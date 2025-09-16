@@ -1,90 +1,136 @@
-Return-Path: <linuxppc-dev+bounces-12287-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12288-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DAB3B591D6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 11:13:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC38B59BCB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 17:16:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQx5x0dJFz30T9;
-	Tue, 16 Sep 2025 19:13:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cR58G2kwsz30FR;
+	Wed, 17 Sep 2025 01:16:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.155
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758014020;
-	cv=none; b=JeR/1j0srv6lQXHpsZUEObbh8o9ReETFEytSuC+ZIPPYMKzzyYNTEnJKaPtTXvLPJn422KltKRe9iJ9MSMaP2Ll+J+5XtD4j+5W+rXktKX92hdOqGeU5AZORGN9GX0HjiWwMCJPFdygLW5ISawCd0lvX0200fw9c1iXeSco1wkiE2xGk/mihR79EelxfTJBahSCTswc3uN2tryKbR9MMTmvjOdXCzHeYbNUPt5PvYkoQBj+PtiGltKZdIt2qobzUwr0Oj0wTp3BkXSeDkztRzpRcYbCnoD89gatcLv8mvEoc/2+AKTBpJXb91H7I/l9foMShSp+gaT/hTr8DARPz9A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758034305;
+	cv=none; b=lAofwn41P9lqq69BmTTdq8KV0ewXpWzvH73T/Fc4QTZw9fz5hGtmdVmOwS0MCtNp5in/Al7i/tE5MeJSfX54VS34yxN6TcgwaE8pYuoMCbF1PRMUHkYC3LpZy2CKALjpsCRzYF6D+tw8VBEmm5LTZaX3+N2X6Kucr9/5UcddWhcDJDZHTnNcEitVgx8FKI8uxbVi/UZDHxoRZPpOjdin5855TtL5zPKmmwj3tLq4Gae+7BDc/zIE6Giv4bJPiobJCENBI8r/dKzjqj1K4jKEp+pcnQL8s9PLnztgW4qHA5r920MvHTrzF9A3kVblBaSz2Dj24GkvCUotxmJMl8ypsw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758014020; c=relaxed/relaxed;
-	bh=1OgYWMorWlEx85Gl8eJPGx4bP2k6bqHXQlySjRgSPhg=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=WJqLZTE8dWvuEBw4owE/Gbga2yAzsoAt3YefshkafU5CujBitV2FOVvUkH726PblYF9HxlJ8qGMSp+Yo7tOgR4B8hdHjD6TmTzXr50MLkr+MS7FqK0hbCYyvicZ+Qn/6SF3AM5shXj0q0JjL/KRtEL2ojoqAvlULl2IbmBLDeRilARwGnBVACYE26dCdi6PjpzS9i+F9dUD0J37C1yiUWFbYut7gfMin6ZQ/UjJ3tu94N/0NmwER3Phr/mQ4AEYmpl8TnQy09Sc9smGPlawckkK0L60NkghNnQu3QI36gYPV4X3a2/pS/zfvuMx98+HN+um+G725CCEAU5wziLXhlQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=RZI+e8Jm; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=GdMynQOk; dkim-atps=neutral; spf=pass (client-ip=202.12.124.155; helo=fhigh-b4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1758034305; c=relaxed/relaxed;
+	bh=kUdV9b+MUzYSykR4K0EUwi33bkRUh9yRXeB209qpl0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=P30THTfKsuSSYJUYmnOM6p07F7+r06iUWu/GpsfUxSWxOomeWxs2WGipzuECulLcsFHadofPCr8FWOadVGPsGJSrFZqbjTIrFzxPsrrIfVCSRM5og1kBcuYyFdfmmPOozeKPFZBLDze5DgNMuXHYO5zPXe2B/vQxmyob/PzRAYoNxOMOT9/kCS9VZGy70NkmSKEOSfocxa9sN6I/fd4xcBT30wcpgnyf4EcL5unqo+pE5QV6Sx8TfAKj6ZIMUbcozNFntLFEW0z/HNFDoLGDcVvzV/elKFkjJtBqF0il5ZyKOsJsZMFVixpBSzwe8B4TwUVGo21kTNyowElU0JO6Bg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=k3KziSGZ; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=wangjinchao600@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=RZI+e8Jm;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=GdMynQOk;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=k3KziSGZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.155; helo=fhigh-b4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=wangjinchao600@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQx5t1Tgtz304h
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 19:13:37 +1000 (AEST)
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id A7D6C7A020A;
-	Tue, 16 Sep 2025 05:13:33 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Tue, 16 Sep 2025 05:13:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1758014013;
-	 x=1758100413; bh=1OgYWMorWlEx85Gl8eJPGx4bP2k6bqHXQlySjRgSPhg=; b=
-	RZI+e8JmSUmd+MgaXuqoWuj7f3IfGtutChgIepT1Be15uX8DwcQO9s8WQ3koYW81
-	oX2RsRVu1V94Y431wW470lVFZ9yLrjSqGXPbuXJDeRzeYeLQmy70hDLoaToVTtqb
-	eBfzaBOvJ8F6+OGh5bbWJLODABYTu5S+wGs3JFCVBqMMPkpIaPi2/JDGi5AnCara
-	tG5wOn6J9FVyjQXAFvxJ10CQqBKiamyGOajv2icre7R5FH8mTYtvYvkUTK2H4b1w
-	G+rWMUnZmQQ2tYsjYWp8FvpsI8WA0E8ogORRb94PZx+2FPmklYzFH7gO+OGIyaja
-	WpnW228Qg/Xs2DG2a/y75A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758014013; x=
-	1758100413; bh=1OgYWMorWlEx85Gl8eJPGx4bP2k6bqHXQlySjRgSPhg=; b=G
-	dMynQOky3jd/4AvDeL1equvO2MMFmqe85lh8q1e69UY+ApCz9I8RJ0FQqOzGld3Y
-	NfVVbtsq9FLkbkNMxFoJjvdjqU6H/+O6M9YTOX4hnYoHOMW50Ef6i2NY7IwaVlKi
-	oTRA+Xt7DIYkgaeCqtPFZh67aA8nfdw6cYgKj91xr6dmOU6xkyx4NM1uy7UIHCHJ
-	lCmtWYLaxrA8caW5vHYG8k+ZtR1O4y/UWS3BLrebLzUuUlYafmy5/vvG7a34sh/C
-	TCN6Ck8S8ymR9ig6KuG+FfyVG8qP1kJlzmumIY5qFxyfTXEcB7IGYf5Lru/Ht4L7
-	vyq1R9AWpY0DfmnREtK8A==
-X-ME-Sender: <xms:PCrJaBp0JrOpVG_PG4r13VFj5rKw3cYPTg62p9PsK7586MwMvsKUVA>
-    <xme:PCrJaDrnnK9PRxsZWcJhvWyZMkW5lGohGWBgN5D9phHraokEDAk-weMTJtACBRi_X
-    elVCG4-E5tScS1k5b0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegtddukecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdp
-    rhgtphhtthhopeifsedufihtrdgvuhdprhgtphhtthhopegthhhrihhsthhophhhvgdrlh
-    gvrhhohiestghsghhrohhuphdrvghupdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghn
-    rdhiugdrrghupdhrtghpthhtohepohhffhhitghirghlthgvtghhfhhlrghshhihthesgh
-    hmrghilhdrtghomhdprhgtphhtthhopegrshhhsehhvgihqhhurghrkhdrtghomhdprhgt
-    phhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpd
-    hrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtoheprgifihhltghogiesfihilhgtohigqdhtvggthhdrtghomh
-X-ME-Proxy: <xmx:PCrJaDKnVJ8NJ5VM4UwsMgrD457HryZ6M2dmkk4XT7k5RMbl4bZk_w>
-    <xmx:PCrJaEDxd-q54vhPgMcuQLPdLq_GvdcTEialDf-h55aiSdeaIU5oKg>
-    <xmx:PCrJaLftXYywb8MkAPAiv2wltbIGFHiSWxUiIrH92lSfvAeJRzU7qQ>
-    <xmx:PCrJaL3QxH_oUveVZbLNJhaAMFig-4sj2kFN3bICj1T92uVM1SnHQQ>
-    <xmx:PSrJaJx2HGsR6ai8Z5NQI7Hde7Bk50Z_tk5_8n4bq6b4FM8XvRA438ed>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 71FFC70006A; Tue, 16 Sep 2025 05:13:32 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cR4bt4TC8z2yrF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Sep 2025 00:51:37 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-7728815e639so3895359b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 07:51:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758034293; x=1758639093; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kUdV9b+MUzYSykR4K0EUwi33bkRUh9yRXeB209qpl0M=;
+        b=k3KziSGZS/yHso9wlbAIY76Chc54Htwm5zvYHtNhQaAXzxVqzv+Q+roY4VIHjKtmcf
+         C9NsZ+hiTgNYV4TongryZFnCBsbi2WNnJ9sQZgDBLphFnqUF8lxMIFGKZP+3g89In08Y
+         1PLYHs0nQq5s/BXjvDQNCN6fLaM/U1sr0BUhMsYa5zsBGjhPqOS3F9HkYMC79sUlxDzL
+         joXXV5ua7HBIlq2IDR3TXjSRQRTv1RR70o1Ei9CXc3HJCTlUWf4t+veIjFAY5P8LJAyx
+         s+BT4SGS0bckWKSmvyWmcsi6dh4K37TQiet4dsT1ltgFzBZm3aZcmFZOG1NdjjyYLMsc
+         5FJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758034293; x=1758639093;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kUdV9b+MUzYSykR4K0EUwi33bkRUh9yRXeB209qpl0M=;
+        b=EgJOG/x6jzVRj8+lsqaOUk1Vd7Mks73wU9/NZd2xyf0iYhn0zoew9PtOVWn36av0Og
+         ULTxPslwnL76HEsI/bh3fp/zW3rV0BtTZJ2Wz30X3wbeFv9B3pNO6d2qf0GAHUow5p6i
+         ddW3k7nuIVxsWKboq/LqzWCEd9mKJDz/V9PUTR9GEaNRvvXquaLLuJaoXpoaekVbO6Fv
+         nqe1LtjdpXr9gSK+vKz1ftn/J8ISIKQcxzluaOIl51DtGDr0xfrYNY1T0R+T0xZPjXWK
+         iqdPPsB+mUEAZzWclAd89zN0DK5rHBQufAi6DwNNovAqFZ793UdnxJtW6v7IBcoYLv4z
+         p5MQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJgUfEuBSmgy53aNLbdMNUjHh6foGJ/r+yzAenxgNR/et3argLJbHNaJciGB7Dl5aqCua5sQKr8xlQD38=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzhQ7gnB0Rcc7SFd3OmOyEW58gw8iuGE7HjeL1tp0QdQbkysrJ5
+	QVjstH0tNaDxFmTT65bBWIoRfP9Oab5MEHXBLOljXfUP8kRQ5ykfYntM
+X-Gm-Gg: ASbGnct2u3kAbzYTrzub+Tm0MBkYnS9InR9SUbABBjXWNZQSe+0XMxoq1K4E4v3r7Le
+	wwpqHP/5B+w4YXLhfZxaiN/5Bt+xcUqazocwE7STS8QoSlAqvdt2ffIXjwtfOZbEjRdlw6Zf1R3
+	69j7SbRbUEjq2MlvUVYygx5J/iZQdv6ycROOwUD+ImuIa94HojW7oQBeM3ZM8ge8rau6y+4vAg3
+	GUGgrxm1vJuiMXf1eu93JABWXsgO3Ile+St7GlyzMCzOI7SlcgqmIcEwEwAOCIHnRFdFWrkUDqd
+	9XmchYD8PudKD5pQk1BtEdvyE9ouFaPOsmeJwgo1bIcgpuzofo7eEYgyV6T55f2NQr2gWP2hr0b
+	D7xcjQJrgp8knRWpSP09rhfQ06pvVXhJEhr3ju6NMbA==
+X-Google-Smtp-Source: AGHT+IHnm4FCK6Te/CibvzapeGhIkDjpDqsd9Sk7/lgMPhn0W5OUMZuiBGRdKNd0yHfUApRIAYjXUQ==
+X-Received: by 2002:a05:6a00:13a5:b0:772:5165:3f68 with SMTP id d2e1a72fcca58-77612194091mr20274566b3a.27.1758034293145;
+        Tue, 16 Sep 2025 07:51:33 -0700 (PDT)
+Received: from localhost ([194.50.154.122])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77607b18371sm16676053b3a.49.2025.09.16.07.51.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 07:51:32 -0700 (PDT)
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: Doug Anderson <dianders@chromium.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Will Deacon <will@kernel.org>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	akpm@linux-foundation.org,
+	catalin.marinas@arm.com,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	mark.rutland@arm.com,
+	alexander.shishkin@linux.intel.com,
+	jolsa@kernel.org,
+	adrian.hunter@intel.com,
+	kan.liang@linux.intel.com,
+	kees@kernel.org,
+	masahiroy@kernel.org,
+	aliceryhl@google.com,
+	ojeda@kernel.org,
+	thomas.weissschuh@linutronix.de,
+	xur@google.com,
+	ruanjinjie@huawei.com,
+	gshan@redhat.com,
+	maz@kernel.org,
+	suzuki.poulose@arm.com,
+	zhanjie9@hisilicon.com,
+	yangyicong@hisilicon.com,
+	gautam@linux.ibm.com,
+	arnd@arndb.de,
+	zhao.xichao@vivo.com,
+	rppt@kernel.org,
+	lihuafei1@huawei.com,
+	coxu@redhat.com,
+	jpoimboe@kernel.org,
+	yaozhenguo1@gmail.com,
+	luogengkun@huaweicloud.com,
+	max.kellermann@ionos.com,
+	tj@kernel.org,
+	yury.norov@gmail.com,
+	thorsten.blum@linux.dev,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-perf-users@vger.kernel.org,
+	Ian Rogers <irogers@google.com>
+Cc: Jinchao Wang <wangjinchao600@gmail.com>
+Subject: [RFC PATCH V1] watchdog: Add boot-time selection for hard lockup detector
+Date: Tue, 16 Sep 2025 22:50:10 +0800
+Message-ID: <20250916145122.416128-1-wangjinchao600@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <https://lore.kernel.org/all/20250915035355.10846-1-cuiyunhui@bytedance.com/>
+References: <https://lore.kernel.org/all/20250915035355.10846-1-cuiyunhui@bytedance.com/>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,52 +144,302 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: ADclxERWIs8s
-Date: Tue, 16 Sep 2025 11:13:03 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Willy Tarreau" <w@1wt.eu>
-Cc: "Ash Logan" <ash@heyquark.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- officialTechflashYT@gmail.com, "A. Wilcox" <AWilcox@wilcox-tech.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>
-Message-Id: <afb4527e-3958-4b04-9bbf-d48e80616aa0@app.fastmail.com>
-In-Reply-To: <20250916070052.GA3616@1wt.eu>
-References: <3e8cb683-a084-4847-8f69-e1f4d9125c45@heyquark.com>
- <432e049f-886d-4734-ad59-52569a796046@app.fastmail.com>
- <11e667d6-2210-47f0-a9ec-a134a60e138c@heyquark.com>
- <39164c56-78f8-4bac-acd2-a996149c1c57@app.fastmail.com>
- <20250916070052.GA3616@1wt.eu>
-Subject: Re: 32-bit HIGHMEM and game console downstreams
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Sep 16, 2025, at 09:00, Willy Tarreau wrote:
-> On Tue, Sep 16, 2025 at 08:20:35AM +0200, Arnd Bergmann wrote:
->> > The maintainer of that downstream claims to be able to boot modern 
->> > text-mode distros on the GameCube' 24MB, which I find really impressive!
->> 
->> On a simpler musl+busybox userland and even more feature reduced
->> kernel (no network, initramfs-only) I could get to ~10MB, but then it
->> doesn't really do anything besides showing a shell.
->
-> When you build your systems from source and install only the necessary
-> *files* (not packages) you can get much lower. Here's my reverse-proxy
-> for example (aarch64):
->
->   $ df /
->   Filesystem     1K-blocks  Used Available Use% Mounted on
->   /dev/ram0          11520 11520         0 100% /
+Currently, the hard lockup detector is selected at compile time via
+Kconfig, which requires a kernel rebuild to switch implementations.
+This is inflexible, especially on systems where a perf event may not
+be available or may be needed for other tasks.
 
-Yes, that was what I did in my busybox example, which used a tiny
-initramfs in the end. Your ramdisk itself is already bigger than
-my total 10MB RAM here, but then it also does one thing instead
-of nothing.
+This commit refactors the hard lockup detector to replace a rigid
+compile-time choice with a flexible build-time and boot-time solution.
+The patch supports building the kernel with either detector
+independently, or with both. When both are built, a new boot parameter
+`hardlockup_detector="perf|buddy"` allows the selection at boot time.
+This is a more robust and user-friendly design.
 
-    Arnd
+This patch is a follow-up to the discussion on the kernel mailing list
+regarding the preference and future of the hard lockup detectors. It
+implements a flexible solution that addresses the community's need to
+select an appropriate detector at boot time.
+
+The core changes are:
+- The `perf` and `buddy` watchdog implementations are separated into
+  distinct functions (e.g., `watchdog_perf_hardlockup_enable`).
+- Global function pointers are introduced (`watchdog_hardlockup_enable_ptr`)
+  to serve as a single API for the entire feature.
+- A new `hardlockup_detector=` boot parameter is added to allow the
+  user to select the desired detector at boot time.
+- The Kconfig options are simplified by removing the complex
+  `HARDLOCKUP_DETECTOR_PREFER_BUDDY` and allowing both detectors to be
+  built without mutual exclusion.
+- The weak stubs are updated to call the new function pointers,
+  centralizing the watchdog logic.
+
+Link: https://lore.kernel.org/all/20250915035355.10846-1-cuiyunhui@bytedance.com/
+Link: https://lore.kernel.org/all/CAD=FV=WWUiCi6bZCs_gseFpDDWNkuJMoL6XCftEo6W7q6jRCkg@mail.gmail.com/
+
+Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+---
+ .../admin-guide/kernel-parameters.txt         |  7 +++
+ include/linux/nmi.h                           |  6 +++
+ kernel/watchdog.c                             | 46 ++++++++++++++++++-
+ kernel/watchdog_buddy.c                       |  7 +--
+ kernel/watchdog_perf.c                        | 10 ++--
+ lib/Kconfig.debug                             | 37 +++++++--------
+ 6 files changed, 85 insertions(+), 28 deletions(-)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 5a7a83c411e9..0af214ee566c 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -1828,6 +1828,13 @@
+ 			backtraces on all cpus.
+ 			Format: 0 | 1
+ 
++	hardlockup_detector=
++			[perf, buddy] Selects the hard lockup detector to use at
++			boot time.
++			Format: <string>
++			- "perf": Use the perf-based detector.
++			- "buddy": Use the buddy-based detector.
++
+ 	hash_pointers=
+ 			[KNL,EARLY]
+ 			By default, when pointers are printed to the console
+diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+index cf3c6ab408aa..9298980ce572 100644
+--- a/include/linux/nmi.h
++++ b/include/linux/nmi.h
+@@ -100,6 +100,9 @@ void watchdog_hardlockup_check(unsigned int cpu, struct pt_regs *regs);
+ #endif
+ 
+ #if defined(CONFIG_HARDLOCKUP_DETECTOR_PERF)
++void watchdog_perf_hardlockup_enable(unsigned int cpu);
++void watchdog_perf_hardlockup_disable(unsigned int cpu);
++extern int watchdog_perf_hardlockup_probe(void);
+ extern void hardlockup_detector_perf_stop(void);
+ extern void hardlockup_detector_perf_restart(void);
+ extern void hardlockup_config_perf_event(const char *str);
+@@ -120,6 +123,9 @@ void watchdog_hardlockup_disable(unsigned int cpu);
+ void lockup_detector_reconfigure(void);
+ 
+ #ifdef CONFIG_HARDLOCKUP_DETECTOR_BUDDY
++void watchdog_buddy_hardlockup_enable(unsigned int cpu);
++void watchdog_buddy_hardlockup_disable(unsigned int cpu);
++int watchdog_buddy_hardlockup_probe(void);
+ void watchdog_buddy_check_hardlockup(int hrtimer_interrupts);
+ #else
+ static inline void watchdog_buddy_check_hardlockup(int hrtimer_interrupts) {}
+diff --git a/kernel/watchdog.c b/kernel/watchdog.c
+index 80b56c002c7f..85451d24a77d 100644
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -55,6 +55,37 @@ unsigned long *watchdog_cpumask_bits = cpumask_bits(&watchdog_cpumask);
+ 
+ #ifdef CONFIG_HARDLOCKUP_DETECTOR
+ 
++#ifdef CONFIG_HARDLOCKUP_DETECTOR_PERF
++/* The global function pointers */
++void (*watchdog_hardlockup_enable_ptr)(unsigned int cpu) = watchdog_perf_hardlockup_enable;
++void (*watchdog_hardlockup_disable_ptr)(unsigned int cpu) = watchdog_perf_hardlockup_disable;
++int (*watchdog_hardlockup_probe_ptr)(void) = watchdog_perf_hardlockup_probe;
++#elif defined(CONFIG_HARDLOCKUP_DETECTOR_BUDDY)
++void (*watchdog_hardlockup_enable_ptr)(unsigned int cpu) = watchdog_buddy_hardlockup_enable;
++void (*watchdog_hardlockup_disable_ptr)(unsigned int cpu) = watchdog_buddy_hardlockup_disable;
++int (*watchdog_hardlockup_probe_ptr)(void) = watchdog_buddy_hardlockup_probe;
++#endif
++
++#ifdef CONFIG_HARDLOCKUP_DETECTOR_MULTIPLE
++static char *hardlockup_detector_type = "perf"; /* Default to perf */
++static int __init set_hardlockup_detector_type(char *str)
++{
++	if (!strncmp(str, "perf", 4)) {
++		watchdog_hardlockup_enable_ptr = watchdog_perf_hardlockup_enable;
++		watchdog_hardlockup_disable_ptr = watchdog_perf_hardlockup_disable;
++		watchdog_hardlockup_probe_ptr = watchdog_perf_hardlockup_probe;
++	} else if (!strncmp(str, "buddy", 5)) {
++		watchdog_hardlockup_enable_ptr = watchdog_buddy_hardlockup_enable;
++		watchdog_hardlockup_disable_ptr = watchdog_buddy_hardlockup_disable;
++		watchdog_hardlockup_probe_ptr = watchdog_buddy_hardlockup_probe;
++	}
++	return 1;
++}
++
++__setup("hardlockup_detector=", set_hardlockup_detector_type);
++
++#endif
++
+ # ifdef CONFIG_SMP
+ int __read_mostly sysctl_hardlockup_all_cpu_backtrace;
+ # endif /* CONFIG_SMP */
+@@ -262,9 +293,17 @@ static inline void watchdog_hardlockup_kick(void) { }
+  * softlockup watchdog start and stop. The detector must select the
+  * SOFTLOCKUP_DETECTOR Kconfig.
+  */
+-void __weak watchdog_hardlockup_enable(unsigned int cpu) { }
++void __weak watchdog_hardlockup_enable(unsigned int cpu)
++{
++	if (watchdog_hardlockup_enable_ptr)
++		watchdog_hardlockup_enable_ptr(cpu);
++}
+ 
+-void __weak watchdog_hardlockup_disable(unsigned int cpu) { }
++void __weak watchdog_hardlockup_disable(unsigned int cpu)
++{
++	if (watchdog_hardlockup_disable_ptr)
++		watchdog_hardlockup_disable_ptr(cpu);
++}
+ 
+ /*
+  * Watchdog-detector specific API.
+@@ -275,6 +314,9 @@ void __weak watchdog_hardlockup_disable(unsigned int cpu) { }
+  */
+ int __weak __init watchdog_hardlockup_probe(void)
+ {
++	if (watchdog_hardlockup_probe_ptr)
++		return watchdog_hardlockup_probe_ptr();
++
+ 	return -ENODEV;
+ }
+ 
+diff --git a/kernel/watchdog_buddy.c b/kernel/watchdog_buddy.c
+index ee754d767c21..390d89bfcafa 100644
+--- a/kernel/watchdog_buddy.c
++++ b/kernel/watchdog_buddy.c
+@@ -19,15 +19,16 @@ static unsigned int watchdog_next_cpu(unsigned int cpu)
+ 	return next_cpu;
+ }
+ 
+-int __init watchdog_hardlockup_probe(void)
++int __init watchdog_buddy_hardlockup_probe(void)
+ {
+ 	return 0;
+ }
+ 
+-void watchdog_hardlockup_enable(unsigned int cpu)
++void watchdog_buddy_hardlockup_enable(unsigned int cpu)
+ {
+ 	unsigned int next_cpu;
+ 
++	pr_info("ddddd %s\n", __func__);
+ 	/*
+ 	 * The new CPU will be marked online before the hrtimer interrupt
+ 	 * gets a chance to run on it. If another CPU tests for a
+@@ -58,7 +59,7 @@ void watchdog_hardlockup_enable(unsigned int cpu)
+ 	cpumask_set_cpu(cpu, &watchdog_cpus);
+ }
+ 
+-void watchdog_hardlockup_disable(unsigned int cpu)
++void watchdog_buddy_hardlockup_disable(unsigned int cpu)
+ {
+ 	unsigned int next_cpu = watchdog_next_cpu(cpu);
+ 
+diff --git a/kernel/watchdog_perf.c b/kernel/watchdog_perf.c
+index 9c58f5b4381d..270110e58f20 100644
+--- a/kernel/watchdog_perf.c
++++ b/kernel/watchdog_perf.c
+@@ -153,10 +153,12 @@ static int hardlockup_detector_event_create(void)
+  * watchdog_hardlockup_enable - Enable the local event
+  * @cpu: The CPU to enable hard lockup on.
+  */
+-void watchdog_hardlockup_enable(unsigned int cpu)
++void watchdog_perf_hardlockup_enable(unsigned int cpu)
+ {
+ 	WARN_ON_ONCE(cpu != smp_processor_id());
+ 
++	pr_info("ddddd %s\n", __func__);
++
+ 	if (hardlockup_detector_event_create())
+ 		return;
+ 
+@@ -172,7 +174,7 @@ void watchdog_hardlockup_enable(unsigned int cpu)
+  * watchdog_hardlockup_disable - Disable the local event
+  * @cpu: The CPU to enable hard lockup on.
+  */
+-void watchdog_hardlockup_disable(unsigned int cpu)
++void watchdog_perf_hardlockup_disable(unsigned int cpu)
+ {
+ 	struct perf_event *event = this_cpu_read(watchdog_ev);
+ 
+@@ -257,10 +259,12 @@ bool __weak __init arch_perf_nmi_is_available(void)
+ /**
+  * watchdog_hardlockup_probe - Probe whether NMI event is available at all
+  */
+-int __init watchdog_hardlockup_probe(void)
++int __init watchdog_perf_hardlockup_probe(void)
+ {
+ 	int ret;
+ 
++	pr_info("ddddd %s\n", __func__);
++
+ 	if (!arch_perf_nmi_is_available())
+ 		return -ENODEV;
+ 
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index dc0e0c6ed075..443353fad1c1 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1167,36 +1167,33 @@ config HARDLOCKUP_DETECTOR
+ #
+ # Note that arch-specific variants are always preferred.
+ #
+-config HARDLOCKUP_DETECTOR_PREFER_BUDDY
+-	bool "Prefer the buddy CPU hardlockup detector"
+-	depends on HARDLOCKUP_DETECTOR
+-	depends on HAVE_HARDLOCKUP_DETECTOR_PERF && HAVE_HARDLOCKUP_DETECTOR_BUDDY
+-	depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
+-	help
+-	  Say Y here to prefer the buddy hardlockup detector over the perf one.
+-
+-	  With the buddy detector, each CPU uses its softlockup hrtimer
+-	  to check that the next CPU is processing hrtimer interrupts by
+-	  verifying that a counter is increasing.
+-
+-	  This hardlockup detector is useful on systems that don't have
+-	  an arch-specific hardlockup detector or if resources needed
+-	  for the hardlockup detector are better used for other things.
+-
+ config HARDLOCKUP_DETECTOR_PERF
+-	bool
++	bool "Enable perf-based hard lockup detector (preferred)"
+ 	depends on HARDLOCKUP_DETECTOR
+-	depends on HAVE_HARDLOCKUP_DETECTOR_PERF && !HARDLOCKUP_DETECTOR_PREFER_BUDDY
++	depends on HAVE_HARDLOCKUP_DETECTOR_PERF
+ 	depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
+ 	select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
++	help
++	  This detector uses a perf event on the CPU to detect when a CPU
++	  has become non-maskable interrupt (NMI) stuck. This is the
++	  preferred method on modern systems as it can detect lockups on
++	  all CPUs at the same time.
+ 
+ config HARDLOCKUP_DETECTOR_BUDDY
+-	bool
++	bool "Enable buddy-based hard lockup detector"
+ 	depends on HARDLOCKUP_DETECTOR
+ 	depends on HAVE_HARDLOCKUP_DETECTOR_BUDDY
+-	depends on !HAVE_HARDLOCKUP_DETECTOR_PERF || HARDLOCKUP_DETECTOR_PREFER_BUDDY
+ 	depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
+ 	select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
++	help
++	  This is an alternative lockup detector that uses a heartbeat
++	  mechanism between CPUs to detect when one has stopped responding.
++	  It is less precise than the perf-based detector and cannot detect
++	  all-CPU lockups, but it does not require a perf counter.
++
++config CONFIG_HARDLOCKUP_DETECTOR_MULTIPLE
++	bool
++	depends on HARDLOCKUP_DETECTOR_PERF && HARDLOCKUP_DETECTOR_BUDDY
+ 
+ config HARDLOCKUP_DETECTOR_ARCH
+ 	bool
+-- 
+2.43.0
+
 
