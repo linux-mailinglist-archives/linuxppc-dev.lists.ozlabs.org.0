@@ -1,79 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-12286-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12287-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C1FB58F68
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 09:43:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DAB3B591D6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 11:13:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQv5N6ZK3z301G;
-	Tue, 16 Sep 2025 17:43:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQx5x0dJFz30T9;
+	Tue, 16 Sep 2025 19:13:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758008584;
-	cv=none; b=NQJjSPT/zPVF+TzSOnTtZJUTEvJ46VTQXPigad3PY2fL3IoKJ8/rjIkiVGWVMuh/pxiD69SH5M9qIXdcdnRGr1soxDFLTvokN+R8MWWzuCH5xGsE0TpsLWH/qGrOuF3dqAXtKzwlqUIlwl6OhpIORRG0Y38ca01By+ZuUj9FP+xjcdhT3iFKmTNEt3np8/KQYA3uuU1qD5t0k9puTcFqqd0Tw0KNjfCtueUpV2CIfPIjKmdIl3Fb2Gg4jCpluUaMvHcIhboUK+9f4KwNM3A/2HNj7XYeCR5yTZHb+jQXWUKUguAITyRp0Tmw/VbgoGWo4yIPsfFWk7ERZ2vEk56CCQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.155
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758014020;
+	cv=none; b=JeR/1j0srv6lQXHpsZUEObbh8o9ReETFEytSuC+ZIPPYMKzzyYNTEnJKaPtTXvLPJn422KltKRe9iJ9MSMaP2Ll+J+5XtD4j+5W+rXktKX92hdOqGeU5AZORGN9GX0HjiWwMCJPFdygLW5ISawCd0lvX0200fw9c1iXeSco1wkiE2xGk/mihR79EelxfTJBahSCTswc3uN2tryKbR9MMTmvjOdXCzHeYbNUPt5PvYkoQBj+PtiGltKZdIt2qobzUwr0Oj0wTp3BkXSeDkztRzpRcYbCnoD89gatcLv8mvEoc/2+AKTBpJXb91H7I/l9foMShSp+gaT/hTr8DARPz9A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758008584; c=relaxed/relaxed;
-	bh=8sHRCjw7e9Pd75QxDAA6YpRMq4pTFEZknMvfD29JhSE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=docE+pjopV5GKaLq0bYdXqLxFomZXiCjr5WXnDcYIJxbFx9FLQjQsB4XZFRwdAZSVYz3UbJvwQEFEoIGlJkN3/7GBNMLhqGwZnhBii2nmFrXoykLtOsSgQegRjTAWbgQeYfXfZRUkzmAbOqEv8bukmuJ2kuERTUiwjHnb1BJbpwSwF0EMs7ItXjWnKgjtivwusxJfdUoDz7rt8OsBXZSZArZelAFMl58PZPPZpgo2t0gFukffLSalJ+FJEVUEqeGjBwexLGIJ9JtkEAMA7z0yI0QORaW8GjJ5Vrj7ZuPnr1OapLm75fafkByjEPhe/ER0ImOecDXvIq7/DHcBHfwtQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=EqS9SBlE; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+	t=1758014020; c=relaxed/relaxed;
+	bh=1OgYWMorWlEx85Gl8eJPGx4bP2k6bqHXQlySjRgSPhg=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=WJqLZTE8dWvuEBw4owE/Gbga2yAzsoAt3YefshkafU5CujBitV2FOVvUkH726PblYF9HxlJ8qGMSp+Yo7tOgR4B8hdHjD6TmTzXr50MLkr+MS7FqK0hbCYyvicZ+Qn/6SF3AM5shXj0q0JjL/KRtEL2ojoqAvlULl2IbmBLDeRilARwGnBVACYE26dCdi6PjpzS9i+F9dUD0J37C1yiUWFbYut7gfMin6ZQ/UjJ3tu94N/0NmwER3Phr/mQ4AEYmpl8TnQy09Sc9smGPlawckkK0L60NkghNnQu3QI36gYPV4X3a2/pS/zfvuMx98+HN+um+G725CCEAU5wziLXhlQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=RZI+e8Jm; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=GdMynQOk; dkim-atps=neutral; spf=pass (client-ip=202.12.124.155; helo=fhigh-b4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=EqS9SBlE;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=RZI+e8Jm;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=GdMynQOk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.155; helo=fhigh-b4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQv5K3hjzz2xnk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 17:43:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=8sHRCjw7e9Pd75QxDAA6YpRMq4pTFEZknMvfD29JhSE=; b=EqS9SBlE80vGVB+xlDQMNuvMLV
-	0fMuIOJTRGJ4WoNMyn+3AdSEjCOd6me78zIoQA0iOD0NvscxJd49pnTIZTEgt42ARaI6WDZ3y8S7z
-	SBLHlAqRFtvoVNqyvFZXEFDVerPjCag7B2ITXdrREd9P6v9s83MVxSkEqu1y+FQd5SQIty5D/fxxG
-	Vmdy54AML2uELeHK6us0F9F0RfxqMGyjcdBEr+8LXUH1+FW+GF6V5E+oSU4yO2InaB/q4N4DHs3ey
-	aFNdNZ1IXIHr26GvZIx4rxnXVMquxgGsW1gh72uwDjaVuE1uK5NhndXG8Lys25qDbwn82Vam+yXb7
-	CPHa5dhA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyQKQ-0000000HFZv-3Lwg;
-	Tue, 16 Sep 2025 07:42:18 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 522A8300134; Tue, 16 Sep 2025 09:42:17 +0200 (CEST)
-Date: Tue, 16 Sep 2025 09:42:17 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Will Deacon <will@kernel.org>, Yunhui Cui <cuiyunhui@bytedance.com>,
-	akpm@linux-foundation.org, catalin.marinas@arm.com,
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
-	acme@kernel.org, namhyung@kernel.org, mark.rutland@arm.com,
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-	irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com, kees@kernel.org, masahiroy@kernel.org,
-	aliceryhl@google.com, ojeda@kernel.org,
-	thomas.weissschuh@linutronix.de, xur@google.com,
-	ruanjinjie@huawei.com, gshan@redhat.com, maz@kernel.org,
-	suzuki.poulose@arm.com, zhanjie9@hisilicon.com,
-	yangyicong@hisilicon.com, gautam@linux.ibm.com, arnd@arndb.de,
-	zhao.xichao@vivo.com, rppt@kernel.org, lihuafei1@huawei.com,
-	coxu@redhat.com, jpoimboe@kernel.org, yaozhenguo1@gmail.com,
-	luogengkun@huaweicloud.com, max.kellermann@ionos.com, tj@kernel.org,
-	wangjinchao600@gmail.com, yury.norov@gmail.com,
-	thorsten.blum@linux.dev, x86@kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org
-Subject: Re: [PATCH] watchdog: remove HARDLOCKUP_DETECTOR_PERF
-Message-ID: <20250916074217.GF3245006@noisy.programming.kicks-ass.net>
-References: <20250915035355.10846-1-cuiyunhui@bytedance.com>
- <aMfpwYPX6_i6ROOY@willie-the-truck>
- <20250915103506.GA3245006@noisy.programming.kicks-ass.net>
- <CAD=FV=Vr67+uRK2bYu34MDXRJN4w_VH_EO7OW4eVLJ3wqUUBog@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQx5t1Tgtz304h
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 19:13:37 +1000 (AEST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id A7D6C7A020A;
+	Tue, 16 Sep 2025 05:13:33 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Tue, 16 Sep 2025 05:13:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1758014013;
+	 x=1758100413; bh=1OgYWMorWlEx85Gl8eJPGx4bP2k6bqHXQlySjRgSPhg=; b=
+	RZI+e8JmSUmd+MgaXuqoWuj7f3IfGtutChgIepT1Be15uX8DwcQO9s8WQ3koYW81
+	oX2RsRVu1V94Y431wW470lVFZ9yLrjSqGXPbuXJDeRzeYeLQmy70hDLoaToVTtqb
+	eBfzaBOvJ8F6+OGh5bbWJLODABYTu5S+wGs3JFCVBqMMPkpIaPi2/JDGi5AnCara
+	tG5wOn6J9FVyjQXAFvxJ10CQqBKiamyGOajv2icre7R5FH8mTYtvYvkUTK2H4b1w
+	G+rWMUnZmQQ2tYsjYWp8FvpsI8WA0E8ogORRb94PZx+2FPmklYzFH7gO+OGIyaja
+	WpnW228Qg/Xs2DG2a/y75A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758014013; x=
+	1758100413; bh=1OgYWMorWlEx85Gl8eJPGx4bP2k6bqHXQlySjRgSPhg=; b=G
+	dMynQOky3jd/4AvDeL1equvO2MMFmqe85lh8q1e69UY+ApCz9I8RJ0FQqOzGld3Y
+	NfVVbtsq9FLkbkNMxFoJjvdjqU6H/+O6M9YTOX4hnYoHOMW50Ef6i2NY7IwaVlKi
+	oTRA+Xt7DIYkgaeCqtPFZh67aA8nfdw6cYgKj91xr6dmOU6xkyx4NM1uy7UIHCHJ
+	lCmtWYLaxrA8caW5vHYG8k+ZtR1O4y/UWS3BLrebLzUuUlYafmy5/vvG7a34sh/C
+	TCN6Ck8S8ymR9ig6KuG+FfyVG8qP1kJlzmumIY5qFxyfTXEcB7IGYf5Lru/Ht4L7
+	vyq1R9AWpY0DfmnREtK8A==
+X-ME-Sender: <xms:PCrJaBp0JrOpVG_PG4r13VFj5rKw3cYPTg62p9PsK7586MwMvsKUVA>
+    <xme:PCrJaDrnnK9PRxsZWcJhvWyZMkW5lGohGWBgN5D9phHraokEDAk-weMTJtACBRi_X
+    elVCG4-E5tScS1k5b0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegtddukecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdp
+    rhgtphhtthhopeifsedufihtrdgvuhdprhgtphhtthhopegthhhrihhsthhophhhvgdrlh
+    gvrhhohiestghsghhrohhuphdrvghupdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghn
+    rdhiugdrrghupdhrtghpthhtohepohhffhhitghirghlthgvtghhfhhlrghshhihthesgh
+    hmrghilhdrtghomhdprhgtphhtthhopegrshhhsehhvgihqhhurghrkhdrtghomhdprhgt
+    phhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpd
+    hrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtoheprgifihhltghogiesfihilhgtohigqdhtvggthhdrtghomh
+X-ME-Proxy: <xmx:PCrJaDKnVJ8NJ5VM4UwsMgrD457HryZ6M2dmkk4XT7k5RMbl4bZk_w>
+    <xmx:PCrJaEDxd-q54vhPgMcuQLPdLq_GvdcTEialDf-h55aiSdeaIU5oKg>
+    <xmx:PCrJaLftXYywb8MkAPAiv2wltbIGFHiSWxUiIrH92lSfvAeJRzU7qQ>
+    <xmx:PCrJaL3QxH_oUveVZbLNJhaAMFig-4sj2kFN3bICj1T92uVM1SnHQQ>
+    <xmx:PSrJaJx2HGsR6ai8Z5NQI7Hde7Bk50Z_tk5_8n4bq6b4FM8XvRA438ed>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 71FFC70006A; Tue, 16 Sep 2025 05:13:32 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,68 +98,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=Vr67+uRK2bYu34MDXRJN4w_VH_EO7OW4eVLJ3wqUUBog@mail.gmail.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+X-ThreadId: ADclxERWIs8s
+Date: Tue, 16 Sep 2025 11:13:03 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Willy Tarreau" <w@1wt.eu>
+Cc: "Ash Logan" <ash@heyquark.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ officialTechflashYT@gmail.com, "A. Wilcox" <AWilcox@wilcox-tech.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>
+Message-Id: <afb4527e-3958-4b04-9bbf-d48e80616aa0@app.fastmail.com>
+In-Reply-To: <20250916070052.GA3616@1wt.eu>
+References: <3e8cb683-a084-4847-8f69-e1f4d9125c45@heyquark.com>
+ <432e049f-886d-4734-ad59-52569a796046@app.fastmail.com>
+ <11e667d6-2210-47f0-a9ec-a134a60e138c@heyquark.com>
+ <39164c56-78f8-4bac-acd2-a996149c1c57@app.fastmail.com>
+ <20250916070052.GA3616@1wt.eu>
+Subject: Re: 32-bit HIGHMEM and game console downstreams
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Sep 15, 2025 at 08:42:00AM -0700, Doug Anderson wrote:
-> On Mon, Sep 15, 2025 at 3:35 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > On Mon, Sep 15, 2025 at 11:26:09AM +0100, Will Deacon wrote:
-> >
-> > >   | If all CPUs are hard locked up at the same time the buddy system
-> > >   | can't detect it.
-> > >
-> > > Ok, so why is that limitation acceptable? It looks to me like you're
-> > > removing useful functionality.
-> >
-> > Yeah, this. I've run into this case waaay too many times to think it
-> > reasonable to remove the perf/NMI based lockup detector.
-> 
-> I am a bit curious how this comes to be in cases where you've seen it.
-> What causes all CPUs to be stuck looping all with interrupts disabled
-> (but still able to execute NMIs)? Certainly one can come up with a
-> synthetic way to make that happen, but I would imagine it to be
-> exceedingly rare in real life. Maybe all CPUs are deadlocked waiting
-> on spinlocks or something? There shouldn't be a lot of other reasons
-> that all CPUs should be stuck indefinitely with interrupts disabled...
+On Tue, Sep 16, 2025, at 09:00, Willy Tarreau wrote:
+> On Tue, Sep 16, 2025 at 08:20:35AM +0200, Arnd Bergmann wrote:
+>> > The maintainer of that downstream claims to be able to boot modern 
+>> > text-mode distros on the GameCube' 24MB, which I find really impressive!
+>> 
+>> On a simpler musl+busybox userland and even more feature reduced
+>> kernel (no network, initramfs-only) I could get to ~10MB, but then it
+>> doesn't really do anything besides showing a shell.
+>
+> When you build your systems from source and install only the necessary
+> *files* (not packages) you can get much lower. Here's my reverse-proxy
+> for example (aarch64):
+>
+>   $ df /
+>   Filesystem     1K-blocks  Used Available Use% Mounted on
+>   /dev/ram0          11520 11520         0 100% /
 
-The simplest one I often run into is rq->lock getting stuck and then all
-the other CPUs piling up on that in various ways.
+Yes, that was what I did in my busybox example, which used a tiny
+initramfs in the end. Your ramdisk itself is already bigger than
+my total 10MB RAM here, but then it also does one thing instead
+of nothing.
 
-Getting stop_machine() stuck is also a fun one.
-
-I mean, it really isn't that hard. If, as a full time kernel dev, you
-don't get into this situation at least a few time a year, you're just
-not doing your job right ;-)
-
-> If that's what's happening, (just spitballing) I wonder if hooking
-> into the slowpath of spinlocks to look for lockups would help? Maybe
-> every 10000 failures to acquire the spinlock we check for a lockup?
-> Obviously you could still come up with synthetic ways to make a
-> non-caught watchdog, but hopefully in those types of cases we can at
-> least reset the device with a hardware watchdog?
-
-Now, why would I want to make the spinlock code worse if I have a
-perfectly functional NMI watchdog?
-
-> Overall the issue is that it's really awkward to have both types of
-> lockup detectors, especially since you've got to pick at compile time.
-
-Well, then go fix that. Surely this isn't rocket science.
-
-> The perf lockup detector has a pile of things that make it pretty
-> awkward and it seems like people have been toward the buddy detector
-> because of this...
-
-There's nothing awkward about the perf one, except that it takes one
-counter, and some people are just greedy and want all of them. At the
-same time, there are people posting patches that use the PMU for
-page-promotion like things, so these same greedy people are going to
-hate on that too.
+    Arnd
 
