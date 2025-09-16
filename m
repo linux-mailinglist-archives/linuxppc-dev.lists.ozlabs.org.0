@@ -1,65 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12283-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12290-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924B5B58E41
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 08:10:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EF1B59BF0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 17:21:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQs2t0dW8z301G;
-	Tue, 16 Sep 2025 16:10:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cR5GJ2zZ9z30Pg;
+	Wed, 17 Sep 2025 01:21:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758003045;
-	cv=none; b=Ne1X9APapcSRtFB3afckw6d6Sc/kz+95PDxXcmb0G/rb1EXfemyAFmpxBVKUnqz32YhZtcTHsMfAiUWYpfLRwmL0mEpwLZ14xJyu+DErseO3OQ94bJUetwqQ1k413Iq09gu920GbtV2Kfdn+YcruuJw8rbVeZXZY7++wNPtI/ySp6uoIwSSbzL3KHo1NXwDE9NNJ/2CuGavU6WCxfwKgNOeRhMWpNAmRSb9jjFICmFTLrngXedJaZNilXUq8+bwKsjq2EhEhnQMe1/u0SHcXSYb1dZ9Dhq6oyX4WWyRxiEIjzlfYx+nTi3jV/qe+7dpUCxGoRk9VHfnGpNU99LCPTA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::335"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758003515;
+	cv=none; b=agY5F+B+0ytEABaws8hQO4DTwcgrP5GNOqBad6a7zxJhLBhULLimCtEr2Hf9thozOoNhhF/6LSZmTsDMlTq00ryzvCsv+VaIx/q5zMeEECE3JrFxianNLeyfBqgVOFhtFZIqNNV/BRo/lVE3fdDAnZhxqF4XPoHCUnxROsKaami4mY+s07q8QqSBfMGLd3Ydu67PhxeVqgpYau/1FPT7ykDil9t/CXSTTYvHTH1RfUPV+NuB+FXfcLLNBXy4H642bf6iFN8Wkpt4KrDB+OLP4VoZhcPiHrzorXWu939rGBJjM43Jsl61X2J/hO7huPqegKzu2FnOgmlX7YLangzALw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758003045; c=relaxed/relaxed;
-	bh=gaWb8FaXTaOm9pYwQoptQTg8O5QNaVOVs+VrR+4evqs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YPMouJhq1gz34E9oyd9CbWQlizgui4pwAooVoG+k4rPyuUjt0rPDOAz6KSJi3k+Ws5qUBdlog5xHOdJi10ZkOGOLtv+GHTFfToPQEDAe7Y3cuRtp8tNc5Dai17BX65VUhJO9nVzMQZ3UDnsWknFl8QlR9ul8u82vkqOo5c9B78tfnKhJqPgDdKL93SMN7uqo15fUqhojDo+Zd/wISkdMlwKJc37OteyrKNnKy+ZTxgGi5OSWtINHpNZrb6boLuQOr1ZnuxeJgAaNz57i1CQG3cwTCGdTqCDsAvOU33f72h/4O0i4FmannXTpFpupyqFx1Xrf5I890aPefhodqKc/jA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Mn1vmNJ2; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=W9BYIc0b; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1758003515; c=relaxed/relaxed;
+	bh=yE36FkE2n6Nf6sdtAOUC4xWShp56TIuhQU2XNORUnm0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jmnYC7fFwp7DFNt+8EjJGhZOR5/c6mv13OkoMWyXnV67Bmw3UJM4gAi8b1lP8t7d0FLll8Fb2LdfBracXvQzS5ij7mvssDqD1PFp4lggEfnH4SzBQ7QDrmNToEF6RNOEbOpUf/scfIcYWZTEV/A+DKz3194989zDM8pCXqhDPdXgit5Xb7kbO6tGT8+qTwtaEL2YaDDA8U41F2hdy9gi9WvrRhNzxlOohQp94yel1JR7673zfxulxLZLcVtuQxGbM0755BKKroMc6F7MGl2MPpztpadELSnC265vMuqq6sH1HfWEez/jj7ZOOjb8Wnh8qdLBcFH1dfES9HQWL23rgA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Wpx2y5PX; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=antonio.feijoo@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Mn1vmNJ2;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=W9BYIc0b;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Wpx2y5PX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=antonio.feijoo@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQs2r2XPCz2yrF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 16:10:44 +1000 (AEST)
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758003038;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gaWb8FaXTaOm9pYwQoptQTg8O5QNaVOVs+VrR+4evqs=;
-	b=Mn1vmNJ29B3nn2f7ZDKYq6uh1x3lGn1KS1bymhPbhHUHYIXuwLU21nc9AVlkaXmEcyDruW
-	m0x0ZHulo1bYfC0f0XqkJTk97e/cIHdH8jqCrXwJuHTtr1wHrCVhWAjMeUHYv6n/a/W6nl
-	3eBw8r+z2oOataqwL5WfhRY6iSjdumIiPFv0Rm99jLQQTz/rif7/XGh7lwwlbg1nIdpb/o
-	Vq5/Ub3PVL5Sm5tp9xYCKFwb7obq6afxX3jzvyUOdGYAd0a02gt5hl7vC8ENqUPGgDwjkI
-	o9+OMgt4ISJlB5nNrMdIvstdVhBRGH/PXKFwrkSKExsa5yroBAKW9JWhCvd9hg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758003038;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gaWb8FaXTaOm9pYwQoptQTg8O5QNaVOVs+VrR+4evqs=;
-	b=W9BYIc0bgetn+IO7V5IHipUl1Twp9sGJ6AA5upoFAXbKJILDMsiGARygGt0Egev4YNZGcZ
-	Phd9o9TLtDhiMICA==
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linuxppc-dev@lists.ozlabs.org
-Cc: Nam Cao <namcao@linutronix.de>
-Subject: [PATCH] genirq/msi: Remove msi_post_free()
-Date: Tue, 16 Sep 2025 08:10:07 +0200
-Message-Id: <20250916061007.964005-1-namcao@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQsCt3hpBz2yrF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 16:18:33 +1000 (AEST)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-45ddc7d5731so35185325e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 23:18:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1758003508; x=1758608308; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yE36FkE2n6Nf6sdtAOUC4xWShp56TIuhQU2XNORUnm0=;
+        b=Wpx2y5PXB27BCiwKPJp9tiMlbqwWTHXAh2y1wKqM97+BubrVlk+UUzAlBd2Uw5jMA5
+         rio/kAj9bHm3ilIoaIrICzH82zupzLIcvRtcZbBnmDv6bCB8Vy5BrxdksoyxEAFvT1Ta
+         6Fwh5RZOBzSjly5ida/YdE0OQ0Lrxawf579KzIoZZlBQykBdXLOs/stNzGkgpsM/zZsW
+         Mrb6U+5+1U88nLb6LV3R3HQM6aNyT2xsBjtQ/A/g2P6lOfUXSVFi3a2IhM7ORhF+BUb1
+         6/Prp/kP/IS2+AkxOREf+1EefZTAEgBCD+SnkhKopQNDvz1TSX6r+nVE0EOPnMco21he
+         pRrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758003508; x=1758608308;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yE36FkE2n6Nf6sdtAOUC4xWShp56TIuhQU2XNORUnm0=;
+        b=wFtBpIqcf/Kl8aafZIXdSFrmECWBghS3bK6Xda99QDX1FTd3CshAlSvor1QHWDYBdi
+         7HzaXAhNcJ7SJzDLk/BsBPMBYzFV8R0Qc6kAfld/IOs5YxE10IRedwwfiXM1T9WAd5vE
+         t5BrMG/5Wx45rZjTVIVERBzgNjnPsJ/UO8aBhvI/YrAwxEs4aXiKvOHQkICHqMV2fA8X
+         MpvvNn/vSE/miwUBB8kkMUA8z6QhZCeBXw+tOfyR7wMasr//mR/szxfZ76h26ROIRixC
+         IH7NZPNsZuY0O9r9E3L1s60aVCa8epPso8E5xAyPYipjgXVMun9CC4U4f91Knc97ndyK
+         R+Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCWa/yy2LXLJEv2zPcY2vgIm2owpb0w4WGgkFsIsf/XTfkroXWfMkthkE22WXE+uGqKPYuZMDg8TQ/wqoLE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyzgfhyQkSKlgylYcZaHt3sN/VvvZOY2l1LTjtrpC41AbdSwGOv
+	dkEzRXTCq/Ljf2Qdzm4/3HBVluUoLtdRy7XRk9eMQb7Wowp9nH1PtefxwY+S9hUrCSDktPBxwdr
+	s/Hvg
+X-Gm-Gg: ASbGncsrNKRQkXZxrOxvQrVamEMttyOssf2MwAwYYnRSftmPOuNJpbB2biBTyqmLmz1
+	jJq6xiJ+FUS2EZLEa9tQ8GrD/lyZQVoB2dG07R1ngERjuCaYjWnJEJ9+WIxI79osFgrz2g7KWjY
+	IoXxT208W4J2yvpE6WkS3ODg6Y8COz99TJ1yooIbSXHFStdhm/e1E3fxNp4dEsJzcH7J8YYNsCz
+	/CDSvFJ6IpwOV+sUigRdPQJKodieF82PmF1yuXTe71zTg19kUcx/dowzKowIZwRK5N9NA0wqdUJ
+	dROHA+F7On/SRk/nyVUQ4OwV4RBWTvPebn5MaXHU9+UizjQzTPfmZlAxJH5l/hIYGBTeBKXf1cx
+	yJ/g8QkV1o4oez5BNit5qMfUpr7nJ8rjF
+X-Google-Smtp-Source: AGHT+IGcaZaJsKjIbaiVHIrRn4D20wudJAA8cvj0MPlUEtXe2fB7JX4ecViL1+EV5ZvPuLWEqJHr3w==
+X-Received: by 2002:a05:600c:4454:b0:45b:97d9:4127 with SMTP id 5b1f17b1804b1-45f211e53femr132015985e9.1.1758003508477;
+        Mon, 15 Sep 2025 23:18:28 -0700 (PDT)
+Received: from [192.168.68.105] ([91.116.119.58])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e016b5cbcsm211728785e9.11.2025.09.15.23.18.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Sep 2025 23:18:28 -0700 (PDT)
+Message-ID: <a6169ca9-51b5-4ac7-99c9-e8be695d831c@suse.com>
+Date: Tue, 16 Sep 2025 08:18:26 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,70 +86,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] powerpc/boot: Add missing compression methods to
+ usage
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <20250915153114.40578-1-antonio.feijoo@suse.com>
+Content-Language: en-US
+From: Antonio Feijoo <antonio.feijoo@suse.com>
+In-Reply-To: <20250915153114.40578-1-antonio.feijoo@suse.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The only user of msi_post_free() - powerpc/pseries - has been changed to
-use msi_teardown().
+Error on the subject, I'll resend the patch.
 
-Remove this unused callback.
+On 15/09/2025 17.31, Antonio Alvarez Feijoo wrote:
+> lzma and lzo are also supported.
+> 
+> Signed-off-by: Antonio Alvarez Feijoo <antonio.feijoo@suse.com>
+> ---
+>  arch/powerpc/boot/wrapper | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+> index 3d8dc822282a..50607bc47d05 100755
+> --- a/arch/powerpc/boot/wrapper
+> +++ b/arch/powerpc/boot/wrapper
+> @@ -21,7 +21,7 @@
+>  #		(default ./arch/powerpc/boot)
+>  # -W dir	specify working directory for temporary files (default .)
+>  # -z		use gzip (legacy)
+> -# -Z zsuffix    compression to use (gz, xz or none)
+> +# -Z zsuffix    compression to use (gz, xz, lzma, lzo or none)
+>  
+>  # Stop execution if any command fails
+>  set -e
+> @@ -69,7 +69,7 @@ usage() {
+>      echo 'Usage: wrapper [-o output] [-p platform] [-i initrd]' >&2
+>      echo '       [-d devtree] [-s tree.dts] [-e esm_blob]' >&2
+>      echo '       [-c] [-C cross-prefix] [-D datadir] [-W workingdir]' >&2
+> -    echo '       [-Z (gz|xz|none)] [--no-compression] [vmlinux]' >&2
+> +    echo '       [-Z (gz|xz|lzma|lzo|none)] [--no-compression] [vmlinux]' >&2
+>      exit 1
+>  }
+>  
 
-Signed-off-by: Nam Cao <namcao@linutronix.de>
----
-This patch depends on the powerpc/series conversion patch, which is
-currently in powerpc tree:
-https://lore.kernel.org/lkml/c7a6d8f27fd217021dea4daad777e81a525ae460.17549=
-03590.git.namcao@linutronix.de/
-
-I think it is most convenient to apply this patch to powerpc tree, if
-everyone is okay with that?
----
- include/linux/msi.h | 4 ----
- kernel/irq/msi.c    | 3 ---
- 2 files changed, 7 deletions(-)
-
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index e5e86a8529fb..faac634ac230 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -431,8 +431,6 @@ struct msi_domain_info;
-  *			function.
-  * @domain_free_irqs:	Optional function to override the default free
-  *			function.
-- * @msi_post_free:	Optional function which is invoked after freeing
-- *			all interrupts.
-  * @msi_translate:	Optional translate callback to support the odd wire to
-  *			MSI bridges, e.g. MBIGEN
-  *
-@@ -473,8 +471,6 @@ struct msi_domain_ops {
- 					     struct device *dev, int nvec);
- 	void		(*domain_free_irqs)(struct irq_domain *domain,
- 					    struct device *dev);
--	void		(*msi_post_free)(struct irq_domain *domain,
--					 struct device *dev);
- 	int		(*msi_translate)(struct irq_domain *domain, struct irq_fwspec *fwspe=
-c,
- 					 irq_hw_number_t *hwirq, unsigned int *type);
- };
-diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index 9b09ad3f9914..e7ad99254841 100644
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -1644,9 +1644,6 @@ static void msi_domain_free_locked(struct device *dev=
-, struct msi_ctrl *ctrl)
- 	else
- 		__msi_domain_free_irqs(dev, domain, ctrl);
-=20
--	if (ops->msi_post_free)
--		ops->msi_post_free(domain, dev);
--
- 	if (info->flags & MSI_FLAG_FREE_MSI_DESCS)
- 		msi_domain_free_descs(dev, ctrl);
- }
---=20
-2.39.5
-
+-- 
+Antonio Álvarez Feijoo
+System Boot and Init
+SUSE
 
