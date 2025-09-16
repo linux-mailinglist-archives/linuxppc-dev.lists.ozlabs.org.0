@@ -1,71 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-12267-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12266-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD13B58CBA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 06:19:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5101AB58CB7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 06:19:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQpZz1H52z2yrF;
-	Tue, 16 Sep 2025 14:19:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQpZ908NKz2yrF;
+	Tue, 16 Sep 2025 14:19:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b2a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757984728;
-	cv=none; b=otxe1ILQrbsPUHobZtkXdZ64twi/6hU+AuY5wqC8mutHJaE7xAdeyqYbzw+NqrkH3Muzj63wqxw+PrN6Sckb/WYOXzjltDRYxvQ9WjMJyUveLxsxCeb1qoNaagomPE7ijbHr+48KQXghp0NpiTZ4jCU/nCPjpcdikbMqXwLRYYLLzUiH9C+vNyGD7qHftxPlqtlSg/kiHzmR3FQFx98TH+VenX7tRKMkzZJKwMJYVsPPFXZH/yIlOPMse4xTTIjX1rzKwGWSKdwbADQEQB0EphyDpJvmhs9D3uSpVUuuujNJ/Rx9Ez/B0mjmT7jF5yWnYPQqlvuPK1pltMxSCxPkTQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::436"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757987232;
+	cv=none; b=BjsKy5di1yceIxliefRhMJOuy5mb1BkkSd1hdcG21yqpDhWWc0Jd/647jS7egkM9cBdUbhjz0SZlz9qzGW9Ap/GwQri50Wf6bvtIozPrUjic6pNx+uEtn8srTUUOpjPFv/XEJuERZnwO5hW6r722TUrMhPP0oIJEqD21qu4imbWtf0aAyeMfEIgcWpsJjtdJGvxy9fux54DtGq02ur5YbdjsRdejynZdMlDpuQrYHrZLN/fcWXtPVGGExRCZ2xXguzz+ejKde9URS2vUTXbSZhI4IU07C3zHdKVgn9rYxOzSCOm/WJYUxZTGmVsxSyl6fZ/FyDraQFGDvoW+BVytKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757984728; c=relaxed/relaxed;
-	bh=d4rwn8y0vRJNvu8C079VdIgUQlj+kBjL5HuZ7smgp/E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZVCHHFHCEvhGnyLHuOxpIDGciNQ/SZzenVn66yHp9Ax4ly/S7Y62UxYRWzM+om7KfAexN563QuO68pPSjJftwKaPkNWtMQMvEH3b0OLBiPjz3XSGI6uSLzJzafcSxu9u+4nKyq/HwdeD0OlujpAF/H1A/vEjEx2qKfSDdE5ZL3lpsttqCeu9ZLvOA0fSILZpYr5fTIPTg5d2lxotrGAmriWuP7vKj9TNb24BhnG0WWX1fCoNDDsqk1jj4FijpCwysbtZAXGhsJS6q4/R2Uw3a3QIKCwDURIy9Rv4h92GNksxrkn4qFEiH8MlrvUxHk1mPqqnr60O1I/bt33+SVMpvQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dgrKxgG7; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1757987232; c=relaxed/relaxed;
+	bh=RiFj7ZcI9WNx+PCt1N/twq4GLIPGrm80taj6KBbbDlU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XFTPcoBYxisR4YKdOU0T6DN2LwnCooZSGJFdNEwNF8eUm0S7epNtWy8XrJq99M3sO867fpnnCvz8iIF5ldpllHn/rxZ3ntz1XUu2IdFR21/VogdnJ5N5tF3/nLHCbwrbJ2kNw/+GQZtsLqhhv8EYOBLhPZvU5sQTZ01uOBdnblMWwghPfJ2SEl3cfQuz5R/dKS3XIFJ/Tp6vhnLVI1wWGf2x9z2P8TpPx/v6lsiAGgDtfcfUwh6lfJFxlIVKRqGw6ZjkouOburcvxncidqfUBv8F3h37rxd1OPoAhwUPnKVJYcTEy53o4MJitbPGV46/0dAcgBC3IpCHAvR9n4qKfA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Eyh4GuX6; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=wangjinchao600@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dgrKxgG7;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Eyh4GuX6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=wangjinchao600@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQkGb1Q4dz2ySV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 11:05:26 +1000 (AEST)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-ea3f9e9f782so2366172276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 18:05:26 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQlBl3q14z302b
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 11:47:10 +1000 (AEST)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-7724df82cabso5030397b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 18:47:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757984724; x=1758589524; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d4rwn8y0vRJNvu8C079VdIgUQlj+kBjL5HuZ7smgp/E=;
-        b=dgrKxgG7+G+yy8cyjXhvzOeamrW2y3qGhbwLZ8neLRZvkP1lE8kTRYmnIWCWz9HNhs
-         JQlo5aAhooVOpL3pOVLcGb7iscS+9PN4gcCj9X7EGv9MGl8wN6wpKhuLWV6JnGz3lpPf
-         xjoGL+zYl2O1v6d/ktgG6+2O2B40Pt464lAsGQ1+4XwfLZXLSblyNYyPsvmAciHJsg/p
-         Ik9drp9jdaSxmLS0qIAn+PrXfiYS30LDMoq2u981GhTTBrBuppLw+83Bi4yzWzoRRjl+
-         zFS0VOZKyUg2V+gJIUlkKfdoDR+hdvYdn2oE9In5vn9blqXCesvyAdXUCSwrXkxvy/uC
-         WwWA==
+        d=gmail.com; s=20230601; t=1757987227; x=1758592027; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RiFj7ZcI9WNx+PCt1N/twq4GLIPGrm80taj6KBbbDlU=;
+        b=Eyh4GuX6GB5Iz5F3BNF1w+gOCW5DVmO5CuhrcmfAlp7FvFk+BRcuBTkqK/IXjG5J+5
+         7fQHh2nut8kCxaiTWGCD3RZ+6ufvCk2IQPDUlEZdsnaZu8AkjVO77eTpaPHLGsbOrfMT
+         zNN1HqKHi4G0W46P69A6OBJo+OObwYsuNmF7HziKsm/zZFtbb6rdgcMo4tGE67UbMPBv
+         9jH4AuhbyU35C1tiZps7ufgmpNefQvSFev/odlknAOCZksEsRsdBElHWvODJGXct0Kmi
+         7F9tjj6asBBfLv/Dd4KMjcuzodr6o4QIAiHb244yyPLveoF2R0aHJBFbpx/A4LRfHaLK
+         jruw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757984724; x=1758589524;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d4rwn8y0vRJNvu8C079VdIgUQlj+kBjL5HuZ7smgp/E=;
-        b=oObXZhBMe/tO61avRdPb13mBfa1bGaYVBDEYVhdTM+AkAZuRy0b9tPeYQkHiMQ09eC
-         BvxJi4xd3U67V6yqWydul5qiFfe09Nr0FfKla0eWSPUes1NjuKyHBJvAwxSbJ7UWgaOd
-         4shZQSVDOoD/LE6Svi6VEp/fYaaTbD76HcD1Q7uHs4xu9Yk+Msqxl1sEowFbuKafeedw
-         UMkiFVOT8nOJdvxcjbNnxgTtxIcve2YmtZZsisHCEM3Yt7+083sKO7xEKC4fmREtS4gg
-         yPU5hkfVH3/7FIrjrWLyn6L4zA2nj54tffTabsFRBnFfG9ESi80J+PGv+kTiDZCEfaJb
-         O8hA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQqDfSZBSR2al73gDSCiHk3ZpviV4u9KedFo7JHRk5D9xruyW1RNTB7mnoDjX8aQ9/2ohtPEgVmkqwGus=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx1u8EFNtnim/4gbMxDCS8uMXcziO+RPZdhJiP89q0UFms8Ev36
-	F5WPzDbnCbl6bZL4BaOmRjvvx/ph7C58GLTtwfliYavpxyaNfQ71HssXq3KHUzFszhC+zpWmd5u
-	sz+ZF5f9B+opHmUMHb+L3Kl5P78ehb90=
-X-Gm-Gg: ASbGncv++9QfVRuNc9M+K7svSX7vsAMX9GY2J9S9J0Ta/u5Y+92aRzbTlE5SifAezcQ
-	sv5XTc+HBlgnDu2sxMDOy6R64Qi0rosf68RzlSvgZkJARFLq5LGsq5aK4fXo1G4lGI2PFefP/IH
-	inagcskC8CcstfmQOnPUoYblv1VdZISdm4R3PTHlxioeQ+eva+vjLHx68a1G/CUUzYMV4GLXnpS
-	wLlMMNIFvUqLhk1/Q==
-X-Google-Smtp-Source: AGHT+IFaJEo1gVHkPCEaCD3vWYjtreYFiQ2WOrRU9CIpbMyg97OVJtr/v3uxdpG+fiXE68E0IfjXLuECnr1bsw09sPQ=
-X-Received: by 2002:a05:6902:2b02:b0:e98:9926:e5ca with SMTP id
- 3f1490d57ef6-ea3d9a6c911mr10729577276.36.1757984723469; Mon, 15 Sep 2025
- 18:05:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757987227; x=1758592027;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RiFj7ZcI9WNx+PCt1N/twq4GLIPGrm80taj6KBbbDlU=;
+        b=Upr9evZAsmPF579sI8SN4BmWbbQQcWP3tSEHAQ4IgHzZJ6vmqvNH6Y4iExihKzXld9
+         CUV8pkS147xXHfDGejA7rqkCuf4x9JvNF87aU9RqXtgboZzz+9dANs68/xFuic+hIDkv
+         gAIfUs+0qqmFhNHB9/QFa5xP1by9u0h2ZUiZ+VCQTTo9bZYhluJHqHWCiw4s0svuEH9D
+         cxsma3MoEwa5nU+QxQO4DAsBH5swycbC6xom+lSXynY/e+yXxqff8asGaaYhni6xWAGM
+         z7byZ3ZGZoRrNBxcN0l9CvoVnnrL5khS/UUa0fpmVltxfLc+rSZm01QUrCRIcrC7SjhV
+         wsfw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFGR2f1BXugEyHUlElbCtmsZ3ErQYNzPjO7wB6ncjYaxoFojpILnJwQvrIPYReQFm8zqmf/Et6E91F93I=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywhu3XfbS58lfVUqtDbJ/L6BHKJsLGjwA8hy80CaTBlWGTzXmJj
+	uxXWPyPAYcj1spSf4reY8O+W0PxctRlA2Vhsvr+V7MCeXe4up1ZSdMVu
+X-Gm-Gg: ASbGnctteGE4M8M6iOhvhjihLI+mNYBpwW4qMw0WVpXWS14TxYR8ty3bcxicmyfIAAc
+	Xvf4s/METmjflg+vV4M6Upgl9P0b9L39hTpxvjgqsEIo8trSU95ztLtdzTXe6yGD/PyTFDebmhz
+	AKBFVyS1Zu5NuSHf+gFPKPkaWDl5/K63NbAQtBUtit3yo0MMxYoFV57RskViCsnmzRP9sAV/1nA
+	kDUzKm3ImMFiPICNIpqAURYeyYP+In07vLrDXzhVDFTIZkXmaKsIDM4RhS0lDfJfP1q8MfOQdDo
+	2P2jDlQi/UhOi1A1MbE62n0q/Ssdp4Frbi5jjTCqAdNrOIV5Kzy2QNM+PDeejGt5T6YCy7CkxwD
+	IwRmkdjYZs2M3vOamsJ8=
+X-Google-Smtp-Source: AGHT+IHJPmOLXIdspKyA83O/BAcGlrfnU5dISVvn02DWV9qPvrZzZVyEnyHMg3+oATLbcf7uKM0HhA==
+X-Received: by 2002:a05:6a20:7f90:b0:249:fd42:fa33 with SMTP id adf61e73a8af0-2602a28e8edmr15663072637.4.1757987227306;
+        Mon, 15 Sep 2025 18:47:07 -0700 (PDT)
+Received: from [127.0.0.1] ([2604:a840:3::30f3])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7760793b5fasm14930150b3a.16.2025.09.15.18.46.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Sep 2025 18:47:06 -0700 (PDT)
+Message-ID: <7366f87a-1924-4dac-8945-389e6674213f@gmail.com>
+Date: Tue, 16 Sep 2025 09:46:53 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,61 +85,84 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250913003842.41944-1-safinaskar@gmail.com> <20250915-modebranche-marken-fc832a25e05d@brauner>
-In-Reply-To: <20250915-modebranche-marken-fc832a25e05d@brauner>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Tue, 16 Sep 2025 04:04:47 +0300
-X-Gm-Features: Ac12FXwuxsP2xoupllcCoDiRw8q2uuerrvP566PgC2Qr6qfMP36Zqdrto9P8zEU
-Message-ID: <CAPnZJGAjfpHZn_VzU3ry9ZV6OUS0RN2iWos153_oM_PhVbMgVg@mail.gmail.com>
-Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
-	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
-	Rob Landley <rob@landley.net>, Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org, 
-	Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, 
-	devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] watchdog: remove HARDLOCKUP_DETECTOR_PERF
+To: Doug Anderson <dianders@chromium.org>,
+ Peter Zijlstra <peterz@infradead.org>
+Cc: Will Deacon <will@kernel.org>, Yunhui Cui <cuiyunhui@bytedance.com>,
+ akpm@linux-foundation.org, catalin.marinas@arm.com, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, acme@kernel.org,
+ namhyung@kernel.org, mark.rutland@arm.com,
+ alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com,
+ adrian.hunter@intel.com, kan.liang@linux.intel.com, kees@kernel.org,
+ masahiroy@kernel.org, aliceryhl@google.com, ojeda@kernel.org,
+ thomas.weissschuh@linutronix.de, xur@google.com, ruanjinjie@huawei.com,
+ gshan@redhat.com, maz@kernel.org, suzuki.poulose@arm.com,
+ zhanjie9@hisilicon.com, yangyicong@hisilicon.com, gautam@linux.ibm.com,
+ arnd@arndb.de, zhao.xichao@vivo.com, rppt@kernel.org, lihuafei1@huawei.com,
+ coxu@redhat.com, jpoimboe@kernel.org, yaozhenguo1@gmail.com,
+ luogengkun@huaweicloud.com, max.kellermann@ionos.com, tj@kernel.org,
+ yury.norov@gmail.com, thorsten.blum@linux.dev, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org
+References: <20250915035355.10846-1-cuiyunhui@bytedance.com>
+ <aMfpwYPX6_i6ROOY@willie-the-truck>
+ <20250915103506.GA3245006@noisy.programming.kicks-ass.net>
+ <CAD=FV=Vr67+uRK2bYu34MDXRJN4w_VH_EO7OW4eVLJ3wqUUBog@mail.gmail.com>
+Content-Language: en-CA
+From: Jinchao Wang <wangjinchao600@gmail.com>
+In-Reply-To: <CAD=FV=Vr67+uRK2bYu34MDXRJN4w_VH_EO7OW4eVLJ3wqUUBog@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Sep 15, 2025 at 4:34=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
-> Split it up into multiple patch series. Send a first series that
-> focusses only on removing the generic infrastructure keeping it as
-> contained as possible. Only do non-generic cleanups that are absolutely
-> essential for the removal. Then the cleanups can go in separate series
-> later.
+On 9/15/25 23:42, Doug Anderson wrote:
+> Hi,
+> 
+> On Mon, Sep 15, 2025 at 3:35 AM Peter Zijlstra <peterz@infradead.org> wrote:
+>>
+>> On Mon, Sep 15, 2025 at 11:26:09AM +0100, Will Deacon wrote:
+>>
+>>>    | If all CPUs are hard locked up at the same time the buddy system
+>>>    | can't detect it.
+>>>
+>>> Ok, so why is that limitation acceptable? It looks to me like you're
+>>> removing useful functionality.
+>>
+>> Yeah, this. I've run into this case waaay too many times to think it
+>> reasonable to remove the perf/NMI based lockup detector.
+> 
+> I am a bit curious how this comes to be in cases where you've seen it.
+> What causes all CPUs to be stuck looping all with interrupts disabled
+> (but still able to execute NMIs)? Certainly one can come up with a
+> synthetic way to make that happen, but I would imagine it to be
+> exceedingly rare in real life. Maybe all CPUs are deadlocked waiting
+> on spinlocks or something? There shouldn't be a lot of other reasons
+> that all CPUs should be stuck indefinitely with interrupts disabled...
+> If that's what's happening, (just spitballing) I wonder if hooking
+> into the slowpath of spinlocks to look for lockups would help? Maybe
+> every 10000 failures to acquire the spinlock we check for a lockup?
+> Obviously you could still come up with synthetic ways to make a
+> non-caught watchdog, but hopefully in those types of cases we can at
+> least reset the device with a hardware watchdog?
+> 
+> Overall the issue is that it's really awkward to have both types of
+> lockup detectors, especially since you've got to pick at compile time.
+> The perf lockup detector has a pile of things that make it pretty
+> awkward and it seems like people have been toward the buddy detector
+> because of this...
+> 
+> -Doug
 
-Ok, I will do this.
-I will send a minimal patchset with arch/ changes kept to absolute minimum
-or even absent. Nearly all of the changes will be in init/ and docs.
-Hopefully it will pass via the VFS tree.
+Should we support both modularization and changing the backend after 
+boot, so that the user has the choice?
 
-If it gets to kernel release, I will consider sending more patchsets.
-
-
---=20
-Askar Safin
+-- 
+Jinchao
 
