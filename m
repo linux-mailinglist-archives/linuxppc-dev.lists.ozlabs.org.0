@@ -1,78 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12268-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12270-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387BDB58CC4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 06:21:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B57B58CE2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 06:37:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQpd5033Mz2yrF;
-	Tue, 16 Sep 2025 14:21:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQpzd74sTz2yvv;
+	Tue, 16 Sep 2025 14:37:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757996409;
-	cv=none; b=i7NzHTsN2QLLFtHmR/gQJHWadedeJcPEG323g3gfNt51LBQ0K9Zb6baGkv9zhyXFLyXCP7OI9gSJh/bOMlCCZgvmo12Ksq+hy2hU+4OW5nOImKTxIjGlnKk9QCONWl+PRdeHwl81HNpwF3aNKZWo1bv50X1fmc6HwTtCbrYgDdXT3OHByB7rwyrMzG4T/Cij6rJCN5WGI36p7Cpaohm7XmA0GJaiJDbwz5nuZCLLidQT/sakOWja9eLJeSEzKyHI8h2bHrsrlcKtdMdLDgY1D0YLunrZR2g5ZJyyrNGanlv4EeooKt0C1xtG8BvumkvL7HSvK1mE1oC2EbiIMLQ6zQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757997469;
+	cv=none; b=Im9IjlaRJPEwy0kPi8YW2Fh6eUrfAW+W4x5KRPRvGZGIkyoJQ4dLXeDvBUBcXr5ON5P3h8+q4Pbbx1YwK7+jU7EIYVYZ8GItpgZcYhCqBU6Eii/+RtbWjhgHQI4Y5t34248M5+/t8PPvJ7aPB81n2Hyl/nITrXhagtB5EuVlsuWKYhzSnyFLIhDKoou7ed4/xQCeOgNT1dLcxB+eiBaVomBEqAZ9SkRU6FlpQWRBUhsVCqFwzqenqdokn1c+h5LX+lNGrp9JdlpNcwfmsbWweYu4L2XcsSKZ0r3WjC2RQjk8zlk5Iei6exqzG6tjhxVjDe0D58eLDbJ3Ybdq1Kct5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757996409; c=relaxed/relaxed;
-	bh=IMYX6+/wntLjFi3USIzJdtXyuVTz2+S4Fd2MtaqIWMg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AYZ9jHeCBbuNIF24m9na51m89UrzS6vea5qvhA++cde5YC+QRZ1aQNIYJ3JJTUOUU54v4gABjyM0cAn+Ac0ORjihpv0JNJfRQ3XAAmWjSNSt/9qlTEF7Oo5CrlIldDFWANBd28r1BneG43KQ742bboEaOJSM2XQxaRs8mAiEpa4Dy7/dgMftw4gHRbWnhMnorYro9TzxTIY4pI9HX/LS6Ro/0o7pVbgUPzZLPDtiDPeQ+q19mlcCc6+VZOCco0EbiQnOidVxqG1EDsPnvWkcRc2Af/AYVtB7ojBKY6AngFtXvlNFB8B2u3Kkhpc4CNPoZ0sL74Gc0rAZNE8OmdB6jA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TYXEiQSi; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mkchauras@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1757997469; c=relaxed/relaxed;
+	bh=Bc018ZCtwOpoZ+2gGHFbjV4KpaKp9t7RIPjYiJD0GjI=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=OkuwfITBAkGmrcTmReohhrVlSbQjHaiFcS/C4c8HPx3v0N1AEnHORrX2tmXen9oDtqN8TLRXQx7ynnrZGtmef3Rq68aoRV3/ib9riuIhI8jVYgmBvMPqt49lY07dpbjYbqZYd+1jf6YwZXM72X/qVntD0W3/cJP7xSAEzC5raAyKoPkhKXGaVTkZ9xfYA3ZbmSIoCX4eCDoMfg3hv25l69Rafww/0shNW8MBdFeo8HqqFn4xOsX3H06lOf5WTLtOv+o9F9iy36LB6woMWJNtUm8JYS5wZkG1EiqGB6iw2W6tkSQB5l/IwvxCG/wigY3PBzxYymZpK17TVbbo7AnoZw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VfuHdiyH; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TYXEiQSi;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VfuHdiyH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mkchauras@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQpbD33pZz2yPd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 14:20:08 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58FH2QuI018825;
-	Tue, 16 Sep 2025 04:19:46 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQpzc5lhTz2ySb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 14:37:48 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58FIKjJg017350;
+	Tue, 16 Sep 2025 04:37:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IMYX6+
-	/wntLjFi3USIzJdtXyuVTz2+S4Fd2MtaqIWMg=; b=TYXEiQSiRJmu5WpTmxhaQ9
-	AKkx5EUg0fTDuOaTEHpYuO1M1VXrrLHJfvR2TxTp6n1aMRaxL6MzeJYxotK9YQ/9
-	CVlVpgh92PvpeP2MGL6UiRAowMejH5u1mJurZqM1fh9/phqzT8e7CwDc3Pmzc2KC
-	7lzbzPjvA3lodeRF/EGId8EgKaWZ1FnxVqgS5JErZkuAfVhui8gUMqEfcSyQbGY8
-	/sS9r6d4vT8HCL05UAi3LuKMxMq0p5VAZCGV/ZpymHaSPArBWtC/Rf53VNSreak5
-	HRt7a6Kc+ubNdfIZnKOD2k0rm+K1Ez8j1qNU+bKbSrVchImGy3gycKZuP4BgllFA
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Bc018Z
+	CtwOpoZ+2gGHFbjV4KpaKp9t7RIPjYiJD0GjI=; b=VfuHdiyHr8iLQllmkwjC35
+	vtZtpmnkmTU8rxEnrGrtnImTudSLrs4vhIhrHKSdrhadenqIbb7d9DhmxB2fwQuk
+	vS1f6yVjC+t9EHITVckIgBX9BYnxBpTkc/tBsP5rVr/Uf4VKa3wyfNLTqESSt+Q6
+	fVEch3xFmIquF07j2dlZO9FqFJP/K6DKJCt9KlnXEyvfrQpFMZzy5scIjbfTiTfQ
+	3VlItGRZfVhZVwrWLHdb5RaL8W7Qhufzp4d8vBqpE6tBPQYMZBhjjBZkr2e6Y/me
+	PqvrG9/AFiegOGmlbyPOqWWXWvHkplA/Xcq3Rr5F7jC1W2n4DknntCNHVYTLottw
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496gat54sh-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496g534yas-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Sep 2025 04:19:46 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58G4HWLU024900;
-	Tue, 16 Sep 2025 04:19:45 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496gat54se-1
+	Tue, 16 Sep 2025 04:37:41 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58G4aYqB016168;
+	Tue, 16 Sep 2025 04:37:40 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496g534yar-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Sep 2025 04:19:45 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58G2AnxZ029536;
-	Tue, 16 Sep 2025 04:19:44 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kb0t5q9-1
+	Tue, 16 Sep 2025 04:37:40 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58G3BkmQ027358;
+	Tue, 16 Sep 2025 04:37:40 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495men1ypb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Sep 2025 04:19:44 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58G4Je4A51183924
+	Tue, 16 Sep 2025 04:37:40 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58G4baja62390758
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Sep 2025 04:19:40 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EC3E720040;
-	Tue, 16 Sep 2025 04:19:39 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 46C1920049;
-	Tue, 16 Sep 2025 04:19:32 +0000 (GMT)
-Received: from [9.39.20.171] (unknown [9.39.20.171])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 16 Sep 2025 04:19:32 +0000 (GMT)
-Message-ID: <2129847d-8058-424e-89b1-5d072b281ce3@linux.ibm.com>
-Date: Tue, 16 Sep 2025 09:49:31 +0530
+	Tue, 16 Sep 2025 04:37:36 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2ED382004D;
+	Tue, 16 Sep 2025 04:37:36 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C9A2D20043;
+	Tue, 16 Sep 2025 04:37:30 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.245.152])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 16 Sep 2025 04:37:30 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,49 +85,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 3/8] powerpc: introduce arch_enter_from_user_mode
-To: Shrikanth Hegde <sshegde@linux.ibm.com>,
-        Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, oleg@redhat.com, kees@kernel.org,
-        luto@amacapital.net, wad@chromium.org, deller@gmx.de, ldv@strace.io,
-        macro@orcam.me.uk, charlie@rivosinc.com, akpm@linux-foundation.org,
-        bigeasy@linutronix.de, ankur.a.arora@oracle.com, naveen@kernel.org,
-        thomas.weissschuh@linutronix.de, Jason@zx2c4.com, peterz@infradead.org,
-        tglx@linutronix.de, namcao@linutronix.de, kan.liang@linux.intel.com,
-        mingo@kernel.org, oliver.upton@linux.dev, mark.barnett@arm.com,
-        atrajeev@linux.vnet.ibm.com, rppt@kernel.org, coltonlewis@google.com,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20250908210235.137300-2-mchauras@linux.ibm.com>
- <20250908210235.137300-5-mchauras@linux.ibm.com>
- <188f79ef-6ad4-4144-b73b-9e1090f4fc95@linux.ibm.com>
-Content-Language: en-US, en-IN, en-GB
-From: Mukesh Kumar Chaurasiya <mkchauras@linux.ibm.com>
-In-Reply-To: <188f79ef-6ad4-4144-b73b-9e1090f4fc95@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
+Subject: Re: [PATCH V2 1/6] tools/perf: Add basic CONFIG_AUXTRACE support for
+ VPA pmu on powerpc
+From: Athira Rajeev <atrajeev@linux.ibm.com>
+In-Reply-To: <bd19b37e-6dfb-495a-bc05-47a347962515@intel.com>
+Date: Tue, 16 Sep 2025 10:07:16 +0530
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
+        "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Aboorva Devarajan <aboorvad@linux.ibm.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, hbathini@linux.vnet.ibm.com,
+        Aditya Bodkhe <Aditya.Bodkhe1@ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BE1E3777-3460-42A0-850D-C021FFA97D22@linux.ibm.com>
+References: <20250915072754.99850-1-atrajeev@linux.ibm.com>
+ <20250915072754.99850-2-atrajeev@linux.ibm.com>
+ <bd19b37e-6dfb-495a-bc05-47a347962515@intel.com>
+To: Adrian Hunter <adrian.hunter@intel.com>
+X-Mailer: Apple Mail (2.3776.700.51)
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=BKWzrEQG c=1 sm=1 tr=0 ts=68c8e562 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=S892im0M2olbNhx55RsA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: Dby_u1cUep2zOakaY6LBdvUsnq6ffJx3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDA4NiBTYWx0ZWRfX2rpdrMZCdB2v
- DArpuFXmyiEbjR+BXx6sfK9bNjQDO2zSm1u8ukai7yAkIisWOcRIFn0SKCgazNnshDZ1iBUrvQJ
- Sw+ti8b9mg3n2ICxpEMC1j7tGGjIQ7xFYRwukQqvIk6yl/Z1Nl+nvbGsnfgfqmPjHnv/oM0x6OJ
- 01iiKCr2pXTKveErvJC/ZE/ELS9auylW09ChrU3HIE+e7zZlryhJzZtI2hBmAHhAft2Clt5kosO
- gDPomokiuTZzM6pv8ESWswJW3mgW0wnmFeFStMzxjIsEjRbL+1KHnO7OswISIZikhgxJ8AhQrxG
- Kw83fXK5uDqe7gauNnJxf+YDd97XQj9YlLBU2Oz49+MT/Z/olgzokAxJ+mcnPQMxPFlFrRnGqWB
- 4/4QJFBc
-X-Proofpoint-ORIG-GUID: 7nzj9B2-PAMJBT1O8w32L4ndZvImg3DU
+X-Proofpoint-GUID: UeuM8CFSjO_nBtB4I1w30nd0_Fy2H65H
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDA4NiBTYWx0ZWRfX2Lzei0B4NhmH
+ Skw/nTpcwz1gSW4oPyv4M2LFh44Ih2CL5loXpvmAo2oAq7zDUs9x6yI0x0+0Rrf0N75Hvyxut2G
+ 4g9au00O99YvgM/P2QR6WWZbP6QQ4aqe3Q1+eqoDUJcM8GodiF3M64n0/hv1iBdQgw05KVkSmwX
+ qdsst5vZagRYN301FTm7FS5mXBGiYI+bWox0KjU5xujIWz1WhWK2eciOhR/9Gn2mcj24IYH0/DY
+ W818Xx+WOHUgEVo4/tg83VrcujjS8wGty/GIkOwWO6B6c/9KP9wu81W9J32vBvzUBuOjKxK8gAq
+ vHQJUsW3kr1TJhl5bxrgj1lsJ7CVLw9yqddp6nmfYKFsn7bLU2kM4H+JaqHuk/Ttp0wN5biaNHQ
+ V9BzP4eI
+X-Proofpoint-ORIG-GUID: 5B6l3aC-B9NtzKCChmfTWxwERKa4KSGB
+X-Authority-Analysis: v=2.4 cv=UJ7dHDfy c=1 sm=1 tr=0 ts=68c8e995 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=QyXUC8HyAAAA:8 a=VnNF1IyMAAAA:8
+ a=V7cUskRflTsJUJfQGFIA:9 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-16_01,2025-09-12_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1011 malwarescore=0 priorityscore=1501 adultscore=0
- suspectscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ adultscore=0 bulkscore=0 impostorscore=0 spamscore=0 priorityscore=1501
+ clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509150086
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -136,223 +135,257 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
-On 9/14/25 2:32 PM, Shrikanth Hegde wrote:
->
->
-> On 9/9/25 2:32 AM, Mukesh Kumar Chaurasiya wrote:
->> - Implement the hook arch_enter_from_user_mode for syscall entry.
->
-> nit: for generic syscall infra.
-Cool, will change this.
->
->> - Move booke_load_dbcr0 from interrupt.c to interrupt.h
->>
->> No functional change intended.
->>
->> Signed-off-by: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+
+> On 15 Sep 2025, at 8:37=E2=80=AFPM, Adrian Hunter =
+<adrian.hunter@intel.com> wrote:
+>=20
+> On 15/09/2025 10:27, Athira Rajeev wrote:
+>> The powerpc PMU collecting Dispatch Trace Log (DTL) entries makes use =
+of
+>> AUX support in perf infrastructure. The PMU driver has the =
+functionality
+>> to collect trace entries in the aux buffer. On the tools side, this =
+data
+>> is made available as PERF_RECORD_AUXTRACE records. This record is
+>> generated by "perf record" command. To enable the creation of
+>> PERF_RECORD_AUXTRACE, add functions to initialize auxtrace records ie
+>> "auxtrace_record__init()". Fill in fields for other callbacks like
+>> info_priv_size, info_fill, free, recording options etc. Define
+>> auxtrace_type as PERF_AUXTRACE_VPA_DTL. Add header file to define vpa
+>> dtl pmu specific details.
+>>=20
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
 >> ---
->>   arch/powerpc/include/asm/entry-common.h | 96 +++++++++++++++++++++++++
->>   arch/powerpc/include/asm/interrupt.h    | 23 ++++++
->>   arch/powerpc/kernel/interrupt.c         | 22 ------
->>   3 files changed, 119 insertions(+), 22 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/entry-common.h 
->> b/arch/powerpc/include/asm/entry-common.h
->> index 3af16d821d07e..49607292bf5a5 100644
->> --- a/arch/powerpc/include/asm/entry-common.h
->> +++ b/arch/powerpc/include/asm/entry-common.h
->> @@ -5,7 +5,103 @@
->>     #ifdef CONFIG_GENERIC_IRQ_ENTRY
->>   +#include <asm/cputime.h>
->> +#include <asm/interrupt.h>
->>   #include <asm/stacktrace.h>
->> +#include <asm/tm.h>
+>> Changelog:
+>> Addressed review comments from Adrian:
+>> - Return VPADTL_AUXTRACE_PRIV_SIZE in powerpc_vpadtl_info_priv_size
+>> - Remove unused powerpc_vpadtl_parse_snapshot_options
+>> - Some of the function parameters had "__maybe_unused", corrected it.
+>> - Used PERF_AUXTRACE_VPA_DTL instead of PERF_AUXTRACE_VPA_PMU
+>> - Moved powerpc_vpadtl_process_auxtrace_info to next patch
+>>=20
+>> tools/perf/arch/powerpc/util/Build      |   1 +
+>> tools/perf/arch/powerpc/util/auxtrace.c | 114 =
+++++++++++++++++++++++++
+>> tools/perf/util/auxtrace.c              |   1 +
+>> tools/perf/util/auxtrace.h              |   1 +
+>> tools/perf/util/powerpc-vpadtl.h        |  18 ++++
+>> 5 files changed, 135 insertions(+)
+>> create mode 100644 tools/perf/arch/powerpc/util/auxtrace.c
+>> create mode 100644 tools/perf/util/powerpc-vpadtl.h
+>>=20
+>> diff --git a/tools/perf/arch/powerpc/util/Build =
+b/tools/perf/arch/powerpc/util/Build
+>> index fdd6a77a3432..a5b0babd307e 100644
+>> --- a/tools/perf/arch/powerpc/util/Build
+>> +++ b/tools/perf/arch/powerpc/util/Build
+>> @@ -10,3 +10,4 @@ perf-util-$(CONFIG_LIBDW) +=3D skip-callchain-idx.o
+>>=20
+>> perf-util-$(CONFIG_LIBUNWIND) +=3D unwind-libunwind.o
+>> perf-util-$(CONFIG_LIBDW_DWARF_UNWIND) +=3D unwind-libdw.o
+>> +perf-util-$(CONFIG_AUXTRACE) +=3D auxtrace.o
+>> diff --git a/tools/perf/arch/powerpc/util/auxtrace.c =
+b/tools/perf/arch/powerpc/util/auxtrace.c
+>> new file mode 100644
+>> index 000000000000..803c582c0c6f
+>> --- /dev/null
+>> +++ b/tools/perf/arch/powerpc/util/auxtrace.c
+>> @@ -0,0 +1,114 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * VPA support
+>> + */
 >> +
->> +static __always_inline void arch_enter_from_user_mode(struct pt_regs 
->> *regs)
+>> +#include <linux/kernel.h>
+>> +#include <linux/types.h>
+>> +#include <linux/bitops.h>
+>> +#include <linux/log2.h>
+>=20
+> Are bitops.h and log2.h needed?
+>=20
+>> +#include <linux/string.h>
+>> +#include <time.h>
+>> +
+>> +#include "../../util/cpumap.h"
+>=20
+> Is cpumap.h needed?
+>=20
+>> +#include "../../util/evsel.h"
+>> +#include "../../util/evlist.h"
+>> +#include "../../util/session.h"
+>> +#include "../../util/util.h"
+>> +#include "../../util/pmu.h"
+>=20
+> Is pmu.h needed?
+>=20
+>> +#include "../../util/debug.h"
+>> +#include "../../util/auxtrace.h"
+>> +#include "../../util/powerpc-vpadtl.h"
+>> +#include "../../util/record.h"
+>> +#include <internal/lib.h> // page_size
+>> +
+>> +#define KiB(x) ((x) * 1024)
+>> +
+>> +static int
+>> +powerpc_vpadtl_recording_options(struct auxtrace_record *ar =
+__maybe_unused,
+>> + struct evlist *evlist __maybe_unused,
+>> + struct record_opts *opts)
 >> +{
->> +    if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
->> +        BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
+>> + opts->full_auxtrace =3D true;
 >> +
->> +    BUG_ON(regs_is_unrecoverable(regs));
->> +    BUG_ON(!user_mode(regs));
->> +    BUG_ON(regs_irqs_disabled(regs));
+>> + /*
+>> +  * Set auxtrace_mmap_pages to minimum
+>> +  * two pages
+>> +  */
+>> + if (!opts->auxtrace_mmap_pages) {
+>> + opts->auxtrace_mmap_pages =3D KiB(128) / page_size;
+>> + if (opts->mmap_pages =3D=3D UINT_MAX)
+>> + opts->mmap_pages =3D KiB(256) / page_size;
+>> + }
 >> +
->> +#ifdef CONFIG_PPC_PKEY
->> +    if (mmu_has_feature(MMU_FTR_PKEY)) {
->> +        unsigned long amr, iamr;
->> +        bool flush_needed = false;
->> +        /*
->> +         * When entering from userspace we mostly have the AMR/IAMR
->> +         * different from kernel default values. Hence don't compare.
->> +         */
->> +        amr = mfspr(SPRN_AMR);
->> +        iamr = mfspr(SPRN_IAMR);
->> +        regs->amr  = amr;
->> +        regs->iamr = iamr;
->> +        if (mmu_has_feature(MMU_FTR_KUAP)) {
->> +            mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
->> +            flush_needed = true;
->> +        }
->> +        if (mmu_has_feature(MMU_FTR_BOOK3S_KUEP)) {
->> +            mtspr(SPRN_IAMR, AMR_KUEP_BLOCKED);
->> +            flush_needed = true;
->> +        }
->> +        if (flush_needed)
->> +            isync();
->> +    } else
->> +#endif
->> +        kuap_assert_locked();
->> +
->> +    booke_restore_dbcr0();
->> +
->> +    account_cpu_user_entry();
->> +
->> +    account_stolen_time();
->> +
->> +    /*
->> +     * This is not required for the syscall exit path, but makes the
->> +     * stack frame look nicer. If this was initialised in the first 
->> stack
->> +     * frame, or if the unwinder was taught the first stack frame 
->> always
->> +     * returns to user with IRQS_ENABLED, this store could be avoided!
->> +     */
->> +    irq_soft_mask_regs_set_state(regs, IRQS_ENABLED);
->> +
->> +    /*
->> +     * If system call is called with TM active, set _TIF_RESTOREALL to
->> +     * prevent RFSCV being used to return to userspace, because POWER9
->> +     * TM implementation has problems with this instruction 
->> returning to
->> +     * transactional state. Final register values are not relevant 
->> because
->> +     * the transaction will be aborted upon return anyway. Or in the 
->> case
->> +     * of unsupported_scv SIGILL fault, the return state does not much
->> +     * matter because it's an edge case.
->> +     */
->> +    if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
->> +            unlikely(MSR_TM_TRANSACTIONAL(regs->msr)))
->> +        set_bits(_TIF_RESTOREALL, &current_thread_info()->flags);
->> +
->> +    /*
->> +     * If the system call was made with a transaction active, doom 
->> it and
->> +     * return without performing the system call. Unless it was an
->> +     * unsupported scv vector, in which case it's treated like an 
->> illegal
->> +     * instruction.
->> +     */
->> +#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->> +    if (unlikely(MSR_TM_TRANSACTIONAL(regs->msr)) &&
->> +        !trap_is_unsupported_scv(regs)) {
->> +        /* Enable TM in the kernel, and disable EE (for scv) */
->> +        hard_irq_disable();
->> +        mtmsr(mfmsr() | MSR_TM);
->> +
->> +        /* tabort, this dooms the transaction, nothing else */
->> +        asm volatile(".long 0x7c00071d | ((%0) << 16)"
->> +                :: "r"(TM_CAUSE_SYSCALL|TM_CAUSE_PERSISTENT));
->> +
->> +        /*
->> +         * Userspace will never see the return value. Execution will
->> +         * resume after the tbegin. of the aborted transaction with the
->> +         * checkpointed register state. A context switch could occur
->> +         * or signal delivered to the process before resuming the
->> +         * doomed transaction context, but that should all be handled
->> +         * as expected.
->> +         */
->> +        return;
->> +    }
->> +#endif // CONFIG_PPC_TRANSACTIONAL_MEM
->
-> nit: Better to follow standard comment practices.
->         /* CONFIG_PPC_TRANSACTIONAL_MEM */
->
-Sure.
->> +}
->> +#define arch_enter_from_user_mode arch_enter_from_user_mode
->>     #endif /* CONFIG_GENERIC_IRQ_ENTRY */
->>   #endif /* _ASM_PPC_ENTRY_COMMON_H */
->> diff --git a/arch/powerpc/include/asm/interrupt.h 
->> b/arch/powerpc/include/asm/interrupt.h
->> index 56bc8113b8cde..6edf064a0fea2 100644
->> --- a/arch/powerpc/include/asm/interrupt.h
->> +++ b/arch/powerpc/include/asm/interrupt.h
->> @@ -138,6 +138,29 @@ static inline void nap_adjust_return(struct 
->> pt_regs *regs)
->>   #endif
->>   }
->>   +static inline void booke_load_dbcr0(void)
->> +{
->> +#ifdef CONFIG_PPC_ADV_DEBUG_REGS
->> +       unsigned long dbcr0 = current->thread.debug.dbcr0;
->> +
->> +       if (likely(!(dbcr0 & DBCR0_IDM)))
->> +               return;
->> +
->> +       /*
->> +        * Check to see if the dbcr0 register is set up to debug.
->> +        * Use the internal debug mode bit to do this.
->> +        */
->> +       mtmsr(mfmsr() & ~MSR_DE);
->> +       if (IS_ENABLED(CONFIG_PPC32)) {
->> +               isync();
->> +               global_dbcr0[smp_processor_id()] = mfspr(SPRN_DBCR0);
->> +       }
->> +       mtspr(SPRN_DBCR0, dbcr0);
->> +       mtspr(SPRN_DBSR, -1);
->> +#endif
+>> + return 0;
 >> +}
 >> +
->
-> Please run checkpatch.pl --strict on the series and fix the simple
-> ones such as need to using tabs, spaces and alignments, extra lines etc.
->
-Sure, will fix these.
-
-Thanks,
-
-Mukesh
-
+>> +static size_t powerpc_vpadtl_info_priv_size(struct auxtrace_record =
+*itr __maybe_unused,
+>> + struct evlist *evlist __maybe_unused)
+>> +{
+>> + return VPADTL_AUXTRACE_PRIV_SIZE;
+>> +}
 >> +
->>   static inline void booke_restore_dbcr0(void)
->>   {
->>   #ifdef CONFIG_PPC_ADV_DEBUG_REGS
->> diff --git a/arch/powerpc/kernel/interrupt.c 
->> b/arch/powerpc/kernel/interrupt.c
->> index 0d8fd47049a19..2a09ac5dabd62 100644
->> --- a/arch/powerpc/kernel/interrupt.c
->> +++ b/arch/powerpc/kernel/interrupt.c
->> @@ -78,28 +78,6 @@ static notrace __always_inline bool 
->> prep_irq_for_enabled_exit(bool restartable)
->>       return true;
->>   }
->>   -static notrace void booke_load_dbcr0(void)
->> -{
->> -#ifdef CONFIG_PPC_ADV_DEBUG_REGS
->> -    unsigned long dbcr0 = current->thread.debug.dbcr0;
->> -
->> -    if (likely(!(dbcr0 & DBCR0_IDM)))
->> -        return;
->> -
->> -    /*
->> -     * Check to see if the dbcr0 register is set up to debug.
->> -     * Use the internal debug mode bit to do this.
->> -     */
->> -    mtmsr(mfmsr() & ~MSR_DE);
->> -    if (IS_ENABLED(CONFIG_PPC32)) {
->> -        isync();
->> -        global_dbcr0[smp_processor_id()] = mfspr(SPRN_DBCR0);
->> -    }
->> -    mtspr(SPRN_DBCR0, dbcr0);
->> -    mtspr(SPRN_DBSR, -1);
->> -#endif
->> -}
->> -
->>   static notrace void check_return_regs_valid(struct pt_regs *regs)
->>   {
->>   #ifdef CONFIG_PPC_BOOK3S_64
->
+>> +static int
+>> +powerpc_vpadtl_info_fill(struct auxtrace_record *itr __maybe_unused,
+>> + struct perf_session *session __maybe_unused,
+>> + struct perf_record_auxtrace_info *auxtrace_info,
+>> + size_t priv_size __maybe_unused)
+>> +{
+>> + auxtrace_info->type =3D PERF_AUXTRACE_VPA_DTL;
+>> +
+>> + return 0;
+>> +}
+>> +
+>> +static void powerpc_vpadtl_free(struct auxtrace_record *itr)
+>> +{
+>> + free(itr);
+>> +}
+>> +
+>> +static u64 powerpc_vpadtl_reference(struct auxtrace_record *itr =
+__maybe_unused)
+>> +{
+>> + return 0;
+>> +}
+>> +
+>> +struct auxtrace_record *auxtrace_record__init(struct evlist *evlist,
+>> + int *err)
+>> +{
+>> + struct auxtrace_record *aux;
+>> + struct evsel *pos;
+>> + char *pmu_name;
+>> + int found =3D 0;
+>> +
+>> + evlist__for_each_entry(evlist, pos) {
+>> + pmu_name =3D strdup(pos->name);
+>> + pmu_name =3D strtok(pmu_name, "/");
+>> + if (strstarts(pmu_name, "vpa_dtl")) {
+>=20
+> pmu_name is leaked, but maybe it is not needed at all e.g.
+>=20
+> if (strstarts(pos->name, "vpa_dtl")) {
+>=20
+>> + found =3D 1;
+>> + pos->needs_auxtrace_mmap =3D true;
+>> + break;
+>> + }
+>> + }
+>> +
+>> + if (!found)
+>> + return NULL;
+>> +
+>> + /*
+>> +  * To obtain the auxtrace buffer file descriptor, the auxtrace =
+event
+>> +  * must come first.
+>> +  */
+>> + evlist__to_front(pos->evlist, pos);
+>> +
+>> + aux =3D zalloc(sizeof(*aux));
+>> + if (aux =3D=3D NULL) {
+>> + pr_debug("aux record is NULL\n");
+>> + *err =3D -ENOMEM;
+>> + return NULL;
+>> + }
+>> +
+>> + aux->recording_options =3D powerpc_vpadtl_recording_options;
+>> + aux->info_priv_size =3D powerpc_vpadtl_info_priv_size;
+>> + aux->info_fill =3D powerpc_vpadtl_info_fill;
+>> + aux->free =3D powerpc_vpadtl_free;
+>> + aux->reference =3D powerpc_vpadtl_reference;
+>> + return aux;
+>> +}
+>> diff --git a/tools/perf/util/auxtrace.c b/tools/perf/util/auxtrace.c
+>> index ebd32f1b8f12..f294658bb948 100644
+>> --- a/tools/perf/util/auxtrace.c
+>> +++ b/tools/perf/util/auxtrace.c
+>> @@ -1393,6 +1393,7 @@ int perf_event__process_auxtrace_info(struct =
+perf_session *session,
+>> case PERF_AUXTRACE_HISI_PTT:
+>> err =3D hisi_ptt_process_auxtrace_info(event, session);
+>> break;
+>> + case PERF_AUXTRACE_VPA_DTL:
+>> case PERF_AUXTRACE_UNKNOWN:
+>> default:
+>> return -EINVAL;
+>> diff --git a/tools/perf/util/auxtrace.h b/tools/perf/util/auxtrace.h
+>> index f001cbb68f8e..e0a5b39fed12 100644
+>> --- a/tools/perf/util/auxtrace.h
+>> +++ b/tools/perf/util/auxtrace.h
+>> @@ -50,6 +50,7 @@ enum auxtrace_type {
+>> PERF_AUXTRACE_ARM_SPE,
+>> PERF_AUXTRACE_S390_CPUMSF,
+>> PERF_AUXTRACE_HISI_PTT,
+>> + PERF_AUXTRACE_VPA_DTL,
+>> };
+>>=20
+>> enum itrace_period_type {
+>> diff --git a/tools/perf/util/powerpc-vpadtl.h =
+b/tools/perf/util/powerpc-vpadtl.h
+>> new file mode 100644
+>> index 000000000000..50a7aa24acbe
+>> --- /dev/null
+>> +++ b/tools/perf/util/powerpc-vpadtl.h
+>> @@ -0,0 +1,18 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +/*
+>> + * VPA DTL PMU Support
+>> + */
+>> +
+>> +#ifndef INCLUDE__PERF_POWERPC_VPADTL_H__
+>> +#define INCLUDE__PERF_POWERPC_VPADTL_H__
+>> +
+>> +#define POWERPC_VPADTL_NAME "powerpc_vpadtl_"
+>=20
+> Never used
+
+Hi Adrian
+
+Thanks for reviewing the patchset and sharing your comments
+
+I will address these changes in V3
+
+Thanks
+Athira
+>=20
+>> +
+>> +enum {
+>> + POWERPC_VPADTL_TYPE,
+>> + VPADTL_AUXTRACE_PRIV_MAX,
+>> +};
+>> +
+>> +#define VPADTL_AUXTRACE_PRIV_SIZE (VPADTL_AUXTRACE_PRIV_MAX * =
+sizeof(u64))
+>> +
+>> +#endif
+
+
 
