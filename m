@@ -1,78 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-12289-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12284-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40689B59BEE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 17:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F3A1B58E62
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Sep 2025 08:21:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cR5G26cdYz30NF;
-	Wed, 17 Sep 2025 01:21:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQsH01qp8z301G;
+	Tue, 16 Sep 2025 16:21:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758003554;
-	cv=none; b=Dl2c98rkxfkMeh82ehl5WJfF8/CHhJyW15Z7Sz7lqCcHY1pts/l6ZzxYAeUU7IHgpR2KkZTtUlmyh9QPPNJ7vBfx5KLMgTgUbmXZXQKUGDwLvXi3yHLB3PN0iUXwn46eO09K7WgzW7QbDhPIf9vRLU17pEdiJcHSQSg/1HCX6woNWDI16YQP7CJuGX9yP725h7OcQqxLhwKjgD4euCvV1kJkVOqrsCWi8R3Zx2rONbx4eYbmBBqqJrWwhk2iQ9g9fOepj1twc3QaZv3b9KfCIAsQekNdKfjHFVkkkyOI98PC7qzV4z3OWpFiMcQirIu6oxSG+dVwIxPbBIkWD6ResQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.153
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758003676;
+	cv=none; b=csrGX7gvJ4uQE0Qv9aZA/H1WoYqoOGxhPia+pNtI9g6njFHPSQiQGwIOejFVdahM6i5koGxPCUXJNUTAAoCzgGodmT+yHiPWMy3x1FOPNAwcHLZegTJDTCbS1WvoN8cPfTguwjbLdtbzUqpQJT64Xr5VFWwA6zuVM+p6Ws0iO2stLZtpcl63sMuyy5+xOXpsr0fp9+KZR7MEpOEZVVr8p2boAfIB47rbzMrxPrYPQr4LLZrdl+4D5niJcfYzbv56ffaQugtd9NrtKoH8LedcQXf6ymvuq5OLwysrrGI/yZtEajJHPj9eeQCXwWojMB1ixq7aZqyTCRqINQY/Y04LSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758003554; c=relaxed/relaxed;
-	bh=7O6H4yncJtI6jRPxDIzl6fb1efR8GujWZKD7CmF704s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KNeo57Eu7R/NHYihU0wua1Qeeqd9j0y15vXkd61nxGX8gHdL/44GQ1jM8Iac0U8AMIB/EpGWIdGQ+V+4iKFmt3nGSndr1tX4XmG1k0znzRRVPlLZCTlqw6Y7d6Tq/vwMP9n43s57Y3baZuOO1Zc/gt3jG8ZtH9M0beoPxuH7rQ7Y5mb8MqBVGJIDiM6xOFmxB12VOv6DmxzdxGs4ifzos6aIChExBfKnL1Fm0aMksyJHY05ID4CFqVZgmpMVwRD2Eu69UPGIhYfFJiHgIxywoitOAfxWXzisoXg9uWoqUUZH9bvVFc9coi+oM8axtNqHz5rCDhwl8W7aMGuhymrl/A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=c8tCVTSS; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=rz0qvUIy; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=antonio.feijoo@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+	t=1758003676; c=relaxed/relaxed;
+	bh=xjyueAXEmWPEqLrRzLXEg+Jxf3wlaTkFjrq4o1OfOb0=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=bkcuf1RZHhd8QPzD1BX20tKajgH0+ylQis4f1irdkDO26dK0nFS0veX0LIvIU3QszILoP6VFmIhbnaTi+tV0psZ6k1K1Ap0qXMoaDHWkGjMpff7OQLWVVHBC+EpqDLodS+b6gEF0pnHpueR8iUHWPnWdW2TGL6mILccaytdgcIU2cZKGiTtx0J/Jhsmul9ttAStbiBvnHtRnCiIvrMbGEaXlYtEIhXRMfQgnlf+ilSTP39TFr42Y8dqDb1Iu7cQDtsaOhDmcdY7ZGxmjxqtLvMx8kaltPTYmsE2zfFEKCRMJ2+wnBpa8myNB3K2bvUqEjLY6qa86+Roi/AJUoaytdQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=Bn4k/Yu3; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=oKTU2dC1; dkim-atps=neutral; spf=pass (client-ip=202.12.124.153; helo=fhigh-b2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=c8tCVTSS;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=rz0qvUIy;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=Bn4k/Yu3;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=oKTU2dC1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=antonio.feijoo@suse.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 53197 seconds by postgrey-1.37 at boromir; Tue, 16 Sep 2025 16:19:13 AEST
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.153; helo=fhigh-b2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQsDd3Ns9z2yrF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 16:19:13 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EAFF822603;
-	Tue, 16 Sep 2025 06:19:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1758003550; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=7O6H4yncJtI6jRPxDIzl6fb1efR8GujWZKD7CmF704s=;
-	b=c8tCVTSSzRZCrEUhqi2pqQ231hFrThJXU+n1WJ676Eer9O+DPXRjj5D2e4Be0BN04zLHCf
-	8P63lmit8RtcMGI5lR8wjbikazo6fDhfqAXRd8RVRWJvMfkUukZKCw3QDQ0bJ2urD0ZnFH
-	uPSQ1TycJVS5khhSEtnO14qI5Fl4kFs=
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1758003549; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=7O6H4yncJtI6jRPxDIzl6fb1efR8GujWZKD7CmF704s=;
-	b=rz0qvUIycmzF6N6796sh0znHJRJL6Ut8qIdwGTrbuAXIsPSJtlaqj6TUys3jJK31gG0FB6
-	VWUxQI6ckGxFQ6p0rRr91Vw+Cy0pUb+bRM2eZ3ZkUzoxE8HhtVp9SRuAM5cyFi6H9u6yQC
-	FUIC/68WxFqnU3FYU+tOcl0gTEZ2EG8=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 61B4113A63;
-	Tue, 16 Sep 2025 06:19:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xe1MFF0ByWijdAAAD6G6ig
-	(envelope-from <antonio.feijoo@suse.com>); Tue, 16 Sep 2025 06:19:09 +0000
-From: Antonio Alvarez Feijoo <antonio.feijoo@suse.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Antonio Alvarez Feijoo <antonio.feijoo@suse.com>
-Subject: [PATCH RESEND] powerpc/boot: Add missing compression methods to usage
-Date: Tue, 16 Sep 2025 08:18:40 +0200
-Message-ID: <20250916061840.5492-1-antonio.feijoo@suse.com>
-X-Mailer: git-send-email 2.51.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQsGt41J6z2yrF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 16:21:09 +1000 (AEST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 858B97A0276;
+	Tue, 16 Sep 2025 02:21:06 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Tue, 16 Sep 2025 02:21:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1758003666;
+	 x=1758090066; bh=xjyueAXEmWPEqLrRzLXEg+Jxf3wlaTkFjrq4o1OfOb0=; b=
+	Bn4k/Yu3QuSvb/F9KSUsKbWKShCAwc+XVf74skhDyiKwumQ1Hd3Qp9B2M/sCxiHW
+	XcAJ5wXHq8aDL0jVr3q76sKLwoBASIBKZ7RVvrPS0WwntURSyCZIi8/jDMvalP0d
+	DoNUGiJw35QPFZphV6ZWI+wcGuGjb11yDPlLLmhxC9xmX/gS5P8dA5XU+uzi+Ayf
+	62Y9pqToEngyI731c35+4mEfXibQwdB8g/TTpJna+MG+O9JaDQxesqPdCHKHM+Zh
+	+SOZ20AELgSzfEb8D76TiME0tUfGwXirOFT4FyX6tgCZnbJwxpmyg6cA1uBZyAd1
+	exOyvXj+vekl7i4tKcatfg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758003666; x=
+	1758090066; bh=xjyueAXEmWPEqLrRzLXEg+Jxf3wlaTkFjrq4o1OfOb0=; b=o
+	KTU2dC1H0UltUgtkG4QSNsbAfNEC6GyVBOl4zt3+fZlO4PyqyNSoizX2KoqyFQEh
+	2ZFiyHuGJ4IALN59BbIGGDnoEHGcvpOntxXxN4NN4ofQRNqgG7uodxarJzRv5cb8
+	nTCYRaZ/CZ+FOKtAOXCGCz1GnN9ieiB3fgRDMBynn2nSneXqvhOMcdNCuEdSN3m5
+	8TUHVfdcKMBoidj6D7rDTYqe6jHrj7Y7FK5EfMP3OcVddBJv5NX4mp+PpmlE3f9O
+	KL7YrUSOgykvPEnBUg0hmqbWuXc8JEwnli+MSc4KjUaZRf3K11Mzg4ARvSDzUzIj
+	4SmeTkj5yeOSl6LbdSLuQ==
+X-ME-Sender: <xms:0QHJaN_xzSyOwfU9Uo31SDIihXRhGtsnoPr-1AhXrBKLoWdcDoZ1Jw>
+    <xme:0QHJaBtyiL6m5CN7DCU3TQ5Imd5qYV_MritapegMBwhra96EclPCy817JZXLGpYKV
+    0Sc-DoH0KKU5N3Dzeo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdefleekfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhpohhuthdp
+    rhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupd
+    hrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghupdhrtghpthhtohepohhf
+    fhhitghirghlthgvtghhfhhlrghshhihthesghhmrghilhdrtghomhdprhgtphhtthhope
+    grshhhsehhvgihqhhurghrkhdrtghomhdprhgtphhtthhopehlihhnuhigphhptgdquggv
+    vheslhhishhtshdrohiilhgrsghsrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrh
+    hnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgifihhltghogies
+    fihilhgtohigqdhtvggthhdrtghomh
+X-ME-Proxy: <xmx:0QHJaMDFaCoirxWjy9HyBoPkBR3rXgoCjkgkjNh4ne1kS-5MfxvoNg>
+    <xmx:0QHJaLdw05ATlXhl1Qqkiy3whw7HD8BKVGKFe-RT7bCtZhx0vIGB5Q>
+    <xmx:0QHJaLOF6LCGiXJD9h-7-_A-w8sqFBz9HE7dNxgFVOQRzO_lyZSvjQ>
+    <xmx:0QHJaLJNYt4WWbmACfasDgexQrWdfiJ9dL34F-cy-8d_9hiQBC5FxA>
+    <xmx:0gHJaLC0NyI6JICwRGIm6Sk-7XVtO4cjK1OLwnWlnf1b63tMNLyZnZL3>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id ACC30700069; Tue, 16 Sep 2025 02:21:05 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,67 +98,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:mid,suse.com:email];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,csgroup.eu,vger.kernel.org,lists.ozlabs.org,suse.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:email];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Level: 
-X-Spam-Score: -2.80
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-ThreadId: ADclxERWIs8s
+Date: Tue, 16 Sep 2025 08:20:35 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Ash Logan" <ash@heyquark.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ officialTechflashYT@gmail.com, "A. Wilcox" <AWilcox@wilcox-tech.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>
+Message-Id: <39164c56-78f8-4bac-acd2-a996149c1c57@app.fastmail.com>
+In-Reply-To: <11e667d6-2210-47f0-a9ec-a134a60e138c@heyquark.com>
+References: <3e8cb683-a084-4847-8f69-e1f4d9125c45@heyquark.com>
+ <432e049f-886d-4734-ad59-52569a796046@app.fastmail.com>
+ <11e667d6-2210-47f0-a9ec-a134a60e138c@heyquark.com>
+Subject: Re: 32-bit HIGHMEM and game console downstreams
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-lzma and lzo are also supported.
+On Tue, Sep 16, 2025, at 03:57, Ash Logan wrote:
+> On 13/9/25 23:52, Arnd Bergmann wrote:
+>
+>> Like most other machines, this one is probably fine with a combination
+>> of a custom LOWMEM_SIZE setting and using zram-highmem, even if we
+>> end up removing support for highmem page cache.
+>
+> Good shout - I'm now testing a 2G/2G split which allows for 1536MiB 
+> lowmem. I know that's a somewhat aggressive setting for userspace, so 
+> we'll see if anything breaks. I read Rasbian shipped similar kernels and 
+> had issues with Wine, though that's not a common use case on PowerPC ^^
 
-Signed-off-by: Antonio Alvarez Feijoo <antonio.feijoo@suse.com>
----
- arch/powerpc/boot/wrapper | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+For experiments I would suggest going all the way to 2GB lowmem on MEM2,
+which would require running without MEM1. At least on powerpc you have
+complete flexibility with the vmsplit, compared to arm and x86 that
+only have a few distinct options.
 
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index 3d8dc822282a..50607bc47d05 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -21,7 +21,7 @@
- #		(default ./arch/powerpc/boot)
- # -W dir	specify working directory for temporary files (default .)
- # -z		use gzip (legacy)
--# -Z zsuffix    compression to use (gz, xz or none)
-+# -Z zsuffix    compression to use (gz, xz, lzma, lzo or none)
- 
- # Stop execution if any command fails
- set -e
-@@ -69,7 +69,7 @@ usage() {
-     echo 'Usage: wrapper [-o output] [-p platform] [-i initrd]' >&2
-     echo '       [-d devtree] [-s tree.dts] [-e esm_blob]' >&2
-     echo '       [-c] [-C cross-prefix] [-D datadir] [-W workingdir]' >&2
--    echo '       [-Z (gz|xz|none)] [--no-compression] [vmlinux]' >&2
-+    echo '       [-Z (gz|xz|lzma|lzo|none)] [--no-compression] [vmlinux]' >&2
-     exit 1
- }
- 
--- 
-2.51.0
+If you run into problems with ~1.8GB user addressing, you can still
+see where exactly the problem is and whether it's fixable. E.g. If
+there is a single process that tries to actually use most of the
+available RAM, it will likely fail when it runs out of address
+space in malloc(), and there is not much we can do about that.
 
+>> The smaller devices are probable getting problematic sooner, 96MB
+>> in the Wii is already really tight and this only gets worse over
+>> time.
+>
+> The maintainer of that downstream claims to be able to boot modern 
+> text-mode distros on the GameCube' 24MB, which I find really impressive!
+
+24MB is impressive indeed. In my latest tests I did not get below 32MB
+(+swap) on an ARMv7 kernel with Debian Bookworm, and major features
+turned off in both kernel and userland.
+
+On a simpler musl+busybox userland and even more feature reduced
+kernel (no network, initramfs-only) I could get to ~10MB, but then it
+doesn't really do anything besides showing a shell.
+
+    Arnd
 
