@@ -1,98 +1,111 @@
-Return-Path: <linuxppc-dev+bounces-12350-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12351-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD27B80443
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Sep 2025 16:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1AAB80724
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Sep 2025 17:14:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cRhb43jPpz3cYH;
-	Thu, 18 Sep 2025 00:53:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cRj3J3Dh4z2yMh;
+	Thu, 18 Sep 2025 01:14:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758120784;
-	cv=none; b=QH/4PuoXK9VUwHkYBAi5r7Io/pqwuO11jewae0ObUtDLUU+8kmmRM5gTsRlSr3X2uz6hQWJHodSpeiWnmjXmi62zAeXQlgAHraNzhcs7P26bAqb9eYYUMxHEr5zv1zJg6aiwIBcDnFn82kLYsSL5P8BZV6G/BDBw7v71XdA3tbbggdfYChTus4PaAivvYw+AVUgOjN95qa+WB+M/Usfu33vgGyLh88QNRf2m8fuvlUfp/uho2+wS1xtncUUVjihXrX5CMVyyfxeUVzPCFeRHe14yB0M8FFu3AQaSxtaIiN2yuHzzdguqb2mqlEgmVufcDBa+QDycOvPKWjD5JxxDng==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758122044;
+	cv=none; b=W6gqFSEOeYrudzRfX0Cu6OXYh41D2eo0NT7Vm/ikdKchGSIYP1BmrsFPDpJY1zazqIE9qwDX9dbuyNSp0FcfWgT8D3mU+pGqPcV6gNg/7U8M9ZiNrDefqtpjdJu4Ou0nqQncefxnewXn39aHS6ndKLKis7PMbKgUBjCm/nhwqa4q9enXIgySnhKBgflthaZIx/ijOTGJ/NUw4i86O0lBT2+9m7DzDOoPPV2PgtHq9ETCK6T+bFADFUN9Vzoh6k8Ndc641b3d8MV2MRcjHS+0Ktc60vv+eISaugs+ShxpjReqc3ImYCXHXAe9jfJx7+31qSfiUZumBr5HbD8RRgyU5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758120784; c=relaxed/relaxed;
-	bh=nujOKC7Z2PPwChq/610XkomQBe6ZaVrhojz/Hn17GTs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dej2z99Kg7a5rbPn5iv7CtIOsUll5NbqC16CpCWnKNKdvtUoJzvLt5Wzl9rOsXXTA0+g8VNOTMEF4xV55nvIg+KbTfxHZuYd4Nu2KOa8790ssRcKRWVVbtP7lKV3znrWix2U50NsDquDIl4b+OWdzwmWDaPpLeB5DNUyMg6uD35b/z7DKB/BrDmWByCR4QqJjme7HeiRa7Z0QaEx3wdKiZTzidAns8HTmNhvRNF+uVdVLn+4Upmzk4An5dOc8XekvkOsP7E8QS8XqsPXVH8uGRCWN3+T8/ws5g1DKeTfzEfNvOHDRVgMycRiBc1veucFODe0ALaaN4eZKVUi4fpb1g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1758122044; c=relaxed/relaxed;
+	bh=Gpbsl99AcwvMMY8pjAz45RrL3lV0my41naP5Lagcwqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FUBZqqa8fGf/w/lt1LrU5XmDNpkbXA2ggsZQfYdUswBukTeo8vRJzQxISpdUyAmxdEgS6cF6ESZSK2XmIifuscTNoaabf1HhX1rgFy44nWlQnDw0yGsReUB7kFJA6N33OBAr/VbYladrQmSqCjnPgA8jnrGYr2/L7cW4OPsLvkzqpDOQB+K52HsxwNU+aSFr9LYBd9lE5zGrXG0XuB0iGxVnWhy3ckr43N+uUVOOU0uvhz2xdIAk83SAq5guZS0x/vQAyXnsrkN2RDa4IUTw9JceqVkjKadi18UznR8fq250hv0r9xOtgWe/JCI/AwB/TT6hrjhCUq5LZZKPjmeGSQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kdxUpA6n; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kdxUpA6n;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cRhb33R1Bz304l
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 00:53:03 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 39702206DF;
-	Wed, 17 Sep 2025 14:53:01 +0000 (UTC)
-Authentication-Results: smtp-out2.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 030AF1368D;
-	Wed, 17 Sep 2025 14:52:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CRHEOkvLymgAEwAAD6G6ig
-	(envelope-from <jgross@suse.com>); Wed, 17 Sep 2025 14:52:59 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	virtualization@lists.linux.dev,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	kvm@vger.kernel.org
-Cc: Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH v2 06/21] sched: Move clock related paravirt code to kernel/sched
-Date: Wed, 17 Sep 2025 16:52:05 +0200
-Message-ID: <20250917145220.31064-7-jgross@suse.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917145220.31064-1-jgross@suse.com>
-References: <20250917145220.31064-1-jgross@suse.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cRj3G6TP9z2xnk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 01:14:02 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58HB2heh031364;
+	Wed, 17 Sep 2025 15:13:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Gpbsl9
+	9AcwvMMY8pjAz45RrL3lV0my41naP5Lagcwqg=; b=kdxUpA6nW5Tmi7rGB3AJGR
+	NM/xNi5WIURhafGfjEHgdYGB/psocIFarKbLZ7LR+Xi/jETeHKEloI5I2HX/qqfU
+	Bw/WhoOHsJKnFaPkecwpriLEG/ZyJitxlMMNELYp7qCZLx5Npqe/zn8hm3XPgwhC
+	l+PBZEdcPvlprtcxn3x5dt84pRqYpc7U3cfTn3dW2pzL+3/lWD/I6q7U46UHtbji
+	IqD0yPQyJs7nSLrExCmTcnhUGCyGTEK2EOM1a2I6/Ufxa+rqU7cP2qp3dmd79kFq
+	WX+YEdoojkGTAJa3RoNX4kIiWGtUajT7XIe8Y9oTHLdeXx/vRgxo1jzZ2CbTPo6Q
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4hmj47-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Sep 2025 15:13:07 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58HEej22030065;
+	Wed, 17 Sep 2025 15:13:06 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4hmj43-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Sep 2025 15:13:06 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58HDRm4L029498;
+	Wed, 17 Sep 2025 15:13:04 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kb122kc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Sep 2025 15:13:04 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58HFD1rn61604222
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 17 Sep 2025 15:13:01 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4A51020043;
+	Wed, 17 Sep 2025 15:13:01 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DFF1620040;
+	Wed, 17 Sep 2025 15:13:00 +0000 (GMT)
+Received: from osiris (unknown [9.152.212.133])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 17 Sep 2025 15:13:00 +0000 (GMT)
+Date: Wed, 17 Sep 2025 17:12:59 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>,
+        Andreas Larsson <andreas@gaisler.com>,
+        Nick Alcock <nick.alcock@oracle.com>, John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Shuah Khan <shuah@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>,
+        Shannon Nelson <sln@onemain.com>, linux-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Subject: Re: [PATCH v3 20/36] s390/time: Set up vDSO datapage later
+Message-ID: <20250917151259.29680Ba8-hca@linux.ibm.com>
+References: <20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de>
+ <20250917-vdso-sparc64-generic-2-v3-20-3679b1bc8ee8@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,394 +119,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLkdkdrsxe9hqhhs5ask8616i6)]
-X-Rspamd-Queue-Id: 39702206DF
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Score: -4.00
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250917-vdso-sparc64-generic-2-v3-20-3679b1bc8ee8@linutronix.de>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -lB8-8Z2vm3Dr2RcdiTeItlnik0kFd3-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwNCBTYWx0ZWRfX0LRupd/nMATB
+ xRH1x3KPf+TeGsBgHzb9CxxubzjsPM3xnWjDFBXVrXb1xnl8dkY4T15BQGOP8AXD1NzuOTVMI9T
+ vyt++8gNnq27pcVi2bYCJP2Zpv85C47f6+JnGasi5qzD4b22Pw8Tfd54sawYgj/G0nN6qX4T+2t
+ KxWPoCxw7oflQSA8CrXDGMKVfJ2GY1fGWARKyxRnD13aQtZjs6NrRvJl8QAdmjvZRG/l8MnuZhS
+ 1G/MCeX/1CDgCgS9UnA+Qf1KwX9KGF/03p/MXyO2dxPmZjecD5qvqxQ2OqtIWFAs2LDX0H7HXO2
+ 1nPDh0fFMqwAjjUFIZbTuRTKdnI0IGr7TwS3bye7rcJIUN/UE+jxDh65KInj/nk1m1BgQN9b8vk
+ KjCbgU2p
+X-Proofpoint-GUID: 9tPi08vdJaon8TFVV3QLHKMPbM8_3wa7
+X-Authority-Analysis: v=2.4 cv=co2bk04i c=1 sm=1 tr=0 ts=68cad003 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=8nJEP1OIZ-IA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=IMH0LFUbUW6ywGf4fkUA:9
+ a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10 a=0lgtpPvCYYIA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-17_01,2025-09-17_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 impostorscore=0 priorityscore=1501 suspectscore=0 adultscore=0
+ phishscore=0 malwarescore=0 spamscore=0 bulkscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509160204
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Paravirt clock related functions are available in multiple archs.
+On Wed, Sep 17, 2025 at 04:00:22PM +0200, Thomas Weißschuh wrote:
+> Upcoming changes to the generic vDSO library will mean that the vDSO
+> datapage will not yet be usable during time_early_init().
+> 
+> Move the initialization to time_init() which is called later. This is
+> valid as the value of tod_clock_base.tod does not change during the
+> lifetime of the machine and the vDSO datapage is only used much later.
 
-In order to share the common parts, move the common static keys
-to kernel/sched/ and remove them from the arch specific files.
+This is not true; tod_clock_base is a union and the tod member is changed
+implicitly within clock_sync_global():
 
-Make a common paravirt_steal_clock() implementation available in
-kernel/sched/cputime.c, guarding it with a new config option
-CONFIG_HAVE_PV_STEAL_CLOCK_GEN, which can be selected by an arch
-in case it wants to use that common variant.
+	tod_clock_base.eitod += delta;
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- arch/Kconfig                           |  3 +++
- arch/arm/include/asm/paravirt.h        |  4 ----
- arch/arm/kernel/paravirt.c             |  3 ---
- arch/arm64/include/asm/paravirt.h      |  4 ----
- arch/arm64/kernel/paravirt.c           |  4 +---
- arch/loongarch/include/asm/paravirt.h  |  3 ---
- arch/loongarch/kernel/paravirt.c       |  3 +--
- arch/powerpc/include/asm/paravirt.h    |  3 ---
- arch/powerpc/platforms/pseries/setup.c |  4 +---
- arch/riscv/include/asm/paravirt.h      |  4 ----
- arch/riscv/kernel/paravirt.c           |  4 +---
- arch/x86/include/asm/paravirt.h        |  4 ----
- arch/x86/kernel/cpu/vmware.c           |  1 +
- arch/x86/kernel/kvm.c                  |  1 +
- arch/x86/kernel/paravirt.c             |  3 ---
- drivers/xen/time.c                     |  1 +
- include/linux/sched/cputime.h          | 18 ++++++++++++++++++
- kernel/sched/core.c                    |  5 +++++
- kernel/sched/cputime.c                 | 13 +++++++++++++
- kernel/sched/sched.h                   |  2 +-
- 20 files changed, 47 insertions(+), 40 deletions(-)
+However that happens only in stop_machine() context. Therefore moving the
+initialization to time_init() is indeed ok, since it is called very early
+when even preemption is still disabled.
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index d1b4ffd6e085..7921be052472 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1003,6 +1003,9 @@ config HAVE_IRQ_TIME_ACCOUNTING
- 	  Archs need to ensure they use a high enough resolution clock to
- 	  support irq time accounting and then call enable_sched_clock_irqtime().
- 
-+config HAVE_PV_STEAL_CLOCK_GEN
-+	bool
-+
- config HAVE_MOVE_PUD
- 	bool
- 	help
-diff --git a/arch/arm/include/asm/paravirt.h b/arch/arm/include/asm/paravirt.h
-index 95d5b0d625cd..69da4bdcf856 100644
---- a/arch/arm/include/asm/paravirt.h
-+++ b/arch/arm/include/asm/paravirt.h
-@@ -5,10 +5,6 @@
- #ifdef CONFIG_PARAVIRT
- #include <linux/static_call_types.h>
- 
--struct static_key;
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
--
- u64 dummy_steal_clock(int cpu);
- 
- DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
-diff --git a/arch/arm/kernel/paravirt.c b/arch/arm/kernel/paravirt.c
-index 7dd9806369fb..3895a5578852 100644
---- a/arch/arm/kernel/paravirt.c
-+++ b/arch/arm/kernel/paravirt.c
-@@ -12,9 +12,6 @@
- #include <linux/static_call.h>
- #include <asm/paravirt.h>
- 
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
--
- static u64 native_steal_clock(int cpu)
- {
- 	return 0;
-diff --git a/arch/arm64/include/asm/paravirt.h b/arch/arm64/include/asm/paravirt.h
-index 9aa193e0e8f2..c9f7590baacb 100644
---- a/arch/arm64/include/asm/paravirt.h
-+++ b/arch/arm64/include/asm/paravirt.h
-@@ -5,10 +5,6 @@
- #ifdef CONFIG_PARAVIRT
- #include <linux/static_call_types.h>
- 
--struct static_key;
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
--
- u64 dummy_steal_clock(int cpu);
- 
- DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
-diff --git a/arch/arm64/kernel/paravirt.c b/arch/arm64/kernel/paravirt.c
-index aa718d6a9274..943b60ce12f4 100644
---- a/arch/arm64/kernel/paravirt.c
-+++ b/arch/arm64/kernel/paravirt.c
-@@ -19,14 +19,12 @@
- #include <linux/slab.h>
- #include <linux/types.h>
- #include <linux/static_call.h>
-+#include <linux/sched/cputime.h>
- 
- #include <asm/paravirt.h>
- #include <asm/pvclock-abi.h>
- #include <asm/smp_plat.h>
- 
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
--
- static u64 native_steal_clock(int cpu)
- {
- 	return 0;
-diff --git a/arch/loongarch/include/asm/paravirt.h b/arch/loongarch/include/asm/paravirt.h
-index 3f4323603e6a..d219ea0d98ac 100644
---- a/arch/loongarch/include/asm/paravirt.h
-+++ b/arch/loongarch/include/asm/paravirt.h
-@@ -5,9 +5,6 @@
- #ifdef CONFIG_PARAVIRT
- 
- #include <linux/static_call_types.h>
--struct static_key;
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
- 
- u64 dummy_steal_clock(int cpu);
- DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
-diff --git a/arch/loongarch/kernel/paravirt.c b/arch/loongarch/kernel/paravirt.c
-index b1b51f920b23..8caaa94fed1a 100644
---- a/arch/loongarch/kernel/paravirt.c
-+++ b/arch/loongarch/kernel/paravirt.c
-@@ -6,11 +6,10 @@
- #include <linux/kvm_para.h>
- #include <linux/reboot.h>
- #include <linux/static_call.h>
-+#include <linux/sched/cputime.h>
- #include <asm/paravirt.h>
- 
- static int has_steal_clock;
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
- static DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
- DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
- 
-diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
-index b78b82d66057..92343a23ad15 100644
---- a/arch/powerpc/include/asm/paravirt.h
-+++ b/arch/powerpc/include/asm/paravirt.h
-@@ -23,9 +23,6 @@ static inline bool is_shared_processor(void)
- }
- 
- #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
--
- u64 pseries_paravirt_steal_clock(int cpu);
- 
- static inline u64 paravirt_steal_clock(int cpu)
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index b10a25325238..50b26ed8432d 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -42,6 +42,7 @@
- #include <linux/memblock.h>
- #include <linux/swiotlb.h>
- #include <linux/seq_buf.h>
-+#include <linux/sched/cputime.h>
- 
- #include <asm/mmu.h>
- #include <asm/processor.h>
-@@ -83,9 +84,6 @@ DEFINE_STATIC_KEY_FALSE(shared_processor);
- EXPORT_SYMBOL(shared_processor);
- 
- #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
--
- static bool steal_acc = true;
- static int __init parse_no_stealacc(char *arg)
- {
-diff --git a/arch/riscv/include/asm/paravirt.h b/arch/riscv/include/asm/paravirt.h
-index c0abde70fc2c..17e5e39c72c0 100644
---- a/arch/riscv/include/asm/paravirt.h
-+++ b/arch/riscv/include/asm/paravirt.h
-@@ -5,10 +5,6 @@
- #ifdef CONFIG_PARAVIRT
- #include <linux/static_call_types.h>
- 
--struct static_key;
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
--
- u64 dummy_steal_clock(int cpu);
- 
- DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
-diff --git a/arch/riscv/kernel/paravirt.c b/arch/riscv/kernel/paravirt.c
-index fa6b0339a65d..d3c334f16172 100644
---- a/arch/riscv/kernel/paravirt.c
-+++ b/arch/riscv/kernel/paravirt.c
-@@ -16,15 +16,13 @@
- #include <linux/printk.h>
- #include <linux/static_call.h>
- #include <linux/types.h>
-+#include <linux/sched/cputime.h>
- 
- #include <asm/barrier.h>
- #include <asm/page.h>
- #include <asm/paravirt.h>
- #include <asm/sbi.h>
- 
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
--
- static u64 native_steal_clock(int cpu)
- {
- 	return 0;
-diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index 1344d2fb2b86..0ef797ea8440 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -30,10 +30,6 @@ static __always_inline u64 paravirt_sched_clock(void)
- 	return static_call(pv_sched_clock)();
- }
- 
--struct static_key;
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
--
- __visible void __native_queued_spin_unlock(struct qspinlock *lock);
- bool pv_is_native_spin_unlock(void);
- __visible bool __native_vcpu_is_preempted(long cpu);
-diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index cb3f900c46fc..a3e6936839b1 100644
---- a/arch/x86/kernel/cpu/vmware.c
-+++ b/arch/x86/kernel/cpu/vmware.c
-@@ -29,6 +29,7 @@
- #include <linux/efi.h>
- #include <linux/reboot.h>
- #include <linux/static_call.h>
-+#include <linux/sched/cputime.h>
- #include <asm/div64.h>
- #include <asm/x86_init.h>
- #include <asm/hypervisor.h>
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index 8ae750cde0c6..a23211eaaeed 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -29,6 +29,7 @@
- #include <linux/syscore_ops.h>
- #include <linux/cc_platform.h>
- #include <linux/efi.h>
-+#include <linux/sched/cputime.h>
- #include <asm/timer.h>
- #include <asm/cpu.h>
- #include <asm/traps.h>
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index ab3e172dcc69..a3ba4747be1c 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -60,9 +60,6 @@ void __init native_pv_lock_init(void)
- 		static_branch_enable(&virt_spin_lock_key);
- }
- 
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
--
- static u64 native_steal_clock(int cpu)
- {
- 	return 0;
-diff --git a/drivers/xen/time.c b/drivers/xen/time.c
-index 5683383d2305..d360ded2ef39 100644
---- a/drivers/xen/time.c
-+++ b/drivers/xen/time.c
-@@ -8,6 +8,7 @@
- #include <linux/gfp.h>
- #include <linux/slab.h>
- #include <linux/static_call.h>
-+#include <linux/sched/cputime.h>
- 
- #include <asm/paravirt.h>
- #include <asm/xen/hypervisor.h>
-diff --git a/include/linux/sched/cputime.h b/include/linux/sched/cputime.h
-index 5f8fd5b24a2e..e90efaf6d26e 100644
---- a/include/linux/sched/cputime.h
-+++ b/include/linux/sched/cputime.h
-@@ -2,6 +2,7 @@
- #ifndef _LINUX_SCHED_CPUTIME_H
- #define _LINUX_SCHED_CPUTIME_H
- 
-+#include <linux/static_call_types.h>
- #include <linux/sched/signal.h>
- 
- /*
-@@ -180,4 +181,21 @@ static inline void prev_cputime_init(struct prev_cputime *prev)
- extern unsigned long long
- task_sched_runtime(struct task_struct *task);
- 
-+#ifdef CONFIG_PARAVIRT
-+struct static_key;
-+extern struct static_key paravirt_steal_enabled;
-+extern struct static_key paravirt_steal_rq_enabled;
-+
-+#ifdef CONFIG_HAVE_PV_STEAL_CLOCK_GEN
-+u64 dummy_steal_clock(int cpu);
-+
-+DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
-+
-+static inline u64 paravirt_steal_clock(int cpu)
-+{
-+	return static_call(pv_steal_clock)(cpu);
-+}
-+#endif
-+#endif
-+
- #endif /* _LINUX_SCHED_CPUTIME_H */
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index be00629f0ba4..e723226e4e11 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -767,6 +767,11 @@ struct rq *task_rq_lock(struct task_struct *p, struct rq_flags *rf)
-  * RQ-clock updating methods:
-  */
- 
-+/* Use CONFIG_PARAVIRT as this will avoid more #ifdef in arch code. */
-+#ifdef CONFIG_PARAVIRT
-+struct static_key paravirt_steal_rq_enabled;
-+#endif
-+
- static void update_rq_clock_task(struct rq *rq, s64 delta)
- {
- /*
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index 7097de2c8cda..ed8f71e08047 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -251,6 +251,19 @@ void __account_forceidle_time(struct task_struct *p, u64 delta)
-  * ticks are not redelivered later. Due to that, this function may on
-  * occasion account more time than the calling functions think elapsed.
-  */
-+#ifdef CONFIG_PARAVIRT
-+struct static_key paravirt_steal_enabled;
-+
-+#ifdef CONFIG_HAVE_PV_STEAL_CLOCK_GEN
-+static u64 native_steal_clock(int cpu)
-+{
-+	return 0;
-+}
-+
-+DEFINE_STATIC_CALL(pv_steal_clock, native_steal_clock);
-+#endif
-+#endif
-+
- static __always_inline u64 steal_account_process_time(u64 maxtime)
- {
- #ifdef CONFIG_PARAVIRT
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 6442441b46d7..fdf3021bdf7d 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -82,7 +82,7 @@ struct rt_rq;
- struct sched_group;
- struct cpuidle_state;
- 
--#ifdef CONFIG_PARAVIRT
-+#if defined(CONFIG_PARAVIRT) && !defined(CONFIG_HAVE_PV_STEAL_CLOCK_GEN)
- # include <asm/paravirt.h>
- #endif
- 
--- 
-2.51.0
+I would appreciate if you would change the commit message a bit.
 
+In any case:
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
 
