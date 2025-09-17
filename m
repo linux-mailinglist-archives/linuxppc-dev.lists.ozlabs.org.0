@@ -1,78 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-12308-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12309-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD00B7E127
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Sep 2025 14:40:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CCE9B7EC71
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Sep 2025 15:00:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cRXnS57Nlz3cYV;
-	Wed, 17 Sep 2025 19:01:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cRf514WLtz2yhD;
+	Wed, 17 Sep 2025 23:00:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758099692;
-	cv=none; b=R+4fgdZwMhwt57Rz8Gnsqa0DQKyMxhp192DRLDEcow+zUdu8SVkUmNHaSrxB733RALprKs8Y/e0uk2OK/6Wz0ytyplAcEBZjXbkrcZ4wym+zpXPBe+rGfsLCTQ6yOt4e9uWyE5smVNaHY7LhEOmmH5ikbvJXH8LmDua54LKrppsyVt7shqNxAFs3wEnQR3qhMpXMMJDkh+g5Gw9xTqG8AukRusJHbLFhMTBIzfUGCTZAcTH0k/EqT+bOWcdIP3OMpwIeCIY5S4KBNgNYugxohHJeFwGIKXi75meE7zUWrzHhEADngjFMa22k+Gu5A2tUV2bk1CiIuKBFoLdo0NM7Wg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758099692; c=relaxed/relaxed;
-	bh=kexc49TnL9QZdO8OTZ8yI9JGT5pMRQxNTKUlP99uYWU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E/8ZwzPWJKG/yv+Z0LISYttcezasUC/iYnYB4QGYzAdQR/PWPTAkSPblZk0vAxTgAWutpED5mtEszkkmHAhQMef6UY7yXysvK7sF1KLh55KXZPPjzRNAqpxcVVzVl+6wm68/We8BnQMdllN10hXyTt21uunsHhZpQ8ssrB4yDqKxfE6uE/bjdxT8zT1VIR7Z3VBzSZISsaBDbfrV6zQQwR9BEWKyDd2FomI9KAg6u2wV11QpOxrkLkmWdHwcFWsS4XAKKTf78Rl2Bsby18af/yDrzPHLEMY4MSs2rMzma94S0lL2zJ970n9egPi5a3PPc+SqK9QO/Bj4/RoxcVEjfQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XHNyp+Zl; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tejas05@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c10d::3" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758114021;
+	cv=pass; b=nlm3skY8p0MPKFiYQb+WPKtAfd8ZyEYDDuuOd1QhG4E7tFIt/yzCi7h8WceWozCrAaBm1vp0UyKSH0wrNqytasbd5xdN+iRNwD/iWBhq9ohp04EzjaN+Cw8ADnG90t97VYKiANIvlFWmmK5JbQTtcgnBM1TTA6LYuJaDdlYSb0k4PssToPdCOwwujIfkzZ6Y57gG22jqrMnrQQf9nUy/nM8RY4lX0GmjNPbzkBIo7zqbh2lJ+JAbDxJqTpaRmajwZTFekjqofjhXYZR61jwwta1eGuSk3OG4DvzLiLwTOs3mXEXm8CXqEP9ZiDE1S/BxFZlSzUuoKm8XmwpxmAqJ5Q==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1758114021; c=relaxed/relaxed;
+	bh=OXqiokgyAALlNMoiJJ0FZ1Sxcgo0g5pTLkiqnY5Xo4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Q2ru0w/3LOVLHBsoUfwZRHvR3Tr4K7BZ+RFp7KvDGwojxUfe8mBjF5oDVESMX32z5k3T/uxnHX/CAXXQjioNZOCiiKoKk8V5twvHmsa3LN4VLrdxz6ai6pQy7EA/wpVRiKStbyg64TCk2uXrm3pMiLdJDVDwtIVGFEbxTV4AZpLCyG/aaDpkRyY8ypFWaeHgOw0SK3Bfrye/l+X6PAosHDFTcbqUdNRPnMLRkoBbfguQImtGA28gwLPfR8sunoR7Dm68TEGb00QCFF50Ptf48VKcrWYANYDlmSkLIaB3R1ZWw8dWNodt0g+CNzgJ9lXLYoC7stH++pK/7a6n89Ar+Q==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=sPUPIOj5; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c10d::3; helo=sn4pr0501cu005.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XHNyp+Zl;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=sPUPIOj5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tejas05@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:c10d::3; helo=sn4pr0501cu005.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazlp170110003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c10d::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cRXnR6gQJz304h
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Sep 2025 19:01:31 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58GLm2WZ032503;
-	Wed, 17 Sep 2025 09:01:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=kexc49
-	TnL9QZdO8OTZ8yI9JGT5pMRQxNTKUlP99uYWU=; b=XHNyp+Zl/sGzz2MuWt79WT
-	1j6vMaUMleLiyD+PwZFzoLxZocf0Gs3fbpKeOX9Kj6H53+kUN9TUcO68TKZa8+qY
-	Jm6zrd+PKoGssI1jLNH6fg/DQJRzZK0DvfH8cKl7UNL5/RI9FN/VTqSavinmitUP
-	Cv0a58aMBVZCANsTbqrfK4SseZpROCDRaSa1eolAaAsKAdijP57jawZmZqhFOQio
-	UlpZ9x5WHoWb3R5QUsugTpjC6iUUaqB+PJaqlbRwA96xxH9z98OjwRe91UbzrK2x
-	dVVJL1rUxE5YKXCGhsbAqw55NvRUIEitYJ/GaEouUNReZBX/X0b/DH0MqV3o9xxA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4hjh7m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Sep 2025 09:01:25 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58H8vIPG031351;
-	Wed, 17 Sep 2025 09:01:25 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4hjh7e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Sep 2025 09:01:25 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58H6kaWO027308;
-	Wed, 17 Sep 2025 09:01:24 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495men894w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Sep 2025 09:01:24 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58H91JPq50397520
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Sep 2025 09:01:19 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CCE7720043;
-	Wed, 17 Sep 2025 09:01:19 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CDA32004B;
-	Wed, 17 Sep 2025 09:01:15 +0000 (GMT)
-Received: from [9.124.214.27] (unknown [9.124.214.27])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 17 Sep 2025 09:01:15 +0000 (GMT)
-Message-ID: <edfcc1cf-365b-42c3-a714-7924a20fb0ef@linux.ibm.com>
-Date: Wed, 17 Sep 2025 14:31:14 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cRf4z4TxDz2yGM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Sep 2025 23:00:18 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OS25hzKPVDlR8ZXSC1Bozpb+OA1kVCnGfV7L/nQWzHtAq7pmOOebgpMYMvXq/VAiQJHddAbhsWO1HrbtCmh9nNMEHdcxGk/XrWnvBQs/BHKp0rKRH/kZroLKr4lKyVh0N3JicqQBQ7en+nPYH0+H2BPnrK3awbgupGFJohYZZyyHMt9aP/8btDRFTPeTcvc9hH2U08zPxoIcV7y5W1fJbaHW/bIA9QlMJ82ly3jRmUwDHd6HNvLtAOmP1yqHgSki7imtXy09lO8lgCLY3wnu8s1YqiyzSsmw9o+tMffS/uFF2GSZ0Q6BHZQ7vb/MqO/f8QZMfS8TncRS5bxt5TMEqg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OXqiokgyAALlNMoiJJ0FZ1Sxcgo0g5pTLkiqnY5Xo4M=;
+ b=oTAsoKxB/kTGDebPCJ+VFjP6lch4ruwyvZ6QwmpxF0+E7ZumWbsHwldNshCBCDOfOS22An+N8J5kukoWY5s5RsfiOO0Cp4E2sViTeCNv7slq6X+wb4jbGPiq2KdIeVOi0IOV+yiGUhQw+RvigsGBEr7UqDcP/Pt/dA1al1ZSQB3aFnC6UR45ZpkyyGxeo702kJAdCSK5Xwu7XHwcRYN2Gz4yYJ0TE8mVUut3kRroSgpZ8oxXLOk7Hev+9mhJt6pDc6oGa3tWvvQgNoOSqB/Bcp27ZRGBipVxQfyVHAbPgu7DNSgUZ9pOYCbuk9N4LfTesGSRGjcWK9LA06V5Xa/g4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OXqiokgyAALlNMoiJJ0FZ1Sxcgo0g5pTLkiqnY5Xo4M=;
+ b=sPUPIOj5Di8hhgNMYh4zkRem0JxUywmWwbzhsIWFQCcDQYdYt+AjDMJogCZBO9b/e+x9Iu7U3JCewAJwOWFLmPV7ZaeoM5vUxPVQJJ5nDFwZrgT6uYNnABhmrm9KHr7GQR3fzHeHcKhEXRd2gC3LppPWaczON5cspX5727NyLQPiOv+5+fetYPVjWemf4QTcmCuQv3MtB9f2DXejJs+GMl+9C/Jcmkmbn1x05EK6ZMvPtfX8BDdxUoGaOrlxCAU68eYCWPtuSlftR10Cd/4XcTGGNKnmnnHNCIyii3mKv4S9G5LeL9kbun4YsJO6Ua0fNgJ447ymcloW60FhGegxbQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by SJ2PR12MB8831.namprd12.prod.outlook.com (2603:10b6:a03:4d0::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.22; Wed, 17 Sep
+ 2025 12:59:54 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9115.022; Wed, 17 Sep 2025
+ 12:59:53 +0000
+Date: Wed, 17 Sep 2025 09:59:51 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Richard Weinberger <richard@nod.at>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+	Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	Andreas Larsson <andreas@gaisler.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Message-ID: <20250917125951.GA1390993@nvidia.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+X-ClientProxiedBy: SA9PR13CA0105.namprd13.prod.outlook.com
+ (2603:10b6:806:24::20) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,217 +102,95 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 0/6] perf/tools: Add interface to expose vpa dtl
-To: Athira Rajeev <atrajeev@linux.ibm.com>, acme@kernel.org, jolsa@kernel.org,
-        adrian.hunter@intel.com, maddy@linux.ibm.com, irogers@google.com,
-        namhyung@kernel.org, linux-perf-users@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org, aboorvad@linux.ibm.com,
-        sshegde@linux.ibm.com, hbathini@linux.vnet.ibm.com,
-        Aditya.Bodkhe1@ibm.com, venkat88@linux.ibm.com, Tejas.Manhas1@ibm.com
-References: <20250916052536.93911-1-atrajeev@linux.ibm.com>
-Content-Language: en-US
-From: tejas05 <tejas05@linux.ibm.com>
-In-Reply-To: <20250916052536.93911-1-atrajeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: onUkVePpjHgtHj5cK-Z6zUPE4V2dacgT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwNCBTYWx0ZWRfX9mQB5+vMDAha
- yjJ7VNR1xpw/nlCLTG7hEqPK7riPWmQll5ymmzzkcajGYTklWUcocsflXgqt7IKLaT6p7U7JOOS
- mbJtEtkPBUvlBb7nWoBtd42jNGA7C7EWSvvMC2DOqLIWIA1aQ7vvdsppHSCIGzU52Wj0k1Hec1L
- 1IegP2yvOOAKKhi2OnR6ar6RcOFBZ/Uful06HtSyXBwG+4mH1woPS/HCF58bLxvJBNwjnJVOpi6
- c1guR64gQ1DiR/bO4+Zrl0PMwhW1y+OtvtXIaZeKac0RS1Lt1zMVlZSonm/nCCreuDhgxUSvVJB
- o1CvIY41r1OMt9niMAR7DzjnJ0VkP5hccvB2IvJbpy7Ar31S57qtC3Xo9A2R8XuDgqIlQqb8AfJ
- P3ArGkdQ
-X-Proofpoint-GUID: wySdjwr5mvkF_X1D9yGoFX9sQ1Z9nzwc
-X-Authority-Analysis: v=2.4 cv=co2bk04i c=1 sm=1 tr=0 ts=68ca78e5 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=0L29NJCzZRmhsLPFlqIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-16_02,2025-09-17_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 priorityscore=1501 suspectscore=0 adultscore=0
- phishscore=0 malwarescore=0 spamscore=0 bulkscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509160204
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|SJ2PR12MB8831:EE_
+X-MS-Office365-Filtering-Correlation-Id: aa7700a8-e5ef-4d0a-79f4-08ddf5ea184e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?J2ir5W5eq3eMIdFc6Pq0/Q92Jwr0Qho/hue3ea8a7L62/Jg5wRJtZhlE/5gs?=
+ =?us-ascii?Q?gAw6v7KHgsj5w3Q7gtDy8KpiRt1z1BAQ6NFc3bXYA2L8pYo5F+TNKMJyPYaW?=
+ =?us-ascii?Q?yodkpbKxVVJ0fNu6zWojaMv+7bpmFXhDMLHTgb96iIeYd68y1VH9EW9wtNlW?=
+ =?us-ascii?Q?ALQqLKRACLbikjFbtNxMuXuXXA0zafsB6gekD1Rol+l4rT4qVlejPJfab8GB?=
+ =?us-ascii?Q?HuvpbW3jdJXiGBvnzfLuG93DhdVJGAJc1902vTur6eoW4d7KlYAtXZuMqWfv?=
+ =?us-ascii?Q?PqrsjpnGTy+UdrKyhF9P5dAgysjrt2cFtLIOu49t0awJWvwl4D0TvYbwL646?=
+ =?us-ascii?Q?dhNKkuJ5p5gkCPVIs19v8Q7ZdYgZr+046bcaRXdsg4fkCBQoFXb7+r63agP3?=
+ =?us-ascii?Q?RqVEuiQOprpFepwFF34HnQuquj4KOFEdI8vn876KhKkXXhU2O/p2FpNLIKpz?=
+ =?us-ascii?Q?RtmOzKivbKXvoCAlTYESThjjlL0XZGXQYGMqpC9MhUblzGZOexeMS9wyJdBH?=
+ =?us-ascii?Q?yHj70J5gzFcngxKd5dhh5qaDx2SqY5fF/XG/t8V+XFVQmjdGSioM8LGK84VA?=
+ =?us-ascii?Q?WE02sEM08Lwk/zHZSpVmdZCZf8BVQUhGYiLoLvPT/g/KIgDQVCR8R0twVAMZ?=
+ =?us-ascii?Q?hMDH3ypERuVQmPzTbd1eCUqkjhI9nKNTh7KkDI0nyXtpNHR9tRsGeYFyUO0F?=
+ =?us-ascii?Q?QcJVRIwoFz0zmwTd5oOHsSldvuOC90frYj+bkC1yFxGiwV+zBl+YrvuS4DwC?=
+ =?us-ascii?Q?DdNspcdE8ypby1DBvjsFAZ3ux7BYU7S6Tsqmt5W6ALiTG7SZ5t42JipEZVc0?=
+ =?us-ascii?Q?VoqLVrIuCrOMCMRs+OrCJFZn+QgHdyNa7+IN9KabRQn2KZovR0sQm3F2XIF6?=
+ =?us-ascii?Q?GOk7skdI3GZ1Fe/PN9Ol79gIIuTuq4hmSxGqBXyieT5PA6ZcHcgFy+BxpEzr?=
+ =?us-ascii?Q?Y/YtOlI0iyzOcx1jOfsnE0bYBVXoaEQpmHgTANTmmLQfz6MxhiKwnIg7fmE0?=
+ =?us-ascii?Q?fVyheQ/kBPnKsk9R3bju/Sv5UKbiqnpdHyQZXIItfS3pCt+4ubrUNFZIHNjZ?=
+ =?us-ascii?Q?NN5reggxLZ86uXyqj/vU9igGneY+TdZY2kW0f1X/dvEOGsUe+f74Kmb6sh0w?=
+ =?us-ascii?Q?tVlilscPfN09V4fCidP7c9E/DDhwRpH5Nmo1SYVreDWnWRHoOpEquEToFViH?=
+ =?us-ascii?Q?L9sw/kw0kJy26WLXdbMVO8g3xhVrs6ZK8UkAuPbxMD05r5aztL2w7VGSBm5i?=
+ =?us-ascii?Q?lHPNe6Pnxb/MSjW+HiDuhdWr3rZ8tEDO4PlU5VC2eWoq5tvnQXgfO8C633P8?=
+ =?us-ascii?Q?dPosj/z8caqJHQlJutnnN3xVfycoOv1Su+Bws2h7hhW1+iy89ai8JoFgU/OP?=
+ =?us-ascii?Q?jRpySfxQiFmuDn7hQ5B/PHbZgbP4EyNLF0f3yVTne6ghnZqSDtFCCPjdsEvt?=
+ =?us-ascii?Q?AxAYZalZwoc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JJmPgck2gMSqLcTSpoZSq2XAKiH51Y+khe1q0hFP1wfY1h/09RvkYBejbwBn?=
+ =?us-ascii?Q?VFr7fu76JtdmSsFsws70wDhP6npIsKmfGR4fk2EX8JeKB+Zi5+A9nCPrvcNu?=
+ =?us-ascii?Q?wNVYWQeJPsPnkUFLQeZkhpfDGezP8wCFa0cvrG4mj5X+FE08Jz3uiSy3Lwuj?=
+ =?us-ascii?Q?iUBoi/LZkCnVHVKIKQISJTMJwnT4IwHtkPGigWMtAlnai0eA1BB1DXQUcNwL?=
+ =?us-ascii?Q?4ztdJMBSyvepA5PtaU2f7Iue4G5FGZL0Pquso4MTo5CsQKGASfToFF11zXfI?=
+ =?us-ascii?Q?LVaIWS83aaKcOS6xYXoVYoRGXm2IKnRdmTPZheSUOeUhDSl0glH/m8ppcLym?=
+ =?us-ascii?Q?o/dMqfitUVUlHD2oAioh898i4xRJcvZK82Rfo85dgPl8FQySv/RTzC41y8Zj?=
+ =?us-ascii?Q?Qbpi39ZXQw32zG2mDVZXcRcecajVtkKu7t9Fx1BeDjcji/PWcfR29yHa6oDa?=
+ =?us-ascii?Q?vDhLKYEN8jSsP8ixtJlf5iIA6X+2GgKoD33rtuTUAuz8sgVFYb6xFu3AYtRZ?=
+ =?us-ascii?Q?imS1HWt/ssSlzjBqWfcD9ylEZBa92NKVdCr/EtZCPnu73IhwW1Tl824JcXN1?=
+ =?us-ascii?Q?LK4CCJy59GxLzeEQS30dxcTxAKtQEcljdhP8ZIbdNQaCxnPCaNWOXEeSTU0L?=
+ =?us-ascii?Q?HG7qI5tktGNzpPE2w0NUELuFRIi0LgFH5nZe9of3Xe1llPADepMiJCSBvT37?=
+ =?us-ascii?Q?37wVsxXqrSlxy4wKPiveMSZ92eOZ/9iQAAf2LILqcvNjtgf+ZIejmT+pQfop?=
+ =?us-ascii?Q?z/QYmVRzT7oI9Pq7q7m84svzMq/hKQVk1islNHqFyyZOVePkWTWN7jDHEd+R?=
+ =?us-ascii?Q?eNLLisa1S6oqTqO+luXLacHvhoIqC3lTsfSQ25dK7GzMTDvHpmJ1nyTlhy2H?=
+ =?us-ascii?Q?V+Vk7fFWCOU6096IDcFiy2mec46RHU8IlFD162mevam9INBd2OI80d0kWNA7?=
+ =?us-ascii?Q?sUv2P/sxmS0cE8f9Y21hx9B+fyE38UNKtv3ZVNM7THBuHCe2XMybERMiWxEu?=
+ =?us-ascii?Q?wsS8kYq17iKtxZcNKwf/+j8cCU9wor/+zMq0Zlj1T75eLZbWIeAPnrAS1K3W?=
+ =?us-ascii?Q?/Anbd3lW9k12oqcYomtp0ImSk8gj9LZCUtB96RyYm4c+QhLkM4sSGheQbpoV?=
+ =?us-ascii?Q?TMKCc06ncbDco54szGeF0EBbTOMvhBeHAhOkgiJojG+qyZ2ey4dno6V8ksmG?=
+ =?us-ascii?Q?pZv6rSo9Ln/ADTCzWZchLH2YMWMJcmg6FZqG2JUq6spt1/kxQBfhO/GCuWlH?=
+ =?us-ascii?Q?r9ini5sndhbXtkIbcfVmOIrOC/E4D23a87K2sev8ExZrL2R6ch+iZGgQ7KvR?=
+ =?us-ascii?Q?DkS1KOj8OccJ/pEf8u04oSEcM+VxzqLZ3y3GAAS726GEeJXGdqoYU4zuUWxz?=
+ =?us-ascii?Q?FKwFznw3+PEph/BTh4c3jB/qxIaaX0cR+/UpSiyTFOBnOP9b7vZaYz4AmHtZ?=
+ =?us-ascii?Q?Lu+JM1d7o8IEyxyJJB90euG+Sxe3IMoWmleQNMCfuGmr8bkItoAWe6W9s+1L?=
+ =?us-ascii?Q?dDCONo+9U0LjnimYyEh07eMQN8o7QqQVhgON3HpYlROviJ2fFr98QNhaBDjc?=
+ =?us-ascii?Q?l/84qijeJJzC/Eojk99UaNotlOQ3hRXifKshyST0?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa7700a8-e5ef-4d0a-79f4-08ddf5ea184e
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 12:59:53.8246
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: L2mI7nuHIPcH/lFYeI3aX4F9iLvSKh9cO5PfYkgmIq6PGrE4bwQrdjaQrV3tvbyz
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8831
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-> The pseries Shared Processor Logical Partition(SPLPAR) machines can
-> retrieve a log of dispatch and preempt events from the hypervisor
-> using data from Disptach Trace Log(DTL) buffer. With this information,
-> user can retrieve when and why each dispatch & preempt has occurred.
-> The vpa-dtl PMU exposes the Virtual Processor Area(VPA) DTL counters
-> via perf.
->
-> - Patch 1 to 6 is perf tools side code changes to enable perf
->    report/script on perf.data file
->
-> Kernel and tools patches is separated. Kernel patches are posted here :
-> V2: https://lore.kernel.org/linux-perf-users/20250915072224.98958-1-atrajeev@linux.ibm.com/T/#t
-> V3: https://lore.kernel.org/linux-perf-users/2D40E056-6194-40CD-BF72-B474A3ACDCAA@linux.ibm.com/T/#t
->
-> Infrastructure used
-> ===================
->
-> The VPA DTL PMU counters do not interrupt on overflow or generate any
-> PMI interrupts. Therefore, hrtimer is used to poll the DTL data. The timer
-> interval can be provided by user via sample_period field in nano seconds.
-> vpa dtl pmu has one hrtimer added per vpa-dtl pmu thread. DTL (Dispatch
-> Trace Log) contains information about dispatch/preempt, enqueue time etc.
-> We directly copy the DTL buffer data as part of auxiliary buffer and it
-> will be processed later. This will avoid time taken to create samples
-> in the kernel space. The PMU driver collecting Dispatch Trace Log (DTL)
-> entries makes use of AUX support in perf infrastructure. On the tools side,
-> this data is made available as PERF_RECORD_AUXTRACE records.
->
-> To corelate each DTL entry with other events across CPU's, an auxtrace_queue
-> is created for each CPU. Each auxtrace queue has a array/list of auxtrace buffers.
-> All auxtrace queues is maintained in auxtrace heap. The queues are sorted
-> based on timestamp. When the different PERF_RECORD_XX records are processed,
-> compare the timestamp of perf record with timestamp of top element in the
-> auxtrace heap so that DTL events can be co-related with other events
-> Process the auxtrace queue if the timestamp of element from heap is
-> lower than timestamp from entry in perf record. Sometimes it could happen that
-> one buffer is only partially processed. if the timestamp of occurrence of
-> another event is more than currently processed element in the queue, it will
-> move on to next perf record. So keep track of position of buffer to continue
-> processing next time. Update the timestamp of the auxtrace heap with the timestamp
-> of last processed entry from the auxtrace buffer.
->
-> This infrastructure ensures dispatch trace log entries can be corelated
-> and presented along with other events like sched.
->
-> vpa-dtl PMU example usage
->
->    # ls /sys/devices/vpa_dtl/
->    events  format  perf_event_mux_interval_ms  power  subsystem  type  uevent
->
->
-> To capture the DTL data using perf record:
->
->    # ./perf record -a -e sched:*,vpa_dtl/dtl_all/ -c 1000000000 sleep 1
->
-> The result can be interpreted using perf report. Snippet of perf report -D:
->
->    # ./perf report -D
->
-> There are different PERF_RECORD_XX records. In that records corresponding to
-> auxtrace buffers includes:
->
-> 1. PERF_RECORD_AUX
->     Conveys that new data is available in AUX area
->
-> 2. PERF_RECORD_AUXTRACE_INFO
->     Describes offset and size of auxtrace data in the buffers
->
-> 3. PERF_RECORD_AUXTRACE
->     This is the record that defines the auxtrace data which here in case of
->     vpa-dtl pmu is dispatch trace log data.
->
-> Snippet from perf report -D showing the PERF_RECORD_AUXTRACE dump
->
-> 0 0 0x39b10 [0x30]: PERF_RECORD_AUXTRACE size: 0x690  offset: 0  ref: 0  idx: 0  tid: -1  cpu: 0
-> .
-> . ... VPA DTL PMU data: size 1680 bytes, entries is 35
-> .  00000000: boot_tb: 21349649546353231, tb_freq: 512000000
-> .  00000030: dispatch_reason:decrementer interrupt, preempt_reason:H_CEDE, enqueue_to_dispatch_time:7064, ready_to_enqueue_time:187, waiting_to_ready_time:6611773
-> .  00000060: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:146, ready_to_enqueue_time:0, waiting_to_ready_time:15359437
-> .  00000090: dispatch_reason:decrementer interrupt, preempt_reason:H_CEDE, enqueue_to_dispatch_time:4868, ready_to_enqueue_time:232, waiting_to_ready_time:5100709
-> .  000000c0: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:179, ready_to_enqueue_time:0, waiting_to_ready_time:30714243
-> .  000000f0: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:197, ready_to_enqueue_time:0, waiting_to_ready_time:15350648
-> .  00000120: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:213, ready_to_enqueue_time:0, waiting_to_ready_time:15353446
-> .  00000150: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:212, ready_to_enqueue_time:0, waiting_to_ready_time:15355126
-> .  00000180: dispatch_reason:decrementer interrupt, preempt_reason:H_CEDE, enqueue_to_dispatch_time:6368, ready_to_enqueue_time:164, waiting_to_ready_time:5104665
->
-> Above is representation of dtl entry of below format:
->
-> struct dtl_entry {
->          u8      dispatch_reason;
->          u8      preempt_reason;
->          u16     processor_id;
->          u32     enqueue_to_dispatch_time;
->          u32     ready_to_enqueue_time;
->          u32     waiting_to_ready_time;
->          u64     timebase;
->          u64     fault_addr;
->          u64     srr0;
->          u64     srr1;
->   };
->
-> First two fields represent the dispatch reason and preempt reason. The post
-> procecssing of PERF_RECORD_AUXTRACE records will translate to meaninful data
-> for user to consume.
->
-> Visualize the dispatch trace log entries with perf report:
->   # ./perf record -a -e sched:*,vpa_dtl/dtl_all/ -c 1000000000 sleep 1
->    [ perf record: Woken up 1 times to write data ]
->    [ perf record: Captured and wrote 0.300 MB perf.data ]
->
->    # ./perf report
->    # Samples: 321  of event 'vpa-dtl'
->    # Event count (approx.): 321
->    #
->    # Children      Self  Command  Shared Object      Symbol
->    # ........  ........  .......  .................  ..............................
->    #
->       100.00%   100.00%  swapper  [kernel.kallsyms]  [k] plpar_hcall_norets_notrace
->
-> Visualize the dispatch trace log entries with perf script:
->
->     # ./perf script
->              perf   13322 [002]   233.835807:                     sched:sched_switch: perf:13322 [120] R ==> migration/2:27 [0]
->       migration/2      27 [002]   233.835811:               sched:sched_migrate_task: comm=perf pid=13322 prio=120 orig_cpu=2 dest_cpu=3
->       migration/2      27 [002]   233.835818:               sched:sched_stat_runtime: comm=migration/2 pid=27 runtime=9214 [ns]
->       migration/2      27 [002]   233.835819:                     sched:sched_switch: migration/2:27 [0] S ==> swapper/2:0 [120]
->           swapper       0 [002]   233.835822:                                vpa-dtl: timebase: 338954486062657 dispatch_reason:decrementer_interrupt, preempt_reason:H_CEDE, enqueue_to_dispatch_time:435,                      ready_to_enqueue_time:0, waiting_to_ready_time:34775058, processor_id: 202 c0000000000f8094 plpar_hcall_norets_notrace+0x18 ([kernel.kallsyms])
->           swapper       0 [001]   233.835886:                                vpa-dtl: timebase: 338954486095398 dispatch_reason:priv_doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:542,                      ready_to_enqueue_time:0, waiting_to_ready_time:1245360, processor_id: 201 c0000000000f8094 plpar_hcall_norets_notrace+0x18 ([kernel.kallsyms])
->
-> Changelog is added for V3 in each individual patch
->
-> Thanks
-> Athira
->
-> Athira Rajeev (6):
->    tools/perf: Add basic CONFIG_AUXTRACE support for VPA pmu on powerpc
->    tools/perf: process auxtrace events and display in perf report -D
->    tools/perf: Add event name as vpa-dtl of PERF_TYPE_SYNTH type to
->      present DTL samples
->    tools/perf: Allocate and setup aux buffer queue to help co-relate with
->      other events across CPU's
->    tools/perf: Process the DTL entries in queue and deliver samples
->    tools/perf: Enable perf script to present the DTL entries
->
->   tools/perf/arch/powerpc/util/Build      |   1 +
->   tools/perf/arch/powerpc/util/auxtrace.c | 103 ++++
->   tools/perf/builtin-script.c             |  30 +
->   tools/perf/util/Build                   |   1 +
->   tools/perf/util/auxtrace.c              |   4 +
->   tools/perf/util/auxtrace.h              |   1 +
->   tools/perf/util/event.h                 |  20 +
->   tools/perf/util/powerpc-vpadtl.c        | 734 ++++++++++++++++++++++++
->   tools/perf/util/powerpc-vpadtl.h        |  23 +
->   9 files changed, 917 insertions(+)
->   create mode 100644 tools/perf/arch/powerpc/util/auxtrace.c
->   create mode 100644 tools/perf/util/powerpc-vpadtl.c
->   create mode 100644 tools/perf/util/powerpc-vpadtl.h
+On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
 
+> I'm still collecting information about which of the remaining highmem
+> users plan to keep updating their kernels and for what reason. 
 
-Hi Athira,
+On this topic of removing some parts of highmem, can we say goodbye to
+kmap_high_get()? Only ARM uses it and only for
+!cache_is_vipt_nonaliasing() systems.
 
-I have tested the above patchset on the mainline kernel [ 6.17.0-rc2], 
-it is working fine. Please add the tag below, for the entire series.
+Maybe if so then HASHED_PAGE_VIRTUAL can go too?
 
-Tested-by: Tejas Manhas <tejas05@linux.ibm.com>
-
-Thanks & Regards,
-
-Tejas
-
->
+Jason
 
