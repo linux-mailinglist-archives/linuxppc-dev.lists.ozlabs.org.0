@@ -1,75 +1,104 @@
-Return-Path: <linuxppc-dev+bounces-12356-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12358-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47EADB82171
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 00:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA3DB83049
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 07:35:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cRt6j6Y5yz2xlR;
-	Thu, 18 Sep 2025 08:02:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cS49T4NWtz2yGM;
+	Thu, 18 Sep 2025 15:35:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.20
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758146557;
-	cv=none; b=nKqdnMheP0Jp9R4E7w+86qgjvgfufPWEzDpH/NZ/Su/uWUKwHyKnuYGRw1T7B2cxfjnUlTkWw/syB075bH91iVA+TZorbeT3ftCHAX5Xn8f1Xj1SfijwvHAa/F3e8kPyj13+R8lMfVNWS0RlxyOJ4LmCKyFehKgATyBvKYFYdBmiu7ezrt18FHgoebAOvuhKZIVM//0sYK9hxLVADsr1bBjPNOc3gF7U0WAqUi5+PScD2Dxr6NRtNzcGZUBcpLCjr0vIx4hGfb28Fj+oX1b3QswtWxkkYEkX0Pk7OYMREWix8VCHYFHOju8ypF00wAj7hZKECPDj40TLZP/lowoAHA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::629"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758073674;
+	cv=none; b=FVII3KvvIz0Z6BRtTUN/k7lVzQOP+ycxATkl8tzRtcAhJSb9Vw9qotF7Fi79rtTUKioGjPJc6YTxhZj1jXgK9UjmIF8B1syyWQ4dhvfh9LIwmegq3EZadjJvNlPrrUp9QX3h2ZrVJW34ttpF16SdtIibBMOFSD1H3bOwoMauMYJ8rbS5ix2Ajb2e+VTDxOC94zdFKd6Qw/0+TlEnkjfTbvxPI2FFPQIQ1cEUDVyMjaAR/TyUPzdbkr9LH6NVX9kvjTxeyHF+RryQnRSNyAmKU3ElQrnamYpzf2FhsN3lLYIXkAINljjgscCcniSvCNeuw5quntJWLl4QaLpfkppX4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758146557; c=relaxed/relaxed;
-	bh=h9VtKpfF0mObpUwQj6ACMkui/4N554FNYxBuIjlY+tg=;
+	t=1758073674; c=relaxed/relaxed;
+	bh=jpedYE8ayX2D4JB3BwcSHfmcAawrf2rx80Q6iy0Jnqk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TmgDNX1hUMD4ly7vG8i4wplBWd/o1furaNMRprSc74Rvk29VqMfzKTiu9CCGlOPe+jjKenpS+6YIJYg7MAs9KZxZRguPQWdQZfTeVr5hKMs1I3KFd2H6YI9MU1puyOB+8cdtlocAxrDdTRsIRj7gpDbFbd01SxM3aCj2R793NYEGRVGuKneSpgEiRWr//S/TjL3tvbkasaYJ4cd/4maplGfH3/MX2MQGLBPmHtW9JF5BMkCHifxKkFsZ4fh/x/KV1Twd74f5pLdSayRQhCBUQAdsWatCquzJe8tITTMYFjSCtdnMH6/12TfhySocFusQEUJQeDTeXDsE/nRrx+jeKw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mDSLhxex; dkim-atps=neutral; spf=pass (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=UOuFo9LJ0N8gsoEDhj4wDtAM0BEocr9aTaN6hEvfJUrFx0Vxs/gU7rY4aC2ESjycoyEoAtND/c1W3qae7k4P0RQujp1W/Ax3ytG7mMLfegTL2qNz9ZMw2vgDUjmawy1E/7zRMudwd6notB7PPYklupSQCIJqeIQwm6g/TjTe0b0NqNS8Eg+Ni8QFl8vY8MXORqUuwJJtpb2gwnD+SjdyKv3Ih7aiIcdA5Hq7Bvb+/gCllUaJGbn9TldbPVjJ30Dl2KtA0qLd0jgFJPjIPvWFYDc8dPQ/JpLRTu8oW2PgDEUmMmEsqEaXEF9Fuc+nA6X2lwkFZS+shnMYVoSW5Pgwaw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kLU9MPha; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=wangjinchao600@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mDSLhxex;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kLU9MPha;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=wangjinchao600@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cRt6f6Q6Rz2xQ1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 08:02:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758146555; x=1789682555;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CVXw9uvZ4D6n5HmWG5IpYQjWsYYCqrfqLRvpe9sauYg=;
-  b=mDSLhxex8LGWGZj9PcZWNwrzlS2+gz77DWYCKhljNqOVn7bTwDubI1C6
-   rX3TyiIyq4w/Kuuj0ABH2ucyOd6h/LX2HSOvpcKCjN97TYOB5bRH1UsWI
-   +jUa12mq9SOEdLJhcc6f8+MedO767lQr7sx8gTrrwTzQaQ7OXzdc9iC0w
-   tOZ3+ZEEMH3KyL16EKJSripUW0D1yQqlvYtjHcEeKiox/cbYcU9pSivE0
-   n97Z4SoEX5VO3dS5ix2SMgsEhOiFGHeJTDCxLdiRE/F+MNJ7yjb0sf5QS
-   1HQBsMuJHXoiTLOK6+A0vNOWb+yYqGVx7YLdJLMg0OUdj6lyskNKJ1TxO
-   g==;
-X-CSE-ConnectionGUID: +00upfa9RBazRsyFLsfDRg==
-X-CSE-MsgGUID: sS9Q7OItTOSOn0AMRPRJyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="60160889"
-X-IronPort-AV: E=Sophos;i="6.18,273,1751266800"; 
-   d="scan'208";a="60160889"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 15:02:28 -0700
-X-CSE-ConnectionGUID: XCLV9Ns4SDyPh9+V1u4rVQ==
-X-CSE-MsgGUID: Xs5J8C6XSLqSRK49Z5F+eQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,273,1751266800"; 
-   d="scan'208";a="175279710"
-Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 17 Sep 2025 15:02:24 -0700
-Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uz0EI-0002VL-1R;
-	Wed, 17 Sep 2025 22:02:22 +0000
-Date: Thu, 18 Sep 2025 06:01:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shuai Xue <xueshuai@linux.alibaba.com>, bhelgaas@google.com,
-	mahesh@linux.ibm.com, mani@kernel.org, Jonathan.Cameron@huawei.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Cc: oe-kbuild-all@lists.linux.dev, oohall@gmail.com,
-	xueshuai@linux.alibaba.com, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 2/3] PCI/DPC: Run recovery on device that detected the
- error
-Message-ID: <202509180501.eB8FJ5Vt-lkp@intel.com>
-References: <20250917063352.19429-3-xueshuai@linux.alibaba.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cRM9428R1z30D3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Sep 2025 11:47:51 +1000 (AEST)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-244582738b5so51329545ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 18:47:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758073669; x=1758678469; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jpedYE8ayX2D4JB3BwcSHfmcAawrf2rx80Q6iy0Jnqk=;
+        b=kLU9MPhaZGQLDAVtcSssT+rmqc8/wtE6KibDBIPa5uJanIAkPT3IxC2uSq20CGirma
+         naE7FAhDLlRH7fL6G6DyDgLkl1TSNtvU/KpJFrpIyhuUQ2htrna8Qx6dBQSFAfLFSwey
+         35M4s7s7X2LG6ekRKxkQF46NnnRaxquiCyBcDBN1KZ5ZjZx38ZbT4t7jktHkQ5MM4sKd
+         chvyr97+nJJ+cIuux/ubuTzD32gL3u27nv5rcXGka+bIMH9IZbpDDeSyaa7zr7+Jagua
+         nT/4NUgpyyxAczLyDWgwPQbij2F9N0TxlSbkLuKH67YgbSMI7dv1FGl9p5hSkMzdnbKl
+         0hSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758073669; x=1758678469;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jpedYE8ayX2D4JB3BwcSHfmcAawrf2rx80Q6iy0Jnqk=;
+        b=TTvc689goJANIEdClWF8OA0CiIxT5uWdl8wAj/YtwilrPUEUbjoGTLmaPHEMzmTN8B
+         Suf+jYkewz+lOzrdR6ECsJsyQAaPvlr9ZOXUGA7fpkcgiQ2295wBv7AIkcoDYrXdUny2
+         FaaC9iggrt4LSgNY1cErsX3njvWsBkf7Ucq8dJlFnRPYzqAoRhFPsorIdnkyogFlmUOI
+         IiRPnJa5H0rzrDfJMptxHlKn18asKbMfUZBvD4RToCzNxHC3v64usABgI6pJBwmA8u1N
+         9kS87aX9v/CHxgy7IlaN8A3I/VxCrJHkGuY4cpPxWHqpeM4ABx9q5UsK28se5nBNNCws
+         B7OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX5yC2C6Dtiaar6ixQvw/XuM5fnJWuvpWI2jnTI71l/iDs9L4dhVjklncV0h85b0h/RbQJ+kCytexaFzQM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzSc28hyRPNcH2uUaJSN0PW2LbAYHVtEBPvOIeDmLb0EbjbieJt
+	KkuPt6JI6N4eRhyEMIyQsUdCjZNlJwBlwsY4BTXNfcgbtGB6grZV/cK5
+X-Gm-Gg: ASbGnct25KD4wyRrRfw4y7151hRPclEsd0i4g3Q/5On8jv20enG9+VGftl1I9We11Ir
+	oayqMifC2t/RaLpqnPlfsAa2AVCncdSgMeS3zvMbfa+odXb8OGIyN9JLOkTz4tfZSFYLHzVy1G6
+	lSAqbsxoXWbaXTvzrwrWsN96JKuhbKtd+3nSI8EIcvRcNmsOUcMZPgNeaCkflAzUhBlDUYRIVGt
+	AlOUoaJHE89ROn0CkKZwidrd+DIwA2S/dkDSsw2YApRKnvo1ClL42ad47gp61eh5RJNyCmAqCcf
+	L1+qZxnGCjFyTMEJkJkD5Wy+hXxthQ1ZgKDRrhoyHkKelYVuHxiQ4q3hfZNns/+frtjG/2ITqYG
+	24Q4cxkZKYRvpb3Hp2s40r5Mxjjczn9am9Ww=
+X-Google-Smtp-Source: AGHT+IGqMIWzNWO6R5Qy2orWOF1UJ217t1FWDRL4LXVp47m16T87eefffE+Z4xzLoGiJ6LF7MR5mXQ==
+X-Received: by 2002:a17:902:d487:b0:248:79d4:93c0 with SMTP id d9443c01a7336-26813efef03mr4774235ad.56.1758073668329;
+        Tue, 16 Sep 2025 18:47:48 -0700 (PDT)
+Received: from localhost ([45.90.208.139])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-260cf673181sm114910675ad.99.2025.09.16.18.47.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 18:47:47 -0700 (PDT)
+Date: Wed, 17 Sep 2025 09:47:37 +0800
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: Ian Rogers <irogers@google.com>
+Cc: Doug Anderson <dianders@chromium.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Will Deacon <will@kernel.org>, Yunhui Cui <cuiyunhui@bytedance.com>,
+	akpm@linux-foundation.org, catalin.marinas@arm.com,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
+	acme@kernel.org, namhyung@kernel.org, mark.rutland@arm.com,
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+	adrian.hunter@intel.com, kan.liang@linux.intel.com, kees@kernel.org,
+	masahiroy@kernel.org, aliceryhl@google.com, ojeda@kernel.org,
+	thomas.weissschuh@linutronix.de, xur@google.com,
+	ruanjinjie@huawei.com, gshan@redhat.com, maz@kernel.org,
+	suzuki.poulose@arm.com, zhanjie9@hisilicon.com,
+	yangyicong@hisilicon.com, gautam@linux.ibm.com, arnd@arndb.de,
+	zhao.xichao@vivo.com, rppt@kernel.org, lihuafei1@huawei.com,
+	coxu@redhat.com, jpoimboe@kernel.org, yaozhenguo1@gmail.com,
+	luogengkun@huaweicloud.com, max.kellermann@ionos.com, tj@kernel.org,
+	yury.norov@gmail.com, thorsten.blum@linux.dev, x86@kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org
+Subject: Re: [RFC PATCH V1] watchdog: Add boot-time selection for hard lockup
+ detector
+Message-ID: <aMoTOXIKBYVTj7PV@mdev>
+References: <20250916145122.416128-1-wangjinchao600@gmail.com>
+ <CAP-5=fWWOQ-6SWiNVBvb5mCofe0kZUURG_bm0PDsVFWqwDwrXg@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,161 +112,332 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250917063352.19429-3-xueshuai@linux.alibaba.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAP-5=fWWOQ-6SWiNVBvb5mCofe0kZUURG_bm0PDsVFWqwDwrXg@mail.gmail.com>
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Shuai,
+On Tue, Sep 16, 2025 at 05:03:48PM -0700, Ian Rogers wrote:
+> On Tue, Sep 16, 2025 at 7:51 AM Jinchao Wang <wangjinchao600@gmail.com> wrote:
+> >
+> > Currently, the hard lockup detector is selected at compile time via
+> > Kconfig, which requires a kernel rebuild to switch implementations.
+> > This is inflexible, especially on systems where a perf event may not
+> > be available or may be needed for other tasks.
+> >
+> > This commit refactors the hard lockup detector to replace a rigid
+> > compile-time choice with a flexible build-time and boot-time solution.
+> > The patch supports building the kernel with either detector
+> > independently, or with both. When both are built, a new boot parameter
+> > `hardlockup_detector="perf|buddy"` allows the selection at boot time.
+> > This is a more robust and user-friendly design.
+> >
+> > This patch is a follow-up to the discussion on the kernel mailing list
+> > regarding the preference and future of the hard lockup detectors. It
+> > implements a flexible solution that addresses the community's need to
+> > select an appropriate detector at boot time.
+> >
+> > The core changes are:
+> > - The `perf` and `buddy` watchdog implementations are separated into
+> >   distinct functions (e.g., `watchdog_perf_hardlockup_enable`).
+> > - Global function pointers are introduced (`watchdog_hardlockup_enable_ptr`)
+> >   to serve as a single API for the entire feature.
+> > - A new `hardlockup_detector=` boot parameter is added to allow the
+> >   user to select the desired detector at boot time.
+> > - The Kconfig options are simplified by removing the complex
+> >   `HARDLOCKUP_DETECTOR_PREFER_BUDDY` and allowing both detectors to be
+> >   built without mutual exclusion.
+> > - The weak stubs are updated to call the new function pointers,
+> >   centralizing the watchdog logic.
+> 
+> What is the impact on  /proc/sys/kernel/nmi_watchdog ? Is that
+> enabling and disabling whatever the boot time choice was? I'm not sure
+> why this has to be a boot time option given the ability to configure
+> via /proc/sys/kernel/nmi_watchdog.
+The new hardlockup_detector boot parameter and the existing
+/proc/sys/kernel/nmi_watchdog file serve different purposes.
 
-kernel test robot noticed the following build warnings:
+The boot parameter selects the type of hard lockup detector (perf or buddy).
+This choice is made once at boot.
 
-[auto build test WARNING on pci/for-linus]
-[also build test WARNING on linus/master v6.17-rc6 next-20250917]
-[cannot apply to pci/next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Shuai-Xue/PCI-DPC-Clarify-naming-for-error-port-in-DPC-Handling/20250917-143459
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git for-linus
-patch link:    https://lore.kernel.org/r/20250917063352.19429-3-xueshuai%40linux.alibaba.com
-patch subject: [PATCH v5 2/3] PCI/DPC: Run recovery on device that detected the error
-config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/20250918/202509180501.eB8FJ5Vt-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 7c861bcedf61607b6c087380ac711eb7ff918ca6)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250918/202509180501.eB8FJ5Vt-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509180501.eB8FJ5Vt-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from <built-in>:3:
-   In file included from include/linux/compiler_types.h:171:
-   include/linux/compiler-clang.h:28:9: warning: '__SANITIZE_ADDRESS__' macro redefined [-Wmacro-redefined]
-      28 | #define __SANITIZE_ADDRESS__
-         |         ^
-   <built-in>:371:9: note: previous definition is here
-     371 | #define __SANITIZE_ADDRESS__ 1
-         |         ^
->> drivers/pci/pcie/edr.c:188:6: warning: variable 'err_dev' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-     188 |         if (!(status & PCI_EXP_DPC_STATUS_TRIGGER)) {
-         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/pci/pcie/edr.c:218:14: note: uninitialized use occurs here
-     218 |         pci_dev_put(err_dev);
-         |                     ^~~~~~~
-   drivers/pci/pcie/edr.c:188:2: note: remove the 'if' if its condition is always false
-     188 |         if (!(status & PCI_EXP_DPC_STATUS_TRIGGER)) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     189 |                 pci_err(err_port, "Invalid DPC trigger %#010x\n", status);
-         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     190 |                 goto send_ost;
-         |                 ~~~~~~~~~~~~~~
-     191 |         }
-         |         ~
-   drivers/pci/pcie/edr.c:181:6: warning: variable 'err_dev' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-     181 |         if (!err_port->dpc_cap) {
-         |             ^~~~~~~~~~~~~~~~~~
-   drivers/pci/pcie/edr.c:218:14: note: uninitialized use occurs here
-     218 |         pci_dev_put(err_dev);
-         |                     ^~~~~~~
-   drivers/pci/pcie/edr.c:181:2: note: remove the 'if' if its condition is always false
-     181 |         if (!err_port->dpc_cap) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-     182 |                 pci_err(err_port, FW_BUG "This device doesn't support DPC\n");
-         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     183 |                 goto send_ost;
-         |                 ~~~~~~~~~~~~~~
-     184 |         }
-         |         ~
-   drivers/pci/pcie/edr.c:153:50: note: initialize the variable 'err_dev' to silence this warning
-     153 |         struct pci_dev *pdev = data, *err_port, *err_dev;
-         |                                                         ^
-         |                                                          = NULL
-   3 warnings generated.
-
-
-vim +188 drivers/pci/pcie/edr.c
-
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  150  
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  151  static void edr_handle_event(acpi_handle handle, u32 event, void *data)
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  152  {
-267102466d7b592 Shuai Xue                  2025-09-17  153  	struct pci_dev *pdev = data, *err_port, *err_dev;
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  154  	pci_ers_result_t estate = PCI_ERS_RESULT_DISCONNECT;
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  155  	u16 status;
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  156  
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  157  	if (event != ACPI_NOTIFY_DISCONNECT_RECOVER)
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  158  		return;
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  159  
-774820b362b07b9 Bjorn Helgaas              2023-04-07  160  	/*
-774820b362b07b9 Bjorn Helgaas              2023-04-07  161  	 * pdev is a Root Port or Downstream Port that is still present and
-774820b362b07b9 Bjorn Helgaas              2023-04-07  162  	 * has triggered a containment event, e.g., DPC, so its child
-774820b362b07b9 Bjorn Helgaas              2023-04-07  163  	 * devices have been disconnected (ACPI r6.5, sec 5.6.6).
-774820b362b07b9 Bjorn Helgaas              2023-04-07  164  	 */
-af03958da0678c3 Kuppuswamy Sathyanarayanan 2020-04-15  165  	pci_info(pdev, "EDR event received\n");
-af03958da0678c3 Kuppuswamy Sathyanarayanan 2020-04-15  166  
-774820b362b07b9 Bjorn Helgaas              2023-04-07  167  	/*
-774820b362b07b9 Bjorn Helgaas              2023-04-07  168  	 * Locate the port that experienced the containment event.  pdev
-774820b362b07b9 Bjorn Helgaas              2023-04-07  169  	 * may be that port or a parent of it (PCI Firmware r3.3, sec
-774820b362b07b9 Bjorn Helgaas              2023-04-07  170  	 * 4.6.13).
-774820b362b07b9 Bjorn Helgaas              2023-04-07  171  	 */
-a56b1e47845b946 Shuai Xue                  2025-09-17  172  	err_port = acpi_dpc_port_get(pdev);
-a56b1e47845b946 Shuai Xue                  2025-09-17  173  	if (!err_port) {
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  174  		pci_err(pdev, "Firmware failed to locate DPC port\n");
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  175  		return;
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  176  	}
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  177  
-a56b1e47845b946 Shuai Xue                  2025-09-17  178  	pci_dbg(pdev, "Reported EDR dev: %s\n", pci_name(err_port));
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  179  
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  180  	/* If port does not support DPC, just send the OST */
-a56b1e47845b946 Shuai Xue                  2025-09-17  181  	if (!err_port->dpc_cap) {
-a56b1e47845b946 Shuai Xue                  2025-09-17  182  		pci_err(err_port, FW_BUG "This device doesn't support DPC\n");
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  183  		goto send_ost;
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  184  	}
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  185  
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  186  	/* Check if there is a valid DPC trigger */
-a56b1e47845b946 Shuai Xue                  2025-09-17  187  	pci_read_config_word(err_port, err_port->dpc_cap + PCI_EXP_DPC_STATUS, &status);
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23 @188  	if (!(status & PCI_EXP_DPC_STATUS_TRIGGER)) {
-a56b1e47845b946 Shuai Xue                  2025-09-17  189  		pci_err(err_port, "Invalid DPC trigger %#010x\n", status);
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  190  		goto send_ost;
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  191  	}
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  192  
-267102466d7b592 Shuai Xue                  2025-09-17  193  	err_dev = dpc_process_error(err_port);
-a56b1e47845b946 Shuai Xue                  2025-09-17  194  	pci_aer_raw_clear_status(err_port);
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  195  
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  196  	/*
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  197  	 * Irrespective of whether the DPC event is triggered by ERR_FATAL
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  198  	 * or ERR_NONFATAL, since the link is already down, use the FATAL
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  199  	 * error recovery path for both cases.
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  200  	 */
-267102466d7b592 Shuai Xue                  2025-09-17  201  	estate = pcie_do_recovery(err_dev, pci_channel_io_frozen, dpc_reset_link);
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  202  
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  203  send_ost:
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  204  
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  205  	/*
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  206  	 * If recovery is successful, send _OST(0xF, BDF << 16 | 0x80)
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  207  	 * to firmware. If not successful, send _OST(0xF, BDF << 16 | 0x81).
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  208  	 */
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  209  	if (estate == PCI_ERS_RESULT_RECOVERED) {
-a56b1e47845b946 Shuai Xue                  2025-09-17  210  		pci_dbg(err_port, "DPC port successfully recovered\n");
-a56b1e47845b946 Shuai Xue                  2025-09-17  211  		pcie_clear_device_status(err_port);
-a56b1e47845b946 Shuai Xue                  2025-09-17  212  		acpi_send_edr_status(pdev, err_port, EDR_OST_SUCCESS);
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  213  	} else {
-a56b1e47845b946 Shuai Xue                  2025-09-17  214  		pci_dbg(err_port, "DPC port recovery failed\n");
-a56b1e47845b946 Shuai Xue                  2025-09-17  215  		acpi_send_edr_status(pdev, err_port, EDR_OST_FAILED);
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  216  	}
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  217  
-267102466d7b592 Shuai Xue                  2025-09-17  218  	pci_dev_put(err_dev);
-a56b1e47845b946 Shuai Xue                  2025-09-17  219  	pci_dev_put(err_port);
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  220  }
-ac1c8e35a3262d0 Kuppuswamy Sathyanarayanan 2020-03-23  221  
+ /proc/sys/kernel/nmi_watchdog, on the other hand, is only a simple on/off
+switch for the currently selected detector. It does not change the detector's
+type.
+> 
+> > Link: https://lore.kernel.org/all/20250915035355.10846-1-cuiyunhui@bytedance.com/
+> > Link: https://lore.kernel.org/all/CAD=FV=WWUiCi6bZCs_gseFpDDWNkuJMoL6XCftEo6W7q6jRCkg@mail.gmail.com/
+> >
+> > Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+> > ---
+> >  .../admin-guide/kernel-parameters.txt         |  7 +++
+> >  include/linux/nmi.h                           |  6 +++
+> >  kernel/watchdog.c                             | 46 ++++++++++++++++++-
+> >  kernel/watchdog_buddy.c                       |  7 +--
+> >  kernel/watchdog_perf.c                        | 10 ++--
+> >  lib/Kconfig.debug                             | 37 +++++++--------
+> >  6 files changed, 85 insertions(+), 28 deletions(-)
+> >
+> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> > index 5a7a83c411e9..0af214ee566c 100644
+> > --- a/Documentation/admin-guide/kernel-parameters.txt
+> > +++ b/Documentation/admin-guide/kernel-parameters.txt
+> > @@ -1828,6 +1828,13 @@
+> >                         backtraces on all cpus.
+> >                         Format: 0 | 1
+> >
+> > +       hardlockup_detector=
+> > +                       [perf, buddy] Selects the hard lockup detector to use at
+> > +                       boot time.
+> > +                       Format: <string>
+> > +                       - "perf": Use the perf-based detector.
+> > +                       - "buddy": Use the buddy-based detector.
+> > +
+> >         hash_pointers=
+> >                         [KNL,EARLY]
+> >                         By default, when pointers are printed to the console
+> > diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+> > index cf3c6ab408aa..9298980ce572 100644
+> > --- a/include/linux/nmi.h
+> > +++ b/include/linux/nmi.h
+> > @@ -100,6 +100,9 @@ void watchdog_hardlockup_check(unsigned int cpu, struct pt_regs *regs);
+> >  #endif
+> >
+> >  #if defined(CONFIG_HARDLOCKUP_DETECTOR_PERF)
+> > +void watchdog_perf_hardlockup_enable(unsigned int cpu);
+> > +void watchdog_perf_hardlockup_disable(unsigned int cpu);
+> > +extern int watchdog_perf_hardlockup_probe(void);
+> >  extern void hardlockup_detector_perf_stop(void);
+> >  extern void hardlockup_detector_perf_restart(void);
+> >  extern void hardlockup_config_perf_event(const char *str);
+> > @@ -120,6 +123,9 @@ void watchdog_hardlockup_disable(unsigned int cpu);
+> >  void lockup_detector_reconfigure(void);
+> >
+> >  #ifdef CONFIG_HARDLOCKUP_DETECTOR_BUDDY
+> > +void watchdog_buddy_hardlockup_enable(unsigned int cpu);
+> > +void watchdog_buddy_hardlockup_disable(unsigned int cpu);
+> > +int watchdog_buddy_hardlockup_probe(void);
+> >  void watchdog_buddy_check_hardlockup(int hrtimer_interrupts);
+> >  #else
+> >  static inline void watchdog_buddy_check_hardlockup(int hrtimer_interrupts) {}
+> > diff --git a/kernel/watchdog.c b/kernel/watchdog.c
+> > index 80b56c002c7f..85451d24a77d 100644
+> > --- a/kernel/watchdog.c
+> > +++ b/kernel/watchdog.c
+> > @@ -55,6 +55,37 @@ unsigned long *watchdog_cpumask_bits = cpumask_bits(&watchdog_cpumask);
+> >
+> >  #ifdef CONFIG_HARDLOCKUP_DETECTOR
+> >
+> > +#ifdef CONFIG_HARDLOCKUP_DETECTOR_PERF
+> > +/* The global function pointers */
+> > +void (*watchdog_hardlockup_enable_ptr)(unsigned int cpu) = watchdog_perf_hardlockup_enable;
+> > +void (*watchdog_hardlockup_disable_ptr)(unsigned int cpu) = watchdog_perf_hardlockup_disable;
+> > +int (*watchdog_hardlockup_probe_ptr)(void) = watchdog_perf_hardlockup_probe;
+> > +#elif defined(CONFIG_HARDLOCKUP_DETECTOR_BUDDY)
+> > +void (*watchdog_hardlockup_enable_ptr)(unsigned int cpu) = watchdog_buddy_hardlockup_enable;
+> > +void (*watchdog_hardlockup_disable_ptr)(unsigned int cpu) = watchdog_buddy_hardlockup_disable;
+> > +int (*watchdog_hardlockup_probe_ptr)(void) = watchdog_buddy_hardlockup_probe;
+> > +#endif
+> > +
+> > +#ifdef CONFIG_HARDLOCKUP_DETECTOR_MULTIPLE
+> > +static char *hardlockup_detector_type = "perf"; /* Default to perf */
+> > +static int __init set_hardlockup_detector_type(char *str)
+> > +{
+> > +       if (!strncmp(str, "perf", 4)) {
+> > +               watchdog_hardlockup_enable_ptr = watchdog_perf_hardlockup_enable;
+> > +               watchdog_hardlockup_disable_ptr = watchdog_perf_hardlockup_disable;
+> > +               watchdog_hardlockup_probe_ptr = watchdog_perf_hardlockup_probe;
+> > +       } else if (!strncmp(str, "buddy", 5)) {
+> > +               watchdog_hardlockup_enable_ptr = watchdog_buddy_hardlockup_enable;
+> > +               watchdog_hardlockup_disable_ptr = watchdog_buddy_hardlockup_disable;
+> > +               watchdog_hardlockup_probe_ptr = watchdog_buddy_hardlockup_probe;
+> > +       }
+> > +       return 1;
+> > +}
+> > +
+> > +__setup("hardlockup_detector=", set_hardlockup_detector_type);
+> > +
+> > +#endif
+> > +
+> >  # ifdef CONFIG_SMP
+> >  int __read_mostly sysctl_hardlockup_all_cpu_backtrace;
+> >  # endif /* CONFIG_SMP */
+> > @@ -262,9 +293,17 @@ static inline void watchdog_hardlockup_kick(void) { }
+> >   * softlockup watchdog start and stop. The detector must select the
+> >   * SOFTLOCKUP_DETECTOR Kconfig.
+> >   */
+> > -void __weak watchdog_hardlockup_enable(unsigned int cpu) { }
+> > +void __weak watchdog_hardlockup_enable(unsigned int cpu)
+> > +{
+> > +       if (watchdog_hardlockup_enable_ptr)
+> > +               watchdog_hardlockup_enable_ptr(cpu);
+> > +}
+> >
+> > -void __weak watchdog_hardlockup_disable(unsigned int cpu) { }
+> > +void __weak watchdog_hardlockup_disable(unsigned int cpu)
+> > +{
+> > +       if (watchdog_hardlockup_disable_ptr)
+> > +               watchdog_hardlockup_disable_ptr(cpu);
+> > +}
+> >
+> >  /*
+> >   * Watchdog-detector specific API.
+> > @@ -275,6 +314,9 @@ void __weak watchdog_hardlockup_disable(unsigned int cpu) { }
+> >   */
+> >  int __weak __init watchdog_hardlockup_probe(void)
+> >  {
+> > +       if (watchdog_hardlockup_probe_ptr)
+> > +               return watchdog_hardlockup_probe_ptr();
+> > +
+> >         return -ENODEV;
+> >  }
+> >
+> > diff --git a/kernel/watchdog_buddy.c b/kernel/watchdog_buddy.c
+> > index ee754d767c21..390d89bfcafa 100644
+> > --- a/kernel/watchdog_buddy.c
+> > +++ b/kernel/watchdog_buddy.c
+> > @@ -19,15 +19,16 @@ static unsigned int watchdog_next_cpu(unsigned int cpu)
+> >         return next_cpu;
+> >  }
+> >
+> > -int __init watchdog_hardlockup_probe(void)
+> > +int __init watchdog_buddy_hardlockup_probe(void)
+> >  {
+> >         return 0;
+> >  }
+> >
+> > -void watchdog_hardlockup_enable(unsigned int cpu)
+> > +void watchdog_buddy_hardlockup_enable(unsigned int cpu)
+> >  {
+> >         unsigned int next_cpu;
+> >
+> > +       pr_info("ddddd %s\n", __func__);
+> >         /*
+> >          * The new CPU will be marked online before the hrtimer interrupt
+> >          * gets a chance to run on it. If another CPU tests for a
+> > @@ -58,7 +59,7 @@ void watchdog_hardlockup_enable(unsigned int cpu)
+> >         cpumask_set_cpu(cpu, &watchdog_cpus);
+> >  }
+> >
+> > -void watchdog_hardlockup_disable(unsigned int cpu)
+> > +void watchdog_buddy_hardlockup_disable(unsigned int cpu)
+> >  {
+> >         unsigned int next_cpu = watchdog_next_cpu(cpu);
+> >
+> > diff --git a/kernel/watchdog_perf.c b/kernel/watchdog_perf.c
+> > index 9c58f5b4381d..270110e58f20 100644
+> > --- a/kernel/watchdog_perf.c
+> > +++ b/kernel/watchdog_perf.c
+> > @@ -153,10 +153,12 @@ static int hardlockup_detector_event_create(void)
+> >   * watchdog_hardlockup_enable - Enable the local event
+> >   * @cpu: The CPU to enable hard lockup on.
+> >   */
+> > -void watchdog_hardlockup_enable(unsigned int cpu)
+> > +void watchdog_perf_hardlockup_enable(unsigned int cpu)
+> >  {
+> >         WARN_ON_ONCE(cpu != smp_processor_id());
+> >
+> > +       pr_info("ddddd %s\n", __func__);
+> > +
+> >         if (hardlockup_detector_event_create())
+> >                 return;
+> >
+> > @@ -172,7 +174,7 @@ void watchdog_hardlockup_enable(unsigned int cpu)
+> >   * watchdog_hardlockup_disable - Disable the local event
+> >   * @cpu: The CPU to enable hard lockup on.
+> >   */
+> > -void watchdog_hardlockup_disable(unsigned int cpu)
+> > +void watchdog_perf_hardlockup_disable(unsigned int cpu)
+> >  {
+> >         struct perf_event *event = this_cpu_read(watchdog_ev);
+> >
+> > @@ -257,10 +259,12 @@ bool __weak __init arch_perf_nmi_is_available(void)
+> >  /**
+> >   * watchdog_hardlockup_probe - Probe whether NMI event is available at all
+> >   */
+> > -int __init watchdog_hardlockup_probe(void)
+> > +int __init watchdog_perf_hardlockup_probe(void)
+> >  {
+> >         int ret;
+> >
+> > +       pr_info("ddddd %s\n", __func__);
+> > +
+> >         if (!arch_perf_nmi_is_available())
+> >                 return -ENODEV;
+> >
+> > diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> > index dc0e0c6ed075..443353fad1c1 100644
+> > --- a/lib/Kconfig.debug
+> > +++ b/lib/Kconfig.debug
+> > @@ -1167,36 +1167,33 @@ config HARDLOCKUP_DETECTOR
+> >  #
+> >  # Note that arch-specific variants are always preferred.
+> >  #
+> > -config HARDLOCKUP_DETECTOR_PREFER_BUDDY
+> > -       bool "Prefer the buddy CPU hardlockup detector"
+> > -       depends on HARDLOCKUP_DETECTOR
+> > -       depends on HAVE_HARDLOCKUP_DETECTOR_PERF && HAVE_HARDLOCKUP_DETECTOR_BUDDY
+> > -       depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
+> > -       help
+> > -         Say Y here to prefer the buddy hardlockup detector over the perf one.
+> > -
+> > -         With the buddy detector, each CPU uses its softlockup hrtimer
+> > -         to check that the next CPU is processing hrtimer interrupts by
+> > -         verifying that a counter is increasing.
+> > -
+> > -         This hardlockup detector is useful on systems that don't have
+> > -         an arch-specific hardlockup detector or if resources needed
+> > -         for the hardlockup detector are better used for other things.
+> > -
+> >  config HARDLOCKUP_DETECTOR_PERF
+> > -       bool
+> > +       bool "Enable perf-based hard lockup detector (preferred)"
+> >         depends on HARDLOCKUP_DETECTOR
+> > -       depends on HAVE_HARDLOCKUP_DETECTOR_PERF && !HARDLOCKUP_DETECTOR_PREFER_BUDDY
+> > +       depends on HAVE_HARDLOCKUP_DETECTOR_PERF
+> >         depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
+> >         select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
+> > +       help
+> > +         This detector uses a perf event on the CPU to detect when a CPU
+> > +         has become non-maskable interrupt (NMI) stuck. This is the
+> > +         preferred method on modern systems as it can detect lockups on
+> > +         all CPUs at the same time.
+> 
+> I'd say this option should be the default for kernel developers but
+> shouldn't be used by default to free the perf event and due to the
+> extra power overhead.
+> 
+> Thanks,
+> Ian
+> 
+> >  config HARDLOCKUP_DETECTOR_BUDDY
+> > -       bool
+> > +       bool "Enable buddy-based hard lockup detector"
+> >         depends on HARDLOCKUP_DETECTOR
+> >         depends on HAVE_HARDLOCKUP_DETECTOR_BUDDY
+> > -       depends on !HAVE_HARDLOCKUP_DETECTOR_PERF || HARDLOCKUP_DETECTOR_PREFER_BUDDY
+> >         depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
+> >         select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
+> > +       help
+> > +         This is an alternative lockup detector that uses a heartbeat
+> > +         mechanism between CPUs to detect when one has stopped responding.
+> > +         It is less precise than the perf-based detector and cannot detect
+> > +         all-CPU lockups, but it does not require a perf counter.
+> > +
+> > +config CONFIG_HARDLOCKUP_DETECTOR_MULTIPLE
+> > +       bool
+> > +       depends on HARDLOCKUP_DETECTOR_PERF && HARDLOCKUP_DETECTOR_BUDDY
+> >
+> >  config HARDLOCKUP_DETECTOR_ARCH
+> >         bool
+> > --
+> > 2.43.0
+> >
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Jinchao
 
