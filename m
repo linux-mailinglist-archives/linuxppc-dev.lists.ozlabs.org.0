@@ -1,49 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-12353-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12354-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BDC4B80BB8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Sep 2025 17:50:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0403EB8145C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Sep 2025 20:00:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cRjsT4z59z2xgQ;
-	Thu, 18 Sep 2025 01:50:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cRmlm5Ksdz2ymg;
+	Thu, 18 Sep 2025 04:00:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758124237;
-	cv=none; b=FujjJp02Ha67D/p2G7zNALYYNtzau2Pvmk0x9OS6MjFyyWWnvErYRi1WTE2KHF2gl7EHpFNK4Oc2tj00NSsjksDCFiDubNr44bjqtJdsZpJAYyRIAIBgTkmGuuj/jrmeZvaS3sE/nFcjmVRmkKMbtyigriQ4u0sMvJm18HTgSW2tbm73YIPPIukYST2TI0FDISVzu03gujyr0xc7IeuTRZNhuak/F3N01CSQF1U4uQtXfmGHNAfGTG9/CyrI9D6bi06sTRmhs7npNF3fOHY4aK5pLH8rJjC3nHrxiTWYnjBTAcBAVlV8vHNlEU5UnRkqJQs9basAPi9FST/X8tvTrA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758132052;
+	cv=none; b=A8/mgv1JnSPbr2DaHUrFfdE9AENozL/rrhyj4+YyBiAHvV3NhRCYobPoarYRlx9UJyjJsWF9ZHZh0LCZM/L3tQvqFJOPI4WN8zk98C1bd3i8wfGlsEKu9Mt6vV0oPJfJFW5RCzay8pbqRBCuo8Cz7Tz0aCj5oFDOFdZZZ/pBdVHkKigeI+vlamleZk4MT6+6nurfGjB35XdszGiMZrp4mGSSli8rsBoBv0Gtr1/u3Xfn1KQimwohnvAVnaye4AXDspvDVRtTTguJ35dDn7oB2px6hFXlbZ4EvavZ2dOAcCrxyHjoKH3AcrE3BaXfoYd6EkoB8OwOuLtQB586logsgw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758124237; c=relaxed/relaxed;
-	bh=BzLbMenZtftH89T106gmsuJ+uofhbnsg1l+2Ng0lErU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g5VNiXsnL3LTowm+YM08vEgImIg4mejDGt7ynURl2s940sqCxqL4uw05mANa4VU54K3mlpZE85QAJ5XDkpeuGJfPbtKlD/9HXbmZr2c8lsBZBeXHekV7fBjnia9bzZ1DZL9/waxKm3qjOvX8PsOKXC061WpV8kASp0fpPr5Iq409zBbawobk4twUiv6Vh29ICXCV/lBgtloQr1E2mwNYM0d2/2UQQ8u5BX/4xJSS42cX5DlBW8YkJmaodzX/3hqTBtY+/WLMYsDXnXTtictaE9WSfwAV32IZdeItrpBFr8U0tMte520bL1azpMdOA8qRF7R8CfSTfH+BsnHT7fFABA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cRjsS6cN8z2xcC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 01:50:36 +1000 (AEST)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cRjGc51W3z9sxb;
-	Wed, 17 Sep 2025 17:23:52 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id semPCKf2cGPh; Wed, 17 Sep 2025 17:23:52 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cRjGc3ltzz9sxZ;
-	Wed, 17 Sep 2025 17:23:52 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 699538B76C;
-	Wed, 17 Sep 2025 17:23:52 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id sLjYwSuYZXNq; Wed, 17 Sep 2025 17:23:52 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 38E3E8B767;
-	Wed, 17 Sep 2025 17:23:40 +0200 (CEST)
-Message-ID: <c4a281c7-e225-418f-95c3-8fa91073a6b4@csgroup.eu>
-Date: Wed, 17 Sep 2025 17:23:40 +0200
+	t=1758132052; c=relaxed/relaxed;
+	bh=0Pv4dFUExNQfPloEDat7jfEF9BkjeLOy7zrinjdnc80=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Tjm1CKnNHMA5+WDkf2xw1AkLgP8t3WiHMz2HPeNnUmWwWWCWG5P/e1dXMsKetuN3q1mMo2aoTwXbVt/sTSFJHpfrc2FmvHBIBsbXREC6CAdZONDe5SHek1g5YDR/i3Dsw1+iXpZZvChtsZ7z2SChxKA5UtygTt2+EanYmDVnsy+jLL2N2p5epHF70EWzWc91Zp7f+5tW+UT/xAnkhISZwfnEN2HY0sO0n0QNJmj12lcaOFXKMOZB3ROdru6IXsSkGp5LaLf1BZJKyk18czRxZxBL5Y0uoA49LzJz/gPEXoTnm9qmchJCHxjMulWQY1whuwWNzkbVuuOwaKyHNQka1w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=amacapital.net; dkim=pass (2048-bit key; unprotected) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=iGBC5C0K; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=luto@amacapital.net; receiver=lists.ozlabs.org) smtp.mailfrom=amacapital.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=amacapital.net
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=iGBC5C0K;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amacapital.net (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=luto@amacapital.net; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cRmlk4J4Dz2yMh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 04:00:49 +1000 (AEST)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-578a8bd4bd2so83241e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Sep 2025 11:00:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1758132044; x=1758736844; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0Pv4dFUExNQfPloEDat7jfEF9BkjeLOy7zrinjdnc80=;
+        b=iGBC5C0K3CvC7ZQdsG0QjsdbrZYhsOQf+o0kG9hU8hO9Q0ilWVmVaCgsqauDWbX13y
+         MAoDkGk3hpwwnggouoXdA2QGFGLIMYVtfYevmgKlhKkS5DVtlgS80B9sKYBSCSiQkBnn
+         /SL9U75uPqhg+ZoYqwhWJu9dT90D6Unm3asTZxEiNvUZdGGHE1rMPxD3i3m21OwVOTYe
+         tn3SqitNgwLcOhLyzo8facmmgDrHGqMp2bIM8v1xzpDuzXWTW2ZP50J8FVtpahNXLx3U
+         TI2A+FC49MDo/hH6qzqapInOvbysQncUN8RtD2B8UR8DcTKk4E8SnAE3LXg3cWreozl8
+         gyFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758132044; x=1758736844;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0Pv4dFUExNQfPloEDat7jfEF9BkjeLOy7zrinjdnc80=;
+        b=ARyrD4N5IKj7qKKH/RubRV9VFTf720a8IKrBjrhZ1cs4cBNs6S0f107ORA8HOI2hbj
+         zM6oaRSHLmuNQOm/HOEeZw6tFvpyI/e8axBMix/AN5vGqH1ItaRzXxfs0rbs9KEKL+Bq
+         thOT0ZqOjUXv0/0TTw5dW1OiwpuJc2lLVuDR1rUiYvEKyvCy+YMQQISNxLagpF/xaMcq
+         GgqRks/oSMAJeK4kWMUoiKhhwiXmeSLl2cVNhnfB6GoTwOJ1C3EvMiTEVBGrq0DlHbF9
+         4xjxVB2JdCV+me+WpuD1+51/EKXadVNzVBm8qkemGZEtWQJgwxcsfyJ4MIbBYYybL26n
+         ULog==
+X-Forwarded-Encrypted: i=1; AJvYcCVUCC5+Vxqv4BubFrQe7srRxijREqb9MOGHREXl/q6060/Q3ZdTGATpWWhrZQ1GhFcJH07jMWjOgC+1wEY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxwsIcfSp4t0ymphvYNAaljkcsqNGeREzEymA0/0Ezu6uW05zDZ
+	chsR1Ybcd1pyKkzIIWQQnQz+kDn1ZPWhEAx3GXOuUzU0tlwCCjDuAU7UrHg/TEckga2UE6E8Zm6
+	vJHpytESzGGzINy68o94ZtwkJPTcrjxrRJFWZLyAe
+X-Gm-Gg: ASbGncvY5z25WgsMdHDrfWiHsL943nX2wo5WXjox66GO2FI3ksGFcO7V0nc9byCUuCM
+	U2CXYUHppPad4oYNHyyLFX6Wc930GK8hQOIbB58CLjacEILyBJz9ASTguDjn1/zdyTRye2PxOSg
+	cTIJbofDvikpR716WGoOBVnKW4E7GxHhORSCMGJ5sHVs4+0r6lqFcGXMgJGiCHrAQs72AWO1cfW
+	sWtoQ==
+X-Google-Smtp-Source: AGHT+IGI+xF2OSgRbI6+fabXiqu9Xwuf5bxWYwnja/rNGOUuSmNzhH42MNUAKuR34Ox7ov8nmiujA9clDhMS84oRbmU=
+X-Received: by 2002:ac2:4e09:0:b0:576:d217:3f2f with SMTP id
+ 2adb3069b0e04-57796b5e819mr1028160e87.3.1758132043747; Wed, 17 Sep 2025
+ 11:00:43 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,98 +79,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/36] powerpc/vdso: Explicitly include asm/cputable.h
- and asm/feature-fixups.h
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Arnd Bergmann
- <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>,
- John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Shuah Khan <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>, Russell King
- <linux@armlinux.org.uk>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Shannon Nelson <sln@onemain.com>,
- linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-s390@vger.kernel.org
-References: <20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de>
- <20250917-vdso-sparc64-generic-2-v3-7-3679b1bc8ee8@linutronix.de>
- <41d100c5-4706-400e-a61a-46b068f1bc74@csgroup.eu>
- <20250917171207-1fad0416-7543-481c-a998-5881fab1714e@linutronix.de>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250917171207-1fad0416-7543-481c-a998-5881fab1714e@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250912223937.3735076-1-safinaskar@zohomail.com> <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
+In-Reply-To: <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
+From: Andy Lutomirski <luto@amacapital.net>
+Date: Wed, 17 Sep 2025 11:00:32 -0700
+X-Gm-Features: AS18NWAGwakGZ9zjxjq7MnfN8O7ZgOJb6fmKIJ0JIML7P3j0NnlDZ27eNb5S7Es
+Message-ID: <CALCETrXHxOkHoS+0zhvc4cfpZqJ0wpfQUDnXW-A-qyQkqur-DQ@mail.gmail.com>
+Subject: Re: [PATCH 00/62] initrd: remove classic initrd support
+To: Rob Landley <rob@landley.net>
+Cc: Askar Safin <safinaskar@zohomail.com>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, 
+	Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Aleksa Sarai <cyphar@cyphar.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+	Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
+	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
+	Alexander Graf <graf@amazon.com>, Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org, 
+	Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org, 
+	linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, 
+	devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Mon, Sep 15, 2025 at 10:09=E2=80=AFAM Rob Landley <rob@landley.net> wrot=
+e:
 
+> While you're at it, could you fix static/builtin initramfs so PID 1 has
+> a valid stdin/stdout/stderr?
+>
+> A static initramfs won't create /dev/console if the embedded initramfs
+> image doesn't contain it, which a non-root build can't mknod, so the
+> kernel plumbing won't see it dev in the directory we point it at unless
+> we build with root access.
 
-Le 17/09/2025 à 17:21, Thomas Weißschuh a écrit :
-> On Wed, Sep 17, 2025 at 04:41:49PM +0200, Christophe Leroy wrote:
->>
->>
->> Le 17/09/2025 à 16:00, Thomas Weißschuh a écrit :
->>> The usage of ASM_FTR_IFCLR(CPU_TR_ARCH_31) requires asm/cputable.h and
->>> asm/feature-fixups.h. Currently these headers are included transitively,
->>> but that transitive inclusion is about to go away.
->>
->> Hum ...
->>
->> That was unexpectedly added by commit 9c7bfc2dc21e ("powerpc/64s: Make
->> POWER10 and later use pause_short in cpu_relax loops")
->>
->> In theory, vdso/ headers shouldn't include any headers outside of vdso/
-> 
-> I am aware. But this is the dependency as it exists today and I don't really
-> want to make this series larger than it already is. This is by far not the
-> only such layering violation in the vDSO headers. I have some patches prepared...
-> 
->>> Explicitly include the headers.
->>>
->>> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
->>> ---
->>>    arch/powerpc/include/asm/vdso/processor.h | 3 +++
->>>    1 file changed, 3 insertions(+)
->>>
->>> diff --git a/arch/powerpc/include/asm/vdso/processor.h b/arch/powerpc/include/asm/vdso/processor.h
->>> index 80d13207c5688d73954822aede2bbe2d0e05c054..42b64903bdf47cc5bd571fc3b5caed45e6358cb9 100644
->>> --- a/arch/powerpc/include/asm/vdso/processor.h
->>> +++ b/arch/powerpc/include/asm/vdso/processor.h
->>> @@ -4,6 +4,9 @@
->>>    #ifndef __ASSEMBLY__
->>
->> __ASSEMBLY__ is replaced by __ASSEMBLER__ in powerpc-next in commit
->> 74db6cc331b0 ("powerpc: Replace __ASSEMBLY__ with __ASSEMBLER__ in non-uapi
->> headers")
-> 
-> Ack. I'll have to rebase this series after -rc1 in any case. Right now I am
-> hoping to collect some Acks.
-> 
->>> +#include <asm/cputable.h>
->>> +#include <asm/feature-fixups.h>
->>> +
->>>    /* Macros for adjusting thread priority (hardware multi-threading) */
->>>    #ifdef CONFIG_PPC64
->>>    #define HMT_very_low()		asm volatile("or 31, 31, 31	# very low priority")
->>>
->>
+I have no current insight as to whether there's a kernel issue here,
+but why are you trying to put actual device nodes in an actual
+filesystem as part of a build process?  It's extremely straightforward
+to emit devices nodes in cpio format, and IMO it's far *more*
+straightforward to do that than to make a whole directory, try to get
+all the modes right, and cpio it up.
 
+I wrote an absolutely trivial tool for this several years ago:
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+https://github.com/amluto/virtme/blob/master/virtme/cpiowriter.py
 
+it would be barely more complicated to strip the trailer off an cpio
+file from some other source, add some device nodes, and stick the
+trailer back on.  But it's also really, really, really easy to emit an
+entire, functioning cpio-formatted initramfs from plain user code with
+no filesystem manipulation at all.  This also makes that portion of
+the build reproducible, which is worth quite a bit IMO.
 
+--Andy
 
