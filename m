@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-12343-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12339-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDCBB7FBF1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Sep 2025 16:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 866D5B7FBBA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Sep 2025 16:06:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cRgSj3x3Lz3f4Y;
-	Thu, 18 Sep 2025 00:02:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cRgSc22BMz3dXQ;
+	Thu, 18 Sep 2025 00:02:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758117749;
-	cv=none; b=ejDZaLjAzFqU9wCShQFIMwWWi/xbv1BYggB8JYF/ZgxCSUlYf8JbJhGLaytamasK+t59W/pS1etoi6t5e63AGfxeTvrMf4cAEzby/YtHNspLpfB/z96inmR2K0GoEFsbKzzjmW5bCIm2xwfY8d0OozZWpIKHgF5PrGtwWadhcX9h7I6istTRqCveKzLg8S9nGuycdGCfMA9x0fUdf8QALo+1aYQEWh+sAd8wGbAu1AYYgSG+I/Gds5msX+IVulAoaCwH1D/uDaE0fhZ/MLGVrd3/50q2P/RIcF3mfllMWlSOXR0iSfTCo8gO8c2pv3/DICLp+fiSCG9BS9qLJqk5uw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758117744;
+	cv=none; b=QE2Fxf/wW8btR5bOeMIoGC385QuqpXdQw7rwia2q73CVNRJuaQnHiyLV3aAHsYro0KVs/5K3NnMKJxjuzFquC6rPDLpVOHPPIbYqw1Ij92rB4ujmfIDYONu8JxPOzeTKB90+rOFqGkfLuYSrAnGyaegDV2gwHC2E1Ia6u/HTy06SPc6pzQH+BDautga6MYvCjv4piJxEO6kvk2l9sWEaRx5wTYMowmiBeMFqr3TJuCnNCtov3YwX4qqINSiArmhPVeV4Qa6AZ3JWYQcElFDhE/Y+dQgbTZo62IBbrHpgB/JRHcGJ6ppTPCyvB29qS+RtSYuauA+UFMfADkRTGnN1hw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758117749; c=relaxed/relaxed;
-	bh=3OZQy+vq0PzscP5l1y5EgevMSFs8XGquiIBZfxPmQ8k=;
+	t=1758117744; c=relaxed/relaxed;
+	bh=nLpJbJ4yoSDtOyQiA+uk/p+kb6cMa3lf/boDCjBlWz0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=is2vnU/T1eitdeUhUh+GdEgZnfqFMG7Z1g28jXG1rVDSV8D/PeXMZ83hhBGDMmjEN4CX3M9gggHNxvXJq+Lg9HJ4M3wvhbUWA8m7f3fjoCZKNxp+RIglUt7RAGqy//6hMHN2/NT2/c+fzXOFsooB+s9ew0ASGp1/g8lXfaK7DO7q/1YCti3lBxJNAXgW4c+oxBW62cva/G7EPtC4y6apldH91ZQkqC8kDoHNEUwazhFWGw4ek24SOJW4qTbXRX2W8hRcTF0XFFu+oYMgXb8dY6yTHTd8PVeWtHsvOtvSAqFsDMlSsQDSpQ8QbhrxWh7ZcPTs27XqkdeclDHF0YcmKA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=QxstqjdH; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=a6DLowl/; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=f1WxLSBHCR/FcIDkoTbmYdpCi9psWG9NWMGEyxSclk8La9FVgMoo7JxUP3j5HynXmjrm36Zad/tstENtlwReAyEHKczyfrvhcGb9Adim2Pwi2iQqIM+1G5tXD+7sa2hO8YHtu3GB6ZKpfJkEeyKA66y7hBOcsyxXR9D8r25/dkOh0EUk5OOapAc7ZHoTuaR5YkUvpmnUMmOvHXQcqYVBkTQBn2tmsef2xCUZoFDFRKPkNN4hkwX/jGYjkYC7uihojqGFqnqOhpb7mr/Hoph6BQEfN9sPPDlfPGBd4ySW0+Qao4dtV3HyuUJiudIXqoTuHTetM3tsUlEnO1U71mAHtw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=C2hNNsVq; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=wnVKE+KA; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=QxstqjdH;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=a6DLowl/;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=C2hNNsVq;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=wnVKE+KA;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4cRgSh5q55z3f1K
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 00:02:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4cRgSZ5hGnz3dWv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 00:02:22 +1000 (AEST)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758117732;
+	s=2020; t=1758117733;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3OZQy+vq0PzscP5l1y5EgevMSFs8XGquiIBZfxPmQ8k=;
-	b=QxstqjdH6dzd1SShJ0WtZcGx+HhdQYj6Ud91px8SrK0sm5BNrBYgqEtua6qvhE2m2YkkNu
-	4FZPi8JDEhK7u5ts4vTvnVYUIQltt4/YmTrbzn/knRDign0R/EUg5zYp6Ce5O5X6vxav0+
-	ULXxlq6J43Wv+1IkW0R1Yz1pkqFJixGcrs0KsPUqpKjxrOfck3++osJF2GRNf+ivLgtref
-	frcrbC/8hCK0KxngeHb5gyN79LLQ5j374p/HH/vS+WXO1dbFJEJdeXgdClq8rKmdKJK0Oy
-	gpsna+QcwCQjUS/4GtZdRASn54xbhGRTEeuDgnuwkWZuutUNciZJZU4lMU8VxQ==
+	bh=nLpJbJ4yoSDtOyQiA+uk/p+kb6cMa3lf/boDCjBlWz0=;
+	b=C2hNNsVqqkQiPoKIVDBS8x6lJTa7oMQ5k7D54u/aSw0FQhCfWy88IPfH5gAYHCS48ThkUI
+	G3YqbX1xx52uMBKKgkYP2g5kq5fNG317gyPlBRT5goPXv08bV8RLgmRl/8jCqG0d0Avl8u
+	4O7TL/BkD1rzW4t2v+LJIyi3rmNAIdIjN1RPup4TsoDtssTg7n1DhSOgnpLLHIKed3sZ+j
+	kglKfJml/6HsJqzXUHJW8/W/eH5ObUaBiXR5Re8lFFFIcmmk9xU2upS1RnUYXLFlwwgjki
+	I/voIzq8wZ/vdCr9nCI2EkZbh6h4BpOxN3ZL40MaGmAWPn5iSmsMSe7aPciB9w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758117732;
+	s=2020e; t=1758117733;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3OZQy+vq0PzscP5l1y5EgevMSFs8XGquiIBZfxPmQ8k=;
-	b=a6DLowl/M7y7mefYWtAGpRgXtQMoOhfSrrWknH9ZY2jXGUI3zWLf2z71FLlCspcpV/WN8n
-	QcoVMgWsf162v7Dw==
-Date: Wed, 17 Sep 2025 16:00:34 +0200
-Subject: [PATCH v3 32/36] sparc64: vdso2c: Drop sym_vvar_start handling
+	bh=nLpJbJ4yoSDtOyQiA+uk/p+kb6cMa3lf/boDCjBlWz0=;
+	b=wnVKE+KAnGIthJrBQSLwmmIME+YarESmoquyXQaRTd5T5xZk8Imo8IPrYwt/wz017Q8Y2G
+	RaSQS3JUShhRTaCA==
+Date: Wed, 17 Sep 2025 16:00:35 +0200
+Subject: [PATCH v3 33/36] sparc64: vdso2c: Remove symbol handling
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,7 +68,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250917-vdso-sparc64-generic-2-v3-32-3679b1bc8ee8@linutronix.de>
+Message-Id: <20250917-vdso-sparc64-generic-2-v3-33-3679b1bc8ee8@linutronix.de>
 References: <20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de>
 In-Reply-To: <20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de>
 To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
@@ -97,11 +97,11 @@ Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
  linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758117712; l=1958;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758117712; l=3432;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=s6/TJ6cDrp1bf8L//kEbLoMezBrsktxJRPvdXOeJnAI=;
- b=4JadwUBtqE/5YmCP2xuMZlTDHVpUgg4SB/G/2cOwZT65Uk9t2zqeVcPUT89pkaqh9/mpicK4g
- Eh6zTSwqowUD7zQV5fe2LIl5aj+IgLWJ7brLrhVS/J1sqPl89dT/pGC
+ bh=f4Pm1iBT2Cenk83Qq5TMSPoB/nyvwI1MW2gyBUgiLI8=;
+ b=iOxuwiA/r72lhmby60u7A4UBDBHyoBd3lZHvKp5Musv9OqhM+XOtOYu/NMYLRg9yWtjwVKTwU
+ 4dtaCO+ChNYA7+JM0i3GBx0znVTFNzjSomyEWYUXHxkYlBzJ3ajEJpv
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -109,68 +109,109 @@ X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-After the adoption of the generic vDSO library this symbol does not exist.
-
-The alignment invariant is now guaranteed by the generic code.
+There are no handled symbols left.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- arch/sparc/include/asm/vdso.h | 2 --
- arch/sparc/vdso/vdso2c.c      | 6 ------
- arch/sparc/vdso/vdso2c.h      | 4 ----
- 3 files changed, 12 deletions(-)
+ arch/sparc/vdso/vdso2c.c | 10 ----------
+ arch/sparc/vdso/vdso2c.h | 41 +----------------------------------------
+ 2 files changed, 1 insertion(+), 50 deletions(-)
 
-diff --git a/arch/sparc/include/asm/vdso.h b/arch/sparc/include/asm/vdso.h
-index 59e79d35cd7384e2dd752e92d20bc599e38cb8b0..f08562d10215bd3e9a2d4eaa0aadc8400b40e256 100644
---- a/arch/sparc/include/asm/vdso.h
-+++ b/arch/sparc/include/asm/vdso.h
-@@ -8,8 +8,6 @@
- struct vdso_image {
- 	void *data;
- 	unsigned long size;   /* Always a multiple of PAGE_SIZE */
--
--	long sym_vvar_start;  /* Negative offset to the vvar area */
- };
- 
- #ifdef CONFIG_SPARC64
 diff --git a/arch/sparc/vdso/vdso2c.c b/arch/sparc/vdso/vdso2c.c
-index b97af5ec9f35c01f2a976b6213b1768b677ad231..70b14a436fe2297ab446f778ab0d43155c272421 100644
+index 70b14a436fe2297ab446f778ab0d43155c272421..e5c61214a0e285547ac57c9997542546464bde23 100644
 --- a/arch/sparc/vdso/vdso2c.c
 +++ b/arch/sparc/vdso/vdso2c.c
-@@ -58,18 +58,12 @@
+@@ -58,14 +58,6 @@
  
  const char *outfilename;
  
--/* Symbols that we need in vdso2c. */
--enum {
--	sym_vvar_start,
+-struct vdso_sym {
+-	const char *name;
+-	int export;
 -};
 -
- struct vdso_sym {
- 	const char *name;
- 	int export;
- };
- 
- struct vdso_sym required_syms[] = {
--	[sym_vvar_start] = {"vvar_start", 1},
- };
- 
+-struct vdso_sym required_syms[] = {
+-};
+-
  __attribute__((format(printf, 1, 2))) __attribute__((noreturn))
+ static void fail(const char *format, ...)
+ {
+@@ -105,8 +97,6 @@ static void fail(const char *format, ...)
+ #define PUT_BE(x, val)					\
+ 	PBE(x, val, 64, PBE(x, val, 32, PBE(x, val, 16, LAST_PBE(x, val))))
+ 
+-#define NSYMS ARRAY_SIZE(required_syms)
+-
+ #define BITSFUNC3(name, bits, suffix) name##bits##suffix
+ #define BITSFUNC2(name, bits, suffix) BITSFUNC3(name, bits, suffix)
+ #define BITSFUNC(name) BITSFUNC2(name, ELF_BITS, )
 diff --git a/arch/sparc/vdso/vdso2c.h b/arch/sparc/vdso/vdso2c.h
-index 60d69acc748f2401156a730027fe34abfb9fb6bc..ba0794659eb5af53b8c86b24f3221a5d0b3f74ab 100644
+index ba0794659eb5af53b8c86b24f3221a5d0b3f74ab..bad6a0593f4ca293feca201a6343833268ad1cb8 100644
 --- a/arch/sparc/vdso/vdso2c.h
 +++ b/arch/sparc/vdso/vdso2c.h
-@@ -104,10 +104,6 @@ static void BITSFUNC(go)(void *raw_addr, size_t raw_len,
- 		}
- 	}
+@@ -17,11 +17,9 @@ static void BITSFUNC(go)(void *raw_addr, size_t raw_len,
+ 	unsigned long mapping_size;
+ 	int i;
+ 	unsigned long j;
+-	ELF(Shdr) *symtab_hdr = NULL, *strtab_hdr;
++	ELF(Shdr) *symtab_hdr = NULL;
+ 	ELF(Ehdr) *hdr = (ELF(Ehdr) *)raw_addr;
+ 	ELF(Dyn) *dyn = 0, *dyn_end = 0;
+-	INT_BITS syms[NSYMS] = {};
+-
+ 	ELF(Phdr) *pt = (ELF(Phdr) *)(raw_addr + GET_BE(&hdr->e_phoff));
  
--	/* Validate mapping addresses. */
--	if (syms[sym_vvar_start] % 8192)
--		fail("vvar_begin must be a multiple of 8192\n");
+ 	/* Walk the segment table. */
+@@ -72,38 +70,6 @@ static void BITSFUNC(go)(void *raw_addr, size_t raw_len,
+ 	if (!symtab_hdr)
+ 		fail("no symbol table\n");
+ 
+-	strtab_hdr = raw_addr + GET_BE(&hdr->e_shoff) +
+-		GET_BE(&hdr->e_shentsize) * GET_BE(&symtab_hdr->sh_link);
+-
+-	/* Walk the symbol table */
+-	for (i = 0;
+-	     i < GET_BE(&symtab_hdr->sh_size) / GET_BE(&symtab_hdr->sh_entsize);
+-	     i++) {
+-		int k;
+-
+-		ELF(Sym) *sym = raw_addr + GET_BE(&symtab_hdr->sh_offset) +
+-			GET_BE(&symtab_hdr->sh_entsize) * i;
+-		const char *name = raw_addr + GET_BE(&strtab_hdr->sh_offset) +
+-			GET_BE(&sym->st_name);
+-
+-		for (k = 0; k < NSYMS; k++) {
+-			if (!strcmp(name, required_syms[k].name)) {
+-				if (syms[k]) {
+-					fail("duplicate symbol %s\n",
+-					     required_syms[k].name);
+-				}
+-
+-				/*
+-				 * Careful: we use negative addresses, but
+-				 * st_value is unsigned, so we rely
+-				 * on syms[k] being a signed type of the
+-				 * correct width.
+-				 */
+-				syms[k] = GET_BE(&sym->st_value);
+-			}
+-		}
+-	}
 -
  	if (!name) {
  		fwrite(stripped_addr, stripped_len, 1, outfile);
  		return;
+@@ -129,10 +95,5 @@ static void BITSFUNC(go)(void *raw_addr, size_t raw_len,
+ 	fprintf(outfile, "const struct vdso_image %s_builtin = {\n", name);
+ 	fprintf(outfile, "\t.data = raw_data,\n");
+ 	fprintf(outfile, "\t.size = %lu,\n", mapping_size);
+-	for (i = 0; i < NSYMS; i++) {
+-		if (required_syms[i].export && syms[i])
+-			fprintf(outfile, "\t.sym_%s = %" PRIi64 ",\n",
+-				required_syms[i].name, (int64_t)syms[i]);
+-	}
+ 	fprintf(outfile, "};\n");
+ }
 
 -- 
 2.51.0
