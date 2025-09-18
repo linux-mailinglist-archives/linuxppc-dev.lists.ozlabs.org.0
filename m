@@ -1,67 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-12369-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12384-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA751B855EA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 16:53:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8ABB861A7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 18:50:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSJY92dqLz2yGM;
-	Fri, 19 Sep 2025 00:53:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSM8K6c8Xz3cYH;
+	Fri, 19 Sep 2025 02:50:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::34a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758205000;
-	cv=none; b=XbAEoFyoMPvOsV/OwWUFcQda2sf+ehHP+HjzzJkZCWs1CQaQzgNc7Ve8iaN7e5CBxPMUEY2bq6F7osuiNZsl/OtTIi721kp00E9Bo1ViSSXQHgueL2VcF/hsZIprt+ZNyZTWPNVZSyKyRNRPYmoyU9h70hXUzEjjnKa+Agd/A2alQUdvuE7mahK4+7QHUJhG/jAw+12So7/vMLPcN2mAuIVXOQyEx3l2W4ijgHf4pPu/4DcckjEZ5Ky27TMs/iSap56oLX/sWwnO20uWjja5r8KyedeBDV7pgPxAih/efNDyQyqDIy9QlUO1eiyLzWzUxpiQkSxjFrv06LzNalfLcg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758214241;
+	cv=none; b=R/dZgvip7M7Tgrj0BZs3cDxLuMnOhuBK86tWB/RVKJHmj/h5e+cN3D8ehEgpHlJQ9o9i8s8QNa+3y7SvJHDICBcm8nG/WYqPE1T8Wsic+Rjky2p0SDNWwPZMsRg8zOfQRU/8gozp0NHxs5ItzJ/pw0bpdVZl+z52OHit6LnpdShWKh1WpphmWBn5RKYI688OEQdwst1YYBmu3q2HJNJOailFGa0q0BmaDcVKSZfN6Cp12uK/tLlf5xXNFXkEGxjp3u7HHATqPXu64sFC5Nw5bzz0dbtY9yDGL7xcr4vP2MQ5n0bveHCG2OP4WVGroCd/tihd1SUm4l2e/KbfkaUFcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758205000; c=relaxed/relaxed;
-	bh=4VpmXSIu+qpJvsDpO1PV+NUaPdBqqdiEw/vU8U+iM14=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=LvFeDlwBb2kpAL9Sh31Dx5Wk8+hvJQl9H4Huukn3QDj0oB/+Iqy9WRiw9ggFwTVZjfUR8f0SBJuzohHE67Z0K4Uqvoekyr1Caye5qeHxfdm4oy4sIr0bHxO4RzTV+eNMecUAFP0DsCnLa4dEyC4YHrMUROEdKGnZS/Qjuap2CRDIb4LMTvFsip//1WRewxW4GNkTvDJ3me8DM03t/YSx87fXGt8vCjI9fgAi7dmOADuPZGNdHw3/3K3mualbv3k/QkQjEQRXeexhdtC+9i2MOjEwRo8fvhGFrRf2AJBqezQjl+Dk6UcfA4e/VgpPYEfiqdN0y9MZRlaILSUroA3dsA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=K1Q+b1cU; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=3rbtmaackdoklmlcyldrzzrwp.nzxwtyfiaan-opgwtded.zkwlmd.zcr@flex--abarnas.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--abarnas.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=K1Q+b1cU;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--abarnas.bounces.google.com (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=3rbtmaackdoklmlcyldrzzrwp.nzxwtyfiaan-opgwtded.zkwlmd.zcr@flex--abarnas.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x34a.google.com (mail-wm1-x34a.google.com [IPv6:2a00:1450:4864:20::34a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSHkb37Qnz2xnh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 00:16:38 +1000 (AEST)
-Received: by mail-wm1-x34a.google.com with SMTP id 5b1f17b1804b1-45b98de0e34so10505025e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 07:16:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758204996; x=1758809796; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4VpmXSIu+qpJvsDpO1PV+NUaPdBqqdiEw/vU8U+iM14=;
-        b=K1Q+b1cUyKomKYEgP4MacM+YcIffEPeWnL7D/2Kl19yhMYOGdYYV5nKyrshWa7ZgtU
-         KQAQcbn57r/KO9WKIYnYr3ctBCQdZZQ6HeJevi4cNXpkRtO9+ZGvHVrmKPPrCNnNIZOs
-         CkscWBFVmvnXhUpIcf/cwg1FHc6t/TWyY2blm7Wg3yWo/MZZBq67lzxgELVv9QMj4UsG
-         gUrmXI4cH3IA3WxxF0HxduBJNKhlGJVsEPoK99i3OgkcHw1+LMZ+caTYXtEmCkVLRlOz
-         fWNU8ieuJp9dARnf7OuueMs19AxqA1Y53SsxT/e7U21PU1hSIBc3UTIATZBHXFxNktEb
-         17/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758204996; x=1758809796;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4VpmXSIu+qpJvsDpO1PV+NUaPdBqqdiEw/vU8U+iM14=;
-        b=qoyqqfrrvx0rY0OQRTfNx3DPZzloZ1zVicdLz3FYlylpP5nE9zP8t6+P830FrM6Mw7
-         sOMfjHEgM8QQ+x0yfHpJ0hYfNoUs4a6110S5mvUNp2/XWGoqt1v/0aGZ6mfaGQH/GR0+
-         GtV8b5BbZmthIXZCJxKePcARP5d5uxsZjqAKANN9OoezRojZE4alnoxvj9kU5S3WrWYY
-         24woul3ObcygE+1ofMLjWVmpLEOjSA3AzvX94SEHgnHu+PuAe2hTq0XIWN/tqYVvbJta
-         9WlPbe/+EwGYyB4gz+0ACIpTtgjHS6Gb7DfkA7o/LBgEzsG8Xf32CGEHWU7hS/SssBoX
-         DtdA==
-X-Forwarded-Encrypted: i=1; AJvYcCXUY8hAOX38fc5Psx0NEVWm5i8w/0bba+iHOQGT9l+Ez9mZKNg8PDHxBs3FJZ20xOHu3sSqfhcm0mkKYqg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywy/r3bzucJsH4H1l8el1uorSs7C9YCeguKq2gkIy9PoITcu2bh
-	BPUjnhzknsrfERy9uZ4ye8NX/b5ouW2oNomci8sT7+jRUjl8BolMyzW9atv+O15epxWUacSJdbI
-	ncgIon+IIcg==
-X-Google-Smtp-Source: AGHT+IFG/CG36IeKleqVuSqLctsPfpA2xFgjVVKw4opNjMh9ri6iTo2cGwDFZ3VXvHE8Jmqqc1cSa0C77UST
-X-Received: from wmoi20.prod.google.com ([2002:a05:600c:4814:b0:459:d8e5:ae9d])
- (user=abarnas job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4e93:b0:45f:2d21:cb36
- with SMTP id 5b1f17b1804b1-462074c576amr50115025e9.35.1758204996093; Thu, 18
- Sep 2025 07:16:36 -0700 (PDT)
-Date: Thu, 18 Sep 2025 14:16:33 +0000
+	t=1758214241; c=relaxed/relaxed;
+	bh=1hrkKIr90ran6knul6gyeMK0S/D2N6iHzxqgIpeMC48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mb7sKsxSrRHKxeU7Fgn9aMUJNSPInmRDPVsgp0otfY2ujtx3njQH3CkTY9UEz/4BiHHZ8J2KJPSRne/hotlzhA6hHFIN35w9YE8urv/jv8kFK7OkCycqqw3aXhFZXPpYrJp5Alu7rXO0wwl54t0bf1qH5+twQDjVf4lOzcyIKAxIuLMTR0no49/fFji6GmcUaqRdNuCG56OmrqFXJqckqVBjwFSwXYkbzhIB0w1IpAx7BUoSUxgnXC8iO036M7kyrF365hluU3vBGAk7YDhX8oM3hE20oaMWw7QyUR7jtmDYPC0Sbg0za0e/Ig2+3nxqXWddEWcurGS07OJFX7TruQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSM8K2SNVz3cQq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 02:50:41 +1000 (AEST)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cSK5K1F5gz9shQ;
+	Thu, 18 Sep 2025 17:17:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id FqKmve-d9GL7; Thu, 18 Sep 2025 17:17:57 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cSK5K0PKRz9shF;
+	Thu, 18 Sep 2025 17:17:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id EFA5D8B775;
+	Thu, 18 Sep 2025 17:17:56 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id yA9-sMw8lPFZ; Thu, 18 Sep 2025 17:17:56 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 55C098B767;
+	Thu, 18 Sep 2025 17:17:56 +0200 (CEST)
+Message-ID: <7c0c53bc-1436-4a48-8afa-8bfff439ce67@csgroup.eu>
+Date: Thu, 18 Sep 2025 17:17:55 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,47 +56,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.470.ga7dc726c21-goog
-Message-ID: <20250918141633.339803-1-abarnas@google.com>
-Subject: [PATCH] powerpc: cell: make spu_subsys const
-From: "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/smp: Add check for kcalloc() in
+ parse_thread_groups()
+To: Guangshuo Li <lgs201920130244@gmail.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20250918131513.3557422-1-lgs201920130244@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250918131513.3557422-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Because driver core can properly handle constant struct bus_type,
-move the spu_subsys to be a constant structure as well, placing it into
-read-only memory which can not be modified at runtime.
 
-Signed-off-by: Adrian Barna=C5=9B <abarnas@google.com>
----
- arch/powerpc/platforms/cell/spu_base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/cell/spu_base.c b/arch/powerpc/platform=
-s/cell/spu_base.c
-index 2c07387201d0..733b512992c0 100644
---- a/arch/powerpc/platforms/cell/spu_base.c
-+++ b/arch/powerpc/platforms/cell/spu_base.c
-@@ -464,7 +464,7 @@ void spu_init_channels(struct spu *spu)
- }
- EXPORT_SYMBOL_GPL(spu_init_channels);
-=20
--static struct bus_type spu_subsys =3D {
-+static const struct bus_type spu_subsys =3D {
- 	.name =3D "spu",
- 	.dev_name =3D "spu",
- };
---=20
-2.51.0.470.ga7dc726c21-goog
+Le 18/09/2025 à 15:15, Guangshuo Li a écrit :
+> [Vous ne recevez pas souvent de courriers de lgs201920130244@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> As kcalloc() may fail, check its return value to avoid a NULL pointer
+> dereference when passing it to of_property_read_u32_array().
+> 
+> Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> ---
+>   arch/powerpc/kernel/smp.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index 5ac7084eebc0..fa0cd3f7a93c 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -822,6 +822,10 @@ static int parse_thread_groups(struct device_node *dn,
+> 
+>          count = of_property_count_u32_elems(dn, "ibm,thread-groups");
+>          thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
+> +       if (!thread_group_array) {
+> +               ret = -ENOMEM;
+> +               goto out_free;
+
+out_free does nothing as thread_group_array is NULL, so don't goto 
+out_free, instead return -ENOMEM immediately:
+
+	if (!thread_group_array)
+		return -ENOMEM;
+
+
+> +       }
+>          ret = of_property_read_u32_array(dn, "ibm,thread-groups",
+>                                           thread_group_array, count);
+>          if (ret)
+> --
+> 2.43.0
+> 
 
 
