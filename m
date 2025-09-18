@@ -1,96 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-12378-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12379-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE032B85984
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 17:29:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F20FB85F15
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 18:19:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSKM03Vn8z2xnr;
-	Fri, 19 Sep 2025 01:29:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSLRp2FHpz2yGM;
+	Fri, 19 Sep 2025 02:19:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:e0c:1:1599::11"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758209388;
-	cv=none; b=dIZT5vu6fOuP4QPCjfou3n3er5/1Dkhz5er1OwbrgRdr5fpmc7Wmi2Opr9dO/X6z0WE9nKPJCyQS5y+ttF5T8UxS/n4E4NQcgbbLcfAzVpiAj0pGH5UgJwnVJfx9asVq7ya+Kg/ECuczuKcBCyIz1sFSGROzp1wZC6DaI36XuCPBSigAo6QtkjPVmwlsWWLll08CovmQPi2cxwYuXoPMh+Un+/kRWxG+xU0DoHQm0AcGeNbP84Yx/5OVhj0VoQbBzoSO09tZlUngcQO3512i9JwN1VLIf/1XRT4xs0GpE14s/7TPfZCtMXQKcWw0JlP66gM7Fgx3+Dvnr7bt0/n+Pg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.144
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758212342;
+	cv=none; b=FHr9WERgtpjF6mB/Ggs/JeO3PL9M4tv6DhohpuglYLbAwd2tMT1DD6Qm5/JE32WLu7WdV4HQeYLiXcft8a1CpuhsooCqCHLk8VFti36Dj12cPsflnsMNCHmpbmf6f6TXaKF0Ku5CMOqDgFFPnLwFiSKJX99KX5GoG/nYUZtfpeYZkxJHdBDL973wMSDvOyF7g1EC2/JxdiK+GFMOt/d+4JvpXmU9+pBfJgGIQ6dJ8aOd7D2AX43bVUn2NwBtGOuQmM21VIUvj+/x56lOj2JHZiE2V0g0Wax0AKC6zW5lAeBjPtR4jl7G7ONkIPVpeCgBCXXH5f16XgAVDoqwlliVHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758209388; c=relaxed/relaxed;
-	bh=XUWQfxZZ308Qh0GEo031WQTVwmY2irHkVNeN0hT1npU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RTpy6Py1436zxfgTtF+T/xqI/MF8zLs+pAygQCO3+KVZq9rCrnbEWZb4vJ3rkMse5TJqeBDSbAzYJw2igc/46C8Y81gbXo3TXuU+0V/zy2vz2mdywxinkmEMOAkXIyBtvCIpHOIjueVnU+uKEsdKxCReLVsiHsXW2sJT4TBu+f0A7uym3kQ9m/RFzcdxLb3zFNKZDuTJuxQeujzVioFCs0J4ZTE+UAXKO08KxjcjX5XKiDXtV8tpyYlcvwRymeOkWSH++eWSrQ/L00bj5Eaa78XsRYjWkwe6UskJ0VXNPKNmWgV8f/ErJ7QO9zmKuRGTkkkfdOf4cYzE1Ctl/Cg9MQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=softfail (client-ip=2a01:e0c:1:1599::11; helo=smtp2-g21.free.fr; envelope-from=nschichan@freebox.fr; receiver=lists.ozlabs.org) smtp.mailfrom=freebox.fr
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=freebox.fr (client-ip=2a01:e0c:1:1599::11; helo=smtp2-g21.free.fr; envelope-from=nschichan@freebox.fr; receiver=lists.ozlabs.org)
-Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [IPv6:2a01:e0c:1:1599::11])
+	t=1758212342; c=relaxed/relaxed;
+	bh=fm4R8b6atPDjgItmLn3c75WIBp5VlWzcsZH4FVIt7ag=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=OMoLQIFGDspUD2s4jtMeYQbMNePwhNNhvv8wOEfFBPVxRhBH8BqoHXb79EYT9XlwbPx5uqMO8NqZYCMeA/SgodebC/32c1aYrLO9RSwceVuhaw9WcW/4CoY1m2f+qloDvfI/FWdNWXtIVF2khvsLzs73u+iolsp8AFvPOocfmkLmlFf0PM21rLUVc5FoRV5iyT46/oZOk+QQB0Hgu0sAPMvjLvsPnzSktqQuT3pUMOtobh7eZiKoTU0xnBWF88io/JYasKVZ/nCFbhoPJRjWZbpf21B9gvBn5bz3slCvjj4o37eWE6ysvIYw4P6osleSULHAzGAWTnS8bZs/glHd0Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=hT3UzSYH; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=narD2chK; dkim-atps=neutral; spf=pass (client-ip=103.168.172.144; helo=fout-a1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=hT3UzSYH;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=narD2chK;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.144; helo=fout-a1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSKLz0kJnz2xcB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 01:29:44 +1000 (AEST)
-Received: from daria.iliad.local (unknown [213.36.7.13])
-	by smtp2-g21.free.fr (Postfix) with ESMTP id 179252003FC;
-	Thu, 18 Sep 2025 17:28:31 +0200 (CEST)
-From: Nicolas Schichan <nschichan@freebox.fr>
-To: safinaskar@gmail.com
-Cc: akpm@linux-foundation.org,
-	andy.shevchenko@gmail.com,
-	axboe@kernel.dk,
-	brauner@kernel.org,
-	cyphar@cyphar.com,
-	devicetree@vger.kernel.org,
-	ecurtin@redhat.com,
-	email2tema@gmail.com,
-	graf@amazon.com,
-	gregkh@linuxfoundation.org,
-	hca@linux.ibm.com,
-	hch@lst.de,
-	hsiangkao@linux.alibaba.com,
-	initramfs@vger.kernel.org,
-	jack@suse.cz,
-	julian.stecklina@cyberus-technology.de,
-	kees@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-alpha@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org,
-	linux-csky@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev,
-	mcgrof@kernel.org,
-	mingo@redhat.com,
-	monstr@monstr.eu,
-	mzxreary@0pointer.de,
-	patches@lists.linux.dev,
-	rob@landley.net,
-	sparclinux@vger.kernel.org,
-	thomas.weissschuh@linutronix.de,
-	thorsten.blum@linux.dev,
-	torvalds@linux-foundation.org,
-	tytso@mit.edu,
-	viro@zeniv.linux.org.uk,
-	x86@kernel.org,
-	nschichan@freebox.fr
-Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
-Date: Thu, 18 Sep 2025 17:28:30 +0200
-Message-Id: <20250918152830.438554-1-nschichan@freebox.fr>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
-References: <20250913003842.41944-1-safinaskar@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSLRk4dgtz2xnh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 02:18:57 +1000 (AEST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id E9DB1EC030E;
+	Thu, 18 Sep 2025 12:18:54 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Thu, 18 Sep 2025 12:18:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1758212334;
+	 x=1758298734; bh=fm4R8b6atPDjgItmLn3c75WIBp5VlWzcsZH4FVIt7ag=; b=
+	hT3UzSYHqECruml9nJYhLaF2PeApMfKPsa2Kchq0gCzfeBYX32RBViapVaUovlLI
+	Txe/jjqieezrzrzA7uJYsDtvqVjCXXnC1LoBBhdcmSoOMaSrN5Fqt+5RD4WlTS+u
+	BKhECFDp11UJ471uauSho7G4oGR/BvOy/5lMipcEoJKhdbXiTwla7TTe3MuQrnYQ
+	KueeBTCWfI8OcXJS2UG9kae6uVbtlAF7CcZVk2LQ2vS/xIuZHiD0Lp9ICyNHy82r
+	40M21sNMmpSgYWUZzCPqKroJovjjCGbk7bJ6mlDgjqwo5fwELH5lepoBABDtgS9L
+	scjCSBoybymPnkbUAktH5Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758212334; x=
+	1758298734; bh=fm4R8b6atPDjgItmLn3c75WIBp5VlWzcsZH4FVIt7ag=; b=n
+	arD2chK72CMw+3XE4ZMyHoCXIAodtWOlFh+lygozTruGzTZh8h856redrTp47dRO
+	sXbFqPqDBwTwab9JjkqMOZqEpw8xcAx1CsSrhxGH9ZhJahklo+5B/YYA8F9qKGuK
+	wms91Otr8e2xctRFqgvVzfrtq2c8xTnxS+u/pW8oiV7Qo/b/JpZmiOHUmjZVqgw/
+	j7EXQHPtj5+QrGpRsg0kWk6VvAUAduP/2DL/i1mtAsRcQBIRbZU3Rh1twx82usbv
+	RgntitcMyx+XgxmuyvLSSVKNtRoybAgMqWlWzYvwXSnU7WaKl8QejTpIg2kBSi6W
+	CaYxaV9Q1r98Co569m6Gg==
+X-ME-Sender: <xms:7TDMaNodCGNeyIp-SBSrJ_TtgdGNi08_RHKQYU5GUMzQyGU2qL51sw>
+    <xme:7TDMaPqtNE5Wm9OwOTBTVsoBpq7nOqMcCYUvpQ-AcC442Pi0J8C_IlqeLqpTVtfET
+    Z4yar8_IO-zzD-k2lw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegieejlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpeeggfejudejvdeijeeglefgtdfhudffieetfedugefhffekjeefhedtjeefjeetfeen
+    ucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghp
+    thhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegthhgvshhtvghrrd
+    grrdhunhgrlhesrghrihhntgelrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgv
+    rdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegrnhgurhgvrghssehgrg
+    hishhlvghrrdgtohhmpdhrtghpthhtohepghgvvghrthdorhgvnhgvshgrshesghhlihgu
+    vghrrdgsvgdprhgtphhtthhopegrlhgvgigrnhguvghrrdhsvhgvrhgulhhinhesghhmrg
+    hilhdrtghomhdprhgtphhtthhopehsvghrghhiohdrphgrrhgrtghuvghllhhoshesghhm
+    rghilhdrtghomhdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtg
+    hpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehirhgr
+    rdifvghinhihsehinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:7TDMaPbKt2WoXqHMwpanytM6BOnhzj_CQNwGh1PFIqubtDAyu5jB5Q>
+    <xmx:7TDMaGKxNLlBIr_WiBflz4DJZ5ui2U4YOwVgSsgJGQrpphOVta5LLQ>
+    <xmx:7TDMaG8COQwGxvO3AW0IJmLokZHWS06CKK-GHPM5ep7McMCa1__b0A>
+    <xmx:7TDMaNp9nu7518TclPj1lZvDtvnU_ezCWZtqceFpg9Flbxum44e-lg>
+    <xmx:7jDMaKcwFz32-9rZOzFDRZfXWP5Uej9dboxG4Bi3HNtAfR6kH7cYV8fc>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 7D7F370006D; Thu, 18 Sep 2025 12:18:53 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,53 +100,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.0 required=3.0 tests=RCVD_IN_DNSWL_NONE,
-	SPF_HELO_PASS,SPF_SOFTFAIL autolearn=disabled version=4.0.1 OzLabs 8
+X-ThreadId: AneuvEk2E7Kg
+Date: Thu, 18 Sep 2025 18:18:13 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andrew Lunn" <andrew@lunn.ch>
+Cc: "Jason Gunthorpe" <jgg@nvidia.com>, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>
+Message-Id: <ea6562f4-ec8c-4e99-98ec-000c25c34a3e@app.fastmail.com>
+In-Reply-To: <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <20250917125951.GA1390993@nvidia.com>
+ <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+ <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello,
+On Thu, Sep 18, 2025, at 15:34, Andrew Lunn wrote:
+>> * Marvell mv78xx0 and kirkwood (armv5 pj1) were fairly
+>>   powerful in 2008 and could support at least 1GB of RAM,
+>>   but I only found one machine (OpenBlocks A7) that does
+>>   this. It's unclear if anyone is still updating kernels
+>>   on this machine, but they could /probably/ use
+>>   VMSPLIT_3G_OPT if they do.
+>
+> If i remember correctly, there was a design issue with the OpenBlocks
+> A7, and it would not run with its full amount of memory. To get a
+> stable system you had to limit the RAM. I don't remember if that was
+> just with the NULL series, and it was fixed for mass production
+> devices, or they are all broken.
 
-> Intro
-> ====
-> This patchset removes classic initrd (initial RAM disk) support,
-> which was deprecated in 2020.
+It's possible that the bug is in the exact bit of code that
+Jason was suggesting to have removed, if this was the last
+ARMv5 machine that actually tried to use highmem.
 
-This serie came a bit as a surprise, because even though the message
-notifying of the initrd deprecation was added in July 2020, the message
-was never displayed on our kernels.
+> I doubt there are any mv78xx0 machines left, why where never very
+> popular, but there are still Kirkwood NAS boxes around.
 
-When booting with root=/dev/ram0 in the kernel commandline,
-handle_initrd() where the deprecation message resides is never called,
-which is rather unfortunate (init/do_mounts_initrd.c):
+https://github.com/1000001101000/Debian_on_Buffalo does support
+some variations of the Terastation Duo, and they were planning
+to do a DT conversion at some point, but I think there is not
+much hope of that ever happening now that Debian armel has had
+its last release, and I expect we can drop the entire platform
+soon.
 
-	if (rd_load_image("/initrd.image") && ROOT_DEV != Root_RAM0) {
-		init_unlink("/initrd.image");
-		handle_initrd(root_device_name); // shows the deprecation msg
-		return true;
-	}
+The reference system for mv78xx0 of course was the platform
+that Nico used for implementing highmem on, with a full 2GB
+of RAM. I think in the end this was around the same time
+as dove and then armada xp.
 
-It is likely we are not the alone booting with that particular
-configuration, so other people are probably going to be surprised when
-initrd support is removed, because they never saw the deprecation
-message.
+> I keep mine up to date, put an LTS kernel on it once a year,
+> update to the latest debian sid.
 
-We do depend on initrd support a lot on our embedded platforms (more
-than a million devices with a yearlyish upgrade to the latest
-kernel). If it eventually becomes removed this is going to impact us.
+Do you know of any kirkwood machines beside the OpenBlocks A7
+that have more than 512MB of RAM?
 
-We use an initrd squashfs4 image, because coming from a time where
-embedded flash devices were fragile, we avoid having the root
-filesystem directly mounted (even when read only) on the flash
-block/mtd device, and have the bootloader load the root filesystem as
-an initrd.
-
-We use a squashfs4 because we can mount it and keep it compressed. The
-kernel would decompress data on demand in the page cache, and evict it
-as needed.
-
-Regards,
-
--- 
-Nicolas Schichan
+    Arnd
 
