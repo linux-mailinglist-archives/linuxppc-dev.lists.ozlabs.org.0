@@ -1,43 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-12408-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12410-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3A0B87A0E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Sep 2025 03:42:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0026B87CA8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Sep 2025 05:20:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSZxQ4Kj2z30RJ;
-	Fri, 19 Sep 2025 11:42:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSd792d35z3cYJ;
+	Fri, 19 Sep 2025 13:20:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.132
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758246122;
-	cv=none; b=AUhP7lXR+vcZEMfOUsjd+cNXlDJnqktTczL5eAsbi2dWhjmeaU/emEJq4oUCDEUZhrGuy5JZ0gjD2gBO9HCZRsDV+KvwLAKtTYyAkFx5HSZetf/oCie8Ym4w4+Gbn5xcD+q+Ye20fFAQX6+PSu89sFGuA+B1Tm3w2Mf2ZLPaY64rOw7JL+G6MakxFilA8JLbiLuBuiOyeELMMrtQefvq5jNPA9XQINBI3qeuyzIQKCTNOBePUbsBoK39+VKmuOuomaKznrAe7hWmyYblZ0IQgfUJduRXB5BKfP2fJDOZx29gzA5bGkfRY3/7mYj6xtqrUpQLkPmlo5pa2qidSkPiNQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758252037;
+	cv=none; b=X4UcUR/H5v+6l3krikz2ZWLCeiXgVVHx/9ndhkt2l46fLBgZwm9Ga7BZ2SBd2mVZIZBJUyYRvq8frlCyDEbpHWwxmgF4bxPWpB3qTUmqwkcNvRD41c7lJPz1y7oLu/sHG6zt3A+qiMWSpRh27prZy4rufU7jngaaNRYpN8cAHdaHqUO2M7Xe4VeaYjC9np1nAUsCzLAsnmRTrxsRL/qoAm/TjSrtZEs/Z+vQ0AvB0hD6t207v+ifgTah9ACkadP1N0AR2C6j5EAfc09yfjU4rXFepBTD2MDNq5F+R/T0xBE0C40k2qTtgVbm5pC8YifEOP1F/omFHM/TUSsREp2zCA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758246122; c=relaxed/relaxed;
-	bh=5F2mu+HPJmOD+g9xW2Kjsqxc2iUpO4ZGC562yuztetI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DUjZU02MRkZJwqA+DZODf0unxyDqOKE2O3i/KP8uBGobhPcVMbyVMSs9ePr+aSG26FfA6TS9U80gHaVyuraov4jH8vDenzMkKFr9PdoJdG7JLhISEI7GDR2gbGlABXNtvKdwPS0JzpVL9/ElTGm8nCdheAwUvDvw7jFt3tKOreTn2Awk5rFlowZx3NCvNAA7Mube/Z85duTEeQurW9BYnGNw+eSIopnMSw4V659uCy6Qwpa3fWf6hwBGDaeP/lI6KiU8zTXQ5fqLYSjTNzpFEeDIFzvjA3PZQlbyzKmA7um7MPup0RQaV0m5XaPq5ufkVRC2wQIJ4w9h0oFyfLfoGg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=HshGbMEH; dkim-atps=neutral; spf=pass (client-ip=115.124.30.132; helo=out30-132.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=HshGbMEH;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132; helo=out30-132.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSZxN3rW7z2yys
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 11:41:59 +1000 (AEST)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1758246115; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=5F2mu+HPJmOD+g9xW2Kjsqxc2iUpO4ZGC562yuztetI=;
-	b=HshGbMEHaqXn/WUJSD8VGo5/avZyhn4JyiAMahWOPN/R4aHDtNlvXfEahnvJlPZRFjkjardOj9cIRxynGoz2eyUUsegJ7Rx+RuMU7XaxYEajpA3YGgGACND3ySYEMYc/E5sdfvPJBdWxIScldEO+Ps/WUdIxlwHOxVFOO8fBvsk=
-Received: from 30.246.178.33(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WoHzP3E_1758246112 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 19 Sep 2025 09:41:53 +0800
-Message-ID: <47b52f6f-d27d-49bc-a999-382441aa310e@linux.alibaba.com>
-Date: Fri, 19 Sep 2025 09:41:52 +0800
+	t=1758252037; c=relaxed/relaxed;
+	bh=THITgQPLO2Jlzu1WPiog3Wg7UV32YJiN+8RHPCLQhVw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Rp2xhTV8VVUrBo41srhX/xiBp1AXrvpM8VIVIkISnpv6g10RWBLhj/RWTd5HHzAbkRPboeuDwvXmUJjzHZJw7dUsl0Qv6XbFvJx9fKemw/9GZjMVZykOsq25ddwvx3Y4SDxh6u3vViXz/j9HfavT4GY9mkuSvk7W2YUTpQrKN73oPKoFR+/0YDRtbl8FCIUUuSZhq9KodhU/2SCir+M/8PNHfh2jYNq8pMO5qP/2C19OdOMEaR3HhLu44mjM3RYJDmbVWdfksUgQd4WT5bj8IPiIsoXjAhO0WXwyTHMsS+n2taS3eNvayAWK+h568hM9dQh3UXkQ+jKfsUucXHy50g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSd7845q1z30HB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 13:20:36 +1000 (AEST)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cSKSS1qhmz9sg3;
+	Thu, 18 Sep 2025 17:34:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Hva2kIU2-6vX; Thu, 18 Sep 2025 17:34:32 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cSKSS0Z9jz9sg2;
+	Thu, 18 Sep 2025 17:34:32 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E8B178B767;
+	Thu, 18 Sep 2025 17:34:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id QD_i62Bf5ayM; Thu, 18 Sep 2025 17:34:31 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 212A18B775;
+	Thu, 18 Sep 2025 17:34:31 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Herve Codina <herve.codina@bootlin.com>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH RESEND v3 3/4] ASoC: fsl: fsl_qmc_audio: Only request completion on last channel
+Date: Thu, 18 Sep 2025 17:34:10 +0200
+Message-ID: <bbd5167d190bbb45c3a4cd6ef2dece8817e0cc1e.1758209158.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1758209158.git.christophe.leroy@csgroup.eu>
+References: <cover.1758209158.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -51,52 +77,152 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/3] PCI/AER: Report fatal errors of RCiEP and EP if
- link recoverd
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: bhelgaas@google.com, mahesh@linux.ibm.com, mani@kernel.org,
- Jonathan.Cameron@huawei.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- oohall@gmail.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-References: <20250918203315.GA1920702@bhelgaas>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20250918203315.GA1920702@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758209657; l=4994; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=X4wuqoJpWXmIdrxYayEnw6eOSBXb//enGdJw05ySXnk=; b=5i6LXaaOIEGn520Ma2k6jL70nix73aVbzgnhaVpZ96giQjjDNoTQigsFLYRNulLzciRKhomQw T17+p9Jsyw+CV8tEilZBBmbOg7wVXk8HGtmOEUvRzIvM8IgLSuRMana
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+In non-interleaved mode, several QMC channels are used in sync.
+More details can be found in commit 188d9cae5438 ("ASoC: fsl:
+fsl_qmc_audio: Add support for non-interleaved mode.")
+At the time being, an interrupt is requested on each channel to
+perform capture/playback completion, allthough the completion is
+really performed only once all channels have completed their work.
 
+This leads to a lot more interrupts than really needed. Looking at
+/proc/interrupts shows ~3800 interrupts per second when using
+4 capture and 4 playback devices with 5ms periods while
+only 1600 (200 x 4 + 200 x 4) periods are processed during one second.
 
-在 2025/9/19 04:33, Bjorn Helgaas 写道:
-> On Wed, Sep 17, 2025 at 02:33:52PM +0800, Shuai Xue wrote:
->> The AER driver has historically avoided reading the configuration space of
->> an endpoint or RCiEP that reported a fatal error, considering the link to
->> that device unreliable. Consequently, when a fatal error occurs, the AER
->> and DPC drivers do not report specific error types, resulting in logs like:
->>
->> 	pcieport 0015:00:00.0: EDR: EDR event received
->> 	pcieport 0015:00:00.0: EDR: Reported EDR dev: 0015:00:00.0
->> 	pcieport 0015:00:00.0: DPC: containment event, status:0x200d, ERR_FATAL received from 0015:01:00.0
->> 	pcieport 0015:00:00.0: AER: broadcast error_detected message
->> 	pcieport 0015:00:00.0: AER: broadcast mmio_enabled message
->> 	pcieport 0015:00:00.0: AER: broadcast resume message
->> 	pcieport 0015:00:00.0: pciehp: Slot(21): Link Down/Up ignored
->> 	pcieport 0015:00:00.0: AER: device recovery successful
->> 	pcieport 0015:00:00.0: EDR: DPC port successfully recovered
->> 	pcieport 0015:00:00.0: EDR: Status for 0015:00:00.0: 0x80
-> 
-> When you update this series, can you indent these messages with two
-> spaces instead of a tab?  That will preserve a little space and also
-> preserve the formatting when "git log" adds its own indentation.
+The QMC channels work in sync, the one started first is the one
+finishing first and the one started last is the one finishing last,
+so when the last one finishes it is guaranteed that the other ones are
+finished as well. Therefore only request completion processing on the
+last QMC channel.
 
+On my board with the above exemple, on a kernel started with
+'threadirqs' option, the QMC irq thread uses 16% CPU time with this
+patch while it uses 26% CPU time without this patch.
 
-Sure, will align with space.
+Acked-by: Herve Codina <herve.codina@bootlin.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ sound/soc/fsl/fsl_qmc_audio.c | 46 +++++------------------------------
+ 1 file changed, 6 insertions(+), 40 deletions(-)
 
-Thanks.
-Shuai
+diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
+index c0c7ef0a1511..2790953543c5 100644
+--- a/sound/soc/fsl/fsl_qmc_audio.c
++++ b/sound/soc/fsl/fsl_qmc_audio.c
+@@ -57,7 +57,6 @@ struct qmc_dai_prtd {
+ 	size_t ch_dma_offset;
+ 
+ 	unsigned int channels;
+-	DECLARE_BITMAP(chans_pending, 64);
+ 	struct snd_pcm_substream *substream;
+ };
+ 
+@@ -126,17 +125,14 @@ static int qmc_audio_pcm_write_submit(struct qmc_dai_prtd *prtd)
+ 	int ret;
+ 
+ 	for (i = 0; i < prtd->channels; i++) {
+-		bitmap_set(prtd->chans_pending, i, 1);
+-
+ 		ret = qmc_chan_write_submit(prtd->qmc_dai->chans[i].qmc_chan,
+ 					    prtd->ch_dma_addr_current + i * prtd->ch_dma_offset,
+ 					    prtd->ch_dma_size,
+-					    qmc_audio_pcm_write_complete,
+-					    &prtd->qmc_dai->chans[i]);
++					    i == prtd->channels - 1 ? qmc_audio_pcm_write_complete :
++								      NULL, prtd);
+ 		if (ret) {
+ 			dev_err(prtd->qmc_dai->dev, "write_submit %u failed %d\n",
+ 				i, ret);
+-			bitmap_clear(prtd->chans_pending, i, 1);
+ 			return ret;
+ 		}
+ 	}
+@@ -146,20 +142,7 @@ static int qmc_audio_pcm_write_submit(struct qmc_dai_prtd *prtd)
+ 
+ static void qmc_audio_pcm_write_complete(void *context)
+ {
+-	struct qmc_dai_chan *chan = context;
+-	struct qmc_dai_prtd *prtd;
+-
+-	prtd = chan->prtd_tx;
+-
+-	/* Mark the current channel as completed */
+-	bitmap_clear(prtd->chans_pending, chan - prtd->qmc_dai->chans, 1);
+-
+-	/*
+-	 * All QMC channels involved must have completed their transfer before
+-	 * submitting a new one.
+-	 */
+-	if (!bitmap_empty(prtd->chans_pending, 64))
+-		return;
++	struct qmc_dai_prtd *prtd = context;
+ 
+ 	prtd->buffer_ended += prtd->period_size;
+ 	if (prtd->buffer_ended >= prtd->buffer_size)
+@@ -182,17 +165,14 @@ static int qmc_audio_pcm_read_submit(struct qmc_dai_prtd *prtd)
+ 	int ret;
+ 
+ 	for (i = 0; i < prtd->channels; i++) {
+-		bitmap_set(prtd->chans_pending, i, 1);
+-
+ 		ret = qmc_chan_read_submit(prtd->qmc_dai->chans[i].qmc_chan,
+ 					   prtd->ch_dma_addr_current + i * prtd->ch_dma_offset,
+ 					   prtd->ch_dma_size,
+-					   qmc_audio_pcm_read_complete,
+-					   &prtd->qmc_dai->chans[i]);
++					   i == prtd->channels - 1 ? qmc_audio_pcm_read_complete :
++								     NULL, prtd);
+ 		if (ret) {
+ 			dev_err(prtd->qmc_dai->dev, "read_submit %u failed %d\n",
+ 				i, ret);
+-			bitmap_clear(prtd->chans_pending, i, 1);
+ 			return ret;
+ 		}
+ 	}
+@@ -202,26 +182,13 @@ static int qmc_audio_pcm_read_submit(struct qmc_dai_prtd *prtd)
+ 
+ static void qmc_audio_pcm_read_complete(void *context, size_t length, unsigned int flags)
+ {
+-	struct qmc_dai_chan *chan = context;
+-	struct qmc_dai_prtd *prtd;
+-
+-	prtd = chan->prtd_rx;
+-
+-	/* Mark the current channel as completed */
+-	bitmap_clear(prtd->chans_pending, chan - prtd->qmc_dai->chans, 1);
++	struct qmc_dai_prtd *prtd = context;
+ 
+ 	if (length != prtd->ch_dma_size) {
+ 		dev_err(prtd->qmc_dai->dev, "read complete length = %zu, exp %zu\n",
+ 			length, prtd->ch_dma_size);
+ 	}
+ 
+-	/*
+-	 * All QMC channels involved must have completed their transfer before
+-	 * submitting a new one.
+-	 */
+-	if (!bitmap_empty(prtd->chans_pending, 64))
+-		return;
+-
+ 	prtd->buffer_ended += prtd->period_size;
+ 	if (prtd->buffer_ended >= prtd->buffer_size)
+ 		prtd->buffer_ended = 0;
+@@ -249,7 +216,6 @@ static int qmc_audio_pcm_trigger(struct snd_soc_component *component,
+ 
+ 	switch (cmd) {
+ 	case SNDRV_PCM_TRIGGER_START:
+-		bitmap_zero(prtd->chans_pending, 64);
+ 		prtd->buffer_ended = 0;
+ 		prtd->ch_dma_addr_current = prtd->ch_dma_addr_start;
+ 
+-- 
+2.49.0
+
 
