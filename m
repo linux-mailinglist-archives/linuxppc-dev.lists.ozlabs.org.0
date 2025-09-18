@@ -1,77 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-12368-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12372-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55234B8510A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 16:12:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8ECB85608
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 16:54:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSHdC4sDdz2yGM;
-	Fri, 19 Sep 2025 00:11:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSJZR1Wr7z30RJ;
+	Fri, 19 Sep 2025 00:54:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=156.67.10.101
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758204719;
-	cv=none; b=NJC0CAakEIg7n6ZRlcdsYFt5PL+DSG13F4n/Fxzl0sHHPJwETutQkZslzaaFq2VXaohb5YzMvWoEgaVScUETYsHGIkP0fzI+lxl/pamBI49C1cwHvk6gOZQLMH4lMXcmTWXrBeyOWFrgfF3t6uUn2NRhTLHaBURAbcn1srrN2v7dXRiEQHDzm9KyNQ2UV3bUIvVp/7jSMtWUfUm0U1C4Sl9ChqFVyMkU2iPVISF2p2JA3nj1d/u+udP4RPwnxkH5zXpvpLk33QJQvKb68v1hyoXQQupm4gLTLwkQOtJXQzRGay8xHQ9A6CaFz1WmolaPBwE2qWPdClWWyND8aNENmQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::349"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758204506;
+	cv=none; b=ksegnhDdts0XeSufGfdxu1VHo3WEnjphRoMoD3rwk3CdrIy64o5vsevAOPIlPse2K4hq1dBmzLPpvzimqca4pjKsAEXzi5T2Hy6NGREhXSJegxt1FQsZQK7qXEOME3iERNe+M3qrgREJHvEM5ODun3LM0xN6CPYaBJgOLk29z5GAeCO8cwhPrwb8muGYSTOg6T05A+ISIU510cy1FK05chhC+sZGHhdwrSDB29eCIHBhcwDOwnccrnUDfe/LdpHo8UojyNKKr44H/XU9sJO2Sp5hmbHwzIDorbiYJboQ0deHaUMF0u8y2IB57ph9djuWaDAjaBgsSYUtTWTuLO9juA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758204719; c=relaxed/relaxed;
-	bh=2WK7RF7NsYG+8NsyTTvySh7GNGT5jm6UcDa778flAEQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JiZY793vEARhKrRufzxPzIU/UgVvTni8355WWqDTD+qbx9NTrXodkPlmqIQPagnELg6EwAWr0yYV294UadC8dM7+ohwjgPgeRRWGfAY7Z83SIBUqbOXH8VdNmMUY7N5tl0B+H4PZ2KfyPu48vHFFypaBsc3ZuljdsiOKGfPI86Cy52r+4kcTDLVznCkEQfeRBVYWgXluFTdrlWUwGB0ZhwBqXQGjti4IsM6J9lvQZJYhSXlAqO6bIhTlRBj80X5Fv/J87NWtcOuOqdf4MgYfnckP3srBblWJpY8XRd7mIv2Exs3aVGkSoQqrYBFMaSu+RsMjP2vgiT6ykCiacHzYWA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=mffiEw3N; dkim-atps=neutral; spf=pass (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org) smtp.mailfrom=lunn.ch
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+	t=1758204506; c=relaxed/relaxed;
+	bh=zX8hRmCAzatzTP7W5f8Y/6xpy5/2V7FwxYbZWinrYv8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=PVOxQNAZwhWs3PQEs/p96ZPKQ7tJy4cK1vDo35C0q701w3U80f4WrrEGT26J56WK3LNt7kUaWqDumBpgqwl//jBF1sxEZbyJw2c4cuIQbFouPiWg7TG62MXhqQZNUuTZzl24bB/FfFkfX64jqffikLasqjxCMzR338oIws6+fKbgGFK7QA30CXHcHnAFS9OEhhlXYzRrswUS7vwTHmNNkktEMMsQTAIkxUdadeU4w6l4H7zSkTFi6PUwG540cbRZic+0lVH56BFxt2FLYsdwbsNwK0RlU3/fHXr1noOVRmMXAZQBJgXE1ETemb7nyZQSFYPlgQak+bOtMRYDFgPHbQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QQpnD4C6; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::349; helo=mail-wm1-x349.google.com; envelope-from=3uxlmaackdpqwxwnjwockkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--abarnas.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--abarnas.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=mffiEw3N;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QQpnD4C6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org)
-X-Greylist: delayed 2236 seconds by postgrey-1.37 at boromir; Fri, 19 Sep 2025 00:11:58 AEST
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--abarnas.bounces.google.com (client-ip=2a00:1450:4864:20::349; helo=mail-wm1-x349.google.com; envelope-from=3uxlmaackdpqwxwnjwockkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--abarnas.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x349.google.com (mail-wm1-x349.google.com [IPv6:2a00:1450:4864:20::349])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSHdB5mwRz2xlR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 00:11:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=2WK7RF7NsYG+8NsyTTvySh7GNGT5jm6UcDa778flAEQ=; b=mffiEw3N0Xsy0iehgYkPk5d+dg
-	sWKIhv5XK/zUNW+x7cpwzMKn+fWVigxBkekrLwF/YIOd76oce1YtRzHGNOghxSvsx4TZKrO8BB5yX
-	oA6G/OA6kjESeDYNowdA/HoKupolfgZZgm9ZJ1RTWZMa7p8eDc9puB5qodRd9gcxhoms=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uzEmL-008pSt-MZ; Thu, 18 Sep 2025 15:34:29 +0200
-Date: Thu, 18 Sep 2025 15:34:29 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
-	linux-mm@kvack.org, imx@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Richard Weinberger <richard@nod.at>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Message-ID: <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <20250917125951.GA1390993@nvidia.com>
- <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSHY468vXz2xlR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 00:08:24 +1000 (AEST)
+Received: by mail-wm1-x349.google.com with SMTP id 5b1f17b1804b1-45f2f15003aso6534825e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 07:08:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758204499; x=1758809299; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zX8hRmCAzatzTP7W5f8Y/6xpy5/2V7FwxYbZWinrYv8=;
+        b=QQpnD4C6JsJ44nnESgg41X1Qf5kiQaDuSTlDyB3QrgTECoLIyBzoNnmHVh42w2dz8s
+         XENPLbZN4qNMB42WxmtIkTZpXNw62J16EIM7SJPWXKPq5Oov8o9EYO+1ncQNK4l2BlmJ
+         Sf3xu6oW5AAy8xrsNajBOzENip4rZR/PsblIVVjoSXZ2fEIhDIVVQWTq6OE6orClhe33
+         cpnxy2aHw9gfCCH3vgRLKt/aoAnuqUVyYGDJ7J6rJKQVu1LKfQBD4TJyutg8Dui3MGGH
+         /XplawgGZKdQ/JAmy39b3r9yz5vkCOdlLs97odp7JtvOpOaZX5Ox7uwSdRTBJELrhcat
+         PCrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758204499; x=1758809299;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zX8hRmCAzatzTP7W5f8Y/6xpy5/2V7FwxYbZWinrYv8=;
+        b=Pn5B8Ar6Nwrsq7ejVWkONVNnUsxE3TgW6gwaT+el+IofTYr+8d2wTtEPLyMgT6NHR0
+         foYt7bPrDZREb/k9IKScRns6RcXsyUZhwxDjHwwQmG2Zig/aXpF5VL6uHUYvqKXvw3AP
+         NsESt2hX8eXL/V6y58gadaeZqkWzdcbWqq08x6RsEgeGAkrzrDyJai2FdLj8cX+Bjbx/
+         zZ8K7HphVF9rPYbDU0Um4LUf7eXd9C3N+auwsMZ4vHSlxrVwzTcDkrvjUr2qcnoxIfz7
+         jlPKVfwRn9mqiBHzuP0LmdwiGvIJ1YYIaHLdfoC7CnXjGq2tXt3ESuCmnzfXVTjiG+f+
+         O/3g==
+X-Forwarded-Encrypted: i=1; AJvYcCXNQbOeRQZoMvCNDIbtJUADwBFxOU+Iwdn20c7uzr3OyPfnaVKQWv9knx1SuLrZ0ua9JcSLi8wC3RFKefs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxiwXwdLEcIAuv7dRaP7y0we02uqkLsdH+7FRpIdvy0gCHi7RSW
+	2B4SOEmeJBgwBzylUM/AeDEfI7wosBYSsfTZ+5sSBOohvmZHo7kkG6EGZVydcR20skuwaZFuY1l
+	m4jbvYjXIog==
+X-Google-Smtp-Source: AGHT+IF1RQGSRNYZqdScgFD6eUa92ab9fa9/BqynjtzBd+gLQZAlGCMW8rWJZNptgVbcM6q8cADYm4uMJB3v
+X-Received: from wmbdp7.prod.google.com ([2002:a05:600c:6487:b0:45b:9acb:6940])
+ (user=abarnas job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:470f:b0:45b:615c:cd2
+ with SMTP id 5b1f17b1804b1-46201f8a4b9mr68058415e9.8.1758204499266; Thu, 18
+ Sep 2025 07:08:19 -0700 (PDT)
+Date: Thu, 18 Sep 2025 14:08:14 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,32 +74,36 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.470.ga7dc726c21-goog
+Message-ID: <20250918140816.335916-1-abarnas@google.com>
+Subject: [PATCH 0/2] powerpc: pseries: making bus_type structures const
+From: "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-> * Marvell mv78xx0 and kirkwood (armv5 pj1) were fairly
->   powerful in 2008 and could support at least 1GB of RAM,
->   but I only found one machine (OpenBlocks A7) that does
->   this. It's unclear if anyone is still updating kernels
->   on this machine, but they could /probably/ use
->   VMSPLIT_3G_OPT if they do.
+Current driver core properly handle constant bus_type structures.
+Both changes are moving bus_type structures to be constant.
+It is a part of tree clean-up from non const bus_type structures
 
-If i remember correctly, there was a design issue with the OpenBlocks
-A7, and it would not run with its full amount of memory. To get a
-stable system you had to limit the RAM. I don't remember if that was
-just with the NULL series, and it was fixed for mass production
-devices, or they are all broken.
+Adrian Barna=C5=9B (2):
+  powerpc: pseries: make suspend_subsys const
+  powerpc: pseries: make cmm_subsys const
 
-I doubt there are any mv78xx0 machines left, why where never very
-popular, but there are still Kirkwood NAS boxes around. I keep mine up
-to date, put an LTS kernel on it once a year, update to the latest
-debian sid.
+ arch/powerpc/platforms/pseries/cmm.c     | 2 +-
+ arch/powerpc/platforms/pseries/suspend.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-	Andrew
+--=20
+2.51.0.470.ga7dc726c21-goog
+
 
