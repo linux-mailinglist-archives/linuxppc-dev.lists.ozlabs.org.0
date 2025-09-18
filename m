@@ -1,90 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-12373-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12368-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8553B85617
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 16:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55234B8510A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 16:12:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSJbb4p3wz2ypV;
-	Fri, 19 Sep 2025 00:55:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSHdC4sDdz2yGM;
+	Fri, 19 Sep 2025 00:11:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758201347;
-	cv=none; b=CQp45GVq1U05lkb5EPsX7BGDWRiCcilMNuvVT19Z0oYliWtNYy5zs36RLaiTz9yU083r4kqxbXP2EnxhFpPyfjWkBRQQx9qtI8mxQThxvEzinYyG64AhXUrCP2C67ui+HkO8sUAe9VSz87Vu+swiZZ1Yazz+9BI3zkCE3IDSAxotT0POXRKTae8IjV2yoU9DXHEwILavCU2LH9ZyihpJ/PEiEXcHlIrKYfIqKKKZy5nJ1RSUNDi+rr497OSoSFwh9nz4pMtYXcMpF8jYvzsuuWySwPAxgZW8fKFmAHRuURj08USRj21KfO9WHhfkfWfiNw/nXZWlMy82UqxD1u0EQA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=156.67.10.101
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758204719;
+	cv=none; b=NJC0CAakEIg7n6ZRlcdsYFt5PL+DSG13F4n/Fxzl0sHHPJwETutQkZslzaaFq2VXaohb5YzMvWoEgaVScUETYsHGIkP0fzI+lxl/pamBI49C1cwHvk6gOZQLMH4lMXcmTWXrBeyOWFrgfF3t6uUn2NRhTLHaBURAbcn1srrN2v7dXRiEQHDzm9KyNQ2UV3bUIvVp/7jSMtWUfUm0U1C4Sl9ChqFVyMkU2iPVISF2p2JA3nj1d/u+udP4RPwnxkH5zXpvpLk33QJQvKb68v1hyoXQQupm4gLTLwkQOtJXQzRGay8xHQ9A6CaFz1WmolaPBwE2qWPdClWWyND8aNENmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758201347; c=relaxed/relaxed;
-	bh=yE34uiJAxjOCRXMZb/gdhVBd/0cCnsnfIfmCkzSAFk8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ippMangzMJ6gixafDExggpslxo2+e8HUGBUa+nRLsarXW3euFDXaUJ8MNIz//wD7Qxw7KrH+G4bVeCANmOyAJLg28fNJ75P5S7T6FKlZF1FQr9EwkWwxtXe24rzEyd71uPUJMnAk/UL/N8J+OpdgOMkVR2Wz5wGPPd6XT8avzFpUmXx7cMSnt7h3SFw4hmXqX+RCsZs4lntsKbM2e9wxluG7jflTHcyyf1NEGszUNQuZHgaXfpnNjwKNb2HpY0b0Nwl/icmE16IyaFtXJ4NBoTurMuNvln29txLnpQvWWkepVdHfGk6gPC64JjFFCbzGR0rliSXKS0T8NhG8zYMJQA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VL92buCz; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52d; helo=mail-pg1-x52d.google.com; envelope-from=lgs201920130244@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1758204719; c=relaxed/relaxed;
+	bh=2WK7RF7NsYG+8NsyTTvySh7GNGT5jm6UcDa778flAEQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JiZY793vEARhKrRufzxPzIU/UgVvTni8355WWqDTD+qbx9NTrXodkPlmqIQPagnELg6EwAWr0yYV294UadC8dM7+ohwjgPgeRRWGfAY7Z83SIBUqbOXH8VdNmMUY7N5tl0B+H4PZ2KfyPu48vHFFypaBsc3ZuljdsiOKGfPI86Cy52r+4kcTDLVznCkEQfeRBVYWgXluFTdrlWUwGB0ZhwBqXQGjti4IsM6J9lvQZJYhSXlAqO6bIhTlRBj80X5Fv/J87NWtcOuOqdf4MgYfnckP3srBblWJpY8XRd7mIv2Exs3aVGkSoQqrYBFMaSu+RsMjP2vgiT6ykCiacHzYWA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=mffiEw3N; dkim-atps=neutral; spf=pass (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org) smtp.mailfrom=lunn.ch
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VL92buCz;
+	dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=mffiEw3N;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d; helo=mail-pg1-x52d.google.com; envelope-from=lgs201920130244@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org)
+X-Greylist: delayed 2236 seconds by postgrey-1.37 at boromir; Fri, 19 Sep 2025 00:11:58 AEST
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSGNL5YLnz2xnr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 23:15:46 +1000 (AEST)
-Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-b55115148b4so207152a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 06:15:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758201344; x=1758806144; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yE34uiJAxjOCRXMZb/gdhVBd/0cCnsnfIfmCkzSAFk8=;
-        b=VL92buCzyQLjBkPNyI8TW6OFa1ke++QbMshoFrfD2sj8zoDTmWS9uKKH2+a/WFudS7
-         k+v+as/uzXcjE3Agn4X3PW89/OLHxoXG4hFpnlN+tpmbmuZTy7+lvDYdchGap3bw7UZ8
-         NTwgKl2g8zuj8Sjv+DjCtiZtRwdWaOhRm3tpOxprWLIdwm3UMVAkZLEGgUQPPLQFErJK
-         tVsf/gOzAVidskhYu8TXx8XA9o1/XIGZc2XEe0YCEP/gXQAiQz1VLZHlUoZ6G89xZoZT
-         K2kfNdgBpXDHS1mTo5XAtBxESMBZUd82iRiEyz2KwVQ7SNoae8BzJK6nhUjxanDbbjTT
-         NlqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758201344; x=1758806144;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yE34uiJAxjOCRXMZb/gdhVBd/0cCnsnfIfmCkzSAFk8=;
-        b=Xsr/OgMG3I68uTA9I4sdu8fAEAcbwLrwuIDJtEYmDjbmIt+p1ddNu5frQy25qou4gk
-         9ahkdTp63+gc8MeP3ECiZ6k/7JMXjO5WgAz3lXzUJ4hFe3UrP2UpR0aOE1iYrqc9nbGz
-         vR9iF3C/mNvaHfNpqF8mDdaHVrNC3qF4CG91Tf5uMXuxEB1FLPprcK14DDpbDS+v2WyV
-         wiUzmafRXGcv2qFMNOYiOTGCm7sO/odGqeP5g7qsOyvC3g/K7Jsi+RAzKiS9oLrsBWxd
-         Pzg6eN7gECqb8S0PsMdIpL0xpcf4ejWcB+59p4SV9B47B11drpTon1BSKZcS3xuTCuWQ
-         Qewg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7vrPzwDdx9lRPhzhrNOVYQFAeheVVG2Myn82JczCc5gEC6wnfF12La/KetIPflG57jfJFQbNW2Zo/tKg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzeA6hE1RwrwdgyBgcf9S+aZ9aJPb3EqDLrNz9Govl53OkmxWko
-	ylZYEd2lvot6WSPpnJNlO3fD0mRLMFPJuiIZ+nrFua6aePd8S5uOf0TY
-X-Gm-Gg: ASbGncv/gJdKCfO14IaP6QOZa+lE7OPk1yix6caDTJdDair46YRjluSDwgWUBEfRL+K
-	ZMGBRen7f+s6xR5Ots3MTqvh9p2YpafP1s5J9tvyk1jy1Iv6yGUG8U9rwrtRKEJGWuYlvREO7mc
-	0866F5zvPEp/EPcRVFqzoexoI3lPejkS+zFDbXYGGUQZQncqOSh205bN3o0MzycJTuEoW3v3Pj+
-	cNRBckBcJ0Cfj1mQV13Vy9O+znbFHziA9Omnd2gDW6/2tLzwqbq7pcMaYIewPhbA5EoPacoQiiP
-	8xTSEmCCPIOAu8R5FIg7HcySPZm17xIpocKbIQuUH6Z2p9PhYktHrWUPM2/YvBvHJ69Ho3dZAJn
-	9EYkqrYM2MYICc7noKYA8A1f2R536hivqKDpTRB6CEw==
-X-Google-Smtp-Source: AGHT+IGsMo/8lQqefuavLtapLE7AECgG8b9jcfsyTOPdN+syxzbumlh0WE+7dvjsyXF6z+BpZPP70Q==
-X-Received: by 2002:a17:903:fa4:b0:24a:8e36:420a with SMTP id d9443c01a7336-2698aa45676mr34911085ad.40.1758201343497;
-        Thu, 18 Sep 2025 06:15:43 -0700 (PDT)
-Received: from lgs.. ([2408:8417:e00:1e5d:c81b:8d5e:98f2:8322])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2698033ff66sm25343095ad.133.2025.09.18.06.15.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 06:15:42 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSHdB5mwRz2xlR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 00:11:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=2WK7RF7NsYG+8NsyTTvySh7GNGT5jm6UcDa778flAEQ=; b=mffiEw3N0Xsy0iehgYkPk5d+dg
+	sWKIhv5XK/zUNW+x7cpwzMKn+fWVigxBkekrLwF/YIOd76oce1YtRzHGNOghxSvsx4TZKrO8BB5yX
+	oA6G/OA6kjESeDYNowdA/HoKupolfgZZgm9ZJ1RTWZMa7p8eDc9puB5qodRd9gcxhoms=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uzEmL-008pSt-MZ; Thu, 18 Sep 2025 15:34:29 +0200
+Date: Thu, 18 Sep 2025 15:34:29 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, ksummit@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+	linux-mm@kvack.org, imx@lists.linux.dev,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	"Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] powerpc/smp: Add check for kcalloc() in parse_thread_groups()
-Date: Thu, 18 Sep 2025 21:15:13 +0800
-Message-ID: <20250918131513.3557422-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Richard Weinberger <richard@nod.at>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	Andreas Larsson <andreas@gaisler.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Message-ID: <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <20250917125951.GA1390993@nvidia.com>
+ <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,39 +85,31 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	FROM_LOCAL_DIGITS,FROM_LOCAL_HEX,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-As kcalloc() may fail, check its return value to avoid a NULL pointer
-dereference when passing it to of_property_read_u32_array().
+> * Marvell mv78xx0 and kirkwood (armv5 pj1) were fairly
+>   powerful in 2008 and could support at least 1GB of RAM,
+>   but I only found one machine (OpenBlocks A7) that does
+>   this. It's unclear if anyone is still updating kernels
+>   on this machine, but they could /probably/ use
+>   VMSPLIT_3G_OPT if they do.
 
-Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- arch/powerpc/kernel/smp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+If i remember correctly, there was a design issue with the OpenBlocks
+A7, and it would not run with its full amount of memory. To get a
+stable system you had to limit the RAM. I don't remember if that was
+just with the NULL series, and it was fixed for mass production
+devices, or they are all broken.
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 5ac7084eebc0..fa0cd3f7a93c 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -822,6 +822,10 @@ static int parse_thread_groups(struct device_node *dn,
- 
- 	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
- 	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
-+	if (!thread_group_array) {
-+		ret = -ENOMEM;
-+		goto out_free;
-+	}
- 	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
- 					 thread_group_array, count);
- 	if (ret)
--- 
-2.43.0
+I doubt there are any mv78xx0 machines left, why where never very
+popular, but there are still Kirkwood NAS boxes around. I keep mine up
+to date, put an LTS kernel on it once a year, update to the latest
+debian sid.
 
+	Andrew
 
