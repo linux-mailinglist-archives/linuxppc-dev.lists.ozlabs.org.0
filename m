@@ -1,91 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-12367-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12373-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A77CB84C13
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 15:13:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8553B85617
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 16:55:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSGL14nHnz2yGM;
-	Thu, 18 Sep 2025 23:13:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSJbb4p3wz2ypV;
+	Fri, 19 Sep 2025 00:55:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.156
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758201225;
-	cv=none; b=mgaET6+MIUw0UfRF77niSKPyfaJhF442ZxTO6oJ7UGK0JfMCOXRNdGyeYEGIjYKdgj6dUiuwzJSBovYOwJ2btnHQXbNzDOB9NT6uWHjuJgCRhFKnPTcWyfUvDIjE3m5LbAZqQ1g+qq1vKNrlGRch+fq/ZdthL5vcUdFmq4b+MvEC8DguiuzP+SXKHArpFtdh6275ZmieH2rHr3dDCvcEId+9s5B03Qx7I2LvVzmjU3st2J57bTZRzLNPzqVu1iA1Gftyxhy9k1pE5pLR9eYpSocqCQoGn5Nq+Fy19SjK8QwDNtFRPD97AFKN6awFzKeCkVpTEBQQfGt7SKdrzYSJJg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758201347;
+	cv=none; b=CQp45GVq1U05lkb5EPsX7BGDWRiCcilMNuvVT19Z0oYliWtNYy5zs36RLaiTz9yU083r4kqxbXP2EnxhFpPyfjWkBRQQx9qtI8mxQThxvEzinYyG64AhXUrCP2C67ui+HkO8sUAe9VSz87Vu+swiZZ1Yazz+9BI3zkCE3IDSAxotT0POXRKTae8IjV2yoU9DXHEwILavCU2LH9ZyihpJ/PEiEXcHlIrKYfIqKKKZy5nJ1RSUNDi+rr497OSoSFwh9nz4pMtYXcMpF8jYvzsuuWySwPAxgZW8fKFmAHRuURj08USRj21KfO9WHhfkfWfiNw/nXZWlMy82UqxD1u0EQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758201225; c=relaxed/relaxed;
-	bh=pLSf0bVUw5MCqJYDkX+vxsx4UdqQkDXJOmyg/3GZX6I=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=EFacJj8laBYIr+tIjfuejp1CKuNKp/3iz+Jetev5THHPs1B3vq1rgB/AnqrDfCtna4HDrbEGxKJLBpBtHFuyEUiuthQ4vJZJ3C1M/EUG/KaNucQDkMGXkD6FgTkzhGwBZHU+6AC4xCfWrXgTKlp1eOptDDZmnV9EtmWVVaWxVMCcApkSboRocziYqK3J7wL4So+H2hiNSXX7UmVhEPadjWl70eyIEaA1t7K019ZH71e/KdVC3VdXZ+PaEBlT7RmVX1LqoisRpAFnnmCZNQ9JXE/B9CQzl3hmbEdMxbgK081UXcR46qxXkYzIwETbJNf3JS1uuR79t5C+clOdBu5QsA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=1ak7ojNe; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=N58W3tD5; dkim-atps=neutral; spf=pass (client-ip=103.168.172.156; helo=fhigh-a5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1758201347; c=relaxed/relaxed;
+	bh=yE34uiJAxjOCRXMZb/gdhVBd/0cCnsnfIfmCkzSAFk8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ippMangzMJ6gixafDExggpslxo2+e8HUGBUa+nRLsarXW3euFDXaUJ8MNIz//wD7Qxw7KrH+G4bVeCANmOyAJLg28fNJ75P5S7T6FKlZF1FQr9EwkWwxtXe24rzEyd71uPUJMnAk/UL/N8J+OpdgOMkVR2Wz5wGPPd6XT8avzFpUmXx7cMSnt7h3SFw4hmXqX+RCsZs4lntsKbM2e9wxluG7jflTHcyyf1NEGszUNQuZHgaXfpnNjwKNb2HpY0b0Nwl/icmE16IyaFtXJ4NBoTurMuNvln29txLnpQvWWkepVdHfGk6gPC64JjFFCbzGR0rliSXKS0T8NhG8zYMJQA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VL92buCz; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52d; helo=mail-pg1-x52d.google.com; envelope-from=lgs201920130244@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=1ak7ojNe;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=N58W3tD5;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VL92buCz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.156; helo=fhigh-a5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d; helo=mail-pg1-x52d.google.com; envelope-from=lgs201920130244@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSGKy5ndDz2xlR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 23:13:42 +1000 (AEST)
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 4D4921400123;
-	Thu, 18 Sep 2025 09:13:40 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Thu, 18 Sep 2025 09:13:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1758201220;
-	 x=1758287620; bh=pLSf0bVUw5MCqJYDkX+vxsx4UdqQkDXJOmyg/3GZX6I=; b=
-	1ak7ojNef1e3g67ZCzGe8Cr86CQBJ+FtYUUdZ98wga8fH+3vuc+RwkTppRISmifj
-	TUQF2YYM9tYsbtzlw4/SjUUoGGdmMBn5Tx06zjVUjlInz+zUP3GqpAoEjzvsx869
-	wddDDt+HjXSiHs17uF5aM1hYdPjyFfy6k5SzRR6jWICdWQiEVv359WWJgj132jJJ
-	07v99j6h/aqeBEffHIyXve8yXE+JF2yzFo9WhjAf903RFRHGDj74a+pThncDZ43U
-	cChz0t8T2JlvSu/bhlxR1hPt7TnIjh7DK2BI84tuHaRAr5IdA5Jn/e/MNKeBZUvX
-	Ow885bcZSVPcmIgNRzukfQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758201220; x=
-	1758287620; bh=pLSf0bVUw5MCqJYDkX+vxsx4UdqQkDXJOmyg/3GZX6I=; b=N
-	58W3tD5qawBw1eKsBN+kr6ZcUHb/ofQFbLKmLhZdv+qguzRhHYAyDLKSfwESXhrf
-	aIY6l97xj+oglomqiNtEG7VTMJ9wGTjdZMtSQXPvA0EL9TgggVm3rQC5HzIiRV2m
-	5xDJYwe8g7qsIUc9Kj38PQcYSOITY0LVGaKueq50doFP6bW244OFrN22sPeENXIY
-	jA1EycAhUpQLSIWjFRVFE+zrgWjqWlsWl40HCwEKhwWQaCWvW/njRnEmJDgdvYsK
-	zw0up4/m7eOD9/kuy1jxPa2+IOIk6ItpAJZUa8eKMXOtJiiJT+cAySSGyZ4hEycm
-	gElUUMqK3gL3+zK38/pmw==
-X-ME-Sender: <xms:ggXMaPqxmIxuS57jlyxuYXMmHn12czYQdlZwV1PqJq6k9KYeiwbKhQ>
-    <xme:ggXMaJp_WDMqihTWUxA0KZ9pJgwdVmKsCp-Vn1fdREcdFTwl75fs0leTwW73akmHR
-    JcpMICm3hi5jq9-VNY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegieegvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvledpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
-    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
-    tghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvg
-    gvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghn
-    uggvrhdrshhvvghrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgih
-    hordhprghrrggtuhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgv
-    nhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrg
-    gurdhorhhgpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:ggXMaPyueOXB7yEQObwBgenAb7JQTgJqnB9NOI6UKzHpBn4i9VSQEg>
-    <xmx:ggXMaOPqe_O8XUcPksli8MZC-GvW0FcpQCzBR-ts3xEmFaWKO-kRlw>
-    <xmx:ggXMaPyfz-9UNPjw4MTfZh2k7kwzHQF2IHlbqQH8wuFNANzoleY-xA>
-    <xmx:ggXMaICP5uqRm6gPGSMpHGW8PXzZmSwLVbGztYAkXSxcjxhxDrjnJw>
-    <xmx:hAXMaDehpAP39-4S3Q408oZS3Swdc4rSB0uIxx1VQvIAhJfZ8ILlFImQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 85F7270006B; Thu, 18 Sep 2025 09:13:38 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSGNL5YLnz2xnr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 23:15:46 +1000 (AEST)
+Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-b55115148b4so207152a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 06:15:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758201344; x=1758806144; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yE34uiJAxjOCRXMZb/gdhVBd/0cCnsnfIfmCkzSAFk8=;
+        b=VL92buCzyQLjBkPNyI8TW6OFa1ke++QbMshoFrfD2sj8zoDTmWS9uKKH2+a/WFudS7
+         k+v+as/uzXcjE3Agn4X3PW89/OLHxoXG4hFpnlN+tpmbmuZTy7+lvDYdchGap3bw7UZ8
+         NTwgKl2g8zuj8Sjv+DjCtiZtRwdWaOhRm3tpOxprWLIdwm3UMVAkZLEGgUQPPLQFErJK
+         tVsf/gOzAVidskhYu8TXx8XA9o1/XIGZc2XEe0YCEP/gXQAiQz1VLZHlUoZ6G89xZoZT
+         K2kfNdgBpXDHS1mTo5XAtBxESMBZUd82iRiEyz2KwVQ7SNoae8BzJK6nhUjxanDbbjTT
+         NlqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758201344; x=1758806144;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yE34uiJAxjOCRXMZb/gdhVBd/0cCnsnfIfmCkzSAFk8=;
+        b=Xsr/OgMG3I68uTA9I4sdu8fAEAcbwLrwuIDJtEYmDjbmIt+p1ddNu5frQy25qou4gk
+         9ahkdTp63+gc8MeP3ECiZ6k/7JMXjO5WgAz3lXzUJ4hFe3UrP2UpR0aOE1iYrqc9nbGz
+         vR9iF3C/mNvaHfNpqF8mDdaHVrNC3qF4CG91Tf5uMXuxEB1FLPprcK14DDpbDS+v2WyV
+         wiUzmafRXGcv2qFMNOYiOTGCm7sO/odGqeP5g7qsOyvC3g/K7Jsi+RAzKiS9oLrsBWxd
+         Pzg6eN7gECqb8S0PsMdIpL0xpcf4ejWcB+59p4SV9B47B11drpTon1BSKZcS3xuTCuWQ
+         Qewg==
+X-Forwarded-Encrypted: i=1; AJvYcCU7vrPzwDdx9lRPhzhrNOVYQFAeheVVG2Myn82JczCc5gEC6wnfF12La/KetIPflG57jfJFQbNW2Zo/tKg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzeA6hE1RwrwdgyBgcf9S+aZ9aJPb3EqDLrNz9Govl53OkmxWko
+	ylZYEd2lvot6WSPpnJNlO3fD0mRLMFPJuiIZ+nrFua6aePd8S5uOf0TY
+X-Gm-Gg: ASbGncv/gJdKCfO14IaP6QOZa+lE7OPk1yix6caDTJdDair46YRjluSDwgWUBEfRL+K
+	ZMGBRen7f+s6xR5Ots3MTqvh9p2YpafP1s5J9tvyk1jy1Iv6yGUG8U9rwrtRKEJGWuYlvREO7mc
+	0866F5zvPEp/EPcRVFqzoexoI3lPejkS+zFDbXYGGUQZQncqOSh205bN3o0MzycJTuEoW3v3Pj+
+	cNRBckBcJ0Cfj1mQV13Vy9O+znbFHziA9Omnd2gDW6/2tLzwqbq7pcMaYIewPhbA5EoPacoQiiP
+	8xTSEmCCPIOAu8R5FIg7HcySPZm17xIpocKbIQuUH6Z2p9PhYktHrWUPM2/YvBvHJ69Ho3dZAJn
+	9EYkqrYM2MYICc7noKYA8A1f2R536hivqKDpTRB6CEw==
+X-Google-Smtp-Source: AGHT+IGsMo/8lQqefuavLtapLE7AECgG8b9jcfsyTOPdN+syxzbumlh0WE+7dvjsyXF6z+BpZPP70Q==
+X-Received: by 2002:a17:903:fa4:b0:24a:8e36:420a with SMTP id d9443c01a7336-2698aa45676mr34911085ad.40.1758201343497;
+        Thu, 18 Sep 2025 06:15:43 -0700 (PDT)
+Received: from lgs.. ([2408:8417:e00:1e5d:c81b:8d5e:98f2:8322])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2698033ff66sm25343095ad.133.2025.09.18.06.15.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 06:15:42 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	"Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] powerpc/smp: Add check for kcalloc() in parse_thread_groups()
+Date: Thu, 18 Sep 2025 21:15:13 +0800
+Message-ID: <20250918131513.3557422-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,105 +98,39 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AneuvEk2E7Kg
-Date: Thu, 18 Sep 2025 15:12:46 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Jason Gunthorpe" <jgg@nvidia.com>
-Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Richard Weinberger" <richard@nod.at>,
- "Lucas Stach" <l.stach@pengutronix.de>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Ankur Arora" <ankur.a.arora@oracle.com>,
- "David Hildenbrand" <david@redhat.com>,
- "Mike Rapoport" <rppt@kernel.org>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Suren Baghdasaryan" <surenb@google.com>,
- "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
- "Andreas Larsson" <andreas@gaisler.com>
-Message-Id: <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
-In-Reply-To: <20250917125951.GA1390993@nvidia.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <20250917125951.GA1390993@nvidia.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	FROM_LOCAL_DIGITS,FROM_LOCAL_HEX,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Sep 17, 2025, at 14:59, Jason Gunthorpe wrote:
-> On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
->
->> I'm still collecting information about which of the remaining highmem
->> users plan to keep updating their kernels and for what reason. 
->
-> On this topic of removing some parts of highmem, can we say goodbye to
-> kmap_high_get()? Only ARM uses it and only for
-> !cache_is_vipt_nonaliasing() systems.
+As kcalloc() may fail, check its return value to avoid a NULL pointer
+dereference when passing it to of_property_read_u32_array().
 
-Good idea. I think we are almost there, just need to verify that
-there is actually no impact for existing users. I already knew
-that there is very little highmem usage on ARMv6 and earlier, but
-I tried to recheck all platforms that might be affected:
+Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ arch/powerpc/kernel/smp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-* As you say (and contrary to what the code comments suggest),
-  all ARMv7 and most ARMv6 systems have non-aliasing VIPT or
-  PIPT caches, so kmap_high_get() does nothing, and we could
-  just turn it off for those configurations.
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 5ac7084eebc0..fa0cd3f7a93c 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -822,6 +822,10 @@ static int parse_thread_groups(struct device_node *dn,
+ 
+ 	count = of_property_count_u32_elems(dn, "ibm,thread-groups");
+ 	thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
++	if (!thread_group_array) {
++		ret = -ENOMEM;
++		goto out_free;
++	}
+ 	ret = of_property_read_u32_array(dn, "ibm,thread-groups",
+ 					 thread_group_array, count);
+ 	if (ret)
+-- 
+2.43.0
 
-* ARMv6 with aliasing VIPT caches exist but are fairly rare,
-  and I think there are no ARMv6 machines left that actually
-  use highmem. AST2500 is commonly used and has aliasing
-  caches, but I only see machines with 512MB or less, and
-  its aspeed_v5_defconfig enables CONFIG_SMP (for AST2600).
-  OMAP2 and realview are in the same category but less
-  important. imx3, s3c64xx and bcm2835 are non-aliasing
-  (and don't have highmem either).
-
-* VIVT caches are used on all ARMv5 and earlier, so removing
-  kmap_high_get() would effectively break highmem these.
-  Most ARMv5 use very small amounts of memory (<256M) in
-  a single physical address range, so they are unaffected,
-  we just have to go through the ones that are left.
-
-* Intel IOP (armv5 xscale) certainly had highmem but was
-  removed a while ago.
-
-* Marvell mv78xx0 and kirkwood (armv5 pj1) were fairly
-  powerful in 2008 and could support at least 1GB of RAM,
-  but I only found one machine (OpenBlocks A7) that does
-  this. It's unclear if anyone is still updating kernels
-  on this machine, but they could /probably/ use
-  VMSPLIT_3G_OPT if they do.
-
-* Microchip SAM9x7 is the newest ARMv5 chip, clearly does
-  get kernel updates, and the only one I can think of with
-  DDR3 support, but seems to be limited to 256MB total memory.
-
-* The Gemini (ARMv4) platform enabled highmem as part of
-  commit c12d7e9fe9af ("ARM: defconfig: Update Gemini defconfig"),
-  but I don't see why, as the machine cited there only has
-  128MB of RAM in a contiguous chunk.
-
-* A few ARMv4/v5 machines (omap1, davinci, ep93xx, clps71xx,
-  sa1100, riscpc) used to select CONFIG_ARCH_HAS_HOLES_MEMORYMODEL
-  or SPARSEMEM, which would indicate that they might need
-  highmem even for <1GB configurations if their memory banks are
-  far apart in physical memory. I checked those and as far
-  as I can tell, they are always within 768MB or less.
-
-     Arnd
 
