@@ -1,49 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-12384-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12378-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8ABB861A7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 18:50:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE032B85984
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 17:29:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSM8K6c8Xz3cYH;
-	Fri, 19 Sep 2025 02:50:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSKM03Vn8z2xnr;
+	Fri, 19 Sep 2025 01:29:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758214241;
-	cv=none; b=R/dZgvip7M7Tgrj0BZs3cDxLuMnOhuBK86tWB/RVKJHmj/h5e+cN3D8ehEgpHlJQ9o9i8s8QNa+3y7SvJHDICBcm8nG/WYqPE1T8Wsic+Rjky2p0SDNWwPZMsRg8zOfQRU/8gozp0NHxs5ItzJ/pw0bpdVZl+z52OHit6LnpdShWKh1WpphmWBn5RKYI688OEQdwst1YYBmu3q2HJNJOailFGa0q0BmaDcVKSZfN6Cp12uK/tLlf5xXNFXkEGxjp3u7HHATqPXu64sFC5Nw5bzz0dbtY9yDGL7xcr4vP2MQ5n0bveHCG2OP4WVGroCd/tihd1SUm4l2e/KbfkaUFcA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:e0c:1:1599::11"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758209388;
+	cv=none; b=dIZT5vu6fOuP4QPCjfou3n3er5/1Dkhz5er1OwbrgRdr5fpmc7Wmi2Opr9dO/X6z0WE9nKPJCyQS5y+ttF5T8UxS/n4E4NQcgbbLcfAzVpiAj0pGH5UgJwnVJfx9asVq7ya+Kg/ECuczuKcBCyIz1sFSGROzp1wZC6DaI36XuCPBSigAo6QtkjPVmwlsWWLll08CovmQPi2cxwYuXoPMh+Un+/kRWxG+xU0DoHQm0AcGeNbP84Yx/5OVhj0VoQbBzoSO09tZlUngcQO3512i9JwN1VLIf/1XRT4xs0GpE14s/7TPfZCtMXQKcWw0JlP66gM7Fgx3+Dvnr7bt0/n+Pg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758214241; c=relaxed/relaxed;
-	bh=1hrkKIr90ran6knul6gyeMK0S/D2N6iHzxqgIpeMC48=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mb7sKsxSrRHKxeU7Fgn9aMUJNSPInmRDPVsgp0otfY2ujtx3njQH3CkTY9UEz/4BiHHZ8J2KJPSRne/hotlzhA6hHFIN35w9YE8urv/jv8kFK7OkCycqqw3aXhFZXPpYrJp5Alu7rXO0wwl54t0bf1qH5+twQDjVf4lOzcyIKAxIuLMTR0no49/fFji6GmcUaqRdNuCG56OmrqFXJqckqVBjwFSwXYkbzhIB0w1IpAx7BUoSUxgnXC8iO036M7kyrF365hluU3vBGAk7YDhX8oM3hE20oaMWw7QyUR7jtmDYPC0Sbg0za0e/Ig2+3nxqXWddEWcurGS07OJFX7TruQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSM8K2SNVz3cQq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 02:50:41 +1000 (AEST)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cSK5K1F5gz9shQ;
-	Thu, 18 Sep 2025 17:17:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id FqKmve-d9GL7; Thu, 18 Sep 2025 17:17:57 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cSK5K0PKRz9shF;
-	Thu, 18 Sep 2025 17:17:57 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id EFA5D8B775;
-	Thu, 18 Sep 2025 17:17:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id yA9-sMw8lPFZ; Thu, 18 Sep 2025 17:17:56 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 55C098B767;
-	Thu, 18 Sep 2025 17:17:56 +0200 (CEST)
-Message-ID: <7c0c53bc-1436-4a48-8afa-8bfff439ce67@csgroup.eu>
-Date: Thu, 18 Sep 2025 17:17:55 +0200
+	t=1758209388; c=relaxed/relaxed;
+	bh=XUWQfxZZ308Qh0GEo031WQTVwmY2irHkVNeN0hT1npU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RTpy6Py1436zxfgTtF+T/xqI/MF8zLs+pAygQCO3+KVZq9rCrnbEWZb4vJ3rkMse5TJqeBDSbAzYJw2igc/46C8Y81gbXo3TXuU+0V/zy2vz2mdywxinkmEMOAkXIyBtvCIpHOIjueVnU+uKEsdKxCReLVsiHsXW2sJT4TBu+f0A7uym3kQ9m/RFzcdxLb3zFNKZDuTJuxQeujzVioFCs0J4ZTE+UAXKO08KxjcjX5XKiDXtV8tpyYlcvwRymeOkWSH++eWSrQ/L00bj5Eaa78XsRYjWkwe6UskJ0VXNPKNmWgV8f/ErJ7QO9zmKuRGTkkkfdOf4cYzE1Ctl/Cg9MQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=softfail (client-ip=2a01:e0c:1:1599::11; helo=smtp2-g21.free.fr; envelope-from=nschichan@freebox.fr; receiver=lists.ozlabs.org) smtp.mailfrom=freebox.fr
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=freebox.fr (client-ip=2a01:e0c:1:1599::11; helo=smtp2-g21.free.fr; envelope-from=nschichan@freebox.fr; receiver=lists.ozlabs.org)
+Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [IPv6:2a01:e0c:1:1599::11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSKLz0kJnz2xcB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 01:29:44 +1000 (AEST)
+Received: from daria.iliad.local (unknown [213.36.7.13])
+	by smtp2-g21.free.fr (Postfix) with ESMTP id 179252003FC;
+	Thu, 18 Sep 2025 17:28:31 +0200 (CEST)
+From: Nicolas Schichan <nschichan@freebox.fr>
+To: safinaskar@gmail.com
+Cc: akpm@linux-foundation.org,
+	andy.shevchenko@gmail.com,
+	axboe@kernel.dk,
+	brauner@kernel.org,
+	cyphar@cyphar.com,
+	devicetree@vger.kernel.org,
+	ecurtin@redhat.com,
+	email2tema@gmail.com,
+	graf@amazon.com,
+	gregkh@linuxfoundation.org,
+	hca@linux.ibm.com,
+	hch@lst.de,
+	hsiangkao@linux.alibaba.com,
+	initramfs@vger.kernel.org,
+	jack@suse.cz,
+	julian.stecklina@cyberus-technology.de,
+	kees@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-alpha@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org,
+	linux-csky@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev,
+	mcgrof@kernel.org,
+	mingo@redhat.com,
+	monstr@monstr.eu,
+	mzxreary@0pointer.de,
+	patches@lists.linux.dev,
+	rob@landley.net,
+	sparclinux@vger.kernel.org,
+	thomas.weissschuh@linutronix.de,
+	thorsten.blum@linux.dev,
+	torvalds@linux-foundation.org,
+	tytso@mit.edu,
+	viro@zeniv.linux.org.uk,
+	x86@kernel.org,
+	nschichan@freebox.fr
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+Date: Thu, 18 Sep 2025 17:28:30 +0200
+Message-Id: <20250918152830.438554-1-nschichan@freebox.fr>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
+References: <20250913003842.41944-1-safinaskar@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,68 +104,53 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/smp: Add check for kcalloc() in
- parse_thread_groups()
-To: Guangshuo Li <lgs201920130244@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Thomas Gleixner <tglx@linutronix.de>,
- "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20250918131513.3557422-1-lgs201920130244@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250918131513.3557422-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=1.0 required=3.0 tests=RCVD_IN_DNSWL_NONE,
+	SPF_HELO_PASS,SPF_SOFTFAIL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hello,
 
+> Intro
+> ====
+> This patchset removes classic initrd (initial RAM disk) support,
+> which was deprecated in 2020.
 
-Le 18/09/2025 à 15:15, Guangshuo Li a écrit :
-> [Vous ne recevez pas souvent de courriers de lgs201920130244@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> As kcalloc() may fail, check its return value to avoid a NULL pointer
-> dereference when passing it to of_property_read_u32_array().
-> 
-> Fixes: 790a1662d3a26 ("powerpc/smp: Parse ibm,thread-groups with multiple properties")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->   arch/powerpc/kernel/smp.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index 5ac7084eebc0..fa0cd3f7a93c 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -822,6 +822,10 @@ static int parse_thread_groups(struct device_node *dn,
-> 
->          count = of_property_count_u32_elems(dn, "ibm,thread-groups");
->          thread_group_array = kcalloc(count, sizeof(u32), GFP_KERNEL);
-> +       if (!thread_group_array) {
-> +               ret = -ENOMEM;
-> +               goto out_free;
+This serie came a bit as a surprise, because even though the message
+notifying of the initrd deprecation was added in July 2020, the message
+was never displayed on our kernels.
 
-out_free does nothing as thread_group_array is NULL, so don't goto 
-out_free, instead return -ENOMEM immediately:
+When booting with root=/dev/ram0 in the kernel commandline,
+handle_initrd() where the deprecation message resides is never called,
+which is rather unfortunate (init/do_mounts_initrd.c):
 
-	if (!thread_group_array)
-		return -ENOMEM;
+	if (rd_load_image("/initrd.image") && ROOT_DEV != Root_RAM0) {
+		init_unlink("/initrd.image");
+		handle_initrd(root_device_name); // shows the deprecation msg
+		return true;
+	}
 
+It is likely we are not the alone booting with that particular
+configuration, so other people are probably going to be surprised when
+initrd support is removed, because they never saw the deprecation
+message.
 
-> +       }
->          ret = of_property_read_u32_array(dn, "ibm,thread-groups",
->                                           thread_group_array, count);
->          if (ret)
-> --
-> 2.43.0
-> 
+We do depend on initrd support a lot on our embedded platforms (more
+than a million devices with a yearlyish upgrade to the latest
+kernel). If it eventually becomes removed this is going to impact us.
 
+We use an initrd squashfs4 image, because coming from a time where
+embedded flash devices were fragile, we avoid having the root
+filesystem directly mounted (even when read only) on the flash
+block/mtd device, and have the bootloader load the root filesystem as
+an initrd.
+
+We use a squashfs4 because we can mount it and keep it compressed. The
+kernel would decompress data on demand in the page cache, and evict it
+as needed.
+
+Regards,
+
+-- 
+Nicolas Schichan
 
