@@ -1,135 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-12431-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4362EB8AA49
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Sep 2025 18:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84515B8AA46
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Sep 2025 18:50:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSz5z2Z1xz3cj1;
-	Sat, 20 Sep 2025 02:50:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSz5s41dPz3cgt;
+	Sat, 20 Sep 2025 02:50:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758210680;
-	cv=none; b=jpWGmX6POFyPFmQjC3vElIByCvOrMMK9rB2Jtcm0ELCEUm6SZr9Phr718FbzRexHvcxDSJ/VqXjgZEDAY+jQGCOsEC5WHU5o3V1AvQkVzOV3Zv6h1viDhnb7LSwr4K80iNVCdGyOz8WhKT5c49mDY6EIdRG2dA3dmsfycPbO6jvb5TpPgtkvpzRHv1zkJRpqyYk8CUzJIfgi/EJf5PrH350Hf87R3OpSUgNbztobGdA+UE7FQYcRLk3V4qKZDhHNu1l7zHyyE0E/mHTmxvtq6tozvuw8KMuXU14GjQ7OPMsLYbude3QiveHfw4K5hFgJAnppgqkNHAL7K+k2Kk9VkQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758300641;
+	cv=none; b=PMOlOoqT6mav5qhQT2VcOjheIQRnVPdq5irYK/Wm8umorUHk3nbtdunJDYrXpGBA+UJp2byXCdsfKeYxTYkE67YoKy7Geoc95iChJgrdS2JDfFxG+D53qtOuNjMU4b/C9pKeEFnqHzPAqIVN1Exrjk46TGeRTuORZY4tFUDq3xQPtZxu64+2Qj3r1T14BTqAClwoTJ2y2ql1y630cXipJUUYiGUOcun7OnbOzzTauWL5Bvs4Bu5xnBHESewSiaQPecwwKfnumZzDy0rwM7TdYJ3xTX/vNy3n3of67nWm+mC0+/1WAYy+YLtohor9gfk9qJJfhgqWTek8mQlVIsxZ5Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758210680; c=relaxed/relaxed;
-	bh=fl//kCkijlzCVR9mkoTjy3hmrs7lH+dhZH4qnaeCWrc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Ds3N8LvWewTRB6dlB8BP+x1tZAunX9hc6ENyPpu2xMuwE6IrhxMLO7o6lYAOpVCCp/YAloKFK3jDcJqOYFlpG1Y7a41vLLO7dpEf58kjp3lZmU695AIGpI0o1XTLe3a5u7XSSUeUAFM6+llkvOmAHGf7hj0si+3wmFBpUDig2WJht7Db4qChACW6OnEVoyqaCMcpBXtdurny2AdzMAzH9k8nq8LbqClkfcEG8jE2WGBn6uOHrR3jfa3ie9K70VlI1AU9RHSNo9NzNf5aTgRyM6IqZos6bH8weN/Qjl01O4UU8GpcT6x9GbA1LtNqIgT8s22wVstP5qVNiK3L4fzd5g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lAxccBgH; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=pjw@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lAxccBgH;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=pjw@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSKqq4Pxsz2xgQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 01:51:19 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3015643217;
-	Thu, 18 Sep 2025 15:51:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77DBC4CEE7;
-	Thu, 18 Sep 2025 15:51:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758210677;
-	bh=e6XJbeklgFNXwruDywAZe7vowNbZUbwBKpZS63m54og=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=lAxccBgHQJMGKL6W5XO/kIBHMi2AladIz8qPWx4MBG7gpBrzHZckIimBwgkALGSoK
-	 RTpLe7661eFC5B/7BhfypSLu8ciNLbjbhnW0/Uiw7F9qtuf/K/hOn+NGzmTK4Elius
-	 Puw/h1XtP570vHRTCm/o6CmMUjRekyChiJ42E7YZlGDJw6uFwLqKV4izLQfNVxc+1W
-	 3GgwOdBMEpO6bPhXxyYgbuGAlwFII7VeYUA20OL3bsW1JzfLATB4CEE7Um16odYOB9
-	 O8FOQqOy+9iE5VgV50GipK6qrDd5viCwdSnAqnhpyMVlV7VT8suWp23kcrZWa2l0BA
-	 qFbk69uCk7f8g==
-Date: Thu, 18 Sep 2025 09:51:07 -0600 (MDT)
-From: Paul Walmsley <pjw@kernel.org>
-To: Simon Schuster <schuster.simon@siemens-energy.com>
-cc: Dinh Nguyen <dinguyen@kernel.org>, Christian Brauner <brauner@kernel.org>, 
-    Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
-    David Hildenbrand <david@redhat.com>, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-    Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-    Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-    Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-    Juri Lelli <juri.lelli@redhat.com>, 
-    Vincent Guittot <vincent.guittot@linaro.org>, 
-    Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-    Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
-    Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
-    Kees Cook <kees@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
-    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-    Alexandre Ghiti <alex@ghiti.fr>, Guo Ren <guoren@kernel.org>, 
-    Oleg Nesterov <oleg@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-    Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-    =?ISO-8859-15?Q?Michal_Koutn=FD?= <mkoutny@suse.com>, 
-    Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
-    James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-    Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-    Frederic Weisbecker <frederic@kernel.org>, 
-    Thomas Gleixner <tglx@linutronix.de>, 
-    Masami Hiramatsu <mhiramat@kernel.org>, 
-    "David S. Miller" <davem@davemloft.net>, 
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-    Arnaldo Carvalho de Melo <acme@kernel.org>, 
-    Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-    Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-    Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-    Adrian Hunter <adrian.hunter@intel.com>, 
-    John Johansen <john.johansen@canonical.com>, 
-    Stephen Smalley <stephen.smalley.work@gmail.com>, 
-    Ondrej Mosnacek <omosnace@redhat.com>, 
-    Kentaro Takeda <takedakn@nttdata.co.jp>, 
-    Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>, 
-    Richard Henderson <richard.henderson@linaro.org>, 
-    Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>, 
-    Russell King <linux@armlinux.org.uk>, 
-    Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-    Brian Cain <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, 
-    WANG Xuerui <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-    Michal Simek <monstr@monstr.eu>, 
-    Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-    Jonas Bonn <jonas@southpole.se>, 
-    Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
-    Stafford Horne <shorne@gmail.com>, 
-    "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
-    Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-    Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-    Christophe Leroy <christophe.leroy@csgroup.eu>, 
-    Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-    Alexander Gordeev <agordeev@linux.ibm.com>, 
-    Christian Borntraeger <borntraeger@linux.ibm.com>, 
-    Sven Schnelle <svens@linux.ibm.com>, 
-    Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-    Andreas Larsson <andreas@gaisler.com>, Richard Weinberger <richard@nod.at>, 
-    Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-    Johannes Berg <johannes@sipsolutions.net>, Borislav Petkov <bp@alien8.de>, 
-    Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-    "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, 
-    Max Filippov <jcmvbkbc@gmail.com>, linux-mm@kvack.org, 
-    linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-    linux-csky@vger.kernel.org, linux-block@vger.kernel.org, 
-    linux-fsdevel@vger.kernel.org, cgroups@vger.kernel.org, 
-    linux-security-module@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-    netdev@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-    apparmor@lists.ubuntu.com, selinux@vger.kernel.org, 
-    linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-    linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org, 
-    loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-    linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
-    linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-    linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-    sparclinux@vger.kernel.org, linux-um@lists.infradead.org
-Subject: Re: [PATCH v2 3/4] arch: copy_thread: pass clone_flags as u64
-In-Reply-To: <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
-Message-ID: <ffb22e54-6b7d-5b88-4217-e67870051c6e@kernel.org>
-References: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com> <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
+	t=1758300641; c=relaxed/relaxed;
+	bh=NXI3kM9yBU2NFSNS1reV27GNn49zaiScl2ch3IUevK8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ompun615IuV3c9JLPgCofNLK8P1oOnZ6FtdMWpTrMlhMnOrEDMwSNCKlRKtuQ8Pnf9+Ix0jcPW+lSfk1akSGLftFjtB2ebmDzkPHooUwlusBuAzn0iz0RXRGvraU3vGesOfsLsuUhQHgUA/Th9s2WoP3Xq8r77fgFTf3X95z7uGvMoE8jWcw9VbTsAQY78HzNjwR0Q2fk1xk0q9rlws+99NFftkSMFXusVAq7XIRD+m6m4MewspLBkEurCACU1Mn0+joS9FLJSZyQkXKQt5NcAW2/U+OC0cwAx2WVvQZOshePIetiLJ1g1AAh7eC0KN3lCSP5RjduqRwNDkTkly/hg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSz5s07kJz3cgd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Sep 2025 02:50:41 +1000 (AEST)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cSLY20nLBz9sfk;
+	Thu, 18 Sep 2025 18:23:34 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id DC6pAqwuh5tc; Thu, 18 Sep 2025 18:23:34 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cSLY160R7z9sfj;
+	Thu, 18 Sep 2025 18:23:33 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BBD638B776;
+	Thu, 18 Sep 2025 18:23:33 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id DYqBu_E8srgz; Thu, 18 Sep 2025 18:23:33 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D63CA8B767;
+	Thu, 18 Sep 2025 18:23:32 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Qiang Zhao <qiang.zhao@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH v6 1/7] soc: fsl: qe: Add an interrupt controller for QUICC Engine Ports
+Date: Thu, 18 Sep 2025 18:23:21 +0200
+Message-ID: <74d4a911a6d17eae7b94a8f30a4d24498a217e71.1758212309.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1758212309.git.christophe.leroy@csgroup.eu>
+References: <cover.1758212309.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -143,37 +74,207 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758212605; l=5183; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=G7scsgL+yrYA4D+2n/22/LhhZgPYYRLFCIoU4FAox1M=; b=65/ofNRoICaFrDJaLuae+CUguGjCMPj2TeU/+DM/ipRDBymnjuE1lMxVfJbnOEbS/w0Z3PfLY NrutJyTMFh2AgW1ounjp+1wosQbl9Iczz5pisy0QH7GbqYcL+KNjGY2
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 1 Sep 2025, Simon Schuster via B4 Relay wrote:
+The QUICC Engine provides interrupts for a few I/O ports. This is
+handled via a separate interrupt ID and managed via a triplet of
+dedicated registers hosted by the SoC.
 
-> From: Simon Schuster <schuster.simon@siemens-energy.com>
-> 
-> With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
-> clone3") the effective bit width of clone_flags on all architectures was
-> increased from 32-bit to 64-bit, with a new type of u64 for the flags.
-> However, for most consumers of clone_flags the interface was not
-> changed from the previous type of unsigned long.
-> 
-> While this works fine as long as none of the new 64-bit flag bits
-> (CLONE_CLEAR_SIGHAND and CLONE_INTO_CGROUP) are evaluated, this is still
-> undesirable in terms of the principle of least surprise.
-> 
-> Thus, this commit fixes all relevant interfaces of the copy_thread
-> function that is called from copy_process to consistently pass
-> clone_flags as u64, so that no truncation to 32-bit integers occurs on
-> 32-bit architectures.
-> 
-> Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+Implement an interrupt driver for it for that those IRQs can then
+be linked to the related GPIOs.
 
-Acked-by: Paul Walmsley <pjw@kernel.org> # for RISC-V
+The number of ports for which interrupts are supported depends on
+the microcontroller:
+- mpc8323 has 10 interrupts
+- mpc8360 has 28 interrupts
+- mpc8568 has 18 interrupts
+So add this information as data of the compatible.
 
-Thanks!
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ drivers/soc/fsl/qe/Makefile      |   2 +-
+ drivers/soc/fsl/qe/qe_ports_ic.c | 156 +++++++++++++++++++++++++++++++
+ 2 files changed, 157 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/soc/fsl/qe/qe_ports_ic.c
 
+diff --git a/drivers/soc/fsl/qe/Makefile b/drivers/soc/fsl/qe/Makefile
+index ec8506e13113..901a9c40d5eb 100644
+--- a/drivers/soc/fsl/qe/Makefile
++++ b/drivers/soc/fsl/qe/Makefile
+@@ -11,4 +11,4 @@ obj-$(CONFIG_UCC_SLOW)	+= ucc_slow.o
+ obj-$(CONFIG_UCC_FAST)	+= ucc_fast.o
+ obj-$(CONFIG_QE_TDM)	+= qe_tdm.o
+ obj-$(CONFIG_QE_USB)	+= usb.o
+-obj-$(CONFIG_QE_GPIO)	+= gpio.o
++obj-$(CONFIG_QE_GPIO)	+= gpio.o qe_ports_ic.o
+diff --git a/drivers/soc/fsl/qe/qe_ports_ic.c b/drivers/soc/fsl/qe/qe_ports_ic.c
+new file mode 100644
+index 000000000000..9715643d36a6
+--- /dev/null
++++ b/drivers/soc/fsl/qe/qe_ports_ic.c
+@@ -0,0 +1,156 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * QUICC ENGINE I/O Ports Interrupt Controller
++ *
++ * Copyright (c) 2025 Christophe Leroy CS GROUP France (christophe.leroy@csgroup.eu)
++ */
++
++#include <linux/irq.h>
++#include <linux/irqdomain.h>
++#include <linux/platform_device.h>
++
++/* QE IC registers offset */
++#define CEPIER		0x0c
++#define CEPIMR		0x10
++#define CEPICR		0x14
++
++struct qepic_data {
++	void __iomem *reg;
++	struct irq_domain *host;
++};
++
++static void qepic_mask(struct irq_data *d)
++{
++	struct qepic_data *data = irq_data_get_irq_chip_data(d);
++
++	clrbits32(data->reg + CEPIMR, 1 << (31 - irqd_to_hwirq(d)));
++}
++
++static void qepic_unmask(struct irq_data *d)
++{
++	struct qepic_data *data = irq_data_get_irq_chip_data(d);
++
++	setbits32(data->reg + CEPIMR, 1 << (31 - irqd_to_hwirq(d)));
++}
++
++static void qepic_end(struct irq_data *d)
++{
++	struct qepic_data *data = irq_data_get_irq_chip_data(d);
++
++	out_be32(data->reg + CEPIER, 1 << (31 - irqd_to_hwirq(d)));
++}
++
++static int qepic_set_type(struct irq_data *d, unsigned int flow_type)
++{
++	struct qepic_data *data = irq_data_get_irq_chip_data(d);
++	unsigned int vec = (unsigned int)irqd_to_hwirq(d);
++
++	switch (flow_type & IRQ_TYPE_SENSE_MASK) {
++	case IRQ_TYPE_EDGE_FALLING:
++		setbits32(data->reg + CEPICR, 1 << (31 - vec));
++		return 0;
++	case IRQ_TYPE_EDGE_BOTH:
++	case IRQ_TYPE_NONE:
++		clrbits32(data->reg + CEPICR, 1 << (31 - vec));
++		return 0;
++	}
++	return -EINVAL;
++}
++
++static struct irq_chip qepic = {
++	.name = "QEPIC",
++	.irq_mask = qepic_mask,
++	.irq_unmask = qepic_unmask,
++	.irq_eoi = qepic_end,
++	.irq_set_type = qepic_set_type,
++};
++
++static int qepic_get_irq(struct irq_desc *desc)
++{
++	struct qepic_data *data = irq_desc_get_handler_data(desc);
++	u32 event = in_be32(data->reg + CEPIER);
++
++	if (!event)
++		return -1;
++
++	return irq_find_mapping(data->host, 32 - ffs(event));
++}
++
++static void qepic_cascade(struct irq_desc *desc)
++{
++	generic_handle_irq(qepic_get_irq(desc));
++}
++
++static int qepic_host_map(struct irq_domain *h, unsigned int virq, irq_hw_number_t hw)
++{
++	irq_set_chip_data(virq, h->host_data);
++	irq_set_chip_and_handler(virq, &qepic, handle_fasteoi_irq);
++	return 0;
++}
++
++static const struct irq_domain_ops qepic_host_ops = {
++	.map = qepic_host_map,
++};
++
++static int qepic_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct qepic_data *data;
++	unsigned long nb;
++	int irq;
++
++	nb = (unsigned long)of_device_get_match_data(dev);
++	if (nb < 1 || nb > 32)
++		return -EINVAL;
++
++	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
++	if (!data)
++		return -ENOMEM;
++
++	data->reg = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(data->reg))
++		return PTR_ERR(data->reg);
++
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0)
++		return irq;
++
++	data->host = irq_domain_add_linear(dev->of_node, nb, &qepic_host_ops, data);
++	if (!data->host)
++		return -ENODEV;
++
++	irq_set_handler_data(irq, data);
++	irq_set_chained_handler(irq, qepic_cascade);
++
++	return 0;
++}
++
++static const struct of_device_id qepic_match[] = {
++	{
++		.compatible = "fsl,mpc8323-qe-ports-ic",
++		.data = (void *)10,
++	},
++	{
++		.compatible = "fsl,mpc8360-qe-ports-ic",
++		.data = (void *)28,
++	},
++	{
++		.compatible = "fsl,mpc8568-qe-ports-ic",
++		.data = (void *)18,
++	},
++	{},
++};
++
++static struct platform_driver qepic_driver = {
++	.driver	= {
++		.name		= "qe_ports_ic",
++		.of_match_table	= qepic_match,
++	},
++	.probe	= qepic_probe,
++};
++
++static int __init qepic_init(void)
++{
++	return platform_driver_register(&qepic_driver);
++}
++arch_initcall(qepic_init);
+-- 
+2.49.0
 
-- Paul
 
