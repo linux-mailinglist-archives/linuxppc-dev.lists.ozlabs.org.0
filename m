@@ -1,104 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-12358-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12357-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA3DB83049
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 07:35:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D68B82AD2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 04:45:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cS49T4NWtz2yGM;
-	Thu, 18 Sep 2025 15:35:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cS0Np2pgWz30Pg;
+	Thu, 18 Sep 2025 12:45:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::629"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758073674;
-	cv=none; b=FVII3KvvIz0Z6BRtTUN/k7lVzQOP+ycxATkl8tzRtcAhJSb9Vw9qotF7Fi79rtTUKioGjPJc6YTxhZj1jXgK9UjmIF8B1syyWQ4dhvfh9LIwmegq3EZadjJvNlPrrUp9QX3h2ZrVJW34ttpF16SdtIibBMOFSD1H3bOwoMauMYJ8rbS5ix2Ajb2e+VTDxOC94zdFKd6Qw/0+TlEnkjfTbvxPI2FFPQIQ1cEUDVyMjaAR/TyUPzdbkr9LH6NVX9kvjTxeyHF+RryQnRSNyAmKU3ElQrnamYpzf2FhsN3lLYIXkAINljjgscCcniSvCNeuw5quntJWLl4QaLpfkppX4w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.112
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758163514;
+	cv=none; b=itOHksAS3XhInwdWZR5jUBZnQdLYUQPqUjyYrdq5kPRtj2h17SGrBmcFGlWm7i6N3OQRwefpnsDOYDih4IzpUzhWoK/6drzwTnxcqGuYoazUGY9k2A+7BRTCs9rNUav8tXx6g6M88TdUqpORMNMErarl6Q6MYKDAk7lhT9yp3soTMZTR6R6W6dsbHeZ5ywqI/27VUEdJ3goDeB/6a3ARXFBIfRdGxGOe9GJxgSFN1mwSD5DOQpSBBUeBrG9C8qt0zEV4y1BY/nyNdYAMxzM/lmc4hBBb8mkm4fx7K3DiVgK99K9dqDgYBbgEOKoY4G/h4FCmYPd89KwsI89KVehkJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758073674; c=relaxed/relaxed;
-	bh=jpedYE8ayX2D4JB3BwcSHfmcAawrf2rx80Q6iy0Jnqk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UOuFo9LJ0N8gsoEDhj4wDtAM0BEocr9aTaN6hEvfJUrFx0Vxs/gU7rY4aC2ESjycoyEoAtND/c1W3qae7k4P0RQujp1W/Ax3ytG7mMLfegTL2qNz9ZMw2vgDUjmawy1E/7zRMudwd6notB7PPYklupSQCIJqeIQwm6g/TjTe0b0NqNS8Eg+Ni8QFl8vY8MXORqUuwJJtpb2gwnD+SjdyKv3Ih7aiIcdA5Hq7Bvb+/gCllUaJGbn9TldbPVjJ30Dl2KtA0qLd0jgFJPjIPvWFYDc8dPQ/JpLRTu8oW2PgDEUmMmEsqEaXEF9Fuc+nA6X2lwkFZS+shnMYVoSW5Pgwaw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kLU9MPha; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=wangjinchao600@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1758163514; c=relaxed/relaxed;
+	bh=JPFeju941uQjjpYAR2xl+DKTC6UMtim0pjMt7+wMivk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gqQbnf7BdFNroz+6KNtjhBpOwqR+Y3iElavfY2YZ7oKArtTRQJXub7+2nqFg6lmTBh0UnrmyzvIC36sP1LKbWZ2q3AjHkeic5E1vx/IoTGyvmsalzVYf2p3BkZkGLAh20jEhkt5J5Q7sw2sAaHxF1/nC15QqXmjlZwdVDHmqBARiVCpC3kj4CsAP5jmQH0q3Ym5oaZe5B4MQA8pvFUU63DaBgkLwAtk6VEZp6sRV0UicZH4rKLMG7Vu9Ska1qhg1sdDA39JiwNgi7MNvoBSChQdR9vxDGorvAn5k2DkKL10Quek0vwP0ZI25ZpxX6kMUGKY/qLGjy0VrHemB2IFtMg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=B+ASsvqf; dkim-atps=neutral; spf=pass (client-ip=115.124.30.112; helo=out30-112.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kLU9MPha;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=B+ASsvqf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=wangjinchao600@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.112; helo=out30-112.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cRM9428R1z30D3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Sep 2025 11:47:51 +1000 (AEST)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-244582738b5so51329545ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 18:47:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758073669; x=1758678469; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jpedYE8ayX2D4JB3BwcSHfmcAawrf2rx80Q6iy0Jnqk=;
-        b=kLU9MPhaZGQLDAVtcSssT+rmqc8/wtE6KibDBIPa5uJanIAkPT3IxC2uSq20CGirma
-         naE7FAhDLlRH7fL6G6DyDgLkl1TSNtvU/KpJFrpIyhuUQ2htrna8Qx6dBQSFAfLFSwey
-         35M4s7s7X2LG6ekRKxkQF46NnnRaxquiCyBcDBN1KZ5ZjZx38ZbT4t7jktHkQ5MM4sKd
-         chvyr97+nJJ+cIuux/ubuTzD32gL3u27nv5rcXGka+bIMH9IZbpDDeSyaa7zr7+Jagua
-         nT/4NUgpyyxAczLyDWgwPQbij2F9N0TxlSbkLuKH67YgbSMI7dv1FGl9p5hSkMzdnbKl
-         0hSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758073669; x=1758678469;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jpedYE8ayX2D4JB3BwcSHfmcAawrf2rx80Q6iy0Jnqk=;
-        b=TTvc689goJANIEdClWF8OA0CiIxT5uWdl8wAj/YtwilrPUEUbjoGTLmaPHEMzmTN8B
-         Suf+jYkewz+lOzrdR6ECsJsyQAaPvlr9ZOXUGA7fpkcgiQ2295wBv7AIkcoDYrXdUny2
-         FaaC9iggrt4LSgNY1cErsX3njvWsBkf7Ucq8dJlFnRPYzqAoRhFPsorIdnkyogFlmUOI
-         IiRPnJa5H0rzrDfJMptxHlKn18asKbMfUZBvD4RToCzNxHC3v64usABgI6pJBwmA8u1N
-         9kS87aX9v/CHxgy7IlaN8A3I/VxCrJHkGuY4cpPxWHqpeM4ABx9q5UsK28se5nBNNCws
-         B7OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX5yC2C6Dtiaar6ixQvw/XuM5fnJWuvpWI2jnTI71l/iDs9L4dhVjklncV0h85b0h/RbQJ+kCytexaFzQM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzSc28hyRPNcH2uUaJSN0PW2LbAYHVtEBPvOIeDmLb0EbjbieJt
-	KkuPt6JI6N4eRhyEMIyQsUdCjZNlJwBlwsY4BTXNfcgbtGB6grZV/cK5
-X-Gm-Gg: ASbGnct25KD4wyRrRfw4y7151hRPclEsd0i4g3Q/5On8jv20enG9+VGftl1I9We11Ir
-	oayqMifC2t/RaLpqnPlfsAa2AVCncdSgMeS3zvMbfa+odXb8OGIyN9JLOkTz4tfZSFYLHzVy1G6
-	lSAqbsxoXWbaXTvzrwrWsN96JKuhbKtd+3nSI8EIcvRcNmsOUcMZPgNeaCkflAzUhBlDUYRIVGt
-	AlOUoaJHE89ROn0CkKZwidrd+DIwA2S/dkDSsw2YApRKnvo1ClL42ad47gp61eh5RJNyCmAqCcf
-	L1+qZxnGCjFyTMEJkJkD5Wy+hXxthQ1ZgKDRrhoyHkKelYVuHxiQ4q3hfZNns/+frtjG/2ITqYG
-	24Q4cxkZKYRvpb3Hp2s40r5Mxjjczn9am9Ww=
-X-Google-Smtp-Source: AGHT+IGqMIWzNWO6R5Qy2orWOF1UJ217t1FWDRL4LXVp47m16T87eefffE+Z4xzLoGiJ6LF7MR5mXQ==
-X-Received: by 2002:a17:902:d487:b0:248:79d4:93c0 with SMTP id d9443c01a7336-26813efef03mr4774235ad.56.1758073668329;
-        Tue, 16 Sep 2025 18:47:48 -0700 (PDT)
-Received: from localhost ([45.90.208.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-260cf673181sm114910675ad.99.2025.09.16.18.47.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Sep 2025 18:47:47 -0700 (PDT)
-Date: Wed, 17 Sep 2025 09:47:37 +0800
-From: Jinchao Wang <wangjinchao600@gmail.com>
-To: Ian Rogers <irogers@google.com>
-Cc: Doug Anderson <dianders@chromium.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Will Deacon <will@kernel.org>, Yunhui Cui <cuiyunhui@bytedance.com>,
-	akpm@linux-foundation.org, catalin.marinas@arm.com,
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
-	acme@kernel.org, namhyung@kernel.org, mark.rutland@arm.com,
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-	adrian.hunter@intel.com, kan.liang@linux.intel.com, kees@kernel.org,
-	masahiroy@kernel.org, aliceryhl@google.com, ojeda@kernel.org,
-	thomas.weissschuh@linutronix.de, xur@google.com,
-	ruanjinjie@huawei.com, gshan@redhat.com, maz@kernel.org,
-	suzuki.poulose@arm.com, zhanjie9@hisilicon.com,
-	yangyicong@hisilicon.com, gautam@linux.ibm.com, arnd@arndb.de,
-	zhao.xichao@vivo.com, rppt@kernel.org, lihuafei1@huawei.com,
-	coxu@redhat.com, jpoimboe@kernel.org, yaozhenguo1@gmail.com,
-	luogengkun@huaweicloud.com, max.kellermann@ionos.com, tj@kernel.org,
-	yury.norov@gmail.com, thorsten.blum@linux.dev, x86@kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org
-Subject: Re: [RFC PATCH V1] watchdog: Add boot-time selection for hard lockup
- detector
-Message-ID: <aMoTOXIKBYVTj7PV@mdev>
-References: <20250916145122.416128-1-wangjinchao600@gmail.com>
- <CAP-5=fWWOQ-6SWiNVBvb5mCofe0kZUURG_bm0PDsVFWqwDwrXg@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cS0Nm184Jz2yGM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 12:45:10 +1000 (AEST)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758163506; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=JPFeju941uQjjpYAR2xl+DKTC6UMtim0pjMt7+wMivk=;
+	b=B+ASsvqfYsuFgj66Uctcx8Ga9imeMS9ONZUzJuAIYoPqnb4dLBR7fZrm7Rr9Xu65665wLF28MR3l1NzIpGWMZ/XNhL/9zMoCqt+SBKq6KsWX17zCCY+XIVThl3z0R/8dR8zlwiZP6yHFnNVwR78Y74YAUCM+ZSnylWZDNAdfJxU=
+Received: from 30.246.178.33(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WoECel4_1758163504 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 18 Sep 2025 10:45:05 +0800
+Message-ID: <67f8beb8-faef-42c4-aae8-72ce4a441533@linux.alibaba.com>
+Date: Thu, 18 Sep 2025 10:45:03 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -112,332 +51,272 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/3] PCI/AER: Report fatal errors of RCiEP and EP if
+ link recoverd
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ bhelgaas@google.com, mahesh@linux.ibm.com, mani@kernel.org,
+ Jonathan.Cameron@huawei.com
+Cc: oohall@gmail.com, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <20250917063352.19429-1-xueshuai@linux.alibaba.com>
+ <20250917063352.19429-4-xueshuai@linux.alibaba.com>
+ <2712a56a-1e2f-4ad8-8ad9-8b7825f4eefd@linux.intel.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <2712a56a-1e2f-4ad8-8ad9-8b7825f4eefd@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAP-5=fWWOQ-6SWiNVBvb5mCofe0kZUURG_bm0PDsVFWqwDwrXg@mail.gmail.com>
-X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Sep 16, 2025 at 05:03:48PM -0700, Ian Rogers wrote:
-> On Tue, Sep 16, 2025 at 7:51 AM Jinchao Wang <wangjinchao600@gmail.com> wrote:
-> >
-> > Currently, the hard lockup detector is selected at compile time via
-> > Kconfig, which requires a kernel rebuild to switch implementations.
-> > This is inflexible, especially on systems where a perf event may not
-> > be available or may be needed for other tasks.
-> >
-> > This commit refactors the hard lockup detector to replace a rigid
-> > compile-time choice with a flexible build-time and boot-time solution.
-> > The patch supports building the kernel with either detector
-> > independently, or with both. When both are built, a new boot parameter
-> > `hardlockup_detector="perf|buddy"` allows the selection at boot time.
-> > This is a more robust and user-friendly design.
-> >
-> > This patch is a follow-up to the discussion on the kernel mailing list
-> > regarding the preference and future of the hard lockup detectors. It
-> > implements a flexible solution that addresses the community's need to
-> > select an appropriate detector at boot time.
-> >
-> > The core changes are:
-> > - The `perf` and `buddy` watchdog implementations are separated into
-> >   distinct functions (e.g., `watchdog_perf_hardlockup_enable`).
-> > - Global function pointers are introduced (`watchdog_hardlockup_enable_ptr`)
-> >   to serve as a single API for the entire feature.
-> > - A new `hardlockup_detector=` boot parameter is added to allow the
-> >   user to select the desired detector at boot time.
-> > - The Kconfig options are simplified by removing the complex
-> >   `HARDLOCKUP_DETECTOR_PREFER_BUDDY` and allowing both detectors to be
-> >   built without mutual exclusion.
-> > - The weak stubs are updated to call the new function pointers,
-> >   centralizing the watchdog logic.
-> 
-> What is the impact on  /proc/sys/kernel/nmi_watchdog ? Is that
-> enabling and disabling whatever the boot time choice was? I'm not sure
-> why this has to be a boot time option given the ability to configure
-> via /proc/sys/kernel/nmi_watchdog.
-The new hardlockup_detector boot parameter and the existing
-/proc/sys/kernel/nmi_watchdog file serve different purposes.
 
-The boot parameter selects the type of hard lockup detector (perf or buddy).
-This choice is made once at boot.
 
- /proc/sys/kernel/nmi_watchdog, on the other hand, is only a simple on/off
-switch for the currently selected detector. It does not change the detector's
-type.
+在 2025/9/18 03:09, Kuppuswamy Sathyanarayanan 写道:
 > 
-> > Link: https://lore.kernel.org/all/20250915035355.10846-1-cuiyunhui@bytedance.com/
-> > Link: https://lore.kernel.org/all/CAD=FV=WWUiCi6bZCs_gseFpDDWNkuJMoL6XCftEo6W7q6jRCkg@mail.gmail.com/
-> >
-> > Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
-> > ---
-> >  .../admin-guide/kernel-parameters.txt         |  7 +++
-> >  include/linux/nmi.h                           |  6 +++
-> >  kernel/watchdog.c                             | 46 ++++++++++++++++++-
-> >  kernel/watchdog_buddy.c                       |  7 +--
-> >  kernel/watchdog_perf.c                        | 10 ++--
-> >  lib/Kconfig.debug                             | 37 +++++++--------
-> >  6 files changed, 85 insertions(+), 28 deletions(-)
-> >
-> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> > index 5a7a83c411e9..0af214ee566c 100644
-> > --- a/Documentation/admin-guide/kernel-parameters.txt
-> > +++ b/Documentation/admin-guide/kernel-parameters.txt
-> > @@ -1828,6 +1828,13 @@
-> >                         backtraces on all cpus.
-> >                         Format: 0 | 1
-> >
-> > +       hardlockup_detector=
-> > +                       [perf, buddy] Selects the hard lockup detector to use at
-> > +                       boot time.
-> > +                       Format: <string>
-> > +                       - "perf": Use the perf-based detector.
-> > +                       - "buddy": Use the buddy-based detector.
-> > +
-> >         hash_pointers=
-> >                         [KNL,EARLY]
-> >                         By default, when pointers are printed to the console
-> > diff --git a/include/linux/nmi.h b/include/linux/nmi.h
-> > index cf3c6ab408aa..9298980ce572 100644
-> > --- a/include/linux/nmi.h
-> > +++ b/include/linux/nmi.h
-> > @@ -100,6 +100,9 @@ void watchdog_hardlockup_check(unsigned int cpu, struct pt_regs *regs);
-> >  #endif
-> >
-> >  #if defined(CONFIG_HARDLOCKUP_DETECTOR_PERF)
-> > +void watchdog_perf_hardlockup_enable(unsigned int cpu);
-> > +void watchdog_perf_hardlockup_disable(unsigned int cpu);
-> > +extern int watchdog_perf_hardlockup_probe(void);
-> >  extern void hardlockup_detector_perf_stop(void);
-> >  extern void hardlockup_detector_perf_restart(void);
-> >  extern void hardlockup_config_perf_event(const char *str);
-> > @@ -120,6 +123,9 @@ void watchdog_hardlockup_disable(unsigned int cpu);
-> >  void lockup_detector_reconfigure(void);
-> >
-> >  #ifdef CONFIG_HARDLOCKUP_DETECTOR_BUDDY
-> > +void watchdog_buddy_hardlockup_enable(unsigned int cpu);
-> > +void watchdog_buddy_hardlockup_disable(unsigned int cpu);
-> > +int watchdog_buddy_hardlockup_probe(void);
-> >  void watchdog_buddy_check_hardlockup(int hrtimer_interrupts);
-> >  #else
-> >  static inline void watchdog_buddy_check_hardlockup(int hrtimer_interrupts) {}
-> > diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-> > index 80b56c002c7f..85451d24a77d 100644
-> > --- a/kernel/watchdog.c
-> > +++ b/kernel/watchdog.c
-> > @@ -55,6 +55,37 @@ unsigned long *watchdog_cpumask_bits = cpumask_bits(&watchdog_cpumask);
-> >
-> >  #ifdef CONFIG_HARDLOCKUP_DETECTOR
-> >
-> > +#ifdef CONFIG_HARDLOCKUP_DETECTOR_PERF
-> > +/* The global function pointers */
-> > +void (*watchdog_hardlockup_enable_ptr)(unsigned int cpu) = watchdog_perf_hardlockup_enable;
-> > +void (*watchdog_hardlockup_disable_ptr)(unsigned int cpu) = watchdog_perf_hardlockup_disable;
-> > +int (*watchdog_hardlockup_probe_ptr)(void) = watchdog_perf_hardlockup_probe;
-> > +#elif defined(CONFIG_HARDLOCKUP_DETECTOR_BUDDY)
-> > +void (*watchdog_hardlockup_enable_ptr)(unsigned int cpu) = watchdog_buddy_hardlockup_enable;
-> > +void (*watchdog_hardlockup_disable_ptr)(unsigned int cpu) = watchdog_buddy_hardlockup_disable;
-> > +int (*watchdog_hardlockup_probe_ptr)(void) = watchdog_buddy_hardlockup_probe;
-> > +#endif
-> > +
-> > +#ifdef CONFIG_HARDLOCKUP_DETECTOR_MULTIPLE
-> > +static char *hardlockup_detector_type = "perf"; /* Default to perf */
-> > +static int __init set_hardlockup_detector_type(char *str)
-> > +{
-> > +       if (!strncmp(str, "perf", 4)) {
-> > +               watchdog_hardlockup_enable_ptr = watchdog_perf_hardlockup_enable;
-> > +               watchdog_hardlockup_disable_ptr = watchdog_perf_hardlockup_disable;
-> > +               watchdog_hardlockup_probe_ptr = watchdog_perf_hardlockup_probe;
-> > +       } else if (!strncmp(str, "buddy", 5)) {
-> > +               watchdog_hardlockup_enable_ptr = watchdog_buddy_hardlockup_enable;
-> > +               watchdog_hardlockup_disable_ptr = watchdog_buddy_hardlockup_disable;
-> > +               watchdog_hardlockup_probe_ptr = watchdog_buddy_hardlockup_probe;
-> > +       }
-> > +       return 1;
-> > +}
-> > +
-> > +__setup("hardlockup_detector=", set_hardlockup_detector_type);
-> > +
-> > +#endif
-> > +
-> >  # ifdef CONFIG_SMP
-> >  int __read_mostly sysctl_hardlockup_all_cpu_backtrace;
-> >  # endif /* CONFIG_SMP */
-> > @@ -262,9 +293,17 @@ static inline void watchdog_hardlockup_kick(void) { }
-> >   * softlockup watchdog start and stop. The detector must select the
-> >   * SOFTLOCKUP_DETECTOR Kconfig.
-> >   */
-> > -void __weak watchdog_hardlockup_enable(unsigned int cpu) { }
-> > +void __weak watchdog_hardlockup_enable(unsigned int cpu)
-> > +{
-> > +       if (watchdog_hardlockup_enable_ptr)
-> > +               watchdog_hardlockup_enable_ptr(cpu);
-> > +}
-> >
-> > -void __weak watchdog_hardlockup_disable(unsigned int cpu) { }
-> > +void __weak watchdog_hardlockup_disable(unsigned int cpu)
-> > +{
-> > +       if (watchdog_hardlockup_disable_ptr)
-> > +               watchdog_hardlockup_disable_ptr(cpu);
-> > +}
-> >
-> >  /*
-> >   * Watchdog-detector specific API.
-> > @@ -275,6 +314,9 @@ void __weak watchdog_hardlockup_disable(unsigned int cpu) { }
-> >   */
-> >  int __weak __init watchdog_hardlockup_probe(void)
-> >  {
-> > +       if (watchdog_hardlockup_probe_ptr)
-> > +               return watchdog_hardlockup_probe_ptr();
-> > +
-> >         return -ENODEV;
-> >  }
-> >
-> > diff --git a/kernel/watchdog_buddy.c b/kernel/watchdog_buddy.c
-> > index ee754d767c21..390d89bfcafa 100644
-> > --- a/kernel/watchdog_buddy.c
-> > +++ b/kernel/watchdog_buddy.c
-> > @@ -19,15 +19,16 @@ static unsigned int watchdog_next_cpu(unsigned int cpu)
-> >         return next_cpu;
-> >  }
-> >
-> > -int __init watchdog_hardlockup_probe(void)
-> > +int __init watchdog_buddy_hardlockup_probe(void)
-> >  {
-> >         return 0;
-> >  }
-> >
-> > -void watchdog_hardlockup_enable(unsigned int cpu)
-> > +void watchdog_buddy_hardlockup_enable(unsigned int cpu)
-> >  {
-> >         unsigned int next_cpu;
-> >
-> > +       pr_info("ddddd %s\n", __func__);
-> >         /*
-> >          * The new CPU will be marked online before the hrtimer interrupt
-> >          * gets a chance to run on it. If another CPU tests for a
-> > @@ -58,7 +59,7 @@ void watchdog_hardlockup_enable(unsigned int cpu)
-> >         cpumask_set_cpu(cpu, &watchdog_cpus);
-> >  }
-> >
-> > -void watchdog_hardlockup_disable(unsigned int cpu)
-> > +void watchdog_buddy_hardlockup_disable(unsigned int cpu)
-> >  {
-> >         unsigned int next_cpu = watchdog_next_cpu(cpu);
-> >
-> > diff --git a/kernel/watchdog_perf.c b/kernel/watchdog_perf.c
-> > index 9c58f5b4381d..270110e58f20 100644
-> > --- a/kernel/watchdog_perf.c
-> > +++ b/kernel/watchdog_perf.c
-> > @@ -153,10 +153,12 @@ static int hardlockup_detector_event_create(void)
-> >   * watchdog_hardlockup_enable - Enable the local event
-> >   * @cpu: The CPU to enable hard lockup on.
-> >   */
-> > -void watchdog_hardlockup_enable(unsigned int cpu)
-> > +void watchdog_perf_hardlockup_enable(unsigned int cpu)
-> >  {
-> >         WARN_ON_ONCE(cpu != smp_processor_id());
-> >
-> > +       pr_info("ddddd %s\n", __func__);
-> > +
-> >         if (hardlockup_detector_event_create())
-> >                 return;
-> >
-> > @@ -172,7 +174,7 @@ void watchdog_hardlockup_enable(unsigned int cpu)
-> >   * watchdog_hardlockup_disable - Disable the local event
-> >   * @cpu: The CPU to enable hard lockup on.
-> >   */
-> > -void watchdog_hardlockup_disable(unsigned int cpu)
-> > +void watchdog_perf_hardlockup_disable(unsigned int cpu)
-> >  {
-> >         struct perf_event *event = this_cpu_read(watchdog_ev);
-> >
-> > @@ -257,10 +259,12 @@ bool __weak __init arch_perf_nmi_is_available(void)
-> >  /**
-> >   * watchdog_hardlockup_probe - Probe whether NMI event is available at all
-> >   */
-> > -int __init watchdog_hardlockup_probe(void)
-> > +int __init watchdog_perf_hardlockup_probe(void)
-> >  {
-> >         int ret;
-> >
-> > +       pr_info("ddddd %s\n", __func__);
-> > +
-> >         if (!arch_perf_nmi_is_available())
-> >                 return -ENODEV;
-> >
-> > diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> > index dc0e0c6ed075..443353fad1c1 100644
-> > --- a/lib/Kconfig.debug
-> > +++ b/lib/Kconfig.debug
-> > @@ -1167,36 +1167,33 @@ config HARDLOCKUP_DETECTOR
-> >  #
-> >  # Note that arch-specific variants are always preferred.
-> >  #
-> > -config HARDLOCKUP_DETECTOR_PREFER_BUDDY
-> > -       bool "Prefer the buddy CPU hardlockup detector"
-> > -       depends on HARDLOCKUP_DETECTOR
-> > -       depends on HAVE_HARDLOCKUP_DETECTOR_PERF && HAVE_HARDLOCKUP_DETECTOR_BUDDY
-> > -       depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
-> > -       help
-> > -         Say Y here to prefer the buddy hardlockup detector over the perf one.
-> > -
-> > -         With the buddy detector, each CPU uses its softlockup hrtimer
-> > -         to check that the next CPU is processing hrtimer interrupts by
-> > -         verifying that a counter is increasing.
-> > -
-> > -         This hardlockup detector is useful on systems that don't have
-> > -         an arch-specific hardlockup detector or if resources needed
-> > -         for the hardlockup detector are better used for other things.
-> > -
-> >  config HARDLOCKUP_DETECTOR_PERF
-> > -       bool
-> > +       bool "Enable perf-based hard lockup detector (preferred)"
-> >         depends on HARDLOCKUP_DETECTOR
-> > -       depends on HAVE_HARDLOCKUP_DETECTOR_PERF && !HARDLOCKUP_DETECTOR_PREFER_BUDDY
-> > +       depends on HAVE_HARDLOCKUP_DETECTOR_PERF
-> >         depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
-> >         select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
-> > +       help
-> > +         This detector uses a perf event on the CPU to detect when a CPU
-> > +         has become non-maskable interrupt (NMI) stuck. This is the
-> > +         preferred method on modern systems as it can detect lockups on
-> > +         all CPUs at the same time.
+> On 9/16/25 23:33, Shuai Xue wrote:
+>> The AER driver has historically avoided reading the configuration space of
+>> an endpoint or RCiEP that reported a fatal error, considering the link to
+>> that device unreliable. Consequently, when a fatal error occurs, the AER
+>> and DPC drivers do not report specific error types, resulting in logs like:
+>>
+>>     pcieport 0015:00:00.0: EDR: EDR event received
+>>     pcieport 0015:00:00.0: EDR: Reported EDR dev: 0015:00:00.0
+>>     pcieport 0015:00:00.0: DPC: containment event, status:0x200d, ERR_FATAL received from 0015:01:00.0
+>>     pcieport 0015:00:00.0: AER: broadcast error_detected message
+>>     pcieport 0015:00:00.0: AER: broadcast mmio_enabled message
+>>     pcieport 0015:00:00.0: AER: broadcast resume message
+>>     pcieport 0015:00:00.0: pciehp: Slot(21): Link Down/Up ignored
+>>     pcieport 0015:00:00.0: AER: device recovery successful
+>>     pcieport 0015:00:00.0: EDR: DPC port successfully recovered
+>>     pcieport 0015:00:00.0: EDR: Status for 0015:00:00.0: 0x80
+>>
+>> AER status registers are sticky and Write-1-to-clear. If the link recovered
+>> after hot reset, we can still safely access AER status and TLP header of the
+>> error device. In such case, report fatal errors which helps to figure out the
+>> error root case.
+>>
+>> After this patch, the logs like:
+>>
+>>     pcieport 0015:00:00.0: EDR: EDR event received
+>>     pcieport 0015:00:00.0: EDR: Reported EDR dev: 0015:00:00.0
+>>     pcieport 0015:00:00.0: DPC: containment event, status:0x200d, ERR_FATAL received from 0015:01:00.0
+>>     pcieport 0015:00:00.0: AER: broadcast error_detected message
+>>     vfio-pci 0015:01:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Transaction Layer, (Receiver ID)
+>>     pcieport 0015:00:00.0: pciehp: Slot(21): Link Down/Up ignored
+>>     vfio-pci 0015:01:00.0:   device [144d:a80a] error status/mask=00001000/00400000
+>>     vfio-pci 0015:01:00.0:    [12] TLP                    (First)
+>>     vfio-pci 0015:01:00.0: AER:   TLP Header: 0x4a004010 0x00000040 0x01000000 0xffffffff
+>>     pcieport 0015:00:00.0: AER: broadcast mmio_enabled message
+>>     pcieport 0015:00:00.0: AER: broadcast resume message
+>>     pcieport 0015:00:00.0: AER: device recovery successful
+>>     pcieport 0015:00:00.0: EDR: DPC port successfully recovered
+>>     pcieport 0015:00:00.0: EDR: Status for 0015:00:00.0: 0x80
+>>
+>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>> ---
+>>   drivers/pci/pci.h      |  3 ++-
+>>   drivers/pci/pcie/aer.c | 11 +++++++----
+>>   drivers/pci/pcie/dpc.c |  2 +-
+>>   drivers/pci/pcie/err.c | 11 +++++++++++
+>>   4 files changed, 21 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+>> index de2f07cefa72..b8d364545e7d 100644
+>> --- a/drivers/pci/pci.h
+>> +++ b/drivers/pci/pci.h
+>> @@ -629,7 +629,8 @@ struct aer_err_info {
+>>       struct pcie_tlp_log tlp;    /* TLP Header */
+>>   };
+>> -int aer_get_device_error_info(struct aer_err_info *info, int i);
+>> +int aer_get_device_error_info(struct aer_err_info *info, int i,
+>> +                  bool link_healthy);
+>>   void aer_print_error(struct aer_err_info *info, int i);
+>>   int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
+>> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+>> index e286c197d716..157ad7fb44a0 100644
+>> --- a/drivers/pci/pcie/aer.c
+>> +++ b/drivers/pci/pcie/aer.c
+>> @@ -1351,12 +1351,14 @@ EXPORT_SYMBOL_GPL(aer_recover_queue);
+>>    * aer_get_device_error_info - read error status from dev and store it to info
+>>    * @info: pointer to structure to store the error record
+>>    * @i: index into info->dev[]
+>> + * @link_healthy: link is healthy or not
+>>    *
+>>    * Return: 1 on success, 0 on error.
+>>    *
+>>    * Note that @info is reused among all error devices. Clear fields properly.
+>>    */
+>> -int aer_get_device_error_info(struct aer_err_info *info, int i)
+>> +int aer_get_device_error_info(struct aer_err_info *info, int i,
+>> +                  bool link_healthy)
+>>   {
+>>       struct pci_dev *dev;
+>>       int type, aer;
+>> @@ -1387,7 +1389,8 @@ int aer_get_device_error_info(struct aer_err_info *info, int i)
+>>       } else if (type == PCI_EXP_TYPE_ROOT_PORT ||
+>>              type == PCI_EXP_TYPE_RC_EC ||
+>>              type == PCI_EXP_TYPE_DOWNSTREAM ||
+>> -           info->severity == AER_NONFATAL) {
+>> +           info->severity == AER_NONFATAL ||
+>> +           (info->severity == AER_FATAL && link_healthy)) {
+>>           /* Link is still healthy for IO reads */
+>>           pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
+>> @@ -1420,11 +1423,11 @@ static inline void aer_process_err_devices(struct aer_err_info *e_info)
+>>       /* Report all before handling them, to not lose records by reset etc. */
+>>       for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
+>> -        if (aer_get_device_error_info(e_info, i))
+>> +        if (aer_get_device_error_info(e_info, i, false))
+>>               aer_print_error(e_info, i);
+>>       }
+>>       for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
+>> -        if (aer_get_device_error_info(e_info, i))
+>> +        if (aer_get_device_error_info(e_info, i, false))
+>>               handle_error_source(e_info->dev[i], e_info);
+>>       }
+>>   }
+>> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+>> index f6069f621683..21c4e8371279 100644
+>> --- a/drivers/pci/pcie/dpc.c
+>> +++ b/drivers/pci/pcie/dpc.c
+>> @@ -284,7 +284,7 @@ struct pci_dev *dpc_process_error(struct pci_dev *pdev)
+>>           pci_warn(pdev, "containment event, status:%#06x: unmasked uncorrectable error detected\n",
+>>                status);
+>>           if (dpc_get_aer_uncorrect_severity(pdev, &info) &&
+>> -            aer_get_device_error_info(&info, 0)) {
+>> +            aer_get_device_error_info(&info, 0, false)) {
+>>               aer_print_error(&info, 0);
+>>               pci_aer_clear_nonfatal_status(pdev);
+>>               pci_aer_clear_fatal_status(pdev);
+>> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+>> index de6381c690f5..744d77ee7271 100644
+>> --- a/drivers/pci/pcie/err.c
+>> +++ b/drivers/pci/pcie/err.c
+>> @@ -196,6 +196,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>>       struct pci_dev *bridge;
+>>       pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
+>>       struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
+>> +    struct aer_err_info info;
+>>       /*
+>>        * If the error was detected by a Root Port, Downstream Port, RCEC,
+>> @@ -223,6 +224,15 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>>               pci_warn(bridge, "subordinate device reset failed\n");
+>>               goto failed;
+>>           }
+>> +
+>> +        info.dev[0] = dev;
+>> +        info.level = KERN_ERR;
+>> +        info.severity = AER_FATAL;
+>> +        /* Link recovered, report fatal errors of RCiEP or EP */
+>> +        if ((type == PCI_EXP_TYPE_ENDPOINT ||
+>> +             type == PCI_EXP_TYPE_RC_END) &&
+>> +            aer_get_device_error_info(&info, 0, true))
+>> +            aer_print_error(&info, 0);
+>>       } else {
+>>           pci_walk_bridge(bridge, report_normal_detected, &status);
+>>       }
+>> @@ -259,6 +269,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>>       if (host->native_aer || pcie_ports_native) {
+>>           pcie_clear_device_status(dev);
+>>           pci_aer_clear_nonfatal_status(dev);
+>> +        pci_aer_clear_fatal_status(dev);
 > 
-> I'd say this option should be the default for kernel developers but
-> shouldn't be used by default to free the perf event and due to the
-> extra power overhead.
+> Above change looks unrelated to dumping the error info. It would be better if
+> you move it to a separate patch.
 > 
-> Thanks,
-> Ian
-> 
-> >  config HARDLOCKUP_DETECTOR_BUDDY
-> > -       bool
-> > +       bool "Enable buddy-based hard lockup detector"
-> >         depends on HARDLOCKUP_DETECTOR
-> >         depends on HAVE_HARDLOCKUP_DETECTOR_BUDDY
-> > -       depends on !HAVE_HARDLOCKUP_DETECTOR_PERF || HARDLOCKUP_DETECTOR_PREFER_BUDDY
-> >         depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
-> >         select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
-> > +       help
-> > +         This is an alternative lockup detector that uses a heartbeat
-> > +         mechanism between CPUs to detect when one has stopped responding.
-> > +         It is less precise than the perf-based detector and cannot detect
-> > +         all-CPU lockups, but it does not require a perf counter.
-> > +
-> > +config CONFIG_HARDLOCKUP_DETECTOR_MULTIPLE
-> > +       bool
-> > +       depends on HARDLOCKUP_DETECTOR_PERF && HARDLOCKUP_DETECTOR_BUDDY
-> >
-> >  config HARDLOCKUP_DETECTOR_ARCH
-> >         bool
-> > --
-> > 2.43.0
-> >
 
+Hi, Kuppuswamy,
+
+Thanks for quick reply and valueable comments.
+Sure, I will add two new separate patches.
+
+The first is to use pcie_aer_is_native() to check for native AER control.
+
+--------- patch 1 start ------
+
+Subject: [PATCH v6 4/5] PCI/ERR: Use pcie_aer_is_native() to check for native AER control
+
+Replace the manual checks for native AER control with the
+pcie_aer_is_native() helper, which provides a more robust way
+to determine if we have native control of AER.
+
+No functional changes intended.
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+---
+  drivers/pci/pcie/err.c | 3 +--
+  1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+index 1397f62f13dc..86624ae61cb6 100644
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -195,7 +195,6 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+  	int type = pci_pcie_type(dev);
+  	struct pci_dev *bridge;
+  	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
+-	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
+  	struct aer_err_info info;
+
+  	/*
+@@ -266,7 +265,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+  	 * it is responsible for clearing this status.  In that case, the
+  	 * signaling device may not even be visible to the OS.
+  	 */
+-	if (host->native_aer || pcie_ports_native) {
++	if (pcie_aer_is_native(dev)) {
+  		pcie_clear_device_status(dev);
+  		pci_aer_clear_nonfatal_status(dev);
+  	}
 -- 
-Jinchao
+
+--------- patch 1 end ------
+
+The second is clear AER fatal status for err_dev:
+
+--------- patch 2 start ------
+
+Subject: [PATCH v6 5/5] PCI/AER: Clear both AER fatal and non-fatal status
+
+The DPC driver clears AER fatal status for the port that reported the
+error, but not for the downstream device that deteced the error.  The
+current recovery code only clears non-fatal AER status, leaving fatal
+status bits set in the error device.
+
+Use pci_aer_raw_clear_status() to clear both fatal and non-fatal error
+status in the error device, ensuring all AER status bits are properly
+cleared after recovery.
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+---
+  drivers/pci/pcie/err.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+index 86624ae61cb6..96d99eaf13d2 100644
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -267,7 +267,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+  	 */
+  	if (pcie_aer_is_native(dev)) {
+  		pcie_clear_device_status(dev);
+-		pci_aer_clear_nonfatal_status(dev);
++		pci_aer_raw_clear_status(dev);
+  	}
+
+  	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
+-- 
+2.39.3
+
+--------- patch 2 end ------
+
+I can also squash these two patches into one. Which way do you prefer?
+
+Thanks.
+Shuai
+
+
+
 
