@@ -1,64 +1,138 @@
-Return-Path: <linuxppc-dev+bounces-12436-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12437-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD752B8B784
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Sep 2025 00:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A137CB8BDD6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Sep 2025 05:13:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cT6bJ4wydz2yDr;
-	Sat, 20 Sep 2025 08:28:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cTDwg25C9z2yyx;
+	Sat, 20 Sep 2025 13:13:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758320892;
-	cv=none; b=N+vIXjG0CJfINms5a2LdvQaq7bbSj5Tq2WYysl2VgWipcBnGoz2RcR3B3zutNV2XfOWJDxydGjxdOr9eyI2fpROl2X8IdOJz2rzZVfYO302GfcGJqlSK+5dxh76yaikjsYt7zXuMUkEhpX/MOIaIeBGarpC+RHnVznsTG8nSVuN9M09sVs8YFzS7d1KAOVPmz/cGRBHa8RJcyyk37hMrRYycwiDtMSBE+Wfx/4RR9t2uNzNYEr9ae+xO80PC/TSmahdNUV1hgAfZDgf9spUbbLP4VWtt49RK3ABTudIzwxzhNiHryDTTDXhWaybMT1ZMAimmXWQwLOPWF8JbEAIMWQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758225503;
+	cv=none; b=WIEj2NxfXQRdDJc8CMAQNM6AnsnOUkIPByFX8Mak3UgDAeP8RQE5MpKCdacOArM8WMiLTYGrVAzB2uPzBr3rfpmt6vGeBMMKMeMCmvCaaJaLG4b16f5H/F9B4l+dR1j1wY7puE9POfelK7++BEAn0NhryKFJXZRoFWnRY0YTPBkiLlFzsSUzxhhghCf0Nnxy4eobxT8yXOpP3bPHBIHGsQW+dtbhFM4bKd8Wx/Cky3Y4ThrsKQ44F4KX2GZov+xh4Yd7FY3EVAZbhUko3l6lxeLDUO58BNsTJbFtNhXJeABjCAS5ixjEF6HtdWcKiKYGqniESqvwwvRcNNZAh7JphA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758320892; c=relaxed/relaxed;
-	bh=q5k0pAHpGk5J40AE2Yfvv+Ov14heouw97Y5iCG2zpaM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dLxObyPDZ3G28Nq95yM8McplECuaonCBpkPNQcUX7fvWZdJJYxSjdX2m8P3GAIKWCCYBdrWPUorwDB/eAILxYCEyqdubVo0HBonn1+AeK7+I1DobGeOAFwSjgorp8IfkCWwvDkV7sTaqhg9oGM/BHXHPmfMJU65VlbS4XT5oo2uxzIWoU+ohgasYIrjWCYYa/eNTCYz+ep3ct2epIwv2S9f+ge9SYGqvwhdiMOFxfFTTPfCA8Eveev2uFvkBRNY+FsCUZs/8oqA5FfQRZ8yJQRwQQPjAWlMzrSJnw94tdr7rLu6AgG+6yxmo+KeAAXmNs23Y5YsugvYxMSPthlDRrQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F8b5++pT; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1758225503; c=relaxed/relaxed;
+	bh=9McvDjxp1cOQ8m8DQ7zr8KAOkClRv+R613f7KwPZqLk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jDeBgusssYRKprNgDm6vU3bzY/+1mOGgSeg00JCkBnOoEZCxcRfNV/t4c8jl8gSM6qZ94/qBrLx+C2kZLqEQlrMnMXBEa4VkhvV8ITxqYrdiGEJtDjs6gU2ohymuGvWmD7QcaxutOOhJtCDnI5A77Brgvhvp9z0Rnyp/34DBiu/WqHVTIZG6BydgezbjUxHqWQs9y3/2yxNd1mQikICwH9Q5DK+8yKMEbSrYzfsepQTCjvYWY7CUHnQ4pQNZ48Q1xjToZbNazgdB6gEM/Em1bv+MfcFeSQA+7id5bbIIT+7luHnKF7Y81JXP65fruQS6BTN54dWhPyR1tib/Vpv+sQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Ng8eWGLK; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62b; helo=mail-ej1-x62b.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F8b5++pT;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Ng8eWGLK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62b; helo=mail-ej1-x62b.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cT6bJ0psqz2xck
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Sep 2025 08:28:12 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 46B6F60194;
-	Fri, 19 Sep 2025 22:28:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B311C4CEF0;
-	Fri, 19 Sep 2025 22:28:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758320889;
-	bh=Y84KteTHYJ4DAZ8QIqjiQleYtmkFVDSOiUlD/F/ayqc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F8b5++pTwDpYbFDh6mS5iqYWkGHN1t6Xtia5PUSoL/e9NMLxXXg2Ty9uHcjgzNR9o
-	 DuJUHFeWkFVe25nvOb54iu52ojHitqvM+/9JZiVJDkK8Y6rn1rKvU9DCHkr+Htca/C
-	 UVyHpXQ7lABHJ3p9HEaclQ1oShkL7r5pH7axcuMVI0L38vWZNROwU8bB1X9PlN6ckO
-	 8BG6+r1hh0PNZWTJyw1R5Ax16NqMYa3wgpz/vtYGEOMGycqkqAJZYvfamSORVv0OQd
-	 h2zR8Z9pMDSyjRO0XiNCh8S7Zcs/RmA9dZFVBB6wwoN/fRPIm+sWCKnfbdvTaes1e6
-	 JngcGHeOhYxGA==
-Date: Fri, 19 Sep 2025 15:28:04 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: clang-built-linux <llvm@lists.linux.dev>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	lkft-triage@lists.linaro.org,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: clang nightly builds failing on PowerPc
-Message-ID: <20250919222804.GA44805@ax162>
-References: <CA+G9fYsJq0sPC+q6vLNKUgBqCGmmjDrfeP4R1-95Eu28FJRY_A@mail.gmail.com>
- <20230612185424.GA2891387@dev-arch.thelio-3990X>
- <CA+G9fYtX6YNqmz9vxJxa5cA5Uf2rr=RNM0nkoTzRpg79Azp2tA@mail.gmail.com>
- <CA+G9fYvmqz3nQ=Cgs=7J6vtRj=OhbNzgkLPmxxN+vOBTU=9zVA@mail.gmail.com>
- <aM071XHb5cppdEKK@stanley.mountain>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSRJt11f6z30T8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 05:58:21 +1000 (AEST)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-b04ba58a84fso229632366b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Sep 2025 12:58:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758225496; x=1758830296; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9McvDjxp1cOQ8m8DQ7zr8KAOkClRv+R613f7KwPZqLk=;
+        b=Ng8eWGLKRuuD1qR3GEgf8oDnF+Cg7S8Jzn/XvIEXm6IPNJnnC9J+b9s7FyYUmrR/nL
+         cbpBjpXKD2qFB5GMxoSe2Z/kCkuaXDsF6FDPjGbTjzwBi4TF970qOxUqLhcd6qWjym+1
+         8dEkEcVrlZRnrrXMleyIkMi/Wqn3ZHuhutHyTtbTlg7nB5h7IS/alMWj0H8IfMN7pMpv
+         ypA1tx7NM7CaWMeqwrVQEmgFsHeI4oFK0B7e2CNFcOKQuMndV5ZMUFxIcL6pifGJSh0H
+         jm2GV1fz4ODhBT9FD1xxffGBJYVDS/OSd+8ooqEfeAxXamgveVcs2LlUiHGKUWtY7sWd
+         fsNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758225496; x=1758830296;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9McvDjxp1cOQ8m8DQ7zr8KAOkClRv+R613f7KwPZqLk=;
+        b=QNrEwNoMAjn6ufUSXgNBmHxV6YbGigTKkW8mxj0LzHDUfSbvO8MxMUEGXBaOLUW+99
+         SsU9d1WB7BPLWXrKPjDt9EaWOjiArtpVoEjPtdzCJZKKznFYZV06ALTUjlzJ5O/iat0P
+         hzzSoxdiy4CS9lNhGvlXbL12dvYle2MgIcqf06YxQ1amAh4Xc65ZxosP/y//usumGt0G
+         /bQiZs2vgcgzgJpsdMfa1UodUbujdN9te1p45R4m7DEi/MwsCs6DV0bx6JIBVS481x2Z
+         sNZugohE8WBu/NTx8msDzQMejvsoT718HCj1ntyc8jH7mTqg+zcXRzoVqSAlo8fY8ef/
+         lC8g==
+X-Forwarded-Encrypted: i=1; AJvYcCWyNc3QdgqvZf2qZeFJ6A+R+41BfnLSugJIbZxR1HTr6sJmDiKPDPinvF9CHjH7EcpmwhvGi+Bbo1kx6tY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzdDtkN0+UlkFUzPGtbCMCSd8FH009ZpJh5P5wnaI1SFQTld/xF
+	S5nA+Am9O/1hk4JSqdYJ3Vm2wwWPqAQiNTHPJ5pEtSRtSyFJdFyXUDWU
+X-Gm-Gg: ASbGncsV0FX5bouVK7yqBt+onjfrn0ogH9oSjB841AB2I0FOH4Sif45T0gG7JlJKqhB
+	9PEL6RH0s3SQXGHcxuAVCp9koAFeLGJbWRbWl1qYAWcVMMGtFZq86y3UFpseXrBQc1EM0fVLEoh
+	kEBtM7BErsVl0F4QbfeEPsuq7Se6CFKem2a2KOKxwXLOGRMykLsb/zIvryW254OZaauKZSyeeF3
+	p/s+UwMNRLkNUIXSG5uBEPfxHwoHUXR8sPpXZu6h9VoSv7JpIdaXV6uN/r/p/1k4A6AITafZblT
+	UkBWSS+ziHwLO8Pk9wJhn8OphrVMpvctcKcxY8eHA+ykCmYxTbUTZoU/neNh2EQY8saXMPkNjWl
+	iDvtiNEGa1Q/sDPUNmn+sdlro7jryDxkZuw2ktw==
+X-Google-Smtp-Source: AGHT+IH2NBu6L+bASXNqg9sJUcZ42MFCB2aqzEFiqoDEW6um54A4CtHcJnO37auTgFbi6nwycKDm8A==
+X-Received: by 2002:a17:907:a089:b0:b19:969a:86 with SMTP id a640c23a62f3a-b24f35aa177mr45885966b.37.1758225496090;
+        Thu, 18 Sep 2025 12:58:16 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b1fd1101c44sm264530466b.82.2025.09.18.12.58.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Sep 2025 12:58:15 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: nschichan@freebox.fr
+Cc: akpm@linux-foundation.org,
+	andy.shevchenko@gmail.com,
+	axboe@kernel.dk,
+	brauner@kernel.org,
+	cyphar@cyphar.com,
+	devicetree@vger.kernel.org,
+	ecurtin@redhat.com,
+	email2tema@gmail.com,
+	graf@amazon.com,
+	gregkh@linuxfoundation.org,
+	hca@linux.ibm.com,
+	hch@lst.de,
+	hsiangkao@linux.alibaba.com,
+	initramfs@vger.kernel.org,
+	jack@suse.cz,
+	julian.stecklina@cyberus-technology.de,
+	kees@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-alpha@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org,
+	linux-csky@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev,
+	mcgrof@kernel.org,
+	mingo@redhat.com,
+	monstr@monstr.eu,
+	mzxreary@0pointer.de,
+	patches@lists.linux.dev,
+	rob@landley.net,
+	safinaskar@gmail.com,
+	sparclinux@vger.kernel.org,
+	thomas.weissschuh@linutronix.de,
+	thorsten.blum@linux.dev,
+	torvalds@linux-foundation.org,
+	tytso@mit.edu,
+	viro@zeniv.linux.org.uk,
+	x86@kernel.org
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+Date: Thu, 18 Sep 2025 22:58:06 +0300
+Message-ID: <20250918195806.6337-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250918152830.438554-1-nschichan@freebox.fr>
+References: <20250918152830.438554-1-nschichan@freebox.fr>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,34 +146,25 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aM071XHb5cppdEKK@stanley.mountain>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Dan,
+> When booting with root=/dev/ram0 in the kernel commandline,
+> handle_initrd() where the deprecation message resides is never called,
+> which is rather unfortunate (init/do_mounts_initrd.c):
 
-On Fri, Sep 19, 2025 at 02:17:41PM +0300, Dan Carpenter wrote:
-> Hi the Clang nightly builds are failing on PowerPC with the
-> ppc64e_defconfig.  They started failing on Sept 11.  Clang is failing on
-> PowerPC in both linux-next and stable so it seems like something changed
-> in Clang and not the kernel.
-> 
-> Unfortunately I don't have ready access to the /tmp/vgetrandom-fef220.c
-> file that was generated, but hopefully these logs are enough to reproduce
-> the issue.
+Yes, this is unfortunate.
 
-Indeed, thanks a lot for the report. I was able to reproduce this
-locally, bisect LLVM to find the problematic commit, and report it
-upstream:
+I personally still think that initrd should be removed.
 
-https://github.com/llvm/llvm-project/pull/157206#issuecomment-3313700961
+I suggest using workaround I described in cover letter.
 
-Hopefully it can be resolved quickly.
+Also, for unknown reasons I didn't get your letter in my inbox.
+(Not even in spam folder.) I ocasionally found it on lore.kernel.org .
 
-Cheers,
-Nathan
+-- 
+Askar Safin
 
