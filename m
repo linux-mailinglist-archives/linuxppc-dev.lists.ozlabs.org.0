@@ -1,59 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-12399-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12400-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35700B86E9B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Sep 2025 22:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B25BB874AA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Sep 2025 00:50:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSS5C6RMyz2yrf;
-	Fri, 19 Sep 2025 06:33:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSW7d5W33z2xnx;
+	Fri, 19 Sep 2025 08:50:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758227599;
-	cv=none; b=TjfAlQNpJue8rd8xhoTA99XYh2M4r3Simw5sug+V56UHISGsfyyV3u89ycCXmrWY8J1YvGsyBqSeqq1CD8tF2tcNeP+NeYXkYT6H4o5DnnBNoN7XPAZfBs9SyiIi6GaD+psVS2XA571wenLXVaodNMMcAzHRh3r+DbM3Ml1qx5mnK9hdX5usQGwfJ+2aLAYxVsF5XP7S4PUSojIZnTMpJVzJz3YKMiCNopSY+iG50Y5rhm7IORGQz7sEv8ZCpmVySEGge/60yayfto+nvVyYG82pFs2tNDhhfs+3crypJalnU5rh2tan770NyXLWCH+bMZhvUkdDZXLrTmoUjwpqwQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758235837;
+	cv=none; b=noAiKBwkeaUu1fchUrdAGR3iGb/5R8INon3xyjo9hBrF+DX3qIzo7K3e5FqSz+rHjkwffcTzdg1omYIA+9ta2zpfChl5H8nJ9j/0ynoINVwrYgsUE86IiJWpI+cIqKlap6hY2Yr3a6bW16MsWVTLonnjkTXlfVha9rFwnCt440xb1XShJdz3PfR5pOUzIThIlaSLvC7BKQnd2xO2pRuFxXCTPxjt4m74IBO/UoFnfNKs0G6TaszAodjdCEQB5obdwXDyvlwAkQt6jnGJiyaXsh7drlc51gQoj0MXDUWujYXso/1vAmK/f9garcl+27unX8lXoJppgNId03Kgm6EQYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758227599; c=relaxed/relaxed;
-	bh=Z0kfvhZYxFLIJhuIR5/Nd2z7/kUbqP2WTpmGSZ6UPTU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=OXoykaZSfLe0DKIzGLeTCphxacFnxYS+ddvVY4XOi98y2nWktxDltGVzYUX/AUlU4Dbylsz5a6Kqoss7jDGvjrMfwYpZO6FuOdRs9a6Wu4W2y3VOz7jKg8NOGggDXrVbcg2fsTRtS5yCjpPNYPxepp2VPQEDgWION2kFHUWSzEbBpI7QZ+NZBZtgaAx5EIvTwrxV3CX4zH5EatyEv62Ww6xO2oZM41UJIFKWEkQ2CXiw03mwae79YZGNXoQIFUs/eot5EtWXLkTGo97VKyYxfI5X7I8ybPCIUp8yKsjnlJ61OVmHcR32KnRXFQsLg//8acpcYqwO6KGOWiBgZNhzew==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jcDzXY7J; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jcDzXY7J;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSS5C1fnRz2xgQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 06:33:19 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 79A09406D3;
-	Thu, 18 Sep 2025 20:33:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AFAC4CEE7;
-	Thu, 18 Sep 2025 20:33:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758227597;
-	bh=b17n9gfNGwudyqoVogCZ25zF5jUPs86Xp8NNXdzWfmY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=jcDzXY7JtAX2Qmrs2oRTx+KHA+oMbI+x0iczcggT04iPXxgl4tymT0b1xtbun0jZJ
-	 6V/NCODn1RjsB1kDqDGFMqbZRiE+DbrqynsDrIn2xKaToFSnrwVonZpD67skulBnvw
-	 Djns0nbgerx7Q/Know0OIZRd3EYSsYGITCm2iIglEqwBOAUi2rlXvcw8PVhp4pRl+q
-	 iKhTWC2TScSNclu6gWyoH8oTdaC+3dYfNtr8xef51l8GqZwwrDS+cHYG0wPQ4LH0LX
-	 ECPNqIpeF0BP5uM4ECR7uVnhMYmiseECEzrSsosxlyIuaqv3rPF7AyGSZqvJZZQMlf
-	 OcHdP1lOHikyA==
-Date: Thu, 18 Sep 2025 15:33:15 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: bhelgaas@google.com, mahesh@linux.ibm.com, mani@kernel.org,
-	Jonathan.Cameron@huawei.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, oohall@gmail.com,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 3/3] PCI/AER: Report fatal errors of RCiEP and EP if
- link recoverd
-Message-ID: <20250918203315.GA1920702@bhelgaas>
+	t=1758235837; c=relaxed/relaxed;
+	bh=DPFj/PUEJX2Mv5IIZorbPN+reFYeZuyiIswoEUsZNxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K+SBqJDTPekFys9OabWkatQ+6tFuPas0AIHY/8j1SkqDvWlz1JM5DfPbzlkyqUIAc0SEJtT81HYJR583GqRgjAQut4lsW9VplIZMuz8iurK2YC6i2GX0loxbZztdnfS0XjnZdkRb2PVyA8dlhRv3KtHjef4dJAayrArA7CscAXxxj9a+t3xG101XcJCBB8BukOPBipdClr/ZfaIp+d1LdB8ZTAeIZW9PmTtuYPce2i8s1AIgSUxMnoIkHLbC3gRAVbisSe0Q2JPbdhV7XVG5lsSeEEIfwX75dLnb4BPpjJv+mTVtSDXjdSf9R49r+LPIy/updpMNCpN/2dZDc/3mCA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSW7c6ZyBz2xlK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 08:50:36 +1000 (AEST)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cSLY10Mbrz9sfh;
+	Thu, 18 Sep 2025 18:23:33 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id sO3sKZP93SXY; Thu, 18 Sep 2025 18:23:32 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cSLY06MC6z9sff;
+	Thu, 18 Sep 2025 18:23:32 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C9AE08B776;
+	Thu, 18 Sep 2025 18:23:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 9SmYjYN9p3HL; Thu, 18 Sep 2025 18:23:32 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1D1588B767;
+	Thu, 18 Sep 2025 18:23:32 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Qiang Zhao <qiang.zhao@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH v6 0/7] Add support of IRQs to QUICC ENGINE GPIOs
+Date: Thu, 18 Sep 2025 18:23:20 +0200
+Message-ID: <cover.1758212309.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,32 +71,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917063352.19429-4-xueshuai@linux.alibaba.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758212605; l=2729; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=OgCnUIlKw1JxR7kjRn4Et9d8YymbVWaWOnW11EryMBs=; b=kJ17167SdnC2brfs/6ZVeip2FJrVuZWNePg7vhRzccMHLW4xR2hWSncCA8JgOKj0R2u6IENLD yr/kbkEH4dEBRTTs5kh8I0ABfpN+NWO5uki35VvaGdsWBxh54sMSOg9
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Sep 17, 2025 at 02:33:52PM +0800, Shuai Xue wrote:
-> The AER driver has historically avoided reading the configuration space of
-> an endpoint or RCiEP that reported a fatal error, considering the link to
-> that device unreliable. Consequently, when a fatal error occurs, the AER
-> and DPC drivers do not report specific error types, resulting in logs like:
-> 
-> 	pcieport 0015:00:00.0: EDR: EDR event received
-> 	pcieport 0015:00:00.0: EDR: Reported EDR dev: 0015:00:00.0
-> 	pcieport 0015:00:00.0: DPC: containment event, status:0x200d, ERR_FATAL received from 0015:01:00.0
-> 	pcieport 0015:00:00.0: AER: broadcast error_detected message
-> 	pcieport 0015:00:00.0: AER: broadcast mmio_enabled message
-> 	pcieport 0015:00:00.0: AER: broadcast resume message
-> 	pcieport 0015:00:00.0: pciehp: Slot(21): Link Down/Up ignored
-> 	pcieport 0015:00:00.0: AER: device recovery successful
-> 	pcieport 0015:00:00.0: EDR: DPC port successfully recovered
-> 	pcieport 0015:00:00.0: EDR: Status for 0015:00:00.0: 0x80
+The QUICC Engine provides interrupts for a few I/O ports. This is
+handled via a separate interrupt ID and managed via a triplet of
+dedicated registers hosted by the SoC.
 
-When you update this series, can you indent these messages with two
-spaces instead of a tab?  That will preserve a little space and also
-preserve the formatting when "git log" adds its own indentation.
+Implement an interrupt driver for those IRQs then add change
+notification capability to the QUICC ENGINE GPIOs.
+
+The number of GPIOs for which interrupts are supported depends on
+the microcontroller:
+- mpc8323 has 10 GPIOS supporting interrupts
+- mpc8360 has 28 GPIOS supporting interrupts
+- mpc8568 has 18 GPIOS supporting interrupts
+
+Changes in v6:
+- Changed mask local var to unsigned long instead of u32 to avoid build failure on 64 bits (patch 4)
+- Comments from Rob taken into account except the comment on fsl,<chip>-qe-pario-bank becoming fsl,chip-qe-pario-bank as I don't know what to do.
+
+Changes in v5:
+- Replaced new DT property "fsl,qe-gpio-irq-mask" by a mask encoded
+in the of_device_id table
+- Converted QE QPIO DT bindings to DT schema
+
+Changes in v4:
+- Removed unused headers
+- Using device_property_read_u32() instead of of_property_read_u32()
+
+Changes in v3:
+- Splited dt-bindings update out of patch "soc: fsl: qe: Add support of IRQ in QE GPIO"
+- Reordered DTS node exemples iaw dts-coding-style.rst
+
+Changes in v2:
+- Fixed warning on PPC64 build (Patch 1)
+- Using devm_kzalloc() instead of kzalloc (Patch 2)
+- Stop using of-mm-gpiochip (New patch 3)
+- Added fsl,qe-gpio-irq-mask propertie in DT binding doc (Patch 4)
+- Fixed problems reported by 'make dt_binding_check' (Patch 5)
+
+Christophe Leroy (7):
+  soc: fsl: qe: Add an interrupt controller for QUICC Engine Ports
+  soc: fsl: qe: Change GPIO driver to a proper platform driver
+  soc: fsl: qe: Drop legacy-of-mm-gpiochip.h header from GPIO driver
+  soc: fsl: qe: Add support of IRQ in QE GPIO
+  dt-bindings: soc: fsl: qe: Add an interrupt controller for QUICC
+    Engine Ports
+  dt-bindings: soc: fsl: qe: Convert QE GPIO to DT schema
+  dt-bindings: soc: fsl: qe: Add support of IRQ in QE GPIO
+
+ .../gpio/fsl,mpc8323-qe-pario-bank.yaml       |  72 ++++++
+ .../soc/fsl/cpm_qe/fsl,qe-ports-ic.yaml       |  58 +++++
+ .../bindings/soc/fsl/cpm_qe/qe/par_io.txt     |  26 +--
+ arch/powerpc/platforms/Kconfig                |   1 -
+ drivers/soc/fsl/qe/Makefile                   |   2 +-
+ drivers/soc/fsl/qe/gpio.c                     | 209 ++++++++++++------
+ drivers/soc/fsl/qe/qe_ports_ic.c              | 156 +++++++++++++
+ 7 files changed, 434 insertions(+), 90 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpio/fsl,mpc8323-qe-pario-bank.yaml
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ports-ic.yaml
+ create mode 100644 drivers/soc/fsl/qe/qe_ports_ic.c
+
+-- 
+2.49.0
+
 
