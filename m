@@ -1,84 +1,102 @@
-Return-Path: <linuxppc-dev+bounces-12426-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12432-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673E2B8A817
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Sep 2025 18:08:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E28B8B019
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Sep 2025 20:56:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSy991JGtz3cZp;
-	Sat, 20 Sep 2025 02:08:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cT1ts4d8Rz3bwk;
+	Sat, 20 Sep 2025 04:56:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758298109;
-	cv=none; b=EnCRoeViDv+aPsw5OD5h4phsRFeubuk59NewUfVMfbQjHJ+0LPFV8IZMoMGO1n7VnSHtIN9LtK2X2LvOyM8FktU474tQyooyoK4hGPik+coXfZQm1D2oVeduvb2T+/xiACpfc+Tc5eqicEw4/aW9GYktFuq+WAOKbKInblfr8AngvzAq+heBPascUaBxJrf9BbZ7YVg65iPeGIZQRUe1pxJ2RczMb7l0uVini0ylezMeVpTR5hZzi6aohcIXc83Otq+L4y8+m/S4zfg/zrk7OnRNPxybtX8VNHz8tdjAUK83sMDG4IcaSCVNyAf9NnVgd4VZYcGMO09PzE0tRCFUcQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758308181;
+	cv=none; b=BQ+ZiP1kwTouR22OjeK3BCr4d3zJfwO8ODEVYv7CKCkg2CiNFjqLBN8q8hEuByLvcV36xxFG4Dnbhhs3ASQezuOeDRecmIWFFjb9jB88GaTMq45Y5hI4NmwcayNP+dVrVwh37YU7MTl5BFzwmikZ6NUuIcZ+EDYJU+cmLP+ERR2lVWNhTn3l3lFaQfZpA0JR2i20aEA0xXsRIQxh5gTOFjpbE+MlbfGWtrLNOAe/RXFkx2lpnZhJp7Rrgg8Gcp3Flidfi5/XdB3KNc2Vd7+iPkOEUCv86mZL9FGNNvXx3p3J/awLeTx8SVU3oT5aZXDlDjCtd2Z4HIXHleIZquvERw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758298109; c=relaxed/relaxed;
-	bh=93+iChQy8k9w2vSLxjsMF2tpsbL6StUGENS3z0mFMo0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D749yYpjazS1jS8wLCNUUbQMPRe7VvlqpSLZu4SqjrtHR+1HAphnO8h7m47fZJVrTGGY4Vtb8XYC8qaW59oBSuy9TUU1ANecXbNPqLN3a7pQPFtj52ObIGog5gpnVXIDNQxMLBnFd6fLwbA7ztNOIraEclAj45RB4o1FLzsw/2hKM/8bOane1gNRq3RIPu+5pt0jYOK/O/jUMSQzSY4+fbcfvy1pAwY/T1Oy4eFMGb8vQm6QPDso4jPRExLuXC6flBe4gWCWS+TMq26SKqIIt6sVZXIpSzYQkgUCn0an1pN40hFmD+bMbYzZXTxPsYgNWXMobU7zw3x4qwZ1sbtztg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gxcwNWOd; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1758308181; c=relaxed/relaxed;
+	bh=lVj38TV6NFlRJUveEKKnf4vw+DN0Kar28r+mnlIexw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V51tuERiy5CTx6/rkI6W8Y9uKtmlAYmnXWDeQsqSFi/qeu316xfghLtzKf544pgW8VlF3EHYDKpNMXaaw3SBfH3xh2NOpJX0VTPyyg4173d1P0s9hJTXGxZTCRm0n0NYg/l+AIo/16kkroTIeEJ2Zgr/kqad+DcupebPleWGKKqN/kwYvAMr5NEvO8ZKHwKggBg9grH02Jn6McZCkGwdOLTqI6YjkB6Smd5AqjJt/i2dwtPoS6OoXlI9zzYXbxih3KBupj58RS4mwasTx+3CRB29/psDiZRerpYs+Zs7pFlFfNPHfyxe+sUG+t3kJqFLBIZQH1aPCnrXwehZ+ckTWw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZxszoSaQ; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dIB9OBQ0; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gxcwNWOd;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZxszoSaQ;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dIB9OBQ0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSy980mFnz3cYg
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Sep 2025 02:08:28 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 581BF60140;
-	Fri, 19 Sep 2025 16:08:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C8EC4CEF0;
-	Fri, 19 Sep 2025 16:08:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758298105;
-	bh=KR7+2nE82F6C0RiPmuqmiCYxfBNwhzjUQ6Re6K7PmkQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gxcwNWOdwyYYCt/Mr4IoNw/QjfiG4fCy9ykIixLtIZgzxpvEaTh0ZrsRzbEkVlnG2
-	 m8b1wOyRgj64SHlplGanM4IqWdr6Ywznq35IYlrDTPSiuH1HbSJA9OSV6F3cLQ0fmv
-	 gIfqZUpL6QTaZY7lchfgfbbV/HzPQ9GlWuIYB09YAq8LPsugW8lRkDPp3pD3pmqfjH
-	 MMDTa/BarqpIPeeM6zxgfbm5MTp42dkz6/ahu8QcAFUE+eO/S+U7a/1bN3BopMvk86
-	 +JRB492i+MxOTtI0yVlp8MJ781GY30PjuvtN+/6jEMPcnyQy8X2xhocLeJS5gf/FQl
-	 TeUW9JwC+yaOg==
-Date: Fri, 19 Sep 2025 10:08:21 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 00/16] dma-mapping: migrate to physical address-based
- API
-Message-ID: <aM1_9cS_LGl4GFC5@kbusch-mbp>
-References: <CGME20250909132821eucas1p1051ce9e0270ddbf520e105c913fa8db6@eucas1p1.samsung.com>
- <cover.1757423202.git.leonro@nvidia.com>
- <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
- <20250912090327.GU341237@unreal>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cT1tr36D0z2xpn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Sep 2025 04:56:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758308174;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lVj38TV6NFlRJUveEKKnf4vw+DN0Kar28r+mnlIexw0=;
+	b=ZxszoSaQ/aNernkoTLJg3I+OjMp0luGQgrmPDeD9cz+4JLQl29iwWiCDiGLldjuAWXz1nZ
+	1cq6BBJttKpqsdrQWGnJ1YEiyLgi/fP0zWl7xDRriYuWw5XJNk8h9qv9qo6Bnxt9t1NUua
+	NbdSWhQRo1DBQkFpaX0/dk4ypB6q0w0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758308175;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lVj38TV6NFlRJUveEKKnf4vw+DN0Kar28r+mnlIexw0=;
+	b=dIB9OBQ07EX3BPwIKmZZ9XeRFtE8UKDtLyKd3THchO5RdGdM1VnGqEGj2bqRPp/xJmIwA/
+	DheWlEhHDdkHpB1I/a0TnQVrbaLlTWeBIiMNZW0oZuI8YeIxVteEWkkj9oVI0szV7bDIKa
+	+A1siXp15900XaGjzpDybvJpUQ1L9h8=
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
+ [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-36-fDsCJamsMHirAI45o1FvDQ-1; Fri, 19 Sep 2025 14:56:07 -0400
+X-MC-Unique: fDsCJamsMHirAI45o1FvDQ-1
+X-Mimecast-MFC-AGG-ID: fDsCJamsMHirAI45o1FvDQ_1758308166
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-4198fcc4a80so4711165ab.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 11:56:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758308166; x=1758912966;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lVj38TV6NFlRJUveEKKnf4vw+DN0Kar28r+mnlIexw0=;
+        b=oDqks4GCHQ1iBOuvk2dyMJHr16aafkIfpBPDTARgigysEodsq6PtVpPi6cuNBLnhAS
+         GM6rPwe+iH9jh8DaeHH8sxHSeGVboeu3g6N8m6tUgZ1JCHoi65VmrU04l7zNhCaU6SwQ
+         0F55Zpgu1XIG5aWIM/JAny3s6obXFtqv7/Gk1MRh67pKcIGUQxOXSxPLbk/hYLS+s1qI
+         UIy+gRUtyh7btwiO+IRzL+ORNSxWEXJ5ARdf8aJF1U7OkgR3Nk7+XZxhQq0F3Zg5iH81
+         /O2CA7epVpoJkLz/2JHwbo9yXCG8DVAKzxNh0xQXdTAySSMeQGrPyxmhf9VWMmpcVwG3
+         TVtg==
+X-Forwarded-Encrypted: i=1; AJvYcCWsoqQh35VRIbVKZgrrk+QDUxV1zIQSO+Xxe5RrLOYJBUeDNjt9bYZcE5EJL47dXCPsXBmq9fWvwTYNGsI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyxkRMmLP0DtmWs6+1D0jOINbL1Ca0zpcyg2jH3elBjivxJuxYW
+	eujXtTe7JZWySqfLPonE0hUF5Azcm2CtmJjRW9FdhGhvpfLYVLq0kknAFIp/gVW04XKj9gejn78
+	sRZ2tUwTxEHQw8sdwVGltyjbreiXI7lVCI5RlEkHlS+jMXNHaSsGxEvVMXrW92IBzQXk=
+X-Gm-Gg: ASbGnctPS+jKs59gu2ok7tx6q+/jg2g0xNTh50fwu2ffAH2DLcHQXOiSGZuUOMTKvhm
+	1+XI8nYJ9aRwfdseiKJaL0jYhGReWs8cQeIaQYtRACNLhHCuUPI/4vifdIifxiVA6pSf4vRtOai
+	SL68HqnVRN3HS2k1Oav/ZUqjfjmjMrO6tYl91wbZWtuSGiORZ1WCL8c7W7R5CNBfzkVKC/XKIJ9
+	yphpJxmdedaX5mZ5OqN/RKkZLRh8wcQrSOcagvOTuHAerR2etOwdXtQ34h+WH9uYKahGgLKyQnJ
+	f7mrnoTA58OLukwG1XA2Cl5Gbnbo0UNs0XVVUUdWTVc=
+X-Received: by 2002:a92:c24a:0:b0:419:de32:2d01 with SMTP id e9e14a558f8ab-42481989234mr25313805ab.4.1758308166453;
+        Fri, 19 Sep 2025 11:56:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHeRMlVVwJSn2J+eoiOVihrmI8BY3L8aB3kwLEGCqd+cR5IVXI2iK+bf/xhrrP0TTZWi378yA==
+X-Received: by 2002:a92:c24a:0:b0:419:de32:2d01 with SMTP id e9e14a558f8ab-42481989234mr25313645ab.4.1758308165944;
+        Fri, 19 Sep 2025 11:56:05 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-53d539906dfsm2442600173.56.2025.09.19.11.56.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Sep 2025 11:56:05 -0700 (PDT)
+Date: Fri, 19 Sep 2025 12:56:03 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Timothy Pearson <tpearson@raptorengineering.com>
+Cc: kvm <kvm@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH] vfio/pci: Fix INTx handling on legacy DisINTx- PCI
+ devices
+Message-ID: <20250919125603.08f600ac.alex.williamson@redhat.com>
+In-Reply-To: <663798478.1707537.1757450926706.JavaMail.zimbra@raptorengineeringinc.com>
+References: <663798478.1707537.1757450926706.JavaMail.zimbra@raptorengineeringinc.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,77 +110,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250912090327.GU341237@unreal>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: MPqOU7YcjL9L3t9ex7Z_3EvDxG3NOJvdfZpslYIFQYM_1758308166
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Sep 12, 2025 at 12:03:27PM +0300, Leon Romanovsky wrote:
-> On Fri, Sep 12, 2025 at 12:25:38AM +0200, Marek Szyprowski wrote:
-> > >
-> > > This series does the core code and modern flows. A followup series
-> > > will give the same treatment to the legacy dma_ops implementation.
-> > 
-> > Applied patches 1-13 into dma-mapping-for-next branch. Let's check if it 
-> > works fine in linux-next.
+On Tue, 9 Sep 2025 15:48:46 -0500 (CDT)
+Timothy Pearson <tpearson@raptorengineering.com> wrote:
+
+> PCI devices prior to PCI 2.3 both use level interrupts and do not support
+> interrupt masking, leading to a failure when passed through to a KVM guest on
+> at least the ppc64 platform, which does not utilize the resample IRQFD. This
+> failure manifests as receiving and acknowledging a single interrupt in the guest
+> while leaving the host physical device VFIO IRQ pending.
 > 
-> Thanks a lot.
+> Level interrupts in general require special handling due to their inherently
+> asynchronous nature; both the host and guest interrupt controller need to
+> remain in synchronization in order to coordinate mask and unmask operations.
+> When lazy IRQ masking is used on DisINTx- hardware, the following sequence
+> occurs:
+>
+>  * Level IRQ assertion on host
+>  * IRQ trigger within host interrupt controller, routed to VFIO driver
+>  * Host EOI with hardware level IRQ still asserted
+>  * Software mask of interrupt source by VFIO driver
+>  * Generation of event and IRQ trigger in KVM guest interrupt controller
+>  * Level IRQ deassertion on host
+>  * Guest EOI
+>  * Guest IRQ level deassertion
+>  * Removal of software mask by VFIO driver
+> 
+> Note that no actual state change occurs within the host interrupt controller,
+> unlike what would happen with either DisINTx+ hardware or message interrupts.
+> The host EOI is not fired with the hardware level IRQ deasserted, and the
+> level interrupt is not re-armed within the host interrupt controller, leading
+> to an unrecoverable stall of the device.
+> 
+> Work around this by disabling lazy IRQ masking for DisINTx- INTx devices.
 
-Just fyi, when dma debug is enabled, we're seeing this new warning
-below. I have not had a chance to look into it yet, so I'm just
-reporting the observation.
+I'm not really following here.  It's claimed above that no actual state
+change occurs within the host interrupt controller, but that's exactly
+what disable_irq_nosync() intends to do, mask the interrupt line at the
+controller.  The lazy optimization that's being proposed here should
+only change the behavior such that the interrupt is masked at the call
+to disable_irq_nosync() rather than at a subsequent re-assertion of the
+interrupt.  In any case, enable_irq() should mark the line enabled and
+reenable the controller if necessary.
 
- DMA-API: nvme 0006:01:00.0: cacheline tracking EEXIST, overlapping mappings aren't supported
- WARNING: kernel/dma/debug.c:598 at add_dma_entry+0x26c/0x328, CPU#1: (udev-worker)/773
- Modules linked in: acpi_power_meter(E) loop(E) efivarfs(E) autofs4(E)
- CPU: 1 UID: 0 PID: 773 Comm: (udev-worker) Tainted: G            E    N  6.17.0-rc6-next-20250918-debug #6 PREEMPT(none)
- Tainted: [E]=UNSIGNED_MODULE, [N]=TEST
- pstate: 63400009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
- pc : add_dma_entry+0x26c/0x328
- lr : add_dma_entry+0x26c/0x328
- sp : ffff80009fe0f460
- x29: ffff80009fe0f470 x28: 0000000000000001 x27: 0000000000000001
- x26: ffff8000835d7f38 x25: ffff8000835d7000 x24: ffff8000835d7e60
- x23: 0000000000000000 x22: 0000000006e2cc00 x21: 0000000000000000
- x20: ffff800082e8f218 x19: ffff0000a908ff80 x18: 00000000ffffffff
- x17: ffff8000801972a0 x16: ffff800080197054 x15: 0000000000000000
- x14: 0000000000000000 x13: 0000000000000004 x12: 0000000000020006
- x11: 0000000030e4ef9f x10: ffff800083443358 x9 : ffff80008019499c
- x8 : 00000000fffeffff x7 : ffff800083443358 x6 : 0000000000000000
- x5 : 00000000000bfff4 x4 : 0000000000000000 x3 : ffff0000bb005ac0
- x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000bb005ac0
- Call trace:
-  add_dma_entry+0x26c/0x328 (P)
-  debug_dma_map_phys+0xc4/0xf0
-  dma_map_phys+0xe0/0x410
-  dma_map_page_attrs+0x94/0xf8
-  blk_dma_map_direct.isra.0+0x64/0xb8
-  blk_rq_dma_map_iter_next+0x6c/0xc8
-  nvme_prep_rq+0x894/0xa98
-  nvme_queue_rqs+0xb0/0x1a0
-  blk_mq_dispatch_queue_requests+0x268/0x3b8
-  blk_mq_flush_plug_list+0x90/0x188
-  __blk_flush_plug+0x104/0x170
-  blk_finish_plug+0x38/0x50
-  read_pages+0x1a4/0x3b8
-  page_cache_ra_unbounded+0x1a0/0x400
-  force_page_cache_ra+0xa8/0xd8
-  page_cache_sync_ra+0xa0/0x3f8
-  filemap_get_pages+0x104/0x950
-  filemap_read+0xf4/0x498
-  blkdev_read_iter+0x88/0x180
-  vfs_read+0x214/0x310
-  ksys_read+0x70/0x110
-  __arm64_sys_read+0x20/0x30
-  invoke_syscall+0x4c/0x118
-  el0_svc_common.constprop.0+0xc4/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x1a0/0x340
-  el0t_64_sync_handler+0x98/0xe0
-  el0t_64_sync+0x17c/0x180
- ---[ end trace 0000000000000000 ]---
+Also, contrary to above, when a device supports DisINT+ we're not
+manipulating the host controller.  We're able to mask the interrupt at
+the device.  MSI is edge triggered, we don't mask it, so it's not
+relevant to this discussion afaict.
+
+There may be good reason to disable the lazy masking behavior as you're
+proposing, but I'm not able to glean it from this discussion of the
+issue.
+
+> 
+> ---
+>  drivers/vfio/pci/vfio_pci_intrs.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+> index 123298a4dc8f..011169ca7a34 100644
+> --- a/drivers/vfio/pci/vfio_pci_intrs.c
+> +++ b/drivers/vfio/pci/vfio_pci_intrs.c
+> @@ -304,6 +304,9 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
+>  
+>  	vdev->irq_type = VFIO_PCI_INTX_IRQ_INDEX;
+>  
+> +	if (is_intx(vdev) && !vdev->pci_2_3)
+
+We just set irq_type, which is what is_intx() tests, how could it be
+anything other?  Thanks,
+
+Alex
+
+> +		irq_set_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
+> +
+>  	ret = request_irq(pdev->irq, vfio_intx_handler,
+>  			  irqflags, ctx->name, ctx);
+>  	if (ret) {
+> @@ -351,6 +354,8 @@ static void vfio_intx_disable(struct vfio_pci_core_device *vdev)
+>  	if (ctx) {
+>  		vfio_virqfd_disable(&ctx->unmask);
+>  		vfio_virqfd_disable(&ctx->mask);
+> +		if (!vdev->pci_2_3)
+> +			irq_clear_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
+>  		free_irq(pdev->irq, ctx);
+>  		if (ctx->trigger)
+>  			eventfd_ctx_put(ctx->trigger);
 
 
