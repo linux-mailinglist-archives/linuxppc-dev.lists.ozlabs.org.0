@@ -1,78 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-12411-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12412-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A59B87FFC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Sep 2025 08:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E7DB88226
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Sep 2025 09:18:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cSjMJ4lBgz30D3;
-	Fri, 19 Sep 2025 16:31:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cSkP223rjz30D3;
+	Fri, 19 Sep 2025 17:17:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758263484;
-	cv=none; b=esR2JFBgmYfaj/aarK/o3MRA0hazobJAJkd4+/ioFUm3t9btrTlFbW6DybAGQ335PdtqBY81woe/JN4A4d+Ihuh+rPjdMO0OA+kjoinLJCBJ60GfPyQR174ROv/4Y4jE8CvB6O4N1ZcvN8H7loYTjz0WBFjZwbP56P/sb1EZnQTOen0VecchFxonvqC0sgP1S/NwG/G70o6IvveOc7uEU2b5rBhu4R2tmBymsZ9nkh0zhL+ITkVTl7nrFMR4a1aOjraSpoUkdLuGwSKsY/P2uzMKAYUTYZ438sbFUzHca7XOJBiiNoLoIVPspavzFGSRDohf+b+A1/I6kuW3IfVrLg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.169
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758266278;
+	cv=none; b=ZLBKM/4KJ8pP0OJtCIi/QVWRkNVMVGziUtHivDa/2CwZLYdu4dzov3OQxiP6lwHS4wD5dxuATDPeS2RsjZcJ7rd9EY9D7sHEy050CWPN38Z+aY7zdtcC4rjcPCwXW/kSgxo+aBgZZkv54jKr37HJIOhO+l3z02cGJ6DkEe6m7J+ZAey+/2bsrLps1qqsQUtYb40OdbqH3dMRdfFjsyS/lYrB5mjBi3Q8qZq+cHDbIc0m8S35kW9ZibDiaOqswDyd3ARNuY5S7em/qqvhxjyzir3jtMLO9KFGyinhfLZz3k+oaSWmgE2Txjcgb0pqTp2e/c6Maw1Quy7DvzUVWJpl6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758263484; c=relaxed/relaxed;
-	bh=AKXTRUMWL+ox9rBx/hXoJNoCYAi39BF6mftgBjv8suY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MrtZpftimmQyfEkjRSW1xu822rMXIMztkmC0s8GZiE5hZw8UQMIRXLC+a6diYRUO+curkH8USQQ5H2Z+aJRm2tSbExPYkuIkD3+suHfQq+pGHUuC8NKx/An9Tsg9iEBKbqGSTIVVZ9p+qphMVN8f2rDQ6Ey2Sc/oftlLt463i9Osu3LRjcccghpb6oPxEGcaVgrEvHVm/qiU/FdqPFa7W2QCfEp5gSnkNhVM5Gpe4RtgSmGB9OPWXjPlHOnTSApA/FRkdoUsjkgEot9dnB3MCStCaIyyiKv42T/KGjii/3mlrU2JvK3iNuI2MrIkEucYMWcuhvAQ4UIaQxY7u1Sp0w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mk/ZD93M; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=borntraeger@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mk/ZD93M;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=borntraeger@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1758266278; c=relaxed/relaxed;
+	bh=jN8ls4Umh9EIXSEQoAkCyXxQ8L8mjN2Gdzzs4J/riyA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jRtRft0RcJtQQzCw8+oqWHFJi0wBnR9gCZBROz3u40uhqrGx3VVmxSE4OxFe7tI1nlu/PyaFTfVpN/CKXzT+bC6xfCXcuqCHFoptjMeeQouQMeDMTkcxBLjVCFcHc/SFYtRWccncTV1ZUEXKZwuZ8ZXTGkZwoBBxzHKGLqNAlxdJwcFjmoiOnu/eyHjHFC17bgXx18w/V5m4v+4ZTqnWPqnvI3kihQ826yU8xVX8HXu3Fmah7xMNZJ9MkpGbU07bM0WQoaiTi+nQvMNfFywLxCKAf9+y79MPJmdQ+NqUhejVnUeVsC+TObuqj3nFoWSq2+o69cf0zxO9kT/eNxxWTw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.221.169; helo=mail-vk1-f169.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.169; helo=mail-vk1-f169.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSjMH3HRCz2yQH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 16:31:22 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58J3KlCx011575;
-	Fri, 19 Sep 2025 06:31:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=AKXTRU
-	MWL+ox9rBx/hXoJNoCYAi39BF6mftgBjv8suY=; b=mk/ZD93Muag+UjLD7/ffZS
-	3/OSHdlEixKtDxg/iE0cyOkIJCFgiBDaIfjhXRqvCJtAMWIO7cZhNGV0VDbNviv0
-	4ays7a4m0fbTfLK5VkJ8IWgOaOrDymA+avDlUoTu6UqTFeIFbCGhJ57p9v7YvJwK
-	XiLPV24xC/VBSbhFUebXwsOEnQqd3hKY95b6w2SPWjQsIjwfzoA78YSGBNIHovL0
-	6o5WxXYt7UuiEW8C688Ty3YYJTx/AhjiI9J9cQmmBmHUXxzQa+y0N4M/pCJKWx/m
-	MlakNlRQZnf1sAHkFsKgBf0wTVw5sZLWd7NpPrNRAuM1lnHuxWkGurnoVs5FdvQA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4np9s0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 Sep 2025 06:31:18 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58J6VIPR025809;
-	Fri, 19 Sep 2025 06:31:18 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4np9rv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 Sep 2025 06:31:18 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58J30QR8009395;
-	Fri, 19 Sep 2025 06:31:17 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 495nn3t8dw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 Sep 2025 06:31:17 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58J6VEei37880162
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 Sep 2025 06:31:14 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E2E0420043;
-	Fri, 19 Sep 2025 06:31:13 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3138520040;
-	Fri, 19 Sep 2025 06:31:13 +0000 (GMT)
-Received: from [9.111.68.111] (unknown [9.111.68.111])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 19 Sep 2025 06:31:13 +0000 (GMT)
-Message-ID: <d0c954dc-6961-4536-b103-d7fdf1afb313@linux.ibm.com>
-Date: Fri, 19 Sep 2025 08:31:06 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cSkP04t8Tz2yD5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 17:17:55 +1000 (AEST)
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-545df2bb95dso739029e0c.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 00:17:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758266272; x=1758871072;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jN8ls4Umh9EIXSEQoAkCyXxQ8L8mjN2Gdzzs4J/riyA=;
+        b=wpTiwxpgxqvahLKU7adN6Hens66dcYFgaIKTo+Y0pNP3Y3YV43v4Lmkin2jCmV8uGx
+         kdq/1zArMnjU+Pp3TuBhlmcujT3dVAzPjJlL0eMHGWI98cB2GY7mwe6GdpBnKHLNIpgj
+         hSefIVQYOGoDHhk5fdlKZgaPYs+hSD7FFa4QJeKuLyNq4GG72ExLK+rcs0gfAFyALOSD
+         rr7tHPCxnaM4atoC8zkVjgipdGDd9ati1nM3m/E5AllKIFWp4CdMMZ1Bkm7DK4zCt5Qa
+         5Ci8D7S9orn0bLiAU+nkzRmxnTtRvt0F5jbU81AvvCLTVtevrptpqfGLwdl6lskRKo1W
+         kWTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWrkG/arBnPVo+0iYDKu0JJEEMrqyKFl6G5uwoMXgHs+6ZWQSYzdC0eTlBGCkO4VB4O/SMdhvT08eXyNy8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxB5IucUJZjqsiYCGNsmjrCAGvUvXZkvLIeZE6Bqu058vW0amPN
+	b5DFRJAN5ySH1pHoJhtT+iL4UWb0MrwimmgvsESMHkdUrDik0WVoU25seZZEuHXI
+X-Gm-Gg: ASbGnct94T2FevfY/QP0km7KpNbwZjB8XR69qnLteYatI/S1QQEIK5iZtMR+ZyobGJg
+	0wwJaRVmndkvqPl0clqdyjYzpUvbqte2YqFxKUvCmfKbXtizLUz9AzMw/JcG9eoxbkGvQKET719
+	1k2qhXPG6eFWvtPdLmn7y5Q4wT6uyX1Hd3/HX42P96cz1GC9vRE/ovtYEe/Cx+nfOovW4xzob16
+	mJVoCpfOYSpYI6+gShytBek6Cfl801XIIRBM91vzbOC+zHx+LfnzUZLwEKvq0KG0qHTWsb7mUQ8
+	p+WmJmtb3zGOdQL5fthUmO4szlbPBkKWiO/0KsR0AdS6CNttsWQ6zUzAWJWgeP5XKKYSbKx+z6u
+	qeR5fErICk1l0iU2TYG3+23oK4s2sqWFZjin1yQSJgyvqbSUxe0jPnaSlfxca
+X-Google-Smtp-Source: AGHT+IFe+FKUZ9OZO0qyzLOZ4hCPVZbceFmbSUTilC03Rvq2OCYXamQ461ZGr5xuiqgmPbzpVC4smw==
+X-Received: by 2002:a05:6122:caa:b0:544:9414:105f with SMTP id 71dfb90a1353d-54a837c5148mr769603e0c.2.1758266272346;
+        Fri, 19 Sep 2025 00:17:52 -0700 (PDT)
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com. [209.85.217.47])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-54a7275993dsm1018845e0c.10.2025.09.19.00.17.52
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Sep 2025 00:17:52 -0700 (PDT)
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-58bf3b15575so47159137.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Sep 2025 00:17:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWr84jkgpKNUf7uwqsDiIS98oRXPMZFPTthMd/oBLQ7RFV4HiLH21s41SBaOWg2ol+PYhbrK7Qani9oHK4=@lists.ozlabs.org
+X-Received: by 2002:a05:6102:534c:b0:55d:b35e:7a58 with SMTP id
+ ada2fe7eead31-588f3357b74mr639278137.23.1758266271934; Fri, 19 Sep 2025
+ 00:17:51 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,130 +75,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] KVM: s390/vfio-ap: Use kvm_is_gpa_in_memslot()
- instead of open coded equivalent
-To: Sean Christopherson <seanjc@google.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Tony Krowiak <akrowiak@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>,
-        Harald Freudenberger <freude@linux.ibm.com>,
-        Holger Dengler <dengler@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250919003303.1355064-1-seanjc@google.com>
- <20250919003303.1355064-2-seanjc@google.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20250919003303.1355064-2-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=MN5gmNZl c=1 sm=1 tr=0 ts=68ccf8b7 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=1XWaLZrsAAAA:8
- a=WMn4R6eJaF8VgN3aVUEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: md5iwfiyFe2OTejpXCjJPdxQmjbfiyb-
-X-Proofpoint-ORIG-GUID: DXgSIvc5M_qRAWhURQ1HdkyzBqz_Qyoc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwNCBTYWx0ZWRfX/BVrxPcE3PG2
- qtrYAMokM4pZJJN97Ey//DXDj5ryel8jNsk3kaQAMcY4cvdBVgSqsLzhhuKOhCo6a9s1QjEHT8Z
- LxUZ+NcKDumMSiUjjlnyFpqwglBskTojSluoYSHV3BHtvAzX/1bBW0oyU4JmfjPGoKqLqS6VWWe
- +iPOybn8095kSdqUIUCner1Hq9z6pvyS4nzDuIl+c5gGG62dJGyIgONiorxk2gZozbrEhkKZAEt
- dHVmV0RMF0kKOBKBx9RVyBjTRSjo+bYvNF196+lQPmbLsxKFSPhy+Gu4VcAiFJdliAk09Z2aZ2h
- FWf/tXahLW+IMOrIMTIgckz3ZPcFw+rtayAovz0F3Hn/b/Z743nzTUr+zRpaMtSCXVM2xljoTvV
- UkqgHXkD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-18_03,2025-09-19_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 spamscore=0 priorityscore=1501 bulkscore=0 impostorscore=0
- malwarescore=0 adultscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509160204
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <20250917125951.GA1390993@nvidia.com> <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+In-Reply-To: <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 19 Sep 2025 09:17:40 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVecUeLZ2LPpa457C0a=uduvDhQ4KZJx-++dEFJraRi3w@mail.gmail.com>
+X-Gm-Features: AS18NWAI1tRNfDFQjIFUy24j2rmv5VjIZdZQpBy05JHeqlSMB-7iVf4odZQDlmM
+Message-ID: <CAMuHMdVecUeLZ2LPpa457C0a=uduvDhQ4KZJx-++dEFJraRi3w@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, 
+	Lucas Stach <l.stach@pengutronix.de>, Linus Walleij <linus.walleij@linaro.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Ankur Arora <ankur.a.arora@oracle.com>, 
+	David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Nishanth Menon <nm@ti.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
+	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Am 19.09.25 um 02:32 schrieb Sean Christopherson:
-> Use kvm_is_gpa_in_memslot() to check the validity of the notification
-> indicator byte address instead of open coding equivalent logic in the VFIO
-> AP driver.
-> 
-> Opportunistically use a dedicated wrapper that exists and is exported
-> expressly for the VFIO AP module.  kvm_is_gpa_in_memslot() is generally
-> unsuitable for use outside of KVM; other drivers typically shouldn't rely
-> on KVM's memslots, and using the API requires kvm->srcu (or slots_lock) to
-> be held for the entire duration of the usage, e.g. to avoid TOCTOU bugs.
-> handle_pqap() is a bit of a special case, as it's explicitly invoked from
-> KVM with kvm->srcu already held, and the VFIO AP driver is in many ways an
-> extension of KVM that happens to live in a separate module.
-> 
-> Providing a dedicated API for the VFIO AP driver will allow restricting
-> the vast majority of generic KVM's exports to KVM submodules (e.g. to x86's
-> kvm-{amd,intel}.ko vendor mdoules).
-> 
-> No functional change intended.
-> 
-> Acked-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Hi Arnd,
 
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+On Thu, 18 Sept 2025 at 15:13, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Wed, Sep 17, 2025, at 14:59, Jason Gunthorpe wrote:
+> > On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
+> >
+> >> I'm still collecting information about which of the remaining highmem
+> >> users plan to keep updating their kernels and for what reason.
+> >
+> > On this topic of removing some parts of highmem, can we say goodbye to
+> > kmap_high_get()? Only ARM uses it and only for
+> > !cache_is_vipt_nonaliasing() systems.
+>
+> Good idea. I think we are almost there, just need to verify that
+> there is actually no impact for existing users. I already knew
+> that there is very little highmem usage on ARMv6 and earlier, but
+> I tried to recheck all platforms that might be affected:
 
-> ---
->   arch/s390/include/asm/kvm_host.h  | 2 ++
->   arch/s390/kvm/priv.c              | 8 ++++++++
->   drivers/s390/crypto/vfio_ap_ops.c | 2 +-
->   3 files changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
-> index f870d09515cc..ee25eeda12fd 100644
-> --- a/arch/s390/include/asm/kvm_host.h
-> +++ b/arch/s390/include/asm/kvm_host.h
-> @@ -722,6 +722,8 @@ extern int kvm_s390_enter_exit_sie(struct kvm_s390_sie_block *scb,
->   extern int kvm_s390_gisc_register(struct kvm *kvm, u32 gisc);
->   extern int kvm_s390_gisc_unregister(struct kvm *kvm, u32 gisc);
->   
-> +bool kvm_s390_is_gpa_in_memslot(struct kvm *kvm, gpa_t gpa);
-> +
->   static inline void kvm_arch_free_memslot(struct kvm *kvm,
->   					 struct kvm_memory_slot *slot) {}
->   static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
-> diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
-> index 9253c70897a8..9a71b6e00948 100644
-> --- a/arch/s390/kvm/priv.c
-> +++ b/arch/s390/kvm/priv.c
-> @@ -605,6 +605,14 @@ static int handle_io_inst(struct kvm_vcpu *vcpu)
->   	}
->   }
->   
-> +#if IS_ENABLED(CONFIG_VFIO_AP)
-> +bool kvm_s390_is_gpa_in_memslot(struct kvm *kvm, gpa_t gpa)
-> +{
-> +	return kvm_is_gpa_in_memslot(kvm, gpa);
-> +}
-> +EXPORT_SYMBOL_FOR_MODULES(kvm_s390_is_gpa_in_memslot, "vfio_ap");
-> +#endif
-> +
->   /*
->    * handle_pqap: Handling pqap interception
->    * @vcpu: the vcpu having issue the pqap instruction
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-> index 766557547f83..eb5ff49f6fe7 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> @@ -354,7 +354,7 @@ static int vfio_ap_validate_nib(struct kvm_vcpu *vcpu, dma_addr_t *nib)
->   
->   	if (!*nib)
->   		return -EINVAL;
-> -	if (kvm_is_error_hva(gfn_to_hva(vcpu->kvm, *nib >> PAGE_SHIFT)))
-> +	if (!kvm_s390_is_gpa_in_memslot(vcpu->kvm, *nib))
->   		return -EINVAL;
->   
->   	return 0;
+> * Microchip SAM9x7 is the newest ARMv5 chip, clearly does
+>   get kernel updates, and the only one I can think of with
+>   DDR3 support, but seems to be limited to 256MB total memory.
 
+Are they limited to DDR3?
+
+IIRC, someone (you? ;-) told me at ELCE that Microchip keeps on spinning
+new variants of old SoCs, to accommodate the changing DDR landscape
+and market.  So perhaps they also accept larger RAM sizes?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
