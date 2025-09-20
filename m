@@ -1,45 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-12450-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12442-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFB1B8C212
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Sep 2025 09:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C32AAB8C1A9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Sep 2025 09:48:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cTM1W4bKQz3cnZ;
-	Sat, 20 Sep 2025 17:48:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cTM1P5tmcz3cYR;
+	Sat, 20 Sep 2025 17:48:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758354495;
-	cv=none; b=FfiYnVm/j5bzVqv2Zb2IQXL54DDU31nVhkrdIxhyehH/otzg4ZP4QhrstEvxbRAkOa6I+9uaxjQ27d7LaSUpopn4UAEbUbAGd3w9NeMDcvBiYupb2gWiV8flfOC91N/xaltXIYjwT7tCTjsAt9B/CI9GpJ4B0EKnhXOx36DfqtkIfFEZ9+aLYmabzSQ/Q4z6tMkde3gmsX5R/iy97JaLiRyjf6Edf8ynHotJXZm1cR6+q4HpIJ8JqKu9yYr43bDLxRVNMLk0GrIws0W3oa7jDGLHTzsftf5iKOgn50/Z6Ehb1rh9GDvIHY8kvBqGZ/eEj5uxRP+88ZCOQrAVNcx+LA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758354489;
+	cv=none; b=M2dEODriuwc/lIA7qUro33Li9Bshi3HaZQA61fDdHOzqMUz3UCIGLpKabTCx3GvGgmOJaWNTUvmXXUfm8zc2Ep83CQkg9YQ8+ouElp8Mkk4NgszSyRJRfkA8w0PNVYtWWWk8+NK1M1vRx3PSR9FYiTikvk0w629Yq8J+KcYp4SUFLoBNq42NzuNrhZcQiguzZqbBRp0LlfRnIGH1XXpPB0wAa5OhzJdzSeuLVbqaKadDFS50iJXNvJdGemcQGrOUpQB5wtZ5xXNuS6lN6mPQM7m0rk0gKnWwbeKfHTZEfYk6I5RiVTczOUMk8lq6CBJVjB/xmcH7IAl8haNcpQraNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758354495; c=relaxed/relaxed;
-	bh=A8YKDw/ZJpGmy7UJsDRR+U4SJc3qy9aBRX8nF/jK6hA=;
+	t=1758354489; c=relaxed/relaxed;
+	bh=PAHSdKFZnF4Zow5YQA+xZ1lkb5Ydb+4Xwjcy3wk/6d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UaLwcYB5Z+osKQ58Z4B0L5GTbgaYv2teqD6PfL9o2C05njBhkPwIr2dA+2D6bFuNOjJY13SwBMqWo78MGzbPAoZnLivd/JrqCQe9etHUEdHytYA2B9mPi920wSQhEMtWMcARDhE0E3oMLwfXUvszgIIhLOG/lYCYk3nSZbVezlrFkOuVrpOMFDAJUuVzM7TDaEfmta1cD72WXzSW5lrEczJH3bGLXqr71h4WAldkK/4P7QkQfxZKI223fjVsF7Y5n6iM+Ss+yLYPsV57X2XnAeCbLAywPwgY9mdSf5spFHuZy4Fe7C6UsI9h/v2QvBwfEjS6zBDZ4Myzk4jNZMzC8Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=jtFtOrXI; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+	 MIME-Version; b=GSmxNZzHPmso8bNoLsFLlX9TMYtVpZDL76gfcGexj544F7lnKmbo+6EvT6P1m33QgBNicZNukaSYCdgjETSQ0Vn/QE5NbRCPSKaXJbODfdf/5wn1nsXFdPAHjCGN/ttXUn08Sicd1ULAfNkIA9+/aLjBs0by2KXZk9aGeh3WP68LkheGV8R+OqIle2kemSVIwP5+Hnx+ilESi6UIEhRiwqIvdYGt6IcKvIgXtLrfr2RDt/OUR0VEs91T5WeLIz2eYSL6lH7yfY1oxdvvE9Q9IXleYawhT6MKQSFpYYJKmOUsc6yyEVct70TKisUW2Xdi46F6arBdVbpz4t7RdCLdqA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=AQsoIyYj; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=jtFtOrXI;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=AQsoIyYj;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cTM1Q0VyRz3cYy
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Sep 2025 17:48:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cTM1N3Cmwz2ytg
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Sep 2025 17:48:08 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=A8YKDw/ZJpGmy7UJsDRR+U4SJc3qy9aBRX8nF/jK6hA=; b=jtFtOrXI4fTFhphzd0e6wCmi/7
-	JjfIpq8JVZN0EjhyoCpioom7D36QQWeM+yiMqXo7UyNAhDGENLZfaj8CgT9raBOYi92eUtrZBfY64
-	yZGwFoe3hLGxZEx4WRUtBKsP5JJ+4y6mIjY//tlqgYfDaBin7dr80b8nU7eqvGBcO9GVLeyEWOfPF
-	6WhTRHOHnHnr29AlRGpEtJLgKI9r0mB9rJqxXoL8Trk34PZMr51jToLyVUzZzH5/5NvFaCW4gfAO3
-	sWbSLJeMzU+YOYGsK/VYRApWAeTTG7X/44xYcs26iWLUm/sobfmkbIRo3Bx1AJdpGHLMEdF1eP0VD
-	nUnMHeyw==;
+	bh=PAHSdKFZnF4Zow5YQA+xZ1lkb5Ydb+4Xwjcy3wk/6d4=; b=AQsoIyYjFl5JWsVoWRzNaCVStQ
+	vfys2KyjQRZsc+oeGdfzgBSJpg3xWyZFHINqZvwJAziA91IMOtKItmxc1KDPkt0i6g5b13GWHHUNa
+	PzZSQvGOVcmh4oE0GnFRnGbTL4GLrUs7T9THfqQjcHZpIFMadfIPbv0iuRdZ1Fs8l+vyrryvzxWcC
+	SPERbfKp6XLxjdyiPMwaIYZ+9NAglN6uRStI02sMIHWP7wV7hX8fG7bJdjsfFwzHeq9GQzM4bJGc8
+	++/1XTR87dLoJozQkKIvWstA1ZlBoZ3R5HKA7oNIhRLMhFnYU9j15bZPzbCbDEW7pap4SPWsVpifV
+	rFnv3rvQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uzsK8-0000000ExC4-3HZU;
+	id 1uzsK8-0000000ExCP-3wgx;
 	Sat, 20 Sep 2025 07:48:00 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
@@ -60,9 +60,9 @@ Cc: torvalds@linux-foundation.org,
 	casey@schaufler-ca.com,
 	linuxppc-dev@lists.ozlabs.org,
 	borntraeger@linux.ibm.com
-Subject: [PATCH 06/39] convert ramfs and tmpfs
-Date: Sat, 20 Sep 2025 08:47:25 +0100
-Message-ID: <20250920074759.3564072-6-viro@zeniv.linux.org.uk>
+Subject: [PATCH 07/39] procfs: make /self and /thread_self dentries persistent
+Date: Sat, 20 Sep 2025 08:47:26 +0100
+Message-ID: <20250920074759.3564072-7-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
 References: <20250920074156.GK39973@ZenIV>
@@ -86,158 +86,172 @@ X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Quite a bit is already done by infrastructure changes (simple_link(),
-simple_unlink()) - all that is left is replacing d_instantiate() +
-pinning dget() (in ->symlink() and ->mknod()) with d_make_persistent(),
-and, in case of shmem, unpinning dput() in ->unlink() with d_make_discardable().
-Since d_make_persistent() accepts (and hashes) unhashed ones,
-shmem situation gets simpler - we no longer care whether ->lookup()
-has hashed the sucker.
-
-With that done, we don't need kill_litter_super() for these filesystems
-anymore - by the umount time all remaining dentries will be marked
-persistent and kill_litter_super() will boil down to call of
-kill_anon_super().
-
-The same goes for devtmpfs and rootfs - they are handled by
-ramfs or by shmem, depending upon config.
-
-NB: strictly speaking, both devtmpfs and rootfs ought to use
-ramfs_kill_sb() if they end up using ramfs; that's a separate
-story and the only impact of "just use kill_{litter,anon}_super()"
-is that we fail to free their sb->s_fs_info... on reboot.
-That's orthogonal to the changes in this series - kill_litter_super()
-is identical to kill_anon_super() for those at this point.
+... and there's no need to remember those pointers anywhere - ->kill_sb()
+no longer needs to bother since kill_anon_super() will take care of
+them anyway and proc_pid_readdir() only wants the inumbers, which
+we had in a couple of static variables all along.
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- drivers/base/devtmpfs.c |  2 +-
- fs/ramfs/inode.c        |  8 +++-----
- init/do_mounts.c        |  2 +-
- mm/shmem.c              | 23 +++++------------------
- 4 files changed, 10 insertions(+), 25 deletions(-)
+ fs/proc/base.c          |  6 ++----
+ fs/proc/internal.h      |  1 +
+ fs/proc/root.c          | 14 ++++----------
+ fs/proc/self.c          | 10 +++-------
+ fs/proc/thread_self.c   | 11 +++--------
+ include/linux/proc_fs.h |  2 --
+ 6 files changed, 13 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/base/devtmpfs.c b/drivers/base/devtmpfs.c
-index 31bfb3194b4c..30b5ae8d79cf 100644
---- a/drivers/base/devtmpfs.c
-+++ b/drivers/base/devtmpfs.c
-@@ -70,7 +70,7 @@ static struct file_system_type internal_fs_type = {
- #else
- 	.init_fs_context = ramfs_init_fs_context,
- #endif
--	.kill_sb = kill_litter_super,
-+	.kill_sb = kill_anon_super,
- };
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 62d35631ba8c..f5071b0bdb1b 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -3583,14 +3583,12 @@ int proc_pid_readdir(struct file *file, struct dir_context *ctx)
+ 		return 0;
  
- /* Simply take a ref on the existing mount */
-diff --git a/fs/ramfs/inode.c b/fs/ramfs/inode.c
-index f8874c3b8c1e..3cc36b1c60b3 100644
---- a/fs/ramfs/inode.c
-+++ b/fs/ramfs/inode.c
-@@ -110,8 +110,7 @@ ramfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
- 			goto out;
- 		}
- 
--		d_instantiate(dentry, inode);
--		dget(dentry);	/* Extra count - pin the dentry in core */
-+		d_make_persistent(dentry, inode);
- 		error = 0;
- 		inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+ 	if (pos == TGID_OFFSET - 2) {
+-		struct inode *inode = d_inode(fs_info->proc_self);
+-		if (!dir_emit(ctx, "self", 4, inode->i_ino, DT_LNK))
++		if (!dir_emit(ctx, "self", 4, self_inum, DT_LNK))
+ 			return 0;
+ 		ctx->pos = pos = pos + 1;
  	}
-@@ -154,8 +153,7 @@ static int ramfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
+ 	if (pos == TGID_OFFSET - 1) {
+-		struct inode *inode = d_inode(fs_info->proc_thread_self);
+-		if (!dir_emit(ctx, "thread-self", 11, inode->i_ino, DT_LNK))
++		if (!dir_emit(ctx, "thread-self", 11, thread_self_inum, DT_LNK))
+ 			return 0;
+ 		ctx->pos = pos = pos + 1;
+ 	}
+diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+index e737401d7383..e165e406c14d 100644
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -373,6 +373,7 @@ static inline void proc_tty_init(void) {}
+ extern struct proc_dir_entry proc_root;
  
- 		error = page_symlink(inode, symname, l);
- 		if (!error) {
--			d_instantiate(dentry, inode);
--			dget(dentry);
-+			d_make_persistent(dentry, inode);
- 			inode_set_mtime_to_ts(dir,
- 					      inode_set_ctime_current(dir));
- 		} else
-@@ -313,7 +311,7 @@ int ramfs_init_fs_context(struct fs_context *fc)
- void ramfs_kill_sb(struct super_block *sb)
+ extern void proc_self_init(void);
++extern unsigned self_inum, thread_self_inum;
+ 
+ /*
+  * task_[no]mmu.c
+diff --git a/fs/proc/root.c b/fs/proc/root.c
+index ed86ac710384..7cedc08b92d3 100644
+--- a/fs/proc/root.c
++++ b/fs/proc/root.c
+@@ -261,17 +261,11 @@ static void proc_kill_sb(struct super_block *sb)
  {
- 	kfree(sb->s_fs_info);
--	kill_litter_super(sb);
-+	kill_anon_super(sb);
+ 	struct proc_fs_info *fs_info = proc_sb_info(sb);
+ 
+-	if (!fs_info) {
+-		kill_anon_super(sb);
+-		return;
+-	}
+-
+-	dput(fs_info->proc_self);
+-	dput(fs_info->proc_thread_self);
+-
+ 	kill_anon_super(sb);
+-	put_pid_ns(fs_info->pid_ns);
+-	kfree_rcu(fs_info, rcu);
++	if (fs_info) {
++		put_pid_ns(fs_info->pid_ns);
++		kfree_rcu(fs_info, rcu);
++	}
  }
  
- static struct file_system_type ramfs_fs_type = {
-diff --git a/init/do_mounts.c b/init/do_mounts.c
-index 6af29da8889e..810878fb55b6 100644
---- a/init/do_mounts.c
-+++ b/init/do_mounts.c
-@@ -507,7 +507,7 @@ static int rootfs_init_fs_context(struct fs_context *fc)
- struct file_system_type rootfs_fs_type = {
- 	.name		= "rootfs",
- 	.init_fs_context = rootfs_init_fs_context,
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= kill_anon_super,
+ static struct file_system_type proc_fs_type = {
+diff --git a/fs/proc/self.c b/fs/proc/self.c
+index b46fbfd22681..62d2c0cfe35c 100644
+--- a/fs/proc/self.c
++++ b/fs/proc/self.c
+@@ -31,12 +31,11 @@ static const struct inode_operations proc_self_inode_operations = {
+ 	.get_link	= proc_self_get_link,
  };
  
- void __init init_rootfs(void)
-diff --git a/mm/shmem.c b/mm/shmem.c
-index e2c76a30802b..2d5832a1e67a 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3922,12 +3922,7 @@ shmem_mknod(struct mnt_idmap *idmap, struct inode *dir,
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
- 	inode_inc_iversion(dir);
+-static unsigned self_inum __ro_after_init;
++unsigned self_inum __ro_after_init;
  
--	if (IS_ENABLED(CONFIG_UNICODE) && IS_CASEFOLDED(dir))
--		d_add(dentry, inode);
--	else
--		d_instantiate(dentry, inode);
--
--	dget(dentry); /* Extra count - pin the dentry in core */
-+	d_make_persistent(dentry, inode);
- 	return error;
+ int proc_setup_self(struct super_block *s)
+ {
+ 	struct inode *root_inode = d_inode(s->s_root);
+-	struct proc_fs_info *fs_info = proc_sb_info(s);
+ 	struct dentry *self;
+ 	int ret = -ENOMEM;
  
- out_iput:
-@@ -4016,11 +4011,7 @@ static int shmem_link(struct dentry *old_dentry, struct inode *dir,
- 	inode_inc_iversion(dir);
- 	inc_nlink(inode);
- 	ihold(inode);	/* New dentry reference */
--	dget(dentry);	/* Extra pinning count for the created dentry */
--	if (IS_ENABLED(CONFIG_UNICODE) && IS_CASEFOLDED(dir))
--		d_add(dentry, inode);
+@@ -51,18 +50,15 @@ int proc_setup_self(struct super_block *s)
+ 			inode->i_uid = GLOBAL_ROOT_UID;
+ 			inode->i_gid = GLOBAL_ROOT_GID;
+ 			inode->i_op = &proc_self_inode_operations;
+-			d_add(self, inode);
++			d_make_persistent(self, inode);
+ 			ret = 0;
+-		} else {
+-			dput(self);
+ 		}
++		dput(self);
+ 	}
+ 	inode_unlock(root_inode);
+ 
+ 	if (ret)
+ 		pr_err("proc_fill_super: can't allocate /proc/self\n");
 -	else
--		d_instantiate(dentry, inode);
-+	d_make_persistent(dentry, inode);
- out:
+-		fs_info->proc_self = self;
+ 
  	return ret;
  }
-@@ -4039,7 +4030,7 @@ static int shmem_unlink(struct inode *dir, struct dentry *dentry)
- 			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
- 	inode_inc_iversion(dir);
- 	drop_nlink(inode);
--	dput(dentry);	/* Undo the count from "create" - does all the work */
-+	d_make_discardable(dentry);
- 
- 	/*
- 	 * For now, VFS can't deal with case-insensitive negative dentries, so
-@@ -4194,11 +4185,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 	dir->i_size += BOGO_DIRENT_SIZE;
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
- 	inode_inc_iversion(dir);
--	if (IS_ENABLED(CONFIG_UNICODE) && IS_CASEFOLDED(dir))
--		d_add(dentry, inode);
--	else
--		d_instantiate(dentry, inode);
--	dget(dentry);
-+	d_make_persistent(dentry, inode);
- 	return 0;
- 
- out_remove_offset:
-@@ -5395,7 +5382,7 @@ static struct file_system_type shmem_fs_type = {
- #ifdef CONFIG_TMPFS
- 	.parameters	= shmem_fs_parameters,
- #endif
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= kill_anon_super,
- 	.fs_flags	= FS_USERNS_MOUNT | FS_ALLOW_IDMAP | FS_MGTIME,
+diff --git a/fs/proc/thread_self.c b/fs/proc/thread_self.c
+index 0e5050d6ab64..d6113dbe58e0 100644
+--- a/fs/proc/thread_self.c
++++ b/fs/proc/thread_self.c
+@@ -31,12 +31,11 @@ static const struct inode_operations proc_thread_self_inode_operations = {
+ 	.get_link	= proc_thread_self_get_link,
  };
  
+-static unsigned thread_self_inum __ro_after_init;
++unsigned thread_self_inum __ro_after_init;
+ 
+ int proc_setup_thread_self(struct super_block *s)
+ {
+ 	struct inode *root_inode = d_inode(s->s_root);
+-	struct proc_fs_info *fs_info = proc_sb_info(s);
+ 	struct dentry *thread_self;
+ 	int ret = -ENOMEM;
+ 
+@@ -51,19 +50,15 @@ int proc_setup_thread_self(struct super_block *s)
+ 			inode->i_uid = GLOBAL_ROOT_UID;
+ 			inode->i_gid = GLOBAL_ROOT_GID;
+ 			inode->i_op = &proc_thread_self_inode_operations;
+-			d_add(thread_self, inode);
++			d_make_persistent(thread_self, inode);
+ 			ret = 0;
+-		} else {
+-			dput(thread_self);
+ 		}
++		dput(thread_self);
+ 	}
+ 	inode_unlock(root_inode);
+ 
+ 	if (ret)
+ 		pr_err("proc_fill_super: can't allocate /proc/thread-self\n");
+-	else
+-		fs_info->proc_thread_self = thread_self;
+-
+ 	return ret;
+ }
+ 
+diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
+index f139377f4b31..19d1c5e5f335 100644
+--- a/include/linux/proc_fs.h
++++ b/include/linux/proc_fs.h
+@@ -66,8 +66,6 @@ enum proc_pidonly {
+ 
+ struct proc_fs_info {
+ 	struct pid_namespace *pid_ns;
+-	struct dentry *proc_self;        /* For /proc/self */
+-	struct dentry *proc_thread_self; /* For /proc/thread-self */
+ 	kgid_t pid_gid;
+ 	enum proc_hidepid hide_pid;
+ 	enum proc_pidonly pidonly;
 -- 
 2.47.3
 
