@@ -1,85 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-12483-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12484-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF739B8CC48
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Sep 2025 17:54:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13BC9B8CCE1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Sep 2025 18:27:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cTYp13jXbz2ysc;
-	Sun, 21 Sep 2025 01:54:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cTZWz261Cz2ytg;
+	Sun, 21 Sep 2025 02:26:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758383641;
-	cv=none; b=WrLJDHxzRvBElSOdTppTr14mqFsVu4Kx+ugWvYMtX6CZK9/bEKilAzhW1zgR/TtsCEAjNC7cz7yIqsTqfBolXvAiA8vOl9NA0kUTci7oXcsHLHOj0DYC1HR8QYEdoDMPxau5eVLtEhixGdKXW2dDxLirOXYOOTL0+0VxGDiaXJuEg6wrdxkkNFkiHLpNr5clcG1BnzPLMh3Id12gt6oD8mf9VJUTsYQYENXEizTlCBNSXgpfMqIY/AzdmxWsEjtuiAbaD5UQAtcxu+jJjZjHzIGbGhHoqChEsJl4SY6nIxInJARzf1YicIcEMxP65EYSJETmsAKMzxY9Q3q23FIqXA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::631"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758385615;
+	cv=none; b=XvB+T5mNvxLsdpeC0rIdh8JznvfURJRwYEmtYFQ6msK6KykKuWPPvG1XSnYdiK2VUu1yhrMu49wdllD2lUnfAhhx0A0L1T2gKl3GWg1gikbcmTOLDv/zDUvfCI8QfYBSbOtLsaNPK1xaDgALzudvaQ4sNqpJk8jkXLmAH4KanXi45P1Pvjy1dQnPMDhWITORra7GjaW8eNW5IlKL0VX5MrQJStJ11hmSzncbp3jfickg7dglgkC74vnxbtpdI0Ev0q91Ob7Ti1UwF/tVpMsvkOOrOeCltdjRRzE3Dajjq0wBctBz6PHKnISeAD0I53c2n0/Mdd1R9I2ZsOQGSnYXGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758383641; c=relaxed/relaxed;
-	bh=06Hpa/1OvoT0TpifdUKNOv9vBuePkD3RG427WbWRUJY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HPjylkTaj4NpVqfAIH/zUZtZbeYUhOh5E9Yg7TANo24vJ9W4T9UKqMIX2UhmDtb7smTA8mczHD1vGFuIxPIuhf9qqA3ia/dHFZZNanK39bcn9/VjcS4DEh38Z8Ok/jJN7ncmq/z88dCnGlzXqboFPifcq5esW78xVdOLE7zZxVFOOqdEDCqWhXx/PJpHMVDeiAwIiNs2NA6Q2JyLZVmEQe+n5qg6cuGZmcT7L0M3mqt/nTPK72tQJagjiN7ZILzQYwluozVEqmOUiYx1xGwUO87v2UdSXuL/TwEapytRpfi0wsOoUWULVyDEzIxf1uKajQJvbIHHAY/FvdyT94FUFA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qbW+7cTt; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1758385615; c=relaxed/relaxed;
+	bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aCwLbdy3WDogvidunsr/QvSxw7DU7CuAuIijMlTC7e35k1pZErx5TH03vOTR3CKy9eYCwauRG3Tw5fB+v4lTNi18faOKmDTK4HaBA590ARGlbGQz4cSuPzsBxXsjPyOl85wmsFYqkpRch+3Vn7S/bGhI9PUQPfMgY8S/5sbFbPVkoOfnce0Y6sc5XW2b9gnz4nUHBjdcucDLjyngofARZF5iC5hoaWuIlffWfHcjkZTCBqSIoNY17deYDz9KYSooE8T/anEwUVMWSN2LNzV4xOO3fVLwr4xygvobJAFeE5NdKzt/p171xAyY/5DJGB44z/Q5kB1E84/nBZqswlPXBw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=hV/yDF1B; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qbW+7cTt;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=hV/yDF1B;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cTYp03Dzxz2xnt
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Sep 2025 01:54:00 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48CFD6014D;
-	Sat, 20 Sep 2025 15:53:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60277C4CEEB;
-	Sat, 20 Sep 2025 15:53:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758383637;
-	bh=74lAPVg94TJI1UJYgpgsOH2UQdl5PvTbgBIsxqD4zKU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qbW+7cTtf3ZC80yzIDcC6P8YiS7RGpwlDTYrGzG6j13dnssuecjvDInjgO1NGXAWT
-	 hwAQh0KbTGofBujeWDAzo8uyHyjnB4klpbdUcdr3KuR2vqLH1ociavVauQR6s6LM4C
-	 wtVOvrFkt2iXYZs5fqCArx+bz0wZR2AOL0I2MwUCesz5LxbYvHr8I0E7tiQwcKX2mh
-	 /6u8BUT9rHwxjmbaoEZQ7oL93zaaJmT1SbIoB4zqQPQjKbmP8WBwznCmHZDgor62TB
-	 Nrccq2E0zXdIiG+Jydr5UoWaXp7Rok6i3H1DFwLNWMk9eGO4TL+3lE8Pzt1MNtveO6
-	 UwT9ZhNinKNOQ==
-Date: Sat, 20 Sep 2025 18:53:52 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Keith Busch <kbusch@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 00/16] dma-mapping: migrate to physical address-based
- API
-Message-ID: <20250920155352.GH10800@unreal>
-References: <CGME20250909132821eucas1p1051ce9e0270ddbf520e105c913fa8db6@eucas1p1.samsung.com>
- <cover.1757423202.git.leonro@nvidia.com>
- <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
- <20250912090327.GU341237@unreal>
- <aM1_9cS_LGl4GFC5@kbusch-mbp>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cTZWx3JLvz2xcB
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Sep 2025 02:26:52 +1000 (AEST)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-b07883a5feeso600166366b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Sep 2025 09:26:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1758385607; x=1758990407; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
+        b=hV/yDF1BTOImJHQjDuz4OebZblJJzAUMECHt+MV5o0IVkBdyt+IBejc1TnHIA0pbuA
+         4eFJWTDl+OwmlpgCJtau9T792rreTFH+4wg4H4gSbhsU6I1FkGDr2sbGUDJAcIswf5B4
+         JYV0juR19jOcRmTIsP6EbXA0pVl/CFETuhGcI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758385607; x=1758990407;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
+        b=NtuNVlXOKk69TrAkfLBmnkQlT7oxGtpLM+oAyZwBt6TijAbGqRllZSJLm5JMGKxjb8
+         ka+nhsYHEZ8lXcVqPfDWgslqHJNSciUEtf/TY/tcuPDLhHkfjs0+xWw1DzEEhWH/YF9V
+         4EzQGbZ62FKYOytyXqBA2u5wqN2L32RavonBZVPhmmkCUKzfWUo4We5Eqq+4AgpLmRtN
+         UP/EmuJRgIOpn9osAcl7TqS1+/ivICJxNrcmyA/C+cxXUo5oCo2W1akYaG/urtJX9MpC
+         Y4IXDj1dKJvfsRWh9M3/P999/2d81IGs/fjZTykYJze63TYjDlkRMLeXVVjafCRsM0Mv
+         4xyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWbxVGZau9G0qFU32Vr7MmKVnloXHd1eRnllO0tTn55QNKLDxtzlAea/8DWPvpuu6XAhj7n8doX2uLXMl4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywsv5cp+KdHCHMakAtRQ/z3A3+vz6xTSTIJCXPqQ1BW8k/2PZU5
+	QFwYwXcLOvX4a7sVelmVOsUqxPcdWOJoSJEpB1suWL4CRmuI2Tr84LqJM+PYdTQPYTlhCR2ZXLq
+	WW4lihGg=
+X-Gm-Gg: ASbGncvc8fgUlA35e1r7GtqnH7MtgU7FX5HOMZdPC3TI8hL5yZDVSRyQKDjR3Jic9GS
+	U5FjxI3hCu6BuYKj5hy7qoj8IZq+FQv0ODc1jqAld8ND//NJc7Rt3mdqxe94PzuX7bBUAK5stik
+	bK4GvYQ8GwsrNJqnKVURet2vUAoiHgFb9SdGFOBMqICtlwTWYoEBSqDdMuzY+u7P6DkexkkWKsm
+	HEH2W7WAgLW/aZ6CVKGRgmBHgOHtMj+hZY9M+WLPQpoXOiG66ScyfT1cufnHYI8Bu9XIhv3zSa0
+	E0G1UPKgWJ/QXGiqeURPEMJiVEMdbPlzu0aWUqh7i+37raFL1keAhe07gQU5BU/1aeeIFxr1ELz
+	ZpIcxTHodKNapizaB3qMuqXI0VoX2xWcLVQX9LkATCb4X7kdiKGb70+F4VbLDTbAFlhNEcpuo
+X-Google-Smtp-Source: AGHT+IEJ3g7lhZO46hMxt5RfiFT/gZzeQnJBZBrdVTEkjeoBIhNgOEVTyI4oOnGmMnuEvXupWub/Jw==
+X-Received: by 2002:a17:907:6d1b:b0:b08:85d0:3d8b with SMTP id a640c23a62f3a-b24ee9ddcb0mr707244166b.21.1758385607309;
+        Sat, 20 Sep 2025 09:26:47 -0700 (PDT)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b2a2a5f6c7asm20634966b.28.2025.09.20.09.26.44
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 20 Sep 2025 09:26:44 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b2350899a40so402018966b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Sep 2025 09:26:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU5dsQOIkn0uzZfqkMQnYDdSuY5tAzoRv5nLJP5e1gaiT21yN7HACELUXjSdwg6Vepa0C2HUK7NrFfkneg=@lists.ozlabs.org
+X-Received: by 2002:a17:907:1c89:b0:b1d:285d:155c with SMTP id
+ a640c23a62f3a-b24ed88702cmr706169166b.7.1758385604052; Sat, 20 Sep 2025
+ 09:26:44 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,85 +87,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aM1_9cS_LGl4GFC5@kbusch-mbp>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+References: <20250920074156.GK39973@ZenIV>
+In-Reply-To: <20250920074156.GK39973@ZenIV>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 20 Sep 2025 09:26:27 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiXPnY9vWFC87sHudSDYY+wpfTrs-uxd7DBypeE+15Y0g@mail.gmail.com>
+X-Gm-Features: AS18NWCBuRxfjxFE7tKBAQqhhkva7pQWM9EJwSLVmis6atYjgiGA5eqHrxKhjLE
+Message-ID: <CAHk-=wiXPnY9vWFC87sHudSDYY+wpfTrs-uxd7DBypeE+15Y0g@mail.gmail.com>
+Subject: Re: [PATCHES][RFC] the meat of tree-in-dcache series
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Jan Kara <jack@suse.cz>, Ian Kent <raven@themaw.net>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, Kees Cook <kees@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	linux-usb@vger.kernel.org, Paul Moore <paul@paul-moore.com>, 
+	Casey Schaufler <casey@schaufler-ca.com>, linuxppc-dev@lists.ozlabs.org, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Sep 19, 2025 at 10:08:21AM -0600, Keith Busch wrote:
-> On Fri, Sep 12, 2025 at 12:03:27PM +0300, Leon Romanovsky wrote:
-> > On Fri, Sep 12, 2025 at 12:25:38AM +0200, Marek Szyprowski wrote:
-> > > >
-> > > > This series does the core code and modern flows. A followup series
-> > > > will give the same treatment to the legacy dma_ops implementation.
-> > > 
-> > > Applied patches 1-13 into dma-mapping-for-next branch. Let's check if it 
-> > > works fine in linux-next.
-> > 
-> > Thanks a lot.
-> 
-> Just fyi, when dma debug is enabled, we're seeing this new warning
-> below. I have not had a chance to look into it yet, so I'm just
-> reporting the observation.
+On Sat, 20 Sept 2025 at 00:42, Al Viro <viro@zeniv.linux.org.uk> wrote:
+>
+> The branch is -rc5-based; it lives in
+> git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #work.persistency
 
-Did you apply all patches or only Marek's branch?
-I don't get this warning when I run my NVMe tests on current dmabuf-vfio branch.
+I reacted to the "d_make_persistent() + dput()" pattern, and wondered
+if it should just use the refcount that the caller has, but it does
+look like that alternate approach would just result in a
+"d_make_persistent(dget()))" pattern instead.
 
-Thanks
+And I guess you already get the lock for d_make_persistent(), so it's
+better to do the dget while having it - but arguably that is also true
+for the dput().
 
-> 
->  DMA-API: nvme 0006:01:00.0: cacheline tracking EEXIST, overlapping mappings aren't supported
->  WARNING: kernel/dma/debug.c:598 at add_dma_entry+0x26c/0x328, CPU#1: (udev-worker)/773
->  Modules linked in: acpi_power_meter(E) loop(E) efivarfs(E) autofs4(E)
->  CPU: 1 UID: 0 PID: 773 Comm: (udev-worker) Tainted: G            E    N  6.17.0-rc6-next-20250918-debug #6 PREEMPT(none)
->  Tainted: [E]=UNSIGNED_MODULE, [N]=TEST
->  pstate: 63400009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
->  pc : add_dma_entry+0x26c/0x328
->  lr : add_dma_entry+0x26c/0x328
->  sp : ffff80009fe0f460
->  x29: ffff80009fe0f470 x28: 0000000000000001 x27: 0000000000000001
->  x26: ffff8000835d7f38 x25: ffff8000835d7000 x24: ffff8000835d7e60
->  x23: 0000000000000000 x22: 0000000006e2cc00 x21: 0000000000000000
->  x20: ffff800082e8f218 x19: ffff0000a908ff80 x18: 00000000ffffffff
->  x17: ffff8000801972a0 x16: ffff800080197054 x15: 0000000000000000
->  x14: 0000000000000000 x13: 0000000000000004 x12: 0000000000020006
->  x11: 0000000030e4ef9f x10: ffff800083443358 x9 : ffff80008019499c
->  x8 : 00000000fffeffff x7 : ffff800083443358 x6 : 0000000000000000
->  x5 : 00000000000bfff4 x4 : 0000000000000000 x3 : ffff0000bb005ac0
->  x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000bb005ac0
->  Call trace:
->   add_dma_entry+0x26c/0x328 (P)
->   debug_dma_map_phys+0xc4/0xf0
->   dma_map_phys+0xe0/0x410
->   dma_map_page_attrs+0x94/0xf8
->   blk_dma_map_direct.isra.0+0x64/0xb8
->   blk_rq_dma_map_iter_next+0x6c/0xc8
->   nvme_prep_rq+0x894/0xa98
->   nvme_queue_rqs+0xb0/0x1a0
->   blk_mq_dispatch_queue_requests+0x268/0x3b8
->   blk_mq_flush_plug_list+0x90/0x188
->   __blk_flush_plug+0x104/0x170
->   blk_finish_plug+0x38/0x50
->   read_pages+0x1a4/0x3b8
->   page_cache_ra_unbounded+0x1a0/0x400
->   force_page_cache_ra+0xa8/0xd8
->   page_cache_sync_ra+0xa0/0x3f8
->   filemap_get_pages+0x104/0x950
->   filemap_read+0xf4/0x498
->   blkdev_read_iter+0x88/0x180
->   vfs_read+0x214/0x310
->   ksys_read+0x70/0x110
->   __arm64_sys_read+0x20/0x30
->   invoke_syscall+0x4c/0x118
->   el0_svc_common.constprop.0+0xc4/0xf0
->   do_el0_svc+0x24/0x38
->   el0_svc+0x1a0/0x340
->   el0t_64_sync_handler+0x98/0xe0
->   el0t_64_sync+0x17c/0x180
->  ---[ end trace 0000000000000000 ]---
-> 
-> 
+I think you did pick the right model, with d_make_persistent() taking
+a ref, and d_make_discardable() releasing it, but this series did make
+me think that the refcounting on the caller side is a bit odd.
+
+Because some places would clearly want a "d_make_persistent_and_put()"
+function. But probably not worth the extra interface.
+
+Anyway, apart from that I only had one reaction: I think
+d_make_discardable() should have a
+
+        WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT))
+
+because without that I think it can mistakenly be used as some kind of
+"dput that always takes the dentry lock", which seems bad.
+
+Or was that intentional for some reason?
+
+Talking about WARN_ON() - please don't add new BUG_ON() cases. I
+realize that those will never trigger, but *if* they were to trigger,
+some of them would do so during early boot and be a pain for people to
+ever even report to us.
+
+BUG_ON() really should be shunned. I think it makes sense to you and
+for automated testing, but it really is absolutely *horrendously* bad
+for the case where the code hits actual users.
+
+                 Linus
 
