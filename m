@@ -1,79 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-12484-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12485-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BC9B8CCE1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Sep 2025 18:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D94EAB8CE8A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Sep 2025 20:09:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cTZWz261Cz2ytg;
-	Sun, 21 Sep 2025 02:26:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cTcpP5QzVz2yqg;
+	Sun, 21 Sep 2025 04:09:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::631"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758385615;
-	cv=none; b=XvB+T5mNvxLsdpeC0rIdh8JznvfURJRwYEmtYFQ6msK6KykKuWPPvG1XSnYdiK2VUu1yhrMu49wdllD2lUnfAhhx0A0L1T2gKl3GWg1gikbcmTOLDv/zDUvfCI8QfYBSbOtLsaNPK1xaDgALzudvaQ4sNqpJk8jkXLmAH4KanXi45P1Pvjy1dQnPMDhWITORra7GjaW8eNW5IlKL0VX5MrQJStJ11hmSzncbp3jfickg7dglgkC74vnxbtpdI0Ev0q91Ob7Ti1UwF/tVpMsvkOOrOeCltdjRRzE3Dajjq0wBctBz6PHKnISeAD0I53c2n0/Mdd1R9I2ZsOQGSnYXGw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758391773;
+	cv=none; b=mQEdm2vnywek8ts43kek3DtluVTgVRA4tWHjnvYmpNu6wq7BWGUgAgA5z95uJDdj6OOU9XeZnwAu7+1DNtyOlbuqqrFjSNitoe/vU0Yd/vwmZCx89xK435h/WJbNL7ng6HKcmB+7tvA2hkzyWqP9acJ0/WzgChCPwvGurXT1IWrBJ5hQTYVsyQIUW6s7zOGWLRM0Z8MwG6TMnA+fieTJTZF4hENKuJOrDNtwSIsTfjgQd6HhHz1N21RR4BZrIKAGur7F0zU0YDHt9klcWLK1GNj/8KbUKeXnQQQUfUexTE+bCBKFJCkDVrleyNISF7Up8LURkpUdsLkVKMO91ykAzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758385615; c=relaxed/relaxed;
-	bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aCwLbdy3WDogvidunsr/QvSxw7DU7CuAuIijMlTC7e35k1pZErx5TH03vOTR3CKy9eYCwauRG3Tw5fB+v4lTNi18faOKmDTK4HaBA590ARGlbGQz4cSuPzsBxXsjPyOl85wmsFYqkpRch+3Vn7S/bGhI9PUQPfMgY8S/5sbFbPVkoOfnce0Y6sc5XW2b9gnz4nUHBjdcucDLjyngofARZF5iC5hoaWuIlffWfHcjkZTCBqSIoNY17deYDz9KYSooE8T/anEwUVMWSN2LNzV4xOO3fVLwr4xygvobJAFeE5NdKzt/p171xAyY/5DJGB44z/Q5kB1E84/nBZqswlPXBw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=hV/yDF1B; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1758391773; c=relaxed/relaxed;
+	bh=6NL30/0+UZmJ+Ndqi2NTqpdBOV8RvNTpTtq6rtRPK9E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=adSzwx63Stve4QgUixlcDs5ALXZO+i9LbYAANNKOTNlKfXbQCFeuguksA0ARvtwtgjKPpR0Cb6ge1PCJEYM7v4x3LFm5XLQ6+KEX2NEOG7eYIaVDOvW4oOTEVwPnaY+0jM8W9QbgBVk2WxzZNA5g+v+2uik/hZ7VqMJY5o4p39vHK92n3tt95eVoHdG0EBGXcSiwHp/zSujaUNNcEPhECd9TxU+iCe/Yq+Qp08L2cIKwDD4q1DIQ0Fgaa1dQDWAtoRYK6WMcX0sEaeWo4vmuSAXDjPUbUXB/63MBpWHbdDB2tBGVaUkrxTkabGk9rdVeYWJZZlk1N9wrPg5ujdwm0A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=NM79fJk4; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=hV/yDF1B;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=NM79fJk4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cTZWx3JLvz2xcB
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Sep 2025 02:26:52 +1000 (AEST)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-b07883a5feeso600166366b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Sep 2025 09:26:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1758385607; x=1758990407; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
-        b=hV/yDF1BTOImJHQjDuz4OebZblJJzAUMECHt+MV5o0IVkBdyt+IBejc1TnHIA0pbuA
-         4eFJWTDl+OwmlpgCJtau9T792rreTFH+4wg4H4gSbhsU6I1FkGDr2sbGUDJAcIswf5B4
-         JYV0juR19jOcRmTIsP6EbXA0pVl/CFETuhGcI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758385607; x=1758990407;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
-        b=NtuNVlXOKk69TrAkfLBmnkQlT7oxGtpLM+oAyZwBt6TijAbGqRllZSJLm5JMGKxjb8
-         ka+nhsYHEZ8lXcVqPfDWgslqHJNSciUEtf/TY/tcuPDLhHkfjs0+xWw1DzEEhWH/YF9V
-         4EzQGbZ62FKYOytyXqBA2u5wqN2L32RavonBZVPhmmkCUKzfWUo4We5Eqq+4AgpLmRtN
-         UP/EmuJRgIOpn9osAcl7TqS1+/ivICJxNrcmyA/C+cxXUo5oCo2W1akYaG/urtJX9MpC
-         Y4IXDj1dKJvfsRWh9M3/P999/2d81IGs/fjZTykYJze63TYjDlkRMLeXVVjafCRsM0Mv
-         4xyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWbxVGZau9G0qFU32Vr7MmKVnloXHd1eRnllO0tTn55QNKLDxtzlAea/8DWPvpuu6XAhj7n8doX2uLXMl4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywsv5cp+KdHCHMakAtRQ/z3A3+vz6xTSTIJCXPqQ1BW8k/2PZU5
-	QFwYwXcLOvX4a7sVelmVOsUqxPcdWOJoSJEpB1suWL4CRmuI2Tr84LqJM+PYdTQPYTlhCR2ZXLq
-	WW4lihGg=
-X-Gm-Gg: ASbGncvc8fgUlA35e1r7GtqnH7MtgU7FX5HOMZdPC3TI8hL5yZDVSRyQKDjR3Jic9GS
-	U5FjxI3hCu6BuYKj5hy7qoj8IZq+FQv0ODc1jqAld8ND//NJc7Rt3mdqxe94PzuX7bBUAK5stik
-	bK4GvYQ8GwsrNJqnKVURet2vUAoiHgFb9SdGFOBMqICtlwTWYoEBSqDdMuzY+u7P6DkexkkWKsm
-	HEH2W7WAgLW/aZ6CVKGRgmBHgOHtMj+hZY9M+WLPQpoXOiG66ScyfT1cufnHYI8Bu9XIhv3zSa0
-	E0G1UPKgWJ/QXGiqeURPEMJiVEMdbPlzu0aWUqh7i+37raFL1keAhe07gQU5BU/1aeeIFxr1ELz
-	ZpIcxTHodKNapizaB3qMuqXI0VoX2xWcLVQX9LkATCb4X7kdiKGb70+F4VbLDTbAFlhNEcpuo
-X-Google-Smtp-Source: AGHT+IEJ3g7lhZO46hMxt5RfiFT/gZzeQnJBZBrdVTEkjeoBIhNgOEVTyI4oOnGmMnuEvXupWub/Jw==
-X-Received: by 2002:a17:907:6d1b:b0:b08:85d0:3d8b with SMTP id a640c23a62f3a-b24ee9ddcb0mr707244166b.21.1758385607309;
-        Sat, 20 Sep 2025 09:26:47 -0700 (PDT)
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b2a2a5f6c7asm20634966b.28.2025.09.20.09.26.44
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 20 Sep 2025 09:26:44 -0700 (PDT)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b2350899a40so402018966b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Sep 2025 09:26:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU5dsQOIkn0uzZfqkMQnYDdSuY5tAzoRv5nLJP5e1gaiT21yN7HACELUXjSdwg6Vepa0C2HUK7NrFfkneg=@lists.ozlabs.org
-X-Received: by 2002:a17:907:1c89:b0:b1d:285d:155c with SMTP id
- a640c23a62f3a-b24ed88702cmr706169166b.7.1758385604052; Sat, 20 Sep 2025
- 09:26:44 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cTcpN59t9z2xpn
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Sep 2025 04:09:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6NL30/0+UZmJ+Ndqi2NTqpdBOV8RvNTpTtq6rtRPK9E=; b=NM79fJk4vVddI7amyfuuFalCjV
+	KCwjdAr3TBi8ShghGh7DNgYuVH9L+WE3QjtxSRg3IZBe1atmcEKyONCQj9I3wo/0CEGQOZou4azRK
+	2+7qBlOTxdA1xp127r7u5bM6TjwF9mONn+nwL5XucvYd3CZuGSX3BA5ysms187Yyj/wF6/86/CmTL
+	WC2z/0mRVx9nm5VEhTaqI7AesxCZh6k1F+Lpz9Pus6qr4SxsrrMPq2R9tjnbIPN4krYN0ZoLm1Cek
+	ZI6tJ4FtKRcLJdSKn5AdIr/wOwwbdc4jFYT2UcYCQC/FIOU5oSOQeuYce7ptP2b4JNzeCtNGNm6Zd
+	bQgwQelw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v021O-000000039W5-3GQv;
+	Sat, 20 Sep 2025 18:09:18 +0000
+Date: Sat, 20 Sep 2025 19:09:18 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>, Ian Kent <raven@themaw.net>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Andreas Hindborg <a.hindborg@kernel.org>, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	Kees Cook <kees@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	Christian Borntraeger <borntraeger@linux.ibm.com>
+Subject: Re: [PATCHES][RFC] the meat of tree-in-dcache series
+Message-ID: <20250920180918.GL39973@ZenIV>
+References: <20250920074156.GK39973@ZenIV>
+ <CAHk-=wiXPnY9vWFC87sHudSDYY+wpfTrs-uxd7DBypeE+15Y0g@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,68 +72,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250920074156.GK39973@ZenIV>
-In-Reply-To: <20250920074156.GK39973@ZenIV>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 20 Sep 2025 09:26:27 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiXPnY9vWFC87sHudSDYY+wpfTrs-uxd7DBypeE+15Y0g@mail.gmail.com>
-X-Gm-Features: AS18NWCBuRxfjxFE7tKBAQqhhkva7pQWM9EJwSLVmis6atYjgiGA5eqHrxKhjLE
-Message-ID: <CAHk-=wiXPnY9vWFC87sHudSDYY+wpfTrs-uxd7DBypeE+15Y0g@mail.gmail.com>
-Subject: Re: [PATCHES][RFC] the meat of tree-in-dcache series
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
-	Jan Kara <jack@suse.cz>, Ian Kent <raven@themaw.net>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, Kees Cook <kees@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-usb@vger.kernel.org, Paul Moore <paul@paul-moore.com>, 
-	Casey Schaufler <casey@schaufler-ca.com>, linuxppc-dev@lists.ozlabs.org, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiXPnY9vWFC87sHudSDYY+wpfTrs-uxd7DBypeE+15Y0g@mail.gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat, 20 Sept 2025 at 00:42, Al Viro <viro@zeniv.linux.org.uk> wrote:
->
-> The branch is -rc5-based; it lives in
-> git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #work.persistency
+On Sat, Sep 20, 2025 at 09:26:27AM -0700, Linus Torvalds wrote:
 
-I reacted to the "d_make_persistent() + dput()" pattern, and wondered
-if it should just use the refcount that the caller has, but it does
-look like that alternate approach would just result in a
-"d_make_persistent(dget()))" pattern instead.
+> Anyway, apart from that I only had one reaction: I think
+> d_make_discardable() should have a
+> 
+>         WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT))
+> 
+> because without that I think it can mistakenly be used as some kind of
+> "dput that always takes the dentry lock", which seems bad.
+> 
+> Or was that intentional for some reason?
 
-And I guess you already get the lock for d_make_persistent(), so it's
-better to do the dget while having it - but arguably that is also true
-for the dput().
+In the end - sure, we want that.  But in the meanwhile that would require
+separate variants of simple_unlink()/simple_recursive_removal()/etc.
+for those filesystems that are already marking persistent ones, with
+the only difference being that warning.
 
-I think you did pick the right model, with d_make_persistent() taking
-a ref, and d_make_discardable() releasing it, but this series did make
-me think that the refcounting on the caller side is a bit odd.
+A lot more noise that way.
 
-Because some places would clearly want a "d_make_persistent_and_put()"
-function. But probably not worth the extra interface.
+So I'd prefer to put a warning in the source for the time being.  In principle,
+by the end of series as posted we are down to very few filesystems that use
+simple_unlink() and friends without having marked them persistent in the
+first place, so it would be possible to put a "make d_make_discardable() warn
+if it's not marked persistent, add variants of simple_unlink()/simple_rmdir()/
+simple_recursive_removal()/locked_recursive_removal() that would *NOT* warn
+and switch the handful of unconverted users to calling those", but...
 
-Anyway, apart from that I only had one reaction: I think
-d_make_discardable() should have a
+By the end of series as posted that's down to nfsctl, rpc_pipe, securityfs,
+configfs and apparmorfs.  The first 3 - because they used to have subseries
+of their own in separate branches, with corresponding conversion commits
+sitting on top of merges (#work.nfsctl is the last of those branches).
+No real obstacle to moving them into the queue, I just wanted to post it
+for review before we get to -rc7.
 
-        WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT))
+The remaining two (configfs and apparmor) are special enough to warrant private
+copies of simple_{unlink,rmdir}().  So I'd rather have that in patch adding
+the warning - simple_recursive_remove() wouldn't need a separate copy that
+way at all.
 
-because without that I think it can mistakenly be used as some kind of
-"dput that always takes the dentry lock", which seems bad.
+configfs has a separate series untangling it, but that's a separate story -
+that work goes back to 2018; I want to resurrect it, but I'm not mixing it
+into this pile.
 
-Or was that intentional for some reason?
-
-Talking about WARN_ON() - please don't add new BUG_ON() cases. I
-realize that those will never trigger, but *if* they were to trigger,
-some of them would do so during early boot and be a pain for people to
-ever even report to us.
-
-BUG_ON() really should be shunned. I think it makes sense to you and
-for automated testing, but it really is absolutely *horrendously* bad
-for the case where the code hits actual users.
-
-                 Linus
+appramor is... special.  They've got locking of their own, completely broken and
+interspersed with regular directory locks.  John Johansen, if I understood him
+correctly, has some plans re fixing that, and I'm happy not to have analysis
+of their locking on my plate.  _Maybe_ it will end up close enough to the usual
+tree-in-dcache to switch to that stuff, but at the moment I'd rather open-code
+simple_{unlink,rmdir} in aafs_remove() and leave it at that.
 
