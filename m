@@ -1,86 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-12487-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12488-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F43B8D2BF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Sep 2025 02:47:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D415AB8D525
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Sep 2025 07:06:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cTndh2tzZz2ywv;
-	Sun, 21 Sep 2025 10:47:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cTvN85WSRz30P3;
+	Sun, 21 Sep 2025 15:06:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758415656;
-	cv=none; b=odQehJ22JBQ1Jy8/pHqjWq/YM/zUojgbl+0aOFS4SnmsyQpFyDNJuLakRs+eUlHrocf2AwrBjjCJiU/SOPclKYjlhRp88CIYvmVc0v5GN4F4NmxFPF3S45jiVelPxxZX7uJZBex/pFkHMrDp3dpITfiznHDriu3Tcoq6cZw+w++2tVWgNWaKPQRz9ZQfKs1b7QwSuOnucv5jkylDGrwnGrMWDdG5YRJV4WB1tgKcHqzKkvLrZyMcdf6fJfQBZ7jCvrICx5ZmBlu35qoyRarfrz9ItR4LGwPHsz2WKpjBcqeW6cKyqTFSmYOqo1uEGNSL7vML+ZMh4eeNTXbur4IUMg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=130.133.4.66
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758431176;
+	cv=none; b=B4vUQEhuJevk3eaneX2zrP+F5gYJbQ6m/fdEIZ0CZjc78e5ITCtMa6yZeH5Ru2YfNwwVgunUbpdMDMCe0qBOso/CVIuEdEvM4Midcm9A8aRtRvCJl2kOCPQuvpDew1q0Z90JWhvC/+zTAf8tgOyAZkSk/242AS+CiMRXojTa4xTI2a/ZqTdte9Kd+cI7H6R8VDzk7UYB97/xuco3UcVhxnfG3Om5w5UX8hZdh44pwY7KyNlFb1m/HySnYuQbvlorMgIro+eSt/tdc/Di6gH+iG5zXIdQ9DyyNxI46mV1VUXV2dDor4NiO5jbB7g4/ETcR543udzWBbTqg8rRLlAMsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758415656; c=relaxed/relaxed;
-	bh=xtIvv4lw44pUlJuaLKbzEHjJi6xJvnBBYTGn1zOuzT8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EOUBIfl7HEYnAVDhuq8GbGMG6qKIAQfqNdItXciBJK7szMzFenHXxsPFUu6CGsRKTmXb6MlaGC3WuRw9St2aUiDYcHNTsNMhRskfQnNznO3d9rMelJu7un9HGs5aR/Nkt4N8U30pModeM1QPkzoHhKyOY3ri4LOeTTopzjIehlkfhv0paXE1DxaprbaixKf7ga33QTKpQfw9oKhAkfmio4NV4eKLZX8FS4ZvzghlLQgqS8NsyoGZgHbFC9TZ23vBzmK99WkCUhW9pKjgUE4LwOjFZidmhCO3a2/uo7DhVe+91fR2DxUK/B+fNklPCt+3nKePLVfnA0BpwEGVLtWpNQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fLUxwzDv; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1758431176; c=relaxed/relaxed;
+	bh=NvoDm3rY6iriVEHdymAWHHxK+7OKvhuVhhBYM9dD7Fk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mH9OAzfgG3jiFUVpTPfoctjRdN46NpQcqDcN/H7BXmGuzE+07lOjsTKQ7yKHtC2WkDWRxRcmcew3wCLSaOKCUtr/3LQrJl9iFTUPyMh46z/RC2WZc2R+wR5mHXn+BRxK07MbjEeVib1Z4dtZVZb7R7Z2H/gODHyM9ACsEdHW3VFZlhETpeP558zLVjlis/hWd6dvwhlmO0Nx5x9mrbbFL0u7Mm81OutJfCZeL8D0Er53sELO0o1g11G/74/0a82n9HfMzdCk24DU+QlM5HrUt2qxCSPbE4FLqwK97+Wau13lzEyzT9U80XwwmpWZ3jSR/gEfY30VccvVe7logM87XA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=MjKEzTBC; dkim-atps=neutral; spf=pass (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org) smtp.mailfrom=zedat.fu-berlin.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fLUxwzDv;
+	dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=MjKEzTBC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cTndg3P4mz2xcB
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Sep 2025 10:47:35 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 70099600AC;
-	Sun, 21 Sep 2025 00:47:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F266C4CEEB;
-	Sun, 21 Sep 2025 00:47:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758415652;
-	bh=aFgKZNQUQCaJ2vrroedLHD+DNPOlwj6GGUlnWjzhG5w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fLUxwzDvBQpVLTwxkVcEMGkM0isY6OG/nLB20SsNVXIRKxxZrAbNIPP/lH+JLvuUn
-	 Kib9NA0Qx8ucaR4Lud4LpP66fHzAfy4YMg/WGXGCNSBD/snmzPLJ/GJr5uZM4GRPA4
-	 FmPuCrywKU63yNMwT+i1LUerAAz4LYMUpnupPis0tcH13QBvBt9TCQlrhzdIw9AGje
-	 8PZjHxaN7jKNeL5CBfGmMNjS4nLwafvguDKC8M88c1TuvUDa7uTmWsQUU6EjD9ZRCh
-	 q7PhsUzYYnzKkPRC+D+A2gtlVl3c6gXMUqXDS+5w81SLBHHJjwyUZmv9q7TG8Bge2K
-	 OMtCSqZskSdHw==
-Date: Sat, 20 Sep 2025 18:47:27 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 00/16] dma-mapping: migrate to physical address-based
- API
-Message-ID: <aM9LH6WSeOPGeleY@kbusch-mbp>
-References: <CGME20250909132821eucas1p1051ce9e0270ddbf520e105c913fa8db6@eucas1p1.samsung.com>
- <cover.1757423202.git.leonro@nvidia.com>
- <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
- <20250912090327.GU341237@unreal>
- <aM1_9cS_LGl4GFC5@kbusch-mbp>
- <20250920155352.GH10800@unreal>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cTvN427bHz2xjv
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Sep 2025 15:06:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=NvoDm3rY6iriVEHdymAWHHxK+7OKvhuVhhBYM9dD7Fk=; t=1758431172;
+	x=1759035972; b=MjKEzTBCLLoVvr819h9OhPK41k88USZrDwPGeX9Y7lo8sTMCkNOvXntMZLjhJ
+	QmKxKhfVCM7Icsn/EZ6kpvGbl0hYA3sn6iMaY64H0EbwTg5zVNb8zGtQSlPPU7eHHdDThhE6+87WN
+	RSXRM82E5BzdyPkPqAtNaJOvJR5UVkSQ8FkaBY+bC8FpwGqhFMdNEGkUpsDD5qkPqhs4F/Ht9dGAB
+	5fdd8DHy/1xeQQs6Q2M6IQRg2R6v7b1WA1qvpGhd3CT9uC4J1fmDYCkIL2lcxbQEd38UG1GzLvbAd
+	3sBMHyR5/Mq137xTvfN6BbqFqZ9IYKXOk9TkY26GGqI7uquITA==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.98)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1v0CGh-00000000RZV-2NJn; Sun, 21 Sep 2025 07:05:47 +0200
+Received: from dynamic-002-245-016-030.2.245.pool.telefonica.de ([2.245.16.30] helo=[192.168.178.50])
+          by inpost2.zedat.fu-berlin.de (Exim 4.98)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1v0CGh-00000002SmM-0yJw; Sun, 21 Sep 2025 07:05:47 +0200
+Message-ID: <9198795c08a6c3d448bbcbdfe620ada792af8dd3.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v3 00/36] sparc64: vdso: Switch to the generic vDSO
+ library
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+  Vincenzo Frascino <vincenzo.frascino@arm.com>, Arnd Bergmann
+ <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>,  Andreas Larsson
+ <andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>, John Stultz
+ <jstultz@google.com>,  Stephen Boyd <sboyd@kernel.org>, Shuah Khan
+ <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,  Will Deacon
+ <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld"
+ <Jason@zx2c4.com>,  Russell King <linux@armlinux.org.uk>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Michael Ellerman	 <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy	
+ <christophe.leroy@csgroup.eu>, Huacai Chen <chenhuacai@kernel.org>, WANG
+ Xuerui	 <kernel@xen0n.name>, Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Alexander Gordeev	 <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,  Sven Schnelle
+ <svens@linux.ibm.com>, Nagarathnam Muthusamy
+ <nagarathnam.muthusamy@oracle.com>, Shannon Nelson	 <sln@onemain.com>,
+ linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, Arnd Bergmann	
+ <arnd@kernel.org>
+Date: Sun, 21 Sep 2025 07:05:44 +0200
+In-Reply-To: <48fd164e-959b-4263-b3c7-cef5771aa40a@linutronix.de>
+References: 
+	<20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de>
+	 <9a122c6cf3e2e0e61a62b0512eb97804acebeee9.camel@physik.fu-berlin.de>
+	 <48fd164e-959b-4263-b3c7-cef5771aa40a@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,38 +100,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250920155352.GH10800@unreal>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 2.245.16.30
+X-ZEDAT-Hint: PO
+X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat, Sep 20, 2025 at 06:53:52PM +0300, Leon Romanovsky wrote:
-> On Fri, Sep 19, 2025 at 10:08:21AM -0600, Keith Busch wrote:
-> > On Fri, Sep 12, 2025 at 12:03:27PM +0300, Leon Romanovsky wrote:
-> > > On Fri, Sep 12, 2025 at 12:25:38AM +0200, Marek Szyprowski wrote:
-> > > > >
-> > > > > This series does the core code and modern flows. A followup series
-> > > > > will give the same treatment to the legacy dma_ops implementation.
-> > > > 
-> > > > Applied patches 1-13 into dma-mapping-for-next branch. Let's check if it 
-> > > > works fine in linux-next.
-> > > 
-> > > Thanks a lot.
-> > 
-> > Just fyi, when dma debug is enabled, we're seeing this new warning
-> > below. I have not had a chance to look into it yet, so I'm just
-> > reporting the observation.
-> 
-> Did you apply all patches or only Marek's branch?
-> I don't get this warning when I run my NVMe tests on current dmabuf-vfio branch.
+Hi Thomas,
 
-This was the snapshot of linux-next from the 20250918 tag. It doesn't
-have the full patchset applied.
+On Sat, 2025-09-20 at 16:37 +0200, Thomas Wei=C3=9Fschuh wrote:
+> Sep 20, 2025 15:25:11 John Paul Adrian Glaubitz <glaubitz@physik.fu-berli=
+n.de>:
+>=20
+> > On Wed, 2025-09-17 at 16:00 +0200, Thomas Wei=C3=9Fschuh wrote:
+> > > The generic vDSO provides a lot common functionality shared between
+> > > different architectures. SPARC is the last architecture not using it,
+> > > preventing some necessary code cleanup.
+> > >=20
+> > > Make use of the generic infrastructure.
+> > >=20
+> > > Follow-up to and replacement for Arnd's SPARC vDSO removal patches:
+> > > https://lore.kernel.org/lkml/20250707144726.4008707-1-arnd@kernel.org=
+/
+> > >=20
+> > > Tested on a Niagara T4 and QEMU.
+> > >=20
+> > > This has a semantic conflict with my series "vdso: Reject absolute
+> > > relocations during build". The last patch of this series expects all =
+users
+> > > of the generic vDSO library to use the vdsocheck tool.
+> > > This is not the case (yet) for SPARC64. I do have the patches for the
+> > > integration, the specifics will depend on which series is applied fir=
+st.
+> > >=20
+> > > Based on tip/timers/vdso.
+> >=20
+> > Could you share a version of the series based on top of 6.17.0-rcN for
+> > testing purposes? I would like to test the series on a Sun Netra 240
+> > which is based on the UltraSPARC IIIi.
+>=20
+> Here is the git branch based on rc4:
+> https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/linux.g=
+it/log/?h=3Db4/vdso-sparc64-generic-2
+>=20
+> Does that work for you?
 
-One other thing to note, this was runing on arm64 platform using smmu
-configured with 64k pages. If your iommu granule is 4k instead, we
-wouldn't use the blk_dma_map_direct path.
+Thanks, I'll give it a try.
+
+> Thanks for testing!
+
+Of course, I want to make sure the kernel stays working on these machines a=
+nd
+you're introducing large changes.
+
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
