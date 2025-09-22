@@ -1,73 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-12521-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12522-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813B3B92675
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Sep 2025 19:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A63B92678
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Sep 2025 19:23:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cVqgr11l5z2yrr;
-	Tue, 23 Sep 2025 03:23:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cVqgt1gnkz3cYN;
+	Tue, 23 Sep 2025 03:23:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.9
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758561784;
-	cv=none; b=A6h4ks+3m8RzG5KGWOAueY+Fulmi47ooKB9/TGnzYQwQCNOO7ZU4GouoY7d02txfB0yBMxEiOCY+Xm3TzTLncwq5JKkIaw5//LlU31yFvEKMyGPn6gD4SG4L2ugbMr/tHf4bTwY1Hf0WghnzENY5p60U+soiOrAnK+NUA1ERjX7qv3wkv3Uzvg9NXLFVmdr7KRRzAhX6cY43JMOsvvp17ZJdSub6EiCAp92C9MHDnzvishqs2FSnt7a/BBT38VISIcd7Y3RRKv3mBEFLz3XrXS7XeYuOHAyRqV6Bm9UYoPiwuo0/fbDcAVBmj5smbc99DX00cXu6q03nPqCWAps6mA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=23.155.224.40
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758561786;
+	cv=none; b=bPb+Kp/U+G+6ct6RunGL3iq14aCfM7Y+tEjJsBBESOHbEfJA3oPsb2NjKDLX9G/NFS0Tok1WMPy5L+MGLe+hZ822/VpAgHerwBHOoxunKOmQu9sq9UL6Zkzck1/fknKqkorgDGzAMahoEOqEpnwBRpnFx21+/cv3LfGQh8J87LTv/ZH0A58QGqag6ucJKxTyQN3bhiKf0bDlcIdkWW3qrGuX1SABT7/jvkuqotGocS51uviOUkszP1hQGyXVTjxrUyUjujnA70PD72BGkRwbCjlR51mGa0sEjGE+m3WEXKmNbKafmmBJOJIKN1a+2Djttu1C3RNgQId1q4GpVnCsSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758561784; c=relaxed/relaxed;
-	bh=z+bNt8jMSabga1AziJFbekAmB+/9uTDfWJn4Xo/tXPc=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Iwa42PDW2T3Xa1vh0qvFvk8SvoAcGdsjtFcYoWrV/ZuGiUe4rV04r9+D09Dt86dcSZwSy8CPQpuX8ENJHuMavEj7ly//V3chrFkXHyK0QmjV0zW5dsKkTGJs0UjNrysQSN8R6Hijn0ksaci70HJEKv5K0Omz2FLDhsH86WWpTisFYNknGpOVfBvZlvzg7iwtF+gkmsgV8GdBzefxdVsX4pUfvIAn2lN8bqouJfUb3c/ygV9VZwkdamZgzgCiaj5NG9yiBtZ/aMlCKFkWL1w6ujrEMUNupnMeZL4JezrK5i4f31PQn/sZGHJrVqdSxhZsl7az0R8S65cNQCXk1UDorw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hmdihzSm; dkim-atps=neutral; spf=pass (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1758561786; c=relaxed/relaxed;
+	bh=fVJJjuPbrBMRrSHdoKJFZ/4aWh06VwrSX4hItNiq0Ck=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=bJIQ87ntNW7jrNQ1cWSaJF/DYDerc1bXVT0nFlr6YiFEgswA7oxR7DPRHeYGFzgtUWJP1kC93k8/90IH4uA9cAdIxwN0Y1Lbj79DqZYNJxw7LW+EyX4DeMGVC8Jnb9H5r0FN1x/mjEWTUjh19pWTiDvNGBqOyulcFtaxu9ULDLgBiW8IIrohkiZQT/Pt8iXfw/yUSJ8aXRwvrhIKzxmeM1hL6/VF953jPkByKeND90W++qIsmeFoz+dHyfDvs5SLgotPVJ8sXYpHsJbDV0Ipwhm/ZGk1HHViOoyE1XnlshP1wdItRr2y//Gq3pqvMiDChUVeh4E+jmwAmIP9ywOZYA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com; dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=RWDghy5c; dkim-atps=neutral; spf=pass (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=raptorengineering.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hmdihzSm;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=RWDghy5c;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cVqgn05DZz2xnt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Sep 2025 03:22:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758561781; x=1790097781;
-  h=date:from:to:cc:subject:message-id;
-  bh=+r56n9p0rvZzsFEgCzbPyLKVtpy0D/sYQdSYs5V07yc=;
-  b=hmdihzSmd6hbtooDsGNEK7LsUvHaVNg/iogqi57DlSecT0V7ZxxDvjT+
-   tVjF1xfea0bDKvwvL/z/Vq2KJse72ww7SxupthLdkD81QLTWJTMSIrMr1
-   7SrYUJhR/UtGKxebwUMuTND8Ip0miBXIzqbP+LJoQ/6uVvUOMEngC2Xgx
-   dmbuBXR01gwiF+JbKXhfun+3RPvYWvLpcq0dssr6W8QhqAzVZdlC9BZPI
-   4NMX44Iwmyo5CtjZpc8XhMdIv2ODce3h2xSW3TGulTTYT38pqAHxfILFT
-   sylFpOfgNOkdNnst6yG71lKf+QgQ5R4l5IfXG5qURyn3eL7K1lHNJ6LZ6
-   g==;
-X-CSE-ConnectionGUID: WZeuIxdMQAe7Lr7L39ckCg==
-X-CSE-MsgGUID: W6Ln7LlbQrqfjF/W0u8fZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="83433024"
-X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; 
-   d="scan'208";a="83433024"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 10:22:55 -0700
-X-CSE-ConnectionGUID: kIJKqlIMTNSNtNTVZwfF1A==
-X-CSE-MsgGUID: KDx9NdNHRxWdYbv1e5Attg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; 
-   d="scan'208";a="176354396"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 22 Sep 2025 10:22:54 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v0kFX-0001uD-1x;
-	Mon, 22 Sep 2025 17:22:51 +0000
-Date: Tue, 23 Sep 2025 01:22:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- 8c86d0e11e703b5ce6812d9703a7617b09cf6fbb
-Message-ID: <202509230125.5YaAFU6Y-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cVqgs1zFPz2xnt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Sep 2025 03:23:05 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 54A9A82877C8;
+	Mon, 22 Sep 2025 12:23:03 -0500 (CDT)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id IV1HI0GL8OGm; Mon, 22 Sep 2025 12:23:02 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 778B58287DFB;
+	Mon, 22 Sep 2025 12:23:02 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 778B58287DFB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1758561782; bh=fVJJjuPbrBMRrSHdoKJFZ/4aWh06VwrSX4hItNiq0Ck=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=RWDghy5cE65Uhdn7+YmSRgKslosTQ3ZIwZ9iCEKrKMFedVn7IlwoxFA+XImVLzhrD
+	 eyoemTcdfO3GQWZ56jdoXRb7kMTrbe7VeAUHmHB2C55n/ikdM4AgyLqku4X0uyqFQ+
+	 cFG4iFJcPK0+rn2Wkg2r4y05fdjg4GwFM7YHeU6g=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 1KkgVY8Ny_bD; Mon, 22 Sep 2025 12:23:02 -0500 (CDT)
+Received: from vali.starlink.edu (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 4C5A082877C8;
+	Mon, 22 Sep 2025 12:23:02 -0500 (CDT)
+Date: Mon, 22 Sep 2025 12:23:02 -0500 (CDT)
+From: Timothy Pearson <tpearson@raptorengineering.com>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: kvm <kvm@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Message-ID: <421530453.1743072.1758561782183.JavaMail.zimbra@raptorengineeringinc.com>
+In-Reply-To: <20250922104658.7c2b775e.alex.williamson@redhat.com>
+References: <663798478.1707537.1757450926706.JavaMail.zimbra@raptorengineeringinc.com> <20250919125603.08f600ac.alex.williamson@redhat.com> <1916735949.1739694.1758315074669.JavaMail.zimbra@raptorengineeringinc.com> <20250919162721.7a38d3e2.alex.williamson@redhat.com> <537354829.1740670.1758396303861.JavaMail.zimbra@raptorengineeringinc.com> <20250922100143.1397e28b.alex.williamson@redhat.com> <456215532.1742889.1758558863369.JavaMail.zimbra@raptorengineeringinc.com> <20250922104658.7c2b775e.alex.williamson@redhat.com>
+Subject: Re: [PATCH] vfio/pci: Fix INTx handling on legacy DisINTx- PCI
+ devices
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,156 +72,88 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC139 (Linux)/8.5.0_GA_3042)
+Thread-Topic: vfio/pci: Fix INTx handling on legacy DisINTx- PCI devices
+Thread-Index: WZOglxowE54aEf3UCclxhetfggfXhg==
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 8c86d0e11e703b5ce6812d9703a7617b09cf6fbb  Automatic merge of 'next' into merge (2025-09-21 21:55)
 
-elapsed time: 1459m
 
-configs tested: 135
-configs skipped: 4
+----- Original Message -----
+> From: "Alex Williamson" <alex.williamson@redhat.com>
+> To: "Timothy Pearson" <tpearson@raptorengineering.com>
+> Cc: "kvm" <kvm@vger.kernel.org>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
+> Sent: Monday, September 22, 2025 11:46:58 AM
+> Subject: Re: [PATCH] vfio/pci: Fix INTx handling on legacy DisINTx- PCI devices
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> On Mon, 22 Sep 2025 11:34:23 -0500 (CDT)
+> Timothy Pearson <tpearson@raptorengineering.com> wrote:
+> 
+>> ----- Original Message -----
+>> > From: "Alex Williamson" <alex.williamson@redhat.com>
+>> > To: "Timothy Pearson" <tpearson@raptorengineering.com>
+>> > Cc: "kvm" <kvm@vger.kernel.org>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
+>> > Sent: Monday, September 22, 2025 11:01:43 AM
+>> > Subject: Re: [PATCH] vfio/pci: Fix INTx handling on legacy DisINTx- PCI devices
+>> 
+>> > On Sat, 20 Sep 2025 14:25:03 -0500 (CDT)
+>> > Timothy Pearson <tpearson@raptorengineering.com> wrote:
+>> >> Personally, I'd argue that such old devices were intended to work
+>> >> with much slower host systems, therefore the slowdown probably
+>> >> doesn't matter vs. being more correct in terms of interrupt handling.
+>> >>  In terms of general kernel design, my understanding has always been
+>> >> is that best practice is to always mask, disable, or clear a level
+>> >> interrupt before exiting the associated IRQ handler, and the current
+>> >> design seems to violate that rule.  In that context, I'd personally
+>> >> want to see an argument as to why echewing this traditional IRQ
+>> >> handler design is beneficial enough to justify making the VFIO driver
+>> >> dependent on platform-specific behavior.
+>> > 
+>> > Yep, I kind of agree.  The unlazy flag seems to provide the more
+>> > intended behavior.  It moves the irq chip masking into the fast path,
+>> > whereas it would have been asynchronous on a subsequent interrupt
+>> > previously, but the impact is only to ancient devices operating in INTx
+>> > mode, so as long as we can verify those still work on both ppc and x86,
+>> > I don't think it's worth complicating the code to make setting the
+>> > unlazy flag conditional on anything other than the device support.
+>> > 
+>> > Care to send out a new version documenting the actual sequence fixed by
+>> > this change and updating the code based on this thread?  Note that we
+>> > can test non-pci2.3 mode for any device/driver that supports INTx using
+>> > the nointxmask=1 option for vfio-pci and booting a linux guest with
+>> > pci=nomsi.  Thanks,
+>> > 
+>> > Alex
+>> 
+>> Sure, I can update the commit message easily enough, but I must have
+>> missed something in regard to a needed code update.  The existing
+>> patch only sets unlazy for non-PCI 2.3 INTX devices, and as I
+>> understand it that's the behavior we have both agreed on at this
+>> point?
+> 
+> I had commented[1] that testing the interrupt type immediately after
+> setting the interrupt type is redundant.  Also, looking again, if we
+> set the flag before request_irq, it seems logical that we'd clear the
+> flag after free_irq.  I think there are also some unaccounted error
+> paths where we can set the flag without clearing it that need to be
+> considered.
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                      axs103_smp_defconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                   randconfig-001-20250922    gcc-8.5.0
-arc                   randconfig-002-20250922    gcc-9.5.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-22
-arm                              allyesconfig    gcc-15.1.0
-arm                                 defconfig    clang-22
-arm                          moxart_defconfig    gcc-15.1.0
-arm                         mv78xx0_defconfig    clang-19
-arm                           omap1_defconfig    gcc-15.1.0
-arm                             pxa_defconfig    gcc-15.1.0
-arm                   randconfig-001-20250922    clang-22
-arm                   randconfig-002-20250922    gcc-12.5.0
-arm                   randconfig-003-20250922    clang-17
-arm                   randconfig-004-20250922    gcc-8.5.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20250922    gcc-8.5.0
-arm64                 randconfig-002-20250922    gcc-15.1.0
-arm64                 randconfig-003-20250922    clang-22
-arm64                 randconfig-004-20250922    clang-22
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20250922    gcc-15.1.0
-csky                  randconfig-002-20250922    gcc-15.1.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-22
-hexagon                          allyesconfig    clang-22
-hexagon                             defconfig    clang-22
-hexagon               randconfig-001-20250922    clang-20
-hexagon               randconfig-002-20250922    clang-19
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20250922    clang-20
-i386        buildonly-randconfig-002-20250922    gcc-14
-i386        buildonly-randconfig-003-20250922    gcc-14
-i386        buildonly-randconfig-004-20250922    gcc-14
-i386        buildonly-randconfig-005-20250922    clang-20
-i386        buildonly-randconfig-006-20250922    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20250922    clang-22
-loongarch             randconfig-002-20250922    clang-18
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20250922    gcc-11.5.0
-nios2                 randconfig-002-20250922    gcc-8.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250922    gcc-8.5.0
-parisc                randconfig-002-20250922    gcc-9.5.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-22
-powerpc                     ksi8560_defconfig    gcc-15.1.0
-powerpc               randconfig-001-20250922    clang-22
-powerpc               randconfig-002-20250922    gcc-12.5.0
-powerpc               randconfig-003-20250922    clang-17
-powerpc64             randconfig-001-20250922    gcc-12.5.0
-powerpc64             randconfig-002-20250922    clang-20
-powerpc64             randconfig-003-20250922    clang-17
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-22
-riscv                    nommu_k210_defconfig    clang-22
-riscv                 randconfig-001-20250922    clang-22
-riscv                 randconfig-002-20250922    clang-22
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-22
-s390                  randconfig-001-20250922    gcc-8.5.0
-s390                  randconfig-002-20250922    gcc-11.5.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                    randconfig-001-20250922    gcc-15.1.0
-sh                    randconfig-002-20250922    gcc-11.5.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250922    gcc-15.1.0
-sparc                 randconfig-002-20250922    gcc-14.3.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20250922    gcc-12.5.0
-sparc64               randconfig-002-20250922    gcc-14.3.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20250922    gcc-14
-um                    randconfig-002-20250922    clang-22
-um                           x86_64_defconfig    clang-22
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250922    clang-20
-x86_64      buildonly-randconfig-002-20250922    gcc-13
-x86_64      buildonly-randconfig-003-20250922    gcc-13
-x86_64      buildonly-randconfig-004-20250922    clang-20
-x86_64      buildonly-randconfig-005-20250922    clang-20
-x86_64      buildonly-randconfig-006-20250922    clang-20
-x86_64                              defconfig    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250922    gcc-9.5.0
-xtensa                randconfig-002-20250922    gcc-11.5.0
+Gotcha, I missed that the first time around.  I also did a quick check for any other exit paths and only saw the MSI exit handlers, which wouln't be relevant here.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+An interesting quirk I found while debugging is that the guest will receive quite a few spurious interrupts.  Changing to unlazy IRQ doesn't fix that, it's just how VFIO works with legacy non-PCI 2.3 INTX devices.  Since the host kernel doesn't know how to clear a pending interrupt on the device, it also doesn't know how to check if the asserted interrupt is actually valid or is the result of the deferred eventfd handling flow we've discussed in this thread.  Therefore, it will always send the IRQ to the guest, which has the somewhat annoying but harmelss effect of incrementing the spurious IRQ counters in the guest with certain drivers.
+
+>> I've tested this on ppc64el and it works quite well, repairing the
+>> broken behavior where the guest would receive exactly one interrupt
+>> on the legacy PCI device per boot.  I don't have amd64 systems
+>> available to test on, however.
+> 
+> Noted, I'll incorporate some targeted testing here.  Thanks,
+
+Sounds good, thanks.  V2 sent.
 
