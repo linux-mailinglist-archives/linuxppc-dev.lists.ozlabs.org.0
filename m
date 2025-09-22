@@ -1,49 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-12526-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12524-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB02B92C33
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Sep 2025 21:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB778B9295E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Sep 2025 20:22:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cVtHV3Zdsz2yxN;
-	Tue, 23 Sep 2025 05:20:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cVrzj5PnPz304l;
+	Tue, 23 Sep 2025 04:21:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758568838;
-	cv=none; b=U8Gfmc7sSHb7Duk5z3MNaCFT1J+l1JPKEObhO+6IbZTyPPvlPukl9iWdWX1EvvbwjKZoSZtFL+ABjkWIQHYdABEw+54s+D4oYHakPr7SPv/mWOFx88VqLCng1/Tqb5mWozoUrEQ6y1iQQUnsQpMarq/UWN1Upum1VQHSEyyRJUE/2gyp8rjCBSUVYzFWI6V4GGxmyosmxzpos1bWfTWxSNiNjGI5yHovXaUmmJcZ/ruZ2sMT19tp9ncSEAnsQKCQiU7BFO5Xv3iDLraTywM6j9Xdcn+5dia5oo12Cn1F2/i4DlGYfWs544tnBmxogR6QyABZiGPZoemoJ9q7ayJVuw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=23.155.224.40
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758565313;
+	cv=none; b=Q1I5K9upyllD9/BxrcdHsj5sUmyauYk9WBJKX15muXpvHq7b0S5V06KlVzvxR57JfEpp0KGMKyn/FW2xA+vWb4yWkKo7QRRarLqcfa3ULc0cpSdifYCV06H4RV/uOmR7U1q+jfGL33Rsa4Ob5QRz2Pd7x80duHWG8LYQRNFzQFuYGH7bzCD/o0Nd8vuCMtKya+p5y3JVgDly0BCxov3bQPC/vPdiztpTETEzUnDADSY+2wd9AMAc7Hc7t17tRCENiAwIzg4cYkn3GMz50qGk3lNcplfgLMoLc3wPiUE4lnhL8jCMz4CTsHO/KtOoUceoYmAA53jbAVQjZ44l7WW8nA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758568838; c=relaxed/relaxed;
-	bh=3/c0zL5CtyedjX9xlkdHNzhrCuYLjzP3fiy9CkFYxNQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UlsuoauqMYw5jWdqrgx1hxd6CKTO1Cy3Ijuxg2Mie6MaO+2dI/Db2MB09gWENJq5+MXCxzuKq5a+nbn+Y2q/zQlvM0eGtJkmjj+MGo/caGwvQE/qoKSFsqN1iX/a4aHWhaRUcI2VQoPOgqDEBS6KQbUf3PMFd2aYuyV74M6VEgt2a/ZU2iT8n13cKOKRzitZzCrOvzGrLYS/TVh91IJZZYrOoioeD7VibGjLLDrlaW3qIk1U3cwiPzuisPPTu//y+wBF8LAnbV4MaJzydvG4HlC/35NI02cM9vxUIIstJFgvMTE5wDOWj07JabI859tW2dr0m70uSdtOiZpxHFSbOg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cVtHT4K3qz2xnt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Sep 2025 05:20:35 +1000 (AEST)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cVmSt6JfJz9sSs;
-	Mon, 22 Sep 2025 16:58:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id KnfmKuq3WAna; Mon, 22 Sep 2025 16:58:22 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cVmSt5ZMnz9sSr;
-	Mon, 22 Sep 2025 16:58:22 +0200 (CEST)
+	t=1758565313; c=relaxed/relaxed;
+	bh=OtvfmlA5uXTpAMNS6sVHVXDNai3k4a81Zcx6I+PbYlM=;
+	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:Content-Type; b=di8+qkO4WHwShVppmy7nCsBeQdk0nxFaLsVSoJ4ZGSCfet7F3/T14Hkh+tUxa0mElQebxFM/ng+v4bGzZeoxvmwdiIAdOZo3uzyk6gtr1GzRnQLU/PnDJRw7lHa9Zmwo9WqUrFqR4M6yxdUFOqwxdU8pPwtElol0RgqplHsCywu1snhWDHyB6i/Mj9I38GH7FAQNrMBsOZKBqG094viiN/ASTHRcML2X/CErznwaVYw+SJDTrFLjb9YL+YBdfS2Gr+35xyPk6brx87Cqjp2+NvjhN1XATrjWMzzCjY/5WWjYiVT65R6nvpX0uoM7Zfjz5b3PdnVvrXR2asSLI9rSuw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com; dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=AkC/2sIR; dkim-atps=neutral; spf=pass (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=raptorengineering.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=AkC/2sIR;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cVrzg6NXQz2xck
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Sep 2025 04:21:51 +1000 (AEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id ACC408B768;
-	Mon, 22 Sep 2025 16:58:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id AJ0qCR0yksLS; Mon, 22 Sep 2025 16:58:22 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3A2CC8B763;
-	Mon, 22 Sep 2025 16:58:22 +0200 (CEST)
-Message-ID: <617e83e9-c9ad-45d1-bc5a-eba2ecd7965f@csgroup.eu>
-Date: Mon, 22 Sep 2025 16:58:21 +0200
+	by mail.rptsys.com (Postfix) with ESMTP id 6C146828522F;
+	Mon, 22 Sep 2025 13:21:49 -0500 (CDT)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id Tx7DX3xOYmPd; Mon, 22 Sep 2025 13:21:48 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id A9263828523D;
+	Mon, 22 Sep 2025 13:21:48 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com A9263828523D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1758565308; bh=OtvfmlA5uXTpAMNS6sVHVXDNai3k4a81Zcx6I+PbYlM=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=AkC/2sIRvMnnBGmg0lrtqXj9w0MQRwRrFWyZSbWEFQCDirjcl2eZd3sP1LmJPZRe3
+	 MO8Qx9PkNc7RatLoHks9qjMqrhZNIpyPx6I3/5Dy0tSfGQ1khZ1556Ilq4aVWKZe9q
+	 UxBz/YSniDODyPMU+br5LskfKw6gbt7kjYu3ng+w=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ALm6YS_aQ25a; Mon, 22 Sep 2025 13:21:48 -0500 (CDT)
+Received: from vali.starlink.edu (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 7A041828522F;
+	Mon, 22 Sep 2025 13:21:48 -0500 (CDT)
+Date: Mon, 22 Sep 2025 13:21:45 -0500 (CDT)
+From: Timothy Pearson <tpearson@raptorengineering.com>
+To: kvm <kvm@vger.kernel.org>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	Alex Williamson <alex.williamson@redhat.com>
+Message-ID: <1293210747.1743219.1758565305521.JavaMail.zimbra@raptorengineeringinc.com>
+Subject: [PATCH v3] vfio/pci: Fix INTx handling on legacy non-PCI 2.3
+ devices
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,68 +71,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] bus: fsl-mc: Replace snprintf and sprintf with
- sysfs_emit in sysfs show functions
-To: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>, ioana.ciornei@nxp.com
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20250822124339.1739290-1-chelsyratnawat2001@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250822124339.1739290-1-chelsyratnawat2001@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC139 (Linux)/8.5.0_GA_3042)
+Thread-Index: AYYHtS+hzYi6d9o76X6FCAgSNGZOEA==
+Thread-Topic: vfio/pci: Fix INTx handling on legacy non-PCI 2.3 devices
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+PCI devices prior to PCI 2.3 both use level interrupts and do not support
+interrupt masking, leading to a failure when passed through to a KVM guest on
+at least the ppc64 platform. This failure manifests as receiving and
+acknowledging a single interrupt in the guest, while the device continues to
+assert the level interrupt indicating a need for further servicing.
 
+When lazy IRQ masking is used on DisINTx- (non-PCI 2.3) hardware, the following
+sequence occurs:
 
-Le 22/08/2025 à 14:43, Chelsy Ratnawat a écrit :
-> [Vous ne recevez pas souvent de courriers de chelsyratnawat2001@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> Use sysfs_emit() instead of snprintf()/sprintf()  when writing
-> to sysfs buffers, as recommended by the kernel documentation.
-> 
-> Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-> ---
-> Changes in v2:
->   - replace sprintf() with sysfs_emit() in modalias_show()
->   - change commit msg to include the change for sprintf
-> 
->   drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> index c1c0a4759c7e..88fea34a55b9 100644
-> --- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-> +++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> @@ -176,8 +176,8 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
->   {
->          struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
-> 
-> -       return sprintf(buf, "fsl-mc:v%08Xd%s\n", mc_dev->obj_desc.vendor,
-> -                      mc_dev->obj_desc.type);
-> +       return sysfs_emit(buf, "fsl-mc:v%08Xd%s\n", mc_dev->obj_desc.vendor,
-> +                       mc_dev->obj_desc.type);
->   }
->   static DEVICE_ATTR_RO(modalias);
-> 
-> @@ -203,7 +203,7 @@ static ssize_t driver_override_show(struct device *dev,
->   {
->          struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
-> 
-> -       return snprintf(buf, PAGE_SIZE, "%s\n", mc_dev->driver_override);
-> +       return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
->   }
->   static DEVICE_ATTR_RW(driver_override);
-> 
-> --
-> 2.47.3
-> 
-> 
+ * Level IRQ assertion on device
+ * IRQ marked disabled in kernel
+ * Host interrupt handler exits without clearing the interrupt on the device
+ * Eventfd is delivered to userspace
+ * Guest processes IRQ and clears device interrupt
+ * Device de-asserts INTx, then re-asserts INTx while the interrupt is masked
+ * Newly asserted interrupt acknowledged by kernel VMM without being handled
+ * Software mask removed by VFIO driver
+ * Device INTx still asserted, host controller does not see new edge after EOI
 
-Applied, thanks!
+The behavior is now platform-dependent.  Some platforms (amd64) will continue
+to spew IRQs for as long as the INTX line remains asserted, therefore the IRQ
+will be handled by the host as soon as the mask is dropped.  Others (ppc64) will
+only send the one request, and if it is not handled no further interrupts will
+be sent.  The former behavior theoretically leaves the system vulnerable to
+interrupt storm, and the latter will result in the device stalling after
+receiving exactly one interrupt in the guest.
 
-Christophe
+Work around this by disabling lazy IRQ masking for DisINTx- INTx devices.
+---
+ drivers/vfio/pci/vfio_pci_intrs.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index 123298a4dc8f..61d29f6b3730 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -304,9 +304,14 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
+ 
+ 	vdev->irq_type = VFIO_PCI_INTX_IRQ_INDEX;
+ 
++	if (!vdev->pci_2_3)
++		irq_set_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
++
+ 	ret = request_irq(pdev->irq, vfio_intx_handler,
+ 			  irqflags, ctx->name, ctx);
+ 	if (ret) {
++		if (!vdev->pci_2_3)
++			irq_clear_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
+ 		vdev->irq_type = VFIO_PCI_NUM_IRQS;
+ 		kfree(name);
+ 		vfio_irq_ctx_free(vdev, ctx, 0);
+@@ -352,6 +357,8 @@ static void vfio_intx_disable(struct vfio_pci_core_device *vdev)
+ 		vfio_virqfd_disable(&ctx->unmask);
+ 		vfio_virqfd_disable(&ctx->mask);
+ 		free_irq(pdev->irq, ctx);
++		if (!vdev->pci_2_3)
++			irq_clear_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
+ 		if (ctx->trigger)
+ 			eventfd_ctx_put(ctx->trigger);
+ 		kfree(ctx->name);
+-- 
+2.39.5
 
