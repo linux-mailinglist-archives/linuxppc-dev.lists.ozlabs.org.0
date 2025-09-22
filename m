@@ -1,108 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-12516-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12519-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE0BDB924AD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Sep 2025 18:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4CEB92588
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Sep 2025 19:06:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cVptT2v6Sz2yrQ;
-	Tue, 23 Sep 2025 02:47:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cVqK522s1z2yr1;
+	Tue, 23 Sep 2025 03:06:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758559633;
-	cv=none; b=erMLhXdnS9emBaI4ET/bYPeA99ZWXlKtVk2oW41FvLFl9bhtQ3IZOxqjDrjWUD16G/ntE/Kp/cizimXSHCJR2oFdOjgWdEFeYY2FFSkfhmoRcdAtPD2ZHEAc7d3RzqpJG0l2tphe/EHZS+HOlbu0PEpNYa/rvNBTUC7qdlKAHsLv+F/1n9nIEDJUGAJ/kirReXbR8xOVIlrwhFZnvoYhQ2ZbydSuwhsqDO9Gbqf8AaTmOdWrk3TF9cm3H6m8NR3r2YEhdgcs4f1ikippacZNk5kO6xqkA6E7Ay6mjO4fcKDEmaQk/85SYqnaUdamxtre5OblSkFM9DggPEKBiufZVA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758560809;
+	cv=none; b=a2f/xeU5w6RiEgKmoYexde5xYSNnqcjmlu/YZc2y51qk/rur4Q4/2qmOOV98l9tKkUJAnd5T9bRlhn4UXI7tnhE/hLwmikL03SrhRoFvLyrR6JmcYKnb9luDAJ11YcvuuBtX8xXb1gCU/me9LeG9a7yAy86qc8r2Z/SFqCj/AEyB8Yz9dtUw/GUXLSw3hqZ7dFZOL1QXXmH7ljwcnQaD6r2irgZMseSQkJpT1KCH+VpJ3SBLetU1E+px6MDXEDO055qLfocUSURIrkzSlGPFqLnD+rwtSsZUopxg5CXUOdpcjY9BFQCvowPmtM6YmUWQjY2rxIq/eRyiDWNgMyQ3Tw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758559633; c=relaxed/relaxed;
-	bh=fRdA7nsQf+ROdRRV/X8F80rPVzMRc7WYaZxeLJaoIjA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QsZpkcmbN4uAnuwgVkpvh4GwCpNTgcPEIMBAAjRq+ZlKqRDxwkJu95lBO55b+E6bgzOFlr1XNxS9z5ma2y8tPe4o6HgJhqzG11nPQUDPgXguEKz8rXTuf9LgSB9XcdJ1zT7TaFwYC7QpHjmINUAgzlJVZV/Scdm/xIG03QdLgwMHzzF0Tv3sVeXomRr3G487QgXKkae7/clN63eXEE/4WH7flRWzn6X818w9l4q386QOw+e+nUIwPfSXcyCjk0/HOQNqAnLPOEqIJdR1uwLibHY7fb8e4wa1E8u/XPkqxsrk3e0BSmuMn1bQHDNssz6GYRTPk4D9fFZffIsryxZuHA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CRnQgE0m; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CRnQgE0m; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1758560809; c=relaxed/relaxed;
+	bh=Et/xnvrYuQUk0byB46PUmXIo7392F/K55Vqq2WX1kEA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZGv90iZYA58s7nOa6up2bmrcMRPYUJowEzUZIz8y2DVg+lIcFtGYc6QwLvnwnQ6lvvP6aIA5ltKKsg5arIbZ0q5BGiJ5a/k8yuPqQo3eQI8mHzwjV1MMzaC621U/71A+h0oWeMkBA12jlcrmEdGPzv5g2wB8TvZ6FD9YN8KQEP9HykDZFV5TLljlj+lmprS247lDEw9VKoQHqbyMyHuDEesmUDYUNQKEauj1PLUd87eNHmwk3j1MOT8R22mjei5a6TtfvHpwsSXhgNg31J3pxoCXQptMub4h06S0h4KoAwa4aisdGeuzVvtcD3NlycuEgjMEuQX1ohKQIlcGtgK7VA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=freebox.fr; dkim=pass (2048-bit key; unprotected) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=sdw/L1Es; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12b; helo=mail-lf1-x12b.google.com; envelope-from=nschichan@freebox.fr; receiver=lists.ozlabs.org) smtp.mailfrom=freebox.fr
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=freebox.fr
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CRnQgE0m;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CRnQgE0m;
+	dkim=pass (2048-bit key; unprotected) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=sdw/L1Es;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=freebox.fr (client-ip=2a00:1450:4864:20::12b; helo=mail-lf1-x12b.google.com; envelope-from=nschichan@freebox.fr; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cVptQ1LBnz2xck
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Sep 2025 02:47:08 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758559625;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fRdA7nsQf+ROdRRV/X8F80rPVzMRc7WYaZxeLJaoIjA=;
-	b=CRnQgE0mfUmlA62y1D2mdbEGP+B7JczMzn91jb7oVg48dDj1+q4PaJFS/Sg6uIvptyn99R
-	3Q/F+QZXATm+FCQzYMLRNDVSYr6UyU80DwqNUe6FcxqYRkgttEt8G3APn0seMRsEKOVfSP
-	JjuWLXPkrOnQCIiap+/jJ1+lWj1PBFg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758559625;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fRdA7nsQf+ROdRRV/X8F80rPVzMRc7WYaZxeLJaoIjA=;
-	b=CRnQgE0mfUmlA62y1D2mdbEGP+B7JczMzn91jb7oVg48dDj1+q4PaJFS/Sg6uIvptyn99R
-	3Q/F+QZXATm+FCQzYMLRNDVSYr6UyU80DwqNUe6FcxqYRkgttEt8G3APn0seMRsEKOVfSP
-	JjuWLXPkrOnQCIiap+/jJ1+lWj1PBFg=
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
- [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-RoIrtCGNNx2Lx3ooFkKfog-1; Mon, 22 Sep 2025 12:47:03 -0400
-X-MC-Unique: RoIrtCGNNx2Lx3ooFkKfog-1
-X-Mimecast-MFC-AGG-ID: RoIrtCGNNx2Lx3ooFkKfog_1758559622
-Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-8935214d60bso106419739f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Sep 2025 09:47:03 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cVqK310vLz2xnt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Sep 2025 03:06:45 +1000 (AEST)
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-57eef777d3eso1128218e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Sep 2025 10:06:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1758560800; x=1759165600; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Et/xnvrYuQUk0byB46PUmXIo7392F/K55Vqq2WX1kEA=;
+        b=sdw/L1Es0SiDUcIwEi0ryM8XWoor4t5xpp8afyEf+nmCUbZrvFLYZQk+bDt3BeCuT1
+         uunli+ZfRhch3sgoyLrCID4hQ8BhiHi2gbEBxFsjBnaQzxGUPPWQyFqEYcgPYyPnF/lW
+         l+lYvQ8mf8+x5sqqbUudx/F8fMr+95RtpX3vjnTilXe1ONbsEC9Q/+T967a4oYY5ux+p
+         miz98jng3c343xyjxKgALXDuAZt+FVulJfbr6xhEiMZ1CoRcqOjE2jf2+Rbt5M0YoMxG
+         dHzDkWVJh784X4cWLGwJv53zElThdQ3b6VzY8T847ByC+ndoFHbPu2eeC2MokgPt2hds
+         5hqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758559622; x=1759164422;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fRdA7nsQf+ROdRRV/X8F80rPVzMRc7WYaZxeLJaoIjA=;
-        b=qVJ+8NCc9qslDn/5Zk45dJj1Csg9fHqjkZlkB/aaYEN5al4ctrfvdjz+IOKpbT3Bkx
-         Gu5eWgIyO5l1bLdXdvGU4JDEhCNOzEN/M68hKkzQyMtjs8T87ijAdcjKHjtcv2sMxgQJ
-         iX+Gq9qkcp7WphUzy2X3tOeH104UcdZmoF6FdOKeI8XYEJ9DBIrsQAepg17mY63GJ4PQ
-         zygHBO026D6IBKAoLSdvaSzYNKMHXaa0qTurJbWjf09svOz4/5fTJQe9OcYmzv3APOik
-         +a7OXszlsAyi1iagwgTULa57EIBLjXTs1XlGf9T0uTtJq2fc0BWDI0Hk0UW5I12mMhG1
-         K2Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFnzUAdIbzJS7AVp1E3nLR9EUmb46FLXP8MKAPAokrew3hq4HkKB8AR/O94XpL+OfrC6GIdzUxItT1zgA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyOl3b2n7wHvTJeQXoYcdWzDl6lZoJ9ABTS9qFnNM7IEMy0Q8Nb
-	WOpuXN8+9a9kCZfFHgNuqTuYL9x3Hz1vzR+vaL+TcD89BLf58J7xKsLN9Bd1AuE107Jzw+KUiw/
-	ouGqNtYlB6o7mpZLZ90YSe2xzyk7tG3havsmQmbCKJQBgjPyPl2pbELwCiAOCu0+yW7Q=
-X-Gm-Gg: ASbGnct5/myqTEpF9r1b8PTTrr5B+5U3yp/dZJLP9dvoLiPp5R91d7Pd/A4WK0Qc4ZU
-	jtne35/NS5dv1T35jkJB3S6s/4ak8x4dKIMiUv7I0Ph68Al8BGMlJb1m0dvc8ei9/KIyytsvNoD
-	49SOxZ2igiswHuZ3DZI5IC/YU5prnnrvd1uiehm2L8mSxGRtHEcifr/F+HiX+UvsiHy0CxD3cM7
-	3OKWvWX9LYM1jJCyB433mhrTDCfThxZ/T7U1o1skC/KT1+AG5aCqPvjtvWj9RouxxfW9qi9E+LA
-	+3iP4rR6SpCwWnMes/Ck4BdoxSD9qv8JG4+4Oj8ukTQ=
-X-Received: by 2002:a05:6602:1492:b0:886:b1ad:5926 with SMTP id ca18e2360f4ac-8ade85dce23mr773714139f.4.1758559622319;
-        Mon, 22 Sep 2025 09:47:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkFiz0OlFYWl2yJOU/iZB/JsOzK1cROcUGrsewO7Eh+2ZzvoGxAdaxPxrlYTqdudrZ2m5WLA==
-X-Received: by 2002:a05:6602:1492:b0:886:b1ad:5926 with SMTP id ca18e2360f4ac-8ade85dce23mr773711839f.4.1758559621755;
-        Mon, 22 Sep 2025 09:47:01 -0700 (PDT)
-Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-8a483230f4dsm467144739f.25.2025.09.22.09.47.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 09:47:01 -0700 (PDT)
-Date: Mon, 22 Sep 2025 10:46:58 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Timothy Pearson <tpearson@raptorengineering.com>
-Cc: kvm <kvm@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH] vfio/pci: Fix INTx handling on legacy DisINTx- PCI
- devices
-Message-ID: <20250922104658.7c2b775e.alex.williamson@redhat.com>
-In-Reply-To: <456215532.1742889.1758558863369.JavaMail.zimbra@raptorengineeringinc.com>
-References: <663798478.1707537.1757450926706.JavaMail.zimbra@raptorengineeringinc.com>
-	<20250919125603.08f600ac.alex.williamson@redhat.com>
-	<1916735949.1739694.1758315074669.JavaMail.zimbra@raptorengineeringinc.com>
-	<20250919162721.7a38d3e2.alex.williamson@redhat.com>
-	<537354829.1740670.1758396303861.JavaMail.zimbra@raptorengineeringinc.com>
-	<20250922100143.1397e28b.alex.williamson@redhat.com>
-	<456215532.1742889.1758558863369.JavaMail.zimbra@raptorengineeringinc.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+        d=1e100.net; s=20230601; t=1758560800; x=1759165600;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Et/xnvrYuQUk0byB46PUmXIo7392F/K55Vqq2WX1kEA=;
+        b=o88yYXhKCujfnCO0QIpFqbQujVODJEA+yPUtMFS8IMbg4g+HvqKPYyqDkmrJc8Ea9b
+         McG+8Dq5tw2LRpvTwyP9UK+PQkiDEl5/Dy9gSSu9a8iSffphQ4dvNdndqsBYbNlzcnaz
+         0yvzqSVHqEjxWhc2FZHnfxuWS/dSUUxmccOvxbxDeLGhk4IVQoeddriz4w2mBCsJywV/
+         +ob/Nnsb7OWsv7GFHevFsWlB787dyFK66cre8D/KOnF2qBu2Tir0VumySK0RgfIV5oKp
+         ZBLzLjJfZfRsQMr3sQc4TBPNzOuCqejHJBrAnccmsTntfqb8UFSaUCZtVLHWtbZWf6wR
+         G2Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCUJBJV5wUL/BFx25jYVJdxjsRNPJO95d0orTF5fSQSCcB22cejWXL24Axj3oZPkAHgr5CeckfiPuFZp1rk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywy6s9W9TbVap3d1WUkD+7CUU5ed0AHlHnPOZ6bVTO4KEnF+R08
+	+/oP4hb9MUGDLVVomwC0bxb7B39KjVWJI4g0dRpSGLua+/JWi/rfRQDGUHCM4LnTWTvrz3UEtyS
+	aHK3HKY6ZgyKh6HGcXx1IlfECkUmJu+rKZgZqvNnRxA==
+X-Gm-Gg: ASbGncu35ayrti9qnQSKPJWutXBV565BPaaZNyWYvL9ufTDXKO8JSLoDIal86kUdHT/
+	gagdBtBL04LPUGNyl1kCRpEBZlZqLl53TXD3kRpt9eQQuUlwHQjmC7zzzO0UydhniA12vbwvK0a
+	7m6wooJ07XC8mv+4svOSDXUnSf/x7JGdFqXm6FQzNqW+rSkhEtDf8b5gFr1hI+C0Akdp3OhszHu
+	dyD
+X-Google-Smtp-Source: AGHT+IGGtpp1dzmc7QwuqgW2pSLIm4mtcBhZLeu+2i3+Ni9prtVcG/n56U1c5SPCEyTQDr/U3BLl49JsojBTLduSacs=
+X-Received: by 2002:a05:6512:4013:b0:57b:aff6:68a2 with SMTP id
+ 2adb3069b0e04-57baff66a5amr2706206e87.26.1758560800251; Mon, 22 Sep 2025
+ 10:06:40 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -116,78 +78,93 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: lM8k2cA7YPPKT0LHppprTMAM01QR9vJUxC_bqToomGQ_1758559622
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <20250917125951.GA1390993@nvidia.com> <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+ <CAMuHMdVecUeLZ2LPpa457C0a=uduvDhQ4KZJx-++dEFJraRi3w@mail.gmail.com>
+ <547dcb81-434d-4910-aa7c-1d69019fcb3d@app.fastmail.com> <20250919143436.GC2132010@nvidia.com>
+ <44f910bf-ac2c-4b2f-8e50-5cfc7dd0761a@app.fastmail.com>
+In-Reply-To: <44f910bf-ac2c-4b2f-8e50-5cfc7dd0761a@app.fastmail.com>
+From: Nicolas Schichan <nschichan@freebox.fr>
+Date: Mon, 22 Sep 2025 19:05:49 +0200
+X-Gm-Features: AS18NWDJSAue7YE7c8rlG0jvR5lve033dTh_Rnu2Tx6e392cgPO_ZPu-mU9r2No
+Message-ID: <CAHNNwZCsBY+ta2-OqD40K0-C8N25PLMYfOJowiVeaEMotqR1nQ@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Geert Uytterhoeven <geert@linux-m68k.org>, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+	imx@lists.linux.dev, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Richard Weinberger <richard@nod.at>, Lucas Stach <l.stach@pengutronix.de>, 
+	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand <david@redhat.com>, 
+	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>, 
+	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
+	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 22 Sep 2025 11:34:23 -0500 (CDT)
-Timothy Pearson <tpearson@raptorengineering.com> wrote:
+> On Fri, Sep 19, 2025, at 16:34, Jason Gunthorpe wrote:
+> > On Fri, Sep 19, 2025 at 04:22:20PM +0200, Arnd Bergmann wrote:
+[...]
+> > I am right it sounds like we can drop vivt cache support with highmem?
+> > vivt is alot easier to understand if kmap isn't running around
+> > creating virtual addresses aliases!
+>
+> I think so, yes. I've prototyped a patch for it to add a dependency
+> on !VIVT and the drop the code paths that are clearly no longer
+> needed without it. This obviously needs proper testing, but the
+> diffstat is promising:
+>
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index f14bac913d50..0a31cfaf3818 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -1214,6 +1214,7 @@ config ARCH_SPARSEMEM_ENABLE
+>  config HIGHMEM
+>         bool "High Memory Support"
+>         depends on MMU
+> +       depends on !CPU_CACHE_VIVT
+>         select KMAP_LOCAL
+>         select KMAP_LOCAL_NON_LINEAR_PTE_ARRAY
+>         help
+>  arch/arm/Kconfig                    |  1 +
+>  arch/arm/configs/gemini_defconfig   |  1 -
+>  arch/arm/configs/multi_v5_defconfig |  1 -
+>  arch/arm/configs/mvebu_v5_defconfig |  1 -
+>  arch/arm/include/asm/highmem.h      | 56 +-----------------------
+>  arch/arm/mm/cache-feroceon-l2.c     | 31 +------------
+>  arch/arm/mm/cache-xsc3l2.c          | 47 +++-----------------
+>  arch/arm/mm/dma-mapping.c           | 14 ++----
+>  arch/arm/mm/flush.c                 | 19 ++------
+>  mm/highmem.c                        | 86 +++++--------------------------------
+>  10 files changed, 27 insertions(+), 230 deletions(-)
+>
+> I did get an email from Nicolas Schichan (added to Cc here),
+> and he is still supporting a widely deployed Kirkwood based
+> platform that uses 1GB RAM configurations. He should get
+> a chance to test that with CONFIG_VMSPLIT_3G_OPT, but I
+> would expect that to continue working, possibly with minor
+> bugfixes.
 
-> ----- Original Message -----
-> > From: "Alex Williamson" <alex.williamson@redhat.com>
-> > To: "Timothy Pearson" <tpearson@raptorengineering.com>
-> > Cc: "kvm" <kvm@vger.kernel.org>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
-> > Sent: Monday, September 22, 2025 11:01:43 AM
-> > Subject: Re: [PATCH] vfio/pci: Fix INTx handling on legacy DisINTx- PCI devices  
-> 
-> > On Sat, 20 Sep 2025 14:25:03 -0500 (CDT)
-> > Timothy Pearson <tpearson@raptorengineering.com> wrote:  
-> >> Personally, I'd argue that such old devices were intended to work
-> >> with much slower host systems, therefore the slowdown probably
-> >> doesn't matter vs. being more correct in terms of interrupt handling.
-> >>  In terms of general kernel design, my understanding has always been
-> >> is that best practice is to always mask, disable, or clear a level
-> >> interrupt before exiting the associated IRQ handler, and the current
-> >> design seems to violate that rule.  In that context, I'd personally
-> >> want to see an argument as to why echewing this traditional IRQ
-> >> handler design is beneficial enough to justify making the VFIO driver
-> >> dependent on platform-specific behavior.  
-> > 
-> > Yep, I kind of agree.  The unlazy flag seems to provide the more
-> > intended behavior.  It moves the irq chip masking into the fast path,
-> > whereas it would have been asynchronous on a subsequent interrupt
-> > previously, but the impact is only to ancient devices operating in INTx
-> > mode, so as long as we can verify those still work on both ppc and x86,
-> > I don't think it's worth complicating the code to make setting the
-> > unlazy flag conditional on anything other than the device support.
-> > 
-> > Care to send out a new version documenting the actual sequence fixed by
-> > this change and updating the code based on this thread?  Note that we
-> > can test non-pci2.3 mode for any device/driver that supports INTx using
-> > the nointxmask=1 option for vfio-pci and booting a linux guest with
-> > pci=nomsi.  Thanks,
-> > 
-> > Alex  
-> 
-> Sure, I can update the commit message easily enough, but I must have
-> missed something in regard to a needed code update.  The existing
-> patch only sets unlazy for non-PCI 2.3 INTX devices, and as I
-> understand it that's the behavior we have both agreed on at this
-> point?
+Hello Arnd,
 
-I had commented[1] that testing the interrupt type immediately after
-setting the interrupt type is redundant.  Also, looking again, if we
-set the flag before request_irq, it seems logical that we'd clear the
-flag after free_irq.  I think there are also some unaccounted error
-paths where we can set the flag without clearing it that need to be
-considered.
+We don't use HIGMEM on our Kirkwood platform, we are happy using a
+2G/2G WMSPLIT. We don't need a lot of virtual address space for
+userland, and with the 2G split we don't waste physical memory.
 
-> I've tested this on ppc64el and it works quite well, repairing the
-> broken behavior where the guest would receive exactly one interrupt
-> on the legacy PCI device per boot.  I don't have amd64 systems
-> available to test on, however.
+I'm happy to test your patch serie with VMSPLIT_3G_OPT and see if it
+still boots with it once you send it.
 
-Noted, I'll incorporate some targeted testing here.  Thanks,
+Regards,
 
-Alex
-
-[1]https://lore.kernel.org/all/20250919125603.08f600ac.alex.williamson@redhat.com/
-
+-- 
+Nicolas Schichan
 
