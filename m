@@ -1,74 +1,107 @@
-Return-Path: <linuxppc-dev+bounces-12509-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12510-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 266C8B91DCA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Sep 2025 17:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BFE2B921B8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Sep 2025 18:02:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cVmlq5j5tz3cBW;
-	Tue, 23 Sep 2025 01:11:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cVntJ0cbTz30Qk;
+	Tue, 23 Sep 2025 02:02:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=66.163.186.153
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758553879;
-	cv=none; b=Q5/J+LLVaknXPkcukVtFwRrspyi6CMOvMttZGI5eyXOUhEiRWmcDsMELdbeszNxSqVrmBQ+A+EF+WJrbIHkiYhy1MhjTkuZLZe13B/8YwCRLgk31fa//ImBJNeCpITsKOasraWpiB762O9IOqw593rSboyyyXX9a08K5XlsjWbEsZEiKrQoE9v8SatbUDb+DXk0/mH1J16Wxs2WcVccQqmpOGSBeAi2Dw+s6fS7WyGW+P/GgwiW6XmgMWQgVgVkYd5uXf7hHLU9Z1x0QEdJLQZ6kMHTB4Jc19kbBUnZXHxjbX05XDqd40Dz7sAKzI4Uus0czAegCAgvWegfICSP2SA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758556919;
+	cv=none; b=leLvzDKVfbE5p+Hcd7XJPvLmj4PcksvLdJrLBhyRgSsVJ69kr78Hd5/12Rppr8d+Rx3YWcIRqNR3h5NXtK7i6V5d+Zy5MUysmSOhi6b7s8kKNat6ek1ljk729iAKUhSzkxYwrncUfx5oiP6dI3H/7a7WIOxkcLd/wXbJGAw2k2E3RvniQiGyMpmXNxyCj3cws6d/8vNiHQwxs5CO8XYOP2P+jJmueg+mj+Ghot0NNQXAa349/5N8gImvjFfGeLz6f7WMw/AdlJKAfIuvKYirO09LYq/ZjLjOJMxELWMqHdAA0U9y5b2sNkz1oGnXppUqDFdYtjUKtfImY5OBzu9IWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758553879; c=relaxed/relaxed;
-	bh=4InEgJCpBgl3urehuyUAnpN3vmaPh6mhZWLVpIhzL0s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jV0dCEpHs9qDDWSxy2IFFaUc5ZXMfaPQ3P280TtFNvhF64tJOfUDnBfHiOqmS1mVTBIl9/wXCmMVb894hSijOMDAP35l4nHCIl+uh/IkBqEhrk9WHk7n2LYW3gDprMEWYm5uezAxGr/mdJRbsLnIJPLsUqy/enneZzlZw/btW1tU+EI23CX9NpsPfsQFGXnQ+mEH1mAf8VxnmJIMq4gSioyxiTvGzHfWkl4k+lcPbb+wswyg8mYxEFovOCRSuwofsduklKvu/9g1owhKa+nLEh61FeGloCRt32gahp/QcdzYh+o08DegcDP+VpSVj73bHzHtoTENfE9OAFrUAmtUvg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; dkim=pass (2048-bit key; unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=J9DwI9EE; dkim-atps=neutral; spf=none (client-ip=66.163.186.153; helo=sonic302-27.consmr.mail.ne1.yahoo.com; envelope-from=casey@schaufler-ca.com; receiver=lists.ozlabs.org) smtp.mailfrom=schaufler-ca.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+	t=1758556919; c=relaxed/relaxed;
+	bh=tXNIluJ/Y0q23mzmIzZIg9/Tv+rjRchaEvz0cHtgPjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HCEUiaVtXFI6LbQNja/OP6NSMC1B2jEajSb19pW/FIudINmYdAs0OinLC6EToFC1hL3524I8X5NoYLMUXbfRJgNidlQxk948CD3kIGooErhIXHeD+crVwgzWQp9Em6QmxUV2eaWG6R0dBcUpsurAnDIyj3M/IoL8jx2V7TsZVWsfYLGerjHX6HTDis//eWQgLhBxGbJPnL+ik5trwdRpxJhqUUQT0RSPME7LXCZqTwBVYje7oPQS/lKsS5MC7Qrg2f4UxmsZCcUwGkdjIRVrnLMjUe5NwaQCnWIv70bhHiJUrPxVVI3CRQWnwNWHoWZDeA/aQeIeKFLyYHoSlKCWTQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S6EMTbdx; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S6EMTbdx; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=J9DwI9EE;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S6EMTbdx;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S6EMTbdx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=schaufler-ca.com (client-ip=66.163.186.153; helo=sonic302-27.consmr.mail.ne1.yahoo.com; envelope-from=casey@schaufler-ca.com; receiver=lists.ozlabs.org)
-Received: from sonic302-27.consmr.mail.ne1.yahoo.com (sonic302-27.consmr.mail.ne1.yahoo.com [66.163.186.153])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cVmlp0VPwz30Ng
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Sep 2025 01:11:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1758553874; bh=4InEgJCpBgl3urehuyUAnpN3vmaPh6mhZWLVpIhzL0s=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=J9DwI9EEoSSW/Lkrr72eSxtrXRRENkjzKi46wW+Sysdd5SAjSVeIV4hgsLSA+JggqGnnt2M9wh7N0MfEiHO2gJR8amsnXUNwHU1/2ki/mr2IbJS4SpuLz1N4Ypj6XtaVdAeHXL/Lbikc+EMiYIhoLSVZuSWehpzhAhFZmcItDq2W3vUCwT+dafBVcOmnYNF/F9ZELG3HfEXIRpHiUwbwDCG6DBBbP6QhGUeVn79618epXSbHiu8hzGhRZGMDKocstCp6uOTE6S62y8udiG8HI5Jrkm0BxRWAChR1b+rKbQp5pV2+BMMabI9y2BAi0RsHcuI4RhQi+MNRhgXIiQFgRQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1758553874; bh=KPwtAbCxygioSedyi/zH4YiPp0McrAJ3B+cmGMWen8n=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=cNlIa+GgmUR4wuvMfIB8WqyYSEX08UMsLE+92KlNC2P/yka3ghVo6hU6YPEvjWL7fZFQUrO417uXOMvZwUAAH5hPqAIf9OzZM7Y39W9y2lcROyU0QToz5a5oJ5P1XGaPPcS58kY7N9vBtO6BQy9pNgIajYzJzO+hDYaUQWmfIhbgs7fRs7yv3gccc/svi7WlbGkbhDWwXa5d/jiY7dZH4E9mjchUAMbc6RCC63G/iiv6KwRqdM87luBlAFkvsVRS7vcQNq6Mq6sV5lCRyhW96NiPuZHLcdSbcVzkpQ+92kvkzDPWEFKS09KgIrOIib74OlO030E1+1YptjS8yNSj/Q==
-X-YMail-OSG: a0ShGM0VM1kS5TdAKyhzMZn1kR2BVScsxCyqUC96KXfqWNmQ7dmcDUkr2C6CD8o
- F.nNwGtrFxyWKgcaKU7c7SzY5sLRNB.kOmj5_1Qm6ugm1qKEKbdGmcF7HD5CS6uaMhzE.a9se2Qm
- F1aP8aIzBCHkxN5RNu9eVRSUSnetYV4eQU1XVm4hTaEV4BvxehZwefxFMd6x0JG.j4dEDQi93AD1
- otuyzSX1.GPHdlyHguPAligClB4vPQXogx4pmPFUNZvIgnYUj3ZAP.eaGvtLAJBWwJZIid7F8Yl7
- fS1HoQ7Jn3KoiQxx99h22rBrZa75BNGmyO0gktHMEZP6MXXhe53TSWat_vR8FAYXp_VD4R4oJuz0
- DW.oPlaIk1ghcJ.KbdLt0LsHV4.48F61tmZEA3FvDg6dnsPKuRGJnMhywRU4K6.kIxo9YPvXQjHB
- F0IEgZLPfOcJ8vj_r5t6ph71MsJq.FE_dJwSDuVWC2OfTIwu3UL950I4YXO0txdngQH3weqQJq6v
- Gd0etDBRenLr.nP4ZVooL08C.kalSnyjilbjQ6hVCbAJFQ5ac5tNMA0yqzDKczYaots_sFff8rvv
- U5vBtTDHFGj9pG1htEk98Bie3Sr1Rh3DfjslgmdEQKnh1_RrMAZSOAa.07QtYLdpDe2ASHqoxstq
- qYaXJgEdH5PCYA35nG5kb60ezbJkPPwOgISysqsYtBczyL7aM0o_YWb87zjEpMrncOBftQRPUxzI
- yY2X1SAcAlN74EUshXhNxN7bDz0fJ9pyw6Z2FsRjy8NP0ZZgh77q88u5.20P4ilTVK7xnx3zwYf4
- Uzh2YFJ6lpxu_av3Ty_RSjjqPs_hrHqzS4E2lP1u8zR0J5nKWFZkiuKSJTrN8DJgClAmJqKAahC0
- NDUnpko2yADSzuuEpuBlBsqp8tv6uhW8teFJt.gLBrwD3pm5T1jSk.0wbeWpfWdlekkEEZwV3NPS
- xZ7VgGeoZC1jxaMek4SWmhHxcE34bMEKU.ZgnVDtv1vB2BQqLi_s6d77dWDiquPUaQAUCXKkMaQP
- uhDhqmwm8pzBqj2r0bYaLSBcqFrAk51e5s4ikqTrwey9HRuUMMB8Eh2Y1HQR9LL_GE.p6iKBKxnX
- nIXVe7cgbeMhuuSyEyhK5k_DGnSaPAqBjwhWbkQQ0EBc3l6dBpb4.Oz6IoO_8WCoLqoiiNyfdai.
- bJqa6nOKQrPDM66mVqWCrlXJ6g1wtUV7f9_RR3ivDzll782rXlyXthQ7MUGtc1O4ztwW9feR0AFR
- uC4vfcZi7p42Pwj2PiMqaKleTA3XAs8ovvKSBT_szRVp_5si5CjN8VyeemuMZTkLEg.rLNOiNPCG
- ytsLPAaDfYvVFrPfcdyYVnIQ2F2svsSmcLS6d07AwqKDkUlZFTirlX5SPJb30aKtLsfZA2vXA1dX
- byb6p2XV5WARbEoql4FkflHp67betBxxYfMoBuk5wsBX.R08duRAeIA7ywEmn2K_jb6_P91vCYMA
- AbckozoJFCLrgV6CWtns8rSzy395xhacTQzNQERJ8u6dQJMrmDYQtaS9J7y33Fwf1vHuWoK09FpM
- l8kJwIWULCnK5tjBv7iWW6LyslPyakaCL6mla8FXtIRDOQbAeGbSfW1aSxgcC89DZHcc2bM0x8e5
- sBoSsKO.AGS65jFjJYffvA9clbSmTISPOj4t64jG0sZpeeCe8VIxXz7WWTqU0XxkmCWiYwIn6KV_
- aUtD_EmSIWjW.J3jq2SVufM16hzqmUzhgU1aFQiACBwp.U2rG._edaOcsQrGJYKlS8tWmS4PL22D
- jSQIOAzuGq548u_mkww0AMgNAVQvlG67kcZ6SNXiFjW.k5iAUl1TlfCPEdCqsi8GWQRdneOBomfT
- ueajbwUt99M2nKlAjWvxQ_hy0RWGK3Ij4TWwNUYFNIsCXb0AsEOgYljPYO3dSJ0UbJwD6wzpABrG
- yZP5OsJLBK6ojQjJFmlGDMCbP7c5vxhge0mlgEPh6ACFt6Pqodho68OWazPnWVRIDSME785Zll_g
- CCQ9BuMOs.kMWTm4pGh28YO3BgmPcOl4hV.JK8XCiEgQY.4EQko2_W9u3bFfLa.Rdf_KvchZbSnR
- YcjkZQL3Gjhl21R0v_mm0v7UmSWebJxuIgVF4JOQehB9F_WNlcDfoawNwAtelzKXFXTaFRp_C6wK
- eszOxCUPqTPOQ_dI8MUlSoTR6Ga9y3m4NFIPKfqe_INBR5CwIx2F23bdEgas1vlI64GNmzsihuP2
- lxI_3RbdGVHuDr69RVlRtRbANidYaUSGf53wBBeZlpqudBL7u_btetqsP2Keq_y6GEDrgR_icQFg
- BgrZFVqwNWg479To-
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: 2c354591-3949-4080-84f2-5cc1785b2062
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ne1.yahoo.com with HTTP; Mon, 22 Sep 2025 15:11:14 +0000
-Received: by hermes--production-gq1-6f9f7cb74b-2n2jr (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5a83043d0b8f6a0e34f3bfd1c61ea603;
-          Mon, 22 Sep 2025 15:11:07 +0000 (UTC)
-Message-ID: <8403fd9a-6667-4202-bd5b-5e83172961b3@schaufler-ca.com>
-Date: Mon, 22 Sep 2025 08:11:05 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cVntG49jjz30HB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Sep 2025 02:01:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758556912;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tXNIluJ/Y0q23mzmIzZIg9/Tv+rjRchaEvz0cHtgPjw=;
+	b=S6EMTbdxm75GhKEHW5qxmK2xBaAEHoO/wwKAOy3Ec/8gj6CJ/uG7Oc+bifift4VIJhUEyo
+	malS32megac6D+UxnZubcjctNBwE7E2E/YNHTN4NbYJkOtXoKe2UpgX/SwKeK16nkR9KqK
+	97bYLndXujDT/+Oh9aZAdxPADyeuKAg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758556912;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tXNIluJ/Y0q23mzmIzZIg9/Tv+rjRchaEvz0cHtgPjw=;
+	b=S6EMTbdxm75GhKEHW5qxmK2xBaAEHoO/wwKAOy3Ec/8gj6CJ/uG7Oc+bifift4VIJhUEyo
+	malS32megac6D+UxnZubcjctNBwE7E2E/YNHTN4NbYJkOtXoKe2UpgX/SwKeK16nkR9KqK
+	97bYLndXujDT/+Oh9aZAdxPADyeuKAg=
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
+ [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-352-vpqURtFOOba6SfVUKMDDVg-1; Mon, 22 Sep 2025 12:01:50 -0400
+X-MC-Unique: vpqURtFOOba6SfVUKMDDVg-1
+X-Mimecast-MFC-AGG-ID: vpqURtFOOba6SfVUKMDDVg_1758556910
+Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-3197f534082so2005693fac.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Sep 2025 09:01:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758556909; x=1759161709;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tXNIluJ/Y0q23mzmIzZIg9/Tv+rjRchaEvz0cHtgPjw=;
+        b=Y9EfNKCjRJUVyCNkupE9ka2w0wDZHokmWAzrV3VOXAb+ECjzjrFtTX5jwtMh/e2eGO
+         BP8TARwZGDK5gKCEUCXJ0CEKah7h8gHtEtZSQvnmqbKwxuhMIrgGyHjTkZQEaWgg7wsT
+         mdUp5SS5ELrqAc/B8svzdVaZQ4mdVm+2b37HGNVdJMizd4ZscaidE08Qi8TAhMIjA8NN
+         tLsWK+h2jUAtu9MGtsVokS1w32afE8Bvc2QWFfpSoSimot+GB3C2PE4/tcobLfmjLqNz
+         b6BKJKHGbICkRKfcVcgJZ3d/oKO9GVsCb1aOZz0UjGQkqApqmpfseGH9Km15ZG8/6QSg
+         I4GA==
+X-Forwarded-Encrypted: i=1; AJvYcCUaIMi06L2ZyjTI1cJ2U4yPZo6qXYHXLjSzTUQUjAUB5gv8XMWFkG0WjlAsQcCZ+wsYQ4K6lV1ClcuNEoQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxvydKZwrrsHgknPK1Yge4VkFmpd+orlCp7OMvYOueikiRH/UF3
+	BtDFZWVn8i+IXmslfElOFbTY7f4tptFgKhAk50EDU3XfOh+vBDVMnGPT8IgPo/6FUfXycJ/Bouo
+	pFmUMUetHJzoDq0BXZZVt5FS0WMJkMPSxYe2adoq5kI0SOMwW2bzvY0X2I10NrjkKdTkjp5/iZB
+	A=
+X-Gm-Gg: ASbGncup8WM3FkTpWdLcegyqV+7qjOBR7e+xWmnb8VaZQiYVsiv9Xj7Xn4y/0kjyQx3
+	hvfEjf8dTMtgAHaIj981Je5jTb33uaSLDj4CQxJir4sCxu+GDrxk0iuiMrcccdFF61TLAm/KmyD
+	c+Qs3ALLTxuraxn/2Rnv0DJsFvSgEOBA90jOPv+W+mUU9N+n4G9uLHGROGH9i5CxGVqtBswEX9w
+	Wn7U47G4xeBaUCaMUseo3amoJPD4bxGeCNa9CDuB3gYd46xTtDa8ui5OaLMUHtPGEWvvxfS/MtJ
+	lB4v8VmwZrh8svSyY0ozOs7jyLKD+RazzfGo/4Hfe/U=
+X-Received: by 2002:a05:6871:2987:b0:331:ebe7:f673 with SMTP id 586e51a60fabf-33bb49655aamr3564718fac.9.1758556908232;
+        Mon, 22 Sep 2025 09:01:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGz5/rWt2sNidlRW6kyh8a7NA1uRncwrteUD3AJv60SOcvoVzWhVpJzASNVa+IT+VYZbfD6A==
+X-Received: by 2002:a05:6871:2987:b0:331:ebe7:f673 with SMTP id 586e51a60fabf-33bb49655aamr3564695fac.9.1758556907521;
+        Mon, 22 Sep 2025 09:01:47 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-336e411fcb8sm7901202fac.8.2025.09.22.09.01.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Sep 2025 09:01:46 -0700 (PDT)
+Date: Mon, 22 Sep 2025 10:01:43 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Timothy Pearson <tpearson@raptorengineering.com>
+Cc: kvm <kvm@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH] vfio/pci: Fix INTx handling on legacy DisINTx- PCI
+ devices
+Message-ID: <20250922100143.1397e28b.alex.williamson@redhat.com>
+In-Reply-To: <537354829.1740670.1758396303861.JavaMail.zimbra@raptorengineeringinc.com>
+References: <663798478.1707537.1757450926706.JavaMail.zimbra@raptorengineeringinc.com>
+	<20250919125603.08f600ac.alex.williamson@redhat.com>
+	<1916735949.1739694.1758315074669.JavaMail.zimbra@raptorengineeringinc.com>
+	<20250919162721.7a38d3e2.alex.williamson@redhat.com>
+	<537354829.1740670.1758396303861.JavaMail.zimbra@raptorengineeringinc.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,54 +115,207 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/39] convert smackfs
-To: Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
- raven@themaw.net, miklos@szeredi.hu, a.hindborg@kernel.org,
- linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
- kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org,
- linux-usb@vger.kernel.org, paul@paul-moore.com,
- linuxppc-dev@lists.ozlabs.org, borntraeger@linux.ibm.com,
- Casey Schaufler <casey@schaufler-ca.com>
-References: <20250920074156.GK39973@ZenIV>
- <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
- <20250920074759.3564072-10-viro@zeniv.linux.org.uk>
-Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <20250920074759.3564072-10-viro@zeniv.linux.org.uk>
-Content-Type: text/plain; charset=UTF-8
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 24HzJ17S21fe7lwg_UjkbYKoyFXNzPqaocghDRU70Is_1758556910
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.24425 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 9/20/2025 12:47 AM, Al Viro wrote:
-> Entirely static tree populated by simple_fill_super().  Can use
-> kill_anon_super() as-is.
->
-> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+On Sat, 20 Sep 2025 14:25:03 -0500 (CDT)
+Timothy Pearson <tpearson@raptorengineering.com> wrote:
 
-Looks fine to me.
-Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+> ----- Original Message -----
+> > From: "Alex Williamson" <alex.williamson@redhat.com>
+> > To: "Timothy Pearson" <tpearson@raptorengineering.com>
+> > Cc: "kvm" <kvm@vger.kernel.org>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
+> > Sent: Friday, September 19, 2025 5:27:21 PM
+> > Subject: Re: [PATCH] vfio/pci: Fix INTx handling on legacy DisINTx- PCI devices  
+> 
+> > On Fri, 19 Sep 2025 15:51:14 -0500 (CDT)
+> > Timothy Pearson <tpearson@raptorengineering.com> wrote:
+> >   
+> >> ----- Original Message -----  
+> >> > From: "Alex Williamson" <alex.williamson@redhat.com>
+> >> > To: "Timothy Pearson" <tpearson@raptorengineering.com>
+> >> > Cc: "kvm" <kvm@vger.kernel.org>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
+> >> > Sent: Friday, September 19, 2025 1:56:03 PM
+> >> > Subject: Re: [PATCH] vfio/pci: Fix INTx handling on legacy DisINTx- PCI devices  
+> >>   
+> >> > On Tue, 9 Sep 2025 15:48:46 -0500 (CDT)
+> >> > Timothy Pearson <tpearson@raptorengineering.com> wrote:
+> >> >     
+> >> >> PCI devices prior to PCI 2.3 both use level interrupts and do not support
+> >> >> interrupt masking, leading to a failure when passed through to a KVM guest on
+> >> >> at least the ppc64 platform, which does not utilize the resample IRQFD. This
+> >> >> failure manifests as receiving and acknowledging a single interrupt in the guest
+> >> >> while leaving the host physical device VFIO IRQ pending.
+> >> >> 
+> >> >> Level interrupts in general require special handling due to their inherently
+> >> >> asynchronous nature; both the host and guest interrupt controller need to
+> >> >> remain in synchronization in order to coordinate mask and unmask operations.
+> >> >> When lazy IRQ masking is used on DisINTx- hardware, the following sequence
+> >> >> occurs:
+> >> >>
+> >> >>  * Level IRQ assertion on host
+> >> >>  * IRQ trigger within host interrupt controller, routed to VFIO driver
+> >> >>  * Host EOI with hardware level IRQ still asserted
+> >> >>  * Software mask of interrupt source by VFIO driver
+> >> >>  * Generation of event and IRQ trigger in KVM guest interrupt controller
+> >> >>  * Level IRQ deassertion on host
+> >> >>  * Guest EOI
+> >> >>  * Guest IRQ level deassertion
+> >> >>  * Removal of software mask by VFIO driver
+> >> >> 
+> >> >> Note that no actual state change occurs within the host interrupt controller,
+> >> >> unlike what would happen with either DisINTx+ hardware or message interrupts.
+> >> >> The host EOI is not fired with the hardware level IRQ deasserted, and the
+> >> >> level interrupt is not re-armed within the host interrupt controller, leading
+> >> >> to an unrecoverable stall of the device.
+> >> >> 
+> >> >> Work around this by disabling lazy IRQ masking for DisINTx- INTx devices.  
+> >> > 
+> >> > I'm not really following here.  It's claimed above that no actual state
+> >> > change occurs within the host interrupt controller, but that's exactly
+> >> > what disable_irq_nosync() intends to do, mask the interrupt line at the
+> >> > controller.  
+> >> 
+> >> While it seems that way on the surface (and this tripped me up
+> >> originally), the actual call chain is:
+> >> 
+> >> disable_irq_nosync()
+> >> __disable_irq_nosync()
+> >> __disable_irq()
+> >> irq_disable()
+> >> 
+> >> Inside void irq_disable(), __irq_disable() is gated on
+> >> irq_settings_disable_unlazy().  The lazy disable is intended to *not*
+> >> touch the interrupt controller itself, instead lazy mode masks the
+> >> interrupt at the device level (DisINT+ registers).  If the IRQ is set
+> >> up to run in lazy mode, the interrupt is not disabled at the actual
+> >> interrupt controller by disable_irq_nosync().  
+> > 
+> > What chip handler are you using?  The comment above irq_disable
+> > reiterates the behavior, yes if the chip doesn't support irq_disable it
+> > marks the interrupt masked but leaves the hardware unmasked.  It does
+> > not describe using DisINTx to mask the device, which would be at a
+> > different level from the chip.  In this case __irq_disable() just calls
+> > irq_state_set_disabled().  Only with the change proposed here would we
+> > also call mask_irq().  
+> 
+> This is all tested on a POWER XIVE controller, so arch/powerpc/sysdev/xive (CONFIG_PPC_XIVE_NATIVE=y)
+> 
+> >> > The lazy optimization that's being proposed here should
+> >> > only change the behavior such that the interrupt is masked at the
+> >> > call to disable_irq_nosync() rather than at a subsequent
+> >> > re-assertion of the interrupt.  In any case, enable_irq() should
+> >> > mark the line enabled and reenable the controller if necessary.  
+> >> 
+> >> If the interrupt was not disabled at the controller, then reenabling
+> >> a level interrupt is not guaranteed to actually do anything (although
+> >> it *might*).  The hardware in the interrupt controller will still
+> >> "see" an active level assert for which it fired an interrupt without
+> >> a prior acknowledge (or disable/enable cycle) from software, and can
+> >> then decide to not re-raise the IRQ on a platform-specific basis.
+> >> 
+> >> The key here is that the interrupt controllers differ somewhat in
+> >> behavior across various architectures.  On POWER, the controller will
+> >> only raise the external processor interrupt once for each level
+> >> interrupt when that interrupt changes state to asserted, and will
+> >> only re-raise the external processor interrupt once an acknowledge
+> >> for that interrupt has been sent to the interrupt controller hardware
+> >> while the level interrupt is deasserted.  As a result, if the
+> >> interrupt handler executes (acknowledging the interrupt), but does
+> >> not first clear the interrupt on the device itself, the interrupt
+> >> controller will never re-raise that interrupt -- from its
+> >> perspective, it has issued another IRQ (because the device level
+> >> interrupt was left asserted) and the associated handler has never
+> >> completed.  Disabling the interrupt causes the controller to reassert
+> >> the interrupt if the level interrupt is still asserted when the
+> >> interrupt is reenabled at the controller level.  
+> > 
+> > This sounds a lot more like the problem than the previous description.  
+> 
+> Apologies for that.  There's a lot of moving parts here and I guess I muddled it all up in the first description.
+> 
+> > Is the actual scenario something like the irq is marked disabled, the
+> > eventfd is delivered to userspace, userspace handles the device, the
+> > interrupt is de-asserted at the device, but then the device re-asserts
+> > the interrupt before the unmask ioctl, causing the interrupt chip to
+> > mask the interrupt, then enable_irq() from the unmask ioctl doesn't
+> > reassert the interrupt?  
+> 
+> That is exactly it, yes.  This particular scenario only occurs on old
+> pre-PCI 2.3 devices that advertise DisINT- ; newer devices that
+> advertise DisINT+ don't trip the fault since the host interrupt
+> handler sets the device interrupt mask (thus deasserting the IRQ at
+> the interrupt controller) before exiting.
+> 
+> >> On other platforms the external processor interrupt itself is
+> >> disabled until the interrupt handler has finished, and the
+> >> controller doesn't auto-mask the level interrupts at the hardware
+> >> level; instead, it will happily re-assert the processor interrupt
+> >> if the interrupt was not cleared at the device level after IRQ
+> >> acknowledge. I suspect on those platforms this bug may be masked
+> >> at the expense of a bunch of "spurious" / unwanted interrupts if
+> >> the interrupt handler hasn't acked the interrupt at the device
+> >> level; as long as the guest interrupt handler is able to somewhat
+> >> rapidly clear the device interrupt, performance won't be impacted
+> >> too much by the extra interrupt load, further hiding the bug on
+> >> these platforms.  
+> > 
+> > It seems this is the trade off the lazy handling makes
+> > intentionally, we risk some spurious interrupts while the line is
+> > disabled to avoid poking the hardware.  So long as we're not
+> > triggering the spurious interrupt handler to permanently disabling
+> > the interrupt line, this is a valid choice.  
+> 
+> At least for some platforms, yes, though it's not exactly clear in
+> the documentation that this is intentional or that the side effect
+> exists at all.
+> 
+> > That's also a consideration for this patch, we're slowing down all
+> > non-PCI2.3 INTx handling for the behavior of this platform.  Is
+> > there some behavior of the interrupt controller we can query to
+> > know which path to use?  Can this issue be seen with the irqfd INTx
+> > handling disabled on other architectures?  Do we actually care
+> > whether we're making old INTx devices slower?  Thanks,  
+> 
+> I honestly don't know.  In reality, we're talking about amd64 and
+> ppc64el as the only two platforms that I know of that both support
+> VFIO and such old PCIe INTX pre-2.3 devices, and their respective
+> interrupt controller handling in a spurious INTX IRQ context is very
+> different from one another.
+> 
+> Personally, I'd argue that such old devices were intended to work
+> with much slower host systems, therefore the slowdown probably
+> doesn't matter vs. being more correct in terms of interrupt handling.
+>  In terms of general kernel design, my understanding has always been
+> is that best practice is to always mask, disable, or clear a level
+> interrupt before exiting the associated IRQ handler, and the current
+> design seems to violate that rule.  In that context, I'd personally
+> want to see an argument as to why echewing this traditional IRQ
+> handler design is beneficial enough to justify making the VFIO driver
+> dependent on platform-specific behavior.
 
-> ---
->  security/smack/smackfs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-> index b1e5e62f5cbd..e989ae3890c7 100644
-> --- a/security/smack/smackfs.c
-> +++ b/security/smack/smackfs.c
-> @@ -2960,7 +2960,7 @@ static int smk_init_fs_context(struct fs_context *fc)
->  static struct file_system_type smk_fs_type = {
->  	.name		= "smackfs",
->  	.init_fs_context = smk_init_fs_context,
-> -	.kill_sb	= kill_litter_super,
-> +	.kill_sb	= kill_anon_super,
->  };
->  
->  static struct vfsmount *smackfs_mount;
+Yep, I kind of agree.  The unlazy flag seems to provide the more
+intended behavior.  It moves the irq chip masking into the fast path,
+whereas it would have been asynchronous on a subsequent interrupt
+previously, but the impact is only to ancient devices operating in INTx
+mode, so as long as we can verify those still work on both ppc and x86,
+I don't think it's worth complicating the code to make setting the
+unlazy flag conditional on anything other than the device support.
+
+Care to send out a new version documenting the actual sequence fixed by
+this change and updating the code based on this thread?  Note that we
+can test non-pci2.3 mode for any device/driver that supports INTx using
+the nointxmask=1 option for vfio-pci and booting a linux guest with
+pci=nomsi.  Thanks,
+
+Alex
+
 
