@@ -1,66 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-12537-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12539-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC340B960F1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Sep 2025 15:46:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DCBB96411
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Sep 2025 16:30:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cWLqs1P0mz2yqg;
-	Tue, 23 Sep 2025 23:46:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cWMp314XCz2ytV;
+	Wed, 24 Sep 2025 00:30:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758635209;
-	cv=none; b=JhkWGdTcHkxuBrKyyBtUqYYAYYuUda2kFkCmav8ihl5V5CNBVJQB/aWpr1L9gCnbF07CwkZES7dkzwZhi9gpheKHZR9Hy0zGBiXWiGkrwiYDawyj8sNa03al72s5aBXW6/iEU73uO3SNVdz4+F02Q5sptPyS6vbAu3OK8KDNc2jyX3vTz0J/r63Nh9vapuFQmmKHoI5y9xinZeaTq2N4rF4U/RZc8kHsOHbSMhx7MSAdaZSLmpmNbR0JFfYcmIU33WyqYkpJYLrce3pAh08TGxYpwtn3EFTWtFZhC++u7jSMGc+gkb+OT8NFOlyhBNAua1kjACb/NcUcEMc1uVW4Dg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:5300:60:3a9d::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758633256;
+	cv=none; b=nm5RHJgWjq26ULnetxqmX7xb86e7ZHIIuOxsuepcOFHvUtp3XAgQTWQTqYuBgBHUCZIX3YaLZb/JbIMau5TfZJWxEsedVIK8+CrRLO+sSCIZnvJE5ckiodjulejHjVqXfpcpqRrllHK7xBFRnq2ym5k3nUlKl9BmSQXkznheeGEdTj5yK2EvldWmo0is8+ZBJHaiMEBSgEuVeMQPKi0MvRFSQGKBSbXgfPf4vfMgMKUAH64uNex/drIlXGkBy1c/AiiMGwnqGkYtMqFAIVglQn9r4K3hCyf6id4KWMfd3+es2YJpb+PeXnhoLbU/O+/YJEQbx+2KbnBVdN0jwrEN1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758635209; c=relaxed/relaxed;
-	bh=HmiFHqTevzpTd67JED8R3CjY5+3NzH7Hvg1rhxsNPiY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VDsn9j2fyzaNrHu1veO1UV8wRz2gY0Cisvx+nCzszkOV98OXT/rSIbYVrPPOlTySq9N8xsS64JvquxclydvO5zmiPdTC88kGheCdYVCFmSaAi2cW2Ejm1iAvb7aE+2uN4uz1HVEUc8uiVl1MXcIiz8YwYhp6t2zPqPCu8uXo90PWy9yHi3RTMRXVuyl40M30j5Oucm+mPwnISlidrBZBB0L7Hjdp/hBH4l5xItwScJuvdvanSE/ei8S6CkIBUCCwaOsmapeTe5xPsFEmFnwZJf0CpGdaMwn1WDX2YZKwhCMt2LItpbFoHaBVdKJMIxLdrEG8Lko7SrG8/FI3Nxuq8Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qxQ7VDKf; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1758633256; c=relaxed/relaxed;
+	bh=2sItBj+QU9qdXvNcIECQjyDp7nGnsVveQgohkd3EYmM=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:MIME-Version:
+	 Content-Type; b=jxSv2orrRlEBmCI2aAxvQItOrtR3yEgpjvUkzJPE7s4YoI27q3L4QdCHiWXWwG+OWpLV80+2mACsNzHycN7jIi2Oi1PgWUzHDsHzGEvWVFuKgmve8BJERz8yq1e5U4nftNdVU6DuNP8/FCdeF5EHbKiWLedB6/y2lPJbAHUqReemcxOqcGQ+ZS95EQeTc3NzzVwntACsUzJ79mcRS2HaWZOvBHcmuYH8/QXfU7di+Ih/joJgzCXUs1fq/UgJ1tstArALawN0E0zmxbvEnVOCT9mEa8w3mcLkfIaZ22YBo+i8GmjXKo2aQuK2CfUfAHsjvD62ndbwsbGaop4OqkKiIg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=tethera.net; dkim=pass (2048-bit key; unprotected) header.d=tethera.net header.i=@tethera.net header.a=rsa-sha256 header.s=2024 header.b=fhY2a8K3; dkim-atps=neutral; spf=pass (client-ip=2607:5300:60:3a9d::1; helo=phubs.tethera.net; envelope-from=david@tethera.net; receiver=lists.ozlabs.org) smtp.mailfrom=tethera.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=tethera.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qxQ7VDKf;
+	dkim=pass (2048-bit key; unprotected) header.d=tethera.net header.i=@tethera.net header.a=rsa-sha256 header.s=2024 header.b=fhY2a8K3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=tethera.net (client-ip=2607:5300:60:3a9d::1; helo=phubs.tethera.net; envelope-from=david@tethera.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 471 seconds by postgrey-1.37 at boromir; Tue, 23 Sep 2025 23:14:14 AEST
+Received: from phubs.tethera.net (phubs.tethera.net [IPv6:2607:5300:60:3a9d::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cWLqr3np4z2xck
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Sep 2025 23:46:48 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C48D1449D0;
-	Tue, 23 Sep 2025 13:46:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C0DC4CEF5;
-	Tue, 23 Sep 2025 13:46:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758635205;
-	bh=FO1IaZWhYXzPZ1kV2cp8Kfr5N2is+biotDlknM0E+x4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qxQ7VDKfAzJIYa13xErJ+FpKQkM0PJmDHnphGd9CMCFROVxi8kNFAWh/WESrHULj8
-	 VLgqHBFIBpQXCtb/GASS4fKMOjmBwZRD7wACS7+FLfDx2ytcroOdgLi/XLulEJQ7NA
-	 eNLCLXjkrcFO4s0XZFhspPWr/XwYMMrWpNf12Cwy0wyvAWs1hrhZHgSbO1wapC2gpT
-	 4W/lMZbVbEYoyuQoOrhA7kGpyuDXmTm0Ft5mrMqqZvR1kv9x+VF9ILnrRUcYFHInJt
-	 uHe+M9HvRIDEV+RyIx9VqgjQDSF4y7mjWkxmTEowB9J7dXKXY2UNJoe3h5D6fiEAoh
-	 cpGKGLsVB4rKg==
-Date: Tue, 23 Sep 2025 15:46:37 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: David Bremner <david@tethera.net>
-Cc: devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org,
-	bhelgaas@google.com, heiko@sntech.de,
-	krishna.chundru@oss.qualcomm.com, kwilczynski@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	lpieralisi@kernel.org, lukas@wunner.de, mahesh@linux.ibm.com,
-	mani@kernel.org, manivannan.sadhasivam@oss.qualcomm.com,
-	oohall@gmail.com, p.zabel@pengutronix.de, robh@kernel.org,
-	wilfred.mallawa@wdc.com, will@kernel.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cWL6G0TRxz2yGM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Sep 2025 23:14:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tethera.net;
+ i=@tethera.net; q=dns/txt; s=2024; t=1758632774; h=from : to : cc :
+ subject : in-reply-to : date : message-id : mime-version :
+ content-type : from; bh=2sItBj+QU9qdXvNcIECQjyDp7nGnsVveQgohkd3EYmM=;
+ b=fhY2a8K3+6Pqc7obdcyMoOLs2tg8wCZkGhoAXWA9670cPb67vtaRWP6JtAARfUpFAZs84
+ IBx29vHM9Jx0C1WoHSU3HOMtKhfHw5OnrBD+qJSNuOiojlAoGPpdI0n1yFXcRmoPpqvBWqB
+ LSjVz2iXNeb1Rls66wn8GHXud1K2QVXMf8Y4NfvWZTcPd9lLXJU0CS5b6+ufgxB7chZsJF+
+ 6SjHwRsZcTCiego5lqemkQ0b9qFxDqd0YGom6xqLJf6fADTwDxQ3SGawi7Cgsn5CMrpaTPN
+ 0ljaoj5ya23LZ0i0WKjwBoVlytOr/Jv7PCE/+FUWnn2ho0ZGTF7eooo5zMjA==
+Received: from tethera.net (fctnnbsc51w-159-2-211-58.dhcp-dynamic.fibreop.nb.bellaliant.net [159.2.211.58])
+	by phubs.tethera.net (Postfix) with ESMTPS id C93D818006D;
+	Tue, 23 Sep 2025 10:06:13 -0300 (ADT)
+Received: (nullmailer pid 1548093 invoked by uid 1000);
+	Tue, 23 Sep 2025 13:06:13 -0000
+From: David Bremner <david@tethera.net>
+To: devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org
+Cc: bhelgaas@google.com, cassel@kernel.org, heiko@sntech.de, krishna.chundru@oss.qualcomm.com, kwilczynski@kernel.org, linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, linux-rockchip@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, lpieralisi@kernel.org, lukas@wunner.de, mahesh@linux.ibm.com, mani@kernel.org, manivannan.sadhasivam@oss.qualcomm.com, oohall@gmail.com, p.zabel@pengutronix.de, robh@kernel.org, wilfred.mallawa@wdc.com, will@kernel.org
 Subject: Re: [PATCH v6 0/4] PCI: Add support for resetting the Root Ports in
  a platform specific way
-Message-ID: <aNKkI00EAJb8LD9S@fedora>
-References: <20250715-pci-port-reset-v6-0-6f9cce94e7bb@oss.qualcomm.com>
- <87ldm548u2.fsf@tethera.net>
+In-Reply-To: <20250715-pci-port-reset-v6-0-6f9cce94e7bb@oss.qualcomm.com>
+Date: Tue, 23 Sep 2025 10:06:13 -0300
+Message-ID: <87ldm548u2.fsf@tethera.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,44 +64,31 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ldm548u2.fsf@tethera.net>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello David,
 
-On Tue, Sep 23, 2025 at 10:06:13AM -0300, David Bremner wrote:
-> 
-> I have been testing this series on the 6.17 pre-releases, lightly
-> patched by the collabora [1] and mnt-reform [2] teams. I have been testing
-> on bare hardware, on MNT Research's pocket-reform product. I'm afraid I
-> can only offer CI level feedback, but in case it helps
-> 
-> 1) The series now applies cleanly onto collabora's rockchip-devel branch
-> 2) The resulting kernel boots and runs OK.
-> 3) the resulting kernel still fails the "platform" pm_test [3] with
->  "rockchip-dw-pcie a40c00000.pcie: Phy link never came up"
-> 
-> Of course there could be other reasons for (3), I don't know that much
-> about it.
+I have been testing this series on the 6.17 pre-releases, lightly
+patched by the collabora [1] and mnt-reform [2] teams. I have been testing
+on bare hardware, on MNT Research's pocket-reform product. I'm afraid I
+can only offer CI level feedback, but in case it helps
 
-I don't think this driver has support for hibernate in upstream.
+1) The series now applies cleanly onto collabora's rockchip-devel branch
+2) The resulting kernel boots and runs OK.
+3) the resulting kernel still fails the "platform" pm_test [3] with
+ "rockchip-dw-pcie a40c00000.pcie: Phy link never came up"
 
-Did you try forward porting this patch:
-https://lore.kernel.org/linux-pci/1744940759-23823-1-git-send-email-shawn.lin@rock-chips.com/
+Of course there could be other reasons for (3), I don't know that much
+about it.
 
-Also, have you tried the downstream driver?
-If it is working there, perhaps you could try to isolate the changes
-that make it work there.
+I'm happy to test a newer version of the series if/when it exists.
 
-Otherwise, I would recommend you to reach out to author of the patch
-above ask for support.
+d
 
-
-Kind regards,
-Niklas
+[1]: https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git#rockchip-devel
+[2]: https://salsa.debian.org/bremner/collabora-rockchip-3588#reform-patches
+[3]: https://www.cs.unb.ca/~bremner/blog/posts/hibernate-pocket-12/
 
