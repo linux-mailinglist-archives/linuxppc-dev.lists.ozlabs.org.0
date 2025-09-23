@@ -1,81 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-12544-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12545-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21948B96FB9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Sep 2025 19:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A88DB97189
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Sep 2025 19:49:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cWRX34kPcz303F;
-	Wed, 24 Sep 2025 03:18:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cWSCk06lBz304l;
+	Wed, 24 Sep 2025 03:49:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758647907;
-	cv=none; b=eChrEN/yW4KxYJ4k/Bl1FSnozg9w7/5NVlpj66bv5RVIQPFPFRTfP2jk/zsfsJ2XeKXH8cDRRl/U+tAH/unCo2+ag3YFogD88cItMnPX5mPPqOqn6BOLfIf+QWjC4Jbq0ozzO8QxtUNBfq4NwHxFL4/87gMwaoDzjLF0CtojB25P/7JN6Ovbgr/BFpJf0nGDRoVzjcI2UKA6+doNkiZQ53HHduDzhxKwSB03FPC0rcoWpdxx3rCyOMdq8HZHUCCoz1JvwXf9gBjgJb4x5i5JPPUkSgNM+ZjmAYriMHrUPUt7g+5JsRitjTWp6hsp+reQvHebF670Eoo5sQ86OUFBnw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758649761;
+	cv=none; b=kZVBZu+mFI+xPekunrCz3eBvDbNCemQ9upyYuYyuC+gg10uyHS0e58JwxlJ9EOqtqVDwqu510GcMXEIQx6+2xfcoe/vCYCqttOdyKa6JzlrMMl4xCbRQZEFEQFBycg8jUgMHYBfeyNq7B02QqPs3sgb6kAeb/S5PtR8H7fF/SskqtBOMzEf4ZoLXvFgE+95J/35uEGM1MbgAWcWpcTkqiJhpinspok8MHWmsLiXeXfYQtv9enC5570hEsxKdBMBifQS/rs4nBik5JbSQsCVT+b5yG7sI06m1tlXnEOe+69grXJpxSCxoxEO90xBX5WTUhhSR58LNwLDrsN8Uk5/V+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758647907; c=relaxed/relaxed;
-	bh=CvIs1sC3Qq/UwE73WmiJURmY8QNLg7F9cxjFD4NAFr0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kNFfGuQTSwKaFDN7WYpP7qOPGF6ozKrwqsxTFX30ETiuAbU6HoDg6I8MicgmBp7sLrtuH7jwqqKFZm9FW54CvshqPk6Qa9p5uKqFfnCsF4XJEeuKe5XaeurgpwYoMkgOV9mvRekSThVIdh2+hR622TmS+74TzDZChzrwkKsfKDbMQgd1e7HFLo3YJhIey1aKeZjx7tjr/0Kvt1kfU0mkZzfQDbzIHGm8xFpKNgXoQZdYwbR3fH4Oca/8RTLsAIsjIbFleAfjz+M5OmbGZRMFOPMymF73hDk/HzODmKyBqgy6EBi3x8jqgkAT3VG4J2hLNVhnfBTvWRNQJaL0t8HX0Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g5Jqi9yu; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1758649761; c=relaxed/relaxed;
+	bh=ak83w47Un+0YVkw6h4ejJTiciQnGZqbDFJcToiU+0xQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bJkT3ng9awUzBTNKFp0qIhWm3zpnJBrBD+yOda/lY1DWp0/Sw1mf9Cxs9M/tK644TS9HwaiiAkYLMS50SMegaiMjfBnmTW0Vk1GUDhCeQz8fZjqGE8hft5+Bj+Z/IXfyl/v+5kP9wDh8iohk0A57lgsZdJMigoctKp6vKrItml6d/4IDY2VVjmiF21EjVZW7PRCaoi1AAX/q/+4pENaBu1R70HhZp32tG7TGfBI4fsA/CeqZy6HY7Nq63fGK43oAgFKVBf2nLMb1E8n/Rk+OX0gehgBY2Y4joa/5XDkJI03b18UvEz2wS8d6gE0mhD8XLQ+oR0mZSS//Ez204nHPkQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nnFhZsNV; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42d; helo=mail-wr1-x42d.google.com; envelope-from=andreyknvl@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g5Jqi9yu;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nnFhZsNV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42d; helo=mail-wr1-x42d.google.com; envelope-from=andreyknvl@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cWRX24qVVz2yxN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Sep 2025 03:18:26 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4D74B447D6;
-	Tue, 23 Sep 2025 17:18:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76194C4CEF5;
-	Tue, 23 Sep 2025 17:18:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758647903;
-	bh=1ANX/1Q+c1YQm6ycMdbCkLhJt5M0dGUVsHIE7DPPmR4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g5Jqi9yueMAnnH73toGC0xOJKxvg0qa4gga/SeRhYNDlfhLJMDwAYoyYF5OeZMllT
-	 4wGYFwIT9tNhvxI7Fwmxeam4DFzzKoOpEvYF6KzT3sugNB9IZN5QFtnFbWNJKdyahQ
-	 njhRkpS4V2fDEMCIbaKPb5Fvro/sH2PrgzN3QArdRquI6/hD8MqkvT+BpL3TaOekdf
-	 ivzyZBCGcNieZxwvItwvCdr8sC9432gSLRdJ+Qt9NVztv9FJs9EoyOLvflbrcT7TLo
-	 fCDKOXnJOo3pz8pFrFpZX02l/lSsNuJ1YSx2nfsXC1cIkAfhePf3pibh9dO8eHGKV8
-	 GZaMzjVv7a/9Q==
-Date: Tue, 23 Sep 2025 20:18:19 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Magnus Lindholm <linmag7@gmail.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Geoff Levand <geoff@infradead.org>, Helge Deller <deller@gmx.de>,
-	Ingo Molnar <mingo@redhat.com>, iommu@lists.linux.dev,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Jason Wang <jasowang@redhat.com>, Juergen Gross <jgross@suse.com>,
-	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	sparclinux@vger.kernel.org,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	virtualization@lists.linux.dev, x86@kernel.org,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH 1/9] alpha: Convert mapping routine to rely on physical
- address
-Message-ID: <20250923171819.GM10800@unreal>
-References: <cover.1758219786.git.leon@kernel.org>
- <0c64474985af55b1aa934b857808068a0e609c6e.1758219787.git.leon@kernel.org>
- <CA+=Fv5Q8dVUFVBh82mAe=fy3mV6mWtQT_0pBPLQwLNBt3f8E1g@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cWSCh0ZmFz2xck
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Sep 2025 03:49:19 +1000 (AEST)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-3e8ef75b146so5524002f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Sep 2025 10:49:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758649755; x=1759254555; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ak83w47Un+0YVkw6h4ejJTiciQnGZqbDFJcToiU+0xQ=;
+        b=nnFhZsNVRGcPocf/vHJrAoq5AsjQSlyh/Z7GfHSjvwnHredbOC4Vmy8ByNEpQn8Crn
+         ccTeUGxhXs1KygOKF8423Nh1sWAe+eYj1Z1MduLkxanmF0GfsSrPZJScNhkXXl2MvYie
+         t+w19k4LdV9C914qOpvyg9DduuOVU1k/Y5g+qKSAbvvMXtrocgvgX1Mg3CLAuG2px6L2
+         rlAAT7ycBlOIoB8IsaoeGRhg633OoysNrspDn9CFH3lG0nMKkG/8GDFqlM4oBAx24Dpw
+         m+A+1z/lIjQO3NIQJiJKXSnzF3QnW5ZQaZUoJgZLI7cdDh9Ss3jPlBEbI6boUyzNU/NY
+         kdxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758649755; x=1759254555;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ak83w47Un+0YVkw6h4ejJTiciQnGZqbDFJcToiU+0xQ=;
+        b=oNraaIj1Mio6mW3StIP9jcuHPBoywvZvm9jL7sF84fQtQ9ANwRjLFwILXFTfWa/SHs
+         oqyyyLUA/GhFnkjDgRn7USAagyxlCqCVd/zGdRHf+aKJ7xzpUUmoLvc9ZX7K2y12Xs0f
+         mbQHXBseQSZfuRkWatcd9uDtJTAO6FHZkINAU9VCLqEKYXagbJr+eXXyaPDVFIYB5Evu
+         NW0Nh6lUgTugL2rU2epPlQQCChJ70xS3BgVM9gKKKVF94LHN92WrpmLMUlDKgPD1cKQU
+         3VDMlKMUdpVhoBMykZmSoHyAO5+EPjNeYssyMdzi0qhsBUcgUDw4h72bavDEhavQLMmB
+         /86w==
+X-Forwarded-Encrypted: i=1; AJvYcCVDdT7S+J4843G2JPfrK/Ycpbe9ggxcGfSFH3vcjtyMHnj5s23eBGMUifRPNvXtDkCang+aFkGMimjinDk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz3UXNBfRrfnLqUY5jrageRphBYhROQmJZW9fTZv1H7P8Njtyu4
+	B6dMLJpbgayM85HFXDR1iKJO0SZjXSDVKxqUWd518tuzwkCh8d+n6yd23OuzU7wYY0nGFQU1K0R
+	8y64/9eI9MFhks3QP4sv9qBPnyppdjIM=
+X-Gm-Gg: ASbGncsse9uj5fOk4rAEEfozoUp3xvNTureUxSLLRZy8W0hn5CXP6tFEWvUSj1Uop5o
+	5ixdeYgBsQcePmJsNp9dkV5G3qcLJpDlg5pKiV5e2sNF5W26bW6YwGtgelEJtuUCTmxAvn315wt
+	FKP98VEO7ePhO3aEwxCoDMF6ppnpAPKDR74vXIJIv6vrEFyPiHWdzLcTAxBkm97SVZcpPFTjiDo
+	nRD8try8Q==
+X-Google-Smtp-Source: AGHT+IFSBc+NBD1jZsd0LSs+Pw95eV8L2vwpY4rCb+CqA5TPaGXD6Axn8yxp6z29u7E5i0MPRJJiZRdC/VoVJA9DlfM=
+X-Received: by 2002:a05:6000:2585:b0:3ea:c7ea:13da with SMTP id
+ ffacd0b85a97d-405c4a9734bmr2645479f8f.9.1758649754815; Tue, 23 Sep 2025
+ 10:49:14 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,41 +79,77 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+=Fv5Q8dVUFVBh82mAe=fy3mV6mWtQT_0pBPLQwLNBt3f8E1g@mail.gmail.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250810125746.1105476-1-snovitoll@gmail.com> <20250810125746.1105476-2-snovitoll@gmail.com>
+ <CA+fCnZdFp69ZHbccLSEKYH3i7g6r2WdQ0qzyf+quLnA0tjfXJg@mail.gmail.com> <CACzwLxh4pJOBbU2fHKCPWkHHCuLtDW-rh52788u2Q6+nG-+bTA@mail.gmail.com>
+In-Reply-To: <CACzwLxh4pJOBbU2fHKCPWkHHCuLtDW-rh52788u2Q6+nG-+bTA@mail.gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Tue, 23 Sep 2025 19:49:03 +0200
+X-Gm-Features: AS18NWAo7UnIsKkvCh16EnxIlUsef04XXrIh6VHPmyIq2HZ6eh0cMjqVLlDuPQw
+Message-ID: <CA+fCnZce3AR+pUesbDkKMtMJ+iR8eDrcjFTbVpAcwjBoZ=gJnQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] kasan: introduce ARCH_DEFER_KASAN and unify static
+ key across modes
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Cc: ryabinin.a.a@gmail.com, christophe.leroy@csgroup.eu, bhe@redhat.com, 
+	hca@linux.ibm.com, akpm@linux-foundation.org, zhangqing@loongson.cn, 
+	chenhuacai@loongson.cn, davidgow@google.com, glider@google.com, 
+	dvyukov@google.com, alexghiti@rivosinc.com, alex@ghiti.fr, 
+	agordeev@linux.ibm.com, vincenzo.frascino@arm.com, elver@google.com, 
+	kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Sep 22, 2025 at 11:04:06PM +0200, Magnus Lindholm wrote:
-> On Thu, Sep 18, 2025 at 8:45 PM Leon Romanovsky <leon@kernel.org> wrote:
-> >
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> >
-> > Alpha doesn't need struct *page and can perform mapping based on
-> > physical addresses. So convert it to implement new .map_phys callback.
-> 
-> 
-> Hi,
-> 
-> SInce this patch affects the Alpha platform I got curious and decided to
-> try it out. The patch series requires some preparatory patches. Leon
-> provided me with links to his dmabuf-vfio branch, which had the
-> patches (and some prerequisite stuff) applied already.
-> 
-> Based on the dmabuf-vfio branch,  I've built a kernel and tested it on
-> my ES40 Alphaserver, the kernel booted fine but after a while of
-> moderate filesystem load I started seeing some ext3/4 related error
-> messages in the system logs. Rebooting with my old kernel into
-> single user mode, I was able to recover the filesystem using fsck.
-> Clearly this set of patches breaks things (at least on Alpha).
+On Mon, Sep 15, 2025 at 6:30=E2=80=AFAM Sabyrzhan Tasbolatov
+<snovitoll@gmail.com> wrote:
+>
+> > Why is the check removed here and in some other places below? This
+> > need to be explained in the commit message.
+>
+> kasan_arch_is_ready which was unified with kasan_enabled, was removed
+> here because
+> __kasan_slab_pre_free is called from include/linux/kasan.h [1] where
+> there's already kasan_enabled() check.
+>
+> [1] https://elixir.bootlin.com/linux/v6.16.7/source/include/linux/kasan.h=
+#L198
+>
+> Please let me know if v7 is required with the change in the git commit
+> message only.
 
-I will try to setup Alpha architecture in QEMU in following days, but
-would like to ask first. Did you test alpha on clean v6.17-rc5 (without
-my patches) as a reference?
+No need, but next time please add such info into the commit message.
 
-Thanks
+> > What I meant with these __wrappers was that we should add them for the
+> > KASAN hooks that are called from non-KASAN code (i.e. for the hooks
+> > defined in include/linux/kasan.h). And then move all the
+> > kasan_enabled() checks from mm/kasan/* to where the wrappers are
+> > defined in include/linux/kasan.h (see kasan_unpoison_range() as an
+> > example).
+> >
+> > kasan_save_free_info is a KASAN internal function that should need
+> > such a wrapper.
+> >
+> > For now, to make these patches simpler, you can keep kasan_enabled()
+> > checks in mm/kasan/*, where they are now. Later we can move them to
+> > include/linux/kasan.h with a separate patch.
+>
+> Yes, I'd like to revisit this in the next separate patch series.
+
+Great!
+
+But for now, please send a fix-up patch that removes the
+__kasan_save_free_info() wrapper (or a v8? But I see that your series
+is now in mm-stable, so I guess a separate fix-up patch is preferred).
+
+I don't think you need a kasan_enabled() check in
+kasan_save_free_info() at all. Both the higher level paths
+(kasan_slab_free and kasan_mempool_poison_object) already contain this
+check.
+
+Thanks!
 
