@@ -1,71 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-12561-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12562-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC38B9B184
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Sep 2025 19:41:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3398B9B187
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Sep 2025 19:42:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cX40h2Rhfz2yxN;
-	Thu, 25 Sep 2025 03:41:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cX4154cV4z306S;
+	Thu, 25 Sep 2025 03:42:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::835"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758730692;
-	cv=none; b=Me+NaJzQKREtL+tmhkVAt7qpbMEgZlOBjOAzXm9Aj+nL8sx/OknGheT2vzXlnkE4afp6mkY+n5r7roBFfhVKY7PfC5vO86fu9uMl6u5jDLvULGCF1iPIEw6poh5VA+QqnW++dnqm2qRlnYmS+VdCxTy/WZzCJYZ7UdKLgg0YreZRcvwuvTzb5Z607yWLuWrrXi8BzQUS1Gd+96A9HOr06/bqORB+wCbqS/VN/Q2zeyM4GKBRx/XG4MnH9Kin8JG5z9xGVFJ56jTD6XL3E5WWfjvH8HmzLmNBBFD0mCBi+AKCUfoYP4C7SjZLIk0BGyWsyKuQqVkS3ec0JkEm2yCXtA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758733022;
+	cv=none; b=jSbwuwepSEiENcGaruiclPhSJNXwBancSKkLp+7fhHoi7qq1fI5l5FWfGEsjog4uIXp6ChEfz6oCCH9w1DvtFXrcjhd3mOSuBSxvUAJZivUeZ7PZI8MSYm5H4hT8IttDgZ4EqbGxSiIrIhiWO6z1BT8LzG1pxrA3Vn5nMTaIFtWGortpyETQ1NKLiarW2rg8l1/9z6QK5Jp+1kb3ZZaU25+tHCGvxDrkBxeMD/OUy8h+ZRcPR3ERByJ+zDOXCfm1R0EkUBcgbh1Nb+WwN6VJu6p//Yuf+Xf8aT5cGIXRQspMXFCgPqwR8qL+JNgrCoq6Xks0/1LlYnWAt8SjiftChA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758730692; c=relaxed/relaxed;
-	bh=+elp/mgEwQHUPO2/veHl6cFeD7QMzkxV3mT27B/vMe0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mFHIMjKY1KnnILEJEza5rSSRcpQ2FVDIdu5+Vyt5BSxZDJhMm+fu8N3IKNUZxOVTIYW28AvMKupxF0/kCJox1U8c+UTOeglyebkoPRjuuSHFDoXQ/Y1NOmNyC0EIYPkVPBDvwPvILSGGuK8Mv4YyuCwXrW4zQDJzachy8CruwgpIBBcDq6ZiN5ItKhISbTCZv52BNO9h9OMxwLKheSeC/VT4GyMkae5Rq28OdYNXKTfJGVF3RpxZBNzDAMv0YqOjcXeY6YJ5QQMi01dFGRkRpqox5IzAUkbOjeGn6rSsYgIJyEKxIKFVcQ7uUjL2M0wI3G0eH4CDTmh80dBjrxlVxA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mTilfjwn; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::835; helo=mail-qt1-x835.google.com; envelope-from=patrakov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mTilfjwn;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::835; helo=mail-qt1-x835.google.com; envelope-from=patrakov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
+	t=1758733022; c=relaxed/relaxed;
+	bh=wItarYwJVipfmi89AjibX164xiYQ1sw1xgqIMHATn9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IECj4ISocZazjxomJRhC5r/Waz3fuxaX/OUbEit13xyXp3h/tsNm7Od3UdtjQGJjD3mHIdyQKh8meqEnM2FgM9VyPUQrX8lfEkbJZd2sQ2t8lzTRRlhhaLYc82Mcll85TIe2xA4nZ9MfO+R6m8oiAdNaVNU8IpANqnoLj4J2cqpNK3IU+0X+sHAxd2yUUq9M4B+GpRJ/g/2jsQM01czSb87+6a1Cf3RPsYjLq7LAA5ulzPfqgYljhD2uAP87hGrDSZXUpNTtg59fIFfg65BL47bVOPdkBod8ng4v6XoHe2ZQepqLhVOpppWCxVrYUY1w+q2mOMSDRjFLfeJZAYruWg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=evilplan.org; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=jlbec@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=evilplan.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=jlbec@ftp.linux.org.uk; receiver=lists.ozlabs.org)
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cX2830nlBz2yqP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Sep 2025 02:18:09 +1000 (AEST)
-Received: by mail-qt1-x835.google.com with SMTP id d75a77b69052e-4d41154079aso213231cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Sep 2025 09:18:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758730686; x=1759335486; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+elp/mgEwQHUPO2/veHl6cFeD7QMzkxV3mT27B/vMe0=;
-        b=mTilfjwnXHeZnK5S4pTz2uA8jWX22YR5zQpBCiTaJz25GvORRT7+mO1ZwEouDT8nrU
-         018Fb8+jOFFkB5GiA00QmXwprWu1IedMX/pwtfe69JWYoTrQLTF9rfUgJI6tRI2LpYbd
-         bcmIU1doIOVN12nZ6idrsLx7s9TBq7u11txvvNpFYd/5PqopgYYxXlHKUZuIqPyQ7tU2
-         mM0H6SMia7M6abeEb6rkGWmztDQFALhSby6yMmscluISvfOYlNsElSPlKD6K1tRm9Yp4
-         Exxe9b3kroiqMOOSKKoKkvPri+SWPwRWrfjXHDuMpCxit9Hwoe8qaavpZgr8ORCFPuur
-         JaQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758730686; x=1759335486;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+elp/mgEwQHUPO2/veHl6cFeD7QMzkxV3mT27B/vMe0=;
-        b=lVF3IMfqkvRLfg5ZIKI7+KOI4bMd3CMD56FLquNdxA2gYUhoHnS8TWuED7VlsH4lDV
-         OrP5WyvVu2DpC4iSWrrA/vNn5WifUI5tvvvAY4FBdOF/VscCR/t15JHZlyBkVu7Hvr7v
-         TVIA56m2+VmcuDdwZe98Z/8aZWicc/RtzUMyQgKAtEZmepZp6n5+wusImr7JB06jWZg7
-         24/zQh/41N/bEMp+04rdOJJwBiIIwkY0/QBjToUJTORP85fbKJ3OryG8LDhxrQIAF5LM
-         IEdM079zmsPwiDsxlMPrDGpvvr9UUed19NAZ1rHV+iV8uVXeecX5EqnrmEHpansWklBP
-         DoNw==
-X-Forwarded-Encrypted: i=1; AJvYcCVZdFIXY3JY3gQQVkPXrezofrOQ+9pyBIl+raO9id1vJHw/Z/pHGfuUDb/IUdb03YBTpe4+jOBMYHjQNA4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz6THApH3UGMnOj5UFtPe2/je2YUaL6ysBrqXdjKf6ePzaMh2XA
-	4uMPcZJ6Pc5xw9V43Qo2qUBWb9crkbXwjhofHNuxvSLUbvVi+xCT6wx3im/DGweWVMGdwP8G4tR
-	uOqyGqgafkEroCrAH6PhFKcqsNbTnWX8=
-X-Gm-Gg: ASbGncvkUWwJciPELAXRLL0+zy9Hjt4LSPYzfsTG1Llmg7uSxYyMLQ9EpDk/6eYNh4N
-	0sZvJ6nt6PTnVZeW5dN1O4Kk8M9Ta4uLtHAVkRzUBhrfArcry/vEu0+d7re2LSIzuTNTqWwkJCD
-	2kRyFZf3bdW45rZeyHOdhvajA8/ptufWHExhIIVrYh61eQpRSg75kt5IVLuTVVloEKItSBFRHa2
-	TO39JzPuRQdBgoZ+IxD8JHDyZVfJrtJzw/fXEBl
-X-Google-Smtp-Source: AGHT+IHrjx0XfB3NQHdqBt66Ox1dwY4oj3I0wMxztSwqqFAAkQnhEkK0QBLdnresO+RuCvDJitimjmBRn2YZHsgZxpk=
-X-Received: by 2002:a05:622a:3d2:b0:4d9:ea03:74f8 with SMTP id
- d75a77b69052e-4da473535b8mr6186491cf.16.1758730685377; Wed, 24 Sep 2025
- 09:18:05 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cX30l43WZz2yqP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Sep 2025 02:56:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wItarYwJVipfmi89AjibX164xiYQ1sw1xgqIMHATn9c=; b=ADQuNtgDqCh42nShQdrRdwoDNL
+	naHjDqhRxe/feBE3gx7YI+GF3SiATwjEKGTxF5HTe/Rd8zeJIPmiziHcLoJCArwg1LMjkST8yjMX2
+	ICMQXn/VCEHj9XYcI5uyQ+z2vU1vDXRjgolv9kx1bsRE24R9kbKPxdEuZwyofsQb1h+8kmqDxmSvE
+	RFGVyb/ITBh0FNHHuxEIh9mQxZOJejY+vTU5rnl3xDxkQaIqjkZC/dq692Uo/WRCE5uDVByN675eh
+	qEjeBUgMKKK9qemuFENVjEtRnyWVd9FbPVfb+wYmBC8z4RcHVsS9yZrtq+r6BEE1D0owQ3AOE/asm
+	tCqspHew==;
+Received: from jlbec by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v1SnC-00000008hCv-35Ks;
+	Wed, 24 Sep 2025 16:56:34 +0000
+Date: Wed, 24 Sep 2025 09:56:30 -0700
+From: Joel Becker <jlbec@evilplan.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
+	miklos@szeredi.hu, a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, paul@paul-moore.com,
+	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org,
+	borntraeger@linux.ibm.com
+Subject: Re: [PATCH 08/39] configfs, securityfs: kill_litter_super() not
+ needed
+Message-ID: <aNQivg5O_Rx3WxlG@google.com>
+Mail-Followup-To: Al Viro <viro@zeniv.linux.org.uk>,
+	linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
+	miklos@szeredi.hu, a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, paul@paul-moore.com,
+	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org,
+	borntraeger@linux.ibm.com
+References: <20250920074156.GK39973@ZenIV>
+ <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
+ <20250920074759.3564072-8-viro@zeniv.linux.org.uk>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,90 +77,75 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250913003842.41944-1-safinaskar@gmail.com> <ffbf1a04-047d-4787-ac1e-f5362e1ca600@csgroup.eu>
-In-Reply-To: <ffbf1a04-047d-4787-ac1e-f5362e1ca600@csgroup.eu>
-From: Alexander Patrakov <patrakov@gmail.com>
-Date: Thu, 25 Sep 2025 00:17:39 +0800
-X-Gm-Features: AS18NWB-xeGoRDKYPj3kUYXUnKXLhFMFvvc0QyoLpOeKcP1DsD-enKeBhlulfsI
-Message-ID: <CAN_LGv3Opj9RW0atfXODy-Epn++5mt_DLEi-ewxR9Me5x46Bkg@mail.gmail.com>
-Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, 
-	Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Aleksa Sarai <cyphar@cyphar.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
-	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>, 
-	Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org, 
-	Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, 
-	devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLY,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250920074759.3564072-8-viro@zeniv.linux.org.uk>
+X-Burt-Line: Trees are cool.
+X-Red-Smith: Ninety feet between bases is perhaps as close as man has ever
+ come to perfection.
+Sender: Joel Becker <jlbec@ftp.linux.org.uk>
+X-Spam-Status: No, score=0.2 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Sep 23, 2025 at 8:22=E2=80=AFPM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 13/09/2025 =C3=A0 02:37, Askar Safin a =C3=A9crit :
-> > [Vous ne recevez pas souvent de courriers de safinaskar@gmail.com. D=C3=
-=A9couvrez pourquoi ceci est important =C3=A0 https://aka.ms/LearnAboutSend=
-erIdentification ]
-> >
-> > Intro
-> > =3D=3D=3D=3D
-> > This patchset removes classic initrd (initial RAM disk) support,
-> > which was deprecated in 2020.
-> > Initramfs still stays, and RAM disk itself (brd) still stays, too.
-> > init/do_mounts* and init/*initramfs* are listed in VFS entry in
-> > MAINTAINERS, so I think this patchset should go through VFS tree.
-> > This patchset touchs every subdirectory in arch/, so I tested it
-> > on 8 (!!!) archs in Qemu (see details below).
-> > Warning: this patchset renames CONFIG_BLK_DEV_INITRD (!!!) to CONFIG_IN=
-ITRAMFS
-> > and CONFIG_RD_* to CONFIG_INITRAMFS_DECOMPRESS_* (for example,
-> > CONFIG_RD_GZIP to CONFIG_INITRAMFS_DECOMPRESS_GZIP).
-> > If you still use initrd, see below for workaround.
->
-> Apologise if my question looks stupid, but I'm using QEMU for various
-> tests, and the way QEMU is started is something like:
->
-> qemu-system-ppc -kernel ./vmlinux -cpu g4 -M mac99 -initrd
-> ./qemu/rootfs.cpio.gz
->
-> I was therefore expecting (and fearing) it to fail with your series
-> applied, but surprisingly it still works.
->
-> Therefore is it really initrd you are removing or just some corner case
-> ? If it is really initrd, then how does QEMU still work with that
-> -initrd parameter ?
+Reviewed-by: Joel Becker <jlbec@evilplan.org>
 
-The QEMU -initrd parameter is a misnomer. It can be used to pass an
-initrd or an initramfs, and the kernel automatically figures out what
-it is. What you are passing is an initramfs (a gzipped cpio archive
-with all the files), which is a modern and supported use case.
+On Sat, Sep 20, 2025 at 08:47:27AM +0100, Al Viro wrote:
+> These are guaranteed to be empty by the time they are shut down;
+> both are single-instance and there is an internal mount maintained
+> for as long as there is any contents.
+> 
+> Both have that internal mount pinned by every object in root.
+> 
+> In other words, kill_litter_super() boils down to kill_anon_super()
+> for those.
+> 
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+> ---
+>  fs/configfs/mount.c | 2 +-
+>  security/inode.c    | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/configfs/mount.c b/fs/configfs/mount.c
+> index 740f18b60c9d..fa66e25f0d75 100644
+> --- a/fs/configfs/mount.c
+> +++ b/fs/configfs/mount.c
+> @@ -116,7 +116,7 @@ static struct file_system_type configfs_fs_type = {
+>  	.owner		= THIS_MODULE,
+>  	.name		= "configfs",
+>  	.init_fs_context = configfs_init_fs_context,
+> -	.kill_sb	= kill_litter_super,
+> +	.kill_sb	= kill_anon_super,
+>  };
+>  MODULE_ALIAS_FS("configfs");
+>  
+> diff --git a/security/inode.c b/security/inode.c
+> index 43382ef8896e..bf7b5e2e6955 100644
+> --- a/security/inode.c
+> +++ b/security/inode.c
+> @@ -70,7 +70,7 @@ static struct file_system_type fs_type = {
+>  	.owner =	THIS_MODULE,
+>  	.name =		"securityfs",
+>  	.init_fs_context = securityfs_init_fs_context,
+> -	.kill_sb =	kill_litter_super,
+> +	.kill_sb =	kill_anon_super,
+>  };
+>  
+>  /**
+> -- 
+> 2.47.3
+> 
+> 
 
---=20
-Alexander Patrakov
+-- 
+
+The Graham Corollary:
+
+	The longer a socially-moderated news website exists, the
+	probability of an old Paul Graham link appearing at the top
+	approaches certainty.
+
+			http://www.jlbec.org/
+			jlbec@evilplan.org
 
