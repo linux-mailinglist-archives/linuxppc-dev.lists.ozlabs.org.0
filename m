@@ -1,92 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-12559-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12560-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638AFB999C2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Sep 2025 13:36:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D169B9AC9A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Sep 2025 17:57:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cWvtY5QVsz2yxN;
-	Wed, 24 Sep 2025 21:36:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cX1hd5Cdtz2yxN;
+	Thu, 25 Sep 2025 01:57:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758713765;
-	cv=none; b=G+AV8nxXgz/XHeKsX8JQicEeJJaLSTRI9bG9AxoibCGgPTfocMZsBnuDWjI/6IPMZuLXOj2q7pIo6QDeX4n9+6p47YKmFVUYzfj0EWAF4o2VQS4EFbCTtxiyJFnuNo8s+YWIHiDWiZ38CJkkwYPNr2aGYMDZbS9L9fkHcq7rK9iyuuCqOHtGLcG3j0I3crM6b1bfoSX5HJrGMI71dFFRRnmCnG+cRWtCuaOvaQmvz62oX2lqSfAZ31utlRjRX+jnD1i92Ye6U0P5XGokx+1RVppRlC+QFnidyTtzwOsaUwga1Ox00turS5HnLl5ySXLdsVzaCqMHXFoWcuQ6UWqf1A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758704759;
+	cv=none; b=Bh56hUx+EqOApzHIA58nIUxMdLDyfgCxzYO3/A8j/ElGL858pxiPp0YMB6XZNIgwE2Rd8GyVBOmDgdYpmD4D8ACCSFSY1xQ0O1z9S6mnYf8mGYs2bx1hy2WkMZo2nqs/D7kBzipKOuCDHxAEpWmpCy9+PorF2fk8ATtnUfGStaxSACzLdt+A8CMHMpeTCHvwEI5+xxlDgMzimPbC7iqWgioXNLT9Et/q9Ta1K2fp22c/AVwdtcLEnnmVJwP4YYtDJWSOwOd5nvL5k5tqmXpIMZlv9VkuSX/P3/redMLER9LopBq3Ibv7dRanHe7kCBlG5yEtsh8NLGQiY/wDy2pmdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758713765; c=relaxed/relaxed;
-	bh=0JGoQ4hmCfZ/TkMkG/taAm55rt5AIxt1SS2NLziKhmk=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=VXPE0/QoJS22Mfsu6TY9DqzA/s8uGRVGweb/IPEYmRqDN0RK4la5POO9BfTzh72lGBbohLl+K6dUPtdC+bYWL7g2dKfiBGI4XjPsIfln0vR2IyOyd9/oV7TytpGZPtXnZozXjMwxK0PDPPac3RrSJQB58LO4opNnHAx0rS3m1b2Tu40OjDZswoQBC3ZrYzjE6+0yNA8FFNQYOjwFPwBisJuYePVgoT0d4PoF51S49TLQ+/KFl562S4KMAm8ePvptnUsTVwM63590V53SEb6ReXEzHOCmjoD0JFKABojkk4tnAmu7l01XyArkmnXrvRexOToq8Tsk33hVtQAJYd+xgQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=QlOkXOk3; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=9aYLxaYQ; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=thomas.weissschuh@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1758704759; c=relaxed/relaxed;
+	bh=w8kKH6i35rhldkgTE5qOuALa2v7kvEjLUO9ifscr9Ok=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:References:
+	 From:In-Reply-To; b=oIKgLRAqlUs0ze4eI6Z7xnRZ1wfl7++V2B2MkqESdBJlhS/a6YCeHfZklp8RdBeKk4qm4cx/7wqAhhHWGDHKn+aGRbLqlXC9miCOCRQzNKyjHF80iHcbdnE5iSczTHDs+v0FU981Z2OLtRhsPbGsmAL2NHvlaO1TgBn6TN849HvTubhe5kfsXWDLPG7aP2IOH3GqybFavDMEA8oY+Y10SffIjk7PteE9YvicZ7Fz8rXsCGgRQG8w9K7GTO76j3g1VCj360uF2UtkV1zq4clXkyvN17/+Bb4MMGMhK83in8H7IrcJJtnWMZUJrT8FyoF/9HbQRGEXB1xv+KiqCgP3NA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rZsqq1NS; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=samir.mulani@ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=QlOkXOk3;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=9aYLxaYQ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rZsqq1NS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=thomas.weissschuh@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=samir.mulani@ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cWvtT0FYzz2xQ5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Sep 2025 21:36:01 +1000 (AEST)
-Date: Wed, 24 Sep 2025 13:35:22 +0200 (GMT+02:00)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758713743;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0JGoQ4hmCfZ/TkMkG/taAm55rt5AIxt1SS2NLziKhmk=;
-	b=QlOkXOk3wDqFbbFYZsEnlgMHERzf96yJYS0jGCAx8XL84tsLn5ka3PYxS3tS6fRiz4EdFp
-	hMUyAsiUILtR8JSw3OgT3Fy0mtO9V6+vyErIQ7UEqbgWogA4ThP02dZ7nQf1bcNUN6oc1E
-	qIS9/nd74dV5DEbbsNthzLIIe0mNg8fHArZw72OWjj0HJx2y/wJcXKWq9tADPKUcw2oCa1
-	MNgG8SaKpMW/kXFfHB3IGyN4KRzzDdYS8yZwV4AN2CdSs8O+lduKmgKTYpZGvoSsWu5yzJ
-	vn9hc+ve1LqLnCQYSUPrJ8WxAuF+cXnlxVYaeRwKdflbaBdk98XsHYzpLwzheQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758713743;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0JGoQ4hmCfZ/TkMkG/taAm55rt5AIxt1SS2NLziKhmk=;
-	b=9aYLxaYQfRDX5WwG1TPEXNPpaVf2pDqro4TeNjcbtq5rkULq+SlNuIn8W8JezYqbHJuTiS
-	grPgu4XhzSRIaIAw==
-From: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Nick Alcock <nick.alcock@oracle.com>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>,
-	Shannon Nelson <sln@onemain.com>, linux-kernel@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-s390@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
-Message-ID: <c5e28d44-3480-4e28-aff0-5c5cfd1b0632@linutronix.de>
-In-Reply-To: <ec0894011cb4403f45ad8b30095cc333edc1e5e6.camel@physik.fu-berlin.de>
-References: <20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de> <9a122c6cf3e2e0e61a62b0512eb97804acebeee9.camel@physik.fu-berlin.de> <48fd164e-959b-4263-b3c7-cef5771aa40a@linutronix.de> <60a0af09cc1a5de3b33b9606ed07ae91b42c5432.camel@physik.fu-berlin.de> <bea9cc5c-7fc6-4c87-ab78-8232b2bee4dc@linutronix.de> <ec0894011cb4403f45ad8b30095cc333edc1e5e6.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v3 00/36] sparc64: vdso: Switch to the generic vDSO
- library
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cWrYK5SGkz2xck
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Sep 2025 19:05:56 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58O8Igm7007335;
+	Wed, 24 Sep 2025 09:05:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=w8kKH6i35rhldkgTE5qOuALa2v7kvE
+	jLUO9ifscr9Ok=; b=rZsqq1NSJSEm2OJA1bgvC33TuDOgt7gqL6bpP359/G7Vud
+	rSjavEAAQR+hXhL6cmqvo+nD+r+Q4NvXyKKxcvhoXoIf4yeVsYF3o3G7pTMctFb9
+	EgZzUkQ2ffl6nWURtEV78NZU8HQddmAUqSH8BvJo4aUf/F7TnNj5jKAh4aLooBFG
+	mkLGYelhGkS4QluYBmwQKtc13uKTQji2y7rLr4RAV45AwhpzYXHRuY9VOA19Mqdd
+	3RYFN0wg4YWd3YHUz91QvNA5+uBXN0ULVah1xyCIug45KC3mqxYjmdQl/iy7E7w4
+	Dx1MB8IgsllhQBm7l1wDNPbmjJUr6465wvvNSFQw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499n0jpasc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Sep 2025 09:05:19 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58O92r3d028085;
+	Wed, 24 Sep 2025 09:05:18 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499n0jpasa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Sep 2025 09:05:18 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58O6ILV0030367;
+	Wed, 24 Sep 2025 09:05:17 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49a9a17hbb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Sep 2025 09:05:17 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58O95F9N62914940
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 24 Sep 2025 09:05:16 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B09C35806A;
+	Wed, 24 Sep 2025 09:05:15 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B0CBE5805A;
+	Wed, 24 Sep 2025 09:04:58 +0000 (GMT)
+Received: from [9.79.205.209] (unknown [9.79.205.209])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 24 Sep 2025 09:04:58 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------YXjKiqqnkrkwlc9CDrNGfH31"
+Message-ID: <446c7bbb-c128-4f3b-94ff-c6f3bf850c5f@ibm.com>
+Date: Wed, 24 Sep 2025 14:34:55 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,61 +87,302 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Correlation-ID: <c5e28d44-3480-4e28-aff0-5c5cfd1b0632@linutronix.de>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V2 0/8] Generic IRQ entry/exit support for powerpc
+To: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        oleg@redhat.com, kees@kernel.org, luto@amacapital.net,
+        wad@chromium.org, deller@gmx.de, ldv@strace.io, macro@orcam.me.uk,
+        charlie@rivosinc.com, akpm@linux-foundation.org, bigeasy@linutronix.de,
+        ankur.a.arora@oracle.com, sshegde@linux.ibm.com, naveen@kernel.org,
+        thomas.weissschuh@linutronix.de, Jason@zx2c4.com, peterz@infradead.org,
+        tglx@linutronix.de, namcao@linutronix.de, kan.liang@linux.intel.com,
+        mingo@kernel.org, oliver.upton@linux.dev, mark.barnett@arm.com,
+        atrajeev@linux.vnet.ibm.com, rppt@kernel.org, coltonlewis@google.com,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20250908210235.137300-2-mchauras@linux.ibm.com>
+Content-Language: en-US
+From: Samir Alamshaha Mulani <Samir.Mulani@ibm.com>
+In-Reply-To: <20250908210235.137300-2-mchauras@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAzMyBTYWx0ZWRfX/AQqkXi+5SNE
+ 0C4aVlbKzoGkRkPKmOGgs3g7DQ92TJAut3otsJWi/7MDjjis+GoeRj3tqBCbyxLcBcBzFV+CmEe
+ 5faP4XSFtjhreYBU4c/LX8MExapAc5uVoEa2wnGcY1KuVgi9ugIIbYweCf0yFLDGWLOtJQ0q3LP
+ ZDMVgskTBwnzi90s/iUIl7Df42OXZAGTEcPrK2z9fSUCSbt1VvKfgOEvrxeEGZAtVeH1dJ4aUtE
+ HbbKURf24niLnYmRH1w0oj9Y/Cd9mbpty80Y6lIpxQEO6xgFfGkxG1RwujONIu4yO5w0TRhn3RP
+ nJmQo9ukgbEMKldfY2NatiFcUP8+0+FSUMDRwmqPgTDDVXchVEu5oLXh7Ee3EeVht724dP6w7Mk
+ jpHNKI7g
+X-Authority-Analysis: v=2.4 cv=TOlFS0la c=1 sm=1 tr=0 ts=68d3b44f cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=yJojWOMRYYMA:10 a=r77TgQKjGQsHNAKrUKIA:9 a=VnNF1IyMAAAA:8
+ a=aXUYgpE7gxmlHphDPu8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=WJu2qr6j2GB9LtsjdnsA:9 a=1MbpTie0CwP2j_3e:21 a=_W_S_7VecoQA:10
+ a=lqcHg5cX4UMA:10
+X-Proofpoint-ORIG-GUID: 8NP4n_lcmP8j3DoKUCfViSKQ1GEqNbQu
+X-Proofpoint-GUID: WG-L9afnnFpGPt7bjGfp2L7j5wv8rlA3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-24_02,2025-09-22_05,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0
+ suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509200033
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,HTML_MESSAGE,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Sep 24, 2025 10:29:00 John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.=
-de>:
+This is a multi-part message in MIME format.
+--------------YXjKiqqnkrkwlc9CDrNGfH31
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> Hi,
+On 09/09/25 2:32 am, Mukesh Kumar Chaurasiya wrote:
+> Adding support for the generic irq entry/exit handling for PowerPC. The
+> goal is to bring PowerPC in line with other architectures that already
+> use the common irq entry infrastructure, reducing duplicated code and
+> making it easier to share future changes in entry/exit paths.
 >
-> On Wed, 2025-09-24 at 10:07 +0200, Thomas Wei=C3=9Fschuh wrote:
->> Sep 24, 2025 09:40:47 John Paul Adrian Glaubitz <glaubitz@physik.fu-berl=
-in.de>:
->>
->>> Hi Thomas,
->>>
->>> On Sat, 2025-09-20 at 16:37 +0200, Thomas Wei=C3=9Fschuh wrote:
->>>>> Could you share a version of the series based on top of 6.17.0-rcN fo=
-r
->>>>> testing purposes? I would like to test the series on a Sun Netra 240
->>>>> which is based on the UltraSPARC IIIi.
->>>>
->>>> Here is the git branch based on rc4:
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/linu=
-x.git/log/?h=3Db4/vdso-sparc64-generic-2
->>>>
->>>> Does that work for you?
->>>
->>> I'm getting merge conflicts with "vdso/datastore: Allocate data pages d=
-ynamically" and
->>> "vdso/datapage: Remove inclusion of gettimeofday.h".
->>>
->>> Can these be skipped?
->>
->> No, these are important.
->>
->> What are you trying to merge?
->> I can probably give you a merge.
+> This is slightly tested on ppc64le.
 >
-> I'm using v6.17-rc7 plus all SPARC fixes in Andreas Larsson's linux-sparc=
- for-next branch:
+> The performance benchmarks from perf bench basic syscall are below:
 >
-> https://git.kernel.org/pub/scm/linux/kernel/git/alarsson/linux-sparc.git/=
-log/?h=3Dfor-next
+> | Metric     | W/O Generic Framework | With Generic Framework | Improvement |
+> | ---------- | --------------------- | ---------------------- | ----------- |
+> | Total time | 0.885 [sec]           | 0.880 [sec]            | ~0.56%      |
+> | usecs/op   | 0.088518              | 0.088005               | ~0.58%      |
+> | ops/sec    | 1,12,97,086           | 1,13,62,977            | ~0.58%      |
+>
+> Thats close to 0.6% improvement with this.
+>
+> Changelog:
+> V1 -> V2: Support added for irq with generic framework.
+>
+> Mukesh Kumar Chaurasiya (8):
+>    powerpc: rename arch_irq_disabled_regs
+>    powerpc: Prepare to build with generic entry/exit framework
+>    powerpc: introduce arch_enter_from_user_mode
+>    powerpc: Introduce syscall exit arch functions
+>    powerpc: add exit_flags field in pt_regs
+>    powerpc: Prepare for IRQ entry exit
+>    powerpc: Enable IRQ generic entry/exit path.
+>    powerpc: Enable Generic Entry/Exit for syscalls.
+>
+>   arch/powerpc/Kconfig                    |   2 +
+>   arch/powerpc/include/asm/entry-common.h | 550 ++++++++++++++++++++++++
+>   arch/powerpc/include/asm/hw_irq.h       |   4 +-
+>   arch/powerpc/include/asm/interrupt.h    | 393 +++--------------
+>   arch/powerpc/include/asm/ptrace.h       |   2 +
+>   arch/powerpc/include/asm/stacktrace.h   |   8 +
+>   arch/powerpc/include/asm/syscall.h      |   5 +
+>   arch/powerpc/include/asm/thread_info.h  |   1 +
+>   arch/powerpc/include/uapi/asm/ptrace.h  |  14 +-
+>   arch/powerpc/kernel/asm-offsets.c       |   1 +
+>   arch/powerpc/kernel/interrupt.c         | 251 ++---------
+>   arch/powerpc/kernel/interrupt_64.S      |   2 -
+>   arch/powerpc/kernel/ptrace/ptrace.c     | 142 +-----
+>   arch/powerpc/kernel/signal.c            |   8 +
+>   arch/powerpc/kernel/syscall.c           | 119 +----
+>   arch/powerpc/kernel/traps.c             |   2 +-
+>   arch/powerpc/kernel/watchdog.c          |   2 +-
+>   arch/powerpc/perf/core-book3s.c         |   2 +-
+>   18 files changed, 698 insertions(+), 810 deletions(-)
+>   create mode 100644 arch/powerpc/include/asm/entry-common.h
+>
+Hi,
 
-This merged cleanly for me:
-https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/linux.git=
-/log/?h=3Dvdso-sparc64-merge
+
+I have reviewed and tested the generic IRQ entry/exist patch series. 
+Below are my observations:
 
 
-(Only compile-tested)
+Test Coverage
+     •    Successfully ran LTP (specially syscall) and entire LTP test 
+suite, without observing any regressions or issues related to the 
+implementation.
 
 
-Thomas
+System Configuration
+     •    CPUs: 640
+     •    Kernel: v6.17.0-rc6+
+     •    Processor mode: Shared (uncapped)
+
+
+Performance Evaluation
+     •    Conducted benchmarking using perf bench syscall basic -l.
+     •    No functional regressions observed, and results were 
+consistent with expectations.
+
+
+The performance benchmarks from perf bench basic syscall are below:
+
+Loops = 100,000 | Metric | W/O Generic Framework | With Generic 
+Framework | Improvement | 
+|----------|-----------------------:|-----------------------:|------------:| 
+| usecs/op | 0.124562 | 0.124253 | ~0.25% | | ops/sec | 8,028,471 | 
+8,048,158 | ~0.25% | Loops = 1,000,000 | Metric | W/O Generic Framework 
+| With Generic Framework | Improvement | 
+|----------|-----------------------:|-----------------------:|------------:| 
+| usecs/op | 0.125389 | 0.124374 | ~0.81% | | ops/sec | 7,977,511 | 
+8,040,330 | ~0.79% | Loops = 10,000,000 | Metric | W/O Generic Framework 
+| With Generic Framework | Improvement | 
+|----------|-----------------------:|-----------------------:|------------:| 
+| usecs/op | 0.124626 | 0.123928 | ~0.56% | | ops/sec | 8,024,058 | 
+8,069,182 | ~0.56% | **Overall (aggregated across all runs)** | Metric | 
+W/O Generic Framework | With Generic Framework | Improvement | | 
+---------- | 
+---------------------:|-----------------------:|------------:| | Total 
+time | 1.384 [sec] | 1.376 [sec] | ~0.58% | | usecs/op | 0.124694 | 
+0.123971 | ~0.58% | | ops/sec | 8,019,904 | 8,066,393 | ~0.58% |
+
+Here with this benchmarking we can see the improvement close to 0.6%.
+
+Overall, the patch series works as intended in my testing.
+
+
+Please add below tag for the patch set.
+
+
+Tested-by: Samir M <samir@linux.vnet.ibm.com>
+
+Thank You !!
+
+
+--------------YXjKiqqnkrkwlc9CDrNGfH31
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">On 09/09/25 2:32 am, Mukesh Kumar
+      Chaurasiya wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20250908210235.137300-2-mchauras@linux.ibm.com">
+      <pre wrap="" class="moz-quote-pre">Adding support for the generic irq entry/exit handling for PowerPC. The
+goal is to bring PowerPC in line with other architectures that already
+use the common irq entry infrastructure, reducing duplicated code and
+making it easier to share future changes in entry/exit paths.
+
+This is slightly tested on ppc64le.
+
+The performance benchmarks from perf bench basic syscall are below:
+
+| Metric     | W/O Generic Framework | With Generic Framework | Improvement |
+| ---------- | --------------------- | ---------------------- | ----------- |
+| Total time | 0.885 [sec]           | 0.880 [sec]            | ~0.56%      |
+| usecs/op   | 0.088518              | 0.088005               | ~0.58%      |
+| ops/sec    | 1,12,97,086           | 1,13,62,977            | ~0.58%      |
+
+Thats close to 0.6% improvement with this.
+
+Changelog:
+V1 -&gt; V2: Support added for irq with generic framework.
+
+Mukesh Kumar Chaurasiya (8):
+  powerpc: rename arch_irq_disabled_regs
+  powerpc: Prepare to build with generic entry/exit framework
+  powerpc: introduce arch_enter_from_user_mode
+  powerpc: Introduce syscall exit arch functions
+  powerpc: add exit_flags field in pt_regs
+  powerpc: Prepare for IRQ entry exit
+  powerpc: Enable IRQ generic entry/exit path.
+  powerpc: Enable Generic Entry/Exit for syscalls.
+
+ arch/powerpc/Kconfig                    |   2 +
+ arch/powerpc/include/asm/entry-common.h | 550 ++++++++++++++++++++++++
+ arch/powerpc/include/asm/hw_irq.h       |   4 +-
+ arch/powerpc/include/asm/interrupt.h    | 393 +++--------------
+ arch/powerpc/include/asm/ptrace.h       |   2 +
+ arch/powerpc/include/asm/stacktrace.h   |   8 +
+ arch/powerpc/include/asm/syscall.h      |   5 +
+ arch/powerpc/include/asm/thread_info.h  |   1 +
+ arch/powerpc/include/uapi/asm/ptrace.h  |  14 +-
+ arch/powerpc/kernel/asm-offsets.c       |   1 +
+ arch/powerpc/kernel/interrupt.c         | 251 ++---------
+ arch/powerpc/kernel/interrupt_64.S      |   2 -
+ arch/powerpc/kernel/ptrace/ptrace.c     | 142 +-----
+ arch/powerpc/kernel/signal.c            |   8 +
+ arch/powerpc/kernel/syscall.c           | 119 +----
+ arch/powerpc/kernel/traps.c             |   2 +-
+ arch/powerpc/kernel/watchdog.c          |   2 +-
+ arch/powerpc/perf/core-book3s.c         |   2 +-
+ 18 files changed, 698 insertions(+), 810 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/entry-common.h
+
+</pre>
+    </blockquote>
+    <p>Hi,</p>
+    <p><br>
+    </p>
+    <p>I have reviewed and tested the generic IRQ entry/exist patch
+      series. Below are my observations:</p>
+    <p><br>
+      Test Coverage<br>
+          •    Successfully ran LTP (specially syscall) and entire LTP
+      test suite, without observing any regressions or issues related to
+      the implementation.</p>
+    <p><br>
+      System Configuration<br>
+          •    CPUs: 640<br>
+          •    Kernel: v6.17.0-rc6+<br>
+          •    Processor mode: Shared (uncapped)</p>
+    <p><br>
+      Performance Evaluation<br>
+          •    Conducted benchmarking using perf bench syscall basic -l.<br>
+          •    No functional regressions observed, and results were
+      consistent with expectations.</p>
+    <p><br>
+    </p>
+    <p>The performance benchmarks from perf bench basic syscall are
+      below:</p>
+    <p><span
+style="color: rgb(209, 210, 211); font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: none; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre-wrap; background-color: rgba(232, 232, 232, 0.04); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">Loops = 100,000
+| Metric   | W/O Generic Framework | With Generic Framework | Improvement |
+|----------|-----------------------:|-----------------------:|------------:|
+| usecs/op |              0.124562 |              0.124253 |      ~0.25% |
+| ops/sec  |             8,028,471 |             8,048,158 |      ~0.25% |
+
+Loops = 1,000,000
+| Metric   | W/O Generic Framework | With Generic Framework | Improvement |
+|----------|-----------------------:|-----------------------:|------------:|
+| usecs/op |              0.125389 |              0.124374 |      ~0.81% |
+| ops/sec  |             7,977,511 |             8,040,330 |      ~0.79% |
+
+Loops = 10,000,000
+| Metric   | W/O Generic Framework | With Generic Framework | Improvement |
+|----------|-----------------------:|-----------------------:|------------:|
+| usecs/op |              0.124626 |              0.123928 |      ~0.56% |
+| ops/sec  |             8,024,058 |             8,069,182 |      ~0.56% |
+
+**Overall (aggregated across all runs)**
+| Metric     | W/O Generic Framework | With Generic Framework | Improvement |
+| ---------- | ---------------------:|-----------------------:|------------:|
+| Total time |           1.384 [sec] |           1.376 [sec] |      ~0.58% |
+| usecs/op   |              0.124694 |              0.123971 |      ~0.58% |
+| ops/sec    |             8,019,904 |             8,066,393 |      ~0.58% |</span><br>
+      <br>
+      Here with this benchmarking we can see the improvement close to
+      0.6%.<br>
+      <br>
+      Overall, the patch series works as intended in my testing.</p>
+    <p><br>
+    </p>
+    <p>Please add below tag for the patch set.</p>
+    <p><br>
+      Tested-by: Samir M <a class="moz-txt-link-rfc2396E" href="mailto:samir@linux.vnet.ibm.com">&lt;samir@linux.vnet.ibm.com&gt;</a></p>
+    <p>Thank You !!</p>
+    <p><br>
+    </p>
+  </body>
+</html>
+
+--------------YXjKiqqnkrkwlc9CDrNGfH31--
+
 
