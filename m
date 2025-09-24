@@ -1,94 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-12558-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12559-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A2AB98DE3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Sep 2025 10:29:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 638AFB999C2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Sep 2025 13:36:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cWqkw373Gz304f;
-	Wed, 24 Sep 2025 18:29:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cWvtY5QVsz2yxN;
+	Wed, 24 Sep 2025 21:36:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=130.133.4.66
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758702552;
-	cv=none; b=Qv0tR2ySTWdI7AjFzDpeYDw3jXhWaNVhyj4Z5ojw80kehXL2yu5hfJtex6VBh460ezvjXjuXPdOfJRuM4gltTWfCUkA5UDRVVS25/ZI4wpsoy2q8jX5tYddM2ZWhQoezCAiRBu4BNRhKrd0IbH3EHZgpKbqkOrrfujRbtLgCupeTVs2Ar+QO/KB0bTwICRKyMx17TKNucP6StocDFpDhHJ7gpucdeM+ldHKXhfUeQeNAV2iFzm6NgZgy43j6lFYMREBpwnilWDWJh5JvReAMV3v7dJwaoNrhQXz6O6+UNZ+3tXcyU+fg/tqRr7fvAKKXK9x6rtwcgYSCpB1DjLDBng==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758713765;
+	cv=none; b=G+AV8nxXgz/XHeKsX8JQicEeJJaLSTRI9bG9AxoibCGgPTfocMZsBnuDWjI/6IPMZuLXOj2q7pIo6QDeX4n9+6p47YKmFVUYzfj0EWAF4o2VQS4EFbCTtxiyJFnuNo8s+YWIHiDWiZ38CJkkwYPNr2aGYMDZbS9L9fkHcq7rK9iyuuCqOHtGLcG3j0I3crM6b1bfoSX5HJrGMI71dFFRRnmCnG+cRWtCuaOvaQmvz62oX2lqSfAZ31utlRjRX+jnD1i92Ye6U0P5XGokx+1RVppRlC+QFnidyTtzwOsaUwga1Ox00turS5HnLl5ySXLdsVzaCqMHXFoWcuQ6UWqf1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758702552; c=relaxed/relaxed;
-	bh=fv65kSjXoHh5kZbIWKr7i3/NioyZJdRuwp5qAQi17S0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PW/eS0hLCKK4s37Jk0usClT541KxktH8PexPU9C1oDQi8Sd/NLnzBBJEz5DW6LHCMR06P4YdfrDIdg/Cg7AP2dBjgGQz69cJxU1cqWk70gUYIuHkDlEtqDB9kH/EbBkPI5YRWeH4zT5Mjko4yAhANc9D2pOn9k0Ei+mIoAi2Ik9FTPq85/3vBmXNUnxXbSl/GpCPZo2q7xi4LyDdGpkNz33WgcY0qiEeBdA0WReU97a6gfNfrazzgLnP731UMT+dfdrFVGOXZuHZN9DoZbg/B2iP/d5wauIsv9rbCNUCVoAsTKbuiX8ACUGh9xNvw4AuNJ1ktb/tXik3pl0XrAoUWg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=i7NmbC7a; dkim-atps=neutral; spf=pass (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org) smtp.mailfrom=zedat.fu-berlin.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+	t=1758713765; c=relaxed/relaxed;
+	bh=0JGoQ4hmCfZ/TkMkG/taAm55rt5AIxt1SS2NLziKhmk=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=VXPE0/QoJS22Mfsu6TY9DqzA/s8uGRVGweb/IPEYmRqDN0RK4la5POO9BfTzh72lGBbohLl+K6dUPtdC+bYWL7g2dKfiBGI4XjPsIfln0vR2IyOyd9/oV7TytpGZPtXnZozXjMwxK0PDPPac3RrSJQB58LO4opNnHAx0rS3m1b2Tu40OjDZswoQBC3ZrYzjE6+0yNA8FFNQYOjwFPwBisJuYePVgoT0d4PoF51S49TLQ+/KFl562S4KMAm8ePvptnUsTVwM63590V53SEb6ReXEzHOCmjoD0JFKABojkk4tnAmu7l01XyArkmnXrvRexOToq8Tsk33hVtQAJYd+xgQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=QlOkXOk3; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=9aYLxaYQ; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=thomas.weissschuh@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=i7NmbC7a;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=QlOkXOk3;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=9aYLxaYQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=thomas.weissschuh@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cWqkv3Kymz2yqg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Sep 2025 18:29:11 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=fv65kSjXoHh5kZbIWKr7i3/NioyZJdRuwp5qAQi17S0=; t=1758702551;
-	x=1759307351; b=i7NmbC7aiRZCIWZySp+lRl+6zN2K+xGUiHM28u9U52uiF0kHarX3D6bGOVk1A
-	G668Vx+QwzdlMjnEyomcG0ecdC7Y+2Bfgd1BbQpOyqcbOD6fDoslnleGo7gteBNwxLEybE/ZVkvfY
-	VSi7qGZ7DRHScZaLbDtxq4fybVfQYN9GGvsjrwDhW2xcQ2BKkmzBC0C0QC5n/+5KHjc4nVL84RQLa
-	RXCzMSNxKMkc97JcNYECOawPD1nom612URWSiE3XfHLmuzWkUNir6J9rMfs0C4goK4WcMcRCJ9Irf
-	/hF4hxxYTRG4oxC1rLs39q3dZIR2R5FdjqTIq7HLBUlpNUXN2g==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1v1Krw-000000002th-3piT; Wed, 24 Sep 2025 10:28:56 +0200
-Received: from p5b13aa34.dip0.t-ipconnect.de ([91.19.170.52] helo=[192.168.178.61])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1v1Krw-00000003LPw-2L5t; Wed, 24 Sep 2025 10:28:56 +0200
-Message-ID: <ec0894011cb4403f45ad8b30095cc333edc1e5e6.camel@physik.fu-berlin.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cWvtT0FYzz2xQ5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Sep 2025 21:36:01 +1000 (AEST)
+Date: Wed, 24 Sep 2025 13:35:22 +0200 (GMT+02:00)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1758713743;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0JGoQ4hmCfZ/TkMkG/taAm55rt5AIxt1SS2NLziKhmk=;
+	b=QlOkXOk3wDqFbbFYZsEnlgMHERzf96yJYS0jGCAx8XL84tsLn5ka3PYxS3tS6fRiz4EdFp
+	hMUyAsiUILtR8JSw3OgT3Fy0mtO9V6+vyErIQ7UEqbgWogA4ThP02dZ7nQf1bcNUN6oc1E
+	qIS9/nd74dV5DEbbsNthzLIIe0mNg8fHArZw72OWjj0HJx2y/wJcXKWq9tADPKUcw2oCa1
+	MNgG8SaKpMW/kXFfHB3IGyN4KRzzDdYS8yZwV4AN2CdSs8O+lduKmgKTYpZGvoSsWu5yzJ
+	vn9hc+ve1LqLnCQYSUPrJ8WxAuF+cXnlxVYaeRwKdflbaBdk98XsHYzpLwzheQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1758713743;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0JGoQ4hmCfZ/TkMkG/taAm55rt5AIxt1SS2NLziKhmk=;
+	b=9aYLxaYQfRDX5WwG1TPEXNPpaVf2pDqro4TeNjcbtq5rkULq+SlNuIn8W8JezYqbHJuTiS
+	grPgu4XhzSRIaIAw==
+From: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Nick Alcock <nick.alcock@oracle.com>,
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>,
+	Shannon Nelson <sln@onemain.com>, linux-kernel@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-s390@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
+Message-ID: <c5e28d44-3480-4e28-aff0-5c5cfd1b0632@linutronix.de>
+In-Reply-To: <ec0894011cb4403f45ad8b30095cc333edc1e5e6.camel@physik.fu-berlin.de>
+References: <20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de> <9a122c6cf3e2e0e61a62b0512eb97804acebeee9.camel@physik.fu-berlin.de> <48fd164e-959b-4263-b3c7-cef5771aa40a@linutronix.de> <60a0af09cc1a5de3b33b9606ed07ae91b42c5432.camel@physik.fu-berlin.de> <bea9cc5c-7fc6-4c87-ab78-8232b2bee4dc@linutronix.de> <ec0894011cb4403f45ad8b30095cc333edc1e5e6.camel@physik.fu-berlin.de>
 Subject: Re: [PATCH v3 00/36] sparc64: vdso: Switch to the generic vDSO
  library
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-  Vincenzo Frascino <vincenzo.frascino@arm.com>, Arnd Bergmann
- <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>,  Andreas Larsson
- <andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>, John Stultz
- <jstultz@google.com>,  Stephen Boyd <sboyd@kernel.org>, Shuah Khan
- <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,  Will Deacon
- <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld"
- <Jason@zx2c4.com>,  Russell King <linux@armlinux.org.uk>, Madhavan
- Srinivasan <maddy@linux.ibm.com>, Michael Ellerman	 <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy	
- <christophe.leroy@csgroup.eu>, Huacai Chen <chenhuacai@kernel.org>, WANG
- Xuerui	 <kernel@xen0n.name>, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>, Heiko Carstens <hca@linux.ibm.com>, Vasily
- Gorbik <gor@linux.ibm.com>, Alexander Gordeev	 <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,  Sven Schnelle
- <svens@linux.ibm.com>, Nagarathnam Muthusamy
- <nagarathnam.muthusamy@oracle.com>, Shannon Nelson	 <sln@onemain.com>,
- linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, Arnd Bergmann	
- <arnd@kernel.org>
-Date: Wed, 24 Sep 2025 10:28:54 +0200
-In-Reply-To: <bea9cc5c-7fc6-4c87-ab78-8232b2bee4dc@linutronix.de>
-References: 
-	<20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de>
-	 <9a122c6cf3e2e0e61a62b0512eb97804acebeee9.camel@physik.fu-berlin.de>
-	 <48fd164e-959b-4263-b3c7-cef5771aa40a@linutronix.de>
-	 <60a0af09cc1a5de3b33b9606ed07ae91b42c5432.camel@physik.fu-berlin.de>
-	 <bea9cc5c-7fc6-4c87-ab78-8232b2bee4dc@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,57 +100,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.170.52
-X-ZEDAT-Hint: PO
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Correlation-ID: <c5e28d44-3480-4e28-aff0-5c5cfd1b0632@linutronix.de>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
+Sep 24, 2025 10:29:00 John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.=
+de>:
 
-On Wed, 2025-09-24 at 10:07 +0200, Thomas Wei=C3=9Fschuh wrote:
-> Sep 24, 2025 09:40:47 John Paul Adrian Glaubitz <glaubitz@physik.fu-berli=
-n.de>:
->=20
-> > Hi Thomas,
-> >=20
-> > On Sat, 2025-09-20 at 16:37 +0200, Thomas Wei=C3=9Fschuh wrote:
-> > > > Could you share a version of the series based on top of 6.17.0-rcN =
-for
-> > > > testing purposes? I would like to test the series on a Sun Netra 24=
-0
-> > > > which is based on the UltraSPARC IIIi.
-> > >=20
-> > > Here is the git branch based on rc4:
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/lin=
-ux.git/log/?h=3Db4/vdso-sparc64-generic-2
-> > >=20
-> > > Does that work for you?
-> >=20
-> > I'm getting merge conflicts with "vdso/datastore: Allocate data pages d=
+> Hi,
+>
+> On Wed, 2025-09-24 at 10:07 +0200, Thomas Wei=C3=9Fschuh wrote:
+>> Sep 24, 2025 09:40:47 John Paul Adrian Glaubitz <glaubitz@physik.fu-berl=
+in.de>:
+>>
+>>> Hi Thomas,
+>>>
+>>> On Sat, 2025-09-20 at 16:37 +0200, Thomas Wei=C3=9Fschuh wrote:
+>>>>> Could you share a version of the series based on top of 6.17.0-rcN fo=
+r
+>>>>> testing purposes? I would like to test the series on a Sun Netra 240
+>>>>> which is based on the UltraSPARC IIIi.
+>>>>
+>>>> Here is the git branch based on rc4:
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/linu=
+x.git/log/?h=3Db4/vdso-sparc64-generic-2
+>>>>
+>>>> Does that work for you?
+>>>
+>>> I'm getting merge conflicts with "vdso/datastore: Allocate data pages d=
 ynamically" and
-> > "vdso/datapage: Remove inclusion of gettimeofday.h".
-> >=20
-> > Can these be skipped?
->=20
-> No, these are important.
->=20
-> What are you trying to merge?
-> I can probably give you a merge.
+>>> "vdso/datapage: Remove inclusion of gettimeofday.h".
+>>>
+>>> Can these be skipped?
+>>
+>> No, these are important.
+>>
+>> What are you trying to merge?
+>> I can probably give you a merge.
+>
+> I'm using v6.17-rc7 plus all SPARC fixes in Andreas Larsson's linux-sparc=
+ for-next branch:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/alarsson/linux-sparc.git/=
+log/?h=3Dfor-next
 
-I'm using v6.17-rc7 plus all SPARC fixes in Andreas Larsson's linux-sparc f=
-or-next branch:
+This merged cleanly for me:
+https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/linux.git=
+/log/?h=3Dvdso-sparc64-merge
 
-https://git.kernel.org/pub/scm/linux/kernel/git/alarsson/linux-sparc.git/lo=
-g/?h=3Dfor-next
 
-Adrian
+(Only compile-tested)
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
+Thomas
 
