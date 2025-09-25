@@ -1,96 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-12572-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12573-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83BBB9E23A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Sep 2025 10:54:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F71B9E24C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Sep 2025 10:55:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cXSFS3tRzz2ytg;
-	Thu, 25 Sep 2025 18:54:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cXSGk1Zw3z301N;
+	Thu, 25 Sep 2025 18:55:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758790460;
-	cv=none; b=iqKXOKDwX2Yl4NFfYJhFMYOL97R2LHhB83AG7U2CRR2UMJNAhRKq2iLrUeAvDbs/IhnJ/P1/UJv9IXZt9lVvqu7DQZIXg7I58bKQqogc1AywmmnHFGr8ayFIaiG9BBenm+ivY7lovQYCbP/b0zjilUrgMEM8PnsbIealq1Hm/6/y1W5CtZcW95AYnrvKKj9QHwN/G8z82ZAburPuTFOL8+D3hQ1ud9YPyY/GepSRgM/JKT9eslDVrh2RPwcVhDV4L8DbA5/3CnWvhovQiPBt+z4KN0EKEZSO5bFNwo1EG0dkpLsWnv60KJ9h64gGzsp0wMpEvynexU1fCjboO2ZsdA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758790526;
+	cv=none; b=VPpFNTJQoNOJZG0RblCTz7JE0MKnYq517Tg0L1prVMSlBRVXYmRcJ71K8pMEuZtNLucTIVBmhQ8jKrJk+usWEU+QknAo5NUMxEyATrB5xAFjbOuq3+ZR8o7RLd2f5/kCZcHJq4S47XI23R6k73YlYng/tfxcLUahN+Bm/p9ZG5EQezyMw20uAZwXqrmAZS5BgauEbK30y89kfZvmMTzi9Ah17GRw6mCZLCSXp2/b6jNZl7uFyn2U4uCCTsWvbj9hw9izTDqPgBHYs1SMWeSONzrjeCn3MCeuk/BWPeMXPqBdn1J/RYfs2406rOKzqpVE7GlbdhByrC2b5UnRRJhjdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758790460; c=relaxed/relaxed;
-	bh=1gsFn/xU4RBQz6XkcOaHJDRKfU+vBnP2TcZFpNfy7DE=;
+	t=1758790526; c=relaxed/relaxed;
+	bh=vIdozAElu728Q2YAT29hpoWcoxXkb/so7CcmQuDvfV0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PyRTymuikVTm9WwZJvAjp52AdwymwNHigKHxx1RAX4xlfLBcts3CZEgglDDZhnS+rEDcNrxAhbYwL9iHUkDw3/6FeHUdJi+AVVNSKzNpxT9kaE6Y9KqxA/GQFl/uOXZ7Z4ii7MSdmCbfYMJl78zfsFvULodztxGIdEdBKQ6sQl//Sh7RLqaQfaZ13uzXCDp9O/39YbctpWGpoxxMpy6jIlcwJKpFaTnxjCdVoMa7zI5JrkLPUEVl7c120INXjBieKxHUPN8OoDmTClYzGyVIM9vZ3QiL56s4V8vOw/b/fnfKSFK19qBMxWO6bn5aGZ2Vc+yAupF16sLZ1On0H1chGA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L8qNXfFe; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TwuvTB9/; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=F4MmMsR+c6WDowm9o1r+brZZ/MMFHaTcaSgsIOfWS829bZUwygzxTdrJoMticF5xSwzuVoMl/GXymmGKkERHTZeUbehnqa7f1vgR1zqA8jqQQNl2WTtF9iTgjdXdwIi0d51eU7Zk9ZNjGJmLJTTQe7RFrey6PgVlmNIJ4dFMOrxdt7yNAfVBYqza/1WE6tMY5bhocGRBfttWGwJne0KZ6UId+A3Q/xqjclW1RWWtY2n6OCC4bGfDWIspfS7ZM68QqGUFs+G77+xlKIrHRrlGHrLAl76nWnq0Tkx/9V3DeRcIpbiDwHNn5TuESP6gKJFmhc6Lc0ZZxfVJwiTD4JgmrA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=I0HDD/DB; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=I0HDD/DB; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L8qNXfFe;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TwuvTB9/;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=I0HDD/DB;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=I0HDD/DB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cXSFR1gYLz2yqR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Sep 2025 18:54:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cXSGj2SdZz2yrm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Sep 2025 18:55:24 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758790453;
+	s=mimecast20190719; t=1758790522;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1gsFn/xU4RBQz6XkcOaHJDRKfU+vBnP2TcZFpNfy7DE=;
-	b=L8qNXfFeEOLppvPNn/xJwOZgG6U2A0lkFx6BbcTlQv4/pH/bQtK+PXeLxTmMRywrzzv19c
-	dXI3TTAtDCVtQv9FIT6CBWw3t3Tur/IoCWXnts342L5TqD3EQPtYihOkdCEoGqnWkgnBFu
-	NHHg8p0tNNZO4v/UOtACCI6LY4WAoNw=
+	bh=vIdozAElu728Q2YAT29hpoWcoxXkb/so7CcmQuDvfV0=;
+	b=I0HDD/DBxhkpzL6EDuWfH0B/XIlsg9VfS12ZvmoJbRzu3/oMuShSTk/iTmVRT2cgLzC3jl
+	Z0m+sz3Twt+QuVXBo+M6YTsxbh4cfMfwemm6bF00RT4GMXaXceXAehF4eN80umWXU6V2EO
+	kyKsPC/jI4rD3xdqs+Xvi3nzdK8Dv74=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758790454;
+	s=mimecast20190719; t=1758790522;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1gsFn/xU4RBQz6XkcOaHJDRKfU+vBnP2TcZFpNfy7DE=;
-	b=TwuvTB9/KMbEwDsCE0u9OSLrRYSGKMXVKg0bLeAMSrRzYSbGEnabr6nEs9EiefT+gM/Q9d
-	mtxqwlD2zCyji6q1JVsUp5OcYT3KlcXEmZyoB+HbcWaToa2jaulvLIKcDXH7J6Y9VivUFv
-	kF4qhgKOvuiS2TgbZ45u0TCffNZKFWU=
+	bh=vIdozAElu728Q2YAT29hpoWcoxXkb/so7CcmQuDvfV0=;
+	b=I0HDD/DBxhkpzL6EDuWfH0B/XIlsg9VfS12ZvmoJbRzu3/oMuShSTk/iTmVRT2cgLzC3jl
+	Z0m+sz3Twt+QuVXBo+M6YTsxbh4cfMfwemm6bF00RT4GMXaXceXAehF4eN80umWXU6V2EO
+	kyKsPC/jI4rD3xdqs+Xvi3nzdK8Dv74=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-az9eYR8iOb2OdFYadYCvUw-1; Thu, 25 Sep 2025 04:54:11 -0400
-X-MC-Unique: az9eYR8iOb2OdFYadYCvUw-1
-X-Mimecast-MFC-AGG-ID: az9eYR8iOb2OdFYadYCvUw_1758790450
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45f2a1660fcso5991055e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Sep 2025 01:54:11 -0700 (PDT)
+ us-mta-8-kb9GMmzfNpaYXkiFeARz6g-1; Thu, 25 Sep 2025 04:55:19 -0400
+X-MC-Unique: kb9GMmzfNpaYXkiFeARz6g-1
+X-Mimecast-MFC-AGG-ID: kb9GMmzfNpaYXkiFeARz6g_1758790518
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46da436df64so8071905e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Sep 2025 01:55:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758790450; x=1759395250;
+        d=1e100.net; s=20230601; t=1758790518; x=1759395318;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1gsFn/xU4RBQz6XkcOaHJDRKfU+vBnP2TcZFpNfy7DE=;
-        b=cMMUoK9sXkAgtvIuZQR5h9LbW00ESkbWQuOycTGCanRn6tupijRaxHNGZ6BxNLdsY6
-         hL83gFZmtKduzuTp20uQT9pbm9t8QesbKqystVaSe5Jx6bBsovRJufj7k1qRHdphrLyN
-         83WJH/CS0+rT9ossxagtk7ld9XQ2MO8hjlYM0yYyHGLlOjQMOLmbHuGHpqsUiWLx4yFB
-         PDb5+CxJEoBYK0fjyVsW+zEifgR9qMuJQxYvycENTZ/vv9ybUKVw5k9auGTqZpQV4Gw7
-         K0Ku0q8+5EJ5DsfvrzSfnAFkLMOJt5Rr4cU9lTB2wRrvF/pUn/m93vKNjUnUw+svXc51
-         uKhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUDystrRQwBU6pLigGEavTGtmqgLu0ORScbRyI0CxeAJTqzcMhyGt2LJ9r2CNDI7t9x5mCCrVpPj6Sh3ss=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz0oA5I1pAoJveLcVP5m4zbMc53Qi/9xwd5RQpo6UviuZBUVOqL
-	+nzv6+REAp30FJw6DVfagsP7aYCv5I9XKTc7eM8U8jQfPbSE+A+SBzhCJydUBuZllhmrIXiulZf
-	ALUNZdhrQHfnTRgI70VkNXPmwRAjBpS+8mHG6WqPNTrGd5Lyn7PR8oAgl/xGbTivVuDY=
-X-Gm-Gg: ASbGncsKnCHH07zkcMJiES34EvlcS3S9bOy3jGZ6v/J9xJ7u0x8mxlEY0jc11pOTeia
-	Ohxs1EtQO9gINKkjZwoVpnbUiU2msGXcOOHYbrnytD9oR4QoTPyEzAXnhfD6LmQFATiWljey977
-	JK36o5UnMncc7Ixgt/fteHPWYNoKaCd14mKrAd1G3kr5mpt+XyZyaKRPqOtXZ2r/QV+x5dJmZE5
-	KOcyMmXdMoi6E//6VCYlC8kie/Oepo54SmpRrEbhpsDpD6jwjun9Lsl+cH8TkyJbXP9L3bVvMkH
-	7zOQRQ/33YRT3cHXeTCqK+R2J6RHXrbTJ3ZakuZQBxdYYnVS0Dt5n2SROyByGpQZ71Yl2he3sld
-	DR1JBrD1w9+KBND+2bEFBfEkOEbvKq1HUj7NR8lg2d180HLkv2ZVm+kNVbUHma1V3IPlD
-X-Received: by 2002:a05:600c:45d4:b0:45f:2ed1:d1c5 with SMTP id 5b1f17b1804b1-46e32a26e4emr26084955e9.36.1758790450340;
-        Thu, 25 Sep 2025 01:54:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7WIypjZMXxbyn5a/1aTfXoe6g5qRkRehIOgpqrXFKvpJdmOeQruAy+DajB3CSz8qmflRRXg==
-X-Received: by 2002:a05:600c:45d4:b0:45f:2ed1:d1c5 with SMTP id 5b1f17b1804b1-46e32a26e4emr26084605e9.36.1758790449876;
-        Thu, 25 Sep 2025 01:54:09 -0700 (PDT)
+        bh=vIdozAElu728Q2YAT29hpoWcoxXkb/so7CcmQuDvfV0=;
+        b=tfQd3TYkEIqrskCNq/OUw9qj+mx7idTR4htHdYnsNXo6vHNVNiPZagR4jxFprvBTmD
+         Gz1AwOJGxsvEB7PuEIdYFVNbyT+l1Cty7DGRnfHV6S8YAWjf9Uo53xaR0uJ4IGRGDmuf
+         h5QXc8AS/pJRbk05g6I3vpKA3JY0iaX/3WSjFUsezL6uEuHtMMRQKVKUjMJBEU+bIPF2
+         S6h6zoBtxHXAscLomtmGToyiKfB5NMwIZNrreOKGH8rsw2kXWTaSknBNLzIFa85k1mM9
+         xEoor3Z/YSjqyVzAL9+YIKW2lxLU8thmR1zTDgfhvUOTWlmvW3pxaAlkMqCQ8ggsm6M6
+         A54Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV5PMlB6HIw69V3RCIDJmuz6noNlsokhHCbWUhMUYmCp/rUrZ1qwtbxdXZqdFLjhIbfLQRpy+HoHrWCktU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzYtsi3YHSQVPBUoAeOY2OdfeCkQ6FgI6/qhXYmqsTqxFjMvJf1
+	AR3oqb343WwsH9tmYq7+zFvmKp3wazVGXoJyqbO3N90orqKdSO6bk4nN1iNKTgv/BR7+s5pkhjh
+	ordwyGM7gUUtJD7WGWb0KnvVLNxQXQVdaVzVR0BUT/E7jIxXUjiHlG1cexQqmK9ST3hw=
+X-Gm-Gg: ASbGncvcCsDXtC9588tCr7vIlTY1QeTuhfw3i10EF1JiJaSeIKitLZdXZoTxk+TQzJQ
+	UI8ADHJbAQj/KKhKZI0wn9ZE8u+PzLKgB6l+evC52LtQ8wEjgxT/KM3dVLGK+feYkd3CvP4mwrB
+	pX69KwJ4jFznE8BBlpFU9REdHhkvhI18zU9s+CYZy4Wqlym95WqERX8Z7OY84VIkzc0WgRyIooY
+	QxtOdjNOEWdhaRhYeXmvqwhDKhvoVaia36zCeWwB9MVAAS9VUbjonWJnszE2TGjOQj0/ANtOVJ2
+	rfKdKlFijDzz7XhFJXeq2hoaQs+2WNjnoQMlUAM58n8ckqIIq3oGJqGK3h/KBoQ/cnyrHVbxl2I
+	AX6Bn0xe+P3LbgqSpYxGHm/OI5B0HwiMylwokbPI7HkIFqxChcKM5g/iafuxwaM2AnDAV
+X-Received: by 2002:a05:600c:1ca5:b0:46e:2637:d182 with SMTP id 5b1f17b1804b1-46e32a08feamr31537695e9.28.1758790518240;
+        Thu, 25 Sep 2025 01:55:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEum28AGUsf/Leenhf3W6Y9umKKEHuPguoH/ZgJbvMiqBUf3p8uOrHXnJzc2Xma2XLm2+kAOQ==
+X-Received: by 2002:a05:600c:1ca5:b0:46e:2637:d182 with SMTP id 5b1f17b1804b1-46e32a08feamr31537295e9.28.1758790517769;
+        Thu, 25 Sep 2025 01:55:17 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08? (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb72fb1a3sm2096184f8f.10.2025.09.25.01.54.08
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2ab31ea3sm66391125e9.12.2025.09.25.01.55.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 01:54:09 -0700 (PDT)
-Message-ID: <0de65980-4333-434a-ae7d-2b7be46c2cca@redhat.com>
-Date: Thu, 25 Sep 2025 10:54:07 +0200
+        Thu, 25 Sep 2025 01:55:17 -0700 (PDT)
+Message-ID: <f93d4271-b601-4fb5-8d95-2e1caa7efe5f@redhat.com>
+Date: Thu, 25 Sep 2025 10:55:15 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,8 +105,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drivers/base/node: merge register_one_node() and
- register_node() to a single function.
+Subject: Re: [PATCH 2/2] drivers/base/node: merge unregister_one_node() and
+ unregister_node() to a single function.
 To: Donet Tom <donettom@linux.ibm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>
 Cc: Ritesh Harjani <ritesh.list@gmail.com>,
@@ -119,7 +119,7 @@ Cc: Ritesh Harjani <ritesh.list@gmail.com>,
  Danilo Krummrich <dakr@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Dave Jiang <dave.jiang@intel.com>
 References: <cover.1758736423.git.donettom@linux.ibm.com>
- <40257b5228dec05e5b252f02438608eb8d681a2d.1758736423.git.donettom@linux.ibm.com>
+ <c99d97e253378455f1b3b7bec5b0c830d4e73074.1758736423.git.donettom@linux.ibm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -165,22 +165,22 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <40257b5228dec05e5b252f02438608eb8d681a2d.1758736423.git.donettom@linux.ibm.com>
+In-Reply-To: <c99d97e253378455f1b3b7bec5b0c830d4e73074.1758736423.git.donettom@linux.ibm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: MtQr454mwBZrDCtlm-Cvdq61-K8migBTMnygFE15C9c_1758790450
+X-Mimecast-MFC-PROC-ID: biloc6OvqjD4ULAQJMiPNFRu-HLyUc1DhF1-zLUhCVQ_1758790518
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 24.09.25 20:40, Donet Tom wrote:
-> register_one_node() and register_node() are small functions.
-> This patch merges them into a single function named register_node()
+> unregister_one_node() and unregister_node() are small functions.
+> This patch merges them into a single function named unregister_node()
 > to improve code readability.
 > 
 > No functional changes are introduced.
@@ -188,52 +188,9 @@ On 24.09.25 20:40, Donet Tom wrote:
 > Signed-off-by: Donet Tom <donettom@linux.ibm.com>
 > ---
 
-[...]
+LGTM with the description adjusted and "extern" dropped
 
->   /**
->    * unregister_node - unregister a node device
->    * @node: node going away
-> @@ -869,7 +842,13 @@ void register_memory_blocks_under_node_hotplug(int nid, unsigned long start_pfn,
->   }
->   #endif /* CONFIG_MEMORY_HOTPLUG */
->   
-> -int register_one_node(int nid)
-> +/*
-
-We can directly convert this to proper kernel doc by using /**
-
-> + * register_node - Setup a sysfs device for a node.
-> + * @nid - Node number to use when creating the device.
-> + *
-> + * Initialize and register the node device.
-
-and briefly describing what the return value means
-
-"Returns 0 on success, ..."
-
-> + */
-> +int register_node(int nid)
->   {
->   	int error;
->   	int cpu;
-> @@ -880,14 +859,23 @@ int register_one_node(int nid)
->   		return -ENOMEM;
->   
->   	INIT_LIST_HEAD(&node->access_list);
-> -	node_devices[nid] = node;
->   
-> -	error = register_node(node_devices[nid], nid);
-> +	node->dev.id = nid;
-> +	node->dev.bus = &node_subsys;
-> +	node->dev.release = node_device_release;
-> +	node->dev.groups = node_dev_groups;
-> +
-> +	error = device_register(&node->dev);
->   	if (error) {
-> -		node_devices[nid] = NULL;
-
-Wondering why we did have this temporary setting of the node_devices[] 
-in there. But I cannot immediately spot why it was required.
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
