@@ -1,96 +1,138 @@
-Return-Path: <linuxppc-dev+bounces-12576-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12577-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE93B9E699
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Sep 2025 11:37:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CFCB9F741
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Sep 2025 15:12:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cXTCD6Py6z30P3;
-	Thu, 25 Sep 2025 19:37:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cXYzT6pDlz2ytg;
+	Thu, 25 Sep 2025 23:12:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758793048;
-	cv=none; b=dTYQq0pj4NonDxiljg9UQmbzfyAWV7dGkDu7cKm088dKUr+lB791YjlAoVoZzwfhvZ97tt9VVYdPwkwnXdAOLTrHzjTQHT3wHSueqgv4SgQLQEVDrptn87XALaVsCJ2ZSeUA/lIkMWCaHIuXwWmHNwAVK6nL+5OS7MVcPKU9vM8kBFbadeSOzNv/bb6oKey0wh70DSQP+a8UyJT7h6KsfQRx9/cp+0pb+PCXc1cqCap2hW+2d+MT+Mp2qOxU3Hc59xKtEyzlM79qGPfDS5MJbML5I38AncJuhbN0iM2Ld8++iIWXZGRjVaUwsOj2Od7GA4fbe8/OxGPxrXBf5V3cGQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::432"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758805957;
+	cv=none; b=dWkr62bOIdAF+KMbf/5cpeOjXuZQ6ro8DmfC7Qos1fBHYTEIXGqFkPze2QnWi6SHucdD0n6Hzckoei69TTV5z21XaBZJ4dLSKhRZbzmHCOXeQiH7bCyiKjHc5l2OmBJ6yJmQ8srSclD8poYd6Vu2bl1nLybmWZSfkU+BEPSk1lFMt4cBiX7NoeleKIrsFZ2Mtno/WHVSGMAkJNui1K2tExz5RWfeY4SyoRJI9SGYgg2SSQU4NPB2f0VU6/5IqOlTEl6kdUZPGbElz9d5DVVDC40Sf+34v2p4n6k6qRG7NqmUmvjxjB09sc+9COEKawyCWkUjLytEwd4v7+fGLsUmPw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758793048; c=relaxed/relaxed;
-	bh=sZteDAWiG7VxkIsADkOw6B3yeLgEfE4eGqGu+VCIiwE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=osF7+XBXVQWHehOVsvsKHBnumr7v7lOAgK+5yvD2MSAI46pqtU3bsEVnxpyCGCEAjfx5SamGhdWxEBAuy3RxjNjd53VmWhGuscUy7VlShhmtxu+5DV+jabOiH/SmuwFlZEF1VnevffDXcSlWgp4uKgKLy0cEfqLuR5cZZblqRh7yGjGowud13OgZIcrHObWkl+5mp5EpZ8IUMm9LB7P2QUE5KODjfOjkFLj91L8a61/bcyvDQ45UFVunoNwROEzQY5rj4HPOBNdomTcSgkLwJEWkAftDIr9MSXAEyEeKsq/T6XP3OotTG3UXHBJiwBhvAh4JReFmoS1fgs3y5v6iIA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ih5sINX3; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ih5sINX3; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1758805957; c=relaxed/relaxed;
+	bh=NfJVwYFcsQ06QJkEnurciWiF3KgCM9rgqn4VVbABEtQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=JA4vsTGAhEIIPJ3u4qXE7XrzMZ6yonpeOOzXjGhl8z7R2Tx7Lsa7omYsxux0QKHh7cs9il+D0enUd6LEe0nvJV62x+jWKZQwZAwNlEXMeezqM3WKVB2mKEV36pLbHMdPLOjTy3prAqRxrcWjr5aFy+kuJbcHPdt3fZ+LVt0twAcOUpX6oJtAazgGdkrZc8EIqMswfiQb+ebtLDJQA3+Xc8a5CtT8nfJMS9Vb3FKWZ9UfiuMCbysKps+TmaWcQjSnq0Uixcj4igZwbn1Rnrs7fWNd+gnQtVUtFuAxYNNrV72MyNpDdOW4BNEsbhGTCcaUUaJh0rCahuoPexSbNfuRpQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=freebox.fr; dkim=pass (2048-bit key; unprotected) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=XXldpj3M; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::432; helo=mail-wr1-x432.google.com; envelope-from=nschichan@freebox.fr; receiver=lists.ozlabs.org) smtp.mailfrom=freebox.fr
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=freebox.fr
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ih5sINX3;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ih5sINX3;
+	dkim=pass (2048-bit key; unprotected) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=XXldpj3M;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=freebox.fr (client-ip=2a00:1450:4864:20::432; helo=mail-wr1-x432.google.com; envelope-from=nschichan@freebox.fr; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cXTCD0N3lz2yqR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Sep 2025 19:37:27 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758793044;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sZteDAWiG7VxkIsADkOw6B3yeLgEfE4eGqGu+VCIiwE=;
-	b=ih5sINX3Shj5u8N+gVj8wa0Sti/rImyMN42NkkSetvfyTjcHjqHOjb8zQjwYP+IbI4yy2s
-	4Of3fBP78v02aOC9HucR4yK6bzKbL1wrcU751vcl9/uWSiOgqgh4h8T/lA9yEXH1/a0zs8
-	ejLqf2oN0imK82yK8oDFIZLahFwHve4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758793044;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sZteDAWiG7VxkIsADkOw6B3yeLgEfE4eGqGu+VCIiwE=;
-	b=ih5sINX3Shj5u8N+gVj8wa0Sti/rImyMN42NkkSetvfyTjcHjqHOjb8zQjwYP+IbI4yy2s
-	4Of3fBP78v02aOC9HucR4yK6bzKbL1wrcU751vcl9/uWSiOgqgh4h8T/lA9yEXH1/a0zs8
-	ejLqf2oN0imK82yK8oDFIZLahFwHve4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-179-jqNMrIjVPqetWIkyeKjsQg-1; Thu, 25 Sep 2025 05:37:20 -0400
-X-MC-Unique: jqNMrIjVPqetWIkyeKjsQg-1
-X-Mimecast-MFC-AGG-ID: jqNMrIjVPqetWIkyeKjsQg_1758793039
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46e38bd6680so105855e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Sep 2025 02:37:20 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cXYzQ6q3Jz2yrP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Sep 2025 23:12:33 +1000 (AEST)
+Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-3ecde0be34eso1232682f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Sep 2025 06:12:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1758805948; x=1759410748; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NfJVwYFcsQ06QJkEnurciWiF3KgCM9rgqn4VVbABEtQ=;
+        b=XXldpj3M52VegpQNAmJc9N1HhwVSqdav4ITwoW7JBS8Odlpr7ongkEVRCWyXv4Peap
+         w+35O24KxR8U+X6Cw1p0FnyAJnLVajeeaKfPz6GJQprSIOreL4oVOdMM+aa1xpd15aCo
+         i159ijp4/qCwkpqo3s11u07OxMlGLPSLKwy869bLb+DtQPM6WcR+Y2ICfv/kUgN+AoSt
+         TY1Z5ODByPo22Iyh7XpNkL7qbGDXD9Lc0HtBiBnPo3YhCqs/kKOU/NBlsMOr/3lR+5qE
+         HgmHNVkFFCCQTRToyETeE6BYJIFHcn2ZwcNl/tsNRgmI7FEf2zhsf0iNiUCN4G4T5dis
+         eqwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758793039; x=1759397839;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sZteDAWiG7VxkIsADkOw6B3yeLgEfE4eGqGu+VCIiwE=;
-        b=cvm6tjJlASxbnon4YBCop6B7yTbeqH0OkM6NIsxGtuZHGHmktGl4pO6NKOHQfb2NlY
-         SVXHUrhjDWqfpiDk/Y2GYUB8Z07wERjFULR9Ui8jliFtE5x/bobAryMOZag3M/xahuwy
-         nicDRYrsqNAwManDCTvylGmFX9wWA/ynGqsTvZeOGdGdP8JCl4QOUWIE5YNpKufxlWS6
-         JDuz+jeytO+3WEbTT1Vug9O50IkI0NEq3ZjZcgXVoiH2mLkjAx9mMKVjSawdqNTJVTn8
-         gezDVEkUckCVwHtxjMxNiVylaxRVOD5B2qLAKDcQbGyHBOQWwQBSnbIDIx2JMi86Xw5t
-         8eag==
-X-Forwarded-Encrypted: i=1; AJvYcCX/j6lZh9Cl7P434sRFNYJoqn2GzHdpXyI5bkS4l34luHIKGz+kmCaa9BMM/+FazgCjIFi12GsVDMdSCgE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzkxo+8tPAEXQCaKVV4/uI6qLzeB5Y2ooBLasEyuxA/+kg6CPEq
-	kzPIFU+ddKpqTmQxfQbW0d8sbIDF77Zx1bYWin94KPg24W9cL0nIHkTXUY8M0mbLeYwCJoIp+r2
-	4pr+IvVGbJ5ZxViHfoUYx7EmQ4gESGL0AjHd7vYUqJv49qRHojkMm9CtUUtZT9RjrCMs=
-X-Gm-Gg: ASbGncupvHOWEsZVKOPfFS/nu5ZCmowZJ4iz/IQI8z1YOTmCyu6hZEO8ktA1IauEDHQ
-	1CtelXfW/ycVQ+/QIVz6W8OR0Qsv59kEbvsXUlUTizpyQrPpY5CBMBtU70i2sG3uZiozOhkzBaz
-	aBLH6z7c/VSZu6qFiWOtYchyu08fd+fePzeLCTdBSNZO3Q6Pt2dzkbXK3Stm6oApbVfWSMvkPTj
-	lcmRGvYtcIMpyRuM2vNgsIjqKjPHe6nAWh28FHCrONLbB1CQhlw0Ea/TqgU/x/LeaiqD5qIOWwq
-	nn0ehop6YJhdE5aVztrDPxAPJmrF7inKn0QWVpGMFYo7eYsF9m3ZJTARPzkhoVtpVXjXTyj7zOb
-	Pq13h4hs7RBF/TbHApNBm+doMGzzTSlQAnEdtQ+FSOEqKGQUvySkgrOR3lhXdFLDXlUB4
-X-Received: by 2002:a05:6000:3101:b0:3eb:df84:60f with SMTP id ffacd0b85a97d-40e4cc62f3fmr2681542f8f.48.1758793039359;
-        Thu, 25 Sep 2025 02:37:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFA9Jm8uD5qp7JBwQIe1Kc6nNA+w35IPqMMEbFkiOgpMPy54NFOFR6LoswdfAvKNPYZ4HWLEA==
-X-Received: by 2002:a05:6000:3101:b0:3eb:df84:60f with SMTP id ffacd0b85a97d-40e4cc62f3fmr2681517f8f.48.1758793038927;
-        Thu, 25 Sep 2025 02:37:18 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08? (p200300d82f3ff800c1015c9f3bc93d08.dip0.t-ipconnect.de. [2003:d8:2f3f:f800:c101:5c9f:3bc9:3d08])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc5602efdsm2323755f8f.34.2025.09.25.02.37.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 02:37:18 -0700 (PDT)
-Message-ID: <95080e61-7009-4e5c-86aa-25ab7356f840@redhat.com>
-Date: Thu, 25 Sep 2025 11:37:16 +0200
+        d=1e100.net; s=20230601; t=1758805948; x=1759410748;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NfJVwYFcsQ06QJkEnurciWiF3KgCM9rgqn4VVbABEtQ=;
+        b=CRvCcIIrtwNQ1sKYiD4HhuXx/dAxVaZtqyLDRvRvHPB7WhNj6ZXv3o+G98OuXEBK+/
+         ltukINMN+MyYnQeR7mEq0F1uKY2btkie28pfRCcX1HhAnB350rT3zzk92GHeRJzRuJ78
+         MnJGrD5J7IJ+xKqlDJ9TpQf+1CrsBlgeEWl31PLb9LpdOQxatWkZfRq4DAI2Uh3j5dtO
+         cqMQHGFQR15OpDeFLUDruKhwis51IbreUMyP9aHuSJlxN5b1y/NceA/q6WFawwDXsKo7
+         l2bk860D99I838H8koFQ9h7wc5BzSL99Pn49TwPHfO1aOLE+2yUTKTRNvbtB3U3bR0ZQ
+         H+vw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMNC61epSLeYQcOnf1hYlWPcdyZ4o2l1mgqSIAohZLJ1/4AybMcNQ0a2nHTnSn5It/F2jJjejGJySmik0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YybDP/S66D31bFfBzg+TQNl5ARaW2i6XpFK4NsMm+3Koem0thNj
+	qq5bBB+E2Q5vdr2zgFDV5Xe5mhJSMFAFyJ3E0pqflxkOAikhbkh3yfF87L9sSJrek0A=
+X-Gm-Gg: ASbGncsTzYl5zPF4VtXoNWO/TFlYus9xYJ/N3U1zHCWgs6DdXXs1mblAtvSJcrK0EtT
+	ixL3jItN+s+SMQdyZ+19gqT4h/OjTwKjw/+VtbEB9/akY5/osrdham/XGQ7Nabj8wKxfl6d2XOV
+	M2wjqAn7Cw2r5HOGN176ztUfv346t3NOnuZTc53MMGnvEjM9GUHiNi+/GyRn2EsSuFU9hmXVy84
+	tmzszCe2r/1UeOOYkM9vYfdE2CDgyTcpjhZSjrSsC4ajEUwTjjGYeMFHCgTeEBkWv3LAouC46c4
+	KKOervh9Jsqw2d4NM5sANFuOMgxj4OSDOn8x329om2Mcx6j0usLSA+nBijVMAdTzswiNJkjYxq3
+	IoLEkUVjH+v6Uvss7VcrSNjoCdNkngYnDGbrpwjej9nYRqAl6cg==
+X-Google-Smtp-Source: AGHT+IGfEDsgYy1Y3V7mn/9vw12xwbotyOf9S0qvgxiLF/dTs1GE6jSNXI03j1w/2hgZi5tVGzAx+Q==
+X-Received: by 2002:a05:6000:290e:b0:3fc:cbfc:fbee with SMTP id ffacd0b85a97d-40f65bbb807mr2115268f8f.19.1758805948078;
+        Thu, 25 Sep 2025 06:12:28 -0700 (PDT)
+Received: from daria.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e33bef4b4sm32929635e9.20.2025.09.25.06.12.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Sep 2025 06:12:27 -0700 (PDT)
+From: nschichan@freebox.fr
+To: nschichan@freebox.fr
+Cc: akpm@linux-foundation.org,
+	andy.shevchenko@gmail.com,
+	axboe@kernel.dk,
+	brauner@kernel.org,
+	cyphar@cyphar.com,
+	devicetree@vger.kernel.org,
+	ecurtin@redhat.com,
+	email2tema@gmail.com,
+	graf@amazon.com,
+	gregkh@linuxfoundation.org,
+	hca@linux.ibm.com,
+	hch@lst.de,
+	hsiangkao@linux.alibaba.com,
+	initramfs@vger.kernel.org,
+	jack@suse.cz,
+	julian.stecklina@cyberus-technology.de,
+	kees@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-alpha@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org,
+	linux-csky@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev,
+	mcgrof@kernel.org,
+	mingo@redhat.com,
+	monstr@monstr.eu,
+	mzxreary@0pointer.de,
+	patches@lists.linux.dev,
+	rob@landley.net,
+	safinaskar@gmail.com,
+	sparclinux@vger.kernel.org,
+	thomas.weissschuh@linutronix.de,
+	thorsten.blum@linux.dev,
+	torvalds@linux-foundation.org,
+	tytso@mit.edu,
+	viro@zeniv.linux.org.uk,
+	x86@kernel.org
+Subject: [PATCH-RFC] init: simplify initrd code (was Re: [PATCH RESEND 00/62] initrd: remove classic initrd support).
+Date: Thu, 25 Sep 2025 15:10:56 +0200
+Message-Id: <20250925131055.3933381-1-nschichan@freebox.fr>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
+References: <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,126 +146,359 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drivers/base/node: merge register_one_node() and
- register_node() to a single function.
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Donet Tom <donettom@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, Ritesh Harjani <ritesh.list@gmail.com>,
- Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Dave Jiang <dave.jiang@intel.com>
-References: <cover.1758736423.git.donettom@linux.ibm.com>
- <40257b5228dec05e5b252f02438608eb8d681a2d.1758736423.git.donettom@linux.ibm.com>
- <0de65980-4333-434a-ae7d-2b7be46c2cca@redhat.com>
- <aNUMnK23qKTjgEdO@kernel.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aNUMnK23qKTjgEdO@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: EzCw-QwSaCvilKaP3Y6ybC8qbcrY8C0XCws49dmnHAQ_1758793039
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 25.09.25 11:34, Mike Rapoport wrote:
-> On Thu, Sep 25, 2025 at 10:54:07AM +0200, David Hildenbrand wrote:
->> On 24.09.25 20:40, Donet Tom wrote:
->>> register_one_node() and register_node() are small functions.
->>> This patch merges them into a single function named register_node()
->>> to improve code readability.
->>>
->>> No functional changes are introduced.
->>>
->>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->>> ---
->>
->> [...]
->>
->>>    /**
->>>     * unregister_node - unregister a node device
->>>     * @node: node going away
->>> @@ -869,7 +842,13 @@ void register_memory_blocks_under_node_hotplug(int nid, unsigned long start_pfn,
->>>    }
->>>    #endif /* CONFIG_MEMORY_HOTPLUG */
->>> -int register_one_node(int nid)
->>> +/*
->>
->> We can directly convert this to proper kernel doc by using /**
->>
->>> + * register_node - Setup a sysfs device for a node.
->>> + * @nid - Node number to use when creating the device.
->>> + *
->>> + * Initialize and register the node device.
->>
->> and briefly describing what the return value means
->>
->> "Returns 0 on success, ..."
-> 
-> For kernel-doc it should be
-> 
-> Return: 0 on success, ...
+From: Nicolas Schichan <nschichan@freebox.fr>
 
-Yeah; I recall that kerneldoc does not complain when using "Returns 
-...", but probably it will not be indicated accordingly.
+- drop prompt_ramdisk and ramdisk_start kernel parameters
+- drop compression support
+- drop image autodetection, the whole /initrd.image content is now
+  copied into /dev/ram0
+- remove rd_load_disk() which doesn't seem to be used anywhere.
 
+There is now no more limitation on the type of initrd filesystem that
+can be loaded since the code trying to guess the initrd filesystem
+size is gone (the whole /initrd.image file is used).
+
+A few global variables in do_mounts_rd.c are now put as local
+variables in rd_load_image() since they do not need to be visible
+outside this function.
+---
+
+Hello,
+
+Hopefully my email config is now better and reaches gmail users
+correctly.
+
+The patch below could probably split in a few patches, but I think
+this simplify the code greatly without removing the functionality we
+depend on (and this allows now to use EROFS initrd images).
+
+Coupled with keeping the function populate_initrd_image() in
+init/initramfs.c, this will keep what we need from the initrd code.
+
+This removes support of loading bzip/gz/xz/... compressed images as
+well, not sure if many user depend on this feature anymore.
+
+No signoff because I'm only seeking comments about those changes right
+now.
+
+ init/do_mounts.h    |   2 -
+ init/do_mounts_rd.c | 243 +-------------------------------------------
+ 2 files changed, 4 insertions(+), 241 deletions(-)
+
+diff --git a/init/do_mounts.h b/init/do_mounts.h
+index 6069ea3eb80d..c0028ee3cff6 100644
+--- a/init/do_mounts.h
++++ b/init/do_mounts.h
+@@ -24,12 +24,10 @@ static inline __init int create_dev(char *name, dev_t dev)
+ 
+ #ifdef CONFIG_BLK_DEV_RAM
+ 
+-int __init rd_load_disk(int n);
+ int __init rd_load_image(char *from);
+ 
+ #else
+ 
+-static inline int rd_load_disk(int n) { return 0; }
+ static inline int rd_load_image(char *from) { return 0; }
+ 
+ #endif
+diff --git a/init/do_mounts_rd.c b/init/do_mounts_rd.c
+index ac021ae6e6fa..5a69ff43f5ee 100644
+--- a/init/do_mounts_rd.c
++++ b/init/do_mounts_rd.c
+@@ -14,173 +14,9 @@
+ 
+ #include <linux/decompress/generic.h>
+ 
+-static struct file *in_file, *out_file;
+-static loff_t in_pos, out_pos;
+-
+-static int __init prompt_ramdisk(char *str)
+-{
+-	pr_warn("ignoring the deprecated prompt_ramdisk= option\n");
+-	return 1;
+-}
+-__setup("prompt_ramdisk=", prompt_ramdisk);
+-
+-int __initdata rd_image_start;		/* starting block # of image */
+-
+-static int __init ramdisk_start_setup(char *str)
+-{
+-	rd_image_start = simple_strtol(str,NULL,0);
+-	return 1;
+-}
+-__setup("ramdisk_start=", ramdisk_start_setup);
+-
+-static int __init crd_load(decompress_fn deco);
+-
+-/*
+- * This routine tries to find a RAM disk image to load, and returns the
+- * number of blocks to read for a non-compressed image, 0 if the image
+- * is a compressed image, and -1 if an image with the right magic
+- * numbers could not be found.
+- *
+- * We currently check for the following magic numbers:
+- *	minix
+- *	ext2
+- *	romfs
+- *	cramfs
+- *	squashfs
+- *	gzip
+- *	bzip2
+- *	lzma
+- *	xz
+- *	lzo
+- *	lz4
+- */
+-static int __init
+-identify_ramdisk_image(struct file *file, loff_t pos,
+-		decompress_fn *decompressor)
+-{
+-	const int size = 512;
+-	struct minix_super_block *minixsb;
+-	struct romfs_super_block *romfsb;
+-	struct cramfs_super *cramfsb;
+-	struct squashfs_super_block *squashfsb;
+-	int nblocks = -1;
+-	unsigned char *buf;
+-	const char *compress_name;
+-	unsigned long n;
+-	int start_block = rd_image_start;
+-
+-	buf = kmalloc(size, GFP_KERNEL);
+-	if (!buf)
+-		return -ENOMEM;
+-
+-	minixsb = (struct minix_super_block *) buf;
+-	romfsb = (struct romfs_super_block *) buf;
+-	cramfsb = (struct cramfs_super *) buf;
+-	squashfsb = (struct squashfs_super_block *) buf;
+-	memset(buf, 0xe5, size);
+-
+-	/*
+-	 * Read block 0 to test for compressed kernel
+-	 */
+-	pos = start_block * BLOCK_SIZE;
+-	kernel_read(file, buf, size, &pos);
+-
+-	*decompressor = decompress_method(buf, size, &compress_name);
+-	if (compress_name) {
+-		printk(KERN_NOTICE "RAMDISK: %s image found at block %d\n",
+-		       compress_name, start_block);
+-		if (!*decompressor)
+-			printk(KERN_EMERG
+-			       "RAMDISK: %s decompressor not configured!\n",
+-			       compress_name);
+-		nblocks = 0;
+-		goto done;
+-	}
+-
+-	/* romfs is at block zero too */
+-	if (romfsb->word0 == ROMSB_WORD0 &&
+-	    romfsb->word1 == ROMSB_WORD1) {
+-		printk(KERN_NOTICE
+-		       "RAMDISK: romfs filesystem found at block %d\n",
+-		       start_block);
+-		nblocks = (ntohl(romfsb->size)+BLOCK_SIZE-1)>>BLOCK_SIZE_BITS;
+-		goto done;
+-	}
+-
+-	if (cramfsb->magic == CRAMFS_MAGIC) {
+-		printk(KERN_NOTICE
+-		       "RAMDISK: cramfs filesystem found at block %d\n",
+-		       start_block);
+-		nblocks = (cramfsb->size + BLOCK_SIZE - 1) >> BLOCK_SIZE_BITS;
+-		goto done;
+-	}
+-
+-	/* squashfs is at block zero too */
+-	if (le32_to_cpu(squashfsb->s_magic) == SQUASHFS_MAGIC) {
+-		printk(KERN_NOTICE
+-		       "RAMDISK: squashfs filesystem found at block %d\n",
+-		       start_block);
+-		nblocks = (le64_to_cpu(squashfsb->bytes_used) + BLOCK_SIZE - 1)
+-			 >> BLOCK_SIZE_BITS;
+-		goto done;
+-	}
+-
+-	/*
+-	 * Read 512 bytes further to check if cramfs is padded
+-	 */
+-	pos = start_block * BLOCK_SIZE + 0x200;
+-	kernel_read(file, buf, size, &pos);
+-
+-	if (cramfsb->magic == CRAMFS_MAGIC) {
+-		printk(KERN_NOTICE
+-		       "RAMDISK: cramfs filesystem found at block %d\n",
+-		       start_block);
+-		nblocks = (cramfsb->size + BLOCK_SIZE - 1) >> BLOCK_SIZE_BITS;
+-		goto done;
+-	}
+-
+-	/*
+-	 * Read block 1 to test for minix and ext2 superblock
+-	 */
+-	pos = (start_block + 1) * BLOCK_SIZE;
+-	kernel_read(file, buf, size, &pos);
+-
+-	/* Try minix */
+-	if (minixsb->s_magic == MINIX_SUPER_MAGIC ||
+-	    minixsb->s_magic == MINIX_SUPER_MAGIC2) {
+-		printk(KERN_NOTICE
+-		       "RAMDISK: Minix filesystem found at block %d\n",
+-		       start_block);
+-		nblocks = minixsb->s_nzones << minixsb->s_log_zone_size;
+-		goto done;
+-	}
+-
+-	/* Try ext2 */
+-	n = ext2_image_size(buf);
+-	if (n) {
+-		printk(KERN_NOTICE
+-		       "RAMDISK: ext2 filesystem found at block %d\n",
+-		       start_block);
+-		nblocks = n;
+-		goto done;
+-	}
+-
+-	printk(KERN_NOTICE
+-	       "RAMDISK: Couldn't find valid RAM disk image starting at %d.\n",
+-	       start_block);
+-
+-done:
+-	kfree(buf);
+-	return nblocks;
+-}
+-
+ static unsigned long nr_blocks(struct file *file)
+ {
+-	struct inode *inode = file->f_mapping->host;
+-
+-	if (!S_ISBLK(inode->i_mode))
+-		return 0;
+-	return i_size_read(inode) >> 10;
++	return i_size_read(file->f_mapping->host) >> 10;
+ }
+ 
+ int __init rd_load_image(char *from)
+@@ -190,10 +26,11 @@ int __init rd_load_image(char *from)
+ 	int nblocks, i;
+ 	char *buf = NULL;
+ 	unsigned short rotate = 0;
+-	decompress_fn decompressor = NULL;
+ #if !defined(CONFIG_S390)
+ 	char rotator[4] = { '|' , '/' , '-' , '\\' };
+ #endif
++	struct file *in_file, *out_file;
++	loff_t in_pos = 0, out_pos = 0;
+ 
+ 	out_file = filp_open("/dev/ram", O_RDWR, 0);
+ 	if (IS_ERR(out_file))
+@@ -203,17 +40,6 @@ int __init rd_load_image(char *from)
+ 	if (IS_ERR(in_file))
+ 		goto noclose_input;
+ 
+-	in_pos = rd_image_start * BLOCK_SIZE;
+-	nblocks = identify_ramdisk_image(in_file, in_pos, &decompressor);
+-	if (nblocks < 0)
+-		goto done;
+-
+-	if (nblocks == 0) {
+-		if (crd_load(decompressor) == 0)
+-			goto successful_load;
+-		goto done;
+-	}
+-
+ 	/*
+ 	 * NOTE NOTE: nblocks is not actually blocks but
+ 	 * the number of kibibytes of data to load into a ramdisk.
+@@ -228,10 +54,7 @@ int __init rd_load_image(char *from)
+ 	/*
+ 	 * OK, time to copy in the data
+ 	 */
+-	if (strcmp(from, "/initrd.image") == 0)
+-		devblocks = nblocks;
+-	else
+-		devblocks = nr_blocks(in_file);
++	nblocks = devblocks = nr_blocks(in_file);
+ 
+ 	if (devblocks == 0) {
+ 		printk(KERN_ERR "RAMDISK: could not determine device size\n");
+@@ -264,7 +87,6 @@ int __init rd_load_image(char *from)
+ 	}
+ 	pr_cont("done.\n");
+ 
+-successful_load:
+ 	res = 1;
+ done:
+ 	fput(in_file);
+@@ -275,60 +97,3 @@ int __init rd_load_image(char *from)
+ 	init_unlink("/dev/ram");
+ 	return res;
+ }
+-
+-int __init rd_load_disk(int n)
+-{
+-	create_dev("/dev/root", ROOT_DEV);
+-	create_dev("/dev/ram", MKDEV(RAMDISK_MAJOR, n));
+-	return rd_load_image("/dev/root");
+-}
+-
+-static int exit_code;
+-static int decompress_error;
+-
+-static long __init compr_fill(void *buf, unsigned long len)
+-{
+-	long r = kernel_read(in_file, buf, len, &in_pos);
+-	if (r < 0)
+-		printk(KERN_ERR "RAMDISK: error while reading compressed data");
+-	else if (r == 0)
+-		printk(KERN_ERR "RAMDISK: EOF while reading compressed data");
+-	return r;
+-}
+-
+-static long __init compr_flush(void *window, unsigned long outcnt)
+-{
+-	long written = kernel_write(out_file, window, outcnt, &out_pos);
+-	if (written != outcnt) {
+-		if (decompress_error == 0)
+-			printk(KERN_ERR
+-			       "RAMDISK: incomplete write (%ld != %ld)\n",
+-			       written, outcnt);
+-		decompress_error = 1;
+-		return -1;
+-	}
+-	return outcnt;
+-}
+-
+-static void __init error(char *x)
+-{
+-	printk(KERN_ERR "%s\n", x);
+-	exit_code = 1;
+-	decompress_error = 1;
+-}
+-
+-static int __init crd_load(decompress_fn deco)
+-{
+-	int result;
+-
+-	if (!deco) {
+-		pr_emerg("Invalid ramdisk decompression routine.  "
+-			 "Select appropriate config option.\n");
+-		panic("Could not decompress initial ramdisk image.");
+-	}
+-
+-	result = deco(NULL, 0, compr_fill, compr_flush, NULL, NULL, error);
+-	if (decompress_error)
+-		result = 1;
+-	return result;
+-}
 -- 
-Cheers
-
-David / dhildenb
+2.34.1
 
 
