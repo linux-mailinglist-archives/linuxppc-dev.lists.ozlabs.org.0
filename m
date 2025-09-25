@@ -1,51 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-12585-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12586-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE85BA1FE6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Sep 2025 01:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 484FFBA1FE9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Sep 2025 01:46:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cXr2h1xWBz3cYg;
-	Fri, 26 Sep 2025 09:46:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cXr2k252dz3cbF;
+	Fri, 26 Sep 2025 09:46:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758843980;
-	cv=none; b=N5NorcPUim5vBSTVmkKZbORe/w7lTgsfjlb9FLpmTx2PKe/ZvD1zHRD5D/TP6UWx0l0HtziFMCpCLxMPTQQlU/XScMoh4+xSk8k0LMrkZDYJxEEcfDNgQI3HKVXy52PzFO5qcjQwih05tJ34VKlYuM9lTnVVXmWwfY4xUlaDj+NRxPrT0z7hqNXHcLe4JJCc7rfHAVeNPlBmkmNQ/Gqq9LjWeFfDTcSHgUseDJnOV3ISUIVsekQMQ8waPsKog5f+SU+bd8ioQ+DxXwQeo9EWAPaDsPJpDawNcV6XXdan1qHye495tXwLTO5s9+U/ZYOTdbLPO0PnRnglh8QuooSxbA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758843982;
+	cv=none; b=SHM145/3zp9tMN/mtEQt+O6wHpIXw9+7OkpaCn9wRnxpk/A79/p/p3+3Utwwkm8MGqwJY9FYPYWV4UkQ1sOpi9D1bZv54pQ6uIxl+zzoDrzKFCOxMV0eWaIugiGD/OegeFMNtJMFTmU+vsKpnP4tTdBhk9iCTf5uvNL0Gz2b4NYv2IaGzjxxjchdGUo916okPneWLOSn9kmLjUyjHc/QXWka0x18+woHKS9HFeGQFnDY8gO/wa1QS+5FcdsRZyiA/oaDN9cfLuhuH+JCrUZocvhjFgosoOM+0eaASSUr9xylSj7gICGemjl/YZMo5kcCDhpiddXp70/YYWTaRUsjNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758843980; c=relaxed/relaxed;
-	bh=C7Z5D/YZWEF3HavVLZgOxCipRcy2DjZbJREVSVMfMAE=;
+	t=1758843982; c=relaxed/relaxed;
+	bh=Xj3KRzu2c6VhWOfOXg+xKc10lWhGpwRneRscgw2Csq0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Iwm1aMhqDXFKTetLjBwbJxxNXObgwm9n2c1iUvo272sPzFPq6yfaUXAxkGX0LRoJiYz7F6o5TpNlRoYAt6TZyClrDvNl7RiJXGPgHczgQZXsMZli5KdHvBmpSCRiCWlP/CCDSpWPmUvY+o5Wek8ZlVXIDKYx3LScY4gZ/jR806Zmoh9dDhQrwXxtl2aACreysGk5N4Vq8kSSM+pSy232LHyjVmtSmwqyhJQSUnp9isq/rcZTCOa6yazk8FScXG8Grh+8M7W6zRslE3JUwu70c09Awk6q2KUY3sSd58dJOWR3csf1aeui806kgdhsQk6ZtsQUYe0vb8RcVYh4QwibIg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jW8SEeu/; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=kh83U5zrj6Jkrwkvsa8UIcH6yewin7vlblH+62kohvnNxogBYnfWZstTtK8CQME5OPJqwD5Joy34TTOKKrXf+3XiZxDNGjjretC7xo0JQSc+mvJT04aSE/QKpHcVPeAB+AMhTa3WfLQRXYra4tSwujihTYGs2hUR4d/GSZjgCEsLapHfjMd3DLHeA6dJeoiO27xeYsfi2+rpyr49gLKCZ7r7085tgvnajtTMNhRHJvQAU8u+qy9SHPRcsojUESSUOK1aKX39QF44X3YraMOqE/aKJ4yKQ/Tb8PuTQnoETp8EdZNunn3hPMFZBXbrVEBHuYyYJ+LCSyffouDl5asM4Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kKxVye+3; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jW8SEeu/;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kKxVye+3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cXr2g3JDJz2xQ3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Sep 2025 09:46:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cXr2j2nvHz2xQ3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Sep 2025 09:46:21 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BF9A261356;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8249A61353;
+	Thu, 25 Sep 2025 23:46:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E618BC4CEF0;
 	Thu, 25 Sep 2025 23:46:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3096FC4CEF5;
-	Thu, 25 Sep 2025 23:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758843976;
-	bh=jy6XpX73dzULscHEsspzWI272121ql+W/8qzRykVrYw=;
+	s=k20201202; t=1758843979;
+	bh=gAxMMO8iLbRfWUQ4XZXNybZmAABcJXpeoRBJ86bPuRc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=jW8SEeu/EqILn9p3g3Lc3UEpDoC65BCidi263ce7vw1jhKXx0XuNnFeTK+KLQivpy
-	 PXtMEapZ7EpiVFCc1kUHLc7tafQOv0neAjpa7Mm+lAIir1AVyIGguWRm0Ny+AZzHeN
-	 b4q/7z7dBxivOkf4wsBAKOfYE1F3dqR81nOavq3CDk7l0mU/lP885FW9gr3vE3urOH
-	 V3Hh4/qoPY7647RmF0nxVsns6ReqUxidoPkAh3BXsaRU8WiYNsowqg7AseifHrmBRr
-	 Z1Hj/wgPfl7K37YPYEO57MYmdMENJX5FExuUwDGINC5hflPiZJcaWY+5hYRoN+JV9E
-	 uAAkrTPHd78IA==
+	b=kKxVye+3Izk9Gil8d0gYEG3VBsDXau0c2QJZb4YGVXnPcBOiDPtYQx1Secx/X25fG
+	 D7k0dAyr3Pw5j1CWJQbDOqCvAwUgezBPFTdaVL9RYIFwkFmlvKd2JsdPJRq2VIKeF6
+	 IP6RhJamtXE5/xungZKqnHa0fBfHlr/kJFmvT+Zni9L55woDYMvXpAbUQgAKOc+7Sd
+	 hTerWBXo85W9LiioUtfaY1gUywnh/+HgTcNkBga6z/bwmWw1pDKR3JAo+eOvc/Dovv
+	 Vux54+isn3hQl4RXk3iDEw2PrmuaMdyb9wMoZ91016cLO1BTvf2orKosq+KAxznJxg
+	 3RpMoUxnrCGKQ==
 From: Nathan Chancellor <nathan@kernel.org>
-Date: Thu, 25 Sep 2025 19:46:06 -0400
-Subject: [PATCH 1/2] powerpc/powermac: Include linux/of.h in backlight.c
+Date: Thu, 25 Sep 2025 19:46:07 -0400
+Subject: [PATCH 2/2] macintosh/via-pmu-backlight: Include linux/of.h and
+ uapi/linux/fb.h
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,7 +62,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-1-d256858d86a6@kernel.org>
+Message-Id: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-2-d256858d86a6@kernel.org>
 References: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-0-d256858d86a6@kernel.org>
 In-Reply-To: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-0-d256858d86a6@kernel.org>
 To: Lee Jones <lee@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
@@ -72,12 +73,12 @@ Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
  Simona Vetter <simona.vetter@ffwll.ch>, linuxppc-dev@lists.ozlabs.org, 
  patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2082; i=nathan@kernel.org;
- h=from:subject:message-id; bh=jy6XpX73dzULscHEsspzWI272121ql+W/8qzRykVrYw=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDBlXrzjZcf9vrA8PmPpkgfqyNC2FO5cC3l5k2B63qps/l
- W/1rolrOkpZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEQpgZGSYsUPcycnfwl6ks
- 017xcMPy+JlXtYxYTVfEHbZZKMQjtJbhn+m/Mz8YL+oKxXHu7Jphy6m4IP7xTY0VS3+uLSp3dvu
- WzAkA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2124; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=gAxMMO8iLbRfWUQ4XZXNybZmAABcJXpeoRBJ86bPuRc=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBlXrzg//Zlr5/Nn4qbse7+EVU87vnS/v0e47UlEm96dr
+ Wd0S7llO0pZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEzk1n+Ctunn5VfU++zpPY
+ dZayqztfPHvnJrDFQFV72rzD035mqPExMqypecY3bdk5h5n6k40aa67/F1aucOZue/1y04zjyfG
+ az3kB
 X-Developer-Key: i=nathan@kernel.org; a=openpgp;
  fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -86,42 +87,47 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 After the recent removal of the fb.h include from backlight.h, which
-transitively included of.h, there are several errors in the powermac backlight
-driver:
+transitively included of.h, there are several errors from
+via-pmu-backlight.c (errors from bl_curve not being properly defined
+omitted):
 
-  arch/powerpc/platforms/powermac/backlight.c: In function 'pmac_has_backlight_type':
-  arch/powerpc/platforms/powermac/backlight.c:59:39: error: implicit declaration of function 'of_find_node_by_name'; did you mean 'bus_find_device_by_name'? [-Wimplicit-function-declaration]
-     59 |         struct device_node* bk_node = of_find_node_by_name(NULL, "backlight");
-        |                                       ^~~~~~~~~~~~~~~~~~~~
-        |                                       bus_find_device_by_name
-  arch/powerpc/platforms/powermac/backlight.c:59:39: error: initialization of 'struct device_node *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-  arch/powerpc/platforms/powermac/backlight.c:60:17: error: implicit declaration of function 'of_property_match_string' [-Wimplicit-function-declaration]
-     60 |         int i = of_property_match_string(bk_node, "backlight-control", type);
+  drivers/macintosh/via-pmu-backlight.c:22:20: error: 'FB_BACKLIGHT_LEVELS' undeclared here (not in a function)
+     22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
+        |                    ^~~~~~~~~~~~~~~~~~~
+  drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_get_level_brightness':
+  drivers/macintosh/via-pmu-backlight.c:63:38: error: 'FB_BACKLIGHT_MAX' undeclared (first use in this function); did you mean 'BACKLIGHT_RAW'?
+     63 |         pmulevel = bl_curve[level] * FB_BACKLIGHT_MAX / MAX_PMU_LEVEL;
+        |                                      ^~~~~~~~~~~~~~~~
+        |                                      BACKLIGHT_RAW
+  drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_init':
+  drivers/macintosh/via-pmu-backlight.c:144:17: error: implicit declaration of function 'of_machine_is_compatible' [-Wimplicit-function-declaration]
+    144 |                 of_machine_is_compatible("AAPL,3400/2400") ||
         |                 ^~~~~~~~~~~~~~~~~~~~~~~~
-  arch/powerpc/platforms/powermac/backlight.c:62:9: error: implicit declaration of function 'of_node_put' [-Wimplicit-function-declaration]
-     62 |         of_node_put(bk_node);
-        |         ^~~~~~~~~~~
 
-Explicitly include of.h to resolve the errors.
+FB_BACKLIGHT_{LEVELS,MAX} are available from the userspace API fb.h so
+just include that avoid dragging in the full fb.h header unnecessarily.
+Include linux/of.h for of_machine_is_compatible().
 
 Fixes: 9f218f9bb9d2 ("backlight: Do not include <linux/fb.h> in header file")
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- arch/powerpc/platforms/powermac/backlight.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/macintosh/via-pmu-backlight.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/powermac/backlight.c b/arch/powerpc/platforms/powermac/backlight.c
-index 79741370c40c..9afb64723649 100644
---- a/arch/powerpc/platforms/powermac/backlight.c
-+++ b/arch/powerpc/platforms/powermac/backlight.c
-@@ -14,6 +14,7 @@
- #include <linux/pmu.h>
- #include <linux/atomic.h>
- #include <linux/export.h>
+diff --git a/drivers/macintosh/via-pmu-backlight.c b/drivers/macintosh/via-pmu-backlight.c
+index 26bd9ed5e664..f7b7853b3802 100644
+--- a/drivers/macintosh/via-pmu-backlight.c
++++ b/drivers/macintosh/via-pmu-backlight.c
+@@ -11,7 +11,9 @@
+ #include <asm/ptrace.h>
+ #include <linux/adb.h>
+ #include <linux/backlight.h>
 +#include <linux/of.h>
+ #include <linux/pmu.h>
++#include <uapi/linux/fb.h>
  #include <asm/backlight.h>
  
- #define OLD_BACKLIGHT_MAX 15
+ #define MAX_PMU_LEVEL 0xFF
 
 -- 
 2.51.0
