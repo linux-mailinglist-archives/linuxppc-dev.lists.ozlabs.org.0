@@ -1,67 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-12592-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12593-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8DACBA5978
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Sep 2025 08:02:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12388BA62D1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Sep 2025 21:20:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cYcLk6TgJz30V1;
-	Sat, 27 Sep 2025 16:02:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cYy3748Vrz2yZ6;
+	Sun, 28 Sep 2025 05:20:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1758952974;
-	cv=none; b=IsjQ0chTsskf/pT4TYkAx7jSwyckhb1nPj66AsduPVCnUDZ72iJ1pAqJT7JjOiwie2VAP9Wd8V34NNJfZrGuuQ1Vcccp6IsIu2X8cc26GZ5qQxznK2SvnXr6/tzZLb/uneTBiSyFoqQi3C+GtyZPNkBBpuAsbwfkzW6/rieG9nMMeNVdcWw2cFWeKweLuuxDKaqPB8ZHVq15X7H1+Rsuh0EuKMPteCZGQzEf5z8932jBsmdkYZYy5K0FduFJwD56wXBNObn9hjmcxGQx22EcgeC38A4TG3WId8/QX8f2DTPJwM9Uytafd0auZiwTJiKki9K3RIO7Ms7rI0zUPPJBsg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::529"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759000835;
+	cv=none; b=gwrPnQM8/eg65CNHQ8kXDLP4Q7Oez9BLiFEeO4BaxAX6qkB7fyUzKREj40WXU03krb+Hulv7gz7D7GZOzhVFrBJNvwbQDhCLPD8YAyZu9eHJ5b8Q86mHkDWowRkcmkQOmZAETkR9LOMO1UVA58fWmXnJybE1J55cPpUmpFqfExs9fQ6tOzKLMfFMsHZKOLWhJ1ZAXFL1OGQnxDaQelLcKnsW9bAQASXgnZU0l4lzdiBKjDLo/TJE5L6NjkDiMl7OUmG7BEjl5tJFbwRzjcZxXWpyWxj5lZcYWTgrpbunPeU2u8IcqrbGndFaatrGXADdsTF5TTbPYvFvVz3H/0l/qQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1758952974; c=relaxed/relaxed;
-	bh=EZz9pdPxtkQCQg0LwPC7a9M9+XqgI2y1Onp5LAdJY54=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AMAsqGGBKhCdvJ08Q4fkQcLhfJaFnN09Sipgy0GojMlHKDBiRfclKVJ7IafLFkepgMAsCCr++8TfkVopsrGclOVfN2cFBuyS9pF7zcbwUoyjnwc+BeTlv+M8UHqESIFfSYpQ6RjosiKq118FTRDizscPQzDy0uQXUkUMCP0vWe0qcnTFtedvRScVFZzl0SSjbjeDK2Z38RjicMiHkSaDpyZo9N6luXc1zlmjeNhkEQBVNbYk6DeqqliodLQc3yw7KD6Vs06u420EC0qT7rrl+eVk/YhjlNCdYGZbGXCt/sps5yeSUOnmvhOMhKdDPdH8cllQGr9daq94+IbsLfNXdQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=0m1vS4Mk; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3cx7xaaykdlaiuqdzsweewbu.secbydknffs-tulbyiji.epbqri.ehw@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1759000835; c=relaxed/relaxed;
+	bh=BpNpqT8E7PV/s4bEDWlZ98/qvJvoxkZccIvsTmWeJBY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iKRmQlLs7cz6o9TH+U2A6v7iJXybC7WklyymKK9K5t7ImuJzoAHtra1twIB+J5dKcV9ntNYoBQeHGLH3heEM/VJCeacFT9QP+tMCiuY8IvgVcf+PBlU6+Lp7u6+SHFcvlxryeC9s15GJVuq4NpStPnx96u6HmIPn+wsl1GtYcn+oWKcFVE9EKQ5txjL5prhfpP9Op8uaZMJ+dZhGiq53zz27nLg2YVCU6lqKr9Ah21empJeLZMbKYVHKrPV1YeKcctZrhjZZlcBV83HpwujkUiSbd+fiqNPl6THfqnRsI6hWyqcl4MMPcper1iTpvpwS9/MO6Lr2LwCKoUn1hDTTpA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=V1ZhJ6s+; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::529; helo=mail-ed1-x529.google.com; envelope-from=linmag7@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=0m1vS4Mk;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=V1ZhJ6s+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3cx7xaaykdlaiuqdzsweewbu.secbydknffs-tulbyiji.epbqri.ehw@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::529; helo=mail-ed1-x529.google.com; envelope-from=linmag7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cYcLj2Krlz2yVP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Sep 2025 16:02:52 +1000 (AEST)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-3306543e5abso3266758a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Sep 2025 23:02:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cYy354XLhz2xQ3
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Sep 2025 05:20:32 +1000 (AEST)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-634cef434beso1579663a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Sep 2025 12:20:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758952969; x=1759557769; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EZz9pdPxtkQCQg0LwPC7a9M9+XqgI2y1Onp5LAdJY54=;
-        b=0m1vS4MkurPxw3LHAnHKnHyw8M+n2ARpgPb7HOhJ9G24WFBj5kd8xlRZ2DP1Kes8z1
-         EBg2kpGd/k7gxzCPhrvBqxYhupbuQcKex9CXhKeBwEsQaAgH2ricEaW5V3KtMomeG1+A
-         9ooVVp1lgj39NEzbQJlqNtflUnVGq8ut6/JglIPMRJ+gdzBBsJP72CTXksHI3xVBEjXY
-         pOEFo5S4H+Wz3N/bGlc3sCUl4A1MidOO6HyjY4S5lZxvczOT085hck+PnS7C0YZvPgz7
-         kLIILuzRgG3ZlLPaDWyBXYnbqndh9qhLTIrEV8SIcradBbi7+/YNC3eGml8EZDozothz
-         xGLA==
+        d=gmail.com; s=20230601; t=1759000827; x=1759605627; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=BpNpqT8E7PV/s4bEDWlZ98/qvJvoxkZccIvsTmWeJBY=;
+        b=V1ZhJ6s+9iaDExq3AvlsA/fdd9UI61Q4Lbuc3xNCaXI//0jE81Ov3P5iXhGjbtCkIm
+         HvVuw9rmKzAVw8o26XZJlZMfIJ+EZ3LPSvlqifvaNs49duX3cAnt5nT40+Br7OGZyeGk
+         gVxf9PFQLcyf3ekDSfPjjDzpvimBs9Aw4MvhiW7yEY+y0tLL7j6pSnpj0o/R4PobkcHR
+         wfSHiqirm3/JUwsdEjj8PNXKopb/YIEhW16/qsU+zV5yqr6pK10JVZ6xWVd1f/1yNaiE
+         lkhGzyNS1xqiNr92mw975wZ3xrlctxWeVQI6AWveIaQ4cXhG++xKI21G0D3kgbFCLoDL
+         rjaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758952969; x=1759557769;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EZz9pdPxtkQCQg0LwPC7a9M9+XqgI2y1Onp5LAdJY54=;
-        b=GrkhIdHetLitZ0NkAC1sstwCEgWevafDufAvybZeLmUp/iwcjrCeEGw0eTXh4fMppO
-         a+r38NsrJlg2nLcS4WxMxe5YFdq2Elm08sAgtDhNZDAihZFf1zpiF6FUVQ4Y+U6XVfdY
-         VfwnMHzDneKtCzjNQVYykB8fsbf0U6IOi8GB5hlJhQm64Tq3FhnKTiO1BlJu8HdZATXf
-         QhsawQqm0LCFC6brcImmz2laDAVNahmr0e4GpehNXHGk3Uh+4Klt6MdeXnpoobPpFez9
-         UpWAX1NvouMHggcJxQ20BFokP/Awxk6V27Ye8DYzZHJsv2jXBtwBHVv36nc5BQiLDVg6
-         TbXA==
-X-Gm-Message-State: AOJu0YxuKHdwNhAtOYQAMjIrKEr0GTe0L4aKnwL67jjbSkX2jzvAGjlQ
-	vrKho1GLsKsgU4bZsHfG2CqV0xFdv2PtwpL5FCJkYamZtnnkX7JojZURRhqUCsJNTZwBsaYtQ5K
-	LO8OdOg==
-X-Google-Smtp-Source: AGHT+IG+O2/UkKI29OQKSSuWam69+x9DRDtxFfKKLWwebRfAoiKlUD2jq0l73MqVAHzrMbEcLiUIcTj1iZg=
-X-Received: from pjst22.prod.google.com ([2002:a17:90b:196:b0:330:7be2:9bdc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b43:b0:32e:72bd:6d5a
- with SMTP id 98e67ed59e1d1-33454f56a18mr9327831a91.1.1758952969598; Fri, 26
- Sep 2025 23:02:49 -0700 (PDT)
-Date: Fri, 26 Sep 2025 23:02:32 -0700
-In-Reply-To: <20250919003303.1355064-1-seanjc@google.com>
+        d=1e100.net; s=20230601; t=1759000827; x=1759605627;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BpNpqT8E7PV/s4bEDWlZ98/qvJvoxkZccIvsTmWeJBY=;
+        b=HTFKVGgGDAoYxZplnlVqfRJdcAMNSOk7oYddCuHCeiUGJe9VYjtN8XxMXnrFI2+KvA
+         J4Yd4sZNuS/ZNdDhs6fCajyoXc9ojtP1YXZNRvpfth4367GuUJLRb8dbBvAb0vWPk5Ez
+         1yUJHEp1mXDZcqpfMyn3LjTz5Da0EAXWR1LxFIXPL9OmOawMOMN9N6NkLA70d7Dtyt+Q
+         HYquaIbUUK5vfiIq23QPEezfrQnTFua92tUM50D/shBd0k9y2VY7UridBYbe1G9JHYVp
+         8Ej7O9dandigw2QE3jLHVZt/+qV5zJsbvuWC0A0q67JL1YdFNFl/4nCkwNwhh/b1qW6u
+         qQew==
+X-Forwarded-Encrypted: i=1; AJvYcCUI6LJYw3RlPNBrO+w7osRyL8IFFQemMIZIgMkF9ysYvMr/uCVFLWOCPlKzlfspe1T4SbRFvGO8e4AVJCc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzfn2P2WTP1+bPCRwRQebgAurAtwYNlPDZi2dYiVEEAOZmnrt3e
+	g11UECf0nlQHxBIFa+PccL/ZK+g+gs56lUTbJ3CO+P/Ai8AdDh8DMCM46lZP2NKruncOD7zEPaJ
+	zIydLdUiPd+zUSC5Xu+LBc6ub/6T9m38=
+X-Gm-Gg: ASbGncsBgUhSt1XjHRzKfcfAA0CAZLsvrZ/oZwhj6oWhgzztN97Ho2cPZv9aDvX2E9d
+	1AwYzBmlwFpgruocgDBYivpsFULe74vQ2ztEHB+1hrkO12GJZwwXZ/MhSski6Y++nXSNjlLcLLF
+	o+eigdbIrEXT08du1CPx4uD1P84V25+yplQj7B70Dq9ytCctrEDRa2cF17ipKYNmTHJkGM22o2Z
+	omnNZR5kSeoZGd3nAE=
+X-Google-Smtp-Source: AGHT+IE6MMpG/TRiFXxnrxz1Vvo3fuH5ytNgtdVEgpXL0NxXawEVfUDFtb+tMcdRPN344hi95Su67MTI32H6Ub9xTJM=
+X-Received: by 2002:a17:907:7b8b:b0:b3c:5f99:dac7 with SMTP id
+ a640c23a62f3a-b3c5fa9674amr74488566b.21.1759000826450; Sat, 27 Sep 2025
+ 12:20:26 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,50 +77,75 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20250919003303.1355064-1-seanjc@google.com>
-X-Mailer: git-send-email 2.51.0.536.g15c5d4f767-goog
-Message-ID: <175895291958.2931667.5042104101547847294.b4-ty@google.com>
-Subject: Re: [PATCH v2 0/5] KVM: Export KVM-internal symbols for sub-modules only
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Tony Krowiak <akrowiak@linux.ibm.com>, 
-	Halil Pasic <pasic@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>, 
-	Harald Freudenberger <freude@linux.ibm.com>, Holger Dengler <dengler@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+References: <cover.1758219786.git.leon@kernel.org> <0c64474985af55b1aa934b857808068a0e609c6e.1758219787.git.leon@kernel.org>
+ <CA+=Fv5Q8dVUFVBh82mAe=fy3mV6mWtQT_0pBPLQwLNBt3f8E1g@mail.gmail.com>
+ <20250923171819.GM10800@unreal> <CA+=Fv5SJcQ5C4UeX2+deV9mPAe5QxrocMG8EJ2eVcYjbLE5U+A@mail.gmail.com>
+ <20250923235318.GD2617119@nvidia.com> <CA+=Fv5Tg7sQACpeG8aMZF6_E6dbRnN5ifg0aiHityXadxiHoPA@mail.gmail.com>
+In-Reply-To: <CA+=Fv5Tg7sQACpeG8aMZF6_E6dbRnN5ifg0aiHityXadxiHoPA@mail.gmail.com>
+From: Magnus Lindholm <linmag7@gmail.com>
+Date: Sat, 27 Sep 2025 21:20:15 +0200
+X-Gm-Features: AS18NWCUkmopfgQP7FxvlAuimXjc1tmQlQb-89CTajXeb-5Nlye2dR2BnBQqzEg
+Message-ID: <CA+=Fv5Sze_BNmHqzypmCh8p2JO6gytXH4E6hXv3gZdfoSJsMUQ@mail.gmail.com>
+Subject: Re: [PATCH 1/9] alpha: Convert mapping routine to rely on physical address
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "David S. Miller" <davem@davemloft.net>, 
+	Geoff Levand <geoff@infradead.org>, Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>, 
+	iommu@lists.linux.dev, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Jason Wang <jasowang@redhat.com>, 
+	Juergen Gross <jgross@suse.com>, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Matt Turner <mattst88@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Richard Henderson <richard.henderson@linaro.org>, 
+	sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
+	virtualization@lists.linux.dev, x86@kernel.org, 
+	xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 18 Sep 2025 17:32:58 -0700, Sean Christopherson wrote:
-> Use the newfangled EXPORT_SYMBOL_FOR_MODULES() along with some macro
-> shenanigans to export KVM-internal symbols if and only if KVM has one or
-> more sub-modules, and only for those sub-modules, e.g. x86's kvm-amd.ko
-> and/or kvm-intel.ko.
-> 
-> Patch 5 gives KVM x86 the full treatment.  If anyone wants to tackle PPC,
-> it should be doable to restrict KVM PPC's exports as well.
-> 
-> [...]
+> > Suggest testing the same branch with the alpha patch reverted just to
+> > rule out any issue in the core code. If it reproduces suggest to
+> > bisect Leon's branch.
 
-Quite belatedly (forgot to send the "thanks"), applied to kvm-x86 exports.
+Hi again, I've booted up the ES40 again with the kernel build from Leons
+branch, it boots up but message log is full off messages like
+"EXT4-fs error (device sda4): ext4_find_extent:939: inode
+#16257327: comm init: pblk 65114257 bad header/extent:
+invalid magic"
 
-[1/5] KVM: s390/vfio-ap: Use kvm_is_gpa_in_memslot() instead of open coded equivalent
-      https://github.com/kvm-x86/linux/commit/66d1a7ac946c
-[2/5] KVM: Export KVM-internal symbols for sub-modules only
-      https://github.com/kvm-x86/linux/commit/d66078b8c990
-[3/5] KVM: x86: Move kvm_intr_is_single_vcpu() to lapic.c
-      https://github.com/kvm-x86/linux/commit/16e53ef18450
-[4/5] KVM: x86: Drop pointless exports of kvm_arch_xxx() hooks
-      https://github.com/kvm-x86/linux/commit/26caf4d04e01
-[5/5] KVM: x86: Export KVM-internal symbols for sub-modules only
-      https://github.com/kvm-x86/linux/commit/aca2a0fa7796
+The filesystem is broken after just booting with the kernel.
+This time fsck did not fix it, I needed to re-install gentoo stage3.
+So it's for sure reproducible as well as destructive.  It's not possible to
+revert all the commits individually, since this will leave the source tree
+in a state where the kernel doesn't build. I've started off by reverting
+the following commits:
 
---
-https://github.com/kvm-x86/linux/tree/next
+e78a9d72517a88faa6f16dab4d1c6f966ed378ae
+(dma-mapping: remove unused map_page callback)
+
+d459e3b80ad1c81bf596d63d2e3347cf8c7bb0d9
+(alpha: Convert mapping routine to rely on physical address)
+
+3cd47242d513050d7a81ac6e7020fd3ef5462ad4
+(block-dma: properly take MMIO path)
+
+7950995bef32aa7e5f74699c7d0fdac41d2dad14
+ (block-dma: migrate to dma_map_phys instead of map_page)
+
+
+After reverting the above commits, I'm able to build a working kernel,
+that is, no filesystem corruption occurs. I'll take a closer look at this
+after the weekend.
+
+Regards
+
+Magnus
 
