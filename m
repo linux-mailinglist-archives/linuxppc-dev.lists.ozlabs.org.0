@@ -1,60 +1,124 @@
-Return-Path: <linuxppc-dev+bounces-12620-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12621-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D110BA8EBA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Sep 2025 12:50:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4C3BA9C1B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Sep 2025 17:06:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cZydC0V1zz30MY;
-	Mon, 29 Sep 2025 20:50:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cb4Jb0W0gz30MY;
+	Tue, 30 Sep 2025 01:06:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759143006;
-	cv=none; b=m7zx6QyxfR09V60Idrn5qUxaElawDSGsfCvqaTlDACiFqnW7WkQlXs8Vls4unYeBpMZCW/AUwB93gdGHovHLFqVEP9dI7lUSCv92LjLE9t9QwysZRilGpDEHeiIdhfcWI7O62d3XwnSfaT6Nmu3aFCs8IHNZwODtSftpGcXp4dvMvgQfcxz8rOVQmg/RlBgaivtFlyuBqOCGt+UrDyexvgi2kyEI/YVzn+PXzR4n2NYYv/F/2s+dONuniHcoYvy9o6YpznQ0w/naxv4OL5zq8tDH6Y1CrKhiGF9vS38vOvTHoRMJb2ZcWU5BHUZ81pPoASByvsH/M2bobtbG/4Y8KA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759137231;
+	cv=none; b=R4lBO5iQgv4rnMTbUoXveLx+z3q9tW6WaOXRjY75Chf4Xz5QFSKoAfSuSbPsI5fHQdPrLWSYTYDaX63sQ455sAZLA1QVP+HQxRlCECbxyHx22d/3mys8IK7HK/TYqApdS4rl10IJJksUQQygLLiiDwcLcShpQwnjTZniRnj1tp6JdKWSKDXJOC2A0aAglveCkPLksgpJ3tAqPmZdc2hBNZvvLLKhcvpDqfT4NuTT1Di0OosE9f+3tWFm73814x8RcIMDexNvqZxfmA+DtOyTMlUDpOS9ol/HNs13gHEV3IuDI/2RNhMRAOi8WYoEdlbJJtWc9ivuoei/BuVsBH0bUw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759143006; c=relaxed/relaxed;
-	bh=qzHDQ5E1BEhrB/Kyhc2CU746VNASWmSMFZRhiDzzUxY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WNEn+CkYxwM+qeMUQDWPz2B4yO1LGXc8q7AvHx0lgHWcDB0zcm5UzOLUV5NCrue7MY8N5B9rnBqR9w3OdFq2etJ9ngKwRvAclkADsK3yXGc+zNnwI7Sua3M+8609yZm89mE7fELuxZ6L8oUBwHLVt2J9AHnffiQdfXWP/1CJGeyxjMVgUSOb3qtaJyL9OlwL2hrSpyygT4OfTkwKSxZMx/wW/wcIN7vLt4DWKvjGk0L6U/ERBQO1Hd0ueGx/9+Sbh7iW3HqA2+eTm4HXg05BvLiL3xouAHAcGeQnkIpWuJakEJvLXUpBtTcwdytdAhijryi7PU4vONIwVft89fE8Xg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	t=1759137231; c=relaxed/relaxed;
+	bh=krawKFrMK6CfXJGZRbum6m0whh/VNnnKuCLw/mlg22U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KYIlsQZ3YFsWNwMnx+imb0R5UjJdS7zpStkLTyJ6T8N/z91Vxn7tIPLlW0RxCEWMrXEO5yIPbLZAH8Dx1QmyILQjqBWvIGG4CA4I/3+RMZvKLdrt5Yzru2JjK1WExkQf54lrPIXmOLsS7mM3DKIFwcWKgkUYZPQ4A+Ku33yYaQzguNMv8OUW7Ck0WS1o0qqesBnq+qUSDI2EYLa7fiejCtrsSN8FJoCSRPcOtx3Ap8OU5owTpnS6aWZN/e0JVJ/Q9hSHnfoo9ybHAkzBjO6hMC+r2jnO35G7GjSI5sc8zw1JYoCN6PMcxTM+UBi82YcZVFAjF9SAJ31kWfgcryGFNw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Hq4pd3FL; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=b25DWtEA; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=hMG0X5o7; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ZWV8cEdM; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=ddiss@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Hq4pd3FL;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=b25DWtEA;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=hMG0X5o7;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ZWV8cEdM;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=ddiss@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cZyd36M8xz2yrW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Sep 2025 20:49:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qzHDQ5E1BEhrB/Kyhc2CU746VNASWmSMFZRhiDzzUxY=; b=F5ixpPayZAyC6bvP+y5MerpI48
-	F/QjGalzkRktcTBEJvEgp/7fU/pfCZyDFtoF4u1/VmElteyXY5hoFA492m3Tbdy5xh6YUyPUrmHgj
-	23Gk29j7Eelt21VuJKDIbodTcw9mbFfR94r5Cw0KhTtnlJlGNr4UgzS8bMk+WKufzBjAQPp7241lt
-	Ue9GqJ0qprXykBpjL3M7YzDKRTWCchrA/Y/QFjxpR7r86YGlWLDGinMoLKaSZKGU+YBBU4ovhq0vw
-	AFQFKq7+COj0EMjfCOb4qUac15POXV1CEfI4C8seCVvj9U9C2WMpjZIoL6S/yoIhJSKd94ox2NSGZ
-	dJJTLpIA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v3BRy-00000000HSo-0Bwp;
-	Mon, 29 Sep 2025 10:49:47 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id D000B300359; Mon, 29 Sep 2025 12:49:46 +0200 (CEST)
-Date: Mon, 29 Sep 2025 12:49:46 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Sathvika Vasireddy <sv@linux.ibm.com>
-Cc: linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	nathan@kernel.org, masahiroy@kernel.org, kees@kernel.org,
-	naveen@kernel.org, jpoimboe@kernel.org, npiggin@gmail.com,
-	maddy@linux.ibm.com, segher@kernel.crashing.org,
-	christophe.leroy@csgroup.eu, mingo@kernel.org, mpe@ellerman.id.au,
-	mahesh@linux.ibm.com
-Subject: Re: [RFC PATCH v2 1/3] objtool/powerpc: Enhance objtool to fixup
- alternate feature relative addresses
-Message-ID: <20250929104946.GG3289052@noisy.programming.kicks-ass.net>
-References: <20250929080456.26538-1-sv@linux.ibm.com>
- <20250929080456.26538-2-sv@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cZwV55wHpz301Y
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Sep 2025 19:13:49 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A184628A42;
+	Mon, 29 Sep 2025 09:13:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759137220; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=krawKFrMK6CfXJGZRbum6m0whh/VNnnKuCLw/mlg22U=;
+	b=Hq4pd3FLlIHlpsq/WIWIpKTQIK1u5uVC206WcP0fQUSFrI19DANzMPCVUP75KY+hBZcL0Q
+	dtdVgf8LzRHS+mLGqBHxvAYy4l40BsAWLIlpobyu01j8D02b0I98f1+p5dw6q44ptuX62H
+	m9Zo3mhg2ZXRKipx4DYunUuhbPd04E4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759137220;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=krawKFrMK6CfXJGZRbum6m0whh/VNnnKuCLw/mlg22U=;
+	b=b25DWtEAGkPFc4sT9issDmqy/BMl9Qbnlh5ruisp0J1gFMCT/qNvoATff8AwO5EUhSceEL
+	kSBiQsu7tqSUuVAA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hMG0X5o7;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZWV8cEdM
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759137219; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=krawKFrMK6CfXJGZRbum6m0whh/VNnnKuCLw/mlg22U=;
+	b=hMG0X5o7qx5uLzOvtPU6oAOR/sM1jQy2B6QsQik0JJGzKLSrpedSDbKzqP6/qSgL4E6z5c
+	PYEIwt7LMqEi6gairxqjXKFRdyD4dFJYTy2ovOneowKDznaaZr9VZ4B/+OwUlRFxMrvTSI
+	pzIsg61tXM/wB+hrp8gOffgcwit1QxI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759137219;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=krawKFrMK6CfXJGZRbum6m0whh/VNnnKuCLw/mlg22U=;
+	b=ZWV8cEdMR8rl5mD9g70Zqdfp6Osb2Z+ASfy/UIiBlSB9+DmXXVL0n2mnz3VGfUEWe6Zu2m
+	Fw46i1nCG69w1gBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CB9D413782;
+	Mon, 29 Sep 2025 09:13:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id q2iJILJN2mgkQwAAD6G6ig
+	(envelope-from <ddiss@suse.de>); Mon, 29 Sep 2025 09:13:22 +0000
+Date: Mon, 29 Sep 2025 19:13:16 +1000
+From: David Disseldorp <ddiss@suse.de>
+To: nschichan@freebox.fr
+Cc: akpm@linux-foundation.org, andy.shevchenko@gmail.com, axboe@kernel.dk,
+ brauner@kernel.org, cyphar@cyphar.com, devicetree@vger.kernel.org,
+ ecurtin@redhat.com, email2tema@gmail.com, graf@amazon.com,
+ gregkh@linuxfoundation.org, hca@linux.ibm.com, hch@lst.de,
+ hsiangkao@linux.alibaba.com, initramfs@vger.kernel.org, jack@suse.cz,
+ julian.stecklina@cyberus-technology.de, kees@kernel.org,
+ linux-acpi@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ mcgrof@kernel.org, mingo@redhat.com, monstr@monstr.eu,
+ mzxreary@0pointer.de, patches@lists.linux.dev, rob@landley.net,
+ safinaskar@gmail.com, sparclinux@vger.kernel.org,
+ thomas.weissschuh@linutronix.de, thorsten.blum@linux.dev,
+ torvalds@linux-foundation.org, tytso@mit.edu, viro@zeniv.linux.org.uk,
+ x86@kernel.org
+Subject: Re: [PATCH-RFC] init: simplify initrd code (was Re: [PATCH RESEND
+ 00/62] initrd: remove classic initrd support).
+Message-ID: <20250929171652.50b7a959.ddiss@suse.de>
+In-Reply-To: <20250925131055.3933381-1-nschichan@freebox.fr>
+References: <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
+	<20250925131055.3933381-1-nschichan@freebox.fr>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,121 +132,136 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250929080456.26538-2-sv@linux.ibm.com>
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Rspamd-Queue-Id: A184628A42
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linux-foundation.org,gmail.com,kernel.dk,kernel.org,cyphar.com,vger.kernel.org,redhat.com,amazon.com,linuxfoundation.org,linux.ibm.com,lst.de,linux.alibaba.com,suse.cz,cyberus-technology.de,lists.infradead.org,lists.linux-m68k.org,lists.ozlabs.org,lists.linux.dev,monstr.eu,0pointer.de,landley.net,linutronix.de,linux.dev,mit.edu,zeniv.linux.org.uk];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	R_RATELIMIT(0.00)[to_ip_from(RL4bphh9snz1w7feaus4qmzef6)];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_DN_NONE(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[56];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid]
+X-Spam-Score: -2.01
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Sep 29, 2025 at 01:34:54PM +0530, Sathvika Vasireddy wrote:
-> Implement build-time fixup of alternate feature relative addresses for
-> the out-of-line (else) patch code. Initial posting to achieve the same
-> using another tool can be found at [1]. Idea is to implement this using
-> objtool instead of introducing another tool since it already has elf
-> parsing and processing covered.
-> 
-> Introduce --ftr-fixup as an option to objtool to do feature fixup at
-> build-time.
-> 
-> Couple of issues and warnings encountered while implementing feature
-> fixup using objtool are as follows:
-> 
-> 1. libelf is creating corrupted vmlinux file after writing necessary
-> changes to the file. Due to this, kexec is not able to load new
-> kernel.
-> 
-> It gives the following error:
->         ELF Note corrupted !
->         Cannot determine the file type of vmlinux
-> 
-> To fix this issue, after opening vmlinux file, make a call to
-> elf_flagelf (e, ELF_C_SET, ELF_F_LAYOUT). This instructs libelf not
-> to touch the segment and section layout. It informs the library
-> that the application will take responsibility for the layout of the
-> file and that the library should not insert any padding between
-> sections.
-> 
-> 2. Fix can't find starting instruction warnings when run on vmlinux
-> 
-> Objtool throws a lot of can't find starting instruction warnings
-> when run on vmlinux with --ftr-fixup option.
-> 
-> These warnings are seen because find_insn() function looks for
-> instructions at offsets that are relative to the start of the section.
-> In case of individual object files (.o), there are no can't find
-> starting instruction warnings seen because the actual offset
-> associated with an instruction is itself a relative offset since the
-> sections start at offset 0x0.
-> 
-> However, in case of vmlinux, find_insn() function fails to find
-> instructions at the actual offset associated with an instruction
-> since the sections in vmlinux do not start at offset 0x0. Due to
-> this, find_insn() will look for absolute offset and not the relative
-> offset. This is resulting in a lot of can't find starting instruction
-> warnings when objtool is run on vmlinux.
-> 
-> To fix this, pass offset that is relative to the start of the section
-> to find_insn().
-> 
-> find_insn() is also looking for symbols of size 0. But, objtool does
-> not store empty STT_NOTYPE symbols in the rbtree. Due to this,
-> for empty symbols, objtool is throwing can't find starting
-> instruction warnings. Fix this by ignoring symbols that are of
-> size 0 since objtool does not add them to the rbtree.
-> 
-> 3. Objtool is throwing unannotated intra-function call warnings
-> when run on vmlinux with --ftr-fixup option.
-> 
-> One such example:
-> 
-> vmlinux: warning: objtool: .text+0x3d94:
->                         unannotated intra-function call
-> 
-> .text + 0x3d94 = c000000000008000 + 3d94 = c0000000000081d4
-> 
-> c0000000000081d4: 45 24 02 48  bl c00000000002a618
-> <system_reset_exception+0x8>
-> 
-> c00000000002a610 <system_reset_exception>:
-> c00000000002a610:       0e 01 4c 3c     addis   r2,r12,270
->                         c00000000002a610: R_PPC64_REL16_HA    .TOC.
-> c00000000002a614:       f0 6c 42 38     addi    r2,r2,27888
->                         c00000000002a614: R_PPC64_REL16_LO    .TOC.+0x4
-> c00000000002a618:       a6 02 08 7c     mflr    r0
-> 
-> This is happening because we should be looking for destination
-> symbols that are at absolute offsets instead of relative offsets.
-> After fixing dest_off to point to absolute offset, there are still
-> a lot of these warnings shown.
-> 
-> In the above example, objtool is computing the destination
-> offset to be c00000000002a618, which points to a completely
-> different instruction. find_call_destination() is looking for this
-> offset and failing. Instead, we should be looking for destination
-> offset c00000000002a610 which points to system_reset_exception
-> function.
-> 
-> Even after fixing the way destination offset is computed, and
-> after looking for dest_off - 0x8 in cases where the original offset
-> is not found, there are still a lot of unannotated intra-function
-> call warnings generated. This is due to symbols that are not
-> properly annotated.
-> 
-> So, for now, as a hack to curb these warnings, do not emit
-> unannotated intra-function call warnings when objtool is run
-> with --ftr-fixup option.
+Hi Nicolas,
 
-Should not all those fixes be split out into separate patches? Also,
-Changelog seems to have lost the bit where you explain *why* you need
-this. IIRC Nick's original tool had a description of why this is needed.
+On Thu, 25 Sep 2025 15:10:56 +0200, nschichan@freebox.fr wrote:
 
-Also, please see:
+> From: Nicolas Schichan <nschichan@freebox.fr>
+> 
+> - drop prompt_ramdisk and ramdisk_start kernel parameters
+> - drop compression support
+> - drop image autodetection, the whole /initrd.image content is now
+>   copied into /dev/ram0
+> - remove rd_load_disk() which doesn't seem to be used anywhere.
+> 
+> There is now no more limitation on the type of initrd filesystem that
+> can be loaded since the code trying to guess the initrd filesystem
+> size is gone (the whole /initrd.image file is used).
+> 
+> A few global variables in do_mounts_rd.c are now put as local
+> variables in rd_load_image() since they do not need to be visible
+> outside this function.
+> ---
+> 
+> Hello,
+> 
+> Hopefully my email config is now better and reaches gmail users
+> correctly.
+> 
+> The patch below could probably split in a few patches, but I think
+> this simplify the code greatly without removing the functionality we
+> depend on (and this allows now to use EROFS initrd images).
+> 
+> Coupled with keeping the function populate_initrd_image() in
+> init/initramfs.c, this will keep what we need from the initrd code.
+> 
+> This removes support of loading bzip/gz/xz/... compressed images as
+> well, not sure if many user depend on this feature anymore.
+> 
+> No signoff because I'm only seeking comments about those changes right
+> now.
+> 
+>  init/do_mounts.h    |   2 -
+>  init/do_mounts_rd.c | 243 +-------------------------------------------
+>  2 files changed, 4 insertions(+), 241 deletions(-)
 
-  https://lkml.kernel.org/r/9500b90c4182b03da59472e1a27876818610b084.1758067942.git.jpoimboe@kernel.org
+This seems like a reasonable improvement to me. FWIW, one alternative
+approach to clean up the FS specific code here was proposed by Al:
+https://lore.kernel.org/all/20250321020826.GB2023217@ZenIV/
 
-  https://lkml.kernel.org/r/457c2e84b81bd6515aaa60ec8e9e0cc892ed7afa.1758067942.git.jpoimboe@kernel.org
+...
+> diff --git a/init/do_mounts_rd.c b/init/do_mounts_rd.c
+> index ac021ae6e6fa..5a69ff43f5ee 100644
+> --- a/init/do_mounts_rd.c
+> +++ b/init/do_mounts_rd.c
+> @@ -14,173 +14,9 @@
+>  
+>  #include <linux/decompress/generic.h>
+>  
+> -static struct file *in_file, *out_file;
+> -static loff_t in_pos, out_pos;
+> -
+> -static int __init prompt_ramdisk(char *str)
+> -{
+> -	pr_warn("ignoring the deprecated prompt_ramdisk= option\n");
+> -	return 1;
+> -}
+> -__setup("prompt_ramdisk=", prompt_ramdisk);
+> -
+> -int __initdata rd_image_start;		/* starting block # of image */
+> -
+> -static int __init ramdisk_start_setup(char *str)
+> -{
+> -	rd_image_start = simple_strtol(str,NULL,0);
+> -	return 1;
+> -}
+> -__setup("ramdisk_start=", ramdisk_start_setup);
 
+There are a couple of other places that mention these parameters, which
+should also be cleaned up.
 
+...
+>  static unsigned long nr_blocks(struct file *file)
+>  {
+> -	struct inode *inode = file->f_mapping->host;
+> -
+> -	if (!S_ISBLK(inode->i_mode))
+> -		return 0;
+> -	return i_size_read(inode) >> 10;
+> +	return i_size_read(file->f_mapping->host) >> 10;
+
+This should be >> BLOCK_SIZE_BITS, and dropped as a wrapper function
+IMO.
 
