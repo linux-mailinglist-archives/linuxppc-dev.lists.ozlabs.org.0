@@ -1,62 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-12619-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12620-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88770BA891D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Sep 2025 11:16:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D110BA8EBA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Sep 2025 12:50:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cZwXY5Cnbz3cZ5;
-	Mon, 29 Sep 2025 19:15:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cZydC0V1zz30MY;
+	Mon, 29 Sep 2025 20:50:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.218.44
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759137357;
-	cv=none; b=N3H0clcvC9gbclI32VVgUlcyRQb4HgMNzxhMff3YHGoVb3ZJwiM9N4nRbzaP+dbV8mO2R+ulFyGERjjxvk+C4kZy6gfovp1wY86QlPPmakRpr1kz3h5CcSvzcPpnIvPE6AmsTIyEmLFeZB6ET6AMjh9+GMkFP56L1ZQFyyMs6JvLxEET5DVYQ7UU/mtjbbjKD51TZoZ/WcJaqWY3DSkztPKtDZRY9HhEV3fnJfdhp97FstIY0VFC3Kvif/0CNYZ1xV8l9jOO0WpFIW3rtXpoHy0FPXD6HZTkdaqdWoztRIxtGF9Npw7+IPtMy0XjHFROCO2FVY4awUF91DI9mHGvPQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759143006;
+	cv=none; b=m7zx6QyxfR09V60Idrn5qUxaElawDSGsfCvqaTlDACiFqnW7WkQlXs8Vls4unYeBpMZCW/AUwB93gdGHovHLFqVEP9dI7lUSCv92LjLE9t9QwysZRilGpDEHeiIdhfcWI7O62d3XwnSfaT6Nmu3aFCs8IHNZwODtSftpGcXp4dvMvgQfcxz8rOVQmg/RlBgaivtFlyuBqOCGt+UrDyexvgi2kyEI/YVzn+PXzR4n2NYYv/F/2s+dONuniHcoYvy9o6YpznQ0w/naxv4OL5zq8tDH6Y1CrKhiGF9vS38vOvTHoRMJb2ZcWU5BHUZ81pPoASByvsH/M2bobtbG/4Y8KA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759137357; c=relaxed/relaxed;
-	bh=S/ySJWiSpFmZf4ki4sz6ItaQY50Q4llbhd6F9+5mYqA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TQSP9OPpmj4EUVYaKP2vHnOj5TlinYdrMRolNP2g+ozcGFgYjQ0NJBNkaj4qkLK2K0sen63Jh+XL0dl7bUpur4jveVvWdbK50n3L1YdQRnDZm0RzbUZAPbaNL1sDUsY2vdfkjsrLw0KHcCZ2aVtYX2I6LuDNKkjw7RyMpHz/INgLFPZR9+FOgt2j8zEFapqyU78hnZOPS+UTOzj1udQ48Bfb2inPSmcpyApm+gvfBy8QhCn3ZC49fgmnacImG6YSOSXTsHV4JhprDyqE1vTQgrOnVAhZUJ12kfJ6M/oH55D8bsompeMdyak+uHmrUVqLnHDKWL+E2VppH7SbeV6zow==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass (client-ip=209.85.218.44; helo=mail-ej1-f44.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.218.44; helo=mail-ej1-f44.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	t=1759143006; c=relaxed/relaxed;
+	bh=qzHDQ5E1BEhrB/Kyhc2CU746VNASWmSMFZRhiDzzUxY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WNEn+CkYxwM+qeMUQDWPz2B4yO1LGXc8q7AvHx0lgHWcDB0zcm5UzOLUV5NCrue7MY8N5B9rnBqR9w3OdFq2etJ9ngKwRvAclkADsK3yXGc+zNnwI7Sua3M+8609yZm89mE7fELuxZ6L8oUBwHLVt2J9AHnffiQdfXWP/1CJGeyxjMVgUSOb3qtaJyL9OlwL2hrSpyygT4OfTkwKSxZMx/wW/wcIN7vLt4DWKvjGk0L6U/ERBQO1Hd0ueGx/9+Sbh7iW3HqA2+eTm4HXg05BvLiL3xouAHAcGeQnkIpWuJakEJvLXUpBtTcwdytdAhijryi7PU4vONIwVft89fE8Xg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cZwXX4fgVz301Y
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Sep 2025 19:15:56 +1000 (AEST)
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b07e3a77b72so896625966b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Sep 2025 02:15:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759137352; x=1759742152;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=S/ySJWiSpFmZf4ki4sz6ItaQY50Q4llbhd6F9+5mYqA=;
-        b=GM2ZSmaNUXMOf3b+OnfLO4OxNUJEPL8N6akL8JjTzIH/v3GS6I5l1Ul0FG4UmjTJCw
-         emv0JR9czddCsl7urNSEoTAEV9xJDgAdubelktpJQqJ+vfpBhMzyyj9tNG+h2OWd3t1V
-         OwXjTQv5khoR1zMtrTnf0MZnTmbK83CmsJM7amWHipIaKL5XqjMt6PkltvZLNaIYGn5/
-         6Dqrva3tUe3AUk5vijrCXwnxOlThe8mmZpM8Hn7S7yIe7yzKCsnEmWsRY+m4txWi/trh
-         WYmyh5Cgbwmp66UDn8lbNhJiH+5lF3/PnPePGb8PhYAwy0n50f858lusnbQRq80GLIOI
-         KpCQ==
-X-Gm-Message-State: AOJu0Yx1o/WSAyY2iNBccKXSiUKSI9cuEdZglg0XwsURoU/0gM08cjuR
-	QgIcyQ1OqS6zcSTIZCQufccpiYoBfbaJCelHNSe+dnlu8QDOwK4OsQGj
-X-Gm-Gg: ASbGncvqhCbMnWDnG9L3Y5UtUnjRw9XjsCP8IudgEWC9UC+T+02GCEqT94CQtlbgi1N
-	jz1wFuJvXQ6gKxYjtDinFDzMnZnBx6+FxikrgftjZ5ISkZjihXDd/zvEQvk/vBHnLCVlUqK1mjO
-	WamwMlXS/E6fNYs2UH0k9PeOMEzBIVm3xSCmHCGwlALbkXNfOCjd9P5bPM44UZ1e1VooDckuUU0
-	EKbvCJKJVCZZGA72zg0WglOqUsDO7kSz3vKN50Dezaxen+bWkA98pMQMTOvWzInrWhnlPWF0Hry
-	z0aSrrAxcbwP5H7rM8DUXlUIoTzRK+/reywX9Gcp4g9xpuIrVWlvsoaWwaDqxp803dH9fv8FobX
-	71WDDrtHwOhky+94KpH5z7Jts
-X-Google-Smtp-Source: AGHT+IEC99o6I5U43x9BBzmjUVvHusJBZH+ekQ9yM0YzCDDYFnPxzInOLc7bxYYRuE1LOgqfOeyByg==
-X-Received: by 2002:a17:907:72c2:b0:b2a:10a3:7112 with SMTP id a640c23a62f3a-b354c244b09mr1746488166b.24.1759137352124;
-        Mon, 29 Sep 2025 02:15:52 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:72::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b401d3d4124sm73171066b.75.2025.09.29.02.15.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Sep 2025 02:15:51 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 29 Sep 2025 02:15:47 -0700
-Subject: [PATCH RESEND] PCI/AER: Check for NULL aer_info before
- ratelimiting in pci_print_aer()
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cZyd36M8xz2yrW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Sep 2025 20:49:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qzHDQ5E1BEhrB/Kyhc2CU746VNASWmSMFZRhiDzzUxY=; b=F5ixpPayZAyC6bvP+y5MerpI48
+	F/QjGalzkRktcTBEJvEgp/7fU/pfCZyDFtoF4u1/VmElteyXY5hoFA492m3Tbdy5xh6YUyPUrmHgj
+	23Gk29j7Eelt21VuJKDIbodTcw9mbFfR94r5Cw0KhTtnlJlGNr4UgzS8bMk+WKufzBjAQPp7241lt
+	Ue9GqJ0qprXykBpjL3M7YzDKRTWCchrA/Y/QFjxpR7r86YGlWLDGinMoLKaSZKGU+YBBU4ovhq0vw
+	AFQFKq7+COj0EMjfCOb4qUac15POXV1CEfI4C8seCVvj9U9C2WMpjZIoL6S/yoIhJSKd94ox2NSGZ
+	dJJTLpIA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v3BRy-00000000HSo-0Bwp;
+	Mon, 29 Sep 2025 10:49:47 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D000B300359; Mon, 29 Sep 2025 12:49:46 +0200 (CEST)
+Date: Mon, 29 Sep 2025 12:49:46 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Sathvika Vasireddy <sv@linux.ibm.com>
+Cc: linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	nathan@kernel.org, masahiroy@kernel.org, kees@kernel.org,
+	naveen@kernel.org, jpoimboe@kernel.org, npiggin@gmail.com,
+	maddy@linux.ibm.com, segher@kernel.crashing.org,
+	christophe.leroy@csgroup.eu, mingo@kernel.org, mpe@ellerman.id.au,
+	mahesh@linux.ibm.com
+Subject: Re: [RFC PATCH v2 1/3] objtool/powerpc: Enhance objtool to fixup
+ alternate feature relative addresses
+Message-ID: <20250929104946.GG3289052@noisy.programming.kicks-ass.net>
+References: <20250929080456.26538-1-sv@linux.ibm.com>
+ <20250929080456.26538-2-sv@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,86 +68,121 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250929-aer_crash_2-v1-1-68ec4f81c356@debian.org>
-X-B4-Tracking: v=1; b=H4sIAEJO2mgC/1XNsQqDMBCA4VcJN5tyF1TEqUNdO7RjEYnJqbdou
- RRpEd+9IF06//D9GyRW4QS12UB5lSTLDLWhzECY/DyylQi1AYeuwArJetYuqE9T52zvKATHA0Z
- EyAw8lQd5H9oDbs29uV6gzQxMkl6Lfo7JSkf9efmft5IlO0Qsi9IFqnx+jtyLn0+LjtDu+/4FS
- 7EPWq8AAAA=
-X-Change-ID: 20250801-aer_crash_2-b21cc2ef0d00
-To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
- Jon Pan-Doh <pandoh@google.com>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-dd21f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1622; i=leitao@debian.org;
- h=from:subject:message-id; bh=R9u55K8LEYMCF9T8YoRD0SE7dnNGouw1ZbsiBle69qs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBo2k5GJj10pwZeQhabxuZAbcMVQsml8bUkcz4E+
- uow6oJeyWuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaNpORgAKCRA1o5Of/Hh3
- bernD/wLDmkL54OkzUb+m61lGMHj30To7QCHn/pKBW3LjFUzHdsfPC/WPjAtG16FZUFGQD373ko
- vqogdRC36R/Cd3umTq7Rw+Vg0rKhmqaqdfGsKmWUQyNgDI3XwmKmNnBFHfWfMjAOi8bSjsN9PNj
- Y3cML4P2gFuQGkdhAcI/Hhyc43UvRAqZB/T2R+4uz/jQdi+6Icg0qPVzMOw6/AIhg6QPStFayZl
- 9c8/LNHcphpjuH8MMz7H1PPEb5dkpotusBK20Wzakvo0rhtUhN/GDprXoILypTRlTlstl97JVSd
- 3sdj8/maZdbMNLtcT1LFNqRg40L41Sfb2X8a90aIJe2JHnRKfiy4ja/ISGeOgc9fG0D9YCA3o8z
- rZTKK7jLhgd9hrkTp77nI6/gDoiKU/g5XXHYCtA5AEiD9mFFXW+2d/3UCm9+M9VJdKbdIpxU+8y
- HFVCz2x4TKz9vr2tNea2Md9/m1GUhriYdrOKT/qj7FUpt8/dKZwsIi99BYyul1P42u4UXerh6Hn
- j5UfcNFRODwlmCq+62PsRjUZ13UWAQK5CGgS5OGj/lslHqNmocE822/74Y66pITfKBAzun4FaUz
- XOOcyLobFtZQJVjhSnHcuAureBrxPBESEGKI31kGTArSOMVm4yhrp8ilJIWkI0O9OVKyUzf1dAf
- jPjB5zbIZkILgqA==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_MSPIKE_H2,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250929080456.26538-2-sv@linux.ibm.com>
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Similarly to pci_dev_aer_stats_incr(), pci_print_aer() may be called
-when dev->aer_info is NULL. Add a NULL check before proceeding to avoid
-calling aer_ratelimit() with a NULL aer_info pointer, returning 1, which
-does not rate limit, given this is fatal.
+On Mon, Sep 29, 2025 at 01:34:54PM +0530, Sathvika Vasireddy wrote:
+> Implement build-time fixup of alternate feature relative addresses for
+> the out-of-line (else) patch code. Initial posting to achieve the same
+> using another tool can be found at [1]. Idea is to implement this using
+> objtool instead of introducing another tool since it already has elf
+> parsing and processing covered.
+> 
+> Introduce --ftr-fixup as an option to objtool to do feature fixup at
+> build-time.
+> 
+> Couple of issues and warnings encountered while implementing feature
+> fixup using objtool are as follows:
+> 
+> 1. libelf is creating corrupted vmlinux file after writing necessary
+> changes to the file. Due to this, kexec is not able to load new
+> kernel.
+> 
+> It gives the following error:
+>         ELF Note corrupted !
+>         Cannot determine the file type of vmlinux
+> 
+> To fix this issue, after opening vmlinux file, make a call to
+> elf_flagelf (e, ELF_C_SET, ELF_F_LAYOUT). This instructs libelf not
+> to touch the segment and section layout. It informs the library
+> that the application will take responsibility for the layout of the
+> file and that the library should not insert any padding between
+> sections.
+> 
+> 2. Fix can't find starting instruction warnings when run on vmlinux
+> 
+> Objtool throws a lot of can't find starting instruction warnings
+> when run on vmlinux with --ftr-fixup option.
+> 
+> These warnings are seen because find_insn() function looks for
+> instructions at offsets that are relative to the start of the section.
+> In case of individual object files (.o), there are no can't find
+> starting instruction warnings seen because the actual offset
+> associated with an instruction is itself a relative offset since the
+> sections start at offset 0x0.
+> 
+> However, in case of vmlinux, find_insn() function fails to find
+> instructions at the actual offset associated with an instruction
+> since the sections in vmlinux do not start at offset 0x0. Due to
+> this, find_insn() will look for absolute offset and not the relative
+> offset. This is resulting in a lot of can't find starting instruction
+> warnings when objtool is run on vmlinux.
+> 
+> To fix this, pass offset that is relative to the start of the section
+> to find_insn().
+> 
+> find_insn() is also looking for symbols of size 0. But, objtool does
+> not store empty STT_NOTYPE symbols in the rbtree. Due to this,
+> for empty symbols, objtool is throwing can't find starting
+> instruction warnings. Fix this by ignoring symbols that are of
+> size 0 since objtool does not add them to the rbtree.
+> 
+> 3. Objtool is throwing unannotated intra-function call warnings
+> when run on vmlinux with --ftr-fixup option.
+> 
+> One such example:
+> 
+> vmlinux: warning: objtool: .text+0x3d94:
+>                         unannotated intra-function call
+> 
+> .text + 0x3d94 = c000000000008000 + 3d94 = c0000000000081d4
+> 
+> c0000000000081d4: 45 24 02 48  bl c00000000002a618
+> <system_reset_exception+0x8>
+> 
+> c00000000002a610 <system_reset_exception>:
+> c00000000002a610:       0e 01 4c 3c     addis   r2,r12,270
+>                         c00000000002a610: R_PPC64_REL16_HA    .TOC.
+> c00000000002a614:       f0 6c 42 38     addi    r2,r2,27888
+>                         c00000000002a614: R_PPC64_REL16_LO    .TOC.+0x4
+> c00000000002a618:       a6 02 08 7c     mflr    r0
+> 
+> This is happening because we should be looking for destination
+> symbols that are at absolute offsets instead of relative offsets.
+> After fixing dest_off to point to absolute offset, there are still
+> a lot of these warnings shown.
+> 
+> In the above example, objtool is computing the destination
+> offset to be c00000000002a618, which points to a completely
+> different instruction. find_call_destination() is looking for this
+> offset and failing. Instead, we should be looking for destination
+> offset c00000000002a610 which points to system_reset_exception
+> function.
+> 
+> Even after fixing the way destination offset is computed, and
+> after looking for dest_off - 0x8 in cases where the original offset
+> is not found, there are still a lot of unannotated intra-function
+> call warnings generated. This is due to symbols that are not
+> properly annotated.
+> 
+> So, for now, as a hack to curb these warnings, do not emit
+> unannotated intra-function call warnings when objtool is run
+> with --ftr-fixup option.
 
-This prevents a kernel crash triggered by dereferencing a NULL pointer
-in aer_ratelimit(), ensuring safer handling of PCI devices that lack
-AER info. This change aligns pci_print_aer() with pci_dev_aer_stats_incr()
-which already performs this NULL check.
+Should not all those fixes be split out into separate patches? Also,
+Changelog seems to have lost the bit where you explain *why* you need
+this. IIRC Nick's original tool had a description of why this is needed.
 
-Cc: stable@vger.kernel.org
-Fixes: a57f2bfb4a5863 ("PCI/AER: Ratelimit correctable and non-fatal error logging")
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-- This problem is still happening in upstream, and unfortunately no action
-  was done in the previous discussion.
-- Link to previous post:
-  https://lore.kernel.org/r/20250804-aer_crash_2-v1-1-fd06562c18a4@debian.org
----
- drivers/pci/pcie/aer.c | 3 +++
- 1 file changed, 3 insertions(+)
+Also, please see:
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index e286c197d7167..55abc5e17b8b1 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -786,6 +786,9 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
- 
- static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
- {
-+	if (!dev->aer_info)
-+		return 1;
-+
- 	switch (severity) {
- 	case AER_NONFATAL:
- 		return __ratelimit(&dev->aer_info->nonfatal_ratelimit);
+  https://lkml.kernel.org/r/9500b90c4182b03da59472e1a27876818610b084.1758067942.git.jpoimboe@kernel.org
 
----
-base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
-change-id: 20250801-aer_crash_2-b21cc2ef0d00
+  https://lkml.kernel.org/r/457c2e84b81bd6515aaa60ec8e9e0cc892ed7afa.1758067942.git.jpoimboe@kernel.org
 
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
 
 
