@@ -1,88 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-12612-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12613-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C391BA763F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Sep 2025 20:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9EC5BA838D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Sep 2025 09:18:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cZXyp4J38z3cYR;
-	Mon, 29 Sep 2025 04:33:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cZsxM2f3yz304x;
+	Mon, 29 Sep 2025 17:18:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a02:2350:5:403::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759084434;
-	cv=none; b=g0z/1HeNoukPmKFJDvCJpdyKYPDyMGAcwq+LAxA2jWXCtX3MD1kaGrcKWX43jEDI+bWaXszaN9PlceFlWgVHrBn626mzZPsI+fXPnfP6jIpEZtMVOY0d+Nhn0pXeQ5Og0tRTWqui01RWY2nkNWEKqIsV1UjcoXlmeKFu6QpmphBU6tSmW/S3vYqRsDPjt4dTMoItNJ4Z7W1z83bBvfEH4z3En+XD0BUMqvt/L+ysW6aW5ywaRgjM7u7CNuGC3xKPqY/GJx0h6uT1+eL0z8MFpfsjET/ddaxzJFyFF8O494md5KIN/MG3UgtjpepkCkKkekWYL5rsNOFNNqFNKOziqA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=143.55.146.78
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759130327;
+	cv=none; b=davtg41vKbXRKpdbgiyTWh+gJ9+ESnoKj/dJ8Ohu3idvDpmLl4ajMIrN7DjswibiE5nVRD8hhxaICDTM9NiLSnxIByfS52bI94MAw9WUKMf0Eu0V+6FIB2/OjN6BgUtYDL3f/wwb/GblLz+kSIN0aNTcCbWJ1cI+HXuTjoOF9Spr6KbUqK05eXGa6enfWgsOhkSJvRlCP6zvT//LiUpb4KabfHykyOZN3zi/4OLQjK1OBRH6hOXLfPDeArtJTIOVUL1kPw47T5fQP2hhvQ/bTlbxl5ysyWB8ur5kbORPmdhBcCpUsDNONLef6OZ9bRrRy5m8BMVs4EY6955cSWxuZw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759084434; c=relaxed/relaxed;
-	bh=/Q5hJNgUVt5SsKvfCGB08N5MVmcUGqA0PZ6u8vFRIRA=;
+	t=1759130327; c=relaxed/relaxed;
+	bh=VBzv5FHYPOVQGsCy9++pu/gMzxx76wtx9Gm9d8RIbhc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kEP+vlp/LyTI2Yq95q7wQkhQ3JU0g+G6YxCwMKCnaZdZho6Cl8a/U9D5hZ3+Urd5he1RqrHR7Q0MP+OY6WZOGSeIT7uCbtweiGUIO+5IlZZfkB2CNwY/GOD6Q3nqat6lr4e993CuTlaJK1QutI2J6zNDmvcxD/RwOh4kcA0FEbku5bcQ+eVw7gJArSa4snn0/vm7BT7lH1xAL/2nVBgKwTNajzP4hEVE2GYXXHuEqnp2uFbP+7wBBsCnggMYLu1XRXMOSi8FmUh8wHHFSrQgYcqXqSGTNhBrLeg6p9v7pOIGOVu4iFA9SHs35xIMPGpLUqPQYGZ0UbEkLR8DExmqbA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ravnborg.org; dkim=pass (2048-bit key; secure) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa1 header.b=XDrJz48O; dkim=pass header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed1 header.b=2W7jKc5o; dkim-atps=neutral; spf=pass (client-ip=2a02:2350:5:403::1; helo=mailrelay-egress4.pub.mailoutpod2-cph3.one.com; envelope-from=sam@ravnborg.org; receiver=lists.ozlabs.org) smtp.helo=mailrelay-egress4.pub.mailoutpod2-cph3.one.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ravnborg.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=PqxDtkcqbEQf+pfx6SKegxCyA9HEeX0e0KhQ56ac2zlEwrB19FiM/5f5Ch20m98xK4XEP+swX8OQpN024IN/gPa6pMibnHH8+NNlUHDD+EYXRpshpKioG4lTveHdRzxdUDftaqVRqOYj3LsLVr100ZeQ9R3w3gWrjn8t+RQxJ30zzFh0fxwZ1Zy2h+z8pk95k0fJP2Y4fE53TKh/15HPEqPkWKY2i4hzecfqlcEh6fqfI1AR8BkCSXnS2EymvJ9Xvx4JOM3Shlm8QE+F8CC5quyoMVX6dvxa0h+X/ZOyEs7X+4ra24iHCkPGBsH+WiJAIZ4cDAz/g6VZGpPnBjxSsA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=iram.es; dkim=pass (2048-bit key; unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256 header.s=dkim3 header.b=Jw3O+d3Z; dkim-atps=neutral; spf=pass (client-ip=143.55.146.78; helo=mx07-006a4e02.pphosted.com; envelope-from=paubert@iram.es; receiver=lists.ozlabs.org) smtp.mailfrom=iram.es
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=iram.es
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa1 header.b=XDrJz48O;
-	dkim=pass header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed1 header.b=2W7jKc5o;
+	dkim=pass (2048-bit key; unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256 header.s=dkim3 header.b=Jw3O+d3Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mailrelay-egress4.pub.mailoutpod2-cph3.one.com (client-ip=2a02:2350:5:403::1; helo=mailrelay-egress4.pub.mailoutpod2-cph3.one.com; envelope-from=sam@ravnborg.org; receiver=lists.ozlabs.org)
-Received: from mailrelay-egress4.pub.mailoutpod2-cph3.one.com (mailrelay-egress4.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:403::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iram.es (client-ip=143.55.146.78; helo=mx07-006a4e02.pphosted.com; envelope-from=paubert@iram.es; receiver=lists.ozlabs.org)
+Received: from mx07-006a4e02.pphosted.com (mx07-006a4e02.pphosted.com [143.55.146.78])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cZXyk2GBrz2ytV
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Sep 2025 04:33:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1759072648; x=1759677448;
-	d=ravnborg.org; s=rsa1;
-	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-	 from:date:from;
-	bh=/Q5hJNgUVt5SsKvfCGB08N5MVmcUGqA0PZ6u8vFRIRA=;
-	b=XDrJz48OIBYo3Q7svVdb5rADtr4uzPeBqjzvjdBidN0feLc/fG5FyC6+FiXnHOkn55ys5B7oUM9TU
-	 wNSnamick0obcSvJhF96XXEZuoST1AXGIm/ETF3M+aEeXyHZD/Uy94xCWNukoXKrPvaVVSyuR/mSdp
-	 KB96525b2afYqAiKmysXETY5dzfEWAwGX0eJNU7vM+m4GXoo64rXvhOnauh357csMR2l9engULsyz3
-	 5PXk1+lrLbhu0QL4HC7CtjxC4UA5AqK0Qya1KK4CYFDrDKU3YZgpLD4h/rFGJ9D+9noDpVHH5zdKCH
-	 rr1+z6bhES67FvuiiyDFZXKzWF0+L1g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1759072648; x=1759677448;
-	d=ravnborg.org; s=ed1;
-	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-	 from:date:from;
-	bh=/Q5hJNgUVt5SsKvfCGB08N5MVmcUGqA0PZ6u8vFRIRA=;
-	b=2W7jKc5o1qHQ2HRmyzqFqhAdPo7FUm8FqIPGGW/HvkJ0QqhXxxc9Hji379Sr1nafpwrNl2oS4qsP7
-	 wU9ELx/Ag==
-X-HalOne-ID: 3c50089e-9c7e-11f0-840e-494313b7f784
-Received: from ravnborg.org (2-105-16-150-cable.dk.customer.tdc.net [2.105.16.150])
-	by mailrelay6.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 3c50089e-9c7e-11f0-840e-494313b7f784;
-	Sun, 28 Sep 2025 15:17:27 +0000 (UTC)
-Date: Sun, 28 Sep 2025 17:17:25 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Geoff Levand <geoff@infradead.org>, Helge Deller <deller@gmx.de>,
-	Ingo Molnar <mingo@redhat.com>, iommu@lists.linux.dev,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Jason Wang <jasowang@redhat.com>, Juergen Gross <jgross@suse.com>,
-	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	sparclinux@vger.kernel.org,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	virtualization@lists.linux.dev, x86@kernel.org,
-	xen-devel@lists.xenproject.org, Magnus Lindholm <linmag7@gmail.com>
-Subject: Re: [PATCH v1 9/9] dma-mapping: remove unused map_page callback
-Message-ID: <20250928151725.GA135708@ravnborg.org>
-References: <cover.1759071169.git.leon@kernel.org>
- <27727b8ef9b3ad55a3a28f9622a62561c9988335.1759071169.git.leon@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cZsxK17r3z301Y
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Sep 2025 17:18:41 +1000 (AEST)
+Received: from pps.filterd (m0316690.ppops.net [127.0.0.1])
+	by mx07-006a4e02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 58T6V69b3377900;
+	Mon, 29 Sep 2025 09:18:29 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iram.es; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=dkim3; bh=VBzv5FHYPOVQGsCy9++pu/gMzxx7
+	6wtx9Gm9d8RIbhc=; b=Jw3O+d3ZFj3c/cDEm7urNC3yFovRg9mqwVIZVrIi2vFY
+	Eh+9Mqn/orQF5z7SI9ki7vElm23v1PPgLxmRf6QX79ZzvGwwtYwsuKFSeb8M2nCh
+	UCkwBA+qP/gzvik6l2JxUaSGbjO/Zs+KMRC6nyNXMWV7Eu9P11ViJYkqt6UIfdQu
+	wzRE0IKSDZOEwNAci9ruXd9QNOrXOkT8LQAGH3KOWXw/VOzYaE684bAYMeTqlfPW
+	RHnpEBRra6NOvAv21shEm8bWFUl/ATbZkVc2YnTPUubgpEHuKMK+pS0l2s0SF/9l
+	rkz6OVGlBLITTAwYO+56QOu4Zxq3NOLmTaqXI5iJjw==
+Received: from mta-out01.sim.rediris.es (mta-out01.sim.rediris.es [130.206.24.43])
+	by mx07-006a4e02.pphosted.com (PPS) with ESMTPS id 49fmwr0hvn-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 29 Sep 2025 09:18:29 +0200 (MEST)
+Received: from mta-out01.sim.rediris.es (localhost.localdomain [127.0.0.1])
+	by mta-out01.sim.rediris.es (Postfix) with ESMTPS id 4F061140734;
+	Mon, 29 Sep 2025 09:18:29 +0200 (CEST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mta-out01.sim.rediris.es (Postfix) with ESMTP id 4AEFB14072F;
+	Mon, 29 Sep 2025 09:18:29 +0200 (CEST)
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+ mta-out01.sim.rediris.es
+Received: from mta-out01.sim.rediris.es ([127.0.0.1])
+ by localhost (mta-out01.sim.rediris.es [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id CHbzLWsTDmXP; Mon, 29 Sep 2025 09:18:29 +0200 (CEST)
+Received: from lt-gp.iram.es (haproxy01.sim.rediris.es [130.206.24.69])
+	by mta-out01.sim.rediris.es (Postfix) with ESMTPA id 15A8114001A;
+	Mon, 29 Sep 2025 09:18:29 +0200 (CEST)
+Date: Mon, 29 Sep 2025 09:18:27 +0200
+From: Gabriel Paubert <paubert@iram.es>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: RFI: powerpc cpus supporting BLRM for MSR_LE
+Message-ID: <aNoywxZU7F1Ln6D7@lt-gp.iram.es>
+References: <5dddd2be-e53d-4067-82aa-02146c39223d@ilande.co.uk>
+ <aMUhMomd752SWzUm@gate>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,50 +82,102 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <27727b8ef9b3ad55a3a28f9622a62561c9988335.1759071169.git.leon@kernel.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_NONE
+In-Reply-To: <aMUhMomd752SWzUm@gate>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI5MDA2OSBTYWx0ZWRfXz2rU7+cAy0xe
+ hovkfvCMNjjUMaUonQuvGcWudxzkgA3/PRLe4NVCfAAYDYlMOnNOPnrf7Ia2J8g5gf9pLHqnxqF
+ oUEWks9tcPz9bqVuK/bLO4JxWHwTgJhoySjhEUAwsk4ZFsE7EkzVYdJ9XKqFm1q0WZ7Fyt3dg4r
+ 7PbC+RSgykn29hcacqzgBqzTyCpL57+7ln5EjLc0GpZJEOWtjXqQf3Bk/Z/04+BxKmBI3X66Mhf
+ 1s79/I01pkV1KKL4O0uhIwdjiAS33Me29+H1sMc33PgXHV+CWw4xSP61AecMvTLXoWqwGXpv3QV
+ CS97wpwAjKw2Qb3oYu2m7DQoQ+LvTp+yiF9nl4NdmRBYeJFwMbbj9A/tAN4dih5YmZv2Qdnc2CS
+ 30RLVN4C/68tIFB3leZepJiV6vzANw==
+X-Proofpoint-ORIG-GUID: WmpfzUiuSmrdrRVpQi-mCm8VKw-K705x
+X-Authority-Analysis: v=2.4 cv=c5+mgB9l c=1 sm=1 tr=0 ts=68da32c5 cx=c_pps
+ a=QKUl0uxKTaJPacWKUfn9WA==:117 a=QKUl0uxKTaJPacWKUfn9WA==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=oY23Sqop_mXvFtQxdzQA:9
+ a=CjuIK1q_8ugA:10 a=HhbK4dLum7pmb74im6QT:22
+X-Proofpoint-GUID: WmpfzUiuSmrdrRVpQi-mCm8VKw-K705x
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-29_02,2025-09-29_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=salida_notspam policy=salida score=0
+ malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0 spamscore=0
+ clxscore=1011 phishscore=0 suspectscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2509150000
+ definitions=main-2509290069
+X-Spam-Status: No, score=-0.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Leon.
+Hi,
 
-On Sun, Sep 28, 2025 at 06:02:29PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+
+[sorry for the delay, I had forgotten this message in my drafts]
+
+On Sat, Sep 13, 2025 at 02:45:54AM -0500, Segher Boessenkool wrote:
+> Hi!
 > 
-> After conversion of arch code to use physical address mapping,
-> there are no users of .map_page() and .unmap_page() callbacks,
-> so let's remove them.
+> On Fri, Sep 12, 2025 at 08:21:10PM +0100, Mark Cave-Ayland wrote:
+> > Whilst the patch is fairly complete, the problem I have is that there
+> > doesn't appear to be a concise list of CPUs that use BLRM (as opposed to
+> > proper LE memory accesses) when MSR_LE is enabled.
 > 
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->  include/linux/dma-map-ops.h |  7 -------
->  kernel/dma/mapping.c        | 12 ------------
->  kernel/dma/ops_helpers.c    |  8 +-------
->  3 files changed, 1 insertion(+), 26 deletions(-)
+> *All* older PowerPC have everything on the system busses in BE, and
+> when the CPU has MSR[LE]=1 it just swaps some lanes somewhere where
+> stuff is transfered to the execution cores.  Exactly how this is done
+> is quite funky, but not-naturally-aligned accesses in LE mode always
+> were disallowed anyway!
+> 
+> I'm not sure how LE is done on 970 (aka "G5"), a 64-bit core (it is
+> derived from GQ, POWER4+).
+> 
 
-It looks like you missed a few sparc32 bits:
-mm/iommu.c:
-static const struct dma_map_ops sbus_iommu_dma_gflush_ops = {
-#ifdef CONFIG_SBUS
-        .alloc                  = sbus_iommu_alloc,
-        .free                   = sbus_iommu_free,
-#endif
-        .map_page               = sbus_iommu_map_page_gflush,
-        .unmap_page             = sbus_iommu_unmap_page,
-        .map_sg                 = sbus_iommu_map_sg_gflush,
+The 970 does not seem to have LE mode. I just had a look at the 970FX
+documentation I have and both LE and ILE bits are marked as reserved.
 
-mm/io-unit.c:
-static const struct dma_map_ops iounit_dma_ops = {
-#ifdef CONFIG_SBUS
-        .alloc                  = iounit_alloc,
-        .free                   = iounit_free,
-#endif
-        .map_page               = iounit_map_page,
-        .unmap_page             = iounit_unmap_page,
-        .map_sg                 = iounit_map_sg,
+Gabriel
 
-I did not compile test, but from a quick look they need to be updated.
+> For the more current cores, since Power8 all LE and misaligned accesses
+> are supported with hardly any delay at all (sometimes the hardware needs
+> to do two memory accesses, but there is no exception and interrupt
+> caused, etc.)  And the hardware does a real shift, a big fat barrel
+> shifter in the load/store unit.
+> 
+> Oh, and also since P8 instructions in LE mode are stored byteswapped in
+> memory, too (older CPUs had instructions in BE always).  This is done
+> somewhere between the instruction cache and predecode.
+> 
+> > From what I can gather all 64-bit CPUs use proper LE memory accesses, but
+> 
+> They don't.
+> 
+> > it's not clear whether for 32-bit CPUs the use of BLRM can be derived from
+> > the PVR or other CPU registers.
+> 
+> It is still not clear to me what "BLRM" really means.
+> 
+> > Can anyone provide any insight as to which CPUs make use of BLRM for MSR_LE?
+> 
+> *All* CPUs that use the 6xx bus simply swap *and duplicate* some byte
+> lanes, in such a way that all naturally aligned accesses work as-if a
+> "real LE access" was done.  You can investigate it on real hardware by
+> seeing what happens to weird accesses.  There was something on the
+> Dolphin (GCN and Wii emulator) mailing lists some years ago you might
+> be able to find (I fail to currently, but I didn't look very far).
+> 
+> Btw:
+> 
+> >   g2               PVR 00810011
+> 
+> That is mpc82xx, which uses a "603e" core.  *All* 603 and 604 are called
+> G2 (G1 was 601, G3 is 740/750, G4 is 7400/7450 (two quite different
+> cores!), G5 is 970).
+> 
+> 
+> Segher
+> 
+ 
 
-	Sam
 
