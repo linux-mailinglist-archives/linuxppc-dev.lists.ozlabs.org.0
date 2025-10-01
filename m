@@ -1,70 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-12628-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12629-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE96BB0A6C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 01 Oct 2025 16:09:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F3ABB1DC8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 01 Oct 2025 23:37:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ccGyS2mBbz3cfB;
-	Thu,  2 Oct 2025 00:09:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ccStl6sZZz3cfm;
+	Thu,  2 Oct 2025 07:37:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759327776;
-	cv=none; b=LfPsEcxc9s3StorDQqhX94F2jN7lDbf09XOrw+wvbWiwnIxBdZG7RJSZC/QxQZZkMcYpGXL7kfZ9VdJn3e60nzeIG9x/oYp0xutTBiBFHwdCONqskvRBHhqsPQi57MJQB0y2YT3DEjAF/+mB2s5rmAEp6zlnyVlubGCFozI7IzGziDc90RKikRCzClqgt57kn7zFG+ONJyqkap+pghbC6YIaZAffjXZoRGdcSADzUHRxJr+8bsEqg0dBPd4UNHt1xFC8B/JEOEdgyT2Myc+LVMYIjMsv+220o5vE4dRMzlS7lXpxPFkWoGfy21h0RButXX+z7/c+sWvEPokyeGIvGA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759354623;
+	cv=none; b=ZjeoX5/9mYqsls3qVmA97x/yK5iS3vRvesB8De8uwQCpNXVaaGsMruKYGBFUHynXhnyAXEjOV13RTM+HffDGHOAkmGCrQ7Qwk5IlQM8V/mfL/1jlJwAC/LtlgIj4yUog9YgB4AbITJM2OUQSKmt8bMHz0GGLl2lbID3SJC3RCu5GYfQGCvLzbn60mps+jmNVynJQukl4izawgDiiGVR2dwEvcmFK9jRMC+JTEdgakG9Hq1f5N4NpeWjNTVOktW5NM9jeFChz8YwBvMM9wW/g/E90fsDqANra8o7LmzZF5rEgeZS4NRQYrhZtBRIIt8CXIU3c/V17ya0WO7xQbzqGzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759327776; c=relaxed/relaxed;
-	bh=o6G+LZsta4oQo1jiBoxMS8IgkjltspgRUCCO28PqZGc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RJcWBfFJ2tYIDTRE8e4vr3iEVG36qCqXghJWuKMIu6FR22jzg2xZgelE7jKLAjXMECOlljHgXM6NIykpgo64rbdoaByngR3TldeY8ZC1owK4ljxN7YPddDLyyVHvMhNgqLBJ2ytuU0csAb1RRXaU0fc0BNyy05k00aOYYKfUBrw0pH3xN9noBS5x3HYFKzZ78ciAQdeDp7BS5bwUqEXh2Xv+MCFPyMob7xlvztEU5J6vlG6dwkjgLnMoRinr06CGmbPno2cVXhl4vy4kGoYi2JQNQIvHRff4wyh/HUOnF8D2PjSIqxQlKl2KcX82nySoOo2EATPL1UDq8wFa+Wk5yw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lxANNX2W; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1759354623; c=relaxed/relaxed;
+	bh=ICkzJc+hAEMwI4mNZzq1NX6ihaYrcmm+HzRlfUlUtQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=P93nzBar1yffk6W2r3Q70QiRqIT+F8NNEcaDrVKjhSc6gynGLETeZ/SczX1GQPQkBOAyWg4hlg4D2r//KGiaX1Xr3Rv7DzLVWdXoNE09btqqxjOtNDM1WPsxPJ/YBS2b0Y+z7ArfoWp4aGgsML+Lr8J/KTu+W1uZzwoRnDBmcJ0/w8Zmw/HyPraoG5HQXjelGPQWxFmAnKfjsr5Zm3Jy593Yxzx0ILFdTpKkmh+d+k/y28CdvY+ggu9vCkGOSCAgcffbT57b2GiZlIQ/AfvXj6TnwjSdODbbBEcO1satJzsJOxA6phagWVdZ7+xlX66pY2sSovtaBqzr6dHmqytxrg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=epLMtl+x; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lxANNX2W;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=epLMtl+x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ccGyQ6Hltz3cdn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Oct 2025 00:09:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ccStk33zJz3cfW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Oct 2025 07:37:01 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D40C9604BE;
-	Wed,  1 Oct 2025 14:09:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E725AC4CEF1;
-	Wed,  1 Oct 2025 14:09:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E5C8A454FC;
+	Wed,  1 Oct 2025 21:36:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A74C4CEF1;
+	Wed,  1 Oct 2025 21:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759327770;
-	bh=aV9Quhsd3bTsmyd1udOTUsvKepHnvhjVqiYvAtgBOjU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lxANNX2WM64f+TmAOiA8AFpsl+rn/cPn3Wwc+0N74w+bEqSKjvIbvhHEoyBryEiU+
-	 a9lafN6lol0p4dZY8oCruGHsYFjc0bQg6fJIkrx+IbtqR6I9VA3NYT+Nru97KlYfbW
-	 livQCBloAMGyrbobKZ2i1rbWpJW57UxS+i1LxMaSfE88P2r8FZZs43uasDF9eIjsgg
-	 Td/FpX0KWotz3tUWb/sOeKLl5KcYNGKZdofMEMHMx8MYQ0xnLp+67CFncqH4ATamp/
-	 NIy4lZ5Bp0rffyLORR6/YQN+XIb32EMpEV9UIwWMja/UiP1Q8UJIzsI5boHm/pD/fE
-	 q4xTpQtvC74wA==
-Date: Wed, 1 Oct 2025 11:09:27 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Athira Rajeev <atrajeev@linux.ibm.com>
-Cc: Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	"open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	hbathini@linux.vnet.ibm.com, Aditya Bodkhe <Aditya.Bodkhe1@ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Tejas Manhas <Tejas.Manhas1@ibm.com>
-Subject: Re: [PATCH V3 0/6] perf/tools: Add interface to expose vpa dtl
-Message-ID: <aN02F61OLv6Tx_gB@x1>
-References: <20250916052536.93911-1-atrajeev@linux.ibm.com>
- <ac85151f-21e0-4a98-96e6-8153d0159915@intel.com>
- <6BB167B7-6479-44E7-9175-E67E500DB9E2@linux.ibm.com>
- <7EE7DD5B-6550-436B-A799-2B1DF293121E@gmail.com>
- <AB498516-CA5D-428C-B6FC-CC46A43E39AA@linux.ibm.com>
+	s=k20201202; t=1759354618;
+	bh=l882ipq009bfLKB8e6Q2lXRfa0190MoH1YGIaQSesJA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=epLMtl+xhETPWKTnxwZv67J+cv3OVQpeTmHQE2ZJCughJAVB6ShIUgR7CP8WRPx+O
+	 G1U+nxtL79Y0BxZffm/M6mc4Y20fL/0tJLyd63Dg+KoD5b0rgjadiXWsgk/ru2wNrX
+	 k9GIA//tusinr20t93XVPBoKeqg7hc/QoeWXuCB6oOyg1WRnUUzFw392s3yGGRRyLW
+	 4H4lVTtH1mJTEo8heZwQmzWORNuI3nSH7R2M6hiA6t4YiAe1wb7b9Mza6pwe+iUiTQ
+	 BuwWI1WZiufIN4q96XSQLI5lGR0xUiVIvwiA6VehO3oE08LdnIHXfIVfuTAzMei3vd
+	 8rX/TBRr7TopA==
+Date: Wed, 1 Oct 2025 16:36:57 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Jon Pan-Doh <pandoh@google.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] PCI/AER: Check for NULL aer_info before
+ ratelimiting in pci_print_aer()
+Message-ID: <20251001213657.GA241794@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,28 +69,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AB498516-CA5D-428C-B6FC-CC46A43E39AA@linux.ibm.com>
+In-Reply-To: <20250929-aer_crash_2-v1-1-68ec4f81c356@debian.org>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Sep 26, 2025 at 10:23:56AM +0530, Athira Rajeev wrote:
-> > On 25 Sep 2025, at 9:57 PM, Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com> wrote:
-> > On September 25, 2025 6:21:19 PM GMT+02:00, Athira Rajeev <atrajeev@linux.ibm.com> wrote:
-> >> Looking for further comments if any on this patchset.
-> >> The kernel side patches for this feature which was sent as separate series is pulled to powerpc tree by Maddy
-> >> 
-> >> If the tools side changes looks good, can we have this merged to perf tools tree ?
+On Mon, Sep 29, 2025 at 02:15:47AM -0700, Breno Leitao wrote:
+> Similarly to pci_dev_aer_stats_incr(), pci_print_aer() may be called
+> when dev->aer_info is NULL. Add a NULL check before proceeding to avoid
+> calling aer_ratelimit() with a NULL aer_info pointer, returning 1, which
+> does not rate limit, given this is fatal.
+> 
+> This prevents a kernel crash triggered by dereferencing a NULL pointer
+> in aer_ratelimit(), ensuring safer handling of PCI devices that lack
+> AER info. This change aligns pci_print_aer() with pci_dev_aer_stats_incr()
+> which already performs this NULL check.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a57f2bfb4a5863 ("PCI/AER: Ratelimit correctable and non-fatal error logging")
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-> > Sure, I'll look at it soon now that the kernel part is merged.
+Thanks, Breno, I applied this to pci/aer for v6.18.  I added a little
+more detail to the commit log because the path where we hit this is a
+bit obscure.  Please take a look and see if it makes sense:
 
-> Sure, thanks Arnaldo 
+  https://git.kernel.org/cgit/linux/kernel/git/pci/pci.git/commit/?id=451f30b97807
 
-Applied locally, build testing now.
-
-- Arnaldo
+> ---
+> - This problem is still happening in upstream, and unfortunately no action
+>   was done in the previous discussion.
+> - Link to previous post:
+>   https://lore.kernel.org/r/20250804-aer_crash_2-v1-1-fd06562c18a4@debian.org
+> ---
+>  drivers/pci/pcie/aer.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index e286c197d7167..55abc5e17b8b1 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -786,6 +786,9 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
+>  
+>  static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
+>  {
+> +	if (!dev->aer_info)
+> +		return 1;
+> +
+>  	switch (severity) {
+>  	case AER_NONFATAL:
+>  		return __ratelimit(&dev->aer_info->nonfatal_ratelimit);
+> 
+> ---
+> base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
+> change-id: 20250801-aer_crash_2-b21cc2ef0d00
+> 
+> Best regards,
+> --  
+> Breno Leitao <leitao@debian.org>
+> 
 
