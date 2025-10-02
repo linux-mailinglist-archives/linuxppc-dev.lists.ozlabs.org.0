@@ -1,61 +1,107 @@
-Return-Path: <linuxppc-dev+bounces-12645-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12646-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB17BB5966
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 03 Oct 2025 01:10:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D35C6BB59A9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 03 Oct 2025 01:20:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cd6wY25PHz3cjT;
-	Fri,  3 Oct 2025 09:10:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cd7831rCZz3ckk;
+	Fri,  3 Oct 2025 09:20:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.14
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759446653;
-	cv=none; b=WpX1yrAJUqYDrWr81cipNCF+J99pDGDZIJ5g/DESox4fsH59EOq09B+W1drkoqswihsHES3CQHL7FWWH5ZfxeP968S583fAtfdMxIvJvS0SzxphDJmYoPVLmEzySHI8rI/z5peDPg5sr6qAWX4TrQLMHHj8LrTmtmCXHpULXo6MZiIgnBD8sQ1ScfCj5VOmOclBwmchWynG0QrPCSqUpWKXY9zgGm86oM8zoEcELQ36ksSALpuUex3/lq/nt5HDr0Jeat9Lb+m4nxICPVW5ZGN8bpT3tYeq76aa/w0owa7jx5l7CFAy4v5+l5hc47xIXoS/+XzzsF2vel6bfkO3huQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::433"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759447251;
+	cv=none; b=l8xsRCkNX/7KXijNN/D8UytqnSanvrlDZCSNn6RKCkrLs9zhzzjgR9/PRVx+b7Lm4PoohpCmq6h610b/zae7e+ym+Je5JzVX/QM5hWhMkGhnk3ouokimFskizdWnqC/QZsWJvN9emte6vAmKbMERbKrts2bKDIpK1g6oinyAkEVpAI3TYTbuCHKzEh7w0kLy0TDB5N5K7nt54ElwMsKeyGRQ0je07UOC14b1ZleTkpvtEHFYT5hlK6s/Rk9ttQbYuDQ9kv0mDo/oqieSGP9517usFWqdQZHiPSQwJHp/rGrruhPmtVonoqkJ9W+jNXW12z610i4hNewB4/yJ4ULaZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759446653; c=relaxed/relaxed;
-	bh=9aUhMF1jF4+bwEw0BmfYOCRd81wS/BFmfKZXPfLVeCw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IsBURSEQYqkyTCKbe13HY9veFqF7fD4VhIcOmd5dpZiKrQdI4YLfcrjX4sCHw+aGc31mznHmEZZq54sRTWCK8Ht9so48k2dbCSqUDbblz2UUhlC7SLQ63+fq4fo8smUKK9uejqM2N4ZBXeq4WjeTVwALxd4j7489YHdECaIZ05LwI0NAhQTpcAiOVcUepdz7/piCQF92BnlOESq6sula4fuhSo+LfIzBZmCzye4Z9cISN3T5h/WgeYavkB9I4oSqSVDzA39G0v7OZtk8faPD2ZQ4IkNbsOHAuQnVrrVRAJ3FFb2Z5aTQoonpmR0nSagBUVjGjkiGv3MqQxyFm5G1tg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bH95eppa; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1759447251; c=relaxed/relaxed;
+	bh=gX9KJbRliuDiUhyueXfwx/TklBf4F3VVV79ND/TcypU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:Mime-Version; b=koQFMUVsx9CGzrRXIhvsAblMmpnh7ZfZvb8Ejfk/JewVAdVWPcmZWl6GeWfbQ4osUsTLjfQYd6EgLh9DvKKqs9p7qPYp01n9WTWVuIrp+B2IY3+2Vzb4AxBDcGvIuDtfcmFsFP2B1RtQAx9ABmWkz+eEzQC+hbrPUD0PzvvyLmWBmxXa0T+v6Z939D7RpwKACueeRs0UZKSbOcP2PzT/jryNLEL2nlSqwjSBkp88JFkcgmuK1p2Mw5KVEZBUfURAYNpyDdEt+0uKe6w1zqvVz931Ws4kUJuRv2e84Gi8i/qB1QArw0mS4tGWSowBV+WjwBvxcaOfM+EWfzQlUUt2Ww==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=gimpelevich.san-francisco.ca.us; dkim=pass (2048-bit key; unprotected) header.d=gimpelevich-san-francisco-ca-us.20230601.gappssmtp.com header.i=@gimpelevich-san-francisco-ca-us.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ObqBWL/j; dkim-atps=neutral; spf=permerror (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=daniel@gimpelevich.san-francisco.ca.us; receiver=lists.ozlabs.org) smtp.mailfrom=gimpelevich.san-francisco.ca.us
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=gimpelevich.san-francisco.ca.us
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bH95eppa;
+	dkim=pass (2048-bit key; unprotected) header.d=gimpelevich-san-francisco-ca-us.20230601.gappssmtp.com header.i=@gimpelevich-san-francisco-ca-us.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ObqBWL/j;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=gimpelevich.san-francisco.ca.us (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=daniel@gimpelevich.san-francisco.ca.us; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cd6wW1nzLz302l
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Oct 2025 09:10:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759446651; x=1790982651;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9aUhMF1jF4+bwEw0BmfYOCRd81wS/BFmfKZXPfLVeCw=;
-  b=bH95eppaYZLanTOvYoatRlmf5JSveVuDdnmZblc2WTLBWdCc3JtlrFI+
-   3wyAPlxac7E2E3rPaKe7oJgqYoiprRRK734gkAi6NCsJBSRN1tNHrXtm9
-   V4TluLB8r3Md3xKfuUzYPi+57KD7ke2u8FNKf0sJIZ6X49vzhUP49hMy7
-   ehvRHxBp6PCH3KBt4HLsMGnCAxA7hjbY61In0iVl3r3o471cK3elUOCsw
-   3x+XgQMr8dVghv2IfdBGV0RwlEfEvzNkZ2Wql9lx3uk8Lg2Cle6vS4vOO
-   rzvopQMwcQx10YaPTE0327IktK/vWJW3TZWGfPtCEvodbjfqFQ/5MRAfJ
-   w==;
-X-CSE-ConnectionGUID: 8oDao3KyQwmi/gbFq3K8eQ==
-X-CSE-MsgGUID: cYwHiqzERmaWdLrl8cXApg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="61774716"
-X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; 
-   d="scan'208";a="61774716"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 16:10:46 -0700
-X-CSE-ConnectionGUID: XpoW4dhpT1OOYopVMjggcg==
-X-CSE-MsgGUID: IKYQRcZfTgWwKhvjgxm5NQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; 
-   d="scan'208";a="179102182"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.249]) ([10.125.109.249])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 16:10:45 -0700
-Message-ID: <dde17d82-3e56-4b9f-8b6d-dae3d523d44e@intel.com>
-Date: Thu, 2 Oct 2025 16:10:44 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cd78226YRz3ckP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Oct 2025 09:20:48 +1000 (AEST)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-7841da939deso1613993b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Oct 2025 16:20:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gimpelevich-san-francisco-ca-us.20230601.gappssmtp.com; s=20230601; t=1759447246; x=1760052046; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:disposition-notification-to
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=gX9KJbRliuDiUhyueXfwx/TklBf4F3VVV79ND/TcypU=;
+        b=ObqBWL/jjEyVfmr+pnyNoGh4mIZS5DNoUz8qtSd7wqlOIJTouk5xelf44B79idX/Ag
+         xB0L+2WyQjOeId+Afe6VFz/j7kIv7LxDQ78pkxovbTGQ+QO3Gv78NoNDo9Uhh1vRjc6/
+         3xvV4hgBcYWFdtFm3NL1e73e3ze2s1tztvB6mjNKwdniXZQtPwIEDGcFvzMlVrcu4t13
+         mD/dwg266pHAjEZylNAyGb2J7HQ1awkDZnL+0jdP2c790Z1+XfRd1IaGOzqyQmfV9KfX
+         ffAxcauofOXyf5jeOet8ctVFINUn0J+kTnKpAIlomDwiF2pQDLY6msdUa02NE7Mtm3ta
+         GKyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759447246; x=1760052046;
+        h=content-transfer-encoding:mime-version:disposition-notification-to
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gX9KJbRliuDiUhyueXfwx/TklBf4F3VVV79ND/TcypU=;
+        b=cyn9Yqms9hYWWXlE1HSXbw4XKgRM5cczF1cdycVrUlJa1h2J1g7NdZaN9JkomSukw7
+         0s6NcSkVxNwJvPT2i0nw8LhvMhLZbzNGHpITSNQHvfQbrOoLOLt2tmDFJj2VqbvEFggf
+         lJe/rT4ZLXMHNOq12oXbcqK7kIZORiOH6U1U54d/u6XZZrPSZO9b/acl3Bame7UgD5Ws
+         QcVWmmWN8yyw8ifVmqRTNLvHd0SzP9FuuyrfnKD0Cu1Hqei6Cn2zaZeQQpNb1uchr1dV
+         QrL7SsWYj1i+wWVhZhZNVCCB7EMDBFibrC5IgiGofqSMW/r7kQMpuPP3yB5+lDRdnQCK
+         nUGA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZHY+lzk6vwySeqAKhnhLAuboLpeox2wWz1f6te2v4bHZFQaFNJBruV+QBIHW7meAa4zVdmxmuxwFBShY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz8ijqKGBoBDEYFI6NWEDSwr2OB0rsUSYWr4/ZlVWS/xk3OqE/o
+	txzR9XG87UPO3HFnGwn70dQUoj48EGmaiiqiwAPxVf9I7j/Yn7G+ft0JVpqM8bGn8w==
+X-Gm-Gg: ASbGncszEdMkT71ZjmT7COjSxD1Hv/SqT6eDbacjyGhxr54t8LisiI1EWANt07wNn59
+	O4XtavccKuQT+xnG3YkXwkeqcF9DyXJqPLecHBW1l+DRRmhLYmNDzvo8J07XxQr069F7muJO/0H
+	vFwUgLG5u6GcOoqM0lpRdPemf97qkM7lz+CZic5Ad3G8eO8Funsmk3zEnI4rIWpOy159hsKzrq/
+	C3lnmVoq0XZuETaRR+WO9V3rERXASXrR+yi42HHgYuo8+6sirTdIOYvLEKuKSzqLbVKInTQJ6fo
+	7oNJErkmGiXrSunbKCkMxAECKQIukHDMKjqfNF3Oa3mfnbgjbdiwDilR4wtqFfBcpTYnPf4mt9y
+	3dj5NF4/kR6ATe4CpoKpUfcKhSdmevoqKFeJT+RHPmRVnT3KEHkJ8QUIhru+c51m6tbN3Q6iefz
+	VoPozY8gpwLqQKbnGSiZPOKtp6ZpqukH+BGO3oMXQptUw=
+X-Google-Smtp-Source: AGHT+IFxx2TCD6D7jFtBEJ3PbntsdESkjjeH5wij8/VnSkkJDYC5xpM48nDuzXv8UOwcied9Nu59sA==
+X-Received: by 2002:a17:90b:17cc:b0:32e:5cba:ae11 with SMTP id 98e67ed59e1d1-339c27859aamr1054843a91.28.1759447246577;
+        Thu, 02 Oct 2025 16:20:46 -0700 (PDT)
+Received: from ?IPv6:2001:5a8:429d:8700:4825:53c7:1977:212e? ([2001:5a8:429d:8700:4825:53c7:1977:212e])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339a6ff0dddsm5947685a91.18.2025.10.02.16.20.45
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 02 Oct 2025 16:20:46 -0700 (PDT)
+Message-ID: <1759447244.24579.14.camel@chimera>
+Subject: Re: [PATCH 6/8] CMDLINE: x86: convert to generic builtin command
+ line
+From: Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Daniel Walker (danielwa)" <danielwa@cisco.com>, Will Deacon
+ <will@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Rob
+ Herring <robh@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Pratyush Brahma <quic_pbrahma@quicinc.com>, Tomas Mudrunka
+ <tomas.mudrunka@gmail.com>, Sean Anderson <sean.anderson@seco.com>,
+ "x86@kernel.org" <x86@kernel.org>, "linux-mips@vger.kernel.org"
+ <linux-mips@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+ "xe-linux-external(mailer list)" <xe-linux-external@cisco.com>, Ruslan
+ Ruslichenko <rruslich@cisco.com>,  Ruslan Bilovol
+ <ruslan.bilovol@gmail.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>
+Date: Thu, 02 Oct 2025 16:20:44 -0700
+In-Reply-To: <dde17d82-3e56-4b9f-8b6d-dae3d523d44e@intel.com>
+References: <20231110013817.2378507-1-danielwa@cisco.com>
+	 <20231110013817.2378507-7-danielwa@cisco.com>
+	 <00c11f75-7400-4b2a-9a5d-10fc62363835@intel.com> <aN7n_5oiPjk-dCyJ@goliath>
+	 <c8b65db3-a6cf-479d-9a83-23cbc62db1ef@intel.com> <aN7vKgcUeQgCFglQ@goliath>
+	 <a2be781f-96b5-47d1-81fa-b20395ca293a@intel.com>
+	 <1759444692.24579.8.camel@chimera>
+	 <dde17d82-3e56-4b9f-8b6d-dae3d523d44e@intel.com>
+Disposition-Notification-To: daniel@gimpelevich.san-francisco.ca.us
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu2 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,107 +114,24 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/8] CMDLINE: x86: convert to generic builtin command line
-To: Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
-Cc: "Daniel Walker (danielwa)" <danielwa@cisco.com>,
- Will Deacon <will@kernel.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Rob Herring <robh@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pratyush Brahma <quic_pbrahma@quicinc.com>,
- Tomas Mudrunka <tomas.mudrunka@gmail.com>,
- Sean Anderson <sean.anderson@seco.com>, "x86@kernel.org" <x86@kernel.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>,
- "xe-linux-external(mailer list)" <xe-linux-external@cisco.com>,
- Ruslan Ruslichenko <rruslich@cisco.com>,
- Ruslan Bilovol <ruslan.bilovol@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20231110013817.2378507-1-danielwa@cisco.com>
- <20231110013817.2378507-7-danielwa@cisco.com>
- <00c11f75-7400-4b2a-9a5d-10fc62363835@intel.com> <aN7n_5oiPjk-dCyJ@goliath>
- <c8b65db3-a6cf-479d-9a83-23cbc62db1ef@intel.com> <aN7vKgcUeQgCFglQ@goliath>
- <a2be781f-96b5-47d1-81fa-b20395ca293a@intel.com>
- <1759444692.24579.8.camel@chimera>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <1759444692.24579.8.camel@chimera>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 10/2/25 15:38, Daniel Gimpelevich wrote:
-> On Thu, 2025-10-02 at 14:55 -0700, Dave Hansen wrote:
->> That's not a bad idea. Or, even if you can pick two amenable
->> architectures to start with it will make it really obvious that this is
->> useful. Two architectures means a *lot*, IMNHO. Two is a billion times
->> better than one.
-> I think it's a bad idea, if I understand it correctly. The patchset
-> conceptually patches a mechanism of the kernel as a whole, but one which
-> just so happens to need to be implemented separately for each arch.
-> Breaking it down like you suggest creates an embarrassingly high
-> likelihood of different architectures' implementations of it going out
-> of sync, a previous situation that this patchset was partly intended to
-> address. I say keep it atomic. If it breaks on an arch or two but not
-> others and nobody notices right away, that would be better addressed
-> with a new patch when someone eventually does notice. Just my 2¢…
+On Thu, 2025-10-02 at 16:10 -0700, Dave Hansen wrote:
+> How is the approach to "keep it atomic" working out so far? ;)
+> 
+> The kernel isn't exactly developed in secret. It's also not hard at all
+> to, say, once a week to peek at linux-next and do a lore search (or use
+> lei) if anyone is desperately worried about the ~50 lines per
+> architecture going out of sync.
 
-How is the approach to "keep it atomic" working out so far? ;)
-
-The kernel isn't exactly developed in secret. It's also not hard at all
-to, say, once a week to peek at linux-next and do a lore search (or use
-lei) if anyone is desperately worried about the ~50 lines per
-architecture going out of sync.
-
+With all due respect, the lack of action on this patchset is not at all
+due to its scope, but purely due to the throwing-spaghetti-at-the-wall
+approach to code review that you yourself just got done pointing out.
+Addressing the latter problem would thereby also address the former.
 
 
