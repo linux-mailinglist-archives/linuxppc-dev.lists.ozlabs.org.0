@@ -1,51 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-12669-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12668-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8509BB9846
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 05 Oct 2025 16:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 315D7BB9837
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 05 Oct 2025 16:29:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cflGt33MMz3cYG;
-	Mon,  6 Oct 2025 01:32:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cflCV0jhfz3cDN;
+	Mon,  6 Oct 2025 01:29:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:f440:8:8::2"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759674742;
-	cv=none; b=WqG3ccjk4YErENbJMi1lIz4pMguEYtcVyAA68gCsi04wt81fADFPTF9OtZ30NyNwmxgDpNExkp+sIgppoLzpipOW7t1vLXkOH9vaNthg9Uq74U6d8SNP6BPbupP1vvzxcjq3HcV9YcnxC3iN5xW1lhoZ3KexM34DI7bOpcQU4UnDdxJ12jZuZQLhtMegK5vVf+ggPzky1v0iH5KznbyBoCHuf035A4An94IYEoK181mLq6d/5MqAHbjMic3WDHmPDZkEWbdjQjaxGYHyNaIFsOKr69KE8vI1qu1IdSlY4qf5aKu+BSfKGbA8x0zYwjQsEJCzNZlin7eWEyDOPCWD3Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759674565;
+	cv=none; b=gQ0vIsm9qKrLbr2P4A4HuIx/f9+Xv+NKnYK6GRqfB+NuNGrBvqvQQtIsNcV+bj+dVNhEqxFQnKtmAl2MMFLe4gNVL+l68GewQBn7yUz0/iBqxU6Hs261s+geHZGjjY1zPUg7nxSjWBpOSDDS49SdqdW+YCiSi3O4M7VkmJiZ1a4FuwZc0pfCWduzo//+freCdGf1mdlKffExA37QOkrBUUXgSpaCzzWOMp3cU3oR+ESGRxEu1C62tgeGFD4sSZ0ksiiZdTYwiIFF5nb9F9L3Dk5jk82iy3dMJikp92nVLpICP31YwQUDHUeT5JJTxfo7okwZ99oxDVPH+7H8eA5+qg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759674742; c=relaxed/relaxed;
-	bh=3zvbBGGUPbtrhxdquNh9U133x3leWCTDaD1EW1tXO3k=;
+	t=1759674565; c=relaxed/relaxed;
+	bh=EwnP/1X/4ZcxM8WQtEQ2chqgPCD4ufKRPQPQouiOxmk=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GO6iowdED9iy4KMETEAytj63DXWhgHl6m4wkAS59PPa5duF4DkQLeiNLxO8u3QUbXqNHI35Tpf5NDPslpvzpNX8RSFnvRQ3SjL8dDRkudCpscbtfKTUHYg0fl1wAnIL2C3DkPWzDahTy4TEyvk3MKfjhQAVuctwlcrd/hEP46MCrLUrl5qAmSOtTGjmLYtRQPMnr8YMkPhO15w4eW2T6C7qooH8h/D+EPc0Go99je1SHritTp2T/xpzAoo66/hvZgujVzbBEjxH+GkRPYZuy1MHTbRkFblw6JNRwpgkzekLT2lcL1yIo0eenDK30MXNucIdociyB0WGNdgMLNVeiOA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=dCWCKQas; dkim-atps=neutral; spf=pass (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org) smtp.mailfrom=hansenpartnership.com
+	 Content-Type:MIME-Version; b=aOQHJp0XA/Uez8cafuN6Qf3jeemDLXyR0WlIPzSTiQMETHQBM2+cWjiRu5HMW5iqVReoww1YBjiIPxkvD+Yo/oK0ML9IWeyN+j0OsARfFqrhaPlhUuj+vG0hDP65zsiuFxrLRJVrJp6lLo7zxg/XGRWNJQejGPwljtBdrW+J53EmHssGkpeGwDufL89yVym+dKVzF4ltqze0lXbpEvSWU9/CWjDoI4Zm+whkUhsL8ZBMdnPJGieJLgr4G3sHPwXrsNf9Hpz7+Gs5R7E9lmD7meO+zd7BinkvrJ5e7HOowCWjS5P6ZF996DjIwCFr4OXWFx+Xg9xDvDZ5b7dqhNRJSg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=Xjfl0yNW; dkim-atps=neutral; spf=pass (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org) smtp.mailfrom=hansenpartnership.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=dCWCKQas;
+	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=Xjfl0yNW;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hansenpartnership.com (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 378 seconds by postgrey-1.37 at boromir; Mon, 06 Oct 2025 01:29:23 AEDT
 Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [IPv6:2604:f440:8:8::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cflGs0Ykkz30M0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Oct 2025 01:32:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cflCR0KGwz2xnk
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Oct 2025 01:29:22 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1759674176;
-	bh=h8/0VfnLYGz2U7csWzqwHZseTDljgEdp48luuBTRQD0=;
+	d=hansenpartnership.com; s=20151216; t=1759674560;
+	bh=hrsv2YDzWLNG7Ngtd7/6UjmmDS9vVj1AT8usgE7qgQI=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=dCWCKQasDDmqK86YFHFQ06W4cUGxZdmuJQrtlZTwnNAcPEgK5AX1S/RG1yah/ME4B
-	 4ebSHYdCfn1lQa6cKNMnNG7E7Uhi4QcETyWOUnWc05NIdbLWDBSKArRXntDtwJ5mol
-	 DZoaJC/udVyI3wt1O8PjwADf3RJ8EaBAdgp2DZZM=
+	b=Xjfl0yNWvNlgfTU8/EAtoWEJVM/U3ViTlMzofQd5PTmLzm6zW9WheCJfZQBWMf/Sx
+	 PS4SvfONhUji+BpjFDo64XZP9T6ZIhKXhywCfLN/UQS3ZvwBWm/hIyqdey/rZSYGFE
+	 L93/5IM0KbGEcCMPzv6xPzkYlBejcfGaIgzTmGwQ=
 Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 33EB71C0014;
-	Sun, 05 Oct 2025 10:22:55 -0400 (EDT)
-Message-ID: <abe81a02173f0520145e15127da0b3d3f2ff244b.camel@HansenPartnership.com>
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id A7B691C0096;
+	Sun, 05 Oct 2025 10:29:19 -0400 (EDT)
+Message-ID: <ce05d6629571eba0a2f0a104fb5584021806addc.camel@HansenPartnership.com>
 Subject: Re: [PATCH v1 3/9] parisc: Convert DMA map_page to map_phys
  interface
 From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leon@kernel.org>
+To: John David Anglin <dave.anglin@bell.net>, Jason Gunthorpe
+ <jgg@nvidia.com>,  Leon Romanovsky <leon@kernel.org>
 Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Leon Romanovsky
  <leonro@nvidia.com>, Andreas Larsson <andreas@gaisler.com>, Borislav Petkov
  <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "David S.
@@ -62,11 +64,12 @@ Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Leon Romanovsky
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,  Thomas Gleixner
  <tglx@linutronix.de>, virtualization@lists.linux.dev, x86@kernel.org, 
  xen-devel@lists.xenproject.org, Magnus Lindholm <linmag7@gmail.com>
-Date: Sun, 05 Oct 2025 10:22:54 -0400
-In-Reply-To: <20251003150144.GC3360665@nvidia.com>
+Date: Sun, 05 Oct 2025 10:29:19 -0400
+In-Reply-To: <610b10bc-1aa2-4fad-a40b-be5fcfa04430@bell.net>
 References: <cover.1759071169.git.leon@kernel.org>
 	 <333ec4dabec16d3d913a93780bc6e7ddb5240fcf.1759071169.git.leon@kernel.org>
 	 <20251003150144.GC3360665@nvidia.com>
+	 <610b10bc-1aa2-4fad-a40b-be5fcfa04430@bell.net>
 Autocrypt: addr=James.Bottomley@HansenPartnership.com;
  prefer-encrypt=mutual;
  keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIBwMCAQYVC
@@ -98,54 +101,38 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, 2025-10-03 at 12:01 -0300, Jason Gunthorpe wrote:
-> On Sun, Sep 28, 2025 at 06:02:23PM +0300, Leon Romanovsky wrote:
-> > +ccio_map_phys(struct device *dev, phys_addr_t phys, size_t size,
-> > +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum dma_data_direction direction, uns=
-igned long
-> > attrs)
-> > =C2=A0{
-> > -	return ccio_map_single(dev, page_address(page) + offset,
-> > size,
-> > -			direction);
-> > +	if (attrs & DMA_ATTR_MMIO)
-> > +		return DMA_MAPPING_ERROR;
-> > +
-> > +	return ccio_map_single(dev, phys_to_virt(phys), size,
-> > direction);
+On Fri, 2025-10-03 at 13:18 -0400, John David Anglin wrote:
+> On 2025-10-03 11:01 a.m., Jason Gunthorpe wrote:
+> > This doesn't actually use the virt at all:
+> >=20
+> > 	offset =3D ((unsigned long) addr) & ~IOVP_MASK;
+> > 	if((size % L1_CACHE_BYTES) || ((unsigned long)addr %
+> > L1_CACHE_BYTES))
+> > 		ccio_io_pdir_entry(pdir_start, KERNEL_SPACE,
+> > (unsigned long)addr, hint);
+> >=20
+> > And ccio_io_pdir_entry():
+> > 	pa =3D lpa(vba);
+> >=20
+> > Is a special instruction that uses virt but AI tells me that
+> > special LPA instruction is returning phys. Not sure if that is a
+> > different value than virt_to_phys()..
 >=20
-> This doesn't actually use the virt at all:
->=20
-> 	offset =3D ((unsigned long) addr) & ~IOVP_MASK;
-> 	if((size % L1_CACHE_BYTES) || ((unsigned long)addr %
-> L1_CACHE_BYTES))
-> 		ccio_io_pdir_entry(pdir_start, KERNEL_SPACE,
-> (unsigned long)addr, hint);
+> ccio_io_pdir_entry currently only supports KERNEL_SPACE.
 
-Actually, it does: it has to; parisc caches are VIPT.  The iommu needs
-to know both the physical address and the virtual tag (also called the
-coherence index) to instruct the CPU to flush its cache.  The sole use
-of the vba is in ccio_io_pdir_entry() which programs the IOMMU page
-table.  The coherence index is pretty small because the largest VIPT
-cache stride parisc has is 4MB and obviously the lower 12 bits (page
-offset) are the same for both physical and virtual, so it's only the 10
-bits between 4k and 4M that the iommu needs (the entry is 12 bits
-because architecturally there were chips with a 16M stride planned for
-but never produced).
-
->=20
-> And ccio_io_pdir_entry():
-> 	pa =3D lpa(vba);
->=20
-> Is a special instruction that uses virt but AI tells me that special
-> LPA instruction is returning phys. Not sure if that is a different
-> value than virt_to_phys()..
-
-That's right, so if you want to pass both phys and virt addresses to
-the function, this could be dropped.
+Actually there's a bit more nuance to it than that.  Obviously DMA has
+to support user pages otherwise I/O wouldn't work.  The way it does  is
+that all physical pages are mapped in the kernel and we try to make
+sure all user mappings are on cache stride (4MB) boundaries so the
+coherence index of the kernel virtual address and the user virtual
+address are the same, so we can solely use the kernel virtual address
+to calculate the coherence index for the IOMMU.  If that's not true, we
+flush the user virtual address range in gup and the kernel virtual
+address range before sending the I/O completion.
 
 Regards,
 
 James
+
 
 
