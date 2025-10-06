@@ -1,75 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-12679-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12680-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420F5BBF2AB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 06 Oct 2025 22:15:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B262BBF2C7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 06 Oct 2025 22:19:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cgVrM70Jtz2ygH;
-	Tue,  7 Oct 2025 07:15:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cgVx51VR6z2ygH;
+	Tue,  7 Oct 2025 07:19:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=116.203.167.152
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759781731;
-	cv=none; b=COgzeGPvWsg+0YVMnC1Vme9YtnFM66+O7OlyZ8Mki4a4KrB3nGYcGiNXKxMH/wYSQswh3jqghJuHNxkzE5X3SYlYsTE1+WCsnOu6S8rk2IH5Xoi7rBDx9bFNe8AAu0vaJs4AGwhxtQd6wbAJVHNgrKuJwdjQ3mq2eRMO7aY6C36td/SyeGPoefIblK7ICgrTwxoCl+Bd9ZraKlpQh0RNmfbM3NCzviNIiNKcIrR0HWhqisiA2NCfq1BxoPXxq88clcwruORlZNILy/k2Fr7g0ffTcbn9JzqHj7rC4pvg7f1K1ZvmyL2UcDGjWbZCFEa39RixQQxsqMypwwADX8w+2g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.166.46
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759781977;
+	cv=none; b=hZFJcHYb2vxHi0eQamXIMj3fFZqGhDPe/5dxu8t4EkjoaH1kaWLvhRiqpB85AcHXv9AASKD2c8L6dSSQ5LhvpnkEUb7uKAjBFmnMawh1Ze/N4VdBJpUzgiAq1GSP8otEwHGp2/3wTxScPnEiEZGBbRz1v286c50U3weS5Oy1taJvhpV8rq91OIb0UJfb6RPh1aUDoUlNQwi0tPKv3lQYN8bRpuCQ7u+H9j+GUsEXhD99CqJ8tPwDcOylbdr7trNjClwzgYaHkznvuROM+kyq5JV0VfdjPObO4VErb815OakzhAVLeMrtlB5omoNkErGpwsqLAwIoMy+waTEJDMNAGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759781731; c=relaxed/relaxed;
-	bh=LhjB5H9mrCqOGAXj5HXNdyEVYPj6mQQyTvJX1KEHiMI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=cZBXDbPnViDufXsJXl8BZatBPVOT3CswmIYDp+0u8y/MidkuS6jcSEectu67HYQgTGH+a9P0IvSOI9gygaOp8Aw0a4ZRZpSTLy+VcUS6G9r2qux8HrFPjsfy+ggPcN1/OzWWp2Tc8CMEi5olQKjYwuf2bXaCqSfM7VJQzIDTOFjtdCgwYat9ETeorItKNMJqHJ/FrXzDsr7dyuPHUMPQDm585iNIw9PYnc5jaTfzKZq1VCJCGwJSYlczEU3R6KpcrjFNs1lzWuuDHhnmEsi3cNt9NmG1jAJoxZMPK7qE5ewteNLz4zoDWdZjVuxjh/3KIggHGIltS3lCH4b98VNn2w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=permerror (client-ip=116.203.167.152; helo=lithops.sigma-star.at; envelope-from=richard@nod.at; receiver=lists.ozlabs.org) smtp.mailfrom=nod.at
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=nod.at
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Unknown mechanism found: ipv4:195.201.40.130) smtp.mailfrom=nod.at (client-ip=116.203.167.152; helo=lithops.sigma-star.at; envelope-from=richard@nod.at; receiver=lists.ozlabs.org)
-Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1759781977; c=relaxed/relaxed;
+	bh=WMQ7AMWhdctXnD7KUrakUOl3r47iwY0bunSrG+xUVBs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LrDiOe2MPUtEMw+80uYpuuNZWYiJ06JG8cWTtdXY7ulfquKIh9v7iFOeymNwPOKpVAN5OKqAjkfi+ZQ8vKTM7x/GCIrWI7YqqYfhgeLbIB/n220AwW6u6atSIDhhUm+cn9YychepifjOG5FKFbR8+LpoeU+eCdtbS/8S+VEg/JJizoJp7WLJMjMvLo5Hueig4sQ9DPJeF7jFmlg+P131+/Rw5T4YI6uXQzCmr91kjiFVHx7JwfCJLAfBKNpH2/HE96T9678yW2B3T1laeqWSNi4q3uGrRfe8OQh7RhFbq8zuzdsfpAN3w+iS4isvTsPk9f1ItzFNe+BmUvEOmPhXUA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass (client-ip=209.85.166.46; helo=mail-io1-f46.google.com; envelope-from=jmforbes@linuxtx.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxtx.org
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxtx.org (client-ip=209.85.166.46; helo=mail-io1-f46.google.com; envelope-from=jmforbes@linuxtx.org; receiver=lists.ozlabs.org)
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cgVrL61VCz2xQ4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Oct 2025 07:15:29 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 853FF2B4F9D;
-	Mon,  6 Oct 2025 22:15:23 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id JD4v2hnJ6q9P; Mon,  6 Oct 2025 22:15:22 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 0C4012B03C9;
-	Mon,  6 Oct 2025 22:15:22 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id j6VbrBHYDJpt; Mon,  6 Oct 2025 22:15:21 +0200 (CEST)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id B486A2ABFC1;
-	Mon,  6 Oct 2025 22:15:21 +0200 (CEST)
-Date: Mon, 6 Oct 2025 22:15:21 +0200 (CEST)
-From: Richard Weinberger <richard@nod.at>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Dave Hansen <dave@sr71.net>, ksummit <ksummit@lists.linux.dev>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
-	linux-mips <linux-mips@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, imx <imx@lists.linux.dev>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Lucas Stach <l.stach@pengutronix.de>, 
-	Linus Walleij <linus.walleij@linaro.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Ankur Arora <ankur.a.arora@oracle.com>, 
-	David Hildenbrand <david@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, vbabka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>, 
-	heiko <heiko@sntech.de>, 
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
-	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>, 
-	Andreas Larsson <andreas@gaisler.com>
-Message-ID: <1190290449.3827.1759781721487.JavaMail.zimbra@nod.at>
-In-Reply-To: <4fcd272f-81e3-4729-922b-588ad144e39b@app.fastmail.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <497308537.21756.1757513073548.JavaMail.zimbra@nod.at> <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net> <640041197.22387.1757536385810.JavaMail.zimbra@nod.at> <4fcd272f-81e3-4729-922b-588ad144e39b@app.fastmail.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cgVx34Hswz2xQ4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Oct 2025 07:19:34 +1100 (AEDT)
+Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-8c3414ad279so206414939f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Oct 2025 13:19:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759781971; x=1760386771;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WMQ7AMWhdctXnD7KUrakUOl3r47iwY0bunSrG+xUVBs=;
+        b=tQr+7YZx8rpyEjifC2dWH/4Bwecc6SnZbqyJF7+l2mFcIbjjdn2YBY3of4iOvvMcqU
+         zgXofVIb+BqeSqgyo0flWcXMq2VmgNz3R+SCE45yk+b/noDK+1/YsQ1Y8Pa1Qg+1ecmN
+         jbQRX/sdpGuRssxZwdPZsMsHfv+ny3VfHhKZCmonwFcHnmDeHInizC/kpoWWhp/lBViX
+         +2dIvV4NAKw8UcXwYV0r3ksEzLX++u7TP9HPXk+joLR5jkoIMWUBiNm2iU88bzwVY+9K
+         oYZYp8e0OfsXvCKVQFV5RfgiLN+L8jsTQVkSI0Jdlw+pOcfFdpEZoVqraxKgPpVhZJjP
+         DKXw==
+X-Forwarded-Encrypted: i=1; AJvYcCVsx8qP96XpdTqFCkKpIkt4G+rH+hyD0N+FLukjSKgHXpffpYUjmKqAjWqt3ueR67Q8S463PIqKuaNY/jY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzOa+LXq6vwOU6B3HkJzdbp0qJQOk1O/f6nUJDb4jBt5+JiSvAh
+	JERxDAKL8Ax+EvldQXt/njz+llvZ0kHMAJRQG8oyl8QCXiUXIQxai22s5Y1+9/YbCl/IE8v2C9x
+	f25cbU2Gtj7P6fT3Y1Hzz4Y15wvgFX9DbJXuvFP9ZyLdXsgWyVVrtkg==
+X-Gm-Gg: ASbGncud+4gTYG5Lv/taJ+Id+5gwmeMknDtrDUalAYdh/x/Rf/S4Bo95RiA53k3U+SE
+	gMDquRNWSPiGOY7TSncFQU4ujb4AXv+5beXQ5VCUa+LPcmVWSOOa43yy+k2JlrAd/G9ckN3mjvx
+	PLQOuC6DPX9A4tTbqS9TEyw2x/XYwRCAu1l/8lumJRoWVfM4WUs61DAFiXcXEz/KhG3UGD/Wzd0
+	yfxyzz2/ldUqPGaR1GIxQapIar9a+7WTw==
+X-Google-Smtp-Source: AGHT+IHRsp5f2Ku6tRb0jzYKixpe8eVlAjBgkS13HoHpwiJO4HW1LYKeuVIAV6O+Y2oX7uDDLHkb1J66/VTyrDNExLc=
+X-Received: by 2002:a05:6e02:178b:b0:42d:8a3f:ec8b with SMTP id
+ e9e14a558f8ab-42e7ad01f91mr194991055ab.3.1759781971030; Mon, 06 Oct 2025
+ 13:19:31 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,37 +64,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <cc6cdd116c3ad9d990df21f13c6d8e8a83815bbd.1758641374.git.jstancek@redhat.com>
+In-Reply-To: <cc6cdd116c3ad9d990df21f13c6d8e8a83815bbd.1758641374.git.jstancek@redhat.com>
+From: Justin Forbes <jforbes@fedoraproject.org>
+Date: Mon, 6 Oct 2025 14:19:20 -0600
+X-Gm-Features: AS18NWACojPXOJnwcNavqYHbaQyGIFY7GHsRyGCpNIUDTuuHWfnt5-IAZ7A22L4
+Message-ID: <CAFxkdApQVEqCjQMAUqy8cuKnMy8GY9j+brgPZBkxCpeGi5xHxA@mail.gmail.com>
+Subject: Re: [PATCH RESEND] powerpc/tools: drop `-o pipefail` in gcc check scripts
+To: Jan Stancek <jstancek@redhat.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, 
+	npiggin@gmail.com, christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org, 
+	joe.lawrence@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [195.201.40.130]
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF141 (Linux)/8.8.12_GA_3809)
-Thread-Topic: Reaching consensus on CONFIG_HIGHMEM phaseout
-Thread-Index: 4qe/Jvt6A7Z6bNoIFm3Eugvg7UbUaA==
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,T_SPF_PERMERROR
+X-Spam-Status: No, score=0.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
------ Urspr=C3=BCngliche Mail -----
-> Von: "Arnd Bergmann" <arnd@arndb.de>
->>> Has anybody run into actual end user visible problems when using one of
->>> weirdo PAGE_OFFSET configs?
->>
->> In the past I saw that programs such as the Java Runtime (JRE) ran into
->> address space limitations due to a 2G/2G split on embedded systems.
->> Reverting to a 3G/1G split fixed the problems.
->=20
-> Right, that makes sense, given the tricks they likely play on the
-> virtual address space. Are the 2GB devices you maintain using a JRE,
-> or was this on other embedded hardware? How common is Java still in
-> this type of workload?
+On Tue, Sep 23, 2025 at 9:31=E2=80=AFAM Jan Stancek <jstancek@redhat.com> w=
+rote:
+>
+> We've been observing rare non-deterministic kconfig failures during
+> olddefconfig, where ARCH_USING_PATCHABLE_FUNCTION_ENTRY was getting
+> disabled and with it number of other config options that depend on it.
+>
+> The reason is that gcc-check-fpatchable-function-entry.sh can fail
+> if `grep -q` (or scripts/dummy-tools/gcc) is fast enough to exit while
+> there is still someone writing on other side of pipe. `pipefail`
+> propagates that error up to kconfig.
+>
+> This can be seen for example with:
+>   # (set -e; set -o pipefail; yes | grep -q y); echo $?
+>   141
+>
+> or by running the actual check script in loop extensively:
+>   ----------------------------- 8< -------------------------------
+>   function kconfig()
+>   {
+>     for i in `seq 1 100`; do
+>       arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh \
+>         ./scripts/dummy-tools/gcc -mlittle-endian \
+>         || { echo "Oops"; exit 1; }
+>     done
+>   }
+>
+>   for ((i=3D0; i<$(nproc); i++)); do kconfig & done
+>   wait; echo "Done"
+>   ----------------------------- >8 -------------------------------
+>
+> Fixes: 0f71dcfb4aef ("powerpc/ftrace: Add support for -fpatchable-functio=
+n-entry")
+> Fixes: b71c9ffb1405 ("powerpc: Add arch/powerpc/tools directory")
+> Reported-by: Joe Lawrence <joe.lawrence@redhat.com>
+> Acked-by: Joe Lawrence <joe.lawrence@redhat.com>
+> Signed-off-by: Jan Stancek <jstancek@redhat.com>
+> ---
+>  arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh | 1 -
+>  arch/powerpc/tools/gcc-check-mprofile-kernel.sh           | 1 -
+>  2 files changed, 2 deletions(-)
+>
+> diff --git a/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh b/=
+arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
+> index 06706903503b..baed467a016b 100755
+> --- a/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
+> +++ b/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
+> @@ -2,7 +2,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>
+>  set -e
+> -set -o pipefail
+>
+>  # To debug, uncomment the following line
+>  # set -x
+> diff --git a/arch/powerpc/tools/gcc-check-mprofile-kernel.sh b/arch/power=
+pc/tools/gcc-check-mprofile-kernel.sh
+> index 73e331e7660e..6193b0ed0c77 100755
+> --- a/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
+> +++ b/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
+> @@ -2,7 +2,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>
+>  set -e
+> -set -o pipefail
+>
+>  # To debug, uncomment the following line
+>  # set -x
+> --
+> 2.47.1
 
-Sorry for the late reply, I was on vacation.
+Would love to see this picked up, it fixes a problem we have run into
+with our CI.
 
-No, the devices with the JRE issues are from a different customer.
-Since I work as a consultant lots of strange issues get thrown my way
-
-I wouldn't say Java is super common but I still see it from time to time.
-=20
-Thanks,
-//richard
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
