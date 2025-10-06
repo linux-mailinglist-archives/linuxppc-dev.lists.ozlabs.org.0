@@ -1,134 +1,127 @@
-Return-Path: <linuxppc-dev+bounces-12672-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12673-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1319BBD1BD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 06 Oct 2025 08:20:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4C9BBD3D8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 06 Oct 2025 09:46:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cg8K93Vm9z30Ng;
-	Mon,  6 Oct 2025 17:20:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cgBCy54JHz30Ng;
+	Mon,  6 Oct 2025 18:46:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759731645;
-	cv=none; b=WEOVa7UOw0XFBhsEauDlKyOI/NL8ANRD04/1FgNDRROuGH3nmQw0ml8mgDjw+Ib7vYZNJ7vQ8SgC/V3IoVMqp46qib+1We1P8Z99NNlgMxRB/DLDM9Q0IUs0gqV1X3LCHsuzSzvOrP0mHdAzGhTceyP56IzieqLoquNs9zp7JXQt+fG5lqvVmXIZPjRoUWFlRthMEVRBBffR6HTU5hoNxB/Upzb9MsNfbSDOfXzUki0JIm7yGXTSBSAO09qso0DiMGJgToapE0Eh67lTrmbGSXpqlwCiVYAEESazDAJSl89E7eC2qBmIgclYmcHgjwv6+hBNXangpIM2Lyu/wluHWw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759736782;
+	cv=none; b=ivSJ2OMCQfUHZ/bmQYRDG1ROd/20FZNRyfBTmmJ2WOhsbJPbUcuG+/guzneIJ93ksoL8XRNKxIeku07Ucd4F9E7ak4OM/j1CY9Td5uPdgSaqCaz3Y+//uhpn40U60XFd0erVA74CE9vRmsQa47lBLfmZkw7KqUM2yOdb/nHoyJ9InGpDSf7v+hbbn1+YgKGc40wClXSgYZTEoJos1VyPgjOnE2krQwM5Dc0BkfJnO6wCo0kECzNL5WXAJLIFczJJA4jN7sxBN0OMU05uJUlRieAmyztlmt/Mz+i/w/0kvHdbfn46vgolfqNsXUiJoHTkgKcvlDUWcJoOBj4Uj2j/xw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759731645; c=relaxed/relaxed;
-	bh=UNquTlh23mP7iB053Dg0R5L3AAPVXFE8/GScyWT83EA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IZPC/zHfWCpvVMUsxOYvO+kBDof/LfM6kpatJ7wwGbNZpyxHrQwjHZpkf+Pr4yH9gYr8OKDWXa5TxeslF9+0iag/07nDYmbMt0XTyGBDNRIqybjsOzoQTSypo72Wbxym6taGlIRwcGFL+EnNyqpDd56VYTSlMB4mVFYofWhC1HmB2mB0Vgzq19yivUisPFen5Zu7KNw31jeNMsBCzjMx4tqTaxUWgjtbxeYpZQ/IsGv+6vnxLCNyir9ePf/fnlzLdds+t2xuZSrGEzHcyWIOnrUlHO7E6bxlii7sDE8RAqOhJZpRTRNn4O4Pktqey32Z8SFvrqQaVUoHIEysLrEyMg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UTHPx8AE; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1759736782; c=relaxed/relaxed;
+	bh=0hUCpLGWp10kneCygo8M4Tl5eBzBlmAWyZmdzLPFfuE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ohXSXiLu/4d78pTUKbhMZQRE5fTxobkM/6TSvpg+u9HKmw1TZR0Q5cGTV3TaxVX0pz0+ohWp51VNxG1rkdkMo0CCTCllYeoINcVL1c5EYb3EUt91Bo81kEaWu2JAkRvoCPGfNeK2NMyHgl5HJH+3bwoD6ab1mM5wwBnyP0bZZP8rQwjcPvLVltX4IlIyYa/ZOfogSuorDOR1bpmS/zVisuVJoiwmFbKF+VMXqgzQR8fLyU3M1yUfh3lms37wjKRni7uffBd8Qj43dKAaaVyLcpDCzSBldDLntkvVY2QNkQSbz1uXCwuM3yGOSK5F8yWpfy8QxeIyzln9vJKKTlQuBg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=S0bMZECP; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=S0bMZECP; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UTHPx8AE;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=S0bMZECP;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=S0bMZECP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cg8K60Fxkz2xQ6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Oct 2025 17:20:40 +1100 (AEDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-b3d50882cc2so857931966b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Oct 2025 23:20:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759731636; x=1760336436; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UNquTlh23mP7iB053Dg0R5L3AAPVXFE8/GScyWT83EA=;
-        b=UTHPx8AEgtcNw2dXR7jFr/de/lzKkGA3Efqj227dXirrh7cllKfut8XzN02Onx6cQ7
-         ysV1wXk0OG1CxYrNwFi+pXEi4pNhB2mr/5xLohRQFDMRDNwK9GIXZ8IbZgR7eqnPw1zU
-         1mOXthVXn05S1NqX4GfyEFlDqRHywbbm6Fpa69oCWQrMq9teo+B5ldMtzKt8ohD6+J6I
-         16Zks2NCrtdMHmF1Jz585r/sH/5oZ213ODdBBuV+j+j6lstY+8e9AupxkiuGqIbBM3pF
-         Qd7OBlExvHn6xAzQTlTtUCmFbDPFcFJs1VCrH3M6108BOnu7R3lmzdGuI1xSd99oUljI
-         3FTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759731636; x=1760336436;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UNquTlh23mP7iB053Dg0R5L3AAPVXFE8/GScyWT83EA=;
-        b=BBlW9+Tf/FjiMtyQQJizkmHQma2HbmBoCy4Lrg9Y5t8O1Ve695WvLWAJBTXqm8/Ix5
-         kNXRUawoktcwmroBZB25TiWKvUVBzdDgptFD5l0OJstzPsEO4X1dVaOZYkqB9fmrX5aH
-         4idnSUTq7TKbZsmqIJTxxmK1hMS7t10AY/Da2WxmllWTjF7aQ3jYvoIraXJUhVif4SgR
-         /9zpATPWACoBS1XI2fZYrJDCiF7dmeHTT19MCcoEYPeSpmRjv4D1hY4HDv6JE5iDjyTA
-         6r0Rg+T7wL+SCQJoShp7h0GuuNtKNdZcA0AbQHCaQfd70N6oZWOu8wqmV+mq7u3P143L
-         dOXA==
-X-Forwarded-Encrypted: i=1; AJvYcCXmdFarOXQ6rjfAbE8tdpeyRHgXSJhIm53HtrH64XLEoYRs1Y7eJI24f78oV6/Ekf7+EIJODLS5jASWlIw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxeRGwBgL20mep4Vc84gsMtn/hkH6Sa0J2ldBFUq4mfq1zZuWlT
-	aoM/LIaxguT8YmUS0HHJFEfuoSqFQLUn2+FSLR7bebOGUzNT2xgKswcl
-X-Gm-Gg: ASbGnctcWd+46X+Jx6CNd/JXrqWn1kVj1CPBmxXl0Eh8eoNUqOm1+jPXKxyaZ4Z0KW5
-	Hna0x5W0JCxl64uBXf0PnREnEfaWLSgHjNn9Nzbn3mOf9Gp2mGE0l0485goRk4NJvPupcYMo/P8
-	a8BbeX6YHTnZ8sj3fepMQPUKOtRySJL1Jfw3rzWIKpfv/tmndiEEEHhwxF5ee3r/rNYpa5kkaOd
-	NpGLqT/Ip2myypG7lPvsnM/3zWf1EairSk8RDfU6hv4Kr7pVqcZIGnhRV8Jp7eocFhaICRNBMDG
-	ZKlc50C5CEZ8kxQ2axaSZtr8naPyFi28DIJBTArOaogm2VGEjEshAnJrUC43tgOxcfdmaTlkGQR
-	dotOJ7Rz+mZdJQDWL36SrQthzMmJmgvJaUgnewtzdJwtxfM9H4sMkEQ==
-X-Google-Smtp-Source: AGHT+IGd3d1JuyR21TpPk9MiZBONB78IR1Ui0MCDuhOuJlJOi/6hOLi13ihVT2uEw4eqZCl9wOO81g==
-X-Received: by 2002:a17:907:7fa5:b0:b04:25e6:2dbe with SMTP id a640c23a62f3a-b49c52746d1mr1340676066b.63.1759731635370;
-        Sun, 05 Oct 2025 23:20:35 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-6378811236csm9486395a12.42.2025.10.05.23.20.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 05 Oct 2025 23:20:34 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: rob@landley.net
-Cc: akpm@linux-foundation.org,
-	andy.shevchenko@gmail.com,
-	axboe@kernel.dk,
-	brauner@kernel.org,
-	cyphar@cyphar.com,
-	devicetree@vger.kernel.org,
-	email2tema@gmail.com,
-	graf@amazon.com,
-	gregkh@linuxfoundation.org,
-	hca@linux.ibm.com,
-	hch@lst.de,
-	hsiangkao@linux.alibaba.com,
-	initramfs@vger.kernel.org,
-	jack@suse.cz,
-	julian.stecklina@cyberus-technology.de,
-	kees@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-alpha@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-csky@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cgBCv6lFgz2xnk
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Oct 2025 18:46:19 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4F1981F452;
+	Mon,  6 Oct 2025 07:46:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1759736770; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0hUCpLGWp10kneCygo8M4Tl5eBzBlmAWyZmdzLPFfuE=;
+	b=S0bMZECPjoWBe+J7lp1BWDzt1QqEtQGjyg5lRVpr3Pu2juRaTRrUYlCop3JnR7QupyR+N/
+	HiQiduYLji7b1fhzocWWJ480xAzIy+ynq/QFBv+yldrV1+Qx/kDnUyRGcq8r0K6f32lBnU
+	SRVJl4Xq3xPVKKjRwuT7RNeYZjty6Kc=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=S0bMZECP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1759736770; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0hUCpLGWp10kneCygo8M4Tl5eBzBlmAWyZmdzLPFfuE=;
+	b=S0bMZECPjoWBe+J7lp1BWDzt1QqEtQGjyg5lRVpr3Pu2juRaTRrUYlCop3JnR7QupyR+N/
+	HiQiduYLji7b1fhzocWWJ480xAzIy+ynq/QFBv+yldrV1+Qx/kDnUyRGcq8r0K6f32lBnU
+	SRVJl4Xq3xPVKKjRwuT7RNeYZjty6Kc=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6771D13A7E;
+	Mon,  6 Oct 2025 07:46:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wfJlF8Bz42gsHgAAD6G6ig
+	(envelope-from <jgross@suse.com>); Mon, 06 Oct 2025 07:46:08 +0000
+From: Juergen Gross <jgross@suse.com>
+To: linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	linux-hyperv@vger.kernel.org,
+	virtualization@lists.linux.dev,
 	loongarch@lists.linux.dev,
-	mcgrof@kernel.org,
-	mingo@redhat.com,
-	monstr@monstr.eu,
-	mzxreary@0pointer.de,
-	patches@lists.linux.dev,
-	sparclinux@vger.kernel.org,
-	thomas.weissschuh@linutronix.de,
-	thorsten.blum@linux.dev,
-	torvalds@linux-foundation.org,
-	tytso@mit.edu,
-	viro@zeniv.linux.org.uk,
-	x86@kernel.org
-Subject: Re: [PATCH 00/62] initrd: remove classic initrd support
-Date: Mon,  6 Oct 2025 09:19:56 +0300
-Message-ID: <20251006062026.1118184-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
-References: <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: Juergen Gross <jgross@suse.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Waiman Long <longman@redhat.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	xen-devel@lists.xenproject.org,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Oleg Nesterov <oleg@redhat.com>
+Subject: [PATCH v3 00/21] paravirt: cleanup and reorg
+Date: Mon,  6 Oct 2025 09:45:45 +0200
+Message-ID: <20251006074606.1266-1-jgross@suse.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -142,460 +135,191 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spamd-Result: default: False [-1.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_CC(0.00)[suse.com,kernel.org,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com,microsoft.com,infradead.org,gmail.com,oracle.com,lists.xenproject.org,broadcom.com,armlinux.org.uk,arm.com,xen0n.name,linux.ibm.com,ellerman.id.au,csgroup.eu,dabbelt.com,eecs.berkeley.edu,ghiti.fr,linaro.org,goodmis.org,google.com,suse.de,lists.infradead.org,epam.com];
+	DKIM_TRACE(0.00)[suse.com:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[57];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	R_RATELIMIT(0.00)[to_ip_from(RLkdkdrsxe9hqhhs5ask8616i6)];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:mid,suse.com:dkim];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 4F1981F452
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -1.51
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Rob Landley <rob@landley.net>:
-> Still useful for embedded systems that can memory map flash, but it's
-
-They can use workaround suggested in cover letter.
-
-> While you're at it, could you fix static/builtin initramfs so PID 1 has 
-> a valid stdin/stdout/stderr?
-
-This is in my low-priority TODO list. I want to help you. I will possibly do this
-after a month or two or three...
-
-> I posted various patches to make CONFIG_DEVTMPFS_MOUNT work for initmpfs
-
-My solution will be different: I will create static /dev/console and /dev/null
-after unpacking of builtin and external initramfs. (/dev/null because of
-that bionic problem you somewhere wrote.)
-
-> Oh hey, somebody using mkroot. Cool. :)
-
-Yeah, thank you for mkroot.
-
-> Now that lkml.iu.edu is back up (yay!) all the links in 
-> ramfs-rootfs-initramfs.txt can theoretically be fixed just by switching 
-> the domain name.
-
-Yes, I plan to replace them with lore.kernel.org ones. This is in my low-priority
-TODO list, too.
-
-> > For example, I renamed the following global variables:
-> > 
-> > __initramfs_start
-> > __initramfs_size
-> 
-> That already said initramfs, and you renamed it.
-
-Yes, to distinguish builtin and external initramfs.
-
-> > phys_initrd_start
-> > phys_initrd_size
-> > initrd_start
-> > initrd_end
-> 
-> Which is data delivered through grub's "initrd" command. Here's how I've 
-
-My plan is to change "official" names for these things.
-"initramfs" will refer both to .cpio archive itself and to loading
-mechanism. Name of GRUB's "initrd" command will become "wrong, kept for
-compatibility".
-
-But I plan to do all these renamings after I fully remove initrd support,
-which will happen in September 2026, as I explained in another email.
-
-> 3) rootfs is (for some reason) the name of the mounted filesystem in 
-> /proc/mounts (because letting it say "ramfs" or "tmpfs" like normal in 
-> /proc/mounts would be consistent and immediately understandable, so they 
-> couldn't have that).
-
-I totally agree. I want to change it to ramfs/tmpfs. But this change
-may break something, so I think we need some strong motivation to
-do this. So I will wait for removal of nommu support. Arnd Bergmann said
-"NOMMU removal maybe 2027" ( https://lwn.net/Articles/1035727/ ,
-https://static.sched.com/hosted_files/osseu2025/75/32-bit%20Linux%20in%202025%20%28OSS%20Europe%29.pdf ,
-slide 20). (Also he said 32-bit support will be removed, too.)
-After that I will remove ramfs (yeah, I love to remove things),
-and, while we are here, I will rename "rootfs" to "tmpfs" in
-/proc/mounts (hopefully I will get away with this).
-
-> > __builtin_initramfs_start
-> > __builtin_initramfs_size
-> > phys_external_initramfs_start
-> > phys_external_initramfs_size
-> > virt_external_initramfs_start
-> > virt_external_initramfs_end
-> 
-> Do you believe people will understand what the slightly longer names are 
-> without looking them up?
-
-No. But I still hope new names are better. As I said above, all these
-will be named "initramfs" under my new plan. But again, all these
-will happen after full initrd removal, which will happen in Sep 2026.
-
-> I'm all for removing obsolete code, but a partial cleanup that still 
-> leaves various sharp edges around isn't necessarily a net improvement. 
-> Did you remove the NFS mount code from init/do_mounts.c? Part of the 
-
-Okay, I put this to my low-priority TODO list.
-
-> The one config symbol that really seems to bite people in this area is 
-> BLK_DEV_INITRD because a common thing people running from initramfs want 
-> to do is yank the block layer entirely (CONFIG_BLOCK=n) and use 
-> initramfs instead, and needing to enable CONFIG_BLK_DEV_INITRD while
-> 
-> And the INSANE part is they generally want a static initrd to do it so 
-> they're not using the external loader, but Kconfig has INITRAMFS_SOURCE 
-> under CONFIG_BLK_DEV_INITRD and it's a mess. Renaming THAT symbol would 
-> be good.
-
-You mean renaming CONFIG_BLK_DEV_INITRD will be good?
-I do exactly that.
-And while we are here, I also rename CONFIG_RD_*,
-because configs will be broken anyway.
-
-Also, recently we got keyword "transitional" to help with such
-renamings: https://www.phoronix.com/news/Linux-6.18-Transitional .
-I will use it.
-
-> To you. I'm not entirely sure what virt_external means. (Yes I could go 
-
-It means "virtual address of external initramfs". But, yes, Borislav Petkov
-said me in another email that kernel devs usually use "va" for virtual
-address and "pa" for physical, so I will use these terms (in Sep 2026).
-
-> Meanwhile 35 years of installed base expertise in other people's heads 
-> has been discarded and developed version skew for anyone maintaining an 
-
-I'm still not convinced. Ideally I want to remove word "initrd" from Linux
-sources completely.
-
-Decision to merge my patches or not is on maintainers anyway. They
-will decide whether these renamings are good idea.
-
-> > - Removed kernel command line parameter "ramdisk_start",
-> > which was used for initrd only (not for initramfs)
-> 
-> Some bootloaders appended that to the kernel command line to specify 
-> where in memory they've loaded the initrd image, which could be a 
-> cpio.gz once upon a time. No idea what regressions happened since though.
-
-I double-checked: ramdisk_start is used for initrd code path only
-in modern kernels, not for initramfs code path.
-
-"initrd=" is used in both code paths, and I keep it.
-
-==
-
-While we are here, let me answer other your emails, too.
-
-Here is answer to https://lore.kernel.org/all/94023988-8498-4070-bdb7-6758dbe4b91d@landley.net/ .
-
-> There used to be a way to feed a the kernel config a text file listing 
-> what to make in the cpio file instead of just pointing it at a 
-> directory, and my old Aboriginal Linux build used that mechanism 
-...
-> But kernel commit 469e87e89fd6 broke that mechanism because somebody 
-> dunning-krugered it away ("I don't understand why we need this therefore 
-
-I will consider fixing this, too. Put to my low-priority TODO list.
-
-But it is possible that I will instead remove gen-init-cpio completely.
-(I will do some experiments before deciding.)
-If it was broken, and nobody except for you cared, then this means that
-nobody except for you use it.
-
-Of course, I will do that after sending patch for unconditional creating of
-/dev/console and /dev/null, so you are safe.
-
-> And again: you ONLY need this for static initramfs. Dynamic initramfs 
-> has code create /dev/console (at boot time, not build time):
->
-> https://github.com/torvalds/linux/blob/v6.16/init/noinitramfs.c#L27
-
-Your explanation is wrong here. As you can see in Makefile, noinitramfs.c
-is not built if there is BLK_DEV_INITRD.
-
-If you don't have BLK_DEV_INITRD, then noinitramfs.c
-is built, and it creates /dev/console.
-
-If there is BLK_DEV_INITRD and there is no INITRAMFS_SOURCE, then
-default built-in initramfs is used, which is specified here:
-https://elixir.bootlin.com/linux/v6.17/source/usr/default_cpio_list
-(and it happens to be equivalent to specified in noinitramfs.c).
-
-If there are both BLK_DEV_INITRD and INITRAMFS_SOURCE, then
-INITRAMFS_SOURCE is used instead of default built-in initramfs,
-so there is no /dev/console.
-
-I am totally sure that my explanation is correct.
-
-> I could emit cpio contents with xxd -r from a HERE document hexdump or
-
-There is no need for "xxd -r". cpio encoding of /dev/console is ASCII
-(except for some null bytes). See:
-
-$ echo /dev/console | cpio --create --format=newc --quiet | xxd
-00000000: 3037 3037 3031 3030 3030 3030 3043 3030  0707010000000C00
-00000010: 3030 3231 3830 3030 3030 3030 3030 3030  0021800000000000
-00000020: 3030 3030 3030 3030 3030 3030 3031 3638  0000000000000168
-00000030: 4438 4337 4241 3030 3030 3030 3030 3030  D8C7BA0000000000
-00000040: 3030 3030 3030 3030 3030 3030 3036 3030  0000000000000600
-00000050: 3030 3030 3035 3030 3030 3030 3031 3030  0000050000000100
-00000060: 3030 3030 3044 3030 3030 3030 3030 2f64  00000D00000000/d
-00000070: 6576 2f63 6f6e 736f 6c65 0000 3037 3037  ev/console..0707
-00000080: 3031 3030 3030 3030 3030 3030 3030 3030  0100000000000000
-00000090: 3030 3030 3030 3030 3030 3030 3030 3030  0000000000000000
-000000a0: 3030 3030 3030 3030 3031 3030 3030 3030  0000000001000000
-000000b0: 3030 3030 3030 3030 3030 3030 3030 3030  0000000000000000
-000000c0: 3030 3030 3030 3030 3030 3030 3030 3030  0000000000000000
-000000d0: 3030 3030 3030 3030 3030 3030 3030 3030  0000000000000000
-000000e0: 3042 3030 3030 3030 3030 5452 4149 4c45  0B00000000TRAILE
-000000f0: 5221 2121 0000 0000 0000 0000 0000 0000  R!!!............
-00000100: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000110: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000120: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000130: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000140: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000150: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000160: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000170: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000180: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-00000190: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001a0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001b0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001c0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001d0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001e0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-000001f0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
-
-So, I think the following will go (not tested):
-
-==
-printf '%s' '0707010000000C0000218000000000000000000000000168D8C7BA00000000000000000000000600000005000000010000000D00000000/dev/console' > out.cpio
-printf '\0\0' >> out.cpio
-==
-
-Maybe even last '\0\0' is not needed.
-
-Also, this your email ( https://lore.kernel.org/all/94023988-8498-4070-bdb7-6758dbe4b91d@landley.net/ )
-for some reasons didn't end up on https://lore.kernel.org/lkml .
-
-As you can see here https://lore.kernel.org/lkml/94023988-8498-4070-bdb7-6758dbe4b91d@landley.net/ ,
-the full list of lore mailing lists, which got it, is linux-snps-arc, linux-riscv and linux-sh .
-
-I wrote about this to public-inbox:
-http://public-inbox.org/meta/CAPnZJGB7ugY5rytS+hO-QzvPQBNjCh1jzs4WVkuakafBM9c_=w@mail.gmail.com/T/#u .
-But it is possible that the problem is on your side.
-
-Maybe this is why people ignore your emails? Maybe they simply don't get them?
-
-Consider applying for linux.dev email ( https://linux.dev ). They are free for linux devs.
-
-==
-
-Now let me answer to https://lore.kernel.org/lkml/8f595eec-e85e-4c1f-acb0-5069a01c1012@landley.net/T/#u .
-
-> I find the community an elaborate bureaucracy unresponsive to hobbyists. 
-> Documentation/process/submitting-patches.rst being a 934 line document 
-> with a bibliography, plus a 24 step checklist not counting the a) b) c) 
-> subsections are just symptoms. The real problem is following those is 
-> not sufficient to navigate said bureaucracy.
-
-I totally agree.
-
-Still I somehow was able to manage this.
-
-Again: I totally agree. I just want to share some practical advice, that helped me
-to get my patches merged.
-
-As you can see, I was able to get my patches merged:
-https://lore.kernel.org/all/?q=f:%22Askar%20Safin%22 .
-
-And this is despite nobody paid me for this. I do this in my own free time.
-
-As well as I understand, you are doing embedded Linux development as your job,
-so you are in better position.
-
-My patches are merged despite my productivity is low. I am very slow person.
-
-You don't need to remember all of submitting-patches.rst . Just do this:
-
-- Run checkpatch.pl . It accepts git ranges, e. g. "checkpatch.pl origin/HEAD..HEAD"
-- After posting patches respond to comments, apply their edits, send new version, then again and again
-
-When sending patches and responding to comments don't write too long letters.
-Nobody will carefully read long letters and respond to them.
-I respond to such letters, because I'm autistic, and I feel responsibility to carefully
-read and respond to each letter. But other people don't do this.
-
-In particular, when sending patches and responding to comments don't write long
-paragraphs about good things you did in the past and about how you are disappointed
-in the entire world, such as these:
-
-> Let's see, I wrote the initramfs documentation in 2005:
->
-> https://lwn.net/Articles/157676/
->
-> Was already correcting kernel developers on how it actually worked 
-> (rather than theoretically worked) in 2006:
->
-> https://lkml.iu.edu/hypermail//linux/kernel/0603.2/2760.html
->
-> I added tmpfs support to it in 2013 (because nobody else had bothered 
-> for EIGHT YEARS):
->
-> https://lkml.iu.edu/hypermail/linux/kernel/1306.3/04204.html
->
-> I've maintained my own cpio implementation in toybox for over a decade:
->
-> https://github.com/landley/toybox/commit/a2d558151a63
->
-> The successor to aboriginal (above) is a 400 line bash script that 
-> builds a dozen archtectures that each boot to a shell prompt in qemu:
->
-> https://github.com/landley/toybox/blob/master/mkroot/mkroot.sh
-> https://landley.net/bin/mkroot/latest/
->
-> With automated regression test infrastructure to boot them all under 
-> qemu and confirm that it runs, the clocks are set right, the network 
-> works, and it can read from -hda:
->
-> https://github.com/landley/toybox/blob/master/mkroot/testroot.sh
->
-> So yes I _can_ create my own bespoke C program to modify the file in 
-> arbitrary ways, I have my reasons not to do that, and have thought about 
-> them for a while now.
-
-Again: I'm not trying to insult you. I'm just trying to give advice how
-to get your patches merged.
-
-When my patches are ready, I send them using something like this:
-
-==
-UPSTREAM=origin/HEAD
-MERGE_BASE="$(git merge-base "$UPSTREAM" HEAD)"
-
-mkdir /tmp/patches
-
-# For --signoff
-export GIT_COMMITTER_EMAIL=me@example.com
-
-# Prepare patches
-# --base for "base-commit:" footer
-git format-patch --cover-letter --find-renames --base="$MERGE_BASE" --signoff -o /tmp/patches \
-  --subject-prefix='PATCH v2' "$MERGE_BASE"
-
-editor /tmp/patches/0000-cover-letter.patch
-
-# Send
-# "--batch-size=1 --relogin-delay=20" to insert delays between patches. Hopefully
-# this will help me to cope with my mailserver limits
-# "--confirm=" to give myself chance to cancel
-git send-email --batch-size=1 --relogin-delay=20 --confirm=always --to=a@example.com --cc=b@example.com \
-  /tmp/patches
-==
-
-This script will automatically generate nice diffstat in cover letter.
-
-This script is not tested. Actually I use my own 182-line Rust program, which does
-same thing.
-
-This is checklist I plan to do when sending v2 version of this initrd patchset:
-- Read all answers to prev. version, respond and apply edits
-- checkpatch.pl
-- Check that my patchset doesn't conflict with linux-next
-- Check that every commit compiles for x86_64 with "W=1"
-- Test everything using mkroot.sh rewritten in Rust
-
-> Why keep the section when you removed the old mechanism?
-
-This section still contains useful info, so I kept it.
-But okay, I agree, I will rewrite it to not mention initrd.
-I will do this after full removal of initrd, i. e. in Sep 2026.
-
-If you want me to send some patch to this document _now_,
-then just ask me, I will try to do this.
-
-> Those two lines you just touched contradict each other
-
-Will fix in Sep 2026, too.
-
-> The init/noinitramfs.c file does init/mkdir("/dev") and 
-> init_mknod("/dev/console") because calling the syscall_blah() functions 
-> directly was considered icky so they created gratuitous wrappers to do
-
-You cannot directly call syscall from kernel code if your syscall
-works with strings. Reasons are here: https://lwn.net/Articles/832121/ .
-
-mkdir syscall expects string, located in user memory. So you
-cannot call it from kernel and pass kernel string to it.
-Thus you need separate init_mkdir.
-
-> Anyway, that's why the 130+ byte archive was there. It wasn't actually 
-> empty, even when initramfs was disabled.
-
-I just double-checked. If BLK_DEV_INITRD is disabled, then
-there is no any builtin initramfs at all. If BLK_DEV_INITRD is
-disabled, then initramfs_data.S is not built, as we can see here:
-
-https://elixir.bootlin.com/linux/v6.17/source/usr/Makefile#L15
-
-And initramfs_data.S contains symbol __initramfs_size, so, yes,
-initramfs_data.S is actual builtin initramfs.
-
-In fact, that "obj-$(CONFIG_BLK_DEV_INITRD) :=" trick
-is not needed, because whole usr/ dir is compiled out,
-if there is no BLK_DEV_INITRD:
-https://elixir.bootlin.com/linux/v6.17/source/init/Kconfig#L1455
-
-Again: I acknoledge that bug with missing /dev/console. In fact,
-I was able to reproduce it. I plan to fix it in a month or two.
-
-> > +If the kernel has CONFIG_BLK_DEV_INITRD enabled, an external cpio.gz archive can also
->
-> You renamed that symbol, then even you use the old name here.
-
-I rename it in later commit.
-
-> > -This has the memory efficiency advantages of initramfs (no ramdisk block
-> > -device) but the separate packaging of initrd (which is nice if you have
-> > +This is nice if you have
-> >   non-GPL code you'd like to run from initramfs, without conflating it with
-> > -the GPL licensed Linux kernel binary).
-> > +the GPL licensed Linux kernel binary.
->
-> IANAL: Whether or not this qualifies as "mere aggregation" had yet to go 
-> to court last I heard.
-
-This is possible that court will use this file as an argument.
-So let's keep this paragraph here. :)
-
-There is an example, where FAQ on FSF site was actually
-used as argument in court: https://www.sonarsource.com/blog/will-the-new-judicial-ruling-in-the-vizio-lawsuit-strengthen-the-gpl/ .
-
-I mean this quote:
-
-> Vizio “did not dispute” the first two questions, focusing instead on the “expectations” of the contracting parties.
-> Relying on the Free Software Foundation’s (FSF) GPL FAQs, it argued that the FSF never intended for third parties to enforce the contract,
-> and therefore the parties to the contract could not have intended it.
-
-
-> >     echo init | cpio -o -H newc | gzip > test.cpio.gz
-> > -  # Testing external initramfs using the initrd loading mechanism.
-> > +  # Testing external initramfs.
->
-> Does grub not still call it "initrd"?
-
-Yes, grub still calls it "initrd".
-As I said, in Sep 2026 I will rename bootloader loading mechanism to "initramfs",
-and name of grub command "initrd" will simply become "wrong".
-
-> A) they added -hda so you don't have to give it a dummy /dev/zero anymore.
-
-Ok, I will fix.
-
-> B) there's no longer a "qemu" defaulting to the current architecture,
-
-Ok, I will fix.
+Some cleanups and reorg of paravirt code and headers:
+
+- The first 2 patches should be not controversial at all, as they
+  remove just some no longer needed #include and struct forward
+  declarations.
+
+- The 3rd patch is removing CONFIG_PARAVIRT_DEBUG, which IMO has
+  no real value, as it just changes a crash to a BUG() (the stack
+  trace will basically be the same). As the maintainer of the main
+  paravirt user (Xen) I have never seen this crash/BUG() to happen.
+
+- The 4th patch is just a movement of code.
+
+- I don't know for what reason asm/paravirt_api_clock.h was added,
+  as all archs supporting it do it exactly in the same way. Patch
+  5 is removing it.
+
+- Patches 6-14 are streamlining the paravirt clock interfaces by
+  using a common implementation across architectures where possible
+  and by moving the related code into common sched code, as this is
+  where it should live.
+
+- Patches 15-20 are more like RFC material preparing the paravirt
+  infrastructure to support multiple pv_ops function arrays.
+  As a prerequisite for that it makes life in objtool much easier
+  with dropping the Xen static initializers of the pv_ops sub-
+  structures, which is done in patches 15-17.
+  Patches 18-20 are doing the real preparations for multiple pv_ops
+  arrays and using those arrays in multiple headers.
+
+- Patch 21 is an example how the new scheme can look like using the
+  PV-spinlocks.
+
+Changes in V2:
+- new patches 13-18 and 20
+- complete rework of patch 21
+
+Changes in V3:
+- fixed 2 issues detected by kernel test robot
+
+Juergen Gross (21):
+  x86/paravirt: Remove not needed includes of paravirt.h
+  x86/paravirt: Remove some unneeded struct declarations
+  x86/paravirt: Remove PARAVIRT_DEBUG config option
+  x86/paravirt: Move thunk macros to paravirt_types.h
+  paravirt: Remove asm/paravirt_api_clock.h
+  sched: Move clock related paravirt code to kernel/sched
+  arm/paravirt: Use common code for paravirt_steal_clock()
+  arm64/paravirt: Use common code for paravirt_steal_clock()
+  loongarch/paravirt: Use common code for paravirt_steal_clock()
+  riscv/paravirt: Use common code for paravirt_steal_clock()
+  x86/paravirt: Use common code for paravirt_steal_clock()
+  x86/paravirt: Move paravirt_sched_clock() related code into tsc.c
+  x86/paravirt: Introduce new paravirt-base.h header
+  x86/paravirt: Move pv_native_*() prototypes to paravirt.c
+  x86/xen: Drop xen_irq_ops
+  x86/xen: Drop xen_cpu_ops
+  x86/xen: Drop xen_mmu_ops
+  objtool: Allow multiple pv_ops arrays
+  x86/paravirt: Allow pv-calls outside paravirt.h
+  x86/paravirt: Specify pv_ops array in paravirt macros
+  x86/pvlocks: Move paravirt spinlock functions into own header
+
+ arch/Kconfig                                  |   3 +
+ arch/arm/Kconfig                              |   1 +
+ arch/arm/include/asm/paravirt.h               |  22 --
+ arch/arm/include/asm/paravirt_api_clock.h     |   1 -
+ arch/arm/kernel/Makefile                      |   1 -
+ arch/arm/kernel/paravirt.c                    |  23 --
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/paravirt.h             |  14 -
+ arch/arm64/include/asm/paravirt_api_clock.h   |   1 -
+ arch/arm64/kernel/paravirt.c                  |  11 +-
+ arch/loongarch/Kconfig                        |   1 +
+ arch/loongarch/include/asm/paravirt.h         |  13 -
+ .../include/asm/paravirt_api_clock.h          |   1 -
+ arch/loongarch/kernel/paravirt.c              |  10 +-
+ arch/powerpc/include/asm/paravirt.h           |   3 -
+ arch/powerpc/include/asm/paravirt_api_clock.h |   2 -
+ arch/powerpc/platforms/pseries/setup.c        |   4 +-
+ arch/riscv/Kconfig                            |   1 +
+ arch/riscv/include/asm/paravirt.h             |  14 -
+ arch/riscv/include/asm/paravirt_api_clock.h   |   1 -
+ arch/riscv/kernel/paravirt.c                  |  11 +-
+ arch/x86/Kconfig                              |   8 +-
+ arch/x86/entry/entry_64.S                     |   1 -
+ arch/x86/entry/vsyscall/vsyscall_64.c         |   1 -
+ arch/x86/hyperv/hv_spinlock.c                 |  11 +-
+ arch/x86/include/asm/apic.h                   |   4 -
+ arch/x86/include/asm/highmem.h                |   1 -
+ arch/x86/include/asm/mshyperv.h               |   1 -
+ arch/x86/include/asm/paravirt-base.h          |  29 ++
+ arch/x86/include/asm/paravirt-spinlock.h      | 146 ++++++++
+ arch/x86/include/asm/paravirt.h               | 331 +++++-------------
+ arch/x86/include/asm/paravirt_api_clock.h     |   1 -
+ arch/x86/include/asm/paravirt_types.h         | 269 +++++++-------
+ arch/x86/include/asm/pgtable_32.h             |   1 -
+ arch/x86/include/asm/ptrace.h                 |   2 +-
+ arch/x86/include/asm/qspinlock.h              |  89 +----
+ arch/x86/include/asm/spinlock.h               |   1 -
+ arch/x86/include/asm/timer.h                  |   1 +
+ arch/x86/include/asm/tlbflush.h               |   4 -
+ arch/x86/kernel/Makefile                      |   2 +-
+ arch/x86/kernel/apm_32.c                      |   1 -
+ arch/x86/kernel/callthunks.c                  |   1 -
+ arch/x86/kernel/cpu/bugs.c                    |   1 -
+ arch/x86/kernel/cpu/vmware.c                  |   1 +
+ arch/x86/kernel/kvm.c                         |  11 +-
+ arch/x86/kernel/kvmclock.c                    |   1 +
+ arch/x86/kernel/paravirt-spinlocks.c          |  26 +-
+ arch/x86/kernel/paravirt.c                    |  42 +--
+ arch/x86/kernel/tsc.c                         |  10 +-
+ arch/x86/kernel/vsmp_64.c                     |   1 -
+ arch/x86/kernel/x86_init.c                    |   1 -
+ arch/x86/lib/cache-smp.c                      |   1 -
+ arch/x86/mm/init.c                            |   1 -
+ arch/x86/xen/enlighten_pv.c                   |  82 ++---
+ arch/x86/xen/irq.c                            |  20 +-
+ arch/x86/xen/mmu_pv.c                         | 100 ++----
+ arch/x86/xen/spinlock.c                       |  11 +-
+ arch/x86/xen/time.c                           |   2 +
+ drivers/clocksource/hyperv_timer.c            |   2 +
+ drivers/xen/time.c                            |   2 +-
+ include/linux/sched/cputime.h                 |  18 +
+ kernel/sched/core.c                           |   5 +
+ kernel/sched/cputime.c                        |  13 +
+ kernel/sched/sched.h                          |   3 +-
+ tools/objtool/arch/x86/decode.c               |   8 +-
+ tools/objtool/check.c                         |  78 ++++-
+ tools/objtool/include/objtool/check.h         |   2 +
+ 67 files changed, 659 insertions(+), 827 deletions(-)
+ delete mode 100644 arch/arm/include/asm/paravirt.h
+ delete mode 100644 arch/arm/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/arm/kernel/paravirt.c
+ delete mode 100644 arch/arm64/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/loongarch/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/powerpc/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/riscv/include/asm/paravirt_api_clock.h
+ create mode 100644 arch/x86/include/asm/paravirt-base.h
+ create mode 100644 arch/x86/include/asm/paravirt-spinlock.h
+ delete mode 100644 arch/x86/include/asm/paravirt_api_clock.h
 
 -- 
-Askar Safin
+2.51.0
+
 
