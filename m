@@ -1,69 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12686-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12687-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16EDBC032D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 07 Oct 2025 07:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9E9BC0336
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 07 Oct 2025 07:34:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cgl7P4bQlz2ywC;
-	Tue,  7 Oct 2025 16:29:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cglDw2gy2z2ywC;
+	Tue,  7 Oct 2025 16:34:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759814961;
-	cv=none; b=LjylXr/Srs9RINaei3eGawXkGGNxxoZA/hkIbWRf7hrVxVc33wTZPw4+durtAo7TAnX9KcdqLcXQGvm78rHPNNr/uUegG/Ah+RgGeq/Whyd6OUz9UHdjEYnUSBoaRxIwIokYtpfEh/Y+qa7yJThUionqWHEEip09LriC41rfZtmVOshEf5HITkp/qj2adOQrX6gps5OmXM3yempWiRicfgRK0td2a5dAsRKpAINzV7kSAtViKUsMZlpyRdT6NoII0uiEZNV9bKPW82Axy9NFlc++xYS5JxZARcMsUkyq2DZ7q1elfs4yj1tLXduRoS5cbJjX1ThyxtDKpQQmeieFgA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759815248;
+	cv=none; b=XbmBxZJ1xC7AiOby9Zo0iWAknKXy04Lz3hfOS52rP6UdDMv3yHGwGDK81h/fBF/6QLb5jh2Kqve0wG/In19ZTFjttbFpnn9CQx6apBifpxBIAr/EYUhsAQKqPFxJO5IYhu5UNYb+s9u3a5YZvvb5NzfBtaadZJAASDfby8tuKACkty0D87c0J+VUyvGWv/dVdvm8BdmnADRu1ZTOiRmIEB/kx+rtB6/IICmSe1oFI/IqhQ0gIKOwXQTzRWdQBW22kE6i4NDF5eGsNAP5RJ+cpGJvsoQgrsCJ6TzD5CYGC6hP/zTyEOLxEhHNfrmXZ3T8900dBKxDnYe/cfgB8E83AQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759814961; c=relaxed/relaxed;
-	bh=BAtC0w6ddeGX7BZOYk+5ICrNsjc3qhw9wh5z9OzF+E8=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=KX82fPhGiC0tTOwakQWyVcVHpdFLphpk7rH075crqJnJRZcyrhEUkuYDpvlEJ0OBeY/dnzAJg5mKvkBLuxanuUnX9YzO5ZN/cugISR4oRQMPJjruDEhCezbWKAIUM7ucHTE5MtKUubflasLULNPs+zA463wzJ7S76bzTjJQM9iKRt04f0WH2E7RCLMhNsjBVq9HkJmrW6GZTKH5EkD3WM+HHqQ4AgHrQzm+SCBjn/4BPDVKVS9t4kB3ixy8HP9DutlC+OQ000CfC7Xkd2Psc4Hz2XCkjgZ02UCkmRDtkGfPO1tCvdOD9cGXhlz8QahNt96kyYob6UEvj5a8nnrWONQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O8AIiczh; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1759815248; c=relaxed/relaxed;
+	bh=FX5SjSWqDlT/Sf/R+hW0i1Lf3ZEpCbIHwofL2VqL1Es=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=DQZgriBcdctLPa4/ff9CDm5SNoqH3ytMEF4PYZsE0Ct96olZydOEMKwJE+5czp8kqnXRxIomKobvoEWf09QMwpTx70mSLMAau0v06R9OpKDKgnOfBadImuIAVUgOZ/lTmu1nfVSwCN9gP8t5GC1bqzTX/bOiCO/cdE7d7vwCSo93viKG1+aauF6FQNF4cgUBfK33Uy4jH7ouo4IamnOpLhSgqSJLjqG7+Z5WUNuKTEDjSkz2x7aqGwcqssiXV8veDACb/BkEQM2ecz7HJtcXZB+1uBX19VVVNXKRE8rRgwmc9RC7d+If/+IjNu277hTDRvX0NC3UlYCupIcIbmX2mQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k/MUyyRu; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O8AIiczh;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k/MUyyRu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cgl7N3sqqz2xcC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Oct 2025 16:29:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cglDv3Ljmz2xcC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Oct 2025 16:34:07 +1100 (AEDT)
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 596NktMr007671;
-	Tue, 7 Oct 2025 05:29:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=BAtC0w6ddeGX7BZOYk+5ICrNsjc3
-	qhw9wh5z9OzF+E8=; b=O8AIiczhDihTrZCXkGl9pdy+mSmr5WZOhwD+4Q30rXhw
-	7QE65euY5kE6CjNDka2x01kSjdUiJ4T9JBJFiTDtKLxPYCZ7B32GpLnuTcphoDya
-	WdR028sWzrJPM8XX5Yo0c22ULT/Qwr+vm5yI+/coDVHibQ60VIVGSz0gwyy4IMjX
-	JkYvVNriMpS0eh5EAqrsTzHufomZz4ceLcouPvoau82s1nyi41En3Z3mkrm8VRTs
-	1MZ9vI59AAec+XioyJd/ldYj6Z5KY4v5RPFPoZpLqpZIiDqEdhOm0qgMoGXCIkoN
-	ifMUdadMOwgYV9gpjYUKkKVR1gaRHDp+L/DpxCtXLA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49js0scyt2-1
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 596HlgY5004499;
+	Tue, 7 Oct 2025 05:34:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=FX5SjS
+	WqDlT/Sf/R+hW0i1Lf3ZEpCbIHwofL2VqL1Es=; b=k/MUyyRu7OKdre3j5t1CuM
+	KmyKay5Jwc97X4jToTn7arqBTY8c/tjEQvNSLYeSmqA2MwD7QQf5EzZy/nzCu3qc
+	mvsUPdCrGEFEM/mxC0vc26R0PMOSlsx4tUo83/hf2ugukVxVWwOvco7ennBhHlFR
+	O3ptqai3+z4A6ymrDT7XY5w4Fg7CnhBJKNYCnY54dgQuPIqFm0SQF8LJWXxWWaqY
+	UGQA2ll3kFPRJRxwRRWifX06Q902Mu7DqZLq70Sfw7/DpHbucRAYIxmdbfnHSc1z
+	NY/00jf0nteSL1NzYQSU64OWKaA+HlAetFW7zaz2gqJ6r1zPAkOi/rO1LT/itk0w
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49js0sd07p-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Oct 2025 05:29:17 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5970pbX9031419;
-	Tue, 7 Oct 2025 05:29:16 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49kfdk1m7a-1
+	Tue, 07 Oct 2025 05:34:01 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5975TZe0010155;
+	Tue, 7 Oct 2025 05:34:00 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49js0sd07n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Oct 2025 05:29:16 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5975TGLH20185776
+	Tue, 07 Oct 2025 05:34:00 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5974tcCe000882;
+	Tue, 7 Oct 2025 05:34:00 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49ke9y1u5p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Oct 2025 05:34:00 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5975Xuex46268792
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Oct 2025 05:29:16 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1B34258056;
-	Tue,  7 Oct 2025 05:29:16 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 691C45803F;
-	Tue,  7 Oct 2025 05:29:14 +0000 (GMT)
-Received: from [9.98.109.65] (unknown [9.98.109.65])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  7 Oct 2025 05:29:14 +0000 (GMT)
-Message-ID: <88f1df7e-8347-45f7-a2a1-e321e72e4009@linux.ibm.com>
-Date: Tue, 7 Oct 2025 10:59:12 +0530
+	Tue, 7 Oct 2025 05:33:56 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F6A620043;
+	Tue,  7 Oct 2025 05:33:56 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F112C20040;
+	Tue,  7 Oct 2025 05:33:46 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.253.188])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  7 Oct 2025 05:33:46 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,37 +85,53 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-GB
-To: LKML <linux-kernel@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
+Subject: Re: [PATCH V3 0/6] perf/tools: Add interface to expose vpa dtl
+From: Athira Rajeev <atrajeev@linux.ibm.com>
+In-Reply-To: <aN02F61OLv6Tx_gB@x1>
+Date: Tue, 7 Oct 2025 11:03:31 +0530
+Cc: Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
         Madhavan Srinivasan <maddy@linux.ibm.com>,
-        linux-kselftest@vger.kernel.org
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: [linux-next20251003] tmp2 selftests resulting in Kernel OOPs
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Aboorva Devarajan <aboorvad@linux.ibm.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, hbathini@linux.vnet.ibm.com,
+        Aditya Bodkhe <Aditya.Bodkhe1@ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Tejas Manhas <Tejas.Manhas1@ibm.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <DDD36407-0973-435A-A087-BB7A071C8BA6@linux.ibm.com>
+References: <20250916052536.93911-1-atrajeev@linux.ibm.com>
+ <ac85151f-21e0-4a98-96e6-8153d0159915@intel.com>
+ <6BB167B7-6479-44E7-9175-E67E500DB9E2@linux.ibm.com>
+ <7EE7DD5B-6550-436B-A799-2B1DF293121E@gmail.com>
+ <AB498516-CA5D-428C-B6FC-CC46A43E39AA@linux.ibm.com> <aN02F61OLv6Tx_gB@x1>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+X-Mailer: Apple Mail (2.3776.700.51)
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=EqnfbCcA c=1 sm=1 tr=0 ts=68e4a52d cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VnNF1IyMAAAA:8 a=SFsY72qJKfksyYy68MgA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: ebr90XJ14DZht262LQfZO3Y8My_ywbwG
-X-Proofpoint-ORIG-GUID: ebr90XJ14DZht262LQfZO3Y8My_ywbwG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDAzMDIwMSBTYWx0ZWRfX9ui6U7Rw0QEJ
- YWtcihaCnZASBFRY756Ziy6swXBQZAxT9yha3QCyfbc8rwIz4kfT1OF8iQs/92kLk+tuLf8Pq8V
- LVGWlPKaMUivkINIXIg7QMF6kRcy40+GQ0rzKQlNCie52LTCP89qwMiVI5XwIknlKPyEWDoYWKC
- P6iht8pyVoHirkYqBLafJLem7nDQ3T7IjXb8sA2xjveHxDjaYKX70GYX4eTT38Te5WcA7qq+DIF
- SFn9o13d+0cE6wS4SuBJdMENlKC4K6ZUzQsws1qC+e+3IVYc7Yk16qOLWB2v67esI9r2So3iw8w
- ugljuLMecuk116SA+pPdTwMB/upL43q50m97SuO6OAFxpwwmjrb618/J22OfG4J7EEWKkGzZR5n
- Jy3FRAlJYF/8MwmW9K0MKyXGsZlPmA==
+X-Authority-Analysis: v=2.4 cv=EqnfbCcA c=1 sm=1 tr=0 ts=68e4a649 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=VnNF1IyMAAAA:8 a=hJTAkFaA5njBwcdrxdAA:9 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: i2KbJFPO8--PEts655tAp3ig6CLkTLGJ
+X-Proofpoint-ORIG-GUID: xtFiBNTvlDuqzMpw1__vUwt45Qv989Yc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDAzMDIwMSBTYWx0ZWRfXw6o9u5Yu1X5i
+ eNE0ur4/KY8O94tEnQ25ArzXUkpnD8UJrzH+ryQZ5fVVqNy/51DMF68cmqXW+tobqmhpEGlss98
+ PDmmxHWwh5pMaDV9l81elUQGkGiUqP9e4jOZ0D+Pb5ZEHpGbbIunbNAJxdQXmpo5OFxYgWsZxbX
+ gRgyngDLNUWk6RhfoZgqHJvmc+118PVBiR1Eqd0a+aTxCsHunJNadQq99n0u/LgLX17j8rhdLHB
+ A3r44ViOeAGE77jJQ5ISAZ7ZLL2fsyYEs580kz2r4KeFkJ+5E5F+yPWtgdyjsTz3DOVsdNbbVbD
+ YsWbGbak73IrvARHFMHLLVl+ECeE6k6jg9gJYl9Q8+9QY3Xs27WlZQconMEoHj8MDv23eNSuOTj
+ XbbZ+n1PuyIVOUXOq3wmpZ+MgV9VyA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-06_07,2025-10-06_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  suspectscore=0 malwarescore=0 impostorscore=0 adultscore=0 phishscore=0
- priorityscore=1501 bulkscore=0 clxscore=1011 spamscore=0 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510030201
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -114,258 +139,32 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Greetings!!!
 
 
-IBM CI has reported a kernel OOPs while running TPM2selftests on IBM 
-Power11 system with linux-next20251002 kernel.
+> On 1 Oct 2025, at 7:39=E2=80=AFPM, Arnaldo Carvalho de Melo =
+<acme@kernel.org> wrote:
+>=20
+> On Fri, Sep 26, 2025 at 10:23:56AM +0530, Athira Rajeev wrote:
+>>> On 25 Sep 2025, at 9:57=E2=80=AFPM, Arnaldo Carvalho de Melo =
+<arnaldo.melo@gmail.com> wrote:
+>>> On September 25, 2025 6:21:19 PM GMT+02:00, Athira Rajeev =
+<atrajeev@linux.ibm.com> wrote:
+>>>> Looking for further comments if any on this patchset.
+>>>> The kernel side patches for this feature which was sent as separate =
+series is pulled to powerpc tree by Maddy
+>>>>=20
+>>>> If the tools side changes looks good, can we have this merged to =
+perf tools tree ?
+>=20
+>>> Sure, I'll look at it soon now that the kernel part is merged.
+>=20
+>> Sure, thanks Arnaldo
+>=20
+> Applied locally, build testing now.
+>=20
+> - Arnaldo
+Sure, thanks Arnaldo
 
-
-Test Case:
-
-make run_tests
-TAP version 13
-1..3
-# timeout set to 600
-# selftests: tpm2: test_smoke.sh
-# test_read_partial_overwrite (tpm2_tests.SmokeTest) ... ok
-# test_read_partial_resp (tpm2_tests.SmokeTest) ... ok
-# test_seal_with_auth (tpm2_tests.SmokeTest) ... ok
-# test_seal_with_policy (tpm2_tests.SmokeTest) ... ok
-# test_seal_with_too_long_auth (tpm2_tests.SmokeTest) ... ok
-# test_send_two_cmds (tpm2_tests.SmokeTest) ... ok
-# test_too_short_cmd (tpm2_tests.SmokeTest) ... ok
-# test_unseal_with_wrong_auth (tpm2_tests.SmokeTest) ... ok
-# test_unseal_with_wrong_policy (tpm2_tests.SmokeTest) ... ERROR
-#
-# ======================================================================
-# ERROR: test_unseal_with_wrong_policy (tpm2_tests.SmokeTest)
-# -----------------------------------------------------
-
-
-Traces:
-
-
-[  452.604333] BUG: KASAN: slab-use-after-free in tpmrm_release+0x78/0xa8
-[  452.604345] Read of size 8 at addr c00000001c650000 by task python3/1856
-[  452.604353]
-[  452.604358] CPU: 24 UID: 0 PID: 1856 Comm: python3 Kdump: loaded Not 
-tainted 6.17.0-next-20251003 #1 VOLUNTARY
-[  452.604364] Hardware name: IBM,9080-HEX Power11 (architected) 
-0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
-[  452.604368] Call Trace:
-[  452.604370] [c0000000c1867840] [c00000000187ea4c] 
-dump_stack_lvl+0x84/0xe8 (unreliable)
-[  452.604380] [c0000000c1867870] [c000000000803754] 
-print_address_description.constprop.0+0x11c/0x56c
-[  452.604388] [c0000000c1867910] [c000000000803c84] print_report+0xe0/0x358
-[  452.604394] [c0000000c18679e0] [c000000000804124] 
-kasan_report+0x128/0x1f4
-[  452.604400] [c0000000c1867af0] [c0000000008062b4] __asan_load8+0xa8/0xe0
-[  452.604406] [c0000000c1867b10] [c000000000f2ec18] tpmrm_release+0x78/0xa8
-[  452.604412] [c0000000c1867b40] [c0000000008b6a2c] __fput+0x21c/0x60c
-[  452.604417] [c0000000c1867bc0] [c0000000008ada70] sys_close+0x74/0xd0
-[  452.604424] [c0000000c1867bf0] [c000000000039270] 
-system_call_exception+0x1e0/0x460
-[  452.604431] [c0000000c1867e50] [c00000000000d05c] 
-system_call_vectored_common+0x15c/0x2ec
-[  452.604438] ---- interrupt: 3000 at 0x7fffb7534ab4
-[  452.604443] NIP:  00007fffb7534ab4 LR: 00007fffb7534ab4 CTR: 
-0000000000000000
-[  452.604446] REGS: c0000000c1867e80 TRAP: 3000   Not tainted 
-(6.17.0-next-20251003)
-[  452.604449] MSR:  800000000280f033 
-<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44284422  XER: 00000000
-[  452.604466] IRQMASK: 0
-[  452.604466] GPR00: 0000000000000006 00007ffff65d76b0 00007fffb7c17700 
-0000000000000006
-[  452.604466] GPR04: 0000000000000000 0000000000000000 0000000000000000 
-0000000000000004
-[  452.604466] GPR08: 0000000000000000 0000000000000000 0000000000000000 
-0000000000000000
-[  452.604466] GPR12: 0000000000000000 00007fffb7e6b8e0 00000000000000a1 
-00007fffb67acec0
-[  452.604466] GPR16: 0000000164032ad0 00007fffb67aceb0 00007fffb76f6a90 
-0000000000000000
-[  452.604466] GPR20: 00007fffb6f21850 0000000000000000 00007fffb71062c0 
-0000000164034490
-[  452.604466] GPR24: 00007fffb6f2fea0 00007fffb67acea8 0000000164032b18 
-00007fffb7c45b32
-[  452.604466] GPR28: 00007fffb7c678e0 00007fffb67aceb8 0000000000000006 
-0000000164034490
-[  452.604510] NIP [00007fffb7534ab4] 0x7fffb7534ab4
-[  452.604513] LR [00007fffb7534ab4] 0x7fffb7534ab4
-[  452.604516] ---- interrupt: 3000
-[  452.604518]
-[  452.604601] Allocated by task 1856:
-[  452.604607]  kasan_save_stack+0x34/0x64
-[  452.604614]  kasan_save_track+0x2c/0x50
-[  452.604621]  kasan_save_alloc_info+0x58/0x74
-[  452.604628]  __kasan_kmalloc+0x12c/0x168
-[  452.604635]  __kmalloc_cache_noprof+0x1d8/0x71c
-[  452.604643]  tpmrm_open+0x88/0x168
-[  452.604649]  chrdev_open+0x1f4/0x484
-[  452.604656]  do_dentry_open+0x578/0x9cc
-[  452.604663]  vfs_open+0x68/0x23c
-[  452.604670]  do_open+0x514/0x74c
-[  452.604676]  path_openat+0x16c/0x380
-[  452.604682]  do_filp_open+0x104/0x230
-[  452.604689]  do_sys_openat2+0xb8/0x154
-[  452.604696]  sys_openat+0xcc/0x130
-[  452.604703]  system_call_exception+0x1e0/0x460
-[  452.604710]  system_call_vectored_common+0x15c/0x2ec
-[  452.604718]
-[  452.604722] Freed by task 1856:
-[  452.604726]  kasan_save_stack+0x34/0x64
-[  452.604733]  kasan_save_track+0x2c/0x50
-[  452.604739]  __kasan_save_free_info+0x64/0x110
-[  452.604747]  __kasan_slab_free+0xb0/0x10c
-[  452.604753]  kfree+0x220/0x624
-[  452.604760]  tpmrm_release+0x6c/0xa8
-[  452.604766]  __fput+0x21c/0x60c
-[  452.604772]  sys_close+0x74/0xd0
-[  452.604779]  system_call_exception+0x1e0/0x460
-[  452.604786]  system_call_vectored_common+0x15c/0x2ec
-[  452.604794]
-[  452.604797] The buggy address belongs to the object at c00000001c650000
-[  452.604797]  which belongs to the cache kmalloc-8k of size 8192
-[  452.604806] The buggy address is located 0 bytes inside of
-[  452.604806]  freed 8192-byte region [c00000001c650000, c00000001c652000)
-[  452.604815]
-[  452.604818] The buggy address belongs to the physical page:
-[  452.604824] page: refcount:0 mapcount:0 mapping:0000000000000000 
-index:0xc00000001c644000 pfn:0x1c60
-[  452.604833] head: order:3 mapcount:0 entire_mapcount:0 
-nr_pages_mapped:0 pincount:0
-[  452.604840] flags: 
-0x3ffffe00000040(head|node=0|zone=0|lastcpupid=0x1fffff)
-[  452.604849] page_type: f5(slab)
-[  452.604856] raw: 003ffffe00000040 c000000007012300 5deadbeef0000122 
-0000000000000000
-[  452.604864] raw: c00000001c644000 000000008020001e 00000000f5000000 
-0000000000000000
-[  452.604872] head: 003ffffe00000040 c000000007012300 5deadbeef0000122 
-0000000000000000
-[  452.604879] head: c00000001c644000 000000008020001e 00000000f5000000 
-0000000000000000
-[  452.604887] head: 003ffffe00000003 c00c000000071801 00000000ffffffff 
-00000000ffffffff
-[  452.604894] head: ffffffffffffffff 0000000000000000 00000000ffffffff 
-0000000000000008
-[  452.604900] page dumped because: kasan: bad access detected
-[  452.604905]
-[  452.604908] Memory state around the buggy address:
-[  452.604914]  c00000001c64ff00: fc fc fc fc fc fc fc fc fc fc fc fc fc 
-fc fc fc
-[  452.604920]  c00000001c64ff80: fc fc fc fc fc fc fc fc fc fc fc fc fc 
-fc fc fc
-[  452.604927] >c00000001c650000: fa fb fb fb fb fb fb fb fb fb fb fb fb 
-fb fb fb
-[  452.604933]                    ^
-[  452.604937]  c00000001c650080: fb fb fb fb fb fb fb fb fb fb fb fb fb 
-fb fb fb
-[  452.604944]  c00000001c650100: fb fb fb fb fb fb fb fb fb fb fb fb fb 
-fb fb fb
-[  452.604950] 
-==================================================================
-[  452.604955] Disabling lock debugging due to kernel taint
-[  452.604961] Kernel attempted to read user page (770) - exploit 
-attempt? (uid: 0)
-[  452.604969] BUG: Kernel NULL pointer dereference on read at 0x00000770
-[  452.604975] Faulting instruction address: 0xc0000000002b2e0c
-[  452.604982] Oops: Kernel access of bad area, sig: 11 [#1]
-[  452.604987] LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=8192 NUMA pSeries
-[  452.604996] Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 
-nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct 
-nft_chain_nat nf_nat bonding nf_conntrack tls nf_defrag_ipv6 
-nf_defrag_ipv4 rfkill ip_set nf_tables nfnetlink sunrpc pseries_rng 
-vmx_crypto fuse ext4 crc16 mbcache jbd2 sd_mod sg ibmvscsi ibmveth 
-scsi_transport_srp pseries_wdt
-[  452.605073] CPU: 24 UID: 0 PID: 1856 Comm: python3 Kdump: loaded 
-Tainted: G    B               6.17.0-next-20251003 #1 VOLUNTARY
-[  452.605084] Tainted: [B]=BAD_PAGE
-[  452.605089] Hardware name: IBM,9080-HEX Power11 (architected) 
-0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
-[  452.605096] NIP:  c0000000002b2e0c LR: c0000000002b2e08 CTR: 
-0000000000000000
-[  452.605103] REGS: c0000000c1867820 TRAP: 0300   Tainted: G B          
-       (6.17.0-next-20251003)
-[  452.605110] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 
-28284420  XER: 0000000d
-[  452.605132] CFAR: c000000000807920 DAR: 0000000000000770 DSISR: 
-40000000 IRQMASK: 0
-[  452.605132] GPR00: c0000000002b2e08 c0000000c1867ac0 c00000000234a500 
-0000000000000001
-[  452.605132] GPR04: 0000000000000008 0000000000000000 c0000000002b2e08 
-0000000000000001
-[  452.605132] GPR08: 0000000000000020 0000000000000001 0000000000000001 
-a80e000000000000
-[  452.605132] GPR12: c00e0000009b1c8c c000000d0ddeb700 0000000000000000 
-0000000000000000
-[  452.605132] GPR16: 0000000000000000 0000000000000000 0000000000000000 
-0000000000000000
-[  452.605132] GPR20: 0000000000000008 0000000000000000 c000000008202f00 
-c00000007b9ff620
-[  452.605132] GPR24: c00000008a76cb20 c00000008a76cb40 c00000008a76cb08 
-c000000002201e80
-[  452.605132] GPR28: c000000061569248 0000000000000770 c00000008a76cb00 
-0000000000000768
-[  452.605227] NIP [c0000000002b2e0c] up_read+0x50/0x17c
-[  452.605237] LR [c0000000002b2e08] up_read+0x4c/0x17c
-[  452.605245] Call Trace:
-[  452.605249] [c0000000c1867ac0] [c0000000002b2e08] up_read+0x4c/0x17c 
-(unreliable)
-[  452.605261] [c0000000c1867b10] [c000000000f2ec28] tpmrm_release+0x88/0xa8
-[  452.605271] [c0000000c1867b40] [c0000000008b6a2c] __fput+0x21c/0x60c
-[  452.605280] [c0000000c1867bc0] [c0000000008ada70] sys_close+0x74/0xd0
-[  452.605291] [c0000000c1867bf0] [c000000000039270] 
-system_call_exception+0x1e0/0x460
-[  452.605301] [c0000000c1867e50] [c00000000000d05c] 
-system_call_vectored_common+0x15c/0x2ec
-[  452.605312] ---- interrupt: 3000 at 0x7fffb7534ab4
-[  452.605319] NIP:  00007fffb7534ab4 LR: 00007fffb7534ab4 CTR: 
-0000000000000000
-[  452.605326] REGS: c0000000c1867e80 TRAP: 3000   Tainted: G B          
-       (6.17.0-next-20251003)
-[  452.605333] MSR:  800000000280f033 
-<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44284422  XER: 00000000
-[  452.605362] IRQMASK: 0
-[  452.605362] GPR00: 0000000000000006 00007ffff65d76b0 00007fffb7c17700 
-0000000000000006
-[  452.605362] GPR04: 0000000000000000 0000000000000000 0000000000000000 
-0000000000000004
-[  452.605362] GPR08: 0000000000000000 0000000000000000 0000000000000000 
-0000000000000000
-[  452.605362] GPR12: 0000000000000000 00007fffb7e6b8e0 00000000000000a1 
-00007fffb67acec0
-[  452.605362] GPR16: 0000000164032ad0 00007fffb67aceb0 00007fffb76f6a90 
-0000000000000000
-[  452.605362] GPR20: 00007fffb6f21850 0000000000000000 00007fffb71062c0 
-0000000164034490
-[  452.605362] GPR24: 00007fffb6f2fea0 00007fffb67acea8 0000000164032b18 
-00007fffb7c45b32
-[  452.605362] GPR28: 00007fffb7c678e0 00007fffb67aceb8 0000000000000006 
-0000000164034490
-[  452.605450] NIP [00007fffb7534ab4] 0x7fffb7534ab4
-[  452.605456] LR [00007fffb7534ab4] 0x7fffb7534ab4
-[  452.605462] ---- interrupt: 3000
-[  452.605467] Code: fbc1fff0 7c7f1b78 f8010010 f821ffb1 e92d0c78 
-f9210028 39200000 3ba30008 38800008 7fa3eb78 48554af5 60000000 
-<ebdf0008> eb8d0908 7bc90764 fbc10020
-[  452.605501] ---[ end trace 0000000000000000 ]---
-[  452.613685] pstore: backend (nvram) writing error (-1)
-[  452.613691]
-
-
-
-If you happen to fix this, please add below tag.
-
-
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-
-
-Regards,
-
-Venkat.
+Athira
 
 
