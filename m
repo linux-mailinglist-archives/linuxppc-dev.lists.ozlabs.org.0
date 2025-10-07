@@ -1,49 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-12695-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12696-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56685BC218C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 07 Oct 2025 18:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEAD9BC28F8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 07 Oct 2025 21:54:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ch1Zw1L0Sz3bjb;
-	Wed,  8 Oct 2025 03:20:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ch6KZ60Mdz3bjb;
+	Wed,  8 Oct 2025 06:54:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759854040;
-	cv=none; b=F3/ixrUOaL9+PSa2hQea9VJYpxDZD3ijlYMH16lJgVojpbotzPj5HW9ZyoS2ucwNmv+8XLpDPRcK4cu5cwDmQH/ywhsn+Z3M+/gAVYHwYWANE3wCFkckiV095HOAH+osk3U2byH3nK9UVeTgiPcXjtROAQnUQ2RfoTsS+icTrCR4552kzW1zIuT2Nzt4qcShSp9Yn0EklncXPTvu7T2IWHRjjv5bJPPm/0jWqciPetNR+yVe3bfSzLWVcSOenU2uzDJ4HEUQRXjQXBbfnwSxbsyfr8zYnzfwtkq6F6pMkaLt9jpIznNbnq9okWm9n5dC4vwvZLQS/zcCtFp5M7ZgaA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::443"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759866866;
+	cv=none; b=ZaHIkv8yrFFRn6CtsulNyhbfbV39U3iKydbOG59HRKBESlSRqmOGl/TdEfo18XTXKaUWqibfdYUwOS+fid9aiTsIZbocrjcEJJMYTSLt5RYvbZjh3rJl5eIxyMnYwyZUedqr+xBnOIMWdajQ6fQbloTF2tMGXnevUma4OUPXwiSL1S5Um40egDcxEkBj0cqffMnx6FMQ8Wch72qpEyfinu+oORdTxIyOb6zSe+tRD12COyIqwF3Ma5ik78JVkIAI3p83kdMVacaNjv8hDOryxlbXcrN+Pq2oosTBrd5Q33/IH2MSCNieyWSAk+K/eGTDxE6DNNO8vti8wRP400X7wg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759854040; c=relaxed/relaxed;
-	bh=EvAsNYPIGWgc+PES6wY6uMPN64MWJzEiPQprrE+f2tI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=cxJDOW206kNObv73xNWO6p7s6vdPPrsi+8JgVPwXw3t41qKwZ4JzvnkCubwTMRD7BvgD9HNbsx5E1fwEfRNxSNB3w/G6wO7arFlAIwOnEwFrcdZxBjeVEwbzWrcPDY3J/ceHxYEGkcU31ohX41BASMbmyTyMOAkGBWDsJN3z6lxmD/XEXHc+2jA+fbs+pzXHcTYcjthRm/ViYP+XUeg1BfxPs62hR1e0u34pRwncuWnHfsyZ8LNSE1wtFuJpsO1wuv2TkWlzZjmTdHKU9OCah/Uvm+7RWHfR8gZH/aZikVRUUMEQaTg63LY48DmonEqasmDTrBaAK1mjEcXf4OaHiA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ch1Zt6GTCz2xgp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Oct 2025 03:20:36 +1100 (AEDT)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4ch16R56SFz9sSC;
-	Tue,  7 Oct 2025 17:59:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id osQ9mmBknqDa; Tue,  7 Oct 2025 17:59:27 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4ch16R41Z2z9sRy;
-	Tue,  7 Oct 2025 17:59:27 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 799A68B770;
-	Tue,  7 Oct 2025 17:59:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id z2pXmbf4wtaa; Tue,  7 Oct 2025 17:59:27 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id D16208B76E;
-	Tue,  7 Oct 2025 17:59:26 +0200 (CEST)
-Message-ID: <feadc4f6-839b-4c04-b6df-dedf279fb315@csgroup.eu>
-Date: Tue, 7 Oct 2025 17:59:25 +0200
+	t=1759866866; c=relaxed/relaxed;
+	bh=yW/aQ0359kHD92Asr8l75TcASuOtUZ2H6uQ4aCH3qfI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YqxGcf01PVqMaODIenrrCGz9lYOQC/0kSWD800Zgt9S8RHLxX6Z/RfPxpPPmENYCVwiv+kKb3u2RQqAPXSs7mAMFzZ1nGfG8nyQTOew7f11T0D6t947DfyJE+//t0EOTEMnEYzIcMZlRMVWOA+fpZskfgCOSDBZxA0M8HMqOFZ5ZwNiakn69Tm2Mbjgon2gcHxZx5S2UDamk6ECbPosprZJiMkj1QSTHJni1Gezqv/j/fFxvOiztW8EBvc0nnwEBmb+4+0KEWKgMAA07qCSWeMfNqj9kKtiSWUaxvS6aRrI2V9v6X0R6FGa/zoD3kOjAl9/36YfAOsUuVqa86AIajg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org; dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VTB/NQUU; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org) smtp.mailfrom=chromium.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VTB/NQUU;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ch6KY1tbKz2xgp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Oct 2025 06:54:23 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id d2e1a72fcca58-782e93932ffso6137457b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Oct 2025 12:54:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1759866862; x=1760471662; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yW/aQ0359kHD92Asr8l75TcASuOtUZ2H6uQ4aCH3qfI=;
+        b=VTB/NQUUFXolcvkunfBfoPO16cDkB5J+/v0sOBtms4lNTmIdZMrba39/X6DQV7l/X/
+         VJ1kC85YycNR5Kll9Rn35xgkXg5QfFiAMtBEOZuZ3/r3IbdvydVkL7pMMeDdJ2cIcc3h
+         zdzwNJDjUeSRPGuMMs9Ou4sammzr3lwsIINWQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759866862; x=1760471662;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yW/aQ0359kHD92Asr8l75TcASuOtUZ2H6uQ4aCH3qfI=;
+        b=lUnfN7N9JvKvAVIvrsTKSIioTY/YyiJWB+0VMbAAVAKjI4K7LXoKyXOvorADtZc264
+         eX1KjNYuOQ0Y/0zWztkn10jHRCpwzorKnRCNMBblvY9M4HNVpdSJAn9AMpD/biUrzAhM
+         rgPG+TOD6QWi5ObGb6X8skMsiVmVteb2PHx5GjVq4UJ2mDPOP9Jn6fO0ZI5bPF3Ajqnf
+         fJU7voEo1yJxhMuXF7ueMllfs1XH/VKuPTVBcOWV6pQkden6g+OXN+HRrAgR67R+DcLQ
+         +Y9HuF5WUQ8qlNwFFDX3UBEowbDxRJgRGtAeXa4if6J7NTyO0sgagfVeFTNoVVe2714u
+         UmuA==
+X-Forwarded-Encrypted: i=1; AJvYcCWm2FvWKAOd9PstUrS2NP2BbGqXgxdliy5Jsa7SzgwEZ8J0s1iuKXvRaEB1kuRa+5AN64M8JBMCzGlvLwY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyQueJ0Rq4bJ16/FdSbnXoBmciuymDs1HtPFLlbr2vymFjWxUOW
+	QRCmFNm353QHMM74VNTPhQ4tOsrTzj1REzRoLrJOd3674HKpbdnws8YvnbOXuh9lABqdYSvnHsc
+	MxvI=
+X-Gm-Gg: ASbGncu62NL6tsoTUHkYkdStaDPBZ6P7d2AzSRiB8GXsKo10Tipv3JuIEKP6F4kuewD
+	zLcyx1BbNYpWupfjHQ4gNe86AmC4tibRPDMSKLvZ7Fl23HIYuxPv/+oOmA/uH86v5Dug6pdrh3V
+	xS5qvaJ1PdTOYr8Klw0aeopmqjo/0y+uT9qHyjZm+iV/QPaufX6c7zFO3fwI4y8Oez1EuO5hEqY
+	3DtJsiBMHXWA+cNg55GFuE/kU7BzQ5qRQDWgGMm3/si5oBRZhX4pZ6pbCTj3DeDOVvRU2H3OvgL
+	13YNXUYAXFewFDPzh/kh0F/imQVQhc4mXpCaKN77TVZYCdEPtYeE+UvVBsuRd3IsiRW/EaLO67/
+	ctO8gzuqmFupadtuIrNf2iU6htDgeLZX7IITZGxBtWLDnP92UfHWHn24NxAybQ0hC/I3wwVLqDV
+	uvTbwM4lGJIw==
+X-Google-Smtp-Source: AGHT+IF3tYWvluZM7NB7+MpleUiieiY32T1VxCluUUzSPZ6tDhLDhXva/CDpNPpwV2+RDStsg5gOUg==
+X-Received: by 2002:a05:6a20:7488:b0:2e3:a914:aac7 with SMTP id adf61e73a8af0-32da8130c42mr881664637.17.1759866862018;
+        Tue, 07 Oct 2025 12:54:22 -0700 (PDT)
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com. [209.85.216.46])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78b01f99acesm16562444b3a.5.2025.10.07.12.54.21
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Oct 2025 12:54:21 -0700 (PDT)
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-330b0bb4507so6037834a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Oct 2025 12:54:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWMWRRbyIAaATCx02vZFWHclKRG31DdLMLk/QihfpCWLdU8KW6w55NYfmGZX9nuf+4QZUw9sreWpAYGZNY=@lists.ozlabs.org
+X-Received: by 2002:a17:90b:48:b0:32e:5d87:8abc with SMTP id
+ 98e67ed59e1d1-33b51399953mr804760a91.36.1759866860576; Tue, 07 Oct 2025
+ 12:54:20 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,417 +89,322 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bisected][linux-next20251003] tmp2 selftests resulting in Kernel
- OOPs
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- LKML <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, linux-kselftest@vger.kernel.org,
- daleksan@redhat.com, jstancek@redhat.com, jarkko@kernel.org,
- pmenzel@molgen.mpg.de
-References: <88f1df7e-8347-45f7-a2a1-e321e72e4009@linux.ibm.com>
- <3d7a5f70-7ece-48ba-92bd-8b6473fd8b6c@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <3d7a5f70-7ece-48ba-92bd-8b6473fd8b6c@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250916145122.416128-1-wangjinchao600@gmail.com>
+ <CAP-5=fWWOQ-6SWiNVBvb5mCofe0kZUURG_bm0PDsVFWqwDwrXg@mail.gmail.com>
+ <aMoTOXIKBYVTj7PV@mdev> <CAP-5=fX7NJmBjd1v5y4xCa0Ce5rNZ8Dqg0LXd12gPrdEQCERVA@mail.gmail.com>
+ <aMpIsqcgpOH1AObN@z2> <aMpRqlDXXOR5qYFd@mdev> <CAP-5=fV05++2Qvcxs=+tqhTdpGK8L9e5HzVu=y+xHxy9AqLMmg@mail.gmail.com>
+ <CAD=FV=VNmjTVxcxgTQqjE7CTkK2NVGbRxFJSwv=yOHU8gj-urQ@mail.gmail.com> <CAP-5=fW64xHEW+4dKU_voNv7E67nUOFm27FFBuhtFii52NiQUQ@mail.gmail.com>
+In-Reply-To: <CAP-5=fW64xHEW+4dKU_voNv7E67nUOFm27FFBuhtFii52NiQUQ@mail.gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Tue, 7 Oct 2025 12:54:08 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=U3ic707dLuUc+NfxtWF6-ZyRdE0OY2VA6TgvgWKCHUzg@mail.gmail.com>
+X-Gm-Features: AS18NWApr4Rg-zXM3q8fbS_fiJ3b6uIVakfVzTHv9MBXxByROdeDBGbo6mNFQ44
+Message-ID: <CAD=FV=U3ic707dLuUc+NfxtWF6-ZyRdE0OY2VA6TgvgWKCHUzg@mail.gmail.com>
+Subject: Re: [RFC PATCH V1] watchdog: Add boot-time selection for hard lockup detector
+To: Ian Rogers <irogers@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jinchao Wang <wangjinchao600@gmail.com>, 
+	Namhyung Kim <namhyung@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Will Deacon <will@kernel.org>, Yunhui Cui <cuiyunhui@bytedance.com>, akpm@linux-foundation.org, 
+	catalin.marinas@arm.com, maddy@linux.ibm.com, mpe@ellerman.id.au, 
+	npiggin@gmail.com, christophe.leroy@csgroup.eu, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	acme@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com, 
+	jolsa@kernel.org, adrian.hunter@intel.com, kan.liang@linux.intel.com, 
+	kees@kernel.org, masahiroy@kernel.org, aliceryhl@google.com, ojeda@kernel.org, 
+	thomas.weissschuh@linutronix.de, xur@google.com, ruanjinjie@huawei.com, 
+	gshan@redhat.com, maz@kernel.org, suzuki.poulose@arm.com, 
+	zhanjie9@hisilicon.com, yangyicong@hisilicon.com, gautam@linux.ibm.com, 
+	arnd@arndb.de, zhao.xichao@vivo.com, rppt@kernel.org, lihuafei1@huawei.com, 
+	coxu@redhat.com, jpoimboe@kernel.org, yaozhenguo1@gmail.com, 
+	luogengkun@huaweicloud.com, max.kellermann@ionos.com, tj@kernel.org, 
+	yury.norov@gmail.com, thorsten.blum@linux.dev, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hi,
+
+On Mon, Oct 6, 2025 at 6:00=E2=80=AFPM Ian Rogers <irogers@google.com> wrot=
+e:
+>
+> On Mon, Oct 6, 2025 at 4:32=E2=80=AFPM Doug Anderson <dianders@chromium.o=
+rg> wrote:
+> >
+> > Hi,
+> >
+> > On Mon, Oct 6, 2025 at 2:30=E2=80=AFPM Ian Rogers <irogers@google.com> =
+wrote:
+> > >
+> > > On Tue, Sep 16, 2025 at 11:14=E2=80=AFPM Jinchao Wang <wangjinchao600=
+@gmail.com> wrote:
+> > > >
+> > > > On Tue, Sep 16, 2025 at 10:35:46PM -0700, Namhyung Kim wrote:
+> > > > > Hello,
+> > > > >
+> > > > > On Tue, Sep 16, 2025 at 10:13:12PM -0700, Ian Rogers wrote:
+> > > > > > On Tue, Sep 16, 2025 at 6:47=E2=80=AFPM Jinchao Wang <wangjinch=
+ao600@gmail.com> wrote:
+> > > > > > >
+> > > > > > > On Tue, Sep 16, 2025 at 05:03:48PM -0700, Ian Rogers wrote:
+> > > > > > > > On Tue, Sep 16, 2025 at 7:51=E2=80=AFAM Jinchao Wang <wangj=
+inchao600@gmail.com> wrote:
+> > > > > > > > >
+> > > > > > > > > Currently, the hard lockup detector is selected at compil=
+e time via
+> > > > > > > > > Kconfig, which requires a kernel rebuild to switch implem=
+entations.
+> > > > > > > > > This is inflexible, especially on systems where a perf ev=
+ent may not
+> > > > > > > > > be available or may be needed for other tasks.
+> > > > > > > > >
+> > > > > > > > > This commit refactors the hard lockup detector to replace=
+ a rigid
+> > > > > > > > > compile-time choice with a flexible build-time and boot-t=
+ime solution.
+> > > > > > > > > The patch supports building the kernel with either detect=
+or
+> > > > > > > > > independently, or with both. When both are built, a new b=
+oot parameter
+> > > > > > > > > `hardlockup_detector=3D"perf|buddy"` allows the selection=
+ at boot time.
+> > > > > > > > > This is a more robust and user-friendly design.
+> > > > > > > > >
+> > > > > > > > > This patch is a follow-up to the discussion on the kernel=
+ mailing list
+> > > > > > > > > regarding the preference and future of the hard lockup de=
+tectors. It
+> > > > > > > > > implements a flexible solution that addresses the communi=
+ty's need to
+> > > > > > > > > select an appropriate detector at boot time.
+> > > > > > > > >
+> > > > > > > > > The core changes are:
+> > > > > > > > > - The `perf` and `buddy` watchdog implementations are sep=
+arated into
+> > > > > > > > >   distinct functions (e.g., `watchdog_perf_hardlockup_ena=
+ble`).
+> > > > > > > > > - Global function pointers are introduced (`watchdog_hard=
+lockup_enable_ptr`)
+> > > > > > > > >   to serve as a single API for the entire feature.
+> > > > > > > > > - A new `hardlockup_detector=3D` boot parameter is added =
+to allow the
+> > > > > > > > >   user to select the desired detector at boot time.
+> > > > > > > > > - The Kconfig options are simplified by removing the comp=
+lex
+> > > > > > > > >   `HARDLOCKUP_DETECTOR_PREFER_BUDDY` and allowing both de=
+tectors to be
+> > > > > > > > >   built without mutual exclusion.
+> > > > > > > > > - The weak stubs are updated to call the new function poi=
+nters,
+> > > > > > > > >   centralizing the watchdog logic.
+> > > > > > > >
+> > > > > > > > What is the impact on  /proc/sys/kernel/nmi_watchdog ? Is t=
+hat
+> > > > > > > > enabling and disabling whatever the boot time choice was? I=
+'m not sure
+> > > > > > > > why this has to be a boot time option given the ability to =
+configure
+> > > > > > > > via /proc/sys/kernel/nmi_watchdog.
+> > > > > > > The new hardlockup_detector boot parameter and the existing
+> > > > > > > /proc/sys/kernel/nmi_watchdog file serve different purposes.
+> > > > > > >
+> > > > > > > The boot parameter selects the type of hard lockup detector (=
+perf or buddy).
+> > > > > > > This choice is made once at boot.
+> > > > > > >
+> > > > > > >  /proc/sys/kernel/nmi_watchdog, on the other hand, is only a =
+simple on/off
+> > > > > > > switch for the currently selected detector. It does not chang=
+e the detector's
+> > > > > > > type.
+> > > > > >
+> > > > > > So the name "nmi_watchdog" for the buddy watchdog is wrong for =
+fairly
+> > > > > > obvious naming reasons but also because we can't differentiate =
+when a
+> > > > > > perf event has been taken or not - this impacts perf that is ch=
+oosing
+> > > > > > not to group events in metrics because of it, reducing the metr=
+ic's
+> > > > > > accuracy. We need an equivalent "buddy_watchdog" file to the
+> > > > > > "nmi_watchdog" file. If we have such a file then if I did "echo=
+ 1 >
+> > > > > > /proc/sys/kernel/nmi_watchdog" I'd expect the buddy watchdog to=
+ be
+> > > > > > disabled and the perf event one to be enabled. Similarly, if I =
+did
+> > > > > > "echo 1 > /proc/sys/kernel/buddy_watchdog" then I would expect =
+the
+> > > > > > perf event watchdog to be disabled and the buddy one enabled. I=
+f I did
+> > > > > >  "echo 0 > /proc/sys/kernel/nmi_watchdog; echo 0 >
+> > > > > > /proc/sys/kernel/buddy_watchdog" then I'd expect neither to be
+> > > > > > enabled. I don't see why choosing the type of watchdog implemen=
+tation
+> > > > > > at boot time is particularly desirable. It seems sensible to de=
+fault
+> > > > > > normal people to using the buddy watchdog (more perf events, po=
+wer...)
+> > > > > > and  CONFIG_DEBUG_KERNEL type people to using the perf event on=
+e. As
+> > > > > > the "nmi_watchdog" file may be assumed to control the buddy wat=
+chdog,
+> > > > > > perhaps a compatibility option (where the "nmi_watchdog" file c=
+ontrols
+> > > > > > the buddy watchdog) is needed so that user code has time to mig=
+rate.
+> > > > >
+> > > > > Sounds good to me.  For perf tools, it'd be great if we can have =
+a run-
+> > > > > time check which watchdog is selected.
+> > > > Considering backward compatibility, I prefer to keep
+> > > > /proc/sys/kernel/nmi_watchdog and introduce a new file called
+> > > > /proc/sys/kernel/hardlockup_detector_type, which only shows the def=
+ault string
+> > > > or the boot parameter.
+> > >
+> > > Is there code using the buddy watchdog that cares about the
+> > > /proc/sys/kernel/nmi_watchdog file? My assumption is that everything
+> > > except Android is using the NMI watchdog, so a new
+> > > /proc/sys/kernel/buddy_watchdog file doesn't impact them.
+> >
+> > Buddy watchdog has been out there for a few years. At Google, I know
+> > it's used by everything except Android. AKA I believe it is used in
+> > Google's servers and also in ChromeOS. Both of those (presumably)
+> > enable the buddy watchdog via calling it "nmi_watchdog". It's possible
+> > that some Android phones are using the buddy watchdog too but I'm not
+> > aware of it. I don't believe Pixel is using it, though that could
+> > change in the future.
+>
+> I thought what motivated the buddy watchdog was patches implementing
+> this approach on Android for ARM that lacked an NMI based hard lockup
+> detector?
+
+It's probably not worth a full rehash of the history, but suffice to
+say that the buddy lockup detector did originally come out of Android
+but isn't currently used there as far as I can tell.
 
 
-Le 07/10/2025 à 17:08, Venkat Rao Bagalkote a écrit :
-> 
-> On 07/10/25 10:59 am, Venkat Rao Bagalkote wrote:
->> Greetings!!!
->>
->>
->> IBM CI has reported a kernel OOPs while running TPM2selftests on IBM 
->> Power11 system with linux-next20251002 kernel.
->>
->>
->> Test Case:
->>
->> make run_tests
->> TAP version 13
->> 1..3
->> # timeout set to 600
->> # selftests: tpm2: test_smoke.sh
->> # test_read_partial_overwrite (tpm2_tests.SmokeTest) ... ok
->> # test_read_partial_resp (tpm2_tests.SmokeTest) ... ok
->> # test_seal_with_auth (tpm2_tests.SmokeTest) ... ok
->> # test_seal_with_policy (tpm2_tests.SmokeTest) ... ok
->> # test_seal_with_too_long_auth (tpm2_tests.SmokeTest) ... ok
->> # test_send_two_cmds (tpm2_tests.SmokeTest) ... ok
->> # test_too_short_cmd (tpm2_tests.SmokeTest) ... ok
->> # test_unseal_with_wrong_auth (tpm2_tests.SmokeTest) ... ok
->> # test_unseal_with_wrong_policy (tpm2_tests.SmokeTest) ... ERROR
->> #
->> # ======================================================================
->> # ERROR: test_unseal_with_wrong_policy (tpm2_tests.SmokeTest)
->> # -----------------------------------------------------
->>
->>
->> Traces:
->>
->>
->> [  452.604333] BUG: KASAN: slab-use-after-free in tpmrm_release+0x78/0xa8
->> [  452.604345] Read of size 8 at addr c00000001c650000 by task 
->> python3/1856
->> [  452.604353]
->> [  452.604358] CPU: 24 UID: 0 PID: 1856 Comm: python3 Kdump: loaded 
->> Not tainted 6.17.0-next-20251003 #1 VOLUNTARY
->> [  452.604364] Hardware name: IBM,9080-HEX Power11 (architected) 
->> 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
->> [  452.604368] Call Trace:
->> [  452.604370] [c0000000c1867840] [c00000000187ea4c] 
->> dump_stack_lvl+0x84/0xe8 (unreliable)
->> [  452.604380] [c0000000c1867870] [c000000000803754] 
->> print_address_description.constprop.0+0x11c/0x56c
->> [  452.604388] [c0000000c1867910] [c000000000803c84] 
->> print_report+0xe0/0x358
->> [  452.604394] [c0000000c18679e0] [c000000000804124] 
->> kasan_report+0x128/0x1f4
->> [  452.604400] [c0000000c1867af0] [c0000000008062b4] 
->> __asan_load8+0xa8/0xe0
->> [  452.604406] [c0000000c1867b10] [c000000000f2ec18] 
->> tpmrm_release+0x78/0xa8
->> [  452.604412] [c0000000c1867b40] [c0000000008b6a2c] __fput+0x21c/0x60c
->> [  452.604417] [c0000000c1867bc0] [c0000000008ada70] sys_close+0x74/0xd0
->> [  452.604424] [c0000000c1867bf0] [c000000000039270] 
->> system_call_exception+0x1e0/0x460
->> [  452.604431] [c0000000c1867e50] [c00000000000d05c] 
->> system_call_vectored_common+0x15c/0x2ec
->> [  452.604438] ---- interrupt: 3000 at 0x7fffb7534ab4
->> [  452.604443] NIP:  00007fffb7534ab4 LR: 00007fffb7534ab4 CTR: 
->> 0000000000000000
->> [  452.604446] REGS: c0000000c1867e80 TRAP: 3000   Not tainted 
->> (6.17.0-next-20251003)
->> [  452.604449] MSR:  800000000280f033 
->> <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44284422  XER: 00000000
->> [  452.604466] IRQMASK: 0
->> [  452.604466] GPR00: 0000000000000006 00007ffff65d76b0 
->> 00007fffb7c17700 0000000000000006
->> [  452.604466] GPR04: 0000000000000000 0000000000000000 
->> 0000000000000000 0000000000000004
->> [  452.604466] GPR08: 0000000000000000 0000000000000000 
->> 0000000000000000 0000000000000000
->> [  452.604466] GPR12: 0000000000000000 00007fffb7e6b8e0 
->> 00000000000000a1 00007fffb67acec0
->> [  452.604466] GPR16: 0000000164032ad0 00007fffb67aceb0 
->> 00007fffb76f6a90 0000000000000000
->> [  452.604466] GPR20: 00007fffb6f21850 0000000000000000 
->> 00007fffb71062c0 0000000164034490
->> [  452.604466] GPR24: 00007fffb6f2fea0 00007fffb67acea8 
->> 0000000164032b18 00007fffb7c45b32
->> [  452.604466] GPR28: 00007fffb7c678e0 00007fffb67aceb8 
->> 0000000000000006 0000000164034490
->> [  452.604510] NIP [00007fffb7534ab4] 0x7fffb7534ab4
->> [  452.604513] LR [00007fffb7534ab4] 0x7fffb7534ab4
->> [  452.604516] ---- interrupt: 3000
->> [  452.604518]
->> [  452.604601] Allocated by task 1856:
->> [  452.604607]  kasan_save_stack+0x34/0x64
->> [  452.604614]  kasan_save_track+0x2c/0x50
->> [  452.604621]  kasan_save_alloc_info+0x58/0x74
->> [  452.604628]  __kasan_kmalloc+0x12c/0x168
->> [  452.604635]  __kmalloc_cache_noprof+0x1d8/0x71c
->> [  452.604643]  tpmrm_open+0x88/0x168
->> [  452.604649]  chrdev_open+0x1f4/0x484
->> [  452.604656]  do_dentry_open+0x578/0x9cc
->> [  452.604663]  vfs_open+0x68/0x23c
->> [  452.604670]  do_open+0x514/0x74c
->> [  452.604676]  path_openat+0x16c/0x380
->> [  452.604682]  do_filp_open+0x104/0x230
->> [  452.604689]  do_sys_openat2+0xb8/0x154
->> [  452.604696]  sys_openat+0xcc/0x130
->> [  452.604703]  system_call_exception+0x1e0/0x460
->> [  452.604710]  system_call_vectored_common+0x15c/0x2ec
->> [  452.604718]
->> [  452.604722] Freed by task 1856:
->> [  452.604726]  kasan_save_stack+0x34/0x64
->> [  452.604733]  kasan_save_track+0x2c/0x50
->> [  452.604739]  __kasan_save_free_info+0x64/0x110
->> [  452.604747]  __kasan_slab_free+0xb0/0x10c
->> [  452.604753]  kfree+0x220/0x624
->> [  452.604760]  tpmrm_release+0x6c/0xa8
->> [  452.604766]  __fput+0x21c/0x60c
->> [  452.604772]  sys_close+0x74/0xd0
->> [  452.604779]  system_call_exception+0x1e0/0x460
->> [  452.604786]  system_call_vectored_common+0x15c/0x2ec
->> [  452.604794]
->> [  452.604797] The buggy address belongs to the object at 
->> c00000001c650000
->> [  452.604797]  which belongs to the cache kmalloc-8k of size 8192
->> [  452.604806] The buggy address is located 0 bytes inside of
->> [  452.604806]  freed 8192-byte region [c00000001c650000, 
->> c00000001c652000)
->> [  452.604815]
->> [  452.604818] The buggy address belongs to the physical page:
->> [  452.604824] page: refcount:0 mapcount:0 mapping:0000000000000000 
->> index:0xc00000001c644000 pfn:0x1c60
->> [  452.604833] head: order:3 mapcount:0 entire_mapcount:0 
->> nr_pages_mapped:0 pincount:0
->> [  452.604840] flags: 0x3ffffe00000040(head|node=0|zone=0| 
->> lastcpupid=0x1fffff)
->> [  452.604849] page_type: f5(slab)
->> [  452.604856] raw: 003ffffe00000040 c000000007012300 5deadbeef0000122 
->> 0000000000000000
->> [  452.604864] raw: c00000001c644000 000000008020001e 00000000f5000000 
->> 0000000000000000
->> [  452.604872] head: 003ffffe00000040 c000000007012300 
->> 5deadbeef0000122 0000000000000000
->> [  452.604879] head: c00000001c644000 000000008020001e 
->> 00000000f5000000 0000000000000000
->> [  452.604887] head: 003ffffe00000003 c00c000000071801 
->> 00000000ffffffff 00000000ffffffff
->> [  452.604894] head: ffffffffffffffff 0000000000000000 
->> 00000000ffffffff 0000000000000008
->> [  452.604900] page dumped because: kasan: bad access detected
->> [  452.604905]
->> [  452.604908] Memory state around the buggy address:
->> [  452.604914]  c00000001c64ff00: fc fc fc fc fc fc fc fc fc fc fc fc 
->> fc fc fc fc
->> [  452.604920]  c00000001c64ff80: fc fc fc fc fc fc fc fc fc fc fc fc 
->> fc fc fc fc
->> [  452.604927] >c00000001c650000: fa fb fb fb fb fb fb fb fb fb fb fb 
->> fb fb fb fb
->> [  452.604933]                    ^
->> [  452.604937]  c00000001c650080: fb fb fb fb fb fb fb fb fb fb fb fb 
->> fb fb fb fb
->> [  452.604944]  c00000001c650100: fb fb fb fb fb fb fb fb fb fb fb fb 
->> fb fb fb fb
->> [  452.604950] 
->> ==================================================================
->> [  452.604955] Disabling lock debugging due to kernel taint
->> [  452.604961] Kernel attempted to read user page (770) - exploit 
->> attempt? (uid: 0)
->> [  452.604969] BUG: Kernel NULL pointer dereference on read at 0x00000770
->> [  452.604975] Faulting instruction address: 0xc0000000002b2e0c
->> [  452.604982] Oops: Kernel access of bad area, sig: 11 [#1]
->> [  452.604987] LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=8192 NUMA pSeries
->> [  452.604996] Modules linked in: nft_fib_inet nft_fib_ipv4 
->> nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 
->> nft_reject nft_ct nft_chain_nat nf_nat bonding nf_conntrack tls 
->> nf_defrag_ipv6 nf_defrag_ipv4 rfkill ip_set nf_tables nfnetlink sunrpc 
->> pseries_rng vmx_crypto fuse ext4 crc16 mbcache jbd2 sd_mod sg ibmvscsi 
->> ibmveth scsi_transport_srp pseries_wdt
->> [  452.605073] CPU: 24 UID: 0 PID: 1856 Comm: python3 Kdump: loaded 
->> Tainted: G    B               6.17.0-next-20251003 #1 VOLUNTARY
->> [  452.605084] Tainted: [B]=BAD_PAGE
->> [  452.605089] Hardware name: IBM,9080-HEX Power11 (architected) 
->> 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
->> [  452.605096] NIP:  c0000000002b2e0c LR: c0000000002b2e08 CTR: 
->> 0000000000000000
->> [  452.605103] REGS: c0000000c1867820 TRAP: 0300   Tainted: G B       
->> (6.17.0-next-20251003)
->> [  452.605110] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 
->> 28284420  XER: 0000000d
->> [  452.605132] CFAR: c000000000807920 DAR: 0000000000000770 DSISR: 
->> 40000000 IRQMASK: 0
->> [  452.605132] GPR00: c0000000002b2e08 c0000000c1867ac0 
->> c00000000234a500 0000000000000001
->> [  452.605132] GPR04: 0000000000000008 0000000000000000 
->> c0000000002b2e08 0000000000000001
->> [  452.605132] GPR08: 0000000000000020 0000000000000001 
->> 0000000000000001 a80e000000000000
->> [  452.605132] GPR12: c00e0000009b1c8c c000000d0ddeb700 
->> 0000000000000000 0000000000000000
->> [  452.605132] GPR16: 0000000000000000 0000000000000000 
->> 0000000000000000 0000000000000000
->> [  452.605132] GPR20: 0000000000000008 0000000000000000 
->> c000000008202f00 c00000007b9ff620
->> [  452.605132] GPR24: c00000008a76cb20 c00000008a76cb40 
->> c00000008a76cb08 c000000002201e80
->> [  452.605132] GPR28: c000000061569248 0000000000000770 
->> c00000008a76cb00 0000000000000768
->> [  452.605227] NIP [c0000000002b2e0c] up_read+0x50/0x17c
->> [  452.605237] LR [c0000000002b2e08] up_read+0x4c/0x17c
->> [  452.605245] Call Trace:
->> [  452.605249] [c0000000c1867ac0] [c0000000002b2e08] 
->> up_read+0x4c/0x17c (unreliable)
->> [  452.605261] [c0000000c1867b10] [c000000000f2ec28] 
->> tpmrm_release+0x88/0xa8
->> [  452.605271] [c0000000c1867b40] [c0000000008b6a2c] __fput+0x21c/0x60c
->> [  452.605280] [c0000000c1867bc0] [c0000000008ada70] sys_close+0x74/0xd0
->> [  452.605291] [c0000000c1867bf0] [c000000000039270] 
->> system_call_exception+0x1e0/0x460
->> [  452.605301] [c0000000c1867e50] [c00000000000d05c] 
->> system_call_vectored_common+0x15c/0x2ec
->> [  452.605312] ---- interrupt: 3000 at 0x7fffb7534ab4
->> [  452.605319] NIP:  00007fffb7534ab4 LR: 00007fffb7534ab4 CTR: 
->> 0000000000000000
->> [  452.605326] REGS: c0000000c1867e80 TRAP: 3000   Tainted: G B       
->> (6.17.0-next-20251003)
->> [  452.605333] MSR:  800000000280f033 
->> <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44284422  XER: 00000000
->> [  452.605362] IRQMASK: 0
->> [  452.605362] GPR00: 0000000000000006 00007ffff65d76b0 
->> 00007fffb7c17700 0000000000000006
->> [  452.605362] GPR04: 0000000000000000 0000000000000000 
->> 0000000000000000 0000000000000004
->> [  452.605362] GPR08: 0000000000000000 0000000000000000 
->> 0000000000000000 0000000000000000
->> [  452.605362] GPR12: 0000000000000000 00007fffb7e6b8e0 
->> 00000000000000a1 00007fffb67acec0
->> [  452.605362] GPR16: 0000000164032ad0 00007fffb67aceb0 
->> 00007fffb76f6a90 0000000000000000
->> [  452.605362] GPR20: 00007fffb6f21850 0000000000000000 
->> 00007fffb71062c0 0000000164034490
->> [  452.605362] GPR24: 00007fffb6f2fea0 00007fffb67acea8 
->> 0000000164032b18 00007fffb7c45b32
->> [  452.605362] GPR28: 00007fffb7c678e0 00007fffb67aceb8 
->> 0000000000000006 0000000164034490
->> [  452.605450] NIP [00007fffb7534ab4] 0x7fffb7534ab4
->> [  452.605456] LR [00007fffb7534ab4] 0x7fffb7534ab4
->> [  452.605462] ---- interrupt: 3000
->> [  452.605467] Code: fbc1fff0 7c7f1b78 f8010010 f821ffb1 e92d0c78 
->> f9210028 39200000 3ba30008 38800008 7fa3eb78 48554af5 60000000 
->> <ebdf0008> eb8d0908 7bc90764 fbc10020
->> [  452.605501] ---[ end trace 0000000000000000 ]---
->> [  452.613685] pstore: backend (nvram) writing error (-1)
->> [  452.613691]
->>
->>
-> 
-> Git bisect is pointing to eb28a2adba0654878bcfd909b429bf567b35922b as 
-> first bad commit.
+> Anyway, while the buddy watchdog is in use by Google servers the
+> nmi_watchdog file has an actively detrimental effect on that.
+> Specifically the nmi_watchdog file having the value of "1" disables
+> certain event groups for certain metrics in the perf tool as it is
+> assumed there are too few performance counters due to the NMI watchdog
+> stealing one. We want groups of events so that events are scheduled
+> together and metrics are more accurate, we don't want groups that fail
+> to schedule because of a lack of counters.
 
-Should be fixed by the following change ?
-
-diff --git a/drivers/char/tpm/tpmrm-dev.c b/drivers/char/tpm/tpmrm-dev.c
-index 13322dd9ac9e0..334b3ec2b36a5 100644
---- a/drivers/char/tpm/tpmrm-dev.c
-+++ b/drivers/char/tpm/tpmrm-dev.c
-@@ -54,8 +54,8 @@ static int tpmrm_release(struct inode *inode, struct 
-file *file)
-
-  	tpm_common_release(file, fpriv);
-  	tpm2_del_space(fpriv->chip, &priv->space);
--	kfree(priv);
-  	up_read(&fpriv->chip->open_lock);
-+	kfree(priv);
-
-  	return 0;
-  }
+Fair enough, but that code could also change.
 
 
-> 
-> 
-> eb28a2adba0654878bcfd909b429bf567b35922b is the first bad commit
-> commit eb28a2adba0654878bcfd909b429bf567b35922b
-> Author: Jonathan McDowell <noodles@meta.com>
-> Date:   Tue Sep 23 18:10:00 2025 +0100
-> 
->      tpm: Ensure exclusive userspace access when using /dev/tpm<n>
-> 
->      There is an is_open lock on /dev/tpm<n> that dates back to at least
->      2013, but it only prevents multiple accesses via *this* interface. 
-> It is
->      perfectly possible for userspace to use /dev/tpmrm<n>, or the 
-> kernel to
->      use the internal interfaces, to access the TPM. For tooling expecting
->      exclusive access, such as firmware updates, this can cause issues.
-> 
->      Close the userspace loophole by changing the simple bit lock to a full
->      read/write mutex. Direct /dev/tpm<n> access needs an exclusive write
->      lock, the resource broker continues to allow concurrent access 
-> *except*
->      when /dev/tpm<n> is open.
-> 
->      Signed-off-by: Jonathan McDowell <noodles@meta.com>
->      Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->      Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> 
->   drivers/char/tpm/tpm-chip.c  |  1 +
->   drivers/char/tpm/tpm-dev.c   | 14 ++++++++------
->   drivers/char/tpm/tpmrm-dev.c | 20 ++++++++++++++++++--
->   include/linux/tpm.h          |  3 ++-
->   4 files changed, 29 insertions(+), 9 deletions(-)
-> 
-> 
-> 
-> Git bisect log:
-> 
-> 
-> git bisect log
-> git bisect start
-> # status: waiting for both good and bad commits
-> # good: [e5f0a698b34ed76002dc5cff3804a61c80233a7a] Linux 6.17
-> git bisect good e5f0a698b34ed76002dc5cff3804a61c80233a7a
-> # status: waiting for bad commit, 1 good commit known
-> # bad: [47a8d4b89844f5974f634b4189a39d5ccbacd81c] Add linux-next 
-> specific files for 20251003
-> git bisect bad 47a8d4b89844f5974f634b4189a39d5ccbacd81c
-> # good: [f79e772258df311c2cb21594ca0996318e720d28] Merge tag 'media/ 
-> v6.18-1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux- 
-> media
-> git bisect good f79e772258df311c2cb21594ca0996318e720d28
-> # good: [6bda5a67f6a2ae4c0153e693e96bd408d054c732] Merge branch 'xtensa- 
-> for-next' of https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fgithub.com%2Fjcmvbkbc%2Flinux- 
-> xtensa.git&data=05%7C02%7Cchristophe.leroy2%40cs- 
-> soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485179363%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=0Y%2BuK%2B%2BkZRoXNH%2FK4Ni4hd3RVZJmX8c2SqoLd40qq2Q%3D&reserved=0
-> git bisect good 6bda5a67f6a2ae4c0153e693e96bd408d054c732
-> # bad: [09026363ffabf7bb33e0ce000d8bff3e41b0c3de] Merge branch 'next' of 
-> https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fpcmoore%2Faudit.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485205361%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=XuvSxtgtEAPPm3jl6X02nRyTfSh0EXMCUorpI21Y6Cs%3D&reserved=0
-> git bisect bad 09026363ffabf7bb33e0ce000d8bff3e41b0c3de
-> # good: [c32d529ea3e39ba4918f3865ef90ef6bddaa498c] Merge branch 'for- 
-> next' of https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fhid%2Fhid.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485215132%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=eOflHx6SriPsE%2FEwEURKIEzRciXVlmsDJ7F%2F1tTJVtk%3D&reserved=0
-> git bisect good c32d529ea3e39ba4918f3865ef90ef6bddaa498c
-> # good: [3fa51882336f09d1a8a03edf107ef43e3b872fc1] Merge branch 'next' 
-> of https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fiwlwifi%2Fiwlwifi-next.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485223439%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=kf7T2nWCNZ3zKqCl%2FFyIMWoWDqerBMMJJmwEDC3dldo%3D&reserved=0
-> git bisect good 3fa51882336f09d1a8a03edf107ef43e3b872fc1
-> # good: [acc26ceeebaa1880ceb70379abb3fac92d1007d5] Merge branch 'drm-xe- 
-> next' of https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fgitlab.freedesktop.org%2Fdrm%2Fxe%2Fkernel.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485231891%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=rAhIU15LaLZVLiCngMMd%2FD8WZFNbBbxlqb95l4ZqN3E%3D&reserved=0
-> git bisect good acc26ceeebaa1880ceb70379abb3fac92d1007d5
-> # good: [3e06c10cef8079782836155d66c2a91798600cfc] Merge branch 'for- 
-> next' of https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fdevice-mapper%2Flinux-dm.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485239888%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=96H7h%2FqU8AOA6BMX3gRIqFvbwree0RrwBKFiyAbbWqw%3D&reserved=0
-> git bisect good 3e06c10cef8079782836155d66c2a91798600cfc
-> # bad: [cf305bb4070bef42cea469a6c4e751a63f5cacf2] Merge branch 'next' of 
-> https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fjarkko%2Flinux-tpmdd.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485248529%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=aYTIA07yF9iCvHBin54NcH7%2Bhcn4wpuUR1%2BCGncndKQ%3D&reserved=0
-> git bisect bad cf305bb4070bef42cea469a6c4e751a63f5cacf2
-> # good: [19766d4984c39d75393d22cbdad14974cb7f9366] Merge branch 'next' 
-> of https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Fgithub.com%2Fcschaufler%2Fsmack- 
-> next&data=05%7C02%7Cchristophe.leroy2%40cs- 
-> soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485256294%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=SAfMhKzF9h2YURPEqPu6ze2oIUJ87TNyRIFC%2B1JjWGE%3D&reserved=0
-> git bisect good 19766d4984c39d75393d22cbdad14974cb7f9366
-> # good: [4e349e68974e71da13d4b34988f795f4cfe29650] tpm: use a map for 
-> tpm2_calc_ordinal_duration()
-> git bisect good 4e349e68974e71da13d4b34988f795f4cfe29650
-> # bad: [b6889908d493fe03a1db28aa9afdade6bceda158] tpm: Allow for 
-> exclusive TPM access when using /dev/tpm<n>
-> git bisect bad b6889908d493fe03a1db28aa9afdade6bceda158
-> # bad: [eb28a2adba0654878bcfd909b429bf567b35922b] tpm: Ensure exclusive 
-> userspace access when using /dev/tpm<n>
-> git bisect bad eb28a2adba0654878bcfd909b429bf567b35922b
-> # good: [11baa7201b1baefd281e5a7faf7de5b7e407364c] tpm: Prevent local 
-> DOS via tpm/tpm0/ppi/*operations
-> git bisect good 11baa7201b1baefd281e5a7faf7de5b7e407364c
-> # first bad commit: [eb28a2adba0654878bcfd909b429bf567b35922b] tpm: 
-> Ensure exclusive userspace access when using /dev/tpm<n>
-> 
->>
->> If you happen to fix this, please add below tag.
->>
->>
->> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
->>
->>
->> Regards,
->>
->> Venkat.
->>
-> 
+> > IMO at this point "nmi watchdog" is simply a synonym for the
+> > hardlockup detector. That was what it looked like in the code before I
+> > started messing around and adding the buddy lockup detector and it's
+> > how it is now. While it's unfortunate that there are two names for the
+> > same thing, I don't personally think that should change at this point.
+> > FWIW, even the "buddy" watchdog relies on NMIs to actually get stack
+> > crawls on stuck cores, so NMI still means something even there.
+>
+> I think this is misguided. Currently the only use of nmi_watchdog I'm
+> aware of is by perf where the buddy watchdog's use of it causes issues
+> (as mentioned above).
+>
+> > If we want to tell between the perf detector or the buddy detector we
+> > should add a separate file for it.
+>
+> We could with perf then having to read from two files rather than one.
+> Presumably the lack of presence of one file will be sufficient to also
+> avoid a kernel version check.
 
+This was what I was assuming
+
+
+> > > On Android
+> > > writing to /proc/sys/kernel/nmi_watchdog would switch from updating
+> > > the buddy watchdog enable/disable to the NMI watchdog enable/disable,
+> > > but it is a straightforward patch to make anything doing this update
+> > > the buddy_watchdog file instead.
+> >
+> > Straightforward, but you've got to go find everyone that you break by
+> > doing this. That's not something I want responsibility for. If you
+> > want to convince others this is something worthwhile and you've got
+> > someone signed up to deal with the fallout (if any) then I won't
+> > object, but it's not something I'd be in support of.
+>
+> Stuff like this happens, check out this thread:
+> https://lore.kernel.org/lkml/2025020304-chip-trench-4e56@gregkh/
+> Imo we shouldn't design in using an actively misleading file name and
+> incurring extra overhead in perf. Having two files nmi_watchdog and
+> buddy_watchdog is fine as the latter case currently isn't in
+> mainstream distro use and people shouldn't care. It also maintains and
+> correct's perf's behavior when the buddy and not nmi watchdog is in
+> use.
+>
+> > > If we have to keep "nmi_watchdog" then we should deprecate it and
+> > > create an equivalent file with a better name (ie without NMI in it).
+> > > It'll be moderately annoying in perf to determine whether the NMI
+> > > watchdog is enabled by having to read two files.
+> >
+> > Again, up to you if you want to try to do this, but I'm not really in
+> > support of it. It doesn't seem terribly hard to make a new file that
+> > says which hardlockup detector is in use. If that file exists then
+> > read it. If not then you fallback to what you have today.
+>
+> I don't mind a file that also says what kind of lockup detector is in
+> use. I'd like the meaning of nmi_watchdog to keep meaning the kernel
+> stole a perf counter as this is the behavior long assumed by perf
+> which I think is the majority or only user of the file. I think the
+> buddy watchdog being controlled by this file is less than intention
+> revealing.
+
+I'm more than happy to be outvoted, but IMO nothing about the name
+"nmi_watchdog" says to me that a perf counter was stolen. It just says
+that there's a watchdog that NMIs are part of its work.
+
+...and, indeed, "nmi_watchdog" doesn't use perf on PPC, right? As far
+as I can tell, from reading `arch/powerpc/kernel/watchdog.c` checks
+`watchdog_enabled & WATCHDOG_HARDLOCKUP_ENABLED`. ...and before I did
+commit df95d3085caa ("watchdog/hardlockup: rename some "NMI watchdog"
+constants/function") it was checking `watchdog_enabled &
+NMI_WATCHDOG_ENABLED`. That was at least since 2019, I think...
+
+...and you can see "PPC_WATCHDOG" depends on
+"HARDLOCKUP_DETECTOR_ARCH", not "HARDLOCKUP_DETECTOR_PERF" so it's not
+perf-backed.
+
+I think this is just the critical question: does/should "nmi_watchdog"
+mean perf-backed detector or is "nmi_watchdog" just a synonym for
+"hard lockup detector". In your mind it's the former and in my mind
+it's the latter. The correct way forward depends on which way we want
+to jump, right? In either case some external code is going to need to
+change...
+
+The kernel docs are certainly pretty ambiguous here. "kernel.rst"
+certainly mentions perf, but it also says that "nmi_watchdog" is only
+for x86 which is certainly not true. "lockup-watchdogs.rst" doesn't
+say anything about perf and just seems to indicate that "nmi_watchdog"
+is another name for the hardlockup detector.  "kernel-parameters.txt"
+makes some mention of tweaking which perf event would be used, but
+otherwise makes it sound like the nmi_watchdog is just another name
+for the hardlockup detector.
+
+My vote would be two files:
+
+* "nmi_watchdog" - simply a synonym for "hardlockup detector". 1
+enabled, 0 if not (like today)
+
+* "hardlock_detector" - could be "buddy", "perf", or "arch"
+
+...if the "hardlockup_detector" file doesn't exist and "nmi_watchdog"
+is enabled, you could probably guess that a perf event was in use. If
+the "hardlockup_detector" file exists then a perf event is only in use
+if the value of that file is "perf". It doesn't feel terribly hard to
+do this and it doesn't break anyone who was assuming they could turn
+on the hardlockup detector with "/proc/nmi_watchdog".
+
+-Doug
 
