@@ -1,85 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-12689-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12690-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15670BC0E25
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 07 Oct 2025 11:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64131BC1032
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 07 Oct 2025 12:28:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cgrnq46mjz3000;
-	Tue,  7 Oct 2025 20:44:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cgsms2qFMz3bjb;
+	Tue,  7 Oct 2025 21:28:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759830271;
-	cv=none; b=RWzzMqaVx7/4ga69DaJc6ZfksNokB5BMP0fslxia2/BAJrf5wLtiNH+iAyAVe1cLiQSsDrwPSu8NqJLdIsMuw+lrZBKcVOqT3isf381IYgLg8erULXdEB91mV2kuzY7wagGYHUiaXydtTP8+3hkklFfkYbrLARZdr+2fs2BaZR0d9ufcA7O/t9dd8KS4C2xdOd+VmTibGzO5XjRJOS5NWa6SXsjnMnBlK9dgvULgT5LJ/bS3hsO5fs1yH2rzmgt3TOHlPloI61Ey19FpmJXrnxGLEYWGHKbFbzZysHK0b/zNAUtymAIQkMb6uco7Bjly1X58OAytqeSnSKvKWDYcHQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759832925;
+	cv=none; b=giyaJ813mNSZOdJG84mlsWZFNK1LP+1/wMl3wT0qh74+vI3P4vyu70b03Bh2x5uOgSJZTSZiZFA8wbD33xwnfs1xmePiemU+U++ZSvhOsXAwBYagV3iQ12Fsahzo7J2LEGodHNh1BUvscVqyjPuZJ6pMcp1N/EcdP+zdcu5Ukz5/G01iKERZVEbA7z8tui1+IOF0bcHOWd/Ri7g42kL1Bd/hTj9C9sHgi6cZ5uUAc7uNwlatxK+8wButpwgGj3CZfJ0KTCCLmNQA6QbFz7JPvwgMjQdtNd28jkYkzxyC34o9/LqOfkxesMdllZT8ULQ+/tUct6ev+8PIv8eQXzrKBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759830271; c=relaxed/relaxed;
-	bh=3A/VwiK3ST2alzhsK6RwftUDnD/x55X00olSZzcEoRA=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:Date:References; b=GI6/xr0/EVkGpXeULE65OoVkzT8K28UC48qb0vjqhyVIYFevb3clCDQsL7oqyKRN5TlFp00m8bbamcbkHLy+Sv2myPltO4kCjPN908OwuN+Q0yt4XDoBSJdjzrrQNTtY4ey8UKS7zZMCUyDpyWIf7HKt3Eu3hy8wqjPpAfiJNTBfEMmp5xMb8smfdoZOJ/X10rAqFQJfUyZRVrF9Pff0DP89xxMyamYv6rkYcYl+UgHJUEnN8RSmpJhLkv9+WuRsV/MMQb23DfTnOuOAY3E9lDaDEjuiia5hA6uB7IWZF9J9bYOCf/bdDHdl/4xLov0npDVUgi97kVEFxUaoYTjeCA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DWTNKEen; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1759832925; c=relaxed/relaxed;
+	bh=cbSe/W8VzXaTL4OKHmy7VB7TEH8NREzZDFaWaWyO9i0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UDQp3OYc/XVkd2SCWP+hustpImHCSTOUTvdYifEsA6ZuIT9FfRPjvbNjlRb4OFy8sUaLx10OB8PntLYYD9B6dwxugAmcfhe8ff09iNF5X6Swge9YlzcSIC6qeur+frLC07pjYH0gtZDnc0BByFiIRI74JepoD9O3YipO5RJ1imOtFKcFXY3Jqm98LXC4wmL4E9DbowKXBslMwqHyEGCE8Gl3m8+fUMwK+2uaQYNyA2dQYmephDoDhFnqT+FiyZY0mCIbSUNL8yLY5MCbGVMGPFlzSxLiMIZbQXVotdXx78/+fyoM8aAU9vGJPG4cms2WUUf6L+nEstChq+2mY8g2SQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EV1ylRpy; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DWTNKEen;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EV1ylRpy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cgrnp1DTyz2xcC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Oct 2025 20:44:28 +1100 (AEDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-781010ff051so4223940b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Oct 2025 02:44:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759830265; x=1760435065; darn=lists.ozlabs.org;
-        h=references:date:in-reply-to:subject:cc:to:from:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3A/VwiK3ST2alzhsK6RwftUDnD/x55X00olSZzcEoRA=;
-        b=DWTNKEenaFPgT3d5o/idxzx/c0yZ3O+vcyi3iQVvbmZfXaCZdFi+qOPGYh74sqNuCo
-         FNtsrmAPzX7kVx12BGbXlR9ZdXFUS+3k65iOtHEMhcagg8+uWgJeclV6UKrnn6XwMCQB
-         ZDkiA4TnyBHcKi94XRSeL6tzQw+7Imo+cpSrzzRWAhEhmMQpobF/lltVAfwmYbXjYEyY
-         x9nqQUD9apxMxxdzMXA+Vg5UaRY+GYpmkty4MAfVEq1mEaRc0m6KVHYhGN8lNdKz74XI
-         uKXOQPEQHLkwbnh8sDw2/CPANTe8VMqH6f1Y/LarPTexe/AczZi89gPF7Q6/cwB7mNmh
-         9wXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759830265; x=1760435065;
-        h=references:date:in-reply-to:subject:cc:to:from:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3A/VwiK3ST2alzhsK6RwftUDnD/x55X00olSZzcEoRA=;
-        b=adAOObipGTJJhtf3okIW45la2pxKnxDfcXqsMzBHqYzcbANRdc2d6G9czbLw9PfIin
-         3ZbVO5vPuDsKXsJvChUKVcskb3kJmz2mdZRtQn6quckmtE/BYbnd9hsMY0SbawU+5PEW
-         gjK0XzMowy0LFcdjiEOWse0bakb8gosNqEafu844Imb0lprQS2AgJOa74aPk2WpJwikJ
-         oR1v4wmpdcelxA6O2CSrR3peBLk1qm/LE2rtG7pG9X15nOxg5POeZSJn0LzglS0XbeQ7
-         mHmzZn+30gdTxS5RLgDdU+0j34aRAQMT7Fk4/7n8ajiiEQE5jMPx4j0gOCI1NG4MztI0
-         XruQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVyolIghFbAX1PN0nkp419RU8+7UYkpKC4A5y3+cknxwYWu0JcAIm9JFXEJzXWLL0oHvIUlpPSy6DBczxo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwYcJcqGUGkjKFdRsHP4berHCzL3CQhNuErjIV4DnLUtPZe1Xxx
-	6KFJpIQ182eFt2pEyGtFKIASTCEkKA00p90UpX7J0VX/i/a6mk0pbxl4hD+1S5C9
-X-Gm-Gg: ASbGncvkFn+vsrBA1x/ucxpT22sfjAHdU0oXX7+WEisPTJ7E6SsSOuCQWaQHsB2wCut
-	3NuIO0FXXfqfH4qSZtrZN7AqcXMOIAxqXzgUZj+91wmzxn4GK13vfFcoJG5Tf86hhvDfPaSXXJQ
-	oHMjJcRhheIMXpzWVp/IZWIZZKMtc+7YhXSSSodIeM8NmbKEtb287RQnhu6mB6lrhrvyskP2xaA
-	uh4pssFK62zXs0Bod+G10pTNJAUcz5mlNxyg8HhkFjeZboShEpGaq0NKHyoo2F1Bmk8NCW9NC0c
-	1xu80pGaGq5v5icB/ptKKR+0HYI586YrUOMCfna2duAFQnCQinabDW8KHXI3aovhfJuFV/e5brU
-	E5u0xcYsy9r2ysMXO9kw9pksE2hMWK14gnxl3QCk=
-X-Google-Smtp-Source: AGHT+IHdDZ+BrmiDr3sqlM3LMsfxZrmam6lJT+2X4FkGsIUdH2hXqWPLsvn9F/0fIGhZvm1Em/I4JA==
-X-Received: by 2002:a05:6a20:9187:b0:2fd:5bf0:706c with SMTP id adf61e73a8af0-32b62118956mr23209672637.58.1759830265355;
-        Tue, 07 Oct 2025 02:44:25 -0700 (PDT)
-Received: from dw-tp ([49.205.218.89])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b62e5549737sm10368308a12.7.2025.10.07.02.44.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Oct 2025 02:44:24 -0700 (PDT)
-Message-ID: <68e4e0f8.050a0220.1e89ea.1c6f@mx.google.com>
-X-Google-Original-Message-ID: <874isbgid9.fsf@ritesh.list@gmail.com>
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 6/6] powerpc/64s: Do not re-activate batched TLB flush
-In-Reply-To: <ef5d851b-0f67-410e-9479-0f6d344fa17b@arm.com>
-Date: Tue, 07 Oct 2025 15:10:18 +0530
-References: <cover.1749747752.git.agordeev@linux.ibm.com> <8625a1d97dcf4ae499b4bb341e27346f768a7248.1749747752.git.agordeev@linux.ibm.com> <aFGFl9Dvb9zdC3JS@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com> <ef5d851b-0f67-410e-9479-0f6d344fa17b@arm.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cgsmq31n8z3000
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Oct 2025 21:28:42 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5971j2KR020652;
+	Tue, 7 Oct 2025 10:28:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=cbSe/W
+	8VzXaTL4OKHmy7VB7TEH8NREzZDFaWaWyO9i0=; b=EV1ylRpyHZEc+CT5glomlL
+	XOXQCEo4Dd4WiUeAlMKldfz3Fa2KOag//VHPpqjJmotuMp5zsoCUrkrdCBpsL1AY
+	nL02W7JFqC3hNL3BXLYrml3OejwmP8eQLh6xR2byx7NOoijrFpIeMqAb+ppFjiNp
+	yehcmaOFfDKxpoqUKsrp2eXAagvNfUv6u9I77/f+VOCsJ6R2/9ycF/MCHyBJgyCj
+	8m+OqSFsJd92+LuujZEMZe1pb1L9oqBi3rbShRGILi2RvQ9MrD23Q6Mq5ew9XJu7
+	XtTjfT54i3yszrTGMcOAVpQpjc4NidSLrTzTFU5cQGu1GGXCVz6sdjhGQb4sQmKg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49ju8anx6h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Oct 2025 10:28:32 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5978XZ9D019601;
+	Tue, 7 Oct 2025 10:28:31 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49kdwsaxvf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Oct 2025 10:28:31 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 597ASSNx46989744
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 7 Oct 2025 10:28:28 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0A74620040;
+	Tue,  7 Oct 2025 10:28:28 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3F06020043;
+	Tue,  7 Oct 2025 10:28:27 +0000 (GMT)
+Received: from [9.78.106.240] (unknown [9.78.106.240])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  7 Oct 2025 10:28:27 +0000 (GMT)
+Message-ID: <89ec78e5-4fe3-4100-9ae1-23f6a9f36e77@linux.ibm.com>
+Date: Tue, 7 Oct 2025 15:58:26 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,46 +78,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: powerpc/fadump: skip parameter area allocation when fadump is
+ disabled
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+References: <20251007074023.176163-1-sourabhjain@linux.ibm.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <20251007074023.176163-1-sourabhjain@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: NMpLb9lpVmgBAMdqd1eCz1lcNEjQX0mN
+X-Authority-Analysis: v=2.4 cv=BpiQAIX5 c=1 sm=1 tr=0 ts=68e4eb50 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VnNF1IyMAAAA:8 a=WqWALAZGvOM0UOBZ99wA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAyMiBTYWx0ZWRfX1wjOwTgKnIJI
+ fDEUqIGxmmNCbQ0u70YfQkA6dUmR80pUGfejz0sRU5v412MYl3kqOv9c0X8nbEreGAP6z7JfxjD
+ h7D5RcMd6DwRcJTU2ECadss98CgkTjabTK87NsTVPPLZ75inDMf3LIKjM3emJboOKP8nM9yZg7M
+ ftVnpK88Kz8ZJClAXsXp3UV076Ow60n96edGLrMlwMvHYuKMpESAzhVRhKYVNk9zsSg70VW5JnP
+ AuL2wzXYDeofQErWZwmVwtW3h9YIoxc5DZD0tZlhM03gdCpm0j50WDA1AYg5Ihm8BkWT0+mG6Wg
+ lUp09oKbufFqFgiuBQ6lvXu121AcfB/pvHTrXmUv6Te9BE6qXpZe+KyTGPPsUAwEmT/S2Kxmc6V
+ sH6CpZwacMBPTiLYlD97mop2aeVosA==
+X-Proofpoint-ORIG-GUID: NMpLb9lpVmgBAMdqd1eCz1lcNEjQX0mN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-06_07,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 bulkscore=0 impostorscore=0 adultscore=0 clxscore=1015
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2509150000
+ definitions=main-2510040022
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Kevin Brodsky <kevin.brodsky@arm.com> writes:
-
-> On 17/06/2025 17:11, Alexander Gordeev wrote:
->> On Thu, Jun 12, 2025 at 07:36:13PM +0200, Alexander Gordeev wrote:
->>> Since commit b9ef323ea168 ("powerpc/64s: Disable preemption in hash
->>> lazy mmu mode") a task can not be preempted while in lazy MMU mode.
->>> Therefore, the batch re-activation code is never called, so remove it.
->>>
->>> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
->>> ---
->>>  arch/powerpc/include/asm/thread_info.h |  2 --
->>>  arch/powerpc/kernel/process.c          | 25 -------------------------
->>>  2 files changed, 27 deletions(-)
->> Hi All,
->>
->> (I trimmed non-ppc mailing lists/people).
->>
->> The whole series does not seem to make it, but this patch alone is still
->> applicable and makes sence, if I am not mistaken.
->
-> Yes, I agree. I arrived at the same conclusion working on the next
-> version of the nested lazy_mmu series [1].
-> [1]
-> https://lore.kernel.org/all/20250908073931.4159362-1-kevin.brodsky@arm.com/
-
-Yes, we disable preemption while in lazy mmu mode for Hash, so I agree that
-we won't call into __switch_to() in between preempt_disable()/_enable().
-So it does look like that we don't need that code. 
 
 
-> May I include this patch in v3?
->
+On 07/10/25 1:10 pm, Sourabh Jain wrote:
+> Fadump allocates memory to pass additional kernel command-line argument
+> to the fadump kernel. However, this allocation is not needed when fadump
+> is disabled. So avoid allocating memory for the additional parameter
+> area in such cases.
+> 
 
-That should be ok. 
+This needs the fixes tag...
 
-> - Kevin
+Fixes: f4892c68ecc1 ("powerpc/fadump: allocate memory for additional 
+parameters early")
 
-Thanks!
+Otherwise, looks good to me.
 
--ritesh
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
+
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> ---
+>   arch/powerpc/kernel/fadump.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> index 5782e743fd27..4ebc333dd786 100644
+> --- a/arch/powerpc/kernel/fadump.c
+> +++ b/arch/powerpc/kernel/fadump.c
+> @@ -1747,6 +1747,9 @@ void __init fadump_setup_param_area(void)
+>   {
+>   	phys_addr_t range_start, range_end;
+>   
+> +	if (!fw_dump.fadump_enabled)
+> +		return;
+> +
+>   	if (!fw_dump.param_area_supported || fw_dump.dump_active)
+>   		return;
+>   
 
 
