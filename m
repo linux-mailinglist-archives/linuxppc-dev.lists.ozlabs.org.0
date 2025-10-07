@@ -1,71 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-12683-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12684-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFB4BBFE15
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 07 Oct 2025 03:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA67BC01D4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 07 Oct 2025 05:50:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cgd97507Zz2yqh;
-	Tue,  7 Oct 2025 12:00:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cghx95CbYz2yqh;
+	Tue,  7 Oct 2025 14:50:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759798827;
-	cv=none; b=C2eCaex3qO25rcgIwEJB59or/1O0f+aWYx+cxWNhQdYLLOC21a4+3XhyFmrXn2fEDT+tn2aVT9jdjJvwbH7pyj1EwkBfXc9VU6ksh52p0bBpYpFVciTz1Z87RT+eST7eXBWmE/ziJXNxisXBO5gdHL4i4/w7gm5ALbRaKQtCClTPPmiCAE9DCfErZUEMzynAsJzI00y0ELGm07rJorR2Td+0n/p+MY9+E5Mi6q6SOMtxAMz8Rcp7yIwZJLBfK6e/DJj8JEmIpUtZ9zL7TwGb19lDYpwORC9xKiLNNMJhw+Cl6RULPQbDGTBwAP7dLo9ggeaBchf20yD0Z37Iwc84PA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::632"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759809021;
+	cv=none; b=C7+15fu0QleKl7RQRh53oPw9QCkeEyzfADrSJbs078sQZcEE/CdIqABqa8E1OY5mG/fOGvfAsIu94WcoZh1WKRMOmvB61TofRCJ8Vg+4ES+A1Efk4JTN/F5JyNCKBNonlI23K3cgcw1eW/NgmLqX5815IitSgeSOGqRPUK8AJA7Y0lH2gOQ92HjOkNIoKE7OejhrrCYHPOI9020gLSaR6dLvmX0/3oM4eLxLGPM1mZVgVXo1Jc/aEk14aK2QlkEo1CeXTXvYgR8g676fgxATsCCsjjWQf/amIHaGVxX3X3R5C0GUQ+29oxfh0TMCMVSyLQOQ1lnarDJ23NhDRb1Rjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759798827; c=relaxed/relaxed;
-	bh=k6mQHeLbc51hD/eXve78YPM4+TxG0628utfcdDhF6wI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P+/NnApCeGM4VDY37qlIj7Moye0koAZbghY6HTRqg+U1ruojQR5XAKDlLbmJiea+UvOWh9WJBXGoCwYzeH/HP6wguoD9b4MfemjpeXpMC9RujCYa9MbmSx5KThe4ArfWVqM1UyOL9RrADlumFcW9vz4KLLhNVJLpJM7EpQEQ68jFUbOYBFglpieUvIXWXSwgIrITQD13b5ljorHhNjGWCmnTrjmfIx3A0zNlyx/ztN6fpI5+lPxr2AepmDtuuCxAiHZ9R0IRT9c1LxGPjYWF1Z9JwSblboHCsTwhgLxso6Ag4uN/z6vqP1q6Na5TzyoWOjNritIxxhqKMoGN+WsNCA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MrYLwZ4J; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1759809021; c=relaxed/relaxed;
+	bh=DLvTrnlB6pwG2/hP8cgIWiHqyjOpePcOnpbnsgYKsys=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:Date:References; b=ScqZkvgvdCtZlpy3QlZm/HYa01hi3bJrBBf45NlKL0lbRrbpJaHnyJ9bD4nwISeXjXFj87UD9Z6SkFYvosgZBxCdfXPU003wjIdHnAHfupR7rSpNWPoH+qUPYP4OLp2pMCGzir5L1twuIi1NWct3JauTljCfHm4KkCgKH3f0TbIbAXjAXd/lfktir8B+PZmIF9z2N4XL/XRUhQ7sHIdpW0FToOq0bW5cDQB6gXrpeBjxuQH+tkbGzjxofrldtw7tPMr4Q4E8U/HAOeo2o45kDculpvqfBOLYM0WpwBD39cGM4UzNVID9tPyDv/PDy3L74l3V7xvZSXkEaW2OW3k/iQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KifLi5Lx; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MrYLwZ4J;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KifLi5Lx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cgd96324Pz2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Oct 2025 12:00:25 +1100 (AEDT)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-2731ff54949so48585ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Oct 2025 18:00:25 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cghx81CKYz2xcC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Oct 2025 14:50:19 +1100 (AEDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-28e7cd6dbc0so65945065ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Oct 2025 20:50:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759798823; x=1760403623; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k6mQHeLbc51hD/eXve78YPM4+TxG0628utfcdDhF6wI=;
-        b=MrYLwZ4J2SGEECpOaOG6ds2UJBo0YSg4bP7Fzc3VeI+s8QyG769sNXV119ig0V/dXt
-         AMIP3v+2jvOO3aK4HmpAJTjhx99OMgqYC4Atzt6M8InMBszLeuP2B0l1IRzd6llevchx
-         mVPsLuR3OBpUv5ZpCy+Bnqlp/nRNxBwKhxCcuPvLQzjn1O/VSUDXR3nadlNXFIBlFEfs
-         cRKSnoDCP6QKeKbTwaQvFliLrezBgsLIXOMSbiXmgwmTrwbXhw//4XfJ6yVaUHudu7JV
-         Nzj7OzPNK9Y3JS5iqncYJzZvm9FOgbSt5VohdDvhcuPri199ZQOE2kNpxgnMN+vjx8cH
-         Jiwg==
+        d=gmail.com; s=20230601; t=1759809017; x=1760413817; darn=lists.ozlabs.org;
+        h=references:date:in-reply-to:subject:cc:to:from:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DLvTrnlB6pwG2/hP8cgIWiHqyjOpePcOnpbnsgYKsys=;
+        b=KifLi5LxaCioAfI9SP4pPbrdOSP4cyhAAy4H/4qX/0g/ofV0TPUVOlrC7+ZrSCGHgL
+         NjBVu7LSC90XpW1pRxpIgvcGlSfCUkRC5i2wPNm5IUXdFdHu9XxgaTqF14OAbcYEEQth
+         MzBK8PNg/FrJRQHQ+CII90fE3EeECD/lnA1ccBHx9bmSqmhpmS2nvBFxj2y01TlJWmwC
+         2AcHAQbGL5LGmanNzcdpdmhCVJD+mYrfcXGFsbZILGw06GpKAgby1kyUgknJaiMfxG6e
+         nz+N4P2ajSZ8sbzYVZFZQ4r/poDRUlApiJlHLmkahtn4eiQmsrvj30AnJatmEx7BbUam
+         lDHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759798823; x=1760403623;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k6mQHeLbc51hD/eXve78YPM4+TxG0628utfcdDhF6wI=;
-        b=lB+7892NKF20DPGX41mQn3thg4b05xSRXmPicFCucqkSEs+g38LqHGQ5Ze0gJj6kTo
-         mfPPoDO9hZd/wPZnbpQRJ0CGA3LRnnO7Cg1XeQPEyxFRBWTRABhjB4i8a9sByjQvPaC9
-         QkGIcHZdNU2kLRKDa2W/ozIsk4yOBmHh0FN0/5pygwnDFHU+BRfhJngMH6YrWzO43fiE
-         OhzcRWtUdCtAUL2/7b9bm8CDR9Pswmy9NZr/MPC5y6/5PY4dZgfddHaXae+Q0twobACu
-         n8cLXTzxiOybfwTQ5zB/efksV89eT0LSGEswKbcvdRi41JZ+ejpDnIuiN83Ac5/yuqb1
-         w2ig==
-X-Forwarded-Encrypted: i=1; AJvYcCVZ2QtsLeZ1NOEO2ho6s86zYDOI+YlXaqfD3ojdRlvNvRhJ39MxOG4ZtreqMRwn2Ri5gBZBxrrDDlUKKBo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxhG2UOzoY3Y+xqC7oklGrXwWTcyaj+iMAXrTOAnPzHu3oI4bY7
-	pPctKC7Vk+V2B0GnHs4uns0CxMrJBtlGLsyj8NWXyTttcfK3jaPpAFjW6EzAX0ZeahlmwFB+pj0
-	Gu4wLe7YC/jcnHbs4+cwx/Pek1WL1D5HUTDpCHfyR
-X-Gm-Gg: ASbGnctp3LkjZi7xOKIPUBmsPmXDAX8+/SSInGHtM3jr96ypVRMZpEU9I2WF4gB7fRz
-	YlHgsd+OL2m7QaCGI6Et621BV5eo+4/bflTH+l8ttgLOumxJJFaj10Db2H51Cya3e3P/x5JmcOB
-	FhCQeN1jA1xlWvDVHHIByt9wsXmPJHoQVsBsQK/ftI7uyMwmiEZABRNr0vIF1YP+/3nNVO7YBuc
-	KHfgUR52l4OXyZ/awsGEingvRcyieXaBdkvgT6a1iIyhn6rak/7A6PY6Cr9oTkjL+BrYJU=
-X-Google-Smtp-Source: AGHT+IGtKqlcr/X53YFNFTKkWMvGJGQM0ey7+a031TD49SZJiyKQEgCc9CJhuov2G46Tt8YqmZ9/Z/qPCT8m39Nszs0=
-X-Received: by 2002:a17:903:298d:b0:267:912b:2b4d with SMTP id
- d9443c01a7336-28ecb74c0e7mr1431545ad.7.1759798822443; Mon, 06 Oct 2025
- 18:00:22 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759809017; x=1760413817;
+        h=references:date:in-reply-to:subject:cc:to:from:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DLvTrnlB6pwG2/hP8cgIWiHqyjOpePcOnpbnsgYKsys=;
+        b=Nq0zviR3sOrO+ji6ZWPUCX0rN62x30chfO0ULlUKnNg0RsqcvNmypz0bQGLNeMVdSV
+         M8i4+xg22dfYkVt15nh5b0y/OiYZUCuAoYPzu0R6MJ8Jt5Udq3Czd/xql3156zd40wQ5
+         YA/cHOgKQpTuMV+3AAdUEVsygNKhml0isjgjd7PK5/qW/LsXmXFq7qf8d9FpYH4Yw3h1
+         W9Rzsn1gC8yFJ2b6BoeLsdNQcv6wFGfAVYshGVQbZnl7U780ZPtEI99jr08QSQm3XUi7
+         7KqCYhTqktQNC9OWPj5t8aSxKuhb9+rdUQoWtEuq8f1D17MDilWhNTDYUt5MfLyPLQze
+         CW3A==
+X-Forwarded-Encrypted: i=1; AJvYcCWD4SD8CWi3DpO2yXb8mfYZU24rd3DLLnv0RulQ/MSNrbcHxpIlThVVFG3Xb3wFAV8YdGFjy+me96b7RNw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwUyBjzmmtHTdgXcXoStnFfPuxx9gZ+Hm2Sc7u4HvwHY+gBjvh5
+	6UVnzB3t7BVV1VSxHot0VuBHcv1o68V/P9a8ZR91aTFZ3lQM4BEO/sad
+X-Gm-Gg: ASbGncssYZiMkvAdkwx7dtaV/rQsnSTynEsTkxXg5uWKimXPDwX4ph/t72e5qup9eH7
+	g1eShkvfVtO3uQPLAG7X/fpxMp48mX5FIQi2bQ9ztoL4t5BzlDxPYblexm3xtVUfrrsENFLwZRA
+	p/ORiPT4kBXIrZVvcAJvU9GXlkZyeIfd0pfny1OWd9p1dMxvzptU6OdM1MiuB/Te8H0Fx4r6h/k
+	3mqVgbuWMUAhp51u2yKpUDUbsrlR0WUCyyGigd82demqroslbkJWWPtk/1hmeUBPj6xK5zfR7pS
+	0E8kiG8BVd68PB8f7SiRwT+sEjUPwNKzXrGASJG02T9fDWLFy5Fd/XE6W18p/W6pGSQ46qSA8VM
+	8mlE4ymvxB3avGgIpcQ9MRxEtzNrmr0FzpDmwTpsmIGpHcStvqg==
+X-Google-Smtp-Source: AGHT+IFmjVvttIfnEZ9exjxiEqJx+Nnc0IZMPVpG/NyeFL1NUXZsFyXzVDAXJzYFsL6KxP1hXcUViw==
+X-Received: by 2002:a17:903:38d0:b0:269:8f2e:e38 with SMTP id d9443c01a7336-28e9a565f18mr186783675ad.6.1759809016924;
+        Mon, 06 Oct 2025 20:50:16 -0700 (PDT)
+Received: from dw-tp ([49.205.218.89])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d1b8444sm149114645ad.86.2025.10.06.20.50.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Oct 2025 20:50:16 -0700 (PDT)
+Message-ID: <68e48df8.170a0220.4b4b0.217d@mx.google.com>
+X-Google-Original-Message-ID: <875xcrgzs2.fsf@ritesh.list@gmail.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Nam Cao <namcao@linutronix.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Thomas Gleixner <tglx@linutronix.de>, Marc Zyngier <maz@kernel.org>, Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Nam Cao <namcao@linutronix.de>
+Subject: Re: [PATCH v2 1/3] powerpc/xive: Untangle xive from child interrupt controller drivers
+In-Reply-To: <83968073022a4cc211dcbd0faccd20ec05e58c3e.1754903590.git.namcao@linutronix.de>
+Date: Tue, 07 Oct 2025 08:54:13 +0530
+References: <cover.1754903590.git.namcao@linutronix.de> <83968073022a4cc211dcbd0faccd20ec05e58c3e.1754903590.git.namcao@linutronix.de>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,263 +92,117 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20250916145122.416128-1-wangjinchao600@gmail.com>
- <CAP-5=fWWOQ-6SWiNVBvb5mCofe0kZUURG_bm0PDsVFWqwDwrXg@mail.gmail.com>
- <aMoTOXIKBYVTj7PV@mdev> <CAP-5=fX7NJmBjd1v5y4xCa0Ce5rNZ8Dqg0LXd12gPrdEQCERVA@mail.gmail.com>
- <aMpIsqcgpOH1AObN@z2> <aMpRqlDXXOR5qYFd@mdev> <CAP-5=fV05++2Qvcxs=+tqhTdpGK8L9e5HzVu=y+xHxy9AqLMmg@mail.gmail.com>
- <CAD=FV=VNmjTVxcxgTQqjE7CTkK2NVGbRxFJSwv=yOHU8gj-urQ@mail.gmail.com>
-In-Reply-To: <CAD=FV=VNmjTVxcxgTQqjE7CTkK2NVGbRxFJSwv=yOHU8gj-urQ@mail.gmail.com>
-From: Ian Rogers <irogers@google.com>
-Date: Mon, 6 Oct 2025 18:00:09 -0700
-X-Gm-Features: AS18NWDGLlvOhtxIZkpVyFf6Sm7S3dsd_RTNVJ4XYO9x6ozGHkZMxjn7T41Jhr4
-Message-ID: <CAP-5=fW64xHEW+4dKU_voNv7E67nUOFm27FFBuhtFii52NiQUQ@mail.gmail.com>
-Subject: Re: [RFC PATCH V1] watchdog: Add boot-time selection for hard lockup detector
-To: Doug Anderson <dianders@chromium.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jinchao Wang <wangjinchao600@gmail.com>, Namhyung Kim <namhyung@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, 
-	Yunhui Cui <cuiyunhui@bytedance.com>, akpm@linux-foundation.org, 
-	catalin.marinas@arm.com, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, christophe.leroy@csgroup.eu, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	acme@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com, 
-	jolsa@kernel.org, adrian.hunter@intel.com, kan.liang@linux.intel.com, 
-	kees@kernel.org, masahiroy@kernel.org, aliceryhl@google.com, ojeda@kernel.org, 
-	thomas.weissschuh@linutronix.de, xur@google.com, ruanjinjie@huawei.com, 
-	gshan@redhat.com, maz@kernel.org, suzuki.poulose@arm.com, 
-	zhanjie9@hisilicon.com, yangyicong@hisilicon.com, gautam@linux.ibm.com, 
-	arnd@arndb.de, zhao.xichao@vivo.com, rppt@kernel.org, lihuafei1@huawei.com, 
-	coxu@redhat.com, jpoimboe@kernel.org, yaozhenguo1@gmail.com, 
-	luogengkun@huaweicloud.com, max.kellermann@ionos.com, tj@kernel.org, 
-	yury.norov@gmail.com, thorsten.blum@linux.dev, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Oct 6, 2025 at 4:32=E2=80=AFPM Doug Anderson <dianders@chromium.org=
-> wrote:
+Nam Cao <namcao@linutronix.de> writes:
+
+> xive-specific data is stored in handler_data. This creates a mess, as xive
+> has to rely on child interrupt controller drivers to clean up this data, as
+> was done by 9a014f45688 ("powerpc/pseries/pci: Add a msi_free() handler to
+> clear XIVE data").
 >
-> Hi,
+> Instead, store xive-specific data in chip_data and untangle the child
+> drivers.
 >
-> On Mon, Oct 6, 2025 at 2:30=E2=80=AFPM Ian Rogers <irogers@google.com> wr=
-ote:
-> >
-> > On Tue, Sep 16, 2025 at 11:14=E2=80=AFPM Jinchao Wang <wangjinchao600@g=
-mail.com> wrote:
-> > >
-> > > On Tue, Sep 16, 2025 at 10:35:46PM -0700, Namhyung Kim wrote:
-> > > > Hello,
-> > > >
-> > > > On Tue, Sep 16, 2025 at 10:13:12PM -0700, Ian Rogers wrote:
-> > > > > On Tue, Sep 16, 2025 at 6:47=E2=80=AFPM Jinchao Wang <wangjinchao=
-600@gmail.com> wrote:
-> > > > > >
-> > > > > > On Tue, Sep 16, 2025 at 05:03:48PM -0700, Ian Rogers wrote:
-> > > > > > > On Tue, Sep 16, 2025 at 7:51=E2=80=AFAM Jinchao Wang <wangjin=
-chao600@gmail.com> wrote:
-> > > > > > > >
-> > > > > > > > Currently, the hard lockup detector is selected at compile =
-time via
-> > > > > > > > Kconfig, which requires a kernel rebuild to switch implemen=
-tations.
-> > > > > > > > This is inflexible, especially on systems where a perf even=
-t may not
-> > > > > > > > be available or may be needed for other tasks.
-> > > > > > > >
-> > > > > > > > This commit refactors the hard lockup detector to replace a=
- rigid
-> > > > > > > > compile-time choice with a flexible build-time and boot-tim=
-e solution.
-> > > > > > > > The patch supports building the kernel with either detector
-> > > > > > > > independently, or with both. When both are built, a new boo=
-t parameter
-> > > > > > > > `hardlockup_detector=3D"perf|buddy"` allows the selection a=
-t boot time.
-> > > > > > > > This is a more robust and user-friendly design.
-> > > > > > > >
-> > > > > > > > This patch is a follow-up to the discussion on the kernel m=
-ailing list
-> > > > > > > > regarding the preference and future of the hard lockup dete=
-ctors. It
-> > > > > > > > implements a flexible solution that addresses the community=
-'s need to
-> > > > > > > > select an appropriate detector at boot time.
-> > > > > > > >
-> > > > > > > > The core changes are:
-> > > > > > > > - The `perf` and `buddy` watchdog implementations are separ=
-ated into
-> > > > > > > >   distinct functions (e.g., `watchdog_perf_hardlockup_enabl=
-e`).
-> > > > > > > > - Global function pointers are introduced (`watchdog_hardlo=
-ckup_enable_ptr`)
-> > > > > > > >   to serve as a single API for the entire feature.
-> > > > > > > > - A new `hardlockup_detector=3D` boot parameter is added to=
- allow the
-> > > > > > > >   user to select the desired detector at boot time.
-> > > > > > > > - The Kconfig options are simplified by removing the comple=
-x
-> > > > > > > >   `HARDLOCKUP_DETECTOR_PREFER_BUDDY` and allowing both dete=
-ctors to be
-> > > > > > > >   built without mutual exclusion.
-> > > > > > > > - The weak stubs are updated to call the new function point=
-ers,
-> > > > > > > >   centralizing the watchdog logic.
-> > > > > > >
-> > > > > > > What is the impact on  /proc/sys/kernel/nmi_watchdog ? Is tha=
-t
-> > > > > > > enabling and disabling whatever the boot time choice was? I'm=
- not sure
-> > > > > > > why this has to be a boot time option given the ability to co=
-nfigure
-> > > > > > > via /proc/sys/kernel/nmi_watchdog.
-> > > > > > The new hardlockup_detector boot parameter and the existing
-> > > > > > /proc/sys/kernel/nmi_watchdog file serve different purposes.
-> > > > > >
-> > > > > > The boot parameter selects the type of hard lockup detector (pe=
-rf or buddy).
-> > > > > > This choice is made once at boot.
-> > > > > >
-> > > > > >  /proc/sys/kernel/nmi_watchdog, on the other hand, is only a si=
-mple on/off
-> > > > > > switch for the currently selected detector. It does not change =
-the detector's
-> > > > > > type.
-> > > > >
-> > > > > So the name "nmi_watchdog" for the buddy watchdog is wrong for fa=
-irly
-> > > > > obvious naming reasons but also because we can't differentiate wh=
-en a
-> > > > > perf event has been taken or not - this impacts perf that is choo=
-sing
-> > > > > not to group events in metrics because of it, reducing the metric=
-'s
-> > > > > accuracy. We need an equivalent "buddy_watchdog" file to the
-> > > > > "nmi_watchdog" file. If we have such a file then if I did "echo 1=
- >
-> > > > > /proc/sys/kernel/nmi_watchdog" I'd expect the buddy watchdog to b=
-e
-> > > > > disabled and the perf event one to be enabled. Similarly, if I di=
-d
-> > > > > "echo 1 > /proc/sys/kernel/buddy_watchdog" then I would expect th=
-e
-> > > > > perf event watchdog to be disabled and the buddy one enabled. If =
-I did
-> > > > >  "echo 0 > /proc/sys/kernel/nmi_watchdog; echo 0 >
-> > > > > /proc/sys/kernel/buddy_watchdog" then I'd expect neither to be
-> > > > > enabled. I don't see why choosing the type of watchdog implementa=
-tion
-> > > > > at boot time is particularly desirable. It seems sensible to defa=
-ult
-> > > > > normal people to using the buddy watchdog (more perf events, powe=
-r...)
-> > > > > and  CONFIG_DEBUG_KERNEL type people to using the perf event one.=
- As
-> > > > > the "nmi_watchdog" file may be assumed to control the buddy watch=
-dog,
-> > > > > perhaps a compatibility option (where the "nmi_watchdog" file con=
-trols
-> > > > > the buddy watchdog) is needed so that user code has time to migra=
-te.
-> > > >
-> > > > Sounds good to me.  For perf tools, it'd be great if we can have a =
-run-
-> > > > time check which watchdog is selected.
-> > > Considering backward compatibility, I prefer to keep
-> > > /proc/sys/kernel/nmi_watchdog and introduce a new file called
-> > > /proc/sys/kernel/hardlockup_detector_type, which only shows the defau=
-lt string
-> > > or the boot parameter.
-> >
-> > Is there code using the buddy watchdog that cares about the
-> > /proc/sys/kernel/nmi_watchdog file? My assumption is that everything
-> > except Android is using the NMI watchdog, so a new
-> > /proc/sys/kernel/buddy_watchdog file doesn't impact them.
->
-> Buddy watchdog has been out there for a few years. At Google, I know
-> it's used by everything except Android. AKA I believe it is used in
-> Google's servers and also in ChromeOS. Both of those (presumably)
-> enable the buddy watchdog via calling it "nmi_watchdog". It's possible
-> that some Android phones are using the buddy watchdog too but I'm not
-> aware of it. I don't believe Pixel is using it, though that could
-> change in the future.
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> ---
+> v2: no change
+> ---
+>  arch/powerpc/include/asm/xive.h           |  1 -
+>  arch/powerpc/platforms/powernv/pci-ioda.c | 21 +-------
+>  arch/powerpc/platforms/pseries/msi.c      | 18 +------
+>  arch/powerpc/sysdev/xive/common.c         | 63 +++++++++++------------
+>  4 files changed, 33 insertions(+), 70 deletions(-)
 
-I thought what motivated the buddy watchdog was patches implementing
-this approach on Android for ARM that lacked an NMI based hard lockup
-detector?
-Anyway, while the buddy watchdog is in use by Google servers the
-nmi_watchdog file has an actively detrimental effect on that.
-Specifically the nmi_watchdog file having the value of "1" disables
-certain event groups for certain metrics in the perf tool as it is
-assumed there are too few performance counters due to the NMI watchdog
-stealing one. We want groups of events so that events are scheduled
-together and metrics are more accurate, we don't want groups that fail
-to schedule because of a lack of counters.
 
-> IMO at this point "nmi watchdog" is simply a synonym for the
-> hardlockup detector. That was what it looked like in the code before I
-> started messing around and adding the buddy lockup detector and it's
-> how it is now. While it's unfortunate that there are two names for the
-> same thing, I don't personally think that should change at this point.
-> FWIW, even the "buddy" watchdog relies on NMIs to actually get stack
-> crawls on stuck cores, so NMI still means something even there.
+Hi Nam, 
 
-I think this is misguided. Currently the only use of nmi_watchdog I'm
-aware of is by perf where the buddy watchdog's use of it causes issues
-(as mentioned above).
+I am facing kernel crash on host when trying to run kvm pseries guest on
+powernv host. Looking it a bit more closely, I see that we are missing
+conversion of xxx_irq_handler_data()) to xxx_irq_chip_data() at few other
+places, including in powerpc KVM code. 
 
-> If we want to tell between the perf detector or the buddy detector we
-> should add a separate file for it.
+<Crash signature>
 
-We could with perf then having to read from two files rather than one.
-Presumably the lack of presence of one file will be sufficient to also
-avoid a kernel version check.
+BUG: Kernel NULL pointer dereference on read at 0x00000010
+Faulting instruction address: 0xc0000000001c0704
+Oops: Kernel access of bad area, sig: 11 [#1]
+LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=2048 NUMA PowerNV
+CPU: 103 UID: 0 PID: 2742 Comm: qemu-system-ppc Not tainted 6.17.0-01737-g50c19e20ed2e #1 NONE
+<...>
+NIP:  c0000000001c0704 LR: c0000000001c06f8 CTR: 0000000000000000
+REGS: c0000000627476a0 TRAP: 0300   Not tainted  (6.17.0-01737-g50c19e20ed2e)
+MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 88044488  XER: 00000036
+CFAR: c0000000002c20d8 DAR: 0000000000000010 DSISR: 40000000 IRQMASK: 0 
+<...>
+NIP [c0000000001c0704] kvmppc_xive_attach_escalation+0x174/0x240
+LR [c0000000001c06f8] kvmppc_xive_attach_escalation+0x168/0x240
+Call Trace:
+  kvmppc_xive_attach_escalation+0x168/0x240 (unreliable)
+  kvmppc_xive_connect_vcpu+0x2a0/0x4c0
+  kvm_arch_vcpu_ioctl+0x354/0x470
+  kvm_vcpu_ioctl+0x488/0x9a0
+  sys_ioctl+0x4ec/0x1030
+  system_call_exception+0x104/0x2b0
+  system_call_vectored_common+0x15c/0x2ec
 
-> > On Android
-> > writing to /proc/sys/kernel/nmi_watchdog would switch from updating
-> > the buddy watchdog enable/disable to the NMI watchdog enable/disable,
-> > but it is a straightforward patch to make anything doing this update
-> > the buddy_watchdog file instead.
->
-> Straightforward, but you've got to go find everyone that you break by
-> doing this. That's not something I want responsibility for. If you
-> want to convince others this is something worthwhile and you've got
-> someone signed up to deal with the fallout (if any) then I won't
-> object, but it's not something I'd be in support of.
 
-Stuff like this happens, check out this thread:
-https://lore.kernel.org/lkml/2025020304-chip-trench-4e56@gregkh/
-Imo we shouldn't design in using an actively misleading file name and
-incurring extra overhead in perf. Having two files nmi_watchdog and
-buddy_watchdog is fine as the latter case currently isn't in
-mainstream distro use and people shouldn't care. It also maintains and
-correct's perf's behavior when the buddy and not nmi watchdog is in
-use.
 
-> > If we have to keep "nmi_watchdog" then we should deprecate it and
-> > create an equivalent file with a better name (ie without NMI in it).
-> > It'll be moderately annoying in perf to determine whether the NMI
-> > watchdog is enabled by having to read two files.
->
-> Again, up to you if you want to try to do this, but I'm not really in
-> support of it. It doesn't seem terribly hard to make a new file that
-> says which hardlockup detector is in use. If that file exists then
-> read it. If not then you fallback to what you have today.
+Here is the diff which fixed this.. 
 
-I don't mind a file that also says what kind of lockup detector is in
-use. I'd like the meaning of nmi_watchdog to keep meaning the kernel
-stole a perf counter as this is the behavior long assumed by perf
-which I think is the majority or only user of the file. I think the
-buddy watchdog being controlled by this file is less than intention
-revealing.
+diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
+index 1302b5ac5672..c029c6cc82ef 100644
+--- a/arch/powerpc/kvm/book3s_xive.c
++++ b/arch/powerpc/kvm/book3s_xive.c
+@@ -917,7 +917,7 @@ int kvmppc_xive_attach_escalation(struct kvm_vcpu *vcpu, u8 prio,
+         */
+        if (single_escalation) {
+                struct irq_data *d = irq_get_irq_data(xc->esc_virq[prio]);
+-               struct xive_irq_data *xd = irq_data_get_irq_handler_data(d);
++               struct xive_irq_data *xd = irq_data_get_irq_chip_data(d);
 
-Thanks,
-Ian
+                xive_vm_esb_load(xd, XIVE_ESB_SET_PQ_01);
+                vcpu->arch.xive_esc_raddr = xd->eoi_page;
+@@ -1612,7 +1612,7 @@ int kvmppc_xive_set_mapped(struct kvm *kvm, unsigned long guest_irq,
 
-> -Doug
+        /* Grab info about irq */
+        state->pt_number = hw_irq;
+-       state->pt_data = irq_data_get_irq_handler_data(host_data);
++       state->pt_data = irq_data_get_irq_chip_data(host_data);
+
+        /*
+         * Configure the IRQ to match the existing configuration of
+@@ -1788,7 +1788,7 @@ void kvmppc_xive_disable_vcpu_interrupts(struct kvm_vcpu *vcpu)
+ void xive_cleanup_single_escalation(struct kvm_vcpu *vcpu, int irq)
+ {
+        struct irq_data *d = irq_get_irq_data(irq);
+-       struct xive_irq_data *xd = irq_data_get_irq_handler_data(d);
++       struct xive_irq_data *xd = irq_data_get_irq_chip_data(d);
+
+        /*
+         * This slightly odd sequence gives the right result
+@@ -2829,7 +2829,7 @@ int kvmppc_xive_debug_show_queues(struct seq_file *m, struct kvm_vcpu *vcpu)
+                if (xc->esc_virq[i]) {
+                        struct irq_data *d = irq_get_irq_data(xc->esc_virq[i]);
+                        struct xive_irq_data *xd =
+-                               irq_data_get_irq_handler_data(d);
++                               irq_data_get_irq_chip_data(d);
+                        u64 pq = xive_vm_esb_load(xd, XIVE_ESB_GET);
+
+                        seq_printf(m, "    ESC %d %c%c EOI @%llx",
+
+
+... However grepping for "handler_data" in arch/powerpc I see there is
+atleast one more place where we may still need the fix.. There are few
+more places which grep returned - but I am not sure if they all really need
+the fix. But I guess VAS should be fixed i.e :
+
+arch/powerpc/platforms/powernv/vas.c:   xd = irq_get_handler_data(vinst->virq);
+
+
+Would you like to submit an official patch for converting these other places too?
+
+
+Thanks!
+-ritesh
+
 
