@@ -1,71 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-12690-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12691-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64131BC1032
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 07 Oct 2025 12:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5373EBC19B9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 07 Oct 2025 15:58:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cgsms2qFMz3bjb;
-	Tue,  7 Oct 2025 21:28:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cgyQm2rHWz3bjb;
+	Wed,  8 Oct 2025 00:58:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759832925;
-	cv=none; b=giyaJ813mNSZOdJG84mlsWZFNK1LP+1/wMl3wT0qh74+vI3P4vyu70b03Bh2x5uOgSJZTSZiZFA8wbD33xwnfs1xmePiemU+U++ZSvhOsXAwBYagV3iQ12Fsahzo7J2LEGodHNh1BUvscVqyjPuZJ6pMcp1N/EcdP+zdcu5Ukz5/G01iKERZVEbA7z8tui1+IOF0bcHOWd/Ri7g42kL1Bd/hTj9C9sHgi6cZ5uUAc7uNwlatxK+8wButpwgGj3CZfJ0KTCCLmNQA6QbFz7JPvwgMjQdtNd28jkYkzxyC34o9/LqOfkxesMdllZT8ULQ+/tUct6ev+8PIv8eQXzrKBA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::54a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759845504;
+	cv=none; b=HEG1oDw/CgcMH4fxkey7yeaXICrN+qcTMu/Xo2LGa/HkQjCZ5MDJVKIJLHHS04+wHgm7KWz0acQE7Qg8h38oB3TZ+qrlWAHWfAQ4Ob/dZ9OfC0MHiY7Qeis4LCkAXsuET9AYkqR40MuANZoDSPOV06VmqFHksINr4i7AOQ3HUC+T0eNgtZvT+fwkgcyttSVfuDcS+/7hgOzcvjzcX7pyPUBax4+XkpyPz2h/asY94rg57H8d2VPH+IyDlup2S/bw58Abrv3iZRpXtQB8SYTU+Ru9xM4MsYvSc13YsJpnTM1Bs1j+F3D3nQHX19t2MbwuZwpBsyCxTQV0vjVYumdpPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759832925; c=relaxed/relaxed;
-	bh=cbSe/W8VzXaTL4OKHmy7VB7TEH8NREzZDFaWaWyO9i0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UDQp3OYc/XVkd2SCWP+hustpImHCSTOUTvdYifEsA6ZuIT9FfRPjvbNjlRb4OFy8sUaLx10OB8PntLYYD9B6dwxugAmcfhe8ff09iNF5X6Swge9YlzcSIC6qeur+frLC07pjYH0gtZDnc0BByFiIRI74JepoD9O3YipO5RJ1imOtFKcFXY3Jqm98LXC4wmL4E9DbowKXBslMwqHyEGCE8Gl3m8+fUMwK+2uaQYNyA2dQYmephDoDhFnqT+FiyZY0mCIbSUNL8yLY5MCbGVMGPFlzSxLiMIZbQXVotdXx78/+fyoM8aAU9vGJPG4cms2WUUf6L+nEstChq+2mY8g2SQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EV1ylRpy; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1759845504; c=relaxed/relaxed;
+	bh=4rlYUY99rqPM8GfD927WUvhieIqn1G/yd0+acs0pn14=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=B8AnF53bPd3jRptzvP0OE2voSnLdvVSbBdZ9DG6XNyp/IJ+JNR3Xa1Xd+EjGZjDQIU9dNiNdge5045pgUjbHVfmEbFk7CFbkiyYYazaOaySnVNQ3iFZXUv8QUxh6eryt/N/kKrEmujZ6pWvKDFXKvQTxjUk2/ROnCDj1gJMGTeDBGgtDYmfW4AqBS75SE5ADz9L0SaAyw+YL67YkzgtFmGTsZM5m1E9THT2C2u9fTX4CMMC8SIULezmnBQ0dwJk92+nM/VGQdVGMtm06MBfFk1i8+C9nBhOhpa7Bi4c97RHYHg+1naU5g/87KCOEZ46mY4cSAzz/h02J/o7YjngAYg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=m6ixHGLU; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3exzlaaykdjyi40d926ee6b4.2ecb8dknff2-34lb8iji.epb01i.eh6@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EV1ylRpy;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=m6ixHGLU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3exzlaaykdjyi40d926ee6b4.2ecb8dknff2-34lb8iji.epb01i.eh6@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cgsmq31n8z3000
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Oct 2025 21:28:42 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5971j2KR020652;
-	Tue, 7 Oct 2025 10:28:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=cbSe/W
-	8VzXaTL4OKHmy7VB7TEH8NREzZDFaWaWyO9i0=; b=EV1ylRpyHZEc+CT5glomlL
-	XOXQCEo4Dd4WiUeAlMKldfz3Fa2KOag//VHPpqjJmotuMp5zsoCUrkrdCBpsL1AY
-	nL02W7JFqC3hNL3BXLYrml3OejwmP8eQLh6xR2byx7NOoijrFpIeMqAb+ppFjiNp
-	yehcmaOFfDKxpoqUKsrp2eXAagvNfUv6u9I77/f+VOCsJ6R2/9ycF/MCHyBJgyCj
-	8m+OqSFsJd92+LuujZEMZe1pb1L9oqBi3rbShRGILi2RvQ9MrD23Q6Mq5ew9XJu7
-	XtTjfT54i3yszrTGMcOAVpQpjc4NidSLrTzTFU5cQGu1GGXCVz6sdjhGQb4sQmKg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49ju8anx6h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Oct 2025 10:28:32 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5978XZ9D019601;
-	Tue, 7 Oct 2025 10:28:31 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49kdwsaxvf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Oct 2025 10:28:31 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 597ASSNx46989744
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Oct 2025 10:28:28 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A74620040;
-	Tue,  7 Oct 2025 10:28:28 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3F06020043;
-	Tue,  7 Oct 2025 10:28:27 +0000 (GMT)
-Received: from [9.78.106.240] (unknown [9.78.106.240])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  7 Oct 2025 10:28:27 +0000 (GMT)
-Message-ID: <89ec78e5-4fe3-4100-9ae1-23f6a9f36e77@linux.ibm.com>
-Date: Tue, 7 Oct 2025 15:58:26 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cgyQl0m1Jz2xgp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Oct 2025 00:58:22 +1100 (AEDT)
+Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-b5535902495so4392955a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Oct 2025 06:58:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1759845500; x=1760450300; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4rlYUY99rqPM8GfD927WUvhieIqn1G/yd0+acs0pn14=;
+        b=m6ixHGLU9kT2z8a4ugwzPlHRkxvpNGMzp3yxZSOIp1iVkvA6hh7Jaguq7iD6KYDu0+
+         4SF4BZSvR8cIaNETHaJZp88TzSapdh2D51czOxMaZ5roI0J5dimUQxXeBDnxlqc2PdzH
+         MTGJgmm8cYMUqN9yzulXPY4BmGetJ7aru9aZ/7XmFMEmdXu51zTp5prrZELpxeqF0o10
+         8n/4HmDKOxdHrfA1TKxwBwQ5sP2phpBZ2DE48/s20LQrrtaja+CZCLxZuM+athBYCWF5
+         kYODLjGdX7yub/3WVf+6PAEizaJHlN1A0g6zvCx9ROduSTwd/0Ll1eQyOmGv2SWq6OKC
+         WHNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759845500; x=1760450300;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4rlYUY99rqPM8GfD927WUvhieIqn1G/yd0+acs0pn14=;
+        b=jGTjQWCOmCek0bOllx23kjosqFujkKtA6RP+KseukM66Jo7A72Er9AeG5fJxOfET13
+         T46OgD/NJfjhHQ9uquIOT4ZYwZuyn/3ECObWokPxxFv4yCKuQfWHqUGrKS5jVa+CauJp
+         uW5zoVBR8Q2FGTB4wfUCr+6BiwhZwWb9CZBUwshqoXbXb/Cb3VCt65ZX1vCN6oImFL11
+         rwhQiXcX9/bsjoTEm7iBliq+17Ja+P23SE1AzEQPo2ik8WMRNX1YecFyoO0UmbCGw58n
+         eCpGfWerZdaobvl956xXaXpeKkwm7bogXEjNoBufec3iQF/TIB/hn3EPhaBVLJnlTXYl
+         tzcg==
+X-Forwarded-Encrypted: i=1; AJvYcCW2rJ1k1K/oX8LR23iyZcBvrc1bAA8l2jraaaPqZFhjFB1FTBt0EaFZ1Rl2peUyFGUWRxpWdWq8Ex9XA4g=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzxgk5FhhpbIb4/XQw8CbbsOVlSsCZw1oSgvEkKiGy//yEPgf6m
+	NFbtnyHadBVa2xYMcO8dpbqKKLboNYFSWrbfk1kBmlARrlEPk/pysjh3tbYuLh1jP7fgJRaqi89
+	2AsgXtA==
+X-Google-Smtp-Source: AGHT+IH44LYFtR2Z9aj26aSM38dj+lWGcrky74kzzSLe1xZuZzZCEhZOyIjquiME0rIkS/AaVEe3J4tloO4=
+X-Received: from pjbmw12.prod.google.com ([2002:a17:90b:4d0c:b0:329:b272:45a7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1c05:b0:335:2823:3686
+ with SMTP id 98e67ed59e1d1-339c274089dmr20831446a91.2.1759845499915; Tue, 07
+ Oct 2025 06:58:19 -0700 (PDT)
+Date: Tue, 7 Oct 2025 06:58:18 -0700
+In-Reply-To: <fc0bb268-07b7-41ef-9a82-791d381f56ac@amazon.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,86 +75,94 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: powerpc/fadump: skip parameter area allocation when fadump is
- disabled
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-References: <20251007074023.176163-1-sourabhjain@linux.ibm.com>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20251007074023.176163-1-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: NMpLb9lpVmgBAMdqd1eCz1lcNEjQX0mN
-X-Authority-Analysis: v=2.4 cv=BpiQAIX5 c=1 sm=1 tr=0 ts=68e4eb50 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VnNF1IyMAAAA:8 a=WqWALAZGvOM0UOBZ99wA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAyMiBTYWx0ZWRfX1wjOwTgKnIJI
- fDEUqIGxmmNCbQ0u70YfQkA6dUmR80pUGfejz0sRU5v412MYl3kqOv9c0X8nbEreGAP6z7JfxjD
- h7D5RcMd6DwRcJTU2ECadss98CgkTjabTK87NsTVPPLZ75inDMf3LIKjM3emJboOKP8nM9yZg7M
- ftVnpK88Kz8ZJClAXsXp3UV076Ow60n96edGLrMlwMvHYuKMpESAzhVRhKYVNk9zsSg70VW5JnP
- AuL2wzXYDeofQErWZwmVwtW3h9YIoxc5DZD0tZlhM03gdCpm0j50WDA1AYg5Ihm8BkWT0+mG6Wg
- lUp09oKbufFqFgiuBQ6lvXu121AcfB/pvHTrXmUv6Te9BE6qXpZe+KyTGPPsUAwEmT/S2Kxmc6V
- sH6CpZwacMBPTiLYlD97mop2aeVosA==
-X-Proofpoint-ORIG-GUID: NMpLb9lpVmgBAMdqd1eCz1lcNEjQX0mN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-06_07,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 malwarescore=0
- suspectscore=0 bulkscore=0 impostorscore=0 adultscore=0 clxscore=1015
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2509150000
- definitions=main-2510040022
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-16-pbonzini@redhat.com>
+ <fc0bb268-07b7-41ef-9a82-791d381f56ac@amazon.com>
+Message-ID: <aOUceqlAnsjQ8mo4@google.com>
+Subject: Re: [PATCH 15/34] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
+ guest-specific backing memory
+From: Sean Christopherson <seanjc@google.com>
+To: Nikita Kalyazin <kalyazin@amazon.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Xu Yilun <yilun.xu@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
+	Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Anish Moorthy <amoorthy@google.com>, David Matlack <dmatlack@google.com>, 
+	Yu Zhang <yu.c.zhang@linux.intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	"=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?=" <mic@digikod.net>, Vlastimil Babka <vbabka@suse.cz>, 
+	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Maciej Szmigiero <mail@maciej.szmigiero.name>, David Hildenbrand <david@redhat.com>, 
+	Quentin Perret <qperret@google.com>, Michael Roth <michael.roth@amd.com>, Wang <wei.w.wang@intel.com>, 
+	Liam Merwick <liam.merwick@oracle.com>, Isaku Yamahata <isaku.yamahata@gmail.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-On 07/10/25 1:10 pm, Sourabh Jain wrote:
-> Fadump allocates memory to pass additional kernel command-line argument
-> to the fadump kernel. However, this allocation is not needed when fadump
-> is disabled. So avoid allocating memory for the additional parameter
-> area in such cases.
+On Fri, Oct 03, 2025, Nikita Kalyazin wrote:
+> On 05/11/2023 16:30, Paolo Bonzini wrote:
+> > From: Sean Christopherson <seanjc@google.com>
+> > 
+> > Introduce an ioctl(), KVM_CREATE_GUEST_MEMFD, to allow creating file-based
+> > memory that is tied to a specific KVM virtual machine and whose primary
+> > purpose is to serve guest memory.
 > 
-
-This needs the fixes tag...
-
-Fixes: f4892c68ecc1 ("powerpc/fadump: allocate memory for additional 
-parameters early")
-
-Otherwise, looks good to me.
-
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> ---
->   arch/powerpc/kernel/fadump.c | 3 +++
->   1 file changed, 3 insertions(+)
+> ...
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > index f1a575d39b3b..8f46d757a2c5 100644
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
 > 
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index 5782e743fd27..4ebc333dd786 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -1747,6 +1747,9 @@ void __init fadump_setup_param_area(void)
->   {
->   	phys_addr_t range_start, range_end;
->   
-> +	if (!fw_dump.fadump_enabled)
-> +		return;
-> +
->   	if (!fw_dump.param_area_supported || fw_dump.dump_active)
->   		return;
->   
+> ...
+> 
+> > -static int check_memory_region_flags(const struct kvm_userspace_memory_region2 *mem)
+> > +static int check_memory_region_flags(struct kvm *kvm,
+> > +				     const struct kvm_userspace_memory_region2 *mem)
+> >   {
+> >   	u32 valid_flags = KVM_MEM_LOG_DIRTY_PAGES;
+> > +	if (kvm_arch_has_private_mem(kvm))
+> > +		valid_flags |= KVM_MEM_GUEST_MEMFD;
+> > +
+> > +	/* Dirty logging private memory is not currently supported. */
+> > +	if (mem->flags & KVM_MEM_GUEST_MEMFD)
+> > +		valid_flags &= ~KVM_MEM_LOG_DIRTY_PAGES;
+> 
+> I was wondering whether this restriction is still required at this stage or
+> can be lifted in cases where the guest memory is accessible by the host.
 
+Off the top of my head, I can't think of any reason why dirty logging wouldn't
+work with guest_memfd for non-CoCo VMs.  We'd likely need to explicitly enumerate
+support to userspace, and there might be some assumptions lurking in KVM, but
+fundamentally it should Just Work (TM).
+
+> Specifically, it would be useful to support differential memory snapshots
+> based on dirty page tracking in Firecracker [1] or in live migration.  As an
+> experiment, I removed the check and was able to produce a diff snapshot and
+> restore a Firecracker VM from it.
+> 
+> [1] https://github.com/firecracker-microvm/firecracker/blob/main/docs/snapshotting/snapshot-support.md#creating-diff-snapshots
+> 
+> > +
+> >   #ifdef __KVM_HAVE_READONLY_MEM
+> >   	valid_flags |= KVM_MEM_READONLY;
+> >   #endif
+> > @@ -2018,7 +2029,7 @@ int __kvm_set_memory_region(struct kvm *kvm,
+> >   	int as_id, id;
+> >   	int r;
+> > -	r = check_memory_region_flags(mem);
+> > +	r = check_memory_region_flags(kvm, mem);
+> >   	if (r)
+> >   		return r;
 
