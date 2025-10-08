@@ -1,71 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-12701-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12702-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8477BC309A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 08 Oct 2025 02:12:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 690EABC3254
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 08 Oct 2025 04:11:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4chD2x02CKz30V7;
-	Wed,  8 Oct 2025 11:12:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4chGhg4Kkkz302b;
+	Wed,  8 Oct 2025 13:11:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759882328;
-	cv=none; b=aVfazFVq6mn+0j3x/UrkL5Vrw/qKqD7QFyM3VK6gCCqKiPDJvH+wn+yAvGSDYgiXQhG0GGZZqEYuqJ1gHMdYx/GP6tCgLAggtBeXLA/at88QZLWElewg+hqC+/knBJPFHlzOciCi4kH09SEtBJm6/0oUIJwVcZgWadLAt1XXgD+zBA3WSJmpIfU6J3GCUXx4fMuOdh5+9IO5L1sBlAjI2GwaOcfst3FarMSjOmto8m94YJK1tIdZBQS7X8YuaF1ZI9/TRoVVjXhePEO/dNoXLEJWRaviiJ4xDuxDnBVeqpHiBAjJ3P8k1GSQr5P6suaOIFI+9cRgRwhf6tGHlfK6KQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759889491;
+	cv=none; b=MY3AQ48jjdug0qzu/yzlMH1L4/vgKxkTl0UEvKpoyx2gc2pAbI57JG3S/ZC+PbwhTCpLZiIidD0uXk3iQmZbiDhx2ayPCCpHGK5mVRd5ZEu6KvgJ/OdtlFIzsM62RJcpnsZekAQBQrYudqErTMUoTFIx5qX35+Z1PsIV7/NhKK/EyQEQ+E1jMfpv1Y2AjRKxxm6rYPL9v03AlW2SWnAiQLZNUrvYFHTsfiUN5ybJbJGt8d8hGVpAQ0G5Qu9dniMNqqvKU0SX3YWdUrxliP7SFPnOBGoOdTkZVOjfYsovjXjCbi0uctBgOJ1OX7Bs1wZQ6j3t8wo379LfSjEyL9APLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759882328; c=relaxed/relaxed;
-	bh=d4s+V4FbLGaf41FAvlBu/thUUG5t6W0OPczp2pqdLV4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dSiIkSSo/6lh0RxZON+AtVWDsgr0cVfscZrNLkIjK1+R3z2pm10YYcP6hyTOa/gr3lvniyx10LD0y6oDAOkdluZPEowwzxtdaQhlmOwi61x78PF2exkEw1FBhIp9QtzKo9x7lYQxtDG09hG6u2gUKVLTR23wNmbNzo6cJfz/BnUfvW7KeVPd+L/RYupR7LWc6ITH38VbZ16W2UBr2ho5d0FLV3LCWciK578TI2SCZOLGUHsSwapV4yjjXXAXHjD6rqz96J03Uq1GE634KSQ/VwlvLY7/FL0wZy9kc4Rg0aUVg80BdveseGWpkREPYuqF0ZThImq/HEJTBQ5I61yySA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=IiSk53Dl; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1759889491; c=relaxed/relaxed;
+	bh=9RpcDUXyyy4RyljFBVdm2qPR5x/5ga6iK/kEeJtlPaA=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=ZHgKTQnu1qaUF6ELD/XqY+OOjg7bOEnDqVsiYmi+TUb9PIgbQ+GCy7Jrqp8IzsUm0rIu/mwd5sqSwANVSi5QLGkJnYH54Wcz5i6gYbcWQeUqgUv5O2xo45X16ltl5o94RXLTTYMurLfMZ9x2DUbIf9KEQxx/lPZxh2Zi1+B/4/nvafKdBssKDXB4YdkoIOg6SewicgglDKDgUE7Url7otuoLnhIde+PVXHMc51Y1ibHSvgdCysFh3sFS/5QhGgMqgG7nXnqT9ijRHjl1kEPvCVyu7nHvB54LdutLpPNpJiVPE8thQZNadx+Dq5yA5nGifpVs3za3PEUAd4ej8guApQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bm2Xc5aI; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=IiSk53Dl;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bm2Xc5aI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4chD2v4xNGz302b
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Oct 2025 11:12:07 +1100 (AEDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-2681645b7b6so50285ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Oct 2025 17:12:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759882325; x=1760487125; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d4s+V4FbLGaf41FAvlBu/thUUG5t6W0OPczp2pqdLV4=;
-        b=IiSk53DlCNkuuDABvZfWcGDrI6eQm3Sczoy//8BiKhWkCYgsxYSCvukWSwK1faWqxP
-         u1VhDoeP14+/EQ4XGKTQz/dHxxV3jy996Ew6JJraVInLJLktqLOcruN8IbORcL+0yXnr
-         4aK5aUhbP95u+iI1vLGR/UR2VsrqYbRxuhgnzdtT2iNbb5pv/SyKiZqlhkNT04CnGxYM
-         1E35Oule6jOzfFc6XAYZ/S5KMA94Pin8OUgF0TUw+T/xSEyoX7mmoeG7V/IrwT5RL82i
-         sJewJMEgdqp98s/GegLsI9yzrhCq4K213LVmWFj8HgmQr/PHVAM8TSU+bUyhU40LpnSP
-         m21g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759882325; x=1760487125;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d4s+V4FbLGaf41FAvlBu/thUUG5t6W0OPczp2pqdLV4=;
-        b=oIZMYrzOUc5p04gIo2IE94qy4V5TWMjt0JX+pvnfdtpe2CWxlih43U/jMZe8Rwp+TG
-         2LkKbnn3h3wQMH1WziIzNtTBQNcnSFXYMTk6I7EeJqT8iQdfMLPhUqYjXxi26TqxMk7t
-         uY5MnjUcjOi9bFuIDO7PdOqueOysxN1A+CgfYLxQ+yYOJcqDgrG0Tc/0Bd+iNLTb4W/v
-         Xbd8tPEcB9Lb2UGu91ygoFfpbj/SosggwM9YLHRdz5ZaZStd4jWxsv8hL94yk484pjNL
-         7ShCU6STE+jnRTdhAvwToiblnr4qwRGJbXO0emjK9mfhDJCktrVKU0L+xrCllFIKkah2
-         kxeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV8mSPwylLduC22FiAfHZ3gaPT7QIyHjPczxpFfMrd27apQrDI+PJ8xSqViP+F03a8ULais1KNfTgNRW/g=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyY9o2z4qAEc0ag3IjntLIc9mvQPkP6AQoNCUkG4L2Gwv3cuxIj
-	HYA1n+VR5YXvMesRGyRts2oU6Nb35oGP/JMQhEOeOz3tgY+S6kcxffpgaXAQ7kYgj7q+IkcxhLv
-	UlQi2Q7tVezCXR5Fg7GD/O2YU8wAoQvWsuBaF9kC0
-X-Gm-Gg: ASbGncuW3rKNYCtpPDlx4VjjeLnDWDTOaYhEc3Bi2qdnh0p52mFNQ5sjVuZXvgPw8r1
-	GWS5PyyhwwekkUOHkOcJDQ1ftUVWTJnnHhifFmhlrUfKKYMFlpdVHkuc44AyNBA/4Jg93gCJekJ
-	oMrRnva678RG1JkZUv//dFfV2faMStH7MmX9KyrVxsDo9x2ob5UDFF5GznhF5qT+ZbKYP6ubDDK
-	Xb7HKrWTHgrvMD0ytnvgOTc/ElYNtAxZKFZ15alKWVwz1KySQ==
-X-Google-Smtp-Source: AGHT+IH+yIGcsp4+CFLpohDGf/cUkctKYAedGH2G5UnTvDt75JS4P+J8+FQ8PDuGaGOvQ1lq/+LMPX2feI/OOwB8H0k=
-X-Received: by 2002:a17:902:dacd:b0:248:f683:e980 with SMTP id
- d9443c01a7336-29027602620mr3056445ad.2.1759882324220; Tue, 07 Oct 2025
- 17:12:04 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4chGhf0LmKz2yrm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Oct 2025 13:11:29 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 597F3Wh7024169;
+	Wed, 8 Oct 2025 02:11:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=9RpcDUXyyy4RyljFBVdm2qPR5x/5
+	ga6iK/kEeJtlPaA=; b=bm2Xc5aIy5Zegce2FwaNiAvZY5TQw0CVlJxaeZbXJWO1
+	9SKVirqOqUh+Fc0NtR4bdGE//IytyGoXFp05Prlqof8AzgXmVzsWdoe2p8Vq4VKs
+	U1cuGJ5jDgFfWAMXHhefjW7kaAz8QPz3fDDfj+/JxzDuigd9VgjMpDqDI4JvOndY
+	iX+LfoMGPUu75Y3jWtywZ8Vg8ek0V17wb1z+oGuzlsP4Nqk6nXLeJ8A6u93/3590
+	IjnS5s+Ed0Hxgp0I6z7iC7IJhE205sqEugm+uALjOzgmTQDxJf8e9mrj05da2LCM
+	oW2CzwffK0nvgU7OyuV+yz6z4QAhds5pPsl+L3O61A==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49jt0phymq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Oct 2025 02:11:18 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5982BI1W011338;
+	Wed, 8 Oct 2025 02:11:18 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49jt0phymn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Oct 2025 02:11:18 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 597LkZI2021251;
+	Wed, 8 Oct 2025 02:11:17 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49kgm1e27j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Oct 2025 02:11:17 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5982BFIT37815006
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Oct 2025 02:11:15 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1832758060;
+	Wed,  8 Oct 2025 02:11:15 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5533C58056;
+	Wed,  8 Oct 2025 02:11:12 +0000 (GMT)
+Received: from [9.61.248.147] (unknown [9.61.248.147])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  8 Oct 2025 02:11:12 +0000 (GMT)
+Message-ID: <8218e149-7718-4432-9312-f97297c352b9@linux.ibm.com>
+Date: Wed, 8 Oct 2025 07:41:10 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,113 +84,398 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250916145122.416128-1-wangjinchao600@gmail.com>
- <CAP-5=fWWOQ-6SWiNVBvb5mCofe0kZUURG_bm0PDsVFWqwDwrXg@mail.gmail.com>
- <aMoTOXIKBYVTj7PV@mdev> <CAP-5=fX7NJmBjd1v5y4xCa0Ce5rNZ8Dqg0LXd12gPrdEQCERVA@mail.gmail.com>
- <aMpIsqcgpOH1AObN@z2> <aMpRqlDXXOR5qYFd@mdev> <CAP-5=fV05++2Qvcxs=+tqhTdpGK8L9e5HzVu=y+xHxy9AqLMmg@mail.gmail.com>
- <CAD=FV=VNmjTVxcxgTQqjE7CTkK2NVGbRxFJSwv=yOHU8gj-urQ@mail.gmail.com>
- <CAP-5=fW64xHEW+4dKU_voNv7E67nUOFm27FFBuhtFii52NiQUQ@mail.gmail.com>
- <CAD=FV=U3ic707dLuUc+NfxtWF6-ZyRdE0OY2VA6TgvgWKCHUzg@mail.gmail.com>
- <CAP-5=fVkw6TLjVuR3UCNs+X1cwVmYk7UFABio4oDOwfshqoP_g@mail.gmail.com>
- <CAD=FV=UWkZx8xQD=jBkOO6h2f5tw_KCoqhHciw5hkEOYU=GM8A@mail.gmail.com>
- <CAP-5=fXTFHcCE8pf5qgEf1AVODs2+r+_nDUOiWgdQeEgUBHzfA@mail.gmail.com> <CAD=FV=VuDYiu5nL5ZeZcY2b+YXOzZtSu2E4qBBHz9fWTW8gPhg@mail.gmail.com>
-In-Reply-To: <CAD=FV=VuDYiu5nL5ZeZcY2b+YXOzZtSu2E4qBBHz9fWTW8gPhg@mail.gmail.com>
-From: Ian Rogers <irogers@google.com>
-Date: Tue, 7 Oct 2025 17:11:52 -0700
-X-Gm-Features: AS18NWC-sVWRHhiacA7_GdnjNxZp2uG6VtSCGmRNgb1MOSdJV-yT9mBtxj51skw
-Message-ID: <CAP-5=fX4=fV70N3GCdXgV6o-YoJynnSppxJp0MwdRrtsyDrs0w@mail.gmail.com>
-Subject: Re: [RFC PATCH V1] watchdog: Add boot-time selection for hard lockup detector
-To: Doug Anderson <dianders@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jinchao Wang <wangjinchao600@gmail.com>, 
-	Namhyung Kim <namhyung@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Will Deacon <will@kernel.org>, Yunhui Cui <cuiyunhui@bytedance.com>, akpm@linux-foundation.org, 
-	catalin.marinas@arm.com, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, christophe.leroy@csgroup.eu, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	acme@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com, 
-	jolsa@kernel.org, adrian.hunter@intel.com, kan.liang@linux.intel.com, 
-	kees@kernel.org, masahiroy@kernel.org, aliceryhl@google.com, ojeda@kernel.org, 
-	thomas.weissschuh@linutronix.de, xur@google.com, ruanjinjie@huawei.com, 
-	gshan@redhat.com, maz@kernel.org, suzuki.poulose@arm.com, 
-	zhanjie9@hisilicon.com, yangyicong@hisilicon.com, gautam@linux.ibm.com, 
-	arnd@arndb.de, zhao.xichao@vivo.com, rppt@kernel.org, lihuafei1@huawei.com, 
-	coxu@redhat.com, jpoimboe@kernel.org, yaozhenguo1@gmail.com, 
-	luogengkun@huaweicloud.com, max.kellermann@ionos.com, tj@kernel.org, 
-	yury.norov@gmail.com, thorsten.blum@linux.dev, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Content-Language: en-GB
+To: LKML <linux-kernel@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>, jstultz@google.com,
+        stultz@google.com
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [bisected][mainline]Kernel warnings at kernel/sched/cpudeadline.c:219
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=XvT3+FF9 c=1 sm=1 tr=0 ts=68e5c846 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=JfrnYn6hAAAA:8 a=1XWaLZrsAAAA:8
+ a=VwQbUJbxAAAA:8 a=hGzw-44bAAAA:8 a=VnNF1IyMAAAA:8 a=sGbenokq8W0xfwz70ZsA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=1CNFftbPRP8L7MoqJWF3:22
+ a=HvKuF1_PTVFglORKqfwH:22
+X-Proofpoint-ORIG-GUID: -JrYcKfkA45CCCE7SFj4uOV-XZZ6ckFw
+X-Proofpoint-GUID: DDUco--7sH9Ejz1XpmcvosZ_Ja1TUNh8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAwOSBTYWx0ZWRfX86m+lOQMCEuT
+ 7/IjuO8i2y2TFAIrRZfYySLFNTtgkIg5Gxpcbwr7dvZZigP5yAqRpeMXROrYR3vu017Y63d3Vnb
+ KO021SDQbcvihksddh+w+8+NNvZRYGt4V6SPnhfQy/Nk8nxthdKgCAFPvLHS+SWSM3N9VPk2BEm
+ GhXyPFcIQzP1FM2KB9xD+hTsonJwUW8NaAiN0WzlLbN2dmN0eiCKi3Nz1ZpvG6Ha40F9RR4drrk
+ F6urhf2wD0EAfk3Zho8FdT0yzF8nYBLd5bXDyl7OxD+n0WO7nowbfzmzyfo/Kgza0+u5DiqL/Wd
+ x2cSsRNJyKIQo9MI1+cBUdaWHmhTpGrN8OsUVpE0J2N2GDgY1la9XM90X7Oy5F5WmNaTdiPUsVg
+ OrynCF/tKmx2KZ7NOesW4pHVlpLYbg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-07_02,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
+ phishscore=0 priorityscore=1501 clxscore=1015 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040009
+X-Spam-Status: No, score=-0.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS,TRACKER_ID autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Oct 7, 2025 at 3:58=E2=80=AFPM Doug Anderson <dianders@chromium.org=
-> wrote:
->
-> Hi,
->
-> On Tue, Oct 7, 2025 at 3:45=E2=80=AFPM Ian Rogers <irogers@google.com> wr=
-ote:
-> >
-> > On Tue, Oct 7, 2025 at 2:43=E2=80=AFPM Doug Anderson <dianders@chromium=
-.org> wrote:
-> > ...
-> > > The buddy watchdog was pretty much following the conventions that wer=
-e
-> > > already in the code: that the hardlockup detector (whether backed by
-> > > perf or not) was essentially called the "nmi watchdog". There were a
-> > > number of people that were involved in reviews and I don't believe
-> > > suggesting creating a whole different mechanism for enabling /
-> > > disabling the buddy watchdog was never suggested.
-> >
-> > I suspect they lacked the context that 1 in the nmi_watchdog is taken
-> > to mean there's a perf event in use by the kernel with implications on
-> > how group events behave. This behavior has been user
-> > visible/advertised for 9 years. I don't doubt that there were good
-> > intentions by PowerPC's watchdog and in the buddy watchdog patches in
-> > using the file, that use will lead to spurious warnings and behaviors
-> > by perf.
-> >
-> > My points remain:
-> > 1) using multiple files regresses perf's performance;
-> > 2) the file name by its meaning is wrong;
-> > 3) old perf tools on new kernels won't behave as expected wrt warnings
-> > and metrics because the meaning of the file has changed.
-> > Using a separate file for each watchdog resolves this. It seems that
-> > there wasn't enough critical mass for getting this right to have
-> > mattered before, but that doesn't mean we shouldn't get it right now.
->
-> Presumably your next steps then are to find someone to submit a patch
-> and try to convince others on the list that this is a good idea. The
-> issue with perf has been known for a while now and I haven't seen any
-> patches. As I've said, I won't stand in the way if everyone else
-> agrees, but given that I'm still not convinced I'm not going to author
-> any patches for this myself.
-
-Writing >1 of:
-```
-static struct ctl_table watchdog_hardlockup_sysctl[] =3D {
-{
-.procname       =3D "nmi_watchdog",
-.data =3D &watchdog_hardlockup_user_enabled,
-.maxlen =3D sizeof(int),
-.mode =3D 0444,
-.proc_handler   =3D proc_nmi_watchdog,
-.extra1 =3D SYSCTL_ZERO,
-.extra2 =3D SYSCTL_ONE,
-},
-};
-```
-is an exercise of copy-and-paste, if you need me to do the copy and
-pasting then it is okay.
-
-Thanks,
-Ian
+Greetings!!!
 
 
-> -Doug
->
+IBM CI has reported a kernel warnings while running CPU hot plug 
+operation on IBM Power9 system.
+
+
+Command to reproduce the issue:
+
+drmgr -c cpu -r -q 1
+
+
+Git Bisect is pointing to below commit as the first bad commit.
+
+
+4ae8d9aa9f9dc7137ea5e564d79c5aa5af1bc45c
+
+
+Traces:
+
+
+[  464.306613] ------------[ cut here ]------------
+[  464.306628] WARNING: CPU: 0 PID: 0 at kernel/sched/cpudeadline.c:219 
+cpudl_set+0x58/0x170
+[  464.306641] Modules linked in: rpadlpar_io(E) rpaphp(E) 
+nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) 
+nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) 
+bonding(E) nft_ct(E) tls(E) rfkill(E) nft_chain_nat(E) ip_set(E) hvcs(E) 
+ibmveth(E) pseries_rng(E) hvcserver(E) vmx_crypto(E) sg(E) 
+dm_multipath(E) drm(E) dm_mod(E) fuse(E) drm_panel_orientation_quirks(E) 
+ext4(E) crc16(E) mbcache(E) jbd2(E) sr_mod(E) sd_mod(E) cdrom(E) 
+ibmvscsi(E) scsi_transport_srp(E)
+[  464.306703] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G       E  
+      6.17.0-gfd94619c4336 #1 VOLUNTARY
+[  464.306711] Tainted: [E]=UNSIGNED_MODULE
+[  464.306714] Hardware name: IBM,8375-42A POWER9 (architected) 0x4e0202 
+0xf000005 of:IBM,FW950.80 (VL950_131) hv:phyp pSeries
+[  464.306720] NIP:  c0000000002b6ed8 LR: c0000000002b7cb8 CTR: 
+c0000000002b7df0
+[  464.306725] REGS: c000000002c2f5d0 TRAP: 0700   Tainted: G     E      
+   (6.17.0-gfd94619c4336)
+[  464.306730] MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 22000228  
+XER: 00000000
+[  464.306743] CFAR: c0000000002b726c IRQMASK: 3
+[  464.306743] GPR00: c0000000002b7cb8 c000000002c2f870 c000000001df8100 
+c000000002d6a710
+[  464.306743] GPR04: 000000000000001e 0000006c566f51e0 0000000000000000 
+c000000002d6adb0
+[  464.306743] GPR08: 00000000ffffffff 0000000000000001 c000000002cac488 
+0000000000000000
+[  464.306743] GPR12: c0000000030a7000 c000000002fa0000 0000000000000000 
+0000000000000000
+[  464.306743] GPR16: 0000000000000000 0000000000000000 0000000000000000 
+0000000000000000
+[  464.306743] GPR20: c0000009e940ac20 0000006c1aa50360 0000000000000001 
+0000000000000002
+[  464.306743] GPR24: 0000000000000000 0000000000000000 0000000000000003 
+c0000009e940ab80
+[  464.306743] GPR28: 000000000000001e 0000006c566f51e0 c000000002d6a710 
+000000000000001e
+[  464.306804] NIP [c0000000002b6ed8] cpudl_set+0x58/0x170
+[  464.306809] LR [c0000000002b7cb8] dl_server_timer+0x168/0x2a0
+[  464.306815] Call Trace:
+[  464.306818] [c000000002c2f870] [c000000002c2f8c0] 
+init_stack+0x78c0/0x8000 (unreliable)
+[  464.306828] [c000000002c2f8c0] [c0000000002b7cb8] 
+dl_server_timer+0x168/0x2a0
+[  464.306835] [c000000002c2f920] [c00000000034df84] 
+__hrtimer_run_queues+0x1a4/0x390
+[  464.306842] [c000000002c2f9b0] [c00000000034f624] 
+hrtimer_interrupt+0x124/0x300
+[  464.306849] [c000000002c2fa60] [c00000000002a230] 
+timer_interrupt+0x140/0x320
+[  464.306856] [c000000002c2fac0] [c000000000009ffc] 
+decrementer_common_virt+0x28c/0x290
+[  464.306865] ---- interrupt: 900 at plpar_hcall_norets_notrace+0x18/0x2c
+[  464.306872] NIP:  c0000000001b75d8 LR: c0000000001bf274 CTR: 
+0000000000000000
+[  464.306877] REGS: c000000002c2faf0 TRAP: 0900   Tainted: G     E      
+   (6.17.0-gfd94619c4336)
+[  464.306882] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  
+CR: 24000228  XER: 20040000
+[  464.306897] CFAR: 0000000000000000 IRQMASK: 0
+[  464.306897] GPR00: 0000000000000000 c000000002c2fd90 c000000001df8100 
+0000000000000000
+[  464.306897] GPR04: 0000000000000010 000000002c000040 0000000000000002 
+0000000000000040
+[  464.306897] GPR08: 0000000000000000 0000000000000310 0000000000000031 
+0000000000000000
+[  464.306897] GPR12: 00000000d02f71f1 c000000002fa0000 0000000000000000 
+0000000000000000
+[  464.306897] GPR16: 0000000000000000 0000000000000000 0000000000000000 
+0000000000000000
+[  464.306897] GPR20: 0000000000c00000 0000000000000008 0000000000000000 
+0000000000000000
+[  464.306897] GPR24: 0000000000000000 c000000000000000 c00000000a6e0000 
+c000000002cad0c0
+[  464.306897] GPR28: 0000000000000001 c0000000022418e0 c0000000022418e8 
+c0000000022418e0
+[  464.306956] NIP [c0000000001b75d8] plpar_hcall_norets_notrace+0x18/0x2c
+[  464.306962] LR [c0000000001bf274] pseries_lpar_idle.part.0+0x74/0x160
+[  464.306967] ---- interrupt: 900
+[  464.306970] [c000000002c2fd90] [c0000009e940b3b0] 0xc0000009e940b3b0 
+(unreliable)
+[  464.306984] [c000000002c2fe10] [c0000000000212fc] 
+arch_cpu_idle+0x4c/0x110
+[  464.306993] [c000000002c2fe30] [c00000000134ddd0] 
+default_idle_call+0x50/0x140
+[  464.307001] [c000000002c2fe50] [c0000000002b4fdc] 
+cpuidle_idle_call+0x1ac/0x240
+[  464.307007] [c000000002c2fea0] [c0000000002b5164] do_idle+0xf4/0x1a0
+[  464.307013] [c000000002c2fef0] [c0000000002b5498] 
+cpu_startup_entry+0x48/0x50
+[  464.307020] [c000000002c2ff20] [c0000000000113cc] rest_init+0xec/0xf0
+[  464.307026] [c000000002c2ff50] [c0000000020052e0] do_initcalls+0x0/0x18c
+[  464.307034] [c000000002c2ffe0] [c00000000000ea9c] 
+start_here_common+0x1c/0x20
+[  464.307040] Code: 549c06be 7c9f2378 7cbd2b78 7c7e1b78 39494388 
+5489e8f8 f8010010 f821ffb1 7d2a482a 7d29e436 552907fe 69290001 
+<0b090000> 490a428d 60000000 e93e0010
+[  464.307060] ---[ end trace 0000000000000000 ]---
+[  464.736380] ------------[ cut here ]------------
+[  464.736397] WARNING: CPU: 0 PID: 0 at kernel/sched/cpudeadline.c:219 
+cpudl_set+0x58/0x170
+[  464.736408] Modules linked in: rpadlpar_io(E) rpaphp(E) 
+nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) 
+nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) 
+bonding(E) nft_ct(E) tls(E) rfkill(E) nft_chain_nat(E) ip_set(E) hvcs(E) 
+ibmveth(E) pseries_rng(E) hvcserver(E) vmx_crypto(E) sg(E) 
+dm_multipath(E) drm(E) dm_mod(E) fuse(E) drm_panel_orientation_quirks(E) 
+ext4(E) crc16(E) mbcache(E) jbd2(E) sr_mod(E) sd_mod(E) cdrom(E) 
+ibmvscsi(E) scsi_transport_srp(E)
+[  464.736468] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G   W   E  
+      6.17.0-gfd94619c4336 #1 VOLUNTARY
+[  464.736476] Tainted: [W]=WARN, [E]=UNSIGNED_MODULE
+[  464.736480] Hardware name: IBM,8375-42A POWER9 (architected) 0x4e0202 
+0xf000005 of:IBM,FW950.80 (VL950_131) hv:phyp pSeries
+[  464.736486] NIP:  c0000000002b6ed8 LR: c0000000002b7cb8 CTR: 
+c0000000002b7df0
+[  464.736491] REGS: c000000002c2f4f0 TRAP: 0700   Tainted: G W   E      
+   (6.17.0-gfd94619c4336)
+[  464.736497] MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 22000424  
+XER: 00000000
+[  464.736509] CFAR: c0000000002b726c IRQMASK: 3
+[  464.736509] GPR00: c0000000002b7cb8 c000000002c2f790 c000000001df8100 
+c000000002d6a710
+[  464.736509] GPR04: 000000000000001f 0000006c700d1304 0000000000000000 
+c000000002d6adb0
+[  464.736509] GPR08: 00000000ffffffff 0000000000000001 c000000002cac488 
+0000000000000000
+[  464.736509] GPR12: c0000000030a7000 c000000002fa0000 0000000000000000 
+0000000000000000
+[  464.736509] GPR16: 0000000000000000 0000000000000000 0000000000000000 
+0000000000000000
+[  464.736509] GPR20: c0000009e940ac20 0000006c3442c73b 0000000000000001 
+0000000000000002
+[  464.736509] GPR24: 0000000000000000 0000000000000000 0000000000000003 
+c0000009e940ab80
+[  464.736509] GPR28: 000000000000001f 0000006c700d1304 c000000002d6a710 
+000000000000001f
+[  464.736569] NIP [c0000000002b6ed8] cpudl_set+0x58/0x170
+[  464.736574] LR [c0000000002b7cb8] dl_server_timer+0x168/0x2a0
+[  464.736580] Call Trace:
+[  464.736582] [c000000002c2f790] [c000000002c2f7e0] 
+init_stack+0x77e0/0x8000 (unreliable)
+[  464.736592] [c000000002c2f7e0] [c0000000002b7cb8] 
+dl_server_timer+0x168/0x2a0
+[  464.736599] [c000000002c2f840] [c00000000034df84] 
+__hrtimer_run_queues+0x1a4/0x390
+[  464.736606] [c000000002c2f8d0] [c00000000034f624] 
+hrtimer_interrupt+0x124/0x300
+[  464.736613] [c000000002c2f980] [c00000000002a230] 
+timer_interrupt+0x140/0x320
+[  464.736620] [c000000002c2f9e0] [c000000000009ffc] 
+decrementer_common_virt+0x28c/0x290
+[  464.736627] ---- interrupt: 900 at plpar_hcall_norets_notrace+0x18/0x2c
+[  464.736634] NIP:  c0000000001b75d8 LR: c00000000134dfe8 CTR: 
+0000000000000000
+[  464.736638] REGS: c000000002c2fa10 TRAP: 0900   Tainted: G W   E      
+   (6.17.0-gfd94619c4336)
+[  464.736644] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  
+CR: 22000424  XER: 20040000
+[  464.736659] CFAR: 0000000000000000 IRQMASK: 0
+[  464.736659] GPR00: 0000000000000000 c000000002c2fcb0 c000000001df8100 
+0000000000000000
+[  464.736659] GPR04: 0000000000000010 000000002c000040 0000000000000002 
+0000000000000040
+[  464.736659] GPR08: 0000000000000000 0000000000000290 0000000000000029 
+0000000000000000
+[  464.736659] GPR12: 00000000d02f74a9 c000000002fa0000 0000000000000000 
+0000000000000000
+[  464.736659] GPR16: 0000000000000000 0000000000000000 0000000000000000 
+0000000000000000
+[  464.736659] GPR20: 0000000000c00000 0000000000000008 0000000000000000 
+0000000000000000
+[  464.736659] GPR24: 0000000000000000 0000000000000000 0000006c3469239a 
+0000000000000001
+[  464.736659] GPR28: c0000009e9419cc0 0000000000000001 c0000000022418e0 
+c0000000022418e8
+[  464.736717] NIP [c0000000001b75d8] plpar_hcall_norets_notrace+0x18/0x2c
+[  464.736723] LR [c00000000134dfe8] check_and_cede_processor+0x48/0x60
+[  464.736730] ---- interrupt: 900
+[  464.736733] [c000000002c2fcb0] [c0000000026a1080] 
+init_task+0x0/0x1d00 (unreliable)
+[  464.736741] [c000000002c2fd10] [c00000000134e210] 
+shared_cede_loop+0x70/0x170
+[  464.736748] [c000000002c2fd50] [c00000000134d830] 
+cpuidle_enter_state+0x2b0/0x648
+[  464.736756] [c000000002c2fdf0] [c000000000e09f70] cpuidle_enter+0x50/0x80
+[  464.736764] [c000000002c2fe30] [c0000000002ad868] call_cpuidle+0x48/0x90
+[  464.736772] [c000000002c2fe50] [c0000000002b4f94] 
+cpuidle_idle_call+0x164/0x240
+[  464.736779] [c000000002c2fea0] [c0000000002b5164] do_idle+0xf4/0x1a0
+[  464.736785] [c000000002c2fef0] [c0000000002b549c] 
+cpu_startup_entry+0x4c/0x50
+[  464.736791] [c000000002c2ff20] [c0000000000113cc] rest_init+0xec/0xf0
+[  464.736797] [c000000002c2ff50] [c0000000020052e0] do_initcalls+0x0/0x18c
+[  464.736804] [c000000002c2ffe0] [c00000000000ea9c] 
+start_here_common+0x1c/0x20
+[  464.736810] Code: 549c06be 7c9f2378 7cbd2b78 7c7e1b78 39494388 
+5489e8f8 f8010010 f821ffb1 7d2a482a 7d29e436 552907fe 69290001 
+<0b090000> 490a428d 60000000 e93e0010
+[  464.736831] ---[ end trace 0000000000000000 ]---
+[  493.843328] Non-volatile memory driver v1.3
+
+
+
+Git Bisect logs:
+
+git bisect bad
+4ae8d9aa9f9dc7137ea5e564d79c5aa5af1bc45c is the first bad commit
+commit 4ae8d9aa9f9dc7137ea5e564d79c5aa5af1bc45c (HEAD)
+Author: Peter Zijlstra <peterz@infradead.org>
+Date:   Tue Sep 16 23:02:41 2025 +0200
+
+     sched/deadline: Fix dl_server getting stuck
+
+     John found it was easy to hit lockup warnings when running locktorture
+     on a 2 CPU VM, which he bisected down to: commit cccb45d7c429
+     ("sched/deadline: Less agressive dl_server handling").
+
+     While debugging it seems there is a chance where we end up with the
+     dl_server dequeued, with dl_se->dl_server_active. This causes
+     dl_server_start() to return without enqueueing the dl_server, thus it
+     fails to run when RT tasks starve the cpu.
+
+     When this happens, dl_server_timer() catches the
+     '!dl_se->server_has_tasks(dl_se)' case, which then calls
+     replenish_dl_entity() and dl_server_stopped() and finally return
+     HRTIMER_NO_RESTART.
+
+     This ends in no new timer and also no enqueue, leaving the dl_server
+     'dead', allowing starvation.
+
+     What should have happened is for the bandwidth timer to start the
+     zero-laxity timer, which in turn would enqueue the dl_server and cause
+     dl_se->server_pick_task() to be called -- which will stop the
+     dl_server if no fair tasks are observed for a whole period.
+
+     IOW, it is totally irrelevant if there are fair tasks at the moment of
+     bandwidth refresh.
+
+     This removes all dl_se->server_has_tasks() users, so remove the whole
+     thing.
+
+     Fixes: cccb45d7c4295 ("sched/deadline: Less agressive dl_server 
+handling")
+     Reported-by: John Stultz <jstultz@google.com>
+     Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+     Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+     Tested-by: John Stultz <jstultz@google.com>
+
+  include/linux/sched.h   |  1 -
+  kernel/sched/deadline.c | 12 +-----------
+  kernel/sched/fair.c     |  7 +------
+  kernel/sched/sched.h    |  4 ----
+  4 files changed, 2 insertions(+), 22 deletions(-)
+
+# git bisect log
+git bisect start
+# status: waiting for both good and bad commits
+# good: [038d61fd642278bab63ee8ef722c50d10ab01e8f] Linux 6.16
+git bisect good 038d61fd642278bab63ee8ef722c50d10ab01e8f
+# status: waiting for bad commit, 1 good commit known
+# bad: [c746c3b5169831d7fb032a1051d8b45592ae8d78] Merge tag 
+'for-6.18-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
+git bisect bad c746c3b5169831d7fb032a1051d8b45592ae8d78
+# good: [e25079858627916b22c4a789005a90a9fae808d8] Merge branch 
+'net-better-drop-accounting'
+git bisect good e25079858627916b22c4a789005a90a9fae808d8
+# bad: [05a54fa773284d1a7923cdfdd8f0c8dabb98bd26] Merge tag 
+'sound-6.18-rc1' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound
+git bisect bad 05a54fa773284d1a7923cdfdd8f0c8dabb98bd26
+# bad: [ae28ed4578e6d5a481e39c5a9827f27048661fdd] Merge tag 
+'bpf-next-6.18' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next
+git bisect bad ae28ed4578e6d5a481e39c5a9827f27048661fdd
+# bad: [6855f06042ae8d134f96c63feb5dfb3943c6d789] Merge tag 
+'i2c-for-6.17-rc8' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux
+git bisect bad 6855f06042ae8d134f96c63feb5dfb3943c6d789
+# good: [3d1e36499e02457f8de0edc9d87783cce97e8677] Merge tag 
+'gpio-fixes-for-v6.17-rc5' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux
+git bisect good 3d1e36499e02457f8de0edc9d87783cce97e8677
+# good: [86cc796e5e9bff0c3993607f4301b8188095516c] Merge tag 'for-linus' 
+of git://git.kernel.org/pub/scm/virt/kvm/kvm
+git bisect good 86cc796e5e9bff0c3993607f4301b8188095516c
+# good: [f975f08c2e899ae2484407d7bba6bb7f8b6d9d40] Merge tag 
+'for-6.17-rc6-tag' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
+git bisect good f975f08c2e899ae2484407d7bba6bb7f8b6d9d40
+# good: [4ff71af020ae59ae2d83b174646fc2ad9fcd4dc4] Merge tag 
+'net-6.17-rc8' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+git bisect good 4ff71af020ae59ae2d83b174646fc2ad9fcd4dc4
+# good: [f26a24662cd2875f82029e28879a20cea212214c] Merge tag 
+'v6.17rc7-smb3-client-fixes' of git://git.samba.org/sfrench/cifs-2.6
+git bisect good f26a24662cd2875f82029e28879a20cea212214c
+# bad: [51a24b7deaae5c3561965f5b4b27bb9d686add1c] Merge tag 
+'trace-tools-v6.17-rc5' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace
+git bisect bad 51a24b7deaae5c3561965f5b4b27bb9d686add1c
+# bad: [083fc6d7fa0d974a3663b97c8b0466737a544236] Merge tag 
+'sched-urgent-2025-09-26' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+git bisect bad 083fc6d7fa0d974a3663b97c8b0466737a544236
+# good: [2cea0ed9796381b142f46bd8de97bb6b54b1df61] Merge tag 
+'locking-urgent-2025-09-26' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+git bisect good 2cea0ed9796381b142f46bd8de97bb6b54b1df61
+# bad: [a3a70caf7906708bf9bbc80018752a6b36543808] sched/deadline: Fix 
+dl_server behaviour
+git bisect bad a3a70caf7906708bf9bbc80018752a6b36543808
+# bad: [4ae8d9aa9f9dc7137ea5e564d79c5aa5af1bc45c] sched/deadline: Fix 
+dl_server getting stuck
+git bisect bad 4ae8d9aa9f9dc7137ea5e564d79c5aa5af1bc45c
+# first bad commit: [4ae8d9aa9f9dc7137ea5e564d79c5aa5af1bc45c] 
+sched/deadline: Fix dl_server getting stuck
+
+
+If you happen to fix this, please add below tag.
+
+
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+
+Regards,
+
+Venkat.
+
+
+
 
