@@ -1,62 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-12714-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12715-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF017BC4E51
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 08 Oct 2025 14:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A0ABC60B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 08 Oct 2025 18:38:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4chXhk0FlHz30NF;
-	Wed,  8 Oct 2025 23:42:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4chdxV3MMFz30D3;
+	Thu,  9 Oct 2025 03:38:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759927349;
-	cv=none; b=KiqyqPOmCOFuj2+5naq6oqj89p2o/8GpKlcOJop5pRziRNfxBM2xCPmeD6VPBb3BJRGnNdY+bR+GrI3C/GG4yJalPlyHkVflQ1VAbRzP7Uxd1mdeisFnhYFn8UGQW1+dg+c5xZKdAKXxqXQ4+uG2NWTyaySpfvsNs/eAI7w1fVyvykIzHTY3GqiUcXze8mH0n/R642O/oDsqGbGSpjN01V3Uh2XQB4D+JaisgKeD6nL0D8CV+1RlCMO5+41yoXKe5sk+C6XgQAjOFtQjMuMGj+JW/AcWHLwRa+kTMj3DkmFoxJszdY/uyZNNtceLmby2NpKUzdJnsXTZJMiD2o44TA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759927349; c=relaxed/relaxed;
-	bh=SEB371UVD7p9y6tuscumDyLeJGmkjZ51qI7OiaqfHYQ=;
-	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=S5NLa+oLgdaalH0+yNlZI1MVH8+AMQGpRMbMZDtSBoK6L8K9oUo07LppQrLFgYWmr42SoSxfKMENq/ZiHJ/gZvc/iFsIAHUuoBqXgPQcD8T8j4XHskexph7JLji5gNr8rq/wYKyxlRNxJxDbPm7begcTOIOHp8eFtoElY9gkBX0f9aHSocEs5gTvMSHNeuawGsyEQJoDxZ/oYN/MStzaipmo1vfldhUyjxZfFyFLiK72OK/blA1pF7/3f57703o/aWpGMUYzPyllvV3rvFPO13iNi/+lNz3R+bstvR0L9p0BsAWHlN32YWQPwEIkv30i15YW3kA8/Tm9hjKoGimOAQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=O1FR00z6; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=1hKkeoZd; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.167 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759941534;
+	cv=pass; b=H1EIvcAjhPz+IlRHmELV+I4/69F+u+2eJjc3SW+Rc9d/De62eRb4yfz4Uvw9KyA8qbcCvdWYQolGFtibsh4M/PauigMg8oLr9DMDW35t22yZY9m8veyezXEzHxfYs8oU6wxEPun4qzonD1QaqRfFlKi1pG4QNfXR2BWaS8IjbJfAXS0pDbiFzxx3OTJpKQGSU4PSi9CaLEhvC+ZswhgCjWThBBITMwTv5pvKg+k1Vc2frpcaKRhNFeIvE7dir2JzZC5Kq0zTdrmo7O11GYPIP3i9HsF3NHYCW+dRs48hBCsfbOrZMibjEKoajKHmQG/UMoaxZCE1pngcKvZf7nm6rw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1759941534; c=relaxed/relaxed;
+	bh=YtMFp6hk0KZtRuvIuBOISOMZNCRxLqDo914yFlgZ7qc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:Cc:References:To:
+	 In-Reply-To:Content-Type; b=MpcNuzrMt19RLmtKObuCoxJ/8Mcdw+jpt5TisHzJr6kpgnypvf7EqCtjx0plAifGcsGrOYsiEv8vWRisWyeFv7NVieTcPikn8jK3BqoDW7L5rMGrZVX+y09lAkjlzT4D6VMBPwnAG7Ayt81aO0u1u4CPTTl5/k02zSVAumnByjp+C0Zj0wIcIKcp+3/nVgtoOBGNBUnKrtGCIIkx4Cbr7k/ImjbClnl6zKnh11a6kIiNxz91sLgKUAgBneFH2z1ZUAgdHOYAlO0A5Vlu3f0EmoJikAADx2NExxpZCjziwpjE9Ayk53mPfbM9c7L0EGDfkZWLyAoN7Y/oPteEXlmB4A==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=WexDtBT0; dkim-atps=neutral; spf=pass (client-ip=81.169.146.167; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=O1FR00z6;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=1hKkeoZd;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=WexDtBT0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.167; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 174 seconds by postgrey-1.37 at boromir; Thu, 09 Oct 2025 03:38:51 AEDT
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.167])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4chXhj177vz2xPw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Oct 2025 23:42:29 +1100 (AEDT)
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1759927343;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SEB371UVD7p9y6tuscumDyLeJGmkjZ51qI7OiaqfHYQ=;
-	b=O1FR00z6YIWDmCnUQnYJ/rkfBxjhVctVN1ldKAHZuqM7AZMiiiTiG3xt3bUMJG2QdsLDnL
-	+tYlj1dm5Bv83Fh28wjSU6yOWAXp5vmR4I4rjbevk5VdVgCmIATmCJ1bNYzq7wyK0tP1dI
-	a8Tn9S3gmAftbWlWn4Wsc4zs7GMXXaJ69ld862jc+04trtrQVYKVC4G7cgKF1RfwflfvOH
-	QZfapA14EaBcqDMo06wxXFwZARn65jZ3pQ9KAdN7GVYvlkJWVrfubNqZ8//+6DOtyacF6R
-	B/klHx/5snA7XPOwcyzDEyq5MNhUFGExt8qY6utqqdouYZ6RVFaJLxPaTzs2yg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1759927343;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SEB371UVD7p9y6tuscumDyLeJGmkjZ51qI7OiaqfHYQ=;
-	b=1hKkeoZdxe2Wz/9/ZnYPPSi8pqPSIkKVb++Fz2slv1L8s3IDPVuroDvdRTH0cnMrehC9fN
-	IlBm9k7eXY5gX1Bg==
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>, linuxppc-dev
- <linuxppc-dev@lists.ozlabs.org>, Gautam Menghani <gautam@linux.ibm.com>
-Subject: Re: [bisected][mainline]Kernel OOPs at msi_desc_to_pci_dev
-In-Reply-To: <878d7651-433a-46fe-a28b-1b7e893fcbe0@linux.ibm.com>
-References: <878d7651-433a-46fe-a28b-1b7e893fcbe0@linux.ibm.com>
-Date: Wed, 08 Oct 2025 14:42:22 +0200
-Message-ID: <87wm55h8ep.fsf@yellow.woof>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4chdxR1dRSz2ypV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 03:38:50 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1759941343; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=kSPZ41FRCnz9M0verzRrPJPBNP4I6pXCrP0PcKXoIZPA7kKq5lxclBo/Oa8mg+ZF9S
+    VSjEtYpI2ofvSTi7O0mxgyGIM+Eqm8LbWdGi2NfVF1tdjAZaYlHkyY94aUIDkEa8LJE4
+    80Ia+RdhQsuqbgz1SwJArf6BUD92f467pTpuWyPtzlKD9PHVZsyTQJ56UJ8wHIz1E3uB
+    At9xUkSK2bz/W2IWPyQH5VV6bHH2lJx1xfulrRMUO/gzY4oQobEBLAVNihs6Ej5edYfx
+    3h0rcH3PWxXJivfUNae4yJ2sxlXCf+t6kxDcgFUUuwN01auV/VXgSwl14E2aisF66BzX
+    NUww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1759941343;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:To:References:Cc:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=YtMFp6hk0KZtRuvIuBOISOMZNCRxLqDo914yFlgZ7qc=;
+    b=rHLRPvOvlH9pZ7cPEEG7hTgqTElKqOtUQFbrwqvhJQNkkkbtH5VxZfihN6fz1haXhA
+    hWQqjVZfyb6lkQjSEPQBG18OqX6oyXgOet7mPcya/0mXwh4cW0YW5iREXjpdgbchJOHH
+    MgsRUeI2R41O9snWRhMqbcJFYVveUySS0/o96pghrWatCI1DHQFGIzia/FwoWb8NGzmd
+    rsju45zUWOjYlrltSbAiQoy2VOAY4fAlIGEJ+45bpz313P0bF0IlnkF+DLqjCRpXvN1G
+    O/gatmCefchezEZMhDipkU4Hsck+3JuU6oA5kjlIeZo1igf+zCXbNMsJMYZmQMv9wEgX
+    Ku6g==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1759941343;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:To:References:Cc:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=YtMFp6hk0KZtRuvIuBOISOMZNCRxLqDo914yFlgZ7qc=;
+    b=WexDtBT02414yWTb5YOODocdEC/B46AXE8dqvkOTXyWeK3Z/lC/Rnic7CaoGwy0/3t
+    aGnmlMcKqzrs1eG66ss7PFUNc/2Md8i21AVCVYwQgoe8DjXWK2UiYJWRC62h9vbFoVo1
+    YRKbXzzkDWg6Xwz/T2/qUMnXn1O+JKKxo6Rz3TIARE5srijFs5vkEoS+msT2pvp0JGmb
+    P8B4S1gBVjUto2Oo9AzU92HtPmAM+SSDow3JkO3PyguwsdCdrYW39SBUx8kPFfeshXuN
+    mGTVOIxusRlKBv8I/zmfUDmEdE/UIKajNCsMB7JlZPoxxpdSjisJN5ExORZ/lGrQ7dXm
+    kSAw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr4thIFiqT9BURIy+m7hjg"
+Received: from [192.168.178.48]
+    by smtp.strato.de (RZmta 53.4.2 DYNA|AUTH)
+    with ESMTPSA id e28866198GZg2G9
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Wed, 8 Oct 2025 18:35:42 +0200 (CEST)
+Message-ID: <db5c95a1-cf3e-46f9-8045-a1b04908051a@xenosoft.de>
+Date: Wed, 8 Oct 2025 18:35:42 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,32 +85,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: [PPC] Boot problems after the pci-v6.18-changes
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Cc: mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <info@xenosoft.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
+ Darren Stevens <darren@stevens-zone.net>,
+ "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>
+References: <3eedbe78-1fbd-4763-a7f3-ac5665e76a4a@xenosoft.de>
+ <15731ad7-83ff-c7ef-e4a1-8b11814572c2@xenosoft.de>
+ <17e37b22-5839-0e3a-0dbf-9c676adb0dec@xenosoft.de>
+ <3b210c92-4be6-ce49-7512-bb194475eeab@xenosoft.de>
+ <78308692-02e6-9544-4035-3171a8e1e6d4@xenosoft.de>
+ <87mtma8udh.wl-maz@kernel.org>
+ <c95c9b58-347e-d159-3a82-bf5f9dbf91ac@xenosoft.de>
+ <87lf1t8pab.wl-maz@kernel.org>
+ <a02c370d-1356-daac-25c4-02d222c91364@xenosoft.de>
+ <87ilwx8ma5.wl-maz@kernel.org>
+ <d044e62f-c7f8-4ec7-dbc6-ce61767e295f@xenosoft.de>
+ <0baf0f26-ab82-ca19-ea9f-7f461ce32aa5@xenosoft.de>
+Content-Language: de-DE
+To: Bjorn Helgaas <bhelgaas@google.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+In-Reply-To: <0baf0f26-ab82-ca19-ea9f-7f461ce32aa5@xenosoft.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Venkat Rao Bagalkote <venkat88@linux.ibm.com> writes:
-> IBM CI has reported a kernel crash while running module load and unload 
-> testing on lpfc driver.
+Hello,
 
-Thanks for the report.
+Our PPC boards [1] have boot problems since the pci-v6.18-changes. [2]
 
-I trust the below patch should fix the issue?
+Without the pci-v6.18-changes, the PPC boards boot without any problems.
 
-diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
-index 825f9432e03d..a82aaa786e9e 100644
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -443,8 +443,7 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
-  */
- static void pseries_msi_ops_teardown(struct irq_domain *domain, msi_alloc_info_t *arg)
- {
--	struct msi_desc *desc = arg->desc;
--	struct pci_dev *pdev = msi_desc_to_pci_dev(desc);
-+	struct pci_dev *pdev = to_pci_dev(domain->dev);
- 
- 	rtas_disable_msi(pdev);
- }
+Boot log with error messages: 
+https://github.com/user-attachments/files/22782016/Kernel_6.18_with_PCI_changes.log
+
+Further information: https://github.com/chzigotzky/kernels/issues/17
+
+Please check the pci-v6.18-changes. [2]
+
+Thanks,
+Christian
+
+
+[1]
+- https://wiki.amiga.org/index.php/X5000
+- https://en.wikipedia.org/wiki/AmigaOne_X1000
+
+[2] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2f2c7254931f41b5736e3ba12aaa9ac1bbeeeb92
+
+
+
+
+
 
