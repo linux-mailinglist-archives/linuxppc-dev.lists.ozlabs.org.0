@@ -1,96 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-12707-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12708-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9245BC3EDE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 08 Oct 2025 10:51:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C07AABC4260
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 08 Oct 2025 11:24:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4chRYj5smSz3057;
-	Wed,  8 Oct 2025 19:51:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4chSJf1Y2Pz3057;
+	Wed,  8 Oct 2025 20:24:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759913465;
-	cv=none; b=fDc/w4oaFihF/bdNCXfemZYRMgInaVBfMLyDlsMVCtdo/ooLoZ+0r5Rs7qcRottkDafthTrw5pA8wigIx+254jaTiuV/DtMvRzmkS7s553Q1C00GUM+Sxoevt5mOtRx4Qjurth5s5c0KYtgZwBn1urjPMLlvgi8zqbgB8D162mf5e2crhlegppB7lBiKUcQzQKzbiqM2L1b9OCBwRhVc/TGuMPZY26CUlxiCDk9JpoLJ+io6OIp0cWMPMDYohNC/O2iD6eEQPoS7QddPBvdhQ7sMamgyk3xKeKlYGzu+FPLExMrdXELSunt5VuZ/8eVSXY8oSlAgFIm3DDhk1p3/pg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759915490;
+	cv=none; b=FcrzfEiOpahsYkGnIR1H1bERLGhG9uvbTUlgHs0nuI95td/maJCgHiLS/h/wKMU6YYl+Y5q5UwIztJ66ae8vg9sarUjGkI9v95Iiv6ZB9udMgvB4+N/d1TdgsgKD0GyQB9ArXKfyDW1b8I5Ory869ghuLr3TVluUOiHk7/zSbcWhJ9Z7nL49HCSUV8FCTrVfupS3F+gU4tPx7jpCQStTos1RtuFNY/R84lX+fa3sM7ijY8QCzHTVfj1n9nHn6QfIq+8IUCsXyaBRWbN+25ugo+zZYAOoLNGQuwMm/i2Buz2yKf/b1KHHvwOU/XOnJTTL6za/oAaV6sPS2YJTVz2yMg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759913465; c=relaxed/relaxed;
-	bh=Ji+Z2s11diIXNL8bVho8bc/Lj4yhx19+I6xuhIPEgg0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XCEFReh58OFl+HVkoOQC+4NUnwCr2clbCtUjjXvILySI308Ascos5dlqAgtagk9/+FY0IU5dxW41szIHT3QhCsJqaxpY4uz+kx9QC9YQjBS4iW5Za9M88uyWTCnMy+dTiKmEiOX3HmLlHu0pOkRSydOvP4GuBAA4QH0RVKBCrS/h80u0BtseRFosGYkcIKLbdT7uJyJFiWqbgA8acZLyMQmkSV2yVBw2RnyLzgDqIhx5H1PPLHr/H1lJZJhnR6O1ucs0qZAE+8G4G1jjblEIjhyy3rIrBoN/rHlX+y3jaX0XHcdXlaLsRQ2BETIU08i3OsFFoGPU+YswI4IcbfdO+g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DY7zfr5C; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1759915490; c=relaxed/relaxed;
+	bh=ZrzNfRRvcJS97NTmRhy4XBCnvSrdNrzkeiBtW6nAwxA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=bGwzHp61eD2qOo5klEBh1MYyKB4xF3y7p1nnI1aLAWIvGlg0myq1+ll1Iu8BUiBQnbaKUyM6HkvMKjrAdXuQKfELaSBMK0GC+4ArN4e2p3HuzZlyQRmBMvOC22mqv2pFnGjuIsnO/2NWQu63I16UBQLPadd/V5Yq61U9mQyBm1chXMlSMk0xs7InMkYzD25rEe+08qrNnZ9KvkSQ5jR6XkzxoW+WbCnwNlinE9LQhEDwhryJgIbz6UX1JBE96nxK+mERht0lKQUHScwZ7rN1KGkdysaZ60qwSV8+1kKd9Irz5xaCSMlSVk3fVUBcHngOxdxv5FzBaEayOKf6uEgEkw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XXTG+kHg; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DY7zfr5C;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XXTG+kHg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4chRYd2swTz300F
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Oct 2025 19:51:00 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 597IxLqQ009447;
-	Wed, 8 Oct 2025 08:50:31 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4chSJc4MkBz300F
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Oct 2025 20:24:47 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59865EGg024854;
+	Wed, 8 Oct 2025 09:24:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=Ji+Z2s11diIXNL8bVho8bc/Lj4yhx19+I6xuhIPEg
-	g0=; b=DY7zfr5CkRx8eOvWT6tR/Cav0LD36FfhHCFcuF0jtfs2TsxbaWYjdsbJE
-	eY2JCEGw2SMfZ53THvzybG72oYVZs7UbR+ZpLZ9YQZViIBqbWvZfJoRfzUdIOqOz
-	PR5zs5n/F6fj2L/Xgr3dGjsrtCxb5yREBnf/7RoQzX9oyJz3DOj3hpMUXTC4Xb0G
-	QJaKRMyg/vc4MHJnnaQY7jJT29NjmnfSisxBGbr8cOnUVzBArLyxeTzseXDnbO8s
-	5gaMynpa6GeZAvkp8NncuG1ZrHXD2+vF8BE9tjcMS5DO7Lelzm42esh+Ixaifh0c
-	gqI45aR17s8tXQXuaMN7+dDcFdzHQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49jt0pkeap-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Oct 2025 08:50:31 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5988W8Tq023328;
-	Wed, 8 Oct 2025 08:50:30 GMT
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ZrzNfR
+	RvcJS97NTmRhy4XBCnvSrdNrzkeiBtW6nAwxA=; b=XXTG+kHgvcejg23ihBRV+P
+	DmBqVJ/lz1NVea5GWNLjTxPvdoYlF7W7uohkDpwIfR3vJ2TJc9OH6jIICZs3dpN3
+	CXyeOkZ7JhRlSRzkBgRanszRGDi79HvV/Fuahkbey0ukGkZYoYFVZYosUdMTt7dk
+	6Uepclcw8d1UyzQm2KLqBPfi7S1mrucOXr+eYXK85WGowB26X9Iixfyq/+Xo773G
+	vQ12J1sMYDn6mtVNAPsDjDLKf+8WOdrX8lRUK3VJ/v3d7Xhq9cELAxkQ1jaA6+O8
+	2sUp1Ca7kKFXvGEg6v5ZvvXrhGbFrRzls7Xq7bVthTZNpqTxHeT7lFnWif167DRQ
+	==
 Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49jt0pkeak-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49js0sksbb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Oct 2025 08:50:30 +0000 (GMT)
+	Wed, 08 Oct 2025 09:24:40 +0000 (GMT)
 Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5986PJUD013252;
-	Wed, 8 Oct 2025 08:50:29 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49kg4jqfd6-1
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5986UrIa013189;
+	Wed, 8 Oct 2025 09:24:39 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49kg4jqjpf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Oct 2025 08:50:29 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5988oRCO40960410
+	Wed, 08 Oct 2025 09:24:39 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5989OcUk64815450
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 8 Oct 2025 08:50:27 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4A93120043;
-	Wed,  8 Oct 2025 08:50:27 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DBA472004B;
-	Wed,  8 Oct 2025 08:50:22 +0000 (GMT)
-Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.in.ibm.com (unknown [9.78.106.240])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  8 Oct 2025 08:50:22 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "Naveen N. Rao" <naveen@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, bpf@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>, Song Liu <songliubraving@fb.com>,
-        Jiri Olsa <jolsa@kernel.org>, Viktor Malik <vmalik@redhat.com>,
-        live-patching@vger.kernel.org, Josh Poimboeuf <jpoimboe@kernel.org>,
-        Joe Lawrence <joe.lawrence@redhat.com>, Jiri Kosina <jikos@kernel.org>,
-        linux-trace-kernel@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH v2] powerpc64/bpf: support direct_call on livepatch function
-Date: Wed,  8 Oct 2025 14:20:21 +0530
-Message-ID: <20251008085021.69988-1-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	Wed, 8 Oct 2025 09:24:38 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7996358054;
+	Wed,  8 Oct 2025 09:24:38 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3CD5358050;
+	Wed,  8 Oct 2025 09:24:35 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.98.109.65])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  8 Oct 2025 09:24:34 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,354 +78,505 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [bisected][linux-next20251003] tmp2 selftests resulting in Kernel
+ OOPs
+From: Venkat <venkat88@linux.ibm.com>
+In-Reply-To: <feadc4f6-839b-4c04-b6df-dedf279fb315@csgroup.eu>
+Date: Wed, 8 Oct 2025 14:54:22 +0530
+Cc: LKML <linux-kernel@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        linux-kselftest@vger.kernel.org, daleksan@redhat.com,
+        jstancek@redhat.com, jarkko@kernel.org, pmenzel@molgen.mpg.de
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8540AB99-D3C8-42B1-9A1F-BCB74C8F5F20@linux.ibm.com>
+References: <88f1df7e-8347-45f7-a2a1-e321e72e4009@linux.ibm.com>
+ <3d7a5f70-7ece-48ba-92bd-8b6473fd8b6c@linux.ibm.com>
+ <feadc4f6-839b-4c04-b6df-dedf279fb315@csgroup.eu>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+X-Mailer: Apple Mail (2.3774.600.62)
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=XvT3+FF9 c=1 sm=1 tr=0 ts=68e625d7 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=EqnfbCcA c=1 sm=1 tr=0 ts=68e62dd8 cx=c_pps
  a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=iox4zFpeAAAA:8 a=VnNF1IyMAAAA:8
- a=-2KXX0oJnJaVn1jAxeUA:9 a=WzC6qhA0u3u7Ye7llzcV:22 a=nl4s5V0KI7Kw-pW0DWrs:22
- a=pHzHmUro8NiASowvMSCR:22 a=xoEH_sTeL_Rfw54TyV31:22
-X-Proofpoint-ORIG-GUID: aVLkeNntDDRU3oDNk64bu7aj32lp8oY8
-X-Proofpoint-GUID: dckqDDY1isTMTHDC6BxD5swLUFjKf_Eq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAwOSBTYWx0ZWRfX6/irdvjJUQVK
- GvxR7NfpFB+r1oX4aa4oXlMW9+4NiwYsPN/joqI3bAdje6ytFhij8dOhQoAiikqDZdF3Q8isTnY
- RItEuKhoVwS2GP/1ifRb8Pb/ouKILt+cV9KZ+BuauWXTniFCoJAsEyNQkBP2Huvekc1xHACFcOu
- tpfOyyxhdOS+ivDqLaCyPYFMzybeU4IJ0IBUtm49NAqIHB50HKuGKSHk0uZf5sCnes3wY7UPJ0m
- jnrSDJiAUlFgV58c+RRBCejqz6idJwnpBkgojfWFoQ9yh/5rLo49NygMqfWJldjR9xHXC11P/8O
- aWVlG5gsLusB9ph63Wqwec36ehAfEdqSjx+8ATohArZyOQm+vt7maD7b1N9EvytaLdIHa49PJS2
- rpC3Zx/ZVvuCzwyVLPIP84AcTP+NdQ==
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=UqCG9HQmAAAA:8 a=VwQbUJbxAAAA:8
+ a=e5mUnYsNAAAA:8 a=1UX6Do5GAAAA:8 a=VnNF1IyMAAAA:8 a=VabnemYjAAAA:8
+ a=NEAV23lmAAAA:8 a=tNIM7thpAAAA:8 a=FhxJebokv2ALl9HGJ60A:9 a=QEXdDO2ut3YA:10
+ a=Vxmtnl_E_bksehYqCbjh:22 a=Et2XPkok5AAZYJIKzHr1:22 a=gKebqoRLp9LExxC7YDUY:22
+ a=Hj2ravQqDRfZqFUSZohz:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: SyXWYQGnZbccR51a1P-XjyuZiT8GSNHZ
+X-Proofpoint-ORIG-GUID: SyXWYQGnZbccR51a1P-XjyuZiT8GSNHZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDAzMDIwMSBTYWx0ZWRfX6J18HCQz0M8Y
+ TgLQTFesrMhv21aZpTqbxv4bfvoA+Y8vcrsWoUHrVmHwE24pbRjYTRuvpf4t9xFIuSrkbDAous4
+ XuDVGaVpAw5Sd/ubxt3H2V1z6pwvMIqQfx2u1RID/dsNO7XwXpB/2mRYmfMtqTdV6T2CcrVIar4
+ wlb+ZkTvmFCdBixxRuV/UpM1Fe/QH5L5rys8T5w+h0Mg9Iu6vx9jWtaSey9+oKKmmBaCHgF6E1z
+ 4La2Gn4K784L9w/joNYL6KMfxToZGArP3GInGJNDu6nFGYYGvusX0gd7YyksbfvxgLwxP1Wq0OI
+ h59QLihfahOCOID/7L4FF+sbZP3G7wnq1In6QR3FQVc5teULQO5KPq4cVtjgRjRMYJOwcoZ9l2p
+ Nt0fxjYLFEeKcpL48t0lJcGnEMxcsg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-08_02,2025-10-06_01,2025-03-28_01
+ definitions=2025-10-08_03,2025-10-06_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
- phishscore=0 priorityscore=1501 clxscore=1015 adultscore=0 bulkscore=0
+ suspectscore=0 malwarescore=0 impostorscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040009
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510030201
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Today, livepatch takes precedence over direct_call. Instead, save the
-state and make direct_call before handling livepatch. This change
-inadvertly skips livepatch stack restore, when an attached fmod_ret
-program fails. To handle this scenario, set cr0.eq bit to indicate
-livepatch is active while making the direct_call, save the expected
-livepatch stack state on the trampoline stack and restore it, if and
-when required, during do_fexit in the trampoline code.
-
-Reported-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Closes: https://lore.kernel.org/all/rwmwrvvtg3pd7qrnt3of6dideioohwhsplancoc2gdrjran7bg@j5tqng6loymr/
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
----
-
-Changes in v2:
-* Fixed compile error reported by kernel test bot for !CONFIG_LIVEPATCH
 
 
- arch/powerpc/include/asm/livepatch.h     | 15 +++++
- arch/powerpc/kernel/trace/ftrace_entry.S | 74 +++++++++++++++++++----
- arch/powerpc/net/bpf_jit_comp.c          | 75 ++++++++++++++++++++++++
- 3 files changed, 154 insertions(+), 10 deletions(-)
+> On 7 Oct 2025, at 9:29=E2=80=AFPM, Christophe Leroy =
+<christophe.leroy@csgroup.eu> wrote:
+>=20
+>=20
+>=20
+> Le 07/10/2025 =C3=A0 17:08, Venkat Rao Bagalkote a =C3=A9crit :
+>> On 07/10/25 10:59 am, Venkat Rao Bagalkote wrote:
+>>> Greetings!!!
+>>>=20
+>>>=20
+>>> IBM CI has reported a kernel OOPs while running TPM2selftests on IBM =
+Power11 system with linux-next20251002 kernel.
+>>>=20
+>>>=20
+>>> Test Case:
+>>>=20
+>>> make run_tests
+>>> TAP version 13
+>>> 1..3
+>>> # timeout set to 600
+>>> # selftests: tpm2: test_smoke.sh
+>>> # test_read_partial_overwrite (tpm2_tests.SmokeTest) ... ok
+>>> # test_read_partial_resp (tpm2_tests.SmokeTest) ... ok
+>>> # test_seal_with_auth (tpm2_tests.SmokeTest) ... ok
+>>> # test_seal_with_policy (tpm2_tests.SmokeTest) ... ok
+>>> # test_seal_with_too_long_auth (tpm2_tests.SmokeTest) ... ok
+>>> # test_send_two_cmds (tpm2_tests.SmokeTest) ... ok
+>>> # test_too_short_cmd (tpm2_tests.SmokeTest) ... ok
+>>> # test_unseal_with_wrong_auth (tpm2_tests.SmokeTest) ... ok
+>>> # test_unseal_with_wrong_policy (tpm2_tests.SmokeTest) ... ERROR
+>>> #
+>>> # =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>> # ERROR: test_unseal_with_wrong_policy (tpm2_tests.SmokeTest)
+>>> # -----------------------------------------------------
+>>>=20
+>>>=20
+>>> Traces:
+>>>=20
+>>>=20
+>>> [  452.604333] BUG: KASAN: slab-use-after-free in =
+tpmrm_release+0x78/0xa8
+>>> [  452.604345] Read of size 8 at addr c00000001c650000 by task =
+python3/1856
+>>> [  452.604353]
+>>> [  452.604358] CPU: 24 UID: 0 PID: 1856 Comm: python3 Kdump: loaded =
+Not tainted 6.17.0-next-20251003 #1 VOLUNTARY
+>>> [  452.604364] Hardware name: IBM,9080-HEX Power11 (architected) =
+0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+>>> [  452.604368] Call Trace:
+>>> [  452.604370] [c0000000c1867840] [c00000000187ea4c] =
+dump_stack_lvl+0x84/0xe8 (unreliable)
+>>> [  452.604380] [c0000000c1867870] [c000000000803754] =
+print_address_description.constprop.0+0x11c/0x56c
+>>> [  452.604388] [c0000000c1867910] [c000000000803c84] =
+print_report+0xe0/0x358
+>>> [  452.604394] [c0000000c18679e0] [c000000000804124] =
+kasan_report+0x128/0x1f4
+>>> [  452.604400] [c0000000c1867af0] [c0000000008062b4] =
+__asan_load8+0xa8/0xe0
+>>> [  452.604406] [c0000000c1867b10] [c000000000f2ec18] =
+tpmrm_release+0x78/0xa8
+>>> [  452.604412] [c0000000c1867b40] [c0000000008b6a2c] =
+__fput+0x21c/0x60c
+>>> [  452.604417] [c0000000c1867bc0] [c0000000008ada70] =
+sys_close+0x74/0xd0
+>>> [  452.604424] [c0000000c1867bf0] [c000000000039270] =
+system_call_exception+0x1e0/0x460
+>>> [  452.604431] [c0000000c1867e50] [c00000000000d05c] =
+system_call_vectored_common+0x15c/0x2ec
+>>> [  452.604438] ---- interrupt: 3000 at 0x7fffb7534ab4
+>>> [  452.604443] NIP:  00007fffb7534ab4 LR: 00007fffb7534ab4 CTR: =
+0000000000000000
+>>> [  452.604446] REGS: c0000000c1867e80 TRAP: 3000   Not tainted =
+(6.17.0-next-20251003)
+>>> [  452.604449] MSR:  800000000280f033 =
+<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44284422  XER: 00000000
+>>> [  452.604466] IRQMASK: 0
+>>> [  452.604466] GPR00: 0000000000000006 00007ffff65d76b0 =
+00007fffb7c17700 0000000000000006
+>>> [  452.604466] GPR04: 0000000000000000 0000000000000000 =
+0000000000000000 0000000000000004
+>>> [  452.604466] GPR08: 0000000000000000 0000000000000000 =
+0000000000000000 0000000000000000
+>>> [  452.604466] GPR12: 0000000000000000 00007fffb7e6b8e0 =
+00000000000000a1 00007fffb67acec0
+>>> [  452.604466] GPR16: 0000000164032ad0 00007fffb67aceb0 =
+00007fffb76f6a90 0000000000000000
+>>> [  452.604466] GPR20: 00007fffb6f21850 0000000000000000 =
+00007fffb71062c0 0000000164034490
+>>> [  452.604466] GPR24: 00007fffb6f2fea0 00007fffb67acea8 =
+0000000164032b18 00007fffb7c45b32
+>>> [  452.604466] GPR28: 00007fffb7c678e0 00007fffb67aceb8 =
+0000000000000006 0000000164034490
+>>> [  452.604510] NIP [00007fffb7534ab4] 0x7fffb7534ab4
+>>> [  452.604513] LR [00007fffb7534ab4] 0x7fffb7534ab4
+>>> [  452.604516] ---- interrupt: 3000
+>>> [  452.604518]
+>>> [  452.604601] Allocated by task 1856:
+>>> [  452.604607]  kasan_save_stack+0x34/0x64
+>>> [  452.604614]  kasan_save_track+0x2c/0x50
+>>> [  452.604621]  kasan_save_alloc_info+0x58/0x74
+>>> [  452.604628]  __kasan_kmalloc+0x12c/0x168
+>>> [  452.604635]  __kmalloc_cache_noprof+0x1d8/0x71c
+>>> [  452.604643]  tpmrm_open+0x88/0x168
+>>> [  452.604649]  chrdev_open+0x1f4/0x484
+>>> [  452.604656]  do_dentry_open+0x578/0x9cc
+>>> [  452.604663]  vfs_open+0x68/0x23c
+>>> [  452.604670]  do_open+0x514/0x74c
+>>> [  452.604676]  path_openat+0x16c/0x380
+>>> [  452.604682]  do_filp_open+0x104/0x230
+>>> [  452.604689]  do_sys_openat2+0xb8/0x154
+>>> [  452.604696]  sys_openat+0xcc/0x130
+>>> [  452.604703]  system_call_exception+0x1e0/0x460
+>>> [  452.604710]  system_call_vectored_common+0x15c/0x2ec
+>>> [  452.604718]
+>>> [  452.604722] Freed by task 1856:
+>>> [  452.604726]  kasan_save_stack+0x34/0x64
+>>> [  452.604733]  kasan_save_track+0x2c/0x50
+>>> [  452.604739]  __kasan_save_free_info+0x64/0x110
+>>> [  452.604747]  __kasan_slab_free+0xb0/0x10c
+>>> [  452.604753]  kfree+0x220/0x624
+>>> [  452.604760]  tpmrm_release+0x6c/0xa8
+>>> [  452.604766]  __fput+0x21c/0x60c
+>>> [  452.604772]  sys_close+0x74/0xd0
+>>> [  452.604779]  system_call_exception+0x1e0/0x460
+>>> [  452.604786]  system_call_vectored_common+0x15c/0x2ec
+>>> [  452.604794]
+>>> [  452.604797] The buggy address belongs to the object at =
+c00000001c650000
+>>> [  452.604797]  which belongs to the cache kmalloc-8k of size 8192
+>>> [  452.604806] The buggy address is located 0 bytes inside of
+>>> [  452.604806]  freed 8192-byte region [c00000001c650000, =
+c00000001c652000)
+>>> [  452.604815]
+>>> [  452.604818] The buggy address belongs to the physical page:
+>>> [  452.604824] page: refcount:0 mapcount:0 mapping:0000000000000000 =
+index:0xc00000001c644000 pfn:0x1c60
+>>> [  452.604833] head: order:3 mapcount:0 entire_mapcount:0 =
+nr_pages_mapped:0 pincount:0
+>>> [  452.604840] flags: 0x3ffffe00000040(head|node=3D0|zone=3D0| =
+lastcpupid=3D0x1fffff)
+>>> [  452.604849] page_type: f5(slab)
+>>> [  452.604856] raw: 003ffffe00000040 c000000007012300 =
+5deadbeef0000122 0000000000000000
+>>> [  452.604864] raw: c00000001c644000 000000008020001e =
+00000000f5000000 0000000000000000
+>>> [  452.604872] head: 003ffffe00000040 c000000007012300 =
+5deadbeef0000122 0000000000000000
+>>> [  452.604879] head: c00000001c644000 000000008020001e =
+00000000f5000000 0000000000000000
+>>> [  452.604887] head: 003ffffe00000003 c00c000000071801 =
+00000000ffffffff 00000000ffffffff
+>>> [  452.604894] head: ffffffffffffffff 0000000000000000 =
+00000000ffffffff 0000000000000008
+>>> [  452.604900] page dumped because: kasan: bad access detected
+>>> [  452.604905]
+>>> [  452.604908] Memory state around the buggy address:
+>>> [  452.604914]  c00000001c64ff00: fc fc fc fc fc fc fc fc fc fc fc =
+fc fc fc fc fc
+>>> [  452.604920]  c00000001c64ff80: fc fc fc fc fc fc fc fc fc fc fc =
+fc fc fc fc fc
+>>> [  452.604927] >c00000001c650000: fa fb fb fb fb fb fb fb fb fb fb =
+fb fb fb fb fb
+>>> [  452.604933]                    ^
+>>> [  452.604937]  c00000001c650080: fb fb fb fb fb fb fb fb fb fb fb =
+fb fb fb fb fb
+>>> [  452.604944]  c00000001c650100: fb fb fb fb fb fb fb fb fb fb fb =
+fb fb fb fb fb
+>>> [  452.604950] =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>> [  452.604955] Disabling lock debugging due to kernel taint
+>>> [  452.604961] Kernel attempted to read user page (770) - exploit =
+attempt? (uid: 0)
+>>> [  452.604969] BUG: Kernel NULL pointer dereference on read at =
+0x00000770
+>>> [  452.604975] Faulting instruction address: 0xc0000000002b2e0c
+>>> [  452.604982] Oops: Kernel access of bad area, sig: 11 [#1]
+>>> [  452.604987] LE PAGE_SIZE=3D64K MMU=3DRadix  SMP NR_CPUS=3D8192 =
+NUMA pSeries
+>>> [  452.604996] Modules linked in: nft_fib_inet nft_fib_ipv4 =
+nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 =
+nft_reject nft_ct nft_chain_nat nf_nat bonding nf_conntrack tls =
+nf_defrag_ipv6 nf_defrag_ipv4 rfkill ip_set nf_tables nfnetlink sunrpc =
+pseries_rng vmx_crypto fuse ext4 crc16 mbcache jbd2 sd_mod sg ibmvscsi =
+ibmveth scsi_transport_srp pseries_wdt
+>>> [  452.605073] CPU: 24 UID: 0 PID: 1856 Comm: python3 Kdump: loaded =
+Tainted: G    B               6.17.0-next-20251003 #1 VOLUNTARY
+>>> [  452.605084] Tainted: [B]=3DBAD_PAGE
+>>> [  452.605089] Hardware name: IBM,9080-HEX Power11 (architected) =
+0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+>>> [  452.605096] NIP:  c0000000002b2e0c LR: c0000000002b2e08 CTR: =
+0000000000000000
+>>> [  452.605103] REGS: c0000000c1867820 TRAP: 0300   Tainted: G B      =
+ (6.17.0-next-20251003)
+>>> [  452.605110] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: =
+28284420  XER: 0000000d
+>>> [  452.605132] CFAR: c000000000807920 DAR: 0000000000000770 DSISR: =
+40000000 IRQMASK: 0
+>>> [  452.605132] GPR00: c0000000002b2e08 c0000000c1867ac0 =
+c00000000234a500 0000000000000001
+>>> [  452.605132] GPR04: 0000000000000008 0000000000000000 =
+c0000000002b2e08 0000000000000001
+>>> [  452.605132] GPR08: 0000000000000020 0000000000000001 =
+0000000000000001 a80e000000000000
+>>> [  452.605132] GPR12: c00e0000009b1c8c c000000d0ddeb700 =
+0000000000000000 0000000000000000
+>>> [  452.605132] GPR16: 0000000000000000 0000000000000000 =
+0000000000000000 0000000000000000
+>>> [  452.605132] GPR20: 0000000000000008 0000000000000000 =
+c000000008202f00 c00000007b9ff620
+>>> [  452.605132] GPR24: c00000008a76cb20 c00000008a76cb40 =
+c00000008a76cb08 c000000002201e80
+>>> [  452.605132] GPR28: c000000061569248 0000000000000770 =
+c00000008a76cb00 0000000000000768
+>>> [  452.605227] NIP [c0000000002b2e0c] up_read+0x50/0x17c
+>>> [  452.605237] LR [c0000000002b2e08] up_read+0x4c/0x17c
+>>> [  452.605245] Call Trace:
+>>> [  452.605249] [c0000000c1867ac0] [c0000000002b2e08] =
+up_read+0x4c/0x17c (unreliable)
+>>> [  452.605261] [c0000000c1867b10] [c000000000f2ec28] =
+tpmrm_release+0x88/0xa8
+>>> [  452.605271] [c0000000c1867b40] [c0000000008b6a2c] =
+__fput+0x21c/0x60c
+>>> [  452.605280] [c0000000c1867bc0] [c0000000008ada70] =
+sys_close+0x74/0xd0
+>>> [  452.605291] [c0000000c1867bf0] [c000000000039270] =
+system_call_exception+0x1e0/0x460
+>>> [  452.605301] [c0000000c1867e50] [c00000000000d05c] =
+system_call_vectored_common+0x15c/0x2ec
+>>> [  452.605312] ---- interrupt: 3000 at 0x7fffb7534ab4
+>>> [  452.605319] NIP:  00007fffb7534ab4 LR: 00007fffb7534ab4 CTR: =
+0000000000000000
+>>> [  452.605326] REGS: c0000000c1867e80 TRAP: 3000   Tainted: G B      =
+ (6.17.0-next-20251003)
+>>> [  452.605333] MSR:  800000000280f033 =
+<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44284422  XER: 00000000
+>>> [  452.605362] IRQMASK: 0
+>>> [  452.605362] GPR00: 0000000000000006 00007ffff65d76b0 =
+00007fffb7c17700 0000000000000006
+>>> [  452.605362] GPR04: 0000000000000000 0000000000000000 =
+0000000000000000 0000000000000004
+>>> [  452.605362] GPR08: 0000000000000000 0000000000000000 =
+0000000000000000 0000000000000000
+>>> [  452.605362] GPR12: 0000000000000000 00007fffb7e6b8e0 =
+00000000000000a1 00007fffb67acec0
+>>> [  452.605362] GPR16: 0000000164032ad0 00007fffb67aceb0 =
+00007fffb76f6a90 0000000000000000
+>>> [  452.605362] GPR20: 00007fffb6f21850 0000000000000000 =
+00007fffb71062c0 0000000164034490
+>>> [  452.605362] GPR24: 00007fffb6f2fea0 00007fffb67acea8 =
+0000000164032b18 00007fffb7c45b32
+>>> [  452.605362] GPR28: 00007fffb7c678e0 00007fffb67aceb8 =
+0000000000000006 0000000164034490
+>>> [  452.605450] NIP [00007fffb7534ab4] 0x7fffb7534ab4
+>>> [  452.605456] LR [00007fffb7534ab4] 0x7fffb7534ab4
+>>> [  452.605462] ---- interrupt: 3000
+>>> [  452.605467] Code: fbc1fff0 7c7f1b78 f8010010 f821ffb1 e92d0c78 =
+f9210028 39200000 3ba30008 38800008 7fa3eb78 48554af5 60000000 =
+<ebdf0008> eb8d0908 7bc90764 fbc10020
+>>> [  452.605501] ---[ end trace 0000000000000000 ]---
+>>> [  452.613685] pstore: backend (nvram) writing error (-1)
+>>> [  452.613691]
+>>>=20
+>>>=20
+>> Git bisect is pointing to eb28a2adba0654878bcfd909b429bf567b35922b as =
+first bad commit.
+>=20
+> Should be fixed by the following change ?
+>=20
+> diff --git a/drivers/char/tpm/tpmrm-dev.c =
+b/drivers/char/tpm/tpmrm-dev.c
+> index 13322dd9ac9e0..334b3ec2b36a5 100644
+> --- a/drivers/char/tpm/tpmrm-dev.c
+> +++ b/drivers/char/tpm/tpmrm-dev.c
+> @@ -54,8 +54,8 @@ static int tpmrm_release(struct inode *inode, struct =
+file *file)
+>=20
+> tpm_common_release(file, fpriv);
+> tpm2_del_space(fpriv->chip, &priv->space);
+> - kfree(priv);
+> up_read(&fpriv->chip->open_lock);
+> + kfree(priv);
+>=20
+> return 0;
+> }
 
-diff --git a/arch/powerpc/include/asm/livepatch.h b/arch/powerpc/include/asm/livepatch.h
-index d044a1fd4f44..356c1eb46f5d 100644
---- a/arch/powerpc/include/asm/livepatch.h
-+++ b/arch/powerpc/include/asm/livepatch.h
-@@ -7,6 +7,20 @@
- #ifndef _ASM_POWERPC_LIVEPATCH_H
- #define _ASM_POWERPC_LIVEPATCH_H
- 
-+#ifdef CONFIG_LIVEPATCH_64
-+#define LIVEPATCH_STACK_MAGIC_OFFSET	8
-+#define LIVEPATCH_STACK_LR_OFFSET	16
-+#define LIVEPATCH_STACK_TOC_OFFSET	24
-+
-+#if defined(CONFIG_PPC_FTRACE_OUT_OF_LINE) && defined(CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS)
-+#define LIVEPATCH_STACK_FRAME_SIZE	32	/* Allocate 4 x 8 bytes (to save new NIP as well) */
-+#define LIVEPATCH_STACK_NIP_OFFSET	32
-+#else
-+#define LIVEPATCH_STACK_FRAME_SIZE	24	/* Allocate 3 x 8 bytes */
-+#endif
-+#endif
-+
-+#ifndef __ASSEMBLY__
- #include <linux/sched.h>
- #include <linux/sched/task_stack.h>
- 
-@@ -20,4 +34,5 @@ static inline void klp_init_thread_info(struct task_struct *p)
- static inline void klp_init_thread_info(struct task_struct *p) { }
- #endif
- 
-+#endif /* !__ASSEMBLY__ */
- #endif /* _ASM_POWERPC_LIVEPATCH_H */
-diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-index 6599fe3c6234..b98f12f378b1 100644
---- a/arch/powerpc/kernel/trace/ftrace_entry.S
-+++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-@@ -8,6 +8,7 @@
- #include <asm/ppc_asm.h>
- #include <asm/asm-offsets.h>
- #include <asm/ftrace.h>
-+#include <asm/livepatch.h>
- #include <asm/ppc-opcode.h>
- #include <asm/thread_info.h>
- #include <asm/bug.h>
-@@ -244,6 +245,8 @@
- 	/* jump after _mcount site */
- #ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
-+	/* For direct_call, set cr0.eq bit only if livepatch is active */
-+	crclr	4*cr0+eq
- 	bnectr	cr1
- #endif
- 	/*
-@@ -306,10 +309,14 @@ ftrace_no_trace:
- 	mtctr	r12
- 	REST_GPRS(11, 12, r1)
- 	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
-+	/* For direct_call, set cr0.eq bit only if livepatch is active */
-+	crclr	4*cr0+eq
- 	bctr
- .Lftrace_direct_call:
- 	mtctr	r12
- 	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
-+	/* For direct_call, set cr0.eq bit only if livepatch is active */
-+	crclr	4*cr0+eq
- 	bctr
- SYM_FUNC_START(ftrace_stub_direct_tramp)
- 	blr
-@@ -340,25 +347,72 @@ SYM_FUNC_END(ftrace_stub_direct_tramp)
- livepatch_handler:
- 	ld	r12, PACA_THREAD_INFO(r13)
- 
--	/* Allocate 3 x 8 bytes */
- 	ld	r11, TI_livepatch_sp(r12)
--	addi	r11, r11, 24
-+	/* Allocate stack to save LR, TOC & optionally NIP (in case of direct_call) */
-+	addi	r11, r11, LIVEPATCH_STACK_FRAME_SIZE
- 	std	r11, TI_livepatch_sp(r12)
- 
- 	/* Store stack end marker */
- 	lis     r12, STACK_END_MAGIC@h
- 	ori     r12, r12, STACK_END_MAGIC@l
--	std	r12, -8(r11)
-+	std	r12, -LIVEPATCH_STACK_MAGIC_OFFSET(r11)
- 
- 	/* Save toc & real LR on livepatch stack */
--	std	r2,  -24(r11)
-+	std	r2,  -LIVEPATCH_STACK_TOC_OFFSET(r11)
- #ifndef CONFIG_PPC_FTRACE_OUT_OF_LINE
- 	mflr	r12
--	std	r12, -16(r11)
-+	std	r12, -LIVEPATCH_STACK_LR_OFFSET(r11)
- 	mfctr	r12
- #else
--	std	r0, -16(r11)
-+	std	r0, -LIVEPATCH_STACK_LR_OFFSET(r11)
- 	mflr	r12
-+
-+	/* Also, save new NIP on livepatch stack before the direct_call */
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
-+	std	r12, -LIVEPATCH_STACK_NIP_OFFSET(r11)
-+
-+	/* For direct_call, set cr0.eq bit to indicate livepatch is active */
-+	crset	4*cr0+eq
-+	/* Jump to the direct_call */
-+	bnectrl	cr1
-+
-+	/*
-+	 * The address to jump after direct call is deduced based on ftrace OOL stub sequence.
-+	 * The seemingly insignificant couple of instructions below is to mimic that here to
-+	 * jump back to the livepatch handler code below.
-+	 */
-+	nop
-+	b	1f
-+
-+	/*
-+	 * Restore the state for livepatching from the livepatch stack.
-+	 * Before that, check if livepatch stack is intact. Use r0 for it.
-+	 */
-+1:	mtctr	r0
-+	ld	r12, PACA_THREAD_INFO(r13)
-+	ld	r11, TI_livepatch_sp(r12)
-+	lis     r0,  STACK_END_MAGIC@h
-+	ori     r0,  r0, STACK_END_MAGIC@l
-+	ld	r12, -LIVEPATCH_STACK_MAGIC_OFFSET(r11)
-+1:	tdne	r12, r0
-+	EMIT_BUG_ENTRY 1b, __FILE__, __LINE__ - 1, 0
-+	mfctr	r0
-+
-+	/*
-+	 * A change in r0 implies the direct_call is not done yet. The direct_call
-+	 * will take care of calling the original LR. Update r0 in livepatch stack
-+	 * with the new LR in the direct_call.
-+	 */
-+	ld	r12, -LIVEPATCH_STACK_LR_OFFSET(r11)
-+	cmpd	r12, r0
-+	beq	1f
-+	mflr	r0
-+	std	r0, -LIVEPATCH_STACK_LR_OFFSET(r11)
-+
-+	/* Put new NIP back in r12 to proceed with livepatch handling */
-+1:	ld	r12, -LIVEPATCH_STACK_NIP_OFFSET(r11)
-+#endif /* CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS */
-+
- 	/* Put ctr in r12 for global entry and branch there */
- 	mtctr	r12
- #endif
-@@ -377,18 +431,18 @@ livepatch_handler:
- 	/* Check stack marker hasn't been trashed */
- 	lis     r2,  STACK_END_MAGIC@h
- 	ori     r2,  r2, STACK_END_MAGIC@l
--	ld	r12, -8(r11)
-+	ld	r12, -LIVEPATCH_STACK_MAGIC_OFFSET(r11)
- 1:	tdne	r12, r2
- 	EMIT_BUG_ENTRY 1b, __FILE__, __LINE__ - 1, 0
- 
- 	/* Restore LR & toc from livepatch stack */
--	ld	r12, -16(r11)
-+	ld	r12, -LIVEPATCH_STACK_LR_OFFSET(r11)
- 	mtlr	r12
--	ld	r2,  -24(r11)
-+	ld	r2,  -LIVEPATCH_STACK_TOC_OFFSET(r11)
- 
- 	/* Pop livepatch stack frame */
- 	ld	r12, PACA_THREAD_INFO(r13)
--	subi	r11, r11, 24
-+	subi	r11, r11, LIVEPATCH_STACK_FRAME_SIZE
- 	std	r11, TI_livepatch_sp(r12)
- 
- 	/* Return to original caller of live patched function */
-diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index 88ad5ba7b87f..9b90acb1ea5f 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -19,6 +19,7 @@
- 
- #include <asm/kprobes.h>
- #include <asm/text-patching.h>
-+#include <asm/livepatch.h>
- 
- #include "bpf_jit.h"
- 
-@@ -684,6 +685,8 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
- 	struct bpf_tramp_links *fentry = &tlinks[BPF_TRAMP_FENTRY];
- 	struct bpf_tramp_links *fexit = &tlinks[BPF_TRAMP_FEXIT];
- 	struct codegen_context codegen_ctx, *ctx;
-+	int __maybe_unused livepatch_sp_off = 0;
-+	bool __maybe_unused handle_lp = false;
- 	u32 *image = (u32 *)rw_image;
- 	ppc_inst_t branch_insn;
- 	u32 *branches = NULL;
-@@ -716,6 +719,8 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
- 	 * dummy frame for unwind       [ back chain 1      ] --
- 	 *                              [ padding           ] align stack frame
- 	 *       r4_off                 [ r4 (tailcallcnt)  ] optional - 32-bit powerpc
-+	 *                              [ *current.TI.lp_sp ]
-+	 *    livepatch_sp_off          [ current.TI.lp_sp  ] optional - livepatch stack info
- 	 *       alt_lr_off             [ real lr (ool stub)] optional - actual lr
- 	 *                              [ r26               ]
- 	 *       nvr_off                [ r25               ] nvr save area
-@@ -780,11 +785,23 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
- 	nvr_off = bpf_frame_size;
- 	bpf_frame_size += 2 * SZL;
- 
-+
- 	/* Optional save area for actual LR in case of ool ftrace */
- 	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE)) {
- 		alt_lr_off = bpf_frame_size;
- 		bpf_frame_size += SZL;
-+		if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS)) {
-+			handle_lp = (func_ptr_is_kernel_text(func_addr) && fmod_ret->nr_links &&
-+				     (flags & BPF_TRAMP_F_CALL_ORIG));
-+		}
-+	}
-+
-+#ifdef CONFIG_LIVEPATCH_64
-+	if (handle_lp) {
-+		livepatch_sp_off = bpf_frame_size;
-+		bpf_frame_size += 2 * SZL;
- 	}
-+#endif
- 
- 	if (IS_ENABLED(CONFIG_PPC32)) {
- 		if (nr_regs < 2) {
-@@ -822,6 +839,32 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
- 	if (IS_ENABLED(CONFIG_PPC32) && nr_regs < 2)
- 		EMIT(PPC_RAW_STL(_R4, _R1, r4_off));
- 
-+#ifdef CONFIG_LIVEPATCH_64
-+	/* Save expected livepatch stack state on the trampoline stack */
-+	if (handle_lp) {
-+		/*
-+		 * The caller is expected to set cr0.eq bit, if livepatch was active on it.
-+		 *
-+		 * If livepatch is active, save address & the expected value of
-+		 * livepatch stack pointer on the trampoline stack.
-+		 * Else, set both of them to 0.
-+		 */
-+		PPC_BCC_SHORT(COND_EQ, (ctx->idx + 5) * 4);
-+		EMIT(PPC_RAW_LI(_R12, 0));
-+		EMIT(PPC_RAW_STL(_R12, _R1, livepatch_sp_off));
-+		EMIT(PPC_RAW_STL(_R12, _R1, livepatch_sp_off + SZL));
-+		PPC_JMP((ctx->idx + 7) * 4);
-+
-+		EMIT(PPC_RAW_LL(_R12, _R13, offsetof(struct paca_struct, __current) +
-+					    offsetof(struct task_struct, thread_info)));
-+		EMIT(PPC_RAW_ADDI(_R12, _R12, offsetof(struct thread_info, livepatch_sp)));
-+		EMIT(PPC_RAW_STL(_R12, _R1, livepatch_sp_off));
-+		EMIT(PPC_RAW_LL(_R12, _R12, 0));
-+		EMIT(PPC_RAW_ADDI(_R12, _R12, -LIVEPATCH_STACK_FRAME_SIZE));
-+		EMIT(PPC_RAW_STL(_R12, _R1, livepatch_sp_off + SZL));
-+	}
-+#endif
-+
- 	bpf_trampoline_save_args(image, ctx, func_frame_offset, nr_regs, regs_off);
- 
- 	/* Save our return address */
-@@ -932,6 +975,38 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
- 		image[branches[i]] = ppc_inst_val(branch_insn);
- 	}
- 
-+#ifdef CONFIG_LIVEPATCH_64
-+	/*
-+	 * Restore livepatch stack state if livepatch was active & an attached
-+	 * fmod_ret program failed.
-+	 */
-+	if (handle_lp) {
-+		EMIT(PPC_RAW_LL(_R12, _R1, livepatch_sp_off + SZL));
-+		EMIT(PPC_RAW_CMPLI(_R12, 0));
-+
-+		/*
-+		 * If expected value (_R12) of livepatch stack pointer saved on the
-+		 * trampoline stack is 0, livepatch was not active. Skip the rest.
-+		 */
-+		PPC_BCC_SHORT(COND_EQ, (ctx->idx + 7) * 4);
-+
-+		EMIT(PPC_RAW_LL(_R25, _R1, livepatch_sp_off));
-+		EMIT(PPC_RAW_LL(_R25, _R25, 0));
-+
-+		/*
-+		 * If the expected value (_R12) of livepatch stack pointer saved on the
-+		 * trampoline stack is not the same as actual value (_R25), it implies
-+		 * fmod_ret program failed and skipped calling the traced/livepatch'ed
-+		 * function. The livepatch'ed function did not get a chance to tear down
-+		 * the livepatch stack it setup. Take care of that here in do_fexit.
-+		 */
-+		EMIT(PPC_RAW_CMPD(_R12, _R25));
-+		PPC_BCC_SHORT(COND_EQ, (ctx->idx + 3) * 4);
-+		EMIT(PPC_RAW_LL(_R25, _R1, livepatch_sp_off));
-+		EMIT(PPC_RAW_STL(_R12, _R25, 0));
-+	}
-+#endif
-+
- 	for (i = 0; i < fexit->nr_links; i++)
- 		if (invoke_bpf_prog(image, ro_image, ctx, fexit->links[i], regs_off, retval_off,
- 				    run_ctx_off, false)) {
--- 
-2.51.0
+Thanks for the fix. It fixes reported issue.
+
+Please add below tag also, while sending out the patch.
+
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+Regards,
+Venkat.
+>=20
+>=20
+>> eb28a2adba0654878bcfd909b429bf567b35922b is the first bad commit
+>> commit eb28a2adba0654878bcfd909b429bf567b35922b
+>> Author: Jonathan McDowell <noodles@meta.com>
+>> Date:   Tue Sep 23 18:10:00 2025 +0100
+>>     tpm: Ensure exclusive userspace access when using /dev/tpm<n>
+>>     There is an is_open lock on /dev/tpm<n> that dates back to at =
+least
+>>     2013, but it only prevents multiple accesses via *this* =
+interface. It is
+>>     perfectly possible for userspace to use /dev/tpmrm<n>, or the =
+kernel to
+>>     use the internal interfaces, to access the TPM. For tooling =
+expecting
+>>     exclusive access, such as firmware updates, this can cause =
+issues.
+>>     Close the userspace loophole by changing the simple bit lock to a =
+full
+>>     read/write mutex. Direct /dev/tpm<n> access needs an exclusive =
+write
+>>     lock, the resource broker continues to allow concurrent access =
+*except*
+>>     when /dev/tpm<n> is open.
+>>     Signed-off-by: Jonathan McDowell <noodles@meta.com>
+>>     Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+>>     Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+>>  drivers/char/tpm/tpm-chip.c  |  1 +
+>>  drivers/char/tpm/tpm-dev.c   | 14 ++++++++------
+>>  drivers/char/tpm/tpmrm-dev.c | 20 ++++++++++++++++++--
+>>  include/linux/tpm.h          |  3 ++-
+>>  4 files changed, 29 insertions(+), 9 deletions(-)
+>> Git bisect log:
+>> git bisect log
+>> git bisect start
+>> # status: waiting for both good and bad commits
+>> # good: [e5f0a698b34ed76002dc5cff3804a61c80233a7a] Linux 6.17
+>> git bisect good e5f0a698b34ed76002dc5cff3804a61c80233a7a
+>> # status: waiting for bad commit, 1 good commit known
+>> # bad: [47a8d4b89844f5974f634b4189a39d5ccbacd81c] Add linux-next =
+specific files for 20251003
+>> git bisect bad 47a8d4b89844f5974f634b4189a39d5ccbacd81c
+>> # good: [f79e772258df311c2cb21594ca0996318e720d28] Merge tag 'media/ =
+v6.18-1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux- =
+media
+>> git bisect good f79e772258df311c2cb21594ca0996318e720d28
+>> # good: [6bda5a67f6a2ae4c0153e693e96bd408d054c732] Merge branch =
+'xtensa- for-next' of https://eur01.safelinks.protection.outlook.com/? =
+url=3Dhttps%3A%2F%2Fgithub.com%2Fjcmvbkbc%2Flinux- =
+xtensa.git&data=3D05%7C02%7Cchristophe.leroy2%40cs- =
+soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45=
+f69a2011bb5%7C0%7C0%7C638954465485179363%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0e=
+U1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjo=
+yfQ%3D%3D%7C0%7C%7C%7C&sdata=3D0Y%2BuK%2B%2BkZRoXNH%2FK4Ni4hd3RVZJmX8c2Sqo=
+Ld40qq2Q%3D&reserved=3D0
+>> git bisect good 6bda5a67f6a2ae4c0153e693e96bd408d054c732
+>> # bad: [09026363ffabf7bb33e0ce000d8bff3e41b0c3de] Merge branch 'next' =
+of =
+https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgit.ke=
+rnel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fpcmoore%2Faudit.git&data=3D0=
+5%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de=
+05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485205361%7=
+CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJ=
+XaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DXuvSxtgtEAP=
+Pm3jl6X02nRyTfSh0EXMCUorpI21Y6Cs%3D&reserved=3D0
+>> git bisect bad 09026363ffabf7bb33e0ce000d8bff3e41b0c3de
+>> # good: [c32d529ea3e39ba4918f3865ef90ef6bddaa498c] Merge branch 'for- =
+next' of =
+https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgit.ke=
+rnel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fhid%2Fhid.git&data=3D05%7C02=
+%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b373=
+67%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485215132%7CUnkno=
+wn%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zM=
+iIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DeOflHx6SriPsE%2FE=
+wEURKIEzRciXVlmsDJ7F%2F1tTJVtk%3D&reserved=3D0
+>> git bisect good c32d529ea3e39ba4918f3865ef90ef6bddaa498c
+>> # good: [3fa51882336f09d1a8a03edf107ef43e3b872fc1] Merge branch =
+'next' of =
+https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgit.ke=
+rnel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fiwlwifi%2Fiwlwifi-next.git&d=
+ata=3D05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b=
+66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C6389544654852=
+23439%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIs=
+IlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3Dkf7T=
+2nWCNZ3zKqCl%2FFyIMWoWDqerBMMJJmwEDC3dldo%3D&reserved=3D0
+>> git bisect good 3fa51882336f09d1a8a03edf107ef43e3b872fc1
+>> # good: [acc26ceeebaa1880ceb70379abb3fac92d1007d5] Merge branch =
+'drm-xe- next' of =
+https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgitlab=
+.freedesktop.org%2Fdrm%2Fxe%2Fkernel.git&data=3D05%7C02%7Cchristophe.leroy=
+2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474d=
+c78df45f69a2011bb5%7C0%7C0%7C638954465485231891%7CUnknown%7CTWFpbGZsb3d8ey=
+JFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIs=
+IldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DrAhIU15LaLZVLiCngMMd%2FD8WZFNbBbxlqb=
+95l4ZqN3E%3D&reserved=3D0
+>> git bisect good acc26ceeebaa1880ceb70379abb3fac92d1007d5
+>> # good: [3e06c10cef8079782836155d66c2a91798600cfc] Merge branch 'for- =
+next' of =
+https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgit.ke=
+rnel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fdevice-mapper%2Flinux-dm.git=
+&data=3D05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa66400=
+9b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C63895446548=
+5239888%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMC=
+IsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3D96=
+H7h%2FqU8AOA6BMX3gRIqFvbwree0RrwBKFiyAbbWqw%3D&reserved=3D0
+>> git bisect good 3e06c10cef8079782836155d66c2a91798600cfc
+>> # bad: [cf305bb4070bef42cea469a6c4e751a63f5cacf2] Merge branch 'next' =
+of =
+https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgit.ke=
+rnel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fjarkko%2Flinux-tpmdd.git&dat=
+a=3D05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66=
+c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485248=
+529%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIl=
+AiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DaYTIA0=
+7yF9iCvHBin54NcH7%2Bhcn4wpuUR1%2BCGncndKQ%3D&reserved=3D0
+>> git bisect bad cf305bb4070bef42cea469a6c4e751a63f5cacf2
+>> # good: [19766d4984c39d75393d22cbdad14974cb7f9366] Merge branch =
+'next' of https://eur01.safelinks.protection.outlook.com/? =
+url=3Dhttps%3A%2F%2Fgithub.com%2Fcschaufler%2Fsmack- =
+next&data=3D05%7C02%7Cchristophe.leroy2%40cs- =
+soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45=
+f69a2011bb5%7C0%7C0%7C638954465485256294%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0e=
+U1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjo=
+yfQ%3D%3D%7C0%7C%7C%7C&sdata=3DSAfMhKzF9h2YURPEqPu6ze2oIUJ87TNyRIFC%2B1JjW=
+GE%3D&reserved=3D0
+>> git bisect good 19766d4984c39d75393d22cbdad14974cb7f9366
+>> # good: [4e349e68974e71da13d4b34988f795f4cfe29650] tpm: use a map for =
+tpm2_calc_ordinal_duration()
+>> git bisect good 4e349e68974e71da13d4b34988f795f4cfe29650
+>> # bad: [b6889908d493fe03a1db28aa9afdade6bceda158] tpm: Allow for =
+exclusive TPM access when using /dev/tpm<n>
+>> git bisect bad b6889908d493fe03a1db28aa9afdade6bceda158
+>> # bad: [eb28a2adba0654878bcfd909b429bf567b35922b] tpm: Ensure =
+exclusive userspace access when using /dev/tpm<n>
+>> git bisect bad eb28a2adba0654878bcfd909b429bf567b35922b
+>> # good: [11baa7201b1baefd281e5a7faf7de5b7e407364c] tpm: Prevent local =
+DOS via tpm/tpm0/ppi/*operations
+>> git bisect good 11baa7201b1baefd281e5a7faf7de5b7e407364c
+>> # first bad commit: [eb28a2adba0654878bcfd909b429bf567b35922b] tpm: =
+Ensure exclusive userspace access when using /dev/tpm<n>
+>>>=20
+>>> If you happen to fix this, please add below tag.
+>>>=20
+>>>=20
+>>> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+>>>=20
+>>>=20
+>>> Regards,
+>>>=20
+>>> Venkat.
+
 
 
