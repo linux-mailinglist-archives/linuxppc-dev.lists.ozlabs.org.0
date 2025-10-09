@@ -1,55 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12728-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12729-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED81BC7723
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 07:37:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CBEBC7756
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 07:50:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4chzCh1b5Xz3cDN;
-	Thu,  9 Oct 2025 16:37:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4chzVn6bb0z3cDN;
+	Thu,  9 Oct 2025 16:50:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:3000::53df:4ef0:0"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759988240;
-	cv=none; b=encsRrt6LUwJeyN9VU8Gxwaw2lgZ8eH9I8eFDsM+xemXdFU9bQzuo0+jqBmF4ux6A2Q68j2t9PbfMC4Kpalp3juB1zzCEqtvqRdG4CCi9MdRkVDO0wpnUXlDdBIWoQP/qq8VKbVh0ylo4qeNtJfy+szRSShkMJXn6sXeJsu6V5q21XA3RyPucNWJ9FbPxQub5HCUv2q9udhGz5S0vVDDBM3FlIs+AqsfsPpt+gbL6qRaCdJ2PxJlWXdZMJABk4nlu/IVN/a36/vp0BGnWHtWeLq9Bg+0rNOgA6xVC4JnvvkMuNWGfzVf9ucfxohJYgt0Sc/G9pQpvmkK1oUr66cGlw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759989025;
+	cv=none; b=DiWml1ORV8caftOXTK8hwHoETmvofaKuGnQRVmCtyD2cCDxbUC0vJmqPtSK94WZ8ooDQInwHrcpzHx2sbTV+j1flaKQi9cBjXUlPHm2McAZEJzsNLWngFI5H/FTaDn+EHVK+TBnWojFpeuRwIbwkjl9JKi2l9wUSij1MXcuA42LA1h2lCSXBIi1Dfvfk9b4hk7hEjSWtDcxSf9U0/qoHZsT0s7UHdKb6xGU5CG6bsyuGYs/00V3jLNVIJsX5Cbp5m4uvOauzAhXCZdcJKXR+yHSl8jqmO540gJ27WC6o5wufT9nxoLr7nL3TjbdxdnkMC+n+EBx4BC8iZCyFTH3N7g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759988240; c=relaxed/relaxed;
-	bh=+tpN2O6fR9WI13p0CIg6nzrDDPvtQapqYXSzBdGG/Qs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BZxX2A4lvLQlcdH74B+3wFwRpxWHHL5nPmcevR8GYh51GQwsnC6SrVbGLKQaCuAfGT7R78Jj2lxsXJ6yNq8ofBE20EPuhKT40d+7yUinClnMr1t1qO/s1dM64gM25GmlvGv6c/KPCKCsFuyqxuirRrGdeThK1O3ieIp/Eo7uoIvUIt3FoGtqm/Mt6SjQhZ1mwAQgWprm2nsFQfrlEmR95bCAenwN3yGaOxKHyNwGWC0ghf5LC1GObVDZPg6AzUYKQmJ5BolImQMhkcQtYVTY2ccg9uMkG8D0tRT9CqapZR6u8NSX25IDimQulMNWasgtsx7m9+DUJFcrI1W7nPNgVg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout2.hostsharing.net
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout2.hostsharing.net (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [IPv6:2a01:37:3000::53df:4ef0:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1759989025; c=relaxed/relaxed;
+	bh=/5cSbIlTHivCoCjUL+gWdAZHt8AL5oHSUiVwv6sMvf0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dSav8Ex/MvpREb3fX3TH5+R0xWXS0Vxhbg1xUx19bxTe5ZAxnibr8nAwVJK7XOc3gagLe7XV6bU8UCrlGpXdNUWLC0t41YHpsIo9dhMvcqGPqrDXJwpO8l8p9dtAoOf9BjyuLI/AFy/wfTdmTxi3BMKEU2s6yN9xiijELF0Hf8Ea31AWE2jgOIoNIVTkkZLDUXxTHMVc0oMcx8bvCVDelYDAZdrXKeRhdqQ8AXusFmAJlurHbno9FbDYuPgK+gnsL7Tlv+YeAYUgmzmFo/bP//B/afZ2dZlQRjv2D+MTsgfkWsTXu+HHqh1QedFBHJaJUt01mBQYZN6bWy7jaOgBmw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l70Aktyx; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l70Aktyx;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4chzCg0XkZz2yPS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 16:37:18 +1100 (AEDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id B668320083CC;
-	Thu,  9 Oct 2025 07:37:06 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id A8524495692; Thu,  9 Oct 2025 07:37:06 +0200 (CEST)
-Date: Thu, 9 Oct 2025 07:37:06 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	mad skateman <madskateman@gmail.com>,
-	"R.T.Dickinson" <rtd2@xtra.co.nz>,
-	Christian Zigotzky <info@xenosoft.de>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
-	Darren Stevens <darren@stevens-zone.net>,
-	"debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-Message-ID: <aOdKAp8P0WwVfjbv@wunner.de>
-References: <20251008195136.GA634732@bhelgaas>
- <bf9ca58b-b54a-42fc-99f7-4edaa7e561f3@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4chzVm60gHz2xC3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 16:50:24 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5994KH1i002137;
+	Thu, 9 Oct 2025 05:49:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=/5cSbI
+	lTHivCoCjUL+gWdAZHt8AL5oHSUiVwv6sMvf0=; b=l70AktyxnXQwFM9irjndoO
+	CwzJCqr8QN9geIZivEu0D1z3ldjMn9twN0V3D7PbuIXoXvLwcLv4j4qsVSwTf37w
+	U49xkAIq/eVbWGEU0sB2ViYCEFBUv4/t8frQ8X1FjBm5J6HXcdBWkbZ7yyiuU/F8
+	lQFWpC1EcqMGGDTyCQ9rFQcerGlItTZCfU8nPe1EHFpWChl8/Xq5ZpieoW4BCm8T
+	/Ywz5lbHM+V1iz4HsuMjHqDyr4k5Dk08wGRaLOhQhxAasip9lR6UIELVC0hyktpx
+	cmfD0UF+lhTlBDTH31igSIIy2k6yCS/yhjNn9bONw2nXcwqtx1teGkeNph2hmC5w
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49nv86tk9n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Oct 2025 05:49:54 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5995lwZb006383;
+	Thu, 9 Oct 2025 05:49:53 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49nv86tk9c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Oct 2025 05:49:53 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5991XAbr021040;
+	Thu, 9 Oct 2025 05:49:52 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49nv8sjjyb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Oct 2025 05:49:52 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5995npEc17563960
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Oct 2025 05:49:51 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 082BD20049;
+	Thu,  9 Oct 2025 05:49:51 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7C47F20040;
+	Thu,  9 Oct 2025 05:49:47 +0000 (GMT)
+Received: from [9.78.106.240] (unknown [9.78.106.240])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Oct 2025 05:49:47 +0000 (GMT)
+Message-ID: <42d72061-3d23-43db-bb02-d5f75333c924@linux.ibm.com>
+Date: Thu, 9 Oct 2025 11:19:45 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,93 +86,110 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bf9ca58b-b54a-42fc-99f7-4edaa7e561f3@xenosoft.de>
-X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc64/bpf: support direct_call on livepatch function
+To: Naveen N Rao <naveen@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, bpf@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>, Song Liu <songliubraving@fb.com>,
+        Jiri Olsa <jolsa@kernel.org>, Viktor Malik <vmalik@redhat.com>,
+        live-patching@vger.kernel.org, Josh Poimboeuf <jpoimboe@kernel.org>,
+        Joe Lawrence
+ <joe.lawrence@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>, linux-trace-kernel@vger.kernel.org,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Shung-Hsi Yu <shung-hsi.yu@suse.com>
+References: <20251002192755.86441-1-hbathini@linux.ibm.com>
+ <amwerofvasp7ssmq3zlrjakqj5aygyrgplcqzweno4ef42tiav@uex2ildqjvx2>
+ <17f49a63-eccb-4075-91dd-b1f37aa762c7@linux.ibm.com>
+ <unegysw3bihg32od7aham3npsdpm5govboo3uglorwsrjqfqfk@pbyzwwztmqtc>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <unegysw3bihg32od7aham3npsdpm5govboo3uglorwsrjqfqfk@pbyzwwztmqtc>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vmzUx7Jj6cCsN4wLndwN3vVcZMSsNY-1
+X-Proofpoint-ORIG-GUID: _txk5zoJyP1dG6BShDodMjflf50oEsuh
+X-Authority-Analysis: v=2.4 cv=MKNtWcZl c=1 sm=1 tr=0 ts=68e74d02 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=RPo1N_Dm-bXGz9hhwcIA:9
+ a=QEXdDO2ut3YA:10 a=nl4s5V0KI7Kw-pW0DWrs:22 a=pHzHmUro8NiASowvMSCR:22
+ a=xoEH_sTeL_Rfw54TyV31:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfX63z3IqBezQN+
+ C81paXFCtrGEL+Iwuc77cQ41YfOapgJ2QPAn4UVzWbXghqF3hEpqCVAHiIJhKF0M/f05w7Lw+gG
+ ff8ffvldnzoh8rvq2fNMiHmAQzkHiesAZ5+BI2QSsZy0J5GMm03gdq4cpOgySpl/HU9BOyj8hAV
+ 4JEkAr2QgA6Qu3vmiHJ6GLTGmwjM5AAob2Xj4mIxgZ5RnA4X0ION/4HE9wA20fzm7fSv53sZgAS
+ w3HOGKVydVjs4dzud0UNF6gToHe54UuFLftWTx3ODzY7OUebRuteTlI2zBUEyOd9ssevzr6eiy3
+ PtT9OPxLNo8REsbkPPDOeWA1p56Xzk6eb7sKmb2QgAzbuSyrsER3GgGc6Dx9h7TiZnW4ghFca5I
+ YeanlSHdIhip6nb4qt6LtAbUY2YzIA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-09_01,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 phishscore=0 malwarescore=0 bulkscore=0 spamscore=0
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 clxscore=1015
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
+ definitions=main-2510080121
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Oct 09, 2025 at 06:54:58AM +0200, Christian Zigotzky wrote:
-> On 08 October 2025 at 09:51 pm, Bjorn Helgaas wrote:
-> > On Wed, Oct 08, 2025 at 06:35:42PM +0200, Christian Zigotzky wrote:
-> > > Our PPC boards [1] have boot problems since the pci-v6.18-changes. [2]
-> > > 
-> > > Without the pci-v6.18-changes, the PPC boards boot without any problems.
-> > > 
-> > > Boot log with error messages:
-> > > https://github.com/user-attachments/files/22782016/Kernel_6.18_with_PCI_changes.log
-> > > 
-> > > Further information: https://github.com/chzigotzky/kernels/issues/17
-> > 
-> > Do you happen to have a similar log from a recent working kernel,
-> > e.g., v6.17, that we could compare with?
+
+
+On 08/10/25 1:43 pm, Naveen N Rao wrote:
+> On Mon, Oct 06, 2025 at 06:50:20PM +0530, Hari Bathini wrote:
+>>
+>>
+>> On 06/10/25 1:22 pm, Naveen N Rao wrote:
+>>> On Fri, Oct 03, 2025 at 12:57:54AM +0530, Hari Bathini wrote:
+>>>> Today, livepatch takes precedence over direct_call. Instead, save the
+>>>> state and make direct_call before handling livepatch.
+>>>
+>>> If we call into the BPF trampoline first and if we have
+>>> BPF_TRAMP_F_CALL_ORIG set, does this result in the BPF trampoline
+>>> calling the new copy of the live-patched function or the old one?
+>>
+>> Naveen, calls the new copy of the live-patched function..
 > 
-> Thanks for your answer. Here is a similar log from the kernel 6.17.0:
-> https://github.com/user-attachments/files/22789946/Kernel_6.17.0_Cyrus_Plus_board_P5040.log
+> Hmm... I'm probably missing something.
+> 
+> With ftrace OOL stubs, what I recall is that BPF trampoline derives the
+> original function address from the OOL stub (which would be associated
+> with the original function, not the livepatch one).
 
-These lines are added in v6.18:
+Trampoline derives the address from LR. The below snippet
+in livepatch_handler ensures the trampoline jumps to '1f'
+label instead of the original function with LR updated:
 
-  pci 0000:01:00.0: ASPM: DT platform, enabling L0s-up L0s-dw L1 ASPM-L1.1 ASPM-L1.2 PCI-PM-L1.1 PCI-PM-L1.2
-  pci 0000:01:00.0: ASPM: DT platform, enabling ClockPM
-  pci 0001:01:00.0: ASPM: DT platform, enabling L0s-up L0s-dw L1 ASPM-L1.1 ASPM-L1.2 PCI-PM-L1.1 PCI-PM-L1.2
-  pci 0001:01:00.0: ASPM: DT platform, enabling ClockPM
-  pci 0001:03:00.0: ASPM: DT platform, enabling L0s-up L0s-dw L1 ASPM-L1.1 ASPM-L1.2 PCI-PM-L1.1 PCI-PM-L1.2
-  pci 0001:03:00.0: ASPM: DT platform, enabling ClockPM
++	/* Jump to the direct_call */
++	bnectrl	cr1
++
++	/*
++	 * The address to jump after direct call is deduced based on ftrace 
+OOL stub sequence.
++	 * The seemingly insignificant couple of instructions below is to 
+mimic that here to
++	 * jump back to the livepatch handler code below.
++	 */
++	nop
++	b	1f
++
++	/*
++	 * Restore the state for livepatching from the livepatch stack.
++	 * Before that, check if livepatch stack is intact. Use r0 for it.
++	 */
++1:	mtctr	r0
 
-Possible candidate:
 
-f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
-
-More lines are added in v6.18:
-
-  pci 0001:03:00.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff 64bit pref] to [bus 04] (unused)
-  pci 0001:02:01.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff 64bit pref] to [bus 03-04] (unused)
-  pci 0001:02:02.0: disabling bridge window [io  0x0000-0xffffffffffffffff] to [bus 05] (unused)
-  pci 0001:02:02.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff 64bit pref] to [bus 05] (unused)
-  pci 0001:02:02.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff] to [bus 05] (unused)
-  pci 0001:02:03.0: disabling bridge window [io  0x0000-0xffffffffffffffff] to [bus 06] (unused)
-  pci 0001:02:03.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff 64bit pref] to [bus 06] (unused)
-  pci 0001:02:03.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff] to [bus 06] (unused)
-  pci 0001:02:08.0: disabling bridge window [io  0x0000-0xffffffffffffffff] to [bus 07] (unused)
-  pci 0001:02:08.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff 64bit pref] to [bus 07] (unused)
-  pci 0001:02:08.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff] to [bus 07] (unused)
-  pci 0001:02:10.0: disabling bridge window [io  0x0000-0xffffffffffffffff] to [bus 08] (unused)
-  pci 0001:02:10.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff 64bit pref] to [bus 08] (unused)
-  pci 0001:02:10.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff] to [bus 08] (unused)
-  pci 0001:01:00.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff 64bit pref] to [bus 02-08] (unused)
-  pci_bus 0001:02: resource 2 [mem 0x00000000-0xffffffffffffffff 64bit pref disabled]
-422a445
-  pci_bus 0001:03: resource 2 [mem 0x00000000-0xffffffffffffffff 64bit pref disabled]
-424a448,460
-  pci_bus 0001:04: resource 2 [mem 0x00000000-0xffffffffffffffff 64bit pref disabled]
-  pci_bus 0001:05: resource 0 [io  0x0000-0xffffffffffffffff disabled]
-  pci_bus 0001:05: resource 1 [mem 0x00000000-0xffffffffffffffff disabled]
-  pci_bus 0001:05: resource 2 [mem 0x00000000-0xffffffffffffffff 64bit pref disabled]
-  pci_bus 0001:06: resource 0 [io  0x0000-0xffffffffffffffff disabled]
-  pci_bus 0001:06: resource 1 [mem 0x00000000-0xffffffffffffffff disabled]
-  pci_bus 0001:06: resource 2 [mem 0x00000000-0xffffffffffffffff 64bit pref disabled]
-  pci_bus 0001:07: resource 0 [io  0x0000-0xffffffffffffffff disabled]
-  pci_bus 0001:07: resource 1 [mem 0x00000000-0xffffffffffffffff disabled]
-  pci_bus 0001:07: resource 2 [mem 0x00000000-0xffffffffffffffff 64bit pref disabled]
-  pci_bus 0001:08: resource 0 [io  0x0000-0xffffffffffffffff disabled]
-  pci_bus 0001:08: resource 1 [mem 0x00000000-0xffffffffffffffff disabled]
-  pci_bus 0001:08: resource 2 [mem 0x00000000-0xffffffffffffffff 64bit pref disabled]
-
-Possible candidate:
-
-fead6a0b15bf ("Merge branch 'pci/resource'")
-
-Adding Ilpo to cc.
-
-Unrelated, it looks like 6a1eda745967 ("PCI/AER: Consolidate Error
-Source ID logging in aer_isr_one_error_type()") erroneously omitted
-a closing brace in the "no details found" string:
-
-  pcieport 0001:00:00.0: AER: Correctable error message received from 0001:00:00.0 (no details found
-
-Thanks,
-
-Lukas
+- Hari
 
