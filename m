@@ -1,96 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12739-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12740-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E27BC843A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 11:20:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35DA9BC85BE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 11:47:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cj49P1tjbz3cDN;
-	Thu,  9 Oct 2025 20:20:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cj4mq28Gzz3cDN;
+	Thu,  9 Oct 2025 20:47:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760001641;
-	cv=none; b=kk0bJbPgl812R2DTzuoXAFhDvHLgkw7EQCBBSJadiOOJpLCtNmTkFobpjb5c44n8Zo0INz42LjImV8YOhiqXRF8PgSQ/MCfgp72QVmu9qD2a+X/CtAVUZZJpZx+vKXgtydwXequx5YIPdk/ykT1ucDNaFPrkQ44hgxZY9sSxUAqyuCgV90RrPneU+GJ+CVCpScZMzWfuCyi8xyeVfHHive+ZKT6eciX+5gr1LdT4NA9W4m3sPjVr2mKhvu99fL1pagtgN4xlu7aPWhHyzvx+Zslzlo5gwYwGER77OkV2sJG1SqnBcHySTXzdR1kNuVg56J33BQ6n44F7/DGo2bt8HA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760003275;
+	cv=none; b=itmH51mz3jb3HLfbIoT/x2XSn4DjUp7s17boorSemEVz6lV2t7jGmuYbQzmDR8koFQEjCIU5XSf7NncCkHSP52UjF/T363Tj0ZbblEu8t0B3Kmz96yyuiTfbK0Z2R+MbkrejO2Rn7wMHshCK2o/Uh+GGgl+5ovxEw4zlqEVA0F6fNsGYVlrMHID7a03OCxHG4ahmwx8btI0b0nPwUti7IpPlRbvVrwyuXAGAMNE1EpEbW4w5p+/zJPWZfVp8uyOaoGAgNnOIwjilMtHpG+9cfY2046t9YavNRRSbqlF61vejSYH3qqjDCO748xkAApLGFCD7Ji+LY71GVUo4BMzHFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760001641; c=relaxed/relaxed;
-	bh=nig+QThvSoNq9uOJUVuoYK6Ng7PXDFkVUD8omncLNk0=;
+	t=1760003275; c=relaxed/relaxed;
+	bh=b3iuP75s/7HuEbGbD6UiSI1R1j7C7WmLHEin761aULI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BOLogeOxyvx5nTkZzuEP6maQVemhNipmy3mil5PpgRtRYfHjdSeRdpN1E7szyuCVckj2gxjcjl+lGl1Lpzo8DYXwbv0qMVss3F5aVrXbD8G6SM0BggF4iJnmwd/WJcwCU1yGP2niePjsQaXu0YcuzK2Obzbpbdao3inXqwop64q7TArXl924x7IW/mJyNcTbBvz6lgKvQVd+zXIEGEwr7r+FG8glXsYamDUTypwyIgrByjan1QxnppPl2Rl14czNj6eAExJuszm3amt0zLT9Z1se6teX+QGD5XMb2ZwSj398DREkyE0qTaV/NDAUjICvhK6pHV3px0QCKNrQyw0djg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DZbzhooP; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DZbzhooP; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	 In-Reply-To:Content-Type; b=oi2Mwwfl2VZWqhU+voGGBEN+ks392BvXg1sOsDx/VpP4YusOC8VuY1v6dHzeOzWXPWFRv/HVB+Z6UPAxxlzN5pTZ8BkCARJcW42LJliwRWVzt4nYUlEc+lyZQzboDjAh0GVbGgwMrY0hEMBeohD2IsvLXal0uO21kPyBz+Y2Y0tPMmJfsa1l/EyVG0y5aWi0tUNNDeQCpr+onZlDjPlNoG+12i15cMdwJnqm0OtkzuZz6QHFeM1+eUppQvih/uebJpFTYAABkXUcvfGdQ5jnpEKOEDoB0McqTyIMFd8BJFncqXv+JMYTdfTPWr1KgR77zPjH1ToVT7lv00fgDM+2JA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E6aAN1hB; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DZbzhooP;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DZbzhooP;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E6aAN1hB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cj49M3vY5z2yPS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 20:20:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760001635;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nig+QThvSoNq9uOJUVuoYK6Ng7PXDFkVUD8omncLNk0=;
-	b=DZbzhooPmXb5Qlzqu1ZcbP8EfOzyNqqgewUn1ZT0s52ocIHSPwshTHDoC8JEi8NVCNz3yh
-	X4hLSJr/tDoXnoAFmwBt5LN2HcJ7FlwcZKouLEsXbkpMiHBaZDUhKMIeGZaCf36Ezub325
-	YNFBEKU46FsmOygoHSBEmIXoziEX1ls=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760001635;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nig+QThvSoNq9uOJUVuoYK6Ng7PXDFkVUD8omncLNk0=;
-	b=DZbzhooPmXb5Qlzqu1ZcbP8EfOzyNqqgewUn1ZT0s52ocIHSPwshTHDoC8JEi8NVCNz3yh
-	X4hLSJr/tDoXnoAFmwBt5LN2HcJ7FlwcZKouLEsXbkpMiHBaZDUhKMIeGZaCf36Ezub325
-	YNFBEKU46FsmOygoHSBEmIXoziEX1ls=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-502-rgWj4Pd6O72VBFAPnV5HKA-1; Thu, 09 Oct 2025 05:20:31 -0400
-X-MC-Unique: rgWj4Pd6O72VBFAPnV5HKA-1
-X-Mimecast-MFC-AGG-ID: rgWj4Pd6O72VBFAPnV5HKA_1760001630
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e4cc8ed76so3708225e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Oct 2025 02:20:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760001630; x=1760606430;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nig+QThvSoNq9uOJUVuoYK6Ng7PXDFkVUD8omncLNk0=;
-        b=hSDHjpzxC+f/zc38fmDzGGNhDA9A1NX7H2pFeVRN012eg9ysmLJCE7/d+t6frT0Dav
-         N4tIbu4WUOpVsQeYrzjrA2O74izGg5d4N2xjubRQAsPgWFzNKLPQvnRIM9IRai2CaZKR
-         52lsjYYpDNyIQ7uuLolMVLI8c3i1vxWuaTCc3l3J6Jpd1/RsfbrcouXbGyt3sd5fYk8T
-         YpGKedld7DnM8lFtArvIPsFQi3e5SRlhe9VzgYA/9FmrJjUPC3D6r+kr4SEUuYJZMOGS
-         2gzlwqVEmKdADnZsv93nmQSfjv7KZyF4Y8I0sl0FA11VPFdfEQ6rR9vQMJaCOTwXa/kI
-         0Yfg==
-X-Forwarded-Encrypted: i=1; AJvYcCVozK+8+q1xxQsmYeuBON0zVx0C175bsxtMg/8fAr2OfIkhcGC4hg9g46NUyJfOevmRXfsWg6mR2blDrAY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw2ZCu/SEp/UcdiPYd76R8NrK2Qxv9r2wHWUa4GgH2VtASM+tmn
-	KxJeXYKx3MImG57YRWMDYZBU3t1pLrA1xQa+1oWACWYcZSxMSxllr9GKvdOKivywVF4NxHszEK2
-	k5znpGst+Pe946vwvMkHYnTo9BHGTslbHNlJJ/rf1+NRuqPTpl7qIRyuKo5g64Do26xM=
-X-Gm-Gg: ASbGncucy05arMTSAPkmk//rZvyQbY4eHg0ZiZIkLNP9koRPcEum4OM2dPaGJ9WOwEi
-	MBjmSphMfkiuafYRsKSJsHfSx/Ap6x/a9owod+6qnWi/GcFeg1FMoGEJgM57Xb4F2r1bDete8e7
-	lsWSWDcyxDtDKL4j+GjQahjGLPkAmV+qhRV3PS66i/U7bG/841dDIIDOYBDnIt89EjOpbHO9F23
-	reWeJn4UU+7JT5Q0uNbZV1XsUY9+0lIpznr8LiKh2QsEX43Kr8RKzVNTV3JdnRIOwDB341ZoIZw
-	WO6kR+BYr+Eufu5Gz1vlroyPZapSvg+NsWP28lZ4hfdrySAhm2pG1xTDXlQ/CI/rG3sO4xWIyCM
-	66ROClGbB
-X-Received: by 2002:a05:600c:4ed4:b0:45d:f88f:9304 with SMTP id 5b1f17b1804b1-46fa9b0e7b3mr48455275e9.30.1760001630402;
-        Thu, 09 Oct 2025 02:20:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFH6dryW1Hp7SOcSF5pIq+EEl2O3Y7bdewmy6HJCehEpHpUM9rQ1drgsPXfQB4HV8Mtnkhnzg==
-X-Received: by 2002:a05:600c:4ed4:b0:45d:f88f:9304 with SMTP id 5b1f17b1804b1-46fa9b0e7b3mr48454685e9.30.1760001629923;
-        Thu, 09 Oct 2025 02:20:29 -0700 (PDT)
-Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8ab8b0sm33676902f8f.18.2025.10.09.02.20.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 02:20:29 -0700 (PDT)
-Message-ID: <1db15a30-72d6-4045-8aa1-68bd8411b0ba@redhat.com>
-Date: Thu, 9 Oct 2025 11:20:24 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cj4mp1zVXz2xQ3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 20:47:53 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59967VtM031169;
+	Thu, 9 Oct 2025 09:47:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=b3iuP7
+	5s/7HuEbGbD6UiSI1R1j7C7WmLHEin761aULI=; b=E6aAN1hBIw4ca7rz5sY4/Z
+	AvDBOEb3J7kLbTQybT+gDhHcdkGg6MoyIBnu1QlZDBVkDENYw91rmMm+Jui6qyrD
+	C1yy4ahijs6WWzZXZ0aAGAcwsE36jnVB7C6zMSltVLUx36QTALARLD9PGMq0nk21
+	5RAzGkjEHMIW0tv8GpsfM5lszIPhTcu0lL/irHM94ZR5cQuquNV93HvgfqHYKCS6
+	mszQjm/09HLp24sPkt//PQTDNOu8R9Sz4blVua1IeFjHH9gXrQ25hHF3xsmjOb20
+	zJWSQd6WeDrErsXCIpszuk1GgAQTnuvkPUzel5n+lbVJ6F/YREWzKLkkCWyY094A
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49nv81kwnc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Oct 2025 09:47:48 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5999jww5014959;
+	Thu, 9 Oct 2025 09:47:47 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49nv81kwna-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Oct 2025 09:47:47 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5998LJLq020997;
+	Thu, 9 Oct 2025 09:47:47 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49nv9muuea-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Oct 2025 09:47:47 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5999lheP53084626
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Oct 2025 09:47:43 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F0CAB200DE;
+	Thu,  9 Oct 2025 09:47:42 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 55C0F200DD;
+	Thu,  9 Oct 2025 09:47:41 +0000 (GMT)
+Received: from [9.109.215.252] (unknown [9.109.215.252])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Oct 2025 09:47:41 +0000 (GMT)
+Message-ID: <ccac0b98-fd05-403f-8cd2-6143f6e8cbdd@linux.ibm.com>
+Date: Thu, 9 Oct 2025 15:17:40 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,184 +87,127 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
- folio sizes when registering hstate
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linux-kernel@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20250901150359.867252-1-david@redhat.com>
- <20250901150359.867252-9-david@redhat.com>
- <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
- <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
- <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
- <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
- <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FytzXf1kvOq_B2S144S33nxS6sDkC60jWEZdQ_H9wBk_1760001630
-X-Mimecast-Originator: redhat.com
+Subject: Re: [bisected][mainline]Kernel warnings at
+ kernel/sched/cpudeadline.c:219
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>, jstultz@google.com,
+        stultz@google.com
+References: <8218e149-7718-4432-9312-f97297c352b9@linux.ibm.com>
+ <20251008095039.GG3245006@noisy.programming.kicks-ass.net>
+ <5a248390-ddaa-4127-a58a-794d0d70461a@linux.ibm.com>
+ <20251008111314.GI3289052@noisy.programming.kicks-ass.net>
+ <86fbf707-9ecf-4941-ae70-3332c360533d@linux.ibm.com>
+ <20251009080007.GH3245006@noisy.programming.kicks-ass.net>
 Content-Language: en-US
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+In-Reply-To: <20251009080007.GH3245006@noisy.programming.kicks-ass.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ywjW_IJhW58weh_YLD-WyXllKI9qTpkB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfXw2N3hF6dYV6b
+ D7ZboDvfpXcvaPgRJNZdD3DrKcKPchW4fOO+BEKMRf5lCTsgLR07bctiuLMfW+ZWPB2kae+3NZ5
+ O5zwDoliDL7TYsUdBlYNL0mnCAs5XVSDxzBp3hrYCFaPR+mI/fXe/F3W4+C3LLeB8rESk26NnRG
+ kPEW3cZeSEVZysPZnFgLwbZ0hjPKMcSRj7fjV0rn6Tb3fpIdv1EJ/eowFq3wpj6ugsW0OiIBDwD
+ EMFuznZLksI6OE60a04NEwjeD1DuvUZPFm4e+miPyxZMwznXM9RBtzKh6+5aoXmXFMmgx0iNB8m
+ tNDl/6YWSAdtZXaPMlEHLN0WBg+YOIE4dd6XNn0AOa6XHHR9EWdTfVnPig5t4aPJvd7DHlP9KQJ
+ c4SF2X4s12ZPg0pKZdN55eUZ7jkbHQ==
+X-Authority-Analysis: v=2.4 cv=cKntc1eN c=1 sm=1 tr=0 ts=68e784c4 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=RDWyn_YapoD0ENg9tjYA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: ml748-No0PCCasYfTsSrrS_2M9j6c7Dc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-09_03,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 bulkscore=0 phishscore=0 spamscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510080121
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 09.10.25 11:16, Christophe Leroy wrote:
+
+
+On 10/9/25 1:30 PM, Peter Zijlstra wrote:
+> On Wed, Oct 08, 2025 at 11:39:11PM +0530, Shrikanth Hegde wrote:
 > 
-> 
-> Le 09/10/2025 à 10:14, David Hildenbrand a écrit :
->> On 09.10.25 10:04, Christophe Leroy wrote:
->>>
->>>
->>> Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
->>>> On 09.10.25 09:14, Christophe Leroy wrote:
->>>>> Hi David,
->>>>>
->>>>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
->>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>>>> index 1e777cc51ad04..d3542e92a712e 100644
->>>>>> --- a/mm/hugetlb.c
->>>>>> +++ b/mm/hugetlb.c
->>>>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
->>>>>>          BUILD_BUG_ON(sizeof_field(struct page, private) *
->>>>>> BITS_PER_BYTE <
->>>>>>                  __NR_HPAGEFLAGS);
->>>>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
->>>>>>          if (!hugepages_supported()) {
->>>>>>              if (hugetlb_max_hstate || default_hstate_max_huge_pages)
->>>>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int
->>>>>> order)
->>>>>>          }
->>>>>>          BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
->>>>>>          BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
->>>>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
->>>>>>          h = &hstates[hugetlb_max_hstate++];
->>>>>>          __mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
->>>>>>          h->order = order;
->>>>
->>>> We end up registering hugetlb folios that are bigger than
->>>> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger that
->>>> (and if we have to support that).
->>>>
->>>
->>> MAX_FOLIO_ORDER is defined as:
->>>
->>> #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
->>> #define MAX_FOLIO_ORDER        PUD_ORDER
->>> #else
->>> #define MAX_FOLIO_ORDER        MAX_PAGE_ORDER
->>> #endif
->>>
->>> MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via
->>> /sys/kernel/mm/hugepages/ but bigger pages can be created at boottime
->>> with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
->>>
->>>      hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
->>>
->>> Gives:
->>>
->>> HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
->>> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
->>> HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
->>> HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
->>> HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
->>> HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
->>> HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
->>> HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
->>> HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
->>> HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
+>> *It pointed to this*
 >>
->> I think it's a violation of CONFIG_ARCH_HAS_GIGANTIC_PAGE. The existing
->> folio_dump() code would not handle it correctly as well.
+>> NIP [c0000000001fd798] dl_server_start+0x50/0xd8
+>> LR [c0000000001d9534] enqueue_task_fair+0x228/0x8ec
+>> Call Trace:
+>> [c000006684a579c0] [0000000000000001] 0x1 (unreliable)
+>> [c000006684a579f0] [c0000000001d9534] enqueue_task_fair+0x228/0x8ec
+>> [c000006684a57a60] [c0000000001bb344] enqueue_task+0x5c/0x1c8
+>> [c000006684a57aa0] [c0000000001c5fc0] ttwu_do_activate+0x98/0x2fc
+>> [c000006684a57af0] [c0000000001c671c] try_to_wake_up+0x2e0/0xa60
+>> [c000006684a57b80] [c00000000019fb48] kthread_park+0x7c/0xf0
+>> [c000006684a57bb0] [c00000000015fefc] takedown_cpu+0x60/0x194
+>> [c000006684a57c00] [c000000000161924] cpuhp_invoke_callback+0x1f4/0x9a4
+>> [c000006684a57c90] [c0000000001621a4] __cpuhp_invoke_callback_range+0xd0/0x188
+>> [c000006684a57d30] [c000000000165aec] _cpu_down+0x19c/0x560
+>> [c000006684a57df0] [c0000000001637c0] __cpu_down_maps_locked+0x2c/0x3c
+>> [c000006684a57e10] [c00000000018a100] work_for_cpu_fn+0x38/0x54
+>> [c000006684a57e40] [c00000000019075c] process_one_work+0x1d8/0x554
+>> [c000006684a57ef0] [c00000000019165c] worker_thread+0x308/0x46c
+>> [c000006684a57f90] [c00000000019e474] kthread+0x16c/0x19c
+>> [c000006684a57fe0] [c00000000000dd58] start_kernel_thread+0x14/0x18
+>>
+>> It is takedown_cpu called from CPU0(boot CPU) and it wakes up kthread
+>> which is CPU Bound I guess.  Since happens after rq was marked
+>> offline, it ends up starting the deadline server again.
+>>
+>> So i think it is sensible idea to stop the deadline server if the cpu
+>> is going down.  Once we stop the server we will return
+>> HRTIMER_NORESTART.
 > 
-> I'm trying to dig into history and when looking at commit 4eb0716e868e
-> ("hugetlb: allow to free gigantic pages regardless of the
-> configuration") I understand that CONFIG_ARCH_HAS_GIGANTIC_PAGE is
-> needed to be able to allocate gigantic pages at runtime. It is not
-> needed to reserve gigantic pages at boottime.
+> D'0h.. that stop was far too early.
 > 
-> What am I missing ?
+> How about moving that dl_server_stop() into sched_cpu_dying() like so.
+> 
+> This seems to survive a few hotplugs for me.
+> 
+> ---
+> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> index 198d2dd45f59..f1ebf67b48e2 100644
+> --- a/kernel/sched/core.c
+> +++ b/kernel/sched/core.c
+> @@ -8571,10 +8571,12 @@ int sched_cpu_dying(unsigned int cpu)
+>   	sched_tick_stop(cpu);
+>   
+>   	rq_lock_irqsave(rq, &rf);
+> +	update_rq_clock(rq);
+>   	if (rq->nr_running != 1 || rq_has_pinned_tasks(rq)) {
+>   		WARN(true, "Dying CPU not properly vacated!");
+>   		dump_rq_tasks(rq, KERN_WARNING);
+>   	}
+> +	dl_server_stop(&rq->fair_server);
+>   	rq_unlock_irqrestore(rq, &rf);
+>   
+>   	calc_load_migrate(rq);
+> diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+> index 615411a0a881..7b7671060bf9 100644
+> --- a/kernel/sched/deadline.c
+> +++ b/kernel/sched/deadline.c
+> @@ -1582,6 +1582,9 @@ void dl_server_start(struct sched_dl_entity *dl_se)
+>   	if (!dl_server(dl_se) || dl_se->dl_server_active)
+>   		return;
+>   
+> +	if (WARN_ON_ONCE(!cpu_online(cpu_of(rq))))
+> +		return;
+> +
+>   	dl_se->dl_server_active = 1;
+>   	enqueue_dl_entity(dl_se, ENQUEUE_WAKEUP);
+>   	if (!dl_task(dl_se->rq->curr) || dl_entity_preempt(dl_se, &rq->curr->dl))
 
-That CONFIG_ARCH_HAS_GIGANTIC_PAGE has nothing runtime-specific in its name.
+Yes. This works. no warning with drmgr or chcpu.
 
-Can't we just select CONFIG_ARCH_HAS_GIGANTIC_PAGE for the relevant 
-hugetlb config that allows for *gigantic pages*.
-
--- 
-Cheers
-
-David / dhildenb
-
+shall i write changelog and send it as patch?
 
