@@ -1,53 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-12747-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12748-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0671BC8E9A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 13:54:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F13BC8F97
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 14:20:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cj7bM1nMBz3cZ5;
-	Thu,  9 Oct 2025 22:54:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cj89062cWz3cZ2;
+	Thu,  9 Oct 2025 23:20:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=210.118.77.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760010895;
-	cv=none; b=h8WDAvOC8rC3qf0K8T5PjiNHqsg2fi7IwOcwaLV32RLcDHpEDz+bhLf4yxj8y1UY0aS9PMmqqpGk7bPSv3W9PAf0D5Z9/LgBnguwEQUmxKHz6BjGfx8AY4AhwesAhvEsdRDsmtMoShXwJYcNlUAXKOljVO4NW+rahlesWjWWDfuoIAamUvwQ75xsIzJx41HmkicrNZVS/x73hDZ1OqtvZ8Ci50DejQr4IsnK/G8XIrr3w8pFjeNGk2Dol4/gza5ybXcSXSDAa0jbd4l3cOxb4Gbi3fSl9IxY+iiHPDu7j6B9y3RhiytOaqiDWrWLFLUJzsApmFVvaSX8E8bMAv7Xkg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760012436;
+	cv=none; b=eLFkES7BHEOEoXJBcGRNBXgrF1Nzp5aL8E9Wxb0c+Xu2ZebQNlz/u3Q3kExNwpi+M6XH6lAvKgKrP3HhhLNkoMLPYiAvZhCK/6M7tVBwFq/IgblkLlaEGiZZNyYA7aRCBQ8mVyPPTTED5uzgCKQZhWVdd9LZQzFPQmGMmhlfFYHduO6GbSGGUSJKqX4ViA0wKM9lvR4ra/Ek6wviQkwINKEoVdOuFGIsO9/MHQb2XtSjocIvHsTbGKuz3VDYgD37+D3i0lj1z6kpvhh+vWCzVISAxWiFLPkRgR3yPLMDcnlnY4ejd86ZHxRo5+7ZcCQJ9CWD4DVGU9Jg6WSOsjcGiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760010895; c=relaxed/relaxed;
-	bh=89YoilszcVgtY2WH9xkUBX5haHu7VfKEfNvtGBAHGdM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=JYnx3ivxWvi9kLOZLlcPHYhinJflhMpJP4YDctJTwbYYqAjCR0NzEpu+SDg+idTyidUbN9t7GcTPSe9RfnnrDpWDiVz4IKAzhsDYV9CBjBKu0J3C2UdzC7ZLOnPKadMrVwP9WHz1uL5r4gqaU8C/R1vnbK+H15wZsp0fACF/NpHUkIJQZZZwPT4uNhyhxHB4EGOG8c+i+UXzjfersfh7fQIpNwt1jbI0d+2rn5BFRuzAL4A5cFXVzW49QL7og6+nMYdyr6aJfYqISU0cp+/+ny3rPyzeGlzHsL8U/2tpLMpq/QBCY8okWLWNsKM0O2UBarYbWfMiFQChGWxGcdny8A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com; dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=bu192Bjv; dkim-atps=neutral; spf=pass (client-ip=210.118.77.12; helo=mailout2.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org) smtp.mailfrom=samsung.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=bu192Bjv;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.12; helo=mailout2.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org)
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cj7bG4W5bz3cYH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 22:54:49 +1100 (AEDT)
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20251009115436euoutp02562f5140ae7a5d6b627e9d3cc86b4fc2~s0JFSUxQs2248222482euoutp02V
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 11:54:36 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20251009115436euoutp02562f5140ae7a5d6b627e9d3cc86b4fc2~s0JFSUxQs2248222482euoutp02V
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1760010877;
-	bh=89YoilszcVgtY2WH9xkUBX5haHu7VfKEfNvtGBAHGdM=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=bu192Bjv4DCyMt7YU61OG1pYaDl8eyq6hJkNiecFAvJUn73QTZW1fP9YjBIisqt5f
-	 f/wiDSTUCbW6KbHBroFQzToTC/AGg4bO4n6ljDpOTc1+soTZpDNaY+TX7K4lWRGUui
-	 9wTa90wgFU9JWr5y2taU+ASF65/nFgLB++a56bOA=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20251009115436eucas1p23974f9afcd730fa3fdf66a7d6919d47f~s0JFAHA-N1574615746eucas1p2s;
-	Thu,  9 Oct 2025 11:54:36 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20251009115435eusmtip1e8fd4f06ffd3e6a355d1458090c4b984~s0JEHJ53D1953819538eusmtip1j;
-	Thu,  9 Oct 2025 11:54:35 +0000 (GMT)
-Message-ID: <0d3eb8e5-5588-4718-b01c-ef32b7dcb4a1@samsung.com>
-Date: Thu, 9 Oct 2025 13:54:35 +0200
+	t=1760012436; c=relaxed/relaxed;
+	bh=Mc1TIPZmtb3tKLWmvtpCO9BID0gxh7mz4dL5hPgt17w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jyWVgtW4QvnTE3wd1/wPXGheLIaPSO4nJDq5gjl+LkVotr8wvZJIvZRXR0uljv8HVyPevenLSOmIU3ZYsG9yeteWINtfE+iq98Qq2H5aceHMUfoxQPSkKw3GXzacEQBQKJDKSxT+1+ehnoMiSBp0slwyJfhmYrP4SVRLHs+kI3YyirYvK2Y86W0RsKN618CYidrlYb3yPc9GsdwgFLozLULHVONvSWyOdBTjuBoN5wJHIXF6SfDqd13LLeku2ILdRXnQsup44aTEgBihbUCsDm8I0ZIH+A4BoqceXpUMLji6bbKevo8+D9Xv1AxO4kbO76r9yi1nUkqPaCO9gB49Jg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cj8901GCpz3cDN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 23:20:35 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cj7tc3BBqz9sSy;
+	Thu,  9 Oct 2025 14:08:08 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id t-GI2jPxTJia; Thu,  9 Oct 2025 14:08:08 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cj7tc1MWCz9sSv;
+	Thu,  9 Oct 2025 14:08:08 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 08F7B8B76C;
+	Thu,  9 Oct 2025 14:08:08 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id dX5DSkuE_w6O; Thu,  9 Oct 2025 14:08:07 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BC52E8B767;
+	Thu,  9 Oct 2025 14:08:05 +0200 (CEST)
+Message-ID: <4632e721-0ac8-4d72-a8ed-e6c928eee94d@csgroup.eu>
+Date: Thu, 9 Oct 2025 14:08:05 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,120 +57,284 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [bisected][mainline]Kernel warnings at
- kernel/sched/cpudeadline.c:219
-To: Peter Zijlstra <peterz@infradead.org>, Shrikanth Hegde
-	<sshegde@linux.ibm.com>
-Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>, LKML
-	<linux-kernel@vger.kernel.org>, linuxppc-dev
-	<linuxppc-dev@lists.ozlabs.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
-	jstultz@google.com, stultz@google.com
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20251009080007.GH3245006@noisy.programming.kicks-ass.net>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20251009115436eucas1p23974f9afcd730fa3fdf66a7d6919d47f
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20251009115436eucas1p23974f9afcd730fa3fdf66a7d6919d47f
-X-EPHeader: CA
-X-CMS-RootMailID: 20251009115436eucas1p23974f9afcd730fa3fdf66a7d6919d47f
-References: <8218e149-7718-4432-9312-f97297c352b9@linux.ibm.com>
-	<20251008095039.GG3245006@noisy.programming.kicks-ass.net>
-	<5a248390-ddaa-4127-a58a-794d0d70461a@linux.ibm.com>
-	<20251008111314.GI3289052@noisy.programming.kicks-ass.net>
-	<86fbf707-9ecf-4941-ae70-3332c360533d@linux.ibm.com>
-	<20251009080007.GH3245006@noisy.programming.kicks-ass.net>
-	<CGME20251009115436eucas1p23974f9afcd730fa3fdf66a7d6919d47f@eucas1p2.samsung.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
+ folio sizes when registering hstate
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+ wireguard@lists.zx2c4.com, x86@kernel.org,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20250901150359.867252-1-david@redhat.com>
+ <20250901150359.867252-9-david@redhat.com>
+ <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
+ <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
+ <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
+ <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
+ <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
+ <1db15a30-72d6-4045-8aa1-68bd8411b0ba@redhat.com>
+ <0c730c52-97ee-43ea-9697-ac11d2880ab7@csgroup.eu>
+ <543e9440-8ee0-4d9e-9b05-0107032d665b@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <543e9440-8ee0-4d9e-9b05-0107032d665b@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 09.10.2025 10:00, Peter Zijlstra wrote:
-> On Wed, Oct 08, 2025 at 11:39:11PM +0530, Shrikanth Hegde wrote:
->> *It pointed to this*
+
+
+Le 09/10/2025 à 12:27, David Hildenbrand a écrit :
+> On 09.10.25 12:01, Christophe Leroy wrote:
 >>
->> NIP [c0000000001fd798] dl_server_start+0x50/0xd8
->> LR [c0000000001d9534] enqueue_task_fair+0x228/0x8ec
->> Call Trace:
->> [c000006684a579c0] [0000000000000001] 0x1 (unreliable)
->> [c000006684a579f0] [c0000000001d9534] enqueue_task_fair+0x228/0x8ec
->> [c000006684a57a60] [c0000000001bb344] enqueue_task+0x5c/0x1c8
->> [c000006684a57aa0] [c0000000001c5fc0] ttwu_do_activate+0x98/0x2fc
->> [c000006684a57af0] [c0000000001c671c] try_to_wake_up+0x2e0/0xa60
->> [c000006684a57b80] [c00000000019fb48] kthread_park+0x7c/0xf0
->> [c000006684a57bb0] [c00000000015fefc] takedown_cpu+0x60/0x194
->> [c000006684a57c00] [c000000000161924] cpuhp_invoke_callback+0x1f4/0x9a4
->> [c000006684a57c90] [c0000000001621a4] __cpuhp_invoke_callback_range+0xd0/0x188
->> [c000006684a57d30] [c000000000165aec] _cpu_down+0x19c/0x560
->> [c000006684a57df0] [c0000000001637c0] __cpu_down_maps_locked+0x2c/0x3c
->> [c000006684a57e10] [c00000000018a100] work_for_cpu_fn+0x38/0x54
->> [c000006684a57e40] [c00000000019075c] process_one_work+0x1d8/0x554
->> [c000006684a57ef0] [c00000000019165c] worker_thread+0x308/0x46c
->> [c000006684a57f90] [c00000000019e474] kthread+0x16c/0x19c
->> [c000006684a57fe0] [c00000000000dd58] start_kernel_thread+0x14/0x18
 >>
->> It is takedown_cpu called from CPU0(boot CPU) and it wakes up kthread
->> which is CPU Bound I guess.  Since happens after rq was marked
->> offline, it ends up starting the deadline server again.
+>> Le 09/10/2025 à 11:20, David Hildenbrand a écrit :
+>>> On 09.10.25 11:16, Christophe Leroy wrote:
+>>>>
+>>>>
+>>>> Le 09/10/2025 à 10:14, David Hildenbrand a écrit :
+>>>>> On 09.10.25 10:04, Christophe Leroy wrote:
+>>>>>>
+>>>>>>
+>>>>>> Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
+>>>>>>> On 09.10.25 09:14, Christophe Leroy wrote:
+>>>>>>>> Hi David,
+>>>>>>>>
+>>>>>>>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
+>>>>>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>>>>>>>> index 1e777cc51ad04..d3542e92a712e 100644
+>>>>>>>>> --- a/mm/hugetlb.c
+>>>>>>>>> +++ b/mm/hugetlb.c
+>>>>>>>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
+>>>>>>>>>           BUILD_BUG_ON(sizeof_field(struct page, private) *
+>>>>>>>>> BITS_PER_BYTE <
+>>>>>>>>>                   __NR_HPAGEFLAGS);
+>>>>>>>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+>>>>>>>>>           if (!hugepages_supported()) {
+>>>>>>>>>               if (hugetlb_max_hstate ||
+>>>>>>>>> default_hstate_max_huge_pages)
+>>>>>>>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int
+>>>>>>>>> order)
+>>>>>>>>>           }
+>>>>>>>>>           BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+>>>>>>>>>           BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
+>>>>>>>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
+>>>>>>>>>           h = &hstates[hugetlb_max_hstate++];
+>>>>>>>>>           __mutex_init(&h->resize_lock, "resize mutex", &h-
+>>>>>>>>>> resize_key);
+>>>>>>>>>           h->order = order;
+>>>>>>>
+>>>>>>> We end up registering hugetlb folios that are bigger than
+>>>>>>> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger
+>>>>>>> that
+>>>>>>> (and if we have to support that).
+>>>>>>>
+>>>>>>
+>>>>>> MAX_FOLIO_ORDER is defined as:
+>>>>>>
+>>>>>> #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+>>>>>> #define MAX_FOLIO_ORDER        PUD_ORDER
+>>>>>> #else
+>>>>>> #define MAX_FOLIO_ORDER        MAX_PAGE_ORDER
+>>>>>> #endif
+>>>>>>
+>>>>>> MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via
+>>>>>> /sys/kernel/mm/hugepages/ but bigger pages can be created at boottime
+>>>>>> with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
+>>>>>>
+>>>>>>       hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
+>>>>>>
+>>>>>> Gives:
+>>>>>>
+>>>>>> HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+>>>>>> HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
+>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
+>>>>>> HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
+>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
+>>>>>> HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
+>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
+>>>>>> HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
+>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
+>>>>>
+>>>>> I think it's a violation of CONFIG_ARCH_HAS_GIGANTIC_PAGE. The 
+>>>>> existing
+>>>>> folio_dump() code would not handle it correctly as well.
+>>>>
+>>>> I'm trying to dig into history and when looking at commit 4eb0716e868e
+>>>> ("hugetlb: allow to free gigantic pages regardless of the
+>>>> configuration") I understand that CONFIG_ARCH_HAS_GIGANTIC_PAGE is
+>>>> needed to be able to allocate gigantic pages at runtime. It is not
+>>>> needed to reserve gigantic pages at boottime.
+>>>>
+>>>> What am I missing ?
+>>>
+>>> That CONFIG_ARCH_HAS_GIGANTIC_PAGE has nothing runtime-specific in its
+>>> name.
 >>
->> So i think it is sensible idea to stop the deadline server if the cpu
->> is going down.  Once we stop the server we will return
->> HRTIMER_NORESTART.
-> D'0h.. that stop was far too early.
->
-> How about moving that dl_server_stop() into sched_cpu_dying() like so.
->
-> This seems to survive a few hotplugs for me.
->
-> ---
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index 198d2dd45f59..f1ebf67b48e2 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -8571,10 +8571,12 @@ int sched_cpu_dying(unsigned int cpu)
->   	sched_tick_stop(cpu);
->   
->   	rq_lock_irqsave(rq, &rf);
-> +	update_rq_clock(rq);
->   	if (rq->nr_running != 1 || rq_has_pinned_tasks(rq)) {
->   		WARN(true, "Dying CPU not properly vacated!");
->   		dump_rq_tasks(rq, KERN_WARNING);
->   	}
-> +	dl_server_stop(&rq->fair_server);
->   	rq_unlock_irqrestore(rq, &rf);
->   
->   	calc_load_migrate(rq);
-> diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-> index 615411a0a881..7b7671060bf9 100644
-> --- a/kernel/sched/deadline.c
-> +++ b/kernel/sched/deadline.c
-> @@ -1582,6 +1582,9 @@ void dl_server_start(struct sched_dl_entity *dl_se)
->   	if (!dl_server(dl_se) || dl_se->dl_server_active)
->   		return;
->   
-> +	if (WARN_ON_ONCE(!cpu_online(cpu_of(rq))))
-> +		return;
-> +
->   	dl_se->dl_server_active = 1;
->   	enqueue_dl_entity(dl_se, ENQUEUE_WAKEUP);
->   	if (!dl_task(dl_se->rq->curr) || dl_entity_preempt(dl_se, &rq->curr->dl))
+>> In its name for sure, but the commit I mention says:
+>>
+>>       On systems without CONTIG_ALLOC activated but that support gigantic
+>> pages,
+>>       boottime reserved gigantic pages can not be freed at all.  This 
+>> patch
+>>       simply enables the possibility to hand back those pages to memory
+>>       allocator.
+> 
+> Right, I think it was a historical artifact.
+> 
+>>
+>> And one of the hunks is:
+>>
+>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+>> index 7f7fbd8bd9d5b..7a1aa53d188d3 100644
+>> --- a/arch/arm64/Kconfig
+>> +++ b/arch/arm64/Kconfig
+>> @@ -19,7 +19,7 @@ config ARM64
+>>           select ARCH_HAS_FAST_MULTIPLIER
+>>           select ARCH_HAS_FORTIFY_SOURCE
+>>           select ARCH_HAS_GCOV_PROFILE_ALL
+>> -       select ARCH_HAS_GIGANTIC_PAGE if CONTIG_ALLOC
+>> +       select ARCH_HAS_GIGANTIC_PAGE
+>>           select ARCH_HAS_KCOV
+>>           select ARCH_HAS_KEEPINITRD
+>>           select ARCH_HAS_MEMBARRIER_SYNC_CORE
+>>
+>> So I understand from the commit message that it was possible at that
+>> time to have gigantic pages without ARCH_HAS_GIGANTIC_PAGE as long as
+>> you didn't have to be able to free them during runtime.
+> 
+> Yes, I agree.
+> 
+>>
+>>>
+>>> Can't we just select CONFIG_ARCH_HAS_GIGANTIC_PAGE for the relevant
+>>> hugetlb config that allows for *gigantic pages*.
+>>>
+>>
+>> We probably can, but I'd really like to understand history and how we
+>> ended up in the situation we are now.
+>> Because blind fixes often lead to more problems.
+> 
+> Yes, let's figure out how to to it cleanly.
+> 
+>>
+>> If I follow things correctly I see a helper gigantic_page_supported()
+>> added by commit 944d9fec8d7a ("hugetlb: add support for gigantic page
+>> allocation at runtime").
+>>
+>> And then commit 461a7184320a ("mm/hugetlb: introduce
+>> ARCH_HAS_GIGANTIC_PAGE") is added to wrap gigantic_page_supported()
+>>
+>> Then commit 4eb0716e868e ("hugetlb: allow to free gigantic pages
+>> regardless of the configuration") changed gigantic_page_supported() to
+>> gigantic_page_runtime_supported()
+>>
+>> So where are we now ?
+> 
+> In
+> 
+> commit fae7d834c43ccdb9fcecaf4d0f33145d884b3e5c
+> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Date:   Tue Feb 27 19:23:31 2024 +0000
+> 
+>      mm: add __dump_folio()
+> 
+> 
+> We started assuming that a folio in the system (boottime, dynamic, 
+> whatever)
+> has a maximum of MAX_FOLIO_NR_PAGES.
+> 
+> Any other interpretation doesn't make any sense for MAX_FOLIO_NR_PAGES.
+> 
+> 
+> So we have two questions:
+> 
+> 1) How to teach MAX_FOLIO_NR_PAGES that hugetlb supports gigantic pages
+> 
+> 2) How do we handle CONFIG_ARCH_HAS_GIGANTIC_PAGE
+> 
+> 
+> We have the following options
+> 
+> (A) Rename existing CONFIG_ARCH_HAS_GIGANTIC_PAGE to something else that is
+> clearer and add a new CONFIG_ARCH_HAS_GIGANTIC_PAGE.
+> 
+> (B) Rename existing CONFIG_ARCH_HAS_GIGANTIC_PAGE -> to something else 
+> that is
+> clearer and derive somehow else that hugetlb in that config supports 
+> gigantic pages.
+> 
+> (c) Just use CONFIG_ARCH_HAS_GIGANTIC_PAGE if hugetlb on an architecture
+> supports gigantic pages.
+> 
+> 
+> I don't quite see why an architecture should be able to opt in into 
+> dynamically
+> allocating+freeing gigantic pages. That's just CONTIG_ALLOC magic and 
+> not some
+> arch-specific thing IIRC.
+> 
+> 
+> Note that in mm/hugetlb.c it is
+> 
+>      #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+>      #ifdef CONFIG_CONTIG_ALLOC
+> 
+> Meaning that at least the allocation side is guarded by CONTIG_ALLOC.
 
-This fixes a similar issue observed on Samsung Exynos SoC based boards 
-(ARM 32bit and 64bit) that I've reported in the following thread:
+Yes but not the freeing since commit 4eb0716e868e ("hugetlb: allow to 
+free gigantic pages regardless of the configuration")
 
-https://lore.kernel.org/all/e56310b5-f7a9-4fad-b79a-dcbcdd3d3883@samsung.com/
+> 
+> So I think (C) is just the right thing to do.
+> 
+> diff --git a/fs/Kconfig b/fs/Kconfig
+> index 0bfdaecaa8775..12c11eb9279d3 100644
+> --- a/fs/Kconfig
+> +++ b/fs/Kconfig
+> @@ -283,6 +283,8 @@ config HUGETLB_PMD_PAGE_TABLE_SHARING
+>          def_bool HUGETLB_PAGE
+>          depends on ARCH_WANT_HUGE_PMD_SHARE && SPLIT_PMD_PTLOCKS
+> 
+> +# An architecture must select this option if there is any mechanism 
+> (esp. hugetlb)
+> +# could obtain gigantic folios.
+>   config ARCH_HAS_GIGANTIC_PAGE
+>          bool
+> 
+> 
 
-Thanks for the fix! Feel free to add:
+I gave it a try. That's not enough, it fixes the problem for 64 Mbytes 
+pages and 256 Mbytes pages, but not for 1 Gbytes pages.
 
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Max folio is defined by PUD_ORDER, but PUD_SIZE is 256 Mbytes so we need 
+to make MAX_FOLIO larger. Do we change it to P4D_ORDER or is it too much 
+? P4D_SIZE is 128 Gbytes
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Christophe
 
 
