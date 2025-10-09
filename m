@@ -1,96 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-12736-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12738-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40ADBC7F80
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 10:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE07BC815A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 10:43:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cj2hz5Y2qz3cDN;
-	Thu,  9 Oct 2025 19:14:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cj3Lj2DXdz3cDN;
+	Thu,  9 Oct 2025 19:43:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759997667;
-	cv=none; b=X9DZpcuFLeNeKfDKcnYcZ9Id3c7UVWnpefbOkCRLVxfI07gT8+g1qq1DXwfS44vUEY6E8uBC5HqCch+gwBD997R/+5JC/ANjZHkKBl5zV6UOoZQ7GaMf01FzqrCxkqFA6qEtvaBKdXAOIooMLsPLgkJaeMWhnm+dKKECZ7wqy69Sq/5TEPW9pDYqjKn4gNT/+Zu40IJnTYoKZsnN65+n7Uw7NGnLSnBxQ3MKGCFXmho1Aazl1AQHPxez4LSsOSurBM/tS3ZFZCWWWA/G4d74+ns3MPYsxFMJBw89tVrnvxohJPorggFfRrdhBYXCCLCXVev6fR8FEjcVzroU0yhEyg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1134"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759999421;
+	cv=none; b=YJcRu0xKCzJA5+mk5t6RYYUFx3UUiifRb/HYMZUe/fwOVSX1d3x99XfmtsIA8eXgStkB/foGKdVGyhSs7i+tPJEF4t/X1RO/iFiv0zW33wZ4IJ8xyDP9WDSqQl7M1w2GUl6k541oLk8WS+OvjjUm514WSrBWVRbepnpqbqRfjljZmimIidsYF9mRrK6d/scN8dW+6kako71QuYlb6yCbDPhP9J9ZYUtslH1sS3r5voNEROlmb8/3XAxVMX0MDna6FsxGyTg4VPCbWqrm9ur1W6Jldxy26OIfj8gXb8zdFY7OCe7mv53KJ1lQvuRJRZGI2E4EqtVo4HOFiDLDwiSrag==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759997667; c=relaxed/relaxed;
-	bh=z/B31lhY4bVYeZNnk+dMlfOVrRbTYtHHzwgcdMMaTVE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iITV9Mr9oAz+jqwmBDKhQtVPEYL0xVVdIVHgSTIbA+UJdvQBu5Ia400Nh5TGgQ6Ra7y5T5yL8HJu4irnzL/3allMfF/jF6hXY+B2SngWscYucHDr/AT60ErpBxb8xNuiYsRTVZhiKoM8shce/DmogbTeqFmL/OqEl/9kM1YatbDPGBCDoQS2lncovX5kBPjwlyE5GjeSDd8wzxE89DY8sHuhGIDbIK3a/AAjS2HM/yFCwAnQUP29Kcnq0yRX1ZbicGZqa+CGMgkeYku+1zfXavmj77eK/az07Avan+wWEsRNINr87cfBunGi1mcafjCLEvuzn5PoHnN8EaMPOHyoPA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dfesaZvl; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cFwnkyHp; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1759999421; c=relaxed/relaxed;
+	bh=oOmLRNO4yxmZr9GGl+AUsKcQlyU35gqHSeHKaWhtPwQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jKRWpsi02y1hIwRW1MUjZKiyQ8FhFwX+8AoO4ElozxZ/3Qt93Es0/Gar9DgBfcdZhEGY3krvAHImZ23cl/s+lCX2r+czWwB1DTgy5qzixfoXkKfzZc8A3ORc2s6o8n/9akVj2WbYfXLd+kwfFki3MNFxaryPTWT6gjpajbIvGoqWyi2Pkh3AeXdoYkBw2iDTE2obQj5syIwAAAS7fWBNeQiD0aQH9wZnxks9kBwIPPXjnwL05E3gOeek4Pjy2VR5PbAYwMRZkAsSuyN1ECjWlQ7A8Xbu5NI4UxkTw6gUnw25w2GX43jby2hmYx7T6VGk6EWPCtVCImgpMWqo8MheYA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H1OjVXVw; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1134; helo=mail-yw1-x1134.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dfesaZvl;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cFwnkyHp;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H1OjVXVw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1134; helo=mail-yw1-x1134.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cj2hw49g5z2xQ3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 19:14:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759997653;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=z/B31lhY4bVYeZNnk+dMlfOVrRbTYtHHzwgcdMMaTVE=;
-	b=dfesaZvlsQUtr0U58MS8V+R5ClgquCeqxooEl/2t5bVBYTplzY5cRC/FXZo/gf4iDd6x3z
-	5wP5oxNppzcxtkWI9zdEgHWL99pLF6xDxtKxkWxSwNPeRQ3NgXIaru35skPzrl26Lx2t4s
-	ynvXvKIEawwU5DrX1FdaEZlIFEIF8gk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759997654;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=z/B31lhY4bVYeZNnk+dMlfOVrRbTYtHHzwgcdMMaTVE=;
-	b=cFwnkyHpg9sM06axWoSaY8BKNTT1hgyLsDOdiJlBV2+uEooW9lSca+xuBfi2wsqUBDtoBK
-	YVNEG/aRx/3nqONkKdjTUImag8NSccTxkseRhNdxyJ58G1oQIf8eCOnfezEiYo2IkH9B3r
-	4Rd7GmQWTYy2wZ7kj4pqKpxv0mniIDo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-45--Q8n0xLANpSiJ7ik9sd1ig-1; Thu, 09 Oct 2025 04:14:12 -0400
-X-MC-Unique: -Q8n0xLANpSiJ7ik9sd1ig-1
-X-Mimecast-MFC-AGG-ID: -Q8n0xLANpSiJ7ik9sd1ig_1759997648
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e3d9bf9e1so3724865e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Oct 2025 01:14:12 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cj3Lg33ygz2yPS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 19:43:38 +1100 (AEDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-71d71bcac45so7656087b3.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Oct 2025 01:43:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759999416; x=1760604216; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oOmLRNO4yxmZr9GGl+AUsKcQlyU35gqHSeHKaWhtPwQ=;
+        b=H1OjVXVwlhEe9phrOhqvIjGkmaPggTXFwC1D72ssHXZnRW9khDC56FgfFPft+ccDnn
+         S6IKd0M1SuEDgcE81ffq1HxVmYgMwSIBZpnd3z4mw6kDMdad0OsgoK6BTmGdU00+kDd2
+         CYJP03ee7ezAnZhy+8RBibwDcRjNvRc57pcq6D8aCEMTlCFQBKDi2CcC0CAan+TkXHFd
+         HFPJkvb3WXPNZ/AdlQc+Aig9wXOCvgIbn4hCe2GsvmQyLLR+StMJb/4CMUZ0omxIM6Hu
+         QN0ieuFKdPPfACh2/6+x/u7m61ErNd+pNzBO+li48Kzftm3OfqP7hLLqhZu62XZf2yvO
+         SWGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759997648; x=1760602448;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=z/B31lhY4bVYeZNnk+dMlfOVrRbTYtHHzwgcdMMaTVE=;
-        b=aV6FFP4ydHXXbFqfw+FqliLE6h2ROPht1zmYVeI0zWHneENu5BhxZ2brQ5FvRqDU51
-         VclPiNKHwanjoWiE4N6yE3/+JhotvVvhq7/G+Uy1sOqv5DUEx5Ri88WzRwH9mghLy2TG
-         8Kgr6vnZQgFrg/ndVpUEiyBdwgeIs9x3PZTg5Zd5l8UWo4+VwQTtQNHtLskq+CN6syZS
-         2K8Y8O6HdzIJTZnIALvio8eZ8uKSR+fwIqdm1etQpY3fg3FkqmWH9lGjZTWXB+1XZwwB
-         ZZcV+rcClyScpvi7EHi3a64da5QeMUBVEPrJRVf+uLU1jNdDQTDKal+hKf0kirAhx3Nr
-         veIA==
-X-Forwarded-Encrypted: i=1; AJvYcCUVntTn0/YbzSjI28kHQnBzUoSTrJjAuIbpr5MvAxJQJZbupW7gkELdFq2rAYrlnloWuMylX6M8flAcx1k=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyxj9++og5IJkr4cm9Rd9aPMrTD2eWUHgT8ofvrP7hOuAvl6GAk
-	jzWH5qprjAwMFIauHIzPQxGIg7JZM57cnBrmIMyvIIuNxeTIFBluDyWUxcW0HktvDgwL30bW6zH
-	Qo6sjWCILY/d2qkg5DxGiQvEzmm/w0GYHTgLLaaZLnL4L3sDgH2ncIY8ZyPCowWBu4CY=
-X-Gm-Gg: ASbGncuwUKvYKD7fiEri6hY9+zUtBk9ySGh/GxxbJEiKa1omjGVcGPUsmQSWsgfR9Kq
-	bcSelceeaW5pkpPtC2OhXVk6O1YFT0q1vEpN9+VV5AUB9koFSoaa2734M1dubJP8SYC7RwhNASv
-	iYW96pXv8zzuHCZ1+O0F+2aIJn/hfSiDEYefH0ws+R6/L4jwmdodyhGdXjb0zCXr9fYbIDUmYnF
-	v164ZAvBwYCNPcZ51H3lMeJv9WaoinMYJnDeF+kA9ZILKPVF4ItF+F5dsLka0VPj1nN46EyqPt0
-	6rGiUV4u9KxjTU+9bYBeUTnT/AkqFF0RoH1lqM3aSLgjIeF5QPYI7qJGUKeGtJXBAG+VZ/WaiHI
-	p8NLO8u0g
-X-Received: by 2002:a05:600c:4750:b0:45f:28d2:bd38 with SMTP id 5b1f17b1804b1-46fa9af3095mr47092965e9.18.1759997648108;
-        Thu, 09 Oct 2025 01:14:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGo93r/upxlN0XWroa/gVbVuSE1HI9H4cBHGhOGnkYv+FuHkp7MlpzQ4ByJt+h+2JF6rzGBiQ==
-X-Received: by 2002:a05:600c:4750:b0:45f:28d2:bd38 with SMTP id 5b1f17b1804b1-46fa9af3095mr47092215e9.18.1759997647608;
-        Thu, 09 Oct 2025 01:14:07 -0700 (PDT)
-Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa9d6fb41sm71628175e9.17.2025.10.09.01.14.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 01:14:07 -0700 (PDT)
-Message-ID: <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
-Date: Thu, 9 Oct 2025 10:14:02 +0200
+        d=1e100.net; s=20230601; t=1759999416; x=1760604216;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oOmLRNO4yxmZr9GGl+AUsKcQlyU35gqHSeHKaWhtPwQ=;
+        b=ej21dQ6nStY3ayJ4MbGy5Qinqgo5PIfdV1WArjkccyY/J/aTTcTeA8jiwajOlVHVoo
+         pr3YzcS3Bo7sK8Aj/NEHMFhZz2pKMcpNQAYfDLa6lMHM5u6u17d8FRdn5ssGkS0buffW
+         1dO5W/WTeUYE6T4D6UrZ1fdGXOU6sPv4k5imSNbfX12+pcv48c98m5ZwxqGpvUgsqEkq
+         lRnKN7zgDrBzQYHoFVIuoeb5CfiLP38pBqRc+mi1tJ9NZiXpQv84xx3uzqXP+Abc8SHm
+         FpGp9vpnYwzU+K7/JhLkYcsqeZmR4Bexp80U6S7vnYOCi7c/XKdreA+50FGqwts1p0jH
+         KCtg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZHsXpP7aG3j3oL8VpTsbZAIXkMgdlp2AQUQTRbjgNzGmmC9aCVxIsQg95nswZmjLUwss/EO56DbqqhC4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YweB1AzSsoY9pifmWzBDtQSDclDQhBjOFPKPUbMUFPnmrUw9fvo
+	LItWVBRfmYFQwfqHSxgjOR7big9a24M2bryR8npenzPIuOrSacoP5/zLOn3+oCdkZ8ortd/P10Y
+	FamuOqg7nJWmQS7qNRq2Ps4MAz0rEpD8=
+X-Gm-Gg: ASbGnct9LX58Db8VQouN2L7VR62zf88dOOC0lmMBRUbkkiktQA2D0dMJsE/8ON5QpTe
+	yor0ZkNlI03OzGEeMWknEnO2Uzvqi7a7KjEckFfkVw64T/PyxnPQ/ICxyc6j4fgnPx2MnAYXpBX
+	PUvXqUBMONsmSoZnct3IGnpULE47jPeKvC62E4QTOCTM9JdZ+XNKEFnZ2dboJQt6qOAD3v/1KH5
+	L/git1jcKPZ4baLlrZ7CUrns+WyvRmIyXZUnt5MGw==
+X-Google-Smtp-Source: AGHT+IHqqt7JHMFlL5DEMxX8/4fuWke6o7x715NV65SuEycRYAp5q8y3uA9SPr+Cccah/gPAgRpT2LfWBS7AmxUm0/4=
+X-Received: by 2002:a05:690e:146:b0:635:4ece:20a9 with SMTP id
+ 956f58d0204a3-63ccb91d5e0mr4410660d50.46.1759999415603; Thu, 09 Oct 2025
+ 01:43:35 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,166 +79,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
- folio sizes when registering hstate
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linux-kernel@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20250901150359.867252-1-david@redhat.com>
- <20250901150359.867252-9-david@redhat.com>
- <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
- <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
- <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: TfV1Tf9KwEWaXkUBScux1vGxAajPqH6x0QI7QQcSi7g_1759997648
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250918152830.438554-1-nschichan@freebox.fr> <20250918195806.6337-1-safinaskar@gmail.com>
+ <CAHNNwZAzecVcJXZmycX063-=p-M5jVkfStfgYVKJruOFo7y9zg@mail.gmail.com>
+ <CAPnZJGDwETQVVURezSRxZB8ZAwBETQ5fwbXyeMpfDLuLW4rVdg@mail.gmail.com> <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
+In-Reply-To: <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
+From: Askar Safin <safinaskar@gmail.com>
+Date: Thu, 9 Oct 2025 11:42:59 +0300
+X-Gm-Features: AS18NWA7xuLtf9pobQHoPGHI9uL9SjsnEaZg-EuuD52zBO81KbUszIYBPPZ5wRY
+Message-ID: <CAPnZJGAp-wG+9wDmmisfpxvFbRtXkG-RipAuZe=fi1BWy-3G-Q@mail.gmail.com>
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+To: Nicolas Schichan <nschichan@freebox.fr>
+Cc: akpm@linux-foundation.org, andy.shevchenko@gmail.com, axboe@kernel.dk, 
+	brauner@kernel.org, cyphar@cyphar.com, devicetree@vger.kernel.org, 
+	ecurtin@redhat.com, email2tema@gmail.com, graf@amazon.com, 
+	gregkh@linuxfoundation.org, hca@linux.ibm.com, hch@lst.de, 
+	hsiangkao@linux.alibaba.com, initramfs@vger.kernel.org, jack@suse.cz, 
+	julian.stecklina@cyberus-technology.de, kees@kernel.org, 
+	linux-acpi@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, mcgrof@kernel.org, 
+	mingo@redhat.com, monstr@monstr.eu, mzxreary@0pointer.de, 
+	patches@lists.linux.dev, rob@landley.net, sparclinux@vger.kernel.org, 
+	thomas.weissschuh@linutronix.de, thorsten.blum@linux.dev, 
+	torvalds@linux-foundation.org, tytso@mit.edu, viro@zeniv.linux.org.uk, 
+	x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 09.10.25 10:04, Christophe Leroy wrote:
-> 
-> 
-> Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
->> On 09.10.25 09:14, Christophe Leroy wrote:
->>> Hi David,
->>>
->>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
->>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>> index 1e777cc51ad04..d3542e92a712e 100644
->>>> --- a/mm/hugetlb.c
->>>> +++ b/mm/hugetlb.c
->>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
->>>>         BUILD_BUG_ON(sizeof_field(struct page, private) * BITS_PER_BYTE <
->>>>                 __NR_HPAGEFLAGS);
->>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
->>>>         if (!hugepages_supported()) {
->>>>             if (hugetlb_max_hstate || default_hstate_max_huge_pages)
->>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int order)
->>>>         }
->>>>         BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
->>>>         BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
->>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
->>>>         h = &hstates[hugetlb_max_hstate++];
->>>>         __mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
->>>>         h->order = order;
->>
->> We end up registering hugetlb folios that are bigger than
->> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger that
->> (and if we have to support that).
->>
-> 
-> MAX_FOLIO_ORDER is defined as:
-> 
-> #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
-> #define MAX_FOLIO_ORDER		PUD_ORDER
-> #else
-> #define MAX_FOLIO_ORDER		MAX_PAGE_ORDER
-> #endif
-> 
-> MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via
-> /sys/kernel/mm/hugepages/ but bigger pages can be created at boottime
-> with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
-> 
->     hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
-> 
-> Gives:
-> 
-> HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
-> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
-> HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
-> HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
-> HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
-> HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
-> HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
-> HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
-> HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
-> HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
+On Mon, Sep 22, 2025 at 5:29=E2=80=AFPM Nicolas Schichan <nschichan@freebox=
+.fr> wrote:
+> > Then in September 2026 I will fully remove initrd.
+>
+> Is there a way to find some kind of middle ground here ?
 
-I think it's a violation of CONFIG_ARCH_HAS_GIGANTIC_PAGE. The existing 
-folio_dump() code would not handle it correctly as well.
+I still plan to fully remove initrd in September 2026.
+Maintainers will decide whether they will merge my patchset.
+You may try to convince them.
 
-See how snapshot_page() uses MAX_FOLIO_NR_PAGES.
+> I can send a patch for that but first I need to sort out my SMTP
+> issues from the other day.
 
--- 
-Cheers
+If you still have mail issues, consider applying for @linux.dev email,
+they are free for Linux devs ( https://linux.dev/ ).
 
-David / dhildenb
+Also, I just tried to test whether your use case is still supported in
+mainline (i. e. uncompressed initrd with root=3D/dev/ram0).
+It turned out that on modern kernels you need to enable
+recently introduced CONFIG_BLK_DEV_WRITE_MOUNTED to
+make this work.
+So, make sure to enable this when upgrading kernel.
 
+--=20
+Askar Safin
 
