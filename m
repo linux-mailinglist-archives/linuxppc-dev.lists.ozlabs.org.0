@@ -1,96 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-12749-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12750-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A7FBC92F6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 15:05:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D232BC9470
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 15:23:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cj98h5zGvz2yr2;
-	Fri, 10 Oct 2025 00:05:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cj9Y95Csmz2yr2;
+	Fri, 10 Oct 2025 00:23:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760015124;
-	cv=none; b=g9v7AjiPR1L/hmPh81z31+FAsEpN19zNWLmNZYh421nzY5AKSz9bgNuXEG/5ieQNPgQqr0Z7mwPK7VcNA4uPWUgjTmVtxPI6cjAJLnb7qGSqx7HDyjmK/wctyZpjsj4srruLQWicirMADmd2gxozW7mYMliXn8XTDm9sBP6RXaWWBiRMJoszlTxuqBH/IRkbUe8/fV5DyN5lLDzOR5kKAas+7MlNHZ7yIva9IyP0Z3er8Eyz8ma/eeTUSER3J6w3AlIRUoWpejVS9ocPxMuDMxTOijcL93nzK/JQz112eDprdIstzqEsvHwWeIy+AFPy1rT1XAfCTQ4ZG5wZavFLig==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760016189;
+	cv=none; b=FDlBXP43qRc9+DlXymto2JCk+oMRI/VmoWNUPb8OD29YfrqhSmzgNKt7CoRPHwOpxLd4Uiwyfb4Vzy6S930N50p0/OMDd6NvOsSZVELvzvQAgul8hK/LAR3c0zusgeDitObQIT7tuNibwuqwCaeNRF9/txGxY6iG8d1RTeLyIBnKFDH/mzwBnmspi3i7fWhltFEwmVV4fIf8TlEQn3EG4SFKJ60PdkPTQdr1UUyCT2//d66ouwCZYc1GSQ3JWgNdvquZnKuQFNSb/g5LVgkWr4ipJ/zdsVlls5b/PSFDb6RCOlHhl9DoyPbGBeD9VidYo3Hr2IHvq2O9YAi0JP39Cg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760015124; c=relaxed/relaxed;
-	bh=oTHo4iuJRNf/FsWLVapxfI0HO0lapgIr2CMWX1RNMGw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Src88e0rGWclv7BfhYLW7qtG5RR6FV7kvCtd2F8J8VLMvbHNNXzSyOqSGAJUfIYaW83foB/7Mfjmp+KSzuFx2T8S0yeJ5bwSeqAPe3cDaaJ1HY9zb8YoEuMcvzrM9nI6vmFNJU8+sXu7pVe6inrUHibmMTT5KxyAijZ8kUiZNLrTFYonx7mdEM34YaoGahcGoMpjzp3iYSKeyefhFWa7Miqx3FO40JZHwu/f6vrfQsWtl3CcWJ/Eve1133+l6DcbIWPFtV6Jn6oAzkrxiSfnkRBJ6PQe99tlsF0IZkUTDInTMFrJorT9SVdMQIROyLWEsE+Bq75X9+EjMGksTWG5zQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YHvPbhWU; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Aw7soX+k; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1760016189; c=relaxed/relaxed;
+	bh=/MmBd+7zzowhrSWoBWSLCsui3fgz/9aHsIIOvCWsuYU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aZJfllYP3TtNcTKFhphSLM1yuRUtnYM/ArxBT0FCKhdekKotgn3vEC172RbXB7217rvJbNYqECpQ6H5J20wIzVGqZ7ln45viQwhJFd9SyyqlAGfGqmrb7uHGXIajdE/sVQR+4rr5KlufbalB9hZfhRsqIwsVNBJtl5NY4utzCmtu3aoPRVdjuvg3eujnSDPhUyzxnTfaw6UeGOpLrc9dfZp5X7Vmx3aYceR/++z3GJNq0rr9lU2xYEKKQRVeunYK/TnwRDFa3djuTpw9CDjJPUbNlRneAJi2k+igDXb6sd/AqoDIzLdHCu6Pqp5gqXhm5dakEvUOEgopt2XPYXRKQw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=IECFit8+; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YHvPbhWU;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Aw7soX+k;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=IECFit8+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cj98f4kJyz2xQ2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Oct 2025 00:05:20 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760015117;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oTHo4iuJRNf/FsWLVapxfI0HO0lapgIr2CMWX1RNMGw=;
-	b=YHvPbhWUUreAI5wqsMsqhLA8w0BXgopaY9+UUxE+BGGAzJxseEhOmbgMmNOphrpUVg1uQC
-	D6cZbQQvLpdXeQEJ9TNOGF3pXz+mOaKrwVc/iKxV+sA/QsoEZz2Px1TWkJ2JjKPeyXj7gF
-	CmTztqFNqxbGaGC8teRyASnnt2SZs8g=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760015118;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oTHo4iuJRNf/FsWLVapxfI0HO0lapgIr2CMWX1RNMGw=;
-	b=Aw7soX+klpdkxrgZGYZTtIY4UZEGVqeLhhj9gA9qz+yvjlryu3ll4tElHQlvLwFNyv7Zfk
-	LV9NQtq7pk9KHuO3ejj1SQrxmbF5mHKKvSW6gWHdPNn3cop63BWvVSG0nhLPYBrlE67LYu
-	8uKlSIvD5JIkNOe589/RFi5PyFyBhoQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-478-bsZVfCkXPZCvQ2eBdnyfqw-1; Thu, 09 Oct 2025 09:05:14 -0400
-X-MC-Unique: bsZVfCkXPZCvQ2eBdnyfqw-1
-X-Mimecast-MFC-AGG-ID: bsZVfCkXPZCvQ2eBdnyfqw_1760015113
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46e45899798so7116585e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Oct 2025 06:05:14 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cj9Y82TN9z2yPS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Oct 2025 00:23:07 +1100 (AEDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-27d67abd215so250695ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Oct 2025 06:23:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760016186; x=1760620986; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/MmBd+7zzowhrSWoBWSLCsui3fgz/9aHsIIOvCWsuYU=;
+        b=IECFit8+g/mQHEj0UlLn27LfJsA5SI9Wf+Q04eQve94IXUjd2wdaaITTuZy5dD1DDS
+         zj9STEzAVmRNqkt5We9GGswTGEpInjzooQhxGXX2JeIOHZ34z2ZEAKZ/Jm25+q9xNrVx
+         RxtFQgsjGmSwcTipt10tgQTTJHkq+EEn34aha1vu/U/P7ZjQ1e+IY0zGk2YsghhIrPgo
+         HnOMtRR5axGdfpdBqbvEhKo3L6nWRp+22cpYcT7veLKQPtag+8zvRA48mTDVm8agN+9m
+         opJ8gf/LSvy3HMQZ94tC1fcr4fOme/chZZ8dwhg+arQceK+9a8Il9e5tMxmr7se6QmTO
+         ZiZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760015113; x=1760619913;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oTHo4iuJRNf/FsWLVapxfI0HO0lapgIr2CMWX1RNMGw=;
-        b=Q0MuJn6wptiW+SfRES538qYj+2nBl+YX4eisvQ/uTjTETc9lLVzpkypfBi16dcMcYx
-         vV8y8WeD7VpzJxSaEH1WUtk5tbmOYui27g2Xn/a1NjfqamxvdIMmEEEi1MgYSznTtpem
-         M+u5ej0YRZbpEd6slZSIQOycwAQA0RvgBTBcNQ8j1duPVHhoeIzBHcLmOQifRiSFHY11
-         s9bDJ2OnxFRRAgIYP+oEImQeRX9S21mlYvhbJJt4SD284D4q8xEixO1srT0UeISI5/PM
-         IVVCi76Vf7aiM7UrHZhfgpMOPXe+UQqjuG0PKuRKJaKmMknskXiCxSA/c75+I3zC2Twl
-         b1nQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUYN/2Y/p1X+xME9LrRhoxQPIFIt1aZs2M3UI1cshqSl9hM6k8BQmkAHR++HYooB2V4Hn+wcDTQK30GSB8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzx0VylhYg6azEuBai+e7X7C3HQ5drmsvd1RBDKii0Tp6YskgAN
-	x6YHugSWPVSGe4JuFIjoN2zzH8sIVhU+SPbdaW8LThRZhp2pL8QQGIPwR2WKc2WxT2TcWiFmO51
-	9xvozIeQfXWUvioTClr4Y4KjLD2uNoUBcuoKhSC7LtyB3jROlg1adPqd+3HNVyUTctX0=
-X-Gm-Gg: ASbGncuzn9u0iBBGtZhGd72RvCUvrcSRfdZLP+GajQ1GI11PjhehDnxQPMrlnaIuNUk
-	YHjY3JH+i8pwkZmazwo+S7r/JG5r4mIhNazVl5p5S3J3prD1qoaNZYlMZpojeE6zMKYwbSmGClJ
-	XralTDD/LbGEfq8t4mOQlnlJWCTXyS8qePSM1SFoZhtSsXcjCTdS322Is7qgM4+kqeLrg34rkTk
-	+7e1dJb08aywUnTvTwfJEvDABoobVfUs+PD0MjfSet3I3pSrEodlBLKQT8t8YaTdHAS2/6OlLI7
-	EvXzC7hzj5ObAHhMLj4+h9sVcY9SYjcQ819sFom47BlPd4t0ooslWHQ/tXZ5zGQ8+YLu2f8o+q0
-	ylbxQNNjO
-X-Received: by 2002:a05:600c:83c9:b0:46f:b42e:edd0 with SMTP id 5b1f17b1804b1-46fb42eee2emr2581365e9.41.1760015112998;
-        Thu, 09 Oct 2025 06:05:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH6MQEGKTHH3lQ2c+ldeRR4aSAzt+sOKbg+VkML9CB8VKORVPmv1RemKtJCCw7qNufQ/ws5mg==
-X-Received: by 2002:a05:600c:83c9:b0:46f:b42e:edd0 with SMTP id 5b1f17b1804b1-46fb42eee2emr2580495e9.41.1760015112341;
-        Thu, 09 Oct 2025 06:05:12 -0700 (PDT)
-Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46faf112fdbsm47591035e9.8.2025.10.09.06.05.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 06:05:11 -0700 (PDT)
-Message-ID: <bce57a83-e7e1-4e3d-85ae-6234a98975ea@redhat.com>
-Date: Thu, 9 Oct 2025 15:05:06 +0200
+        d=1e100.net; s=20230601; t=1760016186; x=1760620986;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/MmBd+7zzowhrSWoBWSLCsui3fgz/9aHsIIOvCWsuYU=;
+        b=U+K5nV3PDaShu+pkmVGxwXJRhtCkMq/F93qonATgIAG2h0tWVcN5Vmoh0Y3d/Dm3vd
+         tpqdbolnQQxSzc9nCCv1nDaFtYYErEvznVjkgtPcm4ZFAmVfS2dqho77aOkIwU+IoZf3
+         kLcETKvAYG0DhAHdIGUYuXLjZg4OUVCrylj2kbCFV7wVFxXDhkD1Cvg2mQujtx8VHVwM
+         6AByEyCCnxpdZrX5a0uJpj/H0aMVQhK4gSdA1vqIguOOeBdr3LLL/+nUOGEBa2ZKNouA
+         Bas/zvHClep4gAMWmtlmO2jg7yj/SqeqbwTZP0lGKiR5XbhnM4L/lQ1UZNr78qcbrC7m
+         YEhw==
+X-Forwarded-Encrypted: i=1; AJvYcCUnxmtUnv9EEN9SFywbVOnfZNLd1Fz7DeT7P2lmQQgzr8hmCpK1OF6WnbtiLkGBsuK2oJ5teuZ0nN5gPrE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz6iRhUuAp4Hy8vur4ncpK/d5kQWBDEZjFmDEM8Jaig/FggxFeW
+	6z9iK8n/CMybwO108MApbLcKl5ij/QJtTVduRrRHZGU6Ay6Z13wX+5ilJD5ha7Ep80Avg96/L8m
+	SUZa7DVpfLlRngLcGXUuJeDN3nlhb99NIgJZmfd5t
+X-Gm-Gg: ASbGncugHerrt3M59WmFBZXMnsvaakxJcmws9AkOtOd9NR6XHzta5m3pLwdL9D0pVLn
+	DN1cKGZ6jl370HhOoqy14C3taWycQ3v6N/40oT038trMgsI/dBQD4YXEUHmEdE8ZxGh9n4C0nJZ
+	WbjEs8MX5e7Ci65GbQ27BOa3RaONLWwc8I832ChzajcCrxArK0XMikX5n6itsAjNT6wlmt9ISJf
+	ljX2ErEeulTfLAD9/67k6c4czjLuX2pN/RVVzrbXspP3YYK9g==
+X-Google-Smtp-Source: AGHT+IEdrbQJWbBux9pavyDpSQy9ZinCAuiOJMYN+NXoFglR2vnRt6D5+OiKnG1DQ8GqgnIDFnpngIY4dqYtYVE57TE=
+X-Received: by 2002:a17:902:f605:b0:25b:fba3:afb5 with SMTP id
+ d9443c01a7336-2902768ec14mr10451505ad.11.1760016185180; Thu, 09 Oct 2025
+ 06:23:05 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,354 +79,157 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
- folio sizes when registering hstate
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linux-kernel@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20250901150359.867252-1-david@redhat.com>
- <20250901150359.867252-9-david@redhat.com>
- <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
- <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
- <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
- <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
- <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
- <1db15a30-72d6-4045-8aa1-68bd8411b0ba@redhat.com>
- <0c730c52-97ee-43ea-9697-ac11d2880ab7@csgroup.eu>
- <543e9440-8ee0-4d9e-9b05-0107032d665b@redhat.com>
- <4632e721-0ac8-4d72-a8ed-e6c928eee94d@csgroup.eu>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <4632e721-0ac8-4d72-a8ed-e6c928eee94d@csgroup.eu>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: K1EMsJBpAFh8kCBvgce3cBt8wQ6MNo1Op7gTRBPCEoo_1760015113
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <aMpRqlDXXOR5qYFd@mdev> <CAP-5=fV05++2Qvcxs=+tqhTdpGK8L9e5HzVu=y+xHxy9AqLMmg@mail.gmail.com>
+ <CAD=FV=VNmjTVxcxgTQqjE7CTkK2NVGbRxFJSwv=yOHU8gj-urQ@mail.gmail.com>
+ <CAP-5=fW64xHEW+4dKU_voNv7E67nUOFm27FFBuhtFii52NiQUQ@mail.gmail.com>
+ <CAD=FV=U3ic707dLuUc+NfxtWF6-ZyRdE0OY2VA6TgvgWKCHUzg@mail.gmail.com>
+ <CAP-5=fVkw6TLjVuR3UCNs+X1cwVmYk7UFABio4oDOwfshqoP_g@mail.gmail.com>
+ <CAD=FV=UWkZx8xQD=jBkOO6h2f5tw_KCoqhHciw5hkEOYU=GM8A@mail.gmail.com>
+ <CAP-5=fXTFHcCE8pf5qgEf1AVODs2+r+_nDUOiWgdQeEgUBHzfA@mail.gmail.com>
+ <CAD=FV=VuDYiu5nL5ZeZcY2b+YXOzZtSu2E4qBBHz9fWTW8gPhg@mail.gmail.com>
+ <CAP-5=fX4=fV70N3GCdXgV6o-YoJynnSppxJp0MwdRrtsyDrs0w@mail.gmail.com> <aOdbRI3BaMCbyvtv@mdev>
+In-Reply-To: <aOdbRI3BaMCbyvtv@mdev>
+From: Ian Rogers <irogers@google.com>
+Date: Thu, 9 Oct 2025 06:22:53 -0700
+X-Gm-Features: AS18NWASwkyvua1-o-5GApfZryqQldGLDGiPEERJurLRPNNxfov3J3ycLz5Cqx0
+Message-ID: <CAP-5=fUAato=+jyNNESCX3SjWMEEJQ697VvWiBFCi5wKs_JQCA@mail.gmail.com>
+Subject: Re: [RFC PATCH V1] watchdog: Add boot-time selection for hard lockup detector
+To: Jinchao Wang <wangjinchao600@gmail.com>
+Cc: Doug Anderson <dianders@chromium.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Will Deacon <will@kernel.org>, Yunhui Cui <cuiyunhui@bytedance.com>, akpm@linux-foundation.org, 
+	catalin.marinas@arm.com, maddy@linux.ibm.com, mpe@ellerman.id.au, 
+	npiggin@gmail.com, christophe.leroy@csgroup.eu, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	acme@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com, 
+	jolsa@kernel.org, adrian.hunter@intel.com, kan.liang@linux.intel.com, 
+	kees@kernel.org, masahiroy@kernel.org, aliceryhl@google.com, ojeda@kernel.org, 
+	thomas.weissschuh@linutronix.de, xur@google.com, ruanjinjie@huawei.com, 
+	gshan@redhat.com, maz@kernel.org, suzuki.poulose@arm.com, 
+	zhanjie9@hisilicon.com, yangyicong@hisilicon.com, gautam@linux.ibm.com, 
+	arnd@arndb.de, zhao.xichao@vivo.com, rppt@kernel.org, lihuafei1@huawei.com, 
+	coxu@redhat.com, jpoimboe@kernel.org, yaozhenguo1@gmail.com, 
+	luogengkun@huaweicloud.com, max.kellermann@ionos.com, tj@kernel.org, 
+	yury.norov@gmail.com, thorsten.blum@linux.dev, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 09.10.25 14:08, Christophe Leroy wrote:
-> 
-> 
-> Le 09/10/2025 à 12:27, David Hildenbrand a écrit :
->> On 09.10.25 12:01, Christophe Leroy wrote:
->>>
->>>
->>> Le 09/10/2025 à 11:20, David Hildenbrand a écrit :
->>>> On 09.10.25 11:16, Christophe Leroy wrote:
->>>>>
->>>>>
->>>>> Le 09/10/2025 à 10:14, David Hildenbrand a écrit :
->>>>>> On 09.10.25 10:04, Christophe Leroy wrote:
->>>>>>>
->>>>>>>
->>>>>>> Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
->>>>>>>> On 09.10.25 09:14, Christophe Leroy wrote:
->>>>>>>>> Hi David,
->>>>>>>>>
->>>>>>>>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
->>>>>>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>>>>>>>> index 1e777cc51ad04..d3542e92a712e 100644
->>>>>>>>>> --- a/mm/hugetlb.c
->>>>>>>>>> +++ b/mm/hugetlb.c
->>>>>>>>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
->>>>>>>>>>            BUILD_BUG_ON(sizeof_field(struct page, private) *
->>>>>>>>>> BITS_PER_BYTE <
->>>>>>>>>>                    __NR_HPAGEFLAGS);
->>>>>>>>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
->>>>>>>>>>            if (!hugepages_supported()) {
->>>>>>>>>>                if (hugetlb_max_hstate ||
->>>>>>>>>> default_hstate_max_huge_pages)
->>>>>>>>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int
->>>>>>>>>> order)
->>>>>>>>>>            }
->>>>>>>>>>            BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
->>>>>>>>>>            BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
->>>>>>>>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
->>>>>>>>>>            h = &hstates[hugetlb_max_hstate++];
->>>>>>>>>>            __mutex_init(&h->resize_lock, "resize mutex", &h-
->>>>>>>>>>> resize_key);
->>>>>>>>>>            h->order = order;
->>>>>>>>
->>>>>>>> We end up registering hugetlb folios that are bigger than
->>>>>>>> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger
->>>>>>>> that
->>>>>>>> (and if we have to support that).
->>>>>>>>
->>>>>>>
->>>>>>> MAX_FOLIO_ORDER is defined as:
->>>>>>>
->>>>>>> #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
->>>>>>> #define MAX_FOLIO_ORDER        PUD_ORDER
->>>>>>> #else
->>>>>>> #define MAX_FOLIO_ORDER        MAX_PAGE_ORDER
->>>>>>> #endif
->>>>>>>
->>>>>>> MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via
->>>>>>> /sys/kernel/mm/hugepages/ but bigger pages can be created at boottime
->>>>>>> with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
->>>>>>>
->>>>>>>        hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
->>>>>>>
->>>>>>> Gives:
->>>>>>>
->>>>>>> HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
->>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
->>>>>>> HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
->>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
->>>>>>> HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
->>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
->>>>>>> HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
->>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
->>>>>>> HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
->>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
->>>>>>
->>>>>> I think it's a violation of CONFIG_ARCH_HAS_GIGANTIC_PAGE. The
->>>>>> existing
->>>>>> folio_dump() code would not handle it correctly as well.
->>>>>
->>>>> I'm trying to dig into history and when looking at commit 4eb0716e868e
->>>>> ("hugetlb: allow to free gigantic pages regardless of the
->>>>> configuration") I understand that CONFIG_ARCH_HAS_GIGANTIC_PAGE is
->>>>> needed to be able to allocate gigantic pages at runtime. It is not
->>>>> needed to reserve gigantic pages at boottime.
->>>>>
->>>>> What am I missing ?
->>>>
->>>> That CONFIG_ARCH_HAS_GIGANTIC_PAGE has nothing runtime-specific in its
->>>> name.
->>>
->>> In its name for sure, but the commit I mention says:
->>>
->>>        On systems without CONTIG_ALLOC activated but that support gigantic
->>> pages,
->>>        boottime reserved gigantic pages can not be freed at all.  This
->>> patch
->>>        simply enables the possibility to hand back those pages to memory
->>>        allocator.
->>
->> Right, I think it was a historical artifact.
->>
->>>
->>> And one of the hunks is:
->>>
->>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
->>> index 7f7fbd8bd9d5b..7a1aa53d188d3 100644
->>> --- a/arch/arm64/Kconfig
->>> +++ b/arch/arm64/Kconfig
->>> @@ -19,7 +19,7 @@ config ARM64
->>>            select ARCH_HAS_FAST_MULTIPLIER
->>>            select ARCH_HAS_FORTIFY_SOURCE
->>>            select ARCH_HAS_GCOV_PROFILE_ALL
->>> -       select ARCH_HAS_GIGANTIC_PAGE if CONTIG_ALLOC
->>> +       select ARCH_HAS_GIGANTIC_PAGE
->>>            select ARCH_HAS_KCOV
->>>            select ARCH_HAS_KEEPINITRD
->>>            select ARCH_HAS_MEMBARRIER_SYNC_CORE
->>>
->>> So I understand from the commit message that it was possible at that
->>> time to have gigantic pages without ARCH_HAS_GIGANTIC_PAGE as long as
->>> you didn't have to be able to free them during runtime.
->>
->> Yes, I agree.
->>
->>>
->>>>
->>>> Can't we just select CONFIG_ARCH_HAS_GIGANTIC_PAGE for the relevant
->>>> hugetlb config that allows for *gigantic pages*.
->>>>
->>>
->>> We probably can, but I'd really like to understand history and how we
->>> ended up in the situation we are now.
->>> Because blind fixes often lead to more problems.
->>
->> Yes, let's figure out how to to it cleanly.
->>
->>>
->>> If I follow things correctly I see a helper gigantic_page_supported()
->>> added by commit 944d9fec8d7a ("hugetlb: add support for gigantic page
->>> allocation at runtime").
->>>
->>> And then commit 461a7184320a ("mm/hugetlb: introduce
->>> ARCH_HAS_GIGANTIC_PAGE") is added to wrap gigantic_page_supported()
->>>
->>> Then commit 4eb0716e868e ("hugetlb: allow to free gigantic pages
->>> regardless of the configuration") changed gigantic_page_supported() to
->>> gigantic_page_runtime_supported()
->>>
->>> So where are we now ?
->>
->> In
->>
->> commit fae7d834c43ccdb9fcecaf4d0f33145d884b3e5c
->> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
->> Date:   Tue Feb 27 19:23:31 2024 +0000
->>
->>       mm: add __dump_folio()
->>
->>
->> We started assuming that a folio in the system (boottime, dynamic,
->> whatever)
->> has a maximum of MAX_FOLIO_NR_PAGES.
->>
->> Any other interpretation doesn't make any sense for MAX_FOLIO_NR_PAGES.
->>
->>
->> So we have two questions:
->>
->> 1) How to teach MAX_FOLIO_NR_PAGES that hugetlb supports gigantic pages
->>
->> 2) How do we handle CONFIG_ARCH_HAS_GIGANTIC_PAGE
->>
->>
->> We have the following options
->>
->> (A) Rename existing CONFIG_ARCH_HAS_GIGANTIC_PAGE to something else that is
->> clearer and add a new CONFIG_ARCH_HAS_GIGANTIC_PAGE.
->>
->> (B) Rename existing CONFIG_ARCH_HAS_GIGANTIC_PAGE -> to something else
->> that is
->> clearer and derive somehow else that hugetlb in that config supports
->> gigantic pages.
->>
->> (c) Just use CONFIG_ARCH_HAS_GIGANTIC_PAGE if hugetlb on an architecture
->> supports gigantic pages.
->>
->>
->> I don't quite see why an architecture should be able to opt in into
->> dynamically
->> allocating+freeing gigantic pages. That's just CONTIG_ALLOC magic and
->> not some
->> arch-specific thing IIRC.
->>
->>
->> Note that in mm/hugetlb.c it is
->>
->>       #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
->>       #ifdef CONFIG_CONTIG_ALLOC
->>
->> Meaning that at least the allocation side is guarded by CONTIG_ALLOC.
-> 
-> Yes but not the freeing since commit 4eb0716e868e ("hugetlb: allow to
-> free gigantic pages regardless of the configuration")
+On Wed, Oct 8, 2025 at 11:50=E2=80=AFPM Jinchao Wang <wangjinchao600@gmail.=
+com> wrote:
+>
+> On Tue, Oct 07, 2025 at 05:11:52PM -0700, Ian Rogers wrote:
+> > On Tue, Oct 7, 2025 at 3:58=E2=80=AFPM Doug Anderson <dianders@chromium=
+.org> wrote:
+> > >
+> > > Hi,
+> > >
+> > > On Tue, Oct 7, 2025 at 3:45=E2=80=AFPM Ian Rogers <irogers@google.com=
+> wrote:
+> > > >
+> > > > On Tue, Oct 7, 2025 at 2:43=E2=80=AFPM Doug Anderson <dianders@chro=
+mium.org> wrote:
+> > > > ...
+> > > > > The buddy watchdog was pretty much following the conventions that=
+ were
+> > > > > already in the code: that the hardlockup detector (whether backed=
+ by
+> > > > > perf or not) was essentially called the "nmi watchdog". There wer=
+e a
+> > > > > number of people that were involved in reviews and I don't believ=
+e
+> > > > > suggesting creating a whole different mechanism for enabling /
+> > > > > disabling the buddy watchdog was never suggested.
+> > > >
+> > > > I suspect they lacked the context that 1 in the nmi_watchdog is tak=
+en
+> > > > to mean there's a perf event in use by the kernel with implications=
+ on
+> > > > how group events behave. This behavior has been user
+> > > > visible/advertised for 9 years. I don't doubt that there were good
+> > > > intentions by PowerPC's watchdog and in the buddy watchdog patches =
+in
+> > > > using the file, that use will lead to spurious warnings and behavio=
+rs
+> > > > by perf.
+> > > >
+> > > > My points remain:
+> > > > 1) using multiple files regresses perf's performance;
+> > > > 2) the file name by its meaning is wrong;
+> > > > 3) old perf tools on new kernels won't behave as expected wrt warni=
+ngs
+> > > > and metrics because the meaning of the file has changed.
+> > > > Using a separate file for each watchdog resolves this. It seems tha=
+t
+> > > > there wasn't enough critical mass for getting this right to have
+> > > > mattered before, but that doesn't mean we shouldn't get it right no=
+w.
+> > >
+> > > Presumably your next steps then are to find someone to submit a patch
+> > > and try to convince others on the list that this is a good idea. The
+> > > issue with perf has been known for a while now and I haven't seen any
+> > > patches. As I've said, I won't stand in the way if everyone else
+> > > agrees, but given that I'm still not convinced I'm not going to autho=
+r
+> > > any patches for this myself.
+> >
+> > Writing >1 of:
+> > ```
+> > static struct ctl_table watchdog_hardlockup_sysctl[] =3D {
+> > {
+> > .procname       =3D "nmi_watchdog",
+> > .data =3D &watchdog_hardlockup_user_enabled,
+> > .maxlen =3D sizeof(int),
+> > .mode =3D 0444,
+> > .proc_handler   =3D proc_nmi_watchdog,
+> > .extra1 =3D SYSCTL_ZERO,
+> > .extra2 =3D SYSCTL_ONE,
+> > },
+> > };
+> > ```
+> > is an exercise of copy-and-paste, if you need me to do the copy and
+> > pasting then it is okay.
+> Can we get whether a perf event is already in use directly from the
+> perf subsystem? There may be (or will be) other kernel users of
+> perf_event besides the NMI watchdog. Exposing that state from the perf
+> side would avoid coupling unrelated users through nmi_watchdog and
+> similar features.
 
-Right, the freeing path is just always around as we no longer depend 
-free_contig_range().
+For regular processes there is this unmerged proposal:
+https://lore.kernel.org/lkml/20250603181634.1362626-1-ctshao@google.com/
+it doesn't say whether the counter is pinned - the NMI watchdog's
+counter is pinned to be a higher priority that flexible regular
+counters that may be multiplexed. I don't believe there is anything to
+say whether the kernel has taken a performance counter. In general
+something else taking a performance counter is okay as  the kernel
+will multiplex the counter or groups of counters.
 
-> 
->>
->> So I think (C) is just the right thing to do.
->>
->> diff --git a/fs/Kconfig b/fs/Kconfig
->> index 0bfdaecaa8775..12c11eb9279d3 100644
->> --- a/fs/Kconfig
->> +++ b/fs/Kconfig
->> @@ -283,6 +283,8 @@ config HUGETLB_PMD_PAGE_TABLE_SHARING
->>           def_bool HUGETLB_PAGE
->>           depends on ARCH_WANT_HUGE_PMD_SHARE && SPLIT_PMD_PTLOCKS
->>
->> +# An architecture must select this option if there is any mechanism
->> (esp. hugetlb)
->> +# could obtain gigantic folios.
->>    config ARCH_HAS_GIGANTIC_PAGE
->>           bool
->>
->>
-> 
-> I gave it a try. That's not enough, it fixes the problem for 64 Mbytes
-> pages and 256 Mbytes pages, but not for 1 Gbytes pages.
+The particular issue for the NMI watchdog counter is that groups of
+events are tested to see if they fit on a PMU, the perf event open
+will fail when a group isn't possible and then the events will be
+reprogrammed by the perf tool without a group. When the group is
+tested the PMU has always assumed that all counters are available,
+which of course with the NMI watchdog they are not. This results with
+the NMI watchdog causing a group of events to be created that can
+never be scheduled.
 
-Thanks!
+Thanks,
+Ian
 
-> 
-> Max folio is defined by PUD_ORDER, but PUD_SIZE is 256 Mbytes so we need
-> to make MAX_FOLIO larger. Do we change it to P4D_ORDER or is it too much
-> ? P4D_SIZE is 128 Gbytes
-
-The exact size doesn't matter, we started with something that soundes 
-reasonable.
-
-I added the comment "There is no real limit on the folio size. We limit 
-them to the maximum we currently expect (e.g., hugetlb, dax)."
-
-We can set it to whatever we would expect for now.
-
--- 
-Cheers
-
-David / dhildenb
-
+> >
+> > Thanks,
+> > Ian
+> >
+> >
+> > > -Doug
+> > >
+>
+> --
+> Jinchao
 
