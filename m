@@ -1,71 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-12753-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12754-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8FBFBC9E52
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 18:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93912BCA6DF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 19:50:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cjF264hKLz2yr2;
-	Fri, 10 Oct 2025 02:59:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cjHTn1Rljz2ySJ;
+	Fri, 10 Oct 2025 04:50:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::136"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760025598;
-	cv=none; b=D1hfschrecJVw4pd0KmW7XZG/X9dnJhoS2Y09zq7FkXz2gViBUCPFoiK/6R9ddB/HYfyo3AsUXmJfn5ilXfEQkxvfO/TQpNGcQyyvviRvCFWyPYrmyG+z2oSvzIEI542cdvrwcm70HmVKr785Pe2asfHHYLQAUYAAnvVvl1C9e1v+PjfqiCnh3AQqPiP+/kKIyH2HFr6ILGu8P0/DhvDurJBTnmNDgnHskmOuI74Tu16QIGZfW5VjlyKyulv2yD7usbDdx7bYMgUap3M11vnF3GVb1RaE1AmrrNOG+5qTr4iVQTzlvL8Yb1rLgp5JUBSsspvBLL868kbxtk0Mj3tfw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760032237;
+	cv=none; b=QEc56RbpWkwfRCaP/St84F5ZtaGsjl2QSc8BJBODrb9qT95BtGN41mXaXF+8TA3RcgFKhhZauiC9kZRUCZ3ppqGEPjjf3mvJYHgq67eJCh8JlwhMCos29xv4jVxK4GTVXEH4i8Gxkltc9VS/IOTlzu4PgwAkSTEQQHGapP7OqPWf6DbLUcNVaYb8B395jTINbttlgjaanj6rj7Vw3YMsXXrDSFL/k/BMYxJsfhvb+xM/7Lnjc/Q9EUGCqZVjcJrxptXF8nNJKoNGZAoVsb19QKdOb8ZuUoFbOww74vOu9JDsVg7di5ALKVKRqSqsRdyyA+k6XsK9lym4SLffct6Gfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760025598; c=relaxed/relaxed;
-	bh=WQBxmURKiGaN3QIqBhTff7pEbZ70mJ9TllMgftPCUcQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JTqMWb5AVN6CAdWAkXYLiGqqTZCejtf6xKv5/Ofc7xvk1laL/p2PV3X5kbt4yoBJJZ08eBVyLQPu/IT58GgK0W641/xHv3bCFPYjob4Bhxz+ZSdHvEMo8PcqKUatCWLI59aEDgBn7TuDNZCkcT3/+eOPqaIBiDF4QUJIpODocnMk+9+5JAoEZ8UOammgKQZQQL5PZTcmLTFLjWtdi+4c1Ji8P0N8Nqi4ic0AQrPKdOavnKdTpXdXhX+t1XlDAIEap0fU4ivEZPwHvSCEyjeyUwOFAz8Mxv6Cck6JgxiBImu5E9TW8JSYOCTxVrw9aBwWvzywo7u9SUOUtxm/lHuS2A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gKQS6Co+; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::136; helo=mail-lf1-x136.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gKQS6Co+;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::136; helo=mail-lf1-x136.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cjF246JX8z2xnt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Oct 2025 02:59:56 +1100 (AEDT)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-57db15eeb11so1403596e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Oct 2025 08:59:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760025590; x=1760630390; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WQBxmURKiGaN3QIqBhTff7pEbZ70mJ9TllMgftPCUcQ=;
-        b=gKQS6Co+2pB/V7nDCUqzR2HDgatj6JVlgbBYIByaQ952xblX7TLIfkO0JabkEW9RDV
-         zFagkzuNkpyCKwBvKDyK4qdQqt9PCfS31uyfrrGGr5z81ZiZkiphs8gKzQOm50t8rjrl
-         S4JMXMdQ3Ljn3Hxs+6nYoArKT/efVOpRESl/ONP6AkxKknpJCbmJnuPDF6ETCW34nZlL
-         ApdhixjXual2vVtRQpHkdfGvcgwY4knVJ7HzcFDgsXaCVAr1dbTe36EmWDZf+9poYrWe
-         IgvSHnaeh/jo3ix9GX/z+ixDvnGOFMvSeq5ap6WMQ/XR4PUIoRklpNnQvPeF0cuMxbrd
-         kNHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760025590; x=1760630390;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WQBxmURKiGaN3QIqBhTff7pEbZ70mJ9TllMgftPCUcQ=;
-        b=C/4W7CpfiAYSzakO6EjPeKPwwCpeyKVqOfwir1R/kSy6NbMzATCys7ydySRMKWHPeU
-         6GvXh04oG2eTg3kXE6E+dYYKPggJ2GOW19VaTxvSLqkhDkElqA02+aS0DBj0ZDEUiUPv
-         gBPgYryRUXWEYgG//yiQMELPKm+y9sPZxFlZpgySQO7yhmfHbEifksQA5SjIgAbeT7KN
-         1HCAq4f1R4fG+tXwpje8uxUoAqLujmOCk4dKNsav0IfO+PpFQhIVa9gHiGDkYAVYsVi7
-         HEs7A8BZrI2IBeR4eIVdrsLvw+dCGLfW0dDWcfijaxkJFJafBoufTE4D6rrY+UeMJyWG
-         PrMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVybm7nBWUFtfLgduZIbOFvNgrf6IxDD1xHXIk/cEJ/pD24Ws6yKtk3EpER7TiXMPwGDUiexeF2loqpVGo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzXZ2PF6jagsqvZMVc92eBwtF7iJIrdf3SaBSd7ctUuQswDLoPL
-	2HbRkE2QiPfLWjJrRj9U/1gyO1fyXXQFet7UGYl9myafKlU7ZPIJ2CDcREfKtzvcFLp5mn6ida8
-	VBEaJ2x4rUkU7bWi+MDMMME9pmLOyOk4=
-X-Gm-Gg: ASbGnctz5Px9wpAxRNPYh2LqzJcptEdVxCft67Mx/nBnKvev+y4nk1fRuyfc285BguO
-	zvy/9Elo4BwgzvIGJeSjY1V1qrS9rNexSPaWP4lfiphp0zdeWVIJnYF6WMRwLDY9RteJCNyO9hb
-	HUli/UusaLvTiov/1DsuzzIsu+SFwMKqSe86dyurPgvlOzCsCwfsy92BaaIygKZEEufvAtL0qXi
-	6Ved27tRIa+4kWLWkU9vL8eEzmYRpP31hocGJ7vLQ==
-X-Google-Smtp-Source: AGHT+IFiOw5ablsLgUKfCaNuQJri4wcztl+zI4ly3LRjrgaXjzgOnqWcpR8ZMzuTHWFg5QDe7h9JoAEutSyQKhvfT4w=
-X-Received: by 2002:a05:6512:1291:b0:57d:ffa4:56f4 with SMTP id
- 2adb3069b0e04-5906dae5904mr2393608e87.41.1760025589415; Thu, 09 Oct 2025
- 08:59:49 -0700 (PDT)
+	t=1760032237; c=relaxed/relaxed;
+	bh=ONlAYRiVq7bcsDLHwlsE88mccd0qUecYyOUGpSLcEDE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UeADj8ln57mZmbVWOnX52jS8Fi/2MwcFQd//MKfGaKtDeYINlNY62fbAbhGWTr4nn8TKytP2lxnHlb5AiCbUIlJ9vNoDnOJdSi4VOFkZTL5w02W10W4fdHI067M5KWs4HHSwSqbZc+5GurhL6DlHbmPnb3O1GrfsqK89IYM/M49QMODesGLduJ1DdIAW5TjNZtgv7qdzY4c6zF7dlJRQldCFoHDL1k2yb4me0zYo1c7amv1ZeDaisHyXBI34zJr76jLVRb93SE4+TyMNXknxNKdJdhcJaZ2KFJ+kMze4Gcm22AIByxnpGD51ql52MTXC0nuIjWlpHUw4ULBESWvH5w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cjHTm2BRHz2xnt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Oct 2025 04:50:35 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cjBQk37hsz9sSm;
+	Thu,  9 Oct 2025 16:02:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id z14JQMJxERpX; Thu,  9 Oct 2025 16:02:38 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cjBQk23D0z9sSb;
+	Thu,  9 Oct 2025 16:02:38 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 31FB08B76C;
+	Thu,  9 Oct 2025 16:02:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id RkFPso1hSIXA; Thu,  9 Oct 2025 16:02:38 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 738278B767;
+	Thu,  9 Oct 2025 16:02:37 +0200 (CEST)
+Message-ID: <7a818442-2c5b-433d-874f-4a11ce3ed42f@csgroup.eu>
+Date: Thu, 9 Oct 2025 16:02:37 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,98 +57,173 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250810125746.1105476-1-snovitoll@gmail.com> <20250810125746.1105476-2-snovitoll@gmail.com>
- <87ldmv6p5n.ritesh.list@gmail.com>
-In-Reply-To: <87ldmv6p5n.ritesh.list@gmail.com>
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Date: Thu, 9 Oct 2025 20:59:32 +0500
-X-Gm-Features: AS18NWAnJdcYDP3fsUmpv8ZuZnvVnkv1zMHsU4QWH3X3orZoE8748Ur0FWZohd0
-Message-ID: <CACzwLxia6xMcQ=vsYG7SE+pUO8=4DiRWD_Omq3wzRyuhDjGcPQ@mail.gmail.com>
-Subject: Re: [PATCH v6 1/2] kasan: introduce ARCH_DEFER_KASAN and unify static
- key across modes
-To: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: ryabinin.a.a@gmail.com, christophe.leroy@csgroup.eu, bhe@redhat.com, 
-	hca@linux.ibm.com, andreyknvl@gmail.com, akpm@linux-foundation.org, 
-	zhangqing@loongson.cn, chenhuacai@loongson.cn, davidgow@google.com, 
-	glider@google.com, dvyukov@google.com, alexghiti@rivosinc.com, alex@ghiti.fr, 
-	agordeev@linux.ibm.com, vincenzo.frascino@arm.com, elver@google.com, 
-	kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] dt-bindings: powerpc: Add Freescale/NXP MPC83xx SoCs
+To: j.ne@posteo.net, Scott Wood <oss@buserror.net>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250412-ppcyaml-soc-v4-1-bd34f4613d31@posteo.net>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250412-ppcyaml-soc-v4-1-bd34f4613d31@posteo.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Sep 4, 2025 at 5:38=E2=80=AFAM Ritesh Harjani <ritesh.list@gmail.co=
-m> wrote:
->
->
-> Only book3s64 needs static keys here because of radix v/s hash mode
-> selection during runtime. The changes in above for powerpc looks good to
-> me. It's a nice cleanup too.
->
 
-Hello,
-Thanks for the review and sorry for the late reply. This has already
-been merged.
-AFAIU, in arch/powerpc/Kconfig
 
-config PPC
-...
-        select ARCH_NEEDS_DEFER_KASAN if PPC_RADIX_MMU
+Le 12/04/2025 à 15:55, J. Neuschäfer via B4 Relay a écrit :
+> From: "J. Neuschäfer" <j.ne@posteo.net>
+> 
+> Add a new binding for MPC83xx platforms, describing the board compatible
+> strings used in currently existing device trees.
+> 
+> Note that the SoC bus is called immr@... in many existing devicetrees,
+> but this contradicts the simple-bus binding.
+> 
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> ---
 
-and in arch/powerpc/platforms/Kconfig.cputype:
+Looks consistant with mpc83xx platforms.
 
-config PPC_RADIX_MMU
-        bool "Radix MMU Support"
-        depends on PPC_BOOK3S_64
-        select ARCH_HAS_GIGANTIC_PAGE
-        default y
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-So the KASAN static key is enabled only for PPC_BOOK3S_64 by this
-Kconfig selection.
-In other git changes like:
-arch/powerpc/mm/kasan/init_32.c
-arch/powerpc/mm/kasan/init_book3e_64.c
+For correctness with dt-bindings documentation format check with DT 
+maintainers/reviewers.
 
-, where we call kasan_init_generic() -> kasan_enable() does nothing because
-CONFIG_ARCH_DEFER_KASAN is not selected.
+> Changes in v4:
+> - Rebase on v6.15-rc1
+> - Link to v3: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250220-ppcyaml-soc-v3-1-b8c98a61bc1a%40posteo.net&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C6a17702bd4a14e74161208dd79cbabc9%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638800637855467799%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=bmGcvUV0O7kyAlbwQQw1Ct8a%2FFz7ZI1Ama79vSykKjo%3D&reserved=0
+> ---
+> 
+> V4:
+> - Try to list all existing compatible strings for MPC83xx boards
+> 
+> V3:
+> - split out as a single patch
+> - otherwise no changes
+> 
+> V2:
+> - part of series [PATCH v2 00/12] YAML conversion of several Freescale/PowerPC DT bindings
+>    Link: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flkml%2F20250207-ppcyaml-v2-1-8137b0c42526%40posteo.net%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C6a17702bd4a14e74161208dd79cbabc9%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638800637855486884%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=JcWFEfu6kvOEwZPXGlH1wG3Ab2zyukRXva%2FW2sr05lA%3D&reserved=0
+> - trim subject line
+> - fix property order to comply with dts coding style
+> - add Rob Herrings's R-b tag
+> ---
+>   .../bindings/powerpc/fsl/fsl,mpc83xx.yaml          | 93 ++++++++++++++++++++++
+>   1 file changed, 93 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/powerpc/fsl/fsl,mpc83xx.yaml b/Documentation/devicetree/bindings/powerpc/fsl/fsl,mpc83xx.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..9e37d155c5829a652d1e4e59536b6586a58d530e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/fsl/fsl,mpc83xx.yaml
+> @@ -0,0 +1,93 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevicetree.org%2Fschemas%2Fpowerpc%2Ffsl%2Ffsl%2Cmpc83xx.yaml%23&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C6a17702bd4a14e74161208dd79cbabc9%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638800637855503120%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=5X55e7ezKH%2ByZkaMchZ3iEIIKt1cLZBcDIsUqyMiBA0%3D&reserved=0
+> +$schema: https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevicetree.org%2Fmeta-schemas%2Fcore.yaml%23&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C6a17702bd4a14e74161208dd79cbabc9%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638800637855517944%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=9%2BNfMJcauF%2FFaVQpIovnwAKbRkclTrmZRPehLopstsM%3D&reserved=0
+> +
+> +title: Freescale PowerQUICC II Pro (MPC83xx) platforms
+> +
+> +maintainers:
+> +  - J. Neuschäfer <j.ne@posteo.net>
+> +
+> +properties:
+> +  $nodename:
+> +    const: '/'
+> +  compatible:
+> +    oneOf:
+> +      - description: MPC83xx Reference Design Boards
+> +        items:
+> +          - enum:
+> +              - fsl,mpc8308rdb
+> +              - fsl,mpc8315erdb
+> +              - fsl,mpc8360rdk
+> +              - fsl,mpc8377rdb
+> +              - fsl,mpc8377wlan
+> +              - fsl,mpc8378rdb
+> +              - fsl,mpc8379rdb
+> +
+> +      - description: MPC8313E Reference Design Board
+> +        items:
+> +          - const: MPC8313ERDB
+> +          - const: MPC831xRDB
+> +          - const: MPC83xxRDB
+> +
+> +      - description: MPC8323E Reference Design Board
+> +        items:
+> +          - const: MPC8323ERDB
+> +          - const: MPC832xRDB
+> +          - const: MPC83xxRDB
+> +
+> +      - description: MPC8349E-mITX(-GP) Reference Design Platform
+> +        items:
+> +          - enum:
+> +              - MPC8349EMITX
+> +              - MPC8349EMITXGP
+> +          - const: MPC834xMITX
+> +          - const: MPC83xxMITX
+> +
+> +      - description: Keymile KMETER1 board
+> +        const: keymile,KMETER1
+> +
+> +      - description: MPC8308 P1M board
+> +        const: denx,mpc8308_p1m
+> +
+> +patternProperties:
+> +  "^soc@.*$":
+> +    type: object
+> +    properties:
+> +      compatible:
+> +        oneOf:
+> +          - items:
+> +              - enum:
+> +                  - fsl,mpc8315-immr
+> +                  - fsl,mpc8308-immr
+> +              - const: simple-bus
+> +          - items:
+> +              - const: fsl,mpc8360-immr
+> +              - const: fsl,immr
+> +              - const: fsl,soc
+> +              - const: simple-bus
+> +          - const: simple-bus
+> +
+> +additionalProperties: true
+> +
+> +examples:
+> +  - |
+> +    / {
+> +        compatible = "fsl,mpc8315erdb";
+> +        model = "MPC8315E-RDB";
+> +        #address-cells = <1>;
+> +        #size-cells = <1>;
+> +
+> +        soc@e0000000 {
+> +            compatible = "fsl,mpc8315-immr", "simple-bus";
+> +            reg = <0xe0000000 0x00000200>;
+> +            #address-cells = <1>;
+> +            #size-cells = <1>;
+> +            device_type = "soc";
+> +            ranges = <0 0xe0000000 0x00100000>;
+> +            bus-frequency = <0>;
+> +        };
+> +    };
+> +
+> +...
+> 
+> ---
+> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+> change-id: 20250220-ppcyaml-soc-cae1f14cf389
+> 
+> Best regards,
 
-> So feel free to take:
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> #powerpc
->
-> However I have few comments below...
->
-> > @@ -246,7 +255,7 @@ static inline void poison_slab_object(struct kmem_c=
-ache *cache, void *object,
-> >  bool __kasan_slab_pre_free(struct kmem_cache *cache, void *object,
-> >                               unsigned long ip)
-> >  {
-> > -     if (!kasan_arch_is_ready() || is_kfence_address(object))
-> > +     if (is_kfence_address(object))
->
-> For changes in mm/kasan/common.c.. you have removed !kasan_enabled()
-> check at few places. This seems to be partial revert of commit [1]:
->
->   b3c34245756ada "kasan: catch invalid free before SLUB reinitializes the=
- object"
->
-> Can you please explain why this needs to be removed?
-
-kasan_arch_is_ready() was removed here because in
-commit 1e338f4d99e6("kasan: introduce ARCH_DEFER_KASAN and unify
-static key across modes")
-I've unified the check with kasan_enabled() which is already called in
-the __wrapper
-__kasan_slab_pre_free in include/linux/kasan.h
-
-> Also the explaination of the same should be added in the commit msg too.
->
-> [1]: https://lore.kernel.org/all/20240809-kasan-tsbrcu-v8-1-aef4593f9532@=
-google.com/
->
 
