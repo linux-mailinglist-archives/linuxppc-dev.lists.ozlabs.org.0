@@ -1,100 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-12721-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12722-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53BBEBC7040
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 02:41:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 847B4BC70C7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 03:07:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4chrfF1rT0z30NF;
-	Thu,  9 Oct 2025 11:41:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4chsD02FJkz300F;
+	Thu,  9 Oct 2025 12:07:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759970485;
-	cv=none; b=CG6M1oLVWp7Meke3Diwewjj7gMSiKNf28oSQm5m0UMEY4hIX8OrqJ3CvmrJ7KkvGy2PcEf52Pszl4QTyEUqbcCCyPT0jbFnf9PslZJv7d6r2Ex0m1t+HvLGizQmpiWP1O8zehL9Fxde2x/OL4rpZDxPpjSpnkNDIkIS808P0jf6wmKePdejfiEumwz6m2bjwCF4Y9LKcIdy3FNbzNquspb/Ra8A3goBzQwlfEKndUK1nMYicvWdoVnMzdtUeYCAblxlUi67wQKN8oEMx2hRmg5+OkXIF//j5mYKZIdPKHLRNLjPM4YEb+pl95cLlNq4ofSsGBQmdWrhT5+u7DNYf2Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759972032;
+	cv=none; b=U0ULFFSOQSpstg6tBm1uUNvyzIsaG2xcuQWvPhWaLflJP0PaAukoLvnqghX5XjckVjx1I1d6PniKdeA9eJk4e/kfPdGQ5UKszU4enjb3ByFBBbgTTowKO8uzI8uDjjdqEwEDGiKVvNfxb/G1x8Y8NE1kQGZhnZiwO+FjqlMRil2zFWPaeJqTWEIeBS9nUY7my2r8D9C7T02z5LIsK6MQvWvISW1whMgePoxPWhzsI1ayO5HdmuOk4ePn8jxgvrMwXbbMBY4/fMX9uW4qD0q7bM5fyVImJl/gwQu5uOnjwBI76M9wT2DF/6VgfIYURltZEUUEDvJdYeAB8c6IDpF4Fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759970485; c=relaxed/relaxed;
-	bh=X1uEAUo9Wl+a6bB3iejTxXaXf2cfXqGB4eT/Jgnc1b0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aAgaHldT9w4y5QBuk56kWzbR0ATLzR5+zO6b3cLyQ7jrWdmNz1SXD1ZVrrpVJrukcKuaZ5C+wMhAgSsNmt7U6399k0IFIth/O4ydsa6azgILnCV1UTpaBjO8FHYELxGgxFU4u7UJ/rWP+yxmeC1K6n0NcgqqTUA1XCLZ3Rh+N64KX0OIVcaAjcWtwIrsub8XrTi8OGlsM8uhO5chFVf2aDHOZOTc3b6rR9tDI3XKnnxbwoTTQMIoceGNR5aKEWMxMM3FppqnXsQs4MUnV6n/PIvsSX+/vSw7qOjWclfyVRSxGTcipAs86wq1oNikH0TwnBdOZpz4Jmk4iEOkP3NF6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ilzzWjVG; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1759972032; c=relaxed/relaxed;
+	bh=Godd2xdELLl8pRhLIf389eS3C6nK6bE96pcvVwqQimk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=MUqpd2Klq6XZWbwjCdk/nBGxcev9Q+lUOG6XgyAtwLdFvQxz86gTN45skP11y38bFuopxu+kALgJu0I5zqwxaRPAfydmN2w7D+33lNNZDH7ghOFYSybcw2owRalSxyvf+d+wOJdH82HFu09HkIlyWIhAoYLlGFvWw7onOm6a7QRjPAKt7/m61LO19O1kcJENf2nTPUbfkXigymc9n4jxHVNPf2DOMHVbovAfMWtzyPyNfyE98CAHnUDguXCO3Rc91bMa10it1X5EAEaXyfKBZCnN9eFsVbOFcccyAtQ0jIdTxRIso15BGk3swF3CdUwVPTLkxStLYQp3q4rk6S9zlg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z85MDq7b; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ilzzWjVG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z85MDq7b;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4chrfC1GwCz2xcB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 11:41:22 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 598HIG4J014342;
-	Thu, 9 Oct 2025 00:41:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=X1uEAU
-	o9Wl+a6bB3iejTxXaXf2cfXqGB4eT/Jgnc1b0=; b=ilzzWjVG8shBBOmqPtOtde
-	ffbCTT+hU5za5QivClVwRTqv35cCALKeMJPel/8iZoddfT0vfkUkje6yfmKVbcQS
-	5C5uyRxyXd0h7bh/yDJPHrLmRZ+OjDqZ7UXtNO15Rsm2vJpZqLoLP/H+/I8MHc8S
-	ecilEond6nPMcOUYD8FEqTvo0Xo/Gvu2XavZ/4VRUx5C0eDuKBQm5eAjEInTVQ6p
-	4rd2BH11KG/9eupeW73mulkXYODjXtrWHWNRLA5EgpKkLM8XTTzPki615W8iBruy
-	jMPq55rx5fyO4ICdm6OEW0ySlzSyspRdV/BZ4Fu/9N2JAlnkGktiuf+UHPtgxMyw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49nv84hm0m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Oct 2025 00:41:05 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5990d4cT005253;
-	Thu, 9 Oct 2025 00:41:05 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49nv84hm0j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Oct 2025 00:41:05 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 598L0RDw020966;
-	Thu, 9 Oct 2025 00:41:04 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49nv9mskam-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Oct 2025 00:41:04 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5990f3CQ24707826
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Oct 2025 00:41:03 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F054158056;
-	Thu,  9 Oct 2025 00:41:02 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A808758052;
-	Thu,  9 Oct 2025 00:40:57 +0000 (GMT)
-Received: from jarvis.ozlabs.ibm.com (unknown [9.150.21.155])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Oct 2025 00:40:57 +0000 (GMT)
-Message-ID: <19ffe9eeb8703656285cab6f0d819602860bb28b.camel@linux.ibm.com>
-Subject: Re: [PATCH] powerpc, ocxl: Fix extraction of struct xive_irq_data
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Nam Cao <namcao@linutronix.de>, Madhavan Srinivasan
- <maddy@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael
- Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy	
- <christophe.leroy@csgroup.eu>,
-        Frederic Barrat <fbarrat@linux.ibm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman	
- <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Ritesh Harjani (IBM)"	
- <ritesh.list@gmail.com>
-Date: Thu, 09 Oct 2025 11:40:55 +1100
-In-Reply-To: <20251008081359.1382699-1-namcao@linutronix.de>
-References: <20251008081359.1382699-1-namcao@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4chsCz2nT9z2xcB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 12:07:11 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B3A866212F;
+	Thu,  9 Oct 2025 01:07:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE42C4CEF8;
+	Thu,  9 Oct 2025 01:07:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759972027;
+	bh=VISjCl3028ZdolLBlNDZGd4lu4o1butuKMV03AtZBlw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Z85MDq7bFHAVb7Rv7QvW4jT9Y15cPiI0WVlhCJV3Hb8KzH2ZYtKDIugmNBfAaGySd
+	 z5ewF5rNJ+Eg/0lDf4iQ7eqlYgIW0QFXYttqFueGd0EyH0q3YxGVMid01GmetPjhLw
+	 CLKH4BhiZk2QE9ZHGNcP1R+Uu7twuBVmXVU7JX+WU6Qkgezekw/tfTay9IqLn/03qv
+	 fGM0puNNPNlEwlNS8diIH3zKif6A6uWsftAXlyDWexxIsHVq/Ua4/nh1U3nC4uYics
+	 +WuF25l1nNqeg2I6RnH6RhbrrEuRMwXBeUzGy3elVssgawfAsHG1eRRK1qPPGapFZ4
+	 MDqB4RaRlBhng==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB00C3A41017;
+	Thu,  9 Oct 2025 01:06:56 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -108,73 +60,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=HKPO14tv c=1 sm=1 tr=0 ts=68e704a1 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8
- a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=ORaXvX-jSRnqCH-k56AA:9 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: qc41LZ5LRnou00jqr-qzsnTD1f3s1L5B
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfX+AiqY55t6yVt
- WkA5/FNZiY0LVjd/uT6RSzioj0FQal/yJIwS9t+LRVcHY81T/QPAVkreq0692NRukSOtfS43Aly
- wtL+cyieojn+lukv3ur34R8wBiDE4ASh/0q0Ge2WrPXBwDi4EMTv5JkZEZOOT02FHjpDR38QDtt
- BAnzmg/Ne7ZrlETNWTBYKhvTxnUxOGue9f5UAIn8Rbp3J9gSsXurbeC8kvPHeGkdBAQvqQU5v9U
- aAcGwVoXm6MzhcuSIkvj8gRZQERCV6NXEsoPUIOfR/rlsFQ6UQtYhD0//ioC2UR2Z0doRjgeZPl
- CDhVPfGEJn4nKAIS2Kf1ltdeS/IJGJVGjjEdNzbeTZVkjemNTH0mjGFXsjz3w5oNVVPBgz4tbFt
- yW85omm8KpnYqxsekaNtEc98nEyy2Q==
-X-Proofpoint-ORIG-GUID: 5rcrvfIYB7kqsqOT9o5GxnxQPaRznZJu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-08_08,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
- adultscore=0 clxscore=1011 phishscore=0 priorityscore=1501 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510080121
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 00/11] vdso: Various cleanups
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <175997201575.3661959.11378704835584004005.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Oct 2025 01:06:55 +0000
+References: <20250826-vdso-cleanups-v1-0-d9b65750e49f@linutronix.de>
+In-Reply-To: <20250826-vdso-cleanups-v1-0-d9b65750e49f@linutronix.de>
+To: =?utf-8?q?Thomas_Wei=C3=9Fschuh_=3Cthomas=2Eweissschuh=40linutronix=2Ede=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: linux-riscv@lists.infradead.org, luto@kernel.org, tglx@linutronix.de,
+ vincenzo.frascino@arm.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, alex@ghiti.fr, namcao@linutronix.de,
+ linux@armlinux.org.uk, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
+ kernel@xen0n.name, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+ hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+ borntraeger@linux.ibm.com, svens@linux.ibm.com, arnd@arndb.de,
+ brauner@kernel.org, shuah@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux@rasmusvillemoes.dk
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 2025-10-08 at 08:13 +0000, Nam Cao wrote:
-> Commit cc0cc23babc9 ("powerpc/xive: Untangle xive from child interrupt
-> controller drivers") changed xive_irq_data to be stashed to chip_data
-> instead of handler_data. However, multiple places are still attempting to
-> read xive_irq_data from handler_data and get a NULL pointer deference bug=
-.
->=20
-> Update them to read xive_irq_data from chip_data.
->=20
-> Non-XIVE files which touch xive_irq_data seem quite strange to me,
-> especially the ocxl driver. I think there ought to be an alternative
-> platform-independent solution, instead of touching XIVE's data directly.
-> Therefore, I think this whole thing should be cleaned up. But perhaps I
-> just misunderstand something. In any case, this cleanup would not be
-> trivial; for now, just get things working again.
+Hello:
 
-ocxl has always done quite a few weird things...
+This series was applied to riscv/linux.git (for-next)
+by Thomas Gleixner <tglx@linutronix.de>:
 
->=20
-> Fixes: cc0cc23babc9 ("powerpc/xive: Untangle xive from child interrupt
-> controller drivers")
-> Reported-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Closes:
-> https://lore.kernel.org/linuxppc-dev/68e48df8.170a0220.4b4b0.217d@mx.goog=
-le.com/
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
+On Tue, 26 Aug 2025 08:17:03 +0200 you wrote:
+> Various cleanups to the generic vDSO infrastructure and a patch for ARM
+> which was never applied.
+> 
+> This series has one trivial syntactic conflict with "dso/datastore: Allow
+> prefaulting by mlockall()" [0] and a semantic one with "sparc64: vdso:
+> Switch to generic vDSO library" [1], which still uses the removed
+> GENERIC_VDSO_DATA_STORE.
+> 
+> [...]
 
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>  # ocxl
+Here is the summary with links:
+  - [01/11] vdso/datastore: Gate time data behind CONFIG_GENERIC_GETTIMEOFDAY
+    https://git.kernel.org/riscv/c/7c0c01a216e6
+  - [02/11] ARM: VDSO: remove cntvct_ok global variable
+    https://git.kernel.org/riscv/c/39f1ee1299c9
+  - [03/11] vdso: Move ENABLE_COMPAT_VDSO from core to arm64
+    https://git.kernel.org/riscv/c/7d298d25ce81
+  - [04/11] vdso/gettimeofday: Remove !CONFIG_TIME_NS stubs
+    https://git.kernel.org/riscv/c/f145d6bf8d59
+  - [05/11] time: Build generic update_vsyscall() only with generic time vDSO
+    https://git.kernel.org/riscv/c/ea1a1fa919a5
+  - [06/11] riscv: vdso: Untangle kconfig logic
+    https://git.kernel.org/riscv/c/eb3b66aab72c
+  - [07/11] vdso: Drop kconfig GENERIC_VDSO_32
+    https://git.kernel.org/riscv/c/278f1c933c3f
+  - [08/11] vdso: Drop kconfig GENERIC_COMPAT_VDSO
+    https://git.kernel.org/riscv/c/bb5bc7bfab06
+  - [09/11] vdso: Drop kconfig GENERIC_VDSO_DATA_STORE
+    https://git.kernel.org/riscv/c/7b338f6d4e3d
+  - [10/11] vdso: Drop kconfig GENERIC_VDSO_TIME_NS
+    https://git.kernel.org/riscv/c/bad53ae2dc42
+  - [11/11] vdso: Gate VDSO_GETRANDOM behind HAVE_GENERIC_VDSO
+    https://git.kernel.org/riscv/c/258b37c6e626
 
-> ---
-> VAS and OCXL has not been tested. I noticed them while grepping.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Unfortunately I don't have convenient ocxl hardware on hand to test with an=
-y
-more (I'm sure the cards are floating around *somewhere* in the company...)=
-, but
-this looks like a straightforward change.
 
---=20
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
 
