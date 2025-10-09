@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-12759-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12758-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC199BCAFB0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 23:50:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 947C4BCAFAD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 23:50:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cjNpn3p2Rz3cZH;
-	Fri, 10 Oct 2025 08:50:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cjNpj3pYNz2xnx;
+	Fri, 10 Oct 2025 08:50:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760046641;
-	cv=none; b=T8XfnzZkyEWg+yN80hcTRpE7jKBLoNGfbtvwGgs2yaDzHfNfcyUSBxGA4aF5HVGbxU7xGXT1U8JnZ2A/4O6KUaIdPkGY5uFHDLiEKGVyJP0Th/sVmoTCeVJCrPIPDgz06VjS/Z2Ui/oCNZeKeW6ML3az38IAK46CJKajpvyW/tSr7riOdn3p3hWwWY77LLToQ0qH+3V6epowCJ5azpORSwMAZBqzO43HXvXFKaOsSGpHhge3U6oMy/yyFJcqPy2ruAeGNlcws3ndr0QwoANBKnjoiPEq6sRbv3H+CfsChtpKUgd8r5g/hrt3EqgtNRpTZOJBUuHBBAsrsrNmqRsDKg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760046637;
+	cv=none; b=hQnTqF42A0+KZRO2O189XhVfWaKiOkXasNhfd4X7a+b3oawdHnFSX3mKq8smyEwMYSCcpfwR4XME3F+uoQdHOgZ/9BLZgcYHAVq0CZTSL9EwQyKeOyTZlgNHh1//HqlP6OCuUG8jeV2T/smlzENQF0g+yu5+7SbCHqmd4g3R7mPzYyyLYcSEyEAJeo/dRcJXfTj7c5OsdzbUsP0WEPAm9Rl7F8yNF1+77FPmjaF+S1yEbC+XJ+OymUTVo7aKuw1nawQXyzdKgm+xy7hV19nbpG3wCg652/B0aHIwAlYWXCmr985+bvcjAXJ6+tEwehTjA9VwniSV7g6HNEtmt/NSCA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760046641; c=relaxed/relaxed;
-	bh=c12d5W0PhL+mxLdkoTXOHPXUrijaCx5rhZLNRgACiSE=;
+	t=1760046637; c=relaxed/relaxed;
+	bh=ibzttu7iBJfIeR187XK2EpXrGUI0WsVRhmmQSKa+GF8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kiV1N4xBZgubzJb22GUq5UjKoOhrgg1qtBgFQe7tlN3AL/e/lVHKEicHXc6rgG1fu3dRl7rVKfw8cjX0oJBgpQh8woX4gRctLXKSJ0ADmj3nMdgooXdBU1BrJO5bEcooUYxQX00LuVFJR0OYHobT5fgIMdrlloeu2latac5uh3YIfGfOelFcWBhOLrjEkGkUvbCQ6Lq6/3/4ycLB4XDDnobsd/tzvxykqcqr5Km0mytvuNu91+JzhSFlfQyPxWlkp6i/DKtZgQnLdMXsnJ6OZB9SID31Ro1YhbhoWghN2QvMdKawtli/gzMWwEPzBm1JZt+iDCh6U8y1wejMxjzxDA==
+	 In-Reply-To:Content-Type; b=EWBW3fuC3/K+fLcU+/WjSaIzSxvjyLcU2/Y+1ZXIcguwaEJMCHVgkyOHFSbrTE/d/lgyRjEH4FKkOBWtXvsPgJyny0HlgHBmpPECACGnRIBkLleuMmRIn5JiDIeFTWzd75nhJjPES6eFXOH7xCde6m53F2qH7LDOw0C3R8LrHEHf+DKg0j1lvVy2baSBTmzex16VP15nOGH63mkZzqIuY3ElJ9Cr6PrfcvGJ7ZhcVxhgB9vqkYQvhfc0rQmYbgymw1QPLufNqvt0ZdCly5BmCGtNoKafBsohECjqoWQjC3itQxN+dSm2vHi6MzI2DYO6OC2IrwRIcDB0dxBmzEhFIw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cjNpn00cBz3cZ2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Oct 2025 08:50:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cjNph61m4z2xcC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Oct 2025 08:50:35 +1100 (AEDT)
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cjBYt4pblz9sVS;
-	Thu,  9 Oct 2025 16:08:50 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4cjBZD4l7Wz9sVK;
+	Thu,  9 Oct 2025 16:09:08 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 7ADpqTBaSwlR; Thu,  9 Oct 2025 16:08:50 +0200 (CEST)
+	with ESMTP id vyOlSRyxGg0t; Thu,  9 Oct 2025 16:09:08 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cjBYd4WL4z9sVW;
-	Thu,  9 Oct 2025 16:08:37 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cjBZD3dh4z9sVm;
+	Thu,  9 Oct 2025 16:09:08 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 880008B774;
-	Thu,  9 Oct 2025 16:08:37 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6D9E78B774;
+	Thu,  9 Oct 2025 16:09:08 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id NG8yT-cNEd_j; Thu,  9 Oct 2025 16:08:37 +0200 (CEST)
+	with ESMTP id h6jEI0H14JLp; Thu,  9 Oct 2025 16:09:08 +0200 (CEST)
 Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id DF97B8B76D;
-	Thu,  9 Oct 2025 16:08:36 +0200 (CEST)
-Message-ID: <93737f68-4714-40ba-8920-48a996534126@csgroup.eu>
-Date: Thu, 9 Oct 2025 16:08:36 +0200
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id CBB218B76D;
+	Thu,  9 Oct 2025 16:09:07 +0200 (CEST)
+Message-ID: <376f509b-c088-4387-965d-071faace6409@csgroup.eu>
+Date: Thu, 9 Oct 2025 16:09:07 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] powerpc: 83xx: Rename wdt@ nodes to watchdog@
+Subject: Re: [PATCH 3/4] powerpc: 86xx: Rename wdt@ nodes to watchdog@
 To: j.ne@posteo.net, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -67,10 +67,10 @@ To: j.ne@posteo.net, Rob Herring <robh@kernel.org>,
 Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
 References: <20250418-watchdog-v1-0-987ff2046272@posteo.net>
- <20250418-watchdog-v1-2-987ff2046272@posteo.net>
+ <20250418-watchdog-v1-3-987ff2046272@posteo.net>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Language: fr-FR
-In-Reply-To: <20250418-watchdog-v1-2-987ff2046272@posteo.net>
+In-Reply-To: <20250418-watchdog-v1-3-987ff2046272@posteo.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
@@ -90,162 +90,76 @@ Le 18/04/2025 à 21:28, J. Neuschäfer via B4 Relay a écrit :
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
 > ---
->   arch/powerpc/boot/dts/asp834x-redboot.dts | 2 +-
->   arch/powerpc/boot/dts/mpc8313erdb.dts     | 2 +-
->   arch/powerpc/boot/dts/mpc8315erdb.dts     | 2 +-
->   arch/powerpc/boot/dts/mpc832x_rdb.dts     | 2 +-
->   arch/powerpc/boot/dts/mpc8349emitx.dts    | 2 +-
->   arch/powerpc/boot/dts/mpc8349emitxgp.dts  | 2 +-
->   arch/powerpc/boot/dts/mpc836x_rdk.dts     | 2 +-
->   arch/powerpc/boot/dts/mpc8377_rdb.dts     | 2 +-
->   arch/powerpc/boot/dts/mpc8377_wlan.dts    | 2 +-
->   arch/powerpc/boot/dts/mpc8378_rdb.dts     | 2 +-
->   arch/powerpc/boot/dts/mpc8379_rdb.dts     | 2 +-
->   11 files changed, 11 insertions(+), 11 deletions(-)
+>   arch/powerpc/boot/dts/fsl/gef_ppc9a.dts  | 4 ++--
+>   arch/powerpc/boot/dts/fsl/gef_sbc310.dts | 4 ++--
+>   arch/powerpc/boot/dts/fsl/gef_sbc610.dts | 4 ++--
+>   3 files changed, 6 insertions(+), 6 deletions(-)
 > 
-> diff --git a/arch/powerpc/boot/dts/asp834x-redboot.dts b/arch/powerpc/boot/dts/asp834x-redboot.dts
-> index 52a84561c4f076ac0c4fc7af3db12f2fda06521c..33ddb17d18760df24ac8f068dce38ac60c353f32 100644
-> --- a/arch/powerpc/boot/dts/asp834x-redboot.dts
-> +++ b/arch/powerpc/boot/dts/asp834x-redboot.dts
-> @@ -72,7 +72,7 @@ soc8349@ff000000 {
->   		reg = <0xff000000 0x00000200>;
->   		bus-frequency = <0>;
->   
-> -		wdt@200 {
-> +		watchdog@200 {
->   			device_type = "watchdog";
->   			compatible = "mpc83xx_wdt";
->   			reg = <0x200 0x100>;
-> diff --git a/arch/powerpc/boot/dts/mpc8313erdb.dts b/arch/powerpc/boot/dts/mpc8313erdb.dts
-> index a8315795b2c951c5914953be0b4a5162dd471505..09508b4c8c73095bf4699e383e7841100d6d7c8f 100644
-> --- a/arch/powerpc/boot/dts/mpc8313erdb.dts
-> +++ b/arch/powerpc/boot/dts/mpc8313erdb.dts
-> @@ -99,7 +99,7 @@ soc8313@e0000000 {
->   		reg = <0xe0000000 0x00000200>;
->   		bus-frequency = <0>;
->   
-> -		wdt@200 {
-> +		watchdog@200 {
->   			device_type = "watchdog";
->   			compatible = "mpc83xx_wdt";
->   			reg = <0x200 0x100>;
-> diff --git a/arch/powerpc/boot/dts/mpc8315erdb.dts b/arch/powerpc/boot/dts/mpc8315erdb.dts
-> index e09b37d7489d01bfd16a26e9786868f630fa0262..56cf6d12c730de52d85623dc34c5987bee635f0f 100644
-> --- a/arch/powerpc/boot/dts/mpc8315erdb.dts
-> +++ b/arch/powerpc/boot/dts/mpc8315erdb.dts
-> @@ -99,7 +99,7 @@ immr@e0000000 {
->   		reg = <0xe0000000 0x00000200>;
->   		bus-frequency = <0>;
->   
-> -		wdt@200 {
-> +		watchdog@200 {
->   			device_type = "watchdog";
->   			compatible = "mpc83xx_wdt";
->   			reg = <0x200 0x100>;
-> diff --git a/arch/powerpc/boot/dts/mpc832x_rdb.dts b/arch/powerpc/boot/dts/mpc832x_rdb.dts
-> index ecebc27a289871a896121fbaf6bc878422d25101..ba7caaf98fd58f9a2b56c0aa566673c70eff2013 100644
-> --- a/arch/powerpc/boot/dts/mpc832x_rdb.dts
-> +++ b/arch/powerpc/boot/dts/mpc832x_rdb.dts
-> @@ -52,7 +52,7 @@ soc8323@e0000000 {
->   		reg = <0xe0000000 0x00000200>;
->   		bus-frequency = <0>;
->   
-> -		wdt@200 {
-> +		watchdog@200 {
->   			device_type = "watchdog";
->   			compatible = "mpc83xx_wdt";
->   			reg = <0x200 0x100>;
-> diff --git a/arch/powerpc/boot/dts/mpc8349emitx.dts b/arch/powerpc/boot/dts/mpc8349emitx.dts
-> index d4ebbb93de0b325a3bb0f5d17464f516a0e12133..13f17232ba83d50498f19e6758063cf905fbc326 100644
-> --- a/arch/powerpc/boot/dts/mpc8349emitx.dts
-> +++ b/arch/powerpc/boot/dts/mpc8349emitx.dts
-> @@ -53,7 +53,7 @@ soc8349@e0000000 {
->   		reg = <0xe0000000 0x00000200>;
->   		bus-frequency = <0>;                    // from bootloader
->   
-> -		wdt@200 {
-> +		watchdog@200 {
->   			device_type = "watchdog";
->   			compatible = "mpc83xx_wdt";
->   			reg = <0x200 0x100>;
-> diff --git a/arch/powerpc/boot/dts/mpc8349emitxgp.dts b/arch/powerpc/boot/dts/mpc8349emitxgp.dts
-> index bcf68a0a7b557e49b48563f586b1fe8441ab3c6d..eae0afd5abbc39852b8e34b2247223168ab863ca 100644
-> --- a/arch/powerpc/boot/dts/mpc8349emitxgp.dts
-> +++ b/arch/powerpc/boot/dts/mpc8349emitxgp.dts
-> @@ -51,7 +51,7 @@ soc8349@e0000000 {
->   		reg = <0xe0000000 0x00000200>;
->   		bus-frequency = <0>;                    // from bootloader
->   
-> -		wdt@200 {
-> +		watchdog@200 {
->   			device_type = "watchdog";
->   			compatible = "mpc83xx_wdt";
->   			reg = <0x200 0x100>;
-> diff --git a/arch/powerpc/boot/dts/mpc836x_rdk.dts b/arch/powerpc/boot/dts/mpc836x_rdk.dts
-> index a0cc1953484d70410f9592bdb84ffaf779ee08b4..4ff38e1a2185f85618b603e703e54c973cb97cc0 100644
-> --- a/arch/powerpc/boot/dts/mpc836x_rdk.dts
-> +++ b/arch/powerpc/boot/dts/mpc836x_rdk.dts
-> @@ -62,7 +62,7 @@ soc@e0000000 {
->   		/* filled by u-boot */
->   		bus-frequency = <0>;
->   
-> -		wdt@200 {
-> +		watchdog@200 {
->   			compatible = "mpc83xx_wdt";
->   			reg = <0x200 0x100>;
+> diff --git a/arch/powerpc/boot/dts/fsl/gef_ppc9a.dts b/arch/powerpc/boot/dts/fsl/gef_ppc9a.dts
+> index fc92bb032c517a543d6e1e498ab903f1937414f8..48a81430a8a31fc29b53fba03986b2fb984b66c1 100644
+> --- a/arch/powerpc/boot/dts/fsl/gef_ppc9a.dts
+> +++ b/arch/powerpc/boot/dts/fsl/gef_ppc9a.dts
+> @@ -82,7 +82,7 @@ fpga@4,0 {
+>   			reg = <0x4 0x0 0x40>;
 >   		};
-> diff --git a/arch/powerpc/boot/dts/mpc8377_rdb.dts b/arch/powerpc/boot/dts/mpc8377_rdb.dts
-> index 7df452efa9579a649195d2266d42bbc4b6b8de1c..f137ccb8cfdedfed98a3cf6899f5508f069834dc 100644
-> --- a/arch/powerpc/boot/dts/mpc8377_rdb.dts
-> +++ b/arch/powerpc/boot/dts/mpc8377_rdb.dts
-> @@ -99,7 +99,7 @@ immr@e0000000 {
->   		reg = <0xe0000000 0x00000200>;
->   		bus-frequency = <0>;
 >   
-> -		wdt@200 {
-> +		watchdog@200 {
->   			device_type = "watchdog";
->   			compatible = "mpc83xx_wdt";
->   			reg = <0x200 0x100>;
-> diff --git a/arch/powerpc/boot/dts/mpc8377_wlan.dts b/arch/powerpc/boot/dts/mpc8377_wlan.dts
-> index d8e7d40aeae449e33ea1640a53ee4dfec7d746a4..ce254dd74dd06b19bc8e15e13f2fa9e959dd25f2 100644
-> --- a/arch/powerpc/boot/dts/mpc8377_wlan.dts
-> +++ b/arch/powerpc/boot/dts/mpc8377_wlan.dts
-> @@ -89,7 +89,7 @@ immr@e0000000 {
->   		reg = <0xe0000000 0x00000200>;
->   		bus-frequency = <0>;
+> -		wdt@4,2000 {
+> +		watchdog@4,2000 {
+>   			compatible = "gef,ppc9a-fpga-wdt", "gef,fpga-wdt-1.00",
+>   				"gef,fpga-wdt";
+>   			reg = <0x4 0x2000 0x8>;
+> @@ -90,7 +90,7 @@ wdt@4,2000 {
+>   			interrupt-parent = <&gef_pic>;
+>   		};
+>   		/* Second watchdog available, driver currently supports one.
+> -		wdt@4,2010 {
+> +		watchdog@4,2010 {
+>   			compatible = "gef,ppc9a-fpga-wdt", "gef,fpga-wdt-1.00",
+>   				"gef,fpga-wdt";
+>   			reg = <0x4 0x2010 0x8>;
+> diff --git a/arch/powerpc/boot/dts/fsl/gef_sbc310.dts b/arch/powerpc/boot/dts/fsl/gef_sbc310.dts
+> index 47ae85c34635bb0165004e52d15df92542406b15..8eb254b1738dde7327d5e3fc07b4bbba137b4d9c 100644
+> --- a/arch/powerpc/boot/dts/fsl/gef_sbc310.dts
+> +++ b/arch/powerpc/boot/dts/fsl/gef_sbc310.dts
+> @@ -79,7 +79,7 @@ fpga@4,0 {
+>   			reg = <0x4 0x0 0x40>;
+>   		};
 >   
-> -		wdt@200 {
-> +		watchdog@200 {
->   			device_type = "watchdog";
->   			compatible = "mpc83xx_wdt";
->   			reg = <0x200 0x100>;
-> diff --git a/arch/powerpc/boot/dts/mpc8378_rdb.dts b/arch/powerpc/boot/dts/mpc8378_rdb.dts
-> index bdcfe83a561e121ed82972406e0302d84d8d0ef6..19e5473d4161b5d6be6ab84ae0ba78875fc377f8 100644
-> --- a/arch/powerpc/boot/dts/mpc8378_rdb.dts
-> +++ b/arch/powerpc/boot/dts/mpc8378_rdb.dts
-> @@ -99,7 +99,7 @@ immr@e0000000 {
->   		reg = <0xe0000000 0x00000200>;
->   		bus-frequency = <0>;
+> -		wdt@4,2000 {
+> +		watchdog@4,2000 {
+>   			compatible = "gef,sbc310-fpga-wdt", "gef,fpga-wdt-1.00",
+>   				"gef,fpga-wdt";
+>   			reg = <0x4 0x2000 0x8>;
+> @@ -87,7 +87,7 @@ wdt@4,2000 {
+>   			interrupt-parent = <&gef_pic>;
+>   		};
+>   /*
+> -		wdt@4,2010 {
+> +		watchdog@4,2010 {
+>   			compatible = "gef,sbc310-fpga-wdt", "gef,fpga-wdt-1.00",
+>   				"gef,fpga-wdt";
+>   			reg = <0x4 0x2010 0x8>;
+> diff --git a/arch/powerpc/boot/dts/fsl/gef_sbc610.dts b/arch/powerpc/boot/dts/fsl/gef_sbc610.dts
+> index 5322be44b62e78bebac0fa92c0de05094b186dde..02edbb262b8f00279dea024700eebf874501f6d5 100644
+> --- a/arch/powerpc/boot/dts/fsl/gef_sbc610.dts
+> +++ b/arch/powerpc/boot/dts/fsl/gef_sbc610.dts
+> @@ -82,14 +82,14 @@ fpga@4,0 {
+>   			reg = <0x4 0x0 0x40>;
+>   		};
 >   
-> -		wdt@200 {
-> +		watchdog@200 {
->   			device_type = "watchdog";
->   			compatible = "mpc83xx_wdt";
->   			reg = <0x200 0x100>;
-> diff --git a/arch/powerpc/boot/dts/mpc8379_rdb.dts b/arch/powerpc/boot/dts/mpc8379_rdb.dts
-> index a5f702304a353c61d6ab804765b817ec34a9582e..61519acca2280427d7237d8d9bbb8485f0c65369 100644
-> --- a/arch/powerpc/boot/dts/mpc8379_rdb.dts
-> +++ b/arch/powerpc/boot/dts/mpc8379_rdb.dts
-> @@ -97,7 +97,7 @@ immr@e0000000 {
->   		reg = <0xe0000000 0x00000200>;
->   		bus-frequency = <0>;
->   
-> -		wdt@200 {
-> +		watchdog@200 {
->   			device_type = "watchdog";
->   			compatible = "mpc83xx_wdt";
->   			reg = <0x200 0x100>;
+> -		wdt@4,2000 {
+> +		watchdog@4,2000 {
+>   			compatible = "gef,fpga-wdt";
+>   			reg = <0x4 0x2000 0x8>;
+>   			interrupts = <0x1a 0x4>;
+>   			interrupt-parent = <&gef_pic>;
+>   		};
+>   		/* Second watchdog available, driver currently supports one.
+> -		wdt@4,2010 {
+> +		watchdog@4,2010 {
+>   			compatible = "gef,fpga-wdt";
+>   			reg = <0x4 0x2010 0x8>;
+>   			interrupts = <0x1b 0x4>;
 > 
 
 
