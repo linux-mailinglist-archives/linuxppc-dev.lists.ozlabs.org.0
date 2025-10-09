@@ -1,71 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-12738-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12741-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE07BC815A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 10:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D7ACBC85D0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 09 Oct 2025 11:50:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cj3Lj2DXdz3cDN;
-	Thu,  9 Oct 2025 19:43:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cj4qy0z99z3cDN;
+	Thu,  9 Oct 2025 20:50:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1134"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1759999421;
-	cv=none; b=YJcRu0xKCzJA5+mk5t6RYYUFx3UUiifRb/HYMZUe/fwOVSX1d3x99XfmtsIA8eXgStkB/foGKdVGyhSs7i+tPJEF4t/X1RO/iFiv0zW33wZ4IJ8xyDP9WDSqQl7M1w2GUl6k541oLk8WS+OvjjUm514WSrBWVRbepnpqbqRfjljZmimIidsYF9mRrK6d/scN8dW+6kako71QuYlb6yCbDPhP9J9ZYUtslH1sS3r5voNEROlmb8/3XAxVMX0MDna6FsxGyTg4VPCbWqrm9ur1W6Jldxy26OIfj8gXb8zdFY7OCe7mv53KJ1lQvuRJRZGI2E4EqtVo4HOFiDLDwiSrag==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760003438;
+	cv=none; b=glajvoHms/NDOU9P0+GcrlFP9WMco7NJx1JjCSefdY9FhnMd3Llk9u19HDm6YeRQtfiyWF8pv2HzVe5zoTzyzi/9bJKs2JrtgUP9hIkAzQz19yem1CcpKeYMPZ3GGG9dY/9TA5XP3qSPw5nX+gf/bwVqGzYla2ojsNTfOD6O0nRId7DcneqiE1ERrf7Ity3TpG71QY1f6SigcLoAME1PsrRyzdsG+DYKJ6h9xZXrwJA+0nCBAm6OhgI30ztBi3YeU3gqLI4Tn43rGwiSh3wz1Uw+hrcCY95gdmIrd8BiaA7fVbAg1CmeEm+oR0twUsdf7XoC7FbaHumU85qiJQH1gw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1759999421; c=relaxed/relaxed;
-	bh=oOmLRNO4yxmZr9GGl+AUsKcQlyU35gqHSeHKaWhtPwQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jKRWpsi02y1hIwRW1MUjZKiyQ8FhFwX+8AoO4ElozxZ/3Qt93Es0/Gar9DgBfcdZhEGY3krvAHImZ23cl/s+lCX2r+czWwB1DTgy5qzixfoXkKfzZc8A3ORc2s6o8n/9akVj2WbYfXLd+kwfFki3MNFxaryPTWT6gjpajbIvGoqWyi2Pkh3AeXdoYkBw2iDTE2obQj5syIwAAAS7fWBNeQiD0aQH9wZnxks9kBwIPPXjnwL05E3gOeek4Pjy2VR5PbAYwMRZkAsSuyN1ECjWlQ7A8Xbu5NI4UxkTw6gUnw25w2GX43jby2hmYx7T6VGk6EWPCtVCImgpMWqo8MheYA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H1OjVXVw; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1134; helo=mail-yw1-x1134.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H1OjVXVw;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1134; helo=mail-yw1-x1134.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cj3Lg33ygz2yPS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 19:43:38 +1100 (AEDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-71d71bcac45so7656087b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Oct 2025 01:43:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759999416; x=1760604216; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oOmLRNO4yxmZr9GGl+AUsKcQlyU35gqHSeHKaWhtPwQ=;
-        b=H1OjVXVwlhEe9phrOhqvIjGkmaPggTXFwC1D72ssHXZnRW9khDC56FgfFPft+ccDnn
-         S6IKd0M1SuEDgcE81ffq1HxVmYgMwSIBZpnd3z4mw6kDMdad0OsgoK6BTmGdU00+kDd2
-         CYJP03ee7ezAnZhy+8RBibwDcRjNvRc57pcq6D8aCEMTlCFQBKDi2CcC0CAan+TkXHFd
-         HFPJkvb3WXPNZ/AdlQc+Aig9wXOCvgIbn4hCe2GsvmQyLLR+StMJb/4CMUZ0omxIM6Hu
-         QN0ieuFKdPPfACh2/6+x/u7m61ErNd+pNzBO+li48Kzftm3OfqP7hLLqhZu62XZf2yvO
-         SWGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759999416; x=1760604216;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oOmLRNO4yxmZr9GGl+AUsKcQlyU35gqHSeHKaWhtPwQ=;
-        b=ej21dQ6nStY3ayJ4MbGy5Qinqgo5PIfdV1WArjkccyY/J/aTTcTeA8jiwajOlVHVoo
-         pr3YzcS3Bo7sK8Aj/NEHMFhZz2pKMcpNQAYfDLa6lMHM5u6u17d8FRdn5ssGkS0buffW
-         1dO5W/WTeUYE6T4D6UrZ1fdGXOU6sPv4k5imSNbfX12+pcv48c98m5ZwxqGpvUgsqEkq
-         lRnKN7zgDrBzQYHoFVIuoeb5CfiLP38pBqRc+mi1tJ9NZiXpQv84xx3uzqXP+Abc8SHm
-         FpGp9vpnYwzU+K7/JhLkYcsqeZmR4Bexp80U6S7vnYOCi7c/XKdreA+50FGqwts1p0jH
-         KCtg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZHsXpP7aG3j3oL8VpTsbZAIXkMgdlp2AQUQTRbjgNzGmmC9aCVxIsQg95nswZmjLUwss/EO56DbqqhC4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YweB1AzSsoY9pifmWzBDtQSDclDQhBjOFPKPUbMUFPnmrUw9fvo
-	LItWVBRfmYFQwfqHSxgjOR7big9a24M2bryR8npenzPIuOrSacoP5/zLOn3+oCdkZ8ortd/P10Y
-	FamuOqg7nJWmQS7qNRq2Ps4MAz0rEpD8=
-X-Gm-Gg: ASbGnct9LX58Db8VQouN2L7VR62zf88dOOC0lmMBRUbkkiktQA2D0dMJsE/8ON5QpTe
-	yor0ZkNlI03OzGEeMWknEnO2Uzvqi7a7KjEckFfkVw64T/PyxnPQ/ICxyc6j4fgnPx2MnAYXpBX
-	PUvXqUBMONsmSoZnct3IGnpULE47jPeKvC62E4QTOCTM9JdZ+XNKEFnZ2dboJQt6qOAD3v/1KH5
-	L/git1jcKPZ4baLlrZ7CUrns+WyvRmIyXZUnt5MGw==
-X-Google-Smtp-Source: AGHT+IHqqt7JHMFlL5DEMxX8/4fuWke6o7x715NV65SuEycRYAp5q8y3uA9SPr+Cccah/gPAgRpT2LfWBS7AmxUm0/4=
-X-Received: by 2002:a05:690e:146:b0:635:4ece:20a9 with SMTP id
- 956f58d0204a3-63ccb91d5e0mr4410660d50.46.1759999415603; Thu, 09 Oct 2025
- 01:43:35 -0700 (PDT)
+	t=1760003438; c=relaxed/relaxed;
+	bh=SjzO/ywmFDyEDpAIYRGFQ4F67Mu4cfU8z7gpJNsGZLg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cHv39sePE5NeBspgmVapryznSZvunNZT329AzwenyDN8XGGsqHzjep4bEDmLHHRVb34SiQzy0dW01rn3K1anM5hbGjARAPtEtscnkdlqA2BN9x8drrT0vR8YDbu8Q7i6fX8bwj6iEc3u6VeywDPmG6V2cW0gwVx2WCy3O1gIRe9tBZGZaTXX/aiowNTvSQjaaTCsuBB+43/4lpDhNQ5K5O9q3OEfTdE6HcWMpNQv404xp7wREeZXdumXwgetFsBzeIakPzj/jmplZjVXl0a71M44fFfgVbsJQeFZiXgQjmUbdP8C7KRlMBw8YMB06BcYAEfx57j/knpM6rezMxteFQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cj4qx2x2Vz2xQ3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Oct 2025 20:50:36 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cj4530nVNz9sSY;
+	Thu,  9 Oct 2025 11:16:55 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 1xW49BLVjvgf; Thu,  9 Oct 2025 11:16:55 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cj4526L27z9sSX;
+	Thu,  9 Oct 2025 11:16:54 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BC2658B773;
+	Thu,  9 Oct 2025 11:16:54 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id ecZHQXz6ERX1; Thu,  9 Oct 2025 11:16:54 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BE4258B770;
+	Thu,  9 Oct 2025 11:16:52 +0200 (CEST)
+Message-ID: <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
+Date: Thu, 9 Oct 2025 11:16:52 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,69 +57,127 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250918152830.438554-1-nschichan@freebox.fr> <20250918195806.6337-1-safinaskar@gmail.com>
- <CAHNNwZAzecVcJXZmycX063-=p-M5jVkfStfgYVKJruOFo7y9zg@mail.gmail.com>
- <CAPnZJGDwETQVVURezSRxZB8ZAwBETQ5fwbXyeMpfDLuLW4rVdg@mail.gmail.com> <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
-In-Reply-To: <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Thu, 9 Oct 2025 11:42:59 +0300
-X-Gm-Features: AS18NWA7xuLtf9pobQHoPGHI9uL9SjsnEaZg-EuuD52zBO81KbUszIYBPPZ5wRY
-Message-ID: <CAPnZJGAp-wG+9wDmmisfpxvFbRtXkG-RipAuZe=fi1BWy-3G-Q@mail.gmail.com>
-Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
-To: Nicolas Schichan <nschichan@freebox.fr>
-Cc: akpm@linux-foundation.org, andy.shevchenko@gmail.com, axboe@kernel.dk, 
-	brauner@kernel.org, cyphar@cyphar.com, devicetree@vger.kernel.org, 
-	ecurtin@redhat.com, email2tema@gmail.com, graf@amazon.com, 
-	gregkh@linuxfoundation.org, hca@linux.ibm.com, hch@lst.de, 
-	hsiangkao@linux.alibaba.com, initramfs@vger.kernel.org, jack@suse.cz, 
-	julian.stecklina@cyberus-technology.de, kees@kernel.org, 
-	linux-acpi@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
-	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, mcgrof@kernel.org, 
-	mingo@redhat.com, monstr@monstr.eu, mzxreary@0pointer.de, 
-	patches@lists.linux.dev, rob@landley.net, sparclinux@vger.kernel.org, 
-	thomas.weissschuh@linutronix.de, thorsten.blum@linux.dev, 
-	torvalds@linux-foundation.org, tytso@mit.edu, viro@zeniv.linux.org.uk, 
-	x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
+ folio sizes when registering hstate
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+ wireguard@lists.zx2c4.com, x86@kernel.org,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20250901150359.867252-1-david@redhat.com>
+ <20250901150359.867252-9-david@redhat.com>
+ <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
+ <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
+ <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
+ <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Sep 22, 2025 at 5:29=E2=80=AFPM Nicolas Schichan <nschichan@freebox=
-.fr> wrote:
-> > Then in September 2026 I will fully remove initrd.
->
-> Is there a way to find some kind of middle ground here ?
 
-I still plan to fully remove initrd in September 2026.
-Maintainers will decide whether they will merge my patchset.
-You may try to convince them.
 
-> I can send a patch for that but first I need to sort out my SMTP
-> issues from the other day.
+Le 09/10/2025 à 10:14, David Hildenbrand a écrit :
+> On 09.10.25 10:04, Christophe Leroy wrote:
+>>
+>>
+>> Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
+>>> On 09.10.25 09:14, Christophe Leroy wrote:
+>>>> Hi David,
+>>>>
+>>>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
+>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>>>> index 1e777cc51ad04..d3542e92a712e 100644
+>>>>> --- a/mm/hugetlb.c
+>>>>> +++ b/mm/hugetlb.c
+>>>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
+>>>>>         BUILD_BUG_ON(sizeof_field(struct page, private) * 
+>>>>> BITS_PER_BYTE <
+>>>>>                 __NR_HPAGEFLAGS);
+>>>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+>>>>>         if (!hugepages_supported()) {
+>>>>>             if (hugetlb_max_hstate || default_hstate_max_huge_pages)
+>>>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int 
+>>>>> order)
+>>>>>         }
+>>>>>         BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+>>>>>         BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
+>>>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
+>>>>>         h = &hstates[hugetlb_max_hstate++];
+>>>>>         __mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
+>>>>>         h->order = order;
+>>>
+>>> We end up registering hugetlb folios that are bigger than
+>>> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger that
+>>> (and if we have to support that).
+>>>
+>>
+>> MAX_FOLIO_ORDER is defined as:
+>>
+>> #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+>> #define MAX_FOLIO_ORDER        PUD_ORDER
+>> #else
+>> #define MAX_FOLIO_ORDER        MAX_PAGE_ORDER
+>> #endif
+>>
+>> MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via
+>> /sys/kernel/mm/hugepages/ but bigger pages can be created at boottime
+>> with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
+>>
+>>     hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
+>>
+>> Gives:
+>>
+>> HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+>> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+>> HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
+>> HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
+>> HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
+>> HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
+>> HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
+>> HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
+>> HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
+>> HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
+> 
+> I think it's a violation of CONFIG_ARCH_HAS_GIGANTIC_PAGE. The existing 
+> folio_dump() code would not handle it correctly as well.
 
-If you still have mail issues, consider applying for @linux.dev email,
-they are free for Linux devs ( https://linux.dev/ ).
+I'm trying to dig into history and when looking at commit 4eb0716e868e 
+("hugetlb: allow to free gigantic pages regardless of the 
+configuration") I understand that CONFIG_ARCH_HAS_GIGANTIC_PAGE is 
+needed to be able to allocate gigantic pages at runtime. It is not 
+needed to reserve gigantic pages at boottime.
 
-Also, I just tried to test whether your use case is still supported in
-mainline (i. e. uncompressed initrd with root=3D/dev/ram0).
-It turned out that on modern kernels you need to enable
-recently introduced CONFIG_BLK_DEV_WRITE_MOUNTED to
-make this work.
-So, make sure to enable this when upgrading kernel.
+What am I missing ?
 
---=20
-Askar Safin
+> 
+> See how snapshot_page() uses MAX_FOLIO_NR_PAGES.
+> 
+
 
