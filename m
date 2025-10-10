@@ -1,71 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-12760-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12761-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D579BCB721
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Oct 2025 04:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB476BCB7B3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Oct 2025 05:18:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cjWQp2PT4z3cYH;
-	Fri, 10 Oct 2025 13:48:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cjX4t2x5hz2xPw;
+	Fri, 10 Oct 2025 14:18:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b12e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760064530;
-	cv=none; b=h7V+KSyYyHMxjAOBnhf8qVmPnY89ZPf+OyrT8nrQbXIxuh3oHwJ15r0Xvju3Za92np3YZtV5tXQKN3SaLJbr+mbTNb1hZVXTusgfUuruqLwWvp+m7/C24Ao6nH1KyrurJD9qwQYP0zISLO3gtY4RehRnPW/MYYzKawroaa0go1S9evfmwXiC8hoGJSrzUTtUoHrK/IBELvaJzY4Wnt8svTiULgCbiLmwiczttev+aTiFu2prKp7XR+bwZIWzaTKUcqDYox6bKqtJjyQEuu7/ad1JsyMhr0YgmcY2kMdNdzJJrAefj9puha3dz130xJoth0bPndDDv4KOBjJXbJBNSw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b131"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760066302;
+	cv=none; b=BR6akUHWrfAafM8BKzHePzS/kXIGM9Tz+Wcx622IFDMgKi4AO+JM5h49cD0WofeOKtunLlzY5O1g+bJK4AsBIsWB89qv5J3R0joIsERa09nR2jjtS8sxFNlPPVqFWKA4+ujN9WCwsu7UqM0T99Tfw+qjJunSR0spSjp0oo8Na0wI/qBYjGzgbf+yc58ylRSBuU6C9Z5DAIrzgzI3bTIFawGcQgJWX61oS14q0htOZFRDvBuKyh0TU0Y8jIHMqF6U8e+R+l4OGglJ/dVE8r1J3qWUeuX7VEtz0YNh0wdyUrjP4zuT1DqiYeVnrkciSNc5LIoJn7iFYyawhOeiwrcygg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760064530; c=relaxed/relaxed;
-	bh=SUvjTYrAKggs3w1tKlxCJydt04WX0hyij5ZVnNtO2rY=;
+	t=1760066302; c=relaxed/relaxed;
+	bh=Pa2OhCNI6n3Mf2P8BAMZLHp7akXwtALOTxVawJZtfK8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NOHXCSTvvBGiODiDXxPwCh5iEiQUMK+qPEkTxxh+jgnyA4dKlAI3s/meOm3G3aypGe8x1uQg59gSUdqwQCnoR5btYaOvyl3CVMqH10EvOfa9MyWrVOJCNaWfhRe+fXsHKXoNH5hKHbW6s2tw86tyaVj1xyMMX5av3ikOC4G6tbQDlX+ZTP8F2jxe4RjwdDG+ovqsnQUkYMIP9Dol2SfaTKIxMNP9uzFehvromJOVNZLXcUPlWm2Mq9j7dVrdbTRojHxB8C6iqhE0vkrhdtsNidE69U1SAR4LsFBAhtjFWg7NkQFa5fOT7C3N4dXIs0PC/CxtGJut5TBBI/JKBGXWgw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KP+UNydO; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b12e; helo=mail-yx1-xb12e.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Y54VeKrMoEKMehG2puI5DL46LPny4C/cMjpgAHlOgX4vYBVlODFp2q8EQ+DWb+zMAwYDVsZwFl/88ZzB177YgtHgRIjq/OXaL9dX0hO/o0sPwgn1AQsoNHjTiVSyw2rqLQQ7LpNJY5GKkPmodugHwjUc1Ftz2Jc31Iq9LwQggxJVnU0DUoYR6cwDZ9DIgOFe/Y0UL8JWNIhDQSbRm7qq1x7v/D9EXsUrWtoE/JZyx7EWgoIYn0Pl+e4OXsHYOyg6keHbuBHnaTWPzSfgc6+PxhRoa6WyUbnL1OERVD3BTFA11wNNIK/NVUE7bOOD0Hex9s4uXq+RjMo1cuq8IsTnaA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b68v8DZa; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b131; helo=mail-yx1-xb131.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KP+UNydO;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b68v8DZa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b12e; helo=mail-yx1-xb12e.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yx1-xb12e.google.com (mail-yx1-xb12e.google.com [IPv6:2607:f8b0:4864:20::b12e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b131; helo=mail-yx1-xb131.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yx1-xb131.google.com (mail-yx1-xb131.google.com [IPv6:2607:f8b0:4864:20::b131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cjWQm36jKz2yrT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Oct 2025 13:48:47 +1100 (AEDT)
-Received: by mail-yx1-xb12e.google.com with SMTP id 956f58d0204a3-633be3be1e6so2501662d50.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Oct 2025 19:48:47 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cjX4s1GNhz2xK5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Oct 2025 14:18:19 +1100 (AEDT)
+Received: by mail-yx1-xb131.google.com with SMTP id 956f58d0204a3-63605f6f64eso1444150d50.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Oct 2025 20:18:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760064523; x=1760669323; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1760066297; x=1760671097; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SUvjTYrAKggs3w1tKlxCJydt04WX0hyij5ZVnNtO2rY=;
-        b=KP+UNydOV1yZvoF/980lzblYRmMsKXaKOouUxmT2+xAClSyskK9HZ3Dxb4x+SLB0xd
-         0FafgExlTadqxCrRf+MYSPiHVUbbKmXlt7c4qLVD69VXyPCyK3YnvN1K5wLhMLJJiBQ/
-         w5wHzPf8np+o5siWKK8fzUUH1Ux1zzAt6fnI8wuttGwBvPWL2Og44se2dea4d8QJ3kjL
-         Nq2UPI71TKMFnvjdT7KmbDAOakgT6hQrRwslZKMI6lDVxQ3mlmF3ZQWe++vur2Nm5tBY
-         LRtfMfA4zQfZGnn3zedDNhZkZC4MJz+72hwNTgS1fP2wFw6sAyjLeQGviVy1Mmc2y9Ha
-         tyIQ==
+        bh=Pa2OhCNI6n3Mf2P8BAMZLHp7akXwtALOTxVawJZtfK8=;
+        b=b68v8DZaqIRlbS5LfpHA/k9WYz44/mYqhJV9S0bXgRn7AzoWUkbnKk6gl/uHzLV3rq
+         3UOTLKxJAnZuOcz24shm6QwNgYAAiDqU4sCAoBQXcbY6nBpHgIRUmxKSSiveTsNI7FDt
+         /i4dw71nl+CbAXwbHlAM7WJ/h9RrRibIHRvMwuzzV7dmWe2ulnnIPCy3jreDPrU0VvmK
+         WpZeYVn+IRJY5zBt32fN14L7HpxBR/s7wn19p6rgQn5ZFjVKgCzYLTToRgTmoqKlCbNF
+         Frfx9t0aM+Sp4f1HZDCWEyY/rXdl8ucTmStwqOvHFWDmvfnVmZ1BFF4+EaPuN4h3AngU
+         aK3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760064523; x=1760669323;
+        d=1e100.net; s=20230601; t=1760066297; x=1760671097;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SUvjTYrAKggs3w1tKlxCJydt04WX0hyij5ZVnNtO2rY=;
-        b=uNkDKy1IEahfyayaWwItQvlz2EMBbX7u7IJf08R4LAdMTtQYTYdzrcfftvH0Nwfy6j
-         xJgTlh4iqOisZxPsHjdGZsj1k0Ho3wPOfG8P4K3bhUA54aOF1GIGcZ2zhpqkbHkIvSCq
-         Qugas8C0pWA6p4kiMcs5vIfnI5mBH+JDSFRPHyn8CaLxeByDibC1EQIjUBFsAqePbmr9
-         B0FsJPsx0ucqHwMezWaBx8vNAJhfqkwXqEA2JUrRD89Ih8ELZ9zQ5viRZEyn4COPwyq2
-         /bCojIOXh+QnEtM3Oqbr1BVwnZy7y8EyxyoA4ckXBIA2v2A8a50ubF0NspQbl9hj+lWS
-         WkCg==
-X-Forwarded-Encrypted: i=1; AJvYcCUiGK6ipfJrhxXBG6PiZuLzngwDVzjGfgjgcBSoWEj6ERK0Bibw1FZmDyFkDJlLJs5idP75Zes7bgaVA6o=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyAGzpghfq4IU/4veQOSahydbS22LFivBoX1evDGwvCRv9W/Csg
-	qPEeY4sw760xg86VGZcACxlLPdBKXkBaD5eo6unef+4T9VgVLTuiw+H9AFUKvWcbZMjq7k1S++5
-	D+z+p2shJjFH2A4D2M9OoYY48ggPjSrA=
-X-Gm-Gg: ASbGncsOZzPnCzY1G3kXLebXrXUTq5aUImQT+zeSMjdA9cRy+dGzOyFyFsOGhxvkK80
-	JfrXggGpDlTC87P/9CkVqCC+SyVQ1ZWsG0SFJK2zhxys2CpNUcSTNZEBp2N6Jwb9exrb89+QlvY
-	IaxfY6rEA43qaQcwPEeUxVpBsvi7XbbE3iTgnJexo8CeuW/14n0oMrGKHyb/yPe58UFX5nMuIeA
-	t3EzRl9CaCKvMofBpuRF7eY2hyp8b7YuveqBY9ZkA==
-X-Google-Smtp-Source: AGHT+IE/ruZR0Nl+gZjd7KSfaZ+4Yt5azf8Eoz6teA2EZ5XcCIQ6BBXF8AxOCZshaSTrV+l7WDzDAJYCcqNIJ+IMELc=
-X-Received: by 2002:a53:cd0e:0:b0:635:4ed0:571e with SMTP id
- 956f58d0204a3-63ccc4fd4b5mr7697871d50.22.1760064522649; Thu, 09 Oct 2025
- 19:48:42 -0700 (PDT)
+        bh=Pa2OhCNI6n3Mf2P8BAMZLHp7akXwtALOTxVawJZtfK8=;
+        b=t7/GHSxWRFUzxe/otqoF/lHMfdsC0bDEnGJEwZoZhgTRsMpuZK2FVlltPtb7XqTu1m
+         H3S2lco8WK3KX/nbCaJ/Pw9D1O4L1jeZyW4OBPg1C7VI+WFDYZIUNMV2das7JSkWtD4y
+         bdPTjfJ51jUBQM6hppAPPPDcH791yeZRPX2yBhlbGGmkvaQOGllgw5MIKTLgYZ+oTA58
+         A2LAUdcsMuGF+D7md4aa9PDWqt4br0Gxiw12w0F4ML8hkwiv6VEZE+oRBmELpOVpcCVS
+         OOe4q24xn2E/vnOtAt/OA6P0BTmGlyIr5BNTF0Ahz542slwCWvTVeNuFG4oXloYLfFkJ
+         eB1A==
+X-Forwarded-Encrypted: i=1; AJvYcCUEfLs+jypAY+DAsAQP6VGe8l0wizUbXySW578PSl6UzId5wVxKNGMqtWRGu86rOD4O0jgm6hldL7sDMak=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yybckk5gjDhH5mwHFJaKwjReYZv03cGAWRU6C37VuuXH/hyvjca
+	UoV5aE5JV9zDQjF7PTsl4eOQVmncKz9akwagdLPqkPHjZiVQxWSKcm4voxzSI9sRfABHgUM1q8t
+	P7pezLdjcpqbICxFfNCC6c19WrJYtFyo=
+X-Gm-Gg: ASbGncuE7v96ANqkLfQNZK0dv3zCs+4cg50XFNJGOapnukxBqnPkOTcLK4U2UavWMlp
+	1WPsfTPYC3Za0uYnZmW+3D6QGEUNKvWC+u6ZY1QBRB35q0DensR25gMSu2MmivVog9VkLm5+iaY
+	N/L4abjh9AWredlDpjQSDYlhqpIeaH2UN4Rwlh327dCqoJJwcTaV3Fi91IpvDfBTt2gLXQqcNCQ
+	jG5XdlHi02JoEH1DI8n8lmq2g==
+X-Google-Smtp-Source: AGHT+IFTQdXvlZxDoBIwCyChBgf2ijvKjPOXu3xyloDy3VewP6H31eXx2tdJ5Y2sZs04pWqa6kN09Zh4TAMeP3pYKTk=
+X-Received: by 2002:a05:690e:1587:10b0:63c:e90c:a6d8 with SMTP id
+ 956f58d0204a3-63ce90cac96mr2654086d50.44.1760066297220; Thu, 09 Oct 2025
+ 20:18:17 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,15 +79,16 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250913003842.41944-1-safinaskar@gmail.com> <20250913003842.41944-22-safinaskar@gmail.com>
- <a079375f-38c2-4f38-b2be-57737084fde8@kernel.org>
-In-Reply-To: <a079375f-38c2-4f38-b2be-57737084fde8@kernel.org>
+References: <20250913003842.41944-1-safinaskar@gmail.com> <20250913003842.41944-3-safinaskar@gmail.com>
+ <053f39a9-06dc-4fbd-ad1b-325f9d3f3f66@csgroup.eu>
+In-Reply-To: <053f39a9-06dc-4fbd-ad1b-325f9d3f3f66@csgroup.eu>
 From: Askar Safin <safinaskar@gmail.com>
-Date: Fri, 10 Oct 2025 05:48:06 +0300
-X-Gm-Features: AS18NWC-iakvkxLfUlO1LRxakg0fg4KV7Trw_hsIF2wxGpnmpWZvHTCQ7Z3GaoE
-Message-ID: <CAPnZJGDK08eDWaMTmvVQwkAAThUvgB0XgAapqqV4_ZmWeay-iw@mail.gmail.com>
-Subject: Re: [PATCH RESEND 21/62] init: remove all mentions of root=/dev/ram*
-To: Krzysztof Kozlowski <krzk@kernel.org>
+Date: Fri, 10 Oct 2025 06:17:41 +0300
+X-Gm-Features: AS18NWCm5nh3vfq5EIpD-J_OKHQvi_8uVbgLjcXTz6TnQl9pdn9vqNDRLNkppRk
+Message-ID: <CAPnZJGC9avy1s=xFS5Tg6obS+RB3zw4yWsUBw9g=Vt09S6j88w@mail.gmail.com>
+Subject: Re: [PATCH RESEND 02/62] init: remove deprecated "prompt_ramdisk"
+ command line parameter, which does nothing
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Linus Torvalds <torvalds@linux-foundation.org>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
@@ -120,14 +121,15 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sun, Sep 14, 2025 at 1:06=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
-> Please wrap commit message according to Linux coding style / submission
-I will do this for v2
+On Mon, Sep 15, 2025 at 2:16=E2=80=AFPM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+> Squash patch 1 and patch 2 together and say this is cleanup of two
+> options deprecated by commit c8376994c86c ("initrd: remove support for
+> multiple floppies") with the documentation by commit 6b99e6e6aa62
+> ("Documentation/admin-guide: blockdev/ramdisk: remove use of "rdev"")
 
-> To me your patchset is way too big bomb, too difficult to review. You
-v2 will be small.
+Will do in v2.
 
---
+--=20
 Askar Safin
 
