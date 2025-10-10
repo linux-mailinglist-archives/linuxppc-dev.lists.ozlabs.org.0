@@ -1,71 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-12761-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12762-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB476BCB7B3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Oct 2025 05:18:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DDDBCB85E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Oct 2025 05:32:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cjX4t2x5hz2xPw;
-	Fri, 10 Oct 2025 14:18:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cjXP825nKz2xPx;
+	Fri, 10 Oct 2025 14:32:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b131"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760066302;
-	cv=none; b=BR6akUHWrfAafM8BKzHePzS/kXIGM9Tz+Wcx622IFDMgKi4AO+JM5h49cD0WofeOKtunLlzY5O1g+bJK4AsBIsWB89qv5J3R0joIsERa09nR2jjtS8sxFNlPPVqFWKA4+ujN9WCwsu7UqM0T99Tfw+qjJunSR0spSjp0oo8Na0wI/qBYjGzgbf+yc58ylRSBuU6C9Z5DAIrzgzI3bTIFawGcQgJWX61oS14q0htOZFRDvBuKyh0TU0Y8jIHMqF6U8e+R+l4OGglJ/dVE8r1J3qWUeuX7VEtz0YNh0wdyUrjP4zuT1DqiYeVnrkciSNc5LIoJn7iFYyawhOeiwrcygg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760067148;
+	cv=none; b=jA1CdmtfCDz1oVEdzUokvPxE5XZd4uSQqsOoWnf+B88XFOUVhrvgZJfM3AUrkKKsGdc9iktjSaDVX5Wdb2+ygb/iKRkrK0pMXBNpusCBDSj4FP474IDynIlYFzjvjvshrCvLEFamVb4aDaCpSNYuVI/OX67JNBq4RmAJHe46KBByX3ua3ClbTn3/KkUGeoOVPKzD4W16gVxxU3D0akTvmoowK3D55uC/Df5RrPpjuVb/rT5/iATJq11x92ZpKQYcmG+E5BL1TkZIhCw8LiVmkTo0vL7CsG+FmnLzLYaPFXbdt7rzVUNHMWj8ZU+1v4Kgjgis1uTWStOigDMltIpxIQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760066302; c=relaxed/relaxed;
-	bh=Pa2OhCNI6n3Mf2P8BAMZLHp7akXwtALOTxVawJZtfK8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y54VeKrMoEKMehG2puI5DL46LPny4C/cMjpgAHlOgX4vYBVlODFp2q8EQ+DWb+zMAwYDVsZwFl/88ZzB177YgtHgRIjq/OXaL9dX0hO/o0sPwgn1AQsoNHjTiVSyw2rqLQQ7LpNJY5GKkPmodugHwjUc1Ftz2Jc31Iq9LwQggxJVnU0DUoYR6cwDZ9DIgOFe/Y0UL8JWNIhDQSbRm7qq1x7v/D9EXsUrWtoE/JZyx7EWgoIYn0Pl+e4OXsHYOyg6keHbuBHnaTWPzSfgc6+PxhRoa6WyUbnL1OERVD3BTFA11wNNIK/NVUE7bOOD0Hex9s4uXq+RjMo1cuq8IsTnaA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b68v8DZa; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b131; helo=mail-yx1-xb131.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1760067148; c=relaxed/relaxed;
+	bh=7Gd4y/1I3fx0wRGlpXPcldOSnrXLkFK8kwAzY0i70QM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mHpiku69tB6ohapcrwhpAxfR3Cj7TD5lnVYoTo+aseSbWdidYCgloFzI7cPGTrOxBPksAWm81U0zjK5FxA2ecKptE89QgwXidT1ZmzoxE7+Z5ZQsDt9JrVFPNJY0Ubk5Esf+Z/EyJXvDdCLpFHnfGm6T6Ul5vg7jMWI5vcG/6aV0XlRZY5TiXoXDzd7YcUF8Lg3/1cybLaNXzW+/guWY36QJtsh4g7LLdwgOkspOeu56ptr90hISQZU8v3dXY8hITalTh7ficTv0MJHpNu27R79VuWIn0v2acN4xzkaXQlzfHWiSF1DLQROV8EUarOeif/A6B9TB56f3/zJtPPD71g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f872pfdK; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b68v8DZa;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f872pfdK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b131; helo=mail-yx1-xb131.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yx1-xb131.google.com (mail-yx1-xb131.google.com [IPv6:2607:f8b0:4864:20::b131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cjX4s1GNhz2xK5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Oct 2025 14:18:19 +1100 (AEDT)
-Received: by mail-yx1-xb131.google.com with SMTP id 956f58d0204a3-63605f6f64eso1444150d50.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Oct 2025 20:18:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760066297; x=1760671097; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pa2OhCNI6n3Mf2P8BAMZLHp7akXwtALOTxVawJZtfK8=;
-        b=b68v8DZaqIRlbS5LfpHA/k9WYz44/mYqhJV9S0bXgRn7AzoWUkbnKk6gl/uHzLV3rq
-         3UOTLKxJAnZuOcz24shm6QwNgYAAiDqU4sCAoBQXcbY6nBpHgIRUmxKSSiveTsNI7FDt
-         /i4dw71nl+CbAXwbHlAM7WJ/h9RrRibIHRvMwuzzV7dmWe2ulnnIPCy3jreDPrU0VvmK
-         WpZeYVn+IRJY5zBt32fN14L7HpxBR/s7wn19p6rgQn5ZFjVKgCzYLTToRgTmoqKlCbNF
-         Frfx9t0aM+Sp4f1HZDCWEyY/rXdl8ucTmStwqOvHFWDmvfnVmZ1BFF4+EaPuN4h3AngU
-         aK3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760066297; x=1760671097;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Pa2OhCNI6n3Mf2P8BAMZLHp7akXwtALOTxVawJZtfK8=;
-        b=t7/GHSxWRFUzxe/otqoF/lHMfdsC0bDEnGJEwZoZhgTRsMpuZK2FVlltPtb7XqTu1m
-         H3S2lco8WK3KX/nbCaJ/Pw9D1O4L1jeZyW4OBPg1C7VI+WFDYZIUNMV2das7JSkWtD4y
-         bdPTjfJ51jUBQM6hppAPPPDcH791yeZRPX2yBhlbGGmkvaQOGllgw5MIKTLgYZ+oTA58
-         A2LAUdcsMuGF+D7md4aa9PDWqt4br0Gxiw12w0F4ML8hkwiv6VEZE+oRBmELpOVpcCVS
-         OOe4q24xn2E/vnOtAt/OA6P0BTmGlyIr5BNTF0Ahz542slwCWvTVeNuFG4oXloYLfFkJ
-         eB1A==
-X-Forwarded-Encrypted: i=1; AJvYcCUEfLs+jypAY+DAsAQP6VGe8l0wizUbXySW578PSl6UzId5wVxKNGMqtWRGu86rOD4O0jgm6hldL7sDMak=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yybckk5gjDhH5mwHFJaKwjReYZv03cGAWRU6C37VuuXH/hyvjca
-	UoV5aE5JV9zDQjF7PTsl4eOQVmncKz9akwagdLPqkPHjZiVQxWSKcm4voxzSI9sRfABHgUM1q8t
-	P7pezLdjcpqbICxFfNCC6c19WrJYtFyo=
-X-Gm-Gg: ASbGncuE7v96ANqkLfQNZK0dv3zCs+4cg50XFNJGOapnukxBqnPkOTcLK4U2UavWMlp
-	1WPsfTPYC3Za0uYnZmW+3D6QGEUNKvWC+u6ZY1QBRB35q0DensR25gMSu2MmivVog9VkLm5+iaY
-	N/L4abjh9AWredlDpjQSDYlhqpIeaH2UN4Rwlh327dCqoJJwcTaV3Fi91IpvDfBTt2gLXQqcNCQ
-	jG5XdlHi02JoEH1DI8n8lmq2g==
-X-Google-Smtp-Source: AGHT+IFTQdXvlZxDoBIwCyChBgf2ijvKjPOXu3xyloDy3VewP6H31eXx2tdJ5Y2sZs04pWqa6kN09Zh4TAMeP3pYKTk=
-X-Received: by 2002:a05:690e:1587:10b0:63c:e90c:a6d8 with SMTP id
- 956f58d0204a3-63ce90cac96mr2654086d50.44.1760066297220; Thu, 09 Oct 2025
- 20:18:17 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cjXP63VGMz2xMV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Oct 2025 14:32:26 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B137A492EF;
+	Fri, 10 Oct 2025 03:32:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F26FC4CEF9;
+	Fri, 10 Oct 2025 03:32:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760067143;
+	bh=eo/kpWRdhX4Pc3Lf2U+5ymsFU3Eqj+uk20mUkZP1wFc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f872pfdK+LzwxpWgddKpBDcb1V62JXpRN4SLPy5NMcuygwhhjb928WXfy3461tg0L
+	 lRg0C+fWMFSjNW9NucMqxcS+BAmljN612cvyEQs7kStfz0Apwv/NfMqLxzi0LmoW2S
+	 33WzR2VJqtgpxfbpAsld9uWQSz5PzvDO88Cq2h/n+Z+rwRTD5BUWBgW0IRuYwBL7qh
+	 ijVoxkaNWcHfK42JNDR4ZTMnqUfCHZZqUfdiDKUc2qq8CTdBFHixx4uMkVKu3rom+7
+	 6gSU5ZCuJsiUrnx2QV6p3D8zwg36artxEfdaK0PdywImkS25gesIj1mm3ZZvnpFeHM
+	 /unZxxOrmmqcA==
+Date: Fri, 10 Oct 2025 06:32:19 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Venkat <venkat88@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	LKML <linux-kernel@vger.kernel.org>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linux-kselftest@vger.kernel.org, daleksan@redhat.com,
+	jstancek@redhat.com, pmenzel@molgen.mpg.de
+Subject: Re: [bisected][linux-next20251003] tmp2 selftests resulting in
+ Kernel OOPs
+Message-ID: <aOh-Q7Ly_zoTLi8g@kernel.org>
+References: <88f1df7e-8347-45f7-a2a1-e321e72e4009@linux.ibm.com>
+ <3d7a5f70-7ece-48ba-92bd-8b6473fd8b6c@linux.ibm.com>
+ <feadc4f6-839b-4c04-b6df-dedf279fb315@csgroup.eu>
+ <8540AB99-D3C8-42B1-9A1F-BCB74C8F5F20@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,57 +72,298 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250913003842.41944-1-safinaskar@gmail.com> <20250913003842.41944-3-safinaskar@gmail.com>
- <053f39a9-06dc-4fbd-ad1b-325f9d3f3f66@csgroup.eu>
-In-Reply-To: <053f39a9-06dc-4fbd-ad1b-325f9d3f3f66@csgroup.eu>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Fri, 10 Oct 2025 06:17:41 +0300
-X-Gm-Features: AS18NWCm5nh3vfq5EIpD-J_OKHQvi_8uVbgLjcXTz6TnQl9pdn9vqNDRLNkppRk
-Message-ID: <CAPnZJGC9avy1s=xFS5Tg6obS+RB3zw4yWsUBw9g=Vt09S6j88w@mail.gmail.com>
-Subject: Re: [PATCH RESEND 02/62] init: remove deprecated "prompt_ramdisk"
- command line parameter, which does nothing
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, 
-	Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Aleksa Sarai <cyphar@cyphar.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
-	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>, 
-	Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org, 
-	Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, 
-	devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8540AB99-D3C8-42B1-9A1F-BCB74C8F5F20@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Sep 15, 2025 at 2:16=E2=80=AFPM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> Squash patch 1 and patch 2 together and say this is cleanup of two
-> options deprecated by commit c8376994c86c ("initrd: remove support for
-> multiple floppies") with the documentation by commit 6b99e6e6aa62
-> ("Documentation/admin-guide: blockdev/ramdisk: remove use of "rdev"")
+On Wed, Oct 08, 2025 at 02:54:22PM +0530, Venkat wrote:
+> 
+> 
+> > On 7 Oct 2025, at 9:29 PM, Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+> > 
+> > 
+> > 
+> > Le 07/10/2025 à 17:08, Venkat Rao Bagalkote a écrit :
+> >> On 07/10/25 10:59 am, Venkat Rao Bagalkote wrote:
+> >>> Greetings!!!
+> >>> 
+> >>> 
+> >>> IBM CI has reported a kernel OOPs while running TPM2selftests on IBM Power11 system with linux-next20251002 kernel.
+> >>> 
+> >>> 
+> >>> Test Case:
+> >>> 
+> >>> make run_tests
+> >>> TAP version 13
+> >>> 1..3
+> >>> # timeout set to 600
+> >>> # selftests: tpm2: test_smoke.sh
+> >>> # test_read_partial_overwrite (tpm2_tests.SmokeTest) ... ok
+> >>> # test_read_partial_resp (tpm2_tests.SmokeTest) ... ok
+> >>> # test_seal_with_auth (tpm2_tests.SmokeTest) ... ok
+> >>> # test_seal_with_policy (tpm2_tests.SmokeTest) ... ok
+> >>> # test_seal_with_too_long_auth (tpm2_tests.SmokeTest) ... ok
+> >>> # test_send_two_cmds (tpm2_tests.SmokeTest) ... ok
+> >>> # test_too_short_cmd (tpm2_tests.SmokeTest) ... ok
+> >>> # test_unseal_with_wrong_auth (tpm2_tests.SmokeTest) ... ok
+> >>> # test_unseal_with_wrong_policy (tpm2_tests.SmokeTest) ... ERROR
+> >>> #
+> >>> # ======================================================================
+> >>> # ERROR: test_unseal_with_wrong_policy (tpm2_tests.SmokeTest)
+> >>> # -----------------------------------------------------
+> >>> 
+> >>> 
+> >>> Traces:
+> >>> 
+> >>> 
+> >>> [  452.604333] BUG: KASAN: slab-use-after-free in tpmrm_release+0x78/0xa8
+> >>> [  452.604345] Read of size 8 at addr c00000001c650000 by task python3/1856
+> >>> [  452.604353]
+> >>> [  452.604358] CPU: 24 UID: 0 PID: 1856 Comm: python3 Kdump: loaded Not tainted 6.17.0-next-20251003 #1 VOLUNTARY
+> >>> [  452.604364] Hardware name: IBM,9080-HEX Power11 (architected) 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+> >>> [  452.604368] Call Trace:
+> >>> [  452.604370] [c0000000c1867840] [c00000000187ea4c] dump_stack_lvl+0x84/0xe8 (unreliable)
+> >>> [  452.604380] [c0000000c1867870] [c000000000803754] print_address_description.constprop.0+0x11c/0x56c
+> >>> [  452.604388] [c0000000c1867910] [c000000000803c84] print_report+0xe0/0x358
+> >>> [  452.604394] [c0000000c18679e0] [c000000000804124] kasan_report+0x128/0x1f4
+> >>> [  452.604400] [c0000000c1867af0] [c0000000008062b4] __asan_load8+0xa8/0xe0
+> >>> [  452.604406] [c0000000c1867b10] [c000000000f2ec18] tpmrm_release+0x78/0xa8
+> >>> [  452.604412] [c0000000c1867b40] [c0000000008b6a2c] __fput+0x21c/0x60c
+> >>> [  452.604417] [c0000000c1867bc0] [c0000000008ada70] sys_close+0x74/0xd0
+> >>> [  452.604424] [c0000000c1867bf0] [c000000000039270] system_call_exception+0x1e0/0x460
+> >>> [  452.604431] [c0000000c1867e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+> >>> [  452.604438] ---- interrupt: 3000 at 0x7fffb7534ab4
+> >>> [  452.604443] NIP:  00007fffb7534ab4 LR: 00007fffb7534ab4 CTR: 0000000000000000
+> >>> [  452.604446] REGS: c0000000c1867e80 TRAP: 3000   Not tainted (6.17.0-next-20251003)
+> >>> [  452.604449] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44284422  XER: 00000000
+> >>> [  452.604466] IRQMASK: 0
+> >>> [  452.604466] GPR00: 0000000000000006 00007ffff65d76b0 00007fffb7c17700 0000000000000006
+> >>> [  452.604466] GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000004
+> >>> [  452.604466] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> >>> [  452.604466] GPR12: 0000000000000000 00007fffb7e6b8e0 00000000000000a1 00007fffb67acec0
+> >>> [  452.604466] GPR16: 0000000164032ad0 00007fffb67aceb0 00007fffb76f6a90 0000000000000000
+> >>> [  452.604466] GPR20: 00007fffb6f21850 0000000000000000 00007fffb71062c0 0000000164034490
+> >>> [  452.604466] GPR24: 00007fffb6f2fea0 00007fffb67acea8 0000000164032b18 00007fffb7c45b32
+> >>> [  452.604466] GPR28: 00007fffb7c678e0 00007fffb67aceb8 0000000000000006 0000000164034490
+> >>> [  452.604510] NIP [00007fffb7534ab4] 0x7fffb7534ab4
+> >>> [  452.604513] LR [00007fffb7534ab4] 0x7fffb7534ab4
+> >>> [  452.604516] ---- interrupt: 3000
+> >>> [  452.604518]
+> >>> [  452.604601] Allocated by task 1856:
+> >>> [  452.604607]  kasan_save_stack+0x34/0x64
+> >>> [  452.604614]  kasan_save_track+0x2c/0x50
+> >>> [  452.604621]  kasan_save_alloc_info+0x58/0x74
+> >>> [  452.604628]  __kasan_kmalloc+0x12c/0x168
+> >>> [  452.604635]  __kmalloc_cache_noprof+0x1d8/0x71c
+> >>> [  452.604643]  tpmrm_open+0x88/0x168
+> >>> [  452.604649]  chrdev_open+0x1f4/0x484
+> >>> [  452.604656]  do_dentry_open+0x578/0x9cc
+> >>> [  452.604663]  vfs_open+0x68/0x23c
+> >>> [  452.604670]  do_open+0x514/0x74c
+> >>> [  452.604676]  path_openat+0x16c/0x380
+> >>> [  452.604682]  do_filp_open+0x104/0x230
+> >>> [  452.604689]  do_sys_openat2+0xb8/0x154
+> >>> [  452.604696]  sys_openat+0xcc/0x130
+> >>> [  452.604703]  system_call_exception+0x1e0/0x460
+> >>> [  452.604710]  system_call_vectored_common+0x15c/0x2ec
+> >>> [  452.604718]
+> >>> [  452.604722] Freed by task 1856:
+> >>> [  452.604726]  kasan_save_stack+0x34/0x64
+> >>> [  452.604733]  kasan_save_track+0x2c/0x50
+> >>> [  452.604739]  __kasan_save_free_info+0x64/0x110
+> >>> [  452.604747]  __kasan_slab_free+0xb0/0x10c
+> >>> [  452.604753]  kfree+0x220/0x624
+> >>> [  452.604760]  tpmrm_release+0x6c/0xa8
+> >>> [  452.604766]  __fput+0x21c/0x60c
+> >>> [  452.604772]  sys_close+0x74/0xd0
+> >>> [  452.604779]  system_call_exception+0x1e0/0x460
+> >>> [  452.604786]  system_call_vectored_common+0x15c/0x2ec
+> >>> [  452.604794]
+> >>> [  452.604797] The buggy address belongs to the object at c00000001c650000
+> >>> [  452.604797]  which belongs to the cache kmalloc-8k of size 8192
+> >>> [  452.604806] The buggy address is located 0 bytes inside of
+> >>> [  452.604806]  freed 8192-byte region [c00000001c650000, c00000001c652000)
+> >>> [  452.604815]
+> >>> [  452.604818] The buggy address belongs to the physical page:
+> >>> [  452.604824] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xc00000001c644000 pfn:0x1c60
+> >>> [  452.604833] head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+> >>> [  452.604840] flags: 0x3ffffe00000040(head|node=0|zone=0| lastcpupid=0x1fffff)
+> >>> [  452.604849] page_type: f5(slab)
+> >>> [  452.604856] raw: 003ffffe00000040 c000000007012300 5deadbeef0000122 0000000000000000
+> >>> [  452.604864] raw: c00000001c644000 000000008020001e 00000000f5000000 0000000000000000
+> >>> [  452.604872] head: 003ffffe00000040 c000000007012300 5deadbeef0000122 0000000000000000
+> >>> [  452.604879] head: c00000001c644000 000000008020001e 00000000f5000000 0000000000000000
+> >>> [  452.604887] head: 003ffffe00000003 c00c000000071801 00000000ffffffff 00000000ffffffff
+> >>> [  452.604894] head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+> >>> [  452.604900] page dumped because: kasan: bad access detected
+> >>> [  452.604905]
+> >>> [  452.604908] Memory state around the buggy address:
+> >>> [  452.604914]  c00000001c64ff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> >>> [  452.604920]  c00000001c64ff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> >>> [  452.604927] >c00000001c650000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> >>> [  452.604933]                    ^
+> >>> [  452.604937]  c00000001c650080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> >>> [  452.604944]  c00000001c650100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> >>> [  452.604950] ==================================================================
+> >>> [  452.604955] Disabling lock debugging due to kernel taint
+> >>> [  452.604961] Kernel attempted to read user page (770) - exploit attempt? (uid: 0)
+> >>> [  452.604969] BUG: Kernel NULL pointer dereference on read at 0x00000770
+> >>> [  452.604975] Faulting instruction address: 0xc0000000002b2e0c
+> >>> [  452.604982] Oops: Kernel access of bad area, sig: 11 [#1]
+> >>> [  452.604987] LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=8192 NUMA pSeries
+> >>> [  452.604996] Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat bonding nf_conntrack tls nf_defrag_ipv6 nf_defrag_ipv4 rfkill ip_set nf_tables nfnetlink sunrpc pseries_rng vmx_crypto fuse ext4 crc16 mbcache jbd2 sd_mod sg ibmvscsi ibmveth scsi_transport_srp pseries_wdt
+> >>> [  452.605073] CPU: 24 UID: 0 PID: 1856 Comm: python3 Kdump: loaded Tainted: G    B               6.17.0-next-20251003 #1 VOLUNTARY
+> >>> [  452.605084] Tainted: [B]=BAD_PAGE
+> >>> [  452.605089] Hardware name: IBM,9080-HEX Power11 (architected) 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+> >>> [  452.605096] NIP:  c0000000002b2e0c LR: c0000000002b2e08 CTR: 0000000000000000
+> >>> [  452.605103] REGS: c0000000c1867820 TRAP: 0300   Tainted: G B       (6.17.0-next-20251003)
+> >>> [  452.605110] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28284420  XER: 0000000d
+> >>> [  452.605132] CFAR: c000000000807920 DAR: 0000000000000770 DSISR: 40000000 IRQMASK: 0
+> >>> [  452.605132] GPR00: c0000000002b2e08 c0000000c1867ac0 c00000000234a500 0000000000000001
+> >>> [  452.605132] GPR04: 0000000000000008 0000000000000000 c0000000002b2e08 0000000000000001
+> >>> [  452.605132] GPR08: 0000000000000020 0000000000000001 0000000000000001 a80e000000000000
+> >>> [  452.605132] GPR12: c00e0000009b1c8c c000000d0ddeb700 0000000000000000 0000000000000000
+> >>> [  452.605132] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> >>> [  452.605132] GPR20: 0000000000000008 0000000000000000 c000000008202f00 c00000007b9ff620
+> >>> [  452.605132] GPR24: c00000008a76cb20 c00000008a76cb40 c00000008a76cb08 c000000002201e80
+> >>> [  452.605132] GPR28: c000000061569248 0000000000000770 c00000008a76cb00 0000000000000768
+> >>> [  452.605227] NIP [c0000000002b2e0c] up_read+0x50/0x17c
+> >>> [  452.605237] LR [c0000000002b2e08] up_read+0x4c/0x17c
+> >>> [  452.605245] Call Trace:
+> >>> [  452.605249] [c0000000c1867ac0] [c0000000002b2e08] up_read+0x4c/0x17c (unreliable)
+> >>> [  452.605261] [c0000000c1867b10] [c000000000f2ec28] tpmrm_release+0x88/0xa8
+> >>> [  452.605271] [c0000000c1867b40] [c0000000008b6a2c] __fput+0x21c/0x60c
+> >>> [  452.605280] [c0000000c1867bc0] [c0000000008ada70] sys_close+0x74/0xd0
+> >>> [  452.605291] [c0000000c1867bf0] [c000000000039270] system_call_exception+0x1e0/0x460
+> >>> [  452.605301] [c0000000c1867e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+> >>> [  452.605312] ---- interrupt: 3000 at 0x7fffb7534ab4
+> >>> [  452.605319] NIP:  00007fffb7534ab4 LR: 00007fffb7534ab4 CTR: 0000000000000000
+> >>> [  452.605326] REGS: c0000000c1867e80 TRAP: 3000   Tainted: G B       (6.17.0-next-20251003)
+> >>> [  452.605333] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44284422  XER: 00000000
+> >>> [  452.605362] IRQMASK: 0
+> >>> [  452.605362] GPR00: 0000000000000006 00007ffff65d76b0 00007fffb7c17700 0000000000000006
+> >>> [  452.605362] GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000004
+> >>> [  452.605362] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> >>> [  452.605362] GPR12: 0000000000000000 00007fffb7e6b8e0 00000000000000a1 00007fffb67acec0
+> >>> [  452.605362] GPR16: 0000000164032ad0 00007fffb67aceb0 00007fffb76f6a90 0000000000000000
+> >>> [  452.605362] GPR20: 00007fffb6f21850 0000000000000000 00007fffb71062c0 0000000164034490
+> >>> [  452.605362] GPR24: 00007fffb6f2fea0 00007fffb67acea8 0000000164032b18 00007fffb7c45b32
+> >>> [  452.605362] GPR28: 00007fffb7c678e0 00007fffb67aceb8 0000000000000006 0000000164034490
+> >>> [  452.605450] NIP [00007fffb7534ab4] 0x7fffb7534ab4
+> >>> [  452.605456] LR [00007fffb7534ab4] 0x7fffb7534ab4
+> >>> [  452.605462] ---- interrupt: 3000
+> >>> [  452.605467] Code: fbc1fff0 7c7f1b78 f8010010 f821ffb1 e92d0c78 f9210028 39200000 3ba30008 38800008 7fa3eb78 48554af5 60000000 <ebdf0008> eb8d0908 7bc90764 fbc10020
+> >>> [  452.605501] ---[ end trace 0000000000000000 ]---
+> >>> [  452.613685] pstore: backend (nvram) writing error (-1)
+> >>> [  452.613691]
+> >>> 
+> >>> 
+> >> Git bisect is pointing to eb28a2adba0654878bcfd909b429bf567b35922b as first bad commit.
+> > 
+> > Should be fixed by the following change ?
+> > 
+> > diff --git a/drivers/char/tpm/tpmrm-dev.c b/drivers/char/tpm/tpmrm-dev.c
+> > index 13322dd9ac9e0..334b3ec2b36a5 100644
+> > --- a/drivers/char/tpm/tpmrm-dev.c
+> > +++ b/drivers/char/tpm/tpmrm-dev.c
+> > @@ -54,8 +54,8 @@ static int tpmrm_release(struct inode *inode, struct file *file)
+> > 
+> > tpm_common_release(file, fpriv);
+> > tpm2_del_space(fpriv->chip, &priv->space);
+> > - kfree(priv);
+> > up_read(&fpriv->chip->open_lock);
+> > + kfree(priv);
+> > 
+> > return 0;
+> > }
+> 
+> Thanks for the fix. It fixes reported issue.
+> 
+> Please add below tag also, while sending out the patch.
+> 
+> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> 
+> Regards,
+> Venkat.
+> > 
+> > 
+> >> eb28a2adba0654878bcfd909b429bf567b35922b is the first bad commit
+> >> commit eb28a2adba0654878bcfd909b429bf567b35922b
+> >> Author: Jonathan McDowell <noodles@meta.com>
+> >> Date:   Tue Sep 23 18:10:00 2025 +0100
+> >>     tpm: Ensure exclusive userspace access when using /dev/tpm<n>
+> >>     There is an is_open lock on /dev/tpm<n> that dates back to at least
+> >>     2013, but it only prevents multiple accesses via *this* interface. It is
+> >>     perfectly possible for userspace to use /dev/tpmrm<n>, or the kernel to
+> >>     use the internal interfaces, to access the TPM. For tooling expecting
+> >>     exclusive access, such as firmware updates, this can cause issues.
+> >>     Close the userspace loophole by changing the simple bit lock to a full
+> >>     read/write mutex. Direct /dev/tpm<n> access needs an exclusive write
+> >>     lock, the resource broker continues to allow concurrent access *except*
+> >>     when /dev/tpm<n> is open.
+> >>     Signed-off-by: Jonathan McDowell <noodles@meta.com>
+> >>     Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> >>     Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> >>  drivers/char/tpm/tpm-chip.c  |  1 +
+> >>  drivers/char/tpm/tpm-dev.c   | 14 ++++++++------
+> >>  drivers/char/tpm/tpmrm-dev.c | 20 ++++++++++++++++++--
+> >>  include/linux/tpm.h          |  3 ++-
+> >>  4 files changed, 29 insertions(+), 9 deletions(-)
+> >> Git bisect log:
+> >> git bisect log
+> >> git bisect start
+> >> # status: waiting for both good and bad commits
+> >> # good: [e5f0a698b34ed76002dc5cff3804a61c80233a7a] Linux 6.17
+> >> git bisect good e5f0a698b34ed76002dc5cff3804a61c80233a7a
+> >> # status: waiting for bad commit, 1 good commit known
+> >> # bad: [47a8d4b89844f5974f634b4189a39d5ccbacd81c] Add linux-next specific files for 20251003
+> >> git bisect bad 47a8d4b89844f5974f634b4189a39d5ccbacd81c
+> >> # good: [f79e772258df311c2cb21594ca0996318e720d28] Merge tag 'media/ v6.18-1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux- media
+> >> git bisect good f79e772258df311c2cb21594ca0996318e720d28
+> >> # good: [6bda5a67f6a2ae4c0153e693e96bd408d054c732] Merge branch 'xtensa- for-next' of https://eur01.safelinks.protection.outlook.com/? url=https%3A%2F%2Fgithub.com%2Fjcmvbkbc%2Flinux- xtensa.git&data=05%7C02%7Cchristophe.leroy2%40cs- soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485179363%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=0Y%2BuK%2B%2BkZRoXNH%2FK4Ni4hd3RVZJmX8c2SqoLd40qq2Q%3D&reserved=0
+> >> git bisect good 6bda5a67f6a2ae4c0153e693e96bd408d054c732
+> >> # bad: [09026363ffabf7bb33e0ce000d8bff3e41b0c3de] Merge branch 'next' of https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fpcmoore%2Faudit.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485205361%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=XuvSxtgtEAPPm3jl6X02nRyTfSh0EXMCUorpI21Y6Cs%3D&reserved=0
+> >> git bisect bad 09026363ffabf7bb33e0ce000d8bff3e41b0c3de
+> >> # good: [c32d529ea3e39ba4918f3865ef90ef6bddaa498c] Merge branch 'for- next' of https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fhid%2Fhid.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485215132%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=eOflHx6SriPsE%2FEwEURKIEzRciXVlmsDJ7F%2F1tTJVtk%3D&reserved=0
+> >> git bisect good c32d529ea3e39ba4918f3865ef90ef6bddaa498c
+> >> # good: [3fa51882336f09d1a8a03edf107ef43e3b872fc1] Merge branch 'next' of https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fiwlwifi%2Fiwlwifi-next.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485223439%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=kf7T2nWCNZ3zKqCl%2FFyIMWoWDqerBMMJJmwEDC3dldo%3D&reserved=0
+> >> git bisect good 3fa51882336f09d1a8a03edf107ef43e3b872fc1
+> >> # good: [acc26ceeebaa1880ceb70379abb3fac92d1007d5] Merge branch 'drm-xe- next' of https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgitlab.freedesktop.org%2Fdrm%2Fxe%2Fkernel.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485231891%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=rAhIU15LaLZVLiCngMMd%2FD8WZFNbBbxlqb95l4ZqN3E%3D&reserved=0
+> >> git bisect good acc26ceeebaa1880ceb70379abb3fac92d1007d5
+> >> # good: [3e06c10cef8079782836155d66c2a91798600cfc] Merge branch 'for- next' of https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fdevice-mapper%2Flinux-dm.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485239888%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=96H7h%2FqU8AOA6BMX3gRIqFvbwree0RrwBKFiyAbbWqw%3D&reserved=0
+> >> git bisect good 3e06c10cef8079782836155d66c2a91798600cfc
+> >> # bad: [cf305bb4070bef42cea469a6c4e751a63f5cacf2] Merge branch 'next' of https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fjarkko%2Flinux-tpmdd.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485248529%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=aYTIA07yF9iCvHBin54NcH7%2Bhcn4wpuUR1%2BCGncndKQ%3D&reserved=0
+> >> git bisect bad cf305bb4070bef42cea469a6c4e751a63f5cacf2
+> >> # good: [19766d4984c39d75393d22cbdad14974cb7f9366] Merge branch 'next' of https://eur01.safelinks.protection.outlook.com/? url=https%3A%2F%2Fgithub.com%2Fcschaufler%2Fsmack- next&data=05%7C02%7Cchristophe.leroy2%40cs- soprasteria.com%7C18e20b6baa664009b66c08de05b37367%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638954465485256294%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=SAfMhKzF9h2YURPEqPu6ze2oIUJ87TNyRIFC%2B1JjWGE%3D&reserved=0
+> >> git bisect good 19766d4984c39d75393d22cbdad14974cb7f9366
+> >> # good: [4e349e68974e71da13d4b34988f795f4cfe29650] tpm: use a map for tpm2_calc_ordinal_duration()
+> >> git bisect good 4e349e68974e71da13d4b34988f795f4cfe29650
+> >> # bad: [b6889908d493fe03a1db28aa9afdade6bceda158] tpm: Allow for exclusive TPM access when using /dev/tpm<n>
+> >> git bisect bad b6889908d493fe03a1db28aa9afdade6bceda158
+> >> # bad: [eb28a2adba0654878bcfd909b429bf567b35922b] tpm: Ensure exclusive userspace access when using /dev/tpm<n>
+> >> git bisect bad eb28a2adba0654878bcfd909b429bf567b35922b
+> >> # good: [11baa7201b1baefd281e5a7faf7de5b7e407364c] tpm: Prevent local DOS via tpm/tpm0/ppi/*operations
+> >> git bisect good 11baa7201b1baefd281e5a7faf7de5b7e407364c
+> >> # first bad commit: [eb28a2adba0654878bcfd909b429bf567b35922b] tpm: Ensure exclusive userspace access when using /dev/tpm<n>
+> >>> 
+> >>> If you happen to fix this, please add below tag.
+> >>> 
+> >>> 
+> >>> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> >>> 
+> >>> 
+> >>> Regards,
+> >>> 
+> >>> Venkat.
+> 
+> 
 
-Will do in v2.
+It's no longer in -next, feature is postponed to 6.19.
 
---=20
-Askar Safin
+BR, Jarkko
 
