@@ -1,61 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-12802-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12803-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B035BBD4B11
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Oct 2025 18:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4E7BD5368
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Oct 2025 18:49:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4clhtj2VbHz30P3;
-	Tue, 14 Oct 2025 03:02:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cljxt67v8z30V1;
+	Tue, 14 Oct 2025 03:49:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760371325;
-	cv=none; b=DcBHEOvME5xehuyFD6QABmc6y7yErHtnrZmO2kMT05tDzp85dlQEtmsyZ4ZOrkXEW+h1ADTUVvX5E8QejYudkcdrIZSHPJsJ6hrTJXEV6F16qb/5KWj3VUzRbhv3yzGu0ykExY1/gWw2wbZIA1J2Deklgk82qXIgyJrVVjfVRH6EGPX0SRJzg+hIu1JL/uoccKShrEAxrJogXtRo7VevaUyKAjxkKi3PRsNsDvVr8C/1PE70A9Qw7eggtIly+BY9mKtNVNLyMQI2Hkvl6ZAKoHoPyHn5NGqQVcHpxX8F+Joz+gnVka+XyBFAirRPUv4TloZ9BnX7OQsnm/VbmnqU4Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760374194;
+	cv=none; b=NWKGZWVpHisrQVMuUGwEcIJF7tzRDpnyRwEcnphk/C0YYGTuZ7ovlR17ftIevsPmmiu8BR8bNJWiMN7YwsxOwuY+tUGSiIA2RzShB3zE4ypMAmR6CSRMycSMB5U+9FM+spFCzyJid+pbZBFYBvbb/G5R2Cwv4+4OE5aN97LH+LivZA0fI8dCTRSrw8iVdjn2bGaBIcRE9u4EwS1AR3de5xcOeE+Dc1mgBIi58/eFrAorHDMAUhn3RTHlUuiJ60rjur/TsqZbAmJJp4HoT9nREtpqS6891o56QZ+3DFVwG8E3c0BxDB6ooZgT1sT1Dakd+PZGzCnAzLqLGGY8m6V/YQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760371325; c=relaxed/relaxed;
-	bh=D3rBH6fJ3if0hTugwlEzY1GrZNRke8eE92podKj58lg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W4BAuR9gF83MVpUeikT1IKenuM9w1dJnb4D/ApdTtwkXMg+OsUCpFxoco012gpVdrPED1bskx1cgz7uCKTi4qiLC7v03DJfxLgscMNeMrP6xoGykal9HCXEXewj/IxBLSZM1x86Q0UO0tDPIbU37OHgBWM0DDRbicZIqgrheovI52wMAiiMEUZyrZmyhXMYBxp5jZqIJIS9VZo5Z4nz7NM76QdZwwFIqffYtkaPWrn6DIz7IFsIiMNe+c19NhRE11Aol+Tmz6Hb6QZ47/pOSWbnzuuZJRsocxZ4NP7tDKfxRa5H+BegvyODtExH2EYwGh848zoSBv7jzrQ7BWqdEEA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kkkiw79w; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1760374194; c=relaxed/relaxed;
+	bh=kx5RY7oeloUuI7eYO+d6SROp0dR5EAAxdn5zrmZ7DwI=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:Date:References; b=gB6Lgktcy31XGFyum2VwIT52JEIWZxsT54XEmVXxJ2TFufb7nCb6MaLKa3wb2EB9yUet77j3/E7wCQEk1bulVRup7EOSmXAAmMN6ghaHBSLuEmIQjb+9hz4oPaQgPe5KHuYu+LuZUfeDSVfweu5KsNdyQGhimpS1qycBi18hcaTvpgk/GjksN9/LFAB752Ks2Kd5N5BSLWbaWWK5A/Fx1aeibhd1+j3ZO4BpmAF5MwjzHvXou3lhXWYCjTYx1nLhWBFnukLNJhCkOp7A9QriQDma6aGSO4IhZMO66mynVmX5Co4uAutvDStoT9r3uiVmSdlsIBycZhitrGc7q/OVzQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nOuks921; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kkkiw79w;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nOuks921;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4clhth3Lgpz302l
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 03:02:04 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D940343C98;
-	Mon, 13 Oct 2025 16:02:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B548DC4CEE7;
-	Mon, 13 Oct 2025 16:01:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760371322;
-	bh=zmWs4tyPdA4WSf506TonoWwzqbFwMzD2ey7AUqVphrg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kkkiw79wL7Hof/AILG3pyTbRsVPGf1cs703PPmyV0W7PsPP+ptpwEo7RZpZXBZ3Pb
-	 2BGDoaDCWx1H4lgm/h5JCR5oExPfQLwWzFx0QiA5GnlJd5eDQJXjYWSPemDe5u0ymJ
-	 YdKnQYUNVLsXYNch3R5eh9y8T1isFqieT/LsIqkdLS+VviZyvHKoYP84wO0g349LxI
-	 TdHODQT2CmgmeH2hkYIy8LpJqu85XrytPHLD6MhDstMEEfo5jgDfcXA82vqrYYbxAN
-	 UJ+Fw0wK/9inL5MM4f/DUA6O1no7TX9lKMeWy4fRYgD5aZ6gpIacYLgs+SBThvSmEd
-	 jPJahPvBexD4Q==
-Date: Mon, 13 Oct 2025 21:31:48 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc: Lukas Wunner <lukas@wunner.de>, 
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org, mad skateman <madskateman@gmail.com>, 
-	"R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>, 
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au, Darren Stevens <darren@stevens-zone.net>, 
-	debian-powerpc@lists.debian.org
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-Message-ID: <rmczfftmndkj7vofbol6i3enl26dbqv4mbbqsxyiruif6xjfd3@3yotxa4j2com>
-References: <0BE6C5AD-8DFD-4126-9B18-C012B522B442@xenosoft.de>
- <2E40B1CD-5EDA-4208-8914-D1FC02FE8185@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cljxs2j8yz302l
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 03:49:52 +1100 (AEDT)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-3306eb96da1so3479801a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Oct 2025 09:49:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760374190; x=1760978990; darn=lists.ozlabs.org;
+        h=references:date:in-reply-to:subject:cc:to:from:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=kx5RY7oeloUuI7eYO+d6SROp0dR5EAAxdn5zrmZ7DwI=;
+        b=nOuks921Wc86p0NHIaHuPs9EAhIEhxwA+BPc0r/knNpNeAtMsCQBjCkHPxtkga7otG
+         q04nhIfnSOUayCCmrTH1fnzf71SpWSMalqQ30WdPuzfuFxlY+imzcopYmfYGcm1Mn+ne
+         8crs1gk8TZY4WMZSOonwOzgAUKJ2dgcz+dTXCGuZBEl6oXbFeP1Vla5/q+KrmqeS1+DC
+         3kc9Fv1rhYSYEC4fsFJSpf5sBWNCEDKLBwxLDlO/5eP1ELzNLZ8pHC0l0e0mNanQa2e0
+         Kr9247D7rmIBpzFEIDDH3OG+n4sYtmM2i+iuCEdOCLYU+EFoz6+HJE0I0/K1DBTNHs1a
+         d2iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760374190; x=1760978990;
+        h=references:date:in-reply-to:subject:cc:to:from:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kx5RY7oeloUuI7eYO+d6SROp0dR5EAAxdn5zrmZ7DwI=;
+        b=LE9x/H7i+Gj/olZkzmzaw6Xp8NV8NZl4K5cNBKGM27mlI95mnlzWo8dF+VDHGlwLC8
+         9JZSG844G0mJLsDsSzzWRHMqmInRoBg8HHONF2zg4prAnJcq6T5LdQEAaI7mPypkA7bm
+         9LyXmiIrRvvxQcl829f14sqs+QK3dXHGafnFBpnW9s2JgJi12VC8DFX4ow68I1gDKT4Y
+         bOWydY2X3zJvHWztgkrFqt99HlCR7SSw05yCe9xn/IjCX4v7xMQjC7YKeFokgVizLJSr
+         GO4Ss2OTG7Mlk4UF4R0c/SiOwvy9fQDNorj7SvnPmXv+6a83yYjOgNwGxBYXJmkA7Xg6
+         Mx0w==
+X-Forwarded-Encrypted: i=1; AJvYcCXXdGpGaz1a09960sR81JZjeQ9I9pJIKqdjBNEzBn4rl6v6H60BVfKQSmWa5hkup0F/pJmdcGC5aSWRi6U=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxTdgM2KZsEaxZ5kxAfUKFci/Aw1lerlXf0vrlxfLuv8cibwfk6
+	iNr9m7/lvu6HxcBZS20wnamB/gY4G8pfY8MlF3rIDWuSgHt/bv5qRcxY
+X-Gm-Gg: ASbGncs2UYyM/brFEq96z1uVfigdhb4kg17yEMLnCRWxe12ZnAKzR6WKTSEmlf/GTBo
+	c56kaRkZa/cslB23tbB34AW0/mi0mKXeoTQ7aAKOpaBEVq2QGwPPtwwWDXLE5CF7AA0RjI7zCMK
+	4DwdcnskEcUbtNrdE6pGzVRYJrviEhYuXxBgasizMbJns0QbNXucOBnPTFau2QR87SQ1IzJjTq4
+	aPBpGdmIvrc7o7KA01pmaHOCdcOrZZB3pFiuMflXh9eVF+9Olkn/yZVkh+/3O9Y+nrugm/q6WQL
+	LXkqeygiEAUzWTuhGD4zhzJdtUbwrGNHYaYm+PUHGnfbgcRhHOx6EpDdccGm17odRzSOSAYomQN
+	8OkVlIg/nMiRktLgLg0hgnD5EZvX/gmM9
+X-Google-Smtp-Source: AGHT+IHevJcBjt8mHUt/pyY93x641rdKkka0MNqxiQeyFCWUh9FBFG0xSjkzcIivii+OZab9HkGH1Q==
+X-Received: by 2002:a17:90b:3909:b0:336:bfcf:c50b with SMTP id 98e67ed59e1d1-33b513865a2mr29845894a91.20.1760374189866;
+        Mon, 13 Oct 2025 09:49:49 -0700 (PDT)
+Received: from dw-tp ([171.76.87.41])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b7411fcf0sm6811568a91.4.2025.10.13.09.49.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Oct 2025 09:49:49 -0700 (PDT)
+Message-ID: <68ed2dad.170a0220.37a345.0a48@mx.google.com>
+X-Google-Original-Message-ID: <87wm4ylpge.fsf@ritesh.list@gmail.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Nam Cao <namcao@linutronix.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <christophe.leroy@csgroup.eu>, Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nam Cao <namcao@linutronix.de>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc, ocxl: Fix extraction of struct xive_irq_data
+In-Reply-To: <20251008081359.1382699-1-namcao@linutronix.de>
+Date: Mon, 13 Oct 2025 22:16:25 +0530
+References: <20251008081359.1382699-1-namcao@linutronix.de>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,114 +92,34 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2E40B1CD-5EDA-4208-8914-D1FC02FE8185@xenosoft.de>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Oct 13, 2025 at 07:02:19AM +0200, Christian Zigotzky wrote:
-> 
-> 
-> > On 13 October 2025 at 06:47 am, Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
-> > 
-> > ﻿
-> >> On 11 October 2025 at 07:36 pm, Manivannan Sadhasivam <mani@kernel.org> wrote:
-> >> 
-> >> Hi Lukas,
-> >> 
-> >> Thanks for looping me in. The referenced commit forcefully enables ASPM on all
-> >> DT platforms as we decided to bite the bullet finally.
-> >> 
-> >> Looks like the device (0000:01:00.0) doesn't play nice with ASPM even though it
-> >> advertises ASPM capability.
-> >> 
-> >> Christian, could you please test the below change and see if it fixes the issue?
-> >> 
-> >> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> >> index 214ed060ca1b..e006b0560b39 100644
-> >> --- a/drivers/pci/quirks.c
-> >> +++ b/drivers/pci/quirks.c
-> >> @@ -2525,6 +2525,15 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
-> >> */
-> >> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
-> >> 
-> >> +
-> >> +static void quirk_disable_aspm_all(struct pci_dev *dev)
-> >> +{
-> >> +       pci_info(dev, "Disabling ASPM\n");
-> >> +       pci_disable_link_state(dev, PCIE_LINK_STATE_ALL);
-> >> +}
-> >> +
-> >> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6738, quirk_disable_aspm_all);
-> >> +
-> >> /*
-> >> * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
-> >> * Link bit cleared after starting the link retrain process to allow this
-> >> 
-> >> 
-> >> Going forward, we should be quirking the devices if they behave erratically.
-> >> 
-> >> - Mani
-> >> 
-> >> --
-> >> மணிவண்ணன் சதாசிவம்
-> > 
-> > Hello Mani,
-> > 
-> >> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6738, quirk_disable_aspm_all);
-> > 
-> > Is this only for my AMD Radeon HD6870?
-> > 
-> > My AMD Radeon HD5870 is also affected.
-> > 
-> > And I tested it with my AMD Radeon HD5870.
-> > 
-> > What would the line be for all AMD graphics cards?
-> > 
-> > Thanks,
-> > Christian
-> 
-> I see. 0x6738 is for the AMD Radeon HD 6800 series.
-> 
-> It could be, that your patch works because I tested it with an AMD Radeon HD5870 instead of an AMD Radeon HD6870. Sorry 
-> 
-> This could be the correct line for the HD5870:
-> 
-> >> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6898, quirk_disable_aspm_all);
-> 
-> There are some more id numbers for the HD5870.
-> 
-> Correct:
-> 
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index 214ed060ca1b..e006b0560b39 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -2525,6 +2525,15 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
-> */
-> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
-> 
-> +
-> +static void quirk_disable_aspm_all(struct pci_dev *dev)
-> +{
-> +       pci_info(dev, "Disabling ASPM\n");
-> +       pci_disable_link_state(dev, PCIE_LINK_STATE_ALL);
-> +}
-> +
-> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6738, quirk_disable_aspm_all);
+Nam Cao <namcao@linutronix.de> writes:
 
-As you've figured out, we need to add the quirks for individual devices. Btw, I
-just used PCIE_LINK_STATE_ALL to make sure the patch works. But for properly
-fixing the issue, we need to try disabling L0s, L1 separately and check which
-one (or both) is causing issue.
+> Commit cc0cc23babc9 ("powerpc/xive: Untangle xive from child interrupt
+> controller drivers") changed xive_irq_data to be stashed to chip_data
+> instead of handler_data. However, multiple places are still attempting to
+> read xive_irq_data from handler_data and get a NULL pointer deference bug.
+>
+> Update them to read xive_irq_data from chip_data.
+>
+> Non-XIVE files which touch xive_irq_data seem quite strange to me,
+> especially the ocxl driver. I think there ought to be an alternative
+> platform-independent solution, instead of touching XIVE's data directly.
+> Therefore, I think this whole thing should be cleaned up. But perhaps I
+> just misunderstand something. In any case, this cleanup would not be
+> trivial; for now, just get things working again.
+>
+> Fixes: cc0cc23babc9 ("powerpc/xive: Untangle xive from child interrupt controller drivers")
+> Reported-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Closes: https://lore.kernel.org/linuxppc-dev/68e48df8.170a0220.4b4b0.217d@mx.google.com/
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
 
-- Mani
 
--- 
-மணிவண்ணன் சதாசிவம்
+Thanks Nam for the fix. I validated this with KVM on my POWER9 hardware and
+this patch fixes the previosly reported problem at my end.
+
+Feel free to add:
+Tested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # KVM
+
+-ritesh
 
