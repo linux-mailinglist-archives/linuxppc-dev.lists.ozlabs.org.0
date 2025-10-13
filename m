@@ -1,78 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-12794-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12795-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C67BD2930
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Oct 2025 12:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C44ABD3563
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Oct 2025 16:05:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4clYVz6Wpfz2yrm;
-	Mon, 13 Oct 2025 21:29:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4clfHm2nGzz30V1;
+	Tue, 14 Oct 2025 01:05:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760351371;
-	cv=none; b=BikalYvii+97fN95Py/q4/J22GL8sBnC4DXzD1aWKxD1GoVtpFtshoKtHeWiNOhzbN61khIIOQxpbv2sdhABdNacUbPrLUnXKxRFGS2VS2akKoOlMC05Lvmi7jvcJe41C7/zHWjknNBvESAaduQ8ctg/pJwxJOpjHCfOTPVVdrkeN57NRUGUO1J/TS2TAutSTD9p0wmbGQert40B3zpHgoa3sBJWvW8I8kRLJoz5xcbYawwwNXWtTOEwKyNjN2ks/3eP9iPX3QAGBCY4M/dDBLhOdw1lOJ49JgR0dskGGSYNLp01GHoqZJaCNJ+jJp8oYXIlpqFQLSW9S2yPr8csQQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.182
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760364308;
+	cv=none; b=b792Vnn93FpHZK2k9HfORBTlxXiz2PxeFEpPDcKzdVZHag/zQ9lEF2VPAl1uNDzML2B2Bg7bL4BDHaxf3ESIVXcdIY/azkB//BHg5RgW5O4JyXs5+INWDSO03YyDD52Z9P2D4ulOEpC0XM8CLRSw0ej6PVGkrsiloDFZjmCAJwveK5ax7FziTYyQgJSdXgvp98RmSlFHQJMWozaL6/TW+F2hdCMiORjjkKYBm3c7u91kOzBSttyOVp8Rc3tqiHJLjUcl/wgvw33J3kkCkGQ6NvrVDNAzMPHuAohvJ6vuxf/5ELXUWs+Jlsy3asCvIsee+cQ+JJQa/8F+4nAA7WmwZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760351371; c=relaxed/relaxed;
-	bh=AfGQqri2a4po2taSAV4I25Z2mcB3VfBkrdk7Z/AhhSk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YV+csfSewmzb2FVEaM5K1mDoiKSx4pIBdzgdbTBBYsPbxc0Acu2x1ebPPF3r4AfECynDXKZOZTdJY8EivT2urUR3ya7XTB8ezfNVW0UIUJq3FV6BptLdC+76d2zbhjo1/AU+J/FqcC3tEffFHyaFdtvJ52kM+7aq9SPYRxiwxqtIZj7/zu6Xz6RzNA77UZ9q+JOyIsgRwN2hxsJIwvyKpbNryH+knSnF5jdYp6hnwY6t31O5OXP1Ff9DgQYIJJJq0iCQLIxGICjQQi8VRKHOAf/S5yf4v9vaJgHAIr9Qa1nxnFCqyqgGLdqAO+bveU+x+SUsC47jEOL7uRNhnyUFIQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VHX/SoW5; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nilay@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1760364308; c=relaxed/relaxed;
+	bh=uKCeVoplcSeU8bHZlk1TaSw0Kbvlf2fYQNyEbPJVu1Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EcyDXObI/CfsCdYCLOoCxyTfbJ1Rb07X2IZJ8vsWRdTswFaAeR8asBhUadtnCgUFZTDSenxEy9ziG3hInolDKWiJ97kRKls8FnGKfbqXZePsvqjgLmvtJ74o78E7NfqaFNlsZJzl8HipS3SQap3P+sg37Y+iWgLPrTFTcSmXCq6xHMkGlbUAu0P9inDZdQ3TmB+zjYOaXfN+ndAja/1p/KkxJgPNE68FEq/UjOQDot5f5vGy1UPo2yc7gi83PmaLB0fcTgecSjV204t0+HOB4mvHQ1yzWe1iL7eYkLe+orUMQiWvQfzktGbTjaM4CBHRhIf7rzNStt/JxHM0YR1EaA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FywpRp8N; dkim-atps=neutral; spf=pass (client-ip=95.215.58.182; helo=out-182.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VHX/SoW5;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FywpRp8N;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nilay@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.182; helo=out-182.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 442 seconds by postgrey-1.37 at boromir; Tue, 14 Oct 2025 01:05:05 AEDT
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4clYVy5w1cz2xQD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Oct 2025 21:29:30 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59CLF802007315;
-	Mon, 13 Oct 2025 10:28:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=AfGQqr
-	i2a4po2taSAV4I25Z2mcB3VfBkrdk7Z/AhhSk=; b=VHX/SoW5Oe/QlrzyHsrloP
-	7manNDBlGJaEu5HMps1vkzo2qL+q9RpV7WggDyysYQuC9skf00wzarrfwHbIuyOO
-	YEHDDzyhNrq3JLJhH2hXpcbeKLatICaE+bGAUhrV5gy1hiurK/jTcZ38ipdCNz1O
-	9x1wdLBjr8NHnM+pJuicySCkrGO/5yyE67eCzJd0Vlce5m/dKNZqnMDPL4W3ori5
-	wUHK0tA5WW09PxJE7RLITwCSOsPrS0uJ38QNRJe3xgmczWxC3ELd/6np6JfJnKvS
-	DmVf9A2XHw2I7ZhKkL2AVlBA4apN2OdYvtWs3mavDDbxcQ+45YBRLYOqhpuCvs9A
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qevyr5bg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Oct 2025 10:28:52 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59DA60D4013691;
-	Mon, 13 Oct 2025 10:28:51 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qevyr5bd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Oct 2025 10:28:51 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59DA0P3o018917;
-	Mon, 13 Oct 2025 10:28:51 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r2jmdc0t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Oct 2025 10:28:51 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59DASnrJ32702850
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Oct 2025 10:28:49 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E92B58051;
-	Mon, 13 Oct 2025 10:28:49 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3578D5805A;
-	Mon, 13 Oct 2025 10:28:45 +0000 (GMT)
-Received: from [9.67.162.81] (unknown [9.67.162.81])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 13 Oct 2025 10:28:44 +0000 (GMT)
-Message-ID: <01f7b9fc-7398-4a28-ae78-e7b4e1c6ca0f@linux.ibm.com>
-Date: Mon, 13 Oct 2025 15:58:43 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4clfHj1GkHz302l
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 01:05:04 +1100 (AEDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760363840;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=uKCeVoplcSeU8bHZlk1TaSw0Kbvlf2fYQNyEbPJVu1Q=;
+	b=FywpRp8NBqUYnNzKAOFOcnOnhX1b4P2C5vwMnLxu+2RmWGmmRRP/NGEXHeHbnjLUSNGKeZ
+	z134yp+cqInNjJV9A4+pmcO2poKGw80v0v8pGT6u9VGlR5rfitm+UlFclLQnqWCf4NTB+I
+	++mpvlPEZ8Wa0fA4uMtrhAEuCooXnXQ=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-hardening@vger.kernel.org,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc/pseries/lparcfg: Replace deprecated strcpy in parse_system_parameter_string
+Date: Mon, 13 Oct 2025 15:57:02 +0200
+Message-ID: <20251013135703.97260-2-thorsten.blum@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,67 +65,71 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bug report][PPC]: rmod nvme driver causes the kernel panic
-To: Nam Cao <namcao@linutronix.de>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, tglx@linutronix.de, maz@kernel.org,
-        gautam@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>
-References: <31838b50-e420-405a-af23-6c6ede281386@linux.ibm.com>
- <87h5w3f7ed.fsf@yellow.woof>
-Content-Language: en-US
-From: Nilay Shroff <nilay@linux.ibm.com>
-In-Reply-To: <87h5w3f7ed.fsf@yellow.woof>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: F6cV-UV_QR2MuYqfLZ0aM5S912tkmXFH
-X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68ecd464 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=sZNwUNTCad_J9JpMvOQA:9 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX05TKRTHb9HTu
- hmVuK8FlFyk7VAPXkhK9ShubIQNF5kxSWY0CS/AYeTDcfEfW1v6V9fEP2PfgS2X/08G3ob3b6bW
- GnOu3zD54kX+Ox9Uz/8yyJvIf4uVW7psModd9MN/HtvCLctcLuFyVVVEf9lA8+4vjYO0flYmSIh
- RbswUasaH4hmZUVFCVh4FUqNWWrp7sCoVAXuKC1c4WvZYg2hVLXvlHecojICB1CVDDrgLW85/kO
- ICiMWemujeYELxXJhpKfjsi1dnhZhNcL52j4ge7NPu/Ps6d/5HP/1ahEbTlgOXm96QQ80YDPQ7J
- zFfW2UqzslhoICFGhJkbDMk5Qw4OJD92NY6fwkToD+CHOxvHWQpzwX0HG+YOLVk94byd7eYNJVx
- UL3hxMwAmb1vgBwIcaikln1GFRwNlA==
-X-Proofpoint-GUID: zLNgnSe9ULUTe0yqUThnKXdsaGy71AZi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-13_04,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 impostorscore=0
- phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+strcpy() is deprecated; use strscpy() instead. Use the return value of
+strscpy() instead of calling strlen() again, and ignore any potential
+string truncation since both strings are much shorter than the buffer
+size SPLPAR_MAXLENGTH.
 
+Change both if conditions to silence the following checkpatch warnings:
 
-On 10/13/25 3:30 PM, Nam Cao wrote:
-> Nilay Shroff <nilay@linux.ibm.com> writes:
->> Hi Nam,
-> Hi Nilay,
-> 
->> On the latest upstream mainline kernel, I am encountering a kernel
->> crash when attempting to unload the NVMe driver module (rmmod nvme)
->> on a POWER9 system. The crash appears to be triggered by the recent
->> work on using MSI parent domains, discussed here: 
->> https://lore.kernel.org/all/cover.1754903590.git.namcao@linutronix.de/
-> 
-> Thanks for the detailed analysis. This should be fixed by:
-> https://lore.kernel.org/linuxppc-dev/20251010120307.3281720-1-namcao@linutronix.de/T/#u
-> 
-> which currently is in powerpc/fixes-test
+  Comparisons should place the constant on the right side of the test
 
-Thanks for the fix! This works well... 
+Link: https://github.com/KSPP/linux/issues/88
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+ arch/powerpc/platforms/pseries/lparcfg.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
---Nilay
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index cc22924f159f..533a6edf2e03 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -22,6 +22,7 @@
+ #include <asm/papr-sysparm.h>
+ #include <linux/seq_file.h>
+ #include <linux/slab.h>
++#include <linux/string.h>
+ #include <linux/uaccess.h>
+ #include <linux/hugetlb.h>
+ #include <asm/lppaca.h>
+@@ -420,17 +421,18 @@ static void parse_system_parameter_string(struct seq_file *m)
+ 				w_idx = 0;
+ 			} else if (local_buffer[idx] == '=') {
+ 				/* code here to replace workbuffer contents
+-				   with different keyword strings */
+-				if (0 == strcmp(workbuffer, "MaxEntCap")) {
+-					strcpy(workbuffer,
+-					       "partition_max_entitled_capacity");
+-					w_idx = strlen(workbuffer);
+-				}
+-				if (0 == strcmp(workbuffer, "MaxPlatProcs")) {
+-					strcpy(workbuffer,
+-					       "system_potential_processors");
+-					w_idx = strlen(workbuffer);
+-				}
++				 * with different keyword strings. Truncation
++				 * by strscpy is deliberately ignored because
++				 * SPLPAR_MAXLENGTH >= maximum string size.
++				 */
++				if (!strcmp(workbuffer, "MaxEntCap"))
++					w_idx = strscpy(workbuffer,
++							"partition_max_entitled_capacity",
++							SPLPAR_MAXLENGTH);
++				if (!strcmp(workbuffer, "MaxPlatProcs"))
++					w_idx = strscpy(workbuffer,
++							"system_potential_processors",
++							SPLPAR_MAXLENGTH);
+ 			}
+ 		}
+ 		kfree(workbuffer);
+-- 
+2.51.0
+
 
