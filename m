@@ -1,74 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-12787-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12788-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB4DBD1644
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Oct 2025 06:47:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 370B3BD1680
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Oct 2025 07:03:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4clPw71L8mz30M0;
-	Mon, 13 Oct 2025 15:47:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4clQGd3ldHz30M0;
+	Mon, 13 Oct 2025 16:03:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.167 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760330839;
-	cv=pass; b=bF1RCAecBtviHfkOB4QhkHMBDNO6Swh7xv2UzZU+jSFJ2DytVAwMwyqzp/rCpRNf4rp1hDTnnoovfZcT3isb5NHGGYV8kZrmfsv/SQY3oCSvCfRBQ//EBD3BWV4y82rutF+qD0pI5L3E0QNd6nmvHVIe8KXxIV+AT/NQ8niB4lXLgV1xMwu2eUxv6SHP3ByHyHtwY/b1RboSC4CKJISlVK1ue+EYjZlEr2KXvL324Q8JBj6jABM7UlHo1mstB8a1mv6ZAplgpuhoQyyRPnlpR7A2SszJe+DqcB38BbWJjPcPL4Ay7Se/5DvOjamKsu4lkxvwoG26a8lPArFzaBxqpw==
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.84 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760331801;
+	cv=pass; b=ET8fnfK13+Tz/K2meUgPGhht/a/DOfmPCs3SQHjP6SNk2b1Y6kLB7sByUcfhfy/1878VLkJfX7zyarl/drs5LsefnccDLYSI4co05oDAbvhPe2xD5eddoSQ1F5OlcB10de5/k4gbWOGronbWpLA/zYLWBtFqo8WJn+PuOjr0C1iw5e7KWabKffHSlsAGvN5uZsLwKv/jn3vE38pjlV8OVVOBIGDymr6xsbhEkK+IKSt31rb7XJpYi7mTINsdbPQkt3h/BEnHqRTySU6JcUKumgpGiypOK3ZOg5SccWbgrFmmDo0WRYx6COzXkg80vPG/tz5orQKuE7JgFUOOBYLEtg==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760330839; c=relaxed/relaxed;
-	bh=fZxToLjYnoS353OgzuhhmLgCZy7eCZMC/R02n7ti78c=;
+	t=1760331801; c=relaxed/relaxed;
+	bh=ryGZqavNZb722eOgUiPZ5/ROVhbA5reqkn4KrrIkQbs=;
 	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=Io/uT1itFILf6ZWnEbNl1WVmsIf7WydXHFmFMV5hZD37isR4D+WNkKPNuMc5nKDKWLOwJScl+81xKnRgK4lbGu/Eblk3SKJiggP0ar7Va4B0gt3CBhhd/+iceRY/a+BqFNhCzcKQwrR51Erbcwz1c71wjlrC6w3Ee69UoJkB3xHHiv2LskfQdEaij7gm29b1MgDXkhpRQHyYUYRTWnUNxwUWK66KXpAP3qnyr+mjewYr4AL3iOBkwwOdyZt5Dt6xV4mMImr/qk39HvAc/yKiaFi+AoqETbel/Bw6y5wQ10lkWIf92+NXnaG6qcM907alZJXVPareNvwqh6S7GcN7Gg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=ZFXQUgOa; dkim-atps=neutral; spf=pass (client-ip=81.169.146.167; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+	 Cc:In-Reply-To:To; b=Vxjdx5p5iLimlx/1hEFq5fyTYsUHB7Sz6NiWVWH5vnQqLGPnp+kX9uvNdoP/b7Q9vccAavvPOBilOdmpUD38KweeYRyq9Z1/eTdK4QOUuBd7bd5aATOlkP9H43W5C+oIBfcbHOGbywzGNxbgQ9jieyNatcDXi7Mj+OW7pueCSaMI+wmXR/yTgd1ENEb1KGmcaA5zr0Er0zMzk9KFpgESSdZcx/em8W5a76iod2SqeYpuoG0XrV7PovcEEFDKs+qsxTdEB+ZxuezAS14VhyUdl//Lo3iX+qmkru1rW7GV3Vr+B6eA2CkXsjscLPkVcynalwGP2NQndOYp7dZAf/i37g==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=WYPoIPp3; dkim-atps=neutral; spf=pass (client-ip=85.215.255.84; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p02-ob.smtp.rzone.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=ZFXQUgOa;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=WYPoIPp3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.167; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.167])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=85.215.255.84; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4clPw412wSz2xQ0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Oct 2025 15:47:14 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1760330785; cv=none;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4clQGb48HYz2xQ0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Oct 2025 16:03:18 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1760331750; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=Ntccy0sy0hg9HwaKxQC5hSXVG7QYcmlmpYTjKmx/no6BHi3ws1mokKGIN68nPhWkuU
-    f7qgpxXYcJhaRXCqlkSfoSj9Xzz8LYAkXqmsKSkIuMe68sSVF08H7T42KUs54yxdRm0e
-    IpIUj12V2qHcN5rUv7ImsIuHitjdekt4ORyQ3K3Ro0JSL7aCnmok3FCppO6irS2eGEuQ
-    TgSXKQ5qyTgDLWvDCZF0230IN2x8DUIQ+Bj9+IqpY3YHh9EPDekhMxR/dV9q92zr2zpu
-    7zEp1sPYM/QiA1zV1jdpeELm4ZIEzjrxMSHtKU4NFlNlRp4ecIJKHf4jqECW/70Co8og
-    xeUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1760330785;
+    b=pYL37jmRrQ3gym3yRsuIYqvqKmlwLg30biYmsqMutMOqXCC8/2MYsFP5WJwFwYfMqh
+    pJANmYkKn7L3viNGLV3+JMvj0UG+LkRVF9G/SiI8nsyVFSxjlMl+Qwaq6oIdo5v+t+7d
+    6G4rSJk6l+4B7D+TeBU0a+UWCL2pq09SXd58LN7qGcki9pOd9q7jnrgazRn9Atvgb1oq
+    f3xObDnv333CSOhYMjiw16swSUwBsXKCXfbZEzdIoi32ZglxaG/tK15CiSXfEOCAwITz
+    13GAEg202J14iUWMIomlEkW5RtdqZ3xaszdWQLo2GHu0aAqwgtsDGxGDVlTgARia3s6n
+    3EPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1760331750;
     s=strato-dkim-0002; d=strato.com;
     h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
     From:Subject:Sender;
-    bh=fZxToLjYnoS353OgzuhhmLgCZy7eCZMC/R02n7ti78c=;
-    b=BrTyVuBWxP2HLFQxcOmsVBXOSBEkLHFYVbCPeAsAEhcOCB4H/u6GeZrlBADbUM2u6k
-    ERS+gR6tYAt6ZohKsKlCvRu+AkoykERVn+CxdyzsHZq7bHhof0Ualmqm4W3s2fk8S0F5
-    sunx6KHBp9n4UPgNnOt4Sy5UgQgNe1ogiuTU3v6NWx5q6+Dlu+kJIOSlmXps5i/kGAu/
-    Pgo7AK/W4cw3z2Oh5FUEnC9Sq41yQxPCb7EdDARHS3dZ5dQGpfkCNvqw5yZtv2gslBGW
-    mtQrPXD1y1nxSafStc3DDgYpRtss07HkjwOwjSIcjXEe9Qlpa8xLmGDROCpw994A0nGn
-    vwBg==
+    bh=ryGZqavNZb722eOgUiPZ5/ROVhbA5reqkn4KrrIkQbs=;
+    b=Gpc16gW1Asu1okQyxorpSctT1J1GvsIzwHxjXzKflfdl92+teWzPs5R6Xp8Wm0genF
+    qLAWiwD990WJWGj1ujwGvoWKm321t9YmF1Z4XoEtEuYGX+kl9klZX/Vv/9u9V0RUEIf7
+    YG4gbjDf3KL4WkRd/N//3hXBesA1LYFmGJEOE6diS+1Bso2EMWd+kuXLyWhr+Tn4myIh
+    LOgMddWboIqjD6swUgiUyVlW0WwPnJVLLbDcLTNKpSBbuRCerD+DtVl9k0haqMoO/o4q
+    3sK5N6KZk84Os7S/ndpa0q4O2nR+bs6rMMTyfX/MEzVk9zxeLbXrmmqJ+a6KH5bM5LD0
+    aBmQ==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1760330785;
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1760331750;
     s=strato-dkim-0002; d=xenosoft.de;
     h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
     From:Subject:Sender;
-    bh=fZxToLjYnoS353OgzuhhmLgCZy7eCZMC/R02n7ti78c=;
-    b=ZFXQUgOamnBtg8JQMgRsZfVbbGPDsqmHsUTESTBkXnrvclAtNnltdjwAKrYIPxpyWl
-    voUdCUIBiM307ie638VjS1esWBTPC1cKe92Y949Q7hyJkSY+bCkyS+m2siadD//Hm8f8
-    lXxxf7vB8jN029wDaYRB1/MpoB0r7oAwSTvjvalrIgd4De7dCV8vO64BfzO2jbIC9Nia
-    CFnR/h24XwKSCTIv67Rn9aVSMCZPPSL+mhNtzihOkaxQHwmd1GkBy7hIw1MMAXOYENcU
-    G9+RD8VRwmWddrbWvm9sfxclkfSooFnnQlr94e03xdn/V8O0PqSqKgS8D7z/tAOCOCnj
-    z45A==
+    bh=ryGZqavNZb722eOgUiPZ5/ROVhbA5reqkn4KrrIkQbs=;
+    b=WYPoIPp3sX72EU1b+vgjEENgaAPgfBot/3MmDJIUVONG4FTyf0wK7Pe9qtCWeXg/P3
+    9W/PbffX/yoeVztBIuA862CMMpNNgMrJiGz051JT515ZBZQu11RD2gamoz2QQ53Z2Nas
+    Ge0boC9BA+oSyEiLJr8/eiI1Qd6EaY2AC2GKLjU4NDxPWSEJefcXd/NDu8bBnHdyLC0q
+    kt9B+EAF4J0cleHBs0KM0Oz0Z+DN3fowHCu0oRk4YIYyBm36bVfOhXGxvcQW1+zsblQw
+    2leeM5ef9BGUe9SCLBNYoLZNg7vhLokTFwMXnigWI6o+lM/T2v+xUrZ7dq5IELvCgeIo
+    kjIg==
 X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5mws3+VAS+pE6REQPvdUsV9fT7R/x5YSqXopuk="
 Received: from smtpclient.apple
     by smtp.strato.de (RZmta 53.4.2 AUTH)
-    with ESMTPSA id e2886619D4kOKN9
+    with ESMTPSA id e2886619D52UKOY
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
 	(Client did not present a certificate);
-    Mon, 13 Oct 2025 06:46:24 +0200 (CEST)
+    Mon, 13 Oct 2025 07:02:30 +0200 (CEST)
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 From: Christian Zigotzky <chzigotzky@xenosoft.de>
@@ -86,9 +86,9 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 Mime-Version: 1.0 (1.0)
 Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-Date: Mon, 13 Oct 2025 06:46:13 +0200
-Message-Id: <0BE6C5AD-8DFD-4126-9B18-C012B522B442@xenosoft.de>
-References: <iv63quznjowwaib5pispl47gibevmmbbhl67ow2abl6s7lziuw@23koanb5uy22>
+Date: Mon, 13 Oct 2025 07:02:19 +0200
+Message-Id: <2E40B1CD-5EDA-4208-8914-D1FC02FE8185@xenosoft.de>
+References: <0BE6C5AD-8DFD-4126-9B18-C012B522B442@xenosoft.de>
 Cc: Lukas Wunner <lukas@wunner.de>,
  Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
  =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
@@ -97,81 +97,127 @@ Cc: Lukas Wunner <lukas@wunner.de>,
  Christian Zigotzky <info@xenosoft.de>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
  Darren Stevens <darren@stevens-zone.net>, debian-powerpc@lists.debian.org
-In-Reply-To: <iv63quznjowwaib5pispl47gibevmmbbhl67ow2abl6s7lziuw@23koanb5uy22>
+In-Reply-To: <0BE6C5AD-8DFD-4126-9B18-C012B522B442@xenosoft.de>
 To: Manivannan Sadhasivam <mani@kernel.org>
 X-Mailer: iPhone Mail (23A355)
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_QP_LONG_LINE,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+	SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
-> On 11 October 2025 at 07:36 pm, Manivannan Sadhasivam <mani@kernel.org> wr=
-ote:
+
+> On 13 October 2025 at 06:47 am, Christian Zigotzky <chzigotzky@xenosoft.de=
+> wrote:
 >=20
-> Hi Lukas,
->=20
-> Thanks for looping me in. The referenced commit forcefully enables ASPM on=
- all
-> DT platforms as we decided to bite the bullet finally.
->=20
-> Looks like the device (0000:01:00.0) doesn't play nice with ASPM even thou=
-gh it
-> advertises ASPM capability.
->=20
-> Christian, could you please test the below change and see if it fixes the i=
-ssue?
->=20
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index 214ed060ca1b..e006b0560b39 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -2525,6 +2525,15 @@ static void quirk_disable_aspm_l0s_l1(struct pci_de=
-v *dev)
->  */
-> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_=
-l0s_l1);
->=20
-> +
-> +static void quirk_disable_aspm_all(struct pci_dev *dev)
-> +{
-> +       pci_info(dev, "Disabling ASPM\n");
-> +       pci_disable_link_state(dev, PCIE_LINK_STATE_ALL);
-> +}
-> +
-> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6738, quirk_disable_aspm_all=
-);
-> +
-> /*
->  * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
->  * Link bit cleared after starting the link retrain process to allow this
->=20
->=20
-> Going forward, we should be quirking the devices if they behave erraticall=
-y.
->=20
-> - Mani
->=20
-> --
-> =E0=AE=AE=E0=AE=A3=E0=AE=BF=E0=AE=B5=E0=AE=A3=E0=AF=8D=E0=AE=A3=E0=AE=A9=E0=
+> =EF=BB=BF
+>> On 11 October 2025 at 07:36 pm, Manivannan Sadhasivam <mani@kernel.org> w=
+rote:
+>>=20
+>> Hi Lukas,
+>>=20
+>> Thanks for looping me in. The referenced commit forcefully enables ASPM o=
+n all
+>> DT platforms as we decided to bite the bullet finally.
+>>=20
+>> Looks like the device (0000:01:00.0) doesn't play nice with ASPM even tho=
+ugh it
+>> advertises ASPM capability.
+>>=20
+>> Christian, could you please test the below change and see if it fixes the=
+ issue?
+>>=20
+>> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+>> index 214ed060ca1b..e006b0560b39 100644
+>> --- a/drivers/pci/quirks.c
+>> +++ b/drivers/pci/quirks.c
+>> @@ -2525,6 +2525,15 @@ static void quirk_disable_aspm_l0s_l1(struct pci_d=
+ev *dev)
+>> */
+>> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm=
+_l0s_l1);
+>>=20
+>> +
+>> +static void quirk_disable_aspm_all(struct pci_dev *dev)
+>> +{
+>> +       pci_info(dev, "Disabling ASPM\n");
+>> +       pci_disable_link_state(dev, PCIE_LINK_STATE_ALL);
+>> +}
+>> +
+>> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6738, quirk_disable_aspm_al=
+l);
+>> +
+>> /*
+>> * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
+>> * Link bit cleared after starting the link retrain process to allow this
+>>=20
+>>=20
+>> Going forward, we should be quirking the devices if they behave erratical=
+ly.
+>>=20
+>> - Mani
+>>=20
+>> --
+>> =E0=AE=AE=E0=AE=A3=E0=AE=BF=E0=AE=B5=E0=AE=A3=E0=AF=8D=E0=AE=A3=E0=AE=A9=E0=
 =AF=8D =E0=AE=9A=E0=AE=A4=E0=AE=BE=E0=AE=9A=E0=AE=BF=E0=AE=B5=E0=AE=AE=E0=AF=
 =8D
+>=20
+> Hello Mani,
+>=20
+>> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6738, quirk_disable_aspm_all=
+);
+>=20
+> Is this only for my AMD Radeon HD6870?
+>=20
+> My AMD Radeon HD5870 is also affected.
+>=20
+> And I tested it with my AMD Radeon HD5870.
+>=20
+> What would the line be for all AMD graphics cards?
+>=20
+> Thanks,
+> Christian
 
-Hello Mani,
+I see. 0x6738 is for the AMD Radeon HD 6800 series.
 
-> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6738, quirk_disable_aspm_all)=
-;
+It could be, that your patch works because I tested it with an AMD Radeon HD=
+5870 instead of an AMD Radeon HD6870. Sorry=20
 
-Is this only for my AMD Radeon HD6870?
+This could be the correct line for the HD5870:
 
-My AMD Radeon HD5870 is also affected.
+>> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6898, quirk_disable_aspm_all=
+);
 
-And I tested it with my AMD Radeon HD5870.
+There are some more id numbers for the HD5870.
 
-What would the line be for all AMD graphics cards?
+Correct:
 
-Thanks,
-Christian=
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 214ed060ca1b..e006b0560b39 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -2525,6 +2525,15 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *=
+dev)
+*/
+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0=
+s_l1);
+
++
++static void quirk_disable_aspm_all(struct pci_dev *dev)
++{
++       pci_info(dev, "Disabling ASPM\n");
++       pci_disable_link_state(dev, PCIE_LINK_STATE_ALL);
++}
++
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6738, quirk_disable_aspm_all);=
+
+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6898, quirk_disable_aspm_all);
+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x6899, quirk_disable_aspm_all);
+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x689E, quirk_disable_aspm_all);
++
+/*
+* Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
+* Link bit cleared after starting the link retrain process to allow this=
 
 
