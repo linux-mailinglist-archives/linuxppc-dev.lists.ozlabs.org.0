@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-12822-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12824-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA8BBD7A87
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Oct 2025 08:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7067CBD7AAB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Oct 2025 08:51:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cm4ZR2X3zz3d39;
-	Tue, 14 Oct 2025 17:49:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cm4ZS2XKKz3d9s;
+	Tue, 14 Oct 2025 17:49:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760424559;
-	cv=none; b=oWwsbjj3kA4hwLIXJoul2l/x2LJZsZgyjs+6B6ivWfJ/XjThH8DhRiOt/feGCYPUCLBEgY+EnxjVq3E4/N1Zvn4qNxtV/Wv4J4gXInSQLJkZd20JeMmJndfmJoSiOlk4gNuSYklpMJ8DkPBRyj6obdd6hEyCZsLovNpy74BbfT4tKA/1f0+11drrviKJN5Rj7Cf0vsGSVZAM1f/gb5nZRiqR82wz4QRR/yHY2r2rfmS/5C1LQ8/Wais7ZWzx2ix9qTLcjqpEasIf0TAXXwar58aoMCwXevIc4RqZuJB/1EgbLN631SAMRnVl1qtTDTfc5GL8qU/UykHLB2STs/bSMA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760424560;
+	cv=none; b=G0oTzYQpHFa6EfJNljXEydenNDTnpxSzA70h0Bf7I3SHTrdg67IKukmDxaEFeUZcsDV/NLlzEba/zAaCjBCby9Et8uOzbwJVilVmbkHhBeEJcvBUT3L33OqzHURs6ERTnyCdgyPLcuYW2+TPeIjeR6ceoxllYkQTPWVaBTfDA8fRbmtwJ2yBQ6u/8Xj4NIT1ze8B3KniDrqkfMMa2rqYpn0p0BxgtzOeActDVudz4fQywlWXHoin5nHJwWXBczLgtDVL11KHqD3IJgBjMZpuQ85FTIQaOL0Zs3o+fDpMFWm0ZHek4kczQUzdRSc70lySRVqUEJ0CXdkQQUxnbebBww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760424559; c=relaxed/relaxed;
-	bh=dfNwuY9Nbo9A8Jz5YapUcUJT7RvIIqIGIu7ip/76FOw=;
+	t=1760424560; c=relaxed/relaxed;
+	bh=L+bQGGgEleKR6qKcL7e+IzIL4DEdxuTbcX+pJZvo9tw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=k1Cz+nqDLAAGMKwTzXfunaH0GmLTezYglKo2+MENcyUALQZkUzsMh6IX/ZECb1S72XbCF0iqXpN05LwNlhR102ZmFKT0tyT1GRQbjji66V+v3L3hCrOHoEXnaNVrfVh6wLaUluskPatpFWjXO8aFoBminP1dK3QOLTg4NCK3mCSk45vVV6rzIJ+DFAYN9hWR7iTcgbZ0OzpNUiQFLyCFTMhW1Elr7jtmpTX4u9lx4iu6z6EGf5muKNXoRRh8WXrKv5kH+bEiaI1h9b94V7wqIwgWC7MygFYH0IqalFvyxbwtfyskznHx5HXe6OQFd2i++ZlctuPPM7ESQnasxd7Shw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=bAt9euk0; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=esfzR2Bk; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=MeoPnIDfazURIa6FTxue5tK3Xhlg8YIXAsh0xdb97fhm8wZ+Aa+KyWth1eZUuucxtPMxiRtjyIsq6gbLH+ocmTQx0/mIth/lDsFAxd1U5+gRpeGd6XsBV69UFYbSKugLIZkYQtUxvx0JlJgIrZ4gYHENcNfaaW03BI4Gu4Lsrnz61L4hoC5r6Wvum0gh0Mp/icSblDrQR5w4ojlLq4YWhSQn7aH67l2lc0ehGwcLy+xRWWWjtBWS00ytY+5UE1LZIwYOMiH7bEDLNWiKBNBcKhdvmDDdrG7Al/iiWRB/OB1+9uiyD/f8D7toD2b2dAuNDdHHLU+VN2h9lQR7HC9E/Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dE+JKAtl; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Qc04abMq; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=bAt9euk0;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=esfzR2Bk;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dE+JKAtl;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Qc04abMq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4cm4ZP40fvz3cmK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 17:49:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4cm4ZQ5sRFz3d28
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 17:49:18 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760424554;
+	s=2020; t=1760424555;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dfNwuY9Nbo9A8Jz5YapUcUJT7RvIIqIGIu7ip/76FOw=;
-	b=bAt9euk0Gmfcxq+1sPRKr0+Z9KV4nDi5abBHzVx+PmfhX5M8UcXyKLYlz1RqAipn6Jh/O2
-	NvI0WQeuDc6JUulIDet6DSUEkHjMzVt5wQsIVCLQBw1V7DpbV8H37mwx8s4FL9j+omQW0j
-	b7/ozB8cBrT+A0EYsNAX/SZWLXq2RLlCvePi7nUJedgAkpbxv4XxQe1OECDJmxtJoEkW5G
-	7ECmMbuBOz1FLoGs1wUocoDRPUA7aOv0yPPvAanmiOqrmrG9mOBnP0AUnh/VxgTm88DR50
-	KB/yYOLGq1xLJ15hkQjZ5nf+aBxZqGgGCbN1aCkbilVgFxlZ+neev1qBgjiTww==
+	bh=L+bQGGgEleKR6qKcL7e+IzIL4DEdxuTbcX+pJZvo9tw=;
+	b=dE+JKAtlzVcOU7qMVWd+wOIpDBIO6/E6E6lf2r4Hm5J7vNxNlJFjJ8nss9T+ZYN298NWm1
+	/u6IBffK04gV8/A/jljWo6nnSw3gZROir4kzTD6eo4X/WVcCnIM68YIsV5T9ZI4xBJVIMT
+	jAEwTr8wC7hGyKCCO17rsh57L6iaQBxGMBTe6wbgHL7odi0CV7KdLytWw2vufAcC4YJ8dn
+	mScXJCComLnsz1mlmdOviomTWrCbEuPNes43L7r4HwzbEYiDwpyE4NmKwaAkmIy5LcKkIW
+	ZFkoC+FJPmWNVCKSt1ItGdg2lXZ1YzXa5lxTj9+/1IU2vWXCrQVlU+i6VhDXrg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760424554;
+	s=2020e; t=1760424555;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dfNwuY9Nbo9A8Jz5YapUcUJT7RvIIqIGIu7ip/76FOw=;
-	b=esfzR2Bkxo2Am6QrNXPkK62SV3u0qeZUqxgG9f45AHxPFpnkxj0m2u9CgK15zrEzW1UR3w
-	mzkDyBFdEo9KqDBw==
-Date: Tue, 14 Oct 2025 08:48:59 +0200
-Subject: [PATCH v4 13/35] vdso/helpers: Explicitly include vdso/processor.h
+	bh=L+bQGGgEleKR6qKcL7e+IzIL4DEdxuTbcX+pJZvo9tw=;
+	b=Qc04abMq+QGgU/+r8eYljefhoSS1pvXdRgFckAu7O2nO5WAEtElmMBMxWIYuaM35smUeGp
+	jJ5lIRLQjF3fZwDA==
+Date: Tue, 14 Oct 2025 08:49:00 +0200
+Subject: [PATCH v4 14/35] vdso/datapage: Remove inclusion of gettimeofday.h
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,7 +68,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251014-vdso-sparc64-generic-2-v4-13-e0607bf49dea@linutronix.de>
+Message-Id: <20251014-vdso-sparc64-generic-2-v4-14-e0607bf49dea@linutronix.de>
 References: <20251014-vdso-sparc64-generic-2-v4-0-e0607bf49dea@linutronix.de>
 In-Reply-To: <20251014-vdso-sparc64-generic-2-v4-0-e0607bf49dea@linutronix.de>
 To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
@@ -97,43 +97,75 @@ Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
  linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760424546; l=852;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1760424546; l=1995;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=pWSgr9LF0PVimD93prkaQ1gUly1gwK+GgmvcantsbHs=;
- b=5CvSNsNvaTcLjW++rQpMme843bzIkkTG1SlgYXdtHg1f8BR19OEsteb5hyQkz7+vWc90VEFWD
- w/4AnwpYHxKB/tfilZa2RyjB+Fjj4hyln+qNLpcvU5wxi/iSPlUding
+ bh=4Cu28HtGZeNZ2tWXY+8GZcEypzFGKNdtzWDHnoy4D9o=;
+ b=cRYYUYuwSy1/sQjgQ8nwnyU5oKcNByhZR7Rdr6sAsc5maxw6trpUanKI0+heRL4Rn+doW4BAU
+ 3w7hBV3IsueDA/39768ZK9QM+han+NhUwo2tKIeXjlZR4EQtdwWSoOO
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The usage of cpu_relax() requires vdso/processor.h. Currently
-this header is included transitively, but that transitive inclusion is
-about to go away.
+vdso/datapage.h is useful without pulling in the architecture-specific
+gettimeofday() helpers.
 
-Explicitly include the header.
+Move the include to the only users which needs it.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Tested-by: Andreas Larsson <andreas@gaisler.com>
 Reviewed-by: Andreas Larsson <andreas@gaisler.com>
 ---
- include/vdso/helpers.h | 1 +
- 1 file changed, 1 insertion(+)
+ include/vdso/datapage.h | 11 -----------
+ lib/vdso/gettimeofday.c | 11 +++++++++++
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/include/vdso/helpers.h b/include/vdso/helpers.h
-index 1a5ee9d9052c38553c0cdf413e0030286f884d53..a1c995af4696351e55cd870c7c4211b0984fe9ab 100644
---- a/include/vdso/helpers.h
-+++ b/include/vdso/helpers.h
-@@ -6,6 +6,7 @@
+diff --git a/include/vdso/datapage.h b/include/vdso/datapage.h
+index 23c39b96190fdfc2f31bf76a8614d69a3a98017c..752856b36a3abf82b849451e5d5233b1067b86f2 100644
+--- a/include/vdso/datapage.h
++++ b/include/vdso/datapage.h
+@@ -184,17 +184,6 @@ enum vdso_pages {
+ 	VDSO_NR_PAGES
+ };
  
- #include <asm/barrier.h>
- #include <vdso/datapage.h>
-+#include <vdso/processor.h>
+-/*
+- * The generic vDSO implementation requires that gettimeofday.h
+- * provides:
+- * - __arch_get_hw_counter(): to get the hw counter based on the
+- *   clock_mode.
+- * - gettimeofday_fallback(): fallback for gettimeofday.
+- * - clock_gettime_fallback(): fallback for clock_gettime.
+- * - clock_getres_fallback(): fallback for clock_getres.
+- */
+-#include <asm/vdso/gettimeofday.h>
+-
+ #else /* !__ASSEMBLY__ */
  
- static __always_inline u32 vdso_read_begin(const struct vdso_clock *vc)
- {
+ #ifdef CONFIG_VDSO_GETRANDOM
+diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
+index 7b3fbae85544c2f2f6b9abd5437f130706fb6ec6..9dddf6c23913e87a62bdaa50c5e32d2951c92760 100644
+--- a/lib/vdso/gettimeofday.c
++++ b/lib/vdso/gettimeofday.c
+@@ -12,6 +12,17 @@
+ #include <vdso/time32.h>
+ #include <vdso/time64.h>
+ 
++/*
++ * The generic vDSO implementation requires that gettimeofday.h
++ * provides:
++ * - __arch_get_hw_counter(): to get the hw counter based on the
++ *   clock_mode.
++ * - gettimeofday_fallback(): fallback for gettimeofday.
++ * - clock_gettime_fallback(): fallback for clock_gettime.
++ * - clock_getres_fallback(): fallback for clock_getres.
++ */
++#include <asm/vdso/gettimeofday.h>
++
+ /* Bring in default accessors */
+ #include <vdso/vsyscall.h>
+ 
 
 -- 
 2.51.0
