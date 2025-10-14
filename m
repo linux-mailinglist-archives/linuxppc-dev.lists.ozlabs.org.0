@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-12858-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12859-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B5FBD98C2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Oct 2025 15:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 424F7BD98CB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Oct 2025 15:07:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cmDx53qcPz3ckl;
-	Wed, 15 Oct 2025 00:06:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cmDx63HcLz3cmK;
+	Wed, 15 Oct 2025 00:06:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760447161;
-	cv=none; b=iJTqjqRSxZRpjzZwnItTn38TCZvAdvf1p2uGAJyyuEFCCWRkJGCmov1+8hAMz7lhGlzisASagU1Uj2yADZsNASEUdO4X64vhPGj2XlXY0J0D1h4eFEx9vT8nNvJueIcjIQOBYxuQ0yfROHVWivUEUg7plLB4N9Q4TfTWKTAnLiQGT822lxB4ypPAyhIo3tRspHm6794byQ8tYLi6+g/1KIbz4JmQaBcOsGUb90g5ZTLLx3EwPVepSUQBd0kI2IfCy5V/Z0SvTWInwD+WPvvnFmTJOquM35cFqf8t7bKM9hjcDhbgD/whK+qhZVvUP0lKQZvHfwiD6PO+vjOTUe+Gfw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760447162;
+	cv=none; b=Vbicqe+LCnT0sTaGcVkq0CU5IBvArEvrK0dtNUtOIKHH0RPWnq1phfPywCekvRHgnFndfDi1GHv4bvoJT5UF9zoXAi1RQzWKJLU4PphnmpRhkc4yrSnbCvWhQrTg/jmSKOsuxukJ/NsV/Jy7up7SWv4mTuI3dWSoiEcIjWsrd5L1qrjf6h6+unCpl43RG3KZnHS1P6LbGrhcN3rGq0zla9rtBe95QnXKv5/95Iu/N9w+DcM1gg9EV66nCVC8zbvPArUL6gFrMJ7rZOV69f2hi3LG5FYfUtm3PHWXOqgKOwYmtZuTI9BWqZJ6sThH6Nzm+VGFcnuPwzpAAmZpAhmkdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760447161; c=relaxed/relaxed;
-	bh=2Jz/fSQ4w2Bn/x6vZR3CdwbYNIGEPKCgvqF2C3xKpfE=;
+	t=1760447162; c=relaxed/relaxed;
+	bh=w4aJGDj19pCqGq6Mwbs9/EzztmQNf0JP3Sfp4xrHRjQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FBQG0kBlhxoqskk/BeaqmuE2x5wwBVdbKFM9dZEPV/j87i01CNR8VjDv5tEkh1KV17W5IJFZ5h9R1TdurdhZkSORe8VVYuV/ZIcnujFMd0D6wRg/7RPpnw3NvhXGwDmkK77nu26bMclZHKcEPDFwcMYK3H9P9keGoJZLGdPtL+mfHP97EvGSbuC16ExUENFBVV/db8CAFtCdyU0tfgYMDKAs4YxkSyzhIN/x7UQG6BDchBf53uVOO1kstNc/8TO/tfl0NM5DEjloJDjokA6JHEvV7REa1vECvDN9Or9K8P6F444aCX4WhLblL/jm175p2GaivaMZM6vFnbdodmVYTw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=VKcGupTm; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=BPouXKjv; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=fBUnQqOvesbxukMPwSiyTEtqciXuh1ovZ5/EoVR9MMSga7MaXU3Vky0ytOkHOSa33A0hAkjilI35yGbhj6kBAxySzN7WOblT/oIFuVlKPkGePLTEn9fU6J8PT2fRKEgmmYt5WPAhoAp/fEHsLWQhsxQh20cgn5ewFssoYC3gh+4cTz+2RfZ47aoJQMakThM0jJNDTm1eTNkAALuazDMHgo21yYEolwDIoWMU3H7I5I77oWMiOZ+dKe6dNNUaGqIVn/G913e3cMmUHn7RhlCMmsgkR6aHvgllnboPqbC8rTxJlm4J2YtUyNVf9zSjGEi9HFQ7qN5upKjHceTuyw2Y8g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Vzd9X37J; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=TWmuMW95; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=VKcGupTm;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=BPouXKjv;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Vzd9X37J;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=TWmuMW95;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4cmDx40bQ9z3cjH
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4cmDx43s3kz3020
 	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 00:06:00 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760447153;
+	s=2020; t=1760447154;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2Jz/fSQ4w2Bn/x6vZR3CdwbYNIGEPKCgvqF2C3xKpfE=;
-	b=VKcGupTmWHcLI7Z0F1GJxSKy3HSwtCoEQeb3y3K5GW3tZ3MbEDvktdbAmdZTn+uH1bg0U2
-	8h4vhGrWqe38UOZfS2U0a3uu3vCKfGG8Q0PpdxY8IqXdPepPVyHpTeW2ODz2NhN4a47v5H
-	w2HA0YBUpXONsWbx/w0WyVCks2VkXQYUKS0zVJY9j53UV6RtdWVlwjecCk6jlGdvpnPXss
-	Fa7s1H3Kp/Fwosf+mJH1mNTuNYDtbUPvRrFCvp5xDIL6qiKsOdYirrovpEG8frLO3SSDcp
-	aNpv/Ts+hnVhhoqgkUPks10emA9sNZ1crjnWsJb8l+ee7LqwXgW9PEGY31oONg==
+	bh=w4aJGDj19pCqGq6Mwbs9/EzztmQNf0JP3Sfp4xrHRjQ=;
+	b=Vzd9X37JzWVNDax9xF7gUtygBZfPFaA3gsNq68iYTXU84peT0r3N8MbT2m2gSyuEWOp475
+	oR+vVdCmcqytsiwYiC6b/bE6d/82PiwkIPqrAvPK4pLAOLq5oJluEKE4Ej6AWHFXvKRgRP
+	cuuYJ9oQ/giOO8oM7d9galUCfWv5BUQogZCB3n0avBH2xCchZEYbEG8Y23WkWP8S9lkqBe
+	sXljt99G0QRpZzxPiMEntfQiVi7KL/+ysk3fM+CyHJAHBi3n6B8rskNRKW2kRWW7tRLHFH
+	gM4uGdxfzGFPYPXkvPD4Uuaw7fSqO2n2Cw19SsmwKTwwJi8bz96YTPC8Ibjw8w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760447153;
+	s=2020e; t=1760447154;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2Jz/fSQ4w2Bn/x6vZR3CdwbYNIGEPKCgvqF2C3xKpfE=;
-	b=BPouXKjvuvb+fmaL4NwW0ji9XzPT4qC/zULrhT4erndSmssrS+FBVwoL8r5nMAE7LPOaHo
-	LwxtHqhKCr7Nk2DA==
-Date: Tue, 14 Oct 2025 15:05:21 +0200
-Subject: [PATCH v2 06/10] powerpc: Implement custom CC_CAN_LINK
+	bh=w4aJGDj19pCqGq6Mwbs9/EzztmQNf0JP3Sfp4xrHRjQ=;
+	b=TWmuMW95i4+CfhBBZ5SlvE9frAHrOqOTHwnuv5oXGcDx7/vcAsqhO3HRTC6MIdlDBbjCEx
+	MiSFQwwp28wI7oCQ==
+Date: Tue, 14 Oct 2025 15:05:22 +0200
+Subject: [PATCH v2 07/10] MIPS: Implement custom CC_CAN_LINK
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,7 +68,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251014-kbuild-userprogs-bits-v2-6-faeec46e887a@linutronix.de>
+Message-Id: <20251014-kbuild-userprogs-bits-v2-7-faeec46e887a@linutronix.de>
 References: <20251014-kbuild-userprogs-bits-v2-0-faeec46e887a@linutronix.de>
 In-Reply-To: <20251014-kbuild-userprogs-bits-v2-0-faeec46e887a@linutronix.de>
 To: Nathan Chancellor <nathan@kernel.org>, 
@@ -93,15 +93,15 @@ Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
  linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760447149; l=1653;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1760447149; l=1586;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=XzQW4/Bu5moeHZMAHvqFvXBlWcd696K9WDlakbG7iS8=;
- b=iMDR0xOl/X2IGC7IEBYdKs5yuoYP5wjW2LSP8Krtgl2eaP0yhU5aS9qhWhGPYYr0+eb0mEveO
- gg/4WcsNrUBDV10e4SbmIWsMoaYJ+4oJo37KgaWlBCNQAPq/+4MetS8
+ bh=N71PVC1EfqSrxafXCVGnmlQykhL538a8yG+n3pVRhVs=;
+ b=Hqg5+Zs1tdClXCVe2TNzjiX+1s7O2uQEAdV1tuC5lSBxirEybZXF94igzHK2M6GzMASu/egXy
+ uBKrmuF+mr3AlBuXbEkMD7e4WRZW54J2F/40AVnKmentil9eMRb4dJa
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
@@ -113,42 +113,42 @@ Use architecture-specific logic supporting byte orders instead.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- arch/powerpc/Kconfig | 15 +++++++++++++++
+ arch/mips/Kconfig | 15 +++++++++++++++
  1 file changed, 15 insertions(+)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index e24f4d88885ae52e77fcb523040e8d31f167571f..c6887a2b97530b9c5b8c34dd0baa3ef8548cb43d 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -127,6 +127,7 @@ config PPC
- 	select ARCH_DMA_DEFAULT_COHERENT	if !NOT_COHERENT_CACHE
- 	select ARCH_ENABLE_MEMORY_HOTPLUG
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index e8683f58fd3e2a43bf9384e1c3c3e454a8e59861..b4f07558ad395eb9bb626a264a2e00fdfbdb7f72 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -4,6 +4,7 @@ config MIPS
+ 	default y
+ 	select ARCH_32BIT_OFF_T if !64BIT
+ 	select ARCH_BINFMT_ELF_STATE if MIPS_FP_SUPPORT
 +	select ARCH_HAS_CC_CAN_LINK
- 	select ARCH_HAS_COPY_MC			if PPC64
+ 	select ARCH_HAS_CPU_CACHE_ALIASING
+ 	select ARCH_HAS_CPU_FINALIZE_INIT
  	select ARCH_HAS_CURRENT_STACK_POINTER
- 	select ARCH_HAS_DEBUG_VIRTUAL
-@@ -1341,6 +1342,20 @@ endif
- config PPC_LIB_RHEAP
- 	bool
+@@ -3126,6 +3127,20 @@ config CC_HAS_MNO_BRANCH_LIKELY
+ config CC_HAS_BROKEN_INLINE_COMPAT_BRANCH
+ 	def_bool y if CC_IS_CLANG
  
 +config ARCH_CC_CAN_LINK
 +	bool
-+	default $(cc_can_link_user,-m64 -mlittle-endian) if 64BIT && CPU_LITTLE_ENDIAN
-+	default $(cc_can_link_user,-m64 -mbig-endian) if 64BIT && CPU_BIG_ENDIAN
-+	default $(cc_can_link_user,-m32 -mlittle-endian) if CPU_LITTLE_ENDIAN
-+	default $(cc_can_link_user,-m32 -mbig-endian) if CPU_BIG_ENDIAN
++	default $(cc_can_link_user,-m64 -EL) if 64BIT && CPU_LITTLE_ENDIAN
++	default $(cc_can_link_user,-m64 -EB) if 64BIT && CPU_BIG_ENDIAN
++	default $(cc_can_link_user,-m32 -EL) if CPU_LITTLE_ENDIAN
++	default $(cc_can_link_user,-m32 -EB) if CPU_BIG_ENDIAN
 +
 +config ARCH_USERFLAGS
 +	string
-+	default "-m64 -mlittle-endian" if 64BIT && CPU_LITTLE_ENDIAN
-+	default "-m64 -mbig-endian" if 64BIT && CPU_BIG_ENDIAN
-+	default "-m32 -mlittle-endian" if CPU_LITTLE_ENDIAN
-+	default "-m32 -mbig-endian" if CPU_BIG_ENDIAN
++	default "-m64 -EL" if 64BIT && CPU_LITTLE_ENDIAN
++	default "-m64 -EB" if 64BIT && CPU_BIG_ENDIAN
++	default "-m32 -EL" if CPU_LITTLE_ENDIAN
++	default "-m32 -EB" if CPU_BIG_ENDIAN
 +
- source "arch/powerpc/kvm/Kconfig"
+ menu "Power management options"
  
- source "kernel/livepatch/Kconfig"
+ config ARCH_HIBERNATION_POSSIBLE
 
 -- 
 2.51.0
