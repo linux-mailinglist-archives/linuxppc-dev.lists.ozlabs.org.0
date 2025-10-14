@@ -1,65 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-12804-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12805-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7997BD652F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Oct 2025 23:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43765BD7252
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Oct 2025 05:12:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4clqdX3nCJz2xWc;
-	Tue, 14 Oct 2025 08:06:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4clzm50TNPz2ytg;
+	Tue, 14 Oct 2025 14:12:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760389568;
-	cv=none; b=NVE/wNbZjVjZxv7OaluWCiIhWoseGL/1iMECUDftZrbpTRhExfefnXmJoGxD1Aw2fONBnhnCnLBOTGF5mP9ybxJK4+Yr1Yz9qEmcAe3veLMWMHc6s0JbV4NFtjZOBYfIQyKLBUx/aQmuaeRJGKlK0Ve3hFm6sNf2DAv7I5R2HqE6kZynxqRPjY3RdqjMYSdCCh1OmPZUhWt/zyAI7qu+9aYk40Y4JB17yOcZwQYskRldhg+PekESPXH3lqAGFLBY4VavO0YTcnnCaSgZpsBo/Md0Cz586Dhdy5zbH8sX5Vj/MwwpsPv9Xsg7tUhaoKf+Vs7XL/o1HumKPV4mV1jHwQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760411540;
+	cv=none; b=LMt85NimMxWxCAd9g1JNfoGpfWwyiaRzGyi9pyTCDOC4btPlMUx0QtNe9Ob/tgfaA+rT+O/vYrmFNG+rg6s4/+LH8h5vG5s//4EPSQ2f2+IXiU+VS28ynFMuf110KztSTb8CqAG8X6FBFNEwRGeVn/F5nL7UUC30vxk3IM80NH3n4+al0L86CqgbwUUnBFIXLit5N8LKaQsDGx7Q64DtYR3PDuTmlQ0/czc8yL8XuOsFRfTOWu9baR9IXRSi0wkhAUvIYj+kADA500MwqPdkA2fLvYpbLKleVqNB5mbOpYoogKuSq0pz6rdryCuVn/yV+aM95ysM2zS3Z3cnsx9odg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760389568; c=relaxed/relaxed;
-	bh=spmi9G6rLszkOy2P+u3UEqUaFqwEz0leram/E7lOhdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=lRSNuWuYYlZlIDGGzb5TTYB3Kz8xfVKmlSaG6vO6g/sjgFc+0WWnXpyHt6LZnhKPoCsM81Mx23MO0m7ZnryMl2n3GvjZeTvUA0fcGQa6SI3OxxT5aPddOOSKbfxJ4oOk4lV+/F/VJ+1qwzUVEQdbQ44+/uyXh5r47dnt1InHVeo2MLXFWg7zoKemKRrX13lAOmTEDApkutwyJpmrpVtbLAl9ES2UAB+X0M1+bHQTklSyJYnLX0+dscCDiJBgx0+U9Tx6HBU9jhGReuz3mmWHsEjYIzfvnCVmSxv5W90CAn5AeAY5LnpAtoaNRZXG1LkVA7E5kcPWUi64a4n5CJ5Ikw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u/2LXsON; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1760411540; c=relaxed/relaxed;
+	bh=I4HeOQzfgCrWQcmEF2AnH59fhcej+PEy63wCuUrjulo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oKVRc9clL3MNbAUSanRKR6UMM18fc3hNmDjkdjk7CSysbub+Jtar6IMew58iZLf/eLQQsEEuz6CMnPj/h3egOkTdZGFG1ueSrWOcf1iTkgNWkkObGEkJ5CF4GSLc+jJRCIS5psXtkCBNNmppy5kpHz4+9H2WQErl9x2D75Tmp7qX781Q8jB8/YCZUEQjbUkaw2aWSFW5s3QglN6ttSY8jph/fKIFaVCJvbfCHD6QzvsnFNwhKGZKMptGk7boGKyscf6+giNlWRV5N4spirvhaUEAtsZ/lbfZnMVMN2n1HjIG7a6aFxDwk4zp6cZLlbooMzo6w3M/SNKFrAwJ0c37xw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=eD85pTw5; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u/2LXsON;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=eD85pTw5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4clqdV115dz2xQ0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 08:06:06 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AC84E45A8B;
-	Mon, 13 Oct 2025 21:06:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61775C4CEE7;
-	Mon, 13 Oct 2025 21:06:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760389563;
-	bh=gMimZXT46hTusGjQg/yFAkmHwf6pf0yukMIhp3DOs2U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=u/2LXsONWeMP2R8o7bZWhH9Q3uuAAPPdKPvYNpUDOneecaltzuMuzXFL4E6m7ZXxO
-	 nB864Z2TSdkOrZdJSHYjZxzwCAzlETz+2jlVI6v/kQ/1bgevxKiH7cvMdSE7+m3a83
-	 sIG632DRHu5kae8igKX3UUpcAjdarU1ZgVckLJ5GjFq+RHNXFX9QnBW6FoILU8Cy7v
-	 bJe6E8VIO3uLfKjo+qJfq/zsCFKl3dV1A5YcivupeoiFJ0TSdUT9u5BrSKW5HHcwCx
-	 jUX35n6WZmN89qcJ5tYAo1y7G3yTgchmiNqT/+aB+WTiOef1FIT7z8VTaBQ3U1B/PO
-	 CwAsatACY/+rQ==
-Date: Mon, 13 Oct 2025 16:06:02 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	mad skateman <madskateman@gmail.com>,
-	"R.T.Dickinson" <rtd2@xtra.co.nz>,
-	Christian Zigotzky <info@xenosoft.de>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
-	Darren Stevens <darren@stevens-zone.net>,
-	"debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Lukas Wunner <lukas@wunner.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	regressions@lists.linux.dev
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-Message-ID: <20251013210602.GA864364@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4clzm20BCMz2yr9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 14:12:16 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=I4HeOQzfgCrWQcmEF2AnH59fhcej+PEy63wCuUrjulo=; b=eD85pTw5f7k+i1H8tTGNRRyRH6
+	/RGWbaizJDsYbr/NQ64bFMKJ6Ctkg/yoYz++QWHAH51QyJP0pCCoDm4xCglHWWl8TEy9XmvdHAPWM
+	u069mvvo4qNyoy9rlxWaejOHpW9Dr3UURqLXW1sXv0qrgQqcIYoPYEl2C+deo/tleVbzSrQ7/uIln
+	7Jpp9OA/61j0Mb2ogut8Or5sQgDz8jzUJxQQFC4JVFdolkLv9ljQYIf4xq87OEQp2WWlocIPN/5+k
+	N7S6vo1XfTkS5N1fZbJqiL49uS5mxD3veW6hi86clqtm8syWrr14LHV8fwqlwVQCLDEEQjRk8e0Ay
+	q1a8vYDQ==;
+Received: from [50.53.43.113] (helo=smtpauth.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v8VSD-00000001apR-2Obj;
+	Tue, 14 Oct 2025 03:12:05 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Tiejun Chen <tiejun.chen@windriver.com>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc: kgdb: fix kernel-doc warnings
+Date: Mon, 13 Oct 2025 20:11:58 -0700
+Message-ID: <20251014031158.762720-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,39 +67,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <db5c95a1-cf3e-46f9-8045-a1b04908051a@xenosoft.de>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-[+cc Adrian, Lukas, Mani, regressions]
+Remove empty comment line at the beginning of a kernel-doc function
+block. Add a "Return:" section for this function.
 
-On Wed, Oct 08, 2025 at 06:35:42PM +0200, Christian Zigotzky wrote:
-> Hello,
-> 
-> Our PPC boards [1] have boot problems since the pci-v6.18-changes. [2]
-> 
-> Without the pci-v6.18-changes, the PPC boards boot without any problems.
-> 
-> Boot log with error messages: https://github.com/user-attachments/files/22782016/Kernel_6.18_with_PCI_changes.log
-> 
-> Further information: https://github.com/chzigotzky/kernels/issues/17
-> 
-> Please check the pci-v6.18-changes. [2]
-> 
-> Thanks,
-> Christian
-> 
-> 
-> [1]
-> - https://wiki.amiga.org/index.php/X5000
-> - https://en.wikipedia.org/wiki/AmigaOne_X1000
-> 
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2f2c7254931f41b5736e3ba12aaa9ac1bbeeeb92
+These changes prevent 2 kernel-doc warnings:
 
-#regzbot introduced: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
+Warning: ../arch/powerpc/kernel/kgdb.c:103 Cannot find identifier on line:
+ *
+Warning: kgdb.c:113 No description found for return value of 'kgdb_skipexception'
 
+Fixes: 949616cf2d30 ("powerpc/kgdb: Bail out of KGDB when we've been triggered")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+Cc: Tiejun Chen <tiejun.chen@windriver.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/kgdb.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- linux-next-20251013.orig/arch/powerpc/kernel/kgdb.c
++++ linux-next-20251013/arch/powerpc/kernel/kgdb.c
+@@ -101,7 +101,6 @@ static int computeSignal(unsigned int tt
+ }
+ 
+ /**
+- *
+  *	kgdb_skipexception - Bail out of KGDB when we've been triggered.
+  *	@exception: Exception vector number
+  *	@regs: Current &struct pt_regs.
+@@ -109,6 +108,8 @@ static int computeSignal(unsigned int tt
+  *	On some architectures we need to skip a breakpoint exception when
+  *	it occurs after a breakpoint has been removed.
+  *
++ *	Return: return %1 if the breakpoint for this address has been removed,
++ *		otherwise return %0
+  */
+ int kgdb_skipexception(int exception, struct pt_regs *regs)
+ {
 
