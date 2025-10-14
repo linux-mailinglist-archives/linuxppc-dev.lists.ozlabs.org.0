@@ -1,49 +1,100 @@
-Return-Path: <linuxppc-dev+bounces-12847-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12848-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D18BD8008
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Oct 2025 09:50:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A03EBD85B2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Oct 2025 11:11:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cm5xB0GsGz2xpn;
-	Tue, 14 Oct 2025 18:50:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cm7kq6N79z30M0;
+	Tue, 14 Oct 2025 20:11:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760428237;
-	cv=none; b=OtZ8Z8sK6LM1MF00CvOkIEeiR1MIr9tpli6zi1Ay4lK7i23cnW6h64IjV3L8kz9L85Xukh1SGGAutzrFhxOTixjYVXeokDBHNVTR3DulCUZl/9yLY8ZUk7APRnh5+RwF48psd4TAgh9NtJ03eZ+h4zoToJMONJaEgFGCKcFRVjR5dM6uqS84noarBbyCVv28ARxgbsaauDUEVTH7LQJjidwKqsyWZu1G1bS6JcZZt3Ybm1T8mV+wwCo3byCrm5YUlIbKCsI9ln0uuyJkW6GKkX0w9PFKBuJJul/6ZCkiVxaGGgcTAO72CYZzp/UyXAzXYKcvYntPVOAqQEu9+qRa1Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760433107;
+	cv=none; b=PuertaijL8RDqvazYft4IA8V+pgxNV6j/Lq4T/vIChc764imsru+jvhbjydQrsVpVicv1TolLldsSSD4LigVlS0Fig5EGkNhLmksJjqMcbgovO3Nlm4iHs8+A5JQJo/I+wKZc7N9tb/WS5/0u0TPfDK8LXcSk3BduAxAh/7+25WFOYStuaLNoMufLe8//gZgLxi/kru2gwQnQKVHdJpxHXlO0squ+596l2fNivRTvnIDP81KTz8yCmKbS9WBaepnHRFTySkJlG6GJP0AK/LAH8TkGPxxOCvJg808WtbLo5jj2NmBoY09qnLq/HVcJCU4dAaVeyv43HJtbx3C7vdeWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760428237; c=relaxed/relaxed;
-	bh=+Os7HR6JQUdBawvUGgI4692f6aW7iR3C+BgP6bkMD2A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HH8/DFDLPep/yXac8NPZBQpofhOjAAj5MobAdhLt1AVJc0LlsiIa6l8ZoYmhW+uIdFTCr+Yculcn06x1tX/iCaLbFP3M5qimqVMuJ13FCxYnFvOKga+sdm2aGkwww0bEa4lBI9dPcff0lCK7k7IFljsw6Pb+qusDKIMJqysjw1pXeiqb73I6yPlR+tr1PSDmnB4xb1NzZR4XWTaahMsL3CrqVmb99nF1P3Kz7OHQ+o2LE03HSPO8ixwqgP8EK4/6wXuNZmyeTeFkm0JQher1p4+6CPn7okp7pJiXSAjEi24HVmGG5gCg+EULopFSdKRylWtziHUl69vyRCqZk8iLxg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cm5x91BPkz2xK5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 18:50:35 +1100 (AEDT)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cm5lc3Hnjz9sST;
-	Tue, 14 Oct 2025 09:42:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id dfjcQFiX-ub0; Tue, 14 Oct 2025 09:42:20 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cm5lc2Gfnz9sRy;
-	Tue, 14 Oct 2025 09:42:20 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 358268B768;
-	Tue, 14 Oct 2025 09:42:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id zsFJORiQt4Vt; Tue, 14 Oct 2025 09:42:20 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4DA788B763;
-	Tue, 14 Oct 2025 09:42:18 +0200 (CEST)
-Message-ID: <6942ea07-e6fa-4a5e-a003-0c7ee5e0c936@csgroup.eu>
-Date: Tue, 14 Oct 2025 09:42:17 +0200
+	t=1760433107; c=relaxed/relaxed;
+	bh=DmZChAiP55LH7fuGlLhGHRkAsOIwC7Uf7Qc1D8RxjL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=dVkRd65032TdQOD3JDN1BPGKc3PBJpD8tmFD4dERHUdVqT+e+RXL+H0KF9veGqar04qhy+AbzvuDbk9mEaVAbivUCNHNFHKIZ6InzxNR6yuiB+8vyLySt9/XWRwT8PB7377jf13QQmvVh9WFErshhIAPfp5Qk6fxaE48KDV9lX36/rAL1c9wYytn9d9s2yWckmK1FArT8Df3ZW0HSVwKU8l8VTSwUrikUzVIDmMpS19tHo/3BgBR9qEaHiFkVcZMW+FRhaydvWqP8XeL3yxj7BSij3skZz7chIoTvbnJ62Or93FvTr3u1ja+IOFIppgWOFGS/c8fo3UiQzc2gsC8DA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TQLaw0+6; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TQLaw0+6; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=juri.lelli@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TQLaw0+6;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TQLaw0+6;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=juri.lelli@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cm7kn4CXyz3020
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 20:11:43 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760433099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DmZChAiP55LH7fuGlLhGHRkAsOIwC7Uf7Qc1D8RxjL0=;
+	b=TQLaw0+63TieRr6jGqbsuQB4mTLXlk4OZ+ZJXnNq2OkaKcngClMb4ezn3q9VCz+h/NVugK
+	btSi4+SZwb14YZZ4XtBMC03XZIJ4eCnVOmy68efV97Szgd08dXse3E6HDMysPlGPMPW3Wg
+	CgnfO9O8qRFY5fouOlHSuklMN4xCorg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760433099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DmZChAiP55LH7fuGlLhGHRkAsOIwC7Uf7Qc1D8RxjL0=;
+	b=TQLaw0+63TieRr6jGqbsuQB4mTLXlk4OZ+ZJXnNq2OkaKcngClMb4ezn3q9VCz+h/NVugK
+	btSi4+SZwb14YZZ4XtBMC03XZIJ4eCnVOmy68efV97Szgd08dXse3E6HDMysPlGPMPW3Wg
+	CgnfO9O8qRFY5fouOlHSuklMN4xCorg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-463-1knP1wguMpefQkXO-WzCxg-1; Tue, 14 Oct 2025 05:11:35 -0400
+X-MC-Unique: 1knP1wguMpefQkXO-WzCxg-1
+X-Mimecast-MFC-AGG-ID: 1knP1wguMpefQkXO-WzCxg_1760433094
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46fa88b5760so16539565e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 02:11:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760433094; x=1761037894;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DmZChAiP55LH7fuGlLhGHRkAsOIwC7Uf7Qc1D8RxjL0=;
+        b=TCJNncIO3pOglmHap3jKcqmrjumBlLNhALNYtrrdLgn9Y0QBrrb6xMRfw701eHjURk
+         Xdef2EvYk16s9WD1wcje34Ok820uOExMsw6sWN1r400g6il5B8dBGrkMcyw9qyVnRLcd
+         MS35Jn/sX8O9lW5GOGuaiiZAqYu3AZDRRwMq017Mi5FgOETpfLhrv4IgaLAJIjWjnp4c
+         9Fhes7Kx80NxCeSdWBsHtafqBpKVmz6+pHbkEIYbVeT+QXb130H+cBuLL1dSzMOLBa3U
+         K5XyvbCRmO82a9rUpumkWTW7qiRKIrrPVVI/Ydhn2tdiYvG0bySIr4k8ExttNdzfMBeG
+         snaw==
+X-Forwarded-Encrypted: i=1; AJvYcCW7EBPVwJGx8mjGcQo9YhhWZAf8VIu3p3VOto/hZABdIQ3QEHUEyHv9LjhSkzYkcvDNV6ADcM7dznH/smQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxOF2vphqtVBjyrgB6FoQZEHOmwQwR0px9he8ahHHzdtW2axEdC
+	bRwabrDO4kUneXbadoSB0/ZjJwyjta+Y1CgLZrT3Gbm1cEu7kQ0zjXwzN3baQLfT1SfIa0Jq5z0
+	njVpwXe5dGYg4EvNqd0u+r3yahVX7wZVeS+ZOoCJsBwSyeG5gmONPrU5bTL/VDtXl+AY=
+X-Gm-Gg: ASbGncvC2WA1cJ5N0CZ/JjHaspoqHiEJGlHp0atzTR/IrbBRXsywmfFwxQvQJnQuZQH
+	CWKBmlPU32MbxjUpx8rHoOrXu0DSd4VTQW1nu2c8RtR5RdtNyhgIyDWqrAM+Is2Z4LFUTdXW2kI
+	RJZ25n2ZqJJ1Lm0BJYE8eJb7L1imQCqXtwdS+SsqrLSzwZi0jXPW28TYhXPI/Zcq7gmNRxHQfi0
+	H/nY327X0CGKmTgv+Jfz168JYIPfC0x7uLQYM8bo9XGUnan6OFfsDofGOlDh7Pc9x9bVx5MUJvc
+	oDPXRrHfGHjYAYnljVyucNp8DyHqHDx22lRZead2UAxbxP5sS44jIPWmBtgOiIWdpKs+WHIW
+X-Received: by 2002:a05:600c:1986:b0:46e:4246:c90d with SMTP id 5b1f17b1804b1-46fa9aa4711mr148996095e9.11.1760433094378;
+        Tue, 14 Oct 2025 02:11:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGmrDXjCw08WD1TQhj3YC4hMNp555u6CSxx5SZw+8OCS1At5RI/2QEFWI5fYDiJWMd8bQmAcA==
+X-Received: by 2002:a05:600c:1986:b0:46e:4246:c90d with SMTP id 5b1f17b1804b1-46fa9aa4711mr148995905e9.11.1760433094004;
+        Tue, 14 Oct 2025 02:11:34 -0700 (PDT)
+Received: from jlelli-thinkpadt14gen4.remote.csb ([176.206.13.103])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fab4e22d8sm145329615e9.5.2025.10.14.02.11.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 02:11:33 -0700 (PDT)
+Date: Tue, 14 Oct 2025 11:11:31 +0200
+From: Juri Lelli <juri.lelli@redhat.com>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: peterz@infradead.org, mingo@redhat.com, vincent.guittot@linaro.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	m.szyprowski@samsung.com, venkat88@linux.ibm.com,
+	jstultz@google.com
+Subject: Re: [PATCH] sched/deadline: stop dl_server before CPU goes offline
+Message-ID: <aO4Tw1SzNpgWutK8@jlelli-thinkpadt14gen4.remote.csb>
+References: <20251009184727.673081-1-sshegde@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,75 +108,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/35] powerpc/vdso/gettimeofday: Explicitly include
- vdso/time32.h
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Arnd Bergmann
- <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>,
- John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Shuah Khan <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>, Russell King
- <linux@armlinux.org.uk>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>,
- Shannon Nelson <sln@onemain.com>
-Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-s390@vger.kernel.org
-References: <20251014-vdso-sparc64-generic-2-v4-0-e0607bf49dea@linutronix.de>
- <20251014-vdso-sparc64-generic-2-v4-6-e0607bf49dea@linutronix.de>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20251014-vdso-sparc64-generic-2-v4-6-e0607bf49dea@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <20251009184727.673081-1-sshegde@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ghZVl7NzAm1WhadWuCOgQ5MAvnlHi_KBXnNKLq2vcqQ_1760433094
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hello,
 
+On 10/10/25 00:17, Shrikanth Hegde wrote:
+> From: Peter Zijlstra (Intel) <peterz@infradead.org>
+> 
+> IBM CI tool reported kernel warning[1] when running a CPU removal
+> operation through drmgr[2]. i.e "drmgr -c cpu -r -q 1"
+> 
+> WARNING: CPU: 0 PID: 0 at kernel/sched/cpudeadline.c:219 cpudl_set+0x58/0x170
+> NIP [c0000000002b6ed8] cpudl_set+0x58/0x170
+> LR [c0000000002b7cb8] dl_server_timer+0x168/0x2a0
+> Call Trace:
+> [c000000002c2f8c0] init_stack+0x78c0/0x8000 (unreliable)
+> [c0000000002b7cb8] dl_server_timer+0x168/0x2a0
+> [c00000000034df84] __hrtimer_run_queues+0x1a4/0x390
+> [c00000000034f624] hrtimer_interrupt+0x124/0x300
+> [c00000000002a230] timer_interrupt+0x140/0x320
+> 
+> Git bisects to: commit 4ae8d9aa9f9d ("sched/deadline: Fix dl_server getting stuck")
+> 
+> This happens since: 
+> - dl_server hrtimer gets enqueued close to cpu offline, when 
+>   kthread_park enqueues a fair task.
+> - CPU goes offline and drmgr removes it from cpu_present_mask.
+> - hrtimer fires and warning is hit.
+> 
+> Fix it by stopping the dl_server before CPU is marked dead.
+> 
+> [1]: https://lore.kernel.org/all/8218e149-7718-4432-9312-f97297c352b9@linux.ibm.com/
+> [2]: https://github.com/ibm-power-utilities/powerpc-utils/tree/next/src/drmgr
+> 
+> [sshegde: wrote the changelog and tested it]
+> Fixes: 4ae8d9aa9f9d ("sched/deadline: Fix dl_server getting stuck")
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Closes: https://lore.kernel.org/all/8218e149-7718-4432-9312-f97297c352b9@linux.ibm.com
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Tested-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-Le 14/10/2025 à 08:48, Thomas Weißschuh a écrit :
-> The usage of 'struct old_timespec32' requires vdso/time32.h. Currently
-> this header is included transitively, but that transitive inclusion is
-> about to go away.
-> 
-> Explicitly include the header.
-> 
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-> Tested-by: Andreas Larsson <andreas@gaisler.com>
-> Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Looks good to me.
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
 
-> ---
->   arch/powerpc/include/asm/vdso/gettimeofday.h | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h b/arch/powerpc/include/asm/vdso/gettimeofday.h
-> index ab3df12c8d947ed3a5b0b173567ca8469afbf2d6..b2f0e971076acaea8bc70107fc0f5b2d23e0b312 100644
-> --- a/arch/powerpc/include/asm/vdso/gettimeofday.h
-> +++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
-> @@ -8,6 +8,7 @@
->   #include <asm/barrier.h>
->   #include <asm/unistd.h>
->   #include <uapi/linux/time.h>
-> +#include <vdso/time32.h>
->   
->   #define VDSO_HAS_CLOCK_GETRES		1
->   
-> 
+Thanks!
+Juri
 
 
