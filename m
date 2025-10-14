@@ -1,49 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-12810-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12812-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA417BD78DD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Oct 2025 08:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29915BD79E2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Oct 2025 08:49:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cm3xK3Q2Nz3020;
-	Tue, 14 Oct 2025 17:20:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cm4ZJ2kG0z3cYL;
+	Tue, 14 Oct 2025 17:49:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760422837;
-	cv=none; b=QIXgEOjLn1VScBTS1eo1M9cYRBwXD14HAqU2JhkbFRL6pS+YuDA+k6/7bz6V2i8hlMTDmrp2KJ/CjjrgBRxXGLs8UKQjTjho/umYb/KXIErbrOjsqxOmDgWLuhZD1h702jn6Jvmw5WDcBVkWIkhZIGX0ytyFstM4qe5Ry7o6ehlbysxIzEKLenaZZlpci5yTUxfv2N4YdN9iwVUm76mom6mVisTZVQafQnpyOnWM80HS5PXigI191YE59hZ+/G65p2N0m9112HymTtx0VF/HNtFZwfGBqFF2984BTNieKfc5tsfAn+ptUm4vkDe3pIyeEvwM2itCrg2oHkTWxuJing==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760424552;
+	cv=none; b=lhcTpK0mrp90ldJQ1PagAROFGzRaKmHLiddN6Kv04SdMtZWeEAAf7VXqGRtlHVSB15KrTlUTDBdm5ZSIIdGfV83D9XCnHTvT4G3Lk4O+3qPI8LHAQ4f6oym5oWXyYWftNN7a7eNVEdhA/Ly7vGfYWeJimAIZOSXM896mSAeb8RZHNSNFQeQd/C+K/Wpvxff9YuOra+1olAzny0O1DXShRpAW9Jabx23KlLkfKzswqW+TBTQssrja8GgxMIIqNXfd6fR5PeR45LE58EjKAfnZSTbxaxEYKsxhQ6GOOxzAv/3wfkXhFhAGylqUbqDLSObHewmKmS+OjCAS9fLACNRuSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760422837; c=relaxed/relaxed;
-	bh=EePgnXsXpE3cOt+iCZV0SUb00Awy++MhoQWxEEi+7E8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=EErHtWR8BihhiIhzTVuGjtjLuG0kPs+n8XP3zDwQoYUKKUm2PoKPW2w326rU9iJLUOQnGpeWGkRdiG4DJkcXEBERj7Afr1jivSQsnD0BPTjXUnaaNITcpE2UNfRiiBOkH+nAOkWUYRZKCX+conY7NfDw0o1Y2K5FkOzWMeWVj4Fhks56IkYQNxaLQX48Di1CDX/Pk5qx4j0zK6vdIYsln7uRQQ/2YD6vrtoi7vxiGKqJ4WpySazYGmsZLqP/9vcwjaQ3XbmRGYa1YLXHZuL7x+QXHRte7MBoPv8jA2bcpKXZ/d45yFLlCdWSR43+39JqwoBJLqo2TjSXAM6ay6aVXQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cm3xJ3gQhz2xpn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 17:20:35 +1100 (AEDT)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cm3Jn20tyz9sS7;
-	Tue, 14 Oct 2025 07:52:25 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 4egiN9TgGf1Y; Tue, 14 Oct 2025 07:52:25 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cm3Jn0qPSz9sRy;
-	Tue, 14 Oct 2025 07:52:25 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id F1ED38B767;
-	Tue, 14 Oct 2025 07:52:24 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id FZPNwzUO7_7x; Tue, 14 Oct 2025 07:52:24 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6F12C8B763;
-	Tue, 14 Oct 2025 07:52:24 +0200 (CEST)
-Message-ID: <efedcf6c-2fe5-4580-a7b1-d14609da916b@csgroup.eu>
-Date: Tue, 14 Oct 2025 07:52:24 +0200
+	t=1760424552; c=relaxed/relaxed;
+	bh=CyAyJkTiCv4dcZmMoFGTGoezzU3KDiXW+Swc/WCxjXw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=B0ogenJXWGTULmtYDVvRicYZVh+0monRwK+u4EGbe0uabT2MRNlfgpPwRx7D8moIs0OERo2J0fgHB6SE9LnbcwAcEuuj+8O0vgfCOpy6bOOHJQ/XKZlzFEscT7pg2nfjpUmaVl/bc6dD/uhYjMaIOFecM2+DB4IzRfDD7l3TspSKlbyyGo/dpjc3zhSRznmByqhmXXmnpn8bVLdkEBYpkYiXrc/YpsKetk3jJLZW/6fa0k+NDDg3TUXDiDEt3Kbf39zI7JfIHh7z59Eq9L3+j7MvkKTp9M0lGfkV8mQidEVn87s4xW/R36JBvN0Yfrficyl5Y6t1gNVX+k6/xEya2w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rYWX/qG8; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=1E1tA4+Y; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rYWX/qG8;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=1E1tA4+Y;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4cm4ZH1Cbbz2yrZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Oct 2025 17:49:11 +1100 (AEDT)
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1760424546;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CyAyJkTiCv4dcZmMoFGTGoezzU3KDiXW+Swc/WCxjXw=;
+	b=rYWX/qG8iMm1wcjaEudd/TRA7CxmOSAJAxNy9Rg65rqCsSSWYEsZWI+aVkiJcII5dWjHM5
+	FoEtHoCJL//akDVp4CslL3/nu1EVy5SdAIZ1tagwX/43JYM+YUDCmgsp7U2nXUTUkeGdXR
+	CL6ErCEj1oOtBumEsq5QdMrTinL6Tbp3RFz0hNpXRJHylB4MAQ47iPsizdi1695t9xfdOV
+	mcqLRvud8P9mT1avHyDn96tdYZ5Y+p15N6xH1COlpqzf0YYXbPezmW5m1yf9i2SaVrceAv
+	wJGQmk2SxRRqLm5ltctXhNYwTw6ig99XdMSojhXnGGLUDf4f1B9KsbzaNw4XBg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1760424546;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CyAyJkTiCv4dcZmMoFGTGoezzU3KDiXW+Swc/WCxjXw=;
+	b=1E1tA4+Y0jiwi4wv/DH5gQFWs6pSKK+Hnz6vAw3y3oxzoCHsgkFIgSnLjn1FLemI9xtJL4
+	TszOjCfDnTUyysDg==
+Subject: [PATCH v4 00/35] sparc64: vdso: Switch to the generic vDSO library
+Date: Tue, 14 Oct 2025 08:48:46 +0200
+Message-Id: <20251014-vdso-sparc64-generic-2-v4-0-e0607bf49dea@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,510 +64,193 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fsl_msi: Translate bitmap to hwirq on fsl,mpic
-To: Ben Collins <bcollins@kernel.org>
-References: <2025042122-cute-skua-c6de4a@boujee-and-buff>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-Cc: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>,
- linux-kernel@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <2025042122-cute-skua-c6de4a@boujee-and-buff>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+X-B4-Tracking: v=1; b=H4sIAE7y7WgC/3XN0QrCIBTG8VcJrzP0qNN11XtEF5uebUK4oSVF7
+ N2zQQyiXf4PfL/zIgmjx0SOuxeJmH3yYygh9ztihyb0SL0rTYCBYhqAZpdGmqYm2krSHkOZWwo
+ UVAfIlMEaLCnjKWLnHwt8vpQefLqN8bn8yfxz/ZJyi8ycMopCV41oHUjHT1cf7rc4Bv84OCQfN
+ sNKGa42KShUq7rOsEqDkPofJVaq5nqTEoUSla5b3lqDaH6peZ7fFnm1mFYBAAA=
+X-Change-ID: 20250722-vdso-sparc64-generic-2-25f2e058e92c
+To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+ Arnd Bergmann <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>, 
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+ Shuah Khan <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, 
+ Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>, 
+ Shannon Nelson <sln@onemain.com>
+Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
+ linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+ Arnd Bergmann <arnd@kernel.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1760424546; l=7292;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=WwQPXUZQ1CD/U6+1AhNXbknubQ1GwIXwbHY5eStZBoM=;
+ b=1MQSoiY2CB8rgixAK/04YHsF9QTmUBDjyn/YHDVYC4dzNsdELt8yAk3zJpQNm5lnuvvk1RuU+
+ 8Kb2gbYyYjrCWdAj+OMqVexodS8qoO6k3YfCXIVxNQ+O9Ixv9iK4rdD
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
+The generic vDSO provides a lot common functionality shared between
+different architectures. SPARC is the last architecture not using it,
+preventing some necessary code cleanup.
 
-Le 22/04/2025 à 04:35, Ben Collins a écrit :
-> On PPC_32 QorIQ, the hwirq bitmap is done with the cascade being the most
-> significant bits and the srs on the cascade being the least. This has the
-> effect of filling up one cascade before the next.
-> 
-> Since each cascade has 32 srs and is tied to a single CPU and interrupt,
-> this means no load balancing of MSIs.
-> 
-> Rework this case to translate between the bitmap and hwirq so that MSIs
-> are allocated across the cascades round-robin to achieve load balancing.
-> 
-> Also, to avoid holes in the bitmap, allocate it for exactly what the
-> hardware supports.
-> 
-> Tested on P4080 (which had the problem) and T4240 (which did not, but
-> also no regressions).
-> 
-> Signed-off-by: Ben Collins <bcollins@kernel.org>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linux-kernel@vger.kernel.org
+Make use of the generic infrastructure.
 
-This patch doesn't apply:
+Follow-up to and replacement for Arnd's SPARC vDSO removal patches:
+https://lore.kernel.org/lkml/20250707144726.4008707-1-arnd@kernel.org/
 
-$ LANG= b4 shazam 2025042122-cute-skua-c6de4a@boujee-and-buff
-Grabbing thread from 
-lore.kernel.org/all/2025042122-cute-skua-c6de4a@boujee-and-buff/t.mbox.gz
-Checking for newer revisions
-Grabbing search results from lore.kernel.org
-Analyzing 1 messages in the thread
-Analyzing 0 code-review messages
-Checking attestation on all messages, may take a moment...
+SPARC64 can not map .bss into userspace, so the vDSO datapages are
+switched over to be allocated dynamically. This requires changes to the
+s390 and random subsystem vDSO initialization as preparation.
+The random subsystem changes in turn require some cleanup of the vDSO
+headers to not end up as ugly #ifdef mess.
+
+Tested on a Niagara T4 and QEMU.
+
+This has a semantic conflict with my series "vdso: Reject absolute
+relocations during build" [0]. The last patch of this series expects all
+users of the generic vDSO library to use the vdsocheck tool.
+This is not the case (yet) for SPARC64. I do have the patches for the
+integration, the specifics will depend on which series is applied first.
+
+Based on v6.18-rc1.
+
+[0] https://lore.kernel.org/lkml/20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de/
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
-   [PATCH] fsl_msi: Translate bitmap to hwirq on fsl,mpic
----
-Total patches: 1
----
-Applying: fsl_msi: Translate bitmap to hwirq on fsl,mpic
-Patch failed at 0001 fsl_msi: Translate bitmap to hwirq on fsl,mpic
-error: patch failed: arch/powerpc/sysdev/fsl_msi.c:412
-error: arch/powerpc/sysdev/fsl_msi.c: patch does not apply
+Changes in v4:
+- Rebase on v6.18-rc1.
+- Keep inclusion of asm/clocksource.h from linux/clocksource.h
+- Reword description of "s390/time: Set up vDSO datapage later"
+- Link to v3: https://lore.kernel.org/r/20250917-vdso-sparc64-generic-2-v3-0-3679b1bc8ee8@linutronix.de
 
-Christophe
+Changes in v3:
+- Allocate vDSO data pages dynamically (and lots of preparations for that)
+- Drop clock_getres()
+- Fix 32bit clock_gettime() syscall fallback
+- Link to v2: https://lore.kernel.org/r/20250815-vdso-sparc64-generic-2-v2-0-b5ff80672347@linutronix.de
 
-> ---
->   arch/powerpc/sysdev/fsl_msi.c | 232 ++++++++++++++++++++++++----------
->   arch/powerpc/sysdev/fsl_msi.h |   7 +-
->   2 files changed, 167 insertions(+), 72 deletions(-)
-> 
-> diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
-> index 7b9a5ea9cad9d..37f2143187ee1 100644
-> --- a/arch/powerpc/sysdev/fsl_msi.c
-> +++ b/arch/powerpc/sysdev/fsl_msi.c
-> @@ -29,17 +29,63 @@
->   #include "fsl_pci.h"
->   
->   #define MSIIR_OFFSET_MASK	0xfffff
-> +
->   #define MSIIR_IBS_SHIFT		0
->   #define MSIIR_SRS_SHIFT		5
-> +#define MSIIR_SRS_MASK		0x7
-> +
->   #define MSIIR1_IBS_SHIFT	4
->   #define MSIIR1_SRS_SHIFT	0
-> -#define MSI_SRS_MASK		0xf
-> +#define MSIIR1_SRS_MASK		0xf
-> +
->   #define MSI_IBS_MASK		0x1f
->   
-> -#define msi_hwirq(msi, msir_index, intr_index) \
-> -		((msir_index) << (msi)->srs_shift | \
-> +#define MSI_MPIC_SIZE		0x10
-> +#define MSI_IPIC_SIZE		0x04
-> +
-> +#define msi_to_hwirq(msi, msir_index, intr_index) \
-> +		(((msir_index) << (msi)->srs_shift) | \
->   		 ((intr_index) << (msi)->ibs_shift))
->   
-> +static inline int msi_to_bit(struct fsl_msi *msi, int msir_index, int intr_index)
-> +{
-> +	if (!msi->srs_shift)
-> +		return msi_to_hwirq(msi, msir_index, intr_index);
-> +
-> +	return msir_index | (intr_index << hweight32(msi->srs_mask));
-> +}
-> +
-> +static inline int bit_to_hwirq(struct fsl_msi *msi, int bit)
-> +{
-> +	int hwirq;
-> +
-> +	if (!msi->srs_shift)
-> +		return bit;
-> +
-> +	hwirq  = (bit & msi->srs_mask) << msi->srs_shift;
-> +	hwirq |=  bit >> hweight32(msi->srs_mask);
-> +
-> +	return hwirq;
-> +}
-> +
-> +static inline int hwirq_to_bit(struct fsl_msi *msi, int hwirq)
-> +{
-> +	int bit;
-> +
-> +	if (!msi->srs_shift)
-> +		return hwirq;
-> +
-> +	bit  = (hwirq >> msi->srs_shift) & msi->srs_mask;
-> +	bit |= (hwirq & MSI_IBS_MASK) << msi->srs_shift;
-> +
-> +	return bit;
-> +}
-> +
-> +#define hwirq_to_srs(msi, hwirq) \
-> +		(((hwirq) >> (msi)->srs_shift) & (msi)->srs_mask)
-> +#define hwirq_to_ibs(msi, hwirq) \
-> +		(((hwirq) >> (msi)->ibs_shift) & MSI_IBS_MASK)
-> +
->   static LIST_HEAD(msi_head);
->   
->   struct fsl_msi_feature {
-> @@ -72,7 +118,7 @@ static void fsl_msi_print_chip(struct irq_data *irqd, struct seq_file *p)
->   	irq_hw_number_t hwirq = irqd_to_hwirq(irqd);
->   	int cascade_virq, srs;
->   
-> -	srs = (hwirq >> msi_data->srs_shift) & MSI_SRS_MASK;
-> +	srs = hwirq_to_srs(msi_data, hwirq);
->   	cascade_virq = msi_data->cascade_array[srs]->virq;
->   
->   	seq_printf(p, "fsl-msi-%d", cascade_virq);
-> @@ -107,8 +153,9 @@ static const struct irq_domain_ops fsl_msi_host_ops = {
->   static int fsl_msi_init_allocator(struct fsl_msi *msi_data)
->   {
->   	int rc, hwirq;
-> +	int num_irqs = msi_data->nr_msi_regs * IRQS_PER_MSI_REG;
->   
-> -	rc = msi_bitmap_alloc(&msi_data->bitmap, NR_MSI_IRQS_MAX,
-> +	rc = msi_bitmap_alloc(&msi_data->bitmap, num_irqs,
->   			      irq_domain_get_of_node(msi_data->irqhost));
->   	if (rc)
->   		return rc;
-> @@ -117,7 +164,7 @@ static int fsl_msi_init_allocator(struct fsl_msi *msi_data)
->   	 * Reserve all the hwirqs
->   	 * The available hwirqs will be released in fsl_msi_setup_hwirq()
->   	 */
-> -	for (hwirq = 0; hwirq < NR_MSI_IRQS_MAX; hwirq++)
-> +	for (hwirq = 0; hwirq < num_irqs; hwirq++)
->   		msi_bitmap_reserve_hwirq(&msi_data->bitmap, hwirq);
->   
->   	return 0;
-> @@ -135,7 +182,8 @@ static void fsl_teardown_msi_irqs(struct pci_dev *pdev)
->   		irq_set_msi_desc(entry->irq, NULL);
->   		irq_dispose_mapping(entry->irq);
->   		entry->irq = 0;
-> -		msi_bitmap_free_hwirqs(&msi_data->bitmap, hwirq, 1);
-> +		msi_bitmap_free_hwirqs(&msi_data->bitmap,
-> +				       hwirq_to_bit(msi_data, hwirq), 1);
->   	}
->   }
->   
-> @@ -171,44 +219,41 @@ static void fsl_compose_msi_msg(struct pci_dev *pdev, int hwirq,
->   	else
->   		msg->data = hwirq;
->   
-> -	pr_debug("%s: allocated srs: %d, ibs: %d\n", __func__,
-> -		 (hwirq >> msi_data->srs_shift) & MSI_SRS_MASK,
-> -		 (hwirq >> msi_data->ibs_shift) & MSI_IBS_MASK);
-> +	pr_debug("%s: allocated srs: %i, ibs: %i\n", __func__,
-> +		 hwirq_to_srs(msi_data, hwirq),
-> +		 hwirq_to_ibs(msi_data, hwirq));
->   }
->   
-> +#ifdef CONFIG_EPAPR_PARAVIRT
-> +static const char * const of_msi_match[] = {
-> +	"fsl,vmpic-msi",
-> +	"fsl,vmpic-msi-v4.3",
-> +	NULL,
-> +};
-> +#endif
-> +
->   static int fsl_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
->   {
->   	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
->   	struct device_node *np;
-> -	phandle phandle = 0;
-> -	int rc, hwirq = -ENOMEM;
-> +	int n_bit, bit = -ENOMEM;
->   	unsigned int virq;
->   	struct msi_desc *entry;
->   	struct msi_msg msg;
->   	struct fsl_msi *msi_data;
->   
-> -	if (type == PCI_CAP_ID_MSI) {
-> -		/*
-> -		 * MPIC version 2.0 has erratum PIC1. For now MSI
-> -		 * could not work. So check to prevent MSI from
-> -		 * being used on the board with this erratum.
-> -		 */
-> -		list_for_each_entry(msi_data, &msi_head, list)
-> -			if (msi_data->feature & MSI_HW_ERRATA_ENDIAN)
-> -				return -EINVAL;
-> -	}
-> -
-> +#ifdef CONFIG_EPAPR_PARAVIRT
-> +	phandle ph = 0;
->   	/*
->   	 * If the PCI node has an fsl,msi property, then we need to use it
-> -	 * to find the specific MSI.
-> +	 * to find the specific MSI. This is deprecated on physical hardware
-> +	 * and only used by ePAPR to restrict use of PAMU registered devices.
->   	 */
->   	np = of_parse_phandle(hose->dn, "fsl,msi", 0);
->   	if (np) {
-> -		if (of_device_is_compatible(np, "fsl,mpic-msi") ||
-> -		    of_device_is_compatible(np, "fsl,vmpic-msi") ||
-> -		    of_device_is_compatible(np, "fsl,vmpic-msi-v4.3"))
-> -			phandle = np->phandle;
-> -		else {
-> +		if (of_device_compatible_match(np, of_msi_match)) {
-> +			ph = np->phandle;
-> +		} else {
->   			dev_err(&pdev->dev,
->   				"node %pOF has an invalid fsl,msi phandle %u\n",
->   				hose->dn, np->phandle);
-> @@ -217,54 +262,73 @@ static int fsl_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
->   		}
->   		of_node_put(np);
->   	}
-> +#endif
->   
-> +	/*
-> +	 * fsl_teardown_msi_irqs() will cleanup already allocated descriptors if
-> +	 * we return an error. Hence the lack of cleaning up previous
-> +	 * iterations.
-> +	 */
-> +	n_bit = 0;
->   	msi_for_each_desc(entry, &pdev->dev, MSI_DESC_NOTASSOCIATED) {
-> +		int hwirq;
-> +
-> +		if (n_bit >= nvec)
-> +			break;
-> +
->   		/*
-> -		 * Loop over all the MSI devices until we find one that has an
-> +		 * Loop over all the MSI devices until we find one that has the
->   		 * available interrupt.
->   		 */
->   		list_for_each_entry(msi_data, &msi_head, list) {
->   			/*
-> -			 * If the PCI node has an fsl,msi property, then we
-> -			 * restrict our search to the corresponding MSI node.
-> -			 * The simplest way is to skip over MSI nodes with the
-> -			 * wrong phandle. Under the Freescale hypervisor, this
-> -			 * has the additional benefit of skipping over MSI
-> -			 * nodes that are not mapped in the PAMU.
-> +			 * MPIC version 2.0 has erratum PIC1. For now MSI could not
-> +			 * work. So check to prevent MSI from being used on the board
-> +			 * with this erratum.
->   			 */
-> -			if (phandle && (phandle != msi_data->phandle))
-> +			if (type == PCI_CAP_ID_MSI &&
-> +			    msi_data->feature & MSI_HW_ERRATA_ENDIAN)
->   				continue;
->   
-> -			hwirq = msi_bitmap_alloc_hwirqs(&msi_data->bitmap, 1);
-> -			if (hwirq >= 0)
-> +#ifdef CONFIG_EPAPR_PARAVIRT
-> +			/* Check for phandle on ePAPR */
-> +			if (ph && (ph != msi_data->phandle))
-> +				continue;
-> +#endif
-> +
-> +			bit = msi_bitmap_alloc_hwirqs(&msi_data->bitmap, 1);
-> +			if (bit >= 0)
->   				break;
->   		}
->   
-> -		if (hwirq < 0) {
-> -			rc = hwirq;
-> -			dev_err(&pdev->dev, "could not allocate MSI interrupt\n");
-> -			goto out_free;
-> +		if (bit < 0) {
-> +			dev_err(&pdev->dev,
-> +				"could not allocate MSI interrupt\n");
-> +			return bit;
->   		}
->   
-> +		hwirq = bit_to_hwirq(msi_data, bit);
-> +
->   		virq = irq_create_mapping(msi_data->irqhost, hwirq);
->   
->   		if (!virq) {
-> -			dev_err(&pdev->dev, "fail mapping hwirq %i\n", hwirq);
-> -			msi_bitmap_free_hwirqs(&msi_data->bitmap, hwirq, 1);
-> -			rc = -ENOSPC;
-> -			goto out_free;
-> +			dev_err(&pdev->dev, "failed to map hwirq %i\n", hwirq);
-> +			msi_bitmap_free_hwirqs(&msi_data->bitmap, bit, 1);
-> +			return -ENOSPC;
->   		}
-> +
->   		/* chip_data is msi_data via host->hostdata in host->map() */
->   		irq_set_msi_desc(virq, entry);
->   
->   		fsl_compose_msi_msg(pdev, hwirq, &msg, msi_data);
->   		pci_write_msi_msg(virq, &msg);
-> +
-> +		n_bit++;
->   	}
-> -	return 0;
->   
-> -out_free:
-> -	/* free by the caller of this function */
-> -	return rc;
-> +	WARN_ON(n_bit != nvec);
-> +
-> +	return 0;
->   }
->   
->   static irqreturn_t fsl_msi_cascade(int irq, void *data)
-> @@ -284,10 +348,11 @@ static irqreturn_t fsl_msi_cascade(int irq, void *data)
->   	switch (msi_data->feature & FSL_PIC_IP_MASK) {
->   	case FSL_PIC_IP_MPIC:
->   		msir_value = fsl_msi_read(msi_data->msi_regs,
-> -			msir_index * 0x10);
-> +					  msir_index * MSI_MPIC_SIZE);
->   		break;
->   	case FSL_PIC_IP_IPIC:
-> -		msir_value = fsl_msi_read(msi_data->msi_regs, msir_index * 0x4);
-> +		msir_value = fsl_msi_read(msi_data->msi_regs,
-> +					  msir_index * MSI_IPIC_SIZE);
->   		break;
->   #ifdef CONFIG_EPAPR_PARAVIRT
->   	case FSL_PIC_IP_VMPIC: {
-> @@ -308,18 +373,31 @@ static irqreturn_t fsl_msi_cascade(int irq, void *data)
->   		intr_index = ffs(msir_value) - 1;
->   
->   		err = generic_handle_domain_irq(msi_data->irqhost,
-> -				msi_hwirq(msi_data, msir_index,
-> +				msi_to_hwirq(msi_data, msir_index,
->   					  intr_index + have_shift));
->   		if (!err)
->   			ret = IRQ_HANDLED;
->   
-> -		have_shift += intr_index + 1;
-> -		msir_value = msir_value >> (intr_index + 1);
-> +		have_shift  += intr_index + 1;
-> +		msir_value >>= intr_index + 1;
->   	}
->   
->   	return ret;
->   }
->   
-> +static ssize_t irq_bitmap_show(struct device *dev,
-> +			       struct device_attribute *attr, char *buf)
-> +{
-> +	struct fsl_msi *msi = dev_get_drvdata(dev);
-> +
-> +	if (msi->bitmap.bitmap == NULL)
-> +		return 0;
-> +
-> +	return bitmap_print_to_pagebuf(false, buf, msi->bitmap.bitmap,
-> +				       msi->bitmap.irq_count);
-> +}
-> +static DEVICE_ATTR_RO(irq_bitmap);
-> +
->   static void fsl_of_msi_remove(struct platform_device *ofdev)
->   {
->   	struct fsl_msi *msi = platform_get_drvdata(ofdev);
-> @@ -327,7 +405,10 @@ static void fsl_of_msi_remove(struct platform_device *ofdev)
->   
->   	if (msi->list.prev != NULL)
->   		list_del(&msi->list);
-> -	for (i = 0; i < NR_MSI_REG_MAX; i++) {
-> +
-> +	device_remove_file(&ofdev->dev, &dev_attr_irq_bitmap);
-> +
-> +	for (i = 0; i < msi->nr_msi_regs; i++) {
->   		if (msi->cascade_array[i]) {
->   			virq = msi->cascade_array[i]->virq;
->   
-> @@ -382,14 +463,16 @@ static int fsl_msi_setup_hwirq(struct fsl_msi *msi, struct platform_device *dev,
->   	}
->   
->   	/* Release the hwirqs corresponding to this MSI register */
-> -	for (i = 0; i < IRQS_PER_MSI_REG; i++)
-> +	for (i = 0; i < IRQS_PER_MSI_REG; i++) {
->   		msi_bitmap_free_hwirqs(&msi->bitmap,
-> -				       msi_hwirq(msi, offset, i), 1);
-> +				       msi_to_bit(msi, offset, i), 1);
-> +	}
->   
->   	return 0;
->   }
->   
->   static const struct of_device_id fsl_of_msi_ids[];
-> +
->   static int fsl_of_msi_probe(struct platform_device *dev)
->   {
->   	struct fsl_msi *msi;
-> @@ -412,8 +495,27 @@ static int fsl_of_msi_probe(struct platform_device *dev)
->   	}
->   	platform_set_drvdata(dev, msi);
->   
-> +	if (device_create_file(&dev->dev, &dev_attr_irq_bitmap)) {
-> +		dev_err(&dev->dev,
-> +			"couldn't create device file for irq_bitmap\n");
-> +	}
-> +
-> +	if (of_device_is_compatible(dev->dev.of_node, "fsl,mpic-msi-v4.3") ||
-> +	    of_device_is_compatible(dev->dev.of_node, "fsl,vmpic-msi-v4.3")) {
-> +		msi->nr_msi_regs = NR_MSI_REG_MSIIR1;
-> +		msi->ibs_shift   = MSIIR1_IBS_SHIFT;
-> +		msi->srs_mask    = MSIIR1_SRS_MASK;
-> +		msi->srs_shift   = MSIIR1_SRS_SHIFT;
-> +	} else {
-> +		msi->nr_msi_regs = NR_MSI_REG_MSIIR;
-> +		msi->ibs_shift   = MSIIR_IBS_SHIFT;
-> +		msi->srs_mask    = MSIIR_SRS_MASK;
-> +		msi->srs_shift   = MSIIR_SRS_SHIFT;
-> +	}
-> +
->   	msi->irqhost = irq_domain_add_linear(dev->dev.of_node,
-> -				      NR_MSI_IRQS_MAX, &fsl_msi_host_ops, msi);
-> +					msi->nr_msi_regs * IRQS_PER_MSI_REG,
-> +					&fsl_msi_host_ops, msi);
->   
->   	if (msi->irqhost == NULL) {
->   		dev_err(&dev->dev, "No memory for MSI irqhost\n");
-> @@ -440,8 +542,6 @@ static int fsl_of_msi_probe(struct platform_device *dev)
->   				dev->dev.of_node);
->   			goto error_out;
->   		}
-> -		msi->msiir_offset =
-> -			features->msiir_offset + (res.start & 0xfffff);
->   
->   		/*
->   		 * First read the MSIIR/MSIIR1 offset from dts
-> @@ -475,10 +575,7 @@ static int fsl_of_msi_probe(struct platform_device *dev)
->   
->   	p = of_get_property(dev->dev.of_node, "msi-available-ranges", &len);
->   
-> -	if (of_device_is_compatible(dev->dev.of_node, "fsl,mpic-msi-v4.3") ||
-> -	    of_device_is_compatible(dev->dev.of_node, "fsl,vmpic-msi-v4.3")) {
-> -		msi->srs_shift = MSIIR1_SRS_SHIFT;
-> -		msi->ibs_shift = MSIIR1_IBS_SHIFT;
-> +	if (msi->nr_msi_regs == NR_MSI_REG_MSIIR1) {
->   		if (p)
->   			dev_warn(&dev->dev, "%s: dose not support msi-available-ranges property\n",
->   				__func__);
-> @@ -494,9 +591,6 @@ static int fsl_of_msi_probe(struct platform_device *dev)
->   		static const u32 all_avail[] =
->   			{ 0, NR_MSI_REG_MSIIR * IRQS_PER_MSI_REG };
->   
-> -		msi->srs_shift = MSIIR_SRS_SHIFT;
-> -		msi->ibs_shift = MSIIR_IBS_SHIFT;
-> -
->   		if (p && len % (2 * sizeof(u32)) != 0) {
->   			dev_err(&dev->dev, "%s: Malformed msi-available-ranges property\n",
->   				__func__);
-> diff --git a/arch/powerpc/sysdev/fsl_msi.h b/arch/powerpc/sysdev/fsl_msi.h
-> index e2a1bfc7c2377..0515030af9acb 100644
-> --- a/arch/powerpc/sysdev/fsl_msi.h
-> +++ b/arch/powerpc/sysdev/fsl_msi.h
-> @@ -15,7 +15,6 @@
->   #define NR_MSI_REG_MSIIR1	16 /* MSIIR1 can index 16 MSI registers */
->   #define NR_MSI_REG_MAX		NR_MSI_REG_MSIIR1
->   #define IRQS_PER_MSI_REG	32
-> -#define NR_MSI_IRQS_MAX	(NR_MSI_REG_MAX * IRQS_PER_MSI_REG)
->   
->   #define FSL_PIC_IP_MASK   0x0000000F
->   #define FSL_PIC_IP_MPIC   0x00000001
-> @@ -32,11 +31,13 @@ struct fsl_msi {
->   	unsigned long cascade_irq;
->   
->   	u32 msiir_offset; /* Offset of MSIIR, relative to start of CCSR */
-> -	u32 ibs_shift; /* Shift of interrupt bit select */
-> -	u32 srs_shift; /* Shift of the shared interrupt register select */
-> +	u32 ibs_shift;    /* Shift of interrupt bit select */
-> +	u32 srs_mask;     /* Mask of the shared interrupt register select */
-> +	u32 srs_shift;    /* Shift for shared interrupt register select */
->   	void __iomem *msi_regs;
->   	u32 feature;
->   	struct fsl_msi_cascade_data *cascade_array[NR_MSI_REG_MAX];
-> +	u32 nr_msi_regs;
->   
->   	struct msi_bitmap bitmap;
->   
---
-pw-bot: cr
+Changes in v2:
+- Rebase on v6.17-rc1
+- Drop RFC state
+- Fix typo in commit message
+- Drop duplicate 'select GENERIC_TIME_VSYSCALL'
+- Merge "sparc64: time: Remove architecture-specific clocksource data" into the
+  main conversion patch. It violated the check in __clocksource_register_scale()
+- Link to v1: https://lore.kernel.org/r/20250724-vdso-sparc64-generic-2-v1-0-e376a3bd24d1@linutronix.de
+
+---
+Arnd Bergmann (1):
+      clocksource: remove ARCH_CLOCKSOURCE_DATA
+
+Thomas Weißschuh (34):
+      selftests: vDSO: vdso_test_correctness: Handle different tv_usec types
+      arm64: vDSO: getrandom: Explicitly include asm/alternative.h
+      arm64: vDSO: gettimeofday: Explicitly include vdso/clocksource.h
+      arm64: vDSO: compat_gettimeofday: Add explicit includes
+      ARM: vdso: gettimeofday: Add explicit includes
+      powerpc/vdso/gettimeofday: Explicitly include vdso/time32.h
+      powerpc/vdso: Explicitly include asm/cputable.h and asm/feature-fixups.h
+      LoongArch: vDSO: Explicitly include asm/vdso/vdso.h
+      MIPS: vdso: Add include guard to asm/vdso/vdso.h
+      MIPS: vdso: Explicitly include asm/vdso/vdso.h
+      random: vDSO: Add explicit includes
+      vdso/gettimeofday: Add explicit includes
+      vdso/helpers: Explicitly include vdso/processor.h
+      vdso/datapage: Remove inclusion of gettimeofday.h
+      vdso/datapage: Trim down unnecessary includes
+      random: vDSO: trim vDSO includes
+      random: vDSO: remove ifdeffery
+      random: vDSO: split out datapage update into helper functions
+      random: vDSO: only access vDSO datapage after random_init()
+      s390/time: Set up vDSO datapage later
+      vdso/datastore: Reduce scope of some variables in vvar_fault()
+      vdso/datastore: Drop inclusion of linux/mmap_lock.h
+      vdso/datastore: Map pages through struct page
+      vdso/datastore: Allocate data pages dynamically
+      sparc64: vdso: Link with -z noexecstack
+      sparc64: vdso: Remove obsolete "fake section table" reservation
+      sparc64: vdso: Replace code patching with runtime conditional
+      sparc64: vdso: Move hardware counter read into header
+      sparc64: vdso: Move syscall fallbacks into header
+      sparc64: vdso: Introduce vdso/processor.h
+      sparc64: vdso: Switch to the generic vDSO library
+      sparc64: vdso2c: Drop sym_vvar_start handling
+      sparc64: vdso2c: Remove symbol handling
+      sparc64: vdso: Implement clock_gettime64()
+
+ arch/arm/include/asm/vdso/gettimeofday.h           |   2 +
+ arch/arm64/include/asm/vdso/compat_gettimeofday.h  |   3 +
+ arch/arm64/include/asm/vdso/gettimeofday.h         |   2 +
+ arch/arm64/kernel/vdso/vgetrandom.c                |   2 +
+ arch/loongarch/kernel/process.c                    |   1 +
+ arch/loongarch/kernel/vdso.c                       |   1 +
+ arch/mips/include/asm/vdso/vdso.h                  |   5 +
+ arch/mips/kernel/vdso.c                            |   1 +
+ arch/powerpc/include/asm/vdso/gettimeofday.h       |   1 +
+ arch/powerpc/include/asm/vdso/processor.h          |   3 +
+ arch/s390/kernel/time.c                            |   4 +-
+ arch/sparc/Kconfig                                 |   3 +-
+ arch/sparc/include/asm/clocksource.h               |   9 -
+ arch/sparc/include/asm/processor.h                 |   3 +
+ arch/sparc/include/asm/processor_32.h              |   2 -
+ arch/sparc/include/asm/processor_64.h              |  25 --
+ arch/sparc/include/asm/vdso.h                      |   2 -
+ arch/sparc/include/asm/vdso/clocksource.h          |  10 +
+ arch/sparc/include/asm/vdso/gettimeofday.h         | 184 ++++++++++
+ arch/sparc/include/asm/vdso/processor.h            |  41 +++
+ arch/sparc/include/asm/vdso/vsyscall.h             |  10 +
+ arch/sparc/include/asm/vvar.h                      |  75 ----
+ arch/sparc/kernel/Makefile                         |   1 -
+ arch/sparc/kernel/time_64.c                        |   6 +-
+ arch/sparc/kernel/vdso.c                           |  69 ----
+ arch/sparc/vdso/Makefile                           |   8 +-
+ arch/sparc/vdso/vclock_gettime.c                   | 380 ++-------------------
+ arch/sparc/vdso/vdso-layout.lds.S                  |  26 +-
+ arch/sparc/vdso/vdso.lds.S                         |   2 -
+ arch/sparc/vdso/vdso2c.c                           |  24 --
+ arch/sparc/vdso/vdso2c.h                           |  45 +--
+ arch/sparc/vdso/vdso32/vdso32.lds.S                |   4 +-
+ arch/sparc/vdso/vma.c                              | 274 +--------------
+ drivers/char/random.c                              |  71 ++--
+ include/linux/clocksource.h                        |   6 +-
+ include/linux/vdso_datastore.h                     |   6 +
+ include/vdso/datapage.h                            |  23 +-
+ include/vdso/helpers.h                             |   1 +
+ init/main.c                                        |   2 +
+ kernel/time/Kconfig                                |   4 -
+ lib/vdso/datastore.c                               |  73 ++--
+ lib/vdso/getrandom.c                               |   3 +
+ lib/vdso/gettimeofday.c                            |  17 +
+ .../testing/selftests/vDSO/vdso_test_correctness.c |   8 +-
+ 44 files changed, 448 insertions(+), 994 deletions(-)
+---
+base-commit: 28b1ac5ccd8d4900a8f53f0e6e84d517a7ccc71f
+change-id: 20250722-vdso-sparc64-generic-2-25f2e058e92c
+
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+
 
