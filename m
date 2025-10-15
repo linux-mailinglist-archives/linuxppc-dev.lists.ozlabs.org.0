@@ -1,65 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-12868-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12869-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82E4BDAF96
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Oct 2025 20:51:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72715BDBE7D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 02:22:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cmNbv1Nhnz30M0;
-	Wed, 15 Oct 2025 05:51:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cmWx62hw5z3cQx;
+	Wed, 15 Oct 2025 11:22:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760467899;
-	cv=none; b=jS/fxYSWsMeKUqyqP3OgweJJf1kM+yOZd03t97BvSyQUxxYLg5BKv6/+UXq5hSy2P4O/SSRuqhMF3UXYW5jXBgPzKRSAAHO1n2Zcoa76mHo6v9Rre9xsj9mQ8Us/HgYSNLU/UAogKuoa2jDDsLGuHIGBf5ImBozqVowGu3xUx/eED5ghxTIanmi5IkI1rqYS3r0xx0DBG1nNhlj2n51Gb/2i4QyV9VOeSDs9CRdXhxv/XC/ggff7jqKJong/utP1VjqgIdSZdR9TagaZzoRId9kQ6Fa1FvtCgkr/w14wbG7JrfVwBzjWQugUH5GD5DK8nq6erj+spCR0iXLbt22VkQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760487722;
+	cv=none; b=BOjWm6b/XwJTd1rEEUSPR8perwvwnZJ1236jU8BxP8QOR5s8Kph5N/bivFD9wFMFkdY4VaJnxlNvxDlD439qThNuDVz96M2jK1P8kv8O0IBfgKuiuuuO1JryRYGNQ/VlHSwL23yD9bTVYFZDGdUhutVll+PaplKoADCb9TmSn+8fLBgtHOXwmSL28TDb6mI2KlDnAcB3HWTUOjPoWX9DPsW0jba0ysVNaAzgJLNJOHQJWKrvlRO6H4dUUo8XwzS2VXwtPONkKkwOb/oM0yUmFGA+obD0LJhf4yluK7RkRZZN4VpdE9YVJGvQ2mj50AR1u4R6t9mxzYutidT98HDVgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760467899; c=relaxed/relaxed;
-	bh=6W9+dn17q8PcyyIxrsB97A8oP0SfYq9Q/LwPjNYB9HA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=PTXLlWzXpqWBHJD+0MYatsf1krXjTOIhRln7mzOYc6InEskZfb8tQKm38Jd9BbggM6VT3ADf3RQG7vVpjyz7i4O13d4oW+qavCAOR83R1uZOlz39cMGTtSJ24JjaZNG9SxvK1714Io5VrCTFUFGKAuqTpdDN2yd3lHNUX2oCSJtaUqMLSPfD++N6hhAPl3VWK+j7q3Ziov89opH3M95CJHMV0XnEWy33xQYXLYiy9Ku90Ic2mMf8mU0q+o9dRWtnLCPF33mymb/RiKY9AIRFMpJwWmT4QdMYxX/Z+tDM2S5IOlXvUGt1gzk1gzvMGEZ8RdMaQX8jRxX/l/9h2f9Dgg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EcbMZCng; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1760487722; c=relaxed/relaxed;
+	bh=2Ya1iHobdldggBQlQvx6CQfKC8LhONqqlkvfoWoP9+w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Db7mcug+z7KGSjJ9na6VAqED+4gPn/Fm0I8gzrIw6obDJ2S1V+VZ1oqB9EpWwnSyas2ZrkelDy/gLQmjK6QJkAUc4EagYroj3Kaqodwc4NixdRyWMkfFLNNRQ4602Q2F56OJHkSCG9WVdVEDK0MZafj4IE0+KyA6315ibkU9A26rjwmlWMga1jy27q9Ee5+OIQJWN6Ex7MgZsRNRwqzjh3D4b08GpO6J1savCKNmp51da8o/vRKEIlfyNm35xTz9oNdgT5ykl9pwxfoNEUISUfxFfZbMKWwJg6A6qxAGXmKadpvKQW6MZlfwkXgsqR307LmOzfrq68FVq70rgQRt1Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uoEDLvVM; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EcbMZCng;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uoEDLvVM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmNbt2Tk5z2yrZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 05:51:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmWx506RHz2xdg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 11:22:00 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B505E4069F;
-	Tue, 14 Oct 2025 18:51:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A377C4CEE7;
-	Tue, 14 Oct 2025 18:51:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5BDE344078;
+	Wed, 15 Oct 2025 00:21:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A30DC4CEE7;
+	Wed, 15 Oct 2025 00:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760467895;
-	bh=6W9+dn17q8PcyyIxrsB97A8oP0SfYq9Q/LwPjNYB9HA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=EcbMZCngfRrA/xLgNse0X1ojCMSb5VC5Pf7eWJWrOBEtGR4pSiO/nM6m441taRqxp
-	 6RwwJesb3t0cU0xwdfLpG79hnmGKkcwDq8/1k+25dkILncIB4BFTc/dXyZiF9FVIvf
-	 U0PgyZu6rPzKo8G/ftEMpht3oa8gUiuCCNRxXX4NLDA2yk5wkpqjwVCjAJU87f8xgJ
-	 jOlHR2DJf84djiHy8+2dUh3KuQUWdCvT7363a7yHmeCGnDBNTu86nIJDahxZ0e9H2I
-	 EUf9tKTFoppcXvhmz3vz3Wo5MlDS9JLQhCnQVKzfs+vjzTQgXKkFiGRXSzzopgQ7L+
-	 t/CkVozAHmHIg==
-Date: Tue, 14 Oct 2025 13:51:34 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	mad skateman <madskateman@gmail.com>,
-	"R.T.Dickinson" <rtd2@xtra.co.nz>,
-	Christian Zigotzky <info@xenosoft.de>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
-	Darren Stevens <darren@stevens-zone.net>,
-	"debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Lukas Wunner <lukas@wunner.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	regressions@lists.linux.dev
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-Message-ID: <20251014185134.GA899287@bhelgaas>
+	s=k20201202; t=1760487718;
+	bh=oLFIibXnPFOJz0MzV3NAkJL/mBUsPSV9HGDX9rhCWkM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uoEDLvVMBYvbxbaqRExO4mBuOXW8xK+xBsM3YpN8BU1lvBX4p3ZAdfzt2L3+iF0GN
+	 WG1/B5BcjO6G5oQtvfsi/xChcW18K/a54r1fdPVQsmPwbbPFnAXEa4+7w5bzq4flhf
+	 6VHS/tdoIl0wngQjxhoS3nTFA8kCFfDp3DcveH/+FyeZcZo2KjS0k+8Ypk97Xtmuun
+	 8K2iC6fX/3DXfiRfPJuvJbT3N1ZJXjBgUU19rx60Zsxgh/AO9zi2sWjzPrju9lComF
+	 gSaIX68xorVOyC+xLeGk3YYnNWC6eRkJurprqsPEMD5vPVxi8cCVp0VHEmEfLgQjp+
+	 O1BtSRYMnbkCg==
+Date: Tue, 14 Oct 2025 17:21:54 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Vishal Chourasia <vishalc@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, maddy@linux.ibm.com,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	clang-built-linux@googlegroups.com,
+	"llvm@lists.linux.dev" <llvm@lists.linux.dev>
+Subject: Re: [PATCH] arch/powerpc: Remove .interp section in vmlinux
+Message-ID: <20251015002154.GA2300901@ax162>
+References: <eeaf8fd6628a75d19872ab31cf7e7179e2baef5e.1751366959.git.christophe.leroy@csgroup.eu>
+ <20251013040148.560439-1-vishalc@linux.ibm.com>
+ <2b4a3215-1620-40c9-a00c-ca833ebbb7b6@csgroup.eu>
+ <aOypxKMzsLR5tAtv@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,17 +69,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251013210602.GA864364@bhelgaas>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aOypxKMzsLR5tAtv@linux.ibm.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Oct 13, 2025 at 04:06:02PM -0500, Bjorn Helgaas wrote:
+Hi Vishal,
 
-> #regzbot introduced: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
+On Mon, Oct 13, 2025 at 12:57:00PM +0530, Vishal Chourasia wrote:
+> On Mon, Oct 13, 2025 at 08:46:48AM +0200, Christophe Leroy wrote:
+> > +CLANG ppl
+> > 
+> > Hi,
+> > 
+> > Le 13/10/2025 à 06:01, Vishal Chourasia a écrit :
+> > > While debugging a ppc64le QEMU guest on an x86_64 host, I observed GDB crashes
+> > > when attempting to attach to the remote target:
+> > > 
+> > > (gdb) target remote :1234
+> > > 
+> > > Investigation revealed that cross-compiling the Linux kernel for ppc64le on an
+> > > x86_64 host using Clang produces a vmlinux binary containing an empty .interp
+> > > section. This empty .interp section is responsible for the GDB crashes.
+> > 
+> > Which version of CLANG is it ?
+> (i) ❯ clang --version
+> clang version 21.0.0git (https://github.com/llvm/llvm-project.git a80bccc6847be104948f46d313f03ac6b9ccb292)
+> 
+> > 
+> > > 
+> > > This issue does not occur when:
+> > > - Building for ppc64le target using GCC on x86_64 host
+> > > - Building for ppc64le target using Clang on ppc64le host
+> > 
+> > Is it the same CLANG version ?
+> # clang --version
+> clang version 22.0.0git (https://github.com/llvm/llvm-project.git 2f755c543ab357bd83235592fcee37fa391cdd9d)
+> 
+> > 
+> > > - Building for ppc64le target using GCC on ppc64le host
+> > > 
+> > > For details refer [1]
+> > > 
+> > > [1] https://sourceware.org/bugzilla/show_bug.cgi?id=33481
 
-#regzbot dup-of: https://github.com/chzigotzky/kernels/issues/17
+In this bug report, you mention using LLVM=1. Does the issue happen if
+you use GNU ld (ld.bfd) via LD (i.e., LD=powerpc64le-linux-gnu-ld or
+equivalent) over ld.lld from LLVM=1? This sounds more likely to be a
+linker difference rather than a compiler difference.
+
+Cheers,
+Nathan
 
