@@ -1,77 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12915-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12916-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1B1BDE764
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 14:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCDBBDE779
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 14:28:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cmr2135x9z3d9H;
-	Wed, 15 Oct 2025 23:27:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cmr3L5bnrz3d9t;
+	Wed, 15 Oct 2025 23:28:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.169 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760531241;
-	cv=pass; b=AZ58hv0VH0p6djZQNzr8fk1GTgnUCiKANGyqpsLzMHPOUPEHGAI+aLgy+Kjh4UeJoXgKck1EfSaehbQ+2R9k0QHo17CajKKFHqO/h00rzP0uxQpUifU4hjb1VYX+UQN9A4lsbyS36NaGssjDYI74XWZjofgv9mOoLMN1Wtq2lGdiYEKs3TWAHegjYgdguBg4fJIdEY36hpWZ+1QQ3W6YG0wCmDIX5+b+sZ+S1F8ObLJOp1Km3xQ4YSdt23b7wP7gGRDHWldOGrCYy5zcCeFLl2YFzRbADM0mWojX4gFtEjNc+tpxjWfGHTfHFWTecYEYrEhmeLAJAN4osBiPrffioA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760531241; c=relaxed/relaxed;
-	bh=tnWL0EzTYcQKOAeh8uiCBudXcH8KwCu92OpKrg/ytAU=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=As9/IxY9I2sRDg1V4J+bN5aLVzd6VaUqKpAvZqej9hvdWqACaqVJsZqkSNVpuk5SY33klJhldi5J3Zypot1IYl7iDBwrCBssNGzNIKuwFbJi0JMPX3DPNyGWOZTg7WEUmuWCv/PhIZ2y/Gmwspsk+7ZUrgvFrfQb2Vlzz+YHK0a7BfIyJzckXPu/a9TMftzbn830ZneOFb3itbTwbNIrN2Mh0VYmtxFa50zbiijMX9CnQZ6/rZBgK1/SusbVGlZV1LMX/0MOLL6OLMj8zh7PADNjjoA+TukAhhoF1n2OmlZt4fHoHKZ2qfuN8gy7g7ruH09n1NvGpEajCIEnnw2Baw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=i+gKJIIn; dkim-atps=neutral; spf=pass (client-ip=81.169.146.169; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p02-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760531310;
+	cv=none; b=KYbeEbgnKYALTADqSILkWSY+enanCGFo1Eul81mMCugmg9bkKbZUAvV0FQ1BPwpw+ncJOo6HD6JEIv35K9C4gWR9oMvtiPF5dLymqoRrMZ88pcx7xJYdFxDSfMQQ22rcjb2XhS6AF93bUtSqkuahh/4ksPzI9WjCB2WVxI3/WPq/3JZdPv/E07ue//Pm6JRHzjsM3SSZsZVOefgPag6OYg0otEEob0Gv+TtOeff63uNF577G9k2C87hsocunH5IgoNGSE0gqJ+qXc+2u8WoOGe2jbunxKZdg659mTUNN3+tDrjuDYX46N7anAEH5+DG96vvdI2do0n9JhRmWCHpasw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1760531310; c=relaxed/relaxed;
+	bh=QAcHt1dapQ840Ot11Ijs6OU/pMU2QO8FW6tPLQhHtAg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RmP+e99Rn0WYozGA+Mo1r3PPxBniT8GuTtnTaqXy2+6ifyFSOY38sIp3de2fQGpJI9WZwS9jH5LkJgIbeE/BbXT3xXCL3eg6bmEjjXEDzU8kITgfm6SzzTXDOKI0vzNYVLUtKWYiXmgbEPgss8ezEBjEnyj21yAJEPgTxzEyZuaXsTLXXru7+b6l1qXxQ9lnWCZUr0XRzzw4K0AZoza34FHeCCO5fUsphWQ/QFDOP4q6seyFPJf6P4+D/7Qrz7sot5FBmr9V9vDoo7gXD6V3X34DJgmHX7MkH0z2Hx2yA/+F6BxpucST+msqEClPOp2k9ht0aH2hLUaUN9F9nVMnrA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bAAGjbmu; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=i+gKJIIn;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bAAGjbmu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=81.169.146.169; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.169])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmr1z2B6Tz3d8D
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 23:27:17 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1760531231; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=HsaHGJnPBY5KeT2Q922JkuHmn32tGWgktfHa+mYVSaSQFtj21quZt+7p5K8vj3njz0
-    30bToP7153RpL7Ju7kW/YZcGp5BohjMHqh9yUi8kcgu4RUolx6jaepJTlYKC4SZQ3GGI
-    xIPkFz1NfRUjTrCi21CIveaecuTMVKFjHnvb+6RQnADj6d2f/NKmcxXQ4IENyXRPccsO
-    CsPFRpd/K32IrcdwJ3nKOzLvCcNN8i1wpXYpKHXeWFYJTiDV6TZjH/GOmIFK4/LM7bZJ
-    F7EiDf85kai7Zc5Irg9mqaUok1wZBcaaw022okWUbFGo2rZQbFNeFHlXjxq3WVu5Kohn
-    DB6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1760531231;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=tnWL0EzTYcQKOAeh8uiCBudXcH8KwCu92OpKrg/ytAU=;
-    b=LiY5ZwFMSXZzLr+uyjFA5B8O1xG1iA/Q4Xt9vxmx5G40ov3K4O8fGZKAis9DLE0WOA
-    /4k/3TPNciISgKo3UhI406yCsnyn3QHwo6KhWDZOt22YWIvPvqN3d9Mxk8ZkfbU27uWG
-    JqWQUaxe6AjSLbQMF0WQCOOor1Ld7/xjM/5p4Lzqj7F8tdmOqO/VY5/CWI0A25hAiKr6
-    8zL+9G11vACP5GpSFyXdGod2zZdP65U83r4UT/tUyNPMeW4MzoAJWGjQqMuzr3aT8b2a
-    uxWYMdd4oAygg9NIJJNp6QsoSP4q2BASVaDvMBu1+VWMTA9Bcae6/MuT9oiJclU7/4Uh
-    0AvQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1760531231;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=tnWL0EzTYcQKOAeh8uiCBudXcH8KwCu92OpKrg/ytAU=;
-    b=i+gKJIIn6Dd+1mdS/xOri0W5DpfltH1fY00wJ5XwslvsXPnW7EuzfRnjhdgMQ3T/rP
-    sO67KvPzn378ozoWOX5nyYjIc93VYtqr2QPTStKw6bUbISc5RCDgGvcOyPPDHI2Ow8qn
-    7iNPkahTYgG7tKm6ngLlMa3d0A/OpzDjXQxtsJST0B/Za6Q4063Bf1P927RKUFqAN9X/
-    GHBlyto2f9LynUs6eiq/A/mc/WsJZwxlboTBgDc/PnvIUlwjA3CVw15DA+Xf82tPxsb8
-    Ac5SMwk1/zaR4+ti69oAAu75I+a9jrFPbcNbzhvq9ZbBQLw1tSKGKe7KaPv34bBLJ/8a
-    RUCA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5qwsy/HXXax+ofCi2ru+NWolPb67sCbW3uT"
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 53.4.2 AUTH)
-    with ESMTPSA id e2886619FCRBXHg
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 15 Oct 2025 14:27:11 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmr3K0w3sz3d96
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 23:28:28 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59F5v1N4014420;
+	Wed, 15 Oct 2025 12:28:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=QAcHt1
+	dapQ840Ot11Ijs6OU/pMU2QO8FW6tPLQhHtAg=; b=bAAGjbmuT1IDIGkly3yRks
+	eQbNqM7L76cDvCOCYZEQZzp2igyVW2n1rYXipXHIQUhBY9GTJjf4CE6Z4TqSWzqz
+	WhHBQapX689ColD4op2WTmI4R/fj92pFolFMWOsbbv9EP9MQ3HWAsoLOezWySaAu
+	vSRLGEYmFA3NDPfMnp0cdmILGUGMIuhCYUYkrUsHnzIoEe/tVdFWuBJKKZdkloI1
+	jXIjd8RtEDChqEPFgMkkyWHA52xHPg43WZ3pBIsSv+yIxCSUogEeTXpOqxFVD333
+	V0Ze8yVQUSSTHHuQ1pqqDkM40ikAMVYNCsPxipZW6K7rR25DTLweKQIbbDnCZwug
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qcnrbwdw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Oct 2025 12:28:09 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59FCS8s5007728;
+	Wed, 15 Oct 2025 12:28:08 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qcnrbwdm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Oct 2025 12:28:08 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59FAb0aH003626;
+	Wed, 15 Oct 2025 12:28:07 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r1xy0cfx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Oct 2025 12:28:07 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59FCS6rC40632730
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Oct 2025 12:28:06 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 31ECD58059;
+	Wed, 15 Oct 2025 12:28:06 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D46B258043;
+	Wed, 15 Oct 2025 12:27:59 +0000 (GMT)
+Received: from [9.109.215.183] (unknown [9.109.215.183])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 Oct 2025 12:27:59 +0000 (GMT)
+Message-ID: <5af4bc20-1809-4389-afe2-987f547cc8f3@linux.ibm.com>
+Date: Wed, 15 Oct 2025 17:57:58 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,95 +85,95 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-Date: Wed, 15 Oct 2025 14:27:00 +0200
-Message-Id: <EF4D5B4B-9A61-4CF8-A5CC-5F6A49E824C1@xenosoft.de>
-References: <20251015135811.58b22331@bootlin.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
- Bjorn Helgaas <helgaas@kernel.org>, Lukas Wunner <lukas@wunner.de>,
- Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- linux-pci@vger.kernel.org, mad skateman <madskateman@gmail.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
- Darren Stevens <darren@stevens-zone.net>, debian-powerpc@lists.debian.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-In-Reply-To: <20251015135811.58b22331@bootlin.com>
-To: Herve Codina <herve.codina@bootlin.com>
-X-Mailer: iPhone Mail (23A355)
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] drivers/base/node: Fold register_node() into
+ register_one_node()
+To: kernel test robot <lkp@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>
+Cc: oe-kbuild-all@lists.linux.dev,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Aboorva Devarajan <aboorvad@linux.ibm.com>,
+        linux-kernel@vger.kernel.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+        x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rafael@kernel.org, Danilo Krummrich <dakr@kernel.org>,
+        Dave Jiang <dave.jiang@intel.com>
+References: <910853c9dd61f7a2190a56cba101e73e9c6859be.1760097207.git.donettom@linux.ibm.com>
+ <202510151130.JYajIJuM-lkp@intel.com>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <202510151130.JYajIJuM-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=M5ZA6iws c=1 sm=1 tr=0 ts=68ef9359 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=anyJmfQTAAAA:8 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=i3X5FwGiAAAA:8 a=QyXUC8HyAAAA:8 a=qCTGczElb8rRS6Tj57UA:9 a=QEXdDO2ut3YA:10
+ a=mmqRlSCDY2ywfjPLJ4af:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: bAX_B4dOnV7v2Y31hobP-XuOn-6zcZlL
+X-Proofpoint-ORIG-GUID: Q30cX-kcGhGWVz-Y0VR0bYuPk7QQATV7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEwMDE0MCBTYWx0ZWRfX3hkaKjg3bS+B
+ VeTAzgD+CRnKJnq40pTHKqA7X9Rp8T+290hlMDS1zQnTI0ADrP/Glw4tQdau7VTmSyPeU3DQFpE
+ 5TgrLDc0oKaAtDO/6MzyFIptSKEGqLiJh6LDc0B6+7xucN9akBdVjOeKKx3SBni4qQNEhja7GZH
+ r2g670bIVASNqqHZcrJ33EwFaSlNmokBQTIwEVXyrwAld0I9zjXqDC7ZaJx36s92+9QwJZZ6RIJ
+ E8E+oXuFNqaRH8pFeW00ek959q3xXYSSQU+8J/xr8Bx6ODymUFtVpA1mszW13wwKaDsuNuiRA2k
+ iUz9ImSFJzoqFe2qai4fwuLBZxg/jUy7yGd+XKScdeOkK+PGKZ2+Mk8LeMpWR3k4a7GPl8Ka25T
+ W8nOA1pMxMKafEosuADFS6Hb57R22g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-15_05,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 spamscore=0 clxscore=1011 impostorscore=0
+ phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
+ definitions=main-2510100140
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
-> On 15 October 2025 at 01:58 pm, Herve Codina <herve.codina@bootlin.com> wr=
-ote:
->=20
-> =EF=BB=BFHi Christian,
->=20
->> On Wed, 15 Oct 2025 13:30:44 +0200
->> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
->>=20
->> Hello Herve,
->>=20
->>>> On 15 October 2025 at 10:39 am, Herve Codina <herve.codina@bootlin.com>=
- wrote:
->>>=20
->>> =EF=BB=BFHi All,
->>>=20
->>> I also observed issues with the commit f3ac2ff14834 ("PCI/ASPM: Enable a=
-ll
->>> ClockPM and ASPM states for devicetree platforms") =20
->>=20
->> Thanks for reporting.
->>=20
->>>=20
->>> Also tried the quirk proposed in this discussion (quirk_disable_aspm_all=
-)
->>> an the quirk also fixes the timing issue. =20
->>=20
->> Where have you added quirk_disable_aspm_all?
->=20
-> --- 8< ---
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index 214ed060ca1b..a3808ab6e92e 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -2525,6 +2525,17 @@ static void quirk_disable_aspm_l0s_l1(struct pci_de=
-v *dev)
->  */
-> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_=
-l0s_l1);
->=20
-> +static void quirk_disable_aspm_all(struct pci_dev *dev)
-> +{
-> +       pci_info(dev, "Disabling ASPM\n");
-> +       pci_disable_link_state(dev, PCIE_LINK_STATE_ALL);
-> +}
-> +
-> +/* LAN966x PCI board */
-> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_EFAR, 0x9660, quirk_disable_aspm_al=
-l);
-> +
-> /*
->  * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
->  * Link bit cleared after starting the link retrain process to allow this
-> --- 8< ---
->=20
-> Best regards,
-> Herv=C3=A9
+On 10/15/25 9:23 AM, kernel test robot wrote:
+> Hi Donet,
+>
+> kernel test robot noticed the following build warnings:
+>
+> [auto build test WARNING on akpm-mm/mm-everything]
+> [also build test WARNING on powerpc/fixes linus/master v6.18-rc1 next-20251014]
+> [cannot apply to driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus powerpc/next tip/x86/mm rppt-memblock/for-next rppt-memblock/fixes]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
 
-It is the same patch, I use for my AMD Radeon cards.
+This patch is based on the mm-new branch. It is not applying cleanly on 
+target branch because the target branches are missing some patches that 
+are present in mm-new.
 
-In my point of view we have to add a lot of other devices.
-
-But if the computer does not boot, will the average user know that there is a=
- problem with the power management and their graphics card?
-I am unsure whether I can deliver the kernel to average users later on.
-
-Thanks,
-Christian=
-
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Donet-Tom/drivers-base-node-Fold-register_node-into-register_one_node/20251015-000850
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> patch link:    https://lore.kernel.org/r/910853c9dd61f7a2190a56cba101e73e9c6859be.1760097207.git.donettom%40linux.ibm.com
+> patch subject: [PATCH v2 1/2] drivers/base/node: Fold register_node() into register_one_node()
+> config: s390-randconfig-001-20251015 (https://download.01.org/0day-ci/archive/20251015/202510151130.JYajIJuM-lkp@intel.com/config)
+> compiler: s390-linux-gcc (GCC) 12.5.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251015/202510151130.JYajIJuM-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202510151130.JYajIJuM-lkp@intel.com/
+>
+> All warnings (new ones prefixed by >>):
+>
+>>> Warning: drivers/base/node.c:889 function parameter 'nid' not described in 'register_node'
 
