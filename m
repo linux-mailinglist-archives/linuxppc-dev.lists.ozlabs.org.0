@@ -1,77 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-12928-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12929-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789E8BDFD2F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 19:16:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D99BDFD6F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 19:26:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cmyRH6456z3dTC;
-	Thu, 16 Oct 2025 04:16:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cmyfy5HZvz3dTN;
+	Thu, 16 Oct 2025 04:26:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.169 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760548571;
-	cv=pass; b=MthAluHJbdcTIpyMrsM+VcGTe0UkEpA1i43ezF3wmvHGZCkYvwJ9XWQmPMchI/khXnIUdm3lhIxsMvSTIVnZfCExMs3gHjkCHowSyZw2vVn4wfQtaoh+w+iHcFE0rqNO3e6Uj50JkvEDFkw4n+Y5akpOSnyO5IQDjcxD9KjudjOQ/m6wX/Ef6qje1KNZ84nw2DWWzled7fVyLeij1hq2NtjBVg7rvmF3dmQQ1Z+qOg7mjru+4Uya3P/ugPghaUzmBBd8sHbZz4F3MjWP2ILNrzF3i/V5M6S822ddViXCigz60KJxgAtaOaegiW2u3Wx5fCPSt9NqV7423YEO6pJh2Q==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760548571; c=relaxed/relaxed;
-	bh=mN7F9fEBnozfv11Tt5u96tzW+BvAMVreqPKTX7UG8vo=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=a0qasC4WHign33Wta1BMt/TlO+WaZwUia85NEXmZ1Xp9snxAPo2Otr4kFQbzF2gngWpFqrkgNOmYWbTR8fYA2SKq/WfC/f6GdBtObFTyNelRMjPu53cwZk+o13r5zGPhF8VosUzZPP5gj9LvMM524GI22M0Ist8ywLoDYHp7vXsxSB3xpNUSIUaXxKZOkkMaLfpCXUONFMUb7u4tAZ/uQKSX67wkmWjoTA8EUo+JtkeYadBipn6e9cV3pU1ylVC5+K7L/lSFElfX5E70S52KW7TnYa1OX+Db/YvApTfqbyevFNJeGp9IIoPRx4DBZimWulAKifYGU+mRsbfTHuC0aA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=XUVRtuVe; dkim-atps=neutral; spf=pass (client-ip=81.169.146.169; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p02-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760549178;
+	cv=none; b=cuJsho8q4TAEUX1xGZB2haPIgXiRX/zq9giN8XB8VPnHLu7nq09Gw95oCfHjFJm5mgM2zyni84rdwFpLRby93F3LXGh35U6xjBaKjQeCdthpHbNMQ/utFF6Sucr8U+r8Uhf2nfRd7GuLNA/H/448UrFhSYcY9H9FHhOEbaBO51pndJimd8baRu8R8tPqTv0N8jtHGGE3CNuaJDUJoz+p5pUglAWy0EABR4VhaJs1x2pFOMAEOTchXQ/LhVN6Kz2HXsnmVopr4E+es+OvucrNkXJ4RejtnK9+PEQX9rCl08giXUbhRglE5+ZTVIkVxeWbBpGoKumBEfIneGWW6E2sow==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1760549178; c=relaxed/relaxed;
+	bh=yQZpbRRSeXhqck6KWzejU4ySPcJxpAvSTRDOqN4La38=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CXNRC7JEC4HI1SsKalF0VhaTey7lCqammHmjfe21zorhnRwPdoT1uxi9B5dSZZUHAATI/oCBOKJymhrqlYajBBQbLyTWRs6XhAD7a3QHN2XP3uOOeMYOJ6DRtGpPCcVxcsu7Snni49P7BUvH2vCUTkyoiFJFsgYMRfSQEW8yZWxdIIBYrW9UVZEOwH1/XjKQtoZ07WG+XstDsSrbB2eV1tvl88gR1/O4jFMhSIcLNsdW53OwAug0cJhwYAgfH5MwVW7e8lJS2lslFEuAbhPBatSEja0Q8/LTRMZyW4xs/E9UkHq4+kH/qy6qz2I6tHBrxJpGLnJHPPPeB/Ut3g5V7A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hA5+vBqM; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=sj@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=XUVRtuVe;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hA5+vBqM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=81.169.146.169; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.169])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=sj@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmyRC3Rl9z3dSl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 04:16:06 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1760548562; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=dw2JzGlArfW5XF0MlYkXghfQgL+saubV1wh+ECcZC/0PQhNgK2Fgs9AsZymdoWLMWK
-    i00i6DICzpBi4l39CFu60dIB0PjuXKC1BmchzV4UUCyp+HBCO6Tp1MyJ9IcwxoOCX23g
-    P6UhMPBli2eDs4l8vx/Dqquh2DCqqlsHsZsWQFOcIoZ6GAsNxenbvO/lKxQTrAPgor4g
-    GeBDoG957i6Dxidn3EbRLdp3KPnaJDpNltoLwzmG2XkE0zAMnisLAlC0RXxth3v8rW9B
-    Xgt0jFnFZ7ZynTnqqUIrmtdUDAFZF9a4xWhIYBnDZbh5lsdif67cJ29foERnyVx+2WVu
-    zckA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1760548562;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=mN7F9fEBnozfv11Tt5u96tzW+BvAMVreqPKTX7UG8vo=;
-    b=V64mkKEJxTQy0TcuY0A5rEhVi0wcwQwJq5ccMPCE7mN0dUubSj+cG/eFLD/h35VEDe
-    MunyqXCJbPC14fPRhbNH7Bp3shP6PJ+BDDRNzjlbxBwyhmd/rMgnlEFKwGa3EfuA1q1/
-    eWdEOBKGOtbX9/nYvOjk8ry3Adxc3GtotMzfAHaSYbTlByfa9eiAVZDtIYmll6Jyuxy9
-    MZPIgE6dVyVyOVlGFx+GqnBJK3plZwwp9SBbktSHkRFXvOeeG4PQS8HW+WCdojOC0kHE
-    esEejWTykiRXYZJrWZpIQCsgSm029Sm7jq753j/nKEfekQV3ugT+J+xeCzlOO7cbXmId
-    rCoQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1760548562;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=mN7F9fEBnozfv11Tt5u96tzW+BvAMVreqPKTX7UG8vo=;
-    b=XUVRtuVe/N2UF+coE850spdKxjnk5mn2hfULUORgHdk30qOFmC4xlGcwJQfNXADNSm
-    2Uk6s58wRGKoYs3p7iRWPtOAcWNqjtee1Ym3LOucdg90Nz3Rn99CZk7xRW7RJL/l3+zY
-    Y0RjUSd+kgDuEgbbTwzvt5vf/mQYwdODk8IJjG42w4H3NgNdds/TNqDHxEhBG9enGu3g
-    QvwCjpiJ+7zEfdjOAIZLlO3IW6qDynLLGFEzCRuZ3EGshZk/39iBJd5n5J3fN37gTDQj
-    mXjdM3ekyxAvBWhQzTQp/q5mUURH+jy7V+0S/V9TmLBEe4EHMd8lT7cwyIgqpmyTAn7R
-    1/Mg==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5qwsy/HXXazq4HBi2zvo2F6xNGeYCT//RDyeg=="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 53.4.2 AUTH)
-    with ESMTPSA id e2886619FHG1YXz
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 15 Oct 2025 19:16:01 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmyft10SRz3dSr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 04:26:14 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 264F2602CB;
+	Wed, 15 Oct 2025 17:26:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B3FC4CEF8;
+	Wed, 15 Oct 2025 17:26:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760549170;
+	bh=EBPP//KAlBskb9pMhxaBL7Kga+U6vtFga53T2SeQa9U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hA5+vBqM9+KAbQ2ZLh7xQyiaPk15CQAjVlTcxPL7on3gUbUnV5A9Zz4mGOXglD3qf
+	 kC54OsUK04mRPIzbcfAB2XY0uYmS1yrt3fKFMOn3J3rRnP9gKLoVN7ahh0rKEOZlLz
+	 Mg+hR1OoHGMmWrFZfURy66L9UrkbTAoX/JjzMFPGSSpyhoeLM2GjmMFJnNfsjgnqkp
+	 YlKLClzCBN9+FfBQdc8eIsjh19j+C53f6pBwkHcZ+XMa9sA958ZqqaeJFvrD4ZRgDh
+	 EPt+SUwO5Wif8Qh1Eoq7XKuEX2DfGOu0WsDI7vvhyH+1qVgK3NK+eOF3zbctTZQ9gQ
+	 V0LVOVJeJklDQ==
+From: SeongJae Park <sj@kernel.org>
+To: Donet Tom <donettom@linux.ibm.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	x86@kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rafael@kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: Re: [PATCH v2 1/2] drivers/base/node: Fold register_node() into register_one_node()
+Date: Wed, 15 Oct 2025 10:26:00 -0700
+Message-ID: <20251015172601.69756-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <910853c9dd61f7a2190a56cba101e73e9c6859be.1760097207.git.donettom@linux.ibm.com>
+References: 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,72 +82,30 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-Date: Wed, 15 Oct 2025 19:15:51 +0200
-Message-Id: <6A12CA6A-0798-49D3-A4AB-C2D5AD616F69@xenosoft.de>
-References: <523e2581-9c78-4c37-9c97-578df079f008@xenosoft.de>
-Cc: Lukas Wunner <lukas@wunner.de>,
- Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- linux-pci@vger.kernel.org, mad skateman <madskateman@gmail.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
- Darren Stevens <darren@stevens-zone.net>, debian-powerpc@lists.debian.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Herve Codina <herve.codina@bootlin.com>
-In-Reply-To: <523e2581-9c78-4c37-9c97-578df079f008@xenosoft.de>
-To: Manivannan Sadhasivam <mani@kernel.org>,
- Bjorn Helgaas <helgaas@kernel.org>
-X-Mailer: iPhone Mail (23A355)
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Oh sorry, it was an old Mail from Bjorn but the lspci -vv and the kernel con=
-fig below are new. I have used the search field and open an old mail.
-I have very small time slots and try to work fast.
+On Tue, 14 Oct 2025 21:09:16 +0530 Donet Tom <donettom@linux.ibm.com> wrote:
 
-> On 15 October 2025 at 06:55 pm, Christian Zigotzky <chzigotzky@xenosoft.de=
-> wrote:
->=20
-> =EF=BB=BF
->=20
->     Bjorn wrote:
->=20
->     Sorry for the breakage, and thank you very much for the report. Can
->     you please collect the complete dmesg logs before and after the
->     pci-v5.16 changes and the "sudo lspci -vv" output from before the
->     changes?
->=20
->     You can attach them at https://bugzilla.kernel.org/ if you don't have
->     a better place to put them.
->=20
->     You could attach the kernel config there, too, since it didn't make it=
+> The function register_node() is only called from register_one_node().
+> This patch folds register_node() into its only caller and renames
+> register_one_node() to register_node().
+> 
+> This reduces unnecessary indirection and simplifies the code structure.
+> No functional changes are introduced.
+> 
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
 
->     to the mailing list (vger may discard them -- see
->     http://vger.kernel.org/majordomo-info.html).
->=20
->     Bjorn
->=20
->=20
->=20
-> Hello,
->=20
-> sudo lspci -vv -> https://github.com/user-attachments/files/22931961/lspci=
-_cyrus_plus.txt
->=20
-> Kernel config -> https://github.com/user-attachments/files/22932038/e5500_=
-defconfig.txt
->=20
-> I have already posted some boot logs.
->=20
-> Further information and boot logs: https://github.com/chzigotzky/kernels/i=
-ssues/17
->=20
-> Thanks,
-> Christian
->=20
+Acked-by: SeongJae Park <sj@kernel.org>
 
+
+Thanks,
+SJ
+
+[...]
 
