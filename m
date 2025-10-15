@@ -1,63 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-12931-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12933-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F78BE02C7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 20:28:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0769BBE10BB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 01:41:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cn02B3n9Yz3dT1;
-	Thu, 16 Oct 2025 05:28:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cn6zN2QKhz305n;
+	Thu, 16 Oct 2025 10:41:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760552882;
-	cv=none; b=YSXQcq7/Sr2Kcf7W06nhf2nOoYHRx+aApPbtRKBIeXG3SQ6TEBBwfUUMj5k4GJvBhe8G6AESXA2K2tylv/UvFfQx7hEGryfT7Z2j673jsaR9q09Xqs5LueGLOVzLmjKp37CN4DvWixGuVQJuzKxiHadJdedA0tRBqKMDqfZGZp5MFffphCp/iKur5dmYGdNpCr0KQU2OOlE/uSQtXMMEerYCU8dkyldg2VIOIdat3JCPondmML49KpOj6a6G8oU6OSyCMOfrM4Vz7KQ1ke9CDsSWLTIGTQPQ5j8pAyX0b7bozFXqryPNxZor7fNiswe+sZTpCVq8zmb1WhOkO6xCFQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760571664;
+	cv=none; b=PJLUDnssJ+IchqH+X46FoOp8ZbKhzL3a35sbGLkijd6b1KEW0ZZ8Tw7+CzHLQ4pBXgUhlW6lUXDN12PXvZTaJIJl41tIcXuQEjgXebdx6mRAJhiHjZ7IvXum5NfW6dP998pQic87RYd95xeQJ1994J4Z/KUunhx31dbiN67yjzsz7b1jD0VlYjT2mqFY57H9/Q8aVnR6vHZRah/ks2E9dufIbg1pVqGY95IjC0+fhL6EWJu3ya52H4ot8EbXL7oSHJ56uX6sov2ZkioIomuGgB9/NAczcnRtdrQdD5Drt9xoxo82zAAGRRXT13a77YNl5XdWekkONOMz/uyp1i1kHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760552882; c=relaxed/relaxed;
-	bh=UT1DXpH6stHZzpuLlVt523N6/w2vc+6EjpAG1UNrdqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WQ2gcKEl8wShNU3ipI+q7+UaWa6y7OZOzFp+XtokfTkqQAbtTBXlYvNKPn7yXYy6crIQAfrrj4zIWngechjWBZFXHH6Pf9c7Ej9ujYk1Et1mF/tDUgFBFqTSV3RMadZfYslBHVTKWbUopFUZSmd+vz3rBx01CSlCKDIcEsUG7OoT65XbLAuf1WL6TfEfxRhUFpje8axPsr2BPbxkZRBQ3jgNpSgmxQt4aPBWY4a8kvqWnwO3bqI67G7VEq710s6sJRubRbIpLRCW8hPl/o4b5ZM4YG4Otc/Ft0ihWX9JChRUqOoe8Ab7U1MSa6O03Uu3tEAHX0E6RkNpnWtcXW16jw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tvsXYo3t; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1760571664; c=relaxed/relaxed;
+	bh=QBMQUzwEv0XvQKRStRx+rFs+6EMUvsiRTeTXhEoZzRI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=RZiaCSvZ8wKD98AmxBfFTOUx2j4ylLvUt03E9XtflHI3H8LBZM2xI2oGAS0QqWqcqXNGsBThxXiFa0mtoZO1HT5XvM+iXVjD2YnVpLdb7zAYfEy9xgflOPnsR5JRjHo5cU12QoSd7VAG4Mhm5l7J64Zs8etAOJIvqe63XLZy1c645tD3JtoVUFde5DfBMIeUkXGCaBxgIkrEZqQ4jS3eyzPcT819mC/rvjWueRoOrPxgoxSK5BqzNg4+F1lxmUxxWo5eNo90Zo4t9cSroBtOz0w3xGlb3DEj2XPzHzuG+yqLRRvB9716qfwWswToTP8YrH9nYUFbkghmHU0Fkr3sCQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h3+qsstL; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tvsXYo3t;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h3+qsstL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cn0294Bp1z3dLN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 05:28:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cn6zM1qb7z2yr1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 10:41:03 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C495F405B2;
-	Wed, 15 Oct 2025 18:27:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D958C4CEF8;
-	Wed, 15 Oct 2025 18:27:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3328543FB5;
+	Wed, 15 Oct 2025 23:41:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89F1C4CEF8;
+	Wed, 15 Oct 2025 23:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760552878;
-	bh=rySxjUJGg5L0aeZfKHHZ0liCV/P4tKXtl04chJYFmac=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tvsXYo3tNsSSd1Bz9TDhzLY1SF60Zj/zoVNkVcI9gooMMrugG/vEvL3ZQmZVTEddb
-	 nphzg6XcABe8gl9eMhGNC9/aJsyz/wBDpNJC4SO8A0glFGnAv2L7JiZjy/Ov/6xHZW
-	 3dJj5m5opzwG6VWnATLPfb1MiUBPb3rK2LDLMJtNeGqPj8JwvuMiw1Bipx7KdVgnCT
-	 1meUG04vCBWam7Q+YQwf5nBrmvoBDhqvUyz1I1cPVqRwo4hodMQqTj3AEfpFqiBFfn
-	 /Qk6cX7PKw1xUqzQPEVJaAYtMFkPlKvrENokbCFdql3cXXcBT7z8hn2RtAarg90WOZ
-	 19Efg6D7mTxyg==
-Date: Wed, 15 Oct 2025 11:27:54 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Vishal Chourasia <vishalc@linux.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, maddy@linux.ibm.com,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	clang-built-linux@googlegroups.com,
-	"llvm@lists.linux.dev" <llvm@lists.linux.dev>
-Subject: Re: [PATCH] arch/powerpc: Remove .interp section in vmlinux
-Message-ID: <20251015182754.GA1055324@ax162>
-References: <eeaf8fd6628a75d19872ab31cf7e7179e2baef5e.1751366959.git.christophe.leroy@csgroup.eu>
- <20251013040148.560439-1-vishalc@linux.ibm.com>
- <2b4a3215-1620-40c9-a00c-ca833ebbb7b6@csgroup.eu>
- <aOypxKMzsLR5tAtv@linux.ibm.com>
- <20251015002154.GA2300901@ax162>
- <aO8XEhMdT19UOPlp@linux.ibm.com>
+	s=k20201202; t=1760571661;
+	bh=7ZVXV77W0d05bk/8gSWIHFEpHIZsQ9H36dwcXGXNqro=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=h3+qsstLdZgrMKrIYjUUZJ3SpvHx3e+0csZghHbFI8vZbxfVK/12Zf+LUjJPRCy6Y
+	 pohFdY1HaBTMKdKHwutLvPO+PtHZB0hLTuyDrsWj/t7xUmSLjNJjHNT0I2ZIhtDR+u
+	 SNCw6SfnHhStgY9NVmZSJANBBGWFHP/KPTU71RmsroxJA8pWIrmyakAMOGhd0gRKGH
+	 5GqgIy5P0cM1GHzA/SrSJOh3mhTWiqAJSqeKl1fAE45R/L4uXugJaIhti/x6XFG7Eu
+	 hCtg7UOPklPh/aO/TMXEk16iIYXrlwCfDfrjc+TAsQ/fv5Lsk8bp2yBVAQBsIKmwzi
+	 MA/Cqt6Jnyc+g==
+Date: Wed, 15 Oct 2025 18:40:59 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+	Christian Zigotzky <chzigotzky@xenosoft.de>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	mad skateman <madskateman@gmail.com>,
+	"R.T.Dickinson" <rtd2@xtra.co.nz>,
+	Christian Zigotzky <info@xenosoft.de>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
+	Darren Stevens <darren@stevens-zone.net>,
+	"debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
+Message-ID: <20251015234059.GA961901@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,52 +75,55 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aO8XEhMdT19UOPlp@linux.ibm.com>
+In-Reply-To: <20251015101304.3ec03e6b@bootlin.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Oct 15, 2025 at 09:07:54AM +0530, Vishal Chourasia wrote:
-> Hello Nathan,
-> 
-> On Tue, Oct 14, 2025 at 05:21:54PM -0700, Nathan Chancellor wrote:
-> > In this bug report, you mention using LLVM=1. Does the issue happen if
-> > you use GNU ld (ld.bfd) via LD (i.e., LD=powerpc64le-linux-gnu-ld or
-> > equivalent) over ld.lld from LLVM=1? This sounds more likely to be a
-> > linker difference rather than a compiler difference.
-> 
-> Thank you for the insight.
-> 
-> Yes, when using powerpc64le-linux-gnu-ld linker .interp section is not
-> emitted.
-> 
-> Command:
-> $ make LLVM=1 ARCH=powerpc LD=powerpc64le-linux-gnu-ld -j 8 zImage
-> $ llvm-readelf -p .comment vmlinux
-> 
-> String dump of section '.comment':
-> [     0] clang version 22.0.0git (https://github.com/llvm/llvm-project.git 7314565281ec28b745502c3f429fd431e16673eb)
-> 
-> $ llvm-readelf -p .interp vmlinux                                                                                    
-> llvm-readelf: warning: 'vmlinux': could not find section '.interp'
+On Wed, Oct 15, 2025 at 10:13:04AM +0200, Herve Codina wrote:
+> ...
 
-Thanks for confirming. Does this fix the issue for you? It appears to
-work for me.
+> I also observed issues with the commit f3ac2ff14834 ("PCI/ASPM: Enable all
+> ClockPM and ASPM states for devicetree platforms")
+> 
+> My system is an ARM board (Marvel Armada 3720 DDB)
+>   https://elixir.bootlin.com/linux/v6.17.1/source/arch/arm64/boot/dts/marvell/armada-3720-db.dts
+> 
+> I use an LAN966x PCI board
+>   https://elixir.bootlin.com/linux/v6.17.1/source/drivers/misc/lan966x_pci.c
+> 
+> Usually, when I did a ping using the PCI board, I have more or less the
+> following timings:
+>    # ping 192.168.32.100
+>    PING 192.168.32.100 (192.168.32.100): 56 data bytes
+>    64 bytes from 192.168.32.100: seq=0 ttl=64 time=3.328 ms
+>    64 bytes from 192.168.32.100: seq=1 ttl=64 time=2.636 ms
+>    64 bytes from 192.168.32.100: seq=2 ttl=64 time=2.928 ms
+>    64 bytes from 192.168.32.100: seq=3 ttl=64 time=2.649 ms
+> 
+> But with a vanilla v6.18-rc1 kernel, those timings become awful:
+>    # ping 192.168.32.100
+>    PING 192.168.32.100 (192.168.32.100): 56 data bytes
+>    64 bytes from 192.168.32.100: seq=0 ttl=64 time=656.634 ms
+>    64 bytes from 192.168.32.100: seq=1 ttl=64 time=551.812 ms
+>    64 bytes from 192.168.32.100: seq=2 ttl=64 time=702.966 ms
+>    64 bytes from 192.168.32.100: seq=3 ttl=64 time=725.904 ms
+> 
+> Reverting commit f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and
+> ASPM states for devicetree platforms") fixes my timing issues.
 
-Cheers,
-Nathan
+We expect *some* performance impact from enabling ASPM, but this seems
+excessive.  You should be able to control the ASPM settings for an
+individual device via sysfs:
 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index de6ee7d35cff..15850296c0a9 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -330,7 +330,6 @@ SECTIONS
- 	}
- 	.hash : AT(ADDR(.hash) - LOAD_OFFSET) { *(.hash) }
- 	.gnu.hash : AT(ADDR(.gnu.hash) - LOAD_OFFSET) { *(.gnu.hash) }
--	.interp : AT(ADDR(.interp) - LOAD_OFFSET) { *(.interp) }
- 	.rela.dyn : AT(ADDR(.rela.dyn) - LOAD_OFFSET)
- 	{
- 		__rela_dyn_start = .;
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/ABI/testing/sysfs-bus-pci?id=v6.17-rc1#n431
+
+My guess is that L1.2 is enabled and the threshold values in the L1 PM
+Substates control registers are bogus.  I don't know how to fix those,
+especially on a devicetree system.  But it might be possible to fiddle
+with them using setpci (while ASPM is disabled).  Not for the faint of
+heart.
+
+Bjorn
 
