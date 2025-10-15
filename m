@@ -1,78 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-12924-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12925-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A5DBDF8A1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 18:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E59BDFA2B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 18:23:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cmws25flSz3dRg;
-	Thu, 16 Oct 2025 03:04:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cmxGn1JH0z3dSC;
+	Thu, 16 Oct 2025 03:23:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760544294;
-	cv=none; b=i47RVnfibS0kyhQOIpTVQCu4MAG3DiXrFILEaQan13BlM54ePJeaHfh+ChWdwpd3J6tgJrnEeuhmPpANCeMx4TyV3MtRIluYtTXAyk8Hy+xhDFT58WojhuupHt4PScleOOeu5ROAEWkzS9rVUS+r7Ec5ZR020AU3ALFSfBT9s14WR4ygo8ZkFl1wnfzbrd+NFsf7p50N218KQoquJQZhFJIRDN47BEzJLwiY9sMnphHlBjDh/ZB9h1WespQa0syUWpXc9u1Nxerq4ueTZuAPwpkAmFquxvpnC21jxe3lxvBF6eonrNnfWD/e2pEg7Ezg8ry+j62CS+YOuxolc0xXRQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760545425;
+	cv=none; b=XEMli7LXjq9JPFgX9G1BSWLHWR8UYBmiAOjVKGioUb/MZPe4Z6fYXQt2o5TXQiYppKKg4RRZirZIOuqtYF3PXAq+5A6qqG7Uh1MPg8TIpfzZxTK2cNYyLqXx+kxUnwgzUxPMCjEpjm41+57J8/SuKOfzotfFZtwGjvO9ueA1Tjvq80ZmdiVuQ9bomtJX1ZeX8u70iaQQqFaha0Lr7vAnl4vyEzaolVx7dPQRpugGTMTMb5AcgeNo1+QwNegEV2lx8Eoj5KY/bXTsCsUMq4/6RAnVhf2BCXjURh19k68Sqzb7G7PbVawI8hRsFvFGFoCuPM93PIX1c4ngMiSrMaV4+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760544294; c=relaxed/relaxed;
-	bh=5opmQQrcs+iQAYIWBtfey0J/RoSdwtl4mYe2y0r2Ztg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hKR8kc2+hT9fLq+EhATW5wNYbSc3I5lG4DnKgeuox6WNOE+2BaOaB2n8b9ypE7le8nilfbZaNrQbEEXmAw1Yixrpje1lKJykiJyYJUz8NrLZzo83bEkrZFAvzXlfszKd9liKvuFl8zowXJGhuJ8Ti9Y4ffwKkt7Ml1T+E3gU1jGyK02MplN56SHh616cSUAk6nrQaOY4FTYxUMj1rAMSPp8m6MWTBXB86X86GKOcxxJRfNhKtepDf+4khv88md8Ce6lxboKfxRDYMc4uFzjuVzgFuk1wCsGzezF6+37Rs9dATWbyWFf4qy9JHJL3dKNsdWkM5DmYwSHD4Qq/tQWkbA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DTMYRDGb; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1760545425; c=relaxed/relaxed;
+	bh=jxcpTn4W5WPcNE5fDpL3fwAkSZ0DnN3kH0q6F/gBZvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KZDH7N7qIICor0QFJd0rt8fFvNpgJKV7+L8Mvg0lPqCi2OmVU6yjIAFl2siLglUjSZUsVJqQWOf55m4dutfesJeAhWyJ3uvwSG8MPj1/s2KcBNGCoRNHRdGxC5gq3lhO1jPMizdKU1TYG5BksZOUvplKLLMCxBiH4cKJaQDTkprAJNygE+cHSOM75ZnSYYfZ1FmvE0DqdkYeKLc3ZiDsx8kZ/gHPZO0mlON/HiNYbafNhUDvyDVeGDwLt24UP1gZlw/QQ6fq1J1K3jqXnVgHz65qdwcYIFUfTyRiyavMcdSZ72as78S8M+bpB9bM6s3nd+YGKy/+AaubQiiGVTKW7Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bdzAG5u9; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DTMYRDGb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bdzAG5u9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmws14MF1z3dRb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 03:04:52 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59FDhs4b001980;
-	Wed, 15 Oct 2025 16:02:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=5opmQQ
-	rcs+iQAYIWBtfey0J/RoSdwtl4mYe2y0r2Ztg=; b=DTMYRDGbbruCsK1hiGXePi
-	NbuXJV52I8gbDdNY9W5EKuZLmSAQBDEHUcH2r6peMBVF2Oh/kCdqsMc6mxNJQeGk
-	Aw/B6GpRKQu9tbPPJPJ5RcRbuXlQxkNIz3azQRk3KPsJdXHGfHlzxPt5XjgVOFvx
-	BQ0/nhlzIIbQQbXnf7MtSdlfo00TmjjfcvDlThYf6U71fY5o3fDsIjTJh+vcOdIU
-	dYavP4hNgCW5L+atWQrgXhGeac0cJhNwANNxfuvecdQnBk3x2YFd+dKpK2iMiVYX
-	HZrFxNrwGZjChtL00YRH1UN34CxwbVQLSiBfOUaLpbw6E+d0LxTAOcF+Z6tH/v8Q
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49rfp80e96-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Oct 2025 16:02:30 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59FFxv93008767;
-	Wed, 15 Oct 2025 16:02:29 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49rfp80e90-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Oct 2025 16:02:29 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59FDu6dv003626;
-	Wed, 15 Oct 2025 16:02:27 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r1xy1a38-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Oct 2025 16:02:27 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59FG2Pc631261170
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Oct 2025 16:02:25 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3D48E200E6;
-	Wed, 15 Oct 2025 16:02:25 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 34465200DB;
-	Wed, 15 Oct 2025 16:02:11 +0000 (GMT)
-Received: from [9.124.218.242] (unknown [9.124.218.242])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 Oct 2025 16:02:10 +0000 (GMT)
-Message-ID: <9901f2e8-653e-42f4-9344-03b2f70846bb@linux.ibm.com>
-Date: Wed, 15 Oct 2025 21:32:10 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmxGm0TSLz3dLN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 03:23:44 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E9D44626C1;
+	Wed, 15 Oct 2025 16:23:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01675C4CEFB;
+	Wed, 15 Oct 2025 16:23:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760545420;
+	bh=vu6ue76QD8o9WFynC7bUcUGayTYCLLK40E6CHK4jY2A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bdzAG5u9dO9QPkYgHiX7SK3N/AugvofjOAAidYDmd6E40Huua/4C37iiqmS9qv0wi
+	 M+WzekZzM+RT11P3e1eYjolgcaxDCV4aZXNhlkB/bcvV+TP4ApHKVJEQK/HO0dPPpv
+	 j0kA22ElaAFOG/BXPO6or9sHcXlHrYNjZyv+MuBYV3VDoADTSGLkYoKzoBrtpCVWud
+	 GN5MSstr6e1fSzxwecWXiq9xGjwa248l+buDzj9rEv/N5XP3ceJsNWyMP7yOjdW1ss
+	 j1wA2vL5iYmn8InvTiwVii4oar72ugqxrw7bkhyBxT1N6WsT9fvkf0UesrwyhpWyp4
+	 fHqp2a5Hb06ow==
+Date: Wed, 15 Oct 2025 21:53:26 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Christian Zigotzky <chzigotzky@xenosoft.de>, 
+	Bjorn Helgaas <helgaas@kernel.org>, Lukas Wunner <lukas@wunner.de>, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
+	linux-pci@vger.kernel.org, mad skateman <madskateman@gmail.com>, 
+	"R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au, Darren Stevens <darren@stevens-zone.net>, 
+	debian-powerpc@lists.debian.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
+Message-ID: <jznknzm2ke7b7d7itdbv5nqianxl3n6p35dg45gpwm3e57ulxp@iy2juxdq5m4i>
+References: <20251015135811.58b22331@bootlin.com>
+ <EF4D5B4B-9A61-4CF8-A5CC-5F6A49E824C1@xenosoft.de>
+ <20251015145901.3ca9d8a0@bootlin.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,106 +71,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/21] paravirt: Remove asm/paravirt_api_clock.h
-To: Juergen Gross <jgross@suse.com>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>,
-        Alexey Makhalov <alexey.makhalov@broadcom.com>,
-        Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
-        Russell King
- <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
-        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, virtualization@lists.linux.dev,
-        loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org
-References: <20251006074606.1266-1-jgross@suse.com>
- <20251006074606.1266-6-jgross@suse.com>
-Content-Language: en-US
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-In-Reply-To: <20251006074606.1266-6-jgross@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9ZUK4UeNEA3M63-5xIUdjnNRJmI9KQSO
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEyMDA4NCBTYWx0ZWRfX90a/KFqHOFA4
- 3LTXuANmdsGxWyQx7Ukevm3RyFSkQJ9pXc2oVr8K5uv/q7SJflj3vhk6rgQPg5a2e4JMHRcokhT
- E+w6CfzUtDgCzNqO7x7Qz0iPi2Udyp1mB5qOlV79KYdYo8wEkzexJTGI0NvxBMb9zp2anqktjy6
- x7dXmTESXxwuIWmKuQwlY9VJQdv5AweqVNhod++KR+c5UndqULhfyI4H+V7In+JTOm9GWN4E92e
- bZgooNZopePk7kVmv+pt2VQaWzIRRgwHx3+Ivefade+IPstSVao1M49g8pQuFBZku8ozOWBjVco
- XGxbdE4m67DWVP6wWkyIRV4aUp8gC4N6DdEGT4oMISQu4RWJ20yslN8ham/g8aBzCSTrxBcUSHp
- 17smtvjqfZzcfkxRb2PzijiKsYbetw==
-X-Proofpoint-GUID: dV8tQT4HDH7j4wsc4MFx6qXJyZuneU1L
-X-Authority-Analysis: v=2.4 cv=af5sXBot c=1 sm=1 tr=0 ts=68efc596 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=iox4zFpeAAAA:8 a=JfrnYn6hAAAA:8 a=VnNF1IyMAAAA:8 a=RR7mTWzPQ-4l2d7n_HwA:9
- a=QEXdDO2ut3YA:10 a=WzC6qhA0u3u7Ye7llzcV:22 a=1CNFftbPRP8L7MoqJWF3:22
- a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-15_06,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 spamscore=0 adultscore=0 suspectscore=0
- bulkscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510120084
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251015145901.3ca9d8a0@bootlin.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-On 10/6/25 1:15 PM, Juergen Gross wrote:
-> All architectures supporting CONFIG_PARAVIRT share the same contents
-> of asm/paravirt_api_clock.h:
+On Wed, Oct 15, 2025 at 02:59:01PM +0200, Herve Codina wrote:
+> On Wed, 15 Oct 2025 14:27:00 +0200
+> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
 > 
->    #include <asm/paravirt.h>
+> > > On 15 October 2025 at 01:58 pm, Herve Codina <herve.codina@bootlin.com> wrote:
+> > > 
+> > > ﻿Hi Christian,
+> > >   
+> > >> On Wed, 15 Oct 2025 13:30:44 +0200
+> > >> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> > >> 
+> > >> Hello Herve,
+> > >>   
+> > >>>> On 15 October 2025 at 10:39 am, Herve Codina <herve.codina@bootlin.com> wrote:  
+> > >>> 
+> > >>> ﻿Hi All,
+> > >>> 
+> > >>> I also observed issues with the commit f3ac2ff14834 ("PCI/ASPM: Enable all
+> > >>> ClockPM and ASPM states for devicetree platforms")    
+> > >> 
+> > >> Thanks for reporting.
+> > >>   
+> > >>> 
+> > >>> Also tried the quirk proposed in this discussion (quirk_disable_aspm_all)
+> > >>> an the quirk also fixes the timing issue.    
+> > >> 
+> > >> Where have you added quirk_disable_aspm_all?  
+> > > 
+> > > --- 8< ---
+> > > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> > > index 214ed060ca1b..a3808ab6e92e 100644
+> > > --- a/drivers/pci/quirks.c
+> > > +++ b/drivers/pci/quirks.c
+> > > @@ -2525,6 +2525,17 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
+> > >  */
+> > > DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
+> > > 
+> > > +static void quirk_disable_aspm_all(struct pci_dev *dev)
+> > > +{
+> > > +       pci_info(dev, "Disabling ASPM\n");
+> > > +       pci_disable_link_state(dev, PCIE_LINK_STATE_ALL);
+> > > +}
+> > > +
+> > > +/* LAN966x PCI board */
+> > > +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_EFAR, 0x9660, quirk_disable_aspm_all);
+> > > +
+> > > /*
+> > >  * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
+> > >  * Link bit cleared after starting the link retrain process to allow this
+> > > --- 8< ---
+> > > 
+> > > Best regards,
+> > > Hervé  
+> > 
+> > It is the same patch, I use for my AMD Radeon cards.
+> > 
+> > In my point of view we have to add a lot of other devices.
 > 
-> So remove all incarnations of asm/paravirt_api_clock.h and remove the
-> only place where it is included, as there asm/paravirt.h is included
-> anyway.
+> Yes, probably!
 > 
-> Signed-off-by: Juergen Gross <jgross@suse.com>
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->   arch/arm/include/asm/paravirt_api_clock.h       | 1 -
->   arch/arm64/include/asm/paravirt_api_clock.h     | 1 -
->   arch/loongarch/include/asm/paravirt_api_clock.h | 1 -
->   arch/powerpc/include/asm/paravirt_api_clock.h   | 2 --
->   arch/riscv/include/asm/paravirt_api_clock.h     | 1 -
->   arch/x86/include/asm/paravirt_api_clock.h       | 1 -
->   kernel/sched/sched.h                            | 1 -
->   7 files changed, 8 deletions(-)
->   delete mode 100644 arch/arm/include/asm/paravirt_api_clock.h
->   delete mode 100644 arch/arm64/include/asm/paravirt_api_clock.h
->   delete mode 100644 arch/loongarch/include/asm/paravirt_api_clock.h
->   delete mode 100644 arch/powerpc/include/asm/paravirt_api_clock.h
->   delete mode 100644 arch/riscv/include/asm/paravirt_api_clock.h
->   delete mode 100644 arch/x86/include/asm/paravirt_api_clock.h
+> > 
+> > But if the computer does not boot, will the average user know that there is a problem with the power management and their graphics card?
+> > I am unsure whether I can deliver the kernel to average users later on.
+> 
+> Also when it boots, it is not easy to know about the problem root cause.
+> 
+> In my case, it was not obvious to make the relationship on my side between
+> my ping timings behavior and ASPM.
 > 
 
-For powerpc, scheduler bits
+Interesting. So in your case, the issue is that ASPM adds up latency of the
+network card? If so, it is intended. The added latency should correspond to the
+L0s/L1 exit latencies.
 
-Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+If you want performance, then you should select CONFIG_PCIEASPM_PERFORMANCE
+using Kconfig or pass 'pcie_aspm=off' in cmdline or do,
+
+'echo performance > /sys/module/pcie_aspm/parameters/policy'
+
+By default, enabling ASPM saves power, but it comes with a cost of reducing
+performance.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
