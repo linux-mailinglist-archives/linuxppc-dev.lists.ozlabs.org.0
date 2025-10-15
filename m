@@ -1,87 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-12877-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12878-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B410BDC64D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 06:02:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA79BDCAF3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 08:19:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cmcqv18PXz3cdn;
-	Wed, 15 Oct 2025 15:02:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cmgsp0tDPz3cft;
+	Wed, 15 Oct 2025 17:19:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760500971;
-	cv=none; b=O6LLwmLBmVx3KZ7FFQ1JGT7v+fBPK+wx8G9v3UPASyVNHVPDStlGeMNZ3LY+Ke/TRSuAB9SEwjEjZ84gvMtwYrM1gknNGgiWCnAz+S9ROoNw01Ut3FSbXbHGdp5pEh9GSR16W0TyTzbhju4lvcVWCJUVB3WXwQlO5vK2UjmTCTPHYU+A5VrFaaJPPEwPUNG9ZcdAaH8XtGxOWdfVvgkb6wqVViXuhuYv2sZQBLbUnU8os/1kUCr4vYCzO7xE/L0c+xHT+FJ1S5ZbiazY4s8ETtKJai09wJ61hrEXwIAPd3iMMRaw0eDyhPqTxC5D8iCNIZ/wiGEncbesgZqXfAkMGw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760509181;
+	cv=none; b=IBvskGBsU5up2Tt406YMv+UeCOwnuog4k5pXfxWJcIVRR8E3ogarkFjQX0pQ1HSFoQjbeOrj88lMXzhY9594wGQ2ObBZ5aUo2MBhKTChj8TgE4t2ule71Cj4omHoq2b+zQqAC44t6ePehiOzAO7XUsDLGf06CAyd7Qx4vib+VySZb51QFTwzzT2bfUWp5VggUUp5k8QZ4j8Piiw2xz4KfFQMhr0HEzf+7baPXEI6etrakzGXjAVjYy2JhKVyQzXNDAOVcoFw0jANFfCojzFbCoX7iEVXftW+c7hPNkjYAT+LhbWop4rwacNAiZYMtRiBan+oyNFaDMTT8oahrVO7Ug==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760500971; c=relaxed/relaxed;
-	bh=hfucgX8ssmEAuSCdZ/Lp7P4GlVmuSbno7gcO+6splP8=;
+	t=1760509181; c=relaxed/relaxed;
+	bh=aBdAYbf2oeRRGJDOcE4PkXfnYgbGj+KNTquxOSPo0SY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VtesQ9jw0rnxtXHzMjtYukzxz+76B4DiXF6b+wh8mRiRoUyfhNQVJEn98dyHqol65uhU02YgFxonqmDjkjcFRyC0vWY8PaUtn0Aif1p+t7ytLRTi7kP0JVMob35FOkDQOHmnOaB2n/JQ1ZxvQF6DmBnV31wDfyBTDzTjHAK9HC3fBdydkQlrj6Vkt3lRzel9jb3HtonFslqM7bHAoa1YLn0gRQZJOIPD8wV9ygZPRQOmQQMWojOU0fBvBXDYYUazJlzbwqdLTJfV/PrJY48OwnZU/rIYk/FL8mCSslLoCXZwCxoFgKVaveQbUFqkiqgxwIXnWPZb94ryC73CAomUzQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DbGQeBCm; dkim-atps=neutral; spf=pass (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=K7zVK7ZfnzNXFujZUaaGM1x0XttQWK/bF4wtoHFAqtujkdSpCL0EarFHYjU4ziR4D/owcnvw7B5+lRnE84KgoxbM6om9uev7i4BFdvCQBaOflijLCpvPVtxYmkFozoy0pjVQEOdROEZ1GMHndFhLdeLc68/SpbVVdZSE6Lm472bxnD/U3PSwBJmGxHvHCQF3hWIZMMKWtDbyK6FDat2XsQXt2xVC/wJmC9MbQ2ZzIqSXPKbH/0RNxrjPxtfvfJ2MIJvIHcvttPl8qJ+ps3Q43Ze24VhFx8IKy+jGrGo8m+sEsnEjFTKly3dqE1SclarqbQ/sjvc7kaqalLS3B2wWng==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hsNNLVEz; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DbGQeBCm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hsNNLVEz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmcqr4XRJz3cdR
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 15:02:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760500968; x=1792036968;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IPYoc3DHk1NL/YolvyR0cWS69iUjEEZ5j0JF14Po0+4=;
-  b=DbGQeBCmAGAdvsPy1H7KIT4nCpB+esDwTlbd+/0/BEE4mOzYEapAwXcH
-   7+9U2uFKVQJj2IPP+lklmxdUFCqIZcsW5z3DRXO5rAAM1a70mOl1ZAWLI
-   tdezIvbRRtYqjn7SIk489tmJk8s8GMwcDzqseJdlgUiffTpZGu9HLbxqM
-   Qyh3JqsmgPyhtnxscHOAHDPpCXgTDTC7zwmfv6/ezP8BCiitrkULqaHW7
-   1phEq9hzM+V6aWfcYsfZSs6hdRcVZz1YO1KR42ePNBnwmEPFs7GXuUojc
-   OtUu62FtV5vnwU4OgJoY99LxsGsLHmHJhJ1Lcun238DVsenqrnhSMLReG
-   Q==;
-X-CSE-ConnectionGUID: O6BrlSWwRpy7mA00yMBJ3Q==
-X-CSE-MsgGUID: y3JORLqjQOmmMAxb0W0SpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="66318624"
-X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; 
-   d="scan'208";a="66318624"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 21:02:43 -0700
-X-CSE-ConnectionGUID: NvEnqguAR3Kd7fzemWuaVg==
-X-CSE-MsgGUID: CSuUhS57SgWXI2/is1sSHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; 
-   d="scan'208";a="181733557"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 14 Oct 2025 21:02:40 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v8shN-0003QH-2q;
-	Wed, 15 Oct 2025 04:01:40 +0000
-Date: Wed, 15 Oct 2025 11:53:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Donet Tom <donettom@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rafael@kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Donet Tom <donettom@linux.ibm.com>
-Subject: Re: [PATCH v2 1/2] drivers/base/node: Fold register_node() into
- register_one_node()
-Message-ID: <202510151130.JYajIJuM-lkp@intel.com>
-References: <910853c9dd61f7a2190a56cba101e73e9c6859be.1760097207.git.donettom@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmgsn0VkMz3c2k
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 17:19:41 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B32E86027F;
+	Wed, 15 Oct 2025 06:19:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D25C4CEF8;
+	Wed, 15 Oct 2025 06:19:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760509177;
+	bh=575+wvXoKm0wSCqMEWqtmPWHwk3ClafWmET/hcBbNmY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hsNNLVEzfzWz7dR7//VOQ7HBra/IIKK2TJb+uHsLg9lLGv1xXVYod7dbxtejsTMHb
+	 vvXynatD9q9yBFtQkzQE2SqRJhFB+9NpMD2/LMeADWReV63RNC/ugzjMMtiKOpR9ZI
+	 Z234DnezMu4QVa5hzU7wwUYj1wpxXr9mHrL362hgck6uc8/8PNjzpLMlkVD7Zd5rle
+	 xngjHIYJeT9N//BZB6XWLTT4RYKf71SPeektAn/4kpxT1lUh5GB/oOe1XGfLi2+8+W
+	 astWLyu9y7M06lsXx0eRd/9UU7edQVgQd0fdIaahhK4O3UrrylNkifDDiUgwX2NiEN
+	 bFaD8HCYYaFOw==
+Date: Wed, 15 Oct 2025 11:48:45 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, bpf@vger.kernel.org, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Song Liu <songliubraving@fb.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Viktor Malik <vmalik@redhat.com>, live-patching@vger.kernel.org, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Joe Lawrence <joe.lawrence@redhat.com>, 
+	Jiri Kosina <jikos@kernel.org>, linux-trace-kernel@vger.kernel.org, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: Re: [PATCH] powerpc64/bpf: support direct_call on livepatch function
+Message-ID: <nuinyo7o7uniemqqmoboctwrkkwkuv77nt7yk6td6eb3x43hv2@2lukfuvcmcko>
+References: <20251002192755.86441-1-hbathini@linux.ibm.com>
+ <amwerofvasp7ssmq3zlrjakqj5aygyrgplcqzweno4ef42tiav@uex2ildqjvx2>
+ <17f49a63-eccb-4075-91dd-b1f37aa762c7@linux.ibm.com>
+ <unegysw3bihg32od7aham3npsdpm5govboo3uglorwsrjqfqfk@pbyzwwztmqtc>
+ <42d72061-3d23-43db-bb02-d5f75333c924@linux.ibm.com>
+ <dvvv5cytyak2iquer7d6g57ttum3qcckupyahsqsmvpzfjbyni@wbsr77swnrcl>
+ <79946463-4742-4919-9d56-927a0a6f1c7c@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,41 +80,104 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <910853c9dd61f7a2190a56cba101e73e9c6859be.1760097207.git.donettom@linux.ibm.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <79946463-4742-4919-9d56-927a0a6f1c7c@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Donet,
+On Fri, Oct 10, 2025 at 12:47:21PM +0530, Hari Bathini wrote:
+> 
+> 
+> On 09/10/25 4:57 pm, Naveen N Rao wrote:
+> > On Thu, Oct 09, 2025 at 11:19:45AM +0530, Hari Bathini wrote:
+> > > 
+> > > 
+> > > On 08/10/25 1:43 pm, Naveen N Rao wrote:
+> > > > On Mon, Oct 06, 2025 at 06:50:20PM +0530, Hari Bathini wrote:
+> > > > > 
+> > > > > 
+> > > > > On 06/10/25 1:22 pm, Naveen N Rao wrote:
+> > > > > > On Fri, Oct 03, 2025 at 12:57:54AM +0530, Hari Bathini wrote:
+> > > > > > > Today, livepatch takes precedence over direct_call. Instead, save the
+> > > > > > > state and make direct_call before handling livepatch.
+> > > > > > 
+> > > > > > If we call into the BPF trampoline first and if we have
+> > > > > > BPF_TRAMP_F_CALL_ORIG set, does this result in the BPF trampoline
+> > > > > > calling the new copy of the live-patched function or the old one?
+> > > > > 
+> > > > > Naveen, calls the new copy of the live-patched function..
+> > > > 
+> > > > Hmm... I'm probably missing something.
+> > > > 
+> > > > With ftrace OOL stubs, what I recall is that BPF trampoline derives the
+> > > > original function address from the OOL stub (which would be associated
+> > > > with the original function, not the livepatch one).
+> > > 
+> > > Trampoline derives the address from LR.
+> > 
+> > Does it? I'm referring to BPF_TRAMP_F_CALL_ORIG handling in
+> > __arch_prepare_bpf_trampoline().
+> 
+> 
+> > LR at BPF trampoline entry points at
+> > the ftrace OOL stub. We recover the "real LR" pointing to the function
+> > being traced from there so that we can call into it from within the BPF
+> > trampoline.
+> 
+> Naveen, from the snippet in livepatch_handler code shared below,
+> the LR at BPF trmapoline entry points at the 'nop' after the call
+> to trampoline with 'bnectrl cr1' in the updated livepatch_handler.
+> 
+> Mimic'ing ftrace OOL branch instruction in livepatch_handler
+> with 'b	1f' (the instruction after nop) to ensure the trmapoline
+> derives the real LR to '1f' and jumps back into the livepatch_handler..
+> 
+> +       /* Jump to the direct_call */
+> +       bnectrl cr1
+> +
+> +       /*
+> +        * The address to jump after direct call is deduced based on ftrace
+> OOL stub sequence.
+> +        * The seemingly insignificant couple of instructions below is to
+> mimic that here to
+> +        * jump back to the livepatch handler code below.
+> +        */
+> +       nop
+> +       b       1f
+> +
+> +       /*
+> +        * Restore the state for livepatching from the livepatch stack.
+> +        * Before that, check if livepatch stack is intact. Use r0 for it.
+> +        */
+> +1:     mtctr   r0
 
-kernel test robot noticed the following build warnings:
+Ah, so you are faking a ftrace OOL stub here. But, won't this mean that 
+bpf_get_func_ip() won't return the function address anymore?
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on powerpc/fixes linus/master v6.18-rc1 next-20251014]
-[cannot apply to driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus powerpc/next tip/x86/mm rppt-memblock/for-next rppt-memblock/fixes]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+One of the other thoughts I had was if we could stuff the function 
+address into the ftrace OOL stub. I had considered this back when I 
+implemented the OOL stubs, but didn't do it due to the extra memory 
+requirement. However, given the dance we're having to do, I'm now 
+thinking that may make sense and can simplify the code. If we can also 
+hook into livepatch, then we should be able to update the function 
+address in the stub to point to the new address and the trampoline 
+should then "just work" since it already saves/restores the TOC [We may 
+additionally have to update the function IP in _R12, but that would be a 
+minor change overall]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Donet-Tom/drivers-base-node-Fold-register_node-into-register_one_node/20251015-000850
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/910853c9dd61f7a2190a56cba101e73e9c6859be.1760097207.git.donettom%40linux.ibm.com
-patch subject: [PATCH v2 1/2] drivers/base/node: Fold register_node() into register_one_node()
-config: s390-randconfig-001-20251015 (https://download.01.org/0day-ci/archive/20251015/202510151130.JYajIJuM-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 12.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251015/202510151130.JYajIJuM-lkp@intel.com/reproduce)
+We will still need a way to restore livepatch TOC if the BPF trampoline 
+doesn't itself call into the function, but we may be able to handle that 
+if we change the return address to jump to a stub that restores the TOC 
+from the livepatch stack.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510151130.JYajIJuM-lkp@intel.com/
+> 
+> 
+> I should probably improve my comments for better readability..
 
-All warnings (new ones prefixed by >>):
+Yes, please. I would also split the changes converting some of the hard 
+coded offsets into macros into a separate patch.
 
->> Warning: drivers/base/node.c:889 function parameter 'nid' not described in 'register_node'
+- Naveen
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
