@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-12899-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12897-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48910BDDA36
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 11:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC21BDDA1B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 11:13:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cmlkB40dWz3d89;
-	Wed, 15 Oct 2025 20:13:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cmlk416X2z3cnc;
+	Wed, 15 Oct 2025 20:13:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760519602;
-	cv=none; b=oKuabr2sP/6p3THkzSpQkOsQCe0Xx/EKRr+KLOvJU4OqRoU7YZK9ebWS2UJN1TBIS8vDWfU21O790afQO/Zzn7ofA7Muy/bLi3t1AizTGGE0xMWUpgHsnZmxhEReHnn0YUyBy8x6cEYU2Mj8PPwOiQs7D2jmMWh93dIy/tockozBFa+BlvmIzX18oBhhUSPq62aIiAKEISi39jiXZf1JQ3u5duWcl1zCBMblEN9PEZ6LUrt5WOMixIN65vfYt5HLDOMe9sAneMnsn9dwVOa1JZcnInCWrLoIXv+BcqWtoATGyhHvubo5Cdq7vK5WrbTSbhwuVdr3kczLYP1hQW3lTQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760519596;
+	cv=none; b=U8LgkWIKH1Q3jeB7rbINcW3MEvDS6N8Xl2e6Zi15vvM3ks1Z0rG3lepy9KJS+fHLUfKde8S/QwWhtHFjRqlm4Gd+Hj+zI6aayjE65Wz7uHbyWKsvuHGNYX4sdFB0al2zG976jZJNyRM/T9D2WTKIifTkakW0tCSvwlPTQMzxyfMbvkDIq04J8X+4m4yStTiab4+C3c9ePHDvdODHQcQXpITjgRw3EUMrZl6MIjtXRHf15QKoxQGZqYF2jMKu7yoij1arSmRyTK7X7D6V0sRhwWk+eMAduASOYSkOe3+iMChucVq5QE8FMRBDAbB87hj+O0oN22Lm1eulGjRf+7G7gg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760519602; c=relaxed/relaxed;
-	bh=cdtHWxZ6P2NkYgYfq08A1DpxEqWfwtgmlHw9aB3IZ2I=;
+	t=1760519596; c=relaxed/relaxed;
+	bh=eE1FTCbPJO6F8EueDMdWrrKJfVX8OHMOkIhf47nagtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bp0xnDJH/TdZpV8caAzPShhITcto/RRJXNGSa8JS9aJwMX9+cw9yj7egMtGZgsakyCmre8cQkUNUDHiFGhhD8zRfolt5XT0Lwm0Abhg+ttqeDCEBFfFlQl8YYoxkMoe65OShnpdIuSz57KWPM8TiEgE87pNKAzk4VmKam9ZuDo9arkWla/B7sLGx75UzKnULS6Ig+6e3f7++lLb94tAUVfLbmry6Uxwpoz4O1cDNQ1pOfyIYqMRNcHM2mYC6D+fn8sI9F+Ol7DeFu3f0f8zDmG5nCe+Ngi49JT7EMYZXOOaFzylRbM94/H56Gf+PjqiDm0kyZIggw8sLgZLl25o0tQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K32xE455; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version:Content-Type; b=OcfNGiz8PaJ/75RftFu4oNWzxkyWE0PwhargJKpC+mP+6ggD4+He7OE5pXeGOwLO16Vq/WyqlgRlw+jisfEHmQuPw95wfw4/5SYwomXOE9Kc6+NcTskjCwjJCS8fdQtW07T4nZbcrhUt99VLm1bioqqTjXqDTnpikViPmAyyVegR4RICmZJr5YJniGalDQVHo2hhPTotmpbWqstBQcXV0pzlfNJjwzF46taKBf5JuqRURXv1gDljmczECyrNOrQ0AF+9hF3k+Z+6PkxaXzK91ioBacIQrOwhacDZH6+xylDbc6JBbXiV1iK1NrspzaIOHFi3hG/Nz7OHKp4YR8yctw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oQijT4BY; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K32xE455;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oQijT4BY;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmlk957nKz3d26
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 20:13:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmlk32G0qz3clq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 20:13:15 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A04462562;
-	Wed, 15 Oct 2025 09:13:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0DD9C4CEF9;
-	Wed, 15 Oct 2025 09:13:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 808BC62555;
+	Wed, 15 Oct 2025 09:13:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E0DC4CEF9;
+	Wed, 15 Oct 2025 09:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760519599;
-	bh=qYoZvd4lyrIfbZIzXqdWJj+pS2O0SyaBOmNGoxPhV3c=;
+	s=k20201202; t=1760519592;
+	bh=fj+wjstxPuu4pe6Ir9X+TCy/RdK5uIxhfZIK9PjQE3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K32xE455hl5TVMpibUH5sKxJsNq9bwl5OqqfqVfG5T1vfNx7YwavLcHlsjOg3GXwk
-	 hYqGo/fxqXFWovR0Ub9T4nwB8lubtw9t5kO3T/yVWfEI02WjdOoMVuxpkn06foahvf
-	 sCVnSkss7qhKvKOg84UqhQPZbxa2z7aRAPqjuXLuQA/2tXC87ALNSFNv6SwLZS5wLb
-	 ZtHADNp8XqlLR/fauneGBjdte7ABPRafvH+H9rc2EsWGvV7fvYhEWAX5RAYQJxorEL
-	 dAClqqYD5IOiBqqCH6VsD/gsHKz9zVZ8+cK3BADKhGGNtvNSNqIggZpAYTaHEXLL8Z
-	 JjKx5x8PvYazQ==
+	b=oQijT4BYDA7G26UJzNdP8FR+Sso17sVT6tLq404JDkxEXIL0SNUGgqKnqLAytRMDc
+	 ybAzgl7PHHhZyg6HwZsrKBErF8H9uQdAB918IqBZI2EmZsuuLeHmRsIh/x/CMRPuW/
+	 hbuFpAnoTb56m0BmBdt1IW2nKqXOiKg+vIQfCq+mZUZ52Ics6N2shnm0co1H8Ntqpo
+	 tYykaD+29yiu12+E8zdxTGe/nfssPj1oRKuBWWpNG9ywOgTVIfeN4yGPnr+Uab0knw
+	 e+80KUPBDOcAIVqRMB21aCnj3es2K2B3WII0PdnnK8Q2Rvik9Y2ZxaH3Zx9omBBGbj
+	 LHFZbbKctgdsw==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>,
 	Robin Murphy <robin.murphy@arm.com>,
@@ -79,9 +79,9 @@ Cc: iommu@lists.linux.dev,
 	sparclinux@vger.kernel.org,
 	Jason Gunthorpe <jgg@ziepe.ca>,
 	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH v5 01/14] dma-mapping: prepare dma_map_ops to conversion to physical address
-Date: Wed, 15 Oct 2025 12:12:47 +0300
-Message-ID: <20251015-remove-map-page-v5-1-3bbfe3a25cdf@kernel.org>
+Subject: [PATCH v5 02/14] dma-mapping: convert dummy ops to physical address mapping
+Date: Wed, 15 Oct 2025 12:12:48 +0300
+Message-ID: <20251015-remove-map-page-v5-2-3bbfe3a25cdf@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
 References: <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
@@ -108,95 +108,52 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-Add new .map_phys() and .unmap_phys() callbacks to dma_map_ops as a
-preparation to replace .map_page() and .unmap_page() respectively.
+Change dma_dummy_map_page and dma_dummy_unmap_page routines
+to accept physical address and rename them.
 
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- include/linux/dma-map-ops.h |  7 +++++++
- kernel/dma/mapping.c        |  4 ++++
- kernel/dma/ops_helpers.c    | 12 ++++++++++--
- 3 files changed, 21 insertions(+), 2 deletions(-)
+ kernel/dma/dummy.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
-index 10882d00cb17..79d2a74d4b49 100644
---- a/include/linux/dma-map-ops.h
-+++ b/include/linux/dma-map-ops.h
-@@ -37,6 +37,13 @@ struct dma_map_ops {
- 	void (*unmap_page)(struct device *dev, dma_addr_t dma_handle,
- 			size_t size, enum dma_data_direction dir,
- 			unsigned long attrs);
-+
-+	dma_addr_t (*map_phys)(struct device *dev, phys_addr_t phys,
-+			size_t size, enum dma_data_direction dir,
-+			unsigned long attrs);
-+	void (*unmap_phys)(struct device *dev, dma_addr_t dma_handle,
-+			size_t size, enum dma_data_direction dir,
-+			unsigned long attrs);
- 	/*
- 	 * map_sg should return a negative error code on error. See
- 	 * dma_map_sgtable() for a list of appropriate error codes
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index fe7472f13b10..4080aebe5deb 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -169,6 +169,8 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
- 		addr = dma_direct_map_phys(dev, phys, size, dir, attrs);
- 	else if (use_dma_iommu(dev))
- 		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
-+	else if (ops->map_phys)
-+		addr = ops->map_phys(dev, phys, size, dir, attrs);
- 	else if (is_mmio) {
- 		if (!ops->map_resource)
- 			return DMA_MAPPING_ERROR;
-@@ -223,6 +225,8 @@ void dma_unmap_phys(struct device *dev, dma_addr_t addr, size_t size,
- 		dma_direct_unmap_phys(dev, addr, size, dir, attrs);
- 	else if (use_dma_iommu(dev))
- 		iommu_dma_unmap_phys(dev, addr, size, dir, attrs);
-+	else if (ops->unmap_phys)
-+		ops->unmap_phys(dev, addr, size, dir, attrs);
- 	else if (is_mmio) {
- 		if (ops->unmap_resource)
- 			ops->unmap_resource(dev, addr, size, dir, attrs);
-diff --git a/kernel/dma/ops_helpers.c b/kernel/dma/ops_helpers.c
-index 6f9d604d9d40..1eccbdbc99c1 100644
---- a/kernel/dma/ops_helpers.c
-+++ b/kernel/dma/ops_helpers.c
-@@ -64,6 +64,7 @@ struct page *dma_common_alloc_pages(struct device *dev, size_t size,
+diff --git a/kernel/dma/dummy.c b/kernel/dma/dummy.c
+index 92de80e5b057..16a51736a2a3 100644
+--- a/kernel/dma/dummy.c
++++ b/kernel/dma/dummy.c
+@@ -11,17 +11,16 @@ static int dma_dummy_mmap(struct device *dev, struct vm_area_struct *vma,
+ 	return -ENXIO;
+ }
+ 
+-static dma_addr_t dma_dummy_map_page(struct device *dev, struct page *page,
+-		unsigned long offset, size_t size, enum dma_data_direction dir,
+-		unsigned long attrs)
++static dma_addr_t dma_dummy_map_phys(struct device *dev, phys_addr_t phys,
++		size_t size, enum dma_data_direction dir, unsigned long attrs)
  {
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 	struct page *page;
-+	phys_addr_t phys;
+ 	return DMA_MAPPING_ERROR;
+ }
+-static void dma_dummy_unmap_page(struct device *dev, dma_addr_t dma_handle,
++static void dma_dummy_unmap_phys(struct device *dev, dma_addr_t dma_handle,
+ 		size_t size, enum dma_data_direction dir, unsigned long attrs)
+ {
+ 	/*
+-	 * Dummy ops doesn't support map_page, so unmap_page should never be
++	 * Dummy ops doesn't support map_phys, so unmap_page should never be
+ 	 * called.
+ 	 */
+ 	WARN_ON_ONCE(true);
+@@ -51,8 +50,8 @@ static int dma_dummy_supported(struct device *hwdev, u64 mask)
  
- 	page = dma_alloc_contiguous(dev, size, gfp);
- 	if (!page)
-@@ -71,9 +72,13 @@ struct page *dma_common_alloc_pages(struct device *dev, size_t size,
- 	if (!page)
- 		return NULL;
- 
-+	phys = page_to_phys(page);
- 	if (use_dma_iommu(dev))
--		*dma_handle = iommu_dma_map_phys(dev, page_to_phys(page), size,
--						 dir, DMA_ATTR_SKIP_CPU_SYNC);
-+		*dma_handle = iommu_dma_map_phys(dev, phys, size, dir,
-+						 DMA_ATTR_SKIP_CPU_SYNC);
-+	else if (ops->map_phys)
-+		*dma_handle = ops->map_phys(dev, phys, size, dir,
-+					    DMA_ATTR_SKIP_CPU_SYNC);
- 	else
- 		*dma_handle = ops->map_page(dev, page, 0, size, dir,
- 					    DMA_ATTR_SKIP_CPU_SYNC);
-@@ -94,6 +99,9 @@ void dma_common_free_pages(struct device *dev, size_t size, struct page *page,
- 	if (use_dma_iommu(dev))
- 		iommu_dma_unmap_phys(dev, dma_handle, size, dir,
- 				     DMA_ATTR_SKIP_CPU_SYNC);
-+	else if (ops->unmap_phys)
-+		ops->unmap_phys(dev, dma_handle, size, dir,
-+				DMA_ATTR_SKIP_CPU_SYNC);
- 	else if (ops->unmap_page)
- 		ops->unmap_page(dev, dma_handle, size, dir,
- 				DMA_ATTR_SKIP_CPU_SYNC);
+ const struct dma_map_ops dma_dummy_ops = {
+ 	.mmap                   = dma_dummy_mmap,
+-	.map_page               = dma_dummy_map_page,
+-	.unmap_page             = dma_dummy_unmap_page,
++	.map_phys               = dma_dummy_map_phys,
++	.unmap_phys             = dma_dummy_unmap_phys,
+ 	.map_sg                 = dma_dummy_map_sg,
+ 	.unmap_sg               = dma_dummy_unmap_sg,
+ 	.dma_supported          = dma_dummy_supported,
 
 -- 
 2.51.0
