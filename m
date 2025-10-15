@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-12908-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12910-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1036CBDDA9C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 11:14:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9B4BDDAB4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 11:14:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cmlkn6Zlsz3dTp;
-	Wed, 15 Oct 2025 20:13:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cmlkw468bz3dVS;
+	Wed, 15 Oct 2025 20:14:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760519633;
-	cv=none; b=ZG61lV+hKi0oePyQzwLHo1OowfRZvQhS5kIX5mWLBqdL4KfZ5zhWYv3hGMteskUF5GcbZUOUf5GzBkE5/f8LoKjCr6SkTf6o4Ynz/XxqMknlYQ0RZwXqIVpWKspCkfgcBxLu41IGVOAoK583gBI8yleSjd5R4q6heNKaibvuFvy4kLYeqwniSgzJ1zVkq5YQvnGm70DzUESWQDyuJqILmXFwWYBILXksLH5Z/8Y/7mhwFgM+f0uUNcHw1PQzzfkUE89BII5nkIPOnuAJD1uWAvT0nX6yG3MgupucbpgjsmLq2GZZlZGmnYEUizHKc6MrYv4EGOIblFP7wM1J7vqKOA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760519640;
+	cv=none; b=ldTDa1o8VdZBXwZC/dk9FICy7GY8ncGwisa0GYTovDvNrcTGWFWUlS+Retc+psSeQnabV8VIAuyk55ORy6/yS7SVu3WTmFgRti4YrFTINawxYKzJ0jtxXkjiXRigVDjKNHtV0rZayiUHRK9q7x2UCAAT6oZWSsrm9o7JX27YlcUVnTnBwdo840qttnt13MZFviQt5M6bz0cU8SsDgTY+WXLaWmA425HXLUHjlxfTBESp0m86/YZO+PC69Sdsj/SgntbCi/QLDZHkItNJO4EkljXiQdC8JiwdVtifW02jjWaCrNdIrrEaQZ8oP4m+ZX+tSLZpwZtMkBMzEgwOfsXxcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760519633; c=relaxed/relaxed;
-	bh=KAq9xJzmOoXx3xcoKMi/etKK6dz4o3cn8Zx5XPgyK40=;
+	t=1760519640; c=relaxed/relaxed;
+	bh=V7ERPbLHu4sHtJtwvlLEMBzhOV5RdwLpU5jWMZfXG4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CIhbWFWlEZTn+32NkU+HtUjmI8g+NRnrK+A/0Ow6jMnJEEngOhBjzOpRKfK+Y2M8nhUbrHu+sAlCUe9htgYgq8qUBgFqNgyqqksgO+0Ut5EEGxzya6LCk5dcpAunPwgLtTQt3D5j2jxyHBL6fk5bM9nFVg/KGbxC5hdbIR8zTpI1cTKflRdeKe5PVThf6GMoOhMLZgQIOcK8DV/5C4npwWlcxtzhTyWATQ+7W4pJQ1H2+wCBXBl00/MZsNUKEb32LbCc2gdESTBuKCJ1lhkxg6lFzCS3yGH61aP3BMHDLBcdttSu7Im9QoqSjYA3R7wRew3i2cDfiSSKUNrRHLzj2w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rEwULnAP; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version:Content-Type; b=WOxVYLhhNOuvkmKmhkaMQIyaH7YxHhyA3Zx2WWkX/SnaKsE/4EKzkJV30kmufKdjiZjLow//BmLKONrfwDb5m1WWJf/n55X5LAAeg5rUZYrKXqlcNOZYRLE+01xMgZJqaeFOVg5t5J4Eypz08iSfFakfUHEEXeRtWKz/9EHr7DoawLKa3C3t+3u/NyR8nclvE8dEP0j4qPXuctC8gCLgCBQqx2RaNJcUVfdF1PSVMmwI0c7iFSabBHPdmsXbi9McqVCvBOB15N7w8ZoSb+iIqvuUJ3T1QQi33IY/3NzW7ykTku68QUYClrS95UZkwq7c40Qz0WDXbOj5xm93lvDI9Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cYni+pn0; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rEwULnAP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cYni+pn0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmlkn1d8Bz3dTm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 20:13:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmlkv6RqYz3dW4
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 20:13:59 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 61E8763BEB;
-	Wed, 15 Oct 2025 09:13:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68352C116B1;
-	Wed, 15 Oct 2025 09:13:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A99C41ABA;
+	Wed, 15 Oct 2025 09:13:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA70C116D0;
+	Wed, 15 Oct 2025 09:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760519631;
-	bh=mdWMUlQx33yhQCgB9g+eGxCMPJQasErUwNks3U6bpsY=;
+	s=k20201202; t=1760519638;
+	bh=jbBStLIP7sXhH5ASWp90/3Kel7nJYFQjjdng7+NCqnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rEwULnAPmCOdwy2UrV0khdEVG+QC189t+pWVTdsvqzsG8ClpvXbpHIclLUeiChJit
-	 Asjzi2wPxyCyNS+yOeqOuZbyh1kzi+RASrkeH6L9WKgqJ4Nep3XyQdWIfGef5UXtLl
-	 4fNLbyDWUuVqDpN4V/R/QJ801iNpMtBJyEWeF8cCn3lbsNgTFYpOnqdjul2qpJ86io
-	 H6krcrHfE21Xptwb5fJAnvBqNCMlN327+oD4pwEgkzc1w47bMq0cyHHDbS9H+MSG3D
-	 R2WhQOt9JKWoeo1Q4OK3KDX5S1JjA3cA5tf/m6FzVx9EfGIR1d1Mk/IWVTz8mEMZz4
-	 6XQHEQ8GGkWUw==
+	b=cYni+pn0hntzXMjiHeAuS5C74xt5skwmhT36I3n+0lgrdCfhhRxdMz4DFq9bbtcE6
+	 KyshYgEW2BEQMCguUhfamAui6SDGk97Pwkv6cy20V4cWR1TsHKQXW5pPWPZJB0bROU
+	 z4ZKgWbbq79xXqedNuYW1MC9dow455r9BBysavYn2gIaxdDnPgefyKpbQmttDiywRR
+	 XVHkKv/NSbuh2sEJWfTis1y15Zck5wSXJQZhSm+nGRhMqLrjGmqENY85tfi+Y0OYZP
+	 t5B2ZZLAkMXiTAZ3Qc6jG3RANx5TxKdOkQVsq+nUWiPqAyNSSsDxWgXnNXCMBoBXwP
+	 N8uyupiJgjgjg==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>,
 	Robin Murphy <robin.murphy@arm.com>,
@@ -79,9 +79,9 @@ Cc: iommu@lists.linux.dev,
 	sparclinux@vger.kernel.org,
 	Jason Gunthorpe <jgg@ziepe.ca>,
 	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH v5 13/14] xen: swiotlb: Convert mapping routine to rely on physical address
-Date: Wed, 15 Oct 2025 12:12:59 +0300
-Message-ID: <20251015-remove-map-page-v5-13-3bbfe3a25cdf@kernel.org>
+Subject: [PATCH v5 14/14] dma-mapping: remove unused map_page callback
+Date: Wed, 15 Oct 2025 12:13:00 +0300
+Message-ID: <20251015-remove-map-page-v5-14-3bbfe3a25cdf@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
 References: <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
@@ -108,90 +108,92 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-Switch to .map_phys callback instead of .map_page.
+After conversion of arch code to use physical address mapping,
+there are no users of .map_page() and .unmap_page() callbacks,
+so let's remove them.
 
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/xen/grant-dma-ops.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ include/linux/dma-map-ops.h |  7 -------
+ kernel/dma/mapping.c        | 12 ------------
+ kernel/dma/ops_helpers.c    |  8 +-------
+ 3 files changed, 1 insertion(+), 26 deletions(-)
 
-diff --git a/drivers/xen/grant-dma-ops.c b/drivers/xen/grant-dma-ops.c
-index 29257d2639db..14077d23f2a1 100644
---- a/drivers/xen/grant-dma-ops.c
-+++ b/drivers/xen/grant-dma-ops.c
-@@ -163,18 +163,22 @@ static void xen_grant_dma_free_pages(struct device *dev, size_t size,
- 	xen_grant_dma_free(dev, size, page_to_virt(vaddr), dma_handle, 0);
+diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
+index 2e98ecc313a3..4809204c674c 100644
+--- a/include/linux/dma-map-ops.h
++++ b/include/linux/dma-map-ops.h
+@@ -31,13 +31,6 @@ struct dma_map_ops {
+ 			void *cpu_addr, dma_addr_t dma_addr, size_t size,
+ 			unsigned long attrs);
+ 
+-	dma_addr_t (*map_page)(struct device *dev, struct page *page,
+-			unsigned long offset, size_t size,
+-			enum dma_data_direction dir, unsigned long attrs);
+-	void (*unmap_page)(struct device *dev, dma_addr_t dma_handle,
+-			size_t size, enum dma_data_direction dir,
+-			unsigned long attrs);
+-
+ 	dma_addr_t (*map_phys)(struct device *dev, phys_addr_t phys,
+ 			size_t size, enum dma_data_direction dir,
+ 			unsigned long attrs);
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 32a85bfdf873..37163eb49f9f 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -171,16 +171,6 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+ 		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
+ 	else if (ops->map_phys)
+ 		addr = ops->map_phys(dev, phys, size, dir, attrs);
+-	else if (!is_mmio && ops->map_page) {
+-		struct page *page = phys_to_page(phys);
+-		size_t offset = offset_in_page(phys);
+-
+-		/*
+-		 * The dma_ops API contract for ops->map_page() requires
+-		 * kmappable memory.
+-		 */
+-		addr = ops->map_page(dev, page, offset, size, dir, attrs);
+-	}
+ 
+ 	if (!is_mmio)
+ 		kmsan_handle_dma(phys, size, dir);
+@@ -222,8 +212,6 @@ void dma_unmap_phys(struct device *dev, dma_addr_t addr, size_t size,
+ 		iommu_dma_unmap_phys(dev, addr, size, dir, attrs);
+ 	else if (ops->unmap_phys)
+ 		ops->unmap_phys(dev, addr, size, dir, attrs);
+-	else
+-		ops->unmap_page(dev, addr, size, dir, attrs);
+ 	trace_dma_unmap_phys(dev, addr, size, dir, attrs);
+ 	debug_dma_unmap_phys(dev, addr, size, dir);
  }
- 
--static dma_addr_t xen_grant_dma_map_page(struct device *dev, struct page *page,
--					 unsigned long offset, size_t size,
-+static dma_addr_t xen_grant_dma_map_phys(struct device *dev, phys_addr_t phys,
-+					 size_t size,
- 					 enum dma_data_direction dir,
- 					 unsigned long attrs)
- {
- 	struct xen_grant_dma_data *data;
-+	unsigned long offset = offset_in_page(phys);
- 	unsigned long dma_offset = xen_offset_in_page(offset),
- 			pfn_offset = XEN_PFN_DOWN(offset);
- 	unsigned int i, n_pages = XEN_PFN_UP(dma_offset + size);
- 	grant_ref_t grant;
- 	dma_addr_t dma_handle;
- 
-+	if (unlikely(attrs & DMA_ATTR_MMIO))
-+		return DMA_MAPPING_ERROR;
-+
- 	if (WARN_ON(dir == DMA_NONE))
- 		return DMA_MAPPING_ERROR;
- 
-@@ -190,7 +194,7 @@ static dma_addr_t xen_grant_dma_map_page(struct device *dev, struct page *page,
- 
- 	for (i = 0; i < n_pages; i++) {
- 		gnttab_grant_foreign_access_ref(grant + i, data->backend_domid,
--				pfn_to_gfn(page_to_xen_pfn(page) + i + pfn_offset),
-+				pfn_to_gfn(page_to_xen_pfn(phys_to_page(phys)) + i + pfn_offset),
- 				dir == DMA_TO_DEVICE);
- 	}
- 
-@@ -199,7 +203,7 @@ static dma_addr_t xen_grant_dma_map_page(struct device *dev, struct page *page,
- 	return dma_handle;
+diff --git a/kernel/dma/ops_helpers.c b/kernel/dma/ops_helpers.c
+index 1eccbdbc99c1..20caf9cabf69 100644
+--- a/kernel/dma/ops_helpers.c
++++ b/kernel/dma/ops_helpers.c
+@@ -76,11 +76,8 @@ struct page *dma_common_alloc_pages(struct device *dev, size_t size,
+ 	if (use_dma_iommu(dev))
+ 		*dma_handle = iommu_dma_map_phys(dev, phys, size, dir,
+ 						 DMA_ATTR_SKIP_CPU_SYNC);
+-	else if (ops->map_phys)
+-		*dma_handle = ops->map_phys(dev, phys, size, dir,
+-					    DMA_ATTR_SKIP_CPU_SYNC);
+ 	else
+-		*dma_handle = ops->map_page(dev, page, 0, size, dir,
++		*dma_handle = ops->map_phys(dev, phys, size, dir,
+ 					    DMA_ATTR_SKIP_CPU_SYNC);
+ 	if (*dma_handle == DMA_MAPPING_ERROR) {
+ 		dma_free_contiguous(dev, page, size);
+@@ -102,8 +99,5 @@ void dma_common_free_pages(struct device *dev, size_t size, struct page *page,
+ 	else if (ops->unmap_phys)
+ 		ops->unmap_phys(dev, dma_handle, size, dir,
+ 				DMA_ATTR_SKIP_CPU_SYNC);
+-	else if (ops->unmap_page)
+-		ops->unmap_page(dev, dma_handle, size, dir,
+-				DMA_ATTR_SKIP_CPU_SYNC);
+ 	dma_free_contiguous(dev, page, size);
  }
- 
--static void xen_grant_dma_unmap_page(struct device *dev, dma_addr_t dma_handle,
-+static void xen_grant_dma_unmap_phys(struct device *dev, dma_addr_t dma_handle,
- 				     size_t size, enum dma_data_direction dir,
- 				     unsigned long attrs)
- {
-@@ -242,7 +246,7 @@ static void xen_grant_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
- 		return;
- 
- 	for_each_sg(sg, s, nents, i)
--		xen_grant_dma_unmap_page(dev, s->dma_address, sg_dma_len(s), dir,
-+		xen_grant_dma_unmap_phys(dev, s->dma_address, sg_dma_len(s), dir,
- 				attrs);
- }
- 
-@@ -257,7 +261,7 @@ static int xen_grant_dma_map_sg(struct device *dev, struct scatterlist *sg,
- 		return -EINVAL;
- 
- 	for_each_sg(sg, s, nents, i) {
--		s->dma_address = xen_grant_dma_map_page(dev, sg_page(s), s->offset,
-+		s->dma_address = xen_grant_dma_map_phys(dev, sg_phys(s),
- 				s->length, dir, attrs);
- 		if (s->dma_address == DMA_MAPPING_ERROR)
- 			goto out;
-@@ -286,8 +290,8 @@ static const struct dma_map_ops xen_grant_dma_ops = {
- 	.free_pages = xen_grant_dma_free_pages,
- 	.mmap = dma_common_mmap,
- 	.get_sgtable = dma_common_get_sgtable,
--	.map_page = xen_grant_dma_map_page,
--	.unmap_page = xen_grant_dma_unmap_page,
-+	.map_phys = xen_grant_dma_map_phys,
-+	.unmap_phys = xen_grant_dma_unmap_phys,
- 	.map_sg = xen_grant_dma_map_sg,
- 	.unmap_sg = xen_grant_dma_unmap_sg,
- 	.dma_supported = xen_grant_dma_supported,
 
 -- 
 2.51.0
