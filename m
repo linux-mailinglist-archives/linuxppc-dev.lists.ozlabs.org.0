@@ -1,70 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-12878-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12879-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA79BDCAF3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 08:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25689BDCC55
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 08:41:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cmgsp0tDPz3cft;
-	Wed, 15 Oct 2025 17:19:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cmhM14YMKz3cgJ;
+	Wed, 15 Oct 2025 17:41:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760509181;
-	cv=none; b=IBvskGBsU5up2Tt406YMv+UeCOwnuog4k5pXfxWJcIVRR8E3ogarkFjQX0pQ1HSFoQjbeOrj88lMXzhY9594wGQ2ObBZ5aUo2MBhKTChj8TgE4t2ule71Cj4omHoq2b+zQqAC44t6ePehiOzAO7XUsDLGf06CAyd7Qx4vib+VySZb51QFTwzzT2bfUWp5VggUUp5k8QZ4j8Piiw2xz4KfFQMhr0HEzf+7baPXEI6etrakzGXjAVjYy2JhKVyQzXNDAOVcoFw0jANFfCojzFbCoX7iEVXftW+c7hPNkjYAT+LhbWop4rwacNAiZYMtRiBan+oyNFaDMTT8oahrVO7Ug==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760510493;
+	cv=none; b=W12tx+g9+hneoIsMWkbnv2M30t3uHnMOCu6Fg2pJnzpbd2HpE08aS8HftnqdTihGM763p3RHLL2aqL0z8hY92Q5x7dYCA5QFiAYiD2TVGmkG+LZMSBmlln6oy7/UkMkJ1OEh/EJsO30G14V2az3y31XQPmy/zMBfv75obaiaIWiZEFIqz7AfY8oSmhH4t56Qpy0nVrmoMfrTDzrQbRg8sz6e4zQglMYyqVeXSMjub18/ZV1lIL3epqgdXVyCV1/AG1w+de226VUllPxlb9a5XQ9+KKQYUQ5oFOqI+9RxFNNZd8M29gWd9F7+/GrHJRtNqpr0+LyC0ZFKUoS7+uHMFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760509181; c=relaxed/relaxed;
-	bh=aBdAYbf2oeRRGJDOcE4PkXfnYgbGj+KNTquxOSPo0SY=;
+	t=1760510493; c=relaxed/relaxed;
+	bh=2qUnO+i6zOw3nAt1oSKIEhvJ8i2aTXhylVZi3nDcW/I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K7zVK7ZfnzNXFujZUaaGM1x0XttQWK/bF4wtoHFAqtujkdSpCL0EarFHYjU4ziR4D/owcnvw7B5+lRnE84KgoxbM6om9uev7i4BFdvCQBaOflijLCpvPVtxYmkFozoy0pjVQEOdROEZ1GMHndFhLdeLc68/SpbVVdZSE6Lm472bxnD/U3PSwBJmGxHvHCQF3hWIZMMKWtDbyK6FDat2XsQXt2xVC/wJmC9MbQ2ZzIqSXPKbH/0RNxrjPxtfvfJ2MIJvIHcvttPl8qJ+ps3Q43Ze24VhFx8IKy+jGrGo8m+sEsnEjFTKly3dqE1SclarqbQ/sjvc7kaqalLS3B2wWng==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hsNNLVEz; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=XT6CGB5JT/2aIoSycHGmkQropqWlAMMbVL5xV0rk/kGkFn+mdizN7XiRQ72s6TmnjANUz99s8Lt/s17I3wTGDSR/nnPpouUMx6Vo346oLzPV9J5m+KyfxSrnssX2pb/6bGIcl9spqpPLC4p17Hxy/sbIMy7o/tOrTGi84tSCc11iBuy9Mk+2cWvMkmr4r+uL/2rwXBGXbFlc3fPkjs3+S9cN3g1uod0ZFSGxZ9rixM9hKPDGz/lCSEJwOMOoHBHIRCbaopgl56Vg+7NzMiHPIX3pLAb57tY+jrcRHyNvI0ZAYSo15QqUuCm8Fc+YeTHsAR06vrEYuJF4FVYm76czTw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EJJt/ILK; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hsNNLVEz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EJJt/ILK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmgsn0VkMz3c2k
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 17:19:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmhM04nWCz3cfx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 17:41:32 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B32E86027F;
-	Wed, 15 Oct 2025 06:19:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D25C4CEF8;
-	Wed, 15 Oct 2025 06:19:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 27B204329F;
+	Wed, 15 Oct 2025 06:41:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD38C4CEFE;
+	Wed, 15 Oct 2025 06:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760509177;
-	bh=575+wvXoKm0wSCqMEWqtmPWHwk3ClafWmET/hcBbNmY=;
+	s=k20201202; t=1760510490;
+	bh=m/Rd3ahVy6pnBD+xeaNqsODPEiInTFOFb5f8DzKRI+g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hsNNLVEzfzWz7dR7//VOQ7HBra/IIKK2TJb+uHsLg9lLGv1xXVYod7dbxtejsTMHb
-	 vvXynatD9q9yBFtQkzQE2SqRJhFB+9NpMD2/LMeADWReV63RNC/ugzjMMtiKOpR9ZI
-	 Z234DnezMu4QVa5hzU7wwUYj1wpxXr9mHrL362hgck6uc8/8PNjzpLMlkVD7Zd5rle
-	 xngjHIYJeT9N//BZB6XWLTT4RYKf71SPeektAn/4kpxT1lUh5GB/oOe1XGfLi2+8+W
-	 astWLyu9y7M06lsXx0eRd/9UU7edQVgQd0fdIaahhK4O3UrrylNkifDDiUgwX2NiEN
-	 bFaD8HCYYaFOw==
-Date: Wed, 15 Oct 2025 11:48:45 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, bpf@vger.kernel.org, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Song Liu <songliubraving@fb.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Viktor Malik <vmalik@redhat.com>, live-patching@vger.kernel.org, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Joe Lawrence <joe.lawrence@redhat.com>, 
-	Jiri Kosina <jikos@kernel.org>, linux-trace-kernel@vger.kernel.org, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: Re: [PATCH] powerpc64/bpf: support direct_call on livepatch function
-Message-ID: <nuinyo7o7uniemqqmoboctwrkkwkuv77nt7yk6td6eb3x43hv2@2lukfuvcmcko>
-References: <20251002192755.86441-1-hbathini@linux.ibm.com>
- <amwerofvasp7ssmq3zlrjakqj5aygyrgplcqzweno4ef42tiav@uex2ildqjvx2>
- <17f49a63-eccb-4075-91dd-b1f37aa762c7@linux.ibm.com>
- <unegysw3bihg32od7aham3npsdpm5govboo3uglorwsrjqfqfk@pbyzwwztmqtc>
- <42d72061-3d23-43db-bb02-d5f75333c924@linux.ibm.com>
- <dvvv5cytyak2iquer7d6g57ttum3qcckupyahsqsmvpzfjbyni@wbsr77swnrcl>
- <79946463-4742-4919-9d56-927a0a6f1c7c@linux.ibm.com>
+	b=EJJt/ILK3ju+7jPsBaqQBz3NPG7iFqr8o2lpTr4cXgFZxoRkgdMgfbva/T02t6U23
+	 /etET6p2GGcAh8IE0q7sfmd0hxvI+hk5M0ECqVgSHea08Sq2Ds0fH8rwb1uRWXRpEA
+	 B7WK+uNLFT11n/1+sbGup7eFozI/EO+IlvUOaqeY05bndwttgVZ/OG0QyZsVlJsqhM
+	 jrE/2OffDpT8HgZpSvo6OHklBnH83Vx5ZICg4KntrQ1qdY7KVaM8gm+7hLPDZ3RDiB
+	 /pqyxb//+V/KPzuiZPV6HT7qrQ3/XgBc/DnuktqcHic3K0JrTa4PL7SvmpkBsJHhZH
+	 KMk/T42Va6Zrg==
+Date: Wed, 15 Oct 2025 12:11:17 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Cc: Lukas Wunner <lukas@wunner.de>, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
+	Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org, mad skateman <madskateman@gmail.com>, 
+	"R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au, Darren Stevens <darren@stevens-zone.net>, 
+	debian-powerpc@lists.debian.org
+Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
+Message-ID: <6avz6bsxu6uyvhk4tfvdaofxt7qptfq22un2geet5rd6pvt77c@sojadc7hp26n>
+References: <2E40B1CD-5EDA-4208-8914-D1FC02FE8185@xenosoft.de>
+ <7FB0AB81-AD0F-420D-B2CB-F81C5E47ADF3@xenosoft.de>
+ <3fba6283-c8e8-48aa-9f84-0217c4835fb8@xenosoft.de>
+ <mg2ahzgcwgm6h5mtgs4tsel3yrphrfqgfcjydfxgzgxq5h7kot@jtealdt6vvcz>
+ <a2ee06b1-28a5-4cb1-9940-b225f9e6d6ee@xenosoft.de>
+ <00fe408b-db39-4a9f-b996-0fad73724759@xenosoft.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,106 +73,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <79946463-4742-4919-9d56-927a0a6f1c7c@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <00fe408b-db39-4a9f-b996-0fad73724759@xenosoft.de>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Oct 10, 2025 at 12:47:21PM +0530, Hari Bathini wrote:
+On Tue, Oct 14, 2025 at 06:55:07AM +0200, Christian Zigotzky wrote:
+> On 13 October 2025 at 05:58 pm, Manivannan Sadhasivam wrote:
+> > Either the Root Port could be triggering these AER messages due to ASPM
+> issue or
+> > due to the endpoint connected downstream.
+> >
+> > If possible, please share the whole dmesg log instead of the snippet so
+> that we
+> > can be sure from where the AER messages are coming from.
+> >
+> > You can also add the below quirk and check:
+> >
+> > DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_FSL, 0x0451,
+> quirk_disable_aspm_all);
+> >
+> > But it would be better to get the whole dmesg.
+> >
+> > - Mani
 > 
+> Hello Mani,
 > 
-> On 09/10/25 4:57 pm, Naveen N Rao wrote:
-> > On Thu, Oct 09, 2025 at 11:19:45AM +0530, Hari Bathini wrote:
-> > > 
-> > > 
-> > > On 08/10/25 1:43 pm, Naveen N Rao wrote:
-> > > > On Mon, Oct 06, 2025 at 06:50:20PM +0530, Hari Bathini wrote:
-> > > > > 
-> > > > > 
-> > > > > On 06/10/25 1:22 pm, Naveen N Rao wrote:
-> > > > > > On Fri, Oct 03, 2025 at 12:57:54AM +0530, Hari Bathini wrote:
-> > > > > > > Today, livepatch takes precedence over direct_call. Instead, save the
-> > > > > > > state and make direct_call before handling livepatch.
-> > > > > > 
-> > > > > > If we call into the BPF trampoline first and if we have
-> > > > > > BPF_TRAMP_F_CALL_ORIG set, does this result in the BPF trampoline
-> > > > > > calling the new copy of the live-patched function or the old one?
-> > > > > 
-> > > > > Naveen, calls the new copy of the live-patched function..
-> > > > 
-> > > > Hmm... I'm probably missing something.
-> > > > 
-> > > > With ftrace OOL stubs, what I recall is that BPF trampoline derives the
-> > > > original function address from the OOL stub (which would be associated
-> > > > with the original function, not the livepatch one).
-> > > 
-> > > Trampoline derives the address from LR.
-> > 
-> > Does it? I'm referring to BPF_TRAMP_F_CALL_ORIG handling in
-> > __arch_prepare_bpf_trampoline().
+> Thanks for your help.
 > 
+> The kernel doesn't compile with PCI_VENDOR_ID_FSL but it compiles with
+> PCI_VENDOR_ID_FREESCALE.
 > 
-> > LR at BPF trampoline entry points at
-> > the ftrace OOL stub. We recover the "real LR" pointing to the function
-> > being traced from there so that we can call into it from within the BPF
-> > trampoline.
+> I tried it with the following patch:
 > 
-> Naveen, from the snippet in livepatch_handler code shared below,
-> the LR at BPF trmapoline entry points at the 'nop' after the call
-> to trampoline with 'bnectrl cr1' in the updated livepatch_handler.
+> diff -rupN a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> --- a/drivers/pci/quirks.c    2025-10-12 22:42:36.000000000 +0200
+> +++ b/drivers/pci/quirks.c    2025-10-13 17:59:51.473097708 +0200
+> @@ -2525,6 +2525,16 @@ static void quirk_disable_aspm_l0s_l1(st
+>   */
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080,
+> quirk_disable_aspm_l0s_l1);
 > 
-> Mimic'ing ftrace OOL branch instruction in livepatch_handler
-> with 'b	1f' (the instruction after nop) to ensure the trmapoline
-> derives the real LR to '1f' and jumps back into the livepatch_handler..
-> 
-> +       /* Jump to the direct_call */
-> +       bnectrl cr1
 > +
-> +       /*
-> +        * The address to jump after direct call is deduced based on ftrace
-> OOL stub sequence.
-> +        * The seemingly insignificant couple of instructions below is to
-> mimic that here to
-> +        * jump back to the livepatch handler code below.
-> +        */
-> +       nop
-> +       b       1f
+> +static void quirk_disable_aspm_all(struct pci_dev *dev)
+> +{
+> +       pci_info(dev, "Disabling ASPM\n");
+> +       pci_disable_link_state(dev, PCIE_LINK_STATE_ALL);
+> +}
 > +
-> +       /*
-> +        * Restore the state for livepatching from the livepatch stack.
-> +        * Before that, check if livepatch stack is intact. Use r0 for it.
-> +        */
-> +1:     mtctr   r0
-
-Ah, so you are faking a ftrace OOL stub here. But, won't this mean that 
-bpf_get_func_ip() won't return the function address anymore?
-
-One of the other thoughts I had was if we could stuff the function 
-address into the ftrace OOL stub. I had considered this back when I 
-implemented the OOL stubs, but didn't do it due to the extra memory 
-requirement. However, given the dance we're having to do, I'm now 
-thinking that may make sense and can simplify the code. If we can also 
-hook into livepatch, then we should be able to update the function 
-address in the stub to point to the new address and the trampoline 
-should then "just work" since it already saves/restores the TOC [We may 
-additionally have to update the function IP in _R12, but that would be a 
-minor change overall]
-
-We will still need a way to restore livepatch TOC if the BPF trampoline 
-doesn't itself call into the function, but we may be able to handle that 
-if we change the return address to jump to a stub that restores the TOC 
-from the livepatch stack.
-
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, PCI_ANY_ID,
+> quirk_disable_aspm_all);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_FREESCALE, PCI_ANY_ID,
+> quirk_disable_aspm_all);
+> +
+>  /*
+>   * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
+>   * Link bit cleared after starting the link retrain process to allow this
 > 
+> ---
 > 
-> I should probably improve my comments for better readability..
+> Unfortunately it doesn't solve the issue with pcieport 0001:00:00.0.
+> 
 
-Yes, please. I would also split the changes converting some of the hard 
-coded offsets into macros into a separate patch.
+That's unfortunate indeed. Could you please share the 'sudo lspci -vv' output?
 
-- Naveen
+That will allow us to see the topology and AER status.
 
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
