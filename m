@@ -1,65 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-12879-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12880-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25689BDCC55
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 08:41:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB14BDCD8A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 09:15:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cmhM14YMKz3cgJ;
-	Wed, 15 Oct 2025 17:41:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cmj5q23FGz3cgW;
+	Wed, 15 Oct 2025 18:15:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760510493;
-	cv=none; b=W12tx+g9+hneoIsMWkbnv2M30t3uHnMOCu6Fg2pJnzpbd2HpE08aS8HftnqdTihGM763p3RHLL2aqL0z8hY92Q5x7dYCA5QFiAYiD2TVGmkG+LZMSBmlln6oy7/UkMkJ1OEh/EJsO30G14V2az3y31XQPmy/zMBfv75obaiaIWiZEFIqz7AfY8oSmhH4t56Qpy0nVrmoMfrTDzrQbRg8sz6e4zQglMYyqVeXSMjub18/ZV1lIL3epqgdXVyCV1/AG1w+de226VUllPxlb9a5XQ9+KKQYUQ5oFOqI+9RxFNNZd8M29gWd9F7+/GrHJRtNqpr0+LyC0ZFKUoS7+uHMFg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.171
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760512511;
+	cv=none; b=cG7rW91wLTpkZvXAeTJO+SHqsXCAxBHkvter06ghhQk6IkUJjAO6SeCZXE5D7Xx3jww6p7leqn0pDL5CV3nVHQcgbjxayc4pTbR55PM4C0nQY/3hITlstI9yoAYn827ff8Uir9gPZgxzvipStZ048a/WvOzXESyU4RpCnbHCT8T3IfF1Zg7ZHvrZb+XxO2jslZoRQE99R0AzgGVYssHzoamKaoGElESjSJKJXqgx/KeuYM8tvXP/IK010RLGRxjEU15Ufnaj9UgYFGOWRqQ9AsXJiKhWrgcwPr6/sQZe1UnxvJFxMYDE377QGCKe5o3Ucu7GLEXnzlV6bJrs4TSJ1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760510493; c=relaxed/relaxed;
-	bh=2qUnO+i6zOw3nAt1oSKIEhvJ8i2aTXhylVZi3nDcW/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XT6CGB5JT/2aIoSycHGmkQropqWlAMMbVL5xV0rk/kGkFn+mdizN7XiRQ72s6TmnjANUz99s8Lt/s17I3wTGDSR/nnPpouUMx6Vo346oLzPV9J5m+KyfxSrnssX2pb/6bGIcl9spqpPLC4p17Hxy/sbIMy7o/tOrTGi84tSCc11iBuy9Mk+2cWvMkmr4r+uL/2rwXBGXbFlc3fPkjs3+S9cN3g1uod0ZFSGxZ9rixM9hKPDGz/lCSEJwOMOoHBHIRCbaopgl56Vg+7NzMiHPIX3pLAb57tY+jrcRHyNvI0ZAYSo15QqUuCm8Fc+YeTHsAR06vrEYuJF4FVYm76czTw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EJJt/ILK; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1760512511; c=relaxed/relaxed;
+	bh=Q5W3plTml2LrXx/+V26o+pAQSf6UvRi+HJfSZMFUt2w=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ntMETcJAY59DV+5iUqFdTYhpoWWvBZ7DtSjsDXKAP8gIkiEPKZ3ykoIOWTtw3T6bNTaTrP4TG/9G9i9xoLi6R7qEL2fJI8yjyi/a2Gop+kvsfS3uXzbc0zd+C8T0b8l8oxn1SQH6bLUFyRO7S8hHpSaj1frIzflZ8TTldb6E4veW9U7FYYNll6X7xe7xK3lWPldWim9PIo7JPL/Zz38fr08lmtYz3HeOVFuggO/XfJL235kTSKMKVDxsSaE1h+VLQrbBo26gZBxcGTYKJLhFH9mjOMBfawQcpNa5Ka4ZGi64k7DuKa2k3y5H8hUIOgb0AOgTLhcR1hzeMtU7xt5dZQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=sNXX1el/; dkim-atps=neutral; spf=pass (client-ip=95.215.58.171; helo=out-171.mta1.migadu.com; envelope-from=ben.collins@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EJJt/ILK;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=sNXX1el/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.171; helo=out-171.mta1.migadu.com; envelope-from=ben.collins@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Wed, 15 Oct 2025 18:15:07 AEDT
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmhM04nWCz3cfx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 17:41:32 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27B204329F;
-	Wed, 15 Oct 2025 06:41:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD38C4CEFE;
-	Wed, 15 Oct 2025 06:41:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760510490;
-	bh=m/Rd3ahVy6pnBD+xeaNqsODPEiInTFOFb5f8DzKRI+g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EJJt/ILK3ju+7jPsBaqQBz3NPG7iFqr8o2lpTr4cXgFZxoRkgdMgfbva/T02t6U23
-	 /etET6p2GGcAh8IE0q7sfmd0hxvI+hk5M0ECqVgSHea08Sq2Ds0fH8rwb1uRWXRpEA
-	 B7WK+uNLFT11n/1+sbGup7eFozI/EO+IlvUOaqeY05bndwttgVZ/OG0QyZsVlJsqhM
-	 jrE/2OffDpT8HgZpSvo6OHklBnH83Vx5ZICg4KntrQ1qdY7KVaM8gm+7hLPDZ3RDiB
-	 /pqyxb//+V/KPzuiZPV6HT7qrQ3/XgBc/DnuktqcHic3K0JrTa4PL7SvmpkBsJHhZH
-	 KMk/T42Va6Zrg==
-Date: Wed, 15 Oct 2025 12:11:17 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc: Lukas Wunner <lukas@wunner.de>, 
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org, mad skateman <madskateman@gmail.com>, 
-	"R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>, 
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au, Darren Stevens <darren@stevens-zone.net>, 
-	debian-powerpc@lists.debian.org
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-Message-ID: <6avz6bsxu6uyvhk4tfvdaofxt7qptfq22un2geet5rd6pvt77c@sojadc7hp26n>
-References: <2E40B1CD-5EDA-4208-8914-D1FC02FE8185@xenosoft.de>
- <7FB0AB81-AD0F-420D-B2CB-F81C5E47ADF3@xenosoft.de>
- <3fba6283-c8e8-48aa-9f84-0217c4835fb8@xenosoft.de>
- <mg2ahzgcwgm6h5mtgs4tsel3yrphrfqgfcjydfxgzgxq5h7kot@jtealdt6vvcz>
- <a2ee06b1-28a5-4cb1-9940-b225f9e6d6ee@xenosoft.de>
- <00fe408b-db39-4a9f-b996-0fad73724759@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmj5m00bqz3cdg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Oct 2025 18:15:07 +1100 (AEDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760512419;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Q5W3plTml2LrXx/+V26o+pAQSf6UvRi+HJfSZMFUt2w=;
+	b=sNXX1el/j7XakQCK55yUWvZmBso+twy+0FuXrccV5J2VIhAypNGnPMphlDPr7nfOLds3QC
+	qnbmD0eeDAxZw1VsK7kqREenh/3tCfSI5a9vKVcpccWLolSEqdF+kXXxIahqM8PoeZm5Ya
+	Qr+oRQMfk1F9EgHh6rBY6gXhjW1GOac=
+From: Ben Collins <ben.collins@linux.dev>
+Date: Wed, 15 Oct 2025 03:13:35 -0400
+Subject: [PATCH] fsl_msi: Translate bitmap to hwirq on fsl,mpic
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,78 +54,230 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <00fe408b-db39-4a9f-b996-0fad73724759@xenosoft.de>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251015-fsl_msi_bitmap_translate-v1-1-c438208b7f80@linux.dev>
+X-B4-Tracking: v=1; b=H4sIAJ5J72gC/x3MTQqAIBBA4avErBNU+qOrRIjWWANl4UgE0d2Tl
+ t/ivQcYIyFDXzwQ8SKmI2SosoBptWFBQXM2aKlrJVUtPG9mZzKO0m5Pk6INvNmEQraNcr6aO/Q
+ acn5G9HT/62F83w8gX/uhagAAAA==
+X-Change-ID: 20251015-fsl_msi_bitmap_translate-0761bf4d8ef2
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+ Ben Collins <bcollins@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Oct 14, 2025 at 06:55:07AM +0200, Christian Zigotzky wrote:
-> On 13 October 2025 at 05:58 pm, Manivannan Sadhasivam wrote:
-> > Either the Root Port could be triggering these AER messages due to ASPM
-> issue or
-> > due to the endpoint connected downstream.
-> >
-> > If possible, please share the whole dmesg log instead of the snippet so
-> that we
-> > can be sure from where the AER messages are coming from.
-> >
-> > You can also add the below quirk and check:
-> >
-> > DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_FSL, 0x0451,
-> quirk_disable_aspm_all);
-> >
-> > But it would be better to get the whole dmesg.
-> >
-> > - Mani
-> 
-> Hello Mani,
-> 
-> Thanks for your help.
-> 
-> The kernel doesn't compile with PCI_VENDOR_ID_FSL but it compiles with
-> PCI_VENDOR_ID_FREESCALE.
-> 
-> I tried it with the following patch:
-> 
-> diff -rupN a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> --- a/drivers/pci/quirks.c    2025-10-12 22:42:36.000000000 +0200
-> +++ b/drivers/pci/quirks.c    2025-10-13 17:59:51.473097708 +0200
-> @@ -2525,6 +2525,16 @@ static void quirk_disable_aspm_l0s_l1(st
->   */
->  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080,
-> quirk_disable_aspm_l0s_l1);
-> 
-> +
-> +static void quirk_disable_aspm_all(struct pci_dev *dev)
-> +{
-> +       pci_info(dev, "Disabling ASPM\n");
-> +       pci_disable_link_state(dev, PCIE_LINK_STATE_ALL);
-> +}
-> +
-> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, PCI_ANY_ID,
-> quirk_disable_aspm_all);
-> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_FREESCALE, PCI_ANY_ID,
-> quirk_disable_aspm_all);
-> +
->  /*
->   * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
->   * Link bit cleared after starting the link retrain process to allow this
-> 
-> ---
-> 
-> Unfortunately it doesn't solve the issue with pcieport 0001:00:00.0.
-> 
+On PPC_32 QorIQ, the hwirq bitmap is done with the cascade being the most
+significant bits and the srs on the cascade being the least. This has the
+effect of filling up one cascade before the next.
 
-That's unfortunate indeed. Could you please share the 'sudo lspci -vv' output?
+Since each cascade has 32 srs and is tied to a single CPU and interrupt,
+this means no load balancing of MSIs.
 
-That will allow us to see the topology and AER status.
+Rework this case to translate between the bitmap and hwirq so that MSIs
+are allocated across the cascades round-robin to achieve load balancing.
 
-- Mani
+Also, to avoid holes in the bitmap, allocate it for exactly what the
+hardware supports.
 
+Tested on P4080 (which had the problem) and T4240 (which did not, but
+also no regressions).
+
+Signed-off-by: Ben Collins <bcollins@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-kernel@vger.kernel.org
+---
+Rework fsl,mpic bitmap translation on PPC_32 so that IRQs cascade across
+CPUs properly.
+
+v2:
+- Slight fuzz fixes since patch is 6 months old.
+---
+ arch/powerpc/sysdev/fsl_msi.c | 70 ++++++++++++++++++++++++++++++++++++-------
+ arch/powerpc/sysdev/fsl_msi.h |  7 +++--
+ 2 files changed, 63 insertions(+), 14 deletions(-)
+
+diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
+index 2a007bfb038d0167edc7e6143d22ca5b76989947..b07eef18dec3c1f7623527c96b3abf5a589bd443 100644
+--- a/arch/powerpc/sysdev/fsl_msi.c
++++ b/arch/powerpc/sysdev/fsl_msi.c
+@@ -29,17 +29,63 @@
+ #include "fsl_pci.h"
+ 
+ #define MSIIR_OFFSET_MASK	0xfffff
++
+ #define MSIIR_IBS_SHIFT		0
+ #define MSIIR_SRS_SHIFT		5
++#define MSIIR_SRS_MASK		0x7
++
+ #define MSIIR1_IBS_SHIFT	4
+ #define MSIIR1_SRS_SHIFT	0
+-#define MSI_SRS_MASK		0xf
++#define MSIIR1_SRS_MASK		0xf
++
+ #define MSI_IBS_MASK		0x1f
+ 
+-#define msi_hwirq(msi, msir_index, intr_index) \
+-		((msir_index) << (msi)->srs_shift | \
++#define MSI_MPIC_SIZE		0x10
++#define MSI_IPIC_SIZE		0x04
++
++#define msi_to_hwirq(msi, msir_index, intr_index) \
++		(((msir_index) << (msi)->srs_shift) | \
+ 		 ((intr_index) << (msi)->ibs_shift))
+ 
++static inline int msi_to_bit(struct fsl_msi *msi, int msir_index, int intr_index)
++{
++	if (!msi->srs_shift)
++		return msi_to_hwirq(msi, msir_index, intr_index);
++
++	return msir_index | (intr_index << hweight32(msi->srs_mask));
++}
++
++static inline int bit_to_hwirq(struct fsl_msi *msi, int bit)
++{
++	int hwirq;
++
++	if (!msi->srs_shift)
++		return bit;
++
++	hwirq  = (bit & msi->srs_mask) << msi->srs_shift;
++	hwirq |=  bit >> hweight32(msi->srs_mask);
++
++	return hwirq;
++}
++
++static inline int hwirq_to_bit(struct fsl_msi *msi, int hwirq)
++{
++	int bit;
++
++	if (!msi->srs_shift)
++		return hwirq;
++
++	bit  = (hwirq >> msi->srs_shift) & msi->srs_mask;
++	bit |= (hwirq & MSI_IBS_MASK) << msi->srs_shift;
++
++	return bit;
++}
++
++#define hwirq_to_srs(msi, hwirq) \
++		(((hwirq) >> (msi)->srs_shift) & (msi)->srs_mask)
++#define hwirq_to_ibs(msi, hwirq) \
++		(((hwirq) >> (msi)->ibs_shift) & MSI_IBS_MASK)
++
+ static LIST_HEAD(msi_head);
+ 
+ struct fsl_msi_feature {
+@@ -72,7 +118,7 @@ static void fsl_msi_print_chip(struct irq_data *irqd, struct seq_file *p)
+ 	irq_hw_number_t hwirq = irqd_to_hwirq(irqd);
+ 	int cascade_virq, srs;
+ 
+-	srs = (hwirq >> msi_data->srs_shift) & MSI_SRS_MASK;
++	srs = hwirq_to_srs(msi_data, hwirq);
+ 	cascade_virq = msi_data->cascade_array[srs]->virq;
+ 
+ 	seq_printf(p, "fsl-msi-%d", cascade_virq);
+@@ -107,8 +153,9 @@ static const struct irq_domain_ops fsl_msi_host_ops = {
+ static int fsl_msi_init_allocator(struct fsl_msi *msi_data)
+ {
+ 	int rc, hwirq;
++	int num_irqs = msi_data->nr_msi_regs * IRQS_PER_MSI_REG;
+ 
+-	rc = msi_bitmap_alloc(&msi_data->bitmap, NR_MSI_IRQS_MAX,
++	rc = msi_bitmap_alloc(&msi_data->bitmap, num_irqs,
+ 			      irq_domain_get_of_node(msi_data->irqhost));
+ 	if (rc)
+ 		return rc;
+@@ -117,7 +164,7 @@ static int fsl_msi_init_allocator(struct fsl_msi *msi_data)
+ 	 * Reserve all the hwirqs
+ 	 * The available hwirqs will be released in fsl_msi_setup_hwirq()
+ 	 */
+-	for (hwirq = 0; hwirq < NR_MSI_IRQS_MAX; hwirq++)
++	for (hwirq = 0; hwirq < num_irqs; hwirq++)
+ 		msi_bitmap_reserve_hwirq(&msi_data->bitmap, hwirq);
+ 
+ 	return 0;
+@@ -172,7 +219,7 @@ static void fsl_compose_msi_msg(struct pci_dev *pdev, int hwirq,
+ 		msg->data = hwirq;
+ 
+ 	pr_debug("%s: allocated srs: %d, ibs: %d\n", __func__,
+-		 (hwirq >> msi_data->srs_shift) & MSI_SRS_MASK,
++		 hwirq_to_srs(msi_data, hwirq),
+ 		 (hwirq >> msi_data->ibs_shift) & MSI_IBS_MASK);
+ }
+ 
+@@ -308,8 +355,8 @@ static irqreturn_t fsl_msi_cascade(int irq, void *data)
+ 		intr_index = ffs(msir_value) - 1;
+ 
+ 		err = generic_handle_domain_irq(msi_data->irqhost,
+-				msi_hwirq(msi_data, msir_index,
+-					  intr_index + have_shift));
++				msi_to_hwirq(msi_data, msir_index,
++					     intr_index + have_shift));
+ 		if (!err)
+ 			ret = IRQ_HANDLED;
+ 
+@@ -384,7 +431,7 @@ static int fsl_msi_setup_hwirq(struct fsl_msi *msi, struct platform_device *dev,
+ 	/* Release the hwirqs corresponding to this MSI register */
+ 	for (i = 0; i < IRQS_PER_MSI_REG; i++)
+ 		msi_bitmap_free_hwirqs(&msi->bitmap,
+-				       msi_hwirq(msi, offset, i), 1);
++				       msi_to_hwirq(msi, offset, i), 1);
+ 
+ 	return 0;
+ }
+@@ -412,7 +459,8 @@ static int fsl_of_msi_probe(struct platform_device *dev)
+ 	}
+ 	platform_set_drvdata(dev, msi);
+ 
+-	msi->irqhost = irq_domain_create_linear(dev_fwnode(&dev->dev), NR_MSI_IRQS_MAX,
++	msi->irqhost = irq_domain_create_linear(dev_fwnode(&dev->dev),
++						msi->nr_msi_regs * IRQS_PER_MSI_REG,
+ 						&fsl_msi_host_ops, msi);
+ 	if (msi->irqhost == NULL) {
+ 		dev_err(&dev->dev, "No memory for MSI irqhost\n");
+diff --git a/arch/powerpc/sysdev/fsl_msi.h b/arch/powerpc/sysdev/fsl_msi.h
+index e2a1bfc7c23777f72f51486ee02284d92d56e1e2..0515030af9acb965c0b5db68d5655004777f4344 100644
+--- a/arch/powerpc/sysdev/fsl_msi.h
++++ b/arch/powerpc/sysdev/fsl_msi.h
+@@ -15,7 +15,6 @@
+ #define NR_MSI_REG_MSIIR1	16 /* MSIIR1 can index 16 MSI registers */
+ #define NR_MSI_REG_MAX		NR_MSI_REG_MSIIR1
+ #define IRQS_PER_MSI_REG	32
+-#define NR_MSI_IRQS_MAX	(NR_MSI_REG_MAX * IRQS_PER_MSI_REG)
+ 
+ #define FSL_PIC_IP_MASK   0x0000000F
+ #define FSL_PIC_IP_MPIC   0x00000001
+@@ -32,11 +31,13 @@ struct fsl_msi {
+ 	unsigned long cascade_irq;
+ 
+ 	u32 msiir_offset; /* Offset of MSIIR, relative to start of CCSR */
+-	u32 ibs_shift; /* Shift of interrupt bit select */
+-	u32 srs_shift; /* Shift of the shared interrupt register select */
++	u32 ibs_shift;    /* Shift of interrupt bit select */
++	u32 srs_mask;     /* Mask of the shared interrupt register select */
++	u32 srs_shift;    /* Shift for shared interrupt register select */
+ 	void __iomem *msi_regs;
+ 	u32 feature;
+ 	struct fsl_msi_cascade_data *cascade_array[NR_MSI_REG_MAX];
++	u32 nr_msi_regs;
+ 
+ 	struct msi_bitmap bitmap;
+ 
+
+---
+base-commit: 9b332cece987ee1790b2ed4c989e28162fa47860
+change-id: 20251015-fsl_msi_bitmap_translate-0761bf4d8ef2
+
+Best regards,
 -- 
-மணிவண்ணன் சதாசிவம்
+Ben Collins <ben.collins@linux.dev>
+
 
