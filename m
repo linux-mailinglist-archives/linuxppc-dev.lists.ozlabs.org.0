@@ -1,77 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-12922-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12923-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5FCBDEB42
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 15:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B7DBDEC71
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Oct 2025 15:35:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cms8N5R2Vz3dBb;
-	Thu, 16 Oct 2025 00:17:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cmsXF1gTSz3dDt;
+	Thu, 16 Oct 2025 00:35:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.82 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760534276;
-	cv=pass; b=m/YSD1cBoQqyvy+hsIioeiae8mmxovIkxYJt+n04RbhH+Jkm887W/jqgML+4fPhK8+CD0cHsUQh2FRYJEyXmAlRVrDfo+l324FkLWFEUeuNWKkJaaco0Z9VMe8D25AlcaZDMMUNjGZsIyzfAOsDFaMPb5NRN4fR3qktOPLiujFWrgaeftxKNc1/rbwYYBoeBAEUBHGNpab8VDpVYLqYmp+T4fEOpnv0RtQU2hwLr0ftECTT+OOWtco666Fgccn1W4zv2TMXWrk8A9YJBNbmu4pBu+Nv73XSko1AtKXhKSygoxAIInT7nviEET7nAGWnTy9atp7fmX3XCICDiEYuiLw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760534276; c=relaxed/relaxed;
-	bh=E2QnsoOmDEvTeEWVN1qoZiMdpBF/8hhdfYA9u5NKFT4=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=nCy1OsZiKPtlENBIHR6NLXGeJhbrurW1ohrqqi+4f4f0TfmqL6GxWFAS0QVltUdbMCvY/4ApCSlzAoh5XBbGqGtoSw686ZfWIQW6j2DwrurMWwK6cq9vo8qJPFE60hjSPcjzJSK3frphmkDwDeiy3jx8eUI5arKLAhoQ7e8RvSWxGB+BdKlgP5oZTL4RGjKC8oJpep6gkO17Sg/kd74UkBfd0BdY7Jnd4CHl+ZMPY7Yyqq6bg7ME4dmYEk8dAbLA0l37p9qepaoPIWmgBQeAyZzYkaKQDEjd8guci7G6W53+j2xguLqrYJt4WJ/5etNgCV7yUZ0gUrWCazSofcrNjQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=TfmKwsC7; dkim-atps=neutral; spf=pass (client-ip=85.215.255.82; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p02-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.246.85.4
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760535309;
+	cv=none; b=kH5Lp4ZyPZQZvbOgxOH+eKyH4z+oBp8k7z14dCiFT8B3sdZxrsfCuXX9pXea8gMArLIDlIxQQq+Jr3TBUSD0GJ0vCqaukqIrDQZyGxGCtEVFdbAE6rVtdnboN5L00+fkSqyO299msSBuAjo818ZMApEVJ4cs9Vp1+E8e3NcV2W5myIq5m5mvqvjlZ1Yo5D+PF07ylDSmKMb+XBXbYFQXb5xlOt4oXcWV/HFZRIVNonzqcaIT3+MDODeqpQZpk2OYdYGTqx5bQp7AQsi5ObBO4yPkN7MYliNrTYP1/SX+v6zo1LbvMXtPRtIWGDPMPlsqfg2utxAb5p8K7wmDbOXiBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1760535309; c=relaxed/relaxed;
+	bh=oMU9G4Af1cq7AyrrzQ2eG1h+ieGKieI2qQ6GlGAzq4U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U2+E0I0/6/SHHDQHymhTwGnSo1h/Bl2WtjTtg5yB+EMOHNjNG7EJ7m44wsBveIZptfqbNrD2LnVyhnNbdJJeSgDvPRKPIXgFLOeSg/Vh3sqMVRihxc8dPtrWUcZ0egqTaICfakhmq9T2exUMHweoDdLKbzcyJA0rq4dbBI/ThXCocrG7xokTa7aKPd7LsDemGbyLPyIS0RXRsSO1/Vav2jhrz7mnRjx0ybCvb+0JT8zfuvgNFoCrdBiSI6nDi/FwyW84elf4r0ylZGdUPBM1Jj62d/ga9lkmTCLGnc0Qt+RKTacYUcrahnfAcapIF3oeZNVa7/xlmtBCeLmWod2nDQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=pjB9mSa4; dkim-atps=neutral; spf=pass (client-ip=185.246.85.4; helo=smtpout-03.galae.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=TfmKwsC7;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=pjB9mSa4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=85.215.255.82; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.82])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=185.246.85.4; helo=smtpout-03.galae.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cms8L6ZX1z3d26
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 00:17:54 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1760534270; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=KMfi6Hr+bpElYQWQoTQ/fa3HBvK1DjrVSEtQdiHp+tngrJvD6tSmNPbUbY5lQbRrMX
-    Svp2qH1hVlRJGE8zd3RjIyU99o8uNtabVvf87IDjEAJfrzJyEdWnp4fA3RlB6ybeWblX
-    xz9Vd/wpFQRiMPa55xqRXxrL4Knz+Dg31viDShehkswzWwq+GsvHLfripVnei1C5KB9E
-    pQE/O0t12lTCxcYv9PV6qbs/rU+mDQKTOC/yLexEI5hHACHGqIPqNH2z840GlhhkQbO2
-    79GXLaTJuw0Thx2gm0L8oQP3TYN9koLXy5/BIWUm/frG7qR+j6zUqM3gYTzruXzWgIu3
-    +7oA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1760534270;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=E2QnsoOmDEvTeEWVN1qoZiMdpBF/8hhdfYA9u5NKFT4=;
-    b=AkefBaOpENTuBoKnmbehgGly8Of+IlEd5V8od26C8Lwk+A9zCoMr77jYW8xoYmxRRA
-    9q6wF+OixY9/5xLcJ3ViFMzHgdUfQxfVF0Jqyj4OFGdUoW/25exQINjbSYyrx69CZx8Z
-    dcVXjRKlo4n4IWHOvkmfevr5zHagvYbL0f+F5abAq8qB9kT8RN+QDSWw343VDbF1UXn6
-    gEscaBw3zIHi877b1vxmDx0xamRHRcEkvdw/Y/GZznuwE/yMObQUeCn8Moj44aiulPgt
-    z1V4RJwHBYkXFdqbgqRsuPGOPDaNCE7PU0vFEm7gJnhLmCDQzn5AqCLlnmBUW1OpR9bM
-    D3ww==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1760534270;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=E2QnsoOmDEvTeEWVN1qoZiMdpBF/8hhdfYA9u5NKFT4=;
-    b=TfmKwsC71jrVZXNgCQK58OG0DGJfmQHVFuAdUGR2C7arg9C+atrzX9pypGee40dVNT
-    dSrMExfYosa5VWc9pMqG1ZeuQ12WRagInvzt9cP8dHTKjGP6FDOFi4jit8h0JYR6WR3G
-    yc6yR5dapwzij6kBjaP82F0zpdpi/BNb6ea1sIua5rSWS9c87OwQjcaxGCbmlrWdkrdN
-    0+wg0ZNqYMgl/Si0o6I1wpgDoyJe1pXNNbYNjVE4pcgiXaMUTXrTc5e7aXd7Vi2IuAFH
-    EOLXd4QMuI1eqQk/Dczzd7jgU316MyXd9RiRccmfaJNAouGSW0c9HBlzqYl9bgHa3xe0
-    UI0A==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5qwsy/HXXax+ofCi2ru+NWolPb67sCbW3uT"
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 53.4.2 AUTH)
-    with ESMTPSA id e2886619FDHoXcR
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 15 Oct 2025 15:17:50 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cmsXD2fR9z3d44
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 00:35:06 +1100 (AEDT)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 54AE84E410D6;
+	Wed, 15 Oct 2025 13:35:04 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 19FEF606F9;
+	Wed, 15 Oct 2025 13:35:04 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5EE7E102F22CF;
+	Wed, 15 Oct 2025 15:34:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760535303; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=oMU9G4Af1cq7AyrrzQ2eG1h+ieGKieI2qQ6GlGAzq4U=;
+	b=pjB9mSa45RgZGf+JyVeqvP7qIc/TzHk5GVvUMqgPHqsIv5/DzktXddn8iq8xeExInGbFO5
+	wixpOYF6+jQHYhxwcjPd/Igt3ht5HkH8OdmdkXXb45VuNafZbpBkM+FxliSS52eqgNx0NW
+	QryRhmGe3Ad5IhLd6KOgwVxa67bPbIHDTs1yPx1ofVCmiqrr6P2qd0m7PD/CIE2OJ3csVn
+	fdDTCJxl+E0DiyNu1UXZ8rvLdpopGBBsnUko9D5DOTdh1z3yKofLV0l+qg2Ks/eCQJyooO
+	a85e+wE4UeENHtsyoJHJbXIXaYY/Vs1ddszHzzrJqAY1idCLfedZDZawJ2V1BA==
+Date: Wed, 15 Oct 2025 15:34:42 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas
+ <helgaas@kernel.org>, Lukas Wunner <lukas@wunner.de>, Manivannan Sadhasivam
+ <manivannan.sadhasivam@oss.qualcomm.com>, Ilpo =?UTF-8?B?SsOkcnZpbmVu?=
+ <ilpo.jarvinen@linux.intel.com>, linux-pci@vger.kernel.org, mad skateman
+ <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian
+ Zigotzky <info@xenosoft.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ hypexed@yahoo.com.au, Darren Stevens <darren@stevens-zone.net>,
+ debian-powerpc@lists.debian.org, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>
+Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
+Message-ID: <20251015153442.423e2278@bootlin.com>
+In-Reply-To: <76026544-3472-4953-910A-376DD42BC6D0@xenosoft.de>
+References: <20251015145901.3ca9d8a0@bootlin.com>
+	<76026544-3472-4953-910A-376DD42BC6D0@xenosoft.de>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,47 +76,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-Date: Wed, 15 Oct 2025 15:17:39 +0200
-Message-Id: <D5EAC41A-837B-4170-8707-7CAE2D630106@xenosoft.de>
-References: <76026544-3472-4953-910A-376DD42BC6D0@xenosoft.de>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
- Bjorn Helgaas <helgaas@kernel.org>, Lukas Wunner <lukas@wunner.de>,
- Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- linux-pci@vger.kernel.org, mad skateman <madskateman@gmail.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
- Darren Stevens <darren@stevens-zone.net>, debian-powerpc@lists.debian.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-In-Reply-To: <76026544-3472-4953-910A-376DD42BC6D0@xenosoft.de>
-To: Herve Codina <herve.codina@bootlin.com>
-X-Mailer: iPhone Mail (23A355)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Am 15 October 2025 at 02:59 pm, Herve Codina <herve.codina@bootlin.com> wrot=
-e:
+Hi Christian,
 
-Also when it boots, it is not easy to know about the problem root cause.
+On Wed, 15 Oct 2025 15:14:28 +0200
+Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
 
-In my case, it was not obvious to make the relationship on my side between
-my ping timings behavior and ASPM.
+> > Am 15 October 2025 at 02:59 pm, Herve Codina <herve.codina@bootlin.com> wrote:
+> > 
+> > Also when it boots, it is not easy to know about the problem root cause.
+> > 
+> > In my case, it was not obvious to make the relationship on my side between
+> > my ping timings behavior and ASPM.
+> > 
+> > Of course 'git bisect' helped a lot but can we rely on that for the average
+> > user?
+> > 
+> > Best regards,
+> > Hervé  
+> 
+> I think I will revert these modifications for the RC2.
 
-Of course 'git bisect' helped a lot but can we rely on that for the average
-user?
+I don't know what is the future of those modifications but maybe instead
+of fully reverting them, maybe you could perform calls to
+ - pcie_clkpm_override_default_link_state() and
+ - pcie_aspm_override_default_link_state()
+only if a new Kconfig symbol is enabled.
+
+Of course this symbols will be disabled by default but if you want some
+people to test behavior, it could be interesting to have the code
+available in the kernel.
+
+I don't know, this was just an idea.
+
+Of course, reverting the patch is simpler than adding this new Kconfig
+symbol.
 
 Best regards,
-Herv=C3=A9
-
-=E2=80=94-
-
-I think I will revert these modifications for the RC2.
-
-Patch for reverting: https://raw.githubusercontent.com/chzigotzky/kernels/re=
-fs/heads/main/patches/e5500/pci.patch
-
+Hervé
 
