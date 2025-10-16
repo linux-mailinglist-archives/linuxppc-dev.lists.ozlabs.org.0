@@ -1,39 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-12938-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12939-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFD6BE1EB3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 09:26:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36771BE1EF4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 09:33:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnKJs1fP3z30Vl;
-	Thu, 16 Oct 2025 18:26:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnKRy6l6Xz30Vl;
+	Thu, 16 Oct 2025 18:33:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a02:c206:3008:6895::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760599613;
-	cv=none; b=G5WSjKaE6lY0HAKvmJLjlkmPu9guxV+ee9U/KgRH43h6D3DT+rtVvDNI1KAvEgtjea8wwjzJNih/+Bjoxgv26M1C9rJZiPR6h77tjspiVj7JrVaXO/XaMBIpVwYRPANm6/OHEDND5BBXPK9G4M7v6a4xjwe1d1qVXhZnXGHDkK2K+0PAvhN4GJqvbpGOAT6zc5sXPTxQUOxZYAY9/MNnN3U/L2VQ/aQeKIAeoObRdL3xVfkz7zI3sx5+rGF7ebYU4T7JcmI5+jvfa4iani0HiZQmsDOSDOwf+omTT4sHAit6Gq0Yvr9dQ23Bb3pRtLMirddTmlSUlSgEZ7SOJYVpug==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760599982;
+	cv=none; b=K3+Eo+ImqBdAyVNsKLrOImUIyLo62OkEZ4FAAjSS/GAf5su6gao1frUAYz5yCTPi51dXzBB7cvJ1IkRbOsyCqMxwE3M0uGVyO51S6yR1mwwOKBufLg2A9KxzPmDxiYEfyHiu/T/GbHX/28pLdWc0kMd8eG32Ld7L9AaDbM30mh/74ETB0q53SHHn0siVC/5aBMIQxjjubJz1c+3+gW+EuNyHlKSOZlK6FChLZXe/RZkimyfptywpqPYoaaXbL5CrOyGUAKuac4503xmT8tBRQ33tLeG4EJ276ItmWttnwpEUtyl9ZJOqwNeHOUeIWvAQNNrdx9pDwLTiH7Gvduxuew==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760599613; c=relaxed/relaxed;
-	bh=VEvL4j8+F+XgSISTk494FQtpJajm2qeH+8/dMLxfttE=;
+	t=1760599982; c=relaxed/relaxed;
+	bh=SK6RxrxNXxRFLxyAYlYq9aaMejSm4vU8SsNeGUxqVQo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tcp94LjZaLVfgEymBHTagKYZ818EfSwQEflvtA8kn+uhT945BGJvk25YRtFMvz0We/poMUOCBd+jXx97IdCsYwE5SxfUsMSy3UWr3qxXY9fOQdaL1lRm2dypLI8TiuGOPVfWPkdfTpWaPSz1ymO4LgO7SnQhoPaQI0VxpzN4AA2Bv2YVMRROAs2JFG74Mx1mJwpiGGKu4+Ovyn3uzLKvN13A7mQIusq8avd5zEV10KJlEaRLc64Udd7gsBXwFIfKLHiSjw1pfiVOJBYlR+ITiPFH7Vg883oWqUpoVL4yrZmgbhrq9cWPXI7gf2HHdsfltoChDrcslaNfVl+DyWCj7g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=hogyros.de; spf=pass (client-ip=2a02:c206:3008:6895::1; helo=psionic.psi5.com; envelope-from=simon.richter@hogyros.de; receiver=lists.ozlabs.org) smtp.mailfrom=hogyros.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=hogyros.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hogyros.de (client-ip=2a02:c206:3008:6895::1; helo=psionic.psi5.com; envelope-from=simon.richter@hogyros.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 15471 seconds by postgrey-1.37 at boromir; Thu, 16 Oct 2025 18:26:51 AEDT
-Received: from psionic.psi5.com (psionic.psi5.com [IPv6:2a02:c206:3008:6895::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnKJq5vWKz2yqq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 18:26:51 +1100 (AEDT)
-Received: from [IPV6:2400:2410:b120:f200:a1f3:73da:3a04:160d] (unknown [IPv6:2400:2410:b120:f200:a1f3:73da:3a04:160d])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by psionic.psi5.com (Postfix) with ESMTPSA id 039FE3F019;
-	Thu, 16 Oct 2025 09:26:46 +0200 (CEST)
-Message-ID: <9b85a5f0-8407-43d9-993a-0f6c3cef2f5c@hogyros.de>
-Date: Thu, 16 Oct 2025 16:26:42 +0900
+	 In-Reply-To:Content-Type; b=Cj0ve0h5pKwKiYX+6R3DuVI1N89Yby9FmyYXbwvRwHKZT60MMPXAhUYgkwdadXHbfX2GHQMNR69cZ9G9s0TW4lFZyTZLUwVK/pdye8NN8HKP8k+osG2ItCgLvI66ah3iY4yyVpMGHubL5HT1IIp/EP7zeFrSoRtsdjSDGYGMowqTE5x4JC/IX1irG1R23CEkI3o1RPW1cqfimCbidP1K5xD38uoaNSif3NcgU69HfGwI3n65ulwNBsA9cLZAJkmT9ai5mHP79lYdulVS/csC/jkw78jwcQt9pLTF6WD9erZVTT+ZapKu0PiyFHmZhoJnEm1SGgLOL/GqizSkvLHT6Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnKRy03PYz2yqq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 18:33:00 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B64F21688;
+	Thu, 16 Oct 2025 00:32:20 -0700 (PDT)
+Received: from [10.57.65.134] (unknown [10.57.65.134])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3F1683F6A8;
+	Thu, 16 Oct 2025 00:32:20 -0700 (PDT)
+Message-ID: <54f183bb-33ce-4b9c-91a9-827a6ed198d6@arm.com>
+Date: Thu, 16 Oct 2025 09:32:13 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -48,34 +44,70 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: BAR resizing broken in 6.18 (PPC only?)
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
-References: <f9a8c975-f5d3-4dd2-988e-4371a1433a60@hogyros.de>
- <yn2ladybszyrxfridi3z3rx4ogfh6c42bcxq5qld64gul2xltt@6hir2oknxfmg>
-Content-Language: en-US
-From: Simon Richter <Simon.Richter@hogyros.de>
-In-Reply-To: <yn2ladybszyrxfridi3z3rx4ogfh6c42bcxq5qld64gul2xltt@6hir2oknxfmg>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v3 02/13] x86/xen: simplify flush_lazy_mmu()
+To: Dave Hansen <dave.hansen@intel.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
+ <20251015082727.2395128-3-kevin.brodsky@arm.com>
+ <35d9cf4f-135e-4786-a4e3-fd3a4a18b800@intel.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <35d9cf4f-135e-4786-a4e3-fd3a4a18b800@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
+On 15/10/2025 18:52, Dave Hansen wrote:
+> On 10/15/25 01:27, Kevin Brodsky wrote:
+>> While at it, we can also avoid preempt_disable() if we are not
+>> in lazy MMU mode - xen_get_lazy_mode() should tolerate preemption.
+> ...
+>>  static void xen_flush_lazy_mmu(void)
+>>  {
+>> -	preempt_disable();
+>> -
+>>  	if (xen_get_lazy_mode() == XEN_LAZY_MMU) {
+>> -		arch_leave_lazy_mmu_mode();
+>> -		arch_enter_lazy_mmu_mode();
+>> +		preempt_disable();
+>> +		xen_mc_flush();
+>> +		preempt_enable();
+>>  	}
+> But xen_get_lazy_mode() does:
+>
+> 	this_cpu_read(xen_lazy_mode);
+>
+> Couldn't preemption end up doing the 'xen_lazy_mode' read and the
+> xen_mc_flush() on different CPUs?
+>
+> That seems like a problem. Is there a reason it's safe?
 
-On 10/16/25 3:47 PM, Manivannan Sadhasivam wrote:
+You're right, I was thinking in terms of task, but xen_mc_flush() does
+operate on the current CPU (and it's called when context-switching).
+Will restore the original order in v4.
 
-> This could be due to the recently merged patch that changes the way we read
-> bridge resources. We saw a similar bug report with Qcom platforms as well [1].a43ac325c7cb
+- Kevin
 
-> Could you please try reverting the below mentioned commit and see if that fixes
-> the issue?
-
-> a43ac325c7cb ("PCI: Set up bridge resources earlier")
-
-No, the problem persists after reverting this.
-
-    Simon
 
