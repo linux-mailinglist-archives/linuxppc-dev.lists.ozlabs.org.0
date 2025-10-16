@@ -1,71 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-12946-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12947-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173F3BE3E9C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 16:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F80BE4525
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 17:46:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnVk74D6xz3bvd;
-	Fri, 17 Oct 2025 01:30:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnXPZ0c6jz3bwk;
+	Fri, 17 Oct 2025 02:46:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760625055;
-	cv=none; b=dMcwOC32bh5HvqlAPp9cLf6wb/fahyiR0T8pqwF/haDCQp5h2jTveXfgYMdlAf6JnstufzhFR6RC13rgs3QtjTbX8EmTVSLTik0Y/oHDu900TgpEwhV/k0j0xSKnICu/ZMO7rpT34TcU3JXbnEUmv1SMXX+JAHRWojXSO5SONqkQ+PhceWGNS1ewr4XK3fZ0M2usBQcvVIXZvX+rvCnuAmxlbegspQm8Aaejcm9C9dJLvBPiMK+3G2+NMKOkb7WFch/gYP8Ho5S2CukflXqjCaUio4B+mBM3cGEOGEZ/tj40r8gMg7GyuGP7FFxjonNoKApAv+DAYBzkKQomR7Y0mQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.11
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760629601;
+	cv=none; b=O0A2TsvLXs+2mpiVntnXHeQhvA/4ij2bYrcwdjDcngTpizbAJTjVVJjIwgTMAEHGCeIk6vVip0oNqO7M4l06t+OkqqwykGFIdWCZAcoNjFffMF/G4JgRCPHR2/tS/u89Xrsff+CNt7OBmejxfUZntB03G6fYT0HhXwIB5srHlqp8SF/bE3Ra15hP2A8kxUNs8xy+ohI1VrUjF9mv3cwd0mt1NuUZlwZvqkX4dRDvE+mvU5Idg4yVTgXB49rTMjEiiBRYUxKpbLWEyvB813hOwr+ZosE+cknBeq5DwkQGe+b8h04rbQfYULnlrLUUeBfDjxaKsfgcAUGZ7jCigJg2/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760625055; c=relaxed/relaxed;
-	bh=OJ5tOUw8/UzVF1GEEaRRUCl/HTRiZBZEsYxOJDd0WXg=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=ifRkM65PUMs4G770slLZjD/sonlwjFDhMTc6KXE5sil1yP4TPvVudKkEwAghydbcgK1XtRwaLb8IXMfGV5vrqW/MYZuxxex2bgRvAGEgWl0PgfjEEltaQIAI7hPBDACjO2dQfCMdAwGhs5ENx9R/H7MGHThO1AXAkDo2kNwu2Xs7ZqtIRVabyWjZshgFeHfras71I7CRzvJkx/Zx3O5S+Ui1ZIuD8B2QGECIMJYhcUB7svDpgnY/uBTne18jCZI3p12PEFfJTBzVP0v9q5RX3AxFyOe67zl1iXuC3hCiq058egsbeINUGfhXbhcQr135JvZ/f3Zdy/ckw+60QbPYsw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CmxDICrl; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1760629601; c=relaxed/relaxed;
+	bh=M+oPDO/XC2e3yAf6T7hETo2zODqknsB/LP2istFq7mw=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=KKoIxLIIxORkZSsx6vxeU2pZAvWcMuZxpx3yMYUeEVKQRxkmivGQfB8nWKlwqZzVb7tFfNwH2X9mPMIYg137JRWZD5jAY+N8WX7GI5kU/OPrh8rw+zJ3kQzQJ5o4c7FLFuPdycaBmgaPnU5dIAHa1/RCCX/4LJ0+QwGKg2xaCkPNgUiTNP6PLzVgBUUok0F7EsPBJFC1sfN6ScQDRhMAkupRp79vYrA6UUIp7kVfXF4VtC8yeF3xsxwIaJZSwSJt4M1brVuhoP2bU4zLjJr6Om3i7PIxl2FeaD9jxhprMAwcLNDXqVoC9hFo7RgpIru9XcQ0Wmu4Z5BdiN3O/cO9kA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lHGHcha5; dkim-atps=neutral; spf=pass (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CmxDICrl;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lHGHcha5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Fri, 17 Oct 2025 02:46:39 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnVk64jbbz2yQH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 01:30:54 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59GDSjuM021062;
-	Thu, 16 Oct 2025 14:30:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=OJ5tOU
-	w8/UzVF1GEEaRRUCl/HTRiZBZEsYxOJDd0WXg=; b=CmxDICrlv3hQMiAYcaUoPc
-	ZnEXYlxVBI5MKnCb37hW5nw8nVTZKdCKpuG2oGwcOHa+9EKWPqBdFet2oTwI7h32
-	UIBFtOjrk3LdLz5X1kjQ8eHdIWQ+aHlBx7Y/u6yxhrEWG5/5N3R85R5zcovoFnXG
-	frHF/d04VkH1PFUnd0epu6xpzym+PhQ5Ji9Ey1Ooe3eg2RinNAjuOUlSJJLPuT5M
-	5mjTqm2CV9/+Eh8rxpQi1nGw6O67H6qx6FpIWcx+40mc0A7iWjwIkgZoZFzoLw7/
-	YWTyvxR4ynhWW3zYHj2KfNnDgtMqg1vmBUBT3iQVbiWOfa1X5Hpflyf4Pkq8bucw
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0a3xq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Oct 2025 14:30:51 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59GEBnSf028069;
-	Thu, 16 Oct 2025 14:30:50 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49tdg9dcts-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Oct 2025 14:30:50 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59GEUlE850725338
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Oct 2025 14:30:47 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5600E200D9;
-	Thu, 16 Oct 2025 14:30:47 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1B074200DD;
-	Thu, 16 Oct 2025 14:30:46 +0000 (GMT)
-Received: from [9.109.204.116] (unknown [9.109.204.116])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 Oct 2025 14:30:45 +0000 (GMT)
-Message-ID: <6f213521-6baa-47a3-91bd-6ec54acca076@linux.ibm.com>
-Date: Thu, 16 Oct 2025 20:00:45 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnXPW2BrWz2yGM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 02:46:38 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760629600; x=1792165600;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=3eOI9uM1XlRZ682Ly82NYwd5MJ5evMnS/SdjAfcAYjo=;
+  b=lHGHcha5AOP+JcRxlWke2x60G1MC/4eCwYe9+G4LSv+AbI+QOJvPWkwe
+   xJVASJ9rMOC8F2CQh0V+fiYHTS3btmM3lyCDklJe2h9odxqwBOQQDvprI
+   PFZqlIoPLabx65zuKsLvRoHxx5lcB3Gg0hVST+5zSHwO8lLtt2e5upnxk
+   KK+pkRPEr/m/i2AiLDFVG4uGY6de/uvHbGP8pQW++WNciID3RSMB9EC7K
+   XGIr4yRB5rmzLscWfcy8AWsK3+dA1RFO67j4Gl8PRDdzERC2ki0cQQ7Yr
+   JGw0EjnBCRVTJSWt/aDxKxCz9Ee8yxTv09APrNSh6iNofFiBDqAQjBkxf
+   A==;
+X-CSE-ConnectionGUID: +ZXbcuCKRR2LRqCy7F9/Uw==
+X-CSE-MsgGUID: IbLOZ5t9QaasrifVcm163Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="73110746"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="73110746"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 08:45:31 -0700
+X-CSE-ConnectionGUID: pFdS7zj+SFKBXhdW1hd/DA==
+X-CSE-MsgGUID: TjTbW3uARTesWtubFOS25w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="182047066"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.242])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 08:45:28 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Thu, 16 Oct 2025 18:45:25 +0300 (EEST)
+To: Simon Richter <Simon.Richter@hogyros.de>, 
+    Lucas De Marchi <lucas.demarchi@intel.com>
+cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
+Subject: Re: BAR resizing broken in 6.18 (PPC only?)
+In-Reply-To: <f9a8c975-f5d3-4dd2-988e-4371a1433a60@hogyros.de>
+Message-ID: <a5e7a118-ba70-000e-bab4-8d56b3404325@linux.intel.com>
+References: <f9a8c975-f5d3-4dd2-988e-4371a1433a60@hogyros.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,179 +77,186 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [mainline]Kernel Boot Warings at arch/powerpc/mm/mem.c:341
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>, Baoquan He <bhe@redhat.com>
-References: <90937fe0-2e76-4c82-b27e-7b8a7fe3ac69@linux.ibm.com>
- <7b9f9ca0-a6d8-40d0-8195-bbf81377e866@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <7b9f9ca0-a6d8-40d0-8195-bbf81377e866@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: XWs6YeKTHds7XJr-JvTYslgJYu5Zc9bq
-X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68f1019b cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=fuU_RVYCY8Oo3qyU2PcA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX5dJQRUVl/9N6
- 5GFzd2QvX26vCvv4nUnVv6ftSNHQNJ2uD3+lhu7dcW2Y8gcnsp8tyEeWUIHOvetbuXx+aNcuX2d
- usG1++ngxzaR2/l2YquEg7Aux9biW8IM/gVWyHTOWXEIOyDB2rSasWGXGVVs2whbBNvFLyoflYO
- Ohcg4x76Y0LyaOc+QDJ+H1ADf3lsZZSsrr+t8ZEQV0C8sexTpLjTJ8C1otD3DKR5LAXnxRYLUX6
- v+cTnPQ9289H7bKSZrXXf2ydtjTqkDR4kbsPsBpkkfZEwzdCh3EhNwUtY3cyNY/bnYfwQJtw/Qm
- Bc1SO6lGji+5k6HCgyIjBnSY7vEQMCkkKOAFK9azN9l0vhsYG7dg5lwNXiMteTKpzd0VjsJi/BR
- ic1u5aB0BmlLdO3KSKhVTUAwhkNNRg==
-X-Proofpoint-GUID: XWs6YeKTHds7XJr-JvTYslgJYu5Zc9bq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-16_02,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 impostorscore=0
- phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello Venkat,
+On Thu, 16 Oct 2025, Simon Richter wrote:
 
-On 16/10/25 15:21, Sourabh Jain wrote:
->
->
-> On 10/10/25 11:15, Venkat Rao Bagalkote wrote:
->> Greetings!!!
->>
->>
->> IBM CI has reported kernel boot warnings on the mainline kernel on 
->> IBM Power11 system.
->>
->>
->> Attached is the .config file.
->>
->> Traces:
->>
->>
->> [    0.040098] plpks: POWER LPAR Platform KeyStore is not supported 
->> or enabled
->> [    0.043041] ------------[ cut here ]------------
->> [    0.043045] WARNING: CPU: 0 PID: 1 at arch/powerpc/mm/mem.c:341 
->> add_system_ram_resources+0xfc/0x180
->> [    0.043058] Modules linked in:
->> [    0.043065] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 
->> 6.17.0-auto-12607-g5472d60c129f #1 VOLUNTARY
->> [    0.043072] Hardware name: IBM,9080-HEX Power11 (architected) 
->> 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
->> [    0.043078] NIP:  c00000000201de3c LR: c00000000201de34 CTR: 
->> 0000000000000000
->> [    0.043082] REGS: c000000127cef8a0 TRAP: 0700   Not tainted 
->> (6.17.0-auto-12607-g5472d60c129f)
->> [    0.043088] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 
->> 84000840  XER: 20040010
->> [    0.043099] CFAR: c00000000017eed0 IRQMASK: 0
->> [    0.043099] GPR00: c00000000201de34 c000000127cefb40 
->> c0000000016a8100 0000000000000001
->> [    0.043099] GPR04: c00000012005aa00 0000000020000000 
->> c000000002b705c8 0000000000000000
->> [    0.043099] GPR08: 000000007fffffff fffffffffffffff0 
->> c000000002db8100 000000011fffffff
->> [    0.043099] GPR12: c00000000201dd40 c000000002ff0000 
->> c0000000000112bc 0000000000000000
->> [    0.043099] GPR16: 0000000000000000 0000000000000000 
->> 0000000000000000 0000000000000000
->> [    0.043099] GPR20: 0000000000000000 0000000000000000 
->> 0000000000000000 c0000000015a3808
->> [    0.043099] GPR24: c00000000200468c c000000001699888 
->> 0000000000000106 c0000000020d1950
->> [    0.043099] GPR28: c0000000014683f8 0000000081000200 
->> c0000000015c1868 c000000002b9f710
->> [    0.043138] NIP [c00000000201de3c] 
->> add_system_ram_resources+0xfc/0x180
->> [    0.043143] LR [c00000000201de34] add_system_ram_resources+0xf4/0x180
->> [    0.043148] Call Trace:
->> [    0.043150] [c000000127cefb40] [c00000000201de34] 
->> add_system_ram_resources+0xf4/0x180 (unreliable)
->> [    0.043157] [c000000127cefba0] [c000000000010eb4] 
->> do_one_initcall+0x60/0x36c
->> [    0.043162] [c000000127cefc80] [c0000000020068cc] 
->> do_initcalls+0x120/0x220
->> [    0.043169] [c000000127cefd30] [c000000002006cbc] 
->> kernel_init_freeable+0x23c/0x390
->> [    0.043174] [c000000127cefde0] [c0000000000112e8] 
->> kernel_init+0x34/0x26c
->> [    0.043178] [c000000127cefe50] [c00000000000df7c] 
->> ret_from_kernel_user_thread+0x14/0x1c
->> [    0.043181] ---- interrupt: 0 at 0x0
->> [    0.043186] Code: 3d02010c e9210028 e9410020 fb840010 fba40018 
->> 38685b48 3929ffff f9440000 f9240008 4a161035 60000000 54630ffe 
->> <0b030000> 39210028 39400000 39010020
->> [    0.043197] ---[ end trace 0000000000000000 ]---
->> [    0.043202] ------------[ cut here ]------------
->> [    0.043203] WARNING: CPU: 0 PID: 1 at arch/powerpc/mm/mem.c:341 
->> add_system_ram_resources+0xfc/0x180
->> [    0.043209] Modules linked in:
->> [    0.043212] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G W      
->>      6.17.0-auto-12607-g5472d60c129f #1 VOLUNTARY
->> [    0.043217] Tainted: [W]=WARN
->> [    0.043219] Hardware name: IBM,9080-HEX Power11 (architected) 
->> 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
->> [    0.043223] NIP:  c00000000201de3c LR: c00000000201de34 CTR: 
->> 0000000000000000
->> [    0.043226] REGS: c000000127cef8a0 TRAP: 0700   Tainted: G W       
->>     (6.17.0-auto-12607-g5472d60c129f)
->> [    0.043229] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 
->> 84000440  XER: 20040010
->> [    0.043237] CFAR: c00000000017eed0 IRQMASK: 0
->> [    0.043237] GPR00: c00000000201de34 c000000127cefb40 
->> c0000000016a8100 0000000000000001
->> [    0.043237] GPR04: c00000012005a9c0 0000000020000000 
->> c000000002b705c8 0000000080000000
->> [    0.043237] GPR08: 000000257fffffff fffffffffffffff0 
->> c000000002db8100 000000011fffffff
->> [    0.043237] GPR12: c00000000201dd40 c000000002ff0000 
->> c0000000000112bc 0000000000000000
->> [    0.043237] GPR16: 0000000000000000 0000000000000000 
->> 0000000000000000 0000000000000000
->> [    0.043237] GPR20: 0000000000000000 0000000000000000 
->> 0000000000000000 c0000000015a3808
->> [    0.043237] GPR24: c00000000200468c c000000001699888 
->> 0000000000000106 c0000000020d1950
->> [    0.043237] GPR28: c0000000014683f8 0000000081000200 
->> c0000000015c1868 c000000002b9f710
->> [    0.043271] NIP [c00000000201de3c] 
->> add_system_ram_resources+0xfc/0x180
->> [    0.043276] LR [c00000000201de34] add_system_ram_resources+0xf4/0x180
->> [    0.043280] Call Trace:
->> [    0.043281] [c000000127cefb40] [c00000000201de34] 
->> add_system_ram_resources+0xf4/0x180 (unreliable)
->> [    0.043287] [c000000127cefba0] [c000000000010eb4] 
->> do_one_initcall+0x60/0x36c
->> [    0.043291] [c000000127cefc80] [c0000000020068cc] 
->> do_initcalls+0x120/0x220
->> [    0.043296] [c000000127cefd30] [c000000002006cbc] 
->> kernel_init_freeable+0x23c/0x390
->> [    0.043301] [c000000127cefde0] [c0000000000112e8] 
->> kernel_init+0x34/0x26c
->> [    0.043305] [c000000127cefe50] [c00000000000df7c] 
->> ret_from_kernel_user_thread+0x14/0x1c
->> [    0.043308] ---- interrupt: 0 at 0x0
->> [    0.043311] Code: 3d02010c e9210028 e9410020 fb840010 fba40018 
->> 38685b48 3929ffff f9440000 f9240008 4a161035 60000000 54630ffe 
->> <0b030000> 39210028 39400000 39010020
->> [    0.043322] ---[ end trace 0000000000000000 ]---
->> [    0.043520] kprobes: kprobe jump-optimization is enabled. Al
->
+> since switching to 6.18rc1, I get
+> 
+> xe 0030:03:00.0: enabling device (0140 -> 0142)
+> xe 0030:03:00.0: [drm] unbounded parent pci bridge, device won't support any
+> PM support.
+> xe 0030:03:00.0: [drm] Attempting to resize bar from 256MiB -> 16384MiB
+> xe 0030:03:00.0: BAR 0 [mem 0x620c000000000-0x620c000ffffff 64bit]: releasing
 
-Please try the below fix:
-https://lore.kernel.org/all/20251016142831.144515-1-sourabhjain@linux.ibm.com/
+Is this stock 6.18-rc1?
 
-Thanks,
-Sourabh Jain
+If yes, I'm wondering who releases BAR0 resource as I don't think Lucas' 
+xe resize BAR series [1] is in 6.18-rc1. xe's _resize_bar() only releases 
+BAR2 in 6.18-rc1. Neither pci_resize_resource() nor 
+pbus_reassign_bridge_resources() should release the device resources which 
+will then lead to pbus_reassign_bridge_resources() finding res->child and 
+failing with -ENOENT because no bridge windows could be released (the 
+saved list is left empty).
+
+Was this resize attempted automatically by the xe driver during boot, not 
+triggered manually through sysfs, right? (Inferring that's likely the case 
+given the proximity of the "enabling device" message.)
+
+> xe 0030:03:00.0: BAR 2 [mem 0x6200000000000-0x620000fffffff 64bit pref]:
+> releasing
+> pci 0030:02:01.0: bridge window [mem 0x6200000000000-0x620001fffffff 64bit
+> pref]: releasing
+> pci 0030:01:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit
+> pref]: releasing
+> pci 0030:00:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit
+> pref]: was not released (still contains assigned resources)
+> pci 0030:02:01.0: disabling bridge window [io  0x0000-0xffffffffffffffff
+> disabled] to [bus 03] (unused)
+> pci 0030:02:02.0: disabling bridge window [io  0x0000-0xffffffffffffffff
+> disabled] to [bus 04] (unused)
+> pci 0030:02:02.0: disabling bridge window [mem 0x00000000-0xffffffffffffffff
+> 64bit pref disabled] to [bus 04] (unused)
+> pci 0030:01:00.0: disabling bridge window [io  0x0000-0xffffffffffffffff
+> disabled] to [bus 02-04] (unused)
+> pci 0030:00:00.0: Assigned bridge window [mem 0x6200000000000-0x6203fbff0ffff
+> 64bit pref] to [bus 01-04] cannot fit 0x4000000000 required for 0030:01:00.0
+> bridging to [bus 02-04]
+> pci 0030:01:00.0: bridge window [mem size 0x3fc0000000 64bit pref] to [bus
+> 02-04] requires relaxed alignment rules
+> pci 0030:00:00.0: disabling bridge window [io  0x0000-0xffffffffffffffff
+> disabled] to [bus 01-04] (unused)
+> pci 0030:01:00.0: bridge window [mem size 0x3fc0000000 64bit pref]: can't
+> assign; no space
+> pci 0030:01:00.0: bridge window [mem size 0x3fc0000000 64bit pref]: failed to
+> assign
+> pci 0030:01:00.0: bridge window [mem size 0x3fc0000000 64bit pref]: can't
+> assign; no space
+> pci 0030:01:00.0: bridge window [mem size 0x3fc0000000 64bit pref]: failed to
+> assign
+> pci 0030:02:01.0: bridge window [mem size 0x400000000 64bit pref]: can't
+> assign; no space
+> pci 0030:02:01.0: bridge window [mem size 0x400000000 64bit pref]: failed to
+> assign
+> pci 0030:02:01.0: bridge window [mem size 0x400000000 64bit pref]: can't
+> assign; no space
+> pci 0030:02:01.0: bridge window [mem size 0x400000000 64bit pref]: failed to
+> assign
+> xe 0030:03:00.0: BAR 2 [mem size 0x400000000 64bit pref]: can't assign; no
+> space
+> xe 0030:03:00.0: BAR 2 [mem size 0x400000000 64bit pref]: failed to assign
+> xe 0030:03:00.0: BAR 0 [mem 0x620c000000000-0x620c000ffffff 64bit]: assigned
+> xe 0030:03:00.0: BAR 0 [mem 0x620c000000000-0x620c000ffffff 64bit]: releasing
+> xe 0030:03:00.0: BAR 2 [mem size 0x400000000 64bit pref]: can't assign; no
+> space
+> xe 0030:03:00.0: BAR 2 [mem size 0x400000000 64bit pref]: failed to assign
+> xe 0030:03:00.0: BAR 0 [mem 0x620c000000000-0x620c000ffffff 64bit]: assigned
+> pci 0030:00:00.0: PCI bridge to [bus 01-04]
+> pci 0030:00:00.0:   bridge window [mem 0x620c000000000-0x620c07fefffff]
+> pci 0030:00:00.0:   bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit
+> pref]
+> pci 0030:01:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit
+> pref]: can't claim; address conflict with 0030:01:00.0 [mem
+> 0x6200020000000-0x62000207fffff 64bit pref]
+> pci 0030:01:00.0: PCI bridge to [bus 02-04]
+> pci 0030:01:00.0:   bridge window [mem 0x620c000000000-0x620c07fefffff]
+> pci 0030:02:01.0: bridge window [mem 0x6200000000000-0x620001fffffff 64bit
+> pref]: can't claim; no compatible bridge window
+> pci 0030:02:01.0: PCI bridge to [bus 03]
+> pci 0030:02:01.0:   bridge window [mem 0x620c000000000-0x620c0013fffff]
+> xe 0030:03:00.0: [drm] Failed to resize BAR2 to 16384M (-ENOSPC). Consider
+> enabling 'Resizable BAR' support in your BIOS
+> xe 0030:03:00.0: BAR 2 [mem size 0x10000000 64bit pref]: can't assign; no
+> space
+> xe 0030:03:00.0: BAR 2 [mem size 0x10000000 64bit pref]: failed to assign
+> xe 0030:03:00.0: BAR 2 [mem size 0x10000000 64bit pref]: can't assign; no
+> space
+> xe 0030:03:00.0: BAR 2 [mem size 0x10000000 64bit pref]: failed to assign
+> xe 0030:03:00.0: [drm] Found battlemage (device ID e20b) discrete display
+> version 14.01 stepping B0
+> xe 0030:03:00.0: [drm] *ERROR* pci resource is not valid
+
+I need to know PCI resource allocations of the parents too. Preferrably 
+dmesg and /proc/iomem from both working and broken cases so it's easier 
+to find the differences.
+
+Please take the dmesgs with dyndbg="file drivers/pci/*.c +p" on the 
+kernel's cmdline.
+
+> There's also a bug report[1] on the freedesktop GitLab, but this may be a more
+> generic problem.
+> 
+> I'm unsure what other "assigned resources" would be below the root that are
+> not covered by the bridge window of equal size on the upstream port of the GPU
+
+The resize now logs the usual culprit for the failure (it didn't earlier):
+
+pci 0030:00:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref]: was not released (still contains assigned resources)
+
+It means the resize would have wanted to release this bridge window to 
+ensure it can be resized (if necessary) but the bridge window has other 
+children pinning the bridge window in place. You can find out what those 
+other children are from the /proc/iomem.
+
+These Intel GPUs have a BAR0 on the built-in PCI switch (likely this one 
+as well but I cannot confirm it with the limited information given) which 
+causes this pinning problem. Can you try if this series from Lucas helps:
+
+[1] https://lore.kernel.org/linux-pci/20250918-xe-pci-rebar-2-v1-1-6c094702a074@intel.com/
+
+(Please check the device ID that has the BAR0 is among the quirked IDs.)
+
+
+If it doesn't help, the commit 3ab10f83e277 ("PCI: Fix finding bridge 
+window in pci_reassign_bridge_resources()") is directly related to BAR 
+resizing. To revert it cleanly, also the commit 85796d20a690 ("PCI: Warn 
+if bridge window cannot be released when resizing BAR") has to be 
+reverted but that's only informational change.
+
+
+If none of those help, it's hard to know which out of the other resource 
+assignment changes caused the regression, at least not until I see more 
+logs.
+
+
+> -- also it would be really cool if it reverted to the old state on failure
+> instead of creating an invalid configuration.
+
+It would, but unfortunately the current PCI core code is mis-structured 
+and would require refactoring so that the resize can restore also the 
+dev's resources as they were.
+
+Curnently, only bridge windows are set as they were by 
+pbus_reassign_bridge_resources() and that may not always result in 
+same, or worse yet, successful assignment of the device BARs. Device 
+resources are currently released by the driver or sysfs interface 
+function, not the core's resize function and that should be to core side 
+to let core to deal with the restore.
+
+Effectively,pci_resize_resource() should be replaced with 
+pci_release_and_resize_resource() that releases relevant dev's resources
+and deals with the restore if rollback is required. This requires moving 
+the resource save/restore from pbus_reassign_bridge_resources() to 
+pci_release_and_resize_resource().
+
+I'd very much want to do this too but I've higher priority items on my 
+list, one of which attempts to resolve these resizable BARs using other 
+way, that is, size the bridge windows considering the maximum size of the 
+BAR right from the start. That would remove the need to try to enlarge 
+BARs afterwards as there won't be more room for them anyway.
+
+> Also, why do we change the BAR assignment while mem decoding is active?
+
+pci_resize_resource() does check for 
+pci_resize_is_memory_decoding_enabled(), do you think that is not enough?
+
+> [1] https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6356
+
+-- 
+ i.
 
 
