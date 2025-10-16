@@ -1,77 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-12935-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12936-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B626BE15BC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 05:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D798BE1A30
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 08:06:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnD294hP2z30Vl;
-	Thu, 16 Oct 2025 14:28:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnHXK6qR5z30Vl;
+	Thu, 16 Oct 2025 17:06:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.50 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760585329;
-	cv=pass; b=cojBt3BPoWzYekY+Ib6ysFZA+zijl014OWqrfN6gfApd/f6FJ3rM+NkOb58ap9nTBAkLLRd/CexZOcQNWqsu/MXGcw/U/xeCvgIL3kppxpWVahfCFgdx/n2nSbmta4r5FQlkCmYtOOZDwvoqRMK4Dp7ADwkJVU7f4cTTdvt2c98B9NJf+Jt6OU1xqVNIaO7zVOljH33Rr/E2Bf0YXOSaObUQbS3JfaZZpxLJ3NBFZrs6UzDd8XwXjXg6E9zprTpTSy85/L0STSx74CFGXPH35zuYWr/o0/7tmjrGF0VKIDlFK6jUoSSXBwxSRZoU2w/hdP5RgmZgeVKc0fj0oWU1pg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760585329; c=relaxed/relaxed;
-	bh=U1QVdd6JW1LVq5T13CF2TXWHmO7bdk1xu1u07tqkK8c=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=YViHpI8a5u7446VAQZ8mjDQuO+sF3EQ2HMiBHL2JqS4FVbq6Bg2n+MDYxzvapCIm79N+hWHirKpV8KdmS3tKc6JIp1tKZEw5FIEz5IeiS/WfPHnP5XJAouVsXqj3bycSC5cBDRFor7cv3NWYAiyZhq4HhGXxmqYJGzYYvEHtzI5Jp9vIMh1z5+1hce+VU1AKv3lPnDPmL/JCIkhdKs2c2n38EMshWH44uEShhNxsEq+Zqr/Qtgdss2YC9EmIfVtwBWg8ec/NFtHZ3s31ZMWMRFtWt/YMSrjs+WPmth7Yt6cjZKAHq8iWtL2lcvRU1yiE4OaHtHO9HWDz8PQP2CQogQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=R/5pbsqG; dkim-atps=neutral; spf=pass (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760594801;
+	cv=none; b=cJ1ZegcPtt8PeyHJe/CueIjjSZ//uFntxPNeTu5c2LfhZoeyoqDcNh664u2hXaIz6TD5vSHmk4x9yhowOD9f/u0jjlODW2GSFYtNu5zFJ0R91VK8cclFjxxpM2y04yeYeXfJioBAptrKIM5a2EdtluQjoQzeYK+jyL/gJ5FMrNwoqr9q+J9a9ZQG15WU5JKmZeaDiGiCozAbKfjAwHlB+bglJvhywA6/UeE3klVVITUt1MJHGE5qmGveKcy6h26M9gy5LbSDHkDzaI6ALrpXZXOkoV0brhu3fCArVIVx9/Uks27Xm9b8vHGxg7NP4e4TD0UJXc82sn7HeQXh/i5RWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1760594801; c=relaxed/relaxed;
+	bh=23BFo5NLUkzmzCmHHTtExAib8hTG4oYZFh0n5xDzJSE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ML/1ZpVeeiq9sdtuQbNL0xYUWkBsT4kPyFFYChFockbw4lTeynsH5R1VxvDhyLny3urn1J+0UtYhb6cBNShKDFRSw3fTJAumVQC4XI4REumj9CEwK8SbkXLLakN/A9ov/I9Nf7Rn3/OYKG6dJzZsB8+YkcoQMmW6ajn+BUg9T9YxDs472tZJPLMROb1gdZL3AWU0lLJW9IhjA7ITATYe93AQTr13w3C2baB9KEjyL3BMwQ7xpSn/ie+TtITYNcjIDO4sqdVqqNFAfVJHt9ts27AooEPQkV4Dh/VNrKqAqAboSnx91Ys+AbE2iUSPOpS8eO4AVRq5N1mLm3SXKML32w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OJ5JqKey; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vishalc@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=R/5pbsqG;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OJ5JqKey;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vishalc@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnD270QlSz2ywC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 14:28:45 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1760585320; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=Du8SE+AQx70knP5bBVWvf1UyPfqlyTXouAxGiB/esD8HkuLeSlYHYBv04ucJY0jVGy
-    rdfnon3jViq1DDUhDXSaMyi2dCZW5Sf8pStHcCHgjvYk0bfC2C61EqNM8xsBdzb9DPDw
-    AwCo77hMK45hfe6haowVPZFJuhH7a1nWu6ZOY6BVF92BwoKZ69b5EPYl4HVHxvhFeTlz
-    s49aQuMqbAZDOwvlMu4alOdTmrQQRpAyjYCaHmBEAbBgfsLXiA4dkYPXOFxQUyDQ5qSQ
-    OvHUzQFzv9bMKwBpyI029hOSsaWoJkLuYy/PslIKmGLPkZX690zd6eP/CL8TLkZSb/am
-    JR/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1760585320;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=U1QVdd6JW1LVq5T13CF2TXWHmO7bdk1xu1u07tqkK8c=;
-    b=fqucTLmLVdqXoSwNWjy76LCF2XjZw7YF+oWRO2uUI79W/ObtXYTSUaN2s4UlXnch5Q
-    NSqnNt/sYSbKkAGlomw+eyMhCP5OONJyExt2EHwQVKISz/s6Wl9H8/B1/sTY6NYWXOD7
-    7C9ArjRhvjui/bNazzdalkjmNEOMERFknaxhh3Dq78Nl5lCNEobflh88jfLp2cS5Qjwq
-    QHUZOY+2YKwDG/gA9Aviru2KUBg6u2c2W4wVOgtDBqFtE7iuxAPaQxtv1K9G0WD6KKCV
-    Sx0+iUqr7WBBO2xkdlkNxS0oXK1zzQVSOPQEgGnZTIOVu0I7NqVmKLfXfaEQW/41E+rE
-    DM2Q==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1760585320;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=U1QVdd6JW1LVq5T13CF2TXWHmO7bdk1xu1u07tqkK8c=;
-    b=R/5pbsqG+oRmSjcLn+iM6jCmmOEnRWvlpSCnbmbuEVjEhT4a41syRZ1QufiSG7cPhO
-    Ucfyyuuxk+ZTwO6/5Wh7y70PFYMVKSAnZROx7FJtBJ9nwZwuVzUHY9eKVVjL5Z++117g
-    bU4oIsOFBljq5csIwdBvKDWoSLdqQM+HGT96tfW7b0eScR4FaLLy9KPtKxGFu4gj10Bp
-    xzHrSsMttCwLbnXsHU+27Tz1Bg314fJ7sNEy5ZrBWLbn6Mb1sQpRf4IJsOFncR8CKphk
-    ZoY6SBFVF9mt/6O2jTjNBAvlwqfAAaTikYT3AXHZmweBPte0lOwsD2kyTNrC4AD3G3St
-    cQsw==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6P1rfO5KiO55fErql7iEPqvUkiut3rDMpXKOGwiWMRFXLr21cvQN8g=="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 53.4.2 AUTH)
-    with ESMTPSA id e2886619G3SdZOK
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 16 Oct 2025 05:28:39 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnHXK0yT2z2ywC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:06:40 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59G0xTrD021081;
+	Thu, 16 Oct 2025 06:06:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=23BFo5
+	NLUkzmzCmHHTtExAib8hTG4oYZFh0n5xDzJSE=; b=OJ5JqKey7JZhTdthd4Q4cf
+	/nJza+emHbNeAs3XTw3IEj7HvDZcYVpW39WP+700xXL4WKORjLvDA/ajdbkoCslv
+	szxBboXcNTepkbn7Z4sjb1nFDvPfPqQQsfH0PSyIQZrF7Z+2mAqnKmA/hftMIWhJ
+	cBHtIvCW3ULc4AQAjxvA2YhbClyIwFxpoxlWQhIDN8qctER3TKvK0MqWIzEX5JqM
+	To74UJJcAZJXdQZr05VEVw5MKCz0h0HniQW4r8CT1SdFux4XylfzqWqXCd1ALcvw
+	8HPh9OwxNnXD5jHVOBjto6UaMgJEiooKz4lL4/Vy/MT012t5qmCxo3NkMDmEpDSQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew07pun-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Oct 2025 06:06:22 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59G2mFo3015010;
+	Thu, 16 Oct 2025 06:06:21 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49r3sjkyt9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Oct 2025 06:06:21 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59G66KO262587366
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Oct 2025 06:06:20 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0AD6E20043;
+	Thu, 16 Oct 2025 06:06:20 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 51F5820040;
+	Thu, 16 Oct 2025 06:06:18 +0000 (GMT)
+Received: from [9.39.26.252] (unknown [9.39.26.252])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Oct 2025 06:06:18 +0000 (GMT)
+Message-ID: <df656b31-d06f-4216-9e34-094e6e54b89b@linux.ibm.com>
+Date: Thu, 16 Oct 2025 11:36:16 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,99 +78,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-Date: Thu, 16 Oct 2025 05:28:28 +0200
-Message-Id: <A1E3F83C-3AE8-43B7-9DCB-6C38C94F8953@xenosoft.de>
-References: <20251015153442.423e2278@bootlin.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
- Bjorn Helgaas <helgaas@kernel.org>, Lukas Wunner <lukas@wunner.de>,
- Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- linux-pci@vger.kernel.org, mad skateman <madskateman@gmail.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
- Darren Stevens <darren@stevens-zone.net>, debian-powerpc@lists.debian.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-In-Reply-To: <20251015153442.423e2278@bootlin.com>
-To: Herve Codina <herve.codina@bootlin.com>
-X-Mailer: iPhone Mail (23A355)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_QP_LONG_LINE,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
-	SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arch/powerpc: Remove .interp section in vmlinux
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, maddy@linux.ibm.com,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        "llvm@lists.linux.dev" <llvm@lists.linux.dev>
+References: <eeaf8fd6628a75d19872ab31cf7e7179e2baef5e.1751366959.git.christophe.leroy@csgroup.eu>
+ <20251013040148.560439-1-vishalc@linux.ibm.com>
+ <2b4a3215-1620-40c9-a00c-ca833ebbb7b6@csgroup.eu>
+ <aOypxKMzsLR5tAtv@linux.ibm.com> <20251015002154.GA2300901@ax162>
+ <aO8XEhMdT19UOPlp@linux.ibm.com> <20251015182754.GA1055324@ax162>
+Content-Language: en-US, en-IN
+From: Vishal Chourasia <vishalc@linux.ibm.com>
+In-Reply-To: <20251015182754.GA1055324@ax162>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: w04b11U9kwOQz219026f-f5VIsSaAmVG
+X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68f08b5e cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=NEAV23lmAAAA:8 a=FSImCwsN6pc2FdypRLQA:9 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX8gEKrMcTbn0Y
+ ba1Ajrou5+Je5z5BZ2kMT+XgHaUeaOzqHRan/Xhs1pMDsth63S6Y3UBPWWXYpJWYfRtxRm1cStr
+ BMqMnVRcdr2IyHhnYpGXcwCSJN8qV7xIzQbnwWVfk/4mEAJBXEXCrwFtZ96VLnma81+YzHua0Zv
+ J0T/l/cjPF5dSyY2QuLMDKEnp2gOScV4wesJ1KURpl+3p78Nhx+eNU51CGsIkeOYwc4hugDZ5lM
+ 7gVwS24rnlEjrk+ndcMJx2ctv2WyyCmXq38nm/h3i2JemKhZdJuXzvc1qt1RcVMUACYmZd7kNgx
+ kNwLJAuLtdLrq9mu/P4s2TbO3Oem7BKE/JKsQ1vUBfDTSodVQCR3wFKeX9mGioZPZLfRTnXxz9u
+ UHk4V3nopURoGbQdJjeiV9j8+NInNQ==
+X-Proofpoint-GUID: w04b11U9kwOQz219026f-f5VIsSaAmVG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-15_07,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
+On 15/10/25 23:57, Nathan Chancellor wrote:
+> On Wed, Oct 15, 2025 at 09:07:54AM +0530, Vishal Chourasia wrote:
+>> Hello Nathan,
+>>
+>> On Tue, Oct 14, 2025 at 05:21:54PM -0700, Nathan Chancellor wrote:
+>>> In this bug report, you mention using LLVM=1. Does the issue happen if
+>>> you use GNU ld (ld.bfd) via LD (i.e., LD=powerpc64le-linux-gnu-ld or
+>>> equivalent) over ld.lld from LLVM=1? This sounds more likely to be a
+>>> linker difference rather than a compiler difference.
+>> Thank you for the insight.
+>>
+>> Yes, when using powerpc64le-linux-gnu-ld linker .interp section is not
+>> emitted.
+>>
+>> Command:
+>> $ make LLVM=1 ARCH=powerpc LD=powerpc64le-linux-gnu-ld -j 8 zImage
+>> $ llvm-readelf -p .comment vmlinux
+>>
+>> String dump of section '.comment':
+>> [     0] clang version 22.0.0git (https://github.com/llvm/llvm-project.git 7314565281ec28b745502c3f429fd431e16673eb)
+>>
+>> $ llvm-readelf -p .interp vmlinux
+>> llvm-readelf: warning: 'vmlinux': could not find section '.interp'
+> Thanks for confirming. Does this fix the issue for you? It appears to
+> work for me.
+>
+> Cheers,
+> Nathan
+>
+> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+> index de6ee7d35cff..15850296c0a9 100644
+> --- a/arch/powerpc/kernel/vmlinux.lds.S
+> +++ b/arch/powerpc/kernel/vmlinux.lds.S
+> @@ -330,7 +330,6 @@ SECTIONS
+>   	}
+>   	.hash : AT(ADDR(.hash) - LOAD_OFFSET) { *(.hash) }
+>   	.gnu.hash : AT(ADDR(.gnu.hash) - LOAD_OFFSET) { *(.gnu.hash) }
+> -	.interp : AT(ADDR(.interp) - LOAD_OFFSET) { *(.interp) }
+>   	.rela.dyn : AT(ADDR(.rela.dyn) - LOAD_OFFSET)
+>   	{
+>   		__rela_dyn_start = .;
 
-> On 15 October 2025 at 03:51 pm, Herve Codina <herve.codina@bootlin.com> wr=
-ote:
->=20
-> =EF=BB=BFHi Christian,
->=20
-> On Wed, 15 Oct 2025 15:14:28 +0200
-> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
->=20
->>> Am 15 October 2025 at 02:59 pm, Herve Codina <herve.codina@bootlin.com> w=
-rote:
->>>=20
->>> Also when it boots, it is not easy to know about the problem root cause.=
+Hello Nathan,
 
->>>=20
->>> In my case, it was not obvious to make the relationship on my side betwe=
-en
->>> my ping timings behavior and ASPM.
->>>=20
->>> Of course 'git bisect' helped a lot but can we rely on that for the aver=
-age
->>> user?
->>>=20
->>> Best regards,
->>> Herv=C3=A9 =20
->>=20
->> I think I will revert these modifications for the RC2.
->=20
-> I don't know what is the future of those modifications but maybe instead
-> of fully reverting them, maybe you could perform calls to
-> - pcie_clkpm_override_default_link_state() and
-> - pcie_aspm_override_default_link_state()
-> only if a new Kconfig symbol is enabled.
->=20
-> Of course this symbols will be disabled by default but if you want some
-> people to test behavior, it could be interesting to have the code
-> available in the kernel.
->=20
-> I don't know, this was just an idea.
->=20
-> Of course, reverting the patch is simpler than adding this new Kconfig
-> symbol.
->=20
-> Best regards,
-> Herv=C3=A9
+It does solve the problem, but with GNU linker it would work even
+without this change.
 
-Hi Herv=C3=A9,
-
-Do you mean an option in the kernel config? If yes, then it is a great idea.=
-
-
-@Mani
-Could you please create an option in the kernel config that enable or disabl=
-e the power management for PCI and PCI Express?
-If yes, then I don=E2=80=99t need to revert the changes due to boot issues a=
-nd less performance.
-
-Just for info: Simon Richter wrote:
-
-Intel B580 on TalosII has trouble growing the BAR with 6.18.
-
-Power management changes should not affect PPC because it is broken anyway =E2=
-=80=94 PCIe bridges are assumed to be managed by OpenFirmware, so the "pciep=
-ort" driver is not registered, so bridges have no power management, so downs=
-tream devices cannot enable it either.
-
-- - -
-
-Thanks,
-Christian=
+regards,
+vishalc
 
 
