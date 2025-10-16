@@ -1,76 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-12940-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12941-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61EBBE1F21
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 09:36:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5DABE2087
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 09:53:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnKXM3vgYz30Vl;
-	Thu, 16 Oct 2025 18:36:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnKvr38Qzz30Vl;
+	Thu, 16 Oct 2025 18:53:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.53 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760600211;
-	cv=pass; b=FhWkHUIaUHWZA0yJsfscjgwbobVziS2oBgEh3J+6JaJLO5Nl5K51c8JK+iZ7u4/GR+R8bTrpqYLzKnHDUg7theY56kZCJAbgq9dHQMaE2r2Psx9FScfvM949RbYFWV6LgBS0x9fB/H0ZEC6Wz68LBDGFA+hXeCkgYLEzJTZaEjlgfl+m4ekWDR6PFHVRgLMIM3UXKnj+568d5VSf5Jd7xRsaJq2GIdjT+7v5OIcN0s1o1MW5XjDXsjA7KOsEBzrRf01R1neiDszhpC6NnvKy8cHfLfqp0vez6v7G1jw3anCRtHA8R7DCYla+jT56jDqzoAGMIEeWfZ4JDSTvYTrWuQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760600211; c=relaxed/relaxed;
-	bh=omfRFwFuup0ZF5Z4dN/shtcrXqUiRc+J4Lic1C/QBrM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Cc:Date:
-	 Message-Id:References:To; b=ZV38KKnQXb3VukBU8LApMga68euQwm3S3iIDViTe8fdhyxtFnobR3d+BMdMymBWfKGywJEUwqwwy9atWPBrgCSGS+pVNt3QdnA6QNWQeHJjPv5MGkHY7iETmvclfDdVjFg4ccA5RUql6tFRLOmPW3L3fxUWH8q7vytS7eSNc7QJIVJYcXEMyAp+8hFvIHwBYskUWCQFo1Zi/WMf3eDQk+Ho1SMyRLFH/F54SFJqBSUF9L8Ss7K7P7QbL2lf9YEdJlj1aPSTVZTXgQNW6bKMcpfjZynW5hhplT7s9Wtvl1GNdc7+y12SCfzGBdDyaU8F4HGoBe0cJdrPlFDFpnJp4mw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=MS0eFW4D; dkim-atps=neutral; spf=pass (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760601224;
+	cv=none; b=AjmTjbnmiYm0c+oMRV0vdopH85x6ZrY9XTF5CkrT9HYCWSMtzH10OCd7Q+YHuUuu33xCsSB+KkjKwWhKQuTLLp7XCMgNsAOBDtNPolbikyZGSGvqisKOYLS+Jc3l+tLe7m37lgeStLWr3aPKoH5ThOiXjEG7k23wxnNUCRngsmbECOZVv9OW7qDAdRNxDGLeXR525/VyclHG1CwzPnGjWlj1J06krLYMv8EwSK4Ff4w8menLQqennq4gkKq5LOPfy+PavHLekUWjcaCOHkoJNY36WadMipiTRK2bpYcYrTcdywayOjY4l9EA7IKw36lRZ1fdVboY4Hm/LRj1WgJmEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1760601224; c=relaxed/relaxed;
+	bh=N9vXUVvY/tt8WEhxZu/0rrC1AJfLxqkIoKGtV+d9NWQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hHL1UwxZg7wLusuZlP0UH9RI7K6wyPanbuwPVBhd1I/Lhu2s/6W1Wk4hBYhRsZyCTy8aH0JFRbDFDthbZcduu5kOGbRgSFp/rIvwZtE1yUiM69vkTPAdJAzmSn4PlAkQ9CQx36aQIcy2zkUFivORnQ+z8DsxTY3joNC9mhYTu+/ikw58BERf9jMhSssTZvkfTfcKuUYyXxS0zcU0AzAFR/ty21LAs9gQT1lhf/uSI7RjL9qNlelLWMlffXlNlrZiHbQKEWnZDRrA/8RchjiutiHLYoOLLj/kWKZSRlhEB62taDSNrDa9gBwp37I7cC0UcNxBY6R5gDnDNUKs7NY/cg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rjK/FlTf; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=MS0eFW4D;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rjK/FlTf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnKXJ6fYgz2yqq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 18:36:47 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1760600201; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=XoPg3LmvH1Y2JnBFy5C/1RMg2tcpV8KZ7I+e2kTkbuttioh5aJMHrVXJquyxPjnklv
-    jVUeggTjtc6naKywTDJEoza0Z6dVX0gZf+nPXrJgvhkrSL08/n20YkHgClkpIPCZzCvb
-    yHCj2Y5G3ICUPBPMpj95mMsdogYb4YuAJlFbIuXrFqtCeo21EKBWqJkLluiv/gMIx/Fx
-    scZ4a/IyYtbLFL6m005IWZYu9JWBkydw5CcrylMbQs6f9vtIJ9JqhZC2qX7ZT2wPmjOI
-    WfRCIJL9HTuCBSbH6fY/MTC/v3dpS+bQyLXAM0qPvAajYnjeQCyU4emY+FQA6pam+4uW
-    HXKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1760600201;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:References:Message-Id:Date:Cc:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=omfRFwFuup0ZF5Z4dN/shtcrXqUiRc+J4Lic1C/QBrM=;
-    b=cSruyN/cC1tqCk8WLhay9JvQsh2y/KNP161dyn5cVjqF78awys7vJWGHaIalTued3H
-    cw2vRcWElsa72P/30dqurKcbTKY7jDVuU2qOqRpw9QTCNKLG4MNC9kZCV9CxIQRW8C7X
-    kxodUDY0E6TAjDcOO6FhAXd6b+693wweOMT0sEfXW+oaD/nVh0GIsqQffRHtyvnWqRE5
-    Ml3m+7F5ucgjOrsxNyPf2r/JGyNEGj4dxnMO7cmizP8p1tjlTbNArlkKrxgtvTjQV5JO
-    fhSKe/fAbFQrmEdhjC/JatGu2yHmYQ3V6bISwWSVAsjLea3gUTZXJyMBKggzRIJ5DNlS
-    hsDQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1760600201;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:References:Message-Id:Date:Cc:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=omfRFwFuup0ZF5Z4dN/shtcrXqUiRc+J4Lic1C/QBrM=;
-    b=MS0eFW4D1F6Mf96PUwVqFbTvG80yMY2N7jKVm0LiHPo+og31thnBjJn1J1IA+aLLaL
-    QOarNgb1wlOUlY/noxONmeAXASxlswJliW3HUF66JKahHmvkbwebd6KZ89DWFau8bp9A
-    fUWgLdQ7mMW5EWkM17CrLRGjsVq6uECg3uYZqLzG6Dhv3RzUSLfOXxT+HmpNHguRDa5d
-    Nd9P/8oQTZ59YQg19x8L+0Ab4YqfQ/aqx/QH2gEr/vwJymD8XdN1zC39o5cCau79dRxT
-    TLmSy2RbSB2+LDkmt/Ddwns3ip+13034xE8i1CCL61iYcZWE32+z8OGaO2mMBxgZ4Caz
-    dpEg==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5iys3LBXHQhT9oAbY5gi9kPmpZaJCQDfE3RBQ0="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 53.4.2 AUTH)
-    with ESMTPSA id e2886619G7aeaKW
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 16 Oct 2025 09:36:40 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnKvq5d88z2ywC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 18:53:43 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5278D45890;
+	Thu, 16 Oct 2025 07:53:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B175C113D0;
+	Thu, 16 Oct 2025 07:53:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760601221;
+	bh=wjntWI2HpwORrYYs/RF4PW7NcPU8Dt5MGy9i5SPIAJI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rjK/FlTfEWsznCIvFMtEQIQFS2ySLSXHPdSz2VzphShnoqE6oUQVK9EMqzjQsz/7f
+	 VDjvB5CmZjTjYADtWoSuikbC2eYJIOXa2vFVDwTumxOLvtahAT5uKA202s3Xy/fxiK
+	 wF9e6Nctpbi9V+V35n3OVle/lBEWHdaB+2e48ZlBQ8WpXaj9aRNOrssinYUlz2QE5/
+	 29CxiJudPNSNgwNs/Qy3irHCj1fpGJcmpFhdkX0XtE4oWudL2yAHqlYT1tuZq9DDAg
+	 PW/7G1WPL7TE490QYaaso7p81n/Otwa+s0bl/bIMt67ULBDUfdPEjnAAmMnR/+4qiO
+	 f0Ef0Luf1PdSA==
+Date: Thu, 16 Oct 2025 13:23:27 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org, 
+	Lukas Wunner <lukas@wunner.de>, Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, mad skateman <madskateman@gmail.com>, 
+	"R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au, Darren Stevens <darren@stevens-zone.net>, 
+	debian-powerpc@lists.debian.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	Herve Codina <herve.codina@bootlin.com>
+Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
+Message-ID: <oholvk65xtm5wlyfbx7vsi4zpmbuvih3kqblfcvt2yrw6qr5wo@zzpghtqp6cg6>
+References: <A1E3F83C-3AE8-43B7-9DCB-6C38C94F8953@xenosoft.de>
+ <48F07B75-2DF3-4E9A-BC22-ADF1ED96DB06@xenosoft.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,34 +69,26 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <A1E3F83C-3AE8-43B7-9DCB-6C38C94F8953@xenosoft.de>
-Cc: Lukas Wunner <lukas@wunner.de>,
- Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Christian Zigotzky <info@xenosoft.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
- Darren Stevens <darren@stevens-zone.net>, debian-powerpc@lists.debian.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Herve Codina <herve.codina@bootlin.com>
-Date: Thu, 16 Oct 2025 09:36:29 +0200
-Message-Id: <48F07B75-2DF3-4E9A-BC22-ADF1ED96DB06@xenosoft.de>
-References: <A1E3F83C-3AE8-43B7-9DCB-6C38C94F8953@xenosoft.de>
-To: Bjorn Helgaas <helgaas@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, linux-pci@vger.kernel.org
-X-Mailer: iPhone Mail (23A355)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <48F07B75-2DF3-4E9A-BC22-ADF1ED96DB06@xenosoft.de>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Is it possible to create an option in the kernel config that enables or disa=
-bles the power management for PCI and PCI Express?
-If yes, then I don=E2=80=99t need to revert the changes due to boot issues a=
-nd less performance.=
+On Thu, Oct 16, 2025 at 09:36:29AM +0200, Christian Zigotzky wrote:
+> Is it possible to create an option in the kernel config that enables or disables the power management for PCI and PCI Express?
+> If yes, then I don’t need to revert the changes due to boot issues and less performance.
+> 
 
+Wouldn't the existing CONFIG_PCIEASPM_* Kconfig options not work for you? They
+can still override this patch.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
