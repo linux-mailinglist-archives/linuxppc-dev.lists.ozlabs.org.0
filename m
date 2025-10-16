@@ -1,77 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-12944-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12945-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84361BE2E3D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 12:46:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E0CBE3E84
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 16:28:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnPkm1NqTz3bjb;
-	Thu, 16 Oct 2025 21:46:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnVgq5304z3bvd;
+	Fri, 17 Oct 2025 01:28:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.53 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760611568;
-	cv=pass; b=D+d9kzNBFm2iMKtWJQuFNc2iyD0Su6+4+ZEirXLgpcjmWXH1tIc5oxoKdnE9blNpzKMq0IBHohN1zmF74vDTqsqT3OO40DZzgkC6QrPANUpkJMex267ZDFuYBKVHXITTvhA+ZtdklQm3ILTxtdEevWpls+I/1Bu8O7egjqiAYuVCgQVLKQ24pIX9Q1wInUxUa9lp6KL2XWHsaRYOJdt8nDVOWCNlgQ29Z7xFjlNWX3PRRd9BjcQATcMMdaDBIJKK+K7aBwmW46lHYVJPw5NBtD0PKWeptcnfTjkniPIdMi1+FFO9qU/RQ1vImaoQtHgg2wtYnoqy19jZTf+8sQ5Wgw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760611568; c=relaxed/relaxed;
-	bh=0+Eri/TpZ9fsThEcu/LGojwEhPU/LNAxeQR1cKjLRUA=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=aq2WuFG76EYGbHL9k4FexRLzjMhShOCUsTlwj4rsOm9lT0FRL75/7717om+QHNaZnYW8TgiMKx4TqV82HfhZAQSqEWs5Qjx+QvYpX17Ma+EmzbfSgjaLOFmwc4Y95GerFKmMNcQ4jeeNqStUfldsq7cGWj9F/contRQrzt9sCoKhHQcCAT8aVGL2cVQzbHiAdaE119gaPRWUGjTig1VS5coDcW67sp0sCCjyCil6nMT8Hs2+Cx7GRP7pbvhV4RZTyIfcAfc6sHVujWKtgbrD6LfWsU+tvYkfCnONP7d46LjCplOdltwLVygr9d2JYF7pp1IorcUAVtkzh4mfG6N4Yg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Lb9Ayz1D; dkim-atps=neutral; spf=pass (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760624935;
+	cv=none; b=Yw2kxaSW0QmETiRshRDIjeKqsE2bNYxOVP7/tX1RMHwnA5Ns9Y8QrzdXh9mDprev1SWzfuGCzzcg7vCXWOsbmGzPwu25wO7jYxgYxovd/dCURkqotYeSbF+ZPbWSuhGYGAXnUCPJ/u+lhjz5m/rByzdzGGkvHu0AvDfthq56pcajeoiRRTiT7D0Hvtji2PZ/9HvAx64+Pu41CMH+MqIB/wrsGtU2WxfES/NS1oGIBJmOUKWoYciBPfssVg6ByJVjglx0eQYNAeDGE9gdexclxbvVOMwWFpw1sCQNfp8f2I/hcn/6ZHK0d3TnW0WWXGBYak0lyH4Or6YmESaXh7A9qA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1760624935; c=relaxed/relaxed;
+	bh=N6TCUvBIFH9Km535j+F8XX51XzSvyn3JmZRkey0E9jU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YNYlb4bZSlRj2qwQjstnxH1a50VzacF4asMsMLiLjusyOLpK1nqOcpgwk8asgq89DE7AaQVGMcbKpLpTrhXg5/iEusqHmbwGe4FNjSYe2X1zSGGyKRtPpqcDfMH3lTvCmG0MbWyVxnHyQv542fujGnSctFKxYWM3U7N16NgSZU/GBejSN+at1niI3LhYUhDiM5PNxn+gqzysA3GaU0wRKoSRHNAYryOAp7UDwOYWH5GelpJUHzYfkawP6eAjSEP6NMPeREIg+wsMVvuzF9UCBj+RjYrddsosVYVw7uk4lQIhb0RDrCBPI2a5y1dFl0JjyZF2jk/KXUhb/2D19E0Nnw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Xs+GY7nq; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Lb9Ayz1D;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Xs+GY7nq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnPkf0RMmz2yqq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 21:46:00 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1760611511; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=kgRmJhBY+/cZ7Zx+zFdReelCwqYh+oPrLOyMrge3zxrfpu45o1BOz86zaUaqoJRXIC
-    3lXxFvnH/Y55RErTDlVn+ElU9kRHbgyHhx+gXy9zhsNnfeRB8NHtAWNRWNJCy0P27W1o
-    TJGw27DxgXy8EvnWVAX67rTVaM9WgYbZNp/e8H2SFRUQhIwwsiFTHaFIZSjLYCIoN1dJ
-    OjKCZEXSVmJl/IENHn4rLERSW993nU9YnCz1BCM6BwIn4ihV3Lfk1Up00uLEMXFIbHJF
-    z34qaofNCUymv4H4BjS0Y6t3NES7DJEOlic2PvDoOS/pagbnQCgSr7nYwV0mj84c2X2S
-    PsdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1760611511;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=0+Eri/TpZ9fsThEcu/LGojwEhPU/LNAxeQR1cKjLRUA=;
-    b=qdd19+QB1LWdk3ea2PbhmcA908TdutVqXmxQ+0+Y0ZAooa7ubQIGO++hpnXonoAegS
-    ln6utpOa7Q2L/8GW76aRPoVyySGqhbK1j+6JqoSpjyn0Yy1z1Sbf6yGyj9SpO7goJmx1
-    PvMMwE2kgYGKYEtGcXhaSQaWg2wHdCuPD1pVEKbD1nxlrQ9rJes23tUccyVwa7MdC42W
-    k4wTX5G3viZqeCqB+CT4MUvBHIsov//XVENs6sd/EJez3yzeV1ExIWMRGI+hyDQ2PXD0
-    RPrvJM3fkkMiIDJC0rNdtDzbg5yuBXoYX8mg6lIdy96fUrEsuDgmw1lbX0JQaLFW+0Az
-    QEmw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1760611511;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=0+Eri/TpZ9fsThEcu/LGojwEhPU/LNAxeQR1cKjLRUA=;
-    b=Lb9Ayz1DVj/joNBEgULbw3HzrTMSFSYEomV1P29D+NSRTNY4bYtuGbvhGnm48GEtPe
-    2aYYVpYUmrG6BaVRk9rLMaRn109TIm+MVqUG8WMOhGg0WxCz8d/n69rRKQnMcPm2N3+d
-    3fd3U0+rk05Cz+hHGDvfIPlPh7xOc7UWOqP9vXleI9SUXkAB7oJrVF7UL+2m9Jsx45UE
-    sTNq5VQbQdAPsZb15qpGoQOuLHhGlzTPQOl+I6yeTj3MDdyXNQgwutI1Yua8KJf+F59n
-    SrUXJmicTS/7JsnWISxHKhcyOR2wbJr4FAlAtbOrWyLEBs7fuk4nIGoEngCZfhV+V4Gt
-    NIKg==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5iys3LBXHQhT9oAbY5gi9kPmpZaJCQDfE3RBQ0="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 53.4.2 AUTH)
-    with ESMTPSA id e2886619GAj9cdy
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 16 Oct 2025 12:45:09 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnVgp5WGRz2yQH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 01:28:53 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59GAm8WP001407;
+	Thu, 16 Oct 2025 14:28:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=N6TCUvBIFH9Km535j+F8XX51XzSvyn3JmZRkey0E9
+	jU=; b=Xs+GY7nqdj0+1k5lWjeQLPxkL7kHSCW4+/iwN94o1X5kd78iMEM911WNA
+	tBtCIAD5k1/NtGNyG1tJ9HKqhlvd9FZNJ8FxFjQDWTtoOxJuEl1fSESSDQQMxpuH
+	tnmZoyMYssqGvjrqli5GCnNSHHkiBebib9RldkEHp3x6IRwPbdg0SQSnAyERsoTu
+	mgEuaIoEgfG4B9X4pX5icPKJNWAM6YfnocS5RsLqZPh+AiZ0cPuE9bPV42vUr6MU
+	qVtMFtuNX6ryDjh/Bbrm3MrIK5yyBJQ2jVtDYWycnUvwJtRgyZ+Srs+FBR591iPJ
+	3+MowHnSr0TpfgAsutfiMqW/63Z6A==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49rfp865s0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Oct 2025 14:28:41 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59GEP5GX013814;
+	Thu, 16 Oct 2025 14:28:41 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49rfp865rv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Oct 2025 14:28:41 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59GBJkmm015028;
+	Thu, 16 Oct 2025 14:28:40 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49r3sjnyb5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Oct 2025 14:28:40 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59GESaXZ51380616
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Oct 2025 14:28:36 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7265D20148;
+	Thu, 16 Oct 2025 14:28:36 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1AC5B20150;
+	Thu, 16 Oct 2025 14:28:34 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.in.ibm.com (unknown [9.109.204.116])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Oct 2025 14:28:33 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>, Baoquan he <bhe@redhat.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [PATCH] crash: let architecture decide crash memory export to iomem_resource
+Date: Thu, 16 Oct 2025 19:58:31 +0530
+Message-ID: <20251016142831.144515-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,58 +96,162 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-Date: Thu, 16 Oct 2025 12:44:59 +0200
-Message-Id: <6E949EB0-CC46-4B08-80BA-706FBD23D256@xenosoft.de>
-References: <oholvk65xtm5wlyfbx7vsi4zpmbuvih3kqblfcvt2yrw6qr5wo@zzpghtqp6cg6>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
- Lukas Wunner <lukas@wunner.de>,
- Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Christian Zigotzky <info@xenosoft.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
- Darren Stevens <darren@stevens-zone.net>, debian-powerpc@lists.debian.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Herve Codina <herve.codina@bootlin.com>
-In-Reply-To: <oholvk65xtm5wlyfbx7vsi4zpmbuvih3kqblfcvt2yrw6qr5wo@zzpghtqp6cg6>
-To: Manivannan Sadhasivam <mani@kernel.org>
-X-Mailer: iPhone Mail (23A355)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-	autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: VN6n-4cdB3fGC8v1n0JAnjD6jY94qsWV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEyMDA4NCBTYWx0ZWRfXxtWerBGArH7U
+ zHMHpqxZ8tU+A95PdpfIz5fqKAQb1LJSXtLXXz1l4BCk7Ky36lbRJwR5KYQw0/58iyjjSAa/fde
+ VgaMQCHlAyEVI7x1xtqjJICz1pNKiiiPyGL41zy9LPLnOyKdO9Vn5qyi5VuGjxdqnLHJLJMjMIH
+ ENTwvTYtE6hBAY5aBBtoNdKP1dxHsh8Mm11LFfdRnaXMFj3RYpSIGYn6TJs+izvK0XzDf4TgpVk
+ tuHOZQuayRozT8Br4DyWCvxYxN31MiV/UmK9t0UsJ+j5RDm5ua0gt2HKkqGuUVhSdPvBSNK143W
+ iVnnFA8oTlBTZMhgZWinb0JZpsElZuFcKFYE0f/G7qaT0TxiPWqnP+CtFJ/qEGDf8GIvS9jfN7n
+ /6Y4YfVFKST8cPaeO5CV8JB/KacK4w==
+X-Proofpoint-GUID: oR4BFbbA78zC_rTnWXR5gpyNLlsY0sK-
+X-Authority-Analysis: v=2.4 cv=af5sXBot c=1 sm=1 tr=0 ts=68f10119 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=Z4Rwk6OoAAAA:8 a=20KFwNOVAAAA:8 a=pGLkceISAAAA:8 a=JfrnYn6hAAAA:8
+ a=oNOrHKTX8ZNhZH91a0IA:9 a=HkZW87K1Qel5hWWM3VKY:22 a=1CNFftbPRP8L7MoqJWF3:22
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-16_02,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 spamscore=0 adultscore=0 suspectscore=0
+ bulkscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510120084
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+With the generic crashkernel reservation, the kernel emits the following
+warning on powerpc:
 
-> On 16 October 2025 at 09:53 am, Manivannan Sadhasivam <mani@kernel.org> wr=
-ote:
->=20
-> =EF=BB=BFOn Thu, Oct 16, 2025 at 09:36:29AM +0200, Christian Zigotzky wrot=
-e:
->> Is it possible to create an option in the kernel config that enables or d=
-isables the power management for PCI and PCI Express?
->> If yes, then I don=E2=80=99t need to revert the changes due to boot issue=
-s and less performance.
->>=20
->=20
-> Wouldn't the existing CONFIG_PCIEASPM_* Kconfig options not work for you? T=
-hey
-> can still override this patch.
->=20
-> - Mani
->=20
-> --
-> =E0=AE=AE=E0=AE=A3=E0=AE=BF=E0=AE=B5=E0=AE=A3=E0=AF=8D=E0=AE=A3=E0=AE=A9=E0=
-=AF=8D =E0=AE=9A=E0=AE=A4=E0=AE=BE=E0=AE=9A=E0=AE=BF=E0=AE=B5=E0=AE=AE=E0=AF=
-=8D
+WARNING: CPU: 0 PID: 1 at arch/powerpc/mm/mem.c:341 add_system_ram_resources+0xfc/0x180
+Modules linked in:
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-auto-12607-g5472d60c129f #1 VOLUNTARY
+Hardware name: IBM,9080-HEX Power11 (architected) 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+NIP:  c00000000201de3c LR: c00000000201de34 CTR: 0000000000000000
+REGS: c000000127cef8a0 TRAP: 0700   Not tainted (6.17.0-auto-12607-g5472d60c129f)
+MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 84000840  XER: 20040010
+CFAR: c00000000017eed0 IRQMASK: 0
+GPR00: c00000000201de34 c000000127cefb40 c0000000016a8100 0000000000000001
+GPR04: c00000012005aa00 0000000020000000 c000000002b705c8 0000000000000000
+GPR08: 000000007fffffff fffffffffffffff0 c000000002db8100 000000011fffffff
+GPR12: c00000000201dd40 c000000002ff0000 c0000000000112bc 0000000000000000
+GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+GPR20: 0000000000000000 0000000000000000 0000000000000000 c0000000015a3808
+GPR24: c00000000200468c c000000001699888 0000000000000106 c0000000020d1950
+GPR28: c0000000014683f8 0000000081000200 c0000000015c1868 c000000002b9f710
+NIP [c00000000201de3c] add_system_ram_resources+0xfc/0x180
+LR [c00000000201de34] add_system_ram_resources+0xf4/0x180
+Call Trace:
+add_system_ram_resources+0xf4/0x180 (unreliable)
+do_one_initcall+0x60/0x36c
+do_initcalls+0x120/0x220
+kernel_init_freeable+0x23c/0x390
+kernel_init+0x34/0x26c
+ret_from_kernel_user_thread+0x14/0x1c
 
-Hi Mani,
+This warning occurs due to a conflict between crashkernel and System RAM
+iomem resources.
 
-I will try it.
+The generic crashkernel reservation adds the crashkernel memory range to
+/proc/iomem during early initialization. Later, all memblock ranges are
+added to /proc/iomem as System RAM. If the crashkernel region overlaps
+with any memblock range, it causes a conflict while adding those memblock
+regions as iomem resources, triggering the above warning. The conflicting
+memblock regions are then omitted from /proc/iomem.
 
-Thanks,
-Christian=
+For example, if the following crashkernel region is added to /proc/iomem:
+20000000-11fffffff : Crash kernel
+
+then the following memblock regions System RAM regions fail to be inserted:
+00000000-7fffffff : System RAM
+80000000-257fffffff : System RAM
+
+Fix this by not adding the crashkernel memory to /proc/iomem on powerpc.
+Introduce an architecture hook to let each architecture decide whether to
+export the crashkernel region to /proc/iomem.
+
+For more info checkout commit c40dd2f766440 ("powerpc: Add System RAM
+to /proc/iomem") and commit bce074bdbc36 ("powerpc: insert System RAM
+resource to prevent crashkernel conflict")
+
+Note: Before switching to the generic crashkernel reservation, powerpc
+never exported the crashkernel region to /proc/iomem.
+
+Fixes: e3185ee438c2 ("powerpc/crash: use generic crashkernel reservation").
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan he <bhe@redhat.com>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: kexec@lists.infradead.org
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Closes: https://lore.kernel.org/all/90937fe0-2e76-4c82-b27e-7b8a7fe3ac69@linux.ibm.com/
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+---
+ arch/powerpc/include/asm/crash_reserve.h | 8 ++++++++
+ include/linux/crash_reserve.h            | 6 ++++++
+ kernel/crash_reserve.c                   | 3 +++
+ 3 files changed, 17 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/crash_reserve.h b/arch/powerpc/include/asm/crash_reserve.h
+index 6467ce29b1fa..d1b570ddbf98 100644
+--- a/arch/powerpc/include/asm/crash_reserve.h
++++ b/arch/powerpc/include/asm/crash_reserve.h
+@@ -5,4 +5,12 @@
+ /* crash kernel regions are Page size agliged */
+ #define CRASH_ALIGN             PAGE_SIZE
+ 
++#ifdef CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
++static inline bool arch_add_crash_res_to_iomem(void)
++{
++	return false;
++}
++#define arch_add_crash_res_to_iomem arch_add_crash_res_to_iomem
++#endif
++
+ #endif /* _ASM_POWERPC_CRASH_RESERVE_H */
+diff --git a/include/linux/crash_reserve.h b/include/linux/crash_reserve.h
+index 7b44b41d0a20..f0dc03d94ca2 100644
+--- a/include/linux/crash_reserve.h
++++ b/include/linux/crash_reserve.h
+@@ -32,6 +32,12 @@ int __init parse_crashkernel(char *cmdline, unsigned long long system_ram,
+ void __init reserve_crashkernel_cma(unsigned long long cma_size);
+ 
+ #ifdef CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
++#ifndef arch_add_crash_res_to_iomem
++static inline bool arch_add_crash_res_to_iomem(void)
++{
++	return true;
++}
++#endif
+ #ifndef DEFAULT_CRASH_KERNEL_LOW_SIZE
+ #define DEFAULT_CRASH_KERNEL_LOW_SIZE	(128UL << 20)
+ #endif
+diff --git a/kernel/crash_reserve.c b/kernel/crash_reserve.c
+index 87bf4d41eabb..62e60e0223cf 100644
+--- a/kernel/crash_reserve.c
++++ b/kernel/crash_reserve.c
+@@ -524,6 +524,9 @@ void __init reserve_crashkernel_cma(unsigned long long cma_size)
+ #ifndef HAVE_ARCH_ADD_CRASH_RES_TO_IOMEM_EARLY
+ static __init int insert_crashkernel_resources(void)
+ {
++	if (!arch_add_crash_res_to_iomem())
++		return 0;
++
+ 	if (crashk_res.start < crashk_res.end)
+ 		insert_resource(&iomem_resource, &crashk_res);
+ 
+-- 
+2.51.0
 
 
