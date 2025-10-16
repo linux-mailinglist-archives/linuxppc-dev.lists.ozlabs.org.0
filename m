@@ -1,35 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-12939-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12940-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36771BE1EF4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 09:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D61EBBE1F21
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Oct 2025 09:36:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnKRy6l6Xz30Vl;
-	Thu, 16 Oct 2025 18:33:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnKXM3vgYz30Vl;
+	Thu, 16 Oct 2025 18:36:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760599982;
-	cv=none; b=K3+Eo+ImqBdAyVNsKLrOImUIyLo62OkEZ4FAAjSS/GAf5su6gao1frUAYz5yCTPi51dXzBB7cvJ1IkRbOsyCqMxwE3M0uGVyO51S6yR1mwwOKBufLg2A9KxzPmDxiYEfyHiu/T/GbHX/28pLdWc0kMd8eG32Ld7L9AaDbM30mh/74ETB0q53SHHn0siVC/5aBMIQxjjubJz1c+3+gW+EuNyHlKSOZlK6FChLZXe/RZkimyfptywpqPYoaaXbL5CrOyGUAKuac4503xmT8tBRQ33tLeG4EJ276ItmWttnwpEUtyl9ZJOqwNeHOUeIWvAQNNrdx9pDwLTiH7Gvduxuew==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760599982; c=relaxed/relaxed;
-	bh=SK6RxrxNXxRFLxyAYlYq9aaMejSm4vU8SsNeGUxqVQo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cj0ve0h5pKwKiYX+6R3DuVI1N89Yby9FmyYXbwvRwHKZT60MMPXAhUYgkwdadXHbfX2GHQMNR69cZ9G9s0TW4lFZyTZLUwVK/pdye8NN8HKP8k+osG2ItCgLvI66ah3iY4yyVpMGHubL5HT1IIp/EP7zeFrSoRtsdjSDGYGMowqTE5x4JC/IX1irG1R23CEkI3o1RPW1cqfimCbidP1K5xD38uoaNSif3NcgU69HfGwI3n65ulwNBsA9cLZAJkmT9ai5mHP79lYdulVS/csC/jkw78jwcQt9pLTF6WD9erZVTT+ZapKu0PiyFHmZhoJnEm1SGgLOL/GqizSkvLHT6Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnKRy03PYz2yqq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 18:33:00 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B64F21688;
-	Thu, 16 Oct 2025 00:32:20 -0700 (PDT)
-Received: from [10.57.65.134] (unknown [10.57.65.134])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3F1683F6A8;
-	Thu, 16 Oct 2025 00:32:20 -0700 (PDT)
-Message-ID: <54f183bb-33ce-4b9c-91a9-827a6ed198d6@arm.com>
-Date: Thu, 16 Oct 2025 09:32:13 +0200
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.53 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760600211;
+	cv=pass; b=FhWkHUIaUHWZA0yJsfscjgwbobVziS2oBgEh3J+6JaJLO5Nl5K51c8JK+iZ7u4/GR+R8bTrpqYLzKnHDUg7theY56kZCJAbgq9dHQMaE2r2Psx9FScfvM949RbYFWV6LgBS0x9fB/H0ZEC6Wz68LBDGFA+hXeCkgYLEzJTZaEjlgfl+m4ekWDR6PFHVRgLMIM3UXKnj+568d5VSf5Jd7xRsaJq2GIdjT+7v5OIcN0s1o1MW5XjDXsjA7KOsEBzrRf01R1neiDszhpC6NnvKy8cHfLfqp0vez6v7G1jw3anCRtHA8R7DCYla+jT56jDqzoAGMIEeWfZ4JDSTvYTrWuQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1760600211; c=relaxed/relaxed;
+	bh=omfRFwFuup0ZF5Z4dN/shtcrXqUiRc+J4Lic1C/QBrM=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Cc:Date:
+	 Message-Id:References:To; b=ZV38KKnQXb3VukBU8LApMga68euQwm3S3iIDViTe8fdhyxtFnobR3d+BMdMymBWfKGywJEUwqwwy9atWPBrgCSGS+pVNt3QdnA6QNWQeHJjPv5MGkHY7iETmvclfDdVjFg4ccA5RUql6tFRLOmPW3L3fxUWH8q7vytS7eSNc7QJIVJYcXEMyAp+8hFvIHwBYskUWCQFo1Zi/WMf3eDQk+Ho1SMyRLFH/F54SFJqBSUF9L8Ss7K7P7QbL2lf9YEdJlj1aPSTVZTXgQNW6bKMcpfjZynW5hhplT7s9Wtvl1GNdc7+y12SCfzGBdDyaU8F4HGoBe0cJdrPlFDFpnJp4mw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=MS0eFW4D; dkim-atps=neutral; spf=pass (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=MS0eFW4D;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnKXJ6fYgz2yqq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 18:36:47 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1760600201; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=XoPg3LmvH1Y2JnBFy5C/1RMg2tcpV8KZ7I+e2kTkbuttioh5aJMHrVXJquyxPjnklv
+    jVUeggTjtc6naKywTDJEoza0Z6dVX0gZf+nPXrJgvhkrSL08/n20YkHgClkpIPCZzCvb
+    yHCj2Y5G3ICUPBPMpj95mMsdogYb4YuAJlFbIuXrFqtCeo21EKBWqJkLluiv/gMIx/Fx
+    scZ4a/IyYtbLFL6m005IWZYu9JWBkydw5CcrylMbQs6f9vtIJ9JqhZC2qX7ZT2wPmjOI
+    WfRCIJL9HTuCBSbH6fY/MTC/v3dpS+bQyLXAM0qPvAajYnjeQCyU4emY+FQA6pam+4uW
+    HXKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1760600201;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Date:Cc:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=omfRFwFuup0ZF5Z4dN/shtcrXqUiRc+J4Lic1C/QBrM=;
+    b=cSruyN/cC1tqCk8WLhay9JvQsh2y/KNP161dyn5cVjqF78awys7vJWGHaIalTued3H
+    cw2vRcWElsa72P/30dqurKcbTKY7jDVuU2qOqRpw9QTCNKLG4MNC9kZCV9CxIQRW8C7X
+    kxodUDY0E6TAjDcOO6FhAXd6b+693wweOMT0sEfXW+oaD/nVh0GIsqQffRHtyvnWqRE5
+    Ml3m+7F5ucgjOrsxNyPf2r/JGyNEGj4dxnMO7cmizP8p1tjlTbNArlkKrxgtvTjQV5JO
+    fhSKe/fAbFQrmEdhjC/JatGu2yHmYQ3V6bISwWSVAsjLea3gUTZXJyMBKggzRIJ5DNlS
+    hsDQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1760600201;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=To:References:Message-Id:Date:Cc:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=omfRFwFuup0ZF5Z4dN/shtcrXqUiRc+J4Lic1C/QBrM=;
+    b=MS0eFW4D1F6Mf96PUwVqFbTvG80yMY2N7jKVm0LiHPo+og31thnBjJn1J1IA+aLLaL
+    QOarNgb1wlOUlY/noxONmeAXASxlswJliW3HUF66JKahHmvkbwebd6KZ89DWFau8bp9A
+    fUWgLdQ7mMW5EWkM17CrLRGjsVq6uECg3uYZqLzG6Dhv3RzUSLfOXxT+HmpNHguRDa5d
+    Nd9P/8oQTZ59YQg19x8L+0Ab4YqfQ/aqx/QH2gEr/vwJymD8XdN1zC39o5cCau79dRxT
+    TLmSy2RbSB2+LDkmt/Ddwns3ip+13034xE8i1CCL61iYcZWE32+z8OGaO2mMBxgZ4Caz
+    dpEg==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5iys3LBXHQhT9oAbY5gi9kPmpZaJCQDfE3RBQ0="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 53.4.2 AUTH)
+    with ESMTPSA id e2886619G7aeaKW
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Thu, 16 Oct 2025 09:36:40 +0200 (CEST)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -42,72 +83,34 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/13] x86/xen: simplify flush_lazy_mmu()
-To: Dave Hansen <dave.hansen@intel.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-3-kevin.brodsky@arm.com>
- <35d9cf4f-135e-4786-a4e3-fd3a4a18b800@intel.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <35d9cf4f-135e-4786-a4e3-fd3a4a18b800@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <A1E3F83C-3AE8-43B7-9DCB-6C38C94F8953@xenosoft.de>
+Cc: Lukas Wunner <lukas@wunner.de>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+ =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <info@xenosoft.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
+ Darren Stevens <darren@stevens-zone.net>, debian-powerpc@lists.debian.org,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Herve Codina <herve.codina@bootlin.com>
+Date: Thu, 16 Oct 2025 09:36:29 +0200
+Message-Id: <48F07B75-2DF3-4E9A-BC22-ADF1ED96DB06@xenosoft.de>
+References: <A1E3F83C-3AE8-43B7-9DCB-6C38C94F8953@xenosoft.de>
+To: Bjorn Helgaas <helgaas@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, linux-pci@vger.kernel.org
+X-Mailer: iPhone Mail (23A355)
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 15/10/2025 18:52, Dave Hansen wrote:
-> On 10/15/25 01:27, Kevin Brodsky wrote:
->> While at it, we can also avoid preempt_disable() if we are not
->> in lazy MMU mode - xen_get_lazy_mode() should tolerate preemption.
-> ...
->>  static void xen_flush_lazy_mmu(void)
->>  {
->> -	preempt_disable();
->> -
->>  	if (xen_get_lazy_mode() == XEN_LAZY_MMU) {
->> -		arch_leave_lazy_mmu_mode();
->> -		arch_enter_lazy_mmu_mode();
->> +		preempt_disable();
->> +		xen_mc_flush();
->> +		preempt_enable();
->>  	}
-> But xen_get_lazy_mode() does:
->
-> 	this_cpu_read(xen_lazy_mode);
->
-> Couldn't preemption end up doing the 'xen_lazy_mode' read and the
-> xen_mc_flush() on different CPUs?
->
-> That seems like a problem. Is there a reason it's safe?
-
-You're right, I was thinking in terms of task, but xen_mc_flush() does
-operate on the current CPU (and it's called when context-switching).
-Will restore the original order in v4.
-
-- Kevin
+Is it possible to create an option in the kernel config that enables or disa=
+bles the power management for PCI and PCI Express?
+If yes, then I don=E2=80=99t need to revert the changes due to boot issues a=
+nd less performance.=
 
 
