@@ -1,77 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-12999-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13000-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB18BE825D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 12:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8ACBE842F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 13:12:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cp1rJ3nV5z3ccf;
-	Fri, 17 Oct 2025 21:53:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cp2Gw0v6Pz3bpS;
+	Fri, 17 Oct 2025 22:12:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.134.164.104
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760698384;
-	cv=none; b=hcF02P9MbJ3lqvBZTMEr4V0Fq+yZcegZPeFWlRPPXeO9BsU1e9vKIbJspa0FLxUDIbz67TeQJO5fQpoj9T20EUYKZRsX+dtvnHuDHeIfov5JTRW0Ri/0rlFtN4yiC+eNTL1FcWU/3CNlfez2EwQJ1iqFw0KMZNyR0DD7j0zGnMaQ9G8Z/wdyCs6ZEIhzDed+Wz2rLYanBXvbstuJGV2m1BwZlJy6NiF6FzMu04YLq0z+1M9PsJCMsVgfaNeHwhj2b+3dE2+LTbdADpcbV7tGYVnRpZFC/xCjRtqfZ+JhAMY4xfqGn04Hw9b4m8nk3zs7L/3fFsGx2++FpPWd35iaFw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760699560;
+	cv=none; b=QGxLYr0GHdFCmOH+QRTvox1zZ4DtJ+7dq4FDYyUonzDC6Tmbqr5v501O1s1srjcOoilc9xQ5AQUrxNFTJUJB1x1dlpehVP6WxOgsVEmNCD7wL5euUJDL7XBlJBzmdMDbgE5vwXduvEtVw4kP76KG2jUcMULbjamOgSDsJQ+39v5Lp7hNAb3WfKLYPlqysWvuniVSaBYsQlxSiwGfH7aehjK81jreChXVBCnAN3FvnLGwtiLbCq4g3bga6vbMkVtfeL5eeRsH91f4NdxXdhHzF+Zm1cjt5JPOsTJ+vFlgPg7ulnrD2Ff/Mf9h+kDeTcHtEYNv3AcVbmg0d6MT9CiAXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760698384; c=relaxed/relaxed;
-	bh=XK6rShI1laVwxqZnNYg1sUJOrdVDcwamBttA7hfuCSM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=g2cxKINWiPsT41r90nDPp2mKZji0oDm5DFHktSynBQJSRPFvJ0d2rB/8ooDPBBewip9tPQNn0eINoqQJS06dhnu7TUh0oPODRoMbtzeaMshZUA53HeRPmYvKPt5Y7rx4Q17WdhahlYmoqeWCKWLiMkSAbEu9rRZwL1ttURgbGrkzTVFrnMFPj/Pnl3gBxChrtxu4zIg69gcZrsQt1Sw3lSbv7QtQcdOaNHws0b4k61AiZUif4XyWh5AQ0RqGx/zKLk5Be1o/xJE0RI/WdzsqD1Z3pCxp2BDGB+WCpL4s4D6sZwOcWJtvBFajEAOrzTNFEAJop9rZzN4E32/inTaR/g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=inria.fr; dkim=pass (1024-bit key; unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=tn4aYz9l; dkim-atps=neutral; spf=pass (client-ip=192.134.164.104; helo=mail3-relais-sop.national.inria.fr; envelope-from=julia.lawall@inria.fr; receiver=lists.ozlabs.org) smtp.mailfrom=inria.fr
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=inria.fr
+	t=1760699560; c=relaxed/relaxed;
+	bh=8r7krmsVbg9LZSGZHAhgtzNazujSLkD3B3g7V5NcBwY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=mWGr0D+/0ZSFCin4jv/kPdYg3dQbI3OLZFVv/aWnU9QoyuLOw1zvxrRN9y3kEinaZPNvgOK7P/+5CwZUHF+eXwY/iR/GrFcVaMd2Ik9huqirytsQknd3ZtsDasJvBQJ3mM0OFtvJ0/ZVh2RysFmHuudmUQermj8L76/XDy/jX/z8/XbYShKhFVxZ2tKnANKo0YfusEq5egViaXwhWckey3ZrKiCWI7lRe0rvRifo6Zac+ldu0MXJSqDLg5rsxxH6QFIXn62nfY6b+NKpQaw+Stg3pNPErqcsms6hifrADOsfM61IKLWF/ZLOmv+S1/ASHcjqiU7tAgGpYP9JECSBBQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dwf9SVgx; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=26gxJBd+; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=tn4aYz9l;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dwf9SVgx;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=26gxJBd+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=inria.fr (client-ip=192.134.164.104; helo=mail3-relais-sop.national.inria.fr; envelope-from=julia.lawall@inria.fr; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Fri, 17 Oct 2025 21:53:01 AEDT
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 3816 seconds by postgrey-1.37 at boromir; Fri, 17 Oct 2025 22:12:39 AEDT
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cp1rF2GKWz3ccF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 21:53:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=XK6rShI1laVwxqZnNYg1sUJOrdVDcwamBttA7hfuCSM=;
-  b=tn4aYz9lmkDrc4N/iK2W/dM81CNjYMahGWFcq4rSfyrAOMJ30S0qvU5x
-   DDrS1DB49dy9J+mDsmpdTC6EmQpk42hAVCNU91tBng/7RP3/kJKfUQYys
-   dvZSuay+w3oYltOCgaKnt47F1KY4PVI6Z3oE5kX432CUOCAhWVjp27mxF
-   g=;
-X-CSE-ConnectionGUID: TVVds0QUR5GM1FOFhwN2PA==
-X-CSE-MsgGUID: 9dq6U7JzTjaJHe2aNq8FFA==
-Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=julia.lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="6.19,236,1754949600"; 
-   d="scan'208";a="128490637"
-Received: from bb116-15-226-202.singnet.com.sg (HELO hadrien) ([116.15.226.202])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 12:51:38 +0200
-Date: Fri, 17 Oct 2025 18:51:31 +0800 (+08)
-From: Julia Lawall <julia.lawall@inria.fr>
-To: Thomas Gleixner <tglx@linutronix.de>
-cc: LKML <linux-kernel@vger.kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>, 
-    Nicolas Palix <nicolas.palix@imag.fr>, kernel test robot <lkp@intel.com>, 
-    Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
-    Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org, 
-    Madhavan Srinivasan <maddy@linux.ibm.com>, 
-    Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-    Christophe Leroy <christophe.leroy@csgroup.eu>, 
-    linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, 
-    Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org, 
-    Heiko Carstens <hca@linux.ibm.com>, 
-    Christian Borntraeger <borntraeger@linux.ibm.com>, 
-    Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org, 
-    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-    Andrew Cooper <andrew.cooper3@citrix.com>, 
-    Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, 
-    Davidlohr Bueso <dave@stgolabs.net>, 
-    =?ISO-8859-15?Q?Andr=E9_Almeida?= <andrealmeid@igalia.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, 
-    Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-    linux-fsdevel@vger.kernel.org
-Subject: Re: [patch V3 09/12] [RFC] coccinelle: misc: Add scoped_masked_$MODE_access()
- checker script
-In-Reply-To: <20251017093030.378863263@linutronix.de>
-Message-ID: <46ea566b-6c42-a73-31da-ba15ed82aaf@inria.fr>
-References: <20251017085938.150569636@linutronix.de> <20251017093030.378863263@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cp2Gv14HBz2xQ5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 22:12:39 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1760699551;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8r7krmsVbg9LZSGZHAhgtzNazujSLkD3B3g7V5NcBwY=;
+	b=dwf9SVgx1Zm1Pjequ3PR4+DL9xU+zQkUKo/qkUoLgcEfT5hWjmoO+A9ILNUIdfH3PCBjcm
+	kjHuIgzpSkUwpYij4l2LrTCRzQ2kOF14XCm2thcKmeyb4xvWKLv4pS9XDX+TSJMhsmM3xZ
+	uJd47j3quh7ZP3eF0SSZHcrgy0w23wDuwgQVoKuxn37DVakJ9pvBRscWEovVvfQBQMLfzo
+	ZDoCCebSSI7JLCizkNXDwjf37GRsNaYiN4YTYgmYyBOmkYv+luhDR3r613BYkEG6UQ4xEp
+	iYq38/MAPfL1wPgY02WJkbXSgs57Re0RYgWYpTOXPn8w5sJohJ8UT9mds3BzsQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1760699551;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8r7krmsVbg9LZSGZHAhgtzNazujSLkD3B3g7V5NcBwY=;
+	b=26gxJBd+HlY8L8NbIT72iVZHqcHJxgQgi0oCm2WnVTtFtLjxOCcaf7Awkdf4HoaO1nfGV0
+	R6vqEwqGMtDc68AQ==
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
+ Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, kernel test robot
+ <lkp@intel.com>, Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org, Linus Torvalds
+ <torvalds@linux-foundation.org>, x86@kernel.org, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
+ Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org, Paul
+ Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, linux-s390@vger.kernel.org, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Andrew Cooper
+ <andrew.cooper3@citrix.com>, Julia Lawall <Julia.Lawall@inria.fr>, Nicolas
+ Palix <nicolas.palix@imag.fr>, Darren Hart <dvhart@infradead.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, =?utf-8?Q?Andr=C3=A9?= Almeida
+ <andrealmeid@igalia.com>
+Subject: Re: [patch V3 12/12] select: Convert to scoped masked user access
+In-Reply-To: <20251017103554.GY4067720@noisy.programming.kicks-ass.net>
+References: <20251017085938.150569636@linutronix.de>
+ <20251017093030.570048808@linutronix.de>
+ <20251017103554.GY4067720@noisy.programming.kicks-ass.net>
+Date: Fri, 17 Oct 2025 13:12:29 +0200
+Message-ID: <874irx234y.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,158 +89,20 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-On Fri, 17 Oct 2025, Thomas Gleixner wrote:
-
-> A common mistake in user access code is that the wrong access mode is
-> selected for starting the user access section. As most architectures map
-> Read and Write modes to ReadWrite this goes often unnoticed for quite some
-> time.
+On Fri, Oct 17 2025 at 12:35, Peter Zijlstra wrote:
+> On Fri, Oct 17, 2025 at 12:09:18PM +0200, Thomas Gleixner wrote:
+>> -		unsafe_get_user(to->p, &from->p, Efault);
+>> -		unsafe_get_user(to->size, &from->size, Efault);
+>> -		user_read_access_end();
+>> +		scoped_masked_user_rw_access(from, Efault) {
 >
-> Aside of that the scoped user access mechanism requires that the same
-> pointer is used for the actual accessor macros that was handed in to start
-> the scope because the pointer can be modified by the scope begin mechanism
-> if the architecture supports masking.
->
-> Add a basic (and incomplete) coccinelle script to check for the common
-> issues. The error output is:
->
-> kernel/futex/futex.h:303:2-17: ERROR: Invalid pointer for unsafe_put_user(p) in scoped_masked_user_write_access(to)
-> kernel/futex/futex.h:292:2-17: ERROR: Invalid access mode unsafe_get_user() in scoped_masked_user_write_access()
->
-> Not-Yet-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Julia Lawall <Julia.Lawall@inria.fr>
-> Cc: Nicolas Palix <nicolas.palix@imag.fr>
-> ---
->  scripts/coccinelle/misc/scoped_uaccess.cocci |  108 +++++++++++++++++++++++++++
->  1 file changed, 108 insertions(+)
->
-> --- /dev/null
-> +++ b/scripts/coccinelle/misc/scoped_uaccess.cocci
-> @@ -0,0 +1,108 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/// Validate scoped_masked_user*access() scopes
-> +///
-> +// Confidence: Zero
-> +// Options: --no-includes --include-headers
-> +
-> +virtual context
-> +virtual report
-> +virtual org
-> +
-> +@initialize:python@
-> +@@
-> +
-> +scopemap = {
-> +  'scoped_masked_user_read_access_size'  : 'scoped_masked_user_read_access',
-> +  'scoped_masked_user_write_access_size' : 'scoped_masked_user_write_access',
-> +  'scoped_masked_user_rw_access_size'    : 'scoped_masked_user_rw_access',
-> +}
-> +
-> +# Most common accessors. Incomplete list
-> +noaccessmap = {
-> +  'scoped_masked_user_read_access'       : ('unsafe_put_user', 'unsafe_copy_to_user'),
-> +  'scoped_masked_user_write_access'      : ('unsafe_get_user', 'unsafe_copy_from_user'),
-> +}
-> +
-> +# Most common accessors. Incomplete list
-> +ptrmap = {
-> +  'unsafe_put_user'			 : 1,
-> +  'unsafe_get_user'			 : 1,
-> +  'unsafe_copy_to_user'		 	 : 0,
-> +  'unsafe_copy_from_user'		 : 0,
-> +}
-> +
-> +print_mode = None
-> +
-> +def pr_err(pos, msg):
-> +   if print_mode == 'R':
-> +      coccilib.report.print_report(pos[0], msg)
-> +   elif print_mode == 'O':
-> +      cocci.print_main(msg, pos)
-> +
-> +@r0 depends on report || org@
-> +iterator name scoped_masked_user_read_access,
-> +	      scoped_masked_user_read_access_size,
-> +	      scoped_masked_user_write_access,
-> +	      scoped_masked_user_write_access_size,
-> +	      scoped_masked_user_rw_access,
-> +	      scoped_masked_user_rw_access_size;
-> +iterator scope;
-> +statement S;
-> +@@
-> +
-> +(
-> +(
-> +scoped_masked_user_read_access(...) S
-> +|
-> +scoped_masked_user_read_access_size(...) S
-> +|
-> +scoped_masked_user_write_access(...) S
-> +|
-> +scoped_masked_user_write_access_size(...) S
-> +|
-> +scoped_masked_user_rw_access(...) S
-> +|
-> +scoped_masked_user_rw_access_size(...) S
-> +)
-> +&
-> +scope(...) S
-> +)
-> +
-> +@script:python depends on r0 && report@
-> +@@
-> +print_mode = 'R'
-> +
-> +@script:python depends on r0 && org@
-> +@@
-> +print_mode = 'O'
-> +
-> +@r1@
-> +expression sp, a0, a1;
-> +iterator r0.scope;
-> +identifier ac;
-> +position p;
-> +@@
-> +
-> +  scope(sp,...) {
-> +    <+...
-> +    ac@p(a0, a1, ...);
-> +    ...+>
-> +  }
+> Should this not be: scoped_masked_user_read_access() ?
 
-This will be more efficient and equally useful with <... ...>
-Using + requires that there is at least one match, which has a cost.
-
-julia
-
-
-> +
-> +@script:python@
-> +pos << r1.p;
-> +scope << r0.scope;
-> +ac << r1.ac;
-> +sp << r1.sp;
-> +a0 << r1.a0;
-> +a1 << r1.a1;
-> +@@
-> +
-> +scope = scopemap.get(scope, scope)
-> +if ac in noaccessmap.get(scope, []):
-> +   pr_err(pos, 'ERROR: Invalid access mode %s() in %s()' %(ac, scope))
-> +
-> +if ac in ptrmap:
-> +   ap = (a0, a1)[ptrmap[ac]]
-> +   if sp != ap.lstrip('&').split('->')[0].strip():
-> +      pr_err(pos, 'ERROR: Invalid pointer for %s(%s) in %s(%s)' %(ac, ap, scope, sp))
->
->
+Of course. The wonders of copy & pasta ....
 
