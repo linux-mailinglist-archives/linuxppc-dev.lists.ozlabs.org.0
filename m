@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-12967-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12968-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F26BE5ED3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 02:35:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13AEBE5EDF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 02:35:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnm5G5xGVz3dKR;
-	Fri, 17 Oct 2025 11:33:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnm5J1Xldz3dLY;
+	Fri, 17 Oct 2025 11:33:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::649"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760661202;
-	cv=none; b=DCrVucxiGge5i9gMqtWqgGFCiVrzmWPhPGenfae9+ZCG2yYmWQt3OslakeRnkgzgg0sd0bFcQt2yKBrE34JLql/FcZ5x8onZnHbp0l4EoXX+hprSW9zWZ3tmciSziq059jG70v757yivSYdttsG8sFKbUQFDsxnrw1VFWB1KocjyHos08VFGko3MNLfadub/8pPUVN8OuU85XlBQgRkUFFWvOtKwKIsFyQyAymtcKlb2J17aGMb+oxoI9GEiLHgU5HvMfDrO1/RMeq99JQbCTN/eGevHjhcwUqmmAnCasl6Yc+fFQ1gZ+esxUkcY72sE3eiaceUUWMOVxIJV4GZkjw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760661204;
+	cv=none; b=F7QdYYt8j6bbySyXEaTHq0NbPa3CnLbX2FQdVnCrvC2k/mQ4RhZ6+oWk5yey/rHM9CEugaBiPPWeZF4cDF5vox7Npx/7W5GIQbC3fuptEwNs3+TmcptHzWWYKsVxaYi3hPFj5O7cCdoeMZdAukjcVQopBh5hiDqp2IfwdA6kFkOrH03GctnZmyasd3UQq2Lw2JY1rbO2nJz8Rr6GJ+byJHXw03N0PptWYD5IV2NL7cfrZ7HLER/IKH1wei2B3A8M3fKKLtXeFN+D4jxFvigi/xyIe2UNqBzg5UVsYujuJK+6/0bzh5UI8tigRO23KB/V73dANGAwqGR0oUE3FXaYqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760661202; c=relaxed/relaxed;
-	bh=Et3yNXLGMeuamTbAzxTVAbjwKav6YdsiHYhgXHS+lqo=;
+	t=1760661204; c=relaxed/relaxed;
+	bh=6nFGgJBVWEpkJy+c6A8c/BAOcJuYsJfcEhqI0sTwd+k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZcuiyKbOwlcuxkOq0DKOupQUbQ6rkpzTK/dLexXWOej7avePYtdvMzGrlI5321RTaHTudzhqZxEfvo2KiC2uk+FjjlmyQCzFe40kf/IQociFooqgFwVMFn98OTVMNc4ELEQodhj1AIyE2x64kxedn27CTr/F/Om/cPu7eayWS7h+OqE7hsqMIiri7axatIo28WyTOsvMiDVKnc1cCz76PJ25sh1QLDLDnrHMc1G6FD/dE6r7BA+vq5dIkHqMCRafeDbFAtyteswohf0M4cKLUyy4ZiJgRNjpJKHdx6xx0nF6Bb/+412D7MI+P6n4Bib8T8tgYRRQxtgc78P3vEDH+A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JfDie63G; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=30i7xaaykdamvhdqmfjrrjoh.frpolqx0ssf-ghyolvwv.r2odev.ruj@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=ZeFzR92nv0LSD4vXtovsKMdfoJrXtEAQWFKdctBx3/oas45MxzvqiNyvtXkdtYgjlqbwnk7WzgFfbIDhokLQm7HnDvGaBbPzUlQSlQUvI6kiY0/Ot/xv8vRJhHyud3H4UHmXRUels/sEQM/x3R6OOx2ppjqt0Rtose0TxBLAy+WABHveTLK7MDgyJu4lIW1zAMQZVqaTi1pehl91685t+6mXcO+Ky53JkUx/keFrG4XZQIxZGXwf/HhYZzCKBZHdV8ge4fp9Lh43OzQ9uCK3YgdgshKIy6OdzCUp1w/VP3HHGouE5pDLITxPghxevM0nO4VJplznC9D+nrJp8kdvIg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=s+8Cc8Mh; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=30y7xaaykdaqwierngksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JfDie63G;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=s+8Cc8Mh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=30i7xaaykdamvhdqmfjrrjoh.frpolqx0ssf-ghyolvwv.r2odev.ruj@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=30y7xaaykdaqwierngksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnm5G0hx2z3dK8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 11:33:22 +1100 (AEDT)
-Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-269af520712so16811855ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:33:22 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnm5H3FSJz3dLK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 11:33:23 +1100 (AEDT)
+Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-33bcb7796d4so677235a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:33:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760661200; x=1761266000; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1760661202; x=1761266002; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=Et3yNXLGMeuamTbAzxTVAbjwKav6YdsiHYhgXHS+lqo=;
-        b=JfDie63GW4xsgqXTIMDx24U98SoBkA0baWccmx0VeXG+4D1rNLt6EQvPb56bI/DGB/
-         0Q9rW9a/tcz9X8UOcJR6cEPSENDO1ZFS7radb/xKFzQKXqaNmHqtu+IXT0OpkHN7jqjC
-         Q8aFLiZFAOXfkjO3/0G0B4H6ztfQ0qdmz0YFx8Fv7Fa4CR+YSRpIj/NtL2by/UAOOFlY
-         74hPdmvOLvmMZ8isZjronBl6KDdt3BIROZgICkoCcEhGcQFYI3B/jJsVQQ1yeJ4IZQ4j
-         Quca+Tkr6PaBKKzEEbA/EPhs57uicBVrhmf+L7VPXlvw08ysczWX3EEixjPb+mxPWDay
-         o/OQ==
+        bh=6nFGgJBVWEpkJy+c6A8c/BAOcJuYsJfcEhqI0sTwd+k=;
+        b=s+8Cc8Mh9HOS3nl5JrJVfxEGYM6QW2M2ZyFyLV7+sVUARfamdRgiLGJNgAl9oOGNAW
+         xzVeo4CFjSeA1s6pw6/iMoMEQffawzPStXIIVQ8OTId6NK1zxiWSg8fgBHPPbGbX81C2
+         amBHtaUXndYBdoCIABqux4DnmaV25eBxTMWX2P1c/5FVAuTM7su7NyIxt7Dp8/GAH0ck
+         XSWwGiJDAcNzd4+nX7XotKtXBFp6kxDoKXOft30Toe+wyr5oX05fBHe5ugTLOG4qVnVB
+         Ic1+6x3t5VOYAIualwK32O4layNWNzf3paBA+E8NLH/ly+N6ienm72+8WGfLmSqEqsPX
+         kbYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760661200; x=1761266000;
+        d=1e100.net; s=20230601; t=1760661202; x=1761266002;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Et3yNXLGMeuamTbAzxTVAbjwKav6YdsiHYhgXHS+lqo=;
-        b=DjxpTEK3N6tDg0pmI191zTd7DHTGKSjOdqQ0i5Wos3doL2TtVU4Sta4iUzjZ2JrMUU
-         W2tQNTw5DFuScXzlmvj95v+f/Ze+ZGPs50dZP4cRR0vbHG4BESXIAN/jcgFWtIXtRG/G
-         yV1mkCt38y+P8k7l3vvfikVUubHF9OQ2obI88aTnK6Dg7xGX6y4g8rz0KvU+HynQYixY
-         ubLqEbrQc4xOws62GDOEovOFmOW7kfcsX3PWAUM5FHFT6wMYj5mtM1wwMfQi6GLn0yoy
-         dDQY2u8d0LozNqZ368fV0Tjm/eFfpQkn9K0a1DcWk62N9CKYRRWHYv4/6FVJN9d+T111
-         wQXA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQi5Azil/18yfJrsiM1nGsbVC2beoUPFqF7jtq0Rkw0zcbdOz0ZCxvabXvXurUBt3TjmVKa1yP07dREgQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxKYmHJnHUGBuj9tHMlj4Wtj8s8gn2fSpJ+Ur5HSaYB+xP8q+bG
-	PdeOgyu+ND9SVmwwbct3nXRcITcyGwtb8YcWm0Q1nAfCfrro3EzzMwHcxY1JXkHDiMbtV7x69wm
-	IE7c/gg==
-X-Google-Smtp-Source: AGHT+IF8DlOutKWl0i8m+B1TfQqXPthFr1585kr7hlu5o2md7/0QzZzZHhKvSNGyUqeTAbPYZaEbqdnIEp8=
-X-Received: from pjbmr8.prod.google.com ([2002:a17:90b:2388:b0:330:49f5:c0a7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e544:b0:26b:5346:5857
- with SMTP id d9443c01a7336-290c9cd4b82mr18056465ad.24.1760661200311; Thu, 16
- Oct 2025 17:33:20 -0700 (PDT)
+        bh=6nFGgJBVWEpkJy+c6A8c/BAOcJuYsJfcEhqI0sTwd+k=;
+        b=rGO6DgwvBoDn8dqSAZVVVaNxe884H5YvIDnMncl681EApBYOsl+2Y52/Sha4XsqeMp
+         hJlsN7SP+9hzxc5S3+nMMLkrI58kVV04KQq+9QgcovcDGG8enSsGeiNIemOiVy94irAq
+         JR6RDVVInfKpIfdVXY7g5RW3shQQQCe//pN4O3NqWN/Cnsm2Gcf65A2YKEnUG86Ivw2L
+         w8KAs1/nknH6CuQWj5tKT03EyD1ymYCZyj7zlEo2zk6wb0at9pRiJxx4bvHZl1daZOQP
+         xnuqULta3ttUEcjZQTnWtUSsD1FtoqtGXCtMHTE8/3yynz9NviqqSOoYeCEGOYcXCxu1
+         GDGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUbgzTfQdjJrIemNQv9ClS4Zmp4l+fT086Z7k8d/FyGuo54dQtOtQN4w6Mpe4ouQ8Ao8EW52D7robnY97o=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YztwBhXmltZ7mCLTgfKen/MCPau/1nPYzlZkianH5XCd4iifd2C
+	bfsnu2qh5cHKrsIfOBoIPlS4iUMJrk4Tt9NHQjG97Gqv6u+9oaTIMN7qTi7cOO+NdYsXrfQ0NM3
+	miUK10A==
+X-Google-Smtp-Source: AGHT+IGwUk2DKc/Clop/mYKkbeytMt0iZD/Bzj0bONucI419CZOE9/NPfh2luTSi9dr6fi1GHUAnQKjomOI=
+X-Received: from pjnu19.prod.google.com ([2002:a17:90a:8913:b0:329:ec3d:72ad])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4fc6:b0:330:6d5e:f17e
+ with SMTP id 98e67ed59e1d1-33bcf8faaeamr1865014a91.24.1760661201850; Thu, 16
+ Oct 2025 17:33:21 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 16 Oct 2025 17:32:36 -0700
+Date: Thu, 16 Oct 2025 17:32:37 -0700
 In-Reply-To: <20251017003244.186495-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -80,9 +80,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20251017003244.186495-1-seanjc@google.com>
 X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <20251017003244.186495-19-seanjc@google.com>
-Subject: [PATCH v3 18/25] KVM: TDX: Derive error argument names from the local
- variable names
+Message-ID: <20251017003244.186495-20-seanjc@google.com>
+Subject: [PATCH v3 19/25] KVM: TDX: Assert that mmu_lock is held for write
+ when removing S-EPT entries
 From: Sean Christopherson <seanjc@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
 	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
@@ -107,43 +107,47 @@ X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-When printing SEAMCALL errors, use the name of the variable holding an
-error parameter instead of the register from whence it came, so that flows
-which use descriptive variable names will similarly print descriptive
-error messages.
+Unconditionally assert that mmu_lock is held for write when removing S-EPT
+entries, not just when removing S-EPT entries triggers certain conditions,
+e.g. needs to do TDH_MEM_TRACK or kick vCPUs out of the guest.
+Conditionally asserting implies that it's safe to hold mmu_lock for read
+when those paths aren't hit, which is simply not true, as KVM doesn't
+support removing S-EPT entries under read-lock.
 
-Suggested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Only two paths lead to remove_external_spte(), and both paths asserts that
+mmu_lock is held for write (tdp_mmu_set_spte() via lockdep, and
+handle_removed_pt() via KVM_BUG_ON()).
+
+Deliberately leave lockdep assertions in the "no vCPUs" helpers to document
+that wait_for_sept_zap is guarded by holding mmu_lock for write.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/tdx.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 2d587a38581e..e517ad3d5f4f 100644
+index e517ad3d5f4f..f6782b0ffa98 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -41,14 +41,15 @@
- #define TDX_BUG_ON(__err, __fn, __kvm)				\
- 	__TDX_BUG_ON(__err, #__fn, __kvm, "%s", "")
+@@ -1711,8 +1711,6 @@ static void tdx_track(struct kvm *kvm)
+ 	if (unlikely(kvm_tdx->state != TD_STATE_RUNNABLE))
+ 		return;
  
--#define TDX_BUG_ON_1(__err, __fn, __rcx, __kvm)			\
--	__TDX_BUG_ON(__err, #__fn, __kvm, ", rcx 0x%llx", __rcx)
-+#define TDX_BUG_ON_1(__err, __fn, a1, __kvm)			\
-+	__TDX_BUG_ON(__err, #__fn, __kvm, ", " #a1 " 0x%llx", a1)
+-	lockdep_assert_held_write(&kvm->mmu_lock);
+-
+ 	err = tdh_mem_track(&kvm_tdx->td);
+ 	if (unlikely(tdx_operand_busy(err))) {
+ 		/* After no vCPUs enter, the second retry is expected to succeed */
+@@ -1758,6 +1756,8 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
+ 	gpa_t gpa = gfn_to_gpa(gfn);
+ 	u64 err, entry, level_state;
  
--#define TDX_BUG_ON_2(__err, __fn, __rcx, __rdx, __kvm)		\
--	__TDX_BUG_ON(__err, #__fn, __kvm, ", rcx 0x%llx, rdx 0x%llx", __rcx, __rdx)
-+#define TDX_BUG_ON_2(__err, __fn, a1, a2, __kvm)	\
-+	__TDX_BUG_ON(__err, #__fn, __kvm, ", " #a1 " 0x%llx, " #a2 " 0x%llx", a1, a2)
- 
--#define TDX_BUG_ON_3(__err, __fn, __rcx, __rdx, __r8, __kvm)	\
--	__TDX_BUG_ON(__err, #__fn, __kvm, ", rcx 0x%llx, rdx 0x%llx, r8 0x%llx", __rcx, __rdx, __r8)
-+#define TDX_BUG_ON_3(__err, __fn, a1, a2, a3, __kvm)	\
-+	__TDX_BUG_ON(__err, #__fn, __kvm, ", " #a1 " 0x%llx, " #a2 ", 0x%llx, " #a3 " 0x%llx", \
-+		     a1, a2, a3)
- 
- 
- bool enable_tdx __ro_after_init;
++	lockdep_assert_held_write(&kvm->mmu_lock);
++
+ 	/*
+ 	 * HKID is released after all private pages have been removed, and set
+ 	 * before any might be populated. Warn if zapping is attempted when
 -- 
 2.51.0.858.gf9c4a03a3a-goog
 
