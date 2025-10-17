@@ -1,70 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-12981-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12980-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C12BE74DE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 10:56:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0CD5BE7466
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 10:50:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnzFj49rfz3069;
-	Fri, 17 Oct 2025 19:56:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnz6Q5DYvz3069;
+	Fri, 17 Oct 2025 19:50:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=203.254.224.33
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760681004;
-	cv=none; b=IuZWnC9CXMMB4BHygIzZI+QiYK9qv94PVQqdboSpyDXFhpNInZoau4YAx26YIL4R7iC4T3au2cPtIl1DzJlgr0LvVaw/OXT3iVdom870AHeUFfskPjezfqb1hV2TFw4tdUGogPMuzi3+2ogo0R9nMcKladagNgoK8X5IrAqGYtThqayknJuiD3cwSn2vjOQ06ps6nW6H5w1JY2ld8dyT7B7NqGOvFqvklvt7hDxRywyyP9dsWq//PASPYVlrs6bNxrU9TDN20CNmoiZXY2i1MGvVX/9prFl0+F58SGI+zI7oWERAdVASaOgf1ljWIK2Pgp4bziQxwa4AaW9A1+ZBog==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760691006;
+	cv=none; b=Qef7+/T3piLFwFuSzAqbtCbNK3DLQW9ohVOT9UxICM0dqCl8h8K/EoZcQ+0pjKriMVYpK5ZPXMclHwVDQmGAo71HxYWJhkdTZtZzdEJXPXD+cfnha9FnjW96B/i+eTWZ5BkbB2JjQzq47NKWaM4+/cZWicZuBxsU1iVMBCBetoMklo+wstkS38690ASndLFy/unjo/Tp91l0LMCu5aIx8UZJWH1XhSC9uib0EVLITAj0Pz0h2H74DhzYuu7jzhtNu5Z/icAlCN1lEjPk/230trijFcTvOrpcrQkRD0zpvZt4jSEpHhqrkcSuMrM9vYfr+C8ELYpbrfuXwcNE0+tb5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760681004; c=relaxed/relaxed;
-	bh=7fM4AzR1nJU2ZM7NlVXiO8tBQaJZuL012ult4XXGHyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
-	 Content-Type:References; b=nkB80IsIHptEo4Hts+/ZAZZoX8s19fMqsYs5Yh8BIU17Ot3QLnkhi0aq69Pr8GpuN3ruwpOGnWV2j4/48Aua8wX5q1YVx9pe/TYQkrYkJD/3j2HtchFXFYH9r35GEDqMwhypYTQyGii6ZXqN1CzAsmqqDdTpHES8HM73DKPlhwysvsmrWCm8LfqL3QTRJUrhk4Ma4VhjBrll9Vi3BAQo81Rr74irdgSxwZmr91+LAQ6cR6sy2zpT16f8UKWry7mZQpufoCGn17Ix0+9/99VU/B9K6qFYYt0RKDJMMEzllz4/4fGknlMvP4R3zM+DDiFSgxPfcSvP+LDo44ErUYpLtQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com; dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=n63Sp1II; dkim-atps=neutral; spf=pass (client-ip=203.254.224.33; helo=mailout3.samsung.com; envelope-from=youngmin.nam@samsung.com; receiver=lists.ozlabs.org) smtp.mailfrom=samsung.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=n63Sp1II;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=203.254.224.33; helo=mailout3.samsung.com; envelope-from=youngmin.nam@samsung.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 457 seconds by postgrey-1.37 at boromir; Fri, 17 Oct 2025 17:03:21 AEDT
-Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnvQ16L5yz2xPx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 17:03:19 +1100 (AEDT)
-Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
-	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20251017055530epoutp03b52e5138d32caddea1632d2802b956e1~vMZ0mdxOA1402614026epoutp03B
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 05:55:30 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20251017055530epoutp03b52e5138d32caddea1632d2802b956e1~vMZ0mdxOA1402614026epoutp03B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1760680530;
-	bh=7fM4AzR1nJU2ZM7NlVXiO8tBQaJZuL012ult4XXGHyo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=n63Sp1IIwOthD6jdaTIkcWJ/vtBOuqyO5JrT9Scy2IM2kWC74eYknvd1xziPgIZ1A
-	 FeZHC2mv+CRdvCImWvKCwrUhjLkGE3r4b0ozERJWSxBCkutZ9WpMkqz50h0oQq0//m
-	 fxAh7BnwIBOsm4VXQFFQxrVWO2i/JJmyKfUJJQcE=
-Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
-	epcas2p3.samsung.com (KnoxPortal) with ESMTPS id
-	20251017055526epcas2p31cac8ee16c0bb46abc3ae7b3eec7b3cc~vMZwktURS1352713527epcas2p3a;
-	Fri, 17 Oct 2025 05:55:26 +0000 (GMT)
-Received: from epcas2p3.samsung.com (unknown [182.195.38.209]) by
-	epsnrtp02.localdomain (Postfix) with ESMTP id 4cnvDs4mMKz2SSKd; Fri, 17 Oct
-	2025 05:55:25 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas2p2.samsung.com (KnoxPortal) with ESMTPA id
-	20251017055524epcas2p2b7cadb80f5d09c4003ccb66d4c39c9dc~vMZvaxaeS2233722337epcas2p2w;
-	Fri, 17 Oct 2025 05:55:24 +0000 (GMT)
-Received: from perf (unknown [10.229.95.91]) by epsmtip1.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20251017055524epsmtip17f2d85c56e9b08636122013814729936~vMZvVgE0t2236022360epsmtip1G;
-	Fri, 17 Oct 2025 05:55:24 +0000 (GMT)
-Date: Fri, 17 Oct 2025 15:01:05 +0900
-From: Youngmin Nam <youngmin.nam@samsung.com>
-To: Juri Lelli <juri.lelli@redhat.com>
-Cc: Shrikanth Hegde <sshegde@linux.ibm.com>, peterz@infradead.org,
-	mingo@redhat.com, vincent.guittot@linaro.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, m.szyprowski@samsung.com,
-	venkat88@linux.ibm.com, jstultz@google.com, d7271.choe@samsung.com,
-	soohyuni.kim@samsung.com, bongkyu7.kim@samsung.com,
-	youngmin.nam@samsung.com, jkkkkk.choi@samsung.com
-Subject: Re: [PATCH] sched/deadline: stop dl_server before CPU goes offline
-Message-ID: <aPHbXxJRUTdkBZVA@perf>
+	t=1760691006; c=relaxed/relaxed;
+	bh=XRlA8wxYmT4T3lHIjrOHkanll5zbsjvfV/g54mtoCXw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=mS3CLM5lO2KgPW/VrdmVrC2bZb63KYtAXpzG36x7iIPKiOryWUUEMdaHGkadCHuRFfNgYpph10Ru7hiUqoIxaksLKskRFFMCMymkCs5WlBFag6caLDBgQoC5uy9J7VwN+kM3dylbPs5+udCfpzUsiLWjQA3hLbi/J1TlKq65PIBb/ZkFItrSrbDtyPEajDDifFUR/VvF/EAI3u1imh0O9JMu8jJa0qhRyW7LAiH1eU6Qehj4yC1LXlTxW1UAo1hT+4tQxlRY8cuIDvKuEqJtTov46mK79EEisuXDi9Q4Ay7qFpIs/Z/rq8NnHH+21Qt3NoJE10inFSbZI6TOJ8m96Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnz6Q07sTz2xQ5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 19:50:04 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cnwvM5bNlz9sSC;
+	Fri, 17 Oct 2025 09:10:23 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ROX6mZqwBn-5; Fri, 17 Oct 2025 09:10:23 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cnwvM4hkJz9sRy;
+	Fri, 17 Oct 2025 09:10:23 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 930D88B773;
+	Fri, 17 Oct 2025 09:10:23 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 1cz_CSRRBRVp; Fri, 17 Oct 2025 09:10:23 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 51AC08B763;
+	Fri, 17 Oct 2025 09:10:23 +0200 (CEST)
+Message-ID: <b41c65b7-db67-48e6-a7ac-609bbc653494@csgroup.eu>
+Date: Fri, 17 Oct 2025 09:10:23 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,90 +57,145 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <aO4Tw1SzNpgWutK8@jlelli-thinkpadt14gen4.remote.csb>
-X-CMS-MailID: 20251017055524epcas2p2b7cadb80f5d09c4003ccb66d4c39c9dc
-X-Msg-Generator: CA
-Content-Type: multipart/mixed;
-	boundary="----PDOc320tARUDg5oiqWLD4tz058SOCZsoCdAHhD7Rt0rJ7P1y=_b9054_"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-cpgsPolicy: CPGSC10-234,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20251017055524epcas2p2b7cadb80f5d09c4003ccb66d4c39c9dc
-References: <20251009184727.673081-1-sshegde@linux.ibm.com>
-	<aO4Tw1SzNpgWutK8@jlelli-thinkpadt14gen4.remote.csb>
-	<CGME20251017055524epcas2p2b7cadb80f5d09c4003ccb66d4c39c9dc@epcas2p2.samsung.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PPC] t1024rdb: CONFIG_KERNEL_START=0x0 equivalent for ppc64
+ (Kernel 3.16.85)
+To: Alex Fetzner <alex@fetzner.me>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <yEcgGewmm_K00goV2VDaiSwPgzZCWcRkHeVowwzmBOkeZHAFjGt6BSjU7ZwRTfKd1cFF6GKshrfTDzQ4LZj65Wkc2S4aPBKKIW6FxvAZ46U=@fetzner.me>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <yEcgGewmm_K00goV2VDaiSwPgzZCWcRkHeVowwzmBOkeZHAFjGt6BSjU7ZwRTfKd1cFF6GKshrfTDzQ4LZj65Wkc2S4aPBKKIW6FxvAZ46U=@fetzner.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-------PDOc320tARUDg5oiqWLD4tz058SOCZsoCdAHhD7Rt0rJ7P1y=_b9054_
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
+Hi Alex,
 
-On Tue, Oct 14, 2025 at 11:11:31AM +0200, Juri Lelli wrote:
-> Hello,
+Le 12/10/2025 à 00:18, Alex Fetzner a écrit :
+> [Vous ne recevez pas souvent de courriers de alex@fetzner.me. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
 > 
-> On 10/10/25 00:17, Shrikanth Hegde wrote:
-> > From: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > 
-> > IBM CI tool reported kernel warning[1] when running a CPU removal
-> > operation through drmgr[2]. i.e "drmgr -c cpu -r -q 1"
-> > 
-> > WARNING: CPU: 0 PID: 0 at kernel/sched/cpudeadline.c:219 cpudl_set+0x58/0x170
-> > NIP [c0000000002b6ed8] cpudl_set+0x58/0x170
-> > LR [c0000000002b7cb8] dl_server_timer+0x168/0x2a0
-> > Call Trace:
-> > [c000000002c2f8c0] init_stack+0x78c0/0x8000 (unreliable)
-> > [c0000000002b7cb8] dl_server_timer+0x168/0x2a0
-> > [c00000000034df84] __hrtimer_run_queues+0x1a4/0x390
-> > [c00000000034f624] hrtimer_interrupt+0x124/0x300
-> > [c00000000002a230] timer_interrupt+0x140/0x320
-> > 
-> > Git bisects to: commit 4ae8d9aa9f9d ("sched/deadline: Fix dl_server getting stuck")
-> > 
-> > This happens since: 
-> > - dl_server hrtimer gets enqueued close to cpu offline, when 
-> >   kthread_park enqueues a fair task.
-> > - CPU goes offline and drmgr removes it from cpu_present_mask.
-> > - hrtimer fires and warning is hit.
-> > 
-> > Fix it by stopping the dl_server before CPU is marked dead.
-> > 
-> > [1]: https://lore.kernel.org/all/8218e149-7718-4432-9312-f97297c352b9@linux.ibm.com/
-> > [2]: https://github.com/ibm-power-utilities/powerpc-utils/tree/next/src/drmgr
-> > 
-> > [sshegde: wrote the changelog and tested it]
-> > Fixes: 4ae8d9aa9f9d ("sched/deadline: Fix dl_server getting stuck")
-> > Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> > Closes: https://lore.kernel.org/all/8218e149-7718-4432-9312-f97297c352b9@linux.ibm.com
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-> > Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> > Tested-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> Hello all,
 > 
-> Looks good to me.
+> I have a legacy product using linux 3.12.19 that I am updating to use linux 4 and eventually 5.
+> The product use an NXT (Freescale) t1024rdb (e5500 processor).
+> I am right now trying to compile a 3.16.85 kernel that works as a stand-in replacement for the existing kernel. The product uses a u-boot load address 0x1000000 (1MB) and flattened device tree address 0x2000000 (2MB). The deployment of this kernel is such that I cannot alter these address.
+> The original uImage header has load address and entry point 0x0.
+> The original vmlinux ELF from the uImage has entry point address 0x0.
 > 
-> Acked-by: Juri Lelli <juri.lelli@redhat.com>
-> 
-> Thanks!
-> Juri
-> 
+> How do I appropriately alter a ppc64 kernel to have entry point 0x0?
+> I can create a uImage header with load and entry point 0x0, but the kernel uses a virtual address 0xc000000000000000 as entry point.
+> I see that 32 bit kernels have the configurable option CONFIG_KERNEL_START, but this is not available for 64 bit.
 
-Hi All,
+Even with the CONFIG_KERNEL_START you can't expect any kernel to have a 
+virtual start address of 0, because the KERNEL needs to be above user space.
 
-Could we expect this patch to address the following issue as well?
+But you shouldn't need that. It is the role of the loader to set the MMU 
+so that the kernel is running with the correct virtual address.
 
-https://lore.kernel.org/all/aMKTHKfegBk4DgjA@jlelli-thinkpadt14gen4.remote.csb/
+I don't understand why you need the virtual starting address of vmlinux 
+to be 0x0.
 
-Thanks,
-Youngmin.
+Here is what I get with ppc64e_defconfig with v6.18-rc1:
 
-------PDOc320tARUDg5oiqWLD4tz058SOCZsoCdAHhD7Rt0rJ7P1y=_b9054_
-Content-Type: text/plain; charset="utf-8"
+CPU:   Unknown, Version: 0.0, (0x00000000)
+Core:  e5500, Version: 2.0, (0x80240020)
+Clock Configuration:
+        CPU0:400  MHz,
+        CCB:400  MHz,
+        DDR:200  MHz (400 MT/s data rate), LBC: unknown (LCRR[CLKDIV] = 
+0x00)
+L1:    D-cache 32 KiB enabled
+        I-cache 32 KiB enabled
+DRAM:  1 GiB
+L2:    disabled
 
+PCI: base address e0008000
+   00:01.0     - 1af4:1000 - Network controller
+PCI1: Bus 00 - 00
 
-------PDOc320tARUDg5oiqWLD4tz058SOCZsoCdAHhD7Rt0rJ7P1y=_b9054_--
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+Hit any key to stop autoboot:  0
+WARNING: adjusting available memory to 30000000
+## Booting kernel from Legacy Image at 02000000 ...
+    Image Name:   Linux-6.18.0-rc1-00010-g179dbcda
+    Image Type:   PowerPC Linux Kernel Image (gzip compressed)
+    Data Size:    7217834 Bytes = 6.9 MiB
+    Load Address: 00000000
+    Entry Point:  00000000
+    Verifying Checksum ... OK
+## Flattened Device Tree blob at e8000000
+    Booting using the fdt blob at 0xe8000000
+    Uncompressing Kernel Image ... OK
+    Loading Device Tree to 03efc000, end 03ffefff ... OK
+random: crng init done
+Activating Kernel Userspace Access Protection
+Activating Kernel Userspace Execution Prevention
+MMU: Supported page sizes
+          4 KB as direct
+       4096 KB as direct
+      16384 KB as direct
+      65536 KB as direct
+     262144 KB as direct
+    1048576 KB as direct
+MMU: Book3E HW tablewalk not supported
+Linux version 6.18.0-rc1-00010-g179dbcda9eb3 
+(chleroy@PO20335.IDSI0.si.c-s.fr) (powerpc64-linux-gcc (GCC) 15.1.0, GNU 
+ld (GNU Binutils) 2.44) #1697 SMP Wed Oct 15 13:47:20 CEST 2025
+OF: reserved mem: Reserved memory: No reserved-memory node in the DT
+Found initrd at 0xc000000004000000:0xc0000000041d1a3b
+Hardware name: QEMU ppce500 e5500 0x80240020 QEMU e500
+printk: legacy bootconsole [udbg0] enabled
+CPU maps initialized for 1 thread per core
+-----------------------------------------------------
+phys_mem_size     = 0x40000000
+dcache_bsize      = 0x40
+icache_bsize      = 0x40
+cpu_features      = 0x0000000300800194
+   possible        = 0x0000000300900394
+   always          = 0x0000000300800394
+cpu_user_features = 0xcc008000 0x08000000
+mmu_features      = 0x000a0010
+firmware_features = 0x0000000000000000
+-----------------------------------------------------
+qemu_e500_setup_arch()
+barrier-nospec: using isync; sync as speculation barrier
+Zone ranges:
+   DMA      [mem 0x0000000000000000-0x000000003fffffff]
+   Normal   empty
+Movable zone start for each node
+Early memory node ranges
+   node   0: [mem 0x0000000000000000-0x000000003fffffff]
+Initmem setup node 0 [mem 0x0000000000000000-0x000000003fffffff]
+MMU: Allocated 2112 bytes of context maps for 255 contexts
+percpu: Embedded 27 pages/cpu s70232 r0 d40360 u1048576
+Kernel command line: noreboot
+Unknown kernel command line parameters "noreboot", will be passed to 
+user space.
+printk: log buffer data + meta data: 131072 + 458752 = 589824 bytes
+Dentry cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)
+Inode-cache hash table entries: 65536 (order: 7, 524288 bytes, linear)
+Built 1 zonelists, mobility grouping on.  Total pages: 262144
+mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+rcu: Hierarchical RCU implementation.
+rcu: 	RCU event tracing is enabled.
+rcu: 	RCU restricting CPUs from NR_CPUS=32 to nr_cpu_ids=1.
+	Tracing variant of Tasks RCU enabled.
+rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
+RCU Tasks Trace: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1 
+rcu_task_cpu_ids=1.
+NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
+mpic: Setting up MPIC " OpenPIC  " version 1.2 at fe0040000, max 1 CPUs
+mpic: ISU size: 256, shift: 8, mask: ff
+mpic: Initializing for 256 sources
+...
+
+Christophe
 
