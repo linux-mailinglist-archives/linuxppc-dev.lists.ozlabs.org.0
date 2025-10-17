@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-12956-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12957-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B2CBE5E8C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 02:33:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AF4BE5E8D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 02:33:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnm4v1xNXz3cmC;
-	Fri, 17 Oct 2025 11:33:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnm4w5jhkz3cns;
+	Fri, 17 Oct 2025 11:33:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::44a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760661183;
-	cv=none; b=JtZ+cI2s+7xFhuSITEH2ssc2YN8oO8aIyvXxjGmK/i6xnWud++AhU6IKvpDyPwsEWQXABlEvtwx2lYN7qkUKjtd5GU2cu/rChmkpqC8KZF4msDqZPZ3TiGVjOSePByATZ8HG/jRwOAg2LHzj/R1AVyURptshZ3Yhnqh596TrkDGNcX7qs1RCEA/yuDAjJB/h2EbpZbfiCzewE6EoxRf9ce0d6owDj5yfVazT++zfxChFLzkTBSOlrtaF9nu/83pMm0FVmld5MNG452+BIcMSui+vKES+KNFeoVTg1E58oWWFTU1+iwzN/heO2uL37VpyekTZ4MjiB9DRgznnAMWoiA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760661184;
+	cv=none; b=HEhz/rALUpN7FsuaabpbQQ1XqbZYJYB9TGDVU+BOa9wRpiRgUfPQx19mGlooje4LNNSdHdfM0uRyX9f/hRLxuBN3WfrnjKMovJBwp85H060l8jxYhGZofzi2TcW/y+eM0iZVUNOCenjP/3tUHG3UAqP6UjTvWyTH6Jui9xaEF5hylaB3cGpOnA2xTbO/KAd8vHciWGaybf3OdrqAMvRf3sZZwxbSwQ5kv6cQ6gG2+7Gj4XK5kMK25DvhH++zzb631A9rJMS2j/b6/gXDlmh+Ih58ExisiJqV3L+48fGliI4xZyv1fcMX2dMiqmO4K0v5qymmtZPx4IDoCfEU3j6PLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760661183; c=relaxed/relaxed;
-	bh=cf8N8Y56G5w6bizwE7Ci0y1MCMFb0ZkjYruE6L135MI=;
+	t=1760661184; c=relaxed/relaxed;
+	bh=EknCUbF2LHWm0fNDNjp+CKNXYZwTUTGxAjt6VludIpM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WaZ14iwBpWQjJMGcNLRJOE0QNsBIeYjthEIv0I/kzH59Rqx+22dF9WJgqPK1hUevrZRMAlUZxCOk9X2MD7sL6ZX9QNhUeTogHiqmUfgOmDt54z6aHvRYRzBdaI8izyh94jp33nzyTPJ/L5LLP6YdgWL2BKf/sVUdAGLrzQaDS7afJZcVo0GK6uUzvaUb7COb9Y1dqqXNJheLyX5OL5pFdkEu+b3Doh4aDDlEY/UC/hwybdX9uBPtgADf15Wb/47un2RtY+hZMD8VCCtRmqO7Pgw0ALEGCdd3QUbhdjhAr8zNZYKpOyoLv/5UO3S9krrL6s7LBrqfbSgmm1kM61hjBw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=m3FPlrya; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::44a; helo=mail-pf1-x44a.google.com; envelope-from=3vi7xaaykdo0htpcyrvddvat.rdbaxcjmeer-stkaxhih.doapqh.dgv@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=dse+fX11qnvvZJRP7Hz0lmkicBS6SJw8TtPW/mR5K4A5j4IOS9WNuwcv8Rtgv7CGhbolV0g27HAxiVunLBZn+Ldp8kISKIr0ZZ9uTTLalhon9GBM/YbW/6QNJA+6bTds5rnLjtEM6NfJdmoc5tlzi437/R89GrWRP4hTfnh3yfm93Knle+BC5Ktp9KRomVkHh/T3umCQxo40EsWsSTGemSn3y20cKazhrkGCmvizuS3LEOwVKtLvr3vmrsSHhRtYUH3Ivn+P++LLUSaq9rEpniJuUgLIECf2nJTrmLv8Pkc86d/lBpJdEr1si4SAKXvmUcKMTJeEEwZchmr2GYiKbQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=TCnGGgms; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3vo7xaaykdo8jvreatxffxcv.tfdczeloggt-uvmczjkj.fqcrsj.fix@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=m3FPlrya;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=TCnGGgms;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::44a; helo=mail-pf1-x44a.google.com; envelope-from=3vi7xaaykdo0htpcyrvddvat.rdbaxcjmeer-stkaxhih.doapqh.dgv@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com [IPv6:2607:f8b0:4864:20::44a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3vo7xaaykdo8jvreatxffxcv.tfdczeloggt-uvmczjkj.fqcrsj.fix@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnm4t3vSFz3cfQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 11:33:02 +1100 (AEDT)
-Received: by mail-pf1-x44a.google.com with SMTP id d2e1a72fcca58-7810e5a22f3so2753604b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:33:02 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnm4w1Spsz3cnc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 11:33:04 +1100 (AEDT)
+Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-3324538ceb0so2396285a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:33:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760661181; x=1761265981; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1760661183; x=1761265983; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=cf8N8Y56G5w6bizwE7Ci0y1MCMFb0ZkjYruE6L135MI=;
-        b=m3FPlrya/tp8MY25/Jc6mvHvC/uULIebovsB2T787zXHVAjKVKx7d96PV7nb3aUlnu
-         jsgDHRuLVJeApPO6Al7+kTkgMtw3B+NHQFLCxl1sq8YC+jkbEvLpNMDE6oyQEkBYX26b
-         DEnZdfKomWf4A9obJJToDIbhnqhQTArryTB02BI73/ZvvyLJPEaWJZVSsvrE2DVhSIM1
-         4EMh4pbZWllJRlmPMzUXmUkJ/5FGVGzBbGwGfsV9uH9W4OvBBfPOzHOwEaMJSA7DLyZx
-         ZwfVGSOi7QeaoUavkLSZPkwPDMNR9kQ7RwQk0PEfoxeez+2L3Q2k1rqkYl3R0qa1pFeW
-         kCZA==
+        bh=EknCUbF2LHWm0fNDNjp+CKNXYZwTUTGxAjt6VludIpM=;
+        b=TCnGGgmsdGJe/7KoGJVTf5Z2UwEBOjC+MqhX0ebf3Ip57XFsKztGYmB0F8/9uilx/r
+         snYWWOMPPZep3RWL4uSfTL/w9fnfQvJfSLmH5ZD5OvANZsUbuZkLr1ec0sZACiZvVF1H
+         kr4yfstOASDHHxSY4rpOZkHRFSOqPLyMZ1V5KR5Yq/ddGunNQVL15iM1aFkAaZKYQsKQ
+         tP1RoJoY/xCjMIj6K/Wo/DbDib2T0KAUipbVAfx7ugTdRkC09y+k20ZgNZXXuf5pNAuz
+         UTtAjAokrqIphPqYKp9hYk7CE6pbI3T+orCk+eMHk0+qvieHuNCKfu/JyOvKvJ5jPwbY
+         HV9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760661181; x=1761265981;
+        d=1e100.net; s=20230601; t=1760661183; x=1761265983;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cf8N8Y56G5w6bizwE7Ci0y1MCMFb0ZkjYruE6L135MI=;
-        b=iXwXIURfsVdn8TiZCJxcB8WuZiVTxR6iUSzk7mcCHaD4+WCQhmvjcFJMgDOHGUrymp
-         nlVQq1btDajxnRssuTow3sobz/0TIlB3bwWugI9NLw/kPMDNrG2NQ3nrtFevDKhqkVQJ
-         UWBBVsOUrBC9w251aKun3lVfzamXhlvBS1M5AZoZfi8K+sPTSOBleuXtaeOjuXyS/H4M
-         89kejmGi062gxmzSr1uTrL6wCWwijU/3mJiv6OHM3fVN2OCKZovMzirLo4S+et7xuaXz
-         YtPtxk2LkB/4H6wWDaYEzequ1PBc93osuisYVyJ1Y9pzwu31o/6BjR42jhouDOgbiydw
-         +zLw==
-X-Forwarded-Encrypted: i=1; AJvYcCW83zUVWxO0n5d7Tzw3H2qr6gQa14m4pwXAVo3dW9oPuwUKInbAtqpPKYwPo5hEirq46jQCzz/WZviztFA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw7Tlt0FY0qkbiQ3i/Z1GBLOZx7nv5Y4u53zF/OsTAWKpAlz0PQ
-	hpwbGXcsZtwF/u/6yiWSWt19q4TbmDy8LgopaaKuJQJOTiNz5rgARwEJPpY/vykWowZge/gnbQl
-	a6vfqCA==
-X-Google-Smtp-Source: AGHT+IFGX/O8rAylXetPrL4mM3U8URlaleqJu641GFX2gsiAqRo0BdBbaKA0U4x8ZGwd9In5RU4acPt36Xo=
-X-Received: from pjbml22.prod.google.com ([2002:a17:90b:3616:b0:339:ae3b:2bc7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:2408:b0:334:a23e:2dff
- with SMTP id adf61e73a8af0-334a858f4e4mr1825671637.25.1760661180701; Thu, 16
- Oct 2025 17:33:00 -0700 (PDT)
+        bh=EknCUbF2LHWm0fNDNjp+CKNXYZwTUTGxAjt6VludIpM=;
+        b=gz3I5dZKxw/VLuh4h46nqk6R/efTtVY5/uCQ5tcIKMMS1ICE6oXLyj5Ki8WE6UGUKz
+         CBC3Yu3/y6lbbKQehyPy7AG0zw8wTooWw24rj3bZPMieK6FtIKtp7QABn2Hc/wmOvz8o
+         v2anFqTBMScabFxGlbaz/lVdMwlv9Okwmvwg7hohmy5IW3fOBoOmnWWVOHHOPmygfa9s
+         8NZOa21VssEFFLP8hHHH350Fje+dH3OpO36cXEhtwnTJzXjZBn/LL4+u7aYAA+nYs3mL
+         IF2dS903/zbQ7zteycHAMcw5pTkwcwBDkrm73X4gi3877jLjG/IUCJyj2uqcxJS0DGY+
+         2P4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWYq34ncfyfEwI1pU0ebfAQAIHjn12kCAz5BDYGm1F9E0n7IxvMtgjkLQYrM4a1ohql/6jwHpor/8N6yDg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwnxYN8GwnEUBB64fLbxA2qkcPR86ZF0afw0zNYLF7BcsiSCH4C
+	7LYyugz2Oe5nyYRkWuzPHUoC/gZbu7BGIsNzJPo5VQhCmVZqVR/s4+iN6XFaAHH+mx58PKNY+/m
+	4iNX37Q==
+X-Google-Smtp-Source: AGHT+IHp0VFuMyv8iYOF0K3G5i6Db3pbnaDLGLxvBIGhE/qWOYmJanCMeHz3uAv5TWFd0pF3pAUnMoqPNCg=
+X-Received: from pjuy20.prod.google.com ([2002:a17:90a:d714:b0:32f:3fab:c9e7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d44c:b0:336:9dcf:ed14
+ with SMTP id 98e67ed59e1d1-33bcf8e3b0emr1878293a91.23.1760661182616; Thu, 16
+ Oct 2025 17:33:02 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 16 Oct 2025 17:32:25 -0700
+Date: Thu, 16 Oct 2025 17:32:26 -0700
 In-Reply-To: <20251017003244.186495-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -80,8 +80,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20251017003244.186495-1-seanjc@google.com>
 X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <20251017003244.186495-8-seanjc@google.com>
-Subject: [PATCH v3 07/25] KVM: TDX: Drop superfluous page pinning in S-EPT management
+Message-ID: <20251017003244.186495-9-seanjc@google.com>
+Subject: [PATCH v3 08/25] KVM: TDX: Return -EIO, not -EINVAL, on a
+ KVM_BUG_ON() condition
 From: Sean Christopherson <seanjc@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
 	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
@@ -106,154 +107,72 @@ X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Yan Zhao <yan.y.zhao@intel.com>
+Return -EIO when a KVM_BUG_ON() is tripped, as KVM's ABI is to return -EIO
+when a VM has been killed due to a KVM bug, not -EINVAL.  Note, many (all?)
+of the affected paths never propagate the error code to userspace, i.e.
+this is about internal consistency more than anything else.
 
-Don't explicitly pin pages when mapping pages into the S-EPT, guest_memfd
-doesn't support page migration in any capacity, i.e. there are no migrate
-callbacks because guest_memfd pages *can't* be migrated.  See the WARN in
-kvm_gmem_migrate_folio().
-
-Eliminating TDX's explicit pinning will also enable guest_memfd to support
-in-place conversion between shared and private memory[1][2].  Because KVM
-cannot distinguish between speculative/transient refcounts and the
-intentional refcount for TDX on private pages[3], failing to release
-private page refcount in TDX could cause guest_memfd to indefinitely wait
-on decreasing the refcount for the splitting.
-
-Under normal conditions, not holding an extra page refcount in TDX is safe
-because guest_memfd ensures pages are retained until its invalidation
-notification to KVM MMU is completed. However, if there're bugs in KVM/TDX
-module, not holding an extra refcount when a page is mapped in S-EPT could
-result in a page being released from guest_memfd while still mapped in the
-S-EPT.  But, doing work to make a fatal error slightly less fatal is a net
-negative when that extra work adds complexity and confusion.
-
-Several approaches were considered to address the refcount issue, including
-  - Attempting to modify the KVM unmap operation to return a failure,
-    which was deemed too complex and potentially incorrect[4].
- - Increasing the folio reference count only upon S-EPT zapping failure[5].
- - Use page flags or page_ext to indicate a page is still used by TDX[6],
-   which does not work for HVO (HugeTLB Vmemmap Optimization).
-  - Setting HWPOISON bit or leveraging folio_set_hugetlb_hwpoison()[7].
-
-Due to the complexity or inappropriateness of these approaches, and the
-fact that S-EPT zapping failure is currently only possible when there are
-bugs in the KVM or TDX module, which is very rare in a production kernel,
-a straightforward approach of simply not holding the page reference count
-in TDX was chosen[8].
-
-When S-EPT zapping errors occur, KVM_BUG_ON() is invoked to kick off all
-vCPUs and mark the VM as dead. Although there is a potential window that a
-private page mapped in the S-EPT could be reallocated and used outside the
-VM, the loud warning from KVM_BUG_ON() should provide sufficient debug
-information. To be robust against bugs, the user can enable panic_on_warn
-as normal.
-
-Link: https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com [1]
-Link: https://youtu.be/UnBKahkAon4 [2]
-Link: https://lore.kernel.org/all/CAGtprH_ypohFy9TOJ8Emm_roT4XbQUtLKZNFcM6Fr+fhTFkE0Q@mail.gmail.com [3]
-Link: https://lore.kernel.org/all/aEEEJbTzlncbRaRA@yzhao56-desk.sh.intel.com [4]
-Link: https://lore.kernel.org/all/aE%2Fq9VKkmaCcuwpU@yzhao56-desk.sh.intel.com [5]
-Link: https://lore.kernel.org/all/aFkeBtuNBN1RrDAJ@yzhao56-desk.sh.intel.com [6]
-Link: https://lore.kernel.org/all/diqzy0tikran.fsf@ackerleytng-ctop.c.googlers.com [7]
-Link: https://lore.kernel.org/all/53ea5239f8ef9d8df9af593647243c10435fd219.camel@intel.com [8]
-Suggested-by: Vishal Annapurve <vannapurve@google.com>
-Suggested-by: Ackerley Tng <ackerleytng@google.com>
-Suggested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-[sean: extract out of hugepage series, massage changelog accordingly]
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/tdx.c | 28 ++++------------------------
- 1 file changed, 4 insertions(+), 24 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 29f344af4cc2..c3bae6b96dc4 100644
+index c3bae6b96dc4..c242d73b6a7b 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1583,29 +1583,22 @@ void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int pgd_level)
- 	td_vmcs_write64(to_tdx(vcpu), SHARED_EPT_POINTER, root_hpa);
- }
- 
--static void tdx_unpin(struct kvm *kvm, struct page *page)
--{
--	put_page(page);
--}
--
- static int tdx_mem_page_aug(struct kvm *kvm, gfn_t gfn,
--			    enum pg_level level, struct page *page)
-+			    enum pg_level level, kvm_pfn_t pfn)
- {
- 	int tdx_level = pg_level_to_tdx_sept_level(level);
+@@ -1621,7 +1621,7 @@ static int tdx_mem_page_record_premap_cnt(struct kvm *kvm, gfn_t gfn,
  	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
-+	struct page *page = pfn_to_page(pfn);
- 	gpa_t gpa = gfn_to_gpa(gfn);
- 	u64 entry, level_state;
- 	u64 err;
  
- 	err = tdh_mem_page_aug(&kvm_tdx->td, gpa, tdx_level, page, &entry, &level_state);
--	if (unlikely(tdx_operand_busy(err))) {
--		tdx_unpin(kvm, page);
-+	if (unlikely(tdx_operand_busy(err)))
- 		return -EBUSY;
--	}
+ 	if (KVM_BUG_ON(kvm->arch.pre_fault_allowed, kvm))
+-		return -EINVAL;
++		return -EIO;
  
- 	if (KVM_BUG_ON(err, kvm)) {
- 		pr_tdx_error_2(TDH_MEM_PAGE_AUG, err, entry, level_state);
--		tdx_unpin(kvm, page);
- 		return -EIO;
- 	}
- 
-@@ -1639,29 +1632,18 @@ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
- 				     enum pg_level level, kvm_pfn_t pfn)
- {
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
--	struct page *page = pfn_to_page(pfn);
+ 	/* nr_premapped will be decreased when tdh_mem_page_add() is called. */
+ 	atomic64_inc(&kvm_tdx->nr_premapped);
+@@ -1635,7 +1635,7 @@ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
  
  	/* TODO: handle large pages. */
  	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
- 		return -EINVAL;
+-		return -EINVAL;
++		return -EIO;
  
--	/*
--	 * Because guest_memfd doesn't support page migration with
--	 * a_ops->migrate_folio (yet), no callback is triggered for KVM on page
--	 * migration.  Until guest_memfd supports page migration, prevent page
--	 * migration.
--	 * TODO: Once guest_memfd introduces callback on page migration,
--	 * implement it and remove get_page/put_page().
--	 */
--	get_page(page);
--
  	/*
  	 * Read 'pre_fault_allowed' before 'kvm_tdx->state'; see matching
- 	 * barrier in tdx_td_finalize().
+@@ -1658,10 +1658,10 @@ static int tdx_sept_drop_private_spte(struct kvm *kvm, gfn_t gfn,
+ 
+ 	/* TODO: handle large pages. */
+ 	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
+-		return -EINVAL;
++		return -EIO;
+ 
+ 	if (KVM_BUG_ON(!is_hkid_assigned(kvm_tdx), kvm))
+-		return -EINVAL;
++		return -EIO;
+ 
+ 	/*
+ 	 * When zapping private page, write lock is held. So no race condition
+@@ -1846,7 +1846,7 @@ static int tdx_sept_free_private_spt(struct kvm *kvm, gfn_t gfn,
+ 	 * and slot move/deletion.
  	 */
- 	smp_rmb();
- 	if (likely(kvm_tdx->state == TD_STATE_RUNNABLE))
--		return tdx_mem_page_aug(kvm, gfn, level, page);
-+		return tdx_mem_page_aug(kvm, gfn, level, pfn);
+ 	if (KVM_BUG_ON(is_hkid_assigned(kvm_tdx), kvm))
+-		return -EINVAL;
++		return -EIO;
  
- 	return tdx_mem_page_record_premap_cnt(kvm, gfn, level, pfn);
- }
-@@ -1712,7 +1694,6 @@ static int tdx_sept_drop_private_spte(struct kvm *kvm, gfn_t gfn,
- 		return -EIO;
- 	}
- 	tdx_quirk_reset_page(page);
--	tdx_unpin(kvm, page);
- 	return 0;
- }
+ 	/*
+ 	 * The HKID assigned to this TD was already freed and cache was
+@@ -1867,7 +1867,7 @@ static int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
+ 	 * there can't be anything populated in the private EPT.
+ 	 */
+ 	if (KVM_BUG_ON(!is_hkid_assigned(to_kvm_tdx(kvm)), kvm))
+-		return -EINVAL;
++		return -EIO;
  
-@@ -1792,7 +1773,6 @@ static int tdx_sept_zap_private_spte(struct kvm *kvm, gfn_t gfn,
- 	if (tdx_is_sept_zap_err_due_to_premap(kvm_tdx, err, entry, level) &&
- 	    !KVM_BUG_ON(!atomic64_read(&kvm_tdx->nr_premapped), kvm)) {
- 		atomic64_dec(&kvm_tdx->nr_premapped);
--		tdx_unpin(kvm, page);
- 		return 0;
- 	}
- 
+ 	ret = tdx_sept_zap_private_spte(kvm, gfn, level, page);
+ 	if (ret <= 0)
 -- 
 2.51.0.858.gf9c4a03a3a-goog
 
