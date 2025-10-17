@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-12969-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12970-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F915BE5EE2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 02:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07439BE5EE8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 02:35:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnm5K5gsQz3dS0;
-	Fri, 17 Oct 2025 11:33:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnm5M23Bzz3dSp;
+	Fri, 17 Oct 2025 11:33:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760661205;
-	cv=none; b=FEo8z1pz4n+ItcEUKkMMVha1LGOTgJCMH0acYmnO2jvAVOgIlhlla6f6uzWMi3m9WrTvFk7HKaFOJnyebaE312xhMMPuokHqvyEq+7qwnmlp4cccANKxsZxMTu127hVs9hk/Z00UOEw3+XOD1qE0c/kFvLDWydm6e9ZuPC+ulODC+9fDLmJ73kOFI4F2BIzjsXLUy229wvHgttt6VinrAcTWMKhQTnowMbw/aSc400qvBkSTxRVz/p9cojon87KSRYng+eRyMAIIC9AEq6FqFQL6wSvkMfsJIWBtlS9jw5u7EhsvSvxag4GXif3R9pX1y5w3x9j6WTU3uHnkAACrag==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760661207;
+	cv=none; b=JzOCe88qR1jhk6q7MfSvU+Br+y9kCpoGQusvq18IrjPWtpqT+6G6zjGXxeytr0gpIaQdQuQiIP5EcsqDf0W1x6HWsCrz7xw07g1vIvhts6gMvquhTm6lXRY9WNYIbY/FjqT64pc4GjPXyzC0mgH+1DpX7bCmtxm4sI2z6RL5NjvhpfOAzDusx/CZmZGMliPEjeN6A6KX31i2ct2TCziCPwTLK6SXX4CLLrJU+NhBM4mbLNzgvNsrCExNDK2YIu1LYnP4Yn4OOpeeBow4dj6XnIAccn+PkgKWL7dhjCyntQc8fj+9dqJLJVdu/hRBmewUJp9Dc7Zwg5Eflc2fOANrAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760661205; c=relaxed/relaxed;
-	bh=jejy5GHiX1n5ZzK7FS/SwKAPXTIMDzw65QOVqYwFQBI=;
+	t=1760661207; c=relaxed/relaxed;
+	bh=G1uT4yQcba8Ntip8LDR4veCehne/0rON+KC3PlpYlbc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gO5eNdId0etE89DxC6OQFSwe5Zn4TGEIGBBKb1DJvCRwad3XzOx78C18jPgs8A1JCZHoA6InSvvzwIA2eDbNbHVo34U3Y79APup+1vXtJ1X6ey/9UypVYrtBXcjtfSUYqXbgN8FqoML3u89M4+l1TXeR+fnwZtGrcet/JoXM1zZS0rqcMakj4GA5oLGjX0h7pVpqbOb8m7VQKU4RNq1m+888ItGRuZHSUONxMwfbOqy7LSWQGuRn2LQuh8RpdSsA8XJbmoWiG6pwwguWu+7YUAp2R+SSBcSE6J76pIFqosEEg9EyiL5HS2PfcYH5bqMgCgSuvxRIdNjwSeJ2FCphmg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QI5STzO6; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3047xaaykdayykgtpimuumrk.iusrot03vvi-jk1royzy.u5rghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=gVqKUhPTlwIclYDyUjkXgY2aryak+/7AcK6uhawOAuldmoWOb+c9OP24c2lddeGqroHUWV7YDTi8a5Npvnn+8KQ3IsBiM7E0U3yjvB1CElZdYUDZogd7FRdXOCSENfP1FD/toO8z2+65LJGlxathmYl/jASUwOuZDyF1trOSSV1FSrMVN0Z0TAOvyg1iSgOocOTJuhryKmXz07JSMVcNNF7Bk9PHOvwSNrlVfsQ3epeltKMOyH0dOOTFpbMLULx9Z05sbGtgvumK4l6QPTLkrl4+S4B8tX5vsB6SDJyXHZT+heugfNbeyHPW66f0PLHCDOIRH/PsHWlvYnUEt5MBZA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=B0zAf9vx; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=31i7xaaykdaczlhuqjnvvnsl.jvtspu14wwj-kl2spz0z.v6shiz.vyn@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QI5STzO6;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=B0zAf9vx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3047xaaykdayykgtpimuumrk.iusrot03vvi-jk1royzy.u5rghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=31i7xaaykdaczlhuqjnvvnsl.jvtspu14wwj-kl2spz0z.v6shiz.vyn@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
 Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnm5K0LGZz3dRg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 11:33:25 +1100 (AEDT)
-Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-32ee157b9c9so1211245a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:33:24 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnm5L4m0Rz3dSg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 11:33:26 +1100 (AEDT)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-32eb18b5659so1156370a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:33:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760661203; x=1761266003; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1760661205; x=1761266005; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=jejy5GHiX1n5ZzK7FS/SwKAPXTIMDzw65QOVqYwFQBI=;
-        b=QI5STzO60hWqFPSONWG4ZRWYISToUR1EGp0VW+48oaHWGmAVQdEvK3JtzTJSzA93qv
-         5Ktu5LsOh4CzfKVZTwYyAwL0Lx53xaxdhL/GqixxqPfHDQWPCF0LjX21GjNv186XyGbv
-         X2RDvvEDZMgRhLBVfk2ouSiKCFrtSbKeTnVC9TFVBKssn6Tv9I8gX02UeQ4bU3hC6HNI
-         efIcx0l+rR9oyMr1G2htMznaMzF1wNSjsI5yWqFcqauhEVTjKSpHK1R5dHWoEC4e8XSr
-         CQ2qMUcCyKcZNPirR3c8aI4EOZym6pqh5H+7gJVgnSIkWVHunItc3ZISc4A3V+HSrmQn
-         G9/A==
+        bh=G1uT4yQcba8Ntip8LDR4veCehne/0rON+KC3PlpYlbc=;
+        b=B0zAf9vx/RTOvpcfnxTepNe5XB0Ci9nI8roXgqsb4CPL325j4tJ42e2skaaa3eJTTB
+         fn7Oi66tLtUtItu5Akok/+g1A9vb8PlMzNWKkqufnGep1vYXkY0DCZMuFYOSAYH+7auo
+         eSuScbb8hDqNy/aXKP+EqqatCZZoaGS5Cng8wBSYScjMwoxOVQjxzMCRdVCfjxhIXU5m
+         buWgL/OVaEDRzcRD5jzVgjNrwy4IO2sFbbSm3ZaZn3AWS8f4S+NMQbY9QFNzuCGjbPE/
+         566Qje08coylUOzvtlxdZcM4+w7vAzcKPpSkwpVWnj91xWZr+VdV9Md+h7DAFosdP+2a
+         u1zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760661203; x=1761266003;
+        d=1e100.net; s=20230601; t=1760661205; x=1761266005;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jejy5GHiX1n5ZzK7FS/SwKAPXTIMDzw65QOVqYwFQBI=;
-        b=uLS9pyg+tLwbGA9lCrIhXlsuMHEcnjLseVo2/maLDUoDfZJRLjhaOaz+h6V1SrgQwl
-         ZvKczvRKU2EOXsEKFeGJd1MzWaAcgf04H7d1RDw0hDJoG+JY7j4ez6aPMyyIwq2Yawn4
-         3qa6TSAC7lAe9vdSXMf+wIb4JdUwzfo69hIrsdQChCnLw3GdfxS/w5bFlW/AsQrhYpUB
-         D0ueVfY4ajbMT684mdk940jERjUOqDRQpWkaEA89jn9AYCo8v8dl6QqTDXTDBAzYo00k
-         rjiohG7q3hVw2CK4nUe/AfnWdubktPOGm8Fe0Nh+sTOkduITWIMRS3YrJkSvWQLkIT35
-         i5Vg==
-X-Forwarded-Encrypted: i=1; AJvYcCWcYb3IZISPLSORHsVRxto7DuJnuxyhoNm6TC5IERWAGoTyD3cnVFWfFEcZF71ZyllbDq/Uds4p4QYWiKA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz96P3ao+xY+7t+Z1LOgtNRoSMG0BzWp7xAJ+VTPwLzIjzKtytw
-	6ImtrbjoRbDt1iPszI87tCbjitQ1i2se2omWPP3+/hSppneRNI4wpOtuHP5RIAO4kZ8pBKyBSpw
-	ICyinKg==
-X-Google-Smtp-Source: AGHT+IFl8lCxI7RawbIX2CACJWbI5vFGM8HhgndqIpbMEKI2O7QrNwa82jxnXWK9S77FfTXYSbFZaN83qL4=
-X-Received: from pjqx20.prod.google.com ([2002:a17:90a:b014:b0:338:3e6b:b835])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c02:b0:32c:38b0:593e
- with SMTP id 98e67ed59e1d1-33bcf85ffa4mr1903883a91.5.1760661203423; Thu, 16
- Oct 2025 17:33:23 -0700 (PDT)
+        bh=G1uT4yQcba8Ntip8LDR4veCehne/0rON+KC3PlpYlbc=;
+        b=jpvf2bhjShbt6558LXQRML/TE2+X3n6ivbHNZ03ymh8YUuwHIrWWF8dgr11zVmE4+J
+         soSGzGO2ScPZPRw1G8jTIsDQwKkLghtmcxmU/TzTgf3Yxkb7kC042UCa/YB0a2K44ZMd
+         DDlZSm+vMOnmt7FemzqxPlLd4jxuVEDY8mmasIfzYTyEuyZEcb4mst5Z0ddUD86MUB3H
+         FYyF/nrTuBV8MScpVRTlJj3y9Vz8062qAyheNJOLnPcAFO4yvJ+AaLFDf5i8Ln/u0Fmb
+         D8IMsSXGeLBhvnCoaWcqMxaMDO2nNjia8FyG75hlI05TrQAlJZRmVjsf0BzCfsLVgUrK
+         dgHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVI9GGLJ0Bk4nqJyc+mHJR8Eh4fKF7yc2g5u8wZX7+WDi0d0lWv/YUMQTDfGQKUofEgrOTXEmWez0dVtZo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyZuHWrSXAXvlV0Oe55gKzVj5rvleBopUS/4D9loz/pe3i9fmFp
+	BgpiUdK37JP4kTBctuVtEEpYMMliOgg8d5IPZ7Y5P9EXH+z7NzIG89TirNjziLdgYkYw1RTBpSF
+	KQayaJw==
+X-Google-Smtp-Source: AGHT+IFb3cb9XScIkfIbQA2oQID7nhqxfExRyWF6N5UGcVhE3T71y0SJP1d51io6pNMM6/KZP3XG25y1rx0=
+X-Received: from pjoa3.prod.google.com ([2002:a17:90a:8c03:b0:32e:a549:83e3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2d8f:b0:335:2eee:19dc
+ with SMTP id 98e67ed59e1d1-33bcf8f94b6mr1826093a91.28.1760661204960; Thu, 16
+ Oct 2025 17:33:24 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 16 Oct 2025 17:32:38 -0700
+Date: Thu, 16 Oct 2025 17:32:39 -0700
 In-Reply-To: <20251017003244.186495-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -80,9 +80,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20251017003244.186495-1-seanjc@google.com>
 X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <20251017003244.186495-21-seanjc@google.com>
-Subject: [PATCH v3 20/25] KVM: TDX: Add macro to retry SEAMCALLs when forcing
- vCPUs out of guest
+Message-ID: <20251017003244.186495-22-seanjc@google.com>
+Subject: [PATCH v3 21/25] KVM: TDX: Add tdx_get_cmd() helper to get and
+ validate sub-ioctl command
 From: Sean Christopherson <seanjc@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
 	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
@@ -107,122 +107,70 @@ X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Add a macro to handle kicking vCPUs out of the guest and retrying
-SEAMCALLs on -EBUSY instead of providing small helpers to be used by each
-SEAMCALL.  Wrapping the SEAMCALLs in a macro makes it a little harder to
-tease out which SEAMCALL is being made, but significantly reduces the
-amount of copy+paste code and makes it all but impossible to leave an
-elevated wait_for_sept_zap.
+Add a helper to copy a kvm_tdx_cmd structure from userspace and verify
+that must-be-zero fields are indeed zero.
+
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/tdx.c | 72 ++++++++++++++----------------------------
- 1 file changed, 23 insertions(+), 49 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index f6782b0ffa98..2e2dab89c98f 100644
+index 2e2dab89c98f..d5f810435f34 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -294,25 +294,24 @@ static inline void tdx_disassociate_vp(struct kvm_vcpu *vcpu)
- 	vcpu->cpu = -1;
+@@ -2761,20 +2761,25 @@ static int tdx_td_finalize(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
+ 	return 0;
  }
  
--static void tdx_no_vcpus_enter_start(struct kvm *kvm)
--{
--	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
--
--	lockdep_assert_held_write(&kvm->mmu_lock);
--
--	WRITE_ONCE(kvm_tdx->wait_for_sept_zap, true);
--
--	kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);
--}
--
--static void tdx_no_vcpus_enter_stop(struct kvm *kvm)
--{
--	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
--
--	lockdep_assert_held_write(&kvm->mmu_lock);
--
--	WRITE_ONCE(kvm_tdx->wait_for_sept_zap, false);
--}
-+#define tdh_do_no_vcpus(tdh_func, kvm, args...)					\
-+({										\
-+	struct kvm_tdx *__kvm_tdx = to_kvm_tdx(kvm);				\
-+	u64 __err;								\
-+										\
-+	lockdep_assert_held_write(&kvm->mmu_lock);				\
-+										\
-+	__err = tdh_func(args);							\
-+	if (unlikely(tdx_operand_busy(__err))) {				\
-+		WRITE_ONCE(__kvm_tdx->wait_for_sept_zap, true);			\
-+		kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);	\
-+										\
-+		__err = tdh_func(args);						\
-+										\
-+		WRITE_ONCE(__kvm_tdx->wait_for_sept_zap, false);		\
-+	}									\
-+	__err;									\
-+})
++static int tdx_get_cmd(void __user *argp, struct kvm_tdx_cmd *cmd)
++{
++	if (copy_from_user(cmd, argp, sizeof(*cmd)))
++		return -EFAULT;
++
++	if (cmd->hw_error)
++		return -EINVAL;
++
++	return 0;
++}
++
+ int tdx_vm_ioctl(struct kvm *kvm, void __user *argp)
+ {
+ 	struct kvm_tdx_cmd tdx_cmd;
+ 	int r;
  
- /* TDH.PHYMEM.PAGE.RECLAIM is allowed only when destroying the TD. */
- static int __tdx_reclaim_page(struct page *page)
-@@ -1711,14 +1710,7 @@ static void tdx_track(struct kvm *kvm)
- 	if (unlikely(kvm_tdx->state != TD_STATE_RUNNABLE))
- 		return;
- 
--	err = tdh_mem_track(&kvm_tdx->td);
--	if (unlikely(tdx_operand_busy(err))) {
--		/* After no vCPUs enter, the second retry is expected to succeed */
--		tdx_no_vcpus_enter_start(kvm);
--		err = tdh_mem_track(&kvm_tdx->td);
--		tdx_no_vcpus_enter_stop(kvm);
--	}
+-	if (copy_from_user(&tdx_cmd, argp, sizeof(struct kvm_tdx_cmd)))
+-		return -EFAULT;
 -
-+	err = tdh_do_no_vcpus(tdh_mem_track, kvm, &kvm_tdx->td);
- 	TDX_BUG_ON(err, TDH_MEM_TRACK, kvm);
+-	/*
+-	 * Userspace should never set hw_error. It is used to fill
+-	 * hardware-defined error by the kernel.
+-	 */
+-	if (tdx_cmd.hw_error)
+-		return -EINVAL;
++	r = tdx_get_cmd(argp, &tdx_cmd);
++	if (r)
++		return r;
  
- 	kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);
-@@ -1770,14 +1762,8 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
- 		return;
+ 	mutex_lock(&kvm->lock);
  
--	err = tdh_mem_range_block(&kvm_tdx->td, gpa, tdx_level, &entry, &level_state);
--	if (unlikely(tdx_operand_busy(err))) {
--		/* After no vCPUs enter, the second retry is expected to succeed */
--		tdx_no_vcpus_enter_start(kvm);
--		err = tdh_mem_range_block(&kvm_tdx->td, gpa, tdx_level, &entry, &level_state);
--		tdx_no_vcpus_enter_stop(kvm);
--	}
+@@ -3152,11 +3157,9 @@ int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp)
+ 	if (!is_hkid_assigned(kvm_tdx) || kvm_tdx->state == TD_STATE_RUNNABLE)
+ 		return -EINVAL;
+ 
+-	if (copy_from_user(&cmd, argp, sizeof(cmd)))
+-		return -EFAULT;
 -
-+	err = tdh_do_no_vcpus(tdh_mem_range_block, kvm, &kvm_tdx->td, gpa,
-+			      tdx_level, &entry, &level_state);
- 	if (TDX_BUG_ON_2(err, TDH_MEM_RANGE_BLOCK, entry, level_state, kvm))
- 		return;
+-	if (cmd.hw_error)
+-		return -EINVAL;
++	ret = tdx_get_cmd(argp, &cmd);
++	if (ret)
++		return ret;
  
-@@ -1792,20 +1778,8 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	 * with other vcpu sept operation.
- 	 * Race with TDH.VP.ENTER due to (0-step mitigation) and Guest TDCALLs.
- 	 */
--	err = tdh_mem_page_remove(&kvm_tdx->td, gpa, tdx_level, &entry,
--				  &level_state);
--
--	if (unlikely(tdx_operand_busy(err))) {
--		/*
--		 * The second retry is expected to succeed after kicking off all
--		 * other vCPUs and prevent them from invoking TDH.VP.ENTER.
--		 */
--		tdx_no_vcpus_enter_start(kvm);
--		err = tdh_mem_page_remove(&kvm_tdx->td, gpa, tdx_level, &entry,
--					  &level_state);
--		tdx_no_vcpus_enter_stop(kvm);
--	}
--
-+	err = tdh_do_no_vcpus(tdh_mem_page_remove, kvm, &kvm_tdx->td, gpa,
-+			      tdx_level, &entry, &level_state);
- 	if (TDX_BUG_ON_2(err, TDH_MEM_PAGE_REMOVE, entry, level_state, kvm))
- 		return;
- 
+ 	switch (cmd.id) {
+ 	case KVM_TDX_INIT_VCPU:
 -- 
 2.51.0.858.gf9c4a03a3a-goog
 
