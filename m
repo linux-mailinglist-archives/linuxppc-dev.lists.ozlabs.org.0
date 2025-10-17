@@ -1,64 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-13005-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13006-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CB8BE8948
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 14:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 226D7BE89C9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 14:37:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cp3v0647Rz3cYx;
-	Fri, 17 Oct 2025 23:25:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cp48X4Y40z3cZ2;
+	Fri, 17 Oct 2025 23:37:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c103::1" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760703932;
-	cv=pass; b=bFw4rbX9b8hYMbwBZt87rmr19da24ksGVlmt3O0lVNVTScQL2RBWfWiuX/1aLyO4WoQ+snNsaHRfyyGWIV2bthu96jQo4qb3W4AEVJWgOcFalDBejdhEHvYNaiR1bP+bpZyXN9um6rMK6FNNHEXI41p7iepK+sYeGylL/K+vdevUuXDO4TTWDwZoo7+oiEHGnLmTag7Cfq00km0kKB2IQ2leoT4fMM/WYDrJKuimQRppDTMCoddUooeZTXGbKRJPj9OkN+HMRhzhDED9at1Mus8i2HXrmNdC3oZ0e/geqfYNvosu5lkmQDvTUxLrWaGrMaK5SWrXCr+4x661vgdvtA==
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c103::5" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760704636;
+	cv=pass; b=IdJIayCCwHQW1u2JoYDCmzeUt8SnGOUL8xw9wFNRzq2DWwKZEQgAPrl32HB9sxAo2FhtriXYzEerwXLBe+5MiI3ipWuvhimyiScYNPa3qkuPxGC9j0CkddThAsSurgw95HsNN0x7f4DIOhcWxMjK5Rpo6BmBz12XZein5esFlzg8qodCjyAXcbnqu1qFmDZE8dhYAwB2dDBe1gTEAUa6FCrmNy5ZXM/6F1DnoKW31N7MIFjU2OLwFi+2QLxWnx36xacN/NdpkWomjLm8AQ32/mnVwGlwxSzBx7/PXXpEjHDtwdYPOkY4IZFuAhbJyAOhj1h0xygxwCNTNlsqIUqRZQ==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760703932; c=relaxed/relaxed;
-	bh=kR01a+ZdzG0MgE2rp7hdekzGWEsSJ6PCmmUxupacaiM=;
+	t=1760704636; c=relaxed/relaxed;
+	bh=tjmdPgLuin1uAqr3oZDlYroQcXfTwQyAOkGrncUeKcA=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=APrV+LtRTXWv3oWIgsBQpd2EXJ8E8Ib64aaCD1tNhOA8mhNC/AMZfeGuO0Y1+W5RA79AF1FiNPwv7PGh+0Rh41IUhnOOkwZlSg1rdJk7jiooYIyDs0WRuXB8Jn7VV8KX8+oLbO1uZ45qqaK61UHAY6U5fgmXPSg9rad7zbpq9T7zeMrOHbSU9EhNHTSf2JYb0biMfUDicLPsSZ3AZnfhBRFw1JFWqCO6BjH2y44RbBhlPMlRg7Ylk1+To6w7TcaDpRwtyBRSFp2znSlU+AtjhO0dn+7WDul89J2+jNrIuUnrrzEPsyNX9PCexo9jOky/mQOOI8tU5CDxXZXCTGOsOQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=efficios.com; dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=gzgL/a94; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c103::1; helo=yt3pr01cu008.outbound.protection.outlook.com; envelope-from=mathieu.desnoyers@efficios.com; receiver=lists.ozlabs.org) smtp.mailfrom=efficios.com
+	 Content-Type:MIME-Version; b=EsFe+Rc4EjNEXo5q4MQvpfbrVlg96F2S6nlGv0kyZWaildftW8+VAXnYCMlVTO4wVpWFSZZjJqcPl5v+/Tj9l/Cl6B8Xwq/p/yZVH3fMBO7aRXXssnZYIWgEbH7zV9OzFz8sZeMb1CddWucsWuQD++Gfh4g9r320Ue3U4TR0ukKg4NwtkVyjRem2WFdgxFbOt3h7LOjbBLr+p5arny+jje1Wu6Gf2fsKuRMckdxDeOBySQhhFSke21v1YvC/yWpN4C0hme7fvI9c+QEQk2uhZDb7CgEDLwHETXPhz1Stey+Ab0wZLq8SXEOQyn4Mj+obGLRKMpvr5JskJV7d+SoO3A==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=efficios.com; dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=Eyd0U48+; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c103::5; helo=yt5pr01cu002.outbound.protection.outlook.com; envelope-from=mathieu.desnoyers@efficios.com; receiver=lists.ozlabs.org) smtp.mailfrom=efficios.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=efficios.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=gzgL/a94;
+	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=Eyd0U48+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=efficios.com (client-ip=2a01:111:f403:c103::1; helo=yt3pr01cu008.outbound.protection.outlook.com; envelope-from=mathieu.desnoyers@efficios.com; receiver=lists.ozlabs.org)
-Received: from YT3PR01CU008.outbound.protection.outlook.com (mail-canadacentralazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c103::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=efficios.com (client-ip=2a01:111:f403:c103::5; helo=yt5pr01cu002.outbound.protection.outlook.com; envelope-from=mathieu.desnoyers@efficios.com; receiver=lists.ozlabs.org)
+Received: from YT5PR01CU002.outbound.protection.outlook.com (mail-canadacentralazlp170110005.outbound.protection.outlook.com [IPv6:2a01:111:f403:c103::5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cp3tw3PL8z3cYV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 23:25:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cp48W6ZKbz3cYg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 23:37:15 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Djo9K3ZXpCSMnJ+aRBnNbS9X+WqgATpUF4WwCeyp2DdFdvm1J5gAK+dZfF5TFyIK1zYVEdbQXVLCJvED/4zxLCyJtnRNdam+IIU3rJTkMt04yTfAiYCqG7oC1dzwdER8SpKeSziqJ8d9DycTw3gENczcwmUlj0mDowvDFqWZvlazclMSBnWaIP1U211OpmuKjjag5V0zOh3ZFTG4Jdt9SHqmbxgY5Yo+XrnLXxhtW1y183RFDiaKGVlgCOL12u62BA7CfS/VX/rtXS3jZKgrtsA7FAoXZWYFJkbvgeiwYra4vIJWpln+xktMsFNx6RkDaKjoykZUPQRmMJGMXFJCLw==
+ b=fmm3y2+jV4oNlHiczGY1Ut5VcvvsueMFIDmZgTTuHoQlapawf3hCOX5ik4VpbCyvkb6Yk4PLSjGKB4+dpTuYcb4TfXM3KHXPsHx5GFZSgruBamiy+il4FGZ1gMwwdpIbP6gWXL6XuzWqBSC0LzbfIgZE9lUAy8bc/zvU5kENvyD06Cu5rKONZ7PuXFf+KAJH6v9GRpe/DnLU9IzLFt8mn7Aj6rlUwzh+utCVgJ+/gr38mDXlKaxsjQJGL04iEhOrEPj7RgfCrouDlZ1paN8wRvNj/ML9NRxyQoxGKF3iMUvnd9dixHQejWXPKeY9AgP9rL11kR3sx4aC5NRwqZZFyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kR01a+ZdzG0MgE2rp7hdekzGWEsSJ6PCmmUxupacaiM=;
- b=r0DnX0Qxl22pJ5oFj2fjVpV3TE5KabVaxQPD5DWFSnX+iJUTkX4i5mJcbOGiN018StdqoSrEvmzppJsagR/tG/Due0CqFF75B6ev6tsqfUYCDvlKZ0Q2ZqB6sqJHZJ01qv0XLI4l3H9cPsMfvX/jvEyi2KE38v7r0Jt38KB6qeSJKiOP6AL4BYaOIUEMERnE2u7Cjtpqe4keNm8/uQvHRXXONOVbjKnecqxMXAGZUH6xJzv2jni4Ur3yWmorSX6HHps90guZGmsxTr+fxQkxQ+fplcgxPZBPOJWQUonkRRJWnXbezQTizrsQ397chvSNOcmYH39emln/xrbhIVh0+g==
+ bh=tjmdPgLuin1uAqr3oZDlYroQcXfTwQyAOkGrncUeKcA=;
+ b=XPIFYMXiL/cUKLGckQeewrXuVKQSxTYmnFMcgQ7vG1riGYaFJMYKZyOMd5hyTnjreyNtTAFfQUdCGE+oY16sFHjTLwXvUUgzIYiHVAu0k8GRrpmDW642bOmTijRcCdvB9uPOyqLhl7QsDY1AWBMmlzK0WKhmS6P9WG/qed1TZabOxOjkDWSW6BXymilZBf/yFLrhInKoDTngLkJ3LYbBLw0JSBbjxgW4ObKkNwXy0T/8UT0+iH171VvLLvgb2pSTxtmNUMlXf8Ew40MT9XKA82XyIgc+mQppaDAj2Bhfmf2d6Wdqbbe+rIpVsPTiFKMvT+EDrPY1a/M9kqOQmY45PA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
  dkim=pass header.d=efficios.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kR01a+ZdzG0MgE2rp7hdekzGWEsSJ6PCmmUxupacaiM=;
- b=gzgL/a943xesuplt8tZt87u4RTOBdwMBqbKhTzGw+FofLfzYDIUlQNogNUV+3mjqpQWkS7rgro0nodgTiSsDFXwcsSX4jpU27Jcu2m0VFOgguIkjkqIA7ZwD7BBVHOCD75xNzubpERQMqCMm2gTtdCQnpGVCMfL1xRY8MIIluIICy0smW5fGhai7O2nznxrz/6L6ytNKPrw7MEtlOJ3xi0AFkzoWlv1CKCQHxd6E6dmrbcqo3OyX0XFE32ZQM4hYUswBmHKNFc79HuCOX06HLE/z+Br7LohcVOSzpLcSNKetfVtoV9hZp/C4vdgtONxC/dLesC6S14dAxrcJ5PZf7w==
+ bh=tjmdPgLuin1uAqr3oZDlYroQcXfTwQyAOkGrncUeKcA=;
+ b=Eyd0U48+hAbb5iG6KkzJqpPeYZJr7eTvvkJ/bzqtEjcBumVFejxCCQI+oUdvmixtmpdI/Vf9U4gBTpY8MUQNo4Oc/7NLTG7KvmC7rmf0bcSLAucJIBkVxdZ/c8e35r6gfWeDghlqxu/M4SZ/J6Nz1lLO4WPbiq4WA0Ta0xlPi8Y8CEK699N/QFWlJtnScB4yM+lwxfmrfnGyBTffa1ZtWDC1VNNzWtyo8O0+HOcQmE0qddYxco2wX87Z8se7fEZgCvLg+szxEnjYGI8j+xUFwmLIkYZWkSi05tsTFqGrtK40xEMs0qxGOWBI+jb+qKCdgEMZeCyaif38Xew8YQ/MHA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=efficios.com;
 Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
- by YT1PR01MB9018.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:cd::16) with
+ by YT6PR01MB11252.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:13b::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Fri, 17 Oct
- 2025 12:25:02 +0000
+ 2025 12:36:52 +0000
 Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
  ([fe80::50f1:2e3f:a5dd:5b4]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
  ([fe80::50f1:2e3f:a5dd:5b4%2]) with mapi id 15.20.9228.011; Fri, 17 Oct 2025
- 12:25:01 +0000
-Message-ID: <3a4c9133-0296-4996-b8a9-46350d6b5f66@efficios.com>
-Date: Fri, 17 Oct 2025 08:25:00 -0400
+ 12:36:52 +0000
+Message-ID: <8669c9f6-74c3-4bd6-833c-1d73158dfc97@efficios.com>
+Date: Fri, 17 Oct 2025 08:36:50 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [patch V3 00/12] uaccess: Provide and use scopes for user masked
- access
+Subject: Re: [patch V3 01/12] ARM: uaccess: Implement missing
+ __get_user_asm_dword()
 To: Thomas Gleixner <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
 Cc: kernel test robot <lkp@intel.com>, Russell King <linux@armlinux.org.uk>,
  linux-arm-kernel@lists.infradead.org,
@@ -79,13 +79,14 @@ Cc: kernel test robot <lkp@intel.com>, Russell King <linux@armlinux.org.uk>,
  Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
  linux-fsdevel@vger.kernel.org
 References: <20251017085938.150569636@linutronix.de>
+ <20251017093029.874834505@linutronix.de>
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Content-Language: en-US
-In-Reply-To: <20251017085938.150569636@linutronix.de>
+In-Reply-To: <20251017093029.874834505@linutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YT4PR01CA0126.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:d5::14) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+X-ClientProxiedBy: YQ1P288CA0021.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:c01:9e::27) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
  (2603:10b6:b01:be::5)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -101,201 +102,198 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT1PR01MB9018:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71eb4084-b67a-45be-23c3-08de0d7831da
+X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT6PR01MB11252:EE_
+X-MS-Office365-Filtering-Correlation-Id: a4b3446d-1a87-486a-5002-08de0d79d93d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MXJ5ZmlXazBndEpXYWgrM0V6NTdsRllQbUNmd2x3NDJlbHR0ZFlkUUJ3aitF?=
- =?utf-8?B?bncxUzc1VVJxQ29hdjhaRXU0WW9nd1RVeTdXUFk2VHBHekJSNm5tS3NiSXBJ?=
- =?utf-8?B?NmRwRnk3VWhTRmdnWjBkcGVmci94dUp5M0hWL3Ewa1g5SkRnMytlUjlSd011?=
- =?utf-8?B?enI1ZTJGMDdXbTFxWFcremJScHRUd09rbERaNjgzdHM5N20vb0FSc25UYlpT?=
- =?utf-8?B?REllUnJZOXR3c3ZpZTJFN2V4NjFRYng0RDJWSUJWcmpoT3pYOU9HcVdVckZo?=
- =?utf-8?B?enIxRW5pMW1nRlY3TnNiVENKTlpDZnVZakMxUHJwU0g4N3pTd0h6QkpCUko5?=
- =?utf-8?B?c0Uwdlp0dFFNZkRJSWlUTlVGanloSlk4aXozckRYRFhja2lmUGdSQnd1V1BJ?=
- =?utf-8?B?WW1FSTloNXpFaFJsOHA4bENHZTJ5eHR2OEJ6L01DcXdRZ1d4NjFhdlE0V0Yv?=
- =?utf-8?B?YjRqWjgwR21oNHB2bUI2ZWErN0V2TTZINkhocmtZdDZaNFZLWTEvcjY0aU1H?=
- =?utf-8?B?Z3JhY2JjNEJ4bTRhMXl1RERWTkxHY0RZTFFtVTdWR25tNlNQc3ZJRTlvTlc3?=
- =?utf-8?B?VDFzMHMzRkNiL0NiR3Jud0ppYWh2b0tJSTQ1Y2s5MEwrZlJ4Tnd5Wk85N0la?=
- =?utf-8?B?RS9wS1JJbHVlOCtQSFVMeCtLbUhicktRSGdpTHhXTTBHRlpaQXpGcXJ0UjJi?=
- =?utf-8?B?dGZqNFRrRXYzZnlGbkREbVpiS2UzakpOMSswU1hwblNUc1lQdDhWK3B2aith?=
- =?utf-8?B?ZUVYYnRFSlRiNWZTUlVYV0F5Smx6VHZleldQbjZZbWhWRjJKTENBeDZROEZ0?=
- =?utf-8?B?SFUveVhJbW5qeFVXZERBencwMTNpSWlSek9IeTRnM21ZUXN0clVWL3lYM0tY?=
- =?utf-8?B?YXFrVE5vamZqMjhteW5VOFJxUmpVMEhkQ1R3RXZtWEtZWXdvb093aXhVMzdt?=
- =?utf-8?B?WUVXbUl6QUZJR0NjTWVDdUFVbmUwdEdLN2Fuc0hzeGRjNHJjU2RGRmRSeEtC?=
- =?utf-8?B?SVVHMytoWlV0VEEyQkNCYUtuZEZaRGs1VmZzUzhUZjZTcWFzRkJ0YWUzQSty?=
- =?utf-8?B?QmJYZEtueVpxK2VyeTdQQWxSUHBIcHVCZ2toSis5VEdnTWNHeDBRUlVrWlJx?=
- =?utf-8?B?VU5pVEJoMVQrUlducWxEUHovR1ZwQm51T1cxODdRK2R4d0ZoWmkwVGF3V2JU?=
- =?utf-8?B?NVZtbGRqSy9EV0JhWW9tRmR5c3JNYVBSN3BwbnQwanJRMlNHVWtjazFtRmJT?=
- =?utf-8?B?QkFqLzFOVDRSMFJsU05sVzkvWEtKckxxa1pva1RuTHowTXV2UGRQZjN2QTht?=
- =?utf-8?B?NHVmR2FwVU1VbkE2aVNPWjhHbUlmeVhqSVB5MDhFb1llc1FZeG5waXlVdk5D?=
- =?utf-8?B?cGFYZlF4YTNIOFpnanU2Y3lqUFA0UnV2YTdBYlUxbFhraW0vRVRteFE5bFlp?=
- =?utf-8?B?NDBwdStBWTB2Z3M1VFBwZ3FaU09YU3pPVE40dnNDMDIyL1pHVVdQOXprelhJ?=
- =?utf-8?B?NnBXaUpGbDFQeXJRQnp6Vkd2YWlNTWdDOGNaVUJMSE1SOENLcEhnWnl4K3RL?=
- =?utf-8?B?Zmh2REJyeCthR0dVVlhXWUpnTW8veEJEYXZTeXB4MjA3enp3bDN4NE9McXc0?=
- =?utf-8?B?a2V2a2FXaWxpUDAxRXFuc1BXL0NzZGpiK3lsYVpqenJjdFV0cmRrdjEzOXVr?=
- =?utf-8?B?cys3ZG4xYVorZEhOeURlTzUzaU0vNkFVOFhrNEdMQjBDdzBPdVFVa3hNWkhJ?=
- =?utf-8?B?Um9sV0V5M0kwNzZCVzMvbG1FVnNJTkp1YVdaTUZ3cVBxNEVFODNNZnlpdXBu?=
- =?utf-8?B?a1J2K3VZaCs3T1Jick9LdDRkdW14T0phYWdtNlF1d080MU5ZWHdicHptRENU?=
- =?utf-8?B?UGlJU0ZLU29EeUZTQXp2bmsrcjIvL2h4ckVibE9KalgrY2c9PQ==?=
+	=?utf-8?B?U0xnU2QybDhWczZVUlM4Y20veTZZRlZ2ZHRyS3hOOG1zeFh4RitUNWxjMWlw?=
+ =?utf-8?B?OEJqcWxXVXNxaHh1UVRwbkNGSnR0em9wUTZqTHN2NjVGQzc5MmpCVk9jQS8r?=
+ =?utf-8?B?K1NEb3ZPQldJZWtUNHV1eUxLN25sNjdLcFdqdUg2bFBWOFhkWXV5Mm5WL0xy?=
+ =?utf-8?B?UC9NbndjZDN4NkNZOTg4eEExc2hzakk5ZzA2TzB0eE5qa3hiemV4eWhIdDhI?=
+ =?utf-8?B?R0hsZk4wcFNWcWFhY2hlSDlZTUhiTDluQTFuOGNSUk5LMis0b094WEhSZEY1?=
+ =?utf-8?B?MXNxRFdkelJxeUtVdmJrRE9WdTJpK05oODEwZXEwRGIrc1RNT3RoeVI4TFlK?=
+ =?utf-8?B?dnJDbkFCNkpHaXJ1S3ZTTW91bWxsUWtkc2p4SUFjQlk3eFRQYVZ2blFlNVpH?=
+ =?utf-8?B?WWJDWThLL0JBTnZLTklPLzk3d2RGSkw4WWdpRHVlUGZsWDl4MHpPa2xyUFV4?=
+ =?utf-8?B?a0RHQm1oQnIxVHNmWWJIbzF3dlBRMGlEdk8rWDBsL0Y1amEzSFFUQ09oMWpJ?=
+ =?utf-8?B?OEEwRmt3eE5Bdk15ZlZLT1VRQUpjaHllcklHeFArZ0dTS0VNM3ZpejZNSS9n?=
+ =?utf-8?B?NzRoMWJROWkrb3BNTldPSjFJV2tCZGhmUlZJeWJqSFBnMXo0bmp2UUl6RlpL?=
+ =?utf-8?B?b1c3WkR2T0o3L1NjVVMwaVk4N3lhUmpWUnIrckxqVkFiZUowZEhpR1RLc0FM?=
+ =?utf-8?B?QjNUWHoyK2d1RXpZNlBjVFRXNjZXcCtPaHM1U2FySDNRMDgycmlDN0F0TGhD?=
+ =?utf-8?B?aTBVUmc4enBvSjJtaDdBenNXdkdNLzd4bWRpSDlBejExMVFkOHE0bUgzdEp6?=
+ =?utf-8?B?bm9YY29yNzBUQzJLV2tOb3lLYjVBa1ZEYnN2UThpdkN4OG1tUXdYQ2dvYUFS?=
+ =?utf-8?B?bUg3OW9NNXdQZUMwKzJETUxvakpkdlJaZmIwd3A4ZVU3M2lTR1IycXBKODJY?=
+ =?utf-8?B?NWIzZ0grWDdCdmpHd3RIMXE3bnl4N08rL2tVNVVZc0pZV2puVW5NV2s0MG1V?=
+ =?utf-8?B?T2M2aWJ1dkVTUlpLSE9MQ2dGUUI3MTdhUjRBQmFDaG9JeEpjeGpad1ZZWkpY?=
+ =?utf-8?B?b1BGRnptOXRSWXVQNXhzNkNncDRNQXB0Wi81RDdHcEpsMEg4cmF1T2w4dFFx?=
+ =?utf-8?B?MktzR1N5ZHc3cmdic2NLSkg4ZE5IcFlUZUNoOUgvcXZFQ0JubzRVRGRpSTJS?=
+ =?utf-8?B?dVdkbXNaSmlqeU1iMDNCMmZKWWRHRnZNMkprMXprdTU3OU95SGhiS0wwSXVZ?=
+ =?utf-8?B?SWViMmZzQmZNMTEvMFdjaG5VWHpiSFFoZGd0a2pFb0FpY0ZrOGlma3FUdGI4?=
+ =?utf-8?B?VlVyNFlhZ1IxWjBodktpaXFDNkVyV05YblVKRGpaa01MSVhZMXB3QittcW1S?=
+ =?utf-8?B?b3J1SGJITVZiMmtvSGhKY2ZhcERYd0s4RHNiMTVTTTBISk0xYzN5S0t6Uzls?=
+ =?utf-8?B?UnFJeS8wV0VsdCtPS25IOXZSdktONUpKRlZTeHdYMGJQbERkNXdvM2VyM2ww?=
+ =?utf-8?B?Mm5BMlpSK0FTb1pHL2JhdFpxbzNtMXhkY3U1L3U2L1FxMEIzUzdKc0NrZzBw?=
+ =?utf-8?B?N1ZsOVhadW9Cem9Cb2k3a1JLcE9BL3dsU1k2c0Z5bFlpTTNsTFdFdTVhcTdl?=
+ =?utf-8?B?MFAyVFpzL3FhYXR4blI0aGZ6L3NQa21DQUJyQjVERWhwb2Q4WjlZR2RHT1Q1?=
+ =?utf-8?B?SkdTNXYxZHRRNEREMUYxVU9DRVA5dldiTDVEaGUyOXVxTHg0Zm1rUmd3MCtR?=
+ =?utf-8?B?MG96VC9obGJLVElKK1NuV0NnQkFLSU5lL0Zsd3dUcTlLaU5DTVpaMHAzMGhO?=
+ =?utf-8?B?ME5pVXptWm84VjEwVDl3ZElFS3ByRGI2cGxCT09lSXUydmZUbGJTZ2lEanly?=
+ =?utf-8?B?eHFiTWZqUnFFY2k3SzVBOTMxeVIrWjJnN1RwUktML3ZzYVE9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Wmc2aWR1dTd6bjN1WHYrNDI0MzV0RE9zZUxtaEdadHJxVE9OOElIcldmSmh3?=
- =?utf-8?B?ZVVVeUtLdXI2N2lkekY1cVo0RGRhMFFOek5QL3ZJVy9zRFhMZWVpWnl2N2dL?=
- =?utf-8?B?dU9JaUIrYnFsdjhNeWR6N3dtdGxwdVVIdk9DbmR5azVLcVkxNE43bjYwdnhR?=
- =?utf-8?B?cE0rVjF5Yll4eExYT3BWNkN4RVlEN0xHSTlBMUNSZUtyTnA5UTAxZGFGWmMx?=
- =?utf-8?B?RkdCeDhOVkN5ZkorblhMaGlUcXFSNjFPNStQNzZNOHVTNy9CbmJwblFEWDAr?=
- =?utf-8?B?NEpIVVNLSGc4UlJiTlBMb3FjSGpoMlptZnlvOEJkVzMyd1RwckdUZUYwQXJV?=
- =?utf-8?B?di9uNGNQeDlkbmlUcUxHbTZuRWZMYTdua21UcStFUnpYWEY1cHFGOFFzUzVr?=
- =?utf-8?B?TVlvL2RaM0ZjdGJpMjRRNXRFRS8yY1ZDWk0wWUtSL1VIQkw2NmxDMVBEaDhW?=
- =?utf-8?B?R2h6dXZ1eHBKQzlyUk9Sa1kyQzAzQloyMnpWcjgyUWVJbVFsbDBDNjlhMGJV?=
- =?utf-8?B?UHIxdjd2NWtxRUVWQjJSRUgyU1JITGNhelpTMmJ2dnNXRy9nVEFsQjhiSlN5?=
- =?utf-8?B?Z2VPMUdtV3RXRTVGQkp5QlFQd01CYUJJeVNMZ2JNQ2I2Q3JwNmJhSWNXaUps?=
- =?utf-8?B?T0psNjBMczRJMEJyakNmODIxZUt4RW9HamtKcithczIremh1Tmhad1ZmajFm?=
- =?utf-8?B?enI5RnBybUZGdkV6WndtV3ljSlFZUkk5dElSZ05SMmZlTzB5ckpJa2ZvSUsy?=
- =?utf-8?B?VWZxSTdYVlYrTk9FeTYxdm1vdXdkbW1tSkRhM1BGUXNGdjltQmpxVXk2ZXNG?=
- =?utf-8?B?NnhMbnVOMnRmQzZwU3RncEVWYlFDMUgyajNtd1o3UHpDYXlFa2Mzb2kyQWN0?=
- =?utf-8?B?c01vSy9yMXRIdmM3UGh4Q3NTTjVobXNrQWtzbDdnV3pYVDlBYzdqOFdTV2pU?=
- =?utf-8?B?dHQvZXJJTzNyMjlGb3BzVXB1bmNkOU0zU0lVTGVZQ21WQjhzeHNSUmVJNnJE?=
- =?utf-8?B?MXQrMXVqT1Nrc0JpWU1VTC9VdUZrOTNrbk9RN3VUeThpNCtrRGRkbnVJb2dT?=
- =?utf-8?B?NEJuSlRaei9sSFdRMFhOUHBoWk50R2JlV0xqZEJNVWxDWFBseGVBbFhvblhq?=
- =?utf-8?B?anEweEpEZVovYjhLWGlNRkFOMEVNbXh4RXpXZjBtZ1NJSE0vU0c1enRnb3Uv?=
- =?utf-8?B?Yk5XTkpVemxSdWNkaStxK0JsNG8wdWxOYUtOZ1YzczVGT1VJTnRNMHZtMVFr?=
- =?utf-8?B?RktiNVVWTVBud0owNlo0R3k2emlIeFJ1YVZVK2V5WFh4T2kwUW42NXBvNXdT?=
- =?utf-8?B?Q1Q2UlJDZ1gzL05ta1AzYVUybUhPc05JekhLa2pkTm4zRnlYS0ZFTU00cDhK?=
- =?utf-8?B?bXBua2V2MGpPZ1BBN01ieHRET2NXUWxLbUVOZ2t1bU5QQmxadEJEcHlqamRC?=
- =?utf-8?B?S25qamlxUTFDdVRXck5aM0FoTWtUWUZsdkhiSms2UmVCVXp6K3FFUVpFTTZx?=
- =?utf-8?B?N3FhL3NsRVo4bnNXQ0ozWlZOSk11RjVER2ExWXZZMDBJVndBQVdzaS8yWTJy?=
- =?utf-8?B?am9RUmxKWk9zQmJMeEh5VHNLMmw4WnpiZkthdTlmVjcvT0pkSVZDbHQxNS9p?=
- =?utf-8?B?RFNMc1dRZVp2Q3NLS2w4d2Q4WTBNZlJ2c3UyWEtJajVlUDJmU0g5RERWaDFP?=
- =?utf-8?B?c3UwMlE1UGVjMVdGZmZ0ano2K1Jocmw3QzZ4NVJYRFBCejRMZ3Rsam5JeVUz?=
- =?utf-8?B?WVVUZkNvRk9talRyc0NEZG5jdmpkcTNKcnNrcVdUMUg4NWdlTWZ3VEhDM2tT?=
- =?utf-8?B?YmxCcGR4QTNqRXh5RXE4eXRwQXZ1SGE3YmNueFQ5d2NQUXlMRFFtWkdQbEhC?=
- =?utf-8?B?VjRkRjhkcXlhc3U1dWJaSmFJUnQzRC9WcHhoQUhpdlFzMys0QndpeEJxT25h?=
- =?utf-8?B?SHVTVmtIa2dZMGJPVE9LRXliMVFETUdzTDI0cGR3TGdVSzVhN2JTcHNFWFpD?=
- =?utf-8?B?cGswVm5OWEJqSlUyWGxSQTY5Y1dCV0tpT05DNUNvbmREYWRQdmJDcnFuTFVC?=
- =?utf-8?B?TWlpeFNnelZGaW1FU0xkYW50SldObCtmbkNBdUZERzM5OWx4TUM5amtMYkZz?=
- =?utf-8?B?NElaSWZKWUF6V1hNRUhtZ0d6QzBqOUwzWThZUU13cExtQTQzT2F2MWQ3eFBn?=
- =?utf-8?Q?H/4M141eFKvCqBv2iTlCLzc=3D?=
+	=?utf-8?B?VVZhWUQ1djl6aVh0RkJwVHVaSW80eGMyMExUNHR3SFR6TlU5NDFMc2NtZWM5?=
+ =?utf-8?B?Q3FYUFRBbmlpY2N1R3hlcUp1cnpSaFdsTUk2WGV0cWRlcEZKbVpFa2tuVEtW?=
+ =?utf-8?B?Y2grSzFGQUFFTU1jdk84VXRmUnlXVkFwMjZPQmQzMXBDQlFZZFlqLzhpTUxh?=
+ =?utf-8?B?RzNpSE1YYjVHS0FEQnR2M2J5c1REV25rdEJRL3dlOHBRSXQzTmNSbW50Y3M4?=
+ =?utf-8?B?UUNLNHpaWXcrYzJtWnVJcEZ2L0VuUCtObWIwZklFRkdGcDR0RjNYck9oTkxD?=
+ =?utf-8?B?cHVyejhDenZSNkswTHVQSmVTOWN5VmVvOU94Q2dDU2lYbGVZb1VSM2h1cE9l?=
+ =?utf-8?B?RE1IR0JOTnVNK0t0VWszQUNKdVFCR2hYVWNlVzIxWVY2dEY1akZyS0J4WTZR?=
+ =?utf-8?B?dUREM2dQZ1hNYVEvQVhCYU9WZFB2enpPM3lndTlOM2Rkb1orMk1Fc0xQUlIr?=
+ =?utf-8?B?aDVNdlllRzFFdWFUbjR2bUxNNnRCWEp1bDlKQjNXOWFSTDJIWmNGOGFIVkVB?=
+ =?utf-8?B?Wk4yMzJPOXBlSW5BWjk5NmpJNGEzRE52N21TQm1GWEpEaG1DTElPZmNDTWds?=
+ =?utf-8?B?Qkx5SjZQY1QxaEI3N3BGcFNMQVBITWZBMU44TXhiTjFteis2MzdweG8wYjdD?=
+ =?utf-8?B?dGhYVXU2MVpKUXBiYTJtMUliM0M2KzZXQ0gyNE80UFZaYXI0MjVlcEYzMElT?=
+ =?utf-8?B?a0VnU1FvSjlQRDRxVkFUK0lxdVdmQ1hBcFRaUVRNZy9yeW0wMGg2NU1hNUhw?=
+ =?utf-8?B?SER6Y0FIOUcvLy9ZNzNuV05vdmNYYVVyd0xSblFrbE9ObXE3dldrSTlwbVhW?=
+ =?utf-8?B?UWRKa0xYc1BJYUg3ZktIUzlTbEk0OG5wZkVBbk03ZWQyZUxkRW1ZTGFDU2Vq?=
+ =?utf-8?B?K1hPR1UvUFNWUnpqeUh2eWV4b1pSZTJ1YndsZ2VaSkdtYXVwbDlmUzJXRWN4?=
+ =?utf-8?B?YmcxSGl2bjRYM2REWWtiT3Z1aHkweUdvZkhZUy8wQWs4YnQzTGhtb05LR3E0?=
+ =?utf-8?B?WFZnQUo1YWlSM0Y0SWNUS1NYV3U5djk3WjZZeC94QnlNTUFaZEh6K0VNQVRu?=
+ =?utf-8?B?K3JzS3FvT3dyYmpaL2ZTY1pac1d4dFk1NTU2aFAxZGpibnB1K1hCMkF5R2xQ?=
+ =?utf-8?B?aE1pZHArSUxqSERMU2lwYUJKeVdCaDkvaFRSbDkyR25kdXJIZXZyMmowU0Fl?=
+ =?utf-8?B?QnpmRUs1aFRlQk5zZGlkRVZ3Sjg4RFNGU2FZY3pxSkwwbERCOGtkY0tUT2kv?=
+ =?utf-8?B?U1FPYTUyM1gxNUg2T0Z6TVpRUXNyWlBxclBjWFIvd0Y5ckxiZGVSaWRYWTEy?=
+ =?utf-8?B?MVpKV0g4eVh4cjFKTDhxOTVVRUx1bFg1ei9oaXpILytnMUd5S25USHI2aTFl?=
+ =?utf-8?B?a3I2TFV6K1RaK0pKK3NyV2hPbEhic21XTHNOSk15Q0QvMGgwRFhNSjMzaXha?=
+ =?utf-8?B?TVpnNjhpZGFKQUE3eE9jTWVaSHJQNVFMMGFRUUE0TlgrWnFRaEkyMjdtZElF?=
+ =?utf-8?B?NWdnSU9pWm5vVGltMU1mV2d1Rno4MFEybFBxckYrL2VPMTFEdmQ3TDRNbmpR?=
+ =?utf-8?B?SFVmR3RzUXV0Ty9xc0ZhaDJOK3I5MjRnZVA0UmZPOHUwYzN3TGFPMnVZaHU4?=
+ =?utf-8?B?SDVCQnVjK1QyUS85bTZRQ2NrYTRrWUtjbnJZS3RWSEpsc2UyZDJHWVdiZDhR?=
+ =?utf-8?B?UHhwOGhzZUZ5UmRpUmlnQ2NPaHR1L1dxZUc0QzJmT2VPem9OOGpJT2t3ZmRX?=
+ =?utf-8?B?NEZldS9ZKzh1blNnS2ZqVXA3U2d4MkZnSUtHd2VCbmR5cjVYMmpSN2NKa0ts?=
+ =?utf-8?B?N0M2RXRraW9WRllJSFN3VDNaN0Y1YmgyVTl3M09MZG45U0ZkdEx4ejRQVTNy?=
+ =?utf-8?B?aC9LR2lwL3hSa0xOeitHN0NrdFNOeUJGTFBOdXVrbitGMTVnUDNUdkViVlRH?=
+ =?utf-8?B?bXhSeUVKRmpWOTRHMlJObUp1eWhxd0hRZEFLbS9QUEt0ZzYzS0VPQmRpSjJh?=
+ =?utf-8?B?cUFkL01SdE1oTU1IN3lES3NwZDNGbGlCc2Z0RjBDZHZzVVVnRDg3ekpUZGFS?=
+ =?utf-8?B?RE5rbS9WOHExNlhYa1phdi9yTzA3cktoQVppMlhCdXMxbVpadzJQMnJXUW1N?=
+ =?utf-8?B?cit5UlNSRGVSWnBaTGtLeHRRSlFNN1ZVY2hpcFo3TDFZcEo2SkVmYTBEV21n?=
+ =?utf-8?Q?u6SKEpC+fH6NJS+MheHHyFI=3D?=
 X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71eb4084-b67a-45be-23c3-08de0d7831da
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4b3446d-1a87-486a-5002-08de0d79d93d
 X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 12:25:01.8491
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 12:36:52.3192
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pwLCdkEgKxgJGtvZO8Tsmwm9RKgc6rWg8dg+DUo3EtDH5A8jS+DDUqiVtAt9/O2fkUMzCHwPU5yTbEWpyLPC/77YS4IVXS1hAE1CbC3XplQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT1PR01MB9018
+X-MS-Exchange-CrossTenant-UserPrincipalName: nvOQiYBGkP0X2RW+J8b0j1unNJg1wfnrFlP0ApIDVjsUn2O7ijYxD6/F9Kig+gJJkkLIREAebROOlvM8fAd7yHRhQaf+MKAcP6Wc0mHbDr4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT6PR01MB11252
 X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 2025-10-17 06:08, Thomas Gleixner wrote:
-> This is a follow up on the V2 feedback:
+> When CONFIG_CPU_SPECTRE=n then get_user() is missing the 8 byte ASM variant
+> for no real good reason. This prevents using get_user(u64) in generic code.
 > 
->     https://lore.kernel.org/20250916163004.674341701@linutronix.de
+> Implement it as a sequence of two 4-byte reads with LE/BE awareness and
+> make the unsigned long (or long long) type for the intermediate variable to
+> read into dependend on the the target type.
 > 
-> The main concern over the V2 implementation was the requirement to have
-> the code within the macro itself.
+> The __long_type() macro and idea was lifted from PowerPC. Thanks to
+> Christophe for pointing it out.
 > 
-> The main reason for that was the issue with ASM GOTO within a auto cleanup
-> scope. Clang refuses to build when the ASM GOTO label is outside of the
-> scope and GCC silently miscompiles the code and misses the cleanup.
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Closes: https://lore.kernel.org/oe-kbuild-all/202509120155.pFgwfeUD-lkp@intel.com/
+> ---
+> V2a: Solve the *ptr issue vs. unsigned long long - Russell/Christophe
+> V2: New patch to fix the 0-day fallout
+> ---
+>   arch/arm/include/asm/uaccess.h |   26 +++++++++++++++++++++++++-
+>   1 file changed, 25 insertions(+), 1 deletion(-)
 > 
-> After some back and forth discussion Linus suggested to put the local label
-> workaround into the user access functions themself.
-> 
-> The second reason for having this construct was to make the potential
-> modification of the pointer (when the architecture supports masking) scope
-> local, as that preserves the original pointer for the failure path.
-> 
-> Andrew thankfully pointed me to nested for() loops and after some head
-> scratching I managed to get all of it hidden in that construct.
-> 
-> So now the scoped access looks like this:
-> 
-> 	scoped_masked_user_read_access(ptr, efault) {
-> 	        // @ptr is aliased. An eventual mask modification is scope local
-> 		unsafe_get_user(val, ptr, efault);
-> 		...
-> 	}
+> --- a/arch/arm/include/asm/uaccess.h
+> +++ b/arch/arm/include/asm/uaccess.h
+> @@ -283,10 +283,17 @@ extern int __put_user_8(void *, unsigned
+>   	__gu_err;							\
+>   })
+>   
+> +/*
+> + * This is a type: either unsigned long, if the argument fits into
+> + * that type, or otherwise unsigned long long.
+> + */
+> +#define __long_type(x) \
+> +	__typeof__(__builtin_choose_expr(sizeof(x) > sizeof(0UL), 0ULL, 0UL))
+> +
+>   #define __get_user_err(x, ptr, err, __t)				\
+>   do {									\
+>   	unsigned long __gu_addr = (unsigned long)(ptr);			\
+> -	unsigned long __gu_val;						\
+> +	__long_type(x) __gu_val;					\
+>   	unsigned int __ua_flags;					\
+>   	__chk_user_ptr(ptr);						\
+>   	might_fault();							\
+> @@ -295,6 +302,7 @@ do {									\
+>   	case 1:	__get_user_asm_byte(__gu_val, __gu_addr, err, __t); break;	\
+>   	case 2:	__get_user_asm_half(__gu_val, __gu_addr, err, __t); break;	\
+>   	case 4:	__get_user_asm_word(__gu_val, __gu_addr, err, __t); break;	\
+> +	case 8:	__get_user_asm_dword(__gu_val, __gu_addr, err, __t); break;	\
+>   	default: (__gu_val) = __get_user_bad();				\
+>   	}								\
+>   	uaccess_restore(__ua_flags);					\
+> @@ -353,6 +361,22 @@ do {									\
+>   #define __get_user_asm_word(x, addr, err, __t)			\
+>   	__get_user_asm(x, addr, err, "ldr" __t)
+>   
+> +#ifdef __ARMEB__
+> +#define __WORD0_OFFS	4
+> +#define __WORD1_OFFS	0
+> +#else
+> +#define __WORD0_OFFS	0
+> +#define __WORD1_OFFS	4
+> +#endif
+> +
+> +#define __get_user_asm_dword(x, addr, err, __t)				\
+> +	({								\
+> +	unsigned long __w0, __w1;					\
+> +	__get_user_asm(__w0, addr + __WORD0_OFFS, err, "ldr" __t);	\
+> +	__get_user_asm(__w1, addr + __WORD1_OFFS, err, "ldr" __t);	\
+> +	(x) = ((u64)__w1 << 32) | (u64) __w0;				\
+> +})
 
-Now we're talking! It indeed looks much more like C now. I'll go review
-the implementation.
+If we look at __get_user_asm_half, it always loads the lower addresses
+first (__gu_addr), and then loads the following address (__gu_addr + 1).
+
+This new code for dword flips the order of word accesses between BE and
+LE, which means that on BE we're reading the second word and then moving
+back one word.
+
+I'm not sure whether it matters or not, but I'm pointing it out in case
+it matters in terms of hardware memory access pattern.
+
+Also we end up with __get_user_asm_{half,dword} that effectively do the
+same tricks in very different ways, so it would be good to come up with
+a unified pattern.
 
 Thanks,
 
 Mathieu
 
 
-> 	return 0;
-> efault:
->          // @ptr is unmodified
-> 	do_stuff(ptr);
-> 	return -EFAULT;
+> +
+>   #define __put_user_switch(x, ptr, __err, __fn)				\
+>   	do {								\
+>   		const __typeof__(*(ptr)) __user *__pu_ptr = (ptr);	\
 > 
-> 
-> Changes vs. V2:
-> 
->      - Fix the unsigned long long pointer issue in ARM get_user() -
->        Christophe, Russell
-> 
->      - Provide a generic workaround for the ASM GOTO issue and convert the
->        affected architecture code over - Linus
-> 
->      - Reimplement the scoped cleanup magic with nested for() loops - Andrew
-> 
->      - Provide variants with size provided by the caller - Mathieu
-> 
->      - Add get/put_user_masked() helpers for single read/write access
-> 
->      - Fixup the usage in futex, x86. select
-> 
->      - A clumsy attempt to implement a coccinelle checker which catches
->        access mismatches, e.g. unsafe_put_user() inside a
->        scoped_masked_user_read_access() region. That needs more thought and
->        more coccinelle foo and is just there for discussion.
-> 
-> The series is based on v6.18-rc1 and also available from git:
-> 
->      git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git uaccess/masked
-> 
-> Thanks,
-> 
-> 	tglx
-> ---
-> Thomas Gleixner (12):
->        ARM: uaccess: Implement missing __get_user_asm_dword()
->        uaccess: Provide ASM GOTO safe wrappers for unsafe_*_user()
->        x86/uaccess: Use unsafe wrappers for ASM GOTO
->        powerpc/uaccess: Use unsafe wrappers for ASM GOTO
->        riscv/uaccess: Use unsafe wrappers for ASM GOTO
->        s390/uaccess: Use unsafe wrappers for ASM GOTO
->        uaccess: Provide scoped masked user access regions
->        uaccess: Provide put/get_user_masked()
->        coccinelle: misc: Add scoped_masked_$MODE_access() checker script
->        futex: Convert to scoped masked user access
->        x86/futex: Convert to scoped masked user access
->        select: Convert to scoped masked user access
-> 
-> ---
->   arch/arm/include/asm/uaccess.h               |   26 ++
->   arch/powerpc/include/asm/uaccess.h           |    8
->   arch/riscv/include/asm/uaccess.h             |    8
->   arch/s390/include/asm/uaccess.h              |    4
->   arch/x86/include/asm/futex.h                 |   75 ++----
->   arch/x86/include/asm/uaccess.h               |   12 -
->   fs/select.c                                  |   12 -
->   include/linux/uaccess.h                      |  313 ++++++++++++++++++++++++++-
->   kernel/futex/futex.h                         |   37 ---
->   scripts/coccinelle/misc/scoped_uaccess.cocci |  108 +++++++++
->   10 files changed, 497 insertions(+), 106 deletions(-)
 
 
 -- 
