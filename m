@@ -1,70 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-12974-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12975-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23233BE5F03
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 02:35:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA657BE665B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 07:18:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnm5V3W7Zz3dW2;
-	Fri, 17 Oct 2025 11:33:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cntPx4rPcz306S;
+	Fri, 17 Oct 2025 16:18:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760661214;
-	cv=none; b=oTpuxVGMEwigHgS4iVkDfMWJTxQXklYTFcdFDGCRZ5yAU+f5yGYlBlLEFmrvR1hBFPmMs2zxxZPMzl3r2DlSrcmA/DFC+4LaVccUh9dZs3rRk8RjFMyFl8FAN810TtwSq5gWWeNcZo0m4Cit9MIddkbo/MAU+0L9HKfQLwdodYJaWUVfYeDTR8aMVtLl2UBdqQrxfDtm1PBBfrQX9qbJTpP0d3jF+vL7ZIe82LyBsz83rq3JCYsRwgtS3CZfsCYgXmiKq0rSEx1TU0ZHtd38A37aGFvb7FecQrLHtm/6YXHi7hmGDUWomp5vyfI7ulqDtk8NJSBV67/EW6dtBmTiUw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760678293;
+	cv=none; b=J/58uKZt8qQzDWiCljvTa376+suwLz4Ne+g6QqAvzfqkSiSh5FNsKRSfIWkoM0heN+DoDoSNNtSsFh5Hvb/kQreJdxVdWMrpWfQtFnGAoz0+Q3sA3Zh1EFAm3Shqd4DLGLpxxWMom7kV3gab1bR7obAWRx4AwvHmiK3ZPd0PlrfkcfHuQtBjUxFkN+7F0V1ujsZo+rLUkLB9rBXNCn2rw6GdeeDdIz/pLNJhOyVmp22spMietgaPMmb8fW8DqUblG1pKM38giZwFTHemAGUdBspnQJv+plH5IDkXzHWsc4rWQ7Ch5gshDgN7/IEe5uGzmTOeS1Xvvta3vxBOIGP2QQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760661214; c=relaxed/relaxed;
-	bh=/pSW/fUm0O3ay1Oo9bje5jBv9ucpW+KObLJe4y1pVWI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IE7LXXrF81jGl5tt/2Z9nOVU9gJ2ED2XC+i2PUs3GBwxCWzNx2IcqeJQ2E27u3kFntyjpNnpEp1EOBaG8ziL6nV/zlwCsMB9Nudao0Ba7zKoUGjUn0tm6HwiFeLqbJcNloYoeoHywyCVvj0Spgyei913Z73/9shmB9Clh6f4Z/BDw7P9ZwaTXxzSdlVI/avUliHhBlAPBqUiPXSmNs71yvsvdrQtT09iZk1RW3fvLbL25mN6tMc+uT391FRoraDHWpRWikKFYBOlbbI1At9FkYlndPE1tjeG2MauXgLQyxeFgwSoVMLxmb6DYJ6AC/TIXl8DRfSPEchHOAgD3/fpdw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=WoOeQbV8; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=33i7xaaykda87tp2yrv33v0t.r310x29c44r-sta0x787.3e0pq7.36v@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1760678293; c=relaxed/relaxed;
+	bh=yRq4Fjs9RQqmCumBXOIWM/V9Rdd8tRYzHUqt4EgQG1g=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=MLnArKTo8iz0T1gXE8r7ypRQXdqQFiHhgDUB6AL1TsQ4FfhKe1CEC15O6qrOWdPox0PPPhYRQkMd/eviKSwDrpgcD24ZucJ0BJziZeEpEtRvkgacOcWgJsgbuXNMciNS9U9b7E9oeZ5purczs4DkP/A8gmBDJ9m5a4gVxEU6xv4j///Bd3GkdUn0kvAtQoac0GD/ybQI1TClpeQZYaSgh3NBMuBArW7kiwG7roI80zbpDO1tvpdXlGxeiEKZ0Y3Hk2cfO2QB5Ld5447DHG4YWl6rA2Zhqaoml50ctidH9yKax1NNzGF2GkWtm41CvomZ9btP8lX59H3PQz39JApRag==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PEeymNue; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=WoOeQbV8;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PEeymNue;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=33i7xaaykda87tp2yrv33v0t.r310x29c44r-sta0x787.3e0pq7.36v@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnm5T58Ftz3cZ9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 11:33:33 +1100 (AEDT)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-32ec69d22b2so1265804a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:33:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760661212; x=1761266012; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=/pSW/fUm0O3ay1Oo9bje5jBv9ucpW+KObLJe4y1pVWI=;
-        b=WoOeQbV8x6nTP6etdiKVCEw29a4XPmyk331+Q0Eo+VWLT6O31rc9pWpShvGKWR09Jw
-         sVMyUXy7Of8mjrrKMfPZdAYIQTVCbL6Ik38OUBp34dNnt/MQfc0cra+7B32GUKQL3AU1
-         SwNJSoJRb54+ejVXgwO7lpsXHH7EHUk4KuH9Vau6v8sIfjyTzO8Gwu6AuX2GnBkZDzPI
-         K0tOIHcHB/QoiFyTSS+W3ZUIkvbwdy/dXzyVWeW0xxaIDz0p4lto/d1X5V0HTVEIzBgD
-         ZVRSJjtvweUfU8HMvYb2jdT35nK9LJi2wZYXMdRpgRCckLQOJXWOji+LdilwPMnr3t7f
-         DPiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760661212; x=1761266012;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/pSW/fUm0O3ay1Oo9bje5jBv9ucpW+KObLJe4y1pVWI=;
-        b=hhKXCB5zkE65qk2mRQCn8drZNLgjbAiFUlFS2pCiDZg+wv6nZuIzXdiLgG6mv8a2Q1
-         c6Tihx28f7YHJMxcYHiuE/J+f3yiAgvoL8zskotE47jIkVCCbQXvjDouNWDdW42F7J8z
-         +5dC9bnzfZznz41uhQxBojnER/uPSE5VZyo4RfsSRLKpO5g1I67RXR7JGkCuagZR4KDe
-         XGB4l9N+nGAtgjf39Q6YMPamm0074nM2Vqtd3Tfm02DOvsU297CbRqvPivs08UrFhAMD
-         WORjBOiOK3rThI5T+dXtOr7He000Tn9uM53RX3UraknkjF7E7NAaqc2fRbRpAmv5P+zc
-         rRYA==
-X-Forwarded-Encrypted: i=1; AJvYcCUzORyjBKq5id1hsQc+9MDkDvO0HezzCmKgtV2AbLjG7J5CEhuPJiUBRgPARiqJPaYhGuk6bYSTGS/G4Go=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyekKLXhny2aSptLfJkduP4GPNXz/4+/G4axcQBSQ2XTvg9tMK+
-	GYNS3KzPRf3dp4uexD6RZSpjycOn9Ae27HR7+nmsHc0KQB9l6UJ/cF5DgSK5/ax20Qebu/A24lf
-	rKnM+0Q==
-X-Google-Smtp-Source: AGHT+IGUYXYNMUKz1i83Pw6n8U7DCU7Wd9XYw4AfmAkZINqRiiLRcAvioXFznTZGlb6j2wOsKcjvQ1uSQcI=
-X-Received: from pjsc19.prod.google.com ([2002:a17:90a:bf13:b0:33b:ab21:aff7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b0f:b0:32e:8c14:5cd2
- with SMTP id 98e67ed59e1d1-33bcf8faac8mr1848079a91.28.1760661212029; Thu, 16
- Oct 2025 17:33:32 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 16 Oct 2025 17:32:43 -0700
-In-Reply-To: <20251017003244.186495-1-seanjc@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cntPw4nFTz2yrt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 16:18:12 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59H3me5T021054;
+	Fri, 17 Oct 2025 05:17:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=yRq4Fjs9RQqmCumBXOIWM/V9Rdd8tR
+	YzHUqt4EgQG1g=; b=PEeymNueSinjU7DQxwA1rVIebo7bhmjJmy9xinIYgvOK5N
+	NwHKuBLojWwD725343ve3TctOfnb57DkzwmoRsQha2erTTiUPeANaqlcanIhILYx
+	VAQNb8nEXdYDt+Ez7iJ/D6xLMijWFezv3N4gxc/qRAtmEmK0LjmMVl3t93dv7JGu
+	Fk+7Zx90Hakp+y9OQDeN4p5WOhU/3BjOr2v5xBP0wudGob//GGr1NLXu0xaj935V
+	2kwMdcQONdC5Btmy7X4jMLeE1QCMFNT92WsZaoGf3fGjrN9QOa9NYfDyuIsbCz8h
+	wJVnmfTr2cd2w6Wd8l2Js39HBuEJlMqUmGw3QBKA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0dh7c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Oct 2025 05:17:53 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59H5ETKP030991;
+	Fri, 17 Oct 2025 05:17:53 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0dh78-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Oct 2025 05:17:53 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59H1gYRO028047;
+	Fri, 17 Oct 2025 05:17:52 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49tdg9gn88-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Oct 2025 05:17:52 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59H5Hpx132571958
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Oct 2025 05:17:51 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DAAB758054;
+	Fri, 17 Oct 2025 05:17:50 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ACBE45805A;
+	Fri, 17 Oct 2025 05:17:44 +0000 (GMT)
+Received: from [9.124.220.117] (unknown [9.124.220.117])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 17 Oct 2025 05:17:44 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------lEjR0iPOz9KnyL9ZWgMzVvbr"
+Message-ID: <cff01514-9074-4c97-bcf1-d4e3594e48b0@linux.ibm.com>
+Date: Fri, 17 Oct 2025 10:47:43 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,141 +86,301 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com>
-X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <20251017003244.186495-26-seanjc@google.com>
-Subject: [PATCH v3 25/25] KVM: TDX: Fix list_add corruption during vcpu_load()
-From: Sean Christopherson <seanjc@google.com>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>, 
-	Kai Huang <kai.huang@intel.com>, Michael Roth <michael.roth@amd.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] drivers/base/node: Fold unregister_node() into
+ unregister_one_node()
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Christophe Leroy
+ <christophe.leroy@csgroup.eu>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+        x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rafael@kernel.org, Danilo Krummrich <dakr@kernel.org>,
+        Dave Jiang <dave.jiang@intel.com>
+References: <20251015172759.69864-1-sj@kernel.org>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20251015172759.69864-1-sj@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: xubv_IjbsENKRNmx41Q90HchWwlwgPIN
+X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68f1d182 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=r77TgQKjGQsHNAKrUKIA:9
+ a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=VwQbUJbxAAAA:8 a=4P3WUyT6FmEQvZmdkCYA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=9QPfRxTwsjrChipofWYA:9
+ a=1qUZTG5jgF9W_AF5:21 a=_W_S_7VecoQA:10 a=lqcHg5cX4UMA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfXxS5P6sLnVrC3
+ o7MeNSwZX9B5YAtb8LTm1QV4ovlO6cC8EqwNxPt+FYgSs5TPohEMr4E3GKVTqz/x8dZt9SjckeW
+ aDS9TfPIpPnlODRhqtiDyAU83W8TtYz61wb4EluTmsaIVbUFYh7PRaqKnRzPPJL2cHVbFNLauYd
+ +EMuSLS3z0wJVRhL7M83cglJJsMvvI2tQnUtdIuqBgXVmqyWNyJdbZo8yxXWu5qmuYgrA9i6qaY
+ JM3iGxioMr+qzNoFhc7NWhVZdCWuN9NZ/Y4cRtd5xr7gF7ku4zShx2Ub7lOCcMTTj+JjBqeUQJJ
+ hjqeMfnVAz3pH9ZAESW9O/sKKc9jRoPOUE3PhGxEz9xLeaF0hKLMIBo1RA0sgA6wQyMTuUyiQyr
+ fn5ovtZM3HeHqQN9kDujHTHNLDB+2g==
+X-Proofpoint-GUID: hgfPyIsn-v6oRJooxxEavvKmFDBTqY1B
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-17_02,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HTML_MESSAGE,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Yan Zhao <yan.y.zhao@intel.com>
+This is a multi-part message in MIME format.
+--------------lEjR0iPOz9KnyL9ZWgMzVvbr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-During vCPU creation, a vCPU may be destroyed immediately after
-kvm_arch_vcpu_create() (e.g., due to vCPU id confiliction). However, the
-vcpu_load() inside kvm_arch_vcpu_create() may have associate the vCPU to
-pCPU via "list_add(&tdx->cpu_list, &per_cpu(associated_tdvcpus, cpu))"
-before invoking tdx_vcpu_free().
 
-Though there's no need to invoke tdh_vp_flush() on the vCPU, failing to
-dissociate the vCPU from pCPU (i.e., "list_del(&to_tdx(vcpu)->cpu_list)")
-will cause list corruption of the per-pCPU list associated_tdvcpus.
+On 10/15/25 10:57 PM, SeongJae Park wrote:
+> On Tue, 14 Oct 2025 21:09:17 +0530 Donet Tom<donettom@linux.ibm.com> wrote:
+>
+>> The function unregister_node() is only called from unregister_one_node().
+>> This patch folds unregister_node() into its only caller and renames
+>> unregister_one_node() to unregister_node().
+>>
+>> This reduces unnecessary indirection and simplifies the code structure.
+>> No functional changes are introduced.
+>>
+>> Acked-by: David Hildenbrand<david@redhat.com>
+>> Acked-by: Mike Rapoport (Microsoft)<rppt@kernel.org>
+>> Signed-off-by: Donet Tom<donettom@linux.ibm.com>
+> Acked-by: SeongJae Park<sj@kernel.org>
+>
+>> ---
+>>   drivers/base/node.c  | 38 +++++++++++++++++---------------------
+>>   include/linux/node.h |  6 ++----
+>>   mm/memory_hotplug.c  |  4 ++--
+>>   3 files changed, 21 insertions(+), 27 deletions(-)
+>>
+>> diff --git a/drivers/base/node.c b/drivers/base/node.c
+>> index 4bcaa8006cd6..758b777dec1f 100644
+>> --- a/drivers/base/node.c
+>> +++ b/drivers/base/node.c
+>> @@ -676,23 +676,6 @@ static void node_device_release(struct device *dev)
+>>   	kfree(to_node(dev));
+>>   }
+>>   
+>> -/**
+>> - * unregister_node - unregister a node device
+>> - * @node: node going away
+>> - *
+>> - * Unregisters a node device @node.  All the devices on the node must be
+>> - * unregistered before calling this function.
+>> - */
+>> -void unregister_node(struct node *node)
+>> -{
+>> -	hugetlb_unregister_node(node);
+>> -	compaction_unregister_node(node);
+>> -	reclaim_unregister_node(node);
+>> -	node_remove_accesses(node);
+>> -	node_remove_caches(node);
+>> -	device_unregister(&node->dev);
+>> -}
+>> -
+>>   struct node *node_devices[MAX_NUMNODES];
+>>   
+>>   /*
+>> @@ -924,13 +907,26 @@ int register_node(int nid)
+>>   
+>>   	return error;
+>>   }
+>> -
+>> -void unregister_one_node(int nid)
+>> +/**
+>> + * unregister_node - unregister a node device
+>> + * @nid: nid of the node going away
+>> + *
+>> + * Unregisters the node device at node id  @nid.  All the devices on the
+> Nit.  Why two spaces before "@nid"?
 
-Then, a later list_add() during vcpu_load() would detect list corruption
-and print calltrace as shown below.
+Thank you for pointing this out.
 
-Dissociate a vCPU from its associated pCPU in tdx_vcpu_free() for the vCPUs
-destroyed immediately after creation which must be in
-VCPU_TD_STATE_UNINITIALIZED state.
+Andrew could you please help apply the below fixlet on top of this patch?
 
-kernel BUG at lib/list_debug.c:29!
-Oops: invalid opcode: 0000 [#2] SMP NOPTI
-RIP: 0010:__list_add_valid_or_report+0x82/0xd0
-
-Call Trace:
- <TASK>
- tdx_vcpu_load+0xa8/0x120
- vt_vcpu_load+0x25/0x30
- kvm_arch_vcpu_load+0x81/0x300
- vcpu_load+0x55/0x90
- kvm_arch_vcpu_create+0x24f/0x330
- kvm_vm_ioctl_create_vcpu+0x1b1/0x53
- kvm_vm_ioctl+0xc2/0xa60
-  __x64_sys_ioctl+0x9a/0xf0
- x64_sys_call+0x10ee/0x20d0
- do_syscall_64+0xc3/0x470
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+ From 0d0345847ad33607c7ebae3798ef37ff16a20fd0 Mon Sep 17 00:00:00 2001
+From: Donet Tom<donettom@linux.ibm.com>                                        
+Date: Fri, 17 Oct 2025 10:27:54 +0530
+Subject: [PATCH] [fixlet] drivers/base/node: Remove extra space in description
+                                                                                 
+This patch removes an extra space before @nid and "All".
+                                                                                 
+Signed-off-by: Donet Tom<donettom@linux.ibm.com>                               
 ---
- arch/x86/kvm/vmx/tdx.c | 43 +++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 38 insertions(+), 5 deletions(-)
+  drivers/base/node.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+                                                                                 
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 63b223a3b38e..00cf4532f121 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -911,7 +911,7 @@ int register_node(int nid)
+   * unregister_node - unregister a node device
+   * @nid: nid of the node going away
+   *
+- * Unregisters the node device at node id  @nid.  All the devices on the
++ * Unregisters the node device at node id @nid. All the devices on the
+   * node must be unregistered before calling this function.
+   */
+  void unregister_node(int nid)
+--
+2.51.0
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index d6541b08423f..daec88d4b88d 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -833,19 +833,52 @@ void tdx_vcpu_put(struct kvm_vcpu *vcpu)
- 	tdx_prepare_switch_to_host(vcpu);
+
+>
+> [...]
+>
+>
+> Thanks,
+> SJ
+--------------lEjR0iPOz9KnyL9ZWgMzVvbr
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 10/15/25 10:57 PM, SeongJae Park
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20251015172759.69864-1-sj@kernel.org">
+      <pre wrap="" class="moz-quote-pre">On Tue, 14 Oct 2025 21:09:17 +0530 Donet Tom <a class="moz-txt-link-rfc2396E" href="mailto:donettom@linux.ibm.com">&lt;donettom@linux.ibm.com&gt;</a> wrote:
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">The function unregister_node() is only called from unregister_one_node().
+This patch folds unregister_node() into its only caller and renames
+unregister_one_node() to unregister_node().
+
+This reduces unnecessary indirection and simplifies the code structure.
+No functional changes are introduced.
+
+Acked-by: David Hildenbrand <a class="moz-txt-link-rfc2396E" href="mailto:david@redhat.com">&lt;david@redhat.com&gt;</a>
+Acked-by: Mike Rapoport (Microsoft) <a class="moz-txt-link-rfc2396E" href="mailto:rppt@kernel.org">&lt;rppt@kernel.org&gt;</a>
+Signed-off-by: Donet Tom <a class="moz-txt-link-rfc2396E" href="mailto:donettom@linux.ibm.com">&lt;donettom@linux.ibm.com&gt;</a>
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+Acked-by: SeongJae Park <a class="moz-txt-link-rfc2396E" href="mailto:sj@kernel.org">&lt;sj@kernel.org&gt;</a>
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">---
+ drivers/base/node.c  | 38 +++++++++++++++++---------------------
+ include/linux/node.h |  6 ++----
+ mm/memory_hotplug.c  |  4 ++--
+ 3 files changed, 21 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 4bcaa8006cd6..758b777dec1f 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -676,23 +676,6 @@ static void node_device_release(struct device *dev)
+ 	kfree(to_node(dev));
  }
  
-+/*
-+ * Life cycles for a TD and a vCPU:
-+ * 1. KVM_CREATE_VM ioctl.
-+ *    TD state is TD_STATE_UNINITIALIZED.
-+ *    hkid is not assigned at this stage.
-+ * 2. KVM_TDX_INIT_VM ioctl.
-+ *    TD transitions to TD_STATE_INITIALIZED.
-+ *    hkid is assigned after this stage.
-+ * 3. KVM_CREATE_VCPU ioctl. (only when TD is TD_STATE_INITIALIZED).
-+ *    3.1 tdx_vcpu_create() transitions vCPU state to VCPU_TD_STATE_UNINITIALIZED.
-+ *    3.2 vcpu_load() and vcpu_put() in kvm_arch_vcpu_create().
-+ *    3.3 (conditional) if any error encountered after kvm_arch_vcpu_create()
-+ *        kvm_arch_vcpu_destroy() --> tdx_vcpu_free().
-+ * 4. KVM_TDX_INIT_VCPU ioctl.
-+ *    tdx_vcpu_init() transitions vCPU state to VCPU_TD_STATE_INITIALIZED.
-+ *    vCPU control structures are allocated at this stage.
-+ * 5. kvm_destroy_vm().
-+ *    5.1 tdx_mmu_release_hkid(): (1) tdh_vp_flush(), disassociates all vCPUs.
-+ *                                (2) puts hkid to !assigned state.
-+ *    5.2 kvm_destroy_vcpus() --> tdx_vcpu_free():
-+ *        transitions vCPU to VCPU_TD_STATE_UNINITIALIZED state.
-+ *    5.3 tdx_vm_destroy()
-+ *        transitions TD to TD_STATE_UNINITIALIZED state.
-+ *
-+ * tdx_vcpu_free() can be invoked only at 3.3 or 5.2.
-+ * - If at 3.3, hkid is still assigned, but the vCPU must be in
-+ *   VCPU_TD_STATE_UNINITIALIZED state.
-+ * - if at 5.2, hkid must be !assigned and all vCPUs must be in
-+ *   VCPU_TD_STATE_INITIALIZED state and have been dissociated.
-+ */
- void tdx_vcpu_free(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(vcpu->kvm);
- 	struct vcpu_tdx *tdx = to_tdx(vcpu);
- 	int i;
+-/**
+- * unregister_node - unregister a node device
+- * @node: node going away
+- *
+- * Unregisters a node device @node.  All the devices on the node must be
+- * unregistered before calling this function.
+- */
+-void unregister_node(struct node *node)
+-{
+-	hugetlb_unregister_node(node);
+-	compaction_unregister_node(node);
+-	reclaim_unregister_node(node);
+-	node_remove_accesses(node);
+-	node_remove_caches(node);
+-	device_unregister(&amp;node-&gt;dev);
+-}
+-
+ struct node *node_devices[MAX_NUMNODES];
  
-+	if (vcpu->cpu != -1) {
-+		KVM_BUG_ON(tdx->state == VCPU_TD_STATE_INITIALIZED, vcpu->kvm);
-+		tdx_disassociate_vp(vcpu);
-+		return;
-+	}
-+
- 	/*
- 	 * It is not possible to reclaim pages while hkid is assigned. It might
--	 * be assigned if:
--	 * 1. the TD VM is being destroyed but freeing hkid failed, in which
--	 * case the pages are leaked
--	 * 2. TD VCPU creation failed and this on the error path, in which case
--	 * there is nothing to do anyway
-+	 * be assigned if the TD VM is being destroyed but freeing hkid failed,
-+	 * in which case the pages are leaked.
- 	 */
- 	if (is_hkid_assigned(kvm_tdx))
- 		return;
--- 
-2.51.0.858.gf9c4a03a3a-goog
+ /*
+@@ -924,13 +907,26 @@ int register_node(int nid)
+ 
+ 	return error;
+ }
+-
+-void unregister_one_node(int nid)
++/**
++ * unregister_node - unregister a node device
++ * @nid: nid of the node going away
++ *
++ * Unregisters the node device at node id  @nid.  All the devices on the
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+Nit.  Why two spaces before "@nid"?</pre>
+    </blockquote>
+    <pre>Thank you for pointing this out.
+
+Andrew could you please help apply the below fixlet on top of this patch?</pre>
+    <pre>From 0d0345847ad33607c7ebae3798ef37ff16a20fd0 Mon Sep 17 00:00:00 2001          
+From: Donet Tom <a class="moz-txt-link-rfc2396E" href="mailto:donettom@linux.ibm.com">&lt;donettom@linux.ibm.com&gt;</a>                                        
+Date: Fri, 17 Oct 2025 10:27:54 +0530                                           
+Subject: [PATCH] [fixlet] drivers/base/node: Remove extra space in description  
+                                                                                
+This patch removes an extra space before @nid and "All".                        
+                                                                                
+Signed-off-by: Donet Tom <a class="moz-txt-link-rfc2396E" href="mailto:donettom@linux.ibm.com">&lt;donettom@linux.ibm.com&gt;</a>                               
+---                                                                             
+ drivers/base/node.c | 2 +-                                                     
+ 1 file changed, 1 insertion(+), 1 deletion(-)                                  
+                                                                                
+diff --git a/drivers/base/node.c b/drivers/base/node.c                          
+index 63b223a3b38e..00cf4532f121 100644                                         
+--- a/drivers/base/node.c                                                       
++++ b/drivers/base/node.c                                                       
+@@ -911,7 +911,7 @@ int register_node(int nid)                                  
+  * unregister_node - unregister a node device                                  
+  * @nid: nid of the node going away                                            
+  *                                                                             
+- * Unregisters the node device at node id  @nid.  All the devices on the          
++ * Unregisters the node device at node id @nid. All the devices on the         
+  * node must be unregistered before calling this function.                     
+  */                                                                            
+ void unregister_node(int nid)                                                  
+--                                                                              
+2.51.0        </pre>
+    <p></p>
+    <p><br>
+    </p>
+    <blockquote type="cite"
+      cite="mid:20251015172759.69864-1-sj@kernel.org">
+      <pre wrap="" class="moz-quote-pre">
+
+[...]
+
+
+Thanks,
+SJ
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------lEjR0iPOz9KnyL9ZWgMzVvbr--
 
 
