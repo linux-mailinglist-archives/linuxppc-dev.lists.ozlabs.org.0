@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-12952-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12953-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85162BE5E76
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 02:33:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F721BE5E7C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 02:33:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnm4l6KyGz3cg1;
-	Fri, 17 Oct 2025 11:32:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnm4n5LKGz3chb;
+	Fri, 17 Oct 2025 11:32:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760661175;
-	cv=none; b=UkxQYRr+eJp1H/+Mhpr7HSAE3zJ24hTIZykWRWG26J40n23SDc9dySG2KMeTW1Ye5+6tvBPSGsIk+KwQMNbMEbXz4vAoYaykyngtWBpMP+SWd9jgm3VWa2u5w4LZRQ1cIjuKve0B+C+F25CvXjapmuxikTnV6pw4i0fXDx6Zm2e0Toz+Kg56ephvmg/hrppctA51QEtFlPYohvhxUklH6DOGKm0lfgWnu4pMEEvtOYtOaf3NY8w2NMsdrqRY7OjrQhsdmHZsLFzH1jWCcSiO/oCYbRYH6t2ukDXSw0ZXTpvseIcx/jF4Mff6qMkxlapcQ90Knv5HNCFm3B/fd+VjVg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760661177;
+	cv=none; b=aCZn4UiVoKDXYr44YRQ5US5xM/FadyzWF481vptsmodU247nYggg6qRaSpyG8T7R8amSNr+77N9hzLMcOPgck5TqwYKRMnsFdgxXQDpwlehwwDXd/GmsAA2X8zw01W7eTbvN/GEpy4GckoQ92eFtnDRFZnHIWWOrDRIs7HZ3NarFXiNsQ2Y+dvgqtRCYUCDxu6ChPAYr55+YIvq5P0gXJ7EPjkfme7Gvq+Wh35qEeAZ2yOh2PsaCSCPF884ewVskKw4Pm1EkaZrex+E6UAwYLnSnZ4du4kgxSs04HUO+7uh9Cn98QABdE83NzuH02cbXIDrnY3I2zUewQGH+SFCQjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760661175; c=relaxed/relaxed;
-	bh=ufVneY39YrbdCfRZpp0jVK1n9RSn66wnVA9SJtGGBdY=;
+	t=1760661177; c=relaxed/relaxed;
+	bh=ko9UTh0kFN5WvzyFoNPT6gnIbmUfHZvedxM+uwzO14M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j1QIPZT/tr3pEHVGBYUrW16k89fGroE5Mpl3TCSn4l0a/EITFbBLkpXak2b+iPTEJtU1h31ACdTHWCKXyaRionbde2yn6Ikw3VOF0f2mielMhavwYMi5CWNzkx4q35DuNut1SoftluNqj5KU6KUu0ZLIwGXiJ0FXswqF9LGOCFWJWt2rJONIh9+xsWdlKi/zfi+7fRtwwLE5bb698MkBBGmeIv30RDsmpvmQetPCV/0ZDGHGRE2V1V7x5p1K8gA+P1xj1AAKb0FV0i4XC2qo59KBCaD2TBK5haEnhXzUDnu0ASu/i0wkWC5+hMxJVVcN085kHlmsoDyuYVmwt0mWlw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=FKuV8P29; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3ty7xaaykdoyamivrkowwotm.kwutqvcfxxk-lmdtqaba.whtija.wzo@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=E8DR7yPp2/qY+7GCEaDEjH8/OCD8k1SIl5hQLAiE+KOqM+N9ZE3hVjzvwS95vlk0LNlbd1FOgUiim3QAAuXmcvGv+Q5nFPvH7HqhN0+LaMS+6Pr21C5wGc/lvN75a1Wlbdth87rnoI1Ntgg9QSKan4/52hCb9UgOS43cLEE3dcE+9APe4Qk240b4apWvuWjjKX5bPKPXv1Uy9mSLtp88DHTdDc8ACzUfJYRBAEITEoTpFHkbidCaTIydOtnq0idJqyJTWLxDR02ggh9Yyp+Z97ZBp8+2pezC7KZM7NM9G9KqkY9ESMMoHFStEoR8KetETKfrspgtll47+Fynu4qgRw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=s4V/5R9K; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3t47xaaykdogcokxtmqyyqvo.mywvsxehzzm-nofvscdc.yjvklc.ybq@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=FKuV8P29;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=s4V/5R9K;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3ty7xaaykdoyamivrkowwotm.kwutqvcfxxk-lmdtqaba.whtija.wzo@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3t47xaaykdogcokxtmqyyqvo.mywvsxehzzm-nofvscdc.yjvklc.ybq@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnm4l1wp6z3cfQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 11:32:55 +1100 (AEDT)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-336b646768eso1548151a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:32:55 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnm4n0vZsz3cfQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 11:32:57 +1100 (AEDT)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-33428befc08so3128520a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:32:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760661174; x=1761265974; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1760661175; x=1761265975; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=ufVneY39YrbdCfRZpp0jVK1n9RSn66wnVA9SJtGGBdY=;
-        b=FKuV8P29IyYAQOTMEE9tMsT4sFy1QbRlWi5a2OEvyaaZtGTz3kVuurxeUIfcBC3QRQ
-         /o4Q+XiwDMavGMFSgRoq4W0LA5kDJGKKDzx6q9J3ifoNoghTAfa8QlinFoSH4jlJBwMO
-         wBh8R2k3/c5yCkUBf14gMtRgr1uhDngqWz19szlf5oopfyQH7TwVzp+q07xf4cHfxjhC
-         sqH995y9hJ3wKyadCZye8RNV92pZc91r2Y37BDJbLF+W4mmomOgucOZUBvhDr+Wt3R6b
-         T5DZuDALAm+dsR+I6LI4IQdq0ODoPsrXO7KnOrF/t89jpd3bLftihnUqApn40/BfkQxK
-         1r4g==
+        bh=ko9UTh0kFN5WvzyFoNPT6gnIbmUfHZvedxM+uwzO14M=;
+        b=s4V/5R9KRj8VyM939r502TGdEqbToCxws4fH82L2s2ebtiA1JAHvJgOu9xiaorTDTL
+         ekS7E7UoYMsRicyvV0jmbA3aqC8t8Iw/SnTZNGVTyHL1Dj60GHEP2DqAPnLrOpl6A+9s
+         9HRVXiSwtMiH2huWEO94fKSOuj6/vcEvjgT7ZMjiai8VP5sEGZUh0eM9WvWe0wDR0ol0
+         IJthmH49ctSNSP61tBHqFez/v7laLaY+RYjRJ7LzInc8vva/8cqxH2vJ9Xd7RJPryqfj
+         ic5seocQ3eo3nIaAKJAyTyc/rN0is4fj2/HifhLuwRI+WePEaNRuyEmQyieN4sZdHmwz
+         7jTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760661174; x=1761265974;
+        d=1e100.net; s=20230601; t=1760661175; x=1761265975;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ufVneY39YrbdCfRZpp0jVK1n9RSn66wnVA9SJtGGBdY=;
-        b=kYQHIr7P8FExEt8tIsuishECcr0CI5OAmmh3bfO2kyF+oT3Mw1PmR7+A88eh4iuNFB
-         5N/TKO1utlTYsEOlB54j4ZVB2pAFRe5SB1JP+CgdqTMItZrdcBbHGDuDzPj16k/HbR5G
-         xowRbxngqDbMwmEGuOnBbbuj+GDZFYqG3p8wlGPB2LbcoGpljDbJ6Q8PNCSNkf+h0RVG
-         J+JvmE9RfoxJmuPLLaiO00v8ALVwfvEcpBt1zaTf1q4CN8CnCxPbuHI8sca0npC397xu
-         K5YzzUgg4qdsXvgz2ltPyDPvmxdgejtlEJH4rPsn4+ghgG7Y6oTNaoR4FIN0rRGmF3ea
-         vNOw==
-X-Forwarded-Encrypted: i=1; AJvYcCUHlkeNkdZRsH54jcQHAzPJZRolaZlR1gjxWSJ/iqBVhd5FEa0Pdj0IgUGx9DmaMLDWbwKHB/qqD5bk/hw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyk0LEiHdcS5JFxYeF2qHNYk2x69b6ooEFxu7A0dzOjC8RotH5B
-	pd02tRTxQnOmVGB3A6rp5m8x0xj9o3YVIWzXp1sOQ7zJsZX86lQkkbofGC6xTC+kCOKxSU9bAVV
-	2tg7JAQ==
-X-Google-Smtp-Source: AGHT+IGBsD40M1TCHpceHuTvrzQu31EsWCpow7sShvAnQiEKP0H9VSo9B6k/+Ftt8wsphMd8FgX3xhZLFrA=
-X-Received: from pjop7.prod.google.com ([2002:a17:90a:9307:b0:33b:aa58:175c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2fd0:b0:32d:601d:f718
- with SMTP id 98e67ed59e1d1-33bcf8f9c16mr1675095a91.31.1760661173675; Thu, 16
- Oct 2025 17:32:53 -0700 (PDT)
+        bh=ko9UTh0kFN5WvzyFoNPT6gnIbmUfHZvedxM+uwzO14M=;
+        b=QHhmYiaHDv7tjBiBO2FAAvH55eeB7sX2owXOHFJAZjuBehhwkwskjgfLPhPBYGPvC0
+         2wg9ip26fU2sp8PMjvo8Is9wEZMME8/+JWpeayOrBX/HtWjJCbJQ+WW5MxpvfgTGbBUt
+         4u5ohlxk+Aa6CuBiYY8bQUn9iQ1K4xP3RWbjHRitrVLERYHDb4OwKaYR5NTMiNrgiw9g
+         0q82xh6uoc8p907rqN5o4NmZe2ynKXl8L9d5NAQ/M6sBPiOO7v+cOxFvl8IE4nAiuSaX
+         BxGLrUPYfxQrAwNCp8gYKkfPUNlZp7M0qUXzt63HyB+/GNMd7uMQOVG5teafE9gfOeZf
+         Ho0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX1tB9eEb7SUyjx97ZrpIEwjJRE6JZzFxif0fCcchRPJYp6PtyJfYY5dHjVhzhuQ83ltpC5RyaTEqjjlTk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyDqIayu4SqEV6aGTCd2SazXzW0kj0n2hDBtNu4Y3inIaz+yLA0
+	tae0Gavt6bTGS8It1a9lTIjGsjMiIzNWKHmEEWry6G818hv7jPVD9sssJQRlVmpiSzPHwggJ1/R
+	RKthhOQ==
+X-Google-Smtp-Source: AGHT+IE6CYPgkt1lc/boR85TJpRZ+SOX8flYF3i2xBYbojnuL2N+y/yOiWuvwhvUCsHzA0ZslE057qBeNRU=
+X-Received: from pjbmr8.prod.google.com ([2002:a17:90b:2388:b0:330:49f5:c0a7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c0c:b0:33b:c5f6:40f1
+ with SMTP id 98e67ed59e1d1-33bcf85d123mr2212838a91.7.1760661175511; Thu, 16
+ Oct 2025 17:32:55 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 16 Oct 2025 17:32:21 -0700
+Date: Thu, 16 Oct 2025 17:32:22 -0700
 In-Reply-To: <20251017003244.186495-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -80,9 +80,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20251017003244.186495-1-seanjc@google.com>
 X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <20251017003244.186495-4-seanjc@google.com>
-Subject: [PATCH v3 03/25] KVM: TDX: Drop PROVE_MMU=y sanity check on
- to-be-populated mappings
+Message-ID: <20251017003244.186495-5-seanjc@google.com>
+Subject: [PATCH v3 04/25] KVM: x86/mmu: Add dedicated API to map guest_memfd
+ pfn into TDP MMU
 From: Sean Christopherson <seanjc@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
 	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
@@ -107,73 +107,162 @@ X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Drop TDX's sanity check that a mirror EPT mapping isn't zapped between
-creating said mapping and doing TDH.MEM.PAGE.ADD, as the check is
-simultaneously superfluous and incomplete.  Per commit 2608f1057601
-("KVM: x86/tdp_mmu: Add a helper function to walk down the TDP MMU"), the
-justification for introducing kvm_tdp_mmu_gpa_is_mapped() was to check
-that the target gfn was pre-populated, with a link that points to this
-snippet:
+Add and use a new API for mapping a private pfn from guest_memfd into the
+TDP MMU from TDX's post-populate hook instead of partially open-coding the
+functionality into the TDX code.  Sharing code with the pre-fault path
+sounded good on paper, but it's fatally flawed as simulating a fault loses
+the pfn, and calling back into gmem to re-retrieve the pfn creates locking
+problems, e.g. kvm_gmem_populate() already holds the gmem invalidation
+lock.
 
- : > One small question:
- : >
- : > What if the memory region passed to KVM_TDX_INIT_MEM_REGION hasn't been pre-
- : > populated?  If we want to make KVM_TDX_INIT_MEM_REGION work with these regions,
- : > then we still need to do the real map.  Or we can make KVM_TDX_INIT_MEM_REGION
- : > return error when it finds the region hasn't been pre-populated?
- :
- : Return an error.  I don't love the idea of bleeding so many TDX details into
- : userspace, but I'm pretty sure that ship sailed a long, long time ago.
+Providing a dedicated API will also removing several MMU exports that
+ideally would not be exposed outside of the MMU, let alone to vendor code.
+On that topic, opportunistically drop the kvm_mmu_load() export.  Leave
+kvm_tdp_mmu_gpa_is_mapped() alone for now; the entire commit that added
+kvm_tdp_mmu_gpa_is_mapped() will be removed in the near future.
 
-But that justification makes little sense for the final code, as the check
-on nr_premapped after TDH.MEM.PAGE.ADD will detect and return an error if
-KVM attempted to zap a S-EPT entry (tdx_sept_zap_private_spte() will fail
-on TDH.MEM.RANGE.BLOCK due lack of a valid S-EPT entry).  And as evidenced
-by the "is mapped?" code being guarded with CONFIG_KVM_PROVE_MMU=y, KVM is
-NOT relying on the check for general correctness.
-
-The sanity check is also incomplete in the sense that mmu_lock is dropped
-between the check and TDH.MEM.PAGE.ADD, i.e. will only detect KVM bugs that
-zap SPTEs in a very specific window (note, this also applies to the check
-on nr_premapped).
-
-Removing the sanity check will allow removing kvm_tdp_mmu_gpa_is_mapped(),
-which has no business being exposed to vendor code, and more importantly
-will pave the way for eliminating the "pre-map" approach entirely in favor
-of doing TDH.MEM.PAGE.ADD under mmu_lock.
-
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
+Cc: Michael Roth <michael.roth@amd.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Vishal Annapurve <vannapurve@google.com>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Link: https://lore.kernel.org/all/20250709232103.zwmufocd3l7sqk7y@amd.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/tdx.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ arch/x86/kvm/mmu.h     |  1 +
+ arch/x86/kvm/mmu/mmu.c | 60 +++++++++++++++++++++++++++++++++++++++++-
+ arch/x86/kvm/vmx/tdx.c | 10 +++----
+ 3 files changed, 63 insertions(+), 8 deletions(-)
 
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index f63074048ec6..2f108e381959 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -259,6 +259,7 @@ extern bool tdp_mmu_enabled;
+ 
+ bool kvm_tdp_mmu_gpa_is_mapped(struct kvm_vcpu *vcpu, u64 gpa);
+ int kvm_tdp_map_page(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code, u8 *level);
++int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn);
+ 
+ static inline bool kvm_memslots_have_rmaps(struct kvm *kvm)
+ {
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 18d69d48bc55..ba5cca825a7f 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5014,6 +5014,65 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+ 	return min(range->size, end - range->gpa);
+ }
+ 
++int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
++{
++	struct kvm_page_fault fault = {
++		.addr = gfn_to_gpa(gfn),
++		.error_code = PFERR_GUEST_FINAL_MASK | PFERR_PRIVATE_ACCESS,
++		.prefetch = true,
++		.is_tdp = true,
++		.nx_huge_page_workaround_enabled = is_nx_huge_page_enabled(vcpu->kvm),
++
++		.max_level = PG_LEVEL_4K,
++		.req_level = PG_LEVEL_4K,
++		.goal_level = PG_LEVEL_4K,
++		.is_private = true,
++
++		.gfn = gfn,
++		.slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn),
++		.pfn = pfn,
++		.map_writable = true,
++	};
++	struct kvm *kvm = vcpu->kvm;
++	int r;
++
++	lockdep_assert_held(&kvm->slots_lock);
++
++	if (KVM_BUG_ON(!tdp_mmu_enabled, kvm))
++		return -EIO;
++
++	if (kvm_gfn_is_write_tracked(kvm, fault.slot, fault.gfn))
++		return -EPERM;
++
++	r = kvm_mmu_reload(vcpu);
++	if (r)
++		return r;
++
++	r = mmu_topup_memory_caches(vcpu, false);
++	if (r)
++		return r;
++
++	do {
++		if (signal_pending(current))
++			return -EINTR;
++
++		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
++			return -EIO;
++
++		cond_resched();
++
++		guard(read_lock)(&kvm->mmu_lock);
++
++		r = kvm_tdp_mmu_map(vcpu, &fault);
++	} while (r == RET_PF_RETRY);
++
++	if (r != RET_PF_FIXED)
++		return -EIO;
++
++	return 0;
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_tdp_mmu_map_private_pfn);
++
+ static void nonpaging_init_context(struct kvm_mmu *context)
+ {
+ 	context->page_fault = nonpaging_page_fault;
+@@ -5997,7 +6056,6 @@ int kvm_mmu_load(struct kvm_vcpu *vcpu)
+ out:
+ 	return r;
+ }
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_mmu_load);
+ 
+ void kvm_mmu_unload(struct kvm_vcpu *vcpu)
+ {
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 326db9b9c567..4c3014befe9f 100644
+index 4c3014befe9f..29f344af4cc2 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -3181,20 +3181,6 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+@@ -3157,15 +3157,12 @@ struct tdx_gmem_post_populate_arg {
+ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 				  void __user *src, int order, void *_arg)
+ {
+-	u64 error_code = PFERR_GUEST_FINAL_MASK | PFERR_PRIVATE_ACCESS;
+-	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+ 	struct tdx_gmem_post_populate_arg *arg = _arg;
+-	struct kvm_vcpu *vcpu = arg->vcpu;
++	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
++	u64 err, entry, level_state;
+ 	gpa_t gpa = gfn_to_gpa(gfn);
+-	u8 level = PG_LEVEL_4K;
+ 	struct page *src_page;
+ 	int ret, i;
+-	u64 err, entry, level_state;
+ 
+ 	/*
+ 	 * Get the source page if it has been faulted in. Return failure if the
+@@ -3177,7 +3174,7 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 	if (ret != 1)
+ 		return -ENOMEM;
+ 
+-	ret = kvm_tdp_map_page(vcpu, gpa, error_code, &level);
++	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
  	if (ret < 0)
  		goto out;
  
--	/*
--	 * The private mem cannot be zapped after kvm_tdp_map_page()
--	 * because all paths are covered by slots_lock and the
--	 * filemap invalidate lock.  Check that they are indeed enough.
--	 */
--	if (IS_ENABLED(CONFIG_KVM_PROVE_MMU)) {
--		scoped_guard(read_lock, &kvm->mmu_lock) {
--			if (KVM_BUG_ON(!kvm_tdp_mmu_gpa_is_mapped(vcpu, gpa), kvm)) {
--				ret = -EIO;
--				goto out;
--			}
--		}
--	}
--
+@@ -3240,7 +3237,6 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+ 	    !vt_is_tdx_private_gpa(kvm, region.gpa + (region.nr_pages << PAGE_SHIFT) - 1))
+ 		return -EINVAL;
+ 
+-	kvm_mmu_reload(vcpu);
  	ret = 0;
- 	err = tdh_mem_page_add(&kvm_tdx->td, gpa, pfn_to_page(pfn),
- 			       src_page, &entry, &level_state);
+ 	while (region.nr_pages) {
+ 		if (signal_pending(current)) {
 -- 
 2.51.0.858.gf9c4a03a3a-goog
 
