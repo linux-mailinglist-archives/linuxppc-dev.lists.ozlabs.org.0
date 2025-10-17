@@ -1,82 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-13020-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13005-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56260BE90F0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 15:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86CB8BE8948
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 14:25:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cp5mf3mXJz3clB;
-	Sat, 18 Oct 2025 00:50:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cp3v0647Rz3cYx;
+	Fri, 17 Oct 2025 23:25:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760709010;
-	cv=none; b=P69fnKR4h/mCg+haOUg0R9FzExIZNsajTUnIJPfX0qrDjr+DPpOxsuKv9gqZWrlYNk36IU4jFwcRyrANirwncPCKLKyBvRGUrD4DOKWDlYOcWQHjdfKLd+GdSne5RXqNLG10O3aFcyYra9wLvxYbNuvBgWuEPneupZyWrT61nTKq3H9y/P/S/i/R/kV6BoI6zuTuc6fGwlkmenwvmhIBV/MHe0qJutXYZFBeKSthM6NiZxIEuw8oUrv68KRZKH/nRxUYsuatwW6M0oAOqwfmhAzR1i9wt8XupxA2uCHxRWTBDdHdIHnn/HKjPZac1puFN1nO6nwIr600Z5Z/xTU2WA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760709010; c=relaxed/relaxed;
-	bh=Y76KYxZ52HWKxzHbnSgfSTS0Ab4hob+fqANVOxXHccA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bc97gHvV1kF2UK2nZusjWLrgNCmDcbxJDwc5L1pWbuDgW4fgA/Kzi+2/SsNATaIo4pqF0K0flq2vlOF6NGb5WQ6JyTB5DaN/myiZxN+l2+n5f59z9uknYzSZRYhk4Y5r34A+f1uX7UVowRHtszdp6N+s7/HiVn2xvCsUKdDldfC8qERVb8ltWXFHnQvy5+UnfO8cDXaiZEx4tHod0GnWzY7Zhd2CEMVjoGiBU4AV+tNdkASjk5C5Syu2QXj3Gg0odALIObmlTgi3GhHme0291t7ZAjmJ1ec1xO6VjAJcRmwKQgA5MFMtU7ihv5E0hMggtenTyHb6iJfLWzBq+uCmuA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cp5md6qzsz3cjG
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Oct 2025 00:50:09 +1100 (AEDT)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cp17z4S6Bz9sSv;
-	Fri, 17 Oct 2025 12:21:35 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 3Oi-5uUs2W2I; Fri, 17 Oct 2025 12:21:35 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cp17z2zZkz9sSt;
-	Fri, 17 Oct 2025 12:21:35 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4FC4B8B780;
-	Fri, 17 Oct 2025 12:21:35 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 2LwN0z7fCh8C; Fri, 17 Oct 2025 12:21:35 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 119018B776;
-	Fri, 17 Oct 2025 12:21:34 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Darren Hart <dvhart@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"Andre Almeida" <andrealmeid@igalia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 10/10] powerpc/uaccess: Implement masked user access
-Date: Fri, 17 Oct 2025 12:21:06 +0200
-Message-ID: <179dbcda9eb3bdc5d314c949047db6ef8fd8a2ee.1760529207.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1760529207.git.christophe.leroy@csgroup.eu>
-References: <cover.1760529207.git.christophe.leroy@csgroup.eu>
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c103::1" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760703932;
+	cv=pass; b=bFw4rbX9b8hYMbwBZt87rmr19da24ksGVlmt3O0lVNVTScQL2RBWfWiuX/1aLyO4WoQ+snNsaHRfyyGWIV2bthu96jQo4qb3W4AEVJWgOcFalDBejdhEHvYNaiR1bP+bpZyXN9um6rMK6FNNHEXI41p7iepK+sYeGylL/K+vdevUuXDO4TTWDwZoo7+oiEHGnLmTag7Cfq00km0kKB2IQ2leoT4fMM/WYDrJKuimQRppDTMCoddUooeZTXGbKRJPj9OkN+HMRhzhDED9at1Mus8i2HXrmNdC3oZ0e/geqfYNvosu5lkmQDvTUxLrWaGrMaK5SWrXCr+4x661vgdvtA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1760703932; c=relaxed/relaxed;
+	bh=kR01a+ZdzG0MgE2rp7hdekzGWEsSJ6PCmmUxupacaiM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=APrV+LtRTXWv3oWIgsBQpd2EXJ8E8Ib64aaCD1tNhOA8mhNC/AMZfeGuO0Y1+W5RA79AF1FiNPwv7PGh+0Rh41IUhnOOkwZlSg1rdJk7jiooYIyDs0WRuXB8Jn7VV8KX8+oLbO1uZ45qqaK61UHAY6U5fgmXPSg9rad7zbpq9T7zeMrOHbSU9EhNHTSf2JYb0biMfUDicLPsSZ3AZnfhBRFw1JFWqCO6BjH2y44RbBhlPMlRg7Ylk1+To6w7TcaDpRwtyBRSFp2znSlU+AtjhO0dn+7WDul89J2+jNrIuUnrrzEPsyNX9PCexo9jOky/mQOOI8tU5CDxXZXCTGOsOQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=efficios.com; dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=gzgL/a94; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c103::1; helo=yt3pr01cu008.outbound.protection.outlook.com; envelope-from=mathieu.desnoyers@efficios.com; receiver=lists.ozlabs.org) smtp.mailfrom=efficios.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=gzgL/a94;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=efficios.com (client-ip=2a01:111:f403:c103::1; helo=yt3pr01cu008.outbound.protection.outlook.com; envelope-from=mathieu.desnoyers@efficios.com; receiver=lists.ozlabs.org)
+Received: from YT3PR01CU008.outbound.protection.outlook.com (mail-canadacentralazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c103::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cp3tw3PL8z3cYV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 23:25:27 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Djo9K3ZXpCSMnJ+aRBnNbS9X+WqgATpUF4WwCeyp2DdFdvm1J5gAK+dZfF5TFyIK1zYVEdbQXVLCJvED/4zxLCyJtnRNdam+IIU3rJTkMt04yTfAiYCqG7oC1dzwdER8SpKeSziqJ8d9DycTw3gENczcwmUlj0mDowvDFqWZvlazclMSBnWaIP1U211OpmuKjjag5V0zOh3ZFTG4Jdt9SHqmbxgY5Yo+XrnLXxhtW1y183RFDiaKGVlgCOL12u62BA7CfS/VX/rtXS3jZKgrtsA7FAoXZWYFJkbvgeiwYra4vIJWpln+xktMsFNx6RkDaKjoykZUPQRmMJGMXFJCLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kR01a+ZdzG0MgE2rp7hdekzGWEsSJ6PCmmUxupacaiM=;
+ b=r0DnX0Qxl22pJ5oFj2fjVpV3TE5KabVaxQPD5DWFSnX+iJUTkX4i5mJcbOGiN018StdqoSrEvmzppJsagR/tG/Due0CqFF75B6ev6tsqfUYCDvlKZ0Q2ZqB6sqJHZJ01qv0XLI4l3H9cPsMfvX/jvEyi2KE38v7r0Jt38KB6qeSJKiOP6AL4BYaOIUEMERnE2u7Cjtpqe4keNm8/uQvHRXXONOVbjKnecqxMXAGZUH6xJzv2jni4Ur3yWmorSX6HHps90guZGmsxTr+fxQkxQ+fplcgxPZBPOJWQUonkRRJWnXbezQTizrsQ397chvSNOcmYH39emln/xrbhIVh0+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
+ dkim=pass header.d=efficios.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kR01a+ZdzG0MgE2rp7hdekzGWEsSJ6PCmmUxupacaiM=;
+ b=gzgL/a943xesuplt8tZt87u4RTOBdwMBqbKhTzGw+FofLfzYDIUlQNogNUV+3mjqpQWkS7rgro0nodgTiSsDFXwcsSX4jpU27Jcu2m0VFOgguIkjkqIA7ZwD7BBVHOCD75xNzubpERQMqCMm2gTtdCQnpGVCMfL1xRY8MIIluIICy0smW5fGhai7O2nznxrz/6L6ytNKPrw7MEtlOJ3xi0AFkzoWlv1CKCQHxd6E6dmrbcqo3OyX0XFE32ZQM4hYUswBmHKNFc79HuCOX06HLE/z+Br7LohcVOSzpLcSNKetfVtoV9hZp/C4vdgtONxC/dLesC6S14dAxrcJ5PZf7w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=efficios.com;
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
+ by YT1PR01MB9018.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:cd::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Fri, 17 Oct
+ 2025 12:25:02 +0000
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::50f1:2e3f:a5dd:5b4]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::50f1:2e3f:a5dd:5b4%2]) with mapi id 15.20.9228.011; Fri, 17 Oct 2025
+ 12:25:01 +0000
+Message-ID: <3a4c9133-0296-4996-b8a9-46350d6b5f66@efficios.com>
+Date: Fri, 17 Oct 2025 08:25:00 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [patch V3 00/12] uaccess: Provide and use scopes for user masked
+ access
+To: Thomas Gleixner <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
+Cc: kernel test robot <lkp@intel.com>, Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Andrew Cooper <andrew.cooper3@citrix.com>,
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
+ Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, =?UTF-8?Q?Andr=C3=A9_Almeida?=
+ <andrealmeid@igalia.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org
+References: <20251017085938.150569636@linutronix.de>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Content-Language: en-US
+In-Reply-To: <20251017085938.150569636@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YT4PR01CA0126.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d5::14) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:be::5)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,286 +100,206 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9919; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=1n3jix8GAFus2icu2hVBBUdHzlbbrlmGYrh+XGB2nFw=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWR8kphynq246FJOj/j+fKEfe4+m+oukT3uw3FIjYO6cm itXXOoOdpSyMIhxMciKKbIc/8+9a0bXl9T8qbv0YeawMoEMYeDiFICJ/Cxk+GcsHXm1Zp/tpl2c Tc9Xq/JP/dO+3dou1Szm21H/fXHVP7cy/E9MWSBbKqYvyW+arBNbdmmBpZzUC2ndCr913YufnX6 Zxg4A
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT1PR01MB9018:EE_
+X-MS-Office365-Filtering-Correlation-Id: 71eb4084-b67a-45be-23c3-08de0d7831da
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MXJ5ZmlXazBndEpXYWgrM0V6NTdsRllQbUNmd2x3NDJlbHR0ZFlkUUJ3aitF?=
+ =?utf-8?B?bncxUzc1VVJxQ29hdjhaRXU0WW9nd1RVeTdXUFk2VHBHekJSNm5tS3NiSXBJ?=
+ =?utf-8?B?NmRwRnk3VWhTRmdnWjBkcGVmci94dUp5M0hWL3Ewa1g5SkRnMytlUjlSd011?=
+ =?utf-8?B?enI1ZTJGMDdXbTFxWFcremJScHRUd09rbERaNjgzdHM5N20vb0FSc25UYlpT?=
+ =?utf-8?B?REllUnJZOXR3c3ZpZTJFN2V4NjFRYng0RDJWSUJWcmpoT3pYOU9HcVdVckZo?=
+ =?utf-8?B?enIxRW5pMW1nRlY3TnNiVENKTlpDZnVZakMxUHJwU0g4N3pTd0h6QkpCUko5?=
+ =?utf-8?B?c0Uwdlp0dFFNZkRJSWlUTlVGanloSlk4aXozckRYRFhja2lmUGdSQnd1V1BJ?=
+ =?utf-8?B?WW1FSTloNXpFaFJsOHA4bENHZTJ5eHR2OEJ6L01DcXdRZ1d4NjFhdlE0V0Yv?=
+ =?utf-8?B?YjRqWjgwR21oNHB2bUI2ZWErN0V2TTZINkhocmtZdDZaNFZLWTEvcjY0aU1H?=
+ =?utf-8?B?Z3JhY2JjNEJ4bTRhMXl1RERWTkxHY0RZTFFtVTdWR25tNlNQc3ZJRTlvTlc3?=
+ =?utf-8?B?VDFzMHMzRkNiL0NiR3Jud0ppYWh2b0tJSTQ1Y2s5MEwrZlJ4Tnd5Wk85N0la?=
+ =?utf-8?B?RS9wS1JJbHVlOCtQSFVMeCtLbUhicktRSGdpTHhXTTBHRlpaQXpGcXJ0UjJi?=
+ =?utf-8?B?dGZqNFRrRXYzZnlGbkREbVpiS2UzakpOMSswU1hwblNUc1lQdDhWK3B2aith?=
+ =?utf-8?B?ZUVYYnRFSlRiNWZTUlVYV0F5Smx6VHZleldQbjZZbWhWRjJKTENBeDZROEZ0?=
+ =?utf-8?B?SFUveVhJbW5qeFVXZERBencwMTNpSWlSek9IeTRnM21ZUXN0clVWL3lYM0tY?=
+ =?utf-8?B?YXFrVE5vamZqMjhteW5VOFJxUmpVMEhkQ1R3RXZtWEtZWXdvb093aXhVMzdt?=
+ =?utf-8?B?WUVXbUl6QUZJR0NjTWVDdUFVbmUwdEdLN2Fuc0hzeGRjNHJjU2RGRmRSeEtC?=
+ =?utf-8?B?SVVHMytoWlV0VEEyQkNCYUtuZEZaRGs1VmZzUzhUZjZTcWFzRkJ0YWUzQSty?=
+ =?utf-8?B?QmJYZEtueVpxK2VyeTdQQWxSUHBIcHVCZ2toSis5VEdnTWNHeDBRUlVrWlJx?=
+ =?utf-8?B?VU5pVEJoMVQrUlducWxEUHovR1ZwQm51T1cxODdRK2R4d0ZoWmkwVGF3V2JU?=
+ =?utf-8?B?NVZtbGRqSy9EV0JhWW9tRmR5c3JNYVBSN3BwbnQwanJRMlNHVWtjazFtRmJT?=
+ =?utf-8?B?QkFqLzFOVDRSMFJsU05sVzkvWEtKckxxa1pva1RuTHowTXV2UGRQZjN2QTht?=
+ =?utf-8?B?NHVmR2FwVU1VbkE2aVNPWjhHbUlmeVhqSVB5MDhFb1llc1FZeG5waXlVdk5D?=
+ =?utf-8?B?cGFYZlF4YTNIOFpnanU2Y3lqUFA0UnV2YTdBYlUxbFhraW0vRVRteFE5bFlp?=
+ =?utf-8?B?NDBwdStBWTB2Z3M1VFBwZ3FaU09YU3pPVE40dnNDMDIyL1pHVVdQOXprelhJ?=
+ =?utf-8?B?NnBXaUpGbDFQeXJRQnp6Vkd2YWlNTWdDOGNaVUJMSE1SOENLcEhnWnl4K3RL?=
+ =?utf-8?B?Zmh2REJyeCthR0dVVlhXWUpnTW8veEJEYXZTeXB4MjA3enp3bDN4NE9McXc0?=
+ =?utf-8?B?a2V2a2FXaWxpUDAxRXFuc1BXL0NzZGpiK3lsYVpqenJjdFV0cmRrdjEzOXVr?=
+ =?utf-8?B?cys3ZG4xYVorZEhOeURlTzUzaU0vNkFVOFhrNEdMQjBDdzBPdVFVa3hNWkhJ?=
+ =?utf-8?B?Um9sV0V5M0kwNzZCVzMvbG1FVnNJTkp1YVdaTUZ3cVBxNEVFODNNZnlpdXBu?=
+ =?utf-8?B?a1J2K3VZaCs3T1Jick9LdDRkdW14T0phYWdtNlF1d080MU5ZWHdicHptRENU?=
+ =?utf-8?B?UGlJU0ZLU29EeUZTQXp2bmsrcjIvL2h4ckVibE9KalgrY2c9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Wmc2aWR1dTd6bjN1WHYrNDI0MzV0RE9zZUxtaEdadHJxVE9OOElIcldmSmh3?=
+ =?utf-8?B?ZVVVeUtLdXI2N2lkekY1cVo0RGRhMFFOek5QL3ZJVy9zRFhMZWVpWnl2N2dL?=
+ =?utf-8?B?dU9JaUIrYnFsdjhNeWR6N3dtdGxwdVVIdk9DbmR5azVLcVkxNE43bjYwdnhR?=
+ =?utf-8?B?cE0rVjF5Yll4eExYT3BWNkN4RVlEN0xHSTlBMUNSZUtyTnA5UTAxZGFGWmMx?=
+ =?utf-8?B?RkdCeDhOVkN5ZkorblhMaGlUcXFSNjFPNStQNzZNOHVTNy9CbmJwblFEWDAr?=
+ =?utf-8?B?NEpIVVNLSGc4UlJiTlBMb3FjSGpoMlptZnlvOEJkVzMyd1RwckdUZUYwQXJV?=
+ =?utf-8?B?di9uNGNQeDlkbmlUcUxHbTZuRWZMYTdua21UcStFUnpYWEY1cHFGOFFzUzVr?=
+ =?utf-8?B?TVlvL2RaM0ZjdGJpMjRRNXRFRS8yY1ZDWk0wWUtSL1VIQkw2NmxDMVBEaDhW?=
+ =?utf-8?B?R2h6dXZ1eHBKQzlyUk9Sa1kyQzAzQloyMnpWcjgyUWVJbVFsbDBDNjlhMGJV?=
+ =?utf-8?B?UHIxdjd2NWtxRUVWQjJSRUgyU1JITGNhelpTMmJ2dnNXRy9nVEFsQjhiSlN5?=
+ =?utf-8?B?Z2VPMUdtV3RXRTVGQkp5QlFQd01CYUJJeVNMZ2JNQ2I2Q3JwNmJhSWNXaUps?=
+ =?utf-8?B?T0psNjBMczRJMEJyakNmODIxZUt4RW9HamtKcithczIremh1Tmhad1ZmajFm?=
+ =?utf-8?B?enI5RnBybUZGdkV6WndtV3ljSlFZUkk5dElSZ05SMmZlTzB5ckpJa2ZvSUsy?=
+ =?utf-8?B?VWZxSTdYVlYrTk9FeTYxdm1vdXdkbW1tSkRhM1BGUXNGdjltQmpxVXk2ZXNG?=
+ =?utf-8?B?NnhMbnVOMnRmQzZwU3RncEVWYlFDMUgyajNtd1o3UHpDYXlFa2Mzb2kyQWN0?=
+ =?utf-8?B?c01vSy9yMXRIdmM3UGh4Q3NTTjVobXNrQWtzbDdnV3pYVDlBYzdqOFdTV2pU?=
+ =?utf-8?B?dHQvZXJJTzNyMjlGb3BzVXB1bmNkOU0zU0lVTGVZQ21WQjhzeHNSUmVJNnJE?=
+ =?utf-8?B?MXQrMXVqT1Nrc0JpWU1VTC9VdUZrOTNrbk9RN3VUeThpNCtrRGRkbnVJb2dT?=
+ =?utf-8?B?NEJuSlRaei9sSFdRMFhOUHBoWk50R2JlV0xqZEJNVWxDWFBseGVBbFhvblhq?=
+ =?utf-8?B?anEweEpEZVovYjhLWGlNRkFOMEVNbXh4RXpXZjBtZ1NJSE0vU0c1enRnb3Uv?=
+ =?utf-8?B?Yk5XTkpVemxSdWNkaStxK0JsNG8wdWxOYUtOZ1YzczVGT1VJTnRNMHZtMVFr?=
+ =?utf-8?B?RktiNVVWTVBud0owNlo0R3k2emlIeFJ1YVZVK2V5WFh4T2kwUW42NXBvNXdT?=
+ =?utf-8?B?Q1Q2UlJDZ1gzL05ta1AzYVUybUhPc05JekhLa2pkTm4zRnlYS0ZFTU00cDhK?=
+ =?utf-8?B?bXBua2V2MGpPZ1BBN01ieHRET2NXUWxLbUVOZ2t1bU5QQmxadEJEcHlqamRC?=
+ =?utf-8?B?S25qamlxUTFDdVRXck5aM0FoTWtUWUZsdkhiSms2UmVCVXp6K3FFUVpFTTZx?=
+ =?utf-8?B?N3FhL3NsRVo4bnNXQ0ozWlZOSk11RjVER2ExWXZZMDBJVndBQVdzaS8yWTJy?=
+ =?utf-8?B?am9RUmxKWk9zQmJMeEh5VHNLMmw4WnpiZkthdTlmVjcvT0pkSVZDbHQxNS9p?=
+ =?utf-8?B?RFNMc1dRZVp2Q3NLS2w4d2Q4WTBNZlJ2c3UyWEtJajVlUDJmU0g5RERWaDFP?=
+ =?utf-8?B?c3UwMlE1UGVjMVdGZmZ0ano2K1Jocmw3QzZ4NVJYRFBCejRMZ3Rsam5JeVUz?=
+ =?utf-8?B?WVVUZkNvRk9talRyc0NEZG5jdmpkcTNKcnNrcVdUMUg4NWdlTWZ3VEhDM2tT?=
+ =?utf-8?B?YmxCcGR4QTNqRXh5RXE4eXRwQXZ1SGE3YmNueFQ5d2NQUXlMRFFtWkdQbEhC?=
+ =?utf-8?B?VjRkRjhkcXlhc3U1dWJaSmFJUnQzRC9WcHhoQUhpdlFzMys0QndpeEJxT25h?=
+ =?utf-8?B?SHVTVmtIa2dZMGJPVE9LRXliMVFETUdzTDI0cGR3TGdVSzVhN2JTcHNFWFpD?=
+ =?utf-8?B?cGswVm5OWEJqSlUyWGxSQTY5Y1dCV0tpT05DNUNvbmREYWRQdmJDcnFuTFVC?=
+ =?utf-8?B?TWlpeFNnelZGaW1FU0xkYW50SldObCtmbkNBdUZERzM5OWx4TUM5amtMYkZz?=
+ =?utf-8?B?NElaSWZKWUF6V1hNRUhtZ0d6QzBqOUwzWThZUU13cExtQTQzT2F2MWQ3eFBn?=
+ =?utf-8?Q?H/4M141eFKvCqBv2iTlCLzc=3D?=
+X-OriginatorOrg: efficios.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71eb4084-b67a-45be-23c3-08de0d7831da
+X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 12:25:01.8491
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pwLCdkEgKxgJGtvZO8Tsmwm9RKgc6rWg8dg+DUo3EtDH5A8jS+DDUqiVtAt9/O2fkUMzCHwPU5yTbEWpyLPC/77YS4IVXS1hAE1CbC3XplQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT1PR01MB9018
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Masked user access avoids the address/size verification by access_ok().
-Allthough its main purpose is to skip the speculation in the
-verification of user address and size hence avoid the need of spec
-mitigation, it also has the advantage of reducing the amount of
-instructions required so it even benefits to platforms that don't
-need speculation mitigation, especially when the size of the copy is
-not know at build time.
+On 2025-10-17 06:08, Thomas Gleixner wrote:
+> This is a follow up on the V2 feedback:
+> 
+>     https://lore.kernel.org/20250916163004.674341701@linutronix.de
+> 
+> The main concern over the V2 implementation was the requirement to have
+> the code within the macro itself.
+> 
+> The main reason for that was the issue with ASM GOTO within a auto cleanup
+> scope. Clang refuses to build when the ASM GOTO label is outside of the
+> scope and GCC silently miscompiles the code and misses the cleanup.
+> 
+> After some back and forth discussion Linus suggested to put the local label
+> workaround into the user access functions themself.
+> 
+> The second reason for having this construct was to make the potential
+> modification of the pointer (when the architecture supports masking) scope
+> local, as that preserves the original pointer for the failure path.
+> 
+> Andrew thankfully pointed me to nested for() loops and after some head
+> scratching I managed to get all of it hidden in that construct.
+> 
+> So now the scoped access looks like this:
+> 
+> 	scoped_masked_user_read_access(ptr, efault) {
+> 	        // @ptr is aliased. An eventual mask modification is scope local
+> 		unsafe_get_user(val, ptr, efault);
+> 		...
+> 	}
 
-So implement masked user access on powerpc. The only requirement is
-to have memory gap that faults between the top user space and the
-real start of kernel area.
+Now we're talking! It indeed looks much more like C now. I'll go review
+the implementation.
 
-On 64 bits platforms the address space is divided that way:
+Thanks,
 
-	0xffffffffffffffff	+------------------+
-				|                  |
-				|   kernel space   |
- 		 		|                  |
-	0xc000000000000000	+------------------+  <== PAGE_OFFSET
-				|//////////////////|
-				|//////////////////|
-	0x8000000000000000	|//////////////////|
-				|//////////////////|
-				|//////////////////|
-	0x0010000000000000	+------------------+  <== TASK_SIZE_MAX
-				|                  |
-				|    user space    |
-				|                  |
-	0x0000000000000000	+------------------+
+Mathieu
 
-Kernel is always above 0x8000000000000000 and user always
-below, with a gap in-between. It leads to a 3 instructions sequence:
 
-  20:	7c 69 fe 76 	sradi   r9,r3,63
-  24:	7c 69 48 78 	andc    r9,r3,r9
-  28:	79 23 00 4c 	rldimi  r3,r9,0,1
+> 	return 0;
+> efault:
+>          // @ptr is unmodified
+> 	do_stuff(ptr);
+> 	return -EFAULT;
+> 
+> 
+> Changes vs. V2:
+> 
+>      - Fix the unsigned long long pointer issue in ARM get_user() -
+>        Christophe, Russell
+> 
+>      - Provide a generic workaround for the ASM GOTO issue and convert the
+>        affected architecture code over - Linus
+> 
+>      - Reimplement the scoped cleanup magic with nested for() loops - Andrew
+> 
+>      - Provide variants with size provided by the caller - Mathieu
+> 
+>      - Add get/put_user_masked() helpers for single read/write access
+> 
+>      - Fixup the usage in futex, x86. select
+> 
+>      - A clumsy attempt to implement a coccinelle checker which catches
+>        access mismatches, e.g. unsafe_put_user() inside a
+>        scoped_masked_user_read_access() region. That needs more thought and
+>        more coccinelle foo and is just there for discussion.
+> 
+> The series is based on v6.18-rc1 and also available from git:
+> 
+>      git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git uaccess/masked
+> 
+> Thanks,
+> 
+> 	tglx
+> ---
+> Thomas Gleixner (12):
+>        ARM: uaccess: Implement missing __get_user_asm_dword()
+>        uaccess: Provide ASM GOTO safe wrappers for unsafe_*_user()
+>        x86/uaccess: Use unsafe wrappers for ASM GOTO
+>        powerpc/uaccess: Use unsafe wrappers for ASM GOTO
+>        riscv/uaccess: Use unsafe wrappers for ASM GOTO
+>        s390/uaccess: Use unsafe wrappers for ASM GOTO
+>        uaccess: Provide scoped masked user access regions
+>        uaccess: Provide put/get_user_masked()
+>        coccinelle: misc: Add scoped_masked_$MODE_access() checker script
+>        futex: Convert to scoped masked user access
+>        x86/futex: Convert to scoped masked user access
+>        select: Convert to scoped masked user access
+> 
+> ---
+>   arch/arm/include/asm/uaccess.h               |   26 ++
+>   arch/powerpc/include/asm/uaccess.h           |    8
+>   arch/riscv/include/asm/uaccess.h             |    8
+>   arch/s390/include/asm/uaccess.h              |    4
+>   arch/x86/include/asm/futex.h                 |   75 ++----
+>   arch/x86/include/asm/uaccess.h               |   12 -
+>   fs/select.c                                  |   12 -
+>   include/linux/uaccess.h                      |  313 ++++++++++++++++++++++++++-
+>   kernel/futex/futex.h                         |   37 ---
+>   scripts/coccinelle/misc/scoped_uaccess.cocci |  108 +++++++++
+>   10 files changed, 497 insertions(+), 106 deletions(-)
 
-This sequence leaves r3 unmodified when it is below 0x8000000000000000
-and clamps it to 0x8000000000000000 if it is above.
 
-On 32 bits it is more tricky. In theory user space can go up to
-0xbfffffff while kernel will usually start at 0xc0000000. So a gap
-needs to be added in-between. Allthough in theory a single 4k page
-would suffice, it is easier and more efficient to enforce a 128k gap
-below kernel, as it simplifies the masking.
-
-e500 has the isel instruction which allows selecting one value or
-the other without branch and that instruction is not speculative, so
-use it. Allthough GCC usually generates code using that instruction,
-it is safer to use inline assembly to be sure. The result is:
-
-  14:	3d 20 bf fe 	lis     r9,-16386
-  18:	7c 03 48 40 	cmplw   r3,r9
-  1c:	7c 69 18 5e 	iselgt  r3,r9,r3
-
-On other ones, when kernel space is over 0x80000000 and user space
-is below, the logic in mask_user_address_simple() leads to a
-3 instruction sequence:
-
-  70:	7c 69 fe 70 	srawi   r9,r3,31
-  74:	7c 69 48 78 	andc    r9,r3,r9
-  78:	51 23 00 7e 	rlwimi  r3,r9,0,1,31
-
-This is the default on powerpc 8xx.
-
-When the limit between user space and kernel space is not 0x80000000,
-mask_user_address_32() is used and a 6 instructions sequence is
-generated:
-
-  24:	54 69 7c 7e 	srwi    r9,r3,17
-  28:	21 29 57 ff 	subfic  r9,r9,22527
-  2c:	7d 29 fe 70 	srawi   r9,r9,31
-  30:	75 2a b0 00 	andis.  r10,r9,45056
-  34:	7c 63 48 78 	andc    r3,r3,r9
-  38:	7c 63 53 78 	or      r3,r3,r10
-
-The constraint is that TASK_SIZE be aligned to 128K in order to get
-the most optimal number of instructions.
-
-When CONFIG_PPC_BARRIER_NOSPEC is not defined, fallback on the
-test-based masking as it is quicker than the 6 instructions sequence
-but not quicker than the 3 instructions sequences above.
-
-As an exemple, allthough barrier_nospec() voids on the 8xx, this
-change has the following impact on strncpy_from_user(): the length of
-the function is reduced from 488 to 340 bytes:
-
-Start of the function with the patch:
-
-00000000 <strncpy_from_user>:
-   0:	7c ab 2b 79 	mr.     r11,r5
-   4:	40 81 01 48 	ble     14c <strncpy_from_user+0x14c>
-   8:	7c 89 fe 70 	srawi   r9,r4,31
-   c:	7c 84 48 78 	andc    r4,r4,r9
-  10:	51 24 00 00 	rlwimi  r4,r9,0,0,0
-  14:	94 21 ff f0 	stwu    r1,-16(r1)
-  18:	3d 20 dc 00 	lis     r9,-9216
-  1c:	7d 3a c3 a6 	mtspr   794,r9
-  20:	2f 8b 00 03 	cmpwi   cr7,r11,3
-  24:	40 9d 00 b8 	ble     cr7,dc <strncpy_from_user+0xdc>
-...
-
-Start of the function without the patch:
-
-00000000 <strncpy_from_user>:
-   0:	7c a0 2b 79 	mr.     r0,r5
-   4:	40 81 01 10 	ble     114 <strncpy_from_user+0x114>
-   8:	2f 84 00 00 	cmpwi   cr7,r4,0
-   c:	41 9c 01 30 	blt     cr7,13c <strncpy_from_user+0x13c>
-  10:	3d 20 80 00 	lis     r9,-32768
-  14:	7d 24 48 50 	subf    r9,r4,r9
-  18:	7f 80 48 40 	cmplw   cr7,r0,r9
-  1c:	7c 05 03 78 	mr      r5,r0
-  20:	41 9d 01 00 	bgt     cr7,120 <strncpy_from_user+0x120>
-  24:	3d 20 80 00 	lis     r9,-32768
-  28:	7d 25 48 50 	subf    r9,r5,r9
-  2c:	7f 84 48 40 	cmplw   cr7,r4,r9
-  30:	38 e0 ff f2 	li      r7,-14
-  34:	41 9d 00 e4 	bgt     cr7,118 <strncpy_from_user+0x118>
-  38:	94 21 ff e0 	stwu    r1,-32(r1)
-  3c:	3d 20 dc 00 	lis     r9,-9216
-  40:	7d 3a c3 a6 	mtspr   794,r9
-  44:	2b 85 00 03 	cmplwi  cr7,r5,3
-  48:	40 9d 01 6c 	ble     cr7,1b4 <strncpy_from_user+0x1b4>
-...
- 118:	7c e3 3b 78 	mr      r3,r7
- 11c:	4e 80 00 20 	blr
- 120:	7d 25 4b 78 	mr      r5,r9
- 124:	3d 20 80 00 	lis     r9,-32768
- 128:	7d 25 48 50 	subf    r9,r5,r9
- 12c:	7f 84 48 40 	cmplw   cr7,r4,r9
- 130:	38 e0 ff f2 	li      r7,-14
- 134:	41 bd ff e4 	bgt     cr7,118 <strncpy_from_user+0x118>
- 138:	4b ff ff 00 	b       38 <strncpy_from_user+0x38>
- 13c:	38 e0 ff f2 	li      r7,-14
- 140:	4b ff ff d8 	b       118 <strncpy_from_user+0x118>
-...
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v3: Rewrite mask_user_address_simple() for a smaller result on powerpc64, suggested by Gabriel
-
-v2: Added 'likely()' to the test in mask_user_address_fallback()
----
- arch/powerpc/include/asm/task_size_32.h |  6 +-
- arch/powerpc/include/asm/uaccess.h      | 79 +++++++++++++++++++++++++
- 2 files changed, 82 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/task_size_32.h b/arch/powerpc/include/asm/task_size_32.h
-index 42a64bbd1964f..725ddbf06217f 100644
---- a/arch/powerpc/include/asm/task_size_32.h
-+++ b/arch/powerpc/include/asm/task_size_32.h
-@@ -13,7 +13,7 @@
- #define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
- #define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
- #define MODULES_BASE	(MODULES_VADDR & ~(UL(SZ_4M) - 1))
--#define USER_TOP	MODULES_BASE
-+#define USER_TOP	(MODULES_BASE - SZ_4M)
- #endif
- 
- #ifdef CONFIG_PPC_BOOK3S_32
-@@ -21,11 +21,11 @@
- #define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
- #define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
- #define MODULES_BASE	(MODULES_VADDR & ~(UL(SZ_256M) - 1))
--#define USER_TOP	MODULES_BASE
-+#define USER_TOP	(MODULES_BASE - SZ_4M)
- #endif
- 
- #ifndef USER_TOP
--#define USER_TOP	ASM_CONST(CONFIG_PAGE_OFFSET)
-+#define USER_TOP	((ASM_CONST(CONFIG_PAGE_OFFSET) - SZ_128K) & ~(UL(SZ_128K) - 1))
- #endif
- 
- #if CONFIG_TASK_SIZE < USER_TOP
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 49254f7d90691..a045914fd7135 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -2,6 +2,8 @@
- #ifndef _ARCH_POWERPC_UACCESS_H
- #define _ARCH_POWERPC_UACCESS_H
- 
-+#include <linux/sizes.h>
-+
- #include <asm/processor.h>
- #include <asm/page.h>
- #include <asm/extable.h>
-@@ -435,6 +437,83 @@ static __must_check __always_inline bool __user_access_begin(const void __user *
- #define user_access_save	prevent_user_access_return
- #define user_access_restore	restore_user_access
- 
-+/*
-+ * Masking the user address is an alternative to a conditional
-+ * user_access_begin that can avoid the fencing. This only works
-+ * for dense accesses starting at the address.
-+ */
-+static inline void __user *mask_user_address_simple(const void __user *ptr)
-+{
-+	unsigned long addr = (unsigned long)ptr;
-+	unsigned long sh = BITS_PER_LONG - 1;
-+	unsigned long mask = (unsigned long)((long)addr >> sh);
-+
-+	addr = ((addr & ~mask) & ((1UL << sh) - 1)) | ((mask & 1UL) << sh);
-+
-+	return (void __user *)addr;
-+}
-+
-+static inline void __user *mask_user_address_isel(const void __user *ptr)
-+{
-+	unsigned long addr;
-+
-+	asm("cmplw %1, %2; iselgt %0, %2, %1" : "=r"(addr) : "r"(ptr), "r"(TASK_SIZE) : "cr0");
-+
-+	return (void __user *)addr;
-+}
-+
-+/* TASK_SIZE is a multiple of 128K for shifting by 17 to the right */
-+static inline void __user *mask_user_address_32(const void __user *ptr)
-+{
-+	unsigned long addr = (unsigned long)ptr;
-+	unsigned long mask = (unsigned long)((long)((TASK_SIZE >> 17) - 1 - (addr >> 17)) >> 31);
-+
-+	addr = (addr & ~mask) | (TASK_SIZE & mask);
-+
-+	return (void __user *)addr;
-+}
-+
-+static inline void __user *mask_user_address_fallback(const void __user *ptr)
-+{
-+	unsigned long addr = (unsigned long)ptr;
-+
-+	return (void __user *)(likely(addr < TASK_SIZE) ? addr : TASK_SIZE);
-+}
-+
-+static inline void __user *mask_user_address(const void __user *ptr)
-+{
-+#ifdef MODULES_VADDR
-+	const unsigned long border = MODULES_VADDR;
-+#else
-+	const unsigned long border = PAGE_OFFSET;
-+#endif
-+
-+	if (IS_ENABLED(CONFIG_PPC64))
-+		return mask_user_address_simple(ptr);
-+	if (IS_ENABLED(CONFIG_E500))
-+		return mask_user_address_isel(ptr);
-+	if (TASK_SIZE <= UL(SZ_2G) && border >= UL(SZ_2G))
-+		return mask_user_address_simple(ptr);
-+	if (IS_ENABLED(CONFIG_PPC_BARRIER_NOSPEC))
-+		return mask_user_address_32(ptr);
-+	return mask_user_address_fallback(ptr);
-+}
-+
-+static __always_inline void __user *__masked_user_access_begin(const void __user *p,
-+							       unsigned long dir)
-+{
-+	void __user *ptr = mask_user_address(p);
-+
-+	might_fault();
-+	allow_user_access(ptr, dir);
-+
-+	return ptr;
-+}
-+
-+#define masked_user_access_begin(p) __masked_user_access_begin(p, KUAP_READ_WRITE)
-+#define masked_user_read_access_begin(p) __masked_user_access_begin(p, KUAP_READ)
-+#define masked_user_write_access_begin(p) __masked_user_access_begin(p, KUAP_WRITE)
-+
- #define unsafe_get_user(x, p, e) do {					\
- 	__long_type(*(p)) __gu_val;				\
- 	__typeof__(*(p)) __user *__gu_addr = (p);		\
 -- 
-2.49.0
-
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
 
