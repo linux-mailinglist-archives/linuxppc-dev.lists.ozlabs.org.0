@@ -1,56 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-12979-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12981-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C983FBE6EC5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 09:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C12BE74DE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 10:56:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnxDd4Gzrz2yMh;
-	Fri, 17 Oct 2025 18:25:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnzFj49rfz3069;
+	Fri, 17 Oct 2025 19:56:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760685921;
-	cv=none; b=dBsDRHdRy/fKwv/9xBhHxBJSOZ1cJfvBTx0Y7Q/aqrKObcRCMC2dvGf/Gajt90qdA4Sw6SAI3ALgE4WtvdxhBQKHeebBrjKLhv0gC7n/PV2Yz81IMXCH/fuMa7Do7Kx5lZZAY5Hh4gzXvKVVQlro4oYWTTX5niV6Y0LStLB1qW7jegm0uAyt1e7TysflnLrRcb5Yw8XYU6VHQONZG5KuSmfLwRv2yXqn3w6PuFzC9qxZkbq9VbHMgRlZ6C7Yd8bIfjilA+bSg/NJ/xGI5bcYd5lHw1sAATm20we/+TTFLn/ElDkm2dtaHPIO+oriaCHejiiQLngE+MKPbV3qULy9mw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=203.254.224.33
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760681004;
+	cv=none; b=IuZWnC9CXMMB4BHygIzZI+QiYK9qv94PVQqdboSpyDXFhpNInZoau4YAx26YIL4R7iC4T3au2cPtIl1DzJlgr0LvVaw/OXT3iVdom870AHeUFfskPjezfqb1hV2TFw4tdUGogPMuzi3+2ogo0R9nMcKladagNgoK8X5IrAqGYtThqayknJuiD3cwSn2vjOQ06ps6nW6H5w1JY2ld8dyT7B7NqGOvFqvklvt7hDxRywyyP9dsWq//PASPYVlrs6bNxrU9TDN20CNmoiZXY2i1MGvVX/9prFl0+F58SGI+zI7oWERAdVASaOgf1ljWIK2Pgp4bziQxwa4AaW9A1+ZBog==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760685921; c=relaxed/relaxed;
-	bh=r1okF/r1G2Aq/NygvlPws9Vet4d9RoZqKUMQ4Fcy+LU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RgaZPkgMwF0Ffm1qFP98RQuEvt3+b5fym323ldq59zarw34N/IPAGEAXjm7DfOJhnk60pm7Fjy20MG2B/9uuZSPDEgq8Aq7IsYLe6re6Rczd3rnbyoNSw5cQ86tzTAeLUT7GEvTYaFTxXsUgIVxojukrDsVqUZxHvt5bq9YlOIES4Ij8F50PbB1B6U1RimOL33gWdsfQUS5/TTbkPsvmTAMe7AE8kruWTAY3k9zVNe68aXCwAf6VeV1Zyj2WyuTksxosqlQh/fX/fen8jrB1Z0kBOQpkZz2LHM7hHuG9+0lCz08qcEFxxsDSE19ffqVvoEpRHAB8ZWZaRjBkEBo0zw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=bfkBtycp; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+	t=1760681004; c=relaxed/relaxed;
+	bh=7fM4AzR1nJU2ZM7NlVXiO8tBQaJZuL012ult4XXGHyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
+	 Content-Type:References; b=nkB80IsIHptEo4Hts+/ZAZZoX8s19fMqsYs5Yh8BIU17Ot3QLnkhi0aq69Pr8GpuN3ruwpOGnWV2j4/48Aua8wX5q1YVx9pe/TYQkrYkJD/3j2HtchFXFYH9r35GEDqMwhypYTQyGii6ZXqN1CzAsmqqDdTpHES8HM73DKPlhwysvsmrWCm8LfqL3QTRJUrhk4Ma4VhjBrll9Vi3BAQo81Rr74irdgSxwZmr91+LAQ6cR6sy2zpT16f8UKWry7mZQpufoCGn17Ix0+9/99VU/B9K6qFYYt0RKDJMMEzllz4/4fGknlMvP4R3zM+DDiFSgxPfcSvP+LDo44ErUYpLtQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com; dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=n63Sp1II; dkim-atps=neutral; spf=pass (client-ip=203.254.224.33; helo=mailout3.samsung.com; envelope-from=youngmin.nam@samsung.com; receiver=lists.ozlabs.org) smtp.mailfrom=samsung.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=bfkBtycp;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=n63Sp1II;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=203.254.224.33; helo=mailout3.samsung.com; envelope-from=youngmin.nam@samsung.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 457 seconds by postgrey-1.37 at boromir; Fri, 17 Oct 2025 17:03:21 AEDT
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnxDc55WMz2xQ5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 18:25:20 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 152A560223;
-	Fri, 17 Oct 2025 07:25:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E14C4CEF9;
-	Fri, 17 Oct 2025 07:25:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760685917;
-	bh=22K/HNC17+AdCshY6tozqt4gBMDZnC30mupe9USAYQc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bfkBtycp+//lFf0d7xJxk1eV3PBv7U1NJ1XUQEWjZ8b1xNauWJVt7AQHleAr2ugkZ
-	 k1eKJb8lGjyCAWPOz49IUgjDCzEwC73bksuXw8UUzOEhIYex6S0IataE/LY7GYT9T/
-	 Xl4pLm6vhT9IE2ost8ZneYBiqK1Ijrytq6Oviwc4=
-Date: Fri, 17 Oct 2025 09:25:15 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	debian-powerpc <debian-powerpc@lists.debian.org>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	linux-stable <stable@vger.kernel.org>
-Subject: Re: Kernel failing to build on 32-bit powerpc
-Message-ID: <2025101758-appendage-postal-6d5e@gregkh>
-References: <eb8a89e43f01a920244bde9252cbe4f5c0e2d75a.camel@physik.fu-berlin.de>
- <bd6fbf70-bf31-4b95-86db-68c0626a3338@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnvQ16L5yz2xPx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 17:03:19 +1100 (AEDT)
+Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20251017055530epoutp03b52e5138d32caddea1632d2802b956e1~vMZ0mdxOA1402614026epoutp03B
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 05:55:30 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20251017055530epoutp03b52e5138d32caddea1632d2802b956e1~vMZ0mdxOA1402614026epoutp03B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1760680530;
+	bh=7fM4AzR1nJU2ZM7NlVXiO8tBQaJZuL012ult4XXGHyo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=n63Sp1IIwOthD6jdaTIkcWJ/vtBOuqyO5JrT9Scy2IM2kWC74eYknvd1xziPgIZ1A
+	 FeZHC2mv+CRdvCImWvKCwrUhjLkGE3r4b0ozERJWSxBCkutZ9WpMkqz50h0oQq0//m
+	 fxAh7BnwIBOsm4VXQFFQxrVWO2i/JJmyKfUJJQcE=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas2p3.samsung.com (KnoxPortal) with ESMTPS id
+	20251017055526epcas2p31cac8ee16c0bb46abc3ae7b3eec7b3cc~vMZwktURS1352713527epcas2p3a;
+	Fri, 17 Oct 2025 05:55:26 +0000 (GMT)
+Received: from epcas2p3.samsung.com (unknown [182.195.38.209]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4cnvDs4mMKz2SSKd; Fri, 17 Oct
+	2025 05:55:25 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas2p2.samsung.com (KnoxPortal) with ESMTPA id
+	20251017055524epcas2p2b7cadb80f5d09c4003ccb66d4c39c9dc~vMZvaxaeS2233722337epcas2p2w;
+	Fri, 17 Oct 2025 05:55:24 +0000 (GMT)
+Received: from perf (unknown [10.229.95.91]) by epsmtip1.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20251017055524epsmtip17f2d85c56e9b08636122013814729936~vMZvVgE0t2236022360epsmtip1G;
+	Fri, 17 Oct 2025 05:55:24 +0000 (GMT)
+Date: Fri, 17 Oct 2025 15:01:05 +0900
+From: Youngmin Nam <youngmin.nam@samsung.com>
+To: Juri Lelli <juri.lelli@redhat.com>
+Cc: Shrikanth Hegde <sshegde@linux.ibm.com>, peterz@infradead.org,
+	mingo@redhat.com, vincent.guittot@linaro.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, m.szyprowski@samsung.com,
+	venkat88@linux.ibm.com, jstultz@google.com, d7271.choe@samsung.com,
+	soohyuni.kim@samsung.com, bongkyu7.kim@samsung.com,
+	youngmin.nam@samsung.com, jkkkkk.choi@samsung.com
+Subject: Re: [PATCH] sched/deadline: stop dl_server before CPU goes offline
+Message-ID: <aPHbXxJRUTdkBZVA@perf>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,37 +78,90 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bd6fbf70-bf31-4b95-86db-68c0626a3338@csgroup.eu>
+In-Reply-To: <aO4Tw1SzNpgWutK8@jlelli-thinkpadt14gen4.remote.csb>
+X-CMS-MailID: 20251017055524epcas2p2b7cadb80f5d09c4003ccb66d4c39c9dc
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+	boundary="----PDOc320tARUDg5oiqWLD4tz058SOCZsoCdAHhD7Rt0rJ7P1y=_b9054_"
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+cpgsPolicy: CPGSC10-234,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20251017055524epcas2p2b7cadb80f5d09c4003ccb66d4c39c9dc
+References: <20251009184727.673081-1-sshegde@linux.ibm.com>
+	<aO4Tw1SzNpgWutK8@jlelli-thinkpadt14gen4.remote.csb>
+	<CGME20251017055524epcas2p2b7cadb80f5d09c4003ccb66d4c39c9dc@epcas2p2.samsung.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Oct 17, 2025 at 08:49:06AM +0200, Christophe Leroy wrote:
-> Hi,
-> 
-> Le 16/10/2025 à 21:03, John Paul Adrian Glaubitz a écrit :
-> > Hi,
-> > 
-> > could someone investigate the following build failure on powerpc [1], please?
-> > 
-> > In file included from /build/reproducible-path/linux-6.16.12/kernel/sched/build_policy.c:64:
-> > /build/reproducible-path/linux-6.16.12/kernel/sched/ext_idle.c: In function ‘is_bpf_migration_disabled’:
-> > /build/reproducible-path/linux-6.16.12/kernel/sched/ext_idle.c:893:14: error: ‘const struct task_struct’ has no member named ‘migration_disabled’
-> >    893 |         if (p->migration_disabled == 1)
-> >        |              ^~
-> > /build/reproducible-path/linux-6.16.12/kernel/sched/ext_idle.c:896:25: error: ‘const struct task_struct’ has no member named ‘migration_disabled’
-> >    896 |                 return p->migration_disabled;
-> >        |                         ^~
-> > 
-> 
-> I guess 6.16.12 is missing commit cac5cefbade9 ("sched/smp: Make SMP
-> unconditional")
+------PDOc320tARUDg5oiqWLD4tz058SOCZsoCdAHhD7Rt0rJ7P1y=_b9054_
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
 
-6.16 is now end-of-life, so not much we can do there, sorry.
+On Tue, Oct 14, 2025 at 11:11:31AM +0200, Juri Lelli wrote:
+> Hello,
+> 
+> On 10/10/25 00:17, Shrikanth Hegde wrote:
+> > From: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > 
+> > IBM CI tool reported kernel warning[1] when running a CPU removal
+> > operation through drmgr[2]. i.e "drmgr -c cpu -r -q 1"
+> > 
+> > WARNING: CPU: 0 PID: 0 at kernel/sched/cpudeadline.c:219 cpudl_set+0x58/0x170
+> > NIP [c0000000002b6ed8] cpudl_set+0x58/0x170
+> > LR [c0000000002b7cb8] dl_server_timer+0x168/0x2a0
+> > Call Trace:
+> > [c000000002c2f8c0] init_stack+0x78c0/0x8000 (unreliable)
+> > [c0000000002b7cb8] dl_server_timer+0x168/0x2a0
+> > [c00000000034df84] __hrtimer_run_queues+0x1a4/0x390
+> > [c00000000034f624] hrtimer_interrupt+0x124/0x300
+> > [c00000000002a230] timer_interrupt+0x140/0x320
+> > 
+> > Git bisects to: commit 4ae8d9aa9f9d ("sched/deadline: Fix dl_server getting stuck")
+> > 
+> > This happens since: 
+> > - dl_server hrtimer gets enqueued close to cpu offline, when 
+> >   kthread_park enqueues a fair task.
+> > - CPU goes offline and drmgr removes it from cpu_present_mask.
+> > - hrtimer fires and warning is hit.
+> > 
+> > Fix it by stopping the dl_server before CPU is marked dead.
+> > 
+> > [1]: https://lore.kernel.org/all/8218e149-7718-4432-9312-f97297c352b9@linux.ibm.com/
+> > [2]: https://github.com/ibm-power-utilities/powerpc-utils/tree/next/src/drmgr
+> > 
+> > [sshegde: wrote the changelog and tested it]
+> > Fixes: 4ae8d9aa9f9d ("sched/deadline: Fix dl_server getting stuck")
+> > Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> > Closes: https://lore.kernel.org/all/8218e149-7718-4432-9312-f97297c352b9@linux.ibm.com
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> > Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> > Tested-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> 
+> Looks good to me.
+> 
+> Acked-by: Juri Lelli <juri.lelli@redhat.com>
+> 
+> Thanks!
+> Juri
+> 
 
-greg k-h
+Hi All,
+
+Could we expect this patch to address the following issue as well?
+
+https://lore.kernel.org/all/aMKTHKfegBk4DgjA@jlelli-thinkpadt14gen4.remote.csb/
+
+Thanks,
+Youngmin.
+
+------PDOc320tARUDg5oiqWLD4tz058SOCZsoCdAHhD7Rt0rJ7P1y=_b9054_
+Content-Type: text/plain; charset="utf-8"
+
+
+------PDOc320tARUDg5oiqWLD4tz058SOCZsoCdAHhD7Rt0rJ7P1y=_b9054_--
 
