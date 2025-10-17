@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-12951-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12952-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20A9BE5E6B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 02:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85162BE5E76
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Oct 2025 02:33:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cnm4k58Klz3cdG;
-	Fri, 17 Oct 2025 11:32:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cnm4l6KyGz3cg1;
+	Fri, 17 Oct 2025 11:32:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760661174;
-	cv=none; b=mFHs6T98T7bXq8ZlfDsPBAXTF88hzyY+0BqE6cAZs2bxpzDxl58oiq6uteRZJdS3hXYs4AkW4k89Io37GRMH+XL/upzalqhpNbL25Py1NnivqZ5suVxJogMEvtFYpgXPVoGIGphrYeWmChqCgHXBcSnoUKZlwwTcmJEJS50q1zgSc4otU/Xx/FtiAzvPcw0zOgwDArnMDfbX0zV8L3KM2NY+LD5gK78LDsxrxO9IvHKgIpCYHlfYm0Nb6hJdAVg7+qwIHSzWy4WVsKOB/YIzskZqVtV3Ntz1bpUvfIpM+70w2R5G4jlEAD+B3Cz+npE4OdEAV4yMqKoJUZQCZMauWg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760661175;
+	cv=none; b=UkxQYRr+eJp1H/+Mhpr7HSAE3zJ24hTIZykWRWG26J40n23SDc9dySG2KMeTW1Ye5+6tvBPSGsIk+KwQMNbMEbXz4vAoYaykyngtWBpMP+SWd9jgm3VWa2u5w4LZRQ1cIjuKve0B+C+F25CvXjapmuxikTnV6pw4i0fXDx6Zm2e0Toz+Kg56ephvmg/hrppctA51QEtFlPYohvhxUklH6DOGKm0lfgWnu4pMEEvtOYtOaf3NY8w2NMsdrqRY7OjrQhsdmHZsLFzH1jWCcSiO/oCYbRYH6t2ukDXSw0ZXTpvseIcx/jF4Mff6qMkxlapcQ90Knv5HNCFm3B/fd+VjVg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760661174; c=relaxed/relaxed;
-	bh=33cozUgZY2qVcRUHL7b8tITs99/x6FMYwOKO1Eer8GQ=;
+	t=1760661175; c=relaxed/relaxed;
+	bh=ufVneY39YrbdCfRZpp0jVK1n9RSn66wnVA9SJtGGBdY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eCRqIxbBJ05H1qkq8Gd2HhVzdL/cBCEFuG9HGECz6RvBfI9Madd17xBRlX/dbor6yrxRR4FniH7Kc3R1k70IlwnALNevu1PMkKGB7u5CQkBIs8ZOhNmXWvVAgj25/bvdf/0iG3hJ17ibAwN0waBCjC4yTpZ3CJjEhlhk+EYTMp7Le8Qpn9laagCsVeDeIORyNzw9pH2xcvJH2N1IiCirJOp8dU6nHfuqwqA61nJ6h5tQkeiLWKX32Pl4L6Rmo2AQgcDtvzXB3jXIPmpvkYHzrrKaHX6XIceTW3w6i11ctjoPuUBYbSG7lh5Kij6klfo3ATffpYP69riPH1cbCRIO7g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=PwvQcWEJ; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3s47xaaykdoqykgtpimuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=j1QIPZT/tr3pEHVGBYUrW16k89fGroE5Mpl3TCSn4l0a/EITFbBLkpXak2b+iPTEJtU1h31ACdTHWCKXyaRionbde2yn6Ikw3VOF0f2mielMhavwYMi5CWNzkx4q35DuNut1SoftluNqj5KU6KUu0ZLIwGXiJ0FXswqF9LGOCFWJWt2rJONIh9+xsWdlKi/zfi+7fRtwwLE5bb698MkBBGmeIv30RDsmpvmQetPCV/0ZDGHGRE2V1V7x5p1K8gA+P1xj1AAKb0FV0i4XC2qo59KBCaD2TBK5haEnhXzUDnu0ASu/i0wkWC5+hMxJVVcN085kHlmsoDyuYVmwt0mWlw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=FKuV8P29; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3ty7xaaykdoyamivrkowwotm.kwutqvcfxxk-lmdtqaba.whtija.wzo@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=PwvQcWEJ;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=FKuV8P29;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3s47xaaykdoqykgtpimuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3ty7xaaykdoyamivrkowwotm.kwutqvcfxxk-lmdtqaba.whtija.wzo@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnm4j5YG2z3cZn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 11:32:53 +1100 (AEDT)
-Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-339b704e2e3so1368116a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:32:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cnm4l1wp6z3cfQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Oct 2025 11:32:55 +1100 (AEDT)
+Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-336b646768eso1548151a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Oct 2025 17:32:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760661172; x=1761265972; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1760661174; x=1761265974; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=33cozUgZY2qVcRUHL7b8tITs99/x6FMYwOKO1Eer8GQ=;
-        b=PwvQcWEJbhPI1oK/wsV6g8K/69RFc1fix8LMNXiFHH7if9hS9pN4jp343eU1RCB4MK
-         mSjOAMX3BCwnRzDwuVR52Fq7YPS0uttMFUtThVEMFpXThqAttaZrv/UWwh1utlkeYvBz
-         g5eePWPIHqE8ZvfPCLD2ZQM1nenzydSKhy61vhCOHnSytpZC5glPz/xJy0Smw+cl+uQH
-         xocO/naFV88rGeUAfsgO+pWdkm4j9ZIiNfKbOpMugF+pwNpDkSZIEqQmz7lbQmnsSL9e
-         INYfVwtr77hL5841LgVcsrV1O5AQ+KyIqjE8ohHhUSocT5Kf2dFyp+WxUcIuLTCZoGFW
-         kdaQ==
+        bh=ufVneY39YrbdCfRZpp0jVK1n9RSn66wnVA9SJtGGBdY=;
+        b=FKuV8P29IyYAQOTMEE9tMsT4sFy1QbRlWi5a2OEvyaaZtGTz3kVuurxeUIfcBC3QRQ
+         /o4Q+XiwDMavGMFSgRoq4W0LA5kDJGKKDzx6q9J3ifoNoghTAfa8QlinFoSH4jlJBwMO
+         wBh8R2k3/c5yCkUBf14gMtRgr1uhDngqWz19szlf5oopfyQH7TwVzp+q07xf4cHfxjhC
+         sqH995y9hJ3wKyadCZye8RNV92pZc91r2Y37BDJbLF+W4mmomOgucOZUBvhDr+Wt3R6b
+         T5DZuDALAm+dsR+I6LI4IQdq0ODoPsrXO7KnOrF/t89jpd3bLftihnUqApn40/BfkQxK
+         1r4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760661172; x=1761265972;
+        d=1e100.net; s=20230601; t=1760661174; x=1761265974;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=33cozUgZY2qVcRUHL7b8tITs99/x6FMYwOKO1Eer8GQ=;
-        b=kLlZS4WRnSEIOqp8O4uUoN5q1EEARTIyAySpkgJIpm1V/gOz3MDmmwifOUa0nkBRfZ
-         JcJhm+1Ebpp50P0lL4z/H+JpmKJZfq3PYf1HJyrkHwIPj4FJxghNbddIfJ8Nza67IZ2V
-         E5u2l/KO/VQGzGvcD5rsDzQ5oICfYH6wOm5qGVeKbMcJMOd/finMqY0akngiiamHp9yj
-         nRflpr/czhCT/gFygXw5ASUS3OFCPN+FAXksnx1tiEBqbio412nvEPv1LKGzNMgAzMrm
-         OfhPmgxLZQbZAMA4t2+aQdH2YLVFUxhlJG6y3OIMINb9JT0HbAaF2kQloOoFNgXH3UfJ
-         zCKg==
-X-Forwarded-Encrypted: i=1; AJvYcCWSpllDx+yEOPeuZ501U6NohrTnuD6JyPJcROXEFcUMMhUb5bysM0BDq9aMDaEYT5R+VbsLVIP4Ipu5dDI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx2qkoYyA8dLTgs5SJ0E7CW/fNfN+0bTneUpYnuJRa8lE9g129q
-	eKKrTwR9zK5KGvW8oDALBKRSjuTepW7g5rXyN2DMurxBgVkKsGOCYSzFJYtPfd9wu+mIbNRmSW0
-	S85YKmg==
-X-Google-Smtp-Source: AGHT+IHi1bmDhBVE/1dfVFfxtUsGZvUIPpndhcsCAkXUuWnb62NCix+r2iPcIxi5145AtUHJ60DhAmmul/g=
-X-Received: from pjut11.prod.google.com ([2002:a17:90a:d50b:b0:33b:beb0:be7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:380f:b0:32e:8931:b59c
- with SMTP id 98e67ed59e1d1-33bcf90c0cdmr1921084a91.27.1760661171886; Thu, 16
- Oct 2025 17:32:51 -0700 (PDT)
+        bh=ufVneY39YrbdCfRZpp0jVK1n9RSn66wnVA9SJtGGBdY=;
+        b=kYQHIr7P8FExEt8tIsuishECcr0CI5OAmmh3bfO2kyF+oT3Mw1PmR7+A88eh4iuNFB
+         5N/TKO1utlTYsEOlB54j4ZVB2pAFRe5SB1JP+CgdqTMItZrdcBbHGDuDzPj16k/HbR5G
+         xowRbxngqDbMwmEGuOnBbbuj+GDZFYqG3p8wlGPB2LbcoGpljDbJ6Q8PNCSNkf+h0RVG
+         J+JvmE9RfoxJmuPLLaiO00v8ALVwfvEcpBt1zaTf1q4CN8CnCxPbuHI8sca0npC397xu
+         K5YzzUgg4qdsXvgz2ltPyDPvmxdgejtlEJH4rPsn4+ghgG7Y6oTNaoR4FIN0rRGmF3ea
+         vNOw==
+X-Forwarded-Encrypted: i=1; AJvYcCUHlkeNkdZRsH54jcQHAzPJZRolaZlR1gjxWSJ/iqBVhd5FEa0Pdj0IgUGx9DmaMLDWbwKHB/qqD5bk/hw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yyk0LEiHdcS5JFxYeF2qHNYk2x69b6ooEFxu7A0dzOjC8RotH5B
+	pd02tRTxQnOmVGB3A6rp5m8x0xj9o3YVIWzXp1sOQ7zJsZX86lQkkbofGC6xTC+kCOKxSU9bAVV
+	2tg7JAQ==
+X-Google-Smtp-Source: AGHT+IGBsD40M1TCHpceHuTvrzQu31EsWCpow7sShvAnQiEKP0H9VSo9B6k/+Ftt8wsphMd8FgX3xhZLFrA=
+X-Received: from pjop7.prod.google.com ([2002:a17:90a:9307:b0:33b:aa58:175c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2fd0:b0:32d:601d:f718
+ with SMTP id 98e67ed59e1d1-33bcf8f9c16mr1675095a91.31.1760661173675; Thu, 16
+ Oct 2025 17:32:53 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 16 Oct 2025 17:32:20 -0700
+Date: Thu, 16 Oct 2025 17:32:21 -0700
 In-Reply-To: <20251017003244.186495-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -80,8 +80,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20251017003244.186495-1-seanjc@google.com>
 X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <20251017003244.186495-3-seanjc@google.com>
-Subject: [PATCH v3 02/25] KVM: Rename kvm_arch_vcpu_async_ioctl() to kvm_arch_vcpu_unlocked_ioctl()
+Message-ID: <20251017003244.186495-4-seanjc@google.com>
+Subject: [PATCH v3 03/25] KVM: TDX: Drop PROVE_MMU=y sanity check on
+ to-be-populated mappings
 From: Sean Christopherson <seanjc@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
 	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
@@ -106,173 +107,73 @@ X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Rename the "async" ioctl API to "unlocked" so that upcoming usage in x86's
-TDX code doesn't result in a massive misnomer.  To avoid having to retry
-SEAMCALLs, TDX needs to acquire kvm->lock *and* all vcpu->mutex locks, and
-acquiring all of those locks after/inside the current vCPU's mutex is a
-non-starter.  However, TDX also needs to acquire the vCPU's mutex and load
-the vCPU, i.e. the handling is very much not async to the vCPU.
+Drop TDX's sanity check that a mirror EPT mapping isn't zapped between
+creating said mapping and doing TDH.MEM.PAGE.ADD, as the check is
+simultaneously superfluous and incomplete.  Per commit 2608f1057601
+("KVM: x86/tdp_mmu: Add a helper function to walk down the TDP MMU"), the
+justification for introducing kvm_tdp_mmu_gpa_is_mapped() was to check
+that the target gfn was pre-populated, with a link that points to this
+snippet:
 
-No functional change intended.
+ : > One small question:
+ : >
+ : > What if the memory region passed to KVM_TDX_INIT_MEM_REGION hasn't been pre-
+ : > populated?  If we want to make KVM_TDX_INIT_MEM_REGION work with these regions,
+ : > then we still need to do the real map.  Or we can make KVM_TDX_INIT_MEM_REGION
+ : > return error when it finds the region hasn't been pre-populated?
+ :
+ : Return an error.  I don't love the idea of bleeding so many TDX details into
+ : userspace, but I'm pretty sure that ship sailed a long, long time ago.
 
+But that justification makes little sense for the final code, as the check
+on nr_premapped after TDH.MEM.PAGE.ADD will detect and return an error if
+KVM attempted to zap a S-EPT entry (tdx_sept_zap_private_spte() will fail
+on TDH.MEM.RANGE.BLOCK due lack of a valid S-EPT entry).  And as evidenced
+by the "is mapped?" code being guarded with CONFIG_KVM_PROVE_MMU=y, KVM is
+NOT relying on the check for general correctness.
+
+The sanity check is also incomplete in the sense that mmu_lock is dropped
+between the check and TDH.MEM.PAGE.ADD, i.e. will only detect KVM bugs that
+zap SPTEs in a very specific window (note, this also applies to the check
+on nr_premapped).
+
+Removing the sanity check will allow removing kvm_tdp_mmu_gpa_is_mapped(),
+which has no business being exposed to vendor code, and more importantly
+will pave the way for eliminating the "pre-map" approach entirely in favor
+of doing TDH.MEM.PAGE.ADD under mmu_lock.
+
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/arm64/kvm/arm.c       | 4 ++--
- arch/loongarch/kvm/vcpu.c  | 4 ++--
- arch/mips/kvm/mips.c       | 4 ++--
- arch/powerpc/kvm/powerpc.c | 4 ++--
- arch/riscv/kvm/vcpu.c      | 4 ++--
- arch/s390/kvm/kvm-s390.c   | 4 ++--
- arch/x86/kvm/x86.c         | 4 ++--
- include/linux/kvm_host.h   | 4 ++--
- virt/kvm/kvm_main.c        | 6 +++---
- 9 files changed, 19 insertions(+), 19 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 785aaaee6a5d..e8d654024608 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -1828,8 +1828,8 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
- 	return r;
- }
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 326db9b9c567..4c3014befe9f 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -3181,20 +3181,6 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 	if (ret < 0)
+ 		goto out;
  
--long kvm_arch_vcpu_async_ioctl(struct file *filp, unsigned int ioctl,
--			       unsigned long arg)
-+long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
-+				  unsigned long arg)
- {
- 	return -ENOIOCTLCMD;
- }
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index 30e3b089a596..9a5844e85fd3 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -1471,8 +1471,8 @@ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu, struct kvm_interrupt *irq)
- 	return 0;
- }
- 
--long kvm_arch_vcpu_async_ioctl(struct file *filp,
--			       unsigned int ioctl, unsigned long arg)
-+long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
-+				  unsigned long arg)
- {
- 	void __user *argp = (void __user *)arg;
- 	struct kvm_vcpu *vcpu = filp->private_data;
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index a75587018f44..b0fb92fda4d4 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -895,8 +895,8 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
- 	return r;
- }
- 
--long kvm_arch_vcpu_async_ioctl(struct file *filp, unsigned int ioctl,
--			       unsigned long arg)
-+long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
-+				  unsigned long arg)
- {
- 	struct kvm_vcpu *vcpu = filp->private_data;
- 	void __user *argp = (void __user *)arg;
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index 2ba057171ebe..9a89a6d98f97 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -2028,8 +2028,8 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
- 	return -EINVAL;
- }
- 
--long kvm_arch_vcpu_async_ioctl(struct file *filp,
--			       unsigned int ioctl, unsigned long arg)
-+long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
-+				  unsigned long arg)
- {
- 	struct kvm_vcpu *vcpu = filp->private_data;
- 	void __user *argp = (void __user *)arg;
-diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-index bccb919ca615..a4bd6077eecc 100644
---- a/arch/riscv/kvm/vcpu.c
-+++ b/arch/riscv/kvm/vcpu.c
-@@ -238,8 +238,8 @@ vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
- 	return VM_FAULT_SIGBUS;
- }
- 
--long kvm_arch_vcpu_async_ioctl(struct file *filp,
--			       unsigned int ioctl, unsigned long arg)
-+long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
-+				  unsigned long arg)
- {
- 	struct kvm_vcpu *vcpu = filp->private_data;
- 	void __user *argp = (void __user *)arg;
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 16ba04062854..8c4caa5f2fcd 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -5730,8 +5730,8 @@ static long kvm_s390_vcpu_memsida_op(struct kvm_vcpu *vcpu,
- 	return r;
- }
- 
--long kvm_arch_vcpu_async_ioctl(struct file *filp,
--			       unsigned int ioctl, unsigned long arg)
-+long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
-+				  unsigned long arg)
- {
- 	struct kvm_vcpu *vcpu = filp->private_data;
- 	void __user *argp = (void __user *)arg;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index ca5ba2caf314..b85cb213a336 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -7240,8 +7240,8 @@ static int kvm_vm_ioctl_set_clock(struct kvm *kvm, void __user *argp)
- 	return 0;
- }
- 
--long kvm_arch_vcpu_async_ioctl(struct file *filp, unsigned int ioctl,
--			       unsigned long arg)
-+long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
-+				  unsigned long arg)
- {
- 	return -ENOIOCTLCMD;
- }
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 7186b2ae4b57..d93f75b05ae2 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1557,6 +1557,8 @@ long kvm_arch_dev_ioctl(struct file *filp,
- 			unsigned int ioctl, unsigned long arg);
- long kvm_arch_vcpu_ioctl(struct file *filp,
- 			 unsigned int ioctl, unsigned long arg);
-+long kvm_arch_vcpu_unlocked_ioctl(struct file *filp,
-+				  unsigned int ioctl, unsigned long arg);
- vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf);
- 
- int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext);
-@@ -2437,8 +2439,6 @@ static inline bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
- }
- #endif /* CONFIG_HAVE_KVM_NO_POLL */
- 
--long kvm_arch_vcpu_async_ioctl(struct file *filp,
--			       unsigned int ioctl, unsigned long arg);
- void kvm_arch_guest_memory_reclaimed(struct kvm *kvm);
- 
- #ifdef CONFIG_HAVE_KVM_VCPU_RUN_PID_CHANGE
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index b7a0ae2a7b20..b7db1d5f71a8 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4434,10 +4434,10 @@ static long kvm_vcpu_ioctl(struct file *filp,
- 		return r;
- 
- 	/*
--	 * Some architectures have vcpu ioctls that are asynchronous to vcpu
--	 * execution; mutex_lock() would break them.
-+	 * Let arch code handle select vCPU ioctls without holding vcpu->mutex,
-+	 * e.g. to support ioctls that can run asynchronous to vCPU execution.
- 	 */
--	r = kvm_arch_vcpu_async_ioctl(filp, ioctl, arg);
-+	r = kvm_arch_vcpu_unlocked_ioctl(filp, ioctl, arg);
- 	if (r != -ENOIOCTLCMD)
- 		return r;
- 
+-	/*
+-	 * The private mem cannot be zapped after kvm_tdp_map_page()
+-	 * because all paths are covered by slots_lock and the
+-	 * filemap invalidate lock.  Check that they are indeed enough.
+-	 */
+-	if (IS_ENABLED(CONFIG_KVM_PROVE_MMU)) {
+-		scoped_guard(read_lock, &kvm->mmu_lock) {
+-			if (KVM_BUG_ON(!kvm_tdp_mmu_gpa_is_mapped(vcpu, gpa), kvm)) {
+-				ret = -EIO;
+-				goto out;
+-			}
+-		}
+-	}
+-
+ 	ret = 0;
+ 	err = tdh_mem_page_add(&kvm_tdx->td, gpa, pfn_to_page(pfn),
+ 			       src_page, &entry, &level_state);
 -- 
 2.51.0.858.gf9c4a03a3a-goog
 
