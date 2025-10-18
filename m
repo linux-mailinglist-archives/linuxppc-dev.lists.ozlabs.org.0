@@ -1,92 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-13038-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13039-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 878D7BEC823
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Oct 2025 07:34:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE8CBEC82C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Oct 2025 07:34:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cpVjx5YgTz3cj3;
-	Sat, 18 Oct 2025 16:34:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cpVjz0jDwz3cl9;
+	Sat, 18 Oct 2025 16:34:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760765653;
-	cv=none; b=TZhQaOgrg7IZCtYWdv/UOrEINm3QM4UDmbbxrsr3ni/dZykaOziHro0ViKc2auSM2A+q4be1LGzN0NE/7aj2/OIDmVwr4cdJjmlgkVoXZkzyO6eWnojSUw7pZd24T2rzVd7p9GSCoFYtuy6zvsLiVcpIYeZ4IOFTKzrX7y8/6h2BI5bl3nHV+AXMpAXPQwMDEm1YU+4BiejA7zL4SWZb+FgUpYnFyGqAab1hzhDOdzn0haIQgFAF+h9weO/eKwJxayUudw4FxP4nuJOpg3oro20zXI2A3IQVN1ljdT9wyq86T1GwMWY4kIABMK7Rn11iLuAaEhOnvFOcLJbxnknypg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760765655;
+	cv=none; b=SPg6x8KBuOOop6g92nRU6t1v72kDsGBHIjrPPFoEnw7DfXKS+QehIfB9pht6yVNygPiVzj6ZtvSpKF7nasIWAUKpEvBMtk2Fi6vx05oODux4Q+Bv4ccWd16mDXzHHjGJ/mtjy8s4TA1o7tQ2ix19kJSUsbL8kTIGZs4RCpDp4ji72a1I5q8yGfOMjs8jTHOzrQPQO86nnxTYzpjbNNg6nGxKE39haMa5qXbRP6A0N6PmX0pEOHaL1oAE5KvbjIemFU61pD2Eqd4MSYXWyznpc2SplXme2mM0GOnJIrlgRX/Ntxpx7yIvcfpxHE9EGq4EzIwZ5L/A/lm3Ji3DH5z5KA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760765653; c=relaxed/relaxed;
-	bh=NeeUesnrcqkMWegJSjwueFiedvybxeTlIsj/sTYadVw=;
+	t=1760765655; c=relaxed/relaxed;
+	bh=1a2xqCPKn7Yfe3qT3m1xrGTlZho+TG3RTSnggotxZDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JjaQIX2/eWam7ZYlbWvNRCOdDPW+N2IwT7wgGHioSd+Um7qEV9QQmEKF/9XRIEnQruZnj7nohhwciZk8i210Op4Wn5kaA945YMCc68KvLpaOd75tmH7tObk0CSHLy4bX8d83iHMG8GOdIGZTrifpI27Kuu69+BEg8HE/X1Z3iVc8LIaCVgf37NQ0Kf5ftoCv2TsHTcNmwnbVIHxlkE7VtGS5FVj5ivFd7a3EwhssqMkNmkPhr6EJqQlkJQJX3U6AacSLH7rhmXQs4RYnasw3SVdJfXf4cAdWP5sKqcfJ7F4KM9Ji9Z3xlw8xpmyAdP2QlqxMRmWhdI3yR1HUXHExOg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Hlj7lB/k; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version:Content-Type; b=bJ0JMj7K/JGO6+nbAmmtJ1xJYPg3WiFhkB0w4WmmX93NZ6Flw79DLfwiUTwesGH5DWaXR+E0x0z/XoG8bsWs6xUh5gp/6Emv3GTHXaEex0fJ9p4AcvtHMOhEqzQEPFHSUEfKqtuobEy4jfcXhHGQI9l6VqCrIkfEyZDPv43ceKUGpjUjfaaZ7WYazHKpTEgZPPjvljM3FYCRirs7WLqsxyF+X53ktl6UXPiWKe0adfDm7LX4POPaEaeRwzy+KJUyBLWfqQpwKWCDMNfHV2ZjAxQMZjW1Kvh6qcxKSplk7M2bOGVUx5KHx83KaSEfSzXTVpBLirjLD0yjyQLODT8oOQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E4fRehD6; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Hlj7lB/k;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E4fRehD6;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cpVjx1QJyz3cdG
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Oct 2025 16:34:13 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59I3U295014014;
-	Sat, 18 Oct 2025 05:33:56 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cpVjy3cmjz3ckQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Oct 2025 16:34:14 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59I4Z7bt005199;
+	Sat, 18 Oct 2025 05:33:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=NeeUes
-	nrcqkMWegJSjwueFiedvybxeTlIsj/sTYadVw=; b=Hlj7lB/kBSBAgiCDAUP3Ko
-	5DpvCRzILttHfdcj0bCJEJ+peyTyqnaFjC/JHkccUZj5pgwxwBhd6DiG6CiS1XQq
-	I7X2evWTj06tWJw6PwEwShjorf/T6MylXZAEzKErSOF+CGHF4VtU+ohl0YG3v0SI
-	ypp/q9E+EJzfE6A5rBlFwxxOJfNWsAPJXA95By9xbY8Gun01+6uI1IcWcw5xB6kR
-	7fk7JnNG/VoBk3138DnN9coAde4ni5SHO+WW5KBMqulvSAjHOzVIDV8xnkT6FnfM
-	33+2OJFt2QgAPwHzutcUjg95dKypAJyPCK6VMibAALOlJv3h2npOQH/ogH1/XPVg
+	:message-id:mime-version:references:subject:to; s=pp1; bh=1a2xqC
+	PKn7Yfe3qT3m1xrGTlZho+TG3RTSnggotxZDU=; b=E4fRehD6nrArxKtRSPcC8s
+	XwOgpkALWloeWT2P3I85t1bBmhJpxD3NIcl6cSt3+L/7I1J4wQWHSz0viExo3EPW
+	K250BDFvk/XEyMyo/gDUSC6qvxiqBjieR8lt4TJtroiD3fHCzKyg77f+X22PbS2C
+	PN7omG0hahQGp63OV9kpbCXZvUC1nsrz1Oh5bcSpe+fCuWWQxc+tr7a4VeT1qrhR
+	n0JQbQw7u3FpjhedFcqxvesDfPzGYF+fANqJfDE031uIOqtOhBdJuM6jD8/epfX8
+	uDccN+vAxV2PRrrK/AGk/TT2ogJkMqJ9/RE13ZbUSWgHgt7i4AgBZ2tlQkWUCToQ
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31rgbkj-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33erb77-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 18 Oct 2025 05:33:56 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59I5XtqF026030;
+	Sat, 18 Oct 2025 05:33:57 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59I5Xvim027400;
+	Sat, 18 Oct 2025 05:33:57 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33erb75-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 18 Oct 2025 05:33:57 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59I3hrIM016742;
 	Sat, 18 Oct 2025 05:33:55 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31rgbkg-1
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r32kgt8c-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 18 Oct 2025 05:33:55 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59I3hSXc018862;
-	Sat, 18 Oct 2025 05:33:54 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r2jn8wrc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 18 Oct 2025 05:33:54 +0000
+	Sat, 18 Oct 2025 05:33:55 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59I5XpiX49086902
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59I5Xs9T27394348
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 18 Oct 2025 05:33:51 GMT
+	Sat, 18 Oct 2025 05:33:54 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2684E20043;
-	Sat, 18 Oct 2025 05:33:51 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 827E220043;
+	Sat, 18 Oct 2025 05:33:54 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D6A3420040;
-	Sat, 18 Oct 2025 05:33:47 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 75F0A20040;
+	Sat, 18 Oct 2025 05:33:52 +0000 (GMT)
 Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com (unknown [9.43.69.229])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 18 Oct 2025 05:33:47 +0000 (GMT)
+	Sat, 18 Oct 2025 05:33:52 +0000 (GMT)
 From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Frederic Barrat <fbarrat@linux.ibm.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>, Nam Cao <namcao@linutronix.de>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: Re: [PATCH] powerpc, ocxl: Fix extraction of struct xive_irq_data
-Date: Sat, 18 Oct 2025 11:03:46 +0530
-Message-ID: <176076456873.59904.12854719764174051235.b4-ty@linux.ibm.com>
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        Nam Cao <namcao@linutronix.de>
+Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries/msi: Fix NULL pointer dereference at irq domain teardown
+Date: Sat, 18 Oct 2025 11:03:51 +0530
+Message-ID: <176076456872.59904.2831569431349537120.b4-ty@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251008081359.1382699-1-namcao@linutronix.de>
-References: <20251008081359.1382699-1-namcao@linutronix.de>
+In-Reply-To: <20251010120307.3281720-1-namcao@linutronix.de>
+References: <20251010120307.3281720-1-namcao@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,26 +99,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0Gs6clxS-3DH47ngsQVduJL7VwCY74hP
-X-Proofpoint-GUID: np-mCPSN0CaaIbi8GK3cb3614DONbjBG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX7XSNL00Cx9Vk
- +Q1sgQnbCuzL78fAkyvIw/L8k4ze2STv0gM+/BYTiNNaHI/EEJ8LJ3VUQ/sXXp93aToOxee6F/k
- 62crA2Qt3MYGCtB0+cWvOkf/fjCSLdTpsIA6MHOpBsWZWkUVolF/83rm0uFZd3yR7Eo37he+ORe
- o67L11GIxkX5Xvj0lahojlofYIPZR7MxXXm6dLMOwP6bYp+gTw0jqdcJcb3K4mwGJNCR7oGQM7R
- FIbY0mfiU/O2R6CNJmjzq+8wRtRN72FIlEvqy3Flc4ZLh1VBRnm5HRjxBLyNehxo0+/K+YLWWxZ
- Ans0NfvNE/lLqL6JbKZqHGC8u3DqthQlXBy1mGrs3Yy2rdqQWBSP7JG4bL/oT25nhd4mknpeDFQ
- plk3PO/b+d11Gwmhw3dSgN2gBFnkcQ==
-X-Authority-Analysis: v=2.4 cv=IJYPywvG c=1 sm=1 tr=0 ts=68f326c4 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68f326c5 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=24m1D_QoUu3p9LEs7a4A:9 a=QEXdDO2ut3YA:10
+ a=VwQbUJbxAAAA:8 a=dwpbbf9tRbJM_blNvucA:9 a=QEXdDO2ut3YA:10
  a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: 6yZP38Vl89LVXNHJjfBlkkslVXp2LRqN
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX00aPiBFyr+W6
+ WG1fJ47TtpUUnVAfhfra8RUQA3B0SoPDQHhmEWV6msPpW5k+IRtwb3abCIYW/8iyqhDf3IL5m+R
+ kHwFgPo/9LSUBEjDoJfGTJ1DP8B0x9TtoDPVk2seqhI5dxYFhHxbcLfbHK4WESe867CBKZOlVR9
+ 1TxTCAcC2HTN85lQOhr8vAHOyqW/swQyyeBQhIMt6lSWB3G0aLYPDymYyaesotHZZXpkoyGqCcV
+ 1vv+h76Qf37K4LdDScNEYWxhluEqPp//F3JYv84St4GBvvxxNzqqWPQDAYYVjKzHDtfHhhBP72s
+ +GdLVwLXPH7PkfD0Q87PyQRmeoOtWj0ouzTkC1IHArWOfnPwW3AtlBp5VNdIARS3Opt6YgQ6NIy
+ sThR0QCp+dH1dCNRQbXbK7F+vwILcA==
+X-Proofpoint-ORIG-GUID: VICwb4uCS6y3HdMBRqjtsqusEBH2C9o4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-18_01,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 clxscore=1011 suspectscore=0 spamscore=0
- bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -130,20 +126,20 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 08 Oct 2025 08:13:59 +0000, Nam Cao wrote:
-> Commit cc0cc23babc9 ("powerpc/xive: Untangle xive from child interrupt
-> controller drivers") changed xive_irq_data to be stashed to chip_data
-> instead of handler_data. However, multiple places are still attempting to
-> read xive_irq_data from handler_data and get a NULL pointer deference bug.
+On Fri, 10 Oct 2025 12:03:07 +0000, Nam Cao wrote:
+> pseries_msi_ops_teardown() reads pci_dev* from msi_alloc_info_t. However,
+> pseries_msi_ops_prepare() does not populate this structure, thus it is all
+> zeros. Consequently, pseries_msi_ops_teardown() triggers a NULL pointer
+> dereference crash.
 > 
-> Update them to read xive_irq_data from chip_data.
+> struct pci_dev is available in struct irq_domain. Read it there instead.
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc, ocxl: Fix extraction of struct xive_irq_data
-      https://git.kernel.org/powerpc/c/2743cf75f7c92d2a0a4acabd7aef1c17d98fe123
+[1/1] powerpc/pseries/msi: Fix NULL pointer dereference at irq domain teardown
+      https://git.kernel.org/powerpc/c/ef3e73a917ec7d080e0fb0e4015098a4fb0f1cff
 
 Thanks
 
