@@ -1,82 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-13034-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13036-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06BCEBEC60B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Oct 2025 04:50:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76FB4BEC6D5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Oct 2025 05:59:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cpR4b1S7Nz3ccF;
-	Sat, 18 Oct 2025 13:50:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cpScH4KlSz3cfT;
+	Sat, 18 Oct 2025 14:59:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760755807;
-	cv=none; b=Z6SbGnkZCT1d9YY0w2cv0iS20pvDoCiN0RjOvrxIPV0IMR56J4V62paWrmflGjPtzBF1v8O4/MxKgIw5k/dm3f1fVJlOV0hpP0xm/OhJdRCt0vSVoXBxAejDHMz+PbL7WRsDdIv9yljuiTb859qfzYlZhp0dGT6cM2Lx5empJscJLeeoCdz9vWU/3BohapuxShuZOr2dOLnQ0nphpOBExH9OY1SI5i2APQzUkUlrSKU619ccSZmDgzfh6cG2P4N2fWtF3oFRUTAZGOvzxGSGDXDkEAQSOVbOttYXam9mz3Vo6OsCgfPALHnwyFevvkBt0Z6BoTK1+W4QXIkESCnpZA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760759951;
+	cv=none; b=Xkt6Ogf9z+NvsP7hthoiQYaWCykAGKyKwzcN6vCm1I2nJhzvyKrWtQJCf9Q1C1IJWx2DpdcsjGSNTtYif+DuCO/Zl7Kt+pwMu09mDyOJMz/HlSgunMqp56YOOPgEm6dHZfl+WD2pnlQ174oUXSZz/afpTmSd3mNwn0zJdXKqd7aergQefRrmJNzL+4XguCToKdWpRQX98EWW/QzdO8qhOkUp13PlPfn+DFAcCLlNmIGJcGcWqNRyUwm51zfCGmnqZCJZHgurCB1/uUu8vkMSz5krwIkjhCqNJrbs4WgfiUiqVRlkLQRNVEY+fThHa3F4iBoMpEsQVm0mH7cHCo3rdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760755807; c=relaxed/relaxed;
-	bh=9T0h92DQz5OO39+QTskSIr/eTl358SlTD58NitcT8ig=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HaTyowV+RM+FH+XHLJf+BOoZt4syHl8k1Q+B0oi65EJqzqFDWk9qtuRY9eZy18lgJjAzU3s9Y3RyEfDMGQhVPm41VEg93kJYr3rEcnH2Ao/DS7qtQgr78x0lrLzvt7YhLPRcIcAFEbC6T1R5GAobkWWiFymnIIQXsMFF77rXXbvAM2RJJpFQ9yssN0/HIHGV//ENNtlmobcHQ0iSKxKjB9mjQAvNbMfqEW436YYlrC/Wc9K8sD6DNTWBuvuCrDyIprr38xKWQPryO8gv9+XO3hSURnjBRibsURSy8zKauiXRAQMmvpIuZDSCiztNYhuP1QnqGyoOBcmf1zefD3oLkA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cpR4Z1rx5z2xS9
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Oct 2025 13:50:04 +1100 (AEDT)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cp17q3TdNz9sSW;
-	Fri, 17 Oct 2025 12:21:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id MUd0DI8w8h4X; Fri, 17 Oct 2025 12:21:27 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cp17q2C4rz9sSV;
-	Fri, 17 Oct 2025 12:21:27 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 351218B786;
-	Fri, 17 Oct 2025 12:21:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id PrL50SiMsfQc; Fri, 17 Oct 2025 12:21:27 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0CB558B780;
-	Fri, 17 Oct 2025 12:21:26 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Darren Hart <dvhart@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"Andre Almeida" <andrealmeid@igalia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 03/10] uaccess: Add masked_user_{read/write}_access_begin
-Date: Fri, 17 Oct 2025 12:20:59 +0200
-Message-ID: <a4ef0a8e1659805c60fafc8d3b073ecd08117241.1760529207.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1760529207.git.christophe.leroy@csgroup.eu>
-References: <cover.1760529207.git.christophe.leroy@csgroup.eu>
+	t=1760759951; c=relaxed/relaxed;
+	bh=Qw4YXAl9CtY6hAowDvx/pdZbXjPBYE782Swc9Cge1go=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=MciIQ5mgG8im8C2tSrR/7UPgVevzGHCqu6Z7vsQ0RoZbuAFUUMuTBzFouKnJAilXoAaIxKGrQYjaq1ds0Tc7aYMnYWoJ2GZBp4o/OBf5z6M6QfrR74RaubBbA0/Lkxl7L1pScSy6eZrianPTh4u+ecsPFlLLt5PQhSfz7TlXHRmdhrPbHEAkWsRtW8+AYPq1E1UqLFlnFd34vlrMDor+ov/oCAeqYjPhmpS1G1M0GrQ9p0WpzvpQ5LXICsCKuE0FND1mcGJGu7d7I6Xzxep1I3EwSIfY3kAKp9IFyJHj1jv3RxDTnqOHxDOrq/14hDMXByRM4Q5CHB5dH6yTBLl0lg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=krIfENMf; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=pjw@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=krIfENMf;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=pjw@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cpScG4Qvxz2yrg;
+	Sat, 18 Oct 2025 14:59:10 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 225F941B3C;
+	Sat, 18 Oct 2025 03:59:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E640C4CEF8;
+	Sat, 18 Oct 2025 03:59:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760759947;
+	bh=EU6U5Z1y6eCiRh+fXNU8O/thPLmzUksR4n4H3faDx18=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=krIfENMfuFjiHhOD9R6DJZJbEI9qyq58vTH4tVORoQRTS2pGY5lkJEIZDY6cO/JsF
+	 7rV4qf/QB3xJavBLHP0t1tOOd2ijiKeeH7r5PBJer2K+56mKaBeK4gxS6ShjW6W321
+	 VkvkNEiUhE+GJg+MsRokLA9CNBFgs7U0v7KF5BOur/qWmLZ7DKTce6BLHyqQ3UmI3d
+	 h3G0koy5DXW63vce1vAszW8CD0JUM4rwNfwwIrL7aT81malR9QIBv5/P/aZVWwdmzB
+	 yRQW1/nRqFaZ64tNvz5lQ6FqKOjnXl5DoM5YdsFKHtq3AqF25dzypI1i46AMW/sKZH
+	 62a7C0hJMLpqQ==
+Date: Fri, 17 Oct 2025 21:59:03 -0600 (MDT)
+From: Paul Walmsley <pjw@kernel.org>
+To: Trevor Woerner <twoerner@gmail.com>
+cc: linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+    linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, 
+    openbmc@lists.ozlabs.org, linux-hexagon@vger.kernel.org, 
+    loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+    linux-stm32@st-md-mailman.stormreply.com, linux-mips@vger.kernel.org, 
+    linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+    linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org, 
+    sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] defconfig: cleanup orphaned CONFIG_SCHED_DEBUG
+In-Reply-To: <20250828103828.33255-1-twoerner@gmail.com>
+Message-ID: <e88ab2ff-dc16-dab7-0ff3-702f093563ce@kernel.org>
+References: <20250828103828.33255-1-twoerner@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,136 +71,32 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4825; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=LUaYsPfBDAifxBCt3YcfvFtnZBPfaSxbCGY+1bgSYgY=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWR8kpjMrdxgqHHhJa+5y5dc/303H/NN3Lr9qOCUqV5nf 616vDt2aUcpC4MYF4OsmCLL8f/cu2Z0fUnNn7pLH2YOKxPIEAYuTgGYSG4hI8PugxP0XD6+P++d tLxF6urFura8RdaX1zJtUZoQsmR3WYwow1+pk7tD5bt6dou+nsl7waZn/fqVSZp/NS8Vn1N76Xp zWxsbAA==
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=2.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+	SUSPICIOUS_RECIPS autolearn=disabled version=4.0.1
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Allthough masked_user_access_begin() is to only be used when reading
-data from user at the moment, introduce masked_user_read_access_begin()
-and masked_user_write_access_begin() in order to match
-user_read_access_begin() and user_write_access_begin().
+On Thu, 28 Aug 2025, Trevor Woerner wrote:
 
-That means masked_user_read_access_begin() is used when user memory is
-exclusively read during the window, masked_user_write_access_begin()
-is used when user memory is exclusively writen during the window,
-masked_user_access_begin() remains and is used when both reads and
-writes are performed during the open window. Each of them is expected
-to be terminated by the matching user_read_access_end(),
-user_write_access_end() and user_access_end().
+> In commit b52173065e0a ("sched/debug: Remove CONFIG_SCHED_DEBUG") this
+> Kconfig option was removed since CONFIG_SCHED_DEBUG was made unconditional
+> by patches preceding it.
+> 
+> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+> ---
 
-Have them default to masked_user_access_begin() when they are
-not defined.
+[ ... ]
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v3: Rebased on top of v6.18-rc1 ==> change in net/core/scm.c
+>  arch/riscv/configs/nommu_k210_defconfig        | 1 -
+>  arch/riscv/configs/nommu_k210_sdcard_defconfig | 1 -
+>  arch/riscv/configs/nommu_virt_defconfig        | 1 -
 
-v2: Added more explanations in the commit message following comments received.
----
- fs/select.c             | 2 +-
- include/linux/uaccess.h | 7 +++++++
- kernel/futex/futex.h    | 4 ++--
- lib/strncpy_from_user.c | 2 +-
- lib/strnlen_user.c      | 2 +-
- net/core/scm.c          | 2 +-
- 6 files changed, 13 insertions(+), 6 deletions(-)
+[ ... ]
 
-diff --git a/fs/select.c b/fs/select.c
-index 082cf60c7e235..36db0359388c8 100644
---- a/fs/select.c
-+++ b/fs/select.c
-@@ -777,7 +777,7 @@ static inline int get_sigset_argpack(struct sigset_argpack *to,
- 	// the path is hot enough for overhead of copy_from_user() to matter
- 	if (from) {
- 		if (can_do_masked_user_access())
--			from = masked_user_access_begin(from);
-+			from = masked_user_read_access_begin(from);
- 		else if (!user_read_access_begin(from, sizeof(*from)))
- 			return -EFAULT;
- 		unsafe_get_user(to->p, &from->p, Efault);
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 1beb5b395d81d..aa48d5415d32f 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -41,6 +41,13 @@
-  #define mask_user_address(src) (src)
- #endif
- 
-+#ifndef masked_user_write_access_begin
-+#define masked_user_write_access_begin masked_user_access_begin
-+#endif
-+#ifndef masked_user_read_access_begin
-+#define masked_user_read_access_begin masked_user_access_begin
-+#endif
-+
- /*
-  * Architectures should provide two primitives (raw_copy_{to,from}_user())
-  * and get rid of their private instances of copy_{to,from}_user() and
-diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
-index 2cd57096c38e1..a1120a318c186 100644
---- a/kernel/futex/futex.h
-+++ b/kernel/futex/futex.h
-@@ -303,7 +303,7 @@ static __always_inline int futex_get_value(u32 *dest, u32 __user *from)
- 	u32 val;
- 
- 	if (can_do_masked_user_access())
--		from = masked_user_access_begin(from);
-+		from = masked_user_read_access_begin(from);
- 	else if (!user_read_access_begin(from, sizeof(*from)))
- 		return -EFAULT;
- 	unsafe_get_user(val, from, Efault);
-@@ -318,7 +318,7 @@ static __always_inline int futex_get_value(u32 *dest, u32 __user *from)
- static __always_inline int futex_put_value(u32 val, u32 __user *to)
- {
- 	if (can_do_masked_user_access())
--		to = masked_user_access_begin(to);
-+		to = masked_user_write_access_begin(to);
- 	else if (!user_write_access_begin(to, sizeof(*to)))
- 		return -EFAULT;
- 	unsafe_put_user(val, to, Efault);
-diff --git a/lib/strncpy_from_user.c b/lib/strncpy_from_user.c
-index 6dc234913dd58..5bb752ff7c61b 100644
---- a/lib/strncpy_from_user.c
-+++ b/lib/strncpy_from_user.c
-@@ -126,7 +126,7 @@ long strncpy_from_user(char *dst, const char __user *src, long count)
- 	if (can_do_masked_user_access()) {
- 		long retval;
- 
--		src = masked_user_access_begin(src);
-+		src = masked_user_read_access_begin(src);
- 		retval = do_strncpy_from_user(dst, src, count, count);
- 		user_read_access_end();
- 		return retval;
-diff --git a/lib/strnlen_user.c b/lib/strnlen_user.c
-index 6e489f9e90f15..4a6574b67f824 100644
---- a/lib/strnlen_user.c
-+++ b/lib/strnlen_user.c
-@@ -99,7 +99,7 @@ long strnlen_user(const char __user *str, long count)
- 	if (can_do_masked_user_access()) {
- 		long retval;
- 
--		str = masked_user_access_begin(str);
-+		str = masked_user_read_access_begin(str);
- 		retval = do_strnlen_user(str, count, count);
- 		user_read_access_end();
- 		return retval;
-diff --git a/net/core/scm.c b/net/core/scm.c
-index 66eaee783e8be..4a65f9baa87e7 100644
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -274,7 +274,7 @@ int put_cmsg(struct msghdr * msg, int level, int type, int len, void *data)
- 		check_object_size(data, cmlen - sizeof(*cm), true);
- 
- 		if (can_do_masked_user_access())
--			cm = masked_user_access_begin(cm);
-+			cm = masked_user_write_access_begin(cm);
- 		else if (!user_write_access_begin(cm, cmlen))
- 			goto efault;
- 
--- 
-2.49.0
+Acked-by: Paul Walmsley <pjw@kernel.org>  # for arch/riscv
 
+
+- Paul
 
