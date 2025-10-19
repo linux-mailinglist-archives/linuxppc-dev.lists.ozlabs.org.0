@@ -1,101 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-13046-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13047-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708FDBEDEC1
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Oct 2025 08:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BCC5BEDF44
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Oct 2025 08:50:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cq7Rr5cg5z2xS9;
-	Sun, 19 Oct 2025 17:09:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cq8Mb2jS8z2xS9;
+	Sun, 19 Oct 2025 17:50:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::335"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760854152;
-	cv=none; b=ekGX3FdYcZEMcZQdk3K2a/orvA9NLQoU1id5kL3VXq89zXCVtXmh/5cY1WerhWx6zRcKOV1g1KDXvq892k/X3+up4j7ibY6SAVraeeWgTzEW2d7De42TzwJaYsQa7DIRBE5Mze97PKlTF3xbramq+fXtcfJ0sXOJpnRK1HPMvNOwsymzT0r9ZQvgaSD5QPBBjApoXnJxTS5oJgR+F2VveFwXwxkulZzCCpgMr2n0+siVLY/8ra1kx6e9Odi+9EXqKU7BrpoOUKXZP3i2oJtDG1nByo1WJSlts7WPfMlCtqsy6LY0O+d433ju5XlG4tBFyRCTyTsgVkiFlXWcBcc/Yg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760856635;
+	cv=none; b=YtyeHQFA5DBxW5yTgaNlDLejFr79NuNmmQ74h6AZBlvcgwtOFoKWVSS6KjugWvjBopIL3+6TKJ0HOkYWs00jDEyP9Boe9YHHy5reJTABqZ9pDAca6tCdAn9qW/sVG8taZQFLmnIhzRCl5n/dFTByBywk5isBBttRpVtOTqrfjUENuPP6Aa6UrrhXo6jHJJwFluxlwpca7bgwv5RnofBEN2fo6z/uEKmYPlT68saFHH2+BYQxdfFndeFUGmojJ9q/BnfzNQVX5yl9cUExxLRYFBE236bubjrVSgXAxf/eOdaqt95E5pxyLUdeN3QdwJYTAOoHu+c/wFLM9mbKds1Q/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760854152; c=relaxed/relaxed;
-	bh=GYC/hQuGeMEF947/LuK3VJRiyEjbNIGm04998G60uow=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+7x/1y/RQSmFG2UBn0RGKvw0LbKz54UeHg2Z9xQ5EnbWLoiPHfTroNhFrFoOdAEJpWc3F9gHb8vHppzy2iY4crKTfA89hT4gR/ghRow9JeVXtK5bQcQ0rbagOwVddOfnn/T9L2BJLi0TORIOpn2OgCVAJJrShBsazF8y9QcN0VvCrI6uHCOEa31LYXVGgRQJfkU+qfk5kylvd5AbaShrSPPOIx0tNoZVgIVG1Id6awDOOu9wEFsl3HEgCDS+PjDj248fkBc/XHpjgDwORRwnYphi+fKzCp9bxL/Y5xNnq0B63MCRxzJO6i8Wvv9AB9vy22oV5eNVU9Oq5RC6Liv/A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=X4aV34Xs; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1760856635; c=relaxed/relaxed;
+	bh=7/8vLtaYtmPZs1oOh1CSMVVaBxjkTTVakzN4rmk7kwA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eC4kWkB8FRTpjwJ+enVYg28PCrN9BFcANtmri4WGeOuyf8Ep+CHEIhSSCS4bqsmYrmW8d17/XBdlShOEDpnib74lpePcel1hjTs1FtLSisMPprYqUN6ZOCA0pI78ZFsMH6QoRm9zGMonG7+fcOjkpSzPpk9re+o1FAgcaKyEELNPmrq9B0dE8JRh6eovFNVLDe9K23pSbWDw1zePnDbZDa0y7YW7zHTaryBkDl3xKmzOlkzJAs2b9LrwblIMDi+gk4UMmIIBvjR1rsnDJWkC/0NDUZN0kEJ3qfzB67Qr17hyUuipbOuP/hjU5n3oYnxTDYoJMzWnu1AIzN7IQCDibg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Cl0KoSN2; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=guoren@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=X4aV34Xs;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Cl0KoSN2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=guoren@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cq7Rn6Z1Pz2xR4
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Oct 2025 17:09:08 +1100 (AEDT)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-47114a40161so35176335e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Oct 2025 23:09:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760854143; x=1761458943; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GYC/hQuGeMEF947/LuK3VJRiyEjbNIGm04998G60uow=;
-        b=X4aV34Xs5qyUPi8pQFGwJkmwrRHbvBNiwGyuOsYmcUVR2VE3h+w3P0yX+lcbOWEpi2
-         kGdDNqexh3IsguI5lQoyo9q0PGkYPoGBydbnMg6+ouiMMiiSDbSBQlZm5chvl03SPeMV
-         MvGaxk++1IRPFR+xQmBkMDxMBLCKhCykIl0IaWKaIdY+E9Hg7irf4OOVE06Sf4HoeKP+
-         W7yE3+9GPvjf+jqC65AowJDA5T3vDhu6TvZp7cXPE6ThgLz1h64bjuLk200fYEn8rMUE
-         Q4FISIy5LBhAmDBUSga/vn2iTQDqcrGcFLg0I454tgrSW4its71mLARqUm7XBvkJrM0x
-         huXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760854143; x=1761458943;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GYC/hQuGeMEF947/LuK3VJRiyEjbNIGm04998G60uow=;
-        b=NOwaCX+GyQ3uR+th5zDFzKf23eCZE3jRMYIWbhmtVlwf0RD7i0wN5cJ2J57Rq09+8P
-         /9fBzGq/MFFU574vFUpX2ogIhMlOBLW4Q7B0/y1sEkgklIQAx9eS7Kigu8X4WOyzyv+g
-         MjNnBkEezH9tMk9Y2K6Lc/aAMKyp2xGrN7W2dBQalcL7SdJXISJGGJCdTzMfRZ/Wm4oj
-         En0QoM4iszs7mbHx+aF57u+R+hUeYA2Yw8Kx3iVXyf5FBK3h7myvzcQO9s9XKxeFuJBT
-         yPEO73lMKuejXOMWg2aLdbhfg9wFl1NTFXS86J165cSeE38RYSY8oiD6YF71e2qeM+8E
-         EHJw==
-X-Forwarded-Encrypted: i=1; AJvYcCWHFoAxJfpRpdLXGxAUXyvixpxVvknIEXExRN0RdZx/SeIVBb88qeirbeNx3n7KxzIqVev/pcSsNm9JZR0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxbPtdOqJKNo9NqQQNdOEJ6mVpu0oqts11X37X4xVLnrXV+7jP2
-	25yf3dmgYfI3HpGyucEfE3NGgBEO6/uBXDkupkp2KSORXTp2FeiqEGHE
-X-Gm-Gg: ASbGncupkJYTs3k1iffPn+eG49WLOdFafo9eakXF8IjDfOeoVqLHgcseD8nKvlnEZdZ
-	HY38M/veMjQ1qGvLXCDEGtu18xB0K9NG8f5Km2d+SvGcN3ClwFz5Qul/SvJfGEEngVJdVXa+Bfd
-	IRjBdAES4+rd1Jjg8pJbuGoZMo36ggTX4Zvh6xSOGcY3PZI1bWbiXmf0OJ7MxF8Q6J3ToUv8fp5
-	l16VixJXA0giTCTnFk6rm6eKGDAs/90IROnP9A8/fHyDG76woFijEERMGQKGYaeagCOts4wDv7i
-	hZZUNv+k3IDOJFdTMw2liAFCXTF67Ukjeq35i96F33kedhsx5lBbUGFqFj+oOCKyIJZdtmG/gfU
-	eo1c6hjbK7c1vJs7AP2IokzXuFZ33QoUfmxcYlGg2BkwT+Q//4w6vY/waqmyLPDDVfqqdnJtzhz
-	qz
-X-Google-Smtp-Source: AGHT+IEZ5upR5rvq2pYeoFEK0g1VqqLoHFsnsUnK8lryUbaHf4IrN1h8fWBgNccm4eIUhXw2FJ5z5w==
-X-Received: by 2002:a05:600c:820f:b0:471:176d:bf8a with SMTP id 5b1f17b1804b1-4711791cd3dmr68834905e9.35.1760854143309;
-        Sat, 18 Oct 2025 23:09:03 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4710cdb9d4dsm83976805e9.5.2025.10.18.23.09.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Oct 2025 23:09:02 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: ebiggers@kernel.org
-Cc: ardb@kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-crypto@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org,
-	x86@kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 15/19] lib/crc32: make crc32c() go directly to lib
-Date: Sun, 19 Oct 2025 09:08:45 +0300
-Message-ID: <20251019060845.553414-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20241202010844.144356-16-ebiggers@kernel.org>
-References: <20241202010844.144356-16-ebiggers@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cq8MZ12SNz2xR4
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Oct 2025 17:50:34 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A755140A5D;
+	Sun, 19 Oct 2025 06:50:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F25C4CEE7;
+	Sun, 19 Oct 2025 06:50:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760856630;
+	bh=EdgpjTa5vPTpdpYEzLk3B3e9bf5d6qYFWAfS+EwNqnE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Cl0KoSN24WldfEYSRSfu5lozmGJAVE9xioGE6C+PBBseYSuE/7hgf2KbKvxu1nAfq
+	 +AnxTaK9VaE7xdn62r2Zk9oFnNMs7lSpecdggsfr9Z5mfbyraggVUnrWZwla30ASHd
+	 TTQUKVBXbjDXmyKfOdXMojvKQKorenot/jpefXad8wpoUyJQ/gWBwcSUSTx6MlFUkq
+	 O4BqR0RMnSAfMnvUpkN7wKJhQIsaUmfqwAekVS20NwyN/940rzzKb69Mu6Ni7vQrxn
+	 4PzVEO7y+ixH5H5iambi/6vum/20jOqyGoZB3A2tTRPyBtt8DjbzWrov4g4xwvEbN2
+	 ljhF5KLlm27vA==
+Date: Sun, 19 Oct 2025 02:50:21 -0400
+From: Guo Ren <guoren@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	x86@kernel.org, linux-alpha@vger.kernel.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, llvm@lists.linux.dev,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 03/17] csky: Add __attribute_const__ to ffs()-family
+ implementations
+Message-ID: <aPSKLRnWUAVSGQjF@gmail.com>
+References: <20250804163910.work.929-kees@kernel.org>
+ <20250804164417.1612371-3-kees@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,104 +73,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250804164417.1612371-3-kees@kernel.org>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Eric Biggers <ebiggers@kernel.org>:
-> Now that the lower level __crc32c_le() library function is optimized for
+On Mon, Aug 04, 2025 at 09:43:59AM -0700, Kees Cook wrote:
+> While tracking down a problem where constant expressions used by
+> BUILD_BUG_ON() suddenly stopped working[1], we found that an added static
+> initializer was convincing the compiler that it couldn't track the state
+> of the prior statically initialized value. Tracing this down found that
+> ffs() was used in the initializer macro, but since it wasn't marked with
+> __attribute__const__, the compiler had to assume the function might
+> change variable states as a side-effect (which is not true for ffs(),
+> which provides deterministic math results).
+> 
+> Add missing __attribute_const__ annotations to C-SKY's implementations of
+> ffs(), __ffs(), fls(), and __fls() functions. These are pure mathematical
+> functions that always return the same result for the same input with no
+> side effects, making them eligible for compiler optimization.
+LGTM.
 
-This patch (i. e. 38a9a5121c3b ("lib/crc32: make crc32c() go directly to lib"))
-solves actual bug I found in practice. So, please, backport it
-to stable kernels.
+Acked-by: Guo Ren <guoren@kernel.org>
 
-I did bisect.
-
-It is possible to apply this patch on top of v6.12.48 without conflicts.
-
-The bug actually prevents me for using my system (more details below).
-
-Here is steps to reproduce bug I noticed.
-
-Build kernel so:
-
-$ cat /tmp/mini
-CONFIG_64BIT=y
-CONFIG_PRINTK=y
-CONFIG_SERIAL_8250=y
-CONFIG_TTY=y
-CONFIG_SERIAL_8250_CONSOLE=y
-CONFIG_BLK_DEV_INITRD=y
-CONFIG_RD_GZIP=y
-CONFIG_BINFMT_ELF=y
-CONFIG_BINFMT_SCRIPT=y
-CONFIG_PROC_FS=y
-CONFIG_SYSFS=y
-CONFIG_DEVTMPFS=y
-CONFIG_MODULES=y
-CONFIG_BTRFS_FS=m
-CONFIG_MODULE_COMPRESS=y
-CONFIG_MODULE_COMPRESS_XZ=y
-CONFIG_MODULE_COMPRESS_ALL=y
-CONFIG_MODULE_DECOMPRESS=y
-CONFIG_PRINTK_TIME=y
-$ make allnoconfig KCONFIG_ALLCONFIG=/tmp/mini
-$ make
-
-Then create initramfs, which contains statically built busybox
-(I used busybox v1.37.0 (Debian 1:1.37.0-6+b3)) and modules we just created.
-
-Then run Qemu using command line similar to this:
-
-qemu-system-x86_64 -kernel arch/x86/boot/bzImage -initrd i.gz -append 'console=ttyS0 panic=1 rdinit=/bin/busybox sh' -m 256 -no-reboot -enable-kvm -serial stdio -display none
-
-Then in busybox shell type this:
-
-# mkdir /proc
-# busybox mount -t proc proc /proc
-# modprobe btrfs
-
-On buggy kernels I get this output:
-
-# modprobe btrfs
-[   19.614228] raid6: skipped pq benchmark and selected sse2x4
-[   19.614638] raid6: using intx1 recovery algorithm
-[   19.616569] xor: measuring software checksum speed
-[   19.616937]    prefetch64-sse  : 42616 MB/sec
-[   19.617270]    generic_sse     : 41320 MB/sec
-[   19.617531] xor: using function: prefetch64-sse (42616 MB/sec)
-[   19.619731] Invalid ELF header magic: != ELF
-modprobe: can't load module libcrc32c (kernel/lib/libcrc32c.ko.xz): unknown symbol in module, or unknown parameter
-
-The bug is reproducible on all kernels from v6.12 until this commit.
-And it is not reproducible on all kernels, which contain this commit.
-I found this using bisect.
-
-This bug actually breaks my workflow. I have btrfs as root filesystem.
-Initramfs, generated by Debian, doesn't suit my needs. So I'm going
-to create my own initramfs from scratch. (Note that I use Debian Trixie,
-which has v6.12.48 kernel.) During testing this initramfs in Qemu
-I noticed that command "modprobe btrfs" fails with error given above.
-(I not yet tried to test this initramfs on real hardware.)
-
-So, this bug actually breaks my workflow.
-
-So, please backport this patch (i. e. 38a9a5121c3b ("lib/crc32: make crc32c() go directly to lib"))
-to stable kernels.
-
-I tested that this patch can be applied without conflicts on top of v6.12.48,
-and this patch indeed fixes the bug for v6.12.48.
-
-If you want, I can give more info.
-
-It is possible that this is in fact bug in busybox, not in Linux.
-But still I think that backporting this patch is good idea.
-
-This busybox thread my be related:
-https://lists.busybox.net/pipermail/busybox/2023-May/090309.html
-
--- 
-Askar Safin
+> 
+> Build tested ARCH=csky defconfig with GCC csky-linux 15.1.0.
+> 
+> Link: https://github.com/KSPP/linux/issues/364 [1]
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+>  arch/csky/include/asm/bitops.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/csky/include/asm/bitops.h b/arch/csky/include/asm/bitops.h
+> index 72e1b2aa29a0..80d67eee6e86 100644
+> --- a/arch/csky/include/asm/bitops.h
+> +++ b/arch/csky/include/asm/bitops.h
+> @@ -9,7 +9,7 @@
+>  /*
+>   * asm-generic/bitops/ffs.h
+>   */
+> -static inline int ffs(int x)
+> +static inline __attribute_const__ int ffs(int x)
+>  {
+>  	if (!x)
+>  		return 0;
+> @@ -26,7 +26,7 @@ static inline int ffs(int x)
+>  /*
+>   * asm-generic/bitops/__ffs.h
+>   */
+> -static __always_inline unsigned long __ffs(unsigned long x)
+> +static __always_inline __attribute_const__ unsigned long __ffs(unsigned long x)
+>  {
+>  	asm volatile (
+>  		"brev %0\n"
+> @@ -39,7 +39,7 @@ static __always_inline unsigned long __ffs(unsigned long x)
+>  /*
+>   * asm-generic/bitops/fls.h
+>   */
+> -static __always_inline int fls(unsigned int x)
+> +static __always_inline __attribute_const__ int fls(unsigned int x)
+>  {
+>  	asm volatile(
+>  		"ff1 %0\n"
+> @@ -52,7 +52,7 @@ static __always_inline int fls(unsigned int x)
+>  /*
+>   * asm-generic/bitops/__fls.h
+>   */
+> -static __always_inline unsigned long __fls(unsigned long x)
+> +static __always_inline __attribute_const__ unsigned long __fls(unsigned long x)
+>  {
+>  	return fls(x) - 1;
+>  }
+> -- 
+> 2.34.1
+> 
+> 
 
