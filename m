@@ -1,43 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-13058-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13059-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 361C1BF174D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Oct 2025 15:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8DDBF1A88
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Oct 2025 15:54:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cqwkr6YRlz3020;
-	Tue, 21 Oct 2025 00:09:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cqxjn0FH8z303y;
+	Tue, 21 Oct 2025 00:54:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760965796;
-	cv=none; b=AqoRKyipop9akiw8FpOBUYjY7jqHNMnTLAqWQmjU/fPzcPm8hK49IHyrIoue+f53JIIToRMnpMduyWrbq2uEjs0ejcgscZ2CxSx/0gfHGKev1pnYyDtpdvoIZ76MT8+LqhclQGGlcz7Zwgo6P/W3KSn3lr0WJA+sdvMOP5QBzVR8/8izQI6JBodPabZyYKnQf/xc0x431MDagQpfwhyOGj4O7O5GgudBugvPLrzsBCdREo1txiLYhWjlcWFQlhC1EbOr8G6TyS4hEN+bwKSrCxXNots/OorDjyC0ufI772OjF4Bh0Q1vDpW5Po1slziGJmj53KFlgHYIxVUR0MCAbA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=83.223.78.240
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760968444;
+	cv=none; b=ibqsCUSBp47PLyykBN7+wmgUYw8Ov/UqV9O/X8GSu3EuBu+XYFTjX5DMihXBwjrmYtTRse7r/76mb4hBlFTjsxoLmM66ucIudso3/c2cOgIaIQ00vbdycNUQoNvkhgE7RGXAsgcA47KcAahNVX+wi+dC/gKwj95KAzqbPFlmuUv+YoX/IGDkYJMXU1rvdKPA04Jv0Huu9rQCTk3b8OGblse9TyK+O2FWYh3q3a8ktWtR13YTk+BxM98tbkn5lV9gDhXVmyuA0U+6fXzeLe1aicKeBnnJN5Os3uwgoQwzHW5W3eVmkSnlB3yZn6pJA80ulhgSOwivUPEh+mOdNZR19Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760965796; c=relaxed/relaxed;
-	bh=A/YVSIfENMg7a+CnApsjKhHaaNSfgBvr9Vz+qTSmgCU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WJiucJs/Sp/gIlCBNYzJu+bLJpBO7rYtRSkF1cVre3V0g+eUGLLVdYxGs9z9HxRVRkf7A3wnU5oC/VDvOUQuwEhgaeTYi9OtZx9c3mHrVW3aySTHDz4CFZnp683ih4IGKT4F8MBH1L58FBhertF9PwLUEQl+bOVpL0Zy8BdiptGLbzWSk3/eTNwpHD1/HI3JxO6SQP4wXJF8f+5Pi7qVMqKDRnpLoQbm94QKIYFHau91cevceHNnpiyrMoEhSYQLyxr4hVrfQr6f3FFj9kHviUEKq8eL8/rKLTMjAegPk5eiunTqZhv3m57rGLUV3u3iDjW5P/zc17uWud4Sr3cZvA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=dwyQ/qjt; dkim-atps=neutral; spf=pass (client-ip=115.124.30.124; helo=out30-124.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=dwyQ/qjt;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.124; helo=out30-124.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	t=1760968444; c=relaxed/relaxed;
+	bh=j0zX0r+L56/chkerh+MdInmCmHID/JZVRZW8uQVEENU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QHpgTWy8BQO2ZM5FdPF/VGaGWL9tXKld91RGaJdhPAFhNtPHCphKv8P4esVSuBirmapsRU0v0zBSZ3M3xPazqeWIewJhNwIeiuUmTNBQva0fHRpY3Qpm6r2c3Y9cVHipvxUX4aIirKBDbQsDTfXCAULtkbLSRVO99OCeZT4npW41P8ca8wxeQr98jmsDZcr9ltVj72xqq0v9ByB6APovoJQB5UQvkh4BvsQ1NuX14FQunjooAklzeTvAAs7NTJ4e6f+X1JGqGJfDB0xbqG57lwiSKc/v0HJ28xAwroHxA9AuGAVnuO7jFmm46mPR+udL5U7JwN+Q8JRe7nsWmxPm2A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=83.223.78.240; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout2.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout2.hostsharing.net (client-ip=83.223.78.240; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 13434 seconds by postgrey-1.37 at boromir; Tue, 21 Oct 2025 00:54:04 AEDT
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cqwkq0DSqz2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 00:09:54 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1760965790; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=A/YVSIfENMg7a+CnApsjKhHaaNSfgBvr9Vz+qTSmgCU=;
-	b=dwyQ/qjt2LPm4K5AQhRWVJkdL21EIssMXhyqEcgHzKHWSNsWa8BmYJ24olrEE2otzFbggZAqwBzUnwkK9edUTwPw6zRqaBVazExh/xShgLMRCrak551sm+Z5KmQaBxhTQ4sLF95yoK5b0e1cmIPXmBFNz3NhXsh8hX9ETMeDi4Y=
-Received: from 30.246.161.241(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WqcnHlY_1760965785 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 20 Oct 2025 21:09:46 +0800
-Message-ID: <0fe95dbe-a7ba-4882-bfff-0197828ee6ba@linux.alibaba.com>
-Date: Mon, 20 Oct 2025 21:09:41 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cqxjm10PSz3020
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 00:54:03 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 210FD20083D3;
+	Mon, 20 Oct 2025 15:54:00 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 0A1E44A12; Mon, 20 Oct 2025 15:54:00 +0200 (CEST)
+Date: Mon, 20 Oct 2025 15:54:00 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com,
+	kbusch@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com,
+	mahesh@linux.ibm.com, oohall@gmail.com, Jonathan.Cameron@huawei.com,
+	terry.bowman@amd.com, tianruidong@linux.alibaba.com
+Subject: Re: [PATCH v6 3/5] PCI/AER: Report fatal errors of RCiEP and EP if
+ link recoverd
+Message-ID: <aPY--DJnNam9ejpT@wunner.de>
+References: <20251015024159.56414-1-xueshuai@linux.alibaba.com>
+ <20251015024159.56414-4-xueshuai@linux.alibaba.com>
+ <aPYKe1UKKkR7qrt1@wunner.de>
+ <6d7143a3-196f-49f8-8e71-a5abc81ae84b@linux.alibaba.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -51,71 +63,92 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] PCI/ERR: Use pcie_aer_is_native() to check for
- native AER control
-To: Lukas Wunner <lukas@wunner.de>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org,
- sathyanarayanan.kuppuswamy@linux.intel.com, mahesh@linux.ibm.com,
- oohall@gmail.com, Jonathan.Cameron@huawei.com, terry.bowman@amd.com,
- tianruidong@linux.alibaba.com
-References: <20251015024159.56414-1-xueshuai@linux.alibaba.com>
- <20251015024159.56414-5-xueshuai@linux.alibaba.com>
- <aPYMO2Eu5UyeEvNu@wunner.de>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <aPYMO2Eu5UyeEvNu@wunner.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=disabled
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6d7143a3-196f-49f8-8e71-a5abc81ae84b@linux.alibaba.com>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-在 2025/10/20 18:17, Lukas Wunner 写道:
-> On Wed, Oct 15, 2025 at 10:41:58AM +0800, Shuai Xue wrote:
->> Replace the manual checks for native AER control with the
->> pcie_aer_is_native() helper, which provides a more robust way
->> to determine if we have native control of AER.
-
-Hi, Lukas,
-
-Thank you for your question.
-
+On Mon, Oct 20, 2025 at 08:58:55PM +0800, Shuai Xue wrote:
+> ??? 2025/10/20 18:10, Lukas Wunner ??????:
+> > On Wed, Oct 15, 2025 at 10:41:57AM +0800, Shuai Xue wrote:
+> > > +++ b/drivers/pci/pcie/err.c
+> > > @@ -253,6 +254,16 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+> > >   			pci_warn(bridge, "subordinate device reset failed\n");
+> > >   			goto failed;
+> > >   		}
+> > > +
+> > > +		/* Link recovered, report fatal errors of RCiEP or EP */
+> > > +		if (state == pci_channel_io_frozen &&
+> > > +		    (type == PCI_EXP_TYPE_ENDPOINT || type == PCI_EXP_TYPE_RC_END)) {
+> > > +			aer_add_error_device(&info, dev);
+> > > +			info.severity = AER_FATAL;
+> > > +			if (aer_get_device_error_info(&info, 0, true))
+> > > +				aer_print_error(&info, 0);
+> > > +			pci_dev_put(dev);
+> > > +		}
+> > 
+> > Where is the the pci_dev_get() to balance the pci_dev_put() here?
 > 
-> Why is it more robust?
+> The corresponding pci_dev_get() is called in add_error_device(). Please
+> refer to commit 60271ab044a5 ("PCI/AER: Take reference on error
+> devices") which introduced this reference counting mechanism.
 
-IMHO, the pcie_aer_is_native() helper is more robust because it includes
-additional safety checks that the manual approach lacks:
+That is non-obvious and needs a code comment.
 
-int pcie_aer_is_native(struct pci_dev *dev)
-{
-	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
-
-	if (!dev->aer_cap)
-		return 0;
-
-	return pcie_ports_native || host->native_aer;
-}
-EXPORT_SYMBOL_NS_GPL(pcie_aer_is_native, "CXL");
-
-Specifically, it performs a sanity check for dev->aer_cap before
-evaluating native AER control.
-
-And I think this is more maintainable than manual checks scattered
-throughout the code, as the helper encapsulates the exact conditions
-required to determine native AER control.
-
+> > It feels awkward to leak AER-specific details into pcie_do_recovery().
+> > That function is supposed to implement the flow described in
+> > Documentation/PCI/pci-error-recovery.rst in a platform-agnostic way
+> > so that powerpc (EEH) and s390 could conceivably take advantage of it.
+> > 
+> > Can you find a way to avoid this, e.g. report errors after
+> > pcie_do_recovery() has concluded?
 > 
-> Thanks,
+> I understand your concern about keeping pcie_do_recovery()
+> platform-agnostic.
+
+The code you're adding above, with the exception of the check for
+pci_channel_io_frozen, should live in a helper in aer.c.
+Then you also don't need to rename add_error_device().
+
+> I explored the possibility of reporting errors after
+> recovery concludes, but unfortunately, this approach isn't feasible due
+> to the recovery sequence. The issue is that most drivers'
+> pci_error_handlers implement .slot_reset() which internally calls
+> pci_restore_state() to restore the device's configuration space and
+> state. This function also clears the device's AER status registers:
 > 
-> Lukas
+>   .slot_reset()
+>     => pci_restore_state()
+>       => pci_aer_clear_status()
 
-Thanks.
+This was added in 2015 by b07461a8e45b.  The commit claims that
+the errors are stale and can be ignored.  It turns out they cannot.
 
-Shuai
+So maybe pci_restore_state() should print information about the
+errors before clearing them?
+
+Actually pci_restore_state() is only supposed to restore state,
+as the name implies, and not clear errors.  It seems questionable
+that the commit amended it to do that.
+
+> > I'm also worried that errors are reported *during* recovery.
+> > I imagine this looks confusing to a user.  The logged messages
+> > should make it clear that these are errors that occurred *earlier*
+> > and are reported belatedly.
+> 
+> You raise an excellent point about potential user confusion. The current
+> aer_print_error() interface doesn't indicate that these are historical
+> errors being reported belatedly. Would it be acceptable to add a
+> clarifying message before calling aer_print_error()? For example:
+> 
+>   pci_err(dev, "Reporting error that occurred before recovery:\n");
+
+Yes, something like that.  "Errors reported prior to reset"?  Dunno.
+
+Thanks,
+
+Lukas
 
