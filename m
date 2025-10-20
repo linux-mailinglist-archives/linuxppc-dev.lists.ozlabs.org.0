@@ -1,43 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-13066-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13067-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7DB8BF2102
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Oct 2025 17:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C429BBF24CC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Oct 2025 18:05:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cqzfN2wcsz304h;
-	Tue, 21 Oct 2025 02:21:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cr0d72j2Kz304h;
+	Tue, 21 Oct 2025 03:05:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760973676;
-	cv=none; b=LrQs+szHzE7B7/KG3zQyCTdxIQv8JNFCCCR31dMACyyFlI/Wkm3pwk07l23jTOkh8/JmIZTu6EENsQARtLVI7rBH1qVr6LOAzPq2U9tjbGgLEmVIQGYR32XL0HUao4OMyYijyTf2rJZ2MIJU6AdaqNY22MIwLqluTETwe7F+mNQwhrkqdHMNddK74hbWISY2DiMg1IdqDig+Ww0N325G9VMNit/C5cl0AwZZJh13QwOaqmoffgwpMwpoFgU+ZMjp0p420/ohvow9S74M8IBSqDJHUJufSh5wu4afZ8lKdaSRrpCUgQpyCZ8UzaZ3MObokVO7hlYF9qoGuAWvRg7EFA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760976315;
+	cv=none; b=LTly56JaMFfJ03fynMPeu0hpz7NRn7vZdTImSQImNS2Bzr41sQCkPaUHMLLwTKpdBJHd+o5oXBv6JeJdIwTYSf+p/DwDB/4T9hT7ig6z4EliNheBzJJYLqnMMpJqtnob4M7teMOAKzbmHVmOfw0o2yHlm+aI/V7yPOtSTThImAK/aETfAo843OwDQjoZQmqH6CJysEZA4e1ya062LvTVos44Wir/hwyTnrKSgDqgJHYmgvM4DfxWO/2HjLoBaxWevAvnQDl3zuINZzQZTPDQB53k0jBRhTTKRWLhEWKpfoswA6UEuF2AKR7+i5gq1BVhnYifxbuVKWqZlxXNY19D+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760973676; c=relaxed/relaxed;
-	bh=Vou/dzf4KP++tes6RLuekqGJp6PWAI7RQxEaTe2LEz4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=jzH52XMyodSn6v5gpcF9f1l7bt1TWSmOXP5Jdb7a1fGarrL7DTWVT2srSY3zfsWpc1uYMOT0zxjC40i16nJ+6Bhh65Yevio4pklNZi4NIq4RiX08H9SOGS1ngyZPl+vJC1tx6H+SFZ1YcljU+zLzZLcILCP0mkCwPHz9gj5awMVsC9aGSFZ6rgNy0H6jITVMOD4/zBfUms+/x/BsjZTJaWJvZAWiD2iH0mHi8Cq+E83JPVBfdvnwV4Sd8zpW4Rs3tuMJn9Iq8Aqaa+/HEgvsxMqzXRqhM5sCawY92+vd/xCyJILVoyeQ6HQEefGw+8dDsUD0d3oKci0w51Okxys3nw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=FwOLkydk; dkim-atps=neutral; spf=pass (client-ip=115.124.30.124; helo=out30-124.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+	t=1760976315; c=relaxed/relaxed;
+	bh=9zqmfJzfxpgIM2tZpR3SI8F5iWo5zFm0WqX/VDgqzME=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CTNLR/S0dc/FdVJiQ6UsxZLn0wyv7LnMLkTDrKsbPei5zmWHiUtc9ZuZbwAkv7wLGGSlu9pdqOeJA7T/pmzFIoAa8aE/jEehCYyPclGWTxDBGKV1mpdaVqHsi0oWEjOjou9GLXcDxWZP6lAzCD2azsnFGUvN9Y+FDxIV97LRfvzu0fZBd/1fbgYoiECUQ7OeXhdhhlhgtEITVix2mjhx9ihMKYiLwD7Sb/LkMJxeBc8CE9sW27DxcbN9ySkIa5KRyg8Ydat6hHKoppMQhSSv2fd247UtycqDWOtNq9HGCZKdBJnKinIVzVFnuXSWFaZiSr5TCP5ve9m2bL/CDlL6YQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BawEUh7D; dkim-atps=neutral; spf=pass (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=FwOLkydk;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BawEUh7D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.124; helo=out30-124.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Tue, 21 Oct 2025 03:05:12 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cqzfL1yQYz2yrm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 02:21:12 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1760973668; h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type;
-	bh=Vou/dzf4KP++tes6RLuekqGJp6PWAI7RQxEaTe2LEz4=;
-	b=FwOLkydkVJ0wD3mbTRfBIdWiSOLx78ssHQSy9EBOJw6TB+lRjhUGxOk7VriZK544FEvvzQ6uy3+z9wiL12wZlsoK7YgDKXJ9Jhz6SjHgNRo1SdJzmauIdjfiZF3diLXbdDCA0r1iBBcp3yvVcw8WBZf67bwNwWeH335ea43+XWs=
-Received: from 30.246.161.241(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WqdMvSw_1760973662 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 20 Oct 2025 23:21:03 +0800
-Message-ID: <30fe11dd-3f21-4a61-adb0-74e39087c84c@linux.alibaba.com>
-Date: Mon, 20 Oct 2025 23:20:58 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cr0d45jPyz300M
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 03:05:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760976314; x=1792512314;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=y87Qov3Jt4LC0JXlONBamFdqUvce5uT3fMcKNGfdSck=;
+  b=BawEUh7DubRy8miaBivdRfpy7UvRtYNNrMrpnj3v2vsAa7WKl7LniKx1
+   nFMIq1xs7wiIj/LrNU76R1ivPBg6MEV8c0FQXCyhrl20kCbnfM25NS47G
+   tQNEMrG90Vsd3Ahehbyr5kVg9dfcDnVXWJBgRBSAQTNrDz8eWql1BsAUl
+   wobCRyBO/Q4igNvLV5uSF35J3Az/XTxcgP+eSpSHPdlMnpNhUf222r1/o
+   kZSW94s+Gm4m6KmWXFYaSmsL67gyI0pSOfz3C4nmKwJhn2kSQZhrVoZHP
+   fu3n4GXkRsay5+oVx7PJZ5/fKjDosuY+seOlpF76swRFcbsSz5nVZeL/i
+   w==;
+X-CSE-ConnectionGUID: u0Gc2Yo5S7+iHE4mpoReTw==
+X-CSE-MsgGUID: +XlklpTlQmGt6rzpg7aRaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66730461"
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
+   d="scan'208";a="66730461"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 09:04:05 -0700
+X-CSE-ConnectionGUID: +BNDHO+tROOuyxe325cjEA==
+X-CSE-MsgGUID: tGqTHgdfTEq/PAYuNSvGDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
+   d="scan'208";a="183379002"
+Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.108.103]) ([10.125.108.103])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 09:04:02 -0700
+Message-ID: <7d4a53ea-1d2b-42b5-ad22-3a023f415cd2@intel.com>
+Date: Mon, 20 Oct 2025 09:04:01 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -52,110 +71,144 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-Subject: Re: [PATCH v6 3/5] PCI/AER: Report fatal errors of RCiEP and EP if
- link recoverd
-To: Lukas Wunner <lukas@wunner.de>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org,
- sathyanarayanan.kuppuswamy@linux.intel.com, mahesh@linux.ibm.com,
- oohall@gmail.com, Jonathan.Cameron@huawei.com, terry.bowman@amd.com,
- tianruidong@linux.alibaba.com
-References: <20251015024159.56414-1-xueshuai@linux.alibaba.com>
- <20251015024159.56414-4-xueshuai@linux.alibaba.com>
- <aPYKe1UKKkR7qrt1@wunner.de>
- <6d7143a3-196f-49f8-8e71-a5abc81ae84b@linux.alibaba.com>
- <aPY--DJnNam9ejpT@wunner.de>
- <43390d36-147f-482c-b31a-d02c2624061f@linux.alibaba.com>
- <aPZGNP79kJO74W4J@wunner.de>
-In-Reply-To: <aPZGNP79kJO74W4J@wunner.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=disabled
-	version=4.0.1 OzLabs 8
+Subject: Re: [PATCH 4/6 v5] acpi/ghes: Add helper for CPER CXL protocol errors
+ checks
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
+ linux-cxl@vger.kernel.org
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Sunil V L <sunilvl@ventanamicro.com>, Xiaofei Tan <tanxiaofei@huawei.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+ Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, Guo Weikang <guoweikang.kernel@gmail.com>,
+ Xin Li <xin@zytor.com>, Will Deacon <will@kernel.org>,
+ Huang Yiwei <quic_hyiwei@quicinc.com>, Gavin Shan <gshan@redhat.com>,
+ Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Li Ming <ming.li@zohomail.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Karolina Stolarek <karolina.stolarek@oracle.com>,
+ Jon Pan-Doh <pandoh@google.com>, Lukas Wunner <lukas@wunner.de>,
+ Shiju Jose <shiju.jose@huawei.com>, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org
+References: <20251017133357.1150982-1-fabio.m.de.francesco@linux.intel.com>
+ <20251017133357.1150982-5-fabio.m.de.francesco@linux.intel.com>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20251017133357.1150982-5-fabio.m.de.francesco@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 
-在 2025/10/20 22:24, Lukas Wunner 写道:
-> On Mon, Oct 20, 2025 at 10:17:10PM +0800, Shuai Xue wrote:
->> void aer_report_frozen_error(struct pci_dev *dev)
->> {
->>      struct aer_err_info info;
->>
->>      if (dev->pci_type != PCI_EXP_TYPE_ENDPOINT &&
->>          dev->pci_type != PCI_EXP_TYPE_RC_END)
->>          return;
->>
->>      aer_info_init(&info);
->>      aer_add_error_device(&info, dev);
->>      info.severity = AER_FATAL;
->>      if (aer_get_device_error_info(&info, 0, true))
->>          aer_print_error(&info, 0);
->>
->>      /* pci_dev_put() pairs with pci_dev_get() in aer_add_error_device() */
->>      pci_dev_put(dev);
->> }
-
-Hi Lukas,
+On 10/17/25 6:30 AM, Fabio M. De Francesco wrote:
+> Move the CPER CXL protocol errors validity checks out of
+> cxl_cper_post_prot_err() to cxl_cper_sec_prot_err_valid() and check the
+> serial number only for CXL agents that are CXL devices (UEFI v2.10,
+> Appendix N.2.13).
 > 
-> Much better.  Again, I think you don't need to rename add_error_device()
-> and then the code comment even fits on the same line:
-
-Good point. I'll keep the original function name and use the one-line
-comment format.
-
+> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+> ---
+>  drivers/acpi/apei/ghes.c | 32 ++++++++++++++++++++++----------
+>  include/cxl/event.h      | 10 ++++++++++
+>  2 files changed, 32 insertions(+), 10 deletions(-)
 > 
-> 	pci_dev_put(dev);  /* pairs with pci_dev_get() in add_error_device() */
-> 
->>>>     .slot_reset()
->>>>       => pci_restore_state()
->>>>         => pci_aer_clear_status()
->>>
->>> This was added in 2015 by b07461a8e45b.  The commit claims that
->>> the errors are stale and can be ignored.  It turns out they cannot.
->>>
->>> So maybe pci_restore_state() should print information about the
->>> errors before clearing them?
->>
->> While that could work, we would lose the error severity information at
-> 
-> Wait, we've got that saved in pci_cap_saved_state, so we could restore
-> the severity register, report leftover errors, then clear those errors?
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index d6fe5f020e96e..e69ae864f43d3 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -706,30 +706,42 @@ static DEFINE_KFIFO(cxl_cper_prot_err_fifo, struct cxl_cper_prot_err_work_data,
+>  static DEFINE_SPINLOCK(cxl_cper_prot_err_work_lock);
+>  struct work_struct *cxl_cper_prot_err_work;
+>  
+> -static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+> -				   int severity)
+> +int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
+>  {
+> -	struct cxl_cper_prot_err_work_data wd;
+> -	u8 *dvsec_start, *cap_start;
+> -
+>  	if (!(prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS)) {
+>  		pr_err_ratelimited("CXL CPER invalid agent type\n");
+> -		return;
+> +		return -EINVAL;
+>  	}
+>  
+>  	if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
+>  		pr_err_ratelimited("CXL CPER invalid protocol error log\n");
+> -		return;
+> +		return -EINVAL;
+>  	}
+>  
+>  	if (prot_err->err_len != sizeof(struct cxl_ras_capability_regs)) {
+>  		pr_err_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
+>  				   prot_err->err_len);
+> -		return;
+> +		return -EINVAL;
+>  	}
+>  
+> -	if (!(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
+> -		pr_warn(FW_WARN "CXL CPER no device serial number\n");
+> +	if ((prot_err->agent_type == RCD || prot_err->agent_type == DEVICE ||
+> +	     prot_err->agent_type == LD || prot_err->agent_type == FMLD) &&
+> +	    !(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
+> +		pr_warn_ratelimited(FW_WARN
+> +				    "CXL CPER no device serial number\n");
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(cxl_cper_sec_prot_err_valid);
+> +
+> +static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+> +				   int severity)
+> +{
+> +	struct cxl_cper_prot_err_work_data wd;
+> +	u8 *dvsec_start, *cap_start;
+> +
+> +	if (cxl_cper_sec_prot_err_valid(prot_err))
+> +		return;
+>  
+>  	guard(spinlock_irqsave)(&cxl_cper_prot_err_work_lock);
+>  
+> diff --git a/include/cxl/event.h b/include/cxl/event.h
+> index 6fd90f9cc2034..e1deb66c2197e 100644
+> --- a/include/cxl/event.h
+> +++ b/include/cxl/event.h
+> @@ -320,4 +320,14 @@ static inline int cxl_cper_prot_err_kfifo_get(struct cxl_cper_prot_err_work_data
+>  }
+>  #endif
+>  
+> +#ifdef CONFIG_ACPI_APEI_PCIEAER
+> +int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err);
+> +#else
+> +static inline int
+> +cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
+> +{
+> +	return -EINVAL;
 
-You're right that the severity register is also sticky, so we could
-retrieve error severity directly from AER registers.
+-EOPNOTSUPP?
 
-However, I have concerns about implementing this approach:
+> +}
+> +#endif
+> +
+>  #endif /* _LINUX_CXL_EVENT_H */
 
-1. Scope creep: The current implementation is explicit - we know we're
-in an AER error recovery path and intentionally report the missed fatal
-errors. Your suggestion would make error reporting implicit during any
-device state restoration.
 
-2. Wider impact: pci_save_state() and pci_restore_state() are used
-extensively beyond AER error handling - in power management, reset
-operations, and various driver flows. Adding error reporting to
-pci_restore_state() could generate unexpected error messages in
-non-error scenarios.
-
-3. Architectural consistency: As you noted earlier, "pci_restore_state()
-is only supposed to restore state, as the name implies, and not clear
-errors." Adding error reporting to this function would further violate
-this principle - we'd be making it do even more than just restore state.
-
-Would you prefer I implement this broader change, or shall we proceed
-with the targeted helper function approach for now? The helper function
-solves the immediate problem while keeping the changes focused on the
-AER recovery path.
-
-> Thanks,
-> 
-> Lukas
-
-Thanks.
-Shuai
 
