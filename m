@@ -1,104 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-13070-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13071-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C651FBF2EF2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Oct 2025 20:29:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AEE6BF2F73
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Oct 2025 20:38:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cr3qF6JhGz304h;
-	Tue, 21 Oct 2025 05:29:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cr41f2xkSz304h;
+	Tue, 21 Oct 2025 05:38:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760984953;
-	cv=none; b=EZcdBJIy0GMEuOSphDfglxSjAzjRQXYaKs/cwRYPor7SxOk6XFVrnmnBnYyGzE9vE3BdbiW+Qf8Zhcn2r2VYQu5JzeqetCwvTbAM91+yBXbPnoPTxEQvmJ4IEq7Y0bWa3iumvEewYcuMLqdeSIlg2Y324ulRqChRp3WDM1FpQwVW9yWbaJliRP/Ma0YX/9MeK5ugLpvs9IdcrM3f5oeGjiRinRihHzy6k4gU7z9WPvxi2UsGrt8CpNi/CP6BtRacX2QBAfWJR2Kki979j1obgBeJVJ/Ge87Gaix/1RKfyUXmiD9Iy9hOGiUcG7Lck2DP8x5Q1JpkdzYXnYeA81u6Vw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1760985494;
+	cv=none; b=fhYHIFv0tgDc/z5w2wkSzqxtNSPbS7aHpL3pvve4iQWDmghfbaxuwnWkldXhsm9eh6fcm2Mdcp7NfHRkA5zRgq7sD5p7N5e6k+wCItdzcvlA/WvxOe9F6TqEzXB0L2OTXo7JCCIm2/ItomVfqK1LnHBzF9Us64XA9IWSmzf45t3/EBp3icRqYjElD3pYNYNsdZgR6tDqL2hMuRbcDQ9zJXlq7q//+QyZ5V1487WRhi7HEqMfWzuepRZeNCofl7IxuJEmbVofN03jyfR+VAdsw6eF8fnvsV/uK2lEEkNqphx3TAtyZ/VJJR/kUYXdxBnhjwx/yJi2O9hPQRNh7pfJ9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1760984953; c=relaxed/relaxed;
-	bh=5yxdyPTr8lflDTwtMVtJRlloOOyifPoptczhCt+xGBw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PZfBEvbOaGuzxPe4upAB3PMe3KioKhhXkV9L6b1PXqpCrHWvIJ0JtyEEtJlJHrlxhIkbDI40m2lVvJRMCAxQpSmg1mn4lK98REEZSQmJPpeCUY9cL1yNf04CIPlm6Mr+yYoFDGk4G6AZlOOe/J3TbQ8cnmgdZF3Hu5qprodj/9Gar3ZtQ3MJZpYK8R6ZO3DBxInBMKZydH3SOezsp8g7ap+LXbs+IF3y9Bmt4AfuWA7/UsmkPBXlOBXZGxBi7rJqejNomekUP5ia3jjBXBhFWZDuJ0eTJarrY1BoADEo7L1x5AQaVjReP7KMzme1rt+ONhUsVKdRYAOIEDUPC0+TQw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=U1TECVr7; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32c; helo=mail-wm1-x32c.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1760985494; c=relaxed/relaxed;
+	bh=87P+hYlz2EKOlOd1ccfFIYt8BcoMcrK77d5m5ajZSe4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JKHO5E5zNtTRgCUe/p9J2kVWD3cnfKQZ8w7J4cBNYaY9r6E3IEnFwIJdTMAAxkFYaPf186LeRMNqCvBT61cVIshHG3bLTU0q8r1Qkqh1iBBqlM+DURXeeOnhYVZ9SXC5bvqWU8k/LHLIGIdyZQkLCEpyEtcw5yeL5nsNQK5lqWL3+JaclsQfv4PArBS4Caws94iEp1VZ9dfxo+2ekmNIaXXpCMXLAjcHoDcIhMumgOST5Di1JYIidHC5rdVg0BdYsektg6Qjt3OZi8tHVMB1yUdwTn8koHERjM6ztuJT7MCcoiyV+0pSbH3pXWAxB8E7WlKMq9sF6o7anbLRhwXqgg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P1kSM3nl; dkim-atps=neutral; spf=pass (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=U1TECVr7;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P1kSM3nl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32c; helo=mail-wm1-x32c.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cr3qD158Gz300M
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 05:29:10 +1100 (AEDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-47109187c32so22488975e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Oct 2025 11:29:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760984942; x=1761589742; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5yxdyPTr8lflDTwtMVtJRlloOOyifPoptczhCt+xGBw=;
-        b=U1TECVr7FRdbgu6REMGLZKzPkxgYGaCKBqH1llMKJbA8UqalX1Zpz+HSW4IiZVmsmC
-         6ozEZIlcmVF+6Sc5Bw3iefb8FVvEUyC68HVm/3CkZSBboqZEyVKYi3sEF5WJH5F9bmH8
-         payP6t4ReLCj6yR6qdQ/32dlJoCg+Px6x+6J550ZiqQObR8m69JJHfDuNqdjZaV9OAKB
-         Tma7GeX/q/op/TCuOPaP8MXSOYg+8tqq0IFOfLouLdG0UXf/lx+oW1lMrn5dz3jycig+
-         Pf/JMQQ5NqbyGljnSX2B+wd8FV4LlmnmbZ37+8O7ipNzTUfE4NEwk9gJrE/LnspZt86w
-         C91A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760984942; x=1761589742;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5yxdyPTr8lflDTwtMVtJRlloOOyifPoptczhCt+xGBw=;
-        b=wtBe1hwfb/GMjxOgrRln+fmnR52yhx2nFzQwkNADBblrFtKKWeMfwg8OkPL0wfAXEY
-         wq5giMNTPEXo2w1J5mJgRlMefF1puUPzEBmthUsQNhfSX6V2p6bnvuJmV424BVBoWQUo
-         EYTvIVQjnrzRY2rtIBphQQbAn23PwV/0tk774mIhgEF4JY8R4w390I0R6Lx/v1UVEw2f
-         oQSoufHhNW0xusghCNWkiS/vij62Os809SpVfuVtOsWU9IeCnSzHczJ4S22IAjP1+FYL
-         pSyYFmbIYYwt6t+pcI2hyeCLuGzKdrSQvzb575c0xnYO/DQmncZgsySAOtRJj9uc7oTr
-         /msA==
-X-Forwarded-Encrypted: i=1; AJvYcCWdwOStfXqXbybMilPAcs8TPtKZZU/MtnN0+WyBNgC7AMhUcV2SH6FyxPiLZMbhhBIxLy+GhbrPHHAacpA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz0WFQQeHqOoOZ7Mgq2V92Bwyn3KKgPLFc8YhWpUXHdZYt0Iw/d
-	OQd6+fMXY5R1C2gBb80FNMv1FMmG64+AhoCv26iayfcgwY+eXK5F6bKS
-X-Gm-Gg: ASbGncvv03DahJhyxCYGvSuufukOW2vbp2JoKoqp2xmZjS2VXA2IMltqjHlzHLgIYfc
-	WHdsa5VUscGqZn3GsWn1zR7FBnQRgLcmLKX6uQyQbWcMnb6PAle4gdg7+FPgXVcfB+nn2vXthBB
-	l/CZmYRJdXkuF/3f+92upj6adZxFsIvaoZj+23kBM0gheqDrodiwO1djimo+tNOGEGWaqkqYkxN
-	2hHX+LNUmFT11L5PeDyXrhku6KtgeAlqDhkLXm1rR7OSTcPiVaShilVXaIXJpXx9ncdV9AqNjxy
-	VGH2hWCT5uZva10M0UL+IM/vi5+Cn2D7Gff9SgVGsLV+2zlhkXh77hzvBb1RZz+rs3JZ/3ej+1a
-	m2+hnWfVx4v5DWWzN7AsZtrEG5sOhA3SErwo18NjVTaEzUN1s2VfLXT7UZvLRydvSM27+Cn5Zmz
-	/NyxNvmhj3r655x+1NUjIKQ0vt2/Bll83GY8aeEoltvG0lw1m3faAM
-X-Google-Smtp-Source: AGHT+IEpzbsejOPW2DE1Xi2kfs5OCLo5cknKMYnsHf1ZhzSMoaTGb7o47ht4fDoeapYu+RtWSxVe8Q==
-X-Received: by 2002:a05:600c:19d4:b0:46e:4a13:e6c6 with SMTP id 5b1f17b1804b1-47117907234mr110583035e9.19.1760984941885;
-        Mon, 20 Oct 2025 11:29:01 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-471144c831asm234365475e9.13.2025.10.20.11.29.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 11:29:01 -0700 (PDT)
-Date: Mon, 20 Oct 2025 19:28:59 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: LKML <linux-kernel@vger.kernel.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Andrew Cooper
- <andrew.cooper3@citrix.com>, Linus Torvalds
- <torvalds@linux-foundation.org>, kernel test robot <lkp@intel.com>, Russell
- King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
- x86@kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, Palmer
- Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org, Heiko
- Carstens <hca@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
- linux-s390@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, Nicolas
- Palix <nicolas.palix@imag.fr>, Peter Zijlstra <peterz@infradead.org>,
- Darren Hart <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>,
- =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
- <jack@suse.cz>, linux-fsdevel@vger.kernel.org
-Subject: Re: [patch V3 07/12] uaccess: Provide scoped masked user access
- regions
-Message-ID: <20251020192859.640d7f0a@pumpkin>
-In-Reply-To: <20251017093030.253004391@linutronix.de>
-References: <20251017085938.150569636@linutronix.de>
-	<20251017093030.253004391@linutronix.de>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cr41b4TNPz2ySV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 05:38:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760985492; x=1792521492;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=u2kLy5AQDMP6Qh4T+AMn2cRnD+nhl4BTD0LozXc+FW8=;
+  b=P1kSM3nlO8dMQeCQZ1UVMWX5CCCdK+uj4PuzLV/veF75l4d7M4W2IGC1
+   U1cADtFweJAkdCbS/jCpZQiUBm1TPAVImMd2Hpf/uhTatnrUS7uUwSmkh
+   Thg1nOFnaXDnYsQjPcgBXGtUXf4Iv8umJFQlSE2+rzQhEoFuQjZrXnpjd
+   FjRmVC9+/YIMUxMCx2XybaRVzFX604Z8Lx7GBUueQpaIEhBAWTngcZnxr
+   KZ2hX1UogTV8EF67SgUcc+CwsK3RgR4qlfSXhTB4n0Kpufqwjx4mzNhwu
+   kTFrFxKiDxGCjnGmiD7owBWUXRJ4x1akVmthEBPivtryitDiPJLc8xFPD
+   w==;
+X-CSE-ConnectionGUID: QRlJL+GgS6eUsKVkE/WOCQ==
+X-CSE-MsgGUID: xvAfHWqvQo+0jo9T5iMopA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66969194"
+X-IronPort-AV: E=Sophos;i="6.19,243,1754982000"; 
+   d="scan'208";a="66969194"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 11:38:07 -0700
+X-CSE-ConnectionGUID: wUJaxdbqSJqeJgCixLySGQ==
+X-CSE-MsgGUID: 1STlR9ztQKawfoBgVeLGaw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,243,1754982000"; 
+   d="scan'208";a="187415426"
+Received: from skuppusw-desk2.jf.intel.com (HELO [10.165.154.101]) ([10.165.154.101])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 11:38:07 -0700
+Message-ID: <fe1daf3b-162e-4132-8cdc-c89305391090@linux.intel.com>
+Date: Mon, 20 Oct 2025 11:38:06 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -112,401 +69,220 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/5] PCI/AER: Report fatal errors of RCiEP and EP if
+ link recoverd
+To: Shuai Xue <xueshuai@linux.alibaba.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ bhelgaas@google.com, kbusch@kernel.org
+Cc: mahesh@linux.ibm.com, oohall@gmail.com, Jonathan.Cameron@huawei.com,
+ terry.bowman@amd.com, tianruidong@linux.alibaba.com, lukas@wunner.de
+References: <20251015024159.56414-1-xueshuai@linux.alibaba.com>
+ <20251015024159.56414-4-xueshuai@linux.alibaba.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20251015024159.56414-4-xueshuai@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, 17 Oct 2025 12:09:08 +0200 (CEST)
-Thomas Gleixner <tglx@linutronix.de> wrote:
 
-> User space access regions are tedious and require similar code patterns all
-> over the place:
-> 
->      	if (!user_read_access_begin(from, sizeof(*from)))
-> 		return -EFAULT;
-> 	unsafe_get_user(val, from, Efault);
-> 	user_read_access_end();
-> 	return 0;
-> Efault:
-> 	user_read_access_end();
-> 	return -EFAULT;
-> 
-> This got worse with the recent addition of masked user access, which
-> optimizes the speculation prevention:
-> 
-> 	if (can_do_masked_user_access())
-> 		from = masked_user_read_access_begin((from));
-> 	else if (!user_read_access_begin(from, sizeof(*from)))
-> 		return -EFAULT;
-> 	unsafe_get_user(val, from, Efault);
-> 	user_read_access_end();
-> 	return 0;
-> Efault:
-> 	user_read_access_end();
-> 	return -EFAULT;
-> 
-> There have been issues with using the wrong user_*_access_end() variant in
-> the error path and other typical Copy&Pasta problems, e.g. using the wrong
-> fault label in the user accessor which ends up using the wrong accesss end
-> variant. 
-> 
-> These patterns beg for scopes with automatic cleanup. The resulting outcome
-> is:
->     	scoped_masked_user_read_access(from, Efault)
-> 		unsafe_get_user(val, from, Efault);
-> 	return 0;
->   Efault:
-> 	return -EFAULT;
+On 10/14/25 19:41, Shuai Xue wrote:
+> The AER driver has historically avoided reading the configuration space of
+> an endpoint or RCiEP that reported a fatal error, considering the link to
+> that device unreliable. Consequently, when a fatal error occurs, the AER
+> and DPC drivers do not report specific error types, resulting in logs like:
+>
+>    pcieport 0015:00:00.0: EDR: EDR event received
+>    pcieport 0015:00:00.0: EDR: Reported EDR dev: 0015:00:00.0
+>    pcieport 0015:00:00.0: DPC: containment event, status:0x200d, ERR_FATAL received from 0015:01:00.0
+>    pcieport 0015:00:00.0: AER: broadcast error_detected message
+>    pcieport 0015:00:00.0: AER: broadcast mmio_enabled message
+>    pcieport 0015:00:00.0: AER: broadcast resume message
+>    pcieport 0015:00:00.0: pciehp: Slot(21): Link Down/Up ignored
+>    pcieport 0015:00:00.0: AER: device recovery successful
+>    pcieport 0015:00:00.0: EDR: DPC port successfully recovered
+>    pcieport 0015:00:00.0: EDR: Status for 0015:00:00.0: 0x80
+>
+> AER status registers are sticky and Write-1-to-clear. If the link recovered
+> after hot reset, we can still safely access AER status and TLP header of the
+> error device. In such case, report fatal errors which helps to figure out the
+> error root case.
+>
+> After this patch, the logs like:
+>
+>    pcieport 0015:00:00.0: EDR: EDR event received
+>    pcieport 0015:00:00.0: EDR: Reported EDR dev: 0015:00:00.0
+>    pcieport 0015:00:00.0: DPC: containment event, status:0x200d, ERR_FATAL received from 0015:01:00.0
+>    pcieport 0015:00:00.0: AER: broadcast error_detected message
+>    vfio-pci 0015:01:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Transaction Layer, (Receiver ID)
+>    pcieport 0015:00:00.0: pciehp: Slot(21): Link Down/Up ignored
 
-That definitely looks better than the earlier versions.
-Even if the implementation looks like an entry in the obfuscated C competition.
+It would be more clear if you follow the same order of the log as before section
+and highlight the new logs that are getting added.
 
-I don't think you need the 'masked' in that name.
-Since it works in all cases.
-
-(I don't like the word 'masked' at all, not sure where it came from.
-Probably because the first version used logical operators.
-'Masking' a user address ought to be the operation of removing high-order
-address bits that the hardware is treating as 'don't care'.
-The canonical operation here is uaddr = min(uaddr, guard_page) - likely to be
-a conditional move.
-I think that s/masked/sanitised/ would make more sense (the patch to do
-that isn't very big at the moment). I might post it.)
-
-> 
-> The scope guarantees the proper cleanup for the access mode is invoked both
-> in the success and the failure (fault) path.
-> 
-> The scoped_masked_user_$MODE_access() macros are implemented as self
-> terminating nested for() loops. Thanks to Andrew Cooper for pointing me at
-> them. The scope can therefore be left with 'break', 'goto' and 'return'.
-> Even 'continue' "works" due to the self termination mechanism. Both GCC and
-> clang optimize all the convoluted macro maze out and the above results with
-> clang in:
-> 
->  b80:	f3 0f 1e fa          	       endbr64
->  b84:	48 b8 ef cd ab 89 67 45 23 01  movabs $0x123456789abcdef,%rax
->  b8e:	48 39 c7    	               cmp    %rax,%rdi
->  b91:	48 0f 47 f8          	       cmova  %rax,%rdi
->  b95:	90                   	       nop
->  b96:	90                   	       nop
->  b97:	90                   	       nop
->  b98:	31 c9                	       xor    %ecx,%ecx
->  b9a:	8b 07                	       mov    (%rdi),%eax
->  b9c:	89 06                	       mov    %eax,(%rsi)
->  b9e:	85 c9                	       test   %ecx,%ecx
->  ba0:	0f 94 c0             	       sete   %al
->  ba3:	90                   	       nop
->  ba4:	90                   	       nop
->  ba5:	90                   	       nop
->  ba6:	c3                   	       ret
-> 
-> Which looks as compact as it gets. The NOPs are placeholder for STAC/CLAC.
-> GCC emits the fault path seperately:
-> 
->  bf0:	f3 0f 1e fa          	       endbr64
->  bf4:	48 b8 ef cd ab 89 67 45 23 01  movabs $0x123456789abcdef,%rax
->  bfe:	48 39 c7             	       cmp    %rax,%rdi
->  c01:	48 0f 47 f8          	       cmova  %rax,%rdi
->  c05:	90                   	       nop
->  c06:	90                   	       nop
->  c07:	90                   	       nop
->  c08:	31 d2                	       xor    %edx,%edx
->  c0a:	8b 07                	       mov    (%rdi),%eax
->  c0c:	89 06                	       mov    %eax,(%rsi)
->  c0e:	85 d2                	       test   %edx,%edx
->  c10:	75 09                	       jne    c1b <afoo+0x2b>
->  c12:	90                   	       nop
->  c13:	90                   	       nop
->  c14:	90                   	       nop
->  c15:	b8 01 00 00 00       	       mov    $0x1,%eax
->  c1a:	c3                   	       ret
->  c1b:	90                   	       nop
->  c1c:	90                   	       nop
->  c1d:	90                   	       nop
->  c1e:	31 c0                	       xor    %eax,%eax
->  c20:	c3                   	       ret
-> 
-> 
-> The fault labels for the scoped*() macros and the fault labels for the
-> actual user space accessors can be shared and must be placed outside of the
-> scope.
-> 
-> If masked user access is enabled on an architecture, then the pointer
-> handed in to scoped_masked_user_$MODE_access() can be modified to point to
-> a guaranteed faulting user address. This modification is only scope local
-> as the pointer is aliased inside the scope. When the scope is left the
-> alias is not longer in effect. IOW the original pointer value is preserved
-> so it can be used e.g. for fixup or diagnostic purposes in the fault path.
-
-I think you need to add (in the kerndoc somewhere):
-
-There is no requirement to do the accesses in strict memory order
-(or to access the lowest address first).
-The only constraint is that gaps must be significantly less than 4k.
-
-Basically the architectures have to support code accessing uptr[4]
-before uptr[0] (so using ~0 as the 'bad address' isn't a good idea).
-Otherwise you have to go through 'hoops' to double check that all code
-accesses the first member of a structure before the second one.
-(I've looked through likely users of this and something like poll
-or epoll does the 2nd access first - and it isn't obvious.)
-
-There always has to be a guard page at the top of valid user addresses.
-Otherwise sequential accesses run into kernel space.
-So the code just has to generate the base of the guard page for kernel
-addresses (see the horrid ppc code for cpu that have broken conditional move).
-
-> 
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+>    vfio-pci 0015:01:00.0:   device [144d:a80a] error status/mask=00001000/00400000
+>    vfio-pci 0015:01:00.0:    [12] TLP                    (First)
+>    vfio-pci 0015:01:00.0: AER:   TLP Header: 0x4a004010 0x00000040 0x01000000 0xffffffff
+>    pcieport 0015:00:00.0: AER: broadcast mmio_enabled message
+>    pcieport 0015:00:00.0: AER: broadcast resume message
+>    pcieport 0015:00:00.0: AER: device recovery successful
+>    pcieport 0015:00:00.0: EDR: DPC port successfully recovered
+>    pcieport 0015:00:00.0: EDR: Status for 0015:00:00.0: 0x80
+>
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 > ---
-> V3: Make it a nested for() loop
->     Get rid of the code in macro parameters - Linus
->     Provide sized variants - Mathieu
-> V2: Remove the shady wrappers around the opening and use scopes with automatic cleanup
-> ---
->  include/linux/uaccess.h |  197 ++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 197 insertions(+)
-> 
-> --- a/include/linux/uaccess.h
-> +++ b/include/linux/uaccess.h
-> @@ -2,6 +2,7 @@
->  #ifndef __LINUX_UACCESS_H__
->  #define __LINUX_UACCESS_H__
->  
-> +#include <linux/cleanup.h>
->  #include <linux/fault-inject-usercopy.h>
->  #include <linux/instrumented.h>
->  #include <linux/minmax.h>
-> @@ -35,9 +36,17 @@
->  
->  #ifdef masked_user_access_begin
->   #define can_do_masked_user_access() 1
-> +# ifndef masked_user_write_access_begin
-> +#  define masked_user_write_access_begin masked_user_access_begin
-> +# endif
-> +# ifndef masked_user_read_access_begin
-> +#  define masked_user_read_access_begin masked_user_access_begin
-> +#endif
->  #else
->   #define can_do_masked_user_access() 0
->   #define masked_user_access_begin(src) NULL
-> + #define masked_user_read_access_begin(src) NULL
-> + #define masked_user_write_access_begin(src) NULL
->   #define mask_user_address(src) (src)
->  #endif
->  
-> @@ -633,6 +642,194 @@ static inline void user_access_restore(u
->  #define user_read_access_end user_access_end
->  #endif
->  
-> +/* Define RW variant so the below _mode macro expansion works */
-> +#define masked_user_rw_access_begin(u)	masked_user_access_begin(u)
-> +#define user_rw_access_begin(u, s)	user_access_begin(u, s)
-> +#define user_rw_access_end()		user_access_end()
-> +
-> +/* Scoped user access */
-> +#define USER_ACCESS_GUARD(_mode)					\
-> +static __always_inline void __user *					\
-> +class_masked_user_##_mode##_begin(void __user *ptr)			\
-> +{									\
-> +	return ptr;							\
-> +}									\
-> +									\
-> +static __always_inline void						\
-> +class_masked_user_##_mode##_end(void __user *ptr)			\
-> +{									\
-> +	user_##_mode##_access_end();					\
-> +}									\
-> +									\
-> +DEFINE_CLASS(masked_user_ ##_mode## _access, void __user *,		\
-> +	     class_masked_user_##_mode##_end(_T),			\
-> +	     class_masked_user_##_mode##_begin(ptr), void __user *ptr)	\
-> +									\
-> +static __always_inline class_masked_user_##_mode##_access_t		\
-> +class_masked_user_##_mode##_access_ptr(void __user *scope)		\
-> +{									\
-> +	return scope;							\
-> +}
-> +
-> +USER_ACCESS_GUARD(read)
-> +USER_ACCESS_GUARD(write)
-> +USER_ACCESS_GUARD(rw)
-> +#undef USER_ACCESS_GUARD
-> +
-> +/**
-> + * __scoped_user_access_begin - Start the masked user access
-> + * @_mode:	The mode of the access class (read, write, rw)
-> + * @_uptr:	The pointer to access user space memory
-> + * @_size:	Size of the access
-> + * @_elbl:	Error label to goto when the access region is rejected.
-> + *
-> + * Internal helper for __scoped_masked_user_access(). Don't use directly
-> + */
-> +#define __scoped_user_access_begin(_mode, _uptr, _size, _elbl)		\
-> +({									\
-> +	typeof((_uptr)) ____ret;					\
-> +									\
-> +	if (can_do_masked_user_access()) {				\
-> +		____ret = masked_user_##_mode##_access_begin((_uptr));	\
-> +	} else {							\
-> +		____ret = _uptr;					\
-> +		if (!user_##_mode##_access_begin(_uptr, (_size)))	\
-> +			goto _elbl;					\
-> +	}								\
-> +	____ret;							\
-> +})
-> +
-> +/**
-> + * __scoped_masked_user_access - Open a scope for masked user access
-> + * @_mode:	The mode of the access class (read, write, rw)
-> + * @_uptr:	The pointer to access user space memory
-> + * @_size:	Size of the access
-> + * @_elbl:	Error label to goto when the access region is rejected. It
-> + *		must be placed outside the scope.
-> + *
-> + * If the user access function inside the scope requires a fault label, it
-> + * can use @_elvl or a difference label outside the scope, which requires
-> + * that user access which is implemented with ASM GOTO has been properly
-> + * wrapped. See unsafe_get_user() for reference.
-> + *
-> + *	scoped_masked_user_rw_access(ptr, efault) {
-> + *		unsafe_get_user(rval, &ptr->rval, efault);
-> + *		unsafe_put_user(wval, &ptr->wval, efault);
-> + *	}
-> + *	return 0;
-> + *  efault:
-> + *	return -EFAULT;
-> + *
-> + * The scope is internally implemented as a autoterminating nested for()
-> + * loop, which can be left with 'return', 'break' and 'goto' at any
-> + * point.
-> + *
-> + * When the scope is left user_##@_mode##_access_end() is automatically
-> + * invoked.
-> + *
-> + * When the architecture supports masked user access and the access region
-> + * which is determined by @_uptr and @_size is not a valid user space
-> + * address, i.e. < TASK_SIZE, the scope sets the pointer to a faulting user
-> + * space address and does not terminate early. This optimizes for the good
-> + * case and lets the performance uncritical bad case go through the fault.
-> + *
-> + * The eventual modification of the pointer is limited to the scope.
-> + * Outside of the scope the original pointer value is unmodified, so that
-> + * the original pointer value is available for diagnostic purposes in an
-> + * out of scope fault path.
-> + *
-> + * Nesting scoped masked user access into a masked user access scope is
-> + * invalid and fails the build. Nesting into other guards, e.g. pagefault
-> + * is safe.
-> + *
-> + * Don't use directly. Use the scoped_masked_user_$MODE_access() instead.
-> +*/
-> +#define __scoped_masked_user_access(_mode, _uptr, _size, _elbl)					\
-> +for (bool ____stop = false; !____stop; ____stop = true)						\
-> +	for (typeof((_uptr)) _tmpptr = __scoped_user_access_begin(_mode, _uptr, _size, _elbl);	\
+>   drivers/pci/pci.h      |  4 +++-
+>   drivers/pci/pcie/aer.c | 18 +++++++++++-------
+>   drivers/pci/pcie/dpc.c |  2 +-
+>   drivers/pci/pcie/err.c | 11 +++++++++++
+>   4 files changed, 26 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index 6b0c55bed15b..3eccef2d25a3 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -739,8 +739,10 @@ struct aer_err_info {
+>   	struct pcie_tlp_log tlp;	/* TLP Header */
+>   };
+>   
+> -int aer_get_device_error_info(struct aer_err_info *info, int i);
+> +int aer_get_device_error_info(struct aer_err_info *info, int i,
+> +			      bool link_healthy);
+>   void aer_print_error(struct aer_err_info *info, int i);
+> +int aer_add_error_device(struct aer_err_info *e_info, struct pci_dev *dev);
+>   
+>   int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
+>   		      unsigned int tlp_len, bool flit,
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 0b5ed4722ac3..aaea9902cbb7 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -978,7 +978,7 @@ EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
+>    * @e_info: pointer to error info
+>    * @dev: pointer to pci_dev to be added
+>    */
+> -static int add_error_device(struct aer_err_info *e_info, struct pci_dev *dev)
+> +int aer_add_error_device(struct aer_err_info *e_info, struct pci_dev *dev)
 
-Can you use 'auto' instead of typeof() ?
+I don't think you need this rename.
 
-> +	     !____stop; ____stop = true)							\
-> +		for (CLASS(masked_user_##_mode##_access, scope) (_tmpptr); !____stop;		\
-> +		     ____stop = true)					\
-> +			/* Force modified pointer usage within the scope */			\
-> +			for (const typeof((_uptr)) _uptr = _tmpptr; !____stop; ____stop = true)	\
+>   {
+>   	int i = e_info->error_dev_num;
+>   
+> @@ -1068,7 +1068,7 @@ static int find_device_iter(struct pci_dev *dev, void *data)
+>   
+>   	if (is_error_source(dev, e_info)) {
+>   		/* List this device */
+> -		if (add_error_device(e_info, dev)) {
+> +		if (aer_add_error_device(e_info, dev)) {
+>   			/* We cannot handle more... Stop iteration */
+>   			pci_err(dev, "Exceeded max supported (%d) devices with errors logged\n",
+>   				AER_MAX_MULTI_ERR_DEVICES);
+> @@ -1382,12 +1382,14 @@ EXPORT_SYMBOL_GPL(aer_recover_queue);
+>    * aer_get_device_error_info - read error status from dev and store it to info
+>    * @info: pointer to structure to store the error record
+>    * @i: index into info->dev[]
+> + * @link_healthy: link is healthy or not
+>    *
+>    * Return: 1 on success, 0 on error.
+>    *
+>    * Note that @info is reused among all error devices. Clear fields properly.
+>    */
+> -int aer_get_device_error_info(struct aer_err_info *info, int i)
+> +int aer_get_device_error_info(struct aer_err_info *info, int i,
+> +			      bool link_healthy)
+>   {
+>   	struct pci_dev *dev;
+>   	int type, aer;
+> @@ -1415,10 +1417,12 @@ int aer_get_device_error_info(struct aer_err_info *info, int i)
+>   			&info->mask);
+>   		if (!(info->status & ~info->mask))
+>   			return 0;
+> +		info->level = KERN_WARNING;
 
-gcc 15.1 also seems to support 'const auto _uptr = _tmpptr;'
+I recommend setting this when initializing the info->level at the caller end (to match
+other callers)
 
-	David
+>   	} else if (type == PCI_EXP_TYPE_ROOT_PORT ||
+>   		   type == PCI_EXP_TYPE_RC_EC ||
+>   		   type == PCI_EXP_TYPE_DOWNSTREAM ||
+> -		   info->severity == AER_NONFATAL) {
+> +		   info->severity == AER_NONFATAL ||
+> +		   (info->severity == AER_FATAL && link_healthy)) {
+>   
+>   		/* Link is still healthy for IO reads */
+>   		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
+> @@ -1427,7 +1431,7 @@ int aer_get_device_error_info(struct aer_err_info *info, int i)
+>   			&info->mask);
+>   		if (!(info->status & ~info->mask))
+>   			return 0;
+> -
+> +		info->level = KERN_ERR;
+>   		/* Get First Error Pointer */
+>   		pci_read_config_dword(dev, aer + PCI_ERR_CAP, &aercc);
+>   		info->first_error = PCI_ERR_CAP_FEP(aercc);
+> @@ -1451,11 +1455,11 @@ static inline void aer_process_err_devices(struct aer_err_info *e_info)
+>   
+>   	/* Report all before handling them, to not lose records by reset etc. */
+>   	for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
+> -		if (aer_get_device_error_info(e_info, i))
+> +		if (aer_get_device_error_info(e_info, i, false))
+>   			aer_print_error(e_info, i);
+>   	}
+>   	for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
+> -		if (aer_get_device_error_info(e_info, i))
+> +		if (aer_get_device_error_info(e_info, i, false))
+>   			handle_error_source(e_info->dev[i], e_info);
+>   	}
+>   }
+> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+> index f6069f621683..21c4e8371279 100644
+> --- a/drivers/pci/pcie/dpc.c
+> +++ b/drivers/pci/pcie/dpc.c
+> @@ -284,7 +284,7 @@ struct pci_dev *dpc_process_error(struct pci_dev *pdev)
+>   		pci_warn(pdev, "containment event, status:%#06x: unmasked uncorrectable error detected\n",
+>   			 status);
+>   		if (dpc_get_aer_uncorrect_severity(pdev, &info) &&
+> -		    aer_get_device_error_info(&info, 0)) {
+> +		    aer_get_device_error_info(&info, 0, false)) {
+>   			aer_print_error(&info, 0);
+>   			pci_aer_clear_nonfatal_status(pdev);
+>   			pci_aer_clear_fatal_status(pdev);
+> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+> index bebe4bc111d7..4e65eac809d1 100644
+> --- a/drivers/pci/pcie/err.c
+> +++ b/drivers/pci/pcie/err.c
+> @@ -215,6 +215,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>   	struct pci_dev *bridge;
+>   	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
+>   	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
+> +	struct aer_err_info info;
+>   
+>   	/*
+>   	 * If the error was detected by a Root Port, Downstream Port, RCEC,
+> @@ -253,6 +254,16 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>   			pci_warn(bridge, "subordinate device reset failed\n");
+>   			goto failed;
+>   		}
+> +
+> +		/* Link recovered, report fatal errors of RCiEP or EP */
+> +		if (state == pci_channel_io_frozen &&
+> +		    (type == PCI_EXP_TYPE_ENDPOINT || type == PCI_EXP_TYPE_RC_END)) {
+> +			aer_add_error_device(&info, dev);
+> +			info.severity = AER_FATAL;
+info.level = KERN_ERR ?
+> +			if (aer_get_device_error_info(&info, 0, true))
+> +				aer_print_error(&info, 0);
+> +			pci_dev_put(dev);
 
-> +				if (1)
-> +
-> +/**
-> + * scoped_masked_user_read_access_size - Start a scoped user read access with given size
-> + * @_usrc:	Pointer to the user space address to read from
-> + * @_size:	Size of the access starting from @_usrc
-> + * @_elbl:	Error label to goto when the access region is rejected.
-> + *
-> + * For further information see __scoped_masked_user_access() above.
-> + */
-> +#define scoped_masked_user_read_access_size(_usrc, _size, _elbl)		\
-> +	__scoped_masked_user_access(read, (_usrc), (_size), _elbl)
-> +
-> +/**
-> + * scoped_masked_user_read_access - Start a scoped user read access
-> + * @_usrc:	Pointer to the user space address to read from
-> + * @_elbl:	Error label to goto when the access region is rejected.
-> + *
-> + * The size of the access starting from @_usrc is determined via sizeof(*@_usrc)).
-> + *
-> + * For further information see __scoped_masked_user_access() above.
-> + */
-> +#define scoped_masked_user_read_access(_usrc, _elbl)				\
-> +	scoped_masked_user_read_access_size((_usrc), sizeof(*(_usrc)), _elbl)
-> +
-> +/**
-> + * scoped_masked_user_read_end - End a scoped user read access
-> + *
-> + * Ends the scope opened with scoped_masked_user_read_access[_size]()
-> + */
-> +#define scoped_masked_user_read_end()	__scoped_masked_user_end()
-> +
-> +/**
-> + * scoped_masked_user_write_access_size - Start a scoped user write access with given size
-> + * @_udst:	Pointer to the user space address to write to
-> + * @_size:	Size of the access starting from @_udst
-> + * @_elbl:	Error label to goto when the access region is rejected.
-> + *
-> + * For further information see __scoped_masked_user_access() above.
-> + */
-> +#define scoped_masked_user_write_access_size(_udst, _size, _elbl)		\
-> +	__scoped_masked_user_access(write, (_udst),  (_size), _elbl)
-> +
-> +/**
-> + * scoped_masked_user_write_access - Start a scoped user write access
-> + * @_udst:	Pointer to the user space address to write to
-> + * @_elbl:	Error label to goto when the access region is rejected.
-> + *
-> + * The size of the access starting from @_udst is determined via sizeof(*@_udst)).
-> + *
-> + * For further information see __scoped_masked_user_access() above.
-> + */
-> +#define scoped_masked_user_write_access(_udst, _elbl)				\
-> +	scoped_masked_user_write_access_size((_udst), sizeof(*(_udst)), _elbl)
-> +
-> +/**
-> + * scoped_masked_user_rw_access_size - Start a scoped user read/write access with given size
-> + * @_uptr	Pointer to the user space address to read from and write to
-> + * @_size:	Size of the access starting from @_uptr
-> + * @_elbl:	Error label to goto when the access region is rejected.
-> + *
-> + * For further information see __scoped_masked_user_access() above.
-> + */
-> +#define scoped_masked_user_rw_access_size(_uptr, _size, _elbl)			\
-> +	__scoped_masked_user_access(rw, (_uptr), (_size), _elbl)
-> +
-> +/**
-> + * scoped_masked_user_rw_access - Start a scoped user read/write access
-> + * @_uptr	Pointer to the user space address to read from and write to
-> + * @_elbl:	Error label to goto when the access region is rejected.
-> + *
-> + * The size of the access starting from @_uptr is determined via sizeof(*@_uptr)).
-> + *
-> + * For further information see __scoped_masked_user_access() above.
-> + */
-> +#define scoped_masked_user_rw_access(_uptr, _elbl)				\
-> +	scoped_masked_user_rw_access_size((_uptr), sizeof(*(_uptr)), _elbl)
-> +
->  #ifdef CONFIG_HARDENED_USERCOPY
->  void __noreturn usercopy_abort(const char *name, const char *detail,
->  			       bool to_user, unsigned long offset,
-> 
-> 
+Like Lukas mentioned, it needs a comment about why you need this.
 
+> +		}
+>   	}
+>   
+>   	if (status == PCI_ERS_RESULT_NEED_RESET) {
 
