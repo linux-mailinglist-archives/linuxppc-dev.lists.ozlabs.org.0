@@ -1,93 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-13096-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13097-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259B1BF699D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 15:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D569BF69A9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 15:00:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4crXSq4fw1z3dTf;
-	Tue, 21 Oct 2025 23:59:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4crXSs1wXYz3dVD;
+	Tue, 21 Oct 2025 23:59:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761051595;
-	cv=none; b=B1Q8qWqV+3gv0URiywpzJIX6TtE3O/+8/3wbtrIQ1MiCWlsaNT6XVkw9XXU6ELgtsnpWgeoJZqxRVCoeAdyi3XYEQnMedlIaicBeo/RlQQCSWI0t+HS2+mb9gWs6e7DHUs95MDuLPYVTCJCa1FP7llqVKgumSG88sJre2ZSa4vcebtn7yvaTkivdpg2aE85U7R+ouebFtK3KVYbSE7Pt79sAYQMuS50LYIf2k6NVB5PgQCJitAsC9xZ8EblmWhlLwaz/QJ112ejY8XjFoGQVGRkiH3lAwlwxjlHoK9OZqKfade4H7AC2yF8U7yWK3KwBDwfDcJ8yeMb9L/H5ajL1zQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761051597;
+	cv=none; b=fuZ9ig9RSMwZBoXDRugTAeOloqmGxLEdR6gc/ImqTlQ3GBzAJLJHNs4OLsBlvM2lE9PD4DHrT+jc2g8+e6LAIS4mrfX9sXWtkPoUaHCEikE5fg6RWzeWp0wmuFEMkqWtzPPxaEt/DOdViL0k9rofKXZlXpYdznXPsxKL7FZVx2aesLfv1RjJLD3zk+hExciHNxOmh0xdo6Kpno9NgHi6SdVmRM4ejT8G3mwjq+jwCryPgb0x4BfFMVV3OQ8sqGR76+y+JnLHtvupVXVq9cDcj4ahnLpQmS9XBiarMes4wtJuIRvWeS2VZklHPFwyy9vUh68ARdGtapioGG0Eu7lGOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761051595; c=relaxed/relaxed;
-	bh=z5VcU60xQeN7ydJcNuOrJoqdazEeOf9bmMF6YJ9dhbk=;
+	t=1761051597; c=relaxed/relaxed;
+	bh=Bd8gqizIzdxCBecoKAkM92GzGk5zRQnzgqcXQENTV8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=HIL6XRW2IGmv/UrLZR85W93HnEvnLOv7S8E4q9uLsX8sUbTtiwfHvEnqQaNq/aXPORORWTENr7BZZ0jm49mPSbHSH9lgkheneekcZHZkIpzrKwAuTxbW1qmPoWSgcN+2C6b3CqJPQjsI3gQwQxqtzB8Oh2hsSDiI/OsOueCmeUa0VtjOCCL/RnLvV3SnQPrcLgKqcZN5lB7wF9suAW1BEhW30o2NnDTIW+I4G9CmY006ZiM/5rYZc/8MuGJ/SsRlg1CiAEdzXYaiVCteySGRzURCBzMGHXYN3OqwlKCdfQsASoGB1vvvphJXuVvly9+yWrlx5a1xTdm6IQVPwk6q8g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vnwku5BP; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IzvnESS6; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:content-type; b=LDKXwodNN0vrGTNUm1+m66UQ956IZJEfGTzVCiffWta/r9nPR0ZFxtqiGO15E3RyVOiGjan3rNWaUCzhBXuZDs4vfWADSOYArR5MaCSsltEKSLhgI32IhMA93wfNdW2jNML7uSUqyDqbk0ecyOi9lMNEXZga+uBZP+ocWDENCTFw2S/Oxcj4agKOhRW5xrn7wq7A8mgiSok1wsuXmSR21bk7QoIpj/1tp0WfAZb7Uv8YL7a00JLXL7PcEweIAJWl9fOATjZpsjzSJId5woyIvj1UOCH4ktAM4wfinEabnXsb5GX2Agn8MTfdt5plEiweHVU9hCMqfGlDQeqa5QZrFQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YnBtzOsU; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YnBtzOsU; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vnwku5BP;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IzvnESS6;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YnBtzOsU;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YnBtzOsU;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4crXSp6NFrz3c5b
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 23:59:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4crXSr3YF6z3dVB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 23:59:56 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761051591;
+	s=mimecast20190719; t=1761051594;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=z5VcU60xQeN7ydJcNuOrJoqdazEeOf9bmMF6YJ9dhbk=;
-	b=Vnwku5BPKWOPAdq0Grdr+r2UexSBw6Sflmeiyh7zytJg4r8R5Djf56SszLrnjn8ni+cN5d
-	boFMUnDL3/8zbaH0OX5v++xMKAxUjHJ8wDVhMDI9awj6HY0KeZ+Typr3LnCW+fDP/pz6Wm
-	JeJspvjLFLGYmqF4ogjHWd1ZCLQCB8U=
+	bh=Bd8gqizIzdxCBecoKAkM92GzGk5zRQnzgqcXQENTV8k=;
+	b=YnBtzOsUNL6j2V6keTKnwsGEFk+t9hLZYGKYJ5twrWkqmW30ZxY4a9LLlhtpjkcuAsa/r6
+	saDvrojl81moLDcqoszIQuQ1gajL8KNGBSurE6TbQcAAG6diTkm8z3i8ySKbu/5t0+lbdn
+	xYF3NcEJIBP1JmFWtCNR12KhevAm8TU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761051592;
+	s=mimecast20190719; t=1761051594;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=z5VcU60xQeN7ydJcNuOrJoqdazEeOf9bmMF6YJ9dhbk=;
-	b=IzvnESS6Kx1lMzaZRH9+2t7BolbzghkMeIvymZNTxKyapNa4ZM8wRFNDGjoXDxSxsNzP3g
-	mVj2B90rXzUDiu90ONC4uyI1qw82dkkavcPzZdkHMJjTRt8MV14pB030sppawsPUmixsqS
-	Q3DrkoGewjIMQfIH5Qw7dcRcq75Ooas=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Bd8gqizIzdxCBecoKAkM92GzGk5zRQnzgqcXQENTV8k=;
+	b=YnBtzOsUNL6j2V6keTKnwsGEFk+t9hLZYGKYJ5twrWkqmW30ZxY4a9LLlhtpjkcuAsa/r6
+	saDvrojl81moLDcqoszIQuQ1gajL8KNGBSurE6TbQcAAG6diTkm8z3i8ySKbu/5t0+lbdn
+	xYF3NcEJIBP1JmFWtCNR12KhevAm8TU=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-ipq15a4HP4KerjwV2aKfsw-1; Tue, 21 Oct 2025 08:59:49 -0400
-X-MC-Unique: ipq15a4HP4KerjwV2aKfsw-1
-X-Mimecast-MFC-AGG-ID: ipq15a4HP4KerjwV2aKfsw_1761051588
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-47107fcb257so77727225e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 05:59:49 -0700 (PDT)
+ us-mta-356-QB_lx8DNPYGKgPEe1Qd9AQ-1; Tue, 21 Oct 2025 08:59:51 -0400
+X-MC-Unique: QB_lx8DNPYGKgPEe1Qd9AQ-1
+X-Mimecast-MFC-AGG-ID: QB_lx8DNPYGKgPEe1Qd9AQ_1761051591
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-471001b980eso34246345e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 05:59:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761051588; x=1761656388;
+        d=1e100.net; s=20230601; t=1761051590; x=1761656390;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=z5VcU60xQeN7ydJcNuOrJoqdazEeOf9bmMF6YJ9dhbk=;
-        b=CQKJf9OXGkCmycf5OTMNYanJX81BLaL7HQQrrnHzxhZxR5V6Axip+bK9tEgt+/qitN
-         BriwhahBjrP4dYjiWwn0UFqth4ARPRXQEjyYqZ8Rd2aEVZ7sVFHukDQd9ULJHMpaNrsj
-         s3FR96u5FKe5WLEVr1kmrN9MweGcVMmD1lH0ghcHWn6DoOiVWptWNftR+9XAdZRwVwmZ
-         wtu/Q5CFJx3QDv6Tp9fz5lZLTKSjuajozi9+0yzqKPYGnbvrz58FN62hw0sBWwrvnIeD
-         s5iwGSWjSF1030WGWj2uoET86TfqJSg+3crqE/+kvTD8yokiSSqQ9yQNDO2E7L+B/KQ4
-         52OA==
-X-Forwarded-Encrypted: i=1; AJvYcCUoIAaler7utuTSWSGvSvZQPCB+jYKY5BG6hTtStM0uFz2a6fZ6TLZDUe6GRrr/YuWNMV39bO6sPh0+wZU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwC6e4qH+njkUjei493IR7d3FD/4irQiY8vdFF14vmQvB0QFetq
-	UyGolbrLI9ZurE12cuEszoWVnDHeALuYvS3Qz3d7UXZ5fBBbnqlgFyCAkq78PVJpSDmgZy3SNwD
-	OgcyWibAXB4+pNGEv4Scnmc9M6W0Qd26UnbjC1QsbkwMiUZswdkQl+A4Hz0jkw9XQhic=
-X-Gm-Gg: ASbGncui2OUcNiuv+rNo8AD9AVHSwfcwsCti9ngn9nBUu+RM2z168p7m78clSVBCT8x
-	0C+l1W/ndpRYjdkD0WWKz2GjcsDsVIjtSATlFwfc+qG9AgO3n3WVJHEi3X4vMjHI2H7Z7Gq7h0Y
-	M+xpHjY53dcxzTe9hbINyIdu2LqpcjM8oGwU9Q8w+M5/UiFgSMmLsV2C+sK4rbE69PsQbWnhSzw
-	D998Dz6/dBulha2MNK84bwasrJMU++jiHtHsRpWKehCAxcYByRIZPYi5WIeKHTYBHXDNgSrCxqk
-	K0nRTrJo73VHS4JUpA18Tfa0yO7/BqVtrNrK5gloFvhGW98kLBX6kDtvJuKZFnn0tJefEjq1LOo
-	fG55kpf5A3b6Evd17KdzZZJRTSdMt+wcIJUUNziWAw3+jCO45qXafDU668Vne
-X-Received: by 2002:a05:600c:45ca:b0:46e:59dd:1b4d with SMTP id 5b1f17b1804b1-471178a4bb0mr123277975e9.16.1761051588088;
-        Tue, 21 Oct 2025 05:59:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHERIP76djccuxwEVDdc3jxl3cHQS1Z1VLDzbGDsvVWwgXU4e20hoqSfb9F5zq9YX0z7BLvwQ==
-X-Received: by 2002:a05:600c:45ca:b0:46e:59dd:1b4d with SMTP id 5b1f17b1804b1-471178a4bb0mr123277565e9.16.1761051587656;
-        Tue, 21 Oct 2025 05:59:47 -0700 (PDT)
+        bh=Bd8gqizIzdxCBecoKAkM92GzGk5zRQnzgqcXQENTV8k=;
+        b=M/uNe2b7bGRFHVGbM4wFIbAvu8ojQkaJAXBpIlhjYZdWMlTtP/TPIfgO1LbzdLgI4o
+         ek4Hta9v2V+yInUMSlNOsmZBXwYFV2k3Rm+5TvD/IsF4haEZrYTJrkMw5Y7Y4vf/xPxB
+         BeMEZLKRuUWlu2nQYSsvZhr8uTOFx8esz2IObOaX2TP+3EonQAdlSX7iFCBKOpeYi0Oy
+         1jE3EGDbUcYpoxK/ojr3ty1qelXhXAomkTc5AjbumDVNYTYw5KpxdnJw8l+617Ox07nG
+         Sat4bNqBD5FFzgebBU4NtN+TBcfuDZFyPZvKDfUo+FOtKbNomR+/BO7PdVeF11rDR/GO
+         V5hw==
+X-Forwarded-Encrypted: i=1; AJvYcCVCFlyRs9JpxskQS6uI43yHu3dpMjT7w5NByDj/oQvzrKyGQQA9S3pvIFqumL7NpjfO1FC1Lh2R4MikB4Y=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzAcnLHZVm2KBgbmjJiStVoNTOa7WtNAkO7HsBt05Xm0EnU37/e
+	9Wri+YrY19AvQGB1dPqWGiKAAes7Su5bZpNIyFASb6j1awyc52twN623KoBu8XRjZ5r1oh0Wuq/
+	jB5ORI9B1jW+jh2u8UGOSfz67IfoCsJnzscdqVvmmTKVN0tvnfogGMyFKr1aqVYcQdX4=
+X-Gm-Gg: ASbGnctfT6pw0dNXdka7ElgN6I3RNQW5Os/TSF9tgE3cTMskBs6JqGVy1G9nIzVRCnt
+	MxHb8AkAwChEBNWTwyh8f1I6giLSJpWB/hOogifyqyw7rFHHvh9HdjS2S9H/3eEEdH/pZ30PU80
+	uq9PvowPMYIF6El9LZpwE1CjKrRD1rQT+DlNTG04GHTmjs8nvrtD/wsKTPOoOn4YR2lFiv7jN2S
+	k2ob9dr16M79sMgXcL0qFGE2DVSk0R4VfYkc0BeMBbtbXSrPCd7i5Ns81GFEuCy372/uk4SlMEe
+	/6pjAsdAKmfKdhOFYiXBG2eWlJ6KbHhD+U4zcYrgHs+wRFjFnfes/6qx0d0ePIRbIIGkLbwNuS8
+	jZXeCAee9jGpfX7jXNkJDLebLX7WI77OmTP9NCCQaEcAQiCvKLFeXvOdpCiNW
+X-Received: by 2002:a05:600c:3e17:b0:46f:c576:189a with SMTP id 5b1f17b1804b1-4711791c3c3mr130359865e9.29.1761051590563;
+        Tue, 21 Oct 2025 05:59:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEdxh7ZKT7824WXcxtADh1plje6WLOr4tApQ2cZuBwyOs4GdyEk8i7jKfPxnpNj/2+0EbpvXg==
+X-Received: by 2002:a05:600c:3e17:b0:46f:c576:189a with SMTP id 5b1f17b1804b1-4711791c3c3mr130359575e9.29.1761051590107;
+        Tue, 21 Oct 2025 05:59:50 -0700 (PDT)
 Received: from localhost (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-471556e17afsm190432085e9.17.2025.10.21.05.59.46
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-47494aa0336sm18536345e9.1.2025.10.21.05.59.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 05:59:47 -0700 (PDT)
+        Tue, 21 Oct 2025 05:59:49 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -117,9 +117,9 @@ Cc: linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 07/23] mm/balloon_compaction: use a device-independent balloon (list) lock
-Date: Tue, 21 Oct 2025 14:59:12 +0200
-Message-ID: <20251021125929.377194-8-david@redhat.com>
+Subject: [PATCH v1 08/23] mm/balloon_compaction: remove dependency on page lock
+Date: Tue, 21 Oct 2025 14:59:13 +0200
+Message-ID: <20251021125929.377194-9-david@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021125929.377194-1-david@redhat.com>
 References: <20251021125929.377194-1-david@redhat.com>
@@ -137,7 +137,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: kunDaFXt224JNhL3Gx6TcMkvOBYi7599RNFNcUz3OEA_1761051588
+X-Mimecast-MFC-PROC-ID: dOmheDNLxPpklHF7rOTXz5WXRB5aXLmX9llMByJDt9E_1761051591
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
@@ -147,192 +147,186 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-In order to remove the dependency on the page lock for balloon
-pages, we need a lock that is independent of the page.
+Let's stop using the page lock in balloon code and instead use only the
+balloon_device_lock.
 
-It's crucial that we can handle the scenario where balloon deflation
-(clearing page->private) can race with page isolation (using
-page->private to obtain the balloon_dev_info where the lock currently
-resides).
+As soon as we set the PG_movable_ops flag, we might now get isolation
+callbacks for that page as we are no longer holding the page lock. In
+there, we'll simply synchronize using the balloon_device_lock.
 
-The current lock in balloon_dev_info is therefore not suitable.
+So in balloon_page_isolate() lookup the balloon_dev_info through
+page->private under balloon_device_lock.
 
-Fortunately, we never really have more than a single balloon device
-per VM, so we can just keep it simple and use a static lock to protect
-all balloon devices.
+It's crucial that we update page->private under the balloon_device_lock,
+so the isolation callback can properly deal with concurrent deflation.
 
-Based on this change we will remove the dependency on the page lock
-next.
+Consequently, make sure that balloon_page_finalize() is called under
+balloon_device_lock as we remove a page from the list and clear
+page->private. balloon_page_insert() is already called with the
+balloon_device_lock held.
+
+Note that the core will still lock the pages, for example in
+isolate_movable_ops_page(). The lock is there still relevant for
+handling the PageMovableOpsIsolated flag, but that can be later changed
+to use an atomic test-and-set instead, or moved into the movable_ops
+backends.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/balloon_compaction.h |  6 ++---
- mm/balloon_compaction.c            | 36 +++++++++++++++++-------------
- 2 files changed, 23 insertions(+), 19 deletions(-)
+ include/linux/balloon_compaction.h | 27 +++++++++++----------
+ mm/balloon_compaction.c            | 38 ++++++++++--------------------
+ 2 files changed, 26 insertions(+), 39 deletions(-)
 
 diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon_compaction.h
-index 3109d3c43d306..e2d9eb40e1fbb 100644
+index e2d9eb40e1fbb..ad594af6ed100 100644
 --- a/include/linux/balloon_compaction.h
 +++ b/include/linux/balloon_compaction.h
-@@ -21,10 +21,10 @@
-  *   i. Setting the PG_movable_ops flag and page->private with the following
-  *	lock order
-  *	    +-page_lock(page);
-- *	      +--spin_lock_irq(&b_dev_info->pages_lock);
-+ *	      +--spin_lock_irq(&balloon_pages_lock);
+@@ -12,24 +12,26 @@
+  * is derived from the page type (PageOffline()) combined with the
+  * PG_movable_ops flag (PageMovableOps()).
+  *
++ * Once the page type and the PG_movable_ops are set, migration code
++ * can initiate page isolation by invoking the
++ * movable_operations()->isolate_page() callback
++ *
++ * As long as page->private is set, the page is either on the balloon list
++ * or isolated for migration. If page->private is not set, the page is
++ * either still getting inflated, or was deflated to be freed by the balloon
++ * driver soon. Isolation is impossible in both cases.
++ *
+  * As the page isolation scanning step a compaction thread does is a lockless
+  * procedure (from a page standpoint), it might bring some racy situations while
+  * performing balloon page compaction. In order to sort out these racy scenarios
+  * and safely perform balloon's page compaction and migration we must, always,
+  * ensure following these simple rules:
+  *
+- *   i. Setting the PG_movable_ops flag and page->private with the following
+- *	lock order
+- *	    +-page_lock(page);
+- *	      +--spin_lock_irq(&balloon_pages_lock);
++ *   i. Inflation/deflation must set/clear page->private under the
++ *      balloon_pages_lock
   *
   *  ii. isolation or dequeueing procedure must remove the page from balloon
-- *      device page list under b_dev_info->pages_lock.
-+ *      device page list under &balloon_pages_lock
+- *      device page list under &balloon_pages_lock
+- *
+- * The functions provided by this interface are placed to help on coping with
+- * the aforementioned balloon page corner case, as well as to ensure the simple
+- * set of exposed rules are satisfied while we are dealing with balloon pages
+- * compaction / migration.
++ *      device page list under balloon_pages_lock
   *
-  * The functions provided by this interface are placed to help on coping with
-  * the aforementioned balloon page corner case, as well as to ensure the simple
-@@ -52,7 +52,6 @@
+  * Copyright (C) 2012, Red Hat, Inc.  Rafael Aquini <aquini@redhat.com>
   */
- struct balloon_dev_info {
- 	unsigned long isolated_pages;	/* # of isolated pages for migration */
--	spinlock_t pages_lock;		/* Protection to pages list */
- 	struct list_head pages;		/* Pages enqueued & handled to Host */
- 	int (*migratepage)(struct balloon_dev_info *, struct page *newpage,
- 			struct page *page, enum migrate_mode mode);
-@@ -71,7 +70,6 @@ extern size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
- static inline void balloon_devinfo_init(struct balloon_dev_info *balloon)
+@@ -93,8 +95,7 @@ static inline struct balloon_dev_info *balloon_page_device(struct page *page)
+  * @balloon : pointer to balloon device
+  * @page    : page to be assigned as a 'balloon page'
+  *
+- * Caller must ensure the page is locked and the spin_lock protecting balloon
+- * pages list is held before inserting a page into the balloon device.
++ * Caller must ensure the balloon_pages_lock is held.
+  */
+ static inline void balloon_page_insert(struct balloon_dev_info *balloon,
+ 				       struct page *page)
+@@ -119,7 +120,7 @@ static inline gfp_t balloon_mapping_gfp_mask(void)
+  *			   balloon list for release to the page allocator
+  * @page: page to be released to the page allocator
+  *
+- * Caller must ensure that the page is locked.
++ * Caller must ensure the balloon_pages_lock is held.
+  */
+ static inline void balloon_page_finalize(struct page *page)
  {
- 	balloon->isolated_pages = 0;
--	spin_lock_init(&balloon->pages_lock);
- 	INIT_LIST_HEAD(&balloon->pages);
- 	balloon->migratepage = NULL;
- 	balloon->adjust_managed_page_count = false;
 diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
-index fd9ec47cf4670..97e838795354d 100644
+index 97e838795354d..28ef0cb6b3bbc 100644
 --- a/mm/balloon_compaction.c
 +++ b/mm/balloon_compaction.c
-@@ -11,6 +11,12 @@
- #include <linux/export.h>
- #include <linux/balloon_compaction.h>
- 
-+/*
-+ * Lock protecting the balloon_dev_info of all devices. We don't really
-+ * expect more than one device.
-+ */
-+static DEFINE_SPINLOCK(balloon_pages_lock);
-+
+@@ -20,15 +20,7 @@ static DEFINE_SPINLOCK(balloon_pages_lock);
  static void balloon_page_enqueue_one(struct balloon_dev_info *b_dev_info,
  				     struct page *page)
  {
-@@ -47,13 +53,13 @@ size_t balloon_page_list_enqueue(struct balloon_dev_info *b_dev_info,
- 	unsigned long flags;
- 	size_t n_pages = 0;
- 
--	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
-+	spin_lock_irqsave(&balloon_pages_lock, flags);
- 	list_for_each_entry_safe(page, tmp, pages, lru) {
- 		list_del(&page->lru);
- 		balloon_page_enqueue_one(b_dev_info, page);
- 		n_pages++;
- 	}
--	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
-+	spin_unlock_irqrestore(&balloon_pages_lock, flags);
- 	return n_pages;
- }
- EXPORT_SYMBOL_GPL(balloon_page_list_enqueue);
-@@ -83,7 +89,7 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
- 	unsigned long flags;
- 	size_t n_pages = 0;
- 
--	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
-+	spin_lock_irqsave(&balloon_pages_lock, flags);
+-	/*
+-	 * Block others from accessing the 'page' when we get around to
+-	 * establishing additional references. We should be the only one
+-	 * holding a reference to the 'page' at this point. If we are not, then
+-	 * memory corruption is possible and we should stop execution.
+-	 */
+-	BUG_ON(!trylock_page(page));
+ 	balloon_page_insert(b_dev_info, page);
+-	unlock_page(page);
+ 	if (b_dev_info->adjust_managed_page_count)
+ 		adjust_managed_page_count(page, -1);
+ 	__count_vm_event(BALLOON_INFLATE);
+@@ -93,22 +85,12 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
  	list_for_each_entry_safe(page, tmp, &b_dev_info->pages, lru) {
  		if (n_pages == n_req_pages)
  			break;
-@@ -106,7 +112,7 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
+-
+-		/*
+-		 * Block others from accessing the 'page' while we get around to
+-		 * establishing additional references and preparing the 'page'
+-		 * to be released by the balloon driver.
+-		 */
+-		if (!trylock_page(page))
+-			continue;
+-
+ 		list_del(&page->lru);
+ 		if (b_dev_info->adjust_managed_page_count)
+ 			adjust_managed_page_count(page, 1);
+ 		balloon_page_finalize(page);
+ 		__count_vm_event(BALLOON_DEFLATE);
+ 		list_add(&page->lru, pages);
+-		unlock_page(page);
  		dec_node_page_state(page, NR_BALLOON_PAGES);
  		n_pages++;
  	}
--	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
-+	spin_unlock_irqrestore(&balloon_pages_lock, flags);
+@@ -213,13 +195,19 @@ EXPORT_SYMBOL_GPL(balloon_page_dequeue);
+ static bool balloon_page_isolate(struct page *page, isolate_mode_t mode)
  
- 	return n_pages;
- }
-@@ -149,9 +155,9 @@ void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
  {
+-	struct balloon_dev_info *b_dev_info = balloon_page_device(page);
++	struct balloon_dev_info *b_dev_info;
  	unsigned long flags;
  
--	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
-+	spin_lock_irqsave(&balloon_pages_lock, flags);
- 	balloon_page_enqueue_one(b_dev_info, page);
--	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
-+	spin_unlock_irqrestore(&balloon_pages_lock, flags);
- }
- EXPORT_SYMBOL_GPL(balloon_page_enqueue);
- 
-@@ -191,11 +197,11 @@ struct page *balloon_page_dequeue(struct balloon_dev_info *b_dev_info)
- 		 * BUG() here, otherwise the balloon driver may get stuck in
- 		 * an infinite loop while attempting to release all its pages.
- 		 */
--		spin_lock_irqsave(&b_dev_info->pages_lock, flags);
-+		spin_lock_irqsave(&balloon_pages_lock, flags);
- 		if (unlikely(list_empty(&b_dev_info->pages) &&
- 			     !b_dev_info->isolated_pages))
- 			BUG();
--		spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
+-	if (!b_dev_info)
+-		return false;
+-
+ 	spin_lock_irqsave(&balloon_pages_lock, flags);
++	b_dev_info = balloon_page_device(page);
++	if (!b_dev_info) {
++		/*
++		 * The page already got deflated and removed from the
++		 * balloon list.
++		 */
 +		spin_unlock_irqrestore(&balloon_pages_lock, flags);
- 		return NULL;
- 	}
- 	return list_first_entry(&pages, struct page, lru);
-@@ -213,10 +219,10 @@ static bool balloon_page_isolate(struct page *page, isolate_mode_t mode)
- 	if (!b_dev_info)
- 		return false;
- 
--	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
-+	spin_lock_irqsave(&balloon_pages_lock, flags);
++		return false;
++	}
  	list_del(&page->lru);
  	b_dev_info->isolated_pages++;
--	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
-+	spin_unlock_irqrestore(&balloon_pages_lock, flags);
+ 	spin_unlock_irqrestore(&balloon_pages_lock, flags);
+@@ -249,9 +237,6 @@ static int balloon_page_migrate(struct page *newpage, struct page *page,
+ 	unsigned long flags;
+ 	int rc;
  
- 	return true;
- }
-@@ -230,10 +236,10 @@ static void balloon_page_putback(struct page *page)
+-	VM_BUG_ON_PAGE(!PageLocked(page), page);
+-	VM_BUG_ON_PAGE(!PageLocked(newpage), newpage);
+-
+ 	/* Isolated balloon pages cannot get deflated. */
  	if (WARN_ON_ONCE(!b_dev_info))
- 		return;
- 
--	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
-+	spin_lock_irqsave(&balloon_pages_lock, flags);
- 	list_add(&page->lru, &b_dev_info->pages);
- 	b_dev_info->isolated_pages--;
--	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
-+	spin_unlock_irqrestore(&balloon_pages_lock, flags);
- }
- 
- static int balloon_page_migrate(struct page *newpage, struct page *page,
-@@ -253,7 +259,7 @@ static int balloon_page_migrate(struct page *newpage, struct page *page,
- 	rc = b_dev_info->migratepage(b_dev_info, newpage, page, mode);
- 	switch (rc) {
- 	case 0:
--		spin_lock_irqsave(&b_dev_info->pages_lock, flags);
-+		spin_lock_irqsave(&balloon_pages_lock, flags);
- 
- 		/* Insert the new page into the balloon list. */
- 		get_page(newpage);
-@@ -272,7 +278,7 @@ static int balloon_page_migrate(struct page *newpage, struct page *page,
- 		}
- 		break;
- 	case -ENOENT:
--		spin_lock_irqsave(&b_dev_info->pages_lock, flags);
-+		spin_lock_irqsave(&balloon_pages_lock, flags);
- 
- 		/* Old page was deflated but new page not inflated. */
- 		__count_vm_event(BALLOON_DEFLATE);
-@@ -285,7 +291,7 @@ static int balloon_page_migrate(struct page *newpage, struct page *page,
+ 		return -EAGAIN;
+@@ -291,10 +276,11 @@ static int balloon_page_migrate(struct page *newpage, struct page *page,
  	}
  
  	b_dev_info->isolated_pages--;
--	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
-+	spin_unlock_irqrestore(&balloon_pages_lock, flags);
+-	spin_unlock_irqrestore(&balloon_pages_lock, flags);
  
  	/* Free the now-deflated page we isolated in balloon_page_isolate(). */
  	balloon_page_finalize(page);
++	spin_unlock_irqrestore(&balloon_pages_lock, flags);
++
+ 	put_page(page);
+ 
+ 	return 0;
 -- 
 2.51.0
 
