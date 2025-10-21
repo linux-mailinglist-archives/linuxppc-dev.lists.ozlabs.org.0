@@ -1,90 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-13084-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13085-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8ABCBF5352
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 10:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61432BF56FD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 11:10:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4crQDg007pz3020;
-	Tue, 21 Oct 2025 19:18:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4crRNQ75kKz3020;
+	Tue, 21 Oct 2025 20:10:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761034738;
-	cv=none; b=cAYbnlSTILIMEs0mkdj0JO8uFt/BdjG6EEQPB0WHv51QZOL8Kc/TupqNp46Pxey27FmSfQnD89WyZM1e3RNQbOraX5yw+SiFB4/RnFmAs6Q+fzQILoHop9tAPgc127Qlodl/P7XcI18qecyvXml6G/Hy3rM5M5YEOzuRp83gL4qyfokU/keqXjI0S04G8dVr1FJAR2TGaSZIRuO25ftDF80/ZEXgizPhGevxPEEtVBFlD8kP4eqgvE70l91PBGUyxjfrISC3UdoPTitTrC/CCsqlG0nvg3z7QCSzbtOzlSfEP1haJ31iM/XzRbzYyygR1ky7UXl3qOQeoBbq08IPDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761034738; c=relaxed/relaxed;
-	bh=L9fBm/Whek+136auQz9DyT244vveoKj6ZQ7dh5ArAbg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AhVcQlAHHqh7djsTRzR5TIEpah+c8A1f8ZM7l3hg6uM6GYWUIuxRCPZPVK0Fk2sC8qV9veCZJ6Hdo3KnwHv4jqOna2RY7tVxOXo4h7c3NHoPrV97jvEOUGyvkLsnJ5KVVSbX7755yA8rDaKa1EDZ6GAlu030QtZ8g3xgpEZdOwD016TJM0ha58PN2Pfs/T4xRnA5tndqsbwxukFLaJij8WA5q5Ka/cz3/6LZvp1FfDuSVKrBbklZ1wsR+Rp9CXkI0TZWZ6YvzDShp7X4nxDHz/2CNMid4+TYNIk862WSNiKynpZQt86iOqa/3jEKHN2YmW+mbzQtMiMwnVkhN3ZeXQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P1qcbKaQ; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vishalc@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c201::1" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761037846;
+	cv=pass; b=esBTfv+OGKflPwqsTzwTuhs9dCxCUWzj6lZwrgPXqkSJntyJq9W/uKSbXVEmRn7z7tzpGq2nH79jkxhZTWW23i/IRuCy4WAUPM/Y6XyMxIX6ol12xcOlfnbjsZFBXpF2wD4kfKRhAAwbthwIemlezqE1fV7EqhzDf0IK/klZQG4Tj72HPqRH3hWN2nihwWVAYygdYaKo2uMsKMxojptTSofSDK7Ww/pchk/HdYshOv/gdgw+44bkl0d0jCztEF+IF0MusF653RjbtlDK6s4ElvmtRjGIjm49HG8LwQbwYZ6FngGu6a5rZOgSNXAgT/NHsguqQh094GdEJxKVjSYZqw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1761037846; c=relaxed/relaxed;
+	bh=o97K3ocqKAgrqfZnOX6yUaE6TNef9f1AB8nxNU1ex64=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=hEo6lpOdmwPw/QCgOJjo1s3Py/8ODTXKlIlFF2mEMCiWSDDbJZJG4nJLabhkSn1hCk4HVy2XCoK3TnmHH1MfgWR/EU0ZJpfXVlkBQmZYmYVNO4TzA/YDs+eq27xAqaQ2BMT0ArKkCIRjeZma9FhZfSSizRRwCn9t5R1t7pRSDUCN3di/F+lpEDN1pV0bk/iL+VlbteJd0qFe6d91qSDcnumbyICwKNGD4naCP/VnOPNyRL+SlM96ljZIrMawylY2LEAJ3xbzzjtBDjnbnr6iyjsLngFcr/cHMmCnhHDWxY2ax9YOeiS2CJtTJaMfT7Rr9mVEjDFxNui62Sbef5X+vQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=YA7J5EnD; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c201::1; helo=am0pr83cu005.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P1qcbKaQ;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=YA7J5EnD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vishalc@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c201::1; helo=am0pr83cu005.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c201::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4crQDd21Bnz2yFq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 19:18:56 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59L0bOeV001179;
-	Tue, 21 Oct 2025 08:18:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=L9fBm/
-	Whek+136auQz9DyT244vveoKj6ZQ7dh5ArAbg=; b=P1qcbKaQ8uXHTxSPk5ISZ5
-	4zlMXuZkCNkBMa/lfDrCZi7wwseJyzambA/shqMej2li3c7tfhGc3G0VIY4kK9SE
-	uL/TK8Uab+6nLbQ+8DWGLSvdacU1Kpc8a2nZ0lfpxBYx1ZOtFv9LwxWblxDQCUbj
-	ZPtzMND51yL/kQshJmQGZOe5jZEy47lUzQtKzzvlC2QdPRLZcLjO05Ygs0km51Aw
-	Z0tL5G8y3A9LFQCHIXwZT5dqbZMv9+vZuV+pS5TkZYcTo6sC8i2JOweT/31skrM7
-	Tq38csvhH1QcXE6Epi6yBKoF6r9kQkN7IvXeKBtaGrHDl+YUoGAgiUNsSvwZ5dgw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33f5urg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Oct 2025 08:18:40 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59L8HP4m000378;
-	Tue, 21 Oct 2025 08:18:40 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33f5ur9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Oct 2025 08:18:40 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59L88ZDa024953;
-	Tue, 21 Oct 2025 08:18:39 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vpqjspwj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Oct 2025 08:18:38 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59L8Ib1x49873330
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Oct 2025 08:18:37 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0353820043;
-	Tue, 21 Oct 2025 08:18:37 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4D11520040;
-	Tue, 21 Oct 2025 08:18:34 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.39.24.196])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 21 Oct 2025 08:18:34 +0000 (GMT)
-Date: Tue, 21 Oct 2025 13:48:31 +0530
-From: Vishal Chourasia <vishalc@linux.ibm.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] powerpc/vmlinux.lds: Drop .interp description
-Message-ID: <aPdBpqhm3JHvKIWJ@linux.ibm.com>
-References: <20251018-ppc-fix-lld-interp-v1-1-a083de6dccc9@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4crRNP1gq2z2xlK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 20:10:44 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aYZFPZF6vD9Qa4XX8LtROgNI62CUB8NrahcCfW6rb3i2VziATTtLQyeDDeRJcCdNp4SM/kdNhbW+MlXoTSJV+2ASgMBdkcFpKvvzB3bbl3RbNuRokpu4lla1rNEqDkiHGIoFWBTsLzwc4vUdnDyHtWhQkvLz01R0U9xR9vnAN+8LKsNhQ0AIOi/KPmOC1neZt+Kz8hh1eObI78xjV2xNrcYnpZ2vK4rxOXkMi+ABLoOS26XPXUl8N1qsPRH2oJN3pnZgNfRNPGx5R7nFoAuryEXmbyAw/QMtsGLFV5b8o/2riziYxxrkQlOmvXn6Sag0/CpPUGO6uo7aLWhHPQ0p2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o97K3ocqKAgrqfZnOX6yUaE6TNef9f1AB8nxNU1ex64=;
+ b=YS4C0tpM/hMUbRbYsnW/wAhT9x9O9XmEUTRtd29utEUNSAPpBQWPG2vOZHvfoZaE8VZjU749TJoa05VTEE4FNKEcsj2qVL1e1k2B6v+41FpMIMc/Qj9tDeXwCvyXYxIfJyIP8k5WyRIkTVelGxXBALnJRkTbJ6dZ+KZB7+uDOAQo3Ogjw2Lgt54zVaDl8/doEH15A9ncoG85mwMqVRkdFr9wT4Dd4GOy5kZo0j9GTF8y89/bieKR2+lL2208+Q38JBoggdUcV3STbNNl9eUCrUKsezzo6kcgWnzeEWKRdZInXEKtLQcXXWQfU8jFouSGJ+OtaynO76TFixEYjZBtSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o97K3ocqKAgrqfZnOX6yUaE6TNef9f1AB8nxNU1ex64=;
+ b=YA7J5EnDXT6ziAOwyBkgJcoq4vQiwps5G7PEL2q0A7J3R7fYfTotaOFc6hoUetCAghqHAn5xlUQLr2u46gV0IPMa/ar9Kl0JV9ZsUgPbnWeVuGJ552IrKYEvWjdqxMfH0yRfWJAlq1ZXbuKmHZESqJorecQ1kSdlYtgka07c1uxWUBZgOE2cR1IDCzACjhCPAWreQGoVXX1Y2/6WFBi3uZentQ5IJ94rcoSV0ozeZxnd01t6x1NduwzCTwC1fc7cbtpYQVVMlpr3fPtfzDbENDhVcuRzztkqDCq+B71PCtR+zmvl2yy2zf8BXr2FwdCb+5iTmZbFP64eSFQMtD8fvA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
+ by AMBPR04MB11812.eurprd04.prod.outlook.com (2603:10a6:20b:6f6::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Tue, 21 Oct
+ 2025 09:10:22 +0000
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::bab2:d15c:fcf8:ef2b]) by AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::bab2:d15c:fcf8:ef2b%7]) with mapi id 15.20.9228.016; Tue, 21 Oct 2025
+ 09:10:21 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: fsl_aud2htx: add IEC958_SUBFRAME_LE format in supported list
+Date: Tue, 21 Oct 2025 17:09:33 +0800
+Message-Id: <20251021090933.3470495-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0041.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::10)
+ To AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,99 +85,111 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251018-ppc-fix-lld-interp-v1-1-a083de6dccc9@kernel.org>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68f741e0 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=CCpqsmhAAAAA:8 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=FAP-1WBkK2k5Bz30Sn0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=ul9cdbp4aOFLsgKbc677:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: PUznJ_3OC0JPYd9aU5zX_VlguL7hWr96
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX2NN4/pHCUp6m
- IUj9VOSHR3Vs497FgOot7qomd0Pc9yaTtu5BDqpcXPmlitueloi0Cb4zV+60D44yufbgI9uab5O
- 3wLXQtsBLWzTxNUcY4omsb0HovyW6zNVXSMMCnkTRpEgouETDUb/8iJxpet5xueVCR/VL9BEwcz
- psb3Pmb2dh32kvIfTGlWacNbJcR5VSAEduCdSfk5RjdwgR4uzDFVfcd9bIO0GRWshIHrYPd6FBK
- hvyMq/uMscveGxnHOFhwGPi1ekr4kI6WUIrfZ4p/OxfMkcpCDvIrbEtJrJQYsL5dSO68/5xfMEN
- dYVrR7gz6oarwwfwRncmM8or6mrMbSm8HdRN2q1TrvVtAmpiqPAoGH3O0j3XRst/rlbLZw0vNao
- 8y3XasGZEPRTVe+vihZzfZysmjVzHQ==
-X-Proofpoint-ORIG-GUID: 7lS_-1FnU6zD-yPA5X_Ge0v5bGE8S3z-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-20_07,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|AMBPR04MB11812:EE_
+X-MS-Office365-Filtering-Correlation-Id: f21b4399-93b2-43e7-16cb-08de1081a990
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|1800799024|52116014|19092799006|376014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3eq+bl5LYlRhUeOH9VgCa0K5xdEuhQZ9ye2wlo1ye0BP3bHkRy3lejZwByXk?=
+ =?us-ascii?Q?10mUqvmWlnwsMKavlCUZC1dMeNZn7fg4TgziEsak+oaH7rqC6rqdqOANQt2c?=
+ =?us-ascii?Q?RaKrG/AjXQFLX1c6wZay7Qw0iZdJMRarUKUXsM1i16WjMxNqqDyIfQp1QjzK?=
+ =?us-ascii?Q?3zbKVe92P5MRMaZc2guBrZjWrI749aXqrhgfuGfNF776dJJeczzFXI1nfxaD?=
+ =?us-ascii?Q?TPf8Rmrr8W/JAg7XXJJTvsZRadibrcP5iNk+EJpi4+8vnOycAR6nAKc5GTXv?=
+ =?us-ascii?Q?9UE7gH+vVDIA3ENaTkIVOk9u/PJH3HIHnTywNvXJpaKwr1LA559fHePBnrxP?=
+ =?us-ascii?Q?0HS6EKc3BfIBztRE8cTw4Wj183hwLxLuPrVUvQx/3sWGV4wdmm3vWdoDz1gn?=
+ =?us-ascii?Q?zMjhMPFV9CHzkkm50NzVE9r8na4+F7ALH9V5gas7DnyGNx6a9xIQo4XB2a6D?=
+ =?us-ascii?Q?xa88qP03QLKpFAkEF+Ho1r9M8IRuGb6FCaVixeCfmvyUv7uRI9VROmvsdNj+?=
+ =?us-ascii?Q?INhChmP0FFSJ+Svt3Q1+TSryY2jqJ7dbTvIJTuhf+F4lm+YydzSFQU3BoYGx?=
+ =?us-ascii?Q?wF9V0c5qkG9sJTwqNlcRX+YPbCmYo1AQOcPrEkAsGiFnTffnxlbUhHUuenH5?=
+ =?us-ascii?Q?OFa1JYYMY0RVkoRVuZXCp1P9oaBUUIVAWYUinwInleemKm6IHe3K2l4LNyLE?=
+ =?us-ascii?Q?Cf1kD85FPojyPkMX2Xq8+SLReSyRhPzRPl+COhSwORa1G7m3lInhh9ngTIcu?=
+ =?us-ascii?Q?tPTyNBgUAU4E9cX0TfYAk2514EuaEHwbFUP28Ny/EnCwHNIcfowfMty+k/AZ?=
+ =?us-ascii?Q?KoTENLsv+GLQQgN2Y3OS3mO0ueTrEcZryZw5aYYtjtlFx4Yw8xPysPe5Uw4V?=
+ =?us-ascii?Q?9QTYRQTcAFECKqKN56ZRC8MzB5zaKn2vUL/HEhyf1MQMz1+Jbh/a5Byk8vli?=
+ =?us-ascii?Q?vcwYaNtPQ5qrlGIZCafjuQQXzIaF2mtbAi8B0fV0WwlLGuCP9TBb/uSCHSET?=
+ =?us-ascii?Q?9U7REHRFw5+fz4QN6GaXceFLckCy8pMN11eIzvi8wkAiFM+j6FGbLWt4ZPqe?=
+ =?us-ascii?Q?e0l6wHR1N6iZZHwZl38Mk+0bRY5B7VReWb2RYYRWsxXyRBKQNBAuQQTHyb1v?=
+ =?us-ascii?Q?IGs0lx9rNWg3pqaxwHjLu5lNx2Aenoq+Fc/nX3bTNIuYchB3lQgvSr6uwM6A?=
+ =?us-ascii?Q?5aun6f3OJGQrOeOBaShm0e7s/+KMo1JZPip4l8D+asfh0AdX97Y6eTaq8yid?=
+ =?us-ascii?Q?llz12Juj8p3PEfvGJy6bPz2AroOXhNBTYUOhaiEKwunKr1snFLHrBbzRZz+e?=
+ =?us-ascii?Q?k0W/Y0tK7LiMJ5iHULymu4UIEiM3o98FzNoUcgkEiW6TdaU/w7TyHviTzfhG?=
+ =?us-ascii?Q?JqzgIcGc/8VmmhVGh+3zZJFnCo8v+qiVhjJC9Dijdg8CxkUGkYffm1hVCkdf?=
+ =?us-ascii?Q?+nhWvM8Ikcv1efS1/tDwMOMqlQrs66G1HfaFZE9loqXIATiGpZKr/LSLYGdK?=
+ =?us-ascii?Q?/ZKPSlRc3VXuVDqUdz2pre3sTtVVo0qsBDPAfRE2dYKsFGFCJBAKGPHqSw?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(52116014)(19092799006)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?eOK2uvc3F/afrMByXJySx9u3UjDHHqjmVKWWJtg1Er3o1mpXZbEQfgkfW4Uh?=
+ =?us-ascii?Q?N1KSk09rqWWBy0NE44btEwv6T45Eq5mC/8b1wAgMM2MpPs0sjQyWZVPJa+uW?=
+ =?us-ascii?Q?MTDBiu+jaCYNOJ6MVjOEU5OfI2NP3b3IMdQxBPvqv5ze746XzRE6i/eV8gwc?=
+ =?us-ascii?Q?SIE8Yq8admin0BHStVWPyrGSMbhK7nbpWimdAZMDjJeHFLvbGL9x50PXWMJx?=
+ =?us-ascii?Q?2IQalIPCfCPaYhUOw2A2+tEA/3rO3Fe2AjeK9nGs7DuDUf8niMA9RIZ3m+0L?=
+ =?us-ascii?Q?aPW4D1x4UJm1QGjwzLSh81nayuUfvEw6AGAlL7myjw01ne9HXhS58b7j5AoS?=
+ =?us-ascii?Q?IOmVLFFEm+6qLdIgga4WsdfHK7HGFGLDSCTPIjWeHAh2nSbIoQByp8nrYAEl?=
+ =?us-ascii?Q?j+eqaz8eTpBYoOwCKhcWWof27l2iPWbtVWbgvEcLM1APAzkjQGh7D33tWvew?=
+ =?us-ascii?Q?LIk5XPffhUBIzrl48+9Ekm8e/ygUWkKVHFudk8B/Ng5EoRQLR6jNfFLkMKiN?=
+ =?us-ascii?Q?uaL7445gh2QuIqfcgcZpaeCU7dLYTK2f94f8M3ZtgJq9T8r/xol+F/EuLL7s?=
+ =?us-ascii?Q?fbdUun6nyvMmH2EB5S7R6/zTPklr2ev8l1sEMNrIX96m9jBYh/7y1dl0hgM5?=
+ =?us-ascii?Q?fS6fd30+VCOOOCS2c71GWakQyrGAC/cDrRY35e/wYa1MVx8WDc0m++wG3EhO?=
+ =?us-ascii?Q?615whx9TqazogGlq5Xxn7vRqXuYNDW8XgVJHKfTl3ch1JH6GKvAJwL0ZtNpi?=
+ =?us-ascii?Q?vGqrLml1NoJndsoS79nDcDZAyk/95o7SjCDnriT67/y0GsbfFTlrfrkp4rOD?=
+ =?us-ascii?Q?nQl5k+8doQeQZnioI00lRE5k1t6MbKj9GT6AxNQ3RYJ98bczLI+ASXZ+dOgQ?=
+ =?us-ascii?Q?cZyuIu9UEM+F6B5eVqLp3nJUqiIOsbKn+VPfnz1LKNsIG5yLm8H9RTndcyCJ?=
+ =?us-ascii?Q?clZlHSsW4TEr+XZTY0TGxfJD7CF29J1nXC+tznc3krCqz0ECtaxg35mtB8LW?=
+ =?us-ascii?Q?BuULwu4JfeCdmVX7BtN9kZFxxk0RIlJTnhzjqdSiwhEF0EzisN5OtqgZYoRb?=
+ =?us-ascii?Q?7uMvUfKIktXPO96hUmN6l5tUbOp+L2iQETLRn25TENjmaaTid9qvHKdS4kF5?=
+ =?us-ascii?Q?cgTQMtOOcsRvb4iMrz2sZaSO3dnzqyMyu6W0XrZ1DQ/Zqda8cYJG7pH9P3bh?=
+ =?us-ascii?Q?yPmed6qgRQlyfhqKrSdEXRsQDwj8CFSM0A/shffBhVhTU9QdXFmb3RdknrnC?=
+ =?us-ascii?Q?lILI/o7oe/qv256Mc7CcwCzqgJRxY8hIglCjtzWHjXUzcObeBElyRl0lVgUH?=
+ =?us-ascii?Q?lBEnQu9VrUF/mYJkUuKSvvyHE6ibVQwB7oYxNydVy6z6OuELiNK3P+uO/Npo?=
+ =?us-ascii?Q?9aluCFJ0dFSiVSOnE918JpUBVxtqHbvBeVfYAcHtRRmXAgSiZ1oiBTiWNmRq?=
+ =?us-ascii?Q?DDs2dxRMvJN3q4Vc40JqBdDflHe7Ra4OFbVgVoqAyuk3RX+Vg9dEq7BaFHm6?=
+ =?us-ascii?Q?KIQAWqKhiOTHJQf0HrWPUH2qBPHXU6FqJYvHHnRTjpBjq5wB/Dc7PzEpALP4?=
+ =?us-ascii?Q?fX0nOi9L399wFAZRDg6B08KWANNfhfnqfDVGEUdS?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f21b4399-93b2-43e7-16cb-08de1081a990
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2025 09:10:21.9125
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qG4/g6PymCu44PsHR4O3Fzv3gaEg4R7wpDgnEqKpQ+DigFkKr7cXJmvJ9ZenbnGfI1N5ind2Jki/advB2Nf62A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB11812
+X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat, Oct 18, 2025 at 06:52:40PM +0100, Nathan Chancellor wrote:
-> Commit da30705c4621 ("arch/powerpc: Remove .interp section in vmlinux")
-> intended to drop the .interp section from vmlinux but even with this
-> change, relocatable kernels linked with ld.lld contain an empty .interp
-> section, which ends up causing crashes in GDB [1].
-> 
->   $ make -skj"$(nproc)" ARCH=powerpc LLVM=1 clean pseries_le_defconfig vmlinux
-> 
->   $ llvm-readelf -S vmlinux | grep interp
->     [44] .interp           PROGBITS        c0000000021ddb34 21edb34 000000 00   A  0   0  1
-> 
-> There appears to be a subtle difference between GNU ld and ld.lld when
-> it comes to discarding sections that specify load addresses [2].
-> 
-> Since '--no-dynamic-linker' prevents emission of the .interp section,
-> there is no need to describe it in the output sections of the vmlinux
-> linker script. Drop the .interp section description from vmlinux.lds.S
-> to avoid this issue altogether.
-> 
-> Link: https://sourceware.org/bugzilla/show_bug.cgi?id=33481 [1]
-> Link: https://github.com/ClangBuiltLinux/linux/issues/2137 [2]
-> Reported-by: Vishal Chourasia <vishalc@linux.ibm.com>
-> Closes: https://lore.kernel.org/20251013040148.560439-1-vishalc@linux.ibm.com/
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
->  arch/powerpc/kernel/vmlinux.lds.S | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-> index de6ee7d35cff..15850296c0a9 100644
-> --- a/arch/powerpc/kernel/vmlinux.lds.S
-> +++ b/arch/powerpc/kernel/vmlinux.lds.S
-> @@ -330,7 +330,6 @@ SECTIONS
->  	}
->  	.hash : AT(ADDR(.hash) - LOAD_OFFSET) { *(.hash) }
->  	.gnu.hash : AT(ADDR(.gnu.hash) - LOAD_OFFSET) { *(.gnu.hash) }
-> -	.interp : AT(ADDR(.interp) - LOAD_OFFSET) { *(.interp) }
->  	.rela.dyn : AT(ADDR(.rela.dyn) - LOAD_OFFSET)
->  	{
->  		__rela_dyn_start = .;
-> 
-> ---
-> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-> change-id: 20251018-ppc-fix-lld-interp-1a78c361cd42
-> 
+Besides S24_LE and S32_LE, the IEC958_SUBFRAME_LE format is also
+supported by this HDMI audio interface.
 
-With this patch, I don't see .interp section being emitted the final
-vmlinux binary.
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_aud2htx.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-```
-(i) ❯ make LLVM=1 vmlinux
-(i) ❯ llvm-readelf -p .comment vmlinux
+diff --git a/sound/soc/fsl/fsl_aud2htx.h b/sound/soc/fsl/fsl_aud2htx.h
+index ad70d6a7694c..cf292e3ccc02 100644
+--- a/sound/soc/fsl/fsl_aud2htx.h
++++ b/sound/soc/fsl/fsl_aud2htx.h
+@@ -7,7 +7,8 @@
+ #define _FSL_AUD2HTX_H
+ 
+ #define FSL_AUD2HTX_FORMATS (SNDRV_PCM_FMTBIT_S24_LE | \
+-			     SNDRV_PCM_FMTBIT_S32_LE)
++			     SNDRV_PCM_FMTBIT_S32_LE | \
++			     SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE)
+ 
+ /* AUD2HTX Register Map */
+ #define AUD2HTX_CTRL          0x0   /* AUD2HTX Control Register */
+-- 
+2.34.1
 
-String dump of section '.comment':
-[     1] clang version 22.0.0git (https://github.com/llvm/llvm-project.git 7314565281ec28b745502c3f429fd431e16673eb)
-[    6d] Linker: LLD 22.0.0 (https://github.com/llvm/llvm-project.git 7314565281ec28b745502c3f429fd431e16673eb)
-
-(i) ❯ llvm-readelf -p .interp vmlinux
-llvm-readelf: warning: 'vmlinux': could not find section '.interp'
-```
-
-Tested-by: Vishal Chourasia <vishalc@linux.ibm.com>
 
