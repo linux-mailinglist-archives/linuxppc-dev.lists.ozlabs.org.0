@@ -1,91 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-13133-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13134-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD88BF8D79
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 22:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA91BF8DA6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 22:59:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4crl491Mc0z3bfX;
-	Wed, 22 Oct 2025 07:57:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4crl622MMXz3bfX;
+	Wed, 22 Oct 2025 07:59:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761080265;
-	cv=none; b=fa1w4Km4rXWqBaJ5J2mJNBIWhULIG1Mp3NgI8oYCCcaxozxD/Bqh9HZp/VJwDvQ53CVnjX0Z8UDehylmZkvDRJ3zXOTLlEBoN7MnxPAPtvCb8ItR7aoXa1F+jYTREU/JCYYJyGhVJXAfcRJAqBid2W3+xq/kPIgnRXdWfMDPZ5FujWC86t69QzlCkCX9mgcfzADGVW585km+VpInFEs9KCV/59BrCoMbWQOkqwoW5//EfPzepD58YQHmCcOjqNDO7dDp2G7vdkFHzVVHIuul1L1nx8aOjPB7oDKTAAql+B3bYMhO3gHU5h9cRNG3Ty2alEcEwpZWp/EIRua2SGpETw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761080362;
+	cv=none; b=KFBtqiB94wTmjhvcjccJVQSzs7u3h61q20ELto0EHckZeHaMd2dmbiKxc9F+tuKcN5SobPk3E1Gnikzig6yNIuukcXL3nqrybEcuzTPaI67fheK6ydB0j9AfmQReb+NKi0RFssSZcSHaofoFwJ612MKxfKgaggAa4FakAnmqDV5ei4mplIIdIOnj/E+CqmDC7v4n21guVt/4uGUP/PBYtt56nQHtq4fzjpcsyMT+q/rDE7gufljdTcEfTuATrm4wrbOYE28f6pZXTpS8Ay5Ya0i5SNZxJli/1BGko7YKi9SObMRSAtmpYJs2ZzYv+H9sf7UabpbQOEx4CPGBOwXCOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761080265; c=relaxed/relaxed;
-	bh=9bAJqRa8uA5UrlbIgGaXWwm0Ps33WDl0PlkuKaJzgdU=;
+	t=1761080362; c=relaxed/relaxed;
+	bh=JKaU+TdmcHMrV3dqR9kS3A74O+yRTxyeV7YGtEGdpzU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=ZpJCdFDQfAs1VRPuMcdzMToD8TgJAYhBbbHTRqsDXpHifFez5ebMzFzVOi/IpnKN6z/PCtIh0kzgTUDKRYSOvmgnk84dU2pkz0oBvlBUbPFNi8ojF6UMLSznfyJf2lZe1kkeCiLDOnbKmoMNlj52mrjdUsUlQRdyVHiwl53XVwam3NpX95i585qF9m+2TH79jFpiiQDvHle4H4VJLqe+YONnjgRebTYA+Pb6iUltz0XqFAMgTYKNHMmPibbim+/Q6x4Whl7bPNV86SYOhS6atxih6Aq0gVjvCoXUyiIld+lP0eOEV2+u8YME1ecQqXzMNo5Y/6kaAoTgNldFzEVOTQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QK78i5Ak; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QK78i5Ak; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mst@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type:Content-Disposition; b=R4M2lOD5GuSTBCJXhLrMDsqGTJ+Ik307qORhQNulLK2O8reJlmyOlgTgUBuXbw9yzhO5gRSI7BsQhcHRx/6GR5flJzQq/DmxeZsfHkIP7bzv9gloiz164hdXYk4R677fFd3JMSI5lOfqN+l0nn+hqZZxh7hX5aSf1khPJ8agOJ59jRR1AppPzaursoKLbawNUCOSh1TEyR8I07ZBkSesqRb4mfmAaVYXv7TkGJiae2Hk/7ET7CfcGUJVsIAjqcs8BhixzkkN3n36AyWcS5X0U51wB8F0qg2jXxd5RgmERzIqNosy00y+6kjDrDl8098WbTjCJuaSWEY8h7oxjOI8dQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DdhoxZIQ; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DdhoxZIQ; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mst@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QK78i5Ak;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QK78i5Ak;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DdhoxZIQ;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DdhoxZIQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mst@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mst@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4crl481vgmz3bfM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 07:57:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4crl611qXFz3bfM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 07:59:20 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761080260;
+	s=mimecast20190719; t=1761080358;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9bAJqRa8uA5UrlbIgGaXWwm0Ps33WDl0PlkuKaJzgdU=;
-	b=QK78i5AklffzO++S+TKJNDt+LWEv/KUTV9IimMRDndh1yWRCe1ddChiSa+WQ6EWYeNyvo8
-	r8BOKr4dno9uM3XPqTpTZt/JYECfGc1dl/CbnZbLV6ZQr3ie4dC3ipgciYWW+Z8ssWRb18
-	GDpMs3bdlmDLbecktVyRCTuya28om88=
+	bh=JKaU+TdmcHMrV3dqR9kS3A74O+yRTxyeV7YGtEGdpzU=;
+	b=DdhoxZIQufJGi7VkT90Wc5tvZUMg7FJqPZxC7mvV3Q6OHfqoUlM5aipqoMKhYxCi1P74Oj
+	HG13ZestLMIxQrF2JxtucuNsDekXSZVTTiPlxI4kJBjFXhzI/Gs+yHJROrJdWCAH0NfnVn
+	eHY0Agf/ENKzTl7LTvLsaqsNkJWPpSo=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761080260;
+	s=mimecast20190719; t=1761080358;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9bAJqRa8uA5UrlbIgGaXWwm0Ps33WDl0PlkuKaJzgdU=;
-	b=QK78i5AklffzO++S+TKJNDt+LWEv/KUTV9IimMRDndh1yWRCe1ddChiSa+WQ6EWYeNyvo8
-	r8BOKr4dno9uM3XPqTpTZt/JYECfGc1dl/CbnZbLV6ZQr3ie4dC3ipgciYWW+Z8ssWRb18
-	GDpMs3bdlmDLbecktVyRCTuya28om88=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=JKaU+TdmcHMrV3dqR9kS3A74O+yRTxyeV7YGtEGdpzU=;
+	b=DdhoxZIQufJGi7VkT90Wc5tvZUMg7FJqPZxC7mvV3Q6OHfqoUlM5aipqoMKhYxCi1P74Oj
+	HG13ZestLMIxQrF2JxtucuNsDekXSZVTTiPlxI4kJBjFXhzI/Gs+yHJROrJdWCAH0NfnVn
+	eHY0Agf/ENKzTl7LTvLsaqsNkJWPpSo=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-528-lfZYpFXcOwuwnxDy4wzKWg-1; Tue, 21 Oct 2025 16:57:36 -0400
-X-MC-Unique: lfZYpFXcOwuwnxDy4wzKWg-1
-X-Mimecast-MFC-AGG-ID: lfZYpFXcOwuwnxDy4wzKWg_1761080256
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4278c82dce6so2411903f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 13:57:36 -0700 (PDT)
+ us-mta-591-1SFAEzayMp6Pi3xDKVjBzA-1; Tue, 21 Oct 2025 16:59:16 -0400
+X-MC-Unique: 1SFAEzayMp6Pi3xDKVjBzA-1
+X-Mimecast-MFC-AGG-ID: 1SFAEzayMp6Pi3xDKVjBzA_1761080355
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-426ff59a320so7527870f8f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 13:59:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761080255; x=1761685055;
+        d=1e100.net; s=20230601; t=1761080355; x=1761685155;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9bAJqRa8uA5UrlbIgGaXWwm0Ps33WDl0PlkuKaJzgdU=;
-        b=a0r9ZcogS7z9h9QCiAI0hBb2IpfMKF9IdLytH9Eo5r4cbvF9U/YZrBgFzQPZTVgj7N
-         yjzlH34/Q/++VWm/aat3+i43Lw+bUNnS3y4KBX5zVcY5mi++WhyLibFcRluS09KnYd0E
-         AGRr0uD5eHLTXSKpyhH0r0B88ThZxPh3BOI31tNabshX8RlBa5vnn1OxghkbHX75NMqj
-         +6+hdIMdQcsGH3fCNtgEbxGqyeYVx6bJUammxhkqgEJ0sKElwrawRX1U7g/XD+9uTOOW
-         X62z/tUkYbl580zW0zrlaRFARpk1V5T9zKcbIu12dxGgi5SkOfHExd40MAlxoVSbOR1Y
-         tjQA==
-X-Forwarded-Encrypted: i=1; AJvYcCWKJfnG/pT1csjT7xQtDvpZn3C7EsZYeUd5+hEsfmLzYYlcCnMZL5ddD/+yP3eX2ahqk20/XR/uYGSYCjE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwbS0BbJYB/SiZcoPKbHdHOFma3DDEbisLSurl6zcWAS2X5Y+Ym
-	/aIIPRp5ctp6IEGUdbkohJUlGy++1+2xjmhd7oeJFJloPr3aq9D/+OsnUx6AfKC8nOI2VG86M9a
-	mbT35/i7y1lXVYbRD8cMJJ7YfJ6o4llgiFMNlsp3rKIkwBBAWqz4bt3iUPFvkZxt+Two=
-X-Gm-Gg: ASbGncuN0DpGP04a8Iw9VAqIetrjUKGILtKWPhxUo9r0lfsuWX30kzc2VFWy/UkiZya
-	TjCNA8GIj15tZq7SK7v7uYOX1n7iJ5sK/46YHQOZCvCtk3KmA4vXtK95qFHMg4JUG+7DhKsQVyW
-	Nw3BkLVH6VkRe7YkSJiUu9qdCmoqcvosMON3lF51tvlLdHC4X+npxC4d2RC99oStLIfIkPShFn8
-	1e2UC/fKaj0lGLc+PrTY6Mhy5Qgi8HHuti8ZUAecxXqEra3PJj73kCrq8iIKeGz1+H3ZtbNZawu
-	A0e55i6xkYKUx1lxfASjpPie357oM3kKSpTcTu9rOYaIdW+o9x2GYicjJQRIByz6bQND
-X-Received: by 2002:a05:600c:8b8c:b0:46e:4287:a85e with SMTP id 5b1f17b1804b1-471178a4af1mr109338245e9.13.1761080255571;
-        Tue, 21 Oct 2025 13:57:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFnSG23+FoLb+GmLuXvkTK9R1YegvexPcW+2uOk5jzx98hZ61iH9ju7jBpY4P6BKlTjZs87DA==
-X-Received: by 2002:a05:600c:8b8c:b0:46e:4287:a85e with SMTP id 5b1f17b1804b1-471178a4af1mr109337965e9.13.1761080255096;
-        Tue, 21 Oct 2025 13:57:35 -0700 (PDT)
+        bh=JKaU+TdmcHMrV3dqR9kS3A74O+yRTxyeV7YGtEGdpzU=;
+        b=fSdUhrqXZgDtUT/oNbtPSQ+HWaFWbOYqMlgnp+i9ioaw9FIwLYwaBrkjr4GfoW2Xke
+         kDTNlQvCUN3Osq4aV/4/93TOGzdKXFM8QRfvRNPUOtPdXSxWRB+e4mINpFuLnEG6+4UA
+         KvbN1Qu368cYLCClCN+ipXyHtCeBspop3KnAUJvCqkpDc7Om+lSnu9cIJ8pgmcRl7cIz
+         Of7YqeqaOX1fn4VrR8ajJaEVt0CmiHgq6rmMWpi8HduTXLSBc4Pj4S6rPXCF1cAOl1HN
+         Bu5d/ks4+UipvMPGHrBq/OMl+qq+mev8DvCgeR2j0FdMiuIrxE10vnOYrT60KCLhdjdv
+         gOHw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9Cud4X3A1f5q+OCpMCfQ+xAXF6kDbXSH3XQfTh6R547dEBMffOlHm2qY11ok4YIYG5oNog8poD3nmwxg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzs80O6+U7JgIFLRXxFVGgxJx6a2Bg83s5zvHYY4bOf5p9I8yLe
+	CNr101pAqyhj54+pQgWnIcqjtP/ootmhK9/NC64z4bjarXbcP3DpOSjjK1zdulnLtJklR9oMDeJ
+	UNfpvgViFceaAk3B0uYKPKP52MLHSrDuGIM7RwOGnJJfIy4piCfAd8OU7tzmF8fhaj9c=
+X-Gm-Gg: ASbGncuV6alHS7q6yjAiedne7TVcCx0Eh51OJRxzB7+3Z281B+S016z+RdM6XY+jTnQ
+	Tez7mjzKjjMhlQC6DM2DsoGjJw/lbPy76zR8sl4foJEyDV9FbeLxIti7wmFK1v+I7GC3J1FrBrG
+	oU/VPRyIiJdeaDn4BN6o+oC84BaQwBx3I7IidP9EqlE8QxTMbmlt8L83No2aaYNb+PCW70iATvo
+	JN8xOjPWPsViUeW2oeQy25UY8/DgTAZh7aO1R3Y0osSpto6niLwQ7yYcn2XSvuDyBr1LuUolHUe
+	dpwonE+TwznNRD2YUAdtyTITxo++00+TAaa9PfmZg50hkfM+Ov00AODi/5rJTe44cTbu
+X-Received: by 2002:a05:6000:25c7:b0:427:854:787 with SMTP id ffacd0b85a97d-4270854085bmr11773164f8f.51.1761080354932;
+        Tue, 21 Oct 2025 13:59:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFm6nUHK4Q2KcRAx2gRXyZZ7eczPX8h4ab+8B0PRAUXehLh5qUDHKRiFzbQIJWCndKqsBf56w==
+X-Received: by 2002:a05:6000:25c7:b0:427:854:787 with SMTP id ffacd0b85a97d-4270854085bmr11773131f8f.51.1761080354419;
+        Tue, 21 Oct 2025 13:59:14 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:152d:b200:2a90:8f13:7c1e:f479])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c428e9b2sm9981535e9.5.2025.10.21.13.57.30
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c4369b33sm9493345e9.14.2025.10.21.13.59.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 13:57:34 -0700 (PDT)
-Date: Tue, 21 Oct 2025 16:57:28 -0400
+        Tue, 21 Oct 2025 13:59:13 -0700 (PDT)
+Date: Tue, 21 Oct 2025 16:59:10 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: David Hildenbrand <david@redhat.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
@@ -110,11 +110,11 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v1 06/23] vmw_balloon: stop using the balloon_dev_info
- lock
-Message-ID: <20251021165626-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH v1 11/23] drivers/virtio/virtio_balloon: stop using
+ balloon_page_push/pop()
+Message-ID: <20251021165854-mutt-send-email-mst@kernel.org>
 References: <20251021125929.377194-1-david@redhat.com>
- <20251021125929.377194-7-david@redhat.com>
+ <20251021125929.377194-12-david@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -128,9 +128,9 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20251021125929.377194-7-david@redhat.com>
+In-Reply-To: <20251021125929.377194-12-david@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: w4XdGw_fN6cYoCDlDroprURXj_WEbQ5ehKEVAj45h2o_1761080256
+X-Mimecast-MFC-PROC-ID: VATXxoO5dFI7Y2cEXws1H6Ifye86WxOTrHXS6BHygkY_1761080355
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -140,109 +140,90 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Oct 21, 2025 at 02:59:11PM +0200, David Hildenbrand wrote:
-> Let's not piggy-back on the existing lock and use a separate lock for the
-> huge page list.
+On Tue, Oct 21, 2025 at 02:59:16PM +0200, David Hildenbrand wrote:
+> Let's stop using these function
 
-which is fine but it is worth documenting that we are also
-no longer disabling interrupts while taking this lock.
+these functions
 
-
-> This is a preparation for changing the locking used to protect
-> balloon_dev_info.
+> so we can remove them. They look like
+> belonging to the balloon API for managing the device balloon list when
+> really they are just simple helpers only used by virtio-balloon.
 > 
-> While at it, talk about "page migration" instead of "page compaction".
-> We'll change that in core code soon as well.
+> Let's just inline them and switch to a proper
+> list_for_each_entry_safe().
 > 
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 > ---
->  drivers/misc/vmw_balloon.c | 20 ++++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
+>  drivers/virtio/virtio_balloon.c | 25 +++++++++++++++----------
+>  1 file changed, 15 insertions(+), 10 deletions(-)
 > 
-> diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
-> index 52b8c0f1eead7..53e9335b6718c 100644
-> --- a/drivers/misc/vmw_balloon.c
-> +++ b/drivers/misc/vmw_balloon.c
-> @@ -354,10 +354,15 @@ struct vmballoon {
->  	/**
->  	 * @huge_pages - list of the inflated 2MB pages.
->  	 *
-> -	 * Protected by @b_dev_info.pages_lock .
-> +	 * Protected by @huge_pages_lock.
->  	 */
->  	struct list_head huge_pages;
+> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+> index f7d6a4a6e54f5..4b22de6a5f845 100644
+> --- a/drivers/virtio/virtio_balloon.c
+> +++ b/drivers/virtio/virtio_balloon.c
+> @@ -242,8 +242,8 @@ static void set_page_pfns(struct virtio_balloon *vb,
+>  static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
+>  {
+>  	unsigned int num_allocated_pages;
+> +	struct page *page, *next;
+>  	unsigned int num_pfns;
+> -	struct page *page;
+>  	LIST_HEAD(pages);
 >  
-> +	/**
-> +	 * @huge_pages_lock: lock for the list of inflated 2MB pages.
-> +	 */
-> +	spinlock_t huge_pages_lock;
+>  	/* We can only do one array worth at a time. */
+> @@ -262,14 +262,15 @@ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
+>  			break;
+>  		}
+>  
+> -		balloon_page_push(&pages, page);
+> +		list_add(&page->lru, &pages);
+>  	}
+>  
+>  	mutex_lock(&vb->balloon_lock);
+>  
+>  	vb->num_pfns = 0;
+>  
+> -	while ((page = balloon_page_pop(&pages))) {
+> +	list_for_each_entry_safe(page, next, &pages, lru) {
+> +		list_del(&page->lru);
+>  		balloon_page_enqueue(&vb->vb_dev_info, page);
+>  
+>  		set_page_pfns(vb, vb->pfns + vb->num_pfns, page);
+> @@ -474,15 +475,19 @@ static inline s64 towards_target(struct virtio_balloon *vb)
+>  static unsigned long return_free_pages_to_mm(struct virtio_balloon *vb,
+>  					     unsigned long num_to_return)
+>  {
+> -	struct page *page;
+> -	unsigned long num_returned;
+> +	unsigned long num_returned = 0;
+> +	struct page *page, *next;
 > +
->  	/**
->  	 * @vmci_doorbell.
->  	 *
-> @@ -987,7 +992,6 @@ static void vmballoon_enqueue_page_list(struct vmballoon *b,
->  					unsigned int *n_pages,
->  					enum vmballoon_page_size_type page_size)
->  {
-> -	unsigned long flags;
->  	struct page *page;
+> +	if (unlikely(!num_to_return))
+> +		return 0;
 >  
->  	if (page_size == VMW_BALLOON_4K_PAGE) {
-> @@ -995,9 +999,9 @@ static void vmballoon_enqueue_page_list(struct vmballoon *b,
+>  	spin_lock_irq(&vb->free_page_list_lock);
+> -	for (num_returned = 0; num_returned < num_to_return; num_returned++) {
+> -		page = balloon_page_pop(&vb->free_page_list);
+> -		if (!page)
+> -			break;
+> +
+> +	list_for_each_entry_safe(page, next, &vb->free_page_list, lru) {
+> +		list_del(&page->lru);
+>  		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
+> +		if (++num_returned == num_to_return)
+> +			break;
+>  	}
+>  	vb->num_free_page_blocks -= num_returned;
+>  	spin_unlock_irq(&vb->free_page_list_lock);
+> @@ -717,7 +722,7 @@ static int get_free_page_and_send(struct virtio_balloon *vb)
+>  		}
+>  		virtqueue_kick(vq);
+>  		spin_lock_irq(&vb->free_page_list_lock);
+> -		balloon_page_push(&vb->free_page_list, page);
+> +		list_add(&page->lru, &vb->free_page_list);
+>  		vb->num_free_page_blocks++;
+>  		spin_unlock_irq(&vb->free_page_list_lock);
 >  	} else {
->  		/*
->  		 * Keep the huge pages in a local list which is not available
-> -		 * for the balloon compaction mechanism.
-> +		 * for the balloon page migration.
->  		 */
-> -		spin_lock_irqsave(&b->b_dev_info.pages_lock, flags);
-> +		spin_lock(&b->huge_pages_lock);
->  
->  		list_for_each_entry(page, pages, lru) {
->  			vmballoon_mark_page_offline(page, VMW_BALLOON_2M_PAGE);
-> @@ -1006,7 +1010,7 @@ static void vmballoon_enqueue_page_list(struct vmballoon *b,
->  		list_splice_init(pages, &b->huge_pages);
->  		__count_vm_events(BALLOON_INFLATE, *n_pages *
->  				  vmballoon_page_in_frames(VMW_BALLOON_2M_PAGE));
-> -		spin_unlock_irqrestore(&b->b_dev_info.pages_lock, flags);
-> +		spin_unlock(&b->huge_pages_lock);
->  	}
->  
->  	*n_pages = 0;
-> @@ -1033,7 +1037,6 @@ static void vmballoon_dequeue_page_list(struct vmballoon *b,
->  {
->  	struct page *page, *tmp;
->  	unsigned int i = 0;
-> -	unsigned long flags;
->  
->  	/* In the case of 4k pages, use the compaction infrastructure */
->  	if (page_size == VMW_BALLOON_4K_PAGE) {
-> @@ -1043,7 +1046,7 @@ static void vmballoon_dequeue_page_list(struct vmballoon *b,
->  	}
->  
->  	/* 2MB pages */
-> -	spin_lock_irqsave(&b->b_dev_info.pages_lock, flags);
-> +	spin_lock(&b->huge_pages_lock);
->  	list_for_each_entry_safe(page, tmp, &b->huge_pages, lru) {
->  		vmballoon_mark_page_online(page, VMW_BALLOON_2M_PAGE);
->  
-> @@ -1054,7 +1057,7 @@ static void vmballoon_dequeue_page_list(struct vmballoon *b,
->  
->  	__count_vm_events(BALLOON_DEFLATE,
->  			  i * vmballoon_page_in_frames(VMW_BALLOON_2M_PAGE));
-> -	spin_unlock_irqrestore(&b->b_dev_info.pages_lock, flags);
-> +	spin_unlock(&b->huge_pages_lock);
->  	*n_pages = i;
->  }
->  
-> @@ -1828,6 +1831,7 @@ static int __init vmballoon_init(void)
->  		balloon.b_dev_info.migratepage = vmballoon_migratepage;
->  
->  	INIT_LIST_HEAD(&balloon.huge_pages);
-> +	spin_lock_init(&balloon.huge_pages_lock);
->  	spin_lock_init(&balloon.comm_lock);
->  	init_rwsem(&balloon.conf_sem);
->  	balloon.vmci_doorbell = VMCI_INVALID_HANDLE;
 > -- 
 > 2.51.0
 
