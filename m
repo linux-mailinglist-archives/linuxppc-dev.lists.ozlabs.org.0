@@ -1,128 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-13104-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13106-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3DDCBF69EE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 15:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C53BF7141
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 16:30:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4crXTB5hkHz3dWb;
-	Wed, 22 Oct 2025 00:00:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4crZSw6Vjpz306S;
+	Wed, 22 Oct 2025 01:30:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761051614;
-	cv=none; b=mNU/exG8dRdxmcleffwlcgM5FMSUulBMkTFLFVqjcfi21vGKIjBEURcOuDKtNB2UkAW8M5Z7d/xODrAcPdTV/fyO7ERJoVtJVuUofnMkJZ8rPDC97RVQol2FOlPOxmAO8aU97aYHrDZ8acbTJJ10WXgA3jwnGIsYni5WHThYTjVnwbbwJ7DgSrDutDwRxSBLWkG+jPftyn49HmW4JCoxR4Qjn10vy1S5FBP42+Loecf78JcQfGLkk4wvA71yNtriLOgfrhlWoGjs3MBRQzrVQ8KotrFSzlgLLXd3PyMnJ4YQWUuz8R45ZaFPmQigVTL9oG1wZF/4ZbEwq+fsnQ1ThQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761057008;
+	cv=none; b=KO/IXt6NDTunfWEUEwDb2aLHLFCyF+eV6Pm4Bv9+aLJFla8lRqpSHfAMtu5CaAlu0QJDPgK5bzSi/G47WEKgfpL2uxx3vkoikQhYfkFaYnEn6ePBOn4KmgbCDeBrSc2QnlOG+DbcnZzKwxfKu69h1gXykFopn0tmOKSFbAgesoyDh74TDKg+wjRDkNijAXHK9wx1OD6dgltCGKL6jEK3DSIioY3houzPzSFdhXSPhn1JlPgPx0MTdEvbTVBOrw3VVjVNdbvejheMLHEUs/jk86mJ+k9nX7udcGk0O67/OXGTjj2cLc5IIyqCgEkuslAPf2j6PP4ye51EXg1W6kyOZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761051614; c=relaxed/relaxed;
-	bh=9Pfle03AoZbMZzwKNT9cqn8RCz4Fl59OlkWq00/g7dM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=a3z23snlq+x9ujhgqSr8wT/0JGvp70NAg0wjHRZGCoJo7JZt+0UXizKuzdHJw3clLyDMsJBEHdor8q3N760tcgM/UvUo0Y9nN5Z21ugPkM0oQMbN6mHM6JbqK4D26AUeABHY00cbxPqPEQ5JEld5dUFWe2htvnHbG1UXQfLFQQX7V0gcSC2asSgt1JkMUAR9mBaWJ9FB2Jm7BO60ITK5uioMiU/s0s6zoqnRzHSxaScCK3OMeUHN7Bq6naphvvrLbDeiYr1K9G7nP9HKkDdj1WLznJf1lluV3FR+DKkIVVcbg6shqi1UA+Qm0yOTbRdzEPacoKSwAWBcfI1HgU8xAQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XNH737iv; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XNH737iv; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1761057008; c=relaxed/relaxed;
+	bh=JS0LeUwhlIw7hjeLiFOMMF88gibn32hLzkAIdUzT3+E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Y4xn3Yfnedyhr40Bv1bsvBCEhVPwgHd8mLGPtvY15z+vINZI6nd4cdo16QwomAQUqViaEF4HqB/Gkud6M7bs1KjVGpMYta5599U0RSTotu8SISyzTWvXMO5M8eLcBvVSPd2IFq39ZMdN6zQL0GVsipNP4XJF3hgBNlBuCjymp/FsafLFNzKGxPGUCARWxq9kea3AaYcipc2uXA1LAIw3qSJM9mi+os+hTPeVIBevDiNetfFWpoMzr/qHTK0ZoiBYpaamn2AN/M4YPDTxNb1fziN6kTtzPub21MHvBqxCEuEtg604e3FBF4zI95pVky9C8jCq3AnnA2mC+bNPac3gyA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=TDjSEslf; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=gnEStIT2; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XNH737iv;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XNH737iv;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=TDjSEslf;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=gnEStIT2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4crXTB0X0lz30MY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 00:00:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761051611;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4crZSv1Tntz2yhD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 01:30:07 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1761057000;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9Pfle03AoZbMZzwKNT9cqn8RCz4Fl59OlkWq00/g7dM=;
-	b=XNH737ivJLyY279nXf6078U0LCKbbnePWbY5JXKXJAb0iHQIVrxbCp/xgD2zUF6jvNzpQD
-	OkDYtkf1lj5pJTNyMN0cTByIBDgAPWroAS2c3D6jiwUpPn+pI6SKGuAc8B7FNk+lzYj1aM
-	MU13+um8JMKPnDpFrxJM2EvtgzTppAc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761051611;
+	bh=JS0LeUwhlIw7hjeLiFOMMF88gibn32hLzkAIdUzT3+E=;
+	b=TDjSEslf+74J5IkqxbH7EKFCeOy9rDtwyTAG4CBl91QecO/LOfBJuamaRgki19wnXmzo3L
+	SqhHxTI7uj395SMVGnS8mInc+ldJ+4y14A+Tcar1t1rjk1P3oeuzs3c10NKrLSlp7vvjg1
+	VO1O+FpON2MdfZDx3F07Yrx1LWm3Y1tfPuAVvpcu5B5UAr7m32Qar3mTzXGVgZBL/qgxSl
+	M9opFpJxcueJycQLaJQ3wdIRJ/cBq2l9fv20bUR/0U+lK5gVKnfZf6PfXeExQ9Wlmv8R1s
+	ZuvqMMx5rUW/pmozC8w6KZbofI1CcE3oULCQg5X4tGxerhKckq68CFYL4PWaaw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1761057000;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9Pfle03AoZbMZzwKNT9cqn8RCz4Fl59OlkWq00/g7dM=;
-	b=XNH737ivJLyY279nXf6078U0LCKbbnePWbY5JXKXJAb0iHQIVrxbCp/xgD2zUF6jvNzpQD
-	OkDYtkf1lj5pJTNyMN0cTByIBDgAPWroAS2c3D6jiwUpPn+pI6SKGuAc8B7FNk+lzYj1aM
-	MU13+um8JMKPnDpFrxJM2EvtgzTppAc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-59-iPHVdeFePoWynHqc8dB-QA-1; Tue, 21 Oct 2025 09:00:10 -0400
-X-MC-Unique: iPHVdeFePoWynHqc8dB-QA-1
-X-Mimecast-MFC-AGG-ID: iPHVdeFePoWynHqc8dB-QA_1761051609
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4721b4f3afbso14059745e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 06:00:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761051609; x=1761656409;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9Pfle03AoZbMZzwKNT9cqn8RCz4Fl59OlkWq00/g7dM=;
-        b=omoqaZqL6goSg88Lxen8nHUvscG1I/Vt/Ll1muRTPSOKJB5OMV1ORGlpk0UcQ8TSyT
-         z6SeNxbkW8QL52nLf7zmBbTFUBGucXsPswEAr/tzOMLw7FCpnSxmrL5aSWPNhDPPgalz
-         JZyjSVl5at6B48KyT0o9CHan1z3lCYpg3TkykYMo0llUzFaFJ0Vvn0N2X/fHS+KSu0EK
-         UynSI6gLhX1uGzCiAo2bJ1Rg5pXJIPMZjWQ3J/f+3KcFspZjwZ6ogiuTYwQ+u5o/xywz
-         HhLfPvdwT6OZO2ieh7K3xwoAR97YRXqCURiQFix3NrI4VNqv67NRvI4pJyDLpoECFW1M
-         hN7g==
-X-Forwarded-Encrypted: i=1; AJvYcCUc4ku2koujEVwE3LxPCSa4XwYIlKdPqBO+eNGA0LIWKyfuP6NSYw3YjRaU5RAI+2IOj4qDzqccIrn8T4M=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwbiDJFAvN9tBFRjalAhJP7c7N6Q6ihkyXb1Md/8yNirqk9YXT2
-	1ftxsH1RHNxJz/nHa+2eZkuZ5zUBfgpt1tQFd9XNKNhyxzNLcOcm0cl7Z2RhbuYQ00KoA/fwfZK
-	PgI+cqkweS1PC1dXZ1oIfn8jBdxigg5YKopzciyQsmc63EdDFMI6T41Lw2uyHhkId0r4=
-X-Gm-Gg: ASbGncsskgfrLeIG+W7Gq54JA4jRoXBZ1ERBsYsVNTHXzSwxdicP+p/zwUBHbrPMnPG
-	h08AtCFkHYOqumZ0FNPm69SFZH1okG/hwQlhcsI82sWwqKDGaN284XpfXPASlUrTEnrw7IXe02E
-	iH6u1IroP42aV2mtrhOK0OcWoA8qhmm7vKmf9XaJsQDTox8On7joyqbsVkKDX7OKT+iPa+ScqLU
-	wxDSe5c4O6TKV71mmZ192LtcC+ENrXa1Qw8A4uELlIPmZKqJTnok78nK+jzqYeWAkRQ+qimwXo7
-	7TNM3TdJe9WfHs2l5Q/ajwKuCBQR3FNSTwuWJpOP/tWbX5XQgeK+aEJkslroc9VZu2uSIxpaBfo
-	MKiCPXAjE1K2yOKU5b6EHRS/cphcgCDKbyVS5k0qTIvrlC83wGkjItkPUGLRU
-X-Received: by 2002:a05:600c:3544:b0:471:c72:c80b with SMTP id 5b1f17b1804b1-471178ad7b3mr117596205e9.18.1761051608652;
-        Tue, 21 Oct 2025 06:00:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYkNMmF6KwTjIi+haTZNa/bZuoGNP9fBOncPRUCNa1fBr3A4oaQbG8grM5Ui4vLJ4xvDadAQ==
-X-Received: by 2002:a05:600c:3544:b0:471:c72:c80b with SMTP id 5b1f17b1804b1-471178ad7b3mr117595585e9.18.1761051608200;
-        Tue, 21 Oct 2025 06:00:08 -0700 (PDT)
-Received: from localhost (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-471143663afsm278506055e9.0.2025.10.21.06.00.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 06:00:07 -0700 (PDT)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-doc@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 16/23] mm/balloon_compaction: mark remaining functions for having proper kerneldoc
-Date: Tue, 21 Oct 2025 14:59:21 +0200
-Message-ID: <20251021125929.377194-17-david@redhat.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251021125929.377194-1-david@redhat.com>
-References: <20251021125929.377194-1-david@redhat.com>
+	bh=JS0LeUwhlIw7hjeLiFOMMF88gibn32hLzkAIdUzT3+E=;
+	b=gnEStIT2+yktjKDz7BaF+L145njHkg3c1jlLnNHRsA0/k3jev0BD99TtrH6ssZALtH2/2H
+	tt8KIreM40BQSKDA==
+To: David Laight <david.laight.linux@gmail.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Andrew Cooper
+ <andrew.cooper3@citrix.com>, Linus Torvalds
+ <torvalds@linux-foundation.org>, kernel test robot <lkp@intel.com>,
+ Russell
+ King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
+ x86@kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, Palmer
+ Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org, Heiko
+ Carstens <hca@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, Nicolas
+ Palix <nicolas.palix@imag.fr>, Peter Zijlstra <peterz@infradead.org>,
+ Darren Hart <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ =?utf-8?Q?Andr=C3=A9?= Almeida <andrealmeid@igalia.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
+ Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
+Subject: Re: [patch V3 07/12] uaccess: Provide scoped masked user access
+ regions
+In-Reply-To: <20251020192859.640d7f0a@pumpkin>
+References: <20251017085938.150569636@linutronix.de>
+ <20251017093030.253004391@linutronix.de> <20251020192859.640d7f0a@pumpkin>
+Date: Tue, 21 Oct 2025 16:29:58 +0200
+Message-ID: <877bwoz5sp.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -136,74 +89,111 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: X5sJW0RZSGoYdSm0EC4gn1i0NjqTmGAWkNwPoKfHJPc_1761051609
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Looks like all we are missing for proper kerneldoc is another "*".
+On Mon, Oct 20 2025 at 19:28, David Laight wrote:
+> On Fri, 17 Oct 2025 12:09:08 +0200 (CEST)
+> Thomas Gleixner <tglx@linutronix.de> wrote:
+> That definitely looks better than the earlier versions.
+> Even if the implementation looks like an entry in the obfuscated C
+> competition.
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- mm/balloon_compaction.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+It has too many characters for that. The contest variant would be:
 
-diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
-index f6e0582bd7ffe..f41e4a179a431 100644
---- a/mm/balloon_compaction.c
-+++ b/mm/balloon_compaction.c
-@@ -22,7 +22,7 @@ static inline struct balloon_dev_info *balloon_page_device(struct page *page)
- 	return (struct balloon_dev_info *)page_private(page);
- }
- 
--/*
-+/**
-  * balloon_page_insert - insert a page into the balloon's page list and make
-  *			 the page->private assignment accordingly.
-  * @balloon : pointer to balloon device
-@@ -42,7 +42,7 @@ static inline void balloon_page_insert(struct balloon_dev_info *balloon,
- 	list_add(&page->lru, &balloon->pages);
- }
- 
--/*
-+/**
-  * balloon_page_finalize - prepare a balloon page that was removed from the
-  *			   balloon list for release to the page allocator
-  * @page: page to be released to the page allocator
-@@ -140,7 +140,7 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
- }
- EXPORT_SYMBOL_GPL(balloon_page_list_dequeue);
- 
--/*
-+/**
-  * balloon_page_alloc - allocates a new page for insertion into the balloon
-  *			page list.
-  *
-@@ -163,7 +163,7 @@ struct page *balloon_page_alloc(void)
- }
- EXPORT_SYMBOL_GPL(balloon_page_alloc);
- 
--/*
-+/**
-  * balloon_page_enqueue - inserts a new page into the balloon page list.
-  *
-  * @b_dev_info: balloon device descriptor where we will insert a new page
-@@ -186,7 +186,7 @@ void balloon_page_enqueue(struct balloon_dev_info *b_dev_info,
- }
- EXPORT_SYMBOL_GPL(balloon_page_enqueue);
- 
--/*
-+/**
-  * balloon_page_dequeue - removes a page from balloon's page list and returns
-  *			  its address to allow the driver to release the page.
-  * @b_dev_info: balloon device descriptor where we will grab a page from.
--- 
-2.51.0
+for(u8 s=0;!s;s=1)for(typeof(u) t= S(m,u,s,e);!s;s=1)for(C(u##m##a,c)(t);!s;s=1)for(const typeof(u) u=t;!s;s=1)
 
+> I don't think you need the 'masked' in that name.
+> Since it works in all cases.
+>
+> (I don't like the word 'masked' at all, not sure where it came from.
+
+It's what Linus named it and I did not think about the name much so far.
+
+> Probably because the first version used logical operators.
+> 'Masking' a user address ought to be the operation of removing high-order
+> address bits that the hardware is treating as 'don't care'.
+> The canonical operation here is uaddr = min(uaddr, guard_page) - likely to be
+> a conditional move.
+
+That's how it's implemented for x86:
+
+>>  b84:	48 b8 ef cd ab 89 67 45 23 01  movabs $0x123456789abcdef,%rax
+>>  b8e:	48 39 c7    	               cmp    %rax,%rdi
+>>  b91:	48 0f 47 f8          	       cmova  %rax,%rdi
+
+0x123456789abcdef is a compile time placeholder for $USR_PTR_MAX which is
+replaced during early boot by the real user space topmost address. See below.
+
+> I think that s/masked/sanitised/ would make more sense (the patch to do
+> that isn't very big at the moment). I might post it.)
+
+The real point is that it is optimized. It does not have to use the
+speculation fence if the architecture supports "masking" because the CPU
+can't speculate on the input address as the actual read/write address
+depends on the cmova. That's similar to the array_nospec() magic which
+masks the input index unconditionally so it's in the valid range before
+it can be used for speculatively accessing the array.
+
+So yes, the naming is a bit awkward.
+
+In principle most places which use user_$MODE_access_begin() could
+benefit from that. Also under the hood the scope magic actually falls
+back to that when the architecture does not support the "masked"
+variant.
+
+So simply naming it scoped_user_$MODE_access() is probably the least
+confusing of all.
+
+>> If masked user access is enabled on an architecture, then the pointer
+>> handed in to scoped_masked_user_$MODE_access() can be modified to point to
+>> a guaranteed faulting user address. This modification is only scope local
+>> as the pointer is aliased inside the scope. When the scope is left the
+>> alias is not longer in effect. IOW the original pointer value is preserved
+>> so it can be used e.g. for fixup or diagnostic purposes in the fault path.
+>
+> I think you need to add (in the kerndoc somewhere):
+>
+> There is no requirement to do the accesses in strict memory order
+> (or to access the lowest address first).
+> The only constraint is that gaps must be significantly less than 4k.
+
+The requirement is that the access is not spilling over into the kernel
+address space, which means:
+
+       USR_PTR_MAX <= address < (1U << 63)
+
+USR_PTR_MAX on x86 is either
+            (1U << 47) - PAGE_SIZE (4-level page tables)
+         or (1U << 57) - PAGE_SIZE (5-level page tables)
+
+Which means at least ~8 EiB of unmapped space in both cases.
+
+The access order does not matter at all.
+
+>> +#define __scoped_masked_user_access(_mode, _uptr, _size, _elbl)					\
+>> +for (bool ____stop = false; !____stop; ____stop = true)						\
+>> +	for (typeof((_uptr)) _tmpptr = __scoped_user_access_begin(_mode, _uptr, _size, _elbl);	\
+>
+> Can you use 'auto' instead of typeof() ?
+
+Compilers are mightily unhappy about that unless I do typecasting on the
+assignment, which is not really buying anything.
+
+>> +	     !____stop; ____stop = true)							\
+>> +		for (CLASS(masked_user_##_mode##_access, scope) (_tmpptr); !____stop;		\
+>> +		     ____stop = true)					\
+>> +			/* Force modified pointer usage within the scope */			\
+>> +			for (const typeof((_uptr)) _uptr = _tmpptr; !____stop; ____stop = true)	\
+>
+> gcc 15.1 also seems to support 'const auto _uptr = _tmpptr;'
+
+Older compilers not so much.
+
+Thanks,
+
+        tglx
 
