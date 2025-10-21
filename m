@@ -1,106 +1,222 @@
-Return-Path: <linuxppc-dev+bounces-13127-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13128-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2679BF82A6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 20:56:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0FFBF82F5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 21:03:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4crhMx312qz30hN;
-	Wed, 22 Oct 2025 05:56:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4crhXK4RxCz30V7;
+	Wed, 22 Oct 2025 06:03:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761072973;
-	cv=none; b=DphpxcYxRYE/Z0ZvFX8yTyn36ywkCP1U+vV8kPJ9DbvQ6bnudfPWzxpVNTrWyJt0V+91ankAqaWmFo+LbCgnE9gSzJMgXgp8rV70b+oaauf90phb9HY2cec2AEU0/adGABZ8z0xmRIh0nZTjOkjrK93dEodIhjuBIuR1DVsIdxmLyhlD7MWnVTwH9245rfjL3nBacHNkz9MtapNL4qbODMUFPSkDV33N9Lk16umJEb53l9txq44DXehvhLtiuUIxl06DVhqnkgjDlhyWcHIkWbMBZZY1T1zhpFRqIC8O5OIg12nwrvSBGgFPPblrm9cUiaw6J3+n+Xgfb2vSCZ0y5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761072973; c=relaxed/relaxed;
-	bh=5qgPMRJSF9sIfpOYtKRyUUBt+NJHpNn43neFwkUQbv0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dsPDDKs6MGSqpSplL2ydZi7mxgMin5aUD365EwCQx3EsiKie/efjbUBYCyGHPR4FHI/ogaFkOMpXyYS7XWXJrRPnlAkYplgqoa3q3AnI8tsGQIWsIPMbQQLNW2oBb+em0Op2skf8kvX/p/DXmHGU4QgUoTdoc9wQCU9dbobdsDzVeEkrqSIAJG8jrgezx2XYrVz8aJkX/pe4cYGvN/yXapjW/uzxWto5tKl6Xbhs4Y1Z7ncPL+yoq5q+KkUZtaf8yVozg8pkjTjvsz7HlLpkUkUjD8TOEgiRY7WeBS85Qd8jNsLduZIQTzkIYUc5nzihCV7Ke0OAojKfCapMmTbC7A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fXS5kx+N; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42a; helo=mail-wr1-x42a.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=192.198.163.16 arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761073409;
+	cv=pass; b=YLDDZBqRyv05pRnOcIwOgk/QMhr8Lk168W89BsFZ8iRnpG39qF80QMUOCmhEz2Jjp3EBLY9/u6cuvD+W83zKjtkkUmsXvYVhrjIUfobiQJg5vKDMel0hC33ewGVn0V5I+twD+kyyvxUJeGs2+OU/RaCrA1WkiQaG5hbzVJTrkKMyedvSN4iOFpfNhXJ1vEByliFXmGMm33r5G08rl9S8UHraXEvO4m6Le8hsqGYBvpsLDsEzFXbobj6z6z31nm38zfTLMEhXAMwtA5vupZkwXcMJxJ0BfN2HALkNMjHYncJjLYwmkLjDJ6eu30RQPa6vJfkz5yQqnCoTcBXEjpC/+w==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1761073409; c=relaxed/relaxed;
+	bh=PzV3fAz36CG929Nqa+Vmpwf5O23/sB4991deanYjMnM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=b0Z+thz8wLkTtVa06FvoV5TTbN6o1MG3SRfO1v/W/2AFhmBNLZKscI8AgBxA3p2r3aZLb63Qe5JCuhaxzGQtW+X4sbkI5zsRq+B3mZ77UOjes7aXe5GEunTSh9s3sor8nZdC/K7BmISm5FPt98yzO0Q+5/wxmLiR1rpSTnFCgIg9ruP4q8GLaJKcXgO6foEy+aV8DNXL6W6ojWU2iqQctpwm/TQpqfoHzBO0YaE9r34BVV0Lmg9kb+FpGWS47LQ5if6+YJAfEw9IdSS075r4PPr5T1ni6e8NDE7hBCv0KlFGuJme3osnMz7mXwq7FwJN2zLwDBgH4O1HWS6VVW/eEQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J6b04pTV; dkim-atps=neutral; spf=pass (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=rick.p.edgecombe@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fXS5kx+N;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J6b04pTV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42a; helo=mail-wr1-x42a.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=rick.p.edgecombe@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4crhMq1Xczz30M0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 05:56:06 +1100 (AEDT)
-Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-426fc536b5dso3330535f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 11:56:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761072962; x=1761677762; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5qgPMRJSF9sIfpOYtKRyUUBt+NJHpNn43neFwkUQbv0=;
-        b=fXS5kx+NUysKB6cMXAU6mGCsnQL91M0Leqk1bi5fs8srFIQqWzJD08t29XAaYAFn4C
-         0BKcOohZg1MBNkEHt8cLlm3lRUFHa+jOFQEftN7YFtDjzQeeboqsIXmSqgEhB38QWhOc
-         y/SzdLZOnBZwl/km+ExT4VV8LQaCk87zfR+SCEJwFzDC8gtgYu7A2wJXx3+g4bJVbujG
-         g/kldZdFF2jcv7OqecFucb67zJRT3pPPQsWtLQWsa8laQSADEiNKBpAgQkYQI9QYS+Sm
-         LTO8UFRH8+ck5Zt4j6x45BvjaVGtzXPIGA7mEoup/PFjv6OxWuZhWcwbt9ZZhLecVkrx
-         7cwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761072962; x=1761677762;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5qgPMRJSF9sIfpOYtKRyUUBt+NJHpNn43neFwkUQbv0=;
-        b=ObdNxn65NZ2JN73wF8ffizbYPo9ZGkM07HTmV60sOnW6M5I+1cTE5ed06lQTNz6Hav
-         yTzGMc8omTa2fqyCHXu+nUO1W9vQjqez/NDrnfQqlOek4eDY5JDhFlbZ1upGuisHYHUK
-         Civ+oJ+Q/vdIDdzLriaUOsApp3EkCdCDOu4Gi+rPZl6eNS1GltnUFFD6UBSubmlAeRL6
-         QfWCBf+fVbTetfW9gwBEY+NNaqeoi5qjUvXRBNBLUdLJdXSqAP70lxR3nwsC15RxTxJq
-         Pkrmunxw/zDfFkTc5Bv5VWaFT8zxJ7CRmkrkuw46aEO5gdi0gO0MU+b+gTLWYTPCCWlN
-         VOqw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVy3gy7mrKs0DyIt9c+ctP0PHbHHzlVwzU+gJD2oQX+7u6V8jVB3VKnbhZR9owMt1JNjVwk72b/6jOouA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxQ9yRWydDIoXP3kcf7Wo6qHA43KkkKwSoJkCI9Na6CHUQpn5Yp
-	GO67LNe77aP/wstgsYrq/PTfUVMPC+hnUHlfSCqV4nX0DxNHX7VL4w+O
-X-Gm-Gg: ASbGnctNNJGxnYs7ztEVhM9EcHdIgtfV053sB4ZZgFe+xXAhUxDb4DDxzt6UfYawS7h
-	7s45Zs31/z8HvzkvfwKVOImPirRYQuTAKCm0pT0+gmrw61Eqgzdo1MIikEL+VvhO9xticpuIswv
-	8sBxDWtkL5025QYscQaJgpv49LJ7oB7BwIB1IX287FzXzNE545VQQEq4SXOpQkXmZC4Pz02TskX
-	h21Trp6f5i8zzMqx/p8tsTlO2vS33dDh10meZJD58HB5AkPZyrwz3Az1jVvBAbECyJFh8h+0x3b
-	tga9o+Ir2G1iolhPz3NYIWKO9WK+e+yceJry6Fp7aFPF4RrArRkbmVXJgmhR4wj4IFGgbbGGwho
-	DbZOcY02X//BfvYu6bp2V1zoUIPr1xNmX7Vbd0WFbd1CjZ12wIq9CO7ucMYNWA3dmzO9ueHpx+Y
-	hqTDw15RhMJ3U+1LbsGRL0YL9dnz5JVhVnm1e1i+BBuA==
-X-Google-Smtp-Source: AGHT+IFjOxufFJONTpxys1bngEKe+lRcQqq+LVDgs/0okuT/Rc8W/l4ZwbhF8BXNqZX3cWqKXviWlw==
-X-Received: by 2002:a05:6000:491d:b0:427:55b:cf6 with SMTP id ffacd0b85a97d-427055b0cf8mr13206929f8f.7.1761072961864;
-        Tue, 21 Oct 2025 11:56:01 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4283e7804f4sm19566507f8f.10.2025.10.21.11.56.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 11:56:01 -0700 (PDT)
-Date: Tue, 21 Oct 2025 19:55:59 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: LKML <linux-kernel@vger.kernel.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Andrew Cooper
- <andrew.cooper3@citrix.com>, Linus Torvalds
- <torvalds@linux-foundation.org>, kernel test robot <lkp@intel.com>, Russell
- King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
- x86@kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, Palmer
- Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org, Heiko
- Carstens <hca@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
- linux-s390@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, Nicolas
- Palix <nicolas.palix@imag.fr>, Peter Zijlstra <peterz@infradead.org>,
- Darren Hart <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>,
- =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
- <jack@suse.cz>, linux-fsdevel@vger.kernel.org
-Subject: Re: [patch V3 07/12] uaccess: Provide scoped masked user access
- regions
-Message-ID: <20251021195559.4809c75a@pumpkin>
-In-Reply-To: <877bwoz5sp.ffs@tglx>
-References: <20251017085938.150569636@linutronix.de>
-	<20251017093030.253004391@linutronix.de>
-	<20251020192859.640d7f0a@pumpkin>
-	<877bwoz5sp.ffs@tglx>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4crhXG6RXVz2yhD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 06:03:24 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761073407; x=1792609407;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=PzV3fAz36CG929Nqa+Vmpwf5O23/sB4991deanYjMnM=;
+  b=J6b04pTVZyGUSsXKQ9pDbCx0TDyaU00LpDpSwXsrBlIZkxdJ8BOgVjyh
+   bMJRxpNciMENurqjFooP3wS3JXnnA08ZhC8z22NebjUTs4ISTW6KGCSQf
+   XqkUQuS5kEKI8HUYPm+GfEdoncbMkiCJQOX8eL6AFzFDE+FmXeqK5ekqs
+   cCA1DrFg5gIUI3ISXCTcYWS1a6Ig2yM/FpYsGIkNjh51nhfpYFpXXsskw
+   OXDpLqe7ZqGKS+wgZ3HPg+R44mOmqpcZFNnIAVkluMUh/LBIyahLaXlgT
+   KbSQ52rfGlOC0yU5SqdAgObualOjUEf97boiRKSX3/TXD6dpijyjHbhj3
+   g==;
+X-CSE-ConnectionGUID: 6NR3uriLQvy5K2gjzhbCPg==
+X-CSE-MsgGUID: nic7vCfOQvWLue86mas86Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="50785560"
+X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
+   d="scan'208";a="50785560"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 12:03:21 -0700
+X-CSE-ConnectionGUID: Bx9mUSJWTbCQYca+htR7hA==
+X-CSE-MsgGUID: SIk4PR6OSqiBKU5Aq9wKAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
+   d="scan'208";a="182873900"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 12:03:21 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Tue, 21 Oct 2025 12:03:21 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Tue, 21 Oct 2025 12:03:21 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.21) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Tue, 21 Oct 2025 12:03:20 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h6WEwUzYRSYo2dVaVG2RCSQL3Fqf/Bp4BNsMJM6F4GzFSQLMHc9MWIHzcTzVJJgu9XvpqMQwgKEH/RLY2tT+tSXsQltdgellrxzOPoKtSvZHop8Zetvdl2lQU1GV+RdksWeM1EJMHFunTM1pxSyjz2kaUCGm1fMLoSjiweDQiLqFYZ8SjZfoHc+J0bSji4OnOU6w6YmCqqq9diJGzCYCXsNY2nF8/ja2mLyp+6f9hxFI3O3RVBM2NANpHOd0Z5K/yAJwZ2vi0K7uAfF8QJb+q94zlwm2sg7ZL0O2ItkGup8syxI7SecDN6MHnrMWBZLeQPUmUMEAxv1tugNsgYJw3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PzV3fAz36CG929Nqa+Vmpwf5O23/sB4991deanYjMnM=;
+ b=oWTgdF1ikcB7hfjIy51tsTVsPvLg3WDEt3x6e5HtZiMo+Wp1LqRiTWgWXNc3M+9etW4uE0BYHQj5P9w/2sBnYnbU6KC61V5Rk4aGaSj6gHt/ShEN6ygX0Rp7FnKCHFSoqDvWLT91koTIwMH5/stK6ablYLvi22tbR6n9Tk6rsasY1jt3gq3tMc/EuA8Hkf7ZMBdnreKlNFMrIBa7oihd5b0GpZYM+/jlxLE40q5oDBNS7lb7QrAkedlUIV1EVP/3vziBHw4A81kgc8ApMU4pjJCfhlyKqJnTMpYAF525fBz5LPGa9ATtd6NB/sH7P3vIs2ycAbM/bR6J9LtKPbmJFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
+ by SJ0PR11MB4816.namprd11.prod.outlook.com (2603:10b6:a03:2ad::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.17; Tue, 21 Oct
+ 2025 19:03:18 +0000
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::edb2:a242:e0b8:5ac9]) by MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::edb2:a242:e0b8:5ac9%5]) with mapi id 15.20.9228.016; Tue, 21 Oct 2025
+ 19:03:18 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "seanjc@google.com" <seanjc@google.com>
+CC: "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
+	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "linux-mips@vger.kernel.org"
+	<linux-mips@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "linux-riscv@lists.infradead.org"
+	<linux-riscv@lists.infradead.org>, "michael.roth@amd.com"
+	<michael.roth@amd.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "palmer@dabbelt.com"
+	<palmer@dabbelt.com>, "binbin.wu@linux.intel.com"
+	<binbin.wu@linux.intel.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
+	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "x86@kernel.org"
+	<x86@kernel.org>, "Annapurve, Vishal" <vannapurve@google.com>,
+	"maddy@linux.ibm.com" <maddy@linux.ibm.com>, "maobibo@loongson.cn"
+	<maobibo@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>,
+	"maz@kernel.org" <maz@kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "Zhao, Yan Y" <yan.y.zhao@intel.com>, "Huang,
+ Kai" <kai.huang@intel.com>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>,
+	"pjw@kernel.org" <pjw@kernel.org>, "zhaotianrui@loongson.cn"
+	<zhaotianrui@loongson.cn>, "ackerleytng@google.com" <ackerleytng@google.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "Weiny, Ira" <ira.weiny@intel.com>,
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
+	"imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, "kas@kernel.org"
+	<kas@kernel.org>
+Subject: Re: [PATCH v3 23/25] KVM: TDX: Use guard() to acquire kvm->lock in
+ tdx_vm_ioctl()
+Thread-Topic: [PATCH v3 23/25] KVM: TDX: Use guard() to acquire kvm->lock in
+ tdx_vm_ioctl()
+Thread-Index: AQHcPv2wOE43VneGUkej4wzVYW2G37TLwBqAgAEZKICAACN6gA==
+Date: Tue, 21 Oct 2025 19:03:18 +0000
+Message-ID: <3270d9d05f4be252a11d5722267135201a976759.camel@intel.com>
+References: <20251017003244.186495-1-seanjc@google.com>
+	 <20251017003244.186495-24-seanjc@google.com>
+	 <d0b369c65e33518d57a40a70c0d13f70bd64db47.camel@intel.com>
+	 <aPe7M1aUPwqDmQbY@google.com>
+In-Reply-To: <aPe7M1aUPwqDmQbY@google.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|SJ0PR11MB4816:EE_
+x-ms-office365-filtering-correlation-id: f0ae1d0a-aa2f-4151-a9d9-08de10d47eec
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700021;
+x-microsoft-antispam-message-info: =?utf-8?B?ZFlkQ1d5UGxkTU4wNFdzMy9qcmpxMHZ3K3ZmOWpmSHNoOE5NTlBBdXZwMC9w?=
+ =?utf-8?B?QWUwUmI0Q2NpWUg1ZVM1dmFpQW82VTdrdnZicVJodHFXMnk4emcyUGY3UlE4?=
+ =?utf-8?B?ZkhWVng0ajFRZVpBUng0L2tKUTRKbGRXY3FBUE81Vy9XMGRoYVRhNW1hTi8y?=
+ =?utf-8?B?MVI3QWRxZEhUYnEwWXNDS1F0SURuNjdYSFkxeGNhNU9Bbkk5Q01LRFg1RTY0?=
+ =?utf-8?B?dGZtYUxEOHNNajh3VWFScnF5eXhZVTZRU2t6TU1xTHkzVHU4MndWc0pwZW5E?=
+ =?utf-8?B?MTRrWWJuQlZzbnB1ZTdKcjl1aUJLK0xJVFcxNFVrVUVqcit6UUJkWlliVi9v?=
+ =?utf-8?B?QTE5ZHdwdHh3SzNVc015OWRHdHFnaGhIRTFVbjczTWxweFM2dEJ4NmUxU01m?=
+ =?utf-8?B?RVZyWUpnYkordUpzY1ZwdDFmSER6Yk1UZmtxMktUbmF5R2NpMUlIeDY2ZVZN?=
+ =?utf-8?B?YVNNY0lxMkFKdS9peWFsdUVoeGx5Lzd1V3BlNVZERmoyNHZSd215VnVsTk1q?=
+ =?utf-8?B?R2xSRW5MZ25SOU9MbTc2MFMwYjNjeEJQbTlmQkp5ZVJMZklVV0FpV29HemYv?=
+ =?utf-8?B?VlJNdklWOFhpRm9XaHlHUmIvalc5RHNxQnNVL200VzZVa2dWN29UbmxXaU1R?=
+ =?utf-8?B?RHJWc3d6eHVDNEpvbVJvczJ1dzZKU21ldDFJbWp0bXVxdVBpUzRyUTN5VFhM?=
+ =?utf-8?B?QTRNaGU2dXVLUVNDQ3o5c3ZuNTZwTVorUDZlbGNxT2RtOVBOdm1OTnZuMFJo?=
+ =?utf-8?B?UHEyWVMzbUhtQWxUS3hsRlpJOHd5dXorMFZURGNyNmtkbC8zU2Y2Y05PYTRy?=
+ =?utf-8?B?U2U2K1AwNFRMcGtyaXgzUGRqakZ3cU5yN0x1YklRZWFEMjZqWWtCc2VVZmZQ?=
+ =?utf-8?B?Y0hrVmFUTXZxRFMyUzArRE00OXc1ai9MeUszTmUzcnpLdjJsUEtZWGJCZDhE?=
+ =?utf-8?B?a0svblhCNjl6SkV2bW1ENGtlZE8zZ3RYTzhDSHZpOUUwcGxveDRmVnkwQUty?=
+ =?utf-8?B?VU9mcC80TmVxdGpwazVNOUlVL1VKbjZkdWlOc3BDb0F3QTEvSjBFbkxyNFRU?=
+ =?utf-8?B?U2RjeGlNQzJIMjEvM0FLUG9COUQ1azZEZmtZZEV3UGVQVWFDNXBDb1hDTUlO?=
+ =?utf-8?B?YWlRblRQYVNHTSs1dnhvU1M3cTh4dnRvbldEbVhwZGJWelM3aW1FVS93aDZw?=
+ =?utf-8?B?d1FabFhPc0tMdjZFNnN3bVNUS1o1eFF1Ym9kc0JxaWxPTUE2YWRCczFGb3Qx?=
+ =?utf-8?B?MHlueXVzZjhCenlsNEV4RXd3OTF3bmM0RDlGZWlQamlHdC9KTEN6NTNZSFh6?=
+ =?utf-8?B?cyt4dkpaUlZzc0hTYnVXQnhMNXgrMnkyY2pWenNFd3Y3NkcvQ2FYUHVTKzk1?=
+ =?utf-8?B?dXFxN0dUdzdmRTM2UEFwN0tuQ3dCQXZrS0duMnZXcGsxV3VDZzBQUkVFM1Na?=
+ =?utf-8?B?eHlUNjd2R25DWVZPL3czS0FrRW1USk1qaDZoZkM3Uy9NZ1FWcnJqaWdURUlQ?=
+ =?utf-8?B?M1l0U1FsWlVCZUJvamNuM2ZEL2ZPeVJQT1l2dWRmUmhXak80dm92WERFdnRB?=
+ =?utf-8?B?bFJnUmNVdXJXeVl3Zm5DOWgwc2U2YnNITWJ6VDJlTndEa2FxTDVYMHdFUGFY?=
+ =?utf-8?B?cExJZWlZcXplUTA1SzA5S1ExOVZBbExhOTNxL3BLMGxIMnlkMW1EU2FVSkcx?=
+ =?utf-8?B?RUZneHZCOGtOZUVrV2kxeDFycjVienE4SFNWaHhJTXV0RTIrbFBTWEdSN1Ro?=
+ =?utf-8?B?YzhiNEdXK01YZ3RmZWczT2cwZEdUZHZFUzJBZEV3TFA2dE4zWXpzcGdKbHQr?=
+ =?utf-8?B?c0phTXp4RFphN0FQcXFHc1NOYUx6cGxFbjNZN2Y3d04xazdtbVNudUJ6VE5h?=
+ =?utf-8?B?aFg3Um9PT1BoNUhxd0N4WDdmbWVlNmVST1RDZERBNnlBNTR3K1l0bjQ0UjdP?=
+ =?utf-8?B?Zm5mVFE5dXpkYVNBdTVpN0x4WUE4SVFiS2p0cCtzOEJ3RkhxSjVPTURiWndP?=
+ =?utf-8?B?QWtCdXlWcHNQellKU0NPZURyM1ZPaTlSS2NiMVh2Y1BOY2V1dGV5a1VZQk5l?=
+ =?utf-8?Q?JlDvh8?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UG9mOUZBVFVmblZZT1JDakpTNFVuNC8zUnZpcngrNHdoZmp3R2ZiL3ZubHJZ?=
+ =?utf-8?B?eHNVdW5vdDdCZmR2TDRUeEFGeUp5OU5EaTg1c05sdzR5aDQzRG1hZEJVVWdB?=
+ =?utf-8?B?Z3dvMjlCM1IzWDIvNi9XSzNLdDU5ZnFFMnpHUEZZdGJuZUYrVGhXTWsvZkZp?=
+ =?utf-8?B?RmkzSUZwQ3BScFVwajFVRnkvU3hYZHo5b0hNaFQrQ1lJQm4wY0pOTUlUWEFt?=
+ =?utf-8?B?OVJmMUdGZ0tiaTd0c0tta1g2SmVKYUFLa2MvbUdNTEkyNXFZQm5SNG04Y0ZD?=
+ =?utf-8?B?a1JSRFRrTHREbnpKYUw4cGt2aVdKVDdHbmx6L0szcjFHc0dOQ1ZQQ3RveEI0?=
+ =?utf-8?B?a0RkaWRIYk0weGhhNWJhc2wwMVVrVWdOaElXQXJESmJhNkNoS3lIZVlZSHVL?=
+ =?utf-8?B?a1ZJMm5XR3dUR08wUmVpYVE5THJMMStSWDNGY3Y2SjR3MitJUi9JNGR0d001?=
+ =?utf-8?B?ZzBGWFlnTlVCay9kZG9vTUFHOFBNa1F6UGIxYmR1dkg1U1l4L1RMVDlFRThi?=
+ =?utf-8?B?SEZwQ0I4U3NFVDcrZERCUHBVWkFGUEdsUlVFdWZNT21DT0NXTDZQOHBKOHI0?=
+ =?utf-8?B?YzhIM084bkFIUFRqOEl4QmtpSXE2Y3JHd0tFSndyNDR4VTB5Q0JBSmRlcXh3?=
+ =?utf-8?B?c2hObDBXcWxaZC9XRzhBNndxRjRrWXNnR1VKYm5HUjdzcEVFa016MUhmUUl4?=
+ =?utf-8?B?cWlNR21DY3p4TzIyb1k1akFIQ3VVMjdrNTV6d2RJVnFIUGNrUURHMVVJK3ZQ?=
+ =?utf-8?B?dW9UUStVcW95UW9DTDlJYSs4anB2MFc4cU15WUozQS9lWEFNcHNHUmpwZGVW?=
+ =?utf-8?B?V2Vocjg0N2ljVGtzSy9tSXRLQi9nNE9laGMzU0tTV2VZeFp3TEJXWWpSZ1BS?=
+ =?utf-8?B?RDcvS1VsREZHcFFBNHZETDhwMkFQeEVsUW81Qk95Ykk5ZTF4RjZoK3kzWUpS?=
+ =?utf-8?B?YStzYVlKY3AwWFJnd2Z4bDBib3p0Q21CYU9OUzBITlg0TWhpRC9QTHIyK2w0?=
+ =?utf-8?B?cDE5K2JKNXlTWE5vd0NLUFl1cEFaMTI5a1BFeVhrWVY3VldtY0IvN21veVBn?=
+ =?utf-8?B?dVBDRXl1MW9IM1dKM05TWkRjRVc0OFBjWG1PRzI0dmY5RjlMVkVMc3JuMkVP?=
+ =?utf-8?B?SkQ4K2k3UTE3Si9FZmZPQ3k2bUdCUzRMRHZUSmx4TitBTWMvTnVlaTg4T0lk?=
+ =?utf-8?B?TUtPdDlyUGNGV0JjQ2MzRW8wV1AvWEVnbzA3UmpKbmErcDdSczBIMVZiZVpy?=
+ =?utf-8?B?NU9QQ1NYMVJmSkdZb1hlTEs4QU9kR2ZjZzBtMCtFRHVPckp3aEJHZXBPdXVi?=
+ =?utf-8?B?cFpLUno3NFA2L3RoQ0c4ekhONmE0TU00cGZ4OFl5dDRQMUYrY1NyOG5NS2E1?=
+ =?utf-8?B?YldvZnZCV1FkamFvbmtLMGVwWmxtWGlTVlh4RldoUXNGYy9kdlR3SkpHS3A5?=
+ =?utf-8?B?KzFobEd1OHJXb25OYnlOMWZaV3JXSjc4eVJ1aTRSV2JUSEVaRWRQU1BLRy9Z?=
+ =?utf-8?B?Q1NDV2FzVzNjSVU1Y3FYZ2lLTkdNVHlITDFvNlArYTc1RytydEl6MDF6ZGpz?=
+ =?utf-8?B?NEtla0kxR1RQV0duQmF1d1RNYXZmczAvekNobGgvU0I0UGkwNHJzTE92MjRX?=
+ =?utf-8?B?TkdSUTNPck5nTXkvRTFPTmkrZG8zQUlOTGNEWTRRbXRKcGZQRklobTRiajlJ?=
+ =?utf-8?B?RnlrWjlmWUNwREZWSUVlVHErV0RXbWkrRjhDSEhBelZSUWRSa256ZlI0QXlF?=
+ =?utf-8?B?RWNYMG5OamhuOUpXMnRPRkxmcFpxTFpYK0RlV2pEdDV3RlRkdUVtOFlLNkkr?=
+ =?utf-8?B?UXJvanNtemcwNzJ0N0NjRTFadXRzOFlFQmZtUWhQNTFRK1Avamd6eGRUbkU5?=
+ =?utf-8?B?Z2JJRExWbENaMzFlTzhpVDN5b2tVSWFXNHEzcEo2c2swVHdHR0NrbUFFTnRX?=
+ =?utf-8?B?ZlZuUSsvZlBJL1ltZlIraWx6STVObFllSGxYUytON1RBQkNrS3U3WnNGL2NH?=
+ =?utf-8?B?c3IvbUY3T1ZoQTVIY0RyTXRQbEUzRlc5TmtOYjVDK1B4ckxhMWpvZE4yM1Q0?=
+ =?utf-8?B?aFBnZ0N6QWt6Si9aL3VtMWphNzZnUFVkcnRIa0FsdnBYTmdCVEtUN2QxNWZj?=
+ =?utf-8?B?WElRUU9yMVpONjNrVGF4bTAxQVd0R0FZLytTdXYzVDVtbEJYVTg5bmY3WmxB?=
+ =?utf-8?B?Rnc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D715145EAA45F34088B6E13FEA55C304@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -114,154 +230,25 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0ae1d0a-aa2f-4151-a9d9-08de10d47eec
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Oct 2025 19:03:18.1202
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: fc3iOUYmznZG01ZlzgGzn0ToNRiUn3dYm+aoAa5vrBdo0MEwM8zgJ9JaGLMFHyoL2J4l43+h1NHXxGuYZ3XtbjbUMXS3Z1QyM14eq7SEPmQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4816
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 21 Oct 2025 16:29:58 +0200
-Thomas Gleixner <tglx@linutronix.de> wrote:
-
-> On Mon, Oct 20 2025 at 19:28, David Laight wrote:
-> > On Fri, 17 Oct 2025 12:09:08 +0200 (CEST)
-> > Thomas Gleixner <tglx@linutronix.de> wrote:
-> > That definitely looks better than the earlier versions.
-> > Even if the implementation looks like an entry in the obfuscated C
-> > competition.  
-> 
-> It has too many characters for that. The contest variant would be:
-> 
-> for(u8 s=0;!s;s=1)for(typeof(u) t= S(m,u,s,e);!s;s=1)for(C(u##m##a,c)(t);!s;s=1)for(const typeof(u) u=t;!s;s=1)
-> 
-> > I don't think you need the 'masked' in that name.
-> > Since it works in all cases.
-> >
-> > (I don't like the word 'masked' at all, not sure where it came from.  
-> 
-> It's what Linus named it and I did not think about the name much so far.
-> 
-> > Probably because the first version used logical operators.
-> > 'Masking' a user address ought to be the operation of removing high-order
-> > address bits that the hardware is treating as 'don't care'.
-> > The canonical operation here is uaddr = min(uaddr, guard_page) - likely to be
-> > a conditional move.  
-> 
-> That's how it's implemented for x86:
-
-I know - I suggested using cmov.
-
-> 
-> >>  b84:	48 b8 ef cd ab 89 67 45 23 01  movabs $0x123456789abcdef,%rax
-> >>  b8e:	48 39 c7    	               cmp    %rax,%rdi
-> >>  b91:	48 0f 47 f8          	       cmova  %rax,%rdi  
-> 
-> 0x123456789abcdef is a compile time placeholder for $USR_PTR_MAX which is
-> replaced during early boot by the real user space topmost address. See below.
-> 
-> > I think that s/masked/sanitised/ would make more sense (the patch to do
-> > that isn't very big at the moment). I might post it.)  
-> 
-> The real point is that it is optimized. It does not have to use the
-> speculation fence if the architecture supports "masking" because the CPU
-> can't speculate on the input address as the actual read/write address
-> depends on the cmova. That's similar to the array_nospec() magic which
-> masks the input index unconditionally so it's in the valid range before
-> it can be used for speculatively accessing the array.
-> 
-> So yes, the naming is a bit awkward.
-> 
-> In principle most places which use user_$MODE_access_begin() could
-> benefit from that. Also under the hood the scope magic actually falls
-> back to that when the architecture does not support the "masked"
-> variant.
-> 
-> So simply naming it scoped_user_$MODE_access() is probably the least
-> confusing of all.
-> 
-> >> If masked user access is enabled on an architecture, then the pointer
-> >> handed in to scoped_masked_user_$MODE_access() can be modified to point to
-> >> a guaranteed faulting user address. This modification is only scope local
-> >> as the pointer is aliased inside the scope. When the scope is left the
-> >> alias is not longer in effect. IOW the original pointer value is preserved
-> >> so it can be used e.g. for fixup or diagnostic purposes in the fault path.  
-> >
-> > I think you need to add (in the kerndoc somewhere):
-> >
-> > There is no requirement to do the accesses in strict memory order
-> > (or to access the lowest address first).
-> > The only constraint is that gaps must be significantly less than 4k.  
-> 
-> The requirement is that the access is not spilling over into the kernel
-> address space, which means:
-> 
->        USR_PTR_MAX <= address < (1U << 63)
-> 
-> USR_PTR_MAX on x86 is either
->             (1U << 47) - PAGE_SIZE (4-level page tables)
->          or (1U << 57) - PAGE_SIZE (5-level page tables)
-> 
-> Which means at least ~8 EiB of unmapped space in both cases.
-> 
-> The access order does not matter at all.
-
-But consider the original x86-64 version.
-While it relied on the guard page for accesses that started with a user
-address, kernel addresses were converted to ~0.
-While a byte access at ~0 fails because it isn't mapped, an access
-at 'addr + 4' wraps to the bottom of userspace which can be mapped.
-So the first access had to be at the requested address, although
-subsequent ones only have to be 'reasonably sequential'.
-
-Not all code that is an obvious candidate for this code accesses
-the base address first.
-So it is best to require that the implementations allow for this,
-and then explicitly document that it is allowed behaviour.
-
-The ppc patches do convert kernel addresses to the base on an
-invalid page - so they are fine.
-I've not seen patches for other architectures.
-
-32bit x86 has a suitable guard page, but the code really needs 'cmov'
-and the recent removal of old cpu (including the 486) didn't quite
-go that far.
-
-
-> 
-> >> +#define __scoped_masked_user_access(_mode, _uptr, _size, _elbl)					\
-
-Thinking about it there is no need for leading _ on #define parameter names.
-It is only variables defined inside #define that have 'issues' if the caller
-passes in the same name.
-
-> >> +for (bool ____stop = false; !____stop; ____stop = true)						\
-> >> +	for (typeof((_uptr)) _tmpptr = __scoped_user_access_begin(_mode, _uptr, _size, _elbl);	\  
-> >
-> > Can you use 'auto' instead of typeof() ?  
-> 
-> Compilers are mightily unhappy about that unless I do typecasting on the
-> assignment, which is not really buying anything.
-
-ok - I did a very quick check and thought it might work.
-
-If you can't use auto for the third definition, then I think tmpptr can be 'void _user *'.
-
-	David
-
-> 
-> >> +	     !____stop; ____stop = true)							\
-> >> +		for (CLASS(masked_user_##_mode##_access, scope) (_tmpptr); !____stop;		\
-> >> +		     ____stop = true)					\
-> >> +			/* Force modified pointer usage within the scope */			\
-> >> +			for (const typeof((_uptr)) _uptr = _tmpptr; !____stop; ____stop = true)	\  
-> >
-> > gcc 15.1 also seems to support 'const auto _uptr = _tmpptr;'  
-> 
-> Older compilers not so much.
-> 
-> Thanks,
-> 
->         tglx
-
+T24gVHVlLCAyMDI1LTEwLTIxIGF0IDA5OjU2IC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
+b3RlOg0KPiBObz/CoCBUaGUgZGVmYXVsdCBjYXNlIGRvZXNuJ3QgY29weSB0aGUgc3RydWN0IGJh
+Y2sgZXZlbiBiZWZvcmUgdGhpcyBwYXRjaCwgaXQNCj4gZXhwbGljaXRseSBza2lwcyB0aGUgY29w
+eV90b191c2VyKCkuDQoNCkVyciwgcmlnaHQuIHNvcnJ5Lg0K
 
