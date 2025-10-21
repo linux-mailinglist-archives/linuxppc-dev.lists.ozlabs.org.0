@@ -1,68 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-13122-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13123-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB14BF7CB9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 18:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40274BF7D61
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 19:13:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4crdjj0S1rz304H;
-	Wed, 22 Oct 2025 03:56:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4crf5r6rxCz304H;
+	Wed, 22 Oct 2025 04:13:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::649"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761065784;
-	cv=none; b=XG6c42aj+XHauC3X7sp92XEqn9aBCBWd9cYyKVq4Aq/KlrIjUJQ4zpe3QNJgFx83cIVGaWzMLU6Pb7I6gh/EPXHAUe/lo5y/l5eFp7XNMhays7Yt8bSZsfIscbJi1wwJjqlpBNZPagZewWN6Rdt6YIj+tyVWr9qZ6HgBob2B+A2AUGBvrSiFmWGOL+f0OScck17WJHlif+YMj3NyjkeApMHc7JrVVAyZd0uQtn+2TxKPGIkadvo1mi8lPxF7nTA/Taa9hEXlJipwFUNuNhy9K4xvgUEZCnlNd8gueEXv+ZVMlRZHvySnkxdBatrOsaymQ34j+Y/L8utKBBLmth3KqQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::133"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761066832;
+	cv=none; b=Mntl94DB23vRKPRYZN5HRm8eKGyW8YP34hz88+xwOlESvB0dxQ929y8/P5T3qsm3+72nUZmJ8FXdDwRQgvBhwNDaqqgpdIm6xVpSZ8mM3kobZBtewZZ+wsh3ggb1EcAjxc2ADbW9XDu3REL3LEI2fvK7cIfJw39HTvNR5Mv301w/AY7paS0SHlg+1wCbh/SkzpKUzeHfI4M5dDjrkIY/OVbmkZPtmDMmpgpLYHdclO179bDDVG+n69K7lES2PB6+LSEZuxSasEiROKhVl6YZiZX7/llfZiQuhEK7Q7slBDQfdgZqnZ988uZelDqhGF1PSVeS+dSo/J57LvZECiQ0lQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761065784; c=relaxed/relaxed;
-	bh=QUj6Jzqtl7pAwgzbknudC50aTFamgZNMeXgKkiBAGZE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eRGUE+vmr0CIrys8ZBQAp4+i5UCOcZGqD2IOHeh+CXQGLEMDvQpjmLDgMsrJNqxEeE+ThCCuwaOFcuERA515xS58IfrNUUbbyRDM9efXY/fWeoY5PKhEuax0LV44vQOodsDsInIiQ8iJoCuF1zAbcK0Ug2tmNjhh+Qe3x8p1Vgb5rZpQbt0lrx7cL88z4NikHYC0re/cBue8JFlVSyeI4Uj2Le+mcVzOc2//W5P0BhXy0pSK6cYyvB1rfG4FN+YbTX2JHXSYvQCKpSgTjIywqkQfC+mEuODHUcfBpf6a24n/4ygPpvYCKlGqbeRzBNifcSEYNuHXQoISIaJkT8mMlQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=iY4QfrXF; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3nlv3aaykdncl73gc59hh9e7.5hfebgnqii5-67oeblml.hse34l.hk9@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=iY4QfrXF;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3nlv3aaykdncl73gc59hh9e7.5hfebgnqii5-67oeblml.hse34l.hk9@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
+	t=1761066832; c=relaxed/relaxed;
+	bh=T7OF7YinQtdM6zEwx9mf3VJteIbSNxF5xxDOzyp6kaY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SmybLQHwqguD7mYry42rAIeFE1wjxLu8SxbTC/HLyGFWh9+PKKEFq7Hu8ITaupEZ9xR3B8Tc1+IVMfJKiL8VBh2ymK1QZrN7wMqEhPwz/9VXt7AL4UOtwsITydM2DhTuJvkwBU2T5ge9UlmIDzsUmrdxnCGyeJL22Gfga2Ke7LDgvyWJwdHKA0H5fM2Lut78bd91TdULZ+PR4n15WVAETfy2M8OT/EAp1rZgZSimBXG2Y8LS3UX0D7IWHIKbMICDv0a/xyQfOoskMvwZkZ8dcqGSmGHgB/l3NGFKYd+Bw7f2iNqHnzNHgxltzoNekYb7nUWY7fLB81vdi6BLD3cgqQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4crdjh08H3z2yqf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 03:56:23 +1100 (AEDT)
-Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-290e4fade70so43549805ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 09:56:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761065781; x=1761670581; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QUj6Jzqtl7pAwgzbknudC50aTFamgZNMeXgKkiBAGZE=;
-        b=iY4QfrXFtDCiIL+wkGnRbE92JttPezLmTsaXGAvL3x3csNQkWY08PUSua0GC1cCmxo
-         agIwEqwGv0POIZZ9dm4ZVC/0JdXZTbGAy6i8Y1P8Jhr8Vw6q2QF3dOa30NRQhp+FG/Lc
-         xdgBOo3Lix7H07RI9v5N9WZfJPIkSTVjzL6KdSx0ELlCvIIUR7L4X7/EwFfbygWymzAV
-         bK3aZzxVtGcbFUjwbPFEcy94oRgQnUekqQntcfcDiuOEwdAo7zSJdRsvDkmgDPwfaSSn
-         23P8S/77+cuqNf1eQNGwGPKJFp4JYx3BDwsQCaqFw9uNRcsmHT9uSNuLCu3JEpcHESLm
-         w/9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761065781; x=1761670581;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QUj6Jzqtl7pAwgzbknudC50aTFamgZNMeXgKkiBAGZE=;
-        b=GA/WJEN4UhHGJW78at0e6ofJhnJwQlSYHKROy0A3iEMT+wUpsA5WsMR1MgCQBMM32H
-         Dl5I1cYCwxV5imFDszSryFkCaTujbW4U4cXTQ7prU14slv16kv+KBX3miILSogipkscZ
-         4WJJmeTCgW1sZptEjBGMG1ne/TPjXUA4WP4ib2X9HHXDL2y2SjhLWcZPnuIcXDsJdRbJ
-         vlTLHe/ICSxlKMm4A5M/M5wQAr7BKAnV4Y/PRTCnkvC7obsRkbyJUuOrCB3mJi6GkMIU
-         wwpBPjyaoanwpQmXOGaT2niFUDIfkeoUIdtH78McR6TXh8l+8EFIiftWXPBYCgiflMAu
-         4enQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV8WolL6pAxWSEY28EdL1fOh0AO/SrhKCnJelovb4RjHPz7JIvVMsuKX2MEviVysF4dZnw8Ltx7Q1T4WwI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz5EmJ0SLyuUHvR00ji0+hjJ1DXKovQSCW8ljHbKOh7F9uq4lvf
-	oyA0spo3oFeUlUj3lnhsY4oPK4SrALEa+KgutIAIV1ZndFYAyvn7Q3LkHNYAwTMo6HmNrDgDptx
-	XeHN5MA==
-X-Google-Smtp-Source: AGHT+IGOqKmUzCbfjGYr8B2jY/C1mdIZnvxK8+ss+AVkwVotQdjiGEd+3SJ7VfMTaFoQGYSh7+8f99sR5n0=
-X-Received: from pjre3.prod.google.com ([2002:a17:90a:b383:b0:33b:51fe:1a75])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e88e:b0:250:1c22:e78
- with SMTP id d9443c01a7336-290c9c89c9amr235880025ad.1.1761065780727; Tue, 21
- Oct 2025 09:56:20 -0700 (PDT)
-Date: Tue, 21 Oct 2025 09:56:19 -0700
-In-Reply-To: <d0b369c65e33518d57a40a70c0d13f70bd64db47.camel@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4crf5Z6G4Pz2xC3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 04:13:38 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=T7OF7YinQtdM6zEwx9mf3VJteIbSNxF5xxDOzyp6kaY=; b=2Q1SsXK2pXUN8mCnQvRcx+QhQn
+	VHutmMR5Rm8NehoV2QJEip/SnFEKMiY64LR/hUPPumhePnybaugYxUzHfGHyOTx0cLGbotoYVCFO+
+	9lyaG/SBzt/6AdyC0IaqifMG/VBu1VMxQL4cnSdmGLEv5ebIL4NZuRX+insIu9cdUJH+b1dnBTRaV
+	g/ngxAKGwaWSaDIqSP52BljzzeAD3aihVqBuTjHlzHYldIZjI+8FkMKoKbeVVwYEWZ5Mboqi23dON
+	0PhF/1OuVgk3SXof8lmqPChWNgxxrLnkYAEP0sqPbIgJb3IRxOhYKRc9Dv4GF2LUgqx3m6edVBpYg
+	uGdt9VGQ==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vBFvS-00000000CZQ-0p2N;
+	Tue, 21 Oct 2025 17:13:34 +0000
+Message-ID: <3ba11b0c-818f-41d5-8885-038c7e0133f5@infradead.org>
+Date: Tue, 21 Oct 2025 10:13:33 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,74 +53,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-24-seanjc@google.com>
- <d0b369c65e33518d57a40a70c0d13f70bd64db47.camel@intel.com>
-Message-ID: <aPe7M1aUPwqDmQbY@google.com>
-Subject: Re: [PATCH v3 23/25] KVM: TDX: Use guard() to acquire kvm->lock in tdx_vm_ioctl()
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, 
-	"maz@kernel.org" <maz@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
-	"pjw@kernel.org" <pjw@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
-	"kas@kernel.org" <kas@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, 
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, 
-	"zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>, 
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
-	Yan Y Zhao <yan.y.zhao@intel.com>, "michael.roth@amd.com" <michael.roth@amd.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, 
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	Vishal Annapurve <vannapurve@google.com>, 
-	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 20/23] mm/kconfig: make BALLOON_COMPACTION depend on
+ MIGRATION
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
+ virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
+ <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
+References: <20251021125929.377194-1-david@redhat.com>
+ <20251021150040.498160-1-david@redhat.com>
+ <20251021150040.498160-4-david@redhat.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20251021150040.498160-4-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Oct 21, 2025, Rick P Edgecombe wrote:
-> On Thu, 2025-10-16 at 17:32 -0700, Sean Christopherson wrote:
-> > Use guard() in tdx_vm_ioctl() to tidy up the code a small amount, but more
-> > importantly to minimize the diff of a future change, which will use
-> > guard-like semantics to acquire and release multiple locks.
-> > 
-> > No functional change intended.
+
+
+On 10/21/25 8:00 AM, David Hildenbrand wrote:
+> Migration support for balloon memory depends on MIGRATION not
+> COMPACTION. Compaction is simply another user of page migration.
 > 
-> There is a tiny functional change. In the default case it no longer re-copies
-> the struct back to userspace.
+> The last dependency on compaction.c was effectively removed with
+> commit 3d388584d599 ("mm: convert "movable" flag in page->mapping to a
+> page flag"). Ever since, everything for handling movable_ops page
+> migration resides in core migration code.
+> 
+> So let's change the dependency and adjust the description +
+> help text.
+> 
+> We'll rename BALLOON_COMPACTION separately next.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  mm/Kconfig | 17 +++++++----------
+>  1 file changed, 7 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index e47321051d765..3aff4d05a2d8c 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -599,17 +599,14 @@ config MEMORY_BALLOON
+>  #
+>  # support for memory balloon compaction
+>  config BALLOON_COMPACTION
+> -	bool "Allow for balloon memory compaction/migration"
+> +	bool "Allow for balloon memory migration"
+>  	default y
+> -	depends on COMPACTION && MEMORY_BALLOON
+> -	help
+> -	  Memory fragmentation introduced by ballooning might reduce
+> -	  significantly the number of 2MB contiguous memory blocks that can be
+> -	  used within a guest, thus imposing performance penalties associated
+> -	  with the reduced number of transparent huge pages that could be used
+> -	  by the guest workload. Allowing the compaction & migration for memory
+> -	  pages enlisted as being part of memory balloon devices avoids the
+> -	  scenario aforementioned and helps improving memory defragmentation.
+> +	depends on MIGRATION && MEMORY_BALLOON
+> +	help
+> +	  Allow for migration of pages inflated in a memory balloon such that
+> +	  they can be allocated from memory areas only available for movable
+> +	  allocations (e.g., ZONE_MOVABLE, CMA) and such that they can get
 
-No?  The default case doesn't copy the struct back even before this patch, it
-explicitly skips the copy_to_user().
+nit:
+s/get/be/
 
-	mutex_lock(&kvm->lock);
+> +	  migrated for memory defragmentation purposes by memory compaction.
+>  
+>  #
+>  # support for memory compaction
 
-	switch (tdx_cmd.id) {
-	case KVM_TDX_CAPABILITIES:
-		r = tdx_get_capabilities(&tdx_cmd);
-		break;
-	case KVM_TDX_INIT_VM:
-		r = tdx_td_init(kvm, &tdx_cmd);
-		break;
-	case KVM_TDX_FINALIZE_VM:
-		r = tdx_td_finalize(kvm, &tdx_cmd);
-		break;
-	default:
-		r = -EINVAL;
-		goto out;  <====================
-	}
+-- 
+~Randy
 
-	if (copy_to_user(argp, &tdx_cmd, sizeof(struct kvm_tdx_cmd)))
-		r = -EFAULT;
-
-out:
-	mutex_unlock(&kvm->lock);
-	return r;
 
