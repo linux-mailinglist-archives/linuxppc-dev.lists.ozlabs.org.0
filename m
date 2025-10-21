@@ -1,93 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-13113-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13114-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8006CBF7387
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 17:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3030BF7393
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Oct 2025 17:01:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4crb8Z6Bqyz3cZf;
-	Wed, 22 Oct 2025 02:01:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4crb8d21Mrz3dBZ;
+	Wed, 22 Oct 2025 02:01:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761058862;
-	cv=none; b=BR3RvHX1oid2eLU3WOBR/BmsmTrzQH2ra6VdCcMUA2/TU3KSTTk5YIhXjxlsF86YrEUKBPiaFpyXJsHl4/AUp9S71SXGGmGXR4gNlEV9zozwayuEhE9+xgtZzDGheVYzgWhy/4c2BDcPdXJ1I6hK/y7c60ozMTsfYNLusup4QIQ9XLdkLA5zWRDmkr0yldEQaTx7GuGoQ1GlA1Dh+aNYqV2fPRkpTDAlqZ4ZkRDVVzpN9uTf45/4veU9PsdNPcLkSOzqLSzkC9Fr5mHQSd2gGjw9j4xRNMku9MN1QAsm4E0txO3IMiYtWUGu8vqNyQxEjGIlQVrEJLS4nhvSgLUmEg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761058865;
+	cv=none; b=HR/cUd69jKC7632v9X3BiTY8wXPqJ2VQqEEkAgyHOC4cAq1mocsAl6bhKNFjZH40rBqZDoqmGBTf/rvu6gJAeuN0S0iK9zvb4BzoAxjfpuBf6A1bnIHD4rNIr6+OnDAJ46mKtlOsNibj1eCeBvuAnqiz/s2YwwTkO7VixLDbZPC89G5D9C5aGQ4mvcIrigVX3pbGveJDG8Z1FCQSW9v1Ec7BXgtMD/lTRoD5eUy9F3+AjNL3uXA3ZXoZqLXvlCtnsgdm4Je54bcgB1q/8ewnIGtNW1GCtNvbwHY7yLOZL0w26TfFlk69IQtc2oFOv+ZGJPchw+7U9Xin5XIXW588IA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761058862; c=relaxed/relaxed;
-	bh=IxeaoFY2Zid2XlBwuhP3Cbqf0hU6HwUeKjXEu5WpZgc=;
+	t=1761058865; c=relaxed/relaxed;
+	bh=lRubUKoIKZa05nEVw7UJ7l9fUFkh873Slwn5354MkBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=CH0xamHCheKp5eYcdHbRjebeY7u0RTXj7ngnatO6IKOGLQDxB62MqjeQyPm1QANEDmq3Syv2YloXSiWzW8Dv5NLo7XyWN8zOHr3xSvMn3gHILKXlq4c8O5LaOkaLe4jHlFazVwCytNwoLFqgcg2PRyj5L16Tk1WTIGVbhbnTkGRyumd+y35B9QuOSpavxYMKibuBA2TdC+k/JqAiTxtkJNMlb9UV6VfZtlvmiJdMBs96cMxomOBp40tg+FE5iKldXOYTqzgc4Us3Z+jhF0Y5ynet8ZCxdu0Kc90Q/06tpn9ZO+iZx2yhKGSSrvrTTJ/0eYf3EFiNPwAvaTPOuR2zdQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TlwTUMfY; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TlwTUMfY; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:content-type; b=hIUzIkdUZXQXqtsTV6YTKQeiqRVX3bOWiizaBwby4nk9DnouP5PhY3yz0hTuklIP14UXkVxEv/5/XcLT2crF1AKuCgfXwidZ4TzSRXJ7xqZAWiGa6F4LagXOl3zh78atm2KfJWNLYuFdTC59rcYqGEixgyY+eCjc5FVUqPsySA4CH6lwnY7eVMCiP10a1Mtcb5V7YpHtf17rlamvqc8YF1oZCuSe8dCemU8D0TRtYNVRhM4LUCj1nt4n/L/N32E3jdNIwv4o7p1+m2hgN8uAPEiXosvcgXFsTETzRSKJ2fWDVtV1JlC5BiBiLbq7wx/7VxWRun/6BaFLnOWNabGWpA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CTWVRKgd; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GvkPHv95; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TlwTUMfY;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TlwTUMfY;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CTWVRKgd;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GvkPHv95;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4crb8Z0qCjz3cZh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 02:01:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4crb8b69TYz3cZh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 02:01:03 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761058859;
+	s=mimecast20190719; t=1761058860;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IxeaoFY2Zid2XlBwuhP3Cbqf0hU6HwUeKjXEu5WpZgc=;
-	b=TlwTUMfYnRxQR8H6255yauArXJfxGBZR3cEGn4JIZNa/wtZWGWz9Ft48+5qlXXC1vPmYMn
-	cox82roNf3aVSAczdkFcvOHvHhxnI0G12rIXHwG4nb+ZQlre+VarT5KBze4HWVnDo7Txr2
-	BGSXtDQMmfAkLNqvG9G9Ot5oMjas338=
+	bh=lRubUKoIKZa05nEVw7UJ7l9fUFkh873Slwn5354MkBU=;
+	b=CTWVRKgdtlEUmEaXoaSO9zkAUZ3tEd8NzCAYy09BVjymoqXCglke1u+KXp9ry/TdQX+a7V
+	A8r6evZE81V56oayjuN+YibKUCIt21AfOIjsrrAezrcF/tQbACIKHAjezgqJrIk622LZ+t
+	ohQ7Rg/Fn4Y2wQuX23syoM2c6+GUT9A=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761058859;
+	s=mimecast20190719; t=1761058861;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IxeaoFY2Zid2XlBwuhP3Cbqf0hU6HwUeKjXEu5WpZgc=;
-	b=TlwTUMfYnRxQR8H6255yauArXJfxGBZR3cEGn4JIZNa/wtZWGWz9Ft48+5qlXXC1vPmYMn
-	cox82roNf3aVSAczdkFcvOHvHhxnI0G12rIXHwG4nb+ZQlre+VarT5KBze4HWVnDo7Txr2
-	BGSXtDQMmfAkLNqvG9G9Ot5oMjas338=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=lRubUKoIKZa05nEVw7UJ7l9fUFkh873Slwn5354MkBU=;
+	b=GvkPHv95sT7hHJJC1zvMnpcuBfgw+pimEzXSakWKqs4Qv+B/4zdiejnyh5urDJKftUv0eb
+	bJpFk4A9kqNBiBTg6JYZZfWm1Eil94Ddw5Pi2xmWFI9QTpapbPDB1Hzw1TQwooN1c0NcIe
+	tbN7XG7HsHQZGMNaCNOadg0l0tAqI/w=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-HGOEEpW-PqaeQBhsoTLJ1g-1; Tue, 21 Oct 2025 11:00:57 -0400
-X-MC-Unique: HGOEEpW-PqaeQBhsoTLJ1g-1
-X-Mimecast-MFC-AGG-ID: HGOEEpW-PqaeQBhsoTLJ1g_1761058855
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-46e4cb3e4deso21049285e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 08:00:56 -0700 (PDT)
+ us-mta-397-_jBPFjYFNfaCGeenwU6BFg-1; Tue, 21 Oct 2025 11:00:58 -0400
+X-MC-Unique: _jBPFjYFNfaCGeenwU6BFg-1
+X-Mimecast-MFC-AGG-ID: _jBPFjYFNfaCGeenwU6BFg_1761058857
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4270848ceffso5759681f8f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Oct 2025 08:00:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761058855; x=1761663655;
+        d=1e100.net; s=20230601; t=1761058857; x=1761663657;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IxeaoFY2Zid2XlBwuhP3Cbqf0hU6HwUeKjXEu5WpZgc=;
-        b=sfyrhZnJjbK9alZkIb8sKhLKuriLcXNA983pLwVKHt0JulsQ7y3kdbS/HkrnREVWz3
-         Oep3oWwuMrarzmFtMxXHum4ZdDzZFjPpkbYx+UifIGTnWhiBZN5os0creKHbqjHgx5fV
-         MzbF4AEtvVYE4EarbyheWz2PBX2OrfvDs+/iNJY4Sw6MsaJoOc1HlcVS5kMK13LudFBS
-         D5Eab5i4rs7xTa1ktwoqVGZ5AyshFk38vpaKec68QkbB+bFZvBIIsgXWRVwny2z4mYod
-         z79hTNRG0MhbRxSRmsCcxABaxfeBHSoC9VnDIFikwOU1qwBzqNoeSDWGeJOmO5lc5Ah/
-         8BAg==
-X-Forwarded-Encrypted: i=1; AJvYcCWeU6rRoRrV2ka5qa7L6af+Ms61yagw5xZOlp+9i9XCREzGNXx2RDJjLFS4LfD9gFwer61X0RciRUJOseo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx+MKqGz1DcDYlSDTeUVPPIdNP39e9sVQo43XChxJjWp3tdRDZf
-	uYpVDHwuqIGAlqsHvej+mZFo/ZZJ5vVoztcO5nnGmkfVqo8gIzi2BSTKiCH9WXQGXGREvfM4yST
-	XHH+0im7VeusR/gWrHPMN60IwUvGBuAA2+qH8sAOsIiWTgwsFHg9K89InO48nT5SZuYQ=
-X-Gm-Gg: ASbGncvcL+sWbHD6ME4u8T6nDHLLa6JLPohI2fD6dKQPQoYXEcsowPfo+qVbWsoLjEx
-	M+0/uPytLHYa8DWz6zje5J+3xy7fJ/f7tgigbGOPOo80k1UyWAg6213F/++3+NbrkjEtanhV4O0
-	nvneudpVzrJeQ4XxOGAinMIYC6dPBkX/4l5czC3mLjNQsK9ylNJppz1tyDBFYDdBJb1rM6MH6To
-	AOpUQacwG41pBtR/lBSQUsv85pCXgFix5pV6f/kLqv0+s2e8NAeTE8z09dZc+NFiHLWdoz5WY3J
-	P3hqIlhsCPsnDP7UGsIFcS9xA7hQx/uUeKQ0Qtg5ZTjiYq53Y2jPE6Dnlbs+ZFE8z9llcxtjEbZ
-	cnlYh3DzI9BAWpltt2t3oyIoBnBJdn2g+8QftQ8Hyvcn4DAoGvgl/XpZXvgD4
-X-Received: by 2002:a05:600c:6d87:b0:46f:cdfe:cd39 with SMTP id 5b1f17b1804b1-475c3ee145emr177105e9.16.1761058855002;
-        Tue, 21 Oct 2025 08:00:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGTNQTiGz5xAhZ5fsddDZjV1qS7LKojQZq7D4oRaNBiv/doXb8XOAkbt7nBaFlt+DyqmCX9Sw==
-X-Received: by 2002:a05:600c:6d87:b0:46f:cdfe:cd39 with SMTP id 5b1f17b1804b1-475c3ee145emr176645e9.16.1761058854422;
-        Tue, 21 Oct 2025 08:00:54 -0700 (PDT)
+        bh=lRubUKoIKZa05nEVw7UJ7l9fUFkh873Slwn5354MkBU=;
+        b=SdudAQaVNbzotDA1vhi0AGYTal6wBdXTxeLqSQsVFDnPsHXbO4sKlOOBxIQebemTnP
+         1d4Hu5GB1PvjCYJmYo1YUvwP2C39HIOWl0CNxkHD/mAoHT57vyReui798CgmgednsRRe
+         TL7D4mEm9ec72DDVzy7W5bgHTvX2U9/e5Meybkwrf6eob19LJqjpYLw3gs1RKOOEQSpn
+         19OT9NhDYFT/aP9cl2no0WtdiRXh5A5FsGPNr9hIh60xnBdXS280dlRAuWKmw838LBve
+         WBLupmdUHhoCZnfWVnAEPNtbZ3U7S5wbTvYVLGfH0EmhC64pqYCrhPdY4Jrx7Dm49h5U
+         P21g==
+X-Forwarded-Encrypted: i=1; AJvYcCXWHJiQ2dgKF6kiepfXpvk/4MGNW66N33UrffI16fuL7BIREEPy4B+VViQa/J6rmR+HnP5HWwt0AFGBREM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxNYDMWEOViyAPzkGmqG99J0JJv34/vkiDOeFAUdwykF61ZGpTS
+	15AEvF7VvPvXISqUZBeHUzGxSD02ESbiLiPbAsluJvPtJcsyaFfMxIwSVcl5HJu2W8BkWpOBlll
+	ELAiwJ4wMFx76XSZWUJeGkMppy9fh+utmnT2/PxKQ1mvivmBHXoOcIR6spx7RK/SMeQ0=
+X-Gm-Gg: ASbGncvipTn/aAG9YnSlz8NbMIwuARadgvIFEbFTRXCm+KWfeEpNAnxxguUjr6DH/Sv
+	B1UyNGdQKoauFGodeTS7kpD1goq1+j7cUzjoFL2yM2d1LPd0PEHoez8boBQq6SZautoagEYbG+f
+	couafykL3s4G6b4m5DG3OVCFJ2tf3WUFTn+xmzmBTx8lCywE5LGAS49jBe1iSS5qYHPYnyCghXX
+	le2LIDcRJRCVT47EXaSpUlcv4EH1rjIihjUbVxOh6lIYr0/P19Zz4YGLISswh67PANWbots9Btp
+	uYUoZcNvZSJYw1G1+w5qCi076TRTowhbBZZPOfZ9qII18MJ/N9zkEE1WlzMwWYXeMmYX0jIIW7m
+	017pvrDNtlEdOm+t59Fde1FqJUjoh+oECda9hevjMBHQ2/CargmsGOPdQhsja
+X-Received: by 2002:a5d:5d05:0:b0:427:809:eff5 with SMTP id ffacd0b85a97d-4270809f252mr11795580f8f.53.1761058857364;
+        Tue, 21 Oct 2025 08:00:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGuNdQq7IEo7xmxPaMqWMcC8QeroaNoRnXCBpBegLE0FB0KNfhJhInOomIlaVikmeTIuzyODg==
+X-Received: by 2002:a5d:5d05:0:b0:427:809:eff5 with SMTP id ffacd0b85a97d-4270809f252mr11795534f8f.53.1761058856848;
+        Tue, 21 Oct 2025 08:00:56 -0700 (PDT)
 Received: from localhost (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-471144c82b8sm285435185e9.15.2025.10.21.08.00.53
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-427f009a78csm20793541f8f.26.2025.10.21.08.00.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 08:00:53 -0700 (PDT)
+        Tue, 21 Oct 2025 08:00:56 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -117,9 +117,9 @@ Cc: linux-mm@kvack.org,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>,
 	David Hildenbrand <david@redhat.com>
-Subject: [PATCH v1 22/23] mm: rename CONFIG_MEMORY_BALLOON -> CONFIG_BALLOON
-Date: Tue, 21 Oct 2025 17:00:39 +0200
-Message-ID: <20251021150040.498160-6-david@redhat.com>
+Subject: [PATCH v1 23/23] MAINTAINERS: move memory balloon infrastructure to "MEMORY MANAGEMENT - BALLOON"
+Date: Tue, 21 Oct 2025 17:00:40 +0200
+Message-ID: <20251021150040.498160-7-david@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021150040.498160-1-david@redhat.com>
 References: <20251021125929.377194-1-david@redhat.com>
@@ -138,7 +138,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: pOCSQNPV9fbN4fkJ-J8naBxRNT4JAJm6pOP8LM0VceI_1761058855
+X-Mimecast-MFC-PROC-ID: nFMrYb5zSPI8jqUVFmMCJHzJx-zmiJQNdlBgV8l4M3c_1761058857
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
@@ -148,136 +148,49 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Let's make it consistent with the naming of the files but also with the
-naming of CONFIG_BALLOON_MIGRATION.
+Nowadays, there is nothing virtio-balloon special anymore about these
+files, the basic infrastructure is used by multiple memory balloon
+drivers.
 
-While at it, add a "/* CONFIG_BALLOON */".
+For now we'll route it through Andrew's tree, maybe in some future it
+makes sense to route this through a separate tree.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/powerpc/platforms/pseries/Kconfig | 2 +-
- drivers/misc/Kconfig                   | 2 +-
- drivers/virtio/Kconfig                 | 2 +-
- include/linux/vm_event_item.h          | 4 ++--
- mm/Kconfig                             | 4 ++--
- mm/Makefile                            | 2 +-
- mm/vmstat.c                            | 4 ++--
- 7 files changed, 10 insertions(+), 10 deletions(-)
+ MAINTAINERS | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
-index 3e042218d6cd8..f7052b131a4c5 100644
---- a/arch/powerpc/platforms/pseries/Kconfig
-+++ b/arch/powerpc/platforms/pseries/Kconfig
-@@ -120,7 +120,7 @@ config PPC_SMLPAR
- config CMM
- 	tristate "Collaborative memory management"
- 	depends on PPC_SMLPAR
--	select MEMORY_BALLOON
-+	select BALLOON
- 	default y
- 	help
- 	  Select this option, if you want to enable the kernel interface
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index b9c11f67315f0..47da8dfcffc2b 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -411,7 +411,7 @@ config DS1682
- config VMWARE_BALLOON
- 	tristate "VMware Balloon Driver"
- 	depends on VMWARE_VMCI && X86 && HYPERVISOR_GUEST
--	select MEMORY_BALLOON
-+	select BALLOON
- 	help
- 	  This is VMware physical memory management driver which acts
- 	  like a "balloon" that can be inflated to reclaim physical pages
-diff --git a/drivers/virtio/Kconfig b/drivers/virtio/Kconfig
-index 6db5235a7693d..ce5bc0d9ea287 100644
---- a/drivers/virtio/Kconfig
-+++ b/drivers/virtio/Kconfig
-@@ -112,7 +112,7 @@ config VIRTIO_PMEM
- config VIRTIO_BALLOON
- 	tristate "Virtio balloon driver"
- 	depends on VIRTIO
--	select MEMORY_BALLOON
-+	select BALLOON
- 	select PAGE_REPORTING
- 	help
- 	 This driver supports increasing and decreasing the amount
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index fca34d3473b6b..22a139f82d75f 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -122,13 +122,13 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- 		THP_SWPOUT,
- 		THP_SWPOUT_FALLBACK,
- #endif
--#ifdef CONFIG_MEMORY_BALLOON
-+#ifdef CONFIG_BALLOON
- 		BALLOON_INFLATE,
- 		BALLOON_DEFLATE,
- #ifdef CONFIG_BALLOON_MIGRATION
- 		BALLOON_MIGRATE,
- #endif /* CONFIG_BALLOON_MIGRATION */
--#endif
-+#endif /* CONFIG_BALLOON */
- #ifdef CONFIG_DEBUG_TLBFLUSH
- 		NR_TLB_REMOTE_FLUSH,	/* cpu tried to flush others' tlbs */
- 		NR_TLB_REMOTE_FLUSH_RECEIVED,/* cpu received ipi for flush */
-diff --git a/mm/Kconfig b/mm/Kconfig
-index c058a65080d1e..73e352bb82653 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -593,7 +593,7 @@ config SPLIT_PMD_PTLOCKS
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 878e53d0f65ed..17fbf5c1ea2fb 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16225,6 +16225,16 @@ T:	quilt git://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new
+ F:	mm/
+ F:	tools/mm/
  
- #
- # support for memory balloon
--config MEMORY_BALLOON
-+config BALLOON
- 	bool
++MEMORY MANAGEMENT - BALLOON
++M:	Andrew Morton <akpm@linux-foundation.org>
++M:	David Hildenbrand <david@redhat.com>
++L:	linux-mm@kvack.org
++S:	Maintained
++W:	http://www.linux-mm.org
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
++F:	include/linux/balloon.h
++F:	mm/balloon.c
++
+ MEMORY MANAGEMENT - CORE
+ M:	Andrew Morton <akpm@linux-foundation.org>
+ M:	David Hildenbrand <david@redhat.com>
+@@ -27062,9 +27072,7 @@ M:	David Hildenbrand <david@redhat.com>
+ L:	virtualization@lists.linux.dev
+ S:	Maintained
+ F:	drivers/virtio/virtio_balloon.c
+-F:	include/linux/balloon.h
+ F:	include/uapi/linux/virtio_balloon.h
+-F:	mm/balloon.c
  
- #
-@@ -601,7 +601,7 @@ config MEMORY_BALLOON
- config BALLOON_MIGRATION
- 	bool "Allow for balloon memory migration"
- 	default y
--	depends on MIGRATION && MEMORY_BALLOON
-+	depends on MIGRATION && BALLOON
- 	help
- 	  Allow for migration of pages inflated in a memory balloon such that
- 	  they can be allocated from memory areas only available for movable
-diff --git a/mm/Makefile b/mm/Makefile
-index ab012157b5109..315aec23d78f5 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -121,7 +121,7 @@ obj-$(CONFIG_CMA)	+= cma.o
- obj-$(CONFIG_NUMA) += numa.o
- obj-$(CONFIG_NUMA_MEMBLKS) += numa_memblks.o
- obj-$(CONFIG_NUMA_EMU) += numa_emulation.o
--obj-$(CONFIG_MEMORY_BALLOON) += balloon.o
-+obj-$(CONFIG_BALLOON) += balloon.o
- obj-$(CONFIG_PAGE_EXTENSION) += page_ext.o
- obj-$(CONFIG_PAGE_TABLE_CHECK) += page_table_check.o
- obj-$(CONFIG_CMA_DEBUGFS) += cma_debug.o
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 8843a8c4914c4..542378df0bf75 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1431,13 +1431,13 @@ const char * const vmstat_text[] = {
- 	[I(THP_SWPOUT)]				= "thp_swpout",
- 	[I(THP_SWPOUT_FALLBACK)]		= "thp_swpout_fallback",
- #endif
--#ifdef CONFIG_MEMORY_BALLOON
-+#ifdef CONFIG_BALLOON
- 	[I(BALLOON_INFLATE)]			= "balloon_inflate",
- 	[I(BALLOON_DEFLATE)]			= "balloon_deflate",
- #ifdef CONFIG_BALLOON_MIGRATION
- 	[I(BALLOON_MIGRATE)]			= "balloon_migrate",
- #endif /* CONFIG_BALLOON_MIGRATION */
--#endif /* CONFIG_MEMORY_BALLOON */
-+#endif /* CONFIG_BALLOON */
- #ifdef CONFIG_DEBUG_TLBFLUSH
- 	[I(NR_TLB_REMOTE_FLUSH)]		= "nr_tlb_remote_flush",
- 	[I(NR_TLB_REMOTE_FLUSH_RECEIVED)]	= "nr_tlb_remote_flush_received",
+ VIRTIO BLOCK AND SCSI DRIVERS
+ M:	"Michael S. Tsirkin" <mst@redhat.com>
 -- 
 2.51.0
 
