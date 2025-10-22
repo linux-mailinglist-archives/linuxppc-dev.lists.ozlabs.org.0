@@ -1,56 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-13160-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13161-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C7FBFBF1B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Oct 2025 14:50:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F55BBFBF2A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Oct 2025 14:50:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cs8B655D7z3dVp;
-	Wed, 22 Oct 2025 23:49:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cs8B73vb9z3dWY;
+	Wed, 22 Oct 2025 23:49:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761137358;
-	cv=none; b=k7KZD7C0NrHYcz7vfIDjCN4nVm6dwWQJ5TPGm9JNJdh9h9O04C3kj6krHF+uUP4UNBR8uHlzTyESfcY0pcocEpGKZgXrWM7UG8Rq2DsBvbNafGoapzM4LXMOwDBDsZkt5JXSEz/b0CslvktSDypfS1nb1BAczjMEA4lAl9Gi2bbkh99PgByhgc3kLlM02GXFClXYyZK7aMaue5EgXtACJ5kyYIVy0wRkHVjuUbhi/t9WFJS2oooE3P40S9kr9U23blQFIt1BLByLcV93roBFbqcgY1/eKwcK7JsD44qhdJrdQqPUSog4En7PQM1mqkBMG2vh3oGopWQQPl62Ybawow==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761137359;
+	cv=none; b=UmojmjP4WlDIJfo8TP1njjlGS9PzChDxEg0LlmgB3j5IXnxLiz5Lz+Zc8u8D2hqEVHr8dLD/n7pVmeeFtE5AE8gXtIutR+SZeQgpyLtjdwc6CQVaK23x7O71A9Hios/Qmx0+ZiYgZf7abL/g6GkVC/hf7pTF1Uy0M9g2PRGbRp1MSm41wH+zY5gTQkfGfbFWePU17cuyt38Ja0oqvWMxe5BX8FyFyqCtkjVxPWejXNPycI52UHfXaALoiFQXfXebW30AaqiJTE8kAXv/9LxQh+l3IQYC5wb49AuAMWF/HR4BvJyfE7PB4WTgOLz5E+ba6FLuGrc+yNqqBYXTg8Yp4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761137358; c=relaxed/relaxed;
-	bh=lccNRRk780OLOrvRTmsIIfoLd+zwTDZxXhd+4kcSfCA=;
+	t=1761137359; c=relaxed/relaxed;
+	bh=CaAPbzoialu5mXFNLErT5ZTF4fpG+LkmcGL7QamE02U=;
 	h=Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Date; b=DRKboHoilgYjZZKpT6U7xmxvATf7F71Xlashu8Ssc6eXxiTfH9sgtdRufylrgWEyaFg9FrRIMiGCQUquKQLJPvRDLz4lTPL/LP29Ae3fc2Ll4Cpzpr9yE9ptaqyh2YjBlnypx9VUdh4xR+vDVTlWXXNMxofyEB79pmE8q0uxHNyFeGNftW9fR1y6WI1aQArjaZ2TXV1CvPodtyuVy2iJj7uZvjwNoD4C67008drUfL1940/GndSkGf6+psK6ydzyg7rpxKnTcvPhdZzqD6VrTdCo8i6mt1i+1gu3GxUydaxmaIIPg7qGPYTxOIuPHulnQDtar3WeDwpUbnq6j7T1Jw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=kSNLvhZH; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=jBvd0+8w; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 Content-Type:Date; b=VyC1YA56LVeSGbDXZ6E+HVENlJbE3YGAqSohDUu3tmsW5OG8O9avPr45tZwNaiqb0Gcp33TvllTsC550PnyGiQQQqshofD5Hz5raIgapOx+U7e58kOmvWan792pmpUzNjYlu7v2r6V8Sy7jbykSF+UOiRBUlEN2WSo1SbvKDmwp0TGT6PTIKgB67y1jP4LKI0l0ZebqM1JMSSnzQ7KkQlEwMQPlrSL+4hF4bza8kwTzHw5uYa6HMJ2Hhm4a+Pxi8JShbFXQGdkcdqxjk1vYQ0gckQ7mtWSicCiNdhKS5L8Q8sGVpKMP7Kl4+Phi19XtJzkb35D/6pRDq0GiVHqv8uA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YCUM+m2I; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=IZpjJMDC; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=kSNLvhZH;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=jBvd0+8w;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YCUM+m2I;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=IZpjJMDC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cs8B36gfkz3clw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 23:49:15 +1100 (AEDT)
-Message-ID: <20251022103112.419590507@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cs8B64vNVz3dVm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 23:49:18 +1100 (AEDT)
+Message-ID: <20251022103112.478876605@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1761137353;
+	s=2020; t=1761137354;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=lccNRRk780OLOrvRTmsIIfoLd+zwTDZxXhd+4kcSfCA=;
-	b=kSNLvhZHcJTcvSj8XCd+k+HYD9K4T7yCINmy83VEZBK84m3WfK/bM45mfZ5F0pkI6uuJu0
-	oytRSuCMIOKuePJ3eBS98GD4Y8yR0+mSEW1CFZInDFQFQGtQ6aybIQf+lGATl+mCkVjvAS
-	Bv9uqeqEjKipDkPqb8YRk0E0bTCt4ULyXEgYj11AP66+iaO0pej0K5kqDozoGdnp3g6kIE
-	QADjIdbC4Rb2fXcGo7OGvJ4afzmSSZCRuG2WSJvRB6gDLxIxDlS+byoXg3jYsPtCPt3tXy
-	mz5W6+lpGnVsjOfQuAHbg7HE8LLFTei08BImHMANYVlHxFwey+pKUDBBTnKG3g==
+	 references:references; bh=CaAPbzoialu5mXFNLErT5ZTF4fpG+LkmcGL7QamE02U=;
+	b=YCUM+m2IJhIlYNc3cw3Ka+JSw1r0rxQfagyYMBCbI5G0Wlrimf1GqVMRdPE4fE3q4DTDLL
+	I3sZqCcSstmzPTAmKHsfJLX2C34OtucmDjHa59k+mhfvh5+9VviczJU5Sds0cipnh9SwfO
+	oWZS+Qqu+HQ4gtdRXc2up+rIBxMO9BqQkbGhl/pgs0VaF5lnHLpP1SJqiRYu7DsIVtGwog
+	iJzQBkR3BVxzibX9Vi4X6eSTOXUzrvM9S2tLua3pO5DkDcic3JptOzX0xEuxlfeEOEsy1h
+	aSrVdebfZCKdTbD1hru16EJ14VbE11jH6OE5kYTFRDrxovf+JUjMjnVnSMwjFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1761137353;
+	s=2020e; t=1761137354;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=lccNRRk780OLOrvRTmsIIfoLd+zwTDZxXhd+4kcSfCA=;
-	b=jBvd0+8wGhqi9YLp+G44n5XgyHsh8eF5MQnWzMNg30j3PgApN0ylxUrS8tq8eAgva7Gr6V
-	RLwP5H6AG5silIDQ==
+	 references:references; bh=CaAPbzoialu5mXFNLErT5ZTF4fpG+LkmcGL7QamE02U=;
+	b=IZpjJMDCZvmWlpmGgE3lhdOQmOPckYbthUby0iY/Im/yxFE9DkRTg5O+cgCbWyzDN24LUx
+	wOuZ0lgHzEUESmCA==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: Julia Lawall <Julia.Lawall@inria.fr>,
- Nicolas Palix <nicolas.palix@imag.fr>,
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Darren Hart <dvhart@infradead.org>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
  kernel test robot <lkp@intel.com>,
  Russell King <linux@armlinux.org.uk>,
  linux-arm-kernel@lists.infradead.org,
@@ -71,16 +73,13 @@ Cc: Julia Lawall <Julia.Lawall@inria.fr>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Cooper <andrew.cooper3@citrix.com>,
  David Laight <david.laight.linux@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Darren Hart <dvhart@infradead.org>,
- Davidlohr Bueso <dave@stgolabs.net>,
- =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+ Julia Lawall <Julia.Lawall@inria.fr>,
+ Nicolas Palix <nicolas.palix@imag.fr>,
  Alexander Viro <viro@zeniv.linux.org.uk>,
  Christian Brauner <brauner@kernel.org>,
  Jan Kara <jack@suse.cz>,
  linux-fsdevel@vger.kernel.org
-Subject: [patch V4 09/12] [RFC] coccinelle: misc: Add scoped_$MODE_access()
- checker script
+Subject: [patch V4 10/12] futex: Convert to scoped user access
 References: <20251022102427.400699796@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -96,145 +95,84 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 22 Oct 2025 14:49:13 +0200 (CEST)
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Date: Wed, 22 Oct 2025 14:49:14 +0200 (CEST)
+X-Spam-Status: No, score=0.5 required=3.0 tests=CTE_8BIT_MISMATCH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-A common mistake in user access code is that the wrong access mode is
-selected for starting the user access section. As most architectures map
-Read and Write modes to ReadWrite this goes often unnoticed for quite some
-time.
+From: Thomas Gleixner <tglx@linutronix.de>
 
-Aside of that the scoped user access mechanism requires that the same
-pointer is used for the actual accessor macros that was handed in to start
-the scope because the pointer can be modified by the scope begin mechanism
-if the architecture supports masking.
+Replace the open coded implementation with the new get/put_user_scoped()
+helpers.
 
-Add a basic (and incomplete) coccinelle script to check for the common
-issues. The error output is:
+No functional change intended
 
-kernel/futex/futex.h:303:2-17: ERROR: Invalid pointer for unsafe_put_user(p) in scoped_user_write_access(to)
-kernel/futex/futex.h:292:2-17: ERROR: Invalid access mode unsafe_get_user() in scoped_user_write_access()
-
-Not-Yet-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Julia Lawall <Julia.Lawall@inria.fr>
-Cc: Nicolas Palix <nicolas.palix@imag.fr>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Darren Hart <dvhart@infradead.org>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: "André Almeida" <andrealmeid@igalia.com>
 ---
- scripts/coccinelle/misc/scoped_uaccess.cocci |  108 +++++++++++++++++++++++++++
- 1 file changed, 108 insertions(+)
-
---- /dev/null
-+++ b/scripts/coccinelle/misc/scoped_uaccess.cocci
-@@ -0,0 +1,108 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/// Validate scoped_masked_user*access() scopes
-+///
-+// Confidence: Zero
-+// Options: --no-includes --include-headers
-+
-+virtual context
-+virtual report
-+virtual org
-+
-+@initialize:python@
-+@@
-+
-+scopemap = {
-+  'scoped_user_read_access_size'  : 'scoped_user_read_access',
-+  'scoped_user_write_access_size' : 'scoped_user_write_access',
-+  'scoped_user_rw_access_size'    : 'scoped_user_rw_access',
-+}
-+
-+# Most common accessors. Incomplete list
-+noaccessmap = {
-+  'scoped_user_read_access'       : ('unsafe_put_user', 'unsafe_copy_to_user'),
-+  'scoped_user_write_access'      : ('unsafe_get_user', 'unsafe_copy_from_user'),
-+}
-+
-+# Most common accessors. Incomplete list
-+ptrmap = {
-+  'unsafe_put_user'			 : 1,
-+  'unsafe_get_user'			 : 1,
-+  'unsafe_copy_to_user'		 	 : 0,
-+  'unsafe_copy_from_user'		 : 0,
-+}
-+
-+print_mode = None
-+
-+def pr_err(pos, msg):
-+   if print_mode == 'R':
-+      coccilib.report.print_report(pos[0], msg)
-+   elif print_mode == 'O':
-+      cocci.print_main(msg, pos)
-+
-+@r0 depends on report || org@
-+iterator name scoped_user_read_access,
-+	      scoped_user_read_access_size,
-+	      scoped_user_write_access,
-+	      scoped_user_write_access_size,
-+	      scoped_user_rw_access,
-+	      scoped_user_rw_access_size;
-+iterator scope;
-+statement S;
-+@@
-+
-+(
-+(
-+scoped_user_read_access(...) S
-+|
-+scoped_user_read_access_size(...) S
-+|
-+scoped_user_write_access(...) S
-+|
-+scoped_user_write_access_size(...) S
-+|
-+scoped_user_rw_access(...) S
-+|
-+scoped_user_rw_access_size(...) S
-+)
-+&
-+scope(...) S
-+)
-+
-+@script:python depends on r0 && report@
-+@@
-+print_mode = 'R'
-+
-+@script:python depends on r0 && org@
-+@@
-+print_mode = 'O'
-+
-+@r1@
-+expression sp, a0, a1;
-+iterator r0.scope;
-+identifier ac;
-+position p;
-+@@
-+
-+  scope(sp,...) {
-+    <...
-+    ac@p(a0, a1, ...);
-+    ...>
-+  }
-+
-+@script:python@
-+pos << r1.p;
-+scope << r0.scope;
-+ac << r1.ac;
-+sp << r1.sp;
-+a0 << r1.a0;
-+a1 << r1.a1;
-+@@
-+
-+scope = scopemap.get(scope, scope)
-+if ac in noaccessmap.get(scope, []):
-+   pr_err(pos, 'ERROR: Invalid access mode %s() in %s()' %(ac, scope))
-+
-+if ac in ptrmap:
-+   ap = (a0, a1)[ptrmap[ac]]
-+   if sp != ap.lstrip('&').split('->')[0].strip():
-+      pr_err(pos, 'ERROR: Invalid pointer for %s(%s) in %s(%s)' %(ac, ap, scope, sp))
+V4: Rename once moar
+V3: Adapt to scope changes
+V2: Convert to scoped variant
+---
+ kernel/futex/futex.h |   37 ++-----------------------------------
+ 1 file changed, 2 insertions(+), 35 deletions(-)
+---
+--- a/kernel/futex/futex.h
++++ b/kernel/futex/futex.h
+@@ -285,48 +285,15 @@ static inline int futex_cmpxchg_value_lo
+  * This does a plain atomic user space read, and the user pointer has
+  * already been verified earlier by get_futex_key() to be both aligned
+  * and actually in user space, just like futex_atomic_cmpxchg_inatomic().
+- *
+- * We still want to avoid any speculation, and while __get_user() is
+- * the traditional model for this, it's actually slower than doing
+- * this manually these days.
+- *
+- * We could just have a per-architecture special function for it,
+- * the same way we do futex_atomic_cmpxchg_inatomic(), but rather
+- * than force everybody to do that, write it out long-hand using
+- * the low-level user-access infrastructure.
+- *
+- * This looks a bit overkill, but generally just results in a couple
+- * of instructions.
+  */
+ static __always_inline int futex_get_value(u32 *dest, u32 __user *from)
+ {
+-	u32 val;
+-
+-	if (can_do_masked_user_access())
+-		from = masked_user_access_begin(from);
+-	else if (!user_read_access_begin(from, sizeof(*from)))
+-		return -EFAULT;
+-	unsafe_get_user(val, from, Efault);
+-	user_read_access_end();
+-	*dest = val;
+-	return 0;
+-Efault:
+-	user_read_access_end();
+-	return -EFAULT;
++	return get_user_scoped(*dest, from) ? 0 : -EFAULT;
+ }
+ 
+ static __always_inline int futex_put_value(u32 val, u32 __user *to)
+ {
+-	if (can_do_masked_user_access())
+-		to = masked_user_access_begin(to);
+-	else if (!user_write_access_begin(to, sizeof(*to)))
+-		return -EFAULT;
+-	unsafe_put_user(val, to, Efault);
+-	user_write_access_end();
+-	return 0;
+-Efault:
+-	user_write_access_end();
+-	return -EFAULT;
++	return put_user_scoped(val, to) ? 0 : -EFAULT;
+ }
+ 
+ static inline int futex_get_value_locked(u32 *dest, u32 __user *from)
 
 
