@@ -1,64 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-13151-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13156-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E967BFBEC1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Oct 2025 14:49:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23BA1BFBEF7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Oct 2025 14:49:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cs89y2TYpz30RJ;
-	Wed, 22 Oct 2025 23:49:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cs8B328dBz3chS;
+	Wed, 22 Oct 2025 23:49:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761137350;
-	cv=none; b=KHIjc8OM+xI54ahZBcP5lYxC7qYvOi8so75IDjKLrdANj1ScejORJhTyZ2db2kG35hbpcXz7hOLi+MAyWg5P/Fxh4hle9eXQfl5RFw6h0NVW6+S3ViA1/PamVZW480xkRGpOu5R9ILGy/x5yMpnFZCwONaV6GXnMRmDLrsIx1uXrLovRxmjd8XytANh+xBvIXYFhHs1AEySTgg4o5vnI72ewdEUreAXAyRbzkstShfXWm1J25oKwtXXG/uA33knSVxfUK2xvBONMMFSHADJPTNnxjOWKpY1L7ij3EfaObJV0S9dl9vLjkmI/gUeVRDQldDxdg86nFFf1uwwSLvrMZg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761137355;
+	cv=none; b=MoLHTnYSGv8jbZrxwolQfhnDSi152uuzBwJkmMVj3a2vu++ZNjbvPCpaKG0Dgpdp0bWYm3bFC1B3nhxjVk0me74j/lxQdlmOPOyJ8GnAusulYi8HEcOuJHxeP0xKL1beFzkKfQDZQnZK1hJY6ntcnWBeyPANb2/TQZyx6lMiZHlQ3c1nT7sVLVRUhADrgMtaCEEZd2IXlO7t2ymfuNJyVQx58Q1wgvDANhiuK8fVbNJ6vIYEFbXY3oTlqNDLrgPYW4CLv71jXLVgnQQKCiN9tDAR6olOe2K0LZINQczzzt01OBC/4YF+lrXJYBxdA3ZK+SG/FgVMgXlwhqAat8yIiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761137350; c=relaxed/relaxed;
-	bh=EKzyB0lrI1vv7+y80GeaggsaapcXMx0ewLMg7+vmnx4=;
+	t=1761137355; c=relaxed/relaxed;
+	bh=DNQHcterXWXQuFWR5KPGbkzD3Sh/vJk9lLVEwO1xPSA=;
 	h=Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Date; b=n8eCcrEU/litOyZpZHn3yvEkGnvNITreC81g0kjv9LzC3VG2T5QTctg3xH5WM4hmO0nTCqrWpHSkbx4P9DgSgDwRHIooltP1qARNKxZoZ+IfjNdPaW0J6RTaUIYgmnPLuqFutyTG8gmXHdikcOp7qwvIiDrujhy1ktZE2liOzzhHu79cKA4tRm8n4yZrFH+n1HjnKt2JzSEiEA5rtKj6CEzqDl0tukkTKjdGWtAvrtLl4Nfy7aNT+oEuEHlUttv7vS2uRIGbSHXr4G0jD8/gBc6ywuhCxOVaROJqgfVMGXKqAafEG9DB56CkNe/cQjk///gvoOVfFwejyVT1oserAg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=T5V35raV; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=l1AEgK8S; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 Content-Type:Date; b=bM5T0NliL12Yind60+67ZhQs0aMvZCD1O2DV4ks35QU4taNsu1/z3Y9EmRDBq3AWaQFRL6Kql6jnx0JZ2RpFqdCy8P2Uv4DVrG3oBUs083xkKZ2FwtH8Caj0dabi6yqJNlA2wMYYo/CtzRp6PEzNu14x++iTRH4OV+w/GtKd2QrAmIa1XhYd0AjN7WGYnqZOBaaDaJ8AgzpNObobJ898jUm6EDbTfTbQb2VgE3rv1JPTbe0ChL9yUCAuo37TopIekIgITDgm2lY5l1Sw7N2kdRZ1TySLwBAvnn6MaoCtCKhy9NgmZCQsCZub0JXX+8QERd/TLUnniPrUXZNL5bkntQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=vAf/WnRL; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=fX8cSqvU; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=T5V35raV;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=l1AEgK8S;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=vAf/WnRL;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=fX8cSqvU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cs89x3DWrz2yhX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 23:49:09 +1100 (AEDT)
-Message-ID: <20251022103112.043380128@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cs8B24zjvz3cZf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 23:49:14 +1100 (AEDT)
+Message-ID: <20251022103112.105759469@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1761137346;
+	s=2020; t=1761137347;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=EKzyB0lrI1vv7+y80GeaggsaapcXMx0ewLMg7+vmnx4=;
-	b=T5V35raVu/smx2hlJYXQ5D8D1+XwwQnq3v8+AH3fEjiYmvW7Du2LfaLDcV7muRMy0uFLrg
-	BKxHQePthKk4KRnO711LND36CEmPcvfCHObhQQLsraSsiaVi+pKWUuIZHdQ9gv5TnkBUrE
-	FJ04eZo8HeatCpK5JbDXBrqk+URNMzNJ5y/ob5NJCA04tb5riHjLWZOF0EU4iR1Yak+uU1
-	pZUIiOBo0H/VtNk7BYGjUp8xjfmAuqNo1l/dWXhTk+/rnA+O8HDhmkZGl8SE2oV8TklTRp
-	msbnFDY5zimkeEwI0NgQZvs01VxkiU5tVMSCU8apVRk2VLOmOUSFPTsi/aBjZQ==
+	 references:references; bh=DNQHcterXWXQuFWR5KPGbkzD3Sh/vJk9lLVEwO1xPSA=;
+	b=vAf/WnRLaiKi9WWTSyH8iUQzQkrzGIljwJslh19+BsVaPrUUzz8NaG/EydNMY5AOh/DPNQ
+	FlAdck5UN2A659HwOPkIYdFRxOmypbXSalDO84wkV/SAikEYWifJGPpjoQHalxcV4Lf/74
+	OgkhQ3pkA+3fk2fPutZTvbNmP7gx1gUr3DclJycvX75iZF036Cnxq7tl5CMsOBm8DAkZG0
+	wFvXbnrq3D20XGC/xN2CIj8+NUzQHTWrFlkDIPqA/TDOqQK+sSj4nfwQQ6rYXxudQKYBUn
+	ciZsu5fNoy2U525hHELagiJeV93MjGckgbHPoy6DCobfk74daY6DlAlnC2eJ1Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1761137346;
+	s=2020e; t=1761137347;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=EKzyB0lrI1vv7+y80GeaggsaapcXMx0ewLMg7+vmnx4=;
-	b=l1AEgK8S6UukWsdMaoJOtcowrWuRYlNMviG4h6+39rvgwRKW639xP7IifHqpgISJ9UlR+t
-	0f/lBikkQLnLXFCg==
+	 references:references; bh=DNQHcterXWXQuFWR5KPGbkzD3Sh/vJk9lLVEwO1xPSA=;
+	b=fX8cSqvU/uRXynxs8KXcle/JVqevyF+HtGxR5AgUEogTAFIK4EpPFW7QD8ucjN5XqCzEmR
+	PFxjDjDc5cEYfhCQ==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: x86@kernel.org,
- kernel test robot <lkp@intel.com>,
- Russell King <linux@armlinux.org.uk>,
- linux-arm-kernel@lists.infradead.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>,
  Nicholas Piggin <npiggin@gmail.com>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  linuxppc-dev@lists.ozlabs.org,
+ kernel test robot <lkp@intel.com>,
+ Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ x86@kernel.org,
  Paul Walmsley <pjw@kernel.org>,
  Palmer Dabbelt <palmer@dabbelt.com>,
  linux-riscv@lists.infradead.org,
@@ -79,7 +79,7 @@ Cc: x86@kernel.org,
  Christian Brauner <brauner@kernel.org>,
  Jan Kara <jack@suse.cz>,
  linux-fsdevel@vger.kernel.org
-Subject: [patch V4 03/12] x86/uaccess: Use unsafe wrappers for ASM GOTO
+Subject: [patch V4 04/12] powerpc/uaccess: Use unsafe wrappers for ASM GOTO
 References: <20251022102427.400699796@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -95,9 +95,9 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 22 Oct 2025 14:49:05 +0200 (CEST)
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+Date: Wed, 22 Oct 2025 14:49:06 +0200 (CEST)
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
@@ -120,57 +120,48 @@ uaccess header wrap it with a local label that makes both compilers emit
 correct code. Same for the kernel_nofault() variants.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86@kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
 ---
- arch/x86/include/asm/uaccess.h |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/powerpc/include/asm/uaccess.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -528,18 +528,18 @@ static __must_check __always_inline bool
- #define user_access_save()	smap_save()
- #define user_access_restore(x)	smap_restore(x)
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -451,7 +451,7 @@ user_write_access_begin(const void __use
+ #define user_write_access_begin	user_write_access_begin
+ #define user_write_access_end		prevent_current_write_to_user
  
--#define unsafe_put_user(x, ptr, label)	\
-+#define arch_unsafe_put_user(x, ptr, label)	\
- 	__put_user_size((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), label)
- 
- #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
--#define unsafe_get_user(x, ptr, err_label)					\
-+#define arch_unsafe_get_user(x, ptr, err_label)					\
- do {										\
- 	__inttype(*(ptr)) __gu_val;						\
- 	__get_user_size(__gu_val, (ptr), sizeof(*(ptr)), err_label);		\
- 	(x) = (__force __typeof__(*(ptr)))__gu_val;				\
- } while (0)
- #else // !CONFIG_CC_HAS_ASM_GOTO_OUTPUT
--#define unsafe_get_user(x, ptr, err_label)					\
-+#define arch_unsafe_get_user(x, ptr, err_label)					\
- do {										\
- 	int __gu_err;								\
- 	__inttype(*(ptr)) __gu_val;						\
-@@ -618,11 +618,11 @@ do {									\
+-#define unsafe_get_user(x, p, e) do {					\
++#define arch_unsafe_get_user(x, p, e) do {			\
+ 	__long_type(*(p)) __gu_val;				\
+ 	__typeof__(*(p)) __user *__gu_addr = (p);		\
+ 								\
+@@ -459,7 +459,7 @@ user_write_access_begin(const void __use
+ 	(x) = (__typeof__(*(p)))__gu_val;			\
  } while (0)
  
- #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+-#define unsafe_put_user(x, p, e) \
++#define arch_unsafe_put_user(x, p, e)				\
+ 	__put_user_size_goto((__typeof__(*(p)))(x), (p), sizeof(*(p)), e)
+ 
+ #define unsafe_copy_from_user(d, s, l, e) \
+@@ -504,11 +504,11 @@ do {									\
+ 		unsafe_put_user(*(u8*)(_src + _i), (u8 __user *)(_dst + _i), e); \
+ } while (0)
+ 
 -#define __get_kernel_nofault(dst, src, type, err_label)			\
 +#define arch_get_kernel_nofault(dst, src, type, err_label)		\
- 	__get_user_size(*((type *)(dst)), (__force type __user *)(src),	\
- 			sizeof(type), err_label)
- #else // !CONFIG_CC_HAS_ASM_GOTO_OUTPUT
--#define __get_kernel_nofault(dst, src, type, err_label)			\
-+#define arch_get_kernel_nofault(dst, src, type, err_label)			\
- do {									\
- 	int __kr_err;							\
- 									\
-@@ -633,7 +633,7 @@ do {									\
- } while (0)
- #endif // CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+ 	__get_user_size_goto(*((type *)(dst)),				\
+ 		(__force type __user *)(src), sizeof(type), err_label)
  
 -#define __put_kernel_nofault(dst, src, type, err_label)			\
 +#define arch_put_kernel_nofault(dst, src, type, err_label)		\
- 	__put_user_size(*((type *)(src)), (__force type __user *)(dst),	\
- 			sizeof(type), err_label)
+ 	__put_user_size_goto(*((type *)(src)),				\
+ 		(__force type __user *)(dst), sizeof(type), err_label)
  
 
 
