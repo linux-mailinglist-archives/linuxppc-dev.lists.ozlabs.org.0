@@ -1,87 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-13149-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13150-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DC8BFB65E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Oct 2025 12:26:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 023B9BFBC6D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Oct 2025 14:06:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cs5101FQqz30Ff;
-	Wed, 22 Oct 2025 21:26:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cs7F20yppz2yhX;
+	Wed, 22 Oct 2025 23:06:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761128772;
-	cv=none; b=LRzcSoA6jr1pUjIIRiLJgE1SzMvF6N+r/sSeJp6kmacuWaaWBM3L51jKAZ3M3vB19VPE8c/pXATP+NkE7YGx/kS+yqxZ1xxt0AympfzB/HXMjicpV/klYRh//bQzNNkvVhW0RMwQV0aWOoD7x8StmsBOZIEX3wRNUy1R0nXgPmqeSHh+5W61WIXeedcre7PzD5BndzbTf76J6O9OaL4d0+cVCNqzPpkIiUuzKctG+WREFtFWtGaNkZdNutMCsBI6GVoCyo+NTmy1T6mGzBMIWn4+26CfZko7WjZii+YfH8K0hfwlW4DvIDKNChqEUuuDRmm3dbDX807y6dBIIDIdtQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761134806;
+	cv=none; b=IjgQBZFDvFsrUKEIm23H/oPKupaGEd00m6Nu1jISgtxfHG544e9+tvuQQ+TlpfEw2Q6fBBFJXBv0Un848asOvRU/t+CWCwbGZ/JS1O1KI7YXfuoai65YyeY/zOSLCVWZfgG3srzvqvJxsvT3AjEY9MEUDqU5BkNCYiswCsk2zTtpv69QOVYdXjrZkyt0JJahra0iMTxJVRbhta+VhbNAOvCT7VKWXPmuNXTk4mbTENX3XTAtE26rLIKopVI3OTVCuvXGiw+H6KTOnvZ7Qh5kduO8Wa/M5oUZfxdbeOSN9NjXuF+ha2y6KjuefbHDOXK/FiLiPxGEWDm3xZYceueM/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761128772; c=relaxed/relaxed;
-	bh=L4WNrkKw0EoDvuIkWpJ3zdanNv54eTH1/JatKZIwH0s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BVhf40DB0H3Swbv0ccd75aUgZDGiHFJsJy+W35L0Z4UvjJ3DiAyZ5azQoC1I8AYM5Qhv/5O6TyNJiqGJO+rNHaR7gCPZaEseOrog6argiZ1ChNQ5vg01T2mdSlWzantt15BlUGViU+vLyUTH6pqcKDaOfE08iAFUmgWV5kJfEz/DaaJU2ltPq0L4jAVdH5LE83L6a0jtdqcIQnCyMlFp0A6HYJVbQYJCSB1Ko+C7R2L6Zkcwan+pwGr/9IIyjE/iEiCPOo98z1Ri4CxP+aVETpapehN/b4bmSXzdXWwAORZ1wh0U7yj7tHmYk5Nt7yzQw6ugykSrWMzzDByoz2OESg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rbQd5tz/; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1761134806; c=relaxed/relaxed;
+	bh=DMR8lYE8gQv8hEnfGmilkbQb1K3aIne19QZ3pLAx+bI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=nVNaEzaFzlofif6No+stT+5T3k2Tfgkm7KemjWEwz31UKV4RV7KcaY2fvjH65oQpVdW09QjfHmCzyAdV9HDlNJnXOjUMtixuu8qV7Y0EWW6s6U6ttxlHT7CPrRFIPDTfjjB1K2L8HmzhNhbVfZ4+Bsf9ZTUZwx9g01bjJzCwGfzmhS1tyS4Wn8T+I6gk1g4cf/C22WLGQyL/bclGmFPDjzZwL09g2LRIvtEwdtRwG1SCCTiWffw5u/BdifYkD5JiLUqFHuluxw1va2wPKs7zxLlMuMHtIprmG1FfUuYk7dGx1MjRzP4QvZMxiF71MHDTg8WJHLhQpJvQUIbsuyicjw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qCgmSQ05; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rbQd5tz/;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qCgmSQ05;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cs50v27nTz2yjx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 21:26:06 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59M7RRpE017349;
-	Wed, 22 Oct 2025 10:25:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=L4WNrkKw0EoDvuIkWpJ3zdanNv54eTH1/JatKZIwH
-	0s=; b=rbQd5tz/T8wwhuE0RlkH0D3GVAECx4HRpTNFwNhWxaY4K5ma7M6CfIAFp
-	veCn4A6Pt4Y8VEt2kyL3FnWNDmdrSNRKZ9GFlchgjA/Y2ZW8Xe+59mkJr0ISwdpl
-	MiiObhNnI8chyVE06NxxjwOfoFJlZlzUe/OHDsX6TNaVJLg7lKDbtLDoSfJxrWIk
-	+XQff9HAPPZn7OlSxBTLSTnRf+HK23O8RcLwfooqrMVSsSBqqyklMPhuT1cRQ+Wr
-	vyGvbk4bj8Uq6K6Wxw8ksQeze3JdcPnzBVnJCg9bXQBaEqo8lTL7hOWZbkVU7pRH
-	tq6cbc2cjxB1snKh6naLD45TtcR8w==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31s44mn-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cs7F04s4bz2xxS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 23:06:44 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59MAaYBJ007202;
+	Wed, 22 Oct 2025 12:06:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=DMR8lY
+	E8gQv8hEnfGmilkbQb1K3aIne19QZ3pLAx+bI=; b=qCgmSQ05ndF39EltRk76SU
+	clOUXant6Oxo1WlC0FMCUBKCypqfI/W8AEwnGc0EpCw4Akfdr1AKXYu4x3m9U8Iv
+	iMWtEidilKiPaGlRh1XGcxQCsgFUg+xU0P31ecNI0wnvc/zm4gYjidxo7QSMClcU
+	W83PLuItVQdioPtc4MjePwywF7xXLWexGcykvr7qzdVZ7xIlU0BTKgP8RuqfvBy1
+	BcxL0QKG7IFVa5UF71yrO+8Cb+fy7RzxMRnDcB+vDhOkkbODn9qV9j8OIESisHiJ
+	O0ASffoAex/pOjevFznsZhsZl2fFHO41/l44YR2ZL6HInFKklQ2yo5Jj0bsnY5SQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vu32j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 10:25:58 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59MAHrtt004413;
-	Wed, 22 Oct 2025 10:25:58 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31s44mh-1
+	Wed, 22 Oct 2025 12:06:25 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59M9XR3K014663;
+	Wed, 22 Oct 2025 12:06:25 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vn7s8cv5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 10:25:58 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59M805f3002367;
-	Wed, 22 Oct 2025 10:25:57 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqejfhu3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 10:25:57 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59MAPriv62456302
+	Wed, 22 Oct 2025 12:06:24 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59MC6Noq31130078
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Oct 2025 10:25:53 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4560A20043;
-	Wed, 22 Oct 2025 10:25:53 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A10120040;
-	Wed, 22 Oct 2025 10:25:51 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.in.ibm.com (unknown [9.109.204.116])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 Oct 2025 10:25:50 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Baoquan he <bhe@redhat.com>,
-        Jiri Bohac <jbohac@suse.cz>, Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>
-Subject: [PATCH] powerpc/kdump: Add support for crashkernel CMA reservation
-Date: Wed, 22 Oct 2025 15:55:31 +0530
-Message-ID: <20251022102531.657147-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	Wed, 22 Oct 2025 12:06:23 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1FF2058067;
+	Wed, 22 Oct 2025 12:06:23 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DE04D5805D;
+	Wed, 22 Oct 2025 12:06:19 +0000 (GMT)
+Received: from [9.61.242.79] (unknown [9.61.242.79])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Oct 2025 12:06:19 +0000 (GMT)
+Message-ID: <cdf7c458-b28f-4657-8708-1f820369baa6@linux.ibm.com>
+Date: Wed, 22 Oct 2025 17:36:18 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,27 +79,44 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [next-20251022] Kernel Boot Warnings at
+ arch/powerpc/kernel/trace/ftrace.c:234
+Content-Language: en-GB
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+To: LKML <linux-kernel@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>, joe.lawrence@redhat.com,
+        Naveen N Rao <naveen@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>, pmladek@suse.com,
+        joe.lawrence@redhat.com, jpoimboe@kernel.org
+References: <72469502-ca37-4287-90b9-a751cecc498c@linux.ibm.com>
+In-Reply-To: <72469502-ca37-4287-90b9-a751cecc498c@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: WlsAFepaj27xWP9bSpdM4F1KvlPiDfLY
-X-Proofpoint-GUID: 6kA8EQxX0CPSoWQJVns_pr0uCVwF47mh
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX4JG2XaMdlcuP
- tp6xKB8tE/WlSSJJosQKssXTO7NQ1SmVMcj4TLLVDRrMnWo03mgxNoaggooqYVqEBcjrheM3m5e
- vAyWSDM48WnVCYd1gm94Ro4Nj4eOqg9Kp2/zPwGNGXTbciOaTxVRjr0eJRQw0TLBLKbqxp8in95
- yFuv3qaz5ZDFhyMz9KZkzKySdgQ3ZcdxlgU4Lm30uAhpmhFVNH+g7RqRRV+1YloAJrqsqs78mEV
- kH3sojfm3x/MYFqgX2pPc0YNbxeMTvOZskuG1SVIaEch/vW4orpylMFd98En114ofBwaTAmLo/J
- mrJYSgnWPgTBB10ZE+NCCnYhM7+rGhjk3vvz5x+BqQqG/CDTxeAXx2U4nwHwg/xkmkblOZwzLE7
- EOlLGhpaQxDrpcCW20+aA9i3RQ8tDw==
-X-Authority-Analysis: v=2.4 cv=IJYPywvG c=1 sm=1 tr=0 ts=68f8b136 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8
- a=pGLkceISAAAA:8 a=-o-kazUmVXvP5PRTSMQA:9
+X-Proofpoint-GUID: keqvlewBiuYZ2A82tzhj-9Agrz9et0hh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX4USRp1RFENlv
+ T6EcI6UWWiSV4UCUHNubHgn55jxqw81onxGxTG4QY4wnpUAAjrX6tXSNnMMySVe1kV1RP8C8i2N
+ TRxnXEnuub71GrBsddbG4SvUUmvRhyIWCYs5ySOaAxvw9eGm4THwkEN7ZJ1KIQ6tUQSNtxbb7ju
+ hTKwgVGBuecPZckjZmqFreRG42G2/qe0uDKlRc8G9LrqcYT7uUJMA/GBAlrWlKBKxJbh8Xlu5yN
+ gHy7dq+Fqlnm6acTZ+F996RV5NFiGPURP3ed/WL/27uYL5QhUteicNL+4K9n+2/thU7EyX8EuXh
+ MFRjfTU1MQgWx1gmq7xt1xkJrj98PWKe1SBfRtZzW/b1KHpBeYTxJXmeq1Oay1HttWAbBLaEhwT
+ e09t5fxfJ79fZRaT5A2IiW/BeBg6Xg==
+X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68f8c8c1 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=HLoz0p-YUXpcMqrYuV8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: keqvlewBiuYZ2A82tzhj-9Agrz9et0hh
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-22_03,2025-10-13_01,2025-03-28_01
+ definitions=2025-10-22_04,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 clxscore=1011 suspectscore=0 spamscore=0
- bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1011 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -123,167 +124,169 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Commit 35c18f2933c5 ("Add a new optional ",cma" suffix to the
-crashkernel= command line option") and commit ab475510e042 ("kdump:
-implement reserve_crashkernel_cma") added CMA support for kdump
-crashkernel reservation.
 
-Extend crashkernel CMA reservation support to powerpc.
+On 22/10/25 1:52 pm, Venkat Rao Bagalkote wrote:
+> Greetings!!!
+>
+>
+> IBM CI has reported kernel boot warnings with next-20251022 kernel. I 
+> see there are couple of warnings hit and eventually system boots to 
+> emergency mode.
+>
+>
+> Traces:
+>
+>
+> [    0.000000] stackdepot: allocating space for 8191 stack pools via 
+> memblock
+> [    0.000000] SLUB: HWalign=128, Order=0-3, MinObjects=0, CPUs=48, 
+> Nodes=32
+> [    0.000000] ------------[ cut here ]------------
+> [    0.000000] WARNING: arch/powerpc/kernel/trace/ftrace.c:234 at 
+> ftrace_init_ool_stub+0x188/0x3f4, CPU#0: swapper/0
+> [    0.000000] Modules linked in:
+> [    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 
+> 6.18.0-rc2-next-20251022+ #1 VOLUNTARY
+> [    0.000000] Hardware name: IBM,9080-HEX Power11 (architected) 
+> 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+> [    0.000000] NIP:  c000000000092430 LR: c000000000092414 CTR: 
+> 0000000000000000
+> [    0.000000] REGS: c000000004ba7a70 TRAP: 0700   Not tainted 
+> (6.18.0-rc2-next-20251022+)
+> [    0.000000] MSR:  8000000002021033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 
+> 44022224  XER: 00000001
+> [    0.000000] CFAR: c0000000008d7114 IRQMASK: 3
+> [    0.000000] GPR00: c000000000508de0 c000000004ba7d10 
+> c00000000248a400 c000000004ce9720
+> [    0.000000] GPR04: c000000007335df8 00000000000000c0 
+> c000000000092414 0000000000000000
+> [    0.000000] GPR08: 0000000000000003 0000000000000001 
+> 0000000000000000 0000000000002000
+> [    0.000000] GPR12: c00e0000008ce3a6 c0000000050b0000 
+> 0000000000000003 0000000000000001
+> [    0.000000] GPR16: c000000007335df8 0000000000000000 
+> c0000000045a8ac0 c000000004c2d450
+> [    0.000000] GPR20: c0000000070e0108 c0000000070e0110 
+> 0000000000000013 000000000000c869
+> [    0.000000] GPR24: c000000004ce9720 000000000000393f 
+> c000000007335e08 c000000001879a78
+> [    0.000000] GPR28: c000000001a10230 0000000000003940 
+> 0000000000000000 c000000007335df8
+> [    0.000000] NIP [c000000000092430] ftrace_init_ool_stub+0x188/0x3f4
+> [    0.000000] LR [c000000000092414] ftrace_init_ool_stub+0x16c/0x3f4
+> [    0.000000] Call Trace:
+> [    0.000000] [c000000004ba7d10] [c0000000000925c0] 
+> ftrace_init_ool_stub+0x318/0x3f4 (unreliable)
+> [    0.000000] [c000000004ba7de0] [c000000000508de0] 
+> ftrace_process_locs+0x364/0x8e0
+> [    0.000000] [c000000004ba7ee0] [c000000003060908] 
+> ftrace_init+0x68/0x1c8
+> [    0.000000] [c000000004ba7f50] [c00000000300ee6c] 
+> start_kernel+0x1e4/0x4fc
+> [    0.000000] [c000000004ba7fe0] [c00000000000e9a0] 
+> start_here_common+0x1c/0x20
+> [    0.000000] Code: 1d290018 7f9c4a14 3bbd0001 7f03c378 48844ca5 
+> 60000000 39400000 7f9dc800 39200001 7c1dc800 93b80000 7d29575e 
+> <0b090000> 4181005c 7fe3fb78 3b3c0008
+> [    0.000000] ---[ end trace 0000000000000000 ]---
+> [    0.000000] ------------[ ftrace bug ]------------
+> [    0.000000] ftrace failed to modify
+> [    0.000000] [<c000000001879a78>] ip6mr_vif_seq_stop+0x0/0x8
+> [    0.000000]  actual:   00:00:00:60
+> [    0.000000] Initializing ftrace call sites
+> [    0.000000] ftrace record flags: 0
+> [    0.000000]  (0)
+> [    0.000000]  expected tramp: c000000000093490
+> [    0.000000] ------------[ cut here ]------------
+> [    0.000000] WARNING: kernel/trace/ftrace.c:2209 at 
+> ftrace_bug+0x168/0x49c, CPU#0: swapper/0
+> [    0.000000] Modules linked in:
+> [    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G   W       
+>    6.18.0-rc2-next-20251022+ #1 VOLUNTARY
+> [    0.000000] Tainted: [W]=WARN
+> [    0.000000] Hardware name: IBM,9080-HEX Power11 (architected) 
+> 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+> [    0.000000] NIP:  c000000000508748 LR: c000000000508744 CTR: 
+> 0000000000000000
+> [    0.000000] REGS: c000000004ba7a90 TRAP: 0700   Tainted: G   W     
+>       (6.18.0-rc2-next-20251022+)
+> [    0.000000] MSR:  8000000002021033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 
+> 28028220  XER: 00000001
+> [    0.000000] CFAR: c0000000003880f8 IRQMASK: 3
+> [    0.000000] GPR00: c000000000508744 c000000004ba7d30 
+> c00000000248a400 0000000000000022
+> [    0.000000] GPR04: 0000000000000004 0000000000000000 
+> c00000000027abec 0000000000000001
+> [    0.000000] GPR08: 0000000000000001 0000000000000000 
+> 0000000000000000 a80e000000000000
+> [    0.000000] GPR12: c00e00000081c5d8 c0000000050b0000 
+> 0000000000000003 0000000000000001
+> [    0.000000] GPR16: c000000007335df8 0000000000000000 
+> c0000000045a8ac0 c000000004c2d450
+> [    0.000000] GPR20: c0000000070e0108 c0000000070e0110 
+> 0000000000000013 000000000000c869
+> [    0.000000] GPR24: 0000000000000000 0000000000000000 
+> 000000000000b93f 0000000000000000
+> [    0.000000] GPR28: c000000001879a78 c000000001b93d20 
+> c000000007335df8 c000000007335e00
+> [    0.000000] NIP [c000000000508748] ftrace_bug+0x168/0x49c
+> [    0.000000] LR [c000000000508744] ftrace_bug+0x164/0x49c
+> [    0.000000] Call Trace:
+> [    0.000000] [c000000004ba7d30] [c000000000508744] 
+> ftrace_bug+0x164/0x49c (unreliable)
+> [    0.000000] [c000000004ba7de0] [c000000000508dfc] 
+> ftrace_process_locs+0x380/0x8e0
+> [    0.000000] [c000000004ba7ee0] [c000000003060908] 
+> ftrace_init+0x68/0x1c8
+> [    0.000000] [c000000004ba7f50] [c00000000300ee6c] 
+> start_kernel+0x1e4/0x4fc
+> [    0.000000] [c000000004ba7fe0] [c00000000000e9a0] 
+> start_here_common+0x1c/0x20
+> [    0.000000] Code: 7fe3fb78 483cea79 60000000 e93e0008 75290800 
+> 40820164 7fc3f378 4bfffa19 7c641b78 387d0fe0 4be7f975 60000000 
+> <0fe00000> 39000001 3ce2027a 3d22fdc1
+> [    0.000000] ---[ end trace 0000000000000000 ]---
+> [    0.000000] ftrace: allocating 51305 entries in 19 pages
+>
+>
+>
+> Attached is the config file.
+>
+>
+> If you happen to fix this, please add below tag.
+>
+>
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 
-The following changes are made to enable CMA reservation on powerpc:
 
-- Parse and obtain the CMA reservation size along with other crashkernel
-  parameters
-- Call reserve_crashkernel_cma() to allocate the CMA region for kdump
-- Include the CMA-reserved ranges in the usable memory ranges for the
-  kdump kernel to use.
-- Exclude the CMA-reserved ranges from the crash kernel memory to
-  prevent them from being exported through /proc/vmcore
+I did bisection and its pointing to below commit as the first bad commit.
 
-To ensure proper CMA reservation, reserve_crashkernel_cma() is called
-after pageblock_order is initialized.
 
-Cc: Baoquan he <bhe@redhat.com>
-Cc: Jiri Bohac <jbohac@suse.cz>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- arch/powerpc/include/asm/kexec.h   |  7 +++++++
- arch/powerpc/kernel/setup-common.c |  4 +++-
- arch/powerpc/kexec/core.c          | 11 ++++++++++-
- arch/powerpc/kexec/ranges.c        | 16 +++++++++++++++-
- 4 files changed, 35 insertions(+), 3 deletions(-)
+6717e8f91db71641cb52855ed14c7900972ed0bc (kbuild: Remove 'kmod_' prefix 
+from __KBUILD_MODNAME) is the first bad commit.
 
-diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index 4bbf9f699aaa..c158ffbfeadb 100644
---- a/arch/powerpc/include/asm/kexec.h
-+++ b/arch/powerpc/include/asm/kexec.h
-@@ -51,9 +51,16 @@
- 
- #ifndef __ASSEMBLER__
- #include <asm/reg.h>
-+#include <linux/crash_reserve.h>
- 
- typedef void (*crash_shutdown_t)(void);
- 
-+#ifdef CRASHKERNEL_CMA
-+void kdump_cma_reserve(void);
-+#else
-+static inline void kdump_cma_reserve(void) { }
-+#endif
-+
- #ifdef CONFIG_KEXEC_CORE
- struct kimage;
- struct pt_regs;
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 68d47c53876c..1279e8777366 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -35,6 +35,7 @@
- #include <linux/of_irq.h>
- #include <linux/hugetlb.h>
- #include <linux/pgtable.h>
-+#include <linux/kexec.h>
- #include <asm/io.h>
- #include <asm/paca.h>
- #include <asm/processor.h>
-@@ -995,11 +996,12 @@ void __init setup_arch(char **cmdline_p)
- 	initmem_init();
- 
- 	/*
--	 * Reserve large chunks of memory for use by CMA for fadump, KVM and
-+	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM and
- 	 * hugetlb. These must be called after initmem_init(), so that
- 	 * pageblock_order is initialised.
- 	 */
- 	fadump_cma_init();
-+	kdump_cma_reserve();
- 	kvm_cma_reserve();
- 	gigantic_hugetlb_cma_reserve();
- 
-diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-index d1a2d755381c..3328b1acd875 100644
---- a/arch/powerpc/kexec/core.c
-+++ b/arch/powerpc/kexec/core.c
-@@ -33,6 +33,9 @@ void machine_kexec_cleanup(struct kimage *image)
- {
- }
- 
-+
-+static unsigned long long cma_size;
-+
- /*
-  * Do not allocate memory (or fail in any way) in machine_kexec().
-  * We are past the point of no return, committed to rebooting now.
-@@ -110,7 +113,7 @@ void __init arch_reserve_crashkernel(void)
- 
- 	/* use common parsing */
- 	ret = parse_crashkernel(boot_command_line, total_mem_sz, &crash_size,
--				&crash_base, NULL, NULL, NULL);
-+				&crash_base, NULL, &cma_size, NULL);
- 
- 	if (ret)
- 		return;
-@@ -130,6 +133,12 @@ void __init arch_reserve_crashkernel(void)
- 	reserve_crashkernel_generic(crash_size, crash_base, 0, false);
- }
- 
-+void __init kdump_cma_reserve(void)
-+{
-+	if (cma_size)
-+		reserve_crashkernel_cma(cma_size);
-+}
-+
- int __init overlaps_crashkernel(unsigned long start, unsigned long size)
- {
- 	return (start + size) > crashk_res.start && start <= crashk_res.end;
-diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
-index 3702b0bdab14..dad58fc38251 100644
---- a/arch/powerpc/kexec/ranges.c
-+++ b/arch/powerpc/kexec/ranges.c
-@@ -515,7 +515,7 @@ int get_exclude_memory_ranges(struct crash_mem **mem_ranges)
-  */
- int get_usable_memory_ranges(struct crash_mem **mem_ranges)
- {
--	int ret;
-+	int ret, i;
- 
- 	/*
- 	 * Early boot failure observed on guests when low memory (first memory
-@@ -528,6 +528,13 @@ int get_usable_memory_ranges(struct crash_mem **mem_ranges)
- 	if (ret)
- 		goto out;
- 
-+	for (i = 0; i < crashk_cma_cnt; i++) {
-+		ret = add_mem_range(mem_ranges, crashk_cma_ranges[i].start,
-+				    crashk_cma_ranges[i].end);
-+		if (ret)
-+			goto out;
-+	}
-+
- 	ret = add_rtas_mem_range(mem_ranges);
- 	if (ret)
- 		goto out;
-@@ -595,6 +602,13 @@ int get_crash_memory_ranges(struct crash_mem **mem_ranges)
- 	if (ret)
- 		goto out;
- 
-+	for (i = 0; i < crashk_cma_cnt; ++i) {
-+		ret = crash_exclude_mem_range(tmem, crashk_cma_ranges[i].start,
-+					      crashk_cma_ranges[i].end);
-+		if (ret)
-+			goto out;
-+	}
-+
- 	/*
- 	 * FIXME: For now, stay in parity with kexec-tools but if RTAS/OPAL
- 	 *        regions are exported to save their context at the time of
--- 
-2.51.0
 
+But there seems to be two seperate issue.
+
+
+1. Kernel boot warnings
+
+2. Kernel booting into emergency mode.
+
+
+With the identified first bad commit, is casuing the kernel to boot to 
+emergency mode. I reverted the bad commit and built the kernel, then 
+kernel is booting fine, but with boot warnings.
+
+
+Reagrds,
+
+Venkat.
+
+>
+>
+> Regards,
+>
+> Venkat.
+>
 
