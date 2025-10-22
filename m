@@ -1,71 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-13142-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13143-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AFFBFAE14
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Oct 2025 10:26:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01493BFAEE3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Oct 2025 10:37:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cs2Lj3p0yz3069;
-	Wed, 22 Oct 2025 19:26:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cs2bX3VGKz3069;
+	Wed, 22 Oct 2025 19:37:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761121581;
-	cv=none; b=MXehK7adA6aZdDM+qHU8JaSt4CN5Xc3fkAbsT0bF4/YtUSOjEwMb0HQ/JSgyrglQfFAuFmnRQztlvXMH20J/p+lD+KRNuyzQN1M6QvHeOKQgptDoVadrBUG1MaHHgLNbAkQUaiyVpvwIHjhdk2BuhB9OF9F/oujEvkkHK2VMt2zDs/Tdf+3l4znHLjEZKDHr1ckvGS7pK5vj0IWZGgwZ11Cgz46/oBnBkPQAYlNCFSX8syeR4kXLpzsb03ISzz2A5KHBuBFu70sQOu9HzUghtCEeCJ8fVJuS/Weuo1LWs51SX+jz5GZw4qIGygc6pV1aMVbkwHMDTidi/DARXbbIWQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761122248;
+	cv=none; b=fuuoZ/ueJ5ZMLXbDtHctZNsbVh54o4dVDrsgni4O9YA0vNpGAeHfEORv6cjjYSiaGEEDJk7n01kZOD1Ffc6P0fcieh4HJtvSBCnNgwEsLovX5p4zJuqVYHxJPwTA7YiILKPZ9oiICDRGOpFw29ze0FIlGN+EQGlT++lWTISsq8LF7F5e2+ciCMJZjJZJqCD2KBRjILGjrfcPFtCEyMXpeXRSlNabRcDGlPg3wdLo+dTz8BfBfuDYNIGaIbUYJTp7ullhSP2i7ulKn1wRGTwEFHuWLmKUNSQ4RHagP50j6PaXaPBMoqpk9CnCz0k6g2wzlkumyzMskGyx8tdv6TQB1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761121581; c=relaxed/relaxed;
-	bh=hHGdoXqZF7p6UDhW/i+tZoTr2H6F6ejSfwgRGcZOc5c=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=myddLkRvCnlKBBQNPzqAGfcyE+MX3NJX+6xVxEv3ls53604Q6O8Ow5h4TR+76KDEfq9PAZALttaDhOPI6abWBidmqA1SkwZxG/KKXKDOhm8j6BOi9UdmZwa9Y67kOSNRPoc6aZLx3ZGIvs7pfsqzWUdun4gCiyu9isNpNl5iYSJrDFNIqPtbedj/q7kK2prGxhsCxF2Tkx+0Ejlgm6lI1RiLjZunHD+qU9GNA9oIYJi3AGUfQnufWXNskm3/OwieiNEzcfYSe3esSJ2jPubumoa2OfhDJcPQgVW1taBJu9s31pX0iAOeNCJRxvUWLY02YxwLSJ1i4MERMXkv++j9IA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=L7RZBvqq; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1761122248; c=relaxed/relaxed;
+	bh=PowtbTWFPJpvinHpTKYrok9CuCgmG5go5XaSSmfJb6o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nmFXyDQZmjLH0lxohVB5kEBjI0jbHeLFGLO82j0kxBEB9QHww86jUFp88xpPrU9IGFudBMLJWXLW3OgAZBF64g9nKvpU9YgNIQWkgOHHN+R0o4oLyT7PhEvQ0b5OVFkrAxUuRZNHJezpxCo8IsV3Q+FoPQJhi1SQWQMEtYJN60YiEb7sTBnPJvbE9xYQ9h2DwKHlKC9KtQZc34gywIhyTiWySTU1oq4V4+5Ee5nvQQIlhSIVAaPTc1s22bg/CqZt9vkji/GzvPv+jWHZwsuUc9prW2XezGintlBEJ+i95MjiUK7xsY1om0pf1efeeZOAvtG7sQIKZHm4FMnCXJ9+Nw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IX1nxqej; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IX1nxqej; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=L7RZBvqq;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IX1nxqej;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IX1nxqej;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cs2Lh5bMCz2yjx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 19:26:20 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59LLRIV1026091;
-	Wed, 22 Oct 2025 08:26:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=hHGdoX
-	qZF7p6UDhW/i+tZoTr2H6F6ejSfwgRGcZOc5c=; b=L7RZBvqqbpnqWUNDB01Z3E
-	rngskuawqQClfBRtjEzgW0d6HpLehjpsPJ+gGBzxl0o7yzMGp7Ly7Z6RZqEXvNrw
-	gYKnAGiMnIvDgYh3inKc1AsQFQn4RENkRM7m4cTrHOAUiSi6O827nUv5yqiFC2fD
-	ToFCGFTYlAd7S+xDnPs+ncHnDh2ak5Twg3pqs9vJUhJ0UCYGWLlluIVytSs5kFjA
-	MbsfI53BwW96krPWmNOaTJSZbF4sCn1Phjj1h/SuycKmAxrzNK5ssqeZzY0bEV/T
-	0rm7Rp/yd/JeKd6GOHMVyRGMTIsWjt66rWWO3WyzIMJXXqjGO5bqDzNqa2rryPTA
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v326uk7d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 08:26:10 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59M7kOMc024686;
-	Wed, 22 Oct 2025 08:26:09 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vpqjy7xb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 08:26:09 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59M8Q8xq31654550
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Oct 2025 08:26:08 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9049C58065;
-	Wed, 22 Oct 2025 08:26:08 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2F56858056;
-	Wed, 22 Oct 2025 08:26:06 +0000 (GMT)
-Received: from [9.61.248.143] (unknown [9.61.248.143])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 Oct 2025 08:26:05 +0000 (GMT)
-Message-ID: <d718ee80-d97e-4f0f-b1f2-692626a19b1d@linux.ibm.com>
-Date: Wed, 22 Oct 2025 13:56:04 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cs2bW24gVz2xdg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 19:37:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761122242;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PowtbTWFPJpvinHpTKYrok9CuCgmG5go5XaSSmfJb6o=;
+	b=IX1nxqejHII1Cml2O6ULLcXE2blsQ3AT1JffMiScTCH1wqfvm1duMi9PS8ifNiiO2HaYXP
+	pq+QmVHzTegTewPOCg3AhmhcdG4TARfnV9Ev82+IAAm81olBVF/N+2GOFroqvKvsa/i2O3
+	CZkfmmnl3lW6sRKIcrjYP9q690Am0mY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761122242;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PowtbTWFPJpvinHpTKYrok9CuCgmG5go5XaSSmfJb6o=;
+	b=IX1nxqejHII1Cml2O6ULLcXE2blsQ3AT1JffMiScTCH1wqfvm1duMi9PS8ifNiiO2HaYXP
+	pq+QmVHzTegTewPOCg3AhmhcdG4TARfnV9Ev82+IAAm81olBVF/N+2GOFroqvKvsa/i2O3
+	CZkfmmnl3lW6sRKIcrjYP9q690Am0mY=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-533-GiCrpeu3NwSYIdF-sUOuFQ-1; Wed, 22 Oct 2025 04:37:20 -0400
+X-MC-Unique: GiCrpeu3NwSYIdF-sUOuFQ-1
+X-Mimecast-MFC-AGG-ID: GiCrpeu3NwSYIdF-sUOuFQ_1761122239
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-471201dc0e9so55320945e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 01:37:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761122239; x=1761727039;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PowtbTWFPJpvinHpTKYrok9CuCgmG5go5XaSSmfJb6o=;
+        b=CNWHGPTNWxAM1/xxtGi1I10MKz62gaNp0AUJQecgOX+cN3xAaZZ/F8iyZaXXzX44PJ
+         9mEGHufoSaIZzSaAyz8Xli1e6/XCCHf/PyfChMkrxNBz5++2bEoZQ1qmBIiAaY4fULFz
+         yXEO9yl09VmUtBCw4gXozXTq5djaJ9qR2rA+XxlhkM9hSMAPOaksun5vrBFtkBl5phiU
+         fIbpEp2XehDWVYj7IhHcyoZ49RuaTZP2zmAU0GqglJCDR5O4v0jrA9OAvVoVMGIWNp9h
+         iDnoxi/NLowHNKv05GVBWBDN0Kp7QUzNKpLU9arDE0nu9RbqT9pD+M3Tk1WZMWKlaE2Q
+         ndyw==
+X-Forwarded-Encrypted: i=1; AJvYcCWI2O+fz+N3pJaJ8BTwEDYWhaBBTrzjhouBaYgHPEn+Y8PN69mhr+K3FZXJxv/WxIA+EeNiGqWG328NYWA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzrLEUozmynrr4i9DmEmiC+aUTibQSVOUi0DtbDFxGdMFGaJytl
+	iK+UI2TR91i6XMHcYVNjcxLqP84pqq32F0RVKygrlmSVCTrGAr8AvpBAR34EpL0X1FLlcs6C18X
+	ES3H+muGrOixsQfzRUaCVWeTxfBczTgMLzlnEVUxUMhJkoowD8FStMM4uPyzuKbXjb74=
+X-Gm-Gg: ASbGncs9oEswHnxHPxnAbxlQZ63J2S6OVqbeaZABshaiE9vyHNkXKBACjBWHibgLKCK
+	CT19hW7ei1sLR8MdE9HLUQtMc+MKC1pzhrrygjuYRBnErbPlCeMfFPdsxfYFWkLxGFDNwA1mQGh
+	byzFknV6cbKqETBCYufPGGblEE2m7x7EcddQuyQVQETw/+CV6FzGkqyPZwYP3RkSVuIv2n3owdO
+	AS4Cf67Cx+T/sfUzbB4H+seuvwGGvhkOwCmpo/qdW8jLHoCwm7mE9y5JUxjeXFw2vwhLV4/MVyt
+	PSdmOmJkfRwmB9JyhHRiqReu1Dao1SlMk9I2TCSmiyoLD3JbvYn784WVBhXvMofCqucNUce1mzi
+	owZBflSbmBfyknlGH+m9i+PMQ3MzkyZooodYwD5xyvNpT1YtwAHEQOr5DwYdmlhgNB+LUjQML1k
+	77AO3AzX4/up9DKIej8b+4mEn5boA=
+X-Received: by 2002:a05:600c:64cf:b0:471:12ed:f698 with SMTP id 5b1f17b1804b1-4711786c793mr157782605e9.8.1761122239146;
+        Wed, 22 Oct 2025 01:37:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFItCI5iZhW1a4GMCfGAtG97A/+uLrq+f4lTV3/dPOqU9C5XR4W+DY4bimzCkihYZ5ekVZbVw==
+X-Received: by 2002:a05:600c:64cf:b0:471:12ed:f698 with SMTP id 5b1f17b1804b1-4711786c793mr157782285e9.8.1761122238693;
+        Wed, 22 Oct 2025 01:37:18 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c427c3bfsm37040815e9.3.2025.10.22.01.37.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Oct 2025 01:37:18 -0700 (PDT)
+Message-ID: <5be0d531-aa15-4852-b29d-cc3d71334894@redhat.com>
+Date: Wed, 22 Oct 2025 10:37:16 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,304 +106,108 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [next-20251022] Kernel Boot Warnings at
- arch/powerpc/kernel/trace/ftrace.c:234
-Content-Language: en-GB
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-To: LKML <linux-kernel@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>, joe.lawrence@redhat.com,
-        Naveen N Rao <naveen@kernel.org>
-References: <72469502-ca37-4287-90b9-a751cecc498c@linux.ibm.com>
-In-Reply-To: <72469502-ca37-4287-90b9-a751cecc498c@linux.ibm.com>
+Subject: Re: [PATCH v1 03/23] powerpc/pseries/cmm: remove
+ cmm_balloon_compaction_init()
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
+ virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
+ <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
+References: <20251021125929.377194-1-david@redhat.com>
+ <20251021125929.377194-4-david@redhat.com>
+ <20251021164220-mutt-send-email-mst@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20251021164220-mutt-send-email-mst@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: w9wEQjZy6OHW4vQYFKcxHvcIInxWQpxSglJ-uhZ4Knk_1761122239
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=EJELElZC c=1 sm=1 tr=0 ts=68f89523 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=X1xm8aspWHkySpns4nUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX9s8ifp2QaYSY
- CByUZt9PumhdzLOI60y53WVLdcLEBs5znyEBD2LisChdT8PRy+oc+L373U+rmBqFBv7xAit+ghV
- rnFXaMC3WGulA7xJ/72/Hen6lO7fesMCZ/pY820HV9f/iQ2HbFHHVOaeXG0YXy7t/zoBNme8LTn
- FcL/8yOtWdy8wIZzDd5k6GuFGUtwl9WqfOBByntxVB93k/OH0n9LyJLZKRJ1ajkyFUFzUKgdGHn
- kgpguB+o5tDqRyb0vh69Smk365qHkNlwAYSCC/UBNlJjIk978fuR5hxfKYYig4XB+CSzJJ22Y2i
- 1bwtzHf6Q0+DMXeDYLLqei9EpqK/puKcv88yBt3VsVcDfJ8I2gZpBal/Z+xLsBHnPwJp2kciYbt
- GSAyIQAwhwIl/IVoS6P8Heiz1UKQug==
-X-Proofpoint-GUID: LXwn_AOwU_brLL-RRXisZ0RQKSQPJm8z
-X-Proofpoint-ORIG-GUID: LXwn_AOwU_brLL-RRXisZ0RQKSQPJm8z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-22_03,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0
- malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On 21.10.25 22:43, Michael S. Tsirkin wrote:
+> On Tue, Oct 21, 2025 at 02:59:08PM +0200, David Hildenbrand wrote:
+>> Now that there is not a lot of logic left, let's just inline setting up
+>> the migration function.
+>>
+>> To avoid #ifdef in the caller we can instead use IS_ENABLED() and make
+>> the compiler happy by only providing the function declaration.
+>>
+>> Now that the function is gone, drop the "out_balloon_compaction" label.
+>> Note that before commit 68f2736a8583 ("mm: Convert all PageMovable users
+>> to movable_operations"), now not anymore.
+> 
+> What does this sentence mean?
 
-On 22/10/25 1:52 pm, Venkat Rao Bagalkote wrote:
-> Greetings!!!
->
->
-> IBM CI has reported kernel boot warnings with next-20251022 kernel. I 
-> see there are couple of warnings hit and eventually system boots to 
-> emergency mode.
->
->
-> Traces:
->
->
-> [    0.000000] stackdepot: allocating space for 8191 stack pools via 
-> memblock
-> [    0.000000] SLUB: HWalign=128, Order=0-3, MinObjects=0, CPUs=48, 
-> Nodes=32
-> [    0.000000] ------------[ cut here ]------------
-> [    0.000000] WARNING: arch/powerpc/kernel/trace/ftrace.c:234 at 
-> ftrace_init_ool_stub+0x188/0x3f4, CPU#0: swapper/0
-> [    0.000000] Modules linked in:
-> [    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 
-> 6.18.0-rc2-next-20251022+ #1 VOLUNTARY
-> [    0.000000] Hardware name: IBM,9080-HEX Power11 (architected) 
-> 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
-> [    0.000000] NIP:  c000000000092430 LR: c000000000092414 CTR: 
-> 0000000000000000
-> [    0.000000] REGS: c000000004ba7a70 TRAP: 0700   Not tainted 
-> (6.18.0-rc2-next-20251022+)
-> [    0.000000] MSR:  8000000002021033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 
-> 44022224  XER: 00000001
-> [    0.000000] CFAR: c0000000008d7114 IRQMASK: 3
-> [    0.000000] GPR00: c000000000508de0 c000000004ba7d10 
-> c00000000248a400 c000000004ce9720
-> [    0.000000] GPR04: c000000007335df8 00000000000000c0 
-> c000000000092414 0000000000000000
-> [    0.000000] GPR08: 0000000000000003 0000000000000001 
-> 0000000000000000 0000000000002000
-> [    0.000000] GPR12: c00e0000008ce3a6 c0000000050b0000 
-> 0000000000000003 0000000000000001
-> [    0.000000] GPR16: c000000007335df8 0000000000000000 
-> c0000000045a8ac0 c000000004c2d450
-> [    0.000000] GPR20: c0000000070e0108 c0000000070e0110 
-> 0000000000000013 000000000000c869
-> [    0.000000] GPR24: c000000004ce9720 000000000000393f 
-> c000000007335e08 c000000001879a78
-> [    0.000000] GPR28: c000000001a10230 0000000000003940 
-> 0000000000000000 c000000007335df8
-> [    0.000000] NIP [c000000000092430] ftrace_init_ool_stub+0x188/0x3f4
-> [    0.000000] LR [c000000000092414] ftrace_init_ool_stub+0x16c/0x3f4
-> [    0.000000] Call Trace:
-> [    0.000000] [c000000004ba7d10] [c0000000000925c0] 
-> ftrace_init_ool_stub+0x318/0x3f4 (unreliable)
-> [    0.000000] [c000000004ba7de0] [c000000000508de0] 
-> ftrace_process_locs+0x364/0x8e0
-> [    0.000000] [c000000004ba7ee0] [c000000003060908] 
-> ftrace_init+0x68/0x1c8
-> [    0.000000] [c000000004ba7f50] [c00000000300ee6c] 
-> start_kernel+0x1e4/0x4fc
-> [    0.000000] [c000000004ba7fe0] [c00000000000e9a0] 
-> start_here_common+0x1c/0x20
-> [    0.000000] Code: 1d290018 7f9c4a14 3bbd0001 7f03c378 48844ca5 
-> 60000000 39400000 7f9dc800 39200001 7c1dc800 93b80000 7d29575e 
-> <0b090000> 4181005c 7fe3fb78 3b3c0008
-> [    0.000000] ---[ end trace 0000000000000000 ]---
-> [    0.000000] ------------[ ftrace bug ]------------
-> [    0.000000] ftrace failed to modify
-> [    0.000000] [<c000000001879a78>] ip6mr_vif_seq_stop+0x0/0x8
-> [    0.000000]  actual:   00:00:00:60
-> [    0.000000] Initializing ftrace call sites
-> [    0.000000] ftrace record flags: 0
-> [    0.000000]  (0)
-> [    0.000000]  expected tramp: c000000000093490
-> [    0.000000] ------------[ cut here ]------------
-> [    0.000000] WARNING: kernel/trace/ftrace.c:2209 at 
-> ftrace_bug+0x168/0x49c, CPU#0: swapper/0
-> [    0.000000] Modules linked in:
-> [    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G   W       
->    6.18.0-rc2-next-20251022+ #1 VOLUNTARY
-> [    0.000000] Tainted: [W]=WARN
-> [    0.000000] Hardware name: IBM,9080-HEX Power11 (architected) 
-> 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
-> [    0.000000] NIP:  c000000000508748 LR: c000000000508744 CTR: 
-> 0000000000000000
-> [    0.000000] REGS: c000000004ba7a90 TRAP: 0700   Tainted: G   W     
->       (6.18.0-rc2-next-20251022+)
-> [    0.000000] MSR:  8000000002021033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 
-> 28028220  XER: 00000001
-> [    0.000000] CFAR: c0000000003880f8 IRQMASK: 3
-> [    0.000000] GPR00: c000000000508744 c000000004ba7d30 
-> c00000000248a400 0000000000000022
-> [    0.000000] GPR04: 0000000000000004 0000000000000000 
-> c00000000027abec 0000000000000001
-> [    0.000000] GPR08: 0000000000000001 0000000000000000 
-> 0000000000000000 a80e000000000000
-> [    0.000000] GPR12: c00e00000081c5d8 c0000000050b0000 
-> 0000000000000003 0000000000000001
-> [    0.000000] GPR16: c000000007335df8 0000000000000000 
-> c0000000045a8ac0 c000000004c2d450
-> [    0.000000] GPR20: c0000000070e0108 c0000000070e0110 
-> 0000000000000013 000000000000c869
-> [    0.000000] GPR24: 0000000000000000 0000000000000000 
-> 000000000000b93f 0000000000000000
-> [    0.000000] GPR28: c000000001879a78 c000000001b93d20 
-> c000000007335df8 c000000007335e00
-> [    0.000000] NIP [c000000000508748] ftrace_bug+0x168/0x49c
-> [    0.000000] LR [c000000000508744] ftrace_bug+0x164/0x49c
-> [    0.000000] Call Trace:
-> [    0.000000] [c000000004ba7d30] [c000000000508744] 
-> ftrace_bug+0x164/0x49c (unreliable)
-> [    0.000000] [c000000004ba7de0] [c000000000508dfc] 
-> ftrace_process_locs+0x380/0x8e0
-> [    0.000000] [c000000004ba7ee0] [c000000003060908] 
-> ftrace_init+0x68/0x1c8
-> [    0.000000] [c000000004ba7f50] [c00000000300ee6c] 
-> start_kernel+0x1e4/0x4fc
-> [    0.000000] [c000000004ba7fe0] [c00000000000e9a0] 
-> start_here_common+0x1c/0x20
-> [    0.000000] Code: 7fe3fb78 483cea79 60000000 e93e0008 75290800 
-> 40820164 7fc3f378 4bfffa19 7c641b78 387d0fe0 4be7f975 60000000 
-> <0fe00000> 39000001 3ce2027a 3d22fdc1
-> [    0.000000] ---[ end trace 0000000000000000 ]---
-> [    0.000000] ftrace: allocating 51305 entries in 19 pages
+Should have been "... we actually had to undo something, now not anymore."
 
-Pasting the traces in more legible form.
+Thanks!
 
+-- 
+Cheers
 
-[    0.000000] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
-[    0.000000] stackdepot: allocating hash table via alloc_large_system_hash
-[    0.000000] stackdepot hash table entries: 1048576 (order: 8, 
-16777216 bytes, linear)
-[    0.000000] stackdepot: allocating space for 8191 stack pools via 
-memblock
-[    0.000000] SLUB: HWalign=128, Order=0-3, MinObjects=0, CPUs=48, Nodes=32
-[    0.000000] ------------[ cut here ]------------
-[    0.000000] WARNING: arch/powerpc/kernel/trace/ftrace.c:234 at 
-ftrace_init_ool_stub+0x188/0x3f4, CPU#0: swapper/0
-[    0.000000] Modules linked in:
-[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 
-6.18.0-rc2-next-20251022+ #1 VOLUNTARY
-[    0.000000] Hardware name: IBM,9080-HEX Power11 (architected) 
-0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
-[    0.000000] NIP:  c000000000092430 LR: c000000000092414 CTR: 
-0000000000000000
-[    0.000000] REGS: c000000004ba7a70 TRAP: 0700   Not tainted 
-(6.18.0-rc2-next-20251022+)
-[    0.000000] MSR:  8000000002021033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 
-44022224  XER: 00000001
-[    0.000000] CFAR: c0000000008d7114 IRQMASK: 3
-[    0.000000] GPR00: c000000000508de0 c000000004ba7d10 c00000000248a400 
-c000000004ce9720
-[    0.000000] GPR04: c000000007335df8 00000000000000c0 c000000000092414 
-0000000000000000
-[    0.000000] GPR08: 0000000000000003 0000000000000001 0000000000000000 
-0000000000002000
-[    0.000000] GPR12: c00e0000008ce3a6 c0000000050b0000 0000000000000003 
-0000000000000001
-[    0.000000] GPR16: c000000007335df8 0000000000000000 c0000000045a8ac0 
-c000000004c2d450
-[    0.000000] GPR20: c0000000070e0108 c0000000070e0110 0000000000000013 
-000000000000c869
-[    0.000000] GPR24: c000000004ce9720 000000000000393f c000000007335e08 
-c000000001879a78
-[    0.000000] GPR28: c000000001a10230 0000000000003940 0000000000000000 
-c000000007335df8
-[    0.000000] NIP [c000000000092430] ftrace_init_ool_stub+0x188/0x3f4
-[    0.000000] LR [c000000000092414] ftrace_init_ool_stub+0x16c/0x3f4
-[    0.000000] Call Trace:
-[    0.000000] [c000000004ba7d10] [c0000000000925c0] 
-ftrace_init_ool_stub+0x318/0x3f4 (unreliable)
-[    0.000000] [c000000004ba7de0] [c000000000508de0] 
-ftrace_process_locs+0x364/0x8e0
-[    0.000000] [c000000004ba7ee0] [c000000003060908] ftrace_init+0x68/0x1c8
-[    0.000000] [c000000004ba7f50] [c00000000300ee6c] 
-start_kernel+0x1e4/0x4fc
-[    0.000000] [c000000004ba7fe0] [c00000000000e9a0] 
-start_here_common+0x1c/0x20
-[    0.000000] Code: 1d290018 7f9c4a14 3bbd0001 7f03c378 48844ca5 
-60000000 39400000 7f9dc800 39200001 7c1dc800 93b80000 7d29575e 
-<0b090000> 4181005c 7fe3fb78 3b3c0008
-[    0.000000] ---[ end trace 0000000000000000 ]---
-[    0.000000] ------------[ ftrace bug ]------------
-[    0.000000] ftrace failed to modify
-[    0.000000] [<c000000001879a78>] ip6mr_vif_seq_stop+0x0/0x8
-[    0.000000]  actual:   00:00:00:60
-[    0.000000] Initializing ftrace call sites
-[    0.000000] ftrace record flags: 0
-[    0.000000]  (0)
-[    0.000000]  expected tramp: c000000000093490
-[    0.000000] ------------[ cut here ]------------
-[    0.000000] WARNING: kernel/trace/ftrace.c:2209 at 
-ftrace_bug+0x168/0x49c, CPU#0: swapper/0
-[    0.000000] Modules linked in:
-[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G   W        
-    6.18.0-rc2-next-20251022+ #1 VOLUNTARY
-[    0.000000] Tainted: [W]=WARN
-[    0.000000] Hardware name: IBM,9080-HEX Power11 (architected) 
-0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
-[    0.000000] NIP:  c000000000508748 LR: c000000000508744 CTR: 
-0000000000000000
-[    0.000000] REGS: c000000004ba7a90 TRAP: 0700   Tainted: G   W        
-     (6.18.0-rc2-next-20251022+)
-[    0.000000] MSR:  8000000002021033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 
-28028220  XER: 00000001
-[    0.000000] CFAR: c0000000003880f8 IRQMASK: 3
-[    0.000000] GPR00: c000000000508744 c000000004ba7d30 c00000000248a400 
-0000000000000022
-[    0.000000] GPR04: 0000000000000004 0000000000000000 c00000000027abec 
-0000000000000001
-[    0.000000] GPR08: 0000000000000001 0000000000000000 0000000000000000 
-a80e000000000000
-[    0.000000] GPR12: c00e00000081c5d8 c0000000050b0000 0000000000000003 
-0000000000000001
-[    0.000000] GPR16: c000000007335df8 0000000000000000 c0000000045a8ac0 
-c000000004c2d450
-[    0.000000] GPR20: c0000000070e0108 c0000000070e0110 0000000000000013 
-000000000000c869
-[    0.000000] GPR24: 0000000000000000 0000000000000000 000000000000b93f 
-0000000000000000
-[    0.000000] GPR28: c000000001879a78 c000000001b93d20 c000000007335df8 
-c000000007335e00
-[    0.000000] NIP [c000000000508748] ftrace_bug+0x168/0x49c
-[    0.000000] LR [c000000000508744] ftrace_bug+0x164/0x49c
-[    0.000000] Call Trace:
-[    0.000000] [c000000004ba7d30] [c000000000508744] 
-ftrace_bug+0x164/0x49c (unreliable)
-[    0.000000] [c000000004ba7de0] [c000000000508dfc] 
-ftrace_process_locs+0x380/0x8e0
-[    0.000000] [c000000004ba7ee0] [c000000003060908] ftrace_init+0x68/0x1c8
-[    0.000000] [c000000004ba7f50] [c00000000300ee6c] 
-start_kernel+0x1e4/0x4fc
-[    0.000000] [c000000004ba7fe0] [c00000000000e9a0] 
-start_here_common+0x1c/0x20
-[    0.000000] Code: 7fe3fb78 483cea79 60000000 e93e0008 75290800 
-40820164 7fc3f378 4bfffa19 7c641b78 387d0fe0 4be7f975 60000000 
-<0fe00000> 39000001 3ce2027a 3d22fdc1
-[    0.000000] ---[ end trace 0000000000000000 ]---
-[    0.000000] ftrace: allocating 51305 entries in 19 pages
-[    0.000000] ftrace: allocated 19 pages with 3 groups
-[    0.000000] rcu: Hierarchical RCU implementation.
-[    0.000000] rcu:     RCU event tracing is enabled.
+David / dhildenb
 
->
->
->
-> Attached is the config file.
->
->
-> If you happen to fix this, please add below tag.
->
->
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
->
->
-> Regards,
->
-> Venkat.
->
 
