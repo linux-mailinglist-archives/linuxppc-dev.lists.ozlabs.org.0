@@ -1,123 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-13148-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13149-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6DEBFAF8E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Oct 2025 10:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DC8BFB65E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Oct 2025 12:26:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cs2r54PSQz30Ff;
-	Wed, 22 Oct 2025 19:48:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cs5101FQqz30Ff;
+	Wed, 22 Oct 2025 21:26:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=198.175.65.14
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761122901;
-	cv=fail; b=f39GomAAKtnvKF+8hlvqFJLtI2oSam34f94ncBFGWd0RRNBA1FhGP5u9jBBkz+kUX++2KFBR7ZYiemHCYXdQDleri5g5WLyq9U61+m8dSrQAWHGLz3hgIXQFnRJmEJ8ZmT7ouIJBsEyHglZjlkf/JdRwt6vEycWmHlEgktsIJtaIUSfQnCijPVg+2ecP9Y96McEJIuf5nMt/dAGBUe5PwSMEss+BUxEUfoh/ECHqUfWoyAxw2H/YcTP9fuHrsp6VpxbDAMhtdzpelaBgCf9ZNT1vHeGL131k0rB1oBkE3luTbmNVuC6WcvrdF8VczUzC2aWAuVMr/8b5Dgn6HNp8Wg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761122901; c=relaxed/relaxed;
-	bh=2CF3j9IDfanOoUj6MJ4RXqDdQyt1YBEgMgXuC+4yGTw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ib/bIWtPW8PT+z79D4wr6BhK9eKnkPyQ56e9+buM/xVJ1l9vHw7WvAiakMCsTsGBj07tWbiELWFOAba1y5iLJ8cpusWdsM0D2VcC5TmpijI2rxOSmjNHtSK7lG1aQ3JKYFWALH7fjB6oCoRynALfTmYID94VZYOo7Tcfckf9TKNOnUmGNwmhMtWARBesA5ZX5/L3nDXBo8zyF5jsoMTQoBkGIoRVvLfJYWSupeQxyWVlecjahumay/bDbj60ztP9r63Q7xI7chejrZwQru08bd8Z0vt2CPzJDUc7gMdS8MhFeTrnGOw9IOy+MUvA4jNZYoQa5EOw8GeFA8FS4ocaZw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SrHNlv0N; dkim-atps=neutral; spf=pass (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=yan.y.zhao@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761128772;
+	cv=none; b=LRzcSoA6jr1pUjIIRiLJgE1SzMvF6N+r/sSeJp6kmacuWaaWBM3L51jKAZ3M3vB19VPE8c/pXATP+NkE7YGx/kS+yqxZ1xxt0AympfzB/HXMjicpV/klYRh//bQzNNkvVhW0RMwQV0aWOoD7x8StmsBOZIEX3wRNUy1R0nXgPmqeSHh+5W61WIXeedcre7PzD5BndzbTf76J6O9OaL4d0+cVCNqzPpkIiUuzKctG+WREFtFWtGaNkZdNutMCsBI6GVoCyo+NTmy1T6mGzBMIWn4+26CfZko7WjZii+YfH8K0hfwlW4DvIDKNChqEUuuDRmm3dbDX807y6dBIIDIdtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1761128772; c=relaxed/relaxed;
+	bh=L4WNrkKw0EoDvuIkWpJ3zdanNv54eTH1/JatKZIwH0s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BVhf40DB0H3Swbv0ccd75aUgZDGiHFJsJy+W35L0Z4UvjJ3DiAyZ5azQoC1I8AYM5Qhv/5O6TyNJiqGJO+rNHaR7gCPZaEseOrog6argiZ1ChNQ5vg01T2mdSlWzantt15BlUGViU+vLyUTH6pqcKDaOfE08iAFUmgWV5kJfEz/DaaJU2ltPq0L4jAVdH5LE83L6a0jtdqcIQnCyMlFp0A6HYJVbQYJCSB1Ko+C7R2L6Zkcwan+pwGr/9IIyjE/iEiCPOo98z1Ri4CxP+aVETpapehN/b4bmSXzdXWwAORZ1wh0U7yj7tHmYk5Nt7yzQw6ugykSrWMzzDByoz2OESg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rbQd5tz/; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SrHNlv0N;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rbQd5tz/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=yan.y.zhao@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cs2r327Wxz2yrb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 19:48:17 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761122899; x=1792658899;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=tpoLRRGotezLojgU/KsjfCu7fHYfodSaASGSTxYVAho=;
-  b=SrHNlv0NEGcqUo6JwPEMAd16P/Cjlj8S/E28CwsJU7pgaSO9ch3tPw3S
-   hKrlr37twIqM+u+K3qia9nIT7H7nyF8xEZsY5OVXOLfBtqSAWb+EUZN8V
-   bUx8liJlNofKSSI63SjfyobNIdmkJGBhbIFBRPxBQiBhewnH75Na5YsZ2
-   /LbkZ1EzZb1nZMNUcRwOipob71nKD5ODUP/O7UYC4yO3JJs9wBhOINFeR
-   51Pk66hwOFsUCpiozDutfUIzbj+KNowFsPUIvjRDMfBTEeuQ643SgxsxR
-   ucn/sRypsqWb/hn73HpIVoMeRSCL8XV/a7QHA85crypyStRdZvzZ3V8zi
-   g==;
-X-CSE-ConnectionGUID: x7c+cUNoRde1miWm3VF/2w==
-X-CSE-MsgGUID: XODSvEOcRQmaryx44tERFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67101209"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="67101209"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 01:48:15 -0700
-X-CSE-ConnectionGUID: dEXOs9L4SMKbGH8oPazRQA==
-X-CSE-MsgGUID: Ngk6H6drTwSiLuD4Q0QXeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
-   d="scan'208";a="189097325"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 01:48:15 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 22 Oct 2025 01:48:14 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Wed, 22 Oct 2025 01:48:14 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.15) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 22 Oct 2025 01:48:14 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pVYjtSvbkE6wdm49/b1I4D6hi4PvHXQqtymeesbWc84R1LuuIi/CuZYfBfGOK5ki8ulFHCwkcqsagct+DyTK2TsSvKnPhsTUivEiOl9xe3dilMolpq5YSpDQRwgfIYg06zq/LcIwvBzp3IvItoC0mntDJnGVMIprRQP463sStXEgFDBKhrxM4F+eT5FzX6Q8Xt47xQxOLM3PR0aRJyQ/6mM043UF7eh+3ANebTfRpfhEyLjM8j7N10SCd9OgA8cMR6SD1377xabjqMqZy3702Q1GSxT//ATXVmaSP78AgtIFBuxEDHGWSPWsKbM45jE0DyyTD41Q+LXnfVUzcrQoBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2CF3j9IDfanOoUj6MJ4RXqDdQyt1YBEgMgXuC+4yGTw=;
- b=Bz5ikREeRBRehYgqd5aIk99dTn6cJGlwatfAdh/DSVVkVSuGdEQwPAuppe1qTkImS9tVq0CRQUiCID9XAoKxhFQA6/wq9oqUxKxTr+S5iabrYF6oma89ffcUWOwpsZdU0aN7sFaqsPJhHHkBEtiCWXLey2imIc9idCbY+xMpudCwtnMCF9n0uJJEdFhUgZG348VogzSw1U7VBMhqNmz0xp1LdTENA3ZB/P9jL34DILsipxPZZkUhqWU6MuT+KMLJRxNVc4WLlK6WmsUa4XUyYLwk2gjNRnG1we2cM2hcuisvdxu1H20paN+W4pQ9DjP0Sf6b7tYFDGCrtCuUH+KGnQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- SN7PR11MB7512.namprd11.prod.outlook.com (2603:10b6:806:345::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.12; Wed, 22 Oct 2025 08:48:11 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca%6]) with mapi id 15.20.9253.011; Wed, 22 Oct 2025
- 08:48:11 +0000
-Date: Wed, 22 Oct 2025 16:46:16 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan
-	<maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley
-	<pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
-	<aou@eecs.berkeley.edu>, Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda
-	<imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, "Kirill A.
- Shutemov" <kas@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>, <loongarch@lists.linux.dev>,
-	<linux-mips@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<kvm-riscv@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
-	<x86@kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, Kai Huang
-	<kai.huang@intel.com>, Michael Roth <michael.roth@amd.com>, Vishal Annapurve
-	<vannapurve@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Ackerley Tng <ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>
-Subject: Re: [PATCH v3 10/25] KVM: x86/mmu: Drop the return code from
- kvm_x86_ops.remove_external_spte()
-Message-ID: <aPiZ2DEQ6qW5r5rY@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20251017003244.186495-1-seanjc@google.com>
- <20251017003244.186495-11-seanjc@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20251017003244.186495-11-seanjc@google.com>
-X-ClientProxiedBy: PS2PR02CA0031.apcprd02.prod.outlook.com
- (2603:1096:300:59::19) To DS7PR11MB5966.namprd11.prod.outlook.com
- (2603:10b6:8:71::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cs50v27nTz2yjx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 21:26:06 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59M7RRpE017349;
+	Wed, 22 Oct 2025 10:25:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=L4WNrkKw0EoDvuIkWpJ3zdanNv54eTH1/JatKZIwH
+	0s=; b=rbQd5tz/T8wwhuE0RlkH0D3GVAECx4HRpTNFwNhWxaY4K5ma7M6CfIAFp
+	veCn4A6Pt4Y8VEt2kyL3FnWNDmdrSNRKZ9GFlchgjA/Y2ZW8Xe+59mkJr0ISwdpl
+	MiiObhNnI8chyVE06NxxjwOfoFJlZlzUe/OHDsX6TNaVJLg7lKDbtLDoSfJxrWIk
+	+XQff9HAPPZn7OlSxBTLSTnRf+HK23O8RcLwfooqrMVSsSBqqyklMPhuT1cRQ+Wr
+	vyGvbk4bj8Uq6K6Wxw8ksQeze3JdcPnzBVnJCg9bXQBaEqo8lTL7hOWZbkVU7pRH
+	tq6cbc2cjxB1snKh6naLD45TtcR8w==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31s44mn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 10:25:58 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59MAHrtt004413;
+	Wed, 22 Oct 2025 10:25:58 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31s44mh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 10:25:58 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59M805f3002367;
+	Wed, 22 Oct 2025 10:25:57 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqejfhu3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 10:25:57 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59MAPriv62456302
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Oct 2025 10:25:53 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4560A20043;
+	Wed, 22 Oct 2025 10:25:53 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0A10120040;
+	Wed, 22 Oct 2025 10:25:51 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.in.ibm.com (unknown [9.109.204.116])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Oct 2025 10:25:50 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Baoquan he <bhe@redhat.com>,
+        Jiri Bohac <jbohac@suse.cz>, Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Shivang Upadhyay <shivangu@linux.ibm.com>
+Subject: [PATCH] powerpc/kdump: Add support for crashkernel CMA reservation
+Date: Wed, 22 Oct 2025 15:55:31 +0530
+Message-ID: <20251022102531.657147-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -131,109 +95,195 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|SN7PR11MB7512:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2436652f-1d90-43e6-fc19-08de1147bb2b
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?JZioBAm7bbsHKt6rHA/h9fdRze7fJKQu+n2WLO0b/ellmmEKrAAFuG6MTfxa?=
- =?us-ascii?Q?93vD/SkyQKu57ggrN4cv3wkEzJoI3esrnZ72Xz7sfn95xkw3cTeK0SIdK/rE?=
- =?us-ascii?Q?49oXLvUf6BaYkzcIvIo03Qp/ix2VYZolTr2N48RVNnWacbsrgonVLOZEMUcj?=
- =?us-ascii?Q?wMWhRYk1ENXjnvNoQ6T3BEu4TO2TRaGoCFOVm0vmMP8atAkA0E6jXVj0KaEm?=
- =?us-ascii?Q?oJNYWdpW3Q+govARKOYRIw8FVvaL8dYeOOWqSQe0N/bWIaKe1TwNPrN/L0c5?=
- =?us-ascii?Q?ZpqdvdQ6e1f2k36uLqf9vgAxY3CKenQy/qirD7Hn1PWClBLfmGrI4CH3ur3A?=
- =?us-ascii?Q?BVck3UUvOZp0suYv03WvsivzW6EjIlYrlegl5F67dJfaMcmyzkq2HBLdvY0Q?=
- =?us-ascii?Q?KZlgcuon0gDXc+GNR8R55MUuX+RkLPgElGMUCqDPjqqHc0z3aegqpuyxeJQS?=
- =?us-ascii?Q?pjTCju8VmlrarARBSUy+37SaacomN0IyARke6ltYr7WjoKZf0fXR5LL9wqnI?=
- =?us-ascii?Q?QmwIDypJ3LsgrxrxodVd7rHyOlHD78aU1HKtC3OaK1Qu/VyXIB0XRaim0YNV?=
- =?us-ascii?Q?c19uXqb8XlmsMlT1FJJId4ORM9rlWI6utrgKoDWoIdYPWXGyV14DO+eEKlsm?=
- =?us-ascii?Q?imXxvrwKeYL9uMWkZrO9aAyurine6QLkWRsaVwjAAHpQlMnn344Fx5d3ucRZ?=
- =?us-ascii?Q?Y3+QyD4ZyfJSZTViRd7MG9Fs2MXGBy0NZgIBWu4zMN2/0XNbRWl/kYPASt2T?=
- =?us-ascii?Q?faB3ieCayYEo6dk8e0LXAzIsmPCB4BhgfhDb07UO18BDm0V+baQt1Bwlip0h?=
- =?us-ascii?Q?yc0lz23Lbb5dbRQvFvB7aKzJerWU9qQfqjw5s99znlFxYhBwvkMUvqrbTrwJ?=
- =?us-ascii?Q?glvgL5I3iJ9fRvQS7BCMpD/2BVHbew2gQAa9Z/AnyzBjlZYCicQ+c8YKGtvP?=
- =?us-ascii?Q?0MSlCV4WrKF0QgiJeiF+HbiZafF9E3YWX4CFZIyBKg4tWcGJd3XG9eRpE6kz?=
- =?us-ascii?Q?8P/+GIfkMd9KylVB1S3nznmCQNjVLLxZMwbI35bCtdUFfo8ztu/z534BaVKR?=
- =?us-ascii?Q?BBDs4d5lx7zR5BZdZcSeVzFL/TQqvaUSFQnRd7WUK2ovxh3Zp6bnnVx1aPBe?=
- =?us-ascii?Q?vrpiKexFWqngoVIxw9ymkGLyvWINwOGMxKdUXMOMFOlpyTOXzdKZY4/e4QNs?=
- =?us-ascii?Q?gwy7puQiED/WR3+lZMamREQ+0Hsv1nk5PYa7Upz/8pCR4p0CUQqecrYRbyDu?=
- =?us-ascii?Q?S10tEmVZ1MIOG98uPxbHjbzytgRq0Qz47f5L1djeMV+cQS81YPTHyBB7owTS?=
- =?us-ascii?Q?hGg9hjmK+i7qnnlk+nu+/nF7NzoZsb1oQnx7EVlvhXZGUXPS6mVYjFAkEnq0?=
- =?us-ascii?Q?gQ+TXUDv9P0VQ9bApMRLQU4/Z8goD+R5+V8pKhSLynCbr+nuapaAAvYxQ/6Q?=
- =?us-ascii?Q?MwHh9vPSYHMrc89LDXton7ZxNsHsQH4m?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?i59JZYiUMqd6ltU8KNcxYrwE/SpwuyY3dtuFjR6uUz/ue6LKgwCSi5b8Qvaq?=
- =?us-ascii?Q?jevnGVuq3+JLmuc7kX7rYOBU4M28+WuL8zeOy5B2y/049e5Jj9qy0v/z4rBn?=
- =?us-ascii?Q?ca2+e3ggxRPEbCbaQvRAFSgh/nYBWNb8r0ij/T3cEb0mC1UeubmrNAQPAE/v?=
- =?us-ascii?Q?cHqm8LswLIT+dShvPoDK4Xl6QbeBwGGZhoyE+OQ6wFyWFd8fLfXoQgU4MriN?=
- =?us-ascii?Q?fB6w1ix6JbPSrf5eUm3L/88Mf8R+r6sLUPOtg/UxvmvEMs9ubcLx3z07un6r?=
- =?us-ascii?Q?x5xY7H0oCthjKIB7oDzx/p1B9O9yWg6cr2YUuT7IuMBR+34su5lioZPumzhH?=
- =?us-ascii?Q?qXcOP6LJKCT3/WFXMX5vMvGNoZV+o6DBJYczBPf0ocEEG8nWfbeE2pMiMeq9?=
- =?us-ascii?Q?+7UFPOfnZofWDf/kttcEb9LZ2BXu00J32mMT5BsAlSpDz3NAR5T6ksIB/MXk?=
- =?us-ascii?Q?1BCatDknQwjH0FUM8sRemc8Y09tSqTvdmKg4tWl1OA+cFh4wByBtHmAigxb7?=
- =?us-ascii?Q?j8/QOtsBN7t9gBxhG3jUFh/ZLuaHWY5gFnzv5/3uOtC7R52OFlQZ6nI4th4G?=
- =?us-ascii?Q?AYt2hXBdTqbqZuAVzTk1R07L+mL7EaAVUshQdbRqR5LajsCNGmt1kK6bbD/C?=
- =?us-ascii?Q?zGKcj4rDoYShXE0+iWb4knPLc7r1AWbcf/VjuKTSYvC60JqNYM1pwC4PjFmr?=
- =?us-ascii?Q?+OnMMB7QhZx6e8Lwc4B9OJjT/EzCyTs1w6R9u4aGZcN54XNE7zvBzakU6AlG?=
- =?us-ascii?Q?LjrioukLipRSahCJzozKk2+S1Ut78uVNVMCRHnLh8ckVdEis4IiW4hhmSPhV?=
- =?us-ascii?Q?gx+AsC0OR194LM+b7cYXHfPLWFa/SyarW7QBviNgeWAtHWhLJNq6MitttT+o?=
- =?us-ascii?Q?dJFWMYNi2JGxBHnROeQFCCe3H80tHaMm46hp+2ZJZSKWErTK8yo1Q5tV4CSt?=
- =?us-ascii?Q?dprWBRe5F2pQgDrk3xhKWW/ZWEL+lla6dg4P3dhhIU4PmESJnwsJ7lg/qiJr?=
- =?us-ascii?Q?A0zso1D3bgUUP+KoL/rK387VEt8rxkx77zR63TSgAO0MKcsUAwBY7ECHaoiM?=
- =?us-ascii?Q?3A8WVj3qrHJXwO02hYh2oapTNR2JJHMquKkILMDUqZTHbOmmII4uEVsmIEk5?=
- =?us-ascii?Q?y6T8Lsmhzll93oD00Vf4LCApHUT3BdxNHa+TDqIzvPSAOTvpGMH1k1TnV/D6?=
- =?us-ascii?Q?2/b5UMoniEEHouPtRE8jboz6890RUp6sM63pTiK2KUSOmDF4AQgH50zHwqb+?=
- =?us-ascii?Q?vsTK2YYsRtolGDeA6MnW0KYpmvA9w3HIcX+AQ8taU934uemMoFFgXRcc74FW?=
- =?us-ascii?Q?SvjkD+qWagwg4lsI/0euT2TWh6DK9apSpXRpLOnAbn3RzBv+NlImc+ne/qc6?=
- =?us-ascii?Q?owj+wCyRWm5xwZh189t4Kx1BaVcUSnURuGubzTfahMUzUjq5o0PSsxc/8o+5?=
- =?us-ascii?Q?p5OikOMSQBnqwFQSE2GjL31apHteL+8Iv8Omb+cnpvZ8r+A9CcRUkK74VVBv?=
- =?us-ascii?Q?PT9v8jZlAkswhZoQFx1C7aP8wxog70pEefjmN8WiFkJzF1MRD89TaOBJgFZH?=
- =?us-ascii?Q?j1mCJZqABPxaonHgj60w2T5o4FImJ9/yb93Z7JM8?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2436652f-1d90-43e6-fc19-08de1147bb2b
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2025 08:48:11.6127
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c3IGt4AlXV+ST532hjcGKNFDGG2L1nlJrLdJb0+rq1uAXCei59bzqRTkm99MqVOzA8b+sqBKPfFTlgH25/p3PA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7512
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: WlsAFepaj27xWP9bSpdM4F1KvlPiDfLY
+X-Proofpoint-GUID: 6kA8EQxX0CPSoWQJVns_pr0uCVwF47mh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX4JG2XaMdlcuP
+ tp6xKB8tE/WlSSJJosQKssXTO7NQ1SmVMcj4TLLVDRrMnWo03mgxNoaggooqYVqEBcjrheM3m5e
+ vAyWSDM48WnVCYd1gm94Ro4Nj4eOqg9Kp2/zPwGNGXTbciOaTxVRjr0eJRQw0TLBLKbqxp8in95
+ yFuv3qaz5ZDFhyMz9KZkzKySdgQ3ZcdxlgU4Lm30uAhpmhFVNH+g7RqRRV+1YloAJrqsqs78mEV
+ kH3sojfm3x/MYFqgX2pPc0YNbxeMTvOZskuG1SVIaEch/vW4orpylMFd98En114ofBwaTAmLo/J
+ mrJYSgnWPgTBB10ZE+NCCnYhM7+rGhjk3vvz5x+BqQqG/CDTxeAXx2U4nwHwg/xkmkblOZwzLE7
+ EOlLGhpaQxDrpcCW20+aA9i3RQ8tDw==
+X-Authority-Analysis: v=2.4 cv=IJYPywvG c=1 sm=1 tr=0 ts=68f8b136 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8
+ a=pGLkceISAAAA:8 a=-o-kazUmVXvP5PRTSMQA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_03,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 clxscore=1011 suspectscore=0 spamscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Oct 16, 2025 at 05:32:28PM -0700, Sean Christopherson wrote:
-> Opportunistically pass the spte instead of the pfn, as the API is clearly
-> about removing an spte.
-From my perspective, "remove_external_spte" means removing an external SPTE (not
-a mirror SPTE). So passing in pfn_for_gfn seems reasonable as well.
+Commit 35c18f2933c5 ("Add a new optional ",cma" suffix to the
+crashkernel= command line option") and commit ab475510e042 ("kdump:
+implement reserve_crashkernel_cma") added CMA support for kdump
+crashkernel reservation.
 
-Additionally, passing in the pfn eliminates potential concerns about incorrect
-spte content.
+Extend crashkernel CMA reservation support to powerpc.
 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 48598d017d6f..7e92aebd07e8 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1855,8 +1855,8 @@ struct kvm_x86_ops {
->  				 void *external_spt);
->  
->  	/* Update external page table from spte getting removed, and flush TLB. */
-> -	int (*remove_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
-> -				    kvm_pfn_t pfn_for_gfn);
-> +	void (*remove_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
-> +				     u64 spte);
-Also update set_external_spte?
+The following changes are made to enable CMA reservation on powerpc:
 
-        /* Update the external page table from spte getting set. */                
-        int (*set_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
-                                 kvm_pfn_t pfn_for_gfn);
+- Parse and obtain the CMA reservation size along with other crashkernel
+  parameters
+- Call reserve_crashkernel_cma() to allocate the CMA region for kdump
+- Include the CMA-reserved ranges in the usable memory ranges for the
+  kdump kernel to use.
+- Exclude the CMA-reserved ranges from the crash kernel memory to
+  prevent them from being exported through /proc/vmcore
+
+To ensure proper CMA reservation, reserve_crashkernel_cma() is called
+after pageblock_order is initialized.
+
+Cc: Baoquan he <bhe@redhat.com>
+Cc: Jiri Bohac <jbohac@suse.cz>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+---
+ arch/powerpc/include/asm/kexec.h   |  7 +++++++
+ arch/powerpc/kernel/setup-common.c |  4 +++-
+ arch/powerpc/kexec/core.c          | 11 ++++++++++-
+ arch/powerpc/kexec/ranges.c        | 16 +++++++++++++++-
+ 4 files changed, 35 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+index 4bbf9f699aaa..c158ffbfeadb 100644
+--- a/arch/powerpc/include/asm/kexec.h
++++ b/arch/powerpc/include/asm/kexec.h
+@@ -51,9 +51,16 @@
+ 
+ #ifndef __ASSEMBLER__
+ #include <asm/reg.h>
++#include <linux/crash_reserve.h>
+ 
+ typedef void (*crash_shutdown_t)(void);
+ 
++#ifdef CRASHKERNEL_CMA
++void kdump_cma_reserve(void);
++#else
++static inline void kdump_cma_reserve(void) { }
++#endif
++
+ #ifdef CONFIG_KEXEC_CORE
+ struct kimage;
+ struct pt_regs;
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 68d47c53876c..1279e8777366 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -35,6 +35,7 @@
+ #include <linux/of_irq.h>
+ #include <linux/hugetlb.h>
+ #include <linux/pgtable.h>
++#include <linux/kexec.h>
+ #include <asm/io.h>
+ #include <asm/paca.h>
+ #include <asm/processor.h>
+@@ -995,11 +996,12 @@ void __init setup_arch(char **cmdline_p)
+ 	initmem_init();
+ 
+ 	/*
+-	 * Reserve large chunks of memory for use by CMA for fadump, KVM and
++	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM and
+ 	 * hugetlb. These must be called after initmem_init(), so that
+ 	 * pageblock_order is initialised.
+ 	 */
+ 	fadump_cma_init();
++	kdump_cma_reserve();
+ 	kvm_cma_reserve();
+ 	gigantic_hugetlb_cma_reserve();
+ 
+diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+index d1a2d755381c..3328b1acd875 100644
+--- a/arch/powerpc/kexec/core.c
++++ b/arch/powerpc/kexec/core.c
+@@ -33,6 +33,9 @@ void machine_kexec_cleanup(struct kimage *image)
+ {
+ }
+ 
++
++static unsigned long long cma_size;
++
+ /*
+  * Do not allocate memory (or fail in any way) in machine_kexec().
+  * We are past the point of no return, committed to rebooting now.
+@@ -110,7 +113,7 @@ void __init arch_reserve_crashkernel(void)
+ 
+ 	/* use common parsing */
+ 	ret = parse_crashkernel(boot_command_line, total_mem_sz, &crash_size,
+-				&crash_base, NULL, NULL, NULL);
++				&crash_base, NULL, &cma_size, NULL);
+ 
+ 	if (ret)
+ 		return;
+@@ -130,6 +133,12 @@ void __init arch_reserve_crashkernel(void)
+ 	reserve_crashkernel_generic(crash_size, crash_base, 0, false);
+ }
+ 
++void __init kdump_cma_reserve(void)
++{
++	if (cma_size)
++		reserve_crashkernel_cma(cma_size);
++}
++
+ int __init overlaps_crashkernel(unsigned long start, unsigned long size)
+ {
+ 	return (start + size) > crashk_res.start && start <= crashk_res.end;
+diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
+index 3702b0bdab14..dad58fc38251 100644
+--- a/arch/powerpc/kexec/ranges.c
++++ b/arch/powerpc/kexec/ranges.c
+@@ -515,7 +515,7 @@ int get_exclude_memory_ranges(struct crash_mem **mem_ranges)
+  */
+ int get_usable_memory_ranges(struct crash_mem **mem_ranges)
+ {
+-	int ret;
++	int ret, i;
+ 
+ 	/*
+ 	 * Early boot failure observed on guests when low memory (first memory
+@@ -528,6 +528,13 @@ int get_usable_memory_ranges(struct crash_mem **mem_ranges)
+ 	if (ret)
+ 		goto out;
+ 
++	for (i = 0; i < crashk_cma_cnt; i++) {
++		ret = add_mem_range(mem_ranges, crashk_cma_ranges[i].start,
++				    crashk_cma_ranges[i].end);
++		if (ret)
++			goto out;
++	}
++
+ 	ret = add_rtas_mem_range(mem_ranges);
+ 	if (ret)
+ 		goto out;
+@@ -595,6 +602,13 @@ int get_crash_memory_ranges(struct crash_mem **mem_ranges)
+ 	if (ret)
+ 		goto out;
+ 
++	for (i = 0; i < crashk_cma_cnt; ++i) {
++		ret = crash_exclude_mem_range(tmem, crashk_cma_ranges[i].start,
++					      crashk_cma_ranges[i].end);
++		if (ret)
++			goto out;
++	}
++
+ 	/*
+ 	 * FIXME: For now, stay in parity with kexec-tools but if RTAS/OPAL
+ 	 *        regions are exported to save their context at the time of
+-- 
+2.51.0
 
 
