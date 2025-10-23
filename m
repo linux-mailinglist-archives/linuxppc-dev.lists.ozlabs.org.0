@@ -1,78 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-13179-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13180-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A26BFF0E5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 06:04:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C59BFF2BF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 06:50:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4csXV03hZjz30RJ;
-	Thu, 23 Oct 2025 15:04:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4csYWg64PTz30RJ;
+	Thu, 23 Oct 2025 15:50:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761192264;
-	cv=none; b=dLOFidyk+ZAa2hRdzg2kWFQida6LcTcmAFe5iDdHe38KF04cdGFyOjcHBtZGBB8jKVWjZhZgLA7RGrvax6Zar3IggVthO1dNgM9UlGjXbbFjPyFePyASTzRyZrWnQXaLUuRBghcR0UZgo8srdeUDtsUn1kG8KZmqJsKHie7q18wzdA4A2N6ZRBnD/j3CS39k2Sa0bg1nHAf/8zQ+meHaP9C0aB8vPVXtDzFNVkBtr4tCKMjUAylYmjtxS/tBnr1TKv+dkrHE1KgajTa9uanG7S1+rpq9ySu9SuXJMelw+/qSCTnoJkMVqUawN/VVV2v1MG8vFu7egZ/tIxvobmrQgQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761177941;
+	cv=none; b=E+CLsaG+edU2yYwg+7vbGmnJnAERql/tlaZxcIthesBf4r1zorDe/2jeL9xdQ7mL35XwoGYrmChc9glS5VwpUI3NvWYZG5EcjJ0UWN2rqj7ZRW3yUWEfqBmr8Q4Ch2ELgBmB0gRSl0gBPM0cCPh+if1IdVrdO0KtZskNumDq+gZWxQN703BEZ6/Of5eOt1Ux6Qw2Njq2I9J8QaeELfortbUkttIxiccraD/fBGaycIiMvIAawpmgdY5qJyaecBzq9r/FHgjO2diTJJFdqZ1lpe6VwVh9NGXlGcP4LV842x618928o9EjYUqT8qmQe11Ky2Ly+lN/N+NgCHIqJE3juw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761192264; c=relaxed/relaxed;
-	bh=kNqq/bIE1J52ZfD77A5OJ4HQCqtofGAaXPUWDYZC3HM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KS7b10e65ij2eKQ/a90fpNh4SBvPxBChgXrYX2Lr9ug2vYD6hTATwbj/NHx00rJ34mgQubQU7e/OgINIU5RPw12xV7js1pmzK1qZNnl72iEx8xh3fRI0CF0r8qMvNKxyZS6C39YuiLXBRxNm0x/jS+17EgTZyrk+qMq9etkI7xKqawGh7SmPd6IAlt4cYj0zPvBNPCXVx5mcQMBkjqKOK9PZ8o3eojoVgSnMv9BqcpIcrEDX2qaxYJbZnEUWqorHlgLKSzao6uc77oECOHNfKO+fVNq3lDuFIxc1e/rS5fLbCdT1oYHi1dntBI6qcXuXx+avibRjs96iw+TmGTAufQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qqE2oKM3; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1761177941; c=relaxed/relaxed;
+	bh=YMUWYl+RTsVCov/vsPtkBuHUA9Ssu9g/aMZ+rIBItRU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=EdBSuO4lHuLN48LSD4McOLIbag+BSyG1L9ZcMchsVnFTzxnwKE9gMsaTks7sWBcaho0TbIp/6UPQWOlirqZ2SVle1ZLuVJvKRIY/YE89mDu94uOfL3dYEYH+zVA1N0xp8wPijJBSEPl/FT46/S/FViYEwc5acrfA2LY/Q2qKprNEULEzNuO30UAHUoaEIvBzXbFf5fPkVqLMSR0gQ2dShZazy00cPcL2OToGtSZmF3wT2cQ3Q9QYipWY7wP1whxvsX58+JU3ctEFxRQEphHyWQ2jx0BRuHouGQ3Rmse9ZWLYZSnvdT8CJWSCYo2CN8hqZvZQ8ShfyhlcrjVkTbi3eQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=dvWGjnx3; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3uxh5aaykdggqatoeamuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--kuniyu.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--kuniyu.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qqE2oKM3;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=dvWGjnx3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--kuniyu.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3uxh5aaykdggqatoeamuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--kuniyu.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4csXTy5q20z304l
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 15:04:22 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59MLMA9j031196;
-	Thu, 23 Oct 2025 04:04:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=kNqq/b
-	IE1J52ZfD77A5OJ4HQCqtofGAaXPUWDYZC3HM=; b=qqE2oKM3aYqpoV+9NG+S6r
-	KRpqEqw/PF95ZD4lYALCAOlE8OyOOEVdZhrX1OQ8/YnryBUwZ1UvVtRUSVdZt9nx
-	Fl5Nx/IEoZYjyWJ3MIZDwqiqkTESTc4la+QiBWh6DIVXCjhFST3ErQG0Ke8q56B9
-	4VxZFgMZ93oES9VDKfaj1SzTHEUNiCVboesynAaaeX7R3chtCDWuzPMwAZbt0IpD
-	QzOZJ8ygrbRtUrxK1dkEyjKgjjwIu905ZHS94lm/8peNQryWG4UGMDpngchIbrSh
-	DGWyf4KpBI+Wxe16LSyFUn/iNlYDLwZYlSgxg9LAzAgkGi1Lnt4oWcnxVvXTNahQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v327069s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Oct 2025 04:04:09 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59N41SVA015176;
-	Thu, 23 Oct 2025 04:04:08 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v327069k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Oct 2025 04:04:08 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59N2aEqQ002281;
-	Thu, 23 Oct 2025 04:04:07 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqejknn8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Oct 2025 04:04:07 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59N443di51839398
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Oct 2025 04:04:03 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B784820043;
-	Thu, 23 Oct 2025 04:04:03 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 26A0020040;
-	Thu, 23 Oct 2025 04:04:00 +0000 (GMT)
-Received: from [9.109.215.252] (unknown [9.109.215.252])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Oct 2025 04:03:59 +0000 (GMT)
-Message-ID: <4d2f41ed-4cab-420a-a7ba-f11a45924c9a@linux.ibm.com>
-Date: Thu, 23 Oct 2025 09:33:59 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csRBX61dfz301N
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 11:05:40 +1100 (AEDT)
+Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-33d75897745so531774a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 17:05:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761177938; x=1761782738; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YMUWYl+RTsVCov/vsPtkBuHUA9Ssu9g/aMZ+rIBItRU=;
+        b=dvWGjnx39sMq/CZGPcPvhRQpdnr6ZElPzjjWPud2gKFC7r7MpOuO3a3kZhN5lMGkPV
+         3GVNXrTmFRMM4sL92U0DqxuUSW/3ZfLqUzMh4gXn6Rr2MwGbNq4QaYOfxD52gDsPHaR/
+         nYdOd/O0fYer8lyDXRl0r/LdyO5h4sbMNXKqLIDRNh4TMrAt35Q98OEuL0gBxGmjSEZy
+         +vG9wt9eelYo6mXoIzvD5yw8TFyE/4TDqhmL+3bmjsQbXv2meiIWpADFTbO84tsCDnKV
+         oFvdecL2Rqh5uIW3g5aEvYcDXmOGiYQtKfadFVPQTdBVoaJpMNl8QrK1NAgyphC+Kmmi
+         kV/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761177938; x=1761782738;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YMUWYl+RTsVCov/vsPtkBuHUA9Ssu9g/aMZ+rIBItRU=;
+        b=eGwNZDzLd2qwLVWivDEn2Pft7GbORyFrohKgHJG8bdft/IcVrJAIQPDqNnnAcJvFAL
+         eJUPPZ2F0+37FoOU3D+eUy1K0wmqqiZZOYhmlC7jYn4he5RzjVb+mUIzM8/iRHC9Vcom
+         1E0Oy+U9JK706KouUWkVDkJFkIuUsNY2k8us2bObn4ijs8t6Xv5s2132LSmnTXDChfB2
+         WvHSJa9jA84UASwF56330tgTG8O+8fHjfUn8L8lHEUwBtfqYN3Ae/UIkrGmcVFNWP9Tn
+         JsEhrYAP/UIXyJ/fe08f9B8bYVxYFpi/AqgV7c+66UkM3O9/7UgHHhotRIuoM+LSyY3m
+         fbTA==
+X-Forwarded-Encrypted: i=1; AJvYcCXjy3W0srWJdcsZx+iwG8oooxAtmLJ/FeRCvpTPBngDjWacktW4at74g9KPklvODTe+Wlxp6+Zapl4FGk0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwVEXLzb9RInGAkhASO1v6xn7h3gnBydwlxxB0z0SLfBQsonLhG
+	KPuaGHG+MHO2PjYffgcnJ+eSv65mocUpn/EwjSjW1GpdT27mu1Jw4wJjIAf8YuPUVMlBAS2fu88
+	y/iHEkg==
+X-Google-Smtp-Source: AGHT+IF6lSdbdtyS+/t/fGvEsbBKEiGOc0L8/NdAr9Cp2dQPW0iljcBuf5Kq/IEP9uj1boUHsE/v/xDHW1g=
+X-Received: from pjih1.prod.google.com ([2002:a17:90a:5801:b0:33e:28eb:7df2])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:55cb:b0:339:9f7d:92d4
+ with SMTP id 98e67ed59e1d1-33bcf87b8a5mr30997233a91.9.1761177937783; Wed, 22
+ Oct 2025 17:05:37 -0700 (PDT)
+Date: Thu, 23 Oct 2025 00:04:42 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,91 +74,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 00/10] paravirt CPUs and push task for less vCPU
- preemption
-To: Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>
-Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, tglx@linutronix.de, yury.norov@gmail.com,
-        maddy@linux.ibm.com, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, gregkh@linuxfoundation.org,
-        vschneid@redhat.com, iii@linux.ibm.com, huschle@linux.ibm.com,
-        rostedt@goodmis.org, dietmar.eggemann@arm.com, vineeth@bitbyteword.org,
-        jgross@suse.com
-References: <20250910174210.1969750-1-sshegde@linux.ibm.com>
- <aPZIGCFk-Rnlc1yT@google.com>
- <cfc43786-5a9d-4813-b8ac-a8a55f430f03@redhat.com>
-Content-Language: en-US
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-In-Reply-To: <cfc43786-5a9d-4813-b8ac-a8a55f430f03@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=EJELElZC c=1 sm=1 tr=0 ts=68f9a939 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Zoj0bJXJtDvkO92F0TYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX31ySbOXlWtrv
- 36HjYPNht7QqJ8cVglDFimrajnMGXUo0ccUOu+Em+zLwxF00WDYiiHKYGsdSsnwGg8EKSYZSAPB
- XKc4zv+43LYRM/q30xU2gt4mHm0JOAD44az/GH3EY/DfQ8bu4I5ehILFxMG7IiRBB4b7w0bljOH
- imIKsaCJ7ztVX5BsQiHmieFXkVaJkoEJKebGFEyyr8p6CPGc3nhYoADKAb92AyD3xSnjH1DIVW/
- dNZ6+1zRtXnrzdRaaq1mIAO0N1237aqLmbOPXgQvA7RQeJ0LvDYSBjPHL1QU9ldJTLstIm6ItRC
- paubwmdw/5J2HDegcVg6EV2a80JUEiDL/01jtj5oCAay7lnejvVeGYAsD4dBtyls02PQkU2pe2h
- T2EX2nW/powb4VbwOZT/Nd+vhQdsGQ==
-X-Proofpoint-GUID: 7AYUV3o335U8A7KKkJkO2g6VjFIco6ML
-X-Proofpoint-ORIG-GUID: LzGoaR3-um5SC2JWdi-dBlo3OVIsc2-4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-22_08,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0
- malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.1.814.gb8fa24458f-goog
+Message-ID: <20251023000535.2897002-1-kuniyu@google.com>
+Subject: [PATCH v1 0/2] epoll: Save one stac/clac pair in epoll_put_uevent().
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Jens Axboe <axboe@kernel.dk>, 
+	Christian Brauner <brauner@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, "H. Peter Anvin" <hpa@zytor.com>, Eric Dumazet <edumazet@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, x86@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+epoll_put_uevent() calls __put_user() twice, which are inlined
+to two calls of out-of-line functions, __put_user_nocheck_4()
+and __put_user_nocheck_8().
 
-Hi Paolo. Thanks for looking into this series.
+Both functions wrap mov with a stac/clac pair, which is expensive
+on an AMD EPYC 7B12 64-Core Processor platform.
 
-On 10/20/25 8:35 PM, Paolo Bonzini wrote:
-> On 10/20/25 16:32, Sean Christopherson wrote:
->>   : Till the hint from underlying hypervisor arrives, another idea is to
->>   : approximate the hint from steal time.
-> 
-> I think this is the first thing to look at.
->
+  __put_user_nocheck_4  /proc/kcore [Percent: local period]
+  Percent =E2=94=82
+    89.91 =E2=94=82      stac
+     0.19 =E2=94=82      mov  %eax,(%rcx)
+     0.15 =E2=94=82      xor  %ecx,%ecx
+     9.69 =E2=94=82      clac
+     0.06 =E2=94=82    =E2=86=90 retq
 
-The current code i have does the below: All of this happens in the Guest.
-No change in host. (Host is running PowerVM, a non linux hypervisor)
+This was remarkable while testing neper/tcp_rr with 1000 flows per
+thread.
 
-At every 1second (configurable):
-1. Low and High steal time thresholds are defined.(configurable)
-2. Gathers steam time from all CPUs.
-3. If it higher than the High threshold reduce the core(SMT8) usage by 1
-4. If it lower than low threshould increase core usage by 1.
-5. Avoid ping-pong as much as possible.
+  Overhead  Shared O  Symbol
+    10.08%  [kernel]  [k] _copy_to_iter
+     7.12%  [kernel]  [k] ip6_output
+     6.40%  [kernel]  [k] sock_poll
+     5.71%  [kernel]  [k] move_addr_to_user
+     4.39%  [kernel]  [k] __put_user_nocheck_4
+     ...
+     1.06%  [kernel]  [k] ep_try_send_events
+     ...                  ^- epoll_put_uevent() was inlined
+     0.78%  [kernel]  [k] __put_user_nocheck_8
 
-Its an initial code to try out if it works with plumbing the push current task framework
-given in the series.
+Patch 1 adds a new uaccess helper that is inlined to a bare stac
+without address masking or uaccess_ok(), which is already checked
+in ep_check_params().
 
-  
-> Perhaps single_task_running() can be exposed in the x86 steal time data 
-> structure, and in fact even in the rseq data for non-VM usecases?  This 
-> is not specific to VMs and I'd like the steal time implementation to 
-> follow the footsteps of rseq rather than the opposite.
-> 
-> Paolo
-> 
+Patch 2 uses the helper and unsafe_put_user() in epoll_put_uevent().
 
-Sorry, I didn't follow. You mean KVM usecases?
 
-I don't know much about rseq(on todo list). Any specific implementation i could
-look at done via rseq that you are talking about?
+Kuniyuki Iwashima (2):
+  uaccess: Add __user_write_access_begin().
+  epoll: Use __user_write_access_begin() and unsafe_put_user() in
+    epoll_put_uevent().
+
+ arch/arm64/include/asm/uaccess.h   |  1 +
+ arch/powerpc/include/asm/uaccess.h | 13 ++++++++++---
+ arch/riscv/include/asm/uaccess.h   |  1 +
+ arch/x86/include/asm/uaccess.h     |  1 +
+ include/linux/eventpoll.h          | 13 ++++++++-----
+ include/linux/uaccess.h            |  1 +
+ 6 files changed, 22 insertions(+), 8 deletions(-)
+
+--=20
+2.51.1.814.gb8fa24458f-goog
 
 
