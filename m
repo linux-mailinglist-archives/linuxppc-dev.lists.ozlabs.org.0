@@ -1,97 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-13225-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13226-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DB72C03336
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 21:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F4AC03360
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 21:41:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4csxCc6c72z3bjb;
-	Fri, 24 Oct 2025 06:38:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4csxGr3fD7z3bjb;
+	Fri, 24 Oct 2025 06:41:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761248300;
-	cv=none; b=KQS/fBpOjssc+gkMwt6tAqxk8QLGRHfVBXbVK8g8BkjTfK+Jy3qfORNYsMFjvx2+sq8Nf/UHqVJLnUhqGJFJnZLiPnpghYIeB/tkRNBoS2xTxXPF9Tl/RGOJKPUSB8HRhQHzPC1QLVcg8ORwSoNqwdXZmHDD4hstFYWQik9b6eEPoK0T+BjwykrL2VaHm8k/9iMjwJEs4IPlY4w5IFhwc3rrB3EVvNpRJk67Yr4Nd4oMAbhtM3yqPUEPjocL4S7vkn0/mUQTVcLFCW3fLPjbI5uov2AVSbaclw1nEbWV72/el+IKnPvyU/cZOsnuhY1ycbDfDrrxeeei6iGTDcVt1Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.17
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761248468;
+	cv=none; b=mu1wmxF2JHb2D1m7BhvQP2C9rcOmyds/CRoOy2efTF3VMX2OZD6vyseUMMXz9O0upimXOblEghkJaFmFbhiD8eEx+Z5wgBacbmb1HQHg4DUWjuuXoi9STgq7Jc2kXt1auDhmLDB60G2192RoOTO7relMzkX47eDGLdQSewVT6aPwsgcu0rqfRHFXpARvy0ovJYdDBZlg/L4OQev+Zr63SPAWt8lXLHv3hnZOsCj9jum88P+Gjmy/jz9rtcviRt+Geshsvke6OZ6J/+YZ8bIFq8WS7I3t1/u7LRATW6CL82zEy+8Cw1vi+gSs2Xj2iHdXuT+gDx7PW0inM/eZNJSJAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761248300; c=relaxed/relaxed;
-	bh=VQ7IyiPkbQDl/6FlpFFPP3SSIBn2cmNYnYEr3eJHlB0=;
+	t=1761248468; c=relaxed/relaxed;
+	bh=g66irbQwH0jxqDv3DTl+NXhVVIHgeOwi6mA7R89diG4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HjRJ343qxEIow9NkYl+W9qvXwm/cotnuuqLhKThMTRMm1rRpESrzUB+2WKPMDvANbpWwk+8Oi+z+Bd4d3X1Hy2zMz66qsMngRAiKy3jUnlELw8Uyp825kr5/zfytqxNNYeriaEIsgBShEy0ogEbft7M0ntQxLq0dFqPCoB5OMEwa/e+Me6iKH3TJxwdpqhBwULUXLmxdQcjyVBlNF0/5Kc8Do8EINLQ8CzIC1J3kJCzGDQbNl+Y3dPndZBIMZblz0flttsPwVnPzvYRiNJy3Y4+ELJww0fHmux+PX0XO5uMn7X95qK2FE3x9+PUsytVMpOcc99u64eymYkKOu8a+AQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WaUgJiS4; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WaUgJiS4; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	 In-Reply-To:Content-Type; b=FSQI3+ZWn31QxlZFZwQxH3EVe5bLzorWtYQfxFZFYyu3qGg8+A2DVMRlDXPwU6pEVckmL7xZqTbQjBoqhe5NgHM3Boh4Tcn4tWSduFuinMSx0AzG/qkEueeIjUOquIX4cTmV9rEMKVAXZeupvT3dNrT1ReiUcfKfGfyOSEpMpXEOXM5QGX3vOoqPpHUf9JdEYQZv6/SbW1n7unhjdiNFBbvC2UuKNSaZ3ul/Y0P+KIjURVh3NkohaGQr4u1Ute0kC+iVJV3XXO6uWzNPzeyuTXfkcBELrTGoSAGZw4ayJbkWPmbpPAJI9x0HvEYLUrDtp/MaTeXIMjNhUBoDf8pBAg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=neQVTAeR; dkim-atps=neutral; spf=pass (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WaUgJiS4;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WaUgJiS4;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=neQVTAeR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4csxCc0bv3z3bf4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 06:38:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761248297;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VQ7IyiPkbQDl/6FlpFFPP3SSIBn2cmNYnYEr3eJHlB0=;
-	b=WaUgJiS4lnTXdFuXbmtBc+ovBYRyZFk/GY87gSYhn6slSvAipbKaOrAXyF0pe0Lkq7PUqq
-	H5TQdOzI4ta62Os8GBuYgX46aCuaOW3mFGqw9qF10rfyaee8X/ZwwBOO1+Fwm5uKu5HNH/
-	NBND0Wh0hqI6OBLJWNdDn3ajtOJ7B/k=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761248297;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VQ7IyiPkbQDl/6FlpFFPP3SSIBn2cmNYnYEr3eJHlB0=;
-	b=WaUgJiS4lnTXdFuXbmtBc+ovBYRyZFk/GY87gSYhn6slSvAipbKaOrAXyF0pe0Lkq7PUqq
-	H5TQdOzI4ta62Os8GBuYgX46aCuaOW3mFGqw9qF10rfyaee8X/ZwwBOO1+Fwm5uKu5HNH/
-	NBND0Wh0hqI6OBLJWNdDn3ajtOJ7B/k=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-102-4qRo2BvGNl-Egxf00Tp-Jw-1; Thu, 23 Oct 2025 15:38:15 -0400
-X-MC-Unique: 4qRo2BvGNl-Egxf00Tp-Jw-1
-X-Mimecast-MFC-AGG-ID: 4qRo2BvGNl-Egxf00Tp-Jw_1761248294
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-471144baa7eso7799075e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 12:38:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761248293; x=1761853093;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VQ7IyiPkbQDl/6FlpFFPP3SSIBn2cmNYnYEr3eJHlB0=;
-        b=V1V4jofmYsGA9p3xOHk9V3mu46A1gAGWr1zktdz7HgQnx/S/z2W8DfgjSmQs7r0Yvm
-         JXPM8SVMqlPsDBilrG6djUZddORdqQMW32F7GpEVg75F0A/IkXWg19nChtvj34zu4emY
-         WjP+sl6UVH/fyrscuXiqkNHyhgf8N6HniUOpg3YnWAVY3Orr6NwYXnNWMVbvasfGIhZt
-         Y0FtG+oOsimK6nJ+4EOY21SygKmUAlSOS1tWlP+KktyCvEfHtjv0JPDsBP4xOVFOpFG6
-         iq9Q0h2mjJ/uRYWRLkRb5DtsSPBqgDS4rdB/NsaZRrAr9Ai4zUfMvvUP0L7D7KuMG2rA
-         6gmA==
-X-Forwarded-Encrypted: i=1; AJvYcCW1fXbzbQ/jp7lyFi1ZZSwrkBux5+hNDDNxrCfQR1UmFNBMaVhAItdEyv/g1gLOcemU6rHw9HYkrjHIR64=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxMF+eBb1BHFomPAgSymg704oysv48cKbTmBYbR4s33OvMeIhmq
-	JlbpcgEfLRJKX4RsbAG/w0Y8j6vvR+PUqVyAZXIOrtRdFRC+ysDCl0EBzT0bngJJvJa3zpvrbMa
-	wFbylldETh+PBKA2sDV62GHnQD6soQzmFptecf9qLCOKyjlOzUruJG64Ng2rMUZbFBnI=
-X-Gm-Gg: ASbGncspVlJkS8C5CXLCzUOM2FomCnyL52JmmvMjBSgbyGMl273Pk1i2+yijgMOLHhw
-	LsgzoJ/72xasbYGEKXDRcSydjFCbNcZYFJJbJbuHMsXVmgk6Tu235H70qwv3vYheo5OwV/8dr/q
-	jGWqoXcKpuffn2nUAcxSgB4T0+fZMdilRWupjsm0Mm7IjH9S2sqRt6/8nyabs17wUhZAGOjj32G
-	1z+Gff3EGX8Xy9E3MgAb45ItJUgQiKFNcd4qzn1y2QKaUQ1VfvBclY2VLaQuz/lA8JtdXagISru
-	M5pzZweUh/HZX5lIIs5T6HVqWvLDzA9fUfrauwVlWnOkRldsqBn2NXQw2Aq3XmTjCnCIBDm15ff
-	oAAfsXmkAsE9eebKFgJWlLyIkQ7a3YhF1KOKcK9yJmaWe3ljc7K5Vnv3mB93FSoBwsobErzpWfk
-	o/hMoTHNN3oNsF+5Kq4lZrGN1flVo=
-X-Received: by 2002:a05:600c:3145:b0:45d:e6b6:55fe with SMTP id 5b1f17b1804b1-4711791e7a4mr225365635e9.34.1761248293308;
-        Thu, 23 Oct 2025 12:38:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFK4kvb9VXDfRke79DTEDXEtAKVHmaVqzR/ZxHwP2FSjJo/KXXf7lv5KID4JKHr2iZrwUPcWA==
-X-Received: by 2002:a05:600c:3145:b0:45d:e6b6:55fe with SMTP id 5b1f17b1804b1-4711791e7a4mr225365155e9.34.1761248292920;
-        Thu, 23 Oct 2025 12:38:12 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898eb549sm5405252f8f.41.2025.10.23.12.38.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 12:38:12 -0700 (PDT)
-Message-ID: <dd3011ec-23cc-4431-95a3-a0c2965e7062@redhat.com>
-Date: Thu, 23 Oct 2025 21:38:10 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csxGm6lQ1z3bf8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 06:41:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761248465; x=1792784465;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=EZvSIuYJ3b/lrMN/a187wOL5XBrJRwc0mlFfLxSRTNs=;
+  b=neQVTAeRmAolqITGwf7aA1335AzmPKWeTPyLCGXJpYYg3o5FxUu1D7Li
+   z+KuC8HXZLYm+ZEwFtndMs5bWveLc+MuPXFwqseXNdCuPYdes8RnAmM00
+   RH5D9mRgS/WkaDuWU31SezHBaNTguggI///OGCH/m9tYNOxfiLcr3ZSBL
+   XPZDV6+/BESyjNsHefEUWtnIuEIH3WpriAJOie0R+YJIaAbUgY5S2Zzba
+   aA48goxfMSJtnvyDAhocRnwEGacfEU4kpzb6QJQuA4DQYIR3REf6mBLqe
+   o+zmc2IZyEv+ZV7GiVcK/T/k6HaZDcLw79U5kMFU1cznkX+w8bN4ZbWhM
+   w==;
+X-CSE-ConnectionGUID: I3oWyhcSQxG+NG2UflKQEg==
+X-CSE-MsgGUID: sFUDgntdRxGJR0OGMSIa4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63336124"
+X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
+   d="scan'208";a="63336124"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 12:41:01 -0700
+X-CSE-ConnectionGUID: xhJ4pgrURdGtIG7TipTo9Q==
+X-CSE-MsgGUID: 9Hg2U50JR468NFeVk2g90Q==
+X-ExtLoop1: 1
+Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.108.251]) ([10.125.108.251])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 12:41:00 -0700
+Message-ID: <0bfa4895-727b-407b-90d2-7d54b9bd4910@intel.com>
+Date: Thu, 23 Oct 2025 12:40:59 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,123 +68,106 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/13] mm: introduce CONFIG_ARCH_LAZY_MMU
-To: Kevin Brodsky <kevin.brodsky@arm.com>, Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+Subject: Re: [PATCH v1 2/2] epoll: Use __user_write_access_begin() and
+ unsafe_put_user() in epoll_put_uevent().
+To: Kuniyuki Iwashima <kuniyu@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-6-kevin.brodsky@arm.com>
- <aPNjd2dg3YN-TZKH@kernel.org> <3836a43f-809e-419d-a85d-74606d9daa0f@arm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <3836a43f-809e-419d-a85d-74606d9daa0f@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Fnw-XVcbxBKr_JYsfvmeyjhsCyPh6YXmV7Y7d-FOkew_1761248294
-X-Mimecast-Originator: redhat.com
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Jens Axboe <axboe@kernel.dk>, Christian Brauner <brauner@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Alexandre Ghiti <alex@ghiti.fr>, "H. Peter Anvin" <hpa@zytor.com>,
+ Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20251023000535.2897002-1-kuniyu@google.com>
+ <20251023000535.2897002-3-kuniyu@google.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20251023000535.2897002-3-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 20.10.25 12:37, Kevin Brodsky wrote:
-> On 18/10/2025 11:52, Mike Rapoport wrote:
->>> @@ -231,7 +231,7 @@ static inline int pmd_dirty(pmd_t pmd)
->>>    * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
->>>    * and the mode cannot be used in interrupt context.
->>>    */
->>> -#ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
->>> +#ifndef CONFIG_ARCH_LAZY_MMU
->>>   static inline void arch_enter_lazy_mmu_mode(void) {}
->>>   static inline void arch_leave_lazy_mmu_mode(void) {}
->>>   static inline void arch_flush_lazy_mmu_mode(void) {}
->>> diff --git a/mm/Kconfig b/mm/Kconfig
->>> index 0e26f4fc8717..2fdcb42ca1a1 100644
->>> --- a/mm/Kconfig
->>> +++ b/mm/Kconfig
->>> @@ -1372,6 +1372,9 @@ config PT_RECLAIM
->>>   config FIND_NORMAL_PAGE
->>>   	def_bool n
->>>   
->>> +config ARCH_LAZY_MMU
->>> +	bool
->>> +
->> I think a better name would be ARCH_HAS_LAZY_MMU and the config option fits
->> better to arch/Kconfig.
-> 
-> Sounds fine by me - I'm inclined to make it slightly longer still,
-> ARCH_HAS_LAZY_MMU_MODE, to avoid making "LAZY_MMU" sound like some HW
-> feature.
+On 10/22/25 17:04, Kuniyuki Iwashima wrote:
+> --- a/include/linux/eventpoll.h
+> +++ b/include/linux/eventpoll.h
+> @@ -82,11 +82,14 @@ static inline struct epoll_event __user *
+>  epoll_put_uevent(__poll_t revents, __u64 data,
+>  		 struct epoll_event __user *uevent)
+>  {
+> -	if (__put_user(revents, &uevent->events) ||
+> -	    __put_user(data, &uevent->data))
+> -		return NULL;
+> -
+> -	return uevent+1;
+> +	__user_write_access_begin(uevent, sizeof(*uevent));
+> +	unsafe_put_user(revents, &uevent->events, efault);
+> +	unsafe_put_user(data, &uevent->data, efault);
+> +	user_access_end();
+> +	return uevent + 1;
+> +efault:
+> +	user_access_end();
+> +	return NULL;
+>  }
+>  #endif
 
-LGTM.
+This makes me nervous. The access_ok() check is quite a distance away.
+I'd kinda want to see some performance numbers before doing this. Is
+removing a single access_ok() even measurable?
 
--- 
-Cheers
-
-David / dhildenb
-
+Also, even if we go do this, shouldn't __user_write_access_begin() be
+called something more like unsafe_user_write_access_begin()?
 
