@@ -1,97 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-13230-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13237-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0DEC034F3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 22:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C84F4C0392A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 23:42:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4csxmL2LQ9z3cZV;
-	Fri, 24 Oct 2025 07:03:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cszyp1JVbz2yFx;
+	Fri, 24 Oct 2025 08:42:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761249794;
-	cv=none; b=HSg7tdLYHtQ+jeeDtUR/1A/tnMeG0WTag6JbDOdEaLurE+MfErY8eclojGTjkyTrPXVPGHYCiyfa5egsUL6SLnLZxc5NemVPVR8muTjwc+7PaQKXnyKes6clcue/U/49shRX+s/xNyv9aeN64WZsVZTEVQkAbPmepJwLMU2ZqU8532ljUqGDqizFuz8Zdw1szOpunRdN6APTbHn0hHyEb/VlWWO9pX12Dp1J+Yo2K2wHvO2tobHOmHZhm5xAo8HJwTF33DevPmO5SS3ClTtoX/d40LJTuEZXZD0tPKz0DgRqh64sYzmCtCFBXyUuDZeMwtQdi8uV5pFS1O9stjg+Kw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=142.132.176.110
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761244597;
+	cv=none; b=SQTU8Sj/63UHWjikSvN5H9HQA1dSsQZ6Rry4it3WYUVuKBqevsOwqOBRvVj3VTM2IQFgR6vSxwxVpryhxlwLinvEbGUPiSAHuopvUGzexmsjXy+iLyS5F/Xy9rD3zKU2jnU+VhDgE9INAe4gFX7SXNcZB6N19WbKo3oKHtJvyPbC0GlFcYVbvGZ44Cq45m0Q4mOp9O/bGdNzqtcbqw36C5G3SpuQ6gtIHgLTwMbvgLMMy4cQlebqGohU5wftE+T0sLBNENZ3I/h4pC8VJX4QHC2L464JPL4Xn81cKzuPa2ZJXszeJAm3xolnekJgVV4vuB/A6/lTJjx5LUTYxQrzlw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761249794; c=relaxed/relaxed;
-	bh=QPUi1jKCUzNIqjtqTEITsV04BJ5RU7P6py+r44ygz4A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZiusIgK937EmcM32n2OijnRWHNUj9l/S9QymKwL1xMSV6KJRTfN1zjUTKzzb0lyNXKMob/Bpr7d9PCBhosOkPtH8gVBw79JCctq0ddRf15NB9+MFyTMM7AZjcnq1dXXU2dMxBZjV7xYg3Um5R5e6ddN4VpESZP/6vV9wD5bqg8gv14V0Y6L8XpvmtePhJA466r3gM1QZLjrgH8E3jP0IYeUhcbX85RGH4eOutowW4tqpBvpJWJQDyqZQpY9lIMRRhYRTS+r6oYBQAwQTyhzks/B3+59f2PysG1LJZ9hguRytI8pW/dgAMS6abSH3rWqVNU1nwDr3oyC0jk7IuEIH4g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Y1q1VHhU; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C2KaDHWG; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1761244597; c=relaxed/relaxed;
+	bh=wMO+SCV0l5dh/TBWZh1mnrGafB3FTHbpefBDO3evOwI=;
+	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
+	 Message-ID:Subject; b=MDXj6Vm1zoSaFJ7T33UpQUFkpJYKcA2F+1ANqilkSDi/NlMiupvJh1QrBla1fmpbWcMPzEYl3S7gG9+vqK6q9MvleF6B7lpMPBQoSQ576Eq5pZEqytnij0BTi4a6ABsiNl+8hpi7+5sypgtIJhscbuZLDBhoe4cI1bUyLETHrCiWxpwArqTVc/JRzKzOlVxUspmtd00yCYrz9wmUqiVunHLFlUF5hVBTSXXCGDHI47wr5aFCdjR0d8sUP0SPOtjpLUO2vioFIvK6t2MnJDNF08k+9ITtN2m/WM0JA0hbtB6KIDYeMgQOGPrzmphA1YZx5o8VkBV9O/9haUCV/s1vdw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; dkim=pass (2048-bit key; unprotected) header.d=manjaro.org header.i=@manjaro.org header.a=rsa-sha256 header.s=dkim header.b=x3vT1EJf; dkim-atps=neutral; spf=pass (client-ip=142.132.176.110; helo=mail1.manjaro.org; envelope-from=dsimic@manjaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=manjaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Y1q1VHhU;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C2KaDHWG;
+	dkim=pass (2048-bit key; unprotected) header.d=manjaro.org header.i=@manjaro.org header.a=rsa-sha256 header.s=dkim header.b=x3vT1EJf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=manjaro.org (client-ip=142.132.176.110; helo=mail1.manjaro.org; envelope-from=dsimic@manjaro.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 535 seconds by postgrey-1.37 at boromir; Fri, 24 Oct 2025 05:36:35 AEDT
+Received: from mail1.manjaro.org (mail1.manjaro.org [142.132.176.110])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4csxmK3XXcz3cQx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 07:03:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761249790;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QPUi1jKCUzNIqjtqTEITsV04BJ5RU7P6py+r44ygz4A=;
-	b=Y1q1VHhUnUtbAfsLtetVtzpxjabLV1NTsI4fNMxCML9j6ZN1Un2/vK5KOp7SKSEklK+Czx
-	DyO80aqMXpClMQhHVgHJ7ZqC2anbauKAnhqchE15JCQhNnaFkLuItd06kx1GDdyWpQBOjG
-	CqChN+k32fMElHxmy8kacz88TWjjcC0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761249791;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QPUi1jKCUzNIqjtqTEITsV04BJ5RU7P6py+r44ygz4A=;
-	b=C2KaDHWG7NkDzutxTWids+XLugiaeS4pdBw2PEw4G5KADijNRXoP+kZdJRGUpc7OCDhvGV
-	wQTpJ3Zjxp/J0QY/xZsEwhb4OntYlIwVOKZxlHxTUKnPK9i6fDuBzckpWsmaTdyUxMK5BH
-	HuUwX27RWNDCCGP/vnSmOGGVvukmTFM=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-626-k9nwXXv_P4ed_1q_gyGbQw-1; Thu, 23 Oct 2025 16:03:09 -0400
-X-MC-Unique: k9nwXXv_P4ed_1q_gyGbQw-1
-X-Mimecast-MFC-AGG-ID: k9nwXXv_P4ed_1q_gyGbQw_1761249788
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-42700099ff5so762782f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 13:03:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761249788; x=1761854588;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QPUi1jKCUzNIqjtqTEITsV04BJ5RU7P6py+r44ygz4A=;
-        b=AFl01uxhWaLCmEx0biEUQe00RBnCXGzwQVgCmsh/jkKmIg0YaskKMDIrF9F8TTYwpH
-         rFnjW0jORC7Y/tICSHZ6JVoslDxHvvgI5Sulv3gZwE4qMTpXW7HZgAcV9p0UdDYcCITi
-         JpDrZXpSUfFdytKAQcPCQoecD0JvKXsVJXujuhe0x5+l143cy2HmJIyt1OZy4DPXnkeO
-         x9fzT+DOoztDU1n3MOyGPtEfGbdjnJPRfuX/kj5wy90i1yodn0dgEnIwOU3M60I53kBr
-         nvk1M22WKxKN/uMQNiOHwuWP8VmxYtIv6ju4CHa8hcGERn2+pqD8gL0hWY0kmQzhA7Un
-         yUcw==
-X-Forwarded-Encrypted: i=1; AJvYcCXuzqgRYSJ1N7lMfKMJjMzKB1lYacBinDFCvuvVNqBaJYjJxDYm8S0X2hbnEZvtfj9eqX6HPInck2CF920=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx/AcqVtOg6Hl8YQKFR3WOdAfHg9mcenoOHonA7govbspNxMOmM
-	H6c1rd7FDIzvnU+f/ynWVYgTIKOVVA2NKsXJSk9Zr+mh5kmSbiLN4UBqBx5Smk/cxeGp+DB90ZU
-	ve7tBJNPrqrqAoAwnZ8ciwt/uteJwgtZ5WE74NJnBjO+7SSOp/EkrDfPzBWVs5WyCWJE=
-X-Gm-Gg: ASbGncsBA5z1ax4LUF2EUSwIFdZWbyYE1nMNlAj9d2KrKMj9PLYczeDjwDyXY8hqZWx
-	6KfWZTNuCVeN12ZChpnIbQNPqo+MxssURlF+Ldz5IvquEWKmVZ67ENHA6jUd1gnsqrxJdtMg2J/
-	a9XjgQ38lcIG4rgToTagoOrEJ/4Qqwtj6roXrcOcqEcMqH0n77ppxoNtXz7M1uqt9iDGpz044mk
-	X5Cppnq5c/PARDSkK/4AN8QBHJgPDBq7tJDy/0JS+4hgdKTKVKKau81nhdtCRlEAW9wz4ZkcpGi
-	Jz69jckEZ5mAI5Zc0tGuJtrGrQZkc45NwRuXGTkPkN5zkO5GrRfYbT3Y3jhEV3twZCVF2Ubarkz
-	K2O2jdL2uUTVV24iLQktuSE/JhbouiJKnk9yKWcqt+ynbPEpHCwkAscP6YHhjed65Y1GMKAtaGt
-	BDBQrPG9szSOos6wStgGYi57GZSCY=
-X-Received: by 2002:a5d:5f54:0:b0:428:3e62:3220 with SMTP id ffacd0b85a97d-4283e6236ebmr11705618f8f.30.1761249787948;
-        Thu, 23 Oct 2025 13:03:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGVpW2WfIyt9mGiyfA1hGoENq2TIdXWY1dpXbpJHoGGtaDtHStMqMHIOiYdTKz+oFfHpZxtMw==
-X-Received: by 2002:a5d:5f54:0:b0:428:3e62:3220 with SMTP id ffacd0b85a97d-4283e6236ebmr11705579f8f.30.1761249787533;
-        Thu, 23 Oct 2025 13:03:07 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429897f57d9sm5671794f8f.20.2025.10.23.13.03.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 13:03:07 -0700 (PDT)
-Message-ID: <e8d31a8d-ad4b-4365-951a-dff0bc9535a5@redhat.com>
-Date: Thu, 23 Oct 2025 22:03:04 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csvrM0TZBz3bd0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 05:36:34 +1100 (AEDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPA id 58F2D40D25;
+	Thu, 23 Oct 2025 20:27:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=dkim;
+	t=1761244050; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=wMO+SCV0l5dh/TBWZh1mnrGafB3FTHbpefBDO3evOwI=;
+	b=x3vT1EJfPxqfvf6DDV90OVcHLztgqacXNaWxXyOwo0jNBDwyLCyeJv+Ph7niMcJnYDzjBG
+	J2UzZzAjq5i3/7WU/eAXEAMb6jgGRiRpLoww3MWmxhS+RtWLCXhJxmEuov4NulcMgpz5PG
+	w1GIi7xYmiBEH/4rLkLz+Fe4Xp6LKm4+7n2zwSIFFAGAZeOBEX3Cd0uhcrFSJYSM+4Dg7y
+	Y+p5mV9ipeAg9wQd8MQGJbqePWEDXiYtY+pdnPNA4lvoTUJyj/LwwX19qiQuaHv70L7Gi9
+	Y+LjMR4vDEkJcmcKkKSsFfSUNcozLPKt+1hwz1nu9t0VQ0cUmKUG331JrfXwew==
+From: "Dragan Simic" <dsimic@manjaro.org>
+In-Reply-To: <20251023180645.1304701-1-helgaas@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+References: <20251023180645.1304701-1-helgaas@kernel.org>
+Date: Thu, 23 Oct 2025 20:27:25 +0200
+Cc: linux-pci@vger.kernel.org, "Manivannan Sadhasivam" <manivannan.sadhasivam@oss.qualcomm.com>, "Christian Zigotzky" <chzigotzky@xenosoft.de>, "FUKAUMI Naoki" <naoki@radxa.com>, "Herve Codina" <herve.codina@bootlin.com>, "Diederik de Haas" <diederik@cknow-tech.com>, linuxppc-dev@lists.ozlabs.org, linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, "Bjorn Helgaas" <bhelgaas@google.com>, "Shawn Lin" <shawn.lin@rock-chips.com>
+To: "Bjorn Helgaas" <helgaas@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,101 +60,153 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/13] sparc/mm: replace batch->active with
- in_lazy_mmu_mode()
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-11-kevin.brodsky@arm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20251015082727.2395128-11-kevin.brodsky@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: yFcbi0OJL9xtcOGjXOpPaW7r-8h6m3r-U3og3KnEt3s_1761249788
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Message-ID: <da79f38f-fdb9-0101-67cc-144ef8d6e1d1@manjaro.org>
+Subject: =?utf-8?q?Re=3A?= [PATCH] =?utf-8?q?PCI/ASPM=3A?= Enable only L0s and L1 
+ for devicetree platforms
+User-Agent: SOGoMail 5.12.3
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: None
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 15.10.25 10:27, Kevin Brodsky wrote:
-> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
-> mode. As a result we no longer need to track whether the per-CPU TLB
-> batch struct is active - we know it is if in_lazy_mmu_mode() returns
-> true.
+Hello Bjorn,
 
-Same here, document the dependency on disabled preemption.
+On Thursday, October 23, 2025 20:06 CEST, Bjorn Helgaas <helgaas@kernel=
+.org> wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
+>=20
+> f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devic=
+etree
+> platforms") enabled Clock Power Management and L1 PM Substates, but t=
+hose
+> features depend on CLKREQ# and possibly other device-specific
+> configuration.  We don't know whether CLKREQ# is supported, so we sho=
+uldn't
+> blindly enable Clock PM and L1 PM Substates.
+>=20
+> Enable only ASPM L0s and L1, and only when both ends of the link adve=
+rtise
+> support for them.
+>=20
+> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states fo=
+r devicetree platforms")
+> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> Link: https://lore.kernel.org/r/db5c95a1-cf3e-46f9-8045-a1b04908051a@=
+xenosoft.de/
+> Reported-by: FUKAUMI Naoki <naoki@radxa.com>
+> Closes: https://lore.kernel.org/r/22594781424C5C98+22cb5d61-19b1-4353=
+-9818-3bb2b311da0b@radxa.com/
+> Reported-by: Herve Codina <herve.codina@bootlin.com>
+> Link: https://lore.kernel.org/r/20251015101304.3ec03e6b@bootlin.com/
+> Reported-by: Diederik de Haas <diederik@cknow-tech.com>
+> Link: https://lore.kernel.org/r/DDJXHRIRGTW9.GYC2ULZ5WQAL@cknow-tech.=
+com/
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> Tested-by: FUKAUMI Naoki <naoki@radxa.com>
+> ---
+> I intend this for v6.18-rc3.
+>=20
+> I think it will fix the issues reported by Diederik and FUKAUMI Naoki=
+ (both
+> on Rockchip).  I hope it will fix Christian's report on powerpc, but =
+don't
+> have confirmation.  I think the performance regression Herve reported=
+ is
+> related, but this patch doesn't seem to fix it.
+>=20
+> FUKAUMI Naoki's successful testing report:
+> https://lore.kernel.org/r/4B275FBD7B747BE6+a3e5b367-9710-4b67-9d66-3e=
+a34fc30866@radxa.com/
 
--- 
-Cheers
+I'm more than happy with the way ASPM patches for DT platforms and
+Rockchip SoCs in particular are unfolding!  Admittedly, we've had
+a rough start with the blanket enabling of ASPM, which followed the
+theory, but the theory often differs from practice, so the combined
+state of this and associated patches from Shawn should be fine.
 
-David / dhildenb
+Thank you very much for all the effort that included quite a lot
+of back and forth, and please feel free to include
+
+Acked-by: Dragan Simic <dsimic@manjaro.org>
+
+> ---
+>  drivers/pci/pcie/aspm.c | 34 +++++++++-------------------------
+>  1 file changed, 9 insertions(+), 25 deletions(-)
+>=20
+> diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+> index 7cc8281e7011..79b965158473 100644
+> --- a/drivers/pci/pcie/aspm.c
+> +++ b/drivers/pci/pcie/aspm.c
+> @@ -243,8 +243,7 @@ struct pcie=5Flink=5Fstate {
+>  	/* Clock PM state */
+>  	u32 clkpm=5Fcapable:1;		/* Clock PM capable? */
+>  	u32 clkpm=5Fenabled:1;		/* Current Clock PM state */
+> -	u32 clkpm=5Fdefault:1;		/* Default Clock PM state by BIOS or
+> -					   override */
+> +	u32 clkpm=5Fdefault:1;		/* Default Clock PM state by BIOS */
+>  	u32 clkpm=5Fdisable:1;		/* Clock PM disabled */
+>  };
+> =20
+> @@ -376,18 +375,6 @@ static void pcie=5Fset=5Fclkpm(struct pcie=5Flin=
+k=5Fstate *link, int enable)
+>  	pcie=5Fset=5Fclkpm=5Fnocheck(link, enable);
+>  }
+> =20
+> -static void pcie=5Fclkpm=5Foverride=5Fdefault=5Flink=5Fstate(struct =
+pcie=5Flink=5Fstate *link,
+> -						   int enabled)
+> -{
+> -	struct pci=5Fdev *pdev =3D link->downstream;
+> -
+> -	/* For devicetree platforms, enable ClockPM by default */
+> -	if (of=5Fhave=5Fpopulated=5Fdt() && !enabled) {
+> -		link->clkpm=5Fdefault =3D 1;
+> -		pci=5Finfo(pdev, "ASPM: DT platform, enabling ClockPM\n");
+> -	}
+> -}
+> -
+>  static void pcie=5Fclkpm=5Fcap=5Finit(struct pcie=5Flink=5Fstate *li=
+nk, int blacklist)
+>  {
+>  	int capable =3D 1, enabled =3D 1;
+> @@ -410,7 +397,6 @@ static void pcie=5Fclkpm=5Fcap=5Finit(struct pcie=
+=5Flink=5Fstate *link, int blacklist)
+>  	}
+>  	link->clkpm=5Fenabled =3D enabled;
+>  	link->clkpm=5Fdefault =3D enabled;
+> -	pcie=5Fclkpm=5Foverride=5Fdefault=5Flink=5Fstate(link, enabled);
+>  	link->clkpm=5Fcapable =3D capable;
+>  	link->clkpm=5Fdisable =3D blacklist ? 1 : 0;
+>  }
+> @@ -811,19 +797,17 @@ static void pcie=5Faspm=5Foverride=5Fdefault=5F=
+link=5Fstate(struct pcie=5Flink=5Fstate *link)
+>  	struct pci=5Fdev *pdev =3D link->downstream;
+>  	u32 override;
+> =20
+> -	/* For devicetree platforms, enable all ASPM states by default */
+> +	/* For devicetree platforms, enable L0s and L1 by default */
+>  	if (of=5Fhave=5Fpopulated=5Fdt()) {
+> -		link->aspm=5Fdefault =3D PCIE=5FLINK=5FSTATE=5FASPM=5FALL;
+> +		if (link->aspm=5Fsupport & PCIE=5FLINK=5FSTATE=5FL0S)
+> +			link->aspm=5Fdefault |=3D PCIE=5FLINK=5FSTATE=5FL0S;
+> +		if (link->aspm=5Fsupport & PCIE=5FLINK=5FSTATE=5FL1)
+> +			link->aspm=5Fdefault |=3D PCIE=5FLINK=5FSTATE=5FL1;
+>  		override =3D link->aspm=5Fdefault & ~link->aspm=5Fenabled;
+>  		if (override)
+> -			pci=5Finfo(pdev, "ASPM: DT platform, enabling%s%s%s%s%s%s%s\n",
+> -				 FLAG(override, L0S=5FUP, " L0s-up"),
+> -				 FLAG(override, L0S=5FDW, " L0s-dw"),
+> -				 FLAG(override, L1, " L1"),
+> -				 FLAG(override, L1=5F1, " ASPM-L1.1"),
+> -				 FLAG(override, L1=5F2, " ASPM-L1.2"),
+> -				 FLAG(override, L1=5F1=5FPCIPM, " PCI-PM-L1.1"),
+> -				 FLAG(override, L1=5F2=5FPCIPM, " PCI-PM-L1.2"));
+> +			pci=5Finfo(pdev, "ASPM: default states%s%s\n",
+> +				 FLAG(override, L0S, " L0s"),
+> +				 FLAG(override, L1, " L1"));
+>  	}
+>  }
 
 
