@@ -1,57 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-13211-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13206-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B92CC01209
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 14:27:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 950E0C011DC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 14:27:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cslfz03pSz3btx;
-	Thu, 23 Oct 2025 23:27:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cslf06xffz3bf4;
+	Thu, 23 Oct 2025 23:27:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.17
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761222474;
-	cv=none; b=apq2URmJwZgSf5oQuxRY1eDCtMyDFFFwvpoi6pdnOd7jcXNFOMXV54VGmKpKLJjq0c3TvjyaJxkBKltPzMi6ScUw/36B6sMLvKOBbNqTF0oLJDreL7vVUn1fhK6CqxeeTLGUQJto3wHLNea1Jo6YmsbPs3vYVd9WVMirziu9n9cQJKgFa2DKgL9DwKTvZo51ohaqCIMsIlw/QEV6KEoVqwwLjVrl/2yVv1/UljFnLuPWe0sK/gcpXmPw7ZzwSAaqpd+1WjKXiEoNG7FrNW/2RNV4vT5dlPpOhDMoYesRdQPzbItfb4OGXrWGWzvZMHI13pErfwFBBVrAWyG3vNANAg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.19
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761222424;
+	cv=none; b=aeEw8YKOvsPhZRUnUe/yU3DmHxduAhsaNm28eSmdQ1t/wUF4qt0Hxsr2huJdr9KViB/czFjMvPanF4L7GPhhFEt7H+B94Y5tPoxZAVqUpnLGF09h48uofgV3lGR/+cVDyu0WsoS+6oBx3RRByv9KJyuQowjWGWLDRzOL76MCXubshSrWCTfNW1BWhC2KAIQXBdlXIV2jCfljJPLoeYnQxkSTkI3ptFOqDJdY3rhVBg9IvI1zmYOwRxf+X3emIrgdhgCMKYgthFHXGujGEak/2JVNwYCGFOpyef/RWpHqB9M8tHBjI/5HwY7Pf4SKAD5706w46cnDvcOdbI8sdt32fQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761222474; c=relaxed/relaxed;
-	bh=mhNJ5UVjbR9XwZg/RG4WVaadVBacBt963EXV7HuFDKw=;
+	t=1761222424; c=relaxed/relaxed;
+	bh=B+wu5n9qUSWZoivSCh1PyY+rrCbIF0emhSS99A9r+U8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2hlQoosISarIfHQWmmHDxxEiiZl6JtazitXqSDJFoILj2OiMvCA4AnTyA1EC2NuhZfz/TMX7/AOfOUChImPjeibK6eGIYpSRTl1Trq97HR3Q5SbwHDnwxAGGggrZPkP0cIUm0hkXPEd0S4lO1Zr48QbCMW1mYlL1pRGccxtO2f1E4Uwa1/kg+HJX/jsSEjC7+fyPPBJG9CEOukxJcZaWk/tf/9P6jijgOSOxv2SWsq3mfZENTmcuaYAQSszqVrdI0Py1IauPQIAPbjsciOQx+FRzt+ake6fTTc47mFPoY4YgzeYSxWpQ9fbLPfcA80Qe0xazxM/otZR1KPiz+zxYQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=drbVBHYG; dkim-atps=neutral; spf=pass (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 MIME-Version; b=oUYJ9UlVE0B/jnc7+JsHGgmsnEfNyf8k8V9mwyy5J5/Hii2Ak+75yyzz1ysb4ki0xUEhEhURw2TaNN3BPCKzGMcejwBek8V8LKePVrUNPGgPMk3YPlQwa5o1FbwrEJoPNvEeaen5V5E8jtXkkFQPGwkvVb2AKCaX8qoZFdvFVAsNS+8eZUcYJRSrH8N0P2F4c6pSV7LjtySzA0f09Nw93TL+WSR5lSGvyQSApsfRPzr5Yz1JOpM7OLe5c1AxFWijpnJtE9Q5fChKPqoSFKHjs9aB4rvOoKa08EwFRacFppN04jZM/6Nt/cWJHpVbU+x5pRiJ8VZJ4nz6A8PDrsHFUg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CI8+Sn88; dkim-atps=neutral; spf=pass (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=drbVBHYG;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CI8+Sn88;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cslfy0ZLxz3btv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 23:27:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csldz568Mz304l
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 23:27:03 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761222474; x=1792758474;
+  t=1761222424; x=1792758424;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=zLJMDs9079RK5MwXvZr2M8uR5FmXfMibcm6mFiquR+k=;
-  b=drbVBHYG1B0XocQYbuJ3WkhioXLzmpj4/qMfM9bKirI6dtbiP+6Qbm2n
-   MGwe/AX9ojXnL6ss0pdt/yQOGitG9Sy82Zln55gl7lxVa1UptiQ3SIQqR
-   7NHWVgoQNVgZ9U3LWMrX+n8WwKlSHQgMKCaEX5XmJpiDzoUcUaQYAvoPf
-   yeRF0hoHEJ6sANeuBW5UBqyQIcU3TAV5F/OKcV6avoRBAm34TZI7uJuE5
-   3Ytu9HDeJ7PYY1Zk0R22Yll/7IdA1WO4Af/Q/fhfR3fJdQfI2kTV83XDX
-   031Rk7CuFSYkUfVhqfN2fsKRw/o5QGZfhsEwDebnmRGGAMUB4mNtpsxAq
-   w==;
-X-CSE-ConnectionGUID: HVy7TmhcTVCLzLQm6C97Bw==
-X-CSE-MsgGUID: VGCMauUTTaGYN9oSQZLO4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63296832"
+  bh=PbFADBLewu37LDKf0I/qUmCC86OvOzKhoSduxuMrrMw=;
+  b=CI8+Sn88cczUWzEklps8zsBeWIljRZKP4vHdNoQoZgaz414rlGf96q6W
+   M7Ly5rpm5PxSz5Aviq8FkDhTGoCTuHKZC8Mn/LTKFSjccNrE2xfZwpJyt
+   cKFI1Wq2PVZngk2hrWBAuRcnoQ/v5l6hGBXQHQdAKRzjc7Vw+2j6j16Gj
+   GTl4nGJsGNqfJVbGdKyK0nAR/HW8zyI4mhmLhwxE+3q6M1y871qHaFR0/
+   Vg8e8kNX/LFllEvgcot9kRHvnTfA2uK5nG+Ehln9NoYxUwlIgTpm24slr
+   w7C27fSjDl6w+hTgl3b4neFOc2gCorQxpVxERdEch5P6i5VgNdhCwPvYp
+   Q==;
+X-CSE-ConnectionGUID: jrhg4E6+RN6f1Rkqv7x+lA==
+X-CSE-MsgGUID: Lu/C+SC3RdWP7i0T1BmN9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63282556"
 X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; 
-   d="scan'208";a="63296832"
+   d="scan'208";a="63282556"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 05:26:49 -0700
-X-CSE-ConnectionGUID: vdRp44lcSV2X6qSpo0BJeQ==
-X-CSE-MsgGUID: 2NFambV/TLubggDm+0LoVg==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 05:27:00 -0700
+X-CSE-ConnectionGUID: jCz3Ch1MR9+KUQDQFIQXOw==
+X-CSE-MsgGUID: j+jCBTy1Tf2GHqB1muXCpA==
 X-ExtLoop1: 1
 Received: from unknown (HELO fdefranc-mobl3.igk.intel.com) ([10.237.142.160])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 05:26:38 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 05:26:49 -0700
 From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
 To: linux-cxl@vger.kernel.org
 Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -98,9 +98,9 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
 	linux-acpi@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-pci@vger.kernel.org
-Subject: [PATCH 2/6 v6] ACPI: extlog: Trace CPER PCI Express Error Section
-Date: Thu, 23 Oct 2025 14:25:37 +0200
-Message-ID: <20251023122612.1326748-3-fabio.m.de.francesco@linux.intel.com>
+Subject: [PATCH 3/6 v6] acpi/ghes: Make GHES select ACPI_APEI_PCIEAER
+Date: Thu, 23 Oct 2025 14:25:38 +0200
+Message-ID: <20251023122612.1326748-4-fabio.m.de.francesco@linux.intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
 References: <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
@@ -123,98 +123,68 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-I/O Machine Check Architecture events may signal failing PCIe components
-or links. The AER event contains details on what was happening on the wire
-when the error was signaled.
+GHES handles the PCI Express Error Section and also the Compute Express
+Link (CXL) Protocol Error Section. Two of its functions depend on the
+APEI PCIe AER logging/recovering support (ACPI_APEI_PCIEAER).
 
-Trace the CPER PCIe Error section (UEFI v2.10, Appendix N.2.7) reported
-by the I/O MCA.
+Make GHES select ACPI_APEI_PCIEAER and remove the conditional
+compilation from the body of two static functions that handle the CPER
+Error Sections mentioned above.
 
-Cc: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
 ---
- drivers/acpi/Kconfig       |  1 +
- drivers/acpi/acpi_extlog.c | 32 ++++++++++++++++++++++++++++++++
- drivers/pci/pcie/aer.c     |  2 +-
- 3 files changed, 34 insertions(+), 1 deletion(-)
+ drivers/acpi/apei/Kconfig | 1 +
+ drivers/acpi/apei/ghes.c  | 4 ----
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index ca00a5dbcf75..f8a97db075fc 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -494,6 +494,7 @@ config ACPI_EXTLOG
- 	tristate "Extended Error Log support"
- 	depends on X86_MCE && X86_LOCAL_APIC && EDAC
- 	select UEFI_CPER
+diff --git a/drivers/acpi/apei/Kconfig b/drivers/acpi/apei/Kconfig
+index 070c07d68dfb..c265b54d810d 100644
+--- a/drivers/acpi/apei/Kconfig
++++ b/drivers/acpi/apei/Kconfig
+@@ -23,6 +23,7 @@ config ACPI_APEI_GHES
+ 	select ACPI_HED
+ 	select IRQ_WORK
+ 	select GENERIC_ALLOCATOR
 +	select ACPI_APEI_PCIEAER
+ 	select ARM_SDE_INTERFACE if ARM64
  	help
- 	  Certain usages such as Predictive Failure Analysis (PFA) require
- 	  more information about the error than what can be described in
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index 47d11cb5c912..cefe8d2d8aff 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -132,6 +132,34 @@ static int print_extlog_rcd(const char *pfx,
- 	return 1;
- }
- 
-+static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
-+			      int severity)
-+{
-+	struct aer_capability_regs *aer;
-+	struct pci_dev *pdev;
-+	unsigned int devfn;
-+	unsigned int bus;
-+	int aer_severity;
-+	int domain;
-+
-+	if (!(pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID ||
-+	      pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO))
-+		return;
-+
-+	aer_severity = cper_severity_to_aer(severity);
-+	aer = (struct aer_capability_regs *)pcie_err->aer_info;
-+	domain = pcie_err->device_id.segment;
-+	bus = pcie_err->device_id.bus;
-+	devfn = PCI_DEVFN(pcie_err->device_id.device,
-+			  pcie_err->device_id.function);
-+	pdev = pci_get_domain_bus_and_slot(domain, bus, devfn);
-+	if (!pdev)
-+		return;
-+
-+	pci_print_aer(pdev, aer_severity, aer);
-+	pci_dev_put(pdev);
-+}
-+
- static int extlog_print(struct notifier_block *nb, unsigned long val,
- 			void *data)
+ 	  Generic Hardware Error Source provides a way to report
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 97ee19f2cae0..d6fe5f020e96 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -613,7 +613,6 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+  */
+ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
  {
-@@ -183,6 +211,10 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 			if (gdata->error_data_length >= sizeof(*mem))
- 				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
- 						       (u8)gdata->error_severity);
-+		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
-+			struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
-+
-+			extlog_print_pcie(pcie_err, gdata->error_severity);
- 		} else {
- 			void *err = acpi_hest_get_payload(gdata);
+-#ifdef CONFIG_ACPI_APEI_PCIEAER
+ 	struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
  
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 0b5ed4722ac3..1b903e0644d6 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -971,7 +971,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
- 		pcie_print_tlp_log(dev, &aer->header_log, info.level,
- 				   dev_fmt("  "));
+ 	if (pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID &&
+@@ -646,7 +645,6 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+ 				  (struct aer_capability_regs *)
+ 				  aer_info);
+ 	}
+-#endif
  }
--EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
-+EXPORT_SYMBOL_GPL(pci_print_aer);
  
- /**
-  * add_error_device - list device to be handled
+ static BLOCKING_NOTIFIER_HEAD(vendor_record_notify_list);
+@@ -711,7 +709,6 @@ struct work_struct *cxl_cper_prot_err_work;
+ static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+ 				   int severity)
+ {
+-#ifdef CONFIG_ACPI_APEI_PCIEAER
+ 	struct cxl_cper_prot_err_work_data wd;
+ 	u8 *dvsec_start, *cap_start;
+ 
+@@ -767,7 +764,6 @@ static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+ 	}
+ 
+ 	schedule_work(cxl_cper_prot_err_work);
+-#endif
+ }
+ 
+ int cxl_cper_register_prot_err_work(struct work_struct *work)
 -- 
 2.51.0
 
