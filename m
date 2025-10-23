@@ -1,69 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-13218-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1615FC02C63
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 19:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 770A8C02D97
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 20:07:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cstfk1Mdwz3bfF;
-	Fri, 24 Oct 2025 04:43:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4csvBK10Gkz3bfF;
+	Fri, 24 Oct 2025 05:07:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761241390;
-	cv=none; b=hBU++wsehAalJO5dJpDHgdN56IybJKsx11drK4eORvICt9rDs2b/0aNL6hobSAfaCpTYSfn1nHXJT6URyjMD76N4iwvo8qKHccAYwuQJaBFve8TAWHmd4+ibh8I1sOz0z1PuB/CgXkniqsLgw/jkwgehrVO1PIw1E/GYYVcDCncA6kfT+XQc8lsPVsvRGQ2PEEPWpvyb9uTs/h/neU3hl4TDSjXklNK0X+nTK4uGoYsTBtBV0i9yVHubDCYudcYkyN9K6cPDSziVVi07N2hHqhdoi094+P4EpgFBLRK93szOSy6QZ/IRs/Zeuy9m2qKidnsctvN+/PQCrvD1uxqUNA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761242825;
+	cv=none; b=Jv5gvDpFUh+zIHuIXIVaxWz5qfFxvi05BBvRnozGEyBc6mExKUNcdkqKgEerWeBlb+Z1o+Ew/dxTeh1sqfCa0RzA6QoCe8xrlEs5bZl9pO0BDM6Ovfz+lGSWA5LPlzOcVCwZBKRn59phHHPirXQL7MZfQfgfukChhF3B3xpOYTdbMO5k5qsRsXdQxwwYigz2KRVDLQI8zHQVuZLx2fd1eg3zFIwt2rnZAqpbGc7WKhg5P027ZLQToEtpt3MHfcA+KaSJ9kU16n9Jvl1MqDic2vBlquRwO3pmAPK5Qt/aHamNgqKR7yoqrjski+MPMd1/UJHpDhq+tRHQrOjcGDN4qA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761241390; c=relaxed/relaxed;
-	bh=KHzMAOwPgSlBKaIP9Aq4oBQ1XjBzvOHOxgqqLEV/1YU=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=FU+YBSP7cY6BMpg9q3wuJwE5kwr+FBP+pU+Tw0tyRfeEDLM2zr030O/KQcm0X4o/8lt0ix/P6zh8jCtDpBEpOuxNdgiTjw1vlqfKwdF5/YJxxId1KRnxOxANcin5WJj1NQ2k2DX+jfSnkX0kV8XLrSwHN56aUtlxfLwaNIt+o+/pA91T2G3AqBy39eoIh0O0egfvRhW2YXjUgkHBEY+cnJP6hkL/E6Xx9cXLwsijMK4hxdElhKdxRmuA+jW9FPq6g5dGuaqaSokBeblpm/xm8VLaRPCKWz1UEvyt6zFcWiTkCHJjqup2W/vn4IDhQrcvhYadSxB+rW6wCIDahDdLyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XxGR5HJu; dkim-atps=neutral; spf=pass (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1761242825; c=relaxed/relaxed;
+	bh=pD4OZ8sTcScrzlsfkjnPhmFjSQEvbzJ3KSCjybNomxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WgjFrgmwRBgvUE1cZSldMulrmLF7x/bOvk3nXKbWKMg3THcDDgr5ddPeCIbmGgjJ3G0K5mHPMhwyPGb7j2o4hkmDgFy2IMdGAWDG8AphxqepVl5wYOXudTUMzOLa7pEUXb5ZAq1F9yASX27POJKPZ6pGCZSVeycVwUhXcpaNL/28g+pTqBR64sKro/bL2KhdFau0bmbbWDjpd0KIVYFaV+cIQLRL//bzqteejcripWC07jPPl9LPTOkVE/jpB+UD5D6+xxdd0l+Z4awZpxYyX1iL+Q+HsKUBQLPOFgVibMKDnDEZVeqlW1Nlx2XoOQvAP5AclC/FWZ63nmF3s/FDOg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V5Z6NbT6; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XxGR5HJu;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V5Z6NbT6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cstfg2NhMz3bd0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 04:43:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761241388; x=1792777388;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=lBogzcavFia1tq1/hy2llZwqk3cknuFx94ohvomXMBA=;
-  b=XxGR5HJuEJQY787e/+OohhBunZtXFkS6ariRKQxG6cmIKVuknZINqNxA
-   esLbInTO166j0e+ViqKiRb/CfC0xlYnjSYgy/VFthyw+7kQBVjILyg+3F
-   BjRei+As0hanJYIQyTVAnW/A1IcnFTO6iyjO1K8YF2RWaCJE4f+cu3GIw
-   Ar8dJSDE5gxYIUZKh61H/HQTT7M7YlcuUAJMcbiSH277fAdcNW2dgAsQh
-   QPXvSVV7GEExYxL92RFSBdWvNm0eFnIWO5UyeeVqDsiXXPPvbFX1JLlJp
-   zbvvh3jzmBmcJ8L4LrGJfgVIFjg9B8R1nMJj5DrzRTGjQUKVxyR8JLMm/
-   Q==;
-X-CSE-ConnectionGUID: ebfIkq1GQ8Kv4XYKolyK6g==
-X-CSE-MsgGUID: Af10GpBUQX6W3F2FSFCi2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="80855383"
-X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
-   d="scan'208";a="80855383"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 10:43:01 -0700
-X-CSE-ConnectionGUID: KyhLV5dhTR+V6DJO+HlNKA==
-X-CSE-MsgGUID: nkm4X9Q6SCOpy1ru1Fvulg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
-   d="scan'208";a="188280889"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.225])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 10:43:00 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Thu, 23 Oct 2025 20:42:56 +0300 (EEST)
-To: Simon Richter <Simon.Richter@hogyros.de>, 
-    Lucas De Marchi <lucas.demarchi@intel.com>
-cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
-Subject: Re: BAR resizing broken in 6.18 (PPC only?)
-In-Reply-To: <af2ed697-4856-4477-8da8-2838ceaf3179@hogyros.de>
-Message-ID: <4fbe3ae1-0752-33f3-35c2-d81e21031f8a@linux.intel.com>
-References: <f9a8c975-f5d3-4dd2-988e-4371a1433a60@hogyros.de> <a5e7a118-ba70-000e-bab4-8d56b3404325@linux.intel.com> <67840a16-99b4-4d8c-9b5c-4721ab0970a2@hogyros.de> <922b1f68-a6a2-269b-880c-d594f9ca6bde@linux.intel.com>
- <af2ed697-4856-4477-8da8-2838ceaf3179@hogyros.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csvBH6sY4z3bd0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 05:07:03 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DDA6645B0B;
+	Thu, 23 Oct 2025 18:07:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A93C4CEE7;
+	Thu, 23 Oct 2025 18:07:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761242820;
+	bh=b5POU65SI9uBItwU3VrQQapA5Fe5zoNWbwcZVbOTXlo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=V5Z6NbT6+ZsvBawxRtQxU7LhzI9ILCHAXbufohmEyU04NEMevBNBjSTSRUOGz0Q6M
+	 p/J8OXFmnNBJwV8Z7CvorFLum3GOtQkbxP5iqmU671wwUKwqgVNcwVxXHQ/0ddSG4/
+	 WnyzlBLS4VlcV8QXxN57mSobGCvmXQUwTGjRneEg77O9umCvyPvHMWxlpsskxpr05i
+	 A7EwOXDh3hCDu9JbL1yuX8Zlf41V1lduTmNA4AFpT5PMbdfqRgb0/x7IebHpC7K8Vc
+	 xzrTrxOAdhXbQg4kmhjO0yEukjIjPBOAvhN0Q9GtFiCHbacF6o9UEmjW0D+0iLFXg7
+	 W7Yne6d0AMhiA==
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: linux-pci@vger.kernel.org
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Christian Zigotzky <chzigotzky@xenosoft.de>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Diederik de Haas <diederik@cknow-tech.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH] PCI/ASPM: Enable only L0s and L1 for devicetree platforms
+Date: Thu, 23 Oct 2025 13:06:26 -0500
+Message-ID: <20251023180645.1304701-1-helgaas@kernel.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,136 +71,118 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-303087025-1761221295=:1016"
-Content-ID: <256de186-4697-84cb-cf91-ad575ccac02f@linux.intel.com>
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Bjorn Helgaas <bhelgaas@google.com>
 
---8323328-303087025-1761221295=:1016
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <395cf5de-bb93-a13b-3583-453330015155@linux.intel.com>
+f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree
+platforms") enabled Clock Power Management and L1 PM Substates, but those
+features depend on CLKREQ# and possibly other device-specific
+configuration.  We don't know whether CLKREQ# is supported, so we shouldn't
+blindly enable Clock PM and L1 PM Substates.
 
-On Wed, 22 Oct 2025, Simon Richter wrote:
-> On 10/22/25 1:20 AM, Ilpo J=E4rvinen wrote:
->=20
-> > Could you please test if the patch below helps.
->=20
-> Yes, this looks better.
->=20
->  - "good" is the 6.17 reference
->  - "shrink" is with this patch and the BAR0 release from Lucas
->  - "bar0" is with this patch, with the bridge BAR0 still mapped (i.e. wit=
-hout
-> the patch from Lucas)
->=20
-> If you compare "good" vs "bar0", the differences are now fairly minimal. =
-The
-> non-prefetchable window has shrunk, but assignments are otherwise the sam=
-e.
+Enable only ASPM L0s and L1, and only when both ends of the link advertise
+support for them.
 
-If a window has extra size prior to any resource fitting operation, the=20
-kernel will recalculate the size based on what it knows about the=20
-downstream resource sizes, no more so extra size is removed.
+Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Link: https://lore.kernel.org/r/db5c95a1-cf3e-46f9-8045-a1b04908051a@xenosoft.de/
+Reported-by: FUKAUMI Naoki <naoki@radxa.com>
+Closes: https://lore.kernel.org/r/22594781424C5C98+22cb5d61-19b1-4353-9818-3bb2b311da0b@radxa.com/
+Reported-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20251015101304.3ec03e6b@bootlin.com/
+Reported-by: Diederik de Haas <diederik@cknow-tech.com>
+Link: https://lore.kernel.org/r/DDJXHRIRGTW9.GYC2ULZ5WQAL@cknow-tech.com/
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: FUKAUMI Naoki <naoki@radxa.com>
+---
+I intend this for v6.18-rc3.
 
-I thought that old_size was to prevent such shrinkage, but it is=20
-problematic as we've seen here (and also in a some other cases).
+I think it will fix the issues reported by Diederik and FUKAUMI Naoki (both
+on Rockchip).  I hope it will fix Christian's report on powerpc, but don't
+have confirmation.  I think the performance regression Herve reported is
+related, but this patch doesn't seem to fix it.
 
-It would be possible to move the max for old_size outside of align so=20
-something like this instead of the patch you tested:
+FUKAUMI Naoki's successful testing report:
+https://lore.kernel.org/r/4B275FBD7B747BE6+a3e5b367-9710-4b67-9d66-3ea34fc30866@radxa.com/
+---
+ drivers/pci/pcie/aspm.c | 34 +++++++++-------------------------
+ 1 file changed, 9 insertions(+), 25 deletions(-)
 
--       return ALIGN(max(size, old_size), align);
-+       return max(ALIGN(size, align), old_size);
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 7cc8281e7011..79b965158473 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -243,8 +243,7 @@ struct pcie_link_state {
+ 	/* Clock PM state */
+ 	u32 clkpm_capable:1;		/* Clock PM capable? */
+ 	u32 clkpm_enabled:1;		/* Current Clock PM state */
+-	u32 clkpm_default:1;		/* Default Clock PM state by BIOS or
+-					   override */
++	u32 clkpm_default:1;		/* Default Clock PM state by BIOS */
+ 	u32 clkpm_disable:1;		/* Clock PM disabled */
+ };
+ 
+@@ -376,18 +375,6 @@ static void pcie_set_clkpm(struct pcie_link_state *link, int enable)
+ 	pcie_set_clkpm_nocheck(link, enable);
+ }
+ 
+-static void pcie_clkpm_override_default_link_state(struct pcie_link_state *link,
+-						   int enabled)
+-{
+-	struct pci_dev *pdev = link->downstream;
+-
+-	/* For devicetree platforms, enable ClockPM by default */
+-	if (of_have_populated_dt() && !enabled) {
+-		link->clkpm_default = 1;
+-		pci_info(pdev, "ASPM: DT platform, enabling ClockPM\n");
+-	}
+-}
+-
+ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
+ {
+ 	int capable = 1, enabled = 1;
+@@ -410,7 +397,6 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
+ 	}
+ 	link->clkpm_enabled = enabled;
+ 	link->clkpm_default = enabled;
+-	pcie_clkpm_override_default_link_state(link, enabled);
+ 	link->clkpm_capable = capable;
+ 	link->clkpm_disable = blacklist ? 1 : 0;
+ }
+@@ -811,19 +797,17 @@ static void pcie_aspm_override_default_link_state(struct pcie_link_state *link)
+ 	struct pci_dev *pdev = link->downstream;
+ 	u32 override;
+ 
+-	/* For devicetree platforms, enable all ASPM states by default */
++	/* For devicetree platforms, enable L0s and L1 by default */
+ 	if (of_have_populated_dt()) {
+-		link->aspm_default = PCIE_LINK_STATE_ASPM_ALL;
++		if (link->aspm_support & PCIE_LINK_STATE_L0S)
++			link->aspm_default |= PCIE_LINK_STATE_L0S;
++		if (link->aspm_support & PCIE_LINK_STATE_L1)
++			link->aspm_default |= PCIE_LINK_STATE_L1;
+ 		override = link->aspm_default & ~link->aspm_enabled;
+ 		if (override)
+-			pci_info(pdev, "ASPM: DT platform, enabling%s%s%s%s%s%s%s\n",
+-				 FLAG(override, L0S_UP, " L0s-up"),
+-				 FLAG(override, L0S_DW, " L0s-dw"),
+-				 FLAG(override, L1, " L1"),
+-				 FLAG(override, L1_1, " ASPM-L1.1"),
+-				 FLAG(override, L1_2, " ASPM-L1.2"),
+-				 FLAG(override, L1_1_PCIPM, " PCI-PM-L1.1"),
+-				 FLAG(override, L1_2_PCIPM, " PCI-PM-L1.2"));
++			pci_info(pdev, "ASPM: default states%s%s\n",
++				 FLAG(override, L0S, " L0s"),
++				 FLAG(override, L1, " L1"));
+ 	}
+ }
+ 
+-- 
+2.43.0
 
-That would not try to make the bridge window larger due to alignment than=
-=20
-what the old_size was, so it should still fit to its old range keeping=20
-its old size.
-
-> I've added "lspci -v" output as well, which shows the bridge configuratio=
-n.
-> I'm still not sure that the address mappings between PCI and system bus a=
-re
-> 1:1.
->=20
-> So the BAR0 release patch from Lucas seems to be no longer required with =
-this,
-> although it does align the prefetchable area better, so in theory it woul=
-d
-> allow a 512G BAR to be mapped. In practice, there are no Intel dGPUs with=
- 512G
-> VRAM.
->
-> > There's indeed something messy and odd going on here with the resource =
-and
-> > window mappings, in the bad case there's also this line which doesn't m=
-ake
-> > much sense:
-> > +pci 0030:01:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 6=
-4bit
-> > pref]: can't claim; address conflict with 0030:01:00.0 [mem
-> > 0x6200020000000-0x62000207fffff 64bit pref]
->=20
-> > ...but that conflicting resource was not assigned in between releasing
-> > this bridge window and trying to claim it back so how did that
-> > conflicting resource get there is totally mysterious to me. It doesn't
-> > seem related directly to the the resize no longer working though.
->=20
-> That is the upstream bridge's BAR0 mapping, which is not a bridge window,=
- so
-> presumably the window allocation algorithm is unaware of it.
-
-Resource tree is independent of PCI's resource allocation algorithm. Now=20
-that I look the numbers and logs again, this doesn't look valid resource=20
-tree state (from iomem.good!):
-
-6200000000000-6203fbfffffff : pciex@620c3c0000000
-  6200000000000-6203fbff0ffff : PCI Bus 0030:01
-    6200020000000-62000207fffff : 0030:01:00.0
-    6200000000000-6203fbff0ffff : PCI Bus 0030:02
-      6200400000000-62007ffffffff : PCI Bus 0030:03
-        6200400000000-62007ffffffff : 0030:03:00.0
-
-6200020000000-62000207fffff and 6200000000000-6203fbff0ffff appear as=20
-siblings and those addresses conflict. It seems this "good" kernel is=20
-"cheating" by double counting addresses... ;-D
-
-I've now found the cause in part thanks to another reporter with=20
-similar impossible resource conflicts (an old bug in the resizing=20
-algorithm which is there since BAR resizing was introduced).
-
-It will take me a few days to fix all this as fixing the claim issue=20
-will make other domino bricks to fall so I'll have to refactor this=20
-pci_resize_resource() interface now, unfortunately.
-
-> > > It's a bit weird that there is a log message that says "enabling devi=
-ce",
-> > > then
-> > > the BARs are reconfigured. I'd want the decoding logic to be inactive
-> > > while
-> > > addresses are assigned.
->=20
-> > So no real issue here and only logging is not the way you'd want it?
->=20
-> It works for the GPU, but I'm unsure about my FPGA designs now, for the m=
-ost
-> part, I would have expected that the "enable memory decoding" bit had to =
-be 0
-> while BAR registers are being written, and I would have expected the driv=
-er to
-> resize the BAR first, then enable the device.
-
-Lucas did move resizing earlier but I guess it still occurs after enabling=
-=20
-the device. I don't know enough about xe driver to say how early BARs=20
-could be resized.
-
---=20
- i.
---8323328-303087025-1761221295=:1016--
 
