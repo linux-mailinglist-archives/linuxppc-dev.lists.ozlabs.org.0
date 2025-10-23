@@ -1,92 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-13196-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13197-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C5EC0026A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 11:13:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B884EC003D3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 11:26:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4csgL51Z2zz3bd0;
-	Thu, 23 Oct 2025 20:13:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4csgdb3d99z3bd0;
+	Thu, 23 Oct 2025 20:26:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761210781;
-	cv=none; b=d0z8x94n9mo5jd3nXUPsgqPPxKOZ3iU1uLmHvpRthUbqPPYhyi3Z+ep+BU9oZ3Dkc/UOEtrHyaaym3MyPj9IJ5W0qTc9UcmHvFvav3o/7UXntFTNGEaoNdHI/+ZaEPlEIQbpYsDoqF+4SNzfU8IrM+WND6j0KW+gRsONB2OC+S7Z5LXpz4DmYM6OSR9v9tP0KXMUZpdL///vfKAG4nYLMY7t+i314heJm79VkSSlNgyILTmUDDw9ihb8t7U3VYNHR2Vodak8IHXjVm+MFrIcrSH3qu6KHCKa7awQSikXQMa9dp98aC4kZKW1Olp/tk5vFuUakvSvoS+fBh+u6Z9Zhg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.171.202.116
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761211587;
+	cv=none; b=lN37OK0g3iAdvPdQB93n+nBrbp0DYSQHDKI6hEhfcGsjGersFQkppqqwDr3Qr1zaJz4dMdVt64EEMaUsh+9E9VXbE1mBTdDtKNqhPDLWUlrdsrKeSlHPXt0/uSB3zCAhhnr7VDU7BAyuJhyf9b5jgeajziJ7PJPgsIh64xXLn82EK7+xb61xzcUtujXKq2a54FhOUNkB/UXoHQDwquhLWm2O6ifc8uyd6zXxYLGBdbSG7idxwF756FyqHE+RSyTeql24/dnmbi27BISjWvBu8W6scoQimF+M6E1GBJzFKtSjpeT6FABa6fcnllllAVmC8en6KXXdXuqxjJ5Q4p/QIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761210781; c=relaxed/relaxed;
-	bh=m4YBI/EqtZ3J00PcXn67Kjmze22CptNisRya2F4tlEU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ncNyML6O2p/8y5HE+XvsVdw8H5RpGYeW8E+I/Pw9YdkeZ9DApC+fgl15Z+eRiRYML5EUs2/gVoaHpVW+6Mkr5zhezy+JQ+QQIHFioM2RFuCuZUuTb6613SdK2cU4+kcz/CBOVhMlg7+Rj1LPFU0wtrnvYJXH29xyvWUhzm22nQogjJtnBzvHdJeGpNdyYLxR6DmcajVdPgGo26UfhbacVDr89zYwnlKOVTHjhEvRAmwLqM27EuzXsdNQ4JBqJwrWH9lecp/1UoP7TERe4JlAr+S8VmgzGIom9PqWxmfzWJmS/0VySmjkaSoDiHM0JGoK7Xx6dGTLjHOBcWB0KSEX+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=KUog9T+c; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+	t=1761211587; c=relaxed/relaxed;
+	bh=7iEQ8Hi8YDiUH5n8pt36cUx2rV4zMT41Lo5e4XDnYiY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JSti8MMUNWMPxa1ewV3pn5f6/DJlJ+U+gGaxtTE5auO0ybeoFAuVE0nNQdUypTHkOxfkghIagEKcwEXF3ssTWsVUt2Y59TkpCzH9Tt0fxV74fWhAkmHRNoR6/Yu1B5N9OiZ/ZcN9fc5YJzx2pycon+5rO3pN7TSa4Rgsjyk+8zQpAFI8zb2YwJ/wnGPb5N/TgMGhQ/2jNE1TeT33llFx/aLnLnPDB5MYDE+mAcBpDU2Ls8esW/EhJj4DFJOiXLXVsQI6w7IFrSzhcly1DWwIdbAmUmIL2T/pcH/NK2kMjBSE8ljcAYk209YIWdouv/u2Izi/kXeofWkztOJFzx9lbg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Wo2xU9lB; dkim-atps=neutral; spf=pass (client-ip=185.171.202.116; helo=smtpout-04.galae.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=KUog9T+c;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Wo2xU9lB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=185.171.202.116; helo=smtpout-04.galae.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 368 seconds by postgrey-1.37 at boromir; Thu, 23 Oct 2025 20:26:26 AEDT
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4csgL34Zv4z30RJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 20:12:58 +1100 (AEDT)
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-47118259fd8so3420045e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 02:12:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1761210775; x=1761815575; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=m4YBI/EqtZ3J00PcXn67Kjmze22CptNisRya2F4tlEU=;
-        b=KUog9T+czsBS5NSh7v7YxtfwvhyEHB0b5MbXM6yeExHXK07I3kvxpaQHAVWXWmjQn2
-         nsezt8SYnqgWikGtO65BeQEKw0u4xFXUqOj0UNyPu/PKZeuZtlxTXRyfTY2f2LK7jEkl
-         J2Q5rXFeo8KUdPyifOOQohW4mLyKW6Tc4QyuULZj5JyDRYdVeFlxEEpHbFTCn2RWrQwx
-         knUxnWn+UdVLbl5rpgtQXQpj51jRuRlK00DornfB21nbt20aN3Fr5DTuobysa0HC+f2I
-         T1+LlDxQBlsPeh6iX6qEtmIXg7rgJR4blp1wwFI/GueyyQVfalwAu/L0ErbKVvMYzTRn
-         NIYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761210775; x=1761815575;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m4YBI/EqtZ3J00PcXn67Kjmze22CptNisRya2F4tlEU=;
-        b=IIiV3NyoaHDKfjbSMl0D/jOo1HGn/LUMl8VCoXR5i8KKqv1ggGrulM52YoTry2ZMLS
-         3G6wrEsLjEKS+h6OfzYADw3eNivUGPaoViY+711FtlOCa23uqOELtZXmW8BhXuzPfzHo
-         ge7m2HPDbXf2lEi4d3vR842UiXri18p7ajCxzNSbRQt/gXSBztgh9qTZj4P7eWBsOhFK
-         38Ki31dwIpF+04u7O0VzS/xw/QKhHActLIAVYvDaiDWpAeBia+UhPic7b4qs9aDt4LlI
-         GuZ3M22QcPZZ6RJSHPTiTpNWm5swIFEpovYBGEv7IW5kE4a5oFOESy1JS3DLhu3f6lv2
-         b15A==
-X-Forwarded-Encrypted: i=1; AJvYcCX/DpeN2jEv48Mf2mpdWx/edvH24StkCT2nRy7J7wARAXN3dFFZ5693vATTijLTs9h0rnZD6Dk+I/m0A+A=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyqGJxOm1epPmQf0LR8H/B39C/7C6uNaV6FQH5PBWS70pkoPDDO
-	exRIsOgLVWJcwhUNR95aU61vALHeQMb56sgmEmMhO9+tg0tjzuwjVAEQ49GDcjaxVQo=
-X-Gm-Gg: ASbGncsKqFyU+OEpd0gxz+FD4fvwbjXbLdnd65apCHjOYeVQ/Qiv91GHmWo/orcL1iA
-	ye7rUqKiQzXi5MhuezQwckSf18LU0h1CfFoW7Ff+tC1cGklQGzybPVTn8xmjz7UOUTgd/x8jPwE
-	mKUVYxnjfby5APSvcK01IQie8QoF6t2R3iTjhTC/0olC/veebGfQpt80pfeBHeDSWHKpJ8/ijE/
-	+uwaUsNha2+ZyrP7ZBn5qQ1dnqRBtka7Rl0lA6GfWPV2Oqxe1W1SRsyt9JZFdo08IYlVjiwCxa+
-	0pGvnCK++xcabeuS9r+PyoCyhfsa0gofYt9Jwk6/Pf5cpu/frKlcbWZd8H1Q45gLoMmNKGv2WBk
-	+0FqbenkMyimbb1xzfkMj7eByOQraDeiUeAwOpuN71coV77vt9Z9NNVGIcn1Lt3XxKf4cN3h+1a
-	Oi1c28OxlmzekrTO3twQ==
-X-Google-Smtp-Source: AGHT+IG89jvdKxuLQ4STXYciOZm7sh9+DpSTyapJXa8dA1Qq3pMQ8PymDcsITN5Fq2o+BBm71Hcnuw==
-X-Received: by 2002:a05:600c:3512:b0:471:12c2:201f with SMTP id 5b1f17b1804b1-471179134f0mr202907375e9.32.1761210774820;
-        Thu, 23 Oct 2025 02:12:54 -0700 (PDT)
-Received: from pathway.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c4342946sm85046525e9.10.2025.10.23.02.12.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 02:12:54 -0700 (PDT)
-Date: Thu, 23 Oct 2025 11:12:52 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>, joe.lawrence@redhat.com,
-	Naveen N Rao <naveen@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>, jpoimboe@kernel.org
-Subject: Re: [next-20251022] Kernel Boot Warnings at
- arch/powerpc/kernel/trace/ftrace.c:234
-Message-ID: <aPnxlEkV1rL0hWOm@pathway.suse.cz>
-References: <72469502-ca37-4287-90b9-a751cecc498c@linux.ibm.com>
- <cdf7c458-b28f-4657-8708-1f820369baa6@linux.ibm.com>
- <aPjW3P2AU7L71S-s@pathway.suse.cz>
- <ee9aaeec-23bf-42ac-8a8d-4ba899cfdd13@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csgdZ4zD7z3bW7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 20:26:24 +1100 (AEDT)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 72319C0C40D;
+	Thu, 23 Oct 2025 09:19:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 435186062C;
+	Thu, 23 Oct 2025 09:20:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 380AE102F2461;
+	Thu, 23 Oct 2025 11:19:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1761211211; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=7iEQ8Hi8YDiUH5n8pt36cUx2rV4zMT41Lo5e4XDnYiY=;
+	b=Wo2xU9lBz8Jw4UJwCyntVY7xyccvqn7f1+wuWv5YaV2fAdkDhA47yH76qdNdTSuVHgCu03
+	XX3o75P1rdEfETnXTdyp8/U7e8uEiCDbseFwXrp5CvxLFxfxcoRIP2tj+F/W2uunnDM8bZ
+	R3yDEYbUNzTyNSBVO2fgk5IsBcu05e9g3q8CX4blVX81HCW6h6MrFaCD3ZRmckv4S4h+s6
+	jka7guD/tLqD/DQNNLdjQXmXOO1l13BgR/gUIOh5eRA6Vt5d/C/qcugJ/MfpK7SRqEtU9H
+	Rrpd+KGt2a+hK1rDiDuGm4mDfZUnSG/6ou7GbepX20xKHGr5jA3zrhyIfdUoYQ==
+Date: Thu, 23 Oct 2025 11:19:47 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Christian Zigotzky <chzigotzky@xenosoft.de>, Bjorn Helgaas
+ <helgaas@kernel.org>, Lukas Wunner <lukas@wunner.de>, Manivannan Sadhasivam
+ <manivannan.sadhasivam@oss.qualcomm.com>, Ilpo =?UTF-8?B?SsOkcnZpbmVu?=
+ <ilpo.jarvinen@linux.intel.com>, linux-pci@vger.kernel.org, mad skateman
+ <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian
+ Zigotzky <info@xenosoft.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ hypexed@yahoo.com.au, Darren Stevens <darren@stevens-zone.net>,
+ debian-powerpc@lists.debian.org, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>
+Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
+Message-ID: <20251023111947.6e960216@bootlin.com>
+In-Reply-To: <vc7ehnmr6tjkkag3j543zwprwqdjyttovav2moo5ravpzzkmbi@qe4tds4e7nc6>
+References: <20251015101304.3ec03e6b@bootlin.com>
+	<A11312DD-8A5A-4456-B0E3-BC8EF37B21A7@xenosoft.de>
+	<20251015135811.58b22331@bootlin.com>
+	<4rtktpyqgvmpyvars3w3gvbny56y4bayw52vwjc3my3q2hw3ew@onz4v2p2uh5i>
+	<20251023093813.3fbcd0ce@bootlin.com>
+	<vc7ehnmr6tjkkag3j543zwprwqdjyttovav2moo5ravpzzkmbi@qe4tds4e7nc6>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,63 +82,111 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ee9aaeec-23bf-42ac-8a8d-4ba899cfdd13@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed 2025-10-22 19:56:45, Venkat Rao Bagalkote wrote:
+Hi Manivannan,
+
+On Thu, 23 Oct 2025 14:19:46 +0530
+Manivannan Sadhasivam <mani@kernel.org> wrote:
+
+> On Thu, Oct 23, 2025 at 09:38:13AM +0200, Herve Codina wrote:
+> > Hi Manivannan,
+> > 
+> > On Wed, 15 Oct 2025 18:20:22 +0530
+> > Manivannan Sadhasivam <mani@kernel.org> wrote:
+> >   
+> > > Hi Herve,
+> > > 
+> > > On Wed, Oct 15, 2025 at 01:58:11PM +0200, Herve Codina wrote:  
+> > > > Hi Christian,
+> > > > 
+> > > > On Wed, 15 Oct 2025 13:30:44 +0200
+> > > > Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> > > >     
+> > > > > Hello Herve,
+> > > > >     
+> > > > > > On 15 October 2025 at 10:39 am, Herve Codina <herve.codina@bootlin.com> wrote:
+> > > > > > 
+> > > > > > ﻿Hi All,
+> > > > > > 
+> > > > > > I also observed issues with the commit f3ac2ff14834 ("PCI/ASPM: Enable all
+> > > > > > ClockPM and ASPM states for devicetree platforms")      
+> > > > > 
+> > > > > Thanks for reporting.
+> > > > >     
+> > > > > > 
+> > > > > > Also tried the quirk proposed in this discussion (quirk_disable_aspm_all)
+> > > > > > an the quirk also fixes the timing issue.      
+> > > > > 
+> > > > > Where have you added quirk_disable_aspm_all?    
+> > > > 
+> > > > --- 8< ---
+> > > > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> > > > index 214ed060ca1b..a3808ab6e92e 100644
+> > > > --- a/drivers/pci/quirks.c
+> > > > +++ b/drivers/pci/quirks.c
+> > > > @@ -2525,6 +2525,17 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
+> > > >   */
+> > > >  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
+> > > >  
+> > > > +static void quirk_disable_aspm_all(struct pci_dev *dev)
+> > > > +{
+> > > > +       pci_info(dev, "Disabling ASPM\n");
+> > > > +       pci_disable_link_state(dev, PCIE_LINK_STATE_ALL);    
+> > > 
+> > > Could you please try disabling L1SS and L0s separately to see which one is
+> > > causing the issue? Like,
+> > > 
+> > > 	pci_disable_link_state(dev, PCIE_LINK_STATE_L1_1 | PCIE_LINK_STATE_L1_2);
+> > > 
+> > > 	pci_disable_link_state(dev, PCIE_LINK_STATE_L0S);
+> > >   
+> > 
+> > I did tests and here are the results:
+> > 
+> >   - quirk pci_disable_link_state(dev, PCIE_LINK_STATE_ALL)
+> >     Issue not present
+> > 
+> >   - quirk pci_disable_link_state(dev, PCIE_LINK_STATE_L1_1 | PCIE_LINK_STATE_L1_2)
+> >     Issue present, timings similar to timings already reported
+> >     (hundreds of ms).
+> > 
+> >   - quirk pci_disable_link_state(dev, PCIE_LINK_STATE_L0S);
+> >     Issue present, timings still incorrect but lower
+> >       64 bytes from 192.168.32.100: seq=10 ttl=64 time=16.738 ms
+> >       64 bytes from 192.168.32.100: seq=11 ttl=64 time=39.500 ms
+> >       64 bytes from 192.168.32.100: seq=12 ttl=64 time=62.178 ms
+> >       64 bytes from 192.168.32.100: seq=13 ttl=64 time=84.709 ms
+> >       64 bytes from 192.168.32.100: seq=14 ttl=64 time=107.484 ms
+> >   
 > 
-> On 22/10/25 6:36 pm, Petr Mladek wrote:
-> > On Wed 2025-10-22 17:36:18, Venkat Rao Bagalkote wrote:
-> > > On 22/10/25 1:52 pm, Venkat Rao Bagalkote wrote:
-> > > > Greetings!!!
-> > > > 
-> > > > 
-> > > > IBM CI has reported kernel boot warnings with next-20251022 kernel. I
-> > > > see there are couple of warnings hit and eventually system boots to
-> > > > emergency mode.
-> > > > 
-> > > > 
-> > > With the identified first bad commit, is casuing the kernel to boot to
-> > > emergency mode. I reverted the bad commit and built the kernel, then kernel
-> > > is booting fine, but with boot warnings.
-> > I guess that it is the same problem which should get fixed by the patch
-> > https://lore.kernel.org/r/e52ee3edf32874da645a9e037a7d77c69893a22a.1760982784.git.jpoimboe@kernel.org
+> This is weird. Looks like all ASPM states (L0s, L1ss) are contributing to the
+> increased latency, which is more than what should occur. This makes me ignore
+> inspecting the L0s/L1 exit latency fields :/
 > 
+> Bjorn sent out a patch [1] that enables only L0s and L1 by default. But it
+> might not help you. I don't honestly know how you are seeing this much of the
+> latency. This could the due to an issue in the PCI component (host or endpoint),
+> or even the board routing. Identifying which one is causing the issue is going
+> to be tricky as it would require some experimentation.
+
+I've just tested the patch from Bjorn and I confirm that it doesn't fix my issue.
+
 > 
-> Thank you Petr, for pointing to the fix patch. It fixes the kernel booting
-> to emergency mode.
+> If you are motivated, we can start to isolate this issue to the endpoint first.
+> Is it possible for you to connect a different PCI card to your host and check
+> whether you are seeing the increased latency? If the different PCI card is not
+> exhibiting the same behavior, then the current device is the culprit and we
+> should be able to quirk it.
 
-Great.
+Will see what I can do.
 
-> But boot warning still persists.
-
-I looks like another problem. I would expect that it is in
-the ftrace code, either in the generic or arch-specific part.
-
-I would suggest to add people proposed by:
-
-$> ./scripts/get_maintainer.pl arch/powerpc/kernel/trace/ftrace.c
-Steven Rostedt <rostedt@goodmis.org> (maintainer:FUNCTION HOOKS (FTRACE))
-Masami Hiramatsu <mhiramat@kernel.org> (maintainer:FUNCTION HOOKS (FTRACE))
-Mark Rutland <mark.rutland@arm.com> (reviewer:FUNCTION HOOKS (FTRACE))
-Madhavan Srinivasan <maddy@linux.ibm.com> (maintainer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
-Michael Ellerman <mpe@ellerman.id.au> (maintainer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
-Nicholas Piggin <npiggin@gmail.com> (reviewer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
-Christophe Leroy <christophe.leroy@csgroup.eu> (reviewer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
-linux-kernel@vger.kernel.org (open list:FUNCTION HOOKS (FTRACE))
-linux-trace-kernel@vger.kernel.org (open list:FUNCTION HOOKS (FTRACE))
-linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT))
-LINUX FOR POWERPC (32-BIT AND 64-BIT) status: Supported
-
-into the original message with the backtrace. Or maybe, send it
-once again and mention just the WARNING. The boot to the emergency
-mode has been already solved...
-
-Best Regards,
-Petr
+Best regards,
+Hervé
 
