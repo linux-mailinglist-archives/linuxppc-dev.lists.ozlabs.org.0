@@ -1,61 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-13220-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13221-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DF5C02E9C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 20:25:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A4EC030BE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 20:44:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4csvbZ5g1Lz3bfF;
-	Fri, 24 Oct 2025 05:25:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4csw1N5Z3jz3bfF;
+	Fri, 24 Oct 2025 05:44:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761243930;
-	cv=none; b=RVKSyvSIVNynLj+ZY5Qivc5yWElIdcHIMZayZKsXU257kMmdwhPiq2eK1JJpAC1Ile1VhZdcy5vUxWZTzrQyO/fTL1bhpEJ5R9Q5cYKxC5pgZrjE3nQjzJ1oXPlHfqN799Ile1mil1fL9y6MJzLqS3yg/kUH0j7b2XsVV+e8f7EcZkXAsT0R4GrX9UvJ8A/7WIKaROf/jCYDBpZAynXnL0Sc7toxQwd8im11jkWaiUEFzznVJ/nay/AKpkB5ktSDThX7dGWO+MQE9RWxI68Npt2tUtIHbITBqal+EMJHPb8weBBz8XgCZ+xrCFEVWp9bmCSEBpYcvL3X2pHPpSSgwg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761245064;
+	cv=none; b=gew7rpCNvp/d0trO0F9RHD0WOZp+4nFWe/2eo6gye2vF7Qz+GFuLaGHTi/UYr+t6kX1iAnY4mjgfbf11K0lsZYjQazfPw9cWNfLGwWVAecrGx+SwyqLkIdZc/BnpHtyM45k1fSPCX1sBqlgLJs8ozt+pQgYH0U83aZrY0tqGKeYtr4Z0bDluQ6Zg3zLzvXmaQFKvExg4mu1FqfNSQ53RsQ2Zmm6mMbjvbXdlR1BiUVXNDq+ZpowCWufVIqjzpZ6dbq4lOze6biWwKPsY10hW/MXO94rewqWY0JY6XXE5PnTFlWR/h2F0FJOEhMezwmpSkzYlOy+EaW1bC+z6g6Om3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761243930; c=relaxed/relaxed;
-	bh=4+62wyTCJyLAiYIDQNu3kvnegWQcawElkeVEBVHKlDM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=dkr9a1VlY2QZP8y/6uOsGOaVJSg81WcgYivy0fcQfm+/Qr/t1zJf3X0uPKzbUVxQc6XkTTdvIn4gFB5FhSxZdmOr0L8bnCZ2xgEzcZKxKwy2yGqilE8MJmD2fBHqjy0JWtFVCimrUgqHWC/D3HfM8pDT5FmxTxi6ITfh+wcKshRDmK4/tqVsp1s6zaL+/p+D0NI6Tf9hZhLbijEKNua/u1ZfnuSIW8F8zQlWhGzgjpMjsCqjo5ItM5DHYr65gEjGyuTXBohUMZs6R22slLBzLM2HEttha5xTsydJwuPtN3Zqkpns20YqtVVNGAOF9QX5Bmx291LY8JDW5IC08e+h4Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o3bQddqm; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1761245064; c=relaxed/relaxed;
+	bh=gr+iTa6I2/obiorgX/iYvIq85HArhg0aBMc30DEux0I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ZqfX9ndVyTMC8ju/ZN/QBYjP4CbPboNrpHEVUh/lJvQ0NYjw9npY+ZIDALsiqr/N5sMOsWPdH97YMW5h2493lNRbDAfyoFgFmDAHGsMKvEIYZY9HP7dkTMpFOyKSd7Rnn49Zqt8lPwz0sWXTstEzhb9/6Liqk9nzYBIqrpcSg8f4OZKszVonnpdgvJwWddFb72Ha9HOja6+jlmC+oYHuHwyz7mxvhNJM7+9KyX0V7S5OyEzQ82nRD8hscNKgkm9LJliYlG4xojUwn70nQFJBLFecJsvdumDmAz9JZj0CMbZxGUhy5ZpLfBq/VlTBusMDaN5EjXvcUp/k2UBd7JvShg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Z6JyVVvX; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=k2PqTysZ; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o3bQddqm;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Z6JyVVvX;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=k2PqTysZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4csvbY5H0bz3bd0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 05:25:29 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3C9EA61185;
-	Thu, 23 Oct 2025 18:25:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23F9C4CEE7;
-	Thu, 23 Oct 2025 18:25:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761243926;
-	bh=mOBvJWsTb0vY1iyFfVuyBlLeVYQAHWLsWjtUccN/ADA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=o3bQddqmlEUkUHxUG3lxTANhdQ3CzljYSwNiZ+aw9PrwVxuPEQ1VK1NjH6lSPvVgj
-	 qYmBKwvUS0H/uIkSkZ/SxY1ue9eAEA+RHhnIhfII0JqwYt7whu4wIC0UAnoEvXkJmR
-	 xYH77ZXgLn00Q+kGapHy5q1qyteK081AOWetYP5XE270E36LWDnEgRHAcyKV5ivYYz
-	 10KMcwk98UI4QGwgIXVTzHtRQZI8BxHglr31GuDXx6XHYRNGzM4NnnAl1Rpunvg6gl
-	 CSfbS5ZdJRzisTbKkDo8ORXc/RZjiUWxCpgYfKqPDscSeSsaBxrf72IDO2M+9o2+02
-	 74WzG/ZfLnP/g==
-Date: Thu, 23 Oct 2025 13:25:25 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: linux-pci@vger.kernel.org
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Christian Zigotzky <chzigotzky@xenosoft.de>,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Diederik de Haas <diederik@cknow-tech.com>,
-	Dragan Simic <dsimic@manjaro.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH] PCI/ASPM: Enable only L0s and L1 for devicetree platforms
-Message-ID: <20251023182525.GA1306699@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csw1M0x6Nz3bf4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 05:44:23 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1761245054;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gr+iTa6I2/obiorgX/iYvIq85HArhg0aBMc30DEux0I=;
+	b=Z6JyVVvXaWOYv4K7XWupHxBpzZlYpgf5Va2pTz0xKoekHimqy8m9kpzWJR67k8NTSge6Pu
+	pj1eoQeYp8npSoNhcmRFl+wtklkvdSbntGU/+ZU+VkEYhATJ/2w67pfLl6NrKzFL8YkFBj
+	tz+RIae+Vg6+/gA7ZwvSAx8jyyfFhHWoerQNsfsX8vZwG++ZSmVquE3u5d9Qky5u/pWhfe
+	Z27mkNjesStYEnSIaLWsvH9GU2GdvVJ+/1wsaxCCyTnv7bk0dW7oyVKDPvU36ZH4tGdIz0
+	SAAZZgn3S2Kdp9w4d8AFHEvN5ZwXz+cPMrMK16HbkBELjB3xvZYnc/4yMJ00yA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1761245054;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gr+iTa6I2/obiorgX/iYvIq85HArhg0aBMc30DEux0I=;
+	b=k2PqTysZqIKK5wnAuNAF6YkOs1yYrSVeb86wNNECOCJRF4fnFtNx18Z5K79S+1+JpepjUk
+	+w4iQ08K50QRq8Bg==
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, Davidlohr
+ Bueso <dave@stgolabs.net>, =?utf-8?Q?Andr=C3=A9?= Almeida
+ <andrealmeid@igalia.com>, kernel
+ test robot <lkp@intel.com>, Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org, x86@kernel.org, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
+ Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org, Paul
+ Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, linux-s390@vger.kernel.org, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Andrew Cooper
+ <andrew.cooper3@citrix.com>, David Laight <david.laight.linux@gmail.com>,
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix
+ <nicolas.palix@imag.fr>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org
+Subject: Re: [patch V4 10/12] futex: Convert to scoped user access
+In-Reply-To: <CAHk-=wgLAJuJ8SP8NiSGbXJQMdxiPkBN32EvAy9R8kCnva4dfg@mail.gmail.com>
+References: <20251022102427.400699796@linutronix.de>
+ <20251022103112.478876605@linutronix.de>
+ <CAHk-=wgLAJuJ8SP8NiSGbXJQMdxiPkBN32EvAy9R8kCnva4dfg@mail.gmail.com>
+Date: Thu, 23 Oct 2025 20:44:13 +0200
+Message-ID: <873479xxtu.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,126 +89,44 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251023180645.1304701-1-helgaas@kernel.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Oct 23, 2025 at 01:06:26PM -0500, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree
-> platforms") enabled Clock Power Management and L1 PM Substates, but those
-> features depend on CLKREQ# and possibly other device-specific
-> configuration.  We don't know whether CLKREQ# is supported, so we shouldn't
-> blindly enable Clock PM and L1 PM Substates.
-> 
-> Enable only ASPM L0s and L1, and only when both ends of the link advertise
-> support for them.
-> 
-> Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
-> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-> Link: https://lore.kernel.org/r/db5c95a1-cf3e-46f9-8045-a1b04908051a@xenosoft.de/
-> Reported-by: FUKAUMI Naoki <naoki@radxa.com>
-> Closes: https://lore.kernel.org/r/22594781424C5C98+22cb5d61-19b1-4353-9818-3bb2b311da0b@radxa.com/
-> Reported-by: Herve Codina <herve.codina@bootlin.com>
-> Link: https://lore.kernel.org/r/20251015101304.3ec03e6b@bootlin.com/
-> Reported-by: Diederik de Haas <diederik@cknow-tech.com>
-> Link: https://lore.kernel.org/r/DDJXHRIRGTW9.GYC2ULZ5WQAL@cknow-tech.com/
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> Tested-by: FUKAUMI Naoki <naoki@radxa.com>
+On Wed, Oct 22 2025 at 05:16, Linus Torvalds wrote:
+> On Wed, 22 Oct 2025 at 02:49, Thomas Gleixner <tglx@linutronix.de> wrote:
+>>
+>> From: Thomas Gleixner <tglx@linutronix.de>
+>>
+>> Replace the open coded implementation with the new get/put_user_scoped()
+>> helpers.
+>
+> Well, "scoped" here makes no sense in the name, since it isn't scoped
+> in any way, it just uses the scoped helpers.
 
-Provisionally applied to pci/for-linus, hoping to make v6.18-rc3.
+I know. Did not come up with a sensible name so far.
 
-Happy to add any testing reports or amend as needed.
+> I also wonder if we should just get rid of the futex_get/put_value()
+> macros entirely. I did those masked user access things them long ago
+> because that code used "__get_user()" and "__put_user()", and I was
+> removing those helpers and making it match the pattern elsewhere, but
+> I do wonder if there is any advantage left to them all.
+>
+> On x86, just using "get_user()" and "put_user()" should work fine now.
+> Yes, they check the address, but these days *those* helpers use that
+> masked user address trick too, so there is no real cost to it.
+>
+> The only cost would be the out-of-line function call, I think. Maybe
+> that is a sufficiently big cost here.
 
-> ---
-> I intend this for v6.18-rc3.
-> 
-> I think it will fix the issues reported by Diederik and FUKAUMI Naoki (both
-> on Rockchip).  I hope it will fix Christian's report on powerpc, but don't
-> have confirmation.  I think the performance regression Herve reported is
-> related, but this patch doesn't seem to fix it.
-> 
-> FUKAUMI Naoki's successful testing report:
-> https://lore.kernel.org/r/4B275FBD7B747BE6+a3e5b367-9710-4b67-9d66-3ea34fc30866@radxa.com/
-> ---
->  drivers/pci/pcie/aspm.c | 34 +++++++++-------------------------
->  1 file changed, 9 insertions(+), 25 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-> index 7cc8281e7011..79b965158473 100644
-> --- a/drivers/pci/pcie/aspm.c
-> +++ b/drivers/pci/pcie/aspm.c
-> @@ -243,8 +243,7 @@ struct pcie_link_state {
->  	/* Clock PM state */
->  	u32 clkpm_capable:1;		/* Clock PM capable? */
->  	u32 clkpm_enabled:1;		/* Current Clock PM state */
-> -	u32 clkpm_default:1;		/* Default Clock PM state by BIOS or
-> -					   override */
-> +	u32 clkpm_default:1;		/* Default Clock PM state by BIOS */
->  	u32 clkpm_disable:1;		/* Clock PM disabled */
->  };
->  
-> @@ -376,18 +375,6 @@ static void pcie_set_clkpm(struct pcie_link_state *link, int enable)
->  	pcie_set_clkpm_nocheck(link, enable);
->  }
->  
-> -static void pcie_clkpm_override_default_link_state(struct pcie_link_state *link,
-> -						   int enabled)
-> -{
-> -	struct pci_dev *pdev = link->downstream;
-> -
-> -	/* For devicetree platforms, enable ClockPM by default */
-> -	if (of_have_populated_dt() && !enabled) {
-> -		link->clkpm_default = 1;
-> -		pci_info(pdev, "ASPM: DT platform, enabling ClockPM\n");
-> -	}
-> -}
-> -
->  static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
->  {
->  	int capable = 1, enabled = 1;
-> @@ -410,7 +397,6 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
->  	}
->  	link->clkpm_enabled = enabled;
->  	link->clkpm_default = enabled;
-> -	pcie_clkpm_override_default_link_state(link, enabled);
->  	link->clkpm_capable = capable;
->  	link->clkpm_disable = blacklist ? 1 : 0;
->  }
-> @@ -811,19 +797,17 @@ static void pcie_aspm_override_default_link_state(struct pcie_link_state *link)
->  	struct pci_dev *pdev = link->downstream;
->  	u32 override;
->  
-> -	/* For devicetree platforms, enable all ASPM states by default */
-> +	/* For devicetree platforms, enable L0s and L1 by default */
->  	if (of_have_populated_dt()) {
-> -		link->aspm_default = PCIE_LINK_STATE_ASPM_ALL;
-> +		if (link->aspm_support & PCIE_LINK_STATE_L0S)
-> +			link->aspm_default |= PCIE_LINK_STATE_L0S;
-> +		if (link->aspm_support & PCIE_LINK_STATE_L1)
-> +			link->aspm_default |= PCIE_LINK_STATE_L1;
->  		override = link->aspm_default & ~link->aspm_enabled;
->  		if (override)
-> -			pci_info(pdev, "ASPM: DT platform, enabling%s%s%s%s%s%s%s\n",
-> -				 FLAG(override, L0S_UP, " L0s-up"),
-> -				 FLAG(override, L0S_DW, " L0s-dw"),
-> -				 FLAG(override, L1, " L1"),
-> -				 FLAG(override, L1_1, " ASPM-L1.1"),
-> -				 FLAG(override, L1_2, " ASPM-L1.2"),
-> -				 FLAG(override, L1_1_PCIPM, " PCI-PM-L1.1"),
-> -				 FLAG(override, L1_2_PCIPM, " PCI-PM-L1.2"));
-> +			pci_info(pdev, "ASPM: default states%s%s\n",
-> +				 FLAG(override, L0S, " L0s"),
-> +				 FLAG(override, L1, " L1"));
->  	}
->  }
->  
-> -- 
-> 2.43.0
-> 
+I'll have a look at the usage sites.
+
+But as you said out-of-line function call it occured to me that these
+helpers might be just named get/put_user_inline(). Hmm?
+
+Thanks,
+
+        tglx
 
