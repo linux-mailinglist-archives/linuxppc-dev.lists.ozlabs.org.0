@@ -1,68 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-13214-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13215-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7500BC0207F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 17:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 710F3C021EE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 17:30:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4csqLn3CVQz3bfZ;
-	Fri, 24 Oct 2025 02:14:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4csqk61Lhgz3bfF;
+	Fri, 24 Oct 2025 02:30:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761232449;
-	cv=none; b=bzOXsEzbipfPUOu2q7I8+W99sa+r88kRtSLgmDMa57WiYFhblByvAG4cujmXWXW4F1Y+ehWMcjKszCt+2ZxClNfTmedWERgAKjtKxAgVzrdUTAtD385JFU/Cav1qGi/AARiqCjotPbiSzlBA2WZfwr5+PHZCjGNc8OpJ3aY2Lw/r0i5QH8yheVAxk3JZqkBlQsIETEGs+SIK9VJ+6jWUO9C+ivGutqw7uVSauOdc0gSZa+SZL1Xjfucw4GnWadSRWSk2a3UkukfmYOVSJWuwS8C309w0u/4puy753xWm8Nu6k5WVo5bI/VKQA7WFR7lfA6sh3QQlFSuWUsn+bcbYUA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761233454;
+	cv=none; b=fGysuCQPsgo/MUXGho6iP7dOJA/+6yQSuCpGvi8JBe8+Qms8/Mn7M4tXsMyfPdhPN8tpb4k15zcqKmj7iijB/GUt9BuNCjg9AWvlzGFazjFoCRb1USfmVUv+ZcgZx4yVm+sGqGAa26WMUM6yrgFKbZsQuie+SBAKwXpzX6YZqKT7zs/8oY0NPahFuTo2d6WQdgdbNNxEH4pzAKO0iXVx7dxDBfIN74OjCYKFC5wpkUfaEu1cEy+eWDxVCYsHeWz9ZPMubAIWYrPwfo/+BaJoxJs4xHshRdPmTZhskRJRpbTgsGHFXliZJWcw5xVfMsJNJDmYnAa1RM+2o1er4cBKKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761232449; c=relaxed/relaxed;
-	bh=eGj/4U8Cjm7Jzuo0N797IrKS+KWnd9Al6qyj+0gj5DU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Aes68x6DFqqd1TxCIJztSHDzw1hTiHFpsyO0SjBWScoh6b7oPh+0aIpjC8h1bHIds6auxbtHWcDGkNIfUC6LU2W9c1uIdVP4jpwQO80vlYiQ/Np6aH/qhsYQlIYYBt9sqp533+LJtw5ckxA3Za9BZgqZnu9dz98Tbgl8thYMmFpeH1QnWCBUAar5X3v7V0JcohsCD8AFbdnuDJAD1CrHfa/tx7xklvCVdI2pHqz+0hL/bp2IZfoQFjOeb5IloPpyzPkIaX0tLzO3JQA34yu9G63NGxVH1LNYeYXKgufzNsdXJriyyaa4BJVjPaslYQ1w2cZVpL4fFA1rsrUoUwo7lw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=eolEinAa; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3pkb6aaykdamvhdqmfjrrjoh.frpolqx0ssf-ghyolvwv.r2odev.ruj@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1761233454; c=relaxed/relaxed;
+	bh=Tr76UWkBmhbzeJoAKpnHprT1sOTnO5bbrqUUa+4UTp8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m87ipKUw0A2rKSI9AKii6MMcf0fwTOKNN1OhYSQmdmIz2S1RGwAMhtIskCUZ/nM0FnuWr3uaFiJ68GSEPOc5YS5T96C7ISq1nl2HxZo/Tr5/IIeVdHlbnznOHL7CJhDL2xyTDjgG2ZKYW18xVAvGRNxWYnTN9zwLXX4DjxGSoCttzwJ2zGn56HzMxP9rtmPtbDl1lbAmhl/DRwIJR9EsJ55EVa6BIzIp4Q8ARq4GFfAN+S4Mft3EwAdTebreZ/EWPX0QKJOsmASmT6dMCHnApIBLIETo34+9ioCau/qdie+HJvqDQDuIPRcfWecj9iOvF6dDzT/xPbfl0hJ6RCRARA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=RiCVhwNq; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=MYWMFF3K; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MtZuXCaQ; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qJHzm0Yx; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=jbohac@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=eolEinAa;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=RiCVhwNq;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=MYWMFF3K;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MtZuXCaQ;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qJHzm0Yx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3pkb6aaykdamvhdqmfjrrjoh.frpolqx0ssf-ghyolvwv.r2odev.ruj@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=jbohac@suse.cz; receiver=lists.ozlabs.org)
+X-Greylist: delayed 427 seconds by postgrey-1.37 at boromir; Fri, 24 Oct 2025 02:30:51 AEDT
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4csqLm4YzNz3bf8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 02:14:07 +1100 (AEDT)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-332560b7171so1720012a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 08:14:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761232446; x=1761837246; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eGj/4U8Cjm7Jzuo0N797IrKS+KWnd9Al6qyj+0gj5DU=;
-        b=eolEinAaDtiJnv4XXayzpJkfny/DBW48jqsehSNrxbd3aT3colYN9Xnfcj813rbw6A
-         4t2bCfv2XxxM4YZ7R7Em4pJgUPMw4uw92sQ49IwBAyqg2Qk7RejoVyiCsZHzmZEdKkyG
-         uiXHVwNpQtFazINbp/yuNFhqLKJ4RDQDOUdd/sBHnw3jzkOP/418rcbJ9r9MQbGbb+Pu
-         HzDtKomwBOMKcb8x6Y5f7wBnwngTo+IvSAD8ODlnrvnTzbZiEOK/ojW6Dlr5tpaVZaaC
-         EXq/l+FVgm2NaOHOnsYJxuXwlwKE+Oi2TViTqGphtOV2bp/DORp8RsfsWGqOd/5h9qnL
-         ysWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761232446; x=1761837246;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eGj/4U8Cjm7Jzuo0N797IrKS+KWnd9Al6qyj+0gj5DU=;
-        b=Wl80VJXwRsIWGGEv/qGusauS4LGr42XlGOY/fNZOI/jHuswt9TlUOpn0kxXIpKvpbC
-         wnFxAVf2/3X33K0mRZCD4sIMEHu1dDfi1dbcE8BFKxYYujSsUHxv9c5REL8hcfkjy2Ij
-         I1ERjtPFuQq5slTY5gmimCe/+dAYAubn8JgSM0mToNoMAiDys4HlQr+2UVHow7mBcWyW
-         zy0FVkL3Vh9vgjPaYp7tsAxkK5Eb7shixcnun07YqynTGOsI7pwONjZKvpUWMMhvgw5k
-         YME62eJGyRXhAnA+lGRNA+iXznYuE9rPJDnHrxQCpEHsV5ItXsL0fKdha0QguYFMA2BJ
-         mT8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVoiVT1YEeLPzZUZ3KE+kRnVJqeKp7FBrUD9sWup/FpXnaHHU/G6z8NsPH4BY2xkCbzTZ942WMShh0O8g8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywuki47eU3KUxqTXB7xnP0AV/s11i0J60rWwImXCJWsDrXXASoM
-	SKaLvwjgVexVPzFzfr8g+wpVKL9kbxbjU+EVcSovIJkDpFKETV993dUbRam2ncxQKxUZcg+/w+d
-	U6t3DCQ==
-X-Google-Smtp-Source: AGHT+IGyk+8DKCi3tYCJowX0kgLUyc4PpyLVM16G5qza1KYeH4GEBaOP8pzea9wQFWKumE2t1taaAoPvn3M=
-X-Received: from pjbrm7.prod.google.com ([2002:a17:90b:3ec7:b0:330:6c04:207])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:570e:b0:32e:7ff6:6dbd
- with SMTP id 98e67ed59e1d1-33e21dedc9fmr9424992a91.0.1761232446100; Thu, 23
- Oct 2025 08:14:06 -0700 (PDT)
-Date: Thu, 23 Oct 2025 08:14:04 -0700
-In-Reply-To: <aPnbIDxGlcAyI9vy@yzhao56-desk.sh.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csqk36hdPz3bW7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 02:30:51 +1100 (AEDT)
+Received: from localhost (unknown [10.100.12.32])
+	by smtp-out1.suse.de (Postfix) with ESMTP id C947521223;
+	Thu, 23 Oct 2025 15:23:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761233017; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tr76UWkBmhbzeJoAKpnHprT1sOTnO5bbrqUUa+4UTp8=;
+	b=RiCVhwNqnXXf/1v2CLdvxtRp1IJrfqPAivJ6sht+Q6PG0Q6HyHnMPdal9bMu83FjydFZ1K
+	th0hlH1trWpZZIN6dCT5PbePcZZFn5wnF2n8ZOb7bhgJJxADd4VInkQzPyLcuW9GyYp2IR
+	m9cTkpaZmZ/rxrCum76jWqbu6nUwZ4g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761233017;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tr76UWkBmhbzeJoAKpnHprT1sOTnO5bbrqUUa+4UTp8=;
+	b=MYWMFF3KrxM10W1+hkCtSbph/xdzMXsIWcsPqyOzeyk6wqTiG+vNLtyzXGs3ivk/mhL9Ly
+	UBstXNvc2H+8lQDQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761233012; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tr76UWkBmhbzeJoAKpnHprT1sOTnO5bbrqUUa+4UTp8=;
+	b=MtZuXCaQvgvwETWJvuyRtXTmedvj2Gj07e1YFK3UyH63WW4MmMpVdLVolh5XZ41RDU7zUK
+	MfpBG16nK3G/N9yhlKCgU7xsB4lTkEsFUiXXTki+VJkOAbfLzgH8G/0z6fnFQqV8Tsup1h
+	qVsqmA8YU23slw/+ZGq5UMNP7aTsqaU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761233012;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tr76UWkBmhbzeJoAKpnHprT1sOTnO5bbrqUUa+4UTp8=;
+	b=qJHzm0YxqJCMh5UENrgVqRbxQyg8aJRDR6az2mOvrFEBOUVwLLjOkZ3UIR7Hpi3KwiKpaP
+	jYdKUyi+JBej7nAQ==
+Date: Thu, 23 Oct 2025 17:23:32 +0200
+From: Jiri Bohac <jbohac@suse.cz>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shivang Upadhyay <shivangu@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/kdump: Add support for crashkernel CMA
+ reservation
+Message-ID: <aPpIdHMnSHRq8M6B@dwarf.suse.cz>
+References: <20251023121413.56963-1-sourabhjain@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,130 +94,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-20-seanjc@google.com>
- <aPnbIDxGlcAyI9vy@yzhao56-desk.sh.intel.com>
-Message-ID: <aPpGPF8McvI3-OO7@google.com>
-Subject: Re: [PATCH v3 19/25] KVM: TDX: Assert that mmu_lock is held for write
- when removing S-EPT entries
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Michael Roth <michael.roth@amd.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251023121413.56963-1-sourabhjain@linux.ibm.com>
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_COUNT_ZERO(0.00)[0];
+	TAGGED_RCPT(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.ozlabs.org,linux.ibm.com,ellerman.id.au,gmail.com];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,localhost:helo]
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Oct 23, 2025, Yan Zhao wrote:
-> On Thu, Oct 16, 2025 at 05:32:37PM -0700, Sean Christopherson wrote:
-> > Unconditionally assert that mmu_lock is held for write when removing S-EPT
-> > entries, not just when removing S-EPT entries triggers certain conditions,
-> > e.g. needs to do TDH_MEM_TRACK or kick vCPUs out of the guest.
-> > Conditionally asserting implies that it's safe to hold mmu_lock for read
-> > when those paths aren't hit, which is simply not true, as KVM doesn't
-> > support removing S-EPT entries under read-lock.
-> > 
-> > Only two paths lead to remove_external_spte(), and both paths asserts that
-> > mmu_lock is held for write (tdp_mmu_set_spte() via lockdep, and
-> > handle_removed_pt() via KVM_BUG_ON()).
-> > 
-> > Deliberately leave lockdep assertions in the "no vCPUs" helpers to document
-> > that wait_for_sept_zap is guarded by holding mmu_lock for write.
-> > 
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
-> >  arch/x86/kvm/vmx/tdx.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> > index e517ad3d5f4f..f6782b0ffa98 100644
-> > --- a/arch/x86/kvm/vmx/tdx.c
-> > +++ b/arch/x86/kvm/vmx/tdx.c
-> > @@ -1711,8 +1711,6 @@ static void tdx_track(struct kvm *kvm)
-> >  	if (unlikely(kvm_tdx->state != TD_STATE_RUNNABLE))
-> >  		return;
-> >  
-> > -	lockdep_assert_held_write(&kvm->mmu_lock);
-> Could we also deliberately leave lockdep assertion for tdx_track()?
+On Thu, Oct 23, 2025 at 05:44:12PM +0530, Sourabh Jain wrote:
+> @@ -595,6 +602,13 @@ int get_crash_memory_ranges(struct crash_mem **mem_ranges)
+>  	if (ret)
+>  		goto out;
+>  
+> +	for (i = 0; i < crashk_cma_cnt; ++i) {
+> +		ret = crash_exclude_mem_range(tmem, crashk_cma_ranges[i].start,
+> +					      crashk_cma_ranges[i].end);
+> +		if (ret)
+> +			goto out;
+> +	}
+> +
 
-Can do.
+I think the loop needs to check if tmem->nr_ranges == tmem->max_nr_ranges and
+reallocate in each iteration, just like it's done when excluding the crashk_res
+region above:
 
-> This is because if we allow removing S-EPT entries while holding mmu_lock for
-> read in future, tdx_track() needs to be protected by a separate spinlock to
-> ensure serialization of tdh_mem_track() and vCPUs kick-off (kicking off vCPUs
-> must follow each tdh_mem_track() to unblock the next tdh_mem_track()).
+        /* Reallocate memory ranges if there is no space to split ranges */
+        tmem = *mem_ranges;
+        if (tmem && (tmem->nr_ranges == tmem->max_nr_ranges)) {
+                tmem = realloc_mem_ranges(mem_ranges);
+                if (!tmem)
+                        goto out;
+        }
 
-Does this look/sound right?
+        /* Exclude crashkernel region */
+        ret = crash_exclude_mem_range(tmem, crashk_res.start, crashk_res.end);
+        if (ret)
+                goto out;
 
-From: Sean Christopherson <seanjc@google.com>
-Date: Thu, 28 Aug 2025 17:06:17 -0700
-Subject: [PATCH] KVM: TDX: Assert that mmu_lock is held for write when
- removing S-EPT entries
 
-Unconditionally assert that mmu_lock is held for write when removing S-EPT
-entries, not just when removing S-EPT entries triggers certain conditions,
-e.g. needs to do TDH_MEM_TRACK or kick vCPUs out of the guest.
-Conditionally asserting implies that it's safe to hold mmu_lock for read
-when those paths aren't hit, which is simply not true, as KVM doesn't
-support removing S-EPT entries under read-lock.
 
-Only two paths lead to remove_external_spte(), and both paths asserts that
-mmu_lock is held for write (tdp_mmu_set_spte() via lockdep, and
-handle_removed_pt() via KVM_BUG_ON()).
+-- 
+Jiri Bohac <jbohac@suse.cz>
+SUSE Labs, Prague, Czechia
 
-Deliberately leave lockdep assertions in the "no vCPUs" helpers to document
-that wait_for_sept_zap is guarded by holding mmu_lock for write, and keep
-the conditional assert in tdx_track() as well, but with a comment to help
-explain why holding mmu_lock for write matters (above and beyond why
-tdx_sept_remove_private_spte()'s requirements).
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/vmx/tdx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index dca9e2561270..899051c64faa 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1715,6 +1715,11 @@ static void tdx_track(struct kvm *kvm)
- 	if (unlikely(kvm_tdx->state != TD_STATE_RUNNABLE))
- 		return;
- 
-+	/*
-+	 * The full sequence of TDH.MEM.TRACK and forcing vCPUs out of guest
-+	 * mode must be serialized, as TDH.MEM.TRACK will fail if the previous
-+	 * tracking epoch hasn't completed.
-+	*/
- 	lockdep_assert_held_write(&kvm->mmu_lock);
- 
- 	err = tdh_mem_track(&kvm_tdx->td);
-@@ -1762,6 +1767,8 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	gpa_t gpa = gfn_to_gpa(gfn);
- 	u64 err, entry, level_state;
- 
-+	lockdep_assert_held_write(&kvm->mmu_lock);
-+
- 	/*
- 	 * HKID is released after all private pages have been removed, and set
- 	 * before any might be populated. Warn if zapping is attempted when
-
-base-commit: 69564844a116861ebea4396894005c8b4e48f870
---
 
