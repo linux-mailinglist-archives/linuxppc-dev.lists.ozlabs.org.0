@@ -1,70 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-13217-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13218-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346D3C02B95
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 19:27:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1615FC02C63
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 19:43:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cstJZ2WS6z3bfF;
-	Fri, 24 Oct 2025 04:27:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cstfk1Mdwz3bfF;
+	Fri, 24 Oct 2025 04:43:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::649"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761240446;
-	cv=none; b=jX4Hnp6PwAajCW14cdG0OHa38XifCxhVZiVrTmb/Xvdqq+3JRuB3v1FWC46HrH1y2yHII+KBqdWdl/2Kq/g4q8MZb3dFr0sAwUuSGKdpfippDmrfA/W6ypVxCvnenGeXWC6MeMJqp8hqypFm1jeG25nV8VoP8jsAbX3EGCcNDwrxhgz5l3bZQHYzvLBc8HgrUxhoDkRTTaecZNf5a41s0lzoBrYWm1ytj9z7u6Trx3ionwNcbpNzx6vbBfpUMGfMUnMJfA0EKuGmKO+Vh7twyKIsQBdb72sQhzl+e6KfguQzaXVdGRHpShA8UOzjuy5N5EHjtYgRq78Tf6ifbUbE9A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761241390;
+	cv=none; b=hBU++wsehAalJO5dJpDHgdN56IybJKsx11drK4eORvICt9rDs2b/0aNL6hobSAfaCpTYSfn1nHXJT6URyjMD76N4iwvo8qKHccAYwuQJaBFve8TAWHmd4+ibh8I1sOz0z1PuB/CgXkniqsLgw/jkwgehrVO1PIw1E/GYYVcDCncA6kfT+XQc8lsPVsvRGQ2PEEPWpvyb9uTs/h/neU3hl4TDSjXklNK0X+nTK4uGoYsTBtBV0i9yVHubDCYudcYkyN9K6cPDSziVVi07N2hHqhdoi094+P4EpgFBLRK93szOSy6QZ/IRs/Zeuy9m2qKidnsctvN+/PQCrvD1uxqUNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761240446; c=relaxed/relaxed;
-	bh=PMd4YohbYBDUY30TTRBHmO9DyPvx8MjhdR/tVFXtYYI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MB//fINre+oi5SXLa91PZ4y5o557a/XbllTjHcK9cczmAwa70vbQwtYMRUYqHsqIooVwtEon+uDMmXhNi3k3P6F/gKSLD3/XTh8Z+jt9sxvd+h+PePoqxEgkCCPr0wR38ADWhVU3ADjsFF0AOhHZVdjl9T77ZNhCy8xzp1Ci8s79PLPAAuX/QF9Zccd12FExElw5cJjHE7RkkFIvZcJlVL71slmIsfzHmjbxEghbtXcN33luWZ5a7YOVjFjMBfJyCUMptJzYmmmN4cs/o8lOCwiTqW/E6QkPRHsPNQCzjAZVr1BT95FKyE6KXVuBJM1quwtnHCk9lSVvSFTplv9fDg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ET/DPV4C; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3dwx6aaykdhgoawjfyckkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1761241390; c=relaxed/relaxed;
+	bh=KHzMAOwPgSlBKaIP9Aq4oBQ1XjBzvOHOxgqqLEV/1YU=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=FU+YBSP7cY6BMpg9q3wuJwE5kwr+FBP+pU+Tw0tyRfeEDLM2zr030O/KQcm0X4o/8lt0ix/P6zh8jCtDpBEpOuxNdgiTjw1vlqfKwdF5/YJxxId1KRnxOxANcin5WJj1NQ2k2DX+jfSnkX0kV8XLrSwHN56aUtlxfLwaNIt+o+/pA91T2G3AqBy39eoIh0O0egfvRhW2YXjUgkHBEY+cnJP6hkL/E6Xx9cXLwsijMK4hxdElhKdxRmuA+jW9FPq6g5dGuaqaSokBeblpm/xm8VLaRPCKWz1UEvyt6zFcWiTkCHJjqup2W/vn4IDhQrcvhYadSxB+rW6wCIDahDdLyw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XxGR5HJu; dkim-atps=neutral; spf=pass (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ET/DPV4C;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XxGR5HJu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3dwx6aaykdhgoawjfyckkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cstJY0hLhz3bf4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 04:27:24 +1100 (AEDT)
-Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-27356178876so7254285ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 10:27:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761240437; x=1761845237; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PMd4YohbYBDUY30TTRBHmO9DyPvx8MjhdR/tVFXtYYI=;
-        b=ET/DPV4Cpk7Pi91Y6d4MmoR9xk3O/g5jSuiqu5Lp5jZ/BXTBkzkiRDyl88Ba4kG68+
-         Y4I6sLodHkSenoViA7MApiwq3f14M7QgVCjpqBNDvjtOJGnkIKg/hVNs1JSi+GSEIDiD
-         +R4SuhN4zqapBn/lO5pbLJjVF4qK/L0wZNXk7mb//XFU4EMdMy3NSmnp8MX8xoR2vw1F
-         ILSK1MvK6Eru+msflBsQyKsICHcECC8TKVkIKqt3o/hG4GzRfLD16EeeIatEm6eW4pti
-         yQHZC/T6XADybL0vBFLP4c+yscNERdVzdV+I3nR99OLfEN4GdppwFoj9ppj/8YABhDf0
-         fiZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761240437; x=1761845237;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PMd4YohbYBDUY30TTRBHmO9DyPvx8MjhdR/tVFXtYYI=;
-        b=jJ+iApT/4lB0ARsAHt40U8pLNQkTio2XKxdz8tYKal3IjlJS18zuvecqOizJ/7CAkc
-         xKecZyU71bPotTycXO75O1Rnc9wos1R9SD+Ia/ZKrnIHUlnFjrDgzLC88XpXnqA/02IC
-         j4CQDARbQnk+LCRK+H+qdvoju6g28TD7duLSM+qMfTysxQ/FxE/1BXtwRXBlv7jVs/fE
-         GQvsfiNxuZwp3fHmpyzaEIbsbcSW+pJlXaDNgmCIzrkcdabJ5m+j5gAf/KSYWAW1S8LT
-         9aX/40VEMqxjhRj+v4kb52qWQCdvSWxQ9CVgst0FEh4mjD+hGjajdZBSxOmGzZ8Jc/ob
-         Rv+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW4FDVaeBz3T4AM012aFozyIwph0vCeP/e4Fcj3IkQqdXJ4A+oiYgh+1o0oHUWy+xlyMjl5NLKxBULsA8U=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzLUOWBlyzb4LvOk7DhBs61F5iRh9dK4Bgkc4FqTxNVGU9uYZUc
-	+6qabyCdcJoIt0c55rktgsbpqnigOOta02TzE0Z+U9w0rbjH8Gpglv7ueuwOXVUHL3enJM3valV
-	5RpkKCQ==
-X-Google-Smtp-Source: AGHT+IFjhG//1khxmFCKdE4+6wWu9+6PA/jOl4XyR0eCgR53v+ZECkEt8twGk0B4jVNQwQCsevpreYrKXxc=
-X-Received: from pjuj5.prod.google.com ([2002:a17:90a:d005:b0:33b:a35b:861])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:db11:b0:240:48f4:40f7
- with SMTP id d9443c01a7336-290cba4efc9mr387536115ad.39.1761240437319; Thu, 23
- Oct 2025 10:27:17 -0700 (PDT)
-Date: Thu, 23 Oct 2025 10:27:16 -0700
-In-Reply-To: <707a01ee36c28863bdc6a4444a5560e9a0b19597.camel@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cstfg2NhMz3bd0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 04:43:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761241388; x=1792777388;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=lBogzcavFia1tq1/hy2llZwqk3cknuFx94ohvomXMBA=;
+  b=XxGR5HJuEJQY787e/+OohhBunZtXFkS6ariRKQxG6cmIKVuknZINqNxA
+   esLbInTO166j0e+ViqKiRb/CfC0xlYnjSYgy/VFthyw+7kQBVjILyg+3F
+   BjRei+As0hanJYIQyTVAnW/A1IcnFTO6iyjO1K8YF2RWaCJE4f+cu3GIw
+   Ar8dJSDE5gxYIUZKh61H/HQTT7M7YlcuUAJMcbiSH277fAdcNW2dgAsQh
+   QPXvSVV7GEExYxL92RFSBdWvNm0eFnIWO5UyeeVqDsiXXPPvbFX1JLlJp
+   zbvvh3jzmBmcJ8L4LrGJfgVIFjg9B8R1nMJj5DrzRTGjQUKVxyR8JLMm/
+   Q==;
+X-CSE-ConnectionGUID: ebfIkq1GQ8Kv4XYKolyK6g==
+X-CSE-MsgGUID: Af10GpBUQX6W3F2FSFCi2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="80855383"
+X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
+   d="scan'208";a="80855383"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 10:43:01 -0700
+X-CSE-ConnectionGUID: KyhLV5dhTR+V6DJO+HlNKA==
+X-CSE-MsgGUID: nkm4X9Q6SCOpy1ru1Fvulg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
+   d="scan'208";a="188280889"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.225])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 10:43:00 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Thu, 23 Oct 2025 20:42:56 +0300 (EEST)
+To: Simon Richter <Simon.Richter@hogyros.de>, 
+    Lucas De Marchi <lucas.demarchi@intel.com>
+cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
+Subject: Re: BAR resizing broken in 6.18 (PPC only?)
+In-Reply-To: <af2ed697-4856-4477-8da8-2838ceaf3179@hogyros.de>
+Message-ID: <4fbe3ae1-0752-33f3-35c2-d81e21031f8a@linux.intel.com>
+References: <f9a8c975-f5d3-4dd2-988e-4371a1433a60@hogyros.de> <a5e7a118-ba70-000e-bab4-8d56b3404325@linux.intel.com> <67840a16-99b4-4d8c-9b5c-4721ab0970a2@hogyros.de> <922b1f68-a6a2-269b-880c-d594f9ca6bde@linux.intel.com>
+ <af2ed697-4856-4477-8da8-2838ceaf3179@hogyros.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,81 +76,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-15-seanjc@google.com>
- <707a01ee36c28863bdc6a4444a5560e9a0b19597.camel@intel.com>
-Message-ID: <aPpldKdiQYYnl4uC@google.com>
-Subject: Re: [PATCH v3 14/25] KVM: TDX: Bug the VM if extended the initial
- measurement fails
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, 
-	"maz@kernel.org" <maz@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
-	"pjw@kernel.org" <pjw@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
-	"kas@kernel.org" <kas@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, 
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, 
-	"zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>, 
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
-	Yan Y Zhao <yan.y.zhao@intel.com>, "michael.roth@amd.com" <michael.roth@amd.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, 
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	Vishal Annapurve <vannapurve@google.com>, 
-	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: multipart/mixed; BOUNDARY="8323328-303087025-1761221295=:1016"
+Content-ID: <256de186-4697-84cb-cf91-ad575ccac02f@linux.intel.com>
+X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Oct 21, 2025, Rick P Edgecombe wrote:
-> On Thu, 2025-10-16 at 17:32 -0700, Sean Christopherson wrote:
-> > WARN and terminate the VM if TDH_MR_EXTEND fails, as extending the
-> > measurement should fail if and only if there is a KVM bug, or if the S-=
-EPT
-> > mapping is invalid, and it should be impossible for the S-EPT mappings =
-to
-> > be removed between kvm_tdp_mmu_map_private_pfn() and tdh_mr_extend().
-> >=20
-> > Holding slots_lock prevents zaps due to memslot updates,
-> > filemap_invalidate_lock() prevents zaps due to guest_memfd PUNCH_HOLE,
-> > and all usage of kvm_zap_gfn_range() is mutually exclusive with S-EPT
-> > entries that can be used for the initial image.=C2=A0 The call from sev=
-.c is
-> > obviously mutually exclusive, TDX disallows KVM_X86_QUIRK_IGNORE_GUEST_=
-PAT
-> > so same goes for kvm_noncoherent_dma_assignment_start_or_stop, and whil=
-e
-> > __kvm_set_or_clear_apicv_inhibit() can likely be tripped while building=
- the
-> > image, the APIC page has its own non-guest_memfd memslot and so can't b=
-e
-> > used for the initial image, which means that too is mutually exclusive.
-> >=20
-> > Opportunistically switch to "goto" to jump around the measurement code,
-> > partly to make it clear that KVM needs to bail entirely if extending th=
-e
-> > measurement fails, partly in anticipation of reworking how and when
-> > TDH_MEM_PAGE_ADD is done.
-> >=20
-> > Fixes: d789fa6efac9 ("KVM: TDX: Handle vCPU dissociation")
-> > Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
->=20
-> Per the discussion in v2, shouldn't it go after patch 24 'KVM: TDX: Guard=
- VM
-> state transitions with "all" the locks'? Otherwise it introduces a KVM_BU=
-G_ON()
-> that can be triggered from userspace. not a huge deal though.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Oh, right.  And then the changelog needs to be updated too.
+--8323328-303087025-1761221295=:1016
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <395cf5de-bb93-a13b-3583-453330015155@linux.intel.com>
+
+On Wed, 22 Oct 2025, Simon Richter wrote:
+> On 10/22/25 1:20 AM, Ilpo J=E4rvinen wrote:
+>=20
+> > Could you please test if the patch below helps.
+>=20
+> Yes, this looks better.
+>=20
+>  - "good" is the 6.17 reference
+>  - "shrink" is with this patch and the BAR0 release from Lucas
+>  - "bar0" is with this patch, with the bridge BAR0 still mapped (i.e. wit=
+hout
+> the patch from Lucas)
+>=20
+> If you compare "good" vs "bar0", the differences are now fairly minimal. =
+The
+> non-prefetchable window has shrunk, but assignments are otherwise the sam=
+e.
+
+If a window has extra size prior to any resource fitting operation, the=20
+kernel will recalculate the size based on what it knows about the=20
+downstream resource sizes, no more so extra size is removed.
+
+I thought that old_size was to prevent such shrinkage, but it is=20
+problematic as we've seen here (and also in a some other cases).
+
+It would be possible to move the max for old_size outside of align so=20
+something like this instead of the patch you tested:
+
+-       return ALIGN(max(size, old_size), align);
++       return max(ALIGN(size, align), old_size);
+
+That would not try to make the bridge window larger due to alignment than=
+=20
+what the old_size was, so it should still fit to its old range keeping=20
+its old size.
+
+> I've added "lspci -v" output as well, which shows the bridge configuratio=
+n.
+> I'm still not sure that the address mappings between PCI and system bus a=
+re
+> 1:1.
+>=20
+> So the BAR0 release patch from Lucas seems to be no longer required with =
+this,
+> although it does align the prefetchable area better, so in theory it woul=
+d
+> allow a 512G BAR to be mapped. In practice, there are no Intel dGPUs with=
+ 512G
+> VRAM.
+>
+> > There's indeed something messy and odd going on here with the resource =
+and
+> > window mappings, in the bad case there's also this line which doesn't m=
+ake
+> > much sense:
+> > +pci 0030:01:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 6=
+4bit
+> > pref]: can't claim; address conflict with 0030:01:00.0 [mem
+> > 0x6200020000000-0x62000207fffff 64bit pref]
+>=20
+> > ...but that conflicting resource was not assigned in between releasing
+> > this bridge window and trying to claim it back so how did that
+> > conflicting resource get there is totally mysterious to me. It doesn't
+> > seem related directly to the the resize no longer working though.
+>=20
+> That is the upstream bridge's BAR0 mapping, which is not a bridge window,=
+ so
+> presumably the window allocation algorithm is unaware of it.
+
+Resource tree is independent of PCI's resource allocation algorithm. Now=20
+that I look the numbers and logs again, this doesn't look valid resource=20
+tree state (from iomem.good!):
+
+6200000000000-6203fbfffffff : pciex@620c3c0000000
+  6200000000000-6203fbff0ffff : PCI Bus 0030:01
+    6200020000000-62000207fffff : 0030:01:00.0
+    6200000000000-6203fbff0ffff : PCI Bus 0030:02
+      6200400000000-62007ffffffff : PCI Bus 0030:03
+        6200400000000-62007ffffffff : 0030:03:00.0
+
+6200020000000-62000207fffff and 6200000000000-6203fbff0ffff appear as=20
+siblings and those addresses conflict. It seems this "good" kernel is=20
+"cheating" by double counting addresses... ;-D
+
+I've now found the cause in part thanks to another reporter with=20
+similar impossible resource conflicts (an old bug in the resizing=20
+algorithm which is there since BAR resizing was introduced).
+
+It will take me a few days to fix all this as fixing the claim issue=20
+will make other domino bricks to fall so I'll have to refactor this=20
+pci_resize_resource() interface now, unfortunately.
+
+> > > It's a bit weird that there is a log message that says "enabling devi=
+ce",
+> > > then
+> > > the BARs are reconfigured. I'd want the decoding logic to be inactive
+> > > while
+> > > addresses are assigned.
+>=20
+> > So no real issue here and only logging is not the way you'd want it?
+>=20
+> It works for the GPU, but I'm unsure about my FPGA designs now, for the m=
+ost
+> part, I would have expected that the "enable memory decoding" bit had to =
+be 0
+> while BAR registers are being written, and I would have expected the driv=
+er to
+> resize the BAR first, then enable the device.
+
+Lucas did move resizing earlier but I guess it still occurs after enabling=
+=20
+the device. I don't know enough about xe driver to say how early BARs=20
+could be resized.
+
+--=20
+ i.
+--8323328-303087025-1761221295=:1016--
 
