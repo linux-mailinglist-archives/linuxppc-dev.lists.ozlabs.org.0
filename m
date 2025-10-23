@@ -1,68 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-13175-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13176-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304CEBFDF89
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Oct 2025 21:08:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C64DBFEBD6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 02:25:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4csJc25SYcz30RJ;
-	Thu, 23 Oct 2025 06:08:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4csRdj2fMxz30RJ;
+	Thu, 23 Oct 2025 11:25:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::54a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761160130;
-	cv=none; b=QlUTNIp43O8QqZjWSq5CZWF86dPrlksB+3mkO6wy3ZKd/EDp2fCRFo55SBcFutb3Uag7i80j0P58Rb8f+eiYhDvUqxCuEkc8+BTpfA7G7HN0bc9XA63/OuYyRIh+ptvnLHjTfUYxQihiQOXOOF1uTpkcdu5AHCpQy3z9e/UnVS8Q3D718lweLlb1IdgzTEaGUMEx4DUErTYa2qI0LJ6NuH176+XubXemdjxt0E0hgW2Zraasz7IUjKGQEbZDAcn3iEg0lUy/NseI6vn5V04AJu+k3Rv8J1L3TpYZIYWyRnpVcgkgkEb/bPo95KOa5M8diCZHpP5la36kEqjo7TZNBg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.14
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761179145;
+	cv=none; b=MZ9YbChSR8LxubDnMeJ4Vp235uqJ/KdyeMkbXxW4z7YklqlmsTbA3hYqnoJHwv3z7/aAabvnp9XNk73uwpVnBbSX4H869fegwMmktZdAMU4L/nBe4ujxS80fEFmMEiPP1mLHYOC3Fs/2Z4a5RonXUagLYtktyBaEq5ipzOvtnyk34JB6+j+05o9W5HOz3v90QNRMce4qgK3yUd3H2yI3z57KhPDlpzfhxGoZf/IfQe7ZcHlcB6TviLqXX7O8ylX9fDrq1PcyN5c2Jx6jdLQGFyLP3DbCLDV6DS3bKE4eUNzjT6tLvDOw0ufx4/9maEqt3kSnFF19gJ7WM3j/KRrgAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761160130; c=relaxed/relaxed;
-	bh=wREzy7rE27X1qKmfXOWprRl7YFBX8aFkFx3LWlFCsNc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=e5uvvgF83j9/4MIQNxIfZqUM6G4uiPtQ0sbU8enlgV9+Nk6jBFa4sbLjG8C9rjQ6r0NmzdcX5sb6YY+HryT9wzV7mxovjgZgGFYXsYngfXf4RwQaqR+IQT1+CQYf91yebI6XSuSOgqzPwo7LhyJ/BwfCQv9ucTm9GrG/fCKSSLs4rVhmv+osvWgGh25g32QwnjV9EN1t2H9w0kPQ+uHcxx+fi5HTRiR5OA/+zWWbVWMLe1MOZXQKM1hNXeJ1bfqY/zHFKZb8UYiUpvrmgdULmv3dfR99Y5BfhN3nZp/FNACYY4rt1WwynBHJHkk7lkcj9rFGQ3WKHx/ouXacqDKtWA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=PnWrWuVx; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3vyv5aaykdeo4qmzvos00sxq.o0yxuz6911o-pq7xu454.0bxmn4.03s@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1761179145; c=relaxed/relaxed;
+	bh=UTdw5fNqYeaCXOptGdXixaHSTv4+nhlrdRr9P7TERSo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Do7qvz9vvRW9MjDLpdGO1CTN5TEYYxVuROfsL7rNzw5SA1iSVRu4fN/R2T/za596YpAqK75B+gRcUtQEuRtgV1H62Y8wCidexDMsXuWpjvep1gcgxVbmAixet7Z4asC0JqXbYVGYYnFTPCZ+uKRqYlz3EjZMnVkG62hPZotXD0UgfBQhusih32wx2pC6+bEBREhGSup3va25FKQSH2Df3F8E8PI81JCi04xQYH4HTXH8U9KHl87S6jPCDxWsQ0c6jjH52r81nCU3xA1L1IF0EoHGXkh19cxTS4Wu7WLqgHu7NmJ+KYAUEwZJrRqDh9TFosykGjHO9PY+OtnzU6na1g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GNYA9iep; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=PnWrWuVx;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GNYA9iep;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3vyv5aaykdeo4qmzvos00sxq.o0yxuz6911o-pq7xu454.0bxmn4.03s@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4csJc167F7z2yyx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 06:08:49 +1100 (AEDT)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-b6ce1b57b3eso1411550a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Oct 2025 12:08:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761160127; x=1761764927; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wREzy7rE27X1qKmfXOWprRl7YFBX8aFkFx3LWlFCsNc=;
-        b=PnWrWuVx9IhmSbtzKwCWDRKD/+Ng6pczLmJJgei1rghHolNJDDcdm0yflmIR4wVb83
-         Gs8T7A4iiOrfjRIlAiNXvbZU5lCyA20iwhBC2RfyM8DpbR/Rg0ZHvO/42hrB/t5eC6CJ
-         2zVBSJgm8yauTE2HMpBKg5B+IZJscJ2/qDZM4tDr7fHgG7wG6dKj6KThGV0I+o/jtV6h
-         z26qcURmVMzlPz5CC8mdWAU35OhSGQaDHz9UTMTatvHU7Bf8LMZhUEbluVgz6zUj2WSl
-         rKgWFcIZzt8aLaF0V9RX9bgB6Zq2T+WY+zWeWrrXMjplz6ocV4lZvW4ZSzcj2h6UEUyS
-         8t/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761160127; x=1761764927;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wREzy7rE27X1qKmfXOWprRl7YFBX8aFkFx3LWlFCsNc=;
-        b=WaLYEhFEVdryc3kKo3oD+7dI37aY9vPxheZaSgocShdKnsSeSBmlbxLrV+4bD9ls/U
-         k9Lff//H5V/bDnUUrpko6jwSC47cCdlz6i5+jDW3JV6b6GLgZIJVri0Qad7e6nmY8WHb
-         Jm1KuwjMr2Zxp/2ZHVPjgJl8CMqKu5LAh0mfgqx9+jiaIqG3r7qt8PtXQB/5qux7IMda
-         PbPqO8SsZE9+I5qg1m784WKcrvJeOKUIIeJuBcRFPyEPtYU1/x++b9jv25GG3EhrPUq4
-         4BT7TaItqENbKK4tZJWcpJ9yET57wtgXKWGRUt5znQbTxZ+zRaXQV+S//nK8PM1vS2QA
-         rpnA==
-X-Forwarded-Encrypted: i=1; AJvYcCUsL6Oqt5giFTQubkPL9pmrnU5jMwdRAJoLDVNwy0ZeOPZPULAMshjsyFHm/hcYDw78Pq/8XQ6TdU/kXlc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwmG+mU3UmMIo9d7Pj4kCjl0oT/NTFrWEzo8xjbmX/cblhnj5Hd
-	51HJwW1g53FfaK/46xa29b+SnW4UISPJ4xXD7BCxiXzLueBJbHfOlL1upikXTENY6TixR7fveoQ
-	yTyMYhQ==
-X-Google-Smtp-Source: AGHT+IG7bMbvOV7PjecaO9CgeAeXZcwC+wb3hcO8vOg4iH6Jor9tS/5vQmEcVRzTkSnVuCY2g2HzBv4NWV8=
-X-Received: from pjbpc16.prod.google.com ([2002:a17:90b:3b90:b0:330:9870:9f18])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:218a:b0:2e5:c9ee:96fa
- with SMTP id adf61e73a8af0-334a861743bmr28027967637.34.1761160127099; Wed, 22
- Oct 2025 12:08:47 -0700 (PDT)
-Date: Wed, 22 Oct 2025 12:08:45 -0700
-In-Reply-To: <aPiZ2DEQ6qW5r5rY@yzhao56-desk.sh.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csRdf0TnPz306d
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 11:25:39 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761179142; x=1792715142;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=u39zB8DoqW+d3c/PCARd9B+XH0IAT0xW8YupK0LYr/Y=;
+  b=GNYA9iepq0dyLnSLw3C6WiviFzOAzSTOH5TduY3eveEbz6O4wA4PwXhH
+   qCU/czZwI2/Sbw/6f/9g8rsqnd0yiF6ObCghbi0AVsY+XscZBWuKS+N6q
+   LzPRLfAVQL75GzIL8AcViZcvAE4lBqG3KuWxAdbgRvxYukd1SxiNC+l4b
+   CvtGPMhpB+XjC3H5njWvsV2ZRWeDqCe+qZsgicCfJwuvxliCHk20YbkNe
+   RxpOeKJ4Wab9GFFouUm9ZBeuFhJ0RZJO/qxOwhPCL1wvGdfGZ2ARSW102
+   j5EjkZn4YldpbaPkBY9mzhn+dS22mKX1t3D5slwfM5NSri8GSVfQHo8Jc
+   g==;
+X-CSE-ConnectionGUID: +foo12xxR3W4fkiAF+2heQ==
+X-CSE-MsgGUID: csSNJX2URKW/YUsgjA4ezQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63377099"
+X-IronPort-AV: E=Sophos;i="6.19,248,1754982000"; 
+   d="scan'208";a="63377099"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 17:25:36 -0700
+X-CSE-ConnectionGUID: MH3z9HdyQJaZJhSDY1AjMg==
+X-CSE-MsgGUID: 0jCOLzenRni+yqQbQuYPvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,248,1754982000"; 
+   d="scan'208";a="183231508"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 22 Oct 2025 17:25:34 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vBj91-000CrB-23;
+	Thu, 23 Oct 2025 00:25:31 +0000
+Date: Thu, 23 Oct 2025 08:24:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: oe-kbuild-all@lists.linux.dev, Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Baoquan he <bhe@redhat.com>, Jiri Bohac <jbohac@suse.cz>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shivang Upadhyay <shivangu@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/kdump: Add support for crashkernel CMA
+ reservation
+Message-ID: <202510230817.h1gNa0VV-lkp@intel.com>
+References: <20251022102531.657147-1-sourabhjain@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,68 +85,80 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-11-seanjc@google.com>
- <aPiZ2DEQ6qW5r5rY@yzhao56-desk.sh.intel.com>
-Message-ID: <aPkrvWcm3JF9WlVd@google.com>
-Subject: Re: [PATCH v3 10/25] KVM: x86/mmu: Drop the return code from kvm_x86_ops.remove_external_spte()
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Michael Roth <michael.roth@amd.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251022102531.657147-1-sourabhjain@linux.ibm.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Oct 22, 2025, Yan Zhao wrote:
-> On Thu, Oct 16, 2025 at 05:32:28PM -0700, Sean Christopherson wrote:
-> > Opportunistically pass the spte instead of the pfn, as the API is clearly
-> > about removing an spte.
-> >From my perspective, "remove_external_spte" means removing an external SPTE (not
-> a mirror SPTE). So passing in pfn_for_gfn seems reasonable as well.
-> 
-> Additionally, passing in the pfn eliminates potential concerns about incorrect
-> spte content.
+Hi Sourabh,
 
-No, it just makes bugs harder to debug.  E.g. it doesn't magically guarantee the
-@pfn matches the pfn that was mapped into the S-EPT.
+kernel test robot noticed the following build errors:
 
-> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> > index 48598d017d6f..7e92aebd07e8 100644
-> > --- a/arch/x86/include/asm/kvm_host.h
-> > +++ b/arch/x86/include/asm/kvm_host.h
-> > @@ -1855,8 +1855,8 @@ struct kvm_x86_ops {
-> >  				 void *external_spt);
-> >  
-> >  	/* Update external page table from spte getting removed, and flush TLB. */
-> > -	int (*remove_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
-> > -				    kvm_pfn_t pfn_for_gfn);
-> > +	void (*remove_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
-> > +				     u64 spte);
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on powerpc/fixes linus/master v6.18-rc2 next-20251022]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thinking more about what "spte" actually tracks, I think I'll rename it to
-"mirror_spte".
+url:    https://github.com/intel-lab-lkp/linux/commits/Sourabh-Jain/powerpc-kdump-Add-support-for-crashkernel-CMA-reservation/20251022-182711
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20251022102531.657147-1-sourabhjain%40linux.ibm.com
+patch subject: [PATCH] powerpc/kdump: Add support for crashkernel CMA reservation
+config: powerpc-allnoconfig (https://download.01.org/0day-ci/archive/20251023/202510230817.h1gNa0VV-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251023/202510230817.h1gNa0VV-lkp@intel.com/reproduce)
 
-> Also update set_external_spte?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510230817.h1gNa0VV-lkp@intel.com/
 
-Ooh, yeah, good call.  And we can use the mirror_spte information to assert that
-KVM expects full RWX permissions, e.g. that we aren't creation a security hole by
-letting the guest write memory that KVM thinks is read-only (extreme paranoia,
-more for documentation purposes).
+All errors (new ones prefixed by >>):
+
+   arch/powerpc/kernel/setup-common.c: In function 'setup_arch':
+>> arch/powerpc/kernel/setup-common.c:1004:9: error: implicit declaration of function 'kdump_cma_reserve'; did you mean 'kvm_cma_reserve'? [-Wimplicit-function-declaration]
+    1004 |         kdump_cma_reserve();
+         |         ^~~~~~~~~~~~~~~~~
+         |         kvm_cma_reserve
+
+
+vim +1004 arch/powerpc/kernel/setup-common.c
+
+   976	
+   977		/* Print various info about the machine that has been gathered so far. */
+   978		print_system_info();
+   979	
+   980		klp_init_thread_info(&init_task);
+   981	
+   982		setup_initial_init_mm(_stext, _etext, _edata, _end);
+   983		/* sched_init() does the mmgrab(&init_mm) for the primary CPU */
+   984		VM_WARN_ON(cpumask_test_cpu(smp_processor_id(), mm_cpumask(&init_mm)));
+   985		cpumask_set_cpu(smp_processor_id(), mm_cpumask(&init_mm));
+   986		inc_mm_active_cpus(&init_mm);
+   987		mm_iommu_init(&init_mm);
+   988	
+   989		irqstack_early_init();
+   990		exc_lvl_early_init();
+   991		emergency_stack_init();
+   992	
+   993		mce_init();
+   994		smp_release_cpus();
+   995	
+   996		initmem_init();
+   997	
+   998		/*
+   999		 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM and
+  1000		 * hugetlb. These must be called after initmem_init(), so that
+  1001		 * pageblock_order is initialised.
+  1002		 */
+  1003		fadump_cma_init();
+> 1004		kdump_cma_reserve();
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
