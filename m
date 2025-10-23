@@ -1,72 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-13195-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13196-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A872C0005A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 10:51:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C5EC0026A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 11:13:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4csfsk0Fd0z3bf8;
-	Thu, 23 Oct 2025 19:51:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4csgL51Z2zz3bd0;
+	Thu, 23 Oct 2025 20:13:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::631"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761209513;
-	cv=none; b=K4w0FVBCPXvmjfG1D8lDG4KYlqNNNDXpyfZIPYKf1ObuZ4I0pl+2MBxWELe725EKcR1DfA2wQmLJVViyubSzLpcflrWAohkB9JOfs+XxO3IXZu0GvDXDQpeL+4zjawcyEt/DME6/N8HH9e6d5ELSuyFjfYUknMu2FCmgbmUkDBvSweBYFJ2OhH+kTk3bBHYrFJfYb3vhieffETBod9IuYbyy/meCtEVtEt1MBR11AXPAL89VyI8powRjroci8/Wcp/ob9hEy1K7nVPMzbWOwb/gUwMaBuZ5QlRaf2j1aqe3tzlY9G2QJFcReuIp/whuj8sedTxOCsBWFgxiUZYEkfQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761210781;
+	cv=none; b=d0z8x94n9mo5jd3nXUPsgqPPxKOZ3iU1uLmHvpRthUbqPPYhyi3Z+ep+BU9oZ3Dkc/UOEtrHyaaym3MyPj9IJ5W0qTc9UcmHvFvav3o/7UXntFTNGEaoNdHI/+ZaEPlEIQbpYsDoqF+4SNzfU8IrM+WND6j0KW+gRsONB2OC+S7Z5LXpz4DmYM6OSR9v9tP0KXMUZpdL///vfKAG4nYLMY7t+i314heJm79VkSSlNgyILTmUDDw9ihb8t7U3VYNHR2Vodak8IHXjVm+MFrIcrSH3qu6KHCKa7awQSikXQMa9dp98aC4kZKW1Olp/tk5vFuUakvSvoS+fBh+u6Z9Zhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761209513; c=relaxed/relaxed;
-	bh=Lia0EGpI9PV6Wa7Mt+zwkxVNwILAbw34cO4vX/DEgGU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NN++TtlF/2Z8oLv7P1Aw6PdDgtksXNlZN6go1IJSt/YCpNnbxt8IT2nC6sNjJbL06seCtHn5zXqzh8S9G7SWSb/SSLVdJmIV5hS4vfkAXdAEkf2wcMFTO7TwFEbLJqyrPkqiCdXOVfjUWHFCPgmSpWoAaIW9RaPOCAQm/SspIV6PH6/mswEDRtAQRk55oBstOOJERclHx557W6jAoYv0YQ1Mf3VA1xxV5lsB2RAk0yUl3im35wO4gRBKLeT3A1IyCV/m7zgJIYoGQbqvbRfWqB6Owk+0h6V5N4Lv+V2/SlILMzTZheqkZuy3QEvQF/k/ot7pX4OIWSAsuFjjKQNmZA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NPY9L9Wm; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1761210781; c=relaxed/relaxed;
+	bh=m4YBI/EqtZ3J00PcXn67Kjmze22CptNisRya2F4tlEU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ncNyML6O2p/8y5HE+XvsVdw8H5RpGYeW8E+I/Pw9YdkeZ9DApC+fgl15Z+eRiRYML5EUs2/gVoaHpVW+6Mkr5zhezy+JQ+QQIHFioM2RFuCuZUuTb6613SdK2cU4+kcz/CBOVhMlg7+Rj1LPFU0wtrnvYJXH29xyvWUhzm22nQogjJtnBzvHdJeGpNdyYLxR6DmcajVdPgGo26UfhbacVDr89zYwnlKOVTHjhEvRAmwLqM27EuzXsdNQ4JBqJwrWH9lecp/1UoP7TERe4JlAr+S8VmgzGIom9PqWxmfzWJmS/0VySmjkaSoDiHM0JGoK7Xx6dGTLjHOBcWB0KSEX+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=KUog9T+c; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NPY9L9Wm;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=KUog9T+c;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4csfsj19jSz3bW7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 19:51:52 +1100 (AEDT)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-290ab379d48so5456025ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 01:51:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csgL34Zv4z30RJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 20:12:58 +1100 (AEDT)
+Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-47118259fd8so3420045e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 02:12:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761209510; x=1761814310; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lia0EGpI9PV6Wa7Mt+zwkxVNwILAbw34cO4vX/DEgGU=;
-        b=NPY9L9WmSsrMfYnKorZCQKLGrZF6hovhNQzVCxn63kNwSnhF6vPWrgz9NMCelAxzF6
-         jQhMfoID7dShYSrZ3h8nQDhdT6D61varetex+09oxVHBeDaEvkbh9omK3+ZbwI1LnqoZ
-         B2DZdmTyo2UVoka0yo4d74DuSP3KeZt/c5xxmuqiwoEGGnG9fwFV57JV/aYCxSYgvjEg
-         6CRWy8jQL8AIhzI0O4tYknV4imHzi18HocnEWCeMh8LOJoBA+JOpdjIG8n8kFCiN6+UN
-         JmhvH6lcODbzRInXj8jGPpGdRiTiUes6Uf6LrsncbwVMbNCQLrCeqe7rzY0PKAPsFwHv
-         pLLw==
+        d=suse.com; s=google; t=1761210775; x=1761815575; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=m4YBI/EqtZ3J00PcXn67Kjmze22CptNisRya2F4tlEU=;
+        b=KUog9T+czsBS5NSh7v7YxtfwvhyEHB0b5MbXM6yeExHXK07I3kvxpaQHAVWXWmjQn2
+         nsezt8SYnqgWikGtO65BeQEKw0u4xFXUqOj0UNyPu/PKZeuZtlxTXRyfTY2f2LK7jEkl
+         J2Q5rXFeo8KUdPyifOOQohW4mLyKW6Tc4QyuULZj5JyDRYdVeFlxEEpHbFTCn2RWrQwx
+         knUxnWn+UdVLbl5rpgtQXQpj51jRuRlK00DornfB21nbt20aN3Fr5DTuobysa0HC+f2I
+         T1+LlDxQBlsPeh6iX6qEtmIXg7rgJR4blp1wwFI/GueyyQVfalwAu/L0ErbKVvMYzTRn
+         NIYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761209510; x=1761814310;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Lia0EGpI9PV6Wa7Mt+zwkxVNwILAbw34cO4vX/DEgGU=;
-        b=Gn+gtqdzViXgLK1Q3844cELFPMGRbfmPIbBkcqPnSmn5PfDx6NsdSwcRSBfvqL72di
-         Ae4e3wjCPPa2iuFlO3/2r2OjR16pvZWgGc4OLDu7AFppkWgER4Dn41ilugtrppL/G0FK
-         WPTobzkbyf3xWuMU82RW24tCbQbrqR/IHE3dzznK5c/LyYctsWhlavEmbIiikcINKVWg
-         /sTv+mjd5fvopnY8ujVHXVDMYIygLKs4dCVTIJnHKa8Pa1j1+uu6cfudwM/VzNBmoDSl
-         1wiHPA3Oi3e0ea1ufJgCmjIATvGvbduaLqOyTd+XmfCGS21e4WkYD36jaLAqiFVfg7u3
-         mPuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWRNqchmW8qL2GZsh64sWP+x5u8fzvljsbMT6fpzBUeZMEPtRWs2sRUIHF1XECtM1ucQC+CIJp/7rRRkjQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwUE6F3QheyMn3lmMytgAJ0SF7Ab+sXvKabq2ojd5QB/cNbDn+U
-	TS2bhptPogceVBTaVkxDpoFdMZ1Geqj74eaDNHn4JLCz5HGYd+gxwCG5CmwplVaIsxyBSiWhcWP
-	h75f/CmvXS/W9wf73RwhqV1MdONYG8CM=
-X-Gm-Gg: ASbGncuze0wowLYjq8o1tB4iYu53tgDXcxN5sxPjswzJurofQoYQg/c/jI73vQZUuyb
-	9w6EBny5rPJOpMeV3fgvymF84CL8PMjHSzjlLiZ/Bje9ZV5gmFpHYIrX9+7CEHkOIt95LJKMhxH
-	n6XXefqYTRtQaCYXqgoTuJatuhXpEoeFkoXZkVksUl3jc0PPWxAV8MSP7qViwrUG7eyFmNsvk97
-	3Iii4a8w5GXHxM86vZUFkNrdfGl33gK5t188svw2bK05KePTauB3Beg3fIPqiS1WBNL2VjQ4Z/V
-	KWgbLBpkq7TG1Q==
-X-Google-Smtp-Source: AGHT+IGVhcbDEMKuw//0lICyRubANBw5BQL/FcN59AYvKRLUM4Q47l9Dc82sfAc3l7GBs+Aq9SlV2iNwhGdQYMKgAJA=
-X-Received: by 2002:a17:903:2b0c:b0:27e:f06b:ae31 with SMTP id
- d9443c01a7336-290cba52787mr296045245ad.61.1761209509923; Thu, 23 Oct 2025
- 01:51:49 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761210775; x=1761815575;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m4YBI/EqtZ3J00PcXn67Kjmze22CptNisRya2F4tlEU=;
+        b=IIiV3NyoaHDKfjbSMl0D/jOo1HGn/LUMl8VCoXR5i8KKqv1ggGrulM52YoTry2ZMLS
+         3G6wrEsLjEKS+h6OfzYADw3eNivUGPaoViY+711FtlOCa23uqOELtZXmW8BhXuzPfzHo
+         ge7m2HPDbXf2lEi4d3vR842UiXri18p7ajCxzNSbRQt/gXSBztgh9qTZj4P7eWBsOhFK
+         38Ki31dwIpF+04u7O0VzS/xw/QKhHActLIAVYvDaiDWpAeBia+UhPic7b4qs9aDt4LlI
+         GuZ3M22QcPZZ6RJSHPTiTpNWm5swIFEpovYBGEv7IW5kE4a5oFOESy1JS3DLhu3f6lv2
+         b15A==
+X-Forwarded-Encrypted: i=1; AJvYcCX/DpeN2jEv48Mf2mpdWx/edvH24StkCT2nRy7J7wARAXN3dFFZ5693vATTijLTs9h0rnZD6Dk+I/m0A+A=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyqGJxOm1epPmQf0LR8H/B39C/7C6uNaV6FQH5PBWS70pkoPDDO
+	exRIsOgLVWJcwhUNR95aU61vALHeQMb56sgmEmMhO9+tg0tjzuwjVAEQ49GDcjaxVQo=
+X-Gm-Gg: ASbGncsKqFyU+OEpd0gxz+FD4fvwbjXbLdnd65apCHjOYeVQ/Qiv91GHmWo/orcL1iA
+	ye7rUqKiQzXi5MhuezQwckSf18LU0h1CfFoW7Ff+tC1cGklQGzybPVTn8xmjz7UOUTgd/x8jPwE
+	mKUVYxnjfby5APSvcK01IQie8QoF6t2R3iTjhTC/0olC/veebGfQpt80pfeBHeDSWHKpJ8/ijE/
+	+uwaUsNha2+ZyrP7ZBn5qQ1dnqRBtka7Rl0lA6GfWPV2Oqxe1W1SRsyt9JZFdo08IYlVjiwCxa+
+	0pGvnCK++xcabeuS9r+PyoCyhfsa0gofYt9Jwk6/Pf5cpu/frKlcbWZd8H1Q45gLoMmNKGv2WBk
+	+0FqbenkMyimbb1xzfkMj7eByOQraDeiUeAwOpuN71coV77vt9Z9NNVGIcn1Lt3XxKf4cN3h+1a
+	Oi1c28OxlmzekrTO3twQ==
+X-Google-Smtp-Source: AGHT+IG89jvdKxuLQ4STXYciOZm7sh9+DpSTyapJXa8dA1Qq3pMQ8PymDcsITN5Fq2o+BBm71Hcnuw==
+X-Received: by 2002:a05:600c:3512:b0:471:12c2:201f with SMTP id 5b1f17b1804b1-471179134f0mr202907375e9.32.1761210774820;
+        Thu, 23 Oct 2025 02:12:54 -0700 (PDT)
+Received: from pathway.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c4342946sm85046525e9.10.2025.10.23.02.12.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 02:12:54 -0700 (PDT)
+Date: Thu, 23 Oct 2025 11:12:52 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>, joe.lawrence@redhat.com,
+	Naveen N Rao <naveen@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>, jpoimboe@kernel.org
+Subject: Re: [next-20251022] Kernel Boot Warnings at
+ arch/powerpc/kernel/trace/ftrace.c:234
+Message-ID: <aPnxlEkV1rL0hWOm@pathway.suse.cz>
+References: <72469502-ca37-4287-90b9-a751cecc498c@linux.ibm.com>
+ <cdf7c458-b28f-4657-8708-1f820369baa6@linux.ibm.com>
+ <aPjW3P2AU7L71S-s@pathway.suse.cz>
+ <ee9aaeec-23bf-42ac-8a8d-4ba899cfdd13@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,41 +100,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20251023064538.368850-1-shengjiu.wang@nxp.com>
- <20251023064538.368850-3-shengjiu.wang@nxp.com> <CAEnQRZB+rFudpHB7TKFOCumh4Ni9q-421X3jRL2y8UbV74e-xQ@mail.gmail.com>
- <CAA+D8AP4t+vS_n=VvRR5YYYrp0DGdWvqSN+4U0ZWMaGHmmt9ug@mail.gmail.com>
-In-Reply-To: <CAA+D8AP4t+vS_n=VvRR5YYYrp0DGdWvqSN+4U0ZWMaGHmmt9ug@mail.gmail.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Thu, 23 Oct 2025 11:54:08 +0300
-X-Gm-Features: AS18NWBXVYcg4iSh2cxYMtB5rD3rArP78fbSE0SD0ku2-r_FGbA2hH__QJQSJT8
-Message-ID: <CAEnQRZBiUu+45Kwe8dy=NsVULj3j=+zmgUEtg1SjZyP8KBpjTw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ASoC: fsl_micfil: correct the endian format for DSD
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
-	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ee9aaeec-23bf-42ac-8a8d-4ba899cfdd13@linux.ibm.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Oct 23, 2025 at 10:52=E2=80=AFAM Shengjiu Wang <shengjiu.wang@gmail=
-.com> wrote:
->
-> On Thu, Oct 23, 2025 at 3:10=E2=80=AFPM Daniel Baluta <daniel.baluta@gmai=
-l.com> wrote:
-> >
-> > oldest - > most significant bit.
->
-> 'oldest' is from the time perspective, which is aligned with the descript=
-ion in
-> https://github.com/alsa-project/alsa-lib/blob/master/src/pcm/pcm.c#L2050
+On Wed 2025-10-22 19:56:45, Venkat Rao Bagalkote wrote:
+> 
+> On 22/10/25 6:36 pm, Petr Mladek wrote:
+> > On Wed 2025-10-22 17:36:18, Venkat Rao Bagalkote wrote:
+> > > On 22/10/25 1:52 pm, Venkat Rao Bagalkote wrote:
+> > > > Greetings!!!
+> > > > 
+> > > > 
+> > > > IBM CI has reported kernel boot warnings with next-20251022 kernel. I
+> > > > see there are couple of warnings hit and eventually system boots to
+> > > > emergency mode.
+> > > > 
+> > > > 
+> > > With the identified first bad commit, is casuing the kernel to boot to
+> > > emergency mode. I reverted the bad commit and built the kernel, then kernel
+> > > is booting fine, but with boot warnings.
+> > I guess that it is the same problem which should get fixed by the patch
+> > https://lore.kernel.org/r/e52ee3edf32874da645a9e037a7d77c69893a22a.1760982784.git.jpoimboe@kernel.org
+> 
+> 
+> Thank you Petr, for pointing to the fix patch. It fixes the kernel booting
+> to emergency mode.
 
-Make sense. Thanks Shengjiu for the explanation.
+Great.
 
-Then this is fine:
-> > Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> But boot warning still persists.
+
+I looks like another problem. I would expect that it is in
+the ftrace code, either in the generic or arch-specific part.
+
+I would suggest to add people proposed by:
+
+$> ./scripts/get_maintainer.pl arch/powerpc/kernel/trace/ftrace.c
+Steven Rostedt <rostedt@goodmis.org> (maintainer:FUNCTION HOOKS (FTRACE))
+Masami Hiramatsu <mhiramat@kernel.org> (maintainer:FUNCTION HOOKS (FTRACE))
+Mark Rutland <mark.rutland@arm.com> (reviewer:FUNCTION HOOKS (FTRACE))
+Madhavan Srinivasan <maddy@linux.ibm.com> (maintainer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
+Michael Ellerman <mpe@ellerman.id.au> (maintainer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
+Nicholas Piggin <npiggin@gmail.com> (reviewer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
+Christophe Leroy <christophe.leroy@csgroup.eu> (reviewer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
+linux-kernel@vger.kernel.org (open list:FUNCTION HOOKS (FTRACE))
+linux-trace-kernel@vger.kernel.org (open list:FUNCTION HOOKS (FTRACE))
+linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT))
+LINUX FOR POWERPC (32-BIT AND 64-BIT) status: Supported
+
+into the original message with the backtrace. Or maybe, send it
+once again and mention just the WARNING. The boot to the emergency
+mode has been already solved...
+
+Best Regards,
+Petr
 
