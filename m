@@ -1,87 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-13215-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13216-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710F3C021EE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 17:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD1BC029DD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 19:00:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4csqk61Lhgz3bfF;
-	Fri, 24 Oct 2025 02:30:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4csshy5fmJz3bfZ;
+	Fri, 24 Oct 2025 04:00:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761233454;
-	cv=none; b=fGysuCQPsgo/MUXGho6iP7dOJA/+6yQSuCpGvi8JBe8+Qms8/Mn7M4tXsMyfPdhPN8tpb4k15zcqKmj7iijB/GUt9BuNCjg9AWvlzGFazjFoCRb1USfmVUv+ZcgZx4yVm+sGqGAa26WMUM6yrgFKbZsQuie+SBAKwXpzX6YZqKT7zs/8oY0NPahFuTo2d6WQdgdbNNxEH4pzAKO0iXVx7dxDBfIN74OjCYKFC5wpkUfaEu1cEy+eWDxVCYsHeWz9ZPMubAIWYrPwfo/+BaJoxJs4xHshRdPmTZhskRJRpbTgsGHFXliZJWcw5xVfMsJNJDmYnAa1RM+2o1er4cBKKg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761238802;
+	cv=none; b=kn0QLk3uAUPuRN39ppJWl6OIIjODkFMYT59oWr7TZFDdcQ64Y1LxaDjPiJJ81thMDN+HLUEoKobsDSQRjwT8yoADbgvslzmXb0syn1g+wA8sD6mH/0bJdR6pTvvyvOIt1BSx5hYH9qSYLFkqij/QNxy8/SXaB/868/UF3ULKl8brM09p2S7yMskcswPybe/6px2WOxgf/xecdawueOa4nbR/LJvXlatias60OLx8VwRoVOkF+jko/KkvyOi1mJO8TeUaL4Zx8zKerT4hg/m9uN5Q4ME46rd44LjLPTEENoN+V4gJ0j9myEms3d9lcz1QHmieRP/doEgIchxHdQflZw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761233454; c=relaxed/relaxed;
-	bh=Tr76UWkBmhbzeJoAKpnHprT1sOTnO5bbrqUUa+4UTp8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m87ipKUw0A2rKSI9AKii6MMcf0fwTOKNN1OhYSQmdmIz2S1RGwAMhtIskCUZ/nM0FnuWr3uaFiJ68GSEPOc5YS5T96C7ISq1nl2HxZo/Tr5/IIeVdHlbnznOHL7CJhDL2xyTDjgG2ZKYW18xVAvGRNxWYnTN9zwLXX4DjxGSoCttzwJ2zGn56HzMxP9rtmPtbDl1lbAmhl/DRwIJR9EsJ55EVa6BIzIp4Q8ARq4GFfAN+S4Mft3EwAdTebreZ/EWPX0QKJOsmASmT6dMCHnApIBLIETo34+9ioCau/qdie+HJvqDQDuIPRcfWecj9iOvF6dDzT/xPbfl0hJ6RCRARA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=RiCVhwNq; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=MYWMFF3K; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MtZuXCaQ; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qJHzm0Yx; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=jbohac@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
+	t=1761238802; c=relaxed/relaxed;
+	bh=ehYNnwiBTKR/Q6UHrJCQIsSLe6XKwf3Q4SgsmQXH0n4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=AJtgKems7E3iCMjzO1VTf+l3FdpkKQJHqRbfp/VEgtcM77mweAnnYleZmYsjv7nGAXxQni846cDA9lJBiHkEdEXtCDjPkULRJXi7GEv+JxbmWisD5UDbPb0ArNMJGAwjbH0ahghb+qDR8DGWvJ/Rn6cL4Au3MXQWit3+FlBcpcze/kCwCabzO2UDJpmj7aZ1bTKWdrV4T8dk6ZPXu9VcKnW8RDrdm3ZILdtpCcJNQr/UiCkYyR0uL60v7pO0alZkEcdgEboiGI3jMnEttN92NM2j9C4Mrw79mKW9N8Z9O+lp6dpKTY0bsg+jf5LYRLkgspt6/oTATX8POMoIeTwH+Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C8Z5KU8k; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=RiCVhwNq;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=MYWMFF3K;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MtZuXCaQ;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qJHzm0Yx;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C8Z5KU8k;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=jbohac@suse.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 427 seconds by postgrey-1.37 at boromir; Fri, 24 Oct 2025 02:30:51 AEDT
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4csqk36hdPz3bW7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 02:30:51 +1100 (AEDT)
-Received: from localhost (unknown [10.100.12.32])
-	by smtp-out1.suse.de (Postfix) with ESMTP id C947521223;
-	Thu, 23 Oct 2025 15:23:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761233017; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tr76UWkBmhbzeJoAKpnHprT1sOTnO5bbrqUUa+4UTp8=;
-	b=RiCVhwNqnXXf/1v2CLdvxtRp1IJrfqPAivJ6sht+Q6PG0Q6HyHnMPdal9bMu83FjydFZ1K
-	th0hlH1trWpZZIN6dCT5PbePcZZFn5wnF2n8ZOb7bhgJJxADd4VInkQzPyLcuW9GyYp2IR
-	m9cTkpaZmZ/rxrCum76jWqbu6nUwZ4g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761233017;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tr76UWkBmhbzeJoAKpnHprT1sOTnO5bbrqUUa+4UTp8=;
-	b=MYWMFF3KrxM10W1+hkCtSbph/xdzMXsIWcsPqyOzeyk6wqTiG+vNLtyzXGs3ivk/mhL9Ly
-	UBstXNvc2H+8lQDQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761233012; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tr76UWkBmhbzeJoAKpnHprT1sOTnO5bbrqUUa+4UTp8=;
-	b=MtZuXCaQvgvwETWJvuyRtXTmedvj2Gj07e1YFK3UyH63WW4MmMpVdLVolh5XZ41RDU7zUK
-	MfpBG16nK3G/N9yhlKCgU7xsB4lTkEsFUiXXTki+VJkOAbfLzgH8G/0z6fnFQqV8Tsup1h
-	qVsqmA8YU23slw/+ZGq5UMNP7aTsqaU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761233012;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tr76UWkBmhbzeJoAKpnHprT1sOTnO5bbrqUUa+4UTp8=;
-	b=qJHzm0YxqJCMh5UENrgVqRbxQyg8aJRDR6az2mOvrFEBOUVwLLjOkZ3UIR7Hpi3KwiKpaP
-	jYdKUyi+JBej7nAQ==
-Date: Thu, 23 Oct 2025 17:23:32 +0200
-From: Jiri Bohac <jbohac@suse.cz>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shivang Upadhyay <shivangu@linux.ibm.com>
-Subject: Re: [PATCH v2] powerpc/kdump: Add support for crashkernel CMA
- reservation
-Message-ID: <aPpIdHMnSHRq8M6B@dwarf.suse.cz>
-References: <20251023121413.56963-1-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csshx4SBnz3bf4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 04:00:01 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B8E1761142;
+	Thu, 23 Oct 2025 16:59:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE3EC4CEE7;
+	Thu, 23 Oct 2025 16:59:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761238798;
+	bh=h+icO936JD9teEQbZE1rnc5+Nmq3sJLtLM81uIp43hM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=C8Z5KU8kW8hHnaNrJcD9NZD9rWQ57hwrWE5Nve4fckneiMxuMuRDT3eVA7hS00i9c
+	 IyaM4bt8tJZdImwRykswdO3VpPybfnqMrFlwjDU5zVAnwfuVgup10Oa7irEOrNSJIN
+	 8pZXE4dqX9R722uFPdss03F7mPIQOsUt7T0JoDacpRFC1pvMAAxeFVYVIDoBMjkB+A
+	 U8cqUh1K3UuWUKhI6rXt0cZ80HJ5LXdp6Wq151H9GNqEQo2YceLRfYAkTkZ7XJg2x8
+	 p8pz4kEcnrNSSWCA8VdIdZxvyuil2XKmq/apcgmpONlFxjj6JSmlwoYXHhsVEuoZkc
+	 HoFWECHsp6zcw==
+Date: Thu, 23 Oct 2025 11:59:57 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Christian Zigotzky <chzigotzky@xenosoft.de>,
+	Lukas Wunner <lukas@wunner.de>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	linux-pci@vger.kernel.org, mad skateman <madskateman@gmail.com>,
+	"R.T.Dickinson" <rtd2@xtra.co.nz>,
+	Christian Zigotzky <info@xenosoft.de>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
+	Darren Stevens <darren@stevens-zone.net>,
+	debian-powerpc@lists.debian.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
+Message-ID: <20251023165957.GA1300574@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,69 +75,79 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251023121413.56963-1-sourabhjain@linux.ibm.com>
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_ZERO(0.00)[0];
-	TAGGED_RCPT(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[lists.ozlabs.org,linux.ibm.com,ellerman.id.au,gmail.com];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,localhost:helo]
-X-Spam-Score: -2.80
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <20251023111947.6e960216@bootlin.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Oct 23, 2025 at 05:44:12PM +0530, Sourabh Jain wrote:
-> @@ -595,6 +602,13 @@ int get_crash_memory_ranges(struct crash_mem **mem_ranges)
->  	if (ret)
->  		goto out;
->  
-> +	for (i = 0; i < crashk_cma_cnt; ++i) {
-> +		ret = crash_exclude_mem_range(tmem, crashk_cma_ranges[i].start,
-> +					      crashk_cma_ranges[i].end);
-> +		if (ret)
-> +			goto out;
-> +	}
-> +
+On Thu, Oct 23, 2025 at 11:19:47AM +0200, Herve Codina wrote:
+> On Thu, 23 Oct 2025 14:19:46 +0530
+> Manivannan Sadhasivam <mani@kernel.org> wrote:
+> > On Thu, Oct 23, 2025 at 09:38:13AM +0200, Herve Codina wrote:
+> > > On Wed, 15 Oct 2025 18:20:22 +0530
+> > > Manivannan Sadhasivam <mani@kernel.org> wrote:
+> > > > On Wed, Oct 15, 2025 at 01:58:11PM +0200, Herve Codina wrote:  
+> > > > > On Wed, 15 Oct 2025 13:30:44 +0200
+> > > > > Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> > > > > > > On 15 October 2025 at 10:39 am, Herve Codina <herve.codina@bootlin.com> wrote:
+> > > > > > > I also observed issues with the commit f3ac2ff14834
+> > > > > > > ("PCI/ASPM: Enable all ClockPM and ASPM states for
+> > > > > > > devicetree platforms")      
 
-I think the loop needs to check if tmem->nr_ranges == tmem->max_nr_ranges and
-reallocate in each iteration, just like it's done when excluding the crashk_res
-region above:
+> > > I did tests and here are the results:
+> > > 
+> > >   - quirk pci_disable_link_state(dev, PCIE_LINK_STATE_ALL)
+> > >     Issue not present
+> > > 
+> > >   - quirk pci_disable_link_state(dev, PCIE_LINK_STATE_L1_1 | PCIE_LINK_STATE_L1_2)
+> > >     Issue present, timings similar to timings already reported
+> > >     (hundreds of ms).
+> > > 
+> > >   - quirk pci_disable_link_state(dev, PCIE_LINK_STATE_L0S);
+> > >     Issue present, timings still incorrect but lower
+> > >       64 bytes from 192.168.32.100: seq=10 ttl=64 time=16.738 ms
+> > >       64 bytes from 192.168.32.100: seq=11 ttl=64 time=39.500 ms
+> > >       64 bytes from 192.168.32.100: seq=12 ttl=64 time=62.178 ms
+> > >       64 bytes from 192.168.32.100: seq=13 ttl=64 time=84.709 ms
+> > >       64 bytes from 192.168.32.100: seq=14 ttl=64 time=107.484 ms
+> > 
+> > This is weird. Looks like all ASPM states (L0s, L1ss) are
+> > contributing to the increased latency, which is more than what
+> > should occur. This makes me ignore inspecting the L0s/L1 exit
+> > latency fields :/
+> > 
+> > Bjorn sent out a patch [1] that enables only L0s and L1 by
+> > default. But it might not help you. I don't honestly know how you
+> > are seeing this much of the latency. This could the due to an
+> > issue in the PCI component (host or endpoint), or even the board
+> > routing. Identifying which one is causing the issue is going to be
+> > tricky as it would require some experimentation.
+> 
+> I've just tested the patch from Bjorn and I confirm that it doesn't
+> fix my issue.
 
-        /* Reallocate memory ranges if there is no space to split ranges */
-        tmem = *mem_ranges;
-        if (tmem && (tmem->nr_ranges == tmem->max_nr_ranges)) {
-                tmem = realloc_mem_ranges(mem_ranges);
-                if (!tmem)
-                        goto out;
-        }
+You should be able to control ASPM at runtime via sysfs:
 
-        /* Exclude crashkernel region */
-        ret = crash_exclude_mem_range(tmem, crashk_res.start, crashk_res.end);
-        if (ret)
-                goto out;
+  What:           /sys/bus/pci/devices/.../link/clkpm
+		  /sys/bus/pci/devices/.../link/l0s_aspm
+		  /sys/bus/pci/devices/.../link/l1_aspm
+		  /sys/bus/pci/devices/.../link/l1_1_aspm
+		  /sys/bus/pci/devices/.../link/l1_2_aspm
+		  /sys/bus/pci/devices/.../link/l1_1_pcipm
+		  /sys/bus/pci/devices/.../link/l1_2_pcipm
+  Date:           October 2019
+  Contact:        Heiner Kallweit <hkallweit1@gmail.com>
+  Description:    If ASPM is supported for an endpoint, these files can be
+		  used to disable or enable the individual power management
+		  states. Write y/1/on to enable, n/0/off to disable.
 
+I assume you're using CONFIG_PCIEASPM_DEFAULT=y, and if you're using
+v6.18-rc1 plus the patch at [1], we should be enabling l0s_aspm and
+l1_aspm at most.
 
+If the sysfs knobs work correctly, maybe we can isolate the slowdown
+to either L0s or L1?
 
--- 
-Jiri Bohac <jbohac@suse.cz>
-SUSE Labs, Prague, Czechia
-
+[1] https://lore.kernel.org/linux-pci/20251020221217.1164153-1-helgaas@kernel.org/
 
