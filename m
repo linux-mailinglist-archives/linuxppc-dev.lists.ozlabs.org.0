@@ -1,97 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-13223-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13224-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA0DC0331B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 21:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DF5C0332A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Oct 2025 21:37:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4csxB94ZDHz3bfF;
-	Fri, 24 Oct 2025 06:37:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4csxC52Ltbz3bfF;
+	Fri, 24 Oct 2025 06:37:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761248225;
-	cv=none; b=HzaC9on1yUiAUWOfmu+cuVriHKmos9FsExMCBCoEaCemQ2MxKZbnAhd14NbYW2G66YR/FgkNgknDuJ7uc9nw4/N0ubsQ9hjiIWWt9dzFyjRQijSl7hwEqElTtnT2k3yiZpiVboXNDugNzXdB5VOVH0PcAxla9lg/K0OpHXmGGcerbmIFtxnxTjxfHS9+Mm757MpEpyiNwGh9l1QG3VU0HNBj/c+j8FO75F7HyVDr2hPQvw0SpueZwaHQGQuqAJrspUT5iGcmgtqC05c7rRRLbvgDmaN8iDJquX7UL36fMGklAtIdlRS9uaqrsuwnUGhMK66GhvmwEVAG5JneGCZXUg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761248273;
+	cv=none; b=iNqa0EOnJM8i7UqaPkKSurQRLKyGyfDqSnZ0VfYRtezunHFKP004zxUkve+Dkq+sd1zpwHQNwOAmk47+w4hAHRgXMWJLPjdliRgE4bcKTcr8dl6AOHdedCekyRsxko9gmbAVtGH5rcYgEHFK3ceCMWmLOzeNTvThTZgSyEhKpWKdBonlifZu8YayX1OE70naFAiVsCVeCgWMNcm8mCwaMBxtPbpu+rb0oQ1JRP5x66M0AnKy3/+6UO9KAhXYOVk6hOf189y04NzPz73vr+HSyQhUmIFQ2EGPYlMdw/ddoa4EAiQTpyEy3M62tBytjvlupz8Dy0fhvAshFdH7Y7kx8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761248225; c=relaxed/relaxed;
-	bh=GAR+zcyIiLP0EmlRcHQPsRsm2ZVMdnZLABW6LHegPGk=;
+	t=1761248273; c=relaxed/relaxed;
+	bh=mPouUhrqRxgjcMBstonzlhFIxQsnreNI+UXdXwtR76k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VaKU49/yTq1HEMHfrJWwrKpiNLdYj3SWOcNNZygLEdNYDb4wFA2Uh2ZxpzmCAIlMtaEnB0eXUiJOZ0nL3RwyEQKJ8c9Ls1eBO/nNytuK389QL84p8G549+51L0jkRhlV5MShSAyUZBuVS/UXB+kKO1E9oGcg9RQDYbhuIZSUy9nO9mUqEZ5NtFx8ogp4YEDzubxWmE64FHElUJQaYbnqfKw1h7w1HWTWCrjGZh7PH3atpz8JHUCKvg9zDsm0AChUjBxtJpPpiQXPtYwxRprIkzkvdVM/D2z82IOhWaoR1LsbfQ1v10c35QWFPmGekXQ9RtrDmodEOShclmhweuo+Pw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YYr/t9f8; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ddEQt0Kt; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=h9hNzYeSgxK8m7MHua8zsguPafp31sUZDnhCnJUn8pERho+KlHCcvSFdD71LZVeJuLeql4Er7+nkZ7w4pZ3BXDoHehqo7ubVWXdM9FZLvT9dDpzTl564Ov2shKin9Nrub+9zK60bgThTtYfR92i4BYClmDavs3H5w3A4tEXvTFn9lB3/1QIfdWP2nomC4Md4XArHR7P4fhCvzm16rbp69DWvaMRDfsmxhYWUnJka+rd+fiySalEo6K02SOWn+vRlcVYP79kjYD/vIaDG1nozJuHIDl1cppVSmNqbQ0rCPvR8Ohd8b9XJN/xJcnyonzOa9FpsbX50wE1ZTrwbgGiwoA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hgPwBE+z; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hgPwBE+z; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YYr/t9f8;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ddEQt0Kt;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hgPwBE+z;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hgPwBE+z;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4csxB82FVjz3bf4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 06:37:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4csxC43bCzz3bf4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 06:37:52 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761248217;
+	s=mimecast20190719; t=1761248270;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GAR+zcyIiLP0EmlRcHQPsRsm2ZVMdnZLABW6LHegPGk=;
-	b=YYr/t9f88DnfRGtalD5RRA3EJOwyBFx2tqF4AsdZj2aulW97W4kocfQxs8R+UFqKUQFgxK
-	xOIwzVhEuE+Bs/SPO/21gWS4GzYciF1a9N/18FHLBpd0VNi+zxRtq0sYa/0dns5B4MWzaU
-	a7dh0ggzzpPG8UUbwMpNevka400Js0s=
+	bh=mPouUhrqRxgjcMBstonzlhFIxQsnreNI+UXdXwtR76k=;
+	b=hgPwBE+zSgNpt4kVXGHGa/kYW/dBIiWcCY6Pi5u8XG1TlbYY4kNIX/YcsC+wEwZ/M32S3z
+	xDd39QO1K8NZvjYbXPewiMagmi44GQwYBAi1NI16l0Bbo/q9NPEqkQ0wRJsUuQe3LKus6E
+	IVV/iyVSx6f2NQ4JpS2pyketTlLNcFw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761248218;
+	s=mimecast20190719; t=1761248270;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GAR+zcyIiLP0EmlRcHQPsRsm2ZVMdnZLABW6LHegPGk=;
-	b=ddEQt0Kt8lZ79ZA6CZgPLmbcEnAQJyncuifEtEeCZw4EQoQPgWyf/KdhTHVmoy3bjnJ0c5
-	ELAGsPwdfiO5ZEmukOCf4KWF4f6fI7Ybs/foQePCTAAYn4LGNUp8H7hLly/cfnhhdwdpTA
-	rfj6r0sdSGm0gqtX2vQWtihBfc5A7IA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mPouUhrqRxgjcMBstonzlhFIxQsnreNI+UXdXwtR76k=;
+	b=hgPwBE+zSgNpt4kVXGHGa/kYW/dBIiWcCY6Pi5u8XG1TlbYY4kNIX/YcsC+wEwZ/M32S3z
+	xDd39QO1K8NZvjYbXPewiMagmi44GQwYBAi1NI16l0Bbo/q9NPEqkQ0wRJsUuQe3LKus6E
+	IVV/iyVSx6f2NQ4JpS2pyketTlLNcFw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-g9cySFQpPceNy_C79MixKQ-1; Thu, 23 Oct 2025 15:36:56 -0400
-X-MC-Unique: g9cySFQpPceNy_C79MixKQ-1
-X-Mimecast-MFC-AGG-ID: g9cySFQpPceNy_C79MixKQ_1761248215
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4298da9fc21so134499f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 12:36:55 -0700 (PDT)
+ us-mta-298-KN2bZW_RO0WNvHaPi_OCiA-1; Thu, 23 Oct 2025 15:37:46 -0400
+X-MC-Unique: KN2bZW_RO0WNvHaPi_OCiA-1
+X-Mimecast-MFC-AGG-ID: KN2bZW_RO0WNvHaPi_OCiA_1761248265
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-471125c8bc1so16183725e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 12:37:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761248215; x=1761853015;
+        d=1e100.net; s=20230601; t=1761248265; x=1761853065;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GAR+zcyIiLP0EmlRcHQPsRsm2ZVMdnZLABW6LHegPGk=;
-        b=vHBazZto4LVUhsBEAP1eMvCtA1QcF8wVzvQqfUpeBhH738FFr8R5OVs0TSuFLjYjAC
-         hdpwM0xdE7eYHeuS23hdCiB5c4z5aZae+7MwO2hxots1hRPZ6gGWmkU8Q/kHin5Q5qH1
-         t6KBaoXFzsBjgUU+xV6FwJGNdi7FteT9ZJYgBRVI55XPp4u0F+LLJ9Z7+rkPzv1H6Ror
-         hqxMjbZ3yU4KxI7JxKwTsbDigDkE1XP49kSYjdLDoJ/7u25HyobVhYNhVkmtVydN6SHw
-         6KrndkurOXLzjlsoljTKr5R3l0UH8Uay7O69v637pP7AEzFEl7ccUOrJlsfJxvt4F+py
-         oTOg==
-X-Forwarded-Encrypted: i=1; AJvYcCWB2Uc8vbFetiOHwadjU8/0qWUUOtvHIkMVq/r/A6feyvVJUVpjvVq4OTjEqc7r+V8Erw3gzEkWHms5mX0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyAx9kajNN1gFUzwKrDde0TfdLLvmsyVCDWUByIs7XtSNyl0Dno
-	V7/HrWz63B7Y2LnCk13v385sKi7P3lryLbaVH4QC9x5jddbCElm5ffdPIlrKuCHA0g+DflVnzZU
-	Nncg3ygybzq7Y4RbKx/bbB2bPQ383IU5XMB9jBFGUrgzq8nQcwZvu4FHcwHJcDEMy9PE=
-X-Gm-Gg: ASbGncusUMdypkDgotukiZPcpfof+MwBCgYOTwDayalpXv7LQJvz57DSs5fBKiv7HSE
-	deF2aRvog59yqjcr6ahJUOJqIRB/Pbr4JWenzmnLuI2Emebchvfrq4oYW2TmK8E7375KNY1Y62i
-	nusldMd4imy2O/I0xHLtZleaI9mHjAx7gSnjRWTLKV4PzWRg1vKM5/W0eakn0L7SLNH+y+pSc05
-	/jLUbq9txobUzpMa7B/W5wUFvgXJAVu+q6+pOLG1vXeId9wGBlQkbLKL1+9croh0jmgyRHbGN5i
-	U8tmY7UVBWLriW+31oWDjU4qaev/JVom49iSWb0+eedk3Ys4yWPgOBofIPgQhd1tUNOq8GDsZY0
-	UClA2w+eymYKNzxs4K7gkIByB4u9JUp75SD4UFx9buFZIkeDnq/gUweGdDfyyGp2ldPILxzhly4
-	fOIxMKg0yDLl8KjRzRU/YAoeEtGjg=
-X-Received: by 2002:a05:6000:2910:b0:426:d60f:746f with SMTP id ffacd0b85a97d-42704d94458mr15755895f8f.30.1761248214810;
-        Thu, 23 Oct 2025 12:36:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFLONoaoN3j9k7k2WPBjhOeKfFc12IEn3iCcAu7lFYqr51oTxzPTHNLcPx+/xVbrYtjrgs6YQ==
-X-Received: by 2002:a05:6000:2910:b0:426:d60f:746f with SMTP id ffacd0b85a97d-42704d94458mr15755849f8f.30.1761248214388;
-        Thu, 23 Oct 2025 12:36:54 -0700 (PDT)
+        bh=mPouUhrqRxgjcMBstonzlhFIxQsnreNI+UXdXwtR76k=;
+        b=EejOl0QFYEuRhqENBjecfnMs1bmsN264/JyJusARclKZcJzGR1KrKVIiAqzzeVbTcE
+         +OF7RwI+1HyBKGpGbeBElQbMji1n8+TrFAqI6bk30DRZnwMNTmFTD5wTciu4yX36LoeY
+         yi2qHM48iyLG1B+HwT0oVwTgfTPc05KiwbkKlit3j0owMuehHVHKhlBHK5Ew+Ge/8Hl+
+         iZsA+wDkrkIgSESdMJL4aFeXTkemhNEfpR7Isa0FNz/Pv5Q1eA6KEiZ7/O5KvnrGZDop
+         NNa8inohi3rKqL39M8kHcDwHKCGh063iXVIa9Ml8zVMqZUj74EkTGkdJWmuS509Wvg9O
+         GK/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU+63tjd6POAah4cqKcIAY1GwG7wTwjQC4Ur8cJINoZ1fAl0T5cPmuA2WsghJe++KSuqG7Fcm1x50+K9NQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz8CZC6Eb3EY8cQsjDtc0PFnm67fSPIb//Kaxau55Jk910NV25L
+	bc7h4PBHoMetURFQU2dp2bgXsiYQmRBloMJWcLWhoI9wyEx6p5FO9l5xPYaoksICZZm4dN7qNjN
+	jevBRRqqx535Fnl2FlwIcZAZF3xvPWctuKx60VT+3C5Vg5PZwvTPd1N53MWpl1QlTCo0=
+X-Gm-Gg: ASbGnctXDAJJo3MIjgkx5RCQsqzvrOZSd0nmWLYQFD+juAln5cxbXnI5B5Et4uPprkW
+	R5DANJLAN4oSsgjt5j7fRM29ewln5xng8OcfzNpt34jxZSq4VwM3B43z4OGaEgPsfdwQVDbu16D
+	hcFegAvYuS9FVipnje0FL3iQ3YZrSVQapd/rOjxGD9zDiyfFJrXyGCeJzu0gGQ6nb5cVSKskh1y
+	ql/NZz3Jh03twpBqOT6ag7PwcXUrdegvhz+Om9Vov74vdbldbGTXAtK63q+MdN1x2LpUywhXTJX
+	FqF8M9xd+ZyF9+FvNMxYPHbSube+QNShvIqEz4JPROmk3Mqk5fp3nvAgz1wRFG94VNHqG9zeBg2
+	gMorvVh+RgH1LA/DjPUr0wIXHevgf0uNqF+OfDLeDMPxclVaGEc1lTZhZIaxh08zTLftz4En3jN
+	nLHyApTYmp6RzRsyn9WiJqNBAlyaY=
+X-Received: by 2002:a05:600c:3149:b0:46e:4b8b:75f2 with SMTP id 5b1f17b1804b1-471178a7ea5mr175792225e9.16.1761248265270;
+        Thu, 23 Oct 2025 12:37:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEZq8ETk/dxv6lw5okKbvprrCeAKa5W7ysoK9CYeQHAr2H0Pl+EqcgQ1cUF8EEIwcu7bpKOCw==
+X-Received: by 2002:a05:600c:3149:b0:46e:4b8b:75f2 with SMTP id 5b1f17b1804b1-471178a7ea5mr175791855e9.16.1761248264842;
+        Thu, 23 Oct 2025 12:37:44 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898ecadbsm5715926f8f.45.2025.10.23.12.36.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c4369b5esm130845595e9.15.2025.10.23.12.37.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 12:36:52 -0700 (PDT)
-Message-ID: <60c55686-87dd-46d0-884e-80f7d423663b@redhat.com>
-Date: Thu, 23 Oct 2025 21:36:48 +0200
+        Thu, 23 Oct 2025 12:37:44 -0700 (PDT)
+Message-ID: <b0373792-a7fa-41c4-9bf8-979c10be49a0@redhat.com>
+Date: Thu, 23 Oct 2025 21:37:42 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,7 +106,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/13] powerpc/mm: implement arch_flush_lazy_mmu_mode()
+Subject: Re: [PATCH v3 04/13] sparc/mm: implement arch_flush_lazy_mmu_mode()
 To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -129,7 +129,7 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
  sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-4-kevin.brodsky@arm.com>
+ <20251015082727.2395128-5-kevin.brodsky@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -175,9 +175,9 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251015082727.2395128-4-kevin.brodsky@arm.com>
+In-Reply-To: <20251015082727.2395128-5-kevin.brodsky@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: fJx7NWIdd4lODRfapOl-DzC8yPSTaGE_xzyDGLI1vo0_1761248215
+X-Mimecast-MFC-PROC-ID: ur8QjPa3tg5X5fpulmxVFE30Gpi6eFPNmsgH_FRiqWE_1761248265
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
@@ -198,31 +198,54 @@ On 15.10.25 10:27, Kevin Brodsky wrote:
 > 
 > Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 > ---
->   .../powerpc/include/asm/book3s/64/tlbflush-hash.h | 15 +++++++++++----
->   1 file changed, 11 insertions(+), 4 deletions(-)
+>   arch/sparc/include/asm/tlbflush_64.h | 2 +-
+>   arch/sparc/mm/tlb.c                  | 9 ++++++++-
+>   2 files changed, 9 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-> index 146287d9580f..7704dbe8e88d 100644
-> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-> @@ -41,6 +41,16 @@ static inline void arch_enter_lazy_mmu_mode(void)
->   	batch->active = 1;
+> diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
+> index 8b8cdaa69272..925bb5d7a4e1 100644
+> --- a/arch/sparc/include/asm/tlbflush_64.h
+> +++ b/arch/sparc/include/asm/tlbflush_64.h
+> @@ -43,8 +43,8 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+>   
+>   void flush_tlb_pending(void);
+>   void arch_enter_lazy_mmu_mode(void);
+> +void arch_flush_lazy_mmu_mode(void);
+>   void arch_leave_lazy_mmu_mode(void);
+> -#define arch_flush_lazy_mmu_mode()      do {} while (0)
+>   
+>   /* Local cpu only.  */
+>   void __flush_tlb_all(void);
+> diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+> index a35ddcca5e76..7b5dfcdb1243 100644
+> --- a/arch/sparc/mm/tlb.c
+> +++ b/arch/sparc/mm/tlb.c
+> @@ -59,12 +59,19 @@ void arch_enter_lazy_mmu_mode(void)
+>   	tb->active = 1;
 >   }
 >   
-> +static inline void arch_flush_lazy_mmu_mode(void)
-> +{
-> +	struct ppc64_tlb_batch *batch;
+> -void arch_leave_lazy_mmu_mode(void)
+> +void arch_flush_lazy_mmu_mode(void)
+>   {
+>   	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
+>   
+>   	if (tb->tlb_nr)
+>   		flush_tlb_pending();
+> +}
 > +
-> +	batch = this_cpu_ptr(&ppc64_tlb_batch);
+> +void arch_leave_lazy_mmu_mode(void)
+> +{
+> +	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
+> +
 
-The downside is the double this_cpu_ptr() now on the 
-arch_leave_lazy_mmu_mode() path.
+Just like for ppc now a double this_cpu_ptr(). I'd similarly just 
+replicate the two statements.
 
-You could just have a helper function that is called by either or just 
-... leave arch_leave_lazy_mmu_mode() alone and just replicate the two 
-statements here in arch_flush_lazy_mmu_mode().
+> +	arch_flush_lazy_mmu_mode();
+>   	tb->active = 0;
+>   	preempt_enable();
+>   }
 
-I would do just that :)
 
 -- 
 Cheers
