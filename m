@@ -1,68 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-13287-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13288-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB0CC06EE3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 17:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D10C0701D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 17:39:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ctRRg2nG6z3cZL;
-	Sat, 25 Oct 2025 02:20:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ctRs04hNDz3btd;
+	Sat, 25 Oct 2025 02:39:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761319231;
-	cv=none; b=AkGWA5RHurmEd7DqmhnmNXvqOJPFx5DQ20YLVJOxZ8jwuW8b59YVn9lcGM+ChPjqjXUmqkf/cqDebWzdfDwDKv/a5LnRlZDzjEp3kOKK2IusUsM38NNmQLj1lld4uKSWeLAVnnI5n5x3rx6L23Sekzr6R0b/RdTspKnrrGZS0J8YLMmkclIw7rTcI/Vv5LPx2nAOlDOj/BkqqWmhq98FE+7M/VjjV1GhtlGp0U9PAG+Pb9FR7B72khqbA0EG0WNCRxVih80Iravn0XBgAUA8Nd/dfZ0vZn3RVzTCZkOsGBC0f/r6smIYSWkGXjPZWE64FdpFGkT392pF4RnfC8qPQg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=130.133.4.66
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761320340;
+	cv=none; b=dSz7akC5wnYqVQW+WESBpEM3JM4YtKoHDCcyU80bM78cG5MmrZHQ6ajwGXdi4niLgktB4TI5B8Mh7nzV6Hx/kmoJwM356T4umM7MuUAZaK3VvAvzw1WArVmxwrZcGHlgcJ/FXWM0cLxK7vermBpVx++bHTOwKbr5sEgAZMa+AgxukuIg1ODdtYrXqh4oBl5itD8vdUFzrH9AhM+fnRwqbEq8tfT80FVWSH6rwUiPiGbtTlgVYYZ711dhJFNtbYLcZuieT8tgtnj/+Zd7NwrnY4DnBkCX1Q1OjU8D4diV9lJQYdvsZlhxz4pIWGQFjyzGG1IZzBjKUvABpDidWuD0ag==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761319231; c=relaxed/relaxed;
-	bh=0B1p6svtLOmgQ+9ck2lRafwl/wz0jGeJoMjCsZpcUfc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nIT1S1bggYehppYFuS9RvZLkbHzElrYFGitdneP63dbU8Ipq39tqnSajE06R8J8y32/NHIyI83inwbbe/qZS/j3lBuL+NuB3W8oyKKs5CsVUQ74MlC/TvlThRU4dHVAOPxg/b8s2LDXJxlcbjnoitTjDKCMYu87CcF1+H4uGAnrchO7q9tW8pu3mm+xj3msb0Hy7Cd8hc5exYQXVeQaSw3bYFznBsUOTqpMBg3SrviV5fGN7XOqMpiuSdzCpjCsI7VGDHgXGpk0g3OX/rCgwnYxSAT3ZQhxi962pkfZi1MexIj9x+78s+C7qSyS3AOvqXTXPGkn0IuoNBKHW6RzW8w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NGUsf/Vb; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=johan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1761320340; c=relaxed/relaxed;
+	bh=73Zwdq32M3wvIOvcsImSKjLgygutGdvwi4JFjWo6zTA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gMw9Bw59lQyWZhWym+twyVSiMWOM3VpDJ4wNbBZXqmWAL4PrdnPDGokXem/pezXNhCM1ZDYaama6A4sjWKZdmT/VX2K1S01zXYiAg1XO123zuyhn0foNoramrAeTdWeM6GcGhaIpY5khEw8VKNwqy+5e2nsQyHAt2rMAPn7YJhnMB0Ju0GE7XnKFJTxx/d5zLu+gKsCse+LYl1Tc8Iq9fKUgfIukw4IB4wkJGbQ6FnxACDhiut9peez6zmfIwQu/ssqOlU65JBRLYyDE4v3F+iN2DPuOr1unW2HID+Qv6wUjX+wtsVNazwo8tEWgr6KreMPVEV9jDeLqPybSQo5SUQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=lwp5Vy7C; dkim-atps=neutral; spf=pass (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org) smtp.mailfrom=zedat.fu-berlin.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NGUsf/Vb;
+	dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=lwp5Vy7C;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=johan@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ctRRf4S8jz3btw
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Oct 2025 02:20:30 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EDA59456F2;
-	Fri, 24 Oct 2025 15:20:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE237C4CEF1;
-	Fri, 24 Oct 2025 15:20:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761319226;
-	bh=n5BEv7tANXuEeHLRiXCQjQbiBaE91Lb87LGC2gdxV0I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NGUsf/VbMr2BwAimYh6NTwmgavBP72r0G6D+vLaMYigU+2+nH7MUlivK4RJuChuZp
-	 xZ12OeBKaEElwRy34Dw9eaPIER0IgnB3Ai9vo3FnbQBwIZIFGG7WCcpxQakNobzlhz
-	 NNcngL+ZI2dqWBAh5mHGIrWPsVvX51zKYDn2lWq3nlbMQAfXOIf2fXSbD4niC42B7a
-	 CSNwxQqgVIuGpGB0WfwT3RBQGiFs3w46Pd2KmSG2lBuH3CzkpY0eWICQYg4Sh6qoSv
-	 jaFQaAM1sR76uspjFTfjnmC6LtQJdc24DiF1O7zcgnxDcKw3lND5+3j5P5wiT4OeUx
-	 Ga8L3Iu/gwg4Q==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vCJaj-000000004RQ-3bNr;
-	Fri, 24 Oct 2025 17:20:33 +0200
-Date: Fri, 24 Oct 2025 17:20:33 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-pci@vger.kernel.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Christian Zigotzky <chzigotzky@xenosoft.de>,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Diederik de Haas <diederik@cknow-tech.com>,
-	Dragan Simic <dsimic@manjaro.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH] PCI/ASPM: Enable only L0s and L1 for devicetree platforms
-Message-ID: <aPuZQRaTN2tAwkb5@hovoldconsulting.com>
-References: <20251023180645.1304701-1-helgaas@kernel.org>
- <aPuXZlaawFmmsLmX@hovoldconsulting.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ctRrx4vFsz3btM
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Oct 2025 02:38:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=73Zwdq32M3wvIOvcsImSKjLgygutGdvwi4JFjWo6zTA=; t=1761320337;
+	x=1761925137; b=lwp5Vy7CNybY1kA0EGickK9DaUcqBkrn3bXa/7XhYCixMwIA/1cKOlPBGYb++
+	G/WF8Z0eYspyBI9b8+CkJQC/eXZvj0YFecE64LhcPjIVbOuBixtVYxpQGe4qE89JHLym27zMKyCRz
+	I3tFw42f/EwZ70zR3tNk5cKlmlE1LXb6IuUvdQOrR0cfqRYgxpVrtQ8KQaJ+uUD8M41JQnz8Gpud7
+	3Z/Sa8x42I7wy0w1D+v7hCe7CdEJwkNxNIzpCbCcV9FOMem+SVFpbMKHwg1SfV+WPL21neeboORkM
+	glsZY/CFhgnVbvab7BBEO+evZcbAVJPH+HS4aM0plEGGxeFUWA==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.98)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1vCJs4-00000000MJF-0C1i; Fri, 24 Oct 2025 17:38:28 +0200
+Received: from p5b13aa34.dip0.t-ipconnect.de ([91.19.170.52] helo=suse-laptop.fritz.box)
+          by inpost2.zedat.fu-berlin.de (Exim 4.98)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1vCJs3-00000000KCV-30QZ; Fri, 24 Oct 2025 17:38:27 +0200
+Message-ID: <fcd7b731d38b256e59edd532e792a00efa4e144e.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v3 11/13] x86/xen: use lazy_mmu_state when
+ context-switching
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: David Woodhouse <dwmw2@infradead.org>, David Hildenbrand
+ <david@redhat.com>,  Kevin Brodsky <kevin.brodsky@arm.com>,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev
+ <agordeev@linux.ibm.com>,  Andreas Larsson <andreas@gaisler.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Boris Ostrovsky	
+ <boris.ostrovsky@oracle.com>, Borislav Petkov <bp@alien8.de>, Catalin
+ Marinas	 <catalin.marinas@arm.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>,  Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin"	 <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,  Juergen
+ Gross <jgross@suse.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes	 <lorenzo.stoakes@oracle.com>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>,  Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, Ryan Roberts	
+ <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>, Thomas
+ Gleixner	 <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Will
+ Deacon	 <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+Date: Fri, 24 Oct 2025 17:38:26 +0200
+In-Reply-To: <cbe0d305cce6d76e00b64e7209f15b4645c15033.camel@infradead.org>
+References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
+		 <20251015082727.2395128-12-kevin.brodsky@arm.com>
+		 <f0067f35-1048-4788-8401-f71d297f56f3@redhat.com>
+		 <348e5f1c5a90e4ab0f14b4d997baf7169745bf04.camel@infradead.org>
+		 <70723f4a-f42b-4d94-9344-5824e48bfad1@redhat.com>
+	 <cbe0d305cce6d76e00b64e7209f15b4645c15033.camel@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,53 +100,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aPuXZlaawFmmsLmX@hovoldconsulting.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.170.52
+X-ZEDAT-Hint: PO
+X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Oct 24, 2025 at 05:12:38PM +0200, Johan Hovold wrote:
-> On Thu, Oct 23, 2025 at 01:06:26PM -0500, Bjorn Helgaas wrote:
-> > From: Bjorn Helgaas <bhelgaas@google.com>
-> > 
-> > f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree
-> > platforms") enabled Clock Power Management and L1 PM Substates, but those
-> > features depend on CLKREQ# and possibly other device-specific
-> > configuration.  We don't know whether CLKREQ# is supported, so we shouldn't
-> > blindly enable Clock PM and L1 PM Substates.
-> > 
-> > Enable only ASPM L0s and L1, and only when both ends of the link advertise
-> > support for them.
-> > 
-> > Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
-> > Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-> > Link: https://lore.kernel.org/r/db5c95a1-cf3e-46f9-8045-a1b04908051a@xenosoft.de/
-> > Reported-by: FUKAUMI Naoki <naoki@radxa.com>
-> > Closes: https://lore.kernel.org/r/22594781424C5C98+22cb5d61-19b1-4353-9818-3bb2b311da0b@radxa.com/
-> > Reported-by: Herve Codina <herve.codina@bootlin.com>
-> > Link: https://lore.kernel.org/r/20251015101304.3ec03e6b@bootlin.com/
-> > Reported-by: Diederik de Haas <diederik@cknow-tech.com>
-> > Link: https://lore.kernel.org/r/DDJXHRIRGTW9.GYC2ULZ5WQAL@cknow-tech.com/
-> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> > Tested-by: FUKAUMI Naoki <naoki@radxa.com>
-> > ---
-> > I intend this for v6.18-rc3.
-> 
-> Note that this will regress ASPM on Qualcomm platforms further by
-> disabling L1SS for devices that do not use pwrctrl (e.g. NVMe). ASPM
-> with pwrctrl is already broken since 6.15. [1]
+On Fri, 2025-10-24 at 16:13 +0100, David Woodhouse wrote:
+> On Fri, 2025-10-24 at 16:51 +0200, David Hildenbrand wrote:
+> > On 24.10.25 16:47, David Woodhouse wrote:
+> > > On Thu, 2025-10-23 at 22:06 +0200, David Hildenbrand wrote:
+> > > > On 15.10.25 10:27, Kevin Brodsky wrote:
+> > > > > We currently set a TIF flag when scheduling out a task that is in
+> > > > > lazy MMU mode, in order to restore it when the task is scheduled
+> > > > > again.
+> > > > >=20
+> > > > > The generic lazy_mmu layer now tracks whether a task is in lazy M=
+MU
+> > > > > mode in task_struct::lazy_mmu_state. We can therefore check that
+> > > > > state when switching to the new task, instead of using a separate
+> > > > > TIF flag.
+> > > > >=20
+> > > > > Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> > > > > ---
+> > > >=20
+> > > >=20
+> > > > Looks ok to me, but I hope we get some confirmation from x86 / xen
+> > > > folks.
+> > >=20
+> > >=20
+> > > I know tglx has shouted at me in the past for precisely this reminder=
+,
+> > > but you know you can test Xen guests under QEMU/KVM now and don't nee=
+d
+> > > to actually run Xen? Has this been boot tested?
+> >=20
+> > And after that, boot-testing sparc as well? :D
+>=20
+> Also not that hard in QEMU, I believe. Although I do have some SPARC
+> boxes in the shed...
 
-Actually, the 6.15 regression was fixed in 6.18-rc1 by the offending
-commit, but pwrctrl devices will now also regress again.
+Please have people test kernel changes on SPARC on real hardware. QEMU does=
+ not
+emulate sun4v, for example, and therefore testing in QEMU does not cover al=
+l
+of SPARC hardware.
 
-> Reverting also a729c1664619 ("PCI: qcom: Remove custom ASPM enablement
-> code") should avoid the new regression until a proper fix for the 6.15
-> regression is in place.
- 
-Johan
+There are plenty of people on the debian-sparc, gentoo-sparc and sparclinux
+LKML mailing lists that can test kernel patches for SPARC. If SPARC-relevan=
+t
+changes need to be tested, please ask there and don't bury such things in a
+deeply nested thread in a discussion which doesn't even have SPARC in the
+mail subject.
 
-> [1] https://lore.kernel.org/lkml/aH4JPBIk_GEoAezy@hovoldconsulting.com/
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
