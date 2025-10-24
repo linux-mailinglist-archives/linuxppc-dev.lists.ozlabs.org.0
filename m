@@ -1,217 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-13242-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13243-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DFEC03B3F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 00:48:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D791AC03FF8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 03:11:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ct1Qt6cFWz3bd0;
-	Fri, 24 Oct 2025 09:48:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ct4bh4B5Xz301K;
+	Fri, 24 Oct 2025 12:11:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=198.175.65.17 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761259702;
-	cv=pass; b=KnM29NL1IKUKe424KM/7dNuJNQPS6mVJH5UN3EhA9FNOllhlASjmFOfWH8SuF3GVo0S62xKX9iln9OovzKekfG/8gVoVlOo9gTwGgVR5ZeDmOX2FZuzOLitnim5kFxaazuJ9Z+uVnASbRVhu7vCkUwSJGGtW0VXqsb9zsF+N+SkDKFGhu4Ewqx/aT7NC6o5BDD9xWud0N4XvLzfzkT4zLNn5QkdqSiqIWCjAXDlmpw/t4kRfjfAx/0//SBd7c/bZ2rBHaZ/jpEl9BX9kwX+URtyOXw7VGrvEEpIi3vC+gVIbJRkWHlLXs1o2E/aBclz7cm077Rk+ASMoeVJz60e9bQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761259702; c=relaxed/relaxed;
-	bh=/avYROLyqweXbDC8Lb5fy7wQW3uuZI8eTbii/2y9ivA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=i2qgCDAZsb7sEvFDVsCe6wiuIfNDN7xlBuNTqjSTtjUomKd0iwNdftPxxlm/J0xVBgZC2L1Y7/fgwwCwkrD66G716eOqeLIR65ICT3ouWFUmqHX0csXfGiv91ilBBEPb9w/f9bn1W3F9yqT5Kl0u3LaWlAqzTTUo8Srwxgh2I8kd79zKDCEDeg+1YXi7ymmzhVAAXZO7ca1kisoXzCLXe35ldWJhbyzh6ep8lnpFFJvTlpuAcLrAywKpD8gxCBJmyAlGFhZcNL84Fw86VUPYzXnndyH7V6M7z2XYPRJ/xOs9OW9KYN8Ft6J6PFqoTp1a+ceT18t9MxXbwCnRMsf4LQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XYKq2cXf; dkim-atps=neutral; spf=pass (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=kai.huang@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::d2b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761267758;
+	cv=none; b=mGqVIiFKd40wW+jzMlG5g65dTlv79StAKoWACuwtdCrE+IpueOG/knZ4NLvII+JEqB01Bf0ZHFwnCUxHxlf60W1gYUiuHZicXkFX5USh0N1axfRQgMbgM6F4VDK3va0rqa3FblKnqkT1KAqM4lsanzZnytu0DKEWHuiIpmAvOIeoOURWx6JsK2OoLfOrIVCmfFs5AeBNTCgdPSjnyyXbZKue2a3AWzSgoYsVKeGiZsnOZl9kF8D7mTrUWN9jrdT/uDndaaANbd+mDqbXVvYvemBoHkto0aERpO+YB6+B4K+1EDqKcjI3a/0NKcDlAvACilQgmS8rCL1j9NlwQgha5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1761267758; c=relaxed/relaxed;
+	bh=IKDbt1wT9yJqALXoBzDuHO4g9TQZ25V02GA6xGAEZGQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dFy3Z1VG/gb0ifEcwJPI8zAaBloi995IQMwgShe1iElIoFwdtIlX2LxISbR8dpglpIWnvxPBSqMygzQmwTcu4r7LazAC0dTmzTce4uWmWNRpxv0sKc9cXjy/okMrGYKFp5NA2Hr7IHuX9xnCDUKzb+D4H4A69P5bFXrm5omQ/yltWT1KqdRkHjVVZFI/NijYQyHbUAuN9iJ/74wqu8We/Ym6Ov+Dd3jWrHSPNXMlTaQe2z1GpVRIuqd1ZXE4b5uwlFIsoj0jkB+0KCQXxNO30B5tSB6UFAgvvEm5f65QScufgiuSF/GihNFqtH2DqzHaGI9xBsqw28wSIzFRB43kXg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fkwZ4ozs; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::d2b; helo=mail-io1-xd2b.google.com; envelope-from=danisjiang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XYKq2cXf;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fkwZ4ozs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=kai.huang@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d2b; helo=mail-io1-xd2b.google.com; envelope-from=danisjiang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ct1Qr3dhpz2xsq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 09:48:18 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761259701; x=1792795701;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=/avYROLyqweXbDC8Lb5fy7wQW3uuZI8eTbii/2y9ivA=;
-  b=XYKq2cXflpawQm3AgIJtycOfk0vC/tTYtfEUQgbhkOoO+H1oF1xEn2DU
-   MdYv61ZSvfa02F/CZaZ6O+frG9lxHCvyQTseL6MAv78VPRKrHNWJJ4QXk
-   K/4au+eiOobDOgaRQkWmfd5bJWpQGU7yeRvY/uc+HTfy/uxdooW4vtBxI
-   xlLMOzLpaJ1MNqIZ9J1Cy5OByDu3QOYOg5/xPtGpTEjHff532pf8dT45h
-   9bgEGd8t1Exxduwb9YxlS7As2JOr5SAaq7irvrdTUCVkH8nnQYrmdYknN
-   d02ck1MCbCCuTVk7rYyU2vIrl6jXflP82LfvybSszzzbA5CdlrLfRZFXe
-   g==;
-X-CSE-ConnectionGUID: sq5gpaiyRBiQj8QKBiRzwA==
-X-CSE-MsgGUID: 9UsebkmGQOWHwYGpahHLxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63366197"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="63366197"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 15:48:16 -0700
-X-CSE-ConnectionGUID: FpjFb2JBRYy5904iCG7lJw==
-X-CSE-MsgGUID: Dp14wHN0QHqbSGvr4GrrMQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
-   d="scan'208";a="183886151"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 15:48:15 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 23 Oct 2025 15:48:14 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Thu, 23 Oct 2025 15:48:14 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.23) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 23 Oct 2025 15:48:14 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I6RwV3U4vkq62eD1VM9gmnDH18MpY8+zMC6k30LeoTj1M2n5qKUa8oOqIZ9DX5lVShy+9tF62fIaaduYr3ix4NO0iYb/jMP1N45KoZe2I8Pl5g2Fx0oXpicpdxRl4IhwKn/Ua6qbDTO4V8jCsYBdzTGRk0WaVozza2IJo1KY2gx48CViKzThwmnjTIN223u9k81I2ilmu/ABE2MszXPJ4mTExh5eic6ox2CNqcpHI7j8LFsUkcLl6a4amuNV91p/lK4+VFEn0k2/YmSjpLGvRO6bO+1VAqqUN/jH9xJDzjoyib8dFrcryeyZchXLAd4F4Nhet/onPQgUP54CCQwPjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/avYROLyqweXbDC8Lb5fy7wQW3uuZI8eTbii/2y9ivA=;
- b=wRH/Fr837Ciats8KVich4QfGoeH8hlYtLvN3eF9bGbFZ7tw2aOTwKqUp7oUDt7SWd7K1FVLtpckd0laQPu+Xmo54Q4uBvymsLPO4kBrl5XJgV8j9vDuqylsI6NIU/Il3eTHMIWuOBtgAfStDKFMkFlHGdhv+5Poa4ww/rxyLnnqkBp8w0UYHsjQDLzfRNqABjrvHa+VU21JqoodFutMLoeHTzgPqiLLZz4vw9Re0BFvYVk04OOu2X3AhWAxBo+ph1P2IJPSp745wMbkmOIdgwIFyr5LL/x8n7MFZXtFyWxpEHj38wIfufE/WjqZ17RPZI/MBbLszNPA/hO5hbYEbBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BL1PR11MB5525.namprd11.prod.outlook.com (2603:10b6:208:31f::10)
- by SA1PR11MB8594.namprd11.prod.outlook.com (2603:10b6:806:3b1::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.13; Thu, 23 Oct
- 2025 22:48:11 +0000
-Received: from BL1PR11MB5525.namprd11.prod.outlook.com
- ([fe80::1a2f:c489:24a5:da66]) by BL1PR11MB5525.namprd11.prod.outlook.com
- ([fe80::1a2f:c489:24a5:da66%6]) with mapi id 15.20.9253.011; Thu, 23 Oct 2025
- 22:48:10 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "frankja@linux.ibm.com"
-	<frankja@linux.ibm.com>, "maz@kernel.org" <maz@kernel.org>,
-	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "pjw@kernel.org"
-	<pjw@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
-	"kas@kernel.org" <kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
-	"maobibo@loongson.cn" <maobibo@loongson.cn>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>,
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "imbrenda@linux.ibm.com"
-	<imbrenda@linux.ibm.com>, "zhaotianrui@loongson.cn"
-	<zhaotianrui@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
-	"michael.roth@amd.com" <michael.roth@amd.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Weiny, Ira" <ira.weiny@intel.com>,
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "kvm-riscv@lists.infradead.org"
-	<kvm-riscv@lists.infradead.org>, "Annapurve, Vishal" <vannapurve@google.com>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Edgecombe,
- Rick P" <rick.p.edgecombe@intel.com>, "linux-mips@vger.kernel.org"
-	<linux-mips@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-riscv@lists.infradead.org"
-	<linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v3 14/25] KVM: TDX: Bug the VM if extended the initial
- measurement fails
-Thread-Topic: [PATCH v3 14/25] KVM: TDX: Bug the VM if extended the initial
- measurement fails
-Thread-Index: AQHcPv2kFQRkmR6NlkOuPIThzOpsirTQYDeA
-Date: Thu, 23 Oct 2025 22:48:10 +0000
-Message-ID: <442f5488e4a66f6a1517082df3d2ae47316be010.camel@intel.com>
-References: <20251017003244.186495-1-seanjc@google.com>
-	 <20251017003244.186495-15-seanjc@google.com>
-In-Reply-To: <20251017003244.186495-15-seanjc@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.56.2 (3.56.2-2.fc42) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR11MB5525:EE_|SA1PR11MB8594:EE_
-x-ms-office365-filtering-correlation-id: 3b34cdc5-3bb8-40b7-4cff-08de12863e08
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|921020|38070700021;
-x-microsoft-antispam-message-info: =?utf-8?B?dkhabXVYdVBWcDQ1azZGSWRGK0RsT1lmcklpaFJvZm1XWXg1WTR6MzZCekdX?=
- =?utf-8?B?TXNCa2hVQXhTWE9Ua2pDVlBMU0FRTGh2L0pROVkvcVBmK3NoZE1xdDBBRVdx?=
- =?utf-8?B?TC92UmhDNFJhRWtEMXI2bG5VKzMxcXJhajZ4R3hoWS9TYTk4ZTNMNlhJUUlM?=
- =?utf-8?B?MUczNkNCSVFsdFMwaHZMb0dMd2Z1Vmk1SkJTTm1YRHVDcVFpUmF0Q3cyTWVJ?=
- =?utf-8?B?UVhIOUliVHJ4R2NraU0yWm9iaXU2MHdLc1FLUE5tdFJHcDFDeVhudFZBTXIv?=
- =?utf-8?B?ME9JeWFrcCtOeENHMzZ0ZU5IVWdBbklCK3pTdlBnWEczWkZHTC8yblhDMUhy?=
- =?utf-8?B?Z3NBOUtKYTc5QTdUM0RPanFJNUZscTFIbzNSVGFEK3ZuRnJtbit2MXRzanJS?=
- =?utf-8?B?MjdNc01TcWc0Q25PSWtWbDNmTVlMV2U3bnF1RWhlTzB2RkNEekx4NzhCMW55?=
- =?utf-8?B?dVYrbDVhUEZBNHVFZnBXTmtmMFNuS3J5ckdCY3Vxd2RqMWJHOGZ4TTgyUXdU?=
- =?utf-8?B?cGx3RFhKbXJtWkFITkRxRXlaRDAvWWEzb0ZZMnBpSWIvSkhZSTErREhBUlow?=
- =?utf-8?B?R1BuNWpURlRSV0ZRMGF5NFY3cG5OU1VjV0RDeHBMdk5hbFRaQm5kWitYZnlO?=
- =?utf-8?B?WURndElobVlEbkZkOEYwNy9EcUJXR2RoMEs0dTYyQktkNk9WZm41UjY4RzdZ?=
- =?utf-8?B?MHB3cUpoUGZ3ODR2NTB2WC9NeGxpSUxpSmw4M2JaR2hJVXFZaExrSWdEYktH?=
- =?utf-8?B?VVUvNDZSa2pQalJ6Um90NFp1VUp5bW02akp5dGpIUDg1TG45MzlDWXlPMUJj?=
- =?utf-8?B?NGtxNmdIUDN0M01LSVEyMjlDdC8zTXc1SkNjNzBVT0xMN1ZYMGJkN3RCaFZH?=
- =?utf-8?B?aDZXclRhdC9rQXNCcExoYUQ4eXBRckYwK0pDVDEzc1hvS3BENFR3cW1NOUxz?=
- =?utf-8?B?UExlOGlWcWxuOGlOODMzZ1FvY0RtWWlET0F5SzRxWWVSNWVLSCsyblZVZ2VC?=
- =?utf-8?B?QW1nMFhpRVBQa2wweEFscHZWVWllMmRNUW1jQTM4Q3BLaWZVNDlib1piZUNG?=
- =?utf-8?B?emJSdjI1S0FMQmZ1UEJwM3duTXh4M1Azd0dkYTRsRW1PbHlvV3lKOVoxU25O?=
- =?utf-8?B?QzlscFlaMnNzUFMydkFKa3dUQ3NqdlVJNlgvL2x2R3QvS1JIMkFlMEl5ZHFC?=
- =?utf-8?B?WXpYYldGVWt4MWticWp2cWEyVEJLTzN1ZHo4d3J2cTlnQ1FWNDFneFpwWlVx?=
- =?utf-8?B?eWJ1Sk9SNW4xMDlmd3dGeWJjOG5sQzk4UENIMGorZXA4dUgybXB1T2ZCUGls?=
- =?utf-8?B?RW9Va3JpWitleldOdXozZFhrTHEwSDhmNC92SGZPZWw5MEEzSzFvTmFnKzVa?=
- =?utf-8?B?a2NWd01BcWNJYVhvcUZ0RDJaL0Q1RU5WTWJTcjRxUkNOZEIyeWdSZjl6VTBj?=
- =?utf-8?B?YldGZ0pHNTExRkF6eTVOOGJqelcwTVF0RmI2TlB6TEgxRE1Vam8yb3UxRWV6?=
- =?utf-8?B?aGhWS1BsU3hybEFTZzhMREo0WnA0NHhiRUpHbnNRVVZuZTBRU2F1a3dCVU9k?=
- =?utf-8?B?ajFQS1d0Z2JxTUc2Q3ROelAvenBrcW1NTkROTFZ5Z0RiL2U5NEJzZGlzK3o2?=
- =?utf-8?B?S3JLcHlJV1NtcURVdElVOW5jc1FuU0NtemtYOUpLS2hGMmk2Q3dqZElHUHll?=
- =?utf-8?B?MXp1VVBoQVBQbEVsK0VIUEYwZEpaM0pmQVlsay9UNnBQZGxwakd6Z1NQLzI5?=
- =?utf-8?B?M2RKL1ZPYTFTbVlReVlGMEdvUGVyUEhUSkc2WXFTTHBaR0NWOGt3T0RoOTZW?=
- =?utf-8?B?bVZXVFFGNGVvVUFoUk02aDdHK0hOTEc3SkxLT2dYU0creDBhYUFuOHI4eFhK?=
- =?utf-8?B?dFozVEJpaS9mYUJTNXRSUkthZTBETitkM3dTeXRWcUU3cVpRVU4vRDZPM0JM?=
- =?utf-8?B?ZXRjbWUydWg5Rm45VHhiL0FUS3o3SGQzdGxOU3hoRmtzZysvdnZjSjhRNyt2?=
- =?utf-8?B?YUdMMXlUdEZFT09za1l1TGZpL3djWFJ3aDJCcTFhYnJvSUIwV0NHM2dxcVdm?=
- =?utf-8?B?V2pGUFBnQnl0SWRCRTA4KzVFbElsdUkyOWdGUT09?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5525.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(921020)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cmZIZEc0a3dTMDliRjVLVExXUWxVUm84eHl3US9YL3o4YmdjSzBieEFzWXkw?=
- =?utf-8?B?MDk1MFIvUGQyU1Jsdm43U1ZKYWlIWTR4eEM3WXNNdzVOQXEzVUFaVUFPRTU2?=
- =?utf-8?B?TnNVLzZNVHQrSTRUbnJnMXVzZDJVajRhVnJxN3JDQUlKRUNGSjYzVkVaNUFI?=
- =?utf-8?B?bDEyWUNNZ3F4V0phaTVTRFhJaVZ5OWVyT015YWYxamVDTzlFbWNPWXYzaEZO?=
- =?utf-8?B?dkw1QmhzUEFRYmtBWjdpNG5xNEpka3VldUZvbjRGZmxReFRxZEVVVlVxNDJn?=
- =?utf-8?B?WkJZMldBK0dHSFVBTENXTlJwTzUwa0FTZHNqckgxWUMzdGM3cWQ5dkZBeE1D?=
- =?utf-8?B?OU42dEwwd3RKSHQzc3B5ZHhrUEQ1bDROZ0tGWDFxUlVSUjhCMFdvZ0lnSndr?=
- =?utf-8?B?UWt5YzUrZ2xieUtwMVZLcEJsMEtsRUNQeW81eDh5THBjZFkyNTZDcXJxRHI4?=
- =?utf-8?B?T0xmVTdPZkhPMGIrUE80VWpCZmIvNzRsSTZPUDd4RS9jZlpEeFBISzB4TTlB?=
- =?utf-8?B?OURISFNvM2lvNDl0RHVTQTBEN3lMelRDS0dReFhTWGJJWXJMYThQNTA5ajlu?=
- =?utf-8?B?RlpFSDd0UVJwenNGdkhFSVFETERCV21iUEM1NTMvR3pSRDBXVDd0R3FBclVX?=
- =?utf-8?B?SU5hQkFFdTIvMDBLdk1sdkVlc2NOSmh0MHQvdytxVExZK01nRFBHTkZSbkJ5?=
- =?utf-8?B?WmxzZzNwZ1YrMjVQUUlSRU96enBaeXowR3NYMzFYOXZlM1d0NVgwMFhQK3dp?=
- =?utf-8?B?eHFrNHoxSjJhbS96UzNyNzJnNHJkZG0wRHdpMXMzbEF4Q0dwYWl3QlVZdEph?=
- =?utf-8?B?QmRjZmtFRUd1QW1ScDh1c0pvTU9ic01YRGxJMUlrYXo3TEFMK0ttRmVia2to?=
- =?utf-8?B?b2JBVXpNWUlkbTN5VUgveHRTWjdNNGJYOFRDWVY0bTJMNVZrelZoWnExU1Vz?=
- =?utf-8?B?b0tJaUcwKzhsTzQyWW9OY0NqcjJEVE5wNFU4QWJiMTAzdUMreHpaRFRkakho?=
- =?utf-8?B?THFIa0REbzNqS0ZsY1hMRk9NMFlPS2FraFdobHNDZmFjQ0hpVFVudUpmZWV6?=
- =?utf-8?B?azd3Qm51TVp4bHRnWllDQkNnVERLYWlDdEVOdmIrdndCR2tGdlk5UStvdHhI?=
- =?utf-8?B?TFI0TDNkN3NYdEs3MHFhejgzUDMxdFM1eEMxZUFjSDFRbzhWbVlBaXRFVTBG?=
- =?utf-8?B?WVppN0pBUytRVmEzVWhjSEZxemtHZmc0THhWNVpsRTlXQlhXdVQ2N0srMCtR?=
- =?utf-8?B?dEx0WEUrTEg3VFVMTXFrdnlkK01KRHgwQXFRcTQ3Zy9ud1NFeGJReWkrRXJn?=
- =?utf-8?B?eXRoa1ZtRCtHcDlBYnBCejFPalBkYk1qU1dvNURPeTlQUURwc3JUSzd2NEo4?=
- =?utf-8?B?Y1JBcEluNGhObEE4eENvMytoZXNiaStxbEtlVjhTUXdMKzBuRVNBSkMwam9S?=
- =?utf-8?B?WGJxb2dlc0JXMHNkMkp4cmcvYUpiL1NvaktmeTJwcGtuZDNrTmpPS1BBQ0RK?=
- =?utf-8?B?NzhJckhtR0p0MnBuWU83SHp6cmZKcVMwZFZIeWZzRnBxSDVaaC9pQ0MxaStO?=
- =?utf-8?B?RjRYTzErN0x0QzhMekcxMlIra2grSGNjVW9DVlNmSVh0K1JrWlppcXl1d1Jn?=
- =?utf-8?B?SjZNNWhpQmlPWlJxSkxsYm54MEYrRUxNS1RZSnpId0ZRdDZuRlNQSURNTWNa?=
- =?utf-8?B?NGJ3VXFHelZaL0hjNVdiUVJFSE9OZy9HMUd6WmtyYjk3TGhHSDFiQTh1QUFC?=
- =?utf-8?B?WDEzdFBUUmsrZnFMWWNhMURIdzZyczhabHZQTVhWYUNXczYxbEtselcwcXRm?=
- =?utf-8?B?Nm5UdUJQNUNzblJuT3crVEViS25vWWNMbHlWckozTktzWmNORDJKYTlpSjh5?=
- =?utf-8?B?UlZSaWVORHI5alNmY1lJQnVkakNuZjh2c1ZTemF3bWdIRmpSUHpob0hTeWZn?=
- =?utf-8?B?eElBa1hPREZnYTNMd1ZGdGtCUWJTbUkybU5WWjdMQjJMK1RUSUI0TmpiWTNR?=
- =?utf-8?B?MkZNYnk1OFpHOWcxWTdqY29NVUdwaG9FUUFCelY3WEJENmo4V1h0RWRvbXlD?=
- =?utf-8?B?eEQ0UVc3T3Jja25BTHV5T1d0ZzYzQzBFSVNhZFNtdHVqR1d5RldaSkM0b09j?=
- =?utf-8?Q?qQ6v6XLqOgq3ADNYLpIZYlioL?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <ECD3108AD6331440B0A3F7B89ADF1E42@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ct4Pm5bfCz2yTK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 12:02:36 +1100 (AEDT)
+Received: by mail-io1-xd2b.google.com with SMTP id ca18e2360f4ac-93bccd4901aso131218739f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Oct 2025 18:02:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761267753; x=1761872553; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IKDbt1wT9yJqALXoBzDuHO4g9TQZ25V02GA6xGAEZGQ=;
+        b=fkwZ4ozscIsJMhhYHjScR4CQx/0HYHq58cbCwYgd49ePm70tWAwmM3Fg0PyoagHAYv
+         V7zgftf9ri7AmXW00EvojzyCC2p44mj0fDxGsnof+7m751IvHiBUWac2Q+r93oddSetv
+         dXKrWs2QVQ6qcTgv9C8mGp7M0pihT3uxthlIyLchSGXf777SUkNg5mi3t84vTfE2fFhD
+         VBDYtloBXnGU2uv0cxsWGVXb8mzF1OV3ezGEsoAqLOkUWwsW/7v+wkjuZBk3VExKvN7X
+         EG+GL9InAPcq66BLR9Q8NTHZ4mIKPe5I6wjuc9khyv21Mk+zRE5BmckMppqJuy2LH8Wg
+         FwQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761267753; x=1761872553;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IKDbt1wT9yJqALXoBzDuHO4g9TQZ25V02GA6xGAEZGQ=;
+        b=O++35BiNeqdva3rq5wVLTEKCCUCHshzRTOY2pXJLFVYntpWWS+1yWQjwuE6Sc+icZi
+         agpmgNkd9yi3aOg4CHbwJ8lyj0w3Zu2FAlkyoAbcPzRLByV1Oow9v6VWS8MtLLvVcjtL
+         O7ZnUNgw1ZtQ6eNIvvYB+h8dTmRGUkF4b16wEYwD9dw+e1wb1VRYqUqogAkqsZzMaDpe
+         2RLio+BXlF3CVDcAQL8H+W7AFgmKfrM+qtA7g7NdqT9Ilt0ByPt14pTaFbABDm9V2N+s
+         bGJQ8qUooHc4jFrH39kcX4gnP9v7jN7drc9gEOfWCnm38YhIItYZdrFRVG4PeAZYuD4n
+         Bibg==
+X-Forwarded-Encrypted: i=1; AJvYcCUxxqeW3hTAS+dYV1fehhI7By1XoR82VCV36hCA2+MIXaSQvWAjIg0DIwKz9whse+bqGN0UuixPAk9M3NI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxGLZqhTZWpf/H0sfOICP0uBSOskFU6pKomK5dSfamAncPzXWXh
+	sRfMWEmTvGYtX3HivwvC15QL0ha1BHT00/+F1afjNkamDJalBoGh44Gb
+X-Gm-Gg: ASbGncuXNBGItwbE20+08KVGKevOjeU77JukjiKjatJSkORwGp9+IVhhLzaX4Sbs0td
+	uwgoaqwmN5t8vTqAQKPryzw88XVYR9YH8Dv+vCsRKRdiFyGQcs5P4VvEZ3pD16opEnT0DzLC1w9
+	1LzbwC3zmN3hPCeDxn1FSFlT1phk7NFwuOx5pU4kahOXpFkOTLqnfVOHlqcex+Jp+xE9T8mRL74
+	BEQ36ylyhHC+a/n0JcMnqmAuvrnUHUuqqQbWJPqk8ce0ht+HuMrGUgo0oHC06j3UZLQ8gGL78sj
+	HruA4qqjvVrHwyfZWbdaBvrTINR4Q9ha2GVkBBUiG/F4XooOS5THG6dPNAGWK8K6jxjoZSXk3O7
+	x75Ghv/i9UECaRr7k7pph42m0kT098mjujp6PKotGLrtgP8200RDO/WUs7WT0DAmn5wsC8b47NR
+	eRtKeBwWRtg/BAhPaQerw/BF47seKv66sjtTkWy2xvA0pX9gW+rmeuhZh3jDE4MxEyu+FqwiM41
+	kIbD2tOMIou+qbMqCE2a6XKsQ==
+X-Google-Smtp-Source: AGHT+IEK9z1XCO0/7ofKXVfCQ/mfQxCmtCOsaVIb6O6vKesfo5b3vwjLT3GVU6VPQlsM67rO3oQbtg==
+X-Received: by 2002:a05:6e02:2508:b0:430:a65c:a833 with SMTP id e9e14a558f8ab-431ebf86680mr9062255ab.31.1761267753103;
+        Thu, 23 Oct 2025 18:02:33 -0700 (PDT)
+Received: from abc-virtual-machine.localdomain (c-76-150-86-52.hsd1.il.comcast.net. [76.150.86.52])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5abb7fda03fsm1538669173.35.2025.10.23.18.02.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 18:02:32 -0700 (PDT)
+From: Yuhao Jiang <danisjiang@gmail.com>
+To: Frederic Barrat <fbarrat@linux.ibm.com>,
+	Andrew Donnellan <ajd@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alastair D'Silva <alastair@d-silva.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ocxl: Fix race leading to use-after-free in file operations
+Date: Thu, 23 Oct 2025 20:02:28 -0500
+Message-Id: <20251024010228.1667904-1-danisjiang@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -225,77 +98,390 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5525.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b34cdc5-3bb8-40b7-4cff-08de12863e08
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2025 22:48:10.8731
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dllTsczdz5HCLdQT3KrWhpHTalRRV0cBIqTGjGl6fmCxr0U+IlDCuyjplJnhe/9pGpv8DZN+MhebDJwnmmhl8w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8594
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-T24gVGh1LCAyMDI1LTEwLTE2IGF0IDE3OjMyIC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
-b3RlOg0KPiBXQVJOIGFuZCB0ZXJtaW5hdGUgdGhlIFZNIGlmIFRESF9NUl9FWFRFTkQgZmFpbHMs
-IGFzIGV4dGVuZGluZyB0aGUNCj4gbWVhc3VyZW1lbnQgc2hvdWxkIGZhaWwgaWYgYW5kIG9ubHkg
-aWYgdGhlcmUgaXMgYSBLVk0gYnVnLCBvciBpZiB0aGUgUy1FUFQNCj4gbWFwcGluZyBpcyBpbnZh
-bGlkLCBhbmQgaXQgc2hvdWxkIGJlIGltcG9zc2libGUgZm9yIHRoZSBTLUVQVCBtYXBwaW5ncyB0
-bw0KPiBiZSByZW1vdmVkIGJldHdlZW4ga3ZtX3RkcF9tbXVfbWFwX3ByaXZhdGVfcGZuKCkgYW5k
-IHRkaF9tcl9leHRlbmQoKS4NCj4gDQo+IEhvbGRpbmcgc2xvdHNfbG9jayBwcmV2ZW50cyB6YXBz
-IGR1ZSB0byBtZW1zbG90IHVwZGF0ZXMsDQo+IGZpbGVtYXBfaW52YWxpZGF0ZV9sb2NrKCkgcHJl
-dmVudHMgemFwcyBkdWUgdG8gZ3Vlc3RfbWVtZmQgUFVOQ0hfSE9MRSwNCj4gYW5kIGFsbCB1c2Fn
-ZSBvZiBrdm1femFwX2dmbl9yYW5nZSgpIGlzIG11dHVhbGx5IGV4Y2x1c2l2ZSB3aXRoIFMtRVBU
-DQo+IGVudHJpZXMgdGhhdCBjYW4gYmUgdXNlZCBmb3IgdGhlIGluaXRpYWwgaW1hZ2UuICBUaGUg
-Y2FsbCBmcm9tIHNldi5jIGlzDQo+IG9idmlvdXNseSBtdXR1YWxseSBleGNsdXNpdmUsIFREWCBk
-aXNhbGxvd3MgS1ZNX1g4Nl9RVUlSS19JR05PUkVfR1VFU1RfUEFUDQo+IHNvIHNhbWUgZ29lcyBm
-b3Iga3ZtX25vbmNvaGVyZW50X2RtYV9hc3NpZ25tZW50X3N0YXJ0X29yX3N0b3AsIGFuZCB3aGls
-ZQ0KPiBfX2t2bV9zZXRfb3JfY2xlYXJfYXBpY3ZfaW5oaWJpdCgpIGNhbiBsaWtlbHkgYmUgdHJp
-cHBlZCB3aGlsZSBidWlsZGluZyB0aGUNCj4gaW1hZ2UsIHRoZSBBUElDIHBhZ2UgaGFzIGl0cyBv
-d24gbm9uLWd1ZXN0X21lbWZkIG1lbXNsb3QgYW5kIHNvIGNhbid0IGJlDQo+IHVzZWQgZm9yIHRo
-ZSBpbml0aWFsIGltYWdlLCB3aGljaCBtZWFucyB0aGF0IHRvbyBpcyBtdXR1YWxseSBleGNsdXNp
-dmUuDQo+IA0KPiBPcHBvcnR1bmlzdGljYWxseSBzd2l0Y2ggdG8gImdvdG8iIHRvIGp1bXAgYXJv
-dW5kIHRoZSBtZWFzdXJlbWVudCBjb2RlLA0KPiBwYXJ0bHkgdG8gbWFrZSBpdCBjbGVhciB0aGF0
-IEtWTSBuZWVkcyB0byBiYWlsIGVudGlyZWx5IGlmIGV4dGVuZGluZyB0aGUNCj4gbWVhc3VyZW1l
-bnQgZmFpbHMsIHBhcnRseSBpbiBhbnRpY2lwYXRpb24gb2YgcmV3b3JraW5nIGhvdyBhbmQgd2hl
-bg0KPiBUREhfTUVNX1BBR0VfQUREIGlzIGRvbmUuDQo+IA0KPiBGaXhlczogZDc4OWZhNmVmYWM5
-ICgiS1ZNOiBURFg6IEhhbmRsZSB2Q1BVIGRpc3NvY2lhdGlvbiIpDQoNClNvIElJVUMgdGhpcyBw
-YXRjaCBvbmx5IGFkZHMgYSBLVk1fQlVHX09OKCkgd2hlbiBUREguTVIuRVhURU5EIGZhaWxzLiAg
-SG93DQpkb2VzIHRoaXMgZml4IGFueXRoaW5nPw0KDQpMb29raW5nIGF0IHYyLCB0aGV5IG1heSBo
-YXZlIGEgcmVsYXRpb25zaGlwLCBidXQgaXQncyBxdWl0ZSBjb25mdXNpbmcgdy9vDQphbnkgZXhw
-bGFuYXRpb24/DQoNCj4gU2lnbmVkLW9mZi1ieTogWWFuIFpoYW8gPHlhbi55LnpoYW9AaW50ZWwu
-Y29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBTZWFuIENocmlzdG9waGVyc29uIDxzZWFuamNAZ29vZ2xl
-LmNvbT4NCj4gLS0tDQo+ICBhcmNoL3g4Ni9rdm0vdm14L3RkeC5jIHwgMjQgKysrKysrKysrKysr
-KysrKy0tLS0tLS0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgMTYgaW5zZXJ0aW9ucygrKSwgOCBkZWxl
-dGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9hcmNoL3g4Ni9rdm0vdm14L3RkeC5jIGIvYXJj
-aC94ODYva3ZtL3ZteC90ZHguYw0KPiBpbmRleCBjMzc1OTE3MzBjYzUuLmY0YmFiNzVkM2ZmYiAx
-MDA2NDQNCj4gLS0tIGEvYXJjaC94ODYva3ZtL3ZteC90ZHguYw0KPiArKysgYi9hcmNoL3g4Ni9r
-dm0vdm14L3RkeC5jDQo+IEBAIC0zMTUxLDE0ICszMTUxLDIyIEBAIHN0YXRpYyBpbnQgdGR4X2dt
-ZW1fcG9zdF9wb3B1bGF0ZShzdHJ1Y3Qga3ZtICprdm0sIGdmbl90IGdmbiwga3ZtX3Bmbl90IHBm
-biwNCj4gIA0KPiAgCUtWTV9CVUdfT04oYXRvbWljNjRfZGVjX3JldHVybigma3ZtX3RkeC0+bnJf
-cHJlbWFwcGVkKSA8IDAsIGt2bSk7DQo+ICANCj4gLQlpZiAoYXJnLT5mbGFncyAmIEtWTV9URFhf
-TUVBU1VSRV9NRU1PUllfUkVHSU9OKSB7DQo+IC0JCWZvciAoaSA9IDA7IGkgPCBQQUdFX1NJWkU7
-IGkgKz0gVERYX0VYVEVORE1SX0NIVU5LU0laRSkgew0KPiAtCQkJZXJyID0gdGRoX21yX2V4dGVu
-ZCgma3ZtX3RkeC0+dGQsIGdwYSArIGksICZlbnRyeSwNCj4gLQkJCQkJICAgICZsZXZlbF9zdGF0
-ZSk7DQo+IC0JCQlpZiAoZXJyKSB7DQo+IC0JCQkJcmV0ID0gLUVJTzsNCj4gLQkJCQlicmVhazsN
-Cj4gLQkJCX0NCj4gKwlpZiAoIShhcmctPmZsYWdzICYgS1ZNX1REWF9NRUFTVVJFX01FTU9SWV9S
-RUdJT04pKQ0KPiArCQlnb3RvIG91dDsNCj4gKw0KPiArCS8qDQo+ICsJICogTm90ZSwgTVIuRVhU
-RU5EIGNhbiBmYWlsIGlmIHRoZSBTLUVQVCBtYXBwaW5nIGlzIHNvbWVob3cgcmVtb3ZlZA0KPiAr
-CSAqIGJldHdlZW4gbWFwcGluZyB0aGUgcGZuIGFuZCBub3csIGJ1dCBzbG90c19sb2NrIHByZXZl
-bnRzIG1lbXNsb3QNCj4gKwkgKiB1cGRhdGVzLCBmaWxlbWFwX2ludmFsaWRhdGVfbG9jaygpIHBy
-ZXZlbnRzIGd1ZXN0X21lbWZkIHVwZGF0ZXMsDQo+ICsJICogbW11X25vdGlmaWVyIGV2ZW50cyBj
-YW4ndCByZWFjaCBTLUVQVCBlbnRyaWVzLCBhbmQgS1ZNJ3MgaW50ZXJuYWwNCj4gKwkgKiB6YXBw
-aW5nIGZsb3dzIGFyZSBtdXR1YWxseSBleGNsdXNpdmUgd2l0aCBTLUVQVCBtYXBwaW5ncy4NCj4g
-KwkgKi8NCj4gKwlmb3IgKGkgPSAwOyBpIDwgUEFHRV9TSVpFOyBpICs9IFREWF9FWFRFTkRNUl9D
-SFVOS1NJWkUpIHsNCj4gKwkJZXJyID0gdGRoX21yX2V4dGVuZCgma3ZtX3RkeC0+dGQsIGdwYSAr
-IGksICZlbnRyeSwgJmxldmVsX3N0YXRlKTsNCj4gKwkJaWYgKEtWTV9CVUdfT04oZXJyLCBrdm0p
-KSB7DQo+ICsJCQlwcl90ZHhfZXJyb3JfMihUREhfTVJfRVhURU5ELCBlcnIsIGVudHJ5LCBsZXZl
-bF9zdGF0ZSk7DQo+ICsJCQlyZXQgPSAtRUlPOw0KPiArCQkJZ290byBvdXQ7DQo+ICAJCX0NCj4g
-IAl9DQo+ICANCj4gLS0gDQo+IDIuNTEuMC44NTguZ2Y5YzRhMDNhM2EtZ29vZw0K
+The file operations dereference the context pointer after checking
+status under ctx->status_mutex, then drop the lock before using the
+context. This allows afu_release() running on another CPU to free
+the context, leading to a use-after-free vulnerability.
+
+The race window exists in afu_ioctl(), afu_mmap(), afu_poll() and
+afu_read() between the status check and context usage. During device
+hot-unplug or rapid open/close cycles, this causes kernel crashes.
+
+Introduce reference counting via kref to prevent premature free.
+ocxl_context_get() atomically checks status and acquires a reference
+under status_mutex. File operations hold this reference for their
+duration, ensuring the context remains valid even if another thread
+calls afu_release().
+
+ocxl_context_alloc() initializes refcount to 1 for the file's
+lifetime. afu_release() drops this reference, with the context freed
+when the last reference goes away. Preserve existing -EBUSY behavior
+where the context intentionally leaks on detach timeout.
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Fixes: 5ef3166e8a32 ("ocxl: Driver code for 'generic' opencapi devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
+---
+ drivers/misc/ocxl/context.c       |  69 ++++++++++++++----
+ drivers/misc/ocxl/file.c          | 113 +++++++++++++++++++++++-------
+ drivers/misc/ocxl/ocxl_internal.h |   4 ++
+ 3 files changed, 144 insertions(+), 42 deletions(-)
+
+diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
+index cded7d1caf32..e154adc972a5 100644
+--- a/drivers/misc/ocxl/context.c
++++ b/drivers/misc/ocxl/context.c
+@@ -28,6 +28,7 @@ int ocxl_context_alloc(struct ocxl_context **context, struct ocxl_afu *afu,
+ 
+ 	ctx->pasid = pasid;
+ 	ctx->status = OPENED;
++	kref_init(&ctx->kref);
+ 	mutex_init(&ctx->status_mutex);
+ 	ctx->mapping = mapping;
+ 	mutex_init(&ctx->mapping_lock);
+@@ -47,6 +48,59 @@ int ocxl_context_alloc(struct ocxl_context **context, struct ocxl_afu *afu,
+ }
+ EXPORT_SYMBOL_GPL(ocxl_context_alloc);
+ 
++/**
++ * ocxl_context_get() - Get a reference to the context if not closed
++ * @ctx: The context
++ *
++ * Atomically checks if context status is not CLOSED and acquires a reference.
++ * Must be called with ctx->status_mutex held.
++ *
++ * Return: true if reference acquired, false if context is CLOSED
++ */
++bool ocxl_context_get(struct ocxl_context *ctx)
++{
++	lockdep_assert_held(&ctx->status_mutex);
++
++	if (ctx->status == CLOSED)
++		return false;
++
++	kref_get(&ctx->kref);
++	return true;
++}
++EXPORT_SYMBOL_GPL(ocxl_context_get);
++
++/*
++ * kref release callback - called when last reference is dropped
++ */
++static void ocxl_context_release(struct kref *kref)
++{
++	struct ocxl_context *ctx = container_of(kref, struct ocxl_context,
++						 kref);
++
++	mutex_lock(&ctx->afu->contexts_lock);
++	ctx->afu->pasid_count--;
++	idr_remove(&ctx->afu->contexts_idr, ctx->pasid);
++	mutex_unlock(&ctx->afu->contexts_lock);
++
++	ocxl_afu_irq_free_all(ctx);
++	idr_destroy(&ctx->irq_idr);
++	/* reference to the AFU taken in ocxl_context_alloc() */
++	ocxl_afu_put(ctx->afu);
++	kfree(ctx);
++}
++
++/**
++ * ocxl_context_put() - Release a reference to the context
++ * @ctx: The context
++ *
++ * Decrements the reference count. When it reaches zero, the context is freed.
++ */
++void ocxl_context_put(struct ocxl_context *ctx)
++{
++	kref_put(&ctx->kref, ocxl_context_release);
++}
++EXPORT_SYMBOL_GPL(ocxl_context_put);
++
+ /*
+  * Callback for when a translation fault triggers an error
+  * data:	a pointer to the context which triggered the fault
+@@ -279,18 +333,3 @@ void ocxl_context_detach_all(struct ocxl_afu *afu)
+ 	}
+ 	mutex_unlock(&afu->contexts_lock);
+ }
+-
+-void ocxl_context_free(struct ocxl_context *ctx)
+-{
+-	mutex_lock(&ctx->afu->contexts_lock);
+-	ctx->afu->pasid_count--;
+-	idr_remove(&ctx->afu->contexts_idr, ctx->pasid);
+-	mutex_unlock(&ctx->afu->contexts_lock);
+-
+-	ocxl_afu_irq_free_all(ctx);
+-	idr_destroy(&ctx->irq_idr);
+-	/* reference to the AFU taken in ocxl_context_alloc() */
+-	ocxl_afu_put(ctx->afu);
+-	kfree(ctx);
+-}
+-EXPORT_SYMBOL_GPL(ocxl_context_free);
+diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
+index 7eb74711ac96..c08724e7ff1e 100644
+--- a/drivers/misc/ocxl/file.c
++++ b/drivers/misc/ocxl/file.c
+@@ -204,17 +204,21 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
+ 	int irq_id;
+ 	u64 irq_offset;
+ 	long rc;
+-	bool closed;
+-
+-	pr_debug("%s for context %d, command %s\n", __func__, ctx->pasid,
+-		CMD_STR(cmd));
+ 
++	/*
++	 * Hold a reference to the context for the duration of this operation.
++	 * We check the status and acquire the reference atomically under the
++	 * status_mutex to ensure the context remains valid.
++	 */
+ 	mutex_lock(&ctx->status_mutex);
+-	closed = (ctx->status == CLOSED);
++	if (!ocxl_context_get(ctx)) {
++		mutex_unlock(&ctx->status_mutex);
++		return -EIO;
++	}
+ 	mutex_unlock(&ctx->status_mutex);
+ 
+-	if (closed)
+-		return -EIO;
++	pr_debug("%s for context %d, command %s\n", __func__, ctx->pasid,
++		CMD_STR(cmd));
+ 
+ 	switch (cmd) {
+ 	case OCXL_IOCTL_ATTACH:
+@@ -230,7 +234,7 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
+ 					sizeof(irq_offset));
+ 			if (rc) {
+ 				ocxl_afu_irq_free(ctx, irq_id);
+-				return -EFAULT;
++				rc = -EFAULT;
+ 			}
+ 		}
+ 		break;
+@@ -238,8 +242,10 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
+ 	case OCXL_IOCTL_IRQ_FREE:
+ 		rc = copy_from_user(&irq_offset, (u64 __user *) args,
+ 				sizeof(irq_offset));
+-		if (rc)
+-			return -EFAULT;
++		if (rc) {
++			rc = -EFAULT;
++			break;
++		}
+ 		irq_id = ocxl_irq_offset_to_id(ctx, irq_offset);
+ 		rc = ocxl_afu_irq_free(ctx, irq_id);
+ 		break;
+@@ -247,14 +253,20 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
+ 	case OCXL_IOCTL_IRQ_SET_FD:
+ 		rc = copy_from_user(&irq_fd, (u64 __user *) args,
+ 				sizeof(irq_fd));
+-		if (rc)
+-			return -EFAULT;
+-		if (irq_fd.reserved)
+-			return -EINVAL;
++		if (rc) {
++			rc = -EFAULT;
++			break;
++		}
++		if (irq_fd.reserved) {
++			rc = -EINVAL;
++			break;
++		}
+ 		irq_id = ocxl_irq_offset_to_id(ctx, irq_fd.irq_offset);
+ 		ev_ctx = eventfd_ctx_fdget(irq_fd.eventfd);
+-		if (IS_ERR(ev_ctx))
+-			return PTR_ERR(ev_ctx);
++		if (IS_ERR(ev_ctx)) {
++			rc = PTR_ERR(ev_ctx);
++			break;
++		}
+ 		rc = ocxl_irq_set_handler(ctx, irq_id, irq_handler, irq_free, ev_ctx);
+ 		if (rc)
+ 			eventfd_ctx_put(ev_ctx);
+@@ -280,6 +292,8 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
+ 	default:
+ 		rc = -EINVAL;
+ 	}
++
++	ocxl_context_put(ctx);
+ 	return rc;
+ }
+ 
+@@ -292,9 +306,23 @@ static long afu_compat_ioctl(struct file *file, unsigned int cmd,
+ static int afu_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+ 	struct ocxl_context *ctx = file->private_data;
++	int rc;
++
++	/*
++	 * Hold a reference during mmap setup to ensure the context
++	 * remains valid.
++	 */
++	mutex_lock(&ctx->status_mutex);
++	if (!ocxl_context_get(ctx)) {
++		mutex_unlock(&ctx->status_mutex);
++		return -EIO;
++	}
++	mutex_unlock(&ctx->status_mutex);
+ 
+ 	pr_debug("%s for context %d\n", __func__, ctx->pasid);
+-	return ocxl_context_mmap(ctx, vma);
++	rc = ocxl_context_mmap(ctx, vma);
++	ocxl_context_put(ctx);
++	return rc;
+ }
+ 
+ static bool has_xsl_error(struct ocxl_context *ctx)
+@@ -324,21 +352,31 @@ static unsigned int afu_poll(struct file *file, struct poll_table_struct *wait)
+ {
+ 	struct ocxl_context *ctx = file->private_data;
+ 	unsigned int mask = 0;
+-	bool closed;
++
++	/*
++	 * Hold a reference to the context while checking for events.
++	 */
++	mutex_lock(&ctx->status_mutex);
++	if (!ocxl_context_get(ctx)) {
++		mutex_unlock(&ctx->status_mutex);
++		return EPOLLERR;
++	}
++	mutex_unlock(&ctx->status_mutex);
+ 
+ 	pr_debug("%s for context %d\n", __func__, ctx->pasid);
+ 
+ 	poll_wait(file, &ctx->events_wq, wait);
+ 
+-	mutex_lock(&ctx->status_mutex);
+-	closed = (ctx->status == CLOSED);
+-	mutex_unlock(&ctx->status_mutex);
+-
+ 	if (afu_events_pending(ctx))
+ 		mask = EPOLLIN | EPOLLRDNORM;
+-	else if (closed)
+-		mask = EPOLLERR;
++	else {
++		mutex_lock(&ctx->status_mutex);
++		if (ctx->status == CLOSED)
++			mask = EPOLLERR;
++		mutex_unlock(&ctx->status_mutex);
++	}
+ 
++	ocxl_context_put(ctx);
+ 	return mask;
+ }
+ 
+@@ -410,6 +448,16 @@ static ssize_t afu_read(struct file *file, char __user *buf, size_t count,
+ 			AFU_EVENT_BODY_MAX_SIZE))
+ 		return -EINVAL;
+ 
++	/*
++	 * Hold a reference to the context for the duration of the read operation.
++	 */
++	mutex_lock(&ctx->status_mutex);
++	if (!ocxl_context_get(ctx)) {
++		mutex_unlock(&ctx->status_mutex);
++		return -EIO;
++	}
++	mutex_unlock(&ctx->status_mutex);
++
+ 	for (;;) {
+ 		prepare_to_wait(&ctx->events_wq, &event_wait,
+ 				TASK_INTERRUPTIBLE);
+@@ -422,11 +470,13 @@ static ssize_t afu_read(struct file *file, char __user *buf, size_t count,
+ 
+ 		if (file->f_flags & O_NONBLOCK) {
+ 			finish_wait(&ctx->events_wq, &event_wait);
++			ocxl_context_put(ctx);
+ 			return -EAGAIN;
+ 		}
+ 
+ 		if (signal_pending(current)) {
+ 			finish_wait(&ctx->events_wq, &event_wait);
++			ocxl_context_put(ctx);
+ 			return -ERESTARTSYS;
+ 		}
+ 
+@@ -437,19 +487,24 @@ static ssize_t afu_read(struct file *file, char __user *buf, size_t count,
+ 
+ 	if (has_xsl_error(ctx)) {
+ 		used = append_xsl_error(ctx, &header, buf + sizeof(header));
+-		if (used < 0)
++		if (used < 0) {
++			ocxl_context_put(ctx);
+ 			return used;
++		}
+ 	}
+ 
+ 	if (!afu_events_pending(ctx))
+ 		header.flags |= OCXL_KERNEL_EVENT_FLAG_LAST;
+ 
+-	if (copy_to_user(buf, &header, sizeof(header)))
++	if (copy_to_user(buf, &header, sizeof(header))) {
++		ocxl_context_put(ctx);
+ 		return -EFAULT;
++	}
+ 
+ 	used += sizeof(header);
+ 
+ 	rc = used;
++	ocxl_context_put(ctx);
+ 	return rc;
+ }
+ 
+@@ -464,8 +519,12 @@ static int afu_release(struct inode *inode, struct file *file)
+ 	ctx->mapping = NULL;
+ 	mutex_unlock(&ctx->mapping_lock);
+ 	wake_up_all(&ctx->events_wq);
++	/*
++	 * Drop the initial reference from afu_open(). The context will be
++	 * freed when all references are released.
++	 */
+ 	if (rc != -EBUSY)
+-		ocxl_context_free(ctx);
++		ocxl_context_put(ctx);
+ 	return 0;
+ }
+ 
+diff --git a/drivers/misc/ocxl/ocxl_internal.h b/drivers/misc/ocxl/ocxl_internal.h
+index d2028d6c6f08..6eab7806b43d 100644
+--- a/drivers/misc/ocxl/ocxl_internal.h
++++ b/drivers/misc/ocxl/ocxl_internal.h
+@@ -5,6 +5,7 @@
+ 
+ #include <linux/pci.h>
+ #include <linux/cdev.h>
++#include <linux/kref.h>
+ #include <linux/list.h>
+ #include <misc/ocxl.h>
+ 
+@@ -68,6 +69,7 @@ struct ocxl_xsl_error {
+ };
+ 
+ struct ocxl_context {
++	struct kref kref;
+ 	struct ocxl_afu *afu;
+ 	int pasid;
+ 	struct mutex status_mutex;
+@@ -140,6 +142,8 @@ int ocxl_link_update_pe(void *link_handle, int pasid, __u16 tid);
+ 
+ int ocxl_context_mmap(struct ocxl_context *ctx,
+ 			struct vm_area_struct *vma);
++bool ocxl_context_get(struct ocxl_context *ctx);
++void ocxl_context_put(struct ocxl_context *ctx);
+ void ocxl_context_detach_all(struct ocxl_afu *afu);
+ 
+ int ocxl_sysfs_register_afu(struct ocxl_file_info *info);
+-- 
+2.34.1
+
 
