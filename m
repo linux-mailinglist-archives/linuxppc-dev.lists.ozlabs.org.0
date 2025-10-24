@@ -1,35 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-13268-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13269-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614A0C0633D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 14:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF7CC06349
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 14:17:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ctMNZ25l7z3cZf;
-	Fri, 24 Oct 2025 23:17:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ctMNn1Cgsz3c5f;
+	Fri, 24 Oct 2025 23:17:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761308254;
-	cv=none; b=nZwlJ/nNbX8b6bBvJ438AleR/EERAKf8y6NSuxyEDRwwO4GXQ//knCoBngZx6m/C+kY6dSU1dOSqVUqA8GboDfYMAV6ybSszbpw9IqCDm6DHm35gaN7U65YSLgEGQqKKCstu54crO/vz9yX3x42XqtcY9eZXbsageH8OIl5PZe6AWhaG9MYLh1KKIZIMkTe9Gxw1nwmN9eCXuvsltmGVc5DJYCnt96wyhYfenb1qZ3EnR5mRnQEgapnlb7IEZeVaOLZ9gGWbrFqwJtMJXcLImMv0Wm2t1QyAE/7Q3tdR96Lsq3Wx5jwB+inXsoCaDvJ4UOZ3zN7KYchQkjCRn48Wcw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761308265;
+	cv=none; b=kTnaxzIA3P32MLNec+59cGxJqjul6oPy4ClU4Ak1IRs2GUBi1f/8Bk+cYU8Sjx0uxzfwCM5vX+HNVAaLcw+mZy53p9LXJSlgMa+3ZKqH5zeZyr5TKZqebkoij/AT8a+w/98pImO3UG/yOog84NlffKodooDS0WqDC8Kdve69bIwDkFGAVAOvoSuZgDJZ0dW62FtCkIB2Au8SlqcgscCv1bTEZbzGddBSWHYF/MWrtm3hy9TMkga5vBFVWAtV8JhemshzzynjtzZILGtAtbpR5lmg2n4qHBo7+sn5ddEvgNiwUDmQputbnNKB7Lp66Qjvb8dXvzPGB355klZCk+R3kQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761308254; c=relaxed/relaxed;
-	bh=cvFdvuPr794gDedSFsrccdsdKFYkvyjvhZA7QrQhBgQ=;
+	t=1761308265; c=relaxed/relaxed;
+	bh=YioWD/IqA/1JOGO8+Y7wTQHhF26d2UKTg8w6nlGrrCI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gvebD2BpslwHMYUVGojNiVE+pCBQzsF2FG5cAbqzJounhjdKUF8fXSs/jKRhMke96xKkKl9TReJN5uKpdtV4rUm2nVTMhYGLlkL9kKC934JFGkr4AxSOUXoNVnVObvUSwK5NmN1sysSOmeh0yzNmJF2JMSRVxhoGaP/k49E5SibTDtBOU4G/U1VOuwBkoqmCT+CwKENUvjBKx40cRKIT2esbYHmDkJdw7CdaO1vDCLMO05J8kBIZGzpbb/Mg2ea2Z2FtOSevceUlEZnRN8WTASWyRhjit/2B2XzB7ggG9czMyPhJ/d0RcBIvIg9vaMuEKQma5ZnOA/JqwW9pcd31dQ==
+	 In-Reply-To:Content-Type; b=JQJuU5fGUoyynXPJ9cik0Q4I319Gi7eYb0J0E+VALfvfCepdnit/xEAd3gTEguhOklGJM6VVLuAeZjga1n3Y7HvRaNjQ/h5OYU7goaPJJJTP1XdNsSXju+Qn+nskCHO64cZLNTrgk0H2eQSLHClnqmK3Qa6aO1jYOd0dxurBaYSMxcCg1Y0gTQoxnJqF3Psl0ifU3GLnHSBXHfrofYeGxsQJ7IJCf0s8RJphduEC+1QDY/OSM8KNYEhUxvI/o7TQP8HcDgcfnRP45TTZ9ywANdJmWyotEaRIm0JTa7kxKGH2S2puZbDcqp/wOrollJuy1FAXZI30sRLe38ms+hdWPA==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ctMNY5BTbz3cZY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 23:17:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ctMNm348Zz3bv1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 23:17:44 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 03DAB1D34;
-	Fri, 24 Oct 2025 05:16:55 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9F3401E2F;
+	Fri, 24 Oct 2025 05:17:05 -0700 (PDT)
 Received: from [10.44.160.74] (e126510-lin.lund.arm.com [10.44.160.74])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 44C443F66E;
-	Fri, 24 Oct 2025 05:16:55 -0700 (PDT)
-Message-ID: <451403ce-f250-44ac-8e2f-b7b27ee9f588@arm.com>
-Date: Fri, 24 Oct 2025 14:16:52 +0200
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 881823F66E;
+	Fri, 24 Oct 2025 05:17:04 -0700 (PDT)
+Message-ID: <ed949468-5425-4f82-826b-249c43a0df05@arm.com>
+Date: Fri, 24 Oct 2025 14:17:04 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -44,8 +44,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/13] powerpc/mm: replace batch->active with
- in_lazy_mmu_mode()
+Subject: Re: [PATCH v3 12/13] mm: bail out of lazy_mmu_mode_* in interrupt
+ context
 To: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -68,29 +68,64 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
  sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-10-kevin.brodsky@arm.com>
- <8d5243ec-3edd-49a6-ab51-16643a709d84@redhat.com>
+ <20251015082727.2395128-13-kevin.brodsky@arm.com>
+ <28f2ebe9-cfed-41c3-803f-8756dca0e300@redhat.com>
 Content-Language: en-GB
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <8d5243ec-3edd-49a6-ab51-16643a709d84@redhat.com>
+In-Reply-To: <28f2ebe9-cfed-41c3-803f-8756dca0e300@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 23/10/2025 22:02, David Hildenbrand wrote:
+On 23/10/2025 22:08, David Hildenbrand wrote:
 > On 15.10.25 10:27, Kevin Brodsky wrote:
->> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
->> mode. As a result we no longer need to track whether the per-CPU TLB
->> batch struct is active - we know it is if in_lazy_mmu_mode() returns
->> true.
+>> The lazy MMU mode cannot be used in interrupt context. This is
+>> documented in <linux/pgtable.h>, but isn't consistently handled
+>> across architectures.
+>>
+>> arm64 ensures that calls to lazy_mmu_mode_* have no effect in
+>> interrupt context, because such calls do occur in certain
+>> configurations - see commit b81c688426a9 ("arm64/mm: Disable barrier
+>> batching in interrupt contexts"). Other architectures do not check
+>> this situation, most likely because it hasn't occurred so far.
+>>
+>> Both arm64 and x86/Xen also ensure that any lazy MMU optimisation is
+>> disabled while in interrupt mode (see queue_pte_barriers() and
+>> xen_get_lazy_mode() respectively).
+>>
+>> Let's handle this in the new generic lazy_mmu layer, in the same
+>> fashion as arm64: bail out of lazy_mmu_mode_* if in_interrupt(), and
+>> have in_lazy_mmu_mode() return false to disable any optimisation.
+>> Also remove the arm64 handling that is now redundant; x86/Xen has
+>> its own internal tracking so it is left unchanged.
+>>
+>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>> ---
+>>   arch/arm64/include/asm/pgtable.h | 17 +----------------
+>>   include/linux/pgtable.h          | 16 ++++++++++++++--
+>>   include/linux/sched.h            |  3 +++
+>>   3 files changed, 18 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/pgtable.h
+>> b/arch/arm64/include/asm/pgtable.h
+>> index 944e512767db..a37f417c30be 100644
+>> --- a/arch/arm64/include/asm/pgtable.h
+>> +++ b/arch/arm64/include/asm/pgtable.h
+>> @@ -62,37 +62,22 @@ static inline void emit_pte_barriers(void)
+>>     static inline void queue_pte_barriers(void)
+>>   {
+>> -    if (in_interrupt()) {
+>> -        emit_pte_barriers();
+>> -        return;
+>> -    }
+>> -
 >
-> It's worth adding that disabling preemption while enabled makes sure
-> that we cannot reschedule while in lazy MMU mode, so when the per-CPU
-> TLB batch structure is active.
+> That took me a while. I guess this works because in_lazy_mmu_mode() ==
+> 0 in interrupt context, so we keep calling emit_pte_barriers?
 
-Yes good point, otherwise this change doesn't make sense. I'll add that.
+Yes exactly.
 
 - Kevin
 
