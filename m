@@ -1,69 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-13295-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13296-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E685C07E83
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 21:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08D31C08149
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 22:39:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ctXyY1g4lz30N8;
-	Sat, 25 Oct 2025 06:29:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ctZWj5bVRz3bsC;
+	Sat, 25 Oct 2025 07:39:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761334149;
-	cv=none; b=Yb6CBI+3yVme+w/8ZXmTiZfAbN6QVMgBBnEzghoMDD/mz3fjDu2mQbzOKZJCG4AFBDCwA+BgmTXuJWlrrhvwjULi/93AgTmR0Q5rv4Vy6rQHbYD+r9yD5NAybDHwfFO/ZjQk3H/9M4XGJ/Yh6YAgAFqH4AUsDQuDt64HspxklPLjFbNzbPhlmpUcJu8w2bFHSYjX1jJgvh8pg3boaj0lg2gdsXTS4rUMGef5SQ3oJZGQCKaF0Zfuvw5yCy5Q4KTEcMiDYsRHKHAjNt97PtJvTPnoaL5LCWuYs9+plGcsqRPQ/vXQLrcY2RpwOdRJ0BhbZaUClChfMO7ZqnGHZ3JZzQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761338369;
+	cv=none; b=Rm+kG2ZuczbKgzYGZ5bpHUOckuyqPvJxfsV0alN0i4yAY4tyuzdamY/sIEnVV4HnLIlXRHXPVueZDI7mmg8QQQ1rwXVgWiZwVm0nmua+5/VuB/r/s6MCGSEsrFyVVNNzbzeg6PbDRNTMtmWJARrLOvAnvLNg9U5YyJZYmU2tR6Tg+Koi7T2+LONVEhrGATyvjErVXabTk8yaNybV8AlH8vFL0OSMUPcAo0bPT/rSqi1xV9PTk7hyU6qq6lOUF2WtaZgZVs5BK5F4I6mxuwmDxf+Hx3QO56B+IgfVV9OkzeU3pu1ZoCXj7FGyO82j18WT8LpURUe5GZEssmdEv4uH7g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761334149; c=relaxed/relaxed;
-	bh=Ggn924Jo/a6Uw5L8/KmtY5GySzQfHwM27dKTjuJUgLA=;
+	t=1761338369; c=relaxed/relaxed;
+	bh=AdD4sa/WCbdrhVqN4ktoTElf74cZr3uNRBxn4HzE5y4=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=b0x4iVZJPQXAVZn1IdaY3rUM+ZCg3XA8VLCFct1Cg0aBAm0Ue51BiQAGAk+8zTw5yASUwuZrepypb2P/4PAmxz5QgzFLfq7T5PnkAjt9rP8ls463svat9WbGaEyOveeNXm/3GDt0Z/XuZLjA0Mza+QgrKE1cMAOd8wnD25ZinTKCQMtFh7CaDPih84C0UjQDTomGPrTTEYc8gvdMxGzFXVRmqj63HeMFiFl8K+Ye1SueQ294bzK7g+whjVCR4UrB6gOtBDf+Mgxk2KskfDfMyZimiNb6lXQ2zOWtwpqUJlAKvWsJpI4BpcZAHvs6cxp8KAIR38aYFX07I+de2ARIfA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jpjzvzA1; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Disposition:In-Reply-To; b=LF5MFbyGM2djs0+49L0Emy3nA3NIdLo1SAuEtCcWwaOZ2FC+ddhzKSdl2L5Zq2Ve3VJ01x+YH0DrDMxQPaI8TKGqIl1YHdh1j1KWU4Z05CPBNT/DImrpWqNjY0/QiCOaxD/q77C1tU/g7BWuU3WpCk3ATFpU7Oz8biJ42wQmxHfcOys774bNjxT7poNSJAYyIsitspZBwNsIy4pXWiQ8TPgqKR3gisPlS1JhREX3kshatYwpHyus1hsFhseOZZEBTwoXKnlQ4/gv5hcrHfAFjGeJB42eie2heo5I+a9SXI/IF4hCbwf82GAxl6QzAWl57iLZBbxPv98PHZj2EcmnGA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z2zGaHcx; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jpjzvzA1;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z2zGaHcx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ctXyW62RHz2yk0
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Oct 2025 06:29:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ctZWh5Jglz2yN1
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Oct 2025 07:39:28 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DCC6A438BD;
-	Fri, 24 Oct 2025 19:29:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919E5C4CEF1;
-	Fri, 24 Oct 2025 19:29:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4FD2A601D4;
+	Fri, 24 Oct 2025 20:39:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEE4C4CEF1;
+	Fri, 24 Oct 2025 20:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761334144;
-	bh=N5IIqjmOeWmLOz2zHVxqEA+WLcaesU5e/utvVwXoDkA=;
-	h=Date:From:To:Cc:Subject:From;
-	b=jpjzvzA1haU4EZKYPT016IUISm/tXebW5eU1fIiWnCJpsXoXf1t6Q7nAERG06TFYw
-	 2g7TYeXPbCeNxibyuMz1D18FSfzzQilOj2bHhL6ixjwhHqExW4YMWp1kLp9L0RGxCj
-	 W5ux/6aSa7HWxGQvM06f3Fv8hA5oOnSoPE8cSq9cCH62RwrWSsSrRVpL3XVVFHY3nz
-	 zjZR5SbdW3WYzyAdVdytz1atd1iXpEr38IO7x7R/KgTIEmsidbDZFvQKK+xv8PDbYf
-	 bkTo2jj1VHWhpXiDVHGQ7C69rCFGL/QzKvKL1btgFoiS3h1BBQflOm+Mao1p3231nq
-	 b8qNc1Jo7v+5A==
-Date: Fri, 24 Oct 2025 14:29:03 -0500
+	s=k20201202; t=1761338366;
+	bh=nnTnBDGKXvWU3WYDEB3L7PEM0B9KPYgfbjggQZcxrE0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Z2zGaHcxF2LNrnLMJqLPWZhzVV1wDDWav76HGV8HAS8LukB473viCusYP/EP83vly
+	 1DroxzbJfkKukObqkqh/VIchMmfMCsGcGOs8S0WFGZeWJquceY27S98gwfz3oLOz9q
+	 I/a9HhY4p6syTcqdnMUD6iLTTVC5nt3NBKm0GK06BpSIKBw7wy0lHl1agr5xY3V3fw
+	 vxmhhR93W0NkYvZx/YxK9CgB0CCV1eHmVA3MvQf3wpxtcAkzn0Km6HM4o8sNav8mL9
+	 28wyXwQe7xUwFSpcvE8iU0PwPhdUZ7mY7IbUJgH0KEeawoOMtl/O/YorTMehiBheqt
+	 Z9DnFkl/JlhAA==
+Date: Fri, 24 Oct 2025 15:39:24 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	Ron Economos <re@w6rz.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+To: Johan Hovold <johan@kernel.org>
+Cc: linux-pci@vger.kernel.org,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
 	Christian Zigotzky <chzigotzky@xenosoft.de>,
 	FUKAUMI Naoki <naoki@radxa.com>,
 	Herve Codina <herve.codina@bootlin.com>,
 	Diederik de Haas <diederik@cknow-tech.com>,
-	Dragan Simic <dsimic@manjaro.org>, Johan Hovold <johan@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org, linux-rockchip@lists.infradead.org,
-	linux-mips@vger.kernel.org
-Subject: [GIT PULL] PCI fixes for v6.18
-Message-ID: <20251024192903.GA1360890@bhelgaas>
+	Dragan Simic <dsimic@manjaro.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>, Frank Li <Frank.li@nxp.com>
+Subject: Re: [PATCH] PCI/ASPM: Enable only L0s and L1 for devicetree platforms
+Message-ID: <20251024203924.GA1361677@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,67 +71,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <aPuZQRaTN2tAwkb5@hovoldconsulting.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The following changes since commit 3a8660878839faadb4f1a6dd72c3179c1df56787:
+[+cc Shawn, Frank]
 
-  Linux 6.18-rc1 (2025-10-12 13:42:36 -0700)
+On Fri, Oct 24, 2025 at 05:20:33PM +0200, Johan Hovold wrote:
+> On Fri, Oct 24, 2025 at 05:12:38PM +0200, Johan Hovold wrote:
+> > On Thu, Oct 23, 2025 at 01:06:26PM -0500, Bjorn Helgaas wrote:
+> > > From: Bjorn Helgaas <bhelgaas@google.com>
+> > > 
+> > > f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for
+> > > devicetree platforms") enabled Clock Power Management and L1 PM
+> > > Substates, but those features depend on CLKREQ# and possibly
+> > > other device-specific configuration.  We don't know whether
+> > > CLKREQ# is supported, so we shouldn't blindly enable Clock PM
+> > > and L1 PM Substates.
+> > > 
+> > > Enable only ASPM L0s and L1, and only when both ends of the link
+> > > advertise support for them.
+> > > 
+> > > Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
+> ...
 
-are available in the Git repository at:
+> > > ---
+> > > I intend this for v6.18-rc3.
+> > 
+> > Note that this will regress ASPM on Qualcomm platforms further by
+> > disabling L1SS for devices that do not use pwrctrl (e.g. NVMe). ASPM
+> > with pwrctrl is already broken since 6.15. [1]
+> 
+> Actually, the 6.15 regression was fixed in 6.18-rc1 by the offending
+> commit, but pwrctrl devices will now also regress again.
+> 
+> > Reverting also a729c1664619 ("PCI: qcom: Remove custom ASPM enablement
+> > code") should avoid the new regression until a proper fix for the 6.15
+> > regression is in place.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git tags/pci-v6.18-fixes-3
+Help me think through this.  I just sent a pull request [2] that
+includes df5192d9bb0e ("PCI/ASPM: Enable only L0s and L1 for
+devicetree platforms").  If all goes well, v6.18-rc3 will enable L0s
+and L1 (but not L1SS) on Qualcomm platforms.
 
-for you to fetch changes up to df5192d9bb0e38bf831fb93e8026e346aa017ca8:
+IIUC, if we then revert a729c1664619 ("PCI: qcom: Remove custom ASPM
+enablement code"), it will enable L1SS again, but since this is done
+in a dw_pcie_host_ops .post_init() hook, L1SS will only be enabled for
+devices powered on at qcom-pcie probe time.  It will *not* be enabled
+for pwrctrl devices because .post_init() was run when those devices
+were powered off.
 
-  PCI/ASPM: Enable only L0s and L1 for devicetree platforms (2025-10-23 20:08:14 -0500)
+I think this is the same as in v6.17.  v6.18-rc1 enabled L1SS for
+everything, including pwrctrl devices, because it was done in the PCI
+enumeration path, not the host controller probe path.  I think that
+enumeration is the right place to do this, but we need to figure out
+how to do it in a generic way.  At a minimum, we need to know that
+CLKREQ# is supported, and some platforms like dw-rockchip also need
+device-specific configuration [3].
 
-----------------------------------------------------------------
+Bottom line, I think we need to revert a729c1664619 for v6.18 to get
+all ASPM states including L1SS enabled on Qualcomm platforms for
+non-pwrctrl devices.  I'll post a patch for this.
 
-- Add DWC custom pci_ops for the root bus instead of overwriting the DBI
-  base address, which broke drivers that rely on the DBI address for iATU
-  programming; fixes an FU740 probe regression (Krishna Chaitanya Chundru)
+Then try to figure out how to make this work for pwrctrl devices for
+v6.19.  Does this sound right?
 
-- Revert qcom ECAM enablement, which is rendered unnecessary by the DWC
-  custom pci_ops (Krishna Chaitanya Chundru)
+Bjorn
 
-- Fix longstanding MIPS Malta resource registration issues to avoid
-  exposing them when the next commit fixes the boot failure (Maciej W.
-  Rozycki)
+> > [1] https://lore.kernel.org/lkml/aH4JPBIk_GEoAezy@hovoldconsulting.com/
 
-- Use pcibios_align_resource() on MIPS Malta to fix boot failure caused by
-  using the generic pci_enable_resources() (Ilpo Järvinen)
-
-- Enable only ASPM L0s and L1, not L1 PM Substates, for devicetree
-  platforms because we lack information required to configure L1 Substates;
-  fixes regressions on powerpc and rockchip.  A qcom regression (L1
-  Substates no longer enabled) remains and will be addressed next (Bjorn
-  Helgaas)
-
-----------------------------------------------------------------
-Bjorn Helgaas (1):
-      PCI/ASPM: Enable only L0s and L1 for devicetree platforms
-
-Ilpo Järvinen (1):
-      MIPS: Malta: Use pcibios_align_resource() to block io range
-
-Krishna Chaitanya Chundru (2):
-      PCI: dwc: Use custom pci_ops for root bus DBI vs ECAM config access
-      Revert "PCI: qcom: Prepare for the DWC ECAM enablement"
-
-Maciej W. Rozycki (2):
-      MIPS: Malta: Fix keyboard resource preventing i8042 driver from registering
-      MIPS: Malta: Fix PCI southbridge legacy resource reservations
-
- arch/mips/mti-malta/malta-setup.c                 |  4 +-
- arch/mips/pci/pci-malta.c                         |  3 +-
- drivers/pci/controller/dwc/pcie-designware-host.c | 28 ++++++++--
- drivers/pci/controller/dwc/pcie-qcom.c            | 68 -----------------------
- drivers/pci/pcie/aspm.c                           | 34 +++---------
- 5 files changed, 36 insertions(+), 101 deletions(-)
+[2] https://lore.kernel.org/r/20251024192903.GA1360890@bhelgaas
+[3] https://lore.kernel.org/r/1761187883-150120-1-git-send-email-shawn.lin@rock-chips.com
 
