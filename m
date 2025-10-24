@@ -1,97 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-13272-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13273-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B670CC0678A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 15:23:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6548C067D8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 15:27:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ctNs41mRDz3bfQ;
-	Sat, 25 Oct 2025 00:23:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ctNxX1Pv0z3bs7;
+	Sat, 25 Oct 2025 00:27:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761312232;
-	cv=none; b=SqvURn8ViEGfZZLyYtDiSUVAK7L/YC013jBPC2ePWyRYaKbt55bsx1KuUvnoxRPp4vstM523xcRticTtR/aTM9JcxE5YbP83PyRu9xifBwTQ02AGVhuhfagHfLBzCIHMoj85elsQw3t6rHdbQE3egyctJd2rh9eu4cH5Spxzkj0r4yFgcOr4D7T8DOiS3dazU3wRRGVfY+5eHRSVZ8tfLlMH0M4AUzDOpVeDPTk5cJQ0dK8c/JwTbx8Rw9ShEngqPNnc3lKdGzqvLhbrBlaYAWna/RqNLVufr246ppurIoa/IifV18t5Z9NgHZKhPxpFxOWKkls4hWUZf1/35Oghww==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761312464;
+	cv=none; b=fug/G70WcrLeb7WfUEK5lgixrrZPjuRPb7SZtvwnSheNvRh2eXrzyKS+lSS7ScAN2XwBgwfXa9JAS4sl8Zv8vfAghCyEeFtu8YFIMZ9wf2G7lp6I6rPbODxpIXJuVBxG3TYJRNVMqGLpDyMbC6KhExozentLtyQgJsO2ExTL32YORhkQ7+Ac4Gvte3dZT/YCspuP36d2iDrVUctBaa4vGD52EILelpG48zigdHXjdgsdvNHHCDs4sMs36AMVAVDIpD4YUv8kP2Jek3lwpTp/HuCwiH7pWZ5M7lYEzKejsr+Qsra80vYAxh8io8uwPIiA0qlWehWgLfhNH288E9OZuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761312232; c=relaxed/relaxed;
-	bh=9pZe05cqV5Y1PIBh8vBXPAYdFpy0cqXi9nRKa9E+n1Q=;
+	t=1761312464; c=relaxed/relaxed;
+	bh=W95gCkBxowoa8sjYCMILYw6pqqluuwtxuEqICefNFQ8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NzzV7yc9CKbglK+OD3XVy2Zpb2VAklBaqFfX0Bh9cEjo80ij4CLRcUEQCg0bhmYNSjFbfjxm/YaXACpn97brKzHblHRXB/wkiMyVj+PcH1Qc3+GdFGS+6uWnYauvOrN21pokO03XHNCAYSiLfQ33FTupgf0KoYm5URBVhq5g9qYdmDUGumWO0f4rymV+Jum+hBYnmKl/r1EHHE/SdDiiGNEcsovf14T1ayqIbWJeJv+P81z2cwshZXQjJyQrQphX6I2WLrlRTzzAPfKRVm4mgDY2+Hb98r5bDii/y3LnWwD2PhCdhb04p3ouzmxAfhFgIkNK8f9KkBAbV6qWPWAF1Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MSchdtg/; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MSchdtg/; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=c/XX/YEiLof0H3zZSpsKzB4TzwxIZB4cdnzxIffG9/58caqlyDPkNhun4e+pjXBKVa/7GGWUx7PvrxEl17rfXnpQ4MpaCxxSm8q4su95QGlNw4zs3qYrVK7uChhag+B8eR/GCMwRFaljQnBgW8egx6JPk/3FhEIhZDcdAe/eVjevwYlQwqMDW9nND+MLrUZzNyfP2VugaOljToo95wePBy+HitiftLqbjkq1kn59MWa7IeM/VmxrluYQ3cfYv/iizihDl/4MtmCuMSSxNKH9UPncMYuCuxUMW94pqWFO01yTgXWJm3SWsfPuS1GPnQJEk6tJp2GSOyR1S/0fwFv3og==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ICFWIv3N; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ICFWIv3N; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MSchdtg/;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MSchdtg/;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ICFWIv3N;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ICFWIv3N;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ctNs30dRKz2xK5
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Oct 2025 00:23:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ctNxW26kCz3bfQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Oct 2025 00:27:43 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761312226;
+	s=mimecast20190719; t=1761312460;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9pZe05cqV5Y1PIBh8vBXPAYdFpy0cqXi9nRKa9E+n1Q=;
-	b=MSchdtg/4j+KLaSKgcGfRjOZVIXPvyc+npI9oIgPWGV8UaK6J2Z5wEmXpLLwx5miJ7q0UL
-	OFKroxe4Gc7Lv2rXp0wb7nrh8/s9uMjplzJisTOSHF6iUXNyFSEswDk+PlKByT6H5v9aJ6
-	UcK5eNguq/FUvShLuFruAyvLD5cqkmc=
+	bh=W95gCkBxowoa8sjYCMILYw6pqqluuwtxuEqICefNFQ8=;
+	b=ICFWIv3NilQ71wQ2SYQhGyz8pbtEusNLhcpimqk7HoHaadqdqCnQuKvtgqFeVpgJ/cTUqb
+	9oMQ0avEAl8BM0x4OC726vLOcCWeaGI2LylSWpJi1EfRecIcOZ+ryuq7u4LqBSeEXXQUCH
+	GN9IpIqdx61opGTlqhpRziSwIVBFiBc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761312226;
+	s=mimecast20190719; t=1761312460;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9pZe05cqV5Y1PIBh8vBXPAYdFpy0cqXi9nRKa9E+n1Q=;
-	b=MSchdtg/4j+KLaSKgcGfRjOZVIXPvyc+npI9oIgPWGV8UaK6J2Z5wEmXpLLwx5miJ7q0UL
-	OFKroxe4Gc7Lv2rXp0wb7nrh8/s9uMjplzJisTOSHF6iUXNyFSEswDk+PlKByT6H5v9aJ6
-	UcK5eNguq/FUvShLuFruAyvLD5cqkmc=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=W95gCkBxowoa8sjYCMILYw6pqqluuwtxuEqICefNFQ8=;
+	b=ICFWIv3NilQ71wQ2SYQhGyz8pbtEusNLhcpimqk7HoHaadqdqCnQuKvtgqFeVpgJ/cTUqb
+	9oMQ0avEAl8BM0x4OC726vLOcCWeaGI2LylSWpJi1EfRecIcOZ+ryuq7u4LqBSeEXXQUCH
+	GN9IpIqdx61opGTlqhpRziSwIVBFiBc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-ScYxrdvyMfeuC43bbWjGHg-1; Fri, 24 Oct 2025 09:23:44 -0400
-X-MC-Unique: ScYxrdvyMfeuC43bbWjGHg-1
-X-Mimecast-MFC-AGG-ID: ScYxrdvyMfeuC43bbWjGHg_1761312223
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46e39567579so10173075e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 06:23:44 -0700 (PDT)
+ us-mta-68-20EiuDQDNWu4GjCP3X_VBQ-1; Fri, 24 Oct 2025 09:27:36 -0400
+X-MC-Unique: 20EiuDQDNWu4GjCP3X_VBQ-1
+X-Mimecast-MFC-AGG-ID: 20EiuDQDNWu4GjCP3X_VBQ_1761312456
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-427a125c925so1302743f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 06:27:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761312223; x=1761917023;
+        d=1e100.net; s=20230601; t=1761312455; x=1761917255;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9pZe05cqV5Y1PIBh8vBXPAYdFpy0cqXi9nRKa9E+n1Q=;
-        b=fcm21mb1LhqLD1MgpKXLLh5nDwtava5eG4am5Ea7C5tpKat1FJfd+HbPN2IGlNwOjk
-         tOkZczIiw+GCEXUKq/HJIma/BxW3mKC9wtJZ1w2F/2jewxsDn5eKXHn5BJaX0LkEyqPz
-         nwJ76AkqjKi8tHD+w6QZCBTIKiHFUkzOZ0rj2Yxj8o9RXPc9a/OO5vF8PI4TPJ1FsUMf
-         a9axaYpk6kGiH7lFCQXW/Z/1S2wEKeJVp7TK54CriCe2LvscjPV3U2oSSBN7R9QBgIj3
-         7sxLAg4Um4ZvCxNaRtmumuwtuWCH0TszdcznxtfWwA2/5AO1kWn6lagptWykShWUREKK
-         uaVA==
-X-Forwarded-Encrypted: i=1; AJvYcCXlIllSOE5+Rs6utB6En/9Nb2XkjD1H4RqZe7Tl42NtFUflLNfWBuZo/nVVLCtLbbfDLxm+8mmUv4llB8c=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxO10jtWSdfRQvHr46y81D+8BWhIMMLPCp5RQ0LH5RUxOiNB+Os
-	VeJ/Mcx+lfBhJglHlKVFXZtIRiHYQASKmQvXed3mLWl9Q/pI0RHaXsjIe1ixgreyF44Mg09Ucb2
-	ssoXp2SIjWHzdNZ2D5+ivJIcl+gzjC0W7undD05LT4PrRQAL4MXQH5EQVlw2xEjV7dWs=
-X-Gm-Gg: ASbGncuvGbaQYPb2lRVaUZS7QJp+pJQ/uWLr9pTvD5F++gr3nnAYZu3EsSn5c7A7BWy
-	zEadU8FOTkC56+K4wgqok1sB68JO1JLPeVPej2ze5FqUYEhjactRv7NTUWwT4NchofmN8xwB35J
-	3Ix9PtbDzQCD87vJBznAk2cHjE22egIcNMaXSfeTmJerTbxBQGIg+rHpbxKEzXTulVtRZQCtPsr
-	PPnoJK0nOljmIARIgUEcSquf4nuML7lBqWFOg+ynifM4BAzxsVDOyPSxd4UnS13qRnZMcfliPWL
-	reXVmqEd91CVoe38MFABU8JUs5SRVuU5b3MRt3S5DtqUqS8VAq9gRr62yzL83n3kqBFW1nWiqpz
-	cvgmjUYb0XX3ar9hetnZ0L+spBqG9mwm/wuCF/nmqOMJ6qTBI4Q0PhqevkwcDf6TVcod4ntbNWy
-	WiaotiQ40MYmMBUHWaS2+XD+bSqns=
-X-Received: by 2002:a05:600c:1d9b:b0:46e:38f7:625f with SMTP id 5b1f17b1804b1-471178771b6mr180789355e9.10.1761312223041;
-        Fri, 24 Oct 2025 06:23:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEtGsLBVTNfj/FZoaJq9YDf0YbzbT70oZVwx4vja/yfyCx4XWjsWfYr2kPeTBeEcFsrMCFiZA==
-X-Received: by 2002:a05:600c:1d9b:b0:46e:38f7:625f with SMTP id 5b1f17b1804b1-471178771b6mr180789265e9.10.1761312222639;
-        Fri, 24 Oct 2025 06:23:42 -0700 (PDT)
+        bh=W95gCkBxowoa8sjYCMILYw6pqqluuwtxuEqICefNFQ8=;
+        b=YCac/0ThoHP9L4i0X1TjOBi6LJs2pEq5T3t6nB2+sWAaMHFkS/J5fSMcr9K6XgssOs
+         rFH9XanAUXmeo0JujN8WBE/xXble6rcIIpUMPG+2ZapIuKXEMjKliG2/+VqsoVPZE8l+
+         KA7Mp6bV9V7I+dxNDMMvpuZ9J16nfTS4mMcCkJGgPyo26ORQUx9rpyfkxEqf3YcTpFWI
+         JUKsF31UC78hdsKHWiK4uTGUVR6rrc4A1HUQW4ivRx20EWXd9zv0DPhFB1aCXfDVlLWX
+         Tcn6UsiOpC0eSskG4O25FEbvMChnMIaabOx3p/g3LdWiEsBXTUAun6YmtJny/eHwn/Eh
+         My0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWvNffVrO0Czklbjrqz16KlGhhd2QPCF1mSb6+TX9UB+JS0WcUvMxnN74MQXlPUcHGa3mKy+KoJGbxnvrU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxkxkxG4rfCcRwb7O1cWfEYoK3ZVdFQRVXjOjsSoduTewKw03SN
+	+kr8QtHKgMT7h1mv7XcQcrwJe0JsMKlLWq05cBfW1TFRQ+jORbLIaeb7154tr6i8aic17/o5OI7
+	pe3HYnjrXMggQ71AJkvEgjwRUrRBeo8NBGNLN2VLhjvpBdOJT+01dwrFxJFYt6zs+Deg=
+X-Gm-Gg: ASbGncvNehuZfUQIsf3j0oX+Wel/iVOpYUwY8yOpvk142PoymkLJfooz+A+A2VPcesK
+	PTDXL9+9jQLzqRdIMCjQBQsRCIkGg+adDMhYSUK/4W9jjH5yB7mmtTrj4UXJdX/6WzK/QeLmdVA
+	tRGcMcrJXflU+deDJbn7Bmeh1L/OCIN8eBhXfD2rgkiJ8hDR5ubYmdzqv41NU+HZXZTPiS/bxW+
+	nQZZuWzdMRaaLr5sCybP1/HEOpFiqHl4ZsHLHfJ9+LxRBKwoXLNKIOgF3sZspvZ8UZZGm3TCpMf
+	9qneIY3+MNyXs5qMjAvEmS++p+CLLmsFu2h8yCVPQ4Y02rFN9weO1CPyBR4y+MWrtu5gfGKZxQ4
+	dVIVkhW+fVhy3n/lWb7oDY40wTEzIf/yHJjVZWsjbzKbOi43yx3BNzjgxkUqsa8i4JNGsiOR8fN
+	V6SKkWmD55AZBr5s2HcnUDP0wiL7Y=
+X-Received: by 2002:a5d:5f82:0:b0:3fa:5925:4b07 with SMTP id ffacd0b85a97d-42704d74f9fmr17804274f8f.18.1761312455501;
+        Fri, 24 Oct 2025 06:27:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6q4w15VA7XMPgV1osu1aNNaqJ9bER4GrjuNDgzSEl5cHuxzuUI4S5/OhMi/rPVse+Lx9Gyg==
+X-Received: by 2002:a5d:5f82:0:b0:3fa:5925:4b07 with SMTP id ffacd0b85a97d-42704d74f9fmr17804231f8f.18.1761312454926;
+        Fri, 24 Oct 2025 06:27:34 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898ec1dfsm9461004f8f.43.2025.10.24.06.23.39
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898ccc60sm9453555f8f.34.2025.10.24.06.27.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Oct 2025 06:23:42 -0700 (PDT)
-Message-ID: <af4414b6-617c-4dc8-bddc-3ea00d1f6f3b@redhat.com>
-Date: Fri, 24 Oct 2025 15:23:39 +0200
+        Fri, 24 Oct 2025 06:27:34 -0700 (PDT)
+Message-ID: <f8d22ae0-4e36-4537-903f-28164c850fdb@redhat.com>
+Date: Fri, 24 Oct 2025 15:27:32 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,7 +106,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/13] mm: enable lazy_mmu sections to nest
+Subject: Re: [PATCH v3 06/13] mm: introduce generic lazy_mmu helpers
 To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -129,9 +129,9 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
  sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-8-kevin.brodsky@arm.com>
- <2073294c-8003-451a-93e0-9aab81de4d22@redhat.com>
- <7a4e136b-66a5-4244-ab07-f0bcc3a26a83@arm.com>
+ <20251015082727.2395128-7-kevin.brodsky@arm.com>
+ <73b274b7-f419-4e2e-8620-d557bac30dc2@redhat.com>
+ <390e41ae-4b66-40c1-935f-7a1794ba0b71@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -177,9 +177,9 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <7a4e136b-66a5-4244-ab07-f0bcc3a26a83@arm.com>
+In-Reply-To: <390e41ae-4b66-40c1-935f-7a1794ba0b71@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: sICH237WIKh3V1byiwmDagE1h07E0qiv_8EM5tsIem4_1761312223
+X-Mimecast-MFC-PROC-ID: uDM53oRojQjOjHojmazNiLOhq959eN77fTmvGNV4ZTk_1761312456
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
@@ -190,77 +190,85 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
->>> + * currently enabled.
->>>     */
->>>    #ifdef CONFIG_ARCH_LAZY_MMU
->>>    static inline void lazy_mmu_mode_enable(void)
->>>    {
->>> -    arch_enter_lazy_mmu_mode();
->>> +    struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>> +
->>> +    VM_BUG_ON(state->count == U8_MAX);
+On 24.10.25 14:13, Kevin Brodsky wrote:
+> On 23/10/2025 21:52, David Hildenbrand wrote:
+>> On 15.10.25 10:27, Kevin Brodsky wrote:
+>>> [...]
+>>>
+>>> * madvise_*_pte_range() call arch_leave() in multiple paths, some
+>>>     followed by an immediate exit/rescheduling and some followed by a
+>>>     conditional exit. These functions assume that they are called
+>>>     with lazy MMU disabled and we cannot simply use pause()/resume()
+>>>     to address that. This patch leaves the situation unchanged by
+>>>     calling enable()/disable() in all cases.
 >>
->> No VM_BUG_ON() please.
+>> I'm confused, the function simply does
+>>
+>> (a) enables lazy mmu
+>> (b) does something on the page table
+>> (c) disables lazy mmu
+>> (d) does something expensive (split folio -> take sleepable locks,
+>>      flushes tlb)
+>> (e) go to (a)
 > 
-> I did wonder if this would be acceptable!
+> That step is conditional: we exit right away if pte_offset_map_lock()
+> fails. The fundamental issue is that pause() must always be matched with
+> resume(), but as those functions look today there is no situation where
+> a pause() would always be matched with a resume().
 
-Use VM_WARN_ON_ONCE() and let early testing find any such issues.
+We have matches enable/disable, so my question is rather "why" you are 
+even thinking about using pause/resume?
 
-VM_* is active in debug kernels only either way! :)
+What would be the benefit of that? If there is no benefit then just drop 
+this from the patch description as it's more confusing than just ... 
+doing what the existing code does :)
 
-If you'd want to handle this in production kernels you'd need
+>>
+>> Why would we use enable/disable instead?
+>>
+>>>
+>>> * x86/Xen is currently the only case where explicit handling is
+>>>     required for lazy MMU when context-switching. This is purely an
+>>>     implementation detail and using the generic lazy_mmu_mode_*
+>>>     functions would cause trouble when nesting support is introduced,
+>>>     because the generic functions must be called from the current task.
+>>>     For that reason we still use arch_leave() and arch_enter() there.
+>>
+>> How does this interact with patch #11?
+> 
+> It is a requirement for patch 11, in fact. If we called disable() when
+> switching out a task, then lazy_mmu_state.enabled would (most likely) be
+> false when scheduling it again.
+> 
+> By calling the arch_* helpers when context-switching, we ensure
+> lazy_mmu_state remains unchanged. This is consistent with what happens
+> on all other architectures (which don't do anything about lazy_mmu when
+> context-switching). lazy_mmu_state is the lazy MMU status *when the task
+> is scheduled*, and should be preserved on a context-switch.
 
-if (WARN_ON_ONCE()) {
-	/* Try to recover */
-}
-
-And that seems unnecessary/overly-complicated for something that should 
-never happen, and if it happens, can be found early during testing.
+Okay, thanks for clarifying. That whole XEN stuff here is rather horrible.
 
 > 
-> What should we do in case of underflow/overflow then? Saturate or just
-> let it wrap around? If an overflow occurs we're probably in some
-> infinite recursion and we'll crash anyway, but an underflow is likely
-> due to a double disable() and saturating would probably allow to recover.
+>>
+>>>
+>>> Note: x86 calls arch_flush_lazy_mmu_mode() unconditionally in a few
+>>> places, but only defines it if PARAVIRT_XXL is selected, and we are
+>>> removing the fallback in <linux/pgtable.h>. Add a new fallback
+>>> definition to <asm/pgtable.h> to keep things building.
+>>
+>> I can see a call in __kernel_map_pages() and
+>> arch_kmap_local_post_map()/arch_kmap_local_post_unmap().
+>>
+>> I guess that is ... harmless/irrelevant in the context of this series?
 > 
->>
->>> +    /* enable() must not be called while paused */
->>> +    VM_WARN_ON(state->count > 0 && !state->enabled);
->>> +
->>> +    if (state->count == 0) {
->>> +        arch_enter_lazy_mmu_mode();
->>> +        state->enabled = true;
->>> +    }
->>> +    ++state->count;
->>
->> Can do
->>
->> if (state->count++ == 0) {
-> 
-> My idea here was to have exactly the reverse order between enable() and
-> disable(), so that arch_enter() is called before lazy_mmu_state is
-> updated, and arch_leave() afterwards. arch_* probably shouldn't rely on
-> this (or care), but I liked the symmetry.
+> It should be. arch_flush_lazy_mmu_mode() was only used by x86 before
+> this series; we're adding new calls to it from the generic layer, but
+> existing x86 calls shouldn't be affected.
 
-I see, but really the arch callback should never have to care about that
-value -- unless something is messed up :)
+Okay, I'd like to understand the rules when arch_flush_lazy_mmu_mode() 
+would actually be required in such arch code, but that's outside of the 
+scope of your patch series.
 
-[...]
-
->>> +static inline bool in_lazy_mmu_mode(void)
->>
->> So these functions will reveal the actual arch state, not whether
->> _enabled() was called.
->>
->> As I can see in later patches, in interrupt context they are also
->> return "not in lazy mmu mode".
-> 
-> Yes - the idea is that a task is in lazy MMU mode if it enabled it and
-> is in process context. The mode is never enabled in interrupt context.
-> This has always been the intention, but it wasn't formalised until patch
-> 12 (except on arm64).
-
-Okay, thanks for clarifying.
 
 -- 
 Cheers
