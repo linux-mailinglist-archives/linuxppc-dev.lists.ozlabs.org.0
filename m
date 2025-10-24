@@ -1,43 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-13244-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13245-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E032BC04385
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 05:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97087C043A0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 05:14:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ct7DJ17bLz30RJ;
-	Fri, 24 Oct 2025 14:09:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ct7L712z4z30RJ;
+	Fri, 24 Oct 2025 14:14:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.100
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761275376;
-	cv=none; b=NCRKVzye3iS6S0iL9PQ0LIKvsD3t7GcSwl1eKwVKLR7Sp0mktm1slBczRZE0xKuhI2xTqkKSadYVv6MotqMVIpTJiNHh6owZsXoqzhjcwVrXXsnos2khZlih3DtDMOOER2tq2U8KfZdyIEThGBPDoR61zZMO2vcAT/Wr/bxqObkNB2bXKvNsJXiDA9M5ukBfzZSBAdd3yBZR+1HMX0w0CTgBdfwiR+WBH4/9OFjGgIupdIwidbd++UQx+cfNunAndFY/aB1m7JuyTTemmYSvpnGU+FpVw3KRl97uVhU35f2fFemdOMeUMeHhuNc9XK3Uo75nxq2zCzEcqklMd+isZg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:1000::53df:5f64:0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761275679;
+	cv=none; b=oSb0FbuVVkQt19gBt2gsuMfV9fnqJHIU1wpazXAqym5AHSMNDPSyKL4ezuheOXULsVJofaXU4nxXm0rEqJWelcn4ckkp3MC1D6A4bNK0u4/eve/fWfnJY6n6sFXWTqtc67r7jKpD2vKVkjDLVfkJK95+C2mpSXXcXQqrhaMKpArxxIf6FLw9homTDr+XSy4Nal+RN9UTj6Bqg7wXXWXOxRqQQnUyGu755mr+Bpu2FYFH0Qb9fO45YZW+y/DdlrVBLQp71IkYh2Rq40S58kNpE1C9+CHC4h4YMJCuZwUgk2X1u6BE4XPTkKjxxYaqGgbNWUbOA4FaKwS3FCweCKSwpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761275376; c=relaxed/relaxed;
-	bh=pdaoYJ6/jp41uVjOn5ADQtwMyGMN5yCeVaz4/XBge20=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l19CjOsVe1AgxDkVqxSt0cZUzbKx2iG3VX7bE6cG8Wd915Omi2LeoVByeHZ1uJMNMCy4cY+2zmy/TDBk5t1DK3eT5HH2hJScjQo17AdU4+H0TwqwtdThZhosswq35C2DkYefo8v7Dxu512yhu4qrhLOtyUGZP+VGupL5SAZYc0rJf1trN5Z4WzbV7MaH7OPIox3xlLIMdGyD6OojidA7/KJhJkUdwkhRKW9Rz5MjxYiHsBWx8tRCl3GOlHwCgpBeIYd+0FZa0SYfICrr7DPvP+stIfjyYDYU7JocF95a2P4vypHMQkBTNtQYPWcVSQW7XwOaeTUBgNYD36RGqiLheA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=wrW3K9eE; dkim-atps=neutral; spf=pass (client-ip=115.124.30.100; helo=out30-100.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=wrW3K9eE;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.100; helo=out30-100.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	t=1761275679; c=relaxed/relaxed;
+	bh=f5Sxb67nknCvEPweVVJzksKU02aksezSvPfR3JKjRGw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YMTF5UJEkoN5H7L43OuPRXmGGXo5VvwossqMtjSPswwiZcvDy9KRq5ZExDJVoRv3K/9StIsFQoK+vDKIvlemIflVaaitMNeZw+h02gCcqbP2TiElPkGGtvZJyE5OseMuoWItPm2IqF5SS3lp+r0NJn+bjrzjVXhmu12BYWzabnOoM9NuaKjP/hH6kh5VgVjXyBuJUvsOrSwUOiE2YPI5B/gOdaPiBekAjnwaMO6rlXHVwkn4EjP8Ia5WHOg8zDq+uKnVg/+s8x1T9w7SwbGpzzh4LMYEZhVlZDIj4fDNQQ4Iz/myg6zlr+NFIs/w1i7lM92Rk5qhNJvlwnHHQ5IbFQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout1.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout1.hostsharing.net (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ct7DG0D0Wz2yl2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 14:09:32 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761275368; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=pdaoYJ6/jp41uVjOn5ADQtwMyGMN5yCeVaz4/XBge20=;
-	b=wrW3K9eEbn+sg9bCo3gFo9CJS1AeS+4TnXjWBnnKiScMtrok8D4FqCB8WmrFQ3+Lfikyh9GCniU+2y6ORY+qKwOzCSwmNNDYBjYM38Nz3sKaHfFlKGmKl/xh7s8P0INefVRIkrhbGNx2rGctU7iVeiqFWK/xI5KPe59FBxjHsD4=
-Received: from 30.246.161.241(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wqskgl9_1761275365 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 24 Oct 2025 11:09:26 +0800
-Message-ID: <1eaf1f94-e26b-4313-b6b7-51ad966fe28e@linux.alibaba.com>
-Date: Fri, 24 Oct 2025 11:09:25 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ct7L52446z2yl2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 14:14:37 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id D04B92C07AA5;
+	Fri, 24 Oct 2025 05:14:25 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id BFD344A12; Fri, 24 Oct 2025 05:14:25 +0200 (CEST)
+Date: Fri, 24 Oct 2025 05:14:25 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	kbusch@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com,
+	mahesh@linux.ibm.com, oohall@gmail.com, Jonathan.Cameron@huawei.com,
+	terry.bowman@amd.com, tianruidong@linux.alibaba.com
+Subject: Re: [PATCH v6 4/5] PCI/ERR: Use pcie_aer_is_native() to check for
+ native AER control
+Message-ID: <aPrvEZ3X4_tiD2Fh@wunner.de>
+References: <20251015024159.56414-1-xueshuai@linux.alibaba.com>
+ <20251015024159.56414-5-xueshuai@linux.alibaba.com>
+ <aPYMO2Eu5UyeEvNu@wunner.de>
+ <0fe95dbe-a7ba-4882-bfff-0197828ee6ba@linux.alibaba.com>
+ <aPZAAPEGBNk_ec36@wunner.de>
+ <645adbb6-096f-4af3-9609-ddc5a6f5239a@linux.alibaba.com>
+ <aPoDbKebJD30NjKG@wunner.de>
+ <1eaf1f94-e26b-4313-b6b7-51ad966fe28e@linux.alibaba.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -51,114 +66,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] PCI/ERR: Use pcie_aer_is_native() to check for
- native AER control
-To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kbusch@kernel.org,
- sathyanarayanan.kuppuswamy@linux.intel.com, mahesh@linux.ibm.com,
- oohall@gmail.com, Jonathan.Cameron@huawei.com, terry.bowman@amd.com,
- tianruidong@linux.alibaba.com
-References: <20251015024159.56414-1-xueshuai@linux.alibaba.com>
- <20251015024159.56414-5-xueshuai@linux.alibaba.com>
- <aPYMO2Eu5UyeEvNu@wunner.de>
- <0fe95dbe-a7ba-4882-bfff-0197828ee6ba@linux.alibaba.com>
- <aPZAAPEGBNk_ec36@wunner.de>
- <645adbb6-096f-4af3-9609-ddc5a6f5239a@linux.alibaba.com>
- <aPoDbKebJD30NjKG@wunner.de>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <aPoDbKebJD30NjKG@wunner.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1eaf1f94-e26b-4313-b6b7-51ad966fe28e@linux.alibaba.com>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-在 2025/10/23 18:29, Lukas Wunner 写道:
-> On Mon, Oct 20, 2025 at 10:45:31PM +0800, Shuai Xue wrote:
->> 	if (host->native_aer || pcie_ports_native) {
->> 		pcie_clear_device_status(bridge);
->> 		pci_aer_clear_nonfatal_status(bridge);
->> 	}
->>
->> This code clears both the PCIe Device Status register and AER status
->> registers when in native AER mode.
->>
->> pcie_clear_device_status() is renamed from
->> pci_aer_clear_device_status(). Does it intends to clear only AER error
->> status?
->>
->> - BIT 0: Correctable Error Detected
->> - BIT 1: Non-Fatal Error Detected
->> - BIT 2: Fatal Error Detected
->> - BIT 3: Unsupported Request Detected
->>
->>  From PCIe spec, BIT 0-2 are logged for functions supporting Advanced
->> Error Handling.
->>
->> I am not sure if we should clear BIT 3, and also BIT 6 (Emergency Power
->> Reduction Detected) and in case a AER error.
+On Fri, Oct 24, 2025 at 11:09:25AM +0800, Shuai Xue wrote:
+> 2025/10/23 18:29, Lukas Wunner:
+> > On Mon, Oct 20, 2025 at 10:45:31PM +0800, Shuai Xue wrote:
+> > > From PCIe spec, BIT 0-2 are logged for functions supporting Advanced
+> > > Error Handling.
+> > > 
+> > > I am not sure if we should clear BIT 3, and also BIT 6 (Emergency Power
+> > > Reduction Detected) and in case a AER error.
+> > 
+> > AFAIUI, bits 0 to 3 are what the PCIe r7.0 sec 6.2.1 calls
+> > "baseline capability" error reporting.  They're supported
+> > even if AER is not supported.
+> > 
+> > Bit 6 has nothing to do with this AFAICS.
 > 
-> AFAIUI, bits 0 to 3 are what the PCIe r7.0 sec 6.2.1 calls
-> "baseline capability" error reporting.  They're supported
-> even if AER is not supported.
+> Per PCIe r7.0 section 7.5.3.5:
 > 
-> Bit 6 has nothing to do with this AFAICS.
+>   **For Functions supporting Advanced Error Handling**, errors are logged
+>   in this register regardless of the settings of the Uncorrectable Error
+>   Mask register. Default value of this bit is 0b.
+> 
+> From this, it's clear that bits 0 to 2 are not logged unless AER is supported.
 
-Hi, Lukas,
+No.  It just means that if AER is supported, the Uncorrectable Error Mask
+register has no bearing on whether the bits in the Device Status register
+are set.  It does not mean that the bits are only set if AER is supported.
 
-Per PCIe r7.0 section 7.5.3.5:
+Thanks,
 
-   **For Functions supporting Advanced Error Handling**, errors are logged
-   in this register regardless of the settings of the Uncorrectable Error
-   Mask register. Default value of this bit is 0b.
-
- From this, it's clear that bits 0 to 2 are not logged unless AER is supported.
-
-So, if dev->aer_cap is not true, there’s no need to clear bits 0 to 2.
-This validates the dev->aer_cap sanity check in pcie_aer_is_native():
-
-   int pcie_aer_is_native(struct pci_dev *dev)
-   {
-       struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
-
-       if (!dev->aer_cap)
-           return 0;
-
-       return pcie_ports_native || host->native_aer;
-   }
-   EXPORT_SYMBOL_NS_GPL(pcie_aer_is_native, "CXL");
-
-Based on this, the introduction of pcie_aer_is_native() in the patch
-seems reasonable and consistent with the PCIe specification.
-
-Further, should we rename pcie_clear_device_status() back to
-pci_aer_clear_device_status():
-
--void pcie_clear_device_status(struct pci_dev *dev)
-+void pci_aer_clear_device_status(struct pci_dev *dev)
-  {
-         u16 sta;
-
-         pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
--       pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
-+       /* Bits 0-2 are logged if AER is supported */
-+       pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta & 0x7);
-  }
-
-I am still uncertain whether bit 3 ("Unsupported Request Detected")
-should be cleared in this function. It’s not directly tied to AER
-capability.
-
-
-I’d love to hear your thoughts, as well as @Bjorn’s, on both the renaming
-suggestion and whether bit 3 should be cleared alongside bits 0 to 2.
-
-Thanks.
-Shuai
+Lukas
 
