@@ -1,70 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-13291-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13292-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DEE1C07553
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 18:33:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5535AC07571
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Oct 2025 18:35:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ctT493tm2z2xlK;
-	Sat, 25 Oct 2025 03:33:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ctT6W1wmLz2xR2;
+	Sat, 25 Oct 2025 03:35:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::549"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761323625;
-	cv=none; b=esmZu2VZaZEDRLuEEPdrjJ4yjuWK0AJLkRJXOOC4zIt8WZB3iJ1LT00DHg7BRvN7+bpzY8hT0wC1gQdK0RJFE+apLw8zPzbn0npz570D15UX9RyK0rrO67V7QHTcviypkz8tz2cp/vqIn1Y2A5jp1w/n8wlM4csG1d9kMGu5lgdORiVQWf/WAXsZBNWTeF8OxK9xBqKRGTvc81TdHjFhIa9E8X9z39NOrqGabv1C8E5hGw+0tjawBbv76c8G4J06TZPSwaYT7i1hp5N830p4qE9vB5i7cxaeKevAkknHq2MDRn1n1q1qA2skJgXtEG3uG5hmegM6x1AEL7nFaIVgdA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::649"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761323747;
+	cv=none; b=FSENmFgfwlvTQMbhNzQL4L6a5y5yia3W881o0tGhSbp3uERzP40NCK2DJT0DcxLjshXnCvwlDnvMlzFx7gAXw62ez1Obgn7nzEV0Rftg8p36rhOpS8vdYpmf6QeWRvoe2aBtMCxvTO1PktEhKIUMgp66UuMEPrHDju5DTWtsb96mRz5ZPv3VR2p19DXayKFC1p14gl+dx/28fLezbZ5DP2i0CMVBzy46oBJXP9OY+/5ZbH/WDD05t3sIlBoKnZszm/dQp4nddHFRSisVyAWqtg+criwFSaPCRMUMqNb1lnOk6pTLQbmYvc5Z3POLCIo5709xqPLWJKfTH+2XFFHv6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761323625; c=relaxed/relaxed;
-	bh=XmFbq4MgFLvSavBU+dsE5BY6fpPsL4/gR9QPfUGTSHw=;
+	t=1761323747; c=relaxed/relaxed;
+	bh=cu0gmfEAQ+U9vhoL2h/iCeG4Q5kdgS/ChdUsj5vfglQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oJ3GlYgD2vUP0zQ9ScvJ74K3TWUvQNSjLV6F8dh3NBb9+X02sXEX73gIYrINLmI8u0hbBzsOjjdQ3MEW9WE9oU2QVU3FKhcVMb4JZvX+nC4+Mi1i0CQjJcgpdjwWPCyy5Sco3CSw5XqTYr8xwByzNQ6+fgdlWEv9NQAtP2ph1WO9LdxiMkQqs9JpWZW2NwWlgvMsgAleYYgSY1aRU9DmJy2VzGTt5Grif9bysF5LNU1zSAwDgNVfcxmikNAgaSFASsJVz00boGhU7ucu5l3OMKqnoMcOoIMDdug1gbTOITjRdCHbhvY++VbhACTzKWMxIkHKdps7ukga411bYwrRDA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=R99nrOtD; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3zkr7aaykdpupbxkgzdlldib.zljifkrummz-absifpqp.lwixyp.lod@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=oOkeJGTGWF3iZjY4n14ChqMcFGDxL6lb3IHeqlLcdr93f3nz/8T7+0CxXBINwGB7cC2H61w0FrR64SR9jsU2t3ERiXISAoRSnXLUsaQA6vjeYFQ8iT352whzdEAfgM4xd4glZBqIVBS/Y3+ZGNyt8E3fIm/gQYhaTgHEfz3Y6cH9IkIZVLLbIH60COnd+c9E++bnlhi7qUiNhPd0o24sKeS+AEOkd7//7C8qz0BMrucGd7FfimGdH+K+f1HaVgFiI4oVntlCTNymCnRFz0Kjfe7Z6SWLwGaXRCVLlt8rYkmHvXF8ZY6NkFv29QCaUprV186qIEn5kfZ5S+3PEcnaqg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ptEzpYxU; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=34kr7aaykdhmjvreatxffxcv.tfdczeloggt-uvmczjkj.fqcrsj.fix@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=R99nrOtD;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ptEzpYxU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3zkr7aaykdpupbxkgzdlldib.zljifkrummz-absifpqp.lwixyp.lod@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=34kr7aaykdhmjvreatxffxcv.tfdczeloggt-uvmczjkj.fqcrsj.fix@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ctT480JjQz2xQD
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Oct 2025 03:33:43 +1100 (AEDT)
-Received: by mail-pg1-x549.google.com with SMTP id 41be03b00d2f7-b522037281bso1398370a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 09:33:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ctT6V3XHbz2xQ4
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Oct 2025 03:35:46 +1100 (AEDT)
+Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-26983c4d708so17924125ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Oct 2025 09:35:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761323621; x=1761928421; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XmFbq4MgFLvSavBU+dsE5BY6fpPsL4/gR9QPfUGTSHw=;
-        b=R99nrOtDsthS3IkGCgT4jmEntokuBM7OiDA0z3HI+7k5RbeyJkQzmVsFRbad1fP/i3
-         dDQUQeb77YM6mgPu2kd56rGzafN+o8+nL7S+OLFc9X8M1lZpY/0EdS1ngvCSUMYSytFY
-         VwaxrLiHkcK5nuLbk/Ubg0m1YZefskXwMkp/OSngs7M27zLgQ01DaCMgauQO+suUTaCb
-         yImFky70fE8PKihAVGxRlBIA+tOFsTO0VUYNZ1t9qjmqOu5FhjQUYP8B0oOCWNJ+tQj3
-         OLtbAYZ5h/p93pnv9zqWq+J8tcsHSePX+G87HpP7xBTB4cRCvCBv/KAr7vGt+7UzcHVd
-         EwxQ==
+        d=google.com; s=20230601; t=1761323744; x=1761928544; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cu0gmfEAQ+U9vhoL2h/iCeG4Q5kdgS/ChdUsj5vfglQ=;
+        b=ptEzpYxUkoKw2xf7aDHXNHQTZjGYBVmeQAltzva6oFiZ2wZcCnmaJO8h2rza2okCpB
+         DxUL/5rVvjxhxVOaUPVrKERQSIwtqwJ9JFp//VOpGysOqROpxw2YqXKTw7FRKIcx72aJ
+         px3Gp+beZGAXcQ480omxNVgx/KeXXu98B3Il0wydMTA+BwwojdnUOvaX8/pBzr2a2WSn
+         KIqktMcSVy6pqGZ3H8HnNlCy9Y8o/mrFvu6P/H3mxLMlfvt5dQNSD11qLwinTz3EUiY9
+         U6Y8Npyq+ubWnXm2gxIPOygJe+mKFM/9bsg1zEICbVWqDiHceTIn6u0JLY1WEchSr+k/
+         fjqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761323621; x=1761928421;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XmFbq4MgFLvSavBU+dsE5BY6fpPsL4/gR9QPfUGTSHw=;
-        b=Td1I3HYzf6Y9DhjzfvyvgtTCaySiXjRi0yBYu/4OMexCMDuIjuyRlHQY2E/joNh+lB
-         e8itlSy04VlipjIts1ynIGfSLJEkL87Zxl9xBtchY52oKtaIXtLfilZTWS5SacZuHjll
-         vyneleEMNNthEqPMEhnypL6TJacam1GSIqzt4jDtPxOC2u2h8ufNotvNseRQVoO8b5jl
-         DZQ8ITtmH9AM1txMPpyxzFldCtfEXAEhgpEMLMqYbGP8B7CqnPuc7QWhNADz1HouAB7M
-         wBITMDYEEMH75GWmziY4+ToLNg0jo8XE00qvUyCywrSQdXBxn4gjUBkXaA2scoXMyFDo
-         hCwg==
-X-Forwarded-Encrypted: i=1; AJvYcCVZNPPLVC75B/xmkTYr+mWRUSUSZHkwoq+0ceDPNfSTIBeiU8fkXR24nXilAcMPl7513BueQ2drZubRczM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxxS8KIhw4QhRkOZOV2QRi7f8o4i/9xpyJYKf0t6n7ONFyu1WkY
-	wbXBsOy56e+VfamvZn+OTICm+HHWBs1JTrL/COlUk5sn1hzVkrUbPQjPx+YWEjjCc/+/hBzwn+K
-	+Yk1xMA==
-X-Google-Smtp-Source: AGHT+IFeKRRbqSfdPI99mHeasG8LL+kiQGTQFDWiy/7cdPCFgXLMLE3NirNFzhTfpVhc/qoTuLXwCz2Ncvs=
-X-Received: from pjot2.prod.google.com ([2002:a17:90a:9502:b0:32f:3fab:c9e7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:244b:b0:30f:7840:2c96
- with SMTP id adf61e73a8af0-334a8629ec6mr34771147637.47.1761323620638; Fri, 24
- Oct 2025 09:33:40 -0700 (PDT)
-Date: Fri, 24 Oct 2025 09:33:39 -0700
-In-Reply-To: <5dea4a3d-c7b7-48f0-b2d5-7597e0cd5f00@linux.intel.com>
+        d=1e100.net; s=20230601; t=1761323744; x=1761928544;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cu0gmfEAQ+U9vhoL2h/iCeG4Q5kdgS/ChdUsj5vfglQ=;
+        b=Qhk+wcbvfbB7bZPlvRomkpputMiALwvRJ1sMvRZJd6ntmfYpwrDUSFNQ7Kc1GBfVy7
+         fxr2BFlWKzJZK72f7q+cBJrjdufQ5CMOgH3AcSOuyBvKlRMgUbJnAwjdtJKZpew90RZf
+         CPxskIFsB6mrViKx84P/zHkEnwrBR+KcrGYvQSADgDJOsSw0whfy3dWvkIc9f2nbSmxo
+         fWCyT184nSoYyTa3wpaQSga3BYQjPHfARoa9m9sfzFLo+h/VPQKuivQSJ66KI53dVwol
+         ioGefnNZYXWSekCPYGheXxUViLcip1COc6RDxr99KdKeRGmbBy8wm6MyR2rxY648Iavx
+         HpqA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdfUxVRhHtLko7zqhYoRaUeTMECRM6/AWyRzaYDPKS4lLbk2by8OkHLnMJBeRbofC5uD+L0R6KGzEwGx8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzSZgk0gYTYLfoOlzGaoCTLsoSmvxBGjsj0oXS3kDmerzn+y2V3
+	7OrxkSd+Uh3dq1yUjVQGyuT4xktgzWpdsukrUAe54C/qeYl7rynDzyYK8+8dA/TGmL8H24KLtTF
+	gpJTMyQ==
+X-Google-Smtp-Source: AGHT+IHEqEX/8GwSPDTtO9R4g/+ZtFO0C94Pe4ULgHF/AbXONvqtNga/vyT3hE3hD5zVd0KE3EnoXL2eWbI=
+X-Received: from pjyj8.prod.google.com ([2002:a17:90a:e608:b0:33b:51fe:1a8b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:db05:b0:24e:3cf2:2450
+ with SMTP id d9443c01a7336-290c9c8a5e6mr368813165ad.2.1761323744332; Fri, 24
+ Oct 2025 09:35:44 -0700 (PDT)
+Date: Fri, 24 Oct 2025 09:35:43 -0700
+In-Reply-To: <442f5488e4a66f6a1517082df3d2ae47316be010.camel@intel.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,77 +76,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-14-seanjc@google.com>
- <5dea4a3d-c7b7-48f0-b2d5-7597e0cd5f00@linux.intel.com>
-Message-ID: <aPuqYz3ly5a3__mf@google.com>
-Subject: Re: [PATCH v3 13/25] KVM: TDX: Fold tdx_mem_page_record_premap_cnt()
- into its sole caller
+References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-15-seanjc@google.com>
+ <442f5488e4a66f6a1517082df3d2ae47316be010.camel@intel.com>
+Message-ID: <aPuq33-qEJsDhdgG@google.com>
+Subject: Re: [PATCH v3 14/25] KVM: TDX: Bug the VM if extended the initial
+ measurement fails
 From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Michael Roth <michael.roth@amd.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Kai Huang <kai.huang@intel.com>
+Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, 
+	"maz@kernel.org" <maz@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
+	"pjw@kernel.org" <pjw@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
+	"kas@kernel.org" <kas@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, 
+	"palmer@dabbelt.com" <palmer@dabbelt.com>, "imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, 
+	"zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>, 
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Yan Y Zhao <yan.y.zhao@intel.com>, 
+	"michael.roth@amd.com" <michael.roth@amd.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, 
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
+	"ackerleytng@google.com" <ackerleytng@google.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, Vishal Annapurve <vannapurve@google.com>, 
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Oct 24, 2025, Binbin Wu wrote:
->=20
->=20
-> On 10/17/2025 8:32 AM, Sean Christopherson wrote:
-> > Fold tdx_mem_page_record_premap_cnt() into tdx_sept_set_private_spte() =
-as
-> > providing a one-off helper for effectively three lines of code is at be=
-st a
-> > wash, and splitting the code makes the comment for smp_rmb()  _extremel=
-y_
-> > confusing as the comment talks about reading kvm->arch.pre_fault_allowe=
-d
-> > before kvm_tdx->state, but the immediately visible code does the exact
-> > opposite.
-> >=20
-> > Opportunistically rewrite the comments to more explicitly explain who i=
-s
-> > checking what, as well as _why_ the ordering matters.
-> >=20
-> > No functional change intended.
-> >=20
-> > Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
->=20
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
->=20
-> One nit below.
->=20
-> [...]
-> > +	/*
-> > +	 * If the TD isn't finalized/runnable, then userspace is initializing
-> > +	 * the VM image via KVM_TDX_INIT_MEM_REGION.  Increment the number of
-> > +	 * pages that need to be mapped and initialized via TDH.MEM.PAGE.ADD.
-> > +	 * KVM_TDX_FINALIZE_VM checks the counter to ensure all mapped pages
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0^
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 Nit: Is pre-mapped better?
+On Thu, Oct 23, 2025, Kai Huang wrote:
+> On Thu, 2025-10-16 at 17:32 -0700, Sean Christopherson wrote:
+> > WARN and terminate the VM if TDH_MR_EXTEND fails, as extending the
+> > measurement should fail if and only if there is a KVM bug, or if the S-EPT
+> > mapping is invalid, and it should be impossible for the S-EPT mappings to
+> > be removed between kvm_tdp_mmu_map_private_pfn() and tdh_mr_extend().
+> > 
+> > Holding slots_lock prevents zaps due to memslot updates,
+> > filemap_invalidate_lock() prevents zaps due to guest_memfd PUNCH_HOLE,
+> > and all usage of kvm_zap_gfn_range() is mutually exclusive with S-EPT
+> > entries that can be used for the initial image.  The call from sev.c is
+> > obviously mutually exclusive, TDX disallows KVM_X86_QUIRK_IGNORE_GUEST_PAT
+> > so same goes for kvm_noncoherent_dma_assignment_start_or_stop, and while
+> > __kvm_set_or_clear_apicv_inhibit() can likely be tripped while building the
+> > image, the APIC page has its own non-guest_memfd memslot and so can't be
+> > used for the initial image, which means that too is mutually exclusive.
+> > 
+> > Opportunistically switch to "goto" to jump around the measurement code,
+> > partly to make it clear that KVM needs to bail entirely if extending the
+> > measurement fails, partly in anticipation of reworking how and when
+> > TDH_MEM_PAGE_ADD is done.
+> > 
+> > Fixes: d789fa6efac9 ("KVM: TDX: Handle vCPU dissociation")
+> 
+> So IIUC this patch only adds a KVM_BUG_ON() when TDH.MR.EXTEND fails.  How
+> does this fix anything?
 
-Yeah, updated (and then it gets deleted a few commits later :-) ).
+Hmm, yeah, I'll drop the Fixes.  It made more sense when I thought it was
+impossible for tdh_mr_extend() to fail, as returning an error and not explicitly
+terminating the VM was "wrong".  But I agree it does far more harm than good,
+even when relocated to the end of the series.
 
