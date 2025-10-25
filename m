@@ -1,66 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-13301-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13302-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E8BC0936F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Oct 2025 18:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C3FC0938D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Oct 2025 18:12:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cv4XL38lrz2xlK;
-	Sun, 26 Oct 2025 03:11:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cv4Xw4qzwz305M;
+	Sun, 26 Oct 2025 03:12:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761408706;
-	cv=none; b=UCwiSoi98W4c/WITUFxO5/rf8OZi4JXeRBE2VDLXes5DeE7zuf/OgoS2W8WM5BmbcKdNmr9TYD1GTQK8lR5UtUVGyv46ImnBnB29pEq9RN7u7ufs31JYghhJnE5zj0Z+4IwibTIWOyBBzCMERBNby0yY7yV9Y6VcANfd8Qtf/vrDIJTIfML5tAVJ53NpWBIEJf28HkBOK6Xty2RwiVdUOUX7M+kmElG21ku0JLMHmJ4tq/+Wb7UcH+rv+TwVKmdAybHxDKK5KCWwv0/DbHSbDJb2Uzms2aZDILvTbFELv+Ql9rVM2/6cdf1QircF5AtBKpS4oKclBAt0LS9N3/Pw6w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761408736;
+	cv=none; b=j+DWu3nXU8HThQfky7rP2PHidA1a6a6sutaJOc1mXG6jMn8De5Hsb2N6GbrBSQmpm5EADH2STi5VvmRlV2Gd7sU10uwvDjtwtqgNQ/EAPx6CYxqp07346Mg6oaPlGcSxV8PoetS7k9CsDRnP26bQd4srIVWUI/8qG16HOB7moz1QZLpayLi+VmGZifrHJlEJ/YT/Itbozfn650bFy1v/XH/h5vUOpMvW7MOVMMIEkkyCyqomcYR4JV2fw47DGEI5FEr6HhxI329xNrY3ySYRwXBZRvB9CRmi/QkzxKU2BioocEVzvEx31h8IDhPxRPwPX9vTOI8NKW49KIB/jf9opg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761408706; c=relaxed/relaxed;
-	bh=kWl9Y94Ep6gYRzadjxfpIPNVGYrE7VyepmA/pg28rlo=;
+	t=1761408736; c=relaxed/relaxed;
+	bh=R2Pv6ZhBB2oiUKZOsz+phRxda2i661lz9EoE4NFGo7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iuj7jflfs2EcjNgVg1nhJTxyG4Yj/pyWmnXm3mL5OLfxP4gM+nCzaAX9LgclZTrt4s+V5HRQfyGvXhe1qkOV+9uXmYl8EV+cxNscm2fooQzJt4zrb02Qm5mGgALQ+i3jClNGSKbfVVpg7cqDwrCgtOuXzoaAYut+ql+ZaU5GIl0o+ET/Ztsv/RrtIbbbentWkkr7wGo0S4OgFHsy3RSIsYG7Ml5BPRevNFg8JiVuwCU4LXhXP3iLKIjkFM/LR9kAfZn67ch3lupfEKMsyE4Vygyv1k/Ax6N+VykVEmrCDjk6v7veGnlQkov5TjoZ1Tw+mMnPtQfdsERbI5or7H+r+g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Goe8MHMI; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version:Content-Type; b=D8aiqKhxTQqQ4p8AYLd/jVztdhivCpQYhLiWLxYWy/zCC2UJqSxMfbXTWp16pZoBMwxMjT2aVXPBBMFxhQo80h0ZGKVd5IO1Y5a4YFvlCquU8mkqIItGnzXWFpk7wSQYKZkoD18f8f90dqxYsVkLVYARjmP1UR/dra/eSxZzJjTtxPSj/0WIF70bxgoFuMP6j2312cE9jvz1kQaY+afurOLLBw0+CtqLMSZ4tspBnpNiJLXjXL1ShFc8wkBUtdiQUbavrJT8VCxOQE9sjAjYtIR7NR5oq4Vaz92ow4+MB1DOnMMBToUQGxQdokME+O9RS3teNBY7ws3crVVXarLumw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f40uJPtt; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Goe8MHMI;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f40uJPtt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cv4XJ5x3qz2xdg
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Oct 2025 03:11:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cv4Xv51Qzz2yFT
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Oct 2025 03:12:15 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CCE42604EB;
-	Sat, 25 Oct 2025 16:11:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D5BC4CEF5;
-	Sat, 25 Oct 2025 16:11:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0BE41602AD;
+	Sat, 25 Oct 2025 16:12:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80FEC4CEFB;
+	Sat, 25 Oct 2025 16:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761408701;
-	bh=c+KxOQM1hdqOoWL5E0ejofcyZci2aCqJVEcaq1R1KPg=;
+	s=k20201202; t=1761408732;
+	bh=Q1m86h5mZ/Z4pKLW9z0TvV/FvWuLAG1O/eDl17A1PD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Goe8MHMI8QdZWY3cQDSlfGKv3+k0MBvjMtwN7DaB2mIgFOfQ0ofK5tbzPGva/5l/l
-	 jolb6n78IxeXy5OjqjKfJxGo7mjMgAA39BQcAEKVEdlHTec9n6yTUJjkIGW2M4rW2U
-	 XBpTneF8+dn0O+Jxm7y6Wy/yJkjinluvEZ7Gz24gbGSaWaMkJuEP7YdXnNRYztSBTU
-	 QLedoWpgFRyjE6R6OQXjw/3uuEcsYd6ikcdn8geQmyJXpHywXRGw2YLQnVUqvENufE
-	 SMtYhcY4gHk1YuH4cmVbzZ/wmpm0G5FidKvDe2NtHLayhCnAhwqs92n1fnJfyudqZD
-	 ZM+OuG2BZNkCw==
+	b=f40uJPtt2xEjA/W/bui78AWH2xaJtaJfYq82REZ/hIEDq2L3Dt8i2hJTKleNdPztC
+	 vEoS07wBcPKXismbaopyn0nfQxTGvOdiEGcaInmY2DnqKj26J6gRoQNFRUj6tWdrGc
+	 1Bk3tJSBQOVnL9TEvHDoHZ16Ap5iMGIA7kNGV0ABRQpN/E6d7/BAINfI1xR/8MAooD
+	 CUyCvTIsjhw1pnWf46PW6yT0KaJYd5jm/2QNspkpYXRS07WY7KJafOR05lkMu7vfPg
+	 YaIfaRO2qXmdh01j5tQi9qYPmJqvci5sH94Je6YTBxYbjDhPGTJ8SS90/xynNz9xDY
+	 BmSJQqmv2heOA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Lukas Wunner <lukas@wunner.de>,
+Cc: Niklas Schnelle <schnelle@linux.ibm.com>,
+	Lukas Wunner <lukas@wunner.de>,
 	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	shshaikh@marvell.com,
-	manishc@marvell.com,
-	GR-Linux-NIC-Dev@marvell.com,
-	mahesh@linux.ibm.com,
-	njavali@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17-6.12] PCI/ERR: Update device error_state already after reset
-Date: Sat, 25 Oct 2025 11:54:37 -0400
-Message-ID: <20251025160905.3857885-46-sashal@kernel.org>
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.17-5.4] powerpc/eeh: Use result of error_detected() in uevent
+Date: Sat, 25 Oct 2025 11:54:48 -0400
+Message-ID: <20251025160905.3857885-57-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -87,42 +82,28 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 45bc82563d5505327d97963bc54d3709939fa8f8 ]
+[ Upstream commit 704e5dd1c02371dfc7d22e1520102b197a3b628b ]
 
-After a Fatal Error has been reported by a device and has been recovered
-through a Secondary Bus Reset, AER updates the device's error_state to
-pci_channel_io_normal before invoking its driver's ->resume() callback.
+Ever since uevent support was added for AER and EEH with commit
+856e1eb9bdd4 ("PCI/AER: Add uevents in AER and EEH error/resume"), it
+reported PCI_ERS_RESULT_NONE as uevent when recovery begins.
 
-By contrast, EEH updates the error_state earlier, namely after resetting
-the device and before invoking its driver's ->slot_reset() callback.
-Commit c58dc575f3c8 ("powerpc/pseries: Set error_state to
-pci_channel_io_normal in eeh_report_reset()") explains in great detail
-that the earlier invocation is necessitated by various drivers checking
-accessibility of the device with pci_channel_offline() and avoiding
-accesses if it returns true.  It returns true for any other error_state
-than pci_channel_io_normal.
+Commit 7b42d97e99d3 ("PCI/ERR: Always report current recovery status for
+udev") subsequently amended AER to report the actual return value of
+error_detected().
 
-The device should be accessible already after reset, hence the reasoning
-is that it's safe to update the error_state immediately afterwards.
+Make the same change to EEH to align it with AER and s390.
 
-This deviation between AER and EEH seems problematic because drivers
-behave differently depending on which error recovery mechanism the
-platform uses.  Three drivers have gone so far as to update the
-error_state themselves, presumably to work around AER's behavior.
-
-For consistency, amend AER to update the error_state at the same recovery
-steps as EEH.  Drop the now unnecessary workaround from the three drivers.
-
-Keep updating the error_state before ->resume() in case ->error_detected()
-or ->mmio_enabled() return PCI_ERS_RESULT_RECOVERED, which causes
-->slot_reset() to be skipped.  There are drivers doing this even for Fatal
-Errors, e.g. mhi_pci_error_detected().
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Link: https://lore.kernel.org/linux-pci/aIp6LiKJor9KLVpv@wunner.de/
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/4517af6359ffb9d66152b827a5d2833459144e3f.1755008151.git.lukas@wunner.de
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Link: https://patch.msgid.link/20250807-add_err_uevents-v5-3-adf85b0620b0@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
@@ -130,149 +111,102 @@ LLM Generated explanations, may be completely bogus:
 
 YES
 
-- Summary
-  - Fixes a long-standing AER vs EEH inconsistency by setting
-    `dev->error_state = pci_channel_io_normal` immediately after reset
-    (before `->slot_reset()`), matching EEH behavior and removing per-
-    driver hacks.
-  - Small, targeted behavioral fix that improves error recovery
-    reliability for drivers that gate hardware access on
-    `pci_channel_offline()`.
+Rationale
+- Fixes incorrect uevent status at start of EEH recovery: the code
+  currently emits a uevent with `PCI_ERS_RESULT_NONE` regardless of what
+  the driver reported via `error_detected()`. This misrepresents the
+  actual recovery status to user space.
+- The fix makes EEH behave like AER (already fixed by commit
+  7b42d97e99d3) and s390, improving cross-arch consistency and user
+  space expectations.
 
-- Why it’s a bug
-  - Under AER, `error_state` was previously restored to normal only
-    before `->resume()`, causing `pci_channel_offline()` to return true
-    during `->slot_reset()`. Drivers that correctly re-initialize
-    hardware in `->slot_reset()` could incorrectly self-gate and skip
-    needed accesses.
-  - EEH has set `error_state` to normal before `->slot_reset()` since
-    c58dc575f3c8 for exactly this reason. The mismatch forces drivers to
-    add workarounds under AER.
+Evidence in code
+- Current EEH behavior: emits BEGIN_RECOVERY unconditionally at error
+  detection
+  - `pci_uevent_ers(pdev, PCI_ERS_RESULT_NONE);` is called after
+    `error_detected()` even if the driver “votes” differently (e.g.,
+    DISCONNECT/NEED_RESET): arch/powerpc/kernel/eeh_driver.c:337
+- Proposed change: pass actual driver result
+  - Changes the above call to `pci_uevent_ers(pdev, rc);`, where `rc` is
+    the result of `driver->err_handler->error_detected()` captured just
+    above: arch/powerpc/kernel/eeh_driver.c:337
+- uevent mapping semantics (what user space sees) are centralized in
+  `pci_uevent_ers()`:
+  - NONE/CAN_RECOVER -> `ERROR_EVENT=BEGIN_RECOVERY`, `DEVICE_ONLINE=0`
+  - RECOVERED -> `ERROR_EVENT=SUCCESSFUL_RECOVERY`, `DEVICE_ONLINE=1`
+  - DISCONNECT -> `ERROR_EVENT=FAILED_RECOVERY`, `DEVICE_ONLINE=0`
+  - Others (e.g., NEED_RESET) -> no immediate uevent (consistent with
+    AER)
+  - drivers/pci/pci-driver.c:1595
+- AER already reports actual `error_detected()` return value to udev:
+  - `pci_uevent_ers(dev, vote);` after computing `vote` in
+    `report_error_detected()`: drivers/pci/pcie/err.c:83
+- EEH already emits final-stage uevents correctly (unchanged by this
+  patch):
+  - Success at resume: `pci_uevent_ers(edev->pdev,
+    PCI_ERS_RESULT_RECOVERED);` arch/powerpc/kernel/eeh_driver.c:432
+  - Failure path: `pci_uevent_ers(pdev, PCI_ERS_RESULT_DISCONNECT);`
+    arch/powerpc/kernel/eeh_driver.c:462
 
-- What changes (code specifics)
-  - Core AER: Set `error_state` early in the slot-reset phase
-    - Adds early state transition in `report_slot_reset()` so drivers
-      see the device as online during `->slot_reset()`:
-      - `drivers/pci/pcie/err.c:156`: `if (!pci_dev_set_io_state(dev,
-        pci_channel_io_normal) || !pdrv || !pdrv->err_handler ||
-        !pdrv->err_handler->slot_reset) goto out;`
-    - Keeps the existing update before `->resume()` to cover flows where
-      `->slot_reset()` is skipped (e.g., when `->error_detected()` or
-      `->mmio_enabled()` returns RECOVERED):
-      - `drivers/pci/pcie/err.c:170`: `if (!pci_dev_set_io_state(dev,
-        pci_channel_io_normal) || ... ) goto out;`
-    - Transition gating is safe: `pci_dev_set_io_state()` only returns
-      false for `pci_channel_io_perm_failure` (see semantics in
-      `drivers/pci/pci.h:456`), so we avoid calling `->slot_reset()` on
-      permanently failed devices (sensible safety net).
-  - Remove driver workarounds that manually forced `error_state =
-    normal`
-    - QLogic qlcnic:
-      - `drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c:4218`:
-        remove `pdev->error_state = pci_channel_io_normal;` from
-        `qlcnic_83xx_io_slot_reset()`.
-      - `drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c:3770`: remove
-        `pdev->error_state = pci_channel_io_normal;` from
-        `qlcnic_attach_func()` (used in 82xx `->slot_reset()` path at
-        `...:3864`).
-    - QLogic qla2xxx:
-      - `drivers/scsi/qla2xxx/qla_os.c:7902`: remove the workaround and
-        comment in `qla2xxx_pci_slot_reset()` that set
-        `pdev->error_state = pci_channel_io_normal;` to avoid mailbox
-        timeouts.
-  - The commit also notes drivers like MHI can return RECOVERED from
-    `->error_detected()`, skipping `->slot_reset()`; the resume-path
-    normalization remains to handle that path correctly (consistent with
-    code in `drivers/pci/pcie/err.c:170`).
+Why this is a bugfix suitable for stable
+- User-visible correctness: With the current code, user space always
+  sees “BEGIN_RECOVERY” even when drivers have already indicated an
+  unrecoverable state (e.g., DISCONNECT). The patch ensures uevents
+  reflect the true state immediately, matching AER behavior introduced
+  by 7b42d97e99d3.
+- Minimal, contained change: One-line change in a single architecture-
+  specific file (PowerPC EEH). No API/ABI changes; only corrects the
+  parameter passed to an existing helper.
+- No architectural change: Keeps existing EEH flow; only adjusts the
+  uevent status emitted at a single step.
+- Low regression risk: AER has used this semantic for years;
+  `pci_uevent_ers()` already handles `rc` values. EEH already emits
+  RECOVERED/DISCONNECT at later stages; this makes the initial event
+  consistent.
+- Aligns cross-arch semantics: Consistent uevent reporting across AER,
+  EEH, and s390 reduces user space special-casing and potential errors.
 
-- Risk/compatibility assessment
-  - Scope is minimal and contained: a single earlier state transition in
-    core AER and removal of redundant per-driver hacks.
-  - Aligns AER with EEH behavior proven since 2009 (c58dc575f3c8),
-    reducing platform-dependent behavioral differences in recovery
-    paths.
-  - Drivers that previously avoided IO in `->slot_reset()` because
-    `pci_channel_offline()` returned true will now proceed as intended
-    once the device is reset and accessible. This improves recovery
-    success rates rather than risking harm.
-  - The core change is guarded by `pci_dev_set_io_state()` semantics; it
-    will not “normalize” devices in permanent failure.
-  - No new features or architectural changes; no ABI/API changes.
+Potential side effects and why acceptable
+- For drivers returning `PCI_ERS_RESULT_DISCONNECT` at
+  `error_detected()`, user space will now see `FAILED_RECOVERY`
+  immediately instead of a misleading `BEGIN_RECOVERY`. This is a
+  correctness fix.
+- For returns like `PCI_ERS_RESULT_NEED_RESET`, no initial uevent is
+  emitted (consistent with AER); user space will still receive final
+  RECOVERED/FAILED, as today. Any scripts that strictly expected an
+  initial BEGIN_RECOVERY for all cases are already inconsistent with AER
+  and should not rely on that behavior.
 
-- Backport assessment
-  - Fixes real recovery failures/workarounds (e.g., qla2xxx mailbox
-    timeouts), affects users, and reduces platform-specific divergence
-    in error recovery semantics.
-  - Change is small and surgical; drivers touched only remove redundant
-    assignments now handled in the core.
-  - Even in stable, these driver-line removals are safe once the core
-    change is present; alternatively, stable could carry just the core
-    change and leave driver workarounds (harmless duplication). As a
-    single commit, it remains suitable.
-  - While the commit message snippet doesn’t show a “Fixes:” or “Cc:
-    stable” tag, the rationale, history, and limited blast radius make
-    it an appropriate stable backport candidate.
+Historical context
+- Uevent support was added by 856e1eb9bdd4 (“PCI/AER: Add uevents in AER
+  and EEH error/resume”), initially emitting `NONE` at error detection
+  for both AER and EEH.
+- AER was corrected by 7b42d97e99d3 (“PCI/ERR: Always report current
+  recovery status for udev”) to emit the actual `error_detected()`
+  result.
+- This patch brings EEH to parity with that established AER behavior.
 
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c | 1 -
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c    | 2 --
- drivers/pci/pcie/err.c                              | 3 ++-
- drivers/scsi/qla2xxx/qla_os.c                       | 5 -----
- 4 files changed, 2 insertions(+), 9 deletions(-)
+Conclusion
+- This is a targeted, low-risk correctness fix that improves user space
+  observability and cross-arch consistency without changing kernel-side
+  recovery logic. It fits stable backport rules (important bugfix,
+  minimal change, low regression risk, confined to a subsystem).
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c
-index d7cdea8f604d0..91e7b38143ead 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c
-@@ -4215,7 +4215,6 @@ static pci_ers_result_t qlcnic_83xx_io_slot_reset(struct pci_dev *pdev)
- 	struct qlcnic_adapter *adapter = pci_get_drvdata(pdev);
- 	int err = 0;
+ arch/powerpc/kernel/eeh_driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 48ad0116f3590..ef78ff77cf8f2 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -334,7 +334,7 @@ static enum pci_ers_result eeh_report_error(struct eeh_dev *edev,
+ 	rc = driver->err_handler->error_detected(pdev, pci_channel_io_frozen);
  
--	pdev->error_state = pci_channel_io_normal;
- 	err = pci_enable_device(pdev);
- 	if (err)
- 		goto disconnect;
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-index 53cdd36c41236..e051d8c7a28d6 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
-@@ -3766,8 +3766,6 @@ static int qlcnic_attach_func(struct pci_dev *pdev)
- 	struct qlcnic_adapter *adapter = pci_get_drvdata(pdev);
- 	struct net_device *netdev = adapter->netdev;
- 
--	pdev->error_state = pci_channel_io_normal;
--
- 	err = pci_enable_device(pdev);
- 	if (err)
- 		return err;
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index a4990c9ad493a..e85b9cd5fec1b 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -141,7 +141,8 @@ static int report_slot_reset(struct pci_dev *dev, void *data)
- 
- 	device_lock(&dev->dev);
- 	pdrv = dev->driver;
--	if (!pdrv || !pdrv->err_handler || !pdrv->err_handler->slot_reset)
-+	if (!pci_dev_set_io_state(dev, pci_channel_io_normal) ||
-+	    !pdrv || !pdrv->err_handler || !pdrv->err_handler->slot_reset)
- 		goto out;
- 
- 	err_handler = pdrv->err_handler;
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index d4b484c0fd9d7..4460421834cb2 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -7883,11 +7883,6 @@ qla2xxx_pci_slot_reset(struct pci_dev *pdev)
- 	       "Slot Reset.\n");
- 
- 	ha->pci_error_state = QLA_PCI_SLOT_RESET;
--	/* Workaround: qla2xxx driver which access hardware earlier
--	 * needs error state to be pci_channel_io_online.
--	 * Otherwise mailbox command timesout.
--	 */
--	pdev->error_state = pci_channel_io_normal;
- 
- 	pci_restore_state(pdev);
+ 	edev->in_error = true;
+-	pci_uevent_ers(pdev, PCI_ERS_RESULT_NONE);
++	pci_uevent_ers(pdev, rc);
+ 	return rc;
+ }
  
 -- 
 2.51.0
