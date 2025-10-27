@@ -1,91 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-13323-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13324-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FFC2C0C646
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 09:46:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6114C0C754
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 09:54:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cw6YN1PDNz3btd;
-	Mon, 27 Oct 2025 19:46:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cw6l56JZjz306S;
+	Mon, 27 Oct 2025 19:54:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761554776;
-	cv=none; b=IKYYoT//a9myf+BYfzm9DHSbnonTvIeJ60/NOl2VXa4HkQIvYts65XMTRoRBG7MYOQpC3SwKUixV1+Sw2Otp5m8NBMexzgMfs+4pharD9v8haJBXkAaBErXu0gPal5tVu/RHqwV3XOoxIRzb9Xhs/xatzV0TvdeFybzN5UGvnC3jhf32Rt7XsM2mTQ58xou/kcoTwQ60WRWyDBcDjDEeiyE53/ISSltUovUFxg/PdhljbDJj5RzKGcXfttvD0m8OkrWFHR1yBKeUXMdVFe47Jok3HWEMwQkvoE/06Md9ybG/wbHyJnzRvD0OH95vOAd7j+9t6FTFV13P8T9fR9TRtw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761555281;
+	cv=none; b=LENT0Ndaysqj3NnCIuU1uziNvABsFaRjcXhdBZQ7qIUWkMoxDAEk6CqhkLQAspdYLrrFVA70QJITBzw7amNJsrLFgAMWxSjnuKLQ/klUpGy5S46GBDq4jPjYO2Vxz/wh0w6pb/o9VSGV5Iv2jKWUw2hJbHuPx1ESLmY5LwL3e3RT6EubRVx06isEo3eRCcnRk+r9c/6IcYaJskQBc3TL96sbglha+ChrBfbhbCOWFZb1ra0HcN7sLTvrtKDAkzpS7Nm4f7/qa9gddbe3i94pYSQS6JQYkSw5rAok+6YYl7M14XcT6A93NBT7j5FKqkGRR8P21dpA/vd/QYGCFUNaNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761554776; c=relaxed/relaxed;
-	bh=KYXicRyMzFG54clHK8f3TeDGrtRhrioeKCXtreOKP9c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dvWt+k+xgRJs6VoiliWzwLsPlLukKB6v0s4Y+hUz0AF3S69YEIlTuMjVMdQ+GNeVedhKMk+ggtGAUbPjc4Hcz5utA9a5uEwjYhlAaFp8ynSUuwm/uEMQW9aDOvxjKX75WLBcXgAl2WXdRmssWuzWoXBUq7sIqzEMUAAhmJw4Axh8UhYFzeeFyAq9slsyIdJ7GMxaJFJKntKJL4q9no6JjGJZby88Tww7fD9+UsO2tuH4L5p9Kq5N8vB6Ocu3XIrSPp+cXfKFbk6hed67oyzyFrXIvt1sS0UoeY3NailTMh/2eIo9CpejhVTq3235uiRlSyMPaLFvnlZZKuR5214yIw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VpDLK1yZ; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=linmq006@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1761555281; c=relaxed/relaxed;
+	bh=wADVRJvytaaWYRB+ePAV85hnF5m9541y74Pe50E1fZI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=jiocwq9rLAJK5n2HxS6GEOMIBJ1OwHG/TDGwZJ/1lFtB5TtwjWD43EJDIQNBJO+Y/jyKoAyoE01B3yTqTDHzul2EFzikNbrBpGLtjXvU6SwswuVyIke4zHH0v6UOk9TjKnnZdnNRswVZjbvw2QyORW9LK5oJoiQizzSAFidlPrGMOmhEf7SxqcpNrTyykstuHTwo6Xanprt9DhDKPHaEwQlukuWxv48rBsPVCAozrrk4TvoBFofny8hddx0IUBV5LfTBtyCufHNlXnY9mUrKXFgMRl0rhXwwr0NUdIbpKg+DGHYAvgGtdqyXc+A3N61bNJWu9ot+4puC6K43OC/69w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YsmeIQP8; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=oSFIPMt9; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VpDLK1yZ;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YsmeIQP8;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=oSFIPMt9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=linmq006@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cw6YL38nqz2yw7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 19:46:13 +1100 (AEDT)
-Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-33226dc4fc9so4145296a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 01:46:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761554771; x=1762159571; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KYXicRyMzFG54clHK8f3TeDGrtRhrioeKCXtreOKP9c=;
-        b=VpDLK1yZ1YU4JM843OKwesxikOIJHlf9vaaICIGkDqedeEJ8drO5W+201+u3PcW1if
-         5LZ2Wh12xhGTYxKNiCXM2mogPZvB+kwN5ZsjfS+1aqU9QDOHR9YvgfqzLdvFJAp8TtCg
-         Ue1OqTg4GARG5CPArPYvijT8lXCdg3aD/d3og721XBfMFTJntNWDXSTGnzuqz6fb1I1s
-         f9gWuzzJ+r+NVI3XAfSktHiIPi8EHuP4Atxy/PBC08vtTjcAbP3w/ksZttHKVQKpPpor
-         1M5YGNRXDTYHY2lvP6fKy5b374yH3ZD9LUajq5TocdZQZ1TX3IVAGhjri0MovsfUMXhF
-         2few==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761554771; x=1762159571;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KYXicRyMzFG54clHK8f3TeDGrtRhrioeKCXtreOKP9c=;
-        b=qwc1QByuCDdY95tNnH38/ATSrGJ+lkvTisjqpK0My8iNgUEedAAZ5jaYsmdizLl5AX
-         3jpQekYcgnU3F/tRlf+HBunsPX/gwj/t/kbmT14QTO7e/K9OLkjjh9HaMYvpzd5sQ3Gi
-         VstGTQjLTwwYmdrmlietFQw/3dPPI3StlNc8/zV/hfEyFHnwMBtgrz4uixfc7Wrkppq5
-         lq64c+dJXu3aoLLfW0UathWF6m1V9KL6gyDcUe7m6g7JrLm+meECsDQYDBSxcFwECM/N
-         B7ePLeOEj/yS8/A82pn2uoPCOEeu475NNDFEuCUxh446PFEDm/v7yYLQ4Vx7efTd96Dt
-         YoEw==
-X-Forwarded-Encrypted: i=1; AJvYcCWsjySSXDBVu95MdnTFaCHmaqrrObAQpiE/OlgBSjsPnOaj7iUeAZw+aXccJ+FTxz8hbVsr2prqHSE0PpM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyKlKGo3wmnL5YTbu5d0z69h/dwEmPbeOl1tNCHSua5x7ufIKPo
-	p+n5XOg9MPcTqW1r/k5SfGLlHfLjqe0Y5sidQnvLExP0om3RGN+XvPeO
-X-Gm-Gg: ASbGncsreOBm0SPzBhUxAfUprwQQz9EKxJ5djxhct+lze+7BfFYaR9HQShQIDH41+t8
-	GOZnSN5q7w98W8UesMSQcfLfTW0GLUHY5pd1PGdymwtVWaxp35FaPJP5WjX+OLmMx77BEhEmldN
-	+anpD9sl2uxi9+ODD44FCK0VCdC+ha5/XXw+p/aqWHYQtI2eMaZdcSVEiiZk4x3eguy7MDO9doI
-	XxyQ9Wm3XNASNapgXv50XYED1/T+We6FQm1FRLkkkoKmSm/NqeozSqYSaNv+4USkrCM5OPOvmgz
-	kvPkEOOGzUcSipB3zgWSzmc86O+KyUnij3nsilF8MJmSgb/7DwR/Wgss4KDQ48fGTcTkESJ+XEn
-	fqvQy4jxBMyqvoJlX1MaTBPhGXemtjHNjs0l8Sh9LmuY7xWgxbsiJSb+6E1ELiyBTbUXcnqyIO0
-	o0rZT1wsxG55EnjTa7czCBSvvGmlcJrQmE
-X-Google-Smtp-Source: AGHT+IFtc9o9JCh/bKZQgDfAtOs/Qjpo1vXU+pF6273boM1sbWl2NHlxbrCZc5bY8n8bBNjS0zBNHg==
-X-Received: by 2002:a17:90b:55cf:b0:32e:64ca:e84e with SMTP id 98e67ed59e1d1-33bcf874448mr42762102a91.15.1761554771534;
-        Mon, 27 Oct 2025 01:46:11 -0700 (PDT)
-Received: from localhost.localdomain ([124.77.218.104])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-33fed7d27b2sm7703951a91.4.2025.10.27.01.46.08
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 27 Oct 2025 01:46:11 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@ozlabs.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] powerpc/powermac: Fix reference count leak in i2c probe functions
-Date: Mon, 27 Oct 2025 16:45:53 +0800
-Message-Id: <20251027084556.80287-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cw6l5109Jz2yjs
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 19:54:41 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1761555278;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wADVRJvytaaWYRB+ePAV85hnF5m9541y74Pe50E1fZI=;
+	b=YsmeIQP8S5/E25k3rwutuq+qQsolOVlhOTHUnDexDGFCkFrHdxhoqTT3j4HSbjWO/eh3bh
+	ws51Q5qDygFbUuo9tkbjwBPSyDMCe7ZduKzOsVawUkjTHIVQ0SGfBb0WK+GaAGv/Q3j5rH
+	QbE7eR6KkenDzVeTCiEc9aiVvHER+zUJJ9sZz/hpZweEJ9/q6Ud0ZpQ0F9lNcMEtRosSQc
+	nsP6h/NOsI6hq2iYLLdgDgO/MPXa8gIwYj2RiIjZVLQepB2mgtUrjeggM4hqUj9K+Zw2ER
+	1/zXoGSDqOvFmIBy0/WHQck8aQpTlOXvnIp3D4ruoF6dMeLf4TQpJTGPwpOv9w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1761555278;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wADVRJvytaaWYRB+ePAV85hnF5m9541y74Pe50E1fZI=;
+	b=oSFIPMt9Z1bsEXRk4Vnk69ZGkKjQvDEd3BNgP5hBFPT/ptpcHdW4WkGr7AjAEYIF46zjmZ
+	p6nXBMQn7vCpeiDA==
+To: Shrikanth Hegde <sshegde@linux.ibm.com>, LKML
+ <linux-kernel@vger.kernel.org>, linuxppc-dev
+ <linuxppc-dev@lists.ozlabs.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Gabriele Monaco
+ <gmonaco@redhat.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Michael Jeanson <mjeanson@efficios.com>, Jens Axboe <axboe@kernel.dk>,
+ "Paul E. McKenney" <paulmck@kernel.org>, "Gautham R. Shenoy"
+ <gautham.shenoy@amd.com>, Florian Weimer <fweimer@redhat.com>, Tim Chen
+ <tim.c.chen@intel.com>, Yury Norov <yury.norov@gmail.com>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>
+Subject: Re: [patch V2 16/20] sched/mmcid: Provide new scheduler CID mechanism
+In-Reply-To: <9076c353-a22b-4c38-bd30-fb10eb0ae851@linux.ibm.com>
+References: <20251022104005.907410538@linutronix.de>
+ <20251022110556.399477196@linutronix.de>
+ <9076c353-a22b-4c38-bd30-fb10eb0ae851@linux.ibm.com>
+Date: Mon, 27 Oct 2025 09:54:36 +0100
+Message-ID: <87ldkwwwqb.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,49 +81,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The of_find_node_by_name() function returns a device tree node with its
-reference count incremented. The caller is responsible for calling
-of_node_put() to release this reference when done.
+On Mon, Oct 27 2025 at 10:41, Shrikanth Hegde wrote:
+> On 10/22/25 6:25 PM, Thomas Gleixner wrote:
+>> The MM CID management has two fundamental requirements:
+>>=20
+>>    1) It has to guarantee that at no given point in time the same CID is
+>>       used by concurrent tasks in userspace.
+>>=20
+>>    2) The CID space must not exceed the number of possible CPUs in a
+>>       system. While most allocators (glibc, tcmalloc, jemalloc) do not
+>>       care about that, there seems to be at least some LTTng library
+>>       depending on it.
+>>=20
+>> The CID space compaction itself is not a functional correctness
+>> requirement, it is only a useful optimization mechanism to reduce the
+>> memory foot print in unused user space pools.
+>>=20
+>
+> Just wondering, if there is no user space request for CID, this whole mec=
+hanism
+> should be under a static check to avoid any overhead?
 
-Fixes: 730745a5c450 ("[PATCH] 1/5 powerpc: Rework PowerMac i2c part 1")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- arch/powerpc/platforms/powermac/low_i2c.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+The problem is that CID has been introduced unconditionally with RSEQ
+and there is no mechanism to opt-in. So we could go and change the ABI,
+but as you know that's generally frowned upon.
 
-diff --git a/arch/powerpc/platforms/powermac/low_i2c.c b/arch/powerpc/platforms/powermac/low_i2c.c
-index 02474e27df9b..f04dbb93bbfa 100644
---- a/arch/powerpc/platforms/powermac/low_i2c.c
-+++ b/arch/powerpc/platforms/powermac/low_i2c.c
-@@ -802,8 +802,10 @@ static void __init pmu_i2c_probe(void)
- 	for (channel = 1; channel <= 2; channel++) {
- 		sz = sizeof(struct pmac_i2c_bus) + sizeof(struct adb_request);
- 		bus = kzalloc(sz, GFP_KERNEL);
--		if (bus == NULL)
-+		if (bus == NULL) {
-+			of_node_put(busnode);
- 			return;
-+		}
- 
- 		bus->controller = busnode;
- 		bus->busnode = busnode;
-@@ -928,6 +930,7 @@ static void __init smu_i2c_probe(void)
- 		bus = kzalloc(sz, GFP_KERNEL);
- 		if (bus == NULL) {
- 			of_node_put(busnode);
-+			of_node_put(controller);
- 			return;
- 		}
- 
--- 
-2.39.5 (Apple Git-154)
+I thought about adding a static key, but that'd be systemwide and
+would probably required to be opt-out for the same reason.
+
+>> +static inline unsigned int mm_get_cid(struct mm_struct *mm)
+>> +{
+>> +	unsigned int cid =3D __mm_get_cid(mm, READ_ONCE(mm->mm_cid.max_cids));
+>> +
+>> +	for (; cid =3D=3D MM_CID_UNSET; cpu_relax())
+>
+> This triggers an compile error on ppc64le.
+>
+> In file included from ./include/vdso/processor.h:10,
+>                   from ./arch/powerpc/include/asm/processor.h:9,
+>                   from ./include/linux/sched.h:13,
+>                   from ./include/linux/sched/affinity.h:1,
+>                   from kernel/sched/sched.h:8,
+>                   from kernel/sched/rq-offsets.c:5:
+> kernel/sched/sched.h: In function =E2=80=98mm_get_cid=E2=80=99:
+> ./arch/powerpc/include/asm/vdso/processor.h:26:9: error: expected express=
+ion before =E2=80=98asm=E2=80=99
+>     26 |         asm volatile(ASM_FTR_IFCLR(                             =
+        \
+>        |         ^~~
+> kernel/sched/sched.h:3615:37: note: in expansion of macro =E2=80=98cpu_re=
+lax=E2=80=99
+>   3615 |         for (; cid =3D=3D MM_CID_UNSET; cpu_relax())
+>
+
+Duh. Did not notice because x86 implements cpu_relax() as a static
+inline while PPC has it as a plain macro define. Let me move it out of
+the for() then.
+
+Thanks,
+
+        tglx
 
 
