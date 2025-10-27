@@ -1,59 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-13321-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13322-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A03C0C619
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 09:45:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 218B5C0C625
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 09:45:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cw6Vx1xFQz3dWv;
-	Mon, 27 Oct 2025 19:44:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cw6Vy36hDz3dmy;
+	Mon, 27 Oct 2025 19:44:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761554649;
-	cv=none; b=mYa8zA3QT+VaJPBYOFYIEoyn/Wfqxt3MWoiIkWGfNXkKr1bU9SiY9Z4wk7fhkuwuVZVAYHZwO+ea57UXoUPl058ApiRpn7HGR8FXCJtGGx9N9GP6LnzPFC+KNS8FWrJ0MBKndKJvIUBzojdi+QHPwelaH9Uw0Xf1P7mf57WfkF4PIi1kvutjaPeUea29lYis8i/tVYAAoPahm50V7nFzZ42Yw5Ro0r2RLSpY2fCFUNPWM0AAhTBkh4k4TmEov9d8EoiJzZIciyEv4vdph2vGMTV0Z97vxmPR7qcVhwTb8k73FrCHa0gKxHsN4ISwd/Dw4o9MmjXHlrhpm0h/TpXzTQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761554650;
+	cv=none; b=MA2JUBQJKh53pyIvBotbcd0Fk2+qgTjTry0UpAU/ExHXVnAPrDcC9E2qqex9onEB5poyq5W/vC8PQv5rs0zOsRHl4D7eI+B4LLditXxoLiTJlXSEFkKv5N2dyw2Dp4YZBSd7ZGZA96G+d9nzxEUP/4OIBOoyrLAMvAhXGbr9/gUHDhyFmtf+W4u9AxbfIRUWNEB9xVM7kfIfrrv6n0lkhw8LVIHHQjhVu6Dy8JPs3FLPp4ltxTjo6sQMnwe7uejmmKqY4DPgAncJxGP0QlOPFhCCnQ6sbTFgm6rhkbuVMS9i78W4ZrsTlLZ4itcyqe2t+4qZxq9WpRNDRDWH5tX0Sg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761554649; c=relaxed/relaxed;
-	bh=uuF1PbflRL7G3epzTRJvFK2AzVPBYAY82eKYUINaU84=;
+	t=1761554650; c=relaxed/relaxed;
+	bh=Zgu2fA8f5xJPsST4+i4W8NVv6qck0BV/bxjOydsn72k=;
 	h=Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Date; b=EDtvcrxlOhgPDMKH2Evvf0KmUwCwrmKY6HjN0/MBvn+0kUjmpaOrh30iScDIaJ583ojOcR16R2CEUFLy4AG0Tf3I+QQmBFSdOMKZ9ZtGK7qC9ofgURhBzSoY0uZPXMSV/zfmlZ8b6EJLk8dFXwVds3CDyG996a/VmLTUqYf3AVhkwxiE4JW5112rJ6ymINhiM6Q2HSVhjFVGg9B+idTEjpl5azvqxfw4TeKqI/ASd1O7PfzO2V3kNEIrp+bmPdiPd9FeeiBdQII76rluPrFgAgqFPMmOXVZQMaPqCCfATbGZUI6A2UyLcnwD3Ht3OheF5LSkGH4S79BcRLK8kGz04g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=XJp1D9/T; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=7tqLdWfu; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 Content-Type:Date; b=G8PBD5xfbjCXPCIwq6vd3h1VweMHRriXPmI+D+u00Cilt9Z5UHV2mP6ReFcyfO4LAaIFkn5Dtuu1l9xKgATYDYCSqn72IsRz0FdePkk7XjH4iCf2FOqXxUeUCF70m5H9ThwAif+SmKk22JqpjDaS3TdFpjPcc+kFeMApYY0W8cAO5F6bWokzlM2E60Yy7rd47NI6AIREqoJIx0zV50tThqPMvejjJmaCDdtp+FBSM83BTTglB2OqlbOIqp1au0ec7ytnG53LHJ+4kTZ+Y+UjeN75QUEmedJ6KZRtxbF59nKhbVyUCnT6TxK7HIh/wUauT95LcpeCnB4mWg5j/jjMNQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=vc02t/+I; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=h5a/XjQ9; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=XJp1D9/T;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=7tqLdWfu;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=vc02t/+I;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=h5a/XjQ9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cw6Vw0Wqhz3bcf
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 19:44:08 +1100 (AEDT)
-Message-ID: <20251027083745.799714344@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cw6Vx6Nqqz3dfr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 19:44:09 +1100 (AEDT)
+Message-ID: <20251027083745.862419776@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1761554643;
+	s=2020; t=1761554645;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=uuF1PbflRL7G3epzTRJvFK2AzVPBYAY82eKYUINaU84=;
-	b=XJp1D9/TPX0ZM7MIHCKed9tqeLgqSv/2F+apqKQDebqYn6NoPuN/KgyUGR7e9+Pb46cv7z
-	PidFEGWYLqR5eMMBoAM5oKne2DNQrQtqnhAYM8P3M+C0njz6W7tSAUwWakDK7lkuC7hKUn
-	4Y98eyJ1Wf91vEpfGdDB7ST9gnjTrgb4Dolb+fcAOSA9UaxhNkGcCUuLSu7NgE2YXw9Ggr
-	8qJdqGMTrUsPkhzNn4k/mS4PBpWTdV/3G4wRCxNvdHKfTDchiv/BOu1s9hjAjN/oy4chY8
-	8Zo/NMPt5F0WhtrkrKzONFyzP7XWX1fHqR0zHKeHhoHZXajxla+RO1Z1XiUNIA==
+	 references:references; bh=Zgu2fA8f5xJPsST4+i4W8NVv6qck0BV/bxjOydsn72k=;
+	b=vc02t/+I+nf33n4SyJKuoN622JX8SnrnzVtfhDPK+/CUbQ/RqLF/DthXP1xJ7sULRhvFl2
+	ervlj9kpfpMbHwMkAynBmHLcTJGBcGkuv85J1dwgCoOnI/zfTSvkKoRqQMa9Hf4Ov6KyNc
+	2rN2oN1ArrM7znk74JARchtCqYx5WcGfoH2YzHDbunlrBv0LlZa49GKnmYBm5bRxysyvD4
+	lAfZl2u+xJgpU+3ekTXaT18RIdUteVcBr/OibuH9jL9sg+2MENKRz5IiDVDBTQbsohFXwL
+	icBtnSnGBPVlo/TpaDZdcBIO7NUpOu7h0egc6gY+lB4hcffx4LFtczx8LgyTUQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1761554643;
+	s=2020e; t=1761554645;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=uuF1PbflRL7G3epzTRJvFK2AzVPBYAY82eKYUINaU84=;
-	b=7tqLdWfui9Z7ALY3gMC74wCiJZ4FeyGAeXFp+T4tRe0iTRQU/C1aRO5OvfbOePqeBzYzHC
-	JnYYqYdj61kHXhBg==
+	 references:references; bh=Zgu2fA8f5xJPsST4+i4W8NVv6qck0BV/bxjOydsn72k=;
+	b=h5a/XjQ9yWZ3Y3xQQNZYqfN6ytz0CnIzmt8Mgcy5kYj76XXOgxcRFSmKp7julm7XZYSWmA
+	kYpiplU0qPYsnOCA==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: x86@kernel.org,
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org,
  kernel test robot <lkp@intel.com>,
  Russell King <linux@armlinux.org.uk>,
  linux-arm-kernel@lists.infradead.org,
  Linus Torvalds <torvalds@linux-foundation.org>,
+ x86@kernel.org,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>,
  Nicholas Piggin <npiggin@gmail.com>,
@@ -74,12 +78,8 @@ Cc: x86@kernel.org,
  Peter Zijlstra <peterz@infradead.org>,
  Darren Hart <dvhart@infradead.org>,
  Davidlohr Bueso <dave@stgolabs.net>,
- =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>,
- linux-fsdevel@vger.kernel.org
-Subject: [patch V5 11/12] x86/futex: Convert to scoped user access
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
+Subject: [patch V5 12/12] select: Convert to scoped user access
 References: <20251027083700.573016505@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -95,124 +95,54 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 27 Oct 2025 09:44:02 +0100 (CET)
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+Date: Mon, 27 Oct 2025 09:44:04 +0100 (CET)
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Replace the open coded implementation with the scoped user access
-guards
+From: Thomas Gleixner <tglx@linutronix.de>
+
+Replace the open coded implementation with the scoped user access guard.
 
 No functional change intended.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86@kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org
 ---
-V4: Rename once more
-    Use asm_inline - Andrew
-V3: Adapt to scope changes
-V2: Convert to scoped masked access
-    Use RW access functions - Christophe
+V4: Use read guard - Peterz
+    Rename once more
+V3: Adopt to scope changes
 ---
- arch/x86/include/asm/futex.h |   75 ++++++++++++++++++-------------------------
- 1 file changed, 33 insertions(+), 42 deletions(-)
+ fs/select.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 ---
---- a/arch/x86/include/asm/futex.h
-+++ b/arch/x86/include/asm/futex.h
-@@ -46,38 +46,31 @@ do {								\
- } while(0)
- 
- static __always_inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
--		u32 __user *uaddr)
-+						       u32 __user *uaddr)
+--- a/fs/select.c
++++ b/fs/select.c
+@@ -776,17 +776,13 @@ static inline int get_sigset_argpack(str
  {
--	if (can_do_masked_user_access())
--		uaddr = masked_user_access_begin(uaddr);
--	else if (!user_access_begin(uaddr, sizeof(u32)))
--		return -EFAULT;
--
--	switch (op) {
--	case FUTEX_OP_SET:
--		unsafe_atomic_op1("xchgl %0, %2", oval, uaddr, oparg, Efault);
--		break;
--	case FUTEX_OP_ADD:
--		unsafe_atomic_op1(LOCK_PREFIX "xaddl %0, %2", oval,
--				   uaddr, oparg, Efault);
--		break;
--	case FUTEX_OP_OR:
--		unsafe_atomic_op2("orl %4, %3", oval, uaddr, oparg, Efault);
--		break;
--	case FUTEX_OP_ANDN:
--		unsafe_atomic_op2("andl %4, %3", oval, uaddr, ~oparg, Efault);
--		break;
--	case FUTEX_OP_XOR:
--		unsafe_atomic_op2("xorl %4, %3", oval, uaddr, oparg, Efault);
--		break;
--	default:
--		user_access_end();
--		return -ENOSYS;
-+	scoped_user_rw_access(uaddr, Efault) {
-+		switch (op) {
-+		case FUTEX_OP_SET:
-+			unsafe_atomic_op1("xchgl %0, %2", oval, uaddr, oparg, Efault);
-+			break;
-+		case FUTEX_OP_ADD:
-+			unsafe_atomic_op1(LOCK_PREFIX "xaddl %0, %2", oval, uaddr, oparg, Efault);
-+			break;
-+		case FUTEX_OP_OR:
-+			unsafe_atomic_op2("orl %4, %3", oval, uaddr, oparg, Efault);
-+			break;
-+		case FUTEX_OP_ANDN:
-+			unsafe_atomic_op2("andl %4, %3", oval, uaddr, ~oparg, Efault);
-+			break;
-+		case FUTEX_OP_XOR:
-+			unsafe_atomic_op2("xorl %4, %3", oval, uaddr, oparg, Efault);
-+			break;
-+		default:
-+			return -ENOSYS;
+ 	// the path is hot enough for overhead of copy_from_user() to matter
+ 	if (from) {
+-		if (can_do_masked_user_access())
+-			from = masked_user_access_begin(from);
+-		else if (!user_read_access_begin(from, sizeof(*from)))
+-			return -EFAULT;
+-		unsafe_get_user(to->p, &from->p, Efault);
+-		unsafe_get_user(to->size, &from->size, Efault);
+-		user_read_access_end();
++		scoped_user_read_access(from, Efault) {
++			unsafe_get_user(to->p, &from->p, Efault);
++			unsafe_get_user(to->size, &from->size, Efault);
 +		}
  	}
--	user_access_end();
  	return 0;
  Efault:
--	user_access_end();
+-	user_read_access_end();
  	return -EFAULT;
  }
  
-@@ -86,21 +79,19 @@ static inline int futex_atomic_cmpxchg_i
- {
- 	int ret = 0;
- 
--	if (can_do_masked_user_access())
--		uaddr = masked_user_access_begin(uaddr);
--	else if (!user_access_begin(uaddr, sizeof(u32)))
--		return -EFAULT;
--	asm volatile("\n"
--		"1:\t" LOCK_PREFIX "cmpxchgl %3, %2\n"
--		"2:\n"
--		_ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG, %0) \
--		: "+r" (ret), "=a" (oldval), "+m" (*uaddr)
--		: "r" (newval), "1" (oldval)
--		: "memory"
--	);
--	user_access_end();
--	*uval = oldval;
-+	scoped_user_rw_access(uaddr, Efault) {
-+		asm_inline volatile("\n"
-+				    "1:\t" LOCK_PREFIX "cmpxchgl %3, %2\n"
-+				    "2:\n"
-+				    _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG, %0)
-+				    : "+r" (ret), "=a" (oldval), "+m" (*uaddr)
-+				    : "r" (newval), "1" (oldval)
-+				    : "memory");
-+		*uval = oldval;
-+	}
- 	return ret;
-+Efault:
-+	return -EFAULT;
- }
- 
- #endif
 
 
