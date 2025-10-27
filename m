@@ -1,91 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-13307-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13308-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DB20C0C2D6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 08:46:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57250C0C411
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 09:13:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cw5Dq72rnz2yyx;
-	Mon, 27 Oct 2025 18:46:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cw5r26TCtz2yyx;
+	Mon, 27 Oct 2025 19:13:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761551211;
-	cv=none; b=J6p1mnKx4KUXbFui6FUXisApGQPBPH0dHQUlZkbxGxtzsTVmHyMckNF8h56Fm7sD/e0jlmZitLHFXccsrndsrBu7j/2qPQxblVSpgMrFEFnfI3SenT0Kbh3w88fGGizK77TWN371+dZWUeWPPMel3trBq6E9hqCp+kiJflDSdETBVP1/vTd73+2PGZmB7grssLz0LYkmvbEe4fpwBjN/OmBIxLq161+FmaL1Zweqpj1NBsGjwCV8rkXYcC3VjBCh+cSaUe/DD0zUPkYm8JUmKOZrYdT89+cAbWnh+ggmLwoOn1DiNE9J4dKFPkyEiuFk9iab+NjUloDzYGBIIrp0gA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761552834;
+	cv=none; b=Edz/DM65t39QrwLy69WyGSMdEQHWs6An971Ihh4LOb1B3CApAX7TI6Ppdmb9MzczzkFWODYuP2k4J7tp5Kb0beGTlVP6CtKvJ1GjwHHmae8tzD7ROe8bs7w/C66cGsLerZ/1dgR/GM3oFKnUMQi/9zmxEWnfHY+ZTugUag+mDHUa30vwsUJUzXO42laFZbhK7ouukMK0+RfVrHZr03rioQ+46unTmg/0acy+ABE2a3ryVD4sfb5R5hBhBF+6taODTtJjrJgO09HyvXDLjC3F8+PBnguFm7AWwCeOcHX5iisR1BQ6MiD1xPyDRQNsOsL5BHD/EeOAb76nDDpgG7NyRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761551211; c=relaxed/relaxed;
-	bh=0Y6BSfaXtj7eGt7emfZsnVlTLYftCSxA9NJ9tCnZ7Po=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bgk0Ez7BbBazed/I/vU4SY4+sNmi9cwmzyvWHTW6so8s4Od/ETKBiGx8aKDyZNILLvezPuwFRPy90kIElED/mbdAApdqksbQ0nZdx4pwSDvLcZw+ldNh0BO0T/zzAxw9EywzO8b4mZASuWC0326ZWK2OAQ6sudVUIm87ijOh3tn6lXI8r9b2emIq1BQXxKI/bJLc+a2VZekFNH4TfK7OZLPgTHVcqnkD0hbwzX14PyKl9awZOeEx0gIzP63ckJPQP18JD00G5O/Mv/trYVyUxqsreOJOxqGFDtaPdVNO+5YzVd4cduhUC9XRAyR3wzo/Nlz26KS/QnYjkZk1XmtRiw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=In2uTG/Q; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vishalc@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1761552834; c=relaxed/relaxed;
+	bh=4Jl1IRJ1KOa3eGEJUzKJJ2c9eSrVA6i/w3yC2J76xMQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=TvBPj021SxUPH11TwCaOxBO7m0mNp1VLXe6ISwS3ayxAgOy1EzPcmQ0h9VcZ6tMLqWEA7eIWgRF1F8WBloYcDll5GE6Q10fnKXbGkC7tKpo4OQx2+7atnhuVBHH6fsiPVczOHWDS4jDaZejIZyIaPgRx9FeeESrFyhWh5huukOihoR9nlY/JakeBGfwebU6QJXhko1YSPFeOphqryYUpRjXe+fo863GRfQM9CMGjt6nreXUOWpNFL7ya/ht3j98g+WOscxK6YoUUhHXEF0RYgmYOtgfpzlTHu1bfuCaYx+TTE+64TLv1y+wPsDEmWpLVs6VCHthXLLowQDOhfrqYFQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=m3xD6u+E; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=naresh.kamboju@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=In2uTG/Q;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=m3xD6u+E;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vishalc@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=naresh.kamboju@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cw5Dn68zkz2yFW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 18:46:49 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59QKrBJq009936;
-	Mon, 27 Oct 2025 07:46:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=0Y6BSf
-	aXtj7eGt7emfZsnVlTLYftCSxA9NJ9tCnZ7Po=; b=In2uTG/QqQZw6G3At9CEW1
-	o5ceaYJD3iPLGGHMz3C4F66zaSCcquNvfvqtVFG3oFtLLxEmA8ag8/maj0wBGW5m
-	Sp3MoSpr/pR9Zs8acm6kZxjngjgLMHcWP3xxEvklW7K1v574FqYHKAb7HGXyLDwq
-	eLWepCA/aRdlF2fvCmTsImCMjSoVtHlNSFaMsNAgfJTywkgoBa4sPi2n9sqiWRKq
-	Wwp/zYWm2NFLIq1ToHS51zqq/ulUAU3o8nQ1QqQ4SCU8PTUI6SZPl4WuxLGb1gn2
-	Ojb7Uy94v+d4bVFYSGRm4q9FqpZqPWovOeDGhANiuhuTIBU3O5qu3jhfyF7rwxTg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0myrwn13-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Oct 2025 07:46:32 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59R7k8sl024040;
-	Mon, 27 Oct 2025 07:46:32 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0myrwn10-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Oct 2025 07:46:31 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59R4ILBv009477;
-	Mon, 27 Oct 2025 07:46:31 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a1b3hv7na-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Oct 2025 07:46:30 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59R7kTI829557190
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Oct 2025 07:46:29 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4EBC72004B;
-	Mon, 27 Oct 2025 07:46:29 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9695F20040;
-	Mon, 27 Oct 2025 07:46:26 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.39.25.223])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 27 Oct 2025 07:46:26 +0000 (GMT)
-Date: Mon, 27 Oct 2025 13:16:23 +0530
-From: Vishal Chourasia <vishalc@linux.ibm.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] powerpc/vmlinux.lds: Drop .interp description
-Message-ID: <aP8jT3XY3kQUCwFQ@linux.ibm.com>
-References: <20251018-ppc-fix-lld-interp-v1-1-a083de6dccc9@kernel.org>
- <aPdBpqhm3JHvKIWJ@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cw5r121fvz2yjr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 19:13:51 +1100 (AEDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-7833765433cso5446038b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 01:13:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761552829; x=1762157629; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4Jl1IRJ1KOa3eGEJUzKJJ2c9eSrVA6i/w3yC2J76xMQ=;
+        b=m3xD6u+EDyRHejaPr/gxbdCXsnMQ6kPPWo4zTd9nXLdl7MvyXaq6vx6FHzqn5v3wJJ
+         1KrSrRbF/dgFLXABPThajIORtekBpN8JU9BTArf84CI6vdyXBUYQV9ZT+RPQNTmPfZvO
+         qJNMcZ/E94Y68pjsez6ISr2GGp/Owk35XyMYFhR14rC4GS8NqMR+t4j2fmVQ0kKJzqqI
+         Wt01EeFoKWJm/7xPvqtsgwUAfhSCW8SOewW+cWm17YnvKfiasK7dklYKEjUJeR5FrEDI
+         MocjWxNAdMG+79+l0FVIM7lPaABG57jBkjWSGTvYKLG2zJLJqQXqgbrxZImq8IIthSw0
+         KsJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761552829; x=1762157629;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4Jl1IRJ1KOa3eGEJUzKJJ2c9eSrVA6i/w3yC2J76xMQ=;
+        b=EPhXSf3b3dzjPqq1s2N0y4u5BMKPEavpQpmHIRWFxlZHHtPS2qP8LBcP6rHScWOXrm
+         5sw9h9Ag+Y/a7AeGWvQ227qF44KlnVPNUDX9OW9hcScJF9+YYyeoZXEiUVtW5q+1LDrK
+         3znhP3Eg5dWmotqoRSsUO4dt6i9Gn0gZYZEC/t/8O8QLCwd9fatUpgWV6KmyupDi6Mq5
+         5H+WYIA6Lgrzxj5KwiRoefl907dLZFWAkymuSHTLtndL76rgg6pBDM7U7FU5ScAjvCi0
+         4qMSYYjhUwv52WQAR1p7AsfB5nO1dR/OxtPheZfLDA1JhiEW6f+nMIcbK7hDw28UShea
+         +6PQ==
+X-Gm-Message-State: AOJu0Yxm4TaBSwMIXmnaaDisNapXfJOohoq5zlgyRF0nTG6cF4OQQzAJ
+	U+R50fQ7QgEWEsGBZISBxbTkWP7IveefWFeo7prP00RZCkq21UnPgxI22Q960UYebDLRCRHc8nj
+	5Qp1dFGwxULiXsFyWB4E4R8TJYbp+kiKxyvadoSzemzru31pUueDV/d4Dnw==
+X-Gm-Gg: ASbGncu3p5MPj0bbrOvUjItk3q0xKHFNh9nHvQC7hHWvX/wz/1Vy9t/ihf/XGnzJgfa
+	XwYFcD6p0LoKsOc6RdEjls7z55vJzeyLRwIGguS2gh+kzusnA95aBwrKDTWOmvltvx0HsJJcffR
+	4kba+IKScUwJVRNRY/leTSSOe97tN/Kopo9Gqxrlt0Om5KkANy5GDzNGHGzsONC/C5mBH73oYRn
+	5IhcNE/4gnBmo/5xKriPDkgAw8+FTLXpVlxoYK5HSFHHPBABhP4MyZ3hMJgCEq5U6pSTRwkTtgB
+	fIg4aQ755HFhn1v32+AqY3jeWImrzrJKIVPj0W2cJh4lfOqql2c=
+X-Google-Smtp-Source: AGHT+IFpw7Ye8EqgDBoHYXjDVFp96NB4mXnlEykGMm7hHSg9c3xvd1K3cyLgJ0zvPp6p1UEM+WFKSKXcc2UnU9fKjmQ=
+X-Received: by 2002:a17:903:11cd:b0:290:8fed:b2a7 with SMTP id
+ d9443c01a7336-290cba51064mr438409095ad.57.1761552829221; Mon, 27 Oct 2025
+ 01:13:49 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,107 +76,178 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aPdBpqhm3JHvKIWJ@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: e3amaIqOg-r1xy8SBw8NhMwTtJVzHPB9
-X-Authority-Analysis: v=2.4 cv=ct2WUl4i c=1 sm=1 tr=0 ts=68ff2358 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=CCpqsmhAAAAA:8 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=oRvyBlM1FexuHqL2RKMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=ul9cdbp4aOFLsgKbc677:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAxMCBTYWx0ZWRfX6r4Z30l7F8Ic
- IWvJWfnaL7SNrgqgZOVWGD3V19dcWtzpr4zSgECiRKSCnm9XZnXzIXv2TN7CeoLYKR3M/KWC4RF
- QPMx3hoMR9hZOrqs21/9Q/8tRg8BKLrAjgY8eYB0BUoZFGfiixqRQv4S+FfaXcuqk3Pw7yHqoiD
- 4xEir7NihCXSIZ/I0ihi8D7hH1SBidXsnMgWhZY1gWSJNZ/sCJ5c2jsRRSXdT17qEzD7qUogffI
- KGLPLQCrhoUERQqhEhJMCPshGUrwTnD9niBZw7xzo3Y7qvvNsqSirSO8Qm7BhQ2wcFHy4d+RW2a
- 2J5e3NfejNarpBmvKNP7S7lTEcdExym9RvtOEM9ts7Aj02cT+tcduu5HqsKUXre8qdaIObS/Bxb
- Jf9K59fwH1PLOhxZ/lAuZ2v3jjLYog==
-X-Proofpoint-GUID: EmA_x7nIdtsKpHamxbrwTQrjfcKv5Wq6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-27_03,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0
- spamscore=0 adultscore=0 priorityscore=1501 clxscore=1011 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250010
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 27 Oct 2025 13:43:37 +0530
+X-Gm-Features: AWmQ_bnuLZFl-Zo9wFQPh5mv4wjIOE1UOzS2nHbBPw0kmkUt1Ft4MkHbj-JLz7k
+Message-ID: <CA+G9fYs8fn5URQx2+s2oNxdUgZkSrdLC0P1tNBW_n-6BaBkK2Q@mail.gmail.com>
+Subject: next-20251027: backlight.c:59:39: error: implicit declaration of
+ function 'of_find_node_by_name'; did you mean 'bus_find_device_by_name'?
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	Linux Regressions <regressions@lists.linux.dev>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Ben Copeland <benjamin.copeland@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-ping.
+The following powerpc ppc6xx_defconfig build regressions noticed on the
+Linux next-20251027 tag with gcc-14 and gcc-8.
 
-what's the status for this patch?
+* powerpc, build
+  - gcc-14-ppc6xx_defconfig
+  - gcc-8-ppc6xx_defconfig
 
-vishalc
+First seen on next-20251027
+Good: next-20251024
+Bad: next-20251027
+
+Regression Analysis:
+- New regression? yes
+- Reproducibility? yes
+
+Build regression: next-20251027: backlight.c:59:39: error: implicit
+declaration of function 'of_find_node_by_name'; did you mean
+'bus_find_device_by_name'?
+Build regression: next-20251027: include/linux/math.h:167:43: error:
+first argument to '__builtin_choose_expr' not a constant
+Build regression: next-20251027: via-pmu-backlight.c:22:20: error:
+'FB_BACKLIGHT_LEVELS' undeclared here (not in a function)
+Build regression: next-20251027: minmax.h:71:17: error: first argument
+to '__builtin_choose_expr' not a constant
+Build regression: next-20251027: compiler.h:168:17: error:
+'__UNIQUE_ID_x__286' undeclared (first use in this function); did you
+mean '__UNIQUE_ID_y__287'?
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build error
+arch/powerpc/platforms/powermac/backlight.c: In function
+'pmac_has_backlight_type':
+arch/powerpc/platforms/powermac/backlight.c:59:39: error: implicit
+declaration of function 'of_find_node_by_name'; did you mean
+'bus_find_device_by_name'? [-Wimplicit-function-declaration]
+   59 |         struct device_node* bk_node =
+of_find_node_by_name(NULL, "backlight");
+      |                                       ^~~~~~~~~~~~~~~~~~~~
+      |                                       bus_find_device_by_name
+arch/powerpc/platforms/powermac/backlight.c:59:39: error:
+initialization of 'struct device_node *' from 'int' makes pointer from
+integer without a cast [-Wint-conversion]
+arch/powerpc/platforms/powermac/backlight.c:60:17: error: implicit
+declaration of function 'of_property_match_string'
+[-Wimplicit-function-declaration]
+   60 |         int i = of_property_match_string(bk_node,
+"backlight-control", type);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+arch/powerpc/platforms/powermac/backlight.c:62:9: error: implicit
+declaration of function 'of_node_put'
+[-Wimplicit-function-declaration]
+   62 |         of_node_put(bk_node);
+      |         ^~~~~~~~~~~
+drivers/macintosh/via-pmu-backlight.c:22:20: error:
+'FB_BACKLIGHT_LEVELS' undeclared here (not in a function)
+   22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
+      |                    ^~~~~~~~~~~~~~~~~~~
+In file included from <command-line>:
+drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_curve_lookup':
+include/linux/compiler.h:168:17: error: '__UNIQUE_ID_x__286'
+undeclared (first use in this function); did you mean
+'__UNIQUE_ID_y__287'?
+  168 |         __PASTE(__UNIQUE_ID_,                                   \
+      |                 ^~~~~~~~~~~~
+drivers/macintosh/via-pmu-backlight.c:45:23: note: in expansion of macro 'max'
+   45 |                 max = max((int)bl_curve[i], max);
+      |                       ^~~
+include/linux/minmax.h:71:17: error: first argument to
+'__builtin_choose_expr' not a constant
+   71 |         (typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL,
+1L)))(ux) >= 0)
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+include/linux/compiler_types.h:577:23: note: in definition of macro
+'__compiletime_assert'
+  577 |                 if (!(condition))
+         \
+      |                       ^~~~~~~~~
+drivers/macintosh/via-pmu-backlight.c:45:23: note: in expansion of macro 'max'
+   45 |                 max = max((int)bl_curve[i], max);
+      |                       ^~~
+include/linux/minmax.h:71:17: error: first argument to
+'__builtin_choose_expr' not a constant
+   71 |         (typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL,
+1L)))(ux) >= 0)
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+include/linux/compiler_types.h:577:23: note: in definition of macro
+'__compiletime_assert'
+  577 |                 if (!(condition))
+         \
+      |                       ^~~~~~~~~
+include/linux/minmax.h:112:25: note: in expansion of macro '__careful_cmp'
+  112 | #define max(x, y)       __careful_cmp(max, x, y)
+      |                         ^~~~~~~~~~~~~
+drivers/macintosh/via-pmu-backlight.c:45:23: note: in expansion of macro 'max'
+   45 |                 max = max((int)bl_curve[i], max);
+      |                       ^~~
+In file included from include/linux/kernel.h:27,
+                 from arch/powerpc/include/asm/page.h:11,
+                 from arch/powerpc/include/asm/thread_info.h:13,
+                 from include/linux/thread_info.h:60,
+                 from arch/powerpc/include/asm/ptrace.h:342,
+                 from drivers/macintosh/via-pmu-backlight.c:11:
+include/linux/math.h:162:17: error: first argument to
+'__builtin_choose_expr' not a constant
+  162 |                 __builtin_choose_expr(
+         \
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+
+drivers/macintosh/via-pmu-backlight.c: In function
+'pmu_backlight_get_level_brightness':
+drivers/macintosh/via-pmu-backlight.c:63:38: error: 'FB_BACKLIGHT_MAX'
+undeclared (first use in this function); did you mean 'BACKLIGHT_RAW'?
+   63 |         pmulevel = bl_curve[level] * FB_BACKLIGHT_MAX / MAX_PMU_LEVEL;
+      |                                      ^~~~~~~~~~~~~~~~
+      |                                      BACKLIGHT_RAW
+drivers/macintosh/via-pmu-backlight.c:58:51: warning: parameter
+'level' set but not used [-Wunused-but-set-parameter]
+   58 | static int pmu_backlight_get_level_brightness(int level)
+      |                                               ~~~~^~~~~
+drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_init':
+drivers/macintosh/via-pmu-backlight.c:144:17: error: implicit
+declaration of function 'of_machine_is_compatible'
+[-Wimplicit-function-declaration]
+  144 |                 of_machine_is_compatible("AAPL,3400/2400") ||
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/via-pmu-backlight.c: At top level:
+drivers/macintosh/via-pmu-backlight.c:22:11: warning: 'bl_curve'
+defined but not used [-Wunused-variable]
+   22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
+      |           ^~~~~~~~
+make[5]: *** [scripts/Makefile.build:287:
+drivers/macintosh/via-pmu-backlight.o] Error 1
+make[5]: Target 'drivers/macintosh/' not remade because of errors.
 
 
-On Tue, Oct 21, 2025 at 01:48:31PM +0530, Vishal Chourasia wrote:
-> On Sat, Oct 18, 2025 at 06:52:40PM +0100, Nathan Chancellor wrote:
-> > Commit da30705c4621 ("arch/powerpc: Remove .interp section in vmlinux")
-> > intended to drop the .interp section from vmlinux but even with this
-> > change, relocatable kernels linked with ld.lld contain an empty .interp
-> > section, which ends up causing crashes in GDB [1].
-> > 
-> >   $ make -skj"$(nproc)" ARCH=powerpc LLVM=1 clean pseries_le_defconfig vmlinux
-> > 
-> >   $ llvm-readelf -S vmlinux | grep interp
-> >     [44] .interp           PROGBITS        c0000000021ddb34 21edb34 000000 00   A  0   0  1
-> > 
-> > There appears to be a subtle difference between GNU ld and ld.lld when
-> > it comes to discarding sections that specify load addresses [2].
-> > 
-> > Since '--no-dynamic-linker' prevents emission of the .interp section,
-> > there is no need to describe it in the output sections of the vmlinux
-> > linker script. Drop the .interp section description from vmlinux.lds.S
-> > to avoid this issue altogether.
-> > 
-> > Link: https://sourceware.org/bugzilla/show_bug.cgi?id=33481 [1]
-> > Link: https://github.com/ClangBuiltLinux/linux/issues/2137 [2]
-> > Reported-by: Vishal Chourasia <vishalc@linux.ibm.com>
-> > Closes: https://lore.kernel.org/20251013040148.560439-1-vishalc@linux.ibm.com/
-> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > ---
-> >  arch/powerpc/kernel/vmlinux.lds.S | 1 -
-> >  1 file changed, 1 deletion(-)
-> > 
-> > diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-> > index de6ee7d35cff..15850296c0a9 100644
-> > --- a/arch/powerpc/kernel/vmlinux.lds.S
-> > +++ b/arch/powerpc/kernel/vmlinux.lds.S
-> > @@ -330,7 +330,6 @@ SECTIONS
-> >  	}
-> >  	.hash : AT(ADDR(.hash) - LOAD_OFFSET) { *(.hash) }
-> >  	.gnu.hash : AT(ADDR(.gnu.hash) - LOAD_OFFSET) { *(.gnu.hash) }
-> > -	.interp : AT(ADDR(.interp) - LOAD_OFFSET) { *(.interp) }
-> >  	.rela.dyn : AT(ADDR(.rela.dyn) - LOAD_OFFSET)
-> >  	{
-> >  		__rela_dyn_start = .;
-> > 
-> > ---
-> > base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-> > change-id: 20251018-ppc-fix-lld-interp-1a78c361cd42
-> > 
-> 
-> With this patch, I don't see .interp section being emitted the final
-> vmlinux binary.
-> 
-> ```
-> (i) ❯ make LLVM=1 vmlinux
-> (i) ❯ llvm-readelf -p .comment vmlinux
-> 
-> String dump of section '.comment':
-> [     1] clang version 22.0.0git (https://github.com/llvm/llvm-project.git 7314565281ec28b745502c3f429fd431e16673eb)
-> [    6d] Linker: LLD 22.0.0 (https://github.com/llvm/llvm-project.git 7314565281ec28b745502c3f429fd431e16673eb)
-> 
-> (i) ❯ llvm-readelf -p .interp vmlinux
-> llvm-readelf: warning: 'vmlinux': could not find section '.interp'
-> ```
-> 
-> Tested-by: Vishal Chourasia <vishalc@linux.ibm.com>
+## Source
+* Kernel version: 6.18.0-rc2-next-20251027
+* Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
+* Git describe: next-20251027
+* Git commit: 8fec172c82c2b5f6f8e47ab837c1dc91ee3d1b87
+* Architectures: powerpc
+* Toolchains: gcc-14
+* Kconfigs: defconfig
+
+## Build
+* Test log: https://storage.tuxsuite.com/public/linaro/lkft/builds/34dKrlb77LGOQQSoC8FHCiIEAZK/build.log
+* Test details:
+https://regressions.linaro.org/lkft/linux-next-master/next-20251027/build/gcc-14-ppc6xx_defconfig/
+* Build plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/builds/34dKrlb77LGOQQSoC8FHCiIEAZK
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/34dKrlb77LGOQQSoC8FHCiIEAZK/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/34dKrlb77LGOQQSoC8FHCiIEAZK/config
+
+--
+Linaro LKFT
 
