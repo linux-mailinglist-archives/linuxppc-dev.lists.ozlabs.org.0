@@ -1,68 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-13350-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13351-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F2EC10CB8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 20:20:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22CEEC11321
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 20:41:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwNcw4gPrz2yyd;
-	Tue, 28 Oct 2025 06:20:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwP4x4fwXz2yyx;
+	Tue, 28 Oct 2025 06:41:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::64a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761592816;
-	cv=none; b=aNCVKLx5f7sJjV8UfkgPy97edtoM5GLETXf0P58NNlnCfxWNgsTQiUsOchPdWad3s+YKUGhxffACLHQKJZmzwHbqJFZ06/P6iKOjSlq7LmG7VB+aiUAC7Oym37/Oose7noYNjsxLmxfgk93ePzoY+5R6rfJbJNonBCD+bgptyHdzqAurvBdqLRi5B1ZLP3eILMgwu9AT96cLhYAnMUc/yNaxfmnL7mkOI0uJy2ehddnP+fh7k4JaLWiRYPozKgxz+6+VumtVZ8Q8RCC4sL0r6fbZvN9VmGJPTPJuHqwGZSIT9UYi2YMbe15eqTp2+M1k+bIqZK70j0nL4xV4K/+NCQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761594065;
+	cv=none; b=OW6jj37lSwuQ/DMgpy8hu19RB0429JVG9D18eGrZR7pBFXaNUgVl5eyYMt9FeeQUMEgdtO2GkBe23iEi6gz5R4omPqc4El3WGSfBwEVfjSO1ltomGdqNT25ugFstecBvePJU9roqQMlV/ongBDO28BkZg2GW1wsaoy71ko0G8y4ZUgH6j63ySgqUY7XAlVpleLjOocLbwuHa/6tHh6aPUmCdd4yF5k3qL0x0JC/RxZqq1KrUAptOnfm0K4pCgwumPk0xN/0qG/w45TcIO5ApJFN3fp3TR4WctsL76RrJXo9TEyOwj4+o+/pL/9nJXTpD3JVcJq+YJ41MgnqfiYUp7g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761592816; c=relaxed/relaxed;
-	bh=GJ/ihzhnBg2h+OIog5s51f1nDJzu1yBHwy2SCCUQ1bo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fBb5uYNABl3ZEyvs61OYEmDpmyt3LUd94ksTtLei3Ogx+vJ1mWrb9Ap3UYESwXLJnqzKSAj8xPUz+nUYzP9PW7mJDXGkLeH6C+3BqSLzwRRtYSseRH9PlvU1tnz/9o+ek1wmJV+As4A6FNeI9lOHiTLRLKnX/1rN6acEk1lkTaV8Jh2YmGfm6GZje3CUI+Lgiyzy2BSOs3tS8+5MiThWK9dH1TLGrYp6Zn07i7tdCN6DbpfA6XU1cMS+h1112McqTss4Qs0JiNb9cl47NpUrjFehNbQKQ9eIiUKcDJuK7zprJZ0wuKYkNBZ0N3855+xFdZ31ckpHhv8mXyvzMGErcQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=k7k9SGQ9; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=368x_aaykdmq2okxtmqyyqvo.mywvsx47zzm-no5vs232.y9vkl2.y1q@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1761594065; c=relaxed/relaxed;
+	bh=kJymAyuSxiwLUZBRkZ3seoYcxkCvV/OM7JzxkrrDiNQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m4O+/gELTSV7MLVkCjBXXK6aaUhjru6whZfVETeZ+kaF11zfRioiQ7XI+J89EM+qQZd1Po5PC9wv9JxJpGeHBJPM8dxGXhSftVSV4KGQLVphXY5C9Ko+/wVAmNa2JVM7OOWFxz44kcn63YBWLVm6AzizSzyXY2qJ5ArdI8moHY1hP5SFz43o6zLimNmFVHZdp5tsIfgGZMFNYw73hbk18sI9K0MFIkVpGSXJfLeKfauba4d3vGbL4MQMFgxOUOnPN48tMAVuiQ4n2aF1DspYw1V/5kOy4dnsegnF+iN3sSkbCC5VqcM39+GHFGdOmf9WQfzFKxeSkOMaFYLAkUW8lg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o7AIzOWP; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=k7k9SGQ9;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o7AIzOWP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=368x_aaykdmq2okxtmqyyqvo.mywvsx47zzm-no5vs232.y9vkl2.y1q@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwNcv4Mpdz2yhX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 06:20:14 +1100 (AEDT)
-Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-28c58e009d1so108170615ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 12:20:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761592812; x=1762197612; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GJ/ihzhnBg2h+OIog5s51f1nDJzu1yBHwy2SCCUQ1bo=;
-        b=k7k9SGQ9XVYosfKe1an/nkws8YkYl9Vzhp23c0cvZiU3j8YABwizAobsB72+jHYUfg
-         bCTg0HJqi46AnxJbrUapzo/yoFkjSSgMTyUKd4NNoFl+TGQWCvgvvVVqAS1LgNTt+vRt
-         SFLub0VXBRAc2CQ2Ae7YPs+cZSFO/uHO5wv/Scc7V3z0C8vFdcORHq14dXOedsgukT8I
-         oM5DTtcVaN15iv1U/E1OvwcKgvp4bIVcfepzjJWQM2ZlXgro3YRWwSZY5Gc4Nd89LMBH
-         FT84i52u2I5pCaqgEuekOx18MrUtPwFsjwC1CQseTcDLtIckkqWZDk1xAV9NvviX3fd5
-         X1+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761592812; x=1762197612;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GJ/ihzhnBg2h+OIog5s51f1nDJzu1yBHwy2SCCUQ1bo=;
-        b=gNLjoNh0CzbOsyiheRyXf4lAJ0k6oZZfvKGFukeL1+m8zt5Nt2ki1cy7Pbr3HajgJv
-         Wv0AFsgPOocNCEC9bdypvY5nvuGwQEChJae9o/LROEY72PCP/UCIZWnA9NWJ8EjAnHBC
-         4npcQCIaPnugo7TKUWxeFsRj9Spx4C4fdeBLbvX2XkUh1Sr2Um6bXHlji3gbJJuZTh9J
-         A2ruF+4XGmJq0ObRUnKlqdWMSx1+mAErSTcoO1uF931sT10XQyJYXuPy3ZRNaM3r/GEF
-         cFRDCuFEGt92gWr6SXGvchF3ozpD9rogJPF6RuHHWaDd0WsrgWL0Xy0HpY11FjO+TkNh
-         inhg==
-X-Forwarded-Encrypted: i=1; AJvYcCVk+q3oYrcEViKk8TKJv9e7Hag6y/jKGMqzkjzEaxKyV3bFKaoGRPNoJI1oeESToVL+RFokJE7wKrj5hSs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxlzzblhW25ynVaotF/7sjKXsa75WXVjRiShCgvtm7DjYM5Ry3N
-	+YlHcKMyjQ6YU482+wuavu4T97m7GlsZqT69ErEa/BR1ghrikGJ8iSq2fcTU32kgEZ0yLYfbcj7
-	tsg9bLQ==
-X-Google-Smtp-Source: AGHT+IGEzxKOsu0TIx9JeJ8jo0iJqVMcVQCTPniC3ps1TgJ3BGzDUda18OgqbILlA0+mvKP7+G2jd9/+Iec=
-X-Received: from pjbrs15.prod.google.com ([2002:a17:90b:2b8f:b0:33b:51fe:1a73])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5c4:b0:25d:1640:1d59
- with SMTP id d9443c01a7336-294cb378610mr8002455ad.8.1761592811798; Mon, 27
- Oct 2025 12:20:11 -0700 (PDT)
-Date: Mon, 27 Oct 2025 12:20:10 -0700
-In-Reply-To: <4809644b0ba02d0987ac56f4be7c426d0724cdef.camel@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwP4w4RWxz2yhX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 06:41:04 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1239A48BA5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 19:41:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE56C116D0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 19:41:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761594062;
+	bh=MDpco140EYHJnzIZmyl84zfrZwv8MADjK5W7/0qLrKE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=o7AIzOWPKf56FcLwUzL3Nvz6/mf+gSJZpTM41Zh5hRGx8HJjPQETapS53QtptxlbD
+	 Ap8CP2fFC/1V+kgIDgfodxjrd/rS5afdJvMHs56Xv1pclr40SXAbiUMpw6//oFQJMp
+	 WAvi3LD7A9xlqxvJQ7w6LYxLbUrnOj92v0B6F5CxfoeSzswRRq3J58W3RkWfsseFTa
+	 hlxANrj0JHYAugTKqAu0SG/ZwyyBH552bXLkcjn25WLio7iKN85XXTRMMm/BLTkvGy
+	 aql6EpnsQy/m/F98BThlg6YHZHZLJBX+4M5Zd0ZWe4swuJZarQ3gQ6zgNIannuXddT
+	 BSDrknRiFu2BQ==
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7c531b42dbeso1672239a34.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 12:41:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVYE6G83lho5eJ3ECTyC1wmnd/BmVsv+T92ipEOCnmi5t+ORWj/t+WWo0QdF4pjwRYjZj4WfmY9mExspWM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzHINFlEw+LsdkCA3GU8fX25/rBqa23PXQBxeP1ftQ0b0C80gKL
+	cf0kv2mzMxr758wDbPU0QKyAJcgFGcnvMns8ZM9QDhQvSgjhqB96O8ErzKoflySwCih7q137fVq
+	8a2gLc2B1OCkAvUr+YHlxCH7/pKdX0Hw=
+X-Google-Smtp-Source: AGHT+IEBgYaGMef3W1iGMJpqdA0ZG8CMABKhFKsCxja1XTApdIIjx+hlUQbv+lCioaXAiOzYpoDeh9fqTixQ61UktBo=
+X-Received: by 2002:a05:6808:1986:b0:43f:1c5d:8db with SMTP id
+ 5614622812f47-44f6b9c8228mr477987b6e.6.1761594060621; Mon, 27 Oct 2025
+ 12:41:00 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,125 +65,131 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-21-seanjc@google.com>
- <4809644b0ba02d0987ac56f4be7c426d0724cdef.camel@intel.com>
-Message-ID: <aP_F6tmzomRtdbpU@google.com>
-Subject: Re: [PATCH v3 20/25] KVM: TDX: Add macro to retry SEAMCALLs when
- forcing vCPUs out of guest
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, 
-	"maz@kernel.org" <maz@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
-	"pjw@kernel.org" <pjw@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
-	"kas@kernel.org" <kas@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, 
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, 
-	"zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>, 
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"michael.roth@amd.com" <michael.roth@amd.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, 
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, Vishal Annapurve <vannapurve@google.com>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+References: <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
+In-Reply-To: <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 27 Oct 2025 20:40:49 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0h22pPnwPnkbd5HfP02aTbiK22nHCGtGKn1eR2KDM4Yhw@mail.gmail.com>
+X-Gm-Features: AWmQ_blpJP4rFQ3BH0tPZYsDJPnselHHXgoaG2rNNVBgBQ9UQYhzqXwIRJ0dTXw
+Message-ID: <CAJZ5v0h22pPnwPnkbd5HfP02aTbiK22nHCGtGKn1eR2KDM4Yhw@mail.gmail.com>
+Subject: Re: [PATCH 0/6 v6] Make ELOG and GHES log and trace consistently
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>, Tony Luck <tony.luck@intel.com>
+Cc: linux-cxl@vger.kernel.org, Len Brown <lenb@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+	"Oliver O'Halloran" <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Sunil V L <sunilvl@ventanamicro.com>, Xiaofei Tan <tanxiaofei@huawei.com>, 
+	Mario Limonciello <mario.limonciello@amd.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>, 
+	Guo Weikang <guoweikang.kernel@gmail.com>, Xin Li <xin@zytor.com>, 
+	Will Deacon <will@kernel.org>, Huang Yiwei <quic_hyiwei@quicinc.com>, Gavin Shan <gshan@redhat.com>, 
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+	Li Ming <ming.li@zohomail.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Karolina Stolarek <karolina.stolarek@oracle.com>, Jon Pan-Doh <pandoh@google.com>, 
+	Lukas Wunner <lukas@wunner.de>, Shiju Jose <shiju.jose@huawei.com>, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Oct 24, 2025, Kai Huang wrote:
-> On Thu, 2025-10-16 at 17:32 -0700, Sean Christopherson wrote:
-> > Add a macro to handle kicking vCPUs out of the guest and retrying
-> > SEAMCALLs on -EBUSY instead of providing small helpers to be used by each
-> > SEAMCALL.  Wrapping the SEAMCALLs in a macro makes it a little harder to
-> > tease out which SEAMCALL is being made, but significantly reduces the
-> > amount of copy+paste code and makes it all but impossible to leave an
-> > elevated wait_for_sept_zap.
-> > 
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
-> >  arch/x86/kvm/vmx/tdx.c | 72 ++++++++++++++----------------------------
-> >  1 file changed, 23 insertions(+), 49 deletions(-)
-> > 
-> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> > index f6782b0ffa98..2e2dab89c98f 100644
-> > --- a/arch/x86/kvm/vmx/tdx.c
-> > +++ b/arch/x86/kvm/vmx/tdx.c
-> > @@ -294,25 +294,24 @@ static inline void tdx_disassociate_vp(struct kvm_vcpu *vcpu)
-> >  	vcpu->cpu = -1;
-> >  }
-> >  
-> > -static void tdx_no_vcpus_enter_start(struct kvm *kvm)
-> > -{
-> > -	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
-> > -
-> > -	lockdep_assert_held_write(&kvm->mmu_lock);
-> > -
-> > -	WRITE_ONCE(kvm_tdx->wait_for_sept_zap, true);
-> > -
-> > -	kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);
-> > -}
-> > -
-> > -static void tdx_no_vcpus_enter_stop(struct kvm *kvm)
-> > -{
-> > -	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
-> > -
-> > -	lockdep_assert_held_write(&kvm->mmu_lock);
-> > -
-> > -	WRITE_ONCE(kvm_tdx->wait_for_sept_zap, false);
-> > -}
-> > +#define tdh_do_no_vcpus(tdh_func, kvm, args...)					\
-> > +({										\
-> > +	struct kvm_tdx *__kvm_tdx = to_kvm_tdx(kvm);				\
-> > +	u64 __err;								\
-> > +										\
-> > +	lockdep_assert_held_write(&kvm->mmu_lock);				\
-> > +										\
-> > +	__err = tdh_func(args);							\
-> > +	if (unlikely(tdx_operand_busy(__err))) {				\
-> > +		WRITE_ONCE(__kvm_tdx->wait_for_sept_zap, true);			\
-> > +		kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);	\
-> > +										\
-> > +		__err = tdh_func(args);						\
-> > +										\
-> > +		WRITE_ONCE(__kvm_tdx->wait_for_sept_zap, false);		\
-> > +	}									\
-> > +	__err;									\
-> > +})
-> 
-> The comment which says "the second retry should succeed" is lost, could we
-> add it to tdh_do_no_vcpus()?
+On Thu, Oct 23, 2025 at 2:26=E2=80=AFPM Fabio M. De Francesco
+<fabio.m.de.francesco@linux.intel.com> wrote:
+>
+> When Firmware First is enabled, BIOS handles errors first and then it
+> makes them available to the kernel via the Common Platform Error Record
+> (CPER) sections (UEFI 2.10 Appendix N). Linux parses the CPER sections
+> via one of two similar paths, either ELOG or GHES.
+>
+> Currently, ELOG and GHES show some inconsistencies in how they print to
+> the kernel log as well as in how they report to userspace via trace
+> events.
+>
+> Make the two mentioned paths act similarly for what relates to logging
+> and tracing.
+>
+> --- Changes for v6 ---
+>
+>         - Rename the helper that copies the CPER CXL protocol error
+>           information to work struct (Dave)
+>         - Return -EOPNOTSUPP (instead of -EINVAL) from the two helpers if
+>           ACPI_APEI_PCIEAER is not defined (Dave)
+>
+> --- Changes for v5 ---
+>
+>         - Add 3/6 to select ACPI_APEI_PCIEAER for GHES
+>         - Add 4,5/6 to move common code between ELOG and GHES out to new
+>           helpers use them in 6/6 (Jonathan).
+>
+> --- Changes for v4 ---
+>
+>         - Re-base on top of recent changes of the AER error logging and
+>           drop obsoleted 2/4 (Sathyanarayanan)
+>         - Log with pr_warn_ratelimited() (Dave)
+>         - Collect tags
+>
+> --- Changes for v3 ---
+>
+>     1/4, 2/4:
+>         - collect tags; no functional changes
+>     3/4:
+>         - Invert logic of checks (Yazen)
+>         - Select CONFIG_ACPI_APEI_PCIEAER (Yazen)
+>     4/4:
+>         - Check serial number only for CXL devices (Yazen)
+>         - Replace "invalid" with "unknown" in the output of a pr_err()
+>           (Yazen)
+>
+> --- Changes for v2 ---
+>
+>         - Add a patch to pass log levels to pci_print_aer() (Dan)
+>         - Add a patch to trace CPER CXL Protocol Errors
+>         - Rework commit messages (Dan)
+>         - Use log_non_standard_event() (Bjorn)
+>
+> --- Changes for v1 ---
+>
+>         - Drop the RFC prefix and restart from PATCH v1
+>         - Drop patch 3/3 because a discussion on it has not yet been
+>           settled
+>         - Drop namespacing in export of pci_print_aer while() (Dan)
+>         - Don't use '#ifdef' in *.c files (Dan)
+>         - Drop a reference on pdev after operation is complete (Dan)
+>         - Don't log an error message if pdev is NULL (Dan)
+>
+> Fabio M. De Francesco (6):
+>   ACPI: extlog: Trace CPER Non-standard Section Body
+>   ACPI: extlog: Trace CPER PCI Express Error Section
+>   acpi/ghes: Make GHES select ACPI_APEI_PCIEAER
+>   acpi/ghes: Add helper for CPER CXL protocol errors validity checks
+>   acpi/ghes: Add helper to copy CPER CXL protocol error information to
+>     work struct
+>   ACPI: extlog: Trace CPER CXL Protocol Error Section
+>
+>  drivers/acpi/Kconfig       |  1 +
+>  drivers/acpi/acpi_extlog.c | 60 ++++++++++++++++++++++++++++++++++++
+>  drivers/acpi/apei/Kconfig  |  1 +
+>  drivers/acpi/apei/ghes.c   | 62 +++++++++++++++++++++++++-------------
+>  drivers/cxl/core/ras.c     |  6 ++++
+>  drivers/pci/pcie/aer.c     |  2 +-
+>  include/cxl/event.h        | 22 ++++++++++++++
+>  7 files changed, 132 insertions(+), 22 deletions(-)
+>
+>
+> base-commit: 552c50713f273b494ac6c77052032a49bc9255e2
+> --
 
-+1, definitely needs a comment.
-
-/*
- * Execute a SEAMCALL related to removing/blocking S-EPT entries, with a single
- * retry (if necessary) after forcing vCPUs to exit and wait for the operation
- * to complete.  All flows that remove/block S-EPT entries run with mmu_lock
- * held for write, i.e. are mutually exlusive with each other, but they aren't
- * mutually exclusive with vCPUs running (because that would be overkill), and
- * so can fail with "operand busy" if a vCPU acquires a required lock in the
- * TDX-Module.
- *
- * Note, the retry is guaranteed to succeed, absent KVM and/or TDX-Module bugs.
- */
- 
-> Also, perhaps we can just TDX_BUG_ON() inside tdh_do_no_vcpus() when the
-> second call of tdh_func() fails?
-
-Heh, this also caught my eye when typing up the comment.  Unfortunately, I don't
-think it's worth doing the TDX_BUG_ON() inside the macro as that would require
-plumbing in the UPPERCASE name, and doesn't work well with the variadic arguments,
-e.g. TRACK wants TDX_BUG_ON(), but REMOVE and BLOCK want TDX_BUG_ON_2().
-
-Given that REMOVE and BLOCK need to check the return value, getting the TDX_BUG_ON()
-call into the macro wouldn't buy that much.
+I need ACKs or equivalent for patches [3-5/6] from the designated APEI
+reviewers.  Tony?
 
