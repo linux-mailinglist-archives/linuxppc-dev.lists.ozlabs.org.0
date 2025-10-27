@@ -1,70 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-13349-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13350-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED516C0FDC9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 19:10:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F2EC10CB8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 20:20:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwM4w4tCvz2yTK;
-	Tue, 28 Oct 2025 05:10:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwNcw4gPrz2yyd;
+	Tue, 28 Oct 2025 06:20:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761588656;
-	cv=none; b=bvcWunTL6E9S+ABb72NgalGGp4ClEBxwriGz1qHMyHroPNcCuukK8yo0VMFWMfopRXAXfPHApY2B6cKHthv0+InPriL5QxEuufrJPS6DWHgvFwG4Y+pLd6zJg60kyWUmZW8MfeyUxOv2W/5l5DRUhlstS3NUZ2ntD+Hb1zEpNp24k0moGtCXMFUcGfr+aYSR13khwNu2dytFhP56Dl38Rr9cdEB52WIjBdKiB6tcjpOYK3SJ5bwLQtGmTzXJiU4SXq61djHAghJXvs9LaFq+WThzOENNiMod8sRvG4xyREo1w+L8JFFAxI5T5GXLkq2ApUtR2S1YpZil3wwDMjX0Og==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::64a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761592816;
+	cv=none; b=aNCVKLx5f7sJjV8UfkgPy97edtoM5GLETXf0P58NNlnCfxWNgsTQiUsOchPdWad3s+YKUGhxffACLHQKJZmzwHbqJFZ06/P6iKOjSlq7LmG7VB+aiUAC7Oym37/Oose7noYNjsxLmxfgk93ePzoY+5R6rfJbJNonBCD+bgptyHdzqAurvBdqLRi5B1ZLP3eILMgwu9AT96cLhYAnMUc/yNaxfmnL7mkOI0uJy2ehddnP+fh7k4JaLWiRYPozKgxz+6+VumtVZ8Q8RCC4sL0r6fbZvN9VmGJPTPJuHqwGZSIT9UYi2YMbe15eqTp2+M1k+bIqZK70j0nL4xV4K/+NCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761588656; c=relaxed/relaxed;
-	bh=bO0HNahSQ0zli7kg4xL2kKu/rPaiGOzpKxwGHDcn9b4=;
+	t=1761592816; c=relaxed/relaxed;
+	bh=GJ/ihzhnBg2h+OIog5s51f1nDJzu1yBHwy2SCCUQ1bo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=csGjZtSkDgcfNObcba6lZ8TcUTbHi3aHNTx19jLxUyX967MnGo90W/RIt7Kv0UrFUhdr0ggS7nd7q/YWi1NRT9QH6mn6qQ4L8xg2HYQBYKEFj4A1gblIACb8b9VbOGqG7j0udw9h+kHKbmrweqG5Ts580J6VuIko/kXytYMzDCgm1H3PYYB1+hQWv3gm1eu9mjsH75yTNO4Eqqjpl4ERwXQK5yjIykpBQU5C1kFQmiKIn4kWGJft1QYGz+76/nE8CgtpXIJeGlkt4wB4igMgfXbpK+D4VQEIntwnORHxZ+AJgz18Xk2fNI3S+R4iGYEZbogDu9UcAuDDNg5u2AcLCA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=wY6w9rs/; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3q7x_aaykdgqugcpleiqqing.eqonkpwzrre-fgxnkuvu.qbncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=fBb5uYNABl3ZEyvs61OYEmDpmyt3LUd94ksTtLei3Ogx+vJ1mWrb9Ap3UYESwXLJnqzKSAj8xPUz+nUYzP9PW7mJDXGkLeH6C+3BqSLzwRRtYSseRH9PlvU1tnz/9o+ek1wmJV+As4A6FNeI9lOHiTLRLKnX/1rN6acEk1lkTaV8Jh2YmGfm6GZje3CUI+Lgiyzy2BSOs3tS8+5MiThWK9dH1TLGrYp6Zn07i7tdCN6DbpfA6XU1cMS+h1112McqTss4Qs0JiNb9cl47NpUrjFehNbQKQ9eIiUKcDJuK7zprJZ0wuKYkNBZ0N3855+xFdZ31ckpHhv8mXyvzMGErcQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=k7k9SGQ9; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=368x_aaykdmq2okxtmqyyqvo.mywvsx47zzm-no5vs232.y9vkl2.y1q@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=wY6w9rs/;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=k7k9SGQ9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3q7x_aaykdgqugcpleiqqing.eqonkpwzrre-fgxnkuvu.qbncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=368x_aaykdmq2okxtmqyyqvo.mywvsx47zzm-no5vs232.y9vkl2.y1q@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwM4v1P8wz2xlK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 05:10:54 +1100 (AEDT)
-Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-33d8970ae47so4450873a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 11:10:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwNcv4Mpdz2yhX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 06:20:14 +1100 (AEDT)
+Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-28c58e009d1so108170615ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 12:20:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761588652; x=1762193452; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bO0HNahSQ0zli7kg4xL2kKu/rPaiGOzpKxwGHDcn9b4=;
-        b=wY6w9rs/OtcJJu6SVvnkZGDGT+jur6Rvy5DGl/U10DT+r0waW3JlD4q5wjvk+62W9r
-         ZSH/Q1zgCy50bGODAhvoWwMalv1IC/zpa92ySxIdgiQWppVRT7EJFIC6eS+g3UJ9u5cE
-         RpUiTXCoVKXstehH3xTWwjT29RRFmQADvmncbUEEt4A8n2mrIhw3fNbyGfr9tmfdYb/E
-         hUlkCIw9ds1Epa2YY1r2ROwNSsZ7++26nSbalbC1fpQRc20hPQxgN6/6roPIrKIXJTXZ
-         c1rxZVjDBFTt+zpqA8TbAp7dPlBPdUrFrzeRCdpHfxLiuJIhpeN0sBOmGay/bSY7oxya
-         uI7A==
+        d=google.com; s=20230601; t=1761592812; x=1762197612; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GJ/ihzhnBg2h+OIog5s51f1nDJzu1yBHwy2SCCUQ1bo=;
+        b=k7k9SGQ9XVYosfKe1an/nkws8YkYl9Vzhp23c0cvZiU3j8YABwizAobsB72+jHYUfg
+         bCTg0HJqi46AnxJbrUapzo/yoFkjSSgMTyUKd4NNoFl+TGQWCvgvvVVqAS1LgNTt+vRt
+         SFLub0VXBRAc2CQ2Ae7YPs+cZSFO/uHO5wv/Scc7V3z0C8vFdcORHq14dXOedsgukT8I
+         oM5DTtcVaN15iv1U/E1OvwcKgvp4bIVcfepzjJWQM2ZlXgro3YRWwSZY5Gc4Nd89LMBH
+         FT84i52u2I5pCaqgEuekOx18MrUtPwFsjwC1CQseTcDLtIckkqWZDk1xAV9NvviX3fd5
+         X1+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761588652; x=1762193452;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bO0HNahSQ0zli7kg4xL2kKu/rPaiGOzpKxwGHDcn9b4=;
-        b=F6u6ahWcHrQEWhP37EQCw9U3lh6rqmnf1BhZdnflUhaRCy8ssAdz6Zfu4lLHcBOggD
-         BzyVK56m7c6fS9iiUcW8KJVLYyVvl1YUDBvuLEJjEWYB/VORHnTpxBCFFxYxadzykHrr
-         VJR5FQRRVvwUH55c1MwhdIpLP5GEj7M5pvU8P+xtYWxepoff15aurSwR3oFKP6ez8LKV
-         8d9+iSQKYt8XCDzvLkri690O0kYxaQXdP8J+BIiA1zhM7/eldh3taKRc2FiN7kUQyrIy
-         OWMgwj8WGkwp/kZpqnjX4xD+4OQ87/M/xfs88RnhuzBR1SHCLn9soiR2+midVzN1LN+u
-         3RoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWhdAPLlrhYZZBJdYEvrKDW3y5E3MYbJs0fcDGKUKvDj2q19ZwsiF0yGENVM9zBBNzpW4nqYolDamW2NF8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxH4Hqdowh6UeUwYgErZxF6Qo19fqfsqYsNOcSMJZWULYIsPeJv
-	M9Zot0Pijzmloo3KEurzsOTogv8LTNyv+UZpGkENIaErhDFFtIBaTs3ciTRozIYPWKMd//Fkw/v
-	EZTXSWg==
-X-Google-Smtp-Source: AGHT+IFYM0pQ56UGeUzsOnJj3+Ow3Uhx6HMXZ6WjKUcRvfRsyB3bsUItowqHfr7m0JixZWoiV89rDaaCMlA=
+        d=1e100.net; s=20230601; t=1761592812; x=1762197612;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GJ/ihzhnBg2h+OIog5s51f1nDJzu1yBHwy2SCCUQ1bo=;
+        b=gNLjoNh0CzbOsyiheRyXf4lAJ0k6oZZfvKGFukeL1+m8zt5Nt2ki1cy7Pbr3HajgJv
+         Wv0AFsgPOocNCEC9bdypvY5nvuGwQEChJae9o/LROEY72PCP/UCIZWnA9NWJ8EjAnHBC
+         4npcQCIaPnugo7TKUWxeFsRj9Spx4C4fdeBLbvX2XkUh1Sr2Um6bXHlji3gbJJuZTh9J
+         A2ruF+4XGmJq0ObRUnKlqdWMSx1+mAErSTcoO1uF931sT10XQyJYXuPy3ZRNaM3r/GEF
+         cFRDCuFEGt92gWr6SXGvchF3ozpD9rogJPF6RuHHWaDd0WsrgWL0Xy0HpY11FjO+TkNh
+         inhg==
+X-Forwarded-Encrypted: i=1; AJvYcCVk+q3oYrcEViKk8TKJv9e7Hag6y/jKGMqzkjzEaxKyV3bFKaoGRPNoJI1oeESToVL+RFokJE7wKrj5hSs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxlzzblhW25ynVaotF/7sjKXsa75WXVjRiShCgvtm7DjYM5Ry3N
+	+YlHcKMyjQ6YU482+wuavu4T97m7GlsZqT69ErEa/BR1ghrikGJ8iSq2fcTU32kgEZ0yLYfbcj7
+	tsg9bLQ==
+X-Google-Smtp-Source: AGHT+IGEzxKOsu0TIx9JeJ8jo0iJqVMcVQCTPniC3ps1TgJ3BGzDUda18OgqbILlA0+mvKP7+G2jd9/+Iec=
 X-Received: from pjbrs15.prod.google.com ([2002:a17:90b:2b8f:b0:33b:51fe:1a73])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4f81:b0:32e:52aa:3973
- with SMTP id 98e67ed59e1d1-340279e5fc5mr862252a91.8.1761588651707; Mon, 27
- Oct 2025 11:10:51 -0700 (PDT)
-Date: Mon, 27 Oct 2025 11:10:50 -0700
-In-Reply-To: <77d8a0d9541ce3fc2b2c76b58add50d152b52e39.camel@intel.com>
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5c4:b0:25d:1640:1d59
+ with SMTP id d9443c01a7336-294cb378610mr8002455ad.8.1761592811798; Mon, 27
+ Oct 2025 12:20:11 -0700 (PDT)
+Date: Mon, 27 Oct 2025 12:20:10 -0700
+In-Reply-To: <4809644b0ba02d0987ac56f4be7c426d0724cdef.camel@intel.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,104 +76,124 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-25-seanjc@google.com>
- <aPtOtzGLigbY0Vqw@yzhao56-desk.sh.intel.com> <aPuv8F8iDp3SLb9q@google.com>
- <aP86sdBZxXm5I17f@yzhao56-desk.sh.intel.com> <77d8a0d9541ce3fc2b2c76b58add50d152b52e39.camel@intel.com>
-Message-ID: <aP-1qlTkmFUgTld-@google.com>
-Subject: Re: [PATCH v3 24/25] KVM: TDX: Guard VM state transitions with "all"
- the locks
+References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-21-seanjc@google.com>
+ <4809644b0ba02d0987ac56f4be7c426d0724cdef.camel@intel.com>
+Message-ID: <aP_F6tmzomRtdbpU@google.com>
+Subject: Re: [PATCH v3 20/25] KVM: TDX: Add macro to retry SEAMCALLs when
+ forcing vCPUs out of guest
 From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
-	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
-	"michael.roth@amd.com" <michael.roth@amd.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "palmer@dabbelt.com" <palmer@dabbelt.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, 
-	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, Vishal Annapurve <vannapurve@google.com>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, 
-	"maobibo@loongson.cn" <maobibo@loongson.cn>, "maz@kernel.org" <maz@kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "anup@brainfault.org" <anup@brainfault.org>, 
-	Kai Huang <kai.huang@intel.com>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, 
-	"pjw@kernel.org" <pjw@kernel.org>, "zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Ira Weiny <ira.weiny@intel.com>, 
+To: Kai Huang <kai.huang@intel.com>
+Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, 
+	"maz@kernel.org" <maz@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
+	"pjw@kernel.org" <pjw@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
+	"kas@kernel.org" <kas@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, 
+	"palmer@dabbelt.com" <palmer@dabbelt.com>, "imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, 
+	"zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>, 
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Yan Y Zhao <yan.y.zhao@intel.com>, 
+	"michael.roth@amd.com" <michael.roth@amd.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, 
 	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
-	"imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, "kas@kernel.org" <kas@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
+	"ackerleytng@google.com" <ackerleytng@google.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, Vishal Annapurve <vannapurve@google.com>, 
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Oct 27, 2025, Rick P Edgecombe wrote:
-> On Mon, 2025-10-27 at 17:26 +0800, Yan Zhao wrote:
-> > > Ugh, I'd rather not?=C2=A0 Refresh me, what's the story with "v1"?=C2=
-=A0 Are we now on
-> > > v2?
-> > No... We are now on v1.
-> > As in [1], I found that TDX module changed SEAMCALL TDH_VP_INIT behavio=
-r to
-> > require exclusive lock on resource TDR when leaf_opcode.version > 0.
-> >=20
-> > Therefore, we moved KVM_TDX_INIT_VCPU to tdx_vcpu_unlocked_ioctl() in p=
-atch
-> > 22.
-> >=20
-> > [1] https://lore.kernel.org/all/aLa34QCJCXGLk%2Ffl@yzhao56-desk.sh.inte=
-l.com/
->=20
-> Looking at the PDF docs, TDR exclusive locking in version =3D=3D 1 is cal=
-led out at
-> least back to the oldest ABI docs I have (March 2024). Not sure about the
-> assertion that the behavior changed, but if indeed this was documented, i=
-t's a
-> little bit our bad. We might consider being flexible around calling it a =
-TDX ABI
-> break?
->=20
-> Sean, can you elaborate why taking mmu_lock is objectionable here, though=
-?
+On Fri, Oct 24, 2025, Kai Huang wrote:
+> On Thu, 2025-10-16 at 17:32 -0700, Sean Christopherson wrote:
+> > Add a macro to handle kicking vCPUs out of the guest and retrying
+> > SEAMCALLs on -EBUSY instead of providing small helpers to be used by each
+> > SEAMCALL.  Wrapping the SEAMCALLs in a macro makes it a little harder to
+> > tease out which SEAMCALL is being made, but significantly reduces the
+> > amount of copy+paste code and makes it all but impossible to leave an
+> > elevated wait_for_sept_zap.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/kvm/vmx/tdx.c | 72 ++++++++++++++----------------------------
+> >  1 file changed, 23 insertions(+), 49 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > index f6782b0ffa98..2e2dab89c98f 100644
+> > --- a/arch/x86/kvm/vmx/tdx.c
+> > +++ b/arch/x86/kvm/vmx/tdx.c
+> > @@ -294,25 +294,24 @@ static inline void tdx_disassociate_vp(struct kvm_vcpu *vcpu)
+> >  	vcpu->cpu = -1;
+> >  }
+> >  
+> > -static void tdx_no_vcpus_enter_start(struct kvm *kvm)
+> > -{
+> > -	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+> > -
+> > -	lockdep_assert_held_write(&kvm->mmu_lock);
+> > -
+> > -	WRITE_ONCE(kvm_tdx->wait_for_sept_zap, true);
+> > -
+> > -	kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);
+> > -}
+> > -
+> > -static void tdx_no_vcpus_enter_stop(struct kvm *kvm)
+> > -{
+> > -	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+> > -
+> > -	lockdep_assert_held_write(&kvm->mmu_lock);
+> > -
+> > -	WRITE_ONCE(kvm_tdx->wait_for_sept_zap, false);
+> > -}
+> > +#define tdh_do_no_vcpus(tdh_func, kvm, args...)					\
+> > +({										\
+> > +	struct kvm_tdx *__kvm_tdx = to_kvm_tdx(kvm);				\
+> > +	u64 __err;								\
+> > +										\
+> > +	lockdep_assert_held_write(&kvm->mmu_lock);				\
+> > +										\
+> > +	__err = tdh_func(args);							\
+> > +	if (unlikely(tdx_operand_busy(__err))) {				\
+> > +		WRITE_ONCE(__kvm_tdx->wait_for_sept_zap, true);			\
+> > +		kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);	\
+> > +										\
+> > +		__err = tdh_func(args);						\
+> > +										\
+> > +		WRITE_ONCE(__kvm_tdx->wait_for_sept_zap, false);		\
+> > +	}									\
+> > +	__err;									\
+> > +})
+> 
+> The comment which says "the second retry should succeed" is lost, could we
+> add it to tdh_do_no_vcpus()?
 
-It's not, I was just hoping we could avoid yet more complexity.
++1, definitely needs a comment.
 
-Assuming we do indeed need to take mmu_lock, can you send a patch that appl=
-ies
-on top?  I'm not planning on sending any of this to stable@, so I don't see=
- any
-reason to try and juggle patches around.
+/*
+ * Execute a SEAMCALL related to removing/blocking S-EPT entries, with a single
+ * retry (if necessary) after forcing vCPUs to exit and wait for the operation
+ * to complete.  All flows that remove/block S-EPT entries run with mmu_lock
+ * held for write, i.e. are mutually exlusive with each other, but they aren't
+ * mutually exclusive with vCPUs running (because that would be overkill), and
+ * so can fail with "operand busy" if a vCPU acquires a required lock in the
+ * TDX-Module.
+ *
+ * Note, the retry is guaranteed to succeed, absent KVM and/or TDX-Module bugs.
+ */
+ 
+> Also, perhaps we can just TDX_BUG_ON() inside tdh_do_no_vcpus() when the
+> second call of tdh_func() fails?
 
-> Note, myself (and I think Yan?) determined the locking by examining TDX m=
-odule
-> source. For myself, it's possible I misread the locking originally.
->=20
-> Also, I'm not sure about switching gears at this point, but it makes me w=
-onder
-> about the previously discussed option of trying to just duplicate the TDX=
- locks
-> on the kernel side.
+Heh, this also caught my eye when typing up the comment.  Unfortunately, I don't
+think it's worth doing the TDX_BUG_ON() inside the macro as that would require
+plumbing in the UPPERCASE name, and doesn't work well with the variadic arguments,
+e.g. TRACK wants TDX_BUG_ON(), but REMOVE and BLOCK want TDX_BUG_ON_2().
 
-Please no.  At best that will yield a pile of effectively useless code.  At=
- worst,
-it will make us lazy and lead to real bugs because we don't propery guard t=
-he *KVM*
-flows that need exclusivity relative to what is going on in the TDX-Module.
-
-> Or perhaps make some kind of debug time lockdep type thing to document/ch=
-eck
-> the assumptions in the kernel. Something along the lines of this patch, b=
-ut
-> to map the TDX locks to KVM locks or something. As we add more things (DP=
-AMT,
-> etc), it doesn't seem like the TDX locking is getting tamer...
-
-Hmm, I like the idea, but actually getting meaningful coverage could be qui=
-te
-difficult.
+Given that REMOVE and BLOCK need to check the return value, getting the TDX_BUG_ON()
+call into the macro wouldn't buy that much.
 
