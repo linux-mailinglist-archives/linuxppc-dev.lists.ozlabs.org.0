@@ -1,93 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-13337-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13339-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE09C0E413
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 15:08:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BAA3C0ED06
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Oct 2025 16:09:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwFhz0z5nz3046;
-	Tue, 28 Oct 2025 01:08:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwH3h5WG4z2yjy;
+	Tue, 28 Oct 2025 02:09:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761574099;
-	cv=none; b=IssRPAftBMOQWrRhtUZ6iJTh1NviNkRxlIMqrUixojZm9b80BxO2cULE2aAtUMCL9mRksOq7YgC3iKaxxMmN1GciSD4mQsn2Bf24koSF5laVLvhbWFTSm8ORCSLpWIIStn4QAQMYSKpPkoSHjn5QQrfaT68Ymn/pZIbKNPtZWfiHxOmNEF13VmUrHJXVK6NzA+wyJQdAWU2fIk+dXHOiEeCmNcSwQfRinHYFnA4J2t57E48+KIhW0vL3vgrDZoLOx0f8i+FVtHrwuvAPxVNekqvpUV94wiOzgRnPaNPRygHWKlkWkWx5MoMzfYKI8JDOhZufxaymS+NLCok7JYhHhA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761577776;
+	cv=none; b=ZmmPzyoP8hIgrAXjCrD5HBBLPTOX4JF371hlsG/v5TPjXQpId3/ejVjkZ5Nv+RvRFmbWRLuK6Oqp2hZ/IxqZJpWIxVdCUGYeQ3KjDRvYG5MXw2AMWefAcjPamShFyEKGZU/843D5uDCMZeBGbmCSZewzLGGE8IucGAN8hGyTRcp2qqyrudmbd39Zet4IFty/B1usT4PJrlfXCSKGEywFxq74T54rf1YhHI8jwEOUBJhchJKVj2mhu4ATPtqpnwJdC5XRENdwEUPlGRfCqXiz8rQbQ0sp/tR0wmDW5mVJRedSq2TRlirZrzAnaquBEL1xa7brukpfTf7JeaZvJ8EvIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761574099; c=relaxed/relaxed;
-	bh=yNDjf2ZkDcwefxbfbTlFfYFP26XA7S/G/BvwaqnvCqI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b35WFStJcn2qU83dC6iOK9ufMwmOHMT++0EB32fV+q5DReIV+2FWBHoBTt/+CeDNk5kFNiG5sjltLBh4d34P5k1M6y8+LO/kG8tHUC+lztJvto+gKY5N6eGtl0T0b4AAJyXrCp6rqiwBgS7mqDm28pKfcMEqWLaQtY4fRA0HYMpF8jw6U9MACzaEGIiQ39eojwC1JYKc2x4mLbjJO0DT3gSgb+uk11PjZKSDHfq/ytqsJUdiiN/yDCuuWkdYvBPCWqc4kN+RCwSGEUl6+NIROSEdxsQPBtKZSDWVkuLxpeWmRPYfwQabFlm9GWveIbdOh8IkZjlOJQwwGeFUPf6jUA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eSQyY/o+; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=HxBj57Va; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eSQyY/o+; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=HxBj57Va; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+	t=1761577776; c=relaxed/relaxed;
+	bh=du5oJpRBhJlPxSiwoBeavUKOwQ5aDhNDZOqlYr8mmsc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PpocMWtHzWlfvIw83AhnPkeGMu//LeHxINk9AVRdH3n5XOFJH+Fpvrhew59KitJq9LcJPblaY2TEf/bM5EjHLqQP35oxQSyv5HHkW8WnXMcPdZ039OhidbRu938CcLgtBxZt8L2fh85QeCE0hcWfDnH8d7sQ2087v4FFOHuBTp+BQQNjtEjuy5T2NRg31nyy+x55fXQikJe/KqCr5XLRNuhAlMXx5pHuYMAPD6s9amQzrqRSYrH64FTnFRzp2D6eEhNDvGX5eMZwwynv3s97p1FftaISzRjYu1sphmrcLniyVZK4Ud/mSKpEkocMCl2i/YBd9DKrVDE5L1KxEGzRlg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=L6dbMj4C; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=linmq006@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eSQyY/o+;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=HxBj57Va;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eSQyY/o+;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=HxBj57Va;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=L6dbMj4C;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 81 seconds by postgrey-1.37 at boromir; Tue, 28 Oct 2025 01:08:16 AEDT
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=linmq006@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwFhw1NZNz2xQ6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 01:08:16 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id AEF7821A64;
-	Mon, 27 Oct 2025 14:08:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761574091; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yNDjf2ZkDcwefxbfbTlFfYFP26XA7S/G/BvwaqnvCqI=;
-	b=eSQyY/o+rh5mjPNza8tf5wvXXvFTAHFZ1tIxk6b6/A94hYeE6WXn7QUBjfw6SfYL43pz1I
-	LPBth3S8oOG96RZLQREXma5XiZpfYdXuI8NOjJzvkPWihYfKz8TtYU1icl9iyBa9i/fBB7
-	uzDoQaekE/lim/gISn2EydfFybLrYIE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761574091;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yNDjf2ZkDcwefxbfbTlFfYFP26XA7S/G/BvwaqnvCqI=;
-	b=HxBj57VaFKgikDOWzpvAJS4F0WWYugR3TfeewtqV2ZQEDYebjVc60HUazYhD1qfFBHnvrB
-	aGJa1oMLhaShGuBg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761574091; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yNDjf2ZkDcwefxbfbTlFfYFP26XA7S/G/BvwaqnvCqI=;
-	b=eSQyY/o+rh5mjPNza8tf5wvXXvFTAHFZ1tIxk6b6/A94hYeE6WXn7QUBjfw6SfYL43pz1I
-	LPBth3S8oOG96RZLQREXma5XiZpfYdXuI8NOjJzvkPWihYfKz8TtYU1icl9iyBa9i/fBB7
-	uzDoQaekE/lim/gISn2EydfFybLrYIE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761574091;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yNDjf2ZkDcwefxbfbTlFfYFP26XA7S/G/BvwaqnvCqI=;
-	b=HxBj57VaFKgikDOWzpvAJS4F0WWYugR3TfeewtqV2ZQEDYebjVc60HUazYhD1qfFBHnvrB
-	aGJa1oMLhaShGuBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 54B9913A9A;
-	Mon, 27 Oct 2025 14:08:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id NtFNE8t8/2i+eAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 27 Oct 2025 14:08:11 +0000
-Message-ID: <69215332-2bc7-464a-9d6e-4e9d8ec66511@suse.de>
-Date: Mon, 27 Oct 2025 15:08:10 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwH3g2YYwz2yFW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 02:09:34 +1100 (AEDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-7a28226dd13so3551623b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 08:09:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761577771; x=1762182571; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=du5oJpRBhJlPxSiwoBeavUKOwQ5aDhNDZOqlYr8mmsc=;
+        b=L6dbMj4CPu4NYbuaIAa+npIuSZ0SkjMbtO0ehaWSrnem4s4rmPkM4O1Y+kQwqORYt2
+         bP+CZDaFThSEvOCq+bXVem7jo1klc652h/vWUmPRfBpx5J9ueNvP+4mCjZFnEAG8YPxP
+         /U9XUKCqnvivLN/p0XvHXit2PMpSwDky+kbeh5nE/US/CRDrQIDVkyX2Jyynrg6xbL6F
+         dVRxywLnn6McUp/oYp9SJx46oHTwEEfEPIVIvxQIYmadq3KOGFfJyjVm7pdmypktTQmx
+         Cx53xBVmGkfGiy3HMZJqil71tF5A/TTsHhlNe6CJALi/YpFS57Zj791FwIO2DRX2N1/3
+         7gaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761577771; x=1762182571;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=du5oJpRBhJlPxSiwoBeavUKOwQ5aDhNDZOqlYr8mmsc=;
+        b=tvYxnANgOVf1MWh9jcd5XdSitAsz8ZQjVasTojJTirvHnW4+kj4SoCYXCN6ADuxCtf
+         B/l5vl5hciE1YxYEX+d/RZl1CYwtuKn40YHkTgGkvoAXYwULNDwv3ksa+2FFL9Z9kx72
+         yz/Yu8pvlrM2QPu3gbSjPYS83Dp5yDPEozPT9dkJOyisl5kITq0WHj3Ozz/RGNryzbru
+         dX3+wBxVe4FtF2Yl5mb8uE+1fkXElJq6k5ev/WSF03X9y9EsxX93nIS8g5HtGEgcleXp
+         BA3nW4n6NU/LZ1AYZqKR6RR6L5bVdHIHTsIg6Nb2TWHIuf6T5G844pEuxPHO1zwOrF+7
+         +k4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWX9IVhvoVPPFDjjDpKGtQ5fIO2uPLU+cbDHv0FEoGyjp6c0a8djBNSjMNEH2Vfu8d6Oh67q03surZcYTs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyhddKpUapu23gSlBwuPVSszYk97Fy7t26UQGmXOHGDDh7TP19g
+	wOj40a1RkwjX3zYvFa6fO44rbZ65psiNIBRjzggGMFCWO1kyr7SDh+aU
+X-Gm-Gg: ASbGnct1Pudrp7lmPFTnF9MhjEKHWDRMecA9YGZ531+QJ624shAEHL4tc19KckhKbGF
+	jm90bA5lIg9Sum+Ftv/O2xoYe6m4ndkQv7nf6ojK1he4kppJuEdIEeoXb7IusjetnQW7mBIYZXD
+	eqpvIdfiKdoh3eHQDRaxm/NqyRysg71J/mpZhLZs2i+BPguVXOj8nJW46nJ6Yc+L3+gQAr1WZk5
+	vAw6JR/TPxyfw3eFaAhV6axMA21ga+ShzyeA04rx2UfVi3uvCnTj/nG3fvQOeeHV54x1jXFMeDJ
+	hLS7UYNla65TgXwar0ND9/DRRqGl6vhfRA6RpqW70tFgmVCStHgf4bGWDk/OHXWmtRvTBk/EWLg
+	uwFBJkqVmuTWSGTVyN0YfQA7W+JW2U239p58bPoWeeHai+Te8rf1ZUqVzYDQAL0N8axGc6xCmaZ
+	MUIG4UFOKggcqRDaC55be2TA==
+X-Google-Smtp-Source: AGHT+IFScmYX6R3rthmA7m7QRURybKZunKqeR6Hr6fFU6rVxiKPR6zlKhkOB5h4TP+qYA1pWCaz3NA==
+X-Received: by 2002:a05:6a00:390b:b0:7a3:455e:3fa5 with SMTP id d2e1a72fcca58-7a441a6b2d6mr397621b3a.0.1761577770926;
+        Mon, 27 Oct 2025 08:09:30 -0700 (PDT)
+Received: from localhost.localdomain ([124.77.218.104])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7a41c70ea64sm6929565b3a.3.2025.10.27.08.09.26
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 27 Oct 2025 08:09:29 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Albert Herranz <albert_herranz@yahoo.es>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] powerpc/flipper-pic: Fix device node reference leak in flipper_pic_init
+Date: Mon, 27 Oct 2025 23:09:11 +0800
+Message-Id: <20251027150914.59811-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,257 +100,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: next-20251027: backlight.c:59:39: error: implicit declaration of
- function 'of_find_node_by_name'; did you mean 'bus_find_device_by_name'?
-To: Naresh Kamboju <naresh.kamboju@linaro.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- lkft-triage@lists.linaro.org, Linux Regressions <regressions@lists.linux.dev>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, danielt@kernel.org,
- Lee Jones <lee@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>,
- Ben Copeland <benjamin.copeland@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- Dan Carpenter <dan.carpenter@linaro.org>,
- Anders Roxell <anders.roxell@linaro.org>
-References: <CA+G9fYs8fn5URQx2+s2oNxdUgZkSrdLC0P1tNBW_n-6BaBkK2Q@mail.gmail.com>
- <CA+G9fYumAD1_G4UG2LDAPD3fRxN+WQnrm8tPx6pL8qF6wSOUrw@mail.gmail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <CA+G9fYumAD1_G4UG2LDAPD3fRxN+WQnrm8tPx6pL8qF6wSOUrw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUBJECT_ENDS_QUESTION(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:url,linaro.org:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -3.30
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
+The flipper_pic_init() function calls of_get_parent() which increases
+the device node reference count, but fails to call of_node_put() to
+balance the reference count.
 
-fix is at 
-https://lore.kernel.org/dri-devel/20251027140646.227025-1-tzimmermann@suse.de/
+Add calls to of_node_put() in all paths to fix the leak.
 
-Best regards
-Thomas
+Found via static analysis.
 
-Am 27.10.25 um 09:38 schrieb Naresh Kamboju:
-> On Mon, 27 Oct 2025 at 13:43, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
->> The following powerpc ppc6xx_defconfig build regressions noticed on the
->> Linux next-20251027 tag with gcc-14 and gcc-8.
->>
->> * powerpc, build
->>    - gcc-14-ppc6xx_defconfig
->>    - gcc-8-ppc6xx_defconfig
->>
->> First seen on next-20251027
->> Good: next-20251024
->> Bad: next-20251027
->>
->> Regression Analysis:
->> - New regression? yes
->> - Reproducibility? yes
->>
->> Build regression: next-20251027: backlight.c:59:39: error: implicit
->> declaration of function 'of_find_node_by_name'; did you mean
->> 'bus_find_device_by_name'?
->> Build regression: next-20251027: include/linux/math.h:167:43: error:
->> first argument to '__builtin_choose_expr' not a constant
->> Build regression: next-20251027: via-pmu-backlight.c:22:20: error:
->> 'FB_BACKLIGHT_LEVELS' undeclared here (not in a function)
->> Build regression: next-20251027: minmax.h:71:17: error: first argument
->> to '__builtin_choose_expr' not a constant
->> Build regression: next-20251027: compiler.h:168:17: error:
->> '__UNIQUE_ID_x__286' undeclared (first use in this function); did you
->> mean '__UNIQUE_ID_y__287'?
-> Anders bisected this down to,
-> # first bad commit:
->     [243ce64b2b371cdf2cbc39c9422cb3047cab6de7]
->     backlight: Do not include <linux/fb.h> in header file
->
->> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->>
->> ## Build error
->> arch/powerpc/platforms/powermac/backlight.c: In function
->> 'pmac_has_backlight_type':
->> arch/powerpc/platforms/powermac/backlight.c:59:39: error: implicit
->> declaration of function 'of_find_node_by_name'; did you mean
->> 'bus_find_device_by_name'? [-Wimplicit-function-declaration]
->>     59 |         struct device_node* bk_node =
->> of_find_node_by_name(NULL, "backlight");
->>        |                                       ^~~~~~~~~~~~~~~~~~~~
->>        |                                       bus_find_device_by_name
->> arch/powerpc/platforms/powermac/backlight.c:59:39: error:
->> initialization of 'struct device_node *' from 'int' makes pointer from
->> integer without a cast [-Wint-conversion]
->> arch/powerpc/platforms/powermac/backlight.c:60:17: error: implicit
->> declaration of function 'of_property_match_string'
->> [-Wimplicit-function-declaration]
->>     60 |         int i = of_property_match_string(bk_node,
->> "backlight-control", type);
->>        |                 ^~~~~~~~~~~~~~~~~~~~~~~~
->> arch/powerpc/platforms/powermac/backlight.c:62:9: error: implicit
->> declaration of function 'of_node_put'
->> [-Wimplicit-function-declaration]
->>     62 |         of_node_put(bk_node);
->>        |         ^~~~~~~~~~~
->> drivers/macintosh/via-pmu-backlight.c:22:20: error:
->> 'FB_BACKLIGHT_LEVELS' undeclared here (not in a function)
->>     22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
->>        |                    ^~~~~~~~~~~~~~~~~~~
->> In file included from <command-line>:
->> drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_curve_lookup':
->> include/linux/compiler.h:168:17: error: '__UNIQUE_ID_x__286'
->> undeclared (first use in this function); did you mean
->> '__UNIQUE_ID_y__287'?
->>    168 |         __PASTE(__UNIQUE_ID_,                                   \
->>        |                 ^~~~~~~~~~~~
->> drivers/macintosh/via-pmu-backlight.c:45:23: note: in expansion of macro 'max'
->>     45 |                 max = max((int)bl_curve[i], max);
->>        |                       ^~~
->> include/linux/minmax.h:71:17: error: first argument to
->> '__builtin_choose_expr' not a constant
->>     71 |         (typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL,
->> 1L)))(ux) >= 0)
->>        |                 ^~~~~~~~~~~~~~~~~~~~~
->> include/linux/compiler_types.h:577:23: note: in definition of macro
->> '__compiletime_assert'
->>    577 |                 if (!(condition))
->>           \
->>        |                       ^~~~~~~~~
->> drivers/macintosh/via-pmu-backlight.c:45:23: note: in expansion of macro 'max'
->>     45 |                 max = max((int)bl_curve[i], max);
->>        |                       ^~~
->> include/linux/minmax.h:71:17: error: first argument to
->> '__builtin_choose_expr' not a constant
->>     71 |         (typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL,
->> 1L)))(ux) >= 0)
->>        |                 ^~~~~~~~~~~~~~~~~~~~~
->> include/linux/compiler_types.h:577:23: note: in definition of macro
->> '__compiletime_assert'
->>    577 |                 if (!(condition))
->>           \
->>        |                       ^~~~~~~~~
->> include/linux/minmax.h:112:25: note: in expansion of macro '__careful_cmp'
->>    112 | #define max(x, y)       __careful_cmp(max, x, y)
->>        |                         ^~~~~~~~~~~~~
->> drivers/macintosh/via-pmu-backlight.c:45:23: note: in expansion of macro 'max'
->>     45 |                 max = max((int)bl_curve[i], max);
->>        |                       ^~~
->> In file included from include/linux/kernel.h:27,
->>                   from arch/powerpc/include/asm/page.h:11,
->>                   from arch/powerpc/include/asm/thread_info.h:13,
->>                   from include/linux/thread_info.h:60,
->>                   from arch/powerpc/include/asm/ptrace.h:342,
->>                   from drivers/macintosh/via-pmu-backlight.c:11:
->> include/linux/math.h:162:17: error: first argument to
->> '__builtin_choose_expr' not a constant
->>    162 |                 __builtin_choose_expr(
->>           \
->>        |                 ^~~~~~~~~~~~~~~~~~~~~
->>
->> drivers/macintosh/via-pmu-backlight.c: In function
->> 'pmu_backlight_get_level_brightness':
->> drivers/macintosh/via-pmu-backlight.c:63:38: error: 'FB_BACKLIGHT_MAX'
->> undeclared (first use in this function); did you mean 'BACKLIGHT_RAW'?
->>     63 |         pmulevel = bl_curve[level] * FB_BACKLIGHT_MAX / MAX_PMU_LEVEL;
->>        |                                      ^~~~~~~~~~~~~~~~
->>        |                                      BACKLIGHT_RAW
->> drivers/macintosh/via-pmu-backlight.c:58:51: warning: parameter
->> 'level' set but not used [-Wunused-but-set-parameter]
->>     58 | static int pmu_backlight_get_level_brightness(int level)
->>        |                                               ~~~~^~~~~
->> drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_init':
->> drivers/macintosh/via-pmu-backlight.c:144:17: error: implicit
->> declaration of function 'of_machine_is_compatible'
->> [-Wimplicit-function-declaration]
->>    144 |                 of_machine_is_compatible("AAPL,3400/2400") ||
->>        |                 ^~~~~~~~~~~~~~~~~~~~~~~~
->> drivers/macintosh/via-pmu-backlight.c: At top level:
->> drivers/macintosh/via-pmu-backlight.c:22:11: warning: 'bl_curve'
->> defined but not used [-Wunused-variable]
->>     22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
->>        |           ^~~~~~~~
->> make[5]: *** [scripts/Makefile.build:287:
->> drivers/macintosh/via-pmu-backlight.o] Error 1
->> make[5]: Target 'drivers/macintosh/' not remade because of errors.
->>
->>
->> ## Source
->> * Kernel version: 6.18.0-rc2-next-20251027
->> * Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
->> * Git describe: next-20251027
->> * Git commit: 8fec172c82c2b5f6f8e47ab837c1dc91ee3d1b87
->> * Architectures: powerpc
->> * Toolchains: gcc-14
->> * Kconfigs: defconfig
->>
->> ## Build
->> * Test log: https://storage.tuxsuite.com/public/linaro/lkft/builds/34dKrlb77LGOQQSoC8FHCiIEAZK/build.log
->> * Test details:
->> https://regressions.linaro.org/lkft/linux-next-master/next-20251027/build/gcc-14-ppc6xx_defconfig/
->> * Build plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/builds/34dKrlb77LGOQQSoC8FHCiIEAZK
->> * Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/34dKrlb77LGOQQSoC8FHCiIEAZK/
->> * Kernel config:
->> https://storage.tuxsuite.com/public/linaro/lkft/builds/34dKrlb77LGOQQSoC8FHCiIEAZK/config
->>
->> --
->> Linaro LKFT
-> - Naresh
+Fixes: 028ee972f032 ("powerpc: gamecube/wii: flipper interrupt controller support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ arch/powerpc/platforms/embedded6xx/flipper-pic.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
+diff --git a/arch/powerpc/platforms/embedded6xx/flipper-pic.c b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
+index 91a8f0a7086e..cf6f795c8d76 100644
+--- a/arch/powerpc/platforms/embedded6xx/flipper-pic.c
++++ b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
+@@ -135,13 +135,13 @@ static struct irq_domain * __init flipper_pic_init(struct device_node *np)
+ 	}
+ 	if (!of_device_is_compatible(pi, "nintendo,flipper-pi")) {
+ 		pr_err("unexpected parent compatible\n");
+-		goto out;
++		goto out_put_node;
+ 	}
+ 
+ 	retval = of_address_to_resource(pi, 0, &res);
+ 	if (retval) {
+ 		pr_err("no io memory range found\n");
+-		goto out;
++		goto out_put_node;
+ 	}
+ 	io_base = ioremap(res.start, resource_size(&res));
+ 
+@@ -154,9 +154,12 @@ static struct irq_domain * __init flipper_pic_init(struct device_node *np)
+ 					      &flipper_irq_domain_ops, io_base);
+ 	if (!irq_domain) {
+ 		pr_err("failed to allocate irq_domain\n");
++		of_node_put(pi);
+ 		return NULL;
+ 	}
+ 
++out_put_node:
++	of_node_put(pi);
+ out:
+ 	return irq_domain;
+ }
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+2.39.5 (Apple Git-154)
 
 
