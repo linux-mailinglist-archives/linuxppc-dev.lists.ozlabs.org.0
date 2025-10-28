@@ -1,80 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-13424-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13425-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E69E5C131EC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 07:24:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39213C13A7F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 09:59:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwgM10bPhz3fq4;
-	Tue, 28 Oct 2025 17:24:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwkns59Xzz3dVv;
+	Tue, 28 Oct 2025 19:59:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761632652;
-	cv=none; b=CoYe10r605Hqxky7woDV/g6MyTWIQ0+lJCMKJ415TcphINgipkV4dgWueZxBKo3lhwa9pWinRqJy0G4XhOnbNEBvy3qijVtJ31AhBQKK1XuXI3WSNqZxZwRXkuuKsWH8w0nDZ2Q6c9d0R96G08JDfY/fRUDNTcxoYFys4lFbXyIUOULqbFW3oa2zq+lsDb2e8snQhrUbs0YI+oBKv5GK/UdXOX/qDApmzUwnegJI1h2cMOp1+hTsW5VAnbPvsrLCvlJK9JaftrccgMLDZXEJka/8cbsOYPUoHCVEF/qd/wTu75YmAU/xBL5Zl2Ft3+6YkJdHVqBIn5oNe4ku+x/AnQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761641953;
+	cv=none; b=bA99pNzLyPY0UnLaTM07YkFIe6InsGDfMBIurSC9tHp2UxtfX0/PC7bpXjrgTXRBVt6fOLTdmgt9hWzS/lsPTubRuE3sDb9sQiRXatVY2XlYNpdn4/OJ8ZRh2WPVAN3qqQYTWv0DC5xsZfmtF7xI8w1hXzohV/r1EoQqaUHfz3f/ta9vLUXzyOYi+es37stVnKFG0ZiANLjTxI5hcX8ZIZ0eDoylDF4v1fZZRozNtq4e4aY6KxbsUPRpw5HrlECsiyi+w1I00X/WpGQtOO1mnWWo5tk/9XF42kfXHd2iy5kVrS+OV65lkHFFC+6IeOIoi/RpD9aEIjPkWDskMqCNAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761632652; c=relaxed/relaxed;
-	bh=zuGj1hW8mWz3shIq2GZWCMOifU7nzT6tSAo/1NZESWI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=dHaxiXsae9VakmVJqPWwXKP2vUmC33Sb+ESS9vbPsiO7yEM4snQ15xLzyO0iVt5TVZDM/Iu2WcrWOMZKAUYXvzFNbVldF8nmdHzqla+pZ3r9ZN3otZHqcgHGRuK5V2QgBosNR4S4GuHAoUqZe6E3WRTC7Lviy/cFMheI10YMAbsVyDHwM7xtOfFFO/dmDjOzBlrAnt74X+kFI5bZepeLwBHTKM4vJ4Gmj+aRTMpeLjBmwvwkYqDkHeeMlK/3mrRCa2yQL5al60YW8ZcWM0KagK7TBEflwIVZc6WUAUDiMTNLDWLfsqa4e6u+mz4C+J/VfBdgIn/samKy9J9LLBxkSQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hmb/wLCG; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hmb/wLCG; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1761641953; c=relaxed/relaxed;
+	bh=afx5QpTACU5XWpfNgC8G7fvB4kwF9GyLx1ba6EDNXCI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cZDLVHiG81SuZFN6IhfxfwzXYkDeH8QgoBMNBsP5Qdq8YgQhfq6a5s6I/q7FC9PhZNdhIDcmdYJdlJxib4rr+qyAGzKUEDnxon0FhYFuqN3y80H/bI56csRRpnllDem/6AKijgF214jSeU14fXEHh8+V/r5oAUtNoaUZxZPzY6wq5HJXs+avnjW8kCK6DuRId23nqoeD0xHwJPAGjmZYNJrcyjDrcH0nYMbJ5Yn+eDPlcWfW1AfuWoBBhstYsRjIrK4lBatBiPqL1Jxm6mbkWbOxL0i3ejOTYoNErCLL/IkulZ9sHtjP3lI3BVIJpraJO3/0nJVASpSb1jSRWsR56A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aA6w5lnE; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hmb/wLCG;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hmb/wLCG;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aA6w5lnE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwgLz5RbMz3fpM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 17:24:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761632646;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zuGj1hW8mWz3shIq2GZWCMOifU7nzT6tSAo/1NZESWI=;
-	b=Hmb/wLCGq57lgunDVeVTlDfJXEeNIh7muITC63uOH9YbnA4/NKrTSt7/60hnRw/ijuNQmD
-	TC4v7QQumky67Z8IjR/3/BNEWesOUDkVAOQvYYVvWDLC1w/LxNRoLt7/7fkOKhGD0sicAz
-	iXASY/9adMTbvgxdxIMyB+ku7oRhfK0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761632646;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zuGj1hW8mWz3shIq2GZWCMOifU7nzT6tSAo/1NZESWI=;
-	b=Hmb/wLCGq57lgunDVeVTlDfJXEeNIh7muITC63uOH9YbnA4/NKrTSt7/60hnRw/ijuNQmD
-	TC4v7QQumky67Z8IjR/3/BNEWesOUDkVAOQvYYVvWDLC1w/LxNRoLt7/7fkOKhGD0sicAz
-	iXASY/9adMTbvgxdxIMyB+ku7oRhfK0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-265-92njuEYVOgKUgJEjxNPoCA-1; Tue,
- 28 Oct 2025 02:24:03 -0400
-X-MC-Unique: 92njuEYVOgKUgJEjxNPoCA-1
-X-Mimecast-MFC-AGG-ID: 92njuEYVOgKUgJEjxNPoCA_1761632641
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9EEE81956080;
-	Tue, 28 Oct 2025 06:24:00 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.212])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6C6FA1800353;
-	Tue, 28 Oct 2025 06:23:58 +0000 (UTC)
-Date: Tue, 28 Oct 2025 14:23:53 +0800
-From: Baoquan he <bhe@redhat.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, kexec@lists.infradead.org
-Cc: linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shivang Upadhyay <shivangu@linux.ibm.com>
-Subject: Re: [PATCH 0/4] powerpc/kdump: Support high crashkernel reservation
-Message-ID: <aQBheTeMycPuDHJ+@MiWiFi-R3L-srv>
-References: <20251027151338.819957-1-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwknr0YHbz3dVl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 19:59:11 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RMwDcs004594;
+	Tue, 28 Oct 2025 08:58:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=afx5Qp
+	TACU5XWpfNgC8G7fvB4kwF9GyLx1ba6EDNXCI=; b=aA6w5lnE7omoyhzECluvPc
+	VKVNfybxFtogropoR58eQRpuoXrGPYL1nkDHh3DmeMKM5FxKaag8WFleKxC7IItF
+	JxYMMOLwCNTFD/El1QNG7pN0huL7lk5JuoiTSAv47FRG6h3iyfPMqNV9PImv3LzV
+	+4BK7RAvRcljKltwMBdp8MJtLfTrM35E7gxhjDPfoDWPa6GgltpdcQOXouuPLiqd
+	Xk1n2EpaKVajHi8micP4qBLbfPVCkz2qiCg9A3h3jTnbaU0DuGE4/0b7wFd/ZzEJ
+	jEvJM0GZE2Us6gUVXC7HlnRia7GHyz8PV9mRhz9ZXK0PmK1M75ncJU9B2DWFRUvQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p992w2u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 08:58:55 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59S8rnr9005602;
+	Tue, 28 Oct 2025 08:58:54 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p992w2p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 08:58:54 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59S8qHaK009424;
+	Tue, 28 Oct 2025 08:58:53 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a1b3j1nn4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 08:58:53 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59S8wqLK43844014
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Oct 2025 08:58:52 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4086720043;
+	Tue, 28 Oct 2025 08:58:52 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2969C20040;
+	Tue, 28 Oct 2025 08:58:50 +0000 (GMT)
+Received: from [9.98.111.108] (unknown [9.98.111.108])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 28 Oct 2025 08:58:49 +0000 (GMT)
+Message-ID: <14872f86-43d4-42af-b3c0-233d220757ba@linux.ibm.com>
+Date: Tue, 28 Oct 2025 14:28:48 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,80 +86,126 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20251027151338.819957-1-sourabhjain@linux.ibm.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Rqmbx65AD74GefaacW59rF15vAtC8IN3GwHKUufRN4Q_1761632641
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/vmlinux.lds: Drop .interp description
+To: Vishal Chourasia <vishalc@linux.ibm.com>,
+        Nathan Chancellor <nathan@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin
+ <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+References: <20251018-ppc-fix-lld-interp-v1-1-a083de6dccc9@kernel.org>
+ <aPdBpqhm3JHvKIWJ@linux.ibm.com> <aP8jT3XY3kQUCwFQ@linux.ibm.com>
+Content-Language: en-US
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <aP8jT3XY3kQUCwFQ@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=JqL8bc4C c=1 sm=1 tr=0 ts=690085cf cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=CCpqsmhAAAAA:8 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=ZHSnkM3jP7rn7XZgXOwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=ul9cdbp4aOFLsgKbc677:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: JhZA-HjLs4FesaqE-SdsyT7TJQidPFYA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAxOSBTYWx0ZWRfX+e5rNKalrEtu
+ sstqnuW7/EWyOgklSY5o+3DCvntg0HMNPUXxaHc5tGpvDPze7NkZ9E3q4zZzFhHRvdD8dsBHlTb
+ bzI6w6JK9rTF9fPaNMGkJZ+NXHqM6xQnUlo4EK3eR8QkhtBr0V4qYPHJIGEFgi7PAKJwie6V7Ig
+ RacVWAnwtHNUl9bgFMqmXCMsdpBfDcLmg1fSwDBLMHorqmglajh35XRH+gGJAz91FfMP0hkuGvq
+ TbqEWsl0BFrrlw6a8HJjHXPG52R/6HRD5oXLkNHo+2ITSViKmXI5uPP7TjkaXkILMx9Xx7/XOmT
+ 4b+BuKuUNCXH3hNACAjhXBMJ3jV2FtVePhoRbj3E/0gvQS1QPlcKEyj3SdIoxTwhw6bcNjLPa10
+ 6QO1yyfpxh7KyNNjMMBFBt1jVW/thg==
+X-Proofpoint-ORIG-GUID: cxNoZzKk-Ut4WXoJsD0wx_seiJzDlGA1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-28_03,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250019
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Cc kexec mailing list.
+Will pick it up. Thanks
 
-On 10/27/25 at 08:43pm, Sourabh Jain wrote:
-> Add support for reserving crashkernel memory in higher address ranges
-> using the crashkernel=xxM,high command-line option.
-> 
-> With this feature, most of the crashkernel memory for kdump will be
-> reserved in high memory regions, while only a small portion (64 MB) will
-> be reserved in low memory for the kdump kernel. This helps free up low
-> memory for other components that require allocations in that region.
-> 
-> For example, if crashkernel=2G,high is specified, the kernel will reserve
-> 2 GB of crashkernel memory near the end of system RAM and an additional
-> 64 MB of low memory (below 1 GB) for RTAS to function properly.
-> 
-> Currently, this feature is supported only on PPC64 systems with 64-bit
-> RTAS instantiation and Radix MMU enabled.
-> 
-> Two critical changes were made to support this feature:
-> 
->  - CPU feature discovery is now performed before crashkernel
->    reservation. This ensures the MMU type is determined before reserving
->    crashkernel memory. (Patch 01/04)
-> 
->  - RTAS instantiation has been moved to 64-bit mode. (Patch 02/04)
-> 
-> Apply the following patch first, and then apply this patch series:
-> https://lore.kernel.org/all/20251024170118.297472-1-sourabhjain@linux.ibm.com/
-> 
-> Cc: Baoquan he <bhe@redhat.com>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
-> 
-> Sourabh Jain (4):
->   powerpc/mmu: do MMU type discovery before crashkernel reservation
->   powerpc: move to 64-bit RTAS
->   powerpc/kdump: consider high crashkernel memory if enabled
->   powerpc/kdump: add support for high crashkernel reservation
-> 
->  arch/powerpc/include/asm/book3s/64/mmu.h |  1 +
->  arch/powerpc/include/asm/crash_reserve.h |  8 +++++
->  arch/powerpc/include/asm/kexec.h         |  1 +
->  arch/powerpc/include/asm/mmu.h           |  1 +
->  arch/powerpc/include/asm/rtas.h          | 11 ++++++
->  arch/powerpc/kernel/prom.c               | 28 ++++++++-------
->  arch/powerpc/kernel/prom_init.c          | 26 +++++++++++---
->  arch/powerpc/kernel/rtas.c               |  5 +++
->  arch/powerpc/kernel/rtas_entry.S         | 17 ++++++++-
->  arch/powerpc/kexec/core.c                | 45 +++++++++++++++++-------
->  arch/powerpc/kexec/elf_64.c              | 10 ++++--
->  arch/powerpc/kexec/file_load_64.c        |  5 +--
->  arch/powerpc/kexec/ranges.c              | 24 +++++++++++--
->  arch/powerpc/mm/init_64.c                | 27 ++++++++------
->  14 files changed, 161 insertions(+), 48 deletions(-)
-> 
-> -- 
-> 2.51.0
-> 
+Maddy
 
+On 10/27/25 1:16 PM, Vishal Chourasia wrote:
+> ping.
+>
+> what's the status for this patch?
+>
+> vishalc
+>
+>
+> On Tue, Oct 21, 2025 at 01:48:31PM +0530, Vishal Chourasia wrote:
+>> On Sat, Oct 18, 2025 at 06:52:40PM +0100, Nathan Chancellor wrote:
+>>> Commit da30705c4621 ("arch/powerpc: Remove .interp section in vmlinux")
+>>> intended to drop the .interp section from vmlinux but even with this
+>>> change, relocatable kernels linked with ld.lld contain an empty .interp
+>>> section, which ends up causing crashes in GDB [1].
+>>>
+>>>    $ make -skj"$(nproc)" ARCH=powerpc LLVM=1 clean pseries_le_defconfig vmlinux
+>>>
+>>>    $ llvm-readelf -S vmlinux | grep interp
+>>>      [44] .interp           PROGBITS        c0000000021ddb34 21edb34 000000 00   A  0   0  1
+>>>
+>>> There appears to be a subtle difference between GNU ld and ld.lld when
+>>> it comes to discarding sections that specify load addresses [2].
+>>>
+>>> Since '--no-dynamic-linker' prevents emission of the .interp section,
+>>> there is no need to describe it in the output sections of the vmlinux
+>>> linker script. Drop the .interp section description from vmlinux.lds.S
+>>> to avoid this issue altogether.
+>>>
+>>> Link: https://sourceware.org/bugzilla/show_bug.cgi?id=33481 [1]
+>>> Link: https://github.com/ClangBuiltLinux/linux/issues/2137 [2]
+>>> Reported-by: Vishal Chourasia <vishalc@linux.ibm.com>
+>>> Closes: https://lore.kernel.org/20251013040148.560439-1-vishalc@linux.ibm.com/
+>>> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+>>> ---
+>>>   arch/powerpc/kernel/vmlinux.lds.S | 1 -
+>>>   1 file changed, 1 deletion(-)
+>>>
+>>> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+>>> index de6ee7d35cff..15850296c0a9 100644
+>>> --- a/arch/powerpc/kernel/vmlinux.lds.S
+>>> +++ b/arch/powerpc/kernel/vmlinux.lds.S
+>>> @@ -330,7 +330,6 @@ SECTIONS
+>>>   	}
+>>>   	.hash : AT(ADDR(.hash) - LOAD_OFFSET) { *(.hash) }
+>>>   	.gnu.hash : AT(ADDR(.gnu.hash) - LOAD_OFFSET) { *(.gnu.hash) }
+>>> -	.interp : AT(ADDR(.interp) - LOAD_OFFSET) { *(.interp) }
+>>>   	.rela.dyn : AT(ADDR(.rela.dyn) - LOAD_OFFSET)
+>>>   	{
+>>>   		__rela_dyn_start = .;
+>>>
+>>> ---
+>>> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+>>> change-id: 20251018-ppc-fix-lld-interp-1a78c361cd42
+>>>
+>> With this patch, I don't see .interp section being emitted the final
+>> vmlinux binary.
+>>
+>> ```
+>> (i) ❯ make LLVM=1 vmlinux
+>> (i) ❯ llvm-readelf -p .comment vmlinux
+>>
+>> String dump of section '.comment':
+>> [     1] clang version 22.0.0git (https://github.com/llvm/llvm-project.git 7314565281ec28b745502c3f429fd431e16673eb)
+>> [    6d] Linker: LLD 22.0.0 (https://github.com/llvm/llvm-project.git 7314565281ec28b745502c3f429fd431e16673eb)
+>>
+>> (i) ❯ llvm-readelf -p .interp vmlinux
+>> llvm-readelf: warning: 'vmlinux': could not find section '.interp'
+>> ```
+>>
+>> Tested-by: Vishal Chourasia <vishalc@linux.ibm.com>
 
