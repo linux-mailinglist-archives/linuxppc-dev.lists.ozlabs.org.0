@@ -1,64 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-13470-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13471-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95DEC175FF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 00:33:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 473B9C17663
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 00:51:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cx6Bq1rxNz2yyx;
-	Wed, 29 Oct 2025 10:33:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cx6bF0lGMz303y;
+	Wed, 29 Oct 2025 10:51:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761694419;
-	cv=none; b=DRBw5M8Anm/1QuGL4+HBdKUGIIccx8s4sTmtfnDOQZKCFfKbxwqeCyyFjpPu3/oYyKLh4T2jOCX7BsW0yibmyY9i4uisQoHXXUVtdd+JxNQDHcnSMG4UwRCr6oJD6N2C3bWBieq95amlA6iSurmQNJvQYhKWT3FB/ko32Y3eFFFDYOVauHVLL9wT7TGZOusMr8uTA1W3PQn1lr/VSpj1Qu48DXjrhgWr6vDfHUiA6xbsKMGWD8s+IfjwPQAH0yuGCHq0GAxEh+VbyVyngQQPsPbXfx15Eds1FX4PsRGTWyv/e3asFEqamoXFfpFien6I9MvAkS/6ecXwJqBLk7ZBpg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761695480;
+	cv=none; b=iKp977JgNIJybvz+XvKOeL/ENwlpdwB2ArMWo6noNDM1yQG63Ghi1NsQ0Dh1UeTM9fF0Z2gWFKi7/T+B+h9wxo1ccjsFcltZeWGaXKaBQBVDsB2JnG9Bq7zxcTe/S+dfj6ewBt8l6ADS1ZH6BpSWzzGbh0Qms5tTl8y9bZa8n5ECp1GlexpiBiCXs7kxiNVVIdwUd06HibVZKeQv0FmusGvuDiOhiQEAGY5ziNFKnOmSCTTg3ULHG64o9ntO0XJN4r95nmcu/Doo9qEwjrjOB4MLjDI8HZvD8D94QwfYlZ8OpAyh8x+rG6N2LreqTWbu2Ikld0RWGKI0lUwuyjvnGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761694419; c=relaxed/relaxed;
-	bh=pODafDoOf8QTcqBtJvjGUo0DO6c+sbISbOuEKjMIk/c=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=hfDUFwIHzpP3PaoACcNiy+XfPZ65KZheTkDKay9RAojaQ36JPsXTHUNSE6EtMfLUiLTexGBCY2O8Lx2/80glLeItcgVpW4J7+d4gJmxjU5MCJ+FnhkkuOGJnxOCTzutc9U5EZH/ye8UwiGkCiRMBb00W+lTGnNTYJ/TT8N6Gtc7kNu+s76mZN7XOq7NWyWaVTNOKu645sU0nwv8gJvRGYjzdS2n2Ms6ldPclJoAh4xHWcsgup4DhI0cqauYjqeOUriecBga0fdac0vhtCet0Ysprqyc7q+TL73i4T1YnQZgKjncIBz68KpKFHFfGXWRPJ5BnYhUP7+P5ZYPQWvZgEA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QZBDyun8; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1761695480; c=relaxed/relaxed;
+	bh=Ss0xsZDTL1rwOqKY2yzsfuodL2zhm4Ktw8Z3rrAQsGY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OIyHvo6c8wFY46+i99Ze7KKzB1hFgt38t19fdGeeaiqfXTwr+8Ws4E9zW7Q75rSbx54D9W4gooMB/WJFQtHRkgGf3rhtbc8jR7RlJfZ+PdjND0OasL4dYN6XqkUhEM9XKXoSWm7PPT1dijYglMEfAPuh6XEA2K6eKEVEs54G5n0dnaG1TdsDcSUt3KPO5/7B+f2cdaxz81vspHZYNkKh/HVgWfymGT1L3Dwg9+/FPdNXTG4HCLw5IA4K/VwPExlOvjqFn7I5NZ9HGg6vuJpkT8h+VmzC7PcqmGNU/m41GJMZjyf4L0AmJa3KhVzB1nWqgPXP3tdbOOQm9AJNTw9e8g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=B52Qs2LA; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org) smtp.mailfrom=paul-moore.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QZBDyun8;
+	dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=B52Qs2LA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=paul-moore.com (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cx6Bp208nz2yD5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 10:33:38 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7B4A060222;
-	Tue, 28 Oct 2025 23:33:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27E0C4CEE7;
-	Tue, 28 Oct 2025 23:33:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761694415;
-	bh=HUOsnm5Nk+6xTsUUMwpytKpcd3je4nJFnLJK5pa2yWw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=QZBDyun8yiZBdSUzQHF1+2JJRcD4znNaEFpCr/zDqada5768JIuN44wzkJC+6msSh
-	 q7w55UUYDhZ+XA3yCU3qfZ1uIjNtiyug2HCW6jX9hoNH7V3G3bY98nAuA2++vlN9K8
-	 wAlXc+k7Zl//pAJrqV/wInOao3V7lmsfOubcVuRSZ1ulRRN2bzla0nbDigJMqMkwg4
-	 lYp7mBo4dWuUMn4i9PLfa/KQYLpRadb64qLud7B1zWmJxbjHfkam1+Obj5JpVMPSSy
-	 E48LLXKHAIdrUksbZjOSUqTnDLUuB9CB5ZJYZIIyRly1x7k8JGZimV7QnAl2+LyQ1z
-	 D5dy17RW2HUsA==
-Date: Tue, 28 Oct 2025 18:33:33 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc: Johan Hovold <johan@kernel.org>, linux-pci@vger.kernel.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Diederik de Haas <diederik@cknow-tech.com>,
-	Dragan Simic <dsimic@manjaro.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>, Frank Li <Frank.li@nxp.com>,
-	"R.T.Dickinson" <rtd2@xtra.co.nz>,
-	mad skateman <madskateman@gmail.com>, hypexed@yahoo.com.au
-Subject: Re: [PATCH] PCI/ASPM: Enable only L0s and L1 for devicetree platforms
-Message-ID: <20251028233333.GA1467459@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cx6bC4G34z2yD5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 10:51:18 +1100 (AEDT)
+Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-b6271ea3a6fso4511648a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 16:51:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1761695475; x=1762300275; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ss0xsZDTL1rwOqKY2yzsfuodL2zhm4Ktw8Z3rrAQsGY=;
+        b=B52Qs2LAFygrGGKnYGgiupZPwTTlzzY94Ojx1d/d5Yv7v0FncYgMnyJ+mkNJj8mFcd
+         6bUG/p1Rr8TMK1D7UOFLTUmYKNRVVPO/2jxl7dfVsWosC0ushb0y8P/0NlWq62T67Vex
+         B2Pk+LKAnJupYAwD0pGlptWuQ4EFvYMygIOrYqrsdxrLQoF851Q4Sj+bai0xxGihvyJO
+         SgO2cnI3sr2/2x0Wy6FerK4dsgQKx+L3zHri88JIk2I7q1mZJnW4vMuUHsUXOPm1uIY1
+         OwMO8M1b+QWpeL07MRI1XGcSs1CceQpzGwnAZLb0LeO2b+/Wg3aNwPH+vhWhOzayCOC6
+         y9IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761695475; x=1762300275;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ss0xsZDTL1rwOqKY2yzsfuodL2zhm4Ktw8Z3rrAQsGY=;
+        b=rqn2JMuiUSEmwHrYHTWXl8WwrSPYT2KdkBOzfFaX5WxaHai9DV0PDodsae7K9hxpCy
+         GudrokAzARt8Bkps2x5mqH+AZIauHgAHiKvzsARyLkZMYVb83IBkzWxegce8gDU28lz1
+         mIb1L1+VlO4MLLOmNGvcLp+tn3VZNQCtsJlTCyTk0SWkwuSxhnHi3YoCaKUyDnPn+W7B
+         LNIsBzuOnTSw2F9J6oedNGv1mPYkPhZ3QEThNQ6cQlhQw+JKdknONBaaTpm6C0qs378j
+         2FL1ex4L80jgkfbmC945AoFk7uTsWYMPgJ0ItckYvdly0KikusDXFFW2l0a/DXb+Vll7
+         c9dA==
+X-Forwarded-Encrypted: i=1; AJvYcCXIflD04jmdP8IiM8aRkO4120PeDCB3aIDqWFIijS8dOp0rKELgLYUaUk/OlJCniHkmElnKbiHHzC36Vg8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzs1mjYc+Q/u1awYvuiI8aanpg9WcjV/HS+wM7fekLvP12Awigh
+	qyicEsZYZ/zwt85BGOGAH0D3oYgpY0CSrMY3E/TuLXzANDEs6+w6kMd9Ek1PiuxNPhp+4Qt7ona
+	sUzp+KpDCCdJ1lTD9+vxIG/MJ5Z5FxiHanuOkOS5i
+X-Gm-Gg: ASbGncsjDEiJEzKASgeI1NbDSG788uqPOiuSOy+w4/HXEMHRaD0N9Og2e8u9xFMG35F
+	xsGvg90Iy7y6LPG2uOStIroklDpWYkBuGN4yewVicRICxs/+JKvMw1WDkWH/vSJI49B2yNx17UV
+	Cm8Mh0iMfaUCqIHbRORkyN2eWS+pOH1AQSierF7OPVx6gQfp5ULHWT0UQRQZea7E3EPWFG3K/xG
+	4+MnnMTHayCM2TeEKozF7c6KJZzJD81+yB/ti5QC87sQ0HQXSgoNbWhQBz6
+X-Google-Smtp-Source: AGHT+IEQNyH4/UIhryBKstXm8OFaWiuLlbUq8UQcH5+4F6rsLQi06Pj91sWwNLFBJTsNKL1LL+PFGKuePdALOMKBWdA=
+X-Received: by 2002:a17:903:32c1:b0:267:99bf:6724 with SMTP id
+ d9443c01a7336-294deebc1a4mr13124835ad.31.1761695475463; Tue, 28 Oct 2025
+ 16:51:15 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,98 +79,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3aa95b26-7801-476e-840f-5976b0ee11c1@xenosoft.de>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk> <20251028004614.393374-35-viro@zeniv.linux.org.uk>
+In-Reply-To: <20251028004614.393374-35-viro@zeniv.linux.org.uk>
+From: Paul Moore <paul@paul-moore.com>
+Date: Tue, 28 Oct 2025 19:51:04 -0400
+X-Gm-Features: AWmQ_bn3uluZWrDfxLWehWBukesK9g25bn5Thq9tyHBU2hJYs5NTI3fvunVput8
+Message-ID: <CAHC9VhRa011jL86779TBk8FK-pcWinLkSkQ1MoxGyyfJg5SMgA@mail.gmail.com>
+Subject: Re: [PATCH v2 34/50] selinuxfs: new helper for attaching files to tree
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
+	neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
+	rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
+	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
+	john.johansen@canonical.com, selinux@vger.kernel.org, 
+	borntraeger@linux.ibm.com, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Oct 27, 2025 at 06:12:24PM +0100, Christian Zigotzky wrote:
-> Hi All,
-> 
-> I activated CONFIG_PCIEASPM and CONFIG_PCIEASPM_DEFAULT again for the RC3 of
-> kernel 6.18. Unfortunately my AMD Radeon HD6870 doesn't work with the latest
-> patches.
-> 
-> But that doesn't matter because we disable the above kernel options by
-> default. We don't need power management for PCI Express because of boot
-> issues and performance issues.
+On Mon, Oct 27, 2025 at 8:46=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> w=
+rote:
+>
+> allocating dentry after the inode has been set up reduces the amount
+> of boilerplate - "attach this inode under that name and this parent
+> or drop inode in case of failure" simplifies quite a few places.
+>
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+> ---
+>  security/selinux/selinuxfs.c | 160 +++++++++++++++--------------------
+>  1 file changed, 66 insertions(+), 94 deletions(-)
 
-It matters to me!  The kernel should work correctly with or without
-CONFIG_PCIEASPM and any of the CONFIG_PCIEASPM_* settings.  We can't
-expect users to know a magic combination of config settings to make
-things work.
+Looks fine to me, thanks Al.  If for some reason the rest of the
+patchset doesn't go anywhere, let me know and I can take this patch;
+it seems like a nice improvement independent of the rest.
 
-I assume AMD Radeon HD6870 is used on a variety of platforms, and I
-don't see other reports of ASPM problems with it, so I suspect the
-problem is something else.
+Acked-by: Paul Moore <paul@paul-moore.com>
 
-  - v6.17 CONFIG_PCIEASPM=y, works OK
-
-  - v6.18-rc3 CONFIG_PCIEASPM unset, works OK, as expected since we
-    don't do anything with ASPM
-
-  - v6.18-rc3 CONFIG_PCIEASPM=y, boot fails (this report, no logs)
-
-I looked at Hypexed's logs from
-https://github.com/chzigotzky/kernels/issues/17#issuecomment-3400419966,
-all of which worked fine:
-
-  - 6.18.0-a8-dmesg.log, looks like CONFIG_PCIEASPM unset, so we would
-    expect this to be fine.
-
-  - 6.18.0-a7-dmesg.log, CONFIG_PCIEASPM=y, ASPM fully enabled,
-    reported to work fine.
-
-    Hardware name: pasemi,nemo PA6T 0x900102 A-EON Amigaone X1000
-    Found PA-PXP PCI host bridge.
-    pci 0000:00:10.0: [1959:a002] type 01 class 0x060400 PCIe Root Port
-
-    All the Root Ports are [1959:a002], and ASPM for 01:00.0 and
-    05:12.0 (apparently the only endpoints that advertise ASPM) seemed
-    to work fine.
-
-  - 6.18.0-a7-2-dmesg.log, looks like CONFIG_PCIEASPM unset, so we would
-    expect this to be fine.
-
-So the only data point I see is that [1959:a002] seems to work.
-
-Christian, can you collect the output of "sudo lspci -vv" from your
-machine where CONFIG_PCIEASPM=y doesn't work?  Doesn't matter what
-kernel you're running when you collect it.
-
-I assume your machine is this:
-
-  Hardware name: varisys,CYRUS5040 e5500 0x80240012 CoreNet Generic
-
-  Found FSL PCI host bridge at 0x0000000ffe200000. Firmware bus number: 0->1
-  Found FSL PCI host bridge at 0x0000000ffe201000. Firmware bus number: 0->8
-  fsl-pci ffe200000.pcie: PCI host bridge to bus 0000:00
-  pci 0000:00:00.0: [1957:0451] type 01 class 0x060400 PCIe Root Port
-  pci 0000:01:00.0: [1002:6738] type 00 class 0x030000 PCIe Legacy Endpoint
-  pci 0000:01:00.1: [1002:aa88] type 00 class 0x040300 PCIe Legacy Endpoint
-
-  [1957:0451] Freescale (some kind of Root Port)
-  [1002:6738] AMD Barts XT [Radeon HD 6870]
-  [1002:aa88] AMD Barts HDMI Audio [Radeon HD 6790/6850/6870 / 7720 OEM]
-
-I don't see any real info about that Freescale Root Port.
-
-If you have a chance, could you try the patch below on top of
-v6.18-rc3 with CONFIG_PCIEASPM=y?
-
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 214ed060ca1b..2b6d4e0958aa 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -2524,6 +2524,7 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
-  * disable both L0s and L1 for now to be safe.
-  */
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_FREESCALE, 0x0451, quirk_disable_aspm_l0s_l1);
- 
- /*
-  * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
+--=20
+paul-moore.com
 
