@@ -1,75 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-13375-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13410-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045D4C12440
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 01:48:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E3EC125D5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 01:53:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwWsc38NWz3f1V;
-	Tue, 28 Oct 2025 11:46:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwX0H0c2hz3fn7;
+	Tue, 28 Oct 2025 11:52:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761612403;
-	cv=none; b=ZSxsb5AhWs1IWq4AVG+ZVoiAlQegH8Dw9IBmwgkyr84yneS/35ndalRFbun1S/xxt9QbzD6a0KIN6Zs2FtogMZvclAQ4aW1Im++//kewyLMctZS7D9v5GTyvLKHwGzamI2rt9okA5NqFTn/kEc0jZeUdisqOnwXLjeh7xta6uMhyt8o1tTR3B3MRQZ2i03CSn8/d7z0XQz4+z+x7AsY8BArpkO7s/8+AZO8QJRugtHvQ2kKOpHSbauogyB2/UQUC1e30F8qrr0zQ0YgKIebsj2UXItFeTMtsE9F3qX+hNSKjeMISJO7mOiK9/epXdp1SMFskwyqtj70vXIuSzbQArQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.9
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761612750;
+	cv=none; b=OzTsc0qUxDI9O7Dy2cHI2SVy5lL/2VfqvPBb2OC41VTcAgQLpO74H/h6X6+WdTDmETrrNuXEsOULLW5bLTpFlqFDptnBSBAq7s28nc60Ui3tocO/q7fgUEtVnKfZs2Ke1G4Cjg8xbqvOpYv0FLWy90IEGNWdVgPLFzb2K5HV9UJNDxVgFSrrE1cRPxxMcgk4s96O7JpSB0rC784IFZLJj0T4VJcBmhjvfGr7A5+CfkPGww90aTwKRG5Ju8ApUrp407v5QJcs1JSJn5Qv9vgcwD99m/s0P/A+yq/SCpj+WGCHQHWdg6O/g9PH+J7XXUu00Aae/cZdYZ0TNKf+YQ99LQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761612403; c=relaxed/relaxed;
-	bh=5jWWnLfQnbfazoBZQwErKmRKFUtRFrqyMeJRRkrQTEk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ylg5+UbXmryFu12H4/uCgZUQ4ryFiPE5ogal9WwoPn7ylpqHVxZYOTW7Ik5WW1VkSyuo8cK7OwgD1QxB6KX8Th5v2e59oT6atCLYyjx1V26sMNbupmO5TbuTXJ6iRaxz5JNC9Z6K+TMiEicRCL2YPS5+vA6dJzw3E5ka1hk04295zvKhsAsrHbo1LGgcYUWApqyNzVBXKWQBmZwljQj1ZezoKd6j23PJIj7o2Z1JCG3XqbUWazIkNFpPeWrD//3vo7PKSh6lTjHR0NxHCZ/6ZKjrBNByPFSvKlg9B1kJ5pGFCS4d2/nKYiZVZGz6Vn7whVJrOF9ju4eLAeZJquwogw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=Gkj7Zb5B; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+	t=1761612750; c=relaxed/relaxed;
+	bh=xE7Ol8ZHHIYSX2HMcYRbiY4I4pOxPmZnHiEv7D3PDUY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kK3w7q0RHM14YIDyLT9TFTfUNx5JBPcoo1EHXj2UZH8z/1DuCJGBDe6KaUdDJIZfCO1jZqR90UP+SAdFJGZsBsDvcP13ZzZB4mTBNCp1bebLFNKLG8AbGX1kJvHE9os33di7Gg7JSgjpGyAiHIXcuNGe87NKkwD930Wp1JiyvPR7NUefTjmkvfcNgK8Vd9BpurVbZVsLy+Ektxp8YT8txnNfnP2hORNCYimHVjVh62B0bPeNcTrVxFXunHGcyOvETF7hnX4ATbcicJBY2N9K93BPG4Aet20tS1u9hVpHlbelf4o0P4toYgyyzDa5/+5djJc+P4x89BJYfBFlKhtqow==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G6Hvogw9; dkim-atps=neutral; spf=pass (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=Gkj7Zb5B;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G6Hvogw9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwWsT3v6Jz3cZf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 11:46:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=5jWWnLfQnbfazoBZQwErKmRKFUtRFrqyMeJRRkrQTEk=; b=Gkj7Zb5BlBFjv4TohuOPBe2E2n
-	AKpodpvilfEOkreEX/7LWr03aoVtBDSQZWfnzMbVklJgGB9kpcJbw4BXo+UH1mAWvVCtispBubRMV
-	wQtSX1wyJFxeVjjtw8xNa08xl48UnT1xrqIaFFUP21QmbPQdfu7YK3IcWV3pDL/M55JLJaZUHaIkS
-	NrbTzq6XSAXX+4KcXv3/FAOf6RhoGu4hK1jH5ajjZCMqZNI8IgSBHmCpNAHIMcEfpyHaEmmK7HnQQ
-	zvERgdMHS3AFHHXmQD3uyX1NIhQtZt8vCBGE2wyW7qW014LseG9AmBq62E4L/AVm8vScqqSLqdrFz
-	1x5cT7YQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDXqw-00000001eqL-0YG6;
-	Tue, 28 Oct 2025 00:46:22 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,
-	brauner@kernel.org,
-	jack@suse.cz,
-	raven@themaw.net,
-	miklos@szeredi.hu,
-	neil@brown.name,
-	a.hindborg@kernel.org,
-	linux-mm@kvack.org,
-	linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	kees@kernel.org,
-	rostedt@goodmis.org,
-	gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	paul@paul-moore.com,
-	casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org,
-	john.johansen@canonical.com,
-	selinux@vger.kernel.org,
-	borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org
-Subject: [PATCH v2 50/50] d_make_discardable(): warn if given a non-persistent dentry
-Date: Tue, 28 Oct 2025 00:46:09 +0000
-Message-ID: <20251028004614.393374-51-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwX0D0p3lz3fn3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 11:52:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761612748; x=1793148748;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=w7zS/Rxbd2Ot04z+qhtf2Kt5+S/gx85Bie+qXzvTKLc=;
+  b=G6Hvogw9yZJo7HQN3Rdqpp8ax/nDetFS1iAK8SJ7radwMNTDQWmlvNIv
+   ar+yMU5CbuM45vdzG+CA9t8wjzT0UPn6e2bjvg7QakynJGYLCethmXa5g
+   R9rKtfnWJE9MzeGVnVNOep8UBjws7bqHwWucDw1l8A25BRbIIwLLEO5u3
+   XZz5fYJwub0L/lv1sKSdsOZnSIFxWTWNiJeo+o2qJao6XLCbtlJvu7ia+
+   eOXX8REuaBcCkUiteslwFw1DJVij3dZbw3ktie76iSzM0e7KcdgnHf/Fp
+   d3M5lRNMmWGgLkkmkzsI+g/XxnYTfGtInNsolBzEVHFmCU88CpkLVWY++
+   Q==;
+X-CSE-ConnectionGUID: +LKai9G+TmWn/wKUElNpQw==
+X-CSE-MsgGUID: OlAbQ+n/R162Pim3Ds3cIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="86331337"
+X-IronPort-AV: E=Sophos;i="6.19,260,1754982000"; 
+   d="scan'208";a="86331337"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 17:52:24 -0700
+X-CSE-ConnectionGUID: iliyoV3HSiWz4WHQBxJ1yQ==
+X-CSE-MsgGUID: hTZAPswWTDKoA9uQQVALaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,260,1754982000"; 
+   d="scan'208";a="185103061"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 27 Oct 2025 17:52:20 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vDXwb-000Ibx-1L;
+	Tue, 28 Oct 2025 00:52:16 +0000
+Date: Tue, 28 Oct 2025 08:51:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Nysal Jan K.A." <nysal@linux.ibm.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	"Nysal Jan K.A." <nysal@linux.ibm.com>,
+	Sachin P Bappalige <sachinpb@linux.ibm.com>, stable@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Laurent Dufour <ldufour@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc/kexec: Enable SMT before waking offline CPUs
+Message-ID: <202510280824.Fe2D1Sbw-lkp@intel.com>
+References: <20251025080512.85690-1-nysal@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,172 +88,89 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Al Viro <viro@ftp.linux.org.uk>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251025080512.85690-1-nysal@linux.ibm.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-At this point there are very few call chains that might lead to
-d_make_discardable() on a dentry that hadn't been made persistent:
-calls of simple_unlink() and simple_rmdir() in configfs and
-apparmorfs.
+Hi Nysal,
 
-Both filesystems do pin (part of) their contents in dcache, but
-they are currently playing very unusual games with that.  Converting
-them to more usual patterns might be possible, but it's definitely
-going to be a long series of changes in both cases.
+kernel test robot noticed the following build errors:
 
-For now the easiest solution is to have both stop using simple_unlink()
-and simple_rmdir() - that allows to make d_make_discardable() warn
-when given a non-persistent dentry.
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on powerpc/fixes linus/master v6.18-rc3 next-20251027]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Rather than giving them full-blown private copies (with calls of
-d_make_discardable() replaced with dput()), let's pull the parts of
-simple_unlink() and simple_rmdir() that deal with timestamps and link
-counts into separate helpers (__simple_unlink() and __simple_rmdir()
-resp.) and have those used by configfs and apparmorfs.
+url:    https://github.com/intel-lab-lkp/linux/commits/Nysal-Jan-K-A/powerpc-kexec-Enable-SMT-before-waking-offline-CPUs/20251025-160821
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20251025080512.85690-1-nysal%40linux.ibm.com
+patch subject: [PATCH] powerpc/kexec: Enable SMT before waking offline CPUs
+config: powerpc64-randconfig-001-20251028 (https://download.01.org/0day-ci/archive/20251028/202510280824.Fe2D1Sbw-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project e1ae12640102fd2b05bc567243580f90acb1135f)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251028/202510280824.Fe2D1Sbw-lkp@intel.com/reproduce)
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- fs/configfs/dir.c              | 10 ++++++++--
- fs/configfs/inode.c            |  3 ++-
- fs/dcache.c                    |  1 +
- fs/libfs.c                     | 21 +++++++++++++++++----
- include/linux/fs.h             |  2 ++
- security/apparmor/apparmorfs.c | 13 +++++++++----
- 6 files changed, 39 insertions(+), 11 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510280824.Fe2D1Sbw-lkp@intel.com/
 
-diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
-index 81f4f06bc87e..e8f2f44012e9 100644
---- a/fs/configfs/dir.c
-+++ b/fs/configfs/dir.c
-@@ -400,8 +400,14 @@ static void remove_dir(struct dentry * d)
- 
- 	configfs_remove_dirent(d);
- 
--	if (d_really_is_positive(d))
--		simple_rmdir(d_inode(parent),d);
-+	if (d_really_is_positive(d)) {
-+		if (likely(simple_empty(d))) {
-+			__simple_rmdir(d_inode(parent),d);
-+			dput(d);
-+		} else {
-+			pr_warn("remove_dir (%pd): attributes remain", d);
-+		}
-+	}
- 
- 	pr_debug(" o %pd removing done (%d)\n", d, d_count(d));
- 
-diff --git a/fs/configfs/inode.c b/fs/configfs/inode.c
-index 1d2e3a5738d1..bcda3372e141 100644
---- a/fs/configfs/inode.c
-+++ b/fs/configfs/inode.c
-@@ -211,7 +211,8 @@ void configfs_drop_dentry(struct configfs_dirent * sd, struct dentry * parent)
- 			dget_dlock(dentry);
- 			__d_drop(dentry);
- 			spin_unlock(&dentry->d_lock);
--			simple_unlink(d_inode(parent), dentry);
-+			__simple_unlink(d_inode(parent), dentry);
-+			dput(dentry);
- 		} else
- 			spin_unlock(&dentry->d_lock);
- 	}
-diff --git a/fs/dcache.c b/fs/dcache.c
-index a7fab68fb4c9..824d620bb563 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -931,6 +931,7 @@ EXPORT_SYMBOL(dput);
- void d_make_discardable(struct dentry *dentry)
- {
- 	spin_lock(&dentry->d_lock);
-+	WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT));
- 	dentry->d_flags &= ~DCACHE_PERSISTENT;
- 	dentry->d_lockref.count--;
- 	rcu_read_lock();
-diff --git a/fs/libfs.c b/fs/libfs.c
-index 80f288a771e3..0aa630e7eb00 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -790,13 +790,27 @@ int simple_empty(struct dentry *dentry)
- }
- EXPORT_SYMBOL(simple_empty);
- 
--int simple_unlink(struct inode *dir, struct dentry *dentry)
-+void __simple_unlink(struct inode *dir, struct dentry *dentry)
- {
- 	struct inode *inode = d_inode(dentry);
- 
- 	inode_set_mtime_to_ts(dir,
- 			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
- 	drop_nlink(inode);
-+}
-+EXPORT_SYMBOL(__simple_unlink);
-+
-+void __simple_rmdir(struct inode *dir, struct dentry *dentry)
-+{
-+	drop_nlink(d_inode(dentry));
-+	__simple_unlink(dir, dentry);
-+	drop_nlink(dir);
-+}
-+EXPORT_SYMBOL(__simple_rmdir);
-+
-+int simple_unlink(struct inode *dir, struct dentry *dentry)
-+{
-+	__simple_unlink(dir, dentry);
- 	d_make_discardable(dentry);
- 	return 0;
- }
-@@ -807,9 +821,8 @@ int simple_rmdir(struct inode *dir, struct dentry *dentry)
- 	if (!simple_empty(dentry))
- 		return -ENOTEMPTY;
- 
--	drop_nlink(d_inode(dentry));
--	simple_unlink(dir, dentry);
--	drop_nlink(dir);
-+	__simple_rmdir(dir, dentry);
-+	d_make_discardable(dentry);
- 	return 0;
- }
- EXPORT_SYMBOL(simple_rmdir);
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 95933ceaae51..ef842adbd418 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3621,6 +3621,8 @@ extern int simple_open(struct inode *inode, struct file *file);
- extern int simple_link(struct dentry *, struct inode *, struct dentry *);
- extern int simple_unlink(struct inode *, struct dentry *);
- extern int simple_rmdir(struct inode *, struct dentry *);
-+extern void __simple_unlink(struct inode *, struct dentry *);
-+extern void __simple_rmdir(struct inode *, struct dentry *);
- void simple_rename_timestamp(struct inode *old_dir, struct dentry *old_dentry,
- 			     struct inode *new_dir, struct dentry *new_dentry);
- extern int simple_rename_exchange(struct inode *old_dir, struct dentry *old_dentry,
-diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.c
-index 391a586d0557..9b9090d38ea2 100644
---- a/security/apparmor/apparmorfs.c
-+++ b/security/apparmor/apparmorfs.c
-@@ -358,10 +358,15 @@ static void aafs_remove(struct dentry *dentry)
- 	dir = d_inode(dentry->d_parent);
- 	inode_lock(dir);
- 	if (simple_positive(dentry)) {
--		if (d_is_dir(dentry))
--			simple_rmdir(dir, dentry);
--		else
--			simple_unlink(dir, dentry);
-+		if (d_is_dir(dentry)) {
-+			if (!WARN_ON(!simple_empty(dentry))) {
-+				__simple_rmdir(dir, dentry);
-+				dput(dentry);
-+			}
-+		} else {
-+			__simple_unlink(dir, dentry);
-+			dput(dentry);
-+		}
- 		d_delete(dentry);
- 		dput(dentry);
- 	}
+All errors (new ones prefixed by >>):
+
+   In file included from <built-in>:3:
+   In file included from include/linux/compiler_types.h:171:
+   include/linux/compiler-clang.h:37:9: warning: '__SANITIZE_THREAD__' macro redefined [-Wmacro-redefined]
+      37 | #define __SANITIZE_THREAD__
+         |         ^
+   <built-in>:353:9: note: previous definition is here
+     353 | #define __SANITIZE_THREAD__ 1
+         |         ^
+>> arch/powerpc/kexec/core_64.c:220:22: error: expression is not assignable
+     220 |         cpu_smt_num_threads = threads_per_core;
+         |         ~~~~~~~~~~~~~~~~~~~ ^
+   arch/powerpc/kexec/core_64.c:221:18: error: expression is not assignable
+     221 |         cpu_smt_control = CPU_SMT_ENABLED;
+         |         ~~~~~~~~~~~~~~~ ^
+   1 warning and 2 errors generated.
+
+
+vim +220 arch/powerpc/kexec/core_64.c
+
+   204	
+   205	/*
+   206	 * We need to make sure each present CPU is online.  The next kernel will scan
+   207	 * the device tree and assume primary threads are online and query secondary
+   208	 * threads via RTAS to online them if required.  If we don't online primary
+   209	 * threads, they will be stuck.  However, we also online secondary threads as we
+   210	 * may be using 'cede offline'.  In this case RTAS doesn't see the secondary
+   211	 * threads as offline -- and again, these CPUs will be stuck.
+   212	 *
+   213	 * So, we online all CPUs that should be running, including secondary threads.
+   214	 */
+   215	static void wake_offline_cpus(void)
+   216	{
+   217		int cpu = 0;
+   218	
+   219		lock_device_hotplug();
+ > 220		cpu_smt_num_threads = threads_per_core;
+   221		cpu_smt_control = CPU_SMT_ENABLED;
+   222		unlock_device_hotplug();
+   223	
+   224		for_each_present_cpu(cpu) {
+   225			if (!cpu_online(cpu)) {
+   226				printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
+   227				       cpu);
+   228				WARN_ON(add_cpu(cpu));
+   229			}
+   230		}
+   231	}
+   232	
+
 -- 
-2.47.3
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
