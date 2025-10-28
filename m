@@ -1,41 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-13448-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13449-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD82C15429
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 15:54:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0134C154B4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 16:00:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwtgg68Jbz3dTY;
-	Wed, 29 Oct 2025 01:54:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwtpD1Pzrz3dW7;
+	Wed, 29 Oct 2025 02:00:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761663263;
-	cv=none; b=GRvbzYEtnEaEjTIdRfWEX/uvd9FckIJoahdB4k7xx+q3B1N+fJg06Di8rrUY5gv2j9NM8Rn2BpI0d1tSRHEV6cLBiJwfWEqALcRWd+J7Zc6cfe8DzrCuyhKLFeCazpxdRF2BUr04TbLnz2rpE7khUt7easQqr+ujJOMF7w9+IpU5Pz7QDOhib4ys+Xs9/kO74WfzWPdd8/KqOj2Zyr3Kf07hCy/AcRtmwnvPIlJia0ycCBRA/s4Vbq6BwEmHHgnerdeTqGFditgJTp87TTxERy0/JBQCwoa1H8NWx2gLwU5fowv/apR770VVHI+PWZ2cvxlmV9fZ4FycoxNpBgAuaQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761663604;
+	cv=none; b=WdSuYQZiyldh5kE0QiSXJDDHl6P8VkIkBWpYdJtsuZCOukP+uDCMtYEtLjWM4yT3xnBnfE6V5f0W90SqqSPIqXZwrw9kYjLdcbGqelnDxCAubkIcMWK7Lu095zCkV6pZZJ/RavcOi6FQv9usybMo8CXPj3tY2/GR0YbI7p8mSmJV5JuTJcHXdGIdeIb/bry4Sb+MN4qlzN6hGdAvhXd8MHOUg03zPluf5ss5zx5rWHh7S3kzGDK+0T/F+ZaICgARf2gvaTdehXMvz4/uXUi6rSfeIoqWuutPtEsb7AiHp//iAB8ZJv80VhuATbYfXLOtnmwzvCgST/ZKEcc7Ria5Fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761663263; c=relaxed/relaxed;
-	bh=8ZlGzCfWx6hQca2N67AU/T4OIDshHG9Jx91UXAF3QDk=;
+	t=1761663604; c=relaxed/relaxed;
+	bh=T5vYWTnlFFB+lmGZzz49Yq0Qzd/tVca/qcRH6qhPziI=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TjO+pF8pf8zb7XdlngR9CTJXgUZ5u0ECsGUxVPK2Rwf7Nr49mmHijZYZXTMl2cAfvvHRCIYPyTFZYT4dN8Fo1wgdweSVdu4tUBd8FbvEg/bsW3zs0iHakOkG29yn++sK6cH09zcG7j41IwKEnJWgjSdNbDgb+M5tssiRjuxAN+f4UF3H5BSMPDLgZbW3Ql0Z7LAhsp9w3V+IQna9jlV8I1NyuqiT06Ak6ab5PfVKfhCKf5q1nsQAnuKOTrIJ46ZIcUCoGZhj317+PgUrjrpWT/wN74py0M4jQo+UllObrXO3lOyQ2VRxSbniLvflAGunYgmlJHZL5YjuSxoQ4poDIA==
+	 MIME-Version:Content-Type; b=k+9Lt/IRHOzoC3Prn0so+qX7+c1YqltVZ7ahE0yLUR1O4f0ROBy8vvaR3rlmxeAU2t5mCsgdEfhExBuvchxN2TtlaYL4joETxsECBNc/qs9IBpop1jNBkTrqv6BAdzBkBMqiXRlpE52q/yB+pjfOMQi6ql7O2EY4XBDK26ozTvoEDaERXA4UX07MWIZgpwfrEhsuFAlSOH0XJbvWxufW/05jlL5ueg1JLVy1ltdGsbuuKULUPI2nd3Qsl2vsFv7AqrTqBxDxY3FkNpZHSWqZQbcCYVbPFV7MIZLy9sPWjGhc0GBnCq74jbvIQhYgfXWvMZ9ftxtoIyEoHfaWs6MzWQ==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 355 seconds by postgrey-1.37 at boromir; Wed, 29 Oct 2025 01:54:22 AEDT
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwtgf2XSGz3cnS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 01:54:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwtpC0Q5Zz3dVZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 02:00:01 +1100 (AEDT)
 Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cwtbY1HTSz6HJcR;
-	Tue, 28 Oct 2025 22:50:49 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4cwtn53hFrzHnGf4;
+	Tue, 28 Oct 2025 14:59:05 +0000 (UTC)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 303081402EF;
-	Tue, 28 Oct 2025 22:54:19 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 44E651402EF;
+	Tue, 28 Oct 2025 22:59:56 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 28 Oct
- 2025 14:54:17 +0000
-Date: Tue, 28 Oct 2025 14:54:15 +0000
+ 2025 14:59:54 +0000
+Date: Tue, 28 Oct 2025 14:59:53 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
 CC: <linux-cxl@vger.kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -64,12 +64,12 @@ CC: <linux-cxl@vger.kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
  Wunner" <lukas@wunner.de>, Shiju Jose <shiju.jose@huawei.com>,
 	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
 	<linuxppc-dev@lists.ozlabs.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH 4/6 v6] acpi/ghes: Add helper for CXL protocol errors
- checks
-Message-ID: <20251028145415.000034bd@huawei.com>
-In-Reply-To: <20251023122612.1326748-5-fabio.m.de.francesco@linux.intel.com>
+Subject: Re: [PATCH 5/6 v6] acpi/ghes: Add helper to copy CXL protocol error
+ info to work struct
+Message-ID: <20251028145953.00005372@huawei.com>
+In-Reply-To: <20251023122612.1326748-6-fabio.m.de.francesco@linux.intel.com>
 References: <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
-	<20251023122612.1326748-5-fabio.m.de.francesco@linux.intel.com>
+	<20251023122612.1326748-6-fabio.m.de.francesco@linux.intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -94,98 +94,14 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 23 Oct 2025 14:25:39 +0200
+On Thu, 23 Oct 2025 14:25:40 +0200
 "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com> wrote:
 
-> Move the CPER CXL protocol errors validity out of
-
-validity check
-
-> cxl_cper_post_prot_err() to cxl_cper_sec_prot_err_valid() and limit the
-
-to new cxl_cper_sec_prot_err_valid() 
-
-as otherwise it sounds like it already exists.
-
-> serial number check only to CXL agents that are CXL devices (UEFI v2.10,
-> Appendix N.2.13).
-
-Perhaps a little more here on why.  I assume because you are going to have
-a second user for it, but good to say that. Also serves to justify the
-export.
-
+> Make a helper out of cxl_cper_post_prot_err() that checks the CXL agent
+> type and copy the CPER CXL protocol errors information to a work data
+> structure.
 > 
 > Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
-> ---
->  drivers/acpi/apei/ghes.c | 32 ++++++++++++++++++++++----------
->  include/cxl/event.h      | 10 ++++++++++
->  2 files changed, 32 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index d6fe5f020e96..e69ae864f43d 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -706,30 +706,42 @@ static DEFINE_KFIFO(cxl_cper_prot_err_fifo, struct cxl_cper_prot_err_work_data,
->  static DEFINE_SPINLOCK(cxl_cper_prot_err_work_lock);
->  struct work_struct *cxl_cper_prot_err_work;
->  
-> -static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> -				   int severity)
-> +int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
-
-Useful to return an error number?  Or would a bool be better given it is either
-valid or not?
-
-Otherwise looks good to me,
-
-Jonathan
-
->  {
-> -	struct cxl_cper_prot_err_work_data wd;
-> -	u8 *dvsec_start, *cap_start;
-> -
->  	if (!(prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS)) {
->  		pr_err_ratelimited("CXL CPER invalid agent type\n");
-> -		return;
-> +		return -EINVAL;
->  	}
->  
->  	if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
->  		pr_err_ratelimited("CXL CPER invalid protocol error log\n");
-> -		return;
-> +		return -EINVAL;
->  	}
->  
->  	if (prot_err->err_len != sizeof(struct cxl_ras_capability_regs)) {
->  		pr_err_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
->  				   prot_err->err_len);
-> -		return;
-> +		return -EINVAL;
->  	}
->  
-> -	if (!(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
-> -		pr_warn(FW_WARN "CXL CPER no device serial number\n");
-> +	if ((prot_err->agent_type == RCD || prot_err->agent_type == DEVICE ||
-> +	     prot_err->agent_type == LD || prot_err->agent_type == FMLD) &&
-> +	    !(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
-> +		pr_warn_ratelimited(FW_WARN
-> +				    "CXL CPER no device serial number\n");
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(cxl_cper_sec_prot_err_valid);
-> +
-> +static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> +				   int severity)
-> +{
-> +	struct cxl_cper_prot_err_work_data wd;
-> +	u8 *dvsec_start, *cap_start;
-> +
-> +	if (cxl_cper_sec_prot_err_valid(prot_err))
-> +		return;
->  
->  	guard(spinlock_irqsave)(&cxl_cper_prot_err_work_lock);
->  
-
-
+LGTM
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
