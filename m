@@ -1,78 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-13419-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13421-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93585C12DF3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 05:44:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A74BC12F31
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 06:33:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwd7t5JK8z3fqF;
-	Tue, 28 Oct 2025 15:44:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwfDc2rzRz3frK;
+	Tue, 28 Oct 2025 16:33:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761626666;
-	cv=none; b=Wg/w/o87EXUNfDd2+I4eWK09jUM89CwESuXBw68F65v7lT+0sT7RuMr7EH4MXSBXFdQRpduRLZBaeqtArHv9Z7tA9OSYzoQI48RMskTOx2QNcPz0Vvabuwj5e+CtiaYsubju06l6loPIi71biZ4+VrfqJ6i+9Bl3V9Ez8WYgEa7evUYZBOoTA8Uv8HJrvdtWjVnYlLCaOlMUWQH4EowQbCTHUGufvW8Y2tnyzFPYXTA0nRIa2ndw0ZPgnYNXuLH/ZIkQzhVdkqRd7OR0VFUZoJrHXxqxSvZrNKdAT3yiEHQL5oRL4dFJxoHH4FhdIfB3eQDyuGdWrA1pnHK3oISpIw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761629616;
+	cv=none; b=eGDruton0zcEH9Uipy22K6LIN8NCGqtirE4YW3l2jf8GOkDGhAd3+Sf2JYyBS+HXknmFO7ayk4MgzMXlAjIVIV0KrhADY2FNjk/sYgyK087S5aPJq8JCyeLqNB7hw08fADsBfhHXuLR/Du0di+7P6tV/XrkmNnzuVGYQ2PxWeTlctyrhflbDhMM+S6pYEAbxE7uJvThcVFpZF7G1f73xOY4C0XJ/Fk73RRl2ThixnKGANlmrrqQghaPmKjHR8o315cmVhAX+z9S78N6BiC9OE7ejI1tdv1/+9C0rrelIADfdDX1THjgd0/HnssSxi7lSTVwDRekuEQCdGBwDEd2Hzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761626666; c=relaxed/relaxed;
-	bh=anze7Eq7+zdgnMdZzYJmUHn38ayPEjEKQqPB9NIDJls=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y4PtV2KzntQGziScLILspVbNI/+EKRp6n0xF9+eCVWmHEOv041U+8F3+8Xi8SvXKCm8hTebjEAUl+FrQDEnNX0Rrd6zqQoZFgH4+Mn/hQ0CD7dOQzXEkqbnWvYO5HlJwPuS71xy8O/fu1gISbiKRw7EZB7215xkj94OK0UD/1MgfLKMOHP1Qdo0uQUXcJD44tzhbKn3yizS6WY1RoTkC1Ek1d5jjOqVUnsa3C6JQHBnoKFbC+Vg+/qV7hieImRhAiejhExCq7KQkhkXWSeWflM3ZhHXMja5BGuvKFBfR+XKcXGMYYQYY9KU1Hy2oSPYK/3A5Np66012hZWsc77AJYg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c2iR0ytx; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1761629616; c=relaxed/relaxed;
+	bh=978k93bL9MxlYRkaTWrSvPo0X/ixK1lZJ0FCxsOFego=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PFEIuRhwes9yJVniuahoKCoAZWn1XBA7ZrtnQWDg2mGJGW4pvqagfBtbYAyDRhDyCjF4IlkeENJWh8bBWgl9ihGUoLq5MvlDNR1r9hrZK54CpHlt6iG5zAmVkL6rMlNB4PdPcZLcKiRAjNcz9ysG1UgsQrIeaw+KG7z5wNcxLSIFrs8ro7/zMe3qzJvPf+cZSSusbA1vKcxz/Pt2HFLzs7olNvwoEzEolLKRcLDXllOciSmKg6EltYXkPn+hVl0EgJXrwJmP2EaD7MVWasr7Eg5AvKsC19190oQMRZDOzOtvbyovVI9lAin80F/JhNbdx+6Cof7hBH+TWltRECuXzw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZodR+HCG; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3rfuaaqykdkcrbupfbnvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--kuniyu.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--kuniyu.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c2iR0ytx;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZodR+HCG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--kuniyu.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3rfuaaqykdkcrbupfbnvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--kuniyu.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwd7s4LQxz3fqB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 15:44:25 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RJ3aTD008697;
-	Tue, 28 Oct 2025 04:44:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=anze7E
-	q7+zdgnMdZzYJmUHn38ayPEjEKQqPB9NIDJls=; b=c2iR0ytxqFaF9TgaFLhQpe
-	f5HbwyKLHbqAagictMvVejSpCfA9ajleNWJrGbIOD+ETOp2rJg0HSgCW16hw+kSh
-	r2jehLsfkW7464qCdIf368HvoFcYUhHCpsyQUa/Ea+mlYjKeSzbqAG5mfevDWYMi
-	0g9jTFF/RmJ8HxVPkSwJRMCxJUa2RjTld8NA01qpOR9yhwLpqlqs/xE3U6ijE7im
-	lIY/VabjlsR87aEBT4rPYHEnZGtJk8SCIaC3aH1mSItfvsE8iLuid8978ghBUM/i
-	iTj1JZyFNT+Cmb0GBwkD2pLSClMHB5RkUEROuDo9BXUiApXbZOwqCAA0XItv7Y9A
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p99217h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 04:44:11 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59S4fCfL009548;
-	Tue, 28 Oct 2025 04:44:11 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p99217f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 04:44:11 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59S3QLW4022923;
-	Tue, 28 Oct 2025 04:44:10 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a198xh39t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 04:44:10 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59S4i5Sa37159228
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Oct 2025 04:44:06 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D8FF920043;
-	Tue, 28 Oct 2025 04:44:05 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D632520040;
-	Tue, 28 Oct 2025 04:44:02 +0000 (GMT)
-Received: from [9.109.204.116] (unknown [9.109.204.116])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Oct 2025 04:44:02 +0000 (GMT)
-Message-ID: <f1544738-bc22-4b6c-b643-7e7076217395@linux.ibm.com>
-Date: Tue, 28 Oct 2025 10:14:01 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwfDb0P0Vz3frH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 16:33:34 +1100 (AEDT)
+Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-32eb864fe90so9650725a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 22:33:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761629612; x=1762234412; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=978k93bL9MxlYRkaTWrSvPo0X/ixK1lZJ0FCxsOFego=;
+        b=ZodR+HCG7qHqcM8CANgJBOmmVT3TCdMdOjVwbYyenkYgBdvgROQpT5XWdoeal0DPDg
+         sQxJex8U5qrZwJVnQoCZ3gpL1OlgPmEOJZPjkKTXf84P+/icxhIgthJxX68/iBui/IaM
+         f5Qpa1yaKDOchziFC5013UhMcx3+oQA1l5p6YEDzFwrtrEOpa55eO5mJujWc8/fvTxbZ
+         6mRV0ODfOvFqPCAjKV5DSiDDQ0p8mpvNuung0TRM0YpMKK5+X3w1akekXPCowx0DK3OY
+         ayY4tPHKe7gWUryVpZvtp4soO0gswMVx7AD0F5CanL/OXOqd7YRCXnX0T7spo/doE7+6
+         S93g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761629612; x=1762234412;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=978k93bL9MxlYRkaTWrSvPo0X/ixK1lZJ0FCxsOFego=;
+        b=OzBGDsZ3OE/lcPDI4rmqQZKrAkjY+rgRqcMeIEKHXHbLXdcIYy0dJ+lTaqyRHxLB4g
+         t9QBYw8agQUsL1hGMfhlBpX1Qw0GymsP2t+GXfxP7wrs41UIDgslHvt6e8DRWW104+We
+         ai5Y0Wwu4QKfOdxpenSM1QXJRgZZdvbaLqTvpxaPzWUEpHWGjahTg240XJyNc5KKhcV5
+         kMpghm75SaqN8YmsNlqfmx7KNgpQ6qAFwmLpE3GvvZwQOCme2/5p8cT1INsllyGIdTcF
+         Afb8O3eJPtoNqgFSVTuJmUTutyrLvA7qdzFsWQQ4rNXzxY1cA5hgwXFxzUGSxYyA2dZj
+         b9oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhiNPkN6qWlwc2f/3PjFPk4Q5NXXfH/dBJYORasb3ZVa1k1gk0GwC4ffA8sYgNmtmxxCvHNO78Z2I3yNA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzKLs09KGmgY8/7njARCne+JAvCkSsUE22HENLTcGtO87rxc5Hb
+	UMyyiWP0JGu3H75SAFGP4FaQ/QizhiL/X4sXM9n/ZfCWs9KohJo6uVupDJBxtOTDVHRquvTBbyw
+	zQGJ0dg==
+X-Google-Smtp-Source: AGHT+IEgPd1Vro8jar4YuvbY14ALahZ9RGAW96D7MCTDGrIDbCO1GDP/qete02Qehy0msaJmFvHad1jiwWY=
+X-Received: from pjxx4.prod.google.com ([2002:a17:90b:58c4:b0:33d:98cb:883b])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2290:b0:273:ab5f:a507
+ with SMTP id d9443c01a7336-294cb394740mr35360685ad.21.1761629612502; Mon, 27
+ Oct 2025 22:33:32 -0700 (PDT)
+Date: Tue, 28 Oct 2025 05:32:13 +0000
+In-Reply-To: <ea7552f1-842c-4bb8-b19e-0410bf18c305@intel.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,115 +75,159 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/kexec: Enable SMT before waking offline CPUs
-To: "Nysal Jan K.A." <nysal@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Sachin P Bappalige <sachinpb@linux.ibm.com>, stable@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Laurent Dufour <ldufour@linux.ibm.com>,
-        Thomas Gleixner
- <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-References: <20251025080512.85690-1-nysal@linux.ibm.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <20251025080512.85690-1-nysal@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=JqL8bc4C c=1 sm=1 tr=0 ts=69004a1b cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=VnNF1IyMAAAA:8 a=FNYM6xYWznnmATNcaFQA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: FxmdnNuzaqm78WhLlnDMk9_nePRBgCOm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAxOSBTYWx0ZWRfX7QkWKQhFuOOO
- V9MA81mTt9sfU1UD8Rq3/20G1aeAxSbe8CFEPB7VnCN4pwya45IxorLcSrfBcX/F6suOnwW34CB
- Cn8L+SYmX9LxK5UTibbSis7CZckp43117R0xE1ZoGvcKAR26z2hgFrCxVqzDNkUDPwdVjnydw6F
- qJtIDFi5uh0mstIzJE2S80w7QpJ/nSfhGhz56vsYUOXVqyCGhYsfa+fhCe0+PUUj5Laj+HfKzak
- r7JBMdSnqeEcAuWlskJqzOpcPoS4z5X46mGRWD1vQVnPbWUJdjYwUiPaZU0UAV6tMyWZ/ScVEJF
- MYK+a9KsRBkULhLeZdBs7iit8B0uR6Ct4rQ7+JvafBgR5EkDr3KH9OPlUMa+qld4QCne36e25ZQ
- YvNeualAVKZNQLfjbKa7yFGgbnSQoA==
-X-Proofpoint-ORIG-GUID: lthnj5OCypztazoUVbkfPZXSBi221ky3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-28_02,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1011 lowpriorityscore=0 malwarescore=0 bulkscore=0
- priorityscore=1501 spamscore=0 adultscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250019
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+References: <ea7552f1-842c-4bb8-b19e-0410bf18c305@intel.com>
+X-Mailer: git-send-email 2.51.1.838.g19442a804e-goog
+Message-ID: <20251028053330.2391078-1-kuniyu@google.com>
+Subject: Re: [PATCH v1 2/2] epoll: Use __user_write_access_begin() and
+ unsafe_put_user() in epoll_put_uevent().
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: dave.hansen@intel.com
+Cc: alex@ghiti.fr, aou@eecs.berkeley.edu, axboe@kernel.dk, bp@alien8.de, 
+	brauner@kernel.org, catalin.marinas@arm.com, christophe.leroy@csgroup.eu, 
+	dave.hansen@linux.intel.com, edumazet@google.com, hpa@zytor.com, 
+	kuni1840@gmail.com, kuniyu@google.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mingo@redhat.com, 
+	mpe@ellerman.id.au, npiggin@gmail.com, palmer@dabbelt.com, pjw@kernel.org, 
+	tglx@linutronix.de, torvalds@linux-foundation.org, will@kernel.org, 
+	x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello Nysal,
+From: Dave Hansen <dave.hansen@intel.com>
+Date: Fri, 24 Oct 2025 07:05:50 -0700
+> On 10/23/25 22:16, Kuniyuki Iwashima wrote:
+> >> This makes me nervous. The access_ok() check is quite a distance away.
+> >> I'd kinda want to see some performance numbers before doing this. Is
+> >> removing a single access_ok() even measurable?
+> > I noticed I made a typo in commit message, s/tcp_rr/udp_rr/.
+> > 
+> > epoll_put_uevent() can be called multiple times in a single
+> > epoll_wait(), and we can see 1.7% more pps on UDP even when
+> > 1 thread has 1000 sockets only:
+> > 
+> > server: $ udp_rr --nolog -6 -F 1000 -T 1 -l 3600
+> > client: $ udp_rr --nolog -6 -F 1000 -T 256 -l 3600 -c -H $SERVER
+> > server: $ nstat > /dev/null; sleep 10; nstat | grep -i udp
+> > 
+> > Without patch (2 stac/clac):
+> > Udp6InDatagrams                 2205209            0.0
+> > 
+> > With patch (1 stac/clac):
+> > Udp6InDatagrams                 2242602            0.0
+> 
+> I'm totally with you about removing a stac/clac:
+> 
+> 	https://lore.kernel.org/lkml/20250228203722.CAEB63AC@davehans-spike.ostc.intel.com/
+> 
+> The thing I'm worried about is having the access_ok() so distant
+> from the unsafe_put_user(). I'm wondering if this:
+> 
+> -	__user_write_access_begin(uevent, sizeof(*uevent));
+> +	if (!user_write_access_begin(uevent, sizeof(*uevent))
+> +		return NULL;
+> 	unsafe_put_user(revents, &uevent->events, efault);
+> 	unsafe_put_user(data, &uevent->data, efault);
+> 	user_access_end();
+> 
+> is measurably slower than what was in your series. If it is
+> not measurably slower, then the series gets simpler because it
+> does not need to refactor user_write_access_begin(). It also ends
+> up more obviously correct because the access check is closer to
+> the unsafe_put_user() calls.
+> 
+> Also, the extra access_ok() is *much* cheaper than stac/clac.
 
-On 25/10/25 13:35, Nysal Jan K.A. wrote:
-> If SMT is disabled or a partial SMT state is enabled, when a new kernel
-> image is loaded for kexec, on reboot the following warning is observed:
->
-> kexec: Waking offline cpu 228.
-> WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
-> [snip]
->   NIP kexec_prepare_cpus+0x1b0/0x1bc
->   LR  kexec_prepare_cpus+0x1a0/0x1bc
->   Call Trace:
->    kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
->    default_machine_kexec+0x160/0x19c
->    machine_kexec+0x80/0x88
->    kernel_kexec+0xd0/0x118
->    __do_sys_reboot+0x210/0x2c4
->    system_call_exception+0x124/0x320
->    system_call_vectored_common+0x15c/0x2ec
->
-> This occurs as add_cpu() fails due to cpu_bootable() returning false for
-> CPUs that fail the cpu_smt_thread_allowed() check or non primary
-> threads if SMT is disabled.
->
-> Fix the issue by enabling SMT and resetting the number of SMT threads to
-> the number of threads per core, before attempting to wake up all present
-> CPUs.
->
-> Fixes: 38253464bc82 ("cpu/SMT: Create topology_smt_thread_allowed()")
-> Reported-by: Sachin P Bappalige <sachinpb@linux.ibm.com>
-> Cc: stable@vger.kernel.org # v6.6+
-> Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-> ---
->   arch/powerpc/kexec/core_64.c | 5 +++++
->   1 file changed, 5 insertions(+)
->
-> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-> index 222aa326dace..ff6df43720c4 100644
-> --- a/arch/powerpc/kexec/core_64.c
-> +++ b/arch/powerpc/kexec/core_64.c
-> @@ -216,6 +216,11 @@ static void wake_offline_cpus(void)
->   {
->   	int cpu = 0;
->   
-> +	lock_device_hotplug();
-> +	cpu_smt_num_threads = threads_per_core;
-> +	cpu_smt_control = CPU_SMT_ENABLED;
+Sorry for the late!
+
+I rebased on 19ab0a22efbd and tested 4 versions on
+AMD EPYC 7B12 machine:
+
+ 1) Base 19ab0a22efbd
+
+ 2) masked_user_access_begin()
+    -> 97% pps and 96% calls of ep_try_send_events()
+
+ 3) user_write_access_begin() (Dave's diff above) (NEW)
+    -> 102.2% pps and 103% calls of ep_try_send_events()
+
+ 4) __user_write_access_begin() (This patch)
+    -> 102.4% pps and 103% calls of ep_try_send_events().
+
+Interestingly user_write_access_begin() was as fast as
+__user_write_access_begin() !
+
+Also, as with the previous result, masked_user_access_begin()
+was the worst somehow.
+
+So, I'll drop patch 1 and post v2 with user_write_access_begin().
+
+Thank you!
 
 
-Above variables are  #define if CONFIG_SMP and CONFIG_HOTPLUG_SMT is not 
-there.
+1) Base (19ab0a22efbd)
 
-I think the above code should go under #if defined(CONFIG_SMP) && 
-defined(CONFIG_HOTPLUG_SMT).
+# nstat > /dev/null; sleep 10; nstat | grep -i udp
+Udp6InDatagrams                 2184011            0.0
 
-Seems like the build failure reported below is also pointing the same issue:
-https://lore.kernel.org/all/202510280824.Fe2D1Sbw-lkp@intel.com/
+@ep_try_send_events_ns:
+[256, 512)       2796601 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
+[512, 1K)         627863 |@@@@@@@@@@@                                         |
+[1K, 2K)          166403 |@@@                                                 |
+[2K, 4K)           10437 |                                                    |
+[4K, 8K)            1396 |                                                    |
+[8K, 16K)            116 |                                                    |
 
-> +	unlock_device_hotplug();
-> +
->   	for_each_present_cpu(cpu) {
->   		if (!cpu_online(cpu)) {
->   			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
+
+2) masked_user_access_begin() + masked_user_access_begin()
+97% pps compared to 1).
+96% calls of ep_try_send_events().
+
+# nstat > /dev/null; sleep 10; nstat | grep -i udp
+Udp6InDatagrams                 2120498            0.0
+
+@ep_try_send_events_ns:
+[256, 512)       2690803 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
+[512, 1K)         533750 |@@@@@@@@@@                                          |
+[1K, 2K)          225969 |@@@@                                                |
+[2K, 4K)           35176 |                                                    |
+[4K, 8K)            2428 |                                                    |
+[8K, 16K)            199 |                                                    |
+
+
+3) user_write_access_begin()
+102.2% pps compared to 1).
+103% calls of ep_try_send_events().
+
+# nstat > /dev/null; sleep 10; nstat | grep -i udp
+Udp6InDatagrams                 2232730            0.0
+
+@ep_try_send_events_ns:
+[256, 512)       2900655 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
+[512, 1K)         622045 |@@@@@@@@@@@                                         |
+[1K, 2K)          172831 |@@@                                                 |
+[2K, 4K)           17687 |                                                    |
+[4K, 8K)            1103 |                                                    |
+[8K, 16K)            174 |                                                    |
+
+
+4) __user_write_access_begin()
+102.4% pps compared to 1).
+103% calls of ep_try_send_events().
+
+# nstat > /dev/null; sleep 10; nstat | grep -i udp
+Udp6InDatagrams                 2238524            0.0
+
+@ep_try_send_events_ns:
+[256, 512)       2906752 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
+[512, 1K)         630199 |@@@@@@@@@@@                                         |
+[1K, 2K)          161741 |@@                                                  |
+[2K, 4K)           17141 |                                                    |
+[4K, 8K)            1041 |                                                    |
+[8K, 16K)             61 |                                                    |
 
 
