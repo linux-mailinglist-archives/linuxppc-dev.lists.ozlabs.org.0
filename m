@@ -1,80 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-13457-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13458-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F319C15B5C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 17:14:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82577C15BE7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 17:20:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwwRY36H1z3c55;
-	Wed, 29 Oct 2025 03:14:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwwZR5Jtwz3c55;
+	Wed, 29 Oct 2025 03:19:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::631"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761668041;
-	cv=none; b=PJidAU0vLCH29dIuU1rggobJ0aKwDJFJgQzsZePVX/nTIojKG4Q3oyZ6qpNFVryiOoHr0wKI7i2JdPUjbqFoNijdFPlI8toCMTB1KcaDajpRTOaYJE4cQnbamZDYhBIYw6SqZRyCAZ7UjbJM7Qz7sfuIhjpMjWi809sU1Byb97IJOkWYY2jBqchFgKLJNarSaR9DnR4HYG2djKenQPbwy52TJJJLxIfnnlcWLvJATcvQoLZYby63D0PPVNK4q4QHFY92mJCwZTJZ1bSKN4JiaD7DW3FVNA6JYo1CGyaCl/9PJg0i2VBesntDVGeUW/1hjt1ZI5SFqiW+z2Z+CNADww==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.9
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761668399;
+	cv=none; b=nliToZqPjV7uDT8yrgCjbPyXWCT3x6pdZdG9HAnlkBlfO9I0MufjBEYG8kL/rZKo9eYOmj2yqdRFCmynczTfo4onqV+rHkhSKw7iOYttyroVJ6t5mlaqY7+/xx02ta/zd1EqPpOP4uSB1e8SPQVJxHkplFkE5/nwzam/yM8s3FONj7KLYIMe9J6gLjY5XJ8IhRi12RVtI1tgd8nPMuEKrLI5iUTS9RykmU8o3W6IK3AvXLgtCFj3TLOttOnFlA9Fmu+fX3hjur+LgQUxEnarkczmp4LiBaiJzhXLddTM/V16w3eYeyFqgq2oLs/urP8YdZXunXKxdq+PnDQzjSTVTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761668041; c=relaxed/relaxed;
-	bh=/7vxW2qYHkfek8BcuNGNfNSQ19bugBoHjwa49fBWcYE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZSBFuDWzJzIBkugBlLwAtEfvTf88QfqgdZ9WtPvKSAFYj8zKDNp59Ng9sZOsrSTKKjUzzONWD+EVfOGeApjbjX5gMQlhsMYnmAF4hKHkCty4GLs/iOrwWW8Aq3UUc1C53ckfF6JPMb+5MefnEy5gbz5GmyuX+d3jGN3CQOo8MAwpQx4B0yogR6kqu46e0tl8SgjqyP7oXeI2abkZpE29gS7O2axUMrmBPIQSm7ZNcrzslSfOSTHM+v4kAbXmg4Czr7D0lBAKKVVtfj59s5zS66D6eESwH/L2rQ74ghMcCHeSY6BGBfzPNQyWA1pyw4D0lV7J/QFsRvBa3R0aRKZOHQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=MtUAU3t/; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1761668399; c=relaxed/relaxed;
+	bh=niIA3RuWaC2fY0iSenjcVGbGvrWkO8+5pRMay2cPrMk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JnMNHsB4qdFnWk0S9NlwLQSZJ7k38Tm0TRjDdlDI2sJnF4lSPbAR1VTiI66Fplt9a7w4ZRclqZ4SIee1KCZgDqJI1bDATQMQ0Q4o0gFi+AJ6RzCfSCqRgUbudFXOGC1Q6nRN6Q1tf6HdvE0ZJNK25M4yllYlTUkOzELDAFDIFgP9/H1xtOwiDsLiquxyfO8s+0IHy1m92sLQqn3l+PgFnQ3HpKVz0YNZ7JmKBfxEXIwydq5lH016nhSxCjRw5BvIrkEPW9ap8AQEKhoi2VyICHIw0AUnvDWvoTJDuaHF6HcOrKfzwKa3G9GwspTqKy+H9mxWxp46TD6jodw8THMfbQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TTTp2/3H; dkim-atps=neutral; spf=pass (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=MtUAU3t/;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TTTp2/3H;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwwRW61J5z2ypw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 03:13:59 +1100 (AEDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-b64cdbb949cso1407467566b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 09:13:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1761668035; x=1762272835; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/7vxW2qYHkfek8BcuNGNfNSQ19bugBoHjwa49fBWcYE=;
-        b=MtUAU3t/rlaO8Uhyu/bwP3FcT7+tFoO5nqauZ1nWYOnNGDQwSxYiCc876D2Ypl3wIn
-         ls7f7VA2Ss6QZdQydMTzcs/6thcQDxXGapmPiDgpA/9igCylGyN4GLtTuG4Iv0RH/W/B
-         /pzcRp14v6Rdq54GKRL3vTYtOtYsibm3TR1Yg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761668035; x=1762272835;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/7vxW2qYHkfek8BcuNGNfNSQ19bugBoHjwa49fBWcYE=;
-        b=bsJ/qmBJy0JpqHb8CrGCfeCcWgnaEM7K+72X/+n/ImNFDx2KxdYoq3ZJKUkETeXF9A
-         b1yDEY8Yv+qwuImwszRqiV1RxPSZdo5x7ic008bS++tbqw2Yb1m4HCyfrVxeIzECwymZ
-         5rjKxUrUgAhyjAW4HWbifv2wAz7hAtl6z7RstG3477FiJ4fFVbXgrLW8k1HoWLvPKY9g
-         zESi5LTJqIt9J4KuWVhJWcGllB8G2f+NX9ONJltYbXSkGA0OHiK0J6AlTWryRZ3ShmEe
-         wWFLbfTFW3iI31KsB23Tb4P+Hylb4iUO93DoKHbkjHQ6U19ugCX2mrk/gYB9+jGCr5aP
-         gxzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOPfnHQ8gLRV5ZuZHFeuYHupo20HL7MFJSjuCTjAvJeIC6eI+D6JndZ+66RzT05RSXrTM7JvtEDeBE3Q4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwEFwySseDYIB5HXno/xpzVvgzRgPGpCEWWZD4/AALF3DBAC6MI
-	e+m/ODp5zxM4Qx8beHN++nRUa3g7DtCKYaCbd5pNGYRh5o4M6pc+zAveyrhZhC/r2jink18uC1J
-	R+hHSVkE=
-X-Gm-Gg: ASbGncunXk4mDd17zKPKy5Tnnzx9bu2QfGqd8LphXFYQFL1hEBUqVZrkaMWIrbJzExR
-	wzAqCxFQlLCpTzGc2jS9g0GD+vhZEk7CqDffiTQO2tWIFQLrOAi2o7ZBJqKykRsiPMnENhHsInP
-	lp7qcuCDUk4S3AIPetxQZIjI1hvm3lqnk9lfDstl+Eucx7Ihhn6AHPiDe75hqfndIH5kwkS4+mS
-	JVuwilzH9g0ejyhNM3HUtdWXKiJdlmP5ak3++OJDA/WNGpO/ruV+ZJlcCq1VNegmiwyWlAn5xn9
-	QNHxj7+JZR7H6lWA762aCUutEC+pmCmS0yXPCkkU3ml4RX5JmuuKx9kp940j6gEwXGLEdt67kGl
-	DWJyyDZ7jEn4CTPH5GuVeQE1FN0kQZV7lcO676Qwwkx3ND1wKYR5uxOy60KeJEcHtWETsgjN9W4
-	V6GDmtiuYjznGRLNnSXVjtKXmLsY+qyv9W9QzS6QzKQSgDLpZzCA==
-X-Google-Smtp-Source: AGHT+IGwyW+wwfb6fwlAIT8msZ1tP0/pbcC3W79AlRsJj+Gpfy9LqjD1ENPop5FueqLvX9ftZ96gTg==
-X-Received: by 2002:a17:907:2d8a:b0:b6d:825b:828 with SMTP id a640c23a62f3a-b6dba492210mr473548766b.25.1761668035293;
-        Tue, 28 Oct 2025 09:13:55 -0700 (PDT)
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com. [209.85.208.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d8536cd11sm1137172266b.31.2025.10.28.09.13.53
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Oct 2025 09:13:53 -0700 (PDT)
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63e11cfb4a9so11366113a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 09:13:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUS74Pn8ituvxL44RX6LjVeXuSgMTMGohBM/IGWYStqaxj1DujGMBoytdh0tRii8NSXlWV/+QQfLLp9+18=@lists.ozlabs.org
-X-Received: by 2002:a05:6402:358a:b0:63c:4d42:993f with SMTP id
- 4fb4d7f45d1cf-63ed826ace7mr3748960a12.3.1761668033009; Tue, 28 Oct 2025
- 09:13:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwwZP33nwz3btg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 03:19:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761668397; x=1793204397;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ql0oHBgcfkHjGUpO+SghiDYcqKotDono1NNct+0rvfg=;
+  b=TTTp2/3HhJKZjIAg6MsjPas82VDBFcEkBe+uIoXpTZgnCoAf2UdJxqUQ
+   AHJjTSFj6EBPSAxw7t2AZjZZrC9+W0iq3dgWgKoXs1QtK1tAhxQ1yXXDX
+   dJOXORyoMhIaN/BFxYPM+agZnDAliOUeV+ZvpzX4GoImwqZ25QVsLUvI8
+   M6OnL5JTxqvB0eew3kCD4Qp+RlESxBxvVsUZCnYP5ReoRk9YflSO4UtSR
+   0qjsP5cfydsy9bik7pevpho/xBDSWUbMOXI6Mzfy3FaJQ5zo+SN++aXUx
+   qZVZ42mzh6r0MtDC+bD9GInRxEjZEZXYO/w8Lv/ZFJ1gjL+E/E3N7L1js
+   A==;
+X-CSE-ConnectionGUID: sdgqFoz6SFGWgYGAJyoTyQ==
+X-CSE-MsgGUID: pE+nOHvXS0GnK4o3MQddrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74449400"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="74449400"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 09:19:54 -0700
+X-CSE-ConnectionGUID: UGf4618tTTyI56XQsvU/MQ==
+X-CSE-MsgGUID: AY3nXcO2R7KvdLAQ9FIFXQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="190528315"
+Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.81.126]) ([10.24.81.126])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 09:19:53 -0700
+Message-ID: <bf4e81e4-70c2-434d-960d-d3b2277ac8ca@linux.intel.com>
+Date: Tue, 28 Oct 2025 09:19:43 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,60 +69,98 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20251027083700.573016505@linutronix.de> <20251027083745.736737934@linutronix.de>
- <0c979fe0-ee55-48be-bd0f-9bff71b88a1d@efficios.com> <87frb3uijw.ffs@tglx>
-In-Reply-To: <87frb3uijw.ffs@tglx>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 28 Oct 2025 09:13:36 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjZ39CSZwN3W6n5kSAqL-OhJghygh3-dRsrJKpOa9nTwg@mail.gmail.com>
-X-Gm-Features: AWmQ_bkZ4DVtg-fqS9oPLAcmx2bmXbpg5s6Qki9Q4422mgDG3jAT_1tXHLLXals
-Message-ID: <CAHk-=wjZ39CSZwN3W6n5kSAqL-OhJghygh3-dRsrJKpOa9nTwg@mail.gmail.com>
-Subject: Re: [patch V5 10/12] futex: Convert to get/put_user_inline()
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, LKML <linux-kernel@vger.kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, 
-	Davidlohr Bueso <dave@stgolabs.net>, =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>, 
-	kernel test robot <lkp@intel.com>, Russell King <linux@armlinux.org.uk>, 
-	linux-arm-kernel@lists.infradead.org, x86@kernel.org, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org, 
-	Heiko Carstens <hca@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org, 
-	Andrew Cooper <andrew.cooper3@citrix.com>, David Laight <david.laight.linux@gmail.com>, 
-	Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6 v6] ACPI: extlog: Trace CPER Non-standard Section Body
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
+ linux-cxl@vger.kernel.org
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Sunil V L <sunilvl@ventanamicro.com>, Xiaofei Tan <tanxiaofei@huawei.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+ Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, Guo Weikang <guoweikang.kernel@gmail.com>,
+ Xin Li <xin@zytor.com>, Will Deacon <will@kernel.org>,
+ Huang Yiwei <quic_hyiwei@quicinc.com>, Gavin Shan <gshan@redhat.com>,
+ Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Li Ming <ming.li@zohomail.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>,
+ Karolina Stolarek <karolina.stolarek@oracle.com>,
+ Jon Pan-Doh <pandoh@google.com>, Lukas Wunner <lukas@wunner.de>,
+ Shiju Jose <shiju.jose@huawei.com>, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org, Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+References: <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
+ <20251023122612.1326748-2-fabio.m.de.francesco@linux.intel.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20251023122612.1326748-2-fabio.m.de.francesco@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 28 Oct 2025 at 08:56, Thomas Gleixner <tglx@linutronix.de> wrote:
->
-> There was not justification for the open coded inline either and
-> converting it to get/put must be a completely seperate change.
 
-Actually, there's some justification in the original: see commit
-43a43faf5376 ("futex: improve user space accesses") which talks about
-the original impetus for it all: avoiding the very expensive barrier
-in __get_user(), and how __get_user() itself couldn't be fixed.
 
-So then it was converted to the modern user access helpers - including
-address masking - and the inlining was mostly incidental to that, but
-the commit message does point out that it actually makes the address
-generation a bit cleaner in addition to avoiding the function call.
+On 10/23/2025 5:25 AM, Fabio M. De Francesco wrote:
+> ghes_do_proc() has a catch-all for unknown or unhandled CPER formats
+> (UEFI v2.10 Appendix N 2.3), extlog_print() does not. This gap was
 
-But I doubt that the extra instructions are all that noticeable.
+Latest is v2.11, right? Why not use it for reference?
 
-That said - this code *is* in a very hot path on some loads, so it is
-entirely possible that the inlining here is noticeable. I$ patterns in
-particular can be a real thing.
+> noticed by a RAS test that injected CXL protocol errors which were
+> notified to extlog_print() via the IOMCA (I/O Machine Check
+> Architecture) mechanism. Bring parity to the extlog_print() path by
+> including a similar log_non_standard_event().
+> 
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+> ---
 
-(There was an additional issue of just making those user accesses -
-get, put and cmpxchg - look a bit more similar)
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-           Linus
+
+>  drivers/acpi/acpi_extlog.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+> index f6b9562779de..47d11cb5c912 100644
+> --- a/drivers/acpi/acpi_extlog.c
+> +++ b/drivers/acpi/acpi_extlog.c
+> @@ -183,6 +183,12 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
+>  			if (gdata->error_data_length >= sizeof(*mem))
+>  				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
+>  						       (u8)gdata->error_severity);
+> +		} else {
+> +			void *err = acpi_hest_get_payload(gdata);
+> +
+> +			log_non_standard_event(sec_type, fru_id, fru_text,
+> +					       gdata->error_severity, err,
+> +					       gdata->error_data_length);
+>  		}
+>  	}
+>  
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
 
