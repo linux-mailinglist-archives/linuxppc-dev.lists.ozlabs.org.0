@@ -1,52 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-13453-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13454-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6544C157F6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 16:36:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3106C159CA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 16:54:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwvcg4z0Lz3c1T;
-	Wed, 29 Oct 2025 02:36:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cww0Y4KzCz3cZl;
+	Wed, 29 Oct 2025 02:54:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=216.40.44.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761665811;
-	cv=none; b=NbUaSzi1FRZE6WqGrq6jtl/3n6v2rn0yw5bt4j6BH8flf8b0AL5J+iA4BoSlV6UmyhuhIWaqx1q7ckn7JQBaaTLM8jUm9gn7LwS4CioxyIxhmColycx28VofztNmpioItrTBPCrDPV3Pyga2cFZSGpLKrzo46gdmy2iTAqPxdfcvAlpsa85Aiway3Zc4Xm8J0lI51N9EMWIgGeQKiy2VEr++8ASj55g8eR3Uf9SiMPhT+HJh7ThJLh2jAvOTSRuA5dFuxLR7Y8pkDxVILJ9vLIKBiObUWX7XNc4KzxByEq+wFNZfOBcCbHndAL3V6/wgIHrnlEIwkaBynbRs+SQhDA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761666845;
+	cv=none; b=PULwtcGaFG2s+Lh2KgzyQTMGMRPunvS5dvRtmWLG/SOrT8Macjc69zagDqlg+8NRiqGX90UicPjgsVsZ4xMIR2KVOq/LqF384dJs8Yrw0eRCHFM8pbhzifKA/xApiKPj3/U83VAR+R2FKaYs/ynfX2M5iBzcs0/A42pg+Ln98dmBklkkNPNHGG7PRfkNxdMuyKjKE8u6wuufesFgow+ZjjFR4I0XEroEzKJ29/bT2nLl2G/vhwd8TwGhdj/5+T5xDM7bmFSkrHLqvmWy0UOgx9y6ZIDBx24x+i5Vo6C7oSKD4WjPWJCYRUj2MDTCFBUBUksPKK1xf8acotsf7loHlQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761665811; c=relaxed/relaxed;
-	bh=Dn+J543PaE9pTtS4VYTKUNcdwvzPCZNgqy59cfgNWrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cLdHM/KO6ietxMd/+LS12FekaztPhhWt0sUBdaHvEL72rETdJSptvDvMKae4MxsQyKcV2msUBjn9+DKFYZKTga6THHk58olJo5IpSC5qaVd7Qt7b+BtevegDeqe16boqrgsJutmzd8x9v/4xLAaYhtBaCRt0b3qp5Is9R/uZHoeJPzS9sbDV3LtuMKNe8uSBINMHYJHqKRfNPaguJNF06dPF2NvJq2XMwz+qgxeS5ruwBMkkyjLjwqkS7b+SGhKmTjykRG1mlowDKaPOc+pczDqa4wBqYJNwQivggyBDKpBVyIZ27ZabZZo2+Rn7raXsJEUMOvjefpA+ilCpI9wFoQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=216.40.44.10; helo=relay.hostedemail.com; envelope-from=rostedt@goodmis.org; receiver=lists.ozlabs.org) smtp.mailfrom=goodmis.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=goodmis.org (client-ip=216.40.44.10; helo=relay.hostedemail.com; envelope-from=rostedt@goodmis.org; receiver=lists.ozlabs.org)
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	t=1761666845; c=relaxed/relaxed;
+	bh=/KXDwBRP2WCWSb38HDbtSfBbdxVUxx52nxz6bCHrlpw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=TxYwe8Lv2Jbqns4/xdFV3bOg21OvwMO83oCa8Oc65PUfpM6srzuTylpa05CqU3955bo4rA2fSDvLlHVzMjHfRifRLS9vQdUo5z4erHbo2sqecxqGmy8oDYy8mJuxhJiaG6hNR+XtjvAax6li0K05YL2zcHI6mh5gbKiJPGZNEtX8CYUZsuCDR4YfXB8YbBXjr5lY11khA+XL8VKdc+L63sRRxZV8qipCKikuwSbs2lMOdgEqXw1Fnz2bt9w5EZfTjtZV1NSV8gBt1gesJAO+dl47ppJTp3AZRT6CYkJhwM+03dVPEUThWbbRfwbGfjGFjq5uBrLtYh1eax62Mn4CPA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=OPEqap7k; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=SARXk4Ru; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=OPEqap7k;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=SARXk4Ru;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwvcf4H39z3btx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 02:36:48 +1100 (AEDT)
-Received: from omf08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3CD0C1404A9;
-	Tue, 28 Oct 2025 15:36:44 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf08.hostedemail.com (Postfix) with ESMTPA id A321A2002A;
-	Tue, 28 Oct 2025 15:36:39 +0000 (UTC)
-Date: Tue, 28 Oct 2025 11:37:17 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
- brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu,
- neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org,
- linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org,
- gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, paul@paul-moore.com,
- casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org,
- john.johansen@canonical.com, selinux@vger.kernel.org,
- borntraeger@linux.ibm.com, bpf@vger.kernel.org
-Subject: Re: [PATCH v2 19/50] convert tracefs
-Message-ID: <20251028113717.2154482d@gandalf.local.home>
-In-Reply-To: <20251028004614.393374-20-viro@zeniv.linux.org.uk>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
-	<20251028004614.393374-20-viro@zeniv.linux.org.uk>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cww0W3XLpz3cZj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 02:54:03 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1761666833;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/KXDwBRP2WCWSb38HDbtSfBbdxVUxx52nxz6bCHrlpw=;
+	b=OPEqap7k08VJelhy9WBQ/aL5T/8oowjEW/Fj5ejEzvuFUOJdHdYO+nY9g3zwtVd8QWDf1F
+	3OycYZl/mXIIkjDEJbYqJn/3lZONlfMLSSkvOIeF5euOmDzhBeb9eL4MDJ07aVD52j+vc3
+	2Ki2E0N97eFYWZ8+a5iDKRlRRUgRRS/Cia0Rk/IX+jL/+Yov9CCKMTIDCIZkBPTMJtSuC6
+	TlGUy15ZD9OqxHiszUngKkX1GB7hr2PiWfv/E9vY6vQ531cTPrIrUUZLo9u4YJwZ5ShkEp
+	MXYPHAOozI3S6XnQsFcoK8zfWpgofXu0Rlf3rxgsiAc0s0ZysVI8vQGLdVgzig==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1761666833;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/KXDwBRP2WCWSb38HDbtSfBbdxVUxx52nxz6bCHrlpw=;
+	b=SARXk4Ruf1xEZbt1pBhbOZgPe7j89e4OCU0if/0OgDMjDi4dxReWkPtapI3fZt2x6xbwVl
+	0zokLNUUHORNRdCg==
+To: Yann Ylavic <ylavic.dev@gmail.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, kernel test robot <lkp@intel.com>,
+ Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org, x86@kernel.org, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
+ Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org, Paul
+ Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, linux-s390@vger.kernel.org, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Andrew Cooper
+ <andrew.cooper3@citrix.com>, David Laight <david.laight.linux@gmail.com>,
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix
+ <nicolas.palix@imag.fr>, Peter Zijlstra <peterz@infradead.org>, Darren
+ Hart <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ =?utf-8?Q?Andr=C3=A9?=
+ Almeida <andrealmeid@igalia.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
+ Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
+Subject: Re: [patch V5 02/12] uaccess: Provide ASM GOTO safe wrappers for
+ unsafe_*_user()
+In-Reply-To: <CAKQ1sVO9YmWqo2uzk7NbssgWuwnQ-o4Yf2+bCP8UmHAU3u8KmQ@mail.gmail.com>
+References: <20251027083700.573016505@linutronix.de>
+ <20251027083745.231716098@linutronix.de>
+ <CAKQ1sVO9YmWqo2uzk7NbssgWuwnQ-o4Yf2+bCP8UmHAU3u8KmQ@mail.gmail.com>
+Date: Tue, 28 Oct 2025 16:53:52 +0100
+Message-ID: <87jz0fuinj.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,42 +93,23 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: f6bmgxhcefm7bwohfbwepa9p8cuixubt
-X-Rspamd-Server: rspamout07
-X-Rspamd-Queue-Id: A321A2002A
-X-Spam-Status: No, score=0.0 required=3.0 tests=RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1+s7gR+r9niKNL07T0pO7ukE0upf2CD5vI=
-X-HE-Tag: 1761665799-59606
-X-HE-Meta: U2FsdGVkX19g0bbaz2RZh320ocW7TSQSsOT9nF8qHkd5qWlBifJ/KGtfmWtsv1mzJP9ht/c5mZRt/OtFwhvV0nurLgOmsL+MgJEwJdQoabvLgqWyyWgPOtUtslgD012XhVqixajC5WLifrc/mNIrsi899n45JcxWb92Q20WFBPjq9fbMnMjzm49UpPMD39et9NXHIuTp+8ue8LHJcfY24Tb39Ouk2tY7I25w4L+/k2xiNhHBjQibW0Hpw7CZthMHcDOEtP04RbMR+7OcgsAvcilq3cwXqyvP6wxxoNA77oyga0E0P4NCRNz/Jj7XTabrxjt2M47rWHelMrTtE3Ho2LOneBwKq0YQxYsBKf09n05la3UZdYBsNJsEB3vTPECvtqDSIEN0Vv1VQdzkGQVHiqH5dArBachPtpebDDmuJAfLPjsP32VD10VFGrg/VDlo
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 28 Oct 2025 00:45:38 +0000
-Al Viro <viro@zeniv.linux.org.uk> wrote:
+On Tue, Oct 28 2025 at 15:04, Yann Ylavic wrote:
+> On Tue, Oct 28, 2025 at 10:32=E2=80=AFAM Thomas Gleixner <tglx@linutronix=
+.de> wrote:
+>> +
+>> +#define __put_kernel_nofault(dst, src, type, label)            \
+>> +do {                                                           \
+>> +       __label__ local_label;                                  \
+>> +       arch_get_kernel_nofault(dst, src, type, local_label);   \
+>
+> Probably arch_put_kernel_nofault() instead?
 
-> A mix of persistent and non-persistent dentries in there.  Strictly
-> speaking, no need for kill_litter_super() anyway - it pins an internal
-> mount whenever a persistent dentry is created, so at fs shutdown time
-> there won't be any to deal with.
-> 
-> However, let's make it explicit - replace d_instantiate() with
-> d_make_persistent() + dput() (the latter in tracefs_end_creating(),
-> where it folds with inode_unlock() into simple_done_creating())
-> for dentries we want persistent and have d_make_discardable() done
-> either by simple_recursive_removal() (used by tracefs_remove())
-> or explicitly in eventfs_remove_events_dir().
-> 
-> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-
-I ran the tracing selftests and some other tests I have against this and
-nothing interesting happened. I didn't run my full test suite, but it looks
-sane to me.
-
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
--- Steve
+Duh. Indeed
 
