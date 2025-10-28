@@ -1,45 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-13402-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13408-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FECFC12569
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 01:51:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B470C125BE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 01:52:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwWth2X4pz3fTf;
-	Tue, 28 Oct 2025 11:47:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwWvx29p1z3cjQ;
+	Tue, 28 Oct 2025 11:48:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761612460;
-	cv=none; b=Gs7/rDXX5XQffLIQjJsUf7bomMudn/n4b/sBuCeSp9PV1Yhm3Royj5foj6EGsfkgX0ClhEUmet5MUYWnlnosN5XW44p5JjP0pFJ6Jqoy9TdhNyd+RORDbd0UEiFF0UG+PfxzuMLy2FSXUiiYakoOjD/wLO60EL3BCLs5/Ik8oS9b68no/c0UOG0wY4I+yChDkxPEEw5GoSqNVptYZUeaD8EItSIkezeP/2XdpjoNkok4LCj/ZxaQhdBIgJSu7lfb8d/msUcxiZPetPAlvUWSfyUdnq2a63KVp1VwgwAdP1Vwwz256y38KeRgK1fwI8StXD7cJKNpEbd2qntBTK2Iwg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761612525;
+	cv=none; b=OPFg6BpLNkzDO8BUo1ZOA3R31jANegkYj/0TmGCxn8Ryb8i/88PJxOYj65Q63+JVJVtba6nF2Xqhrz6fXSrri6Rvt4Mur0T71i2ibzKMj8DFr4fpt8yX0TqFpZ6Wy6NN9STsCuNi9sR7yplpYc0TbA/5DgnXu2Hps46S7CS0+I1tJtVP5gLjs0lQTBDjXa63O1UdsPLVmFK2qr9iepdv/C/XRe/rAIIbIwYwr0rkTVYalJMzwcdZAA7nYSLBZsN5jZvR79yYnbdSbp0Pu27HPqQfT44F3OoSRsI0xgu3XvCvAtn44zGIEq2BrEEM0B5b38AooDp8lNrWz2y9hiUhjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761612460; c=relaxed/relaxed;
-	bh=4Quy3Z9YUR2p7/o0BhLPqipVcn+3o5MzKrJ0FbjbabQ=;
+	t=1761612525; c=relaxed/relaxed;
+	bh=nXGw1nJCnekakkZR178NLSh8+iviODtKUClSm5rridQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SxsfBu4MaiDD0nNiDNikxoT6Y7nWVqIV+MoFtu3/uTiWT6TcJCuvwYkKiK2o0uN5voZ9Q8eQaH2K4yyhnzc8aEQW2SHGP2BcTM8OGs6JwM4s26JnkGQMhasAXa25sWjis0eYzmMAlYOyEWEvR8fU6ZUKMggMLnLo2D2UioN8x/BPL6fQih8Ex2Wqd9NWqNnVcB2Go47TdeJj9qMeU5iA8P/r5ctEpNInwAaVBnDVUKICA64QVuTh8pwHY0Qf5Fjle7HijX6fhLGsaNzvk1jjrhGw0MHsF1MllsV9fR2mwDBKsyy0ENOLprStK/gz9JSgXCOK6xeJ7fxCxJlZY2QWzQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=RshzQwww; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+	 MIME-Version; b=i9BUjFc+xtGIkwzz2s0n+RYZ1sZkvxv15DhzGK7yGeGXVImpGJAefUa6QiBCkECKxI1/DyX+G4BWzei+hkBxVteGwdNZ8YucKHcBpuEsh2M9IGhJrao4BG4Sy+OAdNKsEcg8UPGYxWWx/eG1G3dFQfE4GEamlaBaPdv78d2RJiiUf3WCWpXvAAD7pwRmoZlV2d3uA+Ysf5uzaWgJY6H/8fXJLfugRSU8JEXN2Xpye+gue1EoScyG86Is7AN8/HbG57E2d5f8vgndggom/JMi7p+6yuCC9C1yN89oO96A/U/ylqWXy6EpKiE1PU7EEcjk8ynpHwVpXTIsHVCOtlD7kw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=vzCgEELU; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=RshzQwww;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=vzCgEELU;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwWtf09bxz3c5y
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 11:47:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwWvw1WRfz3cZk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 11:48:44 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=4Quy3Z9YUR2p7/o0BhLPqipVcn+3o5MzKrJ0FbjbabQ=; b=RshzQwwwhIM4JqS6JZxrRB6SRi
-	sXnRpYSIo5COA7j41rIr+FZs7mPLff7B9ySvdiZZ5lxVK1g06AvmaXhv70p6toFwyWll9CLH8n+FE
-	Bq5eaBQZ5p6VPRqN6KqAKsQstjhS1pRI2XyGASAUKmqRbjLp5H6jxFr8YgIzLixZkt4ZM99eScusG
-	ZvniTtZpZZ5rRgkDy7NGh6LoHz5GnEDif1NgRBV7e2R6k1CpekKobidov/xXX9HqS+xxsxzqpESLf
-	1sTR9kt2IXyvCjxM42Ti0MKZ44e35LMsuOuX1BoVt3Um7IFuEeybntNtMTJWIiADZ/bjaKcxTyo3J
-	de8RuQdw==;
+	bh=nXGw1nJCnekakkZR178NLSh8+iviODtKUClSm5rridQ=; b=vzCgEELUGe6tOIUa7WeJ7YhA+s
+	5c6ZIT31hI4iZnOZW9UzVEy3OxGrhNtbk9SPpsn2oIvmtpDhQSN8o0YearlyhHWFsCQncURHA8ML9
+	bO0rCDTnAYpJweWWYrBb4EE93WNm+zD++ge36Qb8HKHMbw4uDIUK3AyT1zZnjbctdMBKT5T5jl9p5
+	VLq4YqF9hvwDiSDYa5zoG7gyfIFp/sXe4MmWGMMsGWo6lyvCX4QWnF6sue5IzQ1gfA1UKM7oueXen
+	PyXfLrj1glksoV95uJELodWugftLKOP6Sed8t/8wlrkZJU65tKHK6lzEN7/ZWzag5V43JwcV09a1x
+	VyPyWf5Q==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDXqp-00000001eWn-2xv8;
+	id 1vDXqp-00000001eWs-3Iwc;
 	Tue, 28 Oct 2025 00:46:15 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
@@ -64,9 +64,9 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v2 10/50] configfs, securityfs: kill_litter_super() not needed
-Date: Tue, 28 Oct 2025 00:45:29 +0000
-Message-ID: <20251028004614.393374-11-viro@zeniv.linux.org.uk>
+Subject: [PATCH v2 11/50] convert xenfs
+Date: Tue, 28 Oct 2025 00:45:30 +0000
+Message-ID: <20251028004614.393374-12-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
@@ -89,48 +89,27 @@ X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-These are guaranteed to be empty by the time they are shut down;
-both are single-instance and there is an internal mount maintained
-for as long as there is any contents.
+entirely static tree, populated by simple_fill_super().  Can switch
+to kill_anon_super() without any other changes.
 
-Both have that internal mount pinned by every object in root.
-
-In other words, kill_litter_super() boils down to kill_anon_super()
-for those.
-
-Reviewed-by: Joel Becker <jlbec@evilplan.org>
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/configfs/mount.c | 2 +-
- security/inode.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/xen/xenfs/super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/configfs/mount.c b/fs/configfs/mount.c
-index 456c4a2efb53..4929f3431189 100644
---- a/fs/configfs/mount.c
-+++ b/fs/configfs/mount.c
-@@ -116,7 +116,7 @@ static struct file_system_type configfs_fs_type = {
- 	.owner		= THIS_MODULE,
- 	.name		= "configfs",
- 	.init_fs_context = configfs_init_fs_context,
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= kill_anon_super,
- };
- MODULE_ALIAS_FS("configfs");
- 
-diff --git a/security/inode.c b/security/inode.c
-index 43382ef8896e..bf7b5e2e6955 100644
---- a/security/inode.c
-+++ b/security/inode.c
-@@ -70,7 +70,7 @@ static struct file_system_type fs_type = {
+diff --git a/drivers/xen/xenfs/super.c b/drivers/xen/xenfs/super.c
+index d7d64235010d..37ea7c5c0346 100644
+--- a/drivers/xen/xenfs/super.c
++++ b/drivers/xen/xenfs/super.c
+@@ -88,7 +88,7 @@ static struct file_system_type xenfs_type = {
  	.owner =	THIS_MODULE,
- 	.name =		"securityfs",
- 	.init_fs_context = securityfs_init_fs_context,
+ 	.name =		"xenfs",
+ 	.init_fs_context = xenfs_init_fs_context,
 -	.kill_sb =	kill_litter_super,
 +	.kill_sb =	kill_anon_super,
  };
+ MODULE_ALIAS_FS("xenfs");
  
- /**
 -- 
 2.47.3
 
