@@ -1,35 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-13428-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458EBC141EC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 11:35:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C98C1426A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 11:44:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwmwn6Ybkz3dng;
-	Tue, 28 Oct 2025 21:35:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwn7341Cbz3fDM;
+	Tue, 28 Oct 2025 21:44:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761647721;
-	cv=none; b=gw6uQJTyw4zbffnChx5ki4sFcIADbKpmBi0cnV/vCQgNguNpY173tR7OXtbepmpndS0GxJ7MmDVgoJBCwldICBrcvPgSZVNpAJ6mkv14MhykvO3+VCLt7ZmjNDhqObE1AfgWnDKWPqX8fSYt5Ih9wxhQ7AyMlc2D+iavhWZ84Jb/00RRX9l6gJZIb3QvIgrV3fwbKjoIpbqK5f5HGPtdC2C6wegHv3AUwUVHoMpE4AGvLJQijSjl2AZq/csC59rlBupillS1S8PTT798PL8sum0DIMrHIHWkiaMUnGKMpIJY8MUpKv1L57zxWwUS9uX79lfXour/9imPRneViTZdng==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761648255;
+	cv=none; b=NFX+xa91/ZrFPTPi9maVEFqOpfDdzvW7qYjCN2232OBS4dVHims/vNXEI4LTEaOJKZBTuivkgWA3fEg1gz4CtYHx8kczavqAZJMfW4ocuiFO+7F9KkSaAe10DFsBOm8O5DB+JgwCxCLNiasFYHYoX+LOuqiLAdWAvdWuiBXURIh10xWpRoN/rL1uVFSfDJylWyGdfvHmsitigQ03JS2p8e/5fiBvN445ydRftC4F5xfCxK69SPf90AqHEFfrakDBIqXfuECuyioLQvNbJyQIuGecM6FkW69lK+Do0uotLrE5awjPyQvAwSVjuiKoGTslwJ7aef4Y46dt3YZ39Htisg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761647721; c=relaxed/relaxed;
-	bh=5HaFRhf1AjitWDNq9/FJXcfd6yha35h050b//Tq74Pw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CPfEEJM+EUjwt4xW9G8lG18mAQsXDY6OUjidRuN70kJ6dh1Kbt0zM2Pnwfu4M98rjNlu/fvfTxqLSj0OJqAkQApEiRgyUwlMN8T3lorMBhlygKpAa+hxmLyvqhU/t3LcOq5/vZkiCRA7Kz7RGyZX2lYjpeBu/evOl5Xnnhyzxq7nnxLxcpO+sqzaW/j1t8t/rRY8Wg8Q2Q+WxzKlJQ/27/OA3BtYJLFile5Hy1+GomBCQtkGoGxzY4G1yTR6IFU6gIZR51j/26ad1IkhetKMuk29AygHdcMtbCbOwH3IZrzARUZmq17ktCFNsfjBO91Csvq540bDwGiW6HgRAX0nQg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwmwm5gHXz3dhY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 21:35:19 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 07A50106F;
-	Tue, 28 Oct 2025 03:34:39 -0700 (PDT)
-Received: from [10.44.160.74] (unknown [10.44.160.74])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3597D3F63F;
-	Tue, 28 Oct 2025 03:34:39 -0700 (PDT)
-Message-ID: <f3b8a71c-7698-4918-99d1-36e97bded97c@arm.com>
-Date: Tue, 28 Oct 2025 11:34:34 +0100
+	t=1761648255; c=relaxed/relaxed;
+	bh=sBPQxt982BoAw3ngYLxS0d1nmtu+Czr+nCUJrS/YPkA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gcaTz9ovwxyot0RnnPmzrQGCnTxDKgzLjIDWclcTpA2ap6n8+TE1qY3WGHHdIei2H3m3jEH78YdUK+ACN6kC751Zgs0njaYLmI3+gt+qLXQXST7/6rtBY2YMg2+JwS3LeWmfkPlvRlFZa8WYoBA2XRBdRYcLtw9frBtoTghHnRHEc9Lw6m/f0VqUT0/ZuqBP2/+jb5YZSaJsr44BsCQYY5cBp4PwP+UoJ5YALYeLDjKX4671G053uZnHXQBrix5LIDD9UtsDatK2nhb/z9wuXt50EoRQcxP9Awps3pLutG4aAU8on6g0KjZ7gcs7abyNL/sHXI0Rcl27mTb+5SZ4EA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JbA2zlNt; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JbA2zlNt;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwn725Q4nz3f1l
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 21:44:14 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59S3bJU4021515;
+	Tue, 28 Oct 2025 10:43:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=sBPQxt982BoAw3ngYLxS0d1nmtu+Czr+nCUJrS/YP
+	kA=; b=JbA2zlNtb2AQWotokrxPExjSpMaFzWex+D9Qo6FI+rUzpJ9SQiQSxhcbM
+	KMCo5Gqu8gr94+PgcNDQf8dA4+B+uBjEkmF0g03W96aZo8wdILOGmCn58EUfT3ZR
+	Su+yT2oCzEzNb20oHw9SeS7FY3hLwrfeUUkU6bJR/zppzPjqbKdewc3mW5pxtEmx
+	/qLAa8N0SGyu13xGGN/gXx93MNikU1nOPx6l9+k2ESqmOmGEQ1GcBdLD4fqCfMwl
+	qLFTU2M90x2cT9M9WKjt4WH2X1xGl9xQuSF+CZn1ql2Ub6/STKCvHOQFuJTH8zuk
+	a55uVnBZqYB2GcUce4GyiGZW/sMWA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0kytbbe2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 10:43:12 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59SAhCd6017566;
+	Tue, 28 Oct 2025 10:43:12 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0kytbbdy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 10:43:12 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59S88B1k022935;
+	Tue, 28 Oct 2025 10:43:11 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a198xjaer-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 10:43:11 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59SAh7Xi42795442
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Oct 2025 10:43:07 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 806A920040;
+	Tue, 28 Oct 2025 10:43:07 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CBE7120043;
+	Tue, 28 Oct 2025 10:43:04 +0000 (GMT)
+Received: from sapthagiri.in.ibm.com (unknown [9.39.27.1])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 28 Oct 2025 10:43:04 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, Ben Segall <bsegall@google.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+        Mel Gorman <mgorman@suse.de>, Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Valentin Schneider <vschneid@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Srikar Dronamraju <srikar@linux.ibm.com>
+Subject: [PATCH 1/2] sched: Feature to decide if steal should update CPU capacity
+Date: Tue, 28 Oct 2025 16:12:54 +0530
+Message-ID: <20251028104255.1892485-1-srikar@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -43,135 +101,111 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/13] mm: introduce generic lazy_mmu helpers
-To: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-7-kevin.brodsky@arm.com>
- <73b274b7-f419-4e2e-8620-d557bac30dc2@redhat.com>
- <390e41ae-4b66-40c1-935f-7a1794ba0b71@arm.com>
- <f8d22ae0-4e36-4537-903f-28164c850fdb@redhat.com>
- <28bf77c0-3aa9-4c41-aa2b-368321355dbb@arm.com>
- <14030818-52e7-41eb-8ad7-602f3476d448@redhat.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <14030818-52e7-41eb-8ad7-602f3476d448@redhat.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mK_pSkU2Uz8Pi3rGoGa9Cp3eTqt70t_x
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAwMSBTYWx0ZWRfX7A/NMiwAXTOa
+ W4v+hBmkODfN/qT7aMePDh4oUifCbFZoMwXsFF0Tj6ZsyIF3feBTXqtOlsqqySQ2ePynvURdHne
+ ZOVZgBgDlwZzHgaQ1Bp0jwLhSL6dOMvyYyc3I1xWfqvINyMDcYlO77cZycNRR1L23Po6a3Ahhb6
+ DtMLa7rBDpypVQTVYR1r4GaP4Te1IQ0ymuhd0XcTiPJ3mmTtV5kPzZEMoVOKjy9EFWJGrOrGRnJ
+ oEiJz3EnGqyyS3awdNYxPXWk53okTA0RK7n0X1hTQYQwx9kQ1iPMMexOv7xvACD2sIg9qjzXp+e
+ 2Lmb7nKfKBI3Z9cL/PLPy4d32/0XgRDhcEvGeLkh/fhh3FcdiGQe8e+OW/ThMmmBfp+VEBm0mgv
+ 4j1R/kURQCwc+I1Dd9C9yxEtmzFaYw==
+X-Proofpoint-GUID: X9P4O8fsl1BaG_mGyibqA6XZeJ4IKR1D
+X-Authority-Analysis: v=2.4 cv=FaE6BZ+6 c=1 sm=1 tr=0 ts=69009e40 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
+ a=HZUKlmiOjlZxzIohUccA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-28_04,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
+ impostorscore=0 priorityscore=1501 clxscore=1011 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250001
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 27/10/2025 17:24, David Hildenbrand wrote:
-> On 24.10.25 16:32, Kevin Brodsky wrote:
->> On 24/10/2025 15:27, David Hildenbrand wrote:
->>> On 24.10.25 14:13, Kevin Brodsky wrote:
->>>> On 23/10/2025 21:52, David Hildenbrand wrote:
->>>>> On 15.10.25 10:27, Kevin Brodsky wrote:
->>>>>> [...]
->>>>>>
->>>>>> * madvise_*_pte_range() call arch_leave() in multiple paths, some
->>>>>>      followed by an immediate exit/rescheduling and some followed
->>>>>> by a
->>>>>>      conditional exit. These functions assume that they are called
->>>>>>      with lazy MMU disabled and we cannot simply use
->>>>>> pause()/resume()
->>>>>>      to address that. This patch leaves the situation unchanged by
->>>>>>      calling enable()/disable() in all cases.
->>>>>
->>>>> I'm confused, the function simply does
->>>>>
->>>>> (a) enables lazy mmu
->>>>> (b) does something on the page table
->>>>> (c) disables lazy mmu
->>>>> (d) does something expensive (split folio -> take sleepable locks,
->>>>>       flushes tlb)
->>>>> (e) go to (a)
->>>>
->>>> That step is conditional: we exit right away if pte_offset_map_lock()
->>>> fails. The fundamental issue is that pause() must always be matched
->>>> with
->>>> resume(), but as those functions look today there is no situation
->>>> where
->>>> a pause() would always be matched with a resume().
->>>
->>> We have matches enable/disable, so my question is rather "why" you are
->>> even thinking about using pause/resume?
->>>
->>> What would be the benefit of that? If there is no benefit then just
->>> drop this from the patch description as it's more confusing than just
->>> ... doing what the existing code does :)
->>
->> Ah sorry I misunderstood, I guess you originally meant: why would we use
->> pause()/resume()?
->>
->> The issue is the one I mentioned in the commit message: using
->> enable()/disable(), we assume that the functions are called with lazy
->> MMU mode is disabled. Consider:
->>
->>    lazy_mmu_mode_enable()
->>    madvise_cold_or_pageout_pte_range():
->>      lazy_mmu_mode_enable()
->>      ...
->>      if (need_resched()) {
->>        lazy_mmu_mode_disable()
->>        cond_resched() // lazy MMU still enabled
->>      }
->>
->> This will explode on architectures that do not allow sleeping while in
->> lazy MMU mode. I'm not saying this is an actual problem - I don't see
->> why those functions would be called with lazy MMU mode enabled. But it
->> does go against the notion that nesting works everywhere.
->
-> I would tackle it from a different direction: if code calls with lazy
-> MMU enabled into random other code that might sleep, that caller would
-> be wrong.
->
-> It's not about changing functions like this to use pause/resume.
->
-> Maybe the rule is simple: if you enable the lazy MMU, don't call any
-> functions that might sleep.
+At present, scheduler scales CPU capacity for fair tasks based on time
+spent on irq and steal time. If a CPU sees irq or steal time, its
+capacity for fair tasks decreases causing tasks to migrate to other CPU
+that are not affected by irq and steal time. All of this is gated by
+NONTASK_CAPACITY.
 
-You're right, this is a requirement for lazy MMU. Calling enable() then
-disable() means returning to the original state, and if the function
-sleeps at that point then the caller must not itself enable lazy MMU.
+In virtualized setups, a CPU that reports steal time (time taken by the
+hypervisor) can cause tasks to migrate unnecessarily to sibling CPUs that
+appear to be less busy, only for the situation to reverse shortly.
 
-I mixed up that case with the original motivation for pause()/resume(),
-which is to temporarily pause any batching. This is considered an
-implementation detail and the caller isn't expected to be aware of it,
-hence the need for that use-case to work regardless of nesting.
+To mitigate this ping-pong behaviour, this change introduces a new
+scheduler feature flag: ACCT_STEAL which will control whether steal time
+contributes to non-task capacity adjustments (used for fair scheduling).
 
-> Maybe we could support that later by handling it before/after
-> sleeping, if ever required?
+Signed-off-by: Srikar Dronamraju <srikar@linux.ibm.com>
+---
+ include/linux/sched.h   | 1 +
+ kernel/sched/core.c     | 7 +++++--
+ kernel/sched/debug.c    | 8 ++++++++
+ kernel/sched/features.h | 1 +
+ 4 files changed, 15 insertions(+), 2 deletions(-)
 
-Indeed, pause()/resume() could be used to allow functions that sleep to
-be called with lazy MMU enabled. But that's only a hypothetical use-case
-for now.
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index aa9c5be7a632..451931cce5bf 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2272,5 +2272,6 @@ static __always_inline void alloc_tag_restore(struct alloc_tag *tag, struct allo
+ #define alloc_tag_save(_tag)			NULL
+ #define alloc_tag_restore(_tag, _old)		do {} while (0)
+ #endif
++extern void steal_updates_cpu_capacity(bool enable);
+ 
+ #endif
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 81c6df746df1..3a7c4e307371 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -792,8 +792,11 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
+ 	rq->clock_task += delta;
+ 
+ #ifdef CONFIG_HAVE_SCHED_AVG_IRQ
+-	if ((irq_delta + steal) && sched_feat(NONTASK_CAPACITY))
+-		update_irq_load_avg(rq, irq_delta + steal);
++	if ((irq_delta + steal) && sched_feat(NONTASK_CAPACITY)) {
++		if (steal && sched_feat(ACCT_STEAL))
++			irq_delta += steal;
++		update_irq_load_avg(rq, irq_delta);
++	}
+ #endif
+ 	update_rq_clock_pelt(rq, delta);
+ }
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 557246880a7e..a0393dd43bb2 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -1307,3 +1307,11 @@ void resched_latency_warn(int cpu, u64 latency)
+ 	       cpu, latency, cpu_rq(cpu)->ticks_without_resched);
+ 	dump_stack();
+ }
++
++void steal_updates_cpu_capacity(bool enable)
++{
++	if (enable)
++		sched_feat_set("ACCT_STEAL");
++	else
++		sched_feat_set("NO_ACCT_STEAL");
++}
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index 3c12d9f93331..82d7806ea515 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -121,3 +121,4 @@ SCHED_FEAT(WA_BIAS, true)
+ SCHED_FEAT(UTIL_EST, true)
+ 
+ SCHED_FEAT(LATENCY_WARN, false)
++SCHED_FEAT(ACCT_STEAL, true)
+-- 
+2.47.3
 
-> Or am I missing something regarding your point on pause()/resume()?
-
-Doesn't sound like it :) I'll remove that paragraph from the (already
-long) commit message. Thanks!
-
-- Kevin
 
