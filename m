@@ -1,94 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-13445-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13446-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0535DC1526A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 15:25:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF77C152CA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 15:31:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwt215tXxz305S;
-	Wed, 29 Oct 2025 01:25:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwt9k6r8rz3ckP;
+	Wed, 29 Oct 2025 01:31:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c103::5" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761661513;
-	cv=pass; b=IAjN6q6q8M8ULF4xmCcpZDa6CaAnnG++YEw8MJNPDCgzOwqwIPaHW5FKvvxcLFUvtKHG1RhLVP4qWZVSVftN6qEIMoo7KsqblUmlXodUsHDxMqMnMySCKUIEA07OlupLDe/WPS8SDk34r/w4kMIu7Ns7zP09aWCjnGaSy3Hg/tH2kjUemzTvZtYXfoPadSmhpYz4ZeeIRk4zXgh+FKPblugi1QYntuUsKz6CdRB6D7XIeAKQfu+h96ha4mXisKWnALemW0n5jIcbVXbx/mfCH2XtXjdam6jGdOesbPg5OnCI2Gl7R/QKL4F+155253VhsxLV58bJqj82eAojqX+RIg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761661513; c=relaxed/relaxed;
-	bh=ZcGwAUSPiRO+unlWLvVjeAjqhSIKFvHIsZ/BTGa1ytw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=XHoMGDFFd+y/QBmRz2/lKGhVTGS5UBjxptgQP8JpD7xZIbQBh5UdO73vqHcPe4C9tLbB+wvd4AIIXuOYKdUFxiXhHZCwXmFlvfnwA0QBzS72ER4QxgL/XGd6PIgYGyYG37MdylTRgHEbDGhFYFLbEZ1GUvD+vD6bL3dWAQ9c9uL/96YO415Fap/Pr+h3NteLydvYycmIYQ0PfA0hnd4xhZwYw7rlRZgE/azAI5LgFF93eXWZ5OUfLLxXmjYixKaHWgYKY7LgsbKexR4hX0YaJB4YpKZ9N/BgmJ6q0u0CMPniH/XNwdOg1qaf3DlYjdTp23aPdHu1uO6d1+eAURM0og==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=efficios.com; dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=az+1/ub/; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c103::5; helo=yt5pr01cu002.outbound.protection.outlook.com; envelope-from=mathieu.desnoyers@efficios.com; receiver=lists.ozlabs.org) smtp.mailfrom=efficios.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761661914;
+	cv=none; b=N5GQHjxSAhXpRBLitUqhK273jTcKVOdPhPN8oY03MVFprVGC0/ABxIYS7R4AGKWLDcfo9W8qs+zG29em0OlS3R+rVrPqDN0MBM8ojIICR6Kq5w/viXHv9HkjMmA1bOXKkn/MOxxY0t5njzlvymCSLcU3T3lCWepHgpL5/nkWV3ajoK56FwQ3sbRIy5U1PGzTaFO+Ue98GqJ72J8IUWxvmyqfhNAz39Cd1lPgWjDXaE3o1r92eooEIXLm2WXbcvuphSQrAR5USF1Po71RRoCeiFkeHMSr+Y+hu+Ircay+9DJXgnjur36jbaCXipZeaLtLZybwUAb6jSFwxIc5HZFiPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1761661914; c=relaxed/relaxed;
+	bh=ucGcR9rOjBIb4XdclIDsHmqAcRNNRWnSM5xXKu7RGrU=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=A0MSnMamK7+U++Ecx5qXqdAVgPNXagktLrkegLg8eqky4zHD89aRl4WrSrBZz6X4xeL1SRSaeJIhUfZwvpwljszN+sf89JRVktZFELk+aLORHspyTUP+1l0bAKC625Rzp0n0qXcTKjqpC+YUQOjwHkPoIEpug3E+2MswS7leCpo7QsrzFEb4Ub3wg0lT3Vqxt8xpyBRhNfUqp4pIwEszDiXj6Qgp8qCkzBj7rSA4QIrsda1YCGLQpR5NqKtzfTw54Nt3LcF47v8lzZkEIbNZJHOqcxo4Z/OZv3JgcpocEUsR+2KSJHkJ9Ca6qYKcit2i1tQfY3n1WRV1FdAQe9c1lQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZSo5uNxu; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=samir@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=az+1/ub/;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZSo5uNxu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=efficios.com (client-ip=2a01:111:f403:c103::5; helo=yt5pr01cu002.outbound.protection.outlook.com; envelope-from=mathieu.desnoyers@efficios.com; receiver=lists.ozlabs.org)
-Received: from YT5PR01CU002.outbound.protection.outlook.com (mail-canadacentralazlp170110005.outbound.protection.outlook.com [IPv6:2a01:111:f403:c103::5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=samir@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwt204KmGz2yx7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 01:25:12 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=myecyUjZnLwgm4vHSMBI57YSci1B5tUKWAipGnzqZmHoUJElVIcj9DLKawzWzxJ+Mk+Tv/t/5Hi2IqjMXiEiyhC91EQzw6ecdVUC0EE0cBEaXzkVS/NO64qr7TtcUnN9FKTGVTeTcBjCwAQmTX0fQ7vKEon8oL9HnewpmEiFts65hBnh7mBcXXSVRQLfybRdlcIKYwE2tBJXz5ZXzq6mfGEc8EXTK9ofwhFflS9vDkTnbPnUHdDRcR27+d5iGIt9p4Wegy01D26u6nBpSI+y2jSGAGIBXWgSSWvIgVbAG98+NtDOZO0r/lLojHCL/imOFRSoseTKCEKbVOu7cENFEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZcGwAUSPiRO+unlWLvVjeAjqhSIKFvHIsZ/BTGa1ytw=;
- b=cPV33M4NFm/KQmuqDa0jSzGWjK271Npywt5xXPodHWYTq7LW5w2h/Dj4QMooqeFYH+4u8UWf6BPIIj4G1B8YWL952BHFSdQ2wzeZ97JNJZ3NAs/Liv5upvTQCH3oWlrzTvIa28NuGmojySALuGkKs5Xdy3jWvLq4kYY4x99Gk3IkjGYqeKBGfqTJqN+g+l/DHtTk5sxz0pyhoH60N6gnVXUNf+cIOwJzqu96Egsg9KHUJTDmUucf8iBjg0vRxf/IqHw3EOoBVFITwInU6fxDXtGSUS1TaY3dyrvSwb1ktUCQloU1KugDMpLUs7o2lG5h82q3B3FoB73QvWEKOLiZug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZcGwAUSPiRO+unlWLvVjeAjqhSIKFvHIsZ/BTGa1ytw=;
- b=az+1/ub/CXUB5oqXIL9giJZzbJ/FX8o24MWlk8FaekY/2geOGJ4INZ+87YX3xe/JAULAiVRCWCo6atqXaksu1uUjUy/QwGyg96XT+UjxHv4WxFNa4WyNbPdY1NY20S322QaHgGTQY76HOwf7dEJpIaPHcgZclC5ONSQGw56sYmNS+CNav8qI/hzsUZIATLXLn5YahXQBTKUGmuqcWhBhXUiTPUj4Bi6EnCK/K48VJSE+IELZ71G1Zy/jblrs/CmYLyUOeKe4fP3M4DlbXHHuJVYQHtJuvF91piaApfjH+qUHjEwdYw8DDrHRyMyP1Nzi1G+TWFK2d3MjCysbFVVx5w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=efficios.com;
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
- by YT2PR01MB6062.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:5a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.12; Tue, 28 Oct
- 2025 14:24:46 +0000
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::50f1:2e3f:a5dd:5b4]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::50f1:2e3f:a5dd:5b4%2]) with mapi id 15.20.9275.013; Tue, 28 Oct 2025
- 14:24:46 +0000
-Message-ID: <0c979fe0-ee55-48be-bd0f-9bff71b88a1d@efficios.com>
-Date: Tue, 28 Oct 2025 10:24:44 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [patch V5 10/12] futex: Convert to get/put_user_inline()
-To: Thomas Gleixner <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Darren Hart
- <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>,
- =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>,
- kernel test robot <lkp@intel.com>, Russell King <linux@armlinux.org.uk>,
- linux-arm-kernel@lists.infradead.org,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org,
- Heiko Carstens <hca@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
- Andrew Cooper <andrew.cooper3@citrix.com>,
- David Laight <david.laight.linux@gmail.com>,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- linux-fsdevel@vger.kernel.org
-References: <20251027083700.573016505@linutronix.de>
- <20251027083745.736737934@linutronix.de>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Content-Language: en-US
-In-Reply-To: <20251027083745.736737934@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YT4PR01CA0091.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:ff::29) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:be::5)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwt9j5fqtz3chZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 01:31:53 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59SCrubO011720;
+	Tue, 28 Oct 2025 14:31:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=ucGcR9rOjBIb4XdclIDsHmqAcRNNRW
+	nSM5xXKu7RGrU=; b=ZSo5uNxutBlmAd89wYx5UR6B2c1eN1EDjhSFR47keLEko6
+	oogIydfD1hBaQtou9JUTSta8M+K7eukVLQPpo7aDZWWPHVLuo5tkAQG1qj0fzuNN
+	4PHyvoFE4SxNYpJFzEXvXLgPup62q3CyGqkTUck7pbFA2JD1I/aJCvQ1NZR+v43G
+	SeMhNcMlpDaUjBW4vaOPIfcIMAeCc2bfFm62l0/iBNMb2AjUucHehbqZJ6W/dH30
+	Go2Un1Ze7lI3smfbA+oFxK80iunPeTQL/ldXqudCnG3A8FcyWrRiqL6xSBRD4P1A
+	ZLU/6DiEPk7OirbNLJd+QoFS/18X+RwkspIXzvsw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0mys4j0h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 14:31:39 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59SERC2d013530;
+	Tue, 28 Oct 2025 14:31:38 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0mys4j0b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 14:31:38 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59SBhXkr021635;
+	Tue, 28 Oct 2025 14:31:37 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a18vs3d9x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Oct 2025 14:31:37 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59SEVZvR17302234
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Oct 2025 14:31:36 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 97E9D5805E;
+	Tue, 28 Oct 2025 14:31:35 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E2C6B58059;
+	Tue, 28 Oct 2025 14:31:29 +0000 (GMT)
+Received: from [9.61.253.27] (unknown [9.61.253.27])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 28 Oct 2025 14:31:29 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------dLuUnlVI0bzbjPQkADLsyzVv"
+Message-ID: <c86ce949-fd09-4810-8612-a6163f26fb9d@linux.ibm.com>
+Date: Tue, 28 Oct 2025 20:01:27 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,128 +87,256 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT2PR01MB6062:EE_
-X-MS-Office365-Filtering-Correlation-Id: 028e8cf7-a624-41e1-8139-08de162dbe5f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NVdqajBHYTFkRWNUS1B6TlluRUkzR2xMS3JXeUROVGhkL1ZCbnc0cExlVXlx?=
- =?utf-8?B?Sms0YjRwdDAvM1hHRWxxQlVYcStJOWZWcVB6dFZoOGV1U3J6VlRUUUxMdDRZ?=
- =?utf-8?B?eHRvUGk0OHVvKzJreXlINTEvQkRWVWZQVThBVlpWNHl2aDdtM2x5WGpkT2wv?=
- =?utf-8?B?SEpwVFV2Smg5Zm5lM0kzZjNtTlRObVNDYjdTc3ZmVzhMZmZocURNYk9vMWw0?=
- =?utf-8?B?bTZlTEhCblQ0Z21TbGJSOXFTU1VpU05VeHRQczdpUnBRR1FhakNhM0VNZXkx?=
- =?utf-8?B?dXZlZkl2WTNiT2s1Q1B4cjJsVTR3c2xENHRCOTEvc0JLZ25YNElqdVFJVWJq?=
- =?utf-8?B?YUJTbXZFbmhDODRoTXJNTzVIT2ZGV21FOE9Ib25FU3dZM1dsOUY3ZVJpb1kr?=
- =?utf-8?B?ZThRNUhzamZWZ1pZVGM0bTJxYlNrYjRZbHp4TGJSeGF5ZWUvT3ljbmNaV1Nz?=
- =?utf-8?B?dVMyc2xyWlhqSWhKZ2NhazhBbTVTajU1NWdVNjJTRDNHdTdManJLSmQ0L0VZ?=
- =?utf-8?B?QWMvNWpkSzd6Q25ZaXZTSmhCclcydkxVODErN2YxaVo0dzFmTEh2TTlNeisr?=
- =?utf-8?B?ZW53SFNmM0dtRStndEloWDFabDF3TGdZd3VPR2IyMUNOazB5YzdwZnhBOXR0?=
- =?utf-8?B?bkhwVXpaa3dlTEJOak51dkZXSzZTYWYvcW1Vcng4UjYzOWhHOEpBcHB4bU1p?=
- =?utf-8?B?Vmw2MWUzVHVxVUd5UTNLQ1ZkaktWckxJV1JvbTFJbWo5bS96NldWMWhrWHMw?=
- =?utf-8?B?VEdYN21Yd1Z0WGMyb1dycTRFS0JCMi9OMDdBWFhNTzdkOSsxNm1xTDZnYVBx?=
- =?utf-8?B?aW1FcHdPVW9aMGN5TXVPQXJHY3JMa1B6TEFhK25HN0lYajhkdS9uaFNmQStK?=
- =?utf-8?B?eGFNYU5rcDNMTWZkV2F2R2VJZGlSUFhUelU3MVc5ZmNiOHExZlM5RktLVzFU?=
- =?utf-8?B?TFVZOG5hTFcvUU4xekx1UFVpS2NaTVAzeHptZXQ5UmpybHd2TDNHWjBld25G?=
- =?utf-8?B?UU1UOFpNM3Vtbm5jbVdNU0g3N0V5UHAya2gyUTdwWCtkcVZKSkk1L0p3RUxt?=
- =?utf-8?B?b0o2YUR1R2krVGNkaDlIenAxK1NNajUwVlQxd0tMeGZmVS9rU2Z0WnFaZWZM?=
- =?utf-8?B?NlAwZTFPcUNVL25rdVJvanB1b2pVSWpVVEtOZ0VkS2JkSE9FV090WDBpalA3?=
- =?utf-8?B?d3d5NEZvU1A5eHQ5NWpFTFVYc1g1R2JVL3NjekpxdmxvWGlSK2lLdHRrY2hH?=
- =?utf-8?B?bmcrTGpWV29YYUhLa2VUc0Z5MXBTYklNU1Zod1ovUmtiVVJxalI0VDlJc091?=
- =?utf-8?B?aDFERkZGd05qQ1Z5RS8ySUhaUjlJN1Y2Sk9VN1ZrZklCMTFqb3p1YWZXQjhN?=
- =?utf-8?B?OEp0VjRaSGZLNmxqb2pTK1hBYUQ5U1pXU2tldklhTzFmTExQWmZwdnlMem5K?=
- =?utf-8?B?cytCNlU2SHkzMzFqWStrdWpmWTJYM0tLOGgxY1ZiMTBxWFhRRjg3WW1PLzkx?=
- =?utf-8?B?ek5UUnNBRGxENUpaTU04VGp4YVNwMjhqSWRXVVZzM05Na3JXaUVyYVVIZkdp?=
- =?utf-8?B?NFFwczhjTHBKZmNtWDRnNjA5Ym9Zelg3RXZpM3pYM0FhaDdqOFkzME5QL3dG?=
- =?utf-8?B?aFk1VklPNVF4SExnQW9JWXJCUHdrRXVMaFFlUFltcEpVSWZ4Mi95MXgxdFdG?=
- =?utf-8?B?VDRtenRFQU84MGFPU0U5Wlg1eFBIU3k2aUF6MFhzU3pHcWIrWVllcmVlN2dO?=
- =?utf-8?B?T01wNXo0ZW93L1crTFlKUExoU3MrRTN2Z3ZCSXJKZzlFWWZ0aDFXTXQweUxD?=
- =?utf-8?B?NmxwdWFNUE5hRjBNUXZDSGJiTTZyM1hmMHhiQUpGMDJlVHZTT2RpdnppOFZY?=
- =?utf-8?B?SW5GZnltZ0NXV2oyazBxT0lNN2UzMmR3SzZFd2MycFpmS1E9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?U0Y5L2IrUjN1T0liTkE4emhBK1VWRDlmTVlKKzI2R1dNKzV6NXRjT3J0R2pC?=
- =?utf-8?B?OHg0WFVuQlp1NlhyeHdaU2laZUI4NVNCNnYzMzZMUW5wTlNXYTVkbmhrWTUy?=
- =?utf-8?B?MndBOWFnMTZQQTZ5b0tYR3dncm5zeG1YSXd4Q3IwamhXaEZWbDV1eUNpeDVk?=
- =?utf-8?B?THkxTlc5SDJLdHZ4bFZVN2lpV0c2YVg1MWgrRytBNGw0RVBLdWhoWkErRmdn?=
- =?utf-8?B?RU9jckpPNUJ3dG9ZRWpoeExkV2tSMUJ6RnBZelQyZG5EQ0xnU21LRDBld0o3?=
- =?utf-8?B?MzRvTDNiNW9BTGRjVWdLNkV4bGhzR25tU2dvNTFNVGZ1bEZ1cnRXcWRsY0do?=
- =?utf-8?B?TmM5Q1ZKdnllZ3hzNEJnMUMyeUIxWnQ1ZG03S0RIMUo1NDZmNUoyeWRVVENJ?=
- =?utf-8?B?TGhRa05xUVRzZlpLR0RBOGJ1Vk5NUnM2Z2IwMGlKQm9GeVljcDdIdXB4WFZp?=
- =?utf-8?B?a05ZZENuUlh2NEMrdkorL2VEeDVPTzFaN3VHTCs2VnNHOW11Q3U4T0MybVV1?=
- =?utf-8?B?YW01cVJvMzRVZGtmQ3djYnJkcU5JTWo3WmlURDNabEQ5b1BrUW04S3ZzR0Zj?=
- =?utf-8?B?cFcvOE1UZk1XWnRMSFY5MVdYb0JpZnpYQ3lEampTTmwvNW1vUkJyMmpBSmVG?=
- =?utf-8?B?czdVNDMvVkQ4VnlDb3FNRmF2N0tkdkNLVVFCYXdwUWVKRExoNzBXVmRDVHdS?=
- =?utf-8?B?NXBVaGpHSGFmblhMWmYrUzRmQ2cvYlg3WmxQbW52QnhVdWVES3NsWXl1NThs?=
- =?utf-8?B?cmZkWHRqMnZERHgyb2YwYkF3QnRSR0g3K3B6WUFmTDZReDZWVFEwWVJ5UTNl?=
- =?utf-8?B?N3A2aG5BK1RtcFB4c0hYSXZGUnJNL0NFSDNlOHR1WXZvMklncnhuc1BHUDZp?=
- =?utf-8?B?WGk5VERRMlJiazA2Z1VxdzF4OStDdGVaQ2JjY3AyNnpINmNBZ0hCaC80RTNG?=
- =?utf-8?B?eSsyQzdxZkFSN3lnWVVBcHpvMXlkSTNJUTNDZEx6R1RxUmFnOE5wYVo1U2NV?=
- =?utf-8?B?NS9mOWFUc2JYTWljc29BTGw3SmtUdWl1Myt5alRRendTWkNsQ3hucWgvc21T?=
- =?utf-8?B?Q1ZmWHBzMUI3bnNQMk1ldmpyb3pPRndWQVhGQkZGUHdFbEdPWWE5T2xxREti?=
- =?utf-8?B?QkpjWXBOQXJ5T0IzRzdQdGFOL3UyQmpNWEsyT3QxODRzajM5aklRUWQ3MEFz?=
- =?utf-8?B?QURoV21mZGRFeGQ2YWJDL0V3TUNnbVpTVUozQWpnWk9QeEFDUHlXRlE2SzR5?=
- =?utf-8?B?ZSsxL2VYUlF6dmVCY291UjVqR2lvd1NvVGx4OUdJQzN6Mmt3NFAzSTg3MHFq?=
- =?utf-8?B?cUtZV2dCYnVwbUp5NGxseFZ0OVVnWFlKVnB4cGNoTHVncVBRbDNvSEFrSkg4?=
- =?utf-8?B?ZlIyc0pGUlBqQjNrRVNKMEM0a2h3Kyt5SXJZb2Z3MjdvQ1J6Z1FoaHgzQmpv?=
- =?utf-8?B?MUNwQkpPc01vUzgxeUhWS2RtMTl0OC9LMm9kbUdaYUtTRFNibXRTQVB1TTF2?=
- =?utf-8?B?dW9wd2N5Q01yNmsvanJQSFVya2FWemZOZmdCc2JGVjBpQWdESmkrd1hxYk5B?=
- =?utf-8?B?VDlyQ3FZRXl1Y2l6Vk1lV1V1ZWpsNmZPSHM4NlZ5dkxaVTZpZDZmSzNGUTJS?=
- =?utf-8?B?TFFCZmQ1ME13NFd4OFZmdDNpVmdINUJkVnUzdFV2OWRWckR1VlRCQ3krdXZ2?=
- =?utf-8?B?RjlqVWZtdlNPVGJVSndLTHV3ZUx0VDF6cXJvQmJSaVJuRGlESElPZDFmOTU5?=
- =?utf-8?B?SFN5VXdIYVo1ZXVLVXpGb1hHanlHaWZ4VVdZWnBLbTZLa05YOEptRjJ2WVRE?=
- =?utf-8?B?S2h5MlpjV0h3MElpdVdpalFRVjR2S3JhNE1PczFCKzZXMGx1dWNlbWhDV1FX?=
- =?utf-8?B?aHdwSzdTelArejhCSEhxRXlwRVdrQzhhZ2dSSmMrcWh0REgyQnBjTXJod1lV?=
- =?utf-8?B?N0RHYVY5RS84MlFhQ3VkZWFiUWJkK3ZNS3B5VDRBUkRvaFBUN1ArcHZvdEE1?=
- =?utf-8?B?NVpKRkpqYzdkREVDNVNGcXQxYUJ0Q25lMlAwYWZUclF1OGNKVDhjS2J3MHRX?=
- =?utf-8?B?Z3VqZTMwcFFTSyt5eFhxeFFVbEhOaEpRUmFxMnZZRlIvYnA5OFlKZm13a2F0?=
- =?utf-8?B?aUMrYTk2R3ZrL29ML0JKS25TT3lMcXJkTFJzZVcxM204a2JSQmxablh5UlJR?=
- =?utf-8?Q?pCbWyXlFuL+2mEnAjUjw4W4=3D?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 028e8cf7-a624-41e1-8139-08de162dbe5f
-X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 14:24:46.1615
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fnVepAzm90XoyWqyBkPf1S+CmK3a7BLLelBoMh6lzGSl7Onz2qE7KOA/KOym39zA7QF4HmVUGDGxIgYS9+Rdth4YxGmX1/yUpB3Hrc1biIE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT2PR01MB6062
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] powerpc/kexec: Enable SMT before waking offline CPUs
+To: "Nysal Jan K.A." <nysal@linux.ibm.com>,
+        Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Srikar Dronamraju <srikar@linux.ibm.com>,
+        Sachin P Bappalige <sachinpb@linux.ibm.com>, stable@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Laurent Dufour <ldufour@linux.ibm.com>,
+        Thomas Gleixner
+ <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+References: <20251025080512.85690-1-nysal@linux.ibm.com>
+ <20251028105516.26258-1-nysal@linux.ibm.com>
+Content-Language: en-US
+From: Samir Alamshaha Mulani <samir@linux.ibm.com>
+In-Reply-To: <20251028105516.26258-1-nysal@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: BMHXwsmjUYqRr2o5l6okFN2ZkzHcC_HX
+X-Authority-Analysis: v=2.4 cv=ct2WUl4i c=1 sm=1 tr=0 ts=6900d3cb cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=r77TgQKjGQsHNAKrUKIA:9
+ a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=bjFi6RqZeUFi83XDj6wA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=nGyChcL-Hsos-sZBGsMA:9 a=X9ioPVpAzRIOd3j1:21
+ a=_W_S_7VecoQA:10 a=lqcHg5cX4UMA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAxMCBTYWx0ZWRfX8tBTgmiGN1JF
+ 0Ic5JW7HzNDSGY309+XFg7PnhEKXrHMXvdNPCOX1Wt7bhUzBBgtR+UHBD6lraktEFwltKmTMfsO
+ bADApz+eGtIWmXuGPdLofBzKGQWP3PkpFanZr9akIVTpxmr2rcsrrvb20LDUPRo5ySWawJ9Iev1
+ atzgy97b5ZwVjjZtGRQIsQ0WTH6aR2HhR8KNFlZXvzzsv1WCafnt35/pYUgadgczwxA7G6bnud/
+ PN3gE8gvzM/AYzCpEQHCJVJIZ9lar4iYaH3HjHduZwC5FI/SiwrS2ec6YoxHPjWjNx0xNST1JjX
+ ewEtlls+0Mj+UaYFGz1mDOO5uAc+J0vl7JPqHGYcXZawhGbFmiEPA9ugq/TX7ljfZpi4U/TAf1Z
+ wMR0Irft7ix5gd5TYdlWdUa0YVnhTg==
+X-Proofpoint-GUID: 8cYIRFExH6VCRaaLGCQeEKLZDYjM0j4Y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-28_05,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0
+ spamscore=0 adultscore=0 priorityscore=1501 clxscore=1011 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250010
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HTML_MESSAGE,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 2025-10-27 04:44, Thomas Gleixner wrote:
-> From: Thomas Gleixner <tglx@linutronix.de>
-> 
-> Replace the open coded implementation with the new get/put_user_inline()
-> helpers. This might be replaced by a regular get/put_user(), but that needs
-> a proper performance evaluation.
+This is a multi-part message in MIME format.
+--------------dLuUnlVI0bzbjPQkADLsyzVv
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-I understand that this is aiming to keep the same underlying code,
-but I find it surprising that the first user of the "inline" get/put
-user puts the burden of the proof on moving this to regular
-get/put_user() rather than on using the inlined version.
 
-The comment above the inline API clearly states that performance
-numbers are needed to justify the use of inline, not the opposite.
+On 28/10/25 4:25 pm, Nysal Jan K.A. wrote:
+> If SMT is disabled or a partial SMT state is enabled, when a new kernel
+> image is loaded for kexec, on reboot the following warning is observed:
+>
+> kexec: Waking offline cpu 228.
+> WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
+> [snip]
+>   NIP kexec_prepare_cpus+0x1b0/0x1bc
+>   LR  kexec_prepare_cpus+0x1a0/0x1bc
+>   Call Trace:
+>    kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
+>    default_machine_kexec+0x160/0x19c
+>    machine_kexec+0x80/0x88
+>    kernel_kexec+0xd0/0x118
+>    __do_sys_reboot+0x210/0x2c4
+>    system_call_exception+0x124/0x320
+>    system_call_vectored_common+0x15c/0x2ec
+>
+> This occurs as add_cpu() fails due to cpu_bootable() returning false for
+> CPUs that fail the cpu_smt_thread_allowed() check or non primary
+> threads if SMT is disabled.
+>
+> Fix the issue by enabling SMT and resetting the number of SMT threads to
+> the number of threads per core, before attempting to wake up all present
+> CPUs.
+>
+> Fixes: 38253464bc82 ("cpu/SMT: Create topology_smt_thread_allowed()")
+> Reported-by: Sachin P Bappalige<sachinpb@linux.ibm.com>
+> Cc:stable@vger.kernel.org # v6.6+
+> Reviewed-by: Srikar Dronamraju<srikar@linux.ibm.com>
+> Signed-off-by: Nysal Jan K.A.<nysal@linux.ibm.com>
+> ---
+>   arch/powerpc/kexec/core_64.c | 19 +++++++++++++++++++
+>   1 file changed, 19 insertions(+)
+>
+> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+> index 222aa326dace..825ab8a88f18 100644
+> --- a/arch/powerpc/kexec/core_64.c
+> +++ b/arch/powerpc/kexec/core_64.c
+> @@ -202,6 +202,23 @@ static void kexec_prepare_cpus_wait(int wait_state)
+>   	mb();
+>   }
+>   
+> +
+> +/*
+> + * The add_cpu() call in wake_offline_cpus() can fail as cpu_bootable()
+> + * returns false for CPUs that fail the cpu_smt_thread_allowed() check
+> + * or non primary threads if SMT is disabled. Re-enable SMT and set the
+> + * number of SMT threads to threads per core.
+> + */
+> +static void kexec_smt_reenable(void)
+> +{
+> +#if defined(CONFIG_SMP) && defined(CONFIG_HOTPLUG_SMT)
+> +	lock_device_hotplug();
+> +	cpu_smt_num_threads = threads_per_core;
+> +	cpu_smt_control = CPU_SMT_ENABLED;
+> +	unlock_device_hotplug();
+> +#endif
+> +}
+> +
+>   /*
+>    * We need to make sure each present CPU is online.  The next kernel will scan
+>    * the device tree and assume primary threads are online and query secondary
+> @@ -216,6 +233,8 @@ static void wake_offline_cpus(void)
+>   {
+>   	int cpu = 0;
+>   
+> +	kexec_smt_reenable();
+> +
+>   	for_each_present_cpu(cpu) {
+>   		if (!cpu_online(cpu)) {
+>   			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
 
-I am concerned that this creates a precedent that may be used by future
-users of the inline API to use it without performance numbers
-justification.
+Hi Nysal,
 
-Thanks,
 
-Mathieu
+I have verified this patch with both *kexec* and the *smt_enabled=on/off 
+or 4 mode* bootline parameters, and no warnings or issues were observed 
+during testing.
 
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+Test Passed.
+
+
+Thank you for fix !!
+
+Tested-by: Samir M <samir@linux.ibm.com>
+
+
+--------------dLuUnlVI0bzbjPQkADLsyzVv
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 28/10/25 4:25 pm, Nysal Jan K.A.
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20251028105516.26258-1-nysal@linux.ibm.com">
+      <pre wrap="" class="moz-quote-pre">If SMT is disabled or a partial SMT state is enabled, when a new kernel
+image is loaded for kexec, on reboot the following warning is observed:
+
+kexec: Waking offline cpu 228.
+WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
+[snip]
+ NIP kexec_prepare_cpus+0x1b0/0x1bc
+ LR  kexec_prepare_cpus+0x1a0/0x1bc
+ Call Trace:
+  kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
+  default_machine_kexec+0x160/0x19c
+  machine_kexec+0x80/0x88
+  kernel_kexec+0xd0/0x118
+  __do_sys_reboot+0x210/0x2c4
+  system_call_exception+0x124/0x320
+  system_call_vectored_common+0x15c/0x2ec
+
+This occurs as add_cpu() fails due to cpu_bootable() returning false for
+CPUs that fail the cpu_smt_thread_allowed() check or non primary
+threads if SMT is disabled.
+
+Fix the issue by enabling SMT and resetting the number of SMT threads to
+the number of threads per core, before attempting to wake up all present
+CPUs.
+
+Fixes: 38253464bc82 ("cpu/SMT: Create topology_smt_thread_allowed()")
+Reported-by: Sachin P Bappalige <a class="moz-txt-link-rfc2396E" href="mailto:sachinpb@linux.ibm.com">&lt;sachinpb@linux.ibm.com&gt;</a>
+Cc: <a class="moz-txt-link-abbreviated" href="mailto:stable@vger.kernel.org">stable@vger.kernel.org</a> # v6.6+
+Reviewed-by: Srikar Dronamraju <a class="moz-txt-link-rfc2396E" href="mailto:srikar@linux.ibm.com">&lt;srikar@linux.ibm.com&gt;</a>
+Signed-off-by: Nysal Jan K.A. <a class="moz-txt-link-rfc2396E" href="mailto:nysal@linux.ibm.com">&lt;nysal@linux.ibm.com&gt;</a>
+---
+ arch/powerpc/kexec/core_64.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+index 222aa326dace..825ab8a88f18 100644
+--- a/arch/powerpc/kexec/core_64.c
++++ b/arch/powerpc/kexec/core_64.c
+@@ -202,6 +202,23 @@ static void kexec_prepare_cpus_wait(int wait_state)
+ 	mb();
+ }
+ 
++
++/*
++ * The add_cpu() call in wake_offline_cpus() can fail as cpu_bootable()
++ * returns false for CPUs that fail the cpu_smt_thread_allowed() check
++ * or non primary threads if SMT is disabled. Re-enable SMT and set the
++ * number of SMT threads to threads per core.
++ */
++static void kexec_smt_reenable(void)
++{
++#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_HOTPLUG_SMT)
++	lock_device_hotplug();
++	cpu_smt_num_threads = threads_per_core;
++	cpu_smt_control = CPU_SMT_ENABLED;
++	unlock_device_hotplug();
++#endif
++}
++
+ /*
+  * We need to make sure each present CPU is online.  The next kernel will scan
+  * the device tree and assume primary threads are online and query secondary
+@@ -216,6 +233,8 @@ static void wake_offline_cpus(void)
+ {
+ 	int cpu = 0;
+ 
++	kexec_smt_reenable();
++
+ 	for_each_present_cpu(cpu) {
+ 		if (!cpu_online(cpu)) {
+ 			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
+</pre>
+    </blockquote>
+    <p>Hi Nysal,</p>
+    <p><br>
+    </p>
+    <p>I have verified this patch with both <strong data-start="37"
+        data-end="46">kexec</strong> and the <strong data-start="55"
+        data-end="70">smt_enabled=on/off or 4 mode</strong> bootline
+      parameters, and no warnings or issues were observed during
+      testing.</p>
+    <p>Test Passed.</p>
+    <p><br>
+    </p>
+    <p>Thank you for fix !!</p>
+    <p>Tested-by: Samir M <a class="moz-txt-link-rfc2396E" href="mailto:samir@linux.ibm.com">&lt;samir@linux.ibm.com&gt;</a></p>
+    <p><br>
+    </p>
+  </body>
+</html>
+
+--------------dLuUnlVI0bzbjPQkADLsyzVv--
+
 
