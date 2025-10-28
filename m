@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-13435-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13436-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D108C14A80
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 13:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5213AC14B67
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 13:53:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwqfZ3gKnz3dXb;
-	Tue, 28 Oct 2025 23:38:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwr0b2yJmz3cZc;
+	Tue, 28 Oct 2025 23:53:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:f440:8:8::2"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761655094;
-	cv=none; b=Kk52iyyTQEX7tQRbtiv9ayEfRx8/m/h1KgCAAHAI/L1uhlyy3U4v1yhisA/zASjkBJF3+1KJaD83/znmM1o+D7J01ZRC+vqhvXBE5S98MgctQZHCgV7wQsrd4t6OOivyyHwqnTeTlJlQBGRrHPDFxgqTzRxSLKNXikcQRV8el//77uIPfed15a1ehQgiZ2Fl+/zxD1tu8IPprP9oUkr/GtBqZX784FEe8iBxsYweo9Dhra6m3PiINy9qdauAk7EBWsOM8IjFUrnRA/hmJ1EaU50ir2lmeX8TpMkeZHMDjfVKLZ9rjBG4OPLbKPvCT3V+0g6jseoOrddjR+sN8RopmA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761656031;
+	cv=none; b=mCZFKunwbUAVr40jduETF2UXmKKVZd7n1dBNPGoEJPrIpCK40IuSZBAU7KPEGZ3ukM3e/UFhmtJNNMVQSIsCBrzFF3OUwNdHP+/fuyZGUQhoLq4WdNJ0yaBq3QlKX82gt4UcEpTTPrMXCxR6m0VCycynTpze2LuSGiP1pu1i/8NNhnevt7wvIZXULhG5rt29+DlDMAmxvpGpp6IJPGEzzWHXzXqUoQvOS2ocNaU9C588fdmmlyq60PdG2qPUYPCrhww6W/Y9y9SkHEgQKilU/noAMAUjogXnr3ohvm85IbXCYWVk3Kr/GtVJhdZcZCv59Qz3VquQsmD1raeO379YNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761655094; c=relaxed/relaxed;
-	bh=sogyW661oCbNHSPgSbES/VRknKCAgbGkPwNv2CeIoPg=;
+	t=1761656031; c=relaxed/relaxed;
+	bh=rjoOaNnRymmfrZGHJVuHuHP6oLUrEEVYSruF4P88ols=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WTM0EnncL87iqJ5+KH/R5co3bDNF6/cn7tMMeXHTpE9KqJKk4K/P7E7cDWqb6S9AeS54p09KuXYSMBPj2FPww4kq64C3Cih8dfmD1O1tzRF1N/UjcDwhgFDV6OL9QDSArVm2t5ODd74Z+1isti82fyxg40q7vzwF/SiHPmvQSgdCOMuKrYB+dqF6UQV8jWaixO0ciaE9U7k0Wto4XgFhIti3VCO7p5EQIZK93t3Q1kG416WqNPJVfnUkdqJEkYKp5T4XMAvt5Ked0ssZcACeUo0avbv/CiJqpVA9TA86fu/fI+8uJJJYICX0k+563UQZzGwp7VWd5+E0JIIZlaLMVw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=keG6XVs4; dkim-atps=neutral; spf=pass (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org) smtp.mailfrom=hansenpartnership.com
+	 Content-Type:MIME-Version; b=mWWTE6TeIUcOJ/tVCWaBJlDJRfAC3uGX+XQUQOTpYP2xZSHo1Qgx9EHcdBzxsvre8jQSu1oO+qUEQSssiFQfq/alKQ0xycgQP4RaACsy8PzVD5MaWtNEqV/utD+28wbZ94FXfV32tNPOQjRyqu13l1VQpddMPT91U5Mq7Kwz9Gm8Af+G2xOopT9ELhobjKMg/CHekpo4pmFZ2uvl7X5SLFVd5j93UKDXfTrz9y0OIg2vtJeRXyJEiEBRkiGKBp4xBdUS7Cl5i+L0hehwPV10TMRK90qxI0t+Ce9dIFgllQr/XHvqWJXcLwfzz0HH1BktMgZmOm7gkd+QTAwxFdeFmg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=Up+wUdpU; dkim-atps=neutral; spf=pass (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org) smtp.mailfrom=hansenpartnership.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=keG6XVs4;
+	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=Up+wUdpU;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hansenpartnership.com (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org)
 Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [IPv6:2604:f440:8:8::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwqfV6wjMz3dW8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 23:38:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwr0Y2vv8z3bfZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 23:53:49 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1761655081;
-	bh=PO5GYW3JRfyGqT//NznkfbFWET3Cuq1GDBXCxKeHqpQ=;
+	d=hansenpartnership.com; s=20151216; t=1761656026;
+	bh=36eCAB+0sW4xMVrmbFJUt0Jd2fPKRpcz4N2tZkYaW0A=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=keG6XVs4IngS/M9orK3tSBGfwrYw0Wbiep2ZWCxwZGD7wpd3Mvw/3qST52CtSKRch
-	 WiOJ7wfTdQF6EK49QnyyyGCrnKdLTw0fbRd5T/YS3toi/mLEwlc8qLiclCh/S57jFf
-	 Un6GUXQaYxOnMWM6Ale69R8Aj0lnkKYuH2cZ+zOw=
+	b=Up+wUdpUE3fM2XmpjOk/4MC2BBN7QcGfqCN/Y30XMtMGeEdr6sS2keJncZnoHtIxc
+	 DUSL0fv5TOME1iHo/0QPy6kCQ/EbzsX/nDu9ZkF/OyKG2r+VSTgHBrf5rWvr3odv+A
+	 bnk/Q+3IpimJ4Pj5aehK+pn8AFKPoritDfPNvoVo=
 Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id AFA251C01DF;
-	Tue, 28 Oct 2025 08:38:00 -0400 (EDT)
-Message-ID: <6d69842d102a496a9729924358c0267f00b170f3.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2 06/50] primitives for maintaining persisitency
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 04C181C00EE;
+	Tue, 28 Oct 2025 08:53:45 -0400 (EDT)
+Message-ID: <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 22/50] convert efivarfs
 From: James Bottomley <James.Bottomley@HansenPartnership.com>
 To: Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz, 
@@ -53,10 +53,10 @@ Cc: torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
  paul@paul-moore.com, casey@schaufler-ca.com, 
  linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
  selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
-Date: Tue, 28 Oct 2025 08:38:00 -0400
-In-Reply-To: <20251028004614.393374-7-viro@zeniv.linux.org.uk>
+Date: Tue, 28 Oct 2025 08:53:45 -0400
+In-Reply-To: <20251028004614.393374-23-viro@zeniv.linux.org.uk>
 References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
-	 <20251028004614.393374-7-viro@zeniv.linux.org.uk>
+	 <20251028004614.393374-23-viro@zeniv.linux.org.uk>
 Autocrypt: addr=James.Bottomley@HansenPartnership.com;
  prefer-encrypt=mutual;
  keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIBwMCAQYVC
@@ -89,24 +89,35 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On Tue, 2025-10-28 at 00:45 +0000, Al Viro wrote:
-[...]
-> +void d_make_discardable(struct dentry *dentry)
-> +{
-> +	spin_lock(&dentry->d_lock);
-> +	dentry->d_flags &=3D ~DCACHE_PERSISTENT;
-> +	dentry->d_lockref.count--;
-> +	rcu_read_lock();
-> +	finish_dput(dentry);
-> +}
-> +EXPORT_SYMBOL(d_make_discardable);
+> Initially filesystem is populated with d_alloc_name() + d_add().
+> That becomes d_alloc_name() + d_make_persistent() + dput().
+> Dynamic creation is switched to d_make_persistent();
+> removal - to simple_unlink() (no point open-coding it in
+> efivarfs_unlink(), better call it there)
+>=20
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
-I was going to ask why you don't have a WARN_ON if the dentry is not
-persistent here.  Fortunately I read the next patch which gives the
-explanation and saw that you do do this in patch 50.  For those of us
-who have a very linear way of reading and responding to patches, it
-would have been helpful to put a comment at the top saying something
-like persistency will be checked when all callers are converted, which
-you can replace in patch 50.
+The patch looks fine to me ... you can add an ack if you're collecting
+them, but don't bother if you're not.
+
+This caught my eye, though:
+
+[...]
+> @@ -278,7 +278,8 @@ static int efivarfs_create_dentry(struct
+> super_block *sb, efi_char16_t *name16,
+> =C2=A0	inode->i_private =3D entry;
+> =C2=A0	i_size_write(inode, size + sizeof(__u32)); /* attributes +
+> data */
+> =C2=A0	inode_unlock(inode);
+> -	d_add(dentry, inode);
+> +	d_make_persistent(dentry, inode);
+> +	dput(dentry);
+
+That dput looks misplaced in a creation routine and this is a common
+pattern in pseudo filesystems that either pre-populate the dentry state
+or create effectively unused dentries on other changes.  I know not
+every pseudo filesystem does this, but it did make me wonder if it
+should have it's own API, say d_create_persistent()?
 
 Regards,
 
