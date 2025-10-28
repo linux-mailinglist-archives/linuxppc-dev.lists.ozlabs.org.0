@@ -1,80 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-13420-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13423-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4A2C12F1D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 06:32:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55861C12FCF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 06:39:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwfCq3ZDXz3fqc;
-	Tue, 28 Oct 2025 16:32:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwfMd0cscz3frB;
+	Tue, 28 Oct 2025 16:39:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::634"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761629575;
-	cv=none; b=gDFfcCuzGNawHCwcPMGaeDrRh0E6D61dsAkQR23fl/bdEddOAKh9FjygmiL1fE+sN8oCkZ0VPHYmnsIFK62Mt/R0T2b9W/+f12TehEMz4foJmEOSN153Yd08eGjx06P6RxqPN1K/XjF+da6/kqhpLjoYMIuBm35N5saIbsAbEMX1GniYfGZ7AWbE4i4vqhDDWVRKxM0ZGRWWyFjhbEw6eIsTLHfGQIi8jz3ga0gr/TOonN/eLUsJtjefJx6ITR/NWLWI2DI0FNzq7Gdt8pA+S1y1q1UZ1LA3vUs8AB5jn1PJ3IeYTlJL4I8TlwhcESxTZ9E14BCGLxtyDXjBS+7wKg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761629981;
+	cv=none; b=dq0YWYXgaqtMeQvOQ3hBKg/zBjbJAn1WwD7Er+Wn4NkTA21/xc7U3ANuVMZWsyaPQk1N7M3Rhj2oEGvjCTuPdhlzGdAFwW898/PY+gaBkaG+VagfOfzNUm4e9fDYdznc2lIAv6T0VNSGInr8WzZLc68uf6vBaXF3c7UPde5DaE2wfJ2L77RzQI5I+sFlcRlH+U3jeK60/jS9KhqTUzrgR5bRtPwAfNYUdrs1K9crJgft2iRPE6HeZ+9psN8ou8VbeO5f+e+GYt8YBoFHskoZYHr+R9HCgGnDbdao9QpcVkIniy5kGeTEUAvh99MMqHxJ+1fsKnYXoDF3vwmesCdo6A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761629575; c=relaxed/relaxed;
-	bh=3Wy1ynDaI6taIoYDlBwI1sYFOXKyWHxR4eO6K9jXR3Y=;
+	t=1761629981; c=relaxed/relaxed;
+	bh=kLpGC29sIJuMD8EW6D6+ekLf15xOznYOaep7iLxbnWw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nzmgS4TdR7FywGDYWHzINcMpD0RtNPGtdLHzhTLJZPm86ljaTKCKq6dRtmOu6rXc6NXnu3bXadF2gBQuibIkVzuhButqDKTzudOtZpiGWhuCUyaClawUQNWWjCqh/3zNQpNWGh2DYqOBI7hIh0hmwwPK6Ds2ujOOtK66jAw2HeFiqpUF3qtiRy9uege2GdQoQZn5olMQETAUHcrs6C+5xdo+038IHudQTfOk7ZbFkZE4nCfhO83lmPYIetJeQR3k8TfW7rqHDkmlRPAk8qJj8YftFAtGDPFtlK9EnMyipoAo4u6QM2wvwlYvy3mL4hz95YiPNKX1b0WU1+vH9tFgHw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=DbyS/+vy; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::634; helo=mail-ej1-x634.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+	 To:Cc:Content-Type; b=nUhZUblAakck6DuNFEuUUNGddYqPastLhx/6tNe2yyFXFUxEhLs7N3a8nlVbIxdaTXsZFdJvIxKjdzclIZcqo39uSbo311tJjY9IOHFH0ooFb5rnORrmvsAqMvwceHuRejjVXuQRmW9M/l/LctWlBqUl8NYr/uxeuwWAaOuVSAl3li61qdDooxz6e4632Wbs0bcTWd73O0IDki0RLMQW3LrBpF6MOfeQ2NbkwuGBq4pPWzcXmmQ1FjhGjHizdAyBgjJrWqiuSzR6sdgZX3BFMDEl3WfKiXhUl+QmVQ3ynF3G+fluK4fr/BgKgM2Oa4hOQSUsTScncisfnb/6WmsAbA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=eOQQfELD; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12d; helo=mail-lf1-x12d.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=DbyS/+vy;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=eOQQfELD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::634; helo=mail-ej1-x634.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::12d; helo=mail-lf1-x12d.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwfCn5YBfz3fqZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 16:32:52 +1100 (AEDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-b4f323cf89bso1309805566b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 22:32:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwfMb5sTDz3fr7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 16:39:39 +1100 (AEDT)
+Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-591eb980286so5783783e87.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 22:39:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1761629567; x=1762234367; darn=lists.ozlabs.org;
+        d=linux-foundation.org; s=google; t=1761629975; x=1762234775; darn=lists.ozlabs.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3Wy1ynDaI6taIoYDlBwI1sYFOXKyWHxR4eO6K9jXR3Y=;
-        b=DbyS/+vyusD5K27VGwl4GJi8dN1nehFl6EYm++6S49HgOreL+adbwUlxbuj3NWj6/U
-         8X49nLlTsKKfU27hA/f/1GKVA2WmNbhQlciWucP68hruh7RgQb4oeDR3x+B6trPVCP1b
-         KSYJKvvfLlp7HGDIWDX1V9T3ndQj1aTeSoaf0=
+        bh=kLpGC29sIJuMD8EW6D6+ekLf15xOznYOaep7iLxbnWw=;
+        b=eOQQfELD2Kvb+HKNfQcx0Isv6CYdHp0UXQqGLeuoulHg7EJ6efCst6BVN/CuurXdXh
+         FfOJW5tzKxA2B+LZ5raNLYpWeX9l1oBWB+u+gG4MFOwsB9B/LbpNySpl8N9HX5Lr2slF
+         xrRMKSz7SXAuzYRbZBO11m8gFdk4hve6sqIIw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761629567; x=1762234367;
+        d=1e100.net; s=20230601; t=1761629975; x=1762234775;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3Wy1ynDaI6taIoYDlBwI1sYFOXKyWHxR4eO6K9jXR3Y=;
-        b=Rq/yhxegOedH4wt2VrEr4m4IWtxw+iNfy0/AnwsbEGKH0foKsvJzwf7S4rJTQJa067
-         6tztgxzg3BRnRlDq3VA6z1xl/1+TMVdeqJlmRTBtLUCs9akmL72PNiW33z4VaVtCkUX/
-         8jZtAOiL6CUOpw07nmAFZLSprQyoYHalPyz89I20nSJT7av9ZJEF1DuvEY0ffyh0o9u6
-         MmV1LZsVMiKa0S9yv5laeRVkmASdFwzs4XesASzJ2X8HKMLN4L6JeIuPF8dAL5YykEWk
-         +e7yvSwOAnGBLIFlRutYMepIv7GYeZ+QmE5BToHLYK7paCBuof+u87SfUD63MH9drOf5
-         Zlxw==
-X-Forwarded-Encrypted: i=1; AJvYcCWSkySTUbLNR3hSxh28ej6M1GzhmucYv0O2HUZWek1fT64q7TG34JUGbLF6tc6MhmVX6KvudSq0Le4ckN0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzu5JAjrGeF3aIEAH/WfPB817y1/Dd5S9m2+fjoJuV+wzozcb5b
-	XD3CNW98RKPFbUxbcdB+RG9uuWaOldJ7JrwXhoaZB7AgIGCw2y21adfKbq136G2yee6E7CahFQY
-	xtAO58btzBQ==
-X-Gm-Gg: ASbGncuiSaHK5jSPVtMA9ozzHkodc4pXkoy9djD+uJ4BMldmc9JSstdQ9Qg7HR2z0JQ
-	lG3ZMUhYeveAEnU+SWgyvgoSJd5+kYnq1jHKa7215opodRVNbEUsBgoviGexktu8Cn3Z987QAQy
-	aWa4Hpm2qr+1iMm4wJykjNeypQ9YsHN+o13BdRxQLqXWLdnG6JuaZM0EhnT3gUJgXoqazLNNm7U
-	+EEPa6DGozLUf+F8lljR2SLDoUGZ+Qyk8RSoFA5p9O7P1nsaC87jDtoMusbk9N/p9MCOTkFEK1W
-	Jh4dYhxRthIIVhuP/b2sVDfACiAeElqTYLXl1b2z6yh5aEILgKyzxx1T2tFgUKCfZKFdxt4jGKu
-	SyJg3IVMF1aYn7hfVOejceSwDOKN0iQ++NpFMekkLdmfhAbRmJXx1JBqSa9ssAZG2A8wWHqMDMy
-	70sN30IwDHzxQahYUdmIQoLxdWO4a7RDh4bneCo5urwGsUN1tCmG8kfqeFAgzY
-X-Google-Smtp-Source: AGHT+IHzmrFBmO1kTKPuC8gSGBoUbjQ9DqrpEyWqSdedpm3Rn+mUejZaEexBBN/A1DAZv6Omt4qY8w==
-X-Received: by 2002:a17:907:9723:b0:b6d:801a:648 with SMTP id a640c23a62f3a-b6dba59a7e8mr270767266b.48.1761629567005;
-        Mon, 27 Oct 2025 22:32:47 -0700 (PDT)
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com. [209.85.208.42])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6db9b86c80sm227772566b.43.2025.10.27.22.32.45
+        bh=kLpGC29sIJuMD8EW6D6+ekLf15xOznYOaep7iLxbnWw=;
+        b=eyzV94gEBd7RWj45yDMwcyJYLHdx7pK27L7ARKwejzMAejrU1CkYXc2xKGSAsc7tUJ
+         l6aPOpGmqs7ZJLpi+458qMwSoLLr2bK5TaycLwgHCXP504ZrWctvqHjSLPeimwceYqi9
+         zWxuX6i+SnUk5B2VyvmTy0Yjxt1uvfM86YloJBjhiLMlUNnCr/7QwkWsyxpdtQBnlbhU
+         UZiZDb6gog4Bwq06QUajr8286ATE8ruhxd1yNZ1qwVMnf6qQMYJSCm1RCZfspMCCJroU
+         lyM6azPjCjouRCPr2cSXtaN1NzJ2FvmSUE2MLUBIv+4795GmZ8hOg3QHI7JDpJ1eX7pm
+         PW1w==
+X-Forwarded-Encrypted: i=1; AJvYcCXsOg+nG6jA0o81TaBbgp9oEKexUyV0n48t4ytH7Cpo9wrmoZvt+XvxgvqsojIerPOJIk8mBpVSCsjczyM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyJjuUcdrGAB9t2WmDoLV0IepcNg9hcZ0buGKkF5E/+tAy86sVy
+	iFeVfTOmem/yo0bCcX6BZkLARmD7NIi2DD/MqvMK6wx5iyWGh9Q2vRlUX2lLKmDJYTvuCXRiZSQ
+	4ovFuLpA3Kw==
+X-Gm-Gg: ASbGnct21ASXWPFOBHd2B92h8a8n38VkHrqqu7MItoD4fNhxlaq8TPfdgnf4SY9vZYs
+	yFYtMTb320GGmINOhDXFvr4EVSMHtUYMCtjO3fOAAF0rmp/nnfYq/alu6OtQpIruiV7qbKIwmn/
+	RwSY8veUck/Gq4iQi4Ezy3F4NYfebPRh4p9qTFAVGdqwAlMSbV2TF0sXlKTO9aWtBSLiO8eEGGM
+	FyfMNZQ0J6ksXNw0rwLNraLCiYenkrhsc/nhwnkpocVjnCMZeNbVmNI1Zr4T5vexnJ5KUorCvcO
+	bVpmG4Yo9Hofe7bxhjGGYWKynz1ogMwbj+E2uq1gyq5QTKEY8N25V94Spci0dufJSP2CfaMPwVN
+	HGunbHEP2/iaIdssdsq9L1kqKxrkGcsQXKiXmQT6SKNS3ViaoQD+exizECMnmwoFUKai4D0uJIm
+	7jxF6SrZRTjdzGwdcPuUXCapIh/vrG64HxEF4DGn/r2olwCRImEtyovvPyzthp
+X-Google-Smtp-Source: AGHT+IEzpd+Bdg64rT72ckoVTXVwJd4Baz5ppzbtT4KnhTA0mtA29n+amoELpqgFuTzgbpwmqb4Fqg==
+X-Received: by 2002:a05:6512:ea6:b0:591:ce58:1def with SMTP id 2adb3069b0e04-5930e98f7demr745834e87.2.1761629974912;
+        Mon, 27 Oct 2025 22:39:34 -0700 (PDT)
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com. [209.85.167.46])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59301f41cddsm2757965e87.17.2025.10.27.22.39.32
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 22:32:45 -0700 (PDT)
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-63bf76fc9faso9824757a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 22:32:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW0i1FnO5dA3fgA26CMLVmBctZE009Fn4oEyTt+NKm3DHyLKLZC7RvvsE1eu7gs6/J1WKqFGTix+kKr5+s=@lists.ozlabs.org
-X-Received: by 2002:a05:6402:5346:20b0:63c:1e15:b9fb with SMTP id
- 4fb4d7f45d1cf-63ed84d11b8mr1725392a12.22.1761629565035; Mon, 27 Oct 2025
- 22:32:45 -0700 (PDT)
+        Mon, 27 Oct 2025 22:39:33 -0700 (PDT)
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-592f9400b04so4802716e87.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 22:39:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU48Ypr55l7KOfjR8u04o425HjiCB8TGoV+Xwvm7M6wyjnttfpAxNTsvvmpRpWzcAbv1SFlIIvwUWrwzqU=@lists.ozlabs.org
+X-Received: by 2002:a05:6402:2681:b0:63b:ef0e:dfa7 with SMTP id
+ 4fb4d7f45d1cf-63ed848cba3mr2102592a12.6.1761629641674; Mon, 27 Oct 2025
+ 22:34:01 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,14 +89,13 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
- <20251028004614.393374-32-viro@zeniv.linux.org.uk> <20251028015553.GM2441659@ZenIV>
-In-Reply-To: <20251028015553.GM2441659@ZenIV>
+In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 27 Oct 2025 22:32:28 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whCnWNXcmZAgxfV9p8rKJfjxcceNzaxia41f675+yEdfA@mail.gmail.com>
-X-Gm-Features: AWmQ_bkREqIMu_f1B9dwguEOjRWmmtrQM-BuU5ACiXPx-fVfEkz6aAECfx6yPOQ
-Message-ID: <CAHk-=whCnWNXcmZAgxfV9p8rKJfjxcceNzaxia41f675+yEdfA@mail.gmail.com>
-Subject: Re: [PATCH v2 31/50] convert autofs
+Date: Mon, 27 Oct 2025 22:33:45 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg_FZnLha9Qr2sMQPXa1go4FPq2p5d7CnMoOnCimS2Wzg@mail.gmail.com>
+X-Gm-Features: AWmQ_bkfyF7pn4e6fUY7bNVBhf2DrgjCvQYqt5ZlzergSjGB0BKOD2LLrniXl7E
+Message-ID: <CAHk-=wg_FZnLha9Qr2sMQPXa1go4FPq2p5d7CnMoOnCimS2Wzg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/50] tree-in-dcache stuff
 To: Al Viro <viro@zeniv.linux.org.uk>
 Cc: linux-fsdevel@vger.kernel.org, brauner@kernel.org, jack@suse.cz, 
 	raven@themaw.net, miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, 
@@ -111,21 +110,17 @@ X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 27 Oct 2025 at 18:55, Al Viro <viro@zeniv.linux.org.uk> wrote:
+On Mon, 27 Oct 2025 at 17:48, Al Viro <viro@zeniv.linux.org.uk> wrote:
 >
-> BTW, is there any reason why autofs_dir_unlink() does not update
-> ctime of the parent directory?
+> Things get simpler if we introduce a new dentry flag (DCACHE_PERSISTENT)
+> marking those "leaked" dentries.  Having it set claims responsibility
+> for +1 in refcount.
+>
+> The end result this series is aiming for: [...]
 
-An autofs 'rmdir' is really just an expire, isn't it? It doesn't
-really change anything in the parent, and a lookup will just reinstate
-the directory.
+The series looks sane to me. Nothing made me really react negatively.
+But that's just from reading the patches: I didn't apply them or -
+shudder - test any of them.
 
-So I'd go the other way, and say that the strange thing is that it
-changes mtime...
-
-That said, exactly *because* it changes mtime, I think the real answer
-is that none of this matters, and it's probably just an oversight, and
-it could easily go either way.
-
-               Linus
+            Linus
 
