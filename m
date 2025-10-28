@@ -1,70 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-13358-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13385-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22F1C122D8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 01:37:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52851C1249A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Oct 2025 01:49:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cwWfX2zn2z304H;
-	Tue, 28 Oct 2025 11:37:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cwWsk3tHwz3fJk;
+	Tue, 28 Oct 2025 11:46:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761611828;
-	cv=none; b=jC5Jx7ox+8+SUUjJRRP91xVfStWmDba98OYsJ2QlfJd38VRmyh6nROgsPDQptxHuSLS8kEufgMmxpPTKlDXOP1kT49JCI8+p43HszoQvbATFEZ3JKBPzLrEXEePNiu/6akW3W7PATACRX8PH8sevKw+pEablkh5WMvD8fswj7ALjU/c7fLK8ZgIKPNYTgugqovLJRXEDWd3iDSCBBc7WnpBGcCetvRXAphGimCNrZM9Zycimq7B5b1JxKVJXYR6wJ/PV9ddM8YTnWSr5JUJHJMG4tHrlS4qdj/fZ3vREMIlkNJu7BUc3WKIPhx01NwwofZhsY3g3NNjz+yj7VOld0g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761612410;
+	cv=none; b=W0R2p8BE9lOgoA2/PWwnIT1PLvE8izuBR+GwXt06XVlPv8Gkge1xXMln2dDH5qNWBTeA5iLHZ96rGrORrFjfq/E9i55i0eCyjLUjJ1qpPCEXu6/1QtErlZp4q9NY7IuBdwA9Nu5ZF+/X2nPPF6/6ThYhshX2+UuT/47Mrk4TkZ7+Jre+vIrf9WulOjtcGP6IlirYJXSn1IChAsNlwlPlR1EPCT24oshVfBuvAjwrAuhOYCqQ9wn1AsjJDlWwws2gA/SJYnBBOxY+pjoUqLxHG8zZ9g4byUtXtbVOC4rsbzIZzGCQw/JqLeKERa38RY9F4xZvau8QwF0aZdCOUEvg2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761611828; c=relaxed/relaxed;
-	bh=J3mxOKer4OGfyDxlfqvGDsZ/A3KYgtdet3LczK0ONqE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bggT8+M1uxumXUT+ie4MAP3B/81tk7GO/A9ygG8hkkldzGKFQdSwgMT1m6p4sxuu2VqvkceM3Yr/cpzWtvZA7ubDr5N6kCO9YCc6R7+OZF+9U/pdKZmsltaXNs+TnOG7Sf1iVKOtEXjrV5MGhM1GAFIAl+x9oVaWSED4hAgAk0n+mDT+zmX/4KQXL3ck3jRz6yzMCeU/E/ZivVPphOh2QiPfVZV9FfKrlqIeZNFg+fA4cB+gp7cBrZJUdfskRbO45ggIQsqfHI5CloRo6eAuOnsZoz5+3f3afsb0EZ9tW+8ornwlSfI4+lTr5bM5J4DkO1xZTENR2akcHwwnJmFQyA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=vW0XgWNJ; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3mraaaqykdkaseanjcgoogle.comlinuxppc-devlists.ozlabs.org@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1761612410; c=relaxed/relaxed;
+	bh=5ME/pVGCOy0Jb+JLf9dI2yLeDW8cBFJkPzOSFDOyz5Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lRXfRnaklsK0IZp6WCSKaT0vLPecptmRzUkgNBDCIHkHU38pH/KTnnxLaRUKI17AqMnnGuUhkZ41ZQG/gAyudgtY3gT+gJXZfNF7p1V67Fijqx87GfMuuBj/6eXKaTuLCouaOJYl7g65OXBTxrBJQwuzsleGDinJ3hIFDmrFeNl+8vgsbzjDezqYvoHcyXeWrph3ejARdXOTIQ/5OTDRiGmKQLajSjL3ijWW5Ue9wJ6zCzbPI11IXANtJXHp6hb34vIbQiewAD9hC9H3Ae0CBlKMlm2b5mCSXL++S2M7p4TaXmoXjrh3XZA1AKjhXQwZj08zvzjXssxungbKcsJSng==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=qUrf3iVC; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=vW0XgWNJ;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=qUrf3iVC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3mraaaqykdkaseanjcgoogle.comlinuxppc-devlists.ozlabs.org@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwWfW4F75z2yFx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 11:37:06 +1100 (AEDT)
-Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-339b704e2e3so4969844a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Oct 2025 17:37:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761611825; x=1762216625; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=J3mxOKer4OGfyDxlfqvGDsZ/A3KYgtdet3LczK0ONqE=;
-        b=vW0XgWNJWQt1C9XrL8OcNv9kwPwKS2he/ZSsz3zD3ZBqMfhBwKDe/vFknRoov7mHqL
-         8KzhB7XRlIX6JD2ACoAOiYX09hrEpz5C3V5JlESa0mrEwIn9GwkvJc2mKB2nb37etZnC
-         pap9sVNPW3FDAsIC5t1wJ8heFyMcp8KzcKCasHFmhMhC9fHH1U/PLWktY7hBLB4irOmw
-         XE8HdPCb5NCzL4V8UzpVPK26p5PpccNSGBX4cxnxBOr5ZWQ+ZCjBzyWmSlbzs0fCU3Vg
-         1Pmasb3weyaslS5ceSpaVKEYJtEszV2yvDjJvFSjdzm7KRWOjdPeYJZcpSVnp1rb7f1j
-         q9pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761611825; x=1762216625;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=J3mxOKer4OGfyDxlfqvGDsZ/A3KYgtdet3LczK0ONqE=;
-        b=rb2bPM6XHNb46wqm//m8AxGjcjSxPKby1noE73MiiAnm8bphLdijYHVvHpJiU/74hA
-         nTIovuN+frcKjFWQl9jLPPA68NvTXyYjXU7MeXa7eCAwzFoMEQR/m/eFLNKgLEHz7Hgc
-         +agWJd5eqp27/na+VjtJcRsS4PBT8kmWwrajWe1nLbucjoE6HRW5T8AO8LDpLTsiXpT2
-         P3Ch/Iminuw/urnQsGw9VZleIKVGuPpb3FaBGzHjhbeAsLJLoqj7r0NMz/1G5rYso+GE
-         glj0hC2uWNtyK7MsmK4wsHltDT2leAktHYexIVjJ6qdGe7VNWbGdA7PowGdDl8l5uH4k
-         oOGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXs/SdWiKjjr92NJhA/U14n1tmmHM8LQmojowo7OnxYcee4iF1rZgmcXEXDK+c+1wUAHl4AHi5AlcFOm8k=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyh540UD396NlSiKC6dV0b7ghio+FK40JIugBUuqi/hZU1F97/4
-	g8M6lQHgayCznC6u6OI8GK0569B4+vMdQJpURW5D0ZYHirsA9uH5EtmXScBSAV7gYRPVuPbwqVv
-	8RwrGtA==
-X-Google-Smtp-Source: AGHT+IGoxyiEdJHjsguM4HhfYAa3a3WGl9IwGzua+OMwKu3+3dxnKcX9NeqRP2yYPcwFhiCcHGTefjSDvqI=
-X-Received: from pjcc13.prod.google.com ([2002:a17:90b:574d:b0:33d:813f:6829])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5241:b0:329:cb75:fef2
- with SMTP id 98e67ed59e1d1-340279e5c84mr1590788a91.3.1761611825209; Mon, 27
- Oct 2025 17:37:05 -0700 (PDT)
-Date: Mon, 27 Oct 2025 17:37:03 -0700
-In-Reply-To: <55461c549803e08db97528127c29e092c597adc5.camel@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cwWsg5rh5z3fCs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 11:46:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=5ME/pVGCOy0Jb+JLf9dI2yLeDW8cBFJkPzOSFDOyz5Y=; b=qUrf3iVC/Npnl6d73w47u6Oa4R
+	zrqTPbfglbVdIPrJRfch5ExLovV2/DlgosTCty9ho+IPlLi36xdYFAMUD8O+hIokG1FBxTJBhOMxM
+	MK0agSJv17yaf4uzQizZ1VLSLosYFLhXqOH1HnXRA3UlIUYbvuZWAfOC9IAcvHxLj2e9tkPi1EAQQ
+	FLljTM38TFxZrY0t7yJcwPWrgjhW+stoRqLFC+AwOjP+jd4j+xPDV1soJFeHjKP9erbpKckHKmOw2
+	/Y94OASfDqEiNUeT9ARs7217/wGzstPuPqW55J0f3HlnblUsip1rp1ieiOuvYuKQVdBkUNbdc36pG
+	Y3DhNePQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vDXqo-00000001eUb-1HIx;
+	Tue, 28 Oct 2025 00:46:14 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org
+Subject: [PATCH v2 00/50] tree-in-dcache stuff
+Date: Tue, 28 Oct 2025 00:45:19 +0000
+Message-ID: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,112 +79,317 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-25-seanjc@google.com>
- <55461c549803e08db97528127c29e092c597adc5.camel@intel.com>
-Message-ID: <aQAQLzxyGFooGtNV@google.com>
-Subject: Re: [PATCH v3 24/25] KVM: TDX: Guard VM state transitions with "all"
- the locks
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, 
-	"maz@kernel.org" <maz@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
-	"pjw@kernel.org" <pjw@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
-	"kas@kernel.org" <kas@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, 
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, 
-	"zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>, 
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"michael.roth@amd.com" <michael.roth@amd.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, 
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, Vishal Annapurve <vannapurve@google.com>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Oct 28, 2025, Kai Huang wrote:
-> On Thu, 2025-10-16 at 17:32 -0700, Sean Christopherson wrote:
-> > @@ -2781,8 +2827,6 @@ int tdx_vm_ioctl(struct kvm *kvm, void __user *ar=
-gp)
-> > =C2=A0	if (r)
-> > =C2=A0		return r;
-> > =C2=A0
-> > -	guard(mutex)(&kvm->lock);
-> > -
-> > =C2=A0	switch (tdx_cmd.id) {
-> > =C2=A0	case KVM_TDX_CAPABILITIES:
-> > =C2=A0		r =3D tdx_get_capabilities(&tdx_cmd);
->=20
-> IIRC, this patch removes grabbing the kvm->lock in tdx_vm_ioctl() but onl=
-y
-> adds the "big hammer" to tdx_td_init() and tdx_td_finalize(), so the
-> tdx_get_capabilities() lost holding the kvm->lock.
+Some filesystems use a kinda-sorta controlled dentry refcount leak to pin
+dentries of created objects in dcache (and undo it when removing those).
+Reference is grabbed and not released, but it's not actually _stored_
+anywhere.  That works, but it's hard to follow and verify; among other
+things, we have no way to tell _which_ of the increments is intended
+to be an unpaired one.  Worse, on removal we need to decide whether
+the reference had already been dropped, which can be non-trivial if
+that removal is on umount and we need to figure out if this dentry is
+pinned due to e.g. unlink() not done.  Usually that is handled by using
+kill_litter_super() as ->kill_sb(), but there are open-coded special
+cases of the same (consider e.g. /proc/self).
 
-Ooh, yeah, nice catch, that is indeed silly and unnecessary churn.
+Things get simpler if we introduce a new dentry flag (DCACHE_PERSISTENT)
+marking those "leaked" dentries.  Having it set claims responsibility
+for +1 in refcount.
 
-> As replied earlier, I think we can just hold the "big hammer" in
-> tdx_vm_ioctl()?
+The end result this series is aiming for:
 
-Actually, I think we can have our cake and eat it too.  With this slotted i=
-n as
-a prep patch, the big hammer can land directly in tdx_vm_ioctl(), without a=
-ny
-change in functionality for KVM_TDX_CAPABILITIES.
+* get these unbalanced dget() and dput() replaced with new primitives that
+  would, in addition to adjusting refcount, set and clear persistency flag.
+* instead of having kill_litter_super() mess with removing the remaining
+  "leaked" references (e.g. for all tmpfs files that hadn't been removed
+  prior to umount), have the regular shrink_dcache_for_umount() strip
+  DCACHE_PERSISTENT of all dentries, dropping the corresponding
+  reference if it had been set.  After that kill_litter_super() becomes
+  an equivalent of kill_anon_super().
 
---
-From: Sean Christopherson <seanjc@google.com>
-Date: Mon, 27 Oct 2025 17:32:34 -0700
-Subject: [PATCH] KVM: TDX: Don't copy "cmd" back to userspace for
- KVM_TDX_CAPABILITIES
+Doing that in a single step is not feasible - it would affect too many places
+in too many filesystems.  It has to be split into a series.
 
-Don't copy the kvm_tdx_cmd structure back to userspace when handling
-KVM_TDX_CAPABILITIES, as tdx_get_capabilities() doesn't modify hw_error or
-any other fields.
+This work has really started early in 2024; quite a few preliminary pieces
+have already gone into mainline.  This chunk is finally getting to the
+meat of that stuff - infrastructure and most of the conversions to it.
 
-Opportunistically hoist the call to tdx_get_capabilities() outside of the
-kvm->lock critical section, as getting the capabilities doesn't touch the
-VM in any way, e.g. doesn't even take @kvm.
+Some pieces are still sitting in the local branches, but the bulk of
+that stuff is here.
 
-Suggested-by: Kai Huang <kai.huang@intel.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/vmx/tdx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Compared to v[1/50] 
+	* fusectl nlink leak fix
+	* selinuxfs stuff split
+	* rpc_pipe conversion added
+	* nfsctl conversion added
+	* rust_binderfs conversion added
+	* securityfs conversion added
+	* now that the last users are converted, kill_litter_super() is gone.
+	* tracefs leak fix in LOCKDOWN_TRACEFS case added.
+	* shmem_{un,}link() makes use of simple_{un,}link() rather than
+open-coding those.
+	* killed securityfs_recursive_remove() - it's an unused alias for
+securityfs_remove
+	* configfs and apparmorfs switched away from calling simple_unlink()
+and simple_rmdir(), allowing to make d_make_discardable() warn when given
+a dentry that had not been marked persistent.
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 1642da9c1fa9..43c0c3f6a8c0 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -2807,12 +2807,12 @@ int tdx_vm_ioctl(struct kvm *kvm, void __user *argp=
-)
- 	if (r)
- 		return r;
-=20
-+	if (tdx_cmd.id =3D=3D KVM_TDX_CAPABILITIES)
-+		return tdx_get_capabilities(&tdx_cmd);
-+
- 	guard(mutex)(&kvm->lock);
-=20
- 	switch (tdx_cmd.id) {
--	case KVM_TDX_CAPABILITIES:
--		r =3D tdx_get_capabilities(&tdx_cmd);
--		break;
- 	case KVM_TDX_INIT_VM:
- 		r =3D tdx_td_init(kvm, &tdx_cmd);
- 		break;
+The branch is -rc3-based; it lives in
+git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #work.persistency
+individual patches in followups.
 
-base-commit: 672537233b8da2c29dca7154bf3a3211af7f6128
---
+Please, help with review and testing; it does appear to survive the local beating,
+but extra eyes on it would be very welcome.
+
+Shortlog:
+      fuse_ctl_add_conn(): fix nlink breakage in case of early failure
+      tracefs: fix a leak in eventfs_create_events_dir()
+      new helper: simple_remove_by_name()
+      new helper: simple_done_creating()
+      introduce a flag for explicitly marking persistently pinned dentries
+      primitives for maintaining persisitency
+      convert simple_{link,unlink,rmdir,rename,fill_super}() to new primitives
+      convert ramfs and tmpfs
+      procfs: make /self and /thread_self dentries persistent
+      configfs, securityfs: kill_litter_super() not needed
+      convert xenfs
+      convert smackfs
+      convert hugetlbfs
+      convert mqueue
+      convert bpf
+      convert dlmfs
+      convert fuse_ctl
+      convert pstore
+      convert tracefs
+      convert debugfs
+      debugfs: remove duplicate checks in callers of start_creating()
+      convert efivarfs
+      convert spufs
+      convert ibmasmfs
+      ibmasmfs: get rid of ibmasmfs_dir_ops
+      convert devpts
+      binderfs: use simple_start_creating()
+      binderfs_binder_ctl_create(): kill a bogus check
+      convert binderfs
+      autofs_{rmdir,unlink}: dentry->d_fsdata->dentry == dentry there
+      convert autofs
+      convert binfmt_misc
+      selinuxfs: don't stash the dentry of /policy_capabilities
+      selinuxfs: new helper for attaching files to tree
+      convert selinuxfs
+      functionfs: switch to simple_remove_by_name()
+      convert functionfs
+      gadgetfs: switch to simple_remove_by_name()
+      convert gadgetfs
+      hypfs: don't pin dentries twice
+      hypfs: switch hypfs_create_str() to returning int
+      hypfs: swich hypfs_create_u64() to returning int
+      convert hypfs
+      convert rpc_pipefs
+      convert nfsctl
+      convert rust_binderfs
+      get rid of kill_litter_super()
+      convert securityfs
+      kill securityfs_recursive_remove()
+      d_make_discardable(): warn if given a non-persistent dentry
+
+Diffstat:
+ Documentation/filesystems/porting.rst     |   7 ++
+ arch/powerpc/platforms/cell/spufs/inode.c |  15 +--
+ arch/s390/hypfs/hypfs.h                   |   6 +-
+ arch/s390/hypfs/hypfs_diag_fs.c           |  60 ++++------
+ arch/s390/hypfs/hypfs_vm_fs.c             |  21 ++--
+ arch/s390/hypfs/inode.c                   |  82 +++++--------
+ drivers/android/binder/rust_binderfs.c    | 121 ++++++-------------
+ drivers/android/binderfs.c                |  82 +++----------
+ drivers/base/devtmpfs.c                   |   2 +-
+ drivers/misc/ibmasm/ibmasmfs.c            |  24 ++--
+ drivers/usb/gadget/function/f_fs.c        |  54 ++++-----
+ drivers/usb/gadget/legacy/inode.c         |  49 ++++----
+ drivers/xen/xenfs/super.c                 |   2 +-
+ fs/autofs/inode.c                         |   2 +-
+ fs/autofs/root.c                          |  11 +-
+ fs/binfmt_misc.c                          |  69 ++++++-----
+ fs/configfs/dir.c                         |  10 +-
+ fs/configfs/inode.c                       |   3 +-
+ fs/configfs/mount.c                       |   2 +-
+ fs/dcache.c                               | 111 +++++++++++-------
+ fs/debugfs/inode.c                        |  32 ++----
+ fs/devpts/inode.c                         |  57 ++++-----
+ fs/efivarfs/inode.c                       |   7 +-
+ fs/efivarfs/super.c                       |   5 +-
+ fs/fuse/control.c                         |  38 +++---
+ fs/hugetlbfs/inode.c                      |  12 +-
+ fs/internal.h                             |   1 -
+ fs/libfs.c                                |  52 +++++++--
+ fs/nfsd/nfsctl.c                          |  18 +--
+ fs/ocfs2/dlmfs/dlmfs.c                    |   8 +-
+ fs/proc/base.c                            |   6 +-
+ fs/proc/internal.h                        |   1 +
+ fs/proc/root.c                            |  14 +--
+ fs/proc/self.c                            |  10 +-
+ fs/proc/thread_self.c                     |  11 +-
+ fs/pstore/inode.c                         |   7 +-
+ fs/ramfs/inode.c                          |   8 +-
+ fs/super.c                                |   8 --
+ fs/tracefs/event_inode.c                  |   7 +-
+ fs/tracefs/inode.c                        |  13 +--
+ include/linux/dcache.h                    |   4 +-
+ include/linux/fs.h                        |   6 +-
+ include/linux/proc_fs.h                   |   2 -
+ include/linux/security.h                  |   2 -
+ init/do_mounts.c                          |   2 +-
+ ipc/mqueue.c                              |  12 +-
+ kernel/bpf/inode.c                        |  15 +--
+ mm/shmem.c                                |  38 ++----
+ net/sunrpc/rpc_pipe.c                     |  27 ++---
+ security/apparmor/apparmorfs.c            |  13 ++-
+ security/inode.c                          |  35 +++---
+ security/selinux/selinuxfs.c              | 185 +++++++++++++-----------------
+ security/smack/smackfs.c                  |   2 +-
+ 53 files changed, 585 insertions(+), 806 deletions(-)
+
+	Overview:
+
+First two commits are bugfixes (fusectl and tracefs resp.)
+
+[1/50] fuse_ctl_add_conn(): fix nlink breakage in case of early failure
+[2/50] tracefs: fix a leak in eventfs_create_events_dir()
+
+Next, two commits adding a couple of useful helpers, the next three adding
+the infrastructure and the rest consists of per-filesystem conversions.
+
+[3/50] new helper: simple_remove_by_name()
+[4/50] new helper: simple_done_creating()
+	end_creating_path() analogue for internal object creation; unlike
+end_creating_path() no mount is passed to it (or guaranteed to exist, for
+that matter - it might be used during the filesystem setup, before the
+superblock gets attached to any mounts).
+
+Infrastructure:
+[5/50] introduce a flag for explicitly marking persistently pinned dentries
+	* introduce the new flag
+	* teach shrink_dcache_for_umount() to handle it (i.e. remove
+and drop refcount on anything that survives to umount with that flag
+still set)
+	* teach kill_litter_super() that anything with that flag does
+*not* need to be unpinned.
+[6/50] primitives for maintaining persisitency
+	* d_make_persistent(dentry, inode) - bump refcount, mark persistent
+and make hashed positive.  Return value is a borrowed reference to dentry;
+it can be used until something removes persistency (at the very least,
+until the parent gets unlocked, but some filesystems may have stronger
+exclusion).
+	* d_make_discardable() - remove persistency mark and drop reference.
+
+NOTE: at that stage d_make_discardable() does not reject dentries not
+marked persistent - it acts as if the mark been set.
+
+Rationale: less noise in series splitup that way.  We want (and on the
+next commit will get) simple_unlink() to do the right thing - remove
+persistency, if it's there.  However, it's used by many filesystems.
+We would have either to convert them all at once or split simple_unlink()
+into "want persistent" and "don't want persistent" versions, the latter
+being the old one.  In the course of the series almost all callers
+would migrate to the replacement, leaving only two pathological cases
+with the old one.  The same goes for simple_rmdir() (two callers left in
+the end), simple_recursive_removal() (all callers gone in the end), etc.
+That's a lot of noise and it's easier to start with d_make_discardable()
+quietly accepting non-persistent dentries, then, in the end, add private
+copies of simple_unlink() and simple_rmdir() for two weird users (configfs
+and apparmorfs) and have those use dput() instead of d_make_discardable().
+At that point we'd be left with all callers of d_make_discardable()
+always passing persistent dentries, allowing to add a warning in it.
+
+[7/50] convert simple_{link,unlink,rmdir,rename,fill_super}() to new primitives
+	See above re quietly accepting non-peristent dentries in
+simple_unlink(), simple_rmdir(), etc.
+
+	Converting filesystems:
+[8/50] convert ramfs and tmpfs
+[9/50] procfs: make /self and /thread_self dentries persistent
+[10/50] configfs, securityfs: kill_litter_super() not needed
+[11/50] convert xenfs
+[12/50] convert smackfs
+[13/50] convert hugetlbfs
+[14/50] convert mqueue
+[15/50] convert bpf
+[16/50] convert dlmfs
+[17/50] convert fuse_ctl
+[18/50] convert pstore
+[19/50] convert tracefs
+[20/50] convert debugfs
+[21/50] debugfs: remove duplicate checks in callers of start_creating()
+[22/50] convert efivarfs
+[23/50] convert spufs
+[24/50] convert ibmasmfs
+[25/50] ibmasmfs: get rid of ibmasmfs_dir_ops
+[26/50] convert devpts
+[27/50] binderfs: use simple_start_creating()
+[28/50] binderfs_binder_ctl_create(): kill a bogus check
+[29/50] convert binderfs
+[30/50] autofs_{rmdir,unlink}: dentry->d_fsdata->dentry == dentry there
+[31/50] convert autofs
+[32/50] convert binfmt_misc
+[33/50] selinuxfs: don't stash the dentry of /policy_capabilities
+[34/50] selinuxfs: new helper for attaching files to tree
+[35/50] convert selinuxfs
+[36/50] functionfs: switch to simple_remove_by_name()
+[37/50] convert functionfs
+[38/50] gadgetfs: switch to simple_remove_by_name()
+[39/50] convert gadgetfs
+[40/50] hypfs: don't pin dentries twice
+[41/50] hypfs: switch hypfs_create_str() to returning int
+[42/50] hypfs: swich hypfs_create_u64() to returning int
+[43/50] convert hypfs
+[44/50] convert rpc_pipefs
+[45/50] convert nfsctl
+[46/50] convert rust_binderfs
+
+	... and no kill_litter_super() callers remain, so we
+can take it out:
+[47/50] get rid of kill_litter_super()
+	
+	Followups:
+[48/50] convert securityfs
+	That was the last remaining user of simple_recursive_removal()
+that did *not* mark things persistent.  Now the only places where
+d_make_discardable() is still called for dentries that are not marked
+persistent are the calls of simple_{unlink,rmdir}() in configfs and
+apparmorfs.
+
+[49/50] kill securityfs_recursive_remove()
+	Unused macro...
+
+[50/50] d_make_discardable(): warn if given a non-persistent dentry
+
+At this point there are very few call chains that might lead to
+d_make_discardable() on a dentry that hadn't been made persistent:
+calls of simple_unlink() and simple_rmdir() in configfs and
+apparmorfs.
+
+Both filesystems do pin (part of) their contents in dcache, but
+they are currently playing very unusual games with that.  Converting
+them to more usual patterns might be possible, but it's definitely
+going to be a long series of changes in both cases.
+
+For now the easiest solution is to have both stop using simple_unlink()
+and simple_rmdir() - that allows to make d_make_discardable() warn
+when given a non-persistent dentry.
+
+Rather than giving them full-blown private copies (with calls of
+d_make_discardable() replaced with dput()), let's pull the parts of
+simple_unlink() and simple_rmdir() that deal with timestamps and link
+counts into separate helpers (__simple_unlink() and __simple_rmdir()
+resp.) and have those used by configfs and apparmorfs.
+
+-- 
+2.47.3
+
 
