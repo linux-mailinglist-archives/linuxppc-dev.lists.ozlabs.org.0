@@ -1,76 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-13527-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13528-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33447C1C1B1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 17:34:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E659CC1C1BD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 17:34:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cxXr35r1Bz3dKb;
-	Thu, 30 Oct 2025 03:33:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cxXr62nBdz3d44;
+	Thu, 30 Oct 2025 03:33:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::631"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761755635;
-	cv=none; b=M+ydzWhpPiVHpDnGwvMBVHQiJtKromY/PEVC8vuDHC4MYxJvilehNmJm/yuh8f2RKwy6HzD+UdCUpBByLeaLdtLVyWbAyBPcBelEBvTCNgbsvXKOWKXhCEZrEcapu+HTb/M6aC4HZm8zm/IajrXTlwDgyBi0f20WM/+32Y7Uz+PRr5uIc0e4FCcCrpPTTc0TMlnVlX8V2dhWrwo6M58Ug5ovqbJrB6+ccKVyL9x9XGPx/q/7+GKR+Gw76QF4XrwwIeL2pqtvnxMbfjqhzQRnT8iPuRI+VybrMHq71xVuQdhEc4pzs0zdBNNb3vlXpua9P93l7uizDj3xBuEA+HAE5A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761755638;
+	cv=none; b=oNHXPLvLJ2h/0rKz5x6jIUKQipAVIxBSx2rXoTCH6YVaWZpSMWWqX2TNYH+vpGPC4UZg/LP+YdOkLJbvsQHDkl1whsTgtRDt924xRiwEWA1HT+3x2JU4CByDhVllDwJ33xWN/iOpx3f5WKUjdT4mKzAICTzM5Gvf9fcCW89kDYN1b9HAOXfEvQmla80NYdKpAsjXY27r82sTgZitvd6b2GGSRqnhQ6dRR/8Htl3mVdWt/M/IeYis2ca1FjOPO8OisEdySTDl+BlPdtQBi6m0VkkveyYXiTFSASZlqfLjIBNHeKuFYytGILdfUDZypYD9S7yVd+JuCHgjVDGPdS+aVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761755635; c=relaxed/relaxed;
-	bh=U3ZWzIw+tzavBMOmDgztL9+WJKK3w3KSDq6YVOazGFI=;
+	t=1761755638; c=relaxed/relaxed;
+	bh=D7niwucTDN3MnvT2f7z1+zCVDCBNmgQwG7r5182Kk6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Psq6om/7t4kDGuLPrUPxaHIdJ68mfdbkPwbQefjpmRnbIwHj186/3LdnvAVTckfAzHEAykxDGAtY7PoeJguQiOJzniL4LAjN7sO3MjBo6To5ojO5QM10o1tEG6I+DImdXLD2TPrA0vHRPRMyASZjM/DRKIlvpgZnKlWasLY4s5iUxikdeta7mvd6NWRJGGBATlnoU1oic5c/wdGGdPb7debbCN6YYm+F3g6PYXxnhpHV7at51TkL1lu8pdsvIii2Bz63biC00445H4diiI93BBIq+oTBeWsnhwQtx5c+Ru1jIyozYcJytwA4iXuqzshk+cIDkyjJObDNImq9PJ+y3Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gJrRbGY/; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=i5r7CJ9yGGJrhUGBex69M4J4TjgP61HKRmks8o8YYNcT29ghh1OIEXlOYNaf6+GuTy77+uTLzxJnbeuDS6Tq+3OoqbPoFHMNIINKGu5+40yRkKXoq/72P+DsROeNrYTr0BISk1Y+9xpuq75qW00Cg6A9J6KIHcW0xtHrQDk4Zr85OTp471+WbbaNHAkUMdNgk6gLXMRgdMoZb6qGj9Sp+WdxHXyMYkMNA6ESgS+A9AsuYO9h2HV+VTERNFRyJMD0ZyOK0p7tx2vBESs/csIqEqcrNkgWophMg5wCkNu+WEQPNx8FcT4gr5urmm3TMdRPT83pPrUs754QAO8RHut8ww==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KVYF/0rv; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62d; helo=mail-ej1-x62d.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gJrRbGY/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KVYF/0rv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62d; helo=mail-ej1-x62d.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cxXr25wcgz302b
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 03:33:54 +1100 (AEDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-b5b823b4f3dso9764766b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 09:33:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cxXr52wQPz302b
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 03:33:57 +1100 (AEDT)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-b6d345d7ff7so257422766b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 09:33:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761755632; x=1762360432; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1761755634; x=1762360434; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=U3ZWzIw+tzavBMOmDgztL9+WJKK3w3KSDq6YVOazGFI=;
-        b=gJrRbGY/8E/UHZfY66tQ53t8vnrhz6sKnSWZEsLrepzW8cdt79p0dTMQ8K8aniCfkl
-         hsbD8BPigjI5Q5RMua88fu/A5UISZtr43mWEdGEs/G7ERyNyaxksjMtGGciIRKHyPZ9P
-         iTdrvXtk1uHga+qlDtCKnotW48TuiSIocz+8vOtLE+BGl4r1/H8abcDrpLWyLiDYFWxA
-         Lc92f+IOrDruw+k8PFCdHBiHbFomCTHpxX06lVMHwxgCXr3Rr7L9kEsZdifjkKs7Cl7B
-         zeN4UD+I+bxagrns6Sl4kV4L8IMjSk3wcrkqFLvY8UTp72524DWJDFXVOgUSx4wWVpre
-         zG+Q==
+        bh=D7niwucTDN3MnvT2f7z1+zCVDCBNmgQwG7r5182Kk6g=;
+        b=KVYF/0rvjcZyJUPgCt0Qboml4tbF+YNOlXeHAANcNT5N7KPrR+XS6ybB+XmHkLyP+2
+         FY9TDzSsOuQSp/zC6f14kbok5uSO6YFVOFK+fzj30VFHB6AWUkzxSzP5Q4WjeNVLkn2w
+         fIdD8OSyogENmvxtiIPVFzgydJXKDsH0VmqC6CMsBiWu7V5jWp2PrEGuj8kEt2Vbei2O
+         4YUeERBSbzGxc+yhGDss2McYCtPnnXoIiAmRkJpZtSJkbfusIsWBWh19aY4Tws6Npufh
+         Mp/2YcV8xj4pkQRXkBXsROUJY6E2MPILkUC2W/fsiEX+jqnqbABN/yy7B9eJvjQqVBaP
+         j8Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761755632; x=1762360432;
+        d=1e100.net; s=20230601; t=1761755634; x=1762360434;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=U3ZWzIw+tzavBMOmDgztL9+WJKK3w3KSDq6YVOazGFI=;
-        b=i53/xB4mlSKVDQNB1advGYGcFqzyTCwDkn3afnn3DxBABbYj3NOYnvlDxi6xBy2nlf
-         MXBaRgAe3rfES+Uegj6x7hCg1E29zydGewLoTax5oB079EaBmxuNshTMHCCfulPAaNrp
-         UuntTkXUc5wep4RJDE3V0OQ3EmaosTCbKkGLtg3uFHIOm5ZWbIjI6qmx6V8l1g98BCSG
-         WiIQBptgo0ZS/Uwsxd+s4m/YSMxGjUX+ElqsggbSFu4kbOwwF7Br3a6Z1hMOq50FBUmq
-         RdW5GOYAG+kZWg6NWi1j52bn0Bk74dyE9x7M0788HKfZ8eUHiRomMJQ+oZrPCbKNdO7/
-         MkGA==
-X-Forwarded-Encrypted: i=1; AJvYcCWwRsL0QBORgEKiHUB470PzB8vO8Lvl/6bS8bHaRgxQ2FG35rPHvjZ51d+qUqSHognE0Ay0kRvcrjcYt+8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyPYa+pPLjd03Morfv2PCfXfFC8SFnkQ04Y8T51nLtGzt7Dxs1M
-	oV3NCoLSL04DwGUmw4kI5mH4TLoh9UxuIc2hz8ahmKDyoxEJy6POY1lG
-X-Gm-Gg: ASbGncuYqas69Ak/AYJisCSJcpLWAZjiLmeNtIliVCmp5RbIbuaKw9ycmegK8t0gpBV
-	+0fhHkZbOv6/vYFjPsuovMsZ9zhce/0LVdDKgKBK9XMAOrcfuXfmkEZtLW+RgVc5uyB2wrDms0A
-	UBFK6lIMrHFtBA0cZtjdNemnQqYoUrTrpT/xGRZusOm65IImi1EYFXu9Wu5HLiJ28Ki7uJseP3A
-	pIept8DYPeYG3SR9rh7qb+tKRmHNbQceQdePTIIug7/zmeuW4SwxJKsMX+2RQqi5LlYXwtSNfet
-	SbPC5nglkM5PeO5Yrs6kGDp2hhwBaqp5w5wJUWBdKvZ7qz/jvQYOLZmkHwkF9UC7QUsgsBtjPSU
-	uolJlOHqA3No6RuVo2ssvqWssho0zLco1GEhRrd5Hat66X5miXQiZfcojgWgnypQJscKzUJnyHK
-	jkQfimOL3sE4PvapBC9dPqoWPkg44Em/bEXXzZBgqd+2/4rvUhd8FDiid8/oCDeEPoEBR3
-X-Google-Smtp-Source: AGHT+IHRieiPBGU6MC5P5jZHI6G/6PD4P6RVg3Iggx9u+yanu4koYZOv2T4MUr84z07ifr1PiVwzxA==
-X-Received: by 2002:a17:907:3da4:b0:b6d:8da0:9a24 with SMTP id a640c23a62f3a-b703d2dc3fcmr322653366b.9.1761755631652;
-        Wed, 29 Oct 2025 09:33:51 -0700 (PDT)
+        bh=D7niwucTDN3MnvT2f7z1+zCVDCBNmgQwG7r5182Kk6g=;
+        b=HSIzDnQqaYivpFLuvPDgBTP3FonOpj78McySv7FxXElV4LHfdtdvzGu5SB2AURcjOj
+         8CYfEicp41EgQwORpU44SpTCi7kYCRw2+79M+OU9Iavo6hNUEUiS8sgisl4FPEZDXsaN
+         Z2Omh575c2LU/+w+C2880loKqJWL+DdRR9r+xSSfTkXU+kuUJrz/uHnA6Bk3DQ2Xz8B9
+         mtWpMwA6OUFQdbcGqKbPLFIO1UWUJZP3AAJ4a3zNAFXiZOt3MVN7Xu+SkXFy1RM2UpAf
+         lw1dPOmrJRwK+kZSuNLn1dmrxwtuz+6vfo4mmEo7FcngxxspFAmvrXVJxZzD2s2Haq7V
+         2Z0A==
+X-Forwarded-Encrypted: i=1; AJvYcCU1zXDBgCcAzUU1p+qSG8cO9QisXrR6wrQ7ifgj8cLaaYVGdVnJASy+Cjbqci+uP+8ybPX8cE6JT1wVJsM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyxmvhXRWYyu0YQx/FDEcH5fdaLj5p3f2LaMRtzlgUwGVktj4hH
+	bPGVr2qu+ctzQvFajDfaVFm6VKOJ5kPWENjtWoW0iL0tGRVqIJ9jgEjN
+X-Gm-Gg: ASbGnct0evDPY9e3mJm2f1fiPJix3+W5mfUyFymwfLvAvYIvpNpoqPdCMs0Eqa3v8Z9
+	smWrAKfkHntiu0WY62VYH9HeRyXXht/wEzvpl4CvtSvIYqyklbeRrFiZh7MiEuWNSAGUwJtPJFT
+	z2VmHOTvjXUr3AqFmmCbQ9e7/kBAljnnN2dIhduHXezyq7O8SuDzL2CMT4WbZwlQ9aLPjHDh2cN
+	OyWQGOAv83LBtvkGjDfJGIlVN8JJ80+JzcgWjS/Iw/H68HXtdiPxHjiDtVdl+oVJ0C5+h2iHikG
+	phdUeQsKEdLloLoXdMgKENHbjg83mxCpCKXGHYI6dZ5bKgXZrkLWk/CHzhYFiDcO9vh2mYzH1sC
+	Kdrg/Hd0BdDj8L9TGM0p34jk0Fm948I/xk+K7p/izArxmSHvP19Tj32AsBX+5M/vwsawkf/XBIr
+	fwRvvzBmD2ZlXSd2auF3hzU3Km+hP/I9ldZBdE3ouY5pqts1vGNrRiXRytKrI2LyHYUeJx
+X-Google-Smtp-Source: AGHT+IGxst0GGPbE3zlpzuYvmZD7MtT+fgNns/2gbspQBUcAcExwpAJ9gNyBIh9hmr+9IwgchPtgzg==
+X-Received: by 2002:a17:906:6a21:b0:b3f:f6d:1d9e with SMTP id a640c23a62f3a-b7051f278acmr28890666b.6.1761755633985;
+        Wed, 29 Oct 2025 09:33:53 -0700 (PDT)
 Received: from localhost (p200300e41f274600f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f27:4600:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b6da1e2226fsm1067814666b.20.2025.10.29.09.33.50
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b6d853696a3sm1468789266b.27.2025.10.29.09.33.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 09:33:50 -0700 (PDT)
+        Wed, 29 Oct 2025 09:33:52 -0700 (PDT)
 From: Thierry Reding <thierry.reding@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>
@@ -84,9 +84,9 @@ Cc: x86@kernel.org,
 	linux-pci@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 4/7] clk: ingenic: tcu: Use contextual data instead of global variable
-Date: Wed, 29 Oct 2025 17:33:33 +0100
-Message-ID: <20251029163336.2785270-5-thierry.reding@gmail.com>
+Subject: [PATCH v3 5/7] clk: mvebu: Use contextual data instead of global variable
+Date: Wed, 29 Oct 2025 17:33:34 +0100
+Message-ID: <20251029163336.2785270-6-thierry.reding@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251029163336.2785270-1-thierry.reding@gmail.com>
 References: <20251029163336.2785270-1-thierry.reding@gmail.com>
@@ -119,111 +119,77 @@ Signed-off-by: Thierry Reding <treding@nvidia.com>
 Changes in v3:
 - adjust for API changes and update commit message
 
- drivers/clk/ingenic/tcu.c | 63 +++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 33 deletions(-)
+ drivers/clk/mvebu/common.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/ingenic/tcu.c b/drivers/clk/ingenic/tcu.c
-index bc6a51da2072..8c6337d8e831 100644
---- a/drivers/clk/ingenic/tcu.c
-+++ b/drivers/clk/ingenic/tcu.c
-@@ -53,9 +53,9 @@ struct ingenic_tcu {
- 	struct clk *clk;
+diff --git a/drivers/clk/mvebu/common.c b/drivers/clk/mvebu/common.c
+index 5adbbd91a6db..8797de93472c 100644
+--- a/drivers/clk/mvebu/common.c
++++ b/drivers/clk/mvebu/common.c
+@@ -189,6 +189,7 @@ void __init mvebu_coreclk_setup(struct device_node *np,
+ DEFINE_SPINLOCK(ctrl_gating_lock);
  
- 	struct clk_hw_onecell_data *clocks;
--};
- 
--static struct ingenic_tcu *ingenic_tcu;
+ struct clk_gating_ctrl {
 +	struct syscore syscore;
-+};
- 
- static inline struct ingenic_tcu_clk *to_tcu_clk(struct clk_hw *hw)
- {
-@@ -332,6 +332,29 @@ static const struct of_device_id __maybe_unused ingenic_tcu_of_match[] __initcon
- 	{ /* sentinel */ }
+ 	spinlock_t *lock;
+ 	struct clk **gates;
+ 	int num_gates;
+@@ -196,11 +197,10 @@ struct clk_gating_ctrl {
+ 	u32 saved_reg;
  };
  
-+static int __maybe_unused tcu_pm_suspend(void *data)
-+{
-+	struct ingenic_tcu *tcu = data;
-+
-+	if (tcu->clk)
-+		clk_disable(tcu->clk);
-+
-+	return 0;
-+}
-+
-+static void __maybe_unused tcu_pm_resume(void *data)
-+{
-+	struct ingenic_tcu *tcu = data;
-+
-+	if (tcu->clk)
-+		clk_enable(tcu->clk);
-+}
-+
-+static const struct syscore_ops tcu_pm_ops __maybe_unused = {
-+	.suspend = tcu_pm_suspend,
-+	.resume = tcu_pm_resume,
-+};
-+
- static int __init ingenic_tcu_probe(struct device_node *np)
+-static struct clk_gating_ctrl *ctrl;
+-
+ static struct clk *clk_gating_get_src(
+ 	struct of_phandle_args *clkspec, void *data)
  {
- 	const struct of_device_id *id = of_match_node(ingenic_tcu_of_match, np);
-@@ -430,7 +453,11 @@ static int __init ingenic_tcu_probe(struct device_node *np)
- 		goto err_unregister_ost_clock;
- 	}
++	struct clk_gating_ctrl *ctrl = data;
+ 	int n;
  
--	ingenic_tcu = tcu;
-+	if (IS_ENABLED(CONFIG_PM_SLEEP)) {
-+		tcu->syscore.ops = &tcu_pm_ops;
-+		tcu->syscore.data = tcu;
-+		register_syscore(&tcu->syscore);
-+	}
+ 	if (clkspec->args_count < 1)
+@@ -217,12 +217,16 @@ static struct clk *clk_gating_get_src(
  
+ static int mvebu_clk_gating_suspend(void *data)
+ {
++	struct clk_gating_ctrl *ctrl = data;
++
+ 	ctrl->saved_reg = readl(ctrl->base);
  	return 0;
- 
-@@ -455,42 +482,12 @@ static int __init ingenic_tcu_probe(struct device_node *np)
- 	return ret;
  }
  
--static int __maybe_unused tcu_pm_suspend(void *data)
--{
--	struct ingenic_tcu *tcu = ingenic_tcu;
--
--	if (tcu->clk)
--		clk_disable(tcu->clk);
--
--	return 0;
--}
--
--static void __maybe_unused tcu_pm_resume(void *data)
--{
--	struct ingenic_tcu *tcu = ingenic_tcu;
--
--	if (tcu->clk)
--		clk_enable(tcu->clk);
--}
--
--static const struct syscore_ops __maybe_unused tcu_pm_ops = {
--	.suspend = tcu_pm_suspend,
--	.resume = tcu_pm_resume,
--};
--
--static struct syscore __maybe_unused tcu_pm = {
--	.ops = &tcu_pm_ops,
--};
--
- static void __init ingenic_tcu_init(struct device_node *np)
+ static void mvebu_clk_gating_resume(void *data)
  {
- 	int ret = ingenic_tcu_probe(np);
- 
- 	if (ret)
- 		pr_crit("Failed to initialize TCU clocks: %d\n", ret);
--
--	if (IS_ENABLED(CONFIG_PM_SLEEP))
--		register_syscore(&tcu_pm);
++	struct clk_gating_ctrl *ctrl = data;
++
+ 	writel(ctrl->saved_reg, ctrl->base);
  }
  
- CLK_OF_DECLARE_DRIVER(jz4740_cgu, "ingenic,jz4740-tcu", ingenic_tcu_init);
+@@ -231,13 +235,10 @@ static const struct syscore_ops clk_gate_syscore_ops = {
+ 	.resume = mvebu_clk_gating_resume,
+ };
+ 
+-static struct syscore clk_gate_syscore = {
+-	.ops = &clk_gate_syscore_ops,
+-};
+-
+ void __init mvebu_clk_gating_setup(struct device_node *np,
+ 				   const struct clk_gating_soc_desc *desc)
+ {
++	static struct clk_gating_ctrl *ctrl;
+ 	struct clk *clk;
+ 	void __iomem *base;
+ 	const char *default_parent = NULL;
+@@ -288,7 +289,9 @@ void __init mvebu_clk_gating_setup(struct device_node *np,
+ 
+ 	of_clk_add_provider(np, clk_gating_get_src, ctrl);
+ 
+-	register_syscore(&clk_gate_syscore);
++	ctrl->syscore.ops = &clk_gate_syscore_ops;
++	ctrl->syscore.data = ctrl;
++	register_syscore(&ctrl->syscore);
+ 
+ 	return;
+ gates_out:
 -- 
 2.51.0
 
