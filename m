@@ -1,77 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-13521-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13522-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D45C1BA2B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 16:26:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FE4C1BE02
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 16:59:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cxWKh162Nz302l;
-	Thu, 30 Oct 2025 02:26:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cxX475tLkz302l;
+	Thu, 30 Oct 2025 02:59:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:f440:8:8::2"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761751560;
-	cv=none; b=Rx1Re/10ilkEdYihfmnTEgF9JbnV006wmcbc3XS0BuoAVbM3xGwgcR1lez/nF6wTBn25lEJHGBIv72EGEsiu6YTUOSWPTkYxpmp3V9mdutXuoNtxv81/xVr5ng3fFZu9q6eVXXGe1h46lKfK95nqvjgZFXEk26mTM6LRu23doYUzP9oxOWvskvEHBbp2OgEbjVM1uD+J4fQaP2U2dTFZYcGGMVKtD41J7bbSS+41J3Tm3imI/fg1yWxTFchwL1qw2yWCzJgndqiTqtlQkRCjCrT85VzgGDbLB/7hF30Yesb2UPOFbxqxVbnav27BvxnT5Gl7aZAdtrBdO3IAsOWH6g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761753559;
+	cv=none; b=ksOoxFEdOZH28jg/D1dEb4rcoSzBSGAosrO5ZSRLC4qO9MQJ2l7pRSf9AekKtzPXE8jz+P/6VXKqNEgMuNsiwn4E1w38HF34a47ANlcqiRwuK80N4Eoz0H4Auhfc80/I3OXgl5k2AuWi5mmGBsZmjuDo0lygPbUCENAW9hi9Pz1mu+T+tDkPPFSKdDcUcYay/KOzoe3tE1096mAO9K1z4p/fzXEb3Rc2LTnwQVndba9Atxvo/6TtREmPnf5QA3gQ0N8p4yX9+B8ih3Wv0+cziDKtOH5YdFtpmRILiBIK07qQfb//TnfxmOO5LND8YK70V2ACWxkPoPUQLF+lGLQnpQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761751560; c=relaxed/relaxed;
-	bh=n6qKJbKuHYSk8HgjepchHn9EgAwiaNMDM1wLPj3sTFo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fJm0++NCb6peu6FKROV1tOXzrLNBCnzu/snp5+0tZu0snpJWPcretddaxatSA6tGL++3yJKok0NRt31kD7yVofKyHWXwTdomXDcSHU2agjtNsfhhi6ykgO+LWxnKXVi8D08OFefmyPK4jfS5C0zAvalhAeSHXg0yvXZjNsJ5ZwSzk9HxwBzXoVk5JspcyHg9OmkYaaxr13Yvb+PmOJRKQQFc/nk3EGZhP5WTt/nmrTrW+NkZ+UNmvKUmpFjoZ/+6N8Dbu5c4GGiQU5E0txm77Nvyw201tpWxHnWVOxx+E2bh2qjvn4X9bbvEOVYGABpJc5iC0DCzr9gNhzQrLj6j6Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=AKrVdB+L; dkim-atps=neutral; spf=pass (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org) smtp.mailfrom=hansenpartnership.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+	t=1761753559; c=relaxed/relaxed;
+	bh=/QeIHNVWmN0pcZJMKm+iE4aLL5VpDsjx0t3eR0zvEzU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=oe0HwCp7Msdh/eFdyTY40N0DsPW2MPTg0OngqMxGzEHi3xGL05wb13egzvpOem0ZniemRkngK0U8bLqZhyTO0TPPpTOqhRjrELRgLmBwgcyiEBCtTdFIDf71hxoHGn5dwPOqYQjKuy9HknN4PYRbXtPOl9YKfyRfFmspbpDofv5d+7U3qPKTVwMrop4BvoZwYq8ASLOV8W0acNlwMLUwFaojU2guKNPuN7jC9pnqlDqQO/9krkoh85u6/bpdlpXYqnHfvniH0GpA969+DQBApsyMoRovCeaP/xdOb8ye2eubFsYR0H7bAd6WRLfIlV8k5BYjx78pppESkFpYjUS9tg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=goUpW2lp; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=AKrVdB+L;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=goUpW2lp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hansenpartnership.com (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org)
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [IPv6:2604:f440:8:8::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cxWKd1G7cz2yD5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 02:25:55 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1761751551;
-	bh=IvEixQumTxnRX9aSpywag7pfHqtg6+Oey+PcXbpcqS8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=AKrVdB+LCGcRlcbz+lLJNGFTrhKCcSbmArsPEfxfeuvv01sKe1gAYtMfTJicge48b
-	 Um8sArH3CypcxXnxAXkedfVeVZYqufgWoe3bYpt7L3tOObDqgUF62OuKSbM3kM8uGQ
-	 81aKzSrAIpxWM1GcOjH0zUN9Gc7Y0TU9ctmMc788=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 4C7D21C02FB;
-	Wed, 29 Oct 2025 11:25:51 -0400 (EDT)
-Message-ID: <9f2217dc2cd3fa5975c38d874a32bb7f4c5414c9.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2 06/50] primitives for maintaining persisitency
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
- brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
- neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
- linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
- rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-  paul@paul-moore.com, casey@schaufler-ca.com,
- linuxppc-dev@lists.ozlabs.org,  john.johansen@canonical.com,
- selinux@vger.kernel.org, borntraeger@linux.ibm.com,  bpf@vger.kernel.org
-Date: Wed, 29 Oct 2025 11:25:50 -0400
-In-Reply-To: <20251029051052.GR2441659@ZenIV>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
-	 <20251028004614.393374-7-viro@zeniv.linux.org.uk>
-	 <6d69842d102a496a9729924358c0267f00b170f3.camel@HansenPartnership.com>
-	 <20251029051052.GR2441659@ZenIV>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cxX463Mxbz2yjm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 02:59:18 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C7873621B7;
+	Wed, 29 Oct 2025 15:59:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4DBC4CEF8;
+	Wed, 29 Oct 2025 15:59:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761753555;
+	bh=BgmmyeX0qvCVjapAnPnDG8LNCQFeWgDwHiQBafyqKGg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=goUpW2lplrswAiJGRTPiqFN91fyucf0gHLsVwamQ0ELnE4mqXBXzIlJgT29sWRzlq
+	 efPIs8A8+Il3KnlWxUGe/vbTM0ftb1HLNXXXPKhqAethTLOVjsXcdSz7RfSDajG7Pg
+	 rK9aBW9LY6DfI6ikoEZAcJL3vZjoB+tFfzX6rMAyc1v7MbsgHoQ6FyFujhfcL3mZ0q
+	 upG+SaliKlySMKLjUsCIzlaJP5JtBSvXyzAp7WVUfI6a0Ubl+uOQE0itPBlbrOBsux
+	 rfuIcHHpttl3oMcYKplNe9VLuY9ImAaS4V31kSwURTUYwPMqcjv8BOhvD5xjHbe6c1
+	 Rrvya6CLl+uNg==
+Date: Wed, 29 Oct 2025 10:59:13 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Cc: Johan Hovold <johan@kernel.org>, linux-pci@vger.kernel.org,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Naoki FUKAUMI <naoki@radxa.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Diederik de Haas <diederik@cknow-tech.com>,
+	Dragan Simic <dsimic@manjaro.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>, Frank Li <Frank.li@nxp.com>,
+	"R.T.Dickinson" <rtd2@xtra.co.nz>,
+	mad skateman <madskateman@gmail.com>, hypexed@yahoo.com.au,
+	Christian Zigotzky <info@xenosoft.de>
+Subject: Re: [PATCH] PCI/ASPM: Enable only L0s and L1 for devicetree platforms
+Message-ID: <20251029155913.GA1563823@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,66 +73,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <D6280EFB-08D7-41EC-BAC6-FD7793A98A16@xenosoft.de>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 2025-10-29 at 05:10 +0000, Al Viro wrote:
-> On Tue, Oct 28, 2025 at 08:38:00AM -0400, James Bottomley wrote:
-> > On Tue, 2025-10-28 at 00:45 +0000, Al Viro wrote:
-> > [...]
-> > > +void d_make_discardable(struct dentry *dentry)
-> > > +{
-> > > +	spin_lock(&dentry->d_lock);
-> > > +	dentry->d_flags &=3D ~DCACHE_PERSISTENT;
-> > > +	dentry->d_lockref.count--;
-> > > +	rcu_read_lock();
-> > > +	finish_dput(dentry);
-> > > +}
-> > > +EXPORT_SYMBOL(d_make_discardable);
-> >=20
-> > I was going to ask why you don't have a WARN_ON if the dentry is
-> > not
-> > persistent here.=C2=A0 Fortunately I read the next patch which gives th=
-e
-> > explanation and saw that you do do this in patch 50.=C2=A0 For those of
-> > us
-> > who have a very linear way of reading and responding to patches, it
-> > would have been helpful to put a comment at the top saying
-> > something
-> > like persistency will be checked when all callers are converted,
-> > which
-> > you can replace in patch 50.
->=20
-> Point...=C2=A0 How about
-> void d_make_discardable(struct dentry *dentry)
-> {
-> 	spin_lock(&dentry->d_lock);
-> 	/*
-> 	 * By the end of the series we'll add=20
-> 	 * WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT);
-> 	 * here, but while object removal is done by a few common
-> helpers,
-> 	 * object creation tends to be open-coded (if nothing else,
-> new inode
-> 	 * needs to be set up), so adding a warning from the very
-> beginning=20
-> 	 * would make for much messier patch series.=C2=A0=20
-> 	 */
-> 	dentry->d_flags &=3D ~DCACHE_PERSISTENT;
-> 	dentry->d_lockref.count--;
-> 	rcu_read_lock();=C2=A0=20
-> 	finish_dput(dentry);
-> }
->=20
-> at that point of the series, with comment replaced with WARN_ON() in
-> #50?
+On Wed, Oct 29, 2025 at 06:47:19AM +0100, Christian Zigotzky wrote:
+> > On 29 October 2025 at 00:33 am, Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > ﻿On Mon, Oct 27, 2025 at 06:12:24PM +0100, Christian Zigotzky wrote:
+> >> Hi All,
+> >> 
+> >> I activated CONFIG_PCIEASPM and CONFIG_PCIEASPM_DEFAULT again for the RC3 of
+> >> kernel 6.18. Unfortunately my AMD Radeon HD6870 doesn't work with the latest
+> >> patches.
+> >> 
+> >> But that doesn't matter because we disable the above kernel options by
+> >> default. We don't need power management for PCI Express because of boot
+> >> issues and performance issues.
+>  
+> > If you have a chance, could you try the patch below on top of
+> > v6.18-rc3 with CONFIG_PCIEASPM=y?
+> > 
+> > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> > index 214ed060ca1b..2b6d4e0958aa 100644
+> > --- a/drivers/pci/quirks.c
+> > +++ b/drivers/pci/quirks.c
+> > @@ -2524,6 +2524,7 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
+> >  * disable both L0s and L1 for now to be safe.
+> >  */
+> > DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
+> > +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_FREESCALE, 0x0451, quirk_disable_aspm_l0s_l1);
+> > 
+> > /*
+> >  * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
+> 
+> Thanks for the patch. 
+> 
+> I will test it on my FSL Cyrus+ board over the weekend.
+> BTW, I also tested my PASemi Nemo board with the RC3 of kernel 6.18
+> and with power management for PCI Express enabled. Unfortunately,
+> the installed AMD Radeon HD5870 does not work with power management
+> for PCI Express enabled either.
 
-Ack.  Works for me.
+Can you share the output of "sudo lspci -vv" and the dmesg log for
+this Nemo board that doesn't work with v6.18-rc3?  I would still guess
+that Nemo root port has an issue rather than the HD5870.
 
-Regards,
+Hypexed reported that "pasemi,nemo PA6T 0x900102 A-EON Amigaone X1000"
+worked fine on 0739473694c4, which was just before v6.18-rc1.  That
+system has:
 
-James
+  pci 0000:00:10.0: [1959:a002] type 01 class 0x060400 PCIe Root Port
+  pci 0000:00:10.0: PCI bridge to [bus 01]
+  pci 0000:01:00.0: [1002:6610] type 00 class 0x030000 PCIe Legacy Endpoint
+  pci 0000:01:00.0: ASPM: DT platform, enabling L0s-up L0s-dw L1 ASPM-L1.1 ASPM-L1.2 PCI-PM-L1.1 PCI-PM-L1.2
 
+which is a [1959:a002] PA Semi PWRficient PCI-Express Root Port
+leading to [1002:6610] AMD Oland XT [Radeon HD 8670 / R5 340X OEM / R7
+250/350/350X OEM], and we tried to enable all ASPM states.
+
+Bjorn
 
