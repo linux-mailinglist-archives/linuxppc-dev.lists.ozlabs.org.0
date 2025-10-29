@@ -1,58 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-13540-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13541-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6078C1CC55
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 19:26:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BD0C1CD9C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 19:58:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cxbKk33Bkz2yjm;
-	Thu, 30 Oct 2025 05:26:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cxc2P4JXXz2yrm;
+	Thu, 30 Oct 2025 05:58:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761762378;
-	cv=none; b=MylhAIMKHSApbFPYLnn9oH6RVOR7mfqSsJHKaS7qCGmHMS05mp62N3sWgLskO3wT6c7dNoyoMNai3JYcL5EYsXBsFUR8+4jnGxwkHi0leWM+B+qv7JqlMaf0Rz7/pmv15o48Lj8vxZ94fYS7mSQr5Tp6pyQsqn3LH5WSiaXcZSreOKlU+Qx/luGawvGHyYVoloC5bPjpbcFqHj6wBDTPiJpg9UsjQu+g3uRP/DHJBhy4dB9g5miJ5OJMSmQP9QY3AvrUNebKPpZLUC8gjKyqelsVuhKz5qvTYE4RegpKmJaHIxZPmhVdMUBVdteGIbMCcnltYk92PCdBRJHfTm1KkA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:f440:8:8::2"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761764285;
+	cv=none; b=L8vdyU1liBQdxyfhwCzmSpiLAotHeqUo+avCNziGFGfl4/5Vv03z9nNtwGQSBCUA8FJFYn0wTbsXyYbbrG7ILU0KzwjyFxvy641sgmqQpWM42bb9RBLQ9A8x2mmUHHhGzqaSBYwcG6RI0WTndbW1g+hooD7oLcSbZ6PiQ3OIeVXYs720wr/xSorLtDIHvFynDorl7bz3LG3nWx5SQSCRd2CQsbSA/fVUM3hSXC0rDYkTSqfLTym3rBxO//qUYpwnqme3ZiOu2zFeqPbnteGxmbrAiovSuy06q+LOdvH556fWy8YrxCLYUR/FqIUhCR/YIOZlBvCuRkxJkXHpr+rCrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761762378; c=relaxed/relaxed;
-	bh=2z56nIm+5e1IvigR9gpmQ54kGrlw/bMFXbXEDGYlOqE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dyIMkwLyTlo8pgKIb0AkO0Rd65O9yEyvxFbWsd6TXOyz//iEvxjMdARvB92/U7kOIiTIdNBXDdt2sAHegsAS9xRyfwi//NpKN45le2WMHdYJqn5xm3XBsSW8czyIaAPCk8BnDsuXD1Wa6YPE8DDIk6Rh0N35KuLdrXAXrus9/qygmpS3RVCD+wvKTdcw4JCy2qS9/7v+2duMLAfWTmGO/4DmtMBARulwLxLGy4QYEdiT5Tg1zFm1tb297bV571s3wVND9Xhzhs11xANOkZOgJu6OSi/Y4/8NKjL2ZKznFrnf+1g4EwpPFewzzm1RC8BFJyLmwZNvffTVhJlSYNuCTQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ndpPn+k4; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1761764285; c=relaxed/relaxed;
+	bh=8noeVAfbXhFfJwZ+aw/7c91dsuSaX7XCpkJyS1Z6pPw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YJz0XFEk6/eroA49/HVDd6n2gmZE6UB1P/h+RJaVM1sgYkW6x7oXcZLkf9ydYUFcoVG/mI8bWsOnpwgUlk+3MV5eVZ+UiOkqdRhO96fajVdl2Rbj/oo8PaGjQzTufU+PwCjEpZUfkiwx1B6RAYlaAvxz9k2aKc8XmxNQtl5/wRBINCfFT5w6Xqa9W7jVhq17dbpe6znWAIO5Upz4Ujfy9wBUBzyE5TeAUVj/AexN0TaCLE7w2RNiZvy4xkGCq66W58KcSWVi9AgYFoMBBn/qStIVjFnuOMB1hsTce+WLI0tFMorJ1r5sdxOe7zIl/w9HGvfnQK58E4XS5svuFLOw9A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=WpREBCTr; dkim-atps=neutral; spf=pass (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org) smtp.mailfrom=hansenpartnership.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ndpPn+k4;
+	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=WpREBCTr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hansenpartnership.com (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org)
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [IPv6:2604:f440:8:8::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cxbKj4FP5z2xsq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 05:26:17 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EEB1B48B34
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 18:26:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCBCC116B1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 18:26:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761762374;
-	bh=SOFE0nE/iwywHZBzY2PA6i2R26wO5/VtY5Jl8lJ4X0I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ndpPn+k4EfUaw6fNwY0zWNL1ecVLo8aBHRZnSz07kFgD/dq8DvyELXxj76gXV4oVi
-	 ktU0XjzrjKbY7uijyq0vT7UtIcjyb/ND1tDToftHHtDIAiRt0YVm3arL2lh8baMuAI
-	 +vz8+RoK0Jww3pqJv+AvrM17kvv5Zn3eqLes/WMlFA/6VE5WWXYm60bfEKGra5Xg6r
-	 thZTXHsYe14mAvd0C1rleJrkFPDe0BuI4HmI2JV5mxGnO4BhQlXQdt5qvo6Gy0KBaT
-	 P6l6n7spmgQ3gWjfr6j6dtYxaD0JXVPuWt+vLn28H15m5YyfxxytbyH5B0vKNTckDF
-	 7LduBId0jKXTw==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-378d246f0f1so938171fa.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 11:26:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVqOp1f+yUNGBYKoJwBvuCmjD2BF6AGaH7vMPzfPPU3K7x2YxcyzvV07wW41/rrEL32gCY0B0x2buYE06s=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyFbD1q1RQQxoVpZbfy4qGw/04Nnay4MJeRYmiOKGMgxyElRaTy
-	4GdfcHs+6PRir28noBxb/QOGFUJG3NXXgPvqbHXlup1Ztmr5xgdayBKchaOAKlkLAqrqy7r/lOK
-	AwPIfB1WBxP9CpcEzfoktLKQk+xnJ6rY=
-X-Google-Smtp-Source: AGHT+IGWFfmJwHuAqzPgZNMRZ1ozVQDIzy88Y1FgQVzyMri4R3xOByg4mInRl7CgPci19RHNrfDbNPxS6PSkoSTGQDU=
-X-Received: by 2002:a05:651c:1986:b0:365:b79:8845 with SMTP id
- 38308e7fff4ca-37a023ba9e9mr11427831fa.10.1761762372950; Wed, 29 Oct 2025
- 11:26:12 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cxc2H56SDz2yG3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 05:57:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1761764273;
+	bh=8noeVAfbXhFfJwZ+aw/7c91dsuSaX7XCpkJyS1Z6pPw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=WpREBCTrohUDCBJ3IIu8cpoqlN2RMaYcE17yYfxQn4g7wi3KJqaOrWCEV3DveRGSW
+	 66vruqzhuO2xQrIC1Q+Tx02Z+XnqjOj0Gbf2vxAy2dhjiPE+1CdpNBoRpk7awAiQpD
+	 h61Jbb/pUJGaGV8jpw+12bQcglQetL6wk16QzlLg=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 7D5DE1C0069;
+	Wed, 29 Oct 2025 14:57:52 -0400 (EDT)
+Message-ID: <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 22/50] convert efivarfs
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Ard Biesheuvel <ardb@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
+ brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
+ neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
+ linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
+ rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+  paul@paul-moore.com, casey@schaufler-ca.com,
+ linuxppc-dev@lists.ozlabs.org,  john.johansen@canonical.com,
+ selinux@vger.kernel.org, borntraeger@linux.ibm.com,  bpf@vger.kernel.org
+Date: Wed, 29 Oct 2025 14:57:51 -0400
+In-Reply-To: <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+	 <20251028004614.393374-23-viro@zeniv.linux.org.uk>
+	 <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
+	 <20251028174540.GN2441659@ZenIV> <20251028210805.GP2441659@ZenIV>
+	 <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIBwMCAQYVC
+	AIJCgsEFgIDAQIeAQIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJgS5mXBQkbNYS9AAoJEIFK5HwhSFTWEYEH/1YZpV+1uCI2MVz0wTRlnO/3OW/xnyigrw+K4cuO7MToo0tHJb/qL9CBJ2ddG6q+GTnF5kqUe87t7M7rSrIcAkIZMbJmtIbKk0j5EstyYqlE1HzvpmssGpg/8uJBBuWbU35af1ubKCjUs1+974mYXkfLmS0a6h+cG7atVLmyClIc2frd3o0zHF9+E7BaB+HQzT4lheQAXv9KI+63ksnbBpcZnS44t6mi1lzUE65+Am1z+1KJurF2Qbj4AkICzJjJa0bXa9DmFunjPhLbCU160LppaG3OksxuNOTkGCo/tEotDOotZNBYejWaXN2nr9WrH5hDfQ5zLayfKMtLSd33T9u0IUphbWVzIEJvdHRvbWxleSA8amVqYkBrZXJuZWwub3JnPokBVQQTAQgAPwIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmAUJGzWEvQAKCRCBSuR8IUhU1gacCAC+QZN+RQd+FOoh5g884HQm8S07ON0/2EMiaXBiL6KQb5yP3w2PKEhug3+uPzugftUfgPEw6emRucrFFpwguhriGhB3pgWJIrTD4JUevrBgjEGOztJpbD73bLLyitSiPQZ6OFVOqIGhdqlc3n0qoNQ45n/w3LMVj6yP43SfBQeQGEdq4yHQxXPs0XQCbmr6Nf2p8mNsIKRYf90fCDmABH1lfZxoGJH/frQOBCJ9bMRNCNy+aFtjd5m8ka5M7gcDvM7TAsKhD5O5qFs4aJHGajF4gCGoWmXZGrISQvrNl9kWUhgsvoPqb2OTTeAQVRuV8C4FQamxzE3MRNH25j6s/qujtCRKYW1lcyBCb3R0b21sZXkgPGplamJAbGludXguaWJtLmNvbT6JAVQEEwEIAD
+	4CGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmQUJGzWEvQAKCRCBSuR8IUhU1kyHB/9VIOkf8RapONUdZ+7FgEpDgESE/y3coDeeb8jrtJyeefWCA0sWU8GSc9KMcMoSUetUreB+fukeVTe/f2NcJ87Bkq5jUEWff4qsbqf5PPM+wlD873StFc6mP8koy8bb7QcH3asH9fDFXUz7Oz5ubI0sE8+qD+Pdlk5qmLY5IiZ4D98V239nrKIhDymcuL7VztyWfdFSnbVXmumIpi79Ox536P2aMe3/v+1jAsFQOIjThMo/2xmLkQiyacB2veMcBzBkcair5WC7SBgrz2YsMCbC37X7crDWmCI3xEuwRAeDNpmxhVCb7jEvigNfRWQ4TYQADdC4KsilPfuW8Edk/8tPtCVKYW1lcyBCb3R0b21sZXkgPEpCb3R0b21sZXlAT2Rpbi5jb20+iQEfBDABAgAJBQJXI+B0Ah0gAAoJEIFK5HwhSFTWzkwH+gOg1UG/oB2lc0DF3lAJPloSIDBW38D3rezXTUiJtAhenWrH2Cl/ejznjdTukxOcuR1bV8zxR9Zs9jhUin2tgCCxIbrdvFIoYilMMRKcue1q0IYQHaqjd7ko8BHn9UysuX8qltJFar0BOClIlH95gdKWJbK46mw7bsXeD66N9IhAsOMJt6mSJmUdIOMuKy4dD4X3adegKMmoTRvHOndZQClTZHiYt5ECRPO534Lb/gyKAKQkFiwirsgx11ZSx3zGlw28brco6ohSLMBylna/Pbbn5hII86cjrCXWtQ4mE0Y6ofeFjpmMdfSRUxy6LHYd3fxVq9PoAJTv7vQ6bLTDFNa0KkphbWVzIEJvdHRvbWxleSA8SkJvdHRvbWxleUBQYXJhbGxlbHMuY29tPokBHwQwAQIACQUCVyPgjAIdIAAKCRCBSuR8IUhU1tXiB/9D9OOU8qB
+	CZPxkxB6ofp0j0pbZppRe6iCJ+btWBhSURz25DQzQNu5GVBRQt1Us6v3PPGU1cEWi5WL935nw+1hXPIVB3x8hElvdCO2aU61bMcpFd138AFHMHJ+emboKHblnhuY5+L1OlA1QmPw6wQooCor1h113lZiBZGrPFxjRYbWYVQmVaM6zhkiGgIkzQw/g9v57nAzYuBhFjnVHgmmu6/B0N8z6xD5sSPCZSjYSS38UG9w189S8HVr4eg54jReIEvLPRaxqVEnsoKmLisryyaw3EpqZcYAWoX0Am+58CXq3j5OvrCvbyqQIWFElba3Ka/oT7CnTdo/SUL/jPNobtCxKYW1lcyBCb3R0b21sZXkgPGplamJAaGFuc2VucGFydG5lcnNoaXAuY29tPokBVwQTAQgAQRYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJjg2eQAhsDBQkbNYS9BQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEIFK5HwhSFTWbtAH/087y9vzXYAHMPbjd8etB/I3OEFKteFacXBRBRDKXI9ZqK5F/xvd1fuehwQWl2Y/sivD4cSAP0iM/rFOwv9GLyrr82pD/GV/+1iXt9kjlLY36/1U2qoyAczY+jsS72aZjWwcO7Og8IYTaRzlqif9Zpfj7Q0Q1e9SAefMlakI6dcZTSlZWaaXCefdPBCc7BZ0SFY4kIg0iqKaagdgQomwW61nJZ+woljMjgv3HKOkiJ+rcB/n+/moryd8RnDhNmvYASheazYvUwaF/aMj5rIb/0w5p6IbFax+wGF5RmH2U5NeUlhIkTodUF/P7g/cJf4HCL+RA1KU/xS9o8zrAOeut2+4UgRaZ7bmEwgqhkjOPQMBBwIDBH4GsIgL0yQij5S5ISDZmlR7qDQPcWUxMVx6zVPsAoITdjKFjaDmUATkS+l5zmiCrUBcJ6MBavPiYQ4kqn4/xwaJAbMEGAEIACYCGwIWIQTVYG5zyLRi
+	cb6tmt+BSuR8IUhU1gUCZag0LwUJDwLkSQCBdiAEGRMIAB0WIQTnYEDbdso9F2cI+arnQslM7pishQUCWme25gAKCRDnQslM7pishdi9AQDyOvLYOBkylBqiTlJrMnGCCsWgGZwPpKq3e3s7JQ/xBAEAlx29pPY5z0RLyIDUsjf9mtkSNTaeaQ6TIjDrFa+8XH8JEIFK5HwhSFTWkasH/j7LL9WH9dRfwfTwuMMj1/KGzjU/4KFIu4uKxDaevKpGS7sDx4F56mafCdGD8u4+ri6bJr/3mmuzIdyger0vJdRlTrnpX3ONXvR57p1JHgCljehE1ZB0RCzIk0vKhdt8+CDBQWfKbbKBTmzA7wR68raMQb2D7nQ9d0KXXbtr7Hag29yj92aUAZ/sFoe9RhDOcRUptdYyPKU1JHgJyc0Z7HwNjRSJ4lKJSKP+Px0/XxT3gV3LaDLtHuHa2IujLEAKcPzTr5DOV+xsgA3iSwTYI6H5aEe+ZRv/rA4sdjqRiVpo2d044aCUFUNQ3PiIHPAZR3KK5O64m6+BJMDXBvgSsMy4VgRaZ7clEggqhkjOPQMBBwIDBMfuMuE+PECbOoYjkD0Teno7TDbcgxJNgPV7Y2lQbNBnexMLOEY6/xJzRi1Xm/o9mOyZ+VIj8h4G5V/eWSntNkwDAQgHiQE8BBgBCAAmAhsMFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoNBwFCQ8C4/cACgkQgUrkfCFIVNZs4AgAnIjU1QEPLdpotiy3X01sKUO+hvcT3/Cd6g55sJyKJ5/U0o3f8fdSn6MWPhi1m62zbAxcLJFiTZ3OWNCZAMEvwHrXFb684Ey6yImQ9gm2dG2nVuCzr1+9gIaMSBeZ+4kUJqhdWSJjrNLQG38GbnBuYOJUD+x6oJ2AT10/mQfBVZ3qWDQXr/je2TSf0OIXaWyG6meG5yTqOEv0eaTH22yBb1nbodoZkmlMMb56jzRGZuorhFE06
+	N0Eb0kiGz5cCIrHZoH10dHWoa7/Z+AzfL0caOKjcmsnUPcmcrqmWzJTEibLA81z15GBCrldfQVt+dF7Us2kc0hKUgaWeI8Gv4CzwLkCDQRUdhaZARAApeF9gbNSBBudW8xeMQIiB/CZwK4VOEP7nGHZn3UsWemsvE9lvjbFzbqcIkbUp2V6ExM5tyEgzio2BavLe1ZJGHVaKkL3cKLABoYi/yBLEnogPFzzYfK2fdipm2G+GhLaqfDxtAQ7cqXeo1TCsZLSvjD+kLVV1TvKlaHS8tUCh2oUyR7fTbv6WHi5H8DLyR0Pnbt9E9/Gcs1j11JX+MWJ7jset2FVDsB5U1LM70AjhXiDiQCtNJzKaqKdMei8zazWS50iMKKeo4m/adWBjG/8ld3fQ7/Hcj6Opkh8xPaCnmgDZovYGavw4Am2tjRqE6G6rPQpS0we5I6lSsKNBP/2FhLmI9fnsBnZC1l1NrASRSX1BK0xf4LYB2Ww3fYQmbbApAUBbWZ/1aQoc2ECKbSK9iW0gfZ8rDggfMw8nzpmEEExl0hU6wtJLymyDV+QGoPx5KwYK/6qAUNJQInUYz8z2ERM/HOI09Zu3jiauFBDtouSIraX/2DDvTf7Lfe1+ihARFSlp64kEMAsjKutNBK2u5oj4H7hQ7zD+BvWLHxMgysOtYYtwggweOrM/k3RndsZ/z3nsGqF0ggct1VLuH2eznDksI+KkZ3Bg0WihQyJ7Z9omgaQAyRDFct+jnJsv2Iza+xIvPei+fpbGNAyFvj0e+TsZoQGcC34/ipGwze651UAEQEAAYkBHwQoAQIACQUCVT6BaAIdAwAKCRCBSuR8IUhU1p5QCAC7pgjOM17Hxwqz9mlGELilYqjzNPUoZt5xslcTFGxj/QWNzu0K8gEQPePnc5dTfumzWL077nxhdKYtoqwm2C6fOmXiJBZx6khBfRqctUvN2DlOB6dFf5I+1QT9TRBvceGzw01E4Gi0xjWKAB6OII
+	MAdnPcDVFzaXJdlAAJdjfg/lyJtAyxifflG8NnXJ3elwGqoBso84XBNWWzbc5VKmatzhYLOvXtfzDhu4mNPv/z7S1HTtRguI0NlH5RVBzSvfzybin9hysE3/+r3C0HJ2xiOHzucNAmG03aztzZYDMTbKQW4bQqeD5MJxT68vBYu8MtzfIe41lSLpb/qlwq1qg0iQElBBgBAgAPBQJUdhaZAhsMBQkA7U4AAAoJEIFK5HwhSFTW3YgH/AyJL2rlCvGrkLcas94ND9Pmn0cUlVrPl7wVGcIV+6I4nrw6u49TyqNMmsYam2YpjervJGgbvIbMzoHFCREi6R9XyUsw5w7GCRoWegw2blZYi5A52xe500+/RruG//MKfOtVUotu3N+u7FcXaYAg9gbYeGNZCV70vI+cnFgq0AEJRdjidzfCWVKPjafTo7jHeFxX7Q22kUfWOkMzzhoDbFg0jPhVYNiEXpNyXCwirzvKA7bvFwZPlRkbfihaiXDE7QKIUtQ10i5kw4C9rqDKwx8F0PaWDRF9gGaKd7/IJGHJaac/OcSJ36zxgkNgLsVX5GUroJ2GaZcR7W9Vppj5H+C4UgRkuRyTEwgqhkjOPQMBBwIDBOySomnsW2SkApXv1zUBaD38dFEj0LQeDEMdSE7bm1fnrdjAYt0f/CtbUUiDaPodQk2qeHzOP6wA/2K6rrjwNIWJAT0EGAEIACcDGyAEFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoM/gFCQSxfmUACgkQgUrkfCFIVNZhTgf/VQxtQ5rgu2aoXh2KOH6naGzPKDkYDJ/K7XCJAq3nJYEpYN8G+F8mL/ql0hrihAsHfjmoDOlt+INa3AcG3v0jDZIMEzmcjAlu7g5NcXS3kntcMHgw3dCgE9eYDaKGipUCubdXvBaZWU6AUlTldaB8FE6u7It7+UO+IW4/L+KpLYKs8V5POInu2rqahlm7vgxY5iv4Txz4EvCW2e4dAlG
+	8mT2Eh9SkH+YVOmaKsajgZgrBxA7fWmGoxXswEVxJIFj3vW7yNc0C5HaUdYa5iGOMs4kg2ht4s7yy7NRQuh7BifWjo6BQ6k4S1H+6axZucxhSV1L6zN9d+lr3Xo/vy1unzA==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.50.3 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,62 +86,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
- <20251028004614.393374-23-viro@zeniv.linux.org.uk> <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
- <20251028174540.GN2441659@ZenIV> <20251028210805.GP2441659@ZenIV>
- <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com> <20251029180835.GT2441659@ZenIV>
-In-Reply-To: <20251029180835.GT2441659@ZenIV>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 29 Oct 2025 19:26:01 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEB+W6wNDUnWeaeiuRqR-AKDwNhsoCAXokAEqRjSt7v7Q@mail.gmail.com>
-X-Gm-Features: AWmQ_bl33W7u9Z27QoRt9V2mEw_lUKBXPTlGyVImKaOffP2I82t-eoqvuUfjNRY
-Message-ID: <CAMj1kXEB+W6wNDUnWeaeiuRqR-AKDwNhsoCAXokAEqRjSt7v7Q@mail.gmail.com>
-Subject: Re: [PATCH v2 22/50] convert efivarfs
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, linux-fsdevel@vger.kernel.org, 
-	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz, 
-	raven@themaw.net, miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, 
-	linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
-	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org, 
-	linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com, 
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 29 Oct 2025 at 19:08, Al Viro <viro@zeniv.linux.org.uk> wrote:
->
-> On Tue, Oct 28, 2025 at 10:34:51PM +0100, Ard Biesheuvel wrote:
->
-> > I'll let James respond to the specifics of your suggestion, but I'll
-> > just note that this code has a rather convoluted history, as we used
-> > to have two separate pseudo-filesystem drivers, up until a few years
-> > ago: the sysfs based 'efivars' and this efivarfs driver. Given that
-> > modifications in one needed to be visible in the other, they shared a
-> > linked list that shadowed the state of the underlying variable store.
-> > 'efivars' was removed years ago, but it was only recently that James
-> > replaced the linked list in this driver with the dentry cache as the
-> > shadow mechanism.
->
-> Hmm...  Another question about that code: is efivar_get_variable()
-> safe outside of efivar_lock()?
+T24gVHVlLCAyMDI1LTEwLTI4IGF0IDIyOjM0ICswMTAwLCBBcmQgQmllc2hldXZlbCB3cm90ZToK
+PiBPbiBUdWUsIDI4IE9jdCAyMDI1IGF0IDIyOjA4LCBBbCBWaXJvIDx2aXJvQHplbml2LmxpbnV4
+Lm9yZy51az4KPiB3cm90ZToKPiA+IAo+ID4gT24gVHVlLCBPY3QgMjgsIDIwMjUgYXQgMDU6NDU6
+NDBQTSArMDAwMCwgQWwgVmlybyB3cm90ZToKPiA+IAo+ID4gPiBGV0lXLCBoYXZpbmcgYSBzcGVj
+aWFsIHBhdGggZm9yICJ3ZSBhcmUgaW4gZm9vZnNfZmlsbF9zdXBlcigpLAo+ID4gPiBmdWNrIHRo
+ZSBsb2NraW5nIC0gbm9ib2R5J3MgZ29pbmcgdG8gYWNjZXNzIGl0IGFueXdheSIgaXMgbm90IGEK
+PiA+ID4gZ3JlYXQgaWRlYSwgc2ltcGx5IGJlY2F1c2UgdGhlIGhlbHBlcnMgdGVuZCB0byBnZXQg
+cmV1c2VkIG9uCj4gPiA+IGNvZGVwYXRocyB3aGVyZSB3ZSBjYW4ndCBjdXQgY29ybmVycyB0aGF0
+IHdheS4KPiA+IAo+ID4gwqDCoMKgwqDCoMKgwqAgQlRXLCBsb29raW5nIHRocm91Z2ggZWZpdmFy
+ZnMgY29kZWJhc2Ugbm93Li4uICpib3RoKgo+ID4gY2FsbGVycyBvZiBlZml2YXJmc19jcmVhdGVf
+ZGVudHJ5KCkgZW5kIHVwIGRvaW5nIGRjYWNoZSBsb29rdXBzLAo+ID4gd2l0aCB2YXJpb3VzbHkg
+Y29udm9sdXRlZCBjYWxsIGNoYWlucy7CoCBMb29rOgo+ID4gZWZpdmFyZnNfY2hlY2tfbWlzc2lu
+ZygpIGhhcyBhbiBleHBsaWNpdCB0cnlfbG9va3VwX25vcGVybSgpIGJlZm9yZQo+ID4gdGhlIGNh
+bGwgb2YgZWZpdmFyZnNfY3JlYXRlX2RlbnRyeSgpLiBlZml2YXJmc19jYWxsYmFjaygpIGRvZXNu
+J3QsCj4gPiBidXQgaXQncyBjYWxsZWQgdmlhCj4gPiDCoMKgwqDCoMKgwqDCoCBlZml2YXJfaW5p
+dChlZml2YXJmc19jYWxsYmFjaywgc2IsIHRydWUpCj4gPiBhbmQgd2l0aCB0aGUgbGFzdCBhcmd1
+bWVudCBiZWluZyB0cnVlIGVmaXZhcl9pbml0KCkgd2lsbCBwcmVjZWRlCj4gPiB0aGUgY2FsbCBv
+ZiB0aGUgY2FsbGJhY2sgd2l0aCBlZml2YXJmc192YXJpYWJsZV9pc19wcmVzZW50KCkuwqAKPiA+
+IEd1ZXNzIHdoYXQgZG9lcyB0aGF0IHRoaW5nIChuZXZlciB1c2VkIGFueXdoZXJlIGVsc2UpIGRv
+P8KgIFJpZ2h0LAo+ID4gdGhlIGNhbGwgb2YgdHJ5X2xvb2t1cF9ub3Blcm0oKS4KPiA+IAo+ID4g
+V2h5IGRvIHdlIGJvdGhlciB3aXRoIHRoYXQ/wqAgV2hhdCdzIHdyb25nIHdpdGggaGF2aW5nCj4g
+PiBlZml2YXJmc19jcmVhdGVfZGVudHJ5KCkgcmV0dXJuaW5nIC1FRVhJU1QgaW4gY2FzZSBvZiBk
+ZW50cnkKPiA+IGFscmVhZHkgYmVpbmcgdGhlcmUgYW5kIHR1cm5pbmcgdGhlIGNodW5rIGluIGVm
+aXZhcl9pbml0KCkgaW50bwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBlcnIgPSBmdW5jKHZhcmlhYmxlX25hbWUsIHZlbmRvcl9ndWlkLAo+ID4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgdmFyaWFibGVfbmFtZV9zaXplLCBkYXRhKTsKPiA+IMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKGVyciA9PSAtRUVYSVNUKSB7Cj4gPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCBpZiAoZHVwbGljYXRlX2NoZWNrKQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gPiBk
+dXBfdmFyaWFibGVfYnVnKHZhcmlhYmxlX25hbWUsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gPiAmdmVuZG9yX2d1aWQsCj4gPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4g
+PiB2YXJpYWJsZV9uYW1lX3NpemUpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZWxzZQo+ID4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIGVyciA9IDA7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgIH0KPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgaWYgKGVycikKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0YXR1cyA9IEVGSV9OT1RfRk9VTkQ7Cj4gPiBOb3Rl
+IHRoYXQgYm90aCBwb3NzaWJsZSBjYWxsYmFja3MgYmVjb21lIGFsbW9zdCBpZGVudGljYWwgYW5k
+IEkKPiA+IHdvdWxkbid0IGJlIHN1cnByaXNlZCBpZiB0aGF0ICJhbG1vc3QiIGlzIGFjdHVhbGx5
+ICJjb21wbGV0ZWx5Ii4uLsKgCj4gPiA8Y2hlY2tzPiB5ZXAuCj4gPiAKPiAKPiBJJ2xsIGxldCBK
+YW1lcyByZXNwb25kIHRvIHRoZSBzcGVjaWZpY3Mgb2YgeW91ciBzdWdnZXN0aW9uLCBidXQgSSds
+bAo+IGp1c3Qgbm90ZSB0aGF0IHRoaXMgY29kZSBoYXMgYSByYXRoZXIgY29udm9sdXRlZCBoaXN0
+b3J5LCBhcyB3ZSB1c2VkCj4gdG8gaGF2ZSB0d28gc2VwYXJhdGUgcHNldWRvLWZpbGVzeXN0ZW0g
+ZHJpdmVycywgdXAgdW50aWwgYSBmZXcgeWVhcnMKPiBhZ286IHRoZSBzeXNmcyBiYXNlZCAnZWZp
+dmFycycgYW5kIHRoaXMgZWZpdmFyZnMgZHJpdmVyLiBHaXZlbiB0aGF0Cj4gbW9kaWZpY2F0aW9u
+cyBpbiBvbmUgbmVlZGVkIHRvIGJlIHZpc2libGUgaW4gdGhlIG90aGVyLCB0aGV5IHNoYXJlZCBh
+Cj4gbGlua2VkIGxpc3QgdGhhdCBzaGFkb3dlZCB0aGUgc3RhdGUgb2YgdGhlIHVuZGVybHlpbmcg
+dmFyaWFibGUgc3RvcmUuCj4gJ2VmaXZhcnMnIHdhcyByZW1vdmVkIHllYXJzIGFnbywgYnV0IGl0
+IHdhcyBvbmx5IHJlY2VudGx5IHRoYXQgSmFtZXMKPiByZXBsYWNlZCB0aGUgbGlua2VkIGxpc3Qg
+aW4gdGhpcyBkcml2ZXIgd2l0aCB0aGUgZGVudHJ5IGNhY2hlIGFzIHRoZQo+IHNoYWRvdyBtZWNo
+YW5pc20uCgpJIHRoaW5rIHRoaXMgYWxsIGxvb2tzIE9LLiAgVGhlIHJlYXNvbiBmb3IgdGhlIGNv
+bnZvbHV0aW9uIGlzIHRoYXQKc2ltcGxlX3N0YXJ0L2RvbmVfY3JlYXRpbmcoKSBkaWRuJ3QgZXhp
+c3Qgd2hlbiBJIGRpZCB0aGUgY29udmVyc2lvbiAuLi4KYWx0aG91Z2ggaWYgdGhleSBoYWQsIEkn
+bSBub3Qgc3VyZSBJJ2QgaGF2ZSB0aG91Z2h0IG9mIHJld29ya2luZwplZml2YXJmc19jcmVhdGVf
+ZGVudHJ5IHRvIHVzZSB0aGVtLiAgSSB0cmllZCB0byB1cGRhdGUgc29tZSByZWR1bmRhbnQKYml0
+cywgYnV0IGl0IHdhc24ndCB0aGUgZm9jdXMgb2Ygd2hhdCBJIHdhcyB0cnlpbmcgdG8gZml4LgoK
+U28gSSB0aGluayB0aGUgY2xlYW51cCB3b3JrcyBhbmQgbG9va3MgbmljZS4KCj4gCj4gUmVseWlu
+ZyBvbiB0aGUgLUVFWElTVCByZXR1cm4gdmFsdWUgdG8gZGV0ZWN0IGR1cGxpY2F0ZXMsIGFuZAo+
+IGNvbWJpbmluZyB0aGUgdHdvIGNhbGxiYWNrcyBzZWVtIGxpa2UgbmVhdCBvcHRpbWl6YXRpb25z
+IHRvIG1lLCBzbwo+IAo+IEFja2VkLWJ5OiBBcmQgQmllc2hldXZlbCA8YXJkYkBrZXJuZWwub3Jn
+Pgo+IAo+IGJ1dCBJIGhhdmUgdG8gY29uZmVzcyBJIGFtIHNsaWdodGx5IG91dCBvZiBteSBkZXB0
+aCB3aGVuIGl0IGNvbWVzIHRvCj4gVkZTIHN0dWZmLgoKWWVzLCBhY2sgdG9vLgoKUmVnYXJkcywK
+CkphbWVzCgoK
 
-Not according to its kerneldoc
-
-/*
- * efivar_get_variable() - retrieve a variable identified by name/vendor
- *
- * Must be called with efivars_lock held.
- */
-
-But actually, I'm not convinced this is accurate. The reason for
-locking at this level is mainly to ensure that a SetVariable() call
-does not interfere with an ongoing enumeration calling
-GetNextVariable() in a loop. The individual EFI runtime calls are
-still serialized at a lower level, given that the firmware is not
-reentrant, and so holding efivars_lock does not provide anything
-meaningful for a GetVariable() call.
 
