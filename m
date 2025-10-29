@@ -1,71 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-13477-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13478-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7EEC177BB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 01:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 731B9C17D43
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 02:18:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cx71d1w1Dz303y;
-	Wed, 29 Oct 2025 11:10:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cx8Vv66vxz3bfF;
+	Wed, 29 Oct 2025 12:17:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1029"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761696645;
-	cv=none; b=BZAtjhbzC/whur5PFlFXPTXpJA8I1WNzDDTmT7g1fNi49BK0aKWTzyzkn/pc0WFrQCUFOtWaIKTvHL2JnRC5QaNSlYQKBYAx2N7b86AuvXIVzUKhJn1YnPh8l52iEsPrwxLenC0OtpiOLrGEJaiAlUdgLJtBg9nblUHQhzzOSA6OAuglKVcGjJfshy9cQ7sVpoDu4O0inrEpRpT6vODIBmL8war4K1VIvknQNHHtiI7kckq6IoXkl8nvURHd4z/nKnKo5hatq0c+iVY2G0gfAYBjgi1o+JMDcjo3ukHXnMXR3xxB4Wj0Qb6gtxKZFhM7qqzgo0N8q9TBBxRAEETSAA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761700663;
+	cv=none; b=eh7Q3RJWDdPgy+pNRoekBbMGBjB365zWCp4GV62qdat46Lm8YvLZ71Obti85Z3UGrjLYd/tLkZAxYQav9PPZjnnLU9eH/5LLDidJDojnk3fxNWOIZblKgotp8dsDdIkzRF99xIEv3hQpjW6nI62sBZJ+KzRN57BkJge37al6gJC59xdwCEy6d3QDgo6RpvhwRnPaGIx8ZDG1dlAgL2d+uwVM1ilnrPHGuVmlirG9iEFP+Q97P+6oNKZm8nA/n8Mf924sV38Dlxi05zzlvvD8IV9t3XPBkBFtlK6N4F0D4jajmBxU/HXRdcKWuKkA+hXh+oyEHobQxfpUeNAZN+z31Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761696645; c=relaxed/relaxed;
-	bh=OAeYT3sIf5J+urxpWRZdGCYWbbcmjWbjfXki2vhXqBo=;
+	t=1761700663; c=relaxed/relaxed;
+	bh=C0CDCgiJ8x0hvDnQ9rVgMefWSHW2D06xPe+Fo8lJHjM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n5SX23oz5xJjuxA/mRYnbMOniPdFrOt9tpXbQEve4VzLX3JO1N8HRd/iciBnxWGYH03TGv5r9SlqW4GuxPd2ddwoRhL5A2gdq4YSlO99ROnfsJTFucfsmYv8ErwTZndxpFqg/OB2CQSOjGJBAXouxERGEWf1fDi3gF46FJdDbuG8xixwv4V0T3I73xVrmR2d29Xt0lfC0MuyYIL+b9OsT4oI0FEH4ffc5mmIZTldracaW1BtZa7J3U5+ydWcdLAZX5yAKX+OGMYVNF9RMIGBYyXMNu8bZI9QmiYA2ke6dIuN0tGH80RRZzgLD/OunvL4+vwgfap6BoHeoRwfKzfXfQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=QH/Nh+ps; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org) smtp.mailfrom=paul-moore.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+	 To:Cc:Content-Type; b=D7Q8+MKugJ6RJTaiiV67fBJkxygr+R5FGruL50MEFXQqzA0bq7ewUupjnLeYtIB44XYjzcA6XrrcZ2NQY1R9gGN5LDJ+EYrfIS+B1bnWMzVUNly/Gq7DSTyEnhiDCKbiHEwyLTvXOO8F3cUmTT6MlJNDE2ryIazSb6kMRz2hFkea9cIa8N3LjZw38DrCQ0z+/134PD0ieamd+RZrZY91ydYpxbnCBB9cCqVH81wtNPAwg17pROVFpIr8+KfEui9DeXr+GDMvi/DJDWb/hr3uFjTvsPqHS29flax3WbnVlP7TgXtq5jcsRyIc4QT3/FgupykBVqjlvtkpyy+wRbo8VA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VSAC2Xxa; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=QH/Nh+ps;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VSAC2Xxa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=paul-moore.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cx71c3Ndjz2xS9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 11:10:43 +1100 (AEDT)
-Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-33db8fde85cso6786464a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 17:10:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1761696642; x=1762301442; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OAeYT3sIf5J+urxpWRZdGCYWbbcmjWbjfXki2vhXqBo=;
-        b=QH/Nh+pszx1XTzjW30IxrEWE4QumyOeTBjTtgcAMEGI/1IM1PzzXssMdCnYIBdT7QI
-         WobNistDsxztyWvVkLA25uH3pJIS0pdDQF6Wu/+vuuXI3SL3D6jHIvcVJTHgNCrx/+wD
-         AC5BkJtWq+T6DYUKXtCCt6CkE7U0QY/Co97zZWSHEYj0ZEdAMbQ4To5JYPBb/7acbtuN
-         Sa6oZpemwdUzHEPKOujlBchcgaT6DZktCPPCJh2zNFISaWIlrBWKaYiwwMf5VQH8s72k
-         UC4J/t3V9UmV+4CnSp01HjLarAbYmouM8xAtl42/Mrr5WYRHjhkeLhzuvE7u4aKP6U+w
-         ytEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761696642; x=1762301442;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OAeYT3sIf5J+urxpWRZdGCYWbbcmjWbjfXki2vhXqBo=;
-        b=j8GxNtlzJHfyxJ0fgEeg/2wQDbppfDYL35IGyRm5bAewp3ypLoeQhk8Eu3VUQrCUy8
-         t4FtdpdhvYOgnEkdWcmmJV1FFHVdNkZuzmurQSTcaWx+h2WH8VeDgNdFvgqsXokJsZvc
-         7vZQUDnWMWWdHvkmHqzuxqhpSPRxmdR/KS9RBlzcCuHUF47ONCvLK51v6lUwGYi9LP3u
-         i8dGnsbC8gR6tB/rmlW6ZN+Di6nGiyLNyyaRu/VvupEaJjpU+qmIDVrqiVZb62SeCB1K
-         g33F4uL6CaKuS/UV/2rgnhiA/D5PD9Sz4OZAI19vxRLFoIXiLuoXpb33WgDyFz9NDYq8
-         C8vQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXHJPph5HydaWu2pQrGzdIiF750mtAyQMOI6bQjTWYAwQwDYvHQvRx7AChOG78K7R3bMkUevH2Xf51jTFY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxrjSy26/wjM26t+HWDEYWGcBDgDJBHMWAlcI2TrX3r1RoBCa87
-	vUMrWkvOOm+Zjv5VeOiV/wW16dZYz1Hg8YhTXLpq+wBesatPUDSSTiJEiFPZEAnvSK9YUk1N033
-	DxXWXY0TfkJCbP0S+yCIjLQzhvl1TqKq7I5Pg2jlC
-X-Gm-Gg: ASbGncuizbNeGIlGSY9YMHbOZBP1QN2rvgxko6gBEA8eKHmqWQL3jP1olK79sNocWFz
-	MEwpq7WxmTVACU2yHeQKA5Hu0hkIEp5RAiAVxXh+9TlEUcATtPzgPjgYFy5YQE87cG5bSyNVRgO
-	uj8ao/E65xLDCokjtaSrqddK0/P5ZqOyEZcks1O+Pvq+NpS80gc/GqcWpa56YzdDkBhEnWfL50L
-	9BcOjxVeBYNeBOUmZJfInCNpiCAjpEJtQya48l+77W02/85GlnLbesCihhR
-X-Google-Smtp-Source: AGHT+IGhjs8q4GiygXwr6DCqhQXMqWhNs5oaPfnq5KAn4id0agHe+xmdqRLWlZPNOFZ/N+dUgAnaM8QQHq+RXzkh3rE=
-X-Received: by 2002:a17:90b:4c8c:b0:32e:d600:4fdb with SMTP id
- 98e67ed59e1d1-3403a2a1014mr987268a91.18.1761696641654; Tue, 28 Oct 2025
- 17:10:41 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cx8Vv1MvWz2yD5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 12:17:43 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7175260253
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 01:17:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2ACC116B1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 01:17:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761700660;
+	bh=C0CDCgiJ8x0hvDnQ9rVgMefWSHW2D06xPe+Fo8lJHjM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VSAC2XxarW5YvzgilU1DarcfuwZgpSiT8XzM5uwOby+o5sPww0kSqz09+TY6ntliU
+	 CAzhj+bvnNbfhhP7ZeiAy+VZxF64030GcftELaWf1S0pCyR8gJg5uC5kKh9U+PdDkh
+	 PoGsoJxqHbYmrzqzYTADGDh8AvcIWKwP5hKi9HiOoZhQPT4pGfS7jrrrWdNMwm2wWg
+	 bqaJhvDpIa2qV14ifN0tYagYGy/5pFynBzuEWKmDOSlcbi74gIv7oGa5t4P9zVZGuw
+	 +oc1asN4JoDlteAFCq4X3BIH0+J0HOSCNXiqL5+ggtpsTmmz44tBBUEyh+EGH7UFxp
+	 K9DVW7x4IWMLg==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b6d5b756284so1423986366b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 18:17:40 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yx3juN1o5173UfwRYjFz2GnOHROi3fg4oOt2cDL+4+eRun2zi68
+	hPsUc8M1rGvZtsZ7AQOdneJcaZ1RWlkP3UH/xAPjTK2sO4iA1Kat6/UW3EkmEBX6SonZD3A+GgJ
+	3lVYQwnq6G3PK3TyOptc7wls6Pzqv8Q==
+X-Google-Smtp-Source: AGHT+IE9CK8UQYhtNwcOKnwYyopCI4f2n23+FukmrM7Wpeqj9d6+J+ZUZBSu+fFQV42iztsGY6fdVEQJoh6i307bCRE=
+X-Received: by 2002:a17:907:3d45:b0:b3a:b22e:dd35 with SMTP id
+ a640c23a62f3a-b703d295ce8mr108527366b.2.1761700658688; Tue, 28 Oct 2025
+ 18:17:38 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,51 +65,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk> <20251028004614.393374-49-viro@zeniv.linux.org.uk>
-In-Reply-To: <20251028004614.393374-49-viro@zeniv.linux.org.uk>
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 28 Oct 2025 20:10:29 -0400
-X-Gm-Features: AWmQ_bnyVa46lrJnSEC4p7b8a6-fhgKBPo6xvMl8XVNnPJL6uMjYjs2dxSO45Ps
-Message-ID: <CAHC9VhRX6kqFbbKuOoKOLLve6c+7TN3=fXHrtXyj=osfNYd+2A@mail.gmail.com>
-Subject: Re: [PATCH v2 48/50] convert securityfs
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
-	brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
-	neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
-	rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
-	john.johansen@canonical.com, selinux@vger.kernel.org, 
-	borntraeger@linux.ibm.com, bpf@vger.kernel.org
+References: <70d76dcf-c7d4-43c5-c169-07054a37195c@yahoo.com> <78e43ec2-a60a-9876-9f03-c0ad92b7da1d@yahoo.com>
+In-Reply-To: <78e43ec2-a60a-9876-9f03-c0ad92b7da1d@yahoo.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 28 Oct 2025 20:17:27 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJ8amo2ggUVfL=YzRrA9UnqKfKCipn-_yOkahJKZVs5=A@mail.gmail.com>
+X-Gm-Features: AWmQ_bmiuTZWvsHcyK6FWVhiVNJOfV5xXAbHqqPgdKGsU5uDnntdZ5mJUEakWzQ
+Message-ID: <CAL_JsqJ8amo2ggUVfL=YzRrA9UnqKfKCipn-_yOkahJKZVs5=A@mail.gmail.com>
+Subject: Re: Excluded List for "#size-cells" warning
+To: Stan Johnson <userm57@yahoo.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Finn Thain <fthain@linux-m68k.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Oct 27, 2025 at 8:46=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> w=
-rote:
+On Tue, Oct 28, 2025 at 7:05=E2=80=AFPM Stan Johnson <userm57@yahoo.com> wr=
+ote:
 >
-> securityfs uses simple_recursive_removal(), but does not bother to mark
-> dentries persistent.  This is the only place where it still happens; get
-> rid of that irregularity.
+> -------- Forwarded Message --------
+> Subject: Excluded List for "#size-cells" warning
+> Date: Tue, 28 Oct 2025 10:00:25 -0600
+> From: Stan Johnson <userm57@yahoo.com>
+> To: debian-powerpc@lists.debian.org
+> CC: Finn Thain <fthain@linux-m68k.org>, Christophe Leroy
+> <christophe.leroy@csgroup.eu>
 >
-> * use simple_{start,done}_creating() and d_make_persitent(); kill_litter_=
-super()
-> use was already gone, since we empty the filesystem instance before it ge=
-ts
-> shut down.
+> Hello,
 >
-> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-> ---
->  security/inode.c | 33 ++++++++++++---------------------
->  1 file changed, 12 insertions(+), 21 deletions(-)
+> On a PowerBook G3 Pismo running the latest Debian SID, dmesg reports the
+> warning shown below. I've also seen the warning on PowerBook Lombard and
+> Wallstreet systems. I haven't checked PowerBook 3400c or Kanga.
 
-Much cleaner now.
+Can you send me a dump of the device tree on these systems:
 
-Acked-by: Paul Moore <paul@paul-moore.com>
+dtc -O dts /proc/device-tree
 
---=20
-paul-moore.com
+We've been fixing up these cases such as in commit 7e67ef889c9a
+("powerpc/prom_init: Fixup missing #size-cells on PowerBook6,7")
+
+Rob
 
