@@ -1,33 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-13505-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13506-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB385C199AF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 11:11:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA6BC199B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 11:11:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cxNLQ2VgVz3dXM;
-	Wed, 29 Oct 2025 21:11:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cxNLW4blBz3dfM;
+	Wed, 29 Oct 2025 21:11:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761732670;
-	cv=none; b=K3da4LzVWuV+ojxdQfA5hy2f1HNCTznjAo3woxKJPpQsLkqZpGagZWdH8+LoxB9A2UKhRdDA5ST0D3jr1YPyGjrl9k4X2ehLKFjLeRPjiu4UfEqRogFdbqCqLlsKJTJSYrh5f4WiVqGFbf11VDvLTgzuEKifBzDkO2hRazFe0hRmWG2y8opuxmLc4A2LjTKIa8PfheKlSfTiKqNdusVD0UDBAJYVG2gbGHD3euXXK/Jdt2M1J5mzoGfOPGK+rsf0UQdpFe2sUbPyfT+f/vkCtE0JwAWiAH+yQnwVCUUwOgtLB0VBnvTNwsC6KBA2M6rY5ui8FCKY/Bf7ft81JnXhFQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761732675;
+	cv=none; b=GHJj+3m0EeyEqysy6QhDEXDPap8B5O3bv+Nwsl55je1zr2MSN1nwyaTOhWhB1Ts3+s+DXb2lmrdpu4gXdokXzDNt+1T1cQPgvB1EA3Fm2EGiinMVbfKJd7S698RyzNxAOTpTFrNowEegNnvF6H5d/RLygoxterNv1HedFqEgjSaOnf8WpdQdUuOLMYzQPvvLfO4st1JRvjdpXlJqYCqbSIE1F1cSXHBXjFJaWv9JtFELkAV4+l/4+ic6MkKdnCRv0jJL6q+PL6ys1vrnjD+FlCgb293kyyVH49xO60C3qpd8VHSTptGxqklqfyNxiZDGIjGrzUF1jwNjcv/l+Q8yzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761732670; c=relaxed/relaxed;
-	bh=N1WYke7yUdTWbw26Vtz0uNRFVp3PKYDfCjn5IuHDAks=;
+	t=1761732675; c=relaxed/relaxed;
+	bh=fwEra26/A0yijkE7baZGrCpY+n3zbLof6zuXP73UfSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERzvz1Adyjc8+uWQJECNjhkCmJv/qGWNNlldPxnch2CIS4mUvPNIRtbnQzOTtyJ21HgJwzJJtjUx2whf8iwcdD7r9r1wLFYY9N6L1mg+Wp+1/ZruNBEGFGNM+TIsOfLlB6LACJUUgEEoD6pzMLvzFdUDpRknj/MzdMJh5d4hm+qTB+uex4tV9dMbeaplRaRTEIUR0rxXvP2452hhg86YGaLk8ZcPQTGeFYF7Omrg/Vhqf7kWM//1dCA3ldkjxj0y2LU7eCm3B6YeX0GLsvpcNhk+v1z1F7egP2UeRs7OvUIBAyrMmGepLxv7gyPvU7qvIR+EYqsYErV0G2RyUZQUig==
+	 MIME-Version; b=HFLVNctCDJ/qXvwJiUfq4qK1JaOB+0eOPdLLQ9ij6xP55xgnRdKu6L6SCiXPhC/3M3p7B4gAReoBnam5SDzQ/eG36FiqjBuL29Z8tyPNoyAjT8QyuBBVZSE76e0lLCBgYjNvthBwYnGphuea5eyDGkQ+LdDZYeQl/JvNyy3r+FtkMtb8q+/vEEvm1Ekbv6+XpCFKTDzDn7Ho71Io5czUKzs1dji/y/MMXFrB3Ix3U+M7VjjlKS4skFFSm49lARj89nVpq/gXDGIC5bQVTDhWOp8pjZyAoqXRVMvyhLd/2KBi3a7G38FfqgCBvK/P0jvs5RbM5oLAR6pG+Z+2GmFiDQ==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cxNLP537Nz3dXH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 21:11:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cxNLV6F8dz3c4d
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 21:11:14 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECC152BCC;
-	Wed, 29 Oct 2025 03:10:30 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 310A22BF7;
+	Wed, 29 Oct 2025 03:10:36 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DACF93F66E;
-	Wed, 29 Oct 2025 03:10:33 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1CBC73F66E;
+	Wed, 29 Oct 2025 03:10:38 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -66,9 +66,9 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	x86@kernel.org
-Subject: [PATCH v4 09/12] powerpc/mm: replace batch->active with in_lazy_mmu_mode()
-Date: Wed, 29 Oct 2025 10:09:06 +0000
-Message-ID: <20251029100909.3381140-10-kevin.brodsky@arm.com>
+Subject: [PATCH v4 10/12] sparc/mm: replace batch->active with in_lazy_mmu_mode()
+Date: Wed, 29 Oct 2025 10:09:07 +0000
+Message-ID: <20251029100909.3381140-11-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20251029100909.3381140-1-kevin.brodsky@arm.com>
 References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
@@ -102,68 +102,58 @@ explicitly.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/powerpc/include/asm/book3s/64/tlbflush-hash.h | 9 ---------
- arch/powerpc/mm/book3s64/hash_tlb.c                | 2 +-
- 2 files changed, 1 insertion(+), 10 deletions(-)
+ arch/sparc/include/asm/tlbflush_64.h | 1 -
+ arch/sparc/mm/tlb.c                  | 9 +--------
+ 2 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-index 623a8a8b2d0e..bbc54690d374 100644
---- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-+++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-@@ -12,7 +12,6 @@
- #define PPC64_TLB_BATCH_NR 192
+diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
+index 4e1036728e2f..6133306ba59a 100644
+--- a/arch/sparc/include/asm/tlbflush_64.h
++++ b/arch/sparc/include/asm/tlbflush_64.h
+@@ -12,7 +12,6 @@ struct tlb_batch {
+ 	unsigned int hugepage_shift;
+ 	struct mm_struct *mm;
+ 	unsigned long tlb_nr;
+-	unsigned long active;
+ 	unsigned long vaddrs[TLB_BATCH_NR];
+ };
  
- struct ppc64_tlb_batch {
--	int			active;
- 	unsigned long		index;
- 	struct mm_struct	*mm;
- 	real_pte_t		pte[PPC64_TLB_BATCH_NR];
-@@ -26,8 +25,6 @@ extern void __flush_tlb_pending(struct ppc64_tlb_batch *batch);
+diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+index 7b5dfcdb1243..879e22c86e5c 100644
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -52,11 +52,7 @@ void flush_tlb_pending(void)
  
- static inline void arch_enter_lazy_mmu_mode(void)
+ void arch_enter_lazy_mmu_mode(void)
  {
--	struct ppc64_tlb_batch *batch;
+-	struct tlb_batch *tb;
 -
- 	if (radix_enabled())
- 		return;
- 	/*
-@@ -35,8 +32,6 @@ static inline void arch_enter_lazy_mmu_mode(void)
- 	 * operating on kernel page tables.
- 	 */
  	preempt_disable();
--	batch = this_cpu_ptr(&ppc64_tlb_batch);
--	batch->active = 1;
+-	tb = this_cpu_ptr(&tlb_batch);
+-	tb->active = 1;
  }
  
- static inline void arch_flush_lazy_mmu_mode(void)
-@@ -51,14 +46,10 @@ static inline void arch_flush_lazy_mmu_mode(void)
+ void arch_flush_lazy_mmu_mode(void)
+@@ -69,10 +65,7 @@ void arch_flush_lazy_mmu_mode(void)
  
- static inline void arch_leave_lazy_mmu_mode(void)
+ void arch_leave_lazy_mmu_mode(void)
  {
--	struct ppc64_tlb_batch *batch;
+-	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
 -
- 	if (radix_enabled())
- 		return;
--	batch = this_cpu_ptr(&ppc64_tlb_batch);
- 
  	arch_flush_lazy_mmu_mode();
--	batch->active = 0;
+-	tb->active = 0;
  	preempt_enable();
  }
  
-diff --git a/arch/powerpc/mm/book3s64/hash_tlb.c b/arch/powerpc/mm/book3s64/hash_tlb.c
-index 787f7a0e27f0..72b83f582b6d 100644
---- a/arch/powerpc/mm/book3s64/hash_tlb.c
-+++ b/arch/powerpc/mm/book3s64/hash_tlb.c
-@@ -100,7 +100,7 @@ void hpte_need_flush(struct mm_struct *mm, unsigned long addr,
- 	 * Check if we have an active batch on this CPU. If not, just
- 	 * flush now and return.
- 	 */
--	if (!batch->active) {
+@@ -93,7 +86,7 @@ static void tlb_batch_add_one(struct mm_struct *mm, unsigned long vaddr,
+ 		nr = 0;
+ 	}
+ 
+-	if (!tb->active) {
 +	if (!in_lazy_mmu_mode()) {
- 		flush_hash_page(vpn, rpte, psize, ssize, mm_is_thread_local(mm));
- 		put_cpu_var(ppc64_tlb_batch);
- 		return;
+ 		flush_tsb_user_page(mm, vaddr, hugepage_shift);
+ 		global_flush_tlb_page(mm, vaddr);
+ 		goto out;
 -- 
 2.47.0
 
