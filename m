@@ -1,71 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-13475-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13476-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C38C1776D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 01:05:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 586E8C1778B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 01:08:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cx6tz4Qdbz30MY;
-	Wed, 29 Oct 2025 11:04:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cx6ys6m7Jz304h;
+	Wed, 29 Oct 2025 11:08:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761696299;
-	cv=none; b=VCcZHxUAYnyoUUnSXfm9DKhAaxfyd6JFvfo2OCY5WjpVH3ySkynHvCZsV7YEvW+rE1rSEoc6x1hTmMytGOyvIaORdyrv8ckKiyYhq/hSXt48VRpey5Z/5a2OubTaDyqL4F0F8LzGX6HbMMjpQCF4G9ECxV8pIy2ok/SXfbsDxkvCvC1APPwPJU/fJoYgHyQnu2YOs3hcSTj9mWPst95w9sEL8PWjQqgTaioFiK2d/ftCThxFyf3FvBeRGps0FB4Aubo+L56OI5ei9jLQAVyQ3Ri+5watszLm/fqoeDBjEQn5cQeJ08yUShwBPDVDR7rdxaqANFqSkAHloLVJFoSZ+w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1030"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761696501;
+	cv=none; b=i+hbc7lqCSpZ244AQSIbGCPEBtfml9oKPoil9nhViGwnrjmrb5FmUxZUd1VRxEMbzcZ+0HvZvg/Hz1HkVoQOzSyLAeGyIwj1GpH+wb4W/Kff0gLwwiiCtTlomKnwg1yB5NAlUCHYylijWRyrHrbtvBo6LMvd+0xc2zRtdjpnnY4RRVmJ9TrtcxjiYUXUTFjYja18EtLl53N3XI3AfMlvChqYKXGwBXS+kV5p10PEwq4CzVZSth4LTmowXpqYeUMYwiW+t3I/ULgJdG8Gqv5DgXeouQx1p/REPtLQTqd3c/j3sSBjlnZaQRMqcJgdh/p8NAk1n/QFP2seEH2WaWRhWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761696299; c=relaxed/relaxed;
-	bh=BerLOcBoWrV1cLwn2WvSsreg5PxA+PLtgWK6veAyVuE=;
+	t=1761696501; c=relaxed/relaxed;
+	bh=cZjzJP5BDJixdHcjsD4MEtXcdIeCfYM/75TifkWeDww=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j7WzM2rcw/B92bndAV59aJ4mGmB05GwHr+MIS9ekpiIXgca7wXXpPq9NTFvtM8PtyRDqZDvp9SHZgYfXInOqZ56ty3shGnl50UGWzAStyjfT4uEGJyFoHNkpYLMnwsGVXwpNnIq3vBVSnfOEaxLQAh26qozmiAgHc5hR0WjZukzoBc2TGK2WsZaHX5iH5QUfQQ4+o0ImvpyI/3aAzK3SiG1WHCU6qukj0cEpFITo9OU3Ebs0qNUeRIVosYMlwGcZG0jMBwdpmgW/geT0pFrZdk7cZesBWLyyll7erMoi+R/43aKlba0SmmXPFfIW7cXVnZtgb3tWbtQetBD+mWWPVA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=d9paSOkU; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org) smtp.mailfrom=paul-moore.com
+	 To:Cc:Content-Type; b=LGqE51292fuby+kZz8rYt/l+ESgpxEzweIjZ6pMQVZ+cuIw6UahozROT3SEJ3ast5chQcuAMSsAeu7xBz1thMCHA7BWqcAOW/vzN8OTjzweMbG3900A+qtKJD266s2NZ0oE3+eciClIXMVOqRFvIjnqHC8DdcPjGtBfmzmUGvhjPU4D0Xb1WdU/iNc42yLKIicCtr3zozOdqSARRBvaqjcyDYJ/8uJCnIubryNv+iDrgGSNY3WhToRgvR5Pf23rk5GtcOb+3gGL4RbkgrtL8E6AHKQ/2FIQzISMd32x03XrNhywY7qtHByzo+RaFxXGnwFu107kIm5YO+O6wgoHC4A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=EKmdnexv; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org) smtp.mailfrom=paul-moore.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=d9paSOkU;
+	dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=EKmdnexv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=paul-moore.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=paul-moore.com (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cx6ty5npFz303y
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 11:04:58 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-33e27a3b153so6483027a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 17:04:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cx6ys05Xwz2xS9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 11:08:20 +1100 (AEDT)
+Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-33e0008d3b3so6682223a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Oct 2025 17:08:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1761696296; x=1762301096; darn=lists.ozlabs.org;
+        d=paul-moore.com; s=google; t=1761696499; x=1762301299; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BerLOcBoWrV1cLwn2WvSsreg5PxA+PLtgWK6veAyVuE=;
-        b=d9paSOkUIHg9SZ0jF3/3RgevdKyTc2X/FjGDY1ygit7Zh6YfR8bx+rhbUQ+NnEfU2Y
-         2lu8h3jGtElVgVxlku5UwIYiO8HW2iEUE2hc1x1P9p9z3o7SuNdaFVHepdQfF/lwep5f
-         6SQA0jMinCZi7VSsoBi/FfkASPyC79aUIfxGpGjKzPk1QhFKs9ZanlJc1pGVGEuAdAY3
-         8x5mfYB11WCVvgsLSxVP/S9OZAjRdURlprBdVMCgGCZikXMwg7UKLOzQpCjz3anYpmnO
-         z9G6DAxGSUD4KBYz4/LkqmCH4jaVNO0Gq/qnxkbaLmEnpOZjux/rw6TT/jaJOI1fZ53P
-         NjWw==
+        bh=cZjzJP5BDJixdHcjsD4MEtXcdIeCfYM/75TifkWeDww=;
+        b=EKmdnexvkDNngEgn3jVBLzWUR37qWjV/PXIcyVjesMcsgi+p1cDnq+U7XDVmAhunLX
+         XTeH/XPVxNI4DGo4MLOm2vVRcTeSd64WtZE6gRCdlM+E4DhnSzqmnXwpGm1qfxEjj8Tn
+         2NKV4zf5+tsmj94suuhhT5aJc78Xt9/A4L/V2Q8HsbjvkhSm9a4NcIxw4iDiyiIW7y6d
+         wLgXh33o3kDsepEr25/Htcy6OQ/xEHBCmtlSSJrwSTCFZV8mBZPj9m2VODX7u+RBTDP2
+         huQIb4MmJg4bvYUGztt4ucNdPHypw7kC6f7EGhMEZbjeqwNndPP5vPMuq8a74hZOkZsi
+         bSag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761696296; x=1762301096;
+        d=1e100.net; s=20230601; t=1761696499; x=1762301299;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BerLOcBoWrV1cLwn2WvSsreg5PxA+PLtgWK6veAyVuE=;
-        b=LrhD7SIHCVzVMx8fbOhXs940AG35qvnVixStDNFurGfrr1CXobT0rTpnfkOZt3Byhw
-         Idu+FcOG6/+AYnebwwtrIqebZS0QW1i3Q3WekxFRQX45ZMJYhCEI8s3kco8gs96MDamb
-         qRAOepEhgFcNzZrtO4BGKM0YNFXy54fTvXVCb6ayEF6jsm1mRoWUuXC6zh6oB74puMeL
-         EUw57xuNA9HPygZJH/YgmR3R0o79ZDGdmtdmmDHrO7Fmlom6s9/Qj8ETGGaA29WDpyES
-         /RjQABPkYMeol60Q3pqKw78up1TKaRnYTkTe7CqqIJwuuFYkfda6ghyu84a6jV1gZAtF
-         qtiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhGEBPX8wr7xM2VO1Giu7lJjjbGLGDJO9bl9ELwb5Q11AG1FZBXRfhDFXXDuI2kFVu/T8/I8N4bvtxLVM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyjb6YDyIOBdxW3SUWj3d99KstxoMVh6iwOJn5u5xhlRfhGl/OW
-	K+uUb8tbFj5mwhGDmJ5HB9Bc1olfn1Og3+7kBdAwWpxXEh14Yjn8Mvyg+SGMnCQ7zUThQCaPgLa
-	/lOuya8lfLa+17J/UF3RVkVNo9DZlXhl4ydsF9Ahk
-X-Gm-Gg: ASbGncvl6JdESDfTq9YOfY5XTTa53vlAozrnBU3ErFPdbyPPGK4y3GlCCKLfpq4kPW8
-	m4ZW//gYl2yfe4SF+X8QFebduS46/OsoOfv1YBjJwoyaeCzQhLJ4cElBHZLY7E+vrPDCj3+QcCK
-	Zai/WEFx22sFjJVil7opbsh4E61FSNjZvERtt9znFN3CPSliZN2AG3aJiP2Dv+c/d7ZW6+vEpkJ
-	P7Ku8utN9+/IZCnTQ97kkuQaCU8TZIBf6+O4DqZ98l0Ov8UxOX2esfoDsMW7Y7aCpDWdqI=
-X-Google-Smtp-Source: AGHT+IF9Sg8XTJhY1XF+gNJzXx33YCPJNPvD397jHY3K37ysFCuyvsRKOtkLfk2UKLtdow89RUSTsoGqlzXNXJIH+YE=
-X-Received: by 2002:a17:90b:3147:b0:33e:1ae2:a4a7 with SMTP id
- 98e67ed59e1d1-3403a2604b4mr1039988a91.12.1761696296385; Tue, 28 Oct 2025
- 17:04:56 -0700 (PDT)
+        bh=cZjzJP5BDJixdHcjsD4MEtXcdIeCfYM/75TifkWeDww=;
+        b=Wogo8b0PHigV20510qHccMb88mUvDrabqhPPVOQ7u5/cDGmZJh9eUKm3uiF8AIbH67
+         KkQd2XrDV3SPtFIukKkKlZkKc+/5taECVapWklmuZ20Pl8TOnihOBMcvVi+G5ETypg/X
+         pzQFEFDe4AkWcva/7Hp1QrefKB/kADoNXatKbcL/7ESUr0ASiSATgOxWX5rfNpB8UlY+
+         G8sOKMXyPYEhT6suECvHyzywAKTHXXsIyoKMsPzwR4BEqRsuRa1sZXaMdX+J6dlCxLKj
+         pzndorlj7kb9C9Di+9j6h/vtbYtVr2+gegdZ2tsTNKTd10+i5fUxnN3Og3r3UUjKndWy
+         p0uA==
+X-Forwarded-Encrypted: i=1; AJvYcCUjecOsSaiCm9KFn7dBpwNBdYF8kQlO+O+JQL1r3ubzbJmD3LlghO5JMTPmtc1TSS4BzDY5oQdwVMgHA8o=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzdvqw9Hchz7ccag31AoBJhJgk7u9tEXXI/Ew3hGDZIt6EzgpBw
+	chJxPrzofFXaNdoX2lEi6bE0T3dN6OJ4XGdF3M4tf7IOnaEoH5xCo0FDCTfeExFUsOi0W8Lwz9s
+	xdM69+vA843uNXLsvNQCikttJNsNbjBTbCX3SGTib
+X-Gm-Gg: ASbGncveH/4MwQyfSSeIpSszSGIDsX4aOjd1CD88K2y5s/LJL2oXiKaMKcl23CV1MuU
+	r/sBWET1TDFBlVeW/VQMMiHAy5zcI4ffwroA70BfGILMX2LxIKcyeSgoMRlTOjqLZher4FonHzt
+	bf8IML/sxAfFjzSDOSutCn3ASyu+pmwJxbgLgxrdI557rK/KhQ10ctN5o8FMPfuWaIG4ZV8rXqr
+	ZWj42CS5tdKmSI9Y6ht7sljQJMscW9kFlGDykLe3TOncsFjxbuhs+6+ZjuG
+X-Google-Smtp-Source: AGHT+IGEKRPFq5L2rd6w/ubcuTn//BXhetf/wOj9xAOGHPjYYno+UXGan0WlvoJBaoZ1JF4tIK0SCxZjeiDlUqLjb6g=
+X-Received: by 2002:a17:90b:4a05:b0:339:ef05:3575 with SMTP id
+ 98e67ed59e1d1-3403a294f2fmr971614a91.26.1761696498871; Tue, 28 Oct 2025
+ 17:08:18 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,13 +79,13 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk> <20251028004614.393374-50-viro@zeniv.linux.org.uk>
-In-Reply-To: <20251028004614.393374-50-viro@zeniv.linux.org.uk>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk> <20251028004614.393374-34-viro@zeniv.linux.org.uk>
+In-Reply-To: <20251028004614.393374-34-viro@zeniv.linux.org.uk>
 From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 28 Oct 2025 20:04:44 -0400
-X-Gm-Features: AWmQ_blrbvCvNMESns84vcg9Bs91_mExO5kolf7cbCdCoz5ngCaqmvIG7Oeo_oM
-Message-ID: <CAHC9VhQH--uP=fWo0MsH5=BojV2qG=qy7A9tHTVOnLYOxKbV5Q@mail.gmail.com>
-Subject: Re: [PATCH v2 49/50] kill securityfs_recursive_remove()
+Date: Tue, 28 Oct 2025 20:08:07 -0400
+X-Gm-Features: AWmQ_blBn2fdqYcxKi_H91_QLngZD09fAUzDyH5oMtRPekpRq9pqWMOuQKzGUHw
+Message-ID: <CAHC9VhSeiK=qqLMUDAKRTgS5EEHdVvLD7-afuDqJWYFindvfUA@mail.gmail.com>
+Subject: Re: [PATCH v2 33/50] selinuxfs: don't stash the dentry of /policy_capabilities
 To: Al Viro <viro@zeniv.linux.org.uk>
 Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
 	brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
@@ -105,15 +105,19 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 On Mon, Oct 27, 2025 at 8:46=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> w=
 rote:
 >
-> it's an unused alias for securityfs_remove()
+> Don't bother to store the dentry of /policy_capabilities - it belongs
+> to invariant part of tree and we only use it to populate that directory,
+> so there's no reason to keep it around afterwards.
+>
+> Same situation as with /avc, /ss, etc.  There are two directories that
+> get replaced on policy load - /class and /booleans.  These we need to
+> stash (and update the pointers on policy reload); /policy_capabilities
+> is not in the same boat.
 >
 > Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 > ---
->  include/linux/security.h | 2 --
->  1 file changed, 2 deletions(-)
-
-That's annoying.  Another case of
-let-me-know-if-this-patchset-dies-so-I-can-take-this-patch-regardless.
+>  security/selinux/selinuxfs.c | 21 +++++++++------------
+>  1 file changed, 9 insertions(+), 12 deletions(-)
 
 Acked-by: Paul Moore <paul@paul-moore.com>
 
