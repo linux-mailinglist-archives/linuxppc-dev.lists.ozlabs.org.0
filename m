@@ -1,33 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-13499-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13500-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B347C1998E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 11:10:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4417FC19991
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Oct 2025 11:10:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cxNKp5c0nz3cfv;
-	Wed, 29 Oct 2025 21:10:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cxNKw0ZsBz3dTk;
+	Wed, 29 Oct 2025 21:10:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761732638;
-	cv=none; b=ig62Byt+qJAZgKcJVJ/razkACEQuwnS32HFu0BusFP9OzGYcd4KH4oKn0sjuxljQ3gm5mEXgpNBqh4T520FpEUvaOauoU548+whXoA/dOe2+2y5PqkWqMa6GKqC4sK7/D9rhwEAOpQpzEhrt3kV706pFo7MM8p0BxDRtr503GnrLnArwoYNTK7ggMeB6SwJktiftCmbyWiqVCeqkNVrq+lXJPDdg/Ql9ed28dRHT2LJT1JKl+QYjZQkVTQhTRzClY5j73mZQX/1Tso64rtmNES76hWcl7oSSvNmBBRQsoV/gkFt7gKZr6n/ARFvDkK6NAXssCfM6u3SqGhj1ko/o4A==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761732643;
+	cv=none; b=MfDgatgz7uGimnWTcVQRCBWjoQhYmCIUCF/ocT6i+pHPpR2uj8PWwnHX++iTwt+Uu6lf4xPK19IYXCRP7FJiy+dRCgFSl8gLz6OQLuE610UIj5BkXBU4qH1vkTs1K+hEu1OnbZmg/72LGuDCsM8W/m0XeIEkUTLaTMDkLpusRoOvG/iTzgPMYR2cKnGAXeVnsQosrQNYhhvJiyQZ8XrkBNJ1HpIAiJAYuEWhTlN/An6PUchnYONWEQx973YVSUD6SCx2qg/QcpcsVHKVgF9F2qk4pG9LhZVw3tXBOTRaGxRi/W+e5Xa+DrFMOZk0da5ksUbTN4t7ZqbAiZxEGhfaOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761732638; c=relaxed/relaxed;
-	bh=kvvX36phAp+peVOlxruWBCxwtzwfFIHoLx/bWBK6XQw=;
+	t=1761732643; c=relaxed/relaxed;
+	bh=CzAmB3+ul/4CB3IEehlTd1PyNa8/CZkGLN+5p5/HgHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gMYZe8RZme4ESYjPgLTdA6/bOVwcewK9XZT46OUzkJ8qyJjiwktESKCCMcOIjXEJIQa2fZLBgsD9DeQ5O1RoacsJN8Fj6UALTwzu50lpDuqT0Bj7w4kZNW2yv35zpJetVXt3uIoTYehGiXZ8iN1D1GJ2oLIAs9M5LFDImSSxD/WIGvOLPqLnXxw3z7fX0kt5n4dYwsEuomKVAwF7YsSgnS1CMpoSxzZX5rrzJrdH+RknzrUMr5WJ2OkHil+DDcGOZWnE4loPmRKFRE3Ifbmg8swCObRqnvxQJQRCI20wt4AwOOqi65sQ3cRDJaBOtG9t2GB94nuufKBqmCU8XMg0GA==
+	 MIME-Version; b=b6f/eu+P0RM/YuxNo+uM/VBufpEeDdGEhHcxNNJo+lcH812KyJpaKzoFU3p7kPbSDHqYnn9Ld+87EbaKQwghPtGXAelU353b/N3oKy/JLBg166fPdz7V8hJSPRm1usByMQJexiYt3W3s016NQbA8GgV8Nt75oiqIBcY00X8BqLmSyLEAyHXb9JpB/JhLC8avDljQaQriiABARJL0QwduJQTRJjtnsVgEN2iiD1vkNqP/KO/uAHjzUp/Eyy4VHPBg7uQZ+79Wcu+hH195YfdDtXygUPKgIxKpkNIjugrrWTxizEiCtwuFUftVNpjSlsa2at9F77T4g4f1IP64r6ZyLw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cxNKp1xQxz3bsb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 21:10:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cxNKv37tGz3dTf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Oct 2025 21:10:43 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 809B12BCC;
-	Wed, 29 Oct 2025 03:09:59 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B6C832BCD;
+	Wed, 29 Oct 2025 03:10:04 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6BA203F66E;
-	Wed, 29 Oct 2025 03:10:02 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A153E3F66E;
+	Wed, 29 Oct 2025 03:10:07 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -66,9 +66,9 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	x86@kernel.org
-Subject: [PATCH v4 03/12] powerpc/mm: implement arch_flush_lazy_mmu_mode()
-Date: Wed, 29 Oct 2025 10:09:00 +0000
-Message-ID: <20251029100909.3381140-4-kevin.brodsky@arm.com>
+Subject: [PATCH v4 04/12] sparc/mm: implement arch_flush_lazy_mmu_mode()
+Date: Wed, 29 Oct 2025 10:09:01 +0000
+Message-ID: <20251029100909.3381140-5-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20251029100909.3381140-1-kevin.brodsky@arm.com>
 References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
@@ -103,46 +103,49 @@ patch.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- .../powerpc/include/asm/book3s/64/tlbflush-hash.h | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ arch/sparc/include/asm/tlbflush_64.h | 2 +-
+ arch/sparc/mm/tlb.c                  | 9 ++++++++-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-index 146287d9580f..7704dbe8e88d 100644
---- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-+++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-@@ -41,6 +41,16 @@ static inline void arch_enter_lazy_mmu_mode(void)
- 	batch->active = 1;
+diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
+index 8b8cdaa69272..925bb5d7a4e1 100644
+--- a/arch/sparc/include/asm/tlbflush_64.h
++++ b/arch/sparc/include/asm/tlbflush_64.h
+@@ -43,8 +43,8 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+ 
+ void flush_tlb_pending(void);
+ void arch_enter_lazy_mmu_mode(void);
++void arch_flush_lazy_mmu_mode(void);
+ void arch_leave_lazy_mmu_mode(void);
+-#define arch_flush_lazy_mmu_mode()      do {} while (0)
+ 
+ /* Local cpu only.  */
+ void __flush_tlb_all(void);
+diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+index a35ddcca5e76..7b5dfcdb1243 100644
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -59,12 +59,19 @@ void arch_enter_lazy_mmu_mode(void)
+ 	tb->active = 1;
  }
  
-+static inline void arch_flush_lazy_mmu_mode(void)
-+{
-+	struct ppc64_tlb_batch *batch;
-+
-+	batch = this_cpu_ptr(&ppc64_tlb_batch);
-+
-+	if (batch->index)
-+		__flush_tlb_pending(batch);
+-void arch_leave_lazy_mmu_mode(void)
++void arch_flush_lazy_mmu_mode(void)
+ {
+ 	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
+ 
+ 	if (tb->tlb_nr)
+ 		flush_tlb_pending();
 +}
 +
- static inline void arch_leave_lazy_mmu_mode(void)
- {
- 	struct ppc64_tlb_batch *batch;
-@@ -49,14 +59,11 @@ static inline void arch_leave_lazy_mmu_mode(void)
- 		return;
- 	batch = this_cpu_ptr(&ppc64_tlb_batch);
- 
--	if (batch->index)
--		__flush_tlb_pending(batch);
++void arch_leave_lazy_mmu_mode(void)
++{
++	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
++
 +	arch_flush_lazy_mmu_mode();
- 	batch->active = 0;
+ 	tb->active = 0;
  	preempt_enable();
  }
- 
--#define arch_flush_lazy_mmu_mode()      do {} while (0)
--
- extern void hash__tlbiel_all(unsigned int action);
- 
- extern void flush_hash_page(unsigned long vpn, real_pte_t pte, int psize,
 -- 
 2.47.0
 
