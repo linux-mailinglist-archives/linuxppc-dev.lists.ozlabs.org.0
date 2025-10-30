@@ -1,71 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-13554-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13555-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F15CC200E9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Oct 2025 13:40:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62EFEC20433
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Oct 2025 14:36:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cy3cB2Y2Lz30V1;
-	Thu, 30 Oct 2025 23:40:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cy4rZ1QtXz30V1;
+	Fri, 31 Oct 2025 00:36:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761828026;
-	cv=none; b=LeIZ1HBKMjTOpuKGg+x43KatBcO2lDHBt2YFt44CPMoeSvhJmrm4KFaiLBiHzn8mhUvjKzmF9FRrJ8ookXPPkNRrFJZhYqwsFSbbdz4Ur81S8sRQjCGjJDtpBZelL+tO/tTT0zGBeGfT5nRMM4b18yDibYqhOnJx8zcBN9UWj7Yjs3TO1jXzS9ynSVqw+nCaBAoRKjupgJXuwYg1f/Hnkl0WvewcEMI2fAqXDHcyLFO2psZZ/zJH335+NaQuhyxqsHqGnYflwvyCBmmJDOHlvHSBf+3YEOzNSOlLwPAxTT9n8i1+8R0E4NEMGuUDCHwbs6bCZY2H6aIqavSP+unHdQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761831374;
+	cv=none; b=LR0kLQ44V+AXN657rpMDewDiqvXWZQqA3KAw9UvL6qofQyluUyvj3V7x/ZWa72jghymFKtaKsh+DhgxD9tAzR8dWH/TcQHZNBhXyU96zDz5mUMZ8XihGoRnTc6i4Wx9M9EheopckEf6ebKkX/s3a+u9Q9Lq/LjlgDhky7yB7JcO6hNrtWKIzQqj65V5L40rJo/7xAleEYGKKybjuthvAZR8gnCuFtkcqshEYArijF5o4t5x6cmqCGyUmdxRhIYYnTHeESOey9KCE1Es+/5XShaoWPcc3hBPZj7gysLSTs3I6D5cr0/amNAe6apPrMJRSfEA+Rc4D3UaipmAyycdHBg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761828026; c=relaxed/relaxed;
-	bh=8r2Luk2NHJWKvIX+RnBPPSWak+4eqo0ePowxoc98Skk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YUn8Q6zhcPygnnNajFcR758EvyKFZEdINB+TdmNutLt+oBJGdK7p3K+TAV0JM0Ym930D3dhX0NKFiC0XdktEHRNIdAXEtjGRQ4k6T2yf7Q/EhNHzrUo8jFFkdRdqjO0bfW7D7iwaPZQgoUeJe+CiiPY63VzFxvJ/MAZ8G0vlVEEajX6RnPgF3+aMF4xQvKBoH7u/rwISRGzK7nKh06qelBVbV3O/DdaCRTEC4+wQbCguqwzM4eWnpNCfp9DjWWFi+2/Eb4+5IcHM7N5qoCyKxZ0R6qGemDHdqhzGgEYJFrF8vl3U9caFIx8NUpGPJckZddbRwNyMzC0gTZ9x3y8iQA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Iab3et7Y; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1761831374; c=relaxed/relaxed;
+	bh=xhRXZRwTf8Wfm4C/x1JXmtSa/La+hRIdRb6fxoCgqmI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BdPqSP+F34L8c7fHwA2l4BoOGfBiTozq/JgxvUv2fE+g/B2PDk8cMzl7aDootby/gEtVPUJ2W9/qkF6VcVmNpK3nTVrxz4VqGHIw+OVlz4cJ06D1/s2LkJdSZcrX0MOeQOjlJ0mfdLHrZLXjyQgZUexi57rCiN9BumP4R/hipYHrZ9jokTLVY23OEAAN//WPkX1kyQnMrDhyyhLfLNH2ef8CEO4jUCeOCQ8YCt67DI8W/xz/nS1j9CqQolfs2lE0kdx5iUsTKBP4k1+ma8uVO/pGD0smP8fGT/5z4UGz8RXKhXAcfF0eBKWtIa2Fk+DVElEfAVMmaNenu2K2X0ofQQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Mo4w8M+z; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Iab3et7Y;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Mo4w8M+z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cy3c90978z2yrX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 23:40:24 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59TM1ATb019585;
-	Thu, 30 Oct 2025 12:40:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=8r2Luk
-	2NHJWKvIX+RnBPPSWak+4eqo0ePowxoc98Skk=; b=Iab3et7YKOKkc/REPq2Rbc
-	Jk2IN/YpmnVrc2tX2+KzSMymuMH6xZRrKtdT9jZLrwY59xEtwnHK5BWbA1czTpNn
-	0XbOclrFdp82iRcq1dgkmRsSVKDg7gPHSNJ/CMVYN8FxFRPiAj+M3+lDOQ7SAoK0
-	zW/Wh1esLdUxHLtHRogzJNJZ/qj/9EFGd2seCO9LD7tzPS83xyIPi8Jz49lAw4io
-	2LlOxx0ALb8jiJqNDb3Ywxwxo+eo5yAD1oVP/OLVkoOkNj4VwrU86vQd3X0Nw7u4
-	rJNSEDkeetUjDKPHuAlD6eMOMoOW9T+0hKOkjmUsqS2IdlGsEc2HmLJO90DWRCsg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34agr4rp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Oct 2025 12:40:11 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59U9h6CV018751;
-	Thu, 30 Oct 2025 12:40:10 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a33xwgmfq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Oct 2025 12:40:10 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59UCe7nL57016662
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Oct 2025 12:40:07 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4819920043;
-	Thu, 30 Oct 2025 12:40:07 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6DE7C20040;
-	Thu, 30 Oct 2025 12:40:05 +0000 (GMT)
-Received: from [9.43.108.211] (unknown [9.43.108.211])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 30 Oct 2025 12:40:05 +0000 (GMT)
-Message-ID: <7f461974-7fdd-422f-b4fe-e65af50b0728@linux.ibm.com>
-Date: Thu, 30 Oct 2025 18:09:54 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cy4rR0fL6z2ySP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 00:36:07 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DE45445C5C
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 13:36:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FF9C4AF09
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 13:36:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761831364;
+	bh=946tCSyfwkcJEZIYbJYPYmAWxgbWBFpGqs507Chemqs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Mo4w8M+zoG7x4VSKBHFBlkcNbJr8yuOPcibcxBBGoKKL/xxYP6SoTzLLo4MNs3B3W
+	 LXBRGiqiBcuymn4pvOVdEzE+RhAUAEeSzEzaMVgkWQfQdcCqM8chFRdyPlB8uyQjhI
+	 Sy04DC7qmGww/ewmG6nPtqVrjY2mNjujRFnNwL7bqfm0FwXXsFy8N/4MjZzNCTEKM6
+	 AH9cxSZFPyaoQjhLwB8gKrOvY8VBqCrViJzhsfAiHRlbe8Pd48ohtXcde5WYc+J+Ks
+	 xtnvYufRNIqRkyzqUNQQ8FGGMaRxPzAYxs8fhTOpNjbPwsbTzNyqAjyH/iSW6qfl8l
+	 9rr9LsibKVXjw==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-37a17d470dfso2742861fa.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 06:36:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUD5Vp2xRmYItJMOv1L97m6EYyt0sm7XxbmI3w4Ld/zDpCOPIboCEBfXj7UK/XiqdZOfQ4oNnryAtwZ97Q=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxRSlVePxIHlvzTGBh2ySwUNXyUGDfBW6JEkc7m8eRsLrAUSHuv
+	GucSX+ORWICgdY4zkknYBAsKKBgltN93SWwvXE1av/KwHlFF2n6BSUQlW9hElDQDZbHDtRhLdHd
+	Jwzz4lb83+/cVrD2TKmTq3/tKOIyfbG0=
+X-Google-Smtp-Source: AGHT+IHPsQ63GACF+WTAXoqOco8sKMg1RRh6aHz0Br4Fnz15qbhOtOELzGrlJEWp65H1oXl/2WnpIpMcc/ndPgk67GM=
+X-Received: by 2002:a2e:9e56:0:b0:376:30c5:66ef with SMTP id
+ 38308e7fff4ca-37a1094a526mr7884761fa.16.1761831362808; Thu, 30 Oct 2025
+ 06:36:02 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,169 +66,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [next-20251022] Kernel Boot Warnings at
- arch/powerpc/kernel/trace/ftrace.c:234
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>, joe.lawrence@redhat.com,
-        Naveen N Rao <naveen@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>
-References: <72469502-ca37-4287-90b9-a751cecc498c@linux.ibm.com>
- <cdf7c458-b28f-4657-8708-1f820369baa6@linux.ibm.com>
- <aPjW3P2AU7L71S-s@pathway.suse.cz>
- <ee9aaeec-23bf-42ac-8a8d-4ba899cfdd13@linux.ibm.com>
- <aPnxlEkV1rL0hWOm@pathway.suse.cz>
- <875b21ae-c30f-4dff-bef2-e41965013416@linux.ibm.com>
- <wxqithrj3vvgbefr7d7afv5vcnuu2ssuzrw6fqtmdjtq3ete3j@pfsgyacqjama>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <wxqithrj3vvgbefr7d7afv5vcnuu2ssuzrw6fqtmdjtq3ete3j@pfsgyacqjama>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=K+gv3iWI c=1 sm=1 tr=0 ts=69035cab cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=0Gqk-NYDlX5IHisLGrAA:9 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: 4fLOi9r2Zk4hTCA0MNtVNFeycqIoPwlj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX/ahDmW26sAB0
- jX6wAbsomBIx+sDAbMb0FEmH0srkrVA7j47h76+uY4d4fScZG8yMRFYUvJkhcJqxXoDR+WpoPrs
- PnbIbCuq4bZZWtzqGw1A0P+XgwJFb653q70I4zPFcdwyltiMzYszc590Go+57j+E1sn4WtalmS9
- GT0fOeOZtBKDYqCM7/RZUrocPLx/YWgpSPGuqEpcqQ/uk6VRbIBhec9lztf9+1e3e+RMx9a+6Qp
- 0WvGA3VGmiHiyqFZr2VYTrJMtpiDLzI5YvigBBMVAF+R1BPkjG22ml86T/FqL0SRGWXCi/gmXsl
- 46qxj69gFaJAjtwQLrLMIQD4vXmq+3HQf4QlZUQZfND+8cllU1foiUw2Dm7tDQkTvoxLKfC/y6O
- Xe1C6F6T9v0FHzgEpjMIePv3FBcUOg==
-X-Proofpoint-GUID: 4fLOi9r2Zk4hTCA0MNtVNFeycqIoPwlj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-10-30_03,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
- adultscore=0 clxscore=1015 malwarescore=0 phishscore=0 spamscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2510280166
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+ <20251028004614.393374-23-viro@zeniv.linux.org.uk> <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
+ <20251028174540.GN2441659@ZenIV> <20251028210805.GP2441659@ZenIV>
+ <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+ <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com> <20251029193755.GU2441659@ZenIV>
+In-Reply-To: <20251029193755.GU2441659@ZenIV>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 30 Oct 2025 14:35:51 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
+X-Gm-Features: AWmQ_bm2LrdVSSm_iuRDZ6ti_gfIvNqTw5CQZuyqzyGspRRRkaM_-X7LCT9AH9Q
+Message-ID: <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
+Subject: Re: [PATCH v2 22/50] convert efivarfs
+To: Al Viro <viro@zeniv.linux.org.uk>, 
+	James Bottomley <james.bottomley@hansenpartnership.com>, brauner@kernel.org
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, jack@suse.cz, 
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, 
+	linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
+	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org, 
+	linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com, 
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Josh,
+On Wed, 29 Oct 2025 at 20:38, Al Viro <viro@zeniv.linux.org.uk> wrote:
+>
+> On Wed, Oct 29, 2025 at 02:57:51PM -0400, James Bottomley wrote:
+>
+> > I think this all looks OK.  The reason for the convolution is that
+> > simple_start/done_creating() didn't exist when I did the conversion ...
+> > although if they had, I'm not sure I'd have thought of reworking
+> > efivarfs_create_dentry to use them.  I tried to update some redundant
+> > bits, but it wasn't the focus of what I was trying to fix.
+> >
+> > So I think the cleanup works and looks nice.
+> >
+> > >
+> > > Relying on the -EEXIST return value to detect duplicates, and
+> > > combining the two callbacks seem like neat optimizations to me, so
+> > >
+> > > Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> > >
+> > > but I have to confess I am slightly out of my depth when it comes to
+> > > VFS stuff.
+> >
+> > Yes, ack too.
+>
+>         Umm...  FWIW, I've got a few more followups on top of that (see
+> #untested.efivarfs, current head at 36051c773015).  Not sure what would
+> be the best way to deal with that stuff - I hope to get the main series
+> stabilized and merged in the coming window.  Right now I'm collecting
+> feedback (acked-by, etc.), and there's a couple of outright bugfixes
+> in front of the series, so I'd expect at least a rebase to -rc4...
+>
 
-On 30/10/25 7:36 am, Josh Poimboeuf wrote:
-> On Wed, Oct 29, 2025 at 11:42:54PM +0530, Hari Bathini wrote:
->> Hi Petr,
->> On 23/10/25 2:42 pm, Petr Mladek wrote:
->>> On Wed 2025-10-22 19:56:45, Venkat Rao Bagalkote wrote:
->>>>
->>>> On 22/10/25 6:36 pm, Petr Mladek wrote:
->>>>> On Wed 2025-10-22 17:36:18, Venkat Rao Bagalkote wrote:
->>>>>> On 22/10/25 1:52 pm, Venkat Rao Bagalkote wrote:
->>>>>>> Greetings!!!
->>>>>>>
->>>>>>>
->>>>>>> IBM CI has reported kernel boot warnings with next-20251022 kernel. I
->>>>>>> see there are couple of warnings hit and eventually system boots to
->>>>>>> emergency mode.
->>>>>>>
->>>>>>>
->>>>>> With the identified first bad commit, is casuing the kernel to boot to
->>>>>> emergency mode. I reverted the bad commit and built the kernel, then kernel
->>>>>> is booting fine, but with boot warnings.
->>>>> I guess that it is the same problem which should get fixed by the patch
->>>>> https://lore.kernel.org/r/e52ee3edf32874da645a9e037a7d77c69893a22a.1760982784.git.jpoimboe@kernel.org
->>>>
->>>>
->>>> Thank you Petr, for pointing to the fix patch. It fixes the kernel booting
->>>> to emergency mode.
->>>
->>> Great.
->>>
->>>> But boot warning still persists.
->>>
->>> I looks like another problem. I would expect that it is in
->>> the ftrace code, either in the generic or arch-specific part.
->> Yeah. This is part of arch-specific code that does init of ftrace
->> out line stubs. The problem seems to be since commit 1ba9f8979426
->> ("vmlinux.lds: Unify TEXT_MAIN, DATA_MAIN, and related macros").
->> Before this commit, .text.startup section was featured in INIT_TEXT
->> but now it seems to feature in TEXT. Is this change right/intentional?
->> If yes, I can post a fix patch in ftrace arch-specific code accordingly.
-> 
-> Ah, I wasn't aware of .text.startup.  Apparently it's used by KASAN,
-> KCSCAN and GCOV for a significant amount of constructor code, which is
-> only called during boot.  So we should try to keep it in .init.text.
-> 
-> Venkat, does this fix it?
+I pulled your code and tried to test it. It works fine for the
+ordinary case, but only now I realized that commit
 
-I tried the patch along with
-https://lore.kernel.org/r/e52ee3edf32874da645a9e037a7d77c69893a22a.1760982784.git.jpoimboe@kernel.org
-It fixes the problems reported. Thanks!
+commit 0e4f9483959b785f65a36120bb0e4cf1407e492c
+Author: Christian Brauner <brauner@kernel.org>
+Date:   Mon Mar 31 14:42:12 2025 +0200
 
-> 
-> diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-> index 5facbc9946344..9de1d900fa154 100644
-> --- a/include/asm-generic/vmlinux.lds.h
-> +++ b/include/asm-generic/vmlinux.lds.h
-> @@ -88,13 +88,29 @@
->   
->   /*
->    * Support -ffunction-sections by matching .text and .text.*,
-> - * but exclude '.text..*'.
-> + * but exclude '.text..*', .text.startup[.*], and .text.exit[.*].
->    *
-> - * Special .text.* sections that are typically grouped separately, such as
-> + * .text.startup and .text.startup.* are matched later by INIT_TEXT.
-> + * .text.exit and .text.exit.* are matched later by EXIT_TEXT.
-> + *
-> + * Other .text.* sections that are typically grouped separately, such as
->    * .text.unlikely or .text.hot, must be matched explicitly before using
->    * TEXT_MAIN.
->    */
-> -#define TEXT_MAIN .text .text.[0-9a-zA-Z_]*
-> +#define TEXT_MAIN							\
-> +	.text								\
-> +	.text.[_0-9A-Za-df-rt-z]*					\
-> +	.text.s[_0-9A-Za-su-z]*						\
-> +	.text.st[_0-9A-Zb-z]*						\
-> +	.text.sta[_0-9A-Za-qs-z]*					\
-> +	.text.star[_0-9A-Za-su-z]*					\
-> +	.text.start[_0-9A-Za-tv-z]*					\
-> +	.text.startu[_0-9A-Za-oq-z]*					\
-> +	.text.startup[_0-9A-Za-z]*					\
-> +	.text.e[_0-9A-Za-wy-z]*						\
-> +	.text.ex[_0-9A-Za-hj-z]*					\
-> +	.text.exi[_0-9A-Za-su-z]*					\
-> +	.text.exit[_0-9A-Za-z]*
->   
->   /*
->    * Support -fdata-sections by matching .data, .data.*, and others,
-> @@ -713,16 +729,16 @@
->   
->   #define INIT_TEXT							\
->   	*(.init.text .init.text.*)					\
-> -	*(.text.startup)
-> +	*(.text.startup .text.startup.*)
->   
->   #define EXIT_DATA							\
->   	*(.exit.data .exit.data.*)					\
->   	*(.fini_array .fini_array.*)					\
-> -	*(.dtors .dtors.*)						\
-> +	*(.dtors .dtors.*)
->   
->   #define EXIT_TEXT							\
->   	*(.exit.text)							\
-> -	*(.text.exit)							\
-> +	*(.text.exit .text.exit.*)
->   
->   #define EXIT_CALL							\
->   	*(.exitcall.exit)
-> 
+    efivarfs: support freeze/thaw
 
+actually broke James's implementation of the post-resume sync with the
+underlying variable store.
+
+So I wonder what the point is of all this complexity if it does not
+work for the use case where it is the most important, i.e., resume
+from hibernation, where the system goes through an ordinary cold boot
+and so the EFI variable store may have gotten out of sync with the
+hibernated kernel's view of it.
+
+If no freeze/thaw support in the suspend/resume path is forthcoming,
+would it be better to just revert that change? That would badly
+conflict with your changes, though, so I'd like to resolve this before
+going further down this path.
+
+
+I did need to apply a fixup to get the revert to compile:
+
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -412,8 +412,7 @@
+ {
+        unsigned long size;
+        struct efivarfs_ctx *ectx = container_of(ctx, struct efivarfs_ctx, ctx);
+-       struct qstr qstr = { .name = name, .len = len };
+-       struct dentry *dentry = d_hash_and_lookup(ectx->sb->s_root, &qstr);
++       struct dentry *dentry = try_lookup_noperm(&QSTR_LEN(name,
+len), ectx->sb->s_root);
+        struct inode *inode;
+        struct efivar_entry *entry;
+        int err;
 
