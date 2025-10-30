@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-13588-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13589-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59DEC2225A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Oct 2025 21:12:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD2CC22260
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Oct 2025 21:12:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cyFbd2cYNz2yjw;
-	Fri, 31 Oct 2025 07:10:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cyFbg5Z8Xz3f1W;
+	Fri, 31 Oct 2025 07:10:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761855037;
-	cv=none; b=m8FXWiNybF/nLHDwZdkfTqf1nE1YHhVBjYeO3CLcBlQitJc6QfTsl8tVII/LWL4cF1oOoEQmn5xFq73F9KCNwWnvrFV/gJoead75rTTmwiE9hYwanfmR2hWnF563c8zGk8wfegC4VFb2hZUL7fARJCBr7lsb89lKf3zeakvixVNxXa5XU1Tfl1jy4q30BG17GF8786+SelRv3zPCJLJprerShXrhdVriQTSHoUD76vZdzacazXjztzUAoOf7y3w1bKGi7uWuv6Fn9cXEmMtAwQOSpOHSBaW+rph1m2CtGijOKFmZseYZMSxGAJenmV3PGwMUOTalBmXbw9L0eeZoqg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761855039;
+	cv=none; b=mGY7YHpr1o0FjvAJwytIdLvN5RxbdDh9/klyxHk+HyVrfQlh+LMDDCwhLO/mW2+qlIL2edCKimDWZUj3tJ686/JgvZO5mZn9x/I6acWjJQLfGuZNOlBL9nWRryJ239UvpaF9i+O+x3gXIwhcwXxRNDfXHY/TWFkTwi1fDD/LgOmMMP64Trw6N+yy8Vt5mXVaGpn3fvaf5D5N29zHpxpSfP90QhbRxkD1RrL/1kyQp7ToFt9iF4D//dE+hu7YneeODVhxkjMa/ieIypBhOhp9lOd7bfwse55uF7c2PuLWnq2Ham4Cc9RSd+E+D7pCDB4a69p2cFTFmOYMpPy/LT62tQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761855037; c=relaxed/relaxed;
-	bh=2Qp65v2XVpj2mbgYoCIcn74lwhNS3G3VX8VrR6k2zs8=;
+	t=1761855039; c=relaxed/relaxed;
+	bh=/Z7Z4VCKxvbeclMBJpiAZWPr8rGnQCyDletBZbiKOLg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ad7Joyi/cLN09nJBGyjLP/aeCQ8m9RKho+awrEPaMWPbM7KFlmcNj+IytLqZ9p3Ptg8YAAO/jf8k+vLY2w5zzr834u1MNYk0Yjz1Rdatmt3cgnZn7+XJlm7Z5socEN66qYKHgktTA0GoFR4C7c8Nd8qEtUBHxMLM5C5jwE2eqtFrSOiUijL76u1OIEnY/mlF1wekk9PTyTh2Ri/7CS1BMMx99tZg5XfHORzzaFPgRcYeNUCAEIm/VvIXs+Xf9M7c5RKseNms4rS7QpUfDUkrE5w0slj6xBYwxGKYVss6rkwLopJ49N/WoJByCvVVmQLdg8ODj5hj82/oj0u8gAhZgA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=BgLlX+hW; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3osydaqykdcutfbokdhpphmf.dpnmjovyqqd-efwmjtut.pambct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=FtFKD0Ie96hSnm/tzi4GxxFbRb7e/4DIi/Fnm7s8iDRfPk9nlsfnCSpwe12AyMwaXG8kOIqSP/MbrQDaR06f+Yb0JCICDshJdqLZnJTMyozszDYyw7x18JjMa+70NeldB8tR9ZHGkkGqCnbChK6f1Yu7bsLgymOajmiNJkWYypitoZUfGfX64kfRN8kjY1I0aJw4vLKeoTk0P+us1rtYZ8k/k5pET6XPtt4gpLi/DM18LzsN/72i3i3T8YjKRW1IJOkQ/zDgWG0/z/aP4QY9PKAlqvpAsmn/w/znUEtVeZNtS0lKdBSV3mu6OJv4qU3F3uyax1J4IX05HZWTo0QSuA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Je/hOxYL; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3pcydaqykdcgwierngksskpi.gsqpmrybttg-hizpmwxw.sdpefw.svk@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=BgLlX+hW;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Je/hOxYL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3osydaqykdcutfbokdhpphmf.dpnmjovyqqd-efwmjtut.pambct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3pcydaqykdcgwierngksskpi.gsqpmrybttg-hizpmwxw.sdpefw.svk@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyFbc3TL3z2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 07:10:36 +1100 (AEDT)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-3406aa44a1dso1645065a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 13:10:36 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyFbf6hvTz3f1V
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 07:10:38 +1100 (AEDT)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-3408d2c733cso57675a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 13:10:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761855035; x=1762459835; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1761855037; x=1762459837; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Qp65v2XVpj2mbgYoCIcn74lwhNS3G3VX8VrR6k2zs8=;
-        b=BgLlX+hWQGu2SFnx0nN1vrb8woEFXXtih2UTr5P1nymWU7HRC3PL+GmQdk/sfNOIxl
-         VJefauDeTqWAeBm0oFQ0aoBCGkajTsXbtEQU6+q3XjeOPFBJhZycnU5XhO5dW6I9qoWS
-         a9VQvFAsRGuCaOvEhNibEjZVhhsYHaW/9dQKXKVjoTc12hkFKb9hYSoTos8U0okY5g/i
-         RdvIiLJXJ+PUmIOEIgI3cjc/vv7+goaujDLlIsc8FeYi9AsiHm3fs+8EMNzXzqyz9om2
-         Yh/XJcrfM5ZqDYs1ljcvH3s0KIy5isy5xhAaqgobqUAffcnQ+i/jk1pZzZvDTA5wZApq
-         PEkw==
+        bh=/Z7Z4VCKxvbeclMBJpiAZWPr8rGnQCyDletBZbiKOLg=;
+        b=Je/hOxYLT+gn+e8DRiKUSnjxZ9T65lRN9ATUAnu72efrhptmrnK1JKRkrPCBnK38Q7
+         04TmVZSVEtIo6wgCWsIADGMZj7DzRu7wcsFJju+V/Qtf9EakNDnmYL8vmzQHXYknoaj4
+         7lSeh27N9eufIvA43H0xIiytr7jYaLpVD34UAVXb4Bi/2WJuV7XPFq2hKG1Lt6YTeOzi
+         t9HB5Ev/q/uC9SzouaiZgLWeEjfMUivfdzDCOG8gLKbF0P5ve8U+COoTFlgDFPRc5Hcu
+         dgcVB0Z2mXSHxYPboLnTSn5TVGYyDHrJaGskV+5oVTRcccdtSGi6dzkjU3wURvClwHCj
+         IR+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761855035; x=1762459835;
+        d=1e100.net; s=20230601; t=1761855037; x=1762459837;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2Qp65v2XVpj2mbgYoCIcn74lwhNS3G3VX8VrR6k2zs8=;
-        b=ntsvwLQm5QKZoi8f0iSCwRh8jdC8WYYzmf7a95FZk32Bq6fXdgoS92z5Qeist+RHvd
-         VdeAULVfaDAoRm4BfyY/3snDz8t2WRjULI/j+YE3zTNnDSiIXyek4kXwto/6gUXb7Gc4
-         bCw71GlUYCVew4hH9HYdtgic9hwDC8Fjtasp2knGBiaiuAWMnuZFidCNFDumA9moKuzq
-         RBhlAnc7Xg3b96BeTGMyADSgZetdDNQJ1nFOHBvbsM1bY/VJGaKear1djKwcPxp1odjd
-         lG3hetTuZcj7280aCiwlPa1CpgRMemnt3L7o7nBP+RbGd5otjsL4BpZNXCP6ypCl44/b
-         urPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCLm7LKqM90EyqP6rUCrjISSl8ffGZtGWhdkC3vZiKQWjzk2oODwgwobkFkdbckd5mo4WCBn0UjNWP21w=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwkUhTbDwOEbscjW2k4gilgPhWF695ouMWFT+iR3P+pFdI65yPQ
-	EOrT0A5xSXELVC052oJrZQJHZL9M3H8HG33p9l52bYf3AE5Hd4AFnrTBLsWAp783lSnTIgMIv4z
-	GuBzPMw==
-X-Google-Smtp-Source: AGHT+IHtEBN2FzRvx/PBMIz+g6mN5JL6fejVbo3/Jj6z8BZ8mwuwi1S8UZTxug0dqnAA2vI1WFCMGP+gtTc=
-X-Received: from pjph23.prod.google.com ([2002:a17:90a:9c17:b0:340:2aef:8b01])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3842:b0:335:2eef:4ca8
- with SMTP id 98e67ed59e1d1-34083088cfamr1279023a91.33.1761855034597; Thu, 30
- Oct 2025 13:10:34 -0700 (PDT)
+        bh=/Z7Z4VCKxvbeclMBJpiAZWPr8rGnQCyDletBZbiKOLg=;
+        b=weerqxNn1+7StTcNQHKJn4Uyy7fn/GgrtQdkFTDGTavdDKIVPNqk04E8JQnjeXvpcn
+         w0gZFMdcuzkEFNCR+3LHmzHlJ2FJWeC1PTsRbE/3Ena27mweZwrokM/ZqFCoLAlEZIR/
+         0cmhtkdVoIdhwYzPIAc8h55URbNqPZiFgDanqOY1hbHG9rRjTImaquaVbLstVWW2G9HY
+         VKCg7XOz+DvFhCYENBsRHjVecUkJfyUZruPVOADm1tD4gKOed1h7AxO46ufLUu6u1PaG
+         EFBWwnHLpDi9ZResiY7a5GYBM17RZw33gV0TilSINt9JbRq2VF0aHjVn3ospmbIbQAWz
+         NZYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXS/W89caJrv9aRYkBBWNjYWM0PGifIqjr4i48JlDu447u/ixQLLZM2ofKQZ+p6/Nxx6VBqjuX3QXD28Ig=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz5rfS131ZelXk9nflkW/QEa0vvqlOlkxKIGQo9PDH1T54Zpn4W
+	DQxeJMI74lh9JjSCHzWPD/k62GAC2li/YqAOGpLuZLcV9RIAehGJ0EOixMxs8k4gURFgxko6jAv
+	whRRw8A==
+X-Google-Smtp-Source: AGHT+IGuQ9tseR+UxrPGQmatIE4dzuj8mufA6J/LivL787A5dSoSjpBpOEZB47eEhvzGXFTpSKaWylv+I0w=
+X-Received: from pjqx5.prod.google.com ([2002:a17:90a:b005:b0:32d:dbd4:5cf3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3141:b0:339:a323:30fe
+ with SMTP id 98e67ed59e1d1-34082fdc1a5mr1313871a91.14.1761855037257; Thu, 30
+ Oct 2025 13:10:37 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 30 Oct 2025 13:09:37 -0700
+Date: Thu, 30 Oct 2025 13:09:38 -0700
 In-Reply-To: <20251030200951.3402865-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -80,9 +80,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20251030200951.3402865-1-seanjc@google.com>
 X-Mailer: git-send-email 2.51.1.930.gacf6e81ea2-goog
-Message-ID: <20251030200951.3402865-15-seanjc@google.com>
-Subject: [PATCH v4 14/28] KVM: TDX: Use atomic64_dec_return() instead of a
- poor equivalent
+Message-ID: <20251030200951.3402865-16-seanjc@google.com>
+Subject: [PATCH v4 15/28] KVM: TDX: Fold tdx_mem_page_record_premap_cnt() into
+ its sole caller
 From: Sean Christopherson <seanjc@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
 	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
@@ -107,50 +107,96 @@ X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Use atomic64_dec_return() when decrementing the number of "pre-mapped"
-S-EPT pages to ensure that the count can't go negative without KVM
-noticing.  In theory, checking for '0' and then decrementing in a separate
-operation could miss a 0=>-1 transition.  In practice, such a condition is
-impossible because nr_premapped is protected by slots_lock, i.e. doesn't
-actually need to be an atomic (that wart will be addressed shortly).
+Fold tdx_mem_page_record_premap_cnt() into tdx_sept_set_private_spte() as
+providing a one-off helper for effectively three lines of code is at best a
+wash, and splitting the code makes the comment for smp_rmb()  _extremely_
+confusing as the comment talks about reading kvm->arch.pre_fault_allowed
+before kvm_tdx->state, but the immediately visible code does the exact
+opposite.
 
-Don't bother trying to keep the count non-negative, as the KVM_BUG_ON()
-ensures the VM is dead, i.e. there's no point in trying to limp along.
+Opportunistically rewrite the comments to more explicitly explain who is
+checking what, as well as _why_ the ordering matters.
+
+No functional change intended.
 
 Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/tdx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 49 ++++++++++++++++++------------------------
+ 1 file changed, 21 insertions(+), 28 deletions(-)
 
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index db64a9e8c6a5..99db19e02cf1 100644
+index 99db19e02cf1..a30471c972ba 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1726,10 +1726,9 @@ static int tdx_sept_zap_private_spte(struct kvm *kvm, gfn_t gfn,
- 		tdx_no_vcpus_enter_stop(kvm);
- 	}
- 	if (tdx_is_sept_zap_err_due_to_premap(kvm_tdx, err, entry, level)) {
--		if (KVM_BUG_ON(!atomic64_read(&kvm_tdx->nr_premapped), kvm))
-+		if (KVM_BUG_ON(atomic64_dec_return(&kvm_tdx->nr_premapped) < 0, kvm))
- 			return -EIO;
+@@ -1605,29 +1605,6 @@ static int tdx_mem_page_aug(struct kvm *kvm, gfn_t gfn,
+ 	return 0;
+ }
  
--		atomic64_dec(&kvm_tdx->nr_premapped);
- 		return 0;
- 	}
+-/*
+- * KVM_TDX_INIT_MEM_REGION calls kvm_gmem_populate() to map guest pages; the
+- * callback tdx_gmem_post_populate() then maps pages into private memory.
+- * through the a seamcall TDH.MEM.PAGE.ADD().  The SEAMCALL also requires the
+- * private EPT structures for the page to have been built before, which is
+- * done via kvm_tdp_map_page(). nr_premapped counts the number of pages that
+- * were added to the EPT structures but not added with TDH.MEM.PAGE.ADD().
+- * The counter has to be zero on KVM_TDX_FINALIZE_VM, to ensure that there
+- * are no half-initialized shared EPT pages.
+- */
+-static int tdx_mem_page_record_premap_cnt(struct kvm *kvm, gfn_t gfn,
+-					  enum pg_level level, kvm_pfn_t pfn)
+-{
+-	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+-
+-	if (KVM_BUG_ON(kvm->arch.pre_fault_allowed, kvm))
+-		return -EIO;
+-
+-	/* nr_premapped will be decreased when tdh_mem_page_add() is called. */
+-	atomic64_inc(&kvm_tdx->nr_premapped);
+-	return 0;
+-}
+-
+ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+ 				     enum pg_level level, u64 mirror_spte)
+ {
+@@ -1642,14 +1619,30 @@ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+ 		     (mirror_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
  
-@@ -3161,8 +3160,7 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 		goto out;
- 	}
+ 	/*
+-	 * Read 'pre_fault_allowed' before 'kvm_tdx->state'; see matching
+-	 * barrier in tdx_td_finalize().
++	 * Ensure pre_fault_allowed is read by kvm_arch_vcpu_pre_fault_memory()
++	 * before kvm_tdx->state.  Userspace must not be allowed to pre-fault
++	 * arbitrary memory until the initial memory image is finalized.  Pairs
++	 * with the smp_wmb() in tdx_td_finalize().
+ 	 */
+ 	smp_rmb();
+-	if (likely(kvm_tdx->state == TD_STATE_RUNNABLE))
+-		return tdx_mem_page_aug(kvm, gfn, level, pfn);
  
--	if (!KVM_BUG_ON(!atomic64_read(&kvm_tdx->nr_premapped), kvm))
--		atomic64_dec(&kvm_tdx->nr_premapped);
-+	KVM_BUG_ON(atomic64_dec_return(&kvm_tdx->nr_premapped) < 0, kvm);
+-	return tdx_mem_page_record_premap_cnt(kvm, gfn, level, pfn);
++	/*
++	 * If the TD isn't finalized/runnable, then userspace is initializing
++	 * the VM image via KVM_TDX_INIT_MEM_REGION.  Increment the number of
++	 * pages that need to be mapped and initialized via TDH.MEM.PAGE.ADD.
++	 * KVM_TDX_FINALIZE_VM checks the counter to ensure all pre-mapped
++	 * pages have been added to the image, to prevent running the TD with a
++	 * valid mapping in the mirror EPT, but not in the S-EPT.
++	 */
++	if (unlikely(kvm_tdx->state != TD_STATE_RUNNABLE)) {
++		if (KVM_BUG_ON(kvm->arch.pre_fault_allowed, kvm))
++			return -EIO;
++
++		atomic64_inc(&kvm_tdx->nr_premapped);
++		return 0;
++	}
++
++	return tdx_mem_page_aug(kvm, gfn, level, pfn);
+ }
  
- 	if (arg->flags & KVM_TDX_MEASURE_MEMORY_REGION) {
- 		for (i = 0; i < PAGE_SIZE; i += TDX_EXTENDMR_CHUNKSIZE) {
+ static int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn,
 -- 
 2.51.1.930.gacf6e81ea2-goog
 
