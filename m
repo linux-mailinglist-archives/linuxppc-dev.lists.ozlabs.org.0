@@ -1,88 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-13573-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13574-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A034C21B18
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Oct 2025 19:10:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C024BC22203
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Oct 2025 21:10:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cyBwX4lRCz2yG3;
-	Fri, 31 Oct 2025 05:10:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cyFb03yjsz2yjw;
+	Fri, 31 Oct 2025 07:10:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761847804;
-	cv=none; b=G2yU4cxw+jnGTezD7T09nAz9kZu+cgyPr4BTRwqih+vBop9fY04WLp47duBb698pe19/HiNbHjLHvhoKMvkWnP91CYO0sndqSBSILbfqonqjSby1I7/aGPeqmqA4fvGDKdx8cKvKoN0qu1WJfaVrCACsWF7vG/7PcV0BjRhxChBzSeH2tHJreMtGdy8EB5LJR4AzaSAl3rRb6G3wM6hAaTApZFRdxf8jubQemj+to9+5JzljwxORlESCuY8Qw6XIhRknXvlqhLorIPv+XI9z/Gvb4oDeqZVxBpCdLlnG7hD91609tf01KQQdu8lQhBFNELqWEi9Z7fLjmK22UPrsyw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761855004;
+	cv=none; b=Kz9co9Gl383X8mW2fyQ5fHtSD8u1C81DAm08TijF15lMFihpnwyvRQOkoMXUs6klPHYe9/BKIOJC8vdbe+hqmsL342FxLYSv6YyEwqUGAy3lO+8zedla0dRV4r8BhQUnAOmWqW7m6dIRlDP0VSPpUzy1or/ZevlTWjOHhOglUqcyvdCAD43Mca/tibFfOoVvrawaFVgIa0iIo2EcnX81no7wI8MMRA3AcZqb9wobM63FcZDxq6FIgptnM0E+jswW2k5+ov0Fv2TiskLKOf2AnKZsF8QrIm5nOxkTuf12xyx4Urrhmnd/q3AJEvKD6TArBrwJQp3B8XBC62XclNq2Sg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761847804; c=relaxed/relaxed;
-	bh=mctqRaSLMd7c2qit82j5QIoFnAfSUGLlal0MZ5uxEJc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l3gm/RRLd0oRpbzNc2GXG5wu9fQ2Lcl1I+96h+dMmfjGFsAF8SLTwLmpJJ25lwewSFqmim20sRIRaUjNSyGYsDZ4tOrHikJPAkQPf98azQPWKmiuHKkR1q6q1Fe0MmLnlfROj1wHabWoovPFPo8umjOyWiNkupUhS+XL40hsi5GqksAwdxwJ17uD9I5f0oLRgYsUpoyd38gRAovdaeW1eDBEYapaS55voZEqLjjtV/cTbx3ztzQsMA6T1w4qsm4vgkerxhF7ew+RFp+N5ZQze8etTRw8+leVRkl8/a3fzHPQtidUAfdyV6eapz/nQVknR7pGiXHloAymnDWAVw+UCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QOUNo9bu; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QOUNo9bu; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jstancek@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1761855004; c=relaxed/relaxed;
+	bh=zrcNX0WZe6UQQAW+Y1acRpaDavildHCqqfp5zf8UBT8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=PtajfOkjwl/fmrY8JHXMqe8VSlL7x0DeJigPFXDzBfI3I14NiuA26F08XfrkgUhEErgKT3QPvmxWQrvqqMz8ujySQRn2gu3jyNXmIQzwxm22ZxkwU5pzNJ7cSOMeB03ZZSHUdBZxGM/aVIOCDrJccC41dQvAxIr2sE73WyHqV+1OSjuOI5U7NLdXP2GjH+1CyGsxcVnGMEphV96fuI1BjSr4y9q1cfTwrdk1PEWlGQMeSRWb+IjHYQBqF0M625cemUB2oquHWXBMYAnvreNex1+ArSq3dD1AK8VR7aT9IHuyfTJfAdx38N3EqF8RymOa8fjSn/mNDIsl5Mtx9VBy+A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZQny7Lqf; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3fsydaqykdaetfbokdhpphmf.dpnmjovyqqd-efwmjtut.p0mbct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QOUNo9bu;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QOUNo9bu;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZQny7Lqf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jstancek@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3fsydaqykdaetfbokdhpphmf.dpnmjovyqqd-efwmjtut.p0mbct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyBwW0fFYz2xnh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 05:10:00 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761847793;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mctqRaSLMd7c2qit82j5QIoFnAfSUGLlal0MZ5uxEJc=;
-	b=QOUNo9buTxS2v2DWCZN6fLa9iuB+UHBVFBpgzcw8dMYzUmOl8+t2WphFT6Eg+hKQ08UL1g
-	nl3T+3+MvyivPecq0WmtYrpxFmtUaXQL+ypd1+VQbCkqs+84ckOdE/pHtHqykGgLOeIwyr
-	WQOv71f3G7OtA1JrVvquwsCSCpCOGo0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761847793;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mctqRaSLMd7c2qit82j5QIoFnAfSUGLlal0MZ5uxEJc=;
-	b=QOUNo9buTxS2v2DWCZN6fLa9iuB+UHBVFBpgzcw8dMYzUmOl8+t2WphFT6Eg+hKQ08UL1g
-	nl3T+3+MvyivPecq0WmtYrpxFmtUaXQL+ypd1+VQbCkqs+84ckOdE/pHtHqykGgLOeIwyr
-	WQOv71f3G7OtA1JrVvquwsCSCpCOGo0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-648-Yrq8xAtPM3af0beDPmJwdA-1; Thu, 30 Oct 2025 14:09:51 -0400
-X-MC-Unique: Yrq8xAtPM3af0beDPmJwdA-1
-X-Mimecast-MFC-AGG-ID: Yrq8xAtPM3af0beDPmJwdA_1761847790
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-429bd66fe65so196726f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 11:09:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761847790; x=1762452590;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyFZy4ZfSz2xC3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 07:10:01 +1100 (AEDT)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-340871b5d89so129411a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 13:10:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761854999; x=1762459799; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mctqRaSLMd7c2qit82j5QIoFnAfSUGLlal0MZ5uxEJc=;
-        b=XiKuiCmzbCwOR1oCOT984TtZJLpDldtlUFKxatPxHppgzpPcR82b844RdHLLQ4V0rj
-         JFmGD79rM4EpIOI1SeNqgfvg5gw+Ffh3PyDVVe+h6WqIQLhnC0+qyJOR7rndxXekyJyp
-         744zJi/RiboivqL+d1uWBOlMzzU8jQqH7FG3Tu2ICsedMBvqIReF7AH35CUax70tmFbW
-         Ko1XEMfAss5Yq7lxxKFQtdUdegfxZyxuMh0eoPkK5VQXgrhh9iJGHwJiDjh0XNTAM7BB
-         r7inFyxUubF7HQAYY8UVvDkyx3t0TWwk9ZdjgxwySZEm6Gc78hphHr6rdNrUlIopkBnF
-         joTA==
-X-Forwarded-Encrypted: i=1; AJvYcCVC62c6G3dUON5QC0shF8kfzZWVSddErQI051craXkT5VhZCI47BbEQ7MPFqglD2YaPjMqbfWHB5MZnU9s=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywo039S4nTXVA/8LAFWFEc5VR2eSEKyWDAm+5dmcHzLNR5Zp430
-	s1L0KHqB1axOTpJ/WOaR/f0RbzFKiKtX36iqaxWebnsX4WOq1kQirATU3qjb/np0bOBH1GPPF7z
-	SVP8vp/y4nH50fGKQzqMuZJJXhmJe0OQWgFTAzVX3buusYxlqcQItTVjaZJ38tXzYBI2LOk2xpp
-	OCl2ydSDLHTnn2zQnd4BkfOt1yDQJmmb3JfzSF+A2PkQ==
-X-Gm-Gg: ASbGnctFRZmGJuLfbf9OVxz/qWxazcyYPBMuxiV08xgwxCnweIRDFaUBaP2A9ZLMYoR
-	EdpYooqWQavSSbWFCZQJLLtW/KIUJ3NNmwyeJU7uqJ/fhdeVMDA3IapJDoE+N0N3wYGfMor+kpq
-	W65a4R3AKLvuRqJEXC3yrhSb+P2bRV3p7Z7LJQI/xGjE1G7cByi4Jt4w==
-X-Received: by 2002:a5d:588e:0:b0:428:5674:7a13 with SMTP id ffacd0b85a97d-429bd6adccamr491057f8f.36.1761847789664;
-        Thu, 30 Oct 2025 11:09:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGIVcwcrZLyKZAEVO6CsM/z7QkByVRb/zeVY0UBsbLqggacUkqCldcvMgAZwWM0uXZNWZCqwgsj/lVCgmiDrik=
-X-Received: by 2002:a5d:588e:0:b0:428:5674:7a13 with SMTP id
- ffacd0b85a97d-429bd6adccamr491032f8f.36.1761847789166; Thu, 30 Oct 2025
- 11:09:49 -0700 (PDT)
+        bh=zrcNX0WZe6UQQAW+Y1acRpaDavildHCqqfp5zf8UBT8=;
+        b=ZQny7Lqfcny1bos1AALcxi9kLnZYNomoNsOlmbj/yaK3yrhdgTuQtntRN6nFbYXexa
+         r9CAODYAAEcuKW4gDAubXXBb7R9LNl3kbitJdN7bcqWFt70dZXMG1n36oOW/N0xAmD+A
+         eSga7gtc2fzkbDr8IYyWzYLfpC1keXCnFaoSE2A+fM1a1oLl2rHf1pwCZB6fLnxg/1Vv
+         hY+2VMAWoDu+FgWddgOoHFwjaUR6kJfIPvL32Iy+Aa2i0ycVO7O29JMR6O7eNZcOyORV
+         4HZbfs3sd6JXkVoz4B7mrG0cY5O+kuLaZgxHyrvdS6z6PW1srSHozZLWOIlibxYz4995
+         5I8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761854999; x=1762459799;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zrcNX0WZe6UQQAW+Y1acRpaDavildHCqqfp5zf8UBT8=;
+        b=W9kTdMqHbP8XKw4zKgGWt+U+j3U6NfNLEiZIAr1G5Y2fg9bTv+kvtHpIcPyHbQMuCi
+         xxbPH7IkDIEP1BT5J0UQAW9+7PTaLFF+K+Vg4C8+/Cez0BxxdiiJrtPQ9fMDQ9/KpgEx
+         Z27wJv4D3Q6PAGsqEctvDvfv8aAFqUiJolNiPPD/iQTOz1/dk1Oj7f4V4KHzkbwK/FfL
+         oDsydedFQa8T9kgMunz6JNYLJSukchZFuz+2fZKvchtfHHXn8RGbCkQOnS04FRA/zn5F
+         WeSXvfdSp5RdTESZU6OUrGPm1G4aPVAwynV0YMxTOot7A/wK6MvGK/BzFXUCECcE9MCA
+         0Cgg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4lelwseCYs/cib2+j4LKXvfq5Vy0e3XY0q/w6pIfVmNGmEIBY7yCkqm9F3pnK1x5jCEcbC3hKOtKsa68=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy2JxuK+54iOixDcXxY0tzgaNEZojBT39/5JfSoJ+9+eWVh0bht
+	yHExzTlFsa87/k7POZVBq/5qYA0QGdIDHAae/RoauCUSRm5N8k8k0MiXpQZOpsya8euldkRjFNl
+	XIZTBNw==
+X-Google-Smtp-Source: AGHT+IHHZpNGbgjLGw+ZYpoCrFPTV304XH1EL6WE9wIH48O/1tSukWUG1dLDd7KIv/LOoUL3Sr92aGNZzYE=
+X-Received: from pjvp23.prod.google.com ([2002:a17:90a:df97:b0:339:e59f:e26])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d40c:b0:33b:b020:5968
+ with SMTP id 98e67ed59e1d1-34083071b1emr1223925a91.21.1761854998946; Thu, 30
+ Oct 2025 13:09:58 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 30 Oct 2025 13:09:23 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,111 +74,162 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-References: <cc6cdd116c3ad9d990df21f13c6d8e8a83815bbd.1758641374.git.jstancek@redhat.com>
- <CAFxkdApQVEqCjQMAUqy8cuKnMy8GY9j+brgPZBkxCpeGi5xHxA@mail.gmail.com>
-In-Reply-To: <CAFxkdApQVEqCjQMAUqy8cuKnMy8GY9j+brgPZBkxCpeGi5xHxA@mail.gmail.com>
-From: Jan Stancek <jstancek@redhat.com>
-Date: Thu, 30 Oct 2025 19:09:31 +0100
-X-Gm-Features: AWmQ_bmanZjZxYXwlDN92d79oco1q_2AvRPQQHVSh93R4vGkOq-pVqgD2FItu1g
-Message-ID: <CAASaF6zvFa-mPaPfKnBcerfVBkDt5B3TEn7P9jjAfentqSNmxQ@mail.gmail.com>
-Subject: Re: [PATCH RESEND] powerpc/tools: drop `-o pipefail` in gcc check scripts
-To: Justin Forbes <jforbes@fedoraproject.org>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, 
-	npiggin@gmail.com, christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org, 
-	joe.lawrence@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KTkerAUPZixGOVUys6ySGfKqZzyII9Pi28JycFMeas0_1761847790
-X-Mimecast-Originator: redhat.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.1.930.gacf6e81ea2-goog
+Message-ID: <20251030200951.3402865-1-seanjc@google.com>
+Subject: [PATCH v4 00/28] KVM: x86/mmu: TDX post-populate cleanups
+From: Sean Christopherson <seanjc@google.com>
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Michael Roth <michael.roth@amd.com>, Yan Zhao <yan.y.zhao@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Oct 6, 2025 at 10:19=E2=80=AFPM Justin Forbes <jforbes@fedoraprojec=
-t.org> wrote:
->
-> On Tue, Sep 23, 2025 at 9:31=E2=80=AFAM Jan Stancek <jstancek@redhat.com>=
- wrote:
-> >
-> > We've been observing rare non-deterministic kconfig failures during
-> > olddefconfig, where ARCH_USING_PATCHABLE_FUNCTION_ENTRY was getting
-> > disabled and with it number of other config options that depend on it.
-> >
-> > The reason is that gcc-check-fpatchable-function-entry.sh can fail
-> > if `grep -q` (or scripts/dummy-tools/gcc) is fast enough to exit while
-> > there is still someone writing on other side of pipe. `pipefail`
-> > propagates that error up to kconfig.
-> >
-> > This can be seen for example with:
-> >   # (set -e; set -o pipefail; yes | grep -q y); echo $?
-> >   141
-> >
-> > or by running the actual check script in loop extensively:
-> >   ----------------------------- 8< -------------------------------
-> >   function kconfig()
-> >   {
-> >     for i in `seq 1 100`; do
-> >       arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh \
-> >         ./scripts/dummy-tools/gcc -mlittle-endian \
-> >         || { echo "Oops"; exit 1; }
-> >     done
-> >   }
-> >
-> >   for ((i=3D0; i<$(nproc); i++)); do kconfig & done
-> >   wait; echo "Done"
-> >   ----------------------------- >8 -------------------------------
-> >
-> > Fixes: 0f71dcfb4aef ("powerpc/ftrace: Add support for -fpatchable-funct=
-ion-entry")
-> > Fixes: b71c9ffb1405 ("powerpc: Add arch/powerpc/tools directory")
-> > Reported-by: Joe Lawrence <joe.lawrence@redhat.com>
-> > Acked-by: Joe Lawrence <joe.lawrence@redhat.com>
-> > Signed-off-by: Jan Stancek <jstancek@redhat.com>
-> > ---
-> >  arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh | 1 -
-> >  arch/powerpc/tools/gcc-check-mprofile-kernel.sh           | 1 -
-> >  2 files changed, 2 deletions(-)
-> >
-> > diff --git a/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh =
-b/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
-> > index 06706903503b..baed467a016b 100755
-> > --- a/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
-> > +++ b/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
-> > @@ -2,7 +2,6 @@
-> >  # SPDX-License-Identifier: GPL-2.0
-> >
-> >  set -e
-> > -set -o pipefail
-> >
-> >  # To debug, uncomment the following line
-> >  # set -x
-> > diff --git a/arch/powerpc/tools/gcc-check-mprofile-kernel.sh b/arch/pow=
-erpc/tools/gcc-check-mprofile-kernel.sh
-> > index 73e331e7660e..6193b0ed0c77 100755
-> > --- a/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
-> > +++ b/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
-> > @@ -2,7 +2,6 @@
-> >  # SPDX-License-Identifier: GPL-2.0
-> >
-> >  set -e
-> > -set -o pipefail
-> >
-> >  # To debug, uncomment the following line
-> >  # set -x
-> > --
-> > 2.47.1
->
-> Would love to see this picked up, it fixes a problem we have run into
-> with our CI.
->
-> Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Non-x86 folks, as with v3, patches 1 and 2 are likely the only thing of
+interest here.  They make kvm_arch_vcpu_async_ioctl() mandatory and then
+rename it to kvm_arch_vcpu_unlocked_ioctl().
 
-Thanks Justin.
+As for the x86 side...
 
-Would any maintainers also care to review? Ty.
+Clean up the TDX post-populate paths (and many tangentially related paths) to
+address locking issues between gmem and TDX's post-populate hook[*], and
+within KVM itself (KVM doesn't ensure full mutual exclusivity between paths
+that for all intents and purposes the TDX-Module requires to be serialized).
+
+I apologize if I missed any trailers or feedback, I think I got everything...
+
+[*] http://lore.kernel.org/all/aG_pLUlHdYIZ2luh@google.com
+
+v4:
+ - Collect reviews/acks.
+ - Add a lockdep assertion in kvm_tdp_mmu_map_private_pfn(). [Yan]
+ - Wrap kvm_tdp_mmu_map_private_pfn() with CONFIG_KVM_GUEST_MEMFD=y. [test bot]
+ - Improve (or add) comments. [Kai, and probably others]
+ - s/spte/mirror_spte to make it clear what's being passed in
+ - Update set_external_spte() to take @mirror_spte as well. [Yan]
+ - Move the KVM_BUG_ON() on tdh_mr_extend() failure to the end. [Rick]
+ - Take "all" the locks in tdx_vm_ioctl(). [Kai]
+ - WARN if KVM attempts to map SPTEs into an invalid root. [Yan]
+ - Use tdx_flush_vp_on_cpu() instead of tdx_disassociate_vp() when freeing
+   a vCPU in VCPU_TD_STATE_UNINITIALIZED state. [Yan]
+
+v3:
+ - https://lore.kernel.org/all/20251017003244.186495-1-seanjc@google.com
+ - Collect more reviews.
+ - Add the async_ioctl() => unlocked_ioctl() patches, and use the "unlocked"
+   variant in the TDX vCPU sub-ioctls so they can take kvm->lock outside of
+   vcpu->mutex.
+ - Add a patch to document that vcpu->mutex is taken *outside* kvm->slots_lock.
+ - Add the tdx_vm_state_guard CLASS() to take kvm->lock, all vcpu->mutex locks,
+   and kvm->slots_lock, in order to make tdx_td_init(), tdx_td_finalize(),
+   tdx_vcpu_init_mem_region(), and tdx_vcpu_init() mutually exclusive with
+   each other, and mutually exclusvie with basically anything that can result
+   in contending one of the TDX-Module locks (can't remember which one).
+ - Refine the changelog for the "Drop PROVE_MMU=y" patch. [Binbin]
+
+v2:
+ - Collect a few reviews (and ignore some because the patches went away).
+   [Rick, Kai, Ira]
+ - Move TDH_MEM_PAGE_ADD under mmu_lock and drop nr_premapped. [Yan, Rick]
+ - Force max_level = PG_LEVEL_4K straightaway. [Yan]
+ - s/kvm_tdp_prefault_page/kvm_tdp_page_prefault. [Rick]
+ - Use Yan's version of "Say no to pinning!".  [Yan, Rick]
+ - Tidy up helpers and macros to reduce boilerplate and copy+pate code, and
+   to eliminate redundant/dead code (e.g. KVM_BUG_ON() the same error
+   multiple times).
+ - KVM_BUG_ON() if TDH_MR_EXTEND fails (I convinced myself it can't).
+
+v1: https://lore.kernel.org/all/20250827000522.4022426-1-seanjc@google.com
+
+
+Sean Christopherson (26):
+  KVM: Make support for kvm_arch_vcpu_async_ioctl() mandatory
+  KVM: Rename kvm_arch_vcpu_async_ioctl() to
+    kvm_arch_vcpu_unlocked_ioctl()
+  KVM: TDX: Drop PROVE_MMU=y sanity check on to-be-populated mappings
+  KVM: x86/mmu: Add dedicated API to map guest_memfd pfn into TDP MMU
+  KVM: x86/mmu: WARN if KVM attempts to map into an invalid TDP MMU root
+  Revert "KVM: x86/tdp_mmu: Add a helper function to walk down the TDP
+    MMU"
+  KVM: x86/mmu: Rename kvm_tdp_map_page() to kvm_tdp_page_prefault()
+  KVM: TDX: Return -EIO, not -EINVAL, on a KVM_BUG_ON() condition
+  KVM: TDX: Fold tdx_sept_drop_private_spte() into
+    tdx_sept_remove_private_spte()
+  KVM: x86/mmu: Drop the return code from
+    kvm_x86_ops.remove_external_spte()
+  KVM: TDX: WARN if mirror SPTE doesn't have full RWX when creating
+    S-EPT mapping
+  KVM: TDX: Avoid a double-KVM_BUG_ON() in tdx_sept_zap_private_spte()
+  KVM: TDX: Use atomic64_dec_return() instead of a poor equivalent
+  KVM: TDX: Fold tdx_mem_page_record_premap_cnt() into its sole caller
+  KVM: TDX: ADD pages to the TD image while populating mirror EPT
+    entries
+  KVM: TDX: Fold tdx_sept_zap_private_spte() into
+    tdx_sept_remove_private_spte()
+  KVM: TDX: Combine KVM_BUG_ON + pr_tdx_error() into TDX_BUG_ON()
+  KVM: TDX: Derive error argument names from the local variable names
+  KVM: TDX: Assert that mmu_lock is held for write when removing S-EPT
+    entries
+  KVM: TDX: Add macro to retry SEAMCALLs when forcing vCPUs out of guest
+  KVM: TDX: Add tdx_get_cmd() helper to get and validate sub-ioctl
+    command
+  KVM: TDX: Convert INIT_MEM_REGION and INIT_VCPU to "unlocked" vCPU
+    ioctl
+  KVM: TDX: Use guard() to acquire kvm->lock in tdx_vm_ioctl()
+  KVM: TDX: Don't copy "cmd" back to userspace for KVM_TDX_CAPABILITIES
+  KVM: TDX: Guard VM state transitions with "all" the locks
+  KVM: TDX: Bug the VM if extending the initial measurement fails
+
+Yan Zhao (2):
+  KVM: TDX: Drop superfluous page pinning in S-EPT management
+  KVM: TDX: Fix list_add corruption during vcpu_load()
+
+ arch/arm64/kvm/arm.c               |   6 +
+ arch/loongarch/kvm/Kconfig         |   1 -
+ arch/loongarch/kvm/vcpu.c          |   4 +-
+ arch/mips/kvm/Kconfig              |   1 -
+ arch/mips/kvm/mips.c               |   4 +-
+ arch/powerpc/kvm/Kconfig           |   1 -
+ arch/powerpc/kvm/powerpc.c         |   4 +-
+ arch/riscv/kvm/Kconfig             |   1 -
+ arch/riscv/kvm/vcpu.c              |   4 +-
+ arch/s390/kvm/Kconfig              |   1 -
+ arch/s390/kvm/kvm-s390.c           |   4 +-
+ arch/x86/include/asm/kvm-x86-ops.h |   1 +
+ arch/x86/include/asm/kvm_host.h    |   7 +-
+ arch/x86/kvm/mmu.h                 |   3 +-
+ arch/x86/kvm/mmu/mmu.c             |  87 +++-
+ arch/x86/kvm/mmu/tdp_mmu.c         |  50 +--
+ arch/x86/kvm/vmx/main.c            |   9 +
+ arch/x86/kvm/vmx/tdx.c             | 659 ++++++++++++++---------------
+ arch/x86/kvm/vmx/tdx.h             |   8 +-
+ arch/x86/kvm/vmx/x86_ops.h         |   1 +
+ arch/x86/kvm/x86.c                 |  13 +
+ include/linux/kvm_host.h           |  14 +-
+ virt/kvm/Kconfig                   |   3 -
+ virt/kvm/kvm_main.c                |   6 +-
+ 24 files changed, 468 insertions(+), 424 deletions(-)
+
+
+base-commit: 4cc167c50eb19d44ac7e204938724e685e3d8057
+-- 
+2.51.1.930.gacf6e81ea2-goog
 
 
