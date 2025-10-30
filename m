@@ -1,58 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-13555-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13556-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62EFEC20433
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Oct 2025 14:36:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A3AC20CA2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Oct 2025 15:59:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cy4rZ1QtXz30V1;
-	Fri, 31 Oct 2025 00:36:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cy6j94XLzz3btf;
+	Fri, 31 Oct 2025 01:59:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761831374;
-	cv=none; b=LR0kLQ44V+AXN657rpMDewDiqvXWZQqA3KAw9UvL6qofQyluUyvj3V7x/ZWa72jghymFKtaKsh+DhgxD9tAzR8dWH/TcQHZNBhXyU96zDz5mUMZ8XihGoRnTc6i4Wx9M9EheopckEf6ebKkX/s3a+u9Q9Lq/LjlgDhky7yB7JcO6hNrtWKIzQqj65V5L40rJo/7xAleEYGKKybjuthvAZR8gnCuFtkcqshEYArijF5o4t5x6cmqCGyUmdxRhIYYnTHeESOey9KCE1Es+/5XShaoWPcc3hBPZj7gysLSTs3I6D5cr0/amNAe6apPrMJRSfEA+Rc4D3UaipmAyycdHBg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761836397;
+	cv=none; b=SP88lJ1zGYbauO1G5h9oBXNqWoCEElEhK3jtKnXv6seXY2+rg5nXdhC1wid7MaDhB/02c8Dapvq5zxOjHGmNylwjXydC/KGh376ifu9XbwJmTqnu7WyxBHHPn+uvgffi2KL7LYyMp9PdBGrYsv3Q8IhC/WvOT2rEukAMIQINUAW70b8plv9MLerMUfU+6cj/MfV5AMPW/GLu+gOfX4Dtwf4sOVOuMU6wzdKK/BqsxDw5a238f+D2NkvzlnHUgox8nGXk6F4tI9keWCLavnD9eZiG6699A/8/3ZbOcSEFSWjb0p7HLupcxKehV0nmI4lkUFNCypOnXo18tkIa2RXMoA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761831374; c=relaxed/relaxed;
-	bh=xhRXZRwTf8Wfm4C/x1JXmtSa/La+hRIdRb6fxoCgqmI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BdPqSP+F34L8c7fHwA2l4BoOGfBiTozq/JgxvUv2fE+g/B2PDk8cMzl7aDootby/gEtVPUJ2W9/qkF6VcVmNpK3nTVrxz4VqGHIw+OVlz4cJ06D1/s2LkJdSZcrX0MOeQOjlJ0mfdLHrZLXjyQgZUexi57rCiN9BumP4R/hipYHrZ9jokTLVY23OEAAN//WPkX1kyQnMrDhyyhLfLNH2ef8CEO4jUCeOCQ8YCt67DI8W/xz/nS1j9CqQolfs2lE0kdx5iUsTKBP4k1+ma8uVO/pGD0smP8fGT/5z4UGz8RXKhXAcfF0eBKWtIa2Fk+DVElEfAVMmaNenu2K2X0ofQQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Mo4w8M+z; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1761836397; c=relaxed/relaxed;
+	bh=BRkdAW+Q7RPnHucSsDJRqWTnLPV2iv5eie2Z/QXpXTs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YFhxdH8j7xyZjUZK5H2y1UoR5Zty22pkkRg7WFgAGfFSgG664eXk0rF+jy8M3XiXDMqkGBed/QKcV1TXVW9FihJVL5WrzpTcHVAa2H3F3ieS5xbwWiJ5mwt9FHGs5lN6z9Rvy6B63QNO548t5T4h/1/3xTJL4UTmfbrmv02u9673OcGpfl7qH3LwH/MK801k5PTn6vXXMf6ox7LAEWXbjlFNyy699Wb/nNqK/KuR2InVQmq9sh55ICTsc32ISXIeqdI6bK/U+2pSdSWn1wom5GnqJHZ+o6l5ckHXslb7FuErmppfxIh0kSgXCtAbrobxa4GXtRgE8c/OJBz3qyt46Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NUO+PobO; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Mo4w8M+z;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NUO+PobO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cy4rR0fL6z2ySP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 00:36:07 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DE45445C5C
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 13:36:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FF9C4AF09
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 13:36:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761831364;
-	bh=946tCSyfwkcJEZIYbJYPYmAWxgbWBFpGqs507Chemqs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Mo4w8M+zoG7x4VSKBHFBlkcNbJr8yuOPcibcxBBGoKKL/xxYP6SoTzLLo4MNs3B3W
-	 LXBRGiqiBcuymn4pvOVdEzE+RhAUAEeSzEzaMVgkWQfQdcCqM8chFRdyPlB8uyQjhI
-	 Sy04DC7qmGww/ewmG6nPtqVrjY2mNjujRFnNwL7bqfm0FwXXsFy8N/4MjZzNCTEKM6
-	 AH9cxSZFPyaoQjhLwB8gKrOvY8VBqCrViJzhsfAiHRlbe8Pd48ohtXcde5WYc+J+Ks
-	 xtnvYufRNIqRkyzqUNQQ8FGGMaRxPzAYxs8fhTOpNjbPwsbTzNyqAjyH/iSW6qfl8l
-	 9rr9LsibKVXjw==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-37a17d470dfso2742861fa.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 06:36:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUD5Vp2xRmYItJMOv1L97m6EYyt0sm7XxbmI3w4Ld/zDpCOPIboCEBfXj7UK/XiqdZOfQ4oNnryAtwZ97Q=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxRSlVePxIHlvzTGBh2ySwUNXyUGDfBW6JEkc7m8eRsLrAUSHuv
-	GucSX+ORWICgdY4zkknYBAsKKBgltN93SWwvXE1av/KwHlFF2n6BSUQlW9hElDQDZbHDtRhLdHd
-	Jwzz4lb83+/cVrD2TKmTq3/tKOIyfbG0=
-X-Google-Smtp-Source: AGHT+IHPsQ63GACF+WTAXoqOco8sKMg1RRh6aHz0Br4Fnz15qbhOtOELzGrlJEWp65H1oXl/2WnpIpMcc/ndPgk67GM=
-X-Received: by 2002:a2e:9e56:0:b0:376:30c5:66ef with SMTP id
- 38308e7fff4ca-37a1094a526mr7884761fa.16.1761831362808; Thu, 30 Oct 2025
- 06:36:02 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cy6j86dJBz3bfQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 01:59:56 +1100 (AEDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-781010ff051so1030254b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 07:59:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761836394; x=1762441194; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BRkdAW+Q7RPnHucSsDJRqWTnLPV2iv5eie2Z/QXpXTs=;
+        b=NUO+PobONst02qkemwReK9KaLTJus3Dyer3LeKf2tSfDKP7DZlYYtZFtJFi1ErTdTy
+         wJZWULriHBvONR654qGic2EMFv0qQ81xRTFN7hhaoFtF/thUC2DmEjuFbArgDKpwBpOa
+         SBh8mk3WgONP4C2KQWGOJkxPZp951M5XnT9WBPCb33XQ5+WvQqhRkB4sXERKb082/GnA
+         ivkOjbOCqeBTdrvl/Ue/QCO21nA00faNYSuNxLKVEYzJfTDkMJsdLK7BJrMiOydE3U50
+         kT0o+DVicdGL5Ku+fcXnZPSExvxU8SXdTTm2At3DJPPG+ckcz5boDk19jY64DpJOHQxT
+         ZujQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761836394; x=1762441194;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BRkdAW+Q7RPnHucSsDJRqWTnLPV2iv5eie2Z/QXpXTs=;
+        b=Y28krWvcKYwQo1+tMmkFP6EC7qxb7/iOyE8VxBKdf8UdOJM8AfLFr169inKAT+4kNn
+         4JgPydZ6s6BQ3NhlVAc+xZ1eJEpIgmj++z1R6c7mTm+hAPO3TVIV3qSN+QvNiJrthLas
+         bgYkfa099OKKpYJfa33Y5pXzpT4t5zpw3YUySQMbDqU4RycRtxeGkrLbJpDJrUdSv31/
+         TLmdHcT9xUXP39nZU4PL8wGEZWd9QNuTGitQyfxC6LKdHn8RvLsoc6r3X15BrBPXoLfC
+         EqcdvjyOG1BMi28iCB9048nVwoT8/s5IsyAtwjdqjjqj1jWJZgL6q5IumEN0CSw+tGUg
+         2itQ==
+X-Gm-Message-State: AOJu0YxS5ltrDXU6C8wLzjBCtR2e4J0HiTFXKetVmk9qSDV78dKRvsWy
+	oFTl38VW1mJMbM8OR8eW8sWky5IEJZKKwvS1aCU0YDpSEwaI67ssbB9rYBKGMvYK
+X-Gm-Gg: ASbGncvrB1+1sImeBj/mh3eGEL2GKHjh/QtIgJ2jolej26JWzxfp6X+EntPxF/SRQuP
+	43wBh4NGCCp5yYjDXwnwXeMITl/NROoqgGH42VuUy/PlJg7lSQbvVhh6LNSN4V/Ada0e0Z6Dn+B
+	zaxDQ6RqH1zsYGKeDllvOM0DFPlsZCKeDx0394T6fkEeDEayYNNqce9qBsrjFVpWzcAjpPyW/fs
+	cs/iluW2b9uVo+lNVEzauBHyHlH/ex8VV3nJlL5l7FxdfbQlZW2AewMbnHHSwtnOiArhsuQNuJG
+	QqtA8/WS3n1GCLOmfjIatKAIJswEFJ1EeCZgY5JA6i4RhmKjI/mMcQ6V0ts2YOC1krGP7y3hzSR
+	0dUdkVVZmoASCKMIuMNDKpMxOptvD0GuYUmWzAieYTdKVt6/2xCThaCIz9g+uIy/N7KJLjg==
+X-Google-Smtp-Source: AGHT+IFFhpLuPHgSg37HN1GF5tns1A7b5QeI5XhKNT2T+PGhBTbv6IOnyRcLQr5PqDFj0UmOsVKEHA==
+X-Received: by 2002:a05:6a20:7d9f:b0:340:fce2:a15c with SMTP id adf61e73a8af0-3465145fb1bmr7363692637.9.1761836394335;
+        Thu, 30 Oct 2025 07:59:54 -0700 (PDT)
+Received: from dw-tp ([171.76.85.117])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a41404987esm18594112b3a.36.2025.10.30.07.59.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 07:59:53 -0700 (PDT)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Paul Mackerras <paulus@ozlabs.org>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Pavithra Prakash <pavrampu@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: [PATCH v2 00/11] powerpc/book3s64: Hash / SLB fixes & improvements
+Date: Thu, 30 Oct 2025 20:27:25 +0530
+Message-ID: <cover.1761834163.git.ritesh.list@gmail.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,101 +95,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
- <20251028004614.393374-23-viro@zeniv.linux.org.uk> <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
- <20251028174540.GN2441659@ZenIV> <20251028210805.GP2441659@ZenIV>
- <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
- <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com> <20251029193755.GU2441659@ZenIV>
-In-Reply-To: <20251029193755.GU2441659@ZenIV>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 30 Oct 2025 14:35:51 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
-X-Gm-Features: AWmQ_bm2LrdVSSm_iuRDZ6ti_gfIvNqTw5CQZuyqzyGspRRRkaM_-X7LCT9AH9Q
-Message-ID: <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
-Subject: Re: [PATCH v2 22/50] convert efivarfs
-To: Al Viro <viro@zeniv.linux.org.uk>, 
-	James Bottomley <james.bottomley@hansenpartnership.com>, brauner@kernel.org
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, jack@suse.cz, 
-	raven@themaw.net, miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, 
-	linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
-	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org, 
-	linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com, 
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 29 Oct 2025 at 20:38, Al Viro <viro@zeniv.linux.org.uk> wrote:
->
-> On Wed, Oct 29, 2025 at 02:57:51PM -0400, James Bottomley wrote:
->
-> > I think this all looks OK.  The reason for the convolution is that
-> > simple_start/done_creating() didn't exist when I did the conversion ...
-> > although if they had, I'm not sure I'd have thought of reworking
-> > efivarfs_create_dentry to use them.  I tried to update some redundant
-> > bits, but it wasn't the focus of what I was trying to fix.
-> >
-> > So I think the cleanup works and looks nice.
-> >
-> > >
-> > > Relying on the -EEXIST return value to detect duplicates, and
-> > > combining the two callbacks seem like neat optimizations to me, so
-> > >
-> > > Acked-by: Ard Biesheuvel <ardb@kernel.org>
-> > >
-> > > but I have to confess I am slightly out of my depth when it comes to
-> > > VFS stuff.
-> >
-> > Yes, ack too.
->
->         Umm...  FWIW, I've got a few more followups on top of that (see
-> #untested.efivarfs, current head at 36051c773015).  Not sure what would
-> be the best way to deal with that stuff - I hope to get the main series
-> stabilized and merged in the coming window.  Right now I'm collecting
-> feedback (acked-by, etc.), and there's a couple of outright bugfixes
-> in front of the series, so I'd expect at least a rebase to -rc4...
->
+Hello All,
 
-I pulled your code and tried to test it. It works fine for the
-ordinary case, but only now I realized that commit
+While working on slb multi-hit issue we identified few more fixes and
+improvements required for Hash / SLB code. This patch series is a result of
+that.
 
-commit 0e4f9483959b785f65a36120bb0e4cf1407e492c
-Author: Christian Brauner <brauner@kernel.org>
-Date:   Mon Mar 31 14:42:12 2025 +0200
+RFC -> v2:
+==========
+1. Addressed review comments from Christophe.
+2. Added PATCH [5-8] as improvements patches.
+3. Dropped the last patch which adds slb faults to vmstat counter.
+   I'd like to do some more testing of this internally first, and if it proves to
+   be really useful, I will send that patch separately later.
 
-    efivarfs: support freeze/thaw
+[RFC]: https://lore.kernel.org/linuxppc-dev/cover.1756522067.git.ritesh.list@gmail.com/
 
-actually broke James's implementation of the post-resume sync with the
-underlying variable store.
+Donet Tom (1):
+  powerpc/64s/slb: Fix SLB multihit issue during SLB preload
 
-So I wonder what the point is of all this complexity if it does not
-work for the use case where it is the most important, i.e., resume
-from hibernation, where the system goes through an ordinary cold boot
-and so the EFI variable store may have gotten out of sync with the
-hibernated kernel's view of it.
+Ritesh Harjani (IBM) (10):
+  powerpc/64s/hash: Restrict stress_hpt_struct memblock region to within RMA limit
+  powerpc/64s/ptdump: Fix kernel_hash_pagetable dump for ISA v3.00 HPTE format
+  powerpc/64s/hash: Fix phys_addr_t printf format in htab_initialize()
+  powerpc/64s/hash: Improve hash mmu printk messages
+  powerpc/64s/hash: Hash hpt_order should be only available with Hash MMU
+  powerpc/64s/hash: Update directMap page counters for Hash
+  powerpc/64s/pgtable: Enable directMap counters in meminfo for Hash
+  powerpc/ptdump: Dump PXX level info for kernel_page_tables
+  powerpc/64s/slb: Make preload_add return type as void
+  powerpc/64s/slb: Add no_slb_preload early cmdline param
 
-If no freeze/thaw support in the suspend/resume path is forthcoming,
-would it be better to just revert that change? That would badly
-conflict with your changes, though, so I'd like to resolve this before
-going further down this path.
+ .../admin-guide/kernel-parameters.txt         |   3 +
+ arch/powerpc/include/asm/book3s/64/mmu-hash.h |   1 -
+ arch/powerpc/kernel/process.c                 |   5 -
+ arch/powerpc/mm/book3s64/hash_utils.c         |  41 +++++--
+ arch/powerpc/mm/book3s64/internal.h           |   9 +-
+ arch/powerpc/mm/book3s64/mmu_context.c        |   2 -
+ arch/powerpc/mm/book3s64/pgtable.c            |  23 ++--
+ arch/powerpc/mm/book3s64/slb.c                | 109 +++---------------
+ arch/powerpc/mm/ptdump/8xx.c                  |   5 +
+ arch/powerpc/mm/ptdump/book3s64.c             |   5 +
+ arch/powerpc/mm/ptdump/hashpagetable.c        |   6 +
+ arch/powerpc/mm/ptdump/ptdump.c               |   1 +
+ arch/powerpc/mm/ptdump/ptdump.h               |   1 +
+ arch/powerpc/mm/ptdump/shared.c               |   5 +
+ 14 files changed, 93 insertions(+), 123 deletions(-)
 
+--
+2.51.0
 
-I did need to apply a fixup to get the revert to compile:
-
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -412,8 +412,7 @@
- {
-        unsigned long size;
-        struct efivarfs_ctx *ectx = container_of(ctx, struct efivarfs_ctx, ctx);
--       struct qstr qstr = { .name = name, .len = len };
--       struct dentry *dentry = d_hash_and_lookup(ectx->sb->s_root, &qstr);
-+       struct dentry *dentry = try_lookup_noperm(&QSTR_LEN(name,
-len), ectx->sb->s_root);
-        struct inode *inode;
-        struct efivar_entry *entry;
-        int err;
 
