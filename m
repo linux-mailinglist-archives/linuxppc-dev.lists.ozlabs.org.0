@@ -1,110 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-13571-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13572-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6B7C21358
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Oct 2025 17:34:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A69DC21894
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Oct 2025 18:43:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cy8pZ5yhnz30V1;
-	Fri, 31 Oct 2025 03:34:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cyBL325Dhz3btC;
+	Fri, 31 Oct 2025 04:43:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761842086;
-	cv=none; b=B1X5qXPBjHr6hTzohDwvzmF9KankPLs+BIwYuuZjucuaaNeT4HHKdaGwqNkirZTHmZ/wSok2nMtfZqfvDQ+sT+3g7eIqBixVo3iO5ehc7tX9RGxUeS+CCvCBlZeWNK0NqXT8lKq6Q2hmVuzn6s7TZHdIf5I2vEdZWRyw6MbAYwcjcySWq9Ykp0pOj2zCs0P+gDTh4BBXbWMWoOoYz7b1wBuoTA/V7VXybHex4zwJz2U1CVkoBekkgUFGz5TG32ELYBl23N/3uAYz869A0jA8DZ+jnW38cJ3R6f7NGxdYeP4U031wkWRmgB2Ne6sulqvccWEbIoxilV1wbyLLXTTE/w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761846219;
+	cv=none; b=k1k4kyLk1eZREXsXpFi6aDoCWmtx4jogb/V0axfkmba1bQXnUxen2zcTaFaGHRXki3LnzalQnCkvqEQ9tugQ1mPmesNVNwtPNZFH/18x5NKGXrhd6vo2L5n8gsvsipMGu7/Xd0PL7yyOT6UKCsM/vfiQh6DNCUCcDL6jQa7UYVuWcIkvQDLBUoSkluaP7BQzuXW7Q2/n9bCPoWuGWPcNnLoyrH8nB1bqSZphacTpp196vni2il8UE9IEjWvcODn687ON2nN2+V2JKj8YD/1f7U7i3rBccqmLnHhkyUucXFK0tJ+qX1V/ishzPyvms4fK7AoDC7ZkI8aS5YWhfTF5sA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761842086; c=relaxed/relaxed;
-	bh=q8xDSEzqv0eO+i7RNgUG5zHxJFTihDqYuVwJgL1tFaw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ncHCCLEfL1VtsrMmOQ+OM1g/j82JTcIGJp7syE/t0f/eyUCWZ26M4ajOjH2QXpY+v9alvV7RtYf+bnvRcd4YYnUWSsram2TkF4tZgCoB8HKehDq8nj+7z1Tp3Lra4hm3jpX6Gwq+qt49Q4B4Mrhf1FQCaBOEuhyNuaNklw7wIaa5XR9nl8baM5ZUl2vraO2wNe3873drt1FzymfRkf2leKlmRbrP/KFaI0TLyv9a8FE1o8fic3BkCSK3SJ10a0jen7keRolQU7D4cpIIdaaAI0Q+5yTkilVoN2Yf439xaRswxzKoIJMiBiahBEVONoTJH6zS1KvJxJNCpD80/s6SaA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Br1VD/7Y; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1761846219; c=relaxed/relaxed;
+	bh=ZgtSx7hhIOtzVUgoXwdyB16XAmwdV9aviNEVG77sTUo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gTDk0li/Yeij2xxRz2iTYUreeM54u/vtqQxv+HpdVdCnOtmNHiPd3XM1dp9yzn1noZ9INSXmEkFtCwveFhLVqaHU3Cv+WnZNnqw9iBFKXPGtBnNyRxmw0uZCNmLKgpXe1idh/2MqJQPOMvEhX5GSpXcTPBT9LzwSfgbD2JRx20kxL6bOd85K90rIjvJ7Evb7liFebx6JcjWHRNzVMtACK+QSW2lvXuSggzAxs39e0bApP0p14FHcwuWW9zzNM/cN0RrXwmoNaXUe8E/msvxuxg4yDLRkzMjeqmAzbzbMyJVDEV+sF1S8bs6fQBliJq1N9/iTxNPjHZQtlcPN02X2HA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VfPQhj/W; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Br1VD/7Y;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VfPQhj/W;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cy8pY4QQ4z2yjw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 03:34:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyBL209Nwz2yG3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 04:43:37 +1100 (AEDT)
 Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59UDJBKn025673;
-	Thu, 30 Oct 2025 16:34:06 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59UD7UCp008812;
+	Thu, 30 Oct 2025 17:43:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=q8xDSEzqv0eO+i7RNgUG5zHxJFTihD
-	qYuVwJgL1tFaw=; b=Br1VD/7YTed3oUT2iUZzltz2mPXnVAxgbDNLxlg7erZO0Q
-	ndcdnpWoXHoUFilySRRpGIi+3NdaYZvtdrCuNelAEGAtrGqT/WKWkRG0++hqoaLl
-	U3DO7TF4/SHlyudz6Ux33YMvs4FeaMwoobkrdswr1iH3NTBoydfGcStuaVfZdbDE
-	P4zDXX/kY8AqU9LgWKdjwtpl3Llgg9/j/U/Of4egne0bsg/u40oDkXOy3QPdZquQ
-	y0CFgu0n6tzgnJiezISNhw7bNixMWitpOdspE2bn/qlvp7I9fj9I5uAhF0vbAX/g
-	Yc4wda7lBmeChb4Nq2HY0X5WFh+YjgYS56JDSgYQ==
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ZgtSx7
+	hhIOtzVUgoXwdyB16XAmwdV9aviNEVG77sTUo=; b=VfPQhj/WMHDu+A6yd1baql
+	egc9Ic+/yN8UsWtTA9O2zuZmpQDKW8Jclxjao0EcNf9DP2v3Hgtf5wkdne4qKRNo
+	km26BqqPNveZo7LxAqHIloQ3g8Q2e010I2qTN3wcfXM5ycScquqNWUqjZ9Pp6Swi
+	2Wd7ZCoG+fk8W7QnVV4eAMb29rpPNmJCRGbbyIAW9e3OC4Lo1fQI6WJQwybazgeQ
+	Vuf++dg3S8C1w1SKZ2RfK7eD/NhNv/95Wxa0PCMqsxX5ajVKQhImS31N0H+4/bri
+	y1T+6LojBvVBJ+9XXI4Z4bSSyVnNLZ5s+zox42b1cub5taXqseRrgwIejIaLBh+w
+	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34afhj8k-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34afhy5v-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Oct 2025 16:34:06 +0000 (GMT)
+	Thu, 30 Oct 2025 17:43:23 +0000 (GMT)
 Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59UGNfcW026454;
-	Thu, 30 Oct 2025 16:34:05 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34afhj8g-1
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59UHS6OI008360;
+	Thu, 30 Oct 2025 17:43:22 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34afhy5q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Oct 2025 16:34:05 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59UGGqRH023873;
-	Thu, 30 Oct 2025 16:34:04 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a33vx9rqq-1
+	Thu, 30 Oct 2025 17:43:22 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59UGHtXa027546;
+	Thu, 30 Oct 2025 17:43:21 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a33w2t4wj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Oct 2025 16:34:04 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59UGY24U58196474
+	Thu, 30 Oct 2025 17:43:20 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59UHhHgu44368364
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Oct 2025 16:34:02 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 510842004B;
-	Thu, 30 Oct 2025 16:34:02 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9ABBB20043;
-	Thu, 30 Oct 2025 16:34:01 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 30 Oct 2025 16:34:01 +0000 (GMT)
-Date: Thu, 30 Oct 2025 17:34:00 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        Andreas Larsson <andreas@gaisler.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        David Woodhouse <dwmw2@infradead.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
-        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
-        x86@kernel.org
-Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
-Message-ID: <46d9bb24-1603-4c75-8723-84a821b3c46c-agordeev@linux.ibm.com>
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-8-kevin.brodsky@arm.com>
- <ef0cd4bc-1a37-4755-8957-d8a7e5c4564e-agordeev@linux.ibm.com>
- <d0767b70-5686-4f6e-8ca4-10b3f3ff3991@arm.com>
+	Thu, 30 Oct 2025 17:43:17 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 405D420040;
+	Thu, 30 Oct 2025 17:43:17 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7F6D020043;
+	Thu, 30 Oct 2025 17:43:13 +0000 (GMT)
+Received: from [9.124.211.3] (unknown [9.124.211.3])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 30 Oct 2025 17:43:13 +0000 (GMT)
+Message-ID: <6f2d4aa8-6bde-4cda-b6d9-c6c46cf01e78@linux.ibm.com>
+Date: Thu, 30 Oct 2025 23:13:12 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -118,24 +86,41 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d0767b70-5686-4f6e-8ca4-10b3f3ff3991@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 00/10] paravirt CPUs and push task for less vCPU
+ preemption
+To: Sean Christopherson <seanjc@google.com>
+Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, tglx@linutronix.de, yury.norov@gmail.com,
+        maddy@linux.ibm.com, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, gregkh@linuxfoundation.org,
+        vschneid@redhat.com, iii@linux.ibm.com, huschle@linux.ibm.com,
+        rostedt@goodmis.org, dietmar.eggemann@arm.com, vineeth@bitbyteword.org,
+        jgross@suse.com, pbonzini@redhat.com
+References: <20250910174210.1969750-1-sshegde@linux.ibm.com>
+ <aPZIGCFk-Rnlc1yT@google.com>
+ <48d66446-40be-4a4e-a5af-c19e0b8d9182@linux.ibm.com>
+ <aPkmdsnG1qsaW3Ro@google.com>
+Content-Language: en-US
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+In-Reply-To: <aPkmdsnG1qsaW3Ro@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9WxMyXTitAyuhGu3vYNyzE5CUF2jkm71
-X-Authority-Analysis: v=2.4 cv=WPhyn3sR c=1 sm=1 tr=0 ts=6903937e cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=I6XwYfBBfidvHYRsdD8A:9 a=CjuIK1q_8ugA:10 a=DXsff8QfwkrTrK3sU8N1:22
- a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX7zpOZgRsm3FF
- 8AnOBLOsvxptlWohzuosbbLPCFjAwF3xq2alPUZgZex8RCwqzG9eoZNV4NIOfsWBFJyYD+ygoAE
- rnoEx4aGNakZqeQ2SGwR0YJxSMuQm2OcteBULwoWnfyU/cMHNt88ZmCD4rU2jE3gxNJmWV7x33E
- oHSSsHXc4rB3cfyO0+d5kIH2YG18f2CCBQDyLSWgcAzaycIeZ5ROXf5OKaBsuvDDXGa4alxNW1z
- RdE+6Uxgxxzst1nDzVaufGD9/ZfHUthevkdMD9SntX+m955wZ+COJtAyQIs64arQ+vraDde5COT
- gqRLVlcqhoG5cbLpwOoCe3250RDdwFTHwZZLlnTZaB4WOK93liI9EHtPlX5NXI4lD6dhjalTaMQ
- w9GXLDeLcNNdyMoMeG4ROtBVzLwnYQ==
-X-Proofpoint-ORIG-GUID: 98PgicvhjO7U-L0VCM0jVX32GpXzOiLG
+X-Proofpoint-GUID: RtUGJCXH1f5m0RG4eKTx-Pg0iKkwRz7f
+X-Authority-Analysis: v=2.4 cv=WPhyn3sR c=1 sm=1 tr=0 ts=6903a3bb cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=OYDx72yix90wosouAF0A:9 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfXyE9BjXBzDY/u
+ b9sZP8AnMZjFSdAuCfovLnKzz+nkdCrDnt3T5EJGojkWyziDD2wtGT4dysk7b/XXhzXg0ewC4aP
+ ng2Z0geVchGfaBYR9UITiD8An63+azQc4jhXNlyYCoV00FyUOiizft2VkC0TtdOAw/loaIYanQm
+ GTPlv9dmHbrM9hA/cMJ4XKWZxmNZPnpYD169ZNvA2vbF0oi8hmMPVGwzSAHYeM0ZMxbbSfVvike
+ yXQcwW6v1fElN+FH0PUBTfNm47/wstXC6+kYOuO7lyYwtoxbyiYODSMgZmghrV8AmehaynZdV9A
+ M4uMOJeuncvnMFdGLTzlCM1ScXJyPBXuaPWTcE8ybpOK3ZDVB8k4I8pP/bCUa269BYIL8BlpDtM
+ 8AIxa4AC8tgtUNBngW2VfEFq5qhv5Q==
+X-Proofpoint-ORIG-GUID: nSlmmbq9yv6w9KmI679Py5cIozB8NtD0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-10-30_05,2025-10-29_03,2025-10-01_01
@@ -150,35 +135,114 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Oct 30, 2025 at 11:28:53AM +0100, Kevin Brodsky wrote:
-> On 29/10/2025 17:41, Alexander Gordeev wrote:
-> > On Wed, Oct 29, 2025 at 10:09:04AM +0000, Kevin Brodsky wrote:
-> >
-> > Hi Kevin,
-> >
-> >> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
-> >> +static inline bool in_lazy_mmu_mode(void)
-> >> +{
-> >> +	return current->lazy_mmu_state.active;
-> > Whether (nesting_level > 0) is more correct check?
-> > Otherwise, it returns false while in paused mode.
-> 
-> That's exactly the intention. Lazy MMU is disabled while paused. The
-> users of that helper want to know if lazy MMU is currently enabled (to
-> decide whether to batch updates for instance); whether this is because
-> we are paused or not in any lazy_mmu section (nesting_level == 0) makes
-> no difference.
-> 
-> > May be check both nesting_level and active and also introduce
-> > in_lazy_mmu_paused_mode() right away to avoid any confusion?
-> 
-> Can you think of any situation where a caller would specifically want to
-> know that lazy MMU is paused?
+Hi Sean.
 
-I thought I do, but in_lazy_mmu_mode() alone works just fine,
-as you described (at least for now).
+On 10/23/25 12:16 AM, Sean Christopherson wrote:
+> On Tue, Oct 21, 2025, Shrikanth Hegde wrote:
+>>
+>> Hi Sean.
+>> Thanks for taking time and going through the series.
+>>
+>> On 10/20/25 8:02 PM, Sean Christopherson wrote:
+>>> On Wed, Sep 10, 2025, Shrikanth Hegde wrote:
+>>>> tl;dr
+>>>>
+>>>> This is follow up of [1] with few fixes and addressing review comments.
+>>>> Upgraded it to RFC PATCH from RFC.
+>>>> Please review.
+>>>>
+>>>> [1]: v2 - https://lore.kernel.org/all/20250625191108.1646208-1-sshegde@linux.ibm.com/
+>>>>
+>>>> v2 -> v3:
+>>>> - Renamed to paravirt CPUs
+>>>
+>>> There are myriad uses of "paravirt" throughout Linux and related environments,
+>>> and none of them mean "oversubscribed" or "contended".  I assume Hillf's comments
+>>> triggered the rename from "avoid CPUs", but IMO "avoid" is at least somewhat
+>>> accurate; "paravirt" is wildly misleading.
+>>
+>> Name has been tricky. We want to have a positive sounding name while
+>> conveying that these CPUs are not be used for now due to contention,
+>> they may be used again when the contention has gone.
+> 
+> I suspect part of the problem with naming is the all-or-nothing approach itself.
+> There's a _lot_ of policy baked into that seemingly simple decision, and thus
+> it's hard to describe with a human-friendly name.
+> 
 
-> - Kevin
+open for suggestions :)
 
-Thanks!
+>>>> Open issues:
+>>>>
+>>>> - Derivation of hint from steal time is still a challenge. Some work is
+>>>>     underway to address it.
+>>>>
+>>>> - Consider kvm and other hypervsiors and how they could derive the hint.
+>>>>     Need inputs from community.
+>>>
+>>> Bluntly, this series is never going to land, at least not in a form that's remotely
+>>> close to what is proposed here.  This is an incredibly simplistic way of handling
+>>> overcommit, and AFAICT there's no line of sight to supporting more complex scenarios.
+>>>
+>>
+>> Could you describe these complex scenarios?
+> 
+> Any setup where "don't use this CPU" isn't a viable option, e.g. because all cores
+> could be overcommitted at any given time, or is far, far too coarse-grained.  Very
+> few use cases can distill vCPU scheduling needs and policies into single flag.
+> 
+
+Okay. Let me explain whats the current thought process is.
+  
+On S390 and pseries are the current main use cases.
+
+On S390, Z hypervisor provides distinction among vCPUs. vCPU are marked as Vertical High,
+Vertical Medium and Vertical Low. When there is a steal time it is recommended
+to use Vertical Highs and avoid using Vertical Lows. In such cases, using this infra, one
+can avoid scheduling anything on these vertical low vCPUs. Performance benefit is
+observed since there is less contention and CPU cycles are mainly from Vertical Highs.
+
+On PowerVM hypervisor, hypervisor dispatches full core at a time. all SMT=8 siblings are dispatched
+to the same core always. That means it beneficial to schedule on vCPU siblings together at core level.
+When there is contention for pCPU full core is preempted. i.e all vCPU belonging to that core would be
+preempted. In such cases, depending on the configuration of overcommit, and depending on the steal time
+one could limit the number of cores usage by using limited vCPUs. When done in that way, we see better
+latency numbers and increase in throughput compared to out-box. The cover letter has those numbers.
+
+Now, lets come to KVM with Linux running as Hypervisor. Correct me if i am wrong.
+each vCPU in KVM will be a process in the host. when vCPU is running, that process will be in
+running state as well. When there is overcommit and all vCPU are running, there will be more
+process than number of physical CPUs and host has to context switch and will preempt one vCPU
+to run another. It can also preempt vCPU to run some host process.
+If we restrict the number of vCPU where workload is currently running, then
+number of runnable process in the host also will reduce and less chance of host context switches.
+Since this avoid any overhead of kvm context save/restore the workload is likely to benefit.
+
+I guess it is possible to distinguish between host process and vCPU running as process.
+If so, host can decide how many threads it can optimally run and give signal to each guest
+depending on the configuration.
+
+Currently keeping it arch dependent, since IMHO it is each Hypervisor is in right place to
+make decision. Not sure if one fit for all approach works here.
+
+
+Another tricky point is how this signal is going to be. It could be hcall, or vpa area
+or some shared memory region or using bpf method similar to vCPU boosting patch series.
+There too, i think it is best to leave to arch to specify how. the reason being bpf method
+will not work for powerVM hypervisors.
+
+> E.g. if all CPUs in a system are being used to vCPU tasks, all vCPUs are actively
+> running, and the host has a non-vCPU task that _must_ run, then the host will need
+> to preempt a vCPU task.  Ideally, a paravirtualized scheduling system would allow
+
+Host/Hypervsior need not make the vCPU as "Not use" every single time it preempts.
+It needs to do so, only when there are more vCPU processes than number of physical CPUS and
+preemption is happening between vCPU process.
+
+There would be corner cases such as only one physical process is there, and two
+KVM each with one vCPU, then nothing much can be done.
+
+> the host to make an informed decision when choosing which vCPU to preempt, e.g. to
+> minimize disruption to the guest(s).
+
 
