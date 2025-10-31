@@ -1,81 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-13624-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13625-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7FDC233B9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 05:03:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2ACC234A7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 06:31:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cyS5J47pJz2xnh;
-	Fri, 31 Oct 2025 15:03:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cyV2L3j83z2xlK;
+	Fri, 31 Oct 2025 16:31:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::636"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761883412;
-	cv=none; b=nJ/gNZ0NHCkbh/XQJqm9Q1WgdurP9bQNuk4RiTMBlMFJwRl2MaIFfLim86mkH823YUbkAMp78OYMKoll838vGg4vp7zsDJtaJMhvByrRWnVzm7weOC8z+4mr0+y1Yh7DAVhINmvUgvKBp5iFBgElQZm8UxiADzBrwlXe7XCkaUA0gGqomeVlkp84awqx4l81b0W76P4NNj5IzHaCGsICrzPbW2cW+OIun/C3umOFM5HKNjCoq5PDhgMc7RRNVNbAJ1FzM1u0dQqAbtfAESZpKKq0swN34ISZguhXKqxVXwjkHaqws/cLHjx+OsSh/+AlrMFcCbVupOTqSqUotjh9Yw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761888666;
+	cv=none; b=Q1yKbK/9b1NDa64uZ2waarcwq/mhL8QsgTsVHCyoix2Vb5lC14j47atFEEMX69wxGyiIcj+b5iJRUHen9/71Jaf8UjjZTFtrVRyofy3iWjwt4+GWzmLv9Ke1mID9WyfqhRxq14V2PbjDVTDcdryzrCJkwjDCO3jDkdaLDzT8qzs+ktE2LcWQi/aHggYn2u4tDc06vy1F7BqLZUZRL8n3Kz4Mim2NM+HZ1t3KoM+hLdZM/2iThWP5ct3ZhKDtrWqVcUCwYf4xMAqUQHEtZyW0wAxLX57KIE/kp8ExA+G2czBxWu96qvQwUsAiXZ+wA6GLcRT44jJGiN/+kdcA1hkIXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761883412; c=relaxed/relaxed;
-	bh=4zM0JrKkuHW0LwFSqMHjgtGldZvpduaKaVu/XjzRQWI=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=VkXbXV5ondVloUwCqftEAgfZj1CV8pAOXd9uyP59iBKMMUWtIYpEQifedH/QvquWXQHu8IXODbwIQ0TjkGy2Yv4ZCxZsWn42N9OfDiNLQ0MZzD292B1y2a55HTj39RjRO8oh7UgN65SsYeQ93KkgyIBMbN8YBwoxwH8gOtuZl7QO3KmoKeEZrnt/4i8DJdgDiBLB4UgZNxiyT+WU4yNo6Wn9bck2I+mOxRMFWWyB83c5WFGA6Md2ZjHPonO8oNL9hWYNo2gI8EEd2vfmxuREiKesclQXkQREGZ25+V7Jnb8+xF9B8x18OPFf//BbWKxfbZAtczk5f5lzRZwAnbq1tQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LfobRB18; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1761888666; c=relaxed/relaxed;
+	bh=7IYtZG8a19O5D//0saInx3itjVsy1qiu6Em4PuYAEQU=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=VfBDW42s+scTVqeFdWRv5HEvaIW6M5U91qLzXEjMOLmLJPSFdSmeRhSDqg0nD8Ns1jz4o4Uk9s/h1a2JWYg8OONy6nGJDP4ES1vw2qcLYJ9Ffm45IqBboLJP9oE1CsByDaf+xPmkqTiQkmXacNVyYYDAFhXo8LV5qG9LE1i3EkUFZ851ODbGvHsQVGd2r82TIo5lWwXS/0MNuQRtjzpA6YkbZnQTuAQOB/nTPAwTw0TweAKpRIqLjLOXyfkuby5xxlMKQm4Nv5qAsPWBxL+OYxz2tWFTm3khRrRxePiV5PSpPMGeZ68s3v+j/rGGAZE45s/JPA1MB+M8cHfwtaIoUQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PwyMs2rm; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LfobRB18;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PwyMs2rm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyS5H0rpDz2xgQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 15:03:30 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-28a5b8b12a1so19570965ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 21:03:30 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyV2K1DTyz2xS2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 16:31:04 +1100 (AEDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-7a23208a0c2so1566547b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Oct 2025 22:31:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761883408; x=1762488208; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1761888661; x=1762493461; darn=lists.ozlabs.org;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=4zM0JrKkuHW0LwFSqMHjgtGldZvpduaKaVu/XjzRQWI=;
-        b=LfobRB18qa6xywWZQrR4bnFwqoSGahelKQHuAnJMK6Jax0tSynH/c1Glk26I6c2oJa
-         lBGcX0vbfflGrm8Y5jn0IVkMdMej6BXkVJ+VYc/3hGFsdhb0FQsmRVWC0/mfiy8RA6fY
-         CiHXVsIgQEflrUt8hMzOEjeEhm5j4qDMv9PnZ94K5BEHylYhAvaRd/qZNkKHlTJoYB4l
-         KQxFMJZkBjynwfA2hVW3L8rjjCLncdcATrc/X6J+JA7oRniAnGhpcb+BvK6INjr7AzIE
-         LX7+63K9+n1JdMgmo975rXs5e8uw78a9YcvrvBCKKIOMBvVsXSz2kQEoV43VtMiWWIUO
-         VSxg==
+        bh=7IYtZG8a19O5D//0saInx3itjVsy1qiu6Em4PuYAEQU=;
+        b=PwyMs2rmCdYBcQWvxbgk5TLZf099yh8pev3D9kYzRcDRPNiKVxjzFOLxu3GUYW0DMO
+         TlgFW/MUFIDZcfBvi/AdJDtEgkryDnyvgzYx2VLx8erkwF01Ycgnt7ey7fWGlDg6GVWo
+         2qn2UYU0Zd76mxTeN7L7CcOWp7GoA8a/gMKAexSD8ffn4oZSS/mLPJYPKR0vU6fl1a3M
+         0/7ANrwh1tXeZg14o+2hDr6NCnJtUHqSoZIe+gvVwt3CbcC7sNJbq5r/FME0zuROTfFm
+         vOA0JLlAy9SBPhD3c5IfrP4zDCyT7BgwO1Jf04RpeomVGmhQ6i9BNdwP1lVvK/EsAIYy
+         V0Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761883408; x=1762488208;
+        d=1e100.net; s=20230601; t=1761888661; x=1762493461;
         h=references:message-id:date:in-reply-to:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4zM0JrKkuHW0LwFSqMHjgtGldZvpduaKaVu/XjzRQWI=;
-        b=FZKMORhgfZPYCg3QdhDtQIX3iSe/UE+C+Dk9vRq6oSwTXGLxO9VB2euVIRDKrpv3m2
-         ZumYbkGC/1ult+YLOEAvJcaeBMzVuR+rIGvraJBIo4cwhnilDxL6o0p66UmTuJQwsnba
-         5XwfKvTGQMhGfBdYBHDdu3W4wpsvrZVS/kp8mAmvV6wNph2EHSNxxetIPr0FLpCtLeZ5
-         0pHYcevqQgxixULHSYxcOJAez7Bs/5R724e92ij7jleQr2FljUwqqn8J+sZxmxGWefOs
-         N+qoXJfSBRzyrxL5L5nzhOBF4jfuqJS/plkshpu8j5jVkpKSqtGq6FSIdVMaHMmavQtC
-         p4XA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCu3f6784E+inUU6zoGPfJsRXTR6aUI/w2Bgcci3ccX1oTWsqdPgA/SbUWio6/sJrWncnibCh63z5JiUw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzBPEhd/y20OACvgUNU0wjT1Ijgub9Wbk7zlP7YvmAxH6xFgiVW
-	sNY68t0HJZqOMgz5yHniE50Ss0snVm7V5ejMWBQnDL3P2vqUqxIwP7kF
-X-Gm-Gg: ASbGncugj1/cP/kkS/Sk7IaMAudmKa8vEz2Dxl8l3wCdV25HMY1EgagmPGyNPCLqk87
-	85rj1NTYqcDUjOH/JfkqlWT7AqCqz2Sue1bokzNi14Jsuo2fjT2NoPRODToUiqTLq0UagT1iQS5
-	voAAa6gyLHtIORl5PDWM7nbx+wqfMQUvsyPaJ1SBjKUwkoTirQu6E4im6SeF97MlZxFUAKfdvin
-	gTiTeXCREnl7+SunVJntFU4G+DE1H4ctsXwajKIaGPeLBxkyhK0Auh9CX8KSNYF1q2E3EIktCNd
-	MfdLQ71GGovSfootK6WrXZm/mLZMd6bOmnMWxTeKFW+ySCE6DD0nfEJ1A+gTvzVa00MPurOi8Ab
-	Kn1AXb7QEbXTybB6EN7lZbzFdTAfsqsMX7d7GbvZR3NiSCdXCXP/QB1iK6Bj3ZNRUgTaMcRHBD1
-	oXnl5J
-X-Google-Smtp-Source: AGHT+IF+Otf3dvCLqA/29pPoqE6PfUKwkEb9dFD/+p/C4B6QO4blh+aAm5xxfJdj2Euz40d+9HoNFg==
-X-Received: by 2002:a17:902:da8c:b0:27e:f018:d312 with SMTP id d9443c01a7336-2951a34cc1emr31612725ad.1.1761883407618;
-        Thu, 30 Oct 2025 21:03:27 -0700 (PDT)
+        bh=7IYtZG8a19O5D//0saInx3itjVsy1qiu6Em4PuYAEQU=;
+        b=ZjSJ6atmiRstbcDl6R8Tj1VaS9TcuDpe7qkJObZrn2MdEdfDMX6YlXwBuDjADsrlev
+         FlHrbBZn9vmkDoE73ntmxR2BqpUJ41UIytdjtC7JnbnF3amojM6hB18S+xS5mwBj47qD
+         KPG5P9X0hyLWjgwZCaENV65f5+/7sBp9sB4jRmpUHubjfk1D6fYkeXa+fhlzZL2GzUMs
+         r2WcsiHyuv/jJ+8LgiZZiZxtPYmqwlnNjk/xXJ4nldg1usOUX1a4sp7ukNsYmylXqxt/
+         0EU3ayP0HUtlpt9E68lHtgaYdrlp/ukl5qxrGxw/YcUq4MfD6FQTblBfoWgAZK0jf2ie
+         q5sw==
+X-Forwarded-Encrypted: i=1; AJvYcCWexQCGc8Y4SuMwZlR2HoaRgZtt8/eNIci0mUY7jn1mbRRt8GHsCsIAqEqKl/L0SpQcvMUaIQymTxhB7iM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyorwlrPAu1zlZ7L8JvfHna1jItgnxbUJf2MeMNWN/NhELSCKQZ
+	IBJSh/4MUuwlW7FUVQCC4FCbk/x9HQihDCp2hMxs/+sgVlAa7aHleiw6
+X-Gm-Gg: ASbGncunlEVk00uzT/PflXkB5DxeTP0EHQL0veHQU6WXxkPG2tdtw3sBTNWxF0nyV2h
+	ZYZSKp56pKDQSpgpzGU/jmOzlfDaIvwI+nCi3Ic/M5v7N0/dO134fmHQ79YJpDT/zrLWRXnpDqm
+	JmgY3IjXZNPXYAxOtzXUEx4Onv2Hby0wGhZKyD3S4wqA3j7BoT+LWEGe4wuCx7FJXA0PjrNA/LI
+	DuN2nbaIST2m6rDTYuewZn4GuDgvk8j1bmMGoJ/yzLsXjqfuhc5z7pzLhYLLColHv2ARjWu3Dic
+	LMOn5VOm8ZSX/DTUA5MYU1LM5AQGlJ2jC1KfgKOdNnmPXh3W4yd53fXTEiUMzOWsqZ389SDD7BK
+	GMqbEBtejVccqbUYPEyMczgzHyvWjtalP/uFAGNZWSQ6RUSZDZM2jW+Tbl6v7o5kN0ffQbMNpwI
+	NnYN87
+X-Google-Smtp-Source: AGHT+IFYq2g7MG5duEw8fbi2oZuSHEwIu61T4jkU/2Jiw7IZEbzDPPxn0J3byCBffEqUoLaF4eqQwA==
+X-Received: by 2002:a05:6a00:4f8b:b0:7a2:73a9:97e with SMTP id d2e1a72fcca58-7a7796c8965mr2441190b3a.26.1761888660935;
+        Thu, 30 Oct 2025 22:31:00 -0700 (PDT)
 Received: from dw-tp ([171.76.85.117])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2952696eac3sm6139355ad.62.2025.10.30.21.03.23
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a7dba69fb1sm737154b3a.65.2025.10.30.22.30.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 21:03:26 -0700 (PDT)
+        Thu, 30 Oct 2025 22:30:59 -0700 (PDT)
 From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Baoquan he <bhe@redhat.com>, Jiri Bohac <jbohac@suse.cz>, Hari Bathini <hbathini@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Shivang Upadhyay <shivangu@linux.ibm.com>
-Subject: Re: [PATCH v4] powerpc/kdump: Add support for crashkernel CMA reservation
-In-Reply-To: <20251030100955.1453314-1-sourabhjain@linux.ibm.com>
-Date: Fri, 31 Oct 2025 09:27:30 +0530
-Message-ID: <87o6pn7mfp.ritesh.list@gmail.com>
-References: <20251030100955.1453314-1-sourabhjain@linux.ibm.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Baoquan he <bhe@redhat.com>, Hari Bathini <hbathini@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Shivang Upadhyay <shivangu@linux.ibm.com>
+Subject: Re: [PATCH 1/4] powerpc/mmu: do MMU type discovery before crashkernel reservation
+In-Reply-To: <20251027151338.819957-2-sourabhjain@linux.ibm.com>
+Date: Fri, 31 Oct 2025 10:23:55 +0530
+Message-ID: <87ms577jto.ritesh.list@gmail.com>
+References: <20251027151338.819957-1-sourabhjain@linux.ibm.com> <20251027151338.819957-2-sourabhjain@linux.ibm.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
@@ -95,74 +95,179 @@ Precedence: list
 
 Sourabh Jain <sourabhjain@linux.ibm.com> writes:
 
-> Commit 35c18f2933c5 ("Add a new optional ",cma" suffix to the
-> crashkernel= command line option") and commit ab475510e042 ("kdump:
-> implement reserve_crashkernel_cma") added CMA support for kdump
-> crashkernel reservation.
+> Crashkernel reservation on high memory depends on the MMU type, so
+> finalize the MMU type before calling arch_reserve_crashkernel().
 >
-> Extend crashkernel CMA reservation support to powerpc.
+> With the changes introduced here, early_radix_enabled() becomes usable
+> and will be used in arch_reserve_crashkernel() in the upcoming patch.
 >
-> The following changes are made to enable CMA reservation on powerpc:
+> early_radix_enabled() depends on cur_cpu_spec->mmu_features to find
+> out if the radix MMU is enabled. The radix MMU bit in mmu_features is
+> discovered from the FDT and kernel configs. To make sure the MMU type is
+> finalized before arch_reserve_crashkernel() is called, the function that
+> scans the FDT and sets mmu_features, along with some bits from
+> mmu_early_type_finalize(), has been moved above
+> arch_reserve_crashkernel().
 >
-> - Parse and obtain the CMA reservation size along with other crashkernel
->   parameters
-> - Call reserve_crashkernel_cma() to allocate the CMA region for kdump
-> - Include the CMA-reserved ranges in the usable memory ranges for the
->   kdump kernel to use.
-> - Exclude the CMA-reserved ranges from the crash kernel memory to
->   prevent them from being exported through /proc/vmcore.
->
-> With the introduction of the CMA crashkernel regions,
-> crash_exclude_mem_range() needs to be called multiple times to exclude
-> both crashk_res and crashk_cma_ranges from the crash memory ranges. To
-> avoid repetitive logic for validating mem_ranges size and handling
-> reallocation when required, this functionality is moved to a new wrapper
-> function crash_exclude_mem_range_guarded().
->
-> To ensure proper CMA reservation, reserve_crashkernel_cma() is called
-> after pageblock_order is initialized.
->
+
+That is correct. mmu_features may as well get set from this path too...
+
+early_init_dt_scan_cpus() -> 
+   if (!dt_cpu_ftrs_in_use())
+       -> check_cpu_features(node, "ibm_pa_features",...
+                      cur_cpu_spec->mmu_features |= fp->mmu_features
+
+...which I guess is controlled using CONFIG_PPC_DT_CPU_FTRS.
+
+so it make sense to move those dependent paths above.
+
+Overall the patch looks good to me. Added few minor nits below.
+
 > Cc: Baoquan he <bhe@redhat.com>
-> Cc: Jiri Bohac <jbohac@suse.cz>
 > Cc: Hari Bathini <hbathini@linux.ibm.com>
 > Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 > Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 > Cc: Michael Ellerman <mpe@ellerman.id.au>
 > Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 > Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
-> Cc: linuxppc-dev@lists.ozlabs.org
 > Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 > ---
-> Changlog:
+>  arch/powerpc/include/asm/book3s/64/mmu.h |  1 +
+>  arch/powerpc/include/asm/mmu.h           |  1 +
+>  arch/powerpc/kernel/prom.c               | 28 +++++++++++++-----------
+>  arch/powerpc/mm/init_64.c                | 27 ++++++++++++++---------
+>  4 files changed, 34 insertions(+), 23 deletions(-)
 >
-> v3 -> v4
->  - Removed repeated initialization to tmem in
->    crash_exclude_mem_range_guarded()
->  - Call crash_exclude_mem_range() with right crashk ranges
->
-> ---
->  arch/powerpc/include/asm/kexec.h   |  2 ++
->  arch/powerpc/kernel/setup-common.c |  4 ++-
->  arch/powerpc/kexec/core.c          | 10 ++++++-
->  arch/powerpc/kexec/ranges.c        | 43 ++++++++++++++++++++++--------
->  4 files changed, 46 insertions(+), 13 deletions(-)
+> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
+> index 48631365b48c..7a3b2ff02041 100644
+> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
+> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+> @@ -208,6 +208,7 @@ extern int mmu_vmemmap_psize;
+>  
+>  /* MMU initialization */
+>  void mmu_early_init_devtree(void);
+> +void mmu_early_type_finalize(void);
+
+Minor nit:
+Can we please rename this function to - mmu_early_init_vec5()?
+Your naming isn't wrong, but it's just known that after vec5 call, we
+finalize the mmu early init type.. So keeping this function name as
+"mmu_early_init_vec5()" makes slightly more sense to me. 
+
+And then the order of function declarations can also be kept like below - 
+
+ /* MMU initialization */
+ +void mmu_early_init_vec5(void);
+ void mmu_early_init_devtree(void);
+
+diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+ +static inline void mmu_early_init_vec5(void) { }
+ static inline void mmu_early_init_devtree(void) { }
 
 
-I am not much familiar with the crash kernel workings but was curious
-about the following query related to this patch:
+>  void hash__early_init_devtree(void);
+>  void radix__early_init_devtree(void);
+>  #ifdef CONFIG_PPC_PKEY
+> diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+> index 5f9c5d436e17..c40dc6349e55 100644
+> --- a/arch/powerpc/include/asm/mmu.h
+> +++ b/arch/powerpc/include/asm/mmu.h
+> @@ -384,6 +384,7 @@ extern void early_init_mmu_secondary(void);
+>  extern void setup_initial_memory_limit(phys_addr_t first_memblock_base,
+>  				       phys_addr_t first_memblock_size);
+>  static inline void mmu_early_init_devtree(void) { }
+> +static inline void mmu_early_type_finalize(void) { }
+>  
+>  static inline void pkey_early_init_devtree(void) {}
+>  
+> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+> index 9ed9dde7d231..db1615f26075 100644
+> --- a/arch/powerpc/kernel/prom.c
+> +++ b/arch/powerpc/kernel/prom.c
+> @@ -853,6 +853,21 @@ void __init early_init_devtree(void *params)
+>  	if (PHYSICAL_START > MEMORY_START)
+>  		memblock_reserve(MEMORY_START, int_vector_size);
+>  	reserve_kdump_trampoline();
+> +
+> +	DBG("Scanning CPUs ...\n");
+> +
+> +	dt_cpu_ftrs_scan();
+> +
+> +	/* Retrieve CPU related informations from the flat tree
+> +	 * (altivec support, boot CPU ID, ...)
+> +	 */
+> +	of_scan_flat_dt(early_init_dt_scan_cpus, NULL);
+> +	if (boot_cpuid < 0) {
+> +		printk("Failed to identify boot CPU !\n");
+> +		BUG();
+> +	}
+> +
+> +	mmu_early_type_finalize();
+>  #if defined(CONFIG_FA_DUMP) || defined(CONFIG_PRESERVE_FA_DUMP)
+>  	/*
+>  	 * If we fail to reserve memory for firmware-assisted dump then
+> @@ -884,19 +899,6 @@ void __init early_init_devtree(void *params)
+>  	 * FIXME .. and the initrd too? */
+>  	move_device_tree();
+>  
+> -	DBG("Scanning CPUs ...\n");
+> -
+> -	dt_cpu_ftrs_scan();
+> -
+> -	/* Retrieve CPU related informations from the flat tree
+> -	 * (altivec support, boot CPU ID, ...)
+> -	 */
+> -	of_scan_flat_dt(early_init_dt_scan_cpus, NULL);
+> -	if (boot_cpuid < 0) {
+> -		printk("Failed to identify boot CPU !\n");
+> -		BUG();
+> -	}
+> -
+>  	save_fscr_to_task();
+>  
+>  #if defined(CONFIG_SMP) && defined(CONFIG_PPC64)
+> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+> index b6f3ae03ca9e..cd52c1baa3bc 100644
+> --- a/arch/powerpc/mm/init_64.c
+> +++ b/arch/powerpc/mm/init_64.c
+> @@ -622,8 +622,10 @@ static void __init early_init_memory_block_size(void)
+>  	of_scan_flat_dt(probe_memory_block_size, &memory_block_size);
+>  }
+>  
+> -void __init mmu_early_init_devtree(void)
 
-As I understand this patch allows for the remaining crash kernel
-memory to come from CMA region. But do we limit the CMA region to be lower
-than 4G? Is this patch dependent over your other patch series [1] which
-supports high crashkernel reservation?
 
-[1]: https://lore.kernel.org/linuxppc-dev/20251027151338.819957-1-sourabhjain@linux.ibm.com/
+Let's also add a comment here to be more explicit perhaps. Because it has
+caused confusion in past.
 
-
-A minor comment: I guess we could reflect the support for ,cma for PPC
-too in Documentation/admin-guide/kernel-parameters.txt like how it is
-done for x86.
-
+/*
+ * mmu_early_init_vec5(): For non-hv mode (Pseries LPAR), whether we can do
+ * radix or not depend upon hypervisor vec5 values. This functions checks
+ * ibm,architecture-vec-5 and updates cur_cpu_spec->mmu_features bits
+ * accordingly.
+ * After this function returns, early_radix_enabled() can be used
+ * to check if radix is supported.
+ */
+> +
+> +void __init mmu_early_type_finalize(void)
+>  {
+> +
+>  	bool hvmode = !!(mfmsr() & MSR_HV);
+>  
+>  	/* Disable radix mode based on kernel command line. */
+> @@ -634,6 +636,20 @@ void __init mmu_early_init_devtree(void)
+>  			pr_warn("WARNING: Ignoring cmdline option disable_radix\n");
+>  	}
+>  
+> +	/*
+> +	 * Check /chosen/ibm,architecture-vec-5 if running as a guest.
+> +	 * When running bare-metal, we can use radix if we like
+> +	 * even though the ibm,architecture-vec-5 property created by
+> +	 * skiboot doesn't have the necessary bits set.
+> +	 */
+> +	if (!hvmode)
+> +		early_check_vec5();
+> +}
 
 -ritesh
 
