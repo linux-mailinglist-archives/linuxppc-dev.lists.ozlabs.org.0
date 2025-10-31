@@ -1,61 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-13635-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13636-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8499BC23F6A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 09:59:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9265C23F98
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 10:01:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cyZfV1x1hz2yrX;
-	Fri, 31 Oct 2025 19:59:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cyZhY4v5qz2yrX;
+	Fri, 31 Oct 2025 20:01:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.18
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761901154;
-	cv=none; b=mMfXsZdCnOEw5CaXFyvw4Ma4XYl7BvLXZLOoV0z+AvjAICeOPPFJlMqQ0ioZZvq6lovMf8DsVJ7h7MXdTBjcvz7osEId7d16IXUHcfvpVvbv5fMKOBSJE7P46D4WgL1Hv2b8lxsLjPJqTnzTEoh4dE+EtK2m3nckhDzOgcnDTwZB6QIpAJMngrO+3pxIO8coMkdGfdE+Mzf0nolCjwuExSoQ0t/ro1Zbqz6bXZM/q5Q45sxDTmsRHqLaxGIYvLR3vHGlxiv7Y183scuk41kwxmbQumokRttEi+FuLZ5ThUKL/m7cSBc8WOfYVn60bT8xY5neFKaHpsk5wFnOjYOO2A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761901261;
+	cv=none; b=kXl3jAA9X6RRI6mS1vygGWAIxx6qrjWOFkYfMof0VCFAINssrlnH77JltVriFK0Mm39i1/1Zdnd1aYwFUFs8ZglQD3gU7rnnd9fZaoGtCbfTC0hE6k5HA+ow6mfpjjAgPdP+84zz7OYL60vZaKOge9+TkqtMM/UgOZu9DY8mjhoXFvj1U6AETPvjUgsfsaR3tmYpO4Tuatz7nJkppa7eC7jDnH0Z7Owurdlz4gYIVN/hksiz9utQQwBJ/GWj78s+k5QDOMmIiswHgJWgsRcRaiIt070XEswkb6IVHc44jglR6SmKHwaC08TbuQz5almChjJYxQu+fn/WXIKlVsJKcw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761901154; c=relaxed/relaxed;
-	bh=90pXO+32SIlTjvB6c+hyOsSoYLkR66cne4JNrBueTOg=;
+	t=1761901261; c=relaxed/relaxed;
+	bh=4FqGoCQAd8WXHNGO1W4O+86RFAzg5M4qX32jto5ifBw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jK23Q+i9Wekr6QeS0hLqaGggy1fDAlaplzBcwuiHyChGFyhzEFm1Xkxvejvyf7GbdiUxA8IkqP5DILLkNCTnd1k3TZVQHNksUKREETDLdbCIWOG13weMtoBFsGjIrROF8BUMjdqWE7Jwszk5pRYA00ZLRULEnrTF8NRaBh9NppA7V7fu7JgQPcYEAFJFy+4hXXGEHJKXQ1Qz+iC4l9Vkvv65tvJVE84WjanYmjrFXT/PynfC+nihCnAtGpmmFc5XMgiUqcdUF+aE7nY7GLU8hJb6wTEIaQUm7JeLEilAxTQRZ9LKsTwmGfnFBGNDITkw1T3suD199Uva/s90+vLWIw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=U8ChYXuD; dkim-atps=neutral; spf=pass (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=VuuVcYfLol3LEDK9UjKJg0vAKLl60aj8C50nrj8H/LFNR8Ik3gHFJOtm00pLoEHRX52jiyfCWzVv0xlhcYYixqRcEOGRWrVds+NwgbOsvQtO4Aqo3/bmRSyvhusp07IxEiZZjBN/hBJAxtucAIuPif894tW/mNh3J2daW/XDkU5VP2GZ530OVGe+KHjdDDWQc+XCZySBg6j6eIDM4y/s4A+peI2oiMaTLbpLVi5JeCdvtyQ+pWg6Smpxcb52b4Ti3tNnd6LXc3V2flz4ebpdZdxMbedp3PrfQ1dy7ph7L7jfKb/uyDDi4THrm/T0tidhLoaVhV18vuymThCXDewLqA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LjqhrfBV; dkim-atps=neutral; spf=pass (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=U8ChYXuD;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LjqhrfBV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyZfT0b0Fz2xnh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 19:59:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyZhX50ksz2xnh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 20:01:00 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761901153; x=1793437153;
+  t=1761901261; x=1793437261;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=14teRbdSNDZoo6LY1BdIEFiTD+Kt/E9bpeaMX41fhsM=;
-  b=U8ChYXuDxpEJJMg4Yvvf/PW9X0vsqYMCsKvohCAtBX0/k0atoAjqG6iE
-   Nj0XyC8Ots1UgQ5FknUa6tJj2mC2RxNL6YuWn9FzSgv7da8buwjmpYyPp
-   7xc+4FLbXBaoODYJYn8QHC/HHBDHiHHFVGQSIsBcWX5u60rLbj3oQeJTG
-   gWtSPvaoKksOKDXWvkJkRFJTkdwcUqq6XjTQ5H3Ct1ydyHntoUxTGA/kM
-   r7L6yZdB1YnmGVUDrzgTGZDHfAQjZwlrcv56L8UbY31/JffTf6IlosNMF
-   AVm330qvQHSre52cJ9zUO9Psfoo6X4uuVzWQuAWFcnZ4Fsq2jfumOFYBi
-   g==;
-X-CSE-ConnectionGUID: 1PYMDo6NQgixWzC0LXXqUQ==
-X-CSE-MsgGUID: JKcsd7soTQG3EgRnvHT2gQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="64097328"
+  bh=WrRAkZWX2mY1Sn4BYh8lP0+Uv8J4x4xta8TyjbzO6EM=;
+  b=LjqhrfBVUI1c1hU0zX/k2qyRqGEoSflVMy2bAVyyLqibsyTvcdEVhtdS
+   9XbyTBd6kKFxOcWg3mrHR6HM1nSHg1DknizLxVKj63cRqRtPN9kzfHDMy
+   SlhAhM3Ytc1EJZUxemVJHkd3faYiGch92r2lSURnH1RCxOxZ13LrlPVr0
+   kw1Ii6Sn8mL1RM0Sw30cQagcTsyG7QrTYo09KF6KBAx2QtPaoScPKMUsW
+   AhCeqe8qBNyUmOhKGOa14TIT5MyDsf2S9ZkZOpjBRe+uqYciT6fO1CwYq
+   Ew8/qPV7+RyXVpb0qL6A7R52ylExoTQ8fC5/PEV8z1It8z5t8Pi3fmYQC
+   Q==;
+X-CSE-ConnectionGUID: 0i9SlzrkRrGuSALcDW4yoA==
+X-CSE-MsgGUID: yxRUA5xhQgm5ilEXczO+lg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="63263163"
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="64097328"
+   d="scan'208";a="63263163"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 01:59:10 -0700
-X-CSE-ConnectionGUID: Qkn6DZO5Rceyyp8KD2OnrQ==
-X-CSE-MsgGUID: hAjIabqjQHemJifWFRIz7Q==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:00:58 -0700
+X-CSE-ConnectionGUID: Dd9eBStPTB2R+zNgqb0uKQ==
+X-CSE-MsgGUID: AT1MnrH1RWGItLZni9BlRw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="186119255"
+   d="scan'208";a="186120016"
 Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.28]) ([10.124.240.28])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 01:59:02 -0700
-Message-ID: <5eaab97d-30c3-46a5-8be2-2ea1ef28e71e@linux.intel.com>
-Date: Fri, 31 Oct 2025 16:58:59 +0800
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:00:50 -0700
+Message-ID: <326290aa-def6-478c-9ef3-1649e027e5d5@linux.intel.com>
+Date: Fri, 31 Oct 2025 17:00:48 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,8 +70,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 18/28] KVM: TDX: Combine KVM_BUG_ON + pr_tdx_error()
- into TDX_BUG_ON()
+Subject: Re: [PATCH v4 19/28] KVM: TDX: Derive error argument names from the
+ local variable names
 To: Sean Christopherson <seanjc@google.com>
 Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
  Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
@@ -93,10 +93,10 @@ Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Ackerley Tng <ackerleytng@google.com>
 References: <20251030200951.3402865-1-seanjc@google.com>
- <20251030200951.3402865-19-seanjc@google.com>
+ <20251030200951.3402865-20-seanjc@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251030200951.3402865-19-seanjc@google.com>
+In-Reply-To: <20251030200951.3402865-20-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -107,17 +107,45 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 On 10/31/2025 4:09 AM, Sean Christopherson wrote:
-> Add TDX_BUG_ON() macros (with varying numbers of arguments) to deduplicate
-> the myriad flows that do KVM_BUG_ON()/WARN_ON_ONCE() followed by a call to
-> pr_tdx_error().  In addition to reducing boilerplate copy+paste code, this
-> also helps ensure that KVM provides consistent handling of SEAMCALL errors.
+> When printing SEAMCALL errors, use the name of the variable holding an
+> error parameter instead of the register from whence it came, so that flows
+> which use descriptive variable names will similarly print descriptive
+> error messages.
 >
-> Opportunistically convert a handful of bare WARN_ON_ONCE() paths to the
-> equivalent of KVM_BUG_ON(), i.e. have them terminate the VM.  If a SEAMCALL
-> error is fatal enough to WARN on, it's fatal enough to terminate the TD.
->
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Suggested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+
+> ---
+>   arch/x86/kvm/vmx/tdx.c | 13 +++++++------
+>   1 file changed, 7 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 5e6f2d8b6014..63d4609cc3bc 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -41,14 +41,15 @@
+>   #define TDX_BUG_ON(__err, __fn, __kvm)				\
+>   	__TDX_BUG_ON(__err, #__fn, __kvm, "%s", "")
+>   
+> -#define TDX_BUG_ON_1(__err, __fn, __rcx, __kvm)			\
+> -	__TDX_BUG_ON(__err, #__fn, __kvm, ", rcx 0x%llx", __rcx)
+> +#define TDX_BUG_ON_1(__err, __fn, a1, __kvm)			\
+> +	__TDX_BUG_ON(__err, #__fn, __kvm, ", " #a1 " 0x%llx", a1)
+>   
+> -#define TDX_BUG_ON_2(__err, __fn, __rcx, __rdx, __kvm)		\
+> -	__TDX_BUG_ON(__err, #__fn, __kvm, ", rcx 0x%llx, rdx 0x%llx", __rcx, __rdx)
+> +#define TDX_BUG_ON_2(__err, __fn, a1, a2, __kvm)	\
+> +	__TDX_BUG_ON(__err, #__fn, __kvm, ", " #a1 " 0x%llx, " #a2 " 0x%llx", a1, a2)
+>   
+> -#define TDX_BUG_ON_3(__err, __fn, __rcx, __rdx, __r8, __kvm)	\
+> -	__TDX_BUG_ON(__err, #__fn, __kvm, ", rcx 0x%llx, rdx 0x%llx, r8 0x%llx", __rcx, __rdx, __r8)
+> +#define TDX_BUG_ON_3(__err, __fn, a1, a2, a3, __kvm)	\
+> +	__TDX_BUG_ON(__err, #__fn, __kvm, ", " #a1 " 0x%llx, " #a2 ", 0x%llx, " #a3 " 0x%llx", \
+> +		     a1, a2, a3)
+>   
+>   
+>   bool enable_tdx __ro_after_init;
+
 
