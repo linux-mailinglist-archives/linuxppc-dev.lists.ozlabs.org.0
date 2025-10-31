@@ -1,61 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-13641-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13642-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00A8C24106
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 10:15:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AB6C24136
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 10:17:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cyb144qRJz2xdg;
-	Fri, 31 Oct 2025 20:15:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cyb3y2pK7z2xnh;
+	Fri, 31 Oct 2025 20:17:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761902120;
-	cv=none; b=mEdUwwENP5/48AoyU+c7DLl3io557iNYi/777t+qlf68WW7Ocgih+YZWaTn34vQBqv0cF1z03jtV10LkC8zjRNr3S9xsiIApOASVdQu4JAULQJ3g++vT+8Izbcxnkw0DkUeK2SX6y018pAJ9TCo0dGrB+rWrEEbqG9kBDQMoX9Ft3DhgaHee7aaXz36RDnYAP+R2k5Er34sMoTm2QuDOgx8kwaPTbBZAzkub1LTPLYs8auE1xwIyXGqu+PAEdR5gpeTZbWVRfPSuyKOkTPGOnsaBBsXWO0w+b2yP0Y3QrGo6AlKhoz1fyrpzLq+BF0D0mA0Y4OWqIQOGS2X2/QJmEg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761902270;
+	cv=none; b=ZM3YOb04NM6gU/zIdWiH18IjSuvfwhZXIVwdH2v0Ate7yuumVG6xETq3FJSpBvW+7hR/jLBjP4n+HUWegm1DP9BWS3SiA/ZrgAJO9SsQeKD5I0UteUhlj8/XaPfaWpxFVJKbQgvYHCZpNMrSzLn6kiyQiSN61gch7hqRdiXwwNOJ+TUe1xjig9gIDkN9Vm0tVD528ebisj4j7HcP/vblj1E+liGOECfXW9bsT6GdxXKedtZwt+qQ1KwPFaqffnET4HncfctAPQyi5gzoQjNrNE4dwSmwPkmA2ChgAFePIr8X3hjwo7FnetG8LBMps0o6v+tU0aE4Xorfv1k1n94T8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761902120; c=relaxed/relaxed;
-	bh=PEZyjCEAirGsnd1ualshLT165jeP3bC2ATQpTmkSqys=;
+	t=1761902270; c=relaxed/relaxed;
+	bh=6+fdM28QuB9T1HFnYCRzCUXVpG1QU1xA4LJIWTCndpE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ract9xsLTn7sAFVvYs1WkljYUjpsKf+F/+BU+58cXZoNnAA6fP+v7edYSW6/JNPI0uTB5yCE5ujTt0qomWnX1jYkMpIRAfg/iShJHAmj/JHQMlUKAWmtf5D+rwijaA8ka0yOmjSvyhDHzQeqpVwRpx7PAU0fECUc/HYjqrCvijNeWU2dBAM4CExce/joJbErbyZkFL9kheygpkPDapskZoTJ0AZYFA6/bmwCPFUh3yjrnN7kYuGrN9Qr1tl2nJPhdMYyvMEYkwk4Gof9LGH+OLuIgsEZksl1S3IwYr8k3ieyz/XORpMeErBAZ9CjweW2Xq67Hzujons1zYIeXWi6fg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WcCj5oD0; dkim-atps=neutral; spf=pass (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=EC62BRZ7EKjGCKjcEghcVDjmC2E8UZ7Q5b2gX2GJKE/OlT5aMHvGUkC1rB6vyQp/43+dYAGtf6UEdMVBvTUWKeQFjjmk785c8pNRH0vIAz75H0vjOHelhHCgam/dffjeR7Lki7255QmJG1T5P9VP2E7Cdi2EXyei9WWuv7Oe7rKHeykBKok2LcIt3nNBIgiqmudbPk2zIsPkixwZJohlqaP3iLzXFNXr06nb7B06keIL/+gF/gHcE3FTZW1sAs0Hs9Hqn5L4iYoTUiqJ6X9LuuEo4HNyrjh5nrk1rXbTn9fS89nARx9KmjtUMOvUWM6N861w14Deg0jLsu1DMddk+A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HhqdTv+x; dkim-atps=neutral; spf=pass (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WcCj5oD0;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HhqdTv+x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyb133Bj5z2xPS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 20:15:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyb3x2TSHz2xPx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 20:17:48 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761902120; x=1793438120;
+  t=1761902270; x=1793438270;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=PEZyjCEAirGsnd1ualshLT165jeP3bC2ATQpTmkSqys=;
-  b=WcCj5oD0u3zhbShu6vPwdHnGv45HkFutP4XpTLr9oQ+lqdLQ/nb6DySR
-   uVUvXaiD/VpZiPDt96Mkgl65WCWkb45dA10EAbNra0ic8m7tQqSKH7ZS7
-   xxSOgkk7UHhGeQPye025TecTI1ONC0WvNiQ3ElThXIgT0+C5JGG+k5wdi
-   EM+XVIvSThBDvxmc3KaEqqJ+2aSFGZiJ/U6RgQBYNWb6y9/jKi/UL8D9C
-   j2DJVFbUVI25vFVZ2fefHwONQCyGAg7JE+WVhuxSN+NBwbqZuo/eJLqYo
-   CxiY1T6UETb+ozqpZVi8Pe67mwn9RK8ROVIPXqNeobovDjpe5AER8fbq1
-   g==;
-X-CSE-ConnectionGUID: uFry4uJdQ7GnxOQsOEIY3A==
-X-CSE-MsgGUID: lWNBomPjSs6pR+4U2U1Hog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="75509920"
+  bh=6+fdM28QuB9T1HFnYCRzCUXVpG1QU1xA4LJIWTCndpE=;
+  b=HhqdTv+x/D5FOLuJfF9YoHKBe+A5lPCXqFT+y+cJhQGcIiar8Ks1Dct6
+   VbfjIIf7Wvg731etE3qLrIjsZa1XjsPuNlV/BXqYbCto5u92zoXVWrTEN
+   ngFfbbzXXCL9HvhUyObSihWNSDIx66OZu8O+ExWbtau6AbeoxtYmBgE9o
+   SKnsa0msh4SfLNTnjbEzBArPX4PCXWnu1HmkD1yKp80QGZxzI3qEeDgGF
+   pNAfQnHDOkvF8tURxW0R20V1xKWi7dG6jEjA5AKn1yAq/csjNxF00olai
+   gE0qsaE/ev5EVECAxwTwKCOCiOiDjuKhVzjUW+NrTQyMwujVzX/Mlfv9F
+   A==;
+X-CSE-ConnectionGUID: I80qVBcVThmSZrxni9VuPQ==
+X-CSE-MsgGUID: U71VxtlCQoWBbFNzTYS7SA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="75177087"
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="75509920"
+   d="scan'208";a="75177087"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:15:18 -0700
-X-CSE-ConnectionGUID: /aUTuTUZR1CXvXYAACxkEg==
-X-CSE-MsgGUID: 8/kgW76KTTCO7UxJ6gCbbg==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:17:41 -0700
+X-CSE-ConnectionGUID: xN3TnblrQqeOxewqaIMiwg==
+X-CSE-MsgGUID: 7VuncW0PQxeTB4CUZL105Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="186125404"
+   d="scan'208";a="186126269"
 Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.28]) ([10.124.240.28])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:15:09 -0700
-Message-ID: <fd65c501-296a-4f77-86fc-7de61a7c5eeb@linux.intel.com>
-Date: Fri, 31 Oct 2025 17:15:06 +0800
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:17:33 -0700
+Message-ID: <94e3e701-b60d-419b-b3c1-2b41796ab5c3@linux.intel.com>
+Date: Fri, 31 Oct 2025 17:17:29 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,8 +70,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 23/28] KVM: TDX: Convert INIT_MEM_REGION and INIT_VCPU
- to "unlocked" vCPU ioctl
+Subject: Re: [PATCH v4 24/28] KVM: TDX: Use guard() to acquire kvm->lock in
+ tdx_vm_ioctl()
 To: Sean Christopherson <seanjc@google.com>
 Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
  Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
@@ -93,10 +93,10 @@ Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Ackerley Tng <ackerleytng@google.com>
 References: <20251030200951.3402865-1-seanjc@google.com>
- <20251030200951.3402865-24-seanjc@google.com>
+ <20251030200951.3402865-25-seanjc@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251030200951.3402865-24-seanjc@google.com>
+In-Reply-To: <20251030200951.3402865-25-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -107,16 +107,14 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 On 10/31/2025 4:09 AM, Sean Christopherson wrote:
-> Handle the KVM_TDX_INIT_MEM_REGION and KVM_TDX_INIT_VCPU vCPU sub-ioctls
-> in the unlocked variant, i.e. outside of vcpu->mutex, in anticipation of
-> taking kvm->lock along with all other vCPU mutexes, at which point the
-> sub-ioctls _must_ start without vcpu->mutex held.
+> Use guard() in tdx_vm_ioctl() to tidy up the code a small amount, but more
+> importantly to minimize the diff of a future change, which will use
+> guard-like semantics to acquire and release multiple locks.
 >
 > No functional change intended.
 >
+> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 > Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Co-developed-by: Yan Zhao <yan.y.zhao@intel.com>
-> Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
