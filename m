@@ -1,98 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-13643-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13644-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987B1C24664
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 11:18:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA7AC24ADF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 12:04:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cycQM1C6wz2xdg;
-	Fri, 31 Oct 2025 21:18:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cydQz4ZnBz2xnh;
+	Fri, 31 Oct 2025 22:04:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.7
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761905931;
-	cv=none; b=Oo8RwVrlfQonWuGolM9J9jb2W0ogX8SWmRxuPqOO/mkuDRyFOI8a+SWEedfGLAfdABMQF/PCeTGe1Qf7b1SpcjZqhSUofjn4JXVztS1iggFZ0OO/U+kLfqP3iBBbnkhxCIGMzrF/TrliNzOdwwESCr9eyjxbDyqmr9p2XUeTvfQjiUlOKxmf/0XOFnFV0hlaC4dpNP9bNRrJLLGj+WaIfXOV0TtVze7hu5WFgbETZ+PZ1R1NoWE6VTBqY5FsYx1SE+0U371IeZDgngu/XOPaHGADKDwgydsyr0Nsf5XPTcv8HHfpPScvGf5OXan+GrVGomRC2aBiY2U60txjd304/Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::634"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761908667;
+	cv=none; b=TQSkFyk0SSMT8qd4AiNqphWm1R+1WS9/xcTUO9Op7ZhuTywQZk0TeqBF+g1n2EN0f7RA8Fr39MvbUhlOlsjyKNJK178uY56aFAwQz8FC0dfp9WmI+HQdtmAR8lW0JfxpHXfgiCKxb1bLIXiX/Zlx04HNAzVWJ/JDMRz0RYUHVVkX3OuJIuFODemBVUQP6CSg7ut4zQT4RZ6nO5ZQKNdRZrknbFA0FMZOB4qT4+Ava2fu7YWO93E0unkOXgfQCXHAYGWIAKIFPBb4oe1wd4toHdXPFzHVwxyDx7VoI1hf0Z2qcIqmA+UZ/xwUJOpTkCG2vrI7mTtC1G6M07WVGnHamA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761905931; c=relaxed/relaxed;
-	bh=ouZuaNOHnJFp67QDBQiw2sbQI2Rbc588YfTaV+JnlAY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NyGJjQr37z8K/t/a2Ix1+QxmoleWVJ8KMhyDS9WhGPQO2yhmUdHB+QKC9PUH4qZ3aDO6Jg8P1G2NOXGeaRzEd6qdbBHj6muSCetTnEJO+mOF1hY1PJEjsnFBhAJz+gWPSvc8NkHRZXeoVmIpm0faLVxuDy72RJtZbZcCV4WMl35+MR2yGzhHysFbu/4QBUSwr96IccBaKdzVGRT5R/4g2l0xF+muHerEy9HHlLqLjmpUHHU3scTm65HnGA+XZcaHqh3jvdtWgM5rcKcTCLxPno7Q3NJWAdwhv+q7UqF5+4yItREZkm4wXclxg2WeF5/2L8gzDotvCQ/EwbjZN06GEw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DPY0MYL4; dkim-atps=neutral; spf=pass (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1761908667; c=relaxed/relaxed;
+	bh=htPoc3I82i1LGjzj+uG5Lg6XVID7SZQAimFmMTgIOQ4=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=ePjJUtNuMWGsDfkyfZjPSue4Y/iSvVdPsu/pUWJdWtMMPs7CDHTl1i4AVVVgzw5Us2PIXUOiwX/gcSWefqmoi9QjqziYFqsHhmM0quUVjHk2dJ7hYPMjLA9rGc35v2jLTyIISbvWYkZZYeE7x8G3l+jSrGdTlYufC8QvtpBQ6FW5DZFSuitvGdu7HiP6BhOsugi5eIIe+ZHy3Nxoul/sG0OtXuK3dANoz0YLyhfrmqecq4cv9sy2U81v9938A4MJbtZVH9yENHFzMCKcE3j1T/xj8TequVefDCrWdjYIa8RDctx45VHhymkcjQGM3qZ9WhXNp77z28D9AdOIF2ZSOg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DBZxHut6; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DPY0MYL4;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DBZxHut6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cycQJ3VFbz2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 21:18:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761905929; x=1793441929;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ScQKh0k+g0sLHY6zzPeiiWF3Mx49kdxeKS7TZIXktok=;
-  b=DPY0MYL42dC7Rj1hzzhBC2MNFvqD5nxyTPoZkOuSpuYnNJKSxowHczgJ
-   fwafMokuMBIcwaKWFyiubBKes6WszrY56zoivPpQJETk5tjVLJaFpSTaC
-   MhVL2z/rtWX80+lIEeWTbJ3fgAZ5l5TfBcKIubUTc4pYd3HoPL2dXWv8G
-   y6cQUE6FuipCNpvpGZZKiSRbZ124T51W4HkaC818CwAIl+w6+QM8y+ysh
-   NKYXsTq2ng23r9D1AeUA7PdzRgVr4X9Z1AMxsCudrCZzlbgTPFitlvw85
-   ThcabA9pJ79AN1CTb1j6lRrHmCEvkFon12SzqdE9+BMTshNfjuiJIBG2k
-   A==;
-X-CSE-ConnectionGUID: XteDIeDzQeCxCZblK1jAXg==
-X-CSE-MsgGUID: 75vdSXZXSfGjJ1JiT2rZOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="89529660"
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="89529660"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 03:18:42 -0700
-X-CSE-ConnectionGUID: k25i44LyS2un9PQ5Y6ncag==
-X-CSE-MsgGUID: vJDIqqS8RQmFeEw6PNSdLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="185890295"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO fdefranc-mobl3.localnet) ([10.245.246.56])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 03:18:30 -0700
-From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: linux-cxl@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
- Borislav Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Shuai Xue <xueshuai@linux.alibaba.com>, Davidlohr Bueso <dave@stgolabs.net>,
- Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Sunil V L <sunilvl@ventanamicro.com>, Xiaofei Tan <tanxiaofei@huawei.com>,
- Mario Limonciello <mario.limonciello@amd.com>,
- Huacai Chen <chenhuacai@kernel.org>,
- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
- Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Guo Weikang <guoweikang.kernel@gmail.com>,
- Xin Li <xin@zytor.com>, Will Deacon <will@kernel.org>,
- Huang Yiwei <quic_hyiwei@quicinc.com>, Gavin Shan <gshan@redhat.com>,
- Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
- Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
- Li Ming <ming.li@zohomail.com>,
- Ilpo =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Karolina Stolarek <karolina.stolarek@oracle.com>,
- Jon Pan-Doh <pandoh@google.com>, Lukas Wunner <lukas@wunner.de>,
- Shiju Jose <shiju.jose@huawei.com>, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org
-Subject: Re: [PATCH 2/6 v6] ACPI: extlog: Trace CPER PCI Express Error Section
-Date: Fri, 31 Oct 2025 11:18:27 +0100
-Message-ID: <2351924.vFx2qVVIhK@fdefranc-mobl3>
-In-Reply-To: <20251028144816.000018a3@huawei.com>
-References:
- <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
- <20251023122612.1326748-3-fabio.m.de.francesco@linux.intel.com>
- <20251028144816.000018a3@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cydQy246pz2xR2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 22:04:25 +1100 (AEDT)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-292fd52d527so22206595ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 04:04:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761908662; x=1762513462; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=htPoc3I82i1LGjzj+uG5Lg6XVID7SZQAimFmMTgIOQ4=;
+        b=DBZxHut63qfKjtI6iz0rjgjn4ZJm0GGwQ0TEnUPA1JmzkuUY6ET0U4tVjqbBTZMNVY
+         k8id+YvnGfGCngoCNPKS+jTS1gykPK/xcaqwvkVwrxueVoxNYLpPqPGyxbJfQdBMvxIV
+         6YgA3FIHzBHe/hB+4RbWuQCcH7lqfjMVBEW5HUHs4pDvh5voOvso2TAlZjjRtakBlliD
+         2cU9RLu9O3aCyFqgimgdDMzfx7LsRgtSVFswqQcg7ZFX7HBTnmnrFKUw0xbBoGgNNMPo
+         tqWK/H5yREAzrpj3McFXGoClQvMl4vC3iqWtX5puO/DMirZPTrTHJdXBx9N6cp8oXi1x
+         9Kwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761908662; x=1762513462;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=htPoc3I82i1LGjzj+uG5Lg6XVID7SZQAimFmMTgIOQ4=;
+        b=IAtrInBSBfWXvzx8XuYmyePj7N5Y5O2dQhlpLujvlhANJC9kdsmUzUGPtnqhoRjunN
+         8usJtmoL94WJFE/nEHzlOb3cH418x9HGa2vLgPTmMX5bNuGN2P6oAeTqc8l9/es7uKhl
+         h5EenoPRAucjPkMIUnznfq7pM6ho2xB+rsN04Zc3qLmkhM9b7vtI7xpNaFdG1ACeP/Lj
+         J/QJSotuv/shBLVKITyMwVXgh2TCxF7gNH+talA/iyBF/VTgts+fP+rfRqZ/J3RsvLog
+         d/5FunUs+qPLVCfWyxiF/lEtszFlZy2ktXGZTtl8FYIFP5XdG+jZYROW1y8W2So6OMMn
+         otUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWfp/CxU2lqJfwzTgZZjrtyBbKBgni0ejkhw4+sgk0jq5BLBhVpHIFN2+F4P4Iaq2rGO/5E2FmxhKgZBZw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx+MNXOn72S/y00NGU9ZjloUFi+lIt/httVvfLNX8ZmnPQMhxcl
+	JfhG+hxr9Hk5qHXiYmtzRKVSACSubaZxSoRxlikEdZjrZPxriUW4AWy7
+X-Gm-Gg: ASbGncts8v+Zp6qwrv3gpW6Z0OXlWY4YpExTVXmamDX6Kgzy+s1kcsrW0OK9KWL3/aR
+	qpthpZvzNy6YXf4f3Y4q6FB+92f2jOvQIUdI9gtP3kLkF76sHh6zoTWUfjGAED2TiDzcPb5Ypug
+	CKorUCIasrHsdAU/KDKqW8H07zPrWKfjKOvbrKfIdhlEFzO5AWjjKAiQLrMFRbITxKzlki+o856
+	wQYaqI+FfCvoHZexoDQ8KddUHOw2WcF+dgLh/P4KPMHO5VJ79fW/+XQkmyh4qKX4VmS3fwLL4dT
+	nVSzbXQ3a8vSd3VOHl5atfOReNK7kgpnzff+cXFq92dcxfTAj6OF6J728O1jGemkthvkkPZCn6V
+	AyJGJ0bRR515BBwp02u7Ppy1bChPIrECoi78gOH/eNL+vTOYZPqcqP8wrF7Ty3xeg0SeHBQUAmV
+	BslGja
+X-Google-Smtp-Source: AGHT+IFITmAbxbh+8GunJ2bzmuuY2hrsfnYGWjpi/NwgdROKHgByq06eCbdKVuIS3vTNNJ8JXa3uFg==
+X-Received: by 2002:a17:903:37cd:b0:273:3f62:6eca with SMTP id d9443c01a7336-2951a3eac4emr48404645ad.18.1761908661524;
+        Fri, 31 Oct 2025 04:04:21 -0700 (PDT)
+Received: from dw-tp ([171.76.85.117])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2952696f277sm19600195ad.55.2025.10.31.04.04.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 04:04:20 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Baoquan he <bhe@redhat.com>, Jiri Bohac <jbohac@suse.cz>, Hari Bathini <hbathini@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Shivang Upadhyay <shivangu@linux.ibm.com>
+Subject: Re: [PATCH v4] powerpc/kdump: Add support for crashkernel CMA reservation
+In-Reply-To: <c6ce9b94-1126-49fd-869b-76a7e386a7d1@linux.ibm.com>
+Date: Fri, 31 Oct 2025 16:31:41 +0530
+Message-ID: <87ldkr72sq.ritesh.list@gmail.com>
+References: <20251030100955.1453314-1-sourabhjain@linux.ibm.com> <87o6pn7mfp.ritesh.list@gmail.com> <c6ce9b94-1126-49fd-869b-76a7e386a7d1@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,91 +92,98 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tuesday, October 28, 2025 3:48:16=E2=80=AFPM Central European Standard T=
-ime Jonathan Cameron wrote:
-> On Thu, 23 Oct 2025 14:25:37 +0200
-> "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com> wrote:
->=20
-> > I/O Machine Check Architecture events may signal failing PCIe components
-> > or links. The AER event contains details on what was happening on the w=
-ire
-> > when the error was signaled.
-> >=20
-> > Trace the CPER PCIe Error section (UEFI v2.10, Appendix N.2.7) reported
-> > by the I/O MCA.
-> >=20
-> > Cc: Dan Williams <dan.j.williams@intel.com>
-> > Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-> > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.=
-com>
-> Hi Fabio,
->=20
-> Was taking a fresh look at this as a precursor to looking at later
-> patches in series and spotted something that I'm doubtful about.
->=20
-> > diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> > index 47d11cb5c912..cefe8d2d8aff 100644
-> > --- a/drivers/acpi/acpi_extlog.c
-> > +++ b/drivers/acpi/acpi_extlog.c
-> > @@ -132,6 +132,34 @@ static int print_extlog_rcd(const char *pfx,
-> >  	return 1;
-> >  }
-> > =20
-> > +static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
-> > +			      int severity)
-> > +{
-> > +	struct aer_capability_regs *aer;
-> > +	struct pci_dev *pdev;
-> > +	unsigned int devfn;
-> > +	unsigned int bus;
-> > +	int aer_severity;
-> > +	int domain;
-> > +
-> > +	if (!(pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID ||
-> > +	      pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO))
->=20
-> Looking again, I'm not sure this is as intended.  Is the aim to
-> allow for either one of these two?  Or check that that are both present?=
-=20
-> That is should it be !(A && B) rather than !(A || B)?
->=20
-Hi Jonathan,
+Sourabh Jain <sourabhjain@linux.ibm.com> writes:
 
-You're right. We need to check that both are true and return if they are=20
-not, then the statement has to be !(A && B).
+> Hi Ritesh,
+>
+> On 31/10/25 09:27, Ritesh Harjani (IBM) wrote:
+>> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>>
+>>> Commit 35c18f2933c5 ("Add a new optional ",cma" suffix to the
+>>> crashkernel= command line option") and commit ab475510e042 ("kdump:
+>>> implement reserve_crashkernel_cma") added CMA support for kdump
+>>> crashkernel reservation.
+>>>
+>>> Extend crashkernel CMA reservation support to powerpc.
+>>>
+>>> The following changes are made to enable CMA reservation on powerpc:
+>>>
+>>> - Parse and obtain the CMA reservation size along with other crashkernel
+>>>    parameters
+>>> - Call reserve_crashkernel_cma() to allocate the CMA region for kdump
+>>> - Include the CMA-reserved ranges in the usable memory ranges for the
+>>>    kdump kernel to use.
+>>> - Exclude the CMA-reserved ranges from the crash kernel memory to
+>>>    prevent them from being exported through /proc/vmcore.
+>>>
+>>> With the introduction of the CMA crashkernel regions,
+>>> crash_exclude_mem_range() needs to be called multiple times to exclude
+>>> both crashk_res and crashk_cma_ranges from the crash memory ranges. To
+>>> avoid repetitive logic for validating mem_ranges size and handling
+>>> reallocation when required, this functionality is moved to a new wrapper
+>>> function crash_exclude_mem_range_guarded().
+>>>
+>>> To ensure proper CMA reservation, reserve_crashkernel_cma() is called
+>>> after pageblock_order is initialized.
+>>>
+>>> Cc: Baoquan he <bhe@redhat.com>
+>>> Cc: Jiri Bohac <jbohac@suse.cz>
+>>> Cc: Hari Bathini <hbathini@linux.ibm.com>
+>>> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+>>> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>>> Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
+>>> Cc: linuxppc-dev@lists.ozlabs.org
+>>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>>> ---
+>>> Changlog:
+>>>
+>>> v3 -> v4
+>>>   - Removed repeated initialization to tmem in
+>>>     crash_exclude_mem_range_guarded()
+>>>   - Call crash_exclude_mem_range() with right crashk ranges
+>>>
+>>> ---
+>>>   arch/powerpc/include/asm/kexec.h   |  2 ++
+>>>   arch/powerpc/kernel/setup-common.c |  4 ++-
+>>>   arch/powerpc/kexec/core.c          | 10 ++++++-
+>>>   arch/powerpc/kexec/ranges.c        | 43 ++++++++++++++++++++++--------
+>>>   4 files changed, 46 insertions(+), 13 deletions(-)
+>>
+>> I am not much familiar with the crash kernel workings but was curious
+>> about the following query related to this patch:
+>>
+>> As I understand this patch allows for the remaining crash kernel
+>> memory to come from CMA region. But do we limit the CMA region to be lower
+>> than 4G?
+>
+> No we are not and we don't need to.
+>
+>> Is this patch dependent over your other patch series [1] which
+>> supports high crashkernel reservation?
+>>
+>> [1]: https://lore.kernel.org/linuxppc-dev/20251027151338.819957-1-sourabhjain@linux.ibm.com/
+>
+> No, this is an independent patch.
+>
 
-Thank you,
+Say, if we are in Hash mode and if the CMA reservations have come from
+higher addresses. Will that work with kdump kernel when it boots with Hash
+mmu? Because memory region beyond RMA is not accessible in Hash correct?
 
-=46abio=20
->=20
-> > +		return;
-> > +
-> > +	aer_severity =3D cper_severity_to_aer(severity);
-> > +	aer =3D (struct aer_capability_regs *)pcie_err->aer_info;
-> > +	domain =3D pcie_err->device_id.segment;
-> > +	bus =3D pcie_err->device_id.bus;
-> > +	devfn =3D PCI_DEVFN(pcie_err->device_id.device,
-> > +			  pcie_err->device_id.function);
-> > +	pdev =3D pci_get_domain_bus_and_slot(domain, bus, devfn);
-> > +	if (!pdev)
-> > +		return;
-> > +
-> > +	pci_print_aer(pdev, aer_severity, aer);
-> > +	pci_dev_put(pdev);
-> > +}
->=20
->=20
+-ritesh
 
-
-
-
+>>
+>>
+>> A minor comment: I guess we could reflect the support for ,cma for PPC
+>> too in Documentation/admin-guide/kernel-parameters.txt like how it is
+>> done for x86.
+>
+> Yes we should. I will make the change in the next version.
+>
+> Thanks for the review.
+>
+> - Sourabh Jain
 
