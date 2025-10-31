@@ -1,61 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-13640-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13641-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E01C240A6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 10:11:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00A8C24106
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 10:15:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cyZwW0cg0z2yqh;
-	Fri, 31 Oct 2025 20:11:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cyb144qRJz2xdg;
+	Fri, 31 Oct 2025 20:15:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761901882;
-	cv=none; b=kSXmZlNWwIxwaMevXrEWl3otU8HoDa9Vh5c/ZDrbnb9ujZxrd/fgwqy2+3nMaGmEkAaPItQ9W7b7l4JHOvPjZFp4PrSe/QSrE+ExNbz+lixnay9bINI8W0rW1OS8P8GGU5j/aFFgogW8X9AY5jlsbPvAo2SsVTOcYoYLx6r+O5RPbxZ+MonttuOdHO0A17E5sNHazeHoMW4YbxBmwsJZc50hvjFf6AQaNUi4S/JajOWVDSAC0hhhSyCae0daLDh/RfGTQs2JM05mM2NBIp1PXzBXkBwGq4s1siSxVcmFQWE9LNW7TmUeQVUad8Kk0+uXSj2mIAo+Uh0hgnI1ZS/LYA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761902120;
+	cv=none; b=mEdUwwENP5/48AoyU+c7DLl3io557iNYi/777t+qlf68WW7Ocgih+YZWaTn34vQBqv0cF1z03jtV10LkC8zjRNr3S9xsiIApOASVdQu4JAULQJ3g++vT+8Izbcxnkw0DkUeK2SX6y018pAJ9TCo0dGrB+rWrEEbqG9kBDQMoX9Ft3DhgaHee7aaXz36RDnYAP+R2k5Er34sMoTm2QuDOgx8kwaPTbBZAzkub1LTPLYs8auE1xwIyXGqu+PAEdR5gpeTZbWVRfPSuyKOkTPGOnsaBBsXWO0w+b2yP0Y3QrGo6AlKhoz1fyrpzLq+BF0D0mA0Y4OWqIQOGS2X2/QJmEg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761901882; c=relaxed/relaxed;
-	bh=nVFcr7cSAivJ3kX3Ong+t5W82ll2lBVB0+D6Fy+f66w=;
+	t=1761902120; c=relaxed/relaxed;
+	bh=PEZyjCEAirGsnd1ualshLT165jeP3bC2ATQpTmkSqys=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gt37VtRhYz2Mt3vjfoZ1ktg1NiDTPoFQVd8TS0pe6kCqA39kHviWyNutu8ubO628VfQJCFEz9yo9MGQex7FfWYKhBpe1qOe5zmRfE3Fn4Q3bs0DiLjz+jKzqajRgFMYauqk9xREPnsfnVnSPqH9yxMplwKbl3nOf8OCoF/aHDNikORpEq4g0/UA0eBP9vOr++1q/E99RyNhrBXBTASRoNWTyLL+sSd6WbOfIjEl7A4sadw8StMecIrpNG3cfSG6TM3nh9zB+fwgQeLCrKByzZYmRKLUu37JZ3EkRPI4tFQXZjyVTQTCHPRuKj00jslxbeeNKOSgle2ZTF8CiYPvtzA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E63JqdjD; dkim-atps=neutral; spf=pass (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=Ract9xsLTn7sAFVvYs1WkljYUjpsKf+F/+BU+58cXZoNnAA6fP+v7edYSW6/JNPI0uTB5yCE5ujTt0qomWnX1jYkMpIRAfg/iShJHAmj/JHQMlUKAWmtf5D+rwijaA8ka0yOmjSvyhDHzQeqpVwRpx7PAU0fECUc/HYjqrCvijNeWU2dBAM4CExce/joJbErbyZkFL9kheygpkPDapskZoTJ0AZYFA6/bmwCPFUh3yjrnN7kYuGrN9Qr1tl2nJPhdMYyvMEYkwk4Gof9LGH+OLuIgsEZksl1S3IwYr8k3ieyz/XORpMeErBAZ9CjweW2Xq67Hzujons1zYIeXWi6fg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WcCj5oD0; dkim-atps=neutral; spf=pass (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E63JqdjD;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WcCj5oD0;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyZwS2L42z2xnh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 20:11:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyb133Bj5z2xPS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 20:15:19 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761901881; x=1793437881;
+  t=1761902120; x=1793438120;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=nVFcr7cSAivJ3kX3Ong+t5W82ll2lBVB0+D6Fy+f66w=;
-  b=E63JqdjDhwEk1yjn9E861qenSzF6QzYWXLQxTYq13/N32kVCjoSYs9G5
-   gN5xxJiwIpkMoti4Wxp7SUNuL+87tjSBfC0fwVTe/ejKR73ne57+6eS47
-   15D0cOKc5mVYcmYv3Zcit2PoGRS2bov7fiL3KE7JSdhR8zps4BlDK5pQN
-   1Bsb4hncJPPDUG+KlchsZTtrdodBftET9uBqofnSEKUV+jtAgyOLV6+Yj
-   mpz0EIO5cs8o2cf7ESFwOHvwFTNtM853OmoOQ7s/B3/FrqQZ4JEQEj0d4
-   +o7qI/rZv1a4e+B23J8GzoyXpS3aT8P64E8/PmicN/xzCftkXwyxSvjFc
-   A==;
-X-CSE-ConnectionGUID: Yd1Znwv2QNqr0eMmgUXSpg==
-X-CSE-MsgGUID: P9pufll5RV+HSq3BMVgVHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="75509617"
+  bh=PEZyjCEAirGsnd1ualshLT165jeP3bC2ATQpTmkSqys=;
+  b=WcCj5oD0u3zhbShu6vPwdHnGv45HkFutP4XpTLr9oQ+lqdLQ/nb6DySR
+   uVUvXaiD/VpZiPDt96Mkgl65WCWkb45dA10EAbNra0ic8m7tQqSKH7ZS7
+   xxSOgkk7UHhGeQPye025TecTI1ONC0WvNiQ3ElThXIgT0+C5JGG+k5wdi
+   EM+XVIvSThBDvxmc3KaEqqJ+2aSFGZiJ/U6RgQBYNWb6y9/jKi/UL8D9C
+   j2DJVFbUVI25vFVZ2fefHwONQCyGAg7JE+WVhuxSN+NBwbqZuo/eJLqYo
+   CxiY1T6UETb+ozqpZVi8Pe67mwn9RK8ROVIPXqNeobovDjpe5AER8fbq1
+   g==;
+X-CSE-ConnectionGUID: uFry4uJdQ7GnxOQsOEIY3A==
+X-CSE-MsgGUID: lWNBomPjSs6pR+4U2U1Hog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="75509920"
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="75509617"
+   d="scan'208";a="75509920"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:11:16 -0700
-X-CSE-ConnectionGUID: mtRCVhiuRGSbh+b9MLYkrw==
-X-CSE-MsgGUID: naB5mn6dRoCATJ8bJWh6cA==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:15:18 -0700
+X-CSE-ConnectionGUID: /aUTuTUZR1CXvXYAACxkEg==
+X-CSE-MsgGUID: 8/kgW76KTTCO7UxJ6gCbbg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="186124007"
+   d="scan'208";a="186125404"
 Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.28]) ([10.124.240.28])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:11:08 -0700
-Message-ID: <709166ed-2102-46f2-807b-3d8139a386f0@linux.intel.com>
-Date: Fri, 31 Oct 2025 17:11:05 +0800
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:15:09 -0700
+Message-ID: <fd65c501-296a-4f77-86fc-7de61a7c5eeb@linux.intel.com>
+Date: Fri, 31 Oct 2025 17:15:06 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,8 +70,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 22/28] KVM: TDX: Add tdx_get_cmd() helper to get and
- validate sub-ioctl command
+Subject: Re: [PATCH v4 23/28] KVM: TDX: Convert INIT_MEM_REGION and INIT_VCPU
+ to "unlocked" vCPU ioctl
 To: Sean Christopherson <seanjc@google.com>
 Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
  Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
@@ -93,10 +93,10 @@ Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Ackerley Tng <ackerleytng@google.com>
 References: <20251030200951.3402865-1-seanjc@google.com>
- <20251030200951.3402865-23-seanjc@google.com>
+ <20251030200951.3402865-24-seanjc@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251030200951.3402865-23-seanjc@google.com>
+In-Reply-To: <20251030200951.3402865-24-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -107,13 +107,16 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 On 10/31/2025 4:09 AM, Sean Christopherson wrote:
-> Add a helper to copy a kvm_tdx_cmd structure from userspace and verify
-> that must-be-zero fields are indeed zero.
+> Handle the KVM_TDX_INIT_MEM_REGION and KVM_TDX_INIT_VCPU vCPU sub-ioctls
+> in the unlocked variant, i.e. outside of vcpu->mutex, in anticipation of
+> taking kvm->lock along with all other vCPU mutexes, at which point the
+> sub-ioctls _must_ start without vcpu->mutex held.
 >
 > No functional change intended.
 >
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 > Reviewed-by: Kai Huang <kai.huang@intel.com>
+> Co-developed-by: Yan Zhao <yan.y.zhao@intel.com>
+> Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
