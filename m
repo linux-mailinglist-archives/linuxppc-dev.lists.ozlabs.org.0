@@ -1,61 +1,98 @@
-Return-Path: <linuxppc-dev+bounces-13642-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13643-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AB6C24136
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 10:17:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 987B1C24664
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Oct 2025 11:18:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cyb3y2pK7z2xnh;
-	Fri, 31 Oct 2025 20:17:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cycQM1C6wz2xdg;
+	Fri, 31 Oct 2025 21:18:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761902270;
-	cv=none; b=ZM3YOb04NM6gU/zIdWiH18IjSuvfwhZXIVwdH2v0Ate7yuumVG6xETq3FJSpBvW+7hR/jLBjP4n+HUWegm1DP9BWS3SiA/ZrgAJO9SsQeKD5I0UteUhlj8/XaPfaWpxFVJKbQgvYHCZpNMrSzLn6kiyQiSN61gch7hqRdiXwwNOJ+TUe1xjig9gIDkN9Vm0tVD528ebisj4j7HcP/vblj1E+liGOECfXW9bsT6GdxXKedtZwt+qQ1KwPFaqffnET4HncfctAPQyi5gzoQjNrNE4dwSmwPkmA2ChgAFePIr8X3hjwo7FnetG8LBMps0o6v+tU0aE4Xorfv1k1n94T8g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.7
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1761905931;
+	cv=none; b=Oo8RwVrlfQonWuGolM9J9jb2W0ogX8SWmRxuPqOO/mkuDRyFOI8a+SWEedfGLAfdABMQF/PCeTGe1Qf7b1SpcjZqhSUofjn4JXVztS1iggFZ0OO/U+kLfqP3iBBbnkhxCIGMzrF/TrliNzOdwwESCr9eyjxbDyqmr9p2XUeTvfQjiUlOKxmf/0XOFnFV0hlaC4dpNP9bNRrJLLGj+WaIfXOV0TtVze7hu5WFgbETZ+PZ1R1NoWE6VTBqY5FsYx1SE+0U371IeZDgngu/XOPaHGADKDwgydsyr0Nsf5XPTcv8HHfpPScvGf5OXan+GrVGomRC2aBiY2U60txjd304/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1761902270; c=relaxed/relaxed;
-	bh=6+fdM28QuB9T1HFnYCRzCUXVpG1QU1xA4LJIWTCndpE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EC62BRZ7EKjGCKjcEghcVDjmC2E8UZ7Q5b2gX2GJKE/OlT5aMHvGUkC1rB6vyQp/43+dYAGtf6UEdMVBvTUWKeQFjjmk785c8pNRH0vIAz75H0vjOHelhHCgam/dffjeR7Lki7255QmJG1T5P9VP2E7Cdi2EXyei9WWuv7Oe7rKHeykBKok2LcIt3nNBIgiqmudbPk2zIsPkixwZJohlqaP3iLzXFNXr06nb7B06keIL/+gF/gHcE3FTZW1sAs0Hs9Hqn5L4iYoTUiqJ6X9LuuEo4HNyrjh5nrk1rXbTn9fS89nARx9KmjtUMOvUWM6N861w14Deg0jLsu1DMddk+A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HhqdTv+x; dkim-atps=neutral; spf=pass (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	t=1761905931; c=relaxed/relaxed;
+	bh=ouZuaNOHnJFp67QDBQiw2sbQI2Rbc588YfTaV+JnlAY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NyGJjQr37z8K/t/a2Ix1+QxmoleWVJ8KMhyDS9WhGPQO2yhmUdHB+QKC9PUH4qZ3aDO6Jg8P1G2NOXGeaRzEd6qdbBHj6muSCetTnEJO+mOF1hY1PJEjsnFBhAJz+gWPSvc8NkHRZXeoVmIpm0faLVxuDy72RJtZbZcCV4WMl35+MR2yGzhHysFbu/4QBUSwr96IccBaKdzVGRT5R/4g2l0xF+muHerEy9HHlLqLjmpUHHU3scTm65HnGA+XZcaHqh3jvdtWgM5rcKcTCLxPno7Q3NJWAdwhv+q7UqF5+4yItREZkm4wXclxg2WeF5/2L8gzDotvCQ/EwbjZN06GEw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DPY0MYL4; dkim-atps=neutral; spf=pass (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HhqdTv+x;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DPY0MYL4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cyb3x2TSHz2xPx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 20:17:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cycQJ3VFbz2xS2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Oct 2025 21:18:46 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761902270; x=1793438270;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=6+fdM28QuB9T1HFnYCRzCUXVpG1QU1xA4LJIWTCndpE=;
-  b=HhqdTv+x/D5FOLuJfF9YoHKBe+A5lPCXqFT+y+cJhQGcIiar8Ks1Dct6
-   VbfjIIf7Wvg731etE3qLrIjsZa1XjsPuNlV/BXqYbCto5u92zoXVWrTEN
-   ngFfbbzXXCL9HvhUyObSihWNSDIx66OZu8O+ExWbtau6AbeoxtYmBgE9o
-   SKnsa0msh4SfLNTnjbEzBArPX4PCXWnu1HmkD1yKp80QGZxzI3qEeDgGF
-   pNAfQnHDOkvF8tURxW0R20V1xKWi7dG6jEjA5AKn1yAq/csjNxF00olai
-   gE0qsaE/ev5EVECAxwTwKCOCiOiDjuKhVzjUW+NrTQyMwujVzX/Mlfv9F
+  t=1761905929; x=1793441929;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ScQKh0k+g0sLHY6zzPeiiWF3Mx49kdxeKS7TZIXktok=;
+  b=DPY0MYL42dC7Rj1hzzhBC2MNFvqD5nxyTPoZkOuSpuYnNJKSxowHczgJ
+   fwafMokuMBIcwaKWFyiubBKes6WszrY56zoivPpQJETk5tjVLJaFpSTaC
+   MhVL2z/rtWX80+lIEeWTbJ3fgAZ5l5TfBcKIubUTc4pYd3HoPL2dXWv8G
+   y6cQUE6FuipCNpvpGZZKiSRbZ124T51W4HkaC818CwAIl+w6+QM8y+ysh
+   NKYXsTq2ng23r9D1AeUA7PdzRgVr4X9Z1AMxsCudrCZzlbgTPFitlvw85
+   ThcabA9pJ79AN1CTb1j6lRrHmCEvkFon12SzqdE9+BMTshNfjuiJIBG2k
    A==;
-X-CSE-ConnectionGUID: I80qVBcVThmSZrxni9VuPQ==
-X-CSE-MsgGUID: U71VxtlCQoWBbFNzTYS7SA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="75177087"
+X-CSE-ConnectionGUID: XteDIeDzQeCxCZblK1jAXg==
+X-CSE-MsgGUID: 75vdSXZXSfGjJ1JiT2rZOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="89529660"
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="75177087"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:17:41 -0700
-X-CSE-ConnectionGUID: xN3TnblrQqeOxewqaIMiwg==
-X-CSE-MsgGUID: 7VuncW0PQxeTB4CUZL105Q==
+   d="scan'208";a="89529660"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 03:18:42 -0700
+X-CSE-ConnectionGUID: k25i44LyS2un9PQ5Y6ncag==
+X-CSE-MsgGUID: vJDIqqS8RQmFeEw6PNSdLg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="186126269"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.28]) ([10.124.240.28])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 02:17:33 -0700
-Message-ID: <94e3e701-b60d-419b-b3c1-2b41796ab5c3@linux.intel.com>
-Date: Fri, 31 Oct 2025 17:17:29 +0800
+   d="scan'208";a="185890295"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO fdefranc-mobl3.localnet) ([10.245.246.56])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 03:18:30 -0700
+From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: linux-cxl@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
+ Borislav Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Shuai Xue <xueshuai@linux.alibaba.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Sunil V L <sunilvl@ventanamicro.com>, Xiaofei Tan <tanxiaofei@huawei.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+ Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, Guo Weikang <guoweikang.kernel@gmail.com>,
+ Xin Li <xin@zytor.com>, Will Deacon <will@kernel.org>,
+ Huang Yiwei <quic_hyiwei@quicinc.com>, Gavin Shan <gshan@redhat.com>,
+ Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
+ Li Ming <ming.li@zohomail.com>,
+ Ilpo =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Karolina Stolarek <karolina.stolarek@oracle.com>,
+ Jon Pan-Doh <pandoh@google.com>, Lukas Wunner <lukas@wunner.de>,
+ Shiju Jose <shiju.jose@huawei.com>, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org
+Subject: Re: [PATCH 2/6 v6] ACPI: extlog: Trace CPER PCI Express Error Section
+Date: Fri, 31 Oct 2025 11:18:27 +0100
+Message-ID: <2351924.vFx2qVVIhK@fdefranc-mobl3>
+In-Reply-To: <20251028144816.000018a3@huawei.com>
+References:
+ <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
+ <20251023122612.1326748-3-fabio.m.de.francesco@linux.intel.com>
+ <20251028144816.000018a3@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,54 +106,90 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 24/28] KVM: TDX: Use guard() to acquire kvm->lock in
- tdx_vm_ioctl()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Huacai Chen <chenhuacai@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, x86@kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
- Kai Huang <kai.huang@intel.com>, Michael Roth <michael.roth@amd.com>,
- Yan Zhao <yan.y.zhao@intel.com>, Vishal Annapurve <vannapurve@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ackerley Tng <ackerleytng@google.com>
-References: <20251030200951.3402865-1-seanjc@google.com>
- <20251030200951.3402865-25-seanjc@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251030200951.3402865-25-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Tuesday, October 28, 2025 3:48:16=E2=80=AFPM Central European Standard T=
+ime Jonathan Cameron wrote:
+> On Thu, 23 Oct 2025 14:25:37 +0200
+> "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com> wrote:
+>=20
+> > I/O Machine Check Architecture events may signal failing PCIe components
+> > or links. The AER event contains details on what was happening on the w=
+ire
+> > when the error was signaled.
+> >=20
+> > Trace the CPER PCIe Error section (UEFI v2.10, Appendix N.2.7) reported
+> > by the I/O MCA.
+> >=20
+> > Cc: Dan Williams <dan.j.williams@intel.com>
+> > Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> > Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.=
+com>
+> Hi Fabio,
+>=20
+> Was taking a fresh look at this as a precursor to looking at later
+> patches in series and spotted something that I'm doubtful about.
+>=20
+> > diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+> > index 47d11cb5c912..cefe8d2d8aff 100644
+> > --- a/drivers/acpi/acpi_extlog.c
+> > +++ b/drivers/acpi/acpi_extlog.c
+> > @@ -132,6 +132,34 @@ static int print_extlog_rcd(const char *pfx,
+> >  	return 1;
+> >  }
+> > =20
+> > +static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
+> > +			      int severity)
+> > +{
+> > +	struct aer_capability_regs *aer;
+> > +	struct pci_dev *pdev;
+> > +	unsigned int devfn;
+> > +	unsigned int bus;
+> > +	int aer_severity;
+> > +	int domain;
+> > +
+> > +	if (!(pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID ||
+> > +	      pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO))
+>=20
+> Looking again, I'm not sure this is as intended.  Is the aim to
+> allow for either one of these two?  Or check that that are both present?=
+=20
+> That is should it be !(A && B) rather than !(A || B)?
+>=20
+Hi Jonathan,
+
+You're right. We need to check that both are true and return if they are=20
+not, then the statement has to be !(A && B).
+
+Thank you,
+
+=46abio=20
+>=20
+> > +		return;
+> > +
+> > +	aer_severity =3D cper_severity_to_aer(severity);
+> > +	aer =3D (struct aer_capability_regs *)pcie_err->aer_info;
+> > +	domain =3D pcie_err->device_id.segment;
+> > +	bus =3D pcie_err->device_id.bus;
+> > +	devfn =3D PCI_DEVFN(pcie_err->device_id.device,
+> > +			  pcie_err->device_id.function);
+> > +	pdev =3D pci_get_domain_bus_and_slot(domain, bus, devfn);
+> > +	if (!pdev)
+> > +		return;
+> > +
+> > +	pci_print_aer(pdev, aer_severity, aer);
+> > +	pci_dev_put(pdev);
+> > +}
+>=20
+>=20
 
 
-On 10/31/2025 4:09 AM, Sean Christopherson wrote:
-> Use guard() in tdx_vm_ioctl() to tidy up the code a small amount, but more
-> importantly to minimize the diff of a future change, which will use
-> guard-like semantics to acquire and release multiple locks.
->
-> No functional change intended.
->
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
 
