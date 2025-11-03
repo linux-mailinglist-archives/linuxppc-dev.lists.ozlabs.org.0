@@ -1,91 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-13705-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13706-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB0CC2DAC5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 03 Nov 2025 19:29:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B1BC2DAD7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 03 Nov 2025 19:29:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d0g8Z5f90z3bfZ;
-	Tue,  4 Nov 2025 05:29:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d0g9L22dxz3bfZ;
+	Tue,  4 Nov 2025 05:29:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.83 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762194542;
-	cv=pass; b=oNQB/24yOu2HC6NUy4nQp9Rmpg/WFpYpzIeiUlq5z7TB/V0DX/ScGCqAWjkpZCCwVbUAAAmoUwBsUTDMTaWNHJu54v1iH5/kostDvTT+Nu3xj8FiKnfpjsTtvvNs6R2rCO5J8lLoWA3wDdnXzhDrNn4fJuHH1USYn2BAznl39dbjxoRabKc6RKL+DdyPIMlFFte6/3R0XOkpGn5iWmHJssevjBg8y+/BSKAf4HtN97Ob5OIcCaLL+rZ9BRoDJCx3G+dRl1Ze6HtuSTJkizLvFnoZUqGd6+Qa3Ha41BCr0ny9pzDvwxGiiCOtde1hh2Rm4I2+IpSD76/sJL8rS/NpeQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762194542; c=relaxed/relaxed;
-	bh=o7mmj4miEk5uHrPbENwgiOkK+B4AYKwPEzssaLhx+ns=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=KW2U86pMACyt6UfUwaMAjK/wcMB/sticq6z1va5hFM+JLlVq2KHARA4xdiX6LSJd//WVxI8Q6rnYQXtKRPUuSw+tlpKY9qMoxZu4RfVD7qTVzye8CHrJzI/M9nT2f6WJ2dhW07K43J/rhEYefeshGrVYa4lkwfpZ0rJlK7Eox3pCJfSEaO3TMvAoQSnUOLz3kOv0O5zeLNRLQNKiRBvOBgowCBsUw/2PMuCDyw38ae7g8ly6qqZnaUM9t0MLN9snoYcw8pnAO+mMmVwZQlCjL81mVWXoJpKMfOL+aFQXD/jSmAv36hCw7Yi0NK4qV/yf49Otf+vz0Js8ILJgb8h94w==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=ZayjRdX4; dkim-atps=neutral; spf=pass (client-ip=85.215.255.83; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p02-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=ZayjRdX4;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=85.215.255.83; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.83])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d0g8W6cnmz3bfN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 05:28:58 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1762194501; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=AU4sy1rW+8LT55IEiSdEhOox/nGGdwtEIgBEx/VWOpxC7gv/6IHVTbMGH9GTa4Pkpw
-    UcORh/wMC2L+caR+WRNufihMy28FTGtrmVRQKU15aypqb5WB0LEkWT0F510e5nSae1Hh
-    MgqhyufKrOULj1CfFOQHgPZXyFsgPkYb94w31g9HQhkzR58/AHgATLADDr6qjK8FY85m
-    p1gpxEOOD737r2wcQL/inQCIErvPF7LDDC8LWclzb25j2p7n7grtWC22fPIVFB8M9NdG
-    IYHy31JglrxacdKxQ5SZrhk26i9HhIRwHxtaqUVif8qMznk5g8DE5Cmm2usJ98zy6/aN
-    VWZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1762194501;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=o7mmj4miEk5uHrPbENwgiOkK+B4AYKwPEzssaLhx+ns=;
-    b=TR6GYXtcjPr+Z+XT7P0QkLcqM5oZtZn2FLXPHZFeE/s32VbZkOfoN0Oz0IBOTpbijJ
-    TYc3UIE38Ki1QUGNKJacfsHGnxNC3CRqgd+B7Wcav64bMA6562x11lU3am/u+aIzdFDu
-    r6DV/MLKWSe9EWxdeto3RUAKtP3b57PjiusxHTIIOqtLZ77lw9GORMDeRQbdP14Ij9xb
-    eDieTH96QfM2JYMHbwxi6kwqBgH7BKNWKF1PnQkRRgWPDZ0zcC0Ad4x/6JNuKzIpWh7y
-    3QpqE6Z3n1k5vylu2YphMjJys4vk1FEVAhuQf3dQirE+29CA6Z7EskO/AYwW40D1z+2s
-    9bAQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1762194501;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=o7mmj4miEk5uHrPbENwgiOkK+B4AYKwPEzssaLhx+ns=;
-    b=ZayjRdX4ltx9V2Lvo2hCi/dnVYykNv66H3B0rrEwErP2mBtDvBf1oUPVFxrOSngBqp
-    2kYpWzMPrUlmW0mYblk/CB4QYD/VuGOqCfhnPtZ2kT/48MgiG+YhQgSyXnIDCUHBk2kC
-    65nMv6Ke6SM6ZuV+euqQbAiZRHTaxcJWz2hFJSbj45DFTTotuOypehe6GZXIif2jO1jM
-    8WkBFV6daljnPg3EVr7ql6qatXLjl+K6S1sH3sMPejeiRqTTmW5Oz7x0ayv5ECagMLsb
-    ub7kHinKTX/sRhJTfONYU3hDDz0m5JNOB8QhAuNozbSQxL4IFgtqsRqq9Fvxcc/2ILKz
-    AR5g==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr4thIFiqT9BURIi+mgQ=="
-Received: from void-ppc.a-eon.tld
-    by smtp.strato.de (RZmta 53.4.2 DYNA|AUTH)
-    with ESMTPSA id e288661A3ISKeHk
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 3 Nov 2025 19:28:20 +0100 (CET)
-Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- linux-pci@vger.kernel.org, mad skateman <madskateman@gmail.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au,
- Darren Stevens <darren@stevens-zone.net>, debian-powerpc@lists.debian.org,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Lukas Wunner <lukas@wunner.de>, regressions@lists.linux.dev
-References: <545ac5c9-580c-5cf7-dd22-10dd79e6aabf@xenosoft.de>
- <AEBA92BD-B46D-4D1B-A4D1-645B276E34CF@xenosoft.de>
- <emjne6l33e3hukef5ms7kubv6kkuvesqkw6ozojnzzdgvso7ma@rbpg2l5i3nno>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Organization: A-EON Open Source
-Message-ID: <d93eac4d-b382-97dd-d829-98aef6695204@xenosoft.de>
-Date: Mon, 3 Nov 2025 19:28:19 +0100
-X-Mailer: BrassMonkey/33.9.1
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762194582;
+	cv=none; b=JJdezWb8wfXVqZHjGZax1ybEBpHZc4kdXrMeVIDctcHDKnyagEXs+XUO94C1NZFuxb6beYtoV+Qr/kLbtv9r4Qf6Nt8Ff9qNsPrspcXW1YEzfUGv3PoB4tM+4UwS4OS97vbd49GhINf9Gj1IwPtzEufMdpZbjvryLb9IYcr2DkjctyEcgdOtpWBv2XbolHDRaxZW9nVHlI+huYFWg8fEcIoaD/GnJTVyyRdSgj63FDDsSGa49A5d8Acbnfctwih/wM+bs8g2UVfWjKgbKiqIYyonEchUB2dp9ea285YyLXVdEydK/7YhIvGtWvIUy8er3Flxm33rbr9uEDnth4UVRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1762194582; c=relaxed/relaxed;
+	bh=PejloQnKGuK3bpH0pnM/kdDvHB2ShDka/sYljxbJywo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VwAXYc/hWiw8mBvigtc2w/mNNGR+Q3rRNRwP+X3Qjeyb9gObDimi2EEGFZKorCttCMcjEaq8q2i+mx0RKbYNGAp7JKhHgdXfYJzqclH+40/Gd8kF8OshTM4h+RKXc9exKOQhNT5g1vXNy1dSrSbRsQTmp2v69iQo+G22tuGei+a6ZU+uUofPooTXaL9YuLJT7WyQu7fXAeBbCT1LZcyfQcUADTkPCv0jtEPG79E4quq6JLY4iHtmmRZh1hTlWthRa+qUgOKbO6eZIMa6qufkNfaf+xk1KMIoRSFQ5SLL0yGgZF+tN5MM38bPQtuNZbPhEMHODigBeDlm+0I/ajDlIw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d0g9K4nhBz3bfN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 05:29:41 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD0752A6B;
+	Mon,  3 Nov 2025 10:29:02 -0800 (PST)
+Received: from [10.1.30.16] (unknown [10.1.30.16])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 191F33F694;
+	Mon,  3 Nov 2025 10:29:02 -0800 (PST)
+Message-ID: <285faae4-dab6-4819-847a-889bdf87d5d7@arm.com>
+Date: Mon, 3 Nov 2025 18:29:00 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,121 +43,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <emjne6l33e3hukef5ms7kubv6kkuvesqkw6ozojnzzdgvso7ma@rbpg2l5i3nno>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 11/12] x86/xen: use lazy_mmu_state when
+ context-switching
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-12-kevin.brodsky@arm.com>
+ <c7c8a233-2103-4b48-b65e-ec81666d20e4@kernel.org>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <c7c8a233-2103-4b48-b65e-ec81666d20e4@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 11/01/2025 06:06 PM, Manivannan Sadhasivam wrote:
- > On Sat, Nov 01, 2025 at 08:59:37AM +0100, Christian Zigotzky wrote:
- >>
- >> Bjorn Helgaas <helgaas@kernel.org> wrote:
- >>
- >> Oops, I made that fixup run too late.  Instead of the patch above, can
- >> you test the one below?
- >>
- >> You'll likely see something like this, which is a little misleading
- >> because even though we claim "default L1" for 01:00.0 (or whatever
- >> your Radeon is), the fact that L0s and L1 are disabled at the other
- >> end of the link (00:00.0) should prevent us from actually enabling it:
- >>
- >> pci 0000:00:00.0: Disabling ASPM L0s/L1
- >> pci 0000:01:00.0: ASPM: default states L1
- >>
- >> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
- >> index 214ed060ca1b..27777ded9a2c 100644
- >> --- a/drivers/pci/quirks.c
- >> +++ b/drivers/pci/quirks.c
- >> @@ -2524,6 +2524,7 @@ static void quirk_disable_aspm_l0s_l1(struct 
-pci_dev *dev)
- >> * disable both L0s and L1 for now to be safe.
- >> */
- >> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, 
-quirk_disable_aspm_l0s_l1);
- >> +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_FREESCALE, 0x0451, 
-quirk_disable_aspm_l0s_l1);
- >>
- >> /*
- >> * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
- >>
- >> —
- >>
- >> Hi Bjorn,
- >>
- >> Thanks for your patch. I patched the RC3 of kernel 6.18 with your 
-new patch and compiled it again. Unfortunately the FSL Cyrus+ board 
-doesn't boot with your new patch.
- >>
- >> Sorry,
- >>
- >> Christian
- >>
- >> --
- >> Sent with BrassMonkey 33.9.1 
-(https://github.com/chzigotzky/Web-Browsers-and-Suites-for-Linux-PPC/releases/tag/BrassMonkey_33.9.1)
- >>
- >> —-
- >>
- >> What about with
- >>
- >> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, PCI_ANY_ID, 
-quirk_disable_aspm_l0s_l1);
- >>
- >
- > The issue is most likely with your Root Port rather than with the 
-Radeon device.
- > So the quirk for Radeon won't fix the issue properly as it will 
-affect other
- > host systems as well.
- >
- > I guess Bjorn's change didn't help because the fixup ran before
- > pcie_aspm_init_link_state(). So even though the fixup disabled the 
-ASPM link
- > state for Root Port, it got enabled by the default ASPM states enabled in
- > pcie_aspm_init_link_state().
- >
- > Can you try doing fixup final as below?
- >
- > ```
- > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
- > index d97335a40193..74d8596b3f62 100644
- > --- a/drivers/pci/quirks.c
- > +++ b/drivers/pci/quirks.c
- > @@ -2524,6 +2524,7 @@ static void quirk_disable_aspm_l0s_l1(struct 
-pci_dev *dev)
- >   * disable both L0s and L1 for now to be safe.
- >   */
- >  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, 
-quirk_disable_aspm_l0s_l1);
- > +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_FREESCALE, 0x0451, 
-quirk_disable_aspm_l0s_l1);
- >
- >  /*
- >   * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe 
-Retrain
- > ```
- >
- > Sorry, I guess we are asking for too many experiments to be done 
-which might be
- > of trouble for you. But without direct access to the device, we had 
-to do these
- > :(
- >
- > Thanks for your help in debugging.
- >
- > - Mani
- >
+On 03/11/2025 16:15, David Hildenbrand (Red Hat) wrote:
+> On 29.10.25 11:09, Kevin Brodsky wrote:
+>> [...]
+>>
+>> @@ -437,7 +436,7 @@ static void xen_end_context_switch(struct
+>> task_struct *next)
+>>         xen_mc_flush();
+>>       leave_lazy(XEN_LAZY_CPU);
+>> -    if (test_and_clear_ti_thread_flag(task_thread_info(next),
+>> TIF_LAZY_MMU_UPDATES))
+>> +    if (next->lazy_mmu_state.active)
+>
+> This is nasty. If in_lazy_mmu_mode() is not sufficient, we will want
+> to have a separate helper that makes it clear what the difference
+> between both variants is.
 
-I tested your patch with the RC4 of kernel 6.18 today. Unfortunately it 
-doesn't solve the boot issue.
+in_lazy_mmu_mode() operates on current, but here we're operating on a
+different task. The difference is more fundamental than just passing a
+task_struct * or not: in_lazy_mmu_mode() is about whether we're
+currently in lazy MMU mode, i.e. not paused and not in interrupt
+context. A task that isn't scheduled is never in lazy MMU mode -
+lazy_mmu_state.active is just the saved state to be restored when
+scheduled again.
 
-- Christian
+My point here is that we could have a helper for this use-case, but it
+should not be used in other situations (at least not on current). Maybe
+__task_lazy_mmu_active(task)? I do wonder if accessing lazy_mmu_state
+directly isn't expressing the intention well enough though (checking the
+saved state).
 
--- 
-Sent with BrassMonkey 33.9.1 
-(https://github.com/chzigotzky/Web-Browsers-and-Suites-for-Linux-PPC/releases/tag/BrassMonkey_33.9.1)
+- Kevin
 
