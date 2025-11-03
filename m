@@ -1,89 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-13691-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13692-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13F9C2A4FA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 03 Nov 2025 08:26:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E03C0C2AA04
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 03 Nov 2025 09:47:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d0NRv46HJz30RJ;
-	Mon,  3 Nov 2025 18:26:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d0QFj5BKxz306d;
+	Mon,  3 Nov 2025 19:47:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.144
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762154779;
-	cv=none; b=Z8fDYuEDpT1mtlhySpwytnI/TKs/0dQa6plj+Tj/DpSEtebOu7XMPrdkwPH6XmcE3SM/AUNgzA8lzrhUKYSfzLei9rGSIrJmbLX54M/ocnHQ2XN3G6eQMoYMSwN9d4p1YsejkwxlCHqbolubHMK+Ul5KIeXVNnRCsIpGUAU/2ZH0/ykccZ6uNvjuQb94g0mL+qLtyU9OsE4jCf2LjxgRvAvmjJ8eLtPcm7yybbukdCVgyvcvhiOnk6k8ONjaovexvTPn9nPqhtoAbtDOnqh3pwPH5VLBusVyRURJN/Suf/dwibWQbHLG9RrPd3MEFUEMCwGAwn3bbKJSL0NreaCCDw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762159657;
+	cv=none; b=cDL616UqWue6inQGJsKEMy0MDW7hH6AMIXxZWcuWCr7hq/KrFEsO4hES1qL333EDLv9vM6sKLjcvP7u4qVH1nDGloltiwIt5jite0ChUbkB5eaF9EHmxgGWpHJFmtMKl/By1subIoyKk8x8k31G7tuVvPXYql8p9strixycoWNHDwTOGtD3dBR1cCVxY4UIK4R3yfeQr4alM52W28wWWqDP09ydq6+EDVMUM3a1jmnCPHMPkqV7p4DLE+WBmzlpQ72cxxpMuAiKcysb0YWIvoMYnDtDS+EbhIP1RYsdKFTiMZMt+G4DD6nTr/WxVzOVlQmnZtMpHPH6ZeL3KzY2i2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762154779; c=relaxed/relaxed;
-	bh=PX5prZmahrgIhU+JbpH47LcMvc0AFM9ySNdraK9Ud/c=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=mkeB2ilEsTDiiHFHo+Qxn2UNMWFaJ/lW6DfMToIvvJ+F3MasOypgFiOTtK4cbD4Eo0hYNroTWuWqEG4hxUe97Wkl5PRVgAnHkI2rUwcy4mKxLijQoKlkHQZP5YVaA46lo1OVq4e/R+9M+8+IS+pa2170R11fpE1mLVboErH+81CtLrmGdNIJkBWrD3Toi7EpT7oUqQoL3atilnVp7nDn+iPhBYEJc7ul2AI2QKEuIMaaGmO6XdOvo024gQPYe02zzbT802IBs1s24pQF9XaYkMyzg01OleS477avKB2s8uIPZ+ZmK/cn/rOYds2JgBTmEwRBcVtgnDyC/P/K6GOKVg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=JKhQo3Yo; dkim-atps=neutral; spf=pass (client-ip=103.168.172.144; helo=fout-a1-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=fout-a1-smtp.messagingengine.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	t=1762159657; c=relaxed/relaxed;
+	bh=1X2By9QoThsdGSa5CA88Md4gR1pD3mMBEB9rDlXDtgg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O6f06evucFbtncUraFZUotSbClR7cCXYRIICaX1pjcPu9gy/cAIwz84gmD1QHAj+XL3ydZMTtL6+W9tRUG6nYAGIYH7/MLf+Z2Ox7ycTGw4gt5De3TyAKlqzAEHOF4i+GSC/ubtYyPxOLkaAA66GlfrLPKHn9w+OhsmR+tVBGTWyytWZMdtKmRqErMGfNID7r95N48aKNQXadig1Qs3ESfB1jkW6NlTmlEkJlnqe1K9Xj/t9t5k5kMXdgN1rs1i56eOlP4fVJUxZ+wC9HI68fs/7Inkc5ASmJ4dunDfnWIP3cMuA8yulAY4NRtaFruuKNVrTpBspjDyYFRCt7cpRPw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=sl09BmYL; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=vincent.guittot@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=JKhQo3Yo;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=sl09BmYL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=fout-a1-smtp.messagingengine.com (client-ip=103.168.172.144; helo=fout-a1-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org)
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=vincent.guittot@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d0NRs0RFHz2xR4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Nov 2025 18:26:15 +1100 (AEDT)
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id E7772EC00A3;
-	Mon,  3 Nov 2025 02:26:12 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 03 Nov 2025 02:26:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1762154772; x=1762241172; bh=PX5prZmahrgIhU+JbpH47LcMvc0AFM9ySNd
-	raK9Ud/c=; b=JKhQo3YoXbYZpttHEkp/VzRzZ+zsA4JJPVBjTs9ObI96ELmjiXJ
-	3bgZaO7IO28F7ZxAR4p/3gvJ5w94dcpYmpRHRFsqbYvPExECiloT2MHBwCtzQ2QN
-	Zo+r081EFl0oEkmbFfv/9EFTKbKuQe/x3Mzi5IQTRsDyfvUwvET6ihul5I7sOXjS
-	LaB9duP/puZKFuyvmWQDVpe64dCRLbdQCk9sSowrnUtgAAqLCryn+X6MhfWGwr93
-	j5OUHy6TlbKVsYZGN3DJQF3oiHHMuYizx/nRLTH85P9YQMWuy51E5rniW/XWxnKI
-	QF8582XslPwikLYYRLorSeOI2rZmimpEECQ==
-X-ME-Sender: <xms:E1kIaYl8JOPjS-j3yFMlOJK7JOiIplv4c80tVxwFlQL4nom9cl9uVw>
-    <xme:E1kIaTqH6dfYtsVTb5eOXY5Y0tqsjec8yQd6D-z338uUWSEerbHPJZsjKxdw7uqRo
-    LT7NWXsqOEFh7BoCVwUnzXRgnf69T6qZ715cDjFLqMmFMhiPzQkxLg>
-X-ME-Received: <xmr:E1kIaSDptXscHynC45OT4jocW6HYUEL9KWtXBkapk922NtkulIOYWYi2ZwuxlupiZ0-XS55Dil5zUS2XyBvN4t5dNFHnmssyb7Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddujeejheefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
-    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeuheeu
-    leenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
-    hhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeduuddpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugiesthhrvggslhhighdrohhrgh
-    dprhgtphhtthhopehushgvrhhmheejseihrghhohhordgtohhmpdhrtghpthhtohepmhhp
-    vgesvghllhgvrhhmrghnrdhiugdrrghupdhrtghpthhtohepnhhpihhgghhinhesghhmrg
-    hilhdrtghomhdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhr
-    ohhuphdrvghupdhrtghpthhtohepshgrmhesrhgrvhhnsghorhhgrdhorhhgpdhrtghpth
-    htohepsggvnhhhsehkvghrnhgvlhdrtghrrghshhhinhhgrdhorhhgpdhrtghpthhtohep
-    lhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtth
-    hopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:E1kIaeE_FfgsNskovQSA7E_VFEENGQ6iM_wWINonI8A0PYjrkEli0w>
-    <xmx:E1kIaU3vZgDv1anx4lcTGSu7HrfwcWAPtrytRL9fD4yXVachoZ_xHw>
-    <xmx:E1kIaXPjzTI_L1FdaVTDQPLzVzitx9urVxiD45ks-7jCDGoKO1hvmQ>
-    <xmx:E1kIacY3oM0B64yU5wJxmfSCYXfjDPEcGweelGfldRYrRVQwec4y_A>
-    <xmx:FFkIafGIA-HvFZtAdfZFwMZLMrcjjkmS59C5w6p5uUC0V112cuUfGRJT>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Nov 2025 02:26:08 -0500 (EST)
-Date: Mon, 3 Nov 2025 18:26:16 +1100 (AEDT)
-From: Finn Thain <fthain@linux-m68k.org>
-To: "Dr. David Alan Gilbert" <linux@treblig.org>
-cc: Stan Johnson <userm57@yahoo.com>, mpe@ellerman.id.au, npiggin@gmail.com, 
-    christophe.leroy@csgroup.eu, sam@ravnborg.org, benh@kernel.crashing.org, 
-    linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-    rdunlap@infradead.org, Cedar Maxwell <cedarmaxwell@mac.com>
-Subject: Re: [PATCH v4] powerpc: Use shared font data
-In-Reply-To: <aQgJ95Y3pA-8GdbP@gallifrey>
-Message-ID: <797f0a13-350f-e26d-f1ef-876419e1c013@linux-m68k.org>
-References: <20230825142754.1487900-1-linux@treblig.org> <d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com> <aQeQYNANzlTqJZdR@gallifrey> <20108eef-b7cf-3f23-264a-5d97021f9ffa@linux-m68k.org> <aQgJ95Y3pA-8GdbP@gallifrey>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d0QFh1dj4z2xnx
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Nov 2025 19:47:34 +1100 (AEDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-2957850c63bso12170905ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Nov 2025 00:47:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1762159651; x=1762764451; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1X2By9QoThsdGSa5CA88Md4gR1pD3mMBEB9rDlXDtgg=;
+        b=sl09BmYLOEDgxcvDfFJwVezMRG5fyZ1Cnlb8Lt7lii5YwyKJy6gCIggLfLillKyQFx
+         QDpRy68OjNSxkDkIfUfrTb7Zp4+Aik/7XbpwvNqoSinGjxP1zA4oQL8sKeBiNoWYDqWb
+         ES218d53am7958Xg3gQsNF/5ebd8wKV+dGvGoZavktAicyZq6b/Ye4py/jZQ2nlX8G2r
+         BZ0KeCJQ70hBY/3TkdnFTLk2Tr52sQbB+J9W95RJMGWgWiVjVh2yKFjs6Z5PfnfZnwPS
+         v/D2cXyTtZuu6h1p3gVtI+JhvtHoGUuDv0MWH+YZS6vRotUdT46Hzav39OG2qDDATv79
+         l/Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762159651; x=1762764451;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1X2By9QoThsdGSa5CA88Md4gR1pD3mMBEB9rDlXDtgg=;
+        b=pAxgulu9dqn35g9F8+Ifm/EOAYx36/6fm3yiSAc5q5UXZ/b11bKgJO0H4dov/oa5QX
+         3dxI2l9yTokt1rryaoOz9sT5yuU+Yv8+aHG/m7mmq6SJtEsRlscFdVOwewKIbyKPxJNO
+         WfGvZWyTjmY4gqhF9rSSIEY8FUiQ9RBMe1i5hv1d2rdTKm5gQiUQiIHXbszgzkyOYcqv
+         kQPCTk0qcZDChlJOJNmgfrP1gIqpjw/jw2DdKpb5sU8owmb+clfp4k3lEVgUERObEGRp
+         tIVGAQsubRVYcQhsTmVtAZ4eTxJLW9vsZpbJZwk3QEBhw7HDeC0R4zfuJJY3AKYJKF5X
+         BoIw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+124V9IYXaTeB72HRME8VBFWOnKg3FMI1Z0ZR85U165+HDUWPw7VrL4cjECntRCERa3IFwTp7c+l5/1E=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxqkYFMlcfySNXUtYrOSLxcf5Y1S2H90cqGC+vxeGlKU3z4T+XH
+	FLpSy4dwQofTYJ6ouNpsLN/IMRNkEuJle2kRj/Kp5hFjxnXJ7c3t97Tlulyj2BvdlRauCZs2amX
+	Hw19mbALMTaRIuQvutBUPwVTJhdRc+GSjEmAPld9FyQ==
+X-Gm-Gg: ASbGnctgieJwr5AsiZDH1f3Qtm/i0MzWIzkIKUiGwou6JoWv6T9waFCfGhYc86ZnX8/
+	dbBpySB8ByuX3QHT32a3duKbCprr9J03CEbC+m00z9+7p4BDVud4PTV9voqunl8MVdX+/BEN1kV
+	/fwT0rjGEscDopa4wa2nhzGu+d96e4PRj9LnG56NZgJqOTQb6sjxRXbEJU4fBxul2DibVLW5O31
+	mDsKTFfVFXqhHRuQwGljcPVVwT0cekmecu4cETiWkKr5Fy2UFUDYuKC3v5YtQ==
+X-Google-Smtp-Source: AGHT+IEiPTsQwQmjnN2J2GJDQ9Za9zoUC977FiwEF1W5fvbJaKj2P0HWSCM/QFTK/S/yIJvxhgV0PffM5gtHzmdjQQw=
+X-Received: by 2002:a17:903:228b:b0:295:4d97:84f9 with SMTP id
+ d9443c01a7336-2954d978dfbmr90787815ad.26.1762159651160; Mon, 03 Nov 2025
+ 00:47:31 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,51 +78,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+References: <20251029060757.2007601-1-srikar@linux.ibm.com>
+ <20251029060757.2007601-2-srikar@linux.ibm.com> <CAKfTPtDW9rApEm+4qSrEpRDMA+68BnVOgegKUZUa5S-gKnR--A@mail.gmail.com>
+ <aQHQ7UyaK849BKV8@linux.ibm.com>
+In-Reply-To: <aQHQ7UyaK849BKV8@linux.ibm.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Mon, 3 Nov 2025 09:46:26 +0100
+X-Gm-Features: AWmQ_bmrR_yvsXkBlqoY42TLV69O97bhzwYzWqV56CRBaYZDsYsoTTM21b2VC28
+Message-ID: <CAKfTPtDtfy7=rb6rPVMAk1+Bq4w=+opiWuo_Y+3dy3me--6KsA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] powerpc/smp: Disable steal from updating CPU capacity
+To: Srikar Dronamraju <srikar@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	Ben Segall <bsegall@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ingo Molnar <mingo@kernel.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Valentin Schneider <vschneid@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hi Sikar,
 
-On Mon, 3 Nov 2025, Dr. David Alan Gilbert wrote:
+On Wed, 29 Oct 2025 at 09:32, Srikar Dronamraju <srikar@linux.ibm.com> wrote:
+>
+> * Vincent Guittot <vincent.guittot@linaro.org> [2025-10-29 08:43:34]:
+>
+> > Hi Srikar,
+> >
+> > On Wed, 29 Oct 2025 at 07:09, Srikar Dronamraju <srikar@linux.ibm.com> wrote:
+> > >
+> > > In a shared LPAR with SMT enabled, it has been observed that when a CPU
+> > > experiences steal time, it can trigger task migrations between sibling
+> > > CPUs. The idle CPU pulls a runnable task from its sibling that is
+> > > impacted by steal, making the previously busy CPU go idle. This reversal
+> >
+> > IIUC, the migration is triggered by the reduced capacity case when
+> > there is 1 task on the CPU
+>
+> Thanks Vincent for taking a look at the change.
+>
+> Yes, Lets assume we have 3 threads running on 6 vCPUs backed by 2 Physical
+> cores. So only 3 vCPUs (0,1,2) would be busy and other 3 (3,4,5) will be
+> idle. The vCPUs that are busy will start seeing steal time of around 33%
+> because they cant run completely on the Physical CPU. Without the change,
+> they will start seeing their capacity decrease. While the idle vCPUs(3,4,5)
+> ones will have their capacity intact. So when the scheduler switches the 3
+> tasks to the idle vCPUs, the newer busy vCPUs (3,4,5) will start seeing steal
+> and hence see their CPU capacity drops while the newer idle vCPUs (0,1,2)
+> will see their capacity increase since their steal time reduces. Hence the
+> tasks will be migrated again.
 
-> 
-> > Anyway, I imagine that the problem with your patch was that it relies 
-> > on font data from a different (read only) section, which is 
-> > unavailable for some reason (MMU not fully configured yet?)
-> > 
-> > So I've asked Stan to test a patch that simply removes the relevant 
-> > 'const' keywords. It's not a solution, but might narrow-down the 
-> > search.
-> 
+Thanks for the details
+This is probably even more visible when vcpu are not pinned to separate cpu
 
-Stan tested my patch to remove 'const' from the font_desc and font_data 
-structs but it did not help. (There goes that theory.)
 
-> I wonder if this is a compiler-flag-ism;  I see 
-> arch/powerpc/kernel/Makefile has a pile of special flags, and for 
-> btext.o it has a -fPIC (as well as turning off some other flags). I 
-> wonder if bodging those in lib/fonts/Makefile for 
-> lib/fonts/font_sun8x16.c fixes it? But... this is data - there's no code 
-> is there - are any of those flags relevant for data only?
-> 
+>
+> >
+> > > can repeat continuously, resulting in ping-pong behavior between SMT
+> > > siblings.
+> >
+> > Does it mean that the vCPU generates its own steal time or is it
+> > because other vcpus are already running on the other CPU and they
+> > starts to steal time on the sibling vCPU
+>
+> There are other vCPUs running and sharing the same Physical CPU, and hence
+> these vCPUs are seeing steal time.
+>
+> >
+> > >
+> > > To avoid migrations solely triggered by steal time, disable steal from
+> > > updating CPU capacity when running in shared processor mode.
+> >
+> > You are disabling the steal time accounting only for your arch. Does
+> > it mean that only powerpc are impacted by this effect ?
+>
+> On PowerVM, the hypervisor schedules at a core granularity. So in the above
+> scenario, if we assume SMT to be 2, then we have 3 vCores and 1 Physical
+> core. So even if 2 threads are running, they would be scheduled on 2 vCores
+> and hence we would start seeing 50% steal. So this steal accounting is more
+> predominant on Shared LPARs running on PowerVM.
+>
+> However we can use this same mechanism on other architectures too since the
+> framework is arch independent.
+>
+> Does this clarify?
 
-I don't know. But I'm sure Stan would be willing to test a patch for you.
+yes, thanks
+I see 2 problems in your use case, the idle cpu doesn't have steal
+time even if the host cpu on which it will run, is already busy with
+other things
+and with not pinned vcpu, we can't estimate what will be the steal
+time on the target host
+And I don't see a simple way other than disabling steal time
 
-> > 
-> > The BootX bootloader doesn't work on New World systems, which is 
-> > probably why we don't see this regression on anything newer than a 
-> > Wallstreet.
-> > 
-> > It's likely that other Old World systems are also affected, if they 
-> > are using BootX. We don't yet know whether the regression also affects 
-> > Old World systems using the iQUIK bootloader instead of BootX.
-> 
-> OK, remember I don't think I've ever tried PPC via MacOS booting, so not 
-> familiar with it.
-> 
-
-I will try to set up a MacOS guest in QEMU, to see if the hang can be 
-reproduced that way.
+>
+> --
+> Thanks and Regards
+> Srikar Dronamraju
 
