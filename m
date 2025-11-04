@@ -1,50 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-13709-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13710-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB77BC2E1FB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 03 Nov 2025 22:16:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6114C2EDC2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 02:44:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d0kt95zKHz2yG0;
-	Tue,  4 Nov 2025 08:16:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d0rpD43qgz2yr9;
+	Tue,  4 Nov 2025 12:43:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762197825;
-	cv=none; b=DZ9U4SmvYuJfzmlGLWKmOAMd6nw9Dm7Ejf0CG+TErm8IcrCVsivIcBhZx6e0Nszzha72Ac8+FZfzmhbi/VQfy6+20neKMip5nue6uWZV1hlQgwYNOv2xpStSd9sYvsXGWTnwl/ewKo2Qks6hDH7CWdGx8J7LqWp8MT5HRP5mMdKJFV5ZCfTw/45MuM0yp98jci1AlEP/ZAMzp63LKuw2anfsB+7uG1qofA1K8UN86pvR+mMlD3yLM381v7Ax+ZpZysNMlGgs/dcFsRf6LU6+jRAcrg9+SeN575dtcIZWHzqvxCqVrCJDYA6WOanODdCTIJqkRFZ9g2pmy0LBA51/BQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762220628;
+	cv=none; b=C/obxZQEIB4fFyqtfudYwGpAS5V5K7D2c/GOVruTZlrIt8q7I8lQr20DB/crk746lKNwqQ2ilgAJEp2eV4PiTYcbNSjG032yqytcJpTFFkXOmekTvMcPKy4qtidBoMdRK5Gacvk7Wi9C1rk+7OwrBiwS4zpCU8Xm8lNf6GBsmCm6e8ewcDFkA+2lCCMPZ+g5jq+h1qToT759OK2Ktlyw05jfBVKNKlmTvX7VDyePVI0yuyahMvPyDQDDkj363CXzbHVY+9chgn0TpSX4gGPlyS8vc6LWgTqqFoHtPj/c8XhuHSNe/Te7vCf+AqSjaeKNstMiKlvMpG1Qh0OQRiD4wg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762197825; c=relaxed/relaxed;
-	bh=VU73K/1EslvMeIQk3g4ipwia/QceF7bjRApk//rXHwo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JTSgExaewSQ824Y0TWwhicg8xUUAnZGG9vDs3iitaSCLpHTKv9cDmO8O4l8psoEt79nopfftMiy1Pt/kKnR5EPnFzg9hD5s5uqzMJAo6II9ZCAnLMrEJY8V3BEmukrEv9rMU+FmpptIsZGVW5n/WrqiZSYsQS47+7eJJTF+I2gemhxYWpQAwBerRa4Bs/N3Ga+RsMpPGODkCLTZD5PGO82jrNAwalCUL7QDlHKMdUue+YI6NArsdNqCBHu4x47ac5q9Lz+WgBkIcbTol7ZVo29Ggsh6y0l9reBvwvrk6Ze2RDMECKW8SHIWVnaR33ngXupHgX06Y0rC7Hb7S+uER2Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c9UT0S1a; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1762220628; c=relaxed/relaxed;
+	bh=R/dyn6nmohhI4MmC9nR9yAqBB4AN045O0WH/mgI5Uck=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nA0JipdGY1oGEujdpD1etI5G9p6fLNZ2aZELgzYkRi6C/Od3hc5muPwnuOaFfQe8Fa/bhkbgGB8u+wGPdXGuI5/YcGyyspEMkzyFq262J15gc/PoPb9Gp8INJ2XAaz91zf5zIkJNJ9lPCNqMBz43C6N8H199j0ckMUwTrDg3yRbpp2L5NW8FakIYc2BsYrqNFwUYCibtz09dY9lFLsn+gkoIOR9T87xh9OPdBun/2fhwfybH+RlBIV/1ShmYGpIvFqK4ogucI4hI6zBRd5U5NFX9ozSr9g3oqa+aefhD0XqScdWiyWscW3Pw3+9/BUVvgLgb+CcrM7oNYes5EZ6huQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dY6b2MM6; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c9UT0S1a;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dY6b2MM6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d0hMg6jsTz2xQ2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 06:23:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d0rpC4X1nz2yFV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 12:43:47 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 31D2D40763;
-	Mon,  3 Nov 2025 19:23:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEBEC4CEE7;
-	Mon,  3 Nov 2025 19:23:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 389A940707;
+	Tue,  4 Nov 2025 01:43:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0699BC4CEFD;
+	Tue,  4 Nov 2025 01:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762197821;
-	bh=YF+Dh7k5RXyD8ZknLWrr6zckBVz5y8Jk5LVnJjqJxoY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c9UT0S1aE+oyoVDfFS4tVvZUGvWl9HiC7/F+Cp66KCVA7C4GhH0PqNtoBTarCw3iW
-	 r2P630kamF4JSjUnf0EzY4gdgF4lREKNM2+yjmeoTw3nLHhjxYDny/gqAjP3iNUL7a
-	 JzIyQ1aRH3QyNtDz4IpxtL5MX/fDHZSJh77cPeKd7LS92GluG1GXIy1BpAiLFwvlox
-	 cRJrDCtLOcgMqEzgJxz44Oa9sLKyl40ixdJjaMo6LOW9qbHf4ryeTRFym1qVmpu9UH
-	 uIilWOADkYHyRHPzn2EvdQ0ZptspxmBomG3l6lNVoh9BMoIycP2QxAs9MQX9p7Fs9q
-	 9DzIobQXg5JOg==
-Message-ID: <a326d1eb-62f1-4add-8dc9-cea7d7e4ed3c@kernel.org>
-Date: Mon, 3 Nov 2025 20:23:30 +0100
+	s=k20201202; t=1762220625;
+	bh=BX0tUVsyY8ldvnds1/e/y6kgPKJqlyj2E8lWQ44dxfo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dY6b2MM6lvQesY8UEelJfXc71chFYKuoyIOZKssRUSMQJxDm9jXPKotxE9/ABbFPu
+	 XdSerDYLKzYzDqDQ6JtxN3d5froEQfTFFz5xPdBJiYV5fi7EtRoBao1e6KRqYwr3AY
+	 4WLnVKWA2sLfmr9+9HcGjMrprpXu64yk6i9qhfJk1xH3AdHuzSaP7REg2SZctZwFBT
+	 ziPcYiFBzusRmwzHTOosUeYKOg4gg5R34YL/8ezSb/+A5pYwNrmsMmzydnbJ1FjVaF
+	 jXaQc0pHgng9HvscIjQuljf8jrhjAvtPL5qfzHDAlZO3QJ8dh49y79v1EdVD6oFICv
+	 aPXmbZutFbm5Q==
+Date: Mon, 3 Nov 2025 17:43:44 -0800
+From: Kees Cook <kees@kernel.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
+	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
+	linux-mm@kvack.org, linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev, rostedt@goodmis.org,
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH v2 18/50] convert pstore
+Message-ID: <202511031743.3F127F8@keescook>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+ <20251028004614.393374-19-viro@zeniv.linux.org.uk>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,113 +73,29 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 11/12] x86/xen: use lazy_mmu_state when
- context-switching
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-12-kevin.brodsky@arm.com>
- <c7c8a233-2103-4b48-b65e-ec81666d20e4@kernel.org>
- <285faae4-dab6-4819-847a-889bdf87d5d7@arm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <285faae4-dab6-4819-847a-889bdf87d5d7@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251028004614.393374-19-viro@zeniv.linux.org.uk>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 03.11.25 19:29, Kevin Brodsky wrote:
-> On 03/11/2025 16:15, David Hildenbrand (Red Hat) wrote:
->> On 29.10.25 11:09, Kevin Brodsky wrote:
->>> [...]
->>>
->>> @@ -437,7 +436,7 @@ static void xen_end_context_switch(struct
->>> task_struct *next)
->>>          xen_mc_flush();
->>>        leave_lazy(XEN_LAZY_CPU);
->>> -    if (test_and_clear_ti_thread_flag(task_thread_info(next),
->>> TIF_LAZY_MMU_UPDATES))
->>> +    if (next->lazy_mmu_state.active)
->>
->> This is nasty. If in_lazy_mmu_mode() is not sufficient, we will want
->> to have a separate helper that makes it clear what the difference
->> between both variants is.
+On Tue, Oct 28, 2025 at 12:45:37AM +0000, Al Viro wrote:
+> object creation by d_alloc_name()+d_add() in pstore_mkfile(), removal -
+> via normal VFS codepaths (with ->unlink() using simple_unlink()) or
+> in pstore_put_backend_records() via locked_recursive_removal()
 > 
-> in_lazy_mmu_mode() operates on current, but here we're operating on a
-> different task. The difference is more fundamental than just passing a
-> task_struct * or not: in_lazy_mmu_mode() is about whether we're
-> currently in lazy MMU mode, i.e. not paused and not in interrupt
-> context. A task that isn't scheduled is never in lazy MMU mode -
-> lazy_mmu_state.active is just the saved state to be restored when
-> scheduled again.
+> Replace d_add() with d_make_persistent()+dput() - that's what really
+> happens there.  The reference that goes into record->dentry is valid
+> only until the unlink (and explicitly cleared by pstore_unlink()).
 > 
-> My point here is that we could have a helper for this use-case, but it
-> should not be used in other situations (at least not on current). Maybe
-> __task_lazy_mmu_active(task)? I do wonder if accessing lazy_mmu_state
-> directly isn't expressing the intention well enough though (checking the
-> saved state).
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
+Thanks for the refactoring!
 
-Likely there should be a
-
-/**
-  * task_lazy_mmu_active - test whether the lazy-mmu mode is active for a
-  *			  task
-  * @task: ...
-  *
-  * The lazy-mmu mode is active if a task has lazy-mmu mode enabled and
-  * currently not paused.
-  */
-static inline bool task_lazy_mmu_active(struct task_struct *task)
-{
-	return task->lazy_mmu_state.active;
-}
-
-/**
-  * in_lazy_mmu_mode() - test whether current is in lazy-mmu mode
-  *
-  * Test whether the current task is in lazy-mmu mode: whether the
-  * interrupts are enabled and the lazy-mmu mode is active for the
-  * current task.
-  */
-  static inline bool in_lazy_mmu_mode(void)
-  {
-+	if (in_interrupt())
-+		return false;
-+
-  	return task_lazy_mmu_active(current);
-  }
-
-
-Something like that. Maybe we can find better terminology.
+Reviewed-by: Kees Cook <kees@kernel.org>
 
 -- 
-Cheers
-
-David
+Kees Cook
 
