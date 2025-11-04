@@ -1,64 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-13751-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13753-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D94C32321
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 18:01:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6B1C326EE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 18:50:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1F8m0zldz3bfN;
-	Wed,  5 Nov 2025 04:01:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1GFB1FWyz3bfN;
+	Wed,  5 Nov 2025 04:50:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762275672;
-	cv=none; b=E7r16LnHVPxGjiu7tYVqqgq0X5J+hXJKDAugYJawhaW9eFNgutgzYj3VS9+9EwDSfUXo6c1jXX3X7UvLzPf0uRh9POnrgKS9YIldDXzIrU96JF/YnImkeTSPlAyw1XTs8uWjzEdaRvjROvHobuBvRbNPEI3UaCRI+gakJ5bxJ3239FJTx0uM4OmwI7/ywwyamIdBwLK3D6ntvTFP71vDkLT8KlVDzSr8yOhD3Pc+vSU8ieqVbC1tuIznUfU/C8/3/GwcWs2/ZtVGLHVUJZSbjd0rw02Vy2/SHPEp1PbTiDUvx+mLAysuWS3aAfTCT/pMxWeGTtMHZD23nHZvZ6IFAg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762278606;
+	cv=none; b=TOp2mmoSipl6nSDh1wUcpHMWFmQeuYQbNrtzzF97odaO/gKmq6/8EE9Nvp766huM3T0WuQetNPe+fSePJGGwhCRsTPEIj6hLZTE8S2fKoKVXRgyfnwYvkii6RkIoiRq61Z68dLj7U74vwWQvceUDbKbpJBu0VQGb4Cd++9rDguz8ZVYH7CGbLdP2peuvBizeJ4oCxOozkbmMH2u+FtW9CLKHVDjolO13/Gm3GsN+oFKQp/LvXJjXqkkit6wr4MO1kxXz4NQwY2uLz7zWY9+qobJs2TaqA01Dw4vNX5wXiTPrmmvjxUGNplzyKTspPw1e0j5n4IKQ6ae60n238TKpAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762275672; c=relaxed/relaxed;
-	bh=msCviUOqQwqvVyFOk3rEYYAZXEGn9KpBa6b6nSF729k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oFO6Hl7RAZYDaIOwFy9kucGHSieMQsUPeD08ae4dqrQ4W4Lg66/uBHWj/Vh9ECcYDHP9eg/mGGA0YkFm5WVjS8/7H4Zww3d/2cejxTXy3Hp148spTxjywbp6Y4oxiby2lr3sC/nA7VIe3r2fletkua81JWAZC7F8jzV76KVdgnx9e9V2KLsb57zkuYyGAeQcA0n1oHicakNKVCPvC3O4JhM5Qq99WhS99obBm8yeG3d2JfllXoUva35hUjETciEEQu+EMWd5r1knqYEJlCR+urgAfR1DXD5f4mKIPwWDAFaFzWniDwVrijqqJAcd59Ot88UoKwvesciSXPt1/8kefQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HUOSlfUN; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HUOSlfUN;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1F8l1PMYz3bf8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 04:01:11 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 191F04053E;
-	Tue,  4 Nov 2025 17:01:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D304CC4CEF7;
-	Tue,  4 Nov 2025 17:01:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762275669;
-	bh=A5hVs65aVEjMq28wLqSGze1IxyHY/ziAOGAuCp034rU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HUOSlfUNGPF0XIHP239Y3KM2928OhCG/CMcUKqlFDLASvpETQEkQyq/5IIazW/w0S
-	 wInfDwWPBMyjRGsWLjHji+VtSUmxr28A4Syxr1a8f6JDcmbgHgYXhzvxBehospKbPY
-	 SycxH1UXRaCXTqPoV3f5LW00sD3+9313yA8FXb24FCOLAX7zrPwzO9DpiRLboBc+q8
-	 XvqilpF5OoYQu2ZINL4nfSnnxZw+7XzH/WHKCq/ul1vcOF+zJPWHp36JIkyRwa+XAl
-	 xJNKMGlLBKmIYLfr7tlTyGKkieEXhikFDwc0DjZu8FvZx7ckV+dqpodmIY69IEzor7
-	 J4gJgJaSqDntQ==
-Date: Tue, 4 Nov 2025 10:01:04 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	linuxppc-dev@lists.ozlabs.org, patches@lists.linux.dev
-Subject: Re: [PATCH 2/2] macintosh/via-pmu-backlight: Include linux/of.h and
- uapi/linux/fb.h
-Message-ID: <20251104170104.GA1416336@ax162>
-References: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-0-d256858d86a6@kernel.org>
- <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-2-d256858d86a6@kernel.org>
- <c1aecfba-fa12-4572-885d-925e9afa1494@suse.de>
+	t=1762278606; c=relaxed/relaxed;
+	bh=xAadiR6ntL7ayTwA4JxHMnkqmPDh9B854RBpL7w6q3Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jgWHbqKMgBgKSdJL4W+2X27N394ljXovbJ0G+zUoQYuXQxCHVCS218yVTY0pVSgOkjoJtZoDIvnMcnw9SVz+527COfjVic531frAkhspDdwTYd1gnxoa1wz/2qWu0tlEgKSu1C5sY70YAcDMXNeaZVPmYy7QMpPlFJB08REdwrQZ0YC+66NNaCozMbr73/JAh+qiKjkkRiA62z6e6woqCRvCGTTsJ9Fa6HaXUx0DbSdeW2QBUbXsGIBKXHOaKKCJqlBQZraE4Srb9G6TJuKa+3suop9Aw2o6UKKaCa3od9EcpZaLU6ZvH9QZstpDkDsx87Hjt2ENGs2IJ+T2ObnVKA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1GF93L6Yz2yvv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 04:50:04 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d1FkL5Pf0z9sS7;
+	Tue,  4 Nov 2025 18:26:50 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ZFw0wj0g-XqU; Tue,  4 Nov 2025 18:26:50 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d1FkL4gnPz9sRy;
+	Tue,  4 Nov 2025 18:26:50 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 90CF78B76E;
+	Tue,  4 Nov 2025 18:26:50 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id sWXRh3sG0pVU; Tue,  4 Nov 2025 18:26:50 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 84DFE8B76D;
+	Tue,  4 Nov 2025 18:26:49 +0100 (CET)
+Message-ID: <a0921920-d381-4a67-8b4d-d91e5319a354@csgroup.eu>
+Date: Tue, 4 Nov 2025 18:26:48 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,76 +57,84 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/flipper-pic: Fix device node reference leak in
+ flipper_pic_init
+To: Miaoqian Lin <linmq006@gmail.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Albert Herranz <albert_herranz@yahoo.es>,
+ Grant Likely <grant.likely@secretlab.ca>,
+ Segher Boessenkool <segher@kernel.crashing.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20251027150914.59811-1-linmq006@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20251027150914.59811-1-linmq006@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c1aecfba-fa12-4572-885d-925e9afa1494@suse.de>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Nov 04, 2025 at 01:43:26PM +0100, Thomas Zimmermann wrote:
-> Hi
-> 
-> Am 26.09.25 um 01:46 schrieb Nathan Chancellor:
-> > After the recent removal of the fb.h include from backlight.h, which
-> > transitively included of.h, there are several errors from
-> > via-pmu-backlight.c (errors from bl_curve not being properly defined
-> > omitted):
-> > 
-> >    drivers/macintosh/via-pmu-backlight.c:22:20: error: 'FB_BACKLIGHT_LEVELS' undeclared here (not in a function)
-> >       22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
-> >          |                    ^~~~~~~~~~~~~~~~~~~
-> >    drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_get_level_brightness':
-> >    drivers/macintosh/via-pmu-backlight.c:63:38: error: 'FB_BACKLIGHT_MAX' undeclared (first use in this function); did you mean 'BACKLIGHT_RAW'?
-> >       63 |         pmulevel = bl_curve[level] * FB_BACKLIGHT_MAX / MAX_PMU_LEVEL;
-> >          |                                      ^~~~~~~~~~~~~~~~
-> >          |                                      BACKLIGHT_RAW
-> >    drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_init':
-> >    drivers/macintosh/via-pmu-backlight.c:144:17: error: implicit declaration of function 'of_machine_is_compatible' [-Wimplicit-function-declaration]
-> >      144 |                 of_machine_is_compatible("AAPL,3400/2400") ||
-> >          |                 ^~~~~~~~~~~~~~~~~~~~~~~~
-> > 
-> > FB_BACKLIGHT_{LEVELS,MAX} are available from the userspace API fb.h so
-> > just include that avoid dragging in the full fb.h header unnecessarily.
-> > Include linux/of.h for of_machine_is_compatible().
-> > 
-> > Fixes: 9f218f9bb9d2 ("backlight: Do not include <linux/fb.h> in header file")
-> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > ---
-> >   drivers/macintosh/via-pmu-backlight.c | 2 ++
-> >   1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/macintosh/via-pmu-backlight.c b/drivers/macintosh/via-pmu-backlight.c
-> > index 26bd9ed5e664..f7b7853b3802 100644
-> > --- a/drivers/macintosh/via-pmu-backlight.c
-> > +++ b/drivers/macintosh/via-pmu-backlight.c
-> > @@ -11,7 +11,9 @@
-> >   #include <asm/ptrace.h>
-> >   #include <linux/adb.h>
-> >   #include <linux/backlight.h>
-> > +#include <linux/of.h>
-> >   #include <linux/pmu.h>
-> > +#include <uapi/linux/fb.h>
-> 
-> Should this not be <linux/fb.h> ?
 
-It could be but as I mention above, this file only needs the UAPI
-FB_BACKLIGHT_LEVELS and FB_BACKLIGHT_MAX constants so I did not really
-feel like it was worth it to drag in the whole fb.h header.
 
-> >   #include <asm/backlight.h>
-> >   #define MAX_PMU_LEVEL 0xFF
-> > 
+Le 27/10/2025 Ã  16:09, Miaoqian Lin a Ã©critÂ :
+> The flipper_pic_init() function calls of_get_parent() which increases
+> the device node reference count, but fails to call of_node_put() to
+> balance the reference count.
 > 
-> -- 
-> --
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-> GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+> Add calls to of_node_put() in all paths to fix the leak.
 > 
+> Found via static analysis.
 > 
+> Fixes: 028ee972f032 ("powerpc: gamecube/wii: flipper interrupt controller support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> ---
+>   arch/powerpc/platforms/embedded6xx/flipper-pic.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/embedded6xx/flipper-pic.c b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
+> index 91a8f0a7086e..cf6f795c8d76 100644
+> --- a/arch/powerpc/platforms/embedded6xx/flipper-pic.c
+> +++ b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
+> @@ -135,13 +135,13 @@ static struct irq_domain * __init flipper_pic_init(struct device_node *np)
+>   	}
+>   	if (!of_device_is_compatible(pi, "nintendo,flipper-pi")) {
+>   		pr_err("unexpected parent compatible\n");
+> -		goto out;
+> +		goto out_put_node;
+>   	}
+>   
+>   	retval = of_address_to_resource(pi, 0, &res);
+>   	if (retval) {
+>   		pr_err("no io memory range found\n");
+> -		goto out;
+> +		goto out_put_node;
+>   	}
+>   	io_base = ioremap(res.start, resource_size(&res));
+>   
+> @@ -154,9 +154,12 @@ static struct irq_domain * __init flipper_pic_init(struct device_node *np)
+>   					      &flipper_irq_domain_ops, io_base);
+>   	if (!irq_domain) {
+>   		pr_err("failed to allocate irq_domain\n");
+> +		of_node_put(pi);
+
+irq_domain is NULL here so instead of adding this of_node_put() you 
+could just remove below 'return NULL' (and the {} of the if) and 
+fallthrough.
+
+>   		return NULL;
+>   	}
+>   
+> +out_put_node:
+> +	of_node_put(pi);
+>   out:
+>   	return irq_domain;
+>   }
+
 
