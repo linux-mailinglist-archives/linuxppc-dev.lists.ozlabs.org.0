@@ -1,83 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-13721-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13724-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1608BC30196
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 09:58:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89655C30580
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 10:50:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d12SB2Kkyz3bfN;
-	Tue,  4 Nov 2025 19:58:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d13bQ68J4z3btL;
+	Tue,  4 Nov 2025 20:50:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762246730;
-	cv=none; b=WZ4s0Q7wwilsh1aTQHhNt0uoXBnXC2ilKnDfoh6YXsRnUySkMsgNn1VM5cfAo2BO5PXp3QUT5pBUJzPW2OCuGhrciGdtP2DBup+u/gKNRq4CuthLARWFHt4ljbQa/NOI6Y2w8XvqSciAve1Mu7yptK7fCGH7+KRJyY9y0bWJrP5DTUGihXl1xrbebsOQUcBQX5y3d99W9NewDHPqhp0r7BftwJ2qtcX6tQKIXG5czAx5yrHz5qQjw68xgwhjnI/4sUyN6xPMpOc9TAAAfbZdcCMizq8tX9/+0eGs06d+KkCusU/xlwFkYto0ZHWRljN5xPEuxtxmK/5i0CHRNdw1xg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762249810;
+	cv=none; b=GBzHtIumPDVu+lZGk341SJ00+704jAPAINBYpQNkJmwbJDofBNJC8Y3/lYH2zMbdUb6lEHBTBKLZh8a30qbkIM/D038QIr1dRii/EpyT1Uv0Jl7YXRuiBJa81uIcWz4Lf8+e2sPunpp6BuVZIcPNm0rWXNwCb/nM63EMe8SeI/+Yc5Io3vCd4ljpAs2uJR65eWRqte1vpVLHZ9o4qVa2uRTTxnqaxordCzCuDsp5cSiHQPFWD3ynHa8+QCHXUwd5fjtIJGGxP0GQ9YBeR7QCaSOMf9Dm1UqeTIc+eea4bL1TO00FsiSZe+nXQNflluq1/VigC7NYwVQ04513tLjH2g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762246730; c=relaxed/relaxed;
-	bh=C0LvKOhhmgkPbAnJv9RUevotOR4DI1Uoh5ENCeo7njA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZmF9K/w9vS+A00VZI518CvOvoN4lSPie5vz6Yv9gHT3ap5BYUGZ3ZW2tByxg8CljMPqREBWIBxTivX74dlTBmt96fY1sr7QP1Pc2sNRV8PsMkDmHSc75FbEiMAXH0IE/Cf3FCQVg4z2VCOAa34b6oZFHrczZ6WZ9YNQbLCB9TtLlbHIUH+rUvC41LkkFdyLoBvCbVdHS6Cs9tpcVeXV3N8W/iZXindk3LiddQujysQiAV71iO/hn18vbc5StB2KzHUA3MvRsTE80XEZ9HHVKEOpqRsoxjmgd8fOG9One8LdBYxlPFGCeuVriHZMgItWPLPcwHUBVhVy5sNRkQNkcew==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=PCKNJxul; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=AYbRVmwT; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=PCKNJxul;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=AYbRVmwT;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4d12S83CHkz2yjq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 19:58:48 +1100 (AEDT)
-Date: Tue, 4 Nov 2025 09:58:37 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762246719;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C0LvKOhhmgkPbAnJv9RUevotOR4DI1Uoh5ENCeo7njA=;
-	b=PCKNJxulpg/PvsGYBz8V1FU4pIkAMexataoGH0wB1Wq12nZZHH8f2DwldZBJQaarAJVsP8
-	yusjtIDWmV+OdYsTjKunNaFJcWiiyhHX6oDRiKaBNw6mbt6vWYMefNn74zwVvtcQNanAb/
-	sFKjzpbAdgHOKh9I1DfB1uxqKlG9OH5OjQWRzQk9ok7MeccZ7XACWEaO4CMbje+8IR5FNE
-	ksy6MxBeFin8cOh8nSGbd7sgJ1u4+BFBLgtkTy0AC0nIyqKnVIQCZ0PrgpFKDWnHjNm1K5
-	thTLlUN+ZyklfklQSZjodwcMM1QHkniqB323QaFPf3lG/gDXH1KQ8B2yVTGLvw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762246719;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C0LvKOhhmgkPbAnJv9RUevotOR4DI1Uoh5ENCeo7njA=;
-	b=AYbRVmwTnBF9DHCl3zSORA5EBbeymIDmU5LN0MCGPkSaFq3DfisSLGnmVmNwMSYywgJ4+e
-	uTDyt4qZNgxw5dDg==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Mark Brown <broonie@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Arnd Bergmann <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Shuah Khan <shuah@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
-	"Jason A. Donenfeld" <Jason@zx2c4.com>, Russell King <linux@armlinux.org.uk>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>, Shannon Nelson <sln@onemain.com>, linux-kernel@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, Aishwarya.TCV@arm.com
-Subject: Re: [PATCH v4 23/35] vdso/datastore: Map pages through struct page
-Message-ID: <20251104095555-ed009488-3aa8-43c5-b39f-066f04dee5a3@linutronix.de>
-References: <20251014-vdso-sparc64-generic-2-v4-0-e0607bf49dea@linutronix.de>
- <20251014-vdso-sparc64-generic-2-v4-23-e0607bf49dea@linutronix.de>
- <aQjJNmwniQwwjeBR@finisterre.sirena.org.uk>
- <CGME20251104084442eucas1p2af1bd88393f4d6a532df1cd41f32a287@eucas1p2.samsung.com>
- <e7f05748-a11c-47eb-b1fa-cdc9dc6d05e0@samsung.com>
+	t=1762249810; c=relaxed/relaxed;
+	bh=xQjuQovI+DE5aEgrD8ao68XCI3hF3vc81XPiTkTYtXM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GjFGCv0yENLF8hIrXXsjwFRkvjD7QUMORojjeQi8hRzh10rNG/wod2mE3Peep+HKge9Y9QMAr5sTdTmgpQUsAdwcZ/En7VWrVACo3MrBgE8TR5lZ9kiZOmAbZSg6jv7Pu8ak3d956778c077UgWggY5VRYQvbhpc5uwjpyWz9ztlJ8n2RGBrq7DOFD2UzH91JnAdB+4VwR4j4XsjGRX0t9jmqm0bfSrvHXZI3g9kTfNqCO96HK+EuBzkpQWIBkFHx1at3v8ZcnLahse6qxXyMgz5KO2z7hdzXb3FxZl/3Rab8iT8WIl9J9odwEPgDl9ei7O9nzmQu8FFvwJNoSlpDg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d13bP6dktz3btC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 20:50:09 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d0yxp0klwz9sSR;
+	Tue,  4 Nov 2025 07:20:46 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id UV5jl7N85Xo4; Tue,  4 Nov 2025 07:20:45 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d0yxn6M0bz9sRy;
+	Tue,  4 Nov 2025 07:20:45 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BCCBB8B76C;
+	Tue,  4 Nov 2025 07:20:45 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id UwygSlglnvtI; Tue,  4 Nov 2025 07:20:45 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BC23D8B763;
+	Tue,  4 Nov 2025 07:20:43 +0100 (CET)
+Message-ID: <0049a144-be4d-46ca-acaf-cfe37ff06e6e@csgroup.eu>
+Date: Tue, 4 Nov 2025 07:20:42 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,71 +57,388 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [patch V5 07/12] uaccess: Provide scoped user access regions
+To: Thomas Gleixner <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Cooper <andrew.cooper3@citrix.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ David Laight <david.laight.linux@gmail.com>,
+ kernel test robot <lkp@intel.com>, Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
+ Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, =?UTF-8?Q?Andr=C3=A9_Almeida?=
+ <andrealmeid@igalia.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org
+References: <20251027083700.573016505@linutronix.de>
+ <20251027083745.546420421@linutronix.de>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20251027083745.546420421@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e7f05748-a11c-47eb-b1fa-cdc9dc6d05e0@samsung.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Marek,
 
-On Tue, Nov 04, 2025 at 09:44:38AM +0100, Marek Szyprowski wrote:
-> On 03.11.2025 16:24, Mark Brown wrote:
-> > On Tue, Oct 14, 2025 at 08:49:09AM +0200, Thomas Wei�schuh wrote:
-> >
-> >> An upcoming change will allocate the datapages dynamically instead of as
-> >> part of the kernel image. Such pages can only be mapped through
-> >> 'struct page' and not through PFNs.
-> > I'm seeing some boot failures on some arm64 platforms in -next which are
-> > bisecting to this patch in -next.  Unfortunately the diagnostics aren't
-> > super useful, we seem to just stop making progress in userspace with no
-> > obvious output.  One sample log from the FVP is:
 
-(...)
-
-> Then I've tested it on ARM64bit (RaspberrryPi3b+ board) and got the 
-> following panic on 6a011a228293 ("vdso/datastore: Map pages through 
-> struct page") commit:
+Le 27/10/2025 à 09:43, Thomas Gleixner a écrit :
+> User space access regions are tedious and require similar code patterns all
+> over the place:
 > 
-> VFS: Mounted root (ext4 filesystem) on device 179:3. Trying to move old 
-> root to /initrd ... okay devtmpfs: mounted Freeing unused kernel memory: 
-> 12672K Run /sbin/init as init process Unable to handle kernel paging 
-> request at virtual address ffffffffc20b5d48 Mem abort info: ESR = 
-> 0x0000000096000006 EC = 0x25: DABT (current EL), IL = 32 bits SET = 0, 
-> FnV = 0 EA = 0, S1PTW = 0 FSC = 0x06: level 2 translation fault Data 
-> abort info: ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000 CM = 0, WnR = 
-> 0, TnD = 0, TagAccess = 0 GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0 
-> swapper pgtable: 4k pages, 48-bit VAs, pgdp=000000000230b000 
-> [ffffffffc20b5d48] pgd=0000000000000000, p4d=0000000003618403, 
-> pud=0000000003619403, pmd=0000000000000000 Internal error: Oops: 
-> 0000000096000006 [#1] SMP Modules linked in: CPU: 2 UID: 0 PID: 1 Comm: 
-> init Tainted: G W 6.18.0-rc1+ #16136 PREEMPT Tainted: [W]=WARN Hardware 
-> name: Raspberry Pi 3 Model B (DT) pstate: 80000005 (Nzcv daif -PAN -UAO 
-> -TCO -DIT -SSBS BTYPE=--) pc : vvar_fault+0x7c/0x17c lr : 
-> vvar_fault+0x24/0x17c ... Call trace: vvar_fault+0x7c/0x17c (P) 
-> special_mapping_fault+0x24/0xd0 __do_fault+0x3c/0x238 
-> __handle_mm_fault+0xaa0/0x19e0 handle_mm_fault+0xcc/0x384 
-> do_page_fault+0x1a0/0x720 do_translation_fault+0x60/0x6c 
-> do_mem_abort+0x44/0x94 el0_da+0x54/0x230 el0t_64_sync_handler+0xd0/0xe4 
-> el0t_64_sync+0x198/0x19c Code: f2d83fe0 8b010063 d34cfc63 8b031803 
-> (f9400461) ---[ end trace 0000000000000000 ]--- Kernel panic - not 
-> syncing: Attempted to kill init! exitcode=0x0000000b SMP: stopping 
-> secondary CPUs Kernel Offset: disabled CPU features: 
-> 0x000000,00180000,40004000,0400421b Memory Limit: none ---[ end Kernel 
-> panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
+>       	if (!user_read_access_begin(from, sizeof(*from)))
+> 		return -EFAULT;
+> 	unsafe_get_user(val, from, Efault);
+> 	user_read_access_end();
+> 	return 0;
+> Efault:
+> 	user_read_access_end();
+> 	return -EFAULT;
 > 
-> Reverting "clocksource: Remove ARCH_CLOCKSOURCE_DATA", "vdso/datastore: 
-> Allocate data pages dynamically" and "vdso/datastore: Map pages through 
-> struct page" on top of linux-next fixes booting on all tested boards.
+> This got worse with the recent addition of masked user access, which
+> optimizes the speculation prevention:
+> 
+> 	if (can_do_masked_user_access())
+> 		from = masked_user_read_access_begin((from));
+> 	else if (!user_read_access_begin(from, sizeof(*from)))
+> 		return -EFAULT;
+> 	unsafe_get_user(val, from, Efault);
+> 	user_read_access_end();
+> 	return 0;
+> Efault:
+> 	user_read_access_end();
+> 	return -EFAULT;
+> 
+> There have been issues with using the wrong user_*_access_end() variant in
+> the error path and other typical Copy&Pasta problems, e.g. using the wrong
+> fault label in the user accessor which ends up using the wrong accesss end
+> variant.
+> 
+> These patterns beg for scopes with automatic cleanup. The resulting outcome
+> is:
+>      	scoped_user_read_access(from, Efault)
+> 		unsafe_get_user(val, from, Efault);
+> 	return 0;
+>    Efault:
+> 	return -EFAULT;
+> 
+> The scope guarantees the proper cleanup for the access mode is invoked both
+> in the success and the failure (fault) path.
+> 
+> The scoped_user_$MODE_access() macros are implemented as self terminating
+> nested for() loops. Thanks to Andrew Cooper for pointing me at them. The
+> scope can therefore be left with 'break', 'goto' and 'return'.  Even
+> 'continue' "works" due to the self termination mechanism. Both GCC and
+> clang optimize all the convoluted macro maze out and the above results with
+> clang in:
+> 
+>   b80:	f3 0f 1e fa          	       endbr64
+>   b84:	48 b8 ef cd ab 89 67 45 23 01  movabs $0x123456789abcdef,%rax
+>   b8e:	48 39 c7    	               cmp    %rax,%rdi
+>   b91:	48 0f 47 f8          	       cmova  %rax,%rdi
+>   b95:	90                   	       nop
+>   b96:	90                   	       nop
+>   b97:	90                   	       nop
+>   b98:	31 c9                	       xor    %ecx,%ecx
+>   b9a:	8b 07                	       mov    (%rdi),%eax
+>   b9c:	89 06                	       mov    %eax,(%rsi)
+>   b9e:	85 c9                	       test   %ecx,%ecx
+>   ba0:	0f 94 c0             	       sete   %al
+>   ba3:	90                   	       nop
+>   ba4:	90                   	       nop
+>   ba5:	90                   	       nop
+>   ba6:	c3                   	       ret
+> 
+> Which looks as compact as it gets. The NOPs are placeholder for STAC/CLAC.
+> GCC emits the fault path seperately:
+> 
+>   bf0:	f3 0f 1e fa          	       endbr64
+>   bf4:	48 b8 ef cd ab 89 67 45 23 01  movabs $0x123456789abcdef,%rax
+>   bfe:	48 39 c7             	       cmp    %rax,%rdi
+>   c01:	48 0f 47 f8          	       cmova  %rax,%rdi
+>   c05:	90                   	       nop
+>   c06:	90                   	       nop
+>   c07:	90                   	       nop
+>   c08:	31 d2                	       xor    %edx,%edx
+>   c0a:	8b 07                	       mov    (%rdi),%eax
+>   c0c:	89 06                	       mov    %eax,(%rsi)
+>   c0e:	85 d2                	       test   %edx,%edx
+>   c10:	75 09                	       jne    c1b <afoo+0x2b>
+>   c12:	90                   	       nop
+>   c13:	90                   	       nop
+>   c14:	90                   	       nop
+>   c15:	b8 01 00 00 00       	       mov    $0x1,%eax
+>   c1a:	c3                   	       ret
+>   c1b:	90                   	       nop
+>   c1c:	90                   	       nop
+>   c1d:	90                   	       nop
+>   c1e:	31 c0                	       xor    %eax,%eax
+>   c20:	c3                   	       ret
+> 
+> 
+> The fault labels for the scoped*() macros and the fault labels for the
+> actual user space accessors can be shared and must be placed outside of the
+> scope.
+> 
+> If masked user access is enabled on an architecture, then the pointer
+> handed in to scoped_user_$MODE_access() can be modified to point to a
+> guaranteed faulting user address. This modification is only scope local as
+> the pointer is aliased inside the scope. When the scope is left the alias
+> is not longer in effect. IOW the original pointer value is preserved so it
+> can be used e.g. for fixup or diagnostic purposes in the fault path.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: Andrew Cooper <andrew.cooper3@citrix.com>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: David Laight <david.laight.linux@gmail.com>
+> ---
+> V4: Remove the _masked_ naming as it's actually confusing - David
+>      Remove underscores and make _tmpptr void - David
+>      Add comment about access size and range - David
+>      Shorten local variables and remove a few unneeded brackets - Mathieu
+> V3: Make it a nested for() loop
+>      Get rid of the code in macro parameters - Linus
+>      Provide sized variants - Mathieu
+> V2: Remove the shady wrappers around the opening and use scopes with automatic cleanup
+> ---
+>   include/linux/uaccess.h |  192 ++++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 192 insertions(+)
+> 
+> --- a/include/linux/uaccess.h
+> +++ b/include/linux/uaccess.h
+> @@ -2,6 +2,7 @@
+>   #ifndef __LINUX_UACCESS_H__
+>   #define __LINUX_UACCESS_H__
+>   
+> +#include <linux/cleanup.h>
+>   #include <linux/fault-inject-usercopy.h>
+>   #include <linux/instrumented.h>
+>   #include <linux/minmax.h>
+> @@ -35,9 +36,17 @@
+>   
+>   #ifdef masked_user_access_begin
+>    #define can_do_masked_user_access() 1
+> +# ifndef masked_user_write_access_begin
+> +#  define masked_user_write_access_begin masked_user_access_begin
+> +# endif
+> +# ifndef masked_user_read_access_begin
+> +#  define masked_user_read_access_begin masked_user_access_begin
+> +#endif
 
-Thanks for the report. I have a Raspberry Pi 3 Model B V1.2 here and will try
-to reproduce the issue with it.
-Can you send me your kernel configuration?
-Which line is vvar_fault+0x7c/0x17c?
+You should move this out of the #ifdef/#else and remove the #else part 
+below, it should work as masked_user_access_begin(src) is defined in 
+both cases.
 
+>   #else
+>    #define can_do_masked_user_access() 0
+>    #define masked_user_access_begin(src) NULL
+> + #define masked_user_read_access_begin(src) NULL
+> + #define masked_user_write_access_begin(src) NULL
+>    #define mask_user_address(src) (src)
+>   #endif
+>   
+> @@ -633,6 +642,189 @@ static inline void user_access_restore(u
+>   #define user_read_access_end user_access_end
+>   #endif
+>   
+> +/* Define RW variant so the below _mode macro expansion works */
+> +#define masked_user_rw_access_begin(u)	masked_user_access_begin(u)
+> +#define user_rw_access_begin(u, s)	user_access_begin(u, s)
+> +#define user_rw_access_end()		user_access_end()
+> +
+> +/* Scoped user access */
+> +#define USER_ACCESS_GUARD(_mode)				\
+> +static __always_inline void __user *				\
+> +class_user_##_mode##_begin(void __user *ptr)			\
+> +{								\
+> +	return ptr;						\
+> +}								\
+> +								\
+> +static __always_inline void					\
+> +class_user_##_mode##_end(void __user *ptr)			\
+> +{								\
+> +	user_##_mode##_access_end();				\
+> +}								\
+> +								\
+> +DEFINE_CLASS(user_ ##_mode## _access, void __user *,		\
+> +	     class_user_##_mode##_end(_T),			\
+> +	     class_user_##_mode##_begin(ptr), void __user *ptr)	\
+> +								\
+> +static __always_inline class_user_##_mode##_access_t		\
+> +class_user_##_mode##_access_ptr(void __user *scope)		\
+> +{								\
+> +	return scope;						\
+> +}
+> +
+> +USER_ACCESS_GUARD(read)
+> +USER_ACCESS_GUARD(write)
+> +USER_ACCESS_GUARD(rw)
+> +#undef USER_ACCESS_GUARD
+> +
+> +/**
+> + * __scoped_user_access_begin - Start a scoped user access
+> + * @mode:	The mode of the access class (read, write, rw)
+> + * @uptr:	The pointer to access user space memory
+> + * @size:	Size of the access
+> + * @elbl:	Error label to goto when the access region is rejected
+> + *
+> + * Internal helper for __scoped_user_access(). Don't use directly
+> + */
+> +#define __scoped_user_access_begin(mode, uptr, size, elbl)		\
+> +({									\
+> +	typeof(uptr) __retptr;						\
+> +									\
+> +	if (can_do_masked_user_access()) {				\
+> +		__retptr = masked_user_##mode##_access_begin(uptr);	\
+> +	} else {							\
+> +		__retptr = uptr;					\
+> +		if (!user_##mode##_access_begin(uptr, size))		\
+> +			goto elbl;					\
+> +	}								\
+> +	__retptr;							\
+> +})
+> +
+> +/**
+> + * __scoped_user_access - Open a scope for user access
+> + * @mode:	The mode of the access class (read, write, rw)
+> + * @uptr:	The pointer to access user space memory
+> + * @size:	Size of the access
+> + * @elbl:	Error label to goto when the access region is rejected. It
+> + *		must be placed outside the scope
+> + *
+> + * If the user access function inside the scope requires a fault label, it
+> + * can use @elvl or a different label outside the scope, which requires
+> + * that user access which is implemented with ASM GOTO has been properly
+> + * wrapped. See unsafe_get_user() for reference.
+> + *
+> + *	scoped_user_rw_access(ptr, efault) {
+> + *		unsafe_get_user(rval, &ptr->rval, efault);
+> + *		unsafe_put_user(wval, &ptr->wval, efault);
+> + *	}
+> + *	return 0;
+> + *  efault:
+> + *	return -EFAULT;
+> + *
+> + * The scope is internally implemented as a autoterminating nested for()
+> + * loop, which can be left with 'return', 'break' and 'goto' at any
+> + * point.
+> + *
+> + * When the scope is left user_##@_mode##_access_end() is automatically
+> + * invoked.
+> + *
+> + * When the architecture supports masked user access and the access region
+> + * which is determined by @uptr and @size is not a valid user space
+> + * address, i.e. < TASK_SIZE, the scope sets the pointer to a faulting user
+> + * space address and does not terminate early. This optimizes for the good
+> + * case and lets the performance uncritical bad case go through the fault.
+> + *
+> + * The eventual modification of the pointer is limited to the scope.
+> + * Outside of the scope the original pointer value is unmodified, so that
+> + * the original pointer value is available for diagnostic purposes in an
+> + * out of scope fault path.
+> + *
+> + * Nesting scoped user access into a user access scope is invalid and fails
+> + * the build. Nesting into other guards, e.g. pagefault is safe.
+> + *
+> + * The masked variant does not check the size of the access and relies on a
+> + * mapping hole (e.g. guard page) to catch an out of range pointer, the
+> + * first access to user memory inside the scope has to be within
+> + * @uptr ... @uptr + PAGE_SIZE - 1
+> + *
+> + * Don't use directly. Use scoped_masked_user_$MODE_access() instead.
+> + */
+> +#define __scoped_user_access(mode, uptr, size, elbl)					\
+> +for (bool done = false; !done; done = true)						\
+> +	for (void __user *_tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl); \
+> +	     !done; done = true)							\
+> +		for (CLASS(user_##mode##_access, scope)(_tmpptr); !done; done = true)	\
+> +			/* Force modified pointer usage within the scope */		\
+> +			for (const typeof(uptr) uptr = _tmpptr; !done; done = true)
+> +
+> +/**
+> + * scoped_user_read_access_size - Start a scoped user read access with given size
+> + * @usrc:	Pointer to the user space address to read from
+> + * @size:	Size of the access starting from @usrc
+> + * @elbl:	Error label to goto when the access region is rejected
+> + *
+> + * For further information see __scoped_user_access() above.
+> + */
+> +#define scoped_user_read_access_size(usrc, size, elbl)		\
+> +	__scoped_user_access(read, usrc, size, elbl)
+> +
+> +/**
+> + * scoped_user_read_access - Start a scoped user read access
+> + * @usrc:	Pointer to the user space address to read from
+> + * @elbl:	Error label to goto when the access region is rejected
+> + *
+> + * The size of the access starting from @usrc is determined via sizeof(*@usrc)).
+> + *
+> + * For further information see __scoped_user_access() above.
+> + */
+> +#define scoped_user_read_access(usrc, elbl)				\
+> +	scoped_user_read_access_size(usrc, sizeof(*(usrc)), elbl)
+> +
+> +/**
+> + * scoped_user_write_access_size - Start a scoped user write access with given size
+> + * @udst:	Pointer to the user space address to write to
+> + * @size:	Size of the access starting from @udst
+> + * @elbl:	Error label to goto when the access region is rejected
+> + *
+> + * For further information see __scoped_user_access() above.
+> + */
+> +#define scoped_user_write_access_size(udst, size, elbl)			\
+> +	__scoped_user_access(write, udst, size, elbl)
+> +
+> +/**
+> + * scoped_user_write_access - Start a scoped user write access
+> + * @udst:	Pointer to the user space address to write to
+> + * @elbl:	Error label to goto when the access region is rejected
+> + *
+> + * The size of the access starting from @udst is determined via sizeof(*@udst)).
+> + *
+> + * For further information see __scoped_user_access() above.
+> + */
+> +#define scoped_user_write_access(udst, elbl)				\
+> +	scoped_user_write_access_size(udst, sizeof(*(udst)), elbl)
+> +
+> +/**
+> + * scoped_user_rw_access_size - Start a scoped user read/write access with given size
+> + * @uptr	Pointer to the user space address to read from and write to
+> + * @size:	Size of the access starting from @uptr
+> + * @elbl:	Error label to goto when the access region is rejected
+> + *
+> + * For further information see __scoped_user_access() above.
+> + */
+> +#define scoped_user_rw_access_size(uptr, size, elbl)			\
+> +	__scoped_user_access(rw, uptr, size, elbl)
+> +
+> +/**
+> + * scoped_user_rw_access - Start a scoped user read/write access
+> + * @uptr	Pointer to the user space address to read from and write to
+> + * @elbl:	Error label to goto when the access region is rejected
+> + *
+> + * The size of the access starting from @uptr is determined via sizeof(*@uptr)).
+> + *
+> + * For further information see __scoped_user_access() above.
+> + */
+> +#define scoped_user_rw_access(uptr, elbl)				\
+> +	scoped_user_rw_access_size(uptr, sizeof(*(uptr)), elbl)
+> +
+>   #ifdef CONFIG_HARDENED_USERCOPY
+>   void __noreturn usercopy_abort(const char *name, const char *detail,
+>   			       bool to_user, unsigned long offset,
+> 
 
-Thomas
 
