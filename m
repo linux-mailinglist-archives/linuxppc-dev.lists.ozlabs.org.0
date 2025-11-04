@@ -1,95 +1,99 @@
-Return-Path: <linuxppc-dev+bounces-13749-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13750-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9726C3204A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 17:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CECB1C3225A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 17:53:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1DHS31RZz3bfM;
-	Wed,  5 Nov 2025 03:21:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1F013GQfz3bfN;
+	Wed,  5 Nov 2025 03:53:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762273316;
-	cv=none; b=JzM+FjbjFdQeZP58x4toYj+mgkiekgucHuBd538Pxz2GfX7fLPWmQ/aZorKYYfpP4LukAqtf1Ff9NLB3nqNkXIoZrCJFqp9vyIkeqqcCfIFUpSOHh96kLORaRuqa5BP8GtDVnn9aN5Y/xVbJ9O6bfn+vK4DBF36NU854uMl0ku0GzzQqJ13X1yUcG1rbDgH61Rim4oKhLnRwEhy8Sy6JEe9qJrc5cW4hj+Qif0aayso7Ajsu/l1AMRfBr67DOBw12GOLWxSvX+XU0AS40pmCip81usxsL82IqU4aEgF6IGueKyfPCtLBFPdfMt90wOlakYzZMR1S3aKQadzZat8G6w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.14
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762275217;
+	cv=none; b=VLf767cgDo9744iBn/qCeQN2PFPw60SVm5hDWAqGrFtYnL942QMkBVSg4cW999yeB7oHzwc00gkMLdZl0a+sXT62TJ/VfsQisfT5ZVTbCdVvFBFyyaMP8PVwQJnSMzVelKLVFOp6Zawh8GXgPGhngEpc/fSPEjgkT+zOjX6+WaFT5N1FbGHFFKQk8COg4SWV3cRV28nyXX60ODdvWyaWOiDXBQmHaqLF7ML7vGZjqunTVkxsMy3skqdyh2lxZqIVMzHc4DyFAbcw5OvribLYx8MnxZDO5Gh+YAedVo11joj6XBFNPeYMhFiAiS8t15nf1LBS0L/uIWYL8OfQas3xJA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762273316; c=relaxed/relaxed;
-	bh=g9b8dgRqX4uL2BHQtqvlqSlczFEDIsrr/9vjvvQGP/s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L3e7O5/CFTPqmNixLJ8Vctxqj0kpMzYjjaJAj8nqkmebva8nbihv2noTvwafEgwEajfmSUxKdY6/rr8ESnb4loXhFbWsMmvfH9W/F75F9G2kLKMtfHUDXX1rEde7UJQro2XYCrkXU9fF71zdFcQ62kGcnbBznnnzRoyoqsb6ahbDSD3VeIFo0epiVaYZGcCr4wF231//7tSGMwubuDaa4sii9ZuEWzgfudpkiJrSE8lP7WrHgxDhA+s90Zx9ho7UHY7+I91RVbxjig+fvZMu/zt6XI96ZlLrBz/H5RPn4kzdJ/kA9qWeB79QUfeXMStBdqaGni+w0f5/kn8vpkPkIg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XERX5aBH; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1762275217; c=relaxed/relaxed;
+	bh=K27NOgtb5k1iecQxNTWvLkZwmXT8q9mNmJD7bsk212A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ohDes+yXUF5UnaE6FTZxrk4zm2qMp3/SNnFbt+voGEmJaqPhcLJplO3irl0BRzZbpeqsdrNS9eJR05uOpsshfMsFkynvJOwdzeB+mo4hnKxYs6irdww9UD4KL3pytQyO5rB6IdTOeQ0QcyWJb9W4HJYbGseK8Nq3DSHmRwwJIo3Gxv7fxMeMUQ/1Dn7CPHJBxc/8MwEFl0NafmYIiQLUZmen/tmQorJaIRMf6EVvt5MESLjJCbhi245v2JzvGu1XyDICvIVvxH1zwEdQaPmZ1aVU40C8VGrayOKMrAGRXJowZnKBYWnUpGCqA21cFIhEhlr30Po3d20Ds6h2T3WbVw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aIgyqREG; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XERX5aBH;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aIgyqREG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1DHR0xJ2z304H
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 03:21:55 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 793D86020D;
-	Tue,  4 Nov 2025 16:21:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA99BC4CEF8;
-	Tue,  4 Nov 2025 16:21:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762273312;
-	bh=ZgapEV2f6UOkVKQ4Tm3UO+ujY8mCniaMXHTUMRbX7qU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XERX5aBHazdMMA+oEnGRxw1zsSiVD03zD1/OvFrITxNP8TY8EKGHO897kQpHZcTC4
-	 AjOz22hE45sDXPt8Me6tOdmAhG+A6sT8FL6AjX6iYO6ZcS6KadkQT0rMkbJmui1OF/
-	 y4pOsmta37VrO7TikjmFAe6yJr0DOXYwKDoT/9gVY3btW9L5vhKbX9306CCCv2kmMU
-	 q0Xm6Z0TQ7+VPuX7Bj+EZ5H6rPQRzeur3ohk90yIJvxkO3YG03g9YEM8mYNDLcUFlG
-	 PnlmletPsDgf5n3+Go+pKne9UEK4e4ygPuzYRVo35SlZ1BzC2w6vuQ8zAxKAJKLqqA
-	 KeZdQ7RUrsN6Q==
-Date: Tue, 4 Nov 2025 16:21:49 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Nick Alcock <nick.alcock@oracle.com>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Shuah Khan <shuah@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>,
-	Shannon Nelson <sln@onemain.com>, linux-kernel@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-s390@vger.kernel.org, Aishwarya.TCV@arm.com
-Subject: Re: [PATCH v4 23/35] vdso/datastore: Map pages through struct page
-Message-ID: <aQooHZ5p4DNhwbar@finisterre.sirena.org.uk>
-References: <20251014-vdso-sparc64-generic-2-v4-0-e0607bf49dea@linutronix.de>
- <20251014-vdso-sparc64-generic-2-v4-23-e0607bf49dea@linutronix.de>
- <aQjJNmwniQwwjeBR@finisterre.sirena.org.uk>
- <CGME20251104084442eucas1p2af1bd88393f4d6a532df1cd41f32a287@eucas1p2.samsung.com>
- <e7f05748-a11c-47eb-b1fa-cdc9dc6d05e0@samsung.com>
- <aQn8G9r2OWv_yEQp@finisterre.sirena.org.uk>
- <20251104162009-8cffa62d-e95b-466b-9a27-c51b0f5257cd@linutronix.de>
- <aQogAfbrP9rTPLvI@finisterre.sirena.org.uk>
- <20251104170215-3600e71c-1573-43aa-ad1d-8d02af9bbbf4@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1Dzy2Mpsz3bf8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 03:53:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762275215; x=1793811215;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0Vi8CmVpksI68INMwO9Cwr5Wqs6m/qtWAkyblVIpvsA=;
+  b=aIgyqREG+yn5jInPozYh9vLBKe52xZaWgoSPklsX0zpAW85PQdhDnLjS
+   J/SjvlaxZbCAu9/HO49HZSeNbq3MLk5LDavuXfNJ4afJ2dxVoY+spnmwO
+   9qFAOs7hT0J0Wm5lXjmFFzhTSQ97ineRWGD68wsqPLyKdneHd83cZo5UK
+   9ujqV39hHb3eHa0Vc9vG4Jf+R/Ng3ZgQehT0AujZvwY1LrF3ZpjpaIyeQ
+   Zu0AZXRKo9MR3U3zeZF9W7E91xG9jDEQrA/lw7V428/4cPnjsXtV16e1C
+   yw8r5FwXf1ZvhYosnG31NRoN73oyFWHijbJWaeYotlIX5jQdlu9RGmkP0
+   A==;
+X-CSE-ConnectionGUID: 8H987ak5RZ6A9MVnohp1aQ==
+X-CSE-MsgGUID: YmrT2+VKQImTY9yNOX+0UQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="64407548"
+X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; 
+   d="scan'208";a="64407548"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 08:53:30 -0800
+X-CSE-ConnectionGUID: MacTnz2bToWrXxp7w5uRHw==
+X-CSE-MsgGUID: SWyiQwSoSH2xTfhg7s/xyA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; 
+   d="scan'208";a="187057481"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO fdefranc-mobl3.localnet) ([10.245.246.211])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 08:53:20 -0800
+From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: linux-cxl@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
+ Borislav Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Shuai Xue <xueshuai@linux.alibaba.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Sunil V L <sunilvl@ventanamicro.com>, Xiaofei Tan <tanxiaofei@huawei.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+ Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, Guo Weikang <guoweikang.kernel@gmail.com>,
+ Xin Li <xin@zytor.com>, Will Deacon <will@kernel.org>,
+ Huang Yiwei <quic_hyiwei@quicinc.com>, Gavin Shan <gshan@redhat.com>,
+ Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
+ Li Ming <ming.li@zohomail.com>,
+ Ilpo =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Karolina Stolarek <karolina.stolarek@oracle.com>,
+ Jon Pan-Doh <pandoh@google.com>, Lukas Wunner <lukas@wunner.de>,
+ Shiju Jose <shiju.jose@huawei.com>, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org
+Subject:
+ Re: [PATCH 6/6 v6] ACPI: extlog: Trace CPER CXL Protocol Error Section
+Date: Tue, 04 Nov 2025 17:53:18 +0100
+Message-ID: <4532273.UPlyArG6xL@fdefranc-mobl3>
+In-Reply-To: <20251028150609.000023bf@huawei.com>
+References:
+ <20251023122612.1326748-1-fabio.m.de.francesco@linux.intel.com>
+ <20251023122612.1326748-7-fabio.m.de.francesco@linux.intel.com>
+ <20251028150609.000023bf@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,49 +107,87 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vgxhQqUhFOf4jqrE"
-Content-Disposition: inline
-In-Reply-To: <20251104170215-3600e71c-1573-43aa-ad1d-8d02af9bbbf4@linutronix.de>
-X-Cookie: If in doubt, mumble.
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Tuesday, October 28, 2025 4:06:09=E2=80=AFPM Central European Standard T=
+ime Jonathan Cameron wrote:
+> On Thu, 23 Oct 2025 14:25:41 +0200
+> "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com> wrote:
+>=20
+> > When Firmware First is enabled, BIOS handles errors first and then it m=
+akes
+> > them available to the kernel via the Common Platform Error Record (CPER)
+> > sections (UEFI 2.10 Appendix N). Linux parses the CPER sections via one=
+ of
+> > two similar paths, either ELOG or GHES. The errors managed by ELOG are
+> > signaled to the BIOS by the I/O Machine Check Architecture (I/O MCA).
+> >=20
+> > Currently, ELOG and GHES show some inconsistencies in how they report to
+> > userspace via trace events.
+> >=20
+> > Therefore, make the two mentioned paths act similarly by tracing the CP=
+ER
+> > CXL Protocol Error Section (UEFI v2.10, Appendix N.2.13).
+> >=20
+> > Cc: Dan Williams <dan.j.williams@intel.com>
+> > Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@lin=
+ux.intel.com>
+> > Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.=
+com>
+>=20
+> Just one small question.   With that addressed,=20
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>=20
+> > diff --git a/drivers/cxl/core/ras.c b/drivers/cxl/core/ras.c
+> > index 2731ba3a0799..3f527b0c6509 100644
+> > --- a/drivers/cxl/core/ras.c
+> > +++ b/drivers/cxl/core/ras.c
+> > @@ -105,6 +105,12 @@ static void cxl_cper_handle_prot_err(struct cxl_cp=
+er_prot_err_work_data *data)
+> >  		cxl_cper_trace_uncorr_prot_err(cxlmd, data->ras_cap);
+> >  }
+> > =20
+> > +void cxl_cper_ras_handle_prot_err(struct cxl_cper_prot_err_work_data *=
+wd)
+>=20
+> Why do we need this wrapper?  The name is a bit more general, so if you
+> do need it, then why not instead just rename cxl_cper_handle_prot_err()
+>=20
+Actually, on a second thought I believe that we don't need either this
+wrapper or renaming cxl_cper_handle_prot_err(). I'll export the latter
+as it is.
 
---vgxhQqUhFOf4jqrE
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+=46abio
+> > +{
+> > +	cxl_cper_handle_prot_err(wd);
+> > +}
+> > +EXPORT_SYMBOL_GPL(cxl_cper_ras_handle_prot_err);
+> > +
+> >  static void cxl_cper_prot_err_work_fn(struct work_struct *work)
+> >  {
+> >  	struct cxl_cper_prot_err_work_data wd;
+> > diff --git a/include/cxl/event.h b/include/cxl/event.h
+> > index 94081aec597a..a37eef112411 100644
+> > --- a/include/cxl/event.h
+> > +++ b/include/cxl/event.h
+> > @@ -340,4 +340,6 @@ cxl_cper_setup_prot_err_work_data(struct cxl_cper_p=
+rot_err_work_data *wd,
+> >  }
+> >  #endif
+> > =20
+> > +void cxl_cper_ras_handle_prot_err(struct cxl_cper_prot_err_work_data *=
+wd);
+> > +
+> >  #endif /* _LINUX_CXL_EVENT_H */
+>=20
+>=20
 
-On Tue, Nov 04, 2025 at 05:03:28PM +0100, Thomas Wei=DFschuh wrote:
-> On Tue, Nov 04, 2025 at 03:47:13PM +0000, Mark Brown wrote:
 
-> > I can let you submit LAVA jobs to my lab (there's an API, a web
-> > interface for (re)submitting jobs and a CLI tool for shoving jobs in) if
-> > that works?  That's how my own access to it works unless I go pull
-> > boards out.  You should be able to resubmit existing jobs, it downloads
-> > test binaries over HTTP.
 
-> Sounds good.
 
-OK, folllowing up off-list for that.
-
---vgxhQqUhFOf4jqrE
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkKKBwACgkQJNaLcl1U
-h9BB+Qf9EauYOf7gmQuIlmWkRFyAe3nL6GnUvplpFK7JQgCAmEpS6FK/StPLVbZL
-WwU/hE4esPcUwdBtU2pbY2fHKOHlAE3CNPiiEYfjkd51GcYtFX5b0Lw1PDB72Kgo
-ZFvKRrKRgkb3Mn3f7Dl2XoapM8m7YR/tRtJNCBk+SesiIQ0HfL5V4ExsYO+L5c7s
-wegS0czcQsWbwDBTsPWl3QJF+HPkq28QUpznRvaUwKfj7Pe5PJTpEQy9OZQf7u4r
-e8p94FrmEto2SEMlh98mHi5iZcmCBPvOtFtCrv8NmzDi7olabfnoQ+ECOnFB2+Cy
-tm2fLJofnR2UpxNKmXwxdF0pK8VkPw==
-=HhMt
------END PGP SIGNATURE-----
-
---vgxhQqUhFOf4jqrE--
 
