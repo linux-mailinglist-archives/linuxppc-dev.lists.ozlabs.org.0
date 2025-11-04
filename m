@@ -1,61 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-13756-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13757-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B0BC327DB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 18:59:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A01DC327F9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 19:02:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1GRm17gfz3bfX;
-	Wed,  5 Nov 2025 04:59:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1GWZ6WVQz3bfN;
+	Wed,  5 Nov 2025 05:02:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1098:5b::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762279156;
-	cv=none; b=ErWU2/HD1lhzLi2Gj2PP0jjtRH+jp2nKKEtN14/UylbC7S1qE2pEPJMwBos9DQzxcNBkjLpvwgvHm9Jt++L9T433fhoH+bILqvJxlUJgmCc3+tzK+ZZJGnmnYQPk466LhvLywqIYOt/GW4vsTire7iR8vQSXQlWblp9SN4fwl12jQe783z1pulq/RhtNS9YyFWnGNQBQ3D985P48J1cL3ICxNDH+UXP0FVCeCZIDK8vABmE3tHePjH9R5p9qEf+wSk9hMqKpk3v1JmT6Q+CgnwWI8mNwqQqO2lWRr9nWw+A5oYnaxQJjheQcyKZSuVVUrUeTt6l64EQAhLYc0zWjBw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::54a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762279354;
+	cv=none; b=QZ2z0r3XBuTA8lLbdR3cGNDnWRhbFd9wBjlCPL6o4Dvg4KRe5fs3SXpEe/tJXOT69X/1gfrrX1e7dfJmfISA7hL1JrgbFFjxcxdsdSaXHuDPoK4Yh/pLhIysZ3P4vab6nD50aJRl7M01lQBfh/PySvhueCkjjKWQod0cR++LaPrOq+26VKaBQtC8A3W+Q0M8NDFir11erEMVPrSdSQYrg8qtr3OvVGpsl6CZbMtrt9YWTLvDGUV/eYoZ4oIq2tDv8nPa8f7PfE5dHM7o0L1oohVdEplzUvm26MtDbpnyKMIR3MVKCFw4b+JUPB5jFk24hzNLkDuRrp1SIDs8hVKUOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762279156; c=relaxed/relaxed;
-	bh=J2T93GZ4iRg/mXaOUM2wPtUcrFT6Ce80fUC5fly//tg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GF0US4/zBZTQut7548c902azrbaOHYWbU0NDQBEM2UeA+BkTKTIMVOxTG6M0nzlQICs26xK9H0FeSPUqQQvfa+DZ75DeobsZ3OWI23dqrqh4dQ4Sx+YYrct+9t3KA2h9m4YmDGRd/9VEWY9WFIT2zNgGFQ16oS4tPBnNptVQZl4ZQgZvfTaOAcYNgm3JWH0rEarovLOa3JeXLArS651VNPRI9RgkoTLkXNODRs813wik4xWhiomkuTdU/YdrsMjDe4IpgIhOr/U6rGLAiZrZAg9LFOLMafBBIs91uBGEQQJ46wNBrKZX99joMc4gBjkfGrqDi9u/gjlU3+kIj6LDog==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=treblig.org; dkim=pass (2048-bit key; unprotected) header.d=treblig.org header.i=@treblig.org header.a=rsa-sha256 header.s=bytemarkmx header.b=FR7PPXiR; dkim-atps=neutral; spf=pass (client-ip=2a00:1098:5b::1; helo=mx.treblig.org; envelope-from=dg@treblig.org; receiver=lists.ozlabs.org) smtp.mailfrom=treblig.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+	t=1762279354; c=relaxed/relaxed;
+	bh=z7TAMX5tgRxcaQgmnIz2dr5/J34h/wClq0GmkAjx/eU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZQJSqAsSPaW2q1ZzwncZGnKcr3043Bu32q+PQqzv62FKFPc0VDael+tipmzvTAximc97fZ3f15qXKQqHqvPtTZgelGlOJFIRHRL5+blt5uR0+SLsF9mA3uVcYfXLMgcL7JZ0DHxcTdXABeB5Lwj68vNWy7dMQDS0Sa4ASTMK7qwX9DLhcWvJJKAelgg8H9Mgd7eb60rZFDwmTercZMEuDbH4SAFw9KthEQhQwC4IXWrCKm6uduJ/F+D310lLtRC38E5iteGRUqsGBfSLB2Qb9zxtDGx9cMFUeZNuWOXfMfSGT3dp4wDOHOFQHHuGHYcDFxiAOTpPqBHiro4pevXNVA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=smSJ5AEC; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3tz8kaqykdk4gsobxquccuzs.qcazwbilddq-rsjzwghg.cnzopg.cfu@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=treblig.org header.i=@treblig.org header.a=rsa-sha256 header.s=bytemarkmx header.b=FR7PPXiR;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=smSJ5AEC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=treblig.org (client-ip=2a00:1098:5b::1; helo=mx.treblig.org; envelope-from=dg@treblig.org; receiver=lists.ozlabs.org)
-Received: from mx.treblig.org (mx.treblig.org [IPv6:2a00:1098:5b::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3tz8kaqykdk4gsobxquccuzs.qcazwbilddq-rsjzwghg.cnzopg.cfu@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1GRj39QTz30V1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 04:59:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=J2T93GZ4iRg/mXaOUM2wPtUcrFT6Ce80fUC5fly//tg=; b=FR7PPXiR6QTPHE7f
-	JNYRc8Pv8zmiwEXXZZiML1cGSQ/67sPPxC66c5986choXJCJQo2Ts6kk7lb3rrYmlCaIiOPc5tdyY
-	rVA8BmEjDqmB3Gkxkwyd8DUVarGegVTrbeqf2d9QgYSTM9swAM/yh5ORVzF+6AbkLCwM0PN7vBG4p
-	bz1WV6OvaTJwt9BrRtr0MLWSqRH76f+MelLBCGGDq2pMw9XVY5EmJx2w+M4UEK15Q1gqH1EduPO7J
-	ZZjgdX1ul6cXtnbc4nPt9CosEDsAXm+8DZsV1yyYgQtlYe3TXN/Ttte/H5O8dG6R2r4zYpYcdkKdq
-	59PqQ6+C8O/NfqOByw==;
-Received: from dg by mx.treblig.org with local (Exim 4.98.2)
-	(envelope-from <dg@treblig.org>)
-	id 1vGLJ7-000000020YW-49uU;
-	Tue, 04 Nov 2025 17:59:02 +0000
-Date: Tue, 4 Nov 2025 17:59:01 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: Finn Thain <fthain@linux-m68k.org>
-Cc: Stan Johnson <userm57@yahoo.com>, mpe@ellerman.id.au, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, sam@ravnborg.org,
-	benh@kernel.crashing.org, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, rdunlap@infradead.org,
-	Cedar Maxwell <cedarmaxwell@mac.com>
-Subject: Re: [PATCH v4] powerpc: Use shared font data
-Message-ID: <aQo-5T8z2nwtNe2p@gallifrey>
-References: <20230825142754.1487900-1-linux@treblig.org>
- <d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com>
- <aQeQYNANzlTqJZdR@gallifrey>
- <20108eef-b7cf-3f23-264a-5d97021f9ffa@linux-m68k.org>
- <aQgJ95Y3pA-8GdbP@gallifrey>
- <797f0a13-350f-e26d-f1ef-876419e1c013@linux-m68k.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1GWY6hHgz30V1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 05:02:33 +1100 (AEDT)
+Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-b55283ff3fcso4043682a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Nov 2025 10:02:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762279351; x=1762884151; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=z7TAMX5tgRxcaQgmnIz2dr5/J34h/wClq0GmkAjx/eU=;
+        b=smSJ5AECqDRVzcfsuigEaRNs70heIriyLHcYfAhaqmJH1qDPN5Qh//M6JfaBF7mb8d
+         W6rES+WzHHtMCL2eaVGvMQ/0as4tQfFp88jfjs0uVssBmevFkkOPU3fvhP/ngLj/u1HY
+         7R/VqPzzz2sYYsAI3uQkL3kjxFpLqK5o69aJkglHU3PMfmn/sQ+iq6pdqQAT1L2pa9Ub
+         dp7RTSaaeg0WdMfHA4jVK+/cXu9F9P1/YlScZsOXe4dgBlugzEwXMWuSLCqYuXlaqCCO
+         wH3oEIFRSfsynR6Cg/IhmTVyP5/9yQB4MoMac76/1o9qrQWSOGrMPYWA1Wbc3TNut7fG
+         SCDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762279351; x=1762884151;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=z7TAMX5tgRxcaQgmnIz2dr5/J34h/wClq0GmkAjx/eU=;
+        b=hm0MgIa6qPXZJbKbRd3M/0MeAeR1VRIBQ5DFmtTzZJYRVPBs2o6lMUA+lCgCAF9Aa6
+         prdHaiI55eTbmSzXlZlPfTX3GYd7T7nXcZ6EpRbD2VSo4xp841PM+xL6qtk6K6b/a6oS
+         m8SFoxO/UrjHBVPOFRTPRU98QA43y9ANGkCPaEIdpPBx1Hb/CIIEGltEThTZGW6Riyzl
+         Jg1t5Ep1CfhH6UUkr11Tdn1yzqype+Hov/6KPEKQvAGmCVsb1XygtQ/RrzmrqcTvC9iW
+         wqBVCQRUVkQcJgrRiiqUXKYqtVujg9g3GC9bTAePbD85hkI2MZMKGGiZJ9diCT+R3/RZ
+         k/Mg==
+X-Forwarded-Encrypted: i=1; AJvYcCWVcAA4Ai7QcUXLfouJQSUTOp/29TPGRSa3UoXv7PaDYcl2EvFWMW6BLFyjattlbhUI8BfDlxLDfRouhVY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyeHHN8MK8Yhui88cXIX/gPFvaTWO354J7nsfF+sb/dSo9bu+YH
+	6jRYXF2D5NicD998H5KMhYxwAeLAMNnXPhATkRqf4ytTbhMtlBbPWcG50MC9WKEF6S/ty5TULE1
+	pg0Al6A==
+X-Google-Smtp-Source: AGHT+IEToeihVC8rNRp4WXHuCXbja7cJV9DF8/gVM9lRFkFysIMA8abH+TqAL0waWRxDGRap6/agKlo3e+8=
+X-Received: from pjbmv10.prod.google.com ([2002:a17:90b:198a:b0:340:d512:22dc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6d92:b0:32b:7222:7459
+ with SMTP id adf61e73a8af0-34f8591c355mr151990637.34.1762279351036; Tue, 04
+ Nov 2025 10:02:31 -0800 (PST)
+Date: Tue, 4 Nov 2025 10:02:26 -0800
+In-Reply-To: <31da959f-d004-4ae0-a6a7-d5d31b646b70@linux.intel.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,70 +75,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <797f0a13-350f-e26d-f1ef-876419e1c013@linux-m68k.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.12.48+deb13-amd64 (x86_64)
-X-Uptime: 17:58:36 up 8 days, 17:34,  2 users,  load average: 0.02, 0.02, 0.00
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+References: <20251030200951.3402865-1-seanjc@google.com> <20251030200951.3402865-28-seanjc@google.com>
+ <31da959f-d004-4ae0-a6a7-d5d31b646b70@linux.intel.com>
+Message-ID: <aQo_spywQuek7fUi@google.com>
+Subject: Re: [PATCH v4 27/28] KVM: TDX: Bug the VM if extending the initial
+ measurement fails
+From: Sean Christopherson <seanjc@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Michael Roth <michael.roth@amd.com>, Yan Zhao <yan.y.zhao@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-* Finn Thain (fthain@linux-m68k.org) wrote:
+On Tue, Nov 04, 2025, Binbin Wu wrote:
 > 
-> On Mon, 3 Nov 2025, Dr. David Alan Gilbert wrote:
 > 
+> On 10/31/2025 4:09 AM, Sean Christopherson wrote:
+> > WARN and terminate the VM if TDH_MR_EXTEND fails, as extending the
+> > measurement should fail if and only if there is a KVM bug, or if the S-EPT
+> > mapping is invalid.  Now that KVM makes all state transitions mutually
+> > exclusive via tdx_vm_state_guard, it should be impossible for S-EPT
+> > mappings to be removed between kvm_tdp_mmu_map_private_pfn() and
+> > tdh_mr_extend().
 > > 
-> > > Anyway, I imagine that the problem with your patch was that it relies 
-> > > on font data from a different (read only) section, which is 
-> > > unavailable for some reason (MMU not fully configured yet?)
-> > > 
-> > > So I've asked Stan to test a patch that simply removes the relevant 
-> > > 'const' keywords. It's not a solution, but might narrow-down the 
-> > > search.
+> > Holding slots_lock prevents zaps due to memslot updates,
+> > filemap_invalidate_lock() prevents zaps due to guest_memfd PUNCH_HOLE,
+> > vcpu->mutex locks prevents updates from other vCPUs, kvm->lock prevents
+> > VM-scoped ioctls from creating havoc (e.g. by creating new vCPUs), and all
+> > usage of kvm_zap_gfn_range() is mutually exclusive with S-EPT entries that
+> > can be used for the initial image.
 > > 
+> > For kvm_zap_gfn_range(), the call from sev.c is obviously mutually
+> > exclusive, TDX disallows KVM_X86_QUIRK_IGNORE_GUEST_PAT so the same goes
+> > for kvm_noncoherent_dma_assignment_start_or_stop(), and
+> > __kvm_set_or_clear_apicv_inhibit() is blocked by virtue of holding all
+> > VM and vCPU mutexes (and the APIC page has its own non-guest_memfd memslot
 > 
-> Stan tested my patch to remove 'const' from the font_desc and font_data 
-> structs but it did not help. (There goes that theory.)
-> 
-> > I wonder if this is a compiler-flag-ism;  I see 
-> > arch/powerpc/kernel/Makefile has a pile of special flags, and for 
-> > btext.o it has a -fPIC (as well as turning off some other flags). I 
-> > wonder if bodging those in lib/fonts/Makefile for 
-> > lib/fonts/font_sun8x16.c fixes it? But... this is data - there's no code 
-> > is there - are any of those flags relevant for data only?
-> > 
-> 
-> I don't know. But I'm sure Stan would be willing to test a patch for you.
+> Nit:
+> It sounds like TDX is using the memslot for the APIC page, but for a TD, the
+> memslot for the APIC page is never initialized or used?
 
-Can one of you point me at the config you're testing with so I can
-try some builds with it.
-
-Dave
-
-> > > 
-> > > The BootX bootloader doesn't work on New World systems, which is 
-> > > probably why we don't see this regression on anything newer than a 
-> > > Wallstreet.
-> > > 
-> > > It's likely that other Old World systems are also affected, if they 
-> > > are using BootX. We don't yet know whether the regression also affects 
-> > > Old World systems using the iQUIK bootloader instead of BootX.
-> > 
-> > OK, remember I don't think I've ever tried PPC via MacOS booting, so not 
-> > familiar with it.
-> > 
-> 
-> I will try to set up a MacOS guest in QEMU, to see if the hang can be 
-> reproduced that way.
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+Oh!  Good point.  I'll tweak that snippet when applying.
 
