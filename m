@@ -1,49 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-13735-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13734-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB568C30D1E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 12:50:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B94C30BFE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 12:33:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d16Fn3NhXz3bfM;
-	Tue,  4 Nov 2025 22:50:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d15tx6Qkvz3bfM;
+	Tue,  4 Nov 2025 22:33:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762257005;
-	cv=none; b=f81kQuSCxNh1Kkdd52zFtSHZGTw+ra3F75wIRgwQ0z7mVXjowMN96+F2eEMKC1N3sAxqZa12M2P5B3HI47iQBRDqtYl++nzbQvXggM93ezw2qPiGcdW37cldS0A/tRXgCINwF4jZJ3ZhOgfS4WUy5RnR7GXT/W27JsRMV8r9R7vuezj8TiFrUiFpCzbmmV0vNO0attK69hgCEU4vlVg7qMaWALd5dlRdCzk+WKs/OhWPnSsYtNnYpa6QO5QluDmzqCy1odShizTZvcYRq4G0jP5yyCnS89JIApKP6RwgbAOrkZf1pbJNk43FFDGODiHH4WTl06i6r5NUcuohj0rD4A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762256025;
+	cv=none; b=PUAnQmFBvVAX+Ml7N5PyfhCsbCQUy2o0URi1+2/w1GC3zN8rYVPFdjrHOcs59ACu6KAOLJzMwey6tjZmqNRY/Vu7Bdb6ObjF6tZidJzL8r+mm6EP+m3Wan0i/Pc132lUTl94wUXazbXo89mdQ2qt/pCQzC2htY94WrCd58kocAq4nqWMHXylkQVr3iJ16yChmrDvYqHmZsbv6CzdGP6f0wXIgHhGB3VXjrNlj/C9lPfmKqD03yLIGXuYTadtf+j9AS5fnjRQzsL9/q+XAXhzB7iNRFo6FSnOWAiXgbTxy0FIrjM06JswEn50/so0R003K+SXAHjAx1QBZy8Sfr9teQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762257005; c=relaxed/relaxed;
-	bh=MchFiUtjHMwhm2YBQcH9TBZ9aUjZSwC9W8kvKKyZlUQ=;
+	t=1762256025; c=relaxed/relaxed;
+	bh=6WOQeTavzPrauVi8MwJO524evgvZo3Tkv1ShmH0pjuo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mxwz8edD2Fc36CmFu9CTG1EG/+hE1XV/CMM3ifqxaUhswRmxJLemzb8yJtIiUalSJMGZqQcoWqgeBsle3j+tJX//ksqGw5fyhfC3mJ2XRjnFIIr7mzZhpcxzQZx9wz4IsZeEYGWTdCSwhAquiejxh7k9I3ew+B6J7gUoH9lgvUbItH2ulvoxtgbZasyzi/JLtACpGdzdEF4pq0h55UyiPjes3sIaB1aO/MYCc3EUPVhtUDc7GEv8tVPZy1tSFA3U5/CN5mpsEhF6fYS1axny8a7NMiOrxy0EKluwlNrZMLd215Y/mmo5VhT0nPmXtZFtUpxWxXnMo3TivzJbHIZLfQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d16Fm4G3Fz3bf3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 22:50:03 +1100 (AEDT)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4d15pT73Vrz9sS8;
-	Tue,  4 Nov 2025 12:29:53 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id cT7tdgBSNYbn; Tue,  4 Nov 2025 12:29:53 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4d15pS6HmPz9sS7;
-	Tue,  4 Nov 2025 12:29:52 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C3DFA8B76D;
-	Tue,  4 Nov 2025 12:29:52 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id yIjqGquuNwdS; Tue,  4 Nov 2025 12:29:52 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6D3EA8B763;
-	Tue,  4 Nov 2025 12:29:52 +0100 (CET)
-Message-ID: <70a965d7-9839-4973-a306-4da4f1089bfc@csgroup.eu>
-Date: Tue, 4 Nov 2025 12:29:51 +0100
+	 In-Reply-To:Content-Type; b=njOZ5c3r8CSc6Ql1FlpDby4SRo+wUpAVUM6R2O/N1Tiadm0Xlx7ssTwAmcOjvhRG/b4IU3NhzrGxAlxK3buzegqB8pujGLn5FP3wUvn0u4yK0Ry+2j+uhb+35ShE3foNmxZBQIwC+9b4VHqvUSDkR5mgJ1rgxXURV9qlrpfzdEIPr9UcyJq5+QYQu3MqqDfLFcm7MMqvv0+hmqaBqfuHCwQx08imqy8BZg3ynpM7xx4jJ1rjuGLOkmXDMNOt2vH4XS2sfoplwWiDdQ53JpUibln00Y2fk4niqVqnGvWO/u90PMubiC0I1SFekhUdbJTo0PMu8O90cURllbg6OMIvvg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d15tx1VjKz304H
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 22:33:44 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D06201C2B;
+	Tue,  4 Nov 2025 03:33:05 -0800 (PST)
+Received: from [10.1.38.100] (e126510-lin.cambridge.arm.com [10.1.38.100])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C979F3F63F;
+	Tue,  4 Nov 2025 03:33:06 -0800 (PST)
+Message-ID: <e3326a9c-108a-4eb2-b12e-bff2b5edd1d3@arm.com>
+Date: Tue, 4 Nov 2025 11:33:03 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,59 +44,69 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] Fixes for pmac32_defconfig after fb.h removal from
- backlight.h
-To: Nathan Chancellor <nathan@kernel.org>, Lee Jones <lee@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, Daniel Thompson <danielt@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Simona Vetter <simona.vetter@ffwll.ch>, linuxppc-dev@lists.ozlabs.org,
- patches@lists.linux.dev, Thierry Reding <treding@nvidia.com>
-References: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-0-d256858d86a6@kernel.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-0-d256858d86a6@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v4 09/12] powerpc/mm: replace batch->active with
+ in_lazy_mmu_mode()
+To: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-10-kevin.brodsky@arm.com>
+ <05e2062c-1689-44e7-9cc6-697646ca075d@redhat.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <05e2062c-1689-44e7-9cc6-697646ca075d@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi All,
+On 03/11/2025 16:05, David Hildenbrand wrote:
+> On 29.10.25 11:09, Kevin Brodsky wrote:
+>> A per-CPU batch struct is activated when entering lazy MMU mode; its
+>> lifetime is the same as the lazy MMU section (it is deactivated when
+>> leaving the mode). Preemption is disabled in that interval to ensure
+>> that the per-CPU reference remains valid.
+>>
+>> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
+>> mode. We can therefore use the generic helper in_lazy_mmu_mode()
+>> to tell whether a batch struct is active instead of tracking it
+>> explicitly.
+>>
+>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>> ---
+>
+> I suspect you were not able to test this on real HW. Some help from
+> the ppc folks would be appreciated.
 
-Le 26/09/2025 à 01:46, Nathan Chancellor a écrit :
-> Commit 9f218f9bb9d2 ("backlight: Do not include <linux/fb.h> in header
-> file") exposed some necessary includes that were missing from a few
-> powerpc drivers, breaking the build. This series resolves them.
-> 
-> This should go via the backlight tree, which includes 9f218f9bb9d2, but
-> I have included the PowerPC folks for visibility.
+Indeed, it would be nice to get some testing on ppc HW that actually
+uses lazy MMU (!radix_enabled()).
 
-What is the status of this fixing series ? I see a couple of similar 
-redundant patchs (see below) roaming around, which make me wonder if 
-this series has been properly processed in the backlight tree.
+>
+> LGTM, but the interaction with pause/resume adds a bit of complication
+> on top.
 
-https://patchwork.ozlabs.org/project/linuxppc-dev/cover/20251029150940.2523328-1-thierry.reding@gmail.com/
-https://patchwork.ozlabs.org/project/linuxppc-dev/cover/20251027140646.227025-1-tzimmermann@suse.de/
+Does it? This series doesn't change when arch_enter() and arch_leave()
+are called, batch->active and in_lazy_mmu_mode() should coincide. 
 
-Christophe
-
-> 
-> ---
-> Nathan Chancellor (2):
->        powerpc/powermac: Include linux/of.h in backlight.c
->        macintosh/via-pmu-backlight: Include linux/of.h and uapi/linux/fb.h
-> 
->   arch/powerpc/platforms/powermac/backlight.c | 1 +
->   drivers/macintosh/via-pmu-backlight.c       | 2 ++
->   2 files changed, 3 insertions(+)
-> ---
-> base-commit: 9f218f9bb9d274b9d5d48a4c95e1b199141fc1f2
-> change-id: 20250925-ppc-fixes-for-backlight-fb-h-removal-2b6a87cced02
-> 
-> Best regards,
-> --
-> Nathan Chancellor <nathan@kernel.org>
-> 
-
+- Kevin
 
