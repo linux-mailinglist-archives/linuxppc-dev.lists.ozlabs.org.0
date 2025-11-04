@@ -1,78 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-13722-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13727-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20094C3048C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 10:35:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0000C307C6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 11:24:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d13Fx5dHPz3bfM;
-	Tue,  4 Nov 2025 20:35:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d14MJ3vyDz3bfM;
+	Tue,  4 Nov 2025 21:24:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762248901;
-	cv=none; b=gbgefk/bsR2QNslKI1MKjkTT/arKSvjmvY5SzMxCabhpLH+PqAVEr52KXO3r/rljWwEP7r3a6n/vlY8hdg4CfS963QPEl2iFCTqBCPnIMHagHXFR8yRvh5eT/lAtc23lBL8AXNZARzoY0bPSF2j+J/MZEaJjey5/wQ0vYshMWf0PJWWiiOOpyfgxa0+edHyr4COP0irYhtxh05e0/3Yzc1DKHeIIpQH3d9QxYVqt/34lkJmcb1xIyGDaLakUmwkBp2oxTtJzADiBK6pRexKWEHb+gbb9KGKaOEqQl08Ynz8eVhVCcPgALJkWhr/oM2SQD/hE7ZA76OyYYanFd8Zjyw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::629"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762251884;
+	cv=none; b=TDt/zvLqdo6jvnF8x2kTl7sd8bc+GQIPMlc1PBeRRYomT0ed3d2zfW11sTQwvyeXlqJhYqJPSzB7BPQAqU6RKwKGoCKpRcatpcAsS1/nM9v7OSWyAjLmq/YNkPzPa8x30FAtxk2SSfuNcGpxng4++SBP3TgaBIRlPkhmarba6fGgE5k3nFZ7MX4OQnm3g6ibInc3qpcOPYFhdKxsIiamM+EyWJJsJxl87aIvvVeWnq2dtwV8r291TvWXEoDyKZ7cJnf/mSW3C3jAdkhyj3fxOzX+rgvByPV7pJ60tY13dIL2fzzwZpTvJ7eS6fB+OoishwSus8TvrTNbD6PBVxjtgw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762248901; c=relaxed/relaxed;
-	bh=cm8ohofdl8x8t8svbS9cTI+oNVT/LIoR61TMRnkuXOs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=EH0kbhGc2jQ29n0SZaibVzWtJDbdE8nbiKZYicFCl1N6PW9G1uIPLY3HI3606kkd6I/gPHYm6ouhEwlP4e+BJV1DyeJDZHylWeZOAIRFlh061VAGTryOEewhhKk7lsKWDcau9xrIF2CEmiyAA6wKqoo2vVdC49Vn0QNdfJHWVpDTHmS9/kgThVH3oVsql2dcmKnCRUycDed1fb2N1wYGCBjbMG0de8sDgnuQpotjjXcoEefPV4dE6o3Zmuv172wE2XkIGnx56lA7W+e113JMh9CiyT8Pl5F/uo/rOMR2b2ak12lGqgYGQS1b78Egt84DNM9NWDEc7yPuGa+PbHTELA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JJlEH/4/; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1762251884; c=relaxed/relaxed;
+	bh=owDawV/cnKyMwzi7YiANe4vB27Qq/ThAIZ5MpALecMg=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=VIE9dLcRUqtOGdpDC42HhILZi3bFXqhg+Yhlw1+5DcTOaBRnNuvfgcnyvwqOm/7neqYJLZZtu+SSxIUcRI7qT9XzyJGNgysUDdxaDULkXhqTOW5HnX8Bn9thDCzyM0nNLVzhRIC9t+GdaRoKMAl4a/HNKwvFV2pmpExvqFgR+pyqiHSRYa1F6fmCs/dOGKBSBc6Pn381/Q9A5s9izFqOvcMwD5XqcI0SdGojgbC1KFDlci75ToOYlH+LifPnmv31sgkHgV3T00Xm2wLJzatd6wnOEHCX0NXZuIpw2Mnqd+UdtoIuWE60TlCBReNacvnCxsxiQdxxLCcRyvqYEx2yjA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=F3A0OWNp; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JJlEH/4/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=F3A0OWNp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d13Fw0x7Tz3bf3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 20:34:59 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A43A6d6012681;
-	Tue, 4 Nov 2025 09:34:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=cm8oho
-	fdl8x8t8svbS9cTI+oNVT/LIoR61TMRnkuXOs=; b=JJlEH/4/gLX+8aC2XD6AC8
-	nImaFYBkS4gHnZ6R41m7zZt7mBmatGt4cMMruCPxRZ0dOM7oixoLYCp3iML//exm
-	hPK7Zn90CXK6llHt0AAPqCZ6+Ma8ZMozFfOVN9YeE2SqY4L9G6d47PN/YjEbVZJW
-	qrle9uNSZM1lxnyG6WaDRCJLbcB4zsk3ROwD4dTbnao+YvPtCvfptH3ICqv9ngPk
-	wxlCqTNV5W+WWogMb/zaYhSV1RJ/PCW0EscAb3XeYxM9XY8m9rCeiONXYNNtwUE3
-	kaaT452dS5GMJlvr6vmZWc3Y7rDAyM326NTFjj4AFJ10DJeE7hdC46JUpDncntCA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59v1u0pg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 09:34:46 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A49Yjpa002806;
-	Tue, 4 Nov 2025 09:34:46 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59v1u0pe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 09:34:45 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A46e6E0009877;
-	Tue, 4 Nov 2025 09:34:45 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a5x1kaa22-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 09:34:45 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A49YfN757606498
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Nov 2025 09:34:41 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2D7B82004B;
-	Tue,  4 Nov 2025 09:34:41 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B16AA20040;
-	Tue,  4 Nov 2025 09:34:38 +0000 (GMT)
-Received: from [9.109.204.116] (unknown [9.109.204.116])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  4 Nov 2025 09:34:38 +0000 (GMT)
-Message-ID: <ea44849c-9d0f-43cc-9476-42bc619728f6@linux.ibm.com>
-Date: Tue, 4 Nov 2025 15:04:37 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d14MH1Cshz3bf3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 21:24:42 +1100 (AEDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-294fc62d7f4so50394535ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Nov 2025 02:24:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762251879; x=1762856679; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=owDawV/cnKyMwzi7YiANe4vB27Qq/ThAIZ5MpALecMg=;
+        b=F3A0OWNp1TU+6qcFqpzViF2E3cD5kvvBL0z8QZVBA3Q8QqQktbloI1xa/z+jpUmPmv
+         Pby9Xed1A0FZDdmDKWPnV94aBaeIbVWiE3ZWkD+Vo/m0bv3L+aF1XYdNqQ0GZPj297vj
+         WXUu8U5zBS8d18/KAbYRMrSujhyGo9iU5HHpAp1S4HsJ1zzGMyD64rNz8ShcpWK/NDcX
+         E0Wol1RdHxbwo2l6B+4ysWN2Vwink8zI/X2++umCVlIgwn+mnGAPoNcr7t1bJolL5Zs/
+         kewh7UJiMT4FH0tSE7aoglvmYQZyi2l+MHzFx5Ij0x2HuCOCqfbQH00ZoIOwf6Ugaedi
+         xrxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762251879; x=1762856679;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=owDawV/cnKyMwzi7YiANe4vB27Qq/ThAIZ5MpALecMg=;
+        b=ijGj8GmpdpNT7Aa2YGSyT1/OI4n/GV0rSx5/TPyMxYTCZhlsv7vNS4ddC0WLQyNeVb
+         ir+KiZ65Fw2aMZSmUn7GVOtPMYYLC3XVf72X5gU3nEvGBkTg0hzpTAdCzJxiCE98n/70
+         +GXEiAeFNkncF1D7ixxGn5oZvS+8dbAlZ9HYogdZWCI8Tc6JZQkxS03zqJZsE/xdqayE
+         J+lwEaJEdg+/lVuSnFyI4yL/t4l7ou6m39o3jECYxVO3Mbz6i2ILEV9cxirRc/zBmksV
+         wsesezNouVNTBgxUfw/K//hbe3O8PsxFeWF888NA0gtFGaslgi/59F2lcWR5hkSIXMrW
+         8vUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWKglXe9AyAqoWULp6FSlsezRAJra/I7QZrfF+/PyDVbfbpRhF9v5eKwh5MNbAI39S5tNSko1zVeZQ3RKk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzDYQ3PZUE2P0bin4KYdln80trQAHTBoSg3wRLVyYcYFuRNFYvf
+	o4z+HxKauLTxD6s17jomo+z+cg38QLOjebJcTu6TG9Xdt8beiYUNtOLe
+X-Gm-Gg: ASbGncuTN6JgAiNTlzB65v7tdcQ1itfx5gbBn/oRqG8LFVaHvy1EJMsTftgQexJhieo
+	Qev5b91gmE2SI2tmwRZxn1tRltGihF3gPc7lm5HAwOTM4N1R2eli5Mq03uhYC6d20uhRHTZGJJ6
+	mH/7BGrVpnweSpTsZBaoL9OeyrDaSBKjcfPnFcfn8Q5VhGGLgvSxPAroKLrwG/SPOXWJ6pDFIpo
+	/7qyfa2aR4u8TlKqkbhLHM6Cez1Fr1OFpbnoq7vHxxOH+8Tb009hlGR5LhXOBIq00bydHJsMJ2Z
+	3zXMDC6bkD41Lv+vlQ0KC5ZUICEnqob1gSKPQ9J2s6QfCfSvVnRRirm6opX4h9gzcvh0jASZrJF
+	S9oKIPNiCioWsNpeSEekdrIA680uFeuLfrhjkUQg5qlTBA/wuZBJ8qZfkFsP1JnYtBeHPyw==
+X-Google-Smtp-Source: AGHT+IEu4ISs/3Zx+zO0qMNXn+InIequcG2BrEwlpQjYK4nng9gbF8T2Q1dyWzpa23EPsiCBGAeVBw==
+X-Received: by 2002:a17:903:41cc:b0:295:7b85:2f5f with SMTP id d9443c01a7336-2957b8530eemr103346575ad.31.1762251879495;
+        Tue, 04 Nov 2025 02:24:39 -0800 (PST)
+Received: from dw-tp ([171.76.85.117])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2960199832asm21393245ad.26.2025.11.04.02.24.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 02:24:38 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Baoquan he <bhe@redhat.com>, Jiri Bohac <jbohac@suse.cz>, Hari Bathini <hbathini@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Shivang Upadhyay <shivangu@linux.ibm.com>, kexec@lists.infradead.org
+Subject: Re: [PATCH v5] powerpc/kdump: Add support for crashkernel CMA reservation
+In-Reply-To: <7957bd55-5bda-406f-aab3-64e0620bd452@linux.ibm.com>
+Date: Tue, 04 Nov 2025 15:48:48 +0530
+Message-ID: <87wm463xtj.ritesh.list@gmail.com>
+References: <20251103043747.1298065-1-sourabhjain@linux.ibm.com> <87y0on4ebh.ritesh.list@gmail.com> <7957bd55-5bda-406f-aab3-64e0620bd452@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,389 +91,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] powerpc/kdump: Add support for crashkernel CMA
- reservation
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org
-Cc: Baoquan he <bhe@redhat.com>, Jiri Bohac <jbohac@suse.cz>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>, kexec@lists.infradead.org
-References: <20251103043747.1298065-1-sourabhjain@linux.ibm.com>
- <87y0on4ebh.ritesh.list@gmail.com>
- <7957bd55-5bda-406f-aab3-64e0620bd452@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <7957bd55-5bda-406f-aab3-64e0620bd452@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: znfR5Pxw2vfiWQeSSFjfjk4DyFZh13ST
-X-Proofpoint-ORIG-GUID: ZAldhUSWiLiHIC2XZw6kiAV0OnldeOJr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX1tTxv6CRqIVZ
- t1nf4gzlw3xmB3Qu9nbGP9yY/O4zB4ZRhxpGBeRAM+WO8DHf2mtCfstgoaxXBouCw9KrbE3AggA
- 2BxwnWgZfY3VElKrdBBlH1eNE7BPf+QfxqWgzW/JQz6NZADZ91YunuxyJYgLRM97wB9S563LZBI
- 4ZigFP6CWhuhsoBjChUZpIOUD/g8M7kyUHKWG7NGB0zfV8kiEswi7oN5Ey07RMyrTDUM1iuGgkl
- +hYO3GakcwhAyYjIgFdMr+guD8oCFj2GcUtGnO6oAcmfKqCRzcDTTUCqiwtiaKQ9q2hxYr6JUeh
- F1XlkKpp0mh5JwzrNXol/ZSRnL/poAdYW8kWF3BPyc3bd4LHNKMLDNv5tSWyV8TE0dFY69uZY8i
- MRGRGkeeqq0LQK4ofES1ubFqlSg3pg==
-X-Authority-Analysis: v=2.4 cv=H8HWAuYi c=1 sm=1 tr=0 ts=6909c8b6 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=pGLkceISAAAA:8 a=JfrnYn6hAAAA:8
- a=jZA0fL0DCMBm6u-czYMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=1CNFftbPRP8L7MoqJWF3:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-03_06,2025-11-03_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501 adultscore=0
- impostorscore=0 clxscore=1015 bulkscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010021
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+
+Sourabh Jain <sourabhjain@linux.ibm.com> writes:
 
 
-
-On 04/11/25 10:48, Sourabh Jain wrote:
->
->
-> On 03/11/25 15:40, Ritesh Harjani (IBM) wrote:
->> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
->>
->>> Commit 35c18f2933c5 ("Add a new optional ",cma" suffix to the
->>> crashkernel= command line option") and commit ab475510e042 ("kdump:
->>> implement reserve_crashkernel_cma") added CMA support for kdump
->>> crashkernel reservation.
->>>
->>> Extend crashkernel CMA reservation support to powerpc.
->>>
->>> The following changes are made to enable CMA reservation on powerpc:
->>>
->>> - Parse and obtain the CMA reservation size along with other 
->>> crashkernel
->>>    parameters
->>> - Call reserve_crashkernel_cma() to allocate the CMA region for kdump
->>> - Include the CMA-reserved ranges in the usable memory ranges for the
->>>    kdump kernel to use.
->>> - Exclude the CMA-reserved ranges from the crash kernel memory to
->>>    prevent them from being exported through /proc/vmcore.
->>>
->>> With the introduction of the CMA crashkernel regions,
->>> crash_exclude_mem_range() needs to be called multiple times to exclude
->>> both crashk_res and crashk_cma_ranges from the crash memory ranges. To
->>> avoid repetitive logic for validating mem_ranges size and handling
->>> reallocation when required, this functionality is moved to a new 
->>> wrapper
->>> function crash_exclude_mem_range_guarded().
->>>
->>> To ensure proper CMA reservation, reserve_crashkernel_cma() is called
->>> after pageblock_order is initialized.
->>>
->>> Update kernel-parameters.txt to document CMA support for crashkernel on
->>> powerpc architecture.
->>>
->>> Cc: Baoquan he <bhe@redhat.com>
->>> Cc: Jiri Bohac <jbohac@suse.cz>
->>> Cc: Hari Bathini <hbathini@linux.ibm.com>
->>> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
->>> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->>> Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
->>> Cc: kexec@lists.infradead.org
->>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->>> ---
->>> Changlog:
->>>
->>> v3 -> v4
->>>   - Removed repeated initialization to tmem in
->>>     crash_exclude_mem_range_guarded()
->>>   - Call crash_exclude_mem_range() with right crashk ranges
->>>
->>> v4 -> v5:
->>>   - Document CMA-based crashkernel support for ppc64 in 
->>> kernel-parameters.txt
->>> ---
->>>   .../admin-guide/kernel-parameters.txt         |  2 +-
->>>   arch/powerpc/include/asm/kexec.h              |  2 +
->>>   arch/powerpc/kernel/setup-common.c            |  4 +-
->>>   arch/powerpc/kexec/core.c                     | 10 ++++-
->>>   arch/powerpc/kexec/ranges.c                   | 43 
->>> ++++++++++++++-----
->>>   5 files changed, 47 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/Documentation/admin-guide/kernel-parameters.txt 
->>> b/Documentation/admin-guide/kernel-parameters.txt
->>> index 6c42061ca20e..0f386b546cec 100644
->>> --- a/Documentation/admin-guide/kernel-parameters.txt
->>> +++ b/Documentation/admin-guide/kernel-parameters.txt
->>> @@ -1013,7 +1013,7 @@
->>>               It will be ignored when crashkernel=X,high is not used
->>>               or memory reserved is below 4G.
->>>       crashkernel=size[KMG],cma
->>> -            [KNL, X86] Reserve additional crash kernel memory from
->>> +            [KNL, X86, ppc64] Reserve additional crash kernel 
->>> memory from
->> Shouldn't this be PPC and not ppc64?
->>
->> If I see the crash_dump support...
->>
->> config ARCH_SUPPORTS_CRASH_DUMP
->>     def_bool PPC64 || PPC_BOOK3S_32 || PPC_85xx || (44x && !SMP)
->>
->> The changes below aren't specific to ppc64 correct?
->
-> The thing is this feature is only supported with KEXEC_FILE and which 
-> only supported on PPC64:
->
-> config ARCH_SUPPORTS_KEXEC_FILE
->     def_bool PPC64
->
-> Hence I kept it as ppc64.
->
-> I think I should update that in the commit message.
->
-> Also do you think is it good to restrict this feature to KEXEC_FILE?
-
-Putting this under KEXEC_FILE may not help much because KEXEC_FILE is 
-enabled
-by default in most configurations. Once it is enabled, the CMA 
-reservation will
-happen regardless of which system call is used to load the kdump kernel
-(kexec_load or kexec_file_load).
-
-However, not restricting this feature to KEXEC_FILE will allow the kexec 
-tool to
-independently add support for this feature in the future for the kexec_load
-system call.
-
-With that logic, I think if we do not restrict this feature to 
-KEXEC_FILE, the support
-will be available for ppc and not limited to ppc64.
-
-
-
->
->>
->>>               CMA. This reservation is usable by the first system's
->>>               userspace memory and kernel movable allocations (memory
->>>               balloon, zswap). Pages allocated from this memory range
->>> diff --git a/arch/powerpc/include/asm/kexec.h 
->>> b/arch/powerpc/include/asm/kexec.h
->>> index 4bbf9f699aaa..bd4a6c42a5f3 100644
->>> --- a/arch/powerpc/include/asm/kexec.h
->>> +++ b/arch/powerpc/include/asm/kexec.h
->>> @@ -115,9 +115,11 @@ int setup_new_fdt_ppc64(const struct kimage 
->>> *image, void *fdt, struct crash_mem
->>>   #ifdef CONFIG_CRASH_RESERVE
->>>   int __init overlaps_crashkernel(unsigned long start, unsigned long 
->>> size);
->>>   extern void arch_reserve_crashkernel(void);
->>> +extern void kdump_cma_reserve(void);
->>>   #else
->>>   static inline void arch_reserve_crashkernel(void) {}
->>>   static inline int overlaps_crashkernel(unsigned long start, 
->>> unsigned long size) { return 0; }
->>> +static inline void kdump_cma_reserve(void) { }
->>>   #endif
->>>     #if defined(CONFIG_CRASH_DUMP)
->>> diff --git a/arch/powerpc/kernel/setup-common.c 
->>> b/arch/powerpc/kernel/setup-common.c
->>> index 68d47c53876c..c8c42b419742 100644
->>> --- a/arch/powerpc/kernel/setup-common.c
->>> +++ b/arch/powerpc/kernel/setup-common.c
->>> @@ -35,6 +35,7 @@
->>>   #include <linux/of_irq.h>
->>>   #include <linux/hugetlb.h>
->>>   #include <linux/pgtable.h>
->>> +#include <asm/kexec.h>
->>>   #include <asm/io.h>
->>>   #include <asm/paca.h>
->>>   #include <asm/processor.h>
->>> @@ -995,11 +996,12 @@ void __init setup_arch(char **cmdline_p)
->>>       initmem_init();
->>>         /*
->>> -     * Reserve large chunks of memory for use by CMA for fadump, 
->>> KVM and
->>> +     * Reserve large chunks of memory for use by CMA for kdump, 
->>> fadump, KVM and
->>>        * hugetlb. These must be called after initmem_init(), so that
->>>        * pageblock_order is initialised.
->>>        */
->>>       fadump_cma_init();
->>> +    kdump_cma_reserve();
->>>       kvm_cma_reserve();
->>>       gigantic_hugetlb_cma_reserve();
->>>   diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
->>> index d1a2d755381c..25744737eff5 100644
->>> --- a/arch/powerpc/kexec/core.c
->>> +++ b/arch/powerpc/kexec/core.c
->>> @@ -33,6 +33,8 @@ void machine_kexec_cleanup(struct kimage *image)
->>>   {
->>>   }
->>>   +unsigned long long cma_size;
->>> +
->> nit:
->> Since this is a gloabal powerpc variable you are defining, then can we
->> keep it's name to crashk_cma_size?
->
-> Yeah make sense. I will update the variable name.
->
->
->>
->>>   /*
->>>    * Do not allocate memory (or fail in any way) in machine_kexec().
->>>    * We are past the point of no return, committed to rebooting now.
->>> @@ -110,7 +112,7 @@ void __init arch_reserve_crashkernel(void)
->>>         /* use common parsing */
->>>       ret = parse_crashkernel(boot_command_line, total_mem_sz, 
->>> &crash_size,
->>> -                &crash_base, NULL, NULL, NULL);
->>> +                &crash_base, NULL, &cma_size, NULL);
->>>         if (ret)
->>>           return;
->>> @@ -130,6 +132,12 @@ void __init arch_reserve_crashkernel(void)
->>>       reserve_crashkernel_generic(crash_size, crash_base, 0, false);
->>>   }
->>>   +void __init kdump_cma_reserve(void)
->>> +{
->>> +    if (cma_size)
->>> +        reserve_crashkernel_cma(cma_size);
->>> +}
->>> +
->> nit:
->> cma_size is already checked for null within reserve_crashkernel_cma(),
->> so we don't really need kdump_cma_reserve() function call as such.
->>
->> Also kdump_cma_reserve() only make sense with #ifdef CRASHKERNEL_CMA..
->> so instead do you think we can directly call 
->> reserve_crashkernel_cma(cma_size)?
->
-> I think the above kdump_cma_reserve() definition should come under 
-> CONFIG_CRASH_RESERVE
-> because the way it is declared in arch/powerpc/include/asm/kexec.h.
->
 > I would like to keep kdump_cma_reserve() as is it because of two reasons:
 >
 > - It keeps setup_arch() free from kdump #ifdefs
-> - In case if we want to add some condition on this reservation it 
-> would straight forward.
+
+Not really.
+
+Instead of kdump_cma_reserve(crashk_cma_size), one could call
+
+reserve_crashkernel_cma(crashk_cma_size) directly in setup_arch().
+
+> - In case if we want to add some condition on this reservation it would 
+> straight forward.
 >
-> So lets keep kdump_cma_reserve as is, unless you have strong opinion 
-> on not to.
+
+Make sense.
+
+> So lets keep kdump_cma_reserve as is, unless you have strong opinion on 
+> not to.
 >
->>>   int __init overlaps_crashkernel(unsigned long start, unsigned long 
->>> size)
->>>   {
->>>       return (start + size) > crashk_res.start && start <= 
->>> crashk_res.end;
->>> diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
->>> index 3702b0bdab14..3bd27c38726b 100644
->>> --- a/arch/powerpc/kexec/ranges.c
->>> +++ b/arch/powerpc/kexec/ranges.c
->>> @@ -515,7 +515,7 @@ int get_exclude_memory_ranges(struct crash_mem 
->>> **mem_ranges)
->>>    */
->>>   int get_usable_memory_ranges(struct crash_mem **mem_ranges)
->>>   {
->>> -    int ret;
->>> +    int ret, i;
->>>         /*
->>>        * Early boot failure observed on guests when low memory 
->>> (first memory
->>> @@ -528,6 +528,13 @@ int get_usable_memory_ranges(struct crash_mem 
->>> **mem_ranges)
->>>       if (ret)
->>>           goto out;
->>>   +    for (i = 0; i < crashk_cma_cnt; i++) {
->>> +        ret = add_mem_range(mem_ranges, crashk_cma_ranges[i].start,
->>> +                    crashk_cma_ranges[i].end - 
->>> crashk_cma_ranges[i].start + 1);
->>> +        if (ret)
->>> +            goto out;
->>> +    }
->>> +
->>>       ret = add_rtas_mem_range(mem_ranges);
->>>       if (ret)
->>>           goto out;
->>> @@ -546,6 +553,22 @@ int get_usable_memory_ranges(struct crash_mem 
->>> **mem_ranges)
->>>   #endif /* CONFIG_KEXEC_FILE */
->>>     #ifdef CONFIG_CRASH_DUMP
->>> +static int crash_exclude_mem_range_guarded(struct crash_mem 
->>> **mem_ranges,
->>> +                       unsigned long long mstart,
->>> +                       unsigned long long mend)
->>> +{
->>> +    struct crash_mem *tmem = *mem_ranges;
->>> +
->>> +    /* Reallocate memory ranges if there is no space to split 
->>> ranges */
->>> +    if (tmem && (tmem->nr_ranges == tmem->max_nr_ranges)) {
->>> +        tmem = realloc_mem_ranges(mem_ranges);
->>> +        if (!tmem)
->>> +            return -ENOMEM;
->>> +    }
->>> +
->>> +    return crash_exclude_mem_range(tmem, mstart, mend);
->>> +}
->>> +
->>>   /**
->>>    * get_crash_memory_ranges - Get crash memory ranges. This list 
->>> includes
->>>    *                           first/crashing kernel's memory 
->>> regions that
->>> @@ -557,7 +580,6 @@ int get_usable_memory_ranges(struct crash_mem 
->>> **mem_ranges)
->>>   int get_crash_memory_ranges(struct crash_mem **mem_ranges)
->>>   {
->>>       phys_addr_t base, end;
->>> -    struct crash_mem *tmem;
->>>       u64 i;
->>>       int ret;
->>>   @@ -582,19 +604,18 @@ int get_crash_memory_ranges(struct crash_mem 
->>> **mem_ranges)
->>>               sort_memory_ranges(*mem_ranges, true);
->>>       }
->>>   -    /* Reallocate memory ranges if there is no space to split 
->>> ranges */
->>> -    tmem = *mem_ranges;
->>> -    if (tmem && (tmem->nr_ranges == tmem->max_nr_ranges)) {
->>> -        tmem = realloc_mem_ranges(mem_ranges);
->>> -        if (!tmem)
->>> -            goto out;
->>> -    }
->>> -
->>>       /* Exclude crashkernel region */
->>> -    ret = crash_exclude_mem_range(tmem, crashk_res.start, 
->>> crashk_res.end);
->>> +    ret = crash_exclude_mem_range_guarded(mem_ranges, 
->>> crashk_res.start, crashk_res.end);
->>>       if (ret)
->>>           goto out;
->>>   +    for (i = 0; i < crashk_cma_cnt; ++i) {
->>> +        ret = crash_exclude_mem_range_guarded(mem_ranges, 
->>> crashk_cma_ranges[i].start,
->>> +                          crashk_cma_ranges[i].end);
->>> +        if (ret)
->>> +            goto out;
->>> +    }
->>> +
->>>       /*
->>>        * FIXME: For now, stay in parity with kexec-tools but if 
->>> RTAS/OPAL
->>>        *        regions are exported to save their context at the 
->>> time of
->>> -- 
->>> 2.51.0
->
+
+No strong opinion, as I said it was a minor nit. Feel free to keep the
+function kdump_cma_reserve() as is then.
+
+-ritesh
 
 
