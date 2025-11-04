@@ -1,78 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-13728-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13730-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D81C3089B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 11:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4FDC30A27
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 12:01:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d14cN5dZfz3bfM;
-	Tue,  4 Nov 2025 21:36:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d159f6kZgz3bfM;
+	Tue,  4 Nov 2025 22:01:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762252564;
-	cv=none; b=KxkcEvBRWxbIXmywubdR5zWGmvxyH8fv+aLA7fZ/FYpEtgs+e1h2HBCSTgocOpHvnYb2YTsXLtyU5ahxo229DanPEzgeLIxKAZ6j1fLrpBTTnkzDznDBGGEvAislsT3pACAUWk8iBV+j4t45povevKC3uFZSie3SPUzK2y86Q3APqjzOeRVqk030wLZPJ/EVm6zlLMHJN7zrZQjsxioYzRnE0EuYy2OnJYZOMRbXeyHtDgjahK9Wd+MyaeNDk9u5weqgtw5VYrUWs9ps6ynyqN8iWVJJk6RTZ6nJTqnG4VTJPfkpWjzuDw4TbR+wifSEbrKrc3pIdMBULvIarNaozg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762254086;
+	cv=none; b=GIMkUHeiFTP5K1DCT2bOQdy04MA1Z0w/jd4JQi085eaJYhdm6B82YXoGdaSnDy+O3cmJTEfp0+SvQLAu1ax0ss6OeMQZFwZiW15SK8qFYW2OvG9NWItSKl2iTPx/OqRsFkgERfa9f2wG3CE1dzTXmo6XtioIBE/nYxuh+QqlutMVgnKCuDVk7Pz1CEMQ9Qf07OMkAZdOprj6YHXOEGkuAvgv/1us0FRwWp7xoUZzUhLBAeYrPjvINFBPAxgltNqdqDfA/9xtzeZ86TLClH//rBCpF9NVBcAppQGRO+2qQDUhq3Ni7EGKJ1yMkAfiJ3t51CCAOy4OUVmvGAvQLZAxGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762252564; c=relaxed/relaxed;
-	bh=OKuYcb6shyYNmq/q4FSadLSNFH9ZQUIXn8Mz9bXJS/k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YNHT25v+Gyfyf2SE5BbnmyhXjMP/5vz+itiDDhNZNn96/6NutJgQbqzBoOIZK2rVk9TcWYjeclWmDG1CbPOVmb0DsCIsjerGx2Zf397AB21XkdYRAF0UIhj41+J4CniTovIHsF5Pf4TlDNZg62X1f5ylWfJxus64TH4DAxBzrgqtCjCRsjrwZGm1BiATG8sJ2H4LIcj5x3yBVBfccHslpfdjHddrREEJ47JpkYJCcSM7B/5+VbIStnir6QA7vNoujgywbFF6Pn+OsA3iISgy4AhL2hKdgntseRQkEuMFtLBnUZEWEVC4HsDh8oFlg3Xatj/wADnLdrCMmL49qkay/A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NwHnhbSe; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1762254086; c=relaxed/relaxed;
+	bh=Ab6XclKIAeufIonZjTLz/qxdfnGFmorsfm6jfN5F/GU=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-version:Content-type; b=evEkCy9/XVzRX9vPuS3Bqq8ZOk02MVum/5OYCLwdCRbYrzeWyXF5apxB+E+a+Vp6suQ4a+OXBknq9oaa+mkyVzX+2kDKVaDroo3e7x49nySQBXMAamSmOnQH1NiFKoBqH5dh/8HFf4zyHOyGIu8lt6CnDcuIuaYtNahwkNyxDHXc9+eDl3kri1t4Eo/1I3oXLpbjaaDxKUUBekZcgHB7TRsBfzWcnmMklZ5MVTtp4zMfBIj/AQWtnViSwlP+yX1JiqUEqsZH5ImzxgH7qJ+ItOF1zyU0OzfUg8X8f/bV1oerPlscab5UEa63W5cA8rHzy7h9OENoS3A8bmutSgLtrg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=SXFTJZSl; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NwHnhbSe;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=SXFTJZSl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d14cL2fxzz2yjq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 21:36:01 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A4AWCMt009411;
-	Tue, 4 Nov 2025 10:35:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=OKuYcb
-	6shyYNmq/q4FSadLSNFH9ZQUIXn8Mz9bXJS/k=; b=NwHnhbSeKrptbF8QIglxV8
-	3oDA22GX/G7kawzdmavJSvy4QaLIIhrpM76cfPYyWzpLJNCZDtmd+uQ+792yVV1V
-	Ql90JP8SQFiMHvDpbQudbVcmXJupKprCuLTdzALPpNxBbPDnA53GrdN6Vy5Ouabv
-	gM9Y62eLJ5nhx+l1ryL3766L8f+t81+vFEpmZZiqTK1di0M5FLwzdJlg2VDirbBv
-	JM9BGIXWEse/LH8nZtYk/b1NU+5LxHXiSZ8D5mLV18P6wT5aUmXY8ygJ9molu3A0
-	XXssupX6dYwnhFYiFz3vLSxJdDDIFlqW3I/UnnNvVg7DrASGVFuqrsGe32KC8k1A
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59vubbw0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 10:35:51 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A4AUBsn012670;
-	Tue, 4 Nov 2025 10:35:51 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59vubbvu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 10:35:50 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A46xHfq021463;
-	Tue, 4 Nov 2025 10:35:50 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a5xrjjbkg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Nov 2025 10:35:49 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A4AZjN632375146
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Nov 2025 10:35:45 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8A8A320049;
-	Tue,  4 Nov 2025 10:35:45 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 667932004B;
-	Tue,  4 Nov 2025 10:35:43 +0000 (GMT)
-Received: from [9.109.204.116] (unknown [9.109.204.116])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  4 Nov 2025 10:35:43 +0000 (GMT)
-Message-ID: <722d72b5-cebf-48f2-8ad5-558ccd3c30f4@linux.ibm.com>
-Date: Tue, 4 Nov 2025 16:05:42 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d159d6bHmz304H
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 22:01:25 +1100 (AEDT)
+Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-3402942e79cso7497914a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Nov 2025 03:01:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762254084; x=1762858884; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ab6XclKIAeufIonZjTLz/qxdfnGFmorsfm6jfN5F/GU=;
+        b=SXFTJZSlss6zCcOIHrJA4ZNU7JZ8KBH2szbXH4vktqxLdqvO03llthnbAy6uwabWPP
+         c1hjZ6UbA+3b3kI+TQ1H7Cs5QHkQDQmaZKWU1YjzgKHBVqf4T+QL2DRhVqpXy5umjn7D
+         wLYOuCAEAFiaT401q2XIfPyqE68Af/q12xTDRFZlPHSZyDapP79qyJL/+Y7fw1KeMWR5
+         gfRGL/LBdGs0dHQdDBeS0+VrRHsjJ4wNqQRM/r6R9ITlsL1oVC6G+WDEfHJX2cVE1+A6
+         vtymf2vMzRLYziGQ5kIGEf5nXBf8FdQ1NwGxl1ArBEvwnwEM/ur5QZ9+8xAwlbx3e9PV
+         7C6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762254084; x=1762858884;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ab6XclKIAeufIonZjTLz/qxdfnGFmorsfm6jfN5F/GU=;
+        b=xFBljcI5pQHc0AE1vweeVuE0sZxohixQy8lMP+EkX3uH0TkCDXdLweo1BweeuONslg
+         xhve3cPmN6SEdStoDzJe6hnO6GOHtg1ehNBhvFnzJQ0dPUPDCH2+RQ2TaetE7TilKUhr
+         Lw5zF9vZQwhYIDQDSIMy6d9TCL97zOxZOhYw1nfg07F72xJb4/eWDMhF93rHB57isH+R
+         N322n0ZhMCSJMlBqQ5CWAfcCDzxdJLdtCXbrHZiV57J9Bo0nCR1H13yQZRGnDVGW/7RO
+         BKnzfXP92UE9m+WbYHzOrmOHt6NzUdAIb2DTe4F1chBaB5BC1J2h0Sdgz4jf2Yi1Q35D
+         GPLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXa893XVi1jnzbA046MV3JUgT2HQlcuxu0Wq1Hb98rnQaeRSbkD0WJrYED6R50rSy4g6HLbNVy9SGoUHQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwrS5oJ1REwZ8i6re1FAyxdMdNus3bssLbTUu1trSn5WtTAC2jT
+	1CV8lkWPR7nuLwzxv9YqfPSLTvmCvFq1cmTJSFi2ll++k9aMAGg2XTujwRkzoZyY
+X-Gm-Gg: ASbGncsq6YAFcg5yvmEbgvZrxBMLj/Phf/XhJRKuvLiMDP/8JJVPT5rsYxW8DvYbzsT
+	pJ7Zq2FLC2UeYRuBL5Z44pfYPtrpqDs49T8jd3Jv6RRuRugfZ+Cti0kofN+SdYD0jpaSJx9RV5i
+	8gskQ3lWiDv2DO7OIx3WvUJnIw2/r39H2lOT/5GS53+JanA5Qbb4mSp5DfSw1tLCXWQpoLiDEJc
+	+ZyZneEPyEDwT5GWnZN1wekXubumDdoDtu/dKyxNXr5I62hTDSUaarKACHXJNx5uSm3pSHLIMRF
+	mR06eWrYnQ/yFpI4s/ZQ/kx2qSQf+qzQStyaCDbGwKoESTDhLgwMs0T2WjV5XCOSdust9wbp9JR
+	C7EASl5NZItaV2tL4/tSp3/zIWWg9tSIHGIHYXNCIh++STByhhqkVnn6iV0AXCjWCXkUezQ==
+X-Google-Smtp-Source: AGHT+IFhUFljNIpr0jYIPpg9DdgdyO4OfzVThDxcWuiPhHq2YUsCvhITskWN98lDONqYdPsc2uu0Gg==
+X-Received: by 2002:a17:90b:57e5:b0:341:3ea2:b615 with SMTP id 98e67ed59e1d1-3413ea2c334mr7908860a91.15.1762254083595;
+        Tue, 04 Nov 2025 03:01:23 -0800 (PST)
+Received: from dw-tp ([171.76.85.117])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34159a15b6fsm4191556a91.18.2025.11.04.03.01.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 03:01:22 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Baoquan he <bhe@redhat.com>, Jiri Bohac <jbohac@suse.cz>, Hari Bathini <hbathini@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Shivang Upadhyay <shivangu@linux.ibm.com>, kexec@lists.infradead.org
+Subject: Re: [PATCH v5] powerpc/kdump: Add support for crashkernel CMA reservation
+In-Reply-To: <722d72b5-cebf-48f2-8ad5-558ccd3c30f4@linux.ibm.com>
+Date: Tue, 04 Nov 2025 16:21:41 +0530
+Message-ID: <87tsza3waq.ritesh.list@gmail.com>
+References: <20251103043747.1298065-1-sourabhjain@linux.ibm.com> <87y0on4ebh.ritesh.list@gmail.com> <7957bd55-5bda-406f-aab3-64e0620bd452@linux.ibm.com> <87wm463xtj.ritesh.list@gmail.com> <722d72b5-cebf-48f2-8ad5-558ccd3c30f4@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,93 +90,81 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] powerpc/kdump: Add support for crashkernel CMA
- reservation
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org
-Cc: Baoquan he <bhe@redhat.com>, Jiri Bohac <jbohac@suse.cz>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>, kexec@lists.infradead.org
-References: <20251103043747.1298065-1-sourabhjain@linux.ibm.com>
- <87y0on4ebh.ritesh.list@gmail.com>
- <7957bd55-5bda-406f-aab3-64e0620bd452@linux.ibm.com>
- <87wm463xtj.ritesh.list@gmail.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <87wm463xtj.ritesh.list@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: O4jDM6axMnUAqQJGEBhWa7jqEkUqKIZ6
-X-Proofpoint-GUID: PZejwZBFQ9hmko76EjeixkrZr7eCnrqW
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfXyTfs0HIG/Bww
- 2rGtj/jsLUiXDmA7ZsGR69mwXCNw1ANZs3shuUAamknaGtlhS+mpuIdt1indDnNzUUDyNsRBFhr
- IMWkkxoZO8x5k8xLgnYcvM15mNg+TMEsl7DM+u/assHxxy2u0e4CgNwuCRndaccJ/opKsV+vI1/
- W8fRrDW7t/MX3Rq334qTloVZYGFRWsAjHJmSP6k0JEj+8o1uzDdUTurtM1wnVqhrhYDk08LfKko
- Ly00aq1/rfjyqZZ9GEE6JtBKZGBXHun7gzp6o/4rMC+2wCShedbVaZaA8xTsvRM+EFgsqU2I/zC
- PhtxyrPMAxHTBzk1ZPg6pk8uIuGrj7uXQxAHAZROpYOZPsrEsadeRLkeO2jqIdfDya6jVluOg8j
- BYTsJlzpiATjzueb6bzFQcHr2tOGeA==
-X-Authority-Analysis: v=2.4 cv=U6qfzOru c=1 sm=1 tr=0 ts=6909d707 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=RPonDWm3pCHkDWdaMWMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-03_06,2025-11-03_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 impostorscore=0 spamscore=0 phishscore=0
- clxscore=1015 malwarescore=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511010021
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Sourabh Jain <sourabhjain@linux.ibm.com> writes:
 
-
-On 04/11/25 15:48, Ritesh Harjani (IBM) wrote:
-> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
->
->
->> I would like to keep kdump_cma_reserve() as is it because of two reasons:
+> On 04/11/25 15:48, Ritesh Harjani (IBM) wrote:
+>> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
 >>
->> - It keeps setup_arch() free from kdump #ifdefs
-> Not really.
->
-> Instead of kdump_cma_reserve(crashk_cma_size), one could call
->
-> reserve_crashkernel_cma(crashk_cma_size) directly in setup_arch().
-
-
-reserve_crashkernel_cma() is not available unless the kernel is built 
-with CONFIG_CRASH_RESERVE.
-So, wouldn’t calling reserve_crashkernel_cma() directly from 
-setup_arch() lead to a build failure? Or
-am I missing something?
-
-
-
->
->> - In case if we want to add some condition on this reservation it would
->> straight forward.
 >>
-> Make sense.
->
->> So lets keep kdump_cma_reserve as is, unless you have strong opinion on
->> not to.
+>>> I would like to keep kdump_cma_reserve() as is it because of two reasons:
+>>>
+>>> - It keeps setup_arch() free from kdump #ifdefs
+>> Not really.
 >>
-> No strong opinion, as I said it was a minor nit. Feel free to keep the
-> function kdump_cma_reserve() as is then.
+>> Instead of kdump_cma_reserve(crashk_cma_size), one could call
+>>
+>> reserve_crashkernel_cma(crashk_cma_size) directly in setup_arch().
 >
-> -ritesh
+>
+> reserve_crashkernel_cma() is not available unless the kernel is built 
+> with CONFIG_CRASH_RESERVE.
+> So, wouldn’t calling reserve_crashkernel_cma() directly from 
+> setup_arch() lead to a build failure? Or
+> am I missing something?
 >
 
+OOps.. I was assuming the #else CRASHKERNEL_CMA definition should get
+called, but all of that logic itself is protected in
+CONFIG_CRASH_RESERVE :(
+
+Right to avoid #ifdef or IS_ENABLED in setup_arch..
+it's better to have kdump_cma_reserve()
+
+Thanks for pointing that out.
+
+
+<snip>
+obj-$(CONFIG_CRASH_RESERVE) += crash_reserve.o
+
+kernel/crash_reserve.c
+
+#ifdef CRASHKERNEL_CMA
+int crashk_cma_cnt;
+void __init reserve_crashkernel_cma(unsigned long long cma_size)
+{
+        ... 
+}
+#else /* CRASHKERNEL_CMA */
+void __init reserve_crashkernel_cma(unsigned long long cma_size)
+{
+	if (cma_size)
+		pr_warn("crashkernel CMA reservation not supported\n");
+}
+#endif
+
+-ritesh
+
+
+>>
+>>> - In case if we want to add some condition on this reservation it would
+>>> straight forward.
+>>>
+>> Make sense.
+>>
+>>> So lets keep kdump_cma_reserve as is, unless you have strong opinion on
+>>> not to.
+>>>
+>> No strong opinion, as I said it was a minor nit. Feel free to keep the
+>> function kdump_cma_reserve() as is then.
+>>
+>> -ritesh
+>>
 
