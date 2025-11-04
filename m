@@ -1,92 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-13739-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13744-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA0AC31083
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 13:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 057E8C31788
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 15:20:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d17RW4wtcz3bfX;
-	Tue,  4 Nov 2025 23:43:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d19Zw3Srfz3bfN;
+	Wed,  5 Nov 2025 01:20:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:2"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762260215;
-	cv=none; b=dUxwgFkSHRZHp4plbiKcF14MrxgP72IPWyqY7xenMQq1mLrDjgfmXDarYJ0jbG2610CrKbKxatAACRI2a/QzO85tjC+aJLVXdS1muTUhuQq6GcDxw1Zp3kpPFurci6BLo6hNuoez/Y4m/DIxQyhIlupR13o042WfEg1fehn+EyTRwkBOfWm5G2RTOC7hwX6Tl3NHiQ+dYI5SCLMKpDCy6hAXVlwkVZDNvQzZOsaHNYKrnxysEQduWVjjDoi2UZflvg9Tejl5RQiKksmhhaz26me4yzAvrHViCCHL7XiYd2bdO/3tAoGXX1X2S5uaUC64Qfky1PdBRBk+DwCD3Ac6BQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762266008;
+	cv=none; b=VVr+GJ2kxeWXbFTQwdjwotwZYB2B+H3NKkRraXzG+JldOuHwKgu349ZUv6k7CqLlScZ2pYFbDNvjxJttczmOt+dWrKAD1Iiw4cA+YnoQt4/1G+umhyhwBYj1w/E+jrEdcrXLoJ0ufKXT4mDFSMQc6BzSVk+aX8mkSwsA8sqxz74CmonZzGpbUm3FggTjJ5CSwuqsyNIGR0yGTcnRgRrmPBDl71qEFGCSI0q2J/gIiYGGfzWkY5mSUzlC0ZUw/EFuORsx5WuKaOWb6QzdCxTsNbMYDZPj0HnPM9L7pAL+xZSdo4Xv7JXQKFBXtFrhm3z0x8DF/xZY+TPgwmN4ggH8Tw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762260215; c=relaxed/relaxed;
-	bh=seJoJrRxVzIiiIJntuQlp8cn06xUkhipNZWVIEq3udo=;
+	t=1762266008; c=relaxed/relaxed;
+	bh=BmyOe5n7LhxjQHPirkxcZ4HFpxOXYzn2LzeHzIejkEk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KUBAOg2DusQOrnL65ru0p0zPCoHEKMin+LndazopYNgBGSAjyXYgfwAFlIVzpZ9q0pNcSnuMDx9LeCecjWOQ9L503TkbqFKq6GYPePRhZMwjUrqZiQrj8QghidxeyezMOhSzfTflTbij15BjxELiNGZp5b8IL1evbUkzEwvtrlIVNKPJdPFCM+gCdWKTwxmM3nBx47VYnDkgUjyo9hj4eGRUKOiJQNYXMGk7EHPEYcPNwVwpyeZgNCg3tm1n6sYNptCRIlOPLYWproqinZV7n4+yiPEPRl3CsfDa8roZghCDoXyRfYB7AVKk/rfIx6mTrZQUZe5wnBCmXLD5dn38/w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=oFsh3x5L; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=si81+G+O; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=oFsh3x5L; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=si81+G+O; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=oFsh3x5L;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=si81+G+O;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=oFsh3x5L;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=si81+G+O;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d17RV51Ktz3bf3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 23:43:34 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0DB001F385;
-	Tue,  4 Nov 2025 12:43:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762260207; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=seJoJrRxVzIiiIJntuQlp8cn06xUkhipNZWVIEq3udo=;
-	b=oFsh3x5LgkyLYZtrfs62QbMWrBdBRto2vHvwJKqWN2Iew/JEp+y8/ss2TRF+TPcxSPXqiy
-	jfEC2FXCK8snIbtzLWPyoxArzQCx+FUdEFVYXPMpuaN+Xqqb4nVcmNeQhrNpM8A5tA/Vga
-	dsWKiFDij9EC8vQKf4Zgwf+VPuDUJdE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762260207;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=seJoJrRxVzIiiIJntuQlp8cn06xUkhipNZWVIEq3udo=;
-	b=si81+G+OaBwJt12Qqc2HvHW/b87uIQqwJkqFTFOD4bmb2FbU+yAKv2EfczeUjoeDZbOGcj
-	MlP8VsAQTAoSB2CA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762260207; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=seJoJrRxVzIiiIJntuQlp8cn06xUkhipNZWVIEq3udo=;
-	b=oFsh3x5LgkyLYZtrfs62QbMWrBdBRto2vHvwJKqWN2Iew/JEp+y8/ss2TRF+TPcxSPXqiy
-	jfEC2FXCK8snIbtzLWPyoxArzQCx+FUdEFVYXPMpuaN+Xqqb4nVcmNeQhrNpM8A5tA/Vga
-	dsWKiFDij9EC8vQKf4Zgwf+VPuDUJdE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762260207;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=seJoJrRxVzIiiIJntuQlp8cn06xUkhipNZWVIEq3udo=;
-	b=si81+G+OaBwJt12Qqc2HvHW/b87uIQqwJkqFTFOD4bmb2FbU+yAKv2EfczeUjoeDZbOGcj
-	MlP8VsAQTAoSB2CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C07D4139A9;
-	Tue,  4 Nov 2025 12:43:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TBPNLe70CWlXYQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 04 Nov 2025 12:43:26 +0000
-Message-ID: <c1aecfba-fa12-4572-885d-925e9afa1494@suse.de>
-Date: Tue, 4 Nov 2025 13:43:26 +0100
+	 In-Reply-To:Content-Type; b=fhwg/9yfctnn21BEMq400DOO1SL5fPWFFT/enGDDjS5QaVwrLvfkLJVnjbE/zcARk5QqHwq6C+wrt9hl5zaKcWCGJ+bSX9W07NmoAC6vT7ssHWj3L7P5SZI5PHTCdyF0ddg+Zas6L9EsFjI/LyoE5a1RZueTL7h+B1YeJnhTvBFXZ6AexEzqe/n8RFygA6EOKcCgXvA93GP1THyizAZ8Tgd4H+eH4EClsQQUWfDDUWyBkxoLTsF/lymzQdf3Q0RFWXrZokpwOonqlFCCDS0OwOovxHEmaQVH6NSP/JhXC/rGaWZI5vbKurySdNIgoLWAFWYQ8OnevXuDHK9h7eNLmA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d19Zv3d0Cz3bf3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 01:20:05 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d0z9m0gsPz9sSb;
+	Tue,  4 Nov 2025 07:31:08 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id tzBUMEXuRcrz; Tue,  4 Nov 2025 07:31:07 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d0z9l6gDWz9sSZ;
+	Tue,  4 Nov 2025 07:31:07 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id CCC188B76C;
+	Tue,  4 Nov 2025 07:31:07 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id GoDVNgciAAnR; Tue,  4 Nov 2025 07:31:07 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id EA3368B763;
+	Tue,  4 Nov 2025 07:31:05 +0100 (CET)
+Message-ID: <942a27d9-135a-4e59-8eff-a44c46f8bb76@csgroup.eu>
+Date: Tue, 4 Nov 2025 07:31:05 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,135 +58,157 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] macintosh/via-pmu-backlight: Include linux/of.h and
- uapi/linux/fb.h
-To: Nathan Chancellor <nathan@kernel.org>, Lee Jones <lee@kernel.org>,
- Daniel Thompson <danielt@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+Subject: Re: [patch V5 10/12] futex: Convert to get/put_user_inline()
+To: Thomas Gleixner <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Darren Hart
+ <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>,
+ kernel test robot <lkp@intel.com>, Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Simona Vetter <simona.vetter@ffwll.ch>, linuxppc-dev@lists.ozlabs.org,
- patches@lists.linux.dev
-References: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-0-d256858d86a6@kernel.org>
- <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-2-d256858d86a6@kernel.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-2-d256858d86a6@kernel.org>
+ linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Cooper <andrew.cooper3@citrix.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org
+References: <20251027083700.573016505@linutronix.de>
+ <20251027083745.736737934@linutronix.de>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20251027083745.736737934@linutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,ffwll.ch,lists.ozlabs.org,lists.linux.dev];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo,suse.com:url]
-X-Spam-Score: -4.30
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi
 
-Am 26.09.25 um 01:46 schrieb Nathan Chancellor:
-> After the recent removal of the fb.h include from backlight.h, which
-> transitively included of.h, there are several errors from
-> via-pmu-backlight.c (errors from bl_curve not being properly defined
-> omitted):
->
->    drivers/macintosh/via-pmu-backlight.c:22:20: error: 'FB_BACKLIGHT_LEVELS' undeclared here (not in a function)
->       22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
->          |                    ^~~~~~~~~~~~~~~~~~~
->    drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_get_level_brightness':
->    drivers/macintosh/via-pmu-backlight.c:63:38: error: 'FB_BACKLIGHT_MAX' undeclared (first use in this function); did you mean 'BACKLIGHT_RAW'?
->       63 |         pmulevel = bl_curve[level] * FB_BACKLIGHT_MAX / MAX_PMU_LEVEL;
->          |                                      ^~~~~~~~~~~~~~~~
->          |                                      BACKLIGHT_RAW
->    drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_init':
->    drivers/macintosh/via-pmu-backlight.c:144:17: error: implicit declaration of function 'of_machine_is_compatible' [-Wimplicit-function-declaration]
->      144 |                 of_machine_is_compatible("AAPL,3400/2400") ||
->          |                 ^~~~~~~~~~~~~~~~~~~~~~~~
->
-> FB_BACKLIGHT_{LEVELS,MAX} are available from the userspace API fb.h so
-> just include that avoid dragging in the full fb.h header unnecessarily.
-> Include linux/of.h for of_machine_is_compatible().
->
-> Fixes: 9f218f9bb9d2 ("backlight: Do not include <linux/fb.h> in header file")
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+
+Le 27/10/2025 à 09:44, Thomas Gleixner a écrit :
+> From: Thomas Gleixner <tglx@linutronix.de>
+> 
+> Replace the open coded implementation with the new get/put_user_inline()
+> helpers. This might be replaced by a regular get/put_user(), but that needs
+> a proper performance evaluation.
+> 
+> No functional change intended
+> 
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Darren Hart <dvhart@infradead.org>
+> Cc: Davidlohr Bueso <dave@stgolabs.net>
+> Cc: "André Almeida" <andrealmeid@igalia.com>
+
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
 > ---
->   drivers/macintosh/via-pmu-backlight.c | 2 ++
->   1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/macintosh/via-pmu-backlight.c b/drivers/macintosh/via-pmu-backlight.c
-> index 26bd9ed5e664..f7b7853b3802 100644
-> --- a/drivers/macintosh/via-pmu-backlight.c
-> +++ b/drivers/macintosh/via-pmu-backlight.c
-> @@ -11,7 +11,9 @@
->   #include <asm/ptrace.h>
->   #include <linux/adb.h>
->   #include <linux/backlight.h>
-> +#include <linux/of.h>
->   #include <linux/pmu.h>
-> +#include <uapi/linux/fb.h>
-
-Should this not be <linux/fb.h> ?
-
-Best regards
-Thomas
-
-
->   #include <asm/backlight.h>
+> V5: Rename again and remove the helpers
+> V4: Rename once moar
+> V3: Adapt to scope changes
+> V2: Convert to scoped variant
+> ---
+>   kernel/futex/core.c  |    4 +--
+>   kernel/futex/futex.h |   58 ++-------------------------------------------------
+>   2 files changed, 5 insertions(+), 57 deletions(-)
+> ---
+> --- a/kernel/futex/core.c
+> +++ b/kernel/futex/core.c
+> @@ -581,7 +581,7 @@ int get_futex_key(u32 __user *uaddr, uns
+>   	if (flags & FLAGS_NUMA) {
+>   		u32 __user *naddr = (void *)uaddr + size / 2;
 >   
->   #define MAX_PMU_LEVEL 0xFF
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
+> -		if (futex_get_value(&node, naddr))
+> +		if (get_user_inline(node, naddr))
+>   			return -EFAULT;
+>   
+>   		if ((node != FUTEX_NO_NODE) &&
+> @@ -601,7 +601,7 @@ int get_futex_key(u32 __user *uaddr, uns
+>   			node = numa_node_id();
+>   			node_updated = true;
+>   		}
+> -		if (node_updated && futex_put_value(node, naddr))
+> +		if (node_updated && put_user_inline(node, naddr))
+>   			return -EFAULT;
+>   	}
+>   
+> --- a/kernel/futex/futex.h
+> +++ b/kernel/futex/futex.h
+> @@ -281,63 +281,11 @@ static inline int futex_cmpxchg_value_lo
+>   	return ret;
+>   }
+>   
+> -/*
+> - * This does a plain atomic user space read, and the user pointer has
+> - * already been verified earlier by get_futex_key() to be both aligned
+> - * and actually in user space, just like futex_atomic_cmpxchg_inatomic().
+> - *
+> - * We still want to avoid any speculation, and while __get_user() is
+> - * the traditional model for this, it's actually slower than doing
+> - * this manually these days.
+> - *
+> - * We could just have a per-architecture special function for it,
+> - * the same way we do futex_atomic_cmpxchg_inatomic(), but rather
+> - * than force everybody to do that, write it out long-hand using
+> - * the low-level user-access infrastructure.
+> - *
+> - * This looks a bit overkill, but generally just results in a couple
+> - * of instructions.
+> - */
+> -static __always_inline int futex_get_value(u32 *dest, u32 __user *from)
+> -{
+> -	u32 val;
+> -
+> -	if (can_do_masked_user_access())
+> -		from = masked_user_access_begin(from);
+> -	else if (!user_read_access_begin(from, sizeof(*from)))
+> -		return -EFAULT;
+> -	unsafe_get_user(val, from, Efault);
+> -	user_read_access_end();
+> -	*dest = val;
+> -	return 0;
+> -Efault:
+> -	user_read_access_end();
+> -	return -EFAULT;
+> -}
+> -
+> -static __always_inline int futex_put_value(u32 val, u32 __user *to)
+> -{
+> -	if (can_do_masked_user_access())
+> -		to = masked_user_access_begin(to);
+> -	else if (!user_write_access_begin(to, sizeof(*to)))
+> -		return -EFAULT;
+> -	unsafe_put_user(val, to, Efault);
+> -	user_write_access_end();
+> -	return 0;
+> -Efault:
+> -	user_write_access_end();
+> -	return -EFAULT;
+> -}
+> -
+> +/* Read from user memory with pagefaults disabled */
+>   static inline int futex_get_value_locked(u32 *dest, u32 __user *from)
+>   {
+> -	int ret;
+> -
+> -	pagefault_disable();
+> -	ret = futex_get_value(dest, from);
+> -	pagefault_enable();
+> -
+> -	return ret;
+> +	guard(pagefault)();
+> +	return get_user_inline(*dest, from);
+>   }
+>   
+>   extern void __futex_unqueue(struct futex_q *q);
+> 
 
 
