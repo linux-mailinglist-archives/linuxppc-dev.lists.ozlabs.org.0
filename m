@@ -1,79 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-13718-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13719-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F563C2FC07
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 09:02:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7D2C30033
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 09:44:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d11Bk07GXz3bf4;
-	Tue,  4 Nov 2025 19:02:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d12893Cx3z3bfZ;
+	Tue,  4 Nov 2025 19:44:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762243325;
-	cv=none; b=UBnBaEmr4zwJoYYqTBM0tzWsv5UOcZjQC+FrZZ1iSrxq2gZ43rDV6O2MARxwlqOyuVpKKTYAbsJMNdAA424yIwXU4i5W3qZLFWIcQAw+nmkNx+7oHBJrI5cFYDltZuvUx6ZwoDi4ulHe0vv3RYUjQBXkvfzMf3qejiwIk/dOZdx0af7XoSag+9+4aC3tJxpEczmFw9A22t054MN3z/zEIppCyyjnyKkDQyMzaffjf5K4RlKwPJyCxIjuOFTubMpwtjkAUgM4j+DwMkHzOcjS/vmP5t1OpwWmvO/1MrWY2UGdgCoLfpD18CLVaEWZ6XLtC0+84c4D9+jVK3EIwgxd9A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=210.118.77.11
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762245897;
+	cv=none; b=JbQm1h0ZKCx2see45viOXc7CByv2HWi//+y54QaTzDKsKdkOGBwz0a2XYz0mOKxrUv7RGT2+wP0o1FT0eNm2nC0jNl3aIeZcnrEqlmSZDKRZuDN/kujcb3zN8nSajl9iD2RqlVmT4tOdw+hmUiSkccmLeBwECcTg80yu16cb7uguZruh8MQ3QbsI3s1tLG0sVJKkwXwqQ3yIz+CIOKf+D0fSwsEAq9Cb5jTSMl8tu6RvV+vrdW02O0HGdtEMHPYQHQTwTXcJodPqUO+Run0e8nZAAllSglukC6bqa4i565VvKd3nhiZxB8kJ4Cxt0S75y3JmkHxvKuieIcZV7S2elA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762243325; c=relaxed/relaxed;
-	bh=WxHg295CBRsqPu2lBIqw5Sn0fGrCLg/ElUlxqApeBLM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iLT8TFhW14+jWeibKOYBZmgAVECgKqbplJNA2JiqetVD0E+9pukBDFoa/LeZ4XZ4Kfde1mWsSEhD+7FishSTU9ASiiOQkYgoV3FRNG8zAW+Q1rNOr9tyAnqzBJHClXFpO50+Yj25q8ftvPp/jhovoYNcJWU2qLCI1yw6h2ciNBAjsupDcaalqCQD1qnfyAg7lbo3I9/OcF53GMS4kzpEe3CrJEW0woXTCDIbCeON2ZkcX11snWkKRS3Ur0BO3TDgVpZKWhRyO+Dn/YoYX7JfAz3JJR2rKEd071bR9xObICTCOkYSMWeujl4Pa+ur16uO3dL9lV8Pz0JcW4zSgcZOWA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Jgwl2Vop; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=t8JDRw+f; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1762245897; c=relaxed/relaxed;
+	bh=4Fu9AdCheOvxz3Im1FXmK3GvN5Xitn31VIJ6mONdECE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=gf3AwEc30zpBC/6DkgHDXa9VYhMPhC1P+nERnA/ykD859a1hIQbU3Cv8AfbkWkLYfo3RSJVDmYXVM8oCoMK1VY5M+WFjIFiTfUsGwobofqV+JMYYHdjSQw1GXChg4LBREP3nliumCi7lKxNc4zzQwvuy4ugc1bnZc+LehY99ksqzqcGGDiGMjHtR6EoX7i5GzHU0lCQQvlqPdHj+zKMgKIMfPm7xRclITJJ541yPAWP6EuS25wBXumlxLuMbbkR/8t5X8vN/eJ1xw6rpBhJtvcQrq8YAxWppSPjn/yiLVphhJ52LVBjxxwUj+ZNLqnvQiShE8HRYeE34BIjkG8S4Cw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com; dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=NIfzfLaK; dkim-atps=neutral; spf=pass (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org) smtp.mailfrom=samsung.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Jgwl2Vop;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=t8JDRw+f;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=NIfzfLaK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org)
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d11Bj0W1Pz2xQD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 19:02:04 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762243320;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WxHg295CBRsqPu2lBIqw5Sn0fGrCLg/ElUlxqApeBLM=;
-	b=Jgwl2VopvLhsHH+YYqRsae6+FKzyHIS0wgTmsM6zvXdnRYVO1Mp+3CjSgP12sRf79JdkIC
-	hx50TnrXAEfEN5ICnRweGj/sSAz5nUPqUFikzhoLJZNQyXaN5ymoCj4E2L3wBjx4OeG4vN
-	lcnERol2ohNQ5nXcU3OkM3UJOm2NJRST4BTxh1MoYrChOMqgAT9DLUj9eFzBzflyLWH87K
-	qqDczZQWcFWGe/iPVZhDUA34+WNIo7S9c1kgflcSpKmM0UaRdPJMv7RLP9TTDCTxs4B7XJ
-	XLq2JS1KXSF/YOo8ZUxjIZTH8AN+3Axixi4ToMHu6WXnTGvIMsd2QaBZquI9Fg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762243320;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WxHg295CBRsqPu2lBIqw5Sn0fGrCLg/ElUlxqApeBLM=;
-	b=t8JDRw+fUTFLMI+7oIYVrsnas628xW2/vuKmoPeHnnr/Dd9LlRlJTGnA4BulGKiXBQPkro
-	pOJgImdDLmiQK4AQ==
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
- Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra
- <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, Davidlohr
- Bueso <dave@stgolabs.net>, Andre Almeida <andrealmeid@igalia.com>, Andrew
- Morton <akpm@linux-foundation.org>, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Simon Horman
- <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Dave Hansen
- <dave.hansen@linux.intel.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Cc: linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 03/10] uaccess: Add
- masked_user_{read/write}_access_begin
-In-Reply-To: <01d89f24-8fca-4fc3-9f48-79e28b9663db@csgroup.eu>
-References: <cover.1760529207.git.christophe.leroy@csgroup.eu>
- <a4ef0a8e1659805c60fafc8d3b073ecd08117241.1760529207.git.christophe.leroy@csgroup.eu>
- <87bjlyyiii.ffs@tglx> <01d89f24-8fca-4fc3-9f48-79e28b9663db@csgroup.eu>
-Date: Tue, 04 Nov 2025 09:01:58 +0100
-Message-ID: <875xbqw7ih.ffs@tglx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d12865KPmz3bf8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 19:44:53 +1100 (AEDT)
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251104084442euoutp0102088d40135302607f87347b0dc37851~0wUsqg9XY0417804178euoutp01G;
+	Tue,  4 Nov 2025 08:44:42 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251104084442euoutp0102088d40135302607f87347b0dc37851~0wUsqg9XY0417804178euoutp01G
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1762245882;
+	bh=4Fu9AdCheOvxz3Im1FXmK3GvN5Xitn31VIJ6mONdECE=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=NIfzfLaKbrHZu0Gnes91/bNFpnUi+PCBujRxqfn1+x6PF4bWcGMTESoPuAVb8BCNe
+	 TtlBUOWDuOkNSnmVQ30DXStAE0ZC8Og/doIluRR7N6u64puk7uGLaCr147tEyKOLdV
+	 mk1n6uHGDW++q0sGM+SWQUfE/wNIAUBaBoIJ+ACU=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20251104084442eucas1p2af1bd88393f4d6a532df1cd41f32a287~0wUr8pCub0922509225eucas1p2b;
+	Tue,  4 Nov 2025 08:44:42 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20251104084440eusmtip27dfa57d3ff654ed50f16a811242c3a65~0wUqFptgI2591225912eusmtip2U;
+	Tue,  4 Nov 2025 08:44:39 +0000 (GMT)
+Message-ID: <e7f05748-a11c-47eb-b1fa-cdc9dc6d05e0@samsung.com>
+Date: Tue, 4 Nov 2025 09:44:38 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,46 +61,135 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v4 23/35] vdso/datastore: Map pages through struct page
+To: Mark Brown <broonie@kernel.org>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?=
+	<thomas.weissschuh@linutronix.de>
+Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Arnd Bergmann
+	<arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>, Andreas Larsson
+	<andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>, John Stultz
+	<jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, John Paul Adrian
+	Glaubitz <glaubitz@physik.fu-berlin.de>, Shuah Khan <shuah@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Russell King <linux@armlinux.org.uk>, Madhavan Srinivasan
+	<maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
+	Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Thomas
+	Bogendoerfer <tsbogend@alpha.franken.de>, Heiko Carstens
+	<hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+	<agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Nagarathnam Muthusamy
+	<nagarathnam.muthusamy@oracle.com>, Shannon Nelson <sln@onemain.com>,
+	linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
+	Aishwarya.TCV@arm.com
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <aQjJNmwniQwwjeBR@finisterre.sirena.org.uk>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20251104084442eucas1p2af1bd88393f4d6a532df1cd41f32a287
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251104084442eucas1p2af1bd88393f4d6a532df1cd41f32a287
+X-EPHeader: CA
+X-CMS-RootMailID: 20251104084442eucas1p2af1bd88393f4d6a532df1cd41f32a287
+References: <20251014-vdso-sparc64-generic-2-v4-0-e0607bf49dea@linutronix.de>
+	<20251014-vdso-sparc64-generic-2-v4-23-e0607bf49dea@linutronix.de>
+	<aQjJNmwniQwwjeBR@finisterre.sirena.org.uk>
+	<CGME20251104084442eucas1p2af1bd88393f4d6a532df1cd41f32a287@eucas1p2.samsung.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Nov 04 2025 at 07:39, Christophe Leroy wrote:
-> Le 22/10/2025 =C3=A0 19:05, Thomas Gleixner a =C3=A9crit=C2=A0:
->> On Fri, Oct 17 2025 at 12:20, Christophe Leroy wrote:
->>> Allthough masked_user_access_begin() is to only be used when reading
->>> data from user at the moment, introduce masked_user_read_access_begin()
->>> and masked_user_write_access_begin() in order to match
->>> user_read_access_begin() and user_write_access_begin().
->>>
->>> That means masked_user_read_access_begin() is used when user memory is
->>> exclusively read during the window, masked_user_write_access_begin()
->>> is used when user memory is exclusively writen during the window,
->>> masked_user_access_begin() remains and is used when both reads and
->>> writes are performed during the open window. Each of them is expected
->>> to be terminated by the matching user_read_access_end(),
->>> user_write_access_end() and user_access_end().
->>>
->>> Have them default to masked_user_access_begin() when they are
->>> not defined.
->>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>=20
->> Can we please coordinate on that vs. the scoped_access() work as this
->> nicely collides all over the place?
+On 03.11.2025 16:24, Mark Brown wrote:
+> On Tue, Oct 14, 2025 at 08:49:09AM +0200, Thomas Weißschuh wrote:
 >
-> Sure, I will rebase on top of your series.
+>> An upcoming change will allocate the datapages dynamically instead of as
+>> part of the kernel image. Such pages can only be mapped through
+>> 'struct page' and not through PFNs.
+> I'm seeing some boot failures on some arm64 platforms in -next which are
+> bisecting to this patch in -next.  Unfortunately the diagnostics aren't
+> super useful, we seem to just stop making progress in userspace with no
+> obvious output.  One sample log from the FVP is:
 >
-> Once it is rebased, could you take the non powerpc patches in your tree ?
+>     https://lava.sirena.org.uk/scheduler/job/2036229#L1268
+>
+> which isn't super instructive.  Not all platforms seem to be affected,
+> I've seen this on at least the Arm FVP, Orion O6 and Libretech Renegade
+> Elite.  The diagnostics aren't very clear here but given that I'm seeing
+> the same issue and bisect result on multiple platforms it seemed worth
+> mentioning.  Some platforms do seem fine.
+>
+> We do have some other serious breakage affecting arm64 in -next which
+> are making it hard to get a clear picture of which platforms are
+> affected, at least the FVP and O6 are unaffected by those other issues
+> (due to using MTE on platforms that don't have it, those platforms do
+> have MTE).
 
-Sure. The current lot is at:
+I got almost the same result while bisecting on ARM 32bit Exynos-based 
+boards, so the issue with this patchset is not fully ARM64 specific. For 
+some reasons it also doesn't affect all systems though. It is even 
+worse, because it affected only a subset of boards, but different for 
+each tested commit. The observed failure looks exactly the same:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git scoped-uaccess
+...
 
-Thanks,
+[   10.199852] devtmpfs: mounted
+[   10.205013] Freeing unused kernel image (initmem) memory: 1024K
+[   10.210086] Run /sbin/init as init process
 
-        tglx
+INIT: version 2.88 booting
+
+(no more messages)
+
+The only difference is that bisecting on ARM32bit lead me to the next 
+patch (10d91dac2ea5 ("vdso/datastore: Allocate data pages dynamically") 
+/ [PATCH v4 24/35]).
+
+Then I've tested it on ARM64bit (RaspberrryPi3b+ board) and got the 
+following panic on 6a011a228293 ("vdso/datastore: Map pages through 
+struct page") commit:
+
+VFS: Mounted root (ext4 filesystem) on device 179:3. Trying to move old 
+root to /initrd ... okay devtmpfs: mounted Freeing unused kernel memory: 
+12672K Run /sbin/init as init process Unable to handle kernel paging 
+request at virtual address ffffffffc20b5d48 Mem abort info: ESR = 
+0x0000000096000006 EC = 0x25: DABT (current EL), IL = 32 bits SET = 0, 
+FnV = 0 EA = 0, S1PTW = 0 FSC = 0x06: level 2 translation fault Data 
+abort info: ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000 CM = 0, WnR = 
+0, TnD = 0, TagAccess = 0 GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0 
+swapper pgtable: 4k pages, 48-bit VAs, pgdp=000000000230b000 
+[ffffffffc20b5d48] pgd=0000000000000000, p4d=0000000003618403, 
+pud=0000000003619403, pmd=0000000000000000 Internal error: Oops: 
+0000000096000006 [#1] SMP Modules linked in: CPU: 2 UID: 0 PID: 1 Comm: 
+init Tainted: G W 6.18.0-rc1+ #16136 PREEMPT Tainted: [W]=WARN Hardware 
+name: Raspberry Pi 3 Model B (DT) pstate: 80000005 (Nzcv daif -PAN -UAO 
+-TCO -DIT -SSBS BTYPE=--) pc : vvar_fault+0x7c/0x17c lr : 
+vvar_fault+0x24/0x17c ... Call trace: vvar_fault+0x7c/0x17c (P) 
+special_mapping_fault+0x24/0xd0 __do_fault+0x3c/0x238 
+__handle_mm_fault+0xaa0/0x19e0 handle_mm_fault+0xcc/0x384 
+do_page_fault+0x1a0/0x720 do_translation_fault+0x60/0x6c 
+do_mem_abort+0x44/0x94 el0_da+0x54/0x230 el0t_64_sync_handler+0xd0/0xe4 
+el0t_64_sync+0x198/0x19c Code: f2d83fe0 8b010063 d34cfc63 8b031803 
+(f9400461) ---[ end trace 0000000000000000 ]--- Kernel panic - not 
+syncing: Attempted to kill init! exitcode=0x0000000b SMP: stopping 
+secondary CPUs Kernel Offset: disabled CPU features: 
+0x000000,00180000,40004000,0400421b Memory Limit: none ---[ end Kernel 
+panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
+
+Reverting "clocksource: Remove ARCH_CLOCKSOURCE_DATA", "vdso/datastore: 
+Allocate data pages dynamically" and "vdso/datastore: Map pages through 
+struct page" on top of linux-next fixes booting on all tested boards.
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
