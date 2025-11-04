@@ -1,76 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-13768-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13770-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C732C33142
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 22:31:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E730CC3320D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 23:04:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1M861Rydz2yD5;
-	Wed,  5 Nov 2025 08:31:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1MtF5WWsz2yD5;
+	Wed,  5 Nov 2025 09:04:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::634"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762255727;
-	cv=none; b=hiEuqcLce4X75QOvLRLNOhY/EQm4NQQDdk4yAmYyeerJnMAl2dBhFDDoqS/gTsB8+w9WjawaqdKsF2o4HLVHZndH1lV+ITX0fmV229NtH+ZKUxJm1PwAy571V6L5IDP83FVpnVupti/9O++NAlEg5KVUwSCMzV16HM9QMSbynkdJWLA7uVrULclbSCzEbetqAujEqvmdFm+v4/BuQZpGzNrn60g1Q+oAHVfJ1U8Zu4QXgiBP84Lgq3xs920ZDwFWBoubkIdANsvs19vFhInkyDs0fBL1LyXzy1zLgzGPaluTaZyBJihaS2P0MCmHo7jO8/Vr10qkWcccCFRHP2rW8g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::629"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762288575;
+	cv=none; b=fCADZ+oQbgUd7xUZ+q8X//W5ZMVs24km/E26MShkSX5pVHzEJyLBdYqoBLb157qJ9ZYvaSMZn2kZHcX2jV9BE/CycNjcT6xMPhK4wavgrU+zjU9Q9qpAlkyfoGfPiDQNJsOVufD292eJZkHwy1DjPHTNuC0D3CemJmNZ0inplPPZdhcYrlrg3pgEZ+q9Og00CV25K2pJVCuw5MDUdiTU0gCWkgRUlkKMcV8rPS8DwC+VvSMKIAxuFxdD9lySYwhxw/TsuHm91pZ8YK8P/Jgjk057ty5kK2647/rE0GWE5EDGjl+0ZVydofyC2xkdeRpQLT5NftwrY/TsuBJUAWtFyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762255727; c=relaxed/relaxed;
-	bh=CxdVni7d9zY7Eb56aBlMj/F4HouDx96+uAbwzp09kRU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hoRFa90KQOE+esZazwY/t9Bd/A+Lkib8wUeyf+zeKJqNBhg0aFMsHam1SJFy4MYSOooLB2rPxqK2mGPYmp52c8rr1ZcbNOvaT1RQBB/QqaWcdf1hg8dquAQ9aJX1NEQD+AfJpPWRdLugJROStF6EKx3qa2QrRUQ6tLaaqWPhF0u3ikYDiPgk/1sE0AlUCuDQfcGtmo9tx92NkfoNY/kKTUEWWAiBMrtX3PQDAqH0XfwXs0ZRBNuyssEA3lqQFahe3yN2WePl8bNUoyGIHGlYc7Coa/nHfGJltUm8rm82LC0MN2vAaWj41RBi3U8UactBGDtYoUSLOjdbTJMMMo2M+A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ftAe2SXY; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=allyheev@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1762288575; c=relaxed/relaxed;
+	bh=hNwxBRLVn+yjNsddWZjaRch63cYGP209xDEv1WXxmfA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e4UwEe4x08JhNa99i/svxMXS0sNLYo9avCHUiLmjkkjZC9OcIDHpOKlduhTubSfx/dnSSpslIftFK4d3d+MKAwa5IN+yqEWzge2r+/TOWEgGPx+qa3J5nDyuFk+11GMWxCXoA4M9HQyHzL1A5yI6X/0F3EWOfDIyC0ZJ9jjQtYpstJROU5Y1xZ6M4QS+Pmb/uHCF//cGziN+h2VAqRP7+tDDJndzNHMCpWyDHRNnbH5MztDZ9f52voT8o4eljP2ovxACxVxGHQVTbniW9G0lvUvNYsURQijFJ1w+PRR9TtDnQkPZiaDcxp7esS/ZcYunKDIeUWrDnbjc2w3KZ05zvg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=surgut.co.uk; dkim=pass (1024-bit key; secure) header.d=surgut.co.uk header.i=@surgut.co.uk header.a=rsa-sha256 header.s=google header.b=gyaNPSY+; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::629; helo=mail-ej1-x629.google.com; envelope-from=dimitri.ledkov@surgut.co.uk; receiver=lists.ozlabs.org) smtp.mailfrom=surgut.co.uk
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=surgut.co.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ftAe2SXY;
+	dkim=pass (1024-bit key; secure) header.d=surgut.co.uk header.i=@surgut.co.uk header.a=rsa-sha256 header.s=google header.b=gyaNPSY+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=allyheev@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=surgut.co.uk (client-ip=2a00:1450:4864:20::629; helo=mail-ej1-x629.google.com; envelope-from=dimitri.ledkov@surgut.co.uk; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d15nB5GZVz304H
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Nov 2025 22:28:46 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-29555b384acso31116585ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Nov 2025 03:28:46 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1Kwr67MHz2yrm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 07:36:11 +1100 (AEDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-b6d402422c2so300959666b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Nov 2025 12:36:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762255724; x=1762860524; darn=lists.ozlabs.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CxdVni7d9zY7Eb56aBlMj/F4HouDx96+uAbwzp09kRU=;
-        b=ftAe2SXYQCv1AkapdnnoPqxebZkh3EVJr4WhH+Imu4zmcDgrDhFZz1xKrriYgpb4FK
-         +1DBs88bPyt5dFreRyak03pJg/w+ukZB8SemOfF6BceY9/DbvZQQ9GH8sfrRRpQsEenh
-         ASkcLVI3dWUS6EjsRMcUWlHLapVpmyAhz0FzvZM+khX0Mjqmz9fuiFX1sPyQq5IjMprV
-         ZSnKCR9+PRiThNTAqIrj8k93qyiaW3zfwPOEikdLDhzXqVYaE4mDdeiVGim/HfcHSvh8
-         8O2x7hAfRwg8IuI6CEdK1c02cR8DXv2Yc32WZeUyhGz/fygoo4mpKAawN4SNQ+tgYhFV
-         1PTg==
+        d=surgut.co.uk; s=google; t=1762288568; x=1762893368; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hNwxBRLVn+yjNsddWZjaRch63cYGP209xDEv1WXxmfA=;
+        b=gyaNPSY+V5wl9vXcNsbjupsa4EyR4KZzt69PKE1PyZwGTt2uzXt/K4Urex7ECEdY/e
+         1OBIZHxtXtUeacSunx4NMcnW3KIG7H1LZ+zK0RekuR8+sYG9CcrfLQXDJMqgrh8mBw/U
+         M7wPCedPCDGOKbJIFIlL0jhkvZzx2Sy697rwI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762255724; x=1762860524;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CxdVni7d9zY7Eb56aBlMj/F4HouDx96+uAbwzp09kRU=;
-        b=MzXKlUxv7IOikfF5GmguiVWV1d+JIdnTYAiaug6u6z/z+IWOZGBZJYncwE5/7zfEeH
-         GRY8NJQqQ1smXdA8YgEu7oPnpam6P84Gm4W/zY7qx0k1BzEdyrJwp3D9bTkit8p1Dj7k
-         Z62oxbIjmXl8zbbJxdxbpuzdEttsA2q/K4jd74+UwPgghsM6/2xPRKQLaOOlgLiub9tJ
-         7q5GL7wNz1/4IPX6cKa8IRng0AiQaLEg7tXJqAOEItFgyionFWFTVt0rffpkj2O37j/c
-         +BSaZbsRLxozzvfD5vQzruqBYvUIgCXAVReNfP7KTErG4ZM+5MqR7ZagrShKPToBa6TD
-         OreA==
-X-Gm-Message-State: AOJu0YxDxbPD5UhYErS1JReRsytjJo2HE9WUPpWBWKMh6k4+VrrEGgIZ
-	ZyAZ6zUy8upt1AfIzss56hd3SFTYm1y4faY7TOilfoucZh7tL8S4jN2w
-X-Gm-Gg: ASbGncsVi8k2d+r55ClgSy7Wycrmx0WoGLH/Xa1KkBNllI5953aIGZfmlhio0gasujV
-	aJuesrwdgTD/RY6+NZTFZbEPG+22iabmvyGsYk9KFiDnWWqMw57Je5ryp5zbAGsEIK00F75LrBN
-	URL7BTx7vU2b7j42nYYpdGIwKEbVg0ynR+XbJSpomjRR2SzMY3K5N/4f6en8B+B2bzhxL+pMd6L
-	wxhSu86l+9Fg7RY9qiyxBPGoUk2hBk41gpHW+e7MdpNVwIVZFlORPebITBlSdOzt+gp3JlNUIt/
-	3PJoJRDeKqflO/QLvY74VmA2+BgxhIUPZC3SvFXA9ZvQA/iZrau4yHAUer4V2IBdhAvrHm6DhYi
-	WlUsPqtYhSdTgXTqDY91jEtNgkFEQ1RrpjOlA9RfsysRBj1DZeh67y4IHg65iAKWZgH9K64EGBN
-	a/
-X-Google-Smtp-Source: AGHT+IGuay4E3cOeIh7l443N7j7NEY6XyHAZjQH0TJBkBS2+aHXGG30+zXi+TgbVqPSIBrRWuFP+2Q==
-X-Received: by 2002:a17:902:ecd0:b0:295:9b39:4533 with SMTP id d9443c01a7336-2959b396096mr101951295ad.30.1762255723916;
-        Tue, 04 Nov 2025 03:28:43 -0800 (PST)
-Received: from aheev.home ([2401:4900:88f5:503e:a1c1:64ad:7a99:42ba])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29601a73c91sm23386055ad.100.2025.11.04.03.28.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 03:28:43 -0800 (PST)
-From: Ally Heev <allyheev@gmail.com>
-Date: Tue, 04 Nov 2025 16:58:36 +0530
-Subject: [PATCH] powerpc: 82xx: fix uninitialized pointers with free attr
+        d=1e100.net; s=20230601; t=1762288568; x=1762893368;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hNwxBRLVn+yjNsddWZjaRch63cYGP209xDEv1WXxmfA=;
+        b=YAlwrGs9i78M2f/2cTKDRcplBZUW6UAw8KPJVo61rQ3uaUbaj4xGrmY5bLlnKEm2hi
+         Vr1amPUf+GwYEKOrta/k3SRGxFOCVhE+9Nl/abFIfnAjDOFmT/q4B8xWHeuKwwgGq+3J
+         lkJlhi24NhPXBmvzXArHjlalJnTrM4KL2qG9+BE4SVQdzswvItNzLdUVokeRwt59ERC8
+         IFpk3ZCEB37SgkJZKiuBDl/D3tmzzkmXg+1GoXss66qB5PVExpk4sSfGM1kaCpu0siUt
+         KHvqxjeuFngd/7c1hKPuxSdCopx8Qy/elUcaSFaXPPYZo/VmVQurPVCIkzI64Lcu1Hwh
+         Mjrw==
+X-Forwarded-Encrypted: i=1; AJvYcCXu6zpEZFa+BquTIi7dDIsyAx9jEP6NOAng9A5JKl2KqPhQyGxMbXuwO++HM+ylAahCwUSYap6TrNEjchs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwQJqXlPAwjzBCnuwZpCkL7yser1DLTR8elnk7lC0Jt6R0u7QXn
+	4iexPQR7YEAMoJ83lcjEmfIYlCaHtOP5IXs47Z1tdbCQMSdqAqxhw0S2xwfFa+zPAIDAbVbq9Bo
+	dnM+mc18D1fIHFWaPQ6SoFXbw3R032IJvz01R72UrYw==
+X-Gm-Gg: ASbGncttrQbX1fOUD+pPLAPlRozNQvBQinA5MR/HYoiZAg2E1XvffpomPRSEcuDpe2o
+	VEINgBXIBpRkDC4FNFG1mo/DM6w+VSetK5R9oyxW3QX8ciYX/uSz2cf27KPyuTsmGkZb5J1gUOt
+	RXar2DxVEeZrfr08pk/ZerOAC7oLXoodTPaow7qaQijekbbOGNqEpRmLmcB/g1MjMl044ATgqYh
+	ZO9fCwQIyscO9y8207h1F8WjMtnjJH9+YVttm0oZxpq5o0Dvnz07H+5Mzp8GveTR1V04F9Q3S9t
+	D918I0lvd9z2VdEwMnsvAYjwflj5
+X-Google-Smtp-Source: AGHT+IHv6MdLvjnzllIsscePyeEHR6x4pXQN16s0CZlQrgp3UqARDV08ZSSUX0hcwSQAb/R4xgOEgL2WxyZLFHbFBvI=
+X-Received: by 2002:a17:906:6a08:b0:b71:edef:b1d5 with SMTP id
+ a640c23a62f3a-b726515d4b4mr53315666b.11.1762288568344; Tue, 04 Nov 2025
+ 12:36:08 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,72 +77,169 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251104-aheev-uninitialized-free-attr-km82xx-v1-1-903be69f2cd4@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAGPjCWkC/x3Nyw7CIBBG4VdpZu0kgPX6KsYFwl87UbEZsCE2f
- XeJy29zzkIZKsh07hZSzJLlnRrspqMw+nQHS2wmZ9zOWtOzH4GZP0mSFPFP+SLyoAD7UpQfr6O
- rlY0JfbgdwjbuT9RSk2KQ+t9cruv6A4Cmc6F2AAAA
-X-Change-ID: 20251104-aheev-uninitialized-free-attr-km82xx-00c4cb7c3d69
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
- Dan Carpenter <dan.carpenter@linaro.org>, Ally Heev <allyheev@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1538; i=allyheev@gmail.com;
- h=from:subject:message-id; bh=zVzW848wcpzFwJAgPK/KarPXxlh9qHAQdW2+l80NgnY=;
- b=owGbwMvMwCU2zXbRFfvr1TKMp9WSGDI5H6dPmL776+tMe7e3QZ0318e/f3BxT1aTy5UIJemqh
- ycVdn3U7ihlYRDjYpAVU2RhFJXy09skNSHucNI3mDmsTCBDGLg4BWAi3IaMDK/fBt7uiFoRctHp
- gKHpwlnTvh6+MP+lUP/07c8D+9Mi5pUw/K80q9nr8unJ/96fl2tzkssvnrvyRmx28bt706pV2VK
- 23mUGAA==
-X-Developer-Key: i=allyheev@gmail.com; a=openpgp;
- fpr=01151A4E2EB21A905EC362F6963DA2D43FD77B1C
+References: <7fef7507-ad64-4e51-9bb8-c9fb6532e51e@linux.ibm.com>
+ <56905387-ec43-4f89-9146-0db6889e46ab@linux.ibm.com> <aQpCE_XTU-bZHFbk@telecaster>
+In-Reply-To: <aQpCE_XTU-bZHFbk@telecaster>
+From: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
+Date: Tue, 4 Nov 2025 20:35:57 +0000
+X-Gm-Features: AWmQ_bnvWh1e0XqPfSnGn_fuTx1oqRO8eoa0E4M9C5uYfyqYXVvrzikkIncqudc
+Message-ID: <CANBHLUhJ5UVsN4-JN2PG=jq63yGttB9BD6Qm8MgvYirTvg_stw@mail.gmail.com>
+Subject: Re: [mainline]Error while running make modules_install command
+To: Omar Sandoval <osandov@osandov.com>
+Cc: linux-kbuild@vger.kernel.org, nathan@kernel.org, 
+	Samir M <samir@linux.ibm.com>, linux-kernel@vger.kernel.org, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org, 
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>, linux-debuggers@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Uninitialized pointers with `__free` attribute can cause undefined
-behaviour as the memory allocated to the pointer is freed automatically
-when the pointer goes out of scope
+On Tue, 4 Nov 2025 at 18:12, Omar Sandoval <osandov@osandov.com> wrote:
+>
+> On Tue, Nov 04, 2025 at 04:54:38PM +0530, Venkat Rao Bagalkote wrote:
+> >
+> > On 04/11/25 4:47 pm, Samir M wrote:
+> > > Hello,
+> > >
+> > >
+> > > I am observing below error while running the make modules_install
+> > > command on latest mainline kernel on IBM Power11 server.
+> > >
+> > >
+> > > Error:
+> > > DEPMOD  /lib/modules/6.18.0-rc4=E2=80=A8depmod: ERROR: kmod_builtin_i=
+ter_next:
+> > > unexpected string without modname prefix
+> > >
+> >
+> > IBM CI has also reported this error.
+> >
+> >
+> > Error:
+> >
+> >
+> > depmod: ERROR: kmod_builtin_iter_next: unexpected string without modnam=
+e
+> > prefix
+> >   INSTALL /boot
+> > depmod: ERROR: kmod_builtin_iter_next: unexpected string without modnam=
+e
+> > prefix
+> > depmod: ERROR: kmod_builtin_iter_next: unexpected string without modnam=
+e
+> > prefix
+> >
+> >
+> > Git bisect is pointing to below commit as first bad commit.
+> >
+> >
+> > d50f21091358b2b29dc06c2061106cdb0f030d03 is the first bad commit
+> > commit d50f21091358b2b29dc06c2061106cdb0f030d03
+> > Author: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
+> > Date:   Sun Oct 26 20:21:00 2025 +0000
+> >
+> >     kbuild: align modinfo section for Secureboot Authenticode EDK2 comp=
+at
+> >
+> >     Previously linker scripts would always generate vmlinuz that has
+> > sections
+> >     aligned. And thus padded (correct Authenticode calculation) and unp=
+added
+> >     calculation would be same. As in https://github.com/rhboot/pesign
+> > userspace
+> >     tool would produce the same authenticode digest for both of the
+> > following
+> >     commands:
+> >
+> >         pesign --padding --hash --in ./arch/x86_64/boot/bzImage
+> >         pesign --nopadding --hash --in ./arch/x86_64/boot/bzImage
+> >
+> >     The commit 3e86e4d74c04 ("kbuild: keep .modinfo section in
+> >     vmlinux.unstripped") added .modinfo section of variable length.
+> > Depending
+> >     on kernel configuration it may or may not be aligned.
+> >
+> >     All userspace signing tooling correctly pads such section to calcul=
+ation
+> >     spec compliant authenticode digest.
+> >
+> >     However, if bzImage is not further processed and is attempted to be
+> > loaded
+> >     directly by EDK2 firmware, it calculates unpadded Authenticode dige=
+st
+> > and
+> >     fails to correct accept/reject such kernel builds even when propoer
+> >     Authenticode values are enrolled in db/dbx. One can say EDK2 requir=
+es
+> >     aligned/padded kernels in Secureboot.
+> >
+> >     Thus add ALIGN(8) to the .modinfo section, to esure kernels irrespe=
+ctive
+> > of
+> >     modinfo contents can be loaded by all existing EDK2 firmware builds=
+.
+> >
+> >     Fixes: 3e86e4d74c04 ("kbuild: keep .modinfo section in
+> > vmlinux.unstripped")
+> >     Cc: stable@vger.kernel.org
+> >     Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
+> >     Link:
+> > https://patch.msgid.link/20251026202100.679989-1-dimitri.ledkov@surgut.=
+co.uk
+> >     Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> >
+> >  include/asm-generic/vmlinux.lds.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> drgn's CI hit this same failure. FWIW, the commit fixed by this bisected
+> commit, 3e86e4d74c04 ("kbuild: keep .modinfo section in
+> vmlinux.unstripped"), also results in ELF segments of size 0 in vmlinux
+> for some configurations, which confused drgn until I added a workaround
+> (https://github.com/osandov/drgn/commit/2a9053de8796af866fd720a3c8c230135=
+95d391a).
+> So there's some funkiness in this area.
 
-powerpc/km82xx doesn't have any bugs related to this as of now, but,
-it is better to initialize and assign pointers with `__free` attribute
-in one statement to ensure proper scope-based cleanup
+The expectation is that said section is removed from the final binary.
+But the fact that it is present with 0 length, indicates incorrect
+linking. It also now makes sense why on x86/arm it is tripping up
+section alignment.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/aPiG_F5EBQUjZqsl@stanley.mountain/
-Signed-off-by: Ally Heev <allyheev@gmail.com>
----
-Testing:
-Successfully compiled the kernel with `allmodconfig`
----
- arch/powerpc/platforms/82xx/km82xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+As it is likely that it is the same underlying issue that such segment
+exists in the first place.
 
-diff --git a/arch/powerpc/platforms/82xx/km82xx.c b/arch/powerpc/platforms/82xx/km82xx.c
-index 99f0f0f4187672614f4f8ad46ab7906f7ad8078b..4ad223525e893c0de15540db2b2c4d239d6d841e 100644
---- a/arch/powerpc/platforms/82xx/km82xx.c
-+++ b/arch/powerpc/platforms/82xx/km82xx.c
-@@ -27,8 +27,8 @@
- 
- static void __init km82xx_pic_init(void)
- {
--	struct device_node *np __free(device_node);
--	np = of_find_compatible_node(NULL, NULL, "fsl,pq2-pic");
-+	struct device_node *np __free(device_node) = of_find_compatible_node(NULL,
-+		NULL, "fsl,pq2-pic");
- 
- 	if (!np) {
- 		pr_err("PIC init: can not find cpm-pic node\n");
+I wonder if the original implementation of moving sections about and
+when/where the builtin module info is kept is not as tidy as it was
+intended to be.
 
----
-base-commit: c9cfc122f03711a5124b4aafab3211cf4d35a2ac
-change-id: 20251104-aheev-uninitialized-free-attr-km82xx-00c4cb7c3d69
+I wonder if we should:
+- rollback to the state of how things were before that feature was added
+- keep the production / stripped / installed kernel build as is
+- reshuffle of how modinfo is preserved in the unstripped kernel with
+a bespoke linker script
 
-Best regards,
--- 
-Ally Heev <allyheev@gmail.com>
+Such that hopefully we have correct alignment, without any zero length segm=
+ents.
 
+Or possibly even link / split the built-in module info somewhere else entir=
+ely.
+
+As in revert both:
+- d50f21091358b (kbuild: align modinfo section for Secureboot
+Authenticode EDK2 compat, 2025-10-26)
+- 3e86e4d74c049 (kbuild: keep .modinfo section in vmlinux.unstripped,
+2025-09-18)
+
+And try implementing the keeping of .modinfo section again.
+
+Better structure tests, after linking would be nice to catch such
+issues, because linker scripts are hard and trying to understand how a
+linker script change affects the result.
+
+--=20
+Regards,
+
+Dimitri.
 
