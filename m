@@ -1,92 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-13758-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13759-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113CFC328EF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 19:11:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE7AC32907
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 19:12:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1Gjg5xGQz3bf8;
-	Wed,  5 Nov 2025 05:11:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1GlF60p0z3bf8;
+	Wed,  5 Nov 2025 05:12:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762279879;
-	cv=none; b=Cs/o+1VUyIQEnwSyV3IB/BiiSHFeOPTUSw+aIzBvkEjiI/GPu6oA3fHWXnyYrNVXmZdydbhtqLIDiy8Qe7oCyrJf6A4LdPIuzwddchdtZ21CQuKt/Po2yin/VzNtg8ldH+i3MGftwsE2HfyqPxj6a//eCbPj1SMKVNkTrWYdhMAsqSORM7nIIELDAAxstoqCTlKzGpp5mQuaztRocgf9muwawVSO54su+Jgcgsy+gvNl8hlxqdj/ZvftH1+rmwMO7HZDkJI97PwIMjnqkqqaS6Nikc+EfOcRDoWfykbuQ/XeBTwTsAMm+qECLs2mF99gr5CwU2YYgp37AmuooL3SjA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762279961;
+	cv=none; b=bC6Eq+H55/wPuPYtQ99yHhQQB7iRjuiHONSq//feiRHAPEozyUuVaSQE7QHLzpYmBXeD1tvUaY9oFka0lGc8krM2kwNj5mo3NMLS3f+8kpoPqoyEl4D+j9APOF7u1rhu/BlCQoXwPA8XBm6/I66oq/vZvst8hZbeV/jJGmr+YDNaZOq/v4SGutg4L0KP52IGg3FMdsc7SfeU9NQ8L6S+LRxs6/U+GALjzOzRVA8HYtDEoeqpwWbCPU0dgVI0c+voyc/4MgHeM6S0lUx7dJ+7zwKtYEI4uosjt6Hk1X+gRem8eXnECYRoPiEa/wvnj6Brr7ZiH5PkkD2D7/SejBp0iA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762279879; c=relaxed/relaxed;
-	bh=yvJofQ7zgV2S0QGyZ+jnZqrgNYVRXLa+r1OXEPMLaDg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=APxGLlMDzLIpymY05JbUf59uSgWTtCWdN2YFpjtL0PNqtxzedaDw77yfJheX7Kea7A3TuRaPsYc6wrwz/GngeMUZ99RyzW3RkXPetAhQcwhrWDEPAks0KPDLTpuJOo4vbjhZ+YIm/Q6P7j6Aqnzj1fqe1XxXypY9oDZlLn5SN2N04G3nMoZkyBXItLutK8IOd4oXgfUuCeii4EA7cNqHJJ2Vn5xurF8iZc/hEQtIEjMWvGK3SzbOXS/WdoCn3/qPp6aTVDiseJMTXG+w7pVj860eqMNV7UE4HLwxpNAjZLet92eMMp5sabxg3/p0yV1iXcmYeH7d9AQERjsPAoaE5g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=e5BBAaOF; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+PwCGwPf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=e5BBAaOF; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+PwCGwPf; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+	t=1762279961; c=relaxed/relaxed;
+	bh=fXMTm+VYzAvY0dzLHfbkpTMRVQ9wHEDxxkapIdIQmk4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PR9sHxTwOgl0i6AtXpwBZRYTNS0vnvqhKqBOw0vdo4yr/wwa0p4T3KDDY8tBLfFobpM/lz860BawsDo00AD6yaHxOrTshJEofWeUasUd8krGbHZ/zFxoczt4/v9cquVJeHZrZPT4nkFbMhgoJ8cCM/5GhqbIC86WmX0OTGUM4ZQAFr+FelGBA0PHkP26auv9UW+06zlDg4M9eQ4twytGddSFVaZgLeL5dOTPACQxarYgr/WIblF0LcKACozHjS+U4fdvZfJMcXQ5scrGVGsI0l57USH6h2W1FXTyf0NNOK6r03tSBw3GtNyM7RUuFLkp4xzZL95MFiTU1a6LXlIrGg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=osandov.com; dkim=pass (2048-bit key; unprotected) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=WnoVkx62; dkim-atps=neutral; spf=none (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=osandov@osandov.com; receiver=lists.ozlabs.org) smtp.mailfrom=osandov.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=osandov.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=e5BBAaOF;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+PwCGwPf;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=e5BBAaOF;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+PwCGwPf;
+	dkim=pass (2048-bit key; unprotected) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=WnoVkx62;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=osandov.com (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=osandov@osandov.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1Gjf248Wz2yvv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 05:11:17 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8D04021194;
-	Tue,  4 Nov 2025 18:11:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762279873; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yvJofQ7zgV2S0QGyZ+jnZqrgNYVRXLa+r1OXEPMLaDg=;
-	b=e5BBAaOF6TUFVfPxOLW5CvpFxRjKpayJ7yuP7atu6Mw0f1ig8Xl2n3YoBH6HCcEfO90yp+
-	60CnWX6A7VBWkXbqGM4f6K/s+c5dde/+IaPWd84vuJQUVz7AVw+oQXfsGQs69rTSrEgUcp
-	j15hKrtWHXCMl//guCyl93M5OuXgU6k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762279873;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yvJofQ7zgV2S0QGyZ+jnZqrgNYVRXLa+r1OXEPMLaDg=;
-	b=+PwCGwPfdwsQNfczEFtL0L9EQV+qxV5QnXvrQXNXB+0Qhl7PwpJ8Ra4NZ9+WdfRgoob1Ws
-	fbY5nyTd2OgYpYAQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762279873; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yvJofQ7zgV2S0QGyZ+jnZqrgNYVRXLa+r1OXEPMLaDg=;
-	b=e5BBAaOF6TUFVfPxOLW5CvpFxRjKpayJ7yuP7atu6Mw0f1ig8Xl2n3YoBH6HCcEfO90yp+
-	60CnWX6A7VBWkXbqGM4f6K/s+c5dde/+IaPWd84vuJQUVz7AVw+oQXfsGQs69rTSrEgUcp
-	j15hKrtWHXCMl//guCyl93M5OuXgU6k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762279873;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yvJofQ7zgV2S0QGyZ+jnZqrgNYVRXLa+r1OXEPMLaDg=;
-	b=+PwCGwPfdwsQNfczEFtL0L9EQV+qxV5QnXvrQXNXB+0Qhl7PwpJ8Ra4NZ9+WdfRgoob1Ws
-	fbY5nyTd2OgYpYAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 37BC0136D1;
-	Tue,  4 Nov 2025 18:11:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id G/hUC8FBCmmwLQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 04 Nov 2025 18:11:13 +0000
-Message-ID: <0827d0ea-9831-4839-989f-13e33d8d6729@suse.de>
-Date: Tue, 4 Nov 2025 19:11:12 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1GlD3BPHz2yvv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 05:12:40 +1100 (AEDT)
+Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-b8f70154354so885857a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Nov 2025 10:12:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1762279958; x=1762884758; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fXMTm+VYzAvY0dzLHfbkpTMRVQ9wHEDxxkapIdIQmk4=;
+        b=WnoVkx62tnUf/RW9sWYnwYI8zNGWmibBXzVY1PeK0+xdke/FjJZCu/TUoDASyK/bTx
+         NZZZuuhLu4SqYGb0TGV+vVyjtHU7HcHAetgo1QshIn3nXvtPP4gSKecGo/83MyBIKHai
+         LugGJOHdzP+xWQrI8l+67TMj/ukIcGTUMDqLASpTcxI64VAH6ZeXcypt3NN8w2acPQM/
+         EMsXHAg7a4QIs/IQvYs3J3jgb2JOnqjP0J66p9Ac1iqL44a5x8IHv4Nnr4EhhAYCu5Eg
+         0EgDAbhbQXoxt6yRlKiuimCBdVeYmNsNdwEhkNWS45LKDd5ehw9dGbp9UYLwM1ZWyHB4
+         Uf4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762279958; x=1762884758;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fXMTm+VYzAvY0dzLHfbkpTMRVQ9wHEDxxkapIdIQmk4=;
+        b=svPn1DDb2KGArVxerVZr7EZC+Ui/Ap7SuP0uP2hrwJ2CkBwdvfLUDK6M9Qp2oxtJlZ
+         gMgq5R0Qs+hrcIwaJwNkaYb29kcYVE/JDectqaKfl0M0sDu7LtZjlI/V2n/ibRsTO5Hl
+         pDJIGYmh8FqnEHD9jRuuTP4g0Wr/gp7sXqtBzJXraZJxjKUXzb73mZ5/kdjD+v7D/rt1
+         pumMcTGwlM0kWpG3EEEuOkYCK75Nm2CIrKB3CmnfKiICotne5YLiCbI+CEzH3EZr158i
+         sj+qnaOfXkkT4smvfy8PKocBuS0YHSOHXBaFZ+I8dfgbNqFnuBIlTgpFMtDqh+zi5vJL
+         k8JA==
+X-Forwarded-Encrypted: i=1; AJvYcCXRWGBxwot4kVRsQNcK7wqzCVOvPoBDK3S9Dw5NP620RZ0lyiwxTFI1Z+VPUgJxrnQalTsu8L0B4rVIGO8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz4HJP6ag/blb5Qn2r9bcJfeTM60UgDq7vBMcQHnMwNfycsow0P
+	ZMdagRLGq07LKbicWfSZVIO4dzEgXZ2qrUiDpAc9GxrXld+a+9g8WBObMAK1Ge8KdiE=
+X-Gm-Gg: ASbGncuE/CYdacpVLv4P/DIfCua7jwbx6rzR+8szYat3ODEVwUaPOhuE/fxUyOqzUK1
+	F2oB5dh/fVSYHDSrmLMVcDgF4Oq4j8faR3CJmwwDnzywI6IXgr6VDZ5nIJWfRsBs+u/FFo1kCME
+	qaY5o7fkiBTpYgzJyRdVBtQ1CdoyE+kJssJc4AoGrOuVhHhm8wmF8L/9BhwrsBRNwIRaDBNVg51
+	WC8aBWofvForJC3gGqgHqqQROPGiyInBXgJ2hL+JfN5APzg48RypRMQY1S29DVcJXtwIDifqXqp
+	zVTEVA2B6DuWMy59sJiZPe4n4LhiMd90XQBajxuZxzsHk/90AiDsF0G0UJnATrnQzA++wGimqZ9
+	ZbIzbYS/d/O9E+TP8iNqmFS2BwPzxJvU8VlZ3+IxH6RC7EO7JP5o84yzqhA==
+X-Google-Smtp-Source: AGHT+IEfMevdEiMdqDvcfkgPhov93sowDZtb/5DAGljcPm4WdOYVS1DF54t90hQB/DDdvYdf8wD0vg==
+X-Received: by 2002:a05:6a20:12c3:b0:342:8c38:ed0 with SMTP id adf61e73a8af0-34f87106a7cmr92855637.8.1762279958021;
+        Tue, 04 Nov 2025 10:12:38 -0800 (PST)
+Received: from telecaster ([2620:10d:c090:400::5:5bc5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ba1f87a6155sm3008088a12.29.2025.11.04.10.12.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 10:12:37 -0800 (PST)
+Date: Tue, 4 Nov 2025 10:12:35 -0800
+From: Omar Sandoval <osandov@osandov.com>
+To: linux-kbuild@vger.kernel.org, nathan@kernel.org,
+	dimitri.ledkov@surgut.co.uk
+Cc: Samir M <samir@linux.ibm.com>, linux-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	linux-debuggers@vger.kernel.org
+Subject: Re: [mainline]Error while running make modules_install command
+Message-ID: <aQpCE_XTU-bZHFbk@telecaster>
+References: <7fef7507-ad64-4e51-9bb8-c9fb6532e51e@linux.ibm.com>
+ <56905387-ec43-4f89-9146-0db6889e46ab@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,155 +96,105 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] macintosh/via-pmu-backlight: Include linux/of.h and
- uapi/linux/fb.h
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Simona Vetter <simona.vetter@ffwll.ch>, linuxppc-dev@lists.ozlabs.org,
- patches@lists.linux.dev
-References: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-0-d256858d86a6@kernel.org>
- <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-2-d256858d86a6@kernel.org>
- <c1aecfba-fa12-4572-885d-925e9afa1494@suse.de>
- <20251104170104.GA1416336@ax162>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20251104170104.GA1416336@ax162>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.995];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,ffwll.ch,lists.ozlabs.org,lists.linux.dev];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:mid]
-X-Spam-Score: -4.30
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+In-Reply-To: <56905387-ec43-4f89-9146-0db6889e46ab@linux.ibm.com>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi
+On Tue, Nov 04, 2025 at 04:54:38PM +0530, Venkat Rao Bagalkote wrote:
+> 
+> On 04/11/25 4:47 pm, Samir M wrote:
+> > Hello,
+> > 
+> > 
+> > I am observing below error while running the make modules_install
+> > command on latest mainline kernel on IBM Power11 server.
+> > 
+> > 
+> > Error:
+> > DEPMOD  /lib/modules/6.18.0-rc4 depmod: ERROR: kmod_builtin_iter_next:
+> > unexpected string without modname prefix
+> > 
+> 
+> IBM CI has also reported this error.
+> 
+> 
+> Error:
+> 
+> 
+> depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname
+> prefix
+>   INSTALL /boot
+> depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname
+> prefix
+> depmod: ERROR: kmod_builtin_iter_next: unexpected string without modname
+> prefix
+> 
+> 
+> Git bisect is pointing to below commit as first bad commit.
+> 
+> 
+> d50f21091358b2b29dc06c2061106cdb0f030d03 is the first bad commit
+> commit d50f21091358b2b29dc06c2061106cdb0f030d03
+> Author: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
+> Date:   Sun Oct 26 20:21:00 2025 +0000
+> 
+>     kbuild: align modinfo section for Secureboot Authenticode EDK2 compat
+> 
+>     Previously linker scripts would always generate vmlinuz that has
+> sections
+>     aligned. And thus padded (correct Authenticode calculation) and unpadded
+>     calculation would be same. As in https://github.com/rhboot/pesign
+> userspace
+>     tool would produce the same authenticode digest for both of the
+> following
+>     commands:
+> 
+>         pesign --padding --hash --in ./arch/x86_64/boot/bzImage
+>         pesign --nopadding --hash --in ./arch/x86_64/boot/bzImage
+> 
+>     The commit 3e86e4d74c04 ("kbuild: keep .modinfo section in
+>     vmlinux.unstripped") added .modinfo section of variable length.
+> Depending
+>     on kernel configuration it may or may not be aligned.
+> 
+>     All userspace signing tooling correctly pads such section to calculation
+>     spec compliant authenticode digest.
+> 
+>     However, if bzImage is not further processed and is attempted to be
+> loaded
+>     directly by EDK2 firmware, it calculates unpadded Authenticode digest
+> and
+>     fails to correct accept/reject such kernel builds even when propoer
+>     Authenticode values are enrolled in db/dbx. One can say EDK2 requires
+>     aligned/padded kernels in Secureboot.
+> 
+>     Thus add ALIGN(8) to the .modinfo section, to esure kernels irrespective
+> of
+>     modinfo contents can be loaded by all existing EDK2 firmware builds.
+> 
+>     Fixes: 3e86e4d74c04 ("kbuild: keep .modinfo section in
+> vmlinux.unstripped")
+>     Cc: stable@vger.kernel.org
+>     Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>
+>     Link:
+> https://patch.msgid.link/20251026202100.679989-1-dimitri.ledkov@surgut.co.uk
+>     Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> 
+>  include/asm-generic/vmlinux.lds.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Am 04.11.25 um 18:01 schrieb Nathan Chancellor:
-> On Tue, Nov 04, 2025 at 01:43:26PM +0100, Thomas Zimmermann wrote:
->> Hi
->>
->> Am 26.09.25 um 01:46 schrieb Nathan Chancellor:
->>> After the recent removal of the fb.h include from backlight.h, which
->>> transitively included of.h, there are several errors from
->>> via-pmu-backlight.c (errors from bl_curve not being properly defined
->>> omitted):
->>>
->>>     drivers/macintosh/via-pmu-backlight.c:22:20: error: 'FB_BACKLIGHT_LEVELS' undeclared here (not in a function)
->>>        22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
->>>           |                    ^~~~~~~~~~~~~~~~~~~
->>>     drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_get_level_brightness':
->>>     drivers/macintosh/via-pmu-backlight.c:63:38: error: 'FB_BACKLIGHT_MAX' undeclared (first use in this function); did you mean 'BACKLIGHT_RAW'?
->>>        63 |         pmulevel = bl_curve[level] * FB_BACKLIGHT_MAX / MAX_PMU_LEVEL;
->>>           |                                      ^~~~~~~~~~~~~~~~
->>>           |                                      BACKLIGHT_RAW
->>>     drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_init':
->>>     drivers/macintosh/via-pmu-backlight.c:144:17: error: implicit declaration of function 'of_machine_is_compatible' [-Wimplicit-function-declaration]
->>>       144 |                 of_machine_is_compatible("AAPL,3400/2400") ||
->>>           |                 ^~~~~~~~~~~~~~~~~~~~~~~~
->>>
->>> FB_BACKLIGHT_{LEVELS,MAX} are available from the userspace API fb.h so
->>> just include that avoid dragging in the full fb.h header unnecessarily.
->>> Include linux/of.h for of_machine_is_compatible().
->>>
->>> Fixes: 9f218f9bb9d2 ("backlight: Do not include <linux/fb.h> in header file")
->>> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
->>> ---
->>>    drivers/macintosh/via-pmu-backlight.c | 2 ++
->>>    1 file changed, 2 insertions(+)
->>>
->>> diff --git a/drivers/macintosh/via-pmu-backlight.c b/drivers/macintosh/via-pmu-backlight.c
->>> index 26bd9ed5e664..f7b7853b3802 100644
->>> --- a/drivers/macintosh/via-pmu-backlight.c
->>> +++ b/drivers/macintosh/via-pmu-backlight.c
->>> @@ -11,7 +11,9 @@
->>>    #include <asm/ptrace.h>
->>>    #include <linux/adb.h>
->>>    #include <linux/backlight.h>
->>> +#include <linux/of.h>
->>>    #include <linux/pmu.h>
->>> +#include <uapi/linux/fb.h>
->> Should this not be <linux/fb.h> ?
-> It could be but as I mention above, this file only needs the UAPI
-> FB_BACKLIGHT_LEVELS and FB_BACKLIGHT_MAX constants so I did not really
-> feel like it was worth it to drag in the whole fb.h header.
+drgn's CI hit this same failure. FWIW, the commit fixed by this bisected
+commit, 3e86e4d74c04 ("kbuild: keep .modinfo section in
+vmlinux.unstripped"), also results in ELF segments of size 0 in vmlinux
+for some configurations, which confused drgn until I added a workaround
+(https://github.com/osandov/drgn/commit/2a9053de8796af866fd720a3c8c23013595d391a).
+So there's some funkiness in this area.
 
-I mean that I thought that the internal header would be preferred over 
-the UAPI header if both exist. But maybe I misremember.
-
-Best regards
-Thomas
-
->
->>>    #include <asm/backlight.h>
->>>    #define MAX_PMU_LEVEL 0xFF
->>>
->> -- 
->> --
->> Thomas Zimmermann
->> Graphics Driver Developer
->> SUSE Software Solutions Germany GmbH
->> Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
->> GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
->>
->>
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
-
+Thanks,
+Omar
 
