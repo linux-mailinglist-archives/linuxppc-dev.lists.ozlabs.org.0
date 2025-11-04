@@ -1,68 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-13757-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13758-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A01DC327F9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 19:02:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 113CFC328EF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 04 Nov 2025 19:11:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1GWZ6WVQz3bfN;
-	Wed,  5 Nov 2025 05:02:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1Gjg5xGQz3bf8;
+	Wed,  5 Nov 2025 05:11:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::54a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762279354;
-	cv=none; b=QZ2z0r3XBuTA8lLbdR3cGNDnWRhbFd9wBjlCPL6o4Dvg4KRe5fs3SXpEe/tJXOT69X/1gfrrX1e7dfJmfISA7hL1JrgbFFjxcxdsdSaXHuDPoK4Yh/pLhIysZ3P4vab6nD50aJRl7M01lQBfh/PySvhueCkjjKWQod0cR++LaPrOq+26VKaBQtC8A3W+Q0M8NDFir11erEMVPrSdSQYrg8qtr3OvVGpsl6CZbMtrt9YWTLvDGUV/eYoZ4oIq2tDv8nPa8f7PfE5dHM7o0L1oohVdEplzUvm26MtDbpnyKMIR3MVKCFw4b+JUPB5jFk24hzNLkDuRrp1SIDs8hVKUOg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762279879;
+	cv=none; b=Cs/o+1VUyIQEnwSyV3IB/BiiSHFeOPTUSw+aIzBvkEjiI/GPu6oA3fHWXnyYrNVXmZdydbhtqLIDiy8Qe7oCyrJf6A4LdPIuzwddchdtZ21CQuKt/Po2yin/VzNtg8ldH+i3MGftwsE2HfyqPxj6a//eCbPj1SMKVNkTrWYdhMAsqSORM7nIIELDAAxstoqCTlKzGpp5mQuaztRocgf9muwawVSO54su+Jgcgsy+gvNl8hlxqdj/ZvftH1+rmwMO7HZDkJI97PwIMjnqkqqaS6Nikc+EfOcRDoWfykbuQ/XeBTwTsAMm+qECLs2mF99gr5CwU2YYgp37AmuooL3SjA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762279354; c=relaxed/relaxed;
-	bh=z7TAMX5tgRxcaQgmnIz2dr5/J34h/wClq0GmkAjx/eU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZQJSqAsSPaW2q1ZzwncZGnKcr3043Bu32q+PQqzv62FKFPc0VDael+tipmzvTAximc97fZ3f15qXKQqHqvPtTZgelGlOJFIRHRL5+blt5uR0+SLsF9mA3uVcYfXLMgcL7JZ0DHxcTdXABeB5Lwj68vNWy7dMQDS0Sa4ASTMK7qwX9DLhcWvJJKAelgg8H9Mgd7eb60rZFDwmTercZMEuDbH4SAFw9KthEQhQwC4IXWrCKm6uduJ/F+D310lLtRC38E5iteGRUqsGBfSLB2Qb9zxtDGx9cMFUeZNuWOXfMfSGT3dp4wDOHOFQHHuGHYcDFxiAOTpPqBHiro4pevXNVA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=smSJ5AEC; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3tz8kaqykdk4gsobxquccuzs.qcazwbilddq-rsjzwghg.cnzopg.cfu@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1762279879; c=relaxed/relaxed;
+	bh=yvJofQ7zgV2S0QGyZ+jnZqrgNYVRXLa+r1OXEPMLaDg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=APxGLlMDzLIpymY05JbUf59uSgWTtCWdN2YFpjtL0PNqtxzedaDw77yfJheX7Kea7A3TuRaPsYc6wrwz/GngeMUZ99RyzW3RkXPetAhQcwhrWDEPAks0KPDLTpuJOo4vbjhZ+YIm/Q6P7j6Aqnzj1fqe1XxXypY9oDZlLn5SN2N04G3nMoZkyBXItLutK8IOd4oXgfUuCeii4EA7cNqHJJ2Vn5xurF8iZc/hEQtIEjMWvGK3SzbOXS/WdoCn3/qPp6aTVDiseJMTXG+w7pVj860eqMNV7UE4HLwxpNAjZLet92eMMp5sabxg3/p0yV1iXcmYeH7d9AQERjsPAoaE5g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=e5BBAaOF; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+PwCGwPf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=e5BBAaOF; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+PwCGwPf; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=smSJ5AEC;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=e5BBAaOF;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+PwCGwPf;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=e5BBAaOF;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+PwCGwPf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3tz8kaqykdk4gsobxquccuzs.qcazwbilddq-rsjzwghg.cnzopg.cfu@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1GWY6hHgz30V1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 05:02:33 +1100 (AEDT)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-b55283ff3fcso4043682a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Nov 2025 10:02:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762279351; x=1762884151; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=z7TAMX5tgRxcaQgmnIz2dr5/J34h/wClq0GmkAjx/eU=;
-        b=smSJ5AECqDRVzcfsuigEaRNs70heIriyLHcYfAhaqmJH1qDPN5Qh//M6JfaBF7mb8d
-         W6rES+WzHHtMCL2eaVGvMQ/0as4tQfFp88jfjs0uVssBmevFkkOPU3fvhP/ngLj/u1HY
-         7R/VqPzzz2sYYsAI3uQkL3kjxFpLqK5o69aJkglHU3PMfmn/sQ+iq6pdqQAT1L2pa9Ub
-         dp7RTSaaeg0WdMfHA4jVK+/cXu9F9P1/YlScZsOXe4dgBlugzEwXMWuSLCqYuXlaqCCO
-         wH3oEIFRSfsynR6Cg/IhmTVyP5/9yQB4MoMac76/1o9qrQWSOGrMPYWA1Wbc3TNut7fG
-         SCDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762279351; x=1762884151;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z7TAMX5tgRxcaQgmnIz2dr5/J34h/wClq0GmkAjx/eU=;
-        b=hm0MgIa6qPXZJbKbRd3M/0MeAeR1VRIBQ5DFmtTzZJYRVPBs2o6lMUA+lCgCAF9Aa6
-         prdHaiI55eTbmSzXlZlPfTX3GYd7T7nXcZ6EpRbD2VSo4xp841PM+xL6qtk6K6b/a6oS
-         m8SFoxO/UrjHBVPOFRTPRU98QA43y9ANGkCPaEIdpPBx1Hb/CIIEGltEThTZGW6Riyzl
-         Jg1t5Ep1CfhH6UUkr11Tdn1yzqype+Hov/6KPEKQvAGmCVsb1XygtQ/RrzmrqcTvC9iW
-         wqBVCQRUVkQcJgrRiiqUXKYqtVujg9g3GC9bTAePbD85hkI2MZMKGGiZJ9diCT+R3/RZ
-         k/Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCWVcAA4Ai7QcUXLfouJQSUTOp/29TPGRSa3UoXv7PaDYcl2EvFWMW6BLFyjattlbhUI8BfDlxLDfRouhVY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyeHHN8MK8Yhui88cXIX/gPFvaTWO354J7nsfF+sb/dSo9bu+YH
-	6jRYXF2D5NicD998H5KMhYxwAeLAMNnXPhATkRqf4ytTbhMtlBbPWcG50MC9WKEF6S/ty5TULE1
-	pg0Al6A==
-X-Google-Smtp-Source: AGHT+IEToeihVC8rNRp4WXHuCXbja7cJV9DF8/gVM9lRFkFysIMA8abH+TqAL0waWRxDGRap6/agKlo3e+8=
-X-Received: from pjbmv10.prod.google.com ([2002:a17:90b:198a:b0:340:d512:22dc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6d92:b0:32b:7222:7459
- with SMTP id adf61e73a8af0-34f8591c355mr151990637.34.1762279351036; Tue, 04
- Nov 2025 10:02:31 -0800 (PST)
-Date: Tue, 4 Nov 2025 10:02:26 -0800
-In-Reply-To: <31da959f-d004-4ae0-a6a7-d5d31b646b70@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1Gjf248Wz2yvv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 05:11:17 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8D04021194;
+	Tue,  4 Nov 2025 18:11:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762279873; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=yvJofQ7zgV2S0QGyZ+jnZqrgNYVRXLa+r1OXEPMLaDg=;
+	b=e5BBAaOF6TUFVfPxOLW5CvpFxRjKpayJ7yuP7atu6Mw0f1ig8Xl2n3YoBH6HCcEfO90yp+
+	60CnWX6A7VBWkXbqGM4f6K/s+c5dde/+IaPWd84vuJQUVz7AVw+oQXfsGQs69rTSrEgUcp
+	j15hKrtWHXCMl//guCyl93M5OuXgU6k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762279873;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=yvJofQ7zgV2S0QGyZ+jnZqrgNYVRXLa+r1OXEPMLaDg=;
+	b=+PwCGwPfdwsQNfczEFtL0L9EQV+qxV5QnXvrQXNXB+0Qhl7PwpJ8Ra4NZ9+WdfRgoob1Ws
+	fbY5nyTd2OgYpYAQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762279873; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=yvJofQ7zgV2S0QGyZ+jnZqrgNYVRXLa+r1OXEPMLaDg=;
+	b=e5BBAaOF6TUFVfPxOLW5CvpFxRjKpayJ7yuP7atu6Mw0f1ig8Xl2n3YoBH6HCcEfO90yp+
+	60CnWX6A7VBWkXbqGM4f6K/s+c5dde/+IaPWd84vuJQUVz7AVw+oQXfsGQs69rTSrEgUcp
+	j15hKrtWHXCMl//guCyl93M5OuXgU6k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762279873;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=yvJofQ7zgV2S0QGyZ+jnZqrgNYVRXLa+r1OXEPMLaDg=;
+	b=+PwCGwPfdwsQNfczEFtL0L9EQV+qxV5QnXvrQXNXB+0Qhl7PwpJ8Ra4NZ9+WdfRgoob1Ws
+	fbY5nyTd2OgYpYAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 37BC0136D1;
+	Tue,  4 Nov 2025 18:11:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id G/hUC8FBCmmwLQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 04 Nov 2025 18:11:13 +0000
+Message-ID: <0827d0ea-9831-4839-989f-13e33d8d6729@suse.de>
+Date: Tue, 4 Nov 2025 19:11:12 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,63 +99,156 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20251030200951.3402865-1-seanjc@google.com> <20251030200951.3402865-28-seanjc@google.com>
- <31da959f-d004-4ae0-a6a7-d5d31b646b70@linux.intel.com>
-Message-ID: <aQo_spywQuek7fUi@google.com>
-Subject: Re: [PATCH v4 27/28] KVM: TDX: Bug the VM if extending the initial
- measurement fails
-From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Michael Roth <michael.roth@amd.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] macintosh/via-pmu-backlight: Include linux/of.h and
+ uapi/linux/fb.h
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Simona Vetter <simona.vetter@ffwll.ch>, linuxppc-dev@lists.ozlabs.org,
+ patches@lists.linux.dev
+References: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-0-d256858d86a6@kernel.org>
+ <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-2-d256858d86a6@kernel.org>
+ <c1aecfba-fa12-4572-885d-925e9afa1494@suse.de>
+ <20251104170104.GA1416336@ax162>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20251104170104.GA1416336@ax162>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.995];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,ffwll.ch,lists.ozlabs.org,lists.linux.dev];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:mid]
+X-Spam-Score: -4.30
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Nov 04, 2025, Binbin Wu wrote:
-> 
-> 
-> On 10/31/2025 4:09 AM, Sean Christopherson wrote:
-> > WARN and terminate the VM if TDH_MR_EXTEND fails, as extending the
-> > measurement should fail if and only if there is a KVM bug, or if the S-EPT
-> > mapping is invalid.  Now that KVM makes all state transitions mutually
-> > exclusive via tdx_vm_state_guard, it should be impossible for S-EPT
-> > mappings to be removed between kvm_tdp_mmu_map_private_pfn() and
-> > tdh_mr_extend().
-> > 
-> > Holding slots_lock prevents zaps due to memslot updates,
-> > filemap_invalidate_lock() prevents zaps due to guest_memfd PUNCH_HOLE,
-> > vcpu->mutex locks prevents updates from other vCPUs, kvm->lock prevents
-> > VM-scoped ioctls from creating havoc (e.g. by creating new vCPUs), and all
-> > usage of kvm_zap_gfn_range() is mutually exclusive with S-EPT entries that
-> > can be used for the initial image.
-> > 
-> > For kvm_zap_gfn_range(), the call from sev.c is obviously mutually
-> > exclusive, TDX disallows KVM_X86_QUIRK_IGNORE_GUEST_PAT so the same goes
-> > for kvm_noncoherent_dma_assignment_start_or_stop(), and
-> > __kvm_set_or_clear_apicv_inhibit() is blocked by virtue of holding all
-> > VM and vCPU mutexes (and the APIC page has its own non-guest_memfd memslot
-> 
-> Nit:
-> It sounds like TDX is using the memslot for the APIC page, but for a TD, the
-> memslot for the APIC page is never initialized or used?
+Hi
 
-Oh!  Good point.  I'll tweak that snippet when applying.
+Am 04.11.25 um 18:01 schrieb Nathan Chancellor:
+> On Tue, Nov 04, 2025 at 01:43:26PM +0100, Thomas Zimmermann wrote:
+>> Hi
+>>
+>> Am 26.09.25 um 01:46 schrieb Nathan Chancellor:
+>>> After the recent removal of the fb.h include from backlight.h, which
+>>> transitively included of.h, there are several errors from
+>>> via-pmu-backlight.c (errors from bl_curve not being properly defined
+>>> omitted):
+>>>
+>>>     drivers/macintosh/via-pmu-backlight.c:22:20: error: 'FB_BACKLIGHT_LEVELS' undeclared here (not in a function)
+>>>        22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
+>>>           |                    ^~~~~~~~~~~~~~~~~~~
+>>>     drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_get_level_brightness':
+>>>     drivers/macintosh/via-pmu-backlight.c:63:38: error: 'FB_BACKLIGHT_MAX' undeclared (first use in this function); did you mean 'BACKLIGHT_RAW'?
+>>>        63 |         pmulevel = bl_curve[level] * FB_BACKLIGHT_MAX / MAX_PMU_LEVEL;
+>>>           |                                      ^~~~~~~~~~~~~~~~
+>>>           |                                      BACKLIGHT_RAW
+>>>     drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_init':
+>>>     drivers/macintosh/via-pmu-backlight.c:144:17: error: implicit declaration of function 'of_machine_is_compatible' [-Wimplicit-function-declaration]
+>>>       144 |                 of_machine_is_compatible("AAPL,3400/2400") ||
+>>>           |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+>>>
+>>> FB_BACKLIGHT_{LEVELS,MAX} are available from the userspace API fb.h so
+>>> just include that avoid dragging in the full fb.h header unnecessarily.
+>>> Include linux/of.h for of_machine_is_compatible().
+>>>
+>>> Fixes: 9f218f9bb9d2 ("backlight: Do not include <linux/fb.h> in header file")
+>>> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+>>> ---
+>>>    drivers/macintosh/via-pmu-backlight.c | 2 ++
+>>>    1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/drivers/macintosh/via-pmu-backlight.c b/drivers/macintosh/via-pmu-backlight.c
+>>> index 26bd9ed5e664..f7b7853b3802 100644
+>>> --- a/drivers/macintosh/via-pmu-backlight.c
+>>> +++ b/drivers/macintosh/via-pmu-backlight.c
+>>> @@ -11,7 +11,9 @@
+>>>    #include <asm/ptrace.h>
+>>>    #include <linux/adb.h>
+>>>    #include <linux/backlight.h>
+>>> +#include <linux/of.h>
+>>>    #include <linux/pmu.h>
+>>> +#include <uapi/linux/fb.h>
+>> Should this not be <linux/fb.h> ?
+> It could be but as I mention above, this file only needs the UAPI
+> FB_BACKLIGHT_LEVELS and FB_BACKLIGHT_MAX constants so I did not really
+> feel like it was worth it to drag in the whole fb.h header.
+
+I mean that I thought that the internal header would be preferred over 
+the UAPI header if both exist. But maybe I misremember.
+
+Best regards
+Thomas
+
+>
+>>>    #include <asm/backlight.h>
+>>>    #define MAX_PMU_LEVEL 0xFF
+>>>
+>> -- 
+>> --
+>> Thomas Zimmermann
+>> Graphics Driver Developer
+>> SUSE Software Solutions Germany GmbH
+>> Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+>> GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+>>
+>>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
+
 
