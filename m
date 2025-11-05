@@ -1,49 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-13803-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13801-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A261C36052
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 15:20:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B1BC35E7D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 14:46:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1nXS0Ls9z2yjp;
-	Thu,  6 Nov 2025 01:20:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1mnR0HmKz3bmk;
+	Thu,  6 Nov 2025 00:46:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762352407;
-	cv=none; b=mvv4Y5DSFIa/rMLDXnTpD2ak9v1zpJkp1eQO+vnYMR5HAZFepNMHGFbnfS9Yx88yvNy/OiwRPsGFRFNw+x0s4CrFmsBFLLd6qYtB6MHxDxTKp+cKTNe9LvluY8L1BdsZLYOIJFl7E+Qcln7aH/9TQgaNs1VziljH5U6BG8ARync45Z7dTQBPE3fBkfpC/yD1E2sehcORX98KUcQN0tloRz6xcmePHw6geEecBQLD87MgxACr+khN6W7RVI3t25E2xmEwGVLee/zHn6Ncta95jiQCWSIv7rRrfdMyKnEf48A2Xq6wmL9708/9SjisTm7pyp8BLe3P8tRhb/cEBj+Ukw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762350378;
+	cv=none; b=G7lVTfXNbN5Vy59YbMmAz5bjD3o2OaRNA74rn/UklQcA/N+bPXGiJTbmU7VTErg/YvVvHUhdE9hA1ND1ZTqdSkEEbrQBJ2KxQrBtR6AOcAgYjdBYNNkYVQ4rH5txhxoZiEYwn1FhN6Jn348AuZ8sTvJtpffnnq9tiMAkNiorpZ/D39AgAZPvbSPf81AWjHqMc+D5oMRugsx+A+LDsegRUmMur/ANcgJmityl2Z2aL/n6uuBpEqPn0fA+s+Qq7ddP7i3TN8E26NJo2+TCJpDeOmw2uxHNDhXJhINGch2rr3mhJ8WvDpcrNBnEUcuvxrQq9wlYLzTfr373qES/YGWZPw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762352407; c=relaxed/relaxed;
-	bh=jWSlozvJUflZmvqBOaD1IRfkpn4o+54VCvLisTp1Fp0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=a5HKOfyhmXkAcrbRaHkSBsFTBbJTydD9bg97kcEtuZFbAd3vQjQbkNAsyW+JYs0n9568wu3z+uoijXADi7+1fZYhsjeGO24DqciFGjfCgmHAmNTxcmTy+gLG86hswf61vwvb0dUetZoIlwfEhsVxQbymHS8qT8TCX8RWeFohctdAyqotYaS4C54G0No2uAlvnDwY6FnyKFY+2YJOINNjKFDSOx3CauuToQP/JFWD0ZsPcfCtwymqv6ALNtHt5VdUccIF26RIznEWJMwmBdFN8m12mvN6jBO3Ylsyz2UZsPzCHBmeNHz/SYNFdoeARMfC37+KirhiRZ/IEqq9HeEwXg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1nXR1FGSz2ySP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 01:20:06 +1100 (AEDT)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4d1mmj0Ysfz9sRy;
-	Wed,  5 Nov 2025 14:45:41 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id lCEyzqt3JgUV; Wed,  5 Nov 2025 14:45:41 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4d1mmh6Whcz9sRh;
-	Wed,  5 Nov 2025 14:45:40 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id CE11D8B76E;
-	Wed,  5 Nov 2025 14:45:40 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id uCc9lE3z-fx3; Wed,  5 Nov 2025 14:45:40 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 86D2A8B76D;
-	Wed,  5 Nov 2025 14:45:40 +0100 (CET)
-Message-ID: <18dd8200-6a8c-449e-9fb8-56874342defb@csgroup.eu>
-Date: Wed, 5 Nov 2025 14:45:40 +0100
+	t=1762350378; c=relaxed/relaxed;
+	bh=QEmg21q/bTDjej8FQo7XnPxvi2Y0z8JlB/H39ewNpd4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PI7y1ahEjFXBJj2d+G5gIc+vxS1E2gIgUDb57Us/AxVKmOtvWPfe7Xtlo6DyTz4f9IbibWK/vF3Fy2oEWr64DscuW1JOnNo5IUGUkIJ9lQPWXK7T90xlDf/BGpMtmpye6mL9viII1wq+mKhvK7es3JvfQ/kPSGdfXxcSFz+nBy+Dw+L0oQtwviThTA+0fQCeNFBv9s5o9u4ZrNGW/MfaA2jkOrnkaoLhMSQI3yjsUfUl7/ylBos/dD6rSA/d7U/HoqsajzpTyE5P6SYYnQZVdiBED8z1lS7pUD7TkCI/aWILUJqDVQTrOsP4wH/DK/xWeyDmqnD9clze6lqsP/N3lg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ShpmD5CE; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ShpmD5CE;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1mnQ19Cjz2ySP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 00:46:18 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EC5C860206;
+	Wed,  5 Nov 2025 13:46:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88442C4CEF8;
+	Wed,  5 Nov 2025 13:46:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762350375;
+	bh=PBw6f127nni3oALBZyW0JgdvwP5qSqzJy9SAmndAriA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ShpmD5CEr+JOX/hdyLmwbKn+7N/84QMIjLE9j2cZcrRvpVVQ75tjvns2y5AtNRjNB
+	 Yz/cddtecY9g6c5niROEmlZIGG5XZUkdnkP1ukuBnc6gReYjrQWthxBdx6AWzSPCto
+	 H5T2MJQ6JwDB5soUuJR37OivkZPbAKj+jm3MbBvvRUCLje5nBaF8qyof8/avmrOrQo
+	 AetMggcJiBTqXIIqRYQO2peEzYuk6WbKzeJQmuHBsuyC0xrt8ateYNVpRjsDJ2WscG
+	 uhaFUjmftREcVGApZjqCE58fnFSyfg3U6HCIwJGFbq7P1TvBbf4A89/uShbWcEdej8
+	 m/GMvmV69qEFQ==
+Date: Wed, 5 Nov 2025 14:46:08 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net, 
+	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
+	rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
+	paul@paul-moore.com, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
+	john.johansen@canonical.com, selinux@vger.kernel.org, borntraeger@linux.ibm.com, 
+	bpf@vger.kernel.org
+Subject: Re: [PATCH v2 22/50] convert efivarfs
+Message-ID: <20251105-ausfiel-klopapier-599213591ad2@brauner>
+References: <20251028174540.GN2441659@ZenIV>
+ <20251028210805.GP2441659@ZenIV>
+ <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+ <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
+ <20251029193755.GU2441659@ZenIV>
+ <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
+ <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
+ <423f5cc5352c54fc21e0570daeeddc4a58e74974.camel@HansenPartnership.com>
+ <20251105-sohlen-fenster-e7c5af1204c4@brauner>
+ <305ff01c159993d8124ae3125f7dacf6b61fa933.camel@HansenPartnership.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,111 +79,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [mainline] Kernel OOPs while running powerpc/mce/ selftest
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>, Nathan Lynch <nathanl@linux.ibm.com>
-References: <4b107285-57d7-482d-9fdf-8499e5fdbebb@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <4b107285-57d7-482d-9fdf-8499e5fdbebb@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <305ff01c159993d8124ae3125f7dacf6b61fa933.camel@HansenPartnership.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-Le 23/10/2025 à 06:54, Venkat Rao Bagalkote a écrit :
-> Greetings!!!
+On Wed, Nov 05, 2025 at 08:33:10AM -0500, James Bottomley wrote:
+> On Wed, 2025-11-05 at 14:16 +0100, Christian Brauner wrote:
+> > On Wed, Nov 05, 2025 at 08:09:03AM -0500, James Bottomley wrote:
+> > > On Wed, 2025-11-05 at 12:47 +0100, Christian Brauner wrote:
+> [...]
+> > > > And suspend/resume works just fine with freeze/thaw. See commit
+> > > > eacfbf74196f ("power: freeze filesystems during suspend/resume")
+> > > > which implements exactly that.
+> > > > 
+> > > > The reason this didn't work for you is very likely:
+> > > > 
+> > > > cat /sys/power/freeze_filesystems
+> > > > 0
+> > > > 
+> > > > which you must set to 1.
+> > > 
+> > > Actually, no, that's not correct.  The efivarfs freeze/thaw logic
+> > > must run unconditionally regardless of this setting to fix the
+> > > systemd bug, so all the variable resyncing is done in the thaw
+> > > call, which isn't conditioned on the above (or at least it
+> > > shouldn't be).
+> > 
+> > It is conditioned on the above currently but we can certainly fix it
+> > easily to not be.
 > 
-> 
-> IBM CI has reported a kernel crash while running mce selftests on 
-> mainline kernel, from tools/testing/selftests/powerpc/mce/.
-> 
-> 
-> This issue is hit when CONFIG_KASAN is enabled. If its disabled, test 
-> passes.
-> 
-> 
-> Traces:
-> 
-> 
-> [ 8041.225432] BUG: Unable to handle kernel data access on read at 
-> 0xc00e0001a1ad6103
-> [ 8041.225453] Faulting instruction address: 0xc0000000008c54d8
-> [ 8041.225461] Oops: Kernel access of bad area, sig: 11 [#1]
-> [ 8041.225467] LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=8192 NUMA pSeries
-> [ 8041.225475] Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 
-> nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct 
-> nft_chain_nat nf_nat nf_conntrack bonding tls nf_defrag_ipv6 
-> nf_defrag_ipv4 rfkill ip_set nf_tables nfnetlink pseries_rng vmx_crypto 
-> dax_pmem fuse ext4 crc16 mbcache jbd2 nd_pmem papr_scm sd_mod libnvdimm 
-> sg ibmvscsi ibmveth scsi_transport_srp pseries_wdt
-> [ 8041.225558] CPU: 17 UID: 0 PID: 877869 Comm: inject-ra-err Kdump: 
-> loaded Not tainted 6.18.0-rc2+ #1 VOLUNTARY
-> [ 8041.225569] Hardware name: IBM,9080-HEX Power11 (architected) 
-> 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
-> [ 8041.225576] NIP:  c0000000008c54d8 LR: c00000000004e464 CTR: 
-> 0000000000000000
-> [ 8041.225583] REGS: c0000000fff778d0 TRAP: 0300   Not tainted (6.18.0- 
-> rc2+)
-> [ 8041.225590] MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 48002828  XER: 
-> 00000000
-> [ 8041.225607] CFAR: c00000000004e460 DAR: c00e0001a1ad6103 DSISR: 
-> 40000000 IRQMASK: 3
-> [ 8041.225607] GPR00: c0000000019d0598 c0000000fff77b70 c00000000244a400 
-> c000000d0d6b0818
-> [ 8041.225607] GPR04: 0000000000004d43 0000000000000008 c00000000004e464 
-> 004d424900000000
-> [ 8041.225607] GPR08: 0000000000000001 18000001a1ad6103 a80e000000000000 
-> 0000000003000048
-> [ 8041.225607] GPR12: 0000000000000000 c000000d0ddf3300 0000000000000000 
-> 0000000000000000
-> [ 8041.225607] GPR16: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
-> [ 8041.225607] GPR20: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
-> [ 8041.225607] GPR24: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
-> [ 8041.225607] GPR28: c000000d0d6b0888 c000000d0d6b0800 0000000000004d43 
-> c000000d0d6b0818
-> [ 8041.225701] NIP [c0000000008c54d8] __asan_load2+0x54/0xd8
-> [ 8041.225712] LR [c00000000004e464] pseries_errorlog_id+0x20/0x3c
-> [ 8041.225722] Call Trace:
-> [ 8041.225726] [c0000000fff77b90] [c0000000001f8748] 
-> fwnmi_get_errinfo+0xd4/0x104
-> [ 8041.225738] [c0000000fff77bc0] [c0000000019d0598] 
-> get_pseries_errorlog+0xa8/0x110
-> [ 8041.225750] [c0000000fff77c00] [c0000000001f8f68] 
-> pseries_machine_check_realmode+0x11c/0x214
-> [ 8041.225762] [c0000000fff77ce0] [c000000000049ca4] 
-> machine_check_early+0x74/0xc0
-> [ 8041.225771] [c0000000fff77d30] [c0000000000084a4] 
-> machine_check_early_common+0x1b4/0x2c0
+> It still seems to be unconditional in upstream 6.18-rc4
+> kernel/power/hibernate.c with only freeze being conditioned on the
 
-Is it a new problem or has it always been there ?
+I'm honestly not sure how efivarfs would be frozen if
+filesystems_freeze() isn't called... Maybe I missed that memo though.
+In any case I just sent you...
 
-The problem is because KASAN is not compatible with realmode (MMU 
-translation is OFF).
+> setting of the filesystem_freeze variable but I haven't checked -next.
+> 
+> However, if there's anything in the works to change that we would need
+> an exception for efivarfs, please ... we can't have a bug fix
+> conditioned on a user setting.
 
-pseries_machine_check_realmode() is located in 
-arch/powerpc/platforms/pseries/ras.c built with KASAN_SANITIZE_ras.o := n
+... a patch in another mail.
 
-But pseries_machine_check_realmode() calls mce_handle_error() which 
-calls get_pseries_errorlog().
-
-get_pseries_errorlog() is in arch/powerpc/kernel/rtas.c which is _not_ 
-built with KASAN_SANITIZE disabled hence the Oops.
-
-Unrelated, but it looks like there is also a problem with commit 
-cc15ff327569 ("powerpc/mce: Avoid using irq_work_queue() in realmode"), 
-which removed the re-enabling of translation but left the call to 
-mce_handle_err_virtmode().
-
-Christophe
+Sorry in case I misunderstood that you _always_ wanted that sync
+regardless of userspace enabling it.
 
