@@ -1,85 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-13802-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13804-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86721C35F19
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 15:02:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F87C36076
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 15:22:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1n7d616xz3bmk;
-	Thu,  6 Nov 2025 01:02:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1nZr2bGsz2yjp;
+	Thu,  6 Nov 2025 01:22:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.37.111.173
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762351325;
-	cv=none; b=irkOEljiZJ81Z+hmtpNk3PmuYrCe+kvozLoV99V0w9XNu48ClAlPvSDqLMQN7s9hmLtZzY5vkbgc9KpVCxHmowYfv0VxNT5xybdAA1lA57MaR6/5QbefOqBvDcRX6goDWrHMRm+JgYagFdDd5BK8l85ipWVL2IjNzgm7kddWUiLDdhl4VMC/cvk5maUPPrB9b86lWe3DIkYVQffEDQ13iV0+LU9Ij/MU+5YmW1lm0rTH9XKiksxRf395mB/4LxUxYfhYjdKUsH7VHZyXGmSDc7g0AcL/zdHWWkz4uqlZpyGZatOrYTCJNQSJPNYe+dDLZT9as+u0eVjcp2RO8WiB8w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.16
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762352532;
+	cv=none; b=TrVSg7SK9alP/QiSLq+O5oLDvAGT0kS4vxSnHh90HykcdDq6+KHBt12pQfwzv5qpjK4WEGiNrj0ktMBtOyaUJ/cckIsp1dI94hvEcSUT3gEepUnaMG2robcPw7WVEen6SklbJby1d1xauGVPVCUiFCSgjxM6Okl7nRlT3h2ojMXIzD962Js4cmVYvztQk61ZxN94UMP70bP0W1IAfR4QB/nUt2hq7DOyfcqmw0KM1/CKjpY1S26DurwhxpyDETKjF1eYOWTL67wjHJSfAGR6JqIuOaIrpm9T+YG6r0U49yGrK+EjPzjEMMO9UuXo5zVzNjRKNoyGpZkfVqJnikH0pw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762351325; c=relaxed/relaxed;
-	bh=fVH2k+zjAlvqKHc72ZR3K5qdlOnx7n4VCTnHMoJeGAU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e6ubbcY8WzUHvW6gbLFZ3bSdHf6+82bdApDeR47nD8rhYZH45fnWSmhdPEvx1zmMYTS9NGrKoqxWkFAVwSB/7kCOjxqunCtDQqyxju0auqhGe0AAlVDdULqPN9UfJWyhgofqbXVAhglWAjJxx3gTDlOstnUpUOeZBWe3Kib2j6zKe5Id+pphaGT3wmRIUu6qI+N0qSSvhig+pg8UrkJn8GoJ3Z21Y9Wnke1MTw7yCuNoSuoB/JgtOg7yeYdSUl4skNb6XdQ5+s/kj5JG8en70MCST8rhsvVa9H/1YJEbxVSCzKZ7UFcrK5ntmmGE8Jcia983Repzj0/ap6eUGoVa1Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=DITFGI7k; dkim-atps=neutral; spf=pass (client-ip=198.37.111.173; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org) smtp.mailfrom=hansenpartnership.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+	t=1762352532; c=relaxed/relaxed;
+	bh=KY8ZUXmr1IIZ8FHz2jH1kLLtrhWMzNynQzPcJEdZBf4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W08r0y+whNDAaPFvEUQmJtBmMCqt1RomvKeT5VKWYPVaFjxEMbNnKRXlV0gqads7F7s4qBQlNopzKN4zrvjvllmpkLL6Ao+KH5NBj2TwSYsYHiGiQA3i9Vt9DUKbZUk/C5791kpDaRDc5tvAS9SHHy2IOp0GTvVSwLjq+49FVtdmUfBcdlXT3jFHNQvJ22caf5y41qjLYmqjX1S+awMbUU7wR2uDaVoRE1Qk1fYenRPbLThD+/RdJ/P2306EthKppVa3xzYpW/dcs6lxFQoLoNq0Nk4/LooB9ubvtFAOKXiy7wGljc7gHccBXecoxCoZIgigEI33X8ICnorIA2g1RA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bxLNUE/p; dkim-atps=neutral; spf=pass (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=DITFGI7k;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bxLNUE/p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hansenpartnership.com (client-ip=198.37.111.173; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org)
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1n7b45FPz2ySq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 01:02:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1nZn3JNTz2ySP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 01:22:07 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1762351320;
-	bh=U1SOFOwQEZy4lr/5coF+o6aFeBeansHiljOkSUgFn6E=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=DITFGI7ky2UGXPSyvPNbR2eDKb2mIpOI8y0K51vGkyfZ+ObaFpNyu67RYk/ENbjEu
-	 3mrCHBbAQhPMbWg/6dVpkvo4tX2HKrVHzZsjI62CXwdlmlzzDCPp4oYCOt0Y9ZBCIk
-	 pWlcU7Ae6wsogMVNvZ5mcAT1o7YRXfjxH8BbE5Kg=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 438B41C02D4;
-	Wed, 05 Nov 2025 09:02:00 -0500 (EST)
-Message-ID: <ddc9e2efa25d59ae7f1989ac155b9a9043ca830b.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2 22/50] convert efivarfs
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, jack@suse.cz,
-  raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
- a.hindborg@kernel.org,  linux-mm@kvack.org, linux-efi@vger.kernel.org,
- ocfs2-devel@lists.linux.dev,  kees@kernel.org, rostedt@goodmis.org,
- gregkh@linuxfoundation.org,  linux-usb@vger.kernel.org,
- paul@paul-moore.com, casey@schaufler-ca.com, 
- linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
- selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
-Date: Wed, 05 Nov 2025 09:01:59 -0500
-In-Reply-To: <20251105-ausfiel-klopapier-599213591ad2@brauner>
-References: <20251028174540.GN2441659@ZenIV>
-	 <20251028210805.GP2441659@ZenIV>
-	 <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
-	 <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
-	 <20251029193755.GU2441659@ZenIV>
-	 <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
-	 <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
-	 <423f5cc5352c54fc21e0570daeeddc4a58e74974.camel@HansenPartnership.com>
-	 <20251105-sohlen-fenster-e7c5af1204c4@brauner>
-	 <305ff01c159993d8124ae3125f7dacf6b61fa933.camel@HansenPartnership.com>
-	 <20251105-ausfiel-klopapier-599213591ad2@brauner>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762352530; x=1793888530;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=34y/01Bj3s9D+0SFBu3q7UEPn0rn/8v07med4iPNrpo=;
+  b=bxLNUE/p8+byvgZ43kCrwZq7iVeAh1y6zeOiRikLf9/zQlAELmyfdecn
+   epz2VpvGIRyn2yomAcS5HKbAL3LwEm9SLDK86lYuhOk11JrgAm7Nn+yah
+   argQJKY/TB0P2ScHtntClcuhwEhgfOZI7H+8JfdolebXqs4lFZipyrZ7h
+   9qhZ40RSFu26C0f5KT9uIPL/W0QJKKnQrAdTYj3KPTG2WVoX8jL5t/vxv
+   3i96hzpql8+Bqep7ZZRJlG+CiyLh7e/pcYF979pmpjgXgxrjy/mpZ3SBC
+   J6KrEWAYsbCYtVHvz96Dve6hAmRHH+mb9r8WAJR7HvaOVqicQVtsgYJi2
+   Q==;
+X-CSE-ConnectionGUID: 2MYlr+EkQUS9Rfp5ZIoagw==
+X-CSE-MsgGUID: 9xpdE96CQqSmR5UtdRTqOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="64616656"
+X-IronPort-AV: E=Sophos;i="6.19,282,1754982000"; 
+   d="scan'208";a="64616656"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 06:22:06 -0800
+X-CSE-ConnectionGUID: 9y6pVknCQA+p9A6wUWjwYA==
+X-CSE-MsgGUID: Dqvh8wm4SE6z0FAnqYkARQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,282,1754982000"; 
+   d="scan'208";a="187134618"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.110.242]) ([10.125.110.242])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 06:22:04 -0800
+Message-ID: <bbfe1baa-5e60-4d2a-9f43-b65ff0ab66d1@intel.com>
+Date: Wed, 5 Nov 2025 07:22:02 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,73 +69,525 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] treewide: Drop pci_save_state() after
+ pci_restore_state()
+To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Riana Tauro <riana.tauro@intel.com>,
+ "Sean C. Dardis" <sean.c.dardis@intel.com>, Farhan Ali
+ <alifm@linux.ibm.com>, Benjamin Block <bblock@linux.ibm.com>,
+ Niklas Schnelle <schnelle@linux.ibm.com>, Alek Du <alek.du@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org, Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ qat-linux@intel.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+References: <cover.1760274044.git.lukas@wunner.de>
+ <c2b28cc4defa1b743cf1dedee23c455be98b397a.1760274044.git.lukas@wunner.de>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <c2b28cc4defa1b743cf1dedee23c455be98b397a.1760274044.git.lukas@wunner.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 2025-11-05 at 14:46 +0100, Christian Brauner wrote:
-> On Wed, Nov 05, 2025 at 08:33:10AM -0500, James Bottomley wrote:
-> > On Wed, 2025-11-05 at 14:16 +0100, Christian Brauner wrote:
-> > > On Wed, Nov 05, 2025 at 08:09:03AM -0500, James Bottomley wrote:
-> > > > On Wed, 2025-11-05 at 12:47 +0100, Christian Brauner wrote:
-> > [...]
-> > > > > And suspend/resume works just fine with freeze/thaw. See
-> > > > > commit
-> > > > > eacfbf74196f ("power: freeze filesystems during
-> > > > > suspend/resume") which implements exactly that.
-> > > > >=20
-> > > > > The reason this didn't work for you is very likely:
-> > > > >=20
-> > > > > cat /sys/power/freeze_filesystems
-> > > > > 0
-> > > > >=20
-> > > > > which you must set to 1.
-> > > >=20
-> > > > Actually, no, that's not correct.=C2=A0 The efivarfs freeze/thaw
-> > > > logic must run unconditionally regardless of this setting to
-> > > > fix the systemd bug, so all the variable resyncing is done in
-> > > > the thaw call, which isn't conditioned on the above (or at
-> > > > least it shouldn't be).
-> > >=20
-> > > It is conditioned on the above currently but we can certainly fix
-> > > it easily to not be.
-> >=20
-> > It still seems to be unconditional in upstream 6.18-rc4
-> > kernel/power/hibernate.c with only freeze being conditioned on the
->=20
-> I'm honestly not sure how efivarfs would be frozen if
-> filesystems_freeze() isn't called... Maybe I missed that memo though.
-> In any case I just sent you...
 
-We don't need to be frozen: our freeze_fs method is empty, we just need
-thaw_fs calling.
 
-Is the trouble that there's now freeze/thaw accounting, so thaw won't
-be called based on that if freeze wasn't?  In which case might it not
-be better for us to implement thaw_super, which is called
-unconditionally and leaves the accounting up to the filesystem?
+On 10/12/25 6:25 AM, Lukas Wunner wrote:
+> In 2009, commit c82f63e411f1 ("PCI: check saved state before restore")
+> changed the behavior of pci_restore_state() such that it became necessary
+> to call pci_save_state() afterwards, lest recovery from subsequent PCI
+> errors fails.
+> 
+> The commit has just been reverted and so all the pci_save_state() after
+> pci_restore_state() calls that have accumulated in the tree are now
+> superfluous.  Drop them.
+> 
+> Two drivers chose a different approach to achieve the same result:
+> drivers/scsi/ipr.c and drivers/net/ethernet/intel/e1000e/netdev.c set the
+> pci_dev's "state_saved" flag to true before calling pci_restore_state().
+> Drop this as well.
+> 
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
 
-> > setting of the filesystem_freeze variable but I haven't checked -
-> > next.
-> >=20
-> > However, if there's anything in the works to change that we would
-> > need an exception for efivarfs, please ... we can't have a bug fix
-> > conditioned on a user setting.
->=20
-> ... a patch in another mail.
->=20
-> Sorry in case I misunderstood that you _always_ wanted that sync
-> regardless of userspace enabling it.
+For ioatdma changes:
+Acked-by: Dave Jiang <dave.jiang@intel.com>
 
-We need the thaw method called to get the variable resync to happen.=20
-That fixes a bug on hibernate with systemd (and also accounts for an
-other efi variable changes the user may have made between hibernate and
-resume), yes.  And we need that to happen unconditionally to fix the
-systemd bug.
-
-Regards,
-
-James
+> ---
+> Some of the pci_save_state() calls in drivers' probe hooks may now
+> likewise be superfluous if the probe hook doesn't touch Config Space.
+> These calls will be identified and dealt with individually.
+> 
+>  drivers/crypto/intel/qat/qat_common/adf_aer.c    | 2 --
+>  drivers/dma/ioat/init.c                          | 1 -
+>  drivers/net/ethernet/broadcom/bnx2.c             | 2 --
+>  drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c | 1 -
+>  drivers/net/ethernet/broadcom/tg3.c              | 1 -
+>  drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c  | 1 -
+>  drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c  | 2 --
+>  drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c | 1 -
+>  drivers/net/ethernet/intel/e1000e/netdev.c       | 1 -
+>  drivers/net/ethernet/intel/fm10k/fm10k_pci.c     | 6 ------
+>  drivers/net/ethernet/intel/i40e/i40e_main.c      | 1 -
+>  drivers/net/ethernet/intel/ice/ice_main.c        | 2 --
+>  drivers/net/ethernet/intel/igb/igb_main.c        | 2 --
+>  drivers/net/ethernet/intel/igc/igc_main.c        | 2 --
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c    | 1 -
+>  drivers/net/ethernet/mellanox/mlx4/main.c        | 1 -
+>  drivers/net/ethernet/mellanox/mlx5/core/main.c   | 1 -
+>  drivers/net/ethernet/meta/fbnic/fbnic_pci.c      | 1 -
+>  drivers/net/ethernet/microchip/lan743x_main.c    | 1 -
+>  drivers/net/ethernet/myricom/myri10ge/myri10ge.c | 4 ----
+>  drivers/net/ethernet/neterion/s2io.c             | 1 -
+>  drivers/pci/pcie/portdrv.c                       | 1 -
+>  drivers/scsi/bfa/bfad.c                          | 1 -
+>  drivers/scsi/csiostor/csio_init.c                | 1 -
+>  drivers/scsi/ipr.c                               | 1 -
+>  drivers/scsi/lpfc/lpfc_init.c                    | 6 ------
+>  drivers/scsi/qla2xxx/qla_os.c                    | 5 -----
+>  drivers/scsi/qla4xxx/ql4_os.c                    | 5 -----
+>  drivers/tty/serial/8250/8250_pci.c               | 1 -
+>  drivers/tty/serial/jsm/jsm_driver.c              | 1 -
+>  30 files changed, 57 deletions(-)
+> 
+> diff --git a/drivers/crypto/intel/qat/qat_common/adf_aer.c b/drivers/crypto/intel/qat/qat_common/adf_aer.c
+> index 35679b2..9a5a4b3 100644
+> --- a/drivers/crypto/intel/qat/qat_common/adf_aer.c
+> +++ b/drivers/crypto/intel/qat/qat_common/adf_aer.c
+> @@ -105,7 +105,6 @@ void adf_dev_restore(struct adf_accel_dev *accel_dev)
+>  			 accel_dev->accel_id);
+>  		hw_device->reset_device(accel_dev);
+>  		pci_restore_state(pdev);
+> -		pci_save_state(pdev);
+>  	}
+>  }
+>  
+> @@ -204,7 +203,6 @@ static pci_ers_result_t adf_slot_reset(struct pci_dev *pdev)
+>  	if (!pdev->is_busmaster)
+>  		pci_set_master(pdev);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  	res = adf_dev_up(accel_dev, false);
+>  	if (res && res != -EALREADY)
+>  		return PCI_ERS_RESULT_DISCONNECT;
+> diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
+> index 02f68b3..2273986 100644
+> --- a/drivers/dma/ioat/init.c
+> +++ b/drivers/dma/ioat/init.c
+> @@ -1286,7 +1286,6 @@ static pci_ers_result_t ioat_pcie_error_slot_reset(struct pci_dev *pdev)
+>  	} else {
+>  		pci_set_master(pdev);
+>  		pci_restore_state(pdev);
+> -		pci_save_state(pdev);
+>  		pci_wake_from_d3(pdev, false);
+>  	}
+>  
+> diff --git a/drivers/net/ethernet/broadcom/bnx2.c b/drivers/net/ethernet/broadcom/bnx2.c
+> index cb1011f..805daae 100644
+> --- a/drivers/net/ethernet/broadcom/bnx2.c
+> +++ b/drivers/net/ethernet/broadcom/bnx2.c
+> @@ -6444,7 +6444,6 @@ static u32 bnx2_find_max_ring(u32 ring_size, u32 max_size)
+>  	if (!(pcicmd & PCI_COMMAND_MEMORY)) {
+>  		/* in case PCI block has reset */
+>  		pci_restore_state(bp->pdev);
+> -		pci_save_state(bp->pdev);
+>  	}
+>  	rc = bnx2_init_nic(bp, 1);
+>  	if (rc) {
+> @@ -8718,7 +8717,6 @@ static pci_ers_result_t bnx2_io_slot_reset(struct pci_dev *pdev)
+>  	} else {
+>  		pci_set_master(pdev);
+>  		pci_restore_state(pdev);
+> -		pci_save_state(pdev);
+>  
+>  		if (netif_running(dev))
+>  			err = bnx2_init_nic(bp, 1);
+> diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
+> index f0f05d7..8e6eec8 100644
+> --- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
+> +++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
+> @@ -14216,7 +14216,6 @@ static pci_ers_result_t bnx2x_io_slot_reset(struct pci_dev *pdev)
+>  
+>  	pci_set_master(pdev);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	if (netif_running(dev))
+>  		bnx2x_set_power_state(bp, PCI_D0);
+> diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+> index 7f00ec7..ecc1220 100644
+> --- a/drivers/net/ethernet/broadcom/tg3.c
+> +++ b/drivers/net/ethernet/broadcom/tg3.c
+> @@ -18352,7 +18352,6 @@ static pci_ers_result_t tg3_io_slot_reset(struct pci_dev *pdev)
+>  
+>  	pci_set_master(pdev);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	if (!netdev || !netif_running(netdev)) {
+>  		rc = PCI_ERS_RESULT_RECOVERED;
+> diff --git a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+> index f92a355..3b1321c 100644
+> --- a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+> +++ b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+> @@ -2933,7 +2933,6 @@ static int t3_reenable_adapter(struct adapter *adapter)
+>  	}
+>  	pci_set_master(adapter->pdev);
+>  	pci_restore_state(adapter->pdev);
+> -	pci_save_state(adapter->pdev);
+>  
+>  	/* Free sge resources */
+>  	t3_free_sge_resources(adapter);
+> diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+> index 392723e..1ce2091 100644
+> --- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+> +++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+> @@ -5456,7 +5456,6 @@ static pci_ers_result_t eeh_slot_reset(struct pci_dev *pdev)
+>  
+>  	if (!adap) {
+>  		pci_restore_state(pdev);
+> -		pci_save_state(pdev);
+>  		return PCI_ERS_RESULT_RECOVERED;
+>  	}
+>  
+> @@ -5471,7 +5470,6 @@ static pci_ers_result_t eeh_slot_reset(struct pci_dev *pdev)
+>  
+>  	pci_set_master(pdev);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	if (t4_wait_dev_ready(adap->regs) < 0)
+>  		return PCI_ERS_RESULT_DISCONNECT;
+> diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+> index 83cf75b..2eb1e3d 100644
+> --- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+> +++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+> @@ -158,7 +158,6 @@ static pci_ers_result_t hbg_pci_err_slot_reset(struct pci_dev *pdev)
+>  
+>  	pci_set_master(pdev);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	hbg_err_reset(priv);
+>  	return PCI_ERS_RESULT_RECOVERED;
+> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+> index 201322d..7589660 100644
+> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
+> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+> @@ -7195,7 +7195,6 @@ static pci_ers_result_t e1000_io_slot_reset(struct pci_dev *pdev)
+>  			"Cannot re-enable PCI device after reset.\n");
+>  		result = PCI_ERS_RESULT_DISCONNECT;
+>  	} else {
+> -		pdev->state_saved = true;
+>  		pci_restore_state(pdev);
+>  		pci_set_master(pdev);
+>  
+> diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_pci.c b/drivers/net/ethernet/intel/fm10k/fm10k_pci.c
+> index ae5fe34..d75b8a5 100644
+> --- a/drivers/net/ethernet/intel/fm10k/fm10k_pci.c
+> +++ b/drivers/net/ethernet/intel/fm10k/fm10k_pci.c
+> @@ -2423,12 +2423,6 @@ static pci_ers_result_t fm10k_io_slot_reset(struct pci_dev *pdev)
+>  	} else {
+>  		pci_set_master(pdev);
+>  		pci_restore_state(pdev);
+> -
+> -		/* After second error pci->state_saved is false, this
+> -		 * resets it so EEH doesn't break.
+> -		 */
+> -		pci_save_state(pdev);
+> -
+>  		pci_wake_from_d3(pdev, false);
+>  
+>  		result = PCI_ERS_RESULT_RECOVERED;
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+> index 50be0a6..d8192aa 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+> @@ -16455,7 +16455,6 @@ static pci_ers_result_t i40e_pci_error_slot_reset(struct pci_dev *pdev)
+>  	} else {
+>  		pci_set_master(pdev);
+>  		pci_restore_state(pdev);
+> -		pci_save_state(pdev);
+>  		pci_wake_from_d3(pdev, false);
+>  
+>  		reg = rd32(&pf->hw, I40E_GLGEN_RTRIG);
+> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+> index 86f5859..6c7dcca 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_main.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
+> @@ -5663,7 +5663,6 @@ static int ice_resume(struct device *dev)
+>  
+>  	pci_set_power_state(pdev, PCI_D0);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	if (!pci_device_is_present(pdev))
+>  		return -ENODEV;
+> @@ -5763,7 +5762,6 @@ static pci_ers_result_t ice_pci_err_slot_reset(struct pci_dev *pdev)
+>  	} else {
+>  		pci_set_master(pdev);
+>  		pci_restore_state(pdev);
+> -		pci_save_state(pdev);
+>  		pci_wake_from_d3(pdev, false);
+>  
+>  		/* Check for life */
+> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+> index 85f9589..dbea372 100644
+> --- a/drivers/net/ethernet/intel/igb/igb_main.c
+> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
+> @@ -9599,7 +9599,6 @@ static int __igb_resume(struct device *dev, bool rpm)
+>  
+>  	pci_set_power_state(pdev, PCI_D0);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	if (!pci_device_is_present(pdev))
+>  		return -ENODEV;
+> @@ -9754,7 +9753,6 @@ static pci_ers_result_t igb_io_slot_reset(struct pci_dev *pdev)
+>  	} else {
+>  		pci_set_master(pdev);
+>  		pci_restore_state(pdev);
+> -		pci_save_state(pdev);
+>  
+>  		pci_enable_wake(pdev, PCI_D3hot, 0);
+>  		pci_enable_wake(pdev, PCI_D3cold, 0);
+> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+> index 728d7ca..7aafa60b 100644
+> --- a/drivers/net/ethernet/intel/igc/igc_main.c
+> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+> @@ -7530,7 +7530,6 @@ static int __igc_resume(struct device *dev, bool rpm)
+>  
+>  	pci_set_power_state(pdev, PCI_D0);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	if (!pci_device_is_present(pdev))
+>  		return -ENODEV;
+> @@ -7667,7 +7666,6 @@ static pci_ers_result_t igc_io_slot_reset(struct pci_dev *pdev)
+>  	} else {
+>  		pci_set_master(pdev);
+>  		pci_restore_state(pdev);
+> -		pci_save_state(pdev);
+>  
+>  		pci_enable_wake(pdev, PCI_D3hot, 0);
+>  		pci_enable_wake(pdev, PCI_D3cold, 0);
+> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> index 90d4e57..d65d691 100644
+> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> @@ -12297,7 +12297,6 @@ static pci_ers_result_t ixgbe_io_slot_reset(struct pci_dev *pdev)
+>  		adapter->hw.hw_addr = adapter->io_addr;
+>  		pci_set_master(pdev);
+>  		pci_restore_state(pdev);
+> -		pci_save_state(pdev);
+>  
+>  		pci_wake_from_d3(pdev, false);
+>  
+> diff --git a/drivers/net/ethernet/mellanox/mlx4/main.c b/drivers/net/ethernet/mellanox/mlx4/main.c
+> index 03d2fc7..d1fbf37 100644
+> --- a/drivers/net/ethernet/mellanox/mlx4/main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx4/main.c
+> @@ -4366,7 +4366,6 @@ static pci_ers_result_t mlx4_pci_slot_reset(struct pci_dev *pdev)
+>  
+>  	pci_set_master(pdev);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  	return PCI_ERS_RESULT_RECOVERED;
+>  }
+>  
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+> index df93625..08f7778 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+> @@ -2095,7 +2095,6 @@ static pci_ers_result_t mlx5_pci_slot_reset(struct pci_dev *pdev)
+>  
+>  	pci_set_master(pdev);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	err = wait_vital(pdev);
+>  	if (err) {
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> index a7a6b4d..0fa90ba 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> @@ -574,7 +574,6 @@ static pci_ers_result_t fbnic_err_slot_reset(struct pci_dev *pdev)
+>  
+>  	pci_set_power_state(pdev, PCI_D0);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	if (pci_enable_device_mem(pdev)) {
+>  		dev_err(&pdev->dev,
+> diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+> index 9d70b51..e4c542f 100644
+> --- a/drivers/net/ethernet/microchip/lan743x_main.c
+> +++ b/drivers/net/ethernet/microchip/lan743x_main.c
+> @@ -3915,7 +3915,6 @@ static int lan743x_pm_resume(struct device *dev)
+>  
+>  	pci_set_power_state(pdev, PCI_D0);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	/* Restore HW_CFG that was saved during pm suspend */
+>  	if (adapter->is_pci11x1x)
+> diff --git a/drivers/net/ethernet/myricom/myri10ge/myri10ge.c b/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
+> index e611ff7..7be30a8 100644
+> --- a/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
+> +++ b/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
+> @@ -3416,10 +3416,6 @@ static void myri10ge_watchdog(struct work_struct *work)
+>  		 * nic was resumed from power saving mode.
+>  		 */
+>  		pci_restore_state(mgp->pdev);
+> -
+> -		/* save state again for accounting reasons */
+> -		pci_save_state(mgp->pdev);
+> -
+>  	} else {
+>  		/* if we get back -1's from our slot, perhaps somebody
+>  		 * powered off our card.  Don't try to reset it in
+> diff --git a/drivers/net/ethernet/neterion/s2io.c b/drivers/net/ethernet/neterion/s2io.c
+> index 5026b02..1e55ccb 100644
+> --- a/drivers/net/ethernet/neterion/s2io.c
+> +++ b/drivers/net/ethernet/neterion/s2io.c
+> @@ -3425,7 +3425,6 @@ static void s2io_reset(struct s2io_nic *sp)
+>  
+>  		/* Restore the PCI state saved during initialization. */
+>  		pci_restore_state(sp->pdev);
+> -		pci_save_state(sp->pdev);
+>  		pci_read_config_word(sp->pdev, 0x2, &val16);
+>  		if (check_pci_device_id(val16) != (u16)PCI_ANY_ID)
+>  			break;
+> diff --git a/drivers/pci/pcie/portdrv.c b/drivers/pci/pcie/portdrv.c
+> index d1b68c18..38a41cc 100644
+> --- a/drivers/pci/pcie/portdrv.c
+> +++ b/drivers/pci/pcie/portdrv.c
+> @@ -760,7 +760,6 @@ static pci_ers_result_t pcie_portdrv_slot_reset(struct pci_dev *dev)
+>  	device_for_each_child(&dev->dev, &off, pcie_port_device_iter);
+>  
+>  	pci_restore_state(dev);
+> -	pci_save_state(dev);
+>  	return PCI_ERS_RESULT_RECOVERED;
+>  }
+>  
+> diff --git a/drivers/scsi/bfa/bfad.c b/drivers/scsi/bfa/bfad.c
+> index ff9adfc..bdfd065 100644
+> --- a/drivers/scsi/bfa/bfad.c
+> +++ b/drivers/scsi/bfa/bfad.c
+> @@ -1528,7 +1528,6 @@ static int restart_bfa(struct bfad_s *bfad)
+>  		goto out_disable_device;
+>  	}
+>  
+> -	pci_save_state(pdev);
+>  	pci_set_master(pdev);
+>  
+>  	rc = dma_set_mask_and_coherent(&bfad->pcidev->dev, DMA_BIT_MASK(64));
+> diff --git a/drivers/scsi/csiostor/csio_init.c b/drivers/scsi/csiostor/csio_init.c
+> index 79c8daf..db0c217 100644
+> --- a/drivers/scsi/csiostor/csio_init.c
+> +++ b/drivers/scsi/csiostor/csio_init.c
+> @@ -1093,7 +1093,6 @@ static void csio_remove_one(struct pci_dev *pdev)
+>  
+>  	pci_set_master(pdev);
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	/* Bring HW s/m to ready state.
+>  	 * but don't resume IOs.
+> diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
+> index 4421488..9512368 100644
+> --- a/drivers/scsi/ipr.c
+> +++ b/drivers/scsi/ipr.c
+> @@ -7859,7 +7859,6 @@ static int ipr_reset_restore_cfg_space(struct ipr_cmnd *ipr_cmd)
+>  	struct ipr_ioa_cfg *ioa_cfg = ipr_cmd->ioa_cfg;
+>  
+>  	ENTER;
+> -	ioa_cfg->pdev->state_saved = true;
+>  	pci_restore_state(ioa_cfg->pdev);
+>  
+>  	if (ipr_set_pcix_cmd_reg(ioa_cfg)) {
+> diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+> index f206267..065eb91 100644
+> --- a/drivers/scsi/lpfc/lpfc_init.c
+> +++ b/drivers/scsi/lpfc/lpfc_init.c
+> @@ -14434,12 +14434,6 @@ static int lpfc_cpu_online(unsigned int cpu, struct hlist_node *node)
+>  
+>  	pci_restore_state(pdev);
+>  
+> -	/*
+> -	 * As the new kernel behavior of pci_restore_state() API call clears
+> -	 * device saved_state flag, need to save the restored state again.
+> -	 */
+> -	pci_save_state(pdev);
+> -
+>  	if (pdev->is_busmaster)
+>  		pci_set_master(pdev);
+>  
+> diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+> index 5ffd945..9007533e 100644
+> --- a/drivers/scsi/qla2xxx/qla_os.c
+> +++ b/drivers/scsi/qla2xxx/qla_os.c
+> @@ -7886,11 +7886,6 @@ static void qla_pci_error_cleanup(scsi_qla_host_t *vha)
+>  
+>  	pci_restore_state(pdev);
+>  
+> -	/* pci_restore_state() clears the saved_state flag of the device
+> -	 * save restored state which resets saved_state flag
+> -	 */
+> -	pci_save_state(pdev);
+> -
+>  	if (ha->mem_only)
+>  		rc = pci_enable_device_mem(pdev);
+>  	else
+> diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
+> index a761c0a..1f52379 100644
+> --- a/drivers/scsi/qla4xxx/ql4_os.c
+> +++ b/drivers/scsi/qla4xxx/ql4_os.c
+> @@ -9796,11 +9796,6 @@ static uint32_t qla4_8xxx_error_recovery(struct scsi_qla_host *ha)
+>  	 */
+>  	pci_restore_state(pdev);
+>  
+> -	/* pci_restore_state() clears the saved_state flag of the device
+> -	 * save restored state which resets saved_state flag
+> -	 */
+> -	pci_save_state(pdev);
+> -
+>  	/* Initialize device or resume if in suspended state */
+>  	rc = pci_enable_device(pdev);
+>  	if (rc) {
+> diff --git a/drivers/tty/serial/8250/8250_pci.c b/drivers/tty/serial/8250/8250_pci.c
+> index 152f914..65bd370 100644
+> --- a/drivers/tty/serial/8250/8250_pci.c
+> +++ b/drivers/tty/serial/8250/8250_pci.c
+> @@ -6178,7 +6178,6 @@ static pci_ers_result_t serial8250_io_slot_reset(struct pci_dev *dev)
+>  		return PCI_ERS_RESULT_DISCONNECT;
+>  
+>  	pci_restore_state(dev);
+> -	pci_save_state(dev);
+>  
+>  	return PCI_ERS_RESULT_RECOVERED;
+>  }
+> diff --git a/drivers/tty/serial/jsm/jsm_driver.c b/drivers/tty/serial/jsm/jsm_driver.c
+> index 417a5b6..8d21373 100644
+> --- a/drivers/tty/serial/jsm/jsm_driver.c
+> +++ b/drivers/tty/serial/jsm/jsm_driver.c
+> @@ -355,7 +355,6 @@ static void jsm_io_resume(struct pci_dev *pdev)
+>  	struct jsm_board *brd = pci_get_drvdata(pdev);
+>  
+>  	pci_restore_state(pdev);
+> -	pci_save_state(pdev);
+>  
+>  	jsm_uart_port_init(brd);
+>  }
 
 
