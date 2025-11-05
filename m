@@ -1,71 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-13808-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13809-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0C1C364DD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 16:23:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6DBC3650D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 16:26:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1pxy1rjfz3bW7;
-	Thu,  6 Nov 2025 02:23:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1q1D29phz3bW7;
+	Thu,  6 Nov 2025 02:26:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762356230;
-	cv=none; b=QQ/LJaCiij7FXsc2uEtLR5IQjqC+a4KE8xiHasMf5ESi0I3qzrD+hmPNJZMfVT4B5V4/EXaDDnSxaSEKfYuJNvbZKtCX4DzlnsOUpY8jM8fIJehUjfcn48c/AORv6UioPfb7QplqJlVnI4x7ZV0wYQMU+Qi/1yLUVxYU/BRj6CiAIAwOAswu/OiVoiXg53o1tcKoVD+PlkYT5NLrTVs+CVkqFACCNFakgkjZs4DXKvarRFcV0vlV7fXUGeqUPYFiqF0KeVRlDeyFJGXh680VozmcKtIh0xrgDkC9jzN62NgbZe/o+mJ01nXyF38eTN1IO5TGJDpA65M9tbLt2fOVsQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762356400;
+	cv=none; b=MOeK9tt3wVe8hWhJNyIJJEKoEmc/UQBzCCJpA8wy5dvWkpLItpL/W6/plX9924G3pIQOXk1s+2d4HmZuqffiWV3UBFjMzJXXuMzkxiacnNCdpH0FZO9gpZg0one8Dj/BzmUGm8oaR8yPPmT1wnReVFDX6RmojkE+RYmSMAIc+JR9FDYu449nFrAaGD6+s0U2ZYE6hdiY8fB3nP9M3cOsjM6ADk3s0eRnBtOdEuZUx0DOV0w75O92tDNKDKlAGPfJl3XQd5DECYNDYfYTNI8WlZWYquiHYQbi04ORBP2xAKaZGz9ISuhiNyTneZDdlbksvwRXOsydjEGSltyTtiyeBg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762356230; c=relaxed/relaxed;
-	bh=ZwXrGHR7YxtpuyFp/BXZocubvmjRwPrv7rU8FbTpQyw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BGKZeWP0Gsk1xx2D8IBhlbmf0/YzCrCLWRABU0CeoaML9ROIAxlB/s0pi9e8AW6yDgedeJMyKyrhwo+5BJMFZc/a+M36K/3a5wKO0+wTAeCNN0sbgRrhTIWDioRtkvW5ue44KyieW+rkb3QWEBggzvIdxbJamZX+LfE22kEHvgdVyDDRsymAta/5QDf8JmnKLTJqspOVC0qhoAdCU3JnC1suRtZimrE6Dj3s0LynwHlRLCLbqRWgj/mt1CLoW+2YtaHLK6I1uBKAoD//LjGwHDtutSdMpIQ44Hu/muLaiVB5YOpCnQsDjRWXNiMN2EH3mEJGJbGF659eb8s8qmZbSg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uMrvcThp; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1762356400; c=relaxed/relaxed;
+	bh=dmjmfo22QwufKip+RFN2GwcKXDk7+fDMohFzNqFh1wo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UIqp319MgdmTK+sJvwEyVx9feR58uiVu68oPC8YwiguByHkdvn4ufHsg7h9vPrlWh4lPAwso+1Wntx77BfyMREzXSs54IYezGH3zqZCj65NJvDHpm9fga+tI46EJMCpQc9Z2esiaDDioBOIqOp9bvKtZZUBR22UH78f8hkDY+N+xyeHVennuZlEcwNhqNXEj8voqKTN+Nx1EOuoTTx3qFhqSDIikJ2bIRV5pkWybOrfHlDGYaec01rKigo3rwfA5PcziNFqYRyYdUJMLmVTPOWI1Sk9N832jQlLS+g+1HH4xAH397bGftHFfXRKqwU/OrAxCQIIa44Q02klfBZD4gA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZZOkuYE/; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3q2wlaqykdaiugcpleiqqing.eqonkpwzrre-fgxnkuvu.q1ncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uMrvcThp;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZZOkuYE/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3q2wlaqykdaiugcpleiqqing.eqonkpwzrre-fgxnkuvu.q1ncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1pxx0Cpzz2yrT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 02:23:48 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EBE606021E;
-	Wed,  5 Nov 2025 15:23:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE3FC4CEF5;
-	Wed,  5 Nov 2025 15:23:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762356226;
-	bh=kUs8Lv2NDX+HzCDICX2X7wBuseMdW6bT2eEf/zscT/4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uMrvcThpY3YAAbWSY9xnzagjiDcwxd3DE9e20MpciQ0mHPg3Rf2Ci/61aau+E4mQM
-	 8nZgzHXJSUUcSaMnT3I6e/kc2OTFqEOU8mhgloW70El8EVP4uFuINodUwyZYdb4wN6
-	 1lFZyctatEB0Ly2mBkqqT1g1f5kszp3d1j2Gfcxbk6+UPzncHihdjKp/ahdU45prxY
-	 rmgoXHjD8Oya/yhaU7KPl20KhLjgM4879Ne2XzlbiGqEnxwVLMRrnoxp2UrzmMsOXc
-	 mmWDqocG56Gn6iM3/+Xaa3pHugJb+dKTjiXrnAV7pXWqqp81/F+Ra04o22uyDpfK++
-	 osL5X75ZbKhQQ==
-Date: Wed, 5 Nov 2025 16:23:39 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net, 
-	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
-	rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	paul@paul-moore.com, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
-	john.johansen@canonical.com, selinux@vger.kernel.org, borntraeger@linux.ibm.com, 
-	bpf@vger.kernel.org
-Subject: Re: [PATCH v2 22/50] convert efivarfs
-Message-ID: <20251105-absatz-zehrt-8d1197f900c9@brauner>
-References: <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
- <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
- <20251029193755.GU2441659@ZenIV>
- <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
- <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
- <423f5cc5352c54fc21e0570daeeddc4a58e74974.camel@HansenPartnership.com>
- <20251105-sohlen-fenster-e7c5af1204c4@brauner>
- <305ff01c159993d8124ae3125f7dacf6b61fa933.camel@HansenPartnership.com>
- <20251105-ausfiel-klopapier-599213591ad2@brauner>
- <ddc9e2efa25d59ae7f1989ac155b9a9043ca830b.camel@HansenPartnership.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1q1B6Tjtz2yrT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 02:26:38 +1100 (AEDT)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-3418ada9e6cso1978173a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Nov 2025 07:26:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762356395; x=1762961195; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dmjmfo22QwufKip+RFN2GwcKXDk7+fDMohFzNqFh1wo=;
+        b=ZZOkuYE/1097Ji/CVc3vYIoW99gMB2PX6BDXbtXUWJkIGfBnvBFaudwjj5muBCYWQo
+         5IFJHWjVDGqUyj9FBhoyBItJLt59O/PDVIEMdJnHkTojzAh8idJZmW3IWPhaWL1g1Gmf
+         8Eqg9yl5aDyGpEiS+NmMwjtgCmzpzPgj+suS69DxAsbB6jpeUmYAyEswP5mqBgrkmyQa
+         +a+c8HBGXaXWvNma2KtakHNAiUc18080xJQ2uawfSf2hM39x+crSLSeb6ePgliY2glIk
+         LE0Dyw5VYbxyIj5S/d4imW6A00JLyXbAfgv3TIDhB4FkmCbDvmqwL3Bn/xrf/+p/hryX
+         E5Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762356395; x=1762961195;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dmjmfo22QwufKip+RFN2GwcKXDk7+fDMohFzNqFh1wo=;
+        b=sRpL3hBwaPUZysMZ2qtCu5hJuB2lvzk9PtSTSAMlGfflgrwNM6BueSu9byRR5DZpXI
+         VCandOJIQHAlCWdgsNUxG42lb301j+2p65pvgGeV2nAv50bLNSB5yZwt2HA1Dwx83D8B
+         4mPSAtJHMzpclsuHWFpFom/c6BMMK9Hc3oGXIG7IIOyaEutMxpGULW9gpIBqcjj8l/wj
+         u1Yptn/oJwhoNOKdyVJzWs8+3C3lhEufWNAJStiUunP56/K8/ozzqxL9KOr2WMQIC6lC
+         Bkq9+LrWrBz7gLpHFiUNFC1B5JFM1uVqYbFcf+rV/tjeHyS6XoEd+xHEKk2X/YOxj4ph
+         Mftg==
+X-Forwarded-Encrypted: i=1; AJvYcCUevF4tktg8qsbK8I8NDHnfP9WklIP2NSYhkh+gyS+LzFvSgJqXgTe5AcjHrCEXmw6eHnqUZ/mfhi48Iio=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxbwA1iz8QPzI252FSH97CzFu+dZRLlDR26Y/3IvKyEHz8lwicH
+	xBB7tiZ+bItcxViZwYFgQ89MwvHEhrZ+Mo5LdzLe6FL+Vn2EG7ar4m4UbvPy2OrAzO7Dgp9hPIG
+	eU+LEbQ==
+X-Google-Smtp-Source: AGHT+IEksiko2nLkYHDcuQoizh41Xk4dhEPlLcSxUswEaWhydqjlp9gNPv6q5VYl/pXem0FsGEVxprPZGIk=
+X-Received: from pjbtc7.prod.google.com ([2002:a17:90b:5407:b0:340:b503:505f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:384d:b0:340:9cf1:54d0
+ with SMTP id 98e67ed59e1d1-341a6c08e65mr4623520a91.1.1762356395074; Wed, 05
+ Nov 2025 07:26:35 -0800 (PST)
+Date: Wed, 5 Nov 2025 07:26:33 -0800
+In-Reply-To: <aQsBI1/SIXGbf9nA@yzhao56-desk.sh.intel.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,95 +75,85 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ddc9e2efa25d59ae7f1989ac155b9a9043ca830b.camel@HansenPartnership.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-5-seanjc@google.com>
+ <aPhjYcOFjL1Z8m2s@yzhao56-desk.sh.intel.com> <aQMi/n9DVyeaWsVH@yzhao56-desk.sh.intel.com>
+ <aQo-hus99rE7WBgb@google.com> <aQr9jW/7zwWJaDFf@yzhao56-desk.sh.intel.com> <aQsBI1/SIXGbf9nA@yzhao56-desk.sh.intel.com>
+Message-ID: <aQtsqXPaZo2SMdJU@google.com>
+Subject: Re: [PATCH v3 04/25] KVM: x86/mmu: Add dedicated API to map
+ guest_memfd pfn into TDP MMU
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Michael Roth <michael.roth@amd.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Nov 05, 2025 at 09:01:59AM -0500, James Bottomley wrote:
-> On Wed, 2025-11-05 at 14:46 +0100, Christian Brauner wrote:
-> > On Wed, Nov 05, 2025 at 08:33:10AM -0500, James Bottomley wrote:
-> > > On Wed, 2025-11-05 at 14:16 +0100, Christian Brauner wrote:
-> > > > On Wed, Nov 05, 2025 at 08:09:03AM -0500, James Bottomley wrote:
-> > > > > On Wed, 2025-11-05 at 12:47 +0100, Christian Brauner wrote:
-> > > [...]
-> > > > > > And suspend/resume works just fine with freeze/thaw. See
-> > > > > > commit
-> > > > > > eacfbf74196f ("power: freeze filesystems during
-> > > > > > suspend/resume") which implements exactly that.
-> > > > > > 
-> > > > > > The reason this didn't work for you is very likely:
-> > > > > > 
-> > > > > > cat /sys/power/freeze_filesystems
-> > > > > > 0
-> > > > > > 
-> > > > > > which you must set to 1.
+On Wed, Nov 05, 2025, Yan Zhao wrote:
+> On Wed, Nov 05, 2025 at 03:32:29PM +0800, Yan Zhao wrote:
+> > On Tue, Nov 04, 2025 at 09:57:26AM -0800, Sean Christopherson wrote:
+> > > On Thu, Oct 30, 2025, Yan Zhao wrote:
+> > > > On Wed, Oct 22, 2025 at 12:53:53PM +0800, Yan Zhao wrote:
+> > > > > On Thu, Oct 16, 2025 at 05:32:22PM -0700, Sean Christopherson wrote:
+> > > > > > Link: https://lore.kernel.org/all/20250709232103.zwmufocd3l7sqk7y@amd.com
 > > > > > 
-> > > > > Actually, no, that's not correct.  The efivarfs freeze/thaw
-> > > > > logic must run unconditionally regardless of this setting to
-> > > > > fix the systemd bug, so all the variable resyncing is done in
-> > > > > the thaw call, which isn't conditioned on the above (or at
-> > > > > least it shouldn't be).
-> > > > 
-> > > > It is conditioned on the above currently but we can certainly fix
-> > > > it easily to not be.
+> > > > > Hi Sean,                                                                         
+> > > > > 
+> > > > > Will you post [1] to fix the AB-BA deadlock issue for huge page in-place
+> > > > > conversion as well?
 > > > 
-> > > It still seems to be unconditional in upstream 6.18-rc4
-> > > kernel/power/hibernate.c with only freeze being conditioned on the
-> > 
-> > I'm honestly not sure how efivarfs would be frozen if
-> > filesystems_freeze() isn't called... Maybe I missed that memo though.
-> > In any case I just sent you...
+> > > If you (or anyone) has the bandwidth, please pick it up.  I won't have cycles to
+> > > look at that for many weeks (potentially not even this calendar year).
+> > Got it!
+> > On the other hand, do you think we can address the warning as below?
+> > The code is based on [2].
+> Hmm, updated the diff.
 > 
-> We don't need to be frozen: our freeze_fs method is empty, we just need
-> thaw_fs calling.
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 7b4a4474d468..543e1eb9db65 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -853,6 +853,9 @@ static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
+>         inode->i_size = size;
+>         mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
+>         mapping_set_inaccessible(inode->i_mapping);
+> +       if (flags &GUEST_MEMFD_FLAG_MMAP)
+> +               lockdep_set_subclass(&inode->i_mapping->invalidate_lock, 1);
+> +
+>         /* Unmovable mappings are supposed to be marked unevictable as well. */
+>         WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+> 
+>  
+> > As noted in [3], the only scenario can trigger the warning after [2] is when a
+> > process creates a TDX VM with non-in-place-conversion guest_memfd and a normal
+> > VM with in-place-conversion guest_memfd. The two invalidate_lock's don't contend
+> > with each other theoretically.
 
-No, you need to call freeze so the power subsystem can mark the
-filesystem as being exclusively frozen by it because that specific
-freeze must not be undone by anyone else e.g., userspace or some other
-internal unfreeze due to some filesystem (for other filesystems this is
-very relevant) internal freeze for say scrub or whatever.
+Hmm, no, I think we need to hoist gup() call outside of filemap_invalidate_lock(),
+because I don't think this is strictly limited to TDX VMs without in-place
+conversion.  Even with in-place conversion, I think KVM should allow the source
+page to be shared memory, at which point I believe this becomes a legimate AB-BA
+issue.
 
-If filesystem_thaw() doesn't find efivarfs frozen - and exclusively
-frozen by the power subsyste - it obviously won't call the actual
-efivarfs thaw method. It's all working in order. My patch should fix
-your issue and will ensure efivarfs always runs. We wouldn't even need
-an SB_I_* flag for this. We could equally well just match superblock but
-other filesystems might need or want to opt into this too.
+In general, playing lockdep games with so many subsystems involved terrifies me.
 
-Don't implement thaw_super() yourself, please.
-
-> 
-> Is the trouble that there's now freeze/thaw accounting, so thaw won't
-> be called based on that if freeze wasn't?  In which case might it not
-> be better for us to implement thaw_super, which is called
-> unconditionally and leaves the accounting up to the filesystem?
-> 
-> > > setting of the filesystem_freeze variable but I haven't checked -
-> > > next.
-> > > 
-> > > However, if there's anything in the works to change that we would
-> > > need an exception for efivarfs, please ... we can't have a bug fix
-> > > conditioned on a user setting.
-> > 
-> > ... a patch in another mail.
-> > 
-> > Sorry in case I misunderstood that you _always_ wanted that sync
-> > regardless of userspace enabling it.
-> 
-> We need the thaw method called to get the variable resync to happen. 
-> That fixes a bug on hibernate with systemd (and also accounts for an
-> other efi variable changes the user may have made between hibernate and
-> resume), yes.  And we need that to happen unconditionally to fix the
-> systemd bug.
-> 
-> Regards,
-> 
-> James
-> 
+> > [2] https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/
+> > [3] https://lore.kernel.org/all/aQMi%2Fn9DVyeaWsVH@yzhao56-desk.sh.intel.com/
 
