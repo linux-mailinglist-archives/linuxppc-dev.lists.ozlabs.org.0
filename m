@@ -1,68 +1,111 @@
-Return-Path: <linuxppc-dev+bounces-13809-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13810-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6DBC3650D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 16:26:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32868C3659D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 16:35:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1q1D29phz3bW7;
-	Thu,  6 Nov 2025 02:26:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1qC75PXqz2ySq;
+	Thu,  6 Nov 2025 02:35:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762356400;
-	cv=none; b=MOeK9tt3wVe8hWhJNyIJJEKoEmc/UQBzCCJpA8wy5dvWkpLItpL/W6/plX9924G3pIQOXk1s+2d4HmZuqffiWV3UBFjMzJXXuMzkxiacnNCdpH0FZO9gpZg0one8Dj/BzmUGm8oaR8yPPmT1wnReVFDX6RmojkE+RYmSMAIc+JR9FDYu449nFrAaGD6+s0U2ZYE6hdiY8fB3nP9M3cOsjM6ADk3s0eRnBtOdEuZUx0DOV0w75O92tDNKDKlAGPfJl3XQd5DECYNDYfYTNI8WlZWYquiHYQbi04ORBP2xAKaZGz9ISuhiNyTneZDdlbksvwRXOsydjEGSltyTtiyeBg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762356915;
+	cv=none; b=YCyXVehLsKAyR8QOhaDNRDrZqljsOPRqptdwEKCjxL8WYGgTo7ZaclCvIylAAqAxH6SCSDQvtcnQJuCuNGtcheyb2gC9hJADaW3ganto6B+FbFS6bB+tMIm6Tx0wFUJ+cWFkwbrCm+oiBXb6q881q7cn/4wk+R84ZRCmWBJDCOjYDtbMYYxP/MtV2uxDxGSvwHiITa6CZpY8xEhRm4s4k1GAVNytNsfFC2zCFU3kk1GKX1urLG7fmFFFZ2aOKoK5VMxxseGhX09btgJ+2GMa4mlUtie3DMVdiS2suPU4gfqbKe8HdTWaab2LRDsRLF697n+FyDRIw1/54UhSqoU65w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762356400; c=relaxed/relaxed;
-	bh=dmjmfo22QwufKip+RFN2GwcKXDk7+fDMohFzNqFh1wo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UIqp319MgdmTK+sJvwEyVx9feR58uiVu68oPC8YwiguByHkdvn4ufHsg7h9vPrlWh4lPAwso+1Wntx77BfyMREzXSs54IYezGH3zqZCj65NJvDHpm9fga+tI46EJMCpQc9Z2esiaDDioBOIqOp9bvKtZZUBR22UH78f8hkDY+N+xyeHVennuZlEcwNhqNXEj8voqKTN+Nx1EOuoTTx3qFhqSDIikJ2bIRV5pkWybOrfHlDGYaec01rKigo3rwfA5PcziNFqYRyYdUJMLmVTPOWI1Sk9N832jQlLS+g+1HH4xAH397bGftHFfXRKqwU/OrAxCQIIa44Q02klfBZD4gA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZZOkuYE/; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3q2wlaqykdaiugcpleiqqing.eqonkpwzrre-fgxnkuvu.q1ncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1762356915; c=relaxed/relaxed;
+	bh=mBCDjFCtIralqPbaobJr9w45EqrrTPgVKXorpBh75DA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DeoRrF6jOEUHRNLGaXf+Gfh11jvT1I+Q1HHZQOYLGoek/Arj75U6z0M7kgDdnoXZGkzo/mtrf683/Iv3D+wUWZWvSjssNqmFFjVZs0R/bKULoaYFIluwKdIMx5wmOHunC3kFMtEacWpVA1qzPPXYVgRFRLSaOHNSG2sFMfdXEPjB7DO3HaRioGgyCcIMEokf0RK9EvLPxmYAkwPGfgYUraQBTIbPrt8/1GF/EQF79RcVxjYkxbPBIkcKWKUyqG1pyUj2GmT9JlozV8091lcIWVUeugdFLkmK2jNgEM34tKyRrvdXUCLm0/WMoGa9Et2RB3+haMAQLAuTKRp0hkrPQw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kJJvQMKS; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZZOkuYE/;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kJJvQMKS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3q2wlaqykdaiugcpleiqqing.eqonkpwzrre-fgxnkuvu.q1ncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1q1B6Tjtz2yrT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 02:26:38 +1100 (AEDT)
-Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-3418ada9e6cso1978173a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Nov 2025 07:26:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762356395; x=1762961195; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dmjmfo22QwufKip+RFN2GwcKXDk7+fDMohFzNqFh1wo=;
-        b=ZZOkuYE/1097Ji/CVc3vYIoW99gMB2PX6BDXbtXUWJkIGfBnvBFaudwjj5muBCYWQo
-         5IFJHWjVDGqUyj9FBhoyBItJLt59O/PDVIEMdJnHkTojzAh8idJZmW3IWPhaWL1g1Gmf
-         8Eqg9yl5aDyGpEiS+NmMwjtgCmzpzPgj+suS69DxAsbB6jpeUmYAyEswP5mqBgrkmyQa
-         +a+c8HBGXaXWvNma2KtakHNAiUc18080xJQ2uawfSf2hM39x+crSLSeb6ePgliY2glIk
-         LE0Dyw5VYbxyIj5S/d4imW6A00JLyXbAfgv3TIDhB4FkmCbDvmqwL3Bn/xrf/+p/hryX
-         E5Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762356395; x=1762961195;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dmjmfo22QwufKip+RFN2GwcKXDk7+fDMohFzNqFh1wo=;
-        b=sRpL3hBwaPUZysMZ2qtCu5hJuB2lvzk9PtSTSAMlGfflgrwNM6BueSu9byRR5DZpXI
-         VCandOJIQHAlCWdgsNUxG42lb301j+2p65pvgGeV2nAv50bLNSB5yZwt2HA1Dwx83D8B
-         4mPSAtJHMzpclsuHWFpFom/c6BMMK9Hc3oGXIG7IIOyaEutMxpGULW9gpIBqcjj8l/wj
-         u1Yptn/oJwhoNOKdyVJzWs8+3C3lhEufWNAJStiUunP56/K8/ozzqxL9KOr2WMQIC6lC
-         Bkq9+LrWrBz7gLpHFiUNFC1B5JFM1uVqYbFcf+rV/tjeHyS6XoEd+xHEKk2X/YOxj4ph
-         Mftg==
-X-Forwarded-Encrypted: i=1; AJvYcCUevF4tktg8qsbK8I8NDHnfP9WklIP2NSYhkh+gyS+LzFvSgJqXgTe5AcjHrCEXmw6eHnqUZ/mfhi48Iio=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxbwA1iz8QPzI252FSH97CzFu+dZRLlDR26Y/3IvKyEHz8lwicH
-	xBB7tiZ+bItcxViZwYFgQ89MwvHEhrZ+Mo5LdzLe6FL+Vn2EG7ar4m4UbvPy2OrAzO7Dgp9hPIG
-	eU+LEbQ==
-X-Google-Smtp-Source: AGHT+IEksiko2nLkYHDcuQoizh41Xk4dhEPlLcSxUswEaWhydqjlp9gNPv6q5VYl/pXem0FsGEVxprPZGIk=
-X-Received: from pjbtc7.prod.google.com ([2002:a17:90b:5407:b0:340:b503:505f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:384d:b0:340:9cf1:54d0
- with SMTP id 98e67ed59e1d1-341a6c08e65mr4623520a91.1.1762356395074; Wed, 05
- Nov 2025 07:26:35 -0800 (PST)
-Date: Wed, 5 Nov 2025 07:26:33 -0800
-In-Reply-To: <aQsBI1/SIXGbf9nA@yzhao56-desk.sh.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1qC56Xjvz2xQ0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 02:35:12 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A57hVAj007179;
+	Wed, 5 Nov 2025 15:34:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=mBCDjF
+	CtIralqPbaobJr9w45EqrrTPgVKXorpBh75DA=; b=kJJvQMKSobCn/AX0FM8hiu
+	lAg3CQC5+pPaGaYOYIf58zJOni1GZeBU5r+Ebpnwm1cT0Y2oN+LZHcCV1AQGy5ib
+	qF0K8CkDnXRO3u+NJ6fCUcRwPNyXTzebzR/1kBMjNE2Du5ppzZk6r0ed08NSlok4
+	BG42+N57/9Pz/7iG3qodXH/AVEVRn1lt7Wp+xfxzW8Mc8+KJtePmcayAgc/3sXkU
+	bEde9/gBVgl3qsanMHgkoEtEGfkLfYWvSabDJoCV796DtA5RfDDhBuG1gLBp65Hj
+	5kCUO4tHPdGz34RItxvzgRYx4bF2NhlaTB9c8EYikfmlyWRKpxX9/Grx/RPi1bBg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a57mr9vpe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 15:34:36 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A5FQeET022630;
+	Wed, 5 Nov 2025 15:34:35 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a57mr9vpb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 15:34:35 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A5ChDTP021482;
+	Wed, 5 Nov 2025 15:34:34 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a5xrjrkr3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 15:34:34 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A5FYURj53674336
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Nov 2025 15:34:30 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A883920040;
+	Wed,  5 Nov 2025 15:34:30 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 13AF62004B;
+	Wed,  5 Nov 2025 15:34:29 +0000 (GMT)
+Received: from osiris (unknown [9.155.211.25])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  5 Nov 2025 15:34:28 +0000 (GMT)
+Date: Wed, 5 Nov 2025 16:34:26 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>,
+        Andreas Larsson <andreas@gaisler.com>,
+        Nick Alcock <nick.alcock@oracle.com>, John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Shuah Khan <shuah@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Nagarathnam Muthusamy <nagarathnam.muthusamy@oracle.com>,
+        Shannon Nelson <sln@onemain.com>, linux-kernel@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Subject: Re: [PATCH v4 24/35] vdso/datastore: Allocate data pages dynamically
+Message-ID: <20251105153426.16228C13-hca@linux.ibm.com>
+References: <20251014-vdso-sparc64-generic-2-v4-0-e0607bf49dea@linutronix.de>
+ <20251014-vdso-sparc64-generic-2-v4-24-e0607bf49dea@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,85 +118,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-5-seanjc@google.com>
- <aPhjYcOFjL1Z8m2s@yzhao56-desk.sh.intel.com> <aQMi/n9DVyeaWsVH@yzhao56-desk.sh.intel.com>
- <aQo-hus99rE7WBgb@google.com> <aQr9jW/7zwWJaDFf@yzhao56-desk.sh.intel.com> <aQsBI1/SIXGbf9nA@yzhao56-desk.sh.intel.com>
-Message-ID: <aQtsqXPaZo2SMdJU@google.com>
-Subject: Re: [PATCH v3 04/25] KVM: x86/mmu: Add dedicated API to map
- guest_memfd pfn into TDP MMU
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Michael Roth <michael.roth@amd.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-7.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251014-vdso-sparc64-generic-2-v4-24-e0607bf49dea@linutronix.de>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: GGdzfD5G3hQ68-39VW7GakGxAH7MovxB
+X-Authority-Analysis: v=2.4 cv=MKhtWcZl c=1 sm=1 tr=0 ts=690b6e8c cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=8nJEP1OIZ-IA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=ebG-ZW-8AAAA:8 a=e1b3s80Sx_c-5AZqzBwA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+ a=Bj2TwAA_C77lQ_X2_dkp:22 a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
+ a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-ORIG-GUID: FA8Qn-I58re3Fj-7DCZVJVXwZ4DiaPYs
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAwMSBTYWx0ZWRfX79q+aRjocr8A
+ WsJicIkrDzeZowDTKWdSRpdbbSTYSdnAKh3ClmRCNP0S8je+b6bwR4QAObGY+JaivfKMlj2hBVw
+ KLzTBb1GVj2u/8kaK8wfeBTBcwczqZx2uJUW94XwBBfiT1PIHgcud1V1IaGBQ7/80r1+m5QVf5y
+ 2MAbdeeWJFA/uN5CkUVEPIEOGTIF7nMUT8yZgz8qLQcWjKcDN5xrV+ylstwr289JOHk8UDvW+If
+ ZS0Vh+xa015UpwIHMHQi/pVyWTfCCQ7nEswkEgkvxtiBx1AXWt5u1z1b8gL7A+PMKBFcztnM0NI
+ NBBPJSUKiH3NfGjyVbk1no9yQUjK4mCZusqZxNsqflVQ6b/X2GCXdlXaNPmhI6deTnzJKGTxcvZ
+ 8le1/uj5xZfo4KJOYkdyfW8kJi0g6w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-05_06,2025-11-03_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 adultscore=0 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010001
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Nov 05, 2025, Yan Zhao wrote:
-> On Wed, Nov 05, 2025 at 03:32:29PM +0800, Yan Zhao wrote:
-> > On Tue, Nov 04, 2025 at 09:57:26AM -0800, Sean Christopherson wrote:
-> > > On Thu, Oct 30, 2025, Yan Zhao wrote:
-> > > > On Wed, Oct 22, 2025 at 12:53:53PM +0800, Yan Zhao wrote:
-> > > > > On Thu, Oct 16, 2025 at 05:32:22PM -0700, Sean Christopherson wrote:
-> > > > > > Link: https://lore.kernel.org/all/20250709232103.zwmufocd3l7sqk7y@amd.com
-> > > > > 
-> > > > > Hi Sean,                                                                         
-> > > > > 
-> > > > > Will you post [1] to fix the AB-BA deadlock issue for huge page in-place
-> > > > > conversion as well?
-> > > 
-> > > If you (or anyone) has the bandwidth, please pick it up.  I won't have cycles to
-> > > look at that for many weeks (potentially not even this calendar year).
-> > Got it!
-> > On the other hand, do you think we can address the warning as below?
-> > The code is based on [2].
-> Hmm, updated the diff.
+On Tue, Oct 14, 2025 at 08:49:10AM +0200, Thomas Weiﬂschuh wrote:
+> Allocating the datapages as part of the kernel image does not work on
+> SPARC. It is also problematic with regards to dcache aliasing as there is
+> no guarantee that the virtual addresses used by the kernel are compatible
+> with those used by userspace.
 > 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 7b4a4474d468..543e1eb9db65 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -853,6 +853,9 @@ static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
->         inode->i_size = size;
->         mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
->         mapping_set_inaccessible(inode->i_mapping);
-> +       if (flags &GUEST_MEMFD_FLAG_MMAP)
-> +               lockdep_set_subclass(&inode->i_mapping->invalidate_lock, 1);
-> +
->         /* Unmovable mappings are supposed to be marked unevictable as well. */
->         WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+> Allocate the data pages through the page allocator instead.
+> Unused pages in the vDSO VMA are still allocated to keep the virtual
+> addresses aligned.
 > 
->  
-> > As noted in [3], the only scenario can trigger the warning after [2] is when a
-> > process creates a TDX VM with non-in-place-conversion guest_memfd and a normal
-> > VM with in-place-conversion guest_memfd. The two invalidate_lock's don't contend
-> > with each other theoretically.
+> These pages are used by both the timekeeping, random pool and architecture
+> initialization code. Introduce a new early initialization step, to make
+> sure they are available when needed.
+> 
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> Tested-by: Andreas Larsson <andreas@gaisler.com>
+> Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+> ---
+>  include/linux/vdso_datastore.h |  6 ++++++
+>  init/main.c                    |  2 ++
+>  lib/vdso/datastore.c           | 44 ++++++++++++++++++++++--------------------
+>  3 files changed, 31 insertions(+), 21 deletions(-)
 
-Hmm, no, I think we need to hoist gup() call outside of filemap_invalidate_lock(),
-because I don't think this is strictly limited to TDX VMs without in-place
-conversion.  Even with in-place conversion, I think KVM should allow the source
-page to be shared memory, at which point I believe this becomes a legimate AB-BA
-issue.
+...
 
-In general, playing lockdep games with so many subsystems involved terrifies me.
+> +void __init vdso_setup_data_pages(void)
+> +{
+> +	unsigned int order = get_order(VDSO_NR_PAGES * PAGE_SIZE);
+> +	struct folio *folio = folio_alloc(GFP_KERNEL, order);
 
-> > [2] https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/
-> > [3] https://lore.kernel.org/all/aQMi%2Fn9DVyeaWsVH@yzhao56-desk.sh.intel.com/
+I'm seeing random hangs on s390 too with our CI, but unfortunately I cannot
+reproduce it manually. But looking at one of the dumps it looks to me like the
+vdso time page contains (more or less) random junk at the end. Or in other
+words, shouldn't this be:
+
+	struct folio *folio = folio_alloc(GFP_KERNEL | __GFP_ZERO, order);
+
+? At least that is a difference to before as far as I can tell.
 
