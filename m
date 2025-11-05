@@ -1,49 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-13821-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13818-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4207EC382B7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 23:20:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0ADDC381C0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 22:53:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d20BH054Fz2yGM;
-	Thu,  6 Nov 2025 09:20:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1zbP2J8nz2yFs;
+	Thu,  6 Nov 2025 08:53:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762381206;
-	cv=none; b=UmFGI9XLdU1gZDnelA2WuE3bD6WO2hkVDCHqZEifVsBtES+FlFR3ssAgIIG88BvbOhe+H0Zo4rcKqgyRsznqly+wubdXxjnYg1UEhQ3TVhHkRNPNUwQXCAPDMpiQBC4HO3uXPjKWbK1Zvo+GCpkSsajGyW+jo6zv5nF3b8/broCBfqM9eVh6GmwmsulVP9202V6MBtI2972zl8EWkHC81Hy5MYLlE0gFmbz+syMj1AZzaAqjwF2rxsT90lANxu8FAAAmK5dTey0MIKRyU4roC02a7iHasSYzrt7oElKlBriw5+DUk4wK5/2RUeauFxEis+IXjyooHVm3/UqKLvBYEw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1036"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762379601;
+	cv=none; b=oibthW1HwZ+Py8zcSLjxY1bdZXQ+ex2iyIreWyGyF/9GOToyrEwgXE/65epd6hoPAcOmBbMrOV63XLunB4WgRiFLzuT9znTGyzvfZOmcUoe+Da0gX75JaxJJH+T4/el/VPGIXxWSvklyq2CAd6/4Th5t7s2A0F2sZkF2icj3Wwv5cL8r8P/u6qNnZUV+PE8A1mFCxySaJ95GIQ5yp9caJwdwU4yPfUjRlRvPimNjS8jiBToV6SvldiRwTYPhtzE6Cmt97FMxA7TcXKaYDwBUE6NcmdceKcwKefqJPcCmS9t5ejBsGDVNaCwXy+i5MImBtt1N7jK0IquujYuJROU7SA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762381206; c=relaxed/relaxed;
-	bh=NCbeKvO+ZjJAQ/elEkMe+bQoL8LQws9xVj3nTV1P/oc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hdI81EVDBUJ9CyWjFDqXVYmuZTr/eqR3jGrTulO2ST1S9DF5WfE7vjjURFpV8phVuF1OhD6V11k8qM4J9MwtGyobMrUurMK4xNQvoWXuFy/1O7Xmd8ixutYfu0CAwEl4WJ2HD5rwksLllTtBM7MRa71Q6Bt/m/UGANMOY8Sgv6FrEnhtZL4UFXsSYCBNwjPtzbDK5EHq/2YEhszyVuQM8YPUcvFZx5SAuKI7i6vG+IL6PFdf1xIra2gSeJHsVLJXS888/rFzlN3NUJh0cDBUks8vVzBbbhUFUmdoZHoHm8glafQ/Q59i6UgV2kw0Fxi6KCTp9VUvgxQkeOjDWC/KxA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d20BG16VNz2xQ2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 09:20:05 +1100 (AEDT)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4d1zPN02rRz9sS7;
-	Wed,  5 Nov 2025 22:44:40 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id l1GfbrSwd72T; Wed,  5 Nov 2025 22:44:39 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4d1zPM5zM6z9sRg;
-	Wed,  5 Nov 2025 22:44:39 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id B8C168B77B;
-	Wed,  5 Nov 2025 22:44:39 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 37srmVnLvJ83; Wed,  5 Nov 2025 22:44:39 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id A23768B773;
-	Wed,  5 Nov 2025 22:44:38 +0100 (CET)
-Message-ID: <3cc3d311-35b0-42f1-b20f-ed59391bb8e0@csgroup.eu>
-Date: Wed, 5 Nov 2025 22:44:38 +0100
+	t=1762379601; c=relaxed/relaxed;
+	bh=LXYPCL23ES9Iyb1NQ2+5KG+FblnpsKPGwtWMhH2bakQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A847t7+8Sbm9tD85ROfRpdPCRT07fIzoUs6qtK+qnY3yW0jJAteuZOXoy16CherXwfRSKocaczUcPGzZ7Y8iebbW83kzftUfEquJfMpcBLZHSr6l0BBRfLoUWd1zklj/fHan6kVdzJ99E29FelEm0KfdsMpiPV7ohX5WSkYmK1Sdg7i7fIROgTlf9kWGd4q8Mrw9ZMSRHFhM9XGPISKxC+Gi9E1QhMQdFf3wDSoQfVkiEO7Sd6mb+9Jw9c651Jxw8g7DbcfohD74+Wcm2AHzAvPlsVvFRPOII/CCAdGilSTf+QL/COhAdCTt7DT3VXywq+bWI0jjMqysCsUS0ucy0g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=osandov.com; dkim=pass (2048-bit key; unprotected) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=UlPLS24G; dkim-atps=neutral; spf=none (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=osandov@osandov.com; receiver=lists.ozlabs.org) smtp.mailfrom=osandov.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=osandov.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=UlPLS24G;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=osandov.com (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=osandov@osandov.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1zbM5hKcz2xdg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 08:53:18 +1100 (AEDT)
+Received: by mail-pj1-x1036.google.com with SMTP id 98e67ed59e1d1-340ef0e6c06so48822a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Nov 2025 13:53:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1762379595; x=1762984395; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LXYPCL23ES9Iyb1NQ2+5KG+FblnpsKPGwtWMhH2bakQ=;
+        b=UlPLS24GvWUTm6NRr0JweoiP4zUVgg5Ar7/0ff4y6HRnkxXZXS8ur+RE1SlKYWmLo9
+         Tq3f+3edP5mqpQB3MGiWvDt4Im+CyK1g+rtSjjfEMCFBbxu4EBL0C9MLoEB9MiQpjiuG
+         vxnPVTAJxDTXip4X+qHXfD2E7TSz0MjEfMit+zGb/lQfTYPQXUDb4DSAwf0s9JyTu+E3
+         dXFf7RE0AnGtftW/mmxglkBNQPOzDpm3H7EYRWNsNeMhBzo40s9aC/YQPHjW29XVkOFn
+         MN/K7SlZfKJzkIFZm4rMEVlUVU1t6KsqJQzktNNHJceyde0q1yxinov9quAZ3emUjq+s
+         RI9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762379595; x=1762984395;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LXYPCL23ES9Iyb1NQ2+5KG+FblnpsKPGwtWMhH2bakQ=;
+        b=xGm+YDMiH3ozNaYjx8H4YlEayjpXBx6rwZd4EGNo8bOskopw6zHejvLY8Ux8ydYnrs
+         Ft9VcNAtEpmyGlbMgWovXDnvo89ABHhTtM9s/xnILCf4Rl+zu+bVoZZPKdmFJbMh/Jd4
+         j5dKKpvZ+mPraWP24TJaqtvrtIfxRa5JLWa22IV1NYTReW990IBOfEaY2Qz84KZ/JUjh
+         WVWNtGe8swz5P5fpKsRCAKZgjeeogwIECad8nyOUCiqjXkN7LH50S+B8buF6u24nfmQ+
+         JyNPhRj5m/ptWCk5uVx2CDFF9xH1OtnI/uVuYrsI3t/rHYktICxun0XReFehwskFNT+G
+         PTGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCF/L6ekG/sE2FH8AGv1+rbZixmNHE69zJsOlcD2hq+rd+Pq9/rQl3mVj0vPNA24Bcp/+rWNfJYXnrg5U=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw+b3RAXuB0hV4gp7gonG02XrIU4T3mBWqcgUGhV3ow+V5NPCvx
+	6IfnTv8mgcCkfMDnegKRm5rzPpMoveLPK7hhcxxdOioGQnikSZUZX7DFnAG1iQABY1c=
+X-Gm-Gg: ASbGncsvQxZun8AM655y9zJmMTk8LQVO5z5A5csyg0JRATEBJ9MEtvDc1vIFbeQMwrt
+	F9bLk9RhrH+BE8irR0RAf+ZvyMMTPHfCs3+q3VjoNP7kx/Bi3BiN2gVVn5ZL89kQx+575hlyXjd
+	nOwVRVyBajCoEjeLs3+YV63S5uCGhztZDNl20Oncc6aAuaCbs7LkQ8kADE8bdlo2AAhsnFI27zq
+	0ubl1rHto/hfVBCkj48py739EiIzTtt+YUG6Ph9poRe+ovJvP74H6sYWI2gx4NUJPlQDH37RMzP
+	twZP7sHuPMqWqS1NG3NoBcYXiB18DSIRtYcrEbj8gzR9nb5ZuoZghwf3wsGtVuKhI+YB0VyvjWs
+	4u7CuaUeGp4wtPAwtHiYicVDy23PMh3qI3W5GneFND0QEHacxNGSnIHfL/AN3M8Uu7UkQtw==
+X-Google-Smtp-Source: AGHT+IGY0r/CwQ4uYP5m9fphBTj5UtPwNG1Wco2SGrHkrgNEwj6b42fgxZjgQDbYi9yCWcOKFr/ugw==
+X-Received: by 2002:a17:90b:1811:b0:340:b501:3ae2 with SMTP id 98e67ed59e1d1-341a6b0d5a4mr3477066a91.0.1762379595410;
+        Wed, 05 Nov 2025 13:53:15 -0800 (PST)
+Received: from telecaster ([2620:10d:c090:500::7:5bbb])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341d048e1d9sm221963a91.6.2025.11.05.13.53.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 13:53:14 -0800 (PST)
+Date: Wed, 5 Nov 2025 13:53:13 -0800
+From: Omar Sandoval <osandov@osandov.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>,
+	linux-kbuild@vger.kernel.org, Samir M <samir@linux.ibm.com>,
+	linux-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	linux-debuggers@vger.kernel.org, Nicolas Schier <nsc@kernel.org>,
+	Alexey Gladkov <legion@kernel.org>
+Subject: Re: [mainline]Error while running make modules_install command
+Message-ID: <aQvHSVXbOdiN_J5D@telecaster>
+References: <7fef7507-ad64-4e51-9bb8-c9fb6532e51e@linux.ibm.com>
+ <56905387-ec43-4f89-9146-0db6889e46ab@linux.ibm.com>
+ <aQpCE_XTU-bZHFbk@telecaster>
+ <CANBHLUhJ5UVsN4-JN2PG=jq63yGttB9BD6Qm8MgvYirTvg_stw@mail.gmail.com>
+ <20251105011548.GB769905@ax162>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,118 +100,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] powerpc: Use shared font data
-To: "Dr. David Alan Gilbert" <linux@treblig.org>,
- Finn Thain <fthain@linux-m68k.org>
-Cc: Stan Johnson <userm57@yahoo.com>, mpe@ellerman.id.au, npiggin@gmail.com,
- sam@ravnborg.org, benh@kernel.crashing.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, rdunlap@infradead.org,
- Cedar Maxwell <cedarmaxwell@mac.com>
-References: <20230825142754.1487900-1-linux@treblig.org>
- <d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com> <aQeQYNANzlTqJZdR@gallifrey>
- <20108eef-b7cf-3f23-264a-5d97021f9ffa@linux-m68k.org>
- <aQgJ95Y3pA-8GdbP@gallifrey>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <aQgJ95Y3pA-8GdbP@gallifrey>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251105011548.GB769905@ax162>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-Le 03/11/2025 à 02:48, Dr. David Alan Gilbert a écrit :
-> * Finn Thain (fthain@linux-m68k.org) wrote:
->>
->> On Sun, 2 Nov 2025, Dr. David Alan Gilbert wrote:
->>
->>>
->>> So I'm not a PPC person specifically; so lets see if the PPC people have
->>> any suggestions, but:
->>>
->>>     a) Do you know if there's any way to recreate the same hang/works
->>> combination in qemu; I know it has a g3beige model but I don't know how
->>> to get something similar to your failing combo.
->>>
->>
->> I guess we could probably reproduce this in QEMU if the BootX bootloader
->> could be made to work there. In theory, 'qemu-system-ppc -M g3beige' might
->> work.
->>
->>>     b) Can you get any diagnostics out of the prom on the mac?  Like a PC
->>> or anything to have some idea where it hung?
->>>
->>
->> Well, that's the problem: if you enable the CONFIG_BOOTX_TEXT diagnostics,
->> the system hangs instead of printing stuff. If you disable the
->> CONFIG_BOOTX_TEXT diagnostics (in favour of serial diagnostics) the hang
->> goes away.
+On Tue, Nov 04, 2025 at 06:15:48PM -0700, Nathan Chancellor wrote:
+> On Tue, Nov 04, 2025 at 08:35:57PM +0000, Dimitri John Ledkov wrote:
+> > On Tue, 4 Nov 2025 at 18:12, Omar Sandoval <osandov@osandov.com> wrote:
+> > > drgn's CI hit this same failure. FWIW, the commit fixed by this bisected
+> > > commit, 3e86e4d74c04 ("kbuild: keep .modinfo section in
+> > > vmlinux.unstripped"), also results in ELF segments of size 0 in vmlinux
+> > > for some configurations, which confused drgn until I added a workaround
+> > > (https://github.com/osandov/drgn/commit/2a9053de8796af866fd720a3c8c23013595d391a).
+> > > So there's some funkiness in this area.
 > 
-> Ah, a bug that doesn't like to be seen :-)
-> 
->> Anyway, I imagine that the problem with your patch was that it relies on
->> font data from a different (read only) section, which is unavailable for
->> some reason (MMU not fully configured yet?)
->>
->> So I've asked Stan to test a patch that simply removes the relevant
->> 'const' keywords. It's not a solution, but might narrow-down the search.
-> 
-> I wonder if this is a compiler-flag-ism; I see arch/powerpc/kernel/Makefile
-> has a pile of special flags, and for btext.o it has a -fPIC
-> (as well as turning off some other flags).
-> I wonder if bodging those in lib/fonts/Makefile for lib/fonts/font_sun8x16.c
-> fixes it?
-> But... this is data - there's no code is there - are any of those flags
-> relevant for data only?
+> Omar, could you provide me with a configuration file that reproduces
+> this for you? Is there an easy way to check for this situation on the
+> command line?
 
-I think -fPIC is relevant for data-only here because font_sun_8x16 
-contains a pointer to fontdata_sun8x16 in font_sun_8x16.data
+Here's a script that reproduces it:
 
-I see two things to try:
+```
+#!/bin/sh
 
-1/ Either build font_sun8x16.o with -fPIC
+set -e
 
-diff --git a/lib/fonts/Makefile b/lib/fonts/Makefile
-index e16f68492174a..844306d7b15e9 100644
---- a/lib/fonts/Makefile
-+++ b/lib/fonts/Makefile
-@@ -20,3 +20,5 @@ font-objs-$(CONFIG_FONT_6x8)       += font_6x8.o
-  font-objs += $(font-objs-y)
+host_arch=x86_64
+compiler_version="12.4.0"
 
-  obj-$(CONFIG_FONT_SUPPORT)         += font.o
-+
-+CFLAGS_font_sun8x16.o             += -fPIC
+compiler_dir="/tmp/arm64-gcc-$compiler_version"
+if [ ! -e "$compiler_dir" ]; then
+	rm -rf "$compiler_dir.tmp"
+	mkdir "$compiler_dir.tmp"
+	curl -L "https://mirrors.kernel.org/pub/tools/crosstool/files/bin/$host_arch/$compiler_version/$host_arch-gcc-$compiler_version-nolibc-aarch64-linux.tar.xz" | tar -C "$compiler_dir.tmp" -Jx
+	mv "$compiler_dir.tmp" "$compiler_dir"
+fi
 
-2/ Or add a PTRRELOC:
+export PATH="$compiler_dir/gcc-$compiler_version-nolibc/aarch64-linux/bin:$PATH"
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux- tinyconfig
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux- -j$(nproc) vmlinux
+readelf -W -l vmlinux | awk '$1 == "LOAD" && $6 ~ /0x0+\>/'
+```
 
-diff --git a/arch/powerpc/kernel/btext.c b/arch/powerpc/kernel/btext.c
-index 7f63f1cdc6c39..fc461cfaf4a34 100644
---- a/arch/powerpc/kernel/btext.c
-+++ b/arch/powerpc/kernel/btext.c
-@@ -20,6 +20,7 @@
-  #include <asm/io.h>
-  #include <asm/processor.h>
-  #include <asm/udbg.h>
-+#include <asm/setup.h>
+It prints something like:
 
-  #define NO_SCROLL
+  LOAD           0x1ef008 0x0000000000000000 0xffff800080220000 0x000000 0x000000 R   0x10000
 
-@@ -463,7 +464,7 @@ static noinline void draw_byte(unsigned char c, long 
-locX, long locY)
-  {
-  	unsigned char *base	= calc_base(locX << 3, locY << 4);
-  	unsigned int font_index = c * 16;
--	const unsigned char *font	= font_sun_8x16.data + font_index;
-+	const unsigned char *font	= PTRRELOC(font_sun_8x16.data) + font_index;
-  	int rb			= dispDeviceRowBytes;
+I.e., a segment with FileSiz and MemSiz 0.
 
-  	rmci_maybe_on();
+Using a newer crosstool version fixes it, so maybe this was a GCC or
+binutils bug.
 
-
-Christophe
-
-
+Thanks,
+Omar
 
