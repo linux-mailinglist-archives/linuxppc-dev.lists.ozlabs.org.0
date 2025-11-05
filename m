@@ -1,78 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-13780-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13781-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE1AC33E1E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 04:51:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9294CC33EBA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 05:13:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1WZr173Gz2yr9;
-	Wed,  5 Nov 2025 14:51:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1X461Vnrz2yjp;
+	Wed,  5 Nov 2025 15:13:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762314676;
-	cv=none; b=FtrCf6jmmvze4KznsCElTMpuqVwswx1SjcIEKeP1zg7U8o6nFxJco8Z12+t3IG70n+TdoeZ9CrjlXIVdmtIAh2sUNjvmN4sOK7uyvjLL59G4Y3XlOZYI5s2yOKZkZZrl6H1NWuL1cGEkIVYlvc/H8vYnKeWBUlHQXDvko4up6mhweBxqNNY5j95+06N3uUz9lPeKW6WNOlpRIDBTsOHFvuwbqyDbrkz9hf5W57crWnY8vtdz8I56oZp9M/0jD8tSM3UAhgSBRItf5ia1LzBdupf8WPDYBsOPEohdLCiBPfGJI3wFW6rGpyId7z2m5/gS6rciuNUqFAD/1gvIz3iGPA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.148
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762315990;
+	cv=none; b=e2rXHZqZHgScaSXv18EeLcXR7+X7J5jJHC9qh1b0UgUf0XZlB67wz2seGFkTfbHaFKuKIMXolK+nCH6BMZHNqe6BQkX1g3l0SnUfjIbxQTUBxVjH1G6yoi8KZJRPo8Ar71SDP2JnI6R9O0OFYfTtXd0r50E7daEX1Rc7q67K5GdohDHSu7aTvxvynALB/NJa1Frx3mE+UxQROGn5nyLein26CQTmv5QUG6Tp9KyQBwTYygZbfEVHw48GjBa8WkDebu0eW4AgGtjasERilUNCHPbgfhORaf/+0MafLelRk7nFVsZs7aKKiEKEjCAUvU8HEt0e3bXoDLzuuiGqUY9DMw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762314676; c=relaxed/relaxed;
-	bh=8qrzGhwEpQyn2ArhPh8Ntq7G0BXphFX7U+G79Ez9yUc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nShxLBMXZcYHHBImy8V0VVCCINReYKpbHz4w9FbfChBwGR2xsbv0IhXHlSoihzisSh3Z+nwwRBSQut7XL3cuYLw6QGgh9FREfA4jA8fQTkn+e+jg8qQISZR69VuCRZmY39MEc1pAw0wto9emGfUtOec6OM3gq7MZ5pr6dONx7o/ylXO4I8ntlr0jMp9iTLEUk+qCgtsDpe7XIJEnyv7NRXND3pwm1tpIbZUyPfMFg5dvA/uHbiTbiOp66OSSjUsYDqch1n9HJ96KwFHIreTE3YE7EqD9r6Dxd4iAB2MZDDA8N/5sY8QBn84i8glgtqHwlEmG+IV9aFjrYcSJ50ELTQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T4dFGKpe; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1762315990; c=relaxed/relaxed;
+	bh=J8MSnqb9oJ8hOyo/Cuc0Lahe+ACYy1X7u4c6Cmkf0Ec=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=CyXTD3OmwcLdo6cmDNpMEF/BHM3B3tb/pmCWZMpfLea4kBu/2gM8AJTdTsQGTK2gb/mammST62XTUxoYBHJ5SEJGUQfskED7ISwLSHm4tqf8p7uiSs20OxHjEl1/jT8SaJOjaVlLVSn/1ZV/jrjiRA1mzq0glJENzOKBn2Z5SNryAcPjCsURwpSs6AfMXwWKtQ4BO0uar+aVnA7V4FiX4doHeMt6uMyXuOvQhFwWwjLTuo+ZC1FcUa194dtZ9A0W9py4rCVRteICRgX1lq3vWHoHmlsf4tYM1pXcev51HNLBK9/f+eUZGfiSwUcDCx3/OaAKKQDYeW4ndQK4w5A6Tw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=me5sjNZ3; dkim-atps=neutral; spf=pass (client-ip=103.168.172.148; helo=fout-a5-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=fout-a5-smtp.messagingengine.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T4dFGKpe;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=me5sjNZ3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=fout-a5-smtp.messagingengine.com (client-ip=103.168.172.148; helo=fout-a5-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org)
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1WZp56yvz2yVP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 14:51:14 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A4KWFaU006421;
-	Wed, 5 Nov 2025 03:50:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=8qrzGh
-	wEpQyn2ArhPh8Ntq7G0BXphFX7U+G79Ez9yUc=; b=T4dFGKpewmXnq/MRppWBvG
-	Dz1TRARw9z+ifR+Y7pHUc35E41JyTnDqA6EOkeSsnDNdJG1nd5xfAR7NQrcEfMBk
-	/A2cLWRG5p4AG73sLQgnk/wSWPED0tfOST3lwF9JqkHe9umISo2kritYqxTSN81i
-	sWKFMzPKtc/oJ2unKVh1EfLGbGRY6a4HxLr+X9kYSdzOGrung+ln6XyUIkoICRuC
-	r7pYSMUXuM02Ad1gLdOGI1zYMPh3F5sdS8YUbuTLKF1I71genUjMcaufdMclAJaj
-	pthUTgff3dr01bSpUPqNK1SvAMfiDSFPyTiubXsnAheb/vxeDoTH/YCv+p06aghQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59xby7pu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Nov 2025 03:50:48 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A53knZN007212;
-	Wed, 5 Nov 2025 03:50:47 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59xby7pr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Nov 2025 03:50:47 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A4N5UQn021558;
-	Wed, 5 Nov 2025 03:50:46 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a5xrjp37g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Nov 2025 03:50:46 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A53ojEF27853532
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Nov 2025 03:50:46 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D91AD5804E;
-	Wed,  5 Nov 2025 03:50:45 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A67955803F;
-	Wed,  5 Nov 2025 03:50:41 +0000 (GMT)
-Received: from [9.43.111.253] (unknown [9.43.111.253])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Nov 2025 03:50:41 +0000 (GMT)
-Message-ID: <6f52c355-c29d-4788-8dab-1e1ad5e4de04@linux.ibm.com>
-Date: Wed, 5 Nov 2025 09:20:39 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1X435yGsz2ySP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 15:13:06 +1100 (AEDT)
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.phl.internal (Postfix) with ESMTP id 55858EC0213;
+	Tue,  4 Nov 2025 23:13:02 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 04 Nov 2025 23:13:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1762315982; x=1762402382; bh=J8MSnqb9oJ8hOyo/Cuc0Lahe+ACYy1X7u4c
+	6Cmkf0Ec=; b=me5sjNZ3cOuy9BjgUmaJtcG4W0KHRF35S9yNi0PjDrGQkc7il31
+	F5G2V/B2YbkIzvxej1bhcMOUcWGrf40Plw1YRsHGepdF6Z2pJUUObLfRoai1m/dv
+	/ypUwxuYfrI2CWkVpGKspS1uvrt+k6eUJgrq3889dC8czyCWgMeMQFNjA2ulgW/z
+	Fnv1DTZ3PoJ1NsjYB/+qiHfRQYQzEcaJS7By1ocwQ96AuK7zLau1efeG4EXgcjTt
+	VcafHWSYUU3xZ26LGu18uvzJf+Y6aDZpHWcFWY3MjjFZPhbeuB0FSUyfFj6wJ9HL
+	bjBYau+rWv8dFVY2nBctC8hNlBKVaGZYR2w==
+X-ME-Sender: <xms:zM4KaR0l1OxErxWXaygApfF_9BONM9C2pMz07CzuU3Teevzpux5yww>
+    <xme:zM4KaT5GmYkH6L3Hc_d_O-twnq6TDZQVj2sviQ1d8XNEE5V7sxMdiQWeaEkuM7fg5
+    nhh1SJYkHiRNs_7XXSaIb2SpEzMN4hRq7OI9IFkVJPV-X03a6IAwbo>
+X-ME-Received: <xmr:zM4KadTV15gR_oE47J17283eElwFXqEAHdAhnnDeImIib6dLrRyPhK-Wb_T2vXS6kXYmEPaBi9kt_6XHuPi0KhhFzqzib9yu1GE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukedvleduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
+    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeuheeu
+    leenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
+    hhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeduuddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugiesthhrvggslhhighdrohhrgh
+    dprhgtphhtthhopehushgvrhhmheejseihrghhohhordgtohhmpdhrtghpthhtohepmhhp
+    vgesvghllhgvrhhmrghnrdhiugdrrghupdhrtghpthhtohepnhhpihhgghhinhesghhmrg
+    hilhdrtghomhdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhr
+    ohhuphdrvghupdhrtghpthhtohepshgrmhesrhgrvhhnsghorhhgrdhorhhgpdhrtghpth
+    htohepsggvnhhhsehkvghrnhgvlhdrtghrrghshhhinhhgrdhorhhgpdhrtghpthhtohep
+    lhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtth
+    hopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:zM4KaYXAICgnitXLRix7RN-xOnsznBzZtbi6Oqh2k_pBrDpMkSzeOw>
+    <xmx:zM4KaSENEJpWEIxaOlbbiV9NSjRqK1DurtvOrl66jqRPyoMUAkOS8A>
+    <xmx:zM4KabcODOifgDuXFQVlqpGVTuhMs0g6SaXjf5HKiTk68eW4_vxOpA>
+    <xmx:zM4Kabq7p643LGzplcMHhsBzAlsyP2aWZicZVnJ0IAOHnnQEMjKu9Q>
+    <xmx:zs4KacX86euGDMYc27_IarFDd8axj6mdTHAG8SuD5NUBok2K_O5qdOP1>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 4 Nov 2025 23:12:57 -0500 (EST)
+Date: Wed, 5 Nov 2025 15:13:09 +1100 (AEDT)
+From: Finn Thain <fthain@linux-m68k.org>
+To: "Dr. David Alan Gilbert" <linux@treblig.org>
+cc: Stan Johnson <userm57@yahoo.com>, mpe@ellerman.id.au, npiggin@gmail.com, 
+    christophe.leroy@csgroup.eu, sam@ravnborg.org, benh@kernel.crashing.org, 
+    linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+    rdunlap@infradead.org, Cedar Maxwell <cedarmaxwell@mac.com>
+Subject: QEMU limitations, was Re: [PATCH v4] powerpc: Use shared font data
+In-Reply-To: <797f0a13-350f-e26d-f1ef-876419e1c013@linux-m68k.org>
+Message-ID: <492c13c9-666c-9578-6c66-0eb8fefc93dc@linux-m68k.org>
+References: <20230825142754.1487900-1-linux@treblig.org> <d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com> <aQeQYNANzlTqJZdR@gallifrey> <20108eef-b7cf-3f23-264a-5d97021f9ffa@linux-m68k.org> <aQgJ95Y3pA-8GdbP@gallifrey>
+ <797f0a13-350f-e26d-f1ef-876419e1c013@linux-m68k.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,98 +98,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] Fixes for pmac32_defconfig after fb.h removal from
- backlight.h
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Nathan Chancellor <nathan@kernel.org>, Lee Jones <lee@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Daniel Thompson <danielt@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin
- <npiggin@gmail.com>,
-        Simona Vetter <simona.vetter@ffwll.ch>, linuxppc-dev@lists.ozlabs.org,
-        patches@lists.linux.dev, Thierry Reding <treding@nvidia.com>
-References: <20250925-ppc-fixes-for-backlight-fb-h-removal-v1-0-d256858d86a6@kernel.org>
- <70a965d7-9839-4973-a306-4da4f1089bfc@csgroup.eu>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <70a965d7-9839-4973-a306-4da4f1089bfc@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX6yWMntHcJlla
- k5JtFRpRRGT2izzgKOHTjy8B37/em4nPrXrrHt5x8xbjIHmQFCWdIhEs2V2Q0ZkUyWinGjFurjG
- F28mf7ig0vmK9r2VpxO1NEeWQ2224oonwjfgBgge41NOpIj8m8GRk6IIy9tnWbrZCmNgc2xV1q2
- iwUvT2HeejQoEeaUfWzHUlSF7+b6ilNSE1dJF6dgQiA6eXZ3ugXmFISO9rEt5MECo3UInqNpyJm
- 8Ei8mu1bFIc1hbGiKYTv5454uteLKlhvQ6Wt4zb4bXHWATtxZUyjIDCXMaj0gDFeE7y0UwTB9n/
- rYD7KLu3jxBQeqzF1Nj5p+suUgnvDZkSHMiQqXRUQv3RP08c+KsmOaMLI7I/BwWHxcN8ocCcKKx
- Yb1HrZiEnqv3mvDeg8K7hod2nn44pg==
-X-Proofpoint-GUID: KHFDrnlGsMN7N-ytlNuA2w6CHWHwoGZI
-X-Authority-Analysis: v=2.4 cv=OdCVzxTY c=1 sm=1 tr=0 ts=690ac998 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=voM4FWlXAAAA:8 a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=lzAno4yBQp4m_lSgxmwA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=IC2XNlieTeVoXbcui8wp:22
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: 7oUFY4i6YNclZkfcuIoVKmNnsJlFZcot
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-05_02,2025-11-03_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 spamscore=0 suspectscore=0 impostorscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1011 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010021
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
+On Mon, 3 Nov 2025, Finn Thain wrote:
 
-On 11/4/25 4:59 PM, Christophe Leroy wrote:
-> Hi All,
+> > OK, remember I don't think I've ever tried PPC via MacOS booting, so 
+> > not familiar with it.
+> > 
 > 
-> Le 26/09/2025 à 01:46, Nathan Chancellor a écrit :
->> Commit 9f218f9bb9d2 ("backlight: Do not include <linux/fb.h> in header
->> file") exposed some necessary includes that were missing from a few
->> powerpc drivers, breaking the build. This series resolves them.
->>
->> This should go via the backlight tree, which includes 9f218f9bb9d2, but
->> I have included the PowerPC folks for visibility.
-> 
-> What is the status of this fixing series ? I see a couple of similar redundant patchs (see below) roaming around, which make me wonder if this series has been properly processed in the backlight tree.
+> I will try to set up a MacOS guest in QEMU, to see if the hang can be 
+> reproduced that way.
 > 
 
-Yes, i will pull this as part of the powerpc tree.
+QEMU appears to be incompatible with the Old World ROM from the Beige G3. 
+'qemu-system-ppc -M g3beige -bios 78F57389.ROM -serial stdio' drops into a 
+ROM diagnostic menu and won't boot.
 
-Maddy
-(sorry for the delay)
+I did get 'qemu-system-ppc -M mac99 ...' to boot into MacOS 9, by using 
+OpenBIOS instead of Apple firmware. Unforunately, BootX is not compatible 
+with this configuration, so it won't help.
 
+BootX is compatible with beige powermacs, but 'qemu-system-ppc -M g3beige' 
+with OpenBIOS fails to boot MacOS 9 ("MacOS: unable to find an interrupt 
+controller node").
 
-> https://patchwork.ozlabs.org/project/linuxppc-dev/cover/20251029150940.2523328-1-thierry.reding@gmail.com/
-> https://patchwork.ozlabs.org/project/linuxppc-dev/cover/20251027140646.227025-1-tzimmermann@suse.de/
-> 
-> Christophe
-> 
->>
->> ---
->> Nathan Chancellor (2):
->>        powerpc/powermac: Include linux/of.h in backlight.c
->>        macintosh/via-pmu-backlight: Include linux/of.h and uapi/linux/fb.h
->>
->>   arch/powerpc/platforms/powermac/backlight.c | 1 +
->>   drivers/macintosh/via-pmu-backlight.c       | 2 ++
->>   2 files changed, 3 insertions(+)
->> ---
->> base-commit: 9f218f9bb9d274b9d5d48a4c95e1b199141fc1f2
->> change-id: 20250925-ppc-fixes-for-backlight-fb-h-removal-2b6a87cced02
->>
->> Best regards,
->> -- 
->> Nathan Chancellor <nathan@kernel.org>
->>
-> 
-
+OpenBIOS wouldn't boot a MacOS 8.1 CD-ROM either, but for different 
+reasons: both mac99 and g3beige failed with "No valid state has been set 
+by load or init-program".
 
