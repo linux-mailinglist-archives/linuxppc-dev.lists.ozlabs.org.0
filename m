@@ -1,90 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-13781-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13782-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9294CC33EBA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 05:13:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E09A3C33F21
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 05:48:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1X461Vnrz2yjp;
-	Wed,  5 Nov 2025 15:13:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1XsD5MCKz3btd;
+	Wed,  5 Nov 2025 15:48:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.148
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762315990;
-	cv=none; b=e2rXHZqZHgScaSXv18EeLcXR7+X7J5jJHC9qh1b0UgUf0XZlB67wz2seGFkTfbHaFKuKIMXolK+nCH6BMZHNqe6BQkX1g3l0SnUfjIbxQTUBxVjH1G6yoi8KZJRPo8Ar71SDP2JnI6R9O0OFYfTtXd0r50E7daEX1Rc7q67K5GdohDHSu7aTvxvynALB/NJa1Frx3mE+UxQROGn5nyLein26CQTmv5QUG6Tp9KyQBwTYygZbfEVHw48GjBa8WkDebu0eW4AgGtjasERilUNCHPbgfhORaf/+0MafLelRk7nFVsZs7aKKiEKEjCAUvU8HEt0e3bXoDLzuuiGqUY9DMw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762318128;
+	cv=none; b=IVAwy2pfjt5HO7eC8E74KiDtJipbFQMNsLpAevkCu5ivH3+04J0psa145oazi7ZQ4Onr2j7FVJCs5unhdPRexHSX749Nr+ae+UGe+YDp/vLFYVYOLNuHagSHJEiI5nRIMJjp7LuCP3BDyF7i/4rG1vVx7m9ad8mnArI3DgH9vU1rkRnPVKO0dNxS7sh7WxuFPToIsDABhj5ov244uBCC+/nCddzotirJ3j5kt1jivRYv/I34m/A23y2iIMyp0vx5bDjVbrrx7+nSV9BA6sBtXgwSrf1BbEPtSv1+1ZDGdB5jPueo8WDagolU8Clnfj/5XtLxADAdSQPj5slI3l/3Kg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762315990; c=relaxed/relaxed;
-	bh=J8MSnqb9oJ8hOyo/Cuc0Lahe+ACYy1X7u4c6Cmkf0Ec=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=CyXTD3OmwcLdo6cmDNpMEF/BHM3B3tb/pmCWZMpfLea4kBu/2gM8AJTdTsQGTK2gb/mammST62XTUxoYBHJ5SEJGUQfskED7ISwLSHm4tqf8p7uiSs20OxHjEl1/jT8SaJOjaVlLVSn/1ZV/jrjiRA1mzq0glJENzOKBn2Z5SNryAcPjCsURwpSs6AfMXwWKtQ4BO0uar+aVnA7V4FiX4doHeMt6uMyXuOvQhFwWwjLTuo+ZC1FcUa194dtZ9A0W9py4rCVRteICRgX1lq3vWHoHmlsf4tYM1pXcev51HNLBK9/f+eUZGfiSwUcDCx3/OaAKKQDYeW4ndQK4w5A6Tw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=me5sjNZ3; dkim-atps=neutral; spf=pass (client-ip=103.168.172.148; helo=fout-a5-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=fout-a5-smtp.messagingengine.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	t=1762318128; c=relaxed/relaxed;
+	bh=YULlj58qL4zgqYnaxIvN0IRxkfnew4hxgBmocTGIAOg=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=XiZhwXKIFgRxivIrzMWGmYSBK2lV6w0HONu/pTw/edvNWQS1vAE7ZrJyRvaw2yCupd6VxQY1+CyATpr875uItMlfHmOBCeJgQlbPmJm+bBijyKSX28kJZfOH/u0EPGYbhfgQiXTsF2NEi/jQZhx1QNArJJzhItg2TWUwSpYLf6PccRvxJWiCHjKu593E5HNZLTQgCmY6pDanifGB+ccu5MscE8G8paKc4AUNWQdn0afo55ux9p2bKTOTzpqk0VfV/km8kcHfOrBYA9o21PDd4TlEdwvEb+jsxVq85TeJbjNyPCrgzmAcIlHUq3uTchH2j13gBX81oMDeBNTblw/vgA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=C2QJTwec; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52d; helo=mail-pg1-x52d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=me5sjNZ3;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=C2QJTwec;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=fout-a5-smtp.messagingengine.com (client-ip=103.168.172.148; helo=fout-a5-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org)
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d; helo=mail-pg1-x52d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1X435yGsz2ySP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 15:13:06 +1100 (AEDT)
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id 55858EC0213;
-	Tue,  4 Nov 2025 23:13:02 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Tue, 04 Nov 2025 23:13:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1762315982; x=1762402382; bh=J8MSnqb9oJ8hOyo/Cuc0Lahe+ACYy1X7u4c
-	6Cmkf0Ec=; b=me5sjNZ3cOuy9BjgUmaJtcG4W0KHRF35S9yNi0PjDrGQkc7il31
-	F5G2V/B2YbkIzvxej1bhcMOUcWGrf40Plw1YRsHGepdF6Z2pJUUObLfRoai1m/dv
-	/ypUwxuYfrI2CWkVpGKspS1uvrt+k6eUJgrq3889dC8czyCWgMeMQFNjA2ulgW/z
-	Fnv1DTZ3PoJ1NsjYB/+qiHfRQYQzEcaJS7By1ocwQ96AuK7zLau1efeG4EXgcjTt
-	VcafHWSYUU3xZ26LGu18uvzJf+Y6aDZpHWcFWY3MjjFZPhbeuB0FSUyfFj6wJ9HL
-	bjBYau+rWv8dFVY2nBctC8hNlBKVaGZYR2w==
-X-ME-Sender: <xms:zM4KaR0l1OxErxWXaygApfF_9BONM9C2pMz07CzuU3Teevzpux5yww>
-    <xme:zM4KaT5GmYkH6L3Hc_d_O-twnq6TDZQVj2sviQ1d8XNEE5V7sxMdiQWeaEkuM7fg5
-    nhh1SJYkHiRNs_7XXSaIb2SpEzMN4hRq7OI9IFkVJPV-X03a6IAwbo>
-X-ME-Received: <xmr:zM4KadTV15gR_oE47J17283eElwFXqEAHdAhnnDeImIib6dLrRyPhK-Wb_T2vXS6kXYmEPaBi9kt_6XHuPi0KhhFzqzib9yu1GE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukedvleduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
-    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeuheeu
-    leenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
-    hhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeduuddpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugiesthhrvggslhhighdrohhrgh
-    dprhgtphhtthhopehushgvrhhmheejseihrghhohhordgtohhmpdhrtghpthhtohepmhhp
-    vgesvghllhgvrhhmrghnrdhiugdrrghupdhrtghpthhtohepnhhpihhgghhinhesghhmrg
-    hilhdrtghomhdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhr
-    ohhuphdrvghupdhrtghpthhtohepshgrmhesrhgrvhhnsghorhhgrdhorhhgpdhrtghpth
-    htohepsggvnhhhsehkvghrnhgvlhdrtghrrghshhhinhhgrdhorhhgpdhrtghpthhtohep
-    lhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtth
-    hopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:zM4KaYXAICgnitXLRix7RN-xOnsznBzZtbi6Oqh2k_pBrDpMkSzeOw>
-    <xmx:zM4KaSENEJpWEIxaOlbbiV9NSjRqK1DurtvOrl66jqRPyoMUAkOS8A>
-    <xmx:zM4KabcODOifgDuXFQVlqpGVTuhMs0g6SaXjf5HKiTk68eW4_vxOpA>
-    <xmx:zM4Kabq7p643LGzplcMHhsBzAlsyP2aWZicZVnJ0IAOHnnQEMjKu9Q>
-    <xmx:zs4KacX86euGDMYc27_IarFDd8axj6mdTHAG8SuD5NUBok2K_O5qdOP1>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 4 Nov 2025 23:12:57 -0500 (EST)
-Date: Wed, 5 Nov 2025 15:13:09 +1100 (AEDT)
-From: Finn Thain <fthain@linux-m68k.org>
-To: "Dr. David Alan Gilbert" <linux@treblig.org>
-cc: Stan Johnson <userm57@yahoo.com>, mpe@ellerman.id.au, npiggin@gmail.com, 
-    christophe.leroy@csgroup.eu, sam@ravnborg.org, benh@kernel.crashing.org, 
-    linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-    rdunlap@infradead.org, Cedar Maxwell <cedarmaxwell@mac.com>
-Subject: QEMU limitations, was Re: [PATCH v4] powerpc: Use shared font data
-In-Reply-To: <797f0a13-350f-e26d-f1ef-876419e1c013@linux-m68k.org>
-Message-ID: <492c13c9-666c-9578-6c66-0eb8fefc93dc@linux-m68k.org>
-References: <20230825142754.1487900-1-linux@treblig.org> <d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com> <aQeQYNANzlTqJZdR@gallifrey> <20108eef-b7cf-3f23-264a-5d97021f9ffa@linux-m68k.org> <aQgJ95Y3pA-8GdbP@gallifrey>
- <797f0a13-350f-e26d-f1ef-876419e1c013@linux-m68k.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1XsC320Zz30M0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 15:48:46 +1100 (AEDT)
+Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-b679450ecb6so4749479a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Nov 2025 20:48:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762318123; x=1762922923; darn=lists.ozlabs.org;
+        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YULlj58qL4zgqYnaxIvN0IRxkfnew4hxgBmocTGIAOg=;
+        b=C2QJTwecx9BkMbgyfmCW5DWstZtXwdQR7b2dRY9IViwwFx7lVCajS57N+nhgWGHm7j
+         TXW5nBUTkFdXyUEyRuo0WCMHdi8bhKyD/cSYpOqvJOJdAW6JIckbamC99lqr4kev12MF
+         2kUWHNd/yN1EC7P/278V5WRr3uGgFT1EyokvxPb9qkR3CPsHT93Kdj7dRFRCE9Si7AqF
+         bXs9SNUxplrLS2vlYsXE3ZWmmOWNHLWlH7L3RC/ejG6VP3lBUMbktFYMyF2dYmoNxMxh
+         nImd84axMvvoIrvHd0CRoRcpn5D4IUZTLqkrITtSLWk/2VR53L2meh/4Rd3b0UCq7BgF
+         A+OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762318123; x=1762922923;
+        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YULlj58qL4zgqYnaxIvN0IRxkfnew4hxgBmocTGIAOg=;
+        b=iEIfBqIutztMV5hVQT1BaeJ7tMhfTN/EZkCMl2LrGz68SDrSNypI3FdWr4wkul8U5+
+         J8eUqrIWXne70DEcABftqf9Y7vNEO8u+/F3Jd31Is1ZOIglCfeh7bBPNgHBvKRt7CUas
+         a+glRpETAZUceOao2dEp/vu0pXqqkDGoRveYCDlR8YJ1Ad1085k5TxknbSmonDbhrMwu
+         z6yoGFA3cgHQ1WvjViB5h7fiLHIcfnC4L+F+wb2CVdxZ5dOLTWV2Y4ITLCjZE70HA6lO
+         tRsRWGDFqAswOck6hn/UuUgO18/NQmucOACVQQbTyNraHhSLCRWvHBPfTwkG28Lw8yMM
+         +oPA==
+X-Forwarded-Encrypted: i=1; AJvYcCVVKC0H/8B/GMckClqQEJVAuTfPXC6DNcWXCxrMOq3tBrgRFrWvAp15weMnXpN+1WN5U0s8DkMkAqwBO1Q=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxl+lgwjWnIxIvkOgSyDwesShnAhXKDSKgW8bem7yGHUSA435a/
+	Kduw7fTF3pKJDUsKd/pVAT98XDUR0zxbvDeHszWewVAKfgHgVsF13Vw+
+X-Gm-Gg: ASbGncu9aeJ90U46590n3slKl5f03DHUVJJuVBlHcOUZ+cJDcPWgFBeFyeNLx/LEai+
+	1fgo8GjZIATf3Bxunab8QB+iQiAUg03bYIFgQyX6GzSS4Mx4q/DziPeKgo9m8CaSf0WEnknPD4g
+	xwMLRzecWsYGZUmEY01DXK5MJakMfF8FCBTdQHnOVvmfc0XJ7BLbZDeGbfLjgC5wgFstx15dHcq
+	dEoHcgfpIxODEg/2dAqiu9nOVuHh+mESgSvo/2gAuAUbcKjUDqmUWizlp472uk64xnkAOPu+Ba4
+	N9+38xJF0orTgSwQAwiwqaxCHGECJM/dpLF8xXmmGqINq37G39gfVdP6+rR8LUqpAMQAbVaZkKi
+	gyqDYShHXZhU+EVY4gsl883EUY9MQ5edogB2wfUgZfNKsTaaWCH5Jjk4Qu0kqz2C0RvGOJg==
+X-Google-Smtp-Source: AGHT+IEGT+eOgR9ydzqm23BJtuNpA3RB5HWaj5Ha9KjzqVJ/S6kqSTkQbIaWCHaOF+SdxbuTbYvUtA==
+X-Received: by 2002:a05:6a20:7483:b0:34e:63bd:81c1 with SMTP id adf61e73a8af0-34f839f5a57mr2604485637.3.1762318122822;
+        Tue, 04 Nov 2025 20:48:42 -0800 (PST)
+Received: from dw-tp ([171.76.85.117])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7acd6824811sm4742988b3a.64.2025.11.04.20.48.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 20:48:42 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	David Hildenbrand <david@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
+	Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>, 
+	Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, 
+	Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+Subject: Re: [PATCH v4 05/12] mm: introduce CONFIG_ARCH_HAS_LAZY_MMU_MODE
+In-Reply-To: <20251029100909.3381140-6-kevin.brodsky@arm.com>
+Date: Wed, 05 Nov 2025 10:10:33 +0530
+Message-ID: <87o6ph3xdq.ritesh.list@gmail.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com> <20251029100909.3381140-6-kevin.brodsky@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,35 +104,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Kevin Brodsky <kevin.brodsky@arm.com> writes:
 
-On Mon, 3 Nov 2025, Finn Thain wrote:
+> Architectures currently opt in for implementing lazy_mmu helpers by
+> defining __HAVE_ARCH_ENTER_LAZY_MMU_MODE.
+>
+> In preparation for introducing a generic lazy_mmu layer that will
+> require storage in task_struct, let's switch to a cleaner approach:
+> instead of defining a macro, select a CONFIG option.
+>
+> This patch introduces CONFIG_ARCH_HAS_LAZY_MMU_MODE and has each
+> arch select it when it implements lazy_mmu helpers.
+> __HAVE_ARCH_ENTER_LAZY_MMU_MODE is removed and <linux/pgtable.h>
+> relies on the new CONFIG instead.
+>
+> On x86, lazy_mmu helpers are only implemented if PARAVIRT_XXL is
+> selected. This creates some complications in arch/x86/boot/, because
+> a few files manually undefine PARAVIRT* options. As a result
+> <asm/paravirt.h> does not define the lazy_mmu helpers, but this
+> breaks the build as <linux/pgtable.h> only defines them if
+> !CONFIG_ARCH_HAS_LAZY_MMU_MODE. There does not seem to be a clean
+> way out of this - let's just undefine that new CONFIG too.
+>
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>  arch/arm64/Kconfig                                 | 1 +
+>  arch/arm64/include/asm/pgtable.h                   | 1 -
+>  arch/powerpc/include/asm/book3s/64/tlbflush-hash.h | 2 --
+>  arch/powerpc/platforms/Kconfig.cputype             | 1 +
+>  arch/sparc/Kconfig                                 | 1 +
+>  arch/sparc/include/asm/tlbflush_64.h               | 2 --
+>  arch/x86/Kconfig                                   | 1 +
+>  arch/x86/boot/compressed/misc.h                    | 1 +
+>  arch/x86/boot/startup/sme.c                        | 1 +
+>  arch/x86/include/asm/paravirt.h                    | 1 -
+>  include/linux/pgtable.h                            | 2 +-
+>  mm/Kconfig                                         | 3 +++
+>  12 files changed, 10 insertions(+), 7 deletions(-)
 
-> > OK, remember I don't think I've ever tried PPC via MacOS booting, so 
-> > not familiar with it.
-> > 
-> 
-> I will try to set up a MacOS guest in QEMU, to see if the hang can be 
-> reproduced that way.
-> 
+Maybe we can add this to ... ?
 
-QEMU appears to be incompatible with the Old World ROM from the Beige G3. 
-'qemu-system-ppc -M g3beige -bios 78F57389.ROM -serial stdio' drops into a 
-ROM diagnostic menu and won't boot.
+Documentation/features/vm/lazy_mmu/arch-support.txt
 
-I did get 'qemu-system-ppc -M mac99 ...' to boot into MacOS 9, by using 
-OpenBIOS instead of Apple firmware. Unforunately, BootX is not compatible 
-with this configuration, so it won't help.
+#
+# Feature name:          lazy_mmu mode
+#         Kconfig:       ARCH_HAS_LAZY_MMU_MODE
+#         description:   arch supports arch_{enter|flush|leave}_lazy_mmu_mode()
+#
+    -----------------------
+    |         arch |status|
+    -----------------------
+    |       arm64: |  ok  |
+    |     powerpc: |  ok  |
+    |       sparc: |  ok  |
+    |         x86: |  ok  |
+    -----------------------
 
-BootX is compatible with beige powermacs, but 'qemu-system-ppc -M g3beige' 
-with OpenBIOS fails to boot MacOS 9 ("MacOS: unable to find an interrupt 
-controller node").
 
-OpenBIOS wouldn't boot a MacOS 8.1 CD-ROM either, but for different 
-reasons: both mac99 and g3beige failed with "No valid state has been set 
-by load or init-program".
+As for this patch, the changes are mostly straight forward around the
+configs part. This looks good to me. Please feel free to add: 
+
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
+-ritesh
 
