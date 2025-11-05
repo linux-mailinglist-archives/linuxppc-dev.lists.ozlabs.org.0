@@ -1,70 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-13794-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13795-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875DDC35B87
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 13:56:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B591BC35B9F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 13:57:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1lgg2svgz3bmk;
-	Wed,  5 Nov 2025 23:56:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1lhW4lKWz3btC;
+	Wed,  5 Nov 2025 23:56:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762347375;
-	cv=none; b=WKR72fq7URx14+sFJYE/4IsfEHSj375xIfKqQ8Qm3x6PUpyjHKin3Qojx4qYRoM5M5nRisa7O4qFJhcfx9iauNu945KrsBSZHpPwmypRB60xsMDJlIdssm/NP8YMW+qSmkmonEw5fMfgWeg/uV2+ld4IiwD1z5NTFH3b6Q8UiIBTPpK26/Ai0H1EauS6H4Ipf6+wsIpQK4vca1zpHWwbxCxJ/E/SvLeQelZ+khJNYl4BukIcAsrmAOhme14h5hTVVNCpAkLRRjzNEMoQVBvGMM8xFePPylxOdLDj/MbfnV4T3FYlXA8Voa6Qrwlz4w5O/Ypb062ViVytCpWQ0ZLUyw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762347419;
+	cv=none; b=Mcs7jN3ZrYMrht8LLqLq7Lvq33niuTpFgT4HP+qxCdqr2dtnP+zsM9lf5NbCtfQjYqvwgeCqa2rrK/zWKxh1bp+9iZJ+JK3hantTEUaX5APEydaROxqWncNNLgxYHZPHqAzO8RVfExb8nS/YtHdsvj1L9jyaEfSO8Cbvo2EwXJed+m+8h2wKAKolm8HnQqoPXgCqU8Cn+wX6anTQHkqxIcIS67tPAx2yICmQlGFBV4giS8iJR/5bRgUdy2x+JCl71O3dyWrVbI9oyM9YB9J7y7ZcYfU6rMosRvk+v5xWKJFt1kWdysZuhLuAbAceE5TL+cH4b4/xa1PjjzP4p7Ebhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762347375; c=relaxed/relaxed;
-	bh=bE00UD2ozi1TjxFPhaSfMHrkqaRtzchM5nf4A0iLV4Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hjWXtlw48aQqmAZSFo2WZOWWt2HIP1Tvu3Va1nXWpktaDNHEcKr7IHqegICZVPQoayhd/y+XuchJGRi7x5q8h6anee1VdbTvhXgfSdNHm16B1dbRgp0o6nzkYmQXqFp9dQShjJCEIatSgmwrFbqZaow773N7uq7qiZ9X/MZNL8dP/s/dPABPPE2JnSYe0dLsWxcbC7DDN6vSHoKeRU8zSJRQ9ANJ8RGxbRGv1U/ySGlu2wR7GnxTjcD3Kgp0eODCZDDomMRQ3XW4Qg/jQrWaWfl51eoF+Dp227KN+vPl+IT+c17+zbTxULrfy/nyZcQnSyZ/5JvMAwC/KpHzbayHCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dvflcplc; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1762347419; c=relaxed/relaxed;
+	bh=rfF8Lvdew6AeZgP1jAJDIjiNUY9T2rz41ibqR1SGGsA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FjZCRkm1cx00LvohqrFt1qZuF9Eg3201JJY+RT/s3HDw9Hm5TIfvUUGWy52b0wcLwB19GYLilCkPKkISBzV+V9NVGixCf5M0QRBv8HrAq+qnmxihYjMPVSq5lYn+ohU0oRPBPp6swvFF2ky7teW9dyNi34WheRAnfA4oTd/E47ezsGOmQFpKV6ON4uiSL7ziGf/qdvqV7Fk53ZTl2o9LjgGec7+925Zbo2dBJXYvaWpGNrmJghNfpnbU2CBrO665XSBTg/oEDdq0bMrpMLbyZOF3435ITu2LsJMW9rTvel1DSQgTwtOENXzSYpblTOR2Ms7cKFXy9XW1GmX13kqYGw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n/UecF4j; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dvflcplc;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n/UecF4j;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1lgf37ldz30Qk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 23:56:14 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D19A6434D3;
-	Wed,  5 Nov 2025 12:56:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E408C4CEFB;
-	Wed,  5 Nov 2025 12:56:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762347371;
-	bh=/8YIJ/IkaELHTBMMbQStDRua58EN3fZrFED65ddxxfY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dvflcplcUhWkJ2R5yUdEfOV14GOSJI1qYLRskRrXY6+YlGQtU6WAL9dBEJQSIOCgS
-	 SBA0Geu4mEjZ3pzr3SUXhUWkAZkJqYZeEJunjGOel6gLcX1D93hLyZVB+oL/5Mpgg+
-	 4StU+OVzJpR3qdc0Igqi0KZCrTOhcErDOPCdPO58yadioNazHWvPuR8oeDBMe2EwQi
-	 cfdIuD4LR5NZ9Rj5U1BRa2r1H/CPvA3H5Y3JgiS8VXyzleSNHWS0An+h80XOTz9i0i
-	 +yjVbmYtY9B8+ntPBhb6kdfqZ96VHiMDCh+1okcWT0YHUnoS5evcpNcpWG3oSbFKCs
-	 rL6FTo2ATZ5LA==
-Date: Wed, 5 Nov 2025 13:56:02 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, linux-efi@vger.kernel.org, 
-	llvm@lists.linux.dev
-Subject: Re: [PATCH] kbuild: Add '-fms-extensions' to areas with dedicated
- CFLAGS
-Message-ID: <20251105-amnesie-eisig-277559b69bae@brauner>
-References: <20251101-kbuild-ms-extensions-dedicated-cflags-v1-1-38004aba524b@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1lhV4kJ3z3bW7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 23:56:58 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A5BiENJ016813;
+	Wed, 5 Nov 2025 12:56:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=rfF8Lv
+	dew6AeZgP1jAJDIjiNUY9T2rz41ibqR1SGGsA=; b=n/UecF4jgt2vk2eFDm3qsY
+	wYY1yFriKk85PuujX6JeD3FbnDjBbmNvb11PX1lqmkRgxUXpETI637q2nYEuBypO
+	jtd1/xk2PLuJiT/MtGMS6dqPXDK5fX2dM3773TUGD3AFWJtkUglfuEUsKoCP+3zK
+	yAbVRO4Clq+Hq76VwuX2QcxPX4zIo7KqDLRrgfbm7EtastVllhGynTbA+7caimYf
+	6IcBIAqmWvQ2zvFmFpu3Fr+sr+TF8KJLMgChqkrOfjFhjBs+fG8U8F+xDH/zcSRn
+	PckdgVNsp3J6nanA8FyWYwTNtVCvEKiijp+F+e/6bpC2w5uwZZKQEhB7kGPzIggA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59v20vc6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 12:56:48 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A5CqlAx010518;
+	Wed, 5 Nov 2025 12:56:48 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59v20vc3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 12:56:48 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A5CW4Y4009822;
+	Wed, 5 Nov 2025 12:56:47 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a5x1kg2ey-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 12:56:47 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A5Cul8t25231930
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Nov 2025 12:56:47 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5D6D358054;
+	Wed,  5 Nov 2025 12:56:47 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F2ABE5805D;
+	Wed,  5 Nov 2025 12:56:43 +0000 (GMT)
+Received: from [9.61.241.252] (unknown [9.61.241.252])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  5 Nov 2025 12:56:43 +0000 (GMT)
+Message-ID: <526693da-9947-4874-ac7b-3548403925d6@linux.ibm.com>
+Date: Wed, 5 Nov 2025 18:26:41 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,47 +86,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251101-kbuild-ms-extensions-dedicated-cflags-v1-1-38004aba524b@kernel.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next20251103] Boot Fail on IBM Power Server
+Content-Language: en-GB
+To: Stephen Rothwell <sfr@canb.auug.org.au>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <5fb6199f-7077-45a2-9a54-2ef731d8a606@linux.ibm.com>
+ <87seet45z0.ritesh.list@gmail.com> <20251105144506.01ba08c8@canb.auug.org.au>
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <20251105144506.01ba08c8@canb.auug.org.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: u7uLKll4GlECw2gd8BssjgHiqV1KZIwG
+X-Proofpoint-ORIG-GUID: 3SIj0pX1vDi5nSR6Nkwm-e39DCcT_lLg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX0hzDNaCa8g7+
+ OiYoTkz+MNtlvg8KpCkf90GXoGAY8uxpZtyA39c6rEBrpO4Zp7lF8z6cR+Q665udqgvL2II79Mk
+ Zoma/ki6w0I553hgmq0GJOfwoYbKJXvi/lPJNi0v7GPWxd5U/OoX776rASkL8d/6RpiMD/Ewn8E
+ yNWnIeh4ZD4e3cew6ix03h6JnyRMD3u4nX/Vn9ploTMu6BfKY7AcuZjiLlQEilljKMltGZ6sEq0
+ McqstLt0XvZkCXZfLS80fdngr/yM9nGIGlTZzFGt0PcWuf708EYctYEZP+PSnvMppp/TJIaSaGY
+ XlrsWEQtEGisrAn88k1NdXYSuMzFGBuSH1TQ8VHgPKUY9/KuEHMk7GlrIp5nDIXNB9P9F5bsdwN
+ 6HkY4En+8pyMDyHLdGd4NPaL80sp3Q==
+X-Authority-Analysis: v=2.4 cv=H8HWAuYi c=1 sm=1 tr=0 ts=690b4990 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=pGLkceISAAAA:8 a=p5uzZ3Qg-5NE2dxgmsoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-05_05,2025-11-03_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501 adultscore=0
+ impostorscore=0 clxscore=1015 bulkscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010021
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat, Nov 01, 2025 at 12:35:47PM -0400, Nathan Chancellor wrote:
-> This is a follow up to commit c4781dc3d1cf ("Kbuild: enable
-> -fms-extensions") but in a separate change due to being substantially
-> different from the initial submission.
-> 
-> There are many places within the kernel that use their own CFLAGS
-> instead of the main KBUILD_CFLAGS, meaning code written with the main
-> kernel's use of '-fms-extensions' in mind that may be tangentially
-> included in these areas will result in "error: declaration does not
-> declare anything" messages from the compiler.
-> 
-> Add '-fms-extensions' to all these areas to ensure consistency, along
-> with -Wno-microsoft-anon-tag to silence clang's warning about use of the
-> extension that the kernel cares about using. parisc does not build with
-> clang so it does not need this warning flag. LoongArch does not need it
-> either because -W flags from KBUILD_FLAGS are pulled into cflags-vdso.
-> 
-> Reported-by: Christian Brauner <brauner@kernel.org>
-> Closes: https://lore.kernel.org/20251030-meerjungfrau-getrocknet-7b46eacc215d@brauner/
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
-> I am taking the original '-fms-extensions' change [1] via a shared
-> branch in kbuild [2] so I would appreciate acks. I plan to finalize that
-> branch so that other maintainers can safely pull it on Thursday.
-> 
-> [1]: https://git.kernel.org/kbuild/c/c4781dc3d1cf0e017e1f290607ddc56cfe187afc
-> [2]: https://git.kernel.org/kbuild/l/kbuild-ms-extensions
-> ---
 
-I'll give my ack:
+On 05/11/25 9:15 am, Stephen Rothwell wrote:
+> Hi all,
+>
+> On Wed, 05 Nov 2025 07:04:59 +0530 Ritesh Harjani (IBM) <ritesh.list@gmail.com> wrote:
+>> Since you must have the previous linux-next tag which was working for
+>> you - do you think you can git bisect to identify the problem patch
+>> (which if reverted boots fine?)
+> You are better off bisecting from Linus' tree (which was SHA
+> 6146a0f1dfae for next-20251103) to the linux-next tag - assuming that
+> Linus' tree is OK.
+>
+> Also, please cut down on what you quote in replies.
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
 
-but don't invalidate the branch just to add my RvB if you've already had
-it stable.
+With next-20251105 kernel, this issue is not seen. I am able to boot to 
+OS, with out this issue.
+
+
+Regards,
+
+Venkat.
+
 
