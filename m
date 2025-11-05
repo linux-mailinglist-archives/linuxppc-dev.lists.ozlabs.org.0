@@ -1,73 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-13788-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13789-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F00C34F21
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 10:49:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FD4C34FDC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 10:58:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1gX95p4Sz30Qk;
-	Wed,  5 Nov 2025 20:49:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1gkk0TFXz3bmk;
+	Wed,  5 Nov 2025 20:58:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762336169;
-	cv=none; b=G6LpQqg0avQJHm87J5CVYyGhUhWBsm5LqaUYHdquL7YRHor0+I1WIMi0weFgALM1ytybrvWyWSj3yvbPb+f2MNPyBLYIlrFQHYus66MJr42b+kA+vcnmGVj3Nw7bviOnvW7daGOpv4Nn6UVFofix3mn6BVg0F43sytli9vBAEvYsgAvGc1kMRylQBXV+WlJpdqMHbltexwPoGPtVp71KcUZN1r03OaINlqBHOFPt70faJKKYIxb/eJ8ijgC2kR8eBYB8h++Dwd5fjRqaWerRgIuLPkvwBI7Iyov7r0LyC6iDnNxLsIn33O4GpMtS7sBrZTM80DNn93OOzHd6pRjOzg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762336717;
+	cv=none; b=ljci7a5RJvXqMTlmNpf++WSjXQngWk5ExGUkc5yzV52njMRtMyfszhwld6J0LHeyX0rdPAe3TlKzQ1kByaDr1bbBR+T2GVLiiCzC+uU1X/yOXMfs9FKZ0mfR1frcde3i7CCYs4fRHahL3jF5k5c44CBQeDV75Xd5ypTMSPFl0skh7y/aMDvu45v2+1qb3ygYXEWiorbsn1G5t+sU8HOyosA2VCHNwLVos71vN+K5Wd8/l/4peH03vG1dt3eRaNcn4U6ziQOozzVIeftg5u49NfjkJERUWV0s/n349ZCBIGw7Ka/dpoUQKynVLc8jInm5RBvIrQ32SFF6M4JQFzu0Mw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762336169; c=relaxed/relaxed;
-	bh=KSkImeW26wxHMAXfbe7WvrT7t//6KWteMn9Q9gZQJTU=;
+	t=1762336717; c=relaxed/relaxed;
+	bh=PiM5gwx7v9fuKjSNGU0XIbMsJHzNcD3t6sxDOvTigVo=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=nyfrqkbsSOovubdx8ums8XmeGsF9E+jeTHiTMiGMTqHcmcSf03zQJJe8G1F/Gqgl6u3i7WOW6Ygcc/chchz7nQ+cj1eE00IgU0nw7h36bKeqbnlzfha18TYFM92epWNSUCjTN5AExjwZpLVEEcmeoGLeOispdM+u3y2pr1wB1gH2+oIvNEByGTT2b7LflUiKfTc0L21oCYwohwgrDnunZ8oljQYcB5vLnKnohHIOXtaXUC+/ufYudY7fbnVWnLcKEnnXUYBLUkFtO+UcOoJVhZv5g6O4xjrxUWaCcHLT1+xYv636foAF9G6vAsdgqByMA6vI/V1YggF9w5Vcp/PEsw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=C5XlgCC1; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version:Content-Type; b=kxnOHOCU2tPk6MpU5Btl+YizlvSWjJqynejPHeLazkXrp8sBm6XmHrYx7LyYTPLGxGkw9uPj085+iptoxZeM95zAEAaHkpxcXw/jxOiQGZq9xVSreSLGfI9AL28b3Kq2Z7gvJaquByc5a2fbAySGZDXCHDacFV5xynJIXXIV8n0CaRIMRVXz+9Wtmfuv/933OYLgYpjxUD0PxqMQPtUTH6UgKIIAAvB28gSLXQbMdLX1EF+kK6FY7mQ5lHv/EQCj2+HDDIYj6zJIXRD6e/ipAOuO4C3ncB2xMd3nSVLDHOij8innNtH6lEEQL3QJlddH3RpqAKxgXcuQ1YALnaREdg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=grSCbl7N; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=C5XlgCC1;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=grSCbl7N;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1gX84Qf5z2yjp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 20:49:28 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-7ae4656d6e4so604934b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Nov 2025 01:49:28 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1gkj1j2Gz30Qk
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 20:58:36 +1100 (AEDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-294fb21b160so45998085ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Nov 2025 01:58:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762336166; x=1762940966; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1762336714; x=1762941514; darn=lists.ozlabs.org;
         h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KSkImeW26wxHMAXfbe7WvrT7t//6KWteMn9Q9gZQJTU=;
-        b=C5XlgCC1GqXZV4BQf5kkpOxV85oweov5f3ggrBN2AdvCRybYdfchpqRbc724nsELG7
-         0tya5K3ujQZqpgD96i0ABn04+h7FOOoddbKoQkvr+RPVwNzwq609I+Knts8tMau855YH
-         fm5BL3jndo0ISiOZ9Sb56rDrQsJlahAjxzDo9/k9ZuSc8joacN/RAlHNeoHXxEapEp5n
-         5ONVeMgqqNvhdYu9Cp7c9KHQ+jiId/D5I6iInWXmexJSgthXzCJlV9uh1wQvRq2F65C1
-         khrENrrkayK8E9xsll69YnHd72u3WPqCdR++IRjVRRAVMNXEXCRCeaGWjSoYHGSEwod1
-         /gSA==
+        bh=PiM5gwx7v9fuKjSNGU0XIbMsJHzNcD3t6sxDOvTigVo=;
+        b=grSCbl7N6uvDmAQFcGpVwdFBd1AFaTxaPw8uXnUqrkYJe24054sKc6HKbuip/hMd0h
+         UT/TazzYgIMF83d7CuyVtwjD6rfqW4kMgpMJ8ou68i2dvexHK3ej6wMiCT+WVDJAULIr
+         4Ld2qncDNL3/0lH07d16XS2M0/w529OVCIgCdkHbfJB6ynDGopNZjvjASet7epI79iKC
+         kglzuG19WsUYp2X4WuFFQauWyjEHxZcblq/+F4OxqZmtWODrSuH/8v8qpUzNyWK78Fpa
+         1VS9uzLkcr4NlInyMjW6enqnynYzrN/S2iQMuNfa0zB2yctWYiXBIPwxDe6IpU7Wd1N9
+         Xafw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762336166; x=1762940966;
+        d=1e100.net; s=20230601; t=1762336714; x=1762941514;
         h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KSkImeW26wxHMAXfbe7WvrT7t//6KWteMn9Q9gZQJTU=;
-        b=pl7aphaDJ75bmEQp0XbYBQhTbpuTlSfraXJciRW+5a4LdQ/3QVLIMgc8X5W1wpUxgK
-         u6NxHDASIYgLfhPM99jdb+qiHQtSlqBFhBnRWLJE/bskUEfPeH9nj8pweqZYAg41oJyo
-         JpIyDFBkCo6L71X8k5YdT4EYNfNgRr/LEjD8lDHJCJ3Iqp4uWjUloYvAXF6OWZncXPWF
-         0zU79I5cxLgbPXvQ7YvBL5xjyrHOP+72hhmy50CjpFP1RHGswkGF65nCoGccrBZPdU6g
-         2t12KtZFfWaoWR5L5FwaGHUCmeiBcx2GDX5f4gIPvSyFTj1AAPnzAKFHP0EpGGta4Q1D
-         xopA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ5uVE8K2FpvAg1e+NuRiAeLv1Q2f3wzP+nSLXdSzNbHP0xC/2R6txgaea+iQrkD/tQv0CFfHiE4DxuUs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywmm6GgJKXoAP4sb1lfinKpHeVDcQMxDMbnrNFiXZK55MDEKvmc
-	xNSLfQS8HKaypRoPFhvz7/O/8Yzho+PLQzIBCNnGaLOT0DCw80wFiUZ+
-X-Gm-Gg: ASbGnctHmovCKHAJVBBoU1jvrr8c1SJqLDH8EbxQJ9f4lDvy11WRPwFASAixcOrn/6u
-	WbylBu+YeHFw+8JHd3aOVrTMSXQoryTNfHByTCGJZC/dvgb1ZTuZ1XUI0kZtWl7m81vpwZaXFyG
-	CrpJGggkZi/4l98ATxgzqwOe/Jp/Yk0qUeMfy25IydRJA2zydd+Zq/Kbzfuu9xF0tCu/NrfIEUB
-	sZBwt7bqhkfKwfOif/BC7kmPYEdqTx+Q9LvkSISQ3eydHFe/u7Q856ltZBItXnrG8EWeJnMWNyP
-	jWYDcokdWGArW2P+kuDwtJTdbt6bKfkhfc8hEwZXxMzNFe1txSVHmd05RVX6zYyhXkHdRwNJDQ1
-	76wGXruEqK/DvNuZ9mj7beERyBm4NL19TtLYvCfK1RFecbxQncLh9i5QvbR9fY3OTN4FgKA==
-X-Google-Smtp-Source: AGHT+IGvXEix8Ale69u5jY13ojKwbWl3rHLnPywsClHEKGLTCQBX8z03LTjZkKtfW5wInDfRAomLmQ==
-X-Received: by 2002:a05:6a20:7283:b0:343:88b4:a722 with SMTP id adf61e73a8af0-34f862ff4a8mr3711914637.52.1762336166397;
-        Wed, 05 Nov 2025 01:49:26 -0800 (PST)
+        bh=PiM5gwx7v9fuKjSNGU0XIbMsJHzNcD3t6sxDOvTigVo=;
+        b=GHgspQoUFhfqvg1TR7mNK9yQkDVBeho/emFXrHbu/FoYLx08n4ETo9ESRlgThYwCAh
+         IO1yfnkmV75TpRZUlnwQjV64i9lfZFVa5soWa2F3lbUBHCNspreqmUrGpSM994onFojw
+         biPbCJLQbBKh78o1NdXhqtnQ2Yil/CFLmhgPpz1uOPY/pQyFnsnnsAoXP3omdygsv4FF
+         MkSeydC2prcI8q1BPlP1V0KOAA9oqLBM208vZfYeCw+3p0s9U6YzeIAGwi6OH9rI1NJ0
+         yrUr/Hq2WlSssBTfE7NU7ujWfYVjkeLLmuOdwPx/3DzQ7V7JsXm6mkoSlihcTvJRgY/E
+         ZUcw==
+X-Forwarded-Encrypted: i=1; AJvYcCWxgPrH9RRAa6CAk+Cg2n3gNOkXtdtz8L/bCWiGIE6Nu0cgvdLXJ1eXcqaZcu1xNlNu3KFCJ5VL3FBZ60Q=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyIGASKjZKJVpSAvwQxKu1zsKxWo5ck5lqenKm2uvvnpNj7OhYs
+	KnKpXUleQZI48HfRRHu3dLxOreisW+vCy6/1w5OL+bIWMrKl9lHwBR3V
+X-Gm-Gg: ASbGncuF5MQuw1E8fFVyS7nkC59V+ylosJaBGTb0FQfzffVhgj8sak6WCsxam9jfMG+
+	cCDPBqdgcigYHQfCJL1L70P6wBePuiA0YEWl8ruRHEZqiEmOuriyK9uTPHeKbbSM4tM7MRmbDEB
+	ejLH/Oet2lsT4EfwhAcf+JwlnAQ3BiNFmgmt7te9Tx+JSSuvRJt22zkrYKMN2RYbj1GmszOD+HT
+	+vjrYlfInjYZ3bog1vFCswAJ2p0ZKWdl5lMEDb+iPAk8jDoEmrg0XvS2vBvi3PXP7qkihm/nF4R
+	fF5ZR7WZWU9vFsvbeEErVNsXBn7IQNN2in21bBWQ4bmexo5/A1Xk9ToK0eygcbzHIFcvxeaJuez
+	U+FN0qIOqfs45UyMDMXuHHg3bcp38dfatWzfV7I/qK59d3ty4Iz7VT6TVrwfW1WUfhTKMXw==
+X-Google-Smtp-Source: AGHT+IHbi+0zqKpbA9V2mHcqMUNAu2olVZcwJU6s62eDD+69tSv+JW/d6KHzoaPAbvo+C4JRz5nOFw==
+X-Received: by 2002:a17:903:19ce:b0:246:7a43:3f66 with SMTP id d9443c01a7336-2962adb2b0fmr33595265ad.7.1762336714441;
+        Wed, 05 Nov 2025 01:58:34 -0800 (PST)
 Received: from dw-tp ([171.76.85.117])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ba1f765f148sm5030694a12.24.2025.11.05.01.49.15
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29601972ad1sm55039695ad.19.2025.11.05.01.58.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 01:49:25 -0800 (PST)
+        Wed, 05 Nov 2025 01:58:33 -0800 (PST)
 From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>, 
@@ -86,11 +86,11 @@ Cc: linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>,
 	Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>, 
 	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
 	sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-Subject: Re: [PATCH v4 09/12] powerpc/mm: replace batch->active with in_lazy_mmu_mode()
-In-Reply-To: <20251029100909.3381140-10-kevin.brodsky@arm.com>
-Date: Wed, 05 Nov 2025 15:10:20 +0530
-Message-ID: <87ldkk4y2j.ritesh.list@gmail.com>
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com> <20251029100909.3381140-10-kevin.brodsky@arm.com>
+Subject: Re: [PATCH v4 03/12] powerpc/mm: implement arch_flush_lazy_mmu_mode()
+In-Reply-To: <87pl9x41c5.ritesh.list@gmail.com>
+Date: Wed, 05 Nov 2025 15:19:35 +0530
+Message-ID: <87jz044xn4.ritesh.list@gmail.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com> <20251029100909.3381140-4-kevin.brodsky@arm.com> <87pl9x41c5.ritesh.list@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -110,26 +110,84 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Kevin Brodsky <kevin.brodsky@arm.com> writes:
+Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
 
-> A per-CPU batch struct is activated when entering lazy MMU mode; its
-> lifetime is the same as the lazy MMU section (it is deactivated when
-> leaving the mode). Preemption is disabled in that interval to ensure
-> that the per-CPU reference remains valid.
+> Kevin Brodsky <kevin.brodsky@arm.com> writes:
 >
-> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
-> mode. We can therefore use the generic helper in_lazy_mmu_mode()
-> to tell whether a batch struct is active instead of tracking it
-> explicitly.
+>> Upcoming changes to the lazy_mmu API will cause
+>> arch_flush_lazy_mmu_mode() to be called when leaving a nested
+>> lazy_mmu section.
+>>
+>> Move the relevant logic from arch_leave_lazy_mmu_mode() to
+>> arch_flush_lazy_mmu_mode() and have the former call the latter.
+>>
+>> Note: the additional this_cpu_ptr() on the
+>> arch_leave_lazy_mmu_mode() path will be removed in a subsequent
+>> patch.
+>>
+>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>> ---
+>>  .../powerpc/include/asm/book3s/64/tlbflush-hash.h | 15 +++++++++++----
+>>  1 file changed, 11 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+>> index 146287d9580f..7704dbe8e88d 100644
+>> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+>> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+>> @@ -41,6 +41,16 @@ static inline void arch_enter_lazy_mmu_mode(void)
+>>  	batch->active = 1;
+>>  }
+>>  
+>> +static inline void arch_flush_lazy_mmu_mode(void)
+>> +{
+>> +	struct ppc64_tlb_batch *batch;
+>> +
+>> +	batch = this_cpu_ptr(&ppc64_tlb_batch);
+>> +
+>> +	if (batch->index)
+>> +		__flush_tlb_pending(batch);
+>> +}
+>> +
 >
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
->  arch/powerpc/include/asm/book3s/64/tlbflush-hash.h | 9 ---------
->  arch/powerpc/mm/book3s64/hash_tlb.c                | 2 +-
->  2 files changed, 1 insertion(+), 10 deletions(-)
+> This looks a bit scary since arch_flush_lazy_mmu_mode() is getting
+> called from several of the places in later patches(). 
+>
+> Although I think arch_flush_lazy_mmu_mode() will only always be called
+> in nested lazy mmu case right?
+>
+> Do you think we can add a VM_BUG_ON(radix_enabled()); in above to make
+> sure the above never gets called in radix_enabled() case. 
+>
+> I am still going over the patch series, but while reviewing this I
+> wanted to take your opinion.
+>
+> Ohh wait.. There is no way of knowing the return value from
+> arch_enter_lazy_mmu_mode().. I think you might need a similar check to
+> return from arch_flush_lazy_mmu_mode() too, if radix_enabled() is true.
 >
 
-This looks good to me.
+Now that I have gone through this series, it seems plaussible that since
+lazy mmu mode supports nesting, arch_flush_lazy_mmu_mode() can get
+called while the lazy mmu is active due to nesting.. 
 
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+That means we should add the radix_enabled() check as I was talking in
+above i.e. 
+
+@@ -38,6 +38,9 @@ static inline void arch_flush_lazy_mmu_mode(void)
+ {
+        struct ppc64_tlb_batch *batch;
+
++       if (radix_enabled())
++               return;
++
+        batch = this_cpu_ptr(&ppc64_tlb_batch);
+
+        if (batch->index)
+
+Correct? Although otherwise also I don't think it should be a problem
+because batch->index is only valid during hash, but I still think we can
+add above check so that we don't have to call this_cpu_ptr() to check
+for batch->index whenever flush is being called.
+
+-ritesh
 
