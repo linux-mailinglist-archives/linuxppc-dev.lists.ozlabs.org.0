@@ -1,78 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-13775-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13776-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC56C33D54
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 04:16:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911BCC33D79
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 04:34:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1VpS2fZKz30Qk;
-	Wed,  5 Nov 2025 14:16:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1WCT33fBz30Qk;
+	Wed,  5 Nov 2025 14:34:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762312576;
-	cv=none; b=g8T5U9BPH9vs3vlptPamJqhn7f/O7T3IP8mtx9RD2actS7uRB+5zlm8zr7E6gtNvXkTByfXGgkTmo/YaS+3V9ILIL5JKi2DYZabix8tVIZLJozNBNxdKf/wljbl8lsg4SDUAUagBw3ZJGNk4IKd9oqgTUoWV8YsAsuTHye/yyzFAk9XLQwKhkf1VqBj9qhj/eF2+yM7DYjXtS4HF55RKpHlCoR9DQxAOn1UdPnO+TRayTOk3yi4eUsh7rf8ifrT56AL2y17hcSyRWMeUoxWcg6F74lUYCGXUm85TIi1AFO1MNX65xVPnVFnfzSfOCztXVqCDM04auk8AtUi5h/mqPA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762313669;
+	cv=none; b=WbrRTzVVfOjBTpUqsdq0BuYjXCfDPms3F7dCiw4qbjKZE37czt5L/GyyPrIduQ5taEHX+iLHP/90tGuo+414YJpXWTqf0SMb5+slOi9IZ/aN7F8LRGifNVflC7zckXd1hed46vPsMphRwTnH/FxyQcHUhLXBoCoOMTN3vs1OpIRBGKn0RNO4F158pASawS0GtwYFzbmDqpCNzTbUz4LEZfJeymNdzQ3PbpCa7QWvnD51le7cNWIq50pu0R/Amjw/0+dVexzdJGBA39CJN5ZrSd2vbHeG8aBPlDeInfsDPyt+2l5x/INdyRFGrh3pdIGRgujFeFU6RE3I/vvsp4L2zQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762312576; c=relaxed/relaxed;
-	bh=khlr+nqfqO8zkgfz4nPt9sJu1gGHQI2iFDjbcvasM4k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iTK8b1vf5wmp8JHp5J+ADKtlw9RiSnW8nJNkAAMZOdfv8DO3VbM2QMcMsz5QN2mYSy5h5rn44PI1BzXyeaGjx9Qscvi7Ou+JcxNDFqb+sSyFwUerahOJ81pNXhX/iNLtRButWl86SflgKHAazdX33kduNk8pn+k1GrFYbT01xe863bqWt/LVRs4jpN5s/vXvqoJoHpcwP/gOwUruVQRhxSkvGPdg2cYlWsIlFxmQ1tdswiTPcpzqPcaCvUMbQ7nkEoyAnhxjGEvZfh3uen8AQIfXcyDQEpUnjnt+Zf+HTM+0Hg2CL0hrP0oTiruBWfrQ8TIL24tRiQn5LCVGmmQl9g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QmPZBxzp; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QmPZBxzp; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1762313669; c=relaxed/relaxed;
+	bh=mqwLGxE4Y564ZewohM8e+2lOgfE4v+q7gK0OGvckDt4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i8MDYvOF59WmYUWoQumznyBQXGEp2m4FOzCqsffQrJfqSbgr5aSr1kPh1/XwtlvnOVv6To/znn41ZAiODDWzDuGm8zyW6R1io6UPyNjPE+528GIh7emDHrxsWeDIs2vuPc0/uBNB0oHd2UbrqJ5OfcA/18yNfN0sBoCAG5/74s+SXfB+OX/OQxGsmgFJF1X4YSoSDwExbqAkhoer3Cc1/XhPl4wfTmP2DuEnAJ0dh+btvxz4XYJKtz2z/Aeml8sgTIJO0PxZT+kXUo2l/TPzjAw00CAVyZ80a7l79xu1LgnTE0VQ+9QvKNoEfIadL8d5pV0/+7bA+yqjjnPpMgJFYg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Fsh1zd9X; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QmPZBxzp;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QmPZBxzp;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Fsh1zd9X;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1VpQ30Z2z306d
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 14:16:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762312568;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=khlr+nqfqO8zkgfz4nPt9sJu1gGHQI2iFDjbcvasM4k=;
-	b=QmPZBxzptheZWWTda0fIEvbp9KF8dNEmgJvSCWSDmG4vWYBmGLGoO5qpahgFbX7wczpx+d
-	O2J0XPYdvI6sn1s9VwA39ErpDI8k+nzjFN95Y8Yz4VxDgPfnY/MgbJdVWEg5MEOnNqWtJg
-	T0OnyfXYuBRDkHAaPzm0uOkpYeHiqtA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762312568;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=khlr+nqfqO8zkgfz4nPt9sJu1gGHQI2iFDjbcvasM4k=;
-	b=QmPZBxzptheZWWTda0fIEvbp9KF8dNEmgJvSCWSDmG4vWYBmGLGoO5qpahgFbX7wczpx+d
-	O2J0XPYdvI6sn1s9VwA39ErpDI8k+nzjFN95Y8Yz4VxDgPfnY/MgbJdVWEg5MEOnNqWtJg
-	T0OnyfXYuBRDkHAaPzm0uOkpYeHiqtA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-pcTzoig4Oy65rcC08Sm5fw-1; Tue,
- 04 Nov 2025 22:16:06 -0500
-X-MC-Unique: pcTzoig4Oy65rcC08Sm5fw-1
-X-Mimecast-MFC-AGG-ID: pcTzoig4Oy65rcC08Sm5fw_1762312565
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 41CD319560B2;
-	Wed,  5 Nov 2025 03:16:04 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.190])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B8CB11956056;
-	Wed,  5 Nov 2025 03:16:01 +0000 (UTC)
-Date: Wed, 5 Nov 2025 11:15:57 +0800
-From: Baoquan he <bhe@redhat.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	Jiri Bohac <jbohac@suse.cz>,
-	Shivang Upadhyay <shivangu@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org, kexec@lists.infradead.org
-Subject: Re: [PATCH 0/2] Export kdump crashkernel CMA ranges
-Message-ID: <aQrBbYVEQleExjpk@MiWiFi-R3L-srv>
-References: <20251103035859.1267318-1-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1WCR6Tlwz306d
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 14:34:27 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A4EgECR024476;
+	Wed, 5 Nov 2025 03:34:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=mqwLGx
+	E4Y564ZewohM8e+2lOgfE4v+q7gK0OGvckDt4=; b=Fsh1zd9XmM+0Qw5AshzRsz
+	Gm3WrqmmPdjasc5DhPIlxPkc0zyRd28dbqtSNgmszN6AG18OZx++I7ERTsxWUD9G
+	pnxa0RnFKqJMCieG5Iet3ObncZlkpfZSrICpywsY49OOBHlh/oz2lJM0AoWJv5wa
+	ObDVX+z398WMx4K0rY4HatkaGdj5t097nbzN9xQeIShY0KjDIf416745mmG2vUk2
+	F2ukfci6aU5Ym3gvAtsj3dOM8UZDv2o2IoejlXCj3HjhfIg5SvAP2bHnNffIgCeZ
+	x1rTNVQYTHIfXxKLqdXZEWg4ATd0LlcTzA/CznUXsOXeE4JbeXswRAQfTxDv8KyQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59vuf6qe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 03:34:20 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A530ZDI009855;
+	Wed, 5 Nov 2025 03:34:19 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a5x1ke6ew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 03:34:19 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A53YH7B59769142
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Nov 2025 03:34:17 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 57CD420043;
+	Wed,  5 Nov 2025 03:34:17 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C732F20040;
+	Wed,  5 Nov 2025 03:34:15 +0000 (GMT)
+Received: from [9.109.204.116] (unknown [9.109.204.116])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  5 Nov 2025 03:34:15 +0000 (GMT)
+Message-ID: <a81bf9c0-f8c8-49f9-965d-26f704a73517@linux.ibm.com>
+Date: Wed, 5 Nov 2025 09:03:43 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,64 +79,80 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251103035859.1267318-1-sourabhjain@linux.ibm.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] Export kdump crashkernel CMA ranges
+To: Baoquan he <bhe@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        Jiri Bohac <jbohac@suse.cz>, Shivang Upadhyay <shivangu@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, kexec@lists.infradead.org
+References: <20251103035859.1267318-1-sourabhjain@linux.ibm.com>
+ <aQrBbYVEQleExjpk@MiWiFi-R3L-srv>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <aQrBbYVEQleExjpk@MiWiFi-R3L-srv>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: HXZlabnTa8h_DEIcxvl6Sm-kK7acfCMs
+X-Proofpoint-GUID: HXZlabnTa8h_DEIcxvl6Sm-kK7acfCMs
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX/2AOhhSIVWQ3
+ CEMlQwF3PoJSFF8N6w/iSrlQZ7dH9aqMHwpp6EAayXxRCihpo2E+PpouVBw/L4wmuBokZSRU3Y9
+ VWx6Z5TFWqNJwggDUgDUMkW2t9bloYQpA5VoIshtPdqjOWfxlQJHXzsZVYX0ofHtT9d/qNA9G4g
+ bN4sjRu2oChRnZmA+3iW5eDQNoF9gazfJY2UlR7dtYKL5YZQcCTk85zg7AJ/dSkdCEutsyTHJnM
+ LsFv+idoiWRcjDSW9wRj3802H6uRnqKxa7YO2cnyi5cNbLOKGXLiB1te07/cptx25ISLlO/dCiF
+ ykzxtk4L24YlaTHi3y73Vwx9EMsHqHCvaZ2xaf/2Bq8phBDw9+RddWG1PN321EhNFpPDCcYnAHp
+ 8GvFpss+rLobSzBRzYDKw+EwC6OnVA==
+X-Authority-Analysis: v=2.4 cv=U6qfzOru c=1 sm=1 tr=0 ts=690ac5bc cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=XWi_oYZyp0CedhVi0gkA:9 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-05_02,2025-11-03_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 impostorscore=0 spamscore=0 phishscore=0
+ clxscore=1015 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2511010021
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 11/03/25 at 09:28am, Sourabh Jain wrote:
-> /sys/kernel/kexec_crash_cma_ranges to export all CMA regions reserved
-> for the crashkernel to user-space. This enables user-space tools
-> configuring kdump to determine the amount of memory reserved for the
-> crashkernel. When CMA is used for crashkernel allocation, tools can use
-> this information to warn users that attempting to capture user pages
-> while CMA reservation is active may lead to unreliable or incomplete
-> dump capture.
-> 
-> While adding documentation for the new sysfs interface, I realized that
-> there was no ABI document for the existing kexec and kdump sysfs
-> interfaces, so I added one.
-> 
-> The first patch adds the ABI documentation for the existing kexec and
-> kdump sysfs interfaces, and the second patch adds the
-> /sys/kernel/kexec_crash_cma_ranges sysfs interface along with its
-> corresponding ABI documentation.
-> 
-> *Seeking opinions*
-> There are already four kexec/kdump sysfs entries under /sys/kernel/,
-> and this patch series adds one more. Should we consider moving them to
-> a separate directory, such as /sys/kernel/kexec, to avoid polluting
-> /sys/kernel/? For backward compatibility, we can create symlinks at
-> the old locations for sometime and remove them in the future.
-
-That sounds a good idea, will you do it in v2? Because otherwise the
-kexec_crash_cma_ranges need be moved too.
 
 
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Baoquan he <bhe@redhat.com>
-> Cc: Jiri Bohac <jbohac@suse.cz>
-> Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: kexec@lists.infradead.org
-> 
-> Sourabh Jain (2):
->   Documentation/ABI: add kexec and kdump sysfs interface
->   crash: export crashkernel CMA reservation to userspace
-> 
->  .../ABI/testing/sysfs-kernel-kexec-kdump      | 53 +++++++++++++++++++
->  kernel/ksysfs.c                               | 17 ++++++
->  2 files changed, 70 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-kernel-kexec-kdump
-> 
-> -- 
-> 2.51.0
-> 
+On 05/11/25 08:45, Baoquan he wrote:
+> On 11/03/25 at 09:28am, Sourabh Jain wrote:
+>> /sys/kernel/kexec_crash_cma_ranges to export all CMA regions reserved
+>> for the crashkernel to user-space. This enables user-space tools
+>> configuring kdump to determine the amount of memory reserved for the
+>> crashkernel. When CMA is used for crashkernel allocation, tools can use
+>> this information to warn users that attempting to capture user pages
+>> while CMA reservation is active may lead to unreliable or incomplete
+>> dump capture.
+>>
+>> While adding documentation for the new sysfs interface, I realized that
+>> there was no ABI document for the existing kexec and kdump sysfs
+>> interfaces, so I added one.
+>>
+>> The first patch adds the ABI documentation for the existing kexec and
+>> kdump sysfs interfaces, and the second patch adds the
+>> /sys/kernel/kexec_crash_cma_ranges sysfs interface along with its
+>> corresponding ABI documentation.
+>>
+>> *Seeking opinions*
+>> There are already four kexec/kdump sysfs entries under /sys/kernel/,
+>> and this patch series adds one more. Should we consider moving them to
+>> a separate directory, such as /sys/kernel/kexec, to avoid polluting
+>> /sys/kernel/? For backward compatibility, we can create symlinks at
+>> the old locations for sometime and remove them in the future.
+> That sounds a good idea, will you do it in v2? Because otherwise the
+> kexec_crash_cma_ranges need be moved too.
+
+Yes I will include it in v2.
+
+Thanks,
+Sourabh Jain
 
 
