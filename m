@@ -1,63 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-13807-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13808-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1403C36304
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 15:58:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0C1C364DD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 16:23:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1pNg2nxhz3bW7;
-	Thu,  6 Nov 2025 01:58:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1pxy1rjfz3bW7;
+	Thu,  6 Nov 2025 02:23:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1098:5b::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762354707;
-	cv=none; b=e0Jk9fGizNrx8adBrd9WESPZ3gt8jzQyOin+7rRD1KuRS/lq0aSphecPeL9WsCPdHJMRShFL3bGPoxhR3V1tjztsVvJY1s7QXMjhlk3bxtMnWzcK6Og6hKygMvgH69mNXJD0Ubih+qyptD2YFPMgfb4ZeGPsBId17uQG+7RhtOQN564/AWwtIXkxoxHDAQ/M5055iHRhyaQm7f4Ag8dA/84mxhbGiKDC0AS3jacxyleY1C/FQeJ2ErQQsIuTo25x2o7RDTGf9QUwLYt2MbuVRTOVAEmew9ST4WQQ5zGYfm/EWj5UtCNKgml7vu2bklCOJukkbIeB4Er8+Ksj4WH7Vg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762356230;
+	cv=none; b=QQ/LJaCiij7FXsc2uEtLR5IQjqC+a4KE8xiHasMf5ESi0I3qzrD+hmPNJZMfVT4B5V4/EXaDDnSxaSEKfYuJNvbZKtCX4DzlnsOUpY8jM8fIJehUjfcn48c/AORv6UioPfb7QplqJlVnI4x7ZV0wYQMU+Qi/1yLUVxYU/BRj6CiAIAwOAswu/OiVoiXg53o1tcKoVD+PlkYT5NLrTVs+CVkqFACCNFakgkjZs4DXKvarRFcV0vlV7fXUGeqUPYFiqF0KeVRlDeyFJGXh680VozmcKtIh0xrgDkC9jzN62NgbZe/o+mJ01nXyF38eTN1IO5TGJDpA65M9tbLt2fOVsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762354707; c=relaxed/relaxed;
-	bh=j+8lmcfXXp+njydpClU6nphHyEcjCaty8/2kZQYj9+E=;
+	t=1762356230; c=relaxed/relaxed;
+	bh=ZwXrGHR7YxtpuyFp/BXZocubvmjRwPrv7rU8FbTpQyw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kBhnohpmEJkO7U9dsD8QZWBNcD1XPLlAlLQsCjz7Oopiy9fFD1vDdWHiBRy2ruBOxCp6RtXwN3RwLlpP2gSC6+z0GK6Q1qFyTnwuQmGmF2R41P2r11ntp1fh+fBN7f45zbSCYVdBobpWuhgayUEM2edJOtmka9yrFYjv29ERf0e/C5l+SRwziYZlrUx8RAQ4I4TY0I+gApS6NhsAKTVmvRtKEpkidqDc3YHf3GDUaOq2cpAgKcMKr5BAABKXx3U3kveuoUfhpvFfZ61NAgKRQh6FYmDTL9bTZqyDA1JF7b3xfkpbW8aL1QOh7kaO/sHWsvMRTEOaBMEkI55DBSiBiw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=treblig.org; dkim=pass (2048-bit key; unprotected) header.d=treblig.org header.i=@treblig.org header.a=rsa-sha256 header.s=bytemarkmx header.b=JM6VIsvw; dkim-atps=neutral; spf=pass (client-ip=2a00:1098:5b::1; helo=mx.treblig.org; envelope-from=dg@treblig.org; receiver=lists.ozlabs.org) smtp.mailfrom=treblig.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=BGKZeWP0Gsk1xx2D8IBhlbmf0/YzCrCLWRABU0CeoaML9ROIAxlB/s0pi9e8AW6yDgedeJMyKyrhwo+5BJMFZc/a+M36K/3a5wKO0+wTAeCNN0sbgRrhTIWDioRtkvW5ue44KyieW+rkb3QWEBggzvIdxbJamZX+LfE22kEHvgdVyDDRsymAta/5QDf8JmnKLTJqspOVC0qhoAdCU3JnC1suRtZimrE6Dj3s0LynwHlRLCLbqRWgj/mt1CLoW+2YtaHLK6I1uBKAoD//LjGwHDtutSdMpIQ44Hu/muLaiVB5YOpCnQsDjRWXNiMN2EH3mEJGJbGF659eb8s8qmZbSg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uMrvcThp; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=treblig.org header.i=@treblig.org header.a=rsa-sha256 header.s=bytemarkmx header.b=JM6VIsvw;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uMrvcThp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=treblig.org (client-ip=2a00:1098:5b::1; helo=mx.treblig.org; envelope-from=dg@treblig.org; receiver=lists.ozlabs.org)
-Received: from mx.treblig.org (mx.treblig.org [IPv6:2a00:1098:5b::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1pNd31Nwz2yrT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 01:58:24 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=j+8lmcfXXp+njydpClU6nphHyEcjCaty8/2kZQYj9+E=; b=JM6VIsvwqcE8eA2d
-	RGoZizM7LrU2/c1pbjv4fPyhyPmNcCS+u9oEkJyXjNgN3CCUm/LvyXxU8CcwCNiH3KEtnDppamwkZ
-	SNpncQlBCZLBhSrHX0u39GkDa1lunWV4bOMAMIspvUT/wlq92C72AtDlCh74hjK38cpZ3KyvBg9XG
-	tVtswSKIdXa6RtKXw/Z3Roze/3Mzu+ZsdJszjeTJKhfmim1NoqA85sjBKcaRp+lc7cvrkiV7Rx7vC
-	+ZHScghNqX3xVup1c5nofV6dtlOTPB9NxMS0F+/AENn+uK0xqK8RZbTacDbBFOfu+QfBXh5PDR3He
-	/drijtdl2LsE01dXVw==;
-Received: from dg by mx.treblig.org with local (Exim 4.98.2)
-	(envelope-from <dg@treblig.org>)
-	id 1vGexe-00000002CEf-1dvB;
-	Wed, 05 Nov 2025 14:58:10 +0000
-Date: Wed, 5 Nov 2025 14:58:10 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: Finn Thain <fthain@linux-m68k.org>, mark.cave-ayland@ilande.co.uk
-Cc: Stan Johnson <userm57@yahoo.com>, mpe@ellerman.id.au, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, sam@ravnborg.org,
-	benh@kernel.crashing.org, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, rdunlap@infradead.org,
-	Cedar Maxwell <cedarmaxwell@mac.com>
-Subject: Re: QEMU limitations, was Re: [PATCH v4] powerpc: Use shared font
- data
-Message-ID: <aQtmAjvkD9CzzIJH@gallifrey>
-References: <20230825142754.1487900-1-linux@treblig.org>
- <d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com>
- <aQeQYNANzlTqJZdR@gallifrey>
- <20108eef-b7cf-3f23-264a-5d97021f9ffa@linux-m68k.org>
- <aQgJ95Y3pA-8GdbP@gallifrey>
- <797f0a13-350f-e26d-f1ef-876419e1c013@linux-m68k.org>
- <492c13c9-666c-9578-6c66-0eb8fefc93dc@linux-m68k.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1pxx0Cpzz2yrT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 02:23:48 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EBE606021E;
+	Wed,  5 Nov 2025 15:23:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE3FC4CEF5;
+	Wed,  5 Nov 2025 15:23:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762356226;
+	bh=kUs8Lv2NDX+HzCDICX2X7wBuseMdW6bT2eEf/zscT/4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uMrvcThpY3YAAbWSY9xnzagjiDcwxd3DE9e20MpciQ0mHPg3Rf2Ci/61aau+E4mQM
+	 8nZgzHXJSUUcSaMnT3I6e/kc2OTFqEOU8mhgloW70El8EVP4uFuINodUwyZYdb4wN6
+	 1lFZyctatEB0Ly2mBkqqT1g1f5kszp3d1j2Gfcxbk6+UPzncHihdjKp/ahdU45prxY
+	 rmgoXHjD8Oya/yhaU7KPl20KhLjgM4879Ne2XzlbiGqEnxwVLMRrnoxp2UrzmMsOXc
+	 mmWDqocG56Gn6iM3/+Xaa3pHugJb+dKTjiXrnAV7pXWqqp81/F+Ra04o22uyDpfK++
+	 osL5X75ZbKhQQ==
+Date: Wed, 5 Nov 2025 16:23:39 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net, 
+	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
+	rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
+	paul@paul-moore.com, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
+	john.johansen@canonical.com, selinux@vger.kernel.org, borntraeger@linux.ibm.com, 
+	bpf@vger.kernel.org
+Subject: Re: [PATCH v2 22/50] convert efivarfs
+Message-ID: <20251105-absatz-zehrt-8d1197f900c9@brauner>
+References: <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+ <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
+ <20251029193755.GU2441659@ZenIV>
+ <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
+ <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
+ <423f5cc5352c54fc21e0570daeeddc4a58e74974.camel@HansenPartnership.com>
+ <20251105-sohlen-fenster-e7c5af1204c4@brauner>
+ <305ff01c159993d8124ae3125f7dacf6b61fa933.camel@HansenPartnership.com>
+ <20251105-ausfiel-klopapier-599213591ad2@brauner>
+ <ddc9e2efa25d59ae7f1989ac155b9a9043ca830b.camel@HansenPartnership.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,58 +79,94 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <492c13c9-666c-9578-6c66-0eb8fefc93dc@linux-m68k.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.12.48+deb13-amd64 (x86_64)
-X-Uptime: 14:56:52 up 9 days, 14:33,  3 users,  load average: 0.00, 0.00, 0.00
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ddc9e2efa25d59ae7f1989ac155b9a9043ca830b.camel@HansenPartnership.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-(Copying Mark Cave-Ayland in - see below)
-
-* Finn Thain (fthain@linux-m68k.org) wrote:
-> 
-> On Mon, 3 Nov 2025, Finn Thain wrote:
-> 
-> > > OK, remember I don't think I've ever tried PPC via MacOS booting, so 
-> > > not familiar with it.
+On Wed, Nov 05, 2025 at 09:01:59AM -0500, James Bottomley wrote:
+> On Wed, 2025-11-05 at 14:46 +0100, Christian Brauner wrote:
+> > On Wed, Nov 05, 2025 at 08:33:10AM -0500, James Bottomley wrote:
+> > > On Wed, 2025-11-05 at 14:16 +0100, Christian Brauner wrote:
+> > > > On Wed, Nov 05, 2025 at 08:09:03AM -0500, James Bottomley wrote:
+> > > > > On Wed, 2025-11-05 at 12:47 +0100, Christian Brauner wrote:
+> > > [...]
+> > > > > > And suspend/resume works just fine with freeze/thaw. See
+> > > > > > commit
+> > > > > > eacfbf74196f ("power: freeze filesystems during
+> > > > > > suspend/resume") which implements exactly that.
+> > > > > > 
+> > > > > > The reason this didn't work for you is very likely:
+> > > > > > 
+> > > > > > cat /sys/power/freeze_filesystems
+> > > > > > 0
+> > > > > > 
+> > > > > > which you must set to 1.
+> > > > > 
+> > > > > Actually, no, that's not correct.  The efivarfs freeze/thaw
+> > > > > logic must run unconditionally regardless of this setting to
+> > > > > fix the systemd bug, so all the variable resyncing is done in
+> > > > > the thaw call, which isn't conditioned on the above (or at
+> > > > > least it shouldn't be).
+> > > > 
+> > > > It is conditioned on the above currently but we can certainly fix
+> > > > it easily to not be.
 > > > 
+> > > It still seems to be unconditional in upstream 6.18-rc4
+> > > kernel/power/hibernate.c with only freeze being conditioned on the
 > > 
-> > I will try to set up a MacOS guest in QEMU, to see if the hang can be 
-> > reproduced that way.
+> > I'm honestly not sure how efivarfs would be frozen if
+> > filesystems_freeze() isn't called... Maybe I missed that memo though.
+> > In any case I just sent you...
+> 
+> We don't need to be frozen: our freeze_fs method is empty, we just need
+> thaw_fs calling.
+
+No, you need to call freeze so the power subsystem can mark the
+filesystem as being exclusively frozen by it because that specific
+freeze must not be undone by anyone else e.g., userspace or some other
+internal unfreeze due to some filesystem (for other filesystems this is
+very relevant) internal freeze for say scrub or whatever.
+
+If filesystem_thaw() doesn't find efivarfs frozen - and exclusively
+frozen by the power subsyste - it obviously won't call the actual
+efivarfs thaw method. It's all working in order. My patch should fix
+your issue and will ensure efivarfs always runs. We wouldn't even need
+an SB_I_* flag for this. We could equally well just match superblock but
+other filesystems might need or want to opt into this too.
+
+Don't implement thaw_super() yourself, please.
+
+> 
+> Is the trouble that there's now freeze/thaw accounting, so thaw won't
+> be called based on that if freeze wasn't?  In which case might it not
+> be better for us to implement thaw_super, which is called
+> unconditionally and leaves the accounting up to the filesystem?
+> 
+> > > setting of the filesystem_freeze variable but I haven't checked -
+> > > next.
+> > > 
+> > > However, if there's anything in the works to change that we would
+> > > need an exception for efivarfs, please ... we can't have a bug fix
+> > > conditioned on a user setting.
 > > 
+> > ... a patch in another mail.
+> > 
+> > Sorry in case I misunderstood that you _always_ wanted that sync
+> > regardless of userspace enabling it.
 > 
-> QEMU appears to be incompatible with the Old World ROM from the Beige G3. 
-> 'qemu-system-ppc -M g3beige -bios 78F57389.ROM -serial stdio' drops into a 
-> ROM diagnostic menu and won't boot.
+> We need the thaw method called to get the variable resync to happen. 
+> That fixes a bug on hibernate with systemd (and also accounts for an
+> other efi variable changes the user may have made between hibernate and
+> resume), yes.  And we need that to happen unconditionally to fix the
+> systemd bug.
 > 
-> I did get 'qemu-system-ppc -M mac99 ...' to boot into MacOS 9, by using 
-> OpenBIOS instead of Apple firmware. Unforunately, BootX is not compatible 
-> with this configuration, so it won't help.
+> Regards,
 > 
-> BootX is compatible with beige powermacs, but 'qemu-system-ppc -M g3beige' 
-> with OpenBIOS fails to boot MacOS 9 ("MacOS: unable to find an interrupt 
-> controller node").
+> James
 > 
-> OpenBIOS wouldn't boot a MacOS 8.1 CD-ROM either, but for different 
-> reasons: both mac99 and g3beige failed with "No valid state has been set 
-> by load or init-program".
-
-Thanks for trying,
-
-I've copied Mark Cave-Ayland from Qemu in; he's down as the g3beige
-maintainer in qemu, he might have a hint.
-
-Dave
-
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
 
