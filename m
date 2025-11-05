@@ -1,96 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-13789-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13792-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FD4C34FDC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 10:58:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC192C3579C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 05 Nov 2025 12:50:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d1gkk0TFXz3bmk;
-	Wed,  5 Nov 2025 20:58:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1kCK68vSz3bW7;
+	Wed,  5 Nov 2025 22:50:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762336717;
-	cv=none; b=ljci7a5RJvXqMTlmNpf++WSjXQngWk5ExGUkc5yzV52njMRtMyfszhwld6J0LHeyX0rdPAe3TlKzQ1kByaDr1bbBR+T2GVLiiCzC+uU1X/yOXMfs9FKZ0mfR1frcde3i7CCYs4fRHahL3jF5k5c44CBQeDV75Xd5ypTMSPFl0skh7y/aMDvu45v2+1qb3ygYXEWiorbsn1G5t+sU8HOyosA2VCHNwLVos71vN+K5Wd8/l/4peH03vG1dt3eRaNcn4U6ziQOozzVIeftg5u49NfjkJERUWV0s/n349ZCBIGw7Ka/dpoUQKynVLc8jInm5RBvIrQ32SFF6M4JQFzu0Mw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762343405;
+	cv=none; b=BfB8PukQsL8rjDf/ElCbk2ONcoZgVS3QiEVwPqnjKt8DFJlEG2ae9HdhFcQkBjxGfMgwrpRV3Lxh2t00y25IFbxfDV0GWS+p6qO7t4xAmqJgiTWLl0zY63WQGB8/Jm5ebYVTan+PiEu0dW5blbnHD2XAcxTcDuIH2TGnPwO/QlsLlPGsXETZ1Bv0NLSehEdjf8bj+z9wu/UxuVaLAhyvXXqq83VVvTc9bFd5E5j8eLTtcRiix0XrH1MmAAkbI6Jlr266jWkwnUquqC8fXc0sr9oqosa4dnww3+iyeER8bXZEFBpd9i6G9e2848LvVukZKUxCvFbs4sYhVdBbI07OAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762336717; c=relaxed/relaxed;
-	bh=PiM5gwx7v9fuKjSNGU0XIbMsJHzNcD3t6sxDOvTigVo=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=kxnOHOCU2tPk6MpU5Btl+YizlvSWjJqynejPHeLazkXrp8sBm6XmHrYx7LyYTPLGxGkw9uPj085+iptoxZeM95zAEAaHkpxcXw/jxOiQGZq9xVSreSLGfI9AL28b3Kq2Z7gvJaquByc5a2fbAySGZDXCHDacFV5xynJIXXIV8n0CaRIMRVXz+9Wtmfuv/933OYLgYpjxUD0PxqMQPtUTH6UgKIIAAvB28gSLXQbMdLX1EF+kK6FY7mQ5lHv/EQCj2+HDDIYj6zJIXRD6e/ipAOuO4C3ncB2xMd3nSVLDHOij8innNtH6lEEQL3QJlddH3RpqAKxgXcuQ1YALnaREdg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=grSCbl7N; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=grSCbl7N;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d1gkj1j2Gz30Qk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 20:58:36 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-294fb21b160so45998085ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Nov 2025 01:58:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762336714; x=1762941514; darn=lists.ozlabs.org;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PiM5gwx7v9fuKjSNGU0XIbMsJHzNcD3t6sxDOvTigVo=;
-        b=grSCbl7N6uvDmAQFcGpVwdFBd1AFaTxaPw8uXnUqrkYJe24054sKc6HKbuip/hMd0h
-         UT/TazzYgIMF83d7CuyVtwjD6rfqW4kMgpMJ8ou68i2dvexHK3ej6wMiCT+WVDJAULIr
-         4Ld2qncDNL3/0lH07d16XS2M0/w529OVCIgCdkHbfJB6ynDGopNZjvjASet7epI79iKC
-         kglzuG19WsUYp2X4WuFFQauWyjEHxZcblq/+F4OxqZmtWODrSuH/8v8qpUzNyWK78Fpa
-         1VS9uzLkcr4NlInyMjW6enqnynYzrN/S2iQMuNfa0zB2yctWYiXBIPwxDe6IpU7Wd1N9
-         Xafw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762336714; x=1762941514;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PiM5gwx7v9fuKjSNGU0XIbMsJHzNcD3t6sxDOvTigVo=;
-        b=GHgspQoUFhfqvg1TR7mNK9yQkDVBeho/emFXrHbu/FoYLx08n4ETo9ESRlgThYwCAh
-         IO1yfnkmV75TpRZUlnwQjV64i9lfZFVa5soWa2F3lbUBHCNspreqmUrGpSM994onFojw
-         biPbCJLQbBKh78o1NdXhqtnQ2Yil/CFLmhgPpz1uOPY/pQyFnsnnsAoXP3omdygsv4FF
-         MkSeydC2prcI8q1BPlP1V0KOAA9oqLBM208vZfYeCw+3p0s9U6YzeIAGwi6OH9rI1NJ0
-         yrUr/Hq2WlSssBTfE7NU7ujWfYVjkeLLmuOdwPx/3DzQ7V7JsXm6mkoSlihcTvJRgY/E
-         ZUcw==
-X-Forwarded-Encrypted: i=1; AJvYcCWxgPrH9RRAa6CAk+Cg2n3gNOkXtdtz8L/bCWiGIE6Nu0cgvdLXJ1eXcqaZcu1xNlNu3KFCJ5VL3FBZ60Q=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyIGASKjZKJVpSAvwQxKu1zsKxWo5ck5lqenKm2uvvnpNj7OhYs
-	KnKpXUleQZI48HfRRHu3dLxOreisW+vCy6/1w5OL+bIWMrKl9lHwBR3V
-X-Gm-Gg: ASbGncuF5MQuw1E8fFVyS7nkC59V+ylosJaBGTb0FQfzffVhgj8sak6WCsxam9jfMG+
-	cCDPBqdgcigYHQfCJL1L70P6wBePuiA0YEWl8ruRHEZqiEmOuriyK9uTPHeKbbSM4tM7MRmbDEB
-	ejLH/Oet2lsT4EfwhAcf+JwlnAQ3BiNFmgmt7te9Tx+JSSuvRJt22zkrYKMN2RYbj1GmszOD+HT
-	+vjrYlfInjYZ3bog1vFCswAJ2p0ZKWdl5lMEDb+iPAk8jDoEmrg0XvS2vBvi3PXP7qkihm/nF4R
-	fF5ZR7WZWU9vFsvbeEErVNsXBn7IQNN2in21bBWQ4bmexo5/A1Xk9ToK0eygcbzHIFcvxeaJuez
-	U+FN0qIOqfs45UyMDMXuHHg3bcp38dfatWzfV7I/qK59d3ty4Iz7VT6TVrwfW1WUfhTKMXw==
-X-Google-Smtp-Source: AGHT+IHbi+0zqKpbA9V2mHcqMUNAu2olVZcwJU6s62eDD+69tSv+JW/d6KHzoaPAbvo+C4JRz5nOFw==
-X-Received: by 2002:a17:903:19ce:b0:246:7a43:3f66 with SMTP id d9443c01a7336-2962adb2b0fmr33595265ad.7.1762336714441;
-        Wed, 05 Nov 2025 01:58:34 -0800 (PST)
-Received: from dw-tp ([171.76.85.117])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29601972ad1sm55039695ad.19.2025.11.05.01.58.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 01:58:33 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-	Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
-	Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>, 
-	Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, 
-	Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-Subject: Re: [PATCH v4 03/12] powerpc/mm: implement arch_flush_lazy_mmu_mode()
-In-Reply-To: <87pl9x41c5.ritesh.list@gmail.com>
-Date: Wed, 05 Nov 2025 15:19:35 +0530
-Message-ID: <87jz044xn4.ritesh.list@gmail.com>
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com> <20251029100909.3381140-4-kevin.brodsky@arm.com> <87pl9x41c5.ritesh.list@gmail.com>
+	t=1762343405; c=relaxed/relaxed;
+	bh=3sreApMNjeNHXRlxFsML7Dnj7kOHNONsoKT8e5K3eYU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gL7fe4r1NvN30vaKvrPAXOr817Lqs5kSkbmxsvd7vmL6nFYCzIjLSyK0mnge5MfQq2EHE26IWEOq+o6eNhTxCjtUXrTAJnA0QE1p3YLz2Q/8pL9wyHdwrgfwjKlEcJyLx+6VziFfzF1P30UUyDxqROl+rjUXtRuDSpxL4nLQuqQW1O7+oQe7W9CRGSNKZO+XUg1w00JRrd7dPv5gjPu0gnM8YZODAn5RPkPvzJKcdM4jHr+2T7hN/+B8XSoMy2p2HRZUfYcCgLpwZrgV1MFucbz0a2q16tiN+Bl/orB3UI5IFJbuvr3hSNeQElvzzZgSsHva6zc7KUMNRKhiWHALaQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d1kCK0mnHz2yrT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Nov 2025 22:50:03 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d1jpk0KBdz9sRy;
+	Wed,  5 Nov 2025 12:32:14 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id zP_dHME8SHYy; Wed,  5 Nov 2025 12:32:13 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d1jpj6S5hz9sRg;
+	Wed,  5 Nov 2025 12:32:13 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id CD46E8B76E;
+	Wed,  5 Nov 2025 12:32:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id G2h3JfiGh9US; Wed,  5 Nov 2025 12:32:13 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 722548B76D;
+	Wed,  5 Nov 2025 12:32:13 +0100 (CET)
+Message-ID: <82ef1da8-44c4-4a58-bd00-9839548cb72d@csgroup.eu>
+Date: Wed, 5 Nov 2025 12:32:13 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,90 +57,162 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: powerpc/e500: WARNING: at mm/hugetlb.c:4755 hugetlb_add_hstate
+To: David Hildenbrand <david@redhat.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Donet Tom <donettom@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com>
+ <dd634b17-cc5e-497c-8228-2470f6533177@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <dd634b17-cc5e-497c-8228-2470f6533177@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
+Hi David,
 
-> Kevin Brodsky <kevin.brodsky@arm.com> writes:
->
->> Upcoming changes to the lazy_mmu API will cause
->> arch_flush_lazy_mmu_mode() to be called when leaving a nested
->> lazy_mmu section.
+Le 29/10/2025 à 09:25, David Hildenbrand a écrit :
+> On 29.10.25 06:49, Sourabh Jain wrote:
+>> Kernel is printing below warning while booting:
 >>
->> Move the relevant logic from arch_leave_lazy_mmu_mode() to
->> arch_flush_lazy_mmu_mode() and have the former call the latter.
 >>
->> Note: the additional this_cpu_ptr() on the
->> arch_leave_lazy_mmu_mode() path will be removed in a subsequent
->> patch.
+>> WARNING: CPU: 0 PID: 1 at mm/hugetlb.c:4753 hugetlb_add_hstate+0xc0/0x180
+>> Modules linked in:
+>> CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted
+>> 6.18.0-rc1-01400-ga297f72c4951 #6 NONE
+>> Hardware name: QEMU ppce500 e5500 0x80240020 QEMU e500
+>> NIP:  c000000001370800 LR: c000000001357740 CTR: 0000000000000005
+>> REGS: c000000080183890 TRAP: 0700   Not tainted
+>> (6.18.0-rc1-01400-ga297f72c4951)
+>> MSR:  0000000080029002 <CE,EE,ME>  CR: 48000242  XER: 20000000
+>> IRQMASK: 0
+>> GPR00: c000000001357740 c000000080183b30 c000000001352000 
+>> 000000000000000e
+>> GPR04: c0000000011d1c4f 0000000000000002 000000000000001a 
+>> 0000000000000000
+>> GPR08: 0000000000000000 0000000000000002 0000000000000001 
+>> 0000000000000005
+>> GPR12: c0000000013576a4 c0000000015ad000 c00000000000210c 
+>> 0000000000000000
+>> GPR16: 0000000000000000 0000000000000000 0000000000000000 
+>> 0000000000000000
+>> GPR20: 0000000000000000 0000000000000000 0000000000000000 
+>> 0000000000000000
+>> GPR24: 0000000000000000 c0000000015876e8 0000000000000002 
+>> c000000001587500
+>> GPR28: c000000001587578 000000000000000e 0000000004000000 
+>> 0000000000000170
+>> NIP [c000000001370800] hugetlb_add_hstate+0xc0/0x180
+>> LR [c000000001357740] hugetlbpage_init+0x9c/0xf0
+>> Call Trace:
+>> hugetlb_add_hstate+0x148/0x180 (unreliable)
+>> hugetlbpage_init+0x9c/0xf0
+>> do_one_initcall+0x84/0x308
+>> kernel_init_freeable+0x2e4/0x380
+>> kernel_init+0x30/0x15c
+>> ret_from_kernel_user_thread+0x14/0x1c
 >>
->> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->> ---
->>  .../powerpc/include/asm/book3s/64/tlbflush-hash.h | 15 +++++++++++----
->>  1 file changed, 11 insertions(+), 4 deletions(-)
+>> Kernel commit causing these warning:
+>> commit 7b4f21f5e0386dfe02c68c009294d8f26e3c1bad (HEAD)
+>> Author: David Hildenbrand <david@redhat.com>
+>> Date:   Mon Sep 1 17:03:29 2025 +0200
 >>
->> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
->> index 146287d9580f..7704dbe8e88d 100644
->> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
->> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
->> @@ -41,6 +41,16 @@ static inline void arch_enter_lazy_mmu_mode(void)
->>  	batch->active = 1;
->>  }
->>  
->> +static inline void arch_flush_lazy_mmu_mode(void)
->> +{
->> +	struct ppc64_tlb_batch *batch;
->> +
->> +	batch = this_cpu_ptr(&ppc64_tlb_batch);
->> +
->> +	if (batch->index)
->> +		__flush_tlb_pending(batch);
->> +}
->> +
->
-> This looks a bit scary since arch_flush_lazy_mmu_mode() is getting
-> called from several of the places in later patches(). 
->
-> Although I think arch_flush_lazy_mmu_mode() will only always be called
-> in nested lazy mmu case right?
->
-> Do you think we can add a VM_BUG_ON(radix_enabled()); in above to make
-> sure the above never gets called in radix_enabled() case. 
->
-> I am still going over the patch series, but while reviewing this I
-> wanted to take your opinion.
->
-> Ohh wait.. There is no way of knowing the return value from
-> arch_enter_lazy_mmu_mode().. I think you might need a similar check to
-> return from arch_flush_lazy_mmu_mode() too, if radix_enabled() is true.
->
+>>       mm/hugetlb: check for unreasonable folio sizes when registering 
+>> hstate
+>>
+>>       Let's check that no hstate that corresponds to an unreasonable
+>> folio size
+>>       is registered by an architecture.  If we were to succeed
+>> registering, we
+>>       could later try allocating an unsupported gigantic folio size.
+>>
+>> ...
+>>
+>>           BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
+>> +       WARN_ON(order > MAX_FOLIO_ORDER);
+>>           h = &hstates[hugetlb_max_hstate++];
+>>
+>> snip...
+>>
+>>
+>> Command to create kernel config:
+>> make ARCH=powerpc corenet64_smp_defconfig
+>>
+>> Qemu command:
+>> qemu-system-ppc64 -nographic -vga none -M ppce500 -smp 2 -m 4G -accel
+>> tcg -kernel ./vmlinux -nic user -initrd ./ppc64-novsx-rootfs.cpio.gz
+>> -cpu e5500 -append "noreboot"
+>>
+>>
+>> Root cause:
+>> The MAX_FOLIO_ORDER  for e500 platform is MAX_PAGE_ORDER which is
+>> nothing but CONFIG_ARCH_FORCE_MAX_ORDER which dependent of page-size
+>> which was 4k. So value of MAX_FOLIO_ODER is 12 for this case.
+>>
+>> As per arch/powerpc/mm/nohash/tlb.c the following page size are 
+>> supported on
+>> e500 platform:
+>>
+>> struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT] = {
+>>       [MMU_PAGE_4K] = {
+>>           .shift    = 12,
+>>       },
+>>       [MMU_PAGE_2M] = {
+>>           .shift    = 21,
+>>       },
+>>       [MMU_PAGE_4M] = {
+>>           .shift    = 22,
+>>       },
+>>       [MMU_PAGE_16M] = {
+>>           .shift    = 24,
+>>       },
+>>       [MMU_PAGE_64M] = {
+>>           .shift    = 26,
+>>       },
+>>       [MMU_PAGE_256M] = {
+>>           .shift    = 28,
+>>       },
+>>       [MMU_PAGE_1G] = {
+>>           .shift    = 30,
+>>       },
+>> };
+>>
+>> With the above MAX_FOLIO_ORDER and page sizes, hugetlbpage_init() in
+>> arch/powerpc/mm/hugetlbpage.c tries to call hugetlb_add_hstate() with
+>> an order higher than 12, causing the kernel to print the above warning.
+>>
+>> Things I tried:
+>> I enabled CONFIG_ARCH_HAS_GIGANTIC_PAGE for the e500 platform. With that,
+>> MAX_FOLIO_ORDER was set to 16, but that was not sufficient for 
+>> MMU_PAGE_1G.
+>>
+>> This is because with CONFIG_ARCH_HAS_GIGANTIC_PAGE enabled,
+>> MAX_FOLIO_ORDER was set to 16 = PUD_ORDER = (PMD_INDEX_SIZE (7) +
+>> PTE_INDEX_SIZE (9)),
+>> while the order for MMU_PAGE_1G was 18.
+> 
+> Yes, we discussed that in [1].
+> 
+> We'll have to set ARCH_HAS_GIGANTIC_PAGE on ppc and increase 
+> MAX_FOLIO_ORDER, because apparently, there might be ppc configs that 
+> have even larger hugetlb sizes than PUDs.
+> 
+> @Cristophe, I was under the impression that you would send a fix. Do you 
+> want me to prepare something and send it out?
 
-Now that I have gone through this series, it seems plaussible that since
-lazy mmu mode supports nesting, arch_flush_lazy_mmu_mode() can get
-called while the lazy mmu is active due to nesting.. 
+Indeed I would have liked to better understand the implications of all 
+this, but I didn't have the time.
 
-That means we should add the radix_enabled() check as I was talking in
-above i.e. 
+By the way, you would describe the fix better than me so yes if you can 
+prepare and send a fix please do.
 
-@@ -38,6 +38,9 @@ static inline void arch_flush_lazy_mmu_mode(void)
- {
-        struct ppc64_tlb_batch *batch;
-
-+       if (radix_enabled())
-+               return;
-+
-        batch = this_cpu_ptr(&ppc64_tlb_batch);
-
-        if (batch->index)
-
-Correct? Although otherwise also I don't think it should be a problem
-because batch->index is only valid during hash, but I still think we can
-add above check so that we don't have to call this_cpu_ptr() to check
-for batch->index whenever flush is being called.
-
--ritesh
+Christophe
 
