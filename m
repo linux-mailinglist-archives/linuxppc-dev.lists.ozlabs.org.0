@@ -1,67 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-13823-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13824-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CFBC38A79
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 02:08:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5779EC39105
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 05:11:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d23wZ51T7z300F;
-	Thu,  6 Nov 2025 12:08:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d27zH6p8bz2yrq;
+	Thu,  6 Nov 2025 15:11:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762391310;
-	cv=none; b=nqO1K66btn7rEqn9Z09ziy9jOGd+VmBbh87u0bhJFBaKx3YzNnXaepPoJEB8ZFwtb7YwRHJLGj1VtHzEUHSt7ZKCGEHN7AltfvhxpmRkXLfiTl7VVXzD1qZxocgOQn4ZXjIBq8LHlt3Xy6xy8coOrTm/Rz3lGyWFeaRrUQ6MhgoSyBr6Kl1hjJ7rJh2tKi9z8/pmBWgf8MDf8vxOYg//RmcWpjmCCmpqyWZ6Ux42mrG22+gtp7n5VLOHj9exp7cBL1He/pj433cgNw2Q0Aw+q/4e01M1gizqWERo572WgAzMGTKEs/TWPbOL/PFMXfSGVXKkCm4Ke+dLyx21mBwM0w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.153
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762402267;
+	cv=none; b=IBtxE9wO7Jqx53i+j5nSVuNqFFiuWVXfFUlCmab+OvMLC2UEnrGFl4cEcxElNhvSsBID/Chin874/D1owIvK0KL3G2ugkZ+xM8QukH5OsuH5Ex8W0lgtggPuzAB4Z+ie+UdWU7b58FNsST6lT0pw2q+hA4uyKxuaDbRAyf6NGax6Xzmru+AFb6JuW/t+zdQm3qPpHANE12Vd3V8a9yLpSrzN+lbD5vroktnci0f52Ic1M3Sfa2kdlGn5cUAhirgveYDX3rFtzStfI9RIKLZmH68Z9HF6/GCNaTVLOEgZmf0TOfy0GadZfj2IlWZ9LR3Kt6JSUymnqRDeenGdRCzgrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762391310; c=relaxed/relaxed;
-	bh=70fXmcNK0Hdv5HPP1vfBxf2aXKqRTIKhbqtQh8u8sLk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bXJ4r68jOZWD5ksVjygNqybF/rXG+LSdFrO547mqwzdRhJVMYOQon9hxAdN7Yrq1tAOkg2Vb+UYoMds4cV+W9O/e462W3fH+5d5x8oS057vKDG0IbZghBc7zVz/DojnwKVfYitE7+AU5ocBDf2+yIVTerCwHKZo8JKQQbatsKB85VYjWxYZmJFfeZhM8hhzgkwzVGY1D/A003c4L2J1KYtbdwMhh7U3ggqPEPuxdH88ieP/4MJ2FWJR1wrmAf/ybG884zzyRyGbTuOMBXcUlASLGoQrE2eisax86t7ffjqHplYdn7Tg/Ec7AFJX/9BGJWg4AmdlDuHkQ7ZyV9iICBA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RznJW4KQ; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1762402267; c=relaxed/relaxed;
+	bh=LtvDTjPP3JwYvEGnmbYFBlPCbslew90zymx8tUWNBRw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=HuvIc4kO7QVvckVgFuIXN9ifDbnKE7m5Eo0HTxqRcHbphQIBqoH4CupvtUxO2SeyEPsqoVBLU1MqKo4URKtolXnvTJbXWiEDHsHhHAtPTcBOyez27/vwJOlcogTU4U4mdGBtfsDt3xZSUryNo3CmJBWkHtv3odqPWfGWD+Q3VwWWEyz/TN8iPIAFk/BDcedvrbkLBI11WBLciFIBy/tIo0hTuPBbOZqn0jnYP5AMkYvhJoAV2ZrkiNypJOdRKznvWM4F7tDXLYNynsnxSWO7cVzOVBgDzeYGBQlde3amzpkNYDIHc4QQPQqDHYFaiHz7g7W/lsoRN9fUHJUd9yAWkA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=kuviunJD; dkim-atps=neutral; spf=pass (client-ip=202.12.124.153; helo=fhigh-b2-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=fhigh-b2-smtp.messagingengine.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RznJW4KQ;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=kuviunJD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=fhigh-b2-smtp.messagingengine.com (client-ip=202.12.124.153; helo=fhigh-b2-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org)
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d23wX3q8fz2xdg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 12:08:28 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CBB21601F1;
-	Thu,  6 Nov 2025 01:08:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C62DC4CEF5;
-	Thu,  6 Nov 2025 01:08:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762391305;
-	bh=C1CMXKhozu8LYFPbX6ylpFCy9Bm+8ecgB1ZjwnG2s6A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RznJW4KQCN5afy0v0SrJz6ewkOwCFcTW5mT6gKEDRbByUJ/aXvmZOKgHub0HfGd8F
-	 C62tJ3ju+U+txK4vrh5547VZXBHPVZ6z1b9FWZlV02UTTcV4YzzmkRxBn8D96VkDv3
-	 i5DocrXEANqZcwu3Ue356M+VYoVdTckBOc6aIs0ShO3a3dzIVMXgXBOgbu53tyx4dJ
-	 49NwlzJdN7yZvJCUhFduK41LNPzVqrvC8dHhK0pyklkvM0fV+GM+TzNWz57AuMdUG5
-	 4Q6TgklWVOkAEMA4uUYP7eOqjiTioLhq6rtY/ec36qG0EkQSxMzx2xmXs5KxYvxu0P
-	 3y492NtCsA4vg==
-Date: Wed, 5 Nov 2025 18:08:20 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Omar Sandoval <osandov@osandov.com>
-Cc: Dimitri John Ledkov <dimitri.ledkov@surgut.co.uk>,
-	linux-kbuild@vger.kernel.org, Samir M <samir@linux.ibm.com>,
-	linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	linux-debuggers@vger.kernel.org, Nicolas Schier <nsc@kernel.org>,
-	Alexey Gladkov <legion@kernel.org>
-Subject: Re: [mainline]Error while running make modules_install command
-Message-ID: <20251106010820.GA3031707@ax162>
-References: <7fef7507-ad64-4e51-9bb8-c9fb6532e51e@linux.ibm.com>
- <56905387-ec43-4f89-9146-0db6889e46ab@linux.ibm.com>
- <aQpCE_XTU-bZHFbk@telecaster>
- <CANBHLUhJ5UVsN4-JN2PG=jq63yGttB9BD6Qm8MgvYirTvg_stw@mail.gmail.com>
- <20251105011548.GB769905@ax162>
- <aQvHSVXbOdiN_J5D@telecaster>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d27zB4Yrqz2xdg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 15:11:01 +1100 (AEDT)
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 6D9EB7A0207;
+	Wed,  5 Nov 2025 23:10:57 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Wed, 05 Nov 2025 23:10:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1762402257; x=1762488657; bh=LtvDTjPP3JwYvEGnmbYFBlPCbslew90zymx
+	8tUWNBRw=; b=kuviunJDLBHDtNDEuNo3DdJBAGE8fry6OdAruBHzhhQxvDftnUs
+	JmgBgy45u59QNd8EtWv0t9//xWPCLoRYaHybd5bTZZDDqnt5LFFVTz/a36VboSIC
+	cDkDsIh2d9MZbePek0NMAs7gSKwT7Qvz2lYhYgLdhR5naBWtMYszvpfEdCIGBJjs
+	NcFeq6VHo7ilIaNwtaItHLxg0vjSyCMjbZrVszNNfZLQHOrePc1ZnHMp3mFGXeLY
+	BHGhPg2S4rp7YN9HCMut11Hw/f6Kb+RGf/b8lo5gzA6O5Uy3wsP529i/8YzosiNl
+	qeiUAUKEO+1G/9sjwpijetmUCCQKj8DBKiw==
+X-ME-Sender: <xms:zx8MaXV-OSn5cc_7Fsa1FDjDreNO4ySGdDAYum6qCDqYYtkNjEvZjw>
+    <xme:zx8MabZgJfz8rqEXyQeJMTZxe0V8Ec6XZrnK743QEMgAtf_ToWJnhR20FZbOXyH4D
+    O_-lgvdM5zAFqc66cUX-fE7m__BoHLN2lCHKlLZCG9jZUi6Xsy0mw>
+X-ME-Received: <xmr:zx8Maezq5rRvi0UbVHoh1DLPYbqTjuMzyNri2Mp0nkWprK5bLX2K9cvM4Q3kgOEW41PMekdYDTUBETLXvMQa6PVG37vYe_lmWak>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeehjeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
+    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeuheeu
+    leenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
+    hhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeduuddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihse
+    gtshhgrhhouhhprdgvuhdprhgtphhtthhopehushgvrhhmheejseihrghhohhordgtohhm
+    pdhrtghpthhtoheplhhinhhugiesthhrvggslhhighdrohhrghdprhgtphhtthhopehmph
+    gvsegvlhhlvghrmhgrnhdrihgurdgruhdprhgtphhtthhopehnphhighhgihhnsehgmhgr
+    ihhlrdgtohhmpdhrtghpthhtohepshgrmhesrhgrvhhnsghorhhgrdhorhhgpdhrtghpth
+    htohepsggvnhhhsehkvghrnhgvlhdrtghrrghshhhinhhgrdhorhhgpdhrtghpthhtohep
+    lhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtth
+    hopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:zx8Mab1LoOmyNFde_jppzQ_-jWPc30J27E-avqBmXxfr1FKEXd4EyA>
+    <xmx:zx8MafmjEnxJTghUfk5PQVn2LigmaITwZ3LVGaX2fc_qFk89nIlJUQ>
+    <xmx:zx8Maa9YzNVgqOJbY-s0JEyTX_txeF3XPcaGagmfItsi5jEKwnv8MA>
+    <xmx:zx8MaVIKnOwZ2W1TRJZwCgBPz34hsoqWuvyyLOuq5v458LC2aDtDuQ>
+    <xmx:0R8MaZ2nEL4yTA_jBJbD5KaAbjjJ-YeE1QNlYE-gj69bjPw2I8EcZ4Ie>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 5 Nov 2025 23:10:52 -0500 (EST)
+Date: Thu, 6 Nov 2025 15:11:04 +1100 (AEDT)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+    Stan Johnson <userm57@yahoo.com>
+cc: "Dr. David Alan Gilbert" <linux@treblig.org>, mpe@ellerman.id.au, 
+    npiggin@gmail.com, sam@ravnborg.org, benh@kernel.crashing.org, 
+    linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+    rdunlap@infradead.org, Cedar Maxwell <cedarmaxwell@mac.com>
+Subject: Re: [PATCH v4] powerpc: Use shared font data
+In-Reply-To: <3cc3d311-35b0-42f1-b20f-ed59391bb8e0@csgroup.eu>
+Message-ID: <ead4ef3f-9f8c-a98e-b48d-f052bc9492d0@linux-m68k.org>
+References: <20230825142754.1487900-1-linux@treblig.org> <d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com> <aQeQYNANzlTqJZdR@gallifrey> <20108eef-b7cf-3f23-264a-5d97021f9ffa@linux-m68k.org> <aQgJ95Y3pA-8GdbP@gallifrey>
+ <3cc3d311-35b0-42f1-b20f-ed59391bb8e0@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,121 +100,23 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQvHSVXbOdiN_J5D@telecaster>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Nov 05, 2025 at 01:53:13PM -0800, Omar Sandoval wrote:
-> Here's a script that reproduces it:
+
+On Wed, 5 Nov 2025, Christophe Leroy wrote:
+
+> 1/ Either build font_sun8x16.o with -fPIC
+> ...
 > 
-> ```
-> #!/bin/sh
-> 
-> set -e
-> 
-> host_arch=x86_64
-> compiler_version="12.4.0"
-> 
-> compiler_dir="/tmp/arm64-gcc-$compiler_version"
-> if [ ! -e "$compiler_dir" ]; then
-> 	rm -rf "$compiler_dir.tmp"
-> 	mkdir "$compiler_dir.tmp"
-> 	curl -L "https://mirrors.kernel.org/pub/tools/crosstool/files/bin/$host_arch/$compiler_version/$host_arch-gcc-$compiler_version-nolibc-aarch64-linux.tar.xz" | tar -C "$compiler_dir.tmp" -Jx
-> 	mv "$compiler_dir.tmp" "$compiler_dir"
-> fi
-> 
-> export PATH="$compiler_dir/gcc-$compiler_version-nolibc/aarch64-linux/bin:$PATH"
-> make ARCH=arm64 CROSS_COMPILE=aarch64-linux- tinyconfig
-> make ARCH=arm64 CROSS_COMPILE=aarch64-linux- -j$(nproc) vmlinux
-> readelf -W -l vmlinux | awk '$1 == "LOAD" && $6 ~ /0x0+\>/'
-> ```
-> 
-> It prints something like:
-> 
->   LOAD           0x1ef008 0x0000000000000000 0xffff800080220000 0x000000 0x000000 R   0x10000
-> 
-> I.e., a segment with FileSiz and MemSiz 0.
+> 2/ Or add a PTRRELOC:
+> ...
 
-Thank you, that was incredibly helpful.
+Thanks for your help with this, Christophe.
 
-> Using a newer crosstool version fixes it, so maybe this was a GCC or
-> binutils bug.
-
-Good observation, as this was reproducible with GCC 12.4.0 from
-kernel.org but not GCC 12.5.0, which I noticed has a newer binutils
-version. I was able to reproduce it with a self compiled copy of
-binutils 2.42 but not with binutils 2.44 so I reverse bisected the fix
-to [1], which certainly makes sense :)
-
-The diff of 'readelf -lW' before that change:
-
-diff --git a/tmp/.psub.9QY0ZO b/tmp/.psub.6lHG9T
-index 7f7f4de7be8..ea3a9b4ffb0 100644
---- a/tmp/.psub.9QY0ZO
-+++ b/tmp/.psub.6lHG9T
-@@ -7,14 +7,14 @@ Program Headers:
-   Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
-   LOAD           0x010000 0xffff800080000000 0xffff800080000000 0x14f000 0x14f000 R E 0x10000
-   LOAD           0x160000 0xffff800080150000 0xffff800080150000 0x08f008 0x0c4c40 RWE 0x10000
--  LOAD           0x1f0000 0xffff800080220000 0xffff800080220000 0x000d08 0x000d08 R   0x10000
-+  LOAD           0x1ef008 0x0000000000000000 0xffff800080220000 0x000000 0x000000 R   0x10000
-   NOTE           0x1860f8 0xffff8000801760f8 0xffff8000801760f8 0x000054 0x000054 R   0x4
--  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10
-+  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x8
- 
-  Section to Segment mapping:
-   Segment Sections...
-    00     .head.text .text 
-    01     .rodata __param __ex_table .notes .rodata.text .init.text .exit.text .altinstructions .init.data runtime_shift_d_hash_shift runtime_ptr_dentry_hashtable .data..percpu .data .mmuoff.data.write .mmuoff.data.read .bss 
--   02     .modinfo 
-+   02     
-    03     .notes 
-    04     
-
-After:
-
-diff --git a/tmp/.psub.x5uqM8 b/tmp/.psub.LHoP7d
-index 7f7f4de7be8..27bda6ea7cc 100644
---- a/tmp/.psub.x5uqM8
-+++ b/tmp/.psub.LHoP7d
-@@ -1,20 +1,18 @@
- 
- Elf file type is EXEC (Executable file)
- Entry point 0xffff800080000000
--There are 5 program headers, starting at offset 64
-+There are 4 program headers, starting at offset 64
- 
- Program Headers:
-   Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
-   LOAD           0x010000 0xffff800080000000 0xffff800080000000 0x14f000 0x14f000 R E 0x10000
-   LOAD           0x160000 0xffff800080150000 0xffff800080150000 0x08f008 0x0c4c40 RWE 0x10000
--  LOAD           0x1f0000 0xffff800080220000 0xffff800080220000 0x000d08 0x000d08 R   0x10000
-   NOTE           0x1860f8 0xffff8000801760f8 0xffff8000801760f8 0x000054 0x000054 R   0x4
--  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x10
-+  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0x8
- 
-  Section to Segment mapping:
-   Segment Sections...
-    00     .head.text .text 
-    01     .rodata __param __ex_table .notes .rodata.text .init.text .exit.text .altinstructions .init.data runtime_shift_d_hash_shift runtime_ptr_dentry_hashtable .data..percpu .data .mmuoff.data.write .mmuoff.data.read .bss 
--   02     .modinfo 
--   03     .notes 
--   04     
-+   02     .notes 
-+   03     
-
-I am not really sure how to workaround this in a concise way... at least
-for arm64 since it does not seem to use PHDRS to describe ELF segments,
-it just relies on the default linker heuristics? It also seems seems
-like this is a generic problem not specific to .modinfo, we just so
-happen to see it with this section since it is in its own segment and we
-are removing it.
-
-[1]: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=7f26d260ef76a4cb2873a7815bef187005528c19
-
-Cheers,
-Nathan
+I fixed up the whitespace problems and forwarded those patches to Stan, 
+along with instructions for applying them. He tells me that patch 2 fixed 
+the hang. Patch 1 did not.
 
