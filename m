@@ -1,82 +1,111 @@
-Return-Path: <linuxppc-dev+bounces-13889-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13890-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5373DC3BFF8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 16:20:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B724C3C12D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 16:34:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2Qqp21Nsz300F;
-	Fri,  7 Nov 2025 02:20:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2R7b0rdRz2ySP;
+	Fri,  7 Nov 2025 02:34:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762442438;
-	cv=none; b=n/SliE9yABlqy0BX3l9qVTbb0HCUjVhi3ItTP9VV1GPP5NfIgHDE7yoT+Y4hVroOfs21BEPEPmvx4xfJ/ErKtpHdJQohiz8HK+TYawcgixynbahwE36Ic+rbxS5ngeCsSsIPZESvpmZJe8HZdwaI5NY3TNJmSokYcWl8iB6puIL9j9gWlqJrHvxgslIw4SNuiWTHA5lajsLKgt0+jmVxb75KcYO4v6crP9kVjZcTGmnLYJ7UwqQZkmsy5ICrJ7PoOrw0Ig/M7z/4eV4u58L92kEE5Kpr7riOg54spIafEZQtR/+4HZhlmssWfJdKo1Pi7jyKxFklu61Q96eWQf7pEg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762443258;
+	cv=none; b=eOMQu227AcJmwsFCDELFkSdX+AnWIRreSKj/8xmADrMQzSPPPEzUB0vwNJA3xFeVJo7HiMSysGT48KXhY9UuTGcvpkQCo9byHadQZZukFDMgRFhgXAmgC59YYwkoSspMFeHTO+P9EUV4fQHk60UbTDmSBqABJizOngrnBTKAEHhegVouNhiTi51NYmNNxjHe8D2kFw/i06glKnCA8t0dGopgaUDLVYIihOaHQik2iFXsW76d1B1OHj2UkdH0BeHJbpuUO4lnHPemGfa7PEMEv/ivnSWBLQ26Sw+bwXQW/gAL+q0bypwigVS/Bk5nX7SUIsVV1R63ZRjRSFNDvm6v2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762442438; c=relaxed/relaxed;
-	bh=NaVmUdJCekez3nyL2bksVu9ZDfqGbPovholJBciMCeY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KRE9+36GK8nAZMjvoSX/ObyPqwiYSkixC9m8/soA90LdEr2fswr13bbSM/VLgWlTexzavGJyeQbjvNCkkX3wig3BrEf/RScn9zXE/JqpqMs4aKSEj2cR22phQLlSqQFMEkWJnORSPDy8DchuXBfTLDHYA3NVioIZHQ4IZSBx5IjcFutf2xJEDRCVmcLf/vKdkR0EuL7dC8010cU1kCVbfU80XzUz62yXus42xldOxzXfkVuabEMAns48cbYU0b0GPnyzmw++vshWEuK8xb5/61CyAvOHgT9q6JKy3n4vfTMfbnLQZHgcuZNtaEHmGyTe0AzxvdbxrGsM11SFCqdJkQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2Qqn1hR1z2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 02:20:36 +1100 (AEDT)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4d2KmW1Tqjz9sSp;
-	Thu,  6 Nov 2025 12:32:27 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id EO68faR96-TB; Thu,  6 Nov 2025 12:32:27 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4d2KmN6FFcz9sSY;
-	Thu,  6 Nov 2025 12:32:20 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BFFCA8B773;
-	Thu,  6 Nov 2025 12:32:20 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id CDTSk4xuxt-8; Thu,  6 Nov 2025 12:32:20 +0100 (CET)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id EACB38B77B;
-	Thu,  6 Nov 2025 12:32:19 +0100 (CET)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Darren Hart <dvhart@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"Andre Almeida" <andrealmeid@igalia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 10/10] powerpc/uaccess: Implement masked user access
-Date: Thu,  6 Nov 2025 12:31:28 +0100
-Message-ID: <5c80dddf8c7b1e75f08b3f42bddde891d6ea3f64.1762427933.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1762427933.git.christophe.leroy@csgroup.eu>
-References: <cover.1762427933.git.christophe.leroy@csgroup.eu>
+	t=1762443258; c=relaxed/relaxed;
+	bh=USDQ8ElKabVeXvYmFW0YLq1tEPCwDR9lnFGrXCv6r44=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WORcKidbY24eyC236/bUuZkBreuHowH9u0dI46BU6kTy4LJo2YUCuAbccOu6zq3LNTYhJiVy/qaJpOJO7zOggG+/1R/kPCkbVgD654sAkZV1bGwl6G6Y2tJhT7QjI0OwW1lAHAtVq38kaLUKOv5k23S0tRBbGrtBwkD85LydK60XpxVVzOm+Hy7aPXdUKjPsjXWqa0e3sHL5+cwjXO7WM6BCzhhpZahIuwiqJCHeyPCs7+Ysqlb2s0nPF3JFHtbdUYcHnNai3NRG82VeTu9QPrCNW0SjNncTkHHqQWapdGpEeZQ/rPodM0qtoxceWvJg5EQ5qJcdn+9mExw9rKivLQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ud1ezlZu; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ud1ezlZu;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2R7Z1GtBz2xS2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 02:34:17 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A673rWV004542;
+	Thu, 6 Nov 2025 15:33:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=USDQ8ElKabVeXvYmFW0YLq1tEPCwDR
+	9lnFGrXCv6r44=; b=Ud1ezlZulJ19pMoMC9cV2Puhpc6xfvY5kH8l9lzJzReHWw
+	mKEvGrCq+8tKTYQ2MxDxhIU69JV0pOnXy39LBfKHxozegDXvBfvTmpds52s5U6cE
+	/B8hVE2W8NjEjWAswsJNBdI1NjgMAEZpxAZmQ2gRLaUTDivnAluHG4qYTu7XsDwF
+	Vsk72wk+IJjAz3KWLN/C9Bbd92H7vh+BDHU0ZjrBqUI/zYCcM9fmOWIHGJocsLRR
+	RFqfscnpogqSAjX1viBd8MZh0c3dOnzgnvPYX0MV5maeP1AFCCwYIoJhH103h2O4
+	ttiB6tX1e7rVFmgT6CXyJjvDJ+Kc6/eoN7Ra3efQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59xc7x4v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 15:33:33 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A6FXWW0020778;
+	Thu, 6 Nov 2025 15:33:32 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59xc7x4m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 15:33:32 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6FSEis009863;
+	Thu, 6 Nov 2025 15:33:30 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a5x1kp3cv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 15:33:30 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A6FXSer15008248
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Nov 2025 15:33:28 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8439B20043;
+	Thu,  6 Nov 2025 15:33:28 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 90CA520040;
+	Thu,  6 Nov 2025 15:33:27 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  6 Nov 2025 15:33:27 +0000 (GMT)
+Date: Thu, 6 Nov 2025 16:33:26 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        x86@kernel.org
+Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
+Message-ID: <d5435e75-036b-44a5-a989-722e13f94b3e-agordeev@linux.ibm.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-8-kevin.brodsky@arm.com>
+ <87ms5050g0.ritesh.list@gmail.com>
+ <50d1b63a-88d7-4484-82c0-3bde96e3207d-agordeev@linux.ibm.com>
+ <48a4ecb5-3412-4d3f-9e43-535f8bee505f@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,284 +119,151 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9884; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=KMw75R3CQH/0ajuqHZB360qVMTa6I2ec71KamG0K8Gg=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWTytGuf9TyeUesdern+qfDuDYYbd9rpbEiwT/ds6/sxf V0si/mpjlIWBjEuBlkxRZbj/7l3zej6kpo/dZc+zBxWJpAhDFycAjARB2WG/7HLlHN+nV15OTlD IupYwjPn7lUrcs++PLz1ub/FAq+m00sY/orPm5psviJK/b7Fp+Vyql7Hlre/ZjzcLxjSUCa7x33 LH14A
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <48a4ecb5-3412-4d3f-9e43-535f8bee505f@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX/YZyxmYrnrJ9
+ xCd4ujIZq7y0lim+YrboYNwl5TsRqk1oOoSjjpPrN2bdS3Yj8+BGw0eDwtF58nU1AxMxpNChFIt
+ kjix63Qwyja0jEYGMpU1W2106lg0/CJxII5rA6IH8ca9YKwDy28POrrS/UliHt5WUxWiY4RvYvK
+ KvjB7Q8W206gTc1ADhSmWj/G5k8ScNY8TzY3EvQXr/BVbxmytuyeX5wifFN5ALnc+chrAMwW/6j
+ QnaXo4exfOcjHuuvP3Y/8qCuhkp//Cj/oqysiN8ehC/uU7vBozF7kWjRZh1pps/+U+PuMO1myX5
+ CRiCQpqgahhrliHsenckRMbSmwXbtqSltJhRXk0UqsG5hBu7Va14xA+ZT8E/Z1xVt8mLCpJRj/v
+ zoQNd/ElbUWMuQJeG/kbcYXCoAfCRQ==
+X-Proofpoint-GUID: TFOhjUGUwcHF-txd3JWs84wNA_RrcFJO
+X-Authority-Analysis: v=2.4 cv=OdCVzxTY c=1 sm=1 tr=0 ts=690cbfcd cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=ENMs_uJo8d3F8rUHHo4A:9 a=CjuIK1q_8ugA:10
+ a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-ORIG-GUID: 0GlCJX74XkrUHHpzFp_J9wLdkqJNwiej
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-06_03,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 spamscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 priorityscore=1501 clxscore=1015 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010021
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Masked user access avoids the address/size verification by access_ok().
-Allthough its main purpose is to skip the speculation in the
-verification of user address and size hence avoid the need of spec
-mitigation, it also has the advantage of reducing the amount of
-instructions required so it even benefits to platforms that don't
-need speculation mitigation, especially when the size of the copy is
-not know at build time.
+On Thu, Nov 06, 2025 at 10:51:43AM +0000, Kevin Brodsky wrote:
+> On 05/11/2025 16:12, Alexander Gordeev wrote:
+> > On Wed, Nov 05, 2025 at 02:19:03PM +0530, Ritesh Harjani wrote:
+> >>> + * in_lazy_mmu_mode() can be used to check whether the lazy MMU mode is
+> >>> + * currently enabled.
+> >>>   */
+> >>>  #ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+> >>>  static inline void lazy_mmu_mode_enable(void)
+> >>>  {
+> >>> -	arch_enter_lazy_mmu_mode();
+> >>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> >>> +
+> >>> +	VM_WARN_ON_ONCE(state->nesting_level == U8_MAX);
+> >>> +	/* enable() must not be called while paused */
+> >>> +	VM_WARN_ON(state->nesting_level > 0 && !state->active);
+> >>> +
+> >>> +	if (state->nesting_level++ == 0) {
+> >>> +		state->active = true;
+> >>> +		arch_enter_lazy_mmu_mode();
+> >>> +	}
+> >>>  }
+> >> Some architectures disables preemption in their
+> >> arch_enter_lazy_mmu_mode(). So shouldn't the state->active = true should
+> >> happen after arch_enter_lazy_mmu_mode() has disabled preemption()? i.e.
+> > Do you have some scenario in mind that could cause an issue?
+> > IOW, what could go wrong if the process is scheduled to another
+> > CPU before preempt_disable() is called?
+> 
+> I'm not sure I understand the issue either.
+> 
+> >>   static inline void lazy_mmu_mode_enable(void)
+> >>   {
+> >>  -	arch_enter_lazy_mmu_mode();
+> >>  +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> >>  +
+> >>  +	VM_WARN_ON_ONCE(state->nesting_level == U8_MAX);
+> >>  +	/* enable() must not be called while paused */
+> >>  +	VM_WARN_ON(state->nesting_level > 0 && !state->active);
+> >>  +
+> >>  +	if (state->nesting_level++ == 0) {
+> >>  +		arch_enter_lazy_mmu_mode();
+> >>  +		state->active = true;
+> >>  +	}
+> >>   }
+> >>
+> >> ... I think it make more sense to enable the state after the arch_**
+> >> call right.
+> > But then in_lazy_mmu_mode() would return false if called from
+> > arch_enter_lazy_mmu_mode(). Not big problem, but still..
+> 
+> The ordering of nesting_level/active was the way you expected in v3, but
+> the conclusion of the discussion with David H [1] is that it doesn't
+> really matter so I simplified the ordering in v4 - the arch hooks
+> shouldn't call in_lazy_mmu_mode() or inspect lazy_mmu_state.
+> arch_enter()/arch_leave() shouldn't need it anyway since they're called
+> once per outer section (not in nested sections). arch_flush() could
+> potentially do something different when nested, but that seems unlikely.
+> 
+> - Kevin
+> 
+> [1]
+> https://lore.kernel.org/all/af4414b6-617c-4dc8-bddc-3ea00d1f6f3b@redhat.com/
 
-So implement masked user access on powerpc. The only requirement is
-to have memory gap that faults between the top user space and the
-real start of kernel area.
+I might be misunderstand this conversation, but it looked to me as a discussion
+about lazy_mmu_state::nesting_level value, not lazy_mmu_state::active.
 
-On 64 bits platforms the address space is divided that way:
+I do use in_lazy_mmu_mode() (lazy_mmu_state::active) check from the arch-
+callbacks. Here is the example (and likely the only case so far) where it hits:
 
-	0xffffffffffffffff	+------------------+
-				|                  |
-				|   kernel space   |
- 		 		|                  |
-	0xc000000000000000	+------------------+  <== PAGE_OFFSET
-				|//////////////////|
-				|//////////////////|
-	0x8000000000000000	|//////////////////|
-				|//////////////////|
-				|//////////////////|
-	0x0010000000000000	+------------------+  <== TASK_SIZE_MAX
-				|                  |
-				|    user space    |
-				|                  |
-	0x0000000000000000	+------------------+
+static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
+				      void *_data)
+{
+	lazy_mmu_mode_pause();
+	...
+	if (likely(pte_none(ptep_get(ptep)))) {
 
-Kernel is always above 0x8000000000000000 and user always
-below, with a gap in-between. It leads to a 3 instructions sequence:
+		/* Here set_pte() checks whether we are in lazy_mmu mode */
+		set_pte_at(&init_mm, addr, ptep, pte);	<--- calls set_pte()
+		data->pages[index] = NULL;
+	}
+	...
+	lazy_mmu_mode_resume();
+	...
+}
 
- 150:	7c 69 fe 76 	sradi   r9,r3,63
- 154:	79 29 00 40 	clrldi  r9,r9,1
- 158:	7c 63 48 78 	andc    r3,r3,r9
+So without in_lazy_mmu_mode() check above the arch-specific set_pte()
+implementation enters a wrong branch, which ends up in:
 
-This sequence leaves r3 unmodified when it is below 0x8000000000000000
-and clamps it to 0x8000000000000000 if it is above.
+[  394.503134] Call Trace:
+[  394.503137]  [<00007fffe01333f4>] dump_stack_lvl+0xbc/0xf0 
+[  394.503143]  [<00007fffe010298c>] vpanic+0x1cc/0x418 
+[  394.503149]  [<00007fffe0102c7a>] panic+0xa2/0xa8 
+[  394.503154]  [<00007fffe01e7a8a>] check_panic_on_warn+0x8a/0xb0 
+[  394.503160]  [<00007fffe082d122>] end_report+0x72/0x110 
+[  394.503166]  [<00007fffe082d3e6>] kasan_report+0xc6/0x100 
+[  394.503171]  [<00007fffe01b9556>] ipte_batch_ptep_get+0x146/0x150 
+[  394.503176]  [<00007fffe0830096>] kasan_populate_vmalloc_pte+0xe6/0x1e0 
+[  394.503183]  [<00007fffe0718050>] apply_to_pte_range+0x1a0/0x570 
+[  394.503189]  [<00007fffe07260fa>] __apply_to_page_range+0x3ca/0x8f0 
+[  394.503195]  [<00007fffe0726648>] apply_to_page_range+0x28/0x40 
+[  394.503201]  [<00007fffe082fe34>] __kasan_populate_vmalloc+0x324/0x340 
+[  394.503207]  [<00007fffe076954e>] alloc_vmap_area+0x31e/0xbf0 
+[  394.503213]  [<00007fffe0770106>] __get_vm_area_node+0x1a6/0x2d0 
+[  394.503218]  [<00007fffe07716fa>] __vmalloc_node_range_noprof+0xba/0x260 
+[  394.503224]  [<00007fffe0771970>] __vmalloc_node_noprof+0xd0/0x110 
+[  394.503229]  [<00007fffe0771a22>] vmalloc_noprof+0x32/0x40 
+[  394.503234]  [<00007fff604eaa42>] full_fit_alloc_test+0xb2/0x3e0 [test_vmalloc] 
+[  394.503241]  [<00007fff604eb478>] test_func+0x488/0x760 [test_vmalloc] 
+[  394.503247]  [<00007fffe025ad68>] kthread+0x368/0x630 
+[  394.503253]  [<00007fffe01391e0>] __ret_from_fork+0xd0/0x490 
+[  394.503259]  [<00007fffe24e468a>] ret_from_fork+0xa/0x30 
 
-On 32 bits it is more tricky. In theory user space can go up to
-0xbfffffff while kernel will usually start at 0xc0000000. So a gap
-needs to be added in-between. Allthough in theory a single 4k page
-would suffice, it is easier and more efficient to enforce a 128k gap
-below kernel, as it simplifies the masking.
+I could have cached lazy_mmu_state::active as arch-specific data
+and check it, but then what is the point to have it generalized?
 
-e500 has the isel instruction which allows selecting one value or
-the other without branch and that instruction is not speculative, so
-use it. Allthough GCC usually generates code using that instruction,
-it is safer to use inline assembly to be sure. The result is:
-
-  14:	3d 20 bf fe 	lis     r9,-16386
-  18:	7c 03 48 40 	cmplw   r3,r9
-  1c:	7c 69 18 5e 	iselgt  r3,r9,r3
-
-On other ones, when kernel space is over 0x80000000 and user space
-is below, the logic in mask_user_address_simple() leads to a
-3 instruction sequence:
-
-  64:	7c 69 fe 70 	srawi   r9,r3,31
-  68:	55 29 00 7e 	clrlwi  r9,r9,1
-  6c:	7c 63 48 78 	andc    r3,r3,r9
-
-This is the default on powerpc 8xx.
-
-When the limit between user space and kernel space is not 0x80000000,
-mask_user_address_32() is used and a 6 instructions sequence is
-generated:
-
-  24:	54 69 7c 7e 	srwi    r9,r3,17
-  28:	21 29 57 ff 	subfic  r9,r9,22527
-  2c:	7d 29 fe 70 	srawi   r9,r9,31
-  30:	75 2a b0 00 	andis.  r10,r9,45056
-  34:	7c 63 48 78 	andc    r3,r3,r9
-  38:	7c 63 53 78 	or      r3,r3,r10
-
-The constraint is that TASK_SIZE be aligned to 128K in order to get
-the most optimal number of instructions.
-
-When CONFIG_PPC_BARRIER_NOSPEC is not defined, fallback on the
-test-based masking as it is quicker than the 6 instructions sequence
-but not quicker than the 3 instructions sequences above.
-
-As an exemple, allthough barrier_nospec() voids on the 8xx, this
-change has the following impact on strncpy_from_user(): the length of
-the function is reduced from 488 to 340 bytes:
-
-Start of the function with the patch:
-
-00000000 <strncpy_from_user>:
-   0:	7c ab 2b 79 	mr.     r11,r5
-   4:	40 81 01 40 	ble     144 <strncpy_from_user+0x144>
-   8:	7c 89 fe 70 	srawi   r9,r4,31
-   c:	55 29 00 7e 	clrlwi  r9,r9,1
-  10:	7c 84 48 78 	andc    r4,r4,r9
-  14:	3d 20 dc 00 	lis     r9,-9216
-  18:	7d 3a c3 a6 	mtspr   794,r9
-  1c:	2f 8b 00 03 	cmpwi   cr7,r11,3
-  20:	40 9d 00 b4 	ble     cr7,d4 <strncpy_from_user+0xd4>
-...
-
-Start of the function without the patch:
-
-00000000 <strncpy_from_user>:
-   0:	7c a0 2b 79 	mr.     r0,r5
-   4:	40 81 01 10 	ble     114 <strncpy_from_user+0x114>
-   8:	2f 84 00 00 	cmpwi   cr7,r4,0
-   c:	41 9c 01 30 	blt     cr7,13c <strncpy_from_user+0x13c>
-  10:	3d 20 80 00 	lis     r9,-32768
-  14:	7d 24 48 50 	subf    r9,r4,r9
-  18:	7f 80 48 40 	cmplw   cr7,r0,r9
-  1c:	7c 05 03 78 	mr      r5,r0
-  20:	41 9d 01 00 	bgt     cr7,120 <strncpy_from_user+0x120>
-  24:	3d 20 80 00 	lis     r9,-32768
-  28:	7d 25 48 50 	subf    r9,r5,r9
-  2c:	7f 84 48 40 	cmplw   cr7,r4,r9
-  30:	38 e0 ff f2 	li      r7,-14
-  34:	41 9d 00 e4 	bgt     cr7,118 <strncpy_from_user+0x118>
-  38:	94 21 ff e0 	stwu    r1,-32(r1)
-  3c:	3d 20 dc 00 	lis     r9,-9216
-  40:	7d 3a c3 a6 	mtspr   794,r9
-  44:	2b 85 00 03 	cmplwi  cr7,r5,3
-  48:	40 9d 01 6c 	ble     cr7,1b4 <strncpy_from_user+0x1b4>
-...
- 118:	7c e3 3b 78 	mr      r3,r7
- 11c:	4e 80 00 20 	blr
- 120:	7d 25 4b 78 	mr      r5,r9
- 124:	3d 20 80 00 	lis     r9,-32768
- 128:	7d 25 48 50 	subf    r9,r5,r9
- 12c:	7f 84 48 40 	cmplw   cr7,r4,r9
- 130:	38 e0 ff f2 	li      r7,-14
- 134:	41 bd ff e4 	bgt     cr7,118 <strncpy_from_user+0x118>
- 138:	4b ff ff 00 	b       38 <strncpy_from_user+0x38>
- 13c:	38 e0 ff f2 	li      r7,-14
- 140:	4b ff ff d8 	b       118 <strncpy_from_user+0x118>
-...
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v4: Rebase on top of core-scoped-uaccess tag and simplified as suggested by Gabriel
-
-v3: Rewrite mask_user_address_simple() for a smaller result on powerpc64, suggested by Gabriel
-
-v2: Added 'likely()' to the test in mask_user_address_fallback()
----
- arch/powerpc/include/asm/task_size_32.h |  6 +-
- arch/powerpc/include/asm/uaccess.h      | 76 +++++++++++++++++++++++++
- 2 files changed, 79 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/task_size_32.h b/arch/powerpc/include/asm/task_size_32.h
-index 42a64bbd1964f..725ddbf06217f 100644
---- a/arch/powerpc/include/asm/task_size_32.h
-+++ b/arch/powerpc/include/asm/task_size_32.h
-@@ -13,7 +13,7 @@
- #define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
- #define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
- #define MODULES_BASE	(MODULES_VADDR & ~(UL(SZ_4M) - 1))
--#define USER_TOP	MODULES_BASE
-+#define USER_TOP	(MODULES_BASE - SZ_4M)
- #endif
- 
- #ifdef CONFIG_PPC_BOOK3S_32
-@@ -21,11 +21,11 @@
- #define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
- #define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
- #define MODULES_BASE	(MODULES_VADDR & ~(UL(SZ_256M) - 1))
--#define USER_TOP	MODULES_BASE
-+#define USER_TOP	(MODULES_BASE - SZ_4M)
- #endif
- 
- #ifndef USER_TOP
--#define USER_TOP	ASM_CONST(CONFIG_PAGE_OFFSET)
-+#define USER_TOP	((ASM_CONST(CONFIG_PAGE_OFFSET) - SZ_128K) & ~(UL(SZ_128K) - 1))
- #endif
- 
- #if CONFIG_TASK_SIZE < USER_TOP
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 721d65dbbb2e5..ba1d878c3f404 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -2,6 +2,8 @@
- #ifndef _ARCH_POWERPC_UACCESS_H
- #define _ARCH_POWERPC_UACCESS_H
- 
-+#include <linux/sizes.h>
-+
- #include <asm/processor.h>
- #include <asm/page.h>
- #include <asm/extable.h>
-@@ -435,6 +437,80 @@ static __must_check __always_inline bool __user_access_begin(const void __user *
- #define user_access_save	prevent_user_access_return
- #define user_access_restore	restore_user_access
- 
-+/*
-+ * Masking the user address is an alternative to a conditional
-+ * user_access_begin that can avoid the fencing. This only works
-+ * for dense accesses starting at the address.
-+ */
-+static inline void __user *mask_user_address_simple(const void __user *ptr)
-+{
-+	unsigned long addr = (unsigned long)ptr;
-+	unsigned long mask = (unsigned long)(((long)addr >> (BITS_PER_LONG - 1)) & LONG_MAX);
-+
-+	return (void __user *)(addr & ~mask);
-+}
-+
-+static inline void __user *mask_user_address_isel(const void __user *ptr)
-+{
-+	unsigned long addr;
-+
-+	asm("cmplw %1, %2; iselgt %0, %2, %1" : "=r"(addr) : "r"(ptr), "r"(TASK_SIZE) : "cr0");
-+
-+	return (void __user *)addr;
-+}
-+
-+/* TASK_SIZE is a multiple of 128K for shifting by 17 to the right */
-+static inline void __user *mask_user_address_32(const void __user *ptr)
-+{
-+	unsigned long addr = (unsigned long)ptr;
-+	unsigned long mask = (unsigned long)((long)((TASK_SIZE >> 17) - 1 - (addr >> 17)) >> 31);
-+
-+	addr = (addr & ~mask) | (TASK_SIZE & mask);
-+
-+	return (void __user *)addr;
-+}
-+
-+static inline void __user *mask_user_address_fallback(const void __user *ptr)
-+{
-+	unsigned long addr = (unsigned long)ptr;
-+
-+	return (void __user *)(likely(addr < TASK_SIZE) ? addr : TASK_SIZE);
-+}
-+
-+static inline void __user *mask_user_address(const void __user *ptr)
-+{
-+#ifdef MODULES_VADDR
-+	const unsigned long border = MODULES_VADDR;
-+#else
-+	const unsigned long border = PAGE_OFFSET;
-+#endif
-+
-+	if (IS_ENABLED(CONFIG_PPC64))
-+		return mask_user_address_simple(ptr);
-+	if (IS_ENABLED(CONFIG_E500))
-+		return mask_user_address_isel(ptr);
-+	if (TASK_SIZE <= UL(SZ_2G) && border >= UL(SZ_2G))
-+		return mask_user_address_simple(ptr);
-+	if (IS_ENABLED(CONFIG_PPC_BARRIER_NOSPEC))
-+		return mask_user_address_32(ptr);
-+	return mask_user_address_fallback(ptr);
-+}
-+
-+static __always_inline void __user *__masked_user_access_begin(const void __user *p,
-+							       unsigned long dir)
-+{
-+	void __user *ptr = mask_user_address(p);
-+
-+	might_fault();
-+	allow_user_access(ptr, dir);
-+
-+	return ptr;
-+}
-+
-+#define masked_user_access_begin(p) __masked_user_access_begin(p, KUAP_READ_WRITE)
-+#define masked_user_read_access_begin(p) __masked_user_access_begin(p, KUAP_READ)
-+#define masked_user_write_access_begin(p) __masked_user_access_begin(p, KUAP_WRITE)
-+
- #define arch_unsafe_get_user(x, p, e) do {			\
- 	__long_type(*(p)) __gu_val;				\
- 	__typeof__(*(p)) __user *__gu_addr = (p);		\
--- 
-2.49.0
-
+Thanks!
 
