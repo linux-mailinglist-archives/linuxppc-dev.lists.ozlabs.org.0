@@ -1,35 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-13875-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13876-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74CDC3A5F6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 11:52:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4561C3AB23
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 12:51:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2JtK49C1z2xdg;
-	Thu,  6 Nov 2025 21:52:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2LB14KZkz3069;
+	Thu,  6 Nov 2025 22:51:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762426345;
-	cv=none; b=DWWANaLgdsRYuKjEfLLWW1RRnQ0NkgoHekq3wGBQJvg+5/z0+sNLx4UGDY1MdSZI+Q4E4bAPfJeFEEjQFJ+AwhmH1uujRJ0RFFx0/Y9CmMLEbDwWD6BCGhWT5JIeMaxNyZT3NmUANcdR/v2UOwq7b7X0snblbrdrvWE3m707Cgox9O01R4kkBqbDQTg3DB/5tUZRT4iQSa8h7MidVkRX0YNMW3hoz624U4ONiyYP8fZ/uOQ9QoqP8zd35KuzMwdL9FPfRpigltnxZt87bj0mQdEwXOq8XxWAKnRtj8MeUvXNHIzv2lZnQMqudhtv0Xkc7DBA0/FJa42JuV752JaABA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.154
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762429865;
+	cv=none; b=AXACJdiDEycRpqb2Y2mzeLN4qTOsXY/F1fYrGvFbRIS89rOra0+r45Vwb41ff4PiyaMcZA27ewHzCDYoiR+atypPiD7ROqZklBTLklqiCy3FyMO69/lAUkigg/Q/Slc2qEgD1fs0EcVw4HqEpzVqVa4OGOSvtZ2GQQwWy5/ve8lo1URSqS26gMGoYVubeBGflHageft8BkAwmuQpf2UtIdtrJMohLKa0ICWQVVAbQJAZS+0MJfsNrn70ST52gLf7jmkVz8P6oQLlpkVkKwOQ9tEBx/wWOc/K59yYO5vLJFwDllMJ8P/4TzmxnEjeiGmJWimBUeGSA5UvYIUt2oPqDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762426345; c=relaxed/relaxed;
-	bh=9BUIVBWzSEg5HnaNi8EEWsgRtlWmX6rseREfNx4QEYE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GbZ/74ZpchUHHFKMI4O4g+HAsRbutGuTUPVhaPQzvUKCFoyPo+00cJ0pYznhmIJZaZCSe8EgCKaMuqS3CdK9B5TGNXldXELxkWYwhVgMnor7XU1RllMjOonkhr2NPiB4rziKFOOzmLyLClpPCJV7217b2ych5jF2OCayw8XlQBlrQSRCW18naFOg2spY6vD2zH0aklqY+95+PfCKJjXUJhjYG+lzGbPQLb5JtWMJaBZo4fw9aPKitQv1LSwRm4QeIsmYaTqMzYuIHNPbGVQKg7Pcbxx5Dir34rZAe1WQHXXWDAD+iEhwvFiV+4GOgR0mlDUp2na4L6VB/K70AcaD6g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2JtJ4SWYz2xQD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 21:52:23 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 20A081596;
-	Thu,  6 Nov 2025 02:51:45 -0800 (PST)
-Received: from [10.1.34.75] (unknown [10.1.34.75])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6866A3F63F;
-	Thu,  6 Nov 2025 02:51:46 -0800 (PST)
-Message-ID: <48a4ecb5-3412-4d3f-9e43-535f8bee505f@arm.com>
-Date: Thu, 6 Nov 2025 10:51:43 +0000
+	t=1762429865; c=relaxed/relaxed;
+	bh=hhpk6fTlqp/j4PTFIYbnE1NZ1PyPGfcYM9fGDcyzk+0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=JIDkZtztY830e0SXTJlm+lls9tP34Tz57vZgTRf5VFZxxppCWPppQ2R4b6fqs1+6VZfCeMbPdvpsPj/ZpNM8GwWkTyUzoY3aZE9maRHfSGIZEnT8/eGVrPHaQTSjRp4uZeyDIi221n5vBUxCc7kY6oX/U2bOBgYqiW2vnPrv+cykGnJH+OHIjfKMkiAXS7E81HYiOcTJO/9ticVxfltwuZ2Sak1vUac73vGv/mb2FGEMIl6gGGpykaaKz3X1+ZAj4yUIyreoLfB1aWd3dDiHKt8kx58v3lfYoH7xtHnxHE+6fEohkRcrBUrcAFMz5NRcWjnUgMTk1PrGxoF4SbeFLQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=G1Ajto9R; dkim-atps=neutral; spf=pass (client-ip=103.168.172.154; helo=fhigh-a3-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=fhigh-a3-smtp.messagingengine.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=G1Ajto9R;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=fhigh-a3-smtp.messagingengine.com (client-ip=103.168.172.154; helo=fhigh-a3-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org)
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2L9y13f5z2xdg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 22:51:00 +1100 (AEDT)
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 290F214001D6;
+	Thu,  6 Nov 2025 06:50:57 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Thu, 06 Nov 2025 06:50:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1762429857; x=1762516257; bh=hhpk6fTlqp/j4PTFIYbnE1NZ1PyPGfcYM9f
+	GDcyzk+0=; b=G1Ajto9RwBMqq/SUC0v5M94XTt0Avvr01b38aA+oTKroecQZU+2
+	2Bq3HBlQl0WocCr9e2PQht2XIxPJ7PYKeBrhdJBYOw9By3mIG/wgYEWimqNGjt+I
+	BEe0H6o0iyY33HD+0i0gNuFkBSLFHi4Xt7X/q/notCEPWyQ2DldLhTL890lch2qm
+	3A/MTraUzYF6yPTOPpcDnN9LIN8/NL4eRoP5dSxj6tbmRwJTxWksLVM6RFPrVLkZ
+	yHxDPZ15UnDRpEdds2e71+NMM90TfkhMbCK7YU7rNeAxMvT3AVQ71XJHcgeFlDuL
+	Z5xCp35TAXqGryXJR/LGeXHC6gVRMgo22KQ==
+X-ME-Sender: <xms:nosMabhEHUf6c3cJ-3fHyG6uAMNkZRVf-kLwPMBG1B04edU4h6TThg>
+    <xme:nosMaegxQeL6DiEPkNTX8LVKGomFHk-jGSf5rBVdYhW1DkmbzXw7KoY5GyfBRDRtr
+    lMqam3gMVvOK0YTPzde7Mz4U7XONX55wlmNt1My0fHJZ9wyPwnXn-k>
+X-ME-Received: <xmr:nosMaZG6YrPzPdnUC3d55Dsy4x-UONLE8uHoat7CIDloousscl37a6NLDbbSsiGuYN4Jxoaq5ggg72Ydjn7zZHwDP4R8ltH9EU4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeeijedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevufgjkfhfgggtsehmtderredttdejnecuhfhrohhmpefhihhnnhcuvfhh
+    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeelfeeklefggfetkedukeevfffgvdeuheetffekledtfeejteelieejteehgeel
+    ieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
+    hhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeduvddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihse
+    gtshhgrhhouhhprdgvuhdprhgtphhtthhopehushgvrhhmheejseihrghhohhordgtohhm
+    pdhrtghpthhtoheplhhinhhugiesthhrvggslhhighdrohhrghdprhgtphhtthhopehmph
+    gvsegvlhhlvghrmhgrnhdrihgurdgruhdprhgtphhtthhopehnphhighhgihhnsehgmhgr
+    ihhlrdgtohhmpdhrtghpthhtohepshgrmhesrhgrvhhnsghorhhgrdhorhhgpdhrtghpth
+    htohepsggvnhhhsehkvghrnhgvlhdrtghrrghshhhinhhgrdhorhhgpdhrtghpthhtohep
+    lhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtth
+    hopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:nosMabAB_t1bGxV6bAdxgJoOu0LW9zq53SYSFQ85o1YR6z4NQsL-Bg>
+    <xmx:nosMafC62GKoaSwwqCagyjnw9AGjwdDHdXeMNKgE_F36sf-MpBGqPg>
+    <xmx:nosMaZMrQeFXP0hvzam01KuUy6esyWIiGhy2yUhhEvlVOKC63d4H6w>
+    <xmx:nosMaTPt4OJ7QQ3yobIYFvpbIOPzxaVaUMf4WTmzQ7U3JOR2B-ndOA>
+    <xmx:oYsMaUiEX6bcvaWKiRi9b79AUyiP0wavSNvldCxbrtqhA8MF4Pz5iYwQ>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 6 Nov 2025 06:50:51 -0500 (EST)
+Date: Thu, 6 Nov 2025 22:50:27 +1100 (AEDT)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+cc: Stan Johnson <userm57@yahoo.com>, 
+    "Dr. David Alan Gilbert" <linux@treblig.org>, mpe@ellerman.id.au, 
+    npiggin@gmail.com, sam@ravnborg.org, benh@kernel.crashing.org, 
+    linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+    rdunlap@infradead.org, Cedar Maxwell <cedarmaxwell@mac.com>, 
+    "maddy@linux.ibm.com" <maddy@linux.ibm.com>
+Subject: Re: [PATCH v4] powerpc: Use shared font data
+In-Reply-To: <994bea8c-7b28-4aae-a6b3-e4f33731cb29@csgroup.eu>
+Message-ID: <b4737133-a33c-f4d1-cc4b-0c0b70c45635@linux-m68k.org>
+References: <20230825142754.1487900-1-linux@treblig.org> <d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com> <aQeQYNANzlTqJZdR@gallifrey> <20108eef-b7cf-3f23-264a-5d97021f9ffa@linux-m68k.org> <aQgJ95Y3pA-8GdbP@gallifrey> <3cc3d311-35b0-42f1-b20f-ed59391bb8e0@csgroup.eu>
+ <ead4ef3f-9f8c-a98e-b48d-f052bc9492d0@linux-m68k.org> <994bea8c-7b28-4aae-a6b3-e4f33731cb29@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -43,105 +100,44 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- Ritesh Harjani <ritesh.list@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-8-kevin.brodsky@arm.com>
- <87ms5050g0.ritesh.list@gmail.com>
- <50d1b63a-88d7-4484-82c0-3bde96e3207d-agordeev@linux.ibm.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <50d1b63a-88d7-4484-82c0-3bde96e3207d-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: multipart/mixed; boundary=-146381177450487057176242982735
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 05/11/2025 16:12, Alexander Gordeev wrote:
-> On Wed, Nov 05, 2025 at 02:19:03PM +0530, Ritesh Harjani wrote:
->>> + * in_lazy_mmu_mode() can be used to check whether the lazy MMU mode is
->>> + * currently enabled.
->>>   */
->>>  #ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
->>>  static inline void lazy_mmu_mode_enable(void)
->>>  {
->>> -	arch_enter_lazy_mmu_mode();
->>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>> +
->>> +	VM_WARN_ON_ONCE(state->nesting_level == U8_MAX);
->>> +	/* enable() must not be called while paused */
->>> +	VM_WARN_ON(state->nesting_level > 0 && !state->active);
->>> +
->>> +	if (state->nesting_level++ == 0) {
->>> +		state->active = true;
->>> +		arch_enter_lazy_mmu_mode();
->>> +	}
->>>  }
->> Some architectures disables preemption in their
->> arch_enter_lazy_mmu_mode(). So shouldn't the state->active = true should
->> happen after arch_enter_lazy_mmu_mode() has disabled preemption()? i.e.
-> Do you have some scenario in mind that could cause an issue?
-> IOW, what could go wrong if the process is scheduled to another
-> CPU before preempt_disable() is called?
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-I'm not sure I understand the issue either.
+---146381177450487057176242982735
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
->>   static inline void lazy_mmu_mode_enable(void)
->>   {
->>  -	arch_enter_lazy_mmu_mode();
->>  +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>  +
->>  +	VM_WARN_ON_ONCE(state->nesting_level == U8_MAX);
->>  +	/* enable() must not be called while paused */
->>  +	VM_WARN_ON(state->nesting_level > 0 && !state->active);
->>  +
->>  +	if (state->nesting_level++ == 0) {
->>  +		arch_enter_lazy_mmu_mode();
->>  +		state->active = true;
->>  +	}
->>   }
->>
->> ... I think it make more sense to enable the state after the arch_**
->> call right.
-> But then in_lazy_mmu_mode() would return false if called from
-> arch_enter_lazy_mmu_mode(). Not big problem, but still..
 
-The ordering of nesting_level/active was the way you expected in v3, but
-the conclusion of the discussion with David H [1] is that it doesn't
-really matter so I simplified the ordering in v4 - the arch hooks
-shouldn't call in_lazy_mmu_mode() or inspect lazy_mmu_state.
-arch_enter()/arch_leave() shouldn't need it anyway since they're called
-once per outer section (not in nested sections). arch_flush() could
-potentially do something different when nested, but that seems unlikely.
+On Thu, 6 Nov 2025, Christophe Leroy wrote:
 
-- Kevin
+> Le 06/11/2025 =C3=A0 05:11, Finn Thain a =C3=A9crit=C2=A0:
+> >=20
+> > On Wed, 5 Nov 2025, Christophe Leroy wrote:
+> >=20
+> >> 1/ Either build font_sun8x16.o with -fPIC
+> >> ...
+> >>
+> >> 2/ Or add a PTRRELOC:
+> >> ...
+> >=20
+> > Thanks for your help with this, Christophe.
+> >=20
+> > I fixed up the whitespace problems and forwarded those patches to Stan,
+> > along with instructions for applying them. He tells me that patch 2 fix=
+ed
+> > the hang. Patch 1 did not.
+>=20
+> Fine. Then let's use PTRRELOC.
+>=20
+> Will you or David submit the patch ?
+>=20
 
-[1]
-https://lore.kernel.org/all/af4414b6-617c-4dc8-bddc-3ea00d1f6f3b@redhat.com/
-
+OK, I'll submit the patch.
+---146381177450487057176242982735--
 
