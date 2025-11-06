@@ -1,85 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-13885-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13886-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38BBCC3B893
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 15:02:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4740C3BCC4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 15:38:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2P5g0Dn0z2xdg;
-	Fri,  7 Nov 2025 01:02:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2PvG2gS0z2xS2;
+	Fri,  7 Nov 2025 01:38:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762437750;
-	cv=none; b=bP/b8YKW9On8YPs5hRhnngB+KHIcYAsInJ9rUXjDV9l7oFa/UlwTQk+dFlGUGmsT6F4x/WeuLinzbESsq7t+9nNHKtkOCOc/wEb5ykv9b0dk1XoNtS24YAorD0+idBVZ6XphiYhl+cUcgiRB0SbQYjnS82shAGxLBgMOW1w6XN/VgkFKpbiGuSQ8tlFDI0e7k72eQhnOf3sDU+jIC613DnKjp9ppKGWvm/UxtIZ4eymSvopJ6c+ke9+7LOsME2lPFf8WWVWkT4yxsCGWG6+f5A3gB8pNTPYqxXOiFQKa+vwdHY0l6NaGUBatVW77tY3NknMgMykbQnVo/0kBi+r2gg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762439914;
+	cv=none; b=kw0cmL7l/gRb8q2iojLz5UDYZTn2Gp+3crdsHzudbcQfU7jrvt0ekNzETiU79689NSqQZuFLIEMAyYs5TfZWwEbMjWbUbLNPFwL17N4CqVlUST1tncp/EuJje0uHP4MGbVx+0uTsJrbZGXUdHZJQu1PTNswqE+kLhako+AEPtVEB2URZbxfHf47frchTixfoKdswwjMOr1lcpwKMpgmFy7xUORE4nQtu3QxrJUHKWZc//153iah8eIVcv1GXjwTLSb+g8V0DPnT0knUWQyZqgeECCWjwAiFRJ+rV55/A0Kwtl2jkgTbi/71U2E0Wux46kDlhjX7q8eZH4ZFNaEkeOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762437750; c=relaxed/relaxed;
-	bh=rks74Ok2xVDZRYVekwVF/tod1CxxsRBTTzdE/GlxP70=;
+	t=1762439914; c=relaxed/relaxed;
+	bh=jh3BnHvW8PIXMHNCqBwP8m/N0iJoZMQt+GVZ+IQ2MbI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L9HpZwQKozBspNZ+iyLrNBSWeWul/r3RoStKN8cmWpT4Hps+JOuW/MuhjW+2T1tmRAI1rPGwP1NLX9KNnyPNhbnHRTeCmLMzefUtkEd1kBiTmmaEqaoLPfFRheCi8WOzM5l8pom9EDrz7868hCPwwWKaExAwjHxqdqIyld3/VLYNW1uECSH3QIiqVSgeMqX1AGTrldQPME3AxsQT3B6Asoo5NFjUcRmb8Ku+ieUiLZtTnl6XPeHUA3f+rl3aoC5WFgAEKhz3r668VOtGG6pd1FkBd0nt50VdPIivkWjqfPPKMp5wLPafthY+O3f1TNXeOZMbRVDgJ+WSOsWHQU80gg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ud+s8WUS; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=THZqG4uA9nbL0CbKg8U2Uo1cvUuh9A5woqfh3MNyPVpVaUsOvBXYPJlSQNeStKaKzCw28O/Ww75AyfeP9C9xQc9Ih9EIhKNjZSdh6536YrCAQ6fV+9XMXOWjn5T+91IW9qON68MEmvX06ltoMqBHCVfCISSMmWhGwfKTb2v0npy7K6/pCkhrXIPmRM3sZcu4dUNnLB958oT4NmSYyYyv2To9rjh+7uxwAzATAbedsocQBeFW0ZXLZdkoLJFWc0I0zz0KmipyQez/iKzGn74TJaK8EuOD9h5LjRgqOF0sIfWhTHo9AmnREoQu/iDGV4uYB4nd9fmMJoJR26B78udqrw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V1mpEM3H; dkim-atps=neutral; spf=pass (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ud+s8WUS;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V1mpEM3H;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2P5f0ddvz2xR2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 01:02:29 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A86BE601B8;
-	Thu,  6 Nov 2025 14:02:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A90C4CEFB;
-	Thu,  6 Nov 2025 14:02:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762437747;
-	bh=rks74Ok2xVDZRYVekwVF/tod1CxxsRBTTzdE/GlxP70=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ud+s8WUSocuprubvzUOn8VaTTNgP5pI8KL1QrPvB41zFUOTeVRqsg6VXanq7RjXrt
-	 Xn+A/6fKrbkrAoSRxtE7sgs19ET/So8zm9IajCVZ4mSdbwTSULmFfhU5BAo+iF7nTD
-	 ZMUcjlN+rjIbRkhA07YgsdHFpyV+ozJZ/xB4qYFYWSN+AChzURE/gwQXR5xm4ExRgC
-	 f5IG/MS4uEHvmQ/Vp4534qX52O/yMhhPHpmXheOg/bpZX16ILqr8bdwixpllo89E9L
-	 dh0F2VOHbeO7NnGAN2xsSfXTCxZCZ93t4sk6Si+GzjOjs2MhU+GK+MX4wmRD6Ijdjv
-	 z3wqWVhwtQQaQ==
-Date: Thu, 6 Nov 2025 14:02:24 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Nick Alcock <nick.alcock@oracle.com>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Shuah Khan <shuah@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Russell King <linux@armlinux.org.uk>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2PvD10THz2xQD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 01:38:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762439913; x=1793975913;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+75GKPCI5jNkPc6bb4WB2j4Mz3JYShSPvH/44slbqt4=;
+  b=V1mpEM3H76B1xmi6nMYsSfww7l/jvJmzPA4U7t7bbFdzjibSsit1cdKz
+   AWV47F3xI+qWdkl7U134odeKTdEf4Ed6SA5EVNPe86K2ZVacxtXqls21i
+   lq4OchnZh+Hk8VcsipDmDuDFJZZjO54sApsGD9Q/VvV0aiMUkw3R63sRP
+   0mZFIn6rcl8/jZkYYZ0kuwKouuCAl8c2VQB2PXi35MpXweXctuhWBwyV3
+   VVDOx5VKGtHagYzJi1jFWYyjmNCdEVFQ72Yx0KKh8LCr+7b04cSO+I69R
+   U6rvLnz0rKSXYp0mKoBp2MScaRYAWQ3ORYa4J/9Yi4sCHpgu6HTtcPLsh
+   g==;
+X-CSE-ConnectionGUID: EyhnB47ERa+9pLm1HnoPgQ==
+X-CSE-MsgGUID: 4FAtTdppQ/ST5CDTv2mobw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="75692357"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
+   d="scan'208";a="75692357"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 06:38:28 -0800
+X-CSE-ConnectionGUID: mtLqvztIR2+6pQQoTPF7Mg==
+X-CSE-MsgGUID: ezPYJZsdQpq225RUv4XYxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
+   d="scan'208";a="187487529"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa009.jf.intel.com with ESMTP; 06 Nov 2025 06:38:24 -0800
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vH182-000U1K-1F;
+	Thu, 06 Nov 2025 14:38:22 +0000
+Date: Thu, 6 Nov 2025 22:38:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: oe-kbuild-all@lists.linux.dev, Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Baoquan he <bhe@redhat.com>, Jiri Bohac <jbohac@suse.cz>,
+	Hari Bathini <hbathini@linux.ibm.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Shannon Nelson <sln@onemain.com>, linux-kernel@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-s390@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v5 00/34] sparc64: vdso: Switch to the generic vDSO
- library
-Message-ID: <aQyqcH39IPLRWMt_@finisterre.sirena.org.uk>
-References: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de>
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shivang Upadhyay <shivangu@linux.ibm.com>,
+	kexec@lists.infradead.org
+Subject: Re: [PATCH v6] powerpc/kdump: Add support for crashkernel CMA
+ reservation
+Message-ID: <202511062213.dHidoorr-lkp@intel.com>
+References: <20251104132818.1724562-1-sourabhjain@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,58 +87,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4rnwqeK5vRaFw2+U"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de>
-X-Cookie: Dyslexics have more fnu.
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20251104132818.1724562-1-sourabhjain@linux.ibm.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hi Sourabh,
 
---4rnwqeK5vRaFw2+U
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+kernel test robot noticed the following build warnings:
 
-On Thu, Nov 06, 2025 at 11:01:53AM +0100, Thomas Wei=DFschuh wrote:
-> The generic vDSO provides a lot common functionality shared between
-> different architectures. SPARC is the last architecture not using it,
-> preventing some necessary code cleanup.
->=20
-> Make use of the generic infrastructure.
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on powerpc/fixes linus/master v6.18-rc4 next-20251106]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> ---
-> Changes in v5:
-> - Merge the patches for 'struct page' mapping and dynamic allocation
-> - Zero out newly-allocated data pages
-> - Pick up review tags
-> - Link to v4: https://lore.kernel.org/r/20251014-vdso-sparc64-generic-2-v=
-4-0-e0607bf49dea@linutronix.de
+url:    https://github.com/intel-lab-lkp/linux/commits/Sourabh-Jain/powerpc-kdump-Add-support-for-crashkernel-CMA-reservation/20251104-213036
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20251104132818.1724562-1-sourabhjain%40linux.ibm.com
+patch subject: [PATCH v6] powerpc/kdump: Add support for crashkernel CMA reservation
+config: powerpc64-randconfig-r113-20251106 (https://download.01.org/0day-ci/archive/20251106/202511062213.dHidoorr-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251106/202511062213.dHidoorr-lkp@intel.com/reproduce)
 
-I've validated that the zeroing fixes the issues we were seeing with
-boot failures on a reasonable chunk of the arm64 platforms:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511062213.dHidoorr-lkp@intel.com/
 
-Tested-by: Mark Brown <broonie@kernel.org>
+sparse warnings: (new ones prefixed by >>)
+>> arch/powerpc/kexec/core.c:62:20: sparse: sparse: symbol 'crashk_cma_size' was not declared. Should it be static?
+   arch/powerpc/kexec/core.c:188:29: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned long long static [addressable] [toplevel] [usertype] crashk_base @@     got restricted __be64 [usertype] @@
+   arch/powerpc/kexec/core.c:188:29: sparse:     expected unsigned long long static [addressable] [toplevel] [usertype] crashk_base
+   arch/powerpc/kexec/core.c:188:29: sparse:     got restricted __be64 [usertype]
+   arch/powerpc/kexec/core.c:190:29: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned long long static [addressable] [toplevel] [usertype] crashk_size @@     got restricted __be64 [usertype] @@
+   arch/powerpc/kexec/core.c:190:29: sparse:     expected unsigned long long static [addressable] [toplevel] [usertype] crashk_size
+   arch/powerpc/kexec/core.c:190:29: sparse:     got restricted __be64 [usertype]
+   arch/powerpc/kexec/core.c:198:19: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned long long static [addressable] [toplevel] mem_limit @@     got restricted __be64 [usertype] @@
+   arch/powerpc/kexec/core.c:198:19: sparse:     expected unsigned long long static [addressable] [toplevel] mem_limit
+   arch/powerpc/kexec/core.c:198:19: sparse:     got restricted __be64 [usertype]
+   arch/powerpc/kexec/core.c:214:20: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned long long static [addressable] [toplevel] [usertype] kernel_end @@     got restricted __be64 [usertype] @@
+   arch/powerpc/kexec/core.c:214:20: sparse:     expected unsigned long long static [addressable] [toplevel] [usertype] kernel_end
+   arch/powerpc/kexec/core.c:214:20: sparse:     got restricted __be64 [usertype]
 
-I didn't get to all of them but I'd expect the rest are also fine.
+vim +/crashk_cma_size +62 arch/powerpc/kexec/core.c
 
---4rnwqeK5vRaFw2+U
-Content-Type: application/pgp-signature; name="signature.asc"
+    61	
+  > 62	unsigned long long crashk_cma_size;
+    63	
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkMqnAACgkQJNaLcl1U
-h9DdXQf/cqvSjdtV28SWYNX+UHnXmboyHxzenwcfa4zxbnrzgQ8feYntV6Ikfx7L
-ovSme6EY9cGYwoDmmhIHSSVZ0iuMwgiSj/NLxYlzbayc8uJITnfMorXtyOkqn7eQ
-9PngOIxdOAGels3s3oLIZfRg7pXKnfX176OvkFQi6I2gHaBHCpQbBq4o5qVqFo85
-Yra3emkWyARoll2AJ3u/dPVaDlXP2H3z4fm9QzX/1aWFaGN5Ml43iLbTfuC6YPlA
-/XTavzO9jIbi7l2J36K152BdwsgyOEHqQezDy5a/7bSQwA9cH7ok32svP1b5hpl1
-DOGKdUeeQCo9BAzV2TfMQR9jwzkZSQ==
-=zN3L
------END PGP SIGNATURE-----
-
---4rnwqeK5vRaFw2+U--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
