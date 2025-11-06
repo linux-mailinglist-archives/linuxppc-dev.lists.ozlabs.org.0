@@ -1,58 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-13856-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13863-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDCDC3A065
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 11:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CAADC3A0A7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 11:06:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2Hmh2YvDz3f5Z;
-	Thu,  6 Nov 2025 21:02:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2Hmq0ZS6z3fL2;
+	Thu,  6 Nov 2025 21:02:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762423348;
-	cv=none; b=ZLQzvNN/txZpL6FnJu2uMZX/rbiB2uiBv/rzQDTwXQaAw40YpLOnLe26+PIQPdF9wKGEMYoQwtFLhgQ9O18Y4o5pm8+84xoOr34M1JUCdjp9D4au7Af8G0yYbGXq69vG+XuPp+abw+rmtsiHrnkqEqvlVGAQxEWundX73pmj2UFb1s2+9ID6LG4hxAbbSlwcgcfU9sppZGHiDW1aq0A4pfnFA75aTWitVno87Gf4EG53S2rGCVceamkc4ExO0Jq18N6sPO4OMMyK0iBdq7+fWEMpUms8km63GywSlNvRntKWMO4b7iPxm1uobhk6r285IoiKvVe3hxvjFXBrzhpdXQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762423354;
+	cv=none; b=Gj36C0zR3qgTEelDQLeBpHX8eKsf4vjdAh9jMS2nXDpdU1lqoP2uoVy+PSXpQM1ivTJ0DiOCqAs2DV1FCNJr5dmmHC4gqoCQ2wLP9+aN5rsVudO4Njw+5Id5CfhYhdPEzRSVD6VoWn8nGRW3ceF+c3iIdA2d0REYLMM7d3PqiANtnFj941Ku1kAADxo5k61QmqY+pgODmxAuxIW0D9OZz2R7JeWl2pUFb1UZA4Xn3ZipRJNLXsZJHhQDNeKq1MtvKy1cXXaGKd7iDKYCT4uJVomXcotC9DEFNaoGeGYR4KqgwiIaGqo4lwDJW6/LkPqnwwthUQtWYyOa4wkn3Nef1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762423348; c=relaxed/relaxed;
-	bh=y3tGpR5SbTtmYH9/UhUB7FG7sTK6XysaxzCJ0fbVJv4=;
+	t=1762423354; c=relaxed/relaxed;
+	bh=w1SV+PqSrKcBXRE0Ygl0UiayHdt8moxs7tJ8I+04D+8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DW7XxwsTmTDgP95iIF4Yf21rhHfCrAsP3Hi+qyrCZQ9WS8uLfsRM9zBXIQZXKkevMYwGf8ZKESxXWo78RLIfAwB6f8CXudctNXLn/4nW4BqSCBFVp+YPT90vwh9ntoqNA/McZEl5jvVITx9C3OsQti6K5q+JYFv76oTLw05P33P2j+WKM8VAjXs00yrB4YW1S/vIuiSKn3kwaNWlYL14ZpRAizw27s8fBQESz+Axa21HrRwfTicZdQ/iWsSd/VakUXrWHcFW3HQwxreldcIleDxpWQPTcVf8ukOOapkR5mjNf5IK4NDZhGkF0CJrlxPDzXduXshL4MuKVmJNHF5AvQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=IS82j6FD; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=IQzJWc/I; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=QFUVSneo61teBH83BdtM57dm2kVFo11Ii2njcGED/g09w3K7G3NobYxXQLbxYgFz/Q9Gl5sbsKlWy8eHUN0gJAQkrztPx2mB61w55kBaNBTeoLd/4xgd1cd7vvjZc4o34MfJFx7UfHK4eAUOMTSkrnuCE3hI5YzmbnFoMx7reW+xIdwQFc8QqUlIULyt8okRyF0SA9JWYEjhycX0auyuhRu1YVLLYj6ymhnRHmcYRXVCX1q108T6bh7p/M85CVqUZ7RElQ+evTzWvksUUhOzCf0n88lq4Bh9zBRFuN4NhnzazB4D4TGqgLg06WlL/ta3n2gkVxxw9L0a3vwJc1jgXw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=w9PW9ll4; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=roC/+VvH; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=IS82j6FD;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=IQzJWc/I;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=w9PW9ll4;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=roC/+VvH;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4d2Hmg2c53z3f99
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 21:02:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4d2Hmp3K0mz3fKp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 21:02:34 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762423341;
+	s=2020; t=1762423343;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y3tGpR5SbTtmYH9/UhUB7FG7sTK6XysaxzCJ0fbVJv4=;
-	b=IS82j6FDl7Ny+WZ6JAbmEnikWn5fk5BKXLGg330FI4L/O4Ay1WXhQlvWJtGmMxqipV2KLM
-	Yyi4cIW0x+8Z2gsq3GhASyD0VgfilEm9lZ852jE1hsXYHm3cDkzarje7iUbTCAsZhb+S/F
-	S6KBL64/N/d2QDM6THqZ+LqVn6PKSjwLFqdScgsG7JZs8K/EtL/xi/oSJiH6kxEmhKV6I1
-	p17oBsinUPILAKY3wKRPgBuyjXUEpZSL5RajdlPtxQKX4x0iZgr9QXFRBNCjmBMu6jZGEe
-	UaofP2CLbPOqvVUKeUrwqBkqrrGejcEdVWGiL4mjxm0L/wY2zNP1hWX+Fwz+4Q==
+	bh=w1SV+PqSrKcBXRE0Ygl0UiayHdt8moxs7tJ8I+04D+8=;
+	b=w9PW9ll4SirBP3p5BmkWSwcxX9yBXq2ZLAtMao42da/rXWAnfeOtC1bJ9E8uAfpxuSE2b8
+	o07hAS/4ARBr1kRqhqTX3XwZDQsgQ+FrFmE7XJMCGEXaB3jbVJrTSErDfCMYnV+vU7oRWd
+	M3pggh1B7o4RNaeIYbjFDC15R3pGSZ7sPp7WD5gZIuZcMJxq/sUfoDglnjG5zT3qid2PH7
+	jzIhhtDpYrfa0KoL3/elxR9+XxUP7WmSF6bX5TALqR88WnUut9GIod+6V4RB+c4yddjEKh
+	PRaFadMESxmzpE2bz01vYUPmZZWNXbrxU0DD02uX7uuDs1tPvs5rlLRHiMFQ7g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762423341;
+	s=2020e; t=1762423343;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y3tGpR5SbTtmYH9/UhUB7FG7sTK6XysaxzCJ0fbVJv4=;
-	b=IQzJWc/I58sgXAbxGDnvHbnbx22zuN+uYONk9lslfn28Stw1YS7Z19VBWQxpa8nJ0rzmlF
-	5ao8jqHUHC914jBQ==
-Date: Thu, 06 Nov 2025 11:02:13 +0100
-Subject: [PATCH v5 20/34] s390/time: Set up vDSO datapage later
+	bh=w1SV+PqSrKcBXRE0Ygl0UiayHdt8moxs7tJ8I+04D+8=;
+	b=roC/+VvH0dZdpOXVcl5LaZh8YoB3OJiAs7429ePimDjbFeWjQFkuAY1yyXpFRnqgrs+hL8
+	3HyvwAGXnWd15yDQ==
+Date: Thu, 06 Nov 2025 11:02:14 +0100
+Subject: [PATCH v5 21/34] vdso/datastore: Reduce scope of some variables in
+ vvar_fault()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,7 +69,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251106-vdso-sparc64-generic-2-v5-20-97ff2b6542f7@linutronix.de>
+Message-Id: <20251106-vdso-sparc64-generic-2-v5-21-97ff2b6542f7@linutronix.de>
 References: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de>
 In-Reply-To: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de>
 To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
@@ -95,11 +96,11 @@ Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
  linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762423327; l=1384;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762423327; l=1296;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=2hSFMUISgDavbKKRu1atPOpNqM6l7sLyIWcWtFRLYDU=;
- b=Ov4mzaNxAT2GTQwh7RPz3N1qjaNCSocF2bw0jkDMXSFmOiEJkoHSjG7+bqcrj2PG3wzY60VRh
- T/MQVcZTM9PDCxCMhOiQu3NLt8WCtCrc/0M9p20icPbA/+4/MccBS9w
+ bh=yVlwKjEkg/2DD/Mb0uz8N0TzPw8B5Wtv5ed+5obQYGU=;
+ b=rikyX4UvTCgMDvnqGEuNjGrWUOEUBhmdyXJkxjtZyBaXdECGv3cgj+MOuFa0Z7Wx1uBoedvNc
+ xcGQPOSE4rSBWH/8RnmCUhVj64mbOeK2j099iHbxdTUw9CYVbrde/2i
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -107,44 +108,41 @@ X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Upcoming changes to the generic vDSO library will mean that the vDSO
-datapage will not yet be usable during time_early_init().
+These variables are only used inside a single branch.
 
-Move the initialization to time_init() which is called later. This is
-valid as the value of tod_clock_base.tod only changes in stop_machine()
-context and both time_init_early() and time_init() are called before
-interrupts are enabled.
+Move their declarations there.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
 Tested-by: Andreas Larsson <andreas@gaisler.com>
 Reviewed-by: Andreas Larsson <andreas@gaisler.com>
 ---
- arch/s390/kernel/time.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/vdso/datastore.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/time.c b/arch/s390/kernel/time.c
-index 63517b85f4c930b799235c381d9d6b263fff5431..6b948b9e61fe674bbc842a0143dd35a26b91a860 100644
---- a/arch/s390/kernel/time.c
-+++ b/arch/s390/kernel/time.c
-@@ -78,8 +78,6 @@ void __init time_early_init(void)
- 	struct ptff_qto qto;
- 	struct ptff_qui qui;
- 
--	vdso_k_time_data->arch_data.tod_delta = tod_clock_base.tod;
--
- 	if (!test_facility(28))
- 		return;
- 
-@@ -248,6 +246,8 @@ struct clocksource * __init clocksource_default_clock(void)
-  */
- void __init time_init(void)
+diff --git a/lib/vdso/datastore.c b/lib/vdso/datastore.c
+index a565c30c71a04ff4116c14f43f4450210eba99c5..2cca4e84e5b5e7686d6a2b42b41af4f399cc5261 100644
+--- a/lib/vdso/datastore.c
++++ b/lib/vdso/datastore.c
+@@ -41,8 +41,7 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+ 			     struct vm_area_struct *vma, struct vm_fault *vmf)
  {
-+	vdso_k_time_data->arch_data.tod_delta = tod_clock_base.tod;
-+
- 	/* Reset time synchronization interfaces. */
- 	stp_reset();
+ 	struct page *timens_page = find_timens_vvar_page(vma);
+-	unsigned long addr, pfn;
+-	vm_fault_t err;
++	unsigned long pfn;
  
+ 	switch (vmf->pgoff) {
+ 	case VDSO_TIME_PAGE_OFFSET:
+@@ -54,6 +53,9 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+ 			 * Fault in VVAR page too, since it will be accessed
+ 			 * to get clock data anyway.
+ 			 */
++			unsigned long addr;
++			vm_fault_t err;
++
+ 			addr = vmf->address + VDSO_TIMENS_PAGE_OFFSET * PAGE_SIZE;
+ 			err = vmf_insert_pfn(vma, addr, pfn);
+ 			if (unlikely(err & VM_FAULT_ERROR))
 
 -- 
 2.51.0
