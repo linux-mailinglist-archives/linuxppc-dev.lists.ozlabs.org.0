@@ -1,82 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-13895-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13896-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2F2C3CEFE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 18:48:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A00CC3D117
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 19:25:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2V5w30pHz2ySP;
-	Fri,  7 Nov 2025 04:48:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2Vwk2Rvfz2ySP;
+	Fri,  7 Nov 2025 05:25:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762451284;
-	cv=none; b=Kf+AO57FNLppSRQRqxREIwyN5m3LFSGaZ+MyfhOKdFBPF57yEp/rAdha/BFA3dvc4pP5KM/jpaIsJwL1wyN9KF51wKb1M4EUBwLCcUYcb1o3hflSaBRuD94PRe3lHSdWW5IYZ+ig583JbAvPNS7eGv/RM9uMozhJnhcH4DWokQz9JsAMfwYTyF3NkRe+NVf2XoVbxsyp0bmJxAvyhxXOegdxDzmxNs8VAWY183Y6JOTKQmF077ieLXaINdydfWfmoydVKL5XwEkzrDd3Fep4/2q+xw1jrTbReJBufjNm9oxhe9Fwj/4TnIQJ2rOIc/NoG4kTlRqExB/hTSNiO7BugA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762453510;
+	cv=none; b=IHlHGIaK1h3D68L+8VUkogFx+E4m1Q9u5HvYc8GVjZ6LcFcQEzc/vGFZayEdZ6XaUQpLx+QwDz4D6IQSYoOK3jJV8YvsNXNs4+T0Ou2U1oRJQXrwqxtngriTjcWZfgv8XI4YHYVLxLG12d0vMSxWvOhW2dLClKDFlEcy2Ic0GZH//OL9nvVvoNSQ1BfBXb/OT+8Ic5ooywvsBcNWtqz3lZ5iJ4JhTEsZgqs4nKyy3QEMwxqwc6fjChXmF8ykiZWK+sqq9CuH7k8rB8ech5PQP2N0hs1NYheO36Qz3J2hVLbMDcAqewMnsoefOJIADpD5vhi7FE5bMEYfYFUrUzDMkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762451284; c=relaxed/relaxed;
-	bh=jUOcQwJRln67uS82tlcAA1G+Boy+nymiclVKiSDZbQQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gsm5TGk5z/mw1XYUuAbd6rYpJvM+k7DygbtYWzbYs94VfyhUWAhbV3K8cTZcU68q+V32eTWleE1z06fQQ71lB3Hi12OOPLpANnx23L8XN2U6Ny5fIn9p3X9hhQhkNsaHlGlZoGvPxLBsxss90ANhoVRcyw7yE531SPeGmC1z+jMz+fZ2m2DK3bkDhrlZkBaAu25WoUuwWLCrCfpnB/WXe15PjRbfS9uZjEn2Z2lnWPwNdYKIoRiudkDaz8qFxrTLl3sp7iUD9oOLj9nrEwifY6OJYhZqSprIW5O8Zu1Q2K+7wwtsGxzr+DOCSI+ZAAXoMMPDl03GMn+fPLfrSAWg+g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z9FnDBrL; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1762453510; c=relaxed/relaxed;
+	bh=qE/gwh02JpgrMrlxY+R8cx6Mq8JbzfPNQpSWv8dq2Tk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=IN2Io5ndihmD9aBqo089w7Fyz7k8acRBjMLGaDMwuekbdTgeqs5BqZLrbhe1o+ZxZgqJgFcWKTZ/bq9hM63/2UwT8CfmvsnMbo6VwiWvbXt580QhrOulYBIwbr30DZt1ni3+rNzBVJQIvKguzWDMWHyLiZ6DKe2r0wPaKl5tXoWCJMib2Y9AQjlnkpDEJSPsMkzufiXv7M6a7FreWpFas8ZjMcWQKfAbPUbwwBbrmSuCDtL8+YXJsrSnnE9+TCs+0ZueN+5AHXBogYq2eOBTsm8oNMMI8oRbOn+qB9qYcA2D3pNqDO7JsvpvMbVtDKBULSbDEEAtKF4p8JbOrUiBCA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZXaCgMPH; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z9FnDBrL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZXaCgMPH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2V5v2Zrjz2xQ5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 04:48:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2Vwj359vz2xQ6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 05:25:09 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 23E6042B05;
-	Thu,  6 Nov 2025 17:48:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD86C116C6;
-	Thu,  6 Nov 2025 17:47:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A4AEA6022D;
+	Thu,  6 Nov 2025 18:25:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FB9C4CEF7;
+	Thu,  6 Nov 2025 18:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762451281;
-	bh=13WsgUGoeK4bC41loapHpdur+Ccm2Mdg30VVAbVHLjg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z9FnDBrLQxnVZ8j0S6dXWmgDdhzRapTlDLeZphuGquMG48Y0ehHhp+zTZ1t5KXHbE
-	 txcGrmgh0jjFrb2R7Z4I4+T/u5lzxWz5dX1+SmKtEgYTcAlIG9Z7mJs448ffRsunb/
-	 NKjfdgOv8bmEebgrBMp3h9vh4pR0Pq8RkV/w1GvjFyMBhyadJ/0oXUr1y1nJ50U0ub
-	 aJnzIoOLRuwk0h/lQKZix1kH9a4jtd/PFlGQeCzBFejhXmzM34PXGVkA6w+0UTpxmg
-	 kZW7+JyfWA+DtE0VoLbWXC2bDxthopkWbymWnjEda4G9uauXq3ZbYJQm9H/atPuoWh
-	 K90fOO5tmdSWQ==
-Date: Thu, 6 Nov 2025 10:47:52 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	linux-efi@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] kbuild: Add '-fms-extensions' to areas with dedicated
- CFLAGS
-Message-ID: <20251106174752.GA2440428@ax162>
-References: <20251101-kbuild-ms-extensions-dedicated-cflags-v1-1-38004aba524b@kernel.org>
- <20251105-amnesie-eisig-277559b69bae@brauner>
- <20251105193931.GA2480016@ax162>
+	s=k20201202; t=1762453506;
+	bh=IO6Ln6PxVJkvupdXH1DzGpt9VjwkaVOtfdDxUcDva38=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ZXaCgMPHUTgCLcoPL1VLHH2zvP1kf6yjh44zuxcuMdBkdMCa8WghRBtj5MJrCqXBW
+	 IAQuQnbUD6UdMgzdBvqrQJauNmmEvn+5rD6qJlOiqnUuIA6UVpSlqCrgXmdxrHZXU5
+	 rzXQUw4PzL3fhldQJmoBvY2AfKTfrduZ2a5iWHdzQyr2yQDPzrXgo2+pDTm+nIlaMB
+	 MbF+q2IixPQD/F6Xc+kEip6PmOBHTSF5aa3jTiOutj/RIP/5UkSWpbTqRVO0Xj+evJ
+	 0VvMp/lgE2a3CDnE8Q8Cya8gAglUbWd6Ao4uLa6c7ZUcvo+VVZWdrSQ5HdlpcfSzDy
+	 Oac/hnAuWG2tw==
+Date: Thu, 6 Nov 2025 12:25:05 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: Christian Zigotzky <chzigotzky@xenosoft.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	mad skateman <madskateman@gmail.com>,
+	"R.T.Dickinson" <rtd2@xtra.co.nz>,
+	Christian Zigotzky <info@xenosoft.de>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	"hypexed@yahoo.com.au" <hypexed@yahoo.com.au>,
+	Darren Stevens <darren@stevens-zone.net>,
+	"debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Lukas Wunner <lukas@wunner.de>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	luigi burdo <intermediadc@hotmail.com>, Al <al@datazap.net>,
+	Roland <rol7and@gmx.com>
+Subject: Re: [PPC] Boot problems after the pci-v6.18-changes
+Message-ID: <20251106182505.GA1962607@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,62 +79,42 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251105193931.GA2480016@ax162>
+In-Reply-To: <AS8PR04MB8833068EEAD864886D2C8AA88CC2A@AS8PR04MB8833.eurprd04.prod.outlook.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Nov 05, 2025 at 12:39:31PM -0700, Nathan Chancellor wrote:
-> I was planning to make it stable tomorrow to give folks time to chime in
-> at the beginning of the week. I have your tag and Ard's to add. After
-> that, we will just have to rely on the link to this submission for
-> follow ups.
+On Thu, Nov 06, 2025 at 08:48:16AM +0000, Hongxing Zhu wrote:
+> ...
 
-Alright, this should be the final result. If there are any other Acks
-that come in later, they will just have to be recorded here. If there
-are any follow up fixes needed, I will apply them on top and update the
-tag but the branch will not be rebased.
+> I tested these patches on i.MX95 EVK board with NVME storage device.
+> Because that i.MX95 PCIe RC failed enter into L2 when one NVME
+> device is connected to the port if ASPM L1 is enabled in default.
+> 
+> These patches work as expected, the l0s and l1 can be disabled after
+> adding the following quirk.
+> 
+> "DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_PHILIPS, PCI_ANY_ID,
+> quirk_disable_aspm_l0s_l1_cap);"
 
-Cheers,
-Nathan
+Thanks for trying this out.
 
-The following changes since commit 3a8660878839faadb4f1a6dd72c3179c1df56787:
+So if I understand correctly, the i.MX95 Root Port has
+PCI_VENDOR_ID_PHILIPS, and if ASPM L1 is enabled on its link, the link
+doesn't go to L2 when suspending?  But it *does* go to L2 on suspend
+if L1 is disabled?
 
-  Linux 6.18-rc1 (2025-10-12 13:42:36 -0700)
+I wonder if the issue is with the RC or with the NVMe device.  The
+comments in dw_pcie_suspend_noirq() and qcom_pcie_suspend_noirq() make
+me wonder if there's something weird about NVMe and L2.
 
-are available in the Git repository at:
+I assume you don't want to disable L0s and L1 for *all* devices with
+PCI_VENDOR_ID_PHILIPS though.  Aren't there endpoints with that ID
+that can use L0s and L1?
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git tags/kbuild-ms-extensions-6.19
-
-for you to fetch changes up to 5ff8ad3909524ad55297a434f87c238224825bf4:
-
-  kbuild: Add '-fms-extensions' to areas with dedicated CFLAGS (2025-10-30 21:26:28 -0400)
-
-----------------------------------------------------------------
-Shared branch between Kbuild and other trees for enabling '-fms-extensions' for 6.19
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-
-----------------------------------------------------------------
-Nathan Chancellor (2):
-      jfs: Rename _inline to avoid conflict with clang's '-fms-extensions'
-      kbuild: Add '-fms-extensions' to areas with dedicated CFLAGS
-
-Rasmus Villemoes (1):
-      Kbuild: enable -fms-extensions
-
- Makefile                              | 3 +++
- arch/arm64/kernel/vdso32/Makefile     | 3 ++-
- arch/loongarch/vdso/Makefile          | 2 +-
- arch/parisc/boot/compressed/Makefile  | 2 +-
- arch/powerpc/boot/Makefile            | 3 ++-
- arch/s390/Makefile                    | 3 ++-
- arch/s390/purgatory/Makefile          | 3 ++-
- arch/x86/Makefile                     | 4 +++-
- arch/x86/boot/compressed/Makefile     | 7 +++++--
- drivers/firmware/efi/libstub/Makefile | 4 ++--
- fs/jfs/jfs_incore.h                   | 6 +++---
- scripts/Makefile.extrawarn            | 4 +++-
- 12 files changed, 29 insertions(+), 15 deletions(-)
+And I suppose the best thing would be if we could enable L0s and L1,
+but turn them off before suspending?  That would require something
+different, like something in imx_pcie_suspend_noirq() or a
+DECLARE_PCI_FIXUP_SUSPEND() quirk.
 
