@@ -1,81 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-13833-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13834-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9FCC39738
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 08:50:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A6BC3981F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 09:06:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2DrD6zJMz2yrq;
-	Thu,  6 Nov 2025 18:50:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2FBl27v3z3btw;
+	Thu,  6 Nov 2025 19:06:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=130.133.4.66
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762415420;
-	cv=none; b=TDsNW+l8xrKgovTONh84dkK9ayTnhbt6EvhGvUON9HsK/JNSuJvWFt3j4XFFTo+0A4SSAyG1B2XTGGA0KqXLDw/VbInxV6rdg2nlxspYQNteD+S7trK+iDzW3bp1cdZoSFYU/+l8q4zZuHynXFzm4P9qVcwD4yU9eP3XIAMRqMqaY6+BXcGitZGSaQRRS0hct6VVleIfJ6l4UHuWa+lrxvW92xq/s1wR91GOaH8DaIGBTo2D+wKXb+vm9cNLYXFPH8dpWmK+rsV4MKCFgUXJaiJovaRZWrKza9Q9IhvIqYSUfEY1Uel04KmMrQddoB+qJjpFEpuwMB2biVJkfw3T7Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762416383;
+	cv=none; b=Hekn4esuHV06Aj6TbkUKhEvESc9iPubJcm57pA9Zqpe6xCwdAFMQPaAscFmo4mN9yIEcXycEDAQJI8hAGBms+qGZoXoh33yFJAH1Ei1Q3Qw3v2KsMjV6p0mwAs0je8TBPugPMvSqYhFZyJJO7HAIjkMrgb+TQERS1GN4ieS61kGRWN5ZRPJAmhYLPzzq1S29a7oEyVuLdCvqlV/9K66Eyxjomzsgv/uRv2ebqP5SO8yRjy5LoqNcQGDMGJM4KPRjGyOuP554XN793qxMFXb7k5tS701keweq/xTQ6dUgARma8GEgEjyHRYz948fXtEM2UyXzoVuW8dbCLGUFX2V0AQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762415420; c=relaxed/relaxed;
-	bh=7Daal1mpDnwksHTBXhovLycDkyASp1letXDnqfk8zx0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RHUB09tHxOv1d09LqqI3vi+J6n76oI8cjQ5tS7HCoeim42a/bjSPIwqXySPHW6JG7tov4Ifmjlu+wzxziPMtdPI0bW8uCBjEyM4WjLwg4rqoXspW+7+emZWbVtefj9S1Ek5BAsACUQG/xnYzoStd1+dOmxMYFzt7QdX82k8AePA/t9i+FE7ce8A+VB/ZSZkzHjeb2tyvntk8vqstb3+TnZkews4r7l8JLYuZS28LzsWhnA7DKLVX6SrdvC4fdhE6uCQNYvSJbCaMdzaHSjmzoSs/T7RP+v1hQs01AzgGDU7+JabywqpaphS1WOBMuqy9AVBqgaBWGeUsz+v9nzyS3Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=oGtJR8jt; dkim-atps=neutral; spf=pass (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org) smtp.mailfrom=zedat.fu-berlin.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+	t=1762416383; c=relaxed/relaxed;
+	bh=GcPVE+Bt0+691uanTzZ6AQR9EtD6ext5gTgu22ByQss=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=QL0yugrFRBeFYyZUnzdxEjaJp092OfJZc9i7Tg/Ik884pB6HHOZ8VWsS4MQG/QZOOI+tcR9D0e7XVhtv0WpnY/mhCWMsV4OQwC9VMQaTJprlooJshanwkNn7NIXuVgXWRIHhN/EgCuLKE9pdEghwQUAJa5Md/vIOrbPXWsFPszQMOsVtvinR87qSeDDZn3suTwt3GgKSllv9Gd1BcV1bBnYYHnE7wbbmwIajCtT2psT4KCesJhPRgKNEewtyKXkXtlBDiJXvOt9YI21j8avjoRSTuoUS/Pv3MKND4Wa6UoDOoxBhVvWwJ836hrRCodp2LqQShtExZfN0ld5RIMxQnw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=le4SFKMY; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=oGtJR8jt;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=le4SFKMY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2Dr72HW1z2xdg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 18:50:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=7Daal1mpDnwksHTBXhovLycDkyASp1letXDnqfk8zx0=; t=1762415415;
-	x=1763020215; b=oGtJR8jtwW4dOgZqd6glaxHar3B0WRikL8zY+38H6nf/4QSZxJ61ylXStUSyB
-	Nn1MfF1Qmn0WXFxTwFvbC536pu3NYE7ZZNk9jSSyzP4gaeV+kwc3lK1EVLEF5lDFdYFsyBh/We1IP
-	y8Sl+zhXZCizPWsaSt+gLArmfv2jpktruSDGf1cAn/ZddTDk9o7+4VrsW+24R0GCMftKddlIxC6op
-	OsUAuFzOdjFsw/vXHHRcbYp7GnR9oygMZIQv2cXbqCBYKrqUwi9IiAp2ND9fs9Ra+QgGL6NFWRwpE
-	YTK/2OgUxp/m13gUWVN3uwrRhdo8TdAOBce887pl2ndLeZSmHA==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1vGukh-00000003Msv-3VoG; Thu, 06 Nov 2025 08:49:51 +0100
-Received: from dynamic-077-183-232-018.77.183.pool.telefonica.de ([77.183.232.18] helo=[192.168.178.50])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1vGukh-00000003VWh-2Pwo; Thu, 06 Nov 2025 08:49:51 +0100
-Message-ID: <8fcc0fd4b74f99d5c4d80d3907e7607a7d4c89da.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH 02/24] sparc/PCI: Remove pcibios_enable_device() as they
- do nothing extra
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Andreas Larsson <andreas@gaisler.com>, Bjorn Helgaas <bhelgaas@google.com>,
- "David S. Miller" <davem@davemloft.net>,  Geert Uytterhoeven
- <geert@linux-m68k.org>, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, 	linux-pci@vger.kernel.org,
- sparclinux@vger.kernel.org, Thomas Bogendoerfer	
- <tsbogend@alpha.franken.de>, Christian =?ISO-8859-1?Q?K=F6nig?=	
- <christian.koenig@amd.com>, Yinghai Lu <yinghai@kernel.org>, Igor Mammedov	
- <imammedo@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Jonathan
- Cameron <Jonathan.Cameron@huawei.com>, Lorenzo Pieralisi
- <lorenzo.pieralisi@arm.com>,  Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=	
- <kw@linux.com>, linux-kernel@vger.kernel.org
-Cc: =?UTF-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>, 
-	linuxppc-dev@lists.ozlabs.org
-Date: Thu, 06 Nov 2025 08:49:50 +0100
-In-Reply-To: <20250822145605.18172-3-ilpo.jarvinen@linux.intel.com>
-References: <20250822145605.18172-1-ilpo.jarvinen@linux.intel.com>
-	 <20250822145605.18172-3-ilpo.jarvinen@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2FBj5Mf1z2xdg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 19:06:21 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A60a2XZ029885;
+	Thu, 6 Nov 2025 08:06:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=GcPVE+
+	Bt0+691uanTzZ6AQR9EtD6ext5gTgu22ByQss=; b=le4SFKMYUHe6bZ4xlQIWBV
+	GoQctNNUEBo/5wfoQ5fLrVWSqdwjKXbtdc7PhKxHc0ODtYE2Zx1uADCbmCku9had
+	Httn+m08SVwXafg8Y83cQuryNT/br+KsdNtiKReb0WRRJDt54oYtLtyfe8Sj01mc
+	9n5ApVUEsheA4rYEayj5KpMEaRIgX6fzN0IMzuHzEbmSa14ItiXNg72SOHVM/FTg
+	4nyfSgghIRlRfXs18wHxWCoBoYS0qYXjeyOhF6wwMpLI99Ol3g2S+GY/IVQQUqDH
+	L9qp8RxJv/mSRxIpVpGbKfWtFvTQ9rJHw7uVyC+ADQp+Nbo+Fgy3hmSITbUwajRA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a57mrd9bd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 08:06:16 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A67lGCL009855;
+	Thu, 6 Nov 2025 08:06:16 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a5x1kmapm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 08:06:16 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A686Ele31261202
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Nov 2025 08:06:14 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 85A7D58056;
+	Thu,  6 Nov 2025 08:06:14 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 990DD58052;
+	Thu,  6 Nov 2025 08:06:12 +0000 (GMT)
+Received: from [9.98.109.80] (unknown [9.98.109.80])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Nov 2025 08:06:12 +0000 (GMT)
+Message-ID: <55249262-e8aa-40a7-8784-1c883d0b0c30@linux.ibm.com>
+Date: Thu, 6 Nov 2025 13:36:11 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,158 +79,152 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 77.183.232.18
-X-ZEDAT-Hint: PO
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [mainline] Kernel OOPs while running powerpc/mce/ selftest
+Content-Language: en-GB
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Ganesh Goudar <ganeshgr@linux.ibm.com>,
+        Nathan Lynch <nathanl@linux.ibm.com>
+References: <4b107285-57d7-482d-9fdf-8499e5fdbebb@linux.ibm.com>
+ <18dd8200-6a8c-449e-9fb8-56874342defb@csgroup.eu>
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <18dd8200-6a8c-449e-9fb8-56874342defb@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: VNI9_mDa694wphE-RXidgrZv-Shg1cmI
+X-Authority-Analysis: v=2.4 cv=MKhtWcZl c=1 sm=1 tr=0 ts=690c56f9 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=FSTmDItLWoQog4XJFnAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: VNI9_mDa694wphE-RXidgrZv-Shg1cmI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAwMSBTYWx0ZWRfXyMLkV1cliQGd
+ kKY9gV8OrwL8vVuxCSE472awj694wkzSELIoZtvo/OA5/VQpwbldyt82jZd2e1qoQRfnQORJRC6
+ qKGqe712rB8rOu8ASnLMB62imDpIZD3Ec9ID8ActZW0/qhm01Hd1Z+B2Kg++89i6n1wgNZQkNL+
+ 1NsXmYP7yj95/WuAaATAxLQx5FsoMPdH7SkU34kRT+eROBVPVrSDnjQLrAEvrNRyc+zVfJqhzFJ
+ CtRxHZ7fiH+uYsJ4v+bgu69lS0JANqEiAxri9PGpOZ7DO/EX+rVhhquVa3Z+MKj8MGRVZV9Kd+P
+ yj/Y8mIkNtuU6LNHZL7LlKlBxlF7qrVEUGjuVTbnUY2uKneVimp/QWRAR7Noyu+CTZFP5E0/D12
+ jLIM2GOP40NJ3pKCevI5VHkVUYfHzA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-06_01,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 adultscore=0 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010001
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello Ilpo,
 
-On Fri, 2025-08-22 at 17:55 +0300, Ilpo J=C3=A4rvinen wrote:
-> Under arch/sparc/ there are multiple copies of pcibios_enable_device()
-> but none of those seem to do anything extra beyond what
-> pci_enable_resources() is supposed to do. These functions could lead to
-> inconsistencies in behavior, especially now as pci_enable_resources()
-> and the bridge window resource flags behavior are going to be altered
-> by upcoming changes.
->=20
-> Remove all pcibios_enable_device() from arch/sparc/ so that PCI core
-> can simply call into pci_enable_resources() instead using it's __weak
-> version of pcibios_enable_device().
->=20
-> Signed-off-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-> ---
->  arch/sparc/kernel/leon_pci.c | 27 ---------------------------
->  arch/sparc/kernel/pci.c      | 27 ---------------------------
->  arch/sparc/kernel/pcic.c     | 27 ---------------------------
->  3 files changed, 81 deletions(-)
->=20
-> diff --git a/arch/sparc/kernel/leon_pci.c b/arch/sparc/kernel/leon_pci.c
-> index 8de6646e9ce8..10934dfa987a 100644
-> --- a/arch/sparc/kernel/leon_pci.c
-> +++ b/arch/sparc/kernel/leon_pci.c
-> @@ -60,30 +60,3 @@ void leon_pci_init(struct platform_device *ofdev, stru=
-ct leon_pci_info *info)
->  	pci_assign_unassigned_resources();
->  	pci_bus_add_devices(root_bus);
->  }
-> -
-> -int pcibios_enable_device(struct pci_dev *dev, int mask)
-> -{
-> -	struct resource *res;
-> -	u16 cmd, oldcmd;
-> -	int i;
-> -
-> -	pci_read_config_word(dev, PCI_COMMAND, &cmd);
-> -	oldcmd =3D cmd;
-> -
-> -	pci_dev_for_each_resource(dev, res, i) {
-> -		/* Only set up the requested stuff */
-> -		if (!(mask & (1<<i)))
-> -			continue;
-> -
-> -		if (res->flags & IORESOURCE_IO)
-> -			cmd |=3D PCI_COMMAND_IO;
-> -		if (res->flags & IORESOURCE_MEM)
-> -			cmd |=3D PCI_COMMAND_MEMORY;
-> -	}
-> -
-> -	if (cmd !=3D oldcmd) {
-> -		pci_info(dev, "enabling device (%04x -> %04x)\n", oldcmd, cmd);
-> -		pci_write_config_word(dev, PCI_COMMAND, cmd);
-> -	}
-> -	return 0;
-> -}
-> diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
-> index ddac216a2aff..a9448088e762 100644
-> --- a/arch/sparc/kernel/pci.c
-> +++ b/arch/sparc/kernel/pci.c
-> @@ -722,33 +722,6 @@ struct pci_bus *pci_scan_one_pbm(struct pci_pbm_info=
- *pbm,
->  	return bus;
->  }
-> =20
-> -int pcibios_enable_device(struct pci_dev *dev, int mask)
-> -{
-> -	struct resource *res;
-> -	u16 cmd, oldcmd;
-> -	int i;
-> -
-> -	pci_read_config_word(dev, PCI_COMMAND, &cmd);
-> -	oldcmd =3D cmd;
-> -
-> -	pci_dev_for_each_resource(dev, res, i) {
-> -		/* Only set up the requested stuff */
-> -		if (!(mask & (1<<i)))
-> -			continue;
-> -
-> -		if (res->flags & IORESOURCE_IO)
-> -			cmd |=3D PCI_COMMAND_IO;
-> -		if (res->flags & IORESOURCE_MEM)
-> -			cmd |=3D PCI_COMMAND_MEMORY;
-> -	}
-> -
-> -	if (cmd !=3D oldcmd) {
-> -		pci_info(dev, "enabling device (%04x -> %04x)\n", oldcmd, cmd);
-> -		pci_write_config_word(dev, PCI_COMMAND, cmd);
-> -	}
-> -	return 0;
-> -}
-> -
->  /* Platform support for /proc/bus/pci/X/Y mmap()s. */
->  int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *=
-vma)
->  {
-> diff --git a/arch/sparc/kernel/pcic.c b/arch/sparc/kernel/pcic.c
-> index 25fe0a061732..3d54ad5656a4 100644
-> --- a/arch/sparc/kernel/pcic.c
-> +++ b/arch/sparc/kernel/pcic.c
-> @@ -641,33 +641,6 @@ void pcibios_fixup_bus(struct pci_bus *bus)
->  	}
->  }
-> =20
-> -int pcibios_enable_device(struct pci_dev *dev, int mask)
-> -{
-> -	struct resource *res;
-> -	u16 cmd, oldcmd;
-> -	int i;
-> -
-> -	pci_read_config_word(dev, PCI_COMMAND, &cmd);
-> -	oldcmd =3D cmd;
-> -
-> -	pci_dev_for_each_resource(dev, res, i) {
-> -		/* Only set up the requested stuff */
-> -		if (!(mask & (1<<i)))
-> -			continue;
-> -
-> -		if (res->flags & IORESOURCE_IO)
-> -			cmd |=3D PCI_COMMAND_IO;
-> -		if (res->flags & IORESOURCE_MEM)
-> -			cmd |=3D PCI_COMMAND_MEMORY;
-> -	}
-> -
-> -	if (cmd !=3D oldcmd) {
-> -		pci_info(dev, "enabling device (%04x -> %04x)\n", oldcmd, cmd);
-> -		pci_write_config_word(dev, PCI_COMMAND, cmd);
-> -	}
-> -	return 0;
-> -}
-> -
->  /* Makes compiler happy */
->  static volatile int pcic_timer_dummy;
+On 05/11/25 7:15 pm, Christophe Leroy wrote:
+>
+>
+> Le 23/10/2025 à 06:54, Venkat Rao Bagalkote a écrit :
+>> Greetings!!!
+>>
+>>
+>> IBM CI has reported a kernel crash while running mce selftests on 
+>> mainline kernel, from tools/testing/selftests/powerpc/mce/.
+>>
+>>
+>> This issue is hit when CONFIG_KASAN is enabled. If its disabled, test 
+>> passes.
+>>
+>>
+>> Traces:
+>>
+>>
+>> [ 8041.225432] BUG: Unable to handle kernel data access on read at 
+>> 0xc00e0001a1ad6103
+>> [ 8041.225453] Faulting instruction address: 0xc0000000008c54d8
+>> [ 8041.225461] Oops: Kernel access of bad area, sig: 11 [#1]
+>> [ 8041.225467] LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=8192 NUMA pSeries
+>> [ 8041.225475] Modules linked in: nft_fib_inet nft_fib_ipv4 
+>> nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 
+>> nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack bonding tls 
+>> nf_defrag_ipv6 nf_defrag_ipv4 rfkill ip_set nf_tables nfnetlink 
+>> pseries_rng vmx_crypto dax_pmem fuse ext4 crc16 mbcache jbd2 nd_pmem 
+>> papr_scm sd_mod libnvdimm sg ibmvscsi ibmveth scsi_transport_srp 
+>> pseries_wdt
+>> [ 8041.225558] CPU: 17 UID: 0 PID: 877869 Comm: inject-ra-err Kdump: 
+>> loaded Not tainted 6.18.0-rc2+ #1 VOLUNTARY
+>> [ 8041.225569] Hardware name: IBM,9080-HEX Power11 (architected) 
+>> 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+>> [ 8041.225576] NIP:  c0000000008c54d8 LR: c00000000004e464 CTR: 
+>> 0000000000000000
+>> [ 8041.225583] REGS: c0000000fff778d0 TRAP: 0300   Not tainted 
+>> (6.18.0- rc2+)
+>> [ 8041.225590] MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 48002828  
+>> XER: 00000000
+>> [ 8041.225607] CFAR: c00000000004e460 DAR: c00e0001a1ad6103 DSISR: 
+>> 40000000 IRQMASK: 3
+>> [ 8041.225607] GPR00: c0000000019d0598 c0000000fff77b70 
+>> c00000000244a400 c000000d0d6b0818
+>> [ 8041.225607] GPR04: 0000000000004d43 0000000000000008 
+>> c00000000004e464 004d424900000000
+>> [ 8041.225607] GPR08: 0000000000000001 18000001a1ad6103 
+>> a80e000000000000 0000000003000048
+>> [ 8041.225607] GPR12: 0000000000000000 c000000d0ddf3300 
+>> 0000000000000000 0000000000000000
+>> [ 8041.225607] GPR16: 0000000000000000 0000000000000000 
+>> 0000000000000000 0000000000000000
+>> [ 8041.225607] GPR20: 0000000000000000 0000000000000000 
+>> 0000000000000000 0000000000000000
+>> [ 8041.225607] GPR24: 0000000000000000 0000000000000000 
+>> 0000000000000000 0000000000000000
+>> [ 8041.225607] GPR28: c000000d0d6b0888 c000000d0d6b0800 
+>> 0000000000004d43 c000000d0d6b0818
+>> [ 8041.225701] NIP [c0000000008c54d8] __asan_load2+0x54/0xd8
+>> [ 8041.225712] LR [c00000000004e464] pseries_errorlog_id+0x20/0x3c
+>> [ 8041.225722] Call Trace:
+>> [ 8041.225726] [c0000000fff77b90] [c0000000001f8748] 
+>> fwnmi_get_errinfo+0xd4/0x104
+>> [ 8041.225738] [c0000000fff77bc0] [c0000000019d0598] 
+>> get_pseries_errorlog+0xa8/0x110
+>> [ 8041.225750] [c0000000fff77c00] [c0000000001f8f68] 
+>> pseries_machine_check_realmode+0x11c/0x214
+>> [ 8041.225762] [c0000000fff77ce0] [c000000000049ca4] 
+>> machine_check_early+0x74/0xc0
+>> [ 8041.225771] [c0000000fff77d30] [c0000000000084a4] 
+>> machine_check_early_common+0x1b4/0x2c0
+>
+> Is it a new problem or has it always been there ?
 
-This change actually broke driver initialization on SPARC, see:
 
-https://github.com/sparclinux/issues/issues/22
+Its not a new problem. I have enabled KASAN recently in the config, and 
+then I started seeing this issue.
 
-Adrian
+I have tested on 6.17, 6.16 and 6.15 kernels and issues is there all along.
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
+Regards,
+
+Venkat.
+
+>
+> The problem is because KASAN is not compatible with realmode (MMU 
+> translation is OFF).
+>
+> pseries_machine_check_realmode() is located in 
+> arch/powerpc/platforms/pseries/ras.c built with KASAN_SANITIZE_ras.o := n
+>
+> But pseries_machine_check_realmode() calls mce_handle_error() which 
+> calls get_pseries_errorlog().
+>
+> get_pseries_errorlog() is in arch/powerpc/kernel/rtas.c which is _not_ 
+> built with KASAN_SANITIZE disabled hence the Oops.
+>
+> Unrelated, but it looks like there is also a problem with commit 
+> cc15ff327569 ("powerpc/mce: Avoid using irq_work_queue() in 
+> realmode"), which removed the re-enabling of translation but left the 
+> call to mce_handle_err_virtmode().
+>
+> Christophe
+>
 
