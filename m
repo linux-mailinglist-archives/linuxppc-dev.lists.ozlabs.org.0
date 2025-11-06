@@ -1,72 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-13899-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13901-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F040C3D159
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 19:37:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48C5C3D385
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 20:20:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2WBJ3cWnz3c8W;
-	Fri,  7 Nov 2025 05:36:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2X8p59ddz3c1T;
+	Fri,  7 Nov 2025 06:20:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762454216;
-	cv=none; b=eFGioSJ15J5s8fa49OKyltty/iuQ6GSjvrNTSAnkFRWqz5sgJMvnXQRY4VwEiHTViXw0JJ2ItMPJMJNgIUNRZnYsrbRtf3zueZr+BjZnK9fbxDhQ+TTP0ByLMnOgwlveuBKUj4fkqaK2tFIWC/SAndnsSVz34hfctBhPbKLVaX9535R1bQrIT+dXTbTlZZJz2Xngbgx8oE8ADHTlaP4NQUcHDSSYgaLUWhGwodeBTxVALXTSZIe7ICDs1IO3x3OswReKhviwqwrS/dAHrM92c48IBAuxvNLxJ1Kv3OdOsC5UWu4PSCBO3ve4+HOOTTZfMlSwFhGUb0aXb9IFccedVQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762456842;
+	cv=none; b=eAIirpW2h1fkvIWFFBpl59T1zTKEcwS+f3V5EjRAbQA/r3ek8UWZUzjn2apcSjxGOwUX1T3Yjw+xWXtgVPC+NIXdz1YSskRBaY7CeawEMkVDDM4SVseS+0B6dtbfLDXOBhFqipjy8yqRFKzHOzbJGo1FmZtfHYl1ILONCsQEN/BEGVDR+Co1PVnKn+bPPKUZJvrR6dTJwFWbIEXzBQk7fbFmZLqL8qGO1twE7AHfLjHCFfYX39XIdTsUKThqi2JWFVVU2s6f37tw2uRvhNk5lB+V/sn7gRu+PTYGlFkoVS9fnCQspfpRhULkfkYFLEYDBuih88p9CyXTgl7n4A+3bg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762454216; c=relaxed/relaxed;
-	bh=xTkOlpA3q7ykHOJbjoRZAPSBFGBd1i7KSj9RcROqJNw=;
+	t=1762456842; c=relaxed/relaxed;
+	bh=fb/jf9XpEZHzpFOZsyVpWj6fs62Tl+Oi8BgvpPUct6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5W43fmS0NDrEWpOc66F9Yxv7HOFgLXqZQWohc7QecF4dYzQgGEURMSiuz6wygtzSDPoMZbzkvyuiADupb1vC8V0Ejq/e3tyEQJh7+pQX5vFuwcVeG9Rlf4IEA985YL9TymACX0dlKXBFEr66Cfe8e9jxLFXVHQzuDivSCQroCR2QkHCVJs9l8AyjYO+y9BIBNDeDDTs8FhNJcQjqnbTIsGsV+ObZh/1GtjCa/nGjz9+sU2wV1ZUzBx/8XrQd1/io2gGhXyMb3rC3if8sus3su+hAaYM1vnttAmYkRr1jzdv5guUmN+0KGr9agJxiaAjyKftMrG0VrUBtJ95ZxY3ww==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rO3Eqy1A; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rO3Eqy1A;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2WBH3hJKz3bt7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 05:36:55 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 94AD6618E4;
-	Thu,  6 Nov 2025 18:36:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4714FC4CEF7;
-	Thu,  6 Nov 2025 18:36:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762454213;
-	bh=WZNwtxVV2uegNUg0XelyPK7YX+WuqMbWLKaUnuqlRTU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rO3Eqy1A5ms4ZtKiqqFF/KKhlZiVemD/ehVK4HQrTdhA0IzDdc+cAYp88fW/XmBLB
-	 qp4PB5+MEOdUSp12T5bQ9tMiGbTJ6gp5IZI9NuTWF0Zy0dd7B6BaGmCXSI3a6jIbwd
-	 MsqSlwEVnS3uFqKEU1qkScx9kRyWwILAgpKKBePTiqd2SKU89MfPLlaN+d/Bt1pYqy
-	 M/ItazlaE/y7tEar6lx6WawE6Eimz9CfmE+9Bd0kTKG8zVhYyZxi2q2i6ZSlHxl8uF
-	 4qAPsRBP/5GZiRTVxABF05VhdqDFtMtP1n6Pnm9igpi06GEeAevhoMWtaQi0UCsC1V
-	 qsKWM/V5adPJg==
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: linux-pci@vger.kernel.org
-Cc: Christian Zigotzky <chzigotzky@xenosoft.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	mad skateman <madskateman@gmail.com>,
-	"R . T . Dickinson" <rtd2@xtra.co.nz>,
-	Darren Stevens <darren@stevens-zone.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Lukas Wunner <lukas@wunner.de>,
-	luigi burdo <intermediadc@hotmail.com>,
-	Al <al@datazap.net>,
-	Roland <rol7and@gmx.com>,
-	Hongxing Zhu <hongxing.zhu@nxp.com>,
-	hypexed@yahoo.com.au,
-	linuxppc-dev@lists.ozlabs.org,
-	debian-powerpc@lists.debian.org,
+	 MIME-Version; b=GRwGO20aAkBmkFYHGJzOrqF7OXw6wEUznP2mFXZEHxPvUK/z7Z1o+Gi2PhqlMmL9OSJCBLjlM91QAmGju0jmv/hwdmxxyBD3vOlSc/std83uNNKlH8bQsXAVDrPxA94WAsfLxp5bAxsNz8vuVb9MbAJY+HF6U2AwXrfwUTZ8T8wu/OOPRP95u8ZxJy2BGpNV75mqhfvVE3QAdHQ0rTmi3NysAaiaD+pFrq9gyx8ffKo4ycnMLPIE3QTd4BR/JwsrY51vVYBX3eDAOjX4m9K8n7NLjLAK3PJgXMH3TX/lxlfBicQrGQFUOkiJLAyQy29rhxKncOvfDo8ZGtuPLg2Qmw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2X8p153nz3bvd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 06:20:42 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d2KmF1dFkz9sS8;
+	Thu,  6 Nov 2025 12:32:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 343GnQeFijfY; Thu,  6 Nov 2025 12:32:13 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d2KmF0qPPz9sRy;
+	Thu,  6 Nov 2025 12:32:13 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 03FE98B773;
+	Thu,  6 Nov 2025 12:32:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 5UWr0kMelD5U; Thu,  6 Nov 2025 12:32:12 +0100 (CET)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3723C8B77B;
+	Thu,  6 Nov 2025 12:32:12 +0100 (CET)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Darren Hart <dvhart@infradead.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"Andre Almeida" <andrealmeid@igalia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 2/2] PCI/ASPM: Avoid L0s and L1 on Freescale Root Ports
-Date: Thu,  6 Nov 2025 12:36:39 -0600
-Message-ID: <20251106183643.1963801-3-helgaas@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251106183643.1963801-1-helgaas@kernel.org>
-References: <20251106183643.1963801-1-helgaas@kernel.org>
+	netdev@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4 01/10] iter: Avoid barrier_nospec() in copy_from_user_iter()
+Date: Thu,  6 Nov 2025 12:31:19 +0100
+Message-ID: <1c3b7384c5231dff292a3d447e0bfafa61015d64.1762427933.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1762427933.git.christophe.leroy@csgroup.eu>
+References: <cover.1762427933.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,51 +90,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1326; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=CInTZPEi9ILbXu4UpfN2lm4dHyQfqcOZ4rC45zzBAr0=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWTytGvuVHhy9KbbDsPkpU2r9d8dfDpFfuKFsmQW9hDDq 7e3FvL/6ShlYRDjYpAVU2Q5/p9714yuL6n5U3fpw8xhZQIZwsDFKQATmZ3D8L9C6W/6lK8J3p37 lbyv2GhNrn45dU+58XqlPZUHVdpNs8UY/tmG9ys7NYupMV914dmx7f0fh8UnP02okW3kXffjuZD ZP0YA
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+Following patch will add missing barrier_nospec() to
+copy_from_user_iter().
 
-Christian reported that f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and
-ASPM states for devicetree platforms") broke booting on the A-EON X5000.
+Avoid it for architectures supporting masked user
+accesses, the same way as done for copy_from_user() by
+commit 0fc810ae3ae1 ("x86/uaccess: Avoid barrier_nospec()
+in 64-bit copy_from_user()")
 
-Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
-Fixes: df5192d9bb0e ("PCI/ASPM: Enable only L0s and L1 for devicetree platforms"
-)
-Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-Link: https://lore.kernel.org/r/db5c95a1-cf3e-46f9-8045-a1b04908051a@xenosoft.de
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/pci/quirks.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+v2: New in v2
+---
+ lib/iov_iter.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 214ed060ca1b..44e780718953 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -2525,6 +2525,18 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
-  */
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index 2fe66a6b8789e..a589935bf3025 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -49,12 +49,16 @@ size_t copy_from_user_iter(void __user *iter_from, size_t progress,
  
-+/*
-+ * Remove ASPM L0s and L1 support from cached copy of Link Capabilities so
-+ * aspm.c won't try to enable them.
-+ */
-+static void quirk_disable_aspm_l0s_l1_cap(struct pci_dev *dev)
-+{
-+	dev->lnkcap &= ~PCI_EXP_LNKCAP_ASPM_L0S;
-+	dev->lnkcap &= ~PCI_EXP_LNKCAP_ASPM_L1;
-+	pci_info(dev, "ASPM: L0s L1 removed from Link Capabilities to work around device defect\n");
-+}
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_FREESCALE, 0x0451, quirk_disable_aspm_l0s_l1_cap);
+ 	if (should_fail_usercopy())
+ 		return len;
+-	if (access_ok(iter_from, len)) {
+-		to += progress;
+-		instrument_copy_from_user_before(to, iter_from, len);
+-		res = raw_copy_from_user(to, iter_from, len);
+-		instrument_copy_from_user_after(to, iter_from, len, res);
+-	}
++	if (can_do_masked_user_access())
++		iter_from = mask_user_address(iter_from);
++	else if (!access_ok(iter_from, len))
++		return res;
 +
- /*
-  * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
-  * Link bit cleared after starting the link retrain process to allow this
++	to += progress;
++	instrument_copy_from_user_before(to, iter_from, len);
++	res = raw_copy_from_user(to, iter_from, len);
++	instrument_copy_from_user_after(to, iter_from, len, res);
++
+ 	return res;
+ }
+ 
 -- 
-2.43.0
+2.49.0
 
 
