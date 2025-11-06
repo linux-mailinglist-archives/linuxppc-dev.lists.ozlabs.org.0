@@ -1,34 +1,34 @@
-Return-Path: <linuxppc-dev+bounces-13867-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13868-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF69C3A0E9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 11:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA0EC3A0F5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 11:07:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2Hmv1yddz3fMd;
-	Thu,  6 Nov 2025 21:02:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2Hmw1tBDz3fQq;
+	Thu,  6 Nov 2025 21:02:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762423359;
-	cv=none; b=ibpprhflZLcj0SQ3ZInfHIYOpA/biyqE2SMqcL6+/COZu8SJ8jbKRXvk2nFdMhNRzVoX++epOJrFQ6rJRU0xIVR6Q39c1cBF1x/vIQO/l4oMSp2QkelsfPgTmK9EH/PSytWRBm5zArEuFqcovaRH/BpyQ5QG4aLc0LvU34dDWLYHCB0ahi/0CWI2GFmmuQj3LOw8BPcOleIz6uetibGZH82rcm8zjxptTCjVzEainFBL06clcNXQEbbC4qctzlHXCAOH7uKUrzQRkNOIHgoReg5pLz2jKXb8wENEsLfuCKkVgoNRI6/YmA9wBLJi8Wzy3z28d1L4kk0+EJbNeT4C5g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762423360;
+	cv=none; b=Ji5854Fm5lZGIAPyAR1PQtovSlWCRkbnMzicXg2SHNFa6+rLb0qf+i1DIHGvLgtP8cocb9QsAl2gTvU3LBKu8zchZAP6l5pOczslkGjAHpc8UoQw8hG4zB8H8C1y9IOTf9+yf0eLIvj0KfTR5oew7+GdfAaQAodYK+6NzZyGu6RB2xlRHsuzK/sk6upqklX3OlI8itXIn5OElbWq4yfCFHWM/eiLnNym5j/ket13kRVLfuzEYihQucSg71l3qh1R8SpWs/ObFZpMVNr1LIitZ+pBgxlv26GY+yZPSQ8Xwd4k9hIj1szLMJGMzHaxpfUbT2fLEIHhJjzJyYfh4WLbww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762423359; c=relaxed/relaxed;
-	bh=W2Ul6+VkoAGtk+fbsWo8FnOHy/g1Ec+KdWjD8933yrE=;
+	t=1762423360; c=relaxed/relaxed;
+	bh=v0BySyb43wBJ5y5cuP5lO0V/BYHsArDn7KOGMPsnnl4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BKrFilKWYTSFlTxk4DAJcH9x4vryaatpBVyNJU+bqKaurOqHCgb4CDPEbSBJWU7WsCFd9xm5XeRbN6/qwv1kHFbMI8PIw9odo9aW/55rApewxnV8cElYIiSWmcWu+dgqQDyy1UbwJBOBlWrIOkRWeZe0tCYXlAPuZVeipikOE+g3izrzneEeBvaVw4pyJbNbT7+i2DydzGXwb5Kd/VQt4HB4VMtQ2aZeZCaTP/M1ZiHNpeRIX4h3tI4BC2hr/3pQ3q3s1718trqvXM+lpm0Nj5hfPE0icXUbFZtEaDi3IQglLTNgjMzId1rppeF0znTBeMmWoDQbQEuhRMlYowjaZw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zzn8GNtx; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Sc2KMZXG; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=keD7BOsPRwnfScPAop3qOoPjmLyAi2yuAyeRO7NsL4W9nh+nav08NUyahtam2YC2uo9KQuG+phCP/6ohF9g0cKZbzbxyH5sRLgDbatZ4NH9jRpDI35W78+vDoxJ416psAeVN3yqFcIFLLaZmyXTC6+7pGfruB/Jafumsk4rGR50d6Ap6Z+N2r0WE9TUbbH/6tfbayX2e0U6CleV39mE/j04ByVJ71pvlKai52TrpfPBPCQh8hzREImAJ4yFKCcQXlEBPOLsPhE5YiwKuGdfXWnvsSXcidbeo66FiwwikshbofBKRHT2rriW6ftvR8exexaGhYDPyg7t1RPD+P18Tfg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=W2avoLV5; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=z51/jrwc; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zzn8GNtx;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Sc2KMZXG;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=W2avoLV5;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=z51/jrwc;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4d2Hmt427Lz3fNc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 21:02:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4d2Hmv4PJQz3fQX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 21:02:39 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1762423350;
@@ -36,23 +36,23 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=W2Ul6+VkoAGtk+fbsWo8FnOHy/g1Ec+KdWjD8933yrE=;
-	b=zzn8GNtxXQFoEaa+oOM4Hn66k9j4jy8ZoB7IVuciMPbwMSeekysm7Pgrx31hA5SpJcD59F
-	IeUV1idTFmiLR1XBwgWgqsAMn8mLiGV4QseV2EJMxWQiRvjXpOnF2yRKubmxoVvn0x22AI
-	GrQ27+Ro5s1jxynIaILnk1bumKg9F5pEPwO8OaCFfJGk1gLfAHfVK1UGK/81cpBOdtjKtY
-	3un6M5hvZiLdnQ2jJyKAuvDWp+27AZ0SlqNhHBvYSV1jgFarCbQp1gh99Yl9mp3pZY4uSF
-	3z2ANPQ1XKHGfQsXqRK/nabqYEG0GqhzPQeq3xF4jaV7bzTveSBZInNQQM+tTw==
+	bh=v0BySyb43wBJ5y5cuP5lO0V/BYHsArDn7KOGMPsnnl4=;
+	b=W2avoLV5mLheM0n5+VZU/iRACei7ZPJhPyf2ExPvLCJLtOg8cTO5cd6e0BxTXS/WW7pnXc
+	v+578OvHwUliGIDwzoV2b58PoI3jwPTH0haNviB6ZMRYjk6sA81FviYVDJ7GgTgS1kCUD5
+	7MKUqYVYrY1Y7ROD4jHoQqdHRcpUBpW5IovjNC3/00GdWQkPFlykkD2TSpOeSs7yQk/JaE
+	5kwfCYaE4sj2Idc1y9EXljkfa/jAV73NEUH0LTti0CIgRi2Oo1YpvROL50esn4yaVONVsG
+	H17prNqscppvKmPuWRhLtk0D1jl8JC6cK8l1fLwZ5n/4lHZJjav01KyIU1bKqw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1762423350;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=W2Ul6+VkoAGtk+fbsWo8FnOHy/g1Ec+KdWjD8933yrE=;
-	b=Sc2KMZXGMiSsHbm8MYfddzr66E3sO7dpadeOTTva5Wo7ak7n3k94fbb29g9pelz6nJjyOs
-	hPIGLP7DiK7guoCQ==
-Date: Thu, 06 Nov 2025 11:02:25 +0100
-Subject: [PATCH v5 32/34] sparc64: vdso2c: Remove symbol handling
+	bh=v0BySyb43wBJ5y5cuP5lO0V/BYHsArDn7KOGMPsnnl4=;
+	b=z51/jrwcetl2rrEVfIpSaQ//9zH9OlqAQ+nk+QPbvOf633X9qXNJGn2VcFPCn1qgUSp3iQ
+	yGzsmODS6mDoFvDg==
+Date: Thu, 06 Nov 2025 11:02:26 +0100
+Subject: [PATCH v5 33/34] sparc64: vdso: Implement clock_gettime64()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,7 +68,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251106-vdso-sparc64-generic-2-v5-32-97ff2b6542f7@linutronix.de>
+Message-Id: <20251106-vdso-sparc64-generic-2-v5-33-97ff2b6542f7@linutronix.de>
 References: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de>
 In-Reply-To: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de>
 To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
@@ -95,11 +95,11 @@ Cc: linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
  linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762423327; l=3583;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762423327; l=3381;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=rscVeDO1P+cKaXX/Ha1fTrfGby5/x6sbnmbmn2plnQg=;
- b=PULV7avTJJBnwuA28r3mPVOxYpRH9jY8icZE/ATVclSu1a37GckUbIeW+wl+hOeEDrcA6Rzf6
- XHLLxsdHHSgCyPlJsmGp+ChkGkWtlb5UZrqfEYqXuyxVx567j+h/oAR
+ bh=niJ5zV3fOozEUYGk5vpPy390WfaoIhw2fIWLZusJAMg=;
+ b=ok1VbX/B5odLmNfowHwPvvMIhYc5QqeLEYb3A+eNa2NoDF5JfkeWry4J2iGYC3MGA86BfM9to
+ z6uUO5Ty3z4AaZE/5z2FUlLx9vo2RsEX//6dyM6WrpmK1DEsSnwDS8E
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -107,112 +107,96 @@ X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-There are no handled symbols left.
+To be y2038-safe, 32-bit userspace needs to explicitly call the 64-bit safe
+time APIs.
+
+Implement clock_gettime64() in the 32-bit vDSO.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Tested-by: Andreas Larsson <andreas@gaisler.com>
 Reviewed-by: Andreas Larsson <andreas@gaisler.com>
 Acked-by: Andreas Larsson <andreas@gaisler.com>
 ---
- arch/sparc/vdso/vdso2c.c | 10 ----------
- arch/sparc/vdso/vdso2c.h | 41 +----------------------------------------
- 2 files changed, 1 insertion(+), 50 deletions(-)
+ arch/sparc/include/asm/vdso/gettimeofday.h | 20 ++++++++++++++++++--
+ arch/sparc/vdso/vclock_gettime.c           |  8 ++++++++
+ arch/sparc/vdso/vdso32/vdso32.lds.S        |  2 ++
+ 3 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sparc/vdso/vdso2c.c b/arch/sparc/vdso/vdso2c.c
-index 70b14a436fe2297ab446f778ab0d43155c272421..e5c61214a0e285547ac57c9997542546464bde23 100644
---- a/arch/sparc/vdso/vdso2c.c
-+++ b/arch/sparc/vdso/vdso2c.c
-@@ -58,14 +58,6 @@
+diff --git a/arch/sparc/include/asm/vdso/gettimeofday.h b/arch/sparc/include/asm/vdso/gettimeofday.h
+index a35875fba45470ba961a7df3ae52bc17d2a4a4a0..b0c80c8a28bb71e16398ab38904ba826457ac71d 100644
+--- a/arch/sparc/include/asm/vdso/gettimeofday.h
++++ b/arch/sparc/include/asm/vdso/gettimeofday.h
+@@ -101,6 +101,8 @@ static __always_inline u64 __arch_get_hw_counter(s32 clock_mode, const struct vd
+ 	"f48", "f50", "f52", "f54", "f56", "f58", "f60", "f62",		\
+ 	"cc", "memory"
  
- const char *outfilename;
- 
--struct vdso_sym {
--	const char *name;
--	int export;
--};
--
--struct vdso_sym required_syms[] = {
--};
--
- __attribute__((format(printf, 1, 2))) __attribute__((noreturn))
- static void fail(const char *format, ...)
++#ifdef CONFIG_SPARC64
++
+ static __always_inline
+ long clock_gettime_fallback(clockid_t clock, struct __kernel_timespec *ts)
  {
-@@ -105,8 +97,6 @@ static void fail(const char *format, ...)
- #define PUT_BE(x, val)					\
- 	PBE(x, val, 64, PBE(x, val, 32, PBE(x, val, 16, LAST_PBE(x, val))))
- 
--#define NSYMS ARRAY_SIZE(required_syms)
--
- #define BITSFUNC3(name, bits, suffix) name##bits##suffix
- #define BITSFUNC2(name, bits, suffix) BITSFUNC3(name, bits, suffix)
- #define BITSFUNC(name) BITSFUNC2(name, ELF_BITS, )
-diff --git a/arch/sparc/vdso/vdso2c.h b/arch/sparc/vdso/vdso2c.h
-index ba0794659eb5af53b8c86b24f3221a5d0b3f74ab..bad6a0593f4ca293feca201a6343833268ad1cb8 100644
---- a/arch/sparc/vdso/vdso2c.h
-+++ b/arch/sparc/vdso/vdso2c.h
-@@ -17,11 +17,9 @@ static void BITSFUNC(go)(void *raw_addr, size_t raw_len,
- 	unsigned long mapping_size;
- 	int i;
- 	unsigned long j;
--	ELF(Shdr) *symtab_hdr = NULL, *strtab_hdr;
-+	ELF(Shdr) *symtab_hdr = NULL;
- 	ELF(Ehdr) *hdr = (ELF(Ehdr) *)raw_addr;
- 	ELF(Dyn) *dyn = 0, *dyn_end = 0;
--	INT_BITS syms[NSYMS] = {};
--
- 	ELF(Phdr) *pt = (ELF(Phdr) *)(raw_addr + GET_BE(&hdr->e_phoff));
- 
- 	/* Walk the segment table. */
-@@ -72,38 +70,6 @@ static void BITSFUNC(go)(void *raw_addr, size_t raw_len,
- 	if (!symtab_hdr)
- 		fail("no symbol table\n");
- 
--	strtab_hdr = raw_addr + GET_BE(&hdr->e_shoff) +
--		GET_BE(&hdr->e_shentsize) * GET_BE(&symtab_hdr->sh_link);
--
--	/* Walk the symbol table */
--	for (i = 0;
--	     i < GET_BE(&symtab_hdr->sh_size) / GET_BE(&symtab_hdr->sh_entsize);
--	     i++) {
--		int k;
--
--		ELF(Sym) *sym = raw_addr + GET_BE(&symtab_hdr->sh_offset) +
--			GET_BE(&symtab_hdr->sh_entsize) * i;
--		const char *name = raw_addr + GET_BE(&strtab_hdr->sh_offset) +
--			GET_BE(&sym->st_name);
--
--		for (k = 0; k < NSYMS; k++) {
--			if (!strcmp(name, required_syms[k].name)) {
--				if (syms[k]) {
--					fail("duplicate symbol %s\n",
--					     required_syms[k].name);
--				}
--
--				/*
--				 * Careful: we use negative addresses, but
--				 * st_value is unsigned, so we rely
--				 * on syms[k] being a signed type of the
--				 * correct width.
--				 */
--				syms[k] = GET_BE(&sym->st_value);
--			}
--		}
--	}
--
- 	if (!name) {
- 		fwrite(stripped_addr, stripped_len, 1, outfile);
- 		return;
-@@ -129,10 +95,5 @@ static void BITSFUNC(go)(void *raw_addr, size_t raw_len,
- 	fprintf(outfile, "const struct vdso_image %s_builtin = {\n", name);
- 	fprintf(outfile, "\t.data = raw_data,\n");
- 	fprintf(outfile, "\t.size = %lu,\n", mapping_size);
--	for (i = 0; i < NSYMS; i++) {
--		if (required_syms[i].export && syms[i])
--			fprintf(outfile, "\t.sym_%s = %" PRIi64 ",\n",
--				required_syms[i].name, (int64_t)syms[i]);
--	}
- 	fprintf(outfile, "};\n");
+@@ -113,7 +115,20 @@ long clock_gettime_fallback(clockid_t clock, struct __kernel_timespec *ts)
+ 	return o0;
  }
+ 
+-#ifndef CONFIG_SPARC64
++#else /* !CONFIG_SPARC64 */
++
++static __always_inline
++long clock_gettime_fallback(clockid_t clock, struct __kernel_timespec *ts)
++{
++	register long num __asm__("g1") = __NR_clock_gettime64;
++	register long o0 __asm__("o0") = clock;
++	register long o1 __asm__("o1") = (long) ts;
++
++	__asm__ __volatile__(SYSCALL_STRING : "=r" (o0) : "r" (num),
++			     "0" (o0), "r" (o1) : SYSCALL_CLOBBERS);
++	return o0;
++}
++
+ static __always_inline
+ long clock_gettime32_fallback(clockid_t clock, struct old_timespec32 *ts)
+ {
+@@ -125,7 +140,8 @@ long clock_gettime32_fallback(clockid_t clock, struct old_timespec32 *ts)
+ 			     "0" (o0), "r" (o1) : SYSCALL_CLOBBERS);
+ 	return o0;
+ }
+-#endif
++
++#endif /* CONFIG_SPARC64 */
+ 
+ static __always_inline
+ long gettimeofday_fallback(struct __kernel_old_timeval *tv, struct timezone *tz)
+diff --git a/arch/sparc/vdso/vclock_gettime.c b/arch/sparc/vdso/vclock_gettime.c
+index 093a7ff4dafce1cf0af5af4c303bef86e159858a..1d9859392e4cfd285349cf9155ca1fc25d3a7b41 100644
+--- a/arch/sparc/vdso/vclock_gettime.c
++++ b/arch/sparc/vdso/vclock_gettime.c
+@@ -48,4 +48,12 @@ int __vdso_clock_gettime(clockid_t clock, struct old_timespec32 *ts)
+ int clock_gettime(clockid_t, struct old_timespec32 *)
+ 	__weak __alias(__vdso_clock_gettime);
+ 
++int __vdso_clock_gettime64(clockid_t clock, struct __kernel_timespec *ts)
++{
++	return __cvdso_clock_gettime(clock, ts);
++}
++
++int clock_gettime64(clockid_t, struct __kernel_timespec *)
++	__weak __alias(__vdso_clock_gettime64);
++
+ #endif
+diff --git a/arch/sparc/vdso/vdso32/vdso32.lds.S b/arch/sparc/vdso/vdso32/vdso32.lds.S
+index 53575ee154c492f9503efdd8f995ac2a035203c7..a14e4f77e6f2222b855df27cc7a0d0a4f98bd4ac 100644
+--- a/arch/sparc/vdso/vdso32/vdso32.lds.S
++++ b/arch/sparc/vdso/vdso32/vdso32.lds.S
+@@ -17,6 +17,8 @@ VERSION {
+ 	global:
+ 		clock_gettime;
+ 		__vdso_clock_gettime;
++		clock_gettime64;
++		__vdso_clock_gettime64;
+ 		gettimeofday;
+ 		__vdso_gettimeofday;
+ 	local: *;
 
 -- 
 2.51.0
