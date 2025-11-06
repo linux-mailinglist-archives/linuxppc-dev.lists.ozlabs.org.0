@@ -1,82 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-13900-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13902-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E0A7C3D383
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 20:20:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 737CFC3D871
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 22:50:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2X8k2CX6z2ymg;
-	Fri,  7 Nov 2025 06:20:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2bTK0ZN5z2xS2;
+	Fri,  7 Nov 2025 08:50:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762456838;
-	cv=none; b=YHB9emWoEgkJszFWC+jG31jzGDjVXFnP8euZHQASjaESR2Y5RYUD64d2cCCJuUnR3jpCH8m+9z3ANfhgCmLXv/SnhSAsgyyYd3Sx5OxV2nzwytESRk7t149aUiPotpSTrKCBO382lMxUbGt25drLe4ZzAUd3SagjYru3Ji6JPyum5brj0Zz+sPLa8Q5fgO6U2aSGaUvpfoyghuMLPmdOFYRifTl+9WJQAVFMAuKhOkR2PFx1clE+Ltbexdliom9OSUe4vI/7MTfBHQ4mZ3E6J34JOVZhAxEKNQ1KuU0IGdRTKlNUv9eog1WsOXu0JOsqwDLQ6pKqt3YLuthxzZ5B/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762456838; c=relaxed/relaxed;
-	bh=mGHTD+ARHXjBF/23D/2tveySnh9Sjo+QI4qiE2meVbA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVw/nvp41D1hTWps0u1Sa91ofkNbr628lWlRENE0RF52Nw80oJDNvMm+1pZ+5qNDDLwJQaAu3EsvO3vwm+rIwwPLyC1Uyj4eN6Axk0PK/4xr/MlPRo1j3eXlWv6N8yRXxi3jc8XECwPFlpCcluRUksS6ZRaX0k3o9lew/3URTiw7jHZ3+5X9n5513p/Lh7Aan9Fx1c8XQhHP598ZrdxxkZkIl9GHMuUSzHYn0Urxd6Y8PuDzEWaA/okX2Idj7TtJD0dWjaIaHA2besr1m1MrXhABnKZgJbZasjSGAY2cXO5PB1qxZXdTPbMAhjppanHoYVQbhCrZc7hisIeIlWVRuQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2X8j35XTz2xQ5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 06:20:36 +1100 (AEDT)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4d2KmQ28qdz9sSf;
-	Thu,  6 Nov 2025 12:32:22 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id YVf_i7GoCn0I; Thu,  6 Nov 2025 12:32:22 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4d2KmJ4Mjpz9sSh;
-	Thu,  6 Nov 2025 12:32:16 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7C8418B792;
-	Thu,  6 Nov 2025 12:32:16 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id JO5LBR2iyzW5; Thu,  6 Nov 2025 12:32:16 +0100 (CET)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 97B858B77B;
-	Thu,  6 Nov 2025 12:32:15 +0100 (CET)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Darren Hart <dvhart@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"Andre Almeida" <andrealmeid@igalia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 05/10] powerpc/uaccess: Remove unused size and from parameters from allow_access_user()
-Date: Thu,  6 Nov 2025 12:31:23 +0100
-Message-ID: <e0c60bc6ae9912b400203c1f16f869211026adc9.1762427933.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1762427933.git.christophe.leroy@csgroup.eu>
-References: <cover.1762427933.git.christophe.leroy@csgroup.eu>
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c000::1" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762433041;
+	cv=pass; b=eX858ScRrQeugq6/qb3WcHZsvoDfOjiin16UK1WXJ8dHJ9BGghCgShfdJhIit+jJQ48g0tUEKlNNLWnGLAurHlMGneAhBf7RMxhFzrs1DcS9zzDVGDFjuMEQi7v07uuifGrwZDpbOBqt2lPO/TsbKpiOLndfbF1NvCHWmOxNLU3kv1Mo+w1OlMiI/7gpLflOKMq3xqk7KvDlWLqjrPEvg0N0e7UVJjcka3yBztAreNX0RxfxGKsQRi6OVxrssSybOTyhyCYzSPp3obdCcuEIplzaplQlF4RvJMKo1jgCM33+FDzHVkochejbCrkQUwiPjQD0mPuP+JLZM5c5ut3OsQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1762433041; c=relaxed/relaxed;
+	bh=xhs4+8dcbkMAZTBfzvawWLtLzaXRFwQ3evVG0RTFMz0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=lDzugKfItc23yTRfP+u9/tFtSm3GhpZkXAZfHherJqp2kGWya6/Jvejbna8aPoDd6MVFj193EvadlD2AE64eljbnqyk3vvDN0QhOhjwq9R2Ry/1cSj3tR7mo7le8XNEV7dv4Peb0qtyTnN4BXVPlyNTR02oFKlExFXg3XTMk95Z2iJG559YUMI84DQlbo1k0TP/zudLk1sqRZTQ4uayK2bTS0GJvNsZMYLIA1CD0SFKtmf/VPAUrjoqGR2upCKMZP4YggiSdj3Xdpt2NFRs6P2rGp2S7RjgT+I58kCje49Tppea53DIu2go2B/+onROfd6EV49vlOy1OQAaGU/UIxg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=egDMC77C; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c000::1; helo=byapr05cu005.outbound.protection.outlook.com; envelope-from=srikanth.aithal@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=egDMC77C;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:c000::1; helo=byapr05cu005.outbound.protection.outlook.com; envelope-from=srikanth.aithal@amd.com; receiver=lists.ozlabs.org)
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c000::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2MM426dtz2xR2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Nov 2025 23:43:59 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JYd823quS56tcIJVJB/qVz2NO752/wWJYJ9HX8GMpT1mCiRut9LPnwFSsxGhA93PWWUzB2S6Sao+ACLeUSGv97ZIEjUhrY2zQy1KBKlAtxVBivDJWEoT5nchVQC8hUe8HhvEUnK/TKCDaIkLwoyuo7aWvocbZEeeCCDCpVSmSJLlVxavqW6fd8a1g0Ysy1kz47cWX667JDZ8iBG9ywowSK45XC07S9waqMNGp/K//fFGq7SftSo5XoKFrV6JNUehcaI66UhP8eOwY+bb0wEGFflcZm8c0WvWUR/uV4xlIlH3GZ0rNnxcEVFTCfzp0ShBF9jCKNmVxOHGzcm3HsbV7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xhs4+8dcbkMAZTBfzvawWLtLzaXRFwQ3evVG0RTFMz0=;
+ b=QqX4TgJMnBq/APyvySsMH+xpNaTdF0ErQX04ADrvmarZ9A4mcnTmiVmNRN6RGhDsT+BSVPy9qrvCx1rJuIxbxW5LVzQia9vMCVnGzbN0Frg3w+JbxLuYFyiW/x0Ch4wEMp7v4VkRrt8C7c6GVTys/rUUBV3QhoIqzCXiGI36qJyvAeatCIcG5ryEnB24FW2rDUXBi3tE91MJ+mbNS+aKYEl1m7WCR6pVZgNGy1kxQ54ep8GOYlw6DiHbyRB3Q+SxgLJ4vdZSvLS8XRGbvaS0p0YDC45Vs5pB399FWKIDIpBqu+Jt8UO3Xl5Kh+IF+MLQp59GIkiX/OElE+B1syJi0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.ibm.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xhs4+8dcbkMAZTBfzvawWLtLzaXRFwQ3evVG0RTFMz0=;
+ b=egDMC77CxUlUHvYrbiIdYLawG3LjRA+wYdJ7kMYN/8DYyPekGfpAjH/akJSI258AIdNQ6jOPOhoao93DGZiQeq0Oa8oM528wsn54fPucEMDqgXsX27wDb+jMdaUDZTjQCQdR7K3GWznwoockBnB0A4BcNcIgqtNfMcxzf8kcUHw=
+Received: from BY3PR03CA0024.namprd03.prod.outlook.com (2603:10b6:a03:39a::29)
+ by MN0PR12MB5786.namprd12.prod.outlook.com (2603:10b6:208:375::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.16; Thu, 6 Nov
+ 2025 12:43:30 +0000
+Received: from CO1PEPF000044FC.namprd21.prod.outlook.com
+ (2603:10b6:a03:39a:cafe::dc) by BY3PR03CA0024.outlook.office365.com
+ (2603:10b6:a03:39a::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.12 via Frontend Transport; Thu,
+ 6 Nov 2025 12:43:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CO1PEPF000044FC.mail.protection.outlook.com (10.167.241.202) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9320.0 via Frontend Transport; Thu, 6 Nov 2025 12:43:30 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 6 Nov
+ 2025 04:43:29 -0800
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 6 Nov
+ 2025 04:43:29 -0800
+Received: from [172.31.39.154] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Thu, 6 Nov 2025 04:43:18 -0800
+Message-ID: <977b68ad-6796-4c3d-9c34-d023597f8ab2@amd.com>
+Date: Thu, 6 Nov 2025 18:13:11 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,134 +89,148 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5364; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=KnzlfUS7b6A05GpPdjrBHv7ZFNA1ZFx8E2W+mgIICCo=; b=kA0DAAoW3ZBwJryrz1MByyZiAGkMhyqi7HXpCsd+qcBnUJl2gCnVLOzgpgcKPJ7chMABwclmX 4h1BAAWCgAdFiEEx/8LupiK9GVvlbov3ZBwJryrz1MFAmkMhyoACgkQ3ZBwJryrz1MeKwEAy0ha N7ps/87sD4oYwH26bIktbycULo/IbbKxgPhsgTsBANqE9t7CuwL1fTq/tdbdBaVJdXFbCT9dMNp HA5cqzQAK
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 24/35] vdso/datastore: Allocate data pages dynamically
+To: Heiko Carstens <hca@linux.ibm.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?=
+	<thomas.weissschuh@linutronix.de>
+CC: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+	"David S. Miller" <davem@davemloft.net>, Andreas Larsson
+	<andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>, John Stultz
+	<jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, "John Paul Adrian
+ Glaubitz" <glaubitz@physik.fu-berlin.de>, Shuah Khan <shuah@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Russell King <linux@armlinux.org.uk>, Madhavan Srinivasan
+	<maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+	<npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Huacai
+ Chen" <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, "Thomas
+ Bogendoerfer" <tsbogend@alpha.franken.de>, Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
+	<borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+	"Nagarathnam Muthusamy" <nagarathnam.muthusamy@oracle.com>, Shannon Nelson
+	<sln@onemain.com>, <linux-kernel@vger.kernel.org>,
+	<sparclinux@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<loongarch@lists.linux.dev>, <linux-mips@vger.kernel.org>,
+	<linux-s390@vger.kernel.org>
+References: <20251014-vdso-sparc64-generic-2-v4-0-e0607bf49dea@linutronix.de>
+ <20251014-vdso-sparc64-generic-2-v4-24-e0607bf49dea@linutronix.de>
+ <20251105153426.16228C13-hca@linux.ibm.com>
+Content-Language: en-US
+From: "Aithal, Srikanth" <sraithal@amd.com>
+In-Reply-To: <20251105153426.16228C13-hca@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044FC:EE_|MN0PR12MB5786:EE_
+X-MS-Office365-Filtering-Correlation-Id: d2eee96c-9b85-46e0-9f63-08de1d3216d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|376014|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Z2s3YWdLZTI3SUZFRHhyZkdPUmlCSFlndkFaZ1YwQ3NmNlFFRmdMaEhvMDht?=
+ =?utf-8?B?YTNrekZOeWk2anYxcWt6Umk5S1MwNlJjaU54ZDNxaCsxT1FVSkFmSlNSa2hJ?=
+ =?utf-8?B?N0tRcVNRZndKWnpNcmtCUWZvbWkzTzhJUkFBN1ZSeTY5cWpWaUVxeW9rMFAy?=
+ =?utf-8?B?aXlINHlRc0gzRjF1bEloNTR5SlNjd1BQMWt6VTZ5VlRLVmxIbHZMWHZoanVQ?=
+ =?utf-8?B?S3FCaU52djljQlFMVTlYWTZTTFNZNDNCbzB4TEQ0alZrM1FjOFF6Y1d1WlJx?=
+ =?utf-8?B?YlF6cCtHcmExRHdGNkxSL0p0SXhNUjR0VTYxUjJ6aGUwNzBCckMzcnNPVkFr?=
+ =?utf-8?B?QUNSZWpSbUR3V240R2dEQThYdjkrV2ZYb0I2d1ZqT2wwSmFJRUw1VmplUGlM?=
+ =?utf-8?B?TGNVVmY3bS9VTEo5MnNoM3kxci8vWkE1RmhJZm9JY0tqa2k0YU5GTUtvdVN4?=
+ =?utf-8?B?UE96b0hTTmNRZTdISGc3OEhFdkZrSmdmM1pERkJqa0oyVHp1KzI4ckUwQUJp?=
+ =?utf-8?B?Vy85U0pOcEF3RFVpcFFHQWo2U1U1aWRScWRMRWQ0VEI2ZGtLMmtVVWd5dG01?=
+ =?utf-8?B?bEZRS1l6SUwyV09KbG5neDJYd290a1I3aER1am1aQ211SW9OVldmM0lNM3pq?=
+ =?utf-8?B?ZnZQWVh3T3o2Y3FZRnhGQTZ2YU9hUnAzNCtkUlBiR3IwcXFKN3ZqTGdLdytL?=
+ =?utf-8?B?ZHdDdFdkQ1dNcUlrVEdtY0l4bDdQK1ZaK0t4T1lWTG5kKzlSc0ZDRmoyb3RZ?=
+ =?utf-8?B?bDBRTEF4OU5NSlBlV08rajkzbnRpUXpiRmxwakRobi9PL1JBbGJaVndxVnox?=
+ =?utf-8?B?WHRDMVd4Q2cwek0rNzNwRjV6RW0rSTAxZEQ4emZwQmVYSTdPdzhELzJIdDhq?=
+ =?utf-8?B?ZGVsdXQ3T0QzdWZDN3VSbHIrSmdyOENLSHR6azVncG9mOHN3NndSS3NCMHBT?=
+ =?utf-8?B?VzMrSjVjb0ZFQ0tMbUZucEpnTzhHL1RUdGhZUFpMQ05SbnJDZ0I4NUZzdXR0?=
+ =?utf-8?B?YlhQRWxQSkg0ZHgveVNPamkxSkE3Q0hJUVc0ejJpQ21tK3FMSGZzemFDS1Uz?=
+ =?utf-8?B?L21haEROYXdnaWI1QTd4Rk1lQ1gvSEhEMENMWmpZV3d1NU9EYmVKU1VhVkFS?=
+ =?utf-8?B?cERzWXVuQmdaVmFJNHZudUJEdERPU2FUK3BwUTlnbG0vTjFqT2hoejRXMUpE?=
+ =?utf-8?B?cHpSOWk5RGUzR3hrYnZJZVpYekZ0YytFNWFGSktxYk9PM2ZsOUVRSnk1RXMr?=
+ =?utf-8?B?MURKdm9kanhxbnVabHlzS3BHMEYzSC9XaDRqelJoOUp2TXhhOTBYNlNwYXEz?=
+ =?utf-8?B?UVNxWkJLSjl5UU1nY0w1RjBVbTMrNkM0bHJheE9Hcnp2c045d2xkNHNGeE8v?=
+ =?utf-8?B?RmVsT2VXeGQwTGd1bGpydWFDWDA2V0gwY2hFV1RzZ1kxL05rdzBhQXdJY29U?=
+ =?utf-8?B?TTNzNHpUOWlQOU1yLzlKZEt4ZkVBclZHeEZvSUEvNjBab3FUbkMvMWRjeHFZ?=
+ =?utf-8?B?cG52bW4ySGFrVHpPdDFIK1Fxc3Z0QlZWRUhCa1I4a29JWnFPbHV5MHg3Uk5X?=
+ =?utf-8?B?UGZESHJaQ0xhZ2pDSURSS2NKZDF5TEZ4VzNtenN1Z2J6R0xPcG9JR21qOVNX?=
+ =?utf-8?B?c1NIeGp2K3pUQU9Jd0tLMEdLWC9GTTNvSW1TeStEOVlrdURVOEtnc09DUkVV?=
+ =?utf-8?B?TmdOTnZzZTZWSXBLZUp1ajFJQSttWHA3SC9LMTFEZDhtYzNraEpEcUZLZnlR?=
+ =?utf-8?B?cGJ0ajN0WGhIL2Q1QzVsUW11UHpjeTg1a1VrTjJ4aU5FaisrZ29BQkdoM1l3?=
+ =?utf-8?B?UUdpclkwcmV2RVNYYkVweGtCZXRTVUJZUHR3N3lyL01hSFV6dy9DM3NPZ3RR?=
+ =?utf-8?B?V21yaGI2bGE1Q3FVMGJGN0pkaWVyK1JnOElzRGZnbGhySmdoVEozeGY0UW9Z?=
+ =?utf-8?B?OWkrQ1lSVFhGRHFsbXNJT1JMNklseHBBbUEvQm56OStSQm95OTVrb3FvekpH?=
+ =?utf-8?B?bGhOWHFkd0c3QzVObUdGbld1alZPVmpNYVdBRzdXMUhKK1lWeGZBZDNtRnFN?=
+ =?utf-8?B?Mm55UzcxVEE0S0hiUXgzNEdRK1F1Um12M3BMdHFVUlVsT3ZpQUtQT0ZFVnRG?=
+ =?utf-8?Q?gUrU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 12:43:30.0259
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2eee96c-9b85-46e0-9f63-08de1d3216d1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000044FC.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5786
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Since commit 16132529cee5 ("powerpc/32s: Rework Kernel Userspace
-Access Protection") the size parameter is unused on all platforms.
+On 11/5/2025 9:04 PM, Heiko Carstens wrote:
+> On Tue, Oct 14, 2025 at 08:49:10AM +0200, Thomas Weißschuh wrote:
+>> Allocating the datapages as part of the kernel image does not work on
+>> SPARC. It is also problematic with regards to dcache aliasing as there is
+>> no guarantee that the virtual addresses used by the kernel are compatible
+>> with those used by userspace.
+>>
+>> Allocate the data pages through the page allocator instead.
+>> Unused pages in the vDSO VMA are still allocated to keep the virtual
+>> addresses aligned.
+>>
+>> These pages are used by both the timekeeping, random pool and architecture
+>> initialization code. Introduce a new early initialization step, to make
+>> sure they are available when needed.
+>>
+>> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+>> Tested-by: Andreas Larsson <andreas@gaisler.com>
+>> Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+>> ---
+>>   include/linux/vdso_datastore.h |  6 ++++++
+>>   init/main.c                    |  2 ++
+>>   lib/vdso/datastore.c           | 44 ++++++++++++++++++++++--------------------
+>>   3 files changed, 31 insertions(+), 21 deletions(-)
+> 
+> ...
+> 
+>> +void __init vdso_setup_data_pages(void)
+>> +{
+>> +	unsigned int order = get_order(VDSO_NR_PAGES * PAGE_SIZE);
+>> +	struct folio *folio = folio_alloc(GFP_KERNEL, order);
+> 
+> I'm seeing random hangs on s390 too with our CI, but unfortunately I cannot
+> reproduce it manually. But looking at one of the dumps it looks to me like the
+> vdso time page contains (more or less) random junk at the end. Or in other
+> words, shouldn't this be:
+> 
+> 	struct folio *folio = folio_alloc(GFP_KERNEL | __GFP_ZERO, order);
+> 
+> ? At least that is a difference to before as far as I can tell.
 
-And the 'from' parameter has never been used.
+I was also hitting random hangs with an x86 KVM guest boot on an AMD64 
+platform. The bisection landed on this commit as the culprit.
+I see that v5 has been posted. I am in the process of testing that 
+version and will reply to the v5 thread with the results.
 
-Remove them.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v2: Also remove 'from' param.
----
- arch/powerpc/include/asm/book3s/32/kup.h     | 3 +--
- arch/powerpc/include/asm/book3s/64/kup.h     | 6 ++----
- arch/powerpc/include/asm/kup.h               | 9 ++++-----
- arch/powerpc/include/asm/nohash/32/kup-8xx.h | 3 +--
- arch/powerpc/include/asm/nohash/kup-booke.h  | 3 +--
- 5 files changed, 9 insertions(+), 15 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-index 873c5146e3261..a3558419c41b1 100644
---- a/arch/powerpc/include/asm/book3s/32/kup.h
-+++ b/arch/powerpc/include/asm/book3s/32/kup.h
-@@ -97,8 +97,7 @@ static __always_inline unsigned long __kuap_get_and_assert_locked(void)
- }
- #define __kuap_get_and_assert_locked __kuap_get_and_assert_locked
- 
--static __always_inline void allow_user_access(void __user *to, const void __user *from,
--					      u32 size, unsigned long dir)
-+static __always_inline void allow_user_access(void __user *to, unsigned long dir)
- {
- 	BUILD_BUG_ON(!__builtin_constant_p(dir));
- 
-diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-index 03aec3c6c851c..9ccf8a5e0926f 100644
---- a/arch/powerpc/include/asm/book3s/64/kup.h
-+++ b/arch/powerpc/include/asm/book3s/64/kup.h
-@@ -353,8 +353,7 @@ __bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- 	return (regs->amr & AMR_KUAP_BLOCK_READ) == AMR_KUAP_BLOCK_READ;
- }
- 
--static __always_inline void allow_user_access(void __user *to, const void __user *from,
--					      unsigned long size, unsigned long dir)
-+static __always_inline void allow_user_access(void __user *to, unsigned long dir)
- {
- 	unsigned long thread_amr = 0;
- 
-@@ -383,8 +382,7 @@ static __always_inline unsigned long get_kuap(void)
- 
- static __always_inline void set_kuap(unsigned long value) { }
- 
--static __always_inline void allow_user_access(void __user *to, const void __user *from,
--					      unsigned long size, unsigned long dir)
-+static __always_inline void allow_user_access(void __user *to, unsigned long dir)
- { }
- 
- #endif /* !CONFIG_PPC_KUAP */
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index f2009d7c8cfa7..3963584ac1cf1 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -72,8 +72,7 @@ static __always_inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned
-  * platforms.
-  */
- #ifndef CONFIG_PPC_BOOK3S_64
--static __always_inline void allow_user_access(void __user *to, const void __user *from,
--					      unsigned long size, unsigned long dir) { }
-+static __always_inline void allow_user_access(void __user *to, unsigned long dir) { }
- static __always_inline void prevent_user_access(unsigned long dir) { }
- static __always_inline unsigned long prevent_user_access_return(void) { return 0UL; }
- static __always_inline void restore_user_access(unsigned long flags) { }
-@@ -134,18 +133,18 @@ static __always_inline void kuap_assert_locked(void)
- 
- static __always_inline void allow_read_from_user(const void __user *from, unsigned long size)
- {
--	allow_user_access(NULL, from, size, KUAP_READ);
-+	allow_user_access(NULL, KUAP_READ);
- }
- 
- static __always_inline void allow_write_to_user(void __user *to, unsigned long size)
- {
--	allow_user_access(to, NULL, size, KUAP_WRITE);
-+	allow_user_access(to, KUAP_WRITE);
- }
- 
- static __always_inline void allow_read_write_user(void __user *to, const void __user *from,
- 						  unsigned long size)
- {
--	allow_user_access(to, from, size, KUAP_READ_WRITE);
-+	allow_user_access(to, KUAP_READ_WRITE);
- }
- 
- static __always_inline void prevent_read_from_user(const void __user *from, unsigned long size)
-diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-index 08486b15b2075..efffb5006d190 100644
---- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-@@ -49,8 +49,7 @@ static __always_inline void uaccess_end_8xx(void)
- 	    "i"(SPRN_MD_AP), "r"(MD_APG_KUAP), "i"(MMU_FTR_KUAP) : "memory");
- }
- 
--static __always_inline void allow_user_access(void __user *to, const void __user *from,
--					      unsigned long size, unsigned long dir)
-+static __always_inline void allow_user_access(void __user *to, unsigned long dir)
- {
- 	uaccess_begin_8xx(MD_APG_INIT);
- }
-diff --git a/arch/powerpc/include/asm/nohash/kup-booke.h b/arch/powerpc/include/asm/nohash/kup-booke.h
-index d6bbb6d78bbe4..cb2d5a96c3df7 100644
---- a/arch/powerpc/include/asm/nohash/kup-booke.h
-+++ b/arch/powerpc/include/asm/nohash/kup-booke.h
-@@ -73,8 +73,7 @@ static __always_inline void uaccess_end_booke(void)
- 	    "i"(SPRN_PID), "r"(0), "i"(MMU_FTR_KUAP) : "memory");
- }
- 
--static __always_inline void allow_user_access(void __user *to, const void __user *from,
--					      unsigned long size, unsigned long dir)
-+static __always_inline void allow_user_access(void __user *to, unsigned long dir)
- {
- 	uaccess_begin_booke(current->thread.pid);
- }
--- 
-2.49.0
-
+Thank you
+Srikanth Aithal <sraithal@amd.com>
 
