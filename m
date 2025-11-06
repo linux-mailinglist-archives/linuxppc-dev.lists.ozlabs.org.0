@@ -1,79 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-13886-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13887-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4740C3BCC4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 15:38:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1620C3BEFC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 06 Nov 2025 16:02:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2PvG2gS0z2xS2;
-	Fri,  7 Nov 2025 01:38:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2QQn2kggz30MY;
+	Fri,  7 Nov 2025 02:02:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762439914;
-	cv=none; b=kw0cmL7l/gRb8q2iojLz5UDYZTn2Gp+3crdsHzudbcQfU7jrvt0ekNzETiU79689NSqQZuFLIEMAyYs5TfZWwEbMjWbUbLNPFwL17N4CqVlUST1tncp/EuJje0uHP4MGbVx+0uTsJrbZGXUdHZJQu1PTNswqE+kLhako+AEPtVEB2URZbxfHf47frchTixfoKdswwjMOr1lcpwKMpgmFy7xUORE4nQtu3QxrJUHKWZc//153iah8eIVcv1GXjwTLSb+g8V0DPnT0knUWQyZqgeECCWjwAiFRJ+rV55/A0Kwtl2jkgTbi/71U2E0Wux46kDlhjX7q8eZH4ZFNaEkeOA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762441345;
+	cv=none; b=JZgdGMYj5nhlNs5dypHqYP6iFjq1+2xebXLsAYcZPqMg4KWyUWgvVq2QvBe2HnZe9KGvdNysAxhZvLKztVd257T2boh/rVJovwSJ7f2aom1BLVDY/9IJeI3qLLc77MqXW3som1P8gTHmsGyLbfYV4RTvp7R9pD4GQC5zXCEuZjxjXdooKW6jgO0SQulpKxF7dLWUTP+EiP5kQLgsk1pstVmc0o9Y6af8n25ZZIOcv2fYiDmVHP8lsuVUfc38Qk+55tZdlKtrG1Qtbca/h/PpszOzZuSobJ45154gK/ATZNHUeMN9A1xMprMjUgJvzjSAzw2Eh2qQzfyieZmD29DylA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762439914; c=relaxed/relaxed;
-	bh=jh3BnHvW8PIXMHNCqBwP8m/N0iJoZMQt+GVZ+IQ2MbI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=THZqG4uA9nbL0CbKg8U2Uo1cvUuh9A5woqfh3MNyPVpVaUsOvBXYPJlSQNeStKaKzCw28O/Ww75AyfeP9C9xQc9Ih9EIhKNjZSdh6536YrCAQ6fV+9XMXOWjn5T+91IW9qON68MEmvX06ltoMqBHCVfCISSMmWhGwfKTb2v0npy7K6/pCkhrXIPmRM3sZcu4dUNnLB958oT4NmSYyYyv2To9rjh+7uxwAzATAbedsocQBeFW0ZXLZdkoLJFWc0I0zz0KmipyQez/iKzGn74TJaK8EuOD9h5LjRgqOF0sIfWhTHo9AmnREoQu/iDGV4uYB4nd9fmMJoJR26B78udqrw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V1mpEM3H; dkim-atps=neutral; spf=pass (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1762441345; c=relaxed/relaxed;
+	bh=i+JHQSszVH5jeyw1w0Tohz/6ytGWsRKBenEWgm5KPDA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U6VzhrRFkLofMmRf7PtBOurmu7TPyDAN9690LeaFuCowQBTAp+wt4yLwBSK+XxKdntQ+S7Aii8bc0cImtvYm/G0ouGeXEyH2PfGCFp61l5cPQFVoq3Nj8EQResYGRofzEvnxR8B6krCpSwu4AODwTTKv/MlIPCtw2DxGCiCSFRQDWTDqeHrGREoltvtZfpFZOh/kIuI3yAOd2yhoQ+7T89S1fTcXaVFrgQkjYeGN8PX4oYNbwF+55NeivnlKyAAUJbunZh8jN4enR469/gJTZ2i2V1zAjL1uFmmYkMt8oOCoRYQYTHJRIB2nLlN4dSpSxGJTsDnBfaVYvbcKnnyiaQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gaY2byH9; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V1mpEM3H;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gaY2byH9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2PvD10THz2xQD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 01:38:30 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762439913; x=1793975913;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+75GKPCI5jNkPc6bb4WB2j4Mz3JYShSPvH/44slbqt4=;
-  b=V1mpEM3H76B1xmi6nMYsSfww7l/jvJmzPA4U7t7bbFdzjibSsit1cdKz
-   AWV47F3xI+qWdkl7U134odeKTdEf4Ed6SA5EVNPe86K2ZVacxtXqls21i
-   lq4OchnZh+Hk8VcsipDmDuDFJZZjO54sApsGD9Q/VvV0aiMUkw3R63sRP
-   0mZFIn6rcl8/jZkYYZ0kuwKouuCAl8c2VQB2PXi35MpXweXctuhWBwyV3
-   VVDOx5VKGtHagYzJi1jFWYyjmNCdEVFQ72Yx0KKh8LCr+7b04cSO+I69R
-   U6rvLnz0rKSXYp0mKoBp2MScaRYAWQ3ORYa4J/9Yi4sCHpgu6HTtcPLsh
-   g==;
-X-CSE-ConnectionGUID: EyhnB47ERa+9pLm1HnoPgQ==
-X-CSE-MsgGUID: 4FAtTdppQ/ST5CDTv2mobw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="75692357"
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
-   d="scan'208";a="75692357"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 06:38:28 -0800
-X-CSE-ConnectionGUID: mtLqvztIR2+6pQQoTPF7Mg==
-X-CSE-MsgGUID: ezPYJZsdQpq225RUv4XYxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
-   d="scan'208";a="187487529"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 06 Nov 2025 06:38:24 -0800
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vH182-000U1K-1F;
-	Thu, 06 Nov 2025 14:38:22 +0000
-Date: Thu, 6 Nov 2025 22:38:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: oe-kbuild-all@lists.linux.dev, Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Baoquan he <bhe@redhat.com>, Jiri Bohac <jbohac@suse.cz>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shivang Upadhyay <shivangu@linux.ibm.com>,
-	kexec@lists.infradead.org
-Subject: Re: [PATCH v6] powerpc/kdump: Add support for crashkernel CMA
- reservation
-Message-ID: <202511062213.dHidoorr-lkp@intel.com>
-References: <20251104132818.1724562-1-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2QQm3kdFz2xK5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 02:02:24 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 165B7618E6;
+	Thu,  6 Nov 2025 15:02:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074BAC116D0;
+	Thu,  6 Nov 2025 15:02:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762441341;
+	bh=i4fjDJDYk2H9d5QDzEVxWVRclwvCRF/Czrqg/2p1iqw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gaY2byH9jBnAEOE9/6eUND3hP3NfNFcP6XtQ8ihoE3kxtnvQGqCwTdBn6/U+jQ8b+
+	 rMjzo5pMxuzDnmjXSzYR4nV7bn20XFxUPzjkEIt/RMzClKebnPg+F8qRqK/aKOyFSL
+	 rRV6rSV+/gQ121aI2b2wMKek+L78+eak9t4Bdh0e7tDiz1mHCmURw9nDAIGZqCAQzU
+	 YRDjAVV+CfGf63m/or6/R14Vf0P7VJ6Lc3A0jYDzTgzYbgEeiPoX/Z6oadmwHIzDr9
+	 NQAT0lSX69xilVf3AJtLl5lRzA56dVV6XTzznT2DA+kIxuLm6feB4FxqzOjR+V6mUQ
+	 6tFO0DJFqSeTA==
+Message-ID: <ba3a2131-c8d4-481d-aebb-d25be7ae0d19@kernel.org>
+Date: Thu, 6 Nov 2025 16:02:17 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,59 +58,190 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251104132818.1724562-1-sourabhjain@linux.ibm.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: powerpc/e500: WARNING: at mm/hugetlb.c:4755 hugetlb_add_hstate
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Donet Tom <donettom@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com>
+ <dd634b17-cc5e-497c-8228-2470f6533177@redhat.com>
+ <82ef1da8-44c4-4a58-bd00-9839548cb72d@csgroup.eu>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <82ef1da8-44c4-4a58-bd00-9839548cb72d@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Sourabh,
+>> Yes, we discussed that in [1].
+>>
+>> We'll have to set ARCH_HAS_GIGANTIC_PAGE on ppc and increase
+>> MAX_FOLIO_ORDER, because apparently, there might be ppc configs that
+>> have even larger hugetlb sizes than PUDs.
+>>
+>> @Cristophe, I was under the impression that you would send a fix. Do you
+>> want me to prepare something and send it out?
+> 
+> Indeed I would have liked to better understand the implications of all
+> this, but I didn't have the time.
 
-kernel test robot noticed the following build warnings:
+Indeed, too me longer than it should to understand and make up my mind as well.
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on powerpc/fixes linus/master v6.18-rc4 next-20251106]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> By the way, you would describe the fix better than me so yes if you can
+> prepare and send a fix please do.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sourabh-Jain/powerpc-kdump-Add-support-for-crashkernel-CMA-reservation/20251104-213036
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/20251104132818.1724562-1-sourabhjain%40linux.ibm.com
-patch subject: [PATCH v6] powerpc/kdump: Add support for crashkernel CMA reservation
-config: powerpc64-randconfig-r113-20251106 (https://download.01.org/0day-ci/archive/20251106/202511062213.dHidoorr-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251106/202511062213.dHidoorr-lkp@intel.com/reproduce)
+I just crafted the following. I yet have to test it more, some early
+feedback+testing would be appreciated!
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511062213.dHidoorr-lkp@intel.com/
+ From 274928854644c49c92515f8675c090dba15a0db6 Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Date: Thu, 6 Nov 2025 11:31:45 +0100
+Subject: [PATCH] mm: fix MAX_FOLIO_ORDER on some ppc64 configs with hugetlb
 
-sparse warnings: (new ones prefixed by >>)
->> arch/powerpc/kexec/core.c:62:20: sparse: sparse: symbol 'crashk_cma_size' was not declared. Should it be static?
-   arch/powerpc/kexec/core.c:188:29: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned long long static [addressable] [toplevel] [usertype] crashk_base @@     got restricted __be64 [usertype] @@
-   arch/powerpc/kexec/core.c:188:29: sparse:     expected unsigned long long static [addressable] [toplevel] [usertype] crashk_base
-   arch/powerpc/kexec/core.c:188:29: sparse:     got restricted __be64 [usertype]
-   arch/powerpc/kexec/core.c:190:29: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned long long static [addressable] [toplevel] [usertype] crashk_size @@     got restricted __be64 [usertype] @@
-   arch/powerpc/kexec/core.c:190:29: sparse:     expected unsigned long long static [addressable] [toplevel] [usertype] crashk_size
-   arch/powerpc/kexec/core.c:190:29: sparse:     got restricted __be64 [usertype]
-   arch/powerpc/kexec/core.c:198:19: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned long long static [addressable] [toplevel] mem_limit @@     got restricted __be64 [usertype] @@
-   arch/powerpc/kexec/core.c:198:19: sparse:     expected unsigned long long static [addressable] [toplevel] mem_limit
-   arch/powerpc/kexec/core.c:198:19: sparse:     got restricted __be64 [usertype]
-   arch/powerpc/kexec/core.c:214:20: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned long long static [addressable] [toplevel] [usertype] kernel_end @@     got restricted __be64 [usertype] @@
-   arch/powerpc/kexec/core.c:214:20: sparse:     expected unsigned long long static [addressable] [toplevel] [usertype] kernel_end
-   arch/powerpc/kexec/core.c:214:20: sparse:     got restricted __be64 [usertype]
+In the past, CONFIG_ARCH_HAS_GIGANTIC_PAGE indicated that we support
+runtime allocation of gigantic hugetlb folios. In the meantime it evolved
+into a generic way for the architecture to state that it supports
+gigantic hugetlb folios.
 
-vim +/crashk_cma_size +62 arch/powerpc/kexec/core.c
+In commit fae7d834c43c ("mm: add __dump_folio()") we started using
+CONFIG_ARCH_HAS_GIGANTIC_PAGE to decide MAX_FOLIO_ORDER: whether we could
+have folios larger than what the buddy can handle. In the context of
+that commit, we started using MAX_FOLIO_ORDER to detect page corruptions
+when dumping tail pages of folios. Before that commit, we assumed that
+we cannot have folios larger than the highest buddy order, which was
+obviously wrong.
 
-    61	
-  > 62	unsigned long long crashk_cma_size;
-    63	
+In commit 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes
+when registering hstate"), we used MAX_FOLIO_ORDER to detect
+inconsistencies, and in fact, we found some now.
+
+Powerpc allows for configs that can allocate gigantic folio during boot
+(not at runtime), that do not set CONFIG_ARCH_HAS_GIGANTIC_PAGE and can
+exceed PUD_ORDER.
+
+To fix it, let's make powerpc select CONFIG_ARCH_HAS_GIGANTIC_PAGE for
+all 64bit configs, and increase the maximum folio size to P4D_ORDER.
+
+Ideally, we'd have a better way to obtain a maximum value. But this should
+be good enough for now fix the issue and now mostly states "no real folio
+size limit".
+
+While at it, handle gigantic DAX folios more clearly: DAX can only
+end up creating gigantic folios with HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
+
+Add a new Kconfig option HAVE_GIGANTIC_FOLIOS to make both cases
+clearer. In particular, worry about ARCH_HAS_GIGANTIC_PAGE only with
+HUGETLB_PAGE.
+
+Note: with enabling CONFIG_ARCH_HAS_GIGANTIC_PAGE on PPC64, we will now
+also allow for runtime allocations of folios in some more powerpc configs.
+I don't think this is a problem, but if it is we could handle it through
+__HAVE_ARCH_GIGANTIC_PAGE_RUNTIME_SUPPORTED.
+
+While __dump_page()/__dump_folio was also problematic (not handling dumping
+of tail pages of such gigantic folios correctly), it doesn't relevant
+critical enough to mark it as a fix.
+
+Fixes: 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes when registering hstate")
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+---
+  arch/powerpc/Kconfig                   | 1 +
+  arch/powerpc/platforms/Kconfig.cputype | 1 -
+  include/linux/mm.h                     | 4 ++--
+  include/linux/pgtable.h                | 1 +
+  mm/Kconfig                             | 7 +++++++
+  5 files changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index e24f4d88885ae..55c3626c86273 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -137,6 +137,7 @@ config PPC
+  	select ARCH_HAS_DMA_OPS			if PPC64
+  	select ARCH_HAS_FORTIFY_SOURCE
+  	select ARCH_HAS_GCOV_PROFILE_ALL
++	select ARCH_HAS_GIGANTIC_PAGE		if PPC64
+  	select ARCH_HAS_KCOV
+  	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
+  	select ARCH_HAS_MEMBARRIER_CALLBACKS
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 7b527d18aa5ee..4c321a8ea8965 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -423,7 +423,6 @@ config PPC_64S_HASH_MMU
+  config PPC_RADIX_MMU
+  	bool "Radix MMU Support"
+  	depends on PPC_BOOK3S_64
+-	select ARCH_HAS_GIGANTIC_PAGE
+  	default y
+  	help
+  	  Enable support for the Power ISA 3.0 Radix style MMU. Currently this
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index d16b33bacc32b..4842edc875185 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
+  	return folio_large_nr_pages(folio);
+  }
+  
+-#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
++#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
+  /*
+   * We don't expect any folios that exceed buddy sizes (and consequently
+   * memory sections).
+@@ -2092,7 +2092,7 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
+   * There is no real limit on the folio size. We limit them to the maximum we
+   * currently expect (e.g., hugetlb, dax).
+   */
+-#define MAX_FOLIO_ORDER		PUD_ORDER
++#define MAX_FOLIO_ORDER		P4D_ORDER
+  #endif
+  
+  #define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 32e8457ad5352..09fc3c2ba39e2 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -7,6 +7,7 @@
+  
+  #define PMD_ORDER	(PMD_SHIFT - PAGE_SHIFT)
+  #define PUD_ORDER	(PUD_SHIFT - PAGE_SHIFT)
++#define P4D_ORDER	(P4D_SHIFT - PAGE_SHIFT)
+  
+  #ifndef __ASSEMBLY__
+  #ifdef CONFIG_MMU
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 0e26f4fc8717b..ca3f146bc7053 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -908,6 +908,13 @@ config PAGE_MAPCOUNT
+  config PGTABLE_HAS_HUGE_LEAVES
+  	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
+  
++#
++# We can end up creating gigantic folio.
++#
++config HAVE_GIGANTIC_FOLIOS
++	def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
++		 (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
++
+  # TODO: Allow to be enabled without THP
+  config ARCH_SUPPORTS_HUGE_PFNMAP
+  	def_bool n
+-- 
+2.51.0
+
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers
+
+David
 
