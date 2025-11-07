@@ -1,61 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-13946-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13947-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5008AC4148F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 19:30:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E84C4149E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 19:31:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d370v6Skbz3054;
-	Sat,  8 Nov 2025 05:30:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d371l2sX3z3bsC;
+	Sat,  8 Nov 2025 05:31:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.20
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762540255;
-	cv=none; b=BDQGq3TIBaD3Syn2dZIkAxwAyS1Bpz1/Y8OP9PGbzfOH1Z3/uFTbSN+8lrFz8XZsei3jEtpZ6WXqLrvPn8QwGkUQ2tu1IGXWV4zQG9+bwKhsNRGNKv+4lCPLLAlkOQz8wB0te4yR4PPGpKjvEINrTHMsGCGBKCcQUjVUA4bO91McwnyOfy+K6KyI/btVY7iXFdmf5jR94PtB5AF7/bPfLaeYnGyKnfjlJfP03not+ZyMcYHOaBpvOP9YLoxUg+w14u3t5UbCUCWJ7OFv+J3TcUbFTltzIGmWJKIgwcnF4P69YimJGVtAgSjVyunqFp3KpYlajSx3+JsTKtt3mYM1Fg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762540299;
+	cv=none; b=Xtqv7gL1BUpo+Bcr6I+zgrfZrXENk1jYLkR+jxITv6hoagHyPK4PFtfUyL0VzrhSMp4rhaArsaMlZsZrCxBD6M4S+MtXiK7UXAiLLErOH7P3IxFTaP7Kb4Bk+xgdY9wjktxE8hKuAIM+RyHJErrbE7TPuYUwR/XxH94c8B1i80hyegv1ltxKd5E6DocIJg9jy+xftD24g971CYWZ5fnPll0T3RspYDy/qVb6uanWEw5h+WWizLbfVFIahw0Ru0D4o2b+iXMV606aRIXgCj3nF8DH3px/c6hqZNcBErsifG1848jsWiFb9AJmTRaBEK0qK4qiIlDiFCuSmjjmlazk5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762540255; c=relaxed/relaxed;
-	bh=r+J+Mk/9We4AXxEYEJVgeItSdSiTZKUcuy29ynNU4Zs=;
+	t=1762540299; c=relaxed/relaxed;
+	bh=Mg7pQk95Lo8v4PgBF6lzEt883DljsAjXxbuHNa125fc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nL1IjBrcteQTpEX2x5IbfQpqPX+cYZelwBrzAMcCpGvVKKNYn5t6yFeu6Wd3AwYyZxCCqW4fdysuQDmwJv9qHyqVjxiEXhrMOapJi5GlVJHgBkZoWgn4RR5u3GWc4ME2NhSnAKFnxFc7bQmbOqiMCHDCkFKVqAwJ37/5IB0lo/BVX9B3QdGVX0bBc8ocNbIzdhWnXTDZ1VgidoHy5jdM+mHwbJpwwZypdHR5tdOohGSUssd/V59MKvlUXKJdKNKGzodvq3XJUBoLO/bTzyY2L0bAQi4dGyzJY88C0Go5vsPR+qT+cjf4dYPT5vNCnoi6tA7U0eFXmROj4BEL76wdrw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=acZpd7C0; dkim-atps=neutral; spf=pass (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=BFHzCeygsuuljAeJAAzXOOQdGfqka7FHVzjaulgFIhajd+T2CXmz1uHb5mVxbBUg2nlLWIvSK7w/lswwrKMOBfYN0qPjgwNEK2RtRbPX8W0P0rCFh0ngE4paiMoXfw3UFctmc/J9ml11SejFhg7xQ23eUwjbvv9e5uqsYVSgBBcjUO3eQvVMcxwYz6Ey3yyEKv02TU82L0mq2IUyLmXSs38GXfnhNIVhlTfSscXfBm4ESd6GfhEJPk+zBa53r001Gn0uo7/qGho8cz/ciVkiPt/9gPDjoxi2aN4aU+reEeddJy4DPzIMMM+DJdw2F12YjJAJwAIVBmDb0xO8VyK/rA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hvVxoDzg; dkim-atps=neutral; spf=pass (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=acZpd7C0;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hvVxoDzg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d370s2d0qz2yrF
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Nov 2025 05:30:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d371k3m5yz2yrF
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Nov 2025 05:31:38 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762540253; x=1794076253;
+  t=1762540299; x=1794076299;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=NQMzSf1AbuMYunJf1VM25Q78A/AsP25m0nmjU1brY+o=;
-  b=acZpd7C0SjiNiJMIzuD6XpTwci9Gkzhvm1PhERoDYiiV8jZTOFrvSE/V
-   PdHPUnCPfYPhXeSOA86nvRRswzPNuGWoscXM+PM/sCfy5Vh0cFywTZAmG
-   NiY+SK47LuCFdYlSVubVWWtW/YhDCjFfpDM0EN5GbPOcVR3O1OB9OXG4Q
-   psEGnu6E8LLrPnA5FpDT9IuYnHIybAsZ4ot6P/GjpBRfS+0WhHvxLqvSN
-   YOu4+Bir6mha/foKUqpOp7VUybLJSpZAvDPBywG7N+79tbQDVSxvwBfcl
-   /TrXMsyFYFAPZcgiU7uVURGVHDpsCUTIRvEVlc5owR6Fr+5X8+V4WzTbO
-   g==;
-X-CSE-ConnectionGUID: zUxKEbRmSS6jYnfKw37zPw==
-X-CSE-MsgGUID: 37WULdEoSyqqAFoy9plMpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11606"; a="64393769"
+  bh=Ivwc2M/ZDTDNDN4wnIiRBUD82UImX2K8AEI+zfxIyOU=;
+  b=hvVxoDzg5dvEmxnK0Puzm6qAIFkG8FzT3PkicSPRqxgmfVE4XkVaiXLm
+   SCjlAaQ9txzfrp5yXlOW1EH9+mlt17F6vFj2d6MwHcuxojEp0t6LQiant
+   7lw/FK+jg+dq59zlELr4mHeViPrjTvSulygV8k/GF9jrl9umU+y+HZsBR
+   UfjGXdAT3bukdtrHCBs6Rms8C4K+QKohQUs51dw4N+AvoPd0XxaksWAQP
+   XKOEIhtxs8jFJddgNNVVs5RhgrW1q5SIfTPKj9w3tRf6HTxpqDCGrj8TB
+   Cpg0EEJCvJH7igNJBLb0rdf3pdX3f+Iwwk5rCKVWuCMnOJbAJH1e63+uY
+   Q==;
+X-CSE-ConnectionGUID: LCBeQVfPS/6V2OgPCP8H7Q==
+X-CSE-MsgGUID: JAO6yhhxTHG8IeWsYswOPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11606"; a="63902319"
 X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; 
-   d="scan'208";a="64393769"
+   d="scan'208";a="63902319"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 10:30:48 -0800
-X-CSE-ConnectionGUID: EXjax2rlQKKiYHZkpDrlCA==
-X-CSE-MsgGUID: opz/TgNzSJqcl3I4SWkXtw==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 10:31:36 -0800
+X-CSE-ConnectionGUID: RgnJVNmPQuS+l15b/XeJnA==
+X-CSE-MsgGUID: T3lEpinBQaalfC++rcdn3g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; 
-   d="scan'208";a="187355089"
+   d="scan'208";a="187355309"
 Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.111.112]) ([10.125.111.112])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 10:30:47 -0800
-Message-ID: <02a7c72f-6d8f-4cd9-af97-9b5e0b6093cb@intel.com>
-Date: Fri, 7 Nov 2025 11:30:46 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 10:31:35 -0800
+Message-ID: <d84eafa5-0038-436e-aa53-9675d4e630b6@intel.com>
+Date: Fri, 7 Nov 2025 11:31:34 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,8 +70,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6 v7] acpi/ghes: Add helper for CXL protocol errors
- checks
+Subject: Re: [PATCH 5/6 v7] acpi/ghes: Add helper to copy CXL protocol error
+ info to work struct
 To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
  linux-cxl@vger.kernel.org
 Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
@@ -88,10 +88,10 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
 References: <20251104182446.863422-1-fabio.m.de.francesco@linux.intel.com>
- <20251104182446.863422-5-fabio.m.de.francesco@linux.intel.com>
+ <20251104182446.863422-6-fabio.m.de.francesco@linux.intel.com>
 From: Dave Jiang <dave.jiang@intel.com>
 Content-Language: en-US
-In-Reply-To: <20251104182446.863422-5-fabio.m.de.francesco@linux.intel.com>
+In-Reply-To: <20251104182446.863422-6-fabio.m.de.francesco@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -102,95 +102,119 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 On 11/4/25 11:22 AM, Fabio M. De Francesco wrote:
-> Move the CPER CXL protocol errors validity check out of
-> cxl_cper_post_prot_err() to new cxl_cper_sec_prot_err_valid() and limit
-> the serial number check only to CXL agents that are CXL devices (UEFI
-> v2.10, Appendix N.2.13).
+> Make a helper out of cxl_cper_post_prot_err() that checks the CXL agent
+> type and copy the CPER CXL protocol errors information to a work data
+> structure.
 > 
 > Export the new symbol for reuse by ELOG.
 > 
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 > Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
 
 Reviewed-by: Dave Jiang <dave.jiang@intel.com>> ---
->  drivers/acpi/apei/ghes.c | 32 ++++++++++++++++++++++----------
+>  drivers/acpi/apei/ghes.c | 42 ++++++++++++++++++++++++++--------------
 >  include/cxl/event.h      | 10 ++++++++++
->  2 files changed, 32 insertions(+), 10 deletions(-)
+>  2 files changed, 37 insertions(+), 15 deletions(-)
 > 
 > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index d6fe5f020e96..e69ae864f43d 100644
+> index e69ae864f43d..2f4632d9855a 100644
 > --- a/drivers/acpi/apei/ghes.c
 > +++ b/drivers/acpi/apei/ghes.c
-> @@ -706,30 +706,42 @@ static DEFINE_KFIFO(cxl_cper_prot_err_fifo, struct cxl_cper_prot_err_work_data,
->  static DEFINE_SPINLOCK(cxl_cper_prot_err_work_lock);
->  struct work_struct *cxl_cper_prot_err_work;
+> @@ -734,20 +734,12 @@ int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
+>  }
+>  EXPORT_SYMBOL_GPL(cxl_cper_sec_prot_err_valid);
 >  
 > -static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
 > -				   int severity)
-> +int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
+> +int cxl_cper_setup_prot_err_work_data(struct cxl_cper_prot_err_work_data *wd,
+> +				      struct cxl_cper_sec_prot_err *prot_err,
+> +				      int severity)
 >  {
 > -	struct cxl_cper_prot_err_work_data wd;
-> -	u8 *dvsec_start, *cap_start;
+>  	u8 *dvsec_start, *cap_start;
+>  
+> -	if (cxl_cper_sec_prot_err_valid(prot_err))
+> -		return;
 > -
->  	if (!(prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS)) {
->  		pr_err_ratelimited("CXL CPER invalid agent type\n");
+> -	guard(spinlock_irqsave)(&cxl_cper_prot_err_work_lock);
+> -
+> -	if (!cxl_cper_prot_err_work)
+> -		return;
+> -
+>  	switch (prot_err->agent_type) {
+>  	case RCD:
+>  	case DEVICE:
+> @@ -756,20 +748,40 @@ static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+>  	case RP:
+>  	case DSP:
+>  	case USP:
+> -		memcpy(&wd.prot_err, prot_err, sizeof(wd.prot_err));
+> +		memcpy(&wd->prot_err, prot_err, sizeof(wd->prot_err));
+>  
+>  		dvsec_start = (u8 *)(prot_err + 1);
+>  		cap_start = dvsec_start + prot_err->dvsec_len;
+>  
+> -		memcpy(&wd.ras_cap, cap_start, sizeof(wd.ras_cap));
+> -		wd.severity = cper_severity_to_aer(severity);
+> +		memcpy(&wd->ras_cap, cap_start, sizeof(wd->ras_cap));
+> +		wd->severity = cper_severity_to_aer(severity);
+>  		break;
+>  	default:
+>  		pr_err_ratelimited("CXL CPER invalid agent type: %d\n",
+>  				   prot_err->agent_type);
 > -		return;
 > +		return -EINVAL;
 >  	}
 >  
->  	if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
->  		pr_err_ratelimited("CXL CPER invalid protocol error log\n");
-> -		return;
-> +		return -EINVAL;
->  	}
->  
->  	if (prot_err->err_len != sizeof(struct cxl_ras_capability_regs)) {
->  		pr_err_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
->  				   prot_err->err_len);
-> -		return;
-> +		return -EINVAL;
->  	}
->  
-> -	if (!(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
-> -		pr_warn(FW_WARN "CXL CPER no device serial number\n");
-> +	if ((prot_err->agent_type == RCD || prot_err->agent_type == DEVICE ||
-> +	     prot_err->agent_type == LD || prot_err->agent_type == FMLD) &&
-> +	    !(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
-> +		pr_warn_ratelimited(FW_WARN
-> +				    "CXL CPER no device serial number\n");
-> +
 > +	return 0;
 > +}
-> +EXPORT_SYMBOL_GPL(cxl_cper_sec_prot_err_valid);
+> +EXPORT_SYMBOL_GPL(cxl_cper_setup_prot_err_work_data);
 > +
 > +static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
 > +				   int severity)
 > +{
 > +	struct cxl_cper_prot_err_work_data wd;
-> +	u8 *dvsec_start, *cap_start;
 > +
 > +	if (cxl_cper_sec_prot_err_valid(prot_err))
 > +		return;
->  
->  	guard(spinlock_irqsave)(&cxl_cper_prot_err_work_lock);
->  
+> +
+> +	guard(spinlock_irqsave)(&cxl_cper_prot_err_work_lock);
+> +
+> +	if (!cxl_cper_prot_err_work)
+> +		return;
+> +
+> +	if (cxl_cper_setup_prot_err_work_data(&wd, prot_err, severity))
+> +		return;
+> +
+>  	if (!kfifo_put(&cxl_cper_prot_err_fifo, wd)) {
+>  		pr_err_ratelimited("CXL CPER kfifo overflow\n");
+>  		return;
 > diff --git a/include/cxl/event.h b/include/cxl/event.h
-> index 6fd90f9cc203..4d7d1036ea9c 100644
+> index 4d7d1036ea9c..94081aec597a 100644
 > --- a/include/cxl/event.h
 > +++ b/include/cxl/event.h
-> @@ -320,4 +320,14 @@ static inline int cxl_cper_prot_err_kfifo_get(struct cxl_cper_prot_err_work_data
->  }
->  #endif
+> @@ -322,12 +322,22 @@ static inline int cxl_cper_prot_err_kfifo_get(struct cxl_cper_prot_err_work_data
 >  
-> +#ifdef CONFIG_ACPI_APEI_PCIEAER
-> +int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err);
-> +#else
+>  #ifdef CONFIG_ACPI_APEI_PCIEAER
+>  int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err);
+> +int cxl_cper_setup_prot_err_work_data(struct cxl_cper_prot_err_work_data *wd,
+> +				      struct cxl_cper_sec_prot_err *prot_err,
+> +				      int severity);
+>  #else
+>  static inline int
+>  cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
+>  {
+>  	return -EOPNOTSUPP;
+>  }
 > +static inline int
-> +cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
+> +cxl_cper_setup_prot_err_work_data(struct cxl_cper_prot_err_work_data *wd,
+> +				  struct cxl_cper_sec_prot_err *prot_err,
+> +				  int severity)
 > +{
 > +	return -EOPNOTSUPP;
 > +}
-> +#endif
-> +
+>  #endif
+>  
 >  #endif /* _LINUX_CXL_EVENT_H */
 
 
