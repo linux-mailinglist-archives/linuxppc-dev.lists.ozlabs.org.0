@@ -1,61 +1,103 @@
-Return-Path: <linuxppc-dev+bounces-13947-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13948-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E84C4149E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 19:31:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6082C416B3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 20:18:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d371l2sX3z3bsC;
-	Sat,  8 Nov 2025 05:31:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d383L22Slz2ypY;
+	Sat,  8 Nov 2025 06:18:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762540299;
-	cv=none; b=Xtqv7gL1BUpo+Bcr6I+zgrfZrXENk1jYLkR+jxITv6hoagHyPK4PFtfUyL0VzrhSMp4rhaArsaMlZsZrCxBD6M4S+MtXiK7UXAiLLErOH7P3IxFTaP7Kb4Bk+xgdY9wjktxE8hKuAIM+RyHJErrbE7TPuYUwR/XxH94c8B1i80hyegv1ltxKd5E6DocIJg9jy+xftD24g971CYWZ5fnPll0T3RspYDy/qVb6uanWEw5h+WWizLbfVFIahw0Ru0D4o2b+iXMV606aRIXgCj3nF8DH3px/c6hqZNcBErsifG1848jsWiFb9AJmTRaBEK0qK4qiIlDiFCuSmjjmlazk5g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762543086;
+	cv=none; b=IZ/UDJ0h81+4CvPVi3U2c1aRAroVx3X4ERLUaJTptMa4/7v/x7dN0VdojzOFQBHM+ykqkbc3iX+sCe8MQkjpFqXs+kQNTSe5Ta7li/GqWpdfHx49+4onEHXrR/Qki6iv1LTL7DjNquEtIV6HNEAShMWPIZ1Wq/1uxT+lk/h5VbrR5oEyXjauPaPVXGaBSdCWPVgWMzXDPGG2p33whAcDt5PPoWIBL8Lu4+EySoks2jo4UMb2T+/PVboGL6uvwXdF9sGuZX7yEWz+R4UD2x0J21cpJUBquYpbT3+7WXDPZq+LTdPVbOtVJgzsQgfS23qx2RtNI15Yx5v+k853CwWWwQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762540299; c=relaxed/relaxed;
-	bh=Mg7pQk95Lo8v4PgBF6lzEt883DljsAjXxbuHNa125fc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BFHzCeygsuuljAeJAAzXOOQdGfqka7FHVzjaulgFIhajd+T2CXmz1uHb5mVxbBUg2nlLWIvSK7w/lswwrKMOBfYN0qPjgwNEK2RtRbPX8W0P0rCFh0ngE4paiMoXfw3UFctmc/J9ml11SejFhg7xQ23eUwjbvv9e5uqsYVSgBBcjUO3eQvVMcxwYz6Ey3yyEKv02TU82L0mq2IUyLmXSs38GXfnhNIVhlTfSscXfBm4ESd6GfhEJPk+zBa53r001Gn0uo7/qGho8cz/ciVkiPt/9gPDjoxi2aN4aU+reEeddJy4DPzIMMM+DJdw2F12YjJAJwAIVBmDb0xO8VyK/rA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hvVxoDzg; dkim-atps=neutral; spf=pass (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1762543086; c=relaxed/relaxed;
+	bh=BoyRAxBYJ97KZHdMcvP1wI7gdZM18PW/SDBquVzm/CM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eJjZXkpQ2RFOY5RROSx3THboezoSf3gMWBIC3VbAONKFx9TXkMmyLYD29b/nqO+Fy0a3Xgkzocw6lOrGFvMf9cpwyAWPByroPWOgp39v9w/Fz6I5mNmHur7S57iI5qqUYvZDHMVNcWC9VgfKochGf367vFs7W57E8PV9bgtD+O4YV4HXAaKKaXFrg7vIWezj8soWRTNilxSQVMQWcQwPP9Q1xRPObj0AuHqAUHRGGrM0Ukda+BBEEg9PdueDrFav12Akuu7hc8eeDa2jiqI3BvQ0xVQeAcJE++lCc4M0KuvcaOI4/tIhF3oZO0uEgxGZ7ibzIPVH+heoAYv9dwQ8zQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ddBy2hqk; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hvVxoDzg;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ddBy2hqk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d371k3m5yz2yrF
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Nov 2025 05:31:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762540299; x=1794076299;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Ivwc2M/ZDTDNDN4wnIiRBUD82UImX2K8AEI+zfxIyOU=;
-  b=hvVxoDzg5dvEmxnK0Puzm6qAIFkG8FzT3PkicSPRqxgmfVE4XkVaiXLm
-   SCjlAaQ9txzfrp5yXlOW1EH9+mlt17F6vFj2d6MwHcuxojEp0t6LQiant
-   7lw/FK+jg+dq59zlELr4mHeViPrjTvSulygV8k/GF9jrl9umU+y+HZsBR
-   UfjGXdAT3bukdtrHCBs6Rms8C4K+QKohQUs51dw4N+AvoPd0XxaksWAQP
-   XKOEIhtxs8jFJddgNNVVs5RhgrW1q5SIfTPKj9w3tRf6HTxpqDCGrj8TB
-   Cpg0EEJCvJH7igNJBLb0rdf3pdX3f+Iwwk5rCKVWuCMnOJbAJH1e63+uY
-   Q==;
-X-CSE-ConnectionGUID: LCBeQVfPS/6V2OgPCP8H7Q==
-X-CSE-MsgGUID: JAO6yhhxTHG8IeWsYswOPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11606"; a="63902319"
-X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; 
-   d="scan'208";a="63902319"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 10:31:36 -0800
-X-CSE-ConnectionGUID: RgnJVNmPQuS+l15b/XeJnA==
-X-CSE-MsgGUID: T3lEpinBQaalfC++rcdn3g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; 
-   d="scan'208";a="187355309"
-Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.111.112]) ([10.125.111.112])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 10:31:35 -0800
-Message-ID: <d84eafa5-0038-436e-aa53-9675d4e630b6@intel.com>
-Date: Fri, 7 Nov 2025 11:31:34 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d383J3j77z2xQ0
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Nov 2025 06:18:03 +1100 (AEDT)
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-477442b1de0so7299885e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Nov 2025 11:18:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762543079; x=1763147879; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BoyRAxBYJ97KZHdMcvP1wI7gdZM18PW/SDBquVzm/CM=;
+        b=ddBy2hqk4zw767WzsHxLW2UeiK3gPLhs/rCYFEVKLFhpPzYeN8yGgTxd+Bt5aibIvR
+         1Wc9p/PlcbBZkMXrlMUeflCLykUsL5W0HEDHKAQ6J/q03yT3fFYPy8J1Auj8ilqjECj9
+         Ggfq0+kG50KkEQuUcR1xIFbF2Bwl2OUvoCgr7iyHFJig6jkgGH8IdwLtS4gDFDfIvCE7
+         scY9b2e6zJuBWbB8T7eENJDz+3Ig4/j6Kf/alWGlYrC4JmqXRhBbzt0IloT1zyOUA3Zc
+         XUKrc0YAm5ZH7liPcVx+sbHHrGSoiZCgOcER3mKNK8CiUe86p1G6V+80RJsapejYqyt9
+         tMMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762543079; x=1763147879;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BoyRAxBYJ97KZHdMcvP1wI7gdZM18PW/SDBquVzm/CM=;
+        b=AUvv7o3z8manHafknBK1hjEqlrXfnPCRM5Id7JN/23bX36Xp/5c49eHzF6ETqc2wpt
+         YpFN5uxHOc0bCETLBtUc+keqQUFWb7svB1ybYC9B5fgKB+tBN6ThOS9GqfIPP+W1G4+P
+         5pvCc6gdmpcOIxiXncrXBMxWO9KBJ4jEuFaGTQ1hNoV/TG/FNCn2qJjSNUmq3iRu69xV
+         37md4PAQRHNHIbm9r/DR3+CK2wpubt3j2AtgreXMk3kTtfHHkrLH+63osaDFho/3MqB2
+         DY+cgh+ZNpGnhovThuaCwAHy9J4165rTc+DV/pNq33wJpt9mJEhQ8D/kMUHuIc15LS37
+         STBg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4yPR0iwbt/+1EDdmyHqydnaP2MO7HZCfFxo0xKai6fVI5fqKHaT5PGV/0s821lzNTHHvtZcBA0SPiQ+E=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwW22lqHcjzcwVPCs6duGGnF8a6C7Tk1U5RIl2Yl532eY/62Vzh
+	kHzN7zQ3C4CCy51is5cIFfNDK/gE36CjmuhJdjgQYrIyGpRSvgeI7B+s
+X-Gm-Gg: ASbGncvx+NyZVyk8XuBOnEK5sXbdSF2I22IHUII0EsdkNIE2Hb8nYI4Ufp3NDNRuULg
+	slv/PGKobTtS4bDEZhmm6d16MDiC4sexBMyV7lAIfEa5xBcKIAKXo0beT3cmiZ8ZIpI+r2+tune
+	gkHfSN+bOBRYuUQTORuOOOkDr8ncMTOrGjI4sG90j5zHTeqnuafmCe7nAAr6OB05oGS8SlvJ68H
+	qSn62OzO/zgjOG7qiFnoNbCohWdJOCm2hr3tbSCnEKcCFRo0l7CUfVzqW9yj04QLVTFR93DR0s4
+	1M/OwHaDeFgU4SFcMWEOvhBKYH6trribOREE/bWiQxkOCsg5X9ny0LDuKLs+dXBIb8P0cLX6uRq
+	YKdWgoylPzS3hF0I/XwzX39SBEkcpGzqK3fYPdVymVXbcWO03jZW2IsSn7uwD4IHA5aVzjNuDJk
+	X8aZlVvUhbnkjQF4j+i2h/wDcSiciKVPXa0mjbh+BWztvQlXL0TU/q
+X-Google-Smtp-Source: AGHT+IGwWldiHMKs6o3o24t2zUapUEv2nDiVIW1qgftMpp+s7M3k154xFpb/vMUGopieuIUWMdpZmw==
+X-Received: by 2002:a05:600c:45c7:b0:477:55b6:cdd6 with SMTP id 5b1f17b1804b1-4777322f0a4mr1228445e9.10.1762543078570;
+        Fri, 07 Nov 2025 11:17:58 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42abe62b23csm6811350f8f.10.2025.11.07.11.17.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Nov 2025 11:17:58 -0800 (PST)
+Date: Fri, 7 Nov 2025 19:17:53 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: LKML <linux-kernel@vger.kernel.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Andrew Cooper
+ <andrew.cooper3@citrix.com>, Linus Torvalds
+ <torvalds@linux-foundation.org>, kernel test robot <lkp@intel.com>, Russell
+ King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
+ x86@kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, Palmer
+ Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org, Heiko
+ Carstens <hca@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, Nicolas
+ Palix <nicolas.palix@imag.fr>, Peter Zijlstra <peterz@infradead.org>,
+ Darren Hart <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+ <jack@suse.cz>, linux-fsdevel@vger.kernel.org
+Subject: Re: [patch V5 07/12] uaccess: Provide scoped user access regions
+Message-ID: <20251107191753.7433d2dc@pumpkin>
+In-Reply-To: <20251027083745.546420421@linutronix.de>
+References: <20251027083700.573016505@linutronix.de>
+	<20251027083745.546420421@linutronix.de>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,152 +111,98 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/6 v7] acpi/ghes: Add helper to copy CXL protocol error
- info to work struct
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
- linux-cxl@vger.kernel.org
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
- Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
-References: <20251104182446.863422-1-fabio.m.de.francesco@linux.intel.com>
- <20251104182446.863422-6-fabio.m.de.francesco@linux.intel.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20251104182446.863422-6-fabio.m.de.francesco@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Mon, 27 Oct 2025 09:43:55 +0100 (CET)
+Thomas Gleixner <tglx@linutronix.de> wrote:
 
+> User space access regions are tedious and require similar code patterns all
+> over the place:
+...
+> There have been issues with using the wrong user_*_access_end() variant in
+> the error path and other typical Copy&Pasta problems, e.g. using the wrong
+> fault label in the user accessor which ends up using the wrong accesss end
+> variant. 
+> 
+> These patterns beg for scopes with automatic cleanup. The resulting outcome
+> is:
+>     	scoped_user_read_access(from, Efault)
+> 		unsafe_get_user(val, from, Efault);
+> 	return 0;
+>   Efault:
+> 	return -EFAULT;
+> 
+> The scope guarantees the proper cleanup for the access mode is invoked both
+> in the success and the failure (fault) path.
+> 
+...
 
-On 11/4/25 11:22 AM, Fabio M. De Francesco wrote:
-> Make a helper out of cxl_cper_post_prot_err() that checks the CXL agent
-> type and copy the CPER CXL protocol errors information to a work data
-> structure.
-> 
-> Export the new symbol for reuse by ELOG.
-> 
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+The code doesn't work if the 'from' (above) is 'const foo __user *from'.
+Due to assigning away constness.
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>> ---
->  drivers/acpi/apei/ghes.c | 42 ++++++++++++++++++++++++++--------------
->  include/cxl/event.h      | 10 ++++++++++
->  2 files changed, 37 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index e69ae864f43d..2f4632d9855a 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -734,20 +734,12 @@ int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
->  }
->  EXPORT_SYMBOL_GPL(cxl_cper_sec_prot_err_valid);
->  
-> -static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> -				   int severity)
-> +int cxl_cper_setup_prot_err_work_data(struct cxl_cper_prot_err_work_data *wd,
-> +				      struct cxl_cper_sec_prot_err *prot_err,
-> +				      int severity)
->  {
-> -	struct cxl_cper_prot_err_work_data wd;
->  	u8 *dvsec_start, *cap_start;
->  
-> -	if (cxl_cper_sec_prot_err_valid(prot_err))
-> -		return;
-> -
-> -	guard(spinlock_irqsave)(&cxl_cper_prot_err_work_lock);
-> -
-> -	if (!cxl_cper_prot_err_work)
-> -		return;
-> -
->  	switch (prot_err->agent_type) {
->  	case RCD:
->  	case DEVICE:
-> @@ -756,20 +748,40 @@ static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
->  	case RP:
->  	case DSP:
->  	case USP:
-> -		memcpy(&wd.prot_err, prot_err, sizeof(wd.prot_err));
-> +		memcpy(&wd->prot_err, prot_err, sizeof(wd->prot_err));
->  
->  		dvsec_start = (u8 *)(prot_err + 1);
->  		cap_start = dvsec_start + prot_err->dvsec_len;
->  
-> -		memcpy(&wd.ras_cap, cap_start, sizeof(wd.ras_cap));
-> -		wd.severity = cper_severity_to_aer(severity);
-> +		memcpy(&wd->ras_cap, cap_start, sizeof(wd->ras_cap));
-> +		wd->severity = cper_severity_to_aer(severity);
->  		break;
->  	default:
->  		pr_err_ratelimited("CXL CPER invalid agent type: %d\n",
->  				   prot_err->agent_type);
-> -		return;
-> +		return -EINVAL;
->  	}
->  
-> +	return 0;
+The changes below fix the build, I suspect the code is then correct.
+
+...
+> +/* Define RW variant so the below _mode macro expansion works */
+> +#define masked_user_rw_access_begin(u)	masked_user_access_begin(u)
+> +#define user_rw_access_begin(u, s)	user_access_begin(u, s)
+> +#define user_rw_access_end()		user_access_end()
+> +
+> +/* Scoped user access */
+> +#define USER_ACCESS_GUARD(_mode)				\
+
+#define USER_ACCESS_GUARD(_mode, void)
+(but change all the void below to a different name...)
+
+> +static __always_inline void __user *				\
+> +class_user_##_mode##_begin(void __user *ptr)			\
+> +{								\
+> +	return ptr;						\
+> +}								\
+> +								\
+> +static __always_inline void					\
+> +class_user_##_mode##_end(void __user *ptr)			\
+> +{								\
+> +	user_##_mode##_access_end();				\
+> +}								\
+> +								\
+> +DEFINE_CLASS(user_ ##_mode## _access, void __user *,		\
+> +	     class_user_##_mode##_end(_T),			\
+> +	     class_user_##_mode##_begin(ptr), void __user *ptr)	\
+> +								\
+> +static __always_inline class_user_##_mode##_access_t		\
+> +class_user_##_mode##_access_ptr(void __user *scope)		\
+> +{								\
+> +	return scope;						\
 > +}
-> +EXPORT_SYMBOL_GPL(cxl_cper_setup_prot_err_work_data);
 > +
-> +static void cxl_cper_post_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> +				   int severity)
-> +{
-> +	struct cxl_cper_prot_err_work_data wd;
+> +USER_ACCESS_GUARD(read)
+> +USER_ACCESS_GUARD(write)
+> +USER_ACCESS_GUARD(rw)
+
+USER_ACCESS_GUARD(read, const void)
+USER_ACCESS_GUARD(write, void)
+USER_ACCESS_GUARD(rw, void)
+
+> +#undef USER_ACCESS_GUARD
+...
+> +#define __scoped_user_access(mode, uptr, size, elbl)					\
+> +for (bool done = false; !done; done = true)						\
+> +	for (void __user *_tmpptr = __scoped_user_access_begin(mode, uptr, size, elbl); \
+
+	for (typeof(uptr) _tmpptr = ...
+
+> +	     !done; done = true)							\
+> +		for (CLASS(user_##mode##_access, scope)(_tmpptr); !done; done = true)	\
+> +			/* Force modified pointer usage within the scope */		\
+> +			for (const typeof(uptr) uptr = _tmpptr; !done; done = true)
 > +
-> +	if (cxl_cper_sec_prot_err_valid(prot_err))
-> +		return;
-> +
-> +	guard(spinlock_irqsave)(&cxl_cper_prot_err_work_lock);
-> +
-> +	if (!cxl_cper_prot_err_work)
-> +		return;
-> +
-> +	if (cxl_cper_setup_prot_err_work_data(&wd, prot_err, severity))
-> +		return;
-> +
->  	if (!kfifo_put(&cxl_cper_prot_err_fifo, wd)) {
->  		pr_err_ratelimited("CXL CPER kfifo overflow\n");
->  		return;
-> diff --git a/include/cxl/event.h b/include/cxl/event.h
-> index 4d7d1036ea9c..94081aec597a 100644
-> --- a/include/cxl/event.h
-> +++ b/include/cxl/event.h
-> @@ -322,12 +322,22 @@ static inline int cxl_cper_prot_err_kfifo_get(struct cxl_cper_prot_err_work_data
->  
->  #ifdef CONFIG_ACPI_APEI_PCIEAER
->  int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err);
-> +int cxl_cper_setup_prot_err_work_data(struct cxl_cper_prot_err_work_data *wd,
-> +				      struct cxl_cper_sec_prot_err *prot_err,
-> +				      int severity);
->  #else
->  static inline int
->  cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
->  {
->  	return -EOPNOTSUPP;
->  }
-> +static inline int
-> +cxl_cper_setup_prot_err_work_data(struct cxl_cper_prot_err_work_data *wd,
-> +				  struct cxl_cper_sec_prot_err *prot_err,
-> +				  int severity)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
->  #endif
->  
->  #endif /* _LINUX_CXL_EVENT_H */
+
+	David
 
 
