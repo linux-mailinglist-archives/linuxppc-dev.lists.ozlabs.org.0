@@ -1,78 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-13921-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13922-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F8AC3EDB2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 09:01:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF39C3EDDF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 09:04:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2s2K1Qykz3bt9;
-	Fri,  7 Nov 2025 19:01:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2s5d3ps3z3bt7;
+	Fri,  7 Nov 2025 19:04:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762502473;
-	cv=none; b=Eb6CkkPAjall7sjCr26rhzf+dvWE0ZvnRbY6ufQxP6owupWSrRBuwK1v2S1hMutEUWg7MEH4s0bAWYjwgW+N3kbQ2qJRJtc9WFlU+WcDjnCl7Lj2bsrfb91M0S8+m6RuFBg+GlhCS0GX5UkrRReLIIKmE7O0RlZ0ngM/+jgVkO/jcZ6Wzhe2jflhNuI3fBMDMLr6zsdg6U9DrNNTKrb/VMgTGGc0O2uSBzerpHLqWT8obP3eIyeX0iZu/cXo9xsS7J0vf3j4LUoJEfCVZxXRTDVWqDh0pzUvcX7/nNAT/aruRRu6uyLUCGLxSlvqv/Ruvq5foRInkDqJiZEKny9+MQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762502645;
+	cv=none; b=gMMLZbkI9+kU6TRACcIA/XpS9z0gJ25BOL8h0Rw1hvQAzR6G7204kC7zDEd3ujXBOaEfoafrEhAh768XBxfw/5DlPGhufS7WxkKZaQXbTGkVnlP5mIw/zhgelx4N6TdtpywBG4i0LEO2KHNd7XElovsrY9N/0nifAu2MUrBZ2k0TVhJnGL4lpTXKCFhXgihuBPsYF/kLcfvJPuOvX6qV+S2hbj4FLc6pZimRysrbO7RtEPDi2ZidftJ2zSs+m4Dh3yrQBG1P9D8ga1CTdpBpMUEo4SkmlZLKKsPCdR8aDd37OvYrcmNYICib2hFKIS6DXa9emOocPlmDVGuZaxT+xQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762502473; c=relaxed/relaxed;
-	bh=HFe7VSm32n3rupz4aNUkfekRamRjQvJQRcQNZ0wc2KM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OoGVIqPrqj3eigASmlXtNbCft/dwQm4Qd0SDWWQofiE/xviAhgkuFBcgvLABgvk6pi6YhFynvZyGCrNiZPdgYadwMdbnVTDImaiO0472Aj/1Zgu+GEIJBP6GAeGL6K8SKaJsQ/47Hpw1WsER/0M10lE0CvdIKHM9Tu8pHD3As1wzNXFGIMZFYLUX8e5+vFJCfViqs19o/R3nDwik55uy0qMnFt03/GKsnWFHgpO+rPDqY2RDAtJPYvPVnmZKouVN3uNvCdqG51sRbt/NTqEFqr2z/SXZPVFXfMaJKxS4jCLS9UZPoGP/l8kVMPm/OO7KwuoCoHGdbmA0MUMfQmBBuQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TpussRQ4; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1762502645; c=relaxed/relaxed;
+	bh=r0WIycQGoDb293KrA8TcGBXpp6L8iM0FDINhPucJVkc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ACpB70TYDxKin+++bQ8z3aZY/YJlHOs/+CSR3ymNHkREVe+Jn77CtDKsqssyb9z7beO93D1LNgvZtkn4AtO7bKzyMSxW3e3aa0JbGS2oNZctVSKan2WU5TAtdjaLVr+ymoGOgEq+G23J4ubUo2OjMAc10690ry+e9aqhG3hT9rIaDllZGrOLFMeYeRpIT5w9pCiyKLja9Mm7VYsxEyDgt4S0gu9viEC6TpuA8ds1bUY1AzEo24LJFAasl62BGMy8wrT/GiMLbz7Owrz78TDeigkFLzJNqrvAvGyVvehWoHEual396xh+nV5MVDPEP1f+kEG1Iqm3b8jZAT6exkV2+g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OLdxbpPt; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TpussRQ4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OLdxbpPt;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2s2J07zGz2xPx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 19:01:11 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6IePZB007984;
-	Fri, 7 Nov 2025 08:01:03 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2s5c5PgZz2xPx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 19:04:04 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A74SYuG005487;
+	Fri, 7 Nov 2025 08:03:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=HFe7VS
-	m32n3rupz4aNUkfekRamRjQvJQRcQNZ0wc2KM=; b=TpussRQ415i4dRJx5UIw+i
-	RTzsgVFp6vVHTHCN4jgedkIYjdxh5XiaG1H8DsrEUQ8UmV8YBgdv6wqjTonyuMuI
-	mpT4Akhu2jJ6Rbfr4zRhouGXTaWHxH0DYGOKZHgyrcQ5GKlTF/Wk8i1ha0uMgyC/
-	YT7iHhmmHVGLt0HB/Q2h33YI2YNnA7vyEj5E7V6MdBj6CSsZv7au/v5JpDzZPf5B
-	qjiruo3ajckKlkJ92S2AOIO/y0f7bvgT0nhV7LQRP3x5Uw2BoPFycVDkN74RXYe0
-	82tP1NgFrDCNLzTEsxM+FYVNr2EZRWd+0zQqDDlBpWbMDjgroz0r3ppS7xWGnixw
-	==
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=r0WIycQGoDb293KrA8TcGBXpp6L8iM0FDINhPucJV
+	kc=; b=OLdxbpPtRlfedISYJtkV47VQXGKvrmnWwtT/z0GRXWqJ16Uct/ndwbrJ1
+	3xdL/rx9wsTWIyrneqkuyIS2DEUUeg1ZBrMJvyKJewZVniXaUx/Jk4FU+D5y2oCg
+	rgZo/AkpUOrJUm+PglqOODmtgKfmvdi3EzRnDZg1tQ7Ibm92QPz5HQqATiLkfFbx
+	TUvd2Ynn7nYKNaNc2z2CqZ6vrCZhE41BAqBJTE6cu6e/BsF5stZon/L2zMNCqsJ6
+	YZTIJwNHva4wS03g8cw2TwCPXxf38MuyLHooWvQ3yUlTeuxo2negfZHhEz7bYUNz
+	sH/pyqoLpJzxHYlTWgP9Aa+/0po4w==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59xcbgn9-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59vuuk6j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Nov 2025 08:01:02 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A77fSfI016652;
-	Fri, 7 Nov 2025 08:01:02 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59xcbgn6-1
+	Fri, 07 Nov 2025 08:03:54 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A783s6r012554;
+	Fri, 7 Nov 2025 08:03:54 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59vuuk6g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Nov 2025 08:01:02 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A780lmD018784;
-	Fri, 7 Nov 2025 08:01:01 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a5whnsmyy-1
+	Fri, 07 Nov 2025 08:03:54 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A73ShhD009863;
+	Fri, 7 Nov 2025 08:03:53 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a5x1kskpj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Nov 2025 08:01:00 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A780vJl28770730
+	Fri, 07 Nov 2025 08:03:53 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A783m5O53608754
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 7 Nov 2025 08:00:57 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 14F8C20043;
-	Fri,  7 Nov 2025 08:00:57 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6C91220040;
-	Fri,  7 Nov 2025 08:00:51 +0000 (GMT)
-Received: from [9.124.216.224] (unknown [9.124.216.224])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  7 Nov 2025 08:00:50 +0000 (GMT)
-Message-ID: <e93e3a1b-5cf1-4d2a-9b2c-5049e211f593@linux.ibm.com>
-Date: Fri, 7 Nov 2025 13:30:49 +0530
+	Fri, 7 Nov 2025 08:03:48 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AB0E52004D;
+	Fri,  7 Nov 2025 08:03:48 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 90D5820043;
+	Fri,  7 Nov 2025 08:03:45 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.124.216.224])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  7 Nov 2025 08:03:45 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Baoquan he <bhe@redhat.com>,
+        Jiri Bohac <jbohac@suse.cz>, Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Shivang Upadhyay <shivangu@linux.ibm.com>, kexec@lists.infradead.org
+Subject: [PATCH v7] powerpc/kdump: Add support for crashkernel CMA reservation
+Date: Fri,  7 Nov 2025 13:33:34 +0530
+Message-ID: <20251107080334.708028-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.51.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,228 +95,268 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: powerpc/e500: WARNING: at mm/hugetlb.c:4755 hugetlb_add_hstate
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Donet Tom <donettom@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com>
- <dd634b17-cc5e-497c-8228-2470f6533177@redhat.com>
- <82ef1da8-44c4-4a58-bd00-9839548cb72d@csgroup.eu>
- <ba3a2131-c8d4-481d-aebb-d25be7ae0d19@kernel.org>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <ba3a2131-c8d4-481d-aebb-d25be7ae0d19@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfXwXwiw5XkAnMN
- E4iz0D4XMTtpXTW+ttC2gbbj4DJDGZjIUoSV7NG933maJAHITQG6Zd2XLWN2oL2IgNHpX5bJyqM
- o6DtamlU9zP5JAPiR2Fsxt3SCFV8nzsD60YVzwXyBQ+9r91q+/vlh0ZyTKcCwbYLGjyf5RqxxNH
- +DmyK2JXxkXRX7Bwtf+LPXBK9ca6IdFq7+HrK9nMUJ7nOmcPiUdFIuJHEXqc4TeiIfxCq38KIwm
- 9z00G1SGXQ/Ntrhs008kR3oxL2lLh9rjznk9Hc6Cte+pTmy1ses8U++69HFQcTE7vsbsTuCCmfC
- u8uXzt4HCsGjjYCKdep1eQn5M35IZ4v0QGNxqrsz5E/VhfA59tTBeZ9CitsyfXCbV7jyY3/W31Z
- den7v3peg+NKGbC47RMH9ELxNtoJnQ==
-X-Proofpoint-GUID: R3aJPhoTvTn0abvlRp-sXvps_FZTHb5i
-X-Authority-Analysis: v=2.4 cv=OdCVzxTY c=1 sm=1 tr=0 ts=690da73e cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=YMD8eA4n9cmAyVnVb-4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: kelqwCqIquxNrS6cErwFBzSajhtYP5zM
+X-Proofpoint-ORIG-GUID: ok-v2_INB8CXqRzvkuZIlxuRjmwV7NCB
+X-Proofpoint-GUID: pMsfbICs8kSd9IhiyLUvd7fVEZhE_Ipd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX6wHxH0Carqaw
+ 3uhmEQaqZjX2F7UEgngy4/c/cdrNLJ/D7TDbTLpgjCeKD233BKKU69L7RhGfgHh1PJlEq1ep3EL
+ qOCBSiCgihZYUMNARnB79fIzC0K4K7tRejoayLjnmQcLbyFqRd3Lljb3e1RspxC7LF8l/b5/FKU
+ RudwlJcdrYHHBrycZtvr6wab18JIjkHipVuB1OxwzsyPkRC6UsPlv+LK7qd6chtleaONOStDWRw
+ QooZwuzOtKx/AlOgJmBekEj438v3AHHi+AXS5CZrWU5Y4L9jSio4ofAX9BqFWY0ugEJ227KLkoD
+ dciwWHon3Ln9DjwRaAwp8xheengn+8w/g49iUaUn7c7p+fO8iC19CMMWQp29CUwoif0wZsJdDwx
+ a0Zdk8goR2WfAtK3DA+P/Mi34+b1ZQ==
+X-Authority-Analysis: v=2.4 cv=U6qfzOru c=1 sm=1 tr=0 ts=690da7ea cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=20KFwNOVAAAA:8 a=pGLkceISAAAA:8 a=JfrnYn6hAAAA:8 a=cx1aSUdoMbGpntF6QmcA:9
+ a=1CNFftbPRP8L7MoqJWF3:22 a=cPQSjfK2_nFv0Q5t_7PE:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-11-07_01,2025-11-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 spamscore=0 suspectscore=0 impostorscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1011 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010021
+ bulkscore=0 adultscore=0 impostorscore=0 spamscore=0 phishscore=0
+ clxscore=1015 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2511010021
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Commit 35c18f2933c5 ("Add a new optional ",cma" suffix to the
+crashkernel= command line option") and commit ab475510e042 ("kdump:
+implement reserve_crashkernel_cma") added CMA support for kdump
+crashkernel reservation.
 
+Extend crashkernel CMA reservation support to powerpc.
 
-On 06/11/25 20:32, David Hildenbrand (Red Hat) wrote:
->>> Yes, we discussed that in [1].
->>>
->>> We'll have to set ARCH_HAS_GIGANTIC_PAGE on ppc and increase
->>> MAX_FOLIO_ORDER, because apparently, there might be ppc configs that
->>> have even larger hugetlb sizes than PUDs.
->>>
->>> @Cristophe, I was under the impression that you would send a fix. Do 
->>> you
->>> want me to prepare something and send it out?
->>
->> Indeed I would have liked to better understand the implications of all
->> this, but I didn't have the time.
->
-> Indeed, too me longer than it should to understand and make up my mind 
-> as well.
->
->>
->> By the way, you would describe the fix better than me so yes if you can
->> prepare and send a fix please do.
->
-> I just crafted the following. I yet have to test it more, some early
-> feedback+testing would be appreciated!
->
-> From 274928854644c49c92515f8675c090dba15a0db6 Mon Sep 17 00:00:00 2001
-> From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-> Date: Thu, 6 Nov 2025 11:31:45 +0100
-> Subject: [PATCH] mm: fix MAX_FOLIO_ORDER on some ppc64 configs with 
-> hugetlb
+The following changes are made to enable CMA reservation on powerpc:
 
-b4 did not detect this patch, and manually copying the patch text from this
-reply also did not apply cleanly on upstream master and linuxppc 
-master/next.
+- Parse and obtain the CMA reservation size along with other crashkernel
+  parameters
+- Call reserve_crashkernel_cma() to allocate the CMA region for kdump
+- Include the CMA-reserved ranges in the usable memory ranges for the
+  kdump kernel to use.
+- Exclude the CMA-reserved ranges from the crash kernel memory to
+  prevent them from being exported through /proc/vmcore.
 
-- Sourabh Jain
+With the introduction of the CMA crashkernel regions,
+crash_exclude_mem_range() needs to be called multiple times to exclude
+both crashk_res and crashk_cma_ranges from the crash memory ranges. To
+avoid repetitive logic for validating mem_ranges size and handling
+reallocation when required, this functionality is moved to a new wrapper
+function crash_exclude_mem_range_guarded().
 
->
-> In the past, CONFIG_ARCH_HAS_GIGANTIC_PAGE indicated that we support
-> runtime allocation of gigantic hugetlb folios. In the meantime it evolved
-> into a generic way for the architecture to state that it supports
-> gigantic hugetlb folios.
->
-> In commit fae7d834c43c ("mm: add __dump_folio()") we started using
-> CONFIG_ARCH_HAS_GIGANTIC_PAGE to decide MAX_FOLIO_ORDER: whether we could
-> have folios larger than what the buddy can handle. In the context of
-> that commit, we started using MAX_FOLIO_ORDER to detect page corruptions
-> when dumping tail pages of folios. Before that commit, we assumed that
-> we cannot have folios larger than the highest buddy order, which was
-> obviously wrong.
->
-> In commit 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes
-> when registering hstate"), we used MAX_FOLIO_ORDER to detect
-> inconsistencies, and in fact, we found some now.
->
-> Powerpc allows for configs that can allocate gigantic folio during boot
-> (not at runtime), that do not set CONFIG_ARCH_HAS_GIGANTIC_PAGE and can
-> exceed PUD_ORDER.
->
-> To fix it, let's make powerpc select CONFIG_ARCH_HAS_GIGANTIC_PAGE for
-> all 64bit configs, and increase the maximum folio size to P4D_ORDER.
->
-> Ideally, we'd have a better way to obtain a maximum value. But this 
-> should
-> be good enough for now fix the issue and now mostly states "no real folio
-> size limit".
->
-> While at it, handle gigantic DAX folios more clearly: DAX can only
-> end up creating gigantic folios with HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
->
-> Add a new Kconfig option HAVE_GIGANTIC_FOLIOS to make both cases
-> clearer. In particular, worry about ARCH_HAS_GIGANTIC_PAGE only with
-> HUGETLB_PAGE.
->
-> Note: with enabling CONFIG_ARCH_HAS_GIGANTIC_PAGE on PPC64, we will now
-> also allow for runtime allocations of folios in some more powerpc 
-> configs.
-> I don't think this is a problem, but if it is we could handle it through
-> __HAVE_ARCH_GIGANTIC_PAGE_RUNTIME_SUPPORTED.
->
-> While __dump_page()/__dump_folio was also problematic (not handling 
-> dumping
-> of tail pages of such gigantic folios correctly), it doesn't relevant
-> critical enough to mark it as a fix.
->
-> Fixes: 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes 
-> when registering hstate")
-> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> ---
->  arch/powerpc/Kconfig                   | 1 +
->  arch/powerpc/platforms/Kconfig.cputype | 1 -
->  include/linux/mm.h                     | 4 ++--
->  include/linux/pgtable.h                | 1 +
->  mm/Kconfig                             | 7 +++++++
->  5 files changed, 11 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index e24f4d88885ae..55c3626c86273 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -137,6 +137,7 @@ config PPC
->      select ARCH_HAS_DMA_OPS            if PPC64
->      select ARCH_HAS_FORTIFY_SOURCE
->      select ARCH_HAS_GCOV_PROFILE_ALL
-> +    select ARCH_HAS_GIGANTIC_PAGE        if PPC64
->      select ARCH_HAS_KCOV
->      select ARCH_HAS_KERNEL_FPU_SUPPORT    if PPC64 && PPC_FPU
->      select ARCH_HAS_MEMBARRIER_CALLBACKS
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype 
-> b/arch/powerpc/platforms/Kconfig.cputype
-> index 7b527d18aa5ee..4c321a8ea8965 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -423,7 +423,6 @@ config PPC_64S_HASH_MMU
->  config PPC_RADIX_MMU
->      bool "Radix MMU Support"
->      depends on PPC_BOOK3S_64
-> -    select ARCH_HAS_GIGANTIC_PAGE
->      default y
->      help
->        Enable support for the Power ISA 3.0 Radix style MMU. Currently 
-> this
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index d16b33bacc32b..4842edc875185 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pages(const 
-> struct folio *folio)
->      return folio_large_nr_pages(folio);
->  }
->
-> -#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
-> +#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
->  /*
->   * We don't expect any folios that exceed buddy sizes (and consequently
->   * memory sections).
-> @@ -2092,7 +2092,7 @@ static inline unsigned long folio_nr_pages(const 
-> struct folio *folio)
->   * There is no real limit on the folio size. We limit them to the 
-> maximum we
->   * currently expect (e.g., hugetlb, dax).
->   */
-> -#define MAX_FOLIO_ORDER        PUD_ORDER
-> +#define MAX_FOLIO_ORDER        P4D_ORDER
->  #endif
->
->  #define MAX_FOLIO_NR_PAGES    (1UL << MAX_FOLIO_ORDER)
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 32e8457ad5352..09fc3c2ba39e2 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -7,6 +7,7 @@
->
->  #define PMD_ORDER    (PMD_SHIFT - PAGE_SHIFT)
->  #define PUD_ORDER    (PUD_SHIFT - PAGE_SHIFT)
-> +#define P4D_ORDER    (P4D_SHIFT - PAGE_SHIFT)
->
->  #ifndef __ASSEMBLY__
->  #ifdef CONFIG_MMU
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 0e26f4fc8717b..ca3f146bc7053 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -908,6 +908,13 @@ config PAGE_MAPCOUNT
->  config PGTABLE_HAS_HUGE_LEAVES
->      def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
->
-> +#
-> +# We can end up creating gigantic folio.
-> +#
-> +config HAVE_GIGANTIC_FOLIOS
-> +    def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
-> +         (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
-> +
->  # TODO: Allow to be enabled without THP
->  config ARCH_SUPPORTS_HUGE_PFNMAP
->      def_bool n
+To ensure proper CMA reservation, reserve_crashkernel_cma() is called
+after pageblock_order is initialized.
+
+Update kernel-parameters.txt to document CMA support for crashkernel on
+powerpc architecture.
+
+Cc: Baoquan he <bhe@redhat.com>
+Cc: Jiri Bohac <jbohac@suse.cz>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
+Cc: kexec@lists.infradead.org
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+---
+Changelog:
+
+v6 -> v7
+https://lore.kernel.org/all/20251104132818.1724562-1-sourabhjain@linux.ibm.com/
+ - declare crashk_cma_size static
+
+---
+ .../admin-guide/kernel-parameters.txt         |  2 +-
+ arch/powerpc/include/asm/kexec.h              |  2 +
+ arch/powerpc/kernel/setup-common.c            |  4 +-
+ arch/powerpc/kexec/core.c                     | 10 ++++-
+ arch/powerpc/kexec/ranges.c                   | 43 ++++++++++++++-----
+ 5 files changed, 47 insertions(+), 14 deletions(-)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 6c42061ca20e..1c10190d583d 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -1013,7 +1013,7 @@
+ 			It will be ignored when crashkernel=X,high is not used
+ 			or memory reserved is below 4G.
+ 	crashkernel=size[KMG],cma
+-			[KNL, X86] Reserve additional crash kernel memory from
++			[KNL, X86, ppc] Reserve additional crash kernel memory from
+ 			CMA. This reservation is usable by the first system's
+ 			userspace memory and kernel movable allocations (memory
+ 			balloon, zswap). Pages allocated from this memory range
+diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+index 4bbf9f699aaa..bd4a6c42a5f3 100644
+--- a/arch/powerpc/include/asm/kexec.h
++++ b/arch/powerpc/include/asm/kexec.h
+@@ -115,9 +115,11 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt, struct crash_mem
+ #ifdef CONFIG_CRASH_RESERVE
+ int __init overlaps_crashkernel(unsigned long start, unsigned long size);
+ extern void arch_reserve_crashkernel(void);
++extern void kdump_cma_reserve(void);
+ #else
+ static inline void arch_reserve_crashkernel(void) {}
+ static inline int overlaps_crashkernel(unsigned long start, unsigned long size) { return 0; }
++static inline void kdump_cma_reserve(void) { }
+ #endif
+ 
+ #if defined(CONFIG_CRASH_DUMP)
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 68d47c53876c..c8c42b419742 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -35,6 +35,7 @@
+ #include <linux/of_irq.h>
+ #include <linux/hugetlb.h>
+ #include <linux/pgtable.h>
++#include <asm/kexec.h>
+ #include <asm/io.h>
+ #include <asm/paca.h>
+ #include <asm/processor.h>
+@@ -995,11 +996,12 @@ void __init setup_arch(char **cmdline_p)
+ 	initmem_init();
+ 
+ 	/*
+-	 * Reserve large chunks of memory for use by CMA for fadump, KVM and
++	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM and
+ 	 * hugetlb. These must be called after initmem_init(), so that
+ 	 * pageblock_order is initialised.
+ 	 */
+ 	fadump_cma_init();
++	kdump_cma_reserve();
+ 	kvm_cma_reserve();
+ 	gigantic_hugetlb_cma_reserve();
+ 
+diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+index d1a2d755381c..e59bdfcc6463 100644
+--- a/arch/powerpc/kexec/core.c
++++ b/arch/powerpc/kexec/core.c
+@@ -59,6 +59,8 @@ void machine_kexec(struct kimage *image)
+ 
+ #ifdef CONFIG_CRASH_RESERVE
+ 
++static unsigned long long crashk_cma_size;
++
+ static unsigned long long __init get_crash_base(unsigned long long crash_base)
+ {
+ 
+@@ -110,7 +112,7 @@ void __init arch_reserve_crashkernel(void)
+ 
+ 	/* use common parsing */
+ 	ret = parse_crashkernel(boot_command_line, total_mem_sz, &crash_size,
+-				&crash_base, NULL, NULL, NULL);
++				&crash_base, NULL, &crashk_cma_size, NULL);
+ 
+ 	if (ret)
+ 		return;
+@@ -130,6 +132,12 @@ void __init arch_reserve_crashkernel(void)
+ 	reserve_crashkernel_generic(crash_size, crash_base, 0, false);
+ }
+ 
++void __init kdump_cma_reserve(void)
++{
++	if (crashk_cma_size)
++		reserve_crashkernel_cma(crashk_cma_size);
++}
++
+ int __init overlaps_crashkernel(unsigned long start, unsigned long size)
+ {
+ 	return (start + size) > crashk_res.start && start <= crashk_res.end;
+diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
+index 3702b0bdab14..3bd27c38726b 100644
+--- a/arch/powerpc/kexec/ranges.c
++++ b/arch/powerpc/kexec/ranges.c
+@@ -515,7 +515,7 @@ int get_exclude_memory_ranges(struct crash_mem **mem_ranges)
+  */
+ int get_usable_memory_ranges(struct crash_mem **mem_ranges)
+ {
+-	int ret;
++	int ret, i;
+ 
+ 	/*
+ 	 * Early boot failure observed on guests when low memory (first memory
+@@ -528,6 +528,13 @@ int get_usable_memory_ranges(struct crash_mem **mem_ranges)
+ 	if (ret)
+ 		goto out;
+ 
++	for (i = 0; i < crashk_cma_cnt; i++) {
++		ret = add_mem_range(mem_ranges, crashk_cma_ranges[i].start,
++				    crashk_cma_ranges[i].end - crashk_cma_ranges[i].start + 1);
++		if (ret)
++			goto out;
++	}
++
+ 	ret = add_rtas_mem_range(mem_ranges);
+ 	if (ret)
+ 		goto out;
+@@ -546,6 +553,22 @@ int get_usable_memory_ranges(struct crash_mem **mem_ranges)
+ #endif /* CONFIG_KEXEC_FILE */
+ 
+ #ifdef CONFIG_CRASH_DUMP
++static int crash_exclude_mem_range_guarded(struct crash_mem **mem_ranges,
++					   unsigned long long mstart,
++					   unsigned long long mend)
++{
++	struct crash_mem *tmem = *mem_ranges;
++
++	/* Reallocate memory ranges if there is no space to split ranges */
++	if (tmem && (tmem->nr_ranges == tmem->max_nr_ranges)) {
++		tmem = realloc_mem_ranges(mem_ranges);
++		if (!tmem)
++			return -ENOMEM;
++	}
++
++	return crash_exclude_mem_range(tmem, mstart, mend);
++}
++
+ /**
+  * get_crash_memory_ranges - Get crash memory ranges. This list includes
+  *                           first/crashing kernel's memory regions that
+@@ -557,7 +580,6 @@ int get_usable_memory_ranges(struct crash_mem **mem_ranges)
+ int get_crash_memory_ranges(struct crash_mem **mem_ranges)
+ {
+ 	phys_addr_t base, end;
+-	struct crash_mem *tmem;
+ 	u64 i;
+ 	int ret;
+ 
+@@ -582,19 +604,18 @@ int get_crash_memory_ranges(struct crash_mem **mem_ranges)
+ 			sort_memory_ranges(*mem_ranges, true);
+ 	}
+ 
+-	/* Reallocate memory ranges if there is no space to split ranges */
+-	tmem = *mem_ranges;
+-	if (tmem && (tmem->nr_ranges == tmem->max_nr_ranges)) {
+-		tmem = realloc_mem_ranges(mem_ranges);
+-		if (!tmem)
+-			goto out;
+-	}
+-
+ 	/* Exclude crashkernel region */
+-	ret = crash_exclude_mem_range(tmem, crashk_res.start, crashk_res.end);
++	ret = crash_exclude_mem_range_guarded(mem_ranges, crashk_res.start, crashk_res.end);
+ 	if (ret)
+ 		goto out;
+ 
++	for (i = 0; i < crashk_cma_cnt; ++i) {
++		ret = crash_exclude_mem_range_guarded(mem_ranges, crashk_cma_ranges[i].start,
++					      crashk_cma_ranges[i].end);
++		if (ret)
++			goto out;
++	}
++
+ 	/*
+ 	 * FIXME: For now, stay in parity with kexec-tools but if RTAS/OPAL
+ 	 *        regions are exported to save their context at the time of
+-- 
+2.51.1
 
 
