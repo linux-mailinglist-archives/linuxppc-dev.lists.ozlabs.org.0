@@ -1,65 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-13904-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13907-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D20C3DE11
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 00:45:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1E3C3DF45
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 01:12:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2f2r5cyNz3bf2;
-	Fri,  7 Nov 2025 10:45:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d2fdz3SRRz3bf2;
+	Fri,  7 Nov 2025 11:12:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762472756;
-	cv=none; b=BZbfxFP5T4KjNImqBBfAe0IlxL86KwcCsHCi9oB0zIF4/uwJFjt+OIMqq+g01si215lMj47lF5Rd567JN75NfdXwgmRc3/IaPA32RVlmpHGB0gVQJ+6huVHzPl5NnoaoH3bhXZtGB6vlEfEOPxRh85KfDGuPlfDopLhw8bIqTCu2/7kbmG769E1gOj3RIWE0kbe+U70huG7R7JCFqwmKi/GwmYs2GoTEyTylyZWKChrOaN182mXNUt2MG98U4zQc2LILLQuhU465xnEhw9dbWqdxvbKpTeuHH/HxuOHwxn8XgP9m/IaN3YLIpyyJ66t8CHwummm79Er63Tvj2LZGhQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762474375;
+	cv=none; b=WwOuZxo4wHlpm6cA89ceDJPXMr3wWXFjcOSESkAB9RTsescYJvDz+C86gVJ8EBYYgMk1lxh5Q+FpSvqtRWYwVcnmmGYzvz2CxFXYs7gWzzFgaLM+KNJa1OLn7Bo3wyP4X9mjEjhMEtPjiSvYFRrhDgKxRq56HaV6uI1wd6jKOFSNVCj2GkgWN0hWfpXSeqc7AbudWQHn9YCArZEws0Zmc3Df5XTs84C3YJcurt2ZL7Sxj5pe/UsHZa77JpsRK0/9gcVfpxCSyn4piPfZTnM++MNlH2fJedCNq038WnIujcmRC2ZNyGz5oy6Ke2djOWE3IQeIF7kunV0tcYU9xFfXYA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762472756; c=relaxed/relaxed;
-	bh=+gnFJJxqbLSg1TYkXQbbrbi6aZzsNHqAku1owFbVMNc=;
+	t=1762474375; c=relaxed/relaxed;
+	bh=FO2YeDdLThGKX3T8+BGIBpNFIBVY5RgAYAnyL2k8ztM=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=HsVODfxRogot77aMEteNphpsTLaREzYxsIaSeXZOxgc3wxEvtcwi/I6+QIUOpyz/4YvV8LH6oTtscEEKvTTMYS9Hm0A4qUsetlFEyoxX7BD3fYtSX9iwAlkjxb0GrltPPhcuDrfl+rJoRv+kERych1yx8TyweaDuVIBncoFmLRFs9Jdu2jBV/l7DFVFkACGhaDizO5qQ08TxCT4RXM3GAVsN6xn5wj1Oyk22NAdGnMPRYAnPVREwcmRxgxdjnp2hkqNxOzVsuzVSnKN4ewenrA78tRERmWPCpR4go/HgQu2AcgA44EXn+9PQL/z6TG8ZuOhHMFapW1gRVYElsloDPQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nDaJ/5/t; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Disposition:In-Reply-To; b=PIxLFGL0ihn2Q1hcxdfvQ/UWkDqO1Uc+0mYIfNmTE4Kh6Vm/9RTvkMAQHrb1BGnZ8EAQS+BVgwcPrX7u9h/tSRgvZ88dB2heuxE43J41RO29LDsjLWYDYIhURR4FXYk4KKYQ0Mtgg1LirEzTjYidphb5L7YzugFzJrW4V1mI2/BopsN2OwZaorVWNiTgJZ6i/9mAPVJuy0wQQvenjzYxOqgCLrnWnVspIF4OnuDJsxa/Voh3b6M8ibnLOwAQQzASFizggBpa9lzsdyNemnq1FQQkwR45mXPVCKv88GeEa8/3lkzUHQjcc+/6kAumCaQtPjnnOnMLMBF4vrI3j8xZuA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=arLi1sXK; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nDaJ/5/t;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=arLi1sXK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2f2q6n75z2xQ4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 10:45:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2fdy4Gxkz2xQ4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 11:12:54 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3AF8F40605;
-	Thu,  6 Nov 2025 23:45:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2545C4CEF7;
-	Thu,  6 Nov 2025 23:45:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 55511601A7;
+	Fri,  7 Nov 2025 00:12:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0F1C4CEFB;
+	Fri,  7 Nov 2025 00:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762472753;
-	bh=23mhRYspHUO/+Jn5j6UsbhA1co9CDPUsRj1RdkMabQU=;
+	s=k20201202; t=1762474371;
+	bh=zVxtIiQXF/h3lLGX+vTX4ScikwyurKS7hUPFV5evgT4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=nDaJ/5/t364D5zfSObhgA0ft1VArPTqWeLPFQA2zIvyUNQrfV2m8D9AA6X3c5wRfH
-	 Q21Bodv0vO+P2iAZM+d8B129L6ihVGsJdLbnQgXgMWbxJxAKxB9W/Vzpt9ERYKmJRt
-	 aPh4IG8/t4b7ih5DeFQIRITz4ez1HnuyE4TWHMhy1rLMvRcLng9ku7ZrAH+AJOoAxT
-	 +SnElhanks/y9iRPZtvGOTsNrJWW8mOlltH/yeUnl3icmXwDxMakvBdKh4Ty7d1tei
-	 a8n09H4P4KN7mwJUyC1cfXnAir4KE2faeS5B4uxozC0VPQXKcCBLQQM2poCCsk8o7Z
-	 9Wg2vPA8Kn0XA==
-Date: Thu, 6 Nov 2025 17:45:51 -0600
+	b=arLi1sXKCOwj5bu+tukL49Vo2iKLJWUsqpLupqoRVBsB+qXse1CVN9RDSb3fOdmz0
+	 QWq+nqXxO6RDUAYD5duqY3eDg4gHTyBzD/i68NgZ2QkpJ6ydS9Bb2FQzOQpPKWj6vz
+	 bXYRTGV9r6zODcS1pIFaOYL4UGDie/fNdCt2WEedrIO50EsyjA+nOsrXtKoZub5BKl
+	 jDZCQ8MH3S60cl138FURAdotszxxo8Q2T6iL0D/iOje6ZfuODWgWtANGpLjPjKU9Fp
+	 h9YpZQQKVGWFV0rRMe/n3+geqebX703u7a4gtQFv7Zu+9PjvF4cnGRAKvTPfzEwtq+
+	 q8rhLXwIRWrPA==
+Date: Thu, 6 Nov 2025 18:12:49 -0600
 From: Bjorn Helgaas <helgaas@kernel.org>
-To: linux-pci@vger.kernel.org
-Cc: Christian Zigotzky <chzigotzky@xenosoft.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	mad skateman <madskateman@gmail.com>,
-	"R . T . Dickinson" <rtd2@xtra.co.nz>,
-	Darren Stevens <darren@stevens-zone.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Lukas Wunner <lukas@wunner.de>,
-	luigi burdo <intermediadc@hotmail.com>, Al <al@datazap.net>,
-	Roland <rol7and@gmx.com>, Hongxing Zhu <hongxing.zhu@nxp.com>,
-	hypexed@yahoo.com.au, linuxppc-dev@lists.ozlabs.org,
-	debian-powerpc@lists.debian.org, linux-kernel@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH 0/2] PCI/ASPM: Allow quirks to avoid L0s and L1
-Message-ID: <20251106234551.GA1976429@bhelgaas>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-pci@vger.kernel.org, sparclinux@vger.kernel.org,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Yinghai Lu <yinghai@kernel.org>,
+	Igor Mammedov <imammedo@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	linux-kernel@vger.kernel.org,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	linuxppc-dev@lists.ozlabs.org, regressions@leemhuis.info
+Subject: Re: [PATCH 02/24] sparc/PCI: Remove pcibios_enable_device() as they
+ do nothing extra
+Message-ID: <20251107001249.GA1977735@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,44 +80,31 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251106183643.1963801-1-helgaas@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8fcc0fd4b74f99d5c4d80d3907e7607a7d4c89da.camel@physik.fu-berlin.de>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Nov 06, 2025 at 12:36:37PM -0600, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> We enabled ASPM too aggressively in v6.18-rc1.  f3ac2ff14834 ("PCI/ASPM:
-> Enable all ClockPM and ASPM states for devicetree platforms") enabled ASPM
-> L0s, L1, and (if advertised) L1 PM Substates.
-> 
-> L1 PM Substates and Clock PM in particular are a problem because they
-> depend on CLKREQ# and sometimes device-specific configuration, and none of
-> this is discoverable in a generic way.
-> 
-> df5192d9bb0e ("PCI/ASPM: Enable only L0s and L1 for devicetree platforms")
-> (v6.18-rc3) backed off and omitted Clock PM and L1 Substates.
-> 
-> L0s and L1 are generically discoverable, but some devices advertise them
-> even though they don't work correctly.  This series is a way to avoid L0s
-> and L1 in that case.
-> 
-> Bjorn Helgaas (2):
->   PCI/ASPM: Cache Link Capabilities so quirks can override them
->   PCI/ASPM: Avoid L0s and L1 on Freescale Root Ports
-> 
->  drivers/pci/pcie/aspm.c | 42 ++++++++++++++++++++---------------------
->  drivers/pci/probe.c     |  5 ++---
->  drivers/pci/quirks.c    | 12 ++++++++++++
->  include/linux/pci.h     |  1 +
->  4 files changed, 36 insertions(+), 24 deletions(-)
+On Thu, Nov 06, 2025 at 08:49:50AM +0100, John Paul Adrian Glaubitz wrote:
+> On Fri, 2025-08-22 at 17:55 +0300, Ilpo Järvinen wrote:
+> > Under arch/sparc/ there are multiple copies of pcibios_enable_device()
+> > but none of those seem to do anything extra beyond what
+> > pci_enable_resources() is supposed to do. These functions could lead to
+> > inconsistencies in behavior, especially now as pci_enable_resources()
+> > and the bridge window resource flags behavior are going to be altered
+> > by upcoming changes.
 
-I put these on for-linus, hopefully for v6.18.  I would like to have
-some review and testing before asking Linus to pull them, especially
-since the first one is not completely trivial and is a change (but
-shouldn't be a functional change) for all platforms.
+> This change actually broke driver initialization on SPARC, see:
+> 
+> https://github.com/sparclinux/issues/issues/22
+
+#regzbot report: https://github.com/sparclinux/issues/issues/22
+#regzbot introduced: 754babaaf333
+#regzbot title: v6.18-rc3 fails to initialise mpt3sas on sparc T5-2
+
+754babaaf333 ("sparc/PCI: Remove pcibios_enable_device() as they do nothing extra")
 
