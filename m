@@ -1,78 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-13931-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13932-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3935C3FE92
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 13:36:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF20C40376
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 14:57:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d2z7b5nstz3bsN;
-	Fri,  7 Nov 2025 23:36:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d30ws6H86z3bs7;
+	Sat,  8 Nov 2025 00:57:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762518971;
-	cv=none; b=TfO67xBoEpwrS3A5WHW8ynTX9D6tbpQFOEan4yhVra91EEXbfxzlGrsBZ4Uoq3f2RS8eC3SEpGAz8og3jPHchLGRWsmsJ7Ey4dqx2sQr1RstffBoZNWTwLs8Q+zLcn2mSuwBamjUXrulx8PwmQW4vgImcVcb0l4oS3kvOwIeEml0GaYE57Y7CqVK8/EDehIKC4LkjPlqG2Ypj9j6Cy215R0m+Ck+vmeMWnKAYRQA94vcyWT5GDaBtpjoSzFuxlRscqrMFyUcvy4CN7AhVfusQ5iG53yANzeHST6ujJwLTQL8fqn7MPs0GKYdU3BjEMM4uupYoKS3injBlpbXpLpUYQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762523821;
+	cv=none; b=PFDR9pbMbgWUlVBAXJ5+Y4AL6M3xuRl1W4+YPrcjNOZRH25CTu1poiXbfuBIrV+MFtq7d7gExhWNo51F9NpvxnjiYCOJoe6g11Mayi0M/q0Rni2LS1LPhSJseM/e1dnLLPR7wBu0ZnLUdWHoaixYlGTfBInJsflW8g1zlvEY74SlfuAqhQIx7+mxJ53KF7TGFOQ6laP/33KBYNYs4jU2COpEVK18oO9PoJM0mfuKqlPfFzOH8E9vtyIdT0jebAaMnCFQxVNduFRGV7j4Ga5xxYUubpQHiSpoWNKtUWpo5P02g/BZrJXXOIkwCnESwEuH+OjF4ynwNXHFBgVHSYRdEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762518971; c=relaxed/relaxed;
-	bh=yk5KcvEXnz/6e4GbGdsHUAlmvii4limw0COKHBHmBOg=;
+	t=1762523821; c=relaxed/relaxed;
+	bh=/N0zytyf9GWg2MCOYMZ3KiEnbTtu2OLzkkLJO68YSF4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OGsgVelxhkdk3foBMWogqu+oUvxkISrx5IB3zVN4D3qavFvMvAk2y911x6h6TLnPTC0WAIz0zLBxZSStWNZbX50K/8CQ8vle1xggO0ySjhc7+dGnjsiPCU7NY0WLZmaOHV0uUChhBMFYdxjmoDyGByTumAAefO2udX75pah+BXXz/lf9lte0ndR7DhXljrOBHu6sPQRcwtfZbMTNwymtHt2Z3dhpwYXpPks748k5SA4Jc2XHxUF3gqTN3Z2J8OIQ/j4NMdPhpVmpUy2F3vay2IhPVD43nMs/xu6lYvpXQ47ksI/XMq7hDJma8sYXDYTXQW+bxIY2Mu5kwTIThQAD9g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tql71cxQ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tql71cxQ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d2z7V5BJzz2yFJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Nov 2025 23:36:06 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A7B88ct030770;
-	Fri, 7 Nov 2025 12:35:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=yk5Kcv
-	EXnz/6e4GbGdsHUAlmvii4limw0COKHBHmBOg=; b=tql71cxQc/zvjsCEASJb2h
-	PBn7t7CRx8yh9pwoEc7MJYOgp/PE7INT7AbgQqNCCQFx65zXk1Qm+Ll1SrgBjMpa
-	JUQuTNg6/Sinqq1FTQwdC+kkmH50EjrGGK9uYYztLPoHsEuQSuPTWFBwI1g6/qDs
-	GjhqL8iPvIRniutbVUEpTTiBsrZ7UYtWRkqW4xaeYdqfjCxrc7OFRbAHdRVFrdY9
-	X4QrMeKwonYjphKomp44FHHVs/sCERG5ViIaBJb4KTwdqXdQHabFeTZ+sqpdTt74
-	QqH34ANCctO4+TMHrx2ol46vlAiWMNZXC/U3pAPfz6L95F99NgkGZb0z0LGcCh2w
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59v2b8ta-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Nov 2025 12:35:58 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A7CMkhW024042;
-	Fri, 7 Nov 2025 12:35:58 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59v2b8t7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Nov 2025 12:35:57 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A7BF9jH025588;
-	Fri, 7 Nov 2025 12:35:57 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a5vht2tvg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Nov 2025 12:35:56 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A7CZrAk27329258
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 7 Nov 2025 12:35:53 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5066F20043;
-	Fri,  7 Nov 2025 12:35:53 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9D62220040;
-	Fri,  7 Nov 2025 12:35:48 +0000 (GMT)
-Received: from [9.124.216.224] (unknown [9.124.216.224])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  7 Nov 2025 12:35:46 +0000 (GMT)
-Message-ID: <5e4bc56e-f0ca-45b3-a7c8-114e7009dfd8@linux.ibm.com>
-Date: Fri, 7 Nov 2025 18:05:42 +0530
+	 In-Reply-To:Content-Type; b=nILqVdWs7RnjVEbIthGEfKvDkisEvtVBk61cao4tJVLbD/3mLY/DKvQ0/iO/6ELOfT0RjlAa4+KM3qV4cgPj1gEKmc/LKosVOvV2zunuPASyHAmChLB0kdOm4K8ZM88hoiH8NOYSmjYnoCVsCn/IhA1JVJeo73G22Y9CYJlzEfrx5BiUvHAwxmlhQyuNVVX4SiPd57kTIQdbb6EivtfYORaKFYzRBX9cWJyR/zVUrxn/F0RWcxJrBVaAA7VpwMlQCFGppwH3wQg3gZI7HjEPfFPB14z7BBihJSecSonAiE6PFSB4LnlBsZUzFhSI1f9r0I2XnGvjyJz94E7mqQ6NQg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d30wr3r00z2yrF
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Nov 2025 00:56:58 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F05461515;
+	Fri,  7 Nov 2025 05:56:18 -0800 (PST)
+Received: from [10.57.86.134] (unknown [10.57.86.134])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 235F03F66E;
+	Fri,  7 Nov 2025 05:56:22 -0800 (PST)
+Message-ID: <6a9c846f-22b6-4d5f-81dc-6cdcd4905952@arm.com>
+Date: Fri, 7 Nov 2025 13:56:20 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,106 +44,235 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: powerpc/e500: WARNING: at mm/hugetlb.c:4755 hugetlb_add_hstate
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Donet Tom <donettom@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com>
- <dd634b17-cc5e-497c-8228-2470f6533177@redhat.com>
- <82ef1da8-44c4-4a58-bd00-9839548cb72d@csgroup.eu>
- <ba3a2131-c8d4-481d-aebb-d25be7ae0d19@kernel.org>
- <e93e3a1b-5cf1-4d2a-9b2c-5049e211f593@linux.ibm.com>
- <b875435f-6a69-4989-bc21-4093c2ce6331@kernel.org>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <b875435f-6a69-4989-bc21-4093c2ce6331@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: r8gRlDEhBN4wEqaBaR_bCi37sPSPLYMr
-X-Proofpoint-ORIG-GUID: PLQF6PgjHeeQg6Df2UBSpWsbeG6sn6TJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX1RVYHPT3Hawz
- d3LMFqQaemFNKRbIjsIjEqBFH2ERQ83VSYb4zmOLLKl1yYv9AgZ8sL9LGtULzWEm9iOj0ztR2a9
- 5apzgN7voo8orzn6+yvvrXWfRS7hDrVlZeCQq2Tg/4bdJFbvAxb+wDMuiLEUaJqJx9ffqEF5EbP
- bnhc4a0rdXBkziZl8ftX6fRXaYebFaGGkiWYxi+5Z6aJ5S1C9fzO+AKYeU0zmdWV8GsnqX6TDFb
- jf23EXty4aOC/CffS0hAKDVqIW6hKq5rTP4p6qNWwZtJoZuY71mGalxOUtoKL1FAfIWJ8Hb85hw
- QRv+DgN9NDNQx5iKNtGrnu1DXhMEYp6qQJH/y/VgOb4tY41j8RFRfpILiQCm//nFf7IAKiIgYrS
- 2XBVT5+MoHogAmkszKrexx35mNp9Ow==
-X-Authority-Analysis: v=2.4 cv=H8HWAuYi c=1 sm=1 tr=0 ts=690de7ae cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=qiArQ2jmnHpOHsBwjaQA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-07_02,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501 adultscore=0
- impostorscore=0 clxscore=1015 bulkscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010021
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Subject: Re: [PATCH v4 05/12] mm: introduce CONFIG_ARCH_HAS_LAZY_MMU_MODE
+Content-Language: en-GB
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
+ <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-6-kevin.brodsky@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20251029100909.3381140-6-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On 29/10/2025 10:09, Kevin Brodsky wrote:
+> Architectures currently opt in for implementing lazy_mmu helpers by
+> defining __HAVE_ARCH_ENTER_LAZY_MMU_MODE.
+> 
+> In preparation for introducing a generic lazy_mmu layer that will
+> require storage in task_struct, let's switch to a cleaner approach:
+> instead of defining a macro, select a CONFIG option.
+> 
+> This patch introduces CONFIG_ARCH_HAS_LAZY_MMU_MODE and has each
+> arch select it when it implements lazy_mmu helpers.
+> __HAVE_ARCH_ENTER_LAZY_MMU_MODE is removed and <linux/pgtable.h>
+> relies on the new CONFIG instead.
+> 
+> On x86, lazy_mmu helpers are only implemented if PARAVIRT_XXL is
+> selected. This creates some complications in arch/x86/boot/, because
+> a few files manually undefine PARAVIRT* options. As a result
+> <asm/paravirt.h> does not define the lazy_mmu helpers, but this
+> breaks the build as <linux/pgtable.h> only defines them if
+> !CONFIG_ARCH_HAS_LAZY_MMU_MODE. There does not seem to be a clean
+> way out of this - let's just undefine that new CONFIG too.
+> 
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>  arch/arm64/Kconfig                                 | 1 +
+>  arch/arm64/include/asm/pgtable.h                   | 1 -
+>  arch/powerpc/include/asm/book3s/64/tlbflush-hash.h | 2 --
+>  arch/powerpc/platforms/Kconfig.cputype             | 1 +
+>  arch/sparc/Kconfig                                 | 1 +
+>  arch/sparc/include/asm/tlbflush_64.h               | 2 --
+>  arch/x86/Kconfig                                   | 1 +
+>  arch/x86/boot/compressed/misc.h                    | 1 +
+>  arch/x86/boot/startup/sme.c                        | 1 +
+>  arch/x86/include/asm/paravirt.h                    | 1 -
+>  include/linux/pgtable.h                            | 2 +-
+>  mm/Kconfig                                         | 3 +++
+>  12 files changed, 10 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 6663ffd23f25..e6bf5c7311b5 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -122,6 +122,7 @@ config ARM64
+>  	select ARCH_WANTS_NO_INSTR
+>  	select ARCH_WANTS_THP_SWAP if ARM64_4K_PAGES
+>  	select ARCH_HAS_UBSAN
+> +	select ARCH_HAS_LAZY_MMU_MODE
 
-On 07/11/25 14:32, David Hildenbrand (Red Hat) wrote:
-> On 07.11.25 09:00, Sourabh Jain wrote:
->>
->>
->> On 06/11/25 20:32, David Hildenbrand (Red Hat) wrote:
->>>>> Yes, we discussed that in [1].
->>>>>
->>>>> We'll have to set ARCH_HAS_GIGANTIC_PAGE on ppc and increase
->>>>> MAX_FOLIO_ORDER, because apparently, there might be ppc configs that
->>>>> have even larger hugetlb sizes than PUDs.
->>>>>
->>>>> @Cristophe, I was under the impression that you would send a fix. Do
->>>>> you
->>>>> want me to prepare something and send it out?
->>>>
->>>> Indeed I would have liked to better understand the implications of all
->>>> this, but I didn't have the time.
->>>
->>> Indeed, too me longer than it should to understand and make up my mind
->>> as well.
->>>
->>>>
->>>> By the way, you would describe the fix better than me so yes if you 
->>>> can
->>>> prepare and send a fix please do.
->>>
->>> I just crafted the following. I yet have to test it more, some early
->>> feedback+testing would be appreciated!
->>>
->>>  From 274928854644c49c92515f8675c090dba15a0db6 Mon Sep 17 00:00:00 2001
->>> From: "David Hildenbrand (Red Hat)" <david@kernel.org>
->>> Date: Thu, 6 Nov 2025 11:31:45 +0100
->>> Subject: [PATCH] mm: fix MAX_FOLIO_ORDER on some ppc64 configs with
->>> hugetlb
->>
->> b4 did not detect this patch, and manually copying the patch text 
->> from this
->> reply also did not apply cleanly on upstream master and linuxppc
->> master/next.
->
-> I have it on a branch here:
->
-> https://github.com/davidhildenbrand/linux/commit/274928854644c49c92515f8675c090dba15a0db6 
->
->
-> https://github.com/davidhildenbrand/linux.git max_folio_order
->
+nit: This list is mostly in alphabetical order. Further up the list there are a
+lot of ARCH_HAS_* entries. Perhaps move it to the correct position in that lot?
+Then ARCH_HAS_UBSAN stays out of order on its own.
 
-The above patch resolves the issue reported in this thread.
+Otherwise, all looks reasonable to me:
 
-Thanks for the fix David.
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 
-Thanks,
-Sourabh Jain
+>  	select ARM_AMBA
+>  	select ARM_ARCH_TIMER
+>  	select ARM_GIC
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 0944e296dd4a..54f8d6bb6f22 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -80,7 +80,6 @@ static inline void queue_pte_barriers(void)
+>  	}
+>  }
+>  
+> -#define  __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+>  static inline void arch_enter_lazy_mmu_mode(void)
+>  {
+>  	/*
+> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+> index 7704dbe8e88d..623a8a8b2d0e 100644
+> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+> @@ -24,8 +24,6 @@ DECLARE_PER_CPU(struct ppc64_tlb_batch, ppc64_tlb_batch);
+>  
+>  extern void __flush_tlb_pending(struct ppc64_tlb_batch *batch);
+>  
+> -#define __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+> -
+>  static inline void arch_enter_lazy_mmu_mode(void)
+>  {
+>  	struct ppc64_tlb_batch *batch;
+> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+> index 7b527d18aa5e..2942d57cf59c 100644
+> --- a/arch/powerpc/platforms/Kconfig.cputype
+> +++ b/arch/powerpc/platforms/Kconfig.cputype
+> @@ -93,6 +93,7 @@ config PPC_BOOK3S_64
+>  	select IRQ_WORK
+>  	select PPC_64S_HASH_MMU if !PPC_RADIX_MMU
+>  	select KASAN_VMALLOC if KASAN
+> +	select ARCH_HAS_LAZY_MMU_MODE
+>  
+>  config PPC_BOOK3E_64
+>  	bool "Embedded processors"
+> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+> index a630d373e645..2bad14744ca4 100644
+> --- a/arch/sparc/Kconfig
+> +++ b/arch/sparc/Kconfig
+> @@ -112,6 +112,7 @@ config SPARC64
+>  	select NEED_PER_CPU_PAGE_FIRST_CHUNK
+>  	select ARCH_SUPPORTS_SCHED_SMT if SMP
+>  	select ARCH_SUPPORTS_SCHED_MC  if SMP
+> +	select ARCH_HAS_LAZY_MMU_MODE
+>  
+>  config ARCH_PROC_KCORE_TEXT
+>  	def_bool y
+> diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
+> index 925bb5d7a4e1..4e1036728e2f 100644
+> --- a/arch/sparc/include/asm/tlbflush_64.h
+> +++ b/arch/sparc/include/asm/tlbflush_64.h
+> @@ -39,8 +39,6 @@ static inline void flush_tlb_range(struct vm_area_struct *vma,
+>  
+>  void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+>  
+> -#define __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+> -
+>  void flush_tlb_pending(void);
+>  void arch_enter_lazy_mmu_mode(void);
+>  void arch_flush_lazy_mmu_mode(void);
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index fa3b616af03a..ef4332d720ab 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -804,6 +804,7 @@ config PARAVIRT
+>  config PARAVIRT_XXL
+>  	bool
+>  	depends on X86_64
+> +	select ARCH_HAS_LAZY_MMU_MODE
+>  
+>  config PARAVIRT_DEBUG
+>  	bool "paravirt-ops debugging"
+> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+> index db1048621ea2..cdd7f692d9ee 100644
+> --- a/arch/x86/boot/compressed/misc.h
+> +++ b/arch/x86/boot/compressed/misc.h
+> @@ -11,6 +11,7 @@
+>  #undef CONFIG_PARAVIRT
+>  #undef CONFIG_PARAVIRT_XXL
+>  #undef CONFIG_PARAVIRT_SPINLOCKS
+> +#undef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>  #undef CONFIG_KASAN
+>  #undef CONFIG_KASAN_GENERIC
+>  
+> diff --git a/arch/x86/boot/startup/sme.c b/arch/x86/boot/startup/sme.c
+> index e7ea65f3f1d6..b76a7c95dfe1 100644
+> --- a/arch/x86/boot/startup/sme.c
+> +++ b/arch/x86/boot/startup/sme.c
+> @@ -24,6 +24,7 @@
+>  #undef CONFIG_PARAVIRT
+>  #undef CONFIG_PARAVIRT_XXL
+>  #undef CONFIG_PARAVIRT_SPINLOCKS
+> +#undef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>  
+>  /*
+>   * This code runs before CPU feature bits are set. By default, the
+> diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+> index b5e59a7ba0d0..13f9cd31c8f8 100644
+> --- a/arch/x86/include/asm/paravirt.h
+> +++ b/arch/x86/include/asm/paravirt.h
+> @@ -526,7 +526,6 @@ static inline void arch_end_context_switch(struct task_struct *next)
+>  	PVOP_VCALL1(cpu.end_context_switch, next);
+>  }
+>  
+> -#define  __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+>  static inline void arch_enter_lazy_mmu_mode(void)
+>  {
+>  	PVOP_VCALL0(mmu.lazy_mode.enter);
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 32e8457ad535..9894366e768b 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -231,7 +231,7 @@ static inline int pmd_dirty(pmd_t pmd)
+>   * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
+>   * and the mode cannot be used in interrupt context.
+>   */
+> -#ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+> +#ifndef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>  static inline void arch_enter_lazy_mmu_mode(void) {}
+>  static inline void arch_leave_lazy_mmu_mode(void) {}
+>  static inline void arch_flush_lazy_mmu_mode(void) {}
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 0e26f4fc8717..5480c9a1bfb2 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1372,6 +1372,9 @@ config PT_RECLAIM
+>  config FIND_NORMAL_PAGE
+>  	def_bool n
+>  
+> +config ARCH_HAS_LAZY_MMU_MODE
+> +	bool
+> +
+>  source "mm/damon/Kconfig"
+>  
+>  endmenu
+
 
