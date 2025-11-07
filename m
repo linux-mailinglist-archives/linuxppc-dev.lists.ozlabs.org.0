@@ -1,61 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-13949-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13950-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899AAC417CD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 20:59:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 056DCC41C92
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 22:55:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d38yq2Rmcz2ypY;
-	Sat,  8 Nov 2025 06:59:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d3CXc2wHCz2yG5;
+	Sat,  8 Nov 2025 08:55:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762545555;
-	cv=none; b=W3AzAD5LDXU6hUiq9hSbGKbgU963KO/X+P9y4PYUXvayK/v4wecT4912dUFOZu1eF607Pl/hJ/TvWeTe9380/SYM+WvNY5xujxAut3pW5w+z+OxSf5pp/fXmskOPfJEmRJDbgdEzv6piKrXBD4LnnMj+jYBHcLFOIZ5VcEteOiF1X/imdYltPSL8rEIi6O+HfyJSvqmNeTWRT0Oy55CgG1g4lzi33rIZx/7R2Z4PGJYK6wB4/6xfHbRvahXynM72c++qNcZjiQf41kozILAeO6NOviZ5ehC/mYvljHrh0h0iTR8Glnz1nab5UxXTc4U9v5U+NAnAISWhfbwvHNt4xA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762552512;
+	cv=none; b=kz8y17U+AhoGaubCV5GP8Im8XoXyer++9p+Z0LWBBYvFQvrGCVOt2bcfbcizOuZ9v0g8C3b6JpQKxRjmql9hiDIQIAWUTT5UwXJtRQ7ZegOG0cikpWRqrbL72wigu7zTF5Do+yjS33YGc2hlsXzne5452V3xlpQj5yn+bgoXBLvjGzcR/bJyLKVptPHJlYZY8zrTWN5AIbBA+TN6uKQqrZxuQgEEsJ8WfEPD/2uh3FQVNP8WD4LKlMULl68/gB85+/fNT+v6gYfpwMXWvOBX/bZgE/HDb1/oEyFCP9cdnQSjloTE0w9AuUOiJoSnDz3jwOKj6LVccQlDRJ1RuzidlQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762545555; c=relaxed/relaxed;
-	bh=UkJwb7i3PmSsdn+/hNSZm8LKyUgpAzaq0zJ9Jid0F5A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=laVbah8G11b9q+c945Tc7lZyr3TNecAPjDq4ODIFE1wHHL5W8NbFP6wSMGQvaZApsQ0v+3/NnEHG5upXxid21MNH4/zWHjqYa9vw6XPUqI1i1GvxNsvRwVdEfBWKKTWpg0mGDqQwfphxbS3W//BlrnWwyxvrMXpvpUYd1l/bQ6i7jMrpGLyGIF8nJLAUgUNBB1agC+i2dJLWnHXVEn9A6Gnz1/uDxy3Iujb6H++JtfsbOHt4XdRTxP1XhGYqiDD54eScs7tY9H2Vl2qD3zKz7r/doiW1Mjpr1fbAzaQ1ie59QHiSefnWQ82/QIcOn70N13eRkcdRUUlyz+0SWK0daQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EjsQC/cX; dkim-atps=neutral; spf=pass (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1762552512; c=relaxed/relaxed;
+	bh=u4p6rheCxqBx8Mi+Eoz64zsgM1KizuM7vmAkYy2tYXk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=IbHyroY6cXufBYmqAL24qslOmmizMkThLyJT6Pv2L6AQNo+i9u8Cg0vUKFKp0c0VhtomZEVJ3mokKpUX8M1MtQTTNy2AKWZiPYXKNEoV0ug+4V/yu8N6qG63VzWfrlcjbRz7GgEgzi34LE2mcTH/brQfuLYgD+rpYhucM0IwMIqe0oJtQvZ+A3k0DCbF1jzUaiLtOi2BqhLwAsMd9xGWIq11zTxEzI8OpPI22SgWz86W8HCuVZ+e0kK8DVjABglg+uWugPvqn7gKEDbZUQ2DJg6zAwqfgA9UYuqaA4ZZXm2kTwEU55RztK414gm7qEY2HZfpUGBlzZkSsiflUpPGqQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aUJjnVDj; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EjsQC/cX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aUJjnVDj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d38ym6DqHz2xnh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Nov 2025 06:59:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762545553; x=1794081553;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=o6sCKaIr+Mcsm7DmCaTJx6MhTkgDqm5CM83QolZ5QBY=;
-  b=EjsQC/cX5bVXTeH3R5gOULrdgFPYJIPzEHmrgEUtHGMcXLwnJxUya3QK
-   k4T6NCE6Albu2/8Tl77QYRl9LB8LQuaDUTEj3WxT0ieiL1im0mZrTieQG
-   qLOMHqdOUhwq9zK8YDlUx/+0e2UXSW1FVW3d66n9KrkaKXllOE1qwhx1B
-   1CE5tqjKfJRLPR05LNLXd4/GlN1JoDUNz2zKBL5buLAbWo121I06QuOyM
-   QfZ9GIOsPhtcCq1xwtg213JAhjgPDTOC6OKxA4MqCRDuZL/MBx690NryV
-   /VThnOAfSn14/bhhHEB0HVpnoXcRa+n4xFHMDc3z5W9tBlQY0q7UuVxU6
-   g==;
-X-CSE-ConnectionGUID: W7M+9CxyQEaMs/IALWjceg==
-X-CSE-MsgGUID: z53HiAbtS1KOEy1/A1FW1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11606"; a="76149851"
-X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; 
-   d="scan'208";a="76149851"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 11:59:08 -0800
-X-CSE-ConnectionGUID: WQraglFVTdSNTqRT+O0OdA==
-X-CSE-MsgGUID: vV07ZoEeSlaSEo5q+8IIjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; 
-   d="scan'208";a="187370899"
-Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.111.112]) ([10.125.111.112])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 11:59:07 -0800
-Message-ID: <85fa077c-0c69-452b-9503-0cd7f3e1b363@intel.com>
-Date: Fri, 7 Nov 2025 12:59:05 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d3CXZ25vZz2xxS
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Nov 2025 08:55:10 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8DE664460A;
+	Fri,  7 Nov 2025 21:55:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58099C19421;
+	Fri,  7 Nov 2025 21:55:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762552507;
+	bh=bzXzOIrmU2vJW/viY2NN2SWyXWmWO2JsboNDeNZlPRU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=aUJjnVDjDdkeP2qaJRg2Kuo0S2Z73RKmtJH2ubSo5KjynyjWcGldUVnPG8hijsbnr
+	 K69F0NuEHhSMsi+vDqF0KRrOdEymZWDhqwfTttcoZDT9rWqJYdL7a166x6hN1HjSjk
+	 Qn7zjttAwzDJUZAW7GZLlCuubm/USgiN0Vbgc0aql4mFj92gJhUfEdQaTAPLTpA492
+	 NwgmE0HNKlOgXIzp/3hbjLDQjFODEZ8R1TzyMgbpuq/cBQxRjCUSCR8oefoPcvBlxw
+	 PlYPJeC8LXFF1WDinXBdexU5vy1O1ZxyM2UphM1S99298KVjXhpdKkAKZsWTK0s7b5
+	 UTsJzxoZEHMIA==
+Date: Fri, 7 Nov 2025 15:55:06 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: linux-pci@vger.kernel.org, Christian Zigotzky <chzigotzky@xenosoft.de>,
+	mad skateman <madskateman@gmail.com>,
+	"R . T . Dickinson" <rtd2@xtra.co.nz>,
+	Darren Stevens <darren@stevens-zone.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Lukas Wunner <lukas@wunner.de>,
+	luigi burdo <intermediadc@hotmail.com>, Al <al@datazap.net>,
+	Roland <rol7and@gmx.com>, Hongxing Zhu <hongxing.zhu@nxp.com>,
+	hypexed@yahoo.com.au, linuxppc-dev@lists.ozlabs.org,
+	debian-powerpc@lists.debian.org, linux-kernel@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH 2/2] PCI/ASPM: Avoid L0s and L1 on Freescale Root Ports
+Message-ID: <20251107215506.GA1998504@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,155 +72,94 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6 v7] ACPI: extlog: Trace CPER CXL Protocol Error
- Section
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
- linux-cxl@vger.kernel.org
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
- Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-References: <20251104182446.863422-1-fabio.m.de.francesco@linux.intel.com>
- <20251104182446.863422-7-fabio.m.de.francesco@linux.intel.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20251104182446.863422-7-fabio.m.de.francesco@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ogkty663ld7fe3qmbxyil47pudidenqeikol5prk7n3qexpteq@h77qi3sg5xo4>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-On 11/4/25 11:22 AM, Fabio M. De Francesco wrote:
-> When Firmware First is enabled, BIOS handles errors first and then it
-> makes them available to the kernel via the Common Platform Error Record
-> (CPER) sections (UEFI 2.11 Appendix N.2.13). Linux parses the CPER
-> sections via one of two similar paths, either ELOG or GHES. The errors
-> managed by ELOG are signaled to the BIOS by the I/O Machine Check
-> Architecture (I/O MCA).
+On Fri, Nov 07, 2025 at 11:39:50AM +0530, Manivannan Sadhasivam wrote:
+> On Thu, Nov 06, 2025 at 12:36:39PM -0600, Bjorn Helgaas wrote:
+> > From: Bjorn Helgaas <bhelgaas@google.com>
+> > 
+> > Christian reported that f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and
+> > ASPM states for devicetree platforms") broke booting on the A-EON X5000.
+> > 
+> > Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
+> > Fixes: df5192d9bb0e ("PCI/ASPM: Enable only L0s and L1 for devicetree platforms"
+> > )
+> > Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> > Link: https://lore.kernel.org/r/db5c95a1-cf3e-46f9-8045-a1b04908051a@xenosoft.de
+> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > ---
+> >  drivers/pci/quirks.c | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
+> > 
+> > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> > index 214ed060ca1b..44e780718953 100644
+> > --- a/drivers/pci/quirks.c
+> > +++ b/drivers/pci/quirks.c
+> > @@ -2525,6 +2525,18 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
+> >   */
+> >  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
+> >  
+> > +/*
+> > + * Remove ASPM L0s and L1 support from cached copy of Link Capabilities so
+> > + * aspm.c won't try to enable them.
+> > + */
+> > +static void quirk_disable_aspm_l0s_l1_cap(struct pci_dev *dev)
+> > +{
+> > +	dev->lnkcap &= ~PCI_EXP_LNKCAP_ASPM_L0S;
+> > +	dev->lnkcap &= ~PCI_EXP_LNKCAP_ASPM_L1;
+> > +	pci_info(dev, "ASPM: L0s L1 removed from Link Capabilities to work around device defect\n");
+> > +}
+> > +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_FREESCALE, 0x0451, quirk_disable_aspm_l0s_l1_cap);
 > 
-> Currently, ELOG and GHES show some inconsistencies in how they report to
-> userspace via trace events.
+> From the commit message of the earlier version [1] you shared:
 > 
-> Therefore, make the two mentioned paths act similarly by tracing the CPER
-> CXL Protocol Error Section.
+>     Removing advertised features prevents aspm.c from enabling them, even if
+>     users try to enable them via sysfs or by building the kernel with
+>     CONFIG_PCIEASPM_POWERSAVE or CONFIG_PCIEASPM_POWER_SUPERSAVE.
 > 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+> Going by this reasoning, shouldn't we be doing this for the other
+> quirks (quirk_disable_aspm_l0s_l1/quirk_disable_aspm_l0s) as well?
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>> ---
->  drivers/acpi/Kconfig       |  1 +
->  drivers/acpi/acpi_extlog.c | 22 ++++++++++++++++++++++
->  drivers/cxl/core/ras.c     |  3 ++-
->  include/cxl/event.h        |  2 ++
->  4 files changed, 27 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index be02634f2320..c2ad24e77ddf 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -498,6 +498,7 @@ config ACPI_EXTLOG
->  	select ACPI_APEI
->  	select ACPI_APEI_PCIEAER
->  	select UEFI_CPER
-> +	select CXL_BUS
->  	help
->  	  Certain usages such as Predictive Failure Analysis (PFA) require
->  	  more information about the error than what can be described in
-> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index b3976ceb4ee4..e6fb25395984 100644
-> --- a/drivers/acpi/acpi_extlog.c
-> +++ b/drivers/acpi/acpi_extlog.c
-> @@ -12,6 +12,7 @@
->  #include <linux/ratelimit.h>
->  #include <linux/edac.h>
->  #include <linux/ras.h>
-> +#include <cxl/event.h>
->  #include <acpi/ghes.h>
->  #include <asm/cpu.h>
->  #include <asm/mce.h>
-> @@ -160,6 +161,21 @@ static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
->  	pci_dev_put(pdev);
->  }
->  
-> +static void
-> +extlog_cxl_cper_handle_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> +				int severity)
-> +{
-> +	struct cxl_cper_prot_err_work_data wd;
-> +
-> +	if (cxl_cper_sec_prot_err_valid(prot_err))
-> +		return;
-> +
-> +	if (cxl_cper_setup_prot_err_work_data(&wd, prot_err, severity))
-> +		return;
-> +
-> +	cxl_cper_handle_prot_err(&wd);
-> +}
-> +
->  static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			void *data)
->  {
-> @@ -211,6 +227,12 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			if (gdata->error_data_length >= sizeof(*mem))
->  				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
->  						       (u8)gdata->error_severity);
-> +		} else if (guid_equal(sec_type, &CPER_SEC_CXL_PROT_ERR)) {
-> +			struct cxl_cper_sec_prot_err *prot_err =
-> +				acpi_hest_get_payload(gdata);
-> +
-> +			extlog_cxl_cper_handle_prot_err(prot_err,
-> +							gdata->error_severity);
->  		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
->  			struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
->  
-> diff --git a/drivers/cxl/core/ras.c b/drivers/cxl/core/ras.c
-> index 2731ba3a0799..a90480d07c87 100644
-> --- a/drivers/cxl/core/ras.c
-> +++ b/drivers/cxl/core/ras.c
-> @@ -63,7 +63,7 @@ static int match_memdev_by_parent(struct device *dev, const void *uport)
->  	return 0;
->  }
->  
-> -static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
-> +void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
->  {
->  	unsigned int devfn = PCI_DEVFN(data->prot_err.agent_addr.device,
->  				       data->prot_err.agent_addr.function);
-> @@ -104,6 +104,7 @@ static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
->  	else
->  		cxl_cper_trace_uncorr_prot_err(cxlmd, data->ras_cap);
->  }
-> +EXPORT_SYMBOL_GPL(cxl_cper_handle_prot_err);
->  
->  static void cxl_cper_prot_err_work_fn(struct work_struct *work)
->  {
-> diff --git a/include/cxl/event.h b/include/cxl/event.h
-> index 94081aec597a..ff97fea718d2 100644
-> --- a/include/cxl/event.h
-> +++ b/include/cxl/event.h
-> @@ -340,4 +340,6 @@ cxl_cper_setup_prot_err_work_data(struct cxl_cper_prot_err_work_data *wd,
->  }
->  #endif
->  
-> +void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *wd);
-> +
->  #endif /* _LINUX_CXL_EVENT_H */
+Yes, probably so.  I was thinking that could be done later to limit
+the scope of v6.18 changes, but since we're enabling L0s/L1 when we
+didn't before, we should probably update those quirks too.
 
+I was hesitant because quirk_disable_aspm_l0s_l1_cap() isn't quite the
+same as quirk_disable_aspm_l0s_l1() because pci_disable_link_state()
+turns off states that are currently enabled and also prevents them
+from being enabled in the future, but quirk_disable_aspm_l0s_l1_cap()
+essentially just clears Link Capability bits.
+
+But if we clear a Link Capability bit for a state that was already
+enabled by firmware:
+
+  - If POLICY_DEFAULT or POLICY_PERFORMANCE, I think we'll disable the
+    state during enumeration:
+
+      pci_scan_slot
+	pcie_aspm_init_link_state
+	  pcie_aspm_init_link_state
+	    if (POLICY_DEFAULT || POLICY_PERFORMANCE)
+	      pcie_config_aspm_path
+
+  - If POLICY_POWERSAVE or POLICY_POWER_SUPERSAVE, I think we'll
+    disable it in pci_enable_device():
+
+      pci_enable_device
+	do_pci_enable_device
+	  pcie_aspm_powersave_config_link
+	    if (POLICY_POWERSAVE || POLICY_POWER_SUPERSAVE)
+	      pcie_config_aspm_path
+
+If firmware enabled the state, it must at least be safe enough to
+boot, and we should eventually disable it regardless of how the kernel
+was built.
+
+Bjorn
 
