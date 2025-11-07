@@ -1,64 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-13950-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13957-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056DCC41C92
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 07 Nov 2025 22:55:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E31D1C422B6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 08 Nov 2025 01:58:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d3CXc2wHCz2yG5;
-	Sat,  8 Nov 2025 08:55:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d3Hc11K9rz2yqh;
+	Sat,  8 Nov 2025 11:58:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762552512;
-	cv=none; b=kz8y17U+AhoGaubCV5GP8Im8XoXyer++9p+Z0LWBBYvFQvrGCVOt2bcfbcizOuZ9v0g8C3b6JpQKxRjmql9hiDIQIAWUTT5UwXJtRQ7ZegOG0cikpWRqrbL72wigu7zTF5Do+yjS33YGc2hlsXzne5452V3xlpQj5yn+bgoXBLvjGzcR/bJyLKVptPHJlYZY8zrTWN5AIbBA+TN6uKQqrZxuQgEEsJ8WfEPD/2uh3FQVNP8WD4LKlMULl68/gB85+/fNT+v6gYfpwMXWvOBX/bZgE/HDb1/oEyFCP9cdnQSjloTE0w9AuUOiJoSnDz3jwOKj6LVccQlDRJ1RuzidlQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762526031;
+	cv=none; b=gkSNCPs/JCfw7vzPSQdZkXapchiLboOGD7CaDPy6t3T+/qG1NlwFB5UXIAs6+ascXUXoV92xiBm3bBheJCCx3XtlCRrLFX+Y9xqK7j89iag58ZEAHuM0yFymZYQ5yV0ZAMtg+OFmnOAcXj/lmt29Tz5J8JnQnE4VFrE5zpod5iU+FzfUm4ujYx3Omo+LYgegOrRGukZg5bAoS75MCIUx4H9P3FY0RLXquIjAWr+n9CBTI51LcfLy7rvZoAm20WTETs02HdjknjUIp07pZj/T10ogAdMFYur5IloD6JJH3tlYmPKxMrZzwmDLrgxzsPUvBskOpFRqhDQqVaLbBpgQMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762552512; c=relaxed/relaxed;
-	bh=u4p6rheCxqBx8Mi+Eoz64zsgM1KizuM7vmAkYy2tYXk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=IbHyroY6cXufBYmqAL24qslOmmizMkThLyJT6Pv2L6AQNo+i9u8Cg0vUKFKp0c0VhtomZEVJ3mokKpUX8M1MtQTTNy2AKWZiPYXKNEoV0ug+4V/yu8N6qG63VzWfrlcjbRz7GgEgzi34LE2mcTH/brQfuLYgD+rpYhucM0IwMIqe0oJtQvZ+A3k0DCbF1jzUaiLtOi2BqhLwAsMd9xGWIq11zTxEzI8OpPI22SgWz86W8HCuVZ+e0kK8DVjABglg+uWugPvqn7gKEDbZUQ2DJg6zAwqfgA9UYuqaA4ZZXm2kTwEU55RztK414gm7qEY2HZfpUGBlzZkSsiflUpPGqQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aUJjnVDj; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1762526031; c=relaxed/relaxed;
+	bh=zZwooRdHB1TiRGXyDl2NtjlO6yhOj/8qnno438SS5o4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YVPF98ijfxXL/d4QLUFSik6LOTCI65htJF2poj+kkRhCY9PhvMM4gKBNL2Bl6yu7PGcTFyNz6xkVLa6tS/CMlGAyQlqfThwffgjpdEGlsckGYWT8w3iYoBl4pQnNnOD366pVj/VBqEAl+N4xVgw+v92i8umM9xdfL5+6Ki7m/sHNGhrIHJYW6atjutLG5rdATGN3oLfhOrCjXXAiFxU5nEO/uuy0AG4XzxcIvj1YWwVhB8qLNSOhFMVBgrHK4Ygpqft3J/4QWqUCttzU01Hg8UyO0PuHj0opeeTxmta/kMj773U41dDBoRnO4BcE5WKys2qb3HLPhU4eCuEsPyOOOg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=SL7CIsF3; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42a; helo=mail-wr1-x42a.google.com; envelope-from=marco.crivellari@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aUJjnVDj;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=SL7CIsF3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::42a; helo=mail-wr1-x42a.google.com; envelope-from=marco.crivellari@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d3CXZ25vZz2xxS
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Nov 2025 08:55:10 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8DE664460A;
-	Fri,  7 Nov 2025 21:55:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58099C19421;
-	Fri,  7 Nov 2025 21:55:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762552507;
-	bh=bzXzOIrmU2vJW/viY2NN2SWyXWmWO2JsboNDeNZlPRU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=aUJjnVDjDdkeP2qaJRg2Kuo0S2Z73RKmtJH2ubSo5KjynyjWcGldUVnPG8hijsbnr
-	 K69F0NuEHhSMsi+vDqF0KRrOdEymZWDhqwfTttcoZDT9rWqJYdL7a166x6hN1HjSjk
-	 Qn7zjttAwzDJUZAW7GZLlCuubm/USgiN0Vbgc0aql4mFj92gJhUfEdQaTAPLTpA492
-	 NwgmE0HNKlOgXIzp/3hbjLDQjFODEZ8R1TzyMgbpuq/cBQxRjCUSCR8oefoPcvBlxw
-	 PlYPJeC8LXFF1WDinXBdexU5vy1O1ZxyM2UphM1S99298KVjXhpdKkAKZsWTK0s7b5
-	 UTsJzxoZEHMIA==
-Date: Fri, 7 Nov 2025 15:55:06 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: linux-pci@vger.kernel.org, Christian Zigotzky <chzigotzky@xenosoft.de>,
-	mad skateman <madskateman@gmail.com>,
-	"R . T . Dickinson" <rtd2@xtra.co.nz>,
-	Darren Stevens <darren@stevens-zone.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Lukas Wunner <lukas@wunner.de>,
-	luigi burdo <intermediadc@hotmail.com>, Al <al@datazap.net>,
-	Roland <rol7and@gmx.com>, Hongxing Zhu <hongxing.zhu@nxp.com>,
-	hypexed@yahoo.com.au, linuxppc-dev@lists.ozlabs.org,
-	debian-powerpc@lists.debian.org, linux-kernel@vger.kernel.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d31lK71Xfz3bs7
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Nov 2025 01:33:48 +1100 (AEDT)
+Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-429c82bf86bso427780f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Nov 2025 06:33:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1762526024; x=1763130824; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zZwooRdHB1TiRGXyDl2NtjlO6yhOj/8qnno438SS5o4=;
+        b=SL7CIsF3coCzDE41UfSSVUdwVc0wTGhXP5cARbrhViDRtAYv630r78ApMXAwcnmNE7
+         pVAxn3GkJrSkPK6YdftHsHP6O5WOcpX3SopGywWoIEkcc8ju+Pwf3ZqatMmU339q7+He
+         umbXyxqebg/h1dWmiygC9IIl49l2Gdlr1wmwcYTDrfUlwtCwV8BwbVkVBXKuZpWg5zWg
+         LkAVg8gFz1/5kW91EA3IbrgW09AOCu6O0QGB1jvqd9rUa4W+UCqJyf6hxlYERX9sol69
+         2Um4H/UNKpjoA0deVrvYQ1GBPfOKl4rgZenftk6aH3IhVVxNlPsm5QAr0QYuYkVQU0z/
+         Llhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762526024; x=1763130824;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zZwooRdHB1TiRGXyDl2NtjlO6yhOj/8qnno438SS5o4=;
+        b=iKtb/CHDqAar5ehJwUZ2ux4nnND86Tz7kbKZzbagwHs/5B024FJmpGTJlIcn5srWpN
+         mLs90wRKpUC4iiwut/jMeXM2Db9skQY3kPnbzYKNocYfSiOFgXz4dUeZOoWXwaGZk211
+         LnCod+row7Q/8Z1kouOVdOk8F+Dsb1IcsCIF1a6qT2kdRLzRxlH1U1OvqnfR/S0OLXt0
+         ksKDmfBu2upZJaMxu6rcy7bQ658E2DLp5MlPv7FuVPDIBomIHMpeuBWoE7eWNghZJ6/q
+         CeI4Fr2qzBAtCFXfqajqwz2X67FV8G4Z3tvwSrJozebdR4rhs3SbkoCdmo6JfNl30RJK
+         x/Yg==
+X-Forwarded-Encrypted: i=1; AJvYcCWtoq8K40nUK7fmZTgCNOr15uQWHBzCCC7AOgPpwKLJhH+ZYeSqEwGadx4V93V74cLPNzqLdyvgVFJp19g=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxFNpQulT38mf9w4CYSK9qCWXjDijJwnBHKQXIVHwDnZ6dGPjD9
+	Y5HZkjWCxSFG9np9+UghZd7yVC2l7RJLH9zZ2tuDABzeHUW6wc9s9c9PtW6K7MPHlh0=
+X-Gm-Gg: ASbGncst4AX8RZBptiMf+84xx9WvtbItoigjPWqzNlzQxaUJjDKkoXG7MeJ579/iGFu
+	h+N3q273xxrGkaBkcUYoYgRYk6XKsXyOfYxWdlaMSbvQqsVShGer84YMibffld5eDNK3W15ZAuL
+	usG8vcWUu/b3VI0F3HiwRnfR7t/iVGRhQaaa7D0HY1lWfgtTIK89KUQjbrmtZK8C7Dhs2vGX3MT
+	3D4LZ0VN1xdWHSv1O7GwkMIKHinpJueDbzQ8YN4IC+Bh8oj7aCTjCs84hKtDSX0ikgqWeR0PPQF
+	0Dj8VmMyDSinvwjS6AC+9x9Pq1oXj0qhHpPOpXkme+O0MFpUJxdyIPwRrYLz3ibTIFqUVBiq6PT
+	AkBvUNZqlweo3VpA+osXOOHS0K7rJc15+ikNsguWvzGY8unLEtCaIxmjMTX3r2Jt/bhjeFzu3We
+	3ziMgbHnfDbziZJSwtSJpFKDjv
+X-Google-Smtp-Source: AGHT+IHKuyvTGNSoJsQ3fSAGflXQvX+4fyFLXoLOYbtCrxRpdLm0CfiflATW1SeGn2vQFdIECJYLiw==
+X-Received: by 2002:a05:6000:1a8d:b0:429:cc01:c6a1 with SMTP id ffacd0b85a97d-42ae5888a25mr2897316f8f.28.1762526023562;
+        Fri, 07 Nov 2025 06:33:43 -0800 (PST)
+Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42abe63e126sm5647624f8f.16.2025.11.07.06.33.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Nov 2025 06:33:43 -0800 (PST)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH 2/2] PCI/ASPM: Avoid L0s and L1 on Freescale Root Ports
-Message-ID: <20251107215506.GA1998504@bhelgaas>
+Subject: [PATCH] PCI: pnv_php: add WQ_PERCPU to alloc_workqueue users
+Date: Fri,  7 Nov 2025 15:33:35 +0100
+Message-ID: <20251107143335.242342-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.51.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,94 +101,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ogkty663ld7fe3qmbxyil47pudidenqeikol5prk7n3qexpteq@h77qi3sg5xo4>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Nov 07, 2025 at 11:39:50AM +0530, Manivannan Sadhasivam wrote:
-> On Thu, Nov 06, 2025 at 12:36:39PM -0600, Bjorn Helgaas wrote:
-> > From: Bjorn Helgaas <bhelgaas@google.com>
-> > 
-> > Christian reported that f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and
-> > ASPM states for devicetree platforms") broke booting on the A-EON X5000.
-> > 
-> > Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
-> > Fixes: df5192d9bb0e ("PCI/ASPM: Enable only L0s and L1 for devicetree platforms"
-> > )
-> > Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-> > Link: https://lore.kernel.org/r/db5c95a1-cf3e-46f9-8045-a1b04908051a@xenosoft.de
-> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> > ---
-> >  drivers/pci/quirks.c | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> > 
-> > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> > index 214ed060ca1b..44e780718953 100644
-> > --- a/drivers/pci/quirks.c
-> > +++ b/drivers/pci/quirks.c
-> > @@ -2525,6 +2525,18 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
-> >   */
-> >  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
-> >  
-> > +/*
-> > + * Remove ASPM L0s and L1 support from cached copy of Link Capabilities so
-> > + * aspm.c won't try to enable them.
-> > + */
-> > +static void quirk_disable_aspm_l0s_l1_cap(struct pci_dev *dev)
-> > +{
-> > +	dev->lnkcap &= ~PCI_EXP_LNKCAP_ASPM_L0S;
-> > +	dev->lnkcap &= ~PCI_EXP_LNKCAP_ASPM_L1;
-> > +	pci_info(dev, "ASPM: L0s L1 removed from Link Capabilities to work around device defect\n");
-> > +}
-> > +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_FREESCALE, 0x0451, quirk_disable_aspm_l0s_l1_cap);
-> 
-> From the commit message of the earlier version [1] you shared:
-> 
->     Removing advertised features prevents aspm.c from enabling them, even if
->     users try to enable them via sysfs or by building the kernel with
->     CONFIG_PCIEASPM_POWERSAVE or CONFIG_PCIEASPM_POWER_SUPERSAVE.
-> 
-> Going by this reasoning, shouldn't we be doing this for the other
-> quirks (quirk_disable_aspm_l0s_l1/quirk_disable_aspm_l0s) as well?
+Currently if a user enqueues a work item using schedule_delayed_work() the
+used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
+WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
+schedule_work() that is using system_wq and queue_work(), that makes use
+again of WORK_CPU_UNBOUND.
+This lack of consistency cannot be addressed without refactoring the API.
 
-Yes, probably so.  I was thinking that could be done later to limit
-the scope of v6.18 changes, but since we're enabling L0s/L1 when we
-didn't before, we should probably update those quirks too.
+alloc_workqueue() treats all queues as per-CPU by default, while unbound
+workqueues must opt-in via WQ_UNBOUND.
 
-I was hesitant because quirk_disable_aspm_l0s_l1_cap() isn't quite the
-same as quirk_disable_aspm_l0s_l1() because pci_disable_link_state()
-turns off states that are currently enabled and also prevents them
-from being enabled in the future, but quirk_disable_aspm_l0s_l1_cap()
-essentially just clears Link Capability bits.
+This default is suboptimal: most workloads benefit from unbound queues,
+allowing the scheduler to place worker threads where they’re needed and
+reducing noise when CPUs are isolated.
 
-But if we clear a Link Capability bit for a state that was already
-enabled by firmware:
+This continues the effort to refactor workqueue APIs, which began with
+the introduction of new workqueues and a new alloc_workqueue flag in:
 
-  - If POLICY_DEFAULT or POLICY_PERFORMANCE, I think we'll disable the
-    state during enumeration:
+commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
 
-      pci_scan_slot
-	pcie_aspm_init_link_state
-	  pcie_aspm_init_link_state
-	    if (POLICY_DEFAULT || POLICY_PERFORMANCE)
-	      pcie_config_aspm_path
+This change adds a new WQ_PERCPU flag to explicitly request
+alloc_workqueue() to be per-cpu when WQ_UNBOUND has not been specified.
 
-  - If POLICY_POWERSAVE or POLICY_POWER_SUPERSAVE, I think we'll
-    disable it in pci_enable_device():
+With the introduction of the WQ_PERCPU flag (equivalent to !WQ_UNBOUND),
+any alloc_workqueue() caller that doesn’t explicitly specify WQ_UNBOUND
+must now use WQ_PERCPU.
 
-      pci_enable_device
-	do_pci_enable_device
-	  pcie_aspm_powersave_config_link
-	    if (POLICY_POWERSAVE || POLICY_POWER_SUPERSAVE)
-	      pcie_config_aspm_path
+Once migration is complete, WQ_UNBOUND can be removed and unbound will
+become the implicit default.
 
-If firmware enabled the state, it must at least be safe enough to
-boot, and we should eventually disable it regardless of how the kernel
-was built.
+Suggested-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+---
+ drivers/pci/hotplug/pnv_php.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Bjorn
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index c5345bff9a55..35f1758126c6 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -802,7 +802,7 @@ static struct pnv_php_slot *pnv_php_alloc_slot(struct device_node *dn)
+ 	}
+ 
+ 	/* Allocate workqueue for this slot's interrupt handling */
+-	php_slot->wq = alloc_workqueue("pciehp-%s", 0, 0, php_slot->name);
++	php_slot->wq = alloc_workqueue("pciehp-%s", WQ_PERCPU, 0, php_slot->name);
+ 	if (!php_slot->wq) {
+ 		SLOT_WARN(php_slot, "Cannot alloc workqueue\n");
+ 		kfree(php_slot->name);
+-- 
+2.51.1
+
 
