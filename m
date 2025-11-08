@@ -1,78 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-13963-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13964-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B6CC426CE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 08 Nov 2025 05:26:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58C0EC42B22
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 08 Nov 2025 11:18:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d3NDH3BDpz3069;
-	Sat,  8 Nov 2025 15:26:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d3X2F4zTxz30Vl;
+	Sat,  8 Nov 2025 21:18:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762575999;
-	cv=none; b=H+yNinA5R4Afm8aTgY8PgfZ0BSDeMEeKEEAJSSgHNc5f+U2miWCWmg53tHWMwh40VijpYT39askWDjT+XT/kcZf5OczpqVDqV/ZJzRbTqgoGjzHnP2vLsCVIs01nlrcDBkm/j5z7ZR5wQZWWg1eti6iz1N0pstttWwO4abQIq7gg8GNLJmwwNLKkDdMSsgwiz93a5AHg0XNQbFa6OoWzUnvyi2np0PYq//lQSJ3IzK/T4IfeXy1c2+lSZoGp6/dJTxlwfSTitQmUT6sWog3tTXmW8oHOe5QqOB5KPVThXFKDzzL75kRPfZ4xAjwwkJEnoayhxw2riYdwn8uLoF87dA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.155
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762597109;
+	cv=none; b=Ki3sHAYniq38NsiKZd2mnKeYAFKtIbMt5RNIuJaWwZAfc6X3cQFztXo+DD+TYZf6AmZng28UxnHBxjgD6UOAtBl339mbMotQAEQd3LVnCw+alRHCvo2oLOvabsodDHs9r7qHqdUQ0uuDC56fEdFD2woe8oVYkcSyLFqpjitv8UcG+Fw/72O5bmSZNXmTVuXCal15C3S7JEtLWQQnukw6qjhXBuN8CzjZPwgrT9PwlcxRXD47Kp1ZVWGr9yYWuuM+jPuMeb1rjXTk2+JUlybG4BaMV9DYg33U2YZtmsWt6NlPOvB4VjzGHH2QIPdTFp7i/bbjl8ACmV9wu2P2onRtuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762575999; c=relaxed/relaxed;
-	bh=PVeT9y3RWDD3B/XC1iBfCoGemPCNDWw+wApB5+mFwaQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KDq4QwMBNO0+2KZ80mvlOp88DAd4C9k4SDkyeRa54/am12850zzkD2oj4GICnnkfIpagF6tAazmdEYC8Tq/APQsJbtaiikzjaX5OTjE2n/oPltJb7yJz+eSqw0DXBkLKh+rA7i8HGNcmkmI0oDEWwrNSha27+CclgvCjln0vwWq9/lE3SE3M3jwJkHWOJr2xnBNfFLVCp7NLuVJccrKxWAA9iFgq2HQfLVNRMlCpZrcr3/5zKuaTayeqZV753vi9k9pdPOnzi0g0hcFJLxiYULPpEaJIGsSk+ZCx5hkeMMGs40sQ0bS3ZsTel9H3bTN0iNZUGlcOFuNLop1dMeJ9hA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tNFnyd/y; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1762597109; c=relaxed/relaxed;
+	bh=Dy0X8O4MO1t7FqOwhn0j3XKQ7MaNsGXpyV2kiweRlxs=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=VOBXtbDRGSi6/2zLCHwy3Y+X7MCZnI5QBa+sycLnNAYk2ydxUmS+W0uwTfIyZPvJXRhjbUqK3VhYrM1YgOenkkWS4hmGVSl5G8G7gFHU+JRvBBRTCVF9BvDp3rLTdy3UvVYDwbr8OsADdQmpiijTrH5SECLca81HgqGoMgO0hosgXqkeZOO5JoLts91I5pE4dM341sWjcZtGWh/mRuRbtgo6K0g9U5X+px+636DucQaKFpjOQJQtFO/aleZa42HJJamv5ebhd6WLvSPsA3pIXCx6z+rsLvqqIxZSdh44BioXac1g37gCFp8yma5WuDH1m4gpfoCpidSmM5RuPpRlNQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=cEZyamzN; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=11RmOGKC; dkim-atps=neutral; spf=pass (client-ip=202.12.124.155; helo=fhigh-b4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tNFnyd/y;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=cEZyamzN;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=11RmOGKC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.155; helo=fhigh-b4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d3NDG36gDz2yqh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Nov 2025 15:26:38 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A84HQGF021783;
-	Sat, 8 Nov 2025 04:26:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=PVeT9y
-	3RWDD3B/XC1iBfCoGemPCNDWw+wApB5+mFwaQ=; b=tNFnyd/yEALZR2GNpzb0VL
-	/1s0QHJ2DhufPyaALcJcPl9eJI54PArLIasa/DF715zUPUtkyKDzJb0weQg0Hab3
-	q1v/WNqPT2uXm9fKQK0n/X2knbz/RpkrwO9DbjUBuYlOSNHpbVoKhdg5iheheMKh
-	CsKhDavAe12syABhmwepelbHaTbiFY5F8YSN3p0EP2qwQ3dDoZMP8iw3do0+U85a
-	f+JBRU53D4WRd1axGGqX8SG9+Vtgfs28xzGpNLRnj1BJGszfAT/z6ZL7VLG7bhdX
-	W+qZvC4phZpbKBJwwMckbgcvfpjYmgic49G6co6rDSh8mgrc4G1qZmnhbdrb7XZg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9u9pgg3d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Nov 2025 04:26:24 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A84QOXX001273;
-	Sat, 8 Nov 2025 04:26:24 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9u9pgg3a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Nov 2025 04:26:24 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A80PbcK012923;
-	Sat, 8 Nov 2025 04:26:23 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a5y82ds0y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Nov 2025 04:26:23 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A84QJW016449928
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 8 Nov 2025 04:26:19 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5157A20043;
-	Sat,  8 Nov 2025 04:26:19 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DC79720040;
-	Sat,  8 Nov 2025 04:26:09 +0000 (GMT)
-Received: from [9.124.216.170] (unknown [9.124.216.170])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  8 Nov 2025 04:26:08 +0000 (GMT)
-Message-ID: <7ad5c02f-63b1-404b-97a1-d7237220f6f7@linux.ibm.com>
-Date: Sat, 8 Nov 2025 09:56:05 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d3X28623Hz2ySP
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Nov 2025 21:18:24 +1100 (AEDT)
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 5A5837A0191;
+	Sat,  8 Nov 2025 05:18:19 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Sat, 08 Nov 2025 05:18:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1762597099;
+	 x=1762683499; bh=Dy0X8O4MO1t7FqOwhn0j3XKQ7MaNsGXpyV2kiweRlxs=; b=
+	cEZyamzNzoH9Icjv4IiQ7MKixYg2dbnKHuP4eSZS/o93PgE6kQ/CWnpSQuyZyBxx
+	Wj6JgdMWTE2GD2KXK2w0u4TdkhZydi440gIa2367xIqal79Y3KxNhf5p0AhBwmx/
+	VCTP94eOxOsZ/+iw45TAaa6TcQt0gBltvqKLZWqaGRL4GmLG3gkoxcoes2xRyISA
+	MKiFHVimYVkDcsc0B028g11jnZY3t1pYZhDpA2KyW/g4itvadMZMjnaC9IyrvexB
+	b6zYB4UY9AuPGgtL3RHrPe0sHVhqFKTIGan1Sc0Qr6WzSFn6w+uQspJfA+IlKvG1
+	5M28rHkO7xmoqtTSGxvGoQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762597099; x=
+	1762683499; bh=Dy0X8O4MO1t7FqOwhn0j3XKQ7MaNsGXpyV2kiweRlxs=; b=1
+	1RmOGKCzj3MrA3S6VHgbq421YPN8O9I8PzYPEWUd2LQirK9sjwdaLiunDdPudTVF
+	oX/iVYhG0uSIDf0Gl9dU/alRQ1Ej12EmiLCWrpyZtHbaytqsF5F8Z46o4jhirvqo
+	1epc1/Q4gaW0SqkMaLk5a4V1iVXL/ClvJz8Snlp4ipuFT6PPUnPCQuN8uW4ZKie7
+	SiN9SCXu0FasH7p25jgc9VvED10nMU0OMLDGBcMiBrPoGi+xZSoLNl0XC6SqHBgZ
+	3eLNB+33wHqfRFOgXTOp1aS8OPqGdA3rIij6tYqtY9ZkN4/PpEmzGWcWKkFXyfNB
+	e5FU0No5QaEl/U4N2hHWQ==
+X-ME-Sender: <xms:6BgPaRRIxWq5jmixg_10_Mir1jteEarI8RHW4m_r0Uav9t2rdu-niA>
+    <xme:6BgPaVl8wFr6gnthaPgSZ1M--DxmnG-g4QebP9dC6AukR-lRUWxEsQWMyCk97OG7m
+    cBfqOHQC0ZW8IRacTFMIUtogXSfeABR1Fv0bJ4MRaVF_NYnIpMvguc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduledvvdekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdegjedvfeehtdeggeevheefleej
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopehtshgsohhgvghnugesrghlphhhrgdrfhhrrghnkhgvnhdruggvpd
+    hrtghpthhtoheptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphht
+    thhopehvihhntggvnhiiohdrfhhrrghstghinhhosegrrhhmrdgtohhmpdhrtghpthhtoh
+    eplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegthhhrihhs
+    thhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhrtghpthhtohepuggrvhgvmh
+    esuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdr
+    ihgurdgruhdprhgtphhtthhopegrnhgurhgvrghssehgrghishhlvghrrdgtohhmpdhrtg
+    hpthhtohepnhhpihhgghhinhesghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:6BgPadWPlUcsGuyo71NaCjKc2YPRvI8gEEyapzU7K_qFqodZYdUZ3Q>
+    <xmx:6BgPaSpqRRWVcjAk5v2CbNcnKLucrzxVs6Dc8Su2mEhLGCTJBU1Bgw>
+    <xmx:6BgPaWY1zqG1CIgxQ5UaNJjuXvzVKu57KP9C9K20ZkpR-xWGduNZIg>
+    <xmx:6BgPaeAB_UvzAn5Sll1yJnfyxEU8_O8ud3cRWf5fHo0_lPSXl6gamw>
+    <xmx:6xgPaQGtgyz68Oh7u7-54VIZcOrGpiuEK0ob3TA8JT0rnP2-R9S_7KgC>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id AA459700065; Sat,  8 Nov 2025 05:18:16 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,128 +99,81 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7] powerpc/kdump: Add support for crashkernel CMA
- reservation
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org
-Cc: Baoquan he <bhe@redhat.com>, Jiri Bohac <jbohac@suse.cz>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>, kexec@lists.infradead.org
-References: <20251107080334.708028-1-sourabhjain@linux.ibm.com>
- <87a50x450c.ritesh.list@gmail.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <87a50x450c.ritesh.list@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAwMCBTYWx0ZWRfXydWUh1taKWy7
- BbywdaN6hGeSpEcCBvDfRsxoja0uBz4N6/ROKGiCPHSlJcyxBYUcjJgsj6kAXZfuEI+lvrsourc
- 4MWvrjt6x82taVUsM4XVW28Hc2vV+VPd2tS+NcUa1AQRBTFo6jSlvvSrnDO4DhsNUxOzcXVK07k
- yaUb1zTF3UDYEBlbiUISlFDgknQbK9AxQ2GfPksfTaYHRnrxk+HAUEdF2AE/nQfG7T3B1D4XPu3
- UnPuQ+JUuYaktU3cAwHL5RaiaaUssp1lywXDotTtGG0UCpYRBPtZrn6qxWXoyq+n/4n3lrlPKig
- jLCIIBe6mYAfrvhrenObup0vH9GZJDTyI2OIVoXrTWgn7l6a0kS/W5n8YLFVF7x+iyUbCi1hCpt
- S6vgnMRgd7ed4KIbHOMO+JLgOvOu1Q==
-X-Proofpoint-ORIG-GUID: lH5l2aBH3V6mv-od1dKTWDkfi-YMJg5U
-X-Authority-Analysis: v=2.4 cv=JdWxbEKV c=1 sm=1 tr=0 ts=690ec670 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=20KFwNOVAAAA:8
- a=JfrnYn6hAAAA:8 a=EzRo69HG9eLfTM0II18A:9 a=QEXdDO2ut3YA:10
- a=1CNFftbPRP8L7MoqJWF3:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: Iqi9hMTUtNIZ9Wv_CQp6yieZCwE6P0be
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-08_01,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
- spamscore=0 bulkscore=0 clxscore=1015 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080000
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-ThreadId: AisJtzLZ_1Kg
+Date: Sat, 08 Nov 2025 11:17:46 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andy Lutomirski" <luto@kernel.org>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ "Thomas Gleixner" <tglx@linutronix.de>,
+ "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Andreas Larsson" <andreas@gaisler.com>,
+ "Nick Alcock" <nick.alcock@oracle.com>,
+ "John Stultz" <jstultz@google.com>, "Stephen Boyd" <sboyd@kernel.org>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+ shuah <shuah@kernel.org>, "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Will Deacon" <will@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
+ "Jason A . Donenfeld" <Jason@zx2c4.com>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Huacai Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "Heiko Carstens" <hca@linux.ibm.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ "Sven Schnelle" <svens@linux.ibm.com>,
+ "Shannon Nelson" <sln@onemain.com>
+Cc: "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+ sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-s390@vger.kernel.org, "Arnd Bergmann" <arnd@kernel.org>
+Message-Id: <6452c785-872a-4fe7-90e1-8138d73c6218@app.fastmail.com>
+In-Reply-To: <b870aa47-5ed4-4dcf-a407-eca83d1733d8@app.fastmail.com>
+References: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de>
+ <b870aa47-5ed4-4dcf-a407-eca83d1733d8@app.fastmail.com>
+Subject: Re: [PATCH v5 00/34] sparc64: vdso: Switch to the generic vDSO library
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Sat, Nov 8, 2025, at 01:17, Andy Lutomirski wrote:
+> On Thu, Nov 6, 2025, at 2:01 AM, Thomas Wei=C3=9Fschuh wrote:
+>
+> Now I'm not an expert on any architecture that has these aliasing=20
+> (coloring?) issues, but from my limited understanding, it ought to be=20
+> possible to choose a correctly colored address to map the vdso data=20
+> given where it's being mapped from.  If there's an issue with gatherin=
+g=20
+> a bunch of basically arbitrarily relatively positioned physical pages=20
+> into their necessary arrangement in usermode, you could presumably fix=20
+> it either with some linker script magic or by rearranging the C code t=
+o=20
+> stick everything into a multipage structure.
 
+On 32-bit Arm, we only allow VDSO on CPUs that have nonaliasing caches
+but not on the rare ARMv4/v5 CPUs. From the public information I could
+find, it appears that similarly all SPARC CPUs from the past 20 years
+(Leon 3/4/5, SPARC64, Niagara, M5/M6/M7/M8, ...) are also nonaliasing,
+though at least UltraSPARC IV (released 2004) and earlier models still
+had an aliasing VIPT dcache.
 
-On 08/11/25 08:14, Ritesh Harjani (IBM) wrote:
-> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
->
->> Commit 35c18f2933c5 ("Add a new optional ",cma" suffix to the
->> crashkernel= command line option") and commit ab475510e042 ("kdump:
->> implement reserve_crashkernel_cma") added CMA support for kdump
->> crashkernel reservation.
->>
->> Extend crashkernel CMA reservation support to powerpc.
->>
-> Yup, would be nice to see this support landing in powerpc!
->
->> The following changes are made to enable CMA reservation on powerpc:
->>
->> - Parse and obtain the CMA reservation size along with other crashkernel
->>    parameters
->> - Call reserve_crashkernel_cma() to allocate the CMA region for kdump
->> - Include the CMA-reserved ranges in the usable memory ranges for the
->>    kdump kernel to use.
->> - Exclude the CMA-reserved ranges from the crash kernel memory to
->>    prevent them from being exported through /proc/vmcore.
->>
->> With the introduction of the CMA crashkernel regions,
->> crash_exclude_mem_range() needs to be called multiple times to exclude
->> both crashk_res and crashk_cma_ranges from the crash memory ranges. To
->> avoid repetitive logic for validating mem_ranges size and handling
->> reallocation when required, this functionality is moved to a new wrapper
->> function crash_exclude_mem_range_guarded().
->>
->> To ensure proper CMA reservation, reserve_crashkernel_cma() is called
->> after pageblock_order is initialized.
->>
->> Update kernel-parameters.txt to document CMA support for crashkernel on
->> powerpc architecture.
->>
->> Cc: Baoquan he <bhe@redhat.com>
->> Cc: Jiri Bohac <jbohac@suse.cz>
->> Cc: Hari Bathini <hbathini@linux.ibm.com>
->> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
->> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->> Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
->> Cc: kexec@lists.infradead.org
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->> ---
->> Changelog:
->>
->> v6 -> v7
->> https://lore.kernel.org/all/20251104132818.1724562-1-sourabhjain@linux.ibm.com/
->>   - declare crashk_cma_size static
->>
->> ---
->>   .../admin-guide/kernel-parameters.txt         |  2 +-
->>   arch/powerpc/include/asm/kexec.h              |  2 +
->>   arch/powerpc/kernel/setup-common.c            |  4 +-
->>   arch/powerpc/kexec/core.c                     | 10 ++++-
->>   arch/powerpc/kexec/ranges.c                   | 43 ++++++++++++++-----
->>   5 files changed, 47 insertions(+), 14 deletions(-)
-> Although my reviewed by may not count much here since I am not deeply
-> familiar with arch/powerpc/kexec/** part..
->
-> But FWIW, the patch overall looks logical to me.
-> Keeping cma reservation in setup_arch() is the right thing to do to
-> avoid issues like these in past [1]. The error handling logic and the
-> loop logic for handling CMA ranges also looks correct to me.
->
-> So feel free to add:
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->
-> [1]: https://lore.kernel.org/linuxppc-dev/3ae208e48c0d9cefe53d2dc4f593388067405b7d.1729146153.git.ritesh.list@gmail.com/
+Someone more familiar with SPARC should double-check that, but I would
+expect that we can gate the VDSO on the actual cache topology.
 
-Thanks for the Review Ritesh.
+On other architectures, I see that parisc (always aliasing) has stubbed
+out the vdso functions, while mips/loongson has limited the page size
+selection to never alias. A few other mips platforms can theoretically
+enable both small pages and vdso, but my guess is that in practice
+they don't use the vdso (mips32/ath79) or they use 16KB pages
+(rm, dec, ip22) based on the defconfig settings.
 
-- Sourabh Jain
+      Arnd
 
