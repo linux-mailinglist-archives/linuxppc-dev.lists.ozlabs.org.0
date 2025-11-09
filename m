@@ -1,96 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-13973-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13974-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19134C436E0
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 09 Nov 2025 01:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E33C43817
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 09 Nov 2025 04:23:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d3v5m32T3z306S;
-	Sun,  9 Nov 2025 11:37:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d3ynD6QKTz303y;
+	Sun,  9 Nov 2025 14:23:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.148
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762648668;
-	cv=none; b=X5DfZBpGDZv59pWLdl4v0/u6sFDKjxMhApRMTu62JGsHV2D9GtKLPFy/9mxA8YKfGNTBBW7z2nL8eYXb8bfDEpuXQMnjrpf3d/hgP0bWQIG62Vhfjan3nVuU3e5SKzMXmngGGQX8si3BWIX2ODTD5g1208H4DOPdgE3D+NOqxlP5ZscFd0i1ehP7qZzXE1Rj9UyxEL7Q0eQ1YPjOjsf33KMN5KJjPOpUbpCYoEdpF3X5lUAQ1Q1JyqxjkVkMpZck5/tfg1pEh79ejGOmUo3euQtXLCzJrlEqMKb33u0gqjA22M0aemdTpnJXO+ncrJo/PWmOH2T+OD24teZGywLMJQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=78.133.224.34
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762658624;
+	cv=none; b=FR2VEs8RGug+2s9pazE2a33JsBZXff57X0GC583mbsVu6k+itJs/aH88nEZAu+ueHCtZdYCjItWgoa2A04lGC2L2z+FmNVF4IQgyNoH3N7zjdxAoPVlwzXzfftoimxssyqFJ4ipLvlmgXCDkOBs2Nw4PXu/OuypB33Xsj/EWSRq9CawFTatxBO52GQe6Fe8b1qPrOd1Ma8woqrB31h/J4WQKVSxWJsmvL2nb3pfHnRlxzTljh0+Wl9T2RWR+EmwlUxkBm859qJsuKoQqluGIU+i5VPZbLjLvwsV/mRNZgjU9kAqVilVj47nwuDXNR6zG18U0L8PkNVNvpmrN8DiBfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762648668; c=relaxed/relaxed;
-	bh=E4aZOzCULi3HBrGklZvBg0eT1cMNm/xQ1tyAYWhxK7U=;
-	h=To:Cc:Message-ID:From:Subject:Date; b=CFLK36OVOJk4/oJ1mtH5M3Xe3ONDdVkmIxaRtHIbtf+T8jw4gutyKx4tOdWYewsScgh0+KimtKyKvBky9/alxA+/ADel9Gm75TOne63rdr65dYOw5VdDEkVx0nHNuvrmJS2FnU800KagIKyPK1NYTcOeR4I8va6Eu0y8TT8QJpMK+Wua8jymrdUJPnyNINHBFVz/A1sP/rngEPm0Yl5Mc2f3dApyOtFrBSVoCPawXiNr8BAWWVadcJ7mdXd/1yHVOhWost554wpNtiGoj01vB8MLJqLoONOBdezV0oL3g/vRRWPYnfBROEWAOknyjPYF/O36BHYgacHE0+5kp7zbcA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=YmA5QFNW; dkim-atps=neutral; spf=pass (client-ip=103.168.172.148; helo=fout-a5-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=fout-a5-smtp.messagingengine.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=YmA5QFNW;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=fout-a5-smtp.messagingengine.com (client-ip=103.168.172.148; helo=fout-a5-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org)
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d3v5h5wX2z2yZ6
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Nov 2025 11:37:43 +1100 (AEDT)
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.phl.internal (Postfix) with ESMTP id E03B6EC0231;
-	Sat,  8 Nov 2025 19:37:39 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Sat, 08 Nov 2025 19:37:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1762648659; x=1762735059; bh=E4aZOzCULi3HBrGklZvBg0eT1cMN
-	m/xQ1tyAYWhxK7U=; b=YmA5QFNW4Q2JUyQorIPO5qjvy0iffm1wFVOoblAsbWs0
-	gfExFKIbtZTiZJoaJK1R+N0n1geUy+LOOt+2JYJ1rUGIFxF1lMUHKZPtLthrV4YK
-	GQphd+mTXcsB3BaL7ilThm65stJ4LsOcNm0qwfZFfnBBxKT2TD+/t74p7yIg9vF6
-	szfV08gaN9inrmIxVPU4+k8kzbcepRguAu1LxJISAeA9y6o8/cydcK+/yCTOux4J
-	MOWmXn5K1lZ9rYLhwZ1oIt2XTxDwVhqmnm+HlpEZCIrb5gfnRk+VXKrSFFaZwtmY
-	xVEO+RMmA0dFKVFPJJRFEgxnpY6LbWYSf6SR8+5Tdg==
-X-ME-Sender: <xms:UeIPac4hLe6EQsJIyDU7u32ckqVirkmk4R20utFsQekc--RQ2mJB-A>
-    <xme:UeIPaWBKfe7v9spAcEAmnWpFhW_eH_qQlI3oBd2aXuWab1-DcdazmUmerg-FFXamb
-    CzZQk5DX5ugOroXa7z7I6-oMEY2D8o3G4ubxFxoB15Y5k__RFJ1Vir->
-X-ME-Received: <xmr:UeIPaa_4Q7aZfPAeMWCjONlH3SqAMqGyUepi3RyL0nqHQDCWNLSEIEnzmIjUzVh2gK9kKMdou68APbNP8MxoHj755Qn2OkxmC24>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduleegtddtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepvfevkffhufffsedttdertddttddtnecuhfhrohhmpefhihhnnhcuvfhhrghinhcu
-    oehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    eukedugeettdegfffhfeejveevkedtgeeuudeggffgheegleejheeiffelgfeuueenucff
-    ohhmrghinhepuggvsghirghnrdhorhhgpdhkvghrnhgvlhdrohhrghenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhu
-    gidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouh
-    htpdhrtghpthhtohepmhgrugguhieslhhinhhugidrihgsmhdrtghomhdprhgtphhtthho
-    pehmphgvsegvlhhlvghrmhgrnhdrihgurdgruhdprhgtphhtthhopehnphhighhgihhnse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegt
-    shhgrhhouhhprdgvuhdprhgtphhtthhopegtvggurghrmhgrgiifvghllhesmhgrtgdrtg
-    homhdprhgtphhtthhopehushgvrhhmheejseihrghhohhordgtohhmpdhrtghpthhtohep
-    lhhinhhugiesthhrvggslhhighdrohhrghdprhgtphhtthhopegsvghnhheskhgvrhhnvg
-    hlrdgtrhgrshhhihhnghdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhk
-    vghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:UeIPaRGbHAKoECcbUn7b9OOW3n-PZLLDU-EJ784-hcZ1vsKk7VD5_Q>
-    <xmx:UeIPacRtG8j8nSrBwA_MQ_5ahQsvJBJfOFsyWcF3C8WxR0d83mbx2A>
-    <xmx:UeIPaQR0aWYF9pY0hnFGFRWeKymwKxvy318bLYMndF_7RRpFdijJrQ>
-    <xmx:UeIPaX0IvF1ZkhwEeC0rbvL3yfJM-99hkNgfWi19k75B0eGy4OWvaA>
-    <xmx:U-IPaTS_kmcfx3H6wFLTx6l83SJPSXPqA0vC5acrXLijI3jQVLMJlUsQ>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 8 Nov 2025 19:37:34 -0500 (EST)
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-    Michael Ellerman <mpe@ellerman.id.au>,
-    Nicholas Piggin <npiggin@gmail.com>,
-    Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Cedar Maxwell <cedarmaxwell@mac.com>,
-    Stan Johnson <userm57@yahoo.com>,
-    "Dr. David Alan Gilbert" <linux@treblig.org>,
-    Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-    stable@vger.kernel.org,
-    linuxppc-dev@lists.ozlabs.org,
-    linux-kernel@vger.kernel.org
-Message-ID: <d941a3221695e836963c8f9cb5fbb61e202bad0c.1762648546.git.fthain@linux-m68k.org>
-From: Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH] powerpc: Use relocated font data pointer for btext_drawchar()
-Date: Sun, 09 Nov 2025 11:35:46 +1100
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	t=1762658624; c=relaxed/relaxed;
+	bh=vP2lHqq1yss88mLftJL/V+DTQZsv/bcvlPmP+YM7xoI=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=olOMqvoCTBK2fuRBQkg+ht6fSt3HxElsqWx5AMEcIFONf0X0506FgG0oRzn7H6ygsBV/r06QlOXZ4+N8zAY1IClPJS3NRW56xLHQ4V/JQMIz3lxCdLcaNxdv7YuTfcSNSGGZtidPKKZq+uRsY4YlfxK0tBdG5mj+PJM4d4W0F3o9fncmh6pTvLy15woaH3ro24/7ldQGuhcfIcNKVcbO9XjvdfGu6/8iKwswEIouI2SwOL5b6WvqbnXNprqWI+2GC3Fkq++Z4RE85AK8Hd2UdKi/ztEWodwvv8oB4KRWDwLQhJn62EvxJefGyku7IqKjoaoNj5bAg4v5vsH3FBRbUQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org) smtp.mailfrom=orcam.me.uk
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=orcam.me.uk (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org)
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d3ynC5jRcz2yjr
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Nov 2025 14:23:43 +1100 (AEDT)
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 5947792009C; Sun,  9 Nov 2025 04:23:31 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 57A8792009B;
+	Sun,  9 Nov 2025 03:23:31 +0000 (GMT)
+Date: Sun, 9 Nov 2025 03:23:31 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Arnd Bergmann <arnd@arndb.de>
+cc: Andy Lutomirski <luto@kernel.org>, 
+    =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+    Thomas Gleixner <tglx@linutronix.de>, 
+    Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+    "David S . Miller" <davem@davemloft.net>, 
+    Andreas Larsson <andreas@gaisler.com>, 
+    Nick Alcock <nick.alcock@oracle.com>, John Stultz <jstultz@google.com>, 
+    Stephen Boyd <sboyd@kernel.org>, 
+    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+    shuah <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+    Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
+    "Jason A . Donenfeld" <Jason@zx2c4.com>, 
+    Russell King <linux@armlinux.org.uk>, 
+    Madhavan Srinivasan <maddy@linux.ibm.com>, 
+    Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+    Christophe Leroy <christophe.leroy@csgroup.eu>, 
+    Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+    Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+    Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+    Alexander Gordeev <agordeev@linux.ibm.com>, 
+    Christian Borntraeger <borntraeger@linux.ibm.com>, 
+    Sven Schnelle <svens@linux.ibm.com>, Shannon Nelson <sln@onemain.com>, 
+    Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+    sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+    linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+    loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+    linux-s390@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH v5 00/34] sparc64: vdso: Switch to the generic vDSO
+ library
+In-Reply-To: <6452c785-872a-4fe7-90e1-8138d73c6218@app.fastmail.com>
+Message-ID: <alpine.DEB.2.21.2511090221080.25436@angie.orcam.me.uk>
+References: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de> <b870aa47-5ed4-4dcf-a407-eca83d1733d8@app.fastmail.com> <6452c785-872a-4fe7-90e1-8138d73c6218@app.fastmail.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,64 +75,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+On Sat, 8 Nov 2025, Arnd Bergmann wrote:
 
-Since Linux v6.7, booting using BootX on an Old World PowerMac produces
-an early crash. Stan Johnson writes, "the symptoms are that the screen
-goes blank and the backlight stays on, and the system freezes (Linux
-doesn't boot)."
-Further testing revealed that the failure can be avoided by disabling
-CONFIG_BOOTX_TEXT. Bisection revealed that the regression was caused by
-a patch which replaced the static btext font data with const data in a
-different compilation unit. To fix this, access the font data at its
-relocated address.
+> On other architectures, I see that parisc (always aliasing) has stubbed
+> out the vdso functions, while mips/loongson has limited the page size
+> selection to never alias. A few other mips platforms can theoretically
+> enable both small pages and vdso, but my guess is that in practice
+> they don't use the vdso (mips32/ath79) or they use 16KB pages
+> (rm, dec, ip22) based on the defconfig settings.
 
-Cc: Cedar Maxwell <cedarmaxwell@mac.com>
-Cc: Stan Johnson <userm57@yahoo.com>
-Cc: "Dr. David Alan Gilbert" <linux@treblig.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: stable@vger.kernel.org
-Link: https://lists.debian.org/debian-powerpc/2025/10/msg00111.html
-Link: https://lore.kernel.org/linuxppc-dev/d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com/
-Reported-by: Cedar Maxwell <cedarmaxwell@mac.com>
-Closes: https://lists.debian.org/debian-powerpc/2025/09/msg00031.html
-Bisected-by: Stan Johnson <userm57@yahoo.com>
-Tested-by: Stan Johnson <userm57@yahoo.com>
-Fixes: 0ebc7feae79a ("powerpc: Use shared font data")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+ Umm, I'd have to dive into the details (and I hardly have the resources 
+at hand), but quite a bunch of MIPS microarchitectures suffer from cache 
+aliases; some even have VIVT caches.  A quick check with a system I have 
+running at my lab:
 
----
+$ ldd /bin/true
+        linux-vdso.so.1 =>  (0x77ff4000)
+        libc.so.6 => /lib/libc.so.6 (0x77e50000)
+        /lib/ld.so.1 (0x77fcc000)
+$ getconf PAGESIZE
+4096
+$ dmesg | grep linesize
+Primary instruction cache 32kB, VIPT, 4-way, linesize 32 bytes.
+Primary data cache 32kB, 4-way, VIPT, cache aliases, linesize 32 bytes
+MIPS secondary cache 512kB, 8-way, linesize 32 bytes.
+$ 
 
-Christophe, as you're the author of this patch, this submission will
-probably need your sign-off.
+Some microarchitectures have aliasing prevention implemented in hardware, 
+e.g. with the MTI 24K core:
 
----
- arch/powerpc/kernel/btext.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+                 Table 6-31 Config7 Register Field Descriptions
+-------------+---------------------------------------------+-------+---------
+   Fields    |                                             |       |
+------+------+                                             | Read/ |  Reset 
+ Name | Bits |                Description                  | Write |  State
+======+======+=============================================+=======+=========
+      |      | Alias removed: This bit indicates that the  |       |
+      |      | data cache is organized to avoid virtual    |       |
+  AR  |  16  | aliasing problems.  This bit is only set if |   R   |  Based
+      |      | the data cache config and MMU type would    |       |  on HW
+      |      | normally cause aliasing - i.e., only for    |       | present
+      |      | the 32KB data cache and TLB-based MMU.      |       |
+------+------+---------------------------------------------+-------+---------
 
-diff --git a/arch/powerpc/kernel/btext.c b/arch/powerpc/kernel/btext.c
-index 7f63f1cdc6c3..ca00c4824e31 100644
---- a/arch/powerpc/kernel/btext.c
-+++ b/arch/powerpc/kernel/btext.c
-@@ -20,6 +20,7 @@
- #include <asm/io.h>
- #include <asm/processor.h>
- #include <asm/udbg.h>
-+#include <asm/setup.h>
- 
- #define NO_SCROLL
- 
-@@ -463,7 +464,7 @@ static noinline void draw_byte(unsigned char c, long locX, long locY)
- {
- 	unsigned char *base	= calc_base(locX << 3, locY << 4);
- 	unsigned int font_index = c * 16;
--	const unsigned char *font	= font_sun_8x16.data + font_index;
-+	const unsigned char *font = PTRRELOC(font_sun_8x16.data) + font_index;
- 	int rb			= dispDeviceRowBytes;
- 
- 	rmci_maybe_on();
--- 
-2.49.1
+But this is entirely optional and not architecturally guaranteed; Config7 
+is a vendor space register.
 
+ DEC platforms have a selectable page size (for R4k CPUs; R3k CPUs have a 
+PIPT write-through cache, so no issue with aliasing ever) and 4KiB is the 
+common choice, but they never suffer from aliases as the hardware resolves 
+them.  It's not completely transparent as with the 24K option shown above, 
+as a virtual coherency exception is triggered instead, at separate levels 
+for the I$ and D$ each, and we handle it in software:
+
+$ getconf PAGESIZE
+4096
+$ dmesg | grep linesize
+Primary instruction cache 16kB, VIPT, direct mapped, linesize 16 bytes.
+Primary data cache 16kB, direct mapped, VIPT, cache aliases, linesize 16 bytes
+Unified secondary cache 1024kB direct mapped, linesize 32 bytes.
+$ uptime
+ 02:46:16  up 250 days,  4:03,  2 users,  load average: 0.01, 0.01, 0.00
+$ cat /proc/cpuinfo
+system type		: Digital DECstation 5000/2x0
+machine			: Unknown
+processor		: 0
+cpu model		: R4400SC V4.0  FPU V0.0
+BogoMIPS		: 59.60
+wait instruction	: no
+microsecond timers	: yes
+tlb_entries		: 48
+extra interrupt vector	: no
+hardware watchpoint	: yes, count: 0, address/irw mask: []
+isa			: mips1 mips2 mips3
+ASEs implemented	:
+Options implemented	: tlb 4kex 4k_cache fpu 32fpr cache_cdex_p cache_cdex_s llsc dc_aliases inclusive_pcaches nan_legacy
+shadow register sets	: 1
+kscratch registers	: 0
+package			: 0
+core			: 0
+VCED exceptions		: 372522
+VCEI exceptions		: 16922804
+
+$ 
+
+(see the figures at the bottom; uptime quoted for an idea of the rate, 
+though the system hasn't been heavily loaded).  It is possible with the 
+aid of S$, which is inclusive and PIPT.
+
+ FWIW,
+
+  Maciej
 
