@@ -1,72 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-13978-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13979-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8387CC446F0
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 09 Nov 2025 21:40:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1925C44A38
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 00:32:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4Pnk44dsz303y;
-	Mon, 10 Nov 2025 07:40:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d4Tbw3LY4z2yG3;
+	Mon, 10 Nov 2025 10:32:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762720842;
-	cv=none; b=IedQBvbEGjwlVtW9Luez8XKSDmAewlYwpJxyj9c6I9ACiE7WQaD+DuxOvxMno1O4QLOhQOZcgmeCgOrKL9rJMcLC0xCt21W6/s8Cfpg5pYossDVaGe7LAg/VD522E4JFqyoAx7pO/DxhHclCcYaxdflqcqm3TN+BiwP06rBPZHKudXBqZdJtBq9B4BUy3mpJSzd/7+n4JDzR0BP6lygz4C9aJnP0BFBwk8qdtGd/FaJCeqAtLQrtM1JOkRs7Tqz3LXqPMpItFNi88pvaVmN7JSDDlvVWbhjn1/BL+gzotF/wdhN5HthVbwZqxqvU9suimVlK7aLOsoWhtIXO8dodMw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.146
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762731148;
+	cv=none; b=PJCmt1cTb2OV4Q4FCF6N7yEsSzQHXvWDHnCLJ4er7G/wJzha3XmOVGxfYxEDXd31fAaNYJxqal2qu0wLTEawDVq6M+lGtmtJ470HdjiApnjzVHKuyuyrTgL7ie+9veN7V1eQTNalKCvTM97X0ezKQ0BTUh+z3KVNrz4ZeqVjvviKnLfVP6E6AxdXCMLxgFrbhmHeussjjOMPR2kAXukbiELJBAx3VPJQUr/JAodT3V9B5loOKL39vmpcNz+ikm6AUc+qMpp2O9gER3RQQpk+R0y7Zm0exSB0QXJPbilFn4taGuYgJX/b/QeY4sc5wfVhQNZgfLz/EDHqqq9W1Lll0Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762720842; c=relaxed/relaxed;
-	bh=BfmRhkxrsEs9tOM8wGbk7dXcVXNceBqTXcIhtt2SrKs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SFdL38Ai/vlvCc5F5Rn4Q745rkcrpxZk0Iq1dvYI1wS8B7m1JTRbJb1Sl1BfbJE3qLLMviPaO0RhIX6qMYnUwzp9jfiWqKozyN+uS8qlZfrYQqJouX2UmYZNSQQCA4XuLCKFrKFGbwLHIeEgB5H1yzogHR1uNwXaxMG2qLUxV2xJkRHUGUgHG9WKBtLgK+Zb5ClAJNA+Tj2o1Sq5yudPD9gtUaY08bx05Z4mh6Jlb+1vzAVWZxPKgCHaSFHxA2IkHC+h+metJ8K5TyVhrOBYUZdL4b6R018KcSnq361vuQBxTWsNEJWvXJ5GZzDvaOzyDRurHkNvOK0namlWXZWMaQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=wUuaVauM; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+	t=1762731148; c=relaxed/relaxed;
+	bh=nx4FOrWdSq+YAbCvyjoWIFM0L4cdYEzeFfgYi/pIqlo=;
+	h=To:Cc:Message-ID:From:Subject:Date; b=DA2248KqorFAAMi39j0JLpvPfitQHg/9/yGHoDz44bpPM4dxuTyLbOp9NhDKCTJxw9XDOtVtwPqc9VIE4/HNExAbOa/JEA/mFk13mco+Z9lSSYqXbE3Jv/O3jpPBICd0N+7mRf/oCl1C1YnLuLKsyAswMz7NghJbBnbGihje0BppeAw9Nwuq3eLm1jXgxJ5Xg92cry1xtw3Y7aVONWfB/tw8XN4tldbSLet3sI9bPKNROOG/AXwdIqcXS6es9DTyqHPzIvsyWZlHldflcYlRBTU8mQgt1NN9yu2F0ZFd4arIUCj8VnJj9E5aOtTJ3BJNQDh8Az4lkLSOawVABqdOrg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=sTTRis8q; dkim-atps=neutral; spf=pass (client-ip=103.168.172.146; helo=fout-a3-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=fout-a3-smtp.messagingengine.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=wUuaVauM;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=sTTRis8q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=fout-a3-smtp.messagingengine.com (client-ip=103.168.172.146; helo=fout-a3-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org)
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d4Png1fqTz2yG2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 07:40:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=BfmRhkxrsEs9tOM8wGbk7dXcVXNceBqTXcIhtt2SrKs=; b=wUuaVauMMR7ErCaLipgahv02uK
-	f8zmYZUSkXrkSeIWVD+p2We+E7S0R1h/RkWnDRzYS23UkSGwmELAbRJJxSREYjeqifZdYxQ0MI7Y8
-	whP1b+2iLCrarO1lAoXJmD7YCetyf1ykJN7sVe3HCohmhOOvBIYllaLsgF2qgYoPuJ6bpGVgIgYwX
-	WVTBkowQ1Lmcdjvk4p6fM2kbY7LuhZft2NVC8ulf4OPzi+fEUEktbxyTH2D3vg2+jh6CBx75Obxt7
-	6/7552MEzeebUdxzenriy13HTG10/jzbqdfcj+Rdt/3+FhTjfYrzTwilZk/MP+73IUGSCKVk2vREG
-	7z5iDtNA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vICCw-00000007AxF-0Wo7;
-	Sun, 09 Nov 2025 20:40:18 +0000
-Date: Sun, 9 Nov 2025 20:40:18 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Christian Brauner <brauner@kernel.org>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Ard Biesheuvel <ardb@kernel.org>, linux-fsdevel@vger.kernel.org,
-	torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net,
-	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
-	linux-mm@kvack.org, linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	paul@paul-moore.com, casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH v2 22/50] convert efivarfs
-Message-ID: <20251109204018.GH2441659@ZenIV>
-References: <20251028174540.GN2441659@ZenIV>
- <20251028210805.GP2441659@ZenIV>
- <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
- <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
- <20251029193755.GU2441659@ZenIV>
- <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
- <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
- <423f5cc5352c54fc21e0570daeeddc4a58e74974.camel@HansenPartnership.com>
- <20251105-sohlen-fenster-e7c5af1204c4@brauner>
- <20251105-vorbild-zutreffen-fe00d1dd98db@brauner>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d4Tbt2DdMz2yG1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 10:32:24 +1100 (AEDT)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 7D0C9EC0096;
+	Sun,  9 Nov 2025 18:32:21 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Sun, 09 Nov 2025 18:32:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1762731141; x=1762817541; bh=nx4FOrWdSq+YAbCvyjoWIFM0L4cd
+	YEzeFfgYi/pIqlo=; b=sTTRis8q4cGmdKtjI7SQR5NMchmNSUj9D2hEv2YLMbmC
+	8W2R4duBlMvcfkFtQbaF1innN67sAqe/j+vhwMyCjaPcV5ozcZoR6DPaAua0YEky
+	X66t2MuVcTfeWiJcM9IRXlSd0goYmxub6Hx662cM+OD2bGN/ZzeNJSyW6py5TWpI
+	9F4SXOwSuC1687WcSYRG2sXK0cztIwUgy5GXuy55j11lqWyCM7yYmtx6+u9BkuN5
+	cW/01r3zKfOz9HM+f6SKZrtBW2NhQfyDbik1X6fdBEzikJMTme4hRJlTY+3egQZP
+	ypx+y2DMJe/UKoi7AI1XrkdITE/5WCv3CSIBebNsFA==
+X-ME-Sender: <xms:gyQRaVxoHoSwFU4KR8ZgDOtrT2hPSwXtnwz7TK7KEIg8pZStBNUOYQ>
+    <xme:gyQRadbog7rYoRV6h9uQxmyr-PmdrhegsZ4qJfn0OB8LKgs8gGJJafbT4fBqaOTsj
+    Fao59dqo_yn6pWSCom4k4qydW2srLzCFiv833AipMytX5yEbnARVEA1>
+X-ME-Received: <xmr:gyQRae10O_B0O-NV6Xdv97bGFa5Ik7zTA0PI0MzySsdAIdTe-Q3xz8urr9-oCMT1cUqY9Ly0Dr4DZ_rdFswUauF_zuKkjiQ55jM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduleeijeehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepvfevkffhufffsedttdertddttddtnecuhfhrohhmpefhihhnnhcuvfhhrghinhcu
+    oehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    eukedugeettdegfffhfeejveevkedtgeeuudeggffgheegleejheeiffelgfeuueenucff
+    ohhmrghinhepuggvsghirghnrdhorhhgpdhkvghrnhgvlhdrohhrghenucevlhhushhtvg
+    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhu
+    gidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouh
+    htpdhrtghpthhtohepmhgrugguhieslhhinhhugidrihgsmhdrtghomhdprhgtphhtthho
+    pehmphgvsegvlhhlvghrmhgrnhdrihgurdgruhdprhgtphhtthhopehnphhighhgihhnse
+    hgmhgrihhlrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegt
+    shhgrhhouhhprdgvuhdprhgtphhtthhopegtvggurghrmhgrgiifvghllhesmhgrtgdrtg
+    homhdprhgtphhtthhopehushgvrhhmheejseihrghhohhordgtohhmpdhrtghpthhtohep
+    lhhinhhugiesthhrvggslhhighdrohhrghdprhgtphhtthhopegsvghnhheskhgvrhhnvg
+    hlrdgtrhgrshhhihhnghdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhk
+    vghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:gyQRaXc1RFdIknDVT28Jr6NJ5CHLiMceYEgqOPUG66Pwxxw-HYd_Zg>
+    <xmx:gyQRaTLPt2hEREj_BMqP524Q5xj_cna2JkjukdC8Mx97Hz7EYoHNvw>
+    <xmx:gyQRadrD7307-ZTMu5fxNNN3BReLwHYaAGmM17Otbr7WvFgOybJbvA>
+    <xmx:gyQRaZtK7jqdKf0Bj1nmwjFPUpheifYGZsZGAszOqAytc_FGvrvSrg>
+    <xmx:hSQRadKHSj-vVrXAFHXXRS0w98m3FHAElT2rKORMXn6cuMf0Zlzdnl2D>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 9 Nov 2025 18:32:16 -0500 (EST)
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+    Michael Ellerman <mpe@ellerman.id.au>,
+    Nicholas Piggin <npiggin@gmail.com>,
+    Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Cedar Maxwell <cedarmaxwell@mac.com>,
+    Stan Johnson <userm57@yahoo.com>,
+    "Dr. David Alan Gilbert" <linux@treblig.org>,
+    Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+    stable@vger.kernel.org,
+    linuxppc-dev@lists.ozlabs.org,
+    linux-kernel@vger.kernel.org
+Message-ID: <22b3b247425a052b079ab84da926706b3702c2c7.1762731022.git.fthain@linux-m68k.org>
+From: Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH v2] powerpc: Add reloc_offset() to font bitmap pointer used for
+ bootx_printf()
+Date: Mon, 10 Nov 2025 10:30:22 +1100
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,27 +104,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251105-vorbild-zutreffen-fe00d1dd98db@brauner>
-Sender: Al Viro <viro@ftp.linux.org.uk>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Nov 05, 2025 at 02:43:34PM +0100, Christian Brauner wrote:
+Since Linux v6.7, booting using BootX on an Old World PowerMac produces
+an early crash. Stan Johnson writes, "the symptoms are that the screen
+goes blank and the backlight stays on, and the system freezes (Linux
+doesn't boot)."
 
-> -static void filesystems_freeze_callback(struct super_block *sb, void *unused)
-> +static void filesystems_freeze_callback(struct super_block *sb, void *bool_freeze_all)
->  {
-> +	bool freeze_all = *(bool *)bool_freeze_all;
-> +
->  	if (!sb->s_op->freeze_fs && !sb->s_op->freeze_super)
->  		return;
->  
-> +	if (!freeze_all) {
+Further testing revealed that the failure can be avoided by disabling
+CONFIG_BOOTX_TEXT. Bisection revealed that the regression was caused by
+a change to the font bitmap pointer that's used when btext_init() begins
+painting characters on the display, early in the boot process.
 
-Minor nitpick: do we even need a dereference here?  Just check
-whether the argument is NULL and adjust the caller...
+Christophe Leroy explains, "before kernel text is relocated to its final
+location ... data is addressed with an offset which is added to the
+Global Offset Table (GOT) entries at the start of bootx_init()
+by function reloc_got2(). But the pointers that are located inside a
+structure are not referenced in the GOT and are therefore not updated by
+reloc_got2(). It is therefore needed to apply the offset manually by using
+PTRRELOC() macro."
+
+Cc: Cedar Maxwell <cedarmaxwell@mac.com>
+Cc: Stan Johnson <userm57@yahoo.com>
+Cc: "Dr. David Alan Gilbert" <linux@treblig.org>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: stable@vger.kernel.org
+Link: https://lists.debian.org/debian-powerpc/2025/10/msg00111.html
+Link: https://lore.kernel.org/linuxppc-dev/d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com/
+Reported-by: Cedar Maxwell <cedarmaxwell@mac.com>
+Closes: https://lists.debian.org/debian-powerpc/2025/09/msg00031.html
+Bisected-by: Stan Johnson <userm57@yahoo.com>
+Tested-by: Stan Johnson <userm57@yahoo.com>
+Fixes: 0ebc7feae79a ("powerpc: Use shared font data")
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+---
+Changed since v1:
+ - Improved commit log entry to better explain the need for PTRRELOC().
+---
+ arch/powerpc/kernel/btext.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/btext.c b/arch/powerpc/kernel/btext.c
+index 7f63f1cdc6c3..ca00c4824e31 100644
+--- a/arch/powerpc/kernel/btext.c
++++ b/arch/powerpc/kernel/btext.c
+@@ -20,6 +20,7 @@
+ #include <asm/io.h>
+ #include <asm/processor.h>
+ #include <asm/udbg.h>
++#include <asm/setup.h>
+ 
+ #define NO_SCROLL
+ 
+@@ -463,7 +464,7 @@ static noinline void draw_byte(unsigned char c, long locX, long locY)
+ {
+ 	unsigned char *base	= calc_base(locX << 3, locY << 4);
+ 	unsigned int font_index = c * 16;
+-	const unsigned char *font	= font_sun_8x16.data + font_index;
++	const unsigned char *font = PTRRELOC(font_sun_8x16.data) + font_index;
+ 	int rb			= dispDeviceRowBytes;
+ 
+ 	rmci_maybe_on();
+-- 
+2.49.1
+
 
