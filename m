@@ -1,68 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-13974-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13975-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E33C43817
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 09 Nov 2025 04:23:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C9EC43B94
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 09 Nov 2025 11:20:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d3ynD6QKTz303y;
-	Sun,  9 Nov 2025 14:23:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d482H2pRDz2yjr;
+	Sun,  9 Nov 2025 21:20:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=78.133.224.34
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762658624;
-	cv=none; b=FR2VEs8RGug+2s9pazE2a33JsBZXff57X0GC583mbsVu6k+itJs/aH88nEZAu+ueHCtZdYCjItWgoa2A04lGC2L2z+FmNVF4IQgyNoH3N7zjdxAoPVlwzXzfftoimxssyqFJ4ipLvlmgXCDkOBs2Nw4PXu/OuypB33Xsj/EWSRq9CawFTatxBO52GQe6Fe8b1qPrOd1Ma8woqrB31h/J4WQKVSxWJsmvL2nb3pfHnRlxzTljh0+Wl9T2RWR+EmwlUxkBm859qJsuKoQqluGIU+i5VPZbLjLvwsV/mRNZgjU9kAqVilVj47nwuDXNR6zG18U0L8PkNVNvpmrN8DiBfQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762683639;
+	cv=none; b=c/aKk1fMg5NaagpzZTQEoos07MIpcmPCx9pGK9bYuo2x2qUFBZ9gT0fpSE+QF58PG/ByIHnf6nTWH/jJ4W1ei9U93jC7ek3PdlfxgSswjdz/TUn/825cTtpi3zgnPaKWYcSChI3GWAcGfkckLqy3KECYMY8z9dii4JTp4vQKTSLwAcX1nMOb+yFtwYEkhVI8FEpu3840JBEV9m2A4SKxYqFEnrGKgUNdGxZ+OhRQ0u06mLfO1nhy7yMAdL4h3m7i3iOC0RkrsMsqLWkRBZj/dDkH9FkjrIeiVAJxw7NJAFWDbU7Rhkn4dU2a034rMcMf+Ix4zNO8vdS8O6NBsiq5hw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762658624; c=relaxed/relaxed;
-	bh=vP2lHqq1yss88mLftJL/V+DTQZsv/bcvlPmP+YM7xoI=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=olOMqvoCTBK2fuRBQkg+ht6fSt3HxElsqWx5AMEcIFONf0X0506FgG0oRzn7H6ygsBV/r06QlOXZ4+N8zAY1IClPJS3NRW56xLHQ4V/JQMIz3lxCdLcaNxdv7YuTfcSNSGGZtidPKKZq+uRsY4YlfxK0tBdG5mj+PJM4d4W0F3o9fncmh6pTvLy15woaH3ro24/7ldQGuhcfIcNKVcbO9XjvdfGu6/8iKwswEIouI2SwOL5b6WvqbnXNprqWI+2GC3Fkq++Z4RE85AK8Hd2UdKi/ztEWodwvv8oB4KRWDwLQhJn62EvxJefGyku7IqKjoaoNj5bAg4v5vsH3FBRbUQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org) smtp.mailfrom=orcam.me.uk
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=orcam.me.uk (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org)
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d3ynC5jRcz2yjr
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Nov 2025 14:23:43 +1100 (AEDT)
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 5947792009C; Sun,  9 Nov 2025 04:23:31 +0100 (CET)
+	t=1762683639; c=relaxed/relaxed;
+	bh=EH6Ri/twJaKWm9tXRBm88oxRjrvHxqIC2sV+ciGM8VA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XAFL1D5hz6eqmOa8kequ9KGKoRczZ6oQxZmbBQDFavHfAhH4eqSaIkcwuzkDivxKE/sT5R+BWzF1L/gjGtIUYkOrhpL5sno1mZ0uiHTkBXnUVTv86H6ZbDfKYGqmb8Ye229X1bPF4PGArCp4N1P3+btc3hIKO/kfYI2mCtWBjqODlzS9129nbEUOfJrgTIUNT67uhTJDDvvhqJVH9ZUYZsVmR+HNT2kyYCfTY1twhoTRfaHx0or45RU3+m7Er3vlwzVq+DBzH5kmS9XZTdNAay4G6Gu0pujRU0BYkjn88uycQ4WYWmOzOTeHaDOaQHoOtX1tv3rq66KeTpM3DpdbJg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d482G26NSz2xnh
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Nov 2025 21:20:35 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d47Jy2P0lz9sSH;
+	Sun,  9 Nov 2025 10:48:18 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 4g6UDkaIzWZF; Sun,  9 Nov 2025 10:48:18 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d47Jy1C6Vz9sS7;
+	Sun,  9 Nov 2025 10:48:18 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 57A8792009B;
-	Sun,  9 Nov 2025 03:23:31 +0000 (GMT)
-Date: Sun, 9 Nov 2025 03:23:31 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: Arnd Bergmann <arnd@arndb.de>
-cc: Andy Lutomirski <luto@kernel.org>, 
-    =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-    Thomas Gleixner <tglx@linutronix.de>, 
-    Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-    "David S . Miller" <davem@davemloft.net>, 
-    Andreas Larsson <andreas@gaisler.com>, 
-    Nick Alcock <nick.alcock@oracle.com>, John Stultz <jstultz@google.com>, 
-    Stephen Boyd <sboyd@kernel.org>, 
-    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-    shuah <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-    Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
-    "Jason A . Donenfeld" <Jason@zx2c4.com>, 
-    Russell King <linux@armlinux.org.uk>, 
-    Madhavan Srinivasan <maddy@linux.ibm.com>, 
-    Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-    Christophe Leroy <christophe.leroy@csgroup.eu>, 
-    Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-    Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-    Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-    Alexander Gordeev <agordeev@linux.ibm.com>, 
-    Christian Borntraeger <borntraeger@linux.ibm.com>, 
-    Sven Schnelle <svens@linux.ibm.com>, Shannon Nelson <sln@onemain.com>, 
-    Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-    sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-    linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-    loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-    linux-s390@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v5 00/34] sparc64: vdso: Switch to the generic vDSO
- library
-In-Reply-To: <6452c785-872a-4fe7-90e1-8138d73c6218@app.fastmail.com>
-Message-ID: <alpine.DEB.2.21.2511090221080.25436@angie.orcam.me.uk>
-References: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de> <b870aa47-5ed4-4dcf-a407-eca83d1733d8@app.fastmail.com> <6452c785-872a-4fe7-90e1-8138d73c6218@app.fastmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 180918B764;
+	Sun,  9 Nov 2025 10:48:18 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id kQzC0qppv8Je; Sun,  9 Nov 2025 10:48:17 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6F75F8B763;
+	Sun,  9 Nov 2025 10:48:17 +0100 (CET)
+Message-ID: <a7d9feaa-3a52-4c72-be56-6757e75af2ac@csgroup.eu>
+Date: Sun, 9 Nov 2025 10:48:17 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,100 +57,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_NONE
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc: Use relocated font data pointer for
+ btext_drawchar()
+To: Finn Thain <fthain@linux-m68k.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Cedar Maxwell <cedarmaxwell@mac.com>, Stan Johnson <userm57@yahoo.com>,
+ "Dr. David Alan Gilbert" <linux@treblig.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, stable@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <d941a3221695e836963c8f9cb5fbb61e202bad0c.1762648546.git.fthain@linux-m68k.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <d941a3221695e836963c8f9cb5fbb61e202bad0c.1762648546.git.fthain@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat, 8 Nov 2025, Arnd Bergmann wrote:
 
-> On other architectures, I see that parisc (always aliasing) has stubbed
-> out the vdso functions, while mips/loongson has limited the page size
-> selection to never alias. A few other mips platforms can theoretically
-> enable both small pages and vdso, but my guess is that in practice
-> they don't use the vdso (mips32/ath79) or they use 16KB pages
-> (rm, dec, ip22) based on the defconfig settings.
 
- Umm, I'd have to dive into the details (and I hardly have the resources 
-at hand), but quite a bunch of MIPS microarchitectures suffer from cache 
-aliases; some even have VIVT caches.  A quick check with a system I have 
-running at my lab:
+Le 09/11/2025 à 01:35, Finn Thain a écrit :
+> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
+> Since Linux v6.7, booting using BootX on an Old World PowerMac produces
+> an early crash. Stan Johnson writes, "the symptoms are that the screen
+> goes blank and the backlight stays on, and the system freezes (Linux
+> doesn't boot)."
+> Further testing revealed that the failure can be avoided by disabling
+> CONFIG_BOOTX_TEXT. Bisection revealed that the regression was caused by
+> a patch which replaced the static btext font data with const data in a
+> different compilation unit. To fix this, access the font data at its
+> relocated address.
 
-$ ldd /bin/true
-        linux-vdso.so.1 =>  (0x77ff4000)
-        libc.so.6 => /lib/libc.so.6 (0x77e50000)
-        /lib/ld.so.1 (0x77fcc000)
-$ getconf PAGESIZE
-4096
-$ dmesg | grep linesize
-Primary instruction cache 32kB, VIPT, 4-way, linesize 32 bytes.
-Primary data cache 32kB, 4-way, VIPT, cache aliases, linesize 32 bytes
-MIPS secondary cache 512kB, 8-way, linesize 32 bytes.
-$ 
+You can explain that characters start being displayed by bootx_init() 
+which is call very early in the boot before kernel text is relocated to 
+its final location. During that period, data is addressed with an offset 
+which is added to the Global Offset Table (GOT) entries at the start of 
+bootx_init() by fonction reloc_got2(). But the pointers that are located 
+inside a structure are not referenced in the GOT and are therefore not 
+updated by reloc_got2(). It is therefore needed to apply the offset 
+manually by using PTRRELOC() macro.
 
-Some microarchitectures have aliasing prevention implemented in hardware, 
-e.g. with the MTI 24K core:
+> 
+> Cc: Cedar Maxwell <cedarmaxwell@mac.com>
+> Cc: Stan Johnson <userm57@yahoo.com>
+> Cc: "Dr. David Alan Gilbert" <linux@treblig.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: stable@vger.kernel.org
+> Link: https://lists.debian.org/debian-powerpc/2025/10/msg00111.html
+> Link: https://lore.kernel.org/linuxppc-dev/d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com/
+> Reported-by: Cedar Maxwell <cedarmaxwell@mac.com>
+> Closes: https://lists.debian.org/debian-powerpc/2025/09/msg00031.html
+> Bisected-by: Stan Johnson <userm57@yahoo.com>
+> Tested-by: Stan Johnson <userm57@yahoo.com>
+> Fixes: 0ebc7feae79a ("powerpc: Use shared font data")
+> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+> 
+> ---
+> 
+> Christophe, as you're the author of this patch, this submission will
+> probably need your sign-off.
 
-                 Table 6-31 Config7 Register Field Descriptions
--------------+---------------------------------------------+-------+---------
-   Fields    |                                             |       |
-------+------+                                             | Read/ |  Reset 
- Name | Bits |                Description                  | Write |  State
-======+======+=============================================+=======+=========
-      |      | Alias removed: This bit indicates that the  |       |
-      |      | data cache is organized to avoid virtual    |       |
-  AR  |  16  | aliasing problems.  This bit is only set if |   R   |  Based
-      |      | the data cache config and MMU type would    |       |  on HW
-      |      | normally cause aliasing - i.e., only for    |       | present
-      |      | the 32KB data cache and TLB-based MMU.      |       |
-------+------+---------------------------------------------+-------+---------
+I only suggested it, you authored the patch. Add me as:
 
-But this is entirely optional and not architecturally guaranteed; Config7 
-is a vendor space register.
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
- DEC platforms have a selectable page size (for R4k CPUs; R3k CPUs have a 
-PIPT write-through cache, so no issue with aliasing ever) and 4KiB is the 
-common choice, but they never suffer from aliases as the hardware resolves 
-them.  It's not completely transparent as with the 24K option shown above, 
-as a virtual coherency exception is triggered instead, at separate levels 
-for the I$ and D$ each, and we handle it in software:
+> 
+> ---
+>   arch/powerpc/kernel/btext.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kernel/btext.c b/arch/powerpc/kernel/btext.c
+> index 7f63f1cdc6c3..ca00c4824e31 100644
+> --- a/arch/powerpc/kernel/btext.c
+> +++ b/arch/powerpc/kernel/btext.c
+> @@ -20,6 +20,7 @@
+>   #include <asm/io.h>
+>   #include <asm/processor.h>
+>   #include <asm/udbg.h>
+> +#include <asm/setup.h>
+>   
+>   #define NO_SCROLL
+>   
+> @@ -463,7 +464,7 @@ static noinline void draw_byte(unsigned char c, long locX, long locY)
+>   {
+>   	unsigned char *base	= calc_base(locX << 3, locY << 4);
+>   	unsigned int font_index = c * 16;
+> -	const unsigned char *font	= font_sun_8x16.data + font_index;
+> +	const unsigned char *font = PTRRELOC(font_sun_8x16.data) + font_index;
+>   	int rb			= dispDeviceRowBytes;
+>   
+>   	rmci_maybe_on();
 
-$ getconf PAGESIZE
-4096
-$ dmesg | grep linesize
-Primary instruction cache 16kB, VIPT, direct mapped, linesize 16 bytes.
-Primary data cache 16kB, direct mapped, VIPT, cache aliases, linesize 16 bytes
-Unified secondary cache 1024kB direct mapped, linesize 32 bytes.
-$ uptime
- 02:46:16  up 250 days,  4:03,  2 users,  load average: 0.01, 0.01, 0.00
-$ cat /proc/cpuinfo
-system type		: Digital DECstation 5000/2x0
-machine			: Unknown
-processor		: 0
-cpu model		: R4400SC V4.0  FPU V0.0
-BogoMIPS		: 59.60
-wait instruction	: no
-microsecond timers	: yes
-tlb_entries		: 48
-extra interrupt vector	: no
-hardware watchpoint	: yes, count: 0, address/irw mask: []
-isa			: mips1 mips2 mips3
-ASEs implemented	:
-Options implemented	: tlb 4kex 4k_cache fpu 32fpr cache_cdex_p cache_cdex_s llsc dc_aliases inclusive_pcaches nan_legacy
-shadow register sets	: 1
-kscratch registers	: 0
-package			: 0
-core			: 0
-VCED exceptions		: 372522
-VCEI exceptions		: 16922804
-
-$ 
-
-(see the figures at the bottom; uptime quoted for an idea of the rate, 
-though the system hasn't been heavily loaded).  It is possible with the 
-aid of S$, which is inclusive and PIPT.
-
- FWIW,
-
-  Maciej
 
