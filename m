@@ -1,63 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-13972-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13973-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C63C43567
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 08 Nov 2025 23:25:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19134C436E0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 09 Nov 2025 01:37:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d3r8b5ltyz3btS;
-	Sun,  9 Nov 2025 09:25:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d3v5m32T3z306S;
+	Sun,  9 Nov 2025 11:37:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.219.51
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762640703;
-	cv=none; b=dK1TR61MBwYJGPXZzpaBYF4ZMx3SP8w5TXAG2ZWmo8imAUdeiQv7ZdMFR1euZFPmfXH3BjRvKm6V3H2v3wI53p+JypFvLa4CNFQuShHoVtEC+2voUSAfu2vNlsGAPI7MwkPQgtAmTtWMlC0H1sGNFx+9lX+G1VERp3OU3ieZ8SZcqrQSx00Fj+Hm8Ei9g7gIztXgAVdXdxxyVCBx0yuvi51gfxF1VAASCSPF4SdRd3TJFGmrp5+wKWCp1H4g5Nn9EkdqEDSQLVAJjN5f1QXmoLxWtmPdFOFi02oxOpKRdFk4dhGVHNvDql5a56Vxj4DmiG2NjTCDOY871tbHz0zLiA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.148
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762648668;
+	cv=none; b=X5DfZBpGDZv59pWLdl4v0/u6sFDKjxMhApRMTu62JGsHV2D9GtKLPFy/9mxA8YKfGNTBBW7z2nL8eYXb8bfDEpuXQMnjrpf3d/hgP0bWQIG62Vhfjan3nVuU3e5SKzMXmngGGQX8si3BWIX2ODTD5g1208H4DOPdgE3D+NOqxlP5ZscFd0i1ehP7qZzXE1Rj9UyxEL7Q0eQ1YPjOjsf33KMN5KJjPOpUbpCYoEdpF3X5lUAQ1Q1JyqxjkVkMpZck5/tfg1pEh79ejGOmUo3euQtXLCzJrlEqMKb33u0gqjA22M0aemdTpnJXO+ncrJo/PWmOH2T+OD24teZGywLMJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762640703; c=relaxed/relaxed;
-	bh=rIK9zYAgTOFKn0gaT0fUYRv/pXw/XsmvNmFsqqYFUAk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MM/xrm1G2yBdHhnCrk2L/tNHhC65Ww2AGvf9sC31PExpKMwFLFb1iQwgtmdfy7sc7VZreW2bo4pRvElyFFCFRd0SjbrZxa2FTFaQSEhsFXYiw6Yuy8QbHjVYdk08a7+ZuKSNIZLKuF8YSMcGy/Zesn6HkTYVGRwd+7/UA792U8l+9mZ9fDV1w5fqz+8eWvw6tPERLUr4d4YvJUrjmo9cG0YyHL9c8X8m0gn6C8UGih/nqs/QCxciD6y4ezVrV/Q0lCfFPGkMX3GoEQzfmPU1GVEtYBrsE0/Zrg+blha9PuLXhPt77d0lO63o7nL8aXndgavxthzxCo+DfqLLu7GWeQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca; spf=pass (client-ip=209.85.219.51; helo=mail-qv1-f51.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.51; helo=mail-qv1-f51.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	t=1762648668; c=relaxed/relaxed;
+	bh=E4aZOzCULi3HBrGklZvBg0eT1cMNm/xQ1tyAYWhxK7U=;
+	h=To:Cc:Message-ID:From:Subject:Date; b=CFLK36OVOJk4/oJ1mtH5M3Xe3ONDdVkmIxaRtHIbtf+T8jw4gutyKx4tOdWYewsScgh0+KimtKyKvBky9/alxA+/ADel9Gm75TOne63rdr65dYOw5VdDEkVx0nHNuvrmJS2FnU800KagIKyPK1NYTcOeR4I8va6Eu0y8TT8QJpMK+Wua8jymrdUJPnyNINHBFVz/A1sP/rngEPm0Yl5Mc2f3dApyOtFrBSVoCPawXiNr8BAWWVadcJ7mdXd/1yHVOhWost554wpNtiGoj01vB8MLJqLoONOBdezV0oL3g/vRRWPYnfBROEWAOknyjPYF/O36BHYgacHE0+5kp7zbcA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=YmA5QFNW; dkim-atps=neutral; spf=pass (client-ip=103.168.172.148; helo=fout-a5-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=fout-a5-smtp.messagingengine.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=YmA5QFNW;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=fout-a5-smtp.messagingengine.com (client-ip=103.168.172.148; helo=fout-a5-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org)
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d3r8Y6rv0z2xQ5
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Nov 2025 09:25:00 +1100 (AEDT)
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-882451b353fso1504456d6.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Nov 2025 14:25:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762640697; x=1763245497;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rIK9zYAgTOFKn0gaT0fUYRv/pXw/XsmvNmFsqqYFUAk=;
-        b=n4lD9/B7/IeW2D4tPqp/DV+0UhHyHaXSY/TC7+xBW/IZf9OCxwP6VeB7XCYdOZpOUQ
-         9Q4eM9gV+IPxF8P/dKYl7NuYsw5z/7ezlBAO4byzK5UqiCU5Np3VSPMh6Y6KdyirRdXS
-         Hjw8imWA6vGAkTv7/cVp6ewPcmuIQjPplsnZDGKsU4wrRLZTTb0VVFMF2H1QDfFuAVN1
-         ESXwNmXFSC7yyfD/y/Yzx1gmYMMff6zRo1trEhMYqz2rliBg+XtLDwMhkjayEKW1Sb7m
-         8cbS+55RrqeWgYtMfGv0yXaXx1UBWflK0ykJEq/b6l/7AHMMoQ8rabRmYYe4ieBHLgJw
-         xl+w==
-X-Gm-Message-State: AOJu0YyIuiUXMfC+4TQzV2FeudtZTD9AQPXudACMxtmc+ofWfiw7bzPG
-	8yxEDcfC6ZEG8Ss7FJ70+MKXb0VeGurTi/n9kLipycT62C+P35pNUCCG
-X-Gm-Gg: ASbGncsD7934FzsY4kVNaj5aGoNO4LPk8vZwqSkQXo5PnGECDhtp4izULmO2OOXW1jM
-	Dl86nDZHv9GZuIpq9ZH0ID4aw0D9ntUrs7mcLyV49bkGAxq8Z70fonncMRzI612J1q8SfTGPVGG
-	vNmAu+cU/7ImZNQaJA+xKQaGkahTd4QvxCKCGHTw5IPnX4RROXIDJzfh1uAEUCAfqkHoopfU3QR
-	+XtCaktwDb/DKRqj1N2zVpF6J4r8R6/D4YFpmhf+1d4p8sVfZ2EVKowagWXiYp38f1mJeTKzaPb
-	nmOM+YfD9EExvRDKBKHaAWquDlsgzUAUJCHYnJXMqUBpAGo1bqFUYQtm3Hdud0mf7+w4hj+oGVo
-	1/RvYt5RldQXfs15kMky1/5QHDyK0CmpU17quXEagQioYu4JQ31geGkqtFER9FYIlJhSoFuTU/d
-	jy
-X-Google-Smtp-Source: AGHT+IEjXFwr+Srm4QmfVRgu2vNEak6lu57AWOlSK22OF1wICTm1uk8SpWxSTMr5t0Nyhn7q3c8MDQ==
-X-Received: by 2002:a05:6214:daf:b0:880:5851:3c61 with SMTP id 6a1803df08f44-882384ae832mr39079716d6.0.1762640697346;
-        Sat, 08 Nov 2025 14:24:57 -0800 (PST)
-Received: from [192.168.2.45] ([65.93.187.46])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88238928a80sm21582896d6.9.2025.11.08.14.24.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Nov 2025 14:24:56 -0800 (PST)
-Message-ID: <baf4fd6c-1796-47cb-a9bb-72521a217453@vasilevsky.ca>
-Date: Sat, 8 Nov 2025 17:24:44 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d3v5h5wX2z2yZ6
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Nov 2025 11:37:43 +1100 (AEDT)
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.phl.internal (Postfix) with ESMTP id E03B6EC0231;
+	Sat,  8 Nov 2025 19:37:39 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Sat, 08 Nov 2025 19:37:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1762648659; x=1762735059; bh=E4aZOzCULi3HBrGklZvBg0eT1cMN
+	m/xQ1tyAYWhxK7U=; b=YmA5QFNW4Q2JUyQorIPO5qjvy0iffm1wFVOoblAsbWs0
+	gfExFKIbtZTiZJoaJK1R+N0n1geUy+LOOt+2JYJ1rUGIFxF1lMUHKZPtLthrV4YK
+	GQphd+mTXcsB3BaL7ilThm65stJ4LsOcNm0qwfZFfnBBxKT2TD+/t74p7yIg9vF6
+	szfV08gaN9inrmIxVPU4+k8kzbcepRguAu1LxJISAeA9y6o8/cydcK+/yCTOux4J
+	MOWmXn5K1lZ9rYLhwZ1oIt2XTxDwVhqmnm+HlpEZCIrb5gfnRk+VXKrSFFaZwtmY
+	xVEO+RMmA0dFKVFPJJRFEgxnpY6LbWYSf6SR8+5Tdg==
+X-ME-Sender: <xms:UeIPac4hLe6EQsJIyDU7u32ckqVirkmk4R20utFsQekc--RQ2mJB-A>
+    <xme:UeIPaWBKfe7v9spAcEAmnWpFhW_eH_qQlI3oBd2aXuWab1-DcdazmUmerg-FFXamb
+    CzZQk5DX5ugOroXa7z7I6-oMEY2D8o3G4ubxFxoB15Y5k__RFJ1Vir->
+X-ME-Received: <xmr:UeIPaa_4Q7aZfPAeMWCjONlH3SqAMqGyUepi3RyL0nqHQDCWNLSEIEnzmIjUzVh2gK9kKMdou68APbNP8MxoHj755Qn2OkxmC24>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduleegtddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepvfevkffhufffsedttdertddttddtnecuhfhrohhmpefhihhnnhcuvfhhrghinhcu
+    oehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    eukedugeettdegfffhfeejveevkedtgeeuudeggffgheegleejheeiffelgfeuueenucff
+    ohhmrghinhepuggvsghirghnrdhorhhgpdhkvghrnhgvlhdrohhrghenucevlhhushhtvg
+    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhu
+    gidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouh
+    htpdhrtghpthhtohepmhgrugguhieslhhinhhugidrihgsmhdrtghomhdprhgtphhtthho
+    pehmphgvsegvlhhlvghrmhgrnhdrihgurdgruhdprhgtphhtthhopehnphhighhgihhnse
+    hgmhgrihhlrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegt
+    shhgrhhouhhprdgvuhdprhgtphhtthhopegtvggurghrmhgrgiifvghllhesmhgrtgdrtg
+    homhdprhgtphhtthhopehushgvrhhmheejseihrghhohhordgtohhmpdhrtghpthhtohep
+    lhhinhhugiesthhrvggslhhighdrohhrghdprhgtphhtthhopegsvghnhheskhgvrhhnvg
+    hlrdgtrhgrshhhihhnghdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhk
+    vghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:UeIPaRGbHAKoECcbUn7b9OOW3n-PZLLDU-EJ784-hcZ1vsKk7VD5_Q>
+    <xmx:UeIPacRtG8j8nSrBwA_MQ_5ahQsvJBJfOFsyWcF3C8WxR0d83mbx2A>
+    <xmx:UeIPaQR0aWYF9pY0hnFGFRWeKymwKxvy318bLYMndF_7RRpFdijJrQ>
+    <xmx:UeIPaX0IvF1ZkhwEeC0rbvL3yfJM-99hkNgfWi19k75B0eGy4OWvaA>
+    <xmx:U-IPaTS_kmcfx3H6wFLTx6l83SJPSXPqA0vC5acrXLijI3jQVLMJlUsQ>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 8 Nov 2025 19:37:34 -0500 (EST)
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+    Michael Ellerman <mpe@ellerman.id.au>,
+    Nicholas Piggin <npiggin@gmail.com>,
+    Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Cedar Maxwell <cedarmaxwell@mac.com>,
+    Stan Johnson <userm57@yahoo.com>,
+    "Dr. David Alan Gilbert" <linux@treblig.org>,
+    Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+    stable@vger.kernel.org,
+    linuxppc-dev@lists.ozlabs.org,
+    linux-kernel@vger.kernel.org
+Message-ID: <d941a3221695e836963c8f9cb5fbb61e202bad0c.1762648546.git.fthain@linux-m68k.org>
+From: Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH] powerpc: Use relocated font data pointer for btext_drawchar()
+Date: Sun, 09 Nov 2025 11:35:46 +1100
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,57 +103,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Fix mprotect on book3s32
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Nadav Amit <nadav.amit@gmail.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, linux-mm@kvack.org
-References: <20251027-vasi-mprotect-g3-v1-1-3c5187085f9a@vasilevsky.ca>
- <878qgg49or.ritesh.list@gmail.com>
-Content-Language: en-US
-From: Dave Vasilevsky <dave@vasilevsky.ca>
-In-Reply-To: <878qgg49or.ritesh.list@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 2025-11-08 14:16, Ritesh Harjani wrote: 
-> Shouldn't we flush all if we get tlb_flush request for full mm? e.g.
-> Something like this maybe? 
-> 
-> +void hash__tlb_flush(struct mmu_gather *tlb)
-> +{
-> +       if (tlb->fullmm || tlb->need_flush_all)
-> +               hash__flush_tlb_mm(tlb->mm);
-> +       else
-> +               hash__flush_range(tlb->mm, tlb->start, tlb->end);
-> +}
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-That seems reasonable, I should be able to test it next by next
-weekend and re-submit.
+Since Linux v6.7, booting using BootX on an Old World PowerMac produces
+an early crash. Stan Johnson writes, "the symptoms are that the screen
+goes blank and the backlight stays on, and the system freezes (Linux
+doesn't boot)."
+Further testing revealed that the failure can be avoided by disabling
+CONFIG_BOOTX_TEXT. Bisection revealed that the regression was caused by
+a patch which replaced the static btext font data with const data in a
+different compilation unit. To fix this, access the font data at its
+relocated address.
 
-> Thanks again for pointing this out. How did you find this though?
-> What hardware do you use?
+Cc: Cedar Maxwell <cedarmaxwell@mac.com>
+Cc: Stan Johnson <userm57@yahoo.com>
+Cc: "Dr. David Alan Gilbert" <linux@treblig.org>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: stable@vger.kernel.org
+Link: https://lists.debian.org/debian-powerpc/2025/10/msg00111.html
+Link: https://lore.kernel.org/linuxppc-dev/d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com/
+Reported-by: Cedar Maxwell <cedarmaxwell@mac.com>
+Closes: https://lists.debian.org/debian-powerpc/2025/09/msg00031.html
+Bisected-by: Stan Johnson <userm57@yahoo.com>
+Tested-by: Stan Johnson <userm57@yahoo.com>
+Fixes: 0ebc7feae79a ("powerpc: Use shared font data")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
 
-I'm on an iBook G3 from 2001, running Arch Power:
-https://archlinuxpower.org/. I found the bug because SheepShaver has a
-configure test for mprotect, which was failing--I was quite surprised!
+---
 
-The bug reproduces easily on qemu (with the `mac99` machine), if you'd
-like to try yourself.
+Christophe, as you're the author of this patch, this submission will
+probably need your sign-off.
 
--Dave
+---
+ arch/powerpc/kernel/btext.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/arch/powerpc/kernel/btext.c b/arch/powerpc/kernel/btext.c
+index 7f63f1cdc6c3..ca00c4824e31 100644
+--- a/arch/powerpc/kernel/btext.c
++++ b/arch/powerpc/kernel/btext.c
+@@ -20,6 +20,7 @@
+ #include <asm/io.h>
+ #include <asm/processor.h>
+ #include <asm/udbg.h>
++#include <asm/setup.h>
+ 
+ #define NO_SCROLL
+ 
+@@ -463,7 +464,7 @@ static noinline void draw_byte(unsigned char c, long locX, long locY)
+ {
+ 	unsigned char *base	= calc_base(locX << 3, locY << 4);
+ 	unsigned int font_index = c * 16;
+-	const unsigned char *font	= font_sun_8x16.data + font_index;
++	const unsigned char *font = PTRRELOC(font_sun_8x16.data) + font_index;
+ 	int rb			= dispDeviceRowBytes;
+ 
+ 	rmci_maybe_on();
+-- 
+2.49.1
 
 
