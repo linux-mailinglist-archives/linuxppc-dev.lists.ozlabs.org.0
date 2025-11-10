@@ -1,47 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-14016-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14017-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F90C498F3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 23:29:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35626C498F6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 23:29:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d549C04zTz2ytx;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d549C3J9lz2yvB;
 	Tue, 11 Nov 2025 09:29:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762813790;
-	cv=none; b=fUyte0plQvJ+MjofkK3sJz7iE+pTZuegmoaBIO2r4gDXhyFvZu6px1jDed60Zi94IaydmZOiB0oxLZhuzbZNcjNt1PeMLiwgS0jyqmLCOIMFJQRytxhL1w7hVcUJJBUSnXsgZ75ML16qdcT0ojxMvhM52qxvQs9tX/m3kMMMKflEfMmpPUF4jkTMdzLu80KEwh9roTpk2M8Y6f97cJ5k8pF12rX237Xr75E2xFsXGiW/BXd/op7+pzIYwLBxwTHx/+2ABD/RZYk0Q8fHng1JxsGe24M5NiMOwarJrUJ2QliizqUMD6ncoJ+a9pqiI97TE/dENyE5qQAywz0Ikvo8Ng==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762813791;
+	cv=none; b=LLV8b8xgLK2iY4C/v2NJfAdnO+ys3q9kXJR5cDsA78u9LVCKYbw1unPxkv10J8pDXM6/Sl1Jxy6jy2H2s0M9B/zTHQVLiOWWd7d3lRqXfCBQ5C+DbgF8JwlMJYwwlRD7TCXE/T+lxduG0UUnjaTNWRf8+220uRKtEW8oDFRtVQg7tGDswKOVyl+7Hj3sHc2txWm4ca1SrB49mO8OrVgG8CvivYiZUMvynFtnkBNoAQbPnZw5nSqEgktaBivUy1QtzNtCgbd3AspsJeJfpK/J2SlS1FtQPkfhM3J03AfcREFwT6xVqcJuhx/9wRYdg9ox+aKqAYJVhHBLShaP8PWwwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762813790; c=relaxed/relaxed;
-	bh=yvB8s9+ubiaaU82Ye4v9kYZ0uUNm5r/pwExZByA4mf8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U4DUcKlZn5onvCE4NaiZCvh5Gbn5+XiOm7Y/hIFDE7KRrEuqVBg04EFA3O3RsyUjxHelSdjW05gy4RICDgbM1s4X+HhVaqJaCYvnUU+NcLDQ2RRhZ5/7ecAJIElMJfP+vXZUpTRRxMDpVsvBiMJMGV0Rang0ZILWrGFH0SS0RprdqGJeNl+JMG1RfA4U3r/txoWNQJawAWitjeCvXbHG0eWamxgXkFndp5/MsL8sJSdEOvYUmZxid5j8thebJfQcixUS7W4VVbQOr4lBdCSytOdPnwkqb4cT6H3+Ffr/EX2DbTtn/wiaYtpaI8BKaqJIctVgHXevMBwXy+CoYCPzdA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m+5t5Swo; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1762813791; c=relaxed/relaxed;
+	bh=Jm0vMdYlCL/ewUjUPkF1P8+QteSFggrjj7SihvrtqlA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LsUnZk1HpZzbWJZPPJckcX2Iq90sBfrbVNbg8zRcNSEPRsHgeKmxaVVxMXL38iJRGt1PZA74yValgKkZBYS/MYZoR9yuST+1FGKflNqtpD2QkY0o7jUFX3nGuV/X16ChqzTOp5dzYZTjxohQRQefpbGtByl3O8HiRIbRLvAJQTn+XAqukKYB1ZZFSsxI0eQXUaDOP64VxvCM12qNKbHFvxsYIJWUhw8DASMpLXFKtqRPC8DhnEUWQOkNsuLyLBkx0bFtmjKYBjmP2bN6dM6k8/vE05klYrLwgbu9CHfu5lNBsIhtstdiUhnW7Nq9pbTbwh0lCxOwc+A1+fTCK7pDWg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pSH/qDu3; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m+5t5Swo;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pSH/qDu3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d549B0cvYz2xqZ
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d549B4Bxwz2ytT
 	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 09:29:50 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB04960145;
-	Mon, 10 Nov 2025 22:29:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0BCC16AAE;
-	Mon, 10 Nov 2025 22:29:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 789A4601EB;
+	Mon, 10 Nov 2025 22:29:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E40FC19423;
+	Mon, 10 Nov 2025 22:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762813786;
-	bh=Ew1J1aHGuwLLJKwapglsP0+NcHadMOOCXzL3ZeOS9U0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=m+5t5Swo67nM7sEdysvArYvIok7mMcmERnJmNun+u5J3G3GBvrq+qiRqn/zPoyaC2
-	 LZqa2i8RTZnLt7i0cTBpcvfBOL9ArsRcbeNK4robmStbfggXqKKxV+vJSh6KA+fuuW
-	 7x9fhhIorg/qa5GfYjACeV6CvN6Kq/r7uLCGU34Q4seUnbRwprLpqgRwM6+xkWlYis
-	 DDb86yBdVCor4GLwlP0RCz/t51N+dka1CCmpINkyOLqgCDqWbxURt2S8sHUT5rzpI1
-	 k9j5PKoi8/aZ84OYGfsrDvV3U4z/fJbU3NMWhzXvq/e4q7RJGlV+IzWtVkVPHXu+U2
-	 +XkWqlhds645w==
+	s=k20201202; t=1762813788;
+	bh=WqBmW56nEto4UkhSZTHwBsWNvqFedV083kEiNxjS+bU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pSH/qDu3I+WPGt8EIT8/xSvN4JCrzgGTbMVQKq5Rw6TTf1XxdV+laSUjFMCrZDLwO
+	 iMuR+S1OXSZOUTHtZ4huQD42ZzR+0ct3iKWsIUPtwgd6Afblq+2pFWPo86I2g+ghGT
+	 htoo4KtejYV+UthOuk0uWENhzgFnlkwD+w4pvDAKcx7K7yZD9cIVX+iFZ9WSb983ON
+	 gvxu2G5MnUHvzTo+RhXuMns64NMvHukjneoMDXmqaN6X4qagON3Tu2AXA8VxM6m8ZR
+	 ++8hkZwDOHDaNk1mvDW2StaTbVnkGXF8leKwg0sYvweG2RW6Z/Lc1oIzyrllPg5Oqm
+	 pGbe7LF9aj3eA==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: linux-pci@vger.kernel.org
 Cc: Christian Zigotzky <chzigotzky@xenosoft.de>,
@@ -60,10 +61,12 @@ Cc: Christian Zigotzky <chzigotzky@xenosoft.de>,
 	debian-powerpc@lists.debian.org,
 	linux-kernel@vger.kernel.org,
 	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v2 0/4] PCI/ASPM: Allow quirks to avoid L0s and L1
-Date: Mon, 10 Nov 2025 16:22:24 -0600
-Message-ID: <20251110222929.2140564-1-helgaas@kernel.org>
+Subject: [PATCH v2 1/4] PCI/ASPM: Cache L0s/L1 Supported so advertised link states can be overridden
+Date: Mon, 10 Nov 2025 16:22:25 -0600
+Message-ID: <20251110222929.2140564-2-helgaas@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251110222929.2140564-1-helgaas@kernel.org>
+References: <20251110222929.2140564-1-helgaas@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,45 +88,103 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Bjorn Helgaas <bhelgaas@google.com>
 
-We enabled ASPM too aggressively in v6.18-rc1.  f3ac2ff14834 ("PCI/ASPM:
-Enable all ClockPM and ASPM states for devicetree platforms") enabled ASPM
-L0s, L1, and (if advertised) L1 PM Substates.
+Defective devices sometimes advertise support for ASPM L0s or L1 states
+even if they don't work correctly.
 
-df5192d9bb0e ("PCI/ASPM: Enable only L0s and L1 for devicetree platforms")
-(v6.18-rc3) backed off and omitted Clock PM and L1 Substates because we
-don't have good infrastructure to discover CLKREQ# support, and L1
-Substates may require device-specific configuration.
+Cache the L0s Supported and L1 Supported bits early in enumeration so
+HEADER quirks can override the ASPM states advertised in Link Capabilities
+before pcie_aspm_cap_init() enables ASPM.
 
-L0s and L1 are generically discoverable and should not require
-device-specific support, but some devices advertise them even though they
-don't work correctly.  This series is a way to add quirks avoid L0s and L1
-in this case.
-
-
-Bjorn Helgaas (4):
-  PCI/ASPM: Cache L0s/L1 Supported so advertised link states can be
-    overridden
-  PCI/ASPM: Add pcie_aspm_remove_cap() to override advertised link
-    states
-  PCI/ASPM: Convert quirks to override advertised link states
-  PCI/ASPM: Avoid L0s and L1 on Freescale Root Ports
-
- drivers/pci/pci.h       |  2 ++
- drivers/pci/pcie/aspm.c | 25 +++++++++++++++++--------
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+---
+ drivers/pci/pcie/aspm.c | 12 ++++--------
  drivers/pci/probe.c     |  7 +++++++
- drivers/pci/quirks.c    | 38 +++++++++++++++++++-------------------
  include/linux/pci.h     |  2 ++
- 5 files changed, 47 insertions(+), 27 deletions(-)
+ 3 files changed, 13 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 7cc8281e7011..15d50c089070 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -830,7 +830,6 @@ static void pcie_aspm_override_default_link_state(struct pcie_link_state *link)
+ static void pcie_aspm_cap_init(struct pcie_link_state *link, int blacklist)
+ {
+ 	struct pci_dev *child = link->downstream, *parent = link->pdev;
+-	u32 parent_lnkcap, child_lnkcap;
+ 	u16 parent_lnkctl, child_lnkctl;
+ 	struct pci_bus *linkbus = parent->subordinate;
+ 
+@@ -845,9 +844,8 @@ static void pcie_aspm_cap_init(struct pcie_link_state *link, int blacklist)
+ 	 * If ASPM not supported, don't mess with the clocks and link,
+ 	 * bail out now.
+ 	 */
+-	pcie_capability_read_dword(parent, PCI_EXP_LNKCAP, &parent_lnkcap);
+-	pcie_capability_read_dword(child, PCI_EXP_LNKCAP, &child_lnkcap);
+-	if (!(parent_lnkcap & child_lnkcap & PCI_EXP_LNKCAP_ASPMS))
++	if (!(parent->aspm_l0s_support && child->aspm_l0s_support) &&
++	    !(parent->aspm_l1_support && child->aspm_l1_support))
+ 		return;
+ 
+ 	/* Configure common clock before checking latencies */
+@@ -859,8 +857,6 @@ static void pcie_aspm_cap_init(struct pcie_link_state *link, int blacklist)
+ 	 * read-only Link Capabilities may change depending on common clock
+ 	 * configuration (PCIe r5.0, sec 7.5.3.6).
+ 	 */
+-	pcie_capability_read_dword(parent, PCI_EXP_LNKCAP, &parent_lnkcap);
+-	pcie_capability_read_dword(child, PCI_EXP_LNKCAP, &child_lnkcap);
+ 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &parent_lnkctl);
+ 	pcie_capability_read_word(child, PCI_EXP_LNKCTL, &child_lnkctl);
+ 
+@@ -880,7 +876,7 @@ static void pcie_aspm_cap_init(struct pcie_link_state *link, int blacklist)
+ 	 * given link unless components on both sides of the link each
+ 	 * support L0s.
+ 	 */
+-	if (parent_lnkcap & child_lnkcap & PCI_EXP_LNKCAP_ASPM_L0S)
++	if (parent->aspm_l0s_support && child->aspm_l0s_support)
+ 		link->aspm_support |= PCIE_LINK_STATE_L0S;
+ 
+ 	if (child_lnkctl & PCI_EXP_LNKCTL_ASPM_L0S)
+@@ -889,7 +885,7 @@ static void pcie_aspm_cap_init(struct pcie_link_state *link, int blacklist)
+ 		link->aspm_enabled |= PCIE_LINK_STATE_L0S_DW;
+ 
+ 	/* Setup L1 state */
+-	if (parent_lnkcap & child_lnkcap & PCI_EXP_LNKCAP_ASPM_L1)
++	if (parent->aspm_l1_support && child->aspm_l1_support)
+ 		link->aspm_support |= PCIE_LINK_STATE_L1;
+ 
+ 	if (parent_lnkctl & child_lnkctl & PCI_EXP_LNKCTL_ASPM_L1)
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index c83e75a0ec12..de72ceaea285 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1663,6 +1663,13 @@ void set_pcie_port_type(struct pci_dev *pdev)
+ 	if (reg32 & PCI_EXP_LNKCAP_DLLLARC)
+ 		pdev->link_active_reporting = 1;
+ 
++#ifdef CONFIG_PCIEASPM
++	if (reg32 & PCI_EXP_LNKCAP_ASPM_L0S)
++		pdev->aspm_l0s_support = 1;
++	if (reg32 & PCI_EXP_LNKCAP_ASPM_L1)
++		pdev->aspm_l1_support = 1;
++#endif
++
+ 	parent = pci_upstream_bridge(pdev);
+ 	if (!parent)
+ 		return;
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index d1fdf81fbe1e..bf97d49c23cf 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -412,6 +412,8 @@ struct pci_dev {
+ 	u16		l1ss;		/* L1SS Capability pointer */
+ #ifdef CONFIG_PCIEASPM
+ 	struct pcie_link_state	*link_state;	/* ASPM link state */
++	unsigned int	aspm_l0s_support:1;	/* ASPM L0s support */
++	unsigned int	aspm_l1_support:1;	/* ASPM L1 support */
+ 	unsigned int	ltr_path:1;	/* Latency Tolerance Reporting
+ 					   supported from root to here */
+ #endif
 -- 
+2.43.0
 
-v1: https://lore.kernel.org/r/20251106183643.1963801-1-helgaas@kernel.org
-
-Changes between v1 and v2:
-- Cache just the two bits for L0s and L1 support, not the entire Link
-  Capabilities (Lukas)
-- Add pcie_aspm_remove_cap() to override the ASPM Support bits in Link
-  Capabilities (Lukas)
-- Convert existing quirks to use pcie_aspm_remove_cap() instead of
-  pci_disable_link_state(), and from FINAL to HEADER (Mani)
 
