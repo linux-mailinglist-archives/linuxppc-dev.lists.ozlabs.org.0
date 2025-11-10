@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-14018-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14019-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8731CC498FC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 23:30:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6018FC49902
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 23:30:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d549D613tz2yxk;
-	Tue, 11 Nov 2025 09:29:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d549G2D4vz3080;
+	Tue, 11 Nov 2025 09:29:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762813792;
-	cv=none; b=kDC7BFI1IoG7ZHNIUDlYUIp84SPEb6VOB73KDub/frumuO1ri2WZ4Cwg/KdGbwg98kVqR05598O8+FIMAQkkRl4HldASe+JoV75YeWYbRjiKu2ZPk5A/TNAnzdlssLe4x1/reYt+iRzMu018YzJSLsQshA9hUfTL76FQq/20c7RDYwn3DwoYtmqOiDrvCO6IQ7Z8nvN03NpjcsgYloADL3ah++HCLCBoHGTUkh3J31SHiogHqcChVRKJ3HfrnRbLGZcX632XDis5yvTXd4FOCj8Ts9brbZdsHAbdh9SBEE7icWkLxw4zRFTJ6KXSaYzLfVcTHHOArPs1f8oEI+ZAOA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762813794;
+	cv=none; b=PoGHrw04AuFGy6hODR9nCwmhlgAfdPOcamgQaRTkqVbnN1s8bifAPtB7yrRVs4LKTezxZSW0YKBtsXxFAzxegFD0Y17TKMFrhc+ICaSGxj000K+IzyyoUTj1ehtSItxxSBmlmv3k9YJqCfCbY2Znq41MeRnmj3BWpwUUwUAL08cbDWg9dBEHC3Xm46kqXDCFm4j08jzMZZ2JwmR7UfAYx4tkiJv9/y6PmecTZvNcXCW++sEdKmoz3CbSUr5O4gWGBpz6y80xOL9dEmsiWLRllrdhkIBNJL55l/UM/hWlF1OfmwXf+ZXP2ByxFRySH4kO81DrQwJEjg6XnDYj/NUVLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762813792; c=relaxed/relaxed;
-	bh=iJZbrDIJOwLTkLDsbW2QWRwWImNPCzM2xk93RC1SlDs=;
+	t=1762813794; c=relaxed/relaxed;
+	bh=h/HndspfrjZ1JT7cyiylGjThQU9lA6glSkfirH6Nx2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrI4dH4804yMxr5ZcGLiSlSD/QC5GIdyI1P2+mx9xBcoLfrkq9MbzQbh/6sitzOJwTwp/1xUAFRwo2+SMxhWHljSCmc3WE3LRAo0wzsGRoDlO+O/bgf2fja4w0qOX1I4KPmNOlTfiYlPbAwzsGbYX/Jt4FvZ8u4x/TwhYYsqrZAQJ8KMLsPO32eOClovwm3HPQYm6HW2tBYpfzAcsmfu3BW4jVp0c2HaL5O36GP0hPBUxJVRxP4GGZybVB0sdHjbgdJ4I87URjVVTXqF6T3yAdLcjAX/znM5rJbv5AE1uxqG/MEiJilV9kMnkruY/fXYb7fuHNh791sF8C3abP+oTw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MbHnf06D; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=ft/9ETil0Eko1ZXDXYiT/g5a8TB6onbgQYwD+j6Ifg/IHtsJYr/U0LX0fJcz0nKLYL5kdopiWgEN+9avWkl6Aw0SRYriCyTHZiQ/VxSmkujbuib+g/JO2KIs+HLk6eJRgJvWbHRPFo1dRV9pwgh8pYOXSvxzEuONu382GC+MfiES6g4+G6/HU6qB0QtiHPM+EcFkghOuOfHxRURYU/sMT0akokoWUwDKDXmB4K1dnIbB634ks7OU1KQ044vQ/yu8qaDlEOU/AxAsg5cHqbdW7OnOCPSPJQFRiBqyHJnskp2IGadZDv4rBXyV3dwSeRAfyHaPtwVKFCla+OjAY4bEhA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lNFz9FBi; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MbHnf06D;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lNFz9FBi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d549C6wn8z2yvS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 09:29:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d549F47TWz3060
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 09:29:53 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 086B2601FA;
-	Mon, 10 Nov 2025 22:29:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BD4C2BCB6;
-	Mon, 10 Nov 2025 22:29:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 93150601F5;
+	Mon, 10 Nov 2025 22:29:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B33C19424;
+	Mon, 10 Nov 2025 22:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762813789;
-	bh=+PAn5KKDm+HKMhr0isGB8WG7OccvwXkrZSq0tSNltXc=;
+	s=k20201202; t=1762813791;
+	bh=Gx7BkbwEI9+5WMZh15d9ZFjuWteQ62dZWggKcssX+Aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MbHnf06DgWCpt3ix50Qh1sy0gaR5wckkgQxhCzMd6X5MdlMwdrONp7pJ1dOIVKddv
-	 an9pkrOArjTcMEhCNrVehpAYb0PfEEQyAWO3Weo4ZmvDr45qOfDHfp8YHgMVq/HYni
-	 HW/I/iYQbqNBHZ84spFvk7XCc7Xgfz50fp9M7UWf9OrkonzZs4KRuJetzcBMY8WHP0
-	 8dBNsTdn+kLOcP2dYv8+z67xQJmVUNRGAyscWpWP4sB9Y4oA8VX8qRRgAvc0F1t3Ox
-	 gjpKxshKstOcMbsQwt4I2Cjp6iW3HkuQ4kCYqwfebRcCcLAWLCBfnotL3ZjItnLAk3
-	 FTAbN66U/xxmA==
+	b=lNFz9FBih/mYXpq/gsNbwuNA74zWvSFiptmRL1aT9H7fmgR+AFRr7VHDJna3cTTsK
+	 C8vz+5GBsnr5erRIT+t8B+7s4T2X2jIFbtPetV87/Fs3XvgQNZkRHWaQ8nRnk26Gp4
+	 7NgoTQ1DUIU/NZJwo9yXv1T0/FMjvQBjE5FEFd07v0U3l7Hy0ht8tYrS4d0FHCowU+
+	 /3L6Mxev64P4A8k6nA/3ZQlXjp5LgVQHFhgSZNszuypiiPwRM6rLZ4O/MJpCPcdeNA
+	 KJse0nccDJGUwCAkx5wdnFC6FPX3yVsTlqW1x9+7csvBnZ1bGWByyL0Ef9bFHt+q0s
+	 ThKIm+vwz3Xdg==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: linux-pci@vger.kernel.org
 Cc: Christian Zigotzky <chzigotzky@xenosoft.de>,
@@ -61,9 +61,9 @@ Cc: Christian Zigotzky <chzigotzky@xenosoft.de>,
 	debian-powerpc@lists.debian.org,
 	linux-kernel@vger.kernel.org,
 	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v2 2/4] PCI/ASPM: Add pcie_aspm_remove_cap() to override advertised link states
-Date: Mon, 10 Nov 2025 16:22:26 -0600
-Message-ID: <20251110222929.2140564-3-helgaas@kernel.org>
+Subject: [PATCH v2 3/4] PCI/ASPM: Convert quirks to override advertised link states
+Date: Mon, 10 Nov 2025 16:22:27 -0600
+Message-ID: <20251110222929.2140564-4-helgaas@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251110222929.2140564-1-helgaas@kernel.org>
 References: <20251110222929.2140564-1-helgaas@kernel.org>
@@ -88,59 +88,101 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Bjorn Helgaas <bhelgaas@google.com>
 
-Add pcie_aspm_remove_cap().  A quirk can use this to prevent use of ASPM
-L0s or L1 link states, even if the device advertised support for them.
+Existing quirks to disable ASPM L0s and L1 use pci_disable_link_state(),
+which disables ASPM states and prevents their use in the future.  But since
+they are FINAL quirks, they happen after ASPM has already been enabled.
+Here's a typical call path:
+
+  pci_host_probe
+    pci_scan_root_bus_bridge
+      pci_scan_child_bus
+        pci_scan_slot
+          pci_scan_single_device
+            pci_device_add
+              pci_fixup_device(pci_fixup_header)  # HEADER quirks
+          pcie_aspm_init_link_state
+            pcie_config_aspm_path
+              pcie_config_aspm_link
+                pcie_config_aspm_dev              # ASPM may be enabled
+    pci_bus_add_devices
+      pci_bus_add_devices
+        pci_fixup_device(pci_fixup_final)         # FINAL quirks
+          quirk_disable_aspm_l0s
+            pci_disable_link_state(dev, PCIE_LINK_STATE_L0S)
+
+Sometimes enabling ASPM can make the link non-functional, so if we know
+ASPM is broken on a device, we shouldn't enable it at all, even
+temporarily.
+
+Convert the existing quirks to use pcie_aspm_remove_cap() instead, which
+overrides the ASPM Support advertised in PCIe Link Capabilities, and make
+them HEADER quirks so they run before pcie_aspm_init_link_state() has a
+chance to enable ASPM.
 
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
- drivers/pci/pci.h       |  2 ++
- drivers/pci/pcie/aspm.c | 13 +++++++++++++
- 2 files changed, 15 insertions(+)
+ drivers/pci/quirks.c | 37 ++++++++++++++++++-------------------
+ 1 file changed, 18 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 4492b809094b..36f8c0985430 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -958,6 +958,7 @@ void pci_save_aspm_l1ss_state(struct pci_dev *dev);
- void pci_restore_aspm_l1ss_state(struct pci_dev *dev);
- 
- #ifdef CONFIG_PCIEASPM
-+void pcie_aspm_remove_cap(struct pci_dev *pdev, u32 lnkcap);
- void pcie_aspm_init_link_state(struct pci_dev *pdev);
- void pcie_aspm_exit_link_state(struct pci_dev *pdev);
- void pcie_aspm_pm_state_change(struct pci_dev *pdev, bool locked);
-@@ -965,6 +966,7 @@ void pcie_aspm_powersave_config_link(struct pci_dev *pdev);
- void pci_configure_ltr(struct pci_dev *pdev);
- void pci_bridge_reconfigure_ltr(struct pci_dev *pdev);
- #else
-+static inline void pcie_aspm_remove_cap(struct pci_dev *pdev, u32 lnkcap) { }
- static inline void pcie_aspm_init_link_state(struct pci_dev *pdev) { }
- static inline void pcie_aspm_exit_link_state(struct pci_dev *pdev) { }
- static inline void pcie_aspm_pm_state_change(struct pci_dev *pdev, bool locked) { }
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 15d50c089070..bc3cb8bc7018 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -1542,6 +1542,19 @@ int pci_enable_link_state_locked(struct pci_dev *pdev, int state)
- }
- EXPORT_SYMBOL(pci_enable_link_state_locked);
- 
-+void pcie_aspm_remove_cap(struct pci_dev *pdev, u32 lnkcap)
-+{
-+	if (lnkcap & PCI_EXP_LNKCAP_ASPM_L0S)
-+		pdev->aspm_l0s_support = 0;
-+	if (lnkcap & PCI_EXP_LNKCAP_ASPM_L1)
-+		pdev->aspm_l1_support = 0;
-+
-+	pci_info(pdev, "ASPM:%s%s removed from Link Capabilities to avoid device defect\n",
-+		 lnkcap & PCI_EXP_LNKCAP_ASPM_L0S ? " L0s" : "",
-+		 lnkcap & PCI_EXP_LNKCAP_ASPM_L1 ? " L1" : "");
-+
-+}
-+
- static int pcie_aspm_set_policy(const char *val,
- 				const struct kernel_param *kp)
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 214ed060ca1b..922c77c627a1 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -2494,28 +2494,27 @@ DECLARE_PCI_FIXUP_CLASS_FINAL(PCI_VENDOR_ID_INTEL, PCI_ANY_ID,
+  */
+ static void quirk_disable_aspm_l0s(struct pci_dev *dev)
  {
+-	pci_info(dev, "Disabling L0s\n");
+-	pci_disable_link_state(dev, PCIE_LINK_STATE_L0S);
++	pcie_aspm_remove_cap(dev, PCI_EXP_LNKCAP_ASPM_L0S);
+ }
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10a7, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10a9, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10b6, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10c6, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10c7, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10c8, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10d6, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10db, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10dd, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10e1, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10ec, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10f1, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x10f4, quirk_disable_aspm_l0s);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1508, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10a7, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10a9, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10b6, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10c6, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10c7, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10c8, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10d6, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10db, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10dd, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10e1, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10ec, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10f1, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x10f4, quirk_disable_aspm_l0s);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x1508, quirk_disable_aspm_l0s);
+ 
+ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
+ {
+-	pci_info(dev, "Disabling ASPM L0s/L1\n");
+-	pci_disable_link_state(dev, PCIE_LINK_STATE_L0S | PCIE_LINK_STATE_L1);
++	pcie_aspm_remove_cap(dev,
++			     PCI_EXP_LNKCAP_ASPM_L0S | PCI_EXP_LNKCAP_ASPM_L1);
+ }
+ 
+ /*
+@@ -2523,7 +2522,7 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
+  * upstream PCIe root port when ASPM is enabled. At least L0s mode is affected;
+  * disable both L0s and L1 for now to be safe.
+  */
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
+ 
+ /*
+  * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
 -- 
 2.43.0
 
