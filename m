@@ -1,49 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-14015-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14016-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D971AC48B53
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 19:50:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F90C498F3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 23:29:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4zJH35cFz2xqj;
-	Tue, 11 Nov 2025 05:50:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d549C04zTz2ytx;
+	Tue, 11 Nov 2025 09:29:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762800639;
-	cv=none; b=nGnRQFR78eZbl9Zq5gByw5I4xbfkNWyuVxH7F4EO5PhoW1u/l5uQgHDElHn5nzlXiY3y2aBZxnbp2oBONTnW5ef1qvbEzpUo2Xe6BLomt30YO0V3IppwrxiqXrgQ8Q5fbnrDboNnh/ihb9w4TdzUHcx85AVSsF+2p88mqkR331ob037R4epjGe0ZRwVM+XsLugNqt0pExZIcKZd4v+YLuJ5BxHmWAMEk7H87dt29Av9Poldd5N9sMtpUkvAvxxLk12YHK+LycYZlL3ewI3UxgOee/Sg7PK/LO+U7zzIN+TPsKjWBbWDmJNAU5x0egX8LEeTF+Ii3prALJKj5/cU1Uw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762813790;
+	cv=none; b=fUyte0plQvJ+MjofkK3sJz7iE+pTZuegmoaBIO2r4gDXhyFvZu6px1jDed60Zi94IaydmZOiB0oxLZhuzbZNcjNt1PeMLiwgS0jyqmLCOIMFJQRytxhL1w7hVcUJJBUSnXsgZ75ML16qdcT0ojxMvhM52qxvQs9tX/m3kMMMKflEfMmpPUF4jkTMdzLu80KEwh9roTpk2M8Y6f97cJ5k8pF12rX237Xr75E2xFsXGiW/BXd/op7+pzIYwLBxwTHx/+2ABD/RZYk0Q8fHng1JxsGe24M5NiMOwarJrUJ2QliizqUMD6ncoJ+a9pqiI97TE/dENyE5qQAywz0Ikvo8Ng==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762800639; c=relaxed/relaxed;
-	bh=tW4Z7vBmJS3+20VMVp/EYtARePtDFl1FuBe3k4IDkag=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KC9/gQF43kRF47xgoeEwa1GFlZym53Bo8yT6ZzNzk3wipv4TkOUK0Gvv6BE7lsjYNqY3ctPokGIzKI62wcYOcy9ZGLeJ9TYkvv+LgfASivcfhYODC40a3gBXf3KwriXlivm8qwH7cYojtdSAGgaA0JfpFJHCTH4LB+shANiYqFm5Ow5tGePP37YbWyb1Ovr0Q/oKqdmZy5+UvDXiA7aMWA4jecbmrlPiFuf5bAZ1fbN1+p75LNtimYElV3x+w5zvjim5QRN7iIaUUy+bVC2876qJz1uQaR966+QcfV161Qeo4oZFofhHRt4Bbhza2gMzGOtV8yhm/CC+FVDdEDCDDQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4zJG0zQpz2xqL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 05:50:36 +1100 (AEDT)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4d4ysg5m93z9sS7;
-	Mon, 10 Nov 2025 19:31:03 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id lzBT5Q9h5BQM; Mon, 10 Nov 2025 19:31:03 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4d4ysg4sDrz9sRy;
-	Mon, 10 Nov 2025 19:31:03 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 93B108B764;
-	Mon, 10 Nov 2025 19:31:03 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id hflliSFPBIpY; Mon, 10 Nov 2025 19:31:03 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5512F8B763;
-	Mon, 10 Nov 2025 19:31:02 +0100 (CET)
-Message-ID: <1463bcd5-c47b-4c7f-bb13-2664e2e8226e@csgroup.eu>
-Date: Mon, 10 Nov 2025 19:31:01 +0100
+	t=1762813790; c=relaxed/relaxed;
+	bh=yvB8s9+ubiaaU82Ye4v9kYZ0uUNm5r/pwExZByA4mf8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U4DUcKlZn5onvCE4NaiZCvh5Gbn5+XiOm7Y/hIFDE7KRrEuqVBg04EFA3O3RsyUjxHelSdjW05gy4RICDgbM1s4X+HhVaqJaCYvnUU+NcLDQ2RRhZ5/7ecAJIElMJfP+vXZUpTRRxMDpVsvBiMJMGV0Rang0ZILWrGFH0SS0RprdqGJeNl+JMG1RfA4U3r/txoWNQJawAWitjeCvXbHG0eWamxgXkFndp5/MsL8sJSdEOvYUmZxid5j8thebJfQcixUS7W4VVbQOr4lBdCSytOdPnwkqb4cT6H3+Ffr/EX2DbTtn/wiaYtpaI8BKaqJIctVgHXevMBwXy+CoYCPzdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m+5t5Swo; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m+5t5Swo;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d549B0cvYz2xqZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 09:29:50 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EB04960145;
+	Mon, 10 Nov 2025 22:29:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0BCC16AAE;
+	Mon, 10 Nov 2025 22:29:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762813786;
+	bh=Ew1J1aHGuwLLJKwapglsP0+NcHadMOOCXzL3ZeOS9U0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=m+5t5Swo67nM7sEdysvArYvIok7mMcmERnJmNun+u5J3G3GBvrq+qiRqn/zPoyaC2
+	 LZqa2i8RTZnLt7i0cTBpcvfBOL9ArsRcbeNK4robmStbfggXqKKxV+vJSh6KA+fuuW
+	 7x9fhhIorg/qa5GfYjACeV6CvN6Kq/r7uLCGU34Q4seUnbRwprLpqgRwM6+xkWlYis
+	 DDb86yBdVCor4GLwlP0RCz/t51N+dka1CCmpINkyOLqgCDqWbxURt2S8sHUT5rzpI1
+	 k9j5PKoi8/aZ84OYGfsrDvV3U4z/fJbU3NMWhzXvq/e4q7RJGlV+IzWtVkVPHXu+U2
+	 +XkWqlhds645w==
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: linux-pci@vger.kernel.org
+Cc: Christian Zigotzky <chzigotzky@xenosoft.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	mad skateman <madskateman@gmail.com>,
+	"R . T . Dickinson" <rtd2@xtra.co.nz>,
+	Darren Stevens <darren@stevens-zone.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Lukas Wunner <lukas@wunner.de>,
+	luigi burdo <intermediadc@hotmail.com>,
+	Al <al@datazap.net>,
+	Roland <rol7and@gmx.com>,
+	Hongxing Zhu <hongxing.zhu@nxp.com>,
+	hypexed@yahoo.com.au,
+	linuxppc-dev@lists.ozlabs.org,
+	debian-powerpc@lists.debian.org,
+	linux-kernel@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH v2 0/4] PCI/ASPM: Allow quirks to avoid L0s and L1
+Date: Mon, 10 Nov 2025 16:22:24 -0600
+Message-ID: <20251110222929.2140564-1-helgaas@kernel.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,97 +77,53 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: powerpc/e500: WARNING: at mm/hugetlb.c:4755 hugetlb_add_hstate
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Donet Tom <donettom@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com>
- <dd634b17-cc5e-497c-8228-2470f6533177@redhat.com>
- <82ef1da8-44c4-4a58-bd00-9839548cb72d@csgroup.eu>
- <ba3a2131-c8d4-481d-aebb-d25be7ae0d19@kernel.org>
- <d62eea1f-3aff-4b51-976a-4cb8abf502bf@csgroup.eu>
- <cdd23dd6-5444-4000-ac68-a72b22bf6a57@kernel.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <cdd23dd6-5444-4000-ac68-a72b22bf6a57@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+From: Bjorn Helgaas <bhelgaas@google.com>
+
+We enabled ASPM too aggressively in v6.18-rc1.  f3ac2ff14834 ("PCI/ASPM:
+Enable all ClockPM and ASPM states for devicetree platforms") enabled ASPM
+L0s, L1, and (if advertised) L1 PM Substates.
+
+df5192d9bb0e ("PCI/ASPM: Enable only L0s and L1 for devicetree platforms")
+(v6.18-rc3) backed off and omitted Clock PM and L1 Substates because we
+don't have good infrastructure to discover CLKREQ# support, and L1
+Substates may require device-specific configuration.
+
+L0s and L1 are generically discoverable and should not require
+device-specific support, but some devices advertise them even though they
+don't work correctly.  This series is a way to add quirks avoid L0s and L1
+in this case.
 
 
-Le 10/11/2025 à 12:27, David Hildenbrand (Red Hat) a écrit :
-> Thanks for the review!
-> 
->>
->> So I think what you want instead is:
->>
->> diff --git a/arch/powerpc/platforms/Kconfig.cputype
->> b/arch/powerpc/platforms/Kconfig.cputype
->> index 7b527d18aa5ee..1f5a1e587740c 100644
->> --- a/arch/powerpc/platforms/Kconfig.cputype
->> +++ b/arch/powerpc/platforms/Kconfig.cputype
->> @@ -276,6 +276,7 @@ config PPC_E500
->>           select FSL_EMB_PERFMON
->>           bool
->>           select ARCH_SUPPORTS_HUGETLBFS if PHYS_64BIT || PPC64
->> +       select ARCH_HAS_GIGANTIC_PAGE if ARCH_SUPPORTS_HUGETLBFS
->>           select PPC_SMP_MUXED_IPI
->>           select PPC_DOORBELL
->>           select PPC_KUEP
->>
->>
->>
->>>        select ARCH_HAS_KCOV
->>>        select ARCH_HAS_KERNEL_FPU_SUPPORT    if PPC64 && PPC_FPU
->>>        select ARCH_HAS_MEMBARRIER_CALLBACKS
->>> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/
->>> platforms/Kconfig.cputype
->>> index 7b527d18aa5ee..4c321a8ea8965 100644
->>> --- a/arch/powerpc/platforms/Kconfig.cputype
->>> +++ b/arch/powerpc/platforms/Kconfig.cputype
->>> @@ -423,7 +423,6 @@ config PPC_64S_HASH_MMU
->>>    config PPC_RADIX_MMU
->>>        bool "Radix MMU Support"
->>>        depends on PPC_BOOK3S_64
->>> -    select ARCH_HAS_GIGANTIC_PAGE
->>
->> Should remain I think.
->>
->>>        default y
->>>        help
->>>          Enable support for the Power ISA 3.0 Radix style MMU. Currently
-> 
-> 
-> We also have PPC_8xx do a
-> 
->      select ARCH_SUPPORTS_HUGETLBFS
-> 
-> And of course !PPC_RADIX_MMU (e.g., PPC_64S_HASH_MMU) through 
-> PPC_BOOK3S_64.
-> 
-> Are we sure they cannot end up with gigantic folios through hugetlb?
-> 
+Bjorn Helgaas (4):
+  PCI/ASPM: Cache L0s/L1 Supported so advertised link states can be
+    overridden
+  PCI/ASPM: Add pcie_aspm_remove_cap() to override advertised link
+    states
+  PCI/ASPM: Convert quirks to override advertised link states
+  PCI/ASPM: Avoid L0s and L1 on Freescale Root Ports
 
-Yes indeed. My PPC_8xx is OK because I set CONFIG_ARCH_FORCE_MAX_ORDER=9 
-(largest hugepage is 8M) but I do get the warning with the default value 
-which is 8 (with 16k pages).
+ drivers/pci/pci.h       |  2 ++
+ drivers/pci/pcie/aspm.c | 25 +++++++++++++++++--------
+ drivers/pci/probe.c     |  7 +++++++
+ drivers/pci/quirks.c    | 38 +++++++++++++++++++-------------------
+ include/linux/pci.h     |  2 ++
+ 5 files changed, 47 insertions(+), 27 deletions(-)
 
-For PPC_64S_HASH_MMU, max page size is 16M, we get no warning with 
-CONFIG_ARCH_FORCE_MAX_ORDER=8 which is the default value but get the 
-warning with CONFIG_ARCH_FORCE_MAX_ORDER=7
+-- 
 
-Should CONFIG_ARCH_HAS_GIGANTIC_PAGE be set unconditionaly as soon as 
-hugepages are selected, or should it depend on 
-CONFIG_ARCH_FORCE_MAX_ORDER ? What is the cost of selecting 
-CONFIG_ARCH_HAS_GIGANTIC_PAGE ?
+v1: https://lore.kernel.org/r/20251106183643.1963801-1-helgaas@kernel.org
 
-Christophe
+Changes between v1 and v2:
+- Cache just the two bits for L0s and L1 support, not the entire Link
+  Capabilities (Lukas)
+- Add pcie_aspm_remove_cap() to override the ASPM Support bits in Link
+  Capabilities (Lukas)
+- Convert existing quirks to use pcie_aspm_remove_cap() instead of
+  pci_disable_link_state(), and from FINAL to HEADER (Mani)
 
