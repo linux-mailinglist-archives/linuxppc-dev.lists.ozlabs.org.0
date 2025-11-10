@@ -1,50 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-14006-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14008-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC68CC463D8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 12:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A28AC46609
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 12:50:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4nSp3jd0z2xqM;
-	Mon, 10 Nov 2025 22:27:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d4nzd0KYLz2xqZ;
+	Mon, 10 Nov 2025 22:50:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762774042;
-	cv=none; b=mjtMq1l9Xh37X03IMtqW8aNZuJFoDdyak7v6yFuXQ+O7xwkeQxb9PLTCVu3RCSMqxIVseIcbVBLj4Cthas2bP0JJytwhfSK67EMtxMt60U4H8D4O/zJSA5lUlYaId2O7WY2WgTLlIAn4SbCB8e7nz+iLnoxB1o0uShD3nBq7CC5H6+ffpfYMqCS0sIMN/zdCWyHgfgGZ9vdTlNWxGHgy7fg34id3g4Z3iUQ46/LNUf29TqU8gZapRew+rUMWBnacomWdf3Ez3htxy3ukDoMLMXI+n3jif0KnO3rqJgq/Vp4T1UXLcR0xDXgsDENhzDxZCXnYkIUtbbzxWxxwk6Cpwg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762775436;
+	cv=none; b=Ue1lvgjBN5yh7rfwmOdoi61ho6tvkmfhrXogGKqY1ecJLEVnl4b45060IN7CXYOSnwJp1EIHXKC7x6kyBBoGZNp0JhEAygWX+GUZiAyj+odz3emTGO4VVgUU9sFfe/6pe5LfPk8q9FpxQucig71ffm+wpNlibKYfHKr00MYVETuJxV/I+GLNGtFCCu881njNFbKE1sYrosa7SNsSKeCFtuxzWjwBNyGt13khg3XfaykQwvCp1JIOBxR6chPUQRHbP9+uCUM+wPrTlPhfbM8rI3yx4e2RKNhmEDZDa4m16hM2DQ3gpqpXWD3GQS3AzEbGS2Fc082WWieLVlUn9CZ4WA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762774042; c=relaxed/relaxed;
-	bh=GSNL8R/Rp4rPOwE/chfZPtHWTIC9bs/JwQXU3FZ9tzw=;
+	t=1762775436; c=relaxed/relaxed;
+	bh=nNFahur7RfWuwFZozuYxzup7bFaGQ4eo/xpPhbKkX9k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SxJCGS1AsaFHVPRaDEbGNEf6BBIokMawo9/uPJaII8iXmQHlxJmId3UezJ3Mv2pAIcS/Ksur0lFrf/ZdtTjRQv4yRfxYDBeEV3xV6XP1+n7FmhtnywnyBn4627DhY2el3KUKrneRGgr/azC/Sv8OeAIzCyhbytwy6VWOF8gbkaHuCTXkK/tuhMTEPVsAk3rWaaEPZl7xQ6iQcUnd0IwqtVjuSdRXb2oVorHRBmVeFnhIU7p+TeMfoDQFCd7vIrwNaIBAdGPjXMJ1lW4IZq+5UVurecLMCPBNJ9ndHPUpHWe7bmED5aVbImabQ7p+6NEHq6rbAx600t75ZO6QJO83cg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d9K9eBBt; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d9K9eBBt;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d4nSn4tt8z2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 22:27:21 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 92B8841A8E;
-	Mon, 10 Nov 2025 11:27:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48BDC4CEF5;
-	Mon, 10 Nov 2025 11:27:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762774039;
-	bh=Jac0LD3KXWWf3Vbx0ZbUSjZpPlnaV+M2uPxJVWQYQ7w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=d9K9eBBtXiPjSMfSz4PKDmstvz0ViHtu0W6ZdPlUt++Yd4erGgSkgpupDk20YRyDN
-	 7Au8CdOyDgQ1SzKoPZwAKxZnhVxS2O8S8gUh8HaIHpJKWyg9yamJtjLQwgiCNhsjDe
-	 3y78YuI4/grbiZkBc1mVhZol5iSIWeBnzSTOjoiKDhRdG6LXnX5BFJ6Fr1TMuCewOL
-	 eUwfDlHAi0SczJQDuqdSl/K0TQA5Ps23TP36UIQ+ujhsQiylSPGXSuKqcThzTrAIWs
-	 7lOz/hnU7h1hepIoO0F1YX77ghSH8weiaUzZVYYyqNHSbEW+sqYdN0rhK4qDY1ZB1R
-	 zTxwJSMT7s9DA==
-Message-ID: <cdd23dd6-5444-4000-ac68-a72b22bf6a57@kernel.org>
-Date: Mon, 10 Nov 2025 12:27:16 +0100
+	 In-Reply-To:Content-Type; b=CNbNWa1MzXfOw1sbvetGm6udfPYnoSfH5eK/GvXiPpifSIVEuhGiyoGFSjTOsM+HcFr+O2qPv6DxUBxnaY3OjDGlHl/VbJ1Zme2DJinH1f9vSBqY6AMIYYAYjdTaGIuAmYjJas9ckSAXrF7Dm2Mm/rsWFxpjcXJYpKMQas+GcX/HCW5cvPcr7qMePEfSUafCC2TxCJcHsOUCiA7GzMuIEaZqYUfRJ0aIH7S+XegqI20+A3G49ZSw7yHkdKGhWTUCy/DNhxeABcmhOQLAVlRjV5nHqP7jn5ZkWAcgXek1W4Aeq/RAZ5YhIubN4HlPyYNsPKRbptpQBUGCMtzrNA/bBQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d4nzb5ZGhz2xFT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 22:50:34 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d4nbl2pTqz9sSS;
+	Mon, 10 Nov 2025 12:33:23 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ju2cuXQ6JEfZ; Mon, 10 Nov 2025 12:33:23 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d4nbl0zrcz9sSR;
+	Mon, 10 Nov 2025 12:33:23 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id DFE738B764;
+	Mon, 10 Nov 2025 12:33:22 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id ioscGiQ2gGqe; Mon, 10 Nov 2025 12:33:22 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6A62D8B763;
+	Mon, 10 Nov 2025 12:33:22 +0100 (CET)
+Message-ID: <d2e51443-49dd-445a-88aa-f29d7b777bce@csgroup.eu>
+Date: Mon, 10 Nov 2025 12:33:22 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,81 +58,117 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: powerpc/e500: WARNING: at mm/hugetlb.c:4755 hugetlb_add_hstate
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Donet Tom <donettom@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com>
- <dd634b17-cc5e-497c-8228-2470f6533177@redhat.com>
- <82ef1da8-44c4-4a58-bd00-9839548cb72d@csgroup.eu>
- <ba3a2131-c8d4-481d-aebb-d25be7ae0d19@kernel.org>
- <d62eea1f-3aff-4b51-976a-4cb8abf502bf@csgroup.eu>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <d62eea1f-3aff-4b51-976a-4cb8abf502bf@csgroup.eu>
+Subject: Re: [PATCH RESEND] powerpc/tools: drop `-o pipefail` in gcc check
+ scripts
+To: Jan Stancek <jstancek@redhat.com>,
+ Justin Forbes <jforbes@fedoraproject.org>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+ npiggin@gmail.com, linux-kernel@vger.kernel.org, joe.lawrence@redhat.com
+References: <cc6cdd116c3ad9d990df21f13c6d8e8a83815bbd.1758641374.git.jstancek@redhat.com>
+ <CAFxkdApQVEqCjQMAUqy8cuKnMy8GY9j+brgPZBkxCpeGi5xHxA@mail.gmail.com>
+ <CAASaF6zvFa-mPaPfKnBcerfVBkDt5B3TEn7P9jjAfentqSNmxQ@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <CAASaF6zvFa-mPaPfKnBcerfVBkDt5B3TEn7P9jjAfentqSNmxQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Thanks for the review!
 
+
+Le 30/10/2025 à 19:09, Jan Stancek a écrit :
+> On Mon, Oct 6, 2025 at 10:19 PM Justin Forbes <jforbes@fedoraproject.org> wrote:
+>>
+>> On Tue, Sep 23, 2025 at 9:31 AM Jan Stancek <jstancek@redhat.com> wrote:
+>>>
+>>> We've been observing rare non-deterministic kconfig failures during
+>>> olddefconfig, where ARCH_USING_PATCHABLE_FUNCTION_ENTRY was getting
+>>> disabled and with it number of other config options that depend on it.
+>>>
+>>> The reason is that gcc-check-fpatchable-function-entry.sh can fail
+>>> if `grep -q` (or scripts/dummy-tools/gcc) is fast enough to exit while
+>>> there is still someone writing on other side of pipe. `pipefail`
+>>> propagates that error up to kconfig.
+>>>
+>>> This can be seen for example with:
+>>>    # (set -e; set -o pipefail; yes | grep -q y); echo $?
+>>>    141
+>>>
+>>> or by running the actual check script in loop extensively:
+>>>    ----------------------------- 8< -------------------------------
+>>>    function kconfig()
+>>>    {
+>>>      for i in `seq 1 100`; do
+>>>        arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh \
+>>>          ./scripts/dummy-tools/gcc -mlittle-endian \
+>>>          || { echo "Oops"; exit 1; }
+>>>      done
+>>>    }
+>>>
+>>>    for ((i=0; i<$(nproc); i++)); do kconfig & done
+>>>    wait; echo "Done"
+>>>    ----------------------------- >8 -------------------------------
+>>>
+>>> Fixes: 0f71dcfb4aef ("powerpc/ftrace: Add support for -fpatchable-function-entry")
+>>> Fixes: b71c9ffb1405 ("powerpc: Add arch/powerpc/tools directory")
+>>> Reported-by: Joe Lawrence <joe.lawrence@redhat.com>
+>>> Acked-by: Joe Lawrence <joe.lawrence@redhat.com>
+>>> Signed-off-by: Jan Stancek <jstancek@redhat.com>
+>>> ---
+>>>   arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh | 1 -
+>>>   arch/powerpc/tools/gcc-check-mprofile-kernel.sh           | 1 -
+>>>   2 files changed, 2 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh b/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
+>>> index 06706903503b..baed467a016b 100755
+>>> --- a/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
+>>> +++ b/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
+>>> @@ -2,7 +2,6 @@
+>>>   # SPDX-License-Identifier: GPL-2.0
+>>>
+>>>   set -e
+>>> -set -o pipefail
+>>>
+>>>   # To debug, uncomment the following line
+>>>   # set -x
+>>> diff --git a/arch/powerpc/tools/gcc-check-mprofile-kernel.sh b/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
+>>> index 73e331e7660e..6193b0ed0c77 100755
+>>> --- a/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
+>>> +++ b/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
+>>> @@ -2,7 +2,6 @@
+>>>   # SPDX-License-Identifier: GPL-2.0
+>>>
+>>>   set -e
+>>> -set -o pipefail
+>>>
+>>>   # To debug, uncomment the following line
+>>>   # set -x
+>>> --
+>>> 2.47.1
+>>
+>> Would love to see this picked up, it fixes a problem we have run into
+>> with our CI.
+>>
+>> Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 > 
-> So I think what you want instead is:
+> Thanks Justin.
 > 
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype
-> b/arch/powerpc/platforms/Kconfig.cputype
-> index 7b527d18aa5ee..1f5a1e587740c 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -276,6 +276,7 @@ config PPC_E500
->           select FSL_EMB_PERFMON
->           bool
->           select ARCH_SUPPORTS_HUGETLBFS if PHYS_64BIT || PPC64
-> +       select ARCH_HAS_GIGANTIC_PAGE if ARCH_SUPPORTS_HUGETLBFS
->           select PPC_SMP_MUXED_IPI
->           select PPC_DOORBELL
->           select PPC_KUEP
+> Would any maintainers also care to review? Ty.
 > 
-> 
-> 
->>        select ARCH_HAS_KCOV
->>        select ARCH_HAS_KERNEL_FPU_SUPPORT    if PPC64 && PPC_FPU
->>        select ARCH_HAS_MEMBARRIER_CALLBACKS
->> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/
->> platforms/Kconfig.cputype
->> index 7b527d18aa5ee..4c321a8ea8965 100644
->> --- a/arch/powerpc/platforms/Kconfig.cputype
->> +++ b/arch/powerpc/platforms/Kconfig.cputype
->> @@ -423,7 +423,6 @@ config PPC_64S_HASH_MMU
->>    config PPC_RADIX_MMU
->>        bool "Radix MMU Support"
->>        depends on PPC_BOOK3S_64
->> -    select ARCH_HAS_GIGANTIC_PAGE
-> 
-> Should remain I think.
-> 
->>        default y
->>        help
->>          Enable support for the Power ISA 3.0 Radix style MMU. Currently
 
+Is the problem only with those scripts ? I see other scripts using 
+pipefail in the kernel:
 
-We also have PPC_8xx do a
+arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh:set -o pipefail
+arch/powerpc/tools/gcc-check-mprofile-kernel.sh:set -o pipefail
+drivers/gpu/drm/ci/dt-binding-check.sh:set -euxo pipefail
+drivers/gpu/drm/ci/dtbs-check.sh:set -euxo pipefail
+drivers/gpu/drm/ci/kunit.sh:set -euxo pipefail
+drivers/gpu/drm/ci/setup-llvm-links.sh:set -euo pipefail
+scripts/check-uapi.sh:set -o pipefail
 
-	select ARCH_SUPPORTS_HUGETLBFS
+Christophe
 
-And of course !PPC_RADIX_MMU (e.g., PPC_64S_HASH_MMU) through PPC_BOOK3S_64.
-
-Are we sure they cannot end up with gigantic folios through hugetlb?
-
--- 
-Cheers
-
-David
 
