@@ -1,79 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-13993-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13994-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE0DC458A3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 10:13:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 078A3C45985
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 10:20:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4kTm5jq6z2xqM;
-	Mon, 10 Nov 2025 20:13:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d4kfK5b3zz2xqM;
+	Mon, 10 Nov 2025 20:20:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762765980;
-	cv=none; b=m2AKKMYENJiubh3pEzOXihL+Qk4RK0hladCyu2GtHZNW/TXu+v1WTyn5q4N3SRb58f713WV5GfNi1lZCOTTz4oxuWh9823/9AZhyh4XEERYHRa2OmhaWVd/UNfj0r+q1gHNnY6PL8i1mWuOHYrHtgXLKwraFGOWkgJaAhKpBcDQLikvWDX4IFGt4DDAjFOFrdHIHQvaA9SdNi8MI96CTC4K9PfBDZJ8/gyOUS9/b0lYJgPN/3LHJsvkLrOIgHnIANroneLqRHvcSzW5pRyTMo/HvuQOZ11XxV48fgSDoWnqsZ4lA1R88/6TICCXF78aA//9cg1vO+KogAtXbVvWfXQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762766425;
+	cv=none; b=JMKAFQI5ydWe9/nVkOsVNorZEp2SF/xWG3LyN3qwX9EMd5KS+9Qx2ao7Z+4T1FdrjjDTsUqSCfwbWWON+AMvpAxXPokC8biAtEJcTzEEmwEHDtLvQl34/UGOFqTRr/RRKeLh0Zo1zMEhFgz2vFVx5bgJV+NUYmHMxTsCn7xoyLp8ByFx1Hhrvr4COUmVwD86dg2/U+B49c3AAuAxvJM1x0b4D9TCt/vzQe4i3nzVW61zm4P+0qtYUS9dnsanJSP6o9EiYi8Bay3ZAd94OxR3/aYToCF2SSDz7IUDAWQ4yJkuMJobKQkQO7qJ1bLzkNmIq5xrwHD3IvZzx+XCU66Ddg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762765980; c=relaxed/relaxed;
-	bh=MlFLz0r4EaIF2tQbBerZnpxCLol/MNcwRpTg/9h+gqw=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:References:
-	 From:In-Reply-To; b=EFnvCrKFLEst1GnFX4yner3Tqg1rg+wEfwLDfLDA5O57edtHWjoR2HGYmY1fUjjQt13ZxCsy/PPByRtIO6YkgDofz3viILbFAee7Umlxt/LayhsnYbiDJspn/ht1garqlKL73WnNtnbNeed3UmdlWWPVt0cy1REvQ0vWL9+qyX+BwjGA/3HLZCdevkJBqYlap4Ln5K1+RCnoATnSYUqHzCp3nUnVh8ljjZtVJNFpQnYRhC3iaPrNzK8kqpqgpGSCbC8W/ZNR8og1xRFFCv8JgQKtAk/qByiOTcQ63FiD6WjrxUmnAfuQkKhioxPOnMPDsVQsMnVE56BcCkyo3QY8KA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mQ+YojTT; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=samir@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mQ+YojTT;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=samir@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d4kTl6NsSz2xFT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 20:12:59 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A9JgFaq016772;
-	Mon, 10 Nov 2025 09:12:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=MlFLz0r4EaIF2tQbBerZnpxCLol/MN
-	cwRpTg/9h+gqw=; b=mQ+YojTTIdrobdNjWcz4QV0bGJZEep82WcawtObqJm6ESp
-	GQrCquTtH+khXC4fTXWP5e2uyNzGHnrRGDncKA+q4yAWuK4Kmox0oqVyNc1K7L1b
-	a0glWFitS6t4Tf3A7DEJ6IEIp2ZsxwU8x/rqtwwuq7Qw+tvLvGmgj1+jA8RLZU5x
-	OQ7VJJoIw7EANUuvrk6Y6da11x4eoThSSnm8zYrq2XgLrqXGP4el8EPuVV5WNtlp
-	4fMuMMdtKeD8oIjtKymbdDLjMOKh5I6OUEuVSsA7Oieb76GqbBDjMHT0kqBGzsif
-	9q8Nssy8eEkUNsc9tj3bHYxoyl8X+qHcKMA8bs8A==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5chx5m0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Nov 2025 09:12:27 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AA996bb004297;
-	Mon, 10 Nov 2025 09:12:27 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5chx5kx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Nov 2025 09:12:27 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AA94BeS011431;
-	Mon, 10 Nov 2025 09:12:26 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajw14huc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Nov 2025 09:12:26 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AA9COa625166380
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Nov 2025 09:12:25 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD7DF5805D;
-	Mon, 10 Nov 2025 09:12:24 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 249855805A;
-	Mon, 10 Nov 2025 09:12:14 +0000 (GMT)
-Received: from [9.79.204.225] (unknown [9.79.204.225])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 10 Nov 2025 09:12:13 +0000 (GMT)
-Content-Type: multipart/alternative;
- boundary="------------IsA5aYp08wrNEpVUKvaW1B2b"
-Message-ID: <de9a7259-73cb-48f6-afd0-7dd47a725c46@linux.ibm.com>
-Date: Mon, 10 Nov 2025 14:42:12 +0530
+	t=1762766425; c=relaxed/relaxed;
+	bh=BE9g58aO+50xrZTAkMSZ+nucJ9JIlqY0y6onurX6UkE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JUpSc5LlwgT4kStKrRWATBYNy5tCyN2pKbTTg2R46Wskr3s0/IU+1BQNLtCBGvoN4pnVFVumGdNOIAlNA5KrN4x+Rxqum158OLPfEzIQrJB6UmThRN0jVpOtBbc6jUd4mmPgYEamKba/OcvXMVZ6jkubdz82drtJy3fmQ72rgM1InY63OUzobvGgjvE5vPVLEfMsfPsvuvlZdqKa4VWWCZPLaV91y+TRcQApA9ltuQkUbqtQQxn5Zyon7WHxbyavgovSw0mvsDnWkJ++TJGXsJXaidH5bVSZeHdiVn6Qha5EWeYpe0UV31ZKMg5LYIuXTy2lyM7FRTdpYHv61OMcYQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d4kfJ3V4pz2xFT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 20:20:22 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 91A6F2B;
+	Mon, 10 Nov 2025 01:19:41 -0800 (PST)
+Received: from [10.57.85.123] (unknown [10.57.85.123])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CED693F63F;
+	Mon, 10 Nov 2025 01:19:42 -0800 (PST)
+Message-ID: <e428b1d5-65a8-49bc-92dc-ec4a4d933dec@arm.com>
+Date: Mon, 10 Nov 2025 09:19:40 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,395 +44,154 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] Generic IRQ entry/exit support for powerpc
-To: Mukesh Kumar Chaurasiya <mkchauras@linux.ibm.com>, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        oleg@redhat.com, kees@kernel.org, luto@amacapital.net,
-        wad@chromium.org, mchauras@linux.ibm.com, thuth@redhat.com,
-        sshegde@linux.ibm.com, akpm@linux-foundation.org, macro@orcam.me.uk,
-        ldv@strace.io, deller@gmx.de, charlie@rivosinc.com,
-        bigeasy@linutronix.de, segher@kernel.crashing.org,
-        thomas.weissschuh@linutronix.de, menglong8.dong@gmail.com,
-        ankur.a.arora@oracle.com, peterz@infradead.org, namcao@linutronix.de,
-        tglx@linutronix.de, kan.liang@linux.intel.com, mingo@kernel.org,
-        atrajeev@linux.vnet.ibm.com, mark.barnett@arm.com,
-        coltonlewis@google.com, rppt@kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-References: <20251102115358.1744304-1-mkchauras@linux.ibm.com>
-Content-Language: en-US
-From: Samir Alamshaha Mulani <samir@linux.ibm.com>
-In-Reply-To: <20251102115358.1744304-1-mkchauras@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Ss+dKfO0 c=1 sm=1 tr=0 ts=6911ac7b cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=r77TgQKjGQsHNAKrUKIA:9
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=Yqzg2m6fQhnNyKgerrwA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=vU58yfGyNwJjuA0bxoQA:9 a=7i3ow50MfOXuK4a5:21
- a=_W_S_7VecoQA:10 a=lqcHg5cX4UMA:10 a=nl4s5V0KI7Kw-pW0DWrs:22
- a=HhbK4dLum7pmb74im6QT:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDA5NSBTYWx0ZWRfX0ZVYKhtJeYBg
- qvcETXRGhNwAjZCfl0gVJB2lsTxZNMax6YRn2ndzn4z1lHVtkJoUyX6k8uA48ZvO9MrhfHignWr
- WWSLF1t1buuimw82/ft/zLIh+ZSZwSujVnUpsLMH6DM5rumuhB6M8r3yEXXiVJ7U55kZWN21H0h
- yn/TZvklfa6XMr3/xUvYb6Umc9W0gnILSDqyyOqoQES70JgGYt6fgCxJsZ/lMOOQ3KjHXb45yoS
- 8Il42XJkG93wDqBP2cGZ9hTGn/b8Y/wfghSfk8UDouCQ6nyQ04fXDbkEvpWNKbvHR204bgXyTHr
- zrimkudoQyjb9teadXEBWEi1xP+1JAP5PM2UFlO2+DLn7ewaRGfZ+fu5qJ6LhysE4qw0tnbliap
- kCf+RnLjj4AsIGRU7lJGWGWqp2KVgw==
-X-Proofpoint-GUID: iG9IjSy-9jrGqcftOMwpC0U1KRSQIRva
-X-Proofpoint-ORIG-GUID: gPSc53AR6nYmw1J9lVDNhX3APDdfSiXA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-10_03,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 suspectscore=0 impostorscore=0 bulkscore=0 phishscore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080095
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HTML_MESSAGE,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+Subject: Re: [PATCH v4 06/12] mm: introduce generic lazy_mmu helpers
+Content-Language: en-GB
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
+ <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-7-kevin.brodsky@arm.com>
+ <71418b31-aedb-4600-9558-842515dd6c44@arm.com>
+ <c764489e-0626-4a50-87b5-39e15d9db733@gmail.com>
+ <645178fd-df4e-42fe-b55e-97d9506499be@arm.com>
+ <413b2c49-f124-4cda-8fea-a6cc165f6326-agordeev@linux.ibm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <413b2c49-f124-4cda-8fea-a6cc165f6326-agordeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This is a multi-part message in MIME format.
---------------IsA5aYp08wrNEpVUKvaW1B2b
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On 10/11/2025 08:11, Alexander Gordeev wrote:
+> On Fri, Nov 07, 2025 at 03:22:54PM +0000, Ryan Roberts wrote:
+> 
+> Hi Ryan,
+> 
+>> On 07/11/2025 14:34, David Hildenbrand (Red Hat) wrote:
+>>>>>   #ifndef pte_batch_hint
+>>>>> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+>>>>> index 5d2a876035d6..c49b029d3593 100644
+>>>>> --- a/mm/kasan/shadow.c
+>>>>> +++ b/mm/kasan/shadow.c
+>>>>> @@ -305,7 +305,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep,
+>>>>> unsigned long addr,
+>>>>>       pte_t pte;
+>>>>>       int index;
+>>>>>   -    arch_leave_lazy_mmu_mode();
+>>>>> +    lazy_mmu_mode_pause();
+>>>>
+>>>> I wonder if there really are use cases that *require* pause/resume? I think
+>>>> these kasan cases could be correctly implemented using a new nest level instead?
+>>>> Are there cases where the effects really need to be immediate or do the effects
+>>>> just need to be visible when you get to where the resume is?
+>>>>
+>>>> If the latter, that could just be turned into a nested disable (e.g. a flush).
+>>>> In this case, there is only 1 PTE write so no benefit, but I wonder if other
+>>>> cases may have more PTE writes that could then still be batched. It would be
+>>>> nice to simplify the API by removing pause/resume if we can?
+>>>
+>>> It has clear semantics, clearer than some nest-disable IMHO.
+>>>
+>>> Maybe you can elaborate how you would change ("simplify") the API in that
+>>> regard? What would the API look like?
+>>
+>> By simplify, I just meant can we remove lazy_mmu_mode_pause() and
+>> lazy_mmu_mode_resume() ?
+>>
+>>
+>> We currently have:
+>>
+>> apply_to_page_range
+>>   lazy_mmu_mode_enable()
+>>     kasan_populate_vmalloc_pte()
+>>       lazy_mmu_mode_pause()
+>>       <code>
+>>       lazy_mmu_mode_resume()
+>>   lazy_mmu_mode_disable()
+>>
+>> Where <code> is setting ptes. But if <code> doesn't need the effects to be
+>> visible until lazy_mmu_mode_resume(), then you could replace the block with:
+>>
+>> apply_to_page_range
+>>   lazy_mmu_mode_enable()
+>>     kasan_populate_vmalloc_pte()
+>>       lazy_mmu_mode_enable()
+>>       <code>
+>>       lazy_mmu_mode_disable()
+>>   lazy_mmu_mode_disable()
+>>
+>> However, looking at this more closely, I'm not really clear on why we need *any*
+>> special attention to lazy mmu inside of kasan_populate_vmalloc_pte() and
+>> kasan_depopulate_vmalloc_pte().
+>>
+>> I *think* that the original concern was that we were doing ptep_get(ptep) inside
+>> of a lazy_mmu block? So we need to flush so that the getter returns the most
+>> recent value? But given we have never written to that particular ptep while in
+>> the lazy mmu block, there is surely no hazard in the first place?
+> 
+> There is, please see:
+> https://lore.kernel.org/linux-mm/cover.1755528662.git.agordeev@linux.ibm.com/
 
+I've stared at this for a while, but I'm afraid I still don't see the problem.
+This all looks safe to me. Could you explain exactly what this issue is?
 
-On 02/11/25 5:23 pm, Mukesh Kumar Chaurasiya wrote:
-> Adding support for the generic irq entry/exit handling for PowerPC. The
-> goal is to bring PowerPC in line with other architectures that already
-> use the common irq entry infrastructure, reducing duplicated code and
-> making it easier to share future changes in entry/exit paths.
->
-> This is slightly tested of ppc64le and ppc32.
->
-> The performance benchmarks from perf bench basic syscall are below:
->
-> | Metric     | W/O Generic Framework | With Generic Framework | Change |
-> | ---------- | --------------------- | ---------------------- | ------ |
-> | Total time | 0.939 [sec]           | 0.938 [sec]            | ~0%    |
-> | usecs/op   | 0.093900              | 0.093882               | ~0%    |
-> | ops/sec    | 1,06,49,615           | 1,06,51,725            | ~0%    |
->
-> Thats very close to performance earlier with arch specific handling.
->
-> Tests done:
->   - Build and boot on ppc64le pseries.
->   - Build and boot on ppc64le powernv8 powernv9 powernv10.
->   - Build and boot on ppc32.
->   - Performance benchmark done with perf syscall basic on pseries.
->
-> Changelog:
->
-> RFC -> PATCH
->   - Fix for ppc32 spitting out kuap lock warnings.
->   - ppc64le powernv8 crash fix.
->   - Review comments incorporated from previous RFC.
-> RFChttps://lore.kernel.org/all/20250908210235.137300-2-mchauras@linux.ibm.com/
->
-> Mukesh Kumar Chaurasiya (8):
->    powerpc: rename arch_irq_disabled_regs
->    powerpc: Prepare to build with generic entry/exit framework
->    powerpc: introduce arch_enter_from_user_mode
->    powerpc: Introduce syscall exit arch functions
->    powerpc: add exit_flags field in pt_regs
->    powerpc: Prepare for IRQ entry exit
->    powerpc: Enable IRQ generic entry/exit path.
->    powerpc: Enable Generic Entry/Exit for syscalls.
->
->   arch/powerpc/Kconfig                    |   2 +
->   arch/powerpc/include/asm/entry-common.h | 539 ++++++++++++++++++++++++
->   arch/powerpc/include/asm/hw_irq.h       |   4 +-
->   arch/powerpc/include/asm/interrupt.h    | 401 +++---------------
->   arch/powerpc/include/asm/ptrace.h       |   3 +
->   arch/powerpc/include/asm/stacktrace.h   |   6 +
->   arch/powerpc/include/asm/syscall.h      |   5 +
->   arch/powerpc/include/asm/thread_info.h  |   1 +
->   arch/powerpc/include/uapi/asm/ptrace.h  |  14 +-
->   arch/powerpc/kernel/asm-offsets.c       |   1 +
->   arch/powerpc/kernel/interrupt.c         | 258 +++---------
->   arch/powerpc/kernel/ptrace/ptrace.c     | 142 +------
->   arch/powerpc/kernel/signal.c            |   8 +
->   arch/powerpc/kernel/syscall.c           | 119 +-----
->   arch/powerpc/kernel/traps.c             |   2 +-
->   arch/powerpc/kernel/watchdog.c          |   2 +-
->   arch/powerpc/perf/core-book3s.c         |   2 +-
->   17 files changed, 693 insertions(+), 816 deletions(-)
->   create mode 100644 arch/powerpc/include/asm/entry-common.h
->
-Hi,
+If I've understood correctly, kasan_populate_vmalloc() is called during virtual
+range allocation by vmalloc. This is not in a nested lazy mmu block (but it
+wouldn't matter if it was once we have Kevin's nested changes to ensure flush
+when exiting the nested scope). kasan_populate_vmalloc() calls
+apply_to_page_range(), which will walk the set of ptes, calling
+kasan_populate_vmalloc_pte() for each one. kasan_populate_vmalloc_pte() does a
+ptep_get() then, if none, calls set_pte_at().
 
-I have reviewed and tested the generic IRQ entry/exist patch series. 
-Below are my observations:
+That's not a hazard since you're calling get before the set and you only visit
+each pte once for the apply_to_page_range() lazy mmu block.
 
+> 
+>> apply_to_existing_page_range() will only call kasan_depopulate_vmalloc_pte()
+>> once per pte, right? So given we read the ptep before writing it, there should
+>> be no hazard? If so we can remove pause/resume.
+> 
+> Unfortunately, we rather not, please see:
+> https://lore.kernel.org/linux-mm/d407a381-099b-4ec6-a20e-aeff4f3d750f@arm.com/
 
- Test Coverage 
+Sorry but I don't see anything relavent to my point in this mail. Perhaps there
+is some s390-specific detail that I'm failing to understand?
 
-• Successfully ran LTP (specially syscall) and entire LTP test suite, 
-without observing any regressions or issues related to the implementation.
+Thanks,
+Ryan
 
-
- System Configuration 
-
-• CPUs: 160 
-
-• Kernel: v6.18.0-rc1+ 
-
-• Processor mode: Shared (uncapped)
-
-
- Performance Evaluation 
-
-• Conducted benchmarking using perf bench syscall basic -l and hackbench. 
-
-• No functional regressions observed, and results were consistent with 
-expectations.
-
-
-  * Results for perf bench syscall**Loops = 100,000**
-
-**Loops = 100,000**
-| Metric       | W/O Generic Framework      | With Generic Framework    
-| Improvement |
-|----------|-----------------------:|-----------------------:|------------:|
-| usecs/op   |              0.125328              | 0.128839            
-   |     ~-2.80% |
-| ops/sec     |             7,979,645              |  7,762,047          
-     |     ~-2.73% |
-
-**Loops = 1,000,000**
-| Metric        | W/O Generic Framework         | With Generic 
-Framework             | Improvement |
-|----------|-----------------------:|-----------------------:|------------:|
-| usecs/op   |              0.125015              | 0.127885            
-   |     ~-2.30% |
-| ops/sec     |             7,999,051              |  7,819,546          
-     |     ~-2.24% |
-
-**Loops = 10,000,000**
-| Metric        | W/O Generic Framework    | With Generic Framework    | 
-Improvement |
-|----------|-----------------------:|-----------------------:|------------:|
-| usecs/op   |              0.124613              | 0.127426            
-   |     ~-2.26% |
-| ops/sec     |             8,024,827              |  7,847,735          
-     |     ~-2.21% |
-
-**Overall (aggregated across all runs)**
-| Metric         | W/O Generic Framework   | With Generic Framework    | 
-Improvement |
-| ---------- | 
----------------------:|-----------------------:|------------:|
-| Total time    |           1.384 [sec]            |           1.415 
-[sec]               |     ~-2.27% |
-| usecs/op     |              0.124656            | 0.127480            
-   |     ~-2.27% |
-| ops/sec       |             8,022,098            |  7,844,423          
-     |     ~-2.21% |
-
-A 2% performance degradation was observed with the perf bench syscall.
-
-
-  * Results for hackbench
-
-
-| Metric        | W/O Generic Framework    | With Generic Framework   | 
-Improvement |
-|----------|---------------------- :|-----------------------:|------------:|
-| Min Time   | 142.055 (sec).                   | 141.699 (sec)         
-        | 0.25%
-| Max Time  | 143.791 (sec).                   | 143.206 (sec)           
-      | 0.41%
-| Avg Time   | 142.925 (sec)                    | 142.472 (sec)         
-        | 0.32%
-
-So overall 0.3 % improvement is observed across 10 runs.
-
-Please add below tag for the patch set.
- Tested-by: Samir M <samir@linux.ibm.com>
-Thank You !!
-
-
-Regards,
-Samir.
---------------IsA5aYp08wrNEpVUKvaW1B2b
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 02/11/25 5:23 pm, Mukesh Kumar
-      Chaurasiya wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:20251102115358.1744304-1-mkchauras@linux.ibm.com">
-      <pre wrap="" class="moz-quote-pre">Adding support for the generic irq entry/exit handling for PowerPC. The
-goal is to bring PowerPC in line with other architectures that already
-use the common irq entry infrastructure, reducing duplicated code and
-making it easier to share future changes in entry/exit paths.
-
-This is slightly tested of ppc64le and ppc32.
-
-The performance benchmarks from perf bench basic syscall are below:
-
-| Metric     | W/O Generic Framework | With Generic Framework | Change |
-| ---------- | --------------------- | ---------------------- | ------ |
-| Total time | 0.939 [sec]           | 0.938 [sec]            | ~0%    |
-| usecs/op   | 0.093900              | 0.093882               | ~0%    |
-| ops/sec    | 1,06,49,615           | 1,06,51,725            | ~0%    |
-
-Thats very close to performance earlier with arch specific handling.
-
-Tests done:
- - Build and boot on ppc64le pseries.
- - Build and boot on ppc64le powernv8 powernv9 powernv10.
- - Build and boot on ppc32.
- - Performance benchmark done with perf syscall basic on pseries.
-
-Changelog:
-
-RFC -&gt; PATCH
- - Fix for ppc32 spitting out kuap lock warnings.
- - ppc64le powernv8 crash fix.
- - Review comments incorporated from previous RFC.
-RFC <a class="moz-txt-link-freetext" href="https://lore.kernel.org/all/20250908210235.137300-2-mchauras@linux.ibm.com/">https://lore.kernel.org/all/20250908210235.137300-2-mchauras@linux.ibm.com/</a>
-
-Mukesh Kumar Chaurasiya (8):
-  powerpc: rename arch_irq_disabled_regs
-  powerpc: Prepare to build with generic entry/exit framework
-  powerpc: introduce arch_enter_from_user_mode
-  powerpc: Introduce syscall exit arch functions
-  powerpc: add exit_flags field in pt_regs
-  powerpc: Prepare for IRQ entry exit
-  powerpc: Enable IRQ generic entry/exit path.
-  powerpc: Enable Generic Entry/Exit for syscalls.
-
- arch/powerpc/Kconfig                    |   2 +
- arch/powerpc/include/asm/entry-common.h | 539 ++++++++++++++++++++++++
- arch/powerpc/include/asm/hw_irq.h       |   4 +-
- arch/powerpc/include/asm/interrupt.h    | 401 +++---------------
- arch/powerpc/include/asm/ptrace.h       |   3 +
- arch/powerpc/include/asm/stacktrace.h   |   6 +
- arch/powerpc/include/asm/syscall.h      |   5 +
- arch/powerpc/include/asm/thread_info.h  |   1 +
- arch/powerpc/include/uapi/asm/ptrace.h  |  14 +-
- arch/powerpc/kernel/asm-offsets.c       |   1 +
- arch/powerpc/kernel/interrupt.c         | 258 +++---------
- arch/powerpc/kernel/ptrace/ptrace.c     | 142 +------
- arch/powerpc/kernel/signal.c            |   8 +
- arch/powerpc/kernel/syscall.c           | 119 +-----
- arch/powerpc/kernel/traps.c             |   2 +-
- arch/powerpc/kernel/watchdog.c          |   2 +-
- arch/powerpc/perf/core-book3s.c         |   2 +-
- 17 files changed, 693 insertions(+), 816 deletions(-)
- create mode 100644 arch/powerpc/include/asm/entry-common.h
-
-</pre>
-    </blockquote>
-    Hi,<br>
-    <br>
-    <p>I have reviewed and tested the generic IRQ entry/exist patch
-      series. Below are my observations:</p>
-    <p><br>
-    </p>
-    <p> Test Coverage    </p>
-    <p>• Successfully ran LTP (specially syscall) and entire LTP test
-      suite, without observing any regressions or issues related to the
-      implementation.</p>
-    <p><br>
-    </p>
-    <p> System Configuration     </p>
-    <p>• CPUs: 160     </p>
-    <p>• Kernel: v6.18.0-rc1+     </p>
-    <p>• Processor mode: Shared (uncapped)</p>
-    <p><br>
-    </p>
-    <p> Performance Evaluation  </p>
-    <p>• Conducted benchmarking using perf bench syscall basic -l and
-      hackbench.     </p>
-    <p>• No functional regressions observed, and results were consistent
-      with expectations.</p>
-    <p><br>
-    </p>
-    <ul>
-      <li>Results for perf bench syscall**Loops = 100,000**</li>
-    </ul>
-    **Loops = 100,000**<br>
-    | Metric       | W/O Generic Framework      | With Generic
-    Framework    | Improvement |<br>
-|----------|-----------------------:|-----------------------:|------------:|<br>
-    | usecs/op   |              0.125328              |             
-    0.128839              |     ~-2.80% |<br>
-    | ops/sec     |             7,979,645              |           
-     7,762,047              |     ~-2.73% |<br>
-    <br>
-    **Loops = 1,000,000**<br>
-    | Metric        | W/O Generic Framework         | With Generic
-    Framework             | Improvement |<br>
-|----------|-----------------------:|-----------------------:|------------:|<br>
-    | usecs/op   |              0.125015              |             
-    0.127885              |     ~-2.30% |<br>
-    | ops/sec     |             7,999,051              |           
-     7,819,546              |     ~-2.24% |<br>
-    <br>
-    **Loops = 10,000,000**<br>
-    | Metric        | W/O Generic Framework    | With Generic Framework 
-       | Improvement |<br>
-|----------|-----------------------:|-----------------------:|------------:|<br>
-    | usecs/op   |              0.124613              |             
-    0.127426              |     ~-2.26% |<br>
-    | ops/sec     |             8,024,827              |           
-     7,847,735              |     ~-2.21% |<br>
-    <br>
-    **Overall (aggregated across all runs)**<br>
-    | Metric         | W/O Generic Framework   | With Generic Framework 
-       | Improvement |<br>
-    | ---------- |
-    ---------------------:|-----------------------:|------------:|<br>
-    | Total time    |           1.384 [sec]            |           1.415
-    [sec]               |     ~-2.27% |<br>
-    | usecs/op     |              0.124656            |             
-    0.127480              |     ~-2.27% |<br>
-    | ops/sec       |             8,022,098            |           
-     7,844,423              |     ~-2.21% |<br>
-    <br>
-    <p>A 2% performance degradation was observed with the perf bench
-      syscall.</p>
-    <p><br>
-    </p>
-    <ul>
-      <li>Results for hackbench</li>
-    </ul>
-    <br>
-    | Metric        | W/O Generic Framework    | With Generic Framework 
-      | Improvement |<br>
-    |----------|----------------------
-    :|-----------------------:|------------:|<br>
-    | Min Time   | 142.055 (sec).                   | 141.699 (sec)     
-                   | 0.25%<br>
-    | Max Time  | 143.791 (sec).                   | 143.206 (sec)     
-                   | 0.41%<br>
-    | Avg Time   | 142.925 (sec)                    | 142.472 (sec)     
-                   | 0.32%<br>
-    <br>
-    So overall 0.3 % improvement is observed across 10 runs.<br>
-    <br>
-    Please add below tag for the patch set.<br>
-     Tested-by: Samir M <a class="moz-txt-link-rfc2396E" href="mailto:samir@linux.ibm.com">&lt;samir@linux.ibm.com&gt;</a><br>
-    Thank You !!<br>
-    <br>
-    <br>
-    Regards,<br>
-    Samir.
-  </body>
-</html>
-
---------------IsA5aYp08wrNEpVUKvaW1B2b--
+> 
+> The problem is kasan code invokes apply_to_page_range(), which enters lazy_mmu
+> mode unconditionally. I would claim that is rather an obstacle for the kasan
+> code, not a benefit. But it needs to be tackled.
+> > Should apply_to_page_range() had an option not to enter the lazy_mmu mode
+> (e.g. an extra "bool skip_lazy" parameter) - the pause/resume could have
+> been avoided.
+> 
+>> Thanks,
+>> Ryan
+> 
+> Thanks!
 
 
