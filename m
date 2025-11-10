@@ -1,35 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-13994-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13999-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078A3C45985
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 10:20:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72AA2C46024
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 11:42:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4kfK5b3zz2xqM;
-	Mon, 10 Nov 2025 20:20:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d4mSl294cz2xqv;
+	Mon, 10 Nov 2025 21:42:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762766425;
-	cv=none; b=JMKAFQI5ydWe9/nVkOsVNorZEp2SF/xWG3LyN3qwX9EMd5KS+9Qx2ao7Z+4T1FdrjjDTsUqSCfwbWWON+AMvpAxXPokC8biAtEJcTzEEmwEHDtLvQl34/UGOFqTRr/RRKeLh0Zo1zMEhFgz2vFVx5bgJV+NUYmHMxTsCn7xoyLp8ByFx1Hhrvr4COUmVwD86dg2/U+B49c3AAuAxvJM1x0b4D9TCt/vzQe4i3nzVW61zm4P+0qtYUS9dnsanJSP6o9EiYi8Bay3ZAd94OxR3/aYToCF2SSDz7IUDAWQ4yJkuMJobKQkQO7qJ1bLzkNmIq5xrwHD3IvZzx+XCU66Ddg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762768715;
+	cv=none; b=PEMX+P8gakTxc/v2il5U7tA/WhuCP3hn5lcj/DHt244+mw8PFW+7J4ueK82YdsOgP8Arv+jaDOXH9fISwFQGgOXwRYIY/ZEaLDyt7er4EBDcaDXK51txw7BkyPJ/w14t9lnDjTVVTXsfxhvJIeyJo1DLXcwcM9uJklpxXVyUnN9L8IpUGgyK1kQbQ4cHm29JWEJvqcXYrTAHBVC0KMNbuHWJY9ATOr1iryXBeR8B70ZlJbGTGpRV7JKlFeAqSYr0tIDrCFmrK1JCTk+4xOh/H3zCZUc8q/159SGOdl4fMEWqxNuX95A+Nj3fHAiaFIgrnPuciJOKJR/7k6K2FGP9Dw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762766425; c=relaxed/relaxed;
-	bh=BE9g58aO+50xrZTAkMSZ+nucJ9JIlqY0y6onurX6UkE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JUpSc5LlwgT4kStKrRWATBYNy5tCyN2pKbTTg2R46Wskr3s0/IU+1BQNLtCBGvoN4pnVFVumGdNOIAlNA5KrN4x+Rxqum158OLPfEzIQrJB6UmThRN0jVpOtBbc6jUd4mmPgYEamKba/OcvXMVZ6jkubdz82drtJy3fmQ72rgM1InY63OUzobvGgjvE5vPVLEfMsfPsvuvlZdqKa4VWWCZPLaV91y+TRcQApA9ltuQkUbqtQQxn5Zyon7WHxbyavgovSw0mvsDnWkJ++TJGXsJXaidH5bVSZeHdiVn6Qha5EWeYpe0UV31ZKMg5LYIuXTy2lyM7FRTdpYHv61OMcYQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4kfJ3V4pz2xFT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 20:20:22 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 91A6F2B;
-	Mon, 10 Nov 2025 01:19:41 -0800 (PST)
-Received: from [10.57.85.123] (unknown [10.57.85.123])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CED693F63F;
-	Mon, 10 Nov 2025 01:19:42 -0800 (PST)
-Message-ID: <e428b1d5-65a8-49bc-92dc-ec4a4d933dec@arm.com>
-Date: Mon, 10 Nov 2025 09:19:40 +0000
+	t=1762768715; c=relaxed/relaxed;
+	bh=Pr1wJd/7uGgpha5iPQ4Q3WZe4ih/H/T0063vCmTBsVQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qym37MlZMeyaEnErsVCZzmte6NL9r1p57L2FalUwFdmW7ANxIHjhbGG0WJHyAEndZu4ZpQRhIKgDeS57s+KEo5WuBO4zdhcs+L2K2ybgM36rnSIYienlQHvYZIATtqv3pdAxTIj+Vfa3ismewNmiSv+fk1S3im/lRxrTYvDqOfpjbT4Cr2ydDhjiPrwoDOg6ICmWwUDS5AcDKgaXNwtjlWbZ7rlprSqMzcYGhjms+WCSMoMzd7lsB3s8QUTz+Uw8PgCrKqmJNLqEiOKIeBQbTnrpBtIYJFn+bl9nWIVlxkMsQ4aZu0F7KYlLfJ5CcXctEZT35FnDfFOxCnzrxkPwQA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=eIpcuwQ7; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12d; helo=mail-lf1-x12d.google.com; envelope-from=marco.crivellari@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=eIpcuwQ7;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::12d; helo=mail-lf1-x12d.google.com; envelope-from=marco.crivellari@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d4lVJ6xWhz2xqL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 20:58:31 +1100 (AEDT)
+Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-5942bac322dso2386618e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 01:58:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1762768703; x=1763373503; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Pr1wJd/7uGgpha5iPQ4Q3WZe4ih/H/T0063vCmTBsVQ=;
+        b=eIpcuwQ7UFehQOIUL2raqcbtQZ+NDm1sP4yzhjcimKrd7lgTQO2lcGrhbdX1JCW0+R
+         DMsZPg36Seze7so8XC0lLdgJPXwnFkQwZKyOxHPBjLPO7reNAi2FWfFtOxQQrdk2sg1S
+         zWsynYtOkTqELWojpyfy9/VC5b4b2EXRymyWR9zmIrx/aoCdCLRKzxGzXAcYJikT8auZ
+         bJDTPPGt/azZ/8qCwd31VWgbp2nRnimq9hfY5mBegvCosgaPg6loxHTfiI/OtpASGw5W
+         KasqeqjbBoVSfMjd2Rirjh2R0F365oqU5jsNTzt5XPbK9+s0J+/B2i7cnypQOLvzwQOj
+         S9sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762768703; x=1763373503;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Pr1wJd/7uGgpha5iPQ4Q3WZe4ih/H/T0063vCmTBsVQ=;
+        b=OQ9rknbBnZIRC4yFd570Wa2Vicm5Ku8kaq8wIIR3p4E+jUCNnGBfyL9zH9mc7PQO2R
+         WiclkZ18T4/HcwxqtsD5hf45lzzK+AzOGO3PKcDoduV83KZTZCds1+kGQoz6SGyAr0dz
+         zzm/SnQNytq0er3i6kNcpMNlHWBxtq7r2uM95U7gdDHHOx5ASYhYkscmYedH+vYPYdz+
+         KlDXuTuTsHwzVIBUNpxrZydP19T4tbWRVqiABjiO2gmhKHpxJO6Kynl62jtdkaR3zj5M
+         UbSjAntso9kdJt0VODHanz7CXtr/amT6RgAv8PHUeDICLurrEYqmaQB5qgUw+wJ8sRsA
+         bqSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVAFZq9KEpSHS9OYXY4lL+zKj0kCpEpDE/r+pOzcxE9yEldXcBbnA88wRoYdf3v8sH2J17/AWXC3AZtvyc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwUHyxB5dtOVXjg7Ev/4i+AbCewuEbDe+LCSTWF59yTy/NnrGT6
+	mlxyu50drxYfl6FExaTM9s297m7rMxIJf98zVMPw6CdB7B+ijtIOFwZyD7PvjrA8pvPycqLK047
+	V0umT9L3gf5nqb4qNetgQ8yQFo8WcJzVTNgi+RagpGw==
+X-Gm-Gg: ASbGncviWzESkrtofZAJmOWckUeM1q2QJiQMjVKnGKY1OEA/yAIBJ8MkBYphVggxAsJ
+	nO1t3aEcsJdq1sYIBwtfuf3CTVzui6F/KovZfsdiae5qK1pUmwlqHz15N8t2LKnSLJJUciFXiD1
+	aV4ZMu7or/9cXraxfO2CRaxJlCnS8wumbsEP55betQQVm09uPRIYJNT4ro4DlSE7nNcIfIt7WsB
+	z+34eca8DDauOiDr09nwW9ywfq3mzl/ZzMiNY5t4VCQ3V/AmP6FYARcYFmiz3dcBw7LJeNk9kXR
+	C185v8XUojw3AdkDE74rMujq2W64
+X-Google-Smtp-Source: AGHT+IH8nzVycdeOgzQi/3FgjBc86W9BwlRBJUJ1/mzPe889ufxIQJ9HVlvKbWPBD1jcEM/roczq0ZhI9VyTgtrOyjM=
+X-Received: by 2002:a05:6512:3d04:b0:594:2df2:84ab with SMTP id
+ 2adb3069b0e04-5945f186cb5mr2251235e87.8.1762768702626; Mon, 10 Nov 2025
+ 01:58:22 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -43,155 +80,44 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/12] mm: introduce generic lazy_mmu helpers
-Content-Language: en-GB
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
- <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-7-kevin.brodsky@arm.com>
- <71418b31-aedb-4600-9558-842515dd6c44@arm.com>
- <c764489e-0626-4a50-87b5-39e15d9db733@gmail.com>
- <645178fd-df4e-42fe-b55e-97d9506499be@arm.com>
- <413b2c49-f124-4cda-8fea-a6cc165f6326-agordeev@linux.ibm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <413b2c49-f124-4cda-8fea-a6cc165f6326-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20251107152950.293899-1-marco.crivellari@suse.com> <64df8b4e-6cd4-49e4-a0f9-c8f9c017b06c@csgroup.eu>
+In-Reply-To: <64df8b4e-6cd4-49e4-a0f9-c8f9c017b06c@csgroup.eu>
+From: Marco Crivellari <marco.crivellari@suse.com>
+Date: Mon, 10 Nov 2025 10:58:11 +0100
+X-Gm-Features: AWmQ_blCrzzwtNXT5OJKtaKmerZRqaCu4AKrtikaapFNCbK_j5LVXjJ3X5YXl6U
+Message-ID: <CAAofZF4QD_vAon4CpHPQCPpgQpp991QOJ-Zd=Qn0siaWz+jtDg@mail.gmail.com>
+Subject: Re: [PATCH] soc: fsl: qbman: add WQ_PERCPU to alloc_workqueue users
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 10/11/2025 08:11, Alexander Gordeev wrote:
-> On Fri, Nov 07, 2025 at 03:22:54PM +0000, Ryan Roberts wrote:
-> 
-> Hi Ryan,
-> 
->> On 07/11/2025 14:34, David Hildenbrand (Red Hat) wrote:
->>>>>   #ifndef pte_batch_hint
->>>>> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
->>>>> index 5d2a876035d6..c49b029d3593 100644
->>>>> --- a/mm/kasan/shadow.c
->>>>> +++ b/mm/kasan/shadow.c
->>>>> @@ -305,7 +305,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep,
->>>>> unsigned long addr,
->>>>>       pte_t pte;
->>>>>       int index;
->>>>>   -    arch_leave_lazy_mmu_mode();
->>>>> +    lazy_mmu_mode_pause();
->>>>
->>>> I wonder if there really are use cases that *require* pause/resume? I think
->>>> these kasan cases could be correctly implemented using a new nest level instead?
->>>> Are there cases where the effects really need to be immediate or do the effects
->>>> just need to be visible when you get to where the resume is?
->>>>
->>>> If the latter, that could just be turned into a nested disable (e.g. a flush).
->>>> In this case, there is only 1 PTE write so no benefit, but I wonder if other
->>>> cases may have more PTE writes that could then still be batched. It would be
->>>> nice to simplify the API by removing pause/resume if we can?
->>>
->>> It has clear semantics, clearer than some nest-disable IMHO.
->>>
->>> Maybe you can elaborate how you would change ("simplify") the API in that
->>> regard? What would the API look like?
->>
->> By simplify, I just meant can we remove lazy_mmu_mode_pause() and
->> lazy_mmu_mode_resume() ?
->>
->>
->> We currently have:
->>
->> apply_to_page_range
->>   lazy_mmu_mode_enable()
->>     kasan_populate_vmalloc_pte()
->>       lazy_mmu_mode_pause()
->>       <code>
->>       lazy_mmu_mode_resume()
->>   lazy_mmu_mode_disable()
->>
->> Where <code> is setting ptes. But if <code> doesn't need the effects to be
->> visible until lazy_mmu_mode_resume(), then you could replace the block with:
->>
->> apply_to_page_range
->>   lazy_mmu_mode_enable()
->>     kasan_populate_vmalloc_pte()
->>       lazy_mmu_mode_enable()
->>       <code>
->>       lazy_mmu_mode_disable()
->>   lazy_mmu_mode_disable()
->>
->> However, looking at this more closely, I'm not really clear on why we need *any*
->> special attention to lazy mmu inside of kasan_populate_vmalloc_pte() and
->> kasan_depopulate_vmalloc_pte().
->>
->> I *think* that the original concern was that we were doing ptep_get(ptep) inside
->> of a lazy_mmu block? So we need to flush so that the getter returns the most
->> recent value? But given we have never written to that particular ptep while in
->> the lazy mmu block, there is surely no hazard in the first place?
-> 
-> There is, please see:
-> https://lore.kernel.org/linux-mm/cover.1755528662.git.agordeev@linux.ibm.com/
+On Sat, Nov 8, 2025 at 8:44=E2=80=AFPM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+> IIUC this patch is part of a wide work on workqueues. I assume the will
+> go via the workqueue tree. Let me know if you want me to take it via soc
+> fsl.
+>
+> Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-I've stared at this for a while, but I'm afraid I still don't see the problem.
-This all looks safe to me. Could you explain exactly what this issue is?
+Hi,
 
-If I've understood correctly, kasan_populate_vmalloc() is called during virtual
-range allocation by vmalloc. This is not in a nested lazy mmu block (but it
-wouldn't matter if it was once we have Kevin's nested changes to ensure flush
-when exiting the nested scope). kasan_populate_vmalloc() calls
-apply_to_page_range(), which will walk the set of ptes, calling
-kasan_populate_vmalloc_pte() for each one. kasan_populate_vmalloc_pte() does a
-ptep_get() then, if none, calls set_pte_at().
+Every maintainer is using its own tree, so I think it is fine if you
+use soc fsl.
+The change here is indeed under soc fsl, adding explicitly WQ_PERCPU.
 
-That's not a hazard since you're calling get before the set and you only visit
-each pte once for the apply_to_page_range() lazy mmu block.
+Many thanks!
 
-> 
->> apply_to_existing_page_range() will only call kasan_depopulate_vmalloc_pte()
->> once per pte, right? So given we read the ptep before writing it, there should
->> be no hazard? If so we can remove pause/resume.
-> 
-> Unfortunately, we rather not, please see:
-> https://lore.kernel.org/linux-mm/d407a381-099b-4ec6-a20e-aeff4f3d750f@arm.com/
+--=20
 
-Sorry but I don't see anything relavent to my point in this mail. Perhaps there
-is some s390-specific detail that I'm failing to understand?
+Marco Crivellari
 
-Thanks,
-Ryan
-
-> 
-> The problem is kasan code invokes apply_to_page_range(), which enters lazy_mmu
-> mode unconditionally. I would claim that is rather an obstacle for the kasan
-> code, not a benefit. But it needs to be tackled.
-> > Should apply_to_page_range() had an option not to enter the lazy_mmu mode
-> (e.g. an extra "bool skip_lazy" parameter) - the pause/resume could have
-> been avoided.
-> 
->> Thanks,
->> Ryan
-> 
-> Thanks!
-
+L3 Support Engineer, Technology & Product
 
