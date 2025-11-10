@@ -1,35 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-13997-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-13996-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01D4C45F75
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 11:37:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E07C45F5A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 11:37:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4mMl5JJVz2xqZ;
-	Mon, 10 Nov 2025 21:37:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d4mM75RgLz2xqZ;
+	Mon, 10 Nov 2025 21:37:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762771075;
-	cv=none; b=CWsZVZaSuZzn72LAjA2IIMwOJVg6yLA/j3/REW6snFJdwKjH4hnZibD6CQUOuRrEc0uDpNK2tlTM6x96+2pGSQ3yasK8/qN/SKk/J0HEWQbziP1adcHVPlIF+gSV7Y3jRgg6Umjcy1m1TIzh1NQL01/w1ebrIG6PCEvOkQlSCvPVJQW7/cy5XZcrLIQItQYH+W5nWWlJ9NSTeMropFXqYtUrcEHnGleF35i1MA/GgUFzrf88BNT0OUl/h6p0kC+GpXb919g/TjOcH5aaRvlwX0HvUSZRTXt5CBd+JwfUCFPJ5rxG6371V905mR0PqvqHBc/UrjvbwicRMlzzWUY14Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762771043;
+	cv=none; b=YrLdXWTaGzByiYcuZ9Ycr8SMhnttrm2bLIBdC53ge/82GfJcNVpaDOTNFmge85xz5i2ChERTDmrargX/mrq2RAR5sSuTgaIxYSlolEwDDxmWeHEicCSENn6kQb7bG1vd6slZpTeDItEwdDkQtP6FJawJXn2bxNmxAkhyhIk3jOnsAfsERDORArdBdf/72FxNSw4DdXv+9Zn7V95bXMngrZ9zkhZrFAp4ov9Ndtszh423JNM7VAD9OIX8yEWqevxfQzW+tUv9i63sCzvp/oHTRB4wOlqfOvSm5OOkiy/p/+fOktqSEn6EuBE0/seg1zILAPFRMileOWupMTlC2MHuug==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762771075; c=relaxed/relaxed;
-	bh=wwdS1VB3vgYSOM1P254K506c5LfSj/vi1RAI9w6ktio=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kIFyndLB80Sghf62qHxtwyFBBC+NKQAqCmIZcel6P+rsJDnkUApkWwHON5kbQjC0xxWJwYI4XVsisKCZLRdGtQo1lYkPVndDh+62VeuH4/Oq4cviPBniaZcLDSlebNVKBYW/nXjybS4kv9VYa/715afQFyVb7KqI+Fvhd4UhNLFjsG7Rz/Fp6MrQul4Q904GrlumMO0od7I6KO1uQtmCzRRR0BpWWCbEkAHZCKmLF2lghKLluf9Y48P+sWxpTIroQlzvjP2DTO0jVJcRNnOvC87ik0euZb+EVDlcuZws/D121htMBhWsLIOJrMH+gad1OmB7Web1VSGCwBbY1O6d8w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4mMk604Sz2xFT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 21:37:53 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CEEFE497;
-	Mon, 10 Nov 2025 02:37:12 -0800 (PST)
-Received: from [10.57.39.147] (unknown [10.57.39.147])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0E4913F66E;
-	Mon, 10 Nov 2025 02:37:12 -0800 (PST)
-Message-ID: <b21fb5b9-2e7f-4cbc-ae62-015b1317a9bd@arm.com>
-Date: Mon, 10 Nov 2025 11:36:52 +0100
+	t=1762771043; c=relaxed/relaxed;
+	bh=1WrguxH4pokigxxkQ8JIMem650725yeeLwdoGz6ziPQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PEx/DehCgodTTNn02L8sy/gwu4HtMlxNtBiYK6f/BAI0V+NhuPw130ZOP4f+JO6jOPRJzuQYb98jwmMINk78Jp6Zf5cF3XjRJD18w49bFAN12eJXCB5F7P1Fk0uOF3YEH+wv9hh4ePRnCBw9lgmvUMj26+FfEdd8qW453S8o2UORtKyhxAVIHje+7S31y+BCfmeafWOk7Cov4R3nZkyXBXmsnOEw8ZfJ0S1xg1/GDjNofvDBYHm514TZbefbrUWBsIxjdlZwR8pdg4Zpxy6F6mbUIkO50v/tdwuj6xM8Pbw9P3RxUqfujAWqYb9ekMdXbxeWW3t0SZU1pb4J/azSzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=WTAHFhLQ; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=srs0=6s+/=5s=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=WTAHFhLQ;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=srs0=6s+/=5s=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d4mM467kCz2xFT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 21:37:20 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 10DD5601A5;
+	Mon, 10 Nov 2025 10:37:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E76C4CEF5;
+	Mon, 10 Nov 2025 10:37:14 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="WTAHFhLQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1762771032;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1WrguxH4pokigxxkQ8JIMem650725yeeLwdoGz6ziPQ=;
+	b=WTAHFhLQBM9L4uVZANImYYYEpEwrJCJmpUsPeVS7opyWT3kewXLiJpB+S7cWvpyOqmRlk0
+	jOvTCsms0UYDa7uYKl2FQdhRurOUoi+bCEX1pnKZador3BykkqFb6xAp1lo4cuCgYvgUtd
+	mk8NOd2uY8oXx8TZ6HnEj3LlqXVn94g=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 190dbf96 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Mon, 10 Nov 2025 10:37:11 +0000 (UTC)
+Date: Mon, 10 Nov 2025 11:37:07 +0100
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Nick Alcock <nick.alcock@oracle.com>,
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Shuah Khan <shuah@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
+	Russell King <linux@armlinux.org.uk>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Shannon Nelson <sln@onemain.com>, linux-kernel@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-s390@vger.kernel.org
+Subject: Re: [PATCH v5 19/34] random: vDSO: only access vDSO datapage after
+ random_init()
+Message-ID: <aRHAU7bVAIyaOrpA@zx2c4.com>
+References: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de>
+ <20251106-vdso-sparc64-generic-2-v5-19-97ff2b6542f7@linutronix.de>
+ <aQ6EvdukQytvqK-u@zx2c4.com>
+ <20251110094555-353883a9-1950-4cc6-a774-bb0ef5db11c5@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -43,75 +100,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/12] x86/xen: simplify flush_lazy_mmu()
-To: Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
- <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-3-kevin.brodsky@arm.com>
- <b165098a-8164-4664-aaaf-1e8c4391d797@arm.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <b165098a-8164-4664-aaaf-1e8c4391d797@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251110094555-353883a9-1950-4cc6-a774-bb0ef5db11c5@linutronix.de>
+X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 07/11/2025 12:31, Ryan Roberts wrote:
-> On 29/10/2025 10:08, Kevin Brodsky wrote:
->> arch_flush_lazy_mmu_mode() is called when outstanding batched
->> pgtable operations must be completed immediately. There should
->> however be no need to leave and re-enter lazy MMU completely. The
->> only part of that sequence that we really need is xen_mc_flush();
->> call it directly.
->>
->> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> This looks functionally equivalent to me, so:
->
-> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
->
-> But I don't think this tidy up is strictly necessary for your series to work?
-> (perhaps I'll change my mind on that as I go through it).
+On Mon, Nov 10, 2025 at 10:04:17AM +0100, Thomas Weißschuh wrote:
+> On Sat, Nov 08, 2025 at 12:46:05AM +0100, Jason A. Donenfeld wrote:
+> > I'm not a huge fan of this change:
+> > 
+> > On Thu, Nov 06, 2025 at 11:02:12AM +0100, Thomas Weißschuh wrote:
+> > > +static DEFINE_STATIC_KEY_FALSE(random_vdso_is_ready);
+> > >  
+> > >  /* Control how we warn userspace. */
+> > >  static struct ratelimit_state urandom_warning =
+> > > @@ -252,6 +253,9 @@ static void random_vdso_update_generation(unsigned long next_gen)
+> > >  	if (!IS_ENABLED(CONFIG_VDSO_GETRANDOM))
+> > >  		return;
+> > >  
+> > > +	if (!static_branch_likely(&random_vdso_is_ready))
+> > > +		return;
+> > > +
+> > >  	/* base_crng.generation's invalid value is ULONG_MAX, while
+> > >  	 * vdso_k_rng_data->generation's invalid value is 0, so add one to the
+> > >  	 * former to arrive at the latter. Use smp_store_release so that this
+> > > @@ -274,6 +278,9 @@ static void random_vdso_set_ready(void)
+> > >  	if (!IS_ENABLED(CONFIG_VDSO_GETRANDOM))
+> > >  		return;
+> > >  
+> > > +	if (!static_branch_likely(&random_vdso_is_ready))
+> > > +		return;
+> > > +
+> > >  	WRITE_ONCE(vdso_k_rng_data->is_ready, true);
+> > >  }
+> > >  
+> > > @@ -925,6 +932,9 @@ void __init random_init(void)
+> > >  	_mix_pool_bytes(&entropy, sizeof(entropy));
+> > >  	add_latent_entropy();
+> > >  
+> > > +	if (IS_ENABLED(CONFIG_VDSO_GETRANDOM))
+> > > +		static_branch_enable(&random_vdso_is_ready);
+> > > +
+> > >  	/*
+> > >  	 * If we were initialized by the cpu or bootloader before jump labels
+> > >  	 * or workqueues are initialized, then we should enable the static
+> > > @@ -934,8 +944,10 @@ void __init random_init(void)
+> > >  		crng_set_ready(NULL);
+> > >  
+> > >  	/* Reseed if already seeded by earlier phases. */
+> > > -	if (crng_ready())
+> > > +	if (crng_ready()) {
+> > >  		crng_reseed(NULL);
+> > > +		random_vdso_set_ready();
+> > > +	}
+> > 
+> > The fact that the vdso datapage is set up by the time random_init() is
+> > called seems incredibly contingent on init details. Why not, instead,
+> > make this a necessary part of the structure of vdso setup code, which
+> > can actually know about what happens when?
+> 
+> The whole early init is "carefully" ordered in any case. I would have been
+> happy to allocate the data pages before the random initialization, but the
+> allocator is not yet usable by then.
+> We could also make the ordering more visible by having the vDSO datastore call
+> into a dedicated function to allow the random core to touch the data pages:
+> random_vdso_enable_datapages().
+> 
+> > For example, one clean way of
+> > doing that would be to make vdso_k_rng_data always valid by having it
+> > initially point to __initdata memory, and then when it's time to
+> > initialize the real datapage, memcpy() the __initdata memory to the new
+> > specially allocated memory. Then we don't need the complex state
+> > tracking that this commit and the prior one introduce.
+> 
+> Wouldn't that require synchronization between the update path and the memcpy()
+> path? Also if the pointer is going to change at some point we'll probably need
+> to use READ_ONCE()/WRITE_ONCE(). In general I would be happy about a cleaner
+> solution for this but didn't find a great one.
 
-I initially thought it might be, but in the end I think you're right -
-it should still work fine without this patch.
+This is still before userspace has started, and interrupts are disabled,
+so I don't think so? Also, you only care about being after
+mm_core_init(), right? So move your thing before sched_init() and then
+you'll really have nothing to worry about.
 
-Still, I'd rather avoid unnecessary calls to arch_enter() and
-arch_leave() as it makes it harder to reason about what is called where.
-Namely, keeping them here means that a nested call to
-lazy_mmu_mode_disable() would cause arch_leave() then arch_enter() to be
-called - rather unexpected.
+But I think globally I agree with Andy/Arnd -- this is kind of ugly and
+not worth it. Disable vDSO for these old CPUs with cache aliasing
+issues.
 
-The only calls to arch_enter() and arch_leave() that are left after this
-series are the ones in <linux/pgtable.h> and the Xen context-switching
-logic (the one case where calling arch hooks directly is justified, see
-discussion on v3 [1]).
-
-- Kevin
-
-[1]
-https://lore.kernel.org/all/390e41ae-4b66-40c1-935f-7a1794ba0b71@arm.com/
+Jason
 
