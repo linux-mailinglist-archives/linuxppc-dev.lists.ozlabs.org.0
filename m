@@ -1,35 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-13998-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14000-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B232C45F87
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 11:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BED2CC4606D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 11:45:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4mNH0GDBz2ynC;
-	Mon, 10 Nov 2025 21:38:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d4mXl3vNmz2xqv;
+	Mon, 10 Nov 2025 21:45:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762771102;
-	cv=none; b=fzy0V3rLVG/QPi74bLweZ5nKDldjg/B5j1R9OBSiUIKwFQFALNwVTQgvuCP85E829uPD1JEc7HGWOWRinTF6WRgJOQNbZr+PYqNiDmJ+A3YAmOQPfBjkJkwYVYL/opFDmh9W03j+EmLemHCX7ifCk89VpC3oK/aHnzM4zN8eYqkL/3qsbqI+8pSjLup6J2CfkqSnVCFmg19QltziuBB+ti/hUYD/AzgtGZvk2QkDpgyuS2Te3fCzNix4DOVxi62JlR55dIKqGNMN37EnZk19qak9nGQ38GhnnwhFbKJMh7oD2T1UqTSYuy1J9BCE0vvMNFMIXWGTvJftBiyZ7Xvj9A==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762771543;
+	cv=none; b=hN2ODMbUPMmn/erEd/0sUjVs5rLKtDfOKdpz97zHrwd44K6SETdAgJXo/RBJ+CdTl1syo54ApzFfaiL0CFquM3XsunqmnQRkX7AbJJ43S5QGVLSiuJWa6ApgTPmJK9lIzwhYgbF/YW+g2Me8Eah3Rd5aeI8N1eMCTlDLiYbpZuMuuuY3iWL7uC2zatzEhUlAEpq5+RjgNlHWkWp67Ti2qOnngSWyyaqsszWEHh9Hl+qtEzxwTRzVpscAjeYuUA9lZox1CFIcJPnu5WK7wvAETYNXdWVbUPmHfF9WKWWT6ZbdE3nCPTbY5BIq1jV/oTRv4IGAz4ULFhbmyapDwRq2Ng==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762771102; c=relaxed/relaxed;
-	bh=hPCgPoE70BetgCqXoAumCGOuKiFkJIVELItuY0uabRE=;
+	t=1762771543; c=relaxed/relaxed;
+	bh=KSjXvKwlFd2+q4RbPzcQXr22CHbUvlx0Q6gRToGfNoM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z6EmggGDnX+it7/FmvHqEzyYQiJePvYt+copeTMTa5Ecgu/RYuo21F4srqnwjdwtqka16skMcjjG0PHdUkFu/FpLWr7+z3SZ7/z27L1HT8Ruj2n52LS+BALXnK47pqsXFWAkdOiC9DLTLC5ppvPhc0Kwm+mgKw9g3lExQiZRMBL9UISeAl3Cif23A88dsssuoOCdq1dFI6eL4b6Z4/SOOl2qKR8UKqhJP1BmNH8hDlkKaCIdyG8KC5d7K2u9M5yj0+0KVgtEWRVhnqhEp48ZS6mXqMSJhDAsX2K6DKLSfnXv7BYHPdk8y2qD/86l/yw0c/ZmA0cJhO0iao3aaB6OMw==
+	 In-Reply-To:Content-Type; b=jGAhumjGx/pBVZy6PfG2hiawnrvo/aW0wTx6hpbiM6h1GJHDMfj8LiPVBA2Vcf2BjVX/NwOaHw6S2LPWFQ5/DfgbEtpFAz9eRCkIvvbBkZPSbBGEJH/iaPN5m3FLRrKFQz+T0HB1/dRN7nwJvEcAO8EwUcZ04+5rzdJg9iMyJDSKguPbEEnj6+R7qUckC2oQG4cfMMYyIbrlccDIEU+1BewEBsYjP1mmAk2oWbj4WiXFtzoJLnxWODVmJRoTzjZGnQ+t2Sm7VhxvlwlUOUx+xnWN8ubll8Iys8z5URrGMJCHCaGJAyTq6YqQpE+647yNksC9ECMlp5e9FootX1sbdw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4mNG2xVlz2xql
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 21:38:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d4mXk3f9Vz2xFT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 21:45:42 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B4A3CFEC;
-	Mon, 10 Nov 2025 02:37:43 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3DC26497;
+	Mon, 10 Nov 2025 02:45:03 -0800 (PST)
 Received: from [10.57.39.147] (unknown [10.57.39.147])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0EB953F66E;
-	Mon, 10 Nov 2025 02:37:43 -0800 (PST)
-Message-ID: <0d00dd6e-9e39-4ac6-8ea4-9407e75947eb@arm.com>
-Date: Mon, 10 Nov 2025 11:37:41 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78B2F3F66E;
+	Mon, 10 Nov 2025 02:45:03 -0800 (PST)
+Message-ID: <b44825dd-aef9-4d3e-91fd-a44122264c23@arm.com>
+Date: Mon, 10 Nov 2025 11:45:00 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/12] mm: introduce CONFIG_ARCH_HAS_LAZY_MMU_MODE
+Subject: Re: [PATCH v4 06/12] mm: introduce generic lazy_mmu helpers
 To: Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -69,33 +69,134 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
  xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-6-kevin.brodsky@arm.com>
- <6a9c846f-22b6-4d5f-81dc-6cdcd4905952@arm.com>
+ <20251029100909.3381140-7-kevin.brodsky@arm.com>
+ <71418b31-aedb-4600-9558-842515dd6c44@arm.com>
 Content-Language: en-GB
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <6a9c846f-22b6-4d5f-81dc-6cdcd4905952@arm.com>
+In-Reply-To: <71418b31-aedb-4600-9558-842515dd6c44@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 07/11/2025 13:56, Ryan Roberts wrote:
->> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
->> index 6663ffd23f25..e6bf5c7311b5 100644
->> --- a/arch/arm64/Kconfig
->> +++ b/arch/arm64/Kconfig
->> @@ -122,6 +122,7 @@ config ARM64
->>  	select ARCH_WANTS_NO_INSTR
->>  	select ARCH_WANTS_THP_SWAP if ARM64_4K_PAGES
->>  	select ARCH_HAS_UBSAN
->> +	select ARCH_HAS_LAZY_MMU_MODE
-> nit: This list is mostly in alphabetical order. Further up the list there are a
-> lot of ARCH_HAS_* entries. Perhaps move it to the correct position in that lot?
-> Then ARCH_HAS_UBSAN stays out of order on its own.
+On 07/11/2025 14:26, Ryan Roberts wrote:
+> On 29/10/2025 10:09, Kevin Brodsky wrote:
+>> [...]
+>>
+>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>> index b8d37eb037fc..d9c8e94f140f 100644
+>> --- a/arch/arm64/mm/mmu.c
+>> +++ b/arch/arm64/mm/mmu.c
+>> @@ -731,7 +731,7 @@ int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
+>>  		return -EINVAL;
+>>  
+>>  	mutex_lock(&pgtable_split_lock);
+>> -	arch_enter_lazy_mmu_mode();
+>> +	lazy_mmu_mode_enable();
+>>  
+>>  	/*
+>>  	 * The split_kernel_leaf_mapping_locked() may sleep, it is not a
+> This is a bit unfortunate, IMHO. The rest of this comment explains that although
+> you're not supposed to sleep inside lazy mmu mode, it's fine for arm64's
+> implementation. But we are no longer calling arm64's implementation; we are
+> calling a generic function, which does who knows what.
+>
+> I think it all still works, but we are no longer containing our assumptions in
+> arm64 code. We are relying on implementation details of generic code.
 
-That's fair, it does look like it's mostly in order apart from
-ARCH_HAS_UBSAN. Will move it further up.
+I see your point. The change itself is still correct (and required
+considering patch 8), but maybe the documentation of the generic
+interface should be clarified to guarantee that the generic layer can
+itself cope with sleeping - without any guarantee regarding the
+behaviour of arch_*_lazy_mmu_mode.
 
-- Kevin
+>> [...]
+>>
+>> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+>> index e33df3da6980..14fd672bc9b2 100644
+>> --- a/arch/x86/include/asm/pgtable.h
+>> +++ b/arch/x86/include/asm/pgtable.h
+>> @@ -117,7 +117,8 @@ extern pmdval_t early_pmd_flags;
+>>  #define pte_val(x)	native_pte_val(x)
+>>  #define __pte(x)	native_make_pte(x)
+>>  
+>> -#define arch_end_context_switch(prev)	do {} while(0)
+>> +#define arch_end_context_switch(prev)	do {} while (0)
+>> +#define arch_flush_lazy_mmu_mode()	do {} while (0)
+> Andrew converted over the default version of this (which you have removed with
+> this commit) to be static inline instead of the do/while guff. Perhaps you
+> should try to preserve that improvement here?
+>
+> See Commit d02ac836e4d6 ("include/linux/pgtable.h: convert
+> arch_enter_lazy_mmu_mode() and friends to static inlines")
+
+Good point, I suppose I could also convert arch_end_context_switch()
+while at it.
+
+>>  #endif	/* CONFIG_PARAVIRT_XXL */
+>>  
+>>  static inline pmd_t pmd_set_flags(pmd_t pmd, pmdval_t set)
+>> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+>> index fc35a0543f01..d16ba1d32169 100644
+>> --- a/fs/proc/task_mmu.c
+>> +++ b/fs/proc/task_mmu.c
+>> @@ -2703,7 +2703,7 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsigned long start,
+>>  		return 0;
+>>  	}
+>>  
+>> -	arch_enter_lazy_mmu_mode();
+>> +	lazy_mmu_mode_enable();
+>>  
+>>  	if ((p->arg.flags & PM_SCAN_WP_MATCHING) && !p->vec_out) {
+>>  		/* Fast path for performing exclusive WP */
+>> @@ -2773,7 +2773,7 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsigned long start,
+>>  	if (flush_end)
+>>  		flush_tlb_range(vma, start, addr);
+>>  
+>> -	arch_leave_lazy_mmu_mode();
+>> +	lazy_mmu_mode_disable();
+>>  	pte_unmap_unlock(start_pte, ptl);
+>>  
+>>  	cond_resched();
+>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>> index 9894366e768b..b5fdf32c437f 100644
+>> --- a/include/linux/pgtable.h
+>> +++ b/include/linux/pgtable.h
+>> @@ -231,10 +231,31 @@ static inline int pmd_dirty(pmd_t pmd)
+>>   * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
+>>   * and the mode cannot be used in interrupt context.
+>>   */
+>> -#ifndef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>> -static inline void arch_enter_lazy_mmu_mode(void) {}
+>> -static inline void arch_leave_lazy_mmu_mode(void) {}
+>> -static inline void arch_flush_lazy_mmu_mode(void) {}
+>> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>> +static inline void lazy_mmu_mode_enable(void)
+>> +{
+>> +	arch_enter_lazy_mmu_mode();
+>> +}
+>> +
+>> +static inline void lazy_mmu_mode_disable(void)
+>> +{
+>> +	arch_leave_lazy_mmu_mode();
+>> +}
+>> +
+>> +static inline void lazy_mmu_mode_pause(void)
+>> +{
+>> +	arch_leave_lazy_mmu_mode();
+>> +}
+>> +
+>> +static inline void lazy_mmu_mode_resume(void)
+>> +{
+>> +	arch_enter_lazy_mmu_mode();
+>> +}
+> It would be good to add documentation blocks for each of these.
+
+I considered it, but then realised that these functions are much better
+explained together (see comment added above in patch 7). Maybe a short
+description for each that refers to the big comment above? That wouldn't
+work well for the generated kernel-doc though...
+
+- Kevin 
 
