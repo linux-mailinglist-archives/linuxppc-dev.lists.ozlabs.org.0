@@ -1,35 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-14009-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14010-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37F7C46D59
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 14:19:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA529C46ECD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 14:34:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4qxj54Ccz2xqZ;
-	Tue, 11 Nov 2025 00:19:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d4rJ05ZbRz2xqZ;
+	Tue, 11 Nov 2025 00:34:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762780745;
-	cv=none; b=AtAnNS31scZ0234URAqXsDrF2UquSi4F/aORYbUgq3SqvLWv3UByPAMnCuV0itjtQzMi1wzKQzVQWqblfRuDiRQXwg2+PIhAiviALvrEzgoDHyUa1U0KNBj+aGVTvAAh/IsI4Bj+tuUwggww5KxEdspoRE84AOzVwflUvN4p8mLtsrVUynawyGh3pB5dmnPZDGxnV4dVcdlrO5WGd7nNMWuBqnCqyW85/M/+P4XOyRGdPOvx1l4JtO9fIcU08qE68DedQZdkZYUzBzmBgJd56ElmS0xO2ZBJA4mD0OTcC04dkNI3UJAK7fo6OJuw0YlDv3LynQD+dWSRvOWHB1ECjA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762781696;
+	cv=none; b=IeypCvZT8/3CVhlKC7M5jtIzxQgXJRWXbj/dD+17MkiVqKYAlq5E5f178OyPxK82UhLy/W8XTCtDIGKXie9g26V+XjHOEPoC2YqxWSDdYyzpS3ExewUxu20GI5EuQd13MAn0TvKXKyPeqFTpaoJvfnwEYtOwKwNI99eCyJvmkSMs5mIdpboI4mU4dshnl96U2Zt9w+Ny7cDKcg8r0rsiRRpIdTFRAAHFl/zlst01F7jvrDNzpnISdfv+pd5sEmyzfCQO8Yvb7gh5fNbbODcdfP446m+5CGWLBBDEqUAFLlkLIz7U+CP6K5lv/8F8/TXA7fVhTOqtFmRWFCP6t13cbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762780745; c=relaxed/relaxed;
-	bh=e61PmBuBpKPW0kEFbYkXrje4f08ptI1Bgty+XwFb8EM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XOCydyY5xM1MnVsW2m3vED6OvAZpmu8Nb6q5U1vjTu5QHJWpoXNNnhWUZ+2V2vY5iMI+mvSTBK8I8bEiMDdxFs9xoXXvwDJidO1yLQv3tEc/hc/5sxK0YSfLh73Js8wpYlwl2P9E6e5Q3ji6J2SqNLGC2xwdBTe63KYkoFL32oWLMaBQpnfpZvXlZm/1WNqlnvFFGzEGY6cQ9k6h9Kef3W3DVUBGsXylGI25AzET7TzTSlmR9ahQoXDWljLhsGqOAbzQWVXXKcluZxccXDmcixFE7OA0ikyIVamYrXLFA0/6S4i6I8ngN9rjeP+GVy/scLCfi/d34eQ3mJ170iXz0Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4qxh564gz2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 00:19:02 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E7B25497;
-	Mon, 10 Nov 2025 05:18:22 -0800 (PST)
-Received: from [10.57.39.147] (unknown [10.57.39.147])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D493F3F63F;
-	Mon, 10 Nov 2025 05:18:22 -0800 (PST)
-Message-ID: <d0ce35ad-bfcd-496b-996d-17e59a1d5a73@arm.com>
-Date: Mon, 10 Nov 2025 14:18:20 +0100
+	t=1762781696; c=relaxed/relaxed;
+	bh=shC1Nztt1uP9RkUsjuMyV1/zqopJXCF8SQBqEZp6MqY=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=RmTMGUjQJ4C9kUpADJX5qUSLKemW0Lq6nmDLOHptoT8/04zqEQfDM2AuFVjD8PUwFiETGGKw+Xn9CccEL7YRwOHlVWEkU50Spud7zF6TpxOV0YdjAZATcixsUQLXdunwJOSnPrPA4qjFWo3jL7H8AgJ3LFSXqMM88dTmfoEeh9R+9KuHubKYJZA3+ksP8QTeI65LaIZzYoAFz3YB2NURZHM4GQ/m5wvZTQjnv+IDHb1lRde6Wz9vxfc1dyNDkJzWv5gjTiZ37krkS1Jaz3aMzOFzUI+wcdJ+NlrlIaL/5O3TlEa1acCmquJovPwZh8bpy9lbS+vGt8hpWQ4nvmyJLA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Gde5P61S; dkim-atps=neutral; spf=pass (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Gde5P61S;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d4rHx6HWRz2xC3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 00:34:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762781694; x=1794317694;
+  h=date:from:to:cc:subject:message-id;
+  bh=dFMVwLA+GNo5nONQrHMph/WOiR/PUlH/z6BxNBqdCvs=;
+  b=Gde5P61SDts31AbZNfRwLEsf+bGqmKVWyEYnYjnkRWT0REnr6GqRNKRc
+   AiKkHv+KyxreKUUFwbNpkFf6fBH0Q/Cu7TDNbyMXxrAdOh9BqwOnZtdtM
+   O1e+SbFHBqvVspzc9UNYuq9sMuQmnznixqZ6HG36zkOB0PlV2MuGsUOmz
+   omPtRjj5qLeqb3aYYTrLrmPUgkVFlQuiX5iHaG5j4oTVJStte2tijk+VQ
+   Qd3mef8HBu/5dqBcsxIsM5GsuQ8HCidbNNlzhvjlPk7yyFVruoKfw2d/7
+   x3OAvg1ykSZ/fzrVu41b8CbsyAapKuAv24pzbeWJ7609AvsTzgyKEy3ZU
+   g==;
+X-CSE-ConnectionGUID: OsXxo3dhQzCSkBrbmBFV4Q==
+X-CSE-MsgGUID: WtGK6GS0Tp2/Bf64RzNdAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="64037153"
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
+   d="scan'208";a="64037153"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 05:34:49 -0800
+X-CSE-ConnectionGUID: q37GyQLoT32xALWNKkNIbg==
+X-CSE-MsgGUID: iNqESZ5YQG2GHbMbhyJmqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
+   d="scan'208";a="219331617"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 10 Nov 2025 05:34:48 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vIS2f-0000TJ-1y;
+	Mon, 10 Nov 2025 13:34:45 +0000
+Date: Mon, 10 Nov 2025 21:33:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:merge] BUILD SUCCESS
+ e651f06871db048f84f90710508e2fe671c23f5f
+Message-ID: <202511102154.Uzl42whC-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -42,90 +80,81 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/12] powerpc/64s: Do not re-activate batched TLB
- flush
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-2-kevin.brodsky@arm.com>
- <87qzud42n1.ritesh.list@gmail.com>
- <b3e4a92f-5b51-4eee-bfb8-c454add0f0d2@arm.com>
- <87cy5t4b0a.ritesh.list@gmail.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <87cy5t4b0a.ritesh.list@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 08/11/2025 00:35, Ritesh Harjani (IBM) wrote:
-> Kevin Brodsky <kevin.brodsky@arm.com> writes:
->
->> [...]
->>
->>> With this analysis - the patch looks good to me. I will give this entire
->>> patch series a try on Power HW with Hash mmu too (which uses lazy mmu and
->>> let you know the results of that)!
->> That'd be very appreciated, thanks a lot!
->>
-> I did give this patch series a run on Power10 with Hash MMU. I ran the
-> following stress-ng tests and didn't observe any issues (kernel warnings) so far.
->
-> stress-ng --all 0 -t 60s --perf -v --verify \
-> --tlb-shootdown 0 \
-> --fault 0 \
-> --userfaultfd 0 \
-> --fork 0 \
-> --exec 0 \
-> --memfd 0 \
-> --numa 0 \
-> --pkey 0 \
-> --remap 0 \
-> --vm 0 \
-> --rmap 0 \
-> -x swap,pagemove
-> (Note not all options shown here will work with --verify)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: e651f06871db048f84f90710508e2fe671c23f5f  powerpc/ci: Add ppce500 machine to kernel+qemu workflows
 
-That's great, many thanks!
+elapsed time: 2901m
 
-> Let me know what else I can run for validation?
-> Do you know of any specific tests for validation of lazy mmu feature?
+configs tested: 60
+configs skipped: 1
 
-I don't think there is - lazy MMU is not supposed to have any observable
-effect, all we can do is exercise the paths that use it and check that
-nothing explodes.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-That said it wouldn't hurt to run the mm kselftests:
+tested configs:
+alpha                   allnoconfig    gcc-15.1.0
+alpha                  allyesconfig    gcc-15.1.0
+arc                     allnoconfig    gcc-15.1.0
+arc         randconfig-001-20251109    gcc-12.5.0
+arc         randconfig-002-20251109    gcc-8.5.0
+arm                     allnoconfig    clang-22
+arm         randconfig-001-20251109    clang-16
+arm         randconfig-002-20251109    clang-22
+arm         randconfig-003-20251109    clang-22
+arm         randconfig-004-20251109    gcc-8.5.0
+arm64                   allnoconfig    gcc-15.1.0
+csky                    allnoconfig    gcc-15.1.0
+hexagon                allmodconfig    clang-17
+hexagon                 allnoconfig    clang-22
+hexagon                allyesconfig    clang-22
+hexagon     randconfig-001-20251108    clang-22
+hexagon     randconfig-002-20251108    clang-22
+i386                    allnoconfig    gcc-14
+loongarch              allmodconfig    clang-19
+loongarch               allnoconfig    clang-22
+loongarch   randconfig-001-20251108    gcc-12.5.0
+loongarch   randconfig-002-20251108    gcc-12.5.0
+m68k                   allmodconfig    gcc-15.1.0
+m68k                    allnoconfig    gcc-15.1.0
+m68k                   allyesconfig    gcc-15.1.0
+microblaze             allmodconfig    gcc-15.1.0
+microblaze              allnoconfig    gcc-15.1.0
+microblaze             allyesconfig    gcc-15.1.0
+mips                    allnoconfig    gcc-15.1.0
+nios2                   allnoconfig    gcc-11.5.0
+nios2       randconfig-001-20251108    gcc-8.5.0
+nios2       randconfig-002-20251108    gcc-9.5.0
+openrisc                allnoconfig    gcc-15.1.0
+parisc                  allnoconfig    gcc-15.1.0
+parisc      randconfig-001-20251109    gcc-9.5.0
+parisc      randconfig-002-20251109    gcc-13.4.0
+powerpc                 allnoconfig    gcc-15.1.0
+powerpc     randconfig-001-20251109    clang-22
+powerpc     randconfig-002-20251109    clang-22
+powerpc64   randconfig-001-20251109    gcc-8.5.0
+powerpc64   randconfig-002-20251109    gcc-8.5.0
+riscv                   allnoconfig    gcc-15.1.0
+riscv       randconfig-001-20251108    clang-19
+riscv       randconfig-002-20251108    gcc-12.5.0
+s390                    allnoconfig    clang-22
+s390        randconfig-001-20251108    clang-22
+sh                      allnoconfig    gcc-15.1.0
+sparc                   allnoconfig    gcc-15.1.0
+um                     allmodconfig    clang-19
+um                      allnoconfig    clang-22
+um                     allyesconfig    gcc-14
+x86_64                  allnoconfig    clang-20
+x86_64                        kexec    clang-20
+x86_64                     rhel-9.4    clang-20
+x86_64                 rhel-9.4-bpf    gcc-14
+x86_64                rhel-9.4-func    clang-20
+x86_64          rhel-9.4-kselftests    clang-20
+x86_64               rhel-9.4-kunit    gcc-14
+x86_64                 rhel-9.4-ltp    gcc-14
+xtensa                  allnoconfig    gcc-15.1.0
 
-    make -C tools/testing/selftests/ TARGETS=mm
-
-Thanks!
-
-- Kevin
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
