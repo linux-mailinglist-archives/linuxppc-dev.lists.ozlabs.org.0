@@ -1,93 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-14012-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14011-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05293C47CB3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 17:10:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D5DC479AA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 16:43:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d4vkx5lxhz2xqj;
-	Tue, 11 Nov 2025 03:10:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d4v853BqTz2xqj;
+	Tue, 11 Nov 2025 02:43:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762778139;
-	cv=none; b=Kk6CNml3XiRGxqbgb0WRcbebG4gQ7HKvndiPiPWFseVx8QM4qlHi7xtBHRIRzhfAqF0zwOgZSVZDwqAqrfeZpwd7k17mejjpIcjKCOEt/2jNaBlYwkayBF09HUoMviUWTjrc8o6ludaLADJfl0rVIcMxoS/pdjPmDmbRbDSD6A2mFzr0a6yh83UFrq638OGAFNppZfOpuyPwhJevpne1fZjoYNYmDHNw/73XQqITovgUYmwkXQiOjAQ68Mlju+rIMx2BlJ3l7XdRNa4h+BVYsHh4yyjDInRRy3jZoJVLLzhROkXaxFvrDL5eLcaNANbdsJ7MybUwpfofi9rD5bhaBA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762789397;
+	cv=none; b=MtwrQWjP9Xgio80XsTNniBml++59pbCKzFr+TI+Ii802e9n8zc3qQvCUjHj9pyIl0VxUlrPHrvb//CrtEP4lPU2q/WGf1uZTaW8BU+TY9HX5dKBjP1t52mKXK7t25wCJVfC+3TlbaQO4OTXMktQ48guYESMwNnjIIhATwYA763d1qJAhSjyVuAiK2qyXcaovmbRwsM7kEakKbdL0ecoz/j/3yL0vB+xX0uZyh6qFN1LDAQX+fLbLD5R3p5iZL+NGLficGFjRxoEautat3t5jVXK4fSwl+hfka1apUv2s3hepXwD3T7npVjI7zOY238qeCSyFKB93vgJtJQp44I8jlw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762778139; c=relaxed/relaxed;
-	bh=a9yuBGJK7ItWgGt5SCLQHjsgMyP28LPonF6RXSUDMaw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AgY8BRFtIgEPx8MSB+MLtffuJz+8ktKKowAEmhO62cnaq6DgPtqkinjqMQCLGu8f/CeS3sFS/QYy2N/tGQJIZv4SCOYwXk41kOxU3740+CWOTKHXGGTW581oRMR8Vs2qLwqLGZcV5dD9Pj18Xxl5C1B9uJmdqwznKRcPzO4LHjPSi/rbnsKAV8fv/BRz4mJS4sjC9WYneE1oIrAr9uLDZdteQTqOTRDgCjs9Txn5wpGw93BVnVSwy5GZWrKRXz9gq6rPngNt6tzkpGzfHXz2GY3pYeN0aRxOMw0++hCc9bKNQggipICfhj9XHRH88HUrCa5/SIisilIPL5q1pQsBtg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YFQ+69No; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52c; helo=mail-ed1-x52c.google.com; envelope-from=fuchsfl@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1762789397; c=relaxed/relaxed;
+	bh=87FfliXTeIYU4Ti4q0mlK1AlR2N3oXTPIRkcYWMY8TY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=IrpLp7vzDam16ZoTE7X8gq2xJMKsapErAKPFQO9xqN/0DghFIQXTEyaZD7n43yuU545mfwkt1x9iJJaeDr/LFoKqka21J32u3o0f59ld08NDzNtDIW1HIQDyM53IbyFh1+U1KjM0BpvTNW6uPdn9ej/AC6/1UAWsrf0kzY0N4crWofExNcuUSM5JiQNoySS7ogTnUJl1JyAOj5EVB+f3TBMllOdceyha9gu0accfO453XAsBDfMv4GhnU37kdmkMj21O6LZvYd/bj8zJu4hwwvWbobVGsrfOyPUnWU13nU7PkK5+yG1Dmi1pxisbQ3vw8IA7nxrYAMLGoiMYIhVNdg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=so2de+zN; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3eagsaqykdlcpbxkgzdlldib.zljifkrummz-absifpqp.lwixyp.lod@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YFQ+69No;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=so2de+zN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52c; helo=mail-ed1-x52c.google.com; envelope-from=fuchsfl@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3eagsaqykdlcpbxkgzdlldib.zljifkrummz-absifpqp.lwixyp.lod@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d4pzY6bpkz2xFT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 23:35:37 +1100 (AEDT)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-6407e617ad4so5055284a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 04:35:36 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d4v835sK6z2xqZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 02:43:14 +1100 (AEDT)
+Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-33da21394adso3372633a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Nov 2025 07:43:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762778128; x=1763382928; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=a9yuBGJK7ItWgGt5SCLQHjsgMyP28LPonF6RXSUDMaw=;
-        b=YFQ+69No6lemmNIZ5EYfVfMGnq3fW2C2imb7AeKFcph3bNpHVuEvmTPQeobztsvTfH
-         WSkGSs0QiVJCgqSMA8X71bzXKOgkEbDgLK/GYBqW9i9W0abJizhm5rCZ8/RXMemh+lWB
-         UGPcef8irPTgDdYIO8jZNau+4yXgs/WnSmtq0ZGAKvy/EC/4cluGgOUoS3APWdGgw3uT
-         mWPwzqFZCmxTH64r7UWBvGNNqau/BOAtE4yXftq3KJUtsgkyORbH+6V28SzlZXvYA/Ok
-         d+4VEXo5vgGOyDsIJKkvn2D8ftUHnuzuaqwTwey2zecwhMPT6KP3qWFBF35OiWeK/3Cs
-         jmUg==
+        d=google.com; s=20230601; t=1762789392; x=1763394192; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=87FfliXTeIYU4Ti4q0mlK1AlR2N3oXTPIRkcYWMY8TY=;
+        b=so2de+zNZ3RhnSmfYYIThYJ6NmuNnuLNxYoIYT0PdK0Iqwvt+Z2DlYin05nF6qfySZ
+         JSwBY25vQuj2B3JP/XTPh0J8DlnZX8R6okscpmuKcZ/BpXj1gfwdC7yAbN9zDGXogVIr
+         mVBzJhHetN2QcaTeVGOEhSUeh2q9tjyurOYo/1yCoDTqBn2Ruu6sEp98ux4LRCjZo5DV
+         73xohYPQGKAoTF6angOuZlM5q3jyn36M/aA8df6VGijKeMZRS4AGM/wjV5YFg12JTHYY
+         D/LclsLw49TCqDrL0mj3ViCnIwxqNsIV8kGeuf/4r0CeuTiAWGF/4YdlmJhSQyMsTTE4
+         aehA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762778128; x=1763382928;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a9yuBGJK7ItWgGt5SCLQHjsgMyP28LPonF6RXSUDMaw=;
-        b=MVSUoVn7IfK0MdIw7xXVRIdZg9hpvtiPlB6RxeHVfgq23kiB52rBgdHab845KUqLXh
-         VJWj/ZTsuLLhtyW+iqShIeWnnX2SigQtYYKcUIzBNkCXijF21jpqgcdY8PbZSDTFR/K3
-         CHEDgOg+BHQAcgz2VhGY0OLrbL1QCO5QUV+pe9PTH9sjEWRUsY6ccl74RQ6raKSPrl+Q
-         0Ve9I0OY6+NA1TqNWxAZyNaBQqh6UmVTy3qalmDJMqMs4Ls9k5E+2BzITl5s8z6FKhlD
-         DWhShCS9X4bLECxM8Ot0iWVyVPZZkUlo0yba/Ouz8w3U/GGTaNqvim68PDcrymEh+3Rc
-         Xcsw==
-X-Forwarded-Encrypted: i=1; AJvYcCWbvpd7M3P4LinoUVerf0lT3BcWHFgbtu+SfzjV1jLJVztu8aGEZO4hdPoEz+ULhlH4iimCRRwpQpt7xnM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YybSQ/Bes3kJI7pU+ngCkgI8MUtJtV6c+09UfMocVhgkSEyGbSK
-	sH+79zjGphX5+808Xo13WFeGQgM3Gq9saxIHkcj66dD/bgS8b6k1IXY=
-X-Gm-Gg: ASbGncut37WwYYjMPVP/Ryw7HE5l87J8os3sgMjXnjG9JFJ4+EjY0QeTvgmLTstHm8F
-	tS63LLiXLq0R7xDRqee+DMWbVFyxH87TMbrKKn1xUD1DAf379arPd5r3yIjDCNdP4rSpiW4bMqQ
-	jCpZ3ZMfnbDuWdIMUfbF8blZj6nhLFY78cz1unWQ3e9OnPrYjdPZk3iLAmtmyN+jVEJIhG8O10R
-	2PSpMWFkCsG9MA7qva94X8eNVNClyAV9C5c4PGXEAie/uYdZ8LwEkCAnM/jwLTYMD0ylsNyDhzO
-	vstUYkbbv0+XO0Wa9CwHugEvrPNBytsDxX5YavAr5T50WsXcCyFb2TxjxuHQpvrXNPsogkkFXmd
-	+AEwnrl9+HAbjYNbnyPGfBVqHYrPsJKoLCTkR/ajpmZJ5x9gS66pe08m2xNx7rKNKzn8jAbUGFB
-	Lhmd9VnMOLxRPR4psclFKhN3vM/VfmpVIa050sSpl5dlmbCi9UQvOrPZTzVA==
-X-Google-Smtp-Source: AGHT+IEpiarrykSHgarbY66mp2ewInXdQS9oj/GI/fOZRk6M3rULM73l5HZ28Hq1eYhWA54E7K5p2A==
-X-Received: by 2002:aa7:cfc3:0:b0:641:997e:d53a with SMTP id 4fb4d7f45d1cf-641997edc9bmr1574561a12.2.1762778128212;
-        Mon, 10 Nov 2025 04:35:28 -0800 (PST)
-Received: from localhost ([2a02:810d:4a94:b300:bca7:1050:d604:3b82])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-6411f86e0cesm11390383a12.33.2025.11.10.04.35.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Nov 2025 04:35:27 -0800 (PST)
-From: Florian Fuchs <fuchsfl@gmail.com>
-To: Geoff Levand <geoff@infradead.org>,
-	netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	fuchsfl@gmail.com
-Subject: [PATCH net] net: ps3_gelic_net: handle skb allocation failures
-Date: Mon, 10 Nov 2025 12:45:23 +0100
-Message-ID: <20251110114523.3099559-1-fuchsfl@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1762789392; x=1763394192;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=87FfliXTeIYU4Ti4q0mlK1AlR2N3oXTPIRkcYWMY8TY=;
+        b=gBxOjTUvId52fvsguHVJfOrkkWIfSaReuseESgtIYVYT/2v8+QUhKrRkXFavPxoS0v
+         ZBT6JR8ueKX0FjJm8+q1DLiwE6zjQYxfy2RCtr+092/LMAwc/wb9boQ+SCeR5t7KsRMO
+         NQR4uOIfP3u7kijqU64MayNeltNyM06871F8+fUKgcFw4GWMfzOhpBCqlfGOD7HxcyrD
+         5wJmJU/FbtNFJozTrGk7CzY5BQhaLXcqh0VSllntkl8OH7T2cyBFEJuEN3l3f9PnrDlM
+         yBLnm4GEWFtcllAEX/iVxgj4rRNGG3F4TtiCc/Q+9sEPCxPFK19B2yJx+MqURES9OYrh
+         fNsw==
+X-Forwarded-Encrypted: i=1; AJvYcCUmGjRXPc6ei2bjDdjKJ+zTzk/jadphyJsecFlJC+ojIJ4VmlMbmEGwE97zdwPTFSyo8h0PBG4pDp+ZBos=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy8VcWivDfVZykzFjfMAR2ho8byibpz3osh/8yr0uQMUyUuzzbC
+	dDC55voW4Iru38YsygA/A66X9XLHCI+hQeVgCud1GPGg77z9s/VhggNcS71W6Z7vgYWEq1NP1BK
+	jhJt5fw==
+X-Google-Smtp-Source: AGHT+IGU2QqcHJOpKVyUh8wnC6DXg/rmfR5MmGRMoX3raYINDU0h+4Ytj4+FRCcbgxWr/CiKwQo1uRnxIsY=
+X-Received: from pjbdw16.prod.google.com ([2002:a17:90b:950:b0:343:6849:31ae])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a10:b0:341:124f:474f
+ with SMTP id 98e67ed59e1d1-3436cd0c3e9mr10428985a91.32.1762789392114; Mon, 10
+ Nov 2025 07:43:12 -0800 (PST)
+Date: Mon, 10 Nov 2025 07:37:29 -0800
+In-Reply-To: <20251030200951.3402865-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,190 +75,112 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+References: <20251030200951.3402865-1-seanjc@google.com>
+X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
+Message-ID: <176278827443.918905.17609380057567446021.b4-ty@google.com>
+Subject: Re: [PATCH v4 00/28] KVM: x86/mmu: TDX post-populate cleanups
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
+	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Kirill A. Shutemov" <kas@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Michael Roth <michael.roth@amd.com>, Yan Zhao <yan.y.zhao@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Handle skb allocation failures in RX path, to avoid NULL pointer
-dereference and RX stalls under memory pressure. If the refill fails
-with -ENOMEM, complete napi polling and wake up later to retry via timer.
-Also explicitly re-enable RX DMA after oom, so the dmac doesn't remain
-stopped in this situation.
+On Thu, 30 Oct 2025 13:09:23 -0700, Sean Christopherson wrote:
+> Non-x86 folks, as with v3, patches 1 and 2 are likely the only thing of
+> interest here.  They make kvm_arch_vcpu_async_ioctl() mandatory and then
+> rename it to kvm_arch_vcpu_unlocked_ioctl().
+> 
+> As for the x86 side...
+> 
+> Clean up the TDX post-populate paths (and many tangentially related paths) to
+> address locking issues between gmem and TDX's post-populate hook[*], and
+> within KVM itself (KVM doesn't ensure full mutual exclusivity between paths
+> that for all intents and purposes the TDX-Module requires to be serialized).
+> 
+> [...]
 
-Previously, memory pressure could lead to skb allocation failures and
-subsequent Oops like:
+Applied to kvm-x86 tdx, with fixups for the various typos.  Thanks for all the
+reviews and testing!
 
-	Oops: Kernel access of bad area, sig: 11 [#2]
-	Hardware name: SonyPS3 Cell Broadband Engine 0x701000 PS3
-	NIP [c0003d0000065900] gelic_net_poll+0x6c/0x2d0 [ps3_gelic] (unreliable)
-	LR [c0003d00000659c4] gelic_net_poll+0x130/0x2d0 [ps3_gelic]
-	Call Trace:
-	  gelic_net_poll+0x130/0x2d0 [ps3_gelic] (unreliable)
-	  __napi_poll+0x44/0x168
-	  net_rx_action+0x178/0x290
+Other KVM arch maintainers, please holler if you want a stable tag for the
+kvm_arch_vcpu_async_ioctl() changes (they're based directly on v6.18-rc4).
 
-Steps to reproduce the issue:
-	1. Start a continuous network traffic, like scp of a 20GB file
-	2. Inject failslab errors using the kernel fault injection:
-	    echo -1 > /sys/kernel/debug/failslab/times
-	    echo 30 > /sys/kernel/debug/failslab/interval
-	    echo 100 > /sys/kernel/debug/failslab/probability
-	3. After some time, traces start to appear, kernel Oopses
-	   and the system stops
+[01/28] KVM: Make support for kvm_arch_vcpu_async_ioctl() mandatory
+        https://github.com/kvm-x86/linux/commit/0a0da3f92118
+[02/28] KVM: Rename kvm_arch_vcpu_async_ioctl() to kvm_arch_vcpu_unlocked_ioctl()
+        https://github.com/kvm-x86/linux/commit/50efc2340a59
+[03/28] KVM: TDX: Drop PROVE_MMU=y sanity check on to-be-populated mappings
+        https://github.com/kvm-x86/linux/commit/5294a4b93e07
+[04/28] KVM: x86/mmu: Add dedicated API to map guest_memfd pfn into TDP MMU
+        https://github.com/kvm-x86/linux/commit/3ab3283dbb2c
+[05/28] KVM: x86/mmu: WARN if KVM attempts to map into an invalid TDP MMU root
+        https://github.com/kvm-x86/linux/commit/c1f173fb3389
+[06/28] Revert "KVM: x86/tdp_mmu: Add a helper function to walk down the TDP MMU"
+        https://github.com/kvm-x86/linux/commit/fe7413e39810
+[07/28] KVM: x86/mmu: Rename kvm_tdp_map_page() to kvm_tdp_page_prefault()
+        https://github.com/kvm-x86/linux/commit/6de2fb089bb2
+[08/28] KVM: TDX: Drop superfluous page pinning in S-EPT management
+        https://github.com/kvm-x86/linux/commit/ce7b5695397b
+[09/28] KVM: TDX: Return -EIO, not -EINVAL, on a KVM_BUG_ON() condition
+        https://github.com/kvm-x86/linux/commit/e6348c90dda9
+[10/28] KVM: TDX: Fold tdx_sept_drop_private_spte() into tdx_sept_remove_private_spte()
+        https://github.com/kvm-x86/linux/commit/b836503300dc
+[11/28] KVM: x86/mmu: Drop the return code from kvm_x86_ops.remove_external_spte()
+        https://github.com/kvm-x86/linux/commit/7139c8606505
+[12/28] KVM: TDX: WARN if mirror SPTE doesn't have full RWX when creating S-EPT mapping
+        https://github.com/kvm-x86/linux/commit/b9d5cf6de0b6
+[13/28] KVM: TDX: Avoid a double-KVM_BUG_ON() in tdx_sept_zap_private_spte()
+        https://github.com/kvm-x86/linux/commit/24adff397052
+[14/28] KVM: TDX: Use atomic64_dec_return() instead of a poor equivalent
+        https://github.com/kvm-x86/linux/commit/af96d5452e5e
+[15/28] KVM: TDX: Fold tdx_mem_page_record_premap_cnt() into its sole caller
+        https://github.com/kvm-x86/linux/commit/b4b2b6eda5af
+[16/28] KVM: TDX: ADD pages to the TD image while populating mirror EPT entries
+        https://github.com/kvm-x86/linux/commit/6b5b71ffabf9
+[17/28] KVM: TDX: Fold tdx_sept_zap_private_spte() into tdx_sept_remove_private_spte()
+        https://github.com/kvm-x86/linux/commit/14c9938619be
+[18/28] KVM: TDX: Combine KVM_BUG_ON + pr_tdx_error() into TDX_BUG_ON()
+        https://github.com/kvm-x86/linux/commit/597d7068702f
+[19/28] KVM: TDX: Derive error argument names from the local variable names
+        https://github.com/kvm-x86/linux/commit/55560b6be5bc
+[20/28] KVM: TDX: Assert that mmu_lock is held for write when removing S-EPT entries
+        https://github.com/kvm-x86/linux/commit/2ff14116982c
+[21/28] KVM: TDX: Add macro to retry SEAMCALLs when forcing vCPUs out of guest
+        https://github.com/kvm-x86/linux/commit/3d626ce5a8cc
+[22/28] KVM: TDX: Add tdx_get_cmd() helper to get and validate sub-ioctl command
+        https://github.com/kvm-x86/linux/commit/59d5c1ed6df2
+[23/28] KVM: TDX: Convert INIT_MEM_REGION and INIT_VCPU to "unlocked" vCPU ioctl
+        https://github.com/kvm-x86/linux/commit/94428e3ba325
+[24/28] KVM: TDX: Use guard() to acquire kvm->lock in tdx_vm_ioctl()
+        https://github.com/kvm-x86/linux/commit/0b76e827b29d
+[25/28] KVM: TDX: Don't copy "cmd" back to userspace for KVM_TDX_CAPABILITIES
+        https://github.com/kvm-x86/linux/commit/f26061fe2c25
+[26/28] KVM: TDX: Guard VM state transitions with "all" the locks
+        https://github.com/kvm-x86/linux/commit/15945e9ec195
+[27/28] KVM: TDX: Bug the VM if extending the initial measurement fails
+        https://github.com/kvm-x86/linux/commit/ad44aa4c5d3f
+[28/28] KVM: TDX: Fix list_add corruption during vcpu_load()
+        https://github.com/kvm-x86/linux/commit/1e3a825c9ec9
 
-Step 2 is not always necessary, as it is usually already triggered by
-the transfer of a big enough file.
-
-Fixes: 02c1889166b4 ("ps3: gigabit ethernet driver for PS3, take3")
-Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
----
- drivers/net/ethernet/toshiba/ps3_gelic_net.c | 54 +++++++++++++++-----
- drivers/net/ethernet/toshiba/ps3_gelic_net.h |  1 +
- 2 files changed, 42 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-index 5ee8e8980393..a8121f7583f9 100644
---- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-+++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-@@ -259,6 +259,7 @@ void gelic_card_down(struct gelic_card *card)
- 	mutex_lock(&card->updown_lock);
- 	if (atomic_dec_if_positive(&card->users) == 0) {
- 		pr_debug("%s: real do\n", __func__);
-+		timer_delete_sync(&card->rx_oom_timer);
- 		napi_disable(&card->napi);
- 		/*
- 		 * Disable irq. Wireless interrupts will
-@@ -970,7 +971,8 @@ static void gelic_net_pass_skb_up(struct gelic_descr *descr,
-  * gelic_card_decode_one_descr - processes an rx descriptor
-  * @card: card structure
-  *
-- * returns 1 if a packet has been sent to the stack, otherwise 0
-+ * returns 1 if a packet has been sent to the stack, -ENOMEM on skb alloc
-+ * failure, otherwise 0
-  *
-  * processes an rx descriptor by iommu-unmapping the data buffer and passing
-  * the packet up to the stack
-@@ -981,16 +983,17 @@ static int gelic_card_decode_one_descr(struct gelic_card *card)
- 	struct gelic_descr_chain *chain = &card->rx_chain;
- 	struct gelic_descr *descr = chain->head;
- 	struct net_device *netdev = NULL;
--	int dmac_chain_ended;
-+	int dmac_chain_ended = 0;
- 
- 	status = gelic_descr_get_status(descr);
- 
- 	if (status == GELIC_DESCR_DMA_CARDOWNED)
- 		return 0;
- 
--	if (status == GELIC_DESCR_DMA_NOT_IN_USE) {
-+	if (status == GELIC_DESCR_DMA_NOT_IN_USE || !descr->skb) {
- 		dev_dbg(ctodev(card), "dormant descr? %p\n", descr);
--		return 0;
-+		dmac_chain_ended = 1;
-+		goto refill;
- 	}
- 
- 	/* netdevice select */
-@@ -1048,9 +1051,10 @@ static int gelic_card_decode_one_descr(struct gelic_card *card)
- refill:
- 
- 	/* is the current descriptor terminated with next_descr == NULL? */
--	dmac_chain_ended =
--		be32_to_cpu(descr->hw_regs.dmac_cmd_status) &
--		GELIC_DESCR_RX_DMA_CHAIN_END;
-+	if (!dmac_chain_ended)
-+		dmac_chain_ended =
-+			be32_to_cpu(descr->hw_regs.dmac_cmd_status) &
-+			GELIC_DESCR_RX_DMA_CHAIN_END;
- 	/*
- 	 * So that always DMAC can see the end
- 	 * of the descriptor chain to avoid
-@@ -1062,10 +1066,12 @@ static int gelic_card_decode_one_descr(struct gelic_card *card)
- 	gelic_descr_set_status(descr, GELIC_DESCR_DMA_NOT_IN_USE);
- 
- 	/*
--	 * this call can fail, but for now, just leave this
--	 * descriptor without skb
-+	 * this call can fail, propagate the error
- 	 */
--	gelic_descr_prepare_rx(card, descr);
-+	int ret = gelic_descr_prepare_rx(card, descr);
-+
-+	if (ret)
-+		return ret;
- 
- 	chain->tail = descr;
- 	chain->head = descr->next;
-@@ -1087,6 +1093,17 @@ static int gelic_card_decode_one_descr(struct gelic_card *card)
- 	return 1;
- }
- 
-+/**
-+ *  gelic_rx_oom_timer - Restart napi poll if oom occurred
-+ *  @t: timer list
-+ */
-+static void gelic_rx_oom_timer(struct timer_list *t)
-+{
-+	struct gelic_card *card = timer_container_of(card, t, rx_oom_timer);
-+
-+	napi_schedule(&card->napi);
-+}
-+
- /**
-  * gelic_net_poll - NAPI poll function called by the stack to return packets
-  * @napi: napi structure
-@@ -1099,12 +1116,21 @@ static int gelic_net_poll(struct napi_struct *napi, int budget)
- {
- 	struct gelic_card *card = container_of(napi, struct gelic_card, napi);
- 	int packets_done = 0;
-+	int work_result = 0;
- 
- 	while (packets_done < budget) {
--		if (!gelic_card_decode_one_descr(card))
--			break;
-+		work_result = gelic_card_decode_one_descr(card);
-+		if (work_result == 1) {
-+			packets_done++;
-+			continue;
-+		}
-+		break;
-+	}
- 
--		packets_done++;
-+	if (work_result == -ENOMEM) {
-+		napi_complete_done(napi, packets_done);
-+		mod_timer(&card->rx_oom_timer, jiffies + 1);
-+		return packets_done;
- 	}
- 
- 	if (packets_done < budget) {
-@@ -1576,6 +1602,8 @@ static struct gelic_card *gelic_alloc_card_net(struct net_device **netdev)
- 	mutex_init(&card->updown_lock);
- 	atomic_set(&card->users, 0);
- 
-+	timer_setup(&card->rx_oom_timer, gelic_rx_oom_timer, 0);
-+
- 	return card;
- }
- 
-diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.h b/drivers/net/ethernet/toshiba/ps3_gelic_net.h
-index f7d7931e51b7..c10f1984a5a1 100644
---- a/drivers/net/ethernet/toshiba/ps3_gelic_net.h
-+++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.h
-@@ -268,6 +268,7 @@ struct gelic_vlan_id {
- struct gelic_card {
- 	struct napi_struct napi;
- 	struct net_device *netdev[GELIC_PORT_MAX];
-+	struct timer_list rx_oom_timer;
- 	/*
- 	 * hypervisor requires irq_status should be
- 	 * 8 bytes aligned, but u64 member is
-
-base-commit: 96a9178a29a6b84bb632ebeb4e84cf61191c73d5
--- 
-2.43.0
-
+--
+https://github.com/kvm-x86/linux/tree/next
 
