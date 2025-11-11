@@ -1,72 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-14020-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14021-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6ED0C49908
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Nov 2025 23:30:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01DAC4A4B1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Nov 2025 02:15:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d549H2hbPz3060;
-	Tue, 11 Nov 2025 09:29:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d57rl1jH6z2yvK;
+	Tue, 11 Nov 2025 12:15:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762813795;
-	cv=none; b=au4QlUHN19ONvvtBZgmtfQsWoHLX+L1UkOyDANVUOuj7Obgm1LzG1+TJbETYBeLHrKxFJvzKvIiNMefFVnR4YFGTp/AsiIwLvMo5q+tGYJUUfxp8KcNNwfM43QvGkOq1XQKwbvsUF52o2+gbmYYIVfiCjVkMiU1VcvKSYt/T3dBI7EjqgWrStb/gIXozj+0NZagTj2ablw63cntTbvieRiuIcRdKd6qbpZBBWWOx/oDitl7u+lSLls6rc7C7xQJ0JK+2zlmES8WnnFDDWOMnvfwjpPTXw7T3WUbEUUwIWzLDt4tK7s41V/XANaLH8ThT4Y257HiNs13wl3JyMKdQcg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762823751;
+	cv=none; b=dF7kMh6UhtuxApzydpJl/PQgtlcPcaA9dqSQhM0NczZ08PKC+lbZ7oBDFn1OIUoJScIAMpMoIvNZuxZPhSPVPR1HfNKyoQ33aYApi4/8WMXc+m4DhHoiT1eJ80Br6Z01FVGK5mmTD6HLfl3wu+6uTqJ9A+QkvG0NDPCsdylkK6HBgS9RmIcaWe1A/eZWmtBgBy7maWMUQYp07UXM8/LPjgFZBHdlOTde7pk1xr0KCEEYczAOtClwqbkKvqNA/mdsR6qlLR+VR/JF/USqmfej+5LHSCmazPm8kdKGldSJtQvc/oue7ZN78OytPEK9gGrriWyKY/xh0LydrMmBJQ1e+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762813795; c=relaxed/relaxed;
-	bh=Nhvm1QdvokVke6+gopUrHeUnwSeZx2fQVGizWKlz9x4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oMcQ/VmSamyeWr5wv4A3IwOIImnphuz/grQjQMM4yKMsbyq0FL8n/ORsn9cBOg2Z578iG1/GkfE3uwZwBTzc9HGFtD6vWnwOWJTEyyioN6Gd+USH9zDx0K1RO2MJPrQ5qINaQkdXf/ACJwR0qaTlP6wzWREiypgMeH5oedQEeh0vJpx/rJXSJGqyYAnGxGRH7PQRRLHaRyGiAh6HPkLUDRDK3GQm05N21uDNr2VTU6zr4irfWYJzL56mPKDVG7/X+tVaHZ/KHCaA0X28d8WXPGG+yU/DWNNwWKCWQeiI7B2cbTHml1HM/Aptl771W2rdQoGX15xXD7cvuPF5YPqCuw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rmwSZj/R; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1762823751; c=relaxed/relaxed;
+	bh=lFuNMW6QorcHfFRhlUpmszpPvplH5exAgJCXldoReDA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fz8NoDIpqyGmm/32BySADjfoRnSZPqjES5rBB9th/0SCwK7KR7hvjPdk3pe2cUG3xNIQrSIT6iFjBktAZsTi+0cGPvxn5yiefsahhbJczCKX/N2fMQRkRl9jhUdP3rgnf+A9Ow494HqXmFBbtVQqnY13qB7zIGODjAGY+CazpLMmYSusE7ae4ZOq2B6JqDGvIAY2Gm9cSozJpxRlVfXDgl0qM3f6+WVn6piGdP28GZmbS8qEc374fM79CyYjtbj0ZFeyN+PjxPSed9eU/M66zyGN/CNlxXU3vq4X3nyqAO4NMPH0QDkhSZcswUMWVYaE/Rh8PJHCmtkabWTbuZ49DQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aX+jBUk+; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aX+jBUk+; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rmwSZj/R;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aX+jBUk+;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aX+jBUk+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d549G5phkz308g
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 09:29:54 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F192A601F1;
-	Mon, 10 Nov 2025 22:29:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D44C19423;
-	Mon, 10 Nov 2025 22:29:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762813792;
-	bh=psqvw1U6/SBJm+8SC9eq36+YROk3NZIjyrzaiC/0Ys0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmwSZj/Rzf9cPQBKu+Fe1z4KaQXQxyTON//wGOlmmhHpzxrYpozRO3vbbIppWtMCj
-	 gWOy+RTwukP3QWrVKfR7FARDJppBvELnHxBg85I8TqFqPq7eEhaXWGtdMOwIQNdYQX
-	 fr0IuMxKP37DvWYFQ826uoe2IMag5HpP/FPxjxwNKXreN14pJ6yIxtDtVWJIkkHHnW
-	 uNE4EhGfEsYZWuMz3WuK3VfgwsPttdYdzzyLBSxsWJ3c69R6P5Gp7jN5F13ls10HVx
-	 tC1xyAXUjkxxI7QGikQsZoQVt+XfqcEkQuKCJseFBmwqNZtg0+scUe1qN+HnF1rIhD
-	 ztVLNbx+Bwlfw==
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: linux-pci@vger.kernel.org
-Cc: Christian Zigotzky <chzigotzky@xenosoft.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	mad skateman <madskateman@gmail.com>,
-	"R . T . Dickinson" <rtd2@xtra.co.nz>,
-	Darren Stevens <darren@stevens-zone.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Lukas Wunner <lukas@wunner.de>,
-	luigi burdo <intermediadc@hotmail.com>,
-	Al <al@datazap.net>,
-	Roland <rol7and@gmx.com>,
-	Hongxing Zhu <hongxing.zhu@nxp.com>,
-	hypexed@yahoo.com.au,
-	linuxppc-dev@lists.ozlabs.org,
-	debian-powerpc@lists.debian.org,
-	linux-kernel@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v2 4/4] PCI/ASPM: Avoid L0s and L1 on Freescale Root Ports
-Date: Mon, 10 Nov 2025 16:22:28 -0600
-Message-ID: <20251110222929.2140564-5-helgaas@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251110222929.2140564-1-helgaas@kernel.org>
-References: <20251110222929.2140564-1-helgaas@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d57rj6pFhz2xC3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 12:15:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762823744;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lFuNMW6QorcHfFRhlUpmszpPvplH5exAgJCXldoReDA=;
+	b=aX+jBUk+jOoxB/DiGQOXdiGb4vtkzHAxXDid9N7eFS0BRBt8QfVZSa0BUzBNMf09JeKxQg
+	mgoilU2KMV3omTA7yfh3RowsADL6lzgVWv4P0hr3x43zSBpCCADche8oYpSdzkqbJLRFRB
+	fkRMLylVcn1hf1sHut1s8rP/d3Xzd9E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762823744;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lFuNMW6QorcHfFRhlUpmszpPvplH5exAgJCXldoReDA=;
+	b=aX+jBUk+jOoxB/DiGQOXdiGb4vtkzHAxXDid9N7eFS0BRBt8QfVZSa0BUzBNMf09JeKxQg
+	mgoilU2KMV3omTA7yfh3RowsADL6lzgVWv4P0hr3x43zSBpCCADche8oYpSdzkqbJLRFRB
+	fkRMLylVcn1hf1sHut1s8rP/d3Xzd9E=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-213-dxEhYB_gNzeGhPkRGAx9IQ-1; Mon,
+ 10 Nov 2025 20:15:40 -0500
+X-MC-Unique: dxEhYB_gNzeGhPkRGAx9IQ-1
+X-Mimecast-MFC-AGG-ID: dxEhYB_gNzeGhPkRGAx9IQ_1762823738
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5A91B19560A2;
+	Tue, 11 Nov 2025 01:15:37 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.59])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2CF2F30044E0;
+	Tue, 11 Nov 2025 01:15:33 +0000 (UTC)
+Date: Tue, 11 Nov 2025 09:15:23 +0800
+From: Baoquan he <bhe@redhat.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, Aditya Gupta <adityag@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dave Young <dyoung@redhat.com>,
+	Hari Bathini <hbathini@linux.ibm.com>, Jiri Bohac <jbohac@suse.cz>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Pingfan Liu <piliu@redhat.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shivang Upadhyay <shivangu@linux.ibm.com>,
+	Vivek Goyal <vgoyal@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+	kexec@lists.infradead.org
+Subject: Re: [PATCH v3 5/5] crash: export crashkernel CMA reservation to
+ userspace
+Message-ID: <aRKOK7ZQ5mOUBzvK@MiWiFi-R3L-srv>
+References: <20251110043143.484408-1-sourabhjain@linux.ibm.com>
+ <20251110043143.484408-6-sourabhjain@linux.ibm.com>
+ <aRGPee9izxWPRHj5@MiWiFi-R3L-srv>
+ <09c4c181-eb4b-43ea-a439-04b83f4c20ba@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,42 +97,129 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <09c4c181-eb4b-43ea-a439-04b83f4c20ba@linux.ibm.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+On 11/10/25 at 02:09pm, Sourabh Jain wrote:
+> 
+> 
+> On 10/11/25 12:38, Baoquan he wrote:
+> > On 11/10/25 at 10:01am, Sourabh Jain wrote:
+> > > Add a sysfs entry /sys/kernel/kexec/crash_cma_ranges to expose all
+> > > CMA crashkernel ranges.
+> > I am not against this way. While wondering if it's more appropriate to
+> > export them into iomem_resource just like crashk_res and crashk_low_res
+> > doing.
+> 
+> Handling conflict is challenging. Hence we don't export crashk_res and
+> crashk_low_res to iomem on powerpc. Checkout [1]
+> 
+> And I think conflicts can occur regardless of the order in which System RAM
+> and
+> Crash CMA ranges are added to iomem.
+> 
+> [1] https://lore.kernel.org/all/20251016142831.144515-1-sourabhjain@linux.ibm.com/
 
-Christian reported that f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and
-ASPM states for devicetree platforms") broke booting on the A-EON X5000.
+Then I would suggest you add this reason and the link into patch log
+to keep a record. One day people may post patch to 'optimize' this.
 
-Override the L0s and L1 Support advertised in Link Capabilities by the
-X5000 Root Ports ([1957:0451]) so we don't try to enable those states.
-
-Fixes: f3ac2ff14834 ("PCI/ASPM: Enable all ClockPM and ASPM states for devicetree platforms")
-Fixes: df5192d9bb0e ("PCI/ASPM: Enable only L0s and L1 for devicetree platforms")
-Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-Link: https://lore.kernel.org/r/db5c95a1-cf3e-46f9-8045-a1b04908051a@xenosoft.de
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
----
- drivers/pci/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 922c77c627a1..b94264cd3833 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -2523,6 +2523,7 @@ static void quirk_disable_aspm_l0s_l1(struct pci_dev *dev)
-  * disable both L0s and L1 for now to be safe.
-  */
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ASMEDIA, 0x1080, quirk_disable_aspm_l0s_l1);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_FREESCALE, 0x0451, quirk_disable_aspm_l0s_l1);
- 
- /*
-  * Some Pericom PCIe-to-PCI bridges in reverse mode need the PCIe Retrain
--- 
-2.43.0
+> 
+> > 
+> > > This allows userspace tools configuring kdump to determine how much
+> > > memory is reserved for crashkernel. If CMA is used, tools can warn
+> > > users when attempting to capture user pages with CMA reservation.
+> > > 
+> > > The new sysfs hold the CMA ranges in below format:
+> > > 
+> > > cat /sys/kernel/kexec/crash_cma_ranges
+> > > 100000000-10c7fffff
+> > > 
+> > > Cc: Aditya Gupta <adityag@linux.ibm.com>
+> > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > Cc: Baoquan he <bhe@redhat.com>
+> > > Cc: Dave Young <dyoung@redhat.com>
+> > > Cc: Hari Bathini <hbathini@linux.ibm.com>
+> > > Cc: Jiri Bohac <jbohac@suse.cz>
+> > > Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> > > Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+> > > Cc: Pingfan Liu <piliu@redhat.com>
+> > > Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> > > Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
+> > > Cc: Vivek Goyal <vgoyal@redhat.com>
+> > > Cc: linuxppc-dev@lists.ozlabs.org
+> > > Cc: kexec@lists.infradead.org
+> > > Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> > > ---
+> > > Changelog:
+> > >   - Add the missing hunk to export crash_cma_ranges sysfs
+> > > 
+> > > ---
+> > >   .../ABI/testing/sysfs-kernel-kexec-kdump        | 10 ++++++++++
+> > >   kernel/kexec_core.c                             | 17 +++++++++++++++++
+> > >   2 files changed, 27 insertions(+)
+> > > 
+> > > diff --git a/Documentation/ABI/testing/sysfs-kernel-kexec-kdump b/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
+> > > index 00c00f380fea..f59051b5d96d 100644
+> > > --- a/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
+> > > +++ b/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
+> > > @@ -49,3 +49,13 @@ Description:	read only
+> > >   		is used by the user space utility kexec to support updating the
+> > >   		in-kernel kdump image during hotplug operations.
+> > >   User:		Kexec tools
+> > > +
+> > > +What:		/sys/kernel/kexec/crash_cma_ranges
+> > > +Date:		Nov 2025
+> > > +Contact:	kexec@lists.infradead.org
+> > > +Description:	read only
+> > > +		Provides information about the memory ranges reserved from
+> > > +		the Contiguous Memory Allocator (CMA) area that are allocated
+> > > +		to the crash (kdump) kernel. It lists the start and end physical
+> > > +		addresses of CMA regions assigned for crashkernel use.
+> > > +User:		kdump service
+> > > diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+> > > index 7476a46de5d6..da6ff72b4669 100644
+> > > --- a/kernel/kexec_core.c
+> > > +++ b/kernel/kexec_core.c
+> > > @@ -1271,6 +1271,22 @@ static ssize_t crash_size_store(struct kobject *kobj,
+> > >   }
+> > >   static struct kobj_attribute crash_size_attr = __ATTR_RW(crash_size);
+> > > +static ssize_t crash_cma_ranges_show(struct kobject *kobj,
+> > > +				     struct kobj_attribute *attr, char *buf)
+> > > +{
+> > > +
+> > > +	ssize_t len = 0;
+> > > +	int i;
+> > > +
+> > > +	for (i = 0; i < crashk_cma_cnt; ++i) {
+> > > +		len += sysfs_emit_at(buf, len, "%08llx-%08llx\n",
+> > > +				     crashk_cma_ranges[i].start,
+> > > +				     crashk_cma_ranges[i].end);
+> > > +	}
+> > > +	return len;
+> > > +}
+> > > +static struct kobj_attribute crash_cma_ranges_attr = __ATTR_RO(crash_cma_ranges);
+> > > +
+> > >   #ifdef CONFIG_CRASH_HOTPLUG
+> > >   static ssize_t crash_elfcorehdr_size_show(struct kobject *kobj,
+> > >   			       struct kobj_attribute *attr, char *buf)
+> > > @@ -1289,6 +1305,7 @@ static struct attribute *kexec_attrs[] = {
+> > >   #ifdef CONFIG_CRASH_DUMP
+> > >   	&crash_loaded_attr.attr,
+> > >   	&crash_size_attr.attr,
+> > > +	&crash_cma_ranges_attr.attr,
+> > >   #ifdef CONFIG_CRASH_HOTPLUG
+> > >   	&crash_elfcorehdr_size_attr.attr,
+> > >   #endif
+> > > -- 
+> > > 2.51.1
+> > > 
+> 
 
 
