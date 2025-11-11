@@ -1,50 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-14082-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14083-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1DE9C4C660
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Nov 2025 09:29:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07884C4C7D1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Nov 2025 09:56:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d5KSs5tfjz3dXg;
-	Tue, 11 Nov 2025 19:29:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d5L3d5wpPz30Hh;
+	Tue, 11 Nov 2025 19:55:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762849757;
-	cv=none; b=Ggv6IAxuk2iUEDlhO6FoqQL0/09HVAbCyH6u5eM7gnvc5KFN7921SIwdsgjniH5bZdob33EYGBWmDnmOIh/fmhC/02LSKNhkeo+7BxG9ussmQySupFKRZ/ReuFwmUqmDch1ymtA0zGn0ZrGJj6ymFejU52kAfNT+JrjVSbZIBqGwN9ullqCKHGQYKDt+uUvDyV0WGuHfEaMRSX1ZvXwt6YhEaYSafVW59vSCvxA/juRNKXLN6DpOuPSQ/sxB9dD3C2dJONYBHD0Uvlqn6yHywy6+pA9oej4prSsGb0GPYQ9auV+4qk7oTAyXTbGAg1P+Yro7n1Iw7bAfnM+zco6Z8g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762851357;
+	cv=none; b=K/zQFfhufOtiVyHRQIJOF3wys4f3dSb+n+6kkmqCCf2bRyyNrkZWgwjqhvt7Ef9elSTO8keTeoX4B9Jj42WU2Re9dJKkA9jzfnK2f5joo68XiNfNgYv3pt5lBDs+xRvHbtKZW55x8AUBDB3Y9x/t16DzIfggPGxDG9gn/DfBnr752I/IW2qzp6ZrECAtIQjwP9hHUm87maRYqV5Llv0y05zG9kO5c/csGCF2yVQzNEweeAQgqpZuhFALbCGF6sYjmXJur67U7s9OnZwJN1R4jzDFh0deotVKorYd20ipBMN4+ZDe4GjZfxhqLHLgb0FB6e7f9bCo30qsycudFD4Tnw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762849757; c=relaxed/relaxed;
-	bh=vZx+JUfe3rFAZF0Lmi5qErIfPbFOcXdFWY9tGalSssM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YfDuXMOLs5GnNgSkthQiRGFy61sK9etS67K7wCcW+X0g+SKx3tqpxTikTqwuSGnB2ggETxpgKQXOG6Zg9ody/bv4u/iiER4BSDYkm0N9hecOth8tIP6Tkgnasq36He/7Ikx+QFAUhyukXxxDpRFsj+P1Vf/V7Pg7GQ4o1B9vwAmBhBptz68F6bgKVQb0LFK4dO5vLOcgIG3aeNngtSZ6P2rjhUf5E2zTAED1eTmLXiMz4mz4ZQ1lHf6fq36OwBh3XazYrHYm7hs8FU+Hp3puov8xkIce/SQylpmW9Z+S3oZ2GJt+u3xp4ini/93fgxrZFE8l7o0NDgrlZc9l5Cvqfw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uaRlttvs; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1762851357; c=relaxed/relaxed;
+	bh=RKTM993Ma21ZOkCemY+4BJTuWewmn2tKdsb5lj2abpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lv6pG8PN8StIvkOdOk+w+Zso2d1PlAYM6mgFk+9twHsEKcYd87QwG80wLjRgOvLao1Ng+RMj7U6ISmzb+m3duC92i09OCDZq+hZUiu4a84tC30npBoQlikFusjbQXfNDRpv/bwSRR6L4r0r7jm5ting6Dh7ZwSE9ld226IyuplQUg3HJj4lsoEFRreJT81NZFZAFwfdvcgRoVwa5hOseFLRij2ruyEli69r/fpy2FFUAZ2W1kzK7WBWVfBZdWCXYb58nfkd9w+umoPsWp6ySZQuL7439UjkZZrLnqV6HdYm3x7UnCaysqbD6zrBP+Dnit6Gwy++6QJOBjjnbrbqzTQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ymWd3Lnk; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=PDy55JQ8; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uaRlttvs;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ymWd3Lnk;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=PDy55JQ8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d5KSr5Hl4z3dXY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 19:29:16 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2B84D418C0;
-	Tue, 11 Nov 2025 08:29:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62278C4CEF7;
-	Tue, 11 Nov 2025 08:29:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762849754;
-	bh=ar1uBswWo8s643uj9MXIM8xxh8EoeUcnXbJJR9c8/j0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uaRlttvsWa8W5MXtgKcG4+MVV6ClUZIB0FXV8QPG8DSILIhydppR/ehpOjoQGXuwQ
-	 w+vz7DxdwWXEvWLM5ESy5wuBDqKI6/7Tmm8HFFSOgKURA0GXdIeC1Do6CAJZoysLxx
-	 4hMb5AvkQIP9a/Vdrswbf/7kDL/qR+zyyjdxloqtC9ekLDd2I92zLFcXmc214sw/4Y
-	 JgA4JWONsMR5WnTwl7LV9pcPba+pWjJjouP5kEVMlYuc40wDs54xq9qjzayy71dthm
-	 oiVeX7hZQeaofcHZpC7xwQth0/I6rEucDuRbSoUgOx+KSUX1w3sa/7oH4E67OS4eEb
-	 8NEZI3GvfMxZQ==
-Message-ID: <16daac89-d382-466b-a800-dbc861dc7c24@kernel.org>
-Date: Tue, 11 Nov 2025 09:29:08 +0100
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4d5L3c2K8Rz30Fm
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 19:55:56 +1100 (AEDT)
+Date: Tue, 11 Nov 2025 09:55:50 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1762851350;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RKTM993Ma21ZOkCemY+4BJTuWewmn2tKdsb5lj2abpk=;
+	b=ymWd3LnkEfwtX1k261UdYE5R5/7IpCIN6oMUmih0narZm6Bp8Tw+ikKxAJ98mC+Ki8kPMJ
+	dBJpjhxGTVeH7mhIVwraawl+x4rKUcLrgjqLQQNzsEMcCgMEHvECAIV2HVQCLFCkTVlVl8
+	O+nqZiC7VSJQgOJQPi13SRfHbDZLHZEY3z1VK0oryukZg4fmRz3ltZctohv5sJoBejwjBp
+	LiENYCvrtOf0BCLFlrBMSBeAaFEbp7NDLImGC6soMNidgoVLHUkoF1FvWUavi7dVQADk5V
+	c9bVZlXcLAPlv0tkMAeLyrfguAvzyipXRg9zcPQHmJYXL0Pd+CRKopm3fmhPVQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1762851350;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RKTM993Ma21ZOkCemY+4BJTuWewmn2tKdsb5lj2abpk=;
+	b=PDy55JQ8GnIS/Y2nfebPHMOFIXaZwBf3oeKj/acsXinCUUcGzezaxkS3vc3c9VSFc5YRUL
+	LWQUVLlkyb70aeBw==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Arnd Bergmann <arnd@arndb.de>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Nick Alcock <nick.alcock@oracle.com>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Shuah Khan <shuah@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
+	Russell King <linux@armlinux.org.uk>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Shannon Nelson <sln@onemain.com>, linux-kernel@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v5 19/34] random: vDSO: only access vDSO datapage after
+ random_init()
+Message-ID: <20251110124547-66c465dc-5214-46bf-937f-c8fa381b86f3@linutronix.de>
+References: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de>
+ <20251106-vdso-sparc64-generic-2-v5-19-97ff2b6542f7@linutronix.de>
+ <aQ6EvdukQytvqK-u@zx2c4.com>
+ <20251110094555-353883a9-1950-4cc6-a774-bb0ef5db11c5@linutronix.de>
+ <aRHAU7bVAIyaOrpA@zx2c4.com>
+ <20251110114550-a3f2afa8-4f86-4048-be5b-2dc4f4ef340d@linutronix.de>
+ <aRHPIXATFJAEv-CF@zx2c4.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,251 +93,81 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: powerpc/e500: WARNING: at mm/hugetlb.c:4755 hugetlb_add_hstate
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Donet Tom <donettom@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com>
- <dd634b17-cc5e-497c-8228-2470f6533177@redhat.com>
- <82ef1da8-44c4-4a58-bd00-9839548cb72d@csgroup.eu>
- <ba3a2131-c8d4-481d-aebb-d25be7ae0d19@kernel.org>
- <d62eea1f-3aff-4b51-976a-4cb8abf502bf@csgroup.eu>
- <cdd23dd6-5444-4000-ac68-a72b22bf6a57@kernel.org>
- <1463bcd5-c47b-4c7f-bb13-2664e2e8226e@csgroup.eu>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <1463bcd5-c47b-4c7f-bb13-2664e2e8226e@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <aRHPIXATFJAEv-CF@zx2c4.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 10.11.25 19:31, Christophe Leroy wrote:
+On Mon, Nov 10, 2025 at 12:40:17PM +0100, Jason A. Donenfeld wrote:
+> On Mon, Nov 10, 2025 at 12:24:13PM +0100, Thomas Wei�schuh wrote:
+> > > > > For example, one clean way of
+> > > > > doing that would be to make vdso_k_rng_data always valid by having it
+> > > > > initially point to __initdata memory, and then when it's time to
+> > > > > initialize the real datapage, memcpy() the __initdata memory to the new
+> > > > > specially allocated memory. Then we don't need the complex state
+> > > > > tracking that this commit and the prior one introduce.
+> > > > 
+> > > > Wouldn't that require synchronization between the update path and the memcpy()
+> > > > path? Also if the pointer is going to change at some point we'll probably need
+> > > > to use READ_ONCE()/WRITE_ONCE(). In general I would be happy about a cleaner
+> > > > solution for this but didn't find a great one.
+> > > 
+> > > This is still before userspace has started, and interrupts are disabled,
+> > > so I don't think so?
+> > 
+> > Interrupts being disabled is a good point. But we are still leaking
+> > implementation details from the random code into the vdso datastore.
 > 
+> It wouldn't. You do this generically with memcpy().
+
+With "implementation details" I meant the fact that it is fine to swap out the
+datapage behind its back. And the fact that the memcpy() can not introduce any
+races.
+
+> > > Also, you only care about being after
+> > > mm_core_init(), right? So move your thing before sched_init() and then
+> > > you'll really have nothing to worry about.
+> > 
+> > The callchains random_init_early() -> crng_reseed()/_credit_init_bits() could
+> > still touch the datapage before it is allocated.
+> > Adding conditionals to prevent those is essentially what my patch does.
 > 
-> Le 10/11/2025 à 12:27, David Hildenbrand (Red Hat) a écrit :
->> Thanks for the review!
->>
->>>
->>> So I think what you want instead is:
->>>
->>> diff --git a/arch/powerpc/platforms/Kconfig.cputype
->>> b/arch/powerpc/platforms/Kconfig.cputype
->>> index 7b527d18aa5ee..1f5a1e587740c 100644
->>> --- a/arch/powerpc/platforms/Kconfig.cputype
->>> +++ b/arch/powerpc/platforms/Kconfig.cputype
->>> @@ -276,6 +276,7 @@ config PPC_E500
->>>            select FSL_EMB_PERFMON
->>>            bool
->>>            select ARCH_SUPPORTS_HUGETLBFS if PHYS_64BIT || PPC64
->>> +       select ARCH_HAS_GIGANTIC_PAGE if ARCH_SUPPORTS_HUGETLBFS
->>>            select PPC_SMP_MUXED_IPI
->>>            select PPC_DOORBELL
->>>            select PPC_KUEP
->>>
->>>
->>>
->>>>         select ARCH_HAS_KCOV
->>>>         select ARCH_HAS_KERNEL_FPU_SUPPORT    if PPC64 && PPC_FPU
->>>>         select ARCH_HAS_MEMBARRIER_CALLBACKS
->>>> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/
->>>> platforms/Kconfig.cputype
->>>> index 7b527d18aa5ee..4c321a8ea8965 100644
->>>> --- a/arch/powerpc/platforms/Kconfig.cputype
->>>> +++ b/arch/powerpc/platforms/Kconfig.cputype
->>>> @@ -423,7 +423,6 @@ config PPC_64S_HASH_MMU
->>>>     config PPC_RADIX_MMU
->>>>         bool "Radix MMU Support"
->>>>         depends on PPC_BOOK3S_64
->>>> -    select ARCH_HAS_GIGANTIC_PAGE
->>>
->>> Should remain I think.
->>>
->>>>         default y
->>>>         help
->>>>           Enable support for the Power ISA 3.0 Radix style MMU. Currently
->>
->>
->> We also have PPC_8xx do a
->>
->>       select ARCH_SUPPORTS_HUGETLBFS
->>
->> And of course !PPC_RADIX_MMU (e.g., PPC_64S_HASH_MMU) through
->> PPC_BOOK3S_64.
->>
->> Are we sure they cannot end up with gigantic folios through hugetlb?
->>
+> I think I wasn't very clear in my proposal, because this isn't an issue
+> in it.
+
+I interpreted your previous mail as two different proposals:
+1) do the memcpy() thing
+2) move the page allocation after mm_core_init()
+
+Now it makes more sense.
+
+> Global scope:
 > 
-> Yes indeed. My PPC_8xx is OK because I set CONFIG_ARCH_FORCE_MAX_ORDER=9
-> (largest hugepage is 8M) but I do get the warning with the default value
-> which is 8 (with 16k pages).
+> static struct vdso_rng_data placeholder_vdso_k_rng_data __initdata;
+> struct vdso_rng_data *vdso_k_rng_data = &placeholder_vdso_k_rng_data;
 > 
-> For PPC_64S_HASH_MMU, max page size is 16M, we get no warning with
-> CONFIG_ARCH_FORCE_MAX_ORDER=8 which is the default value but get the
-> warning with CONFIG_ARCH_FORCE_MAX_ORDER=7
+> Then,
+> 
+> void __init vdso_setup_data_pages(void)
+> {
+>     ...
+>     vdso_k_rng_data = blabla();
+>     ...
+>     memcpy(vdso_k_rng_data, &placeholder_vdso_k_rng_data, sizeof(*vdso_k_rng_data);
+>     ...
+> }
+> 
+> If vdso_setup_data_pages() is called early enough in init, this is safe
+> to do, and then you don't need to muck up the random code with awful
+> state machine ordering stuff.
 
-Right, the dependency on CONFIG_ARCH_FORCE_MAX_ORDER is nasty. In the future,
-likely the arch should just tell us the biggest possible hugetlb size and we
-can then determine this ourselves.
-
-... or we'll simply remove the gigantic vs. !gigantic handling completely and
-simply assume that "if there is hugetlb, we might have gigantic folios".
-
-> Should CONFIG_ARCH_HAS_GIGANTIC_PAGE be set unconditionaly as soon as
-> hugepages are selected, or should it depend on
-> CONFIG_ARCH_FORCE_MAX_ORDER ? What is the cost of selecting
-> CONFIG_ARCH_HAS_GIGANTIC_PAGE ?
-
-There is no real cost, we just try to keep the value small so __dump_folio()
-can better detect inconsistencies.
-
-To fix it for now, likely the following is good enough (pushed to the
-previously mentioned branch):
+Yes it is safe, but this safety is not obvious in my opinion.
+However I'll use your proposal for the next revision.
 
 
- From 7abf0f52e59d96533aa8c96194878e9453aa8be0 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Date: Thu, 6 Nov 2025 11:31:45 +0100
-Subject: [PATCH] mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
-
-In the past, CONFIG_ARCH_HAS_GIGANTIC_PAGE indicated that we support
-runtime allocation of gigantic hugetlb folios. In the meantime it evolved
-into a generic way for the architecture to state that it supports
-gigantic hugetlb folios.
-
-In commit fae7d834c43c ("mm: add __dump_folio()") we started using
-CONFIG_ARCH_HAS_GIGANTIC_PAGE to decide MAX_FOLIO_ORDER: whether we could
-have folios larger than what the buddy can handle. In the context of
-that commit, we started using MAX_FOLIO_ORDER to detect page corruptions
-when dumping tail pages of folios. Before that commit, we assumed that
-we cannot have folios larger than the highest buddy order, which was
-obviously wrong.
-
-In commit 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes
-when registering hstate"), we used MAX_FOLIO_ORDER to detect
-inconsistencies, and in fact, we found some now.
-
-Powerpc allows for configs that can allocate gigantic folio during boot
-(not at runtime), that do not set CONFIG_ARCH_HAS_GIGANTIC_PAGE and can
-exceed PUD_ORDER.
-
-To fix it, let's make powerpc select CONFIG_ARCH_HAS_GIGANTIC_PAGE with
-hugetlb on powerpc, and increase the maximum folio size with hugetlb to 16
-GiB (possible on arm64 and powerpc). Note that on some powerpc
-configurations, whether we actually have gigantic pages
-depends on the setting of CONFIG_ARCH_FORCE_MAX_ORDER, but there is
-nothing really problematic about setting it unconditionally: we just try to
-keep the value small so we can better detect problems in __dump_folio()
-and inconsistencies around the expected largest folio in the system.
-
-Ideally, we'd have a better way to obtain the maximum hugetlb folio size
-and detect ourselves whether we really end up with gigantic folios. Let's
-defer bigger changes and fix the warnings first.
-
-While at it, handle gigantic DAX folios more clearly: DAX can only
-end up creating gigantic folios with HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
-
-Add a new Kconfig option HAVE_GIGANTIC_FOLIOS to make both cases
-clearer. In particular, worry about ARCH_HAS_GIGANTIC_PAGE only with
-HUGETLB_PAGE.
-
-Note: with enabling CONFIG_ARCH_HAS_GIGANTIC_PAGE on powerpc, we will now
-also allow for runtime allocations of folios in some more powerpc configs.
-I don't think this is a problem, but if it is we could handle it through
-__HAVE_ARCH_GIGANTIC_PAGE_RUNTIME_SUPPORTED.
-
-While __dump_page()/__dump_folio was also problematic (not handling dumping
-of tail pages of such gigantic folios correctly), it doesn't relevant
-critical enough to mark it as a fix.
-
-Fixes: 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes when registering hstate")
-Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Closes: https://lore.kernel.org/r/3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu/
-Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Closes: https://lore.kernel.org/r/94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com/
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
----
-  arch/powerpc/Kconfig |  1 +
-  include/linux/mm.h   | 12 +++++++++---
-  mm/Kconfig           |  7 +++++++
-  3 files changed, 17 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index e24f4d88885ae..9537a61ebae02 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -137,6 +137,7 @@ config PPC
-  	select ARCH_HAS_DMA_OPS			if PPC64
-  	select ARCH_HAS_FORTIFY_SOURCE
-  	select ARCH_HAS_GCOV_PROFILE_ALL
-+	select ARCH_HAS_GIGANTIC_PAGE		if ARCH_SUPPORTS_HUGETLBFS
-  	select ARCH_HAS_KCOV
-  	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
-  	select ARCH_HAS_MEMBARRIER_CALLBACKS
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index d16b33bacc32b..2646ba7c96a49 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
-  	return folio_large_nr_pages(folio);
-  }
-  
--#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
-+#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
-  /*
-   * We don't expect any folios that exceed buddy sizes (and consequently
-   * memory sections).
-@@ -2087,10 +2087,16 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
-   * pages are guaranteed to be contiguous.
-   */
-  #define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
--#else
-+#elif defined(CONFIG_HUGETLB_PAGE)
-  /*
-   * There is no real limit on the folio size. We limit them to the maximum we
-- * currently expect (e.g., hugetlb, dax).
-+ * currently expect: with hugetlb, we expect no folios larger than 16 GiB.
-+ */
-+#define MAX_FOLIO_ORDER		(16 * GIGA / PAGE_SIZE)
-+#else
-+/*
-+ * Without hugetlb, gigantic folios that are bigger than a single PUD are
-+ * currently impossible.
-   */
-  #define MAX_FOLIO_ORDER		PUD_ORDER
-  #endif
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 0e26f4fc8717b..ca3f146bc7053 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -908,6 +908,13 @@ config PAGE_MAPCOUNT
-  config PGTABLE_HAS_HUGE_LEAVES
-  	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
-  
-+#
-+# We can end up creating gigantic folio.
-+#
-+config HAVE_GIGANTIC_FOLIOS
-+	def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
-+		 (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
-+
-  # TODO: Allow to be enabled without THP
-  config ARCH_SUPPORTS_HUGE_PFNMAP
-  	def_bool n
--- 
-2.51.0
-
-
-
--- 
-Cheers
-
-David
+Thomas
 
