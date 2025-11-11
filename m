@@ -1,51 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-14087-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14088-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E05FC4CC4C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Nov 2025 10:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DCF8C4CD75
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Nov 2025 11:01:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d5MG76v6tz30FX;
-	Tue, 11 Nov 2025 20:50:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d5MWC0p5rz30J0;
+	Tue, 11 Nov 2025 21:01:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762854607;
-	cv=none; b=gWhPK/A4DGD+s9a24RroapXb1PnLTaf76CyqUGMhe8uZycSpkiQwshujjpf6mIYprLp/lzNkR8Lt9+b8Cmo22vxa8hldlAnCiRKciTT8uz+fdEJf9JkE/5HwUb3TaXd5D2Hv2DVo15jPou5utQE6qp6/zFbMQJKgYQQ2p+yggSBCmnjJmeGqWGQQqB7AQ0URLX5aXo6yYDX6dxm7Xl322Wz5c/am/74PRKQCVkBMPeXWJZSuGlVPv84DVZB+mI2zn73E2i7lSIyyxOEvM/JCS1Qvuat3bf83fT/nborIyYLzta5a8PwwP+wbAWBa8i1eKCmui0UUuT1LKDz2hz5Shg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762855286;
+	cv=none; b=FwoR80335+sexFXrPtiRxzaBLTuv0YRJ+0RyWvxQgqm5eQgE//rreW8se9NUeYzU5vYLVpLG8YswrUhEWGbBqyA7QLyHwaMlr93h+aSDVaCMsLTi9XnnIS/tfwiEg+VWmGMMikK3MxbiAqB7UEAHMMqLArwafPCPnf8u8AMDuK9y6UQ/y0PvGsdYS/GME9GLkMCKWEavheS38ollqNJFX7QAiNKV6Xvyz/zb4HWlk3AlrVmVGUzFe10MmSKPMofsEOiNELyB7pmH15t2Qo9jLz20uEqwrxK2D58QwgOzAGpFwAQr3RmnXyJ2GKQ8f7jBp2mfdUap63OC+xxO73+Ysg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762854607; c=relaxed/relaxed;
-	bh=6bsPdtBaqJ4UPF5R7K+ouK1dJ6DCyxBWv0w/QZnr7cE=;
+	t=1762855286; c=relaxed/relaxed;
+	bh=mqzMG8DZM/gvRBtNitIiPBI41Lv4Ew10vO1gkoA+Kjs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mYhWU32qdfTuQ7ak2e+HxiXVl2J9TIWRaCV6p1ixbr+snhpCuMt3IL4+NhccyfNhKB+MKAPBsCt+PjCYZv/jJMaqFdGPr9WSSYhGOHJn4xxRm8jADmfGnSOQJxUEfXFr7oX83NyQzAht1U5M/9NFOHdE6zGvqmm7kNyysyNi2a1C1FXQY8QKcnZYP644d2+T9vwKgcJfr285pYx4KVhQf2A5gLH0BWK1WAgQK2wRS+MKmV1dF+CP3qt9BLWcRfJgm25wBWpioo6BEL+wfWJnxGi0ZbFPYRrt7M0Hydo6H8CFlaW/XAn5mghTjB2AZX3gxd42lyIS5PJzp0boezBOKQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=WXA69s3/; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=QGRLzKwLImHkl1BJqYi4Vw54N4cTee8nH0EFjfAFKqiV2ccPNEUtZeJT4e98YeOm3Y6i3U0GxeAn3MyxKekpvv0RD0T3sUVavnFsL9575lD2kiXkZ9rLCXSE1BRNEWObasCvkDYbqw5d8/lceCwp0uGinKefUJxqjmo4qcnRmUhUKcEL/6ycF0EZP4a9g2TZayaL6eLlZLurCmOmVkoS64is3erlOB+AnM1cxylnzxXn4eyeiJmIo3+0GvyXMx1aqSoKq/Xrr6V4aPUxaoJgx/7gbL3b5zI7NhSRPj6M6hmHiZM10rQHTepXF+FqvZOlAGtMSLifn0uG6njM88pGAw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=MW8BXQRZ; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=WXA69s3/;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=MW8BXQRZ;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d5MG6607tz30F0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 20:50:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d5MWB0v7Zz30Gt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Nov 2025 21:01:25 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6bsPdtBaqJ4UPF5R7K+ouK1dJ6DCyxBWv0w/QZnr7cE=; b=WXA69s3/ndSSCDKncRmaO/hjic
-	O1y94fGm7YG4wpp1EnXG6yDbvuMjQmTNWvtrC7zZiZbJKSJQ3qPVVV+wFbvU9CFAsYmwuwFWd9TQz
-	502RxsFSRuMlb+ZsoiAw/Eyy0gQ2krWPMw0fEZQ3Z1ZbYzdnWOQhbqHDcknhoQE/b6LUe5OiGj/uX
-	ilItJNCZJAw3WeivKD5Fmg/6ibDscl4juFxBkBG0efupSFSIBUUIdS3DG4fn/rMt/0u9B5d/iqbE3
-	VTHj0bLhd9xu7SVaxQVogoLmue/J7I9fcpgSO2MhCBANTrOxCwyy94lXIyVk5oV9wmikQTnsNUf6U
-	oFmhH9OQ==;
+	bh=mqzMG8DZM/gvRBtNitIiPBI41Lv4Ew10vO1gkoA+Kjs=; b=MW8BXQRZWfQCxSkVRaAW5RDNRv
+	u1sda6MVQC9abOrzArDC8Tn/TJ0Lsnq3zSEIToxqDk+2Y3hn7b+eNYfnCIbwUlXCj2iIT2wjI/wew
+	cBCjS6trY0nXW2EHN2fegFgCawQAJsMgikqLavler34mWIP1rQcTnw8A+1GdCExcvRmhNRc8KvMsv
+	1qNOJzokl6uVp9Ybw0BL5rIhQ4k24h8BTs3yqMPybTjBAdjdlfD5wcYREFELha7wTjdS7t/GfB0pT
+	gJRegxPM88TCv3SWy/DpaceAnnpzuoH08amxqHgXkDEMvxRFnhOFsiApuvBrXKnLF1ZZDYsq8fPYB
+	xbQFpQFQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIl0f-0000000FPaa-0OxV;
-	Tue, 11 Nov 2025 09:49:57 +0000
-Date: Tue, 11 Nov 2025 09:49:57 +0000
+	id 1vIlBb-0000000FeCe-2SRQ;
+	Tue, 11 Nov 2025 10:01:15 +0000
+Date: Tue, 11 Nov 2025 10:01:15 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
-To: bot+bpf-ci@kernel.org
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
-	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
+To: Christian Brauner <brauner@kernel.org>
+Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net,
 	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
 	linux-mm@kvack.org, linux-efi@vger.kernel.org,
 	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
@@ -56,11 +56,12 @@ Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
 	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
 	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
 	yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev
-Subject: Re: [PATCH v3 34/50] selinuxfs: new helper for attaching files to
- tree
-Message-ID: <20251111094957.GT2441659@ZenIV>
-References: <20251111065520.2847791-35-viro@zeniv.linux.org.uk>
- <70d825699c6e0a7e6cb978fdefba5935d5a515702e22e732d5c2ad919cfe010b@mail.kernel.org>
+Subject: Re: [PATCH v3 36/50] functionfs: switch to simple_remove_by_name()
+Message-ID: <20251111100115.GU2441659@ZenIV>
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+ <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+ <20251111092244.GS2441659@ZenIV>
+ <20251111-verelendung-unpolitisch-1bdcd153611e@brauner>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,47 +77,26 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <70d825699c6e0a7e6cb978fdefba5935d5a515702e22e732d5c2ad919cfe010b@mail.kernel.org>
+In-Reply-To: <20251111-verelendung-unpolitisch-1bdcd153611e@brauner>
 Sender: Al Viro <viro@ftp.linux.org.uk>
 X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Nov 11, 2025 at 07:53:18AM +0000, bot+bpf-ci@kernel.org wrote:
+On Tue, Nov 11, 2025 at 10:30:22AM +0100, Christian Brauner wrote:
 
-> Can this leak the parent directory's reference count? The parent inode's
-> link count is incremented with inc_nlink(d_inode(dir)) before calling
-> sel_attach(). When sel_attach()->d_alloc_name() fails and returns NULL,
-> sel_attach() correctly cleans up the child inode with iput() and returns
-> ERR_PTR(-ENOMEM). However, the parent directory's link count has already
-> been incremented and is never decremented on this error path.
+> > Incorrect.  The loop in question is
 > 
-> In the original code, the parent link count increment happened after
-> d_add() succeeded, ensuring it only occurred when the full operation
-> completed successfully.
+> Are you aware that you're replying to a bot-generated email?
 
-All callers of sel_make_dir() proceed to remove the parent in case of
-failure.  All directories are created either at mount time or at
-policy reload afterwards.  A failure in the former will have
-sel_fill_super() return an error, with the entire filesystem instance
-being torn apart by the cleanup path in its caller (get_tree_single()).
-No directories survive that.  A failure in the latter (in something
-called from sel_make_policy_nodes()) will be taken care of by the
-call of simple_recursive_removal() in the end of sel_make_policy_nodes() -
-there we
-	1.  create a temporary directory ("/.swapover").  We do *NOT*
-use sel_make_dir() for that - see sel_make_swapover_dir().  If that has
-failed, we return an error.
-	2.  create and populate two subtrees in it ("booleans" and "classes").
-That's the step where we would create subdirectories and that's where
-sel_make_dir() failures might occur.
-	3.  if the subtree creation had been successful, swap "/.swapover/booleans"
-with "/booleans" and "/.swapover/classes" with "/classes" respectively.
-	4.  recursively remove "/.swapover", along with anything that might
-be in it.  In case of success that would be the old "/classes" and "/booleans"
-that got replaced, in case of failure - whatever we have partially created.
+I am.  I couldn't care less about the bot, but there are intelligent
+readers and the loop _is_ unidiomatic enough to trigger a WTF
+reaction in those as well.  Sure, they can figure it out on their
+own, but...
 
-That's the same reason why we don't need to bother with failure cleanups in
-the functions that populate directories - if they fail halfway through, the
-entire (sub)tree is going to be wiped out in one pass.
+And yes, catching places that might smell fishy is one area where that
+kind of bots can be genuinely useful - triage assistance, same as with
+sparse/cc/etc. warnings.  With the same need to LART the cretins of
+"The Most Holy Tool Makes Unhappy Noises - Must Appease It" variety,
+of course...
 
