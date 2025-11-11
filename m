@@ -1,61 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-14105-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14106-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DB8C4ED52
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Nov 2025 16:43:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74258C4ED55
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Nov 2025 16:44:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d5W6C0jgxz2yvV;
-	Wed, 12 Nov 2025 02:43:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d5W7P3b1Fz304h;
+	Wed, 12 Nov 2025 02:44:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762875827;
-	cv=none; b=NZQQB+I8QHlhAAsMZcxoqdmiHXVLLVI/+i+uhymd1i1c/sw7HduQlaBE0DFuptSNlH1/n3qBiFvoN0pyzwhk65q0Kw2Q/LMd936lpAvv0JUzuEKOb9fM+8IGn7fyqb1Ob0MK5noD/rJvLJEgEfUhdQHzplnoh/D/fqLutPj0KRPDgZFKclvGMFkLyOHrtUQwTWmY4Nm1u6d4GASeV403Q9gvbmVgsiMI/kjH9WmKTtqFhPn3wWR4mdEf5jTIuQcZZTdzwzAlHmilpaeuW0HL6F5kwavckIrh3twTtvJCTh4DghCBnhai5U5wTb+o0BrGsS0w7N2fimBUAkpgeQXlCQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762875889;
+	cv=none; b=EPrb6EZlUGUNKMQK9fJR8W49fmlCZhhSvQGCX4ja0gFfesbTvg++St+FA0sQ/Bq0j9jk/3EZafldWtAeEbn9zeTblBrCBRv39PAqolvF6qVBjUegNiF3qnfyG38nFTvNmTAAwfTVkKoKFtAZfTAWoYHSYfjQWtQWaQvH4XqykNlxC7MNO8WvkhXHtBhO8rYDaxKB0r/VkWoaTlsW+zcpjsrA0i49SgS3HF7avTMm7pWLXLeJynhUOWwqFKIdmekz3UA4n5fndxnzRUZ3jFkg56jHHm8slXXKK830ZBMNDSBpkxyA18G2up11UsBehdcq2K5sPZ4Cb2fkJP4Buj/bxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762875827; c=relaxed/relaxed;
-	bh=6z4eNtTEtsQGTT5IqBYrFG77WbD3eno/0NIPXZVFT3o=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iZlywnqz8uYBJ6B1owmdKAOeS0gF0S5YdSHzTbUOwOv2mDacosSC6NjRC67Y2dVdiuMTrJadhTwKcag0KT4qTrOFC62gq0+GArSshLXfzXQNzEv0k/CW1N3nEWijT0SExpET4cH6X6tcE9c1etk152WPqTZ1QUr+5FXBqdj7ArkrIt+mXUqBXIphWQb3IHo3LZQxqZAK/3Q5ygRjzkPUR31xrmIJ0tT99wmebir6aqalD50tT47sIEkCie17i8aL5eKIhL0FwQKskPgUm/3snshunfYhWPz7gFUmDMumjZ4Db5D2yh6//6ZAUNgB34PqtIUrdsrHNVzAhUfyyOfGEQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	t=1762875889; c=relaxed/relaxed;
+	bh=Fq7BwnY4CU803RbB1ABnIKKLDH+itY4JvzdBYWfObY4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Kdiyc9QcxKgA8E0ETB6Ii2+6KqZUYqdJZA+WrOqJMW6DBuhW7vy7B4cwqfcOy755IL2pMI1RRhLnFNCIo9hrCRxkB55bdb+9lWKqPM+0kFn6fnLI8emfukGi9eKNimODO3YwMFkISkpbhO4Se2TD19b/fFFQRTHvPB6GM9rA2uHFiJWp4xD1zLCGStasHxhsdlQfVkvwujKcR5qrSSsaZlEsFfF/esbVWCJRH5WZv0Gguv5+FvjJvpZprwMhl8XM+lhMrfP+X6otbn8iNPb+vPxMr0XzMZ/8jX2XkL6ZMS9MbHsr/ZoDFNZFnr4JlAM5bClI0dQ2kv0xYS53xUyjag==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HzG6rQ3X; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HzG6rQ3X;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d5W6B39nxz2ySq
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Nov 2025 02:43:46 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d5W5X6W9SzJ46Zq;
-	Tue, 11 Nov 2025 23:43:12 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id ECA1D140278;
-	Tue, 11 Nov 2025 23:43:43 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 11 Nov
- 2025 15:43:42 +0000
-Date: Tue, 11 Nov 2025 15:43:40 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-CC: <linux-cxl@vger.kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
-	"Len Brown" <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>, Borislav
- Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho
- Chehab <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>,
-	"Davidlohr Bueso" <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>,
-	"Alison Schofield" <alison.schofield@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
-	<dan.j.williams@intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
-	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH 4/6 v7] acpi/ghes: Add helper for CXL protocol errors
- checks
-Message-ID: <20251111154340.00002a39@huawei.com>
-In-Reply-To: <20251104182446.863422-5-fabio.m.de.francesco@linux.intel.com>
-References: <20251104182446.863422-1-fabio.m.de.francesco@linux.intel.com>
-	<20251104182446.863422-5-fabio.m.de.francesco@linux.intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d5W7N6HCVz2ySq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Nov 2025 02:44:48 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 02DA14420B;
+	Tue, 11 Nov 2025 15:44:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9780C4CEF5;
+	Tue, 11 Nov 2025 15:44:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762875886;
+	bh=kEIGVMJBVgHNfIsiqOwArbHxxwlSOP5asagz3P1dOYM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=HzG6rQ3XnpbNRMYPZqf6GW3qRv66U2ogE5HBMLFcHTastXLV865vpAqesAjiTw0xW
+	 vuoYR5fSX/oc0NdvRHNDpqRQ+65k1MKSmY1klwOIFU+PNl0hzHhQXHn2hZWHDWMO2r
+	 mX7AX9TNL5UHcfOgNWcU+h0F2A8piJLgOJPWlZvK8n+KG3evkRQ1AKGMUOCN9h5FNI
+	 e+6FBekHbauDgnPHF0EgKlFZiJhDCy5L57NdDJbtRWoz1G6Fm6EJT/KwMrilkusw3l
+	 V8xVkucrNjEElXKevi5q0jxAzK41WFn+5tsOO7TRqF376loU+B9V09Fzf4ZmgqjoE3
+	 j/I3ZOlpGG+2w==
+Date: Tue, 11 Nov 2025 09:44:45 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: linux-pci@vger.kernel.org, Christian Zigotzky <chzigotzky@xenosoft.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	mad skateman <madskateman@gmail.com>,
+	"R . T . Dickinson" <rtd2@xtra.co.nz>,
+	Darren Stevens <darren@stevens-zone.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	luigi burdo <intermediadc@hotmail.com>, Al <al@datazap.net>,
+	Roland <rol7and@gmx.com>, Hongxing Zhu <hongxing.zhu@nxp.com>,
+	hypexed@yahoo.com.au, linuxppc-dev@lists.ozlabs.org,
+	debian-powerpc@lists.debian.org, linux-kernel@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v2 0/4] PCI/ASPM: Allow quirks to avoid L0s and L1
+Message-ID: <20251111154445.GA2175922@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,26 +72,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRMC9z93mI5BKbW0@wunner.de>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue,  4 Nov 2025 19:22:35 +0100
-"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com> wrote:
+On Tue, Nov 11, 2025 at 10:33:43AM +0100, Lukas Wunner wrote:
+> On Mon, Nov 10, 2025 at 04:22:24PM -0600, Bjorn Helgaas wrote:
+> > We enabled ASPM too aggressively in v6.18-rc1.  f3ac2ff14834 ("PCI/ASPM:
+> > Enable all ClockPM and ASPM states for devicetree platforms") enabled ASPM
+> > L0s, L1, and (if advertised) L1 PM Substates.
+> > 
+> > df5192d9bb0e ("PCI/ASPM: Enable only L0s and L1 for devicetree platforms")
+> > (v6.18-rc3) backed off and omitted Clock PM and L1 Substates because we
+> > don't have good infrastructure to discover CLKREQ# support, and L1
+> > Substates may require device-specific configuration.
+> > 
+> > L0s and L1 are generically discoverable and should not require
+> > device-specific support, but some devices advertise them even though they
+> > don't work correctly.  This series is a way to add quirks avoid L0s and L1
+> > in this case.
+> 
+> Reviewed-by: Lukas Wunner <lukas@wunner.de>
 
-> Move the CPER CXL protocol errors validity check out of
-> cxl_cper_post_prot_err() to new cxl_cper_sec_prot_err_valid() and limit
-> the serial number check only to CXL agents that are CXL devices (UEFI
-> v2.10, Appendix N.2.13).
+Thanks!
+
+> I note that a number of drivers call pci_disable_link_state() or
+> pci_disable_link_state_locked() to disable ASPM on probe.
+> Can we convert (all of) these to quirks which use the new helper
+> introduced here?
 > 
-> Export the new symbol for reuse by ELOG.
+> I think that would be useful because it would disable ASPM even if
+> the driver isn't available and thus avoid e.g. AER messages caused
+> by ASPM issues.
 > 
-> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> pcie_aspm_init_link_state() also contains the following code comment:
+> 
+> 	/*
+> 	 * At this stage drivers haven't had an opportunity to change the
+> 	 * link policy setting. Enabling ASPM on broken hardware can cripple
+> 	 * it even before the driver has had a chance to disable ASPM, so
+> 	 * default to a safe level right now. If we're enabling ASPM beyond
+> 	 * the BIOS's expectation, we'll do so once pci_enable_device() is
+> 	 * called.
+> 	 */
+> 
+> If we'd mask out incorrect or non-working L0s/L1 capabilities for all
+> devices early during enumeration via quirks, we wouldn't have to go
+> through these contortions of setting up deeper ASPM states only at
+> device enable time.
+
+I definitely agree.  I forgot to follow up on all of those cases.
+There aren't that many of them, but it looks like probably too many to
+address for v6.18, and I *think* it's safe to wait and deal with them
+for v6.19.
+
+Bjorn
 
