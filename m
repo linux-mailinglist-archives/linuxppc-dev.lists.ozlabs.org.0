@@ -1,63 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-14132-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14133-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED264C53AC2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Nov 2025 18:27:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74600C5452E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Nov 2025 21:03:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d69MR584wz2yvJ;
-	Thu, 13 Nov 2025 04:27:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d6Dqg1DvTz2yvR;
+	Thu, 13 Nov 2025 07:03:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762968451;
-	cv=none; b=ezt7GbttA6Gi17dfVwwY5kOAiMq91IIIBaEIAuxja71jJD8Z3OmQtSODNmoYU5Wher5M6pgOLpK0xd1VRQBMCOSdOJ9yGWn3hnRn40ZAzKlCmJTWd28zQtkzmoT0lp1pdUoUcgWyVx/3OY/w3RGhtTN3niZMw22uboeeYevxXZ9O9kjJJZUgVSf6OsXPb0/22LCrQDXp/oSRg0u46XcECbE9n0omWVUc7GZmfdA8FnqTuPtiXQLVNpy0gc7vnJdG6u9KQKg6hNFLh1fYvUPLq20ol7+0unGSUwNwArmD/M8NjBYS28i5dmler7V9NdsFOoa+TItVNNglfJcals4xRQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762977823;
+	cv=none; b=TbhRQdQqfqZroPhVYiW3wdoxafF53Z5z8TKzwQUd7dB+8C5r8h/WAaucXW9XqsU/4Q5k7u6jrvriyCzOBYPtM9+vsiQDzl7VFSg+vU2zQpgFYp4uxI2aTRQ3zQR8sr8Guv53bQEYux6vXYDHKHgt37ur4yOAxaptqLvi4kfi6sYhbdjRaTolP7AgPq2OVFxx5SmIch11xJoM1O9H/w9o3ndquEvf+ns6TFQcbTd950EaCyAlGMIFMn3zAFG9drzvd7DMlJIOQyDncC4DO9SWNIte9n8+mmZHWMcIc/WlPPL3YV8NplkMykusr09X0q8fzShugaE6AQURzz4UyMK6Eg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762968451; c=relaxed/relaxed;
-	bh=/MHu+4AB43Bk0NhBtlWelD/MARvV3HFZd2TK5ME+pp8=;
+	t=1762977823; c=relaxed/relaxed;
+	bh=H57JN/9iHGXxmrsKYOTMMOs+sS4zb60ocLeJI0CgIwA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YabhxaT6a4vLFUHkKcGgOuv+6qhaAKTtRzQ2j5KXU5kgUAC7FSaz+GYPWBXN2O8PBSrXTF/zFHPBHAHGQ3j1ElVHrXGKTOvInXdG6OKtZe6pxXWmcgeWdwKKj40cbnYLottWozFCs2fe/KcHEOpVUlIhCsSnZyzNGjx9FgBsDH8CSYf9Kw8sTYvILTRCWUOeiMPlDV/KqGAgEbc82ZOQqalTeOM4g7l9rz9o/1NktBHX6ujj/6ZHVGR27gW5jCE4orc51KXFWUJcgFXChYiqQdeMxIPnu/TENBcb5o6aN2Un9NFhN206bor1en1CvtjIULoG0NuV//plfvVdtDsqMg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J2e9xUty; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=ftzTOlg3JirGBWNkYNb7fzKrJm2TPNRzD89UZmRglRPkWkdq8i9dUimWMBXQd7nboR2aPZ0FRAdcl0RgOO4vsx7Lqq2ImDYvnau1+g7fcpizDEJLkIFb7Yu2K3gog8QmCRa+Iobn0HBiZOQF2Ek1EQkVWCrHk4JqnrVZix4tTBsGkVkey6sIYZFqVo9mvNO3181hkZdNorA6LcqY7ffmh6amzhw0HhQLNI38eTR41owvgNN87W5d0q2Ha3YDMcrp7HDPOuzVcPpUlrr8f2+Ivxe8qo1bm456gb+K+8VFMmH5g8H07du1NqVgGbe7fZ2aS2WQ6Vrvs6l6uWnErsrdJg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BJlDjxq7; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J2e9xUty;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BJlDjxq7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=nsc@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d69MQ4W17z2yFT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 04:27:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d6Dqf17t1z2xSX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 07:03:42 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7176A601D0;
-	Wed, 12 Nov 2025 17:27:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAD1C19424;
-	Wed, 12 Nov 2025 17:27:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8C8BA601AF;
+	Wed, 12 Nov 2025 20:03:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88134C116B1;
+	Wed, 12 Nov 2025 20:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762968447;
-	bh=7qJu6hxk6QNjW6m7PnkDRSFXCijC1JmS6gfHLufAYyc=;
+	s=k20201202; t=1762977818;
+	bh=zAvG1Qo2HuWOnUmKk3EcMjBeNxBNM8ZFtr9UpT/34Vw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J2e9xUty5WyHXfj+KhPSJEF8UeixC7K4OO+ydfOeq0s6rVjC/o2M7+WvW2sv00byK
-	 ghoXIaNf8XRhCXwVEObGQvM/+TurALvw3OW2q4s9QEjCmlxpyh1BRMku30qd4JFUE7
-	 3X87kf67iXbG8osZYowne/siQAz+U9YmDANEkGH6o9mYgjAIdicAIZk3xwmajCMIAy
-	 Z934/pxNKmfJwZe/sgA1NGkAtI1iKk8MBmV55UxLZFwFg2SP9cvyHg6lS6S5YERRHb
-	 2RP5IaPbA0EWpn1fwhdDXC6hGLRQoVfKGwGUjGW7oRR3UvxcFpS6ezyIrOCj0idbvV
-	 pDFNEZ9Fr4nQA==
-Date: Wed, 12 Nov 2025 22:57:07 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-pci@vger.kernel.org, Christian Zigotzky <chzigotzky@xenosoft.de>, 
-	mad skateman <madskateman@gmail.com>, "R . T . Dickinson" <rtd2@xtra.co.nz>, 
-	Darren Stevens <darren@stevens-zone.net>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	Lukas Wunner <lukas@wunner.de>, luigi burdo <intermediadc@hotmail.com>, Al <al@datazap.net>, 
-	Roland <rol7and@gmx.com>, Hongxing Zhu <hongxing.zhu@nxp.com>, hypexed@yahoo.com.au, 
-	linuxppc-dev@lists.ozlabs.org, debian-powerpc@lists.debian.org, linux-kernel@vger.kernel.org, 
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v2 2/4] PCI/ASPM: Add pcie_aspm_remove_cap() to override
- advertised link states
-Message-ID: <xkrehb72sk7x5iyxbkvydu356hgo5t2xr3asnwiddvhtz5eqam@jlzd6gwg256n>
-References: <20251110222929.2140564-1-helgaas@kernel.org>
- <20251110222929.2140564-3-helgaas@kernel.org>
+	b=BJlDjxq7IfTUQQ7KUoqeZvLJ7e7liS62fkRaIr+cTAEO3z6jy+mhhshvOmd3bh8vc
+	 LKQO04khJh2oTe+f9rb+O0G37uBzgRuvleSSc1k+8vfLQQV7cKjeurjC9gI6nKycv6
+	 PtFT/rC0/q2cqD1G9etafq9EthszRCQfMIRlsYu7HBTVjs9du5ebCl4+i2pradypdg
+	 uuGbRqvggNZ1Vq8SYiqLM6ZaYk0XhBHTie0iiVMSMc61PWlcq5ZLMdJpdkHbN/3sxg
+	 o1Sg+B3yFgDuYTpbiL1bDCgFQIu50KZMRUyF2kc3V/3zdo4GQF+AkhnVV8Fo5aIP9W
+	 TUrrjnu0wLLlw==
+Date: Wed, 12 Nov 2025 20:55:55 +0100
+From: Nicolas Schier <nsc@kernel.org>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Nathan Chancellor <nathan@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+	sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 01/10] kbuild: don't enable CC_CAN_LINK if the dummy
+ program generates warnings
+Message-ID: <aRTmSzzOmdhBy_lO@derry.ads.avm.de>
+References: <20251014-kbuild-userprogs-bits-v2-0-faeec46e887a@linutronix.de>
+ <20251014-kbuild-userprogs-bits-v2-1-faeec46e887a@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,75 +88,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251110222929.2140564-3-helgaas@kernel.org>
+In-Reply-To: <20251014-kbuild-userprogs-bits-v2-1-faeec46e887a@linutronix.de>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Nov 10, 2025 at 04:22:26PM -0600, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
+On Tue, Oct 14, 2025 at 03:05:16PM +0200, Thomas Wei�schuh wrote:
+> It is possible that the kernel toolchain generates warnings when used
+> together with the system toolchain. This happens for example when the
+> older kernel toolchain does not handle new versions of sframe debug
+> information. While these warnings where ignored during the evaluation
+> of CC_CAN_LINK, together with CONFIG_WERROR the actual userprog build
+> will later fail.
 > 
-> Add pcie_aspm_remove_cap().  A quirk can use this to prevent use of ASPM
-> L0s or L1 link states, even if the device advertised support for them.
+> Example warning:
 > 
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> .../x86_64-linux/13.2.0/../../../../x86_64-linux/bin/ld:
+> error in /lib/../lib64/crt1.o(.sframe); no .sframe will be created
+> collect2: error: ld returned 1 exit status
+> 
+> Make sure that the very simple example program does not generate
+> warnings already to avoid breaking the userprog compilations.
+> 
+> Fixes: ec4a3992bc0b ("kbuild: respect CONFIG_WERROR for linker and assembler")
+> Fixes: 3f0ff4cc6ffb ("kbuild: respect CONFIG_WERROR for userprogs")
+> Signed-off-by: Thomas Wei�schuh <thomas.weissschuh@linutronix.de>
 > ---
->  drivers/pci/pci.h       |  2 ++
->  drivers/pci/pcie/aspm.c | 13 +++++++++++++
->  2 files changed, 15 insertions(+)
+>  scripts/cc-can-link.sh | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 4492b809094b..36f8c0985430 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -958,6 +958,7 @@ void pci_save_aspm_l1ss_state(struct pci_dev *dev);
->  void pci_restore_aspm_l1ss_state(struct pci_dev *dev);
->  
->  #ifdef CONFIG_PCIEASPM
-> +void pcie_aspm_remove_cap(struct pci_dev *pdev, u32 lnkcap);
->  void pcie_aspm_init_link_state(struct pci_dev *pdev);
->  void pcie_aspm_exit_link_state(struct pci_dev *pdev);
->  void pcie_aspm_pm_state_change(struct pci_dev *pdev, bool locked);
-> @@ -965,6 +966,7 @@ void pcie_aspm_powersave_config_link(struct pci_dev *pdev);
->  void pci_configure_ltr(struct pci_dev *pdev);
->  void pci_bridge_reconfigure_ltr(struct pci_dev *pdev);
->  #else
-> +static inline void pcie_aspm_remove_cap(struct pci_dev *pdev, u32 lnkcap) { }
->  static inline void pcie_aspm_init_link_state(struct pci_dev *pdev) { }
->  static inline void pcie_aspm_exit_link_state(struct pci_dev *pdev) { }
->  static inline void pcie_aspm_pm_state_change(struct pci_dev *pdev, bool locked) { }
-> diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-> index 15d50c089070..bc3cb8bc7018 100644
-> --- a/drivers/pci/pcie/aspm.c
-> +++ b/drivers/pci/pcie/aspm.c
-> @@ -1542,6 +1542,19 @@ int pci_enable_link_state_locked(struct pci_dev *pdev, int state)
->  }
->  EXPORT_SYMBOL(pci_enable_link_state_locked);
->  
-> +void pcie_aspm_remove_cap(struct pci_dev *pdev, u32 lnkcap)
-> +{
-> +	if (lnkcap & PCI_EXP_LNKCAP_ASPM_L0S)
-> +		pdev->aspm_l0s_support = 0;
-> +	if (lnkcap & PCI_EXP_LNKCAP_ASPM_L1)
-> +		pdev->aspm_l1_support = 0;
-> +
-> +	pci_info(pdev, "ASPM:%s%s removed from Link Capabilities to avoid device defect\n",
-> +		 lnkcap & PCI_EXP_LNKCAP_ASPM_L0S ? " L0s" : "",
-> +		 lnkcap & PCI_EXP_LNKCAP_ASPM_L1 ? " L1" : "");
 
-I think this gives a false impression that the ASPM CAPs are being removed from
-the LnkCap register. This function is just removing it from the internal cache
-and the LnkCap register is left unchanged.
-
-IMO, either we need to disable relevant CAPs in LnkCap register also or change
-the log in this and quirks patches.
-
-- Mani
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Nicolas
 
