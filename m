@@ -1,70 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-14129-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14130-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9DFC52D7D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Nov 2025 15:56:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F45C539BC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Nov 2025 18:13:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d661P2Zk3z2yvJ;
-	Thu, 13 Nov 2025 01:56:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d693k0bs0z2yvN;
+	Thu, 13 Nov 2025 04:13:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762959401;
-	cv=none; b=Bd++njKPrG3u8Q5hev2AH+6c4YGgQcXHFEsmLvmP6B1fFBATf+HomEr4OYYz2+biBzbrLrzKlmsoFDihiIN25DW44LrO1vgF3UH1JJtPMnzoCwHNjnVMvse5XJgDifHejCCmxfojwdBHyluyp5VNnWkMtNsf5yaMtl8CNtQ0PQ3NaHf6Na22WXMJ/kvS8Ke9NFKRRGHAWtmYsu+mRKSIj2B9AxUU96y6RVO9Dniv0XxVzhat6Fj8yJBWJUjuXz0i6XujCrEm1j0EZHJD2n4nWA3A6EU7bh0HLnpR5LCctfv9CRIAEf7iXws47FIqTUL5hhHifhBhnCKOqG0q84FKTw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762967633;
+	cv=none; b=it9QrF38HiDZBQsOewz5InZ+46Uraaq2LsvnihLJwBx7uk3zCGwhFl6vSdWl4r5fUKMMEu57KgAGctwAgIrwaI8dICuvb+hYs7hXd+wIA+8AhWt9Tr05mqxI4NqYkRHBLBdj3fSN8xo2CRb90P8EEPKd2qHrLaOVxllEAK55tjlFIL0t6sJbMhnnGa9cVLI5NuDJlyo5zE+KfhuzPN/GrgqXGFiifa46RPpJlaJhQr6/TGAwc+ERaxMCrOCJsB5EJsLaVwuFoBQ94/xYzKJC4lYDYkQrGRVhrrvfXxT5ZeOQSn49LJFHus+BSbrjdPUWSkS73sBKyp0Gcq+R7HT5kw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762959401; c=relaxed/relaxed;
-	bh=ryP1wiJVw9aw+DpTbMpV/h0UEZ8NMcdOc+GlItX0uJI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nYan4ds7d4D6PQYaUQnGehll3N0O7xdt9BW1UVi8Ml7lpMDlXiAkONMYLymebRADpGQ3GIC/5JHxLdGGQnW6/uZL3G2wnItTtTvn5yYJx0EBgV69H5NdMi0DTbGbwf9ZXXiRCXnJTfEKKF1QjMK3fUP0SCRod/wzFPTxYkWXqmLJ07bN1WflAVJSwJPEXzHrYLfgU/Vg8ElJxgYUZnWerbNtgiDeVADAucZE7oeR2AqvDCaitH9g0IAM+B7KCFwAInnl/5fp1C1eODvvwTSzwE5pJfWc+iZx6pnHCzec8LV7t6AkLjDmCNVXMFa4lis/yNca3Dv3BxWMxNci0LZYNw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=D79khSQs; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1762967633; c=relaxed/relaxed;
+	bh=SblB2KAmTuwKP3qBb4spBPUSKpxGRH6EYqk/7ae5JNI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y7jkx+NxBWbeKOvpWSzM19w6pVcahqffVy5i4TKz2xEaulG70T/BuyPVdqyR2656YhbYjmYY89fVijsXZ37exXfP6f1/mHgCBQYVSxGiluqWpEBeQK7WjZKuv7uVVyz7cv+AkB7n24NXJaI+AktC3Cbc992GIefFDnmaNndNOHYen6wXooN/sf8vToU0xHPusbUmzz+Gtmn3ZeS79mvj2q88f+QP0ppHsocTIpatSUrb1F88YG0ptiiNUOQ574ll08fZU9KyE9rvD+KYK46fn5WBIRRmskJ0Vq97CIlGK2puU1Gd4rfZILsLs4uUpMmhy6nRb1WuRCRJH+RZs39oeA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rLUewenB; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=D79khSQs;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rLUewenB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d661N3Cqrz2yhD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 01:56:40 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 37CDE60219;
-	Wed, 12 Nov 2025 14:56:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BD2C113D0;
-	Wed, 12 Nov 2025 14:56:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762959397;
-	bh=/i5+uzL0Oqs6gEV3AXY8bbYwafp63UToQF5glVJFuPc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=D79khSQsyM2jtSumiC6G+0g59BNd6JFWbzNVlgUIR79tiGlaliyAjTfh8cVo+sovs
-	 Zf0qtjUtxNdE+enBHdx/SoUjg4XTdWhKo1E9Cw3JDQqa2QNqbP6roWSveZcgbKByYY
-	 u1kGW4HkXHsIbz364QHPma0yJrxgNJqgw8txrHtMUGMzq8CzEpmTvJIcUflZesjOQO
-	 hMjrnKaZxEfOSo72qJpGUddcPsp6Rag5IxCIIyWNvAORAhmC8jp0NveqasSz6ceZti
-	 cKLJCFHmP8tgM/qYXGge3d1hQBnhVyLPZ/IqOkQKjj41GF0X1ZkvlsbfDMYi42+4mk
-	 Ygc6eYKKTpabw==
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH v1] mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
-Date: Wed, 12 Nov 2025 15:56:32 +0100
-Message-ID: <20251112145632.508687-1-david@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d693j0gdnz2yhD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 04:13:52 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5ACFrTc2025879;
+	Wed, 12 Nov 2025 17:13:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=SblB2KAmTuwKP3qBb4spBPUSKpxGRH6EYqk/7ae5J
+	NI=; b=rLUewenBZQMZmNiKlPXede/IPGRlkh5Woy95RzjGmVmLrWYMHrQOVvHpD
+	7E9EjkbU1mzJ3ZmEU8qrpxmrv0ICGQsU5PLYFQfXaCAFmTShCWf+UOrqJ8fr6ntK
+	IPsRZBE3UWKNSno+iKDjF42+KH4HeLxJGtZlU06yFVBpTKgfn478WxbMjIBruneI
+	KCvaOCTnXH6ubWceWIbKmLT8p37+9WhDLezD5qqX6tPHhi+iT2xZ+G2byDeyhAl/
+	25b162dQmlipXJAXY7XL+unyzQiaFIT1aYVlCKcAQUwt78jBOPuPEL6+3MCrfgPp
+	/ytNXE4rqtg2pX+nLlpk/tMR0a0gQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wk8bsev-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Nov 2025 17:13:39 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ACHBcJu014716;
+	Wed, 12 Nov 2025 17:13:39 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wk8bsen-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Nov 2025 17:13:39 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5ACGqs0F007325;
+	Wed, 12 Nov 2025 17:13:38 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajdjh88t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Nov 2025 17:13:38 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5ACHDYVR41746812
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Nov 2025 17:13:34 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 92AFD20043;
+	Wed, 12 Nov 2025 17:13:34 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 39E5720040;
+	Wed, 12 Nov 2025 17:13:32 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.124.218.11])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Nov 2025 17:13:31 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Shivang Upadhyay <shivangu@linux.ibm.com>, kexec@lists.infradead.org
+Subject: [PATCH 1/2] powerpc/fadump: remove old sysfs symlink
+Date: Wed, 12 Nov 2025 22:43:27 +0530
+Message-ID: <20251112171328.298109-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.51.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,149 +96,109 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAyMiBTYWx0ZWRfX3VZOPQg7DoL8
+ VMYiW/AJqoemTVP/PObzQ7Je8pCTe6Y14hViRhjf9ElOJwMhvU7iIUg8TlNYVHGWo+GFO8j7Uxq
+ ys7C/y/TInzbdRTTgbskEFokUVxaTmlnwKabONn0mue1CB10J5nqtwY6LofIGTEZtcQloFhUW4I
+ Nd+psar9wQMPBm1IcyCBK0VonbenaOXTCTtGdLfmQ/UUqYw0kJmEr460jNXBYxMmzwWLwJ8py/x
+ AUlRGOhLzll8TOOZo/iBgouJaCkhFE6TM63V9J/AqYPXCnJuSP3mI87X2ss1rRccJcribQhedUi
+ 9Pyw3rVZFFnZTohDvlxNLKf6P2A72OFrNaKwgGawk+Uyft5c4oz8seaaHOA0oMNrCwnEwZDVlUt
+ DRN9+MpnwXf5PgTfHcbzwHwS+DW3xQ==
+X-Authority-Analysis: v=2.4 cv=ZK3aWH7b c=1 sm=1 tr=0 ts=6914c043 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=VnNF1IyMAAAA:8
+ a=pGLkceISAAAA:8 a=JfrnYn6hAAAA:8 a=MMG_BdGZt7urRIUxIQMA:9
+ a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-ORIG-GUID: 1zoa3h6ASXA9saSPNw_mRyZPk3Jxupyo
+X-Proofpoint-GUID: hZeQqP-AEBpOiMNDMrplkHmj8YnqOuiJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-12_05,2025-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ phishscore=0 impostorscore=0 spamscore=0 bulkscore=0 adultscore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2511080022
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-In the past, CONFIG_ARCH_HAS_GIGANTIC_PAGE indicated that we support
-runtime allocation of gigantic hugetlb folios. In the meantime it evolved
-into a generic way for the architecture to state that it supports
-gigantic hugetlb folios.
+Commit d418b19f34ed ("powerpc/fadump: Reorganize /sys/kernel/fadump_*
+sysfs files") and commit 3f5f1f22ef10 ("Documentation/ABI: Mark
+/sys/kernel/fadump_* sysfs files deprecated") moved the
+/sys/kernel/fadump_* sysfs files to /sys/kernel/fadump/ and deprecated
+the old files in 2019.
 
-In commit fae7d834c43c ("mm: add __dump_folio()") we started using
-CONFIG_ARCH_HAS_GIGANTIC_PAGE to decide MAX_FOLIO_ORDER: whether we could
-have folios larger than what the buddy can handle. In the context of
-that commit, we started using MAX_FOLIO_ORDER to detect page corruptions
-when dumping tail pages of folios. Before that commit, we assumed that
-we cannot have folios larger than the highest buddy order, which was
-obviously wrong.
+To maintain backward compatibility, symlinks were added at the old
+locations so existing tools could still work. References [1][2] now use
+the new sysfs interface, so we can safely remove the old symlinks.
 
-In commit 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes
-when registering hstate"), we used MAX_FOLIO_ORDER to detect
-inconsistencies, and in fact, we found some now.
+Link: https://github.com/rhkdump/kdump-utils/commit/fc7c65312a5bef115ce40818bf43ddd3b01b8958 [1]
+Link: https://github.com/openSUSE/kdump/commit/c274a22ff5f326c8afaa7bba60bd1b86abfc4fab [2]
 
-Powerpc allows for configs that can allocate gigantic folio during boot
-(not at runtime), that do not set CONFIG_ARCH_HAS_GIGANTIC_PAGE and can
-exceed PUD_ORDER.
-
-To fix it, let's make powerpc select CONFIG_ARCH_HAS_GIGANTIC_PAGE with
-hugetlb on powerpc, and increase the maximum folio size with hugetlb to 16
-GiB (possible on arm64 and powerpc). Note that on some powerpc
-configurations, whether we actually have gigantic pages
-depends on the setting of CONFIG_ARCH_FORCE_MAX_ORDER, but there is
-nothing really problematic about setting it unconditionally: we just try to
-keep the value small so we can better detect problems in __dump_folio()
-and inconsistencies around the expected largest folio in the system.
-
-Ideally, we'd have a better way to obtain the maximum hugetlb folio size
-and detect ourselves whether we really end up with gigantic folios. Let's
-defer bigger changes and fix the warnings first.
-
-While at it, handle gigantic DAX folios more clearly: DAX can only
-end up creating gigantic folios with HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
-
-Add a new Kconfig option HAVE_GIGANTIC_FOLIOS to make both cases
-clearer. In particular, worry about ARCH_HAS_GIGANTIC_PAGE only with
-HUGETLB_PAGE.
-
-Note: with enabling CONFIG_ARCH_HAS_GIGANTIC_PAGE on powerpc, we will now
-also allow for runtime allocations of folios in some more powerpc configs.
-I don't think this is a problem, but if it is we could handle it through
-__HAVE_ARCH_GIGANTIC_PAGE_RUNTIME_SUPPORTED.
-
-While __dump_page()/__dump_folio was also problematic (not handling dumping
-of tail pages of such gigantic folios correctly), it doesn't relevant
-critical enough to mark it as a fix.
-
-Fixes: 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes when registering hstate")
-Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Closes: https://lore.kernel.org/r/3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu/
-Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Closes: https://lore.kernel.org/r/94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com/
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
+Cc: kexec@lists.infradead.org
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 ---
- arch/powerpc/Kconfig |  1 +
- include/linux/mm.h   | 12 +++++++++---
- mm/Kconfig           |  7 +++++++
- 3 files changed, 17 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/fadump.c | 36 ------------------------------------
+ 1 file changed, 36 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index e24f4d88885ae..9537a61ebae02 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -137,6 +137,7 @@ config PPC
- 	select ARCH_HAS_DMA_OPS			if PPC64
- 	select ARCH_HAS_FORTIFY_SOURCE
- 	select ARCH_HAS_GCOV_PROFILE_ALL
-+	select ARCH_HAS_GIGANTIC_PAGE		if ARCH_SUPPORTS_HUGETLBFS
- 	select ARCH_HAS_KCOV
- 	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
- 	select ARCH_HAS_MEMBARRIER_CALLBACKS
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index d16b33bacc32b..63aea4b3fb5d9 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
- 	return folio_large_nr_pages(folio);
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index 4ebc333dd786..4348466260cf 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -1604,43 +1604,7 @@ static void __init fadump_init_files(void)
+ 		pr_err("sysfs group creation failed (%d), unregistering FADump",
+ 		       rc);
+ 		unregister_fadump();
+-		return;
+-	}
+-
+-	/*
+-	 * The FADump sysfs are moved from kernel_kobj to fadump_kobj need to
+-	 * create symlink at old location to maintain backward compatibility.
+-	 *
+-	 *      - fadump_enabled -> fadump/enabled
+-	 *      - fadump_registered -> fadump/registered
+-	 *      - fadump_release_mem -> fadump/release_mem
+-	 */
+-	rc = compat_only_sysfs_link_entry_to_kobj(kernel_kobj, fadump_kobj,
+-						  "enabled", "fadump_enabled");
+-	if (rc) {
+-		pr_err("unable to create fadump_enabled symlink (%d)", rc);
+-		return;
+-	}
+-
+-	rc = compat_only_sysfs_link_entry_to_kobj(kernel_kobj, fadump_kobj,
+-						  "registered",
+-						  "fadump_registered");
+-	if (rc) {
+-		pr_err("unable to create fadump_registered symlink (%d)", rc);
+-		sysfs_remove_link(kernel_kobj, "fadump_enabled");
+-		return;
+ 	}
+-
+-	if (fw_dump.dump_active) {
+-		rc = compat_only_sysfs_link_entry_to_kobj(kernel_kobj,
+-							  fadump_kobj,
+-							  "release_mem",
+-							  "fadump_release_mem");
+-		if (rc)
+-			pr_err("unable to create fadump_release_mem symlink (%d)",
+-			       rc);
+-	}
+-	return;
  }
  
--#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
-+#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
- /*
-  * We don't expect any folios that exceed buddy sizes (and consequently
-  * memory sections).
-@@ -2087,10 +2087,16 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
-  * pages are guaranteed to be contiguous.
-  */
- #define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
--#else
-+#elif defined(CONFIG_HUGETLB_PAGE)
- /*
-  * There is no real limit on the folio size. We limit them to the maximum we
-- * currently expect (e.g., hugetlb, dax).
-+ * currently expect: with hugetlb, we expect no folios larger than 16 GiB.
-+ */
-+#define MAX_FOLIO_ORDER		get_order(SZ_16G)
-+#else
-+/*
-+ * Without hugetlb, gigantic folios that are bigger than a single PUD are
-+ * currently impossible.
-  */
- #define MAX_FOLIO_ORDER		PUD_ORDER
- #endif
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 0e26f4fc8717b..ca3f146bc7053 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -908,6 +908,13 @@ config PAGE_MAPCOUNT
- config PGTABLE_HAS_HUGE_LEAVES
- 	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
- 
-+#
-+# We can end up creating gigantic folio.
-+#
-+config HAVE_GIGANTIC_FOLIOS
-+	def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
-+		 (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
-+
- # TODO: Allow to be enabled without THP
- config ARCH_SUPPORTS_HUGE_PFNMAP
- 	def_bool n
+ static int __init fadump_setup_elfcorehdr_buf(void)
 -- 
-2.51.0
+2.51.1
 
 
