@@ -1,64 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-14126-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14127-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6B6C52BA0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Nov 2025 15:31:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C63C52BF4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Nov 2025 15:40:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d65Sh4VGfz2yvJ;
-	Thu, 13 Nov 2025 01:31:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d65fx03kgz2yvJ;
+	Thu, 13 Nov 2025 01:40:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762957908;
-	cv=none; b=cRqLSrBj8ecIe7LAYLGOKcXCMTN7UlHZBHWwSoScrvp0PbDDzDdUs5HTU9e0AIzNG057RQyAI0XIcom979j3K/n2Tpg6a+jXX1Rdi+udZL7GLgWTWQ+kn+wvVRlGLpGsNgP0QToD0/yFtsADUy1t+sibI7G2+rhSA6HWTq5CI+rXvytPN12/hj0uv0/VVlsXCskAIto6Cc+uzXd5eGk9NZ2ZvtrOhHdKEQFi2yfTEfpg3aBit8EF3V0NX8L3RCgDlqEsRQhfjgEx1myGcDtTSt1ZQEKJlBape/yGiA1D7Nd6OmHX88mHbL6LkNehrtoaGOon2GCpTCKuLOdM+O70zw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762958440;
+	cv=none; b=U0QX83hTwJoA4Fz+71liRgc+vMFujI9AbyICp243aoNQ+18mslo2W5Ywis/4SvVmT756A050FAaxV9Lz0KilfvAf8Dn58cJLzEH2EPd7mpteR27gti7X3ozQiAWOGBm5puml4G7/wWaqwTn3itr1N80EmbgKAq3oGim4JLxZbzVNBagv1FPvt2LgtgyYU9LASL65fiPPZ/81c9jMTmlH7Rg70wGatF3FFmUedjr5+MugbtOMBkNhEX3I5GAZcSMP/h0xNgUIHQIwsHsgRT7rmjlahde5Z9UQPathSlLfxyv9rmG8Kj7J0bgGwPR1fFPnpO6OuJzD3frzelcgo8XpjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762957908; c=relaxed/relaxed;
-	bh=MukasWcD2HlrVrLej9eLTyub9bgX8lgt4xPdv4L4T3w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a3CurZqd/6vnWmJLdiDMwk6RZXCUZhO8cdbTxuQmJtRtTmcIN8zOCwIKe/8VBmONvkgsEiTprOr8CpWeqmttbAsg8KZyI5Bx2W60Tme/i9Z0LAVHeCmfvQF932h2H3wiGyCR1mR9GUCqGXH8fJQtZk2+ADkr40vT1sPJpAbl1F1gVM/nRdaglqvK9tzzHsPJ3ohnS0FciVJAi0gqB8EcSHQ3cUmxUGqsPs99MJ+k8ogXAguxf6YK8H/9Q3VRmt6rwiLLS6uLsvXJVUYS3Pjk6IPUc1gSe45qajRdrGNuKTD3+vCXwuPoA3Bt8/B6bvA4ggSD4jtltmpOG26CSafHdQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GIinGQwg; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GIinGQwg;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	t=1762958440; c=relaxed/relaxed;
+	bh=WC3E6BD73GgPha6nZHc4OSxq0fpx4NrvupkItIIJvNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eAHpjo8kCbpofre223Jr40aq17gVv8Fs8i427hOkf9a/uWSUPZScFmgfFjrllpTKfvY9XhK9kLBnwW2UAYU85leHlbJ3KKOEsvttvArF+NmRzBpnMwkqtX/frOsUTXhYa95MgN+a4GNPsKuvl5mmFYW9a/nUbAPbWCOI/ymOf9D/q4v/VFA4EiPTF8jX7sO5lptXLu/S5YVnFAIAEH8TySl92U5oHjPIdto+04yw7GfUNGfnSiURkpCl3iktC1DNxUpSlONrxm537GOu3FC78kz0lZHo4vMAnTM0Rh2+ku4YFok4qxzQo8x9NjC+YFtHP+lmgQ0VbjAH/xLxmntozw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d65Sg6dKPz2yhD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 01:31:47 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A09B26021C;
-	Wed, 12 Nov 2025 14:31:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32E1C4CEF5;
-	Wed, 12 Nov 2025 14:31:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762957905;
-	bh=Zh735Muu3xEoGfWdwvFpedTcy89mgtmJ14KbCy/3EQE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GIinGQwghyLFcbqlaCIqJdMQRe/oeTlsFI8shPpORhabfRb0llPMkSikbIEd/JZiK
-	 +gBPQOsFBELK1bMqOdX+yU7Sn3GfSNLITAxYB0gjD3FL260k1FYnk/QWT86Ilv7G9S
-	 YQppZvMVUWCXvbcjoevdvtKdBAqw6OGpHaM5bhHPQtGrqYCG2MsqWGlz9ufN5kx+o6
-	 C1F5qOC3ET/u09SZQQv0w0hYR4eDjHSanx15/qQ49GB0p8xKafEKuqvgDT/cgjs43k
-	 l8NhT0rSDWDwEKKTWVrEG7CsCmalw1FY9fvBx3gx5TEfqSDwyyDWcTX9hUe3uwRNH0
-	 vKTUa3Nh0HI5w==
-Date: Wed, 12 Nov 2025 06:31:43 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Florian Fuchs <fuchsfl@gmail.com>
-Cc: Geoff Levand <geoff@infradead.org>, netdev@vger.kernel.org, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Madhavan
- Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: ps3_gelic_net: handle skb allocation failures
-Message-ID: <20251112063143.1040d431@kernel.org>
-In-Reply-To: <aRRUiYIrOcpSiakH@lithos>
-References: <20251110114523.3099559-1-fuchsfl@gmail.com>
-	<20251111180451.0ef1dc9c@kernel.org>
-	<aRRUiYIrOcpSiakH@lithos>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d65fv3ssdz2yhD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 01:40:39 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id A35832C051E8;
+	Wed, 12 Nov 2025 15:40:26 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 73C00162D4; Wed, 12 Nov 2025 15:40:26 +0100 (CET)
+Date: Wed, 12 Nov 2025 15:40:26 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: linux-pci@vger.kernel.org, Christian Zigotzky <chzigotzky@xenosoft.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	mad skateman <madskateman@gmail.com>,
+	"R . T . Dickinson" <rtd2@xtra.co.nz>,
+	Darren Stevens <darren@stevens-zone.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	luigi burdo <intermediadc@hotmail.com>, Al <al@datazap.net>,
+	Hongxing Zhu <hongxing.zhu@nxp.com>, hypexed@yahoo.com.au,
+	linuxppc-dev@lists.ozlabs.org, debian-powerpc@lists.debian.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] PCI/ASPM: Allow quirks to avoid L0s and L1
+Message-ID: <aRScWjHRy1FrGiwC@wunner.de>
+References: <aRMC9z93mI5BKbW0@wunner.de>
+ <20251111154445.GA2175922@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,49 +64,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251111154445.GA2175922@bhelgaas>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 12 Nov 2025 10:34:01 +0100 Florian Fuchs wrote:
-> > > --- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-> > > +++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-> > > @@ -259,6 +259,7 @@ void gelic_card_down(struct gelic_card *card)
-> > >  	mutex_lock(&card->updown_lock);
-> > >  	if (atomic_dec_if_positive(&card->users) == 0) {
-> > >  		pr_debug("%s: real do\n", __func__);
-> > > +		timer_delete_sync(&card->rx_oom_timer);
-> > >  		napi_disable(&card->napi);  
-> > 
-> > I think the ordering here should be inverted  
-> 
-> I thought, that there might be a race condition in the inverted order
-> like that napi gets re-enabled by the timer in between of the down:
-> 
-> 1. napi_disable
-> 2. rx_oom_timer runs and calls napi_schedule again
-> 3. timer_delete_sync
-> 
-> So the timer is deleted first, to prevent any possibility to run.
+On Tue, Nov 11, 2025 at 09:44:45AM -0600, Bjorn Helgaas wrote:
+> On Tue, Nov 11, 2025 at 10:33:43AM +0100, Lukas Wunner wrote:
+> > I note that a number of drivers call pci_disable_link_state() or
+> > pci_disable_link_state_locked() to disable ASPM on probe.
+> > Can we convert (all of) these to quirks which use the new helper
+> > introduced here?
+[...]
+> I definitely agree.  I forgot to follow up on all of those cases.
+> There aren't that many of them, but it looks like probably too many to
+> address for v6.18, and I *think* it's safe to wait and deal with them
+> for v6.19.
 
-napi_disable() makes napi_schedule() a nop (it makes it look like it's
-already scheduled).
+Yes I agree this isn't necessary for v6.18.
 
-> > TBH handling the OOM inside the Rx function seems a little fragile.
-> > What if there is a packet to Rx as we enter. I don't see any loop here
-> > it just replaces the used buffer..  
-> 
-> I am not sure, the handling needs to happen, when the skb allocation
-> fails, and that happens in the rx function, right? I am open to better
-> fitting fix position.
+It may even be too late for v6.19 given the amount of time to come up
+with patches, get them reviewed and allow sufficient time to soak in
+linux-next.  And this would be a cleanup, so not really urgent.
 
-Purely from the structure of the code PoV it'd be cleaner if the
-alloc/refill was separate from the processing so we can call just 
-that part.
+I note that a lot of material has queued up in patchwork and only few
+new features have been applied to pci.git this cycle, which I guess
+has been caused by the unusual number of regressions introduced
+during the merge window.  Given that, I'd down-prioritize conversion
+of pci_disable_link_state() calls.
 
-But looking closer I think the handling is fine as is. So I think
-just addressing the nits is fine for v2
+One feature I'd be keen to get in for v6.19 (if time permits) is this one:
+
+https://lore.kernel.org/all/cover.1760274044.git.lukas@wunner.de/
+
+I'm worried that the "pci_save_state() after pci_restore_state()"
+anti-pattern gets cargo-culted to more drivers if it's not removed soon.
+I can split patch [2/2] in that series into smaller patches and funnel
+them through the individual subsystem trees if you'd rather not apply
+them wholesale in one large treewide patch.
+
+Thanks,
+
+Lukas
 
