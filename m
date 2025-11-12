@@ -1,50 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-14125-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14126-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C288C52935
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Nov 2025 14:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6B6C52BA0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Nov 2025 15:31:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d64jZ6jc7z2yvJ;
-	Thu, 13 Nov 2025 00:57:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d65Sh4VGfz2yvJ;
+	Thu, 13 Nov 2025 01:31:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762955874;
-	cv=none; b=F8jcXVbADHQuOt+7BCyS+YgkC2xcoE1T4LB5z0AMr1U9iMGNFvrkUl7bbxGNV6med6PmWiAllHORbhMV1CrFEIP6nPaRRs7JRb+5PDf242CtXizJp2laJrZQbZKwByLHUAjE8KYeIT4Gpk5sFsPJseXkMlqlf/RkgWDdNRgzYZX2wxKVXFz1TyDTCWDvev+Ae1ppDA+Yjxz54/qxZFbnTCG9blYYz/Xpd1xD4OW7gSUsAELwKK4QFNcml0daiQ19u834hXey+q+arOFRsuRGV650KiIkH9hLn1TBweb0PW0vkwxKEt5jCIxYzRJQyd53jshzJi5fi3zHKVnJTMTA3A==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762957908;
+	cv=none; b=cRqLSrBj8ecIe7LAYLGOKcXCMTN7UlHZBHWwSoScrvp0PbDDzDdUs5HTU9e0AIzNG057RQyAI0XIcom979j3K/n2Tpg6a+jXX1Rdi+udZL7GLgWTWQ+kn+wvVRlGLpGsNgP0QToD0/yFtsADUy1t+sibI7G2+rhSA6HWTq5CI+rXvytPN12/hj0uv0/VVlsXCskAIto6Cc+uzXd5eGk9NZ2ZvtrOhHdKEQFi2yfTEfpg3aBit8EF3V0NX8L3RCgDlqEsRQhfjgEx1myGcDtTSt1ZQEKJlBape/yGiA1D7Nd6OmHX88mHbL6LkNehrtoaGOon2GCpTCKuLOdM+O70zw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762955874; c=relaxed/relaxed;
-	bh=/iYFkq8EoSIFdFM4yiltEoa/A9Iy/iMJWrMfuUMJqAY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XLH8iZnOhmhv8aDMQfkyh57bnZhTiGyHNkEDmStMylDujMtt3HPjsHvjsXrKwUh/PQgrShbFe9AZXVnO36jWLcU5CllSz/6dABw8tTxpVHgy6j9Ybwmq6COD3xEHRGdg7R5kPt22qzOt0J1anqDLd1Fz6oKIQNgw7A/f5Xzb3SH82dV3k5fwAIS9FFQ5LKawwDC+LPoaBEdQN0oNs/5o/vCOeFAyvbaE3E9JTIOc85XHx+EI9gPT6jdeeEn1izBxuBaucK6OsWy5vX5WZhhzpcBLm+XHLlD3mpxGe9JN33Ch/IxNFtoQDgzHacLUNhLjczrPt/4WCkPXB7vLpgsGaw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uDdn5b0T; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1762957908; c=relaxed/relaxed;
+	bh=MukasWcD2HlrVrLej9eLTyub9bgX8lgt4xPdv4L4T3w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a3CurZqd/6vnWmJLdiDMwk6RZXCUZhO8cdbTxuQmJtRtTmcIN8zOCwIKe/8VBmONvkgsEiTprOr8CpWeqmttbAsg8KZyI5Bx2W60Tme/i9Z0LAVHeCmfvQF932h2H3wiGyCR1mR9GUCqGXH8fJQtZk2+ADkr40vT1sPJpAbl1F1gVM/nRdaglqvK9tzzHsPJ3ohnS0FciVJAi0gqB8EcSHQ3cUmxUGqsPs99MJ+k8ogXAguxf6YK8H/9Q3VRmt6rwiLLS6uLsvXJVUYS3Pjk6IPUc1gSe45qajRdrGNuKTD3+vCXwuPoA3Bt8/B6bvA4ggSD4jtltmpOG26CSafHdQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GIinGQwg; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uDdn5b0T;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GIinGQwg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d64jY6zYPz2yFT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 00:57:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d65Sg6dKPz2yhD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 01:31:47 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6148D60213;
-	Wed, 12 Nov 2025 13:57:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29847C2BCB4;
-	Wed, 12 Nov 2025 13:57:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A09B26021C;
+	Wed, 12 Nov 2025 14:31:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32E1C4CEF5;
+	Wed, 12 Nov 2025 14:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762955871;
-	bh=wyYh5JA+N7mRZY7BRonX9hRu7lWf6kG2xADXz4mWKHk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uDdn5b0TMd79Lh5gGh2J4WjGYOU7mL3bVuBbQ/VXgzY4nMQRUASwOOOn1wPdm3Cym
-	 W4XE28wEzp5MfEzdP2hqphehcMkmvAS/b8w6wcpUiLZxYE0rCMGLEp+rVCdW9qI4ba
-	 ocobM87q4/c0/j7wdbVyzm/yrXe8KetWir7vwxyUiRXtVNS/+8DnZ7OaB4HqMTf7u6
-	 36VSYtBbbyHuGEXAGGvXe/GFkuJFAWR+xBF55ycy4xXYzkSJweCr6O/7vY6qeuk4iJ
-	 2JAYXvNk5KDLXblAvdwOWYLaBc3JfMXId6w7fnEaMQeOyF/yR5GPTl+Yi8z7SCHe3i
-	 /nZPR2FUDupLg==
-Message-ID: <ba3cf0c1-174e-4e86-b464-7c5c15a803d8@kernel.org>
-Date: Wed, 12 Nov 2025 14:57:32 +0100
+	s=k20201202; t=1762957905;
+	bh=Zh735Muu3xEoGfWdwvFpedTcy89mgtmJ14KbCy/3EQE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GIinGQwghyLFcbqlaCIqJdMQRe/oeTlsFI8shPpORhabfRb0llPMkSikbIEd/JZiK
+	 +gBPQOsFBELK1bMqOdX+yU7Sn3GfSNLITAxYB0gjD3FL260k1FYnk/QWT86Ilv7G9S
+	 YQppZvMVUWCXvbcjoevdvtKdBAqw6OGpHaM5bhHPQtGrqYCG2MsqWGlz9ufN5kx+o6
+	 C1F5qOC3ET/u09SZQQv0w0hYR4eDjHSanx15/qQ49GB0p8xKafEKuqvgDT/cgjs43k
+	 l8NhT0rSDWDwEKKTWVrEG7CsCmalw1FY9fvBx3gx5TEfqSDwyyDWcTX9hUe3uwRNH0
+	 vKTUa3Nh0HI5w==
+Date: Wed, 12 Nov 2025 06:31:43 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Florian Fuchs <fuchsfl@gmail.com>
+Cc: Geoff Levand <geoff@infradead.org>, netdev@vger.kernel.org, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: ps3_gelic_net: handle skb allocation failures
+Message-ID: <20251112063143.1040d431@kernel.org>
+In-Reply-To: <aRRUiYIrOcpSiakH@lithos>
+References: <20251110114523.3099559-1-fuchsfl@gmail.com>
+	<20251111180451.0ef1dc9c@kernel.org>
+	<aRRUiYIrOcpSiakH@lithos>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,70 +72,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
-To: Kevin Brodsky <kevin.brodsky@arm.com>, Ryan Roberts
- <ryan.roberts@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
- <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-8-kevin.brodsky@arm.com>
- <999feffa-5d1d-42e3-bd3a-d949f2a9de9d@arm.com>
- <cc9dc398-b9c5-4bb8-94ad-7e7f3ddd5b4f@arm.com>
- <824bf705-e9d6-4eeb-9532-9059fa56427f@arm.com>
- <58fd1a6e-f2c4-421c-9b95-dea4b244a515@arm.com>
- <8f70692c-25a9-4bd0-94ab-43ab435e4b1b@arm.com>
- <cdb4b97a-415b-4dba-877b-0cd570381a6d@arm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <cdb4b97a-415b-4dba-877b-0cd570381a6d@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
->>>
->>> I don't really mind either way, but I don't see an immediate use for [C]
->>> and [D] - the idea is that the paused section is short and controlled,
->>> not made up of arbitrary calls.
->> If my thinking above is correct, then I've already demonstrated that this is not
->> the case. So I'd be inclined to go with [D] on the basis that it is the most robust.
->>
->> Keeping 2 nesting counts (enable and pause) feels pretty elegant to me and gives
->> the fewest opportunities for surprises.
+On Wed, 12 Nov 2025 10:34:01 +0100 Florian Fuchs wrote:
+> > > --- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
+> > > +++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
+> > > @@ -259,6 +259,7 @@ void gelic_card_down(struct gelic_card *card)
+> > >  	mutex_lock(&card->updown_lock);
+> > >  	if (atomic_dec_if_positive(&card->users) == 0) {
+> > >  		pr_debug("%s: real do\n", __func__);
+> > > +		timer_delete_sync(&card->rx_oom_timer);
+> > >  		napi_disable(&card->napi);  
+> > 
+> > I think the ordering here should be inverted  
 > 
-> Agreed, if we're going to allow enable() within a paused section, then
-> we might as well allow paused sections to nest too. The use-case is
-> clear, so I'm happy to go ahead and make those changes.
+> I thought, that there might be a race condition in the inverted order
+> like that napi gets re-enabled by the timer in between of the down:
 > 
-> David, any thoughts?
+> 1. napi_disable
+> 2. rx_oom_timer runs and calls napi_schedule again
+> 3. timer_delete_sync
+> 
+> So the timer is deleted first, to prevent any possibility to run.
 
-I don't mind allowing nesting of pause(), so works for me.
+napi_disable() makes napi_schedule() a nop (it makes it look like it's
+already scheduled).
 
--- 
-Cheers
+> > TBH handling the OOM inside the Rx function seems a little fragile.
+> > What if there is a packet to Rx as we enter. I don't see any loop here
+> > it just replaces the used buffer..  
+> 
+> I am not sure, the handling needs to happen, when the skb allocation
+> fails, and that happens in the rx function, right? I am open to better
+> fitting fix position.
 
-David
+Purely from the structure of the code PoV it'd be cleaner if the
+alloc/refill was separate from the processing so we can call just 
+that part.
+
+But looking closer I think the handling is fine as is. So I think
+just addressing the nits is fine for v2
 
