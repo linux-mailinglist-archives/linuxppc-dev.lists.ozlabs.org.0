@@ -1,89 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-14117-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14118-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCA7C5100D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Nov 2025 08:49:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA85C515EF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Nov 2025 10:34:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d5wXn6xk8z2yvR;
-	Wed, 12 Nov 2025 18:49:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d5ysV4sHFz2yqP;
+	Wed, 12 Nov 2025 20:34:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762933785;
-	cv=none; b=fF8co9haGE8vOyz+D8Ht0r56Jt8qicFMUs1xR336bhohROhypn+zkl2ymDRcaAWT44mBxCaV+VTgHvJU38ejtHgAccxquE8x32KYZnn+YnBNOpJxX1Fn9H9TBG43XsctQLXQDFbj7JB0W2ku2qxLN9wwULNakTM+kxWB6GPjFmn+xk9ZmmHo2jTloqTcxs9J4kb6dr+dMrS1whSmE2EO+jLNB47aaspJSeI0RusueijbPvLHi/lbj7lv1OoLJYoKFSTrKzAtsYi1SNARbruDN54C7yaygQPTmS+tLxVIgSwnWcknWG+t1+qbDtS7FjY5+K7XXTfgQOiDsmJrDO+eRA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1762940062;
+	cv=none; b=bD3rz10cq+47/9INbgEdbWYQFSrCoJkqdZpb/UOx4CEY1lTUpa69RkDEkfeO95UvQYZHUFWKQhFblUn5hlFgFIT2GpQWtVa0Gw91Qq7P4opTIiVFgemouGRjYjBz6roq00Zc2dKDgVuRdaTXfj502jgr8VCek7tzsL6y1OR+dytRb75xrj+e64qKuC5mQ0fkUfozL2zY1ZZFHNwoYc5mqWs8Ps+vqOAt3j4THfL6QaaQcB49kvN292Q/j2xjcIXjODMoup/St340H7ZJuXYEHrK2Q31I9lw6S/rl77LzqxaJMxc2b4V9eFxXy/6NNVr3fKGQT6HOhOGEPfyjyPBUOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1762933785; c=relaxed/relaxed;
-	bh=IeasLi6tJZCSJTT4jvd92KlZnCpNxzwF6qmUZxsIbQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=doKwMRO14ycLtm6/SCjzakZe7Ub7O9GHWwFnr6OsDHehjpg8oI9SoUzkF1svWLKD18dcBD0/zMhGM2L0tYtOPjum71CiJquWPrMSEXJUCWSQ1dKf/BiMiMj+N7ttAVDEpM4tWbwMgC2RARxbXClrliQ41wZ+apqVYaZ2Z+WnaO76W6pi1agCZoD7uJaivs1tco91xWdrXfE2PYL7cH8DPrEIlbkVWujkNlnddSIGWMGKMrjgZuiB/1rob5Qq0B0JF4RokTF2OXnHDl7cHFWmIN9N/BhjTGNIQKL5AvC1HAUp75mAMDYtbhZGdDUDeegoXUsMbB9DaQyd4G/Pj/NAig==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rJYSQAWK; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1762940062; c=relaxed/relaxed;
+	bh=Y+ph3n81MNofPspKtp5iN2RLnNXwZpO7ZQr4gG1y+Xg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OJnqNP4JYYMqa4U/aBB3XcEvqBf6n3TbrwiC7U2kEW7RsXcEPpMM7mI8jDYc6aIHmpWZrcO1wbwccvbRyQBjxFaWhxYbQySUAWTnB61LxVw0mknSJ9lEC6oMl7r0ThaR9qqM45VI4dcaxHwyWiU7ivQpDWWcZRCbywYvuFMFGweb8Mi8SV1Rv8mo/baDNx/usfvAR2AB6GB6acHgz2jVhNj/cJrspPdv8qWKESaOtpqDcLdfDrhqx6EsFJJtqk2HzEtHJPckxSKXUNI5b04xQgMgJcC0pGCERC5UGW6bIP9PJo9LWTSOdz2UK7LIobNUgwcpyZuEZgl/JbJe415vaA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nFlgUQhJ; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=fuchsfl@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rJYSQAWK;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nFlgUQhJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=fuchsfl@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d5wXm31hnz2yhD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Nov 2025 18:49:43 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC5163a023600;
-	Wed, 12 Nov 2025 07:49:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=IeasLi6tJZCSJTT4jvd92KlZnCpNxzwF6qmUZxsIb
-	Qc=; b=rJYSQAWKI4Z3VDtNF2RBgy4ytm432/dBkUiCf9Es7Dms0gfhT3QKSoEfN
-	vk3gAVtFLp1LJGhkAHc0yQdHtE6HVTw6CUV/UST57Xt2+q1JT8PKC0NnzM1RqZVi
-	J7IuKk09xVH8Fb5o59SLBE8ZAHVdmCyIe4BTumhHSKcRd2LfZr3zfnQdX8vE536z
-	vD6CptqcVpAu/6Nydcw2smna3jm0v8M5Dhc+VgHDhZxRyNqewSj91GffWG0v9Dk3
-	X31tzP9v1jOzriwfc6vyF43Z0FF7fe3xSrMDdgaOTJQTuXMFivhcrdEuh7eN4+Aq
-	mLCxKn6HO04eWWZsN5fqjQFBWZ7HA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5tjxte7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Nov 2025 07:49:10 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AC7klnU028890;
-	Wed, 12 Nov 2025 07:49:10 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5tjxte5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Nov 2025 07:49:09 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC63SSK011605;
-	Wed, 12 Nov 2025 07:49:09 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajw1en3w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Nov 2025 07:49:09 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AC7n5d238273446
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Nov 2025 07:49:05 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EA53A2004D;
-	Wed, 12 Nov 2025 07:49:04 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3644420043;
-	Wed, 12 Nov 2025 07:49:03 +0000 (GMT)
-Received: from sapthagiri.in.ibm.com (unknown [9.124.211.234])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Nov 2025 07:49:03 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>,
-        Srikar Dronamraju <srikar@linux.ibm.com>
-Subject: [PATCH v2] powerpc/smp: Expose die_id and die_cpumask
-Date: Wed, 12 Nov 2025 13:18:59 +0530
-Message-ID: <20251112074859.814087-1-srikar@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d5ysS64jjz2yFT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Nov 2025 20:34:19 +1100 (AEDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-6419aaced59so853314a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Nov 2025 01:34:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762940051; x=1763544851; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y+ph3n81MNofPspKtp5iN2RLnNXwZpO7ZQr4gG1y+Xg=;
+        b=nFlgUQhJGSL077gKE2Z2xF9ImN6h9bB5KkrzxqjUX3yZIvxIUp9J5LhC5SgZEtt3zr
+         AIgSsPRMxh3jw2+BwE62Rf8Lbih/vRsNIBEFv/+9furHNbFgq7lj+Gcs9ubZQ6NrOShz
+         DUIeFvvSkxauhK1SdIS28d30CL+CVaJEYEcdcjyEH2rXNX2Kb7iWz56CG9yfWOJEshsC
+         0m3AS6FcBw31Qa4tZw/l7uPG92R971Rl0UP7xKX8Cm0h/0NVnO8lwyq8zxku8/UP2tfW
+         ERNlN5OUpT7PX9oFqUgHpDEoiYmoaAG8EoIGwFv2OCMrzdC1/rLEMPXOXoG/LEuxcYDp
+         qccw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762940051; x=1763544851;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y+ph3n81MNofPspKtp5iN2RLnNXwZpO7ZQr4gG1y+Xg=;
+        b=CWZMzErujJ2kK5C6jImG3AsFQEugLHRcJapdGWABEO5gb5AROwgqQWo/ZHG80X1DJV
+         NuM4KqzZmGBsbiLY7vQ4TNAs3582f3xXMC2b7BDHs+paHWYweSbLWPqULl8p3mI+xAP3
+         u3tSH4ZwP1XRnVKExp3BXJKT1P2hpe1GfoUDu6eZpA3dIMjY708A3kHVxaQ2p9brMqwD
+         0zZ+JxxYuT8xR2MGfUQeTfka2c+wAWje75rbUEBDK62pPaXmqTf8cHEfr6GTCgU+s8cF
+         XtoZaOozfj1OLCsMwOyLMy4lf23Yo1lerXTsMVNO2C8/l/S6O6up4LuccQwATYhZj2Bj
+         lxnA==
+X-Forwarded-Encrypted: i=1; AJvYcCViHQiJB7rartxQJdcp12tYwx+slK7tgR4my1vWRNh0xtEqLi1fQ4DOfpHwiwNu4cg1i3ZJZOHWe4I2+uI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzDOhlKnonZWAFPCmMk9iT6/VJM7W4Qz2gC+mq8V3tzgj6JCWPW
+	LcMrvLWdiQ2QtcUiVFn6jP8SGTIyKGLoXOCfFXAbjNCTFUsW0io9d4A=
+X-Gm-Gg: ASbGncsHjl5/gzBKxO/IO5ifrd7fbMXYXnikAcNIjz5+SpNgwgDNNI6Hc3qTHECDtDa
+	BLBzry3Agq8Od58WhSXRdXQmz8WZoyjwAF1RNWgmBGbwenFExxGob09gtBB7ePFD+izmyZVhvAy
+	4LS7YhEOTDgDD5MuIT1TNXp2j7j5cD8qwPTr++raJvkonAoxLVk/oTNLjR4RvmagGG+3LO9sgHU
+	A7VrKSOfyXhvcUmWoyrsFn0m0HnR3ciATSVCxdq7OHukfP9QZWlnVTsAzPnp2yPw522P8/k+16i
+	6jpiQ5p1yN81Gr4zvyjkJ3aT8xEturx8i8dhCmdWjdpFLLq8Y8byYLmGSzoop96Yjy4Q6C5ZARp
+	pgv+BobdGYVuX1UfrY7h0z+1nWtZz9iJGO61R8d3Vra9qGttBsaTw7hzGiAD+sccCGtXGnoPGro
+	5/RWbanXXTvGcVE5hWDBmvGB7DYSSgtku/K62jFhEeMkQO94d8XW1a
+X-Google-Smtp-Source: AGHT+IEbaOVdolpRZRtQY4C4p55uxdFbLWKLEJUaTQ2W0vBS9wly5TtrzUUAVAA7VNF0NNYTPywc0g==
+X-Received: by 2002:a05:6402:3046:10b0:640:b814:bb81 with SMTP id 4fb4d7f45d1cf-6431a55e501mr1856940a12.32.1762940051127;
+        Wed, 12 Nov 2025 01:34:11 -0800 (PST)
+Received: from lithos ([2a02:810d:4a94:b300:ec52:7cf5:e31:cdb7])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64165b2aa03sm9869160a12.6.2025.11.12.01.34.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 01:34:10 -0800 (PST)
+Date: Wed, 12 Nov 2025 10:34:01 +0100
+From: Florian Fuchs <fuchsfl@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Geoff Levand <geoff@infradead.org>, netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: ps3_gelic_net: handle skb allocation failures
+Message-ID: <aRRUiYIrOcpSiakH@lithos>
+References: <20251110114523.3099559-1-fuchsfl@gmail.com>
+ <20251111180451.0ef1dc9c@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,208 +99,84 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xlvXidZWXkvSHj8_-mOPw2qUXunJhQmV
-X-Proofpoint-ORIG-GUID: RTVaL4WkZMBbQz6x-ys6VvuZQGxdabJA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDA5OSBTYWx0ZWRfX6AeVpa4QxTcB
- naEcD8QMCaiv5o/5rK7OHemX7k0Zk81tCPeCsuB7lXR3Q8f7c3qmq9azhKyq9ElL1tUDYllqRi1
- 60+VSbMC62Vh5nOvQZxvrGN3rAA/Olf/iw5/aICJwXCvr5ckgc6yV893ZgHWuHugBzM2rRzxW5/
- BAWmELDbOj0J4vdkkQHPGr4R4xzU81bmUVYqQutz3Wjzuz/C4yfZ7JXC9dCX29lkxicqbFeUhst
- JImktDeRHDvpbIuiXahld8ubQssLCvnc9DKODpT6rudAD2McGwfxZ5aF+rQ6HL+R++ZD9A+8X1f
- 4R6VCBhjeZlTvj8w192fu3xOfaSW2Bdqi2Euwv3Ki48UbyBO8aaeuA0TSrqNGfTZVleIupJmon8
- 8npIYVwpNCobIFjY7LniFXlpT46caw==
-X-Authority-Analysis: v=2.4 cv=V6xwEOni c=1 sm=1 tr=0 ts=69143bf6 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=_0LhuuOVu_CDEUY1ngwA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-12_02,2025-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0
- suspectscore=0 priorityscore=1501 phishscore=0 bulkscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080099
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251111180451.0ef1dc9c@kernel.org>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From Power10 processors onwards, each chip has 2 hemispheres. For LPARs
-running on PowerVM Hypervisor, hypervisor determines the allocation of
-CPU groups to each LPAR, resulting in two LPARs with the same number of
-CPUs potentially having different numbers of CPUs from each hemisphere.
-Additionally, it is not feasible to ascertain the hemisphere based
-solely on the CPU number.
+Hi Jakub,
 
-Users wishing to assign their workload to all CPUs, or a subset of CPUs
-within a specific hemisphere, encounter difficulties in identifying the
-cpumask. To address this, it is proposed to expose hemisphere
-information as a die in sysfs. This aligns with other architectures
-and facilitates the identification of CPUs within the same hemisphere.
-Tools such as lstopo can also access this information.
+On 11 Nov 18:04, Jakub Kicinski wrote:
+> On Mon, 10 Nov 2025 12:45:23 +0100 Florian Fuchs wrote:
+> > Steps to reproduce the issue:
+> > 	1. Start a continuous network traffic, like scp of a 20GB file
+> > 	2. Inject failslab errors using the kernel fault injection:
+> > 	    echo -1 > /sys/kernel/debug/failslab/times
+> > 	    echo 30 > /sys/kernel/debug/failslab/interval
+> > 	    echo 100 > /sys/kernel/debug/failslab/probability
+> > 	3. After some time, traces start to appear, kernel Oopses
+> > 	   and the system stops
+> > 
+> > Step 2 is not always necessary, as it is usually already triggered by
+> > the transfer of a big enough file.
+> 
+> Have you actually tested this on a real device?
+> Please describe the testing you have done rather that "how to test".
 
-Please note: The hypervisor reveals the locality of the CPUs to
-hemispheres only in dedicated mode. Consequently, in systems where
-hemisphere information is unavailable, such as shared LPARs, the
-die_cpus information in sysfs will mirror package_cpus, with
-die_id set to -1.
+Yes, of course, I intensively tested the patch on a Sony PS3 (CECHL04
+PAL). I ran the final fix for many hours, with continuous system load
+and high network transfer load. I am happy to get feedback on better or
+acceptable testing.
 
-Without this change.
-$ grep . /sys/devices/system/cpu/cpu16/topology/{die*,package*} 2>/dev/null
-/sys/devices/system/cpu/cpu16/topology/package_cpus:000000,000000ff,ffff0000
-/sys/devices/system/cpu/cpu16/topology/package_cpus_list:16-39
+My testing consisted of:
+1. Produce Oops: Test the kernel without any gelic patches, scp a big
+   file to usb stick and create high cpu/memory load (like compiling
+   some software) or extract verbose, tar xv, a big file via ssh
+2. Safely re-produce the Oops using failslab injection, so I dont need
+   to wait for it
+3. Develop against that failslab injection, high load and network
+   transfer
+4. First solution was to just always refill the chain, which resulted in
+   RX stall after some time, as the dmac seemed to be stopped, when buffer
+   was full and NOT_IN_USE head found and needed rmmod/modprobe to work
+   again
+5. Run the final fix for many hours while injecting failslabs, high load,
+   and high network load with continuous scp and netcat
+6. Further massive improvement is to convert the driver to use
+   napi_gro_receive and napi_skb_alloc, but this would be a separate
+   patch
 
-With this change.
-$ grep . /sys/devices/system/cpu/cpu16/topology/{die*,package*} 2>/dev/null
-/sys/devices/system/cpu/cpu16/topology/die_cpus:000000,00000000,00ff0000
-/sys/devices/system/cpu/cpu16/topology/die_cpus_list:16-23
-/sys/devices/system/cpu/cpu16/topology/die_id:2
-/sys/devices/system/cpu/cpu16/topology/package_cpus:000000,000000ff,ffff0000
-/sys/devices/system/cpu/cpu16/topology/package_cpus_list:16-39
+> > --- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
+> > +++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
+> > @@ -259,6 +259,7 @@ void gelic_card_down(struct gelic_card *card)
+> >  	mutex_lock(&card->updown_lock);
+> >  	if (atomic_dec_if_positive(&card->users) == 0) {
+> >  		pr_debug("%s: real do\n", __func__);
+> > +		timer_delete_sync(&card->rx_oom_timer);
+> >  		napi_disable(&card->napi);
+> 
+> I think the ordering here should be inverted
 
-snipped lstopo-no-graphics o/p
-  Group0 L#0 (total=8747584KB)
-    Package L#0 (total=3564096KB CPUModel="POWER10 (architected), altivec supported" CPURevision="2.0 (pvr 0080 0200)")
-      NUMANode L#0 (P#0 local=3564096KB total=3564096KB)
-      Die L#0 (P#0)
-        Core L#0 (P#0)
-<snipped>
-    Package L#1 (total=5183488KB CPUModel="POWER10 (architected), altivec supported" CPURevision="2.0 (pvr 0080 0200)")
-      NUMANode L#1 (P#1 local=5183488KB total=5183488KB)
-      Die L#2 (P#2)
-        Core L#2 (P#16)
-          L3Cache L#4 (size=4096KB linesize=128 ways=16)
-            L2Cache L#4 (size=1024KB linesize=128 ways=8)
-              L1dCache L#4 (size=32KB linesize=128 ways=8)
-                L1iCache L#4 (size=48KB linesize=128 ways=6)
-                  PU L#16 (P#16)
-                  PU L#17 (P#18)
-                  PU L#18 (P#20)
-                  PU L#19 (P#22)
-          L3Cache L#5 (size=4096KB linesize=128 ways=16)
-            L2Cache L#5 (size=1024KB linesize=128 ways=8)
-              L1dCache L#5 (size=32KB linesize=128 ways=8)
-                L1iCache L#5 (size=48KB linesize=128 ways=6)
-                  PU L#20 (P#17)
-                  PU L#21 (P#19)
-                  PU L#22 (P#21)
-                  PU L#23 (P#23)
-      Die L#3 (P#3)
-        Core L#3 (P#24)
-          L3Cache L#6 (size=4096KB linesize=128 ways=16)
-            L2Cache L#6 (size=1024KB linesize=128 ways=8)
-              L1dCache L#6 (size=32KB linesize=128 ways=8)
-                L1iCache L#6 (size=48KB linesize=128 ways=6)
-                  PU L#24 (P#24)
-                  PU L#25 (P#26)
-                  PU L#26 (P#28)
-                  PU L#27 (P#30)
-          L3Cache L#7 (size=4096KB linesize=128 ways=16)
-            L2Cache L#7 (size=1024KB linesize=128 ways=8)
-              L1dCache L#7 (size=32KB linesize=128 ways=8)
-                L1iCache L#7 (size=48KB linesize=128 ways=6)
-                  PU L#28 (P#25)
-                  PU L#29 (P#27)
-                  PU L#30 (P#29)
-                  PU L#31 (P#31)
-        Core L#4 (P#32)
-          L3Cache L#8 (size=4096KB linesize=128 ways=16)
-            L2Cache L#8 (size=1024KB linesize=128 ways=8)
-              L1dCache L#8 (size=32KB linesize=128 ways=8)
-                L1iCache L#8 (size=48KB linesize=128 ways=6)
-                  PU L#32 (P#32)
-                  PU L#33 (P#34)
-                  PU L#34 (P#36)
-                  PU L#35 (P#38)
-          L3Cache L#9 (size=4096KB linesize=128 ways=16)
-            L2Cache L#9 (size=1024KB linesize=128 ways=8)
-              L1dCache L#9 (size=32KB linesize=128 ways=8)
-                L1iCache L#9 (size=48KB linesize=128 ways=6)
-                  PU L#36 (P#33)
-                  PU L#37 (P#35)
-                  PU L#38 (P#37)
-                  PU L#39 (P#39)
-  Group0 L#1 (total=7736896KB)
-    Package L#2 (total=5170880KB CPUModel="POWER10 (architected), altivec supported" CPURevision="2.0 (pvr 0080 0200)")
-      NUMANode L#2 (P#2 local=5170880KB total=5170880KB)
-      Die L#4 (P#4)
-<snipped>
+I thought, that there might be a race condition in the inverted order
+like that napi gets re-enabled by the timer in between of the down:
 
-Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Srikar Dronamraju <srikar@linux.ibm.com>
----
-Changelog v1: v2:
-v1: https://lore.kernel.org/all/20251028105734.1894998-1-srikar@linux.ibm.com/t/#u
-Updated changelog and few nits as suggested by Shrikanth
+1. napi_disable
+2. rx_oom_timer runs and calls napi_schedule again
+3. timer_delete_sync
 
- arch/powerpc/include/asm/topology.h | 11 +++++++----
- arch/powerpc/kernel/smp.c           | 23 +++++++++++++++++++++++
- 2 files changed, 30 insertions(+), 4 deletions(-)
+So the timer is deleted first, to prevent any possibility to run.
 
-diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
-index f19ca44512d1..66ed5fe1b718 100644
---- a/arch/powerpc/include/asm/topology.h
-+++ b/arch/powerpc/include/asm/topology.h
-@@ -132,15 +132,18 @@ static inline int cpu_to_coregroup_id(int cpu)
- #include <asm/cputable.h>
- 
- struct cpumask *cpu_coregroup_mask(int cpu);
-+const struct cpumask *cpu_die_mask(int cpu);
-+int cpu_die_id(int cpu);
- 
- #ifdef CONFIG_PPC64
- #include <asm/smp.h>
- 
- #define topology_physical_package_id(cpu)	(cpu_to_chip_id(cpu))
--
--#define topology_sibling_cpumask(cpu)	(per_cpu(cpu_sibling_map, cpu))
--#define topology_core_cpumask(cpu)	(per_cpu(cpu_core_map, cpu))
--#define topology_core_id(cpu)		(cpu_to_core_id(cpu))
-+#define topology_sibling_cpumask(cpu)		(per_cpu(cpu_sibling_map, cpu))
-+#define topology_core_cpumask(cpu)		(per_cpu(cpu_core_map, cpu))
-+#define topology_core_id(cpu)			(cpu_to_core_id(cpu))
-+#define topology_die_id(cpu)			(cpu_die_id(cpu))
-+#define topology_die_cpumask(cpu)		(cpu_die_mask(cpu))
- 
- #endif
- #endif
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 68edb66c2964..338142cd97db 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1085,6 +1085,29 @@ static int __init init_big_cores(void)
- 	return 0;
- }
- 
-+/*
-+ * die_mask and die_id are only available on systems which support
-+ * multiple coregroups within a same package. On all other systems, die_mask
-+ * would be same as package mask and die_id would be set to -1.
-+ */
-+const struct cpumask *cpu_die_mask(int cpu)
-+{
-+	if (has_coregroup_support())
-+		return per_cpu(cpu_coregroup_map, cpu);
-+	else
-+		return cpu_node_mask(cpu);
-+}
-+EXPORT_SYMBOL_GPL(cpu_die_mask);
-+
-+int cpu_die_id(int cpu)
-+{
-+	if (has_coregroup_support())
-+		return cpu_to_coregroup_id(cpu);
-+	else
-+		return -1;
-+}
-+EXPORT_SYMBOL_GPL(cpu_die_id);
-+
- void __init smp_prepare_cpus(unsigned int max_cpus)
- {
- 	unsigned int cpu, num_threads;
--- 
-2.43.7
+> TBH handling the OOM inside the Rx function seems a little fragile.
+> What if there is a packet to Rx as we enter. I don't see any loop here
+> it just replaces the used buffer..
 
+I am not sure, the handling needs to happen, when the skb allocation
+fails, and that happens in the rx function, right? I am open to better
+fitting fix position.
+
+Thank you for your feedback!
+Florian
 
