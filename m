@@ -1,58 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-14158-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14159-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A10C5A0BB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Nov 2025 22:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F50C5A14C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Nov 2025 22:20:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d6t6l373Dz2xqh;
-	Fri, 14 Nov 2025 08:03:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d6tTT5bxxz2xqk;
+	Fri, 14 Nov 2025 08:20:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763067839;
-	cv=none; b=k3dRRKKw4J0As363BeWWmvkZVV92ZGjtrff67tFfmM5JW0o+BKdy4Rr6r9QPCIk1Ev+fOAa0C9JzEAqkI9NwNygBPyKSZXT/Oq+3rT92gLyfH1Q0cYuuvuHv2XqWRDX4jL+kkjdWEhfvIStlRKn/LLYyWiHlLRSbRk+KhjhI5m4XdarXTCFg6LaUtR1SuKGD8zt4drO4u6U6qHNhaML9sRGHhqhUdnWs41TO0PDQEiHrCBrf8vEn1jvfTwiBPN4q6uyysUOzouSiZu2owN4wxcjkiN1h4PAPsXquLw47X2KkO91poz+jwWFrsAXmuedct9i8j5YHwe60ZcmkWLxoQw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763068813;
+	cv=none; b=KsZbvwgfm0RmbpxmdJwLlRqcPMxYqwRGBjrBr0HoYrPRi2RoTrvU5/ItaOcpumf4wOisx7kY2SF7LHAU4x7PvKI5EU13k4OHbi4VdM6CPntmXHRJGscYhgg13hZ/TOQN0rmGqrJnnLB12Z4f1agQUXKU9Khum7ZclDxI9v+3DxRvgUOamTx1z8Pqh0dGQuBvwnYT6Rndm6XkeXTM0jKj+AII1+upCF4Em1dsE+hXEcZJDH4+OJTpfI6J4x2HKv22fTvEt3lX//R0EajNcUBL0j4h+QgDGHnbuN3K/LEbhRs8KU1548v48qQvPqXgBh/gVu/V/+NYHZe8MaD2V3ppwA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763067839; c=relaxed/relaxed;
-	bh=FkxeHvM2NChr4uqOTCQ9ti3XsI3s6vBFmV6Jn+n/Dnw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mNTBAJS/rw6TSs51+PPPcY6VCQ3rptgNJ2x/M5SNTyrSTmYvnjjQMcYAcqmi8EF2w2YFhWnvhhOu2qud+kar7xeVOc6H6M3JnT4aHxIvLCVwit785S/bdwXvG/Ch/L0nrCElFccnlCCvD5EL9ItAAAUtC6GJT5L+Z7sp/z1S1DT+hvL9uxEicof2oBPWhyGWzjERbxw/fpJq2TxJCANmtuJ8OdkK9M/lnEd3VauYLultkkfN2cuXsuHBAHTMVXaVhx/+txXiNV0294mBR3z2NReW1B91o2+DJ2kk/g9Dk9xlFLt/+PtpBZ+9m3wMSuYCAoRG5JsoMh3lSX0Y3XK6gg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oFIgKq5v; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1763068813; c=relaxed/relaxed;
+	bh=3SMS7VBCa5HOAMawflIUN1T2WGvQjK05sPeyzxksjKk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K6ZiKGmvjaNkFHY36rWESNDae3mN5Pb924ED/mh6MzFxYfG5NwmvPyE3H0sYByQL1L2XywUTTRnINfNgAYiCXSOqTI7hY7dSfIlN9HD5Ho1n3vAQuMd67YmkoFFwvy2mu1+3jx/kb/sUR4Vo8KdwCF9r/8NIlgNrqE3nXlRVErd73zBpKmaGfFvKd5IfZ+F1wXCQhXXva6b0fL47+1ASqZ0viteurkpD1Cb94eOtRNw2ytrIfl/ptRXcVbuO/tiTi0N4+j6vXJ4/8JmkNwj9AIOibJcnzJLwyQO/rDSres1spu091XykODXMxMyy6FDEi1vOAwYwjm64pDFgawtgrg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=S6rUH8FB; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oFIgKq5v;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=S6rUH8FB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d6t6k2RK9z2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Nov 2025 08:03:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d6tTR6w7Rz2xS2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Nov 2025 08:20:11 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9C8FB6012A
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 21:03:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F48C2BC9E
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 21:03:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763067835;
-	bh=l1kwHOu+FvSimzRnA3MbT/c6yK4JOJDpeQC1zywnzFE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=oFIgKq5vymoxcBHwDnOkz9UxZaZ+S4lHXHQ5XgePNUsWyCFn00/N9GzHNClGG+QjD
-	 sPvollPnnbHp30flzSx6ckugamM0neSTasywkW23Vis+BwO7Kkv6KI2OAu4TTug48S
-	 eQtAXp9bkJsnb/Crffnpfg2KsAxDgpAb41OkGb0xj3sUM6DhzHNJuRE7W3Y0d+T6fP
-	 hdvP38UZ5dRJmw8IIpSb7XSOqYpiWW+RK+zwU7Xo+UcFczL53ymu2wZc4Qv40V53+P
-	 9hYi5mX5AbCmfcjzsKbIguNYEl2INzAFsjrXUSn9NsXvOetX32JT3z4l/+ErzcxTcI
-	 h8qSkQJcI9yrQ==
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-45090ef26c6so187914b6e.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 13:03:55 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUv9TCb1jsQS5ur2PpvKzkdFsNEvyrSPbjPZoSsLekzsmgmplx9DsX0iYPy8Ug9aUkzTmA8kTKMvB19yxk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxqDjfWSBqSdez5snUj91mTlxwHLjX5bP47IUGrnIXYsJxgOZDQ
-	pq1CdHWQC/NnCBAjqXisvkSAvqGtjfdVhRNGDEo08pOVz9YCQslG9PVSlqjo+SUB6XuoNWeBK9/
-	TiEGSTQ04y9mGEzKVVd6QoMrjy+doeL8=
-X-Google-Smtp-Source: AGHT+IE0fbHk6As1rDorm+7a0crtd6lfOOXOPtfAdhgHmLrMuSQqUrE+FVVqxktvMt7FcyX7LzaZaDhmTgVQsuOgNNY=
-X-Received: by 2002:a05:6808:220f:b0:43f:7dee:46b1 with SMTP id
- 5614622812f47-4509749f401mr321513b6e.29.1763067834339; Thu, 13 Nov 2025
- 13:03:54 -0800 (PST)
+	by sea.source.kernel.org (Postfix) with ESMTP id AF1D141A32;
+	Thu, 13 Nov 2025 21:20:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C0AC4CEF5;
+	Thu, 13 Nov 2025 21:20:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1763068809;
+	bh=9y9a2c/jVOu6lhfw2KQmK7c70gHOg4s3VbgeD47eFJc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S6rUH8FB57R/UUe04bwBSoaGOYGmurKvFQGiKjaRp+69RaYMny8aJztzOQraBcrQq
+	 2lwrKakpi4mw3npKSHEcLjHJYPumZM6bSLsdqs+5vrFZt/jlpgeaTIxOM5qITJXPz9
+	 vcfnIkmnsJ7qWYDomwahLU7DQW/0LJ2QhI+mOxNo=
+Date: Thu, 13 Nov 2025 16:20:08 -0500
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+	a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
+	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
+	yonghong.song@linux.dev, ihor.solodrai@linux.dev,
+	Chris Mason <clm@meta.com>
+Subject: Re: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
+ switch to simple_remove_by_name())
+Message-ID: <2025111316-cornfield-sphinx-ba89@gregkh>
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+ <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+ <20251111092244.GS2441659@ZenIV>
+ <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
+ <20251113092636.GX2441659@ZenIV>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,174 +77,165 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1760274044.git.lukas@wunner.de> <070a03221dbec25f478d36d7bc76e0da81985c5d.1760274044.git.lukas@wunner.de>
- <CAJZ5v0hE31RqZ19oN_11cKYnLY_CP0KccTGwa9ViT4UmR+6rfg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hE31RqZ19oN_11cKYnLY_CP0KccTGwa9ViT4UmR+6rfg@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 13 Nov 2025 22:03:42 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0inkPVO-H5df1ZPCax89g6rtGOYPHPdbpZ_wXS1KHN9nA@mail.gmail.com>
-X-Gm-Features: AWmQ_bmG8mA3nZdUGitr0pr_4t3kvFmvM8MIydo8M7Uc876xYarDE7ZeTUZ4WGs
-Message-ID: <CAJZ5v0inkPVO-H5df1ZPCax89g6rtGOYPHPdbpZ_wXS1KHN9nA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] PCI: Ensure error recoverability at all times
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Riana Tauro <riana.tauro@intel.com>, "Sean C. Dardis" <sean.c.dardis@intel.com>, 
-	Farhan Ali <alifm@linux.ibm.com>, Benjamin Block <bblock@linux.ibm.com>, 
-	Niklas Schnelle <schnelle@linux.ibm.com>, Alek Du <alek.du@intel.com>, 
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org, 
-	linux-pci@vger.kernel.org, Giovanni Cabiddu <giovanni.cabiddu@intel.com>, qat-linux@intel.com, 
-	Dave Jiang <dave.jiang@intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Jiri Slaby <jirislaby@kernel.org>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251113092636.GX2441659@ZenIV>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Nov 13, 2025 at 9:49=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> On Sun, Oct 12, 2025 at 3:30=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wr=
-ote:
-> >
-> > When the PCI core gained power management support in 2002, it introduce=
-d
-> > pci_save_state() and pci_restore_state() helpers to restore Config Spac=
-e
-> > after a D3hot or D3cold transition, which implies a Soft or Fundamental
-> > Reset (PCIe r7.0 sec 5.8):
-> >
-> >   https://git.kernel.org/tglx/history/c/a5287abe398b
-> >
-> > In 2006, EEH and AER were introduced to recover from errors by performi=
-ng
-> > a reset.  Because errors can occur at any time, drivers began calling
-> > pci_save_state() on probe to ensure recoverability.
-> >
-> > In 2009, recoverability was foiled by commit c82f63e411f1 ("PCI: check
-> > saved state before restore"):  It amended pci_restore_state() to bail o=
-ut
-> > if the "state_saved" flag has been cleared.  The flag is cleared by
-> > pci_restore_state() itself, hence a saved state is now allowed to be
-> > restored only once and is then invalidated.  That doesn't seem to make
-> > sense because the saved state should be good enough to be reused.
-> >
-> > Soon after, drivers began to work around this behavior by calling
-> > pci_save_state() immediately after pci_restore_state(), see e.g. commit
-> > b94f2d775a71 ("igb: call pci_save_state after pci_restore_state").
-> > Hilariously, two drivers even set the "saved_state" flag to true before
-> > invoking pci_restore_state(), see ipr_reset_restore_cfg_space() and
-> > e1000_io_slot_reset().
-> >
-> > Despite these workarounds, recoverability at all times is not guarantee=
-d:
-> > E.g. when a PCIe port goes through a runtime suspend and resume cycle,
-> > the "saved_state" flag is cleared by:
-> >
-> >   pci_pm_runtime_resume()
-> >     pci_pm_default_resume_early()
-> >       pci_restore_state()
-> >
-> > ... and hence on a subsequent AER event, the port's Config Space cannot=
- be
-> > restored.  Riana reports a recovery failure of a GPU-integrated PCIe
-> > switch and has root-caused it to the behavior of pci_restore_state().
-> > Another workaround would be necessary, namely calling pci_save_state() =
-in
-> > pcie_port_device_runtime_resume().
-> >
-> > The motivation of commit c82f63e411f1 was to prevent restoring state if
-> > pci_save_state() hasn't been called before.  But that can be achieved b=
-y
-> > saving state already on device addition, after Config Space has been
-> > initialized.  A desirable side effect is that devices become recoverabl=
-e
-> > even if no driver gets bound.  This renders the commit unnecessary, so
-> > revert it.
-> >
-> > Reported-by: Riana Tauro <riana.tauro@intel.com> # off-list
-> > Tested-by: Riana Tauro <riana.tauro@intel.com>
-> > Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> > ---
-> > Proof that removing the check in pci_restore_state() makes no
-> > difference for the PCI core:
-> >
-> > * The only relevant invocations of pci_restore_state() are in
-> >   drivers/pci/pci-driver.c
-> > * One invocation is in pci_restore_standard_config(), which is
-> >   always called conditionally on "if (pci_dev->state_saved)".
-> >   So the check at the beginning of pci_restore_state() which
-> >   this patch removes is an unnecessary duplication.
-> > * Another invocation is in pci_pm_default_resume_early(), which
-> >   is called from pci_pm_resume_noirq(), pci_pm_restore_noirq()
-> >   and pci_pm_runtime_resume().  Those functions are only called
-> >   after prior calls to pci_pm_suspend_noirq(), pci_pm_freeze_noirq(),
-> >   and pci_pm_runtime_suspend(), respectively.  And all of them
-> >   call pci_save_state().  So the "if (!dev->state_saved)" check
-> >   in pci_restore_state() never evaluates to true.
-> > * A third invocation is in pci_pm_thaw_noirq().  It is only called
-> >   after a prior call to pci_pm_freeze_noirq(), which invokes
-> >   pci_save_state().  So likewise the "if (!dev->state_saved)" check
-> >   in pci_restore_state() never evaluates to true.
-> >
-> >  drivers/pci/bus.c   | 7 +++++++
-> >  drivers/pci/pci.c   | 3 ---
-> >  drivers/pci/probe.c | 2 --
-> >  3 files changed, 7 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
-> > index f26aec6..4318568 100644
-> > --- a/drivers/pci/bus.c
-> > +++ b/drivers/pci/bus.c
-> > @@ -358,6 +358,13 @@ void pci_bus_add_device(struct pci_dev *dev)
-> >         pci_bridge_d3_update(dev);
-> >
-> >         /*
-> > +        * Save config space for error recoverability.  Clear state_sav=
-ed
-> > +        * to detect whether drivers invoked pci_save_state() on suspen=
-d.
-> > +        */
-> > +       pci_save_state(dev);
-> > +       dev->state_saved =3D false;
-> > +
-> > +       /*
-> >          * If the PCI device is associated with a pwrctrl device with a
-> >          * power supply, create a device link between the PCI device an=
-d
-> >          * pwrctrl device.  This ensures that pwrctrl drivers are probe=
-d
-> > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> > index b14dd06..2f0da5d 100644
-> > --- a/drivers/pci/pci.c
-> > +++ b/drivers/pci/pci.c
-> > @@ -1855,9 +1855,6 @@ static void pci_restore_rebar_state(struct pci_de=
-v *pdev)
-> >   */
-> >  void pci_restore_state(struct pci_dev *dev)
-> >  {
-> > -       if (!dev->state_saved)
-> > -               return;
-> > -
->
-> So after this change, is there any mechanism to clear state_saved
-> after a suspend-resume cycle so that the next cycle is not confused by
-> seeing it set?
+On Thu, Nov 13, 2025 at 09:26:36AM +0000, Al Viro wrote:
+> On Tue, Nov 11, 2025 at 10:44:26PM -0500, Chris Mason wrote:
+> 
+> > We're wandering into fuzzing territory here, and I honestly have no idea
+> > if this is a valid use of any of this code, but AI managed to make a
+> > repro that crashes only after your patch.  So, I'll let you decide.
+> > 
+> > The new review:
+> > 
+> > Can this dereference ZERO_SIZE_PTR when eps_count is 0?
+> > 
+> > When ffs->eps_count is 0, ffs_epfiles_create() calls kcalloc(0, ...) which
+> > returns ZERO_SIZE_PTR (0x10). The loop never executes so epfiles[0].ffs is
+> > never initialized. Later, cleanup paths (ffs_data_closed and ffs_data_clear)
+> > check if (epfiles) which is true for ZERO_SIZE_PTR, and call
+> > ffs_epfiles_destroy(epfiles, 0).
+> > 
+> > In the old code, the for loop condition prevented any dereferences when
+> > count=0. In the new code, "root = epfile->ffs->sb->s_root" dereferences
+> > epfile before checking count, which would fault on ZERO_SIZE_PTR.
+> 
+> Lovely.  OK, this is a bug.  It is trivial to work around (all callers
+> have ffs avaible, so just passing it as an explicit argument solves
+> the problem), but there is a real UAF in functionfs since all the way
+> back to original merge.  Take a look at
+> 
+> static int
+> ffs_epfile_open(struct inode *inode, struct file *file)
+> {
+> 	struct ffs_epfile *epfile = inode->i_private;
+> 
+> 	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
+> 		return -ENODEV;
+> 
+> 	file->private_data = epfile;
+> 	ffs_data_opened(epfile->ffs);
+> 
+> 	return stream_open(inode, file);
+> }
+> 
+> and think what happens if that (->open() of dynamic files in there)
+> races with file removal.  Specifically, if we get called with ffs->opened
+> equal to 1 due to opened ep0 and get preempted away just before the
+> call ffs_data_opened().  Another thread closes ep0, hitting
+> ffs_data_closed(), dropping ffs->opened to 0 and getting
+> 			ffs->state = FFS_CLOSING;
+> 			ffs_data_reset(ffs);
+> which calls ffs_data_clear(), where we hit
+> 		ffs_epfiles_destroy(epfiles, ffs->eps_count);
+> All files except ep0 are removed and epfiles gets freed, leaving the
+> first thread (in ffs_epfile_open()) with file->private_data pointing
+> into a freed array.
+> 
+> open() succeeds, with any subsequent IO on the resulting file leading
+> to calls of
+> static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
+> {
+> 	struct ffs_epfile *epfile = file->private_data;
+> 
+> and a bunch of accesses to *epfile later in that function, all of them
+> UAF.
+> 
+> As far as I can tell, the damn thing intends to prevent removals between
+> ffs_data_opened() and ffs_data_closed(), so other methods would be safe
+> if ->open() had been done right.  I'm not happy with the way that FSM
+> is done (the real state is a mix of ffs->state, ffs->opened and ffs->mutex,
+> and rules bloody awful; I'm still not entirely convinced that ffs itself
+> can't be freed with ffs->reset_work scheduled for execution), but that's
+> a separate story.  
+> 
+> Another variant of that scenario is with ffs->no_disconnect set;
+> in a sense, it's even nastier.  In that case ffs_data_closed() won't
+> remove anything - it will set ffs->state to FFS_DEACTIVATED, leaving
+> the removals for ffs_data_open().  If we have *two* threads in open(),
+> the first one to call ffs_data_open() will do removal; on another CPU
+> the second will just get past its increment of ->opened (from 1 to 2)
+> and move on, without waiting for anything.
+> 
+> IMO we should just take ffs->mutex in there, getting to ffs via
+> inode->i_sb->s_fs_info.  And yes, compare ffs->state with FFS_ACTIVE -
+> under ->mutex, without WARN_ON() and after having bumped ->opened
+> so that racing ffs_data_closed() would do nothing.  Not FFS_ACTIVE -
+> call ffs_data_closed() ourselves on failure exit.
+> 
+> As in
+> 
+> static int
+> ffs_epfile_open(struct inode *inode, struct file *file)
+> {
+> 	strict ffs_data *ffs = inode->i_sb->s_fs_info;
+> 	int ret;
+> 
+>         /* Acquire mutex */
+> 	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+> 	if (ret < 0)
+> 		return ret;
+> 
+> 	ffs_data_opened(ffs);
+> 	/*
+> 	 * not FFS_ACTIVE - there might be a pending removal;
+> 	 * FFS_ACITVE alone is not enough, though - we might have
+> 	 * been through FFS_CLOSING and back to FFS_ACTIVE,
+> 	 * with our file already removed.
+> 	 */
+> 	if (unlikely(ffs->state != FFS_ACTIVE ||
+> 		     !simple_positive(file->f_path.dentry))) {
+> 		ffs_data_closed(ffs);
+> 		mutex_unlock(&ffs->mutex);
+> 		return -ENODEV;
+> 	}
+> 	mutex_unlock(&ffs->mutex);
+> 
+> 	file->private_data = inode->i_private;
+> 	return stream_open(inode, file);
+> }
+> 
+> and
+> 
+> static int ffs_ep0_open(struct inode *inode, struct file *file)
+> {
+>         struct ffs_data *ffs = inode->i_private;
+> 	int ret;
+> 
+>         /* Acquire mutex */
+> 	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+> 	if (ret < 0)
+> 		return ret;
+> 
+> 	ffs_data_opened(ffs);
+> 	if (ffs->state == FFS_CLOSING) {
+> 		ffs_data_closed(ffs);
+> 		mutex_unlock(&ffs->mutex);
+> 		return -EBUSY;
+> 	}
+> 	mutex_unlock(&ffs->mutex);
+> 
+> 	file->private_data = ffs;
+> 	return stream_open(inode, file);
+> }
+> 
+> Said that, I'm _NOT_ familiar with that code; this is just from a couple
+> of days digging through the driver, so I would like to hear comments from
+> the maintainer...  Greg?
+> 
 
-Never mind, this hasn't changed.
+Sorry for the delay.  Yes, we should be grabing the mutex in there, good
+catch.  There's been more issues pointed out with the gadget code in the
+past year or so as more people are starting to actually use it and
+stress it more.  So if you have a patch for this, I'll gladly take it :)
 
-So I agree with Bjorn that it would be good to expand the new comment
-in pci_bus_add_device() because it doesn't really explain much in its
-current form.  Or maybe even split it to say "Save config space for
-error recoverability" before pci_save_state(dev) and then explain why
-state_saved is cleared after it?
+thanks,
 
-Apart from this and modulo possible changelog adjustments
-
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+greg k-h
 
