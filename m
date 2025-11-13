@@ -1,77 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-14147-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14148-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32F8C569A0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Nov 2025 10:31:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39165C56A25
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Nov 2025 10:38:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d6ZlR3DNlz2yvk;
-	Thu, 13 Nov 2025 20:31:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d6ZvY0SWPz2yvb;
+	Thu, 13 Nov 2025 20:38:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763026275;
-	cv=none; b=cqiS/ewfXhEpPO/CcNPa+hZgUklfoLPyFszo5H4/3X71V9iNF9g1E+6uVSe8MgGrXCvmZsoPigVw5VSkqSlP9nEPXfQKUeVFWKNI/tS3Oa4rvt1Di0/1yvqyf1xRfE+ntK8oeREACvmvdNdjfzUScwYQIAEUkzJQr79Yi0ZQ3fGESVOyMNz5Q8o8XF340ktYK1VBh/Eqrhwgem8z/g0w87ssxBHt/btrOc9HLsXl7LiA2JGjriURLQthAXQJvvPSc8SyseBYDCkMKDnb+dNgHIFiaaDMUMSFlifnI9j3etKqfKifS+ug99KLvefHSgows3Ib2znjH6JbaxwSbBvJ3g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763026696;
+	cv=none; b=YxpfjFKLVwTpQ+Wy31Jw7RW+B8qFwm5o+27xZfa2Gcfo/44Q33eo8RLHo7wWkHVQgtij/oeA3jEkLA7GtBszwdLZEFrAmJ/GM++K+GJRRoj0F/rc3xI0XxpYCwFC8qnRFun99JbxCaDKtyK9DelIdgg+LAMLv+Ds8MS4k8ycNCBNt3a3ZTs/DivjkeXXZP7sGG0HH9J8EzFz88Dxy2dnqG/yNfWIcRxOrpPrQ/RKPpP+93+ZsHRlfU0D1dV4OUEkEQ/nSVAfvgB54t8/1JTI/dCT3QIrKhZI8Kwd4jBWbonnQUVraaJMclCHAw2TCrmCgGPP7Jcr2Kzt6y9WYwzxfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763026275; c=relaxed/relaxed;
-	bh=di0zlvtolFZ2ujSvVa+1BFR0CAlyEx4DiO0mYSWQDwc=;
+	t=1763026696; c=relaxed/relaxed;
+	bh=tXuItvXgERirCiLWAwQEeGMq3Gov8mLEWwB3mr34SNU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W6oKXxrDUTzkXovnlbaWDT7Ub81oDiN4eyi45sC8ebfXl9fRv744UizH5PiXUIiRQ+iVDlu5yiOdG9EylpAddl2nk5vdN1JuoaHwd3DOu+8mkC7uKQq+6fr9h8vOyhc2BEh66WbBOCb8OGMrNjfY/vh2Y3av8OVtuiYoJrRSxJwGSeyLW1QVeZaf1GtCsIc86eWg+IEryJv2rr6DZXVLaVgUDw3JLejHQ6oOzSv2CbI/k7KtBXX/AFDlQEv7Dqu+D+W1V7PvllIxXthNwdr/1CZb+pKPDSlI9s3MnAhKLYQafaCxRcbPK07RbrcRHCEOkmD74KdQSbsLENV3xzPo8Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ygwUYp2F; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=+qRXOq4J; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ygwUYp2F;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=+qRXOq4J;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	 Content-Type:Content-Disposition:In-Reply-To; b=CQH6XPv2FzQqZrTbnB48YYZHIkEcXF1A3EXMUbgWI/+xN57PpYLz6uuQQRy12PDyNEToEWKFXfhmOHeDmyaPY0Z4P/xE3dawMLu9L/EH0ht0WXtvxXCHgBHZ32DAgvYcc/hNf7Tl45e9JpkXPsL+mEJn1u9NjXsnxUzbGwDj4gNGL84TjPEJ99rtReNtdfJLux4QZaaAf5OQAGhRDk1LUZxQqlLQbHowiQqcMf1nXjbcsi4L5TsIqzOJGwMJhyrxBFPXDU+h9Y5mKkiXvATonfccrfVbuK+34T1jnOVWmqQr6/pPqBRqt8uVKrrUHoR0NG3vTER1Bt/MDBGN8U1KvA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4d6ZlQ50Ghz2yvX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 20:31:14 +1100 (AEDT)
-Date: Thu, 13 Nov 2025 10:31:10 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763026270;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=di0zlvtolFZ2ujSvVa+1BFR0CAlyEx4DiO0mYSWQDwc=;
-	b=ygwUYp2FepRzD3HjKdKbHo13iKPe5fGwe/j9Ys6zZiMvxAWN1OBuAhyCiELOtD2RGYJltU
-	8VX7MMGJ5DjE9n6DrWYVAuNwfdZvsbH1aHRwEYX3teYkFw5AJBO35bW4WpF5Tk5kFHUWrL
-	gLNEY+Wc1BUOIms3gsYJ/wOrqfpecWcaeu7T+cTr/m0bQLMtttloE8h10mHvi2/tYzORRN
-	G/jTKrO/gkksvgHb4CvJQr0H0W8vsKeIQ0e8rgMNvSrLaU6xLfa0eBk4Zd3xD9o+7GQDNd
-	mfHowgXQeM41cjXmGj3ubXSd3BExQ+zjAH7KBXzuEcjBpvptyc3CwuDZVPJ21A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763026270;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=di0zlvtolFZ2ujSvVa+1BFR0CAlyEx4DiO0mYSWQDwc=;
-	b=+qRXOq4Jk2slHhdA1iSs+PP5mTSlOHMcDybHXlytmmFNwk4bSfci9b5O8vXXVZ+OjYzTkf
-	EiwvRX9YrR/EFeCw==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Nicolas Schier <nsc@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Masahiro Yamada <masahiroy@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2 00/10] kbuild: userprogs: introduce
- architecture-specific CC_CAN_LINK and userprog flags
-Message-ID: <20251113102307-ca2180c8-4876-46ea-8678-aaedd9ba36f0@linutronix.de>
-References: <20251014-kbuild-userprogs-bits-v2-0-faeec46e887a@linutronix.de>
- <aRToC77bNUy2sKAK@derry.ads.avm.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d6ZvW6Tzmz2yD5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 20:38:13 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id B6DD32C02BAE;
+	Thu, 13 Nov 2025 10:38:09 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 9BB47192C; Thu, 13 Nov 2025 10:38:09 +0100 (CET)
+Date: Thu, 13 Nov 2025 10:38:09 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Riana Tauro <riana.tauro@intel.com>,
+	"Sean C. Dardis" <sean.c.dardis@intel.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Benjamin Block <bblock@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alek Du <alek.du@intel.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, qat-linux@intel.com,
+	Dave Jiang <dave.jiang@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH 1/2] PCI: Ensure error recoverability at all times
+Message-ID: <aRWnAd-PZuHMqBwd@wunner.de>
+References: <070a03221dbec25f478d36d7bc76e0da81985c5d.1760274044.git.lukas@wunner.de>
+ <20251112223831.GA2245026@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,85 +74,116 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aRToC77bNUy2sKAK@derry.ads.avm.de>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20251112223831.GA2245026@bhelgaas>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Nov 12, 2025 at 09:03:23PM +0100, Nicolas Schier wrote:
-> On Tue, Oct 14, 2025 at 03:05:15PM +0200, Thomas Weiﬂschuh wrote:
-> > The current logic to inherit -m32/-m64 from the kernel build only works
-> > for a few architectures. It does not handle byte order differences,
-> > architectures using different compiler flags or different kinds of ABIs.
+On Wed, Nov 12, 2025 at 04:38:31PM -0600, Bjorn Helgaas wrote:
+> On Sun, Oct 12, 2025 at 03:25:01PM +0200, Lukas Wunner wrote:
+> > Despite these workarounds, recoverability at all times is not guaranteed:
+> > E.g. when a PCIe port goes through a runtime suspend and resume cycle,
+> > the "saved_state" flag is cleared by:
 > > 
-> > Introduce a per-architecture override mechanism to set CC_CAN_LINK and
-> > the flags used for userprogs.
+> >   pci_pm_runtime_resume()
+> >     pci_pm_default_resume_early()
+> >       pci_restore_state()
 > > 
-> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> > ---
-> > Changes in v2:
-> > - Rebase and drop already applied patch
-> > - Disable CC_CAN_LINK if the test program generates warnings
-> > - Move to architecture-specific logic
-> > - Link to v1: https://lore.kernel.org/r/20250813-kbuild-userprogs-bits-v1-0-2d9f7f411083@linutronix.de
-> > 
-> > ---
-> > Thomas Weiﬂschuh (10):
-> >       kbuild: don't enable CC_CAN_LINK if the dummy program generates warnings
-> >       init: deduplicate cc-can-link.sh invocations
-> >       kbuild: allow architectures to override CC_CAN_LINK
-> >       riscv: Implement custom CC_CAN_LINK
-> >       s390: Implement custom CC_CAN_LINK
-> >       powerpc: Implement custom CC_CAN_LINK
-> >       MIPS: Implement custom CC_CAN_LINK
-> >       x86/Kconfig: Implement custom CC_CAN_LINK
-> >       sparc: Implement custom CC_CAN_LINK
-> >       kbuild: simplify CC_CAN_LINK
-> > 
-> >  Makefile                |  8 ++++++--
-> >  arch/mips/Kconfig       | 15 +++++++++++++++
-> >  arch/powerpc/Kconfig    | 15 +++++++++++++++
-> >  arch/riscv/Kconfig      | 11 +++++++++++
-> >  arch/s390/Kconfig       | 11 +++++++++++
-> >  arch/sparc/Kconfig      | 11 +++++++++++
-> >  arch/x86/Kconfig        | 11 +++++++++++
-> >  init/Kconfig            |  7 +++++--
-> >  scripts/Kconfig.include |  3 +++
-> >  scripts/cc-can-link.sh  |  2 +-
-> >  10 files changed, 89 insertions(+), 5 deletions(-)
-> > ---
-> > base-commit: 10f8210c7a7098897fcee5ca70236167b39eb797
-> > change-id: 20250813-kbuild-userprogs-bits-03c117da4d50
-> > 
-> > Best regards,
-> > -- 
-> > Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> > 
+> > ... and hence on a subsequent AER event, the port's Config Space cannot be
+> > restored.  
 > 
-> Thanks for the patch set and all the work behind!  I found only one
-> issue in patch 3, the rest looks good to me as they are.
+> I guess this restore would be done by a driver's
+> pci_error_handlers.slot_reset() or .reset_done() calling
+> pci_restore_state()?
+
+Yes.  Restoration of config space after an error-recovery-induced reset
+is currently always the job of the device driver.
+
+E.g. in the case of portdrv, it happens in pcie_portdrv_slot_reset().
+
+We could revisit this design decision and change the behavior to have
+pcie_do_recovery() call pci_restore_state(), thus reducing boilerplate
+in the drivers.  But that would be a separate effort, orthogonal to the
+present patch.
+
+> > +++ b/drivers/pci/bus.c
+> > @@ -358,6 +358,13 @@ void pci_bus_add_device(struct pci_dev *dev)
+> >  	pci_bridge_d3_update(dev);
+> >  
+> >  	/*
+> > +	 * Save config space for error recoverability.  Clear state_saved
+> > +	 * to detect whether drivers invoked pci_save_state() on suspend.
 > 
-> I haven't reviewed the compiler flags for the archs, but from the formal
-> point of view they look good to me, too.
+> Can we expand this a little to explain how this is detected and what
+> drivers *should* be doing?
+
+That is documented in Documentation/power/pci.rst, "3.1.2. suspend()":
+
+   "This callback is expected to quiesce the device and prepare it to be
+    put into a low-power state by the PCI subsystem.  It is not required
+    (in fact it even is not recommended) that a PCI driver's suspend()
+    callback save the standard configuration registers of the device [...]
+
+    However, in some rare case it is convenient to carry out these
+    operations in a PCI driver.  Then, pci_save_state() [...] should be
+    used to save the device's standard configuration registers [...].
+    Moreover, if the driver calls pci_save_state(), the PCI subsystem will
+    not execute either pci_prepare_to_sleep(), or pci_set_power_state()
+    for its device, so the driver is then responsible for handling the
+    device as appropriate."
+
+> I think the reason is that the PCI core
+> can invoke pci_save_state() on suspend if the driver did not.
+
+Right.  By calling pci_save_state(), a driver signals to the PCI core
+that it assumes responsibility for putting the device into a low power
+state.  If a driver wants to keep a device in D0, it could call
+pci_save_state() and thus prevent the PCI core from putting it e.g.
+into D3.
+
+> I assume:
 > 
-> How shall we proceed with here?  I think, easiest would be if we get
-> appropriate acks from the architecture maintainers, so we could take
-> this via kbuild.
+>   - PCI core always calls pci_save_state() and clears state_saved when
+>     device is enumerated (below)
+> 
+>   - When it has configured the device to the state it wants restore,
+>     the driver may call pci_save_state() again, which will set
+>     state_saved
+> 
+>   - If driver has not called pci_save_state(), i.e., state_saved is
+>     still clear, we want the PCI core to call pci_save_state() during
+>     suspend
 
-That would surely be the best option. Unfortunately quite frequently it is hard
-to get architecture maintainer's feedback on a cross-architecture series.
+Right.
 
-> Other opinions?
+> This sounds sensible to me.  It would be nice if there were a few more
+> words about pci_save_state() and pci_restore_state() in
+> Documentation/.
+> 
+> pci_save_state() isn't mentioned at all in Documentation/PCI
 
-It would also work to only take the first three patches through the kbuild tree
-and push the other ones through the architecture trees.
+Right, it's documented in the Documentation/power directory. :)
 
-I don't really have a clear preference.
+The "state_saved" flag in struct pci_dev is an internal flag used by
+the PCI core to keep track of whether a driver called pci_save_state()
+on suspend.
 
+The logic to update the flag is not modified by the patch, deliberately so
+to avoid any breakage.  The flag is currently initialized to false in
+pci_device_add() (even though it already is false due to kzalloc() zeroing
+the memory).  I'm now later calling pci_save_state() in pci_bus_add_device(),
+which sets the flag to true.  To preserve the existing logic, I am resetting
+the flag to false again.
 
-Thomas
+The only change made by the patch is to not invalidate the saved state
+upon pci_restore_state() and thus allow re-using it for error recovery.
+The patch seeks to avoid changing the behavior of suspend/resume.
+I wanted to keep this minimal, non-intrusive and as low risk as possible.
+
+Thanks,
+
+Lukas
 
