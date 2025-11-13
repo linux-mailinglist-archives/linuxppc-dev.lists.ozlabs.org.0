@@ -1,78 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-14145-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14146-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B099C568F5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Nov 2025 10:23:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9FEC56946
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Nov 2025 10:27:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d6ZZ36jZGz2yvY;
-	Thu, 13 Nov 2025 20:23:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d6ZfZ0lddz2yvY;
+	Thu, 13 Nov 2025 20:27:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763025787;
-	cv=none; b=j3TCkUePWMoYrxL9z5fHymYLyBmf1zcgHUuxcivexr2eY9QQi91ijtCLXHFPWUsv7xYjFzEzc1zF8H1ucXJ90KSHZz31q6uB7YfreIFgBb/3QulGZtCefoapqMxf5X+WtfNzXhnj4KU+6AJWXdm6abmKc/du9+OTexsyZX5/Gy+aRyVo0XAHbB9mhBfhKMWXbBmSdUyjLdr6JTZoRAicdaFzzisSQZWlY87rybpL6ImF2MMJBHd+VBKTl0U1PPeupQx9vIlqSrljsC+bdMkcGlqTgxIAKz0O2j4b02ZMyWObVkwtxO2dPbEd8bRnBPw6Ae0SS3crXQ37rfwmQabWxQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763026021;
+	cv=none; b=TeYtx1RV9ESDXsV6VXNHZGLbi3IVKWCViivtQcsxjWWCc+GseFe9M9u9aWogrtih2oby/mj38Q8G2S5N8QbrdHwmYupkmI+eYjgzktM9ckrLs/VNtbjvpaDo2AIc5GSPSoELla2Dfpfmsva+nFOOBeQSz+zclVAsv/pQMu34fJiq/x4Ee8dLtL6LwSHab6/R9xv+/Pw30/pR4dLgUvsv8dBeURcfJ7XkZrR6BRa/jkr7Yhlka+mUa/dCYf/tjcNeXyVFx5q+1s96spFifqDn7FHBwDcVMJfqJ2o5gRRndz3aa7NNp8FTCNnR/EatB+pV2pXhsDGvzFF7W7W69TDyBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763025787; c=relaxed/relaxed;
-	bh=HMXftlIRLs0I4I5KBEH91u2IIAB76cPs2+aj/P7XaXI=;
+	t=1763026021; c=relaxed/relaxed;
+	bh=LDUxCZ9a1FBEg+ndXr53elrDsetDAHrRuckIwq+rkq0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g2uVD6dW6+vQnKF5suNG9b6jTpDzB8vJJ/mCEvIqCOXh0hzYHoMFsg5sMpyHq+zQBvIn1qYnKyiWaR4j3Zd7l4vLnyFvE/gp0QWpRnCYNZDW2VLntDCSjof2+SVgRHzq1gIFkGyV4r9BoYbt1TqsuKMtR2dkcE/f8fI+7fLu+Awr76AsKeGc5RkhT3h7jtNKsymhWlPFzMaKjSLtVx4Tk8TOlySepACS6omaiyOAOv/K+8p7ksJcDdbNKNJJXTBFt5sO/7N4D5iWdFUh03NX88fEXJGvVNsedjiP+Jcwtwp/q1mFfJ7JXxWtjiO/mwTQFxvmCCS3fHICbiQ1VbBfiA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ju37J1p2; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=yj3MpOVf; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=aPmv0Z4V0m5GD7Ca4M0AGprz4YGh044bhkJLks9xPAjk63yIKII/B3gSfRlPH9s+AzRUw+sixlQYag+SnHWkYUBp+LvQOkJQnBiQeCzBtvrGnXC0+iXzL8H0bqYQaMfkBUu58vyNYIVKshczEu5zf78Coyl4cvaSs/9n2UgfjeyXXi3OdrBDGPDHJ2t6h1vEDye+5T6QO4y0J0L6Thx/ropBNJnI8hlhaveWmVIjXSKjSCdYRBe0c01mpJ65F0qvz+oqjK82pUsTD8c77YUP2+WVxrt30niqBlFNmpL7p+WWIJlioKnyp3/MZKa7jmbhuerZ1vFLnldBE7RVR+RtjQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=BZWkX6ff; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ju37J1p2;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=yj3MpOVf;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=BZWkX6ff;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4d6ZZ209wfz2yD5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 20:23:05 +1100 (AEDT)
-Date: Thu, 13 Nov 2025 10:22:58 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763025779;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HMXftlIRLs0I4I5KBEH91u2IIAB76cPs2+aj/P7XaXI=;
-	b=ju37J1p2hCJon7Dq3EBdc85zXolYmJpQFCDTDD8FHlvRoEjSOjlt4Yp4KTbgB+KXM8NcYf
-	x3XTLgFMg7s207AYx4nl33y1T7AsXPupY2fLhI04LI5i9mGt07hV5/LXgVSxjC9NWmgQAa
-	KqW1OH6sg1WZuym+vr+IuqGfgMbqLdr1tI/aw1wSpW86G2aLwk2MCJCFBMALz4sjVRNETn
-	KkDa1CbmU1hyAhZyUbsikCLXiGWtupPq5TLM5m+oNtPlFP+wYSHVn6OyRIyBbZiK4RDRII
-	854zE6FXH9KIsYP0DkrSuQU61CL7NMT2DNoYB6l8S3LyjnomxgvlNoDIEVa5SA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763025779;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HMXftlIRLs0I4I5KBEH91u2IIAB76cPs2+aj/P7XaXI=;
-	b=yj3MpOVfBn1X0F5np7dHo4NQ2EaJr+XO2eqbf3c6nh3gZeHlyNtkeRsYccVi0YEIjMy8Pj
-	TA7I+NuN5tR4vTBQ==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Nicolas Schier <nsc@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Masahiro Yamada <masahiroy@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2 03/10] kbuild: allow architectures to override
- CC_CAN_LINK
-Message-ID: <20251113102236-1954dc76-ad1b-423d-ad29-104c3e07db17@linutronix.de>
-References: <20251014-kbuild-userprogs-bits-v2-0-faeec46e887a@linutronix.de>
- <20251014-kbuild-userprogs-bits-v2-3-faeec46e887a@linutronix.de>
- <aRTmXJVXlbkF2rI4@derry.ads.avm.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d6ZfV2wXwz2yD5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 20:26:57 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=LDUxCZ9a1FBEg+ndXr53elrDsetDAHrRuckIwq+rkq0=; b=BZWkX6ff3GA3RTeDfa4driAPz2
+	WEG9gIlnyiYFdtMOWlbZu9v/maRJmMXsW7OV71VZxaFQzrkQ+QdzfOvUBvZ8qNmBTAaQ0c64+1a4e
+	e2Ntp0fd4Nz2PbSh3xvepolayFe8B+2k6YRJKodfIL7Czycd5Xq28Trj5RrH9AvJL7ifIGizzoNUd
+	S85OBW6rXLf1OGeorqTcGvgW3AVCokPuyfp1wjY7Y3yAbmhvYTcVBNIroydt68NMMAAiPyRPwfcyz
+	nXp2xc7r/dlTreE2iy/5WTgr8kPTqpleSNRGiMCmePXOZMGXGvpta32ZoNyWi03E8Avg9wVxF2qVG
+	6GSVcCPw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vJTbA-0000000HMAd-16pF;
+	Thu, 13 Nov 2025 09:26:36 +0000
+Date: Thu, 13 Nov 2025 09:26:36 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+	a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, paul@paul-moore.com,
+	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com, selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com, bpf@vger.kernel.org, ast@kernel.org,
+	andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org,
+	eddyz87@gmail.com, yonghong.song@linux.dev, ihor.solodrai@linux.dev,
+	Chris Mason <clm@meta.com>
+Subject: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
+ switch to simple_remove_by_name())
+Message-ID: <20251113092636.GX2441659@ZenIV>
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+ <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+ <20251111092244.GS2441659@ZenIV>
+ <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,52 +77,154 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aRTmXJVXlbkF2rI4@derry.ads.avm.de>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Nov 12, 2025 at 08:56:12PM +0100, Nicolas Schier wrote:
-> On Tue, Oct 14, 2025 at 03:05:18PM +0200, Thomas Weiﬂschuh wrote:
-> > The generic test for CC_CAN_LINK assumes that all architectures use -m32
-> > and -m64 to switch between 32-bit and 64-bit compilation. This is overly
-> > simplistic. Architectures may use other flags (-mabi, -m31, etc.) or may
-> > also require byte order handling (-mlittle-endian, -EL). Expressing all
-> > of the different possibilities will be very complicated and brittle.
-> > Instead allow architectures to supply their own logic which will be
-> > easy to understand and evolve.
-> > 
-> > Both the boolean ARCH_HAS_CC_CAN_LINK and the string ARCH_USERFLAGS need
-> > to be implemented as kconfig does not allow the reuse of string options.
-> > 
-> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> > ---
-> >  Makefile     | 13 +++++++++++--
-> >  init/Kconfig |  4 ++++
-> >  2 files changed, 15 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/Makefile b/Makefile
-> > index 17cfa11ca7163aa3297101ceb3c9e85f4878f12d..26e5bca534e27034c355939bca4c90db435ecdbd 100644
-> > --- a/Makefile
-> > +++ b/Makefile
-> > @@ -1134,8 +1134,17 @@ ifneq ($(CONFIG_ARCH_VMLINUX_NEEDS_RELOCS),)
-> >  LDFLAGS_vmlinux	+= --emit-relocs --discard-none
-> >  endif
-> >  
-> > -# Align the bit size of userspace programs with the kernel
-> > -USERFLAGS_FROM_KERNEL := -m32 -m64 --target=%
-> > +# Align the architecture of userspace programs with the kernel
-> > +USERFLAGS_FROM_KERNEL := --target=%
-> > +
-> > +ifdef CONFIG_ARCH_USERPROGS_CFLAGS
-> 
-> Is this some left-over from a previous version?
-> 
-> s/CONFIG_ARCH_USERPROGS_CFLAGS/CONFIG_ARCH_USERFLAGS/
+On Tue, Nov 11, 2025 at 10:44:26PM -0500, Chris Mason wrote:
 
-Indeed. Thanks.
+> We're wandering into fuzzing territory here, and I honestly have no idea
+> if this is a valid use of any of this code, but AI managed to make a
+> repro that crashes only after your patch.  So, I'll let you decide.
+> 
+> The new review:
+> 
+> Can this dereference ZERO_SIZE_PTR when eps_count is 0?
+> 
+> When ffs->eps_count is 0, ffs_epfiles_create() calls kcalloc(0, ...) which
+> returns ZERO_SIZE_PTR (0x10). The loop never executes so epfiles[0].ffs is
+> never initialized. Later, cleanup paths (ffs_data_closed and ffs_data_clear)
+> check if (epfiles) which is true for ZERO_SIZE_PTR, and call
+> ffs_epfiles_destroy(epfiles, 0).
+> 
+> In the old code, the for loop condition prevented any dereferences when
+> count=0. In the new code, "root = epfile->ffs->sb->s_root" dereferences
+> epfile before checking count, which would fault on ZERO_SIZE_PTR.
+
+Lovely.  OK, this is a bug.  It is trivial to work around (all callers
+have ffs avaible, so just passing it as an explicit argument solves
+the problem), but there is a real UAF in functionfs since all the way
+back to original merge.  Take a look at
+
+static int
+ffs_epfile_open(struct inode *inode, struct file *file)
+{
+	struct ffs_epfile *epfile = inode->i_private;
+
+	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
+		return -ENODEV;
+
+	file->private_data = epfile;
+	ffs_data_opened(epfile->ffs);
+
+	return stream_open(inode, file);
+}
+
+and think what happens if that (->open() of dynamic files in there)
+races with file removal.  Specifically, if we get called with ffs->opened
+equal to 1 due to opened ep0 and get preempted away just before the
+call ffs_data_opened().  Another thread closes ep0, hitting
+ffs_data_closed(), dropping ffs->opened to 0 and getting
+			ffs->state = FFS_CLOSING;
+			ffs_data_reset(ffs);
+which calls ffs_data_clear(), where we hit
+		ffs_epfiles_destroy(epfiles, ffs->eps_count);
+All files except ep0 are removed and epfiles gets freed, leaving the
+first thread (in ffs_epfile_open()) with file->private_data pointing
+into a freed array.
+
+open() succeeds, with any subsequent IO on the resulting file leading
+to calls of
+static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
+{
+	struct ffs_epfile *epfile = file->private_data;
+
+and a bunch of accesses to *epfile later in that function, all of them
+UAF.
+
+As far as I can tell, the damn thing intends to prevent removals between
+ffs_data_opened() and ffs_data_closed(), so other methods would be safe
+if ->open() had been done right.  I'm not happy with the way that FSM
+is done (the real state is a mix of ffs->state, ffs->opened and ffs->mutex,
+and rules bloody awful; I'm still not entirely convinced that ffs itself
+can't be freed with ffs->reset_work scheduled for execution), but that's
+a separate story.  
+
+Another variant of that scenario is with ffs->no_disconnect set;
+in a sense, it's even nastier.  In that case ffs_data_closed() won't
+remove anything - it will set ffs->state to FFS_DEACTIVATED, leaving
+the removals for ffs_data_open().  If we have *two* threads in open(),
+the first one to call ffs_data_open() will do removal; on another CPU
+the second will just get past its increment of ->opened (from 1 to 2)
+and move on, without waiting for anything.
+
+IMO we should just take ffs->mutex in there, getting to ffs via
+inode->i_sb->s_fs_info.  And yes, compare ffs->state with FFS_ACTIVE -
+under ->mutex, without WARN_ON() and after having bumped ->opened
+so that racing ffs_data_closed() would do nothing.  Not FFS_ACTIVE -
+call ffs_data_closed() ourselves on failure exit.
+
+As in
+
+static int
+ffs_epfile_open(struct inode *inode, struct file *file)
+{
+	strict ffs_data *ffs = inode->i_sb->s_fs_info;
+	int ret;
+
+        /* Acquire mutex */
+	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+	if (ret < 0)
+		return ret;
+
+	ffs_data_opened(ffs);
+	/*
+	 * not FFS_ACTIVE - there might be a pending removal;
+	 * FFS_ACITVE alone is not enough, though - we might have
+	 * been through FFS_CLOSING and back to FFS_ACTIVE,
+	 * with our file already removed.
+	 */
+	if (unlikely(ffs->state != FFS_ACTIVE ||
+		     !simple_positive(file->f_path.dentry))) {
+		ffs_data_closed(ffs);
+		mutex_unlock(&ffs->mutex);
+		return -ENODEV;
+	}
+	mutex_unlock(&ffs->mutex);
+
+	file->private_data = inode->i_private;
+	return stream_open(inode, file);
+}
+
+and
+
+static int ffs_ep0_open(struct inode *inode, struct file *file)
+{
+        struct ffs_data *ffs = inode->i_private;
+	int ret;
+
+        /* Acquire mutex */
+	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+	if (ret < 0)
+		return ret;
+
+	ffs_data_opened(ffs);
+	if (ffs->state == FFS_CLOSING) {
+		ffs_data_closed(ffs);
+		mutex_unlock(&ffs->mutex);
+		return -EBUSY;
+	}
+	mutex_unlock(&ffs->mutex);
+
+	file->private_data = ffs;
+	return stream_open(inode, file);
+}
+
+Said that, I'm _NOT_ familiar with that code; this is just from a couple
+of days digging through the driver, so I would like to hear comments from
+the maintainer...  Greg?
 
