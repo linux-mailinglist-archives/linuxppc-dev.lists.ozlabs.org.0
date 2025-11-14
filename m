@@ -1,94 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-14174-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14175-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280D7C5B60B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Nov 2025 06:16:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B093C5BD51
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Nov 2025 08:46:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d752H6wwSz30GH;
-	Fri, 14 Nov 2025 16:15:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d78N62shhz2yx8;
+	Fri, 14 Nov 2025 18:46:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763097351;
-	cv=none; b=I5wxG6kBrG1CG/C0MwXjJLE2FKcphgyyoNzzr36vJpr4mwQXw4ckbx39akmwPxIgEZA1xIXfnAQfohYYk9XuAbkzWk54xmyUhhhTtfqqbRf/0Qo82oPccrbbUogxXTgk+jJeVmWfYNEOsRC+Y45G0kN/RctNd7FFE9w8mhMVBWOVs8yvvWnzC1ZbK36S2Ey6YCYk3n+ZxTq3rsq3SwcgGDwlln+3dB9hn2Sn0U0xcAPQPnf/j6F9noFO59+dKAayUVc/2k+vRcMn38LRc8bNmmOsOWFDOov+xUpvBnANTFo0VeT02VEQdNPZtphchL1wlhIx55s2YHrbZuxfdo2sng==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763106390;
+	cv=none; b=df/aPLMa9Ll2PBam6UL0Sm9qUYN8Jm2ItHBuvNpNdx8gN3ffEWEKw0WwjLQx8nbJ+esPGsg5ZP+rHFSBrdmkFUelEAjCTdxPddzeEKbn04VE7GJ6cvsX99Srb2x1afRJYcWy+vJrlfIOO7fWcTY6q8UTnLfjjmC0WoZA2RcqNyGlAXDW2f+TwJEAc0IplP4G2WaMg4JEilKPvihtkuo2QRvQUz4b/ty6EzTMD1hvUspWRbEv0hzqSm9thyrqq3ePTC8nmuX+Dp+3H7HM/JeXyCjqhN1ej9ITw8/DygO7T5tsQfvhJmT0iukRt0Uv9SxCNdd/Bb+6U8jP9Y7N0EHx9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763097351; c=relaxed/relaxed;
-	bh=2oVKsIXyrJXkyM+6wrn/iLOKfHA/LtsIXpmykgi6E68=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkFGZxIXvbQaaQ2F9Q5zg6Dp842w0MbsUwlwS6dHqtBdGUyCc3D40xy6leAjlIbAOkOD9+f9O6G0xMXGiIwoJ/E9cUQeAkasKDcGeGOd0ZkWysTU937/4svmKBVr57ovMF30xW3xtJn+LyLolyXLLPlJnXi5R1vm9fe4N5T6i1vhQFV2zF5ku40Le0TAsF7L12BJCRCjTt9puXXoFvrn4kcszTy0yphcA6G6tCOvxxyWR216Sqy5s7r644+fK1CuH9hRXpIVslohP1QUfJtQTrd75GBdrAMLJ65A9nVaFtwGJcXb6MI6HlAhz9YsHedLicJQ0H022wzIlwQIx/xJPw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bh3ik9Dy; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1763106390; c=relaxed/relaxed;
+	bh=h+GY3DA2a89Ro6bK+Ny9JBXd1oGc4240hj01Ocp0k3I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EsiaLvt92Sjrk84i9UtlXq4tGBPFseP3j0xsj3YBcYvsFFCYB3dyWMJLz1ABqn196+ZC4QBG/24utF+KrtnIP4mt13+OFedE5z5Csq5/8Vx8h5SuQwRsMMSKHypRzxi8Egrt73F0czZU2ShrEhyJhAWmIqNuM87dAamEgMe+FyAThNb4SlR9OPr+weKMM+kCBI+xcGADE+GVXb4ibheFOq67sVxKsOYE9FaVY5vQffX7WnfLtGS5H8ymrUPCjRYATxSnufKpL3iS7MqA22NL3hfQ+uv5cFry/QGaGAE9fLI0kgdjd7mFhQl5BqgK0kcavzPG82L5dTwyUMNuHrzqZQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=RmwmpcQV; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bh3ik9Dy;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=RmwmpcQV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d752H1YBrz2yxl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Nov 2025 16:15:51 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5ADMlLHm022347;
-	Fri, 14 Nov 2025 05:15:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=2oVKsIXyrJXkyM+6w
-	rn/iLOKfHA/LtsIXpmykgi6E68=; b=bh3ik9Dy1uFdHWAfF4PHleVPJlHZBWJvn
-	SR0GLiVs0VGatsu14WDYa5lyDUkhMHXkqEuorLmq0mWOADpFMNzO2TnvA0Wz1zS6
-	nXGw4PxEf4mjcuFkChqMXUHhAA392pck4PuCMnM3HExJ8stUZstZC6NvJHhtcUbf
-	qSJic78JXL1Y1atOCYLce55FJwbdRYtRiU91I83FN6ea10eBZ/0B6hRQvcgYNasv
-	gxFg4eYtB41T/JOxW1exIAs+Wl1JhAkfOfIuhOkIKZhUclKqGuqglRsPDntATLt0
-	an2nPIiRo3RrNcupp/dHjlwIzjISLfTSM+RNmEqjGVi+tLbytj8sg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4adrecs29w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Nov 2025 05:15:46 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AE5Fj8W020409;
-	Fri, 14 Nov 2025 05:15:45 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4adrecs29u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Nov 2025 05:15:45 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AE4NB1k011562;
-	Fri, 14 Nov 2025 05:15:44 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajw1sb3s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Nov 2025 05:15:44 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AE5FewL15860138
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Nov 2025 05:15:40 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A1A0820043;
-	Fri, 14 Nov 2025 05:15:40 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 19BD720040;
-	Fri, 14 Nov 2025 05:15:37 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.124.211.127])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 14 Nov 2025 05:15:36 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Aditya Gupta <adityag@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>, Baoquan he <bhe@redhat.com>,
-        Dave Young <dyoung@redhat.com>, Hari Bathini <hbathini@linux.ibm.com>,
-        Jiri Bohac <jbohac@suse.cz>, Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        Pingfan Liu <piliu@redhat.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>,
-        Vivek Goyal <vgoyal@redhat.com>, linuxppc-dev@lists.ozlabs.org,
-        kexec@lists.infradead.org
-Subject: [PATCH v4 5/5] crash: export crashkernel CMA reservation to userspace
-Date: Fri, 14 Nov 2025 10:45:04 +0530
-Message-ID: <20251114051504.614937-6-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251114051504.614937-1-sourabhjain@linux.ibm.com>
-References: <20251114051504.614937-1-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d78N44d6Hz2yw7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Nov 2025 18:46:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=h+GY3DA2a89Ro6bK+Ny9JBXd1oGc4240hj01Ocp0k3I=; b=RmwmpcQVdyxseRwak/qof99plg
+	19GIkQZH7ChhzOiG3uz8dg2HkAA5N+5/V1UIxXkDLDUEZCoKXkHmJU2jU1s+Q0xxu/tK+e7sPtX1g
+	p9WnhHDcBBVa4n8KLpZIKcLWl1vD6DcEr3NuPGBC/3lFrFbZqBzzS93Vmonf4mXY1YBnwXFMeqSOq
+	0VjFZh3Nht/9wWMlfASZ7/M0BXd2QaeBC84W+1f0gTGtGlmpUd/NgvFb/SFB2rT88CqI0WGcOH1cX
+	adF7Nl5bHG2kHMKYO15y03X/mRHcKujBsb/+YppfEkDblFYHA+Zfb/PsC9CidjgprrT4VBcTnotMR
+	Z1lBwfCw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vJoVa-00000009Pew-1WxF;
+	Fri, 14 Nov 2025 07:46:14 +0000
+Date: Fri, 14 Nov 2025 07:46:14 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+	a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
+	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
+	yonghong.song@linux.dev, ihor.solodrai@linux.dev,
+	Chris Mason <clm@meta.com>
+Subject: Re: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
+ switch to simple_remove_by_name())
+Message-ID: <20251114074614.GY2441659@ZenIV>
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+ <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+ <20251111092244.GS2441659@ZenIV>
+ <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
+ <20251113092636.GX2441659@ZenIV>
+ <2025111316-cornfield-sphinx-ba89@gregkh>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,132 +79,227 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEzMDE3OSBTYWx0ZWRfX1AAJZaP/oujO
- uiu5H01dlBe3gRRPwCkBWPeZQJbyr9565VIe69d1T7P8t28QE0wYZsZJPOqhep5HNrdrL5tYpBl
- K87p8P4OsA9agLz5Vzk/ePFlmAJPrLHTHxmLOYYMSKqGGGFgdPpttSLTKjHfCCf8XmRkoObmgp5
- 3Zuu3kpN3zD78DL8mkdClooVORl7gpCpL0fi7cRBo+R0JM9kwW86HAn7xd1OMloBNeZCqnaSzHw
- oBlnScwv8bUHuB+CbYWodiz/mSNjxw+CPKUj70EtQxhK9LBsUW1xqCfzc2NBi89Qt5FFVXnY41R
- c7qwCqnQomf2kADurKiI21HVT8zX3+ou/xyw7ni0srEdmg2NZiL7UcvWY4Z9993efArvhjd0tmW
- mukBd+O0YT05Tc1DQ+3FQIBxM/Hm3g==
-X-Authority-Analysis: v=2.4 cv=E//AZKdl c=1 sm=1 tr=0 ts=6916bb02 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=Z4Rwk6OoAAAA:8 a=20KFwNOVAAAA:8 a=pGLkceISAAAA:8 a=voM4FWlXAAAA:8
- a=JfrnYn6hAAAA:8 a=xHySkhmCpRGYbmLIrh4A:9 a=HkZW87K1Qel5hWWM3VKY:22
- a=IC2XNlieTeVoXbcui8wp:22 a=1CNFftbPRP8L7MoqJWF3:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: ULITlymv-_B6FIobW1VyROl7jAgp9zCo
-X-Proofpoint-ORIG-GUID: u8O023xO4rxTK2LTmYqQ9ChugD43PQZp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-13_07,2025-11-13_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 clxscore=1015 spamscore=0 phishscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511130179
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025111316-cornfield-sphinx-ba89@gregkh>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Add a sysfs entry /sys/kernel/kexec/crash_cma_ranges to expose all
-CMA crashkernel ranges.
+On Thu, Nov 13, 2025 at 04:20:08PM -0500, Greg Kroah-Hartman wrote:
 
-This allows userspace tools configuring kdump to determine how much
-memory is reserved for crashkernel. If CMA is used, tools can warn
-users when attempting to capture user pages with CMA reservation.
+> Sorry for the delay.  Yes, we should be grabing the mutex in there, good
+> catch.  There's been more issues pointed out with the gadget code in the
+> past year or so as more people are starting to actually use it and
+> stress it more.  So if you have a patch for this, I'll gladly take it :)
 
-The new sysfs hold the CMA ranges in below format:
+How about the following?
 
-cat /sys/kernel/kexec/crash_cma_ranges
-100000000-10c7fffff
+commit 330837c8101578438f64cfaec3fb85521d668e56
+Author: Al Viro <viro@zeniv.linux.org.uk>
+Date:   Fri Nov 14 02:18:22 2025 -0500
 
-The reason for not including Crash CMA Ranges in /proc/iomem is to avoid
-conflicts. It has been observed that contiguous memory ranges are sometimes
-shown as two separate System RAM entries in /proc/iomem. If a CMA range
-overlaps two System RAM ranges, adding crashk_res to /proc/iomem can create
-a conflict. Reference [1] describes one such instance on the PowerPC
-architecture.
+    functionfs: fix the open/removal races
+    
+    ffs_epfile_open() can race with removal, ending up with file->private_data
+    pointing to freed object.
+    
+    There is a total count of opened files on functionfs (both ep0 and
+    dynamic ones) and when it hits zero, dynamic files get removed.
+    Unfortunately, that removal can happen while another thread is
+    in ffs_epfile_open(), but has not incremented the count yet.
+    In that case open will succeed, leaving us with UAF on any subsequent
+    read() or write().
+    
+    The root cause is that ffs->opened is misused; atomic_dec_and_test() vs.
+    atomic_add_return() is not a good idea, when object remains visible all
+    along.
+    
+    To untangle that
+            * serialize openers on ffs->mutex (both for ep0 and for dynamic files)
+            * have dynamic ones use atomic_inc_not_zero() and fail if we had
+    zero ->opened; in that case the file we are opening is doomed.
+            * have the inodes of dynamic files marked on removal (from the
+    callback of simple_recursive_removal()) - clear ->i_private there.
+            * have open of dynamic ones verify they hadn't been already removed,
+    along with checking that state is FFS_ACTIVE.
+    
+    Fix another abuse of ->opened, while we are at it - it starts equal to 0,
+    is incremented on opens and decremented on ->release()... *and* decremented
+    (always from 0 to -1) in ->kill_sb().  Handling that case has no business
+    in ffs_data_closed() (or to ->opened); just have ffs_kill_sb() do what
+    ffs_data_closed() would in case of decrement to negative rather than
+    calling ffs_data_closed() there.
+    
+    And don't bother with bumping ffs->ref when opening a file - superblock
+    already holds the reference and it won't go away while there are any opened
+    files on the filesystem.
+    
+    Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
-Link: https://lore.kernel.org/all/20251016142831.144515-1-sourabhjain@linux.ibm.com/ [1]
-
-Cc: Aditya Gupta <adityag@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Baoquan he <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Jiri Bohac <jbohac@suse.cz>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-Cc: Pingfan Liu <piliu@redhat.com>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Shivang Upadhyay <shivangu@linux.ibm.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: kexec@lists.infradead.org
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- .../ABI/testing/sysfs-kernel-kexec-kdump        | 10 ++++++++++
- kernel/kexec_core.c                             | 17 +++++++++++++++++
- 2 files changed, 27 insertions(+)
-
-diff --git a/Documentation/ABI/testing/sysfs-kernel-kexec-kdump b/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
-index 00c00f380fea..f59051b5d96d 100644
---- a/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
-+++ b/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
-@@ -49,3 +49,13 @@ Description:	read only
- 		is used by the user space utility kexec to support updating the
- 		in-kernel kdump image during hotplug operations.
- User:		Kexec tools
-+
-+What:		/sys/kernel/kexec/crash_cma_ranges
-+Date:		Nov 2025
-+Contact:	kexec@lists.infradead.org
-+Description:	read only
-+		Provides information about the memory ranges reserved from
-+		the Contiguous Memory Allocator (CMA) area that are allocated
-+		to the crash (kdump) kernel. It lists the start and end physical
-+		addresses of CMA regions assigned for crashkernel use.
-+User:		kdump service
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index 7476a46de5d6..da6ff72b4669 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -1271,6 +1271,22 @@ static ssize_t crash_size_store(struct kobject *kobj,
- }
- static struct kobj_attribute crash_size_attr = __ATTR_RW(crash_size);
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index 47cfbe41fdff..ed7fa869ea77 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -640,13 +640,22 @@ static ssize_t ffs_ep0_read(struct file *file, char __user *buf,
  
-+static ssize_t crash_cma_ranges_show(struct kobject *kobj,
-+				     struct kobj_attribute *attr, char *buf)
-+{
-+
-+	ssize_t len = 0;
-+	int i;
-+
-+	for (i = 0; i < crashk_cma_cnt; ++i) {
-+		len += sysfs_emit_at(buf, len, "%08llx-%08llx\n",
-+				     crashk_cma_ranges[i].start,
-+				     crashk_cma_ranges[i].end);
+ static int ffs_ep0_open(struct inode *inode, struct file *file)
+ {
+-	struct ffs_data *ffs = inode->i_private;
++	struct ffs_data *ffs = inode->i_sb->s_fs_info;
++	int ret;
+ 
+-	if (ffs->state == FFS_CLOSING)
+-		return -EBUSY;
++	/* Acquire mutex */
++	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
++	if (ret < 0)
++		return ret;
+ 
+-	file->private_data = ffs;
+ 	ffs_data_opened(ffs);
++	if (ffs->state == FFS_CLOSING) {
++		ffs_data_closed(ffs);
++		mutex_unlock(&ffs->mutex);
++		return -EBUSY;
 +	}
-+	return len;
-+}
-+static struct kobj_attribute crash_cma_ranges_attr = __ATTR_RO(crash_cma_ranges);
++	mutex_unlock(&ffs->mutex);
++	file->private_data = ffs;
+ 
+ 	return stream_open(inode, file);
+ }
+@@ -1193,14 +1202,33 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
+ static int
+ ffs_epfile_open(struct inode *inode, struct file *file)
+ {
+-	struct ffs_epfile *epfile = inode->i_private;
++	struct ffs_data *ffs = inode->i_sb->s_fs_info;
++	struct ffs_epfile *epfile;
++	int ret;
+ 
+-	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
++	/* Acquire mutex */
++	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
++	if (ret < 0)
++		return ret;
 +
- #ifdef CONFIG_CRASH_HOTPLUG
- static ssize_t crash_elfcorehdr_size_show(struct kobject *kobj,
- 			       struct kobj_attribute *attr, char *buf)
-@@ -1289,6 +1305,7 @@ static struct attribute *kexec_attrs[] = {
- #ifdef CONFIG_CRASH_DUMP
- 	&crash_loaded_attr.attr,
- 	&crash_size_attr.attr,
-+	&crash_cma_ranges_attr.attr,
- #ifdef CONFIG_CRASH_HOTPLUG
- 	&crash_elfcorehdr_size_attr.attr,
- #endif
--- 
-2.51.1
-
++	if (!atomic_inc_not_zero(&ffs->opened)) {
++		mutex_unlock(&ffs->mutex);
+ 		return -ENODEV;
++	}
++	/*
++	 * we want the state to be FFS_ACTIVE; FFS_ACTIVE alone is
++	 * not enough, though - we might have been through FFS_CLOSING
++	 * and back to FFS_ACTIVE, with our file already removed.
++	 */
++	epfile = smp_load_acquire(&inode->i_private);
++	if (unlikely(ffs->state != FFS_ACTIVE || !epfile)) {
++		mutex_unlock(&ffs->mutex);
++		ffs_data_closed(ffs);
++		return -ENODEV;
++	}
++	mutex_unlock(&ffs->mutex);
+ 
+ 	file->private_data = epfile;
+-	ffs_data_opened(epfile->ffs);
+-
+ 	return stream_open(inode, file);
+ }
+ 
+@@ -1332,7 +1360,7 @@ static void ffs_dmabuf_put(struct dma_buf_attachment *attach)
+ static int
+ ffs_epfile_release(struct inode *inode, struct file *file)
+ {
+-	struct ffs_epfile *epfile = inode->i_private;
++	struct ffs_epfile *epfile = file->private_data;
+ 	struct ffs_dmabuf_priv *priv, *tmp;
+ 	struct ffs_data *ffs = epfile->ffs;
+ 
+@@ -2071,12 +2099,18 @@ static int ffs_fs_init_fs_context(struct fs_context *fc)
+ 	return 0;
+ }
+ 
++static void ffs_data_reset(struct ffs_data *ffs);
++
+ static void
+ ffs_fs_kill_sb(struct super_block *sb)
+ {
+ 	kill_litter_super(sb);
+-	if (sb->s_fs_info)
+-		ffs_data_closed(sb->s_fs_info);
++	if (sb->s_fs_info) {
++		struct ffs_data *ffs = sb->s_fs_info;
++		ffs->state = FFS_CLOSING;
++		ffs_data_reset(ffs);
++		ffs_data_put(ffs);
++	}
+ }
+ 
+ static struct file_system_type ffs_fs_type = {
+@@ -2114,7 +2148,6 @@ static void functionfs_cleanup(void)
+ /* ffs_data and ffs_function construction and destruction code **************/
+ 
+ static void ffs_data_clear(struct ffs_data *ffs);
+-static void ffs_data_reset(struct ffs_data *ffs);
+ 
+ static void ffs_data_get(struct ffs_data *ffs)
+ {
+@@ -2123,7 +2156,6 @@ static void ffs_data_get(struct ffs_data *ffs)
+ 
+ static void ffs_data_opened(struct ffs_data *ffs)
+ {
+-	refcount_inc(&ffs->ref);
+ 	if (atomic_add_return(1, &ffs->opened) == 1 &&
+ 			ffs->state == FFS_DEACTIVATED) {
+ 		ffs->state = FFS_CLOSING;
+@@ -2148,11 +2180,11 @@ static void ffs_data_put(struct ffs_data *ffs)
+ 
+ static void ffs_data_closed(struct ffs_data *ffs)
+ {
+-	struct ffs_epfile *epfiles;
+-	unsigned long flags;
+-
+ 	if (atomic_dec_and_test(&ffs->opened)) {
+ 		if (ffs->no_disconnect) {
++			struct ffs_epfile *epfiles;
++			unsigned long flags;
++
+ 			ffs->state = FFS_DEACTIVATED;
+ 			spin_lock_irqsave(&ffs->eps_lock, flags);
+ 			epfiles = ffs->epfiles;
+@@ -2171,12 +2203,6 @@ static void ffs_data_closed(struct ffs_data *ffs)
+ 			ffs_data_reset(ffs);
+ 		}
+ 	}
+-	if (atomic_read(&ffs->opened) < 0) {
+-		ffs->state = FFS_CLOSING;
+-		ffs_data_reset(ffs);
+-	}
+-
+-	ffs_data_put(ffs);
+ }
+ 
+ static struct ffs_data *ffs_data_new(const char *dev_name)
+@@ -2352,6 +2378,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+ 	return 0;
+ }
+ 
++static void clear_one(struct dentry *dentry)
++{
++	smp_store_release(&dentry->d_inode->i_private, NULL);
++}
++
+ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+ {
+ 	struct ffs_epfile *epfile = epfiles;
+@@ -2359,7 +2390,7 @@ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+ 	for (; count; --count, ++epfile) {
+ 		BUG_ON(mutex_is_locked(&epfile->mutex));
+ 		if (epfile->dentry) {
+-			simple_recursive_removal(epfile->dentry, NULL);
++			simple_recursive_removal(epfile->dentry, clear_one);
+ 			epfile->dentry = NULL;
+ 		}
+ 	}
 
