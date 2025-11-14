@@ -1,70 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-14179-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14180-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B37C5CE72
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Nov 2025 12:42:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAB2C5D677
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Nov 2025 14:43:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d7Fcs3R9Gz2yx7;
-	Fri, 14 Nov 2025 22:42:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d7JJ56Gq1z2yxl;
+	Sat, 15 Nov 2025 00:43:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763120573;
-	cv=none; b=ddFf7XHWFVS7KF86HfKR49WCm7lM8OsSnor+BwjcWzbbQT+J7QiNUthMpvXabff2CVMNNxCVaPxHL1lbvJk3/maEL2l/ujl4j9NgyosajMfnzFE3hr1LmAgEUSsncaK27+CmSLLo27n1qlcxbTnaBsrfh259a+HJAL8RQryDps7xkYOVupSQeduIfRI3emG8A7RstEE3V9NEpgHSdaJ6MeUiQj1QwFli/MQ6qQMcHvSWqI51gtPvp6V6os5LrmFSnZXPYK94YLK52k2/dq0p4GV+MSCr59gTr2S96UUKDjg4axtB/qdt6Q+1FXGcHGjHrz2g5sMaQI0LhUoGDF0gIw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763127813;
+	cv=none; b=C9YINjJxPJzbZRmWrRhf4LU65QHSy7dg12a4t5rmP1CtbUPH4VRQEXN4JczE8x8N9+0TkHFkCIYC6LGjQretXhJGZ+CXSpNJxgPU5IJ35+nVinv6Up8x0YTRm2pE77v+ldyFybkmxZXXFakBgNO+YAhvbRmG0edxWnYPjyAH15hZbkalSLqZictsorOdQWiwEhsAtZLNX7Z638SCQowX/MFPwWClmxKiXCUN0APRHCrcfKAgLWa2tCvkgPpsi726Z7S7EJxdq8fUlR7ypvPwTKlN/YRLM1PVaoLmglA8yo3sL0sSLEgMoOgfnI/JVMFKjKOF6fh3TiD0GGwteWkvMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763120573; c=relaxed/relaxed;
-	bh=pSa4YzVp8h2bYoRAUikxeeiupwQSNFXdKAeGXPBV9Nw=;
+	t=1763127813; c=relaxed/relaxed;
+	bh=xQUB6KjOBhp5NcnouuFZQn81BWCzOQnuwQGVzcoOc6s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L6laQpOx9jORQWsmlqg/PsNp9d0DE0xDfXG4za7d8zyvyAV9TWACGdzrPjB8rK5mJ1n9pLlfeEowF6dQitkBVJ9mcrC8rtvX1yf4FrObvvrpsWwr2EsucmZJ9qVBghK80UgTM8flneE5Xuyb1M55XYV0bJoB0LCj5LK0xF48a822a5RopTGdFP2pRma8gpb17yg/FMHbwDKy8jnNj5pGdT8RfqzjnnBR1BHzLzAm83TwunsQJBLcOiaM42ZI39nM+6HBKE+J8F5QiblET5uHA2XvJY7cam6YDrI+VhdfDVkgEzxfVQJhOoAO/nnl2UdDGOIe+tiQrP3PgPWHA4q88Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=q8fkkteN; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=gNp801rWnJ173RXS1egAd84/c0a1yvWFwnxuPpPCGSRMbxLKVSOpI61/TcajVPpqA/jrT+XfeDBejq5ZQAsww7cGIYZ6ZXYNYM1l1WKYxty+fUaJtBsWBK4lR2J8uLez3j8tn2fhRJUJEhBXRDrjOT3tPrw510I+did13niidRMevnKfQeeorsEioy7eb6bF12Q8NY88Vaf/M1QYeGX8mJ9dz8d4lzDn98LEs741IiKm7Gws0fafFEp18lxddsFhi4RpNz85JnB8eOssAEEddbNa9CVgOACEN7J561fB72JmmXpsTHCEbkHzEfe30TvAtbXGe363udjmCz/kt2wXxw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=gIRir/4L; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=PJp/vBSm; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=q8fkkteN;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=gIRir/4L;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=PJp/vBSm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d7Fcr2w7pz2yvN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Nov 2025 22:42:52 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 198CC60175;
-	Fri, 14 Nov 2025 11:42:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05698C4CEF8;
-	Fri, 14 Nov 2025 11:42:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763120568;
-	bh=JCJJ+smwYrR2g3QGo7fPrR+zmXOiaWETE6PY6T/Dud0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=q8fkkteNmYzK0uACVLTWx5CVyhemcbPv8ndiusq5y7wxdrRHX+D2H9fcpkAKGbyPx
-	 t5aZYId2snhO2ynpmREc1bqI3cU4DdNz17nRX/z5TP+NFY1vcDyPrCXh9/NqUwnFif
-	 Z6wTsOzsxOik8RgVJyp7gpXSEh75s+2HrrOGP3ASjN7IzFCA4pRUKqXxnv5YH2pe3M
-	 L+vwqRdrmBiLxbWOkkw54+LuM8bcNU97McPS4KwqMsEThRjBXbgOcNftN9EmWedDtj
-	 inyCQJSGs2hC3h21FdXNPEG8NpnkR4rLZbURImoTgCWZzgbov37oGW2cpm0piGUfPF
-	 04fJ+m4146kng==
-Date: Fri, 14 Nov 2025 12:42:39 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, bot+bpf-ci@kernel.org, 
-	linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net, 
-	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
-	rostedt@goodmis.org, linux-usb@vger.kernel.org, paul@paul-moore.com, 
-	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org, ast@kernel.org, 
-	andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com, 
-	yonghong.song@linux.dev, ihor.solodrai@linux.dev, Chris Mason <clm@meta.com>
-Subject: Re: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
- switch to simple_remove_by_name())
-Message-ID: <20251114-abkehr-rasur-b2eae31c4d57@brauner>
-References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
- <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
- <20251111092244.GS2441659@ZenIV>
- <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
- <20251113092636.GX2441659@ZenIV>
- <2025111316-cornfield-sphinx-ba89@gregkh>
- <20251114074614.GY2441659@ZenIV>
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4d7JJ40DvMz2ynW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Nov 2025 00:43:31 +1100 (AEDT)
+Date: Fri, 14 Nov 2025 14:43:24 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1763127807;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xQUB6KjOBhp5NcnouuFZQn81BWCzOQnuwQGVzcoOc6s=;
+	b=gIRir/4Lzgj/mHOd7JZaVUa1E9UZ0Kp6SBQjTGTYc3zBB9Uccw1PDQZgKCugDD7SNkLJc4
+	rWTA1bZOYnnxFBU1c3I5+6pxafi3efAKVcvOfQxa8mYLHkao6U1a+WgjquQRNJGq7KMi70
+	KU9KOzGVJgkI8JKU94Xqv5bvdlgDzk5qNnnCwypNirbyc7n9xcDwwQTJr5+ysJL63QDwuN
+	v4Zoxyc9j/Niyifj12WxqFysmUyas8fb1CvF8xpXQm6Uqhxo+L+tYv/l1uziRIrJw4fWPL
+	jpQKVyMnpupxpF8qCOOc7QA9LHCLSTU3hyevSChE6sWIUtC5QvXQSjxHIH2nHg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1763127807;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xQUB6KjOBhp5NcnouuFZQn81BWCzOQnuwQGVzcoOc6s=;
+	b=PJp/vBSmzIi+3+3HURui2pgktdSqU9eraGxE64lkXGPNdO6ZlBzcYl1MFyPqJRIG+bG6hX
+	hK2GxotHfbZs93BQ==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas.schier@linux.dev>, 
+	Nicolas Schier <nsc@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Masahiro Yamada <masahiroy@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 01/10] kbuild: don't enable CC_CAN_LINK if the dummy
+ program generates warnings
+Message-ID: <20251114143845-ff0d3849-4495-469c-b9c1-bebf2e8808db@linutronix.de>
+References: <20251014-kbuild-userprogs-bits-v2-0-faeec46e887a@linutronix.de>
+ <20251014-kbuild-userprogs-bits-v2-1-faeec46e887a@linutronix.de>
+ <20251114042741.GA3582402@ax162>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,232 +87,54 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20251114074614.GY2441659@ZenIV>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251114042741.GA3582402@ax162>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Nov 14, 2025 at 07:46:14AM +0000, Al Viro wrote:
-> On Thu, Nov 13, 2025 at 04:20:08PM -0500, Greg Kroah-Hartman wrote:
+On Thu, Nov 13, 2025 at 09:27:41PM -0700, Nathan Chancellor wrote:
+> On Tue, Oct 14, 2025 at 03:05:16PM +0200, Thomas Weiﬂschuh wrote:
+> > It is possible that the kernel toolchain generates warnings when used
+> > together with the system toolchain. This happens for example when the
+> > older kernel toolchain does not handle new versions of sframe debug
+> > information. While these warnings where ignored during the evaluation
+> > of CC_CAN_LINK, together with CONFIG_WERROR the actual userprog build
+> > will later fail.
+> > 
+> > Example warning:
+> > 
+> > .../x86_64-linux/13.2.0/../../../../x86_64-linux/bin/ld:
+> > error in /lib/../lib64/crt1.o(.sframe); no .sframe will be created
+> > collect2: error: ld returned 1 exit status
+> > 
+> > Make sure that the very simple example program does not generate
+> > warnings already to avoid breaking the userprog compilations.
+> > 
+> > Fixes: ec4a3992bc0b ("kbuild: respect CONFIG_WERROR for linker and assembler")
+> > Fixes: 3f0ff4cc6ffb ("kbuild: respect CONFIG_WERROR for userprogs")
+> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
 > 
-> > Sorry for the delay.  Yes, we should be grabing the mutex in there, good
-> > catch.  There's been more issues pointed out with the gadget code in the
-> > past year or so as more people are starting to actually use it and
-> > stress it more.  So if you have a patch for this, I'll gladly take it :)
-> 
-> How about the following?
-> 
-> commit 330837c8101578438f64cfaec3fb85521d668e56
-> Author: Al Viro <viro@zeniv.linux.org.uk>
-> Date:   Fri Nov 14 02:18:22 2025 -0500
-> 
->     functionfs: fix the open/removal races
->     
->     ffs_epfile_open() can race with removal, ending up with file->private_data
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-Very apt prefix though.
-(Like Paul would say: "Sorry, couldn't resist.")
+Thanks!
 
->     pointing to freed object.
->     
->     There is a total count of opened files on functionfs (both ep0 and
->     dynamic ones) and when it hits zero, dynamic files get removed.
->     Unfortunately, that removal can happen while another thread is
->     in ffs_epfile_open(), but has not incremented the count yet.
->     In that case open will succeed, leaving us with UAF on any subsequent
->     read() or write().
->     
->     The root cause is that ffs->opened is misused; atomic_dec_and_test() vs.
->     atomic_add_return() is not a good idea, when object remains visible all
->     along.
->     
->     To untangle that
->             * serialize openers on ffs->mutex (both for ep0 and for dynamic files)
->             * have dynamic ones use atomic_inc_not_zero() and fail if we had
->     zero ->opened; in that case the file we are opening is doomed.
->             * have the inodes of dynamic files marked on removal (from the
->     callback of simple_recursive_removal()) - clear ->i_private there.
->             * have open of dynamic ones verify they hadn't been already removed,
->     along with checking that state is FFS_ACTIVE.
->     
->     Fix another abuse of ->opened, while we are at it - it starts equal to 0,
->     is incremented on opens and decremented on ->release()... *and* decremented
->     (always from 0 to -1) in ->kill_sb().  Handling that case has no business
->     in ffs_data_closed() (or to ->opened); just have ffs_kill_sb() do what
->     ffs_data_closed() would in case of decrement to negative rather than
->     calling ffs_data_closed() there.
->     
->     And don't bother with bumping ffs->ref when opening a file - superblock
->     already holds the reference and it won't go away while there are any opened
->     files on the filesystem.
->     
->     Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-> 
-> diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-> index 47cfbe41fdff..ed7fa869ea77 100644
-> --- a/drivers/usb/gadget/function/f_fs.c
-> +++ b/drivers/usb/gadget/function/f_fs.c
-> @@ -640,13 +640,22 @@ static ssize_t ffs_ep0_read(struct file *file, char __user *buf,
->  
->  static int ffs_ep0_open(struct inode *inode, struct file *file)
->  {
-> -	struct ffs_data *ffs = inode->i_private;
-> +	struct ffs_data *ffs = inode->i_sb->s_fs_info;
-> +	int ret;
->  
-> -	if (ffs->state == FFS_CLOSING)
-> -		return -EBUSY;
-> +	/* Acquire mutex */
-> +	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
-> +	if (ret < 0)
-> +		return ret;
->  
-> -	file->private_data = ffs;
->  	ffs_data_opened(ffs);
-> +	if (ffs->state == FFS_CLOSING) {
-> +		ffs_data_closed(ffs);
-> +		mutex_unlock(&ffs->mutex);
-> +		return -EBUSY;
-> +	}
-> +	mutex_unlock(&ffs->mutex);
-> +	file->private_data = ffs;
->  
->  	return stream_open(inode, file);
->  }
-> @@ -1193,14 +1202,33 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
->  static int
->  ffs_epfile_open(struct inode *inode, struct file *file)
->  {
-> -	struct ffs_epfile *epfile = inode->i_private;
-> +	struct ffs_data *ffs = inode->i_sb->s_fs_info;
-> +	struct ffs_epfile *epfile;
-> +	int ret;
->  
-> -	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
-> +	/* Acquire mutex */
-> +	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (!atomic_inc_not_zero(&ffs->opened)) {
-> +		mutex_unlock(&ffs->mutex);
->  		return -ENODEV;
-> +	}
-> +	/*
-> +	 * we want the state to be FFS_ACTIVE; FFS_ACTIVE alone is
-> +	 * not enough, though - we might have been through FFS_CLOSING
-> +	 * and back to FFS_ACTIVE, with our file already removed.
-> +	 */
-> +	epfile = smp_load_acquire(&inode->i_private);
-> +	if (unlikely(ffs->state != FFS_ACTIVE || !epfile)) {
-> +		mutex_unlock(&ffs->mutex);
-> +		ffs_data_closed(ffs);
-> +		return -ENODEV;
-> +	}
-> +	mutex_unlock(&ffs->mutex);
->  
->  	file->private_data = epfile;
-> -	ffs_data_opened(epfile->ffs);
-> -
->  	return stream_open(inode, file);
->  }
->  
-> @@ -1332,7 +1360,7 @@ static void ffs_dmabuf_put(struct dma_buf_attachment *attach)
->  static int
->  ffs_epfile_release(struct inode *inode, struct file *file)
->  {
-> -	struct ffs_epfile *epfile = inode->i_private;
-> +	struct ffs_epfile *epfile = file->private_data;
->  	struct ffs_dmabuf_priv *priv, *tmp;
->  	struct ffs_data *ffs = epfile->ffs;
->  
-> @@ -2071,12 +2099,18 @@ static int ffs_fs_init_fs_context(struct fs_context *fc)
->  	return 0;
->  }
->  
-> +static void ffs_data_reset(struct ffs_data *ffs);
-> +
->  static void
->  ffs_fs_kill_sb(struct super_block *sb)
->  {
->  	kill_litter_super(sb);
-> -	if (sb->s_fs_info)
-> -		ffs_data_closed(sb->s_fs_info);
-> +	if (sb->s_fs_info) {
-> +		struct ffs_data *ffs = sb->s_fs_info;
-> +		ffs->state = FFS_CLOSING;
-> +		ffs_data_reset(ffs);
-> +		ffs_data_put(ffs);
-> +	}
->  }
->  
->  static struct file_system_type ffs_fs_type = {
-> @@ -2114,7 +2148,6 @@ static void functionfs_cleanup(void)
->  /* ffs_data and ffs_function construction and destruction code **************/
->  
->  static void ffs_data_clear(struct ffs_data *ffs);
-> -static void ffs_data_reset(struct ffs_data *ffs);
->  
->  static void ffs_data_get(struct ffs_data *ffs)
->  {
-> @@ -2123,7 +2156,6 @@ static void ffs_data_get(struct ffs_data *ffs)
->  
->  static void ffs_data_opened(struct ffs_data *ffs)
->  {
-> -	refcount_inc(&ffs->ref);
->  	if (atomic_add_return(1, &ffs->opened) == 1 &&
->  			ffs->state == FFS_DEACTIVATED) {
->  		ffs->state = FFS_CLOSING;
-> @@ -2148,11 +2180,11 @@ static void ffs_data_put(struct ffs_data *ffs)
->  
->  static void ffs_data_closed(struct ffs_data *ffs)
->  {
-> -	struct ffs_epfile *epfiles;
-> -	unsigned long flags;
-> -
->  	if (atomic_dec_and_test(&ffs->opened)) {
->  		if (ffs->no_disconnect) {
-> +			struct ffs_epfile *epfiles;
-> +			unsigned long flags;
-> +
->  			ffs->state = FFS_DEACTIVATED;
->  			spin_lock_irqsave(&ffs->eps_lock, flags);
->  			epfiles = ffs->epfiles;
-> @@ -2171,12 +2203,6 @@ static void ffs_data_closed(struct ffs_data *ffs)
->  			ffs_data_reset(ffs);
->  		}
->  	}
-> -	if (atomic_read(&ffs->opened) < 0) {
-> -		ffs->state = FFS_CLOSING;
-> -		ffs_data_reset(ffs);
-> -	}
-> -
-> -	ffs_data_put(ffs);
->  }
->  
->  static struct ffs_data *ffs_data_new(const char *dev_name)
-> @@ -2352,6 +2378,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
->  	return 0;
->  }
->  
-> +static void clear_one(struct dentry *dentry)
-> +{
-> +	smp_store_release(&dentry->d_inode->i_private, NULL);
-> +}
-> +
->  static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
->  {
->  	struct ffs_epfile *epfile = epfiles;
-> @@ -2359,7 +2390,7 @@ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
->  	for (; count; --count, ++epfile) {
->  		BUG_ON(mutex_is_locked(&epfile->mutex));
->  		if (epfile->dentry) {
-> -			simple_recursive_removal(epfile->dentry, NULL);
-> +			simple_recursive_removal(epfile->dentry, clear_one);
->  			epfile->dentry = NULL;
->  		}
->  	}
+> While this makes sense as a way to immediately fix the problem and align
+> cc-can-link.sh with the other test functions like cc-option and like, it
+> is rather unfortunate that this particular warning causes an error since
+> the rest of the userprogs infrastructure does not care about SFrame...
+> I wonder if there is a way to avoid it since I think this warning does
+> not point to a fundamental problem.
+
+I did not find any way to avoid this specific warning, unfortunately.
+This patch should make sense in any case. If we find a way to avoid the
+sframe warning then that should go on top.
+
+(...)
+
+
+Thomas
 
