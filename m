@@ -1,62 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-14189-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14190-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CE4C5F931
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Nov 2025 00:25:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49772C5F9CD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Nov 2025 00:39:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d7YD45b7Tz2yvv;
-	Sat, 15 Nov 2025 10:25:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d7YWn0zWSz2yvv;
+	Sat, 15 Nov 2025 10:39:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763162756;
-	cv=none; b=h7IjtC7087tqOUgeFBlhmxJIj3rRfTRWlg8mL5la21LIv939wIQRx3qxb10OEodN0hwkF1fgiWnZRAF3Mudc0QQJagzsWuAyfzRKH/D0kEaEYWyy4jh/wOy9XyU9BQkljjxvyz73Qx2rbS+SmMpxTEH2+PNvsdwr7d43JsZKQEPO39pD4gp00Cx4/HEJCuF7oW+By3M2PEpnuZeWb/eLsWTtDdgoIdpH+iad9YSJO4jdpfJNaEClpr3+Y7bCanWGKae4sOIenhNF0jIFHV3V0NuDj41etl+oH2U6+C2e973LYT+EgXX26dTF7hneu1y+Wh3GHrqoGsGx9E3VQFUFNw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763163573;
+	cv=none; b=GGKuhobbn67GhJrABr/gEwIje9Wb/I7Zfy2kPtRKDWp8H8vRK9/B6LSOGbAv/tqreCng/KoyQoGzsrI7XXbqjBWTF2f01+iv7OPXt5ZZyb2g6l700XtNbknT7Fv1BGZ6LV83QyyO1iHji1VDil+vG6g6qwVQ908KOB+NU5TZQhYvbY3X3EbUsbJCk7hjx1/sIIX8tbblczP38oQ6Ujb4lNY49x78f+1Z7sbYqHWiVtMAz/s1L4tjWaNl6rG4P4ILzA3FbSLwyaPvXgGXmTmcBX3PpbmVQCsXgBQmuzDvQoQZFPFEtV6i2M79jTfh8obVwPMLIhbn1rZ5srrB2iOlkg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763162756; c=relaxed/relaxed;
-	bh=BaIz4X/5I9tklFh7cNp7+RRcYCvDSJ7PDGNKJW0xrLQ=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=fBf3c7zC9Uu0NWPt4tSfucm5dSnbmcq5M5nGeCzVOvYjY/0FEKC65Xd5ZPvaD5GH556vasPoZBm+JRsHBmWYQMp5mx7AR/6peXFqmugEYGJ373al23NIA3TREo5aJA9mz4hQVpIyQ2XR0nh60/WZ/lNsBvV5e+7g+vUXwvJ4BSjC7cULVQniZsWSs7qFU/fyWIomvoq6kp6eKtQIqN9jSI8k51QT2YklQhBipYQ6UHi+JJM9gI9VLc9E37e4Fy6BomNhbu3tCqLvwrm3eZWEs8EGx7vzFPC3mxxt97qLGIWV1Hsp7x6Xf7ctnoEa0+5ZGzQoMqeRpXviMmfR4UzeZA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=1/R9MxMJ; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1763163573; c=relaxed/relaxed;
+	bh=HCUKOH9WKMtxK4g/DWFGMyuwu9fSW5X748bvDlNNYww=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=S5XaFeGGZGG2s7rCJyIKlJgP9Iq9d2KNTQJHE4N47Lns4n6pg2UJe+hdRWhQZ16UHuCRjBssAZybiNklQzOjiBEE+tvpC0Y8hEfwT0fBTWw65hLX6B4aPkf0fcEU0ar0YkUMk4792Nn04XcELsHlDaN9dyw0K22uP1qrpIX1HBEkl0/VHB5U/GFfEvaUvHP9fkEzTkdareKjij1qZ2MRqoaSboVqGGuidEL+m5eKaC5zs9ALC6GDx5q2jcRY20sck3m2lZ5BqmNUVcdanJaHeUnc/GLGYmyYWexHSpbmT81fgCmFINlyUjikZQJb4KI3ZR8vxsU3TivjhV1dz0mHzg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Cp5gRDVc; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=1/R9MxMJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Cp5gRDVc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d7YD32pDPz2xqk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Nov 2025 10:25:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d7YWm1Rm6z2xqk
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Nov 2025 10:39:32 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C60DA60180;
-	Fri, 14 Nov 2025 23:25:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E886C116D0;
-	Fri, 14 Nov 2025 23:25:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763162751;
-	bh=Ck5IkKtCvWM+M1Kp2duA/OeRrzLgopnF8GA+ov+y++s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=1/R9MxMJfU+i9uYcVVt5kq9wz3T2Nm4N9M3jU5sMGuvNfeB4RE8Bn7K4W8Yw4k+aj
-	 O9E4t2TkpXz3+fNH8/hVvX22UdJO7v2ev7K2CJ0VvcTJxWqIcXj/wuQoVqyXFTTy4W
-	 8IvMlRI+ccVcHeuqm2Yx961xfOqZ9llp6m3vPFY4=
-Date: Fri, 14 Nov 2025 15:25:50 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, Aditya Gupta <adityag@linux.ibm.com>,
- Baoquan he <bhe@redhat.com>, Dave Young <dyoung@redhat.com>, Hari Bathini
- <hbathini@linux.ibm.com>, Jiri Bohac <jbohac@suse.cz>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Pingfan
- Liu <piliu@redhat.com>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shivang Upadhyay <shivangu@linux.ibm.com>, Sourabh Jain
- <sourabhjains@linux.ibm.com>, Vivek Goyal <vgoyal@redhat.com>,
- linuxppc-dev@lists.ozlabs.org, kexec@lists.infradea
-Subject: Re: [PATCH v4 0/5]  kexec: reorganize sysfs interface and add new
- kexec sysfs
-Message-Id: <20251114152550.ac2dd5e23542f09c62defec7@linux-foundation.org>
-In-Reply-To: <20251114051504.614937-1-sourabhjain@linux.ibm.com>
-References: <20251114051504.614937-1-sourabhjain@linux.ibm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by tor.source.kernel.org (Postfix) with ESMTP id AAD7F60180;
+	Fri, 14 Nov 2025 23:39:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C90C16AAE;
+	Fri, 14 Nov 2025 23:39:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763163568;
+	bh=mMZEYwBQECCPCFF8rmEdIOUMs8DDjVoCSWmS9oPZGwY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Cp5gRDVcjC3odfNuO0uHJbvv0x7lSokw9lbB3VBBnT4oX3LS/AlBEfKF3Gj+5ESrY
+	 R7tPcaKBiCXYjqhifGtNAbUwEDcrTo16D5fzXyYonT6qlCTKNSwTZPpiv6vq1E5bkk
+	 zjUEOjZCVkdNeAbrH3nCiZcNaG2h2jMBc7O+krrZivj5zeTyLrdFW1kWW/jXeldHer
+	 aOfqCv21KD5NIGmiCAK+1+8rqNmAluym4f9WlQj1izWKzay1miKSXj6wwJHvItgjxO
+	 368GpWGEeQSiwgFYVsBDE4IcWL/nspVEwAFYM3E8hnrBQ2JP3m/TriIUrwM/aqFQZ6
+	 DdtBz42MCPAQw==
+Date: Fri, 14 Nov 2025 17:39:27 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Riana Tauro <riana.tauro@intel.com>,
+	"Sean C. Dardis" <sean.c.dardis@intel.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Benjamin Block <bblock@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alek Du <alek.du@intel.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, qat-linux@intel.com,
+	Dave Jiang <dave.jiang@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH 1/2] PCI: Ensure error recoverability at all times
+Message-ID: <20251114233927.GA2340588@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,48 +80,128 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRd7y8blTOn1XYFE@wunner.de>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, 14 Nov 2025 10:44:59 +0530 Sourabh Jain <sourabhjain@linux.ibm.com> wrote:
-
-> All existing kexec and kdump sysfs entries are moved to a new location,
-> /sys/kernel/kexec, to keep /sys/kernel/ clean and better organized.
-> Symlinks are created at the old locations for backward compatibility and
-> can be removed in the future [02/05].
+On Fri, Nov 14, 2025 at 07:58:19PM +0100, Lukas Wunner wrote:
+> On Thu, Nov 13, 2025 at 10:15:56AM -0600, Bjorn Helgaas wrote:
+> > It seems like there are two things going on here, and I'm not sure
+> > they're completely compatible:
+> > 
+> >   1) Driver calls pci_save_state() to take over device power
+> >      management and prevent the PCI core from doing it.
+> > 
+> >   2) Driver calls pci_save_state() to capture the device state it
+> >      wants to restore when recovering from an error.
+> > 
+> > Shouldn't a driver be able to do 2) without also getting 1)?
 > 
-> While doing this cleanup, missing ABI documentation for the old sysfs
-> interfaces is added, and those entries are marked as deprecated
-> [01/05 and 03/05]. New ABI documentation is also added for the
-> reorganized interfaces. [04/05]
+> In general, it can:
 > 
-> Along with this reorganization, a new sysfs file,
-> /sys/kernel/kexec/crash_cma_ranges, is introduced to export crashkernel
-> CMA reservation details to user space [05/05]. This helps tools
-> determine the total crashkernel reserved memory and warn users that
-> capturing user pages while CMA is reserved may cause incomplete or
-> unreliable dumps.
+> A number of drivers already call pci_save_state() on probe to capture
+> the state for subsequent error recovery.  If the driver has modified
+> config space in its probe hook, then calling pci_save_state() continues
+> to make sense.  If the driver has *not* modified config space, then the
+> call becomes obsolete once this patch is accepted.
 
-Patchset does three unrelated things in remarkably random order.
+So I guess "state_saved == true" means "driver does its own power
+management and PCI core shouldn't do it", and drivers that want 2) but
+not 1) just need to set state_saved = false after they call
+pci_save_state()?
 
-1: Document existing stuff
+That makes sense in sort of a weird way that makes my head hurt every
+time I try to understand it.  I think it's the sequence of
+"pci_save_state(); dev->state_saved = false" that seems
+counter-intuitive: we just saved the state; why would we immediately
+turn around and say we didn't?  Maybe "state_saved" isn't the most
+appropriate name.
 
-	Great, thanks, in it goes.
+After error recovery, those drivers will see the state the driver
+identified when it called pci_save_state().  But after resume, they
+will see the state the PCI core saved at suspend time.  Right?
 
-2: export crashkernel CMA reservation to userspace
+> The reason I'm using the "in general" qualifier:
+> 
+> I've identified two corner cases where the PCI core neglects to set
+> state_saved = false before commencing the suspend sequence:
+> 
+> * If a driver has legacy PCI PM callbacks, pci_legacy_suspend() neglects
+>   to set state_saved = false.  Yet both pci_legacy_suspend() and
+>   pci_legacy_suspend_late() subsequently query the state_saved flag.
 
-	Well, OK, probably reasonable, didn't look closely.
+> * If a device is unbound or its driver has no PM callbacks
+>   (driver->pm == NULL), pci_pm_freeze() neglects to set state_saved = false.
+>   Yet pci_pm_freeze_noirq() subsequently queries the state_saved flag.
+> 
+> In these corner cases, pci_legacy_suspend() and pci_pm_freeze() depend
+> on some other part of the PCI core to set state_saved = false.
+> For a freshly enumerated device, the flag is initialized to false by
+> kzalloc() and pci_device_add() also explicitly sets it to false for good
+> measure.  On resume (or thaw or restore), the flag is set to false by
+> pci_restore_state().  The latter is preserved as is by my patch and the
+> former is moved to pci_bus_add_device() to retain the current behavior.
+> 
+> Clearly, the two corner cases should be fixed and then setting
+> state_saved = false in pci_bus_add_device() becomes unnecessary.
+> 
+> I'd prefer doing that in a separate step though.
+> 
+> So drivers which use legacy PCI PM callbacks or have no PM callbacks
+> should currently not call pci_save_state() on probe without manually
+> setting state_saved = false afterwards.  If they neglect that, then
+> pci_legacy_suspend_late() and pci_pm_freeze_noirq() will not call
+> pci_save_state() on the next suspend cycle and so the state that
+> will be restored on resume is the one recorded on probe, not the
+> one that the device had on suspend.  If these two states happen
+> to be identical, there's no problem.
+> 
+> > > > > +++ b/drivers/pci/bus.c
+> > > > > @@ -358,6 +358,13 @@ void pci_bus_add_device(struct pci_dev *dev)
+> > > > >  	pci_bridge_d3_update(dev);
+> > > > >  
+> > > > >  	/*
+> > > > > +	 * Save config space for error recoverability.  Clear state_saved
+> > > > > +	 * to detect whether drivers invoked pci_save_state() on suspen
+> [...]
+> > > > Can we expand this a little to explain how this is detected and what
+> > > > drivers *should* be doing?
+> [...]
+> > Yes.  I should have proposed some text for the comment, e.g.,
+> > 
+> >   Save config space for error recoverability.  Clear state_saved.  If
+> >   driver calls pci_save_state() again, state_saved will be set and
+> >   we'll know that on suspend, the PCI core shouldn't call
+> >   pci_save_state() or change the device power state.
+> 
+> I'm fine with rewording the code comment like this, as well as splitting
+> the code comment as suggested by Rafael.  Would you prefer amending the
+> code comment when applying or should I respin with a reworded comment?
+> 
+> Again, clearing state_saved in pci_bus_add_device() is just a temporary
+> measure to retain the existing behavior.  It (and an accompanying code
+> comment) can be dropped once pci_legacy_suspend() and pci_pm_freeze()
+> are fixed.
+> 
+> > I'm just wishing for a more concrete mention of "pci_save_state()",
+> > since that's where the critical "state_saved" flag is updated.
+> > 
+> > And I'm not sure Documentation/ includes anything about the idea of
+> > a driver using pci_save_state() to capture the state it wants to
+> > restore after an error.  I guess that's obvious now that I write it
+> > down, but I'm sure learning a lot from this conversation :)
+> 
+> Okay, noted that the documentation could be improved.  I'd be glad
+> if this could be postponed to a separate step as well though.
+> I can only address problems one at a time. :)
 
-3: Alter longstanding userspace ABI with deprecation plan
+Absolutely.  Would you mind posting an update with the tweaks above?
+I'm not at all confident about doing it myself.
 
-	Whoa, tricky, needs careful consideration.
-
-
-So can we please prepare and consider this material in three separate
-patchsets?  In the above order, I suggest.
+Bjorn
 
