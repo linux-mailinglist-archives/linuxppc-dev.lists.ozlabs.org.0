@@ -1,66 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-14183-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14184-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A50BFC5EF00
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Nov 2025 19:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D6AC5F034
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Nov 2025 20:18:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d7RHS2zHgz2yyd;
-	Sat, 15 Nov 2025 05:58:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d7RkV0lMxz2yx7;
+	Sat, 15 Nov 2025 06:18:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763146708;
-	cv=none; b=BCLd6AScWhSZhoWjbNrB0u+7sqjNKxeGhVnR66wYLUmkbFW1AxApUHaRxVHVR2RFqf7qySJ+Q5N5bAtMa8Xfqrd633700X1m2zxoTByM1OUWEjeXkuS0qEWSlSu/U35TwZmfFZ2ioxV6NSgxdr4AgQoaKuZyZb87UQixEyCHCMALKNwjolAH2UBx2yBkS1F2dQ/yFNUiGCm11fM/bH84MZ3HqwLm2+ch6VHzO5x2qwSsnVv++vF2uCYTPweWs7/4vkBcQww9MGgiaIGVDpIZziJpROcCzLup0ze+FTT6ZXI0tBCpfaPK2gom5k2+ekdoAsORKORR8p978BqlnyrdUg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763147905;
+	cv=none; b=ZPXuKckKzfZvO9KEJJT/WHPytvSYt3aAj7MrDzojyS5wMCJuzncBIpSq/0gKjUt/BcKf8enCxVtnk38gcb64v085C5C2wVgDgIaD2TflmVAHQTfQ6qGqc9RQ42bMkyrl27GZJFv56mfa9iWaQQYoyn+e55VSNsReYo3pLdrExFkk332aQA+bhrMj4TND07yZL/sXvU6gEN4cSk3ur2ogaiwp54F3IHzoTCYQktfMoS4GRcg0MidjclyXkmcGsQ/8fb291Q3k4YOOVsBljdQ076XBbY5PtrWm5jMARcmjJtNKcuZaFrHCPVMDapFnOMLdp3WVIF8vEhHdcttxM4b9oA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763146708; c=relaxed/relaxed;
-	bh=DJW1+79yxivjXbK9Yj9TshBIKBD4/cdIz+PsNM7H6d0=;
+	t=1763147905; c=relaxed/relaxed;
+	bh=sLyi/+2zqDnVdY9Cq47xGNcqDCx9T5B3TdTVzF1jVRQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dNmxVbOFBQD0UH2RuVgWgPZRWxc2fG5PbVm2YvnKDn+gB1JLr/Ja0iDR8UE4WdqSFLMOvSHmQborltmADvJ+dL4bTz+LTUuvuA0onPVpaqKZTGDUIt++YDpWY0MuBelYE3ACRFmuls94v3C4Cg0JHUfZ5NRfNAbzkS0RWEHE8O4O/2FjGepcZt0AzCv2zCJP4GxxagRY7VMOYH5TK9L46D/7HzPVrPIW9SQwLs+BCvmHm0sJ5j77rUhsLtuq4EuchHIVpxhT/peWgOlPeuyhki7NsUIJyZTpcYUs8F5wSGIDhY93XdXh4EUB487TvNGnDbumeQrx4wZ7HtP1boLC5A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+	 Content-Type:Content-Disposition:In-Reply-To; b=djH919pLGx+88yHYejPM6dYXNuU2QcUvAc/KRFdmyb1JO2HsRI+OqsndiWXpRYtMfbqX3te4bdKR830oEZWmMa1jgkBXOwY5Znb1op1mBRworjJTbhtcCrWv8UX1HFEt99TjMGU1RTT8aOz/j1W7EJjR2+JUpv1YFJYTRvIljt8WG9x66ZNklS/R/M2nuHTAP1917THleSQPzuPJvl58uDC4X89xW3tsq9F9m9eYOyGOJoIbL7vMY+JWD7FzyeXNxK73pSTPVa3vRp7yZh2eO64VvzKGX+A+IVueX3aNP4d8kaUL5Z5woH6Zi3ZV1glgvd+b/Gp84DAqKjUgC+Vn/A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jy0Sphxk; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jy0Sphxk;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d7RHR0l31z2ynW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Nov 2025 05:58:24 +1100 (AEDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
-	 client-signature ECDSA (secp384r1) client-digest SHA384)
-	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 6D1B92C02B98;
-	Fri, 14 Nov 2025 19:58:19 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 45E521740C; Fri, 14 Nov 2025 19:58:19 +0100 (CET)
-Date: Fri, 14 Nov 2025 19:58:19 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Riana Tauro <riana.tauro@intel.com>,
-	"Sean C. Dardis" <sean.c.dardis@intel.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Benjamin Block <bblock@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Alek Du <alek.du@intel.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, qat-linux@intel.com,
-	Dave Jiang <dave.jiang@intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH 1/2] PCI: Ensure error recoverability at all times
-Message-ID: <aRd7y8blTOn1XYFE@wunner.de>
-References: <aRWnAd-PZuHMqBwd@wunner.de>
- <20251113161556.GA2284238@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d7RkS66D1z2ynW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Nov 2025 06:18:24 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7CEB943C7B;
+	Fri, 14 Nov 2025 19:18:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED921C116B1;
+	Fri, 14 Nov 2025 19:18:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763147902;
+	bh=q1olEHlGpuigXtFzJVBaSoMshU+v/j0ueFTcAUs+I9s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Jy0Sphxk9WR3dz6SBtNjAI3Ag2YV7/GuKr7/FFWOwTamKuZCdqFwcjOXh/hJ3+Ian
+	 gArB2pLXfsGjcZhJMAGERlegHCumDDyuUoBmj1JyqZ+TcSSwkqcOWRcSjZEaHruHTr
+	 HrsNXqOWkf0E1Ev/PpDXMacfc/DKQHo/itZwh/vqf5IJwgh0wYXAnbIPfEdYnlk/Og
+	 UuqFZX3EZTPpv5YL1A2XaeykoteoPNQk+uMRFmWUutc8D8qK9T0JtawgKlAsQ14Fvo
+	 3H2TJ1HaqAsNxl3ZCl+UIskhnYGaee2i1MaTooLgDSAmlPF0YPtnNKeV90KBT10itb
+	 baNAz/2G9utJw==
+Date: Fri, 14 Nov 2025 12:18:17 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: kernel test robot <lkp@intel.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [akpm-mm:mm-unstable 36/283] mm/hugetlb.c:4753:18: warning:
+ implicit conversion from 'unsigned long long' to 'unsigned long' changes
+ value from 17179869184 to 0
+Message-ID: <20251114191817.GA1089438@ax162>
+References: <202511141140.LrrRrtIv-lkp@intel.com>
+ <20251114182956.GD2566209@ax162>
+ <aRd69_c1pULRoKOU@casper.infradead.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,107 +78,79 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251113161556.GA2284238@bhelgaas>
-X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+In-Reply-To: <aRd69_c1pULRoKOU@casper.infradead.org>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Nov 13, 2025 at 10:15:56AM -0600, Bjorn Helgaas wrote:
-> It seems like there are two things going on here, and I'm not sure
-> they're completely compatible:
+On Fri, Nov 14, 2025 at 06:54:47PM +0000, Matthew Wilcox wrote:
+> On Fri, Nov 14, 2025 at 11:29:56AM -0700, Nathan Chancellor wrote:
+> > > >> mm/util.c:1263:16: warning: implicit conversion from 'unsigned long long' to 'unsigned long' changes value from 17179869184 to 0 [-Wconstant-conversion]
+> > >     1263 |         if (ps->idx < MAX_FOLIO_NR_PAGES) {
+> > >          |                       ^~~~~~~~~~~~~~~~~~
+> > >    include/linux/mm.h:2104:36: note: expanded from macro 'MAX_FOLIO_NR_PAGES'
+> > >     2104 | #define MAX_FOLIO_NR_PAGES      (1UL << MAX_FOLIO_ORDER)
+> > >          |                                         ^~~~~~~~~~~~~~~
+> > >    include/linux/mm.h:2095:36: note: expanded from macro 'MAX_FOLIO_ORDER'
+> > >     2095 | #define MAX_FOLIO_ORDER         get_order(SZ_16G)
+> > >          |                                 ~~~~~~~~~ ^~~~~~
+> > >    include/linux/sizes.h:56:19: note: expanded from macro 'SZ_16G'
+> > >       56 | #define SZ_16G                          _AC(0x400000000, ULL)
+> > >          |                                         ^~~~~~~~~~~~~~~~~~~~~
 > 
->   1) Driver calls pci_save_state() to take over device power
->      management and prevent the PCI core from doing it.
+> Clearly this is a 32-bit build, since otherwise a conversion from
+> "unsigned long long" to "unsigned long" is a NOP.  But 32-bit cannot
+> support 16GB folios!
 > 
->   2) Driver calls pci_save_state() to capture the device state it
->      wants to restore when recovering from an error.
+> I say this is a bug in powerpc32's config.
 > 
-> Shouldn't a driver be able to do 2) without also getting 1)?
-
-In general, it can:
-
-A number of drivers already call pci_save_state() on probe to capture
-the state for subsequent error recovery.  If the driver has modified
-config space in its probe hook, then calling pci_save_state() continues
-to make sense.  If the driver has *not* modified config space, then the
-call becomes obsolete once this patch is accepted.
-
-The reason I'm using the "in general" qualifier:
-
-I've identified two corner cases where the PCI core neglects to set
-state_saved = false before commencing the suspend sequence:
-
-* If a driver has legacy PCI PM callbacks, pci_legacy_suspend() neglects
-  to set state_saved = false.  Yet both pci_legacy_suspend() and
-  pci_legacy_suspend_late() subsequently query the state_saved flag.
-
-* If a device is unbound or its driver has no PM callbacks
-  (driver->pm == NULL), pci_pm_freeze() neglects to set state_saved = false.
-  Yet pci_pm_freeze_noirq() subsequently queries the state_saved flag.
-
-In these corner cases, pci_legacy_suspend() and pci_pm_freeze() depend
-on some other part of the PCI core to set state_saved = false.
-For a freshly enumerated device, the flag is initialized to false by
-kzalloc() and pci_device_add() also explicitly sets it to false for good
-measure.  On resume (or thaw or restore), the flag is set to false by
-pci_restore_state().  The latter is preserved as is by my patch and the
-former is moved to pci_bus_add_device() to retain the current behavior.
-
-Clearly, the two corner cases should be fixed and then setting
-state_saved = false in pci_bus_add_device() becomes unnecessary.
-
-I'd prefer doing that in a separate step though.
-
-So drivers which use legacy PCI PM callbacks or have no PM callbacks
-should currently not call pci_save_state() on probe without manually
-setting state_saved = false afterwards.  If they neglect that, then
-pci_legacy_suspend_late() and pci_pm_freeze_noirq() will not call
-pci_save_state() on the next suspend cycle and so the state that
-will be restored on resume is the one recorded on probe, not the
-one that the device had on suspend.  If these two states happen
-to be identical, there's no problem.
-
-> > > > +++ b/drivers/pci/bus.c
-> > > > @@ -358,6 +358,13 @@ void pci_bus_add_device(struct pci_dev *dev)
-> > > >  	pci_bridge_d3_update(dev);
-> > > >  
-> > > >  	/*
-> > > > +	 * Save config space for error recoverability.  Clear state_saved
-> > > > +	 * to detect whether drivers invoked pci_save_state() on suspen
-[...]
-> > > Can we expand this a little to explain how this is detected and what
-> > > drivers *should* be doing?
-[...]
-> Yes.  I should have proposed some text for the comment, e.g.,
+> #if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
+> #define MAX_FOLIO_ORDER         MAX_PAGE_ORDER
+> ...
+> #else
+> #define MAX_FOLIO_ORDER         PUD_ORDER
 > 
->   Save config space for error recoverability.  Clear state_saved.  If
->   driver calls pci_save_state() again, state_saved will be set and
->   we'll know that on suspend, the PCI core shouldn't call
->   pci_save_state() or change the device power state.
-
-I'm fine with rewording the code comment like this, as well as splitting
-the code comment as suggested by Rafael.  Would you prefer amending the
-code comment when applying or should I respin with a reworded comment?
-
-Again, clearing state_saved in pci_bus_add_device() is just a temporary
-measure to retain the existing behavior.  It (and an accompanying code
-comment) can be dropped once pci_legacy_suspend() and pci_pm_freeze()
-are fixed.
-
-> I'm just wishing for a more concrete mention of "pci_save_state()",
-> since that's where the critical "state_saved" flag is updated.
+> (PUD_ORDER is 16GB, so I think this will be what's being picked up)
 > 
-> And I'm not sure Documentation/ includes anything about the idea of
-> a driver using pci_save_state() to capture the state it wants to
-> restore after an error.  I guess that's obvious now that I write it
-> down, but I'm sure learning a lot from this conversation :)
+> but the only place the mentions ARCH_HAS_GIGANTIC_PAGE is pretty
+> clearly dependent on 64bit ...
+> 
+> config PPC_RADIX_MMU
+>         bool "Radix MMU Support"
+>         depends on PPC_BOOK3S_64
+>         select ARCH_HAS_GIGANTIC_PAGE
+> 
+> so I'm a bit stuck about how this comes to be.  Adding the PPC people
+> for thoughts.
 
-Okay, noted that the documentation could be improved.  I'd be glad
-if this could be postponed to a separate step as well though.
-I can only address problems one at a time. :)
+Note that the original report is against mm-unstable and flags
 
-Thanks,
+  https://git.kernel.org/akpm/mm/c/c3f81a41ba6f93693d208edde08ce2b0da21c645
+  https://lore.kernel.org/20251112145632.508687-1-david@kernel.org/
 
-Lukas
+in mm-hotfixes-unstable as the problematic change. This configuration ends up
+with
+
+  $ rg -N 'HAVE_GIGANTIC|HUGETLB|PPC_8xx' .config
+  # CONFIG_CGROUP_HUGETLB is not set
+  CONFIG_PPC_8xx=y
+  CONFIG_HAVE_GIGANTIC_FOLIOS=y
+  CONFIG_ARCH_SUPPORTS_HUGETLBFS=y
+  CONFIG_HUGETLBFS=y
+  CONFIG_HUGETLB_PAGE=y
+
+  config PPC_8xx
+      bool "Freescale 8xx"
+      select ARCH_SUPPORTS_HUGETLBFS
+      select FSL_SOC
+      select PPC_KUEP
+      select HAVE_ARCH_VMAP_STACK
+      select HUGETLBFS
+
+which may indicate a bug in either selecting ARCH_HAS_GIGANTIC_PAGE in
+this case or the logic of HAVE_GIGANTIC_FOLIOS in that change?
+
+Cheers,
+Nathan
 
