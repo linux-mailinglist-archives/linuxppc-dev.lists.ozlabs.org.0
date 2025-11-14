@@ -1,78 +1,100 @@
-Return-Path: <linuxppc-dev+bounces-14162-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14163-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82935C5A519
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Nov 2025 23:32:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A47C5AFBF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Nov 2025 03:17:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d6w53737Mz2yv7;
-	Fri, 14 Nov 2025 09:32:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d714q0bNBz2yv7;
+	Fri, 14 Nov 2025 13:17:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::82e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763073159;
-	cv=none; b=LyH30jzNQXCHPzNlx7T0wT2Yps691xYIB+QygorYtiLUiEOGu0M6t2Vo3IhCDDNzgVbVM8zoJVI3z8OZtkkVxoG9CwqT0iSi3t4NREgsZtfquvn39CmpVmsVNROkjwx83nh2M4BjYXXxmRd2HSLP7cM5KfEENq6eE/eoFWvMj0B4cP7mX6mK09TZMmTgyj1z+4ZCp2DqSAvIaF1KQEl3Y7uHGafrm5PCo9q/IO7fT0/ugo/XE2oe6gVChcMkfK9Sc28QlLqsm5MERz4xuSl6dejavYIsG+aHn45AhHd9HI0cCQpuIbRStgSfZnN+9rQNOgkUyMg6EV+VI6Jwc63acw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763073159; c=relaxed/relaxed;
-	bh=oqfIb2AsLZ18FUcu13I3BhblJiPBNh67QC0c/VhsTKY=;
-	h=From:Message-Id:Content-Type:Mime-Version:Subject:Date:
-	 In-Reply-To:Cc:To:References; b=dY/315wyTLI2BEMIHVMwz5yF/eHWmj3rWd7mdACF81NgX38oDvC8ibYDX7gG1s3OWE52f/nmRKiFBCfv67uiGlYXWa5YSNnMw+3tkc4oB3UKFwgSlh9KVF64qj+osNvNd+rH5ZgZLe0zFoAueCNYBABA8pUbkdzdgcIleJiIPlBOYi3Lx/eAUazAanLttog0kPp8MpCfwqgyng7+Z1FKEuTvBRvsujwWoiiAbSSAsUpeJScCUwZARuDBzvNXRPJbmIVIrOkvYooEovy3GK7ge34Yl/cJlRBACeUTc8vvMbEtEDSxG2OqX2kqK1w8dIytA/zEElgVvART/U2txy5euA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jxdXRv9N; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82e; helo=mail-qt1-x82e.google.com; envelope-from=manili.devteam@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=67.231.153.30 arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763086666;
+	cv=pass; b=idnrIKv1XYKBPTmF073nKnS41WksCt6RAWXnrAVc8JXFi6szpjUFLyMksDikVq8dot9HhNnte3nQuAGyL4aE/vGTJCxiZ3jUsZQwmnX+jFdjpbl2s5xbINHGVHBQZxC8dkY0Y+k9iVvBl71Rz5HRDuUf8vHySAQEVeCC0mvUF/QB9Q0IMChZF/dX1Mqb9DwgtrLz3LZFSBfrPQeVT/sYPS+jlACz1/Fx7l4H1KsJTy47V2ble+QCioKLZbRiSYtMARXcVKUwb1oXV4DFjBPLJKfLNNxLNbr4Nb/qqq3WPlIv5eQYt8ofbwaL03JPLfQ+r+EZQtGcPe/g6rdtpT4f2A==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1763086666; c=relaxed/relaxed;
+	bh=KLIJTHdXgv2IfSmg4UnBBJfMSx01Vk5HC/ZbCVwbofE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=D7JXd8MXH4xKvkNO/MgEVxkhLRRE8aKJUQPB5PGYNT9gbAhAfDRCUHPB4TfWYLpc45dOImD3nlhHVy03F4YlE+hSdW8xXXDon6irtuq+WQ4JbHwxMg6dr3+qwq8PqEiSFO6ChrIe/FAIyCm5h5Y7+QLY3gb/KPT8iTKHxdb92Ccq5+5Ybos1NlcxpPKXoBMKlFX7498y/fdLRnXBcggrWVEd5Y4DIawoOxVTn8vM3+vh/05aDqDzD9O77f+KWdn9T/6gR1yPxNtTHD9Oxv2xNNtQh1QPFlNRpE7f/lHOpU0rz3dwh32aRATh7Fb4QsXZLuXVYKnyEzSCXo79wHbPZQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=meta.com; dkim=pass (2048-bit key; unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=s2048-2025-q2 header.b=og0PVXo8; dkim-atps=neutral; spf=pass (client-ip=67.231.153.30; helo=mx0a-00082601.pphosted.com; envelope-from=prvs=7413481f61=clm@meta.com; receiver=lists.ozlabs.org) smtp.mailfrom=meta.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jxdXRv9N;
+	dkim=pass (2048-bit key; unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=s2048-2025-q2 header.b=og0PVXo8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82e; helo=mail-qt1-x82e.google.com; envelope-from=manili.devteam@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=meta.com (client-ip=67.231.153.30; helo=mx0a-00082601.pphosted.com; envelope-from=prvs=7413481f61=clm@meta.com; receiver=lists.ozlabs.org)
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d6w516tgcz2yjx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Nov 2025 09:32:36 +1100 (AEDT)
-Received: by mail-qt1-x82e.google.com with SMTP id d75a77b69052e-4e88ac010b0so1199391cf.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Nov 2025 14:32:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763073154; x=1763677954; darn=lists.ozlabs.org;
-        h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oqfIb2AsLZ18FUcu13I3BhblJiPBNh67QC0c/VhsTKY=;
-        b=jxdXRv9Nx2M3Iu+zwBwTb9jdsJ+QeLcBl1SFUsqsgcPdHVDytZvR/VtRhmCugYgs4Q
-         biT7MyQgZRtGjnSGplRPKeH0ZDDsWdg5J0LG7uXu9ba33KsAyFf+OtWz37Q58U/gywlS
-         BhwuW5trcBKbTf2eW+chEeDHt7ZXTIQzh4l5p2UsTUXHc4XKM+QkwfABI0qFJ2Iil/Mc
-         dqBakjjzIKGRFJi77/c/Yw3uqFdCRVbRoumHmLupb2q9H87GxbeHcEI+ap6mYMxuiHpY
-         UBqhE/8vmRdnhjpr9Fql2e6IpodPL38hbKT7yqImP25V/u8H9d/rwzJDpTeByY1/GCes
-         Bkcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763073154; x=1763677954;
-        h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oqfIb2AsLZ18FUcu13I3BhblJiPBNh67QC0c/VhsTKY=;
-        b=XVcspz2vJ1nW/yMTvjXMREtnVdnSGIAejK6NZhgsQXy9GQnPA4QOoKDjfnhl/zjolj
-         D8pGkgWOhnC+I5an7kUzDdOGIPI7PkhjPRNYfu5fVrsm9i/Meqo5fn4oJREcoJUuGV5X
-         itHPyo/MN2NhdoXWT4/fX6YEsQ32Izht/TUHXnkfOWEvHkONgPtUPtdWiuKpEIoBpdN1
-         J3hMhBM7nm1VhMiCCm+9VqGpRjb09tyhSXN2HdfXuM+8zaHiz7rpUOo04Kd8Xb1OEwYU
-         eUqilcPQvq5XGKNSBJ3xaz2xOESAd1wJo0y3Pb76ld2uLig45cmOAPHVNpkRrNqf4xuh
-         W1sA==
-X-Gm-Message-State: AOJu0YxWTrr6LeuEXDNvICgr8dst8zkgSt3QufXyyR8UZ8HA7jXO96+w
-	Sj55H7P5+gTUa8JOWWkNXhMP1GFgcPq7nBVSi/TNuyKRhm5vpq/v0f9R
-X-Gm-Gg: ASbGncvDW9TCkRn+vCLrPYFVKF9JqMhic7qCrhts4bGzGfyIQTlZDCOUvhuoxvJr6ex
-	puYWj3Xy0iAkFhQekzr/W69Ba3BAF2WhpzTJLilpQzSTp8ijPJQH4yc6WiElFaRABtbT4xT8v7D
-	4plT6ac6C+HkYMLHYH4HThykAUsGceSK8nFizJOGINXSrmiH7xLtE5bTqC86o9aRGhNR8GWgJ/D
-	8tFgkBJYZusiqcoQ+TEpdBwvf5DB4M59SoVLAnuS8/OOUz72e13D1BVzwIPxXd3rvHOQ1iw+CUZ
-	pNzbwMBFI1VbNWYKqKIGHE2WwjW/jRxY32Dr//8IOlXZRU3R0xppkpI0MyP5L9AbvKrl6GlsCJw
-	INej6tfGbp7gkqHWIznpgKbjuS4i4Itykhv36tWajP8PYjkvg1ai9rU9Uhx0YL6IrREhN9KnG45
-	GXIycAYNaN3Yh2e2dsaT6z8CXasOiZIDU+V1tyYyPDmUBUKw==
-X-Google-Smtp-Source: AGHT+IFGiBuyEN0tTaBeBcwNAX8s/etCIai0EFteke5Agx5OZSjI49Dlytf2X6p/OGMsHAqsN3N0jg==
-X-Received: by 2002:ac8:5743:0:b0:4ec:f075:50cb with SMTP id d75a77b69052e-4edf35bdeaemr7593741cf.2.1763073153435;
-        Thu, 13 Nov 2025 14:32:33 -0800 (PST)
-Received: from smtpclient.apple (ec2-3-87-7-19.compute-1.amazonaws.com. [3.87.7.19])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-882862c7fd3sm20062596d6.3.2025.11.13.14.32.31
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 13 Nov 2025 14:32:33 -0800 (PST)
-From: Mohammad Amin Nili <manili.devteam@gmail.com>
-Message-Id: <CFB0E332-AB7C-4E70-BB8A-45BFD4EB9E18@gmail.com>
-Content-Type: multipart/alternative;
-	boundary="Apple-Mail=_CD1337D0-509F-45D9-8F51-C422B394E1EA"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d714n2j2Mz2xFT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Nov 2025 13:17:44 +1100 (AEDT)
+Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
+	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 5AE150QN2410002;
+	Thu, 13 Nov 2025 18:17:05 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=KLIJTHdXgv2IfSmg4UnBBJfMSx01Vk5HC/ZbCVwbofE=; b=og0PVXo8WBTd
+	ld0hXmfNs3pS9c4KVvKGgWm5fmxxRxF6kIHLAiXKiLgPWB7DS32915ouPHRxziS5
+	iepUKVt7CorZoFANpCyI18JSXBHiLPWGz/tZH5tcqZ6rcnptJbKjr7zngMF3zYvB
+	dT/bwDAgazKTuSw7BWHlj1t+chZa/iusRT3AUznltwFWZFGmUx2wzCyoR9Cw8QOc
+	V5LUcL6dWVJxNlN3CVBnoSmDRUqi9ij4hIY8/FxOPxdNQeIjnWVzd5eT2wQmUg+m
+	gfCCoUJPr+m6R5PC2qPo5r+fCTIfRSvl5Xvc2mWDiRGzXwxh5tVSZ6qVG2/SKJXJ
+	2a0GCWCAWQ==
+Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012049.outbound.protection.outlook.com [40.93.195.49])
+	by m0089730.ppops.net (PPS) with ESMTPS id 4adr8a9ehy-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 13 Nov 2025 18:17:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wmd9ySpi0+JZ9ycdcKkqoFSA3k9WmypdBSypSwWXMWMiOUEa/jltRo9FNLcrRuFqCw9q8wKpd8UocxwDN9PkrWV/Ns5zfISRehNbqmd/8dcIakd4HX7M0pG4JcL0rNGdrW0VBLIAJs31Lqh6szNJxxIqcAcZXh8llu72AIDx5ro0oAqcfeNmDzTnz0OYsQqPaffhiw0tFsBMPoIFIQzPQT5IzciGpCNAVH1RiFSbl9TDYRBAYMrG5MzMgo3vw5zwdYemXKfIOdnbmTennsUTKT4V16MJh4GoWMdL2AxFm/KfpDexiZwAldkZZsq915BGb5p+hVflmf8xLCQhJpPnDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KLIJTHdXgv2IfSmg4UnBBJfMSx01Vk5HC/ZbCVwbofE=;
+ b=ca3qXgu1Mxbj17tVKW4so5Sinv2mazKiHDukFbQgEnwsuG4lkR9oSTdTShXf64n1RS6mZ2CDJ9523TOdTQd7btdJWHTmcz0qaJRjAdWbXGfXDdzG8rzN7/6TwaB9Jkv27zZMyVzsNIfIb1ki8wM7nmytcOkstXS8lz2fjVmyI5t/qsxLwwDiKAfKJrJAQg7Udjr3O/+DVqNzDXZtnQfNKzzYOjbPgXeebrKgzi+7QTjEcGxCuTYxvgFVNulKg/8AstbdKYkpRWcehTih2d6/2wSseqLp7fpVUsmncwaeShoBugMz343Dt8wHdVME+a0GUFst/oxVnEweqhIkPMfIrw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=meta.com; dmarc=pass action=none header.from=meta.com;
+ dkim=pass header.d=meta.com; arc=none
+Received: from LV3PR15MB6455.namprd15.prod.outlook.com (2603:10b6:408:1ad::10)
+ by DM4PR15MB6034.namprd15.prod.outlook.com (2603:10b6:8:189::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
+ 2025 02:17:02 +0000
+Received: from LV3PR15MB6455.namprd15.prod.outlook.com
+ ([fe80::8102:bfca:2805:316e]) by LV3PR15MB6455.namprd15.prod.outlook.com
+ ([fe80::8102:bfca:2805:316e%5]) with mapi id 15.20.9298.007; Fri, 14 Nov 2025
+ 02:17:02 +0000
+Message-ID: <3984c9bd-2ac8-424e-9390-7170fdab3c03@meta.com>
+Date: Thu, 13 Nov 2025 21:16:52 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
+ switch to simple_remove_by_name())
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
+        torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+        raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+        a.hindborg@kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org,
+        ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
+        linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com,
+        linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+        selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+        bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
+        daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
+        yonghong.song@linux.dev, ihor.solodrai@linux.dev
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+ <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+ <20251111092244.GS2441659@ZenIV>
+ <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
+ <20251113092636.GX2441659@ZenIV> <2025111316-cornfield-sphinx-ba89@gregkh>
+From: Chris Mason <clm@meta.com>
+Content-Language: en-US
+In-Reply-To: <2025111316-cornfield-sphinx-ba89@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN2PR20CA0050.namprd20.prod.outlook.com
+ (2603:10b6:208:235::19) To LV3PR15MB6455.namprd15.prod.outlook.com
+ (2603:10b6:408:1ad::10)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,135 +107,440 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.15\))
-Subject: =?utf-8?Q?Re=3A_=5BHelp=5D_Microwatt_=28Zynqwatt=29_=E2=80=94_Ker?=
- =?utf-8?Q?nel_halts_after_Radix_MMU_init_on_booting_Linux_on_Zynq_version?=
- =?utf-8?Q?_of_Microwatt?=
-Date: Thu, 13 Nov 2025 17:32:29 -0500
-In-Reply-To: <CAOSf1CEf41H4ynEQvszspTMKpq9vq0FnXy=qdk_-PUrZpJVwCg@mail.gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-To: Oliver O'Halloran <oohall@gmail.com>
-References: <AEFA6CA1-69CB-4248-9911-C0BDFB03DB56@gmail.com>
- <CAOSf1CEf41H4ynEQvszspTMKpq9vq0FnXy=qdk_-PUrZpJVwCg@mail.gmail.com>
-X-Mailer: Apple Mail (2.3654.120.0.1.15)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HTML_MESSAGE,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR15MB6455:EE_|DM4PR15MB6034:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6417f566-8f32-4773-ab84-08de2323e62e
+X-FB-Source: Internal
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dm41YVg3aHJKQVlhMktwdjJIcUxKd1pMWGd1YVdoazVucVczRkdKM29OaEdD?=
+ =?utf-8?B?Nk5kekJjM1AvbUlJUUdYVXo4ZzlXN09ZYVgwKzExS2E0U1loOGtsS2RXL0VY?=
+ =?utf-8?B?SGttMDRlY2grRktDdktFSEMwbmhZN2dQa3RiNGRHQ2Q2aW9FeXNGRG5ZaE9x?=
+ =?utf-8?B?S2xtQU5BTE9xV3g3d0p4Sit2a3VVL2d2WTA0N3gyRGhkRFFlS1oweDBJNDdv?=
+ =?utf-8?B?anNHUFFRTlB5YWNsUFdQWU84d1ZFdVBlckVoblVxUjBucE5WOUFwUVNFWlJF?=
+ =?utf-8?B?UVVHUktDRWFwaXdwYS9YMHUxR2g2b0IzYWY1NXJ4b1JtMWpvMzhwMGRNZUFK?=
+ =?utf-8?B?MjltNldDL3pkZXFjUHpqdjAzbFRDNVQ5NDc3eDdxWmtNVG14N0NSZHYxSUpY?=
+ =?utf-8?B?MGlLM2YrUWM5YW0zcm40WlY4TlJndUpNY3RaSFJrNzZaUWRxVnJPOVFzTzN1?=
+ =?utf-8?B?T2tCTkFGbTFqZ2hkMXhpcDRIN2grRGZxZVdYQWJJbTNpVkdldm9tc2Y1blYv?=
+ =?utf-8?B?bFo5UjVvRlMrd3NMQzFHZ29NNWlqSmsweU1rbTZtRnNWSFFrM3pwTmlieTJD?=
+ =?utf-8?B?UXZlR3pKdU82L1owbi9GMms1R3lGckRCZGZ1TkpRL3l1N1dhV1EvSmVPQlFO?=
+ =?utf-8?B?YW1pZzZUeENwaTdndjJwV1BxVEh4eEVDZHRpMnU1TGhiWEgvcGpMdUFDSUZh?=
+ =?utf-8?B?UHRGWDhYTjZORHp0amdoYUx0NzZ5LzhlOWpPL3hFc0F3YzZGQjhVWmpJbkNY?=
+ =?utf-8?B?MG1vdHo0MTJCcURGVEw4dFViOE1ha3BINGdzUTUvbUE3eTNYKzlRUUdnMXdq?=
+ =?utf-8?B?aldTc2dXRGxBaWhHM0ZOaElTNG9NdHdMNEJlVmUvVk5CWmljTElpaUxsZXNi?=
+ =?utf-8?B?M2NYbU1HVjZ2Q2RFZThxdnNnYi9GUXZzbUo0WHhLaVBrR2ZNaytHbmhzSkRo?=
+ =?utf-8?B?QzhhWnN0cTQ2MzMzN01jRXAydHZ1ZjV1c1k0clVmVnEzU01vR2NOTjBPck9C?=
+ =?utf-8?B?RXRpUDF3NDFXS25jRktCdEx4VUsxeW5KWDQ1d0pMNVdNR1lhY2dKN1c5WDJk?=
+ =?utf-8?B?c1F3SWZwM2xtdU9KNWUvU0lzZjU0cFpNalc3ZE5VelBtQ0M5N2taNlF2dCtE?=
+ =?utf-8?B?T0tlUWJGQ090b3U5amR5dHF4QkR3THdJVjNKb0puNnJxWEZLb3VTTHFtczRQ?=
+ =?utf-8?B?TGttRHIyRTJUS1NxdGFlU3FlWTBUZWF1Z1hxWUpaMklxZEUwNVhGT0k0UkRi?=
+ =?utf-8?B?a2hKcEF3cnNQTkRQRVI4Wjd1V3FIR1dKeXN5dW9aNVdJR3VmaE1ZSXJMZWpm?=
+ =?utf-8?B?VElVZTVUZTg5d0YraU5wRW5mYzNtTHFmSWhrV1d0dEhzMUlVeDV1Rm0rMURB?=
+ =?utf-8?B?TlJoWmVNa0dzTlZpUktuRGRMaGZSeWZIZ0s2OUJkTURoQS9iZ0RiQ3pITlVX?=
+ =?utf-8?B?V0pudjNtZWNYT28rWlg0V1k1bkRBZmFLZ3ZXMDk0VkMrTDdCU1IxV0R6VzJi?=
+ =?utf-8?B?U1UyVE9mL0U2R0lySUVlbHp4UDhkOHlucndsazhzZDI1ay9saWU4aGhSQjR0?=
+ =?utf-8?B?b2tQaDRncHBJdThLb3pwaXNtdE80N3FmWEhpNGNBc01hQ1ArU1M5QkNkOGht?=
+ =?utf-8?B?M0hsWkh0clQ3aVArOUJ0d2tpZzRRWWRORVRsMGt0U2hTTlUzQnVybDNzTHlB?=
+ =?utf-8?B?QXptS1pHLzByclZETkJqMDgyd1dFbjVYa3Q3andZTy9lNENmT2lHaFhaNzFz?=
+ =?utf-8?B?bENlTUpmU0kzcUZmTjVSbTBiYVFzejdyRGdmUlN5cHRrZGw5LzFQSVlzcEV6?=
+ =?utf-8?B?V21tcXROcVMyU05uNHhwSEpVck8vVG1POGV4c1J2NnZvZ2JmbXdWOFdlaEFq?=
+ =?utf-8?B?YjNSZ3UvZk9jcXhadFZ1aW1zUENYb3JwWkt6TXdVNVh0ckh5RWk2VGhnUTJC?=
+ =?utf-8?Q?bFTauiMkwG7adbET2T0BecyOE/G9joZb?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR15MB6455.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T1dXelJ6OXV6WlhaS0daT3k3SVArckx0VFRQZnI2akNpMDJlWDFIVTVQUkdh?=
+ =?utf-8?B?bWVYb1RJZ0VIVFBKVkdnTWI2R1EyN24wTlhDdFlqZkVHV0MrSHlrZnM1SGUr?=
+ =?utf-8?B?UVpoNjgzZms2c0ZReTJLU2Z3ZysvcWhheVVZNUhpc2FEYnB6VjlFS2NiaC9r?=
+ =?utf-8?B?VldVVDJFdmJOaThHRzk2eUhsbUxmV2hDWGZtREIrajBpRHF4Ni96RU1tSUtw?=
+ =?utf-8?B?bFhQNjBwTFhxL3NCWEZ4Tm5UR0Z2cCsrVy9kaisvYWhjL2JwaEZzWlRpUzQv?=
+ =?utf-8?B?ZWZwemEvdGQ3SFJBSDFXVWw5NUp3a0h0ZkFNSjZTZkdMdG1FYVlPUFZtUXhj?=
+ =?utf-8?B?VWIvQW1UTGx1N2NUUWZGOEFYbnowVXBKZHQ4aDNUT0VrS0hBM3J5cDI2VHRI?=
+ =?utf-8?B?c3NTaktybnRSRENIRGo1VjQxZkpIUGh6VWFWNHV1KzhwR3ZWbHk2MzhXVnlW?=
+ =?utf-8?B?NTE3L01OMlQ3aDFCcFNrNE5DaHo3OUpGN1lyL2JhS1kyM1h0dlRJTmlOR2Nq?=
+ =?utf-8?B?UDJieGVWR1BKUEdiMzN1aVpOc1VUM2VzeTdVV29YRC9BVjhDUzNKcVZyMlUz?=
+ =?utf-8?B?NUdodE1wUWY3dGdZd3ZjU3QvVWNXaFEvd29ZVlVLT3NIYUdqNTRxZlYvcFhI?=
+ =?utf-8?B?MzFEWnV1L3BEN0JQSks3N1IzeVlwNXhPd1Vpd2crWDZSY1huNlhPQjQxRkdV?=
+ =?utf-8?B?Z0Y5V1JjSysxMm5QdEdYdGVFKytkNWRLQngxUUJpcmo4VWk2YTlWaXpSREds?=
+ =?utf-8?B?S28xZ0gzakhvYVY3cmEvNGlyckV5K1FYY3NFZmEvQW1tTm05UjJkTk1aTzBI?=
+ =?utf-8?B?U0RvaFpFOXpoVm95aGFUQVZka1psN0hpMHN2ZWRzc2U5TFNtU2J2OTR6NlU3?=
+ =?utf-8?B?T1RYZytOZFlNZ282OTFsWi9VSFJvWlppb3dTYUwyOHd2ODZRWTVDZXhxQXd1?=
+ =?utf-8?B?aHE4Q29HU3pzeEdLdGxOTTZZSGcwdnhtcm53ZXRiWnRiY2RRYVdCYS9xUDE3?=
+ =?utf-8?B?dUJJTWlQanhvS2J3ZnNZOUpBWG9lMjk5UVdjWkNVMXRUOW13SUNWSUtva0VZ?=
+ =?utf-8?B?NXBnSkMxdEQ1dTNWbzRYcFlwYjN4T3ZjM3FYS3BOQlZCaTBpazB1OU5GVUhu?=
+ =?utf-8?B?WmZkcktscFd0a2xJZGdIak93WmxwZ2R3UmlwS2prUzlnLzFPZ0VkQ0xqdHEr?=
+ =?utf-8?B?NHBHalQrUjdiSmlmYmRlbytsYnh5TFVJUGZoODVFY0dwc2ZsdnlDSkFWSFBi?=
+ =?utf-8?B?ZXZtTHdBSFV3RWh2YS9tdXNaNFI1QjBuUUw2c2YxZ2d0OVc4NUY5dU0xb0FM?=
+ =?utf-8?B?ajRpeW4za3QxSFkyNlVxSkZtbDZZQ1lpV1NQNy9HUU9md1JSdHArdm8zNytG?=
+ =?utf-8?B?MXZPZ09ubGJqY3FYRzJJWXdWSWJUczlyUFp0dFU0QXJIdmRnMVhqcnFJTzBZ?=
+ =?utf-8?B?TE5pT2lpcFVLWkN4QjhES08zRUdMU3RGeGN4NkZ6akExTm4zL0xVY3Npc05Q?=
+ =?utf-8?B?cE9pZVhmR1FxbmQ1R1F1MFJFaXVocEpIdXF6RWhhRVhZeXEyOVRZanluOGIz?=
+ =?utf-8?B?SHRnbjdydHhwVzIyWXY5YWxpNzV2bXdRVWFTNWNscDlZMXRZRXUyMEZBTEpn?=
+ =?utf-8?B?TGh2OFo5Nm9IaWZrZGtpeFZlNjVQL1daeUlMczhPWUNiMkNyaW9WSldKZWk5?=
+ =?utf-8?B?c0xVVUI4TTVGQnNIem5vUzBoRVVvVWNPczNYWXFBUTBETUNVUkUyUHlOQXV4?=
+ =?utf-8?B?T0RIR3NwMDBzSVdVY0JMd0UvLzdOR3grUlVqRCs3N2djK1crbXBhN1pRbEcr?=
+ =?utf-8?B?ckFzcmZTdGZ2WDF0WEtkc01XRzVIV2V5U1ZLb2N6WUVtTkthNUkwYjR2MzFa?=
+ =?utf-8?B?RWlVTHRxV1p2OFNOUWk4clYxblpzUEFyV0EvZVVSbGQ0TXBZMDlpM3lKYlov?=
+ =?utf-8?B?RjdaSWNoMnlCQnJXU2I3dkM0MWhZS2NkcmdYajRjUXJCc2pBQmRXOWpPcW5G?=
+ =?utf-8?B?c3F5NWF1bVJYMm5OTkNpaG1FWEU4U1kyWXV3WG8xRy9icXlCb0ZZUmNKVmZM?=
+ =?utf-8?B?WG1FdW5LV3NDZEdYK0drcitJY1pZa3E2d21iSXJjNm5SOXM4TEs5dGxZamda?=
+ =?utf-8?Q?1F/Y=3D?=
+X-OriginatorOrg: meta.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6417f566-8f32-4773-ab84-08de2323e62e
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR15MB6455.namprd15.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 02:17:02.7318
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pYLw/u3nKvioSDvRjATEeS9uQEUtBZetlLSS93smUfy712etiCym4+/0ZzQOe39q
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR15MB6034
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE0MDAxNSBTYWx0ZWRfX/LgSfRDtyDtH
+ TJldFCceGiPepvc5+GYTmiA+ziCmMbslSwzmdE0KNBGdPCPQJiUGU7kdFmnOw5aTu8UXaObGRfv
+ AfA5kGdkbNCsLP42gsWr0f1rB3Ek0Zu0fWF2+MOLSqU+EbtQ1zU+w/rma9oWJ5p2VMPNur98zly
+ AST8ncLmaz+CL2l1wCTLWh0oQ7KMjY8NAZztPR/BvDQCM2Qg8T/PFqNyWjG0fYAOgAisLPEZFKr
+ JX7FaKYBXyFl3ZAGyGsqHZNFFQSX/WtdoExQ8glbfrJUc2oz2IMDMI11vvZIk3fs0M+f0fBQU/U
+ I+XD3Wld35P6Ln9+ElaAPL2cUTU/UsZb+7j6ALH85T/2UgjXZ6JCDL3EKt0Nr3ZpUOZpzfcqlMD
+ cSuY9CCeaqyUfpXJhY1YiIIVS4aM+Q==
+X-Proofpoint-ORIG-GUID: xfVBWqs8FqkI4eRp4g7C46DxVwzWVErM
+X-Authority-Analysis: v=2.4 cv=I69ohdgg c=1 sm=1 tr=0 ts=69169121 cx=c_pps
+ a=nvwb1BjkeYK3HDx+lqLWkw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=wJNMY6CPLibaGjMAeTcA:9 a=QEXdDO2ut3YA:10
+ a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-GUID: xfVBWqs8FqkI4eRp4g7C46DxVwzWVErM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-13_07,2025-11-13_02,2025-10-01_01
+X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On 11/13/25 4:20 PM, Greg Kroah-Hartman wrote:
+> On Thu, Nov 13, 2025 at 09:26:36AM +0000, Al Viro wrote:
+>> On Tue, Nov 11, 2025 at 10:44:26PM -0500, Chris Mason wrote:
+>>
+>>> We're wandering into fuzzing territory here, and I honestly have no idea
+>>> if this is a valid use of any of this code, but AI managed to make a
+>>> repro that crashes only after your patch.  So, I'll let you decide.
+>>>
+>>> The new review:
+>>>
+>>> Can this dereference ZERO_SIZE_PTR when eps_count is 0?
+>>>
+>>> When ffs->eps_count is 0, ffs_epfiles_create() calls kcalloc(0, ...) which
+>>> returns ZERO_SIZE_PTR (0x10). The loop never executes so epfiles[0].ffs is
+>>> never initialized. Later, cleanup paths (ffs_data_closed and ffs_data_clear)
+>>> check if (epfiles) which is true for ZERO_SIZE_PTR, and call
+>>> ffs_epfiles_destroy(epfiles, 0).
+>>>
+>>> In the old code, the for loop condition prevented any dereferences when
+>>> count=0. In the new code, "root = epfile->ffs->sb->s_root" dereferences
+>>> epfile before checking count, which would fault on ZERO_SIZE_PTR.
+>>
+>> Lovely.  OK, this is a bug.  It is trivial to work around (all callers
+>> have ffs avaible, so just passing it as an explicit argument solves
+>> the problem), but there is a real UAF in functionfs since all the way
+>> back to original merge.  Take a look at
+>>
+>> static int
+>> ffs_epfile_open(struct inode *inode, struct file *file)
+>> {
+>> 	struct ffs_epfile *epfile = inode->i_private;
+>>
+>> 	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
+>> 		return -ENODEV;
+>>
+>> 	file->private_data = epfile;
+>> 	ffs_data_opened(epfile->ffs);
+>>
+>> 	return stream_open(inode, file);
+>> }
+>>
+>> and think what happens if that (->open() of dynamic files in there)
+>> races with file removal.  Specifically, if we get called with ffs->opened
+>> equal to 1 due to opened ep0 and get preempted away just before the
+>> call ffs_data_opened().  Another thread closes ep0, hitting
+>> ffs_data_closed(), dropping ffs->opened to 0 and getting
+>> 			ffs->state = FFS_CLOSING;
+>> 			ffs_data_reset(ffs);
+>> which calls ffs_data_clear(), where we hit
+>> 		ffs_epfiles_destroy(epfiles, ffs->eps_count);
+>> All files except ep0 are removed and epfiles gets freed, leaving the
+>> first thread (in ffs_epfile_open()) with file->private_data pointing
+>> into a freed array.
+>>
+>> open() succeeds, with any subsequent IO on the resulting file leading
+>> to calls of
+>> static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
+>> {
+>> 	struct ffs_epfile *epfile = file->private_data;
+>>
+>> and a bunch of accesses to *epfile later in that function, all of them
+>> UAF.
+>>
+>> As far as I can tell, the damn thing intends to prevent removals between
+>> ffs_data_opened() and ffs_data_closed(), so other methods would be safe
+>> if ->open() had been done right.  I'm not happy with the way that FSM
+>> is done (the real state is a mix of ffs->state, ffs->opened and ffs->mutex,
+>> and rules bloody awful; I'm still not entirely convinced that ffs itself
+>> can't be freed with ffs->reset_work scheduled for execution), but that's
+>> a separate story.  
+>>
+>> Another variant of that scenario is with ffs->no_disconnect set;
+>> in a sense, it's even nastier.  In that case ffs_data_closed() won't
+>> remove anything - it will set ffs->state to FFS_DEACTIVATED, leaving
+>> the removals for ffs_data_open().  If we have *two* threads in open(),
+>> the first one to call ffs_data_open() will do removal; on another CPU
+>> the second will just get past its increment of ->opened (from 1 to 2)
+>> and move on, without waiting for anything.
+>>
+>> IMO we should just take ffs->mutex in there, getting to ffs via
+>> inode->i_sb->s_fs_info.  And yes, compare ffs->state with FFS_ACTIVE -
+>> under ->mutex, without WARN_ON() and after having bumped ->opened
+>> so that racing ffs_data_closed() would do nothing.  Not FFS_ACTIVE -
+>> call ffs_data_closed() ourselves on failure exit.
 
---Apple-Mail=_CD1337D0-509F-45D9-8F51-C422B394E1EA
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+I was curious what else would get flagged if I ran the whole f_fs.c through
+the review prompt.  It found a variant of Al's bug above, along with additional
+concerns around unprotected ffs->gadget?  BUGS #1 and #2 below look
+the most important, did AI miss some locking there?
 
-Hi Oliver,
-Thanks a lot for your time and the answer.
+-chris
 
-> Right, you turn on the MMU and the next time printk() is called the
-> console driver tries to write to 0xFF00_0000. That's not a valid
-> virtual address so it explodes. To make an address usable in both real
-> mode (i.e. pre-mmu) and virtual mode you need to have the page tables
-> setup so that virtual address maps to the same physical address.
-> Setting up that mapping is what early_ioremap() does. That's why
-> there's a warning telling you to use it.
->=20
-> Based on the in-tree DTS files earlycon doesn't seem to be used on any
-> powerpc systems. My guess would be that most ppc platform use udbg
-> (very old, powerpc specific thing) rather than earlycon for this kind
-> of super-early debug output. Considering you're getting console output
-> via udbg I'd say just removing earlycon from your kernel command line
-> will probably fix your issue.
+================================================================================
+BUG #1: NULL pointer dereference in ffs_dmabuf_find_attachment()
+================================================================================
 
-Well, I disabled all the early logs (now bootargs =3D =E2=80=9C=E2=80=9D =
-in dts) and modified .config
-so that no earlycon.c gets compiled at all. The followings are the only =
-compiled
-files within the `/derivers/tty/serial`:
+In ffs_dmabuf_find_attachment(), the gadget pointer is dereferenced without
+a NULL check:
 
-serial_base_bus.o, serial_core.o, serial_ctrl.o, serial_port.o, =
-xilinx_uartps.o
+static struct dma_buf_attachment *
+ffs_dmabuf_find_attachment(struct ffs_epfile *epfile, struct dma_buf *dmabuf)
+{
+        struct device *dev = epfile->ffs->gadget->dev.parent;
+                                           ^^^^^^^
 
-Now, I get no outputs during booting procedure which sounds normal, I =
-guess.
-But still no luck getting to the rootfs or anywhere which actually =
-initializes the
-`xilinx_uartps` driver and print something.
+Can epfile->ffs->gadget be NULL here? This function is called from dmabuf
+ioctl handlers which can execute at any time the file is open. If the USB
+function is unbound or the gadget is being torn down, gadget will be NULL.
 
-Also please check shenki=E2=80=99s blogpost=E2=80=99s logs, if you have =
-enough time:
+================================================================================
+BUG #2: Race condition in ffs_data_closed()
+================================================================================
 
-https://shenki.github.io/boot-linux-on-microwatt =
-<https://shenki.github.io/boot-linux-on-microwatt>
+In ffs_data_closed(), there's an unsynchronized state modification:
 
-Based on the blog post, I think there should be no problem to get the =
-early
-booting logs.
+static void ffs_data_closed(struct ffs_data *ffs)
+{
+        ...
+        if (atomic_dec_and_test(&ffs->opened)) {
+                if (ffs->no_disconnect) {
+                        ffs->state = FFS_DEACTIVATED;
+                        ...
+                } else {
+                        ffs->state = FFS_CLOSING;
+                        ffs_data_reset(ffs);
+                }
+        }
+        if (atomic_read(&ffs->opened) < 0) {
+                ffs->state = FFS_CLOSING;
+                ffs_data_reset(ffs);
+        }
+        ...
+}
 
-Bests,
-Manili=
+Can this race with concurrent state changes? The atomic_read() check is not
+synchronized with the subsequent state assignment. Between the read and the
+assignment, another thread could modify the state, potentially causing state
+machine corruption or double cleanup via ffs_data_reset().
 
---Apple-Mail=_CD1337D0-509F-45D9-8F51-C422B394E1EA
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
+================================================================================
+BUG #3: race with gadget pointer in ffs_dmabuf_attach()
+================================================================================
 
-<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; =
-charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: after-white-space;" class=3D""><div =
-class=3D"">Hi Oliver,</div><div class=3D"">Thanks a lot for your time =
-and the answer.</div><br class=3D""><div><blockquote type=3D"cite" =
-class=3D""><div class=3D""><div class=3D"">Right, you turn on the MMU =
-and the next time printk() is called the<br class=3D"">console driver =
-tries to write to 0xFF00_0000. That's not a valid<br class=3D"">virtual =
-address so it explodes. To make an address usable in both real<br =
-class=3D"">mode (i.e. pre-mmu) and virtual mode you need to have the =
-page tables<br class=3D"">setup so that virtual address maps to the same =
-physical address.<br class=3D"">Setting up that mapping is what =
-early_ioremap() does. That's why<br class=3D"">there's a warning telling =
-you to use it.<br class=3D""><br class=3D"">Based on the in-tree DTS =
-files earlycon doesn't seem to be used on any<br class=3D"">powerpc =
-systems. My guess would be that most ppc platform use udbg<br =
-class=3D"">(very old, powerpc specific thing) rather than earlycon for =
-this kind<br class=3D"">of super-early debug output. Considering you're =
-getting console output<br class=3D"">via udbg I'd say just removing =
-earlycon from your kernel command line<br class=3D"">will probably fix =
-your issue.<br class=3D""></div></div></blockquote></div><br =
-class=3D""><div class=3D"">Well, I disabled all the early logs (now =
-bootargs =3D =E2=80=9C=E2=80=9D in dts) and modified .config</div><div =
-class=3D"">so that no earlycon.c gets compiled at all. The followings =
-are the only compiled</div><div class=3D"">files within the =
-`/derivers/tty/serial`:</div><div class=3D""><br class=3D""></div><div =
-class=3D"">serial_base_bus.o, serial_core.o, serial_ctrl.o, =
-serial_port.o, xilinx_uartps.o</div><div class=3D""><br =
-class=3D""></div><div class=3D"">Now, I get no outputs during booting =
-procedure which sounds normal, I guess.</div><div class=3D"">But still =
-no luck getting to the rootfs or anywhere which actually initializes =
-the</div><div class=3D"">`<span style=3D"caret-color: rgb(0, 0, 0); =
-color: rgb(0, 0, 0);" class=3D"">xilinx_uartps`&nbsp;</span><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);" =
-class=3D"">driver and print something.</span></div><div class=3D""><span =
-style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);" class=3D""><br =
-class=3D""></span></div><div class=3D""><font color=3D"#000000" =
-class=3D"">Also please check shenki=E2=80=99s blogpost=E2=80=99s logs, =
-if you have enough time:</font></div><div class=3D""><font =
-color=3D"#000000" class=3D""><br class=3D""></font></div><div =
-class=3D""><font color=3D"#000000" class=3D""><a =
-href=3D"https://shenki.github.io/boot-linux-on-microwatt" =
-class=3D"">https://shenki.github.io/boot-linux-on-microwatt</a></font></di=
-v><div class=3D""><font color=3D"#000000" class=3D""><br =
-class=3D""></font></div><div class=3D""><font color=3D"#000000" =
-class=3D""><span style=3D"caret-color: rgb(0, 0, 0);" class=3D"">Based =
-on the blog post, I think there should be no problem to get the =
-early</span></font></div><div class=3D""><font color=3D"#000000" =
-class=3D""><span style=3D"caret-color: rgb(0, 0, 0);" class=3D"">booting =
-logs.</span></font></div><div class=3D""><font color=3D"#000000" =
-class=3D""><span style=3D"caret-color: rgb(0, 0, 0);" class=3D""><br =
-class=3D""></span></font></div><div class=3D""><font color=3D"#000000" =
-class=3D""><span style=3D"caret-color: rgb(0, 0, 0);" =
-class=3D"">Bests,</span></font></div><div class=3D""><font =
-color=3D"#000000" class=3D""><span style=3D"caret-color: rgb(0, 0, 0);" =
-class=3D"">Manili</span></font></div></body></html>=
+In ffs_dmabuf_attach(), the gadget pointer is checked then used without
+synchronization:
 
---Apple-Mail=_CD1337D0-509F-45D9-8F51-C422B394E1EA--
+static int ffs_dmabuf_attach(struct file *file, int fd)
+{
+        ...
+        struct usb_gadget *gadget = epfile->ffs->gadget;
+        ...
+        if (!gadget || !gadget->sg_supported)
+                return -EPERM;
+
+        dmabuf = dma_buf_get(fd);
+        if (IS_ERR(dmabuf))
+                return PTR_ERR(dmabuf);
+
+        attach = dma_buf_attach(dmabuf, gadget->dev.parent);
+                                        ^^^^^^^
+
+Can the gadget be freed between the NULL check and use? The gadget pointer
+is cached early in the function, checked for NULL, but then used later
+without any locks. If the function is unbound between the check and use,
+gadget->dev.parent dereferences freed memory.
+
+A mutex is held when ffs->gadget is set to NULL, but ffs_dma_buff_attach
+is Called from ff_epfile_ioctl(), with no locks are held.
+
+================================================================================
+BUG #4: dma_fence_put on uninitialized fence in ffs_dmabuf_transfer()
+================================================================================
+
+In ffs_dmabuf_transfer(), error paths call dma_fence_put() before the fence
+is initialized:
+
+static int ffs_dmabuf_transfer(...)
+{
+        ...
+        fence = kmalloc(sizeof(*fence), GFP_KERNEL);
+        if (!fence) {
+                ret = -ENOMEM;
+                goto err_resv_unlock;
+        }
+
+        fence->priv = priv;
+
+        spin_lock_irq(&epfile->ffs->eps_lock);
+
+        if (epfile->ep != ep) {
+                ret = -ESHUTDOWN;
+                goto err_fence_put;
+        }
+
+        usb_req = usb_ep_alloc_request(ep->ep, GFP_ATOMIC);
+        if (!usb_req) {
+                ret = -ENOMEM;
+                goto err_fence_put;
+        }
+
+        seqno = atomic_add_return(1, &epfile->seqno);
+
+        dma_fence_init(&fence->base, &ffs_dmabuf_fence_ops,
+                       &priv->lock, priv->context, seqno);
+        ...
+
+err_fence_put:
+        spin_unlock_irq(&epfile->ffs->eps_lock);
+        dma_fence_put(&fence->base);
+        ...
+}
+
+Can dma_fence_put() be called on an uninitialized fence? The error paths at
+epfile->ep != ep and usb_ep_alloc_request failure jump to err_fence_put, but
+dma_fence_init() isn't called until after those checks. Calling
+dma_fence_put() on an uninitialized fence violates the DMA fence API and
+likely crashes on uninitialized refcount.
+
+================================================================================
+BUG #5: NULL pointer dereference in ffs_epfile_ioctl()
+================================================================================
+
+In ffs_epfile_ioctl() handling FUNCTIONFS_ENDPOINT_DESC, the gadget pointer
+is dereferenced without a NULL check:
+
+static long ffs_epfile_ioctl(...)
+{
+        ...
+        case FUNCTIONFS_ENDPOINT_DESC:
+        {
+                int desc_idx;
+                struct usb_endpoint_descriptor desc1, *desc;
+
+                switch (epfile->ffs->gadget->speed) {
+                                   ^^^^^^^
+
+Can epfile->ffs->gadget be NULL here? The gadget can be
+NULL if the function is unbound. The function holds eps_lock but this
+doesn't protect against gadget being NULL.
+
+================================================================================
+BUG #6: NULL pointer dereference accessing descriptor array
+================================================================================
+
+In the same FUNCTIONFS_ENDPOINT_DESC handler, the descriptor pointer from
+the array is used without NULL check:
+
+                switch (epfile->ffs->gadget->speed) {
+                case USB_SPEED_SUPER:
+                case USB_SPEED_SUPER_PLUS:
+                        desc_idx = 2;
+                        break;
+                case USB_SPEED_HIGH:
+                        desc_idx = 1;
+                        break;
+                default:
+                        desc_idx = 0;
+                }
+
+                desc = epfile->ep->descs[desc_idx];
+                memcpy(&desc1, desc, desc->bLength);
+                                     ^^^^
+
+Can desc be NULL here? The descs array elements may not all be populated if
+userspace only provided descriptors for certain speeds. Accessing
+desc->bLength without a NULL check can crash.
+
+================================================================================
+BUG #7: Out-of-bounds array access in ffs_func_get_alt()
+================================================================================
+
+In ffs_func_get_alt(), the interface parameter is used to index cur_alt[]
+instead of the validated intf value:
+
+static int ffs_func_get_alt(struct usb_function *f,
+                            unsigned int interface)
+{
+        struct ffs_function *func = ffs_func_from_usb(f);
+        int intf = ffs_func_revmap_intf(func, interface);
+
+        return (intf < 0) ? intf : func->cur_alt[interface];
+                                                    ^^^^^^^^^
+}
+
+Can func->cur_alt[interface] overflow the array? The function calls
+ffs_func_revmap_intf() to validate and map the interface number, returning
+the validated index in intf. However, it then uses the unvalidated
+interface parameter to index cur_alt[] instead of intf.
+
+If interface >= MAX_CONFIG_INTERFACES, this reads beyond the array bounds.
+
+ffs_func_set_alt() follows the same incorrect pattern:
+func->cur_alt[interface] = alt;
+
+Data flow analysis:
+
+The interface parameter originates from the USB HOST (the PC or device that
+the USB gadget is plugged into), NOT from the userspace application. Here's
+the call chain:
+
+1. USB HOST sends USB_REQ_GET_INTERFACE control request over the wire
+2. composite_setup() in drivers/usb/gadget/composite.c handles it
+3. Extracts w_index from ctrl->wIndex (16-bit value from USB packet)
+4. Validates LOW 8 bits: checks intf >= MAX_CONFIG_INTERFACES
+5. Gets function: f = cdev->config->interface[intf]
+6. Calls: value = f->get_alt(f, w_index)
+
+The composite layer validates the low 8 bits (intf), but passes the FULL
+16-bit w_index as the interface parameter. The FunctionFS code:
+
+1. Calls ffs_func_revmap_intf(func, interface) which validates and returns
+   a local index
+2. **But then uses the original interface parameter to index cur_alt[]
+   instead of the validated intf**
+
+The interface number comes from the USB HOST over the wire,
+not from userspace application. It's validated partially by composite, but
+FunctionFS uses the wrong variable for array indexing.
+
 
