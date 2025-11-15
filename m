@@ -1,54 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-14195-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14196-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C696FC60810
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Nov 2025 16:52:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13F8C60816
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Nov 2025 16:53:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d7z654BZwz2yrQ;
-	Sun, 16 Nov 2025 02:52:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d7z7g5Rmgz2yrQ;
+	Sun, 16 Nov 2025 02:53:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763221933;
-	cv=none; b=XJ83R9R9+z4l6aRSKUP025BV48RTpQBTvITRfOAOJKuV/OVRcfGrRnsqkNIt2ooHIZ/qZ3je1HSd6bmuM/I/rVMsY16gJbGwifdnfrnOlIriPlWc7uN+6fk10zGeMN9/tn8hiOa2fJMjuVjg2GSwhF8binLkX72lxBRUEmLL28aAXr3vVWZC3IzqHH+dWvY+myIZxcvepoRWt1rPEikhRlGsNnX+osEllZ3pnxnxOEKjnoWd5x7j2GiKsi1gG2/GnOSSXXgVGs06Ca67BWKgivCKlqfV1LvMnNumBUwtOAz/qTukqbczlsDMYo07r+PUbAguD3CgoeFLrpeJWiqekA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763222015;
+	cv=none; b=LAHuTpyQMqYjXYKAhffdvuTA5CJ7JeHnWFGqpH8FE+wP7jldL6SFSb/ooOEFZd1470qUGLt3jHJm37Ogp9elsa2GkuMuhN3vFIJGRm47A/K9X7sny+bhE0HbWYOR/Dm9pqY8mEY9pA0XS4BDPhbwQZuybakXuvugPiVn3rtWr6XKy0BbpQiPtAsElvAfxHivVRI5y2FCskGZf896hBZCjmzqzRS5rwDh+L76C0OnLuLvZMpT0xqoKq8uVJNLvO10VSufpStHQtCC/zmnB3Cn9u15NBchHjcLKgQ+TeWx7aS2aICiaiHr8hI7yJdDn9+XUukos2F9wnmP1zQiT9tD0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763221933; c=relaxed/relaxed;
-	bh=HSPnZMDPrSmy6ZnP5yUFLoTkZttJ+ulSH2tuXAA3xPU=;
+	t=1763222015; c=relaxed/relaxed;
+	bh=xZ3ruAdoiAVL5AiOWMufuanCJT2Hk+KKUqr8L/GImxg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ed4Xs6K1gbRx6M3T4cFeUnOgAsYOgZSt6qG+HzmVsv8G4rvJDvsPvt2/IRmTl1BuxyiWW8JXbv0gOV5k1SVPNo5j67thjAXwccw2MgmZ/y2wMHXKt8HGbK+NIa76LMgCRUEQQve8KeNocWzekdP516efdyvvL0GAZsvf0zi7Fy3D+NF0ZFzF4R0vbc25IZxqTdsWBhRUX/W620wUn4A0T18WhHP/cvIs4kLB2rzvQQnH+QmQ9D3Ui8UjMC629m5xBNTIpPutM86FnExndT6Ie8hA8QXHnK2YnlxqdgDOlBZJLLo8aGefslDs2+EQ0aJarZeT2Thj3MRhH9nLinT+RA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=bSRDkmmk; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=q9EioKQO; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 MIME-Version:Content-Type; b=ZvhRoXapzswSY7IOvdJ1m6iIJ6q30sLxTibmhU+JJiIirdRNXzTSx8cHGsvK7H6qCVpnBb315Jm9+LnzA0o3hw0ftmJ40xrKqIHRtdomrO1wML2BUIYNS6nJ4DemECQkL/ogGNVrq1ge2afEaRenwIgZsFlfWZj2YVH3/xuwVHzdk8MxfueWaljPXUsWeiDtmsbtriJM0oxwOGm7bUoH2k26NYyI/GPujw3s55f8oqUz4MxKcycrd4HewSzXXTRcvEk7Ce31lHwzJwqyJANp5FfBM4egq59W+Uv5SDxoYl57rD0wD9aO5yeIouIYw7j/uhh1ISdfyQmZLGxdofEm/Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=SLEtXJs9; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=fCWvnkFh; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=bSRDkmmk;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=q9EioKQO;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=SLEtXJs9;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=fCWvnkFh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d7z635b61z2xqm
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Nov 2025 02:52:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d7z7f5rjnz2xqm
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Nov 2025 02:53:34 +1100 (AEDT)
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763221920;
+	s=2020; t=1763222011;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HSPnZMDPrSmy6ZnP5yUFLoTkZttJ+ulSH2tuXAA3xPU=;
-	b=bSRDkmmkFM+3H86HARt9T+Nmon/tHmmTmfBcVZ4meeRSD/6sMoF05cS6o02IaEF/X5+AEp
-	hGCyUIWGfdlI4ROZmuOkcp6c7VwUy1/HYtgAeUur21/RD6NrfG2g0tOyKkY5OR3ghE4Bdy
-	OirG2HWhgC9w1EtGdh5jSgAE4WIwhxnYOTwp5Wp1uknEDQ5rbTlo7cvZP0n6HojpnCqu6x
-	lonK55GQltRVV07NyHSFktsseUp4Z2NUBUcwMuX2XeP/hY0n+HDSIkuASxqHOB7Ll/+859
-	xqV7wA1p/qgQo31iITdEy1A0lWOY32oK3oOUYgmokDoqg5BNgkF5nfXIq+64mg==
+	bh=xZ3ruAdoiAVL5AiOWMufuanCJT2Hk+KKUqr8L/GImxg=;
+	b=SLEtXJs90G/7NF9CrSjBMolaz51zpek96DGbr3R8BvIftzWculk19f97DkjJIqgyyOE5b1
+	rJq4JYu+8eltZRC6K+Ky57qlhN2irEA0MVU6CbJrmV6I2WxV6d7H4STn3FmW2Nm2iAukJ1
+	Lb8+gYcxQTz8PXfTHVLntDKFeg/wHLmYTUNXVU7q8+YKUJOK7GGJ4Ht7pDCTSTNrD9qetm
+	bwZVGPoW3pSFcoWuUh5ciT5paxc6cOtYOyWcMyrDIjB0kKPRd+w9rnUbKiuawGL22julqt
+	2tsXicGSHUzzZFnVkQbPDZJumodu0COCelq70rNBeeac/Ib2X38KS/w1VXZucw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763221920;
+	s=2020e; t=1763222011;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HSPnZMDPrSmy6ZnP5yUFLoTkZttJ+ulSH2tuXAA3xPU=;
-	b=q9EioKQOs2kPRGrhP2HBDkWUx314/kUIkP+PNQvawiMxyrLHb6u/YSqyHWKp7a/d4AxH90
-	QE0X4Os16XT0NFCA==
+	bh=xZ3ruAdoiAVL5AiOWMufuanCJT2Hk+KKUqr8L/GImxg=;
+	b=fCWvnkFhaCE05joawZuvor/UjHcnZb/Uv1cgWtTEj3z+VMFBzvtxj4oixCLjs41kiNl59I
+	ipV96EcnsYStGXCg==
 To: Christophe Leroy <christophe.leroy@csgroup.eu>, Alexander Viro
  <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
  Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra
@@ -65,13 +65,13 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
  linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v4 02/10] uaccess: Add speculation barrier to
- copy_from_user_iter()
-In-Reply-To: <598e9ec31716ce351f1456c81eee140477d4ecc4.1762427933.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4 03/10] uaccess: Use
+ masked_user_{read/write}_access_begin when required
+In-Reply-To: <5effda898b110d413dc84a53c5664d4c9d11c1bf.1762427933.git.christophe.leroy@csgroup.eu>
 References: <cover.1762427933.git.christophe.leroy@csgroup.eu>
- <598e9ec31716ce351f1456c81eee140477d4ecc4.1762427933.git.christophe.leroy@csgroup.eu>
-Date: Sat, 15 Nov 2025 16:51:59 +0100
-Message-ID: <87jyzr9tuo.ffs@tglx>
+ <5effda898b110d413dc84a53c5664d4c9d11c1bf.1762427933.git.christophe.leroy@csgroup.eu>
+Date: Sat, 15 Nov 2025 16:53:30 +0100
+Message-ID: <87h5uv9ts5.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,38 +86,24 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On Thu, Nov 06 2025 at 12:31, Christophe Leroy wrote:
-> The results of "access_ok()" can be mis-speculated.  The result is that
-> you can end speculatively:
->
-> 	if (access_ok(from, size))
-> 		// Right here
+> diff --git a/net/core/scm.c b/net/core/scm.c
+> index 66eaee783e8be..4a65f9baa87e7 100644
+> --- a/net/core/scm.c
+> +++ b/net/core/scm.c
+> @@ -274,7 +274,7 @@ int put_cmsg(struct msghdr * msg, int level, int type, int len, void *data)
+>  		check_object_size(data, cmlen - sizeof(*cm), true);
+>  
+>  		if (can_do_masked_user_access())
+> -			cm = masked_user_access_begin(cm);
+> +			cm = masked_user_write_access_begin(cm);
+>  		else if (!user_write_access_begin(cm, cmlen))
+>  			goto efault;
 
-This is actually the wrong patch ordering as the barrier is missing in
-the current code. So please add the missing barrier first.
-
-As a bonus the subject of the first patch makes actually sense
-then. Right now it does not because there is nothing to avoid :)
-
-Also please use the same prefix for these two patches which touch the
-iter code.
-
-> For the same reason as done in copy_from_user() by
-> commit 74e19ef0ff80 ("uaccess: Add speculation barrier to
-> copy_from_user()"), add a speculation barrier to copy_from_user_iter().
->
-> See commit 74e19ef0ff80 ("uaccess: Add speculation barrier to
-> copy_from_user()") for more details.
-
-No need to repeat that. Anyone with more than two braincells can look at
-that commit, which you mentioned already two lines above already.
-
-Thanks,
-
-        tglx
+Shouldn't this be converted to scoped_....() ?
 
