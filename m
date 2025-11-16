@@ -1,78 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-14197-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14198-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95ECBC60858
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Nov 2025 17:10:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0F7C60F48
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Nov 2025 03:52:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d7zVc2K5vz2yrQ;
-	Sun, 16 Nov 2025 03:10:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d8FmD5PZrz2yvN;
+	Sun, 16 Nov 2025 13:52:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763223000;
-	cv=none; b=k7C3jsRRKUYysVr1ctbccocroCzLzczSe/O3PzQwWaPVgZ8vJK/zm2QmL28N/1r/VAqpPt1bLn+ivvCfRCpGq+zkcR/IxXdWLtZdtlhFp03CJ5HYP4NF/M+U8GXIlA60aMGnPQa+un/QXneCrxmToh+Q2OKzxWbH9RCRHUFiODzSqje9z+NCoF9Wuilt2gt3XUWRTdLq5ZN2lgMpTUzy/I5R5FpNb3QFn6YOx9U4BjfIvo8LFlYco5+SUtNLqony8rC8AJOzWmPP0ROFtpZWbUWVN2SLaM4Mng6SzvidwbBCJyshLrvDm+gpkKAg1FDk6BAXRcOjnz/06zxOCAkTEQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.81
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763261564;
+	cv=none; b=nsP3R/YdfKC+tfDeqaHqRicyZ8+63htskNKlvueoXlQEE8DLsItgnumA81Vj3Ssmux0OdIotjX5MyMry5a9ZYp0PkHkC7c17bsIvSYZxI6rE4ByR5Wua3YHgQVgGHhVuixGatMvfsKPcNvHpbYEbhztdXpr5NLUamYdJviFPxd2dz/mO7pc7Hs3WUuilMX5cthTVVghEKIy0h7EnpmXiB7S3f8WWgeKmkT5INyk4IhsFQhlT1U2Z9FWDetbvqQiqLjDVc6HWCih6puWhUGIqpaRgBwUoDoYQ3asWiTyVMIdvmF/HEU89MVgLrsEfXIsNAuekG9E7+hf0rqX/p9OPOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763223000; c=relaxed/relaxed;
-	bh=5aeXLLodxctI/pPZxImkPY+GPKafvw9rs1/2OslTctY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jAI4rFR+vrX/HcN/amlL4MnFJyP5CabR5iLuFzRB1sWQkD8lnWLp5zIbwInbTX36hg7UhTlN8xwQ1bH/wgeHEFDHGbprbC868X1T2J0DmtO9fVHYfLg0ji3NDdG1cbHAK01JsEfn6q8tMJOOONuH73b5yGAr2opeGpuizAADN9N+CBacOllNr2qAxP9F8iEej6yDcXKIy1gwHzGq75GvywKECVE/lfs2/OpznH9eetDiZ/FgiiSt+iOv3CjiH8tM1/+2KI5d1MTZelqg47yHl2tErm5kd1JHJdKTgjUDr5av0SAHbkVUgBNUADJOF3xRfeiddKjhkFxF24hxjzL6/Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oDqfKQpV; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oDqfKQpV;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1763261564; c=relaxed/relaxed;
+	bh=yGDEHh5NtNCjAMZMrYp2fiuiXGVY0OeXsIHtFaxaiGE=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=GplVMRz2gwqTSdDFrujmbiEzCeBSdebohuSXRdHLKsll1pJDf9Nl+bPrucwAmrb6WjzKNg6Sv4FrKbVf95/O5Xii9tSj5/PPjpqI+gJ4pWEat4MNOxD8zDWpGUusCLfahug9QJj7oKLmYdyXZJWnnopHjrynG2DczZehPtpWEy6KlIAC+eSqlIwr490FCNFdpXb532rvIjJdeSicrH2pKG0EuuLARVdlkWzC+3YTYdUYXuzX49gEPJzL/X1sZfsihtSUcw+XmayrF5X314unAHpo4FdKt3N5A6G4bsNC9kGt6J2jCAX6jrDuYDXlAjm2gNvPk6DpWMudC526EGWg8w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass (client-ip=159.226.251.81; helo=cstnet.cn; envelope-from=make24@iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.81; helo=cstnet.cn; envelope-from=make24@iscas.ac.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 479 seconds by postgrey-1.37 at boromir; Sun, 16 Nov 2025 13:52:43 AEDT
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d7zVZ5hgLz2xqk
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Nov 2025 03:09:58 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AFBQfPY010931;
-	Sat, 15 Nov 2025 16:09:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=5aeXLL
-	odxctI/pPZxImkPY+GPKafvw9rs1/2OslTctY=; b=oDqfKQpV1NuVWoNNVozN4C
-	8xSl5/f+nRnqx+1QXSVq+kobKuA0d6ynqJnfxa/iSzJDWseBFdYcYcJj1Cbpw5Zf
-	JYoAvDyUR2z/VMuFV3fAUNzgBfsSzYxLnWkR/Zo2606Qr4Qdpuczxzn7KjFc9MUs
-	JxWclPikwoqApbvDz9b/S6taZ7Onh9YseKCAwJ2bTqpNRxcohFAikOBnJWiBqBqW
-	XV6JiRJcAuhEyn9OZ+nvAhn/5f8Pbxwf3S86DTcL60AXx9K8KZnTIOwA6U5xHlef
-	qkqRxSM4oGX/gbBkN2Z1F7XF4un6PtOx+ayJZ1F5bfbERmyziBhuMgBFl01N449w
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejgwh2mp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 15 Nov 2025 16:09:53 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AFG9r70008447;
-	Sat, 15 Nov 2025 16:09:53 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejgwh2mm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 15 Nov 2025 16:09:53 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AFC1jP7008182;
-	Sat, 15 Nov 2025 16:09:52 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aah6ng92c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 15 Nov 2025 16:09:52 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AFG9km641877920
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 15 Nov 2025 16:09:46 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AAE2020043;
-	Sat, 15 Nov 2025 16:09:46 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1BE5C20040;
-	Sat, 15 Nov 2025 16:09:43 +0000 (GMT)
-Received: from [9.39.19.249] (unknown [9.39.19.249])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 15 Nov 2025 16:09:42 +0000 (GMT)
-Message-ID: <a27ecae9-a001-4e57-86cf-09c2cc3d6371@linux.ibm.com>
-Date: Sat, 15 Nov 2025 21:39:40 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d8FmC2x5Kz2xqM
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Nov 2025 13:52:42 +1100 (AEDT)
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by APP-03 (Coremail) with SMTP id rQCowACnONt9OhlphMrrAA--.5337S2;
+	Sun, 16 Nov 2025 10:44:20 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	make24@iscas.ac.cn,
+	benh@kernel.crashing.org,
+	smaclennan@pikatech.com
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	stable@vger.kernel.org
+Subject: [PATCH] powerpc/warp: Fix error handling in pika_dtm_thread
+Date: Sun, 16 Nov 2025 10:44:11 +0800
+Message-Id: <20251116024411.21968-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:rQCowACnONt9OhlphMrrAA--.5337S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtrW7tryDtFy8Xr17Cw17KFg_yoWftwb_Ka
+	109a97urW8Wr4qk3Wqyr1fGrZxJ39rJ34UKw1qg3W2ya45Xa95Xw4FyrZ5uw17ursFkr43
+	Jan5WrsrC3WS9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbDAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwV
+	AFwVW8JwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
+	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+	wI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUmLvtU
+	UUUU=
+X-Originating-IP: [202.112.113.212]
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,108 +79,36 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/5] kexec: reorganize sysfs interface and add new
- kexec sysfs
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, Aditya Gupta <adityag@linux.ibm.com>,
-        Baoquan he <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        Hari Bathini <hbathini@linux.ibm.com>, Jiri Bohac <jbohac@suse.cz>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        Pingfan Liu <piliu@redhat.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>,
-        Sourabh Jain <sourabhjains@linux.ibm.com>,
-        Vivek Goyal <vgoyal@redhat.com>, linuxppc-dev@lists.ozlabs.org,
-        kexec@lists.infradea
-References: <20251114051504.614937-1-sourabhjain@linux.ibm.com>
- <20251114152550.ac2dd5e23542f09c62defec7@linux-foundation.org>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <20251114152550.ac2dd5e23542f09c62defec7@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9n2C37ByZa5_ROB86UWmrby0MJwyrkHq
-X-Authority-Analysis: v=2.4 cv=YqwChoYX c=1 sm=1 tr=0 ts=6918a5d1 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=gKol05NBOib2xTfy92sA:9 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: dVXF1qsjVYQdl2pEdgoUWq-DA0XY4uRS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX+NLnRL/ZBXtZ
- Modz/yk8C4zjyeQsioo26dAgJHIVW6iKj5BonU4x+LeabDbs6qOnkD+LyRo2JtF0r5phrOUYiCh
- TVgna6iEjkOWx4ACZX39LKuD7CXpGAxTIsWyk98BQ4Axn++4DbEWK2pO7uMA1a6Oiub/KmhUkIl
- HLEwhA8+LkrOJcZ9x9fgA/bvGjxpY/ZsKFpy8KdudPOnQsWzqB+y/evMHcgrAEvgAr3avs26e3j
- f1bovNF3bBewnE/vE/9dnmFCzL0ddEdV/YJWE4K8Mdci6ElL8ah13uiq0Kl2gyXbjKV30GiuHl2
- 9yAPgdiMMwcrkMrq4N02OOhAztt1DvkLX0UOkeDZ7NnvD/qK+MKd5bLvUMZ0w/YGOzC9KbSBdtN
- d4kyhbnWmPJklVVn0djxR6TN/Bqhew==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-15_05,2025-11-13_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 lowpriorityscore=0 malwarescore=0
- clxscore=1015 adultscore=0 bulkscore=0 phishscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511150032
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+pika_dtm_thread() acquires client through of_find_i2c_device_by_node()
+but fails to release it in error handling path. This could result in a
+reference count leak, preventing proper cleanup and potentially
+leading to resource exhaustion. Add put_device() to release the
+reference in the error handling path.
 
+Found by code review.
 
-On 15/11/25 04:55, Andrew Morton wrote:
-> On Fri, 14 Nov 2025 10:44:59 +0530 Sourabh Jain <sourabhjain@linux.ibm.com> wrote:
->
->> All existing kexec and kdump sysfs entries are moved to a new location,
->> /sys/kernel/kexec, to keep /sys/kernel/ clean and better organized.
->> Symlinks are created at the old locations for backward compatibility and
->> can be removed in the future [02/05].
->>
->> While doing this cleanup, missing ABI documentation for the old sysfs
->> interfaces is added, and those entries are marked as deprecated
->> [01/05 and 03/05]. New ABI documentation is also added for the
->> reorganized interfaces. [04/05]
->>
->> Along with this reorganization, a new sysfs file,
->> /sys/kernel/kexec/crash_cma_ranges, is introduced to export crashkernel
->> CMA reservation details to user space [05/05]. This helps tools
->> determine the total crashkernel reserved memory and warn users that
->> capturing user pages while CMA is reserved may cause incomplete or
->> unreliable dumps.
-> Patchset does three unrelated things in remarkably random order.
->
-> 1: Document existing stuff
->
-> 	Great, thanks, in it goes.
->
-> 2: export crashkernel CMA reservation to userspace
->
-> 	Well, OK, probably reasonable, didn't look closely.
->
-> 3: Alter longstanding userspace ABI with deprecation plan
->
-> 	Whoa, tricky, needs careful consideration.
->
->
-> So can we please prepare and consider this material in three separate
-> patchsets?  In the above order, I suggest.
+Cc: stable@vger.kernel.org
+Fixes: 3984114f0562 ("powerpc/warp: Platform fix for i2c change")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ arch/powerpc/platforms/44x/warp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Yeah sure.
-
-The question here is where to add the new CMA reservation sysfs.
-Should I place it under /sys/kernel/ or create /sys/kernel/kexec and
-add it there?
-
-Since I am proposing that all kexec sysfs entries move to the new
-location /sys/kernel/kexec, I am going to add the CMA reservation
-sysfs under /sys/kernel/kexec to avoid creating a symlink for this
-entry later in my third patch series.
-
-- Sourabh
+diff --git a/arch/powerpc/platforms/44x/warp.c b/arch/powerpc/platforms/44x/warp.c
+index a5001d32f978..6f674f86dc85 100644
+--- a/arch/powerpc/platforms/44x/warp.c
++++ b/arch/powerpc/platforms/44x/warp.c
+@@ -293,6 +293,8 @@ static int pika_dtm_thread(void __iomem *fpga)
+ 		schedule_timeout(HZ);
+ 	}
+ 
++	put_device(&client->dev);
++
+ 	return 0;
+ }
+ 
+-- 
+2.17.1
 
 
