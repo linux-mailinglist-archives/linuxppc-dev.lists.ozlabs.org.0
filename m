@@ -1,73 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-14199-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14200-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB241C610BC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Nov 2025 07:31:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78645C610E0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Nov 2025 07:40:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d8LcN2bkWz2xnx;
-	Sun, 16 Nov 2025 17:31:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d8LqY0lngz30VQ;
+	Sun, 16 Nov 2025 17:40:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763274676;
-	cv=none; b=O22ud6CsCbiNkPe764m7krrtG4yORPSuEMC/QSkXZX7P3/3cIi1oIDC2YQgGif9CFP4JGjoCfeGNHSuzVQpP/VhbV790PcYRzxuAsM1akA1eIyHMPypbva7cNrG1wc78xVBAVoucKgMlq89HlgTwkxJ0YjkwFhb0OoZ1j5apTMW15R0IEbHBmpDtnw7J0WYOxtnaGwxyTblGBQ84Sbr54aR1I7vb8ioPKNQbHnzhMpW1f75gWsF1O+aDHGqe4hYfRBaO0Jjx85y/AnCr7Ux/a9P8weTMuG8nYm2/gR4uXV7IOQoGfuY1e0bJElpRn0wwJ17t0fcF6Wig4zabx9bQhQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.160.181
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763275256;
+	cv=none; b=chiCsc75ruQ1+ncikEcgrNdmOxskhVEdUlQxc9k4F9Lh70Qfn4jk+CP6PYfJNVWxDx2FxPjGp4ML415EF/J5tdI6SKjyZcCPhEKWFtKQJUqTQam/HHcrnBRRn45ddsXIRMmoypq2Ezm6HoFYFf5//T7YSlpscxXSeJXPfwvMea1KPtRBLwTCk9Vnxy7yz69NZE2RViomv272dqEWzDgMmwwpFhm7cUQZgCffu/OX5CmmbO+BMqHsYEVS4jH5/BSCM4PnYDYph4NWVRv3kmaK1RHNuHeTmwtN6UQ71yPwCn6dblzQjSgYHiyFnye14MhJuaEebqZDem0YucQ1kq7Aug==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763274676; c=relaxed/relaxed;
-	bh=CSaTv+g6iTeyfNwAPb2UZSBv3rc0hQYoL1YvQs/TGcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YIQT1WN3bDA0hBPAUw9kwac6ahsuHtz76h8B3rfFQIZCuTWMo7PeZEHOuHhUmOQZSksR6iCvjwI0V8Qc7LkvrlK60R62t2SBSflQN+5MNMir8c8erM/0oIhx6VeOnYgNER2nNfa0zIJO3SUXEn+klECz5YnqJwhyRbEtzgsDFOkbyFaCOn2FpDrm1TSNijsrkJa0aO63aEo2xkM8DN3rQaVBQ1+kEn8u1y513F14cdjEJpp+w4/QUXm0BqTeO4/4KsxHyP2ZIvkwAUtOR4EgtpS1uIW0+otm8R/7RRq97uYHOn7fMXaTvnIwHXUHBmQ/i3uUAxg2lLJAqRgIunJSAg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=v87ep+8s; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=v87ep+8s;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+	t=1763275256; c=relaxed/relaxed;
+	bh=A/TBs7BuWibkRX4L1Mxki9I3H1/n/J1InK7hm63Zqwc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KTQBSL3BGb0Ah8DjK5f26MYz6ZccXapzjNJdt08sAo1B5OXqIbZZnBXQZkBD/BZS660EUxFLBbv2mfCS6eWPrYWlqKQoRkYllhKp6RHBb1Qs7s3ADVzMQkzc48kbhYljZy1E/lMR/Fo0M5peLamGa+766KzowAUeEQV1nqBnecSgt2P2o52ilb1BRuqLSFcrqnL2W636Q6Ai4FjZMS7qi6qw79mBGfNYKOWPc8Xbfl6elI9U4SabwA4CJ1fdcOPwBVpla+5AlT+cpEYhxSYPrcG6d/lRjmx2hUCm+Gy7hoVOLbTl0SC7F0WXzeNcY42gCtLIF5ovhaJLGQM9eSdGgg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca; spf=pass (client-ip=209.85.160.181; helo=mail-qt1-f181.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.181; helo=mail-qt1-f181.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d8LcJ5753z2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Nov 2025 17:31:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
-	bh=CSaTv+g6iTeyfNwAPb2UZSBv3rc0hQYoL1YvQs/TGcA=; b=v87ep+8sGAj47MEf8Vt4uadQZk
-	43mSG/U79MDARH/6bYNHWYEijJCkGJlTApHxDreiHLLZkq2qjparHOIa8lh4alzW34fB6LARDpvoq
-	a0tzMldguNQi01Y3KE+ZamiC2CGY+r1XBlYwAhZvQT42pRdi83POrqpQ/KgmCrP2H9U6V/h9J+URe
-	7TZKT/6AEJtzbW1csZg/Nf9SbWs9D/NPnstDd2Jkzk2xyIjQO+HzNXWvKJIhrZhTAqyNMImpj9WXS
-	2UDAdfdak31c1xzZAJF2F3bpuo5eTczIsPAO7ceypi0uEUZb4ZieasuxVGFqwzwJDx4l0egDgHhP7
-	bvKKdfyQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vKWHj-0000000Ccfr-1WoW;
-	Sun, 16 Nov 2025 06:30:51 +0000
-Date: Sun, 16 Nov 2025 06:30:51 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
-	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
-	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
-	a.hindborg@kernel.org, linux-mm@kvack.org,
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
-	paul@paul-moore.com, casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
-	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
-	yonghong.song@linux.dev, ihor.solodrai@linux.dev,
-	Chris Mason <clm@meta.com>
-Subject: Re: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
- switch to simple_remove_by_name())
-Message-ID: <20251116063051.GA2441659@ZenIV>
-References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
- <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
- <20251111092244.GS2441659@ZenIV>
- <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
- <20251113092636.GX2441659@ZenIV>
- <2025111316-cornfield-sphinx-ba89@gregkh>
- <20251114074614.GY2441659@ZenIV>
- <2025111555-spoon-backslid-8d1f@gregkh>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d8LqW37wfz30V3
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Nov 2025 17:40:54 +1100 (AEDT)
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ee1e18fb37so359611cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Nov 2025 22:40:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763275251; x=1763880051;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A/TBs7BuWibkRX4L1Mxki9I3H1/n/J1InK7hm63Zqwc=;
+        b=KRyqSwv63Cn6yeuiWzuwA0WmJG2DYeznAsh5pzOQhGT+1hJ9u5rdGz/OFV2VCIODh0
+         WIAGFDFbY06SvPWQ3XdJcOcOx8wrOaXmXoWRohGhYn6MXj3e/1AfxmjNJBbiNKVIsz+h
+         dHheUTMn8o3L5yXlgyuYTQMJXo8uYcqA4lIGBRdi/2nyTmuxqBU3tqOJ2iwVpgFe4ncx
+         JRQGo7c0JbRpbwDmeLUNdXrl5a6JIwr9pjpoqyTI44dtz2XnpBOKS9Il6ZF0eQpbKlP/
+         RXGEHTRoLD/Rkt1gkbph2CPq1iXHLS2OHONT/1zGtVXEUqciMR6uplkn+fo5uquYgjUo
+         WNFw==
+X-Gm-Message-State: AOJu0YxGQPbHKaPzsIhv/TbByYanWhznilHH6DE+ftJ9ZzPZA/Wtgdnp
+	QpTMjrsi9TrnB248TNlBg8xPBURHauWNnMGnvQdxDXzYZ5jwHiX1zHUe
+X-Gm-Gg: ASbGncumLR4m2dMGU+EqOLhBWiFBsr9aSDmWYWe0/klSZKd9Dp/XyAiDbPf/uU6el7q
+	j8Ooqi4HVk8oYFF/i/lVrgsRJ7542ayOSsn40juM0E1+xA6JCamz+Uhn0uW/n0q/xNRED/C4H9O
+	V07YF/nl3GVV0BAQKZw7LTfQVClV2cEIB4L3asKMHyaGhsXMzc2QISfsDsivgt+kRyx1MvXDoUq
+	HzMrqOuZBaj/gfx6JeKltudNmor1TNTVwanGqV+ZALZsC/TO2DQZoNC5XHtEy9wN60lCD+F2Ffn
+	UD57ITUlPZ+HjIQr8wpBFrZCR0BRtf/7Fwnbj4vw6s5SF03avOQFKQib0ZHYwtHLpOq1CMhc+LJ
+	3tm7nF2uBxheWyEOYktoNKNHVEJukU4fh3JEI4XuoaII+Bubz6+38WRN7cIsqduFi9EAAAKJgfS
+	9aRC7+DLJy0+SclFCUO/SU7SSnEIfKk0SozQcaU9R3KJuhvftvuy4Sv76fmOXOcd2up7Shob9FV
+	g==
+X-Google-Smtp-Source: AGHT+IG+qzsrR+dRWKF4NmoVX7b6CUaR8vMmbs3TLbWswTg9TED3bCbWhUIV58kjiV3MwgK5w6g1yA==
+X-Received: by 2002:a05:622a:1107:b0:4ec:f7de:f5eb with SMTP id d75a77b69052e-4edf20a2ebbmr113268941cf.33.1763275250934;
+        Sat, 15 Nov 2025 22:40:50 -0800 (PST)
+Received: from [192.168.2.45] (bras-base-mtrlpq3141w-grc-10-65-95-13-196.dsl.bell.ca. [65.95.13.196])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ede87e6fecsm61188021cf.18.2025.11.15.22.40.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Nov 2025 22:40:50 -0800 (PST)
+From: Dave Vasilevsky <dave@vasilevsky.ca>
+Date: Sun, 16 Nov 2025 01:40:46 -0500
+Subject: [PATCH v3] powerpc, mm: Fix mprotect on book3s 32-bit
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,177 +71,120 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2025111555-spoon-backslid-8d1f@gregkh>
-Sender: Al Viro <viro@ftp.linux.org.uk>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251116-vasi-mprotect-g3-v3-1-59a9bd33ba00@vasilevsky.ca>
+X-B4-Tracking: v=1; b=H4sIAO1xGWkC/33NwQ6CMAwG4FchPTuzli0MT76H8TDHBosKZCOLh
+ PDuDi4mxtjb3/z9ukC0wdsIp2KBYJOPfuhzKA8FmE73rWW+yRmIk0ROFUs6evYcwzBZM7G2ZE4
+ 5SZVqBAoO+WwM1vnXTl6uOXc+TkOY9w8Jt+0fLCFDVhqJquJKulqft8rDpnifj0bDBib6IHl+I
+ JQRpdDUQrubEfSNrOv6BpGaqhz5AAAA
+X-Change-ID: 20251027-vasi-mprotect-g3-f8f5278d4140
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Nadav Amit <nadav.amit@gmail.com>, 
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Ritesh Harjani <ritesh.list@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, linux-mm@kvack.org, 
+ Dave Vasilevsky <dave@vasilevsky.ca>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1763275249; l=3309;
+ i=dave@vasilevsky.ca; s=20251027; h=from:subject:message-id;
+ bh=muIWQccO36YRMVeS5U/f/4/TLToyy8blzhH60i2svbE=;
+ b=BqibHhRBraGtc5DC4MXisv7cfh+xdLpFWAQQaxC9fzFoJvdvVanpK8QruKXcOddOsTtRvfNgH
+ YlQotamK+KoD0aCejzMYbW1umsa7tkoXkMduqh2O3DDT0rZZS39zLZd
+X-Developer-Key: i=dave@vasilevsky.ca; a=ed25519;
+ pk=Jsd1btZeqqg6x6y73Dx0YrleQb3A3pCBnUeE0qmoKq4=
+X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat, Nov 15, 2025 at 08:21:34AM -0500, Greg Kroah-Hartman wrote:
+On 32-bit book3s with hash-MMUs, tlb_flush() was a no-op. This was
+unnoticed because all uses until recently were for unmaps, and thus
+handled by __tlb_remove_tlb_entry().
 
-> Ugh, messy.  But yes, this does look better, thanks for that.  Want me
-> to take it through the USB tree, or will you take it through one of
-> yours? (I don't remember what started this thread...)
+After commit 4a18419f71cd ("mm/mprotect: use mmu_gather") in kernel 5.19,
+tlb_gather_mmu() started being used for mprotect as well. This caused
+mprotect to simply not work on these machines:
 
-I'll carve it up in several chunks and push to #work.functionfs; will post
-tomorrow morning.  Minimal fix for ffs_epfiles_destroy() bug folded into #36
-in #work.persistency - replacement for that commit below; are you OK with
-that one?  It's orthogonal to the rest of the mess in there.
+  int *ptr = mmap(NULL, 4096, PROT_READ|PROT_WRITE,
+                  MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+  *ptr = 1; // force HPTE to be created
+  mprotect(ptr, 4096, PROT_READ);
+  *ptr = 2; // should segfault, but succeeds
 
-commit b9c24b7499916a1dbee50a4429fc04ebf7e21f03
-Author: Al Viro <viro@zeniv.linux.org.uk>
-Date:   Wed Sep 17 22:55:33 2025 -0400
+Fixed by making tlb_flush() actually flush TLB pages. This finally
+agrees with the behaviour of boot3s64's tlb_flush().
 
-    functionfs: switch to simple_remove_by_name()
-    
-    No need to return dentry from ffs_sb_create_file() or keep it around
-    afterwards.
-    
-    To avoid subtle issues with getting to ffs from epfiles in
-    ffs_epfiles_destroy(), pass the superblock as explicit argument.
-    Callers have it anyway.
-    
-    Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Fixes: 4a18419f71cd ("mm/mprotect: use mmu_gather")
+Cc: stable@vger.kernel.org
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
+---
+Changes in v3:
+- Fix formatting
+- Link to v2: https://lore.kernel.org/r/20251111-vasi-mprotect-g3-v2-1-881c94afbc42@vasilevsky.ca
 
-diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index 47cfbe41fdff..6e6933a9fe45 100644
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -160,8 +160,6 @@ struct ffs_epfile {
- 	struct ffs_data			*ffs;
- 	struct ffs_ep			*ep;	/* P: ffs->eps_lock */
+Changes in v2:
+- Flush entire TLB if full mm is requested.
+- Link to v1: https://lore.kernel.org/r/20251027-vasi-mprotect-g3-v1-1-3c5187085f9a@vasilevsky.ca
+---
+ arch/powerpc/include/asm/book3s/32/tlbflush.h | 5 ++++-
+ arch/powerpc/mm/book3s32/tlb.c                | 9 +++++++++
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+index e43534da5207aa3b0cb3c07b78e29b833c141f3f..4be2200a3c7e1e8307f5ce1f1d5d28047429c106 100644
+--- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
++++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+@@ -11,6 +11,7 @@
+ void hash__flush_tlb_mm(struct mm_struct *mm);
+ void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
+ void hash__flush_range(struct mm_struct *mm, unsigned long start, unsigned long end);
++void hash__flush_gather(struct mmu_gather *tlb);
  
--	struct dentry			*dentry;
--
- 	/*
- 	 * Buffer for holding data from partial reads which may happen since
- 	 * we’re rounding user read requests to a multiple of a max packet size.
-@@ -271,11 +269,11 @@ struct ffs_desc_helper {
- };
- 
- static int  __must_check ffs_epfiles_create(struct ffs_data *ffs);
--static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count);
-+static void ffs_epfiles_destroy(struct super_block *sb,
-+				struct ffs_epfile *epfiles, unsigned count);
- 
--static struct dentry *
--ffs_sb_create_file(struct super_block *sb, const char *name, void *data,
--		   const struct file_operations *fops);
-+static int ffs_sb_create_file(struct super_block *sb, const char *name,
-+			      void *data, const struct file_operations *fops);
- 
- /* Devices management *******************************************************/
- 
-@@ -1866,9 +1864,8 @@ ffs_sb_make_inode(struct super_block *sb, void *data,
- }
- 
- /* Create "regular" file */
--static struct dentry *ffs_sb_create_file(struct super_block *sb,
--					const char *name, void *data,
--					const struct file_operations *fops)
-+static int ffs_sb_create_file(struct super_block *sb, const char *name,
-+			      void *data, const struct file_operations *fops)
+ #ifdef CONFIG_SMP
+ void _tlbie(unsigned long address);
+@@ -29,7 +30,9 @@ void _tlbia(void);
+ static inline void tlb_flush(struct mmu_gather *tlb)
  {
- 	struct ffs_data	*ffs = sb->s_fs_info;
- 	struct dentry	*dentry;
-@@ -1876,16 +1873,16 @@ static struct dentry *ffs_sb_create_file(struct super_block *sb,
- 
- 	dentry = d_alloc_name(sb->s_root, name);
- 	if (!dentry)
--		return NULL;
-+		return -ENOMEM;
- 
- 	inode = ffs_sb_make_inode(sb, data, fops, NULL, &ffs->file_perms);
- 	if (!inode) {
- 		dput(dentry);
--		return NULL;
-+		return -ENOMEM;
- 	}
- 
- 	d_add(dentry, inode);
--	return dentry;
-+	return 0;
+ 	/* 603 needs to flush the whole TLB here since it doesn't use a hash table. */
+-	if (!mmu_has_feature(MMU_FTR_HPTE_TABLE))
++	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
++		hash__flush_gather(tlb);
++	else
+ 		_tlbia();
  }
  
- /* Super block */
-@@ -1928,10 +1925,7 @@ static int ffs_sb_fill(struct super_block *sb, struct fs_context *fc)
- 		return -ENOMEM;
- 
- 	/* EP0 file */
--	if (!ffs_sb_create_file(sb, "ep0", ffs, &ffs_ep0_operations))
--		return -ENOMEM;
--
--	return 0;
-+	return ffs_sb_create_file(sb, "ep0", ffs, &ffs_ep0_operations);
+diff --git a/arch/powerpc/mm/book3s32/tlb.c b/arch/powerpc/mm/book3s32/tlb.c
+index 9ad6b56bfec96e989b96f027d075ad5812500854..e54a7b0112322e5818d80facd2e3c7722e6dd520 100644
+--- a/arch/powerpc/mm/book3s32/tlb.c
++++ b/arch/powerpc/mm/book3s32/tlb.c
+@@ -105,3 +105,12 @@ void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
+ 		flush_hash_pages(mm->context.id, vmaddr, pmd_val(*pmd), 1);
  }
- 
- enum {
-@@ -2161,7 +2155,7 @@ static void ffs_data_closed(struct ffs_data *ffs)
- 							flags);
- 
- 			if (epfiles)
--				ffs_epfiles_destroy(epfiles,
-+				ffs_epfiles_destroy(ffs->sb, epfiles,
- 						 ffs->eps_count);
- 
- 			if (ffs->setup_state == FFS_SETUP_PENDING)
-@@ -2226,7 +2220,7 @@ static void ffs_data_clear(struct ffs_data *ffs)
- 	 * copy of epfile will save us from use-after-free.
- 	 */
- 	if (epfiles) {
--		ffs_epfiles_destroy(epfiles, ffs->eps_count);
-+		ffs_epfiles_destroy(ffs->sb, epfiles, ffs->eps_count);
- 		ffs->epfiles = NULL;
- 	}
- 
-@@ -2323,6 +2317,7 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
- {
- 	struct ffs_epfile *epfile, *epfiles;
- 	unsigned i, count;
-+	int err;
- 
- 	count = ffs->eps_count;
- 	epfiles = kcalloc(count, sizeof(*epfiles), GFP_KERNEL);
-@@ -2339,12 +2334,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
- 			sprintf(epfile->name, "ep%02x", ffs->eps_addrmap[i]);
- 		else
- 			sprintf(epfile->name, "ep%u", i);
--		epfile->dentry = ffs_sb_create_file(ffs->sb, epfile->name,
--						 epfile,
--						 &ffs_epfile_operations);
--		if (!epfile->dentry) {
--			ffs_epfiles_destroy(epfiles, i - 1);
--			return -ENOMEM;
-+		err = ffs_sb_create_file(ffs->sb, epfile->name,
-+					 epfile, &ffs_epfile_operations);
-+		if (err) {
-+			ffs_epfiles_destroy(ffs->sb, epfiles, i - 1);
-+			return err;
- 		}
- 	}
- 
-@@ -2352,16 +2346,15 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
- 	return 0;
- }
- 
--static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
-+static void ffs_epfiles_destroy(struct super_block *sb,
-+				struct ffs_epfile *epfiles, unsigned count)
- {
- 	struct ffs_epfile *epfile = epfiles;
-+	struct dentry *root = sb->s_root;
- 
- 	for (; count; --count, ++epfile) {
- 		BUG_ON(mutex_is_locked(&epfile->mutex));
--		if (epfile->dentry) {
--			simple_recursive_removal(epfile->dentry, NULL);
--			epfile->dentry = NULL;
--		}
-+		simple_remove_by_name(root, epfile->name, NULL);
- 	}
- 
- 	kfree(epfiles);
+ EXPORT_SYMBOL(hash__flush_tlb_page);
++
++void hash__flush_gather(struct mmu_gather *tlb)
++{
++	if (tlb->fullmm || tlb->need_flush_all)
++		hash__flush_tlb_mm(tlb->mm);
++	else
++		hash__flush_range(tlb->mm, tlb->start, tlb->end);
++}
++EXPORT_SYMBOL(hash__flush_gather);
+
+---
+base-commit: 24172e0d79900908cf5ebf366600616d29c9b417
+change-id: 20251027-vasi-mprotect-g3-f8f5278d4140
+
+Best regards,
+-- 
+Dave Vasilevsky <dave@vasilevsky.ca>
+
 
