@@ -1,72 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-14198-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14199-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0F7C60F48
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Nov 2025 03:52:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB241C610BC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Nov 2025 07:31:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d8FmD5PZrz2yvN;
-	Sun, 16 Nov 2025 13:52:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d8LcN2bkWz2xnx;
+	Sun, 16 Nov 2025 17:31:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.81
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763261564;
-	cv=none; b=nsP3R/YdfKC+tfDeqaHqRicyZ8+63htskNKlvueoXlQEE8DLsItgnumA81Vj3Ssmux0OdIotjX5MyMry5a9ZYp0PkHkC7c17bsIvSYZxI6rE4ByR5Wua3YHgQVgGHhVuixGatMvfsKPcNvHpbYEbhztdXpr5NLUamYdJviFPxd2dz/mO7pc7Hs3WUuilMX5cthTVVghEKIy0h7EnpmXiB7S3f8WWgeKmkT5INyk4IhsFQhlT1U2Z9FWDetbvqQiqLjDVc6HWCih6puWhUGIqpaRgBwUoDoYQ3asWiTyVMIdvmF/HEU89MVgLrsEfXIsNAuekG9E7+hf0rqX/p9OPOg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763274676;
+	cv=none; b=O22ud6CsCbiNkPe764m7krrtG4yORPSuEMC/QSkXZX7P3/3cIi1oIDC2YQgGif9CFP4JGjoCfeGNHSuzVQpP/VhbV790PcYRzxuAsM1akA1eIyHMPypbva7cNrG1wc78xVBAVoucKgMlq89HlgTwkxJ0YjkwFhb0OoZ1j5apTMW15R0IEbHBmpDtnw7J0WYOxtnaGwxyTblGBQ84Sbr54aR1I7vb8ioPKNQbHnzhMpW1f75gWsF1O+aDHGqe4hYfRBaO0Jjx85y/AnCr7Ux/a9P8weTMuG8nYm2/gR4uXV7IOQoGfuY1e0bJElpRn0wwJ17t0fcF6Wig4zabx9bQhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763261564; c=relaxed/relaxed;
-	bh=yGDEHh5NtNCjAMZMrYp2fiuiXGVY0OeXsIHtFaxaiGE=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=GplVMRz2gwqTSdDFrujmbiEzCeBSdebohuSXRdHLKsll1pJDf9Nl+bPrucwAmrb6WjzKNg6Sv4FrKbVf95/O5Xii9tSj5/PPjpqI+gJ4pWEat4MNOxD8zDWpGUusCLfahug9QJj7oKLmYdyXZJWnnopHjrynG2DczZehPtpWEy6KlIAC+eSqlIwr490FCNFdpXb532rvIjJdeSicrH2pKG0EuuLARVdlkWzC+3YTYdUYXuzX49gEPJzL/X1sZfsihtSUcw+XmayrF5X314unAHpo4FdKt3N5A6G4bsNC9kGt6J2jCAX6jrDuYDXlAjm2gNvPk6DpWMudC526EGWg8w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass (client-ip=159.226.251.81; helo=cstnet.cn; envelope-from=make24@iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=iscas.ac.cn
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.81; helo=cstnet.cn; envelope-from=make24@iscas.ac.cn; receiver=lists.ozlabs.org)
-X-Greylist: delayed 479 seconds by postgrey-1.37 at boromir; Sun, 16 Nov 2025 13:52:43 AEDT
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	t=1763274676; c=relaxed/relaxed;
+	bh=CSaTv+g6iTeyfNwAPb2UZSBv3rc0hQYoL1YvQs/TGcA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YIQT1WN3bDA0hBPAUw9kwac6ahsuHtz76h8B3rfFQIZCuTWMo7PeZEHOuHhUmOQZSksR6iCvjwI0V8Qc7LkvrlK60R62t2SBSflQN+5MNMir8c8erM/0oIhx6VeOnYgNER2nNfa0zIJO3SUXEn+klECz5YnqJwhyRbEtzgsDFOkbyFaCOn2FpDrm1TSNijsrkJa0aO63aEo2xkM8DN3rQaVBQ1+kEn8u1y513F14cdjEJpp+w4/QUXm0BqTeO4/4KsxHyP2ZIvkwAUtOR4EgtpS1uIW0+otm8R/7RRq97uYHOn7fMXaTvnIwHXUHBmQ/i3uUAxg2lLJAqRgIunJSAg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=v87ep+8s; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=v87ep+8s;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d8FmC2x5Kz2xqM
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Nov 2025 13:52:42 +1100 (AEDT)
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-03 (Coremail) with SMTP id rQCowACnONt9OhlphMrrAA--.5337S2;
-	Sun, 16 Nov 2025 10:44:20 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	make24@iscas.ac.cn,
-	benh@kernel.crashing.org,
-	smaclennan@pikatech.com
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	stable@vger.kernel.org
-Subject: [PATCH] powerpc/warp: Fix error handling in pika_dtm_thread
-Date: Sun, 16 Nov 2025 10:44:11 +0800
-Message-Id: <20251116024411.21968-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:rQCowACnONt9OhlphMrrAA--.5337S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrtrW7tryDtFy8Xr17Cw17KFg_yoWftwb_Ka
-	109a97urW8Wr4qk3Wqyr1fGrZxJ39rJ34UKw1qg3W2ya45Xa95Xw4FyrZ5uw17ursFkr43
-	Jan5WrsrC3WS9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbDAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwV
-	AFwVW8JwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
-	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIx
-	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
-	wI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
-	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUmLvtU
-	UUUU=
-X-Originating-IP: [202.112.113.212]
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d8LcJ5753z2xS2
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Nov 2025 17:31:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
+	bh=CSaTv+g6iTeyfNwAPb2UZSBv3rc0hQYoL1YvQs/TGcA=; b=v87ep+8sGAj47MEf8Vt4uadQZk
+	43mSG/U79MDARH/6bYNHWYEijJCkGJlTApHxDreiHLLZkq2qjparHOIa8lh4alzW34fB6LARDpvoq
+	a0tzMldguNQi01Y3KE+ZamiC2CGY+r1XBlYwAhZvQT42pRdi83POrqpQ/KgmCrP2H9U6V/h9J+URe
+	7TZKT/6AEJtzbW1csZg/Nf9SbWs9D/NPnstDd2Jkzk2xyIjQO+HzNXWvKJIhrZhTAqyNMImpj9WXS
+	2UDAdfdak31c1xzZAJF2F3bpuo5eTczIsPAO7ceypi0uEUZb4ZieasuxVGFqwzwJDx4l0egDgHhP7
+	bvKKdfyQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vKWHj-0000000Ccfr-1WoW;
+	Sun, 16 Nov 2025 06:30:51 +0000
+Date: Sun, 16 Nov 2025 06:30:51 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+	a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
+	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
+	yonghong.song@linux.dev, ihor.solodrai@linux.dev,
+	Chris Mason <clm@meta.com>
+Subject: Re: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
+ switch to simple_remove_by_name())
+Message-ID: <20251116063051.GA2441659@ZenIV>
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+ <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+ <20251111092244.GS2441659@ZenIV>
+ <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
+ <20251113092636.GX2441659@ZenIV>
+ <2025111316-cornfield-sphinx-ba89@gregkh>
+ <20251114074614.GY2441659@ZenIV>
+ <2025111555-spoon-backslid-8d1f@gregkh>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,36 +80,178 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025111555-spoon-backslid-8d1f@gregkh>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-pika_dtm_thread() acquires client through of_find_i2c_device_by_node()
-but fails to release it in error handling path. This could result in a
-reference count leak, preventing proper cleanup and potentially
-leading to resource exhaustion. Add put_device() to release the
-reference in the error handling path.
+On Sat, Nov 15, 2025 at 08:21:34AM -0500, Greg Kroah-Hartman wrote:
 
-Found by code review.
+> Ugh, messy.  But yes, this does look better, thanks for that.  Want me
+> to take it through the USB tree, or will you take it through one of
+> yours? (I don't remember what started this thread...)
 
-Cc: stable@vger.kernel.org
-Fixes: 3984114f0562 ("powerpc/warp: Platform fix for i2c change")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- arch/powerpc/platforms/44x/warp.c | 2 ++
- 1 file changed, 2 insertions(+)
+I'll carve it up in several chunks and push to #work.functionfs; will post
+tomorrow morning.  Minimal fix for ffs_epfiles_destroy() bug folded into #36
+in #work.persistency - replacement for that commit below; are you OK with
+that one?  It's orthogonal to the rest of the mess in there.
 
-diff --git a/arch/powerpc/platforms/44x/warp.c b/arch/powerpc/platforms/44x/warp.c
-index a5001d32f978..6f674f86dc85 100644
---- a/arch/powerpc/platforms/44x/warp.c
-+++ b/arch/powerpc/platforms/44x/warp.c
-@@ -293,6 +293,8 @@ static int pika_dtm_thread(void __iomem *fpga)
- 		schedule_timeout(HZ);
+commit b9c24b7499916a1dbee50a4429fc04ebf7e21f03
+Author: Al Viro <viro@zeniv.linux.org.uk>
+Date:   Wed Sep 17 22:55:33 2025 -0400
+
+    functionfs: switch to simple_remove_by_name()
+    
+    No need to return dentry from ffs_sb_create_file() or keep it around
+    afterwards.
+    
+    To avoid subtle issues with getting to ffs from epfiles in
+    ffs_epfiles_destroy(), pass the superblock as explicit argument.
+    Callers have it anyway.
+    
+    Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index 47cfbe41fdff..6e6933a9fe45 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -160,8 +160,6 @@ struct ffs_epfile {
+ 	struct ffs_data			*ffs;
+ 	struct ffs_ep			*ep;	/* P: ffs->eps_lock */
+ 
+-	struct dentry			*dentry;
+-
+ 	/*
+ 	 * Buffer for holding data from partial reads which may happen since
+ 	 * we’re rounding user read requests to a multiple of a max packet size.
+@@ -271,11 +269,11 @@ struct ffs_desc_helper {
+ };
+ 
+ static int  __must_check ffs_epfiles_create(struct ffs_data *ffs);
+-static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count);
++static void ffs_epfiles_destroy(struct super_block *sb,
++				struct ffs_epfile *epfiles, unsigned count);
+ 
+-static struct dentry *
+-ffs_sb_create_file(struct super_block *sb, const char *name, void *data,
+-		   const struct file_operations *fops);
++static int ffs_sb_create_file(struct super_block *sb, const char *name,
++			      void *data, const struct file_operations *fops);
+ 
+ /* Devices management *******************************************************/
+ 
+@@ -1866,9 +1864,8 @@ ffs_sb_make_inode(struct super_block *sb, void *data,
+ }
+ 
+ /* Create "regular" file */
+-static struct dentry *ffs_sb_create_file(struct super_block *sb,
+-					const char *name, void *data,
+-					const struct file_operations *fops)
++static int ffs_sb_create_file(struct super_block *sb, const char *name,
++			      void *data, const struct file_operations *fops)
+ {
+ 	struct ffs_data	*ffs = sb->s_fs_info;
+ 	struct dentry	*dentry;
+@@ -1876,16 +1873,16 @@ static struct dentry *ffs_sb_create_file(struct super_block *sb,
+ 
+ 	dentry = d_alloc_name(sb->s_root, name);
+ 	if (!dentry)
+-		return NULL;
++		return -ENOMEM;
+ 
+ 	inode = ffs_sb_make_inode(sb, data, fops, NULL, &ffs->file_perms);
+ 	if (!inode) {
+ 		dput(dentry);
+-		return NULL;
++		return -ENOMEM;
  	}
  
-+	put_device(&client->dev);
-+
+ 	d_add(dentry, inode);
+-	return dentry;
++	return 0;
+ }
+ 
+ /* Super block */
+@@ -1928,10 +1925,7 @@ static int ffs_sb_fill(struct super_block *sb, struct fs_context *fc)
+ 		return -ENOMEM;
+ 
+ 	/* EP0 file */
+-	if (!ffs_sb_create_file(sb, "ep0", ffs, &ffs_ep0_operations))
+-		return -ENOMEM;
+-
+-	return 0;
++	return ffs_sb_create_file(sb, "ep0", ffs, &ffs_ep0_operations);
+ }
+ 
+ enum {
+@@ -2161,7 +2155,7 @@ static void ffs_data_closed(struct ffs_data *ffs)
+ 							flags);
+ 
+ 			if (epfiles)
+-				ffs_epfiles_destroy(epfiles,
++				ffs_epfiles_destroy(ffs->sb, epfiles,
+ 						 ffs->eps_count);
+ 
+ 			if (ffs->setup_state == FFS_SETUP_PENDING)
+@@ -2226,7 +2220,7 @@ static void ffs_data_clear(struct ffs_data *ffs)
+ 	 * copy of epfile will save us from use-after-free.
+ 	 */
+ 	if (epfiles) {
+-		ffs_epfiles_destroy(epfiles, ffs->eps_count);
++		ffs_epfiles_destroy(ffs->sb, epfiles, ffs->eps_count);
+ 		ffs->epfiles = NULL;
+ 	}
+ 
+@@ -2323,6 +2317,7 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+ {
+ 	struct ffs_epfile *epfile, *epfiles;
+ 	unsigned i, count;
++	int err;
+ 
+ 	count = ffs->eps_count;
+ 	epfiles = kcalloc(count, sizeof(*epfiles), GFP_KERNEL);
+@@ -2339,12 +2334,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+ 			sprintf(epfile->name, "ep%02x", ffs->eps_addrmap[i]);
+ 		else
+ 			sprintf(epfile->name, "ep%u", i);
+-		epfile->dentry = ffs_sb_create_file(ffs->sb, epfile->name,
+-						 epfile,
+-						 &ffs_epfile_operations);
+-		if (!epfile->dentry) {
+-			ffs_epfiles_destroy(epfiles, i - 1);
+-			return -ENOMEM;
++		err = ffs_sb_create_file(ffs->sb, epfile->name,
++					 epfile, &ffs_epfile_operations);
++		if (err) {
++			ffs_epfiles_destroy(ffs->sb, epfiles, i - 1);
++			return err;
+ 		}
+ 	}
+ 
+@@ -2352,16 +2346,15 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
  	return 0;
  }
  
--- 
-2.17.1
-
+-static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
++static void ffs_epfiles_destroy(struct super_block *sb,
++				struct ffs_epfile *epfiles, unsigned count)
+ {
+ 	struct ffs_epfile *epfile = epfiles;
++	struct dentry *root = sb->s_root;
+ 
+ 	for (; count; --count, ++epfile) {
+ 		BUG_ON(mutex_is_locked(&epfile->mutex));
+-		if (epfile->dentry) {
+-			simple_recursive_removal(epfile->dentry, NULL);
+-			epfile->dentry = NULL;
+-		}
++		simple_remove_by_name(root, epfile->name, NULL);
+ 	}
+ 
+ 	kfree(epfiles);
 
