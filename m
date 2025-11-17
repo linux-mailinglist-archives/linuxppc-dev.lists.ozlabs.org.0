@@ -1,47 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-14228-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14229-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CFFBC6665D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Nov 2025 23:06:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF86C66670
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Nov 2025 23:06:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d9MJp0xCLz3bb2;
-	Tue, 18 Nov 2025 09:06:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d9MKH5dP9z3bh6;
+	Tue, 18 Nov 2025 09:06:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763417178;
-	cv=none; b=AVKXwudqaTAk8y+70wJpLa2Q9h/dH1pdW/kxOJWPeh8a4RyFtjX26Yxr8ag1DHkphHFHkHjVCVqh6zNKqahOEX1ZlIU1OcFJTjkjPXp+QXtYNLLK+PK+wzKz64clwEeX6k41RxfpWMqOajz540dRFoUwO7tC8iqZf5mA2ueHUr1fOAjIHVBI6kBKhHrocY+/B3Vkc13C/BugCQvqDXYOcsBa8PeZzGkr27xSpagH84laQDgVTGSCzSOlPeha8yNX7n402G+t3VJY6gdo7BQnjQNLngyVlgOGmHDn02PKXHBSUG872IhBC8Hhhqi15wlhj3aouHuNUyyd6W0gFQ+wng==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763417203;
+	cv=none; b=RbGrp8Wa+c9dwHKFxf9N2g1UU7G2L08JmoGK6STP0j8Y8/BgufJ12hQw1ViEL4mJL7bnTTW5B220f8KY7WckZLbkfWJot0jK0hF4A8TU9uzZptiFFv5T5STCwHxWQA5HsO8TTy7CD2FQqajmuH3gOM+cjch6FibFUAszxJyIQB/U7JlqEU2pDYSIKgS4OJBiGY4Vig+mCha0jMfitjmThvKHy51VHE7lu4ixa5zwaFXUOYF6uB9VzZYiOWAWuwk9gWnSsc1FFFwYMZu2ex8imrVto4kD0DDXcuCDihyXgIj8DWriYCWbjc9lPPafTgTwFrpp+T/HwCUwIw9JJM1ejQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763417178; c=relaxed/relaxed;
-	bh=cWu60E9A6eXyK8hzFZrjRSDEhFiIM1wWoXt1TAJWCcw=;
+	t=1763417203; c=relaxed/relaxed;
+	bh=Pa8Bj6Fizee8bOJm05tNzfmFor9U/R6BxTW6KbLJQb8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LWf+LyBQc0LCTLOPw4dO5dEKLws5vtD1SwSBwJfD7CSBGNfAjfSVLB+JSo4FigCWz1u9kVkUzuDyMq9WDk3G9++jGCpugHbq5o4KtTFyJZfuVF2KJvHrNRpqlrYncLwUC8J4A9dS7HlEcchdyEuUnua96xP2HfDjSZaPi4m+MfIRN/yWSt/3BltI06fk9Ywk5ai8uCfrrezwBqHFkXhSgJxwq19lv+dbp1+614LjXIkZhgYTXz50JdF+sK1gDWsvrdKlNXmUmraesQzKoFKBU324ZO9h520yvnglFhOKuvxGhwfxsaBOQxMF10HTdi3qZV0+hXXfTTRK0ndwsGRWHQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=pqNWxOKL; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=m9YZ730eSj8ap2NDqa/CKu1uFvcLDLKfD/o3SLztpDrKPHA/hUbD0nm7TQLsUL1IJ8Xkty6PNvS0IhxrorLC6xhKvrHHlDq9aUGtBKwL7DOo+FewiIMa59XLjqY1to5EFBKcz4sNbNop7xzHZrWFI5XciB0636lj1vx8Fo0mjCwMmJQ30HLOwXE8KUuJsgmKbqrCsj6K4Di2X4chCPihRjPAthjofJkVJFbUk4SVyqDNrFUh+zstXh4aKooKFuZPTx1bjPYaYH0IAXSOFPWA3xQAwaw3WtLWGYqcHXd2dXiV+HbQN9/+RF1s8pJp+ZQhI0TXMfaS0ANFosd4v1VZUA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=LGGTxIiN; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=pqNWxOKL;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=LGGTxIiN;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d9MJn2Jykz2xqr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Nov 2025 09:06:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d9MKH0xP4z2xqr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Nov 2025 09:06:43 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cWu60E9A6eXyK8hzFZrjRSDEhFiIM1wWoXt1TAJWCcw=; b=pqNWxOKL+lbKRWfwobdUpl+/CV
-	FcB+NN4AnY+inY4vDZGGcMrdUGyeqhRm7MfkvQuub3rnJfDwBilzKnvLWSwotdOFmy7j9ZACrxOah
-	bI+DiB2vEhxdAsNCrUqPAcG+4DnBsP4tTJsXlbNqbm4xhcmuZDcb4Xv2P9y/KmD/wK1zeAYOZCAnc
-	M+7iRmhBwl+iF9VqgMjyYbEp48RREHAm09kCiAeBo5irXFHK83o47/cHAXqVvTI1NvdDqD4DdbzgO
-	Mme0uqmBRdU1Piy6uk54hLooqG0LNlg6hm0MiXcK+rUE3cQx0+SOKw0v2SRLNhld45JqeQ6WL3lJb
-	Sp9BIcFw==;
+	bh=Pa8Bj6Fizee8bOJm05tNzfmFor9U/R6BxTW6KbLJQb8=; b=LGGTxIiNBdrbm5G2I+cWguzNzA
+	zWVvjmo7bkADIlhFP685l1lN8nMOPePMcXYA8HPiQkfsCX2eaHsBhgEmqSlkey+XkLqDp4jvYvvYP
+	bjcDbMo44o50n24abxn38PZ0pyf+c868M7DhFitlxq19WV5vC1nlrn867TlFaLsqi96LU2NDUpWkc
+	phrUaYp+rXDBb16CZ1LpweTW6OlKcN47whnhIVrsAbduMu+37YeWV/ant1bEjxIR2f4ZgJYP/VAPL
+	XTMw5jekKcQsFuy69b1FFiXLw2cnuLnT1rHFocNvmgCtp4kCKDeEKPFGnl6w8KeV7mLyTvQTa8nKd
+	NA3ikdXQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vL7MP-00000007MQ0-1yLf;
-	Mon, 17 Nov 2025 22:06:09 +0000
-Date: Mon, 17 Nov 2025 22:06:09 +0000
+	id 1vL7Mp-00000007N36-2ZO2;
+	Mon, 17 Nov 2025 22:06:35 +0000
+Date: Mon, 17 Nov 2025 22:06:35 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
@@ -57,8 +57,8 @@ Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
 	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
 	yonghong.song@linux.dev, ihor.solodrai@linux.dev,
 	Chris Mason <clm@meta.com>
-Subject: [PATCH 3/4] functionfs: need to cancel ->reset_work in ->kill_sb()
-Message-ID: <20251117220609.GC1745314@ZenIV>
+Subject: [PATCH 4/4] functionfs: fix the open/removal races
+Message-ID: <20251117220635.GD1745314@ZenIV>
 References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
  <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
  <20251111092244.GS2441659@ZenIV>
@@ -89,31 +89,133 @@ X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-... otherwise we just might free ffs with ffs->reset_work
-still on queue.  That needs to be done after ffs_data_reset() -
-that's the cutoff point for configfs accesses (serialized
-on gadget_info->lock), which is where the schedule_work()
-would come from.
+ffs_epfile_open() can race with removal, ending up with file->private_data
+pointing to freed object.
+
+There is a total count of opened files on functionfs (both ep0 and
+dynamic ones) and when it hits zero, dynamic files get removed.
+Unfortunately, that removal can happen while another thread is
+in ffs_epfile_open(), but has not incremented the count yet.
+In that case open will succeed, leaving us with UAF on any subsequent
+read() or write().
+
+The root cause is that ffs->opened is misused; atomic_dec_and_test() vs.
+atomic_add_return() is not a good idea, when object remains visible all
+along.
+
+To untangle that
+	* serialize openers on ffs->mutex (both for ep0 and for dynamic files)
+	* have dynamic ones use atomic_inc_not_zero() and fail if we had
+zero ->opened; in that case the file we are opening is doomed.
+	* have the inodes of dynamic files marked on removal (from the
+callback of simple_recursive_removal()) - clear ->i_private there.
+	* have open of dynamic ones verify they hadn't been already removed,
+along with checking that state is FFS_ACTIVE.
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- drivers/usb/gadget/function/f_fs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/gadget/function/f_fs.c | 53 ++++++++++++++++++++++++------
+ 1 file changed, 43 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index 0bcff49e1f11..27860fc0fd7d 100644
+index 27860fc0fd7d..c7cb23a15fd0 100644
 --- a/drivers/usb/gadget/function/f_fs.c
 +++ b/drivers/usb/gadget/function/f_fs.c
-@@ -2081,6 +2081,9 @@ ffs_fs_kill_sb(struct super_block *sb)
- 		struct ffs_data *ffs = sb->s_fs_info;
- 		ffs->state = FFS_CLOSING;
- 		ffs_data_reset(ffs);
-+		// no configfs accesses from that point on,
-+		// so no further schedule_work() is possible
-+		cancel_work_sync(&ffs->reset_work);
- 		ffs_data_put(ffs);
- 	}
+@@ -640,13 +640,22 @@ static ssize_t ffs_ep0_read(struct file *file, char __user *buf,
+ 
+ static int ffs_ep0_open(struct inode *inode, struct file *file)
+ {
+-	struct ffs_data *ffs = inode->i_private;
++	struct ffs_data *ffs = inode->i_sb->s_fs_info;
++	int ret;
+ 
+-	if (ffs->state == FFS_CLOSING)
+-		return -EBUSY;
++	/* Acquire mutex */
++	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
++	if (ret < 0)
++		return ret;
+ 
+-	file->private_data = ffs;
+ 	ffs_data_opened(ffs);
++	if (ffs->state == FFS_CLOSING) {
++		ffs_data_closed(ffs);
++		mutex_unlock(&ffs->mutex);
++		return -EBUSY;
++	}
++	mutex_unlock(&ffs->mutex);
++	file->private_data = ffs;
+ 
+ 	return stream_open(inode, file);
  }
+@@ -1193,14 +1202,33 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
+ static int
+ ffs_epfile_open(struct inode *inode, struct file *file)
+ {
+-	struct ffs_epfile *epfile = inode->i_private;
++	struct ffs_data *ffs = inode->i_sb->s_fs_info;
++	struct ffs_epfile *epfile;
++	int ret;
+ 
+-	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
++	/* Acquire mutex */
++	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
++	if (ret < 0)
++		return ret;
++
++	if (!atomic_inc_not_zero(&ffs->opened)) {
++		mutex_unlock(&ffs->mutex);
++		return -ENODEV;
++	}
++	/*
++	 * we want the state to be FFS_ACTIVE; FFS_ACTIVE alone is
++	 * not enough, though - we might have been through FFS_CLOSING
++	 * and back to FFS_ACTIVE, with our file already removed.
++	 */
++	epfile = smp_load_acquire(&inode->i_private);
++	if (unlikely(ffs->state != FFS_ACTIVE || !epfile)) {
++		mutex_unlock(&ffs->mutex);
++		ffs_data_closed(ffs);
+ 		return -ENODEV;
++	}
++	mutex_unlock(&ffs->mutex);
+ 
+ 	file->private_data = epfile;
+-	ffs_data_opened(epfile->ffs);
+-
+ 	return stream_open(inode, file);
+ }
+ 
+@@ -1332,7 +1360,7 @@ static void ffs_dmabuf_put(struct dma_buf_attachment *attach)
+ static int
+ ffs_epfile_release(struct inode *inode, struct file *file)
+ {
+-	struct ffs_epfile *epfile = inode->i_private;
++	struct ffs_epfile *epfile = file->private_data;
+ 	struct ffs_dmabuf_priv *priv, *tmp;
+ 	struct ffs_data *ffs = epfile->ffs;
+ 
+@@ -2353,6 +2381,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+ 	return 0;
+ }
+ 
++static void clear_one(struct dentry *dentry)
++{
++	smp_store_release(&dentry->d_inode->i_private, NULL);
++}
++
+ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+ {
+ 	struct ffs_epfile *epfile = epfiles;
+@@ -2360,7 +2393,7 @@ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+ 	for (; count; --count, ++epfile) {
+ 		BUG_ON(mutex_is_locked(&epfile->mutex));
+ 		if (epfile->dentry) {
+-			simple_recursive_removal(epfile->dentry, NULL);
++			simple_recursive_removal(epfile->dentry, clear_one);
+ 			epfile->dentry = NULL;
+ 		}
+ 	}
 -- 
 2.47.3
 
