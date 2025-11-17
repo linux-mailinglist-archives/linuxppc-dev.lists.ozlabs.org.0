@@ -1,47 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-14219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14221-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B16C653E2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Nov 2025 17:50:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED64CC653F5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Nov 2025 17:51:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d9DJf6xKYz30VQ;
-	Tue, 18 Nov 2025 03:50:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d9DJr4J0gz3bWX;
+	Tue, 18 Nov 2025 03:50:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763398242;
-	cv=none; b=kiQvoCbHdI+PLw896Z3rCMjvnsQX7ZHzKyjMNW+c05JmhHF+4Gr0Wjq8TUKB6Gk7LpIfzqTPwxPgkUxCaAb0glI57/t9l796+/pgQFQe+rnLNRhkCJ+L0KWNK+LLA5Hj5+0bOD6s/gPf1D4zlUmjTe6xsFbYgh7F5botIwBJ3nG6k1A67hpSOpWJ4wO2x/7u573l86PAOgzNbd9l+qoq4istE7cgRo8vDmYSkv2SlHupf5t4QZxoamuDLrbMfCQM6SsVaYBqf2aHuXuV+PfF9k2VdeBeUMdw6SKLAqUFKLKnofeeGp0NupkWupyMIx9s9JwHGhqWcsjTIhRIZiJCIw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763398252;
+	cv=none; b=SH1WB9YAKEv7SfnHcAd2177+4HhOh5GC6IgRJUxHdiMFLqT7SWagUToN3kw6N82pWxoKqsWsLNi5Ytw00cSU45CK7TS/GxUe4LdCes/m0cxuOAoYk1054LwMjKaCgt/B6wyEVgIkws3rg6u1evDXeJ2kiBttoM2KIJUauq3SorusK29pa9W7tSnMF3GbG4A7W0Dj0aUUdRIrKx86uXyYDR8j0L9twCOlqHsaW/uUWBbGh4ea2wqfChlZRWPCflB+gvYGvKOd54sQmyWBYLxOuCCYXtap3JiftRv6xckxlhIybtawx8IRWhjnpqZnVJKxyepUXcuFiNADmBoBPDibhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763398242; c=relaxed/relaxed;
-	bh=YnfKQDV29XVif7N/irnwGJLyCtzkGfriZitKjIWTi4E=;
+	t=1763398252; c=relaxed/relaxed;
+	bh=pO6k7Jhg9TOBKGhsvcM39j4QsLYtMJCzoIcbeLFZMIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+0CMa9vhpmAIM+8VagMSQY+dYyZwGsAUhnVOyr0pUeHcJN0ZGreCUnnr1spsvr8tzTpVATyF77GTF4IeVULLBT5xxzMXb76/h/6lO9Y/1DCwNoFwNcxTTPMLw1wxrKSJY/irLMsbIh3p1tMTgyNaakadfcK4pI7wEqCvnqJqywiCEEXkF+o3l2aITVtiQoBxt/VBklwVttQsR1e1RwEBIQ18YU+tQTmy5PyZbjw3DyL72S46DrP3NltpvTG7q6d/OpNVfwSLKy2vQP4PLEnCHMePapYvGVT5SCatM3bJJrwzN4NCUW+vRVJiaUnr3+Lmaw+ULrnCIF6Yf1PTv3rkw==
+	 MIME-Version; b=VrPMlAismMURG8M4BYMPv3XpqTB9d5XNfz/3YK3x7XXI4m73IYwEKdNBg2iQGaBMIjNL0fPqqFKP25XPrOimun58BTgfkDu7K1gwDoJK9R8Xs0XjN1t41Cynae8hI3LXAm+yBRCKDg4c/5uZWNGo7UO7s/uRQEx57wqHx+LIl52pN6DgoSbkJCd7eAabGbn2SlbMAleyPXgEXKNJmhfRFqS2WSPK/BywSkBVENsLcfWeqzoGMAflVrbeutCiH/gfny8ZjN7b4AzG/lU4YvNaeBaDxjJpPWOTpD14iqgaEQntSeFedD4q+NM58mqOxz6hSw5LAqQ9EzXhkF6OOODOAw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d9DJf30SVz2ypw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Nov 2025 03:50:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d9DJq6jg3z3bV6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Nov 2025 03:50:51 +1100 (AEDT)
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4d9D974sv3z9sTX;
-	Mon, 17 Nov 2025 17:44:11 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4d9D986Dcjz9sTh;
+	Mon, 17 Nov 2025 17:44:12 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id B6EAP4w0AuZ2; Mon, 17 Nov 2025 17:44:11 +0100 (CET)
+	with ESMTP id ODDw4OUpL3tH; Mon, 17 Nov 2025 17:44:12 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4d9D9746V2z9sTW;
-	Mon, 17 Nov 2025 17:44:11 +0100 (CET)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d9D98579Gz9sTZ;
+	Mon, 17 Nov 2025 17:44:12 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A3DB8B763;
-	Mon, 17 Nov 2025 17:44:11 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D7F18B763;
+	Mon, 17 Nov 2025 17:44:12 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Zrq7Eiq6nOLm; Mon, 17 Nov 2025 17:44:11 +0100 (CET)
+	with ESMTP id hO1787tWgDqo; Mon, 17 Nov 2025 17:44:12 +0100 (CET)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5B6B38B769;
-	Mon, 17 Nov 2025 17:44:10 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7FB1E8B768;
+	Mon, 17 Nov 2025 17:44:11 +0100 (CET)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Peter Zijlstra <peterz@infradead.org>
@@ -71,9 +71,9 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 2/4] iov_iter: Add missing speculation barrier to copy_from_user_iter()
-Date: Mon, 17 Nov 2025 17:43:42 +0100
-Message-ID: <6b73e69cc7168c89df4eab0a216e3ed4cca36b0a.1763396724.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v5 3/4] scm: Convert put_cmsg() to scoped user access
+Date: Mon, 17 Nov 2025 17:43:43 +0100
+Message-ID: <793219313f641eda09a892d06768d2837246bf9f.1763396724.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1763396724.git.christophe.leroy@csgroup.eu>
 References: <cover.1763396724.git.christophe.leroy@csgroup.eu>
@@ -90,55 +90,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1316; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=MaSZLcG93ruseoCd/jNUTCbVIjzk2wIX1qL4RQMUeN0=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWRKBxxX3PAkbObONVNX3ny3/Sr7tYkJtiXP+/xeFZ6wT ci7otS9oKOUhUGMi0FWTJHl+H/uXTO6vqTmT92lDzOHlQlkCAMXpwBMZJIJI8OtiC+XXkppPlyz unjhqRuqTEJbclpcf0v4Mk9jVDn16CcPw39fsW351z703dcMY7zu8bBnxoQrN5ktpzYci38SzXv 9qTk/AA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1623; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=G9vSR7KnQqIxN+4o+okHL5tWkQyiUXlrPWVzKylp4RY=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWRKB5y4msa79uMdnvb97Ws8Dr5sdLO50Ghlq90Ym1rzX Ofc1FTWjlIWBjEuBlkxRZbj/7l3zej6kpo/dZc+zBxWJpAhDFycAjARSyVGhpazbZ9+HNTk3i7v amJmo3boZihrUcvNMkv+VxX/Nl/4F8vI8EOU7U+KU0bAKSa/9293WU7XvRW190pY0r+tVmXBk7d a8wMA
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The results of "access_ok()" can be mis-speculated.  The result is that
-you can end speculatively:
+Replace the open coded implementation with the scoped user access
+guards.
 
-	if (access_ok(from, size))
-		// Right here
-
-For the same reason as done in copy_from_user() by
-commit 74e19ef0ff80 ("uaccess: Add speculation barrier to
-copy_from_user()"), add a speculation barrier to copy_from_user_iter().
+No functional change intended.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- lib/iov_iter.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+v5: New
+---
+ net/core/scm.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-index a589935bf302..896760bad455 100644
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -49,11 +49,19 @@ size_t copy_from_user_iter(void __user *iter_from, size_t progress,
+diff --git a/net/core/scm.c b/net/core/scm.c
+index 66eaee783e8b..cd87f66671aa 100644
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -273,17 +273,13 @@ int put_cmsg(struct msghdr * msg, int level, int type, int len, void *data)
  
- 	if (should_fail_usercopy())
- 		return len;
--	if (can_do_masked_user_access())
-+	if (can_do_masked_user_access()) {
- 		iter_from = mask_user_address(iter_from);
--	else if (!access_ok(iter_from, len))
--		return res;
-+	} else {
-+		if (!access_ok(iter_from, len))
-+			return res;
+ 		check_object_size(data, cmlen - sizeof(*cm), true);
  
-+		/*
-+		 * Ensure that bad access_ok() speculation will not
-+		 * lead to nasty side effects *after* the copy is
-+		 * finished:
-+		 */
-+		barrier_nospec();
-+	}
- 	to += progress;
- 	instrument_copy_from_user_before(to, iter_from, len);
- 	res = raw_copy_from_user(to, iter_from, len);
+-		if (can_do_masked_user_access())
+-			cm = masked_user_access_begin(cm);
+-		else if (!user_write_access_begin(cm, cmlen))
+-			goto efault;
+-
+-		unsafe_put_user(cmlen, &cm->cmsg_len, efault_end);
+-		unsafe_put_user(level, &cm->cmsg_level, efault_end);
+-		unsafe_put_user(type, &cm->cmsg_type, efault_end);
+-		unsafe_copy_to_user(CMSG_USER_DATA(cm), data,
+-				    cmlen - sizeof(*cm), efault_end);
+-		user_write_access_end();
++		scoped_user_write_access_size(cm, cmlen, efault) {
++			unsafe_put_user(cmlen, &cm->cmsg_len, efault);
++			unsafe_put_user(level, &cm->cmsg_level, efault);
++			unsafe_put_user(type, &cm->cmsg_type, efault);
++			unsafe_copy_to_user(CMSG_USER_DATA(cm), data,
++					    cmlen - sizeof(*cm), efault);
++		}
+ 	} else {
+ 		struct cmsghdr *cm = msg->msg_control;
+ 
+@@ -301,8 +297,6 @@ int put_cmsg(struct msghdr * msg, int level, int type, int len, void *data)
+ 	msg->msg_controllen -= cmlen;
+ 	return 0;
+ 
+-efault_end:
+-	user_write_access_end();
+ efault:
+ 	return -EFAULT;
+ }
 -- 
 2.49.0
 
