@@ -1,78 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-14224-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14225-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA74C65BB3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Nov 2025 19:34:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 743F4C66625
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Nov 2025 23:04:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d9Gc63M4Bz2yw7;
-	Tue, 18 Nov 2025 05:34:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d9MGx1NkVz2yvM;
+	Tue, 18 Nov 2025 09:04:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763404454;
-	cv=none; b=W3P/0dFCOzD+O8E4a4MJAFyXiBAjdURRVlwZm1/pvenI5bt0k7UwspUV/PbasyR81Nynlb6JMHqrZlBVHH9gHmAm/aRc4/glLkmNEm2O4HseqWj7MP4rd+1VynweqhLR/Llpa4xqo7pbb/w4/9dVG/CVfaoYS3ehL7qVZJYAf75GPeMyu1n1E1pjiZh+hMlBAW4HKkA4RbNIjpVA0WDn6KhrUi30Ybk3UAYRQug5I+kIYbtY/HtsWvN4LR8e7YitxfIQBb4uFT1qbl7/mqlnlbxhB+MyRJgL2/1Gwa0fPOp57bZGTAFCK20KRtJDPOuDhBfAio8mIMZ2QoNY5as0OA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763417081;
+	cv=none; b=eyRH5eLGbMmzLAnQelTZbeXHtDGzvTBUQuazSsoUAeCzQmleCPiveHC93k5NEQ6fv4Tb+qPxtt8wqAU6BJNKYUtGaFE8X67vtrCuQ1kQEtkl2aGMie2O7pm8beTyRzQJPQgrVxLCq0ec6Kr3NW+VzER461irhOWP6Pfx5WkxodcnIyBVcp0s6QVoL1t+m5RWU+3pCvsFtmxKY/WQkpqD94M4sMGyPzsK3nQgEMV+QtMPFZcJghIXGirecS+ZKDxgu42syC+w8QJE5X3pjcc5c3TgSZkQ9y3aP/SsKXUtF8ARIDrb7saWI0jLuHFXmlxdYkK/bwAEqh2C2Z7sHR/nDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763404454; c=relaxed/relaxed;
-	bh=CB4azO07xyg1JfNcGlWqEWWzwLoXdVKZABwYq4c8BVY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FgKKZz6+0TL2vzD3XL4bV46l8j/afqGqUVbQfyOMqjJ/Lkhn2R50+oX0zdt23ummX6jdWthPndekt+f3FrcRjO3csC/rm7TjNwtgDu99xSFkyCCFnT0AqZhWuf5tDdTyNkgH0v9Xg4IK80awVz3bnOtT0TOEnIKO6jYxqFgBkHKGc2Rs7asPF8go/GieR4lFNNXotPBJXeRXKY67KGrP0cwfexCiEzDsxCvo356bC30ym7lVfH5IYHWR+zqYsRJb7HwJ7eZTX8mK/A76MTlXprINkjJ8mtT0SLHMBE00dTX30lZg4xZgT9/JPdDJyKkx1DxI1RiIqTYX4V76K2y4WQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ijgo3hGQ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1763417081; c=relaxed/relaxed;
+	bh=x4vYLxHITOk7FY5Vha316u1XPKmx4CmxosD+41s+PrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dsOCb8rGjkmWh4VJ+y3a1AWrxcCRMzBeRjUBzfroh5qUfmYOL/XlUqiR9pYmaIVcnVZHr4aLzZigLelNxFOgh/WzeQw3N/itfIcOlfl8GlBGeRoPFZlLYQHwj3xVZsjj/CWJXjv7vWvGi905/cS/VQfCAxSdTtt0mEH+uRUctdLsboRNyX0unYSWNcCqMiPwsPpJAfG3vj0b6pYn3YBTo9931nQNu9Fg8EJn9MfBZWZDC2RrukflouUecajoQR9x5m0sdS0xwDnS8HBB2z+9sqfnulM/F89PK6b+43hFIyG25KnnvV5BKkBweJUkc3O/fJFpWXn9KjigreEzspVixQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=bommFxq7; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ijgo3hGQ;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=bommFxq7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d9Gc46x8wz2ynC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Nov 2025 05:34:12 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AHBlNK5017282;
-	Mon, 17 Nov 2025 18:34:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=CB4azO
-	07xyg1JfNcGlWqEWWzwLoXdVKZABwYq4c8BVY=; b=Ijgo3hGQSin4zYV/JXPl2r
-	r9u2yN+I597/lVvzC+ylB3//8PWhCmpdUvnFXNwzQAWwW5xQ00DEx+ub/R9LDpkA
-	VXbjOnZFQl8Urin/PTSKUB69FUZsSwOm7Wgj/FP3kJ8x0oZevMivvERtkUdWOlvf
-	hBVNUodLNR+tn1VD/iuiSHl7ea3cQwE96MGVtWlnmBIZktOh4/riKUFCXXYtXyjF
-	uRHqi1bXRZyQbeVOWQWVZ7Rwu2xx89uU/diSynw3exHi+wfVvklTIpPkyyISeeMW
-	kNwWx0Xt7Vg5jIMVGM7y2X5SRqQdtfXO+HU5bkuvEbeMY/IQdJ9FV8TFKizXUlUw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejjtqd3b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Nov 2025 18:34:04 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AHISmE4016800;
-	Mon, 17 Nov 2025 18:34:03 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejjtqd39-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Nov 2025 18:34:03 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AHHrgtE010411;
-	Mon, 17 Nov 2025 18:34:02 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4af3urygt3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Nov 2025 18:34:02 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AHIXxmN8061184
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Nov 2025 18:33:59 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 177362004B;
-	Mon, 17 Nov 2025 18:33:59 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DEBB920040;
-	Mon, 17 Nov 2025 18:33:55 +0000 (GMT)
-Received: from [9.39.23.49] (unknown [9.39.23.49])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 17 Nov 2025 18:33:55 +0000 (GMT)
-Message-ID: <469c97cb-5ea1-4c2b-a70f-b1a6febf70df@linux.ibm.com>
-Date: Tue, 18 Nov 2025 00:03:54 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d9MGs3SYrz2ypY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Nov 2025 09:04:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=x4vYLxHITOk7FY5Vha316u1XPKmx4CmxosD+41s+PrI=; b=bommFxq7sliAeyjvLPQEoXoIVd
+	pKa5o1Yb4IZq/+Xwuf716utrTFwG+e1EsNxYWcpzPTbdpHRsyC+gnwvbW2CxCuCIULA7mQDMxwK5/
+	AD9OstpSMVU2Lx+nYqPNClApquHbL/pPqjnm6CSLnpit0oArJLDk/9tAqD/lIMvZ5qr2Fe2hFo0DW
+	O1QvQUtGp8okxdB0iNSpx11sF0WGBhQtqqPRzaeS3gnJrqxtzofIHkzHybBV0AkLPLWQ3z6hODug1
+	LIuAWXCkHx6YuL1QuzIbhbKRobQAT7Rzt9v5JNZjbJHnm8L2IAhzA7JyTKsGV5a7GQI7nzes/1y1g
+	a0CeNx3Q==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vL7KZ-00000007Jyi-1gmT;
+	Mon, 17 Nov 2025 22:04:15 +0000
+Date: Mon, 17 Nov 2025 22:04:15 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+	a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
+	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
+	yonghong.song@linux.dev, ihor.solodrai@linux.dev,
+	Chris Mason <clm@meta.com>
+Subject: Re: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
+ switch to simple_remove_by_name())
+Message-ID: <20251117220415.GB2441659@ZenIV>
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+ <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+ <20251111092244.GS2441659@ZenIV>
+ <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
+ <20251113092636.GX2441659@ZenIV>
+ <2025111316-cornfield-sphinx-ba89@gregkh>
+ <20251114074614.GY2441659@ZenIV>
+ <2025111555-spoon-backslid-8d1f@gregkh>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,86 +81,23 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] crash: export crashkernel CMA reservation to userspace
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, Aditya Gupta <adityag@linux.ibm.com>,
-        Baoquan he <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-        Hari Bathini <hbathini@linux.ibm.com>, Jiri Bohac <jbohac@suse.cz>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        Pingfan Liu <piliu@redhat.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>,
-        Vivek Goyal <vgoyal@redhat.com>, linuxppc-dev@lists.ozlabs.org,
-        kexec@lists.infradead.org
-References: <20251117041905.1277801-1-sourabhjain@linux.ibm.com>
- <20251117094211.f8b4426ddda3bc0db5a62624@linux-foundation.org>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <20251117094211.f8b4426ddda3bc0db5a62624@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: CU9iESYN2j67vAEv2SgazOoBXgPDzaQZ
-X-Proofpoint-ORIG-GUID: pxnzCu9taJxuT8G2Bw21OV8xLzu6ZmTS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX27fIVSon0c6o
- UhN7VIJqtR8X3Mll3WY0QUrGaxzD3eoEtbFLhPJP4xwmtisCcKFGgUTtpJFYFNCuz8lf8PriBwf
- Mo/rT53XUKk0VG3KPLrYJQBmmAUS+LkMpqB5MZIdiHhU3g9cJ9i3x6DI6vpdneuc1Ax9A37PAhW
- jbgBAvIt23EnO+qkzXEfmuB0oieL+72N0YJ1lZUkit9jf2cPx7EzjkyHl9HGs3+dA9Q3KJANyRt
- kRxGDqsSZQPDM7yR6rUmru+g7ZN5mNdTzenEcOob2W5hsyzNv+YDsCzIltQgDNSusGPKfXOhwKx
- cRMIK2OaYKyHSzi8LzsGL1xB3TZn1WHiSqQOh2N51evC/vDLGqQuD/yNkIGHXvPhJeJwbS10Z4G
- 0fKNeNrEdaZy3dB3H7icpuJe0t5wdg==
-X-Authority-Analysis: v=2.4 cv=SvOdKfO0 c=1 sm=1 tr=0 ts=691b6a9c cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=0l8sKcWMKP3lnFByZlwA:9 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-17_03,2025-11-13_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 clxscore=1015
- suspectscore=0 phishscore=0 adultscore=0 bulkscore=0 impostorscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511150032
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025111555-spoon-backslid-8d1f@gregkh>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Sat, Nov 15, 2025 at 08:21:34AM -0500, Greg Kroah-Hartman wrote:
 
+> Ugh, messy.  But yes, this does look better, thanks for that.  Want me
+> to take it through the USB tree, or will you take it through one of
+> yours? (I don't remember what started this thread...)
 
-On 17/11/25 23:12, Andrew Morton wrote:
-> On Mon, 17 Nov 2025 09:49:05 +0530 Sourabh Jain <sourabhjain@linux.ibm.com> wrote:
->
->> Add a sysfs entry /sys/kernel/kexec/crash_cma_ranges to expose all
->> CMA crashkernel ranges.
->>
->> This allows userspace tools configuring kdump to determine how much
->> memory is reserved for crashkernel. If CMA is used, tools can warn
->> users when attempting to capture user pages with CMA reservation.
->>
->> The new sysfs hold the CMA ranges in below format:
->>
->> cat /sys/kernel/kexec/crash_cma_ranges
->> 100000000-10c7fffff
->>
->> There are already four kexec and kdump sysfs entries under /sys/kernel.
->> Adding more entries there would clutter the directory. To avoid this,
->> the new crash_cma_ranges sysfs entry is placed in a new kexec node under
->> /sys/kernel/.
-> I suggest not creating /sys/kernel/kexec in this patch.
->
-> Moving everything into a new /sys/kernel/kexec is a separate patchset
-> and a separate concept and it might never be merged - it changes ABI!
->
-> So let's put crash_cma_ranges in /sys/kernel and move it to
-> /sys/kernel/kexec within the other patchset.
-
-Yeah sure. I will send the patches accordingly.
-
-Thanks,
-Sourabh Jain
+See #work.functionfs in my tree - that patch carved up + fix for UAF
+on uncancelled scheduled work.  Individual patches in followups.
+If you have problems with that series, please say so.  Otherwise
+I'm merging it with #work.persistence (with #36 in there updated as
+posted)...
 
