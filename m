@@ -1,47 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-14221-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14222-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED64CC653F5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Nov 2025 17:51:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD52C65402
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Nov 2025 17:51:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d9DJr4J0gz3bWX;
-	Tue, 18 Nov 2025 03:50:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d9DJw3GP8z3bdW;
+	Tue, 18 Nov 2025 03:50:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763398252;
-	cv=none; b=SH1WB9YAKEv7SfnHcAd2177+4HhOh5GC6IgRJUxHdiMFLqT7SWagUToN3kw6N82pWxoKqsWsLNi5Ytw00cSU45CK7TS/GxUe4LdCes/m0cxuOAoYk1054LwMjKaCgt/B6wyEVgIkws3rg6u1evDXeJ2kiBttoM2KIJUauq3SorusK29pa9W7tSnMF3GbG4A7W0Dj0aUUdRIrKx86uXyYDR8j0L9twCOlqHsaW/uUWBbGh4ea2wqfChlZRWPCflB+gvYGvKOd54sQmyWBYLxOuCCYXtap3JiftRv6xckxlhIybtawx8IRWhjnpqZnVJKxyepUXcuFiNADmBoBPDibhw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763398256;
+	cv=none; b=mpO8zBiFfIPjEHBS5ZTTsg4cUrtwahMyKluA9UnoKy+HLyPKwGAOqr1iZ1fUN3PO1LHXBufZm8v3msEdc+bRcyBMGn2+XRd7ex+jTuChj9mDikEXrMkHO2eEGLBv37U+Mq9mZ8L3Mf1h9jLbYNUcRaHH6yCNIo0UXxSVZ66K/4K3AIo2V5HMsO/h+U5EvMhDpzIkGM+rLVIKjjD0u/c4KGlmGYzWNPKeGu+JgsTltQ1DZup+GFecPNrcY+aCNpw2vHukLBnjJouO31tHgMyoYQJbNxfoGLyU0aG3dSE3rrRm/A1oG4LWmRDUn1FgxH8NNAGCwM07ip3k9isEpspdpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763398252; c=relaxed/relaxed;
-	bh=pO6k7Jhg9TOBKGhsvcM39j4QsLYtMJCzoIcbeLFZMIU=;
+	t=1763398256; c=relaxed/relaxed;
+	bh=YyOTTPcC/RNbKSFI2z0yUWvkIH44N+KJZsdn8cZpWm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VrPMlAismMURG8M4BYMPv3XpqTB9d5XNfz/3YK3x7XXI4m73IYwEKdNBg2iQGaBMIjNL0fPqqFKP25XPrOimun58BTgfkDu7K1gwDoJK9R8Xs0XjN1t41Cynae8hI3LXAm+yBRCKDg4c/5uZWNGo7UO7s/uRQEx57wqHx+LIl52pN6DgoSbkJCd7eAabGbn2SlbMAleyPXgEXKNJmhfRFqS2WSPK/BywSkBVENsLcfWeqzoGMAflVrbeutCiH/gfny8ZjN7b4AzG/lU4YvNaeBaDxjJpPWOTpD14iqgaEQntSeFedD4q+NM58mqOxz6hSw5LAqQ9EzXhkF6OOODOAw==
+	 MIME-Version; b=XBppH3xOIOhx/qxe5KfkvzT2sxIR2/jH2Z0tY6I65t9c6YMdYI2YPMaJ3fF/vz+sKrjnYyodRMm3wafa8paiT3jWd2EOvMtiNMf1lQJm6/nN5HIo5AvI0ZAh31KO0M8SvITL2qfUjAEa6f/3NBBiBaaHlv9IISp2Dip5OAWrOe4YPJv834+M94ereh2bOWhhSP7HiVKwvYuBna8EylvkSLhOrACIUwtp6YClelFBOfBpRnnpc865uskRAED+TV4ZFFn4FrZNkUC0w6BvdB7Tjmxmx/OcV9nLZNzAV3NhT0cHQIJF1wKXZjhFhMq04fAFtoKcaxbKZwhamrgAhORJVw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d9DJq6jg3z3bV6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Nov 2025 03:50:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d9DJv5mJhz300F
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Nov 2025 03:50:55 +1100 (AEDT)
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4d9D986Dcjz9sTh;
-	Mon, 17 Nov 2025 17:44:12 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4d9D9B0fVlz9sTk;
+	Mon, 17 Nov 2025 17:44:14 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id ODDw4OUpL3tH; Mon, 17 Nov 2025 17:44:12 +0100 (CET)
+	with ESMTP id eU0hj9tte4dv; Mon, 17 Nov 2025 17:44:14 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4d9D98579Gz9sTZ;
-	Mon, 17 Nov 2025 17:44:12 +0100 (CET)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d9D996cx9z9sTj;
+	Mon, 17 Nov 2025 17:44:13 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D7F18B763;
-	Mon, 17 Nov 2025 17:44:12 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id CE2E78B763;
+	Mon, 17 Nov 2025 17:44:13 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id hO1787tWgDqo; Mon, 17 Nov 2025 17:44:12 +0100 (CET)
+	with ESMTP id tff4OGSdT2mn; Mon, 17 Nov 2025 17:44:13 +0100 (CET)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7FB1E8B768;
-	Mon, 17 Nov 2025 17:44:11 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A48D28B768;
+	Mon, 17 Nov 2025 17:44:12 +0100 (CET)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Peter Zijlstra <peterz@infradead.org>
@@ -71,9 +71,9 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 3/4] scm: Convert put_cmsg() to scoped user access
-Date: Mon, 17 Nov 2025 17:43:43 +0100
-Message-ID: <793219313f641eda09a892d06768d2837246bf9f.1763396724.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v5 4/4] lib/strn*,uaccess: Use masked_user_{read/write}_access_begin when required
+Date: Mon, 17 Nov 2025 17:43:44 +0100
+Message-ID: <cb5e4b0fa49ea9c740570949d5e3544423389757.1763396724.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1763396724.git.christophe.leroy@csgroup.eu>
 References: <cover.1763396724.git.christophe.leroy@csgroup.eu>
@@ -90,63 +90,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1623; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=G9vSR7KnQqIxN+4o+okHL5tWkQyiUXlrPWVzKylp4RY=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWRKB5y4msa79uMdnvb97Ws8Dr5sdLO50Ghlq90Ym1rzX Ofc1FTWjlIWBjEuBlkxRZbj/7l3zej6kpo/dZc+zBxWJpAhDFycAjARSyVGhpazbZ9+HNTk3i7v amJmo3boZihrUcvNMkv+VxX/Nl/4F8vI8EOU7U+KU0bAKSa/9293WU7XvRW190pY0r+tVmXBk7d a8wMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2306; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=qDckhyWd5Xp/iUbxoRJgosMNjecj8byVLupzPsFbxdU=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWRKB5zwcf5XZ8nQsPWQR3SBdCH7ipUnHdxv1zv7Ku9On 1xYOe1CRykLgxgXg6yYIsvx/9y7ZnR9Sc2fuksfZg4rE8gQBi5OAZjIyQJGhg+x8vzW+28u3+X+ ZFGOZmr8v6hj/g/nf9VfOM1v700nrukM/71WCtXdYlPy+rWCe77xJ9dct9gfnaqndGPERLYczlm gxQkA
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Replace the open coded implementation with the scoped user access
-guards.
+Properly use masked_user_read_access_begin() and
+masked_user_write_access_begin() instead of masked_user_access_begin()
+in order to match user_read_access_end() and user_write_access_end().
+This is important for architectures like powerpc that enable
+separately user reads and user writes.
 
-No functional change intended.
+That means masked_user_read_access_begin() is used when user memory is
+exclusively read during the window and masked_user_write_access_begin()
+is used when user memory is exclusively writen during the window.
+masked_user_access_begin() remains and is used when both reads and
+writes are performed during the open window. Each of them is expected
+to be terminated by the matching user_read_access_end(),
+user_write_access_end() and user_access_end().
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v5: New
----
- net/core/scm.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+v5:
+- Removed net/core/scm.c which is converted to scope user access by previous patch
+- Renamed the patch as it now only handles lib/strncpy_from_user.c and lib/strnlen_user.c
 
-diff --git a/net/core/scm.c b/net/core/scm.c
-index 66eaee783e8b..cd87f66671aa 100644
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -273,17 +273,13 @@ int put_cmsg(struct msghdr * msg, int level, int type, int len, void *data)
+v4: Rebased on top of core-scoped-uaccess tag
+
+v3: Rebased on top of v6.18-rc1 ==> change in net/core/scm.c
+
+v2: Added more explanations in the commit message following comments received.
+---
+ lib/strncpy_from_user.c | 2 +-
+ lib/strnlen_user.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/strncpy_from_user.c b/lib/strncpy_from_user.c
+index 6dc234913dd5..5bb752ff7c61 100644
+--- a/lib/strncpy_from_user.c
++++ b/lib/strncpy_from_user.c
+@@ -126,7 +126,7 @@ long strncpy_from_user(char *dst, const char __user *src, long count)
+ 	if (can_do_masked_user_access()) {
+ 		long retval;
  
- 		check_object_size(data, cmlen - sizeof(*cm), true);
+-		src = masked_user_access_begin(src);
++		src = masked_user_read_access_begin(src);
+ 		retval = do_strncpy_from_user(dst, src, count, count);
+ 		user_read_access_end();
+ 		return retval;
+diff --git a/lib/strnlen_user.c b/lib/strnlen_user.c
+index 6e489f9e90f1..4a6574b67f82 100644
+--- a/lib/strnlen_user.c
++++ b/lib/strnlen_user.c
+@@ -99,7 +99,7 @@ long strnlen_user(const char __user *str, long count)
+ 	if (can_do_masked_user_access()) {
+ 		long retval;
  
--		if (can_do_masked_user_access())
--			cm = masked_user_access_begin(cm);
--		else if (!user_write_access_begin(cm, cmlen))
--			goto efault;
--
--		unsafe_put_user(cmlen, &cm->cmsg_len, efault_end);
--		unsafe_put_user(level, &cm->cmsg_level, efault_end);
--		unsafe_put_user(type, &cm->cmsg_type, efault_end);
--		unsafe_copy_to_user(CMSG_USER_DATA(cm), data,
--				    cmlen - sizeof(*cm), efault_end);
--		user_write_access_end();
-+		scoped_user_write_access_size(cm, cmlen, efault) {
-+			unsafe_put_user(cmlen, &cm->cmsg_len, efault);
-+			unsafe_put_user(level, &cm->cmsg_level, efault);
-+			unsafe_put_user(type, &cm->cmsg_type, efault);
-+			unsafe_copy_to_user(CMSG_USER_DATA(cm), data,
-+					    cmlen - sizeof(*cm), efault);
-+		}
- 	} else {
- 		struct cmsghdr *cm = msg->msg_control;
- 
-@@ -301,8 +297,6 @@ int put_cmsg(struct msghdr * msg, int level, int type, int len, void *data)
- 	msg->msg_controllen -= cmlen;
- 	return 0;
- 
--efault_end:
--	user_write_access_end();
- efault:
- 	return -EFAULT;
- }
+-		str = masked_user_access_begin(str);
++		str = masked_user_read_access_begin(str);
+ 		retval = do_strnlen_user(str, count, count);
+ 		user_read_access_end();
+ 		return retval;
 -- 
 2.49.0
 
