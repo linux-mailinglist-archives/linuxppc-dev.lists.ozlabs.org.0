@@ -1,45 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-14251-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14263-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8290FC6762E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Nov 2025 06:18:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 098B0C676D3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Nov 2025 06:20:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d9XsF4pGhz3dLj;
-	Tue, 18 Nov 2025 16:16:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d9XsS2xCSz3fLF;
+	Tue, 18 Nov 2025 16:16:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763442991;
-	cv=none; b=QqZqxT0CmPOHsLUtRJdSUJXHfBxilaJsti9BbhU7+OuCUmg/SFvE7YTDM+0+2bInb4e6Q9U3jImX0u3j604yk9C+si6PGaMWnaRK0UE0zhwYiuGy4XENc5mrgi8Q2HYmUY3hNe78LpXKY+7je827Pbvps42xTmKH6yUnNndBuTZip4dodmvF55z3ACORemrdAWrEDl2FIjgm52Nc97Kv5aTVYo0DtxmX2XlLM/f6FIChrtckC/ggR0nmQPStpaR7JdAxl14QT5x0b2QF7fmtQE7xAoq2fZNmbxU+hL0j2gFoBuKxApagrgkKJi/SDXqNQWALWOkvb0dXKu8bZxnSXg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763442997;
+	cv=none; b=fTsEL2flh1jh0+1as1bjGH9hgh+YxHMdQ91oKVK0I+/aZfQrPiJeLA18hl9Kuz0CkiTxC9GSIOQyVoUnDIxtiFcMbPFrFZnLVp3b91NvR42rUYofWcshIcT1EHgQxXG7tkiak/DjWq+3tbQXdmgkq/5bX6Hi7za+1UH0OmEXbjPWno837dI/VNrov5kkySAoLTZL3OqXzPo0JRonfcvWxDqSSMn35SBJQXg/kzqqPiGEbqKKMUUryfiC9wl4V4P5oiBRcbAftfD2Qw9n1CMfMa0skl0xZ96GMsH1Zu3tQdwUTVTKQBln5eoz/+5F+s9MoC7NYnF9ZnXrwAVPrH0gLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763442991; c=relaxed/relaxed;
-	bh=Wk0cJUyWrg1Q2BlOVZqE6LE8f2oIgwbaaPLwX7j5Zz0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mR7H/p2xgdhrCDm1fjldauSHwFcZ2xonPHllRjhMzN3n0ZE7dylE5MBqCqDe8a4Tu5RD3fHK2vshtkD61FZAzm/nKqBAPnAICEG6RtNvxSQLwMC5uex6csGSjRViCyPr7NTxMG1MJifqKIWuuQdaKUaccLBsS2PXTLBiZ9yOX/a4Ag4K6CFo1UW/rjXz1xEOHBVmcDf97Viz4E6vWaYOyaf2X4HlLBAj9bTWEyF3L9eXy8SXkGUwxtWDn5cJIOyimPof4/ky0s6o7z13reKYFT3GOBdDY3xBdq2CAbOuMFfndkGZCgESf4XepDG7X2GR4XGr7op62scjL013I0zJFw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=L2YBNssu; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+	t=1763442997; c=relaxed/relaxed;
+	bh=BK+HD9eFsxlpB9DT0f/M/+bf/xKzOtOP84IbBFRjnBU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QBthT7Ktsb8/29FBfIOIYOqHQ2o7IyQjm7d+HafDX+PhL5VZDpPyOWohWHA6gpwH1SgDg/PzmVTYtcYv8A4oU6RZzalyXiZGJB3AWK3qLZ5dPh9r0B7WS+kcnpKDKXvffw25ZAVIhCrr72NzTA1A2XswKhZIkJhYvPeE5+aPfE2Tl4P0OmTjbXLenPZn8osE5LptMCNe+E/aqb5XkZConvKL3rQxrraGUWqYeyt/gqQSHeLGQc5a+2Rn4lcZrND52bKMx/4j0X6Lzg16P7mEI524R89+wzzd00kQRxb5d1I/wkFVHMB0eGveUqETAwLgcT5dzU8XfzgUDhZFqpRDIA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=gGHivrs5; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=L2YBNssu;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=gGHivrs5;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d9Xry3Tjzz30Vf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Nov 2025 16:16:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d9Xs03mbxz30YZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Nov 2025 16:16:18 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=Wk0cJUyWrg1Q2BlOVZqE6LE8f2oIgwbaaPLwX7j5Zz0=; b=L2YBNssuhAbD/coTE+zppD6pgG
-	4SHEnV/kIGVlfWZ/qJcm+mD7nBTcUj5u3PTUqaT11eNiFSt/eQjg53/kO2xAH3TAX1K+ir2dHsN/W
-	+V2PSQeCGsk5NCmFRrEceu48UcS3G7dNw05gFfDQD/LGLbv3GTZ8U6VquIrxRziO0egZlUY5wvf+7
-	rSHx7tdBjJILDSiZ9Nq7Zbb8qz3qlP5vEyyl8YxzfhzblHJlTb9Xjll2P9yAVRvIGhrorVG7e2mAe
-	gwzXte4nPeA0zgOAP42jxne/BSzms8NV7fAnYjOgsWD9EXBqwRr1k3J2CvzlJ3gfHFtZK2D4YIPpB
-	GKZnts7A==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=BK+HD9eFsxlpB9DT0f/M/+bf/xKzOtOP84IbBFRjnBU=; b=gGHivrs5VQYbp4P2WHM7xvl1vI
+	ax4AH360oXnMEt1pRtc4JNx9Mxj27G7Ntlw1mm2vR1YKwsbAJ7BIDIj7eFRTT5DnvK8JCUY03Da8N
+	fSZOXX/fBbd9LVbSGFm1KbrbLVwJmrOCLc3+6IQCZPiNgcegz18/qFCXOQsbpNt3DjC7U07vYtsPs
+	9Rhmie54jINi8XG2EuV19IWK3Ct6nuMbf1bu4GhYd7sCTgGxsorbv2ahk2JRFthbRoeXfeiF8W2c5
+	DoQk1Kfd0U8wa560MOaJXOVqC5lEJpoM0utWOPXCu1ozCSlbpkmyZddLcoFla63XBFJB319IxTbwC
+	cWQnABmg==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4S-0000000GEPJ-3281;
-	Tue, 18 Nov 2025 05:16:04 +0000
+	id 1vLE4T-0000000GEPd-0X8R;
+	Tue, 18 Nov 2025 05:16:05 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -64,10 +65,12 @@ Cc: torvalds@linux-foundation.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org,
 	clm@meta.com
-Subject: [PATCH v4 00/54] tree-in-dcache stuff
-Date: Tue, 18 Nov 2025 05:15:09 +0000
-Message-ID: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+Subject: [PATCH v4 01/54] fuse_ctl_add_conn(): fix nlink breakage in case of early failure
+Date: Tue, 18 Nov 2025 05:15:10 +0000
+Message-ID: <20251118051604.3868588-2-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,310 +90,77 @@ X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Some filesystems use a kinda-sorta controlled dentry refcount leak to pin
-dentries of created objects in dcache (and undo it when removing those).
-Reference is grabbed and not released, but it's not actually _stored_
-anywhere.  That works, but it's hard to follow and verify; among other
-things, we have no way to tell _which_ of the increments is intended
-to be an unpaired one.  Worse, on removal we need to decide whether
-the reference had already been dropped, which can be non-trivial if
-that removal is on umount and we need to figure out if this dentry is
-pinned due to e.g. unlink() not done.  Usually that is handled by using
-kill_litter_super() as ->kill_sb(), but there are open-coded special
-cases of the same (consider e.g. /proc/self).
+fuse_ctl_remove_conn() used to decrement the link count of root
+manually; that got subsumed by simple_recursive_removal(), but
+in case when subdirectory creation has failed the latter won't
+get called.
 
-Things get simpler if we introduce a new dentry flag (DCACHE_PERSISTENT)
-marking those "leaked" dentries.  Having it set claims responsibility
-for +1 in refcount.
+Just move the modification of parent's link count into
+fuse_ctl_add_dentry() to keep the things simple.  Allows to
+get rid of the nlink argument as well...
 
-The end result this series is aiming for:
+Fixes: fcaac5b42768 "fuse_ctl: use simple_recursive_removal()"
+Acked-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ fs/fuse/control.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-* get these unbalanced dget() and dput() replaced with new primitives that
-  would, in addition to adjusting refcount, set and clear persistency flag.
-* instead of having kill_litter_super() mess with removing the remaining
-  "leaked" references (e.g. for all tmpfs files that hadn't been removed
-  prior to umount), have the regular shrink_dcache_for_umount() strip
-  DCACHE_PERSISTENT of all dentries, dropping the corresponding
-  reference if it had been set.  After that kill_litter_super() becomes
-  an equivalent of kill_anon_super().
-
-Doing that in a single step is not feasible - it would affect too many places
-in too many filesystems.  It has to be split into a series.
-
-This work has really started early in 2024; quite a few preliminary pieces
-have already gone into mainline.  This chunk is finally getting to the
-meat of that stuff - infrastructure and most of the conversions to it.
-
-Some pieces are still sitting in the local branches, but the bulk of
-that stuff is here.
-
-Compared to v3:
-	* fixed a functionfs braino around ffs_epfiles_destroy() (in #40/54,
-used to be #36/50).
-	* added fixes for a couple of UAF in functionfs (##36--39); that
-does *NOT* include any fixes for dmabuf bugs Chris posted last week, though.
-
-The branch is -rc5-based; it lives in
-git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #work.persistency
-individual patches in followups.
-
-Please, help with review and testing.  If nobody objects, in a few days it
-goes into #for-next.
-
-Shortlog:
-      fuse_ctl_add_conn(): fix nlink breakage in case of early failure
-      tracefs: fix a leak in eventfs_create_events_dir()
-      new helper: simple_remove_by_name()
-      new helper: simple_done_creating()
-      introduce a flag for explicitly marking persistently pinned dentries
-      primitives for maintaining persisitency
-      convert simple_{link,unlink,rmdir,rename,fill_super}() to new primitives
-      convert ramfs and tmpfs
-      procfs: make /self and /thread_self dentries persistent
-      configfs, securityfs: kill_litter_super() not needed
-      convert xenfs
-      convert smackfs
-      convert hugetlbfs
-      convert mqueue
-      convert bpf
-      convert dlmfs
-      convert fuse_ctl
-      convert pstore
-      convert tracefs
-      convert debugfs
-      debugfs: remove duplicate checks in callers of start_creating()
-      convert efivarfs
-      convert spufs
-      convert ibmasmfs
-      ibmasmfs: get rid of ibmasmfs_dir_ops
-      convert devpts
-      binderfs: use simple_start_creating()
-      binderfs_binder_ctl_create(): kill a bogus check
-      convert binderfs
-      autofs_{rmdir,unlink}: dentry->d_fsdata->dentry == dentry there
-      convert autofs
-      convert binfmt_misc
-      selinuxfs: don't stash the dentry of /policy_capabilities
-      selinuxfs: new helper for attaching files to tree
-      convert selinuxfs
-      functionfs: don't abuse ffs_data_closed() on fs shutdown
-      functionfs: don't bother with ffs->ref in ffs_data_{opened,closed}()
-      functionfs: need to cancel ->reset_work in ->kill_sb()
-      functionfs: fix the open/removal races
-      functionfs: switch to simple_remove_by_name()
-      convert functionfs
-      gadgetfs: switch to simple_remove_by_name()
-      convert gadgetfs
-      hypfs: don't pin dentries twice
-      hypfs: switch hypfs_create_str() to returning int
-      hypfs: swich hypfs_create_u64() to returning int
-      convert hypfs
-      convert rpc_pipefs
-      convert nfsctl
-      convert rust_binderfs
-      get rid of kill_litter_super()
-      convert securityfs
-      kill securityfs_recursive_remove()
-      d_make_discardable(): warn if given a non-persistent dentry
-
-Diffstat:
- Documentation/filesystems/porting.rst     |   7 ++
- arch/powerpc/platforms/cell/spufs/inode.c |  17 ++-
- arch/s390/hypfs/hypfs.h                   |   6 +-
- arch/s390/hypfs/hypfs_diag_fs.c           |  60 ++++------
- arch/s390/hypfs/hypfs_vm_fs.c             |  21 ++--
- arch/s390/hypfs/inode.c                   |  82 +++++--------
- drivers/android/binder/rust_binderfs.c    | 121 ++++++-------------
- drivers/android/binderfs.c                |  82 +++----------
- drivers/base/devtmpfs.c                   |   2 +-
- drivers/misc/ibmasm/ibmasmfs.c            |  24 ++--
- drivers/usb/gadget/function/f_fs.c        | 144 +++++++++++++----------
- drivers/usb/gadget/legacy/inode.c         |  49 ++++----
- drivers/xen/xenfs/super.c                 |   2 +-
- fs/autofs/inode.c                         |   2 +-
- fs/autofs/root.c                          |  11 +-
- fs/binfmt_misc.c                          |  69 ++++++-----
- fs/configfs/dir.c                         |  10 +-
- fs/configfs/inode.c                       |   3 +-
- fs/configfs/mount.c                       |   2 +-
- fs/dcache.c                               | 111 +++++++++++-------
- fs/debugfs/inode.c                        |  32 ++----
- fs/devpts/inode.c                         |  57 ++++-----
- fs/efivarfs/inode.c                       |   7 +-
- fs/efivarfs/super.c                       |   5 +-
- fs/fuse/control.c                         |  38 +++---
- fs/hugetlbfs/inode.c                      |  12 +-
- fs/internal.h                             |   1 -
- fs/libfs.c                                |  52 +++++++--
- fs/nfsd/nfsctl.c                          |  18 +--
- fs/ocfs2/dlmfs/dlmfs.c                    |   8 +-
- fs/proc/base.c                            |   6 +-
- fs/proc/internal.h                        |   1 +
- fs/proc/root.c                            |  14 +--
- fs/proc/self.c                            |  10 +-
- fs/proc/thread_self.c                     |  11 +-
- fs/pstore/inode.c                         |   7 +-
- fs/ramfs/inode.c                          |   8 +-
- fs/super.c                                |   8 --
- fs/tracefs/event_inode.c                  |   7 +-
- fs/tracefs/inode.c                        |  13 +--
- include/linux/dcache.h                    |   4 +-
- include/linux/fs.h                        |   6 +-
- include/linux/proc_fs.h                   |   2 -
- include/linux/security.h                  |   2 -
- init/do_mounts.c                          |   2 +-
- ipc/mqueue.c                              |  12 +-
- kernel/bpf/inode.c                        |  15 +--
- mm/shmem.c                                |  38 ++----
- net/sunrpc/rpc_pipe.c                     |  27 ++---
- security/apparmor/apparmorfs.c            |  13 ++-
- security/inode.c                          |  35 +++---
- security/selinux/selinuxfs.c              | 185 +++++++++++++-----------------
- security/smack/smackfs.c                  |   2 +-
- 53 files changed, 649 insertions(+), 834 deletions(-)
-
-	Overview:
-
-First two commits are bugfixes (fusectl and tracefs resp.)
-
-[1/54] fuse_ctl_add_conn(): fix nlink breakage in case of early failure
-[2/54] tracefs: fix a leak in eventfs_create_events_dir()
-
-Next, two commits adding a couple of useful helpers, the next three adding
-the infrastructure and the rest consists of per-filesystem conversions.
-
-[3/54] new helper: simple_remove_by_name()
-[4/54] new helper: simple_done_creating()
-	end_creating_path() analogue for internal object creation; unlike
-end_creating_path() no mount is passed to it (or guaranteed to exist, for
-that matter - it might be used during the filesystem setup, before the
-superblock gets attached to any mounts).
-
-Infrastructure:
-[5/54] introduce a flag for explicitly marking persistently pinned dentries
-	* introduce the new flag
-	* teach shrink_dcache_for_umount() to handle it (i.e. remove
-and drop refcount on anything that survives to umount with that flag
-still set)
-	* teach kill_litter_super() that anything with that flag does
-*not* need to be unpinned.
-[6/54] primitives for maintaining persisitency
-	* d_make_persistent(dentry, inode) - bump refcount, mark persistent
-and make hashed positive.  Return value is a borrowed reference to dentry;
-it can be used until something removes persistency (at the very least,
-until the parent gets unlocked, but some filesystems may have stronger
-exclusion).
-	* d_make_discardable() - remove persistency mark and drop reference.
-
-NOTE: at that stage d_make_discardable() does not reject dentries not
-marked persistent - it acts as if the mark been set.
-
-Rationale: less noise in series splitup that way.  We want (and on the
-next commit will get) simple_unlink() to do the right thing - remove
-persistency, if it's there.  However, it's used by many filesystems.
-We would have either to convert them all at once or split simple_unlink()
-into "want persistent" and "don't want persistent" versions, the latter
-being the old one.  In the course of the series almost all callers
-would migrate to the replacement, leaving only two pathological cases
-with the old one.  The same goes for simple_rmdir() (two callers left in
-the end), simple_recursive_removal() (all callers gone in the end), etc.
-That's a lot of noise and it's easier to start with d_make_discardable()
-quietly accepting non-persistent dentries, then, in the end, add private
-copies of simple_unlink() and simple_rmdir() for two weird users (configfs
-and apparmorfs) and have those use dput() instead of d_make_discardable().
-At that point we'd be left with all callers of d_make_discardable()
-always passing persistent dentries, allowing to add a warning in it.
-
-[7/54] convert simple_{link,unlink,rmdir,rename,fill_super}() to new primitives
-	See above re quietly accepting non-peristent dentries in
-simple_unlink(), simple_rmdir(), etc.
-
-	Converting filesystems:
-[8/54] convert ramfs and tmpfs
-[9/54] procfs: make /self and /thread_self dentries persistent
-[10/54] configfs, securityfs: kill_litter_super() not needed
-[11/54] convert xenfs
-[12/54] convert smackfs
-[13/54] convert hugetlbfs
-[14/54] convert mqueue
-[15/54] convert bpf
-[16/54] convert dlmfs
-[17/54] convert fuse_ctl
-[18/54] convert pstore
-[19/54] convert tracefs
-[20/54] convert debugfs
-[21/54] debugfs: remove duplicate checks in callers of start_creating()
-[22/54] convert efivarfs
-[23/54] convert spufs
-[24/54] convert ibmasmfs
-[25/54] ibmasmfs: get rid of ibmasmfs_dir_ops
-[26/54] convert devpts
-[27/54] binderfs: use simple_start_creating()
-[28/54] binderfs_binder_ctl_create(): kill a bogus check
-[29/54] convert binderfs
-[30/54] autofs_{rmdir,unlink}: dentry->d_fsdata->dentry == dentry there
-[31/54] convert autofs
-[32/54] convert binfmt_misc
-[33/54] selinuxfs: don't stash the dentry of /policy_capabilities
-[34/54] selinuxfs: new helper for attaching files to tree
-[35/54] convert selinuxfs
-
-	Several functionfs fixes, before converting it, to make life
-simpler for backporting:
-[36/54] functionfs: don't abuse ffs_data_closed() on fs shutdown
-[37/54] functionfs: don't bother with ffs->ref in ffs_data_{opened,closed}()
-[38/54] functionfs: need to cancel ->reset_work in ->kill_sb()
-[39/54] functionfs: fix the open/removal races
-
-	... and back to filesystems conversions:
-
-[40/54] functionfs: switch to simple_remove_by_name()
-[41/54] convert functionfs
-[42/54] gadgetfs: switch to simple_remove_by_name()
-[43/54] convert gadgetfs
-[44/54] hypfs: don't pin dentries twice
-[45/54] hypfs: switch hypfs_create_str() to returning int
-[46/54] hypfs: swich hypfs_create_u64() to returning int
-[47/54] convert hypfs
-[48/54] convert rpc_pipefs
-[49/54] convert nfsctl
-[50/54] convert rust_binderfs
-
-	... and no kill_litter_super() callers remain, so we
-can take it out:
-[51/54] get rid of kill_litter_super()
-	
-	Followups:
-[52/54] convert securityfs
-	That was the last remaining user of simple_recursive_removal()
-that did *not* mark things persistent.  Now the only places where
-d_make_discardable() is still called for dentries that are not marked
-persistent are the calls of simple_{unlink,rmdir}() in configfs and
-apparmorfs.
-
-[53/54] kill securityfs_recursive_remove()
-	Unused macro...
-
-[54/54] d_make_discardable(): warn if given a non-persistent dentry
-
-At this point there are very few call chains that might lead to
-d_make_discardable() on a dentry that hadn't been made persistent:
-calls of simple_unlink() and simple_rmdir() in configfs and
-apparmorfs.
-
-Both filesystems do pin (part of) their contents in dcache, but
-they are currently playing very unusual games with that.  Converting
-them to more usual patterns might be possible, but it's definitely
-going to be a long series of changes in both cases.
-
-For now the easiest solution is to have both stop using simple_unlink()
-and simple_rmdir() - that allows to make d_make_discardable() warn
-when given a non-persistent dentry.
-
-Rather than giving them full-blown private copies (with calls of
-d_make_discardable() replaced with dput()), let's pull the parts of
-simple_unlink() and simple_rmdir() that deal with timestamps and link
-counts into separate helpers (__simple_unlink() and __simple_rmdir()
-resp.) and have those used by configfs and apparmorfs.
+diff --git a/fs/fuse/control.c b/fs/fuse/control.c
+index bb407705603c..5247df896c5d 100644
+--- a/fs/fuse/control.c
++++ b/fs/fuse/control.c
+@@ -205,8 +205,7 @@ static const struct file_operations fuse_conn_congestion_threshold_ops = {
+ 
+ static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
+ 					  struct fuse_conn *fc,
+-					  const char *name,
+-					  int mode, int nlink,
++					  const char *name, int mode,
+ 					  const struct inode_operations *iop,
+ 					  const struct file_operations *fop)
+ {
+@@ -232,7 +231,10 @@ static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
+ 	if (iop)
+ 		inode->i_op = iop;
+ 	inode->i_fop = fop;
+-	set_nlink(inode, nlink);
++	if (S_ISDIR(mode)) {
++		inc_nlink(d_inode(parent));
++		inc_nlink(inode);
++	}
+ 	inode->i_private = fc;
+ 	d_add(dentry, inode);
+ 
+@@ -252,22 +254,21 @@ int fuse_ctl_add_conn(struct fuse_conn *fc)
+ 		return 0;
+ 
+ 	parent = fuse_control_sb->s_root;
+-	inc_nlink(d_inode(parent));
+ 	sprintf(name, "%u", fc->dev);
+-	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500, 2,
++	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500,
+ 				     &simple_dir_inode_operations,
+ 				     &simple_dir_operations);
+ 	if (!parent)
+ 		goto err;
+ 
+-	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400, 1,
++	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400,
+ 				 NULL, &fuse_ctl_waiting_ops) ||
+-	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200, 1,
++	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200,
+ 				 NULL, &fuse_ctl_abort_ops) ||
+ 	    !fuse_ctl_add_dentry(parent, fc, "max_background", S_IFREG | 0600,
+-				 1, NULL, &fuse_conn_max_background_ops) ||
++				 NULL, &fuse_conn_max_background_ops) ||
+ 	    !fuse_ctl_add_dentry(parent, fc, "congestion_threshold",
+-				 S_IFREG | 0600, 1, NULL,
++				 S_IFREG | 0600, NULL,
+ 				 &fuse_conn_congestion_threshold_ops))
+ 		goto err;
+ 
+-- 
+2.47.3
 
 
