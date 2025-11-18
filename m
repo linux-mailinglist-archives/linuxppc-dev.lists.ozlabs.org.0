@@ -1,88 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-14302-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14306-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3251DC69DDD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Nov 2025 15:16:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F21C6A192
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Nov 2025 15:50:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d9mqw0mCgz2yvH;
-	Wed, 19 Nov 2025 01:16:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d9nbc6Vtvz2yvW;
+	Wed, 19 Nov 2025 01:50:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=65.109.113.108
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763475371;
-	cv=none; b=RixceaFr/ghFhX+GmXobv0DvrgOrd1RI9NQIEQSARZAFkJm9EAieZpuf7FhWehHUlxm0mW+zWkmPN/aqeNRzI4r7GyZiXEQnr3V/CiRoTUGqgi0NnPrOR47is2Ig7yx3T6b5K1FLjC+rW04o+fih201sOztuyEhXy9y7rCESxqmscIxJKmEAZb0RAVxd+ZPx9QDdO3LLwcPDUUpKIDdiq4RAC6PoQ3mCaS0FyKpFF7Lggg35KjaVkagvVsZqdzGVm9KdmD6R53Bb1QfDafAwxZ1GIS8rLX228Ph/A1LKbabUe6GkPIYP+d1t2ZO1HhIob4tYpDs7gNijuCK3j9Y94g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763477436;
+	cv=none; b=MFNEyOw1LdFczXf4aAjGDp4YonWSJIQK4+kjq5PzKvWk+A8v5y8fe7pa2P0opeTP9BkWVD/C59sBn8iOOTdwMSCPeR9WrQbud/GR7aqxO75m7B6fGDYA6sXEHWV297RUekoiqSKqRRqH129ZjbAlb1FvHPMNAu6VztrbI68mtYteVXTsaiaWCjMjQejV7S/r3KK/8umlsVLUQwvKddNKP0j7oM/UgR0Agn95rDo4NXJU2aJ0cs0ktKjH8nHyD102N5SzsoCNRZXCaI7Aq8dvKb9LGjt9Fn1CbcApZqMpV5c7ptXNrkTVw831D6GEFj46HvOvUR2RGKopiVIbg070dg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763475371; c=relaxed/relaxed;
-	bh=9GD8fqgyRaRKCE/AY0roMXTzEL0vi/2D0Y4+wcNO0K8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AbF5OHvrXIfxBgdlGQkwBXlEike2QqUdnEgHKP8Q6D1EJAzNQXrFikr1ftA4eF/+RJLvl7XhW/cX0s2VDKk7xWzT6D7BHH0GzBsmyJmSwYmH8At9jJIZbw/nNxap7W5OoH3yRxiRYWXXyT24K6qESsIxrMayV6X2Z7g0h3ybeWAGplr4gprzmTCIGWOWyR4xeeiHiC8rPwAmtmGtdIjnCMBaTbMqL3TKsLUwcqqWrMStVFA9RkDURNRjfK1IbCi8wkLEsxExVmGE1XQ9M8x9XB3Q22y2HY0oYGLRK7g/zv9ndGPbIZ8ijlUjEIhMbE4PYrVPQZEiw9Xo3HdgCUq4tQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de; dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=gzDSz+t8; dkim-atps=neutral; spf=pass (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org) smtp.mailfrom=alien8.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=gzDSz+t8;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 312 seconds by postgrey-1.37 at boromir; Wed, 19 Nov 2025 01:16:09 AEDT
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d9mqs5c38z2yqP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 01:16:09 +1100 (AEDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8C2FF40E016E;
-	Tue, 18 Nov 2025 14:10:40 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id kqE8OtHje236; Tue, 18 Nov 2025 14:10:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1763475036; bh=9GD8fqgyRaRKCE/AY0roMXTzEL0vi/2D0Y4+wcNO0K8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gzDSz+t8y2W5ztKUxB2zKC8hvXpqWlIHWrKM18Ov/M9poPe8ZwILXR5W4V078i0Hu
-	 l4fmG0sRIkNQPQCqUlkbpQ2RjFB7rV9NkkMZrVIMhJJYeNyhbinqJsA/xixzgr7IKI
-	 QXfvIexTR17HxrYdZhGNzG93BEJgwLPzUpEzLSm0jWgfJ8JP665GEPVVKuAI5vGqvT
-	 7GyF4Hm5Ez28zvH6SDR6ltfmuWLFLAXxb6v20g5vA8qZagWUJrql3QLi7G0MipLw5/
-	 FT2qwDh4Ppd874MfgFEG0u4EGA6VUFIl9fICW8s/REdigd6f0t1OwASPOYdsCtm8rL
-	 27XQsNZV3tfqueCpE0JSzzW/OGl2OLxQO7Cc6Qj5+qLQJ7oPcgJ7NG2rFqnb+d90JY
-	 fKQkPBZactJdMwq6fpj9mh+8Q/DdSgRUQB4g4notdOEV2pRqsIfZa+Rebhwm0Xo+G9
-	 vZZzZYrzIqrIsPTx3GmmgconK0RAqYSUJZ4EjGEw0W/ZdxAOujIerrllTGeDYUmQYg
-	 sNRkw/GC8OPfjVfBjygiG3NqN2BRgM8JErLCmf9msXk3TKh5Ytm8BpVUM2jsgbBkzM
-	 fgR1Ooth9wlGU+wGUdaWKFPZH7/4U8p7VH6uY/Ih7++wGDSLbQxTbv+DbWXuQ42pWV
-	 YR8PsAW4U6JF9zUXCnPZyn+k=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 2BDBD40E0216;
-	Tue, 18 Nov 2025 14:10:09 +0000 (UTC)
-Date: Tue, 18 Nov 2025 15:10:02 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Breno Leitao <leitao@debian.org>
-Cc: tony.luck@intel.com, akpm@linux-foundation.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev, osandov@osandov.com,
-	xueshuai@linux.alibaba.com, konrad.wilk@oracle.com,
-	linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org, kernel-team@meta.com,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-	Robert Moore <robert.moore@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH RESEND v5] vmcoreinfo: Track and log recoverable hardware
- errors
-Message-ID: <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
-References: <20251010-vmcore_hw_error-v5-1-636ede3efe44@debian.org>
- <vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
+	t=1763477436; c=relaxed/relaxed;
+	bh=rZkmb7zFofZfvDjvYK75CVHmmfpZ76lCH7TYpvuCr9k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dAC98QVyWBcC7yEwmPiTidTG2/93m3DCV7iwIFn6iiT/NHq8EpJMhi2L/yZktJIiucU0cUwrAXL/HuwokUsbcEutgegp1Brz8scDcCS5CBgrZUhLdNA4162Bh85I1Fg3KSiuBudvscYNSREVIuj5UvrHSv+Rxs9bkMv2B2mEs+c9uNmIBYvQVX5FHPwErqkL9kFySE6Gwq9gsH98BgkIw4aNxp6Y4czW59B5Ujh0w8H0qlhb76izCjGoPn+Zecyf1tFaEx+KkKTJNb7BOARheyZPWHG53NLccTNIyibNsVN9SlwOo8MZrwm4wvkuh+cMvyOvu3FaSdwsYEhLCBTn8w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d9nbb1T4Kz2yrg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 01:50:34 +1100 (AEDT)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d9n2N6Btgz9sSL;
+	Tue, 18 Nov 2025 15:25:16 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ycg5OWnpwCW8; Tue, 18 Nov 2025 15:25:16 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d9n2N5KGnz9sRg;
+	Tue, 18 Nov 2025 15:25:16 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 90FBD8B769;
+	Tue, 18 Nov 2025 15:25:16 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id Qafumh8Gab3i; Tue, 18 Nov 2025 15:25:16 +0100 (CET)
+Received: from [192.168.202.221] (unknown [192.168.202.221])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id DCE948B763;
+	Tue, 18 Nov 2025 15:25:15 +0100 (CET)
+Message-ID: <748c8f8c-23ed-4589-9521-a948cce40922@csgroup.eu>
+Date: Tue, 18 Nov 2025 15:25:14 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,24 +57,95 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] modpost: amend ppc symnames for -Os build
+To: =?UTF-8?Q?Ren=C3=A9_Rebe?= <rene@exactco.de>,
+ linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+References: <20251118.131735.802732108462696577.rene@exactco.de>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20251118.131735.802732108462696577.rene@exactco.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Nov 18, 2025 at 05:01:47AM -0800, Breno Leitao wrote:
-> Do you know what is the right tree for this patch?
-> 
-> I am wondering if it should go through Kdump, x86 or RAS/MCE tree?
-
-I can take it if akpm wants me to...
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+SGksDQoNCkxlIDE4LzExLzIwMjUgw6AgMTM6MTcsIFJlbsOpIFJlYmUgYSDDqWNyaXTCoDoN
+Cj4gW1ZvdXMgbmUgcmVjZXZleiBwYXMgc291dmVudCBkZSBjb3VycmllcnMgZGUgcmVuZUBl
+eGFjdGNvLmRlLiBEw6ljb3V2cmV6IHBvdXJxdW9pIGNlY2kgZXN0IGltcG9ydGFudCDDoCBo
+dHRwczovL2FrYS5tcy9MZWFybkFib3V0U2VuZGVySWRlbnRpZmljYXRpb24gXQ0KPiANCj4g
+QnVpbGRpbmcgYSBzaXplIG9wdGltaXplZCBwcGMga2VybmVsLCBnY2MgZW1taXRzIG1vcmUg
+c3ltYm9scyB0aGFuDQo+IGN1cnJlbnRseSBhbGxvd2VkIGxpc3RlZCBpbiBzY3JpcHRzL21v
+ZC9tb2Rwb3N0LmMuIEFkZCB0byBmaXg6DQoNCllvdSBzaG91bGQgc2F5IHdoZW4gdGhlIHBy
+b2JsZW0gc3RhcnRlZCB0byBoYXBwZW4sIGFuZCB3aGF0IHRob3NlIA0KZnVuY3Rpb25zIGFy
+ZSBzdXBwb3NlZCB0byBzYXZlIGFuZCByZXN0b3JlLg0KDQpBcyBhbiBleGVtcGxlIHNlZSBj
+b21taXQgOGZlOWM5M2U3NDUzICgicG93ZXJwYzogQWRkIHZyIHNhdmUvcmVzdG9yZSANCmZ1
+bmN0aW9ucyIpDQoNCkFsc28gY29uZmlybSBpdCBpcyBvbmx5IG5lZWRlZCBvbiBwb3dlcnBj
+NjQsIGlmIHNvIG1ha2UgaXQgY2xlYXIgaW4gdGhlIA0KY29tbWl0IG1lc3NhZ2UuDQoNCkNo
+cmlzdG9waGUNCg0KDQo+IA0KPiBNT0RQT1NUIE1vZHVsZS5zeW12ZXJzDQo+IEVSUk9SOiBt
+b2Rwb3N0OiAiX3Jlc3RmcHJfMjAiIFtkcml2ZXJzL2dwdS9kcm0vYW1kL2FtZGdwdS9hbWRn
+cHUua29dIHVuZGVmaW5lZCENCj4gRVJST1I6IG1vZHBvc3Q6ICJfcmVzdGZwcl8yNiIgW2Ry
+aXZlcnMvZ3B1L2RybS9hbWQvYW1kZ3B1L2FtZGdwdS5rb10gdW5kZWZpbmVkIQ0KPiBFUlJP
+UjogbW9kcG9zdDogIl9yZXN0ZnByXzIyIiBbZHJpdmVycy9ncHUvZHJtL2FtZC9hbWRncHUv
+YW1kZ3B1LmtvXSB1bmRlZmluZWQhDQo+IEVSUk9SOiBtb2Rwb3N0OiAiX3NhdmVncHIxXzI3
+IiBbZHJpdmVycy9ncHUvZHJtL2FtZC9hbWRncHUvYW1kZ3B1LmtvXSB1bmRlZmluZWQhDQo+
+IEVSUk9SOiBtb2Rwb3N0OiAiX3NhdmVncHIxXzI1IiBbZHJpdmVycy9ncHUvZHJtL2FtZC9h
+bWRncHUvYW1kZ3B1LmtvXSB1bmRlZmluZWQhDQo+IEVSUk9SOiBtb2Rwb3N0OiAiX3Jlc3Rm
+cHJfMjgiIFtkcml2ZXJzL2dwdS9kcm0vYW1kL2FtZGdwdS9hbWRncHUua29dIHVuZGVmaW5l
+ZCENCj4gRVJST1I6IG1vZHBvc3Q6ICJfc2F2ZWdwcjFfMjkiIFtkcml2ZXJzL2dwdS9kcm0v
+YW1kL2FtZGdwdS9hbWRncHUua29dIHVuZGVmaW5lZCENCj4gRVJST1I6IG1vZHBvc3Q6ICJf
+c2F2ZWZwcl8yMCIgW2RyaXZlcnMvZ3B1L2RybS9hbWQvYW1kZ3B1L2FtZGdwdS5rb10gdW5k
+ZWZpbmVkIQ0KPiBFUlJPUjogbW9kcG9zdDogIl9zYXZlZnByXzIyIiBbZHJpdmVycy9ncHUv
+ZHJtL2FtZC9hbWRncHUvYW1kZ3B1LmtvXSB1bmRlZmluZWQhDQo+IEVSUk9SOiBtb2Rwb3N0
+OiAiX3Jlc3RmcHJfMTUiIFtkcml2ZXJzL2dwdS9kcm0vYW1kL2FtZGdwdS9hbWRncHUua29d
+IHVuZGVmaW5lZCENCj4gV0FSTklORzogbW9kcG9zdDogc3VwcHJlc3NlZCA1NiB1bnJlc29s
+dmVkIHN5bWJvbCB3YXJuaW5ncyBiZWNhdXNlIHRoZXJlIHdlcmUgdG9vIG1hbnkpDQo+IA0K
+PiBTaWduZWQtb2ZmLWJ5OiBSZW7DqSBSZWJlIDxyZW5lQGV4YWN0Y28uZGU+DQo+IA0KPiAt
+LS0NCj4gICBzY3JpcHRzL21vZC9tb2Rwb3N0LmMgfCA0ICsrKysNCj4gICAxIGZpbGUgY2hh
+bmdlZCwgNCBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9tb2Qv
+bW9kcG9zdC5jIGIvc2NyaXB0cy9tb2QvbW9kcG9zdC5jDQo+IGluZGV4IDQ3YzhhYTJhNjkz
+OS4uMTMzZGZhMTYzMDhhIDEwMDY0NA0KPiAtLS0gYS9zY3JpcHRzL21vZC9tb2Rwb3N0LmMN
+Cj4gKysrIGIvc2NyaXB0cy9tb2QvbW9kcG9zdC5jDQo+IEBAIC02MDIsNiArNjAyLDEwIEBA
+IHN0YXRpYyBpbnQgaWdub3JlX3VuZGVmX3N5bWJvbChzdHJ1Y3QgZWxmX2luZm8gKmluZm8s
+IGNvbnN0IGNoYXIgKnN5bW5hbWUpDQo+ICAgICAgICAgICAgICAgICAgLyogU3BlY2lhbCBy
+ZWdpc3RlciBmdW5jdGlvbiBsaW5rZWQgb24gYWxsIG1vZHVsZXMgZHVyaW5nIGZpbmFsIGxp
+bmsgb2YgLmtvICovDQo+ICAgICAgICAgICAgICAgICAgaWYgKHN0cnN0YXJ0cyhzeW1uYW1l
+LCAiX3Jlc3RncHIwXyIpIHx8DQo+ICAgICAgICAgICAgICAgICAgICAgIHN0cnN0YXJ0cyhz
+eW1uYW1lLCAiX3NhdmVncHIwXyIpIHx8DQo+ICsgICAgICAgICAgICAgICAgICAgc3Ryc3Rh
+cnRzKHN5bW5hbWUsICJfcmVzdGdwcjFfIikgfHwNCj4gKyAgICAgICAgICAgICAgICAgICBz
+dHJzdGFydHMoc3ltbmFtZSwgIl9zYXZlZ3ByMV8iKSB8fA0KPiArICAgICAgICAgICAgICAg
+ICAgIHN0cnN0YXJ0cyhzeW1uYW1lLCAiX3Jlc3RmcHJfIikgfHwNCj4gKyAgICAgICAgICAg
+ICAgICAgICBzdHJzdGFydHMoc3ltbmFtZSwgIl9zYXZlZnByXyIpIHx8DQo+ICAgICAgICAg
+ICAgICAgICAgICAgIHN0cnN0YXJ0cyhzeW1uYW1lLCAiX3Jlc3R2cl8iKSB8fA0KPiAgICAg
+ICAgICAgICAgICAgICAgICBzdHJzdGFydHMoc3ltbmFtZSwgIl9zYXZldnJfIikgfHwNCj4g
+ICAgICAgICAgICAgICAgICAgICAgc3RyY21wKHN5bW5hbWUsICIuVE9DLiIpID09IDApDQo+
+IC0tDQo+IDIuNDYuMA0KPiANCj4gLS0NCj4gUmVuw6kgUmViZSwgRXhhY3RDT0RFIEdtYkgs
+IEJlcmxpbiwgR2VybWFueQ0KPiBodHRwczovL2V1cjAxLnNhZmVsaW5rcy5wcm90ZWN0aW9u
+Lm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZleGFjdGNvLmRlJTJGJmRhdGE9MDUl
+N0MwMiU3Q2NocmlzdG9waGUubGVyb3klNDBjc2dyb3VwLmV1JTdDYmRmODFiZWNmZjc2NGIw
+MGQ4YTcwOGRlMjY5YzcxNzYlN0M4Yjg3YWY3ZDg2NDc0ZGM3OGRmNDVmNjlhMjAxMWJiNSU3
+QzAlN0MwJTdDNjM4OTkwNjUxOTU4NjUwMzk3JTdDVW5rbm93biU3Q1RXRnBiR1pzYjNkOGV5
+SkZiWEIwZVUxaGNHa2lPblJ5ZFdVc0lsWWlPaUl3TGpBdU1EQXdNQ0lzSWxBaU9pSlhhVzR6
+TWlJc0lrRk9Jam9pVFdGcGJDSXNJbGRVSWpveWZRJTNEJTNEJTdDNjAwMDAlN0MlN0MlN0Mm
+c2RhdGE9MkE0aWxxUXUlMkJOeGV5Y0JRVU1GSU42R1ZXM3g0amt3anBJd3dFelZhZzV3JTNE
+JnJlc2VydmVkPTAg4oCiIGh0dHBzOi8vZXVyMDEuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0
+bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRnQybGludXguY29tJTJGJmRhdGE9MDUlN0Mw
+MiU3Q2NocmlzdG9waGUubGVyb3klNDBjc2dyb3VwLmV1JTdDYmRmODFiZWNmZjc2NGIwMGQ4
+YTcwOGRlMjY5YzcxNzYlN0M4Yjg3YWY3ZDg2NDc0ZGM3OGRmNDVmNjlhMjAxMWJiNSU3QzAl
+N0MwJTdDNjM4OTkwNjUxOTU4Njc2ODI4JTdDVW5rbm93biU3Q1RXRnBiR1pzYjNkOGV5SkZi
+WEIwZVUxaGNHa2lPblJ5ZFdVc0lsWWlPaUl3TGpBdU1EQXdNQ0lzSWxBaU9pSlhhVzR6TWlJ
+c0lrRk9Jam9pVFdGcGJDSXNJbGRVSWpveWZRJTNEJTNEJTdDNjAwMDAlN0MlN0MlN0Mmc2Rh
+dGE9NnRvRnhjbnQxNk9XNk5MT0hCSkVBTjBERnkyVVdOWVY3R3haNWhxcHdsUSUzRCZyZXNl
+cnZlZD0wIOKAoiBodHRwczovL2V1cjAxLnNhZmVsaW5rcy5wcm90ZWN0aW9uLm91dGxvb2su
+Y29tLz91cmw9aHR0cHMlM0ElMkYlMkZwYXRyZW9uLmNvbSUyRnJlbmVyZWJlJmRhdGE9MDUl
+N0MwMiU3Q2NocmlzdG9waGUubGVyb3klNDBjc2dyb3VwLmV1JTdDYmRmODFiZWNmZjc2NGIw
+MGQ4YTcwOGRlMjY5YzcxNzYlN0M4Yjg3YWY3ZDg2NDc0ZGM3OGRmNDVmNjlhMjAxMWJiNSU3
+QzAlN0MwJTdDNjM4OTkwNjUxOTU4NjkzNDgyJTdDVW5rbm93biU3Q1RXRnBiR1pzYjNkOGV5
+SkZiWEIwZVUxaGNHa2lPblJ5ZFdVc0lsWWlPaUl3TGpBdU1EQXdNQ0lzSWxBaU9pSlhhVzR6
+TWlJc0lrRk9Jam9pVFdGcGJDSXNJbGRVSWpveWZRJTNEJTNEJTdDNjAwMDAlN0MlN0MlN0Mm
+c2RhdGE9dTFqNU9HQ2JWd2NFRHdsZncwQ1poVEU3NVN5JTJCSmlUNFZBM09QZVNlYlg0JTNE
+JnJlc2VydmVkPTANCg0K
 
