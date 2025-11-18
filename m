@@ -1,75 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-14304-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14305-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC094C69F6F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Nov 2025 15:29:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EADDBC6A0D5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Nov 2025 15:42:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d9n7T3yR2z2yvH;
-	Wed, 19 Nov 2025 01:29:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d9nPw4sWtz2yvH;
+	Wed, 19 Nov 2025 01:42:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763476181;
-	cv=none; b=l1YQSqgTa05DNZlzugV3Dva2qMjeKLWA8tZPScppowOuxF7l7gUGK6ReGbfvNhaLsTWYA6UFCkIP0Or5oslhjcmnBeU3qmmdD7muXCs7EHFlev/JbNAmsK1lRxcySd6gnnh9Wp9ZU5G/WBSDnY/turmst8Qs2kGYBys3hwTif1YUmuFOCLMYnGhtNJmOS+vMeh7AOymblVwMgjsFCUGkrGzZ4Tm7o/Twr1nX7ILR83SVmjjQgnggKyK+YeikvOuUpibtbBBOtzU1vrFAQ4hRs2VcudkAYqmL9Adb82tgpmabU++SGn/O3QqYrURiVt9MpWuZn4qMr6wbo+DRbpRLUw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.10.151
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763476932;
+	cv=none; b=fAlKSpZ3mX6MtJjsd3RYKUmiICP4olgHI3SlLB8fIU1aTeb05p0GhIuUxx0VGz4IPmpa6CE0h0sFX710/UGkPbUyS7C3LHX+uUSPWF4jCLytP58FOq7wCzLd5GJ0gvU8+KKdS+rLNmcB0Av0icft0S8KpvJkEskg/YJifTLtF2oScWpJWaK7JQuPTHleh4aXvZmUVOIpQZ/YGthLCXwu1a2l40JEDVYNlZDNC428LTcophjtxdgAMIKslenSy/KYO03ryZkr7rrN4CAY/vMyZk5nPAK+xVvfEKoEqXeQ2CuznDa/nKAcLaJTZBpck09rGb1Dboui+sa5XI3C1tVgHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763476181; c=relaxed/relaxed;
-	bh=0n9UnbJWA0qi+JmKy/6pHK84BHEidvZ9wIicmRWTn88=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=exFpaNQmGZx1tNImB2SSPju/jafoVaWeXI5VeUnvdv7XgqG7WPBZ6XAXRxvRaSslQwLedLOISjQTn7HxS+XzJfKBov6UridxZI/jWCyaQfDv1yx26DaZbrkPrngpKtNA8pqBQcHOR6IoRJIT6AK7PfdEfz1BUtz62bOpv9QXUIk3Y+7krxTw6GWW2IKZyxxG9LIRk4bDJQlJUB7GQbDcfi9QgKUWtGdERR91WUoixmRxmdfWYiyxvcLm42LgM+W/fvcMthS/jXJwT3CdizoYoY7pOvwUW38/KPO6kugngwNTDnO3viEntysFQZXCq3FXG7TEXEWOkvLY+Y1YmFH94g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=UEKPZFD8; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=h/sRwr7x; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1763476932; c=relaxed/relaxed;
+	bh=dg4kdYmQD9pOuHVmBlO/os7cl4IQGg77c2SdNrJufvM=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=ZLkOpNyhN2VX0aJGOspyXg+NbXMY5rWqFOT31AWVH1TxrP2Cq/FYPINxijh9d1h7m9/RM/2D8wS7/hi1ChenmIihrLPj9cy871UiHBhVMjV+87m7EiiggWaJCv7wps0CXI/vc1GT/ctJOpiQMrE6tNAnD6YyrOxZC6N2t2ppwMeEqtvMOEgMGXw42u0tetNnES8PimjSqJ0N6CgNpinZG8VFASg/kw0u3IEUupmprlyfDDzz5S/833x/Jw3HvvvFQElxtoCHgku0QWF6GYRUezxBhYuwvyRLjMWDiIE3HVxGdGLlAaNQMYFbKlg7R8JZ+eSXt3csJPY71XkaptXsYA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de; dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=aRO4Do0p; dkim-atps=neutral; spf=pass (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org) smtp.mailfrom=exactco.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=UEKPZFD8;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=h/sRwr7x;
+	dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=aRO4Do0p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=exactco.de (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org)
+Received: from exactco.de (exactco.de [176.9.10.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d9n7S09ctz2yqP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 01:29:39 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763476171;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0n9UnbJWA0qi+JmKy/6pHK84BHEidvZ9wIicmRWTn88=;
-	b=UEKPZFD8IIH9dBvKhwzK+fXlmTby97FDKBDH31b76QtLz4uD0gbhWa+W7SG6f2imgKHsWF
-	nu7N2cXnD+OCXTKolN3SzKUxx0O8+YMYrf0DJRqkmvAsYU7YQt4xMRIRn31eSNTDdyUdTG
-	IT2upU2s7XedV+LOJih1/IaYmQwaNjbWORnGZX5SwX7NuvSC4KD3ikvjJIvhOM46GhQd01
-	52oJbqmp9xU9wMBK5pfo+VUj795hv5/+DoNV18rIIGuY7Np5J8ffKQgUsoL/5nUfJg3+NS
-	VL74Yn4la+CYnL9s6qvPYaEX2wHWgAZZrqm1x678CcgHB2dDbTcn5wYaPqQxpw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763476171;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0n9UnbJWA0qi+JmKy/6pHK84BHEidvZ9wIicmRWTn88=;
-	b=h/sRwr7xzeJWCEHSEV2dmP1lyM8HmabFe+SrA74S6/B5KUksS4LoIrxmGid+rFGCLsbVgL
-	qsdlJxY2x7xXHyBw==
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Peter Zijlstra
- <peterz@infradead.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
- Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, Darren Hart
- <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>, Andre Almeida
- <andrealmeid@igalia.com>, Andrew Morton <akpm@linux-foundation.org>, Eric
- Dumazet <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Dave Hansen <dave.hansen@linux.intel.com>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nichlas
- Piggin <npiggin@gmail.com>, linux-block@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 0/4] uaccess: Prepare for masked user access on powerpc
-In-Reply-To: <cover.1763396724.git.christophe.leroy@csgroup.eu>
-References: <cover.1763396724.git.christophe.leroy@csgroup.eu>
-Date: Tue, 18 Nov 2025 15:29:29 +0100
-Message-ID: <87y0o35s8m.ffs@tglx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d9nPv4BDMz2yqP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 01:42:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
+	s=x; h=Content-Transfer-Encoding:Content-Type:Mime-Version:References:
+	In-Reply-To:From:Subject:Cc:To:Message-Id:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=dg4kdYmQD9pOuHVmBlO/os7cl4IQGg77c2SdNrJufvM=; b=aRO4Do0p+yi/zEAT0kEQEi0zJk
+	ZNz5xY+s9pKMZnRwF3B7KMBABLXRdmdO0zgH7RMQoCEbcRLFp4qFApb+WyrQU4QWdknwT7ji95YnW
+	gCyA6iKgxRlx4nxpXbV7cHyMtibEm8FX4GARnRDY7bsNu6hh5j4rmoK87CrhF+xXP0NX5E5BZ6VPn
+	5uuoYVJ1xY0kCkZ83h9QzEXaIMaZX7Tnuz1yi6GS3PJ+T7FBEI9WyTjHBzkBO0mXjx0bFgO9qk62O
+	NRM4PRcWY/C7ePuow7ljBH/zwqg99xbCmon1CwiowtEYgibYjrcBReofWPC9pW9CYaxCdtWeyDg6+
+	3xa86MuQ==;
+Date: Tue, 18 Nov 2025 15:42:20 +0100 (CET)
+Message-Id: <20251118.154220.44312517709250718.rene@exactco.de>
+To: christophe.leroy@csgroup.eu
+Cc: linuxppc-dev@lists.ozlabs.org, geoff@infradead.org,
+ maddy@linux.ibm.com, mpe@ellerman.id.au
+Subject: Re: ppc/lv1call: Fix PS3 LV1 clobbering SRR
+From: =?iso-8859-1?Q?Ren=E9?= Rebe <rene@exactco.de>
+In-Reply-To: <a376f125-649e-4939-9363-ec73f1c1ea48@csgroup.eu>
+References: <20251118.144230.697987246761031674.rene@exactco.de>
+	<a376f125-649e-4939-9363-ec73f1c1ea48@csgroup.eu>
+X-Mailer: Mew version 6.10 on Emacs 30.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,30 +63,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Nov 17 2025 at 17:43, Christophe Leroy wrote:
-> This is v5 of the series "powerpc: Implement masked user access". This
-> version only includes the preparatory patches to enable merging of
-> powerpc architecture patches that depend on them on next cycle.
->
-> It applies on top of commit 6ec821f050e2 (tag: core-scoped-uaccess)
-> from tip tree.
->
-> Thomas, Peter, could you please take those preparatory patches
-> in tip tree for v6.19, then Maddy will take powerpc patches
-> into powerpc-next for v6.20.
+Hi,
 
-I've applied them to tip core/uaccess, which contains only the uaccess
-related bits. That branch is immutable and could be consumed by PPC if
-required.
+On Tue, 18 Nov 2025 14:57:25 +0100, Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-Thanks,
+> Le 18/11/2025 à 14:42, René Rebe a écrit :
+> > [Vous ne recevez pas souvent de courriers de
+> > rene@exactco.de. Découvrez pourquoi ceci est important à
+> > https://aka.ms/LearnAboutSenderIdentification ]
+> > Since a while booting a PS3 instantly yields:
+> 
+> Can you bisect to say since when, and add a Fixes: tag to the commit ?
 
-        tglx
+I could, but it might take a day, or two. But maybe always, and we
+only notice since 6eaaf9de3599865ee3b339d90cb24f2153f40bf4
+("powerpc/64s/interrupt: Check and fix srr_valid without crashing")?
+
+Should I use that as a Fixes?
+
+> > <4>SRR0 was: c0000000000971b4 should be: c0000000002d55c4
+> > <4>SRR1 was: 8000000000008032 should be: 8000000000008032
+> > Fix LV1 clobbering SRR by srr_regs_clobbered() each lv1 call.
+> > Attribute srr_regs_clobbered always_inline for use by modules.
+> > Signed-off-by: René Rebe <rene@exactco.de>
+> > ---
+> >   arch/powerpc/include/asm/interrupt.h | 1 +
+> >   arch/powerpc/include/asm/lv1call.h   | 3 ++-
+> >   2 files changed, 3 insertions(+), 1 deletion(-)
+> > diff --git a/arch/powerpc/include/asm/interrupt.h
+> > b/arch/powerpc/include/asm/interrupt.h
+> > index eb0e4a20b818..783c6f32a395 100644
+> > --- a/arch/powerpc/include/asm/interrupt.h
+> > +++ b/arch/powerpc/include/asm/interrupt.h
+> > @@ -106,6 +106,7 @@ static inline bool is_implicit_soft_masked(struct
+> > pt_regs *regs)
+> >          return search_kernel_soft_mask_table(regs->nip);
+> >   }
+> > +__attribute__((always_inline))
+> >   static inline void srr_regs_clobbered(void)
+> 
+> Instead, use:
+> 
+> 	static __always_inline void srr_regs_clobbered(void)
+
+Of course, happy to v2 as soon as I know of the above Fixes: is good
+enough or I should start bisecting to double-check, ...
+
+Merci,
+       René
+
+-- 
+René Rebe, ExactCODE GmbH, Berlin, Germany
+https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
 
