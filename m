@@ -1,52 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-14298-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14299-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D54F7C69540
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Nov 2025 13:17:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A96BC6984D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Nov 2025 14:02:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4d9kBz6Dbbz2yv9;
-	Tue, 18 Nov 2025 23:17:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4d9lC055mvz2yv9;
+	Wed, 19 Nov 2025 00:02:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.10.151
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763468251;
-	cv=none; b=Ab+vZqNyH24uc+zjJq3PpbID2yMBQPeJ8gDOeYXD1qPjcho/sss/qxnxwtwlHRaLuS1MQoGxyJau+u+A9/4k3UVEF43GpERPsI1lOAIKCBIBMBTcyj3ypKmv8l29SAatXah0c5zBSlCg7V+XxHxc4HMELw4tsugVJfusKE4TySS5qJEoUBR5FssqzbxhBzMcUAcAWCvAu8krhbiW4IdP51JiNLjk4werSGYTz933NP1Rmt3/aLSqpwC2d6ehsukP0cHrJrP3rkaW0anlv9NTHg8gPPLSHfqCcvwg8EBdeY9Xxg5wgH3joxIvRDiA0IrOFYQ1iCmhTqHL27mk8x3wbw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41b8:202:deb::311:108"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763470956;
+	cv=none; b=F91aimO8UgKzdXi18+4EGENf+6eFZFFbSyapS2ZmmLBLidE2979FRd00aOeMX2g30SGxLdbxrnyatKkIcI23J2y8jhm2FofT/UEfoXk524gId2ob2xNNhKQhRIxa2/H6ZuTyx4D0KKmrdnHqtarCWw5vws6I45ycS90nsVncLP9U63hPyGFulRw2q5ssLdahzhJycMbMsFjHui0zDhTJ8Zi44th2FLc5nRTkY6IKxAbAwD8yq6WkFjShHXKHjcq6xX9NZYjSixKUauIXR5EcCiIJq9tR3uYuOeQhAQGEQAOs+XdG74XPKs3d9wrx7JjcI+7uzjP8Gwj2tvoPBvXhxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763468251; c=relaxed/relaxed;
-	bh=yA1z6/yzX06CrYPNUozJJh9ZoiURLo5ikElsnyrc8uU=;
-	h=Date:Message-Id:To:Cc:Subject:From:Mime-Version:Content-Type; b=A8Jzzm9qAb2/ZMmDz3V2mZVyEEG/ctBFn5uuYsjre/8/BvtY5GCAEdCMZ53NbmtXyFWIPGX62ojtaE00JzxQb9A12v55wRgtB+t8XNZSHeBBEG63MedmDdtrrUrKmtD0Cg/6wEKhRXPKBHicq5YRjiAdIqgnZ8mo7KHBfg5uoCpbPOO19G0pGiCbHdbBKVMzPjOJdHZA5rkv1KVfPIPYnTTHjX4WAFgK4PusAWyuSIHy9R6mAht0G3a8Kc3H+b7RJ/7yHpHt7SWzbjk8b8qWnl3GuVs0wvnDWrTurlLoM6c6hTejEiYV3YTNX07/w8Du0aULd1XgDZaybZxcJWRQTg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de; dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=SKeWdvoj; dkim-atps=neutral; spf=pass (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org) smtp.mailfrom=exactco.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de
+	t=1763470956; c=relaxed/relaxed;
+	bh=CB2uOReZgsobtwaBKBpmnV0Wphw1VrV1rB9pFCourqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=diHVzN0yA9EVI1ptNYVu06iAm6yCM64FXFe2mUu73+hFcbdU6h+3XvNEY9EBsrZAIXS8K5FA7DyGUtA5AEe+teoluZ4m6vmxRjm9yyTGBDWeLi7LaJRmAyc9grgXF9VN+svuhRJFmWnQg+XudPMLN5A8CW3pJRHkkKtxE5a1m1FFjf/+9r6DLUXL07LytSGjYmIK/+pXMk92Ms2WCFfwgkgGh2SRj/stMv41NlzIlmnVpzizgQsnFoojdGE/Ue8kJXzvA5Oxw7EeP6EhyxHISSycVLq94N5NIAw3Jy2j2aThlAXjuFuNZBYIIKe5dyJPAeNHTC+drFXFz1b8ULAstg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; dkim=pass (2048-bit key; secure) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=v04/qdvc; dkim-atps=neutral; spf=none (client-ip=2001:41b8:202:deb::311:108; helo=stravinsky.debian.org; envelope-from=leitao@debian.org; receiver=lists.ozlabs.org) smtp.mailfrom=debian.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=SKeWdvoj;
+	dkim=pass (2048-bit key; secure) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=v04/qdvc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=exactco.de (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org)
-Received: from exactco.de (exactco.de [176.9.10.151])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=debian.org (client-ip=2001:41b8:202:deb::311:108; helo=stravinsky.debian.org; envelope-from=leitao@debian.org; receiver=lists.ozlabs.org)
+Received: from stravinsky.debian.org (stravinsky.debian.org [IPv6:2001:41b8:202:deb::311:108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4d9kBx1bK4z2yqP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Nov 2025 23:17:28 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
-	s=x; h=Content-Transfer-Encoding:Content-Type:Mime-Version:From:Subject:Cc:To
-	:Message-Id:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
-	List-Owner:List-Archive; bh=yA1z6/yzX06CrYPNUozJJh9ZoiURLo5ikElsnyrc8uU=; b=S
-	KeWdvojIDZ9GnBUOh2L2GLCjWXTUovyDh2aZprrXCzXLADAKfJ2mz5PR31GBFQQ+YLU7dbwl+uBSj
-	xawb3/I1mG5sn5GF/0Qj4UcPiSBQoygOrcvNQ316GvHF1l05+uGw1vrkubISIvk9UbNshQrSQFv+5
-	BCE57WIVg6PGax+hCm9eZ8SoHCz92j2YAy8c0YfpXsc5sBcUv4DJ2GVP9McavTMv4bOkAdi9N71RV
-	hE7SR7sz3bVLi3P28EYH12vct6mV2uJaGGsvsmcL4MHbDRLHiKPUuWAo6G68bRAr0RBhSqgovlLX8
-	EDEszr7HDJQTpWoyaLP9AnlJVE2weGQIw==;
-Date: Tue, 18 Nov 2025 13:17:35 +0100 (CET)
-Message-Id: <20251118.131735.802732108462696577.rene@exactco.de>
-To: linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe
- Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] modpost: amend ppc symnames for -Os build
-From: =?iso-8859-1?Q?Ren=E9?= Rebe <rene@exactco.de>
-X-Mailer: Mew version 6.10 on Emacs 30.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4d9lBz2jdbz2yrg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 00:02:35 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=CB2uOReZgsobtwaBKBpmnV0Wphw1VrV1rB9pFCourqE=; b=v04/qdvc32+tt+zPP4pbDmrzkf
+	zXGN+g/n7abQcm8ATAQLOOicg69LK54vwGhdR8jdcZh3yLsGHMNA3Ut6OlqqiMOMStHcN7gxFfKxN
+	enI0+iv1n4sauXKQob6ILS8ypE7nUnadXxnfCJlEXdPaBj7rxfELh4+KlLT/MN2SBs8/tGY6r+j1s
+	CViq6f347IAYD/ZBAw4f+BRM+uNF9RSbdew7zxtwQhEk2cL2iXEVhLh8nlUMvdMAnDuiu44RuoVai
+	ciM5p5UncHRv9cYN7CNYAyQVHPxLxsepPQA/I94/WwnvGJaaw6RSksnJT8E8jby62YqZCLWtPio7B
+	sRZNlS6w==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vLLLH-00FHMs-OI; Tue, 18 Nov 2025 13:01:56 +0000
+Date: Tue, 18 Nov 2025 05:01:47 -0800
+From: Breno Leitao <leitao@debian.org>
+To: tony.luck@intel.com, bp@alien8.de, akpm@linux-foundation.org
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, osandov@osandov.com, xueshuai@linux.alibaba.com, 
+	konrad.wilk@oracle.com, linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-pci@vger.kernel.org, kernel-team@meta.com, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
+	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
+	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH RESEND v5] vmcoreinfo: Track and log recoverable hardware
+ errors
+Message-ID: <vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
+References: <20251010-vmcore_hw_error-v5-1-636ede3efe44@debian.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,55 +73,39 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251010-vmcore_hw_error-v5-1-636ede3efe44@debian.org>
+X-Debian-User: leitao
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Building a size optimized ppc kernel, gcc emmits more symbols than
-currently allowed listed in scripts/mod/modpost.c. Add to fix:
+Hello Andrew, Borislav, Tony,
 
-MODPOST Module.symvers
-ERROR: modpost: "_restfpr_20" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_restfpr_26" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_restfpr_22" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_savegpr1_27" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_savegpr1_25" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_restfpr_28" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_savegpr1_29" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_savefpr_20" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_savefpr_22" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_restfpr_15" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-WARNING: modpost: suppressed 56 unresolved symbol warnings because there were too many)
+On Fri, Oct 10, 2025 at 03:36:50AM -0700, Breno Leitao wrote:
+> Introduce a generic infrastructure for tracking recoverable hardware
+> errors (HW errors that are visible to the OS but does not cause a panic)
+> and record them for vmcore consumption. This aids post-mortem crash
+> analysis tools by preserving a count and timestamp for the last
+> occurrence of such errors. On the other side, correctable errors, which
+> the OS typically remains unaware of because the underlying hardware
+> handles them transparently, are less relevant for crash dump
+> and therefore are NOT tracked in this infrastructure.
 
-Signed-off-by: René Rebe <rene@exactco.de>
+<snip>
 
----
- scripts/mod/modpost.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> Suggested-by: Tony Luck <tony.luck@intel.com>
+> Suggested-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 47c8aa2a6939..133dfa16308a 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -602,6 +602,10 @@ static int ignore_undef_symbol(struct elf_info *info, const char *symname)
- 		/* Special register function linked on all modules during final link of .ko */
- 		if (strstarts(symname, "_restgpr0_") ||
- 		    strstarts(symname, "_savegpr0_") ||
-+		    strstarts(symname, "_restgpr1_") ||
-+		    strstarts(symname, "_savegpr1_") ||
-+		    strstarts(symname, "_restfpr_") ||
-+		    strstarts(symname, "_savefpr_") ||
- 		    strstarts(symname, "_restvr_") ||
- 		    strstarts(symname, "_savevr_") ||
- 		    strcmp(symname, ".TOC.") == 0)
--- 
-2.46.0
+Do you know what is the right tree for this patch?
 
--- 
-René Rebe, ExactCODE GmbH, Berlin, Germany
-https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
+I am wondering if it should go through Kdump, x86 or RAS/MCE tree?
+
+Thanks
+--breno
 
