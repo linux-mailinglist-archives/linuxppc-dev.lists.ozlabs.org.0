@@ -1,46 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-14336-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14339-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F75C6D8A5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Nov 2025 09:59:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46611C6D9B1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Nov 2025 10:10:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dBFlR62z6z3bkT;
-	Wed, 19 Nov 2025 19:58:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dBG162FF5z3bpt;
+	Wed, 19 Nov 2025 20:10:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763542739;
-	cv=none; b=EDYGp6bdUZQXD9KJ/Xr1hkiWppO2kWl8SN/Z7iULBNL2wjSgVbbLrTSLWzxhZSqECPCp1Qz4rhQ07i499gNSYaLabCJvM+xzI0nnNnymOP5HKh+lqCEZhCVfdl92i8BmrSraiXHr243pMY7+1UmP1FYmyhdq2MxMEOrbkjyPouxWoWCcZNY8boMzPvog+UB7hKbwyxI0683gAwW7BZ5qbhA1lebU2QXAtBusKYyWSuszGqsgeTWly0W1zV0Y3swa9BtO8YQO9mJb1XSIHZ6/UZWMNrbWSGkXfpJooHxF280ia3TS3Dk+/Qn9YPUbYDa8OLwcCHQI9R9/cmQtwkaUVQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:3000::53df:4ef0:0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763543450;
+	cv=none; b=a4QybON+K/BYN5ZjKE3jzmvKjyMyk0FWDYZU7wwSCH3j7wHD0PKEbb2MzWlUAsImhARKtCs5cGKKfKMyRSKX2e35n7mGHo63/A6ambuS+Taf4upy9PnAD4O0xJ0BZOfRWj7fs8VBB0MWFr7bJ4iYFq8BthSi3E6+vGZRd0uKvF6Auydwm9uCZ0O/smsu6jpL+Mg2AF9+KWx3+Mw8WmHCKrvD/EBw3LgWcns6Hj2WI9pp63j+SYbyEkFVjLx8ZKolBTnS0bViDDU7Fu/4K8IivB67c6irN1LLfYmrLDszq8JokPmORlRFQ/WUBiPFn4eN5swj/ZU87LqHjME0LtKs/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763542739; c=relaxed/relaxed;
-	bh=zK7/rmTdFkRcU6KQrm7q6Fs+RNfxaad8fq4tcrwHTmk=;
-	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=FdCj64MSroU7/xvndgc2MK5XatZQmRkkd5DdwRqQ+eydd2DTJkXdF03sXLuu8A29GZBQ+Gpenho9xNLZmjbkg05HATIc76JKAoQ2CV9nXqPTG6d19qedby7sSY1U6cMekMU0eBo5gTT5hg75KFqSa+XitHGsqSSSw1BgMFEdxbeSQQDjodT7Wv23uuMDZuMaK4Cct/wH3bIiu1o15RSwwX/h/vA/ZGIqggqbeB2IjQNnTtDz3s7S5NbLFevXpgVOsJJQa6dloWElTljJIJFORvooVm1dlRikTKRhSizgoy3XdG6L0RIejWcdHya13GjbIYfbirLnIIJJfHVPkk4kKw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org) smtp.mailfrom=wunner.de
+	t=1763543450; c=relaxed/relaxed;
+	bh=Ol7Yca3OwirrWn+clPayPFntNbsnCjfymBMu4YYkhk4=;
+	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=V+7PQRoTBBChOjX6rvhAST+zf/06Gee4VF5bQuAKtUlRmijV5qEh/CnVNFqHM3+H6AvHJEqFJy6QWdirnaZjQjMYkGt1WuhVa15/HDcRNFFCmpeauWzpB8Xi/+lth4zZmxUmmKIqtyCHNJR2CZjDwQUs5ZReuInn0KBqumkNAt2HFhyH2StkiyJv7v/kIOHqUvAexs7pmk30Ic4TiD4baQ57HGX+Kf84p+2B5lFQjDdtsDqIbos8T8+2kBOWremNm1PPm5Xxp59fdxrehjXg414DongutPakktGmM0mX23dkV+Pmb/MZbGNgEdxQ2vZKqB/Sd+MBc8+kTbZdq6NdCQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org) smtp.mailfrom=wunner.de
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wunner.de (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 479 seconds by postgrey-1.37 at boromir; Wed, 19 Nov 2025 19:58:59 AEDT
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wunner.de (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 478 seconds by postgrey-1.37 at boromir; Wed, 19 Nov 2025 20:10:49 AEDT
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [IPv6:2a01:37:3000::53df:4ef0:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dBFlR0Vc9z3bcP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 19:58:59 +1100 (AEDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dBG153MNqz3bn4
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 20:10:49 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
 	 client-signature ECDSA (secp384r1) client-digest SHA384)
 	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 5F1E02C000B0;
-	Wed, 19 Nov 2025 09:58:56 +0100 (CET)
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id CA1C7200803E;
+	Wed, 19 Nov 2025 10:02:43 +0100 (CET)
 Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 36BA4D5EC; Wed, 19 Nov 2025 09:58:56 +0100 (CET)
-Message-ID: <094f2aad64418710daf0940112abe5a0afdc6bce.1763483367.git.lukas@wunner.de>
+	id C0714E729; Wed, 19 Nov 2025 10:02:43 +0100 (CET)
+Message-ID: <fd167945bd7852e1ca08cd4b202130659eea2c2f.1763483367.git.lukas@wunner.de>
 In-Reply-To: <cover.1763483367.git.lukas@wunner.de>
 References: <cover.1763483367.git.lukas@wunner.de>
 From: Lukas Wunner <lukas@wunner.de>
-Date: Wed, 19 Nov 2025 09:50:01 +0100
-Subject: [PATCH v2 1/3] PCI/PM: Reinstate clearing state_saved in legacy and
- !pm codepaths
+Date: Wed, 19 Nov 2025 09:50:02 +0100
+Subject: [PATCH v2 2/3] PCI/PM: Stop needlessly clearing state_saved on
+ enumeration and thaw
 To: Bjorn Helgaas <helgaas@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: Riana Tauro <riana.tauro@intel.com>, "Sean C. Dardis" <sean.c.dardis@intel.com>, Farhan Ali <alifm@linux.ibm.com>, Benjamin Block <bblock@linux.ibm.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Alek Du <alek.du@intel.com>, "Mahesh J Salgaonkar" <mahesh@linux.ibm.com>, Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, linux-pm@vger.kernel.org
 X-Spam-Status: No, score=-0.7 required=3.0 tests=RCVD_IN_DNSWL_LOW,
@@ -59,83 +59,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 
-When a PCI device is suspended, it is normally the PCI core's job to save
-Config Space and put the device into a low power state.  However drivers
-are allowed to assume these responsibilities.  When they do, the PCI core
-can tell by looking at the state_saved flag in struct pci_dev:  The flag
-is cleared before commencing the suspend sequence and it is set when
-pci_save_state() is called.  If the PCI core finds the flag set late in
-the suspend sequence, it refrains from calling pci_save_state() itself.
+The state_saved flag tells the PCI core whether a driver assumes
+responsibility to save Config Space and put the device into a low power
+state on suspend.
 
-But there are two corner cases where the PCI core neglects to clear the
-flag before commencing the suspend sequence:
+The flag is currently initialized to false on enumeration, even though it
+already is false (because struct pci_dev is zeroed by kzalloc()) and even
+though it is set to false before commencing the suspend sequence (the only
+code path where it's relevant).
 
-* If a driver has legacy PCI PM callbacks, pci_legacy_suspend() neglects
-  to clear the flag.  The (stale) flag is subsequently queried by
-  pci_legacy_suspend() itself and pci_legacy_suspend_late().
+The flag is also set to false in pci_pm_thaw(), i.e. on resume, when it's
+no longer relevant.
 
-* If a device has no driver or its driver has no PCI PM callbacks,
-  pci_pm_freeze() neglects to clear the flag.  The (stale) flag is
-  subsequently queried by pci_pm_freeze_noirq().
+Drop these two superfluous flag assignments for simplicity.
 
-The flag may be set prior to suspend if the device went through error
-recovery:  Drivers commonly invoke pci_restore_state() + pci_save_state()
-to restore Config Space after reset.
-
-The flag may also be set if drivers call pci_save_state() on probe to
-allow for recovery from subsequent errors.
-
-The result is that pci_legacy_suspend_late() and pci_pm_freeze_noirq()
-don't call pci_save_state() and so the state that will be restored on
-resume is the one recorded on last error recovery or on probe, not the one
-that the device had on suspend.  If the two states happen to be identical,
-there's no problem.
-
-Reinstate clearing the flag in pci_legacy_suspend() and pci_pm_freeze().
-The two functions used to do that until commit 4b77b0a2ba27 ("PCI: Clear
-saved_state after the state has been restored") deemed it unnecessary
-because it assumed that it's sufficient to clear the flag on resume in
-pci_restore_state().  The commit seemingly did not take into account that
-pci_save_state() and pci_restore_state() are not only used by power
-management code, but also for error recovery.
-
-Devices without driver or whose driver has no PCI PM callbacks may be in
-runtime suspend when pci_pm_freeze() is called.  Their state has already
-been saved, so don't clear the flag to skip a pointless pci_save_state()
-in pci_pm_freeze_noirq().
-
-None of the drivers with legacy PCI PM callbacks seem to use runtime PM,
-so clear the flag unconditionally in their case.
-
-Fixes: 4b77b0a2ba27 ("PCI: Clear saved_state after the state has been restored")
 Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org # v2.6.32+
 ---
- drivers/pci/pci-driver.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pci/pci-driver.c | 2 --
+ drivers/pci/probe.c      | 2 --
+ 2 files changed, 4 deletions(-)
 
 diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 302d61783f6c..327b21c48614 100644
+index 327b21c48614..7c2d9d596258 100644
 --- a/drivers/pci/pci-driver.c
 +++ b/drivers/pci/pci-driver.c
-@@ -629,6 +629,8 @@ static int pci_legacy_suspend(struct device *dev, pm_message_t state)
- 	struct pci_dev *pci_dev = to_pci_dev(dev);
- 	struct pci_driver *drv = pci_dev->driver;
- 
-+	pci_dev->state_saved = false;
-+
- 	if (drv && drv->suspend) {
- 		pci_power_t prev = pci_dev->current_state;
- 		int error;
-@@ -1036,6 +1038,8 @@ static int pci_pm_freeze(struct device *dev)
- 
- 	if (!pm) {
- 		pci_pm_default_suspend(pci_dev);
-+		if (!pm_runtime_suspended(dev))
-+			pci_dev->state_saved = false;
- 		return 0;
+@@ -1133,8 +1133,6 @@ static int pci_pm_thaw(struct device *dev)
+ 		pci_pm_reenable_device(pci_dev);
  	}
  
+-	pci_dev->state_saved = false;
+-
+ 	return error;
+ }
+ 
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index c83e75a0ec12..c7c7a3d5ec0f 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2747,8 +2747,6 @@ void pci_device_add(struct pci_dev *dev, struct pci_bus *bus)
+ 
+ 	pci_reassigndev_resource_alignment(dev);
+ 
+-	dev->state_saved = false;
+-
+ 	pci_init_capabilities(dev);
+ 
+ 	/*
 -- 
 2.51.0
 
