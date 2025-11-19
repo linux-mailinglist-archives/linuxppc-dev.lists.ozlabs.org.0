@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-14315-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14314-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABCDBC6CE42
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Nov 2025 07:22:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2698AC6CE3F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Nov 2025 07:22:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dBBGS6s5Sz3bVW;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dBBGS07Ssz30Vy;
 	Wed, 19 Nov 2025 17:22:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763533328;
-	cv=none; b=XXhnu0FMZr3q1/7dsyV3Lr6mP5nBoImZwV3t/ftYGhGOuVKfKfp8DPd2sAxK7aryRGzs2ZhO5xS5mtIPAfW66UdAbMxXiFhb9FMpM698rZdED43G6VdFRdmOaxH0iX3yNltbujFC3iVZQhBrLuo/R2q8Xw15VzhugGctKTilBSvvLndC+LNC//NAbhtVG1BVJTl88EB0ZpTfSZS9LJFink1P0J6n1MtDyIiIP6qpWxOVTvtJRlyQMxyzrxS3/FUonAMcO4jy7O/ysx+Ea4S7RUENl6Q2iFTkZLvdV72Z9ZE0hEBRuQJFBNvdF/Ppo39kmxwmrn/rbR+80fwZcQTCCw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763533327;
+	cv=none; b=ihMtzUSYmVGBuTtdWTQ0besSUeAnfD3n6tNm5qojxW/4lD4Arczrfmy69y7oovqUET7ORxuhDYZWMQQXx6wVpKqgWaotjInRvvrwjTFkxJEKWiEQaOsZP1gXGdik04swWrBRlMC41s1dz/O4yayNdkPCUwIlxzIGNrmwOGyFoNerVdBPLYCB8dx2JTfLF67cxblqRpiWBEnNbQCGSavLAmldW+MktFU80asY6s1VjDmZlSriuYn0Tf7FGmC9Qa9rmnjFMmstf7i6SP4Desa6TDzjahVsdzJd+yCgYxAewQigfWDOGRkbNbnI0FmBHxEu9IJTzhFSgO/dub5ck1hxwQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763533328; c=relaxed/relaxed;
-	bh=SsxUtQuljbB31H4Vb1A8/PH/i69O3OULsuRsxx0vaAs=;
+	t=1763533327; c=relaxed/relaxed;
+	bh=TdgnQQqw3dse0Fr7rtbUgEkaeZgAUCl9B4/S5gvCyY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtkfbUMP7C4UTzRxdZ8RcCUbypYYkCg+3xYIehki2NUCMbF0DH6lNxnFtsOAYiewzg6O+4xFtB5omT04VmGSCrpr9cfLA0eZePgzBo8u0162ePNhm9balk+QMsCeCsU82aLjHJCZjF/RgTyuk5/xXSX7ZhswYlFvbX9H9S3wpyDV8ilQj1IbbzDqnOJXd64TG3vKIS92VJlBLTg+94re7QP5VMdQX2xrRrk99EL9RmsNz4jRDAFonsfsGYHlBMbv27leDiLEPAWFPmqlGh423wFqPzuo0c4Qhx0bwodsjxj+JsCLZVWm9d66ccBKoaHDtIKQ7yUrEerD0av2zCdgWA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mjZ4V/IE; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=i3TyDKEi7bdYXn0a+jeQhKVK9opkomRhILmDiiGowD3exzuvz08JhTb8/7KJFoglbdvm1IMzY+atafqP5vxOBlYYy3fnrt6aSUC7HRsML4V6LVXkS3sDH9+J4sslxSZoRpOvVYBkMsrPHlKeHCtEk42wiBVFNXfk9QA9rd9unSNAqxTaPbzreZMgUbzhUv5yVzvVxi2Ro0tP7cPTp/SO6hIEHcefC7TLzdhdjgIUog3mkgu6se/SktaEWg0ksVnZb1tpSYWtJ1lj8Udk1XPglRpkt2sUH0Z3iauQ0U0bccEBOOzEyGnBm8961DTXqaXFwogU8JnQUuvhv6iaY4BE+A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j/ECiUIX; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mjZ4V/IE;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j/ECiUIX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dBBGS1hzRz30WT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 17:22:08 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AIHUbnK011607;
-	Wed, 19 Nov 2025 06:21:44 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dBBGR1Phvz30V2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 17:22:06 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AIGptgK025875;
+	Wed, 19 Nov 2025 06:21:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=SsxUtQuljbB31H4Vb
-	1A8/PH/i69O3OULsuRsxx0vaAs=; b=mjZ4V/IE7n7zNX/uOrIWHQXWUSNUzw1Fn
-	ic3Aym9Y+kpx/05GqQTl/f1ibztgKp+jpiZ5nS3/JqJDOlZ2gmNnzkZ5Dgo6Tc1A
-	LNwhMt5PShcJkAQltzsq7jgyW8W1iwzSxL7bDsBvblFB/EQf0QnFvWO6DsslE6K9
-	rzvXoQnnUymcADvWWeO/9E8Xqx/+Y1WFCWmcDjROT/TaDJI0mjd1sUJtQvGgO704
-	HOImehvdofhUaMQHx/xoN3hzAGQvgBD/y+9hUpq2fVJy4OQWw2iP5fH/qGmwShEf
-	G5ub6yHgshfNqFJbbrkn9OXhu/2uOs0+hjKWUs47F/mnkLB3edN0Q==
+	:mime-version:references:subject:to; s=pp1; bh=TdgnQQqw3dse0Fr7r
+	tbUgEkaeZgAUCl9B4/S5gvCyY4=; b=j/ECiUIXMh5fpZM/U9L9Uk4/d5jK2mJ1l
+	v3G+kdw+ufFmNgvrIDstrqws9VpWDQZSZhfg4aNJNsmbUI2Xe9GmZ222s0Zsa0Qb
+	1c1PShgHu+WU5TzkYy9MDCIYO7ceTLsX2cqAT9VqoyZk9SZaJaGVAWaT5dcPqtMQ
+	LFEERRwLRcOrCSmR4oYVFkPb2IhQisryveEODmcHrfVOOdEbRHFJGLWZV2IGn7q0
+	BA4tiprwRuQXpNMgvvbFAZRyPxvW9ZaxoGPu9xpZgD4O/UU+jxYUZ102CjQLoImR
+	BXCpKsLd2Rnz2GsgXTCDw7CYQ+rw1H+6xTmKZ7/EeIQ47WfjeOjPQ==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejk1ewa2-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejjtx545-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Nov 2025 06:21:44 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AJ6EI6D008689;
-	Wed, 19 Nov 2025 06:21:44 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejk1ew9y-1
+	Wed, 19 Nov 2025 06:21:48 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AJ6LAki031375;
+	Wed, 19 Nov 2025 06:21:48 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejjtx542-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Nov 2025 06:21:43 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AJ4IvwI006959;
-	Wed, 19 Nov 2025 06:21:42 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4af62jexs7-1
+	Wed, 19 Nov 2025 06:21:48 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AJ3wTUu022340;
+	Wed, 19 Nov 2025 06:21:47 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4af4umy559-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Nov 2025 06:21:42 +0000
+	Wed, 19 Nov 2025 06:21:47 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AJ6Ld8R59900380
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AJ6LhWV40173884
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Nov 2025 06:21:39 GMT
+	Wed, 19 Nov 2025 06:21:43 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3570B20043;
+	by IMSVA (Postfix) with ESMTP id 654D020043;
+	Wed, 19 Nov 2025 06:21:43 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D70320040;
 	Wed, 19 Nov 2025 06:21:39 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4EF1420040;
-	Wed, 19 Nov 2025 06:21:35 +0000 (GMT)
 Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.ibm.com.com (unknown [9.39.25.220])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 19 Nov 2025 06:21:35 +0000 (GMT)
+	Wed, 19 Nov 2025 06:21:39 +0000 (GMT)
 From: Shrikanth Hegde <sshegde@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Cc: sshegde@linux.ibm.com, mingo@redhat.com, peterz@infradead.org,
@@ -79,9 +79,9 @@ Cc: sshegde@linux.ibm.com, mingo@redhat.com, peterz@infradead.org,
         kprateek.nayak@amd.com, vschneid@redhat.com, iii@linux.ibm.com,
         huschle@linux.ibm.com, rostedt@goodmis.org, dietmar.eggemann@arm.com,
         christophe.leroy@csgroup.eu
-Subject: [RFC PATCH v4 02/17] cpumask: Introduce cpu_paravirt_mask
-Date: Wed, 19 Nov 2025 11:50:45 +0530
-Message-ID: <20251119062100.1112520-3-sshegde@linux.ibm.com>
+Subject: [RFC PATCH v4 03/17] sched/core: Dont allow to use CPU marked as paravirt
+Date: Wed, 19 Nov 2025 11:50:46 +0530
+Message-ID: <20251119062100.1112520-4-sshegde@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251119062100.1112520-1-sshegde@linux.ibm.com>
 References: <20251119062100.1112520-1-sshegde@linux.ibm.com>
@@ -100,88 +100,74 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=C/nkCAP+ c=1 sm=1 tr=0 ts=691d61f8 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=PotXWsJoChvkt9Z01ZEA:9
-X-Proofpoint-GUID: SeUl8-wKJs6eo51LYYd04r9hwVjjx5Vn
-X-Proofpoint-ORIG-GUID: EHBrfSJ6VLeGaRXmrCmU7qeCGo-A_gSy
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfXwzLq0WQrfmww
- T7vwK5CXfKEbtqpXSxzfndKzW4FABy4G8W4cWkqKGuJvrQnm/lNOtOzWmN5bSXLBDTs16dq+a2z
- B6f2Nd/70CcgTj8ncEUaX22dItJN2+2J6E3XMDB2ACeGZtbSLYFKCrRTqWtGMRpHnOMKnV2ezmG
- ADNKL4OCG9iUwz0ozpo/C8+pclFRffnGwegiVsYb15rrmB/HXJlYDLd9H4e8FgGEWu+b2bwzxM6
- /4aPK+sI7p6gdaZlIqBJz9FPPF36sjKtLHtgbI3ovZzlybQ5dGxAEiSNTMQlsm5pbrEJ+6Cv3gm
- rbn/jSOUSPYIasp0JANwjJ6Cx/KsK/xLuTpbDF9UQWZId/H+oR7eESDN8iOmmBh8L1T/jr2LtEy
- FwGqgnAzGo0ZQMLIoMKHjDUR2R4/Hw==
+X-Proofpoint-GUID: RmD7JrXzjaEmULP8Wb7yKpvJTEVFNXuP
+X-Proofpoint-ORIG-GUID: Yi_8-_bdtM2cdPdRlxASLrxMuM8z5HHX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX7sLczRLJaOz7
+ eG75Ua8tzMMTeWsg4lhNEBo6CYOBm3E3p1vQ8P6AbSSRBf+JX9xDozJGzrpl7ynBUaOl8zgGp8h
+ xSwzaFPp/KlBLKBd4VYSRyJHd49hjfd+3XLDt8aN7m9proYeIGhkmPHBP+I5w+r1rmk5ufVJaw8
+ kZI8v/cFTT/cN3royXzhQH4W6fFB60XzCreKeadRfEUNbNe/do3DAvkVNSydtSFz+YOls37xQ6b
+ m3nvX8DtOjqma62cCMQWrGBX2wWE9lI6LJfFiPu8Dt5uG3sCtd9Tew6+1gjPfl8PS+qv+Ft94fv
+ K39JG4GPkYTEohQ9Hcv7kahjIutlr0gbDFw8C4O/L6R3k2dqN1B8SwqAXTV7V8EyiVg7wIX5OqZ
+ QvkFWU0y+5gf6Y3oYMUJ5RyKibgUAw==
+X-Authority-Analysis: v=2.4 cv=SvOdKfO0 c=1 sm=1 tr=0 ts=691d61fc cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=uXBPIk7YWzXHA4pK:21 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=P8M16rivtmrVeddd8boA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-11-19_01,2025-11-18_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 spamscore=0 impostorscore=0 bulkscore=0
- malwarescore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511150032
+ priorityscore=1501 lowpriorityscore=0 spamscore=0 clxscore=1015
+ suspectscore=0 phishscore=0 adultscore=0 bulkscore=0 impostorscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2511150032
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This patch does
-- Declare and Define cpu_paravirt_mask.
-- Get/Set helpers for it.
+Don't allow a paravirt CPU to be used while looking for a CPU to use.
 
-Values are set by arch code and consumed by the scheduler.
+Push task mechanism uses stopper thread which going to call
+select_fallback_rq and use this mechanism to avoid picking a paravirt CPU.
 
 Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 ---
- include/linux/cpumask.h | 20 ++++++++++++++++++++
- kernel/sched/core.c     |  5 +++++
- 2 files changed, 25 insertions(+)
+ kernel/sched/core.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
-index ff8f41ab7ce6..079903851341 100644
---- a/include/linux/cpumask.h
-+++ b/include/linux/cpumask.h
-@@ -1270,6 +1270,26 @@ static __always_inline bool cpu_dying(unsigned int cpu)
- 
- #endif /* NR_CPUS > 1 */
- 
-+/*
-+ * All related wrappers kept together to avoid too many ifdefs
-+ * See Documentation/scheduler/sched-arch.rst for details
-+ */
-+#ifdef CONFIG_PARAVIRT
-+extern struct cpumask __cpu_paravirt_mask;
-+#define cpu_paravirt_mask    ((const struct cpumask *)&__cpu_paravirt_mask)
-+#define set_cpu_paravirt(cpu, paravirt) assign_cpu((cpu), &__cpu_paravirt_mask, (paravirt))
-+
-+static __always_inline bool cpu_paravirt(unsigned int cpu)
-+{
-+	return cpumask_test_cpu(cpu, cpu_paravirt_mask);
-+}
-+#else
-+static __always_inline bool cpu_paravirt(unsigned int cpu)
-+{
-+	return false;
-+}
-+#endif
-+
- #define cpu_is_offline(cpu)	unlikely(!cpu_online(cpu))
- 
- #if NR_CPUS <= BITS_PER_LONG
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 9f10cfbdc228..40db5e659994 100644
+index 40db5e659994..90fc04d84b74 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -10852,3 +10852,8 @@ void sched_change_end(struct sched_change_ctx *ctx)
- 		p->sched_class->prio_changed(rq, p, ctx->prio);
- 	}
- }
+@@ -2397,8 +2397,13 @@ static inline bool is_cpu_allowed(struct task_struct *p, int cpu)
+ 		return cpu_online(cpu);
+ 
+ 	/* Non kernel threads are not allowed during either online or offline. */
+-	if (!(p->flags & PF_KTHREAD))
+-		return cpu_active(cpu);
++	if (!(p->flags & PF_KTHREAD)) {
++		/* A user thread shouldn't be allowed on a paravirt cpu */
++		if (cpu_paravirt(cpu))
++			return false;
++		else
++			return cpu_active(cpu);
++	}
+ 
+ 	/* KTHREAD_IS_PER_CPU is always allowed. */
+ 	if (kthread_is_per_cpu(p))
+@@ -2408,6 +2413,10 @@ static inline bool is_cpu_allowed(struct task_struct *p, int cpu)
+ 	if (cpu_dying(cpu))
+ 		return false;
+ 
++	/* Non percpu kthreads should stay away from paravirt cpu*/
++	if (cpu_paravirt(cpu))
++		return false;
 +
-+#ifdef CONFIG_PARAVIRT
-+struct cpumask __cpu_paravirt_mask __read_mostly;
-+EXPORT_SYMBOL(__cpu_paravirt_mask);
-+#endif
+ 	/* But are allowed during online. */
+ 	return cpu_online(cpu);
+ }
 -- 
 2.47.3
 
