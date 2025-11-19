@@ -1,71 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-14369-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14370-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3667C70E9F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Nov 2025 20:56:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E887C711C6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Nov 2025 22:09:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dBXKc1v1jz3dKm;
-	Thu, 20 Nov 2025 06:56:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dBYxm6H8Xz2yvM;
+	Thu, 20 Nov 2025 08:09:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763582164;
-	cv=none; b=jFH88A3S9Y4gVgeJflHOn/IYXQQi4mi3Cww7rF4YfC6hYOWTMnQ//3TXXZPe2U3PlgU18QMQ2/QaexmbY1oV6Qr5DFtLj0ZvXAtFZdmKDBrIsi110vowZPU1wcZhldd8jiacn0VvoW6D/D10SnQMwvPg0s/G12x8y/7f5tY3/oKmT/eiEXwp1YVofObjYyppiK3ur6JMgCxabBSIoultjP1ap1LcsCUvZQejgpjgCzd/9Q0jyE4EQUpzlPLrgNNRnUEh+gT7IfobidiA7NM6siMWrWwNRJiieF3S98DzL/971VX7aQyR9+Ep8OG7y5rhXybTTVf4HPDARGUGNTkAgg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763586540;
+	cv=none; b=j/Xla8DOGS/lHk1wwIH60MPfXhzoibx4SxDFlZmfSKXEwc2+uSyJt9gwYAJ8UR196ewPaRpi7GWTJORhwUrPl1lbPKBtO3ICcAIYeaA8SkFbM/Q7ohk00mMAdUOQvYGzMO0+0yN0XpsxTRT0jYq1u7gkwcfqhUp8xVsBXNX+UKsumKyq2Si0oXRZQUp+MXd6Pz9ZLnKEGJMGudU7EtBjwdOW9sdpJcmW2iHEj0M4fpJTxDImQA9r//SKDcqOObDsn+rAgfXJC/jwvtUDPQWLpE56jQc6L0ICsoQ24gBs9KKLp4i6NXUbpVlwWSKUKkaFx8cL4BT4fxLVUeFjyVyAhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763582164; c=relaxed/relaxed;
-	bh=DN/DzA6q+86ev6MGPfAT+dLF+J2Uxfsbiqindp3jA1o=;
+	t=1763586540; c=relaxed/relaxed;
+	bh=6pLw1lwdEKcLbL6fi/zFw3hXa1sHyiQKrHPNXECsD6k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nJGA6shIAzkSpzvQSkJj5n6nqUYo5krK5CA8iFZthtPSNZ7VzEfUYbo5EDjeaYC+Fdpqrc3jUhaZieY9vFO9u8luSoTCuiPF64crUnU1T+SJrEKNWI1TiLCHLo954cbLVpke8LQV8omoFkhztPMYu/LXEdNr9rGWox4bYsGtEu9PTxTTljq/rQbIhM415gffwiFR9UAQ5QTYKVkZaD1hV35k3eH8GIE43PCtjbagPKFCBRvlNDHTU583kqQWKf4Lj5jq3wvsCHuUqCIX1ZPQpvfzfD5PRmjBZfarXry/+M9FWJA48K3ezx1dpM0jjQQGXpZO4zuSAzD9NOuGPGBm+g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=XTbDClOX; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org) smtp.mailfrom=paul-moore.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+	 To:Cc:Content-Type; b=AcqT8RVYDQ0ALthvYWluakZFpMgfzWC6in+pDMttFKgLMrmVGPnNJ9KYDDDXg+9pQ2q0XI5o1XufVa5GApZNG8FiAY5y5l9XOBq+ANWS8LWagtEDMad0nyN9mZVrhNYKeZhQOuBQKB+ee7XWPFtQ2PKvS6SV9SnNvi/gHdahfC9d2jsONLDp2fXWVW34bqnLTRY2q7y4iTk8dRGCWyfZ6D5WLHAMjIzGUE/HMUaHxtDNr52kdq1HO2a3ABZhnBSb9/61AjT/RD8lvPMgU+THPPG9zYvUCK+Yy1PRlevsGDh5AO9yI02ZeHLFKs3jL4ssXJb3RQoGJ+Al4S39xv1PrA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=otkduF27; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=XTbDClOX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=otkduF27;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=paul-moore.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dBXKb03LLz3dJq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Nov 2025 06:56:01 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-29812589890so1403025ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 11:56:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1763582159; x=1764186959; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DN/DzA6q+86ev6MGPfAT+dLF+J2Uxfsbiqindp3jA1o=;
-        b=XTbDClOXZA2c+Dp5VqRi/LLIZAbXt5rVXv/JlcZ6dFbgV2XIwq1VR4PnKlCXTO6hAf
-         CIw0YOldgDeEM2IlUDYr1IPvgxXwLJaaOjqLwbuQsnhBEARfVmf0wLKnD0iDJho/dd5e
-         1aqAb3UWSBH5wD+fjspW8MGVNodby0UbIkNSf7CADpnyiKkHnNL0Amr1JZ3Szb7Jt7zm
-         lV960kKnS3j0D7etFyoXTY0LhSJWZanfEComWpUOKuq+D0SKL+gyN/31bEj+HBtZlzHJ
-         EabWE7CByloLDgg2/P0gT3iG5Lb5+01ECcKn8e+2vWoSa1N1p4pd8MDLCr4RLRFimk5o
-         y1sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763582159; x=1764186959;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DN/DzA6q+86ev6MGPfAT+dLF+J2Uxfsbiqindp3jA1o=;
-        b=s0cbnNLfGujhuPvwy3r4TE8DYIidkR4UyAMHycN5NL/mOqZ7J5pIWiWlIRnFOj8K3u
-         1+chav2bhShRnjcPNk7Hn/sTxxOB18fM8hz78wCeAjpSWkhuZL/lRwzeZZjb7YbQRgZS
-         mhBMr/jpcCBY1djWNIvQeYTSO1yGlODZ2VSrLkq0ssny0Uny/9rk96sdtSo2bYNmL6qE
-         Zb3N1YYu3nVDAMkRczKw1pdE+lOiAgfwKXzeGEwC4B6x3if8AGHa1k8gJg4Vh8s2foe3
-         74n3sQ9QRMzlIl8ClKCGT82Z9bZGQhuGPFTqsXgyNx3RwkH0NJRunihte18g9rMYWUl9
-         HSWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCViGstzIArhk/CtFjHvDLaUJ/wBcHja8zngOG3+Tx/kONV/XEd6OMhnnB0ipjA5iZcn7SMDuGFf26spZlc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw8wgcrh9qQWdU4p04+Ok4CnhshYmLF5zt48coXnKe2cgvfsRx9
-	h9J0H5jpvkvRT9sQlQkEecfykedg/KR93pR43Rez2HgipQw0mgFQaMgyh/+5xArC6lV/iktUR4E
-	APLHkvRyiTG6HbzW3SUOLWY63gyN/zs09wp1M1IzO
-X-Gm-Gg: ASbGncthnExw+eotnpIGfrWu9yWtBPV8cPJrzXLwZuvx7rULfMnLSKHl9JVOl8BHqen
-	zTfUbxT1n7a8Zfj49pdqt79Vjb/T6nSVkqz6cue2CR0XMkx0mRW2Srhn8S3AZNgiefM4+LwgQHf
-	oJuMu8ou9pu008n4g4RnVOHVJqytDc8iCWb6rNjua3Pdm9QAPNyyY/ikmhV7K3/61PUMIFKJ9qP
-	CEZP7rpgRhPtzHzBXTrxyyAgVoSqmeRThHffHkgFjh0TBfJvBJhCEjUHKf3b42yXGVCB6M=
-X-Google-Smtp-Source: AGHT+IFH9MSHfJWp6YXFB42UsuMhoLOkEWsFTDtMBAdcLCsEfu9ycctu3VPOXdyMN2njeOgrz0I5tCYbRs8o2VLROfk=
-X-Received: by 2002:a17:903:19cd:b0:295:a1a5:baf7 with SMTP id
- d9443c01a7336-29b5b0d7f17mr6451945ad.37.1763582159025; Wed, 19 Nov 2025
- 11:55:59 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dBYxm0HMkz2yvH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Nov 2025 08:09:00 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C2E67419B4
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 21:08:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CEFC116B1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 21:08:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763586537;
+	bh=16ZMTChKTjSpq1K5C21d8JLgJneqgfU+d17xRQO+50Q=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=otkduF27NPeuj9DKNWoIdRslIiTT9935uXGl3u/4xMmUgBaHd1YnbW6P7esDHSmw7
+	 6hTdJkbQZM3oNoMlAcUwGLsmNnoZLoqgJiBJ+9HcVhcModTS6oMdaltmiFQS0FiRvi
+	 Aw06CiSCqz3WrlqssNU9yoXhjgPTkMpdNQ4DKWARDDXhwlUBBcm9UR0UBxr70NJeFk
+	 yYx6SqYL6nD54U7Ct+sY8wCb0HuC/G2MGGsGVK6IbCJYFduWIeuaSDdQ2p1PJnGePJ
+	 wR99Xt5Nu/iE0Yzh3wFbwwG1fag1Gt1bssWgARr7Us3Ziia/eZQNRAJ2DLy9Jz1Pve
+	 8vhtmES6VRcvQ==
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-4503ee5c160so69306b6e.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Nov 2025 13:08:57 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXxDbad4pE1z7BWAXaHu5JXu2EC7RPrLon6r0JlDa8Lo2UK2nY+8A/ecxxy3OFJBux04teo0xIAemC4rkU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzZa//vMjUminRcaQeUVDE00QHSIMHFuZtosiBNopgoSDcjQe0q
+	IdfXhKCXpTMyLTNpNjkORXQVfrqaDQBU86Zi4a9fm154jttmv48kFpN7JfaxRXtrkkhR638mHWc
+	kwenJ6XDbRj6FIZZ8I2TcJTwk3qh6Zf0=
+X-Google-Smtp-Source: AGHT+IHc04nHlgUwT2+nxDos3Jg4thRAorugNdW8jucP4fYf1TIOLd1CqRyUoTwdLt7mI0uTa8AF3kX48Fvs3/j7cF8=
+X-Received: by 2002:a05:6808:68c9:10b0:44f:8f02:c75a with SMTP id
+ 5614622812f47-451000904a8mr176480b6e.1.1763586536919; Wed, 19 Nov 2025
+ 13:08:56 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,55 +66,120 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
- <20250429-module-hashes-v3-7-00e9258def9e@weissschuh.net> <20251119112055.W1l5FOxc@linutronix.de>
-In-Reply-To: <20251119112055.W1l5FOxc@linutronix.de>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 19 Nov 2025 14:55:47 -0500
-X-Gm-Features: AWmQ_bn1L21n_pWrZnJvXRwL1Z-01d6qlYWdrkllcBBpENXLHykDJ3f6oq3wlNk
-Message-ID: <CAHC9VhTuf1u4B3uybZxdojcmz5sFG+_JHUCC=C0N=9gFDmurHg@mail.gmail.com>
-Subject: Re: [PATCH v3 7/9] module: Move lockdown check into generic module loader
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, 
-	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
-	Eric Snowberg <eric.snowberg@oracle.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	=?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>, 
-	Arnout Engelen <arnout@bzzt.net>, Mattia Rizzolo <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>, 
-	Christian Heusel <christian@heusel.eu>, =?UTF-8?Q?C=C3=A2ju_Mihai=2DDrosi?= <mcaju95@gmail.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+References: <cover.1763483367.git.lukas@wunner.de> <094f2aad64418710daf0940112abe5a0afdc6bce.1763483367.git.lukas@wunner.de>
+In-Reply-To: <094f2aad64418710daf0940112abe5a0afdc6bce.1763483367.git.lukas@wunner.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 19 Nov 2025 22:08:44 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gPeQUHY_OpnvGPXgkE2dw4D008V2bFrF14tYgisKD6dQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bnELAxukPfeKquwawkMHEgp3PlGUnRhS77TwPV0fUbQvNQrwqoD1__2ld0
+Message-ID: <CAJZ5v0gPeQUHY_OpnvGPXgkE2dw4D008V2bFrF14tYgisKD6dQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] PCI/PM: Reinstate clearing state_saved in legacy
+ and !pm codepaths
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Riana Tauro <riana.tauro@intel.com>, "Sean C. Dardis" <sean.c.dardis@intel.com>, 
+	Farhan Ali <alifm@linux.ibm.com>, Benjamin Block <bblock@linux.ibm.com>, 
+	Niklas Schnelle <schnelle@linux.ibm.com>, Alek Du <alek.du@intel.com>, 
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org, 
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Nov 19, 2025 at 6:20=E2=80=AFAM Sebastian Andrzej Siewior
-<bigeasy@linutronix.de> wrote:
-> On 2025-04-29 15:04:34 [+0200], Thomas Wei=C3=9Fschuh wrote:
-> > The lockdown check buried in module_sig_check() will not compose well
-> > with the introduction of hash-based module validation.
+On Wed, Nov 19, 2025 at 9:59=E2=80=AFAM Lukas Wunner <lukas@wunner.de> wrot=
+e:
 >
-> An explanation of why would be nice.
+> When a PCI device is suspended, it is normally the PCI core's job to save
+> Config Space and put the device into a low power state.  However drivers
+> are allowed to assume these responsibilities.  When they do, the PCI core
+> can tell by looking at the state_saved flag in struct pci_dev:  The flag
+> is cleared before commencing the suspend sequence and it is set when
+> pci_save_state() is called.  If the PCI core finds the flag set late in
+> the suspend sequence, it refrains from calling pci_save_state() itself.
+>
+> But there are two corner cases where the PCI core neglects to clear the
+> flag before commencing the suspend sequence:
+>
+> * If a driver has legacy PCI PM callbacks, pci_legacy_suspend() neglects
+>   to clear the flag.  The (stale) flag is subsequently queried by
+>   pci_legacy_suspend() itself and pci_legacy_suspend_late().
+>
+> * If a device has no driver or its driver has no PCI PM callbacks,
+>   pci_pm_freeze() neglects to clear the flag.  The (stale) flag is
+>   subsequently queried by pci_pm_freeze_noirq().
+>
+> The flag may be set prior to suspend if the device went through error
+> recovery:  Drivers commonly invoke pci_restore_state() + pci_save_state()
+> to restore Config Space after reset.
+>
+> The flag may also be set if drivers call pci_save_state() on probe to
+> allow for recovery from subsequent errors.
+>
+> The result is that pci_legacy_suspend_late() and pci_pm_freeze_noirq()
+> don't call pci_save_state() and so the state that will be restored on
+> resume is the one recorded on last error recovery or on probe, not the on=
+e
+> that the device had on suspend.  If the two states happen to be identical=
+,
+> there's no problem.
+>
+> Reinstate clearing the flag in pci_legacy_suspend() and pci_pm_freeze().
+> The two functions used to do that until commit 4b77b0a2ba27 ("PCI: Clear
+> saved_state after the state has been restored") deemed it unnecessary
+> because it assumed that it's sufficient to clear the flag on resume in
+> pci_restore_state().  The commit seemingly did not take into account that
+> pci_save_state() and pci_restore_state() are not only used by power
+> management code, but also for error recovery.
 
-/me shrugs
+That's right, it didn't.
 
-I thought the explanation was sufficient.
+> Devices without driver or whose driver has no PCI PM callbacks may be in
+> runtime suspend when pci_pm_freeze() is called.  Their state has already
+> been saved, so don't clear the flag to skip a pointless pci_save_state()
+> in pci_pm_freeze_noirq().
+>
+> None of the drivers with legacy PCI PM callbacks seem to use runtime PM,
+> so clear the flag unconditionally in their case.
+>
+> Fixes: 4b77b0a2ba27 ("PCI: Clear saved_state after the state has been res=
+tored")
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> Cc: stable@vger.kernel.org # v2.6.32+
 
-> > Move it into module_integrity_check() which will work better.
-> >
-> > Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
 
---=20
-paul-moore.com
+> ---
+>  drivers/pci/pci-driver.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+> index 302d61783f6c..327b21c48614 100644
+> --- a/drivers/pci/pci-driver.c
+> +++ b/drivers/pci/pci-driver.c
+> @@ -629,6 +629,8 @@ static int pci_legacy_suspend(struct device *dev, pm_=
+message_t state)
+>         struct pci_dev *pci_dev =3D to_pci_dev(dev);
+>         struct pci_driver *drv =3D pci_dev->driver;
+>
+> +       pci_dev->state_saved =3D false;
+> +
+>         if (drv && drv->suspend) {
+>                 pci_power_t prev =3D pci_dev->current_state;
+>                 int error;
+> @@ -1036,6 +1038,8 @@ static int pci_pm_freeze(struct device *dev)
+>
+>         if (!pm) {
+>                 pci_pm_default_suspend(pci_dev);
+> +               if (!pm_runtime_suspended(dev))
+> +                       pci_dev->state_saved =3D false;
+>                 return 0;
+>         }
+>
+> --
+> 2.51.0
+>
+>
 
