@@ -1,92 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-14410-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14412-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A26AC77D01
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Nov 2025 09:13:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB3EBC7828B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Nov 2025 10:30:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dCSdh2xPBz2yD5;
-	Fri, 21 Nov 2025 19:13:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dCVMM3bgfz2yFq;
+	Fri, 21 Nov 2025 20:30:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763712792;
-	cv=none; b=D+b+EiastFbR+du5ydz9uD7fsfmKFZid8E+OJM5eb7ulWdse9bif4mYcJHhyN5IS5vs9fRyOcCib4mB9tRkW+UjzRQfMNMQmyV8R1/7TaJ4YlFGF1t7oAGWFErYCx8B45/FBiER2lajCDCY/rGOZE2NPuycbepw6+dEftasJbtc33SI7j8mR0BigX+3vk5b1hsJwQ//2Y8ylLl2sNpHV6r1E+BcRq90X7af1oTllyJbHVb6vJdnaxcMJ+0d+ccbLces7kk9qKkhY1Hcwy9bdV8+5hXzJ63Zv2CKbrd2jT68iIKASPBjOAOq/OfCg6g9oeZpVOBm+MnVsVhJ0AANaWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763712792; c=relaxed/relaxed;
-	bh=47f3t2quGh0AzMkGBd1vq9EFL0ZXErTFAI2lHjxXT9Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XAB/tfXzIo2xKDLONRvzf4nXYDr3Ob3BEyStiIFP0+7vvrTXdK4KG9EqAIWieR6nFAlNZDLkX9e2M6dkrEcj+08tGp4TO4QlZIboBrWjZjO7wNioFcduujv2To7m3LTTxxsoQ9dhyv6+RswWtnHXcme/pwUgk2Trxu4+HWFg1636+7c9VWOFGtA8Fpa9Q9w48VnAOoPNLLykAPzOQRLoyuxcQU8YuZAs0fnUBR4r3kUjPbmRYDBXeIfk2nUfG1Xk3FAOGosYigWslmGcSLO75WJ2eOjiwuQNxXXxXYqKvWmvv8YCanWCEzM/26ZwruetfTmsnQ0e/YX+dtclqUlfYA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=j76ldxl3; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UL7ECpFF; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=j76ldxl3; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UL7ECpFF; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c105::7" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763713130;
+	cv=pass; b=FXfdXqZ5uYeGDExaL85jDQZgZBUzSNdxuGzZk4TaN/m4d9RiJIbEk+0njwbHiMfYlFVItLuHiB7ZysAiBabrrcPOfX19jD4vXSlBlliZ4nzpCvHpNsPqtWo5CGthDFj5roN1IRKBSoi+S3KFNOkwj0VyzAzS9zXdMKvPPnJMhpmasck6zuhy0Q3ADARR0bjm6y/tJM/kqMWoER5wECTmlHAd1ejYANWcC0Dw/TZHpdDD0Z2t9flloHlHf2wuLQIqvUhiCVjnmSWMq+z/g6N9+CFrdcG3eYh+whkpBcN1A/rKwbssdK233T07bp36T0qVXEDcUKR/AiH4J2oCWVDyoA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1763713130; c=relaxed/relaxed;
+	bh=InNng6IapEqjuR0Z+zs7HEUA0T18Z0nYsDw6o2QO1do=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=C2XBNSGDo3ZMBZI7lmvZpQrM1i0hXCBxkzyVztG4gytuRWNqvvMmeKDGCVAiVpyiod4TnJCv+nH50XG4FPfNjFOnELQFsdWouZKEuQeAzCIjpwb/rIhDymwFy8UWxQ3fNmixg++BaTznkcbeFEO7hcNjHLiWkZnMy1pjf5UqyTje1YTJCE3t3iK6Sj/h6d+afsPocw4ZjbucLRd5ledEUyElpRaldFBI6n2x+iJqs6piIEJ/I0sXIRSVepjHP6vzM/jAnivbvJS4lI46dprMPauFKRmrMBlgNRLiPU3Ij9L/N7Ch7vNHK0YhK0rl9agFoXR/loLdzW2tPwdWtoU39A==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=fXv8Rni8; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c105::7; helo=ch4pr04cu002.outbound.protection.outlook.com; envelope-from=vasant.hegde@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=j76ldxl3;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UL7ECpFF;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=j76ldxl3;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UL7ECpFF;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=fXv8Rni8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:c105::7; helo=ch4pr04cu002.outbound.protection.outlook.com; envelope-from=vasant.hegde@amd.com; receiver=lists.ozlabs.org)
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazlp170130007.outbound.protection.outlook.com [IPv6:2a01:111:f403:c105::7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dCSdf6Qhrz2xqm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 19:13:10 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id AC25121900;
-	Fri, 21 Nov 2025 08:13:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1763712782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=47f3t2quGh0AzMkGBd1vq9EFL0ZXErTFAI2lHjxXT9Y=;
-	b=j76ldxl3RJ2z6jfuSLhlmbehzI8pOG5XXfb9WeHkvsRza7uzJe2qGY7nciPuRdSHx4M1uz
-	7thdIdr8+0H+EnYi47ArlBMtxLuIGBleLBTfZl62NPaqrUaLhyNtTmAUEsz0b60eMf9ndq
-	7QNzWwo53jiMeSLxCjktDUrmvikBTSk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1763712782;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=47f3t2quGh0AzMkGBd1vq9EFL0ZXErTFAI2lHjxXT9Y=;
-	b=UL7ECpFFa9/WhLy8Xa7NY065ENt/7AGP+3lDf9QVuhwpzMKTUfFzK0ox2Nwvy++KWwBhnV
-	f7W8JY+BUMuAOZCg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1763712782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=47f3t2quGh0AzMkGBd1vq9EFL0ZXErTFAI2lHjxXT9Y=;
-	b=j76ldxl3RJ2z6jfuSLhlmbehzI8pOG5XXfb9WeHkvsRza7uzJe2qGY7nciPuRdSHx4M1uz
-	7thdIdr8+0H+EnYi47ArlBMtxLuIGBleLBTfZl62NPaqrUaLhyNtTmAUEsz0b60eMf9ndq
-	7QNzWwo53jiMeSLxCjktDUrmvikBTSk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1763712782;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=47f3t2quGh0AzMkGBd1vq9EFL0ZXErTFAI2lHjxXT9Y=;
-	b=UL7ECpFFa9/WhLy8Xa7NY065ENt/7AGP+3lDf9QVuhwpzMKTUfFzK0ox2Nwvy++KWwBhnV
-	f7W8JY+BUMuAOZCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 898313EA61;
-	Fri, 21 Nov 2025 08:13:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GWmnHw4fIGmWKwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 21 Nov 2025 08:13:02 +0000
-Message-ID: <2766a9d5-1a8f-451e-b018-993563715629@suse.de>
-Date: Fri, 21 Nov 2025 09:13:02 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dCSm81cx4z2y5T
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 19:18:47 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nwHCWTTNSFytQjystORxuOXjwP7amKoYIBS6cf9NIW9WasAh+V/MRipFBiB/tsvEx6VnwWtQDbORTMRSoIy7CKd/nNRa+DBA+Gd8zlk2AjYhQfiy6oPRMOx0RHbcbzhmgQiJnkVdajYdgkgzOhxUA7IeERj1JICBMsFOt5RwthJC1Lp5r4LkUbPs1Wj69ogltZ8jDNGTDtURgMw+VniNs2YbfPO97BEmE9KdP9J82ZYTLM0MOmJwtlRej3V8HHAQSs+xCd4YnxBFuwohkLUfXw1fCAetub4ERLAMOmagD1+gt6K4RoUG8CfN1XS57z3Y/U0U4lzq51igBexqAQ9fdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=InNng6IapEqjuR0Z+zs7HEUA0T18Z0nYsDw6o2QO1do=;
+ b=xZv7A/W1E9oO7dGtNRHgN5tVn43XsnQcH0wgIdmU99U23BHLXPpeDvkITw+LXXYK7I4C8pRUf1sGcvS4pxT/snuQyFHyXsm/PRQUrDIXZeyN4hXBv9Ujv3aQxfXWSwn/joBJLdKlu+/UvXgw8e4r1RWUhzomE14T1BQAIFbWYS1N6XsAvrzX4D29Ju9gaAfoYNWGDI8s/pL5ICRL18MThX/Y1dL+QORRV0F6c2mHaCwdeP2QH8LIYqW9fUsFKNPEqUaloezW9z+tnfwC0k19j37WYDe6YjXF7DwAJDMbE+ZlSAxR+c5hiZu+neH6z9K0g0cNcC3fJAY2ee93dMTPSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=InNng6IapEqjuR0Z+zs7HEUA0T18Z0nYsDw6o2QO1do=;
+ b=fXv8Rni8btQh7MHwxxV2A74BnIiMV3RWpcK70WuZKJyfvcXM/03Mvi22idMac4LFXC5/rsfvnNdfnMBXGZHZPQKzuHRStyW/Ns0DimgOyJ02E0/huCT9+zmSMfxscSn0Tf9VD0JUaZixhAGk/f+ieGtEidyO1SvvjNnCPpE/2g4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) by
+ CH2PR12MB4310.namprd12.prod.outlook.com (2603:10b6:610:a9::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.12; Fri, 21 Nov 2025 08:18:24 +0000
+Received: from DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::a5e0:9d7e:d941:c74d]) by DS7PR12MB6048.namprd12.prod.outlook.com
+ ([fe80::a5e0:9d7e:d941:c74d%7]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
+ 08:18:24 +0000
+Message-ID: <038ff750-db4b-40bd-be12-bc85cee5abe6@amd.com>
+Date: Fri, 21 Nov 2025 13:48:13 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/pseries/svm: Make mem_encrypt.h self contained
+To: Jason Gunthorpe <jgg@nvidia.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Joerg Roedel <joerg.roedel@amd.com>, linuxppc-dev@lists.ozlabs.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+ Kevin Tian <kevin.tian@intel.com>, kernel test robot <lkp@intel.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, patches@lists.linux.dev
+References: <0-v1-672b61acd916+1449-ppc_mem_encrypt_jgg@nvidia.com>
+Content-Language: en-US
+From: Vasant Hegde <vasant.hegde@amd.com>
+In-Reply-To: <0-v1-672b61acd916+1449-ppc_mem_encrypt_jgg@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0186.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:be::7) To DS7PR12MB6048.namprd12.prod.outlook.com
+ (2603:10b6:8:9f::5)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,222 +86,127 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] drm/ast: Fix framebuffer color swapping on ppc64
- systems
-To: Timothy Pearson <tpearson@raptorengineering.com>,
- Dave Airlie <airlied@redhat.com>
-Cc: dri-devel <dri-devel@lists.freedesktop.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <407388289.1798972.1760725035958.JavaMail.zimbra@raptorengineeringinc.com>
- <705534604.1798975.1760725076596.JavaMail.zimbra@raptorengineeringinc.com>
- <109693647.1798978.1760725111876.JavaMail.zimbra@raptorengineeringinc.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <109693647.1798978.1760725111876.JavaMail.zimbra@raptorengineeringinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	URIBL_BLOCKED(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo,suse.com:url,raptorengineering.com:email];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_DN_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo,suse.com:url,raptorengineering.com:email]
-X-Spam-Score: -4.30
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6048:EE_|CH2PR12MB4310:EE_
+X-MS-Office365-Filtering-Correlation-Id: 95506f7f-ab05-459b-f429-08de28d689fd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bEJ6TlJxdkNlU2ZBOUdRNHJwY29wWWtwQXoxYVhJeUQ2aEFWWDc2dXBNdEQ0?=
+ =?utf-8?B?ZjZLcnNLS0h4L1Z5ZnpYcmFpQzRnRlNzOHlEZmJTQ2gyTm5IVjNZWTYxVnJQ?=
+ =?utf-8?B?dnRGakg4Z3JZVW5pQ3R1SWFDUlplTXowNWoweGs1OEVYVS95cTFOeGhpQmIr?=
+ =?utf-8?B?eWF1T3J3MUovTVZwTGluaXcrd2tXK3MvYkJhZWNNdi9EejB6SjMybTJ2UVVW?=
+ =?utf-8?B?WnVxQUlWanhDamFnZkhCODBxS01kdWZ5ano1V01TcjIwVzd4Q3phdWI3Tlcw?=
+ =?utf-8?B?YTdwMVA2VGNpTU5sbVlVUUMzTm5zY2ttR1IrQlQwVW5oOTBOTmNNQXFTSnA2?=
+ =?utf-8?B?Vnh3REZCcTkwZ2dRTzB1N0NwN0phbDlPOUowQWNQREVrU25IYkNsajg0Wnhk?=
+ =?utf-8?B?dG9DaUdKTWcvYWNTSHhrb0ozMG51Wk5oOGtJdEVNaE8rVmxMSU5HVml6OHlk?=
+ =?utf-8?B?WGtCZEpKQVhoREZKTWZLeEkrQnZ3MmZ0M0ZUQ2Z3dzdxVVhaR1g0S21aOGZU?=
+ =?utf-8?B?VjZXazhhY0drcks5UTZ1S2s3RzRGZVh0VjBYM1FJNWRwUFJJYkVZOVpOc3du?=
+ =?utf-8?B?U2NSRDFONm1TVndCdFV2OXc3dStQalZkSHhwdk80SngxOVZ2ZUhOYXc1NGVP?=
+ =?utf-8?B?Q0FvZGo1eS95NVVyY1liRytkaHRLVUxqYldKckRLT09VUE1jSlFaSmx2ZXk1?=
+ =?utf-8?B?R3NxSGtOUThVNzVIVHRjUS9yb0dNZUZGQlEwSm54OER0d2lycytmbnFTTzBT?=
+ =?utf-8?B?NUZPZkpmQ1YxNzlzaGQyaTFSdE8wYndKNDdyd21GeVJnQmdoZytnWmppb0di?=
+ =?utf-8?B?aVJzZE1RTFpVZmp5cDczSVhRb1JJcXRFSXNJUy9FTW14Y0VMbkdKUG1SOGhG?=
+ =?utf-8?B?ZEpXZmp3S3NaUDcvSUE3WXdvTWNNZ0JTWExGV1dNdXF0ZktEUjM5c294eS9G?=
+ =?utf-8?B?RGpRNzN6UWQ4QW1wVWFBQ2V0clpxUjkwSStDYkYzbjJ4OXVXSUdla1N1a3Rl?=
+ =?utf-8?B?Vk44bnZ5a21XM0I2VEozbmNjNHhJQ0trSm5BQjladW43RWw2aHljVkcyTFhW?=
+ =?utf-8?B?WkkzMzE0NEtmSGNOTkRubUV5eWtaLzZCZmVINGpTNEdTVkNTYkg0cGhQOGtX?=
+ =?utf-8?B?UEE0dGp2RHV6RHI1QUZ1cnhNTEVVRW96V2VvNjBrMGlxTDdvejA0dW10OHhG?=
+ =?utf-8?B?VVJnOWtCS21Wd3NwMU5pVkJIMnYwaWI5ZGRqVlhPZ0dDTm1ieHhYaEdLRmZo?=
+ =?utf-8?B?bVhIS1pGSEJtVGx3R0k0WU5WRU9oOE1LL3ZXWGVQdjhxSG51TWlYbVNVRm9o?=
+ =?utf-8?B?aU05ajR5Um41akE4NXJLNjkyTTJmWldLcTNkMVBKVmhzTTdOcGxmamhKTFln?=
+ =?utf-8?B?bVptL2t1UkZIY0NNRmU2T2J4TUl6MUF6eUFVSnJYRENaK01IcDZZR3ZFNUZm?=
+ =?utf-8?B?M2Q2NTRueC9pc1EwdEtKNXVoNEJsYlE2c3RpZUpiY2hPMnp3SUplaStVc1dx?=
+ =?utf-8?B?aDlyM0dYSnZTNTBRTERuRXFWMUNyV2RzRXFxSUFySzlRRlppZEZPQzNWUDUr?=
+ =?utf-8?B?bjlPU1ZJYWJaQmR5K3JYalZ3MEdNTFp3QTJCbFFoSHVnTzlqMlc3MXV6ZndE?=
+ =?utf-8?B?N3VObkFHL0ZlYTRuU1ZNUGlFQzJFUnpNYURXdWRWRXZGZ1RFNytWWEM3RW5N?=
+ =?utf-8?B?VFMwREZ1YnBkRWlVblJTRVRkOVBFclNhVGZuM3VmRjJ4YTlhWWh4RHR5VjA5?=
+ =?utf-8?B?b01QS1hBNDYzSHBPNElJSXJyVFJXeEhHanU2WXZHNXRWR1RYam1VWlVHM25r?=
+ =?utf-8?B?QVlrRktZeWJUWUFmSXpsaTVHMlV3RzVoS1BVcFpmNmdSZHlIcWd5RjdoWTFW?=
+ =?utf-8?B?bkZTWllxaGY2RGtYV2JTbzF1TmVmMUU5b1dDOXdnUHIzaFNGRDd6UFJwQkFV?=
+ =?utf-8?Q?SmCEa0OSlkxNwL+JiGgF0NuTQnKVFHqW?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6048.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K1JXS0ZHSGMwcTZBOW05L0xFdzBxMTIzT1FSK2JQcERSQ0NMNTFlbVRoUHBB?=
+ =?utf-8?B?NXBUSGc2Sk5iNHlxR1ltWFUzZXBMWHp5eTlWSDdqa1F2L2RaZjA4VytMc0lG?=
+ =?utf-8?B?YUM3bEJ1a0w1RDZlQmxOaE85RmVSTGU1d3RFQ0RtbTFya0hXKzNBdUlyRnFJ?=
+ =?utf-8?B?RFZEcjNUNU4vWklkbW10elFQb0JuaWIrc0NQa29MRTY1eUliM3pEL243K0th?=
+ =?utf-8?B?M2Y4YTEzenNjZ2J1eHR5STlhbmlBNEtyU3NEK0pMY2tkRWNXbHNCWUkyUU84?=
+ =?utf-8?B?WWx4NWVWYTN4UjVCSWM3Y0laL0k1QWJBWWYrNmdPM2N3Z3ltSVVLSEZRQUlS?=
+ =?utf-8?B?aHJ5Ni9nQlBuNHhRajlaNFlXYjE5ek9JRGwyemR5MWhjZGoxanArY3I4Z25E?=
+ =?utf-8?B?YjA2QURuSzB3M1VKTll3T2IyWUp4d2tVS01JMlNkaS8xeTN0VGY1cktjY3ls?=
+ =?utf-8?B?ZWxtUlo3ci9ib2NjOS9iK3ZpelR2WjRxYWdudnd5YWxQbGx0bXBmOEltWUd3?=
+ =?utf-8?B?ME9kYWFmd1pjUThNejVNOTgrK2xtNVJSM0ZjWG14UHlXZjBDZGJBbml2V08w?=
+ =?utf-8?B?WnVEMnVKc0w3dXRSVkcvb1NKSVdjbzRjZm1ZODExQ2JkZm04K0NaSVNaY3Bt?=
+ =?utf-8?B?dU9RazVFWDhHRlJRbGl2Z0dzT2Y2VTBhbmhnT010c1NEbFRVUDYvRkJGdzd6?=
+ =?utf-8?B?Y3RtcGZXRzdLTTNES3NYOWUyRHpqSnFIalBJcE5kdW1aaFlmLzdxbngrZ2J3?=
+ =?utf-8?B?TWl6K1BMY3ZaZlFtQUtubVRTRkdBWkVzLy9ZMXNMNlVNVjZxeUs4eUZVcy9B?=
+ =?utf-8?B?VkRzNXdtYXVVRm53L09MK2QzTjJBUUNRdWJSYWUwelJDYWpVbUhBRlQxbENk?=
+ =?utf-8?B?dkw1Z09iakhWVmo1bm5nRnlJeUNPU1FPYlJ3WGVBMk1vb2hoUllZWTN3amps?=
+ =?utf-8?B?NEY3M1dyVzI0Y0ZoaS9NS01mQkJ1UkxWbDNsN05jVnZhTk5YWVFlQWw2WXZX?=
+ =?utf-8?B?RnZhdjdzOTlSZFdEWENxQWJKTHNkRWs2OVQ2Y0dwVWxjOExURkwvYjBSMnh4?=
+ =?utf-8?B?UngwM0NkaEtCdmt2bWpzZzdoc09mUnU4dzdLMW9IQlFtRG5UWDBoaFlFSmtH?=
+ =?utf-8?B?aFI2Nk42RGtkcDdCcDFnbGM5bTNlNmk5VzJXcHhKeSt4Ulk3QUlhZEoxMGwx?=
+ =?utf-8?B?Y1UySXJrUnVKa3dLMS9vQTl0VldXZmdtVUc2Y0ZuRC9hZE9BNGI2diszZ3Rv?=
+ =?utf-8?B?Uzh1bzZsS3o2djE5V2p5dTZObDlzSzZveGhjU0NBeVF0TlB1OGpHUjl4ZkU0?=
+ =?utf-8?B?M0h3Yk5kakE3Y3BkU0RFdmQ2TXhJUnhFVG0yTTl5QXVMNDZBeG5BaFRCS1Ri?=
+ =?utf-8?B?emFRc004TGlUK1orWnBvUFJYWEtwdXhNTGljWGlNNVBoQ1EzK3VORWo5REJP?=
+ =?utf-8?B?amF4ZVVqcVBJajN4cW50bFdDQy8vcmgyRk9CU2pQTTNUcmRlNmlWV29jbkRD?=
+ =?utf-8?B?S3RGTmpGMG1aWnlmazVGa0dleVdiWGxJWE4wSEluOWl6Rk5ablc0emFmQVZr?=
+ =?utf-8?B?Zys2T0F6dHU1ZTByQVg4ZHh3NzZQaDgzUHlyK3FFYjJrd0RLWkhhcU81cmM0?=
+ =?utf-8?B?VnlRaVlISmt4VXRBYlZEU0wyT0NKYTVvNlBTVXJ4Q2RwRkNhTm1VeXhuTTFj?=
+ =?utf-8?B?T0ViMVc1Q01QZzZ5YnhTa0pvODIwMkF4OEF0UDdUNEljbjVHczFuaG85SU81?=
+ =?utf-8?B?NlZMVHd2cUtZUklvRVVjQzFSTWMzSStEcGtPZElydmlBWWFxem1qSHlJRmVw?=
+ =?utf-8?B?c2s3T0p0YmdrK2lvZm9RZnp0QmpYUXBIbGlVMy9rN0pRTldweldiT3c0Yisv?=
+ =?utf-8?B?TnZrZG9HZUwwSkxYTXE2NC9xVHBIVzkydHlvZEh4ODdNd2VkckpCQXhqcjRS?=
+ =?utf-8?B?Q0JTQ2NhT2d3SkJ2aDZmMHQ2bHAwUElVVGNwMlV5SGdodzEralQ5NHBYU2hx?=
+ =?utf-8?B?NkhhTDNNUno2VHFFbWM1K1I3aU96NnY5NUF0K0YwTGlKbFJiUE14WjV6Yy85?=
+ =?utf-8?B?eXVPakxsZklUejNJUmFVaWl0TFlLd2xEaXBTblhyQ1R4OGFQRTR3OEVZVk5o?=
+ =?utf-8?Q?9JxVD11G8PWU7CYntk4zGEkqB?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95506f7f-ab05-459b-f429-08de28d689fd
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6048.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 08:18:24.0086
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AacwE2qC8VdrcT+JFICZvUdnD9Z7/ben1XSWc1++Xx3rVtzDma3YHjJ8f+hm70p25X6cDbTUdFuEXlMEuEtkOQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4310
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi
 
-Am 17.10.25 um 20:18 schrieb Timothy Pearson:
-> On certain big endian systems, such as the POWER9 operating in big endian
-> mode, PCI MMIO BAR accesses are transparently endian-swapped by hardware.
-> On the AST2xx0 series devices, this results in the little endian framebuffer
-> appearing to the host as a big endian device, resulting in unwanted color
-> swapping.
->
-> Furthermore, per ASpeed technical support, the big endian mode on these devices
-> is not supported and, per Raptor's internal testing, does not function at a
-> hardware level.
->
-> Detect transparent PCI swapping via CONFIG_PCI_ARCH_ENDIAN_AUTOSWAP, and
-> expose the framebuffer as a big endian device with software swapping.
->
-> Tested on a POWER9 Blackbird system with Debian sid/ppc64.
->
-> Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-> ---
->   drivers/gpu/drm/ast/ast_mode.c | 33 +++++++++++++++++++++++++++++++--
->   1 file changed, 31 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
-> index 30b011ed0a05..07f04668ef92 100644
-> --- a/drivers/gpu/drm/ast/ast_mode.c
-> +++ b/drivers/gpu/drm/ast/ast_mode.c
-> @@ -105,9 +105,11 @@ static void ast_crtc_fill_gamma(struct ast_device *ast,
->   		drm_crtc_fill_palette_8(crtc, ast_set_gamma_lut);
->   		break;
->   	case DRM_FORMAT_RGB565:
-> +	case DRM_FORMAT_HOST_RGB565:
->   		/* also uses 8-bit gamma ramp on low-color modes */
->   		fallthrough;
->   	case DRM_FORMAT_XRGB8888:
-> +	case DRM_FORMAT_HOST_XRGB8888:
->   		drm_crtc_fill_gamma_888(crtc, ast_set_gamma_lut);
->   		break;
->   	default:
-> @@ -129,9 +131,11 @@ static void ast_crtc_load_gamma(struct ast_device *ast,
->   		drm_crtc_load_palette_8(crtc, lut, ast_set_gamma_lut);
->   		break;
->   	case DRM_FORMAT_RGB565:
-> +	case DRM_FORMAT_HOST_RGB565:
->   		/* also uses 8-bit gamma ramp on low-color modes */
->   		fallthrough;
->   	case DRM_FORMAT_XRGB8888:
-> +	case DRM_FORMAT_HOST_XRGB8888:
->   		drm_crtc_load_gamma_888(crtc, lut, ast_set_gamma_lut);
->   		break;
->   	default:
-> @@ -502,8 +506,13 @@ void __iomem *ast_plane_vaddr(struct ast_plane *ast_plane)
->    */
->   
->   static const uint32_t ast_primary_plane_formats[] = {
-> +#if defined(__BIG_ENDIAN) && defined(CONFIG_PCI_ARCH_ENDIAN_AUTOSWAP)
-> +	DRM_FORMAT_HOST_XRGB8888,
-> +	DRM_FORMAT_HOST_RGB565,
-> +#else
->   	DRM_FORMAT_XRGB8888,
->   	DRM_FORMAT_RGB565,
-> +#endif
->   	DRM_FORMAT_C8,
->   };
->   
-> @@ -541,12 +550,24 @@ static int ast_primary_plane_helper_atomic_check(struct drm_plane *plane,
->   
->   static void ast_handle_damage(struct ast_plane *ast_plane, struct iosys_map *src,
->   			      struct drm_framebuffer *fb,
-> -			      const struct drm_rect *clip)
-> +			      const struct drm_rect *clip,
-> +			      struct drm_format_conv_state *fmtcnv_state)
->   {
->   	struct iosys_map dst = IOSYS_MAP_INIT_VADDR_IOMEM(ast_plane_vaddr(ast_plane));
->   
->   	iosys_map_incr(&dst, drm_fb_clip_offset(fb->pitches[0], fb->format, clip));
-> +#if defined(__BIG_ENDIAN) && defined(CONFIG_PCI_ARCH_ENDIAN_AUTOSWAP)
-> +	switch (fb->format->format) {
-> +		case DRM_FORMAT_HOST_XRGB8888:
-> +		case DRM_FORMAT_HOST_RGB565:
-> +			drm_fb_swab(&dst, fb->pitches, src, fb, clip, false, fmtcnv_state);
 
-DRM formats are always little endian. I'm not sure if most user space 
-even supports anything else.  Can we just drop the whole _FORMAT_HOST_ 
-formats and do a swap here if we're on BE PPC64?
+On 11/20/2025 8:36 PM, Jason Gunthorpe wrote:
+> Add the missing forward declarations and includes so it does not have
+> implicit dependencies. mem_encrypt.h is a public header imported by
+> drivers. Users should not have to guess what include files are needed.
+> 
+> Resolves a kbuild splat:
+> 
+>    In file included from drivers/iommu/generic_pt/fmt/iommu_amdv1.c:15:
+>    In file included from drivers/iommu/generic_pt/fmt/iommu_template.h:36:
+>    In file included from drivers/iommu/generic_pt/fmt/amdv1.h:23:
+>    In file included from include/linux/mem_encrypt.h:17:
+>>> arch/powerpc/include/asm/mem_encrypt.h:13:49: warning: declaration of 'struct device' will not be visible outside of this function [-Wvisibility]
+>       13 | static inline bool force_dma_unencrypted(struct device *dev)
+> 
+> Fixes: 879ced2bab1b ("iommupt: Add the AMD IOMMU v1 page table format")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202511161358.rS5pSb3U-lkp@intel.com/
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 
-Best regards
-Thomas
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
 
-> +			break;
-> +		default:
-> +			drm_fb_memcpy(&dst, fb->pitches, src, fb, clip);
-> +	}
-> +#else
->   	drm_fb_memcpy(&dst, fb->pitches, src, fb, clip);
-> +#endif
->   }
->   
->   static void ast_primary_plane_helper_atomic_update(struct drm_plane *plane,
-> @@ -574,7 +595,7 @@ static void ast_primary_plane_helper_atomic_update(struct drm_plane *plane,
->   
->   	drm_atomic_helper_damage_iter_init(&iter, old_plane_state, plane_state);
->   	drm_atomic_for_each_plane_damage(&iter, &damage) {
-> -		ast_handle_damage(ast_plane, shadow_plane_state->data, fb, &damage);
-> +		ast_handle_damage(ast_plane, shadow_plane_state->data, fb, &damage, &shadow_plane_state->fmtcnv_state);
->   	}
->   
->   	/*
-> @@ -766,10 +787,13 @@ static int ast_crtc_helper_atomic_check(struct drm_crtc *crtc,
->   		ast_state->std_table = &vbios_stdtable[VGAModeIndex];
->   		break;
->   	case DRM_FORMAT_RGB565:
-> +	case DRM_FORMAT_HOST_RGB565:
->   		ast_state->std_table = &vbios_stdtable[HiCModeIndex];
->   		break;
->   	case DRM_FORMAT_RGB888:
-> +	case DRM_FORMAT_BGR888:
->   	case DRM_FORMAT_XRGB8888:
-> +	case DRM_FORMAT_HOST_XRGB8888:
->   		ast_state->std_table = &vbios_stdtable[TrueCModeIndex];
->   		break;
->   	default:
-> @@ -978,7 +1002,11 @@ static const struct drm_mode_config_helper_funcs ast_mode_config_helper_funcs =
->   static enum drm_mode_status ast_mode_config_mode_valid(struct drm_device *dev,
->   						       const struct drm_display_mode *mode)
->   {
-> +#if defined(__BIG_ENDIAN) && defined(CONFIG_PCI_ARCH_ENDIAN_AUTOSWAP)
-> +	const struct drm_format_info *info = drm_format_info(DRM_FORMAT_HOST_XRGB8888);
-> +#else
->   	const struct drm_format_info *info = drm_format_info(DRM_FORMAT_XRGB8888);
-> +#endif
->   	struct ast_device *ast = to_ast_device(dev);
->   	unsigned long max_fb_size = ast_fb_vram_size(ast);
->   	u64 pitch;
-> @@ -1021,6 +1049,7 @@ int ast_mode_config_init(struct ast_device *ast)
->   	dev->mode_config.min_width = 0;
->   	dev->mode_config.min_height = 0;
->   	dev->mode_config.preferred_depth = 24;
-> +	dev->mode_config.quirk_addfb_prefer_host_byte_order = true;
->   
->   	if (ast->support_fullhd) {
->   		dev->mode_config.max_width = 1920;
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
+-Vasant
 
 
