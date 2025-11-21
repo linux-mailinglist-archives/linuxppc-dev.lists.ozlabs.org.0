@@ -1,90 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-14398-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14388-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCC6C772D1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Nov 2025 04:43:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BC0C7713B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Nov 2025 03:54:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dCLfg5LqGz2ySb;
-	Fri, 21 Nov 2025 14:43:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dCKZP35mcz30TY;
+	Fri, 21 Nov 2025 13:54:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763696619;
-	cv=none; b=SOC0q+xAWLtIZM8jhB7/wJwlTtoY7ntizz5rA505FEBFnkGKdGBfECQYKVVKlutpuIC4fjbFCvD3JPnsVKnZwAsztcL8nXRlUZqH5vg1Ejr42eET0l3cM6VVt13grNu4UqR9Do+qIcIa6UeB5zYBbbWiTCpEKM+jHOBg7B0h2YbE0NBrpq3dHd9LegDnqclUbS/wHYKrrKaTf7exHC5BLBm8Tt3GqI46YzR1/mt0PbcFG9eIRTUrySSG3hdWsGVhvALPWt1sH54wOI+miXBmfs0gv9+KZmpbX/wFB0yxZzzepTPfeQAQXteMrDrBX6GLI348u2L1Xg1e5Lk6jufHsQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763693693;
+	cv=none; b=HWJhuVguQSdUGJ0Ib0ltTf1kxpGYg8kWxq6eRkPipJzkqU/EQEIA0ggwMLDfhgdv9AY5gFUG8DH1hAQzCM6Ufjud5KpLqbHrEFd+GuSN0i2PyyP75LzV2ndYIksWgGkj0XnqzbjWQZTklynAN9jwvSFTj4o3jTZh8ZLruAyDm+n8K6xWxz3+Hc7sgUmqDdoipRpsJk09mTy/mea2qZ+vUYD76vM76zI8ZnkWsGzs9Mdqs7Pst2M2Ny8jp3FATfc3vOeCLBLMUagvEYJT43NzsrNzzCRgbFohi4EB/uVntAnNi7CyxPq4c6nGhM2fiK5SYalFyiwxPH47dE+CKWq1aw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763696619; c=relaxed/relaxed;
-	bh=/xxysxJgCWfMcO9pdJv+8jWo5Gyz7GeEeukgJRHAehQ=;
+	t=1763693693; c=relaxed/relaxed;
+	bh=H5tZ2/Lm/gwCoVyrTlSZTq69Ul+D19GqVTSkmWCtWRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jxr4z0qinsfopKcggSikLu7r4QOa1u9ErfPo5XqwFb8pHVile176+AEuW/xo5RjNjX4mHdXwUtoVQciA9MAXu2WasgnOHsCpOn3z3dUCNx4ngMbVM/r82hvlNplBJWKHPhjrw14E0RFZPGEvgJQo6psYnRvA9oi6ClVWfhz9CA9h9acGL92anTBwZrXqw7UsZp0/WIu57rlTRLyqeV8GE27rls8bFPjLLF3TSgkQz1WOAHyw+Ad50qVGBjz26nACTPm1R5bLdMcDscp/HoHkCz06fmt10m3ViZdMaTKUnUxhtrfMn47Pcu7nVC6qM0PsSsmWvu3h+UE555efzTtPiQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f4s3mcgr; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version:Content-Type; b=cBzYlHiWVAEhn7bvs1p/4B3O2d8o6jF9xGQjYB00JRsIOkBJCbc1WrjgCQwD4VFI8AMDNGkqFooqy+H9SGv0XIV6A+1OhxhAZQBjjuF9HKd2lXU0llzAg71wnDqXuXpqQNFksdt1P3wbjvGAmxflyh4q+89Z6SgUR359Wa3v6DU+u/YDB+leiqRXYqL+uIRN/eYQgO3k7n0mvBJcKipUFOWe3EjSgE2c2ix85SM5+59Pcfjyq5SPZ1qOP4L/IVAMUnK197hHp68pV1fdd6CyYTayAgX0IWT0uEtAb5UHiEIbi0Lf0Ii+EqlJFbTR8NjLfVMQf652XdExZQ01we4h0g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e6w9pPUK; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f4s3mcgr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e6w9pPUK;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dCLfc5vhlz2yD5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 14:43:36 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AL1Sh1s027957;
-	Fri, 21 Nov 2025 03:43:29 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dCKZN57Lpz30TM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 13:54:52 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AL0n2Nf029035;
+	Fri, 21 Nov 2025 02:54:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=/xxysx
-	JgCWfMcO9pdJv+8jWo5Gyz7GeEeukgJRHAehQ=; b=f4s3mcgrpYrdNH8KYt/3zI
-	jpySnRrdNHa/h9Y6trvXXhIN1YR9xAvIg2CFo3XGBLmO8l/Z+LZwfDPt6yjGLMB9
-	8viNNkIgiutBesVvkNe6SHp73OX8TRLwRLena8ycSX5N4Ruy1r/pKh+Mq7MuxuAL
-	L/4qYYt7Zn0CkIlkMq7RvtE+D/PfmYDHXG3Oas52+bFRDbLD9UUKFD0MKH5QQxCM
-	GK2fwg6SN3mJaSl0LFDi6Hzl4uAA2imwRLvnQ8fWE+Yvkpea3T6Vd3xpspdp8mMh
-	iLWHLxspxKjElFfh7hFTs4M88kdbvC6zQCbSosTrqGyvv0Bzw8RO/BrP/ixloQUA
+	:message-id:mime-version:references:subject:to; s=pp1; bh=H5tZ2/
+	Lm/gwCoVyrTlSZTq69Ul+D19GqVTSkmWCtWRE=; b=e6w9pPUKor/gD+tYE2FTQM
+	eV6u09Ne7eBu0Ow+iKyf2J3UIFL90BumHNq+MabfoPBCDdYezt9xSKo/nekVWI4l
+	mKo491DQcS2f6w0hJ+wKpzIOg5VLfQG1d5VpZUxWjFmP0jS8PjZwpQR9CCxggkBA
+	iRImm6gaJ3kazGiDTuWQDaBNZh/iv7kdD1KSXJGDkCmxjejKlVwE6nm/oIaaPh24
+	Z3vbvccgTPFLuvr4aZBL7DUwu8Y7ydWFcUYU4qQhBGAwBSsFCRsf5Dph4kw3qAAG
+	QCjjwoKst4GpMZ9xn02JDaC538P40tgGf4T85GQ6kXM+R/WVgyL6D7nzMFo4+Skg
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejka9reg-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejk1srtv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Nov 2025 03:43:28 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AL3hSxr022003;
-	Fri, 21 Nov 2025 03:43:28 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejka9ref-1
+	Fri, 21 Nov 2025 02:54:42 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AL2sfrL031888;
+	Fri, 21 Nov 2025 02:54:41 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejk1srts-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Nov 2025 03:43:28 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AKNRHM2022434;
-	Fri, 21 Nov 2025 03:43:27 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4af4una5f2-1
+	Fri, 21 Nov 2025 02:54:41 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AKNGhge010399;
+	Fri, 21 Nov 2025 02:54:40 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4af3usj5e2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Nov 2025 03:43:27 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AL3hNEA42664302
+	Fri, 21 Nov 2025 02:54:40 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AL2saOK49414554
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Nov 2025 03:43:23 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7DD7E201AE;
-	Fri, 21 Nov 2025 02:54:32 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A3C5F201AA;
-	Fri, 21 Nov 2025 02:54:30 +0000 (GMT)
+	Fri, 21 Nov 2025 02:54:36 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C398A201EC;
+	Fri, 21 Nov 2025 02:54:35 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E93C201EA;
+	Fri, 21 Nov 2025 02:54:33 +0000 (GMT)
 Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.in.ibm.com (unknown [9.98.111.108])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 21 Nov 2025 02:54:30 +0000 (GMT)
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 21 Nov 2025 02:54:33 +0000 (GMT)
 From: Madhavan Srinivasan <maddy@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Hari Bathini <hbathini@linux.ibm.com>,
+Cc: Baoquan he <bhe@redhat.com>, Jiri Bohac <jbohac@suse.cz>,
+        Hari Bathini <hbathini@linux.ibm.com>,
         Mahesh Salgaonkar <mahesh@linux.ibm.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>,
-        Shirisha G <shirisha@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/kdump: Fix size calculation for hot-removed memory ranges
-Date: Fri, 21 Nov 2025 08:23:59 +0530
-Message-ID: <176369324781.72695.91068925619265054.b4-ty@linux.ibm.com>
+        Shivang Upadhyay <shivangu@linux.ibm.com>, kexec@lists.infradead.org
+Subject: Re: [PATCH v7] powerpc/kdump: Add support for crashkernel CMA reservation
+Date: Fri, 21 Nov 2025 08:24:02 +0530
+Message-ID: <176369324781.72695.15722637983958584587.b4-ty@linux.ibm.com>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251105033941.1752287-1-sourabhjain@linux.ibm.com>
-References: <20251105033941.1752287-1-sourabhjain@linux.ibm.com>
+In-Reply-To: <20251107080334.708028-1-sourabhjain@linux.ibm.com>
+References: <20251107080334.708028-1-sourabhjain@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,25 +101,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: KHTHAS5JVeVNgiFhUGhG8BJUfrKa4sZ3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX2AOOZMvyuKhK
- m7ZtK3v9HxsOuEpiWujiLBOFDKk9RSzuEmduNFy4lKRBA63CNBE+v9B8gYu/XtNEeLQJ4c+IEGa
- m3G7S0jSt/0hzNkMnODnnRHDgAMESds9Vfdc6xbw3SVGkYFPBSG7aL2fzkdsflAFii70r8DAYf8
- 0FeszCXY2EdO6z65ygx++vXOLl38joC4+AwDLKH7tPA4J0DAiKzNFcaQHFVT1bmvc6BD9x5lQjh
- t66NFgomg+3UqFaFllaHXZe0b9vYujno7gruOg6Fnzr1r3PcJDRJEfInslgfKC1jLrld1qwbXBi
- D6M/nDX0nWs2zX5taSmRQ97/FuW4/tERpsLA8RrElWSSDR6kRsoXwGadOixl9FsA6ztwc/iw64X
- zLcqlPFNus0INNV/JyqcXJ/d4IOvWg==
-X-Proofpoint-ORIG-GUID: hC9KIIREGWLnSBMBOasyt0PjLABWvd6n
-X-Authority-Analysis: v=2.4 cv=XtL3+FF9 c=1 sm=1 tr=0 ts=691fdfe0 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Authority-Analysis: v=2.4 cv=C/nkCAP+ c=1 sm=1 tr=0 ts=691fd472 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=kHnH0_rxvdj-15et1z8A:9 a=QEXdDO2ut3YA:10
+ a=VwQbUJbxAAAA:8 a=FGl_mr9ZrwtVw05MWQUA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: JDc77HEW783QNu7Y_CCJUKAi0M4AWlC6
+X-Proofpoint-ORIG-GUID: wU6oy4Zd1G1bDYG3hZJsO81U1dpSqrgT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX7CSINEqgEjln
+ 89blGDgfGy3JrZ5GlK+Q8wKVSzwZ0qfTg+4aBX+soYTy590uQvWMZhkhpLt55KDZQBnQW7LkkCI
+ vLJ80IL9SMnFYFZ7Fx8tTk1MT8nz1OdXdIY6b7oE8blR0TSGCVfNxsq04NcVLXCje8oR9lJcLRZ
+ ySb42V/NystjGAkLjuC8t/n1aR9cMcUH0B1lxMo+iZvgv62ZBNho1ww6LHYYfh7rp9JoVGz+MwZ
+ e6e0yDVjhawEHmLVOESHj6nd0TE7Wf/APOy0DoNiAUQBwF3ynPqnlf8Tu2PuYp7Ty9wNFULFzrw
+ auf6F8vhL6RU6D36ZY6PZ+3GYX0f7g5d4GNFOVpb1M4Kq02qvI9ReJVnCs7hCFMTMXSkwCXhNkl
+ UN8qCwPG/Z9Jrz1L1H46KTn5Sd5PQQ==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-11-21_01,2025-11-20_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- adultscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0 malwarescore=0
+ phishscore=0 priorityscore=1501 spamscore=0 impostorscore=0 bulkscore=0
+ malwarescore=0 suspectscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511150032
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -127,21 +127,20 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 05 Nov 2025 09:09:41 +0530, Sourabh Jain wrote:
-> The elfcorehdr segment in the kdump image stores information about the
-> memory regions (called crash memory ranges) that the kdump kernel must
-> capture.
+On Fri, 07 Nov 2025 13:33:34 +0530, Sourabh Jain wrote:
+> Commit 35c18f2933c5 ("Add a new optional ",cma" suffix to the
+> crashkernel= command line option") and commit ab475510e042 ("kdump:
+> implement reserve_crashkernel_cma") added CMA support for kdump
+> crashkernel reservation.
 > 
-> When a memory hot-remove event occurs, the kernel regenerates the
-> elfcorehdr for the currently loaded kdump image to remove the
-> hot-removed memory from the crash memory ranges.
+> Extend crashkernel CMA reservation support to powerpc.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/kdump: Fix size calculation for hot-removed memory ranges
-      https://git.kernel.org/powerpc/c/7afe2383eff05f76f4ce2cfda658b7889c89f101
+[1/1] powerpc/kdump: Add support for crashkernel CMA reservation
+      https://git.kernel.org/powerpc/c/b4a96ab50f368afc2360ff539a20254ca2c9a889
 
 Thanks
 
