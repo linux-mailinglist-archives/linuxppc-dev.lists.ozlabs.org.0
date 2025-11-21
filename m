@@ -1,78 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-14412-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14411-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3EBC7828B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Nov 2025 10:30:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 439A2C77E7C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Nov 2025 09:29:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dCVMM3bgfz2yFq;
-	Fri, 21 Nov 2025 20:30:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dCT0n652sz2yFq;
+	Fri, 21 Nov 2025 19:29:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c105::7" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763713130;
-	cv=pass; b=FXfdXqZ5uYeGDExaL85jDQZgZBUzSNdxuGzZk4TaN/m4d9RiJIbEk+0njwbHiMfYlFVItLuHiB7ZysAiBabrrcPOfX19jD4vXSlBlliZ4nzpCvHpNsPqtWo5CGthDFj5roN1IRKBSoi+S3KFNOkwj0VyzAzS9zXdMKvPPnJMhpmasck6zuhy0Q3ADARR0bjm6y/tJM/kqMWoER5wECTmlHAd1ejYANWcC0Dw/TZHpdDD0Z2t9flloHlHf2wuLQIqvUhiCVjnmSWMq+z/g6N9+CFrdcG3eYh+whkpBcN1A/rKwbssdK233T07bp36T0qVXEDcUKR/AiH4J2oCWVDyoA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763713130; c=relaxed/relaxed;
-	bh=InNng6IapEqjuR0Z+zs7HEUA0T18Z0nYsDw6o2QO1do=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=C2XBNSGDo3ZMBZI7lmvZpQrM1i0hXCBxkzyVztG4gytuRWNqvvMmeKDGCVAiVpyiod4TnJCv+nH50XG4FPfNjFOnELQFsdWouZKEuQeAzCIjpwb/rIhDymwFy8UWxQ3fNmixg++BaTznkcbeFEO7hcNjHLiWkZnMy1pjf5UqyTje1YTJCE3t3iK6Sj/h6d+afsPocw4ZjbucLRd5ledEUyElpRaldFBI6n2x+iJqs6piIEJ/I0sXIRSVepjHP6vzM/jAnivbvJS4lI46dprMPauFKRmrMBlgNRLiPU3Ij9L/N7Ch7vNHK0YhK0rl9agFoXR/loLdzW2tPwdWtoU39A==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=fXv8Rni8; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c105::7; helo=ch4pr04cu002.outbound.protection.outlook.com; envelope-from=vasant.hegde@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763713785;
+	cv=none; b=RgJ8iaiswRSQEh4xu1K3qCSuYrm/7DOX0l1UtRldi634ztzvWN2DlYO9ZF44kSsw6ie0GjG6mzEb2nekn/iqyVxTeiF52ZHE2lSNGMBZothbb+ObcoyzUVdB9hQMLpmAj1hhAU2EcStB6Ji79LeWNWzc6eV/rrlVKFGrDS4KcrEAMhbKEHrsAquQqjuMM8t4XwiNkpmJ1JtEKaGD39YMOUzbNOuvsBqyycxTb8yeEMgRf25z2/OhuH4MAs9Q35RkxCHIHQjGTTP+Bl8l9x2cTvf+0/c64tUT3CFi9ZsLAuXR0PS7PzF4IQNU9zMFDGq142NunF9TPQhUBm6MupmY5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1763713785; c=relaxed/relaxed;
+	bh=Zg80lzeJdeQcn7i0xSP07fimY5POxQfUDNdhJ4rwiL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OZOc0uSiP2VY+qvSFU0VgFp88mUWrKigWap9p0FB7wwayzFmOzCf/BX5P7uElnaycTLEih4SGZQO81YxCH9VvoDBthTuof/3OLyOV6l11iv3kD2FHnzAkoGDMGyJGSAd1ZT5tpZk37kANmyT72JCKs/WGn73hx38fhrI6zl0IHc1UBx2TsPoQlx3BTrJvC7i9yhkwb539HQ0Dl1/mkQv0F4UUKNrz4B8g13VJzt/jg190JaQudl81oN40T6w/723CSpnudU3waeUI6GvAd/eextO4uXqwrswOMY6VKyifsTnunMy/hyKb49MpSKvGZUGO0e4tfKgw7yYxvOVg5p5Zg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IcBglDGS; dkim-atps=neutral; spf=pass (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=fXv8Rni8;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IcBglDGS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:c105::7; helo=ch4pr04cu002.outbound.protection.outlook.com; envelope-from=vasant.hegde@amd.com; receiver=lists.ozlabs.org)
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazlp170130007.outbound.protection.outlook.com [IPv6:2a01:111:f403:c105::7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dCSm81cx4z2y5T
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 19:18:47 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nwHCWTTNSFytQjystORxuOXjwP7amKoYIBS6cf9NIW9WasAh+V/MRipFBiB/tsvEx6VnwWtQDbORTMRSoIy7CKd/nNRa+DBA+Gd8zlk2AjYhQfiy6oPRMOx0RHbcbzhmgQiJnkVdajYdgkgzOhxUA7IeERj1JICBMsFOt5RwthJC1Lp5r4LkUbPs1Wj69ogltZ8jDNGTDtURgMw+VniNs2YbfPO97BEmE9KdP9J82ZYTLM0MOmJwtlRej3V8HHAQSs+xCd4YnxBFuwohkLUfXw1fCAetub4ERLAMOmagD1+gt6K4RoUG8CfN1XS57z3Y/U0U4lzq51igBexqAQ9fdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=InNng6IapEqjuR0Z+zs7HEUA0T18Z0nYsDw6o2QO1do=;
- b=xZv7A/W1E9oO7dGtNRHgN5tVn43XsnQcH0wgIdmU99U23BHLXPpeDvkITw+LXXYK7I4C8pRUf1sGcvS4pxT/snuQyFHyXsm/PRQUrDIXZeyN4hXBv9Ujv3aQxfXWSwn/joBJLdKlu+/UvXgw8e4r1RWUhzomE14T1BQAIFbWYS1N6XsAvrzX4D29Ju9gaAfoYNWGDI8s/pL5ICRL18MThX/Y1dL+QORRV0F6c2mHaCwdeP2QH8LIYqW9fUsFKNPEqUaloezW9z+tnfwC0k19j37WYDe6YjXF7DwAJDMbE+ZlSAxR+c5hiZu+neH6z9K0g0cNcC3fJAY2ee93dMTPSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=InNng6IapEqjuR0Z+zs7HEUA0T18Z0nYsDw6o2QO1do=;
- b=fXv8Rni8btQh7MHwxxV2A74BnIiMV3RWpcK70WuZKJyfvcXM/03Mvi22idMac4LFXC5/rsfvnNdfnMBXGZHZPQKzuHRStyW/Ns0DimgOyJ02E0/huCT9+zmSMfxscSn0Tf9VD0JUaZixhAGk/f+ieGtEidyO1SvvjNnCPpE/2g4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS7PR12MB6048.namprd12.prod.outlook.com (2603:10b6:8:9f::5) by
- CH2PR12MB4310.namprd12.prod.outlook.com (2603:10b6:610:a9::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.12; Fri, 21 Nov 2025 08:18:24 +0000
-Received: from DS7PR12MB6048.namprd12.prod.outlook.com
- ([fe80::a5e0:9d7e:d941:c74d]) by DS7PR12MB6048.namprd12.prod.outlook.com
- ([fe80::a5e0:9d7e:d941:c74d%7]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
- 08:18:24 +0000
-Message-ID: <038ff750-db4b-40bd-be12-bc85cee5abe6@amd.com>
-Date: Fri, 21 Nov 2025 13:48:13 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/pseries/svm: Make mem_encrypt.h self contained
-To: Jason Gunthorpe <jgg@nvidia.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Joerg Roedel <joerg.roedel@amd.com>, linuxppc-dev@lists.ozlabs.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Cc: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
- Kevin Tian <kevin.tian@intel.com>, kernel test robot <lkp@intel.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, patches@lists.linux.dev
-References: <0-v1-672b61acd916+1449-ppc_mem_encrypt_jgg@nvidia.com>
-Content-Language: en-US
-From: Vasant Hegde <vasant.hegde@amd.com>
-In-Reply-To: <0-v1-672b61acd916+1449-ppc_mem_encrypt_jgg@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0186.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:be::7) To DS7PR12MB6048.namprd12.prod.outlook.com
- (2603:10b6:8:9f::5)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dCT0l1Rh3z2xSY
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 19:29:40 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763713784; x=1795249784;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BB4/6hGUoiLibs4Na2AJzu1fx/ZenLoo01mFy4fD8p4=;
+  b=IcBglDGSAjvsvWQSgtH4vo4PjsADhHmyXYgQt96b33AvAd++FQ24uxTc
+   bsv4q+Je6nkJGJ4iCXYr0lvraPTYfJfxEBbEaPvPGOOZ8KF7G8593kJDy
+   ky+5AejslESk0MFqI6H/9RRgYf+mEZwaNRJBxM6qw9IkIQhzzdPcf5IKP
+   /YEG7u/7VWOxuu6P4OrK9wI3KyvUcSsBE6nRVg7FofMnZOcP5DV0cn7Sh
+   FSFX1jd3rdt8R4l6svjDKkvHplzSkkjCeuw4UVwCArfpHy3KBNQrB4qHx
+   uNEVqfXt6NcWM46pnqfnjF2Pvuxb31NPEFkO56hH+41Ns9oi76Mr097tN
+   g==;
+X-CSE-ConnectionGUID: cp+hPEz3TSC+1+ShzftM0w==
+X-CSE-MsgGUID: Yy7NpTRfSSWpZ+icXLAntw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="83193113"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
+   d="scan'208";a="83193113"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 00:29:37 -0800
+X-CSE-ConnectionGUID: IFcT6buWSgylRLtiFzTJOw==
+X-CSE-MsgGUID: HnY3eJyGTEa8YGbHZclxEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
+   d="scan'208";a="191428265"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 21 Nov 2025 00:29:31 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vMMWH-00056t-07;
+	Fri, 21 Nov 2025 08:29:29 +0000
+Date: Fri, 21 Nov 2025 16:29:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: oe-kbuild-all@lists.linux.dev, sshegde@linux.ibm.com, mingo@redhat.com,
+	peterz@infradead.org, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, tglx@linutronix.de,
+	yury.norov@gmail.com, maddy@linux.ibm.com, srikar@linux.ibm.com,
+	gregkh@linuxfoundation.org, pbonzini@redhat.com, seanjc@google.com,
+	kprateek.nayak@amd.com, vschneid@redhat.com, iii@linux.ibm.com,
+	huschle@linux.ibm.com, rostedt@goodmis.org,
+	dietmar.eggemann@arm.com, christophe.leroy@csgroup.eu
+Subject: Re: [PATCH 12/17] powerpc: method to initialize ec and vp cores
+Message-ID: <202511211643.QVn7aDHd-lkp@intel.com>
+References: <20251119124449.1149616-13-sshegde@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,127 +86,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB6048:EE_|CH2PR12MB4310:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95506f7f-ab05-459b-f429-08de28d689fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bEJ6TlJxdkNlU2ZBOUdRNHJwY29wWWtwQXoxYVhJeUQ2aEFWWDc2dXBNdEQ0?=
- =?utf-8?B?ZjZLcnNLS0h4L1Z5ZnpYcmFpQzRnRlNzOHlEZmJTQ2gyTm5IVjNZWTYxVnJQ?=
- =?utf-8?B?dnRGakg4Z3JZVW5pQ3R1SWFDUlplTXowNWoweGs1OEVYVS95cTFOeGhpQmIr?=
- =?utf-8?B?eWF1T3J3MUovTVZwTGluaXcrd2tXK3MvYkJhZWNNdi9EejB6SjMybTJ2UVVW?=
- =?utf-8?B?WnVxQUlWanhDamFnZkhCODBxS01kdWZ5ano1V01TcjIwVzd4Q3phdWI3Tlcw?=
- =?utf-8?B?YTdwMVA2VGNpTU5sbVlVUUMzTm5zY2ttR1IrQlQwVW5oOTBOTmNNQXFTSnA2?=
- =?utf-8?B?Vnh3REZCcTkwZ2dRTzB1N0NwN0phbDlPOUowQWNQREVrU25IYkNsajg0Wnhk?=
- =?utf-8?B?dG9DaUdKTWcvYWNTSHhrb0ozMG51Wk5oOGtJdEVNaE8rVmxMSU5HVml6OHlk?=
- =?utf-8?B?WGtCZEpKQVhoREZKTWZLeEkrQnZ3MmZ0M0ZUQ2Z3dzdxVVhaR1g0S21aOGZU?=
- =?utf-8?B?VjZXazhhY0drcks5UTZ1S2s3RzRGZVh0VjBYM1FJNWRwUFJJYkVZOVpOc3du?=
- =?utf-8?B?U2NSRDFONm1TVndCdFV2OXc3dStQalZkSHhwdk80SngxOVZ2ZUhOYXc1NGVP?=
- =?utf-8?B?Q0FvZGo1eS95NVVyY1liRytkaHRLVUxqYldKckRLT09VUE1jSlFaSmx2ZXk1?=
- =?utf-8?B?R3NxSGtOUThVNzVIVHRjUS9yb0dNZUZGQlEwSm54OER0d2lycytmbnFTTzBT?=
- =?utf-8?B?NUZPZkpmQ1YxNzlzaGQyaTFSdE8wYndKNDdyd21GeVJnQmdoZytnWmppb0di?=
- =?utf-8?B?aVJzZE1RTFpVZmp5cDczSVhRb1JJcXRFSXNJUy9FTW14Y0VMbkdKUG1SOGhG?=
- =?utf-8?B?ZEpXZmp3S3NaUDcvSUE3WXdvTWNNZ0JTWExGV1dNdXF0ZktEUjM5c294eS9G?=
- =?utf-8?B?RGpRNzN6UWQ4QW1wVWFBQ2V0clpxUjkwSStDYkYzbjJ4OXVXSUdla1N1a3Rl?=
- =?utf-8?B?Vk44bnZ5a21XM0I2VEozbmNjNHhJQ0trSm5BQjladW43RWw2aHljVkcyTFhW?=
- =?utf-8?B?WkkzMzE0NEtmSGNOTkRubUV5eWtaLzZCZmVINGpTNEdTVkNTYkg0cGhQOGtX?=
- =?utf-8?B?UEE0dGp2RHV6RHI1QUZ1cnhNTEVVRW96V2VvNjBrMGlxTDdvejA0dW10OHhG?=
- =?utf-8?B?VVJnOWtCS21Wd3NwMU5pVkJIMnYwaWI5ZGRqVlhPZ0dDTm1ieHhYaEdLRmZo?=
- =?utf-8?B?bVhIS1pGSEJtVGx3R0k0WU5WRU9oOE1LL3ZXWGVQdjhxSG51TWlYbVNVRm9o?=
- =?utf-8?B?aU05ajR5Um41akE4NXJLNjkyTTJmWldLcTNkMVBKVmhzTTdOcGxmamhKTFln?=
- =?utf-8?B?bVptL2t1UkZIY0NNRmU2T2J4TUl6MUF6eUFVSnJYRENaK01IcDZZR3ZFNUZm?=
- =?utf-8?B?M2Q2NTRueC9pc1EwdEtKNXVoNEJsYlE2c3RpZUpiY2hPMnp3SUplaStVc1dx?=
- =?utf-8?B?aDlyM0dYSnZTNTBRTERuRXFWMUNyV2RzRXFxSUFySzlRRlppZEZPQzNWUDUr?=
- =?utf-8?B?bjlPU1ZJYWJaQmR5K3JYalZ3MEdNTFp3QTJCbFFoSHVnTzlqMlc3MXV6ZndE?=
- =?utf-8?B?N3VObkFHL0ZlYTRuU1ZNUGlFQzJFUnpNYURXdWRWRXZGZ1RFNytWWEM3RW5N?=
- =?utf-8?B?VFMwREZ1YnBkRWlVblJTRVRkOVBFclNhVGZuM3VmRjJ4YTlhWWh4RHR5VjA5?=
- =?utf-8?B?b01QS1hBNDYzSHBPNElJSXJyVFJXeEhHanU2WXZHNXRWR1RYam1VWlVHM25r?=
- =?utf-8?B?QVlrRktZeWJUWUFmSXpsaTVHMlV3RzVoS1BVcFpmNmdSZHlIcWd5RjdoWTFW?=
- =?utf-8?B?bkZTWllxaGY2RGtYV2JTbzF1TmVmMUU5b1dDOXdnUHIzaFNGRDd6UFJwQkFV?=
- =?utf-8?Q?SmCEa0OSlkxNwL+JiGgF0NuTQnKVFHqW?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6048.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K1JXS0ZHSGMwcTZBOW05L0xFdzBxMTIzT1FSK2JQcERSQ0NMNTFlbVRoUHBB?=
- =?utf-8?B?NXBUSGc2Sk5iNHlxR1ltWFUzZXBMWHp5eTlWSDdqa1F2L2RaZjA4VytMc0lG?=
- =?utf-8?B?YUM3bEJ1a0w1RDZlQmxOaE85RmVSTGU1d3RFQ0RtbTFya0hXKzNBdUlyRnFJ?=
- =?utf-8?B?RFZEcjNUNU4vWklkbW10elFQb0JuaWIrc0NQa29MRTY1eUliM3pEL243K0th?=
- =?utf-8?B?M2Y4YTEzenNjZ2J1eHR5STlhbmlBNEtyU3NEK0pMY2tkRWNXbHNCWUkyUU84?=
- =?utf-8?B?WWx4NWVWYTN4UjVCSWM3Y0laL0k1QWJBWWYrNmdPM2N3Z3ltSVVLSEZRQUlS?=
- =?utf-8?B?aHJ5Ni9nQlBuNHhRajlaNFlXYjE5ek9JRGwyemR5MWhjZGoxanArY3I4Z25E?=
- =?utf-8?B?YjA2QURuSzB3M1VKTll3T2IyWUp4d2tVS01JMlNkaS8xeTN0VGY1cktjY3ls?=
- =?utf-8?B?ZWxtUlo3ci9ib2NjOS9iK3ZpelR2WjRxYWdudnd5YWxQbGx0bXBmOEltWUd3?=
- =?utf-8?B?ME9kYWFmd1pjUThNejVNOTgrK2xtNVJSM0ZjWG14UHlXZjBDZGJBbml2V08w?=
- =?utf-8?B?WnVEMnVKc0w3dXRSVkcvb1NKSVdjbzRjZm1ZODExQ2JkZm04K0NaSVNaY3Bt?=
- =?utf-8?B?dU9RazVFWDhHRlJRbGl2Z0dzT2Y2VTBhbmhnT010c1NEbFRVUDYvRkJGdzd6?=
- =?utf-8?B?Y3RtcGZXRzdLTTNES3NYOWUyRHpqSnFIalBJcE5kdW1aaFlmLzdxbngrZ2J3?=
- =?utf-8?B?TWl6K1BMY3ZaZlFtQUtubVRTRkdBWkVzLy9ZMXNMNlVNVjZxeUs4eUZVcy9B?=
- =?utf-8?B?VkRzNXdtYXVVRm53L09MK2QzTjJBUUNRdWJSYWUwelJDYWpVbUhBRlQxbENk?=
- =?utf-8?B?dkw1Z09iakhWVmo1bm5nRnlJeUNPU1FPYlJ3WGVBMk1vb2hoUllZWTN3amps?=
- =?utf-8?B?NEY3M1dyVzI0Y0ZoaS9NS01mQkJ1UkxWbDNsN05jVnZhTk5YWVFlQWw2WXZX?=
- =?utf-8?B?RnZhdjdzOTlSZFdEWENxQWJKTHNkRWs2OVQ2Y0dwVWxjOExURkwvYjBSMnh4?=
- =?utf-8?B?UngwM0NkaEtCdmt2bWpzZzdoc09mUnU4dzdLMW9IQlFtRG5UWDBoaFlFSmtH?=
- =?utf-8?B?aFI2Nk42RGtkcDdCcDFnbGM5bTNlNmk5VzJXcHhKeSt4Ulk3QUlhZEoxMGwx?=
- =?utf-8?B?Y1UySXJrUnVKa3dLMS9vQTl0VldXZmdtVUc2Y0ZuRC9hZE9BNGI2diszZ3Rv?=
- =?utf-8?B?Uzh1bzZsS3o2djE5V2p5dTZObDlzSzZveGhjU0NBeVF0TlB1OGpHUjl4ZkU0?=
- =?utf-8?B?M0h3Yk5kakE3Y3BkU0RFdmQ2TXhJUnhFVG0yTTl5QXVMNDZBeG5BaFRCS1Ri?=
- =?utf-8?B?emFRc004TGlUK1orWnBvUFJYWEtwdXhNTGljWGlNNVBoQ1EzK3VORWo5REJP?=
- =?utf-8?B?amF4ZVVqcVBJajN4cW50bFdDQy8vcmgyRk9CU2pQTTNUcmRlNmlWV29jbkRD?=
- =?utf-8?B?S3RGTmpGMG1aWnlmazVGa0dleVdiWGxJWE4wSEluOWl6Rk5ablc0emFmQVZr?=
- =?utf-8?B?Zys2T0F6dHU1ZTByQVg4ZHh3NzZQaDgzUHlyK3FFYjJrd0RLWkhhcU81cmM0?=
- =?utf-8?B?VnlRaVlISmt4VXRBYlZEU0wyT0NKYTVvNlBTVXJ4Q2RwRkNhTm1VeXhuTTFj?=
- =?utf-8?B?T0ViMVc1Q01QZzZ5YnhTa0pvODIwMkF4OEF0UDdUNEljbjVHczFuaG85SU81?=
- =?utf-8?B?NlZMVHd2cUtZUklvRVVjQzFSTWMzSStEcGtPZElydmlBWWFxem1qSHlJRmVw?=
- =?utf-8?B?c2s3T0p0YmdrK2lvZm9RZnp0QmpYUXBIbGlVMy9rN0pRTldweldiT3c0Yisv?=
- =?utf-8?B?TnZrZG9HZUwwSkxYTXE2NC9xVHBIVzkydHlvZEh4ODdNd2VkckpCQXhqcjRS?=
- =?utf-8?B?Q0JTQ2NhT2d3SkJ2aDZmMHQ2bHAwUElVVGNwMlV5SGdodzEralQ5NHBYU2hx?=
- =?utf-8?B?NkhhTDNNUno2VHFFbWM1K1I3aU96NnY5NUF0K0YwTGlKbFJiUE14WjV6Yy85?=
- =?utf-8?B?eXVPakxsZklUejNJUmFVaWl0TFlLd2xEaXBTblhyQ1R4OGFQRTR3OEVZVk5o?=
- =?utf-8?Q?9JxVD11G8PWU7CYntk4zGEkqB?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95506f7f-ab05-459b-f429-08de28d689fd
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6048.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 08:18:24.0086
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AacwE2qC8VdrcT+JFICZvUdnD9Z7/ben1XSWc1++Xx3rVtzDma3YHjJ8f+hm70p25X6cDbTUdFuEXlMEuEtkOQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4310
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251119124449.1149616-13-sshegde@linux.ibm.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hi Shrikanth,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on tip/sched/core]
+[also build test ERROR on next-20251121]
+[cannot apply to powerpc/next powerpc/fixes driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus linus/master v6.18-rc6]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Shrikanth-Hegde/sched-docs-Document-cpu_paravirt_mask-and-Paravirt-CPU-concept/20251119-204931
+base:   tip/sched/core
+patch link:    https://lore.kernel.org/r/20251119124449.1149616-13-sshegde%40linux.ibm.com
+patch subject: [PATCH 12/17] powerpc: method to initialize ec and vp cores
+config: powerpc-randconfig-002-20251121 (https://download.01.org/0day-ci/archive/20251121/202511211643.QVn7aDHd-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251121/202511211643.QVn7aDHd-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511211643.QVn7aDHd-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   powerpc-linux-ld: arch/powerpc/kernel/smp.o: in function `smp_cpus_done':
+>> arch/powerpc/kernel/smp.c:1735:(.init.text+0xd5c): undefined reference to `pseries_init_ec_vp_cores'
 
 
-On 11/20/2025 8:36 PM, Jason Gunthorpe wrote:
-> Add the missing forward declarations and includes so it does not have
-> implicit dependencies. mem_encrypt.h is a public header imported by
-> drivers. Users should not have to guess what include files are needed.
-> 
-> Resolves a kbuild splat:
-> 
->    In file included from drivers/iommu/generic_pt/fmt/iommu_amdv1.c:15:
->    In file included from drivers/iommu/generic_pt/fmt/iommu_template.h:36:
->    In file included from drivers/iommu/generic_pt/fmt/amdv1.h:23:
->    In file included from include/linux/mem_encrypt.h:17:
->>> arch/powerpc/include/asm/mem_encrypt.h:13:49: warning: declaration of 'struct device' will not be visible outside of this function [-Wvisibility]
->       13 | static inline bool force_dma_unencrypted(struct device *dev)
-> 
-> Fixes: 879ced2bab1b ("iommupt: Add the AMD IOMMU v1 page table format")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202511161358.rS5pSb3U-lkp@intel.com/
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+vim +1735 arch/powerpc/kernel/smp.c
 
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+  1721	
+  1722	void __init smp_cpus_done(unsigned int max_cpus)
+  1723	{
+  1724		/*
+  1725		 * We are running pinned to the boot CPU, see rest_init().
+  1726		 */
+  1727		if (smp_ops && smp_ops->setup_cpu)
+  1728			smp_ops->setup_cpu(boot_cpuid);
+  1729	
+  1730		if (smp_ops && smp_ops->bringup_done)
+  1731			smp_ops->bringup_done();
+  1732	
+  1733		dump_numa_cpu_topology();
+  1734		build_sched_topology();
+> 1735		pseries_init_ec_vp_cores();
+  1736	}
+  1737	
 
--Vasant
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
