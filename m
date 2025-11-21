@@ -1,86 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-14394-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14403-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B26CC77218
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Nov 2025 04:14:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE80FC77481
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Nov 2025 05:44:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dCL0t5jLVz2yG5;
-	Fri, 21 Nov 2025 14:14:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dCN0T6ZKqz30VZ;
+	Fri, 21 Nov 2025 15:44:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763694862;
-	cv=none; b=fu05tH+5u+MZqWv8q637DfVYsXqAVIVZmQiiweCY+uHFxLcx+iV7Xon73dFlZhlyh/NR5NZDkigUYjGnvUUFAYNAsBnSkQCIH6kUkIaVp++wLVgQTbFTS+ALcXaNRT1VBn/EsR9vl6fj8Xyle49tgFo93bvM4sdRojCJG74kkXYNu6B2D5LM5ZnuCwBrZGRrSeRSumwmqmNkpx6kdV+sR6BevxU4wYMQnheWBYJE6dLpw+6qbaS9zKef355RRn96o0SronKN3ynllA8lcS0eD4Gk+umtssEF6Aw7qkst2YArnF2fTqLkjcWw1UzCKrYWWGabV2fdcza0TdOkqNGNZg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763700249;
+	cv=none; b=KpFpgt5t4i3qNAioPsx1ppz6lZXc8AjVrCtuXVLYFqY+O/QjJYo/28d3iRMC8EghsqpvMHkccAEIQNmFwn5Tnlo1YMtifISib4YWp0v8iEnd3tFoZr7QQOp2JmkrFKbwVn2PDfEVhLndJRurd+t+fVMyq5Xi+U9VqazYIHxekWNQu7Ahk89xEBg5zGEImw0E7j9a5MnX1eVOWFtBkbpTa85uxGzoFsgUwRghvG5ZCZtV1EbLu93TLWkAa6fvJtjmd4Cu4p965tFXPUseipQKUQ6nJan5SK8rtLNJIqtbRFO7DmASERw4dGnoB9ki+XXNru+1DJV+hY2sSpMmPKN+0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763694862; c=relaxed/relaxed;
-	bh=zahLHRr4riqi1zUQGdH0lnzO97hqdBIsJ3nEqotbKzQ=;
+	t=1763700249; c=relaxed/relaxed;
+	bh=fm0DB17Jut9djr4vYmcigm/NwxL0ucQfZJPf/uSD7DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nD6KSaPwikZNTsCGFQvpOq27Z1Mzl+2wuXyA4+rHDT87A7rgjdkd25pR+CMp0B35qHKRJehVQLGNRWxXr9IIDcouwyJBIHe5jZSAI/iebXkd5N8jqpzcxfcLvYY5emT9J73obj5lqxaro/HUhY5N2x26objOcvm0BtLx7Pmljedt74HW5kenkBEH+Jw0FVuTyZy7Kx7zBtlAy/LErHpnBPoItflXoq3oue+3Zl4+Q4mCYBS4KlRbMF6djtRrDxGKF1OXHABpx4jPIamI8UEcX44F/G9fP8yAmAt20vgf8Xs1hPWJH+bNvuANISdIOHmufnFwOE1RTsPEd4qvRflRrg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TyVWNFqz; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version:Content-Type; b=bBKtT8vnu7RfYKjYNUkunUpfcj3tjO2bXZcYonWm3s5DihsMrVHx994WLqaMJ5eWfkE4U4P+vzk9tDYykrOa4VIkEi9twXcyUDoxQeBeBqBm5MyXm8hyuBdp2i2kGfe4eDVO0BCZVFJ3iQgorU1/TsrPXs2OL5Xg9ZVSOPQduYw9otm7p219v1OSQhSNW77LcTRdkhHue8QrhgsCwEpivuopHCOdfCvvyTD8fxS3pkbkAi3/Locv07SU0b4my7YKTM1uc+1e/72rbvgLrHUR76kwKHc/kIUbO+ArEd8lR03S5y7FZgVe77t1lsIFUqIVy1jViyfO56kfWucE/L/iJw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cQvY9GxU; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TyVWNFqz;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cQvY9GxU;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dCL0s5rXgz2xQ6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 14:14:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dCN0T0TxMz30VQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 15:44:08 +1100 (AEDT)
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AL0HekZ012697;
-	Fri, 21 Nov 2025 03:14:11 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AKNbkEx012620;
+	Fri, 21 Nov 2025 04:43:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=zahLHR
-	r4riqi1zUQGdH0lnzO97hqdBIsJ3nEqotbKzQ=; b=TyVWNFqzJJJAdHAkEpcLHn
-	M7RIteHwrqpvW1iATZVoYFaZBExszPcdXH1lt/kMHHdjnjLJi4uOMDkXvWaOdzAb
-	fpqhQUAn5kKLJcFFq0BQ8WfT3U1oo4p098Kv3IIHOqIiZwTAuqn2ps8c+RMtW8pv
-	jedsMiMO4d6vlJ+EBo2pTdvs4JqYCIhRaDWv4f5ZNDLR8LLAgtFIFE/Cs5T9Z3Yg
-	Vm318UpD0GmNgrSejXAZSsg25Wg6G7KbheufYdGFEcyQ7/CfYCkdxhLxYAPshIjk
-	za3U/TIe07jH+X2JdeJzVKmdth5kiHUHubAYOrS44KwVpDh7K2GnDiG7B/CAIrvg
+	:message-id:mime-version:references:subject:to; s=pp1; bh=fm0DB1
+	7Jut9djr4vYmcigm/NwxL0ucQfZJPf/uSD7DY=; b=cQvY9GxUdJxKH7lHEKqhCY
+	X0pIJd2+F6IyzZC3Y/feIXte4JbqbJB3gYmGyTLEFv1b7HAJWMwhQEQd61OuESIt
+	02BUkzUwwE5EfGAlbg/UuB+IzuLYto/K0D2ZK9M0jk//xTsJ62BqRA3EC9b+5OaK
+	uA2lGCB9F6lz6PA79nFmR12Y2Mv6PLM95wc031ysZgQbzx5bnwg6bgMap58ngp2O
+	DCusN/zciDLQDPQmQoaUnaIVgF1wlECfthxv+EVJs9CjvoMdTmFDQtN6L7Z8VAAE
+	YSbsauNP78pJuReOYDwj+QD7kO3xpJBwmQxLwOi5Qs2CPf5qMgb/IWfZosbq/ZXg
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejgx8aj0-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejgx8jf2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Nov 2025 03:14:11 +0000 (GMT)
+	Fri, 21 Nov 2025 04:43:57 +0000 (GMT)
 Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AL39G9P010582;
-	Fri, 21 Nov 2025 03:14:10 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejgx8ahv-1
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AL4ZsOH007689;
+	Fri, 21 Nov 2025 04:43:57 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejgx8jey-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Nov 2025 03:14:10 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AL2MPqn010419;
-	Fri, 21 Nov 2025 03:14:10 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4af3usj7xt-1
+	Fri, 21 Nov 2025 04:43:57 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AL1J0K8017335;
+	Fri, 21 Nov 2025 04:43:56 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4af6j222vf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Nov 2025 03:14:09 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AL3E8O651642774
+	Fri, 21 Nov 2025 04:43:56 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AL4hsaA34930950
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Nov 2025 03:14:08 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 02AAA201FD;
-	Fri, 21 Nov 2025 02:53:45 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BE331201FC;
-	Fri, 21 Nov 2025 02:53:43 +0000 (GMT)
+	Fri, 21 Nov 2025 04:43:54 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9EECD20177;
+	Fri, 21 Nov 2025 02:54:16 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 29D0B2016F;
+	Fri, 21 Nov 2025 02:54:15 +0000 (GMT)
 Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.in.ibm.com (unknown [9.98.111.108])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 21 Nov 2025 02:53:43 +0000 (GMT)
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 21 Nov 2025 02:53:56 +0000 (GMT)
 From: Madhavan Srinivasan <maddy@linux.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
         Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/8xx: Remove specific code from fast_exception_return
-Date: Fri, 21 Nov 2025 08:23:08 +0530
-Message-ID: <176369324781.72695.12523299833738902821.b4-ty@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/32: Fix unpaired stwcx. on interrupt exit
+Date: Fri, 21 Nov 2025 08:23:11 +0530
+Message-ID: <176369324782.72695.6792022172636807941.b4-ty@linux.ibm.com>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <39de3e0f0122b571474b1ba352a2dc3ad8cb71dd.1756304318.git.christophe.leroy@csgroup.eu>
-References: <39de3e0f0122b571474b1ba352a2dc3ad8cb71dd.1756304318.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <6040b5dbcf5cdaa1cd919fcf0790f12974ea6e5a.1757666244.git.christophe.leroy@csgroup.eu>
+References: <6040b5dbcf5cdaa1cd919fcf0790f12974ea6e5a.1757666244.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,19 +97,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SFHhpVBqm8CHWnqNuMXjQTaVGJXYxsxn
-X-Authority-Analysis: v=2.4 cv=YqwChoYX c=1 sm=1 tr=0 ts=691fd903 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Proofpoint-GUID: 6Bq6XP1gsCSRlvfNwxQT4BCxyZod8Qvh
+X-Authority-Analysis: v=2.4 cv=YqwChoYX c=1 sm=1 tr=0 ts=691fee0d cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=UWDi0W9GykAcyYuS8hgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: F2e4jqPwk87WBm1DH_lim1jrwXT8j9UK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX36nbHVGgD6F2
- fgS7VlFOAsN5RPM0WXqhezJG5MlY1eMTkU4LSujcusFiwGu7gto76KOTz8dmcwF58yedTtW6/sd
- 528JpSiM596nmSSeIHILoZ8WuVW9jdOzV4R9sO8zvgy0OV7b3+Kwmx2ofedHGJtYZ8fE6RVD2Wu
- 2PKzXWBnlRTv4DMMAq4pye1hQ6Uom0JBhAf9OkHpMzNxsI+CQcSfywg512R4poh9eJvRT2vOGjO
- BKVi7MNSuPVLE22aLeTuJV847DqUJzweCkpmkgLq1RglyQVQZJ8z+OQXH8Gr4LOSFIprdjm9ktx
- jDvOkkXZ3UayvULIadQu3Hkcf7B0cx+TbrQy/IZqCYs5l1GjzXdwSmtAxjsU8QuMKRsm04hPEOg
- Hp502RloXTToQiDtZJnNgWKiX3xfAQ==
+ a=VwQbUJbxAAAA:8 a=iv14AmuG69q8u87zfAgA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
+X-Proofpoint-ORIG-GUID: ilCvk1jT_FUOBlg0uE3jpUe7MPnfjWC8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX8pBLmdaQ/htj
+ tAJc2IkZWHoGBuX9AMNALv5/R0Taj7HXqFyIwhauh2IiLXWWTg8M5xsatCLtA0SjimyymXFFFp/
+ rtZLI/C6mXGYXob3MLpMnwG4EVmqIs7GU4BnjnYB+I17TpU/63n649HgmUtyGiOuvYKz4q9L5Aq
+ o+BpzXnv5lgZIe0yCIA9/m/hKKTZbpImdVol+jsysQptJ3msOtsJZ9lUQhljl2AP/zncp1Wvc/n
+ UbbyH4RNJz8SESyJJcnPxy/XGyvmfBC+2Oq3VkmFl8WM1L16tplukBOlYtFbKPDSdB5t0XSRCdw
+ tZgcP2dTWj2OXGgmKmXPU8OGBClzTd8tkNemOy/YSwa/FNEMqEgVnLooVh2XrJG8uleH7/hnBl8
+ gGushSY7wYTRtzNx2ANz+NEgiMlENA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-11-21_01,2025-11-20_01,2025-10-01_01
@@ -124,20 +124,22 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 27 Aug 2025 16:18:53 +0200, Christophe Leroy wrote:
-> The label 2: in fast_exception_return is a leftover from
-> commit b96bae3ae2cb ("powerpc/32: Replace ASM exception exit by C
-> exception exit from ppc64"). Once removed, we see that
-> fast_exception_return is a standalone function that is called only
-> from pieces of assembly dedicated to book3s/32 or booke, never by
-> common code or 8xx code.
+On Fri, 12 Sep 2025 10:37:34 +0200, Christophe Leroy wrote:
+> Commit b96bae3ae2cb ("powerpc/32: Replace ASM exception exit by C
+> exception exit from ppc64") erroneouly copied to powerpc/32 the logic
+> from powerpc/64 based on feature CPU_FTR_STCX_CHECKS_ADDRESS which is
+> always 0 on powerpc/32.
+> 
+> Re-instate the logic implemented by commit b64f87c16f3c ("[POWERPC]
+> Avoid unpaired stwcx. on some processors") which is based on
+> CPU_FTR_NEED_PAIRED_STWCX feature.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/8xx: Remove specific code from fast_exception_return
-      https://git.kernel.org/powerpc/c/98fa236044ca4f8841107382fb03832101fa7328
+[1/1] powerpc/32: Fix unpaired stwcx. on interrupt exit
+      https://git.kernel.org/powerpc/c/10e1c77c3636d815db802ceef588522c2d2d947c
 
 Thanks
 
