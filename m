@@ -1,58 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-14381-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14385-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03685C76294
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Nov 2025 21:16:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0DC4C7702D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Nov 2025 03:31:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dC8kB4Fyjz2yvL;
-	Fri, 21 Nov 2025 07:16:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dCK3L3WWPz2yG5;
+	Fri, 21 Nov 2025 13:31:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763669762;
-	cv=none; b=BszmROPLilqCWo+h7WohhJ2YGSDls4TdJL4qKpj8C+uV9vXwGvYVXcfjkXRlEJQznsqq4IM0qDi4/99VERtPgpd72cqvlc6SYbq6TJHBVh3UBgXl6HXQ7L7iVjlfDo53RdHSLsoZTeC6W4j6Gs8HFErWh8NFZyAHAR3l2puUV9rWaz7l1gfO45h6HK2c940PqAlQRO51xNxJDvCPhvzhR6qF49bOxbzeiexN5W38X9MEGMfUloZAwtJjqCdxH8BtH7pTS4Pg0cVItvyZlFzZ9QYsrCGcSOpplvCnwtduS9jsWT1+L3Pci8T2f8Op6RY5mLCmhkCkNrC8bbPVqhRO8w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.187
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763692286;
+	cv=none; b=ZvpNugog3igOR3TyzSwwbsQlEN7P4JNIKxEahIz6DrdWGYwRv4ym8m+TLspfU8ISGhHViR84BHOsNoIYQB+cSISiVUo3JBw1p01a/tNMMAGQW/0IAp1PtE5tTxtuIJktTMey8sbxrskg4Knj/YbgEA1SqSKsCd4kBoUEUpuck1+0jnLWo8Jjx8O7JzLa7e//AlrlWdtEDwPKu22C2mhAZHkr4iQJq6cA8cdN4TA5r8IN8knh7aYWV1ksKUMSFERmWr+YmqwwRp0mR92gLf6GUJ5VvldNs9aWw1aaMYIQt51hXiUlAJxd9H+j4On3E31t2YtDC8QAdfVXrZcdkfyWOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763669762; c=relaxed/relaxed;
-	bh=OLl64RVwbxG7uWMTRj+QY42tMwVazdb3ajQCCN58D/Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C/zyvKAHnqzQ5GasvrzZbNrZWKgHOvWHnKIO0KM8fsZUN24S1c+5/ELBvVBStVUSZ4a0kIrw+2Aer6KLFrJvqmc26QSjgApQRQtwtkKNCs6eIChRbRWoSUMXPmcXB76Odrt5Mknjy4eX2RhZLovol463swvbCRrCttJJ7Azg6l8bTtoH4Kko0VBOxC7vzsC9LIFol8yK0aPVFImf5V8wxwKTNvv5ZQgxReOAZgzd4vR432xNC4LDpVDTXgzJyBjgVLCScdKAkeCh/5lH+2/pGzgv/DF5DnM1KUsYMS049Fa261X0F1h3InRkmSLO6m4DHIJfeAYB/cj3hdm59hsMLg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aBeYe4xN; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1763692286; c=relaxed/relaxed;
+	bh=AQS3TZ1si/Ig2wkymXClxgNNI6FTrzeWsHMvwkBCMDg=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=htBDlVuVpbf823nTrVJufB9TSFrpYZAWpCJnUR4hYuWk5l1wyQrIuwgPM9BlrY5qmGSlZK5TRa0zxBcCEIcuK5kQRyXqAqGXhzcw6+h2EB2I/xgPrV1BJKXksGeUEMP7GvfuKFqL1m4uGfSMPo8pTlbyXOdDNT1nJQCBIzEi97wihFWk+DaDTy9Mmo3ufg2yrGrJuM+O/Z9uO4LP8dFWysVXTZqoJTBPJaMuslltOWdicm/JYYLXtqSbypz0V/QYLICOverTMSWYaQq7Oe3a98uN/VmZ7XcRsvIPhqVP4izsnzMqO16Wsq/771YcChsKTQQIkzNF27GjqDvTBO/xXA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=u40LWVUi; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=u40LWVUi; dkim-atps=neutral; spf=pass (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=guohanjun@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aBeYe4xN;
+	dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=u40LWVUi;
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=u40LWVUi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=guohanjun@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1140 seconds by postgrey-1.37 at boromir; Fri, 21 Nov 2025 13:31:23 AEDT
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dC8k86GrWz2yFq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 07:16:00 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 806A144080;
-	Thu, 20 Nov 2025 20:15:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC582C4CEF1;
-	Thu, 20 Nov 2025 20:15:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763669758;
-	bh=UVvLhmqpWsCeKRPq24w1NmHmZ13Ys5GIiVAPutH6rLA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aBeYe4xNr9rBxhDTF+/AZm9PdyFdsFK0lecmz/AfH/WyxhIThpr9Vv0PD/vtDOLMV
-	 clZ1SuNl6vKhkpvXfVyOQOpHVXsXOLhKJ0q/nCy0OTAEU2hhvpm9vqgk+3FiW8nFF2
-	 KaVho+HcG+ruGM4iHnJb7TdCmaArotnL6/lKLC1ZshijnCl6HI1L8xwEVk9OXn3N/4
-	 kgqGWI99/qNv462kJ1RveNYIanmYglrXmzz7kb4Q8qw205XAdgz7DbNHVJ47jzkSGk
-	 ByXMN27IIO9Fhzg9cbXJTUMzWxXHL/smYBaFsWKRyksEHCggud5roWs/Akp6EUnmSA
-	 w6Nxx0RYXhVow==
-Date: Thu, 20 Nov 2025 12:15:56 -0800
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, 
-	linux-kernel@vger.kernel.org, joe.lawrence@redhat.com, Jan Stancek <jstancek@redhat.com>
-Subject: Re: [PATCH RESEND] powerpc/tools: drop `-o pipefail` in gcc check
- scripts
-Message-ID: <qtnjbiz2wq35mmisa2dljpvslnmc3wmygxsq5usmiml223ry3r@eze7qwlrgx5p>
-References: <cc6cdd116c3ad9d990df21f13c6d8e8a83815bbd.1758641374.git.jstancek@redhat.com>
- <z4go2m2c7ufulwjk7vkcpv2oyfo2jwpxzieiuuetegnv7sjrsj@gbjwkp2dpdyd>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dCK3H2jCCz2xQs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 13:31:21 +1100 (AEDT)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=AQS3TZ1si/Ig2wkymXClxgNNI6FTrzeWsHMvwkBCMDg=;
+	b=u40LWVUiaHDsbCA01CQYv9znHEwW+kbk7n9CJMnawfy/JqQjuFN1zeEfE52OVPOa1JJU3VvGc
+	Af+Zmtn2UuTu37GoOwE5H7E42FZK4NDiMyUtsrwLKtr/EaNCO2dnV7B16f6EPBKaPAC+txl34X2
+	rkqy9fpgxCj50OJgmLhLopc=
+Received: from canpmsgout12.his.huawei.com (unknown [172.19.92.144])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTPS id 4dCJcY0tv0z1BFNT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 10:11:41 +0800 (CST)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=AQS3TZ1si/Ig2wkymXClxgNNI6FTrzeWsHMvwkBCMDg=;
+	b=u40LWVUiaHDsbCA01CQYv9znHEwW+kbk7n9CJMnawfy/JqQjuFN1zeEfE52OVPOa1JJU3VvGc
+	Af+Zmtn2UuTu37GoOwE5H7E42FZK4NDiMyUtsrwLKtr/EaNCO2dnV7B16f6EPBKaPAC+txl34X2
+	rkqy9fpgxCj50OJgmLhLopc=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dCJbV65TDznTWW;
+	Fri, 21 Nov 2025 10:10:46 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6C164140119;
+	Fri, 21 Nov 2025 10:12:13 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 21 Nov 2025 10:12:11 +0800
+Subject: Re: [PATCH 3/6 v7] acpi/ghes: Make GHES select ACPI_APEI_PCIEAER
+To: Jonathan Cameron <jonathan.cameron@huawei.com>, "Fabio M. De Francesco"
+	<fabio.m.de.francesco@linux.intel.com>
+CC: <linux-cxl@vger.kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, Len
+ Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>, Borislav Petkov
+	<bp@alien8.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, Shuai Xue
+	<xueshuai@linux.alibaba.com>, Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang
+	<dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, Vishal
+ Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan
+ Williams <dan.j.williams@intel.com>, Mahesh J Salgaonkar
+	<mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas
+	<bhelgaas@google.com>, <linux-kernel@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-pci@vger.kernel.org>
+References: <20251104182446.863422-1-fabio.m.de.francesco@linux.intel.com>
+ <20251104182446.863422-4-fabio.m.de.francesco@linux.intel.com>
+ <20251111154220.00004767@huawei.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <19155ced-8702-71f9-6eba-4dbfdc7c88ad@huawei.com>
+Date: Fri, 21 Nov 2025 10:12:11 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,29 +92,39 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <z4go2m2c7ufulwjk7vkcpv2oyfo2jwpxzieiuuetegnv7sjrsj@gbjwkp2dpdyd>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20251111154220.00004767@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.247]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
+X-Spam-Status: No, score=-2.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Nov 12, 2025 at 02:56:05PM -0800, Josh Poimboeuf wrote:
-> On Tue, Sep 23, 2025 at 05:32:16PM +0200, Jan Stancek wrote:
-> > We've been observing rare non-deterministic kconfig failures during
-> > olddefconfig, where ARCH_USING_PATCHABLE_FUNCTION_ENTRY was getting
-> > disabled and with it number of other config options that depend on it.
-> > 
-> > The reason is that gcc-check-fpatchable-function-entry.sh can fail
-> > if `grep -q` (or scripts/dummy-tools/gcc) is fast enough to exit while
-> > there is still someone writing on other side of pipe. `pipefail`
-> > propagates that error up to kconfig.
+On 2025/11/11 23:42, Jonathan Cameron wrote:
+> On Tue,  4 Nov 2025 19:22:34 +0100
+> "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com> wrote:
 > 
-> Ping?  This fixes a nasty build bug, any objections to merging?
+>> GHES handles the PCI Express Error Section and also the Compute Express
+>> Link (CXL) Protocol Error Section. Two of its functions depend on the
+>> APEI PCIe AER logging/recovering support (ACPI_APEI_PCIEAER).
+>>
+>> Make GHES select ACPI_APEI_PCIEAER and remove the conditional
+>> compilation from the body of two static functions that handle the CPER
+>> Error Sections mentioned above.
+> 
+> Hi Fabio,
+> 
+> I'm not seeing a justification here for the change and there may be
+> APEI platforms without PCI support.  So is this just to simplify things or
+> is there a functional reason that it is necessary?
 
-Ping?
+I have the same worry, embedded system with ACPI support may don't have
+PCI. And for APEI, AER is one of the error type and optional.
 
--- 
-Josh
+Thanks
+Hanjun
 
