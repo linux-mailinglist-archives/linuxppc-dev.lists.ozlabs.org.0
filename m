@@ -1,63 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-14421-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14422-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7582BC7CC5D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Nov 2025 11:11:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A90F4C7CC9D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Nov 2025 11:25:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dD7D75Ng3z2yD5;
-	Sat, 22 Nov 2025 21:11:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dD7WH3Cpbz2yD5;
+	Sat, 22 Nov 2025 21:24:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763806311;
-	cv=none; b=m/00CTW20BmX+aJVYvhlg5F2FfLMAm2tGap3RSDBD5f/kcJcpLpiiCdOZTh7eCR6ZOM8srMfjpQmi/JokYqEODfOiS0NWl35r4VFESOs3cuYyX1hXtKLKHcPwM+FJ1nEym83OEcC1f+TBQNHhRdtGSkR6vieM0Svm5YSjpz7874cse2hJ22PLfWEnJpd48OvNhGgYVZRwAnlCtdEUQIEU69QFynfypAxT3Nu0eYquDgn6qoXoj29Idlw9zpjNQGnYQjE8RI8TqPe+cS8Pxjo4S8jPCa9RVM7rUyTXqrQsdvqo9CeM0FnJ5ziXwqAPJZsALJo0629shY0WsQALFxT4g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=83.223.78.240
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763807099;
+	cv=none; b=kh0dh+2ScgAEWw2yWElRJKyV3d2PlwucU6tISqoZeMpb9wItFao7hUhx077s857vioWXzMnqhqMWs6+5VGYwCZ+RDTW+q3SIJiddWyxJhoWemh8xa1GT59RfcZhPVVH3FFrO2b/mRJPBoqgP/jSHRbaG0x4mAJoNVa/UAaE6ML0wNWwPcKA+eYwKiVuWZ9lzu7Q8aHwC34t3uqrjUccMVOoQXIz2eGMrHbKC4GvqFAyh4KEBTFa7HRbN1mj0Mbbg6cTYZ+irMv6qO6KtC/hB7ERo1WWwTOPjG/NwspDKGeKiU6Ohn8Ov5e08PEGmdTI3FcCnFGd+Wg1IkZcknF7AvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763806311; c=relaxed/relaxed;
-	bh=u2P7H6CSeWfeRavuvxhdKjLxwAh5A39cihk4/topHg8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gFOUpAqZ1xKQiGMVTzSDhfe2Rjr3Rg9hB50J0/O6EU4B1ZTiRBr/12+kLjdkC4Z4R7P/2YrJL4ft1uFsIjMWcfwgFMyKkC9NevcH63lcx2VCnikiT6qjbhLvSPuWLxZ/K21cdbJ6su7C0qy3TZtIaH/z/vHjY+F8DTElBetU7tL8eP3iXRA6HKw9spfMKkvLpcl3r2Yy0vAOUAN+H0DNk4NSa62x3Yq2bgcbqYVYreaDR+rh7k3krxGE3TUZA+8dZu34zmoXwqJCNqwoRB5E4zPkq6Ek1tSDI5fuf0EsQk7fJfMAoSPZHJwv+kX2D2bDOl2wFYJiTdHsBoTvSNHtFg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cGVd2iLj; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cGVd2iLj;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	t=1763807099; c=relaxed/relaxed;
+	bh=uEVDAQcdQAH/M/JmuPrNmzCWkTCrQG9E+FHKpOEVl4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JsLEzjoHjiuUXWON2JmK7eteNAe+8FUj8uipGyjaXRRH7AEthFp8DHU0xF6kqPFumPAqYAB6fZ/gFCWjBmqtTSgY8gBpfJnbTIk+P+2CUHlkLSsn98LIr907fCr+se5+EmRlM9APakDPfO7umirjA13B/rSU2EtmE4pshOo2vXm7szAlw26Nhw75no0FW9+gcHR66cMgH8gf6UbqT6k3mI3ozXZOecpJX/mvH/6xk65AAnYNkcq/8iYaInZ5RdF6bmwGfAFxVmUEvsS/QDp/jXeoHeXsGWBZdF5wDSfumbqvch4aQ3KV122HVPmi9CPb7RI5qbM1linV26WHmVL8jg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=83.223.78.240; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout2.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout2.hostsharing.net (client-ip=83.223.78.240; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dD7D65zS1z2xqn
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Nov 2025 21:11:50 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 99AD243AB8;
-	Sat, 22 Nov 2025 10:11:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F44DC4CEF5;
-	Sat, 22 Nov 2025 10:11:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763806308;
-	bh=gGkpOCI4RD9+V/lhr7rLU1PbrWKMwrcPaYukubgCn6s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGVd2iLjY3YbXoOgpZPWbV8VI/Q0gpuXxeTsEgUUkjE/QeE1BJB7SDo9Rxiwrpnos
-	 M7Gvts5A037kLXQ0efZ5xXTxHdmHZy/sts2Az25ycq2NLydbTQJeSy2fm4kmowFeyw
-	 3c6Puat0OSjYdVQzFal9hj0EYFIBZmKqUq5kSOzYyQ3z2uWKfz2Kr8/f/xTHGEBfiK
-	 HiqlEN29dMRHCQ6LfACWIMph1Nvghv67Kub2SHo1tQaGsxILuc06Ui+neOSt8zBkrH
-	 gkTKLcN/31/XdNURzpkpWZ6puS4EkMTkLF+nsqoMVDYO9fA5hrGhumrA+jPE8cvLfa
-	 xG/mZdoSkZYFA==
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-To: Christophe Leroy <chleroy@kernel.org>,
-	Gongwei Li <13875017792@163.com>
-Cc: wangfushuai@baidu.com,
-	frederic@kernel.org,
-	ligongwei@kylinos.cn,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] soc/qman: use kmalloc_array() instead of kmalloc()
-Date: Sat, 22 Nov 2025 11:11:31 +0100
-Message-ID: <176380603653.1964777.3896069792665004828.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251121061022.114609-1-13875017792@163.com>
-References: <20251121061022.114609-1-13875017792@163.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dD7WG1gLHz2xqn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Nov 2025 21:24:55 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id A58282006F59;
+	Sat, 22 Nov 2025 11:24:51 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 8E32C1BF15; Sat, 22 Nov 2025 11:24:51 +0100 (CET)
+Date: Sat, 22 Nov 2025 11:24:51 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Farhan Ali <alifm@linux.ibm.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Benjamin Block <bblock@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+	Linas Vepstas <linasvepstas@gmail.com>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH] Documentation: PCI: Amend error recovery doc with
+ pci_save_state() rules
+Message-ID: <aSGPc2qQGgdjp7iV@wunner.de>
+References: <077596ba70202be0e43fdad3bb9b93d356cbe4ec.1763746079.git.lukas@wunner.de>
+ <ab3158f0-7954-4a89-88da-6d7d69111e3b@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,28 +63,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=403; i=chleroy@kernel.org; h=from:subject:message-id; bh=NgxY/adJ3cobR8fVnYzUybTqc0RHqQIANpRfoJAxGII=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWQq9oQ80vz5WzrrYw2D1brb7y6xHlT9ND/4j/k+/4feU w2+MpjFd5SyMIhxMciKKbIc/8+9a0bXl9T8qbv0YeawMoEMYeDiFICJGKxl+F/tnVWXe+Di3dsX fW2n/Z+UnqpeN/mZ5fdzvDM/C5ZtenqT4X/Z7cBntQuKzic/iNVSff/ik8599U7h4FkXKsUTehd 67OMEAA==
-X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ab3158f0-7954-4a89-88da-6d7d69111e3b@linux.ibm.com>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-On Fri, 21 Nov 2025 14:10:22 +0800, Gongwei Li wrote:
-> Replace kmalloc() with kmalloc_array() to prevent potential
-> overflow, as recommended in Documentation/process/deprecated.rst.
+On Fri, Nov 21, 2025 at 10:57:24AM -0800, Farhan Ali wrote:
+> On 11/21/2025 9:31 AM, Lukas Wunner wrote:
+> > +++ b/Documentation/PCI/pci-error-recovery.rst
+> > @@ -326,6 +326,21 @@ be recovered, there is nothing more that can be done;  the platform
+> >   will typically report a "permanent failure" in such a case.  The
+> >   device will be considered "dead" in this case.
+> > +Drivers typically need to call pci_restore_state() after reset to
+> > +re-initialize the device's config space registers and thereby
+> > +bring it from D0\ :sub:`uninitialized` into D0\ :sub:`active` state
+> > +(PCIe r7.0 sec 5.3.1.1).  The PCI core invokes pci_save_state()
+> > +on enumeration after initializing config space to ensure that a
+> > +saved state is available for subsequent error recovery.
+> > +Drivers which modify config space on probe may need to invoke
+> > +pci_save_state() afterwards to record those changes for later
+> > +error recovery.  When going into system suspend, pci_save_state()
+> > +is called for every PCI device and that state will be restored
+> > +not only on resume, but also on any subsequent error recovery.
 > 
-> 
+> Nit: Should we clarify in the above sentence on what calls the
+> pci_save_state() when going into suspend? My assumption is the
+> pci_save_state() is called by the PCI core and not the drivers?
 
-Applied, thanks!
+Per section 3.1.2 of Documentation/power/pci.rst, pci_save_state()
+may be called by either the driver or the PCI core.  Normally it's
+the PCI core's responsibility, but a driver may choose to call it
+and bring the device into a low power state itself.  The PCI core
+recognizes that by looking at the state_saved flag in struct pci_dev
+and will then neither call pci_save_state() nor transition the device
+to a low power state.  That is the (only) purpose of the flag.
 
-[1/1] soc/qman: use kmalloc_array() instead of kmalloc()
-      commit: 4ee2a8883d9cd6370a2f858e886f16d7414c9c2f
+I could maybe add a cross-reference pointing to Documentation/power/pci.rst.
+And/or that document could be moved to Documentation/PCI/.
 
-Best regards,
--- 
-Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> What should the PCI core do if the saved state recorded is bad? should we
+> continue to restore the device with the recorded bad state?
+
+Basically the answer is, it should never happen and if it does,
+we've got a bug somewhere.
+
+> On s390 restoring the device with the bad state can break the device
+> put into error again.
+
+My (limited) understanding is that you may end up with a bad
+saved state on s390 virtualization scenarios because you're
+telling the PCI core in the ->error_detected phase() that the
+device has recovered and then you try to reset and recover the
+device on your own.  I think the solution is to enhance qemu
+to integrate better with error recovery on the host.
+
+Thanks,
+
+Lukas
 
