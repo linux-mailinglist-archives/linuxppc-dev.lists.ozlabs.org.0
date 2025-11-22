@@ -1,78 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-14419-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14418-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B89C7C544
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Nov 2025 04:49:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ADCDC7C353
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Nov 2025 03:48:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dCykg41R0z30B4;
-	Sat, 22 Nov 2025 14:49:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dCxNh3Jwxz302l;
+	Sat, 22 Nov 2025 13:48:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763751457;
-	cv=none; b=S5w5SGkQ9Es1Y1Tv4+uqDckpKoNqVJRO976l0L5L7N3PEj/xuRhhpoR+URuPeVfmhxdjhB/9tWM5X0jovenQoOowWuJjD4wxF5iT/yppi9xSJ332E/oDQXiP6Y6uxIguaJIiYnKXEyihxWzIVpjPNLz5Q4h2QBMqyUbCyhoOAzwVtajy037aQMYW/aFzjvns6NqVk9Vs9c0zOgS7ZKUApL/PrKHzPkFWYJWCxdKctOMJT0HkmWHlJOqy/Yq4bfZHUdRxGE7ePdLxP/0ZZBLeRlgVAq5hYK0SAZKrjUz55ZHWYZSSa1Uw0Lg3o2yfVmZI1oagW3A0EypRXYrSW6ATnA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763779716;
+	cv=none; b=hOosXEm3IYKoJIdZBibL6jN/q0h3xhZ+ex6fw1M0ZMeWDxSVJMHwSopFhY6u3oAVK/DtO6uFLQA3Ejm5XY92QhrH2XqU5YzKWynONWBsZFaSt21lGfh3+iWsnwc2azpED4Mx0aTeNrkeWMM4qx9mlO113kW6ztIvTbzSAI6jxl+2gISC2uKS6LsG8YV4VCWypg41VJDOAiBrEo0vo5uBrptqme9wUvJHr8EoNF+rN60UDMcUN/gavhNe7fv8nikGNgDzO47RIq2NfsjjQojdoG9UjG/CTAS+c/Ms+7m4OeHFUabp2JZ++6qCeCwlxI/nOHDlsA8jk1isEZ5Qpgj2aQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763751457; c=relaxed/relaxed;
-	bh=qyT3aVXUS0qy3xeo2Jt8io+s2fQtl6tf6g20n+ujMFY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ao7TMmhfFfosyFdrJs6+CIn27BQZoSTRI7h/kD2go8O3gK2t9gdz/E8gFaGTGJwuP3a3Tqb4q7YuVne2M+mU70Sro9l11cMTPzeCsN3jV7gQPDjxIVkJBn0cdqb3LwxvM/xJPmFxtv/yQK2UHQS2Wz4q59HefRu60fR269q0I0G5BJFA/CALZoQuAcmzmEZCQHR7zW0No/yBi4OahgNDQfHB9MVpT0ZLPXOyMV6jmMO66tKpGJ3QGZhZPwnKQhibFmYb2yWEOfT6HMj7EbnoPc+m3hU2nT957W043vZQrKvIwX4X+VsKh1xWeanTgOs2W3HCDtTSfAz7h0yxHAMnyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oomZIlh5; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=alifm@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1763779716; c=relaxed/relaxed;
+	bh=wkjKi/GcIsfFwPxnJVBX2oqJY7KP3swBhoKF5dVways=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T1uxLjcJnpXLAt0prS/8B5MEx/oHh/ANCgYXdNgzrAVmgzi8kqXUYFpeRg9L3oy1jYPX/ByNpNNM4qT72uYP5VYhb5tENcz6keJhuYCRd37bfQt2l1a+mEDyQmOSd0ST9zA9o7rJQW3GtqHnxalyEVWnqL2LdHi1CBzAQP8ZZV7zVJckvHnLJuwxZ7vdnuBLfmVeqNKA2VaGnwOWDnQE0MB/P3QJBP+7uRLTn0a4UJlF3WWuvgF0yXTflBkf2CA9mLRBKLDzGQtQfL1zkQC6k7TUp0oxqhm/gjdj5LfPOnIDe067O/KtqxfXIlppo6FnNlhaXECBS7DIAxTR8QRaug==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PAnXzh8o; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=oohall@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oomZIlh5;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PAnXzh8o;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=alifm@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=oohall@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dCkxD0yqkz2yrQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Nov 2025 05:57:35 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5ALEUr1g028867;
-	Fri, 21 Nov 2025 18:57:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=qyT3aV
-	XUS0qy3xeo2Jt8io+s2fQtl6tf6g20n+ujMFY=; b=oomZIlh5i8ZgfusUL0jIO3
-	yEPrQy6KLLHPDGGs08fGvw7ZM+U3/1tLWKppPyXi1mtv0Ub33cCcaget9qxws4lN
-	5CQVvzPKb3Ql9IfmFMRSbU38uMbva/TqzoY49CPkulLhRsJDI4JXaY32SdVUNw5A
-	Pb7shNKrPZ+X14J9SXg1ZHUPfPMNYONwJiN2mOpDDEYiI9gy/7dHJ4pu/dtzPaMb
-	qJ5PrB8TlOtKWHCRaqnK+3FaaFGIyuZp4DLtgu7UOmztFnvVSZQAF0hLqh4NUPED
-	rFptzgECpSgJp/WEfL+T5prmhQrHaWY/s/fScO4s0a3isUYM0P/CJ/8pbIAdrzcw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejkadtfd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Nov 2025 18:57:30 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ALIqxWp007111;
-	Fri, 21 Nov 2025 18:57:30 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejkadtf8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Nov 2025 18:57:29 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5ALGXlnL017381;
-	Fri, 21 Nov 2025 18:57:29 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4af6j25rnd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Nov 2025 18:57:29 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5ALIvRjZ6423114
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Nov 2025 18:57:28 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B9DD85804B;
-	Fri, 21 Nov 2025 18:57:27 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0DAB658063;
-	Fri, 21 Nov 2025 18:57:26 +0000 (GMT)
-Received: from [9.61.252.112] (unknown [9.61.252.112])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 21 Nov 2025 18:57:25 +0000 (GMT)
-Message-ID: <ab3158f0-7954-4a89-88da-6d7d69111e3b@linux.ibm.com>
-Date: Fri, 21 Nov 2025 10:57:24 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dCxNd4q7cz2yFJ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Nov 2025 13:48:32 +1100 (AEDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-b73b24f1784so499266066b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Nov 2025 18:48:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763779704; x=1764384504; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wkjKi/GcIsfFwPxnJVBX2oqJY7KP3swBhoKF5dVways=;
+        b=PAnXzh8oRCzfjrWV3NkpVGRemKbLyrmoxlzUb3iMP2k/Pl4UUQOqo4TICBJm/XhRM4
+         +j3y60w7o01AEIXlofu8LoWk5AJJ1QNLx5oLXm1Uv9b+MtqQ7pYfmU4odRIBmBYTwCpW
+         +YMZ+McLgZhhJ6mhdXEE4xHBw1ftO9s/iazMAZDabjdjfvHUtkF0NLyHQ5/SbBsXiETP
+         a2eN4TepVzYSuU9iYlfkXRIvRu5gcTB0wZ9dS3CSliEH+1JliTahqUvDeFv8axsc5I8p
+         Vz3IwNvz4w2OqSc7yc2dFuXxCFSLXpfofmZWhjVxlwQAROPe1eJlxzPQPfnXmoBmgDzz
+         Cd4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763779704; x=1764384504;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wkjKi/GcIsfFwPxnJVBX2oqJY7KP3swBhoKF5dVways=;
+        b=eVBTmnAHEB4npy++uTmN5onas4AUo9kYunv3mPMlQrjgqiN/n/0wApVg7MwQhcWaT5
+         2u5Z9tBkXzZHrka/h0bsHI4r0TmFx5uof+JQTCNMcq+xYlVshUeQXN9vSb2mR+eE0J1H
+         viMQRM5T4KD062SWILyi6fiXZRDe7UkfLO9SWtvddnzou8XEujAE3bYa5J43lYICtub2
+         BVO+ohF/o+SbgfTOobUOezgcU358IebxpBIWRiDjkLisG5jNdVbcInSEfimNmw/mywa/
+         rw3ptUQVPI/B4RxWlugwp6iXQNao1DN/bXfu1jF07LtTsmgzFVez+O6Fq1RO3s48Ux9j
+         /QVA==
+X-Gm-Message-State: AOJu0Yyi/tfiMvB6so6E2OsO7eBaWA7cSKPuXKfR2oliZvjWYDsaQpQB
+	tY6DC/xrSGytfI9M1eNlQmiOAFIQsy2sXOLFsHQ67Vi6t5vHY5ILtuD+iDdpc3DzaxbevXs6ifT
+	oiul+VJ7Ph9VbhgFr7XWPg4KJT9d1qy4=
+X-Gm-Gg: ASbGncvsHNKpQXqXLvMDI2mMHrsESlZEFm2e5v6Stm52LTYxb0/8CSayI4r4x7pa0mB
+	IO8Hj+iyXEdxA1flElBntskefd8HEChHZyd8v7bG7lZ+LqP6Vs3bbNe2w7Xn+CRjq2EBuTQ9OMM
+	dp1vkSTOG4DnTRG+S2EX4eX2+Gyb/sZIMoZJkoxC+izg1iZWJZ4NQSOrfrDcbeZ+69mGTwmLz/E
+	9eMAFsgV0S4ePtMpx2wbW/2qcEfPGZSBGlvCq7RRb3T1gnTA2Eb4Hkjp1jI1RkuIynJXpkWgmK1
+	yTjzKbU=
+X-Google-Smtp-Source: AGHT+IFnsYHAvqEdGlgbB9sKcMzjtfUBA9egLD2my8e0mrtjWPyUN+z/1pT5fl+stY7jLmb68+TH5futBKWtYl9pHb0=
+X-Received: by 2002:a17:907:3d87:b0:b72:671:b2a5 with SMTP id
+ a640c23a62f3a-b76571367f9mr1048116366b.3.1763779703813; Fri, 21 Nov 2025
+ 18:48:23 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,112 +79,122 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Documentation: PCI: Amend error recovery doc with
- pci_save_state() rules
-To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-        Benjamin Block <bblock@linux.ibm.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-        Linas Vepstas <linasvepstas@gmail.com>, linux-doc@vger.kernel.org
-References: <077596ba70202be0e43fdad3bb9b93d356cbe4ec.1763746079.git.lukas@wunner.de>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <077596ba70202be0e43fdad3bb9b93d356cbe4ec.1763746079.git.lukas@wunner.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fs6KLg9GEKleGzJvCp6K6fCRZECaWYD9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX5aCXAO1F2cPP
- uElBjQhxOAEeVYKYpPU3ckb9J9WKYdgjfRX+yP+lghOa+L/8Zg5tH6RCFS1HOErPhQaBL4lXmtv
- BXBFLz4ng4AtWDfEaFnG7Ycfs19Yn1+DG/CFD/ehAJBOTSha635k2L5o20fhKpR+VBRumJWCnRD
- DFGQvDtzBN6HZThvWycmCH5E+GSTq7qDJuCQGoCOHZP5aYwEYmMruNmkpbJONGxkheXJ3+psQag
- Ms6Ok9OwMcjIXKRx8M/SxBZfJDXF6QoPnupeG8/ys9FknWNKefZvZujlhmT0JnnSV3H1ixqkMx7
- LFZeLpu9tjJnBP+T8+cvN0NGGVR7ySAc/5j6Sl+3KSapZgmTe8KSS8YVK7CNXF+wZaQDpiDakf9
- qVyVFm+pJ8XPo5CgOFEgBzuFbfejeA==
-X-Proofpoint-ORIG-GUID: _dRHeuwYC4Sk6IJN0TT_cCPjuBL6GKfp
-X-Authority-Analysis: v=2.4 cv=XtL3+FF9 c=1 sm=1 tr=0 ts=6920b61a cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=RJpQON7kbKqcj-e44qYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-21_05,2025-11-21_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- adultscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511150032
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <AEFA6CA1-69CB-4248-9911-C0BDFB03DB56@gmail.com>
+ <CAOSf1CEf41H4ynEQvszspTMKpq9vq0FnXy=qdk_-PUrZpJVwCg@mail.gmail.com>
+ <CFB0E332-AB7C-4E70-BB8A-45BFD4EB9E18@gmail.com> <CAOSf1CEQPBrXBXkLkJ7o7VJYbrT1jXQDzqqe=FjRyKv62sfC0Q@mail.gmail.com>
+ <0BCEC0A4-006A-487F-B3E8-8AA0ECB20B2D@gmail.com>
+In-Reply-To: <0BCEC0A4-006A-487F-B3E8-8AA0ECB20B2D@gmail.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Sat, 22 Nov 2025 13:48:12 +1100
+X-Gm-Features: AWmQ_bnodxtm7U8V1GPYbvQLuiE2RRvFVIodEq7QUAUg5nlexK_2QPQukzho1jA
+Message-ID: <CAOSf1CEqFVxaNetW_=gBZFnvn4Our8-gGSDUigWeaMc98Kg-yg@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=5BHelp=5D_Microwatt_=28Zynqwatt=29_=E2=80=94_Kernel_halts_aft?=
+	=?UTF-8?Q?er_Radix_MMU_init_on_booting_Linux_on_Zynq_version_of_Microw?=
+	=?UTF-8?Q?att?=
+To: Mohammad Amin Nili <manili.devteam@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Lukas,
-
-Thanks for the update to documentation.
-
-On 11/21/2025 9:31 AM, Lukas Wunner wrote:
-> After recovering from a PCI error through reset, affected devices are in
-> D0_uninitialized state and need to be brought into D0_active state by
-> re-initializing their Config Space registers (PCIe r7.0 sec 5.3.1.1).
+On Sat, Nov 22, 2025 at 1:59=E2=80=AFAM Mohammad Amin Nili
+<manili.devteam@gmail.com> wrote:
 >
-> To facilitate that, the PCI core provides pci_restore_state() and
-> pci_save_state() helpers.  Document rules governing their usage.
+> The problem with the *first* (early) path is that a udbg driver
+> often calls `early_ioremap()` **before** any MMU/memory
+> setup has completed. The MMU setup for 64-bit happens here:
+> - https://elixir.bootlin.com/linux/v6.18-rc5/source/arch/powerpc/kernel/s=
+etup_64.c#L418
 >
-> As Bjorn notes, so far no file in "Documentation/ includes anything about
-> the idea of a driver using pci_save_state() to capture the state it wants
-> to restore after an error", even though it is a common pattern in drivers.
-> So that's obviously a gap that should be closed.
+> The 32-bit setup (`setup_32.c`) calls `udbg_early_init` *after*
+> `early_ioremap_init`, so it doesn=E2=80=99t hit this ordering problem:
+> - https://elixir.bootlin.com/linux/v6.18-rc5/source/arch/powerpc/kernel/s=
+etup_32.c#L87
 >
-> Reported-by: Bjorn Helgaas <helgaas@kernel.org>
-> Closes: https://lore.kernel.org/r/20251113161556.GA2284238@bhelgaas/
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> ---
->   Documentation/PCI/pci-error-recovery.rst | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
+> In my case, attempting to initialize the Xilinx udbg driver via
+> the early path can (and did) cause kernel panics because
+> `early_ioremap()` runs before the memory/MMU is ready.
+> Practically, the only reliable place for my driver to initialize
+> is later in `init/main.c`. Is this the intended/expected behavior
+> for PPC64? Or am I missing something?
+
+Nah it's just broken for your case. Most ppc64 development happens on
+IBM hardware and the udbg drivers for those platforms (pseries for
+VMs, powernv for bare metal) don't require the MMU to be setup.
+Enabling debug output pre-MMU is handy since it lets you debug MMU
+setup issues, but obviously it's not going to work if your udbg driver
+needs to map stuff. You could avoid depending on the MMU by using the
+potato uart driver's trick of just disabling data relocation when
+writing to the UART's registers. That's pretty slow and a bit janky
+though. A better fix might be to split udbg init into an early
+(pre-mmu) and late variants with the udbg drivers that need the mmu
+are initialised later.
+
+> 2. I had to inject a busy-wait loop between lines 125=E2=80=93126 in
+> `kernel/rcu/tiny.c` to prevent a crash when/after switching to
+> userspace:
+> - https://elixir.bootlin.com/linux/v6.18-rc5/source/kernel/rcu/tiny.c#L12=
+5
 >
-> diff --git a/Documentation/PCI/pci-error-recovery.rst b/Documentation/PCI/pci-error-recovery.rst
-> index 5df481a..43bc4e3 100644
-> --- a/Documentation/PCI/pci-error-recovery.rst
-> +++ b/Documentation/PCI/pci-error-recovery.rst
-> @@ -326,6 +326,21 @@ be recovered, there is nothing more that can be done;  the platform
->   will typically report a "permanent failure" in such a case.  The
->   device will be considered "dead" in this case.
->   
-> +Drivers typically need to call pci_restore_state() after reset to
-> +re-initialize the device's config space registers and thereby
-> +bring it from D0\ :sub:`uninitialized` into D0\ :sub:`active` state
-> +(PCIe r7.0 sec 5.3.1.1).  The PCI core invokes pci_save_state()
-> +on enumeration after initializing config space to ensure that a
-> +saved state is available for subsequent error recovery.
-> +Drivers which modify config space on probe may need to invoke
-> +pci_save_state() afterwards to record those changes for later
-> +error recovery.  When going into system suspend, pci_save_state()
-> +is called for every PCI device and that state will be restored
-> +not only on resume, but also on any subsequent error recovery.
+> Here is the loop I added:
+> for (volatile uint32_t i =3D 0; i < 10; i++);
+>
+> If I omit that trivial busy-wait, the kernel crashes while/after
+> switching to userspace with an error LIKE:
+>
+> [   42.397074] kernel tried to execute exec-protected page (c00c000000000=
+000) - exploit attempt? (uid: 0)
+> [   42.408148] BUG: Unable to handle kernel instruction fetch
+> [   42.414964] Faulting instruction address: 0xc00c000000000000
+> Vector: 400 (Instruction Access) at [c00000000207fae0]
+>     pc: c00c000000000000
+>     lr: c00000000008c798: rcu_process_callbacks+0xf8/0x100
+>     sp: c00000000207fd80
+>    msr: 900000001000b033
+>   current =3D 0xc000000002056300
+>   paca    =3D 0xc0000000016e8000 irqmask: 0x03 irq_happened: 0x09
+>     pid   =3D 10, comm =3D ksoftirqd/0
+> Linux version 6.18.0-rc5-00111-g6fa9041b7177-dirty (manili@manili) (power=
+pc64le-linux-gcc.br_real (Buildroot 2021.11-18033-g83947c7bb6) 14.3.0, GNU =
+ld (GNU Binutils) 2.43.1) #3 Thu Nov 20 09:33:11 EST 2025
+> enter ? for help
+> [link register   ] c00000000008c798 rcu_process_callbacks+0xf8/0x100
+> [c00000000207fd80] c00000000008c748 rcu_process_callbacks+0xa8/0x100 (unr=
+eliable)
+> [c00000000207fe00] c00000000003f320 handle_softirqs+0x1ec/0x23c
+> [c00000000207ff00] c00000000003f3a8 run_ksoftirqd+0x38/0x58
+> [c00000000207ff20] c00000000005f9c4 smpboot_thread_fn+0x1a0/0x1a8
+> [c00000000207ff80] c00000000005b190 kthread+0x1c0/0x1cc
+> [c00000000207ffe0] c00000000000b160 start_kernel_thread+0x14/0x18
+> mon>
+>
+> The exact addresses in the error vary, but the crash
+> template is the same. My suspicion is that this is a
+> core/thread synchronization issue. Do you have any
+> ideas on this issue and why a simple while loop is able
+> to solve it?
 
-Nit: Should we clarify in the above sentence on what calls the 
-pci_save_state() when going into suspend? My assumption is the 
-pci_save_state() is called by the PCI core and not the drivers?
+That's very odd. rcu_reclaim_tiny() is probably being folded into
+rcu_process_callbacks() by the compiler and the crash occurs when
+branching to the callback function from the rcu_head
+(https://elixir.bootlin.com/linux/v6.18-rc5/source/kernel/rcu/tiny.c#L95).
+That said, the "callback" address it branched to (0xc00c000000000000)
+is actually the base of the vmemmap (i.e. the struct page array) so I
+doubt that's actually the callback address stored in the rcu_head. You
+can use xmon to dump the registers and examine memory to confirm this.
+It's hard to say why this is happening, but it's pretty likely to
+either be the compiler optimizing away code you'd prefer to keep or a
+bug in the core itself.
 
-> +In the unlikely event that the saved state recorded on suspend
-> +is unsuitable for error recovery, drivers should call
-> +pci_save_state() on resume.
-> +
+I'd compare the disasm of rcu_process_callbacks() with and without
+your wait loop added and see how the emitted code changes. If adding
+the loop changes nothing then it might be a logic bug in microwatt
+itself or some other timing induced problem.
 
-What should the PCI core do if the saved state recorded is bad? should 
-we continue to restore the device with the recorded bad state? On s390 
-restoring the device with the bad state can break the device put into 
-error again.
-
-Thanks
-
-Farhan
-
-
+>
+> Bests,
+> Manili
 
