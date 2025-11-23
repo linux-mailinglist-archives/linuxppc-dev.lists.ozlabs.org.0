@@ -1,58 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-14432-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14434-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E09C7E28A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Nov 2025 16:25:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65983C7E4FC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Nov 2025 18:13:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dDt7k50ptz2yvd;
-	Mon, 24 Nov 2025 02:25:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dDwXc60MXz2yvd;
+	Mon, 24 Nov 2025 04:13:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.10.151
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763911538;
-	cv=none; b=Ar2WYAIu9XcTyx1Ef7Yol8boHmeIqtB8kRMIRHBII/4gDzlTbDZ/NZfRup3cjsQTlzDWmP38bYYQwYkdB8KdoDJofK+xBLXAvvriO2KUJzNwJsuf5D4zKywz5RqULRzVNK53abvf4fhkWxvvhxJZisA3bkt3ykCdYarqdCUJ7zPHYJ2q/iBRvOQBYlxpwmK8+yLjPZClGUzPv4iO5dvXRPH7U71+t8YgIMPRt3gH2dRPaYb8u0wGIR4LWtJc29C82B/leOFFmPHL+psQa2uEBI4dD/mSamylegjTBpemeRnV/Pz0mwgh50PyOTb2lSFOMNi445g7FCHA62ZRdYz0/Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.216.245.30
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763918032;
+	cv=none; b=kWxZ/ucdWxhTign2VJRkdSTfbIElohtIHL8DWV1z7bU5L+9jSWlex1mLPefjWiFbC/KSMLYoWQUZrNY2H9T1C6i6VVI9jg03KS96iJdtPz44RiIe7qN28p65ffYSXmBFL3Q27K9g1IK9nA6dLsElTgn66ET4+cvcXRkbwaPBXIvPPHB5Dg06bqQNGA6wRTUHjjOZTiWB2qR7Lr40jVECCvM5V1VpQ+5mbgpVfNaSm7rKjqSIJdCD6VfptkWPErSYlsZjT21T69kDoOj9xS5orAfeTUzCSYhzucvBY5GSOTgKBquY5rEIZpo7C8JMqtq3acwVS+k93zbC7nVvY7PyFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763911538; c=relaxed/relaxed;
-	bh=aUc3P9ysPZDm92XYCdc8+nGHGL1i/S6DJc77k8uuxBg=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=m5EqRSdA8wczFlA9R2rysb0KWvAOuIeZ4Q8aJ8ZeyEC0f/F4Ge0NI0OVmN0mkyGPSHTbWjZGPFK59cMwhr56LHC8lk3hQIxz9ydoTSvWDenRIlofJcExLznP1+qwqOTR0dk9Jn0Y3SeXpNe5DlzfLPq0HlpslTARSsJfMiB2GH/ANc/sjGlWUvuQUEEpP8OUSDC0J4hF6eMgavp2mkF36ivvI+jV5VIuRurFAzSwKxgG44SgtT556ozTS1v5eKG4GHz4l37jzLyXIuhsrZwz0RbkmR7G+fBhv3tvAdFFjPvJ58SUxsY9PCvz41kVi1w8iMlxXiGJPVy21Rtq1NjtgA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de; dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=Tpb/gHw0; dkim-atps=neutral; spf=pass (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org) smtp.mailfrom=exactco.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de
+	t=1763918032; c=relaxed/relaxed;
+	bh=QJ6buai6EBWSD8LmmfmrQPMqAmWKgltB1mTsvfume4I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U4fHcXP9KzjmqGworRdj9aj0hp3lx7YdRsx8NKQEEHtAqPbZBgfv+2Oc7ZCVKn0uNcY3AN2Kz+50fl+l44iWgq4P7oRhkl1C2pS0G1uHCRMDrdaDG65+thOST34Q9ERnKT0Z09rlJsY6/+5bv0oB4pLW2j8SI+8HwIe42yZ21O+M2z0hmvq46kCrINicYHbFj7a0P6ue03rLjAaIsx6eFPevT2WzA+70f/zSu/5HbtYGgofdNW+C9KhmsO3GCEQbJIo3Woj6zqiYNDcxyXM4yRVPSlHCMgAjokuzffdS6aqCin8O64hV3vmVFowG3Yw4FU9aoY5csTdXD0yyqyH+ew==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=breakpoint.cc; dkim=pass (2048-bit key; secure) header.d=breakpoint.cc header.i=@breakpoint.cc header.a=rsa-sha256 header.s=2025 header.b=bHRX0y9G; dkim=pass header.d=breakpoint.cc header.i=@breakpoint.cc header.a=ed25519-sha256 header.s=2025e header.b=eLiJDv2b; dkim-atps=neutral; spf=pass (client-ip=91.216.245.30; helo=chamillionaire.breakpoint.cc; envelope-from=sebastian@breakpoint.cc; receiver=lists.ozlabs.org) smtp.mailfrom=breakpoint.cc
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=breakpoint.cc
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=Tpb/gHw0;
+	dkim=pass (2048-bit key; secure) header.d=breakpoint.cc header.i=@breakpoint.cc header.a=rsa-sha256 header.s=2025 header.b=bHRX0y9G;
+	dkim=pass header.d=breakpoint.cc header.i=@breakpoint.cc header.a=ed25519-sha256 header.s=2025e header.b=eLiJDv2b;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=exactco.de (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org)
-Received: from exactco.de (exactco.de [176.9.10.151])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=breakpoint.cc (client-ip=91.216.245.30; helo=chamillionaire.breakpoint.cc; envelope-from=sebastian@breakpoint.cc; receiver=lists.ozlabs.org)
+X-Greylist: delayed 513 seconds by postgrey-1.37 at boromir; Mon, 24 Nov 2025 04:13:51 AEDT
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bit raw public key) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dDt7j4hGvz2yqP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Nov 2025 02:25:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
-	s=x; h=Content-Transfer-Encoding:Content-Type:Mime-Version:References:
-	In-Reply-To:From:Subject:Cc:To:Message-Id:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=aUc3P9ysPZDm92XYCdc8+nGHGL1i/S6DJc77k8uuxBg=; b=Tpb/gHw0qdwL8dHvFhQJ9pNDk3
-	rUFL1jOmjY5harVw1Vav6f/OyEpEssXvatrnQqvVi+Plk5FUtCvgsAv2aZmDxfPHs3TPYVWpvnNLv
-	GrEHJbyzZkJXcmO6ccfPNIG4VFIwTsTsIH0MURlRj4LZS1JkZ0MjevIJVp/y+Qt3Gz4mOdf6nMloy
-	izrzcPAhqaxLrJUUpWIErT4UoMM47X5/s6bl6f++KlPWkwMVGftxhPwkranCadW4+xF4v38Eggk9X
-	/qsX6Y7ZVcMQdWNAvubtjc4IMfdM3ZwnXHiy75+fVlrlQh9f4BXzOAH7RGOBMBcM8zNBczZ8rEsEM
-	pQAxzYcA==;
-Date: Sun, 23 Nov 2025 16:25:51 +0100 (CET)
-Message-Id: <20251123.162551.979799191208988118.rene@exactco.de>
-To: chleroy@kernel.org
-Cc: linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com
-Subject: Re: [PATCH V2] modpost: Amend ppc64 save/restfpr symnames for -Os
- build
-From: =?iso-8859-1?Q?Ren=E9?= Rebe <rene@exactco.de>
-In-Reply-To: <20251123.160941.475051668667578407.rene@exactco.de>
-References: <20251123.131330.407910684435629198.rene@exactco.de>
-	<d69d7167-00d1-49c5-90ee-6bc0b7e8295f@kernel.org>
-	<20251123.160941.475051668667578407.rene@exactco.de>
-X-Mailer: Mew version 6.10 on Emacs 30.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dDwXb43q8z2xnh
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Nov 2025 04:13:51 +1100 (AEDT)
+Date: Sun, 23 Nov 2025 18:05:02 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=breakpoint.cc;
+	s=2025; t=1763917504;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QJ6buai6EBWSD8LmmfmrQPMqAmWKgltB1mTsvfume4I=;
+	b=bHRX0y9GC2dSySARiyWGiMmrp/Xe96irqn0m9ozILmBYs6yV2zb/fA9R+6p0XjUSLcFsMx
+	vAEQ3ThKgIriI3d1xBfZz10HDnnJ1Qu4IplfQEC5/BG0U7pFjkinz5RNiB5OOnOodqurLL
+	rBtfdrfmkTW1g57sLR/uwRP+vD7BIkHFSzCEjA2gLhe6M4QdIqNr7thtmgyRbXHLEMzz6z
+	ZFC5X00QxbjVqmP6ZyjhxGlkMJLTrC1EEYg4LMJFljJfoi4MCyUJ2hELJNaZmy2KJscnrz
+	IJm9CAbGvkzsztKGABF71wt3hAlYfraokWs/aUk60LSaeG1zpjfQduS7/tkvGw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=breakpoint.cc;
+	s=2025e; t=1763917504;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QJ6buai6EBWSD8LmmfmrQPMqAmWKgltB1mTsvfume4I=;
+	b=eLiJDv2bkfc0QH49mP1xeveb0IgqR2Kb5m/smULeZHuXH+L/8GJdHV6BxAx7MFEPi8mVsP
+	r6Dhlwj0lu1R2DBQ==
+From: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Fabian =?utf-8?Q?Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
+	Arnout Engelen <arnout@bzzt.net>,
+	Mattia Rizzolo <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>,
+	Christian Heusel <christian@heusel.eu>,
+	=?utf-8?B?Q8OianU=?= Mihai-Drosi <mcaju95@gmail.com>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v3 0/9] module: Introduce hash-based integrity checking
+Message-ID: <20251123170502.Ai5Ig66Z@breakpoint.cc>
+References: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
+ <f1dca9daa01d0d2432c12ecabede3fa1389b1d29.camel@HansenPartnership.com>
+ <20251119154834.A-tQsLzh@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,168 +97,805 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251119154834.A-tQsLzh@linutronix.de>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hey,
+On 2025-11-19 16:48:34 [+0100], Sebastian Andrzej Siewior wrote:
+> I fully agree with this approach. I don't like the big hash array but I
+> have an idea how to optimize that part. So I don't see a problem in the
+> long term.
 
-On Sun, 23 Nov 2025 16:09:41 +0100 (CET), René Rebe <rene@exactco.de> wrote:
+The following PoC creates a merkle tree from a set files ending with .ko
+within the specified directory. It will write a .hash files containing
+the required hash for each file for its validation. The root hash is
+saved as "hash_root" and "hash_root.h" in the directory.
 
-> On Sun, 23 Nov 2025 15:57:24 +0100, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
-> 
-> > Le 23/11/2025 à 13:13, René Rebe a écrit :
-> > > Building a size optimized ppc64 kernel (-Os), gcc emits more FP
-> > > save/restore symbols, that the linker generates on demand into the
-> > > .sfpr section. Explicitly allow-list those in scripts/mod/modpost.c,
-> > > too. They are needed for the amdgpu in-kernel floating point support.
-> > 
-> > Would have been interested to know with which version of GCC the
-> > problem started.
-> 
-> idk, maybe forever, or at least a decade fo GCC? Most devs probably
-> don't build size optimized, and addtionally we only use in kernel
-> floating point for amdgpu since recently? Should I add Fixes: for the
-> in-kernel FP hash?
-> 
-> > By the way you seem to fix the problem for modules, but does it also
-> > work when amdgpu is in kernel ? I would have expected a need to add
-> > functions in arch/powerpc/lib/crtsavres.S as well, just like following
-> > commits:
-> > 
-> > 8fe9c93e7453 ("powerpc: Add vr save/restore functions")
-> > 7fca5dc8aa7a ("powerpc: Fix module building for gcc 4.5 and 64 bit")
-> > da3de6df33f5 ("[POWERPC] Fix -Os kernel builds with newer gcc
-> > versions")
-> 
-> idk, I avoid linking that big stuff directly into the kernel and would
-> need to specically test that, too. I guess I go do that now, too, ...
+The Debian kernel shipps 4256 modules:
 
-It appears built-in amdgpu FP somehow magically works for me:
+| $ time ./compute_hashes mods_deb
+| Files 4256 levels: 13 root hash: 97f8f439d63938ed74f48ec46dbd75c2b5e5b49f012a414e89b6f0e0f06efe84
+| 
+| real    0m0,732s
+| user    0m0,304s
+| sys     0m0,427s
 
-debug-linux:[linux-6.17]# grep DRM.*AMD .config
-CONFIG_DRM_AMDGPU=y
-CONFIG_DRM_AMDGPU_SI=y
-CONFIG_DRM_AMDGPU_CIK=y
-CONFIG_DRM_AMDGPU_USERPTR=y
-CONFIG_DRM_AMD_ACP=y
-CONFIG_DRM_AMD_DC=y
-CONFIG_DRM_AMD_DC_FP=y
-CONFIG_DRM_AMD_DC_SI=y
-...
-  CC      drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp_ddc.o
-  CC      drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp_log.o
-  CC      drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp_psp.o
-  CC      drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp.o
-  CC      drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp1_execution.o
-  CC      drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp1_transition.o
-  CC      drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp2_execution.o
-  CC      drivers/gpu/drm/amd/amdgpu/../display/modules/hdcp/hdcp2_transition.o
-  AR      drivers/gpu/drm/amd/amdgpu/built-in.a
-  AR      drivers/gpu/drm/built-in.a
-  AR      drivers/gpu/built-in.a
-  AR      drivers/built-in.a
-  AR      built-in.a
-  AR      vmlinux.a
-  LD      vmlinux.o
-  GEN     modules.builtin.modinfo
-  GEN     modules.builtin
-  MODPOST vmlinux.symvers
-  CC      .vmlinux.export.o
-  UPD     include/generated/utsversion.h
-  CC      init/version-timestamp.o
-  KSYMS   .tmp_vmlinux0.kallsyms.S
-  AS      .tmp_vmlinux0.kallsyms.o
-  LD      .tmp_vmlinux1
-  NM      .tmp_vmlinux1.syms
-  KSYMS   .tmp_vmlinux1.kallsyms.S
-  AS      .tmp_vmlinux1.kallsyms.o
-  LD      .tmp_vmlinux2
-  NM      .tmp_vmlinux2.syms
-  KSYMS   .tmp_vmlinux2.kallsyms.S
-  AS      .tmp_vmlinux2.kallsyms.o
-  LD      vmlinux.unstripped
-  NM      System.map
-  SORTTAB vmlinux.unstripped
-make[3]: Nothing to be done for 'vmlinux.unstripped'.
-  OBJCOPY vmlinux
+This computes the hashes for all the modules it found in the mods_deb
+folder.
+The kernel needs the root hash (for sha256 32 bytes) and the depth of
+the tree (4 bytes). That are 36 bytes regardless of the number of
+modules that are built.
+In this case, the attached hash for each module is 420 bytes. This is 4
+bytes (position in the tree) + 13 (depth) * 32.
+The verification process requires 13 hash operation to hash through the
+tree and verify against the root hash.
 
-So I guess the patch is good to go after clarifying which kind of
-Fixes: to use?
+For convience, the following PoC can also be found at
+	https://git.kernel.org/pub/scm/linux/kernel/git/bigeasy/mtree-hashed-mods.git/
 
-Thanks!
-       René
+which also includes a small testsuite.
 
-> > > MODPOST Module.symvers
-> > > ERROR: modpost: "_restfpr_20" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
-> > > undefined!
-> > > ERROR: modpost: "_restfpr_26" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
-> > > undefined!
-> > > ERROR: modpost: "_restfpr_22" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
-> > > undefined!
-> > > ERROR: modpost: "_savegpr1_27" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
-> > > undefined!
-> > > ERROR: modpost: "_savegpr1_25" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
-> > > undefined!
-> > > ERROR: modpost: "_restfpr_28" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
-> > > undefined!
-> > > ERROR: modpost: "_savegpr1_29" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
-> > > undefined!
-> > > ERROR: modpost: "_savefpr_20" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
-> > > undefined!
-> > > ERROR: modpost: "_savefpr_22" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
-> > > undefined!
-> > > ERROR: modpost: "_restfpr_15" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko]
-> > > undefined!
-> > > WARNING: modpost: suppressed 56 unresolved symbol warnings because
-> > > there were too many)
-> > > Signed-off-by: René Rebe <rene@exactco.de>
-> > > ---
-> > > V2: description
-> > > Theoretically for -stable, but no previous commit that broke it.
-> > 
-> > In that case you have to add Cc: stable@vger.kernel.org
-> > Add indeed it is likely a gcc upgrade that broke it, not a previous
-> > commit.
-> 
-> Should I then simply use enabling amdgpu dc_fp and in-kernel FP as the
-> breaking commit for Fixes:?
-> 
-> Thanks!
-> 
-> 	René
-> 
-> > > ---
-> > >   scripts/mod/modpost.c | 4 ++++
-> > >   1 file changed, 4 insertions(+)
-> > > diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> > > index 47c8aa2a6939..133dfa16308a 100644
-> > > --- a/scripts/mod/modpost.c
-> > > +++ b/scripts/mod/modpost.c
-> > > @@ -602,6 +602,10 @@ static int ignore_undef_symbol(struct elf_info
-> > > *info, const char *symname)
-> > >   		/* Special register function linked on all modules during final link of
-> > >   		.ko */
-> > >   		if (strstarts(symname, "_restgpr0_") ||
-> > >   		    strstarts(symname, "_savegpr0_") ||
-> > > +		    strstarts(symname, "_restgpr1_") ||
-> > > +		    strstarts(symname, "_savegpr1_") ||
-> > > +		    strstarts(symname, "_restfpr_") ||
-> > > +		    strstarts(symname, "_savefpr_") ||
-> > >   		    strstarts(symname, "_restvr_") ||
-> > >   		    strstarts(symname, "_savevr_") ||
-> > >   		    strcmp(symname, ".TOC.") == 0)
-> > 
-> 
-> -- 
-> René Rebe, ExactCODE GmbH, Berlin, Germany
-> https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
-
+diff --git a/Makefile b/Makefile
+new file mode 100644
+index 0000000000000..e4a35c15f0a94
+--- /dev/null
++++ b/Makefile
+@@ -0,0 +1,7 @@
++CC := gcc
++CFLAGS := -O2 -g -Wall
++LDLIBS := -lcrypto
++
++all: compute_hashes mk-files verify_hash
++test: compute_hashes mk-files verify_hash
++	./verify_test.sh
+diff --git a/compute_hashes.c b/compute_hashes.c
+new file mode 100644
+index 0000000000000..da61b214137b8
+--- /dev/null
++++ b/compute_hashes.c
+@@ -0,0 +1,407 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Compute hashes for individual files and build a merkle tree.
++ *
++ * Author: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
++ *
++ */
++#define _GNU_SOURCE 1
++#include <ftw.h>
++#include <unistd.h>
++#include <fcntl.h>
++#include <stdio.h>
++#include <string.h>
++#include <stdlib.h>
++
++#include <sys/stat.h>
++#include <sys/mman.h>
++
++#include <openssl/evp.h>
++
++#include "helpers.h"
++
++struct file_entry {
++	char *name;
++	size_t fsize;
++	unsigned int pos;
++	unsigned char hash[EVP_MAX_MD_SIZE];
++};
++
++static struct file_entry *fh_list;
++static size_t num_files;
++
++struct leaf_hash {
++	unsigned char hash[EVP_MAX_MD_SIZE];
++};
++
++struct mtree {
++	struct leaf_hash **l;
++	unsigned int *entries;
++	unsigned int levels;
++};
++
++static unsigned int get_pow2(unsigned int val)
++{
++	return 31 - __builtin_clz(val);
++}
++
++static unsigned int roundup_pow2(unsigned int val)
++{
++	return 1 << (get_pow2(val - 1) + 1);
++}
++
++static unsigned int log2_roundup(unsigned int val)
++{
++	return get_pow2(roundup_pow2(val));
++}
++
++static int str_endswith(const char *s, const char *suffix)
++{
++	size_t ls, lf;
++
++	ls = strlen(s);
++	lf = strlen(suffix);
++
++	if (ls <= lf)
++		return -1;
++	return strcmp(s + ls - lf, suffix);
++}
++
++static void __print_hash(unsigned char *h)
++{
++	int i;
++
++	for (i = 0; i < hash_size; i++)
++		printf("%02x", h[i]);
++}
++
++static void print_hash(unsigned char *h)
++{
++	__print_hash(h);
++	printf("\n");
++}
++
++static int hash_file(struct file_entry *fe)
++{
++	void *mem;
++	int fd;
++
++	fd = open(fe->name, O_RDONLY);
++	if (fd < 0) {
++		printf("Failed to open %s: %m\n", fe->name);
++		exit(1);
++	}
++
++	mem = mmap(NULL, fe->fsize, PROT_READ, MAP_SHARED, fd, 0);
++	close(fd);
++
++	if (mem == MAP_FAILED) {
++		printf("Failed to mmap %s: %m\n", fe->name);
++		exit(1);
++	}
++
++	hash_data(mem, fe->pos, fe->fsize, fe->hash);
++
++	munmap(mem, fe->fsize);
++	return 0;
++}
++
++static int add_files_cb(const char *fpath, const struct stat *sb, int tflag,
++			struct FTW *ftwbuf)
++{
++	if (tflag != FTW_F)
++		return 0;
++
++	if (str_endswith(fpath, ".ko"))
++		return 0;
++
++	fh_list = xrealloc(fh_list, (num_files + 1) * sizeof (struct file_entry));
++
++	fh_list[num_files].name = strdup(fpath);
++	if (!fh_list[num_files].name) {
++		printf("Failed to allocate memory\n");
++		exit(1);
++	}
++
++	fh_list[num_files].fsize = sb->st_size;
++
++	num_files++;
++	return 0;
++}
++
++static int cmp_file_entry(const void *p1, const void *p2)
++{
++	const struct file_entry *f1, *f2;
++
++	f1 = p1;
++	f2 = p2;
++
++	return strcmp(f1->name, f2->name);
++}
++
++static struct mtree *build_merkle(struct file_entry *fh, size_t num)
++{
++	unsigned int i, le;
++	struct mtree *mt;
++
++	mt = xmalloc(sizeof(struct mtree));
++	mt->levels = log2_roundup(num);
++	mt->l = xcalloc(sizeof(struct leaf_hash *), mt->levels);
++
++	mt->entries = xcalloc(sizeof(unsigned int), mt->levels);
++	le = num / 2;
++	if (num & 1)
++		le++;
++	mt->entries[0] = le;
++	mt->l[0] = xcalloc(sizeof(struct leaf_hash), le);
++
++	/* First level of pairs */
++	for (i = 0; i < num; i+= 2) {
++		if (i == num - 1) {
++			/* Odd number of files, no pair. Hash with itself */
++			hash_entry(fh[i].hash, fh[i].hash, mt->l[0][i/2].hash);
++		} else {
++			hash_entry(fh[i].hash, fh[i + 1].hash, mt->l[0][i/2].hash);
++		}
++	}
++	for (i = 1; i < mt->levels; i++) {
++		int n;
++		int odd = 0;
++
++		if (le & 1) {
++			le++;
++			odd++;
++		}
++
++		mt->entries[i] = le / 2;
++		mt->l[i] = xcalloc(sizeof(struct leaf_hash), le);
++
++		for (n = 0; n < le; n += 2) {
++			if (n == le - 2 && odd) {
++				/* Odd number of pairs, no pair. Hash with itself */
++				hash_entry(mt->l[i - 1][n].hash, mt->l[i - 1][n].hash,
++					   mt->l[i][n/2].hash);
++			} else {
++				hash_entry(mt->l[i - 1][n].hash, mt->l[i - 1][n +1].hash,
++					   mt->l[i][n/2].hash);
++			}
++		}
++		le =  mt->entries[i];
++	}
++	return mt;
++}
++
++static void free_mtree(struct mtree *mt)
++{
++	int i;
++
++	for (i = 0; i < mt->levels; i++)
++		free(mt->l[i]);
++
++	free(mt->l);
++	free(mt->entries);
++	free(mt);
++}
++
++static void write_be_int(int fd, unsigned int v)
++{
++	unsigned int be_val = host_to_be32(v);
++
++	if (write(fd, &be_val, sizeof(be_val)) != sizeof(be_val)) {
++		printf("Failed writting to file: %m\n");
++		exit(1);
++	}
++}
++
++static void write_hash(int fd, const void *h)
++{
++	ssize_t wr;
++
++	wr = write(fd, h, hash_size);
++	if (wr != hash_size) {
++		printf("Failed writting to file: %m\n");
++		exit(1);
++	}
++}
++
++static void build_proof(struct mtree *mt, unsigned int n, int fd)
++{
++	unsigned char cur[EVP_MAX_MD_SIZE];
++	unsigned char tmp[EVP_MAX_MD_SIZE];
++	struct file_entry *fe, *fe_sib;
++	unsigned int i;
++
++	fe = &fh_list[n];
++
++	if ((n & 1) == 0) {
++		/* No pair, hash with itself */
++		if (n + 1 == num_files)
++			fe_sib = fe;
++		else
++			fe_sib = &fh_list[n + 1];
++	} else {
++		fe_sib = &fh_list[n - 1];
++	}
++	/* First comes the node position into the file */
++	write_be_int(fd, n);
++
++	if ((n & 1) == 0)
++		hash_entry(fe->hash, fe_sib->hash, cur);
++	else
++		hash_entry(fe_sib->hash, fe->hash, cur);
++
++	/* Next is the sibling hash, followed by hashes in the tree */
++	write_hash(fd, fe_sib->hash);
++
++	for (i = 0; i < mt->levels - 1; i++) {
++		n >>= 1;
++		if ((n & 1) == 0) {
++			void *h;
++
++			/* No pair, hash with itself */
++			if (n + 1 == mt->entries[i])
++				h = cur;
++			else
++				h = mt->l[i][n + 1].hash;
++
++			hash_entry(cur, h, tmp);
++			write_hash(fd, h);
++		} else {
++			hash_entry(mt->l[i][n - 1].hash, cur, tmp);
++			write_hash(fd, mt->l[i][n - 1].hash);
++		}
++		memcpy(cur, tmp, hash_size);
++	}
++
++	 /* After all that, the end hash should match the root hash */
++	if (memcmp(cur, mt->l[mt->levels - 1][0].hash, hash_size))
++		printf("MISS-MATCH\n");
++}
++
++static void write_merkle_root(struct mtree *mt, const char *fp)
++{
++	char buf[1024];
++	int fd;
++
++	if (snprintf(buf, sizeof(buf), "%s/hash_root", fp) >= sizeof(buf)) {
++		printf("Root dir too long\n");
++		exit(1);
++	}
++	fd = open(buf, O_WRONLY | O_CREAT | O_TRUNC, DEF_F_PERM);
++	if (fd < 0) {
++		printf("Failed to create %s: %m\n", buf);
++		exit(1);
++	}
++
++	write_be_int(fd, mt->levels);
++	write_hash(fd, mt->l[mt->levels - 1][0].hash);
++	close(fd);
++	printf("Files %ld levels: %d root hash: ", num_files, mt->levels);
++	print_hash(mt->l[mt->levels - 1][0].hash);
++}
++
++static void write_merkle_root_h(struct mtree *mt, const char *fp)
++{
++	char buf[1024];
++	unsigned int i;
++	unsigned char *h;
++	FILE *f;
++
++	if (snprintf(buf, sizeof(buf), "%s/hash_root.h", fp) >= sizeof(buf)) {
++		printf("Root dir too long\n");
++		exit(1);
++	}
++	f = fopen(buf, "w");
++	if (!f) {
++		printf("Failed to create %s: %m\n", buf);
++		exit(1);
++	}
++	h = mt->l[mt->levels - 1][0].hash;
++
++	fprintf(f, "#ifndef __HASH_ROOT_TREE_H__\n");
++	fprintf(f, "#define __HASH_ROOT_TREE_H__\n\n");
++	fprintf(f, "unsigned int hashed_mods_levels = %u;\n", mt->levels);
++	fprintf(f, "unsigned char hashed_mods_root[%d] = {", hash_size);
++	for (i = 0; i < hash_size; i++) {
++		char *space = "";
++
++		if (!(i % 8))
++			fprintf(f, "\n\t");
++
++		if ((i + 1) % 8)
++			space = " ";
++
++		fprintf(f, "0x%02x,%s", h[i], space);
++	}
++	fprintf(f, "\n};\n#endif\n");
++	fclose(f);
++}
++
++int main(int argc, char *argv[])
++{
++	const EVP_MD *hash_evp;
++	char *fp;
++	struct mtree *mt;
++	int i;
++
++	ctx = EVP_MD_CTX_new();
++	if (!ctx)
++		goto err_ossl;
++
++	if (argc != 2) {
++		printf("%s: folder\n", argv[0]);
++		return 1;
++	}
++	fp = argv[1];
++
++	hash_evp = EVP_sha256();
++	hash_size = EVP_MD_get_size(hash_evp);
++	if (hash_size <= 0)
++		goto err_ossl;
++
++	if (EVP_DigestInit_ex(ctx, hash_evp, NULL) != 1)
++		goto err_ossl;
++
++	nftw(fp, add_files_cb, 64, 0);
++
++	qsort(fh_list, num_files, sizeof(struct file_entry), cmp_file_entry);
++
++	for (i = 0; i < num_files; i++) {
++		fh_list[i].pos = i;
++		hash_file(&fh_list[i]);
++	}
++
++	mt = build_merkle(fh_list, num_files);
++	write_merkle_root(mt, fp);
++	write_merkle_root_h(mt, fp);
++	for (i = 0; i < num_files; i++) {
++		char signame[1024];
++		int fd;
++		int ret;
++
++		ret = snprintf(signame, sizeof(signame), "%s.hash", fh_list[i].name);
++		if (ret >= sizeof(signame)) {
++			printf("path + name too long\n");
++			return 1;
++		}
++		fd = open(signame, O_WRONLY | O_CREAT | O_TRUNC, DEF_F_PERM);
++		if (fd < 0) {
++			printf("Can't create %s: %m\n", signame);
++			return 1;
++		}
++		build_proof(mt, i, fd);
++		close(fd);
++	}
++
++	free_mtree(mt);
++	for (i = 0; i < num_files; i++)
++		free(fh_list[i].name);
++	free(fh_list);
++
++	EVP_MD_CTX_free(ctx);
++	return 0;
++
++err_ossl:
++	printf("libssl operation failed\n");
++	return 1;
++}
+diff --git a/helpers.h b/helpers.h
+new file mode 100644
+index 0000000000000..f52ad3543f890
+--- /dev/null
++++ b/helpers.h
+@@ -0,0 +1,109 @@
++#ifndef __HELPERS_H__
++#define __HELPERS_H__
++
++static EVP_MD_CTX *ctx;
++static int hash_size;
++
++#define DEF_F_PERM (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH) /* 0644*/
++#define DEF_D_PERM (S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH) /* 0755*/
++
++static unsigned int host_to_be32(unsigned int v)
++{
++#if __BYTE_ORDER__ == __LITTLE_ENDIAN
++	return __builtin_bswap32(v);
++#elif __BYTE_ORDER__ == __BIG_ENDIAN
++	return  v;
++#else
++#error Missing endian define
++#endif
++}
++
++static inline void *xcalloc(size_t n, size_t size)
++{
++	void *p;
++
++	p = calloc(n, size);
++	if (p)
++		return p;
++	printf("Memory allocation failed\n");
++	exit(1);
++}
++
++static void *xmalloc(size_t size)
++{
++	void *p;
++
++	p = malloc(size);
++	if (p)
++		return p;
++	printf("Memory allocation failed\n");
++	exit(1);
++}
++
++static inline void *xrealloc(void *oldp, size_t size)
++{
++	void *p;
++
++	p = realloc(oldp, size);
++	if (p)
++		return p;
++	printf("Memory allocation failed\n");
++	exit(1);
++}
++
++static void hash_data(void *p, unsigned int pos, size_t size, void *ret_hash)
++{
++	unsigned char magic = 0x01;
++	unsigned int pos_be;
++
++	pos_be = host_to_be32(pos);
++	if (EVP_DigestInit_ex(ctx, NULL, NULL) != 1)
++		goto err;
++
++	if (EVP_DigestUpdate(ctx, &magic, sizeof(magic)) != 1)
++		goto err;
++
++	if (EVP_DigestUpdate(ctx, &pos_be, sizeof(pos_be)) != 1)
++		goto err;
++
++	if (EVP_DigestUpdate(ctx, p, size) != 1)
++		goto err;
++
++	if (EVP_DigestFinal_ex(ctx, ret_hash, NULL) != 1)
++		goto err;
++
++	return;
++
++err:
++	printf("libssl operation failed\n");
++	exit(1);
++}
++static void hash_entry(void *left, void *right, void *ret_hash)
++{
++	unsigned char magic = 0x02;
++
++	if (EVP_DigestInit_ex(ctx, NULL, NULL) != 1)
++		goto err;
++
++	if (EVP_DigestUpdate(ctx, &magic, sizeof(magic)) != 1)
++		goto err;
++
++	if (EVP_DigestUpdate(ctx, left, hash_size) != 1)
++		goto err;
++
++	if (EVP_DigestUpdate(ctx, right, hash_size) != 1)
++		goto err;
++
++	if (EVP_DigestFinal_ex(ctx, ret_hash, NULL) != 1)
++		goto err;
++
++	return;
++
++err:
++	printf("libssl operation failed\n");
++	exit(1);
++}
++
++
++
++#endif
+diff --git a/verify_hash.c b/verify_hash.c
+new file mode 100644
+index 0000000000000..0a842f27f1ebc
+--- /dev/null
++++ b/verify_hash.c
+@@ -0,0 +1,206 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Verify a file against and its hash against a merkle tree hash.
++ *
++ * Author: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
++ *
++ */
++#define _GNU_SOURCE 1
++#include <unistd.h>
++#include <fcntl.h>
++#include <string.h>
++#include <stdlib.h>
++
++#include <sys/stat.h>
++#include <sys/mman.h>
++
++#include <openssl/evp.h>
++
++#include "helpers.h"
++
++struct hash_root {
++	unsigned int level;
++	unsigned char hash[EVP_MAX_MD_SIZE];
++};
++
++struct verify_sig {
++	unsigned int pos;
++	char hash_sigs[];
++};
++
++static int hash_file(const char *f, unsigned char *hash, unsigned int pos)
++{
++	struct stat sb;
++	int fd, ret;
++	void *mem;
++
++	fd = open(f, O_RDONLY);
++	if (fd < 0) {
++		printf("Failed to open %s: %m\n", f);
++		exit(1);
++	}
++
++	ret = fstat(fd, &sb);
++	if (ret) {
++		printf("stat failed %m\n");
++		exit(1);
++	}
++
++	mem = mmap(NULL, sb.st_size, PROT_READ, MAP_SHARED, fd, 0);
++	close(fd);
++
++	if (mem == MAP_FAILED) {
++		printf("Failed to mmap file: %m\n");
++		exit(1);
++	}
++
++	hash_data(mem, pos, sb.st_size, hash);
++
++	munmap(mem, sb.st_size);
++	return 0;
++}
++
++static void verify_hash(struct hash_root *hr, struct verify_sig *vs, unsigned char *cur,
++			const char *fn)
++{
++	unsigned char tmp[EVP_MAX_MD_SIZE];
++	unsigned sig_ofs = 0;
++	unsigned int i, n;
++
++	n = vs->pos;
++	if ((n & 1) == 0)
++		hash_entry(cur, &vs->hash_sigs[sig_ofs], tmp);
++	else
++		hash_entry(&vs->hash_sigs[sig_ofs], cur, tmp);
++
++	memcpy(cur, tmp, hash_size);
++	sig_ofs += hash_size;
++	for (i = 0; i < hr->level - 1; i++) {
++		n >>= 1;
++		if ((n & 1) == 0) {
++			hash_entry(cur, &vs->hash_sigs[sig_ofs], tmp);
++		} else {
++			hash_entry(&vs->hash_sigs[sig_ofs], cur, tmp);
++		}
++		memcpy(cur, tmp, hash_size);
++		sig_ofs += hash_size;
++	}
++
++	if (!memcmp(cur, hr->hash, hash_size)) {
++		exit(0);
++	} else {
++		printf("MISS-MATCH on %s\n", fn);
++		exit(1);
++	}
++}
++
++static void read_be_int(int fd, unsigned int *val)
++{
++	unsigned int val_be;
++
++	if (read(fd, &val_be, sizeof(val_be)) != sizeof(val_be)) {
++		printf("Can't read from file\n");
++		exit(1);
++	}
++	*val = host_to_be32(val_be);
++}
++
++struct hash_root *read_root_hash(const char *f)
++{
++	int fd;
++	struct hash_root *hr;
++
++	hr = xmalloc(sizeof(*hr));
++	fd = open(f, O_RDONLY);
++	if (fd < 0) {
++		printf("Can't open %s: %m\n", f);
++		exit(1);
++	}
++	read_be_int(fd, &hr->level);
++	if (read(fd, hr->hash, hash_size) != hash_size) {
++		printf("Can't read complete hash (%u): %m\n",
++		       hash_size);
++		exit(1);
++	}
++	close(fd);
++	return hr;
++}
++
++static void load_hash_sig(const char *f, struct verify_sig *verify_sig,
++			  unsigned int sig_num)
++{
++	ssize_t total_hash_size;
++	struct stat sb;
++	char buf[1024];
++	int fd;
++	int ret;
++
++	total_hash_size = sig_num * hash_size;
++
++	ret = snprintf(buf, sizeof(buf), "%s.hash", f);
++	if (ret >= sizeof(buf)) {
++		printf("Too long\n");
++		exit(1);
++	}
++	fd = open(buf, O_RDONLY);
++	if (fd < 0) {
++		printf("Failed to open %s\n", buf);
++		exit(1);
++	}
++	read_be_int(fd, &verify_sig->pos);
++
++	ret = fstat(fd, &sb);
++	if (ret < 0) {
++		printf("Failed to stat %s: %m\n", f);
++		exit(1);
++	}
++
++	if (sb.st_size != total_hash_size + 4) {
++		printf("Unexpected signature size: Expected %ld vs found %ld\n",
++		       total_hash_size + 4, sb.st_size);
++		exit(1);
++	}
++	if (read(fd, verify_sig->hash_sigs, total_hash_size) != total_hash_size) {
++		printf("Failed to read the signature: %m\n");
++		exit(1);
++	}
++	close(fd);
++}
++
++int main(int argc, char *argv[])
++{
++	struct hash_root *hash_root;
++	struct verify_sig *vsig;
++	unsigned char fhash[EVP_MAX_MD_SIZE];
++	const EVP_MD *hash_evp;
++
++	ctx = EVP_MD_CTX_new();
++	if (!ctx)
++		goto err;
++
++	if (argc != 3) {
++		printf("%s: hash_root module\n", argv[0]);
++		return 1;
++	}
++
++	hash_evp = EVP_sha256();
++	hash_size = EVP_MD_get_size(hash_evp);
++	if (hash_size <= 0)
++		goto err;
++
++	if (EVP_DigestInit_ex(ctx, hash_evp, NULL) != 1)
++		goto err;
++
++	hash_root = read_root_hash(argv[1]);
++	vsig = xmalloc(sizeof(struct verify_sig) + hash_root->level * hash_size);
++
++	load_hash_sig(argv[2], vsig, hash_root->level);
++	hash_file(argv[2], fhash, vsig->pos);
++	verify_hash(hash_root, vsig, fhash, argv[2]);
++
++	EVP_MD_CTX_free(ctx);
++	return 0;
++err:
++	printf("libssl operation failed\n");
++	return 1;
++}
 -- 
-René Rebe, ExactCODE GmbH, Berlin, Germany
-https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
+2.51.0
+
+
+Sebastian
 
