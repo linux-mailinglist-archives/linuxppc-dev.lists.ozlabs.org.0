@@ -1,52 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14429-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E66AC7E0DF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Nov 2025 13:13:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D784C7E20D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Nov 2025 15:57:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dDnsw0SPZz2yvM;
-	Sun, 23 Nov 2025 23:13:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dDsWM0y3mz2yvd;
+	Mon, 24 Nov 2025 01:57:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.10.151
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763900003;
-	cv=none; b=HNLEdkqxwXZAlghdt0VFEqm2EBgglExM3GxqDewVJVyVn0iBnnJlMbmyYcWZRpxIKNk4aracx47Hzxu35hGl7ng4WDreMVWTWMbV9opOe5CUYueadVn3R6Fy77QeptEkpYmcS+Q3jPlxNpGp9Tl6y91c+xMU9c+QOeD9FZcAX+4qudYob4jfEEY7RHS/xRtHApGW5BfWz8wHI/WeSUS2G+s60zLfMSXpovpv3KgooXrvKJlEsn/scuDRMQVrd+aVmXZRPzeikoaigokOTzoEmNQDWDrxM/riShhV/NeRADiT0PC/39TNN8iCnLvL5sNBNvJrG441/sD5yLDXOxkTOQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763909855;
+	cv=none; b=CqAKJSCZ7kpmXvtL/WUzJoDoTH91Bs8XNlwDrwcuhOLMPJQx9oFmIEG5Igfdw7qZSvUgFVSFjepPPzQO6WLzqVA1GTowg1WKYk1tu0D3V89Hj/qmAv91SlcDyjsiQPpxGGcXqdj1QnSfSoMevdBcAQtGdVVJ4sx+A7h0la93OW7HQ4l0kVk4+dInubueqbBVgqnWT9IgU4tv3V5T0eq4bTnJXBBt5BXogkQ7HVjgCroMhc8t5th79zpGT1IE3Pdzzwbt4V7TjNvlQzb+0qJu1/7sWDdnplsqMgl+73TQJuJpD8xh3uL+iYFWmw+Dj1BTirHeqvXk1InbT4PbaIUM9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763900003; c=relaxed/relaxed;
-	bh=FiByvmPj4vskMAitEF2oyus7EhqWwE7+LOIfdmKxcgM=;
-	h=Date:Message-Id:To:Cc:Subject:From:Mime-Version:Content-Type; b=Sxdkb57w3oSF5OSajynn7B9Bkl1JGaNVp5kh+HGTXJOtAHJAqAjlKqznvV104KKRL8nql00YCZtvFXsu2GGaojfpA7Al3NwtxgthoEG5IJADjFE2kv1/2yXbd4fbAn+LIOh8/fds3tMgjSo3RSSIPCLdAo5C4P6RPT6k9Ip0pU5XmCH9cl9akxjHahqyYrhGDAPtGF0gnBrBJEUfJmDu7kD0T1MfDloR5srpezUaAzeMzSrnQJOrnH4LLi0B8Zcr2xwKKdEICB6IfOyS64pEQUj/ULiGYLr1xSB5frEhQtBHvjTfcZXjM/uD1XF4sYVK2DC7a63E9Rj+5D0wCyUsVA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de; dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=YB7CtJNW; dkim-atps=neutral; spf=pass (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org) smtp.mailfrom=exactco.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de
+	t=1763909855; c=relaxed/relaxed;
+	bh=rtcA7Uc2HIlApvW4klg1wPonZEbY7o0wvIbGAFYXJ+c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Yw4dkwToIemYxV/P+3pDD7muTS3+DQck9lqVmQNW91owFYBJSsE6gERSeBW9fnAXbwexh8DWmerZQhZCSb8L2mw0Mx0Q6nFD2+BwL56gzbTD093ZDRQoTjjEZhJYR6lqLiMaCBwSmXzlYg8+nOVP8FhBvJLKXbeptnwP5z+sVFXDy0sUIC+roqigpzx2XhkkRAFGSVbDjATO79NX5d87Qa0KxGNVsZOkRKmjezUkDM/g+3j7H3IIpl4Mlln2JuoVwJMV2461vK+SNYIyrXCqx2q7KpSyCmzxlXMkGWwgrp9uAXdF1q/+AU762YmlxobS8Ns6XIg6ff+frnzZ3fyU3A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kuKqZjYN; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=YB7CtJNW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kuKqZjYN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=exactco.de (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org)
-Received: from exactco.de (exactco.de [176.9.10.151])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dDnss0L62z2xSY
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Nov 2025 23:13:20 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
-	s=x; h=Content-Transfer-Encoding:Content-Type:Mime-Version:From:Subject:Cc:To
-	:Message-Id:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
-	List-Owner:List-Archive; bh=FiByvmPj4vskMAitEF2oyus7EhqWwE7+LOIfdmKxcgM=; b=Y
-	B7CtJNWX7Y5fdrO7Yf1Z8jmhNSOrbagvits5hHavY/HU6bNJLAeoX7WqzqMx0JQh/RcWMj97W7zSj
-	ro5bNXzM9+MYOfIpNCrCJqgURkwsMg5+9dtXZ+Pv7opq+vTSd1sbdmVMeKNU5UGYi8vBriDlyYZoH
-	E0ROQK5QWNAxJ+YYM0rxLecsAxCcM4SvPwczYE37WSSJLYZAaEvtcKLUjlZfmpBmesZs3p+nnlWiQ
-	7e26SslRYZ121zcM1YU2VFGSOQZgrvlcnIzHp1m/GRfV0lrTrA/UUhhyTYubAvq73hRUPAwxXiRUX
-	PEcPX/4ha4KT6HCMlSIN3bjvqn2tVv5RA==;
-Date: Sun, 23 Nov 2025 13:13:30 +0100 (CET)
-Message-Id: <20251123.131330.407910684435629198.rene@exactco.de>
-To: linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe
- Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH V2] modpost: Amend ppc64 save/restfpr symnames for -Os build
-From: =?iso-8859-1?Q?Ren=E9?= Rebe <rene@exactco.de>
-X-Mailer: Mew version 6.10 on Emacs 30.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dDsWJ1q1Fz2yv7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Nov 2025 01:57:32 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 27546402B2;
+	Sun, 23 Nov 2025 14:57:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4ABC113D0;
+	Sun, 23 Nov 2025 14:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763909849;
+	bh=K3ub+XN+dK5BebXb5mWR26pjcLIx/qIluZdqNfZ1t+k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kuKqZjYNy9zZsGzAmW+DCx7ZL6pFdTlkY2Sr1vt0WEsR6UHdn1wWoreBt1bhiAT5p
+	 BMxN69x+BPfEkoCBLGvuFIfsnxAp4aiWtumrcj+2neGxfxc5hg4VOWNr6NlQhHsTKh
+	 +dtvqylXTj4n/+dSVrzvF/2aW3lVhCM66ALuuRCcELxlICgvdI2Z8c8i9dhFk5BSaI
+	 0RNeuWy7ADL93Gmyf8oNMW7k3w+4D54LjGTKbG/xKbsFYCGh9tbba6q+PZvoQCBVhh
+	 NAxYz4LWYU0dRaE+1IOoHV8DE0ExHZ9f1eQrY09PAYdm0x9T1akiYDaL+1eYmAdhCG
+	 wHtVGTzhbDJaQ==
+Message-ID: <d69d7167-00d1-49c5-90ee-6bc0b7e8295f@kernel.org>
+Date: Sun, 23 Nov 2025 15:57:24 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,59 +57,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2] modpost: Amend ppc64 save/restfpr symnames for -Os
+ build
+To: =?UTF-8?Q?Ren=C3=A9_Rebe?= <rene@exactco.de>,
+ linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+References: <20251123.131330.407910684435629198.rene@exactco.de>
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Content-Language: fr-FR
+In-Reply-To: <20251123.131330.407910684435629198.rene@exactco.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Building a size optimized ppc64 kernel (-Os), gcc emits more FP
-save/restore symbols, that the linker generates on demand into the
-.sfpr section. Explicitly allow-list those in scripts/mod/modpost.c,
-too. They are needed for the amdgpu in-kernel floating point support.
 
-MODPOST Module.symvers
-ERROR: modpost: "_restfpr_20" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_restfpr_26" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_restfpr_22" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_savegpr1_27" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_savegpr1_25" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_restfpr_28" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_savegpr1_29" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_savefpr_20" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_savefpr_22" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-ERROR: modpost: "_restfpr_15" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-WARNING: modpost: suppressed 56 unresolved symbol warnings because there were too many)
 
-Signed-off-by: René Rebe <rene@exactco.de>
----
-V2: description
-Theoretically for -stable, but no previous commit that broke it.
----
- scripts/mod/modpost.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Le 23/11/2025 à 13:13, René Rebe a écrit :
+> Building a size optimized ppc64 kernel (-Os), gcc emits more FP
+> save/restore symbols, that the linker generates on demand into the
+> .sfpr section. Explicitly allow-list those in scripts/mod/modpost.c,
+> too. They are needed for the amdgpu in-kernel floating point support.
 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 47c8aa2a6939..133dfa16308a 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -602,6 +602,10 @@ static int ignore_undef_symbol(struct elf_info *info, const char *symname)
- 		/* Special register function linked on all modules during final link of .ko */
- 		if (strstarts(symname, "_restgpr0_") ||
- 		    strstarts(symname, "_savegpr0_") ||
-+		    strstarts(symname, "_restgpr1_") ||
-+		    strstarts(symname, "_savegpr1_") ||
-+		    strstarts(symname, "_restfpr_") ||
-+		    strstarts(symname, "_savefpr_") ||
- 		    strstarts(symname, "_restvr_") ||
- 		    strstarts(symname, "_savevr_") ||
- 		    strcmp(symname, ".TOC.") == 0)
--- 
-2.46.0
+Would have been interested to know with which version of GCC the problem 
+started.
 
--- 
-René Rebe, ExactCODE GmbH, Berlin, Germany
-https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
+By the way you seem to fix the problem for modules, but does it also 
+work when amdgpu is in kernel ? I would have expected a need to add 
+functions in arch/powerpc/lib/crtsavres.S as well, just like following 
+commits:
+
+8fe9c93e7453 ("powerpc: Add vr save/restore functions")
+7fca5dc8aa7a ("powerpc: Fix module building for gcc 4.5 and 64 bit")
+da3de6df33f5 ("[POWERPC] Fix -Os kernel builds with newer gcc versions")
+
+
+> 
+> MODPOST Module.symvers
+> ERROR: modpost: "_restfpr_20" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_restfpr_26" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_restfpr_22" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_savegpr1_27" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_savegpr1_25" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_restfpr_28" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_savegpr1_29" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_savefpr_20" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_savefpr_22" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> ERROR: modpost: "_restfpr_15" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+> WARNING: modpost: suppressed 56 unresolved symbol warnings because there were too many)
+> 
+> Signed-off-by: René Rebe <rene@exactco.de>
+> ---
+> V2: description
+> Theoretically for -stable, but no previous commit that broke it.
+
+In that case you have to add Cc: stable@vger.kernel.org
+Add indeed it is likely a gcc upgrade that broke it, not a previous commit.
+
+> ---
+>   scripts/mod/modpost.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+> index 47c8aa2a6939..133dfa16308a 100644
+> --- a/scripts/mod/modpost.c
+> +++ b/scripts/mod/modpost.c
+> @@ -602,6 +602,10 @@ static int ignore_undef_symbol(struct elf_info *info, const char *symname)
+>   		/* Special register function linked on all modules during final link of .ko */
+>   		if (strstarts(symname, "_restgpr0_") ||
+>   		    strstarts(symname, "_savegpr0_") ||
+> +		    strstarts(symname, "_restgpr1_") ||
+> +		    strstarts(symname, "_savegpr1_") ||
+> +		    strstarts(symname, "_restfpr_") ||
+> +		    strstarts(symname, "_savefpr_") ||
+>   		    strstarts(symname, "_restvr_") ||
+>   		    strstarts(symname, "_savevr_") ||
+>   		    strcmp(symname, ".TOC.") == 0)
+
 
