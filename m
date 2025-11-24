@@ -1,33 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-14443-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14444-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867EEC80B91
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 14:23:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D4DC80B97
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 14:23:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dFRNF2ydBz30Vb;
-	Tue, 25 Nov 2025 00:23:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dFRNM0SP2z30VZ;
+	Tue, 25 Nov 2025 00:23:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763990605;
-	cv=none; b=SWrXe8eYFCo5OPbYOEaorE2V9JN8wTfv+XrQn/nGJa1lCyOH7UqV0zt22nsR+YBNHBP5os+37FsYgMCxVlcGeg8E0KUNkerssickEKtG33Gz/DlY25Qx3cdfk0dbaftZeEtQ2jypFPq3o8D6rpWTcjhxqqOp4lcECW02SNbZ8jcRc9tz6MEnbgKnb5c0qGJ7tE7nLTZqMKJXybavuyV0z1kk3JQBuLHkDaUSUku8aYKf7PJM1SsDNUSCHgPzT6z6MiBxNE0OPw0bPdkxREf8ftQYa4B7r8Abmd8QQBnUjyX6zEnC2PdRcxW0/zu0rNO3MS9gRFNgbpDXVBI18NoE6w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763990610;
+	cv=none; b=KU/sQdiYoWAKdy+xe4cDmWdRmxOL+CI5EqfQbbmgWwC6frx9DCMu/kYY3o7yuVZ+gsxmrj/gvMCqWL9v+sPSxXKZ4IewC7MvIKFiplNjSGiNfyE6MZHtAzWB5HXy12rufGkltVsitH9iBmJ0iJlFCANGtHXtQwXJc7hSMgf1tCE02rhLZtoTtpsJpUWKh+s1KkjafPY0Srv2DjQMiHnqRLTBHgms/TguFQp2iKMz179u24uz4QIxrsAHAE+ScMrQe8R7Flcr4xOWJN52/0Hx65mQH7ynWxylBD0Rw3lXjs4zbRwM2mRutf7C8na93SPRKzsk6AudHpCM1l+nzUVlAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763990605; c=relaxed/relaxed;
-	bh=vgN1Dl8//YP4AAH7YH7ckHY2/xdqQ5K9UykyI+hwA0g=;
+	t=1763990610; c=relaxed/relaxed;
+	bh=WVgyfR//D2q7JroeMxNIl2TxTXsGcGIa5UzeM8XuVb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d7/yw9KHmobojWC9jRd72c/G49w70WvehgpqZpG/+EGLdSxrvULYf8LIeOztQhk7THgoyFiTU6V5rrikK9c1HDlWiGqt6Bg3BocOcYPyQz3m2+1gi90S1mdg4Fe/4WN/hireVEPcyPr2hfuIA9takTB1qjpbG0JfY3ueC8JCdCHsNgDORiqYrIo1+Gz3MQbP4GM5fh9ktatWqiXUU6DL90hUlHRb2t9aujSFTDhxGt/dJ857kW23b3QeHUDc8VhYksROrJpiRPdT4+ESaRG8fXideKVxCaErxOjONv+GPtV1e7TzeOxPOXq0b+UQO9wzmfXPWUW8AEsA3nyb9DBbtw==
+	 MIME-Version; b=hOwJnZrPtl471IM4Byq/9TA/H5J4BS6wzX6Y7id+gGKhph8IGkAzphPyjrO6vF5yR0mZy5InryFosuIP19OWxW97ZDZYkWZcJzPziUkyC1NEgT9MEw1eht4Y3s4GdQMXaE786F5fSYXK7ysFPMr0sBVe7PQsO6H+jfI5V5wSFVHboxj4zItIpQwS8401FyFyyBvwEsgXqsfHI7vIq2JUrZ2VI3Hdd7xhrWcrOoez4lqM8UGryW06Tff2sTsQvyHivz7aPML2BrEI5l4S8sZNsQeU4ozSXhfQ5/X8wg5NQE74uHgn+Bzhz4w990aIh5FFmIIJGAmMpKnxjhUmrYeSlg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dFRND5K0Dz2xQD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 00:23:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dFRNL2CRBz2xQs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 00:23:30 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 351551515;
-	Mon, 24 Nov 2025 05:22:46 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A86B71516;
+	Mon, 24 Nov 2025 05:22:51 -0800 (PST)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 85C673F73B;
-	Mon, 24 Nov 2025 05:22:48 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0518D3F73B;
+	Mon, 24 Nov 2025 05:22:53 -0800 (PST)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -68,9 +68,9 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	x86@kernel.org
-Subject: [PATCH v5 02/12] x86/xen: simplify flush_lazy_mmu()
-Date: Mon, 24 Nov 2025 13:22:18 +0000
-Message-ID: <20251124132228.622678-3-kevin.brodsky@arm.com>
+Subject: [PATCH v5 03/12] powerpc/mm: implement arch_flush_lazy_mmu_mode()
+Date: Mon, 24 Nov 2025 13:22:19 +0000
+Message-ID: <20251124132228.622678-4-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251124132228.622678-1-kevin.brodsky@arm.com>
 References: <20251124132228.622678-1-kevin.brodsky@arm.com>
@@ -92,37 +92,63 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-arch_flush_lazy_mmu_mode() is called when outstanding batched
-pgtable operations must be completed immediately. There should
-however be no need to leave and re-enter lazy MMU completely. The
-only part of that sequence that we really need is xen_mc_flush();
-call it directly.
+Upcoming changes to the lazy_mmu API will cause
+arch_flush_lazy_mmu_mode() to be called when leaving a nested
+lazy_mmu section.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
+Move the relevant logic from arch_leave_lazy_mmu_mode() to
+arch_flush_lazy_mmu_mode() and have the former call the latter. The
+radix_enabled() check is required in both as
+arch_flush_lazy_mmu_mode() will be called directly from the generic
+layer in a subsequent patch.
+
+Note: the additional this_cpu_ptr() and radix_enabled() calls on the
+arch_leave_lazy_mmu_mode() path will be removed in a subsequent
+patch.
+
+Acked-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/x86/xen/mmu_pv.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ .../powerpc/include/asm/book3s/64/tlbflush-hash.h | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index 2a4a8deaf612..7a35c3393df4 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -2139,10 +2139,8 @@ static void xen_flush_lazy_mmu(void)
+diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+index 146287d9580f..2d45f57df169 100644
+--- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
++++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+@@ -41,7 +41,7 @@ static inline void arch_enter_lazy_mmu_mode(void)
+ 	batch->active = 1;
+ }
+ 
+-static inline void arch_leave_lazy_mmu_mode(void)
++static inline void arch_flush_lazy_mmu_mode(void)
  {
- 	preempt_disable();
+ 	struct ppc64_tlb_batch *batch;
  
--	if (xen_get_lazy_mode() == XEN_LAZY_MMU) {
--		arch_leave_lazy_mmu_mode();
--		arch_enter_lazy_mmu_mode();
--	}
-+	if (xen_get_lazy_mode() == XEN_LAZY_MMU)
-+		xen_mc_flush();
+@@ -51,12 +51,21 @@ static inline void arch_leave_lazy_mmu_mode(void)
  
+ 	if (batch->index)
+ 		__flush_tlb_pending(batch);
++}
++
++static inline void arch_leave_lazy_mmu_mode(void)
++{
++	struct ppc64_tlb_batch *batch;
++
++	if (radix_enabled())
++		return;
++	batch = this_cpu_ptr(&ppc64_tlb_batch);
++
++	arch_flush_lazy_mmu_mode();
+ 	batch->active = 0;
  	preempt_enable();
  }
+ 
+-#define arch_flush_lazy_mmu_mode()      do {} while (0)
+-
+ extern void hash__tlbiel_all(unsigned int action);
+ 
+ extern void flush_hash_page(unsigned long vpn, real_pte_t pte, int psize,
 -- 
 2.51.2
 
