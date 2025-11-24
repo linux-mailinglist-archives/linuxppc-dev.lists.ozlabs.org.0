@@ -1,58 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-14464-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14465-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D5EC821CD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 19:32:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A366FC8240E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 20:15:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dFZDW2SG3z2xS2;
-	Tue, 25 Nov 2025 05:32:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dFbBz3Yb9z2xS2;
+	Tue, 25 Nov 2025 06:15:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764009131;
-	cv=none; b=BzIl6zHNgVF4toL8RXZNIrYz+P6h+DpwwkM66kbC6htemBrELuTsIHf0V3R+dp6381x9PXQA+s00rJvfP+K8gyvGDFaCE3GBGmbbTa/aPc1oAh+9f/vtP2UOXEZ0I0vZWLkkKP3uBFCU1YO0BQFT9Zn1uZIR3BRHHJDy9y6vqQwM0+cs0dFddfjGrslSviHd4JO9REC8WgKBNXf6H6JTdXPUXveeYDNgB8JNhF+R/poVu67vsh0e0SxUULN89HpV9P0yrZk/ILKLKFQa7zHe6cKAWU2mCRsruQbQXPJUncHEoYTv7QsiiO+Y56gIP2XRRLji0JspzBM6j2kd3HmOmw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764011755;
+	cv=none; b=E/oX8UPHXwfAB1ZZwEKIdlJ+CxN4PPmNGnJhG4sC4cKqaMOwMX266gFuN2iJ5dmldhYCM2PHnoU6SfwUt+lWQ58+XuFcbV7qUMRKCu+qvAJqhxMhp3w3pO/LStBUz0iQ2e1eXr5ER2SoNTIwyOyBt3t+4CYgXZiSpdqTS7DBnieO/RVTMWfbMe4gur4NSvJOBag5sU+UrcL2Sy3FDvEj0+/OniLibUeKEYB3ouK1wkUkEYf/VPqFXVhDeHwtU2Ipru0xnkXe6GKNINv+PQzpSC2ysw2W9RP/ZW75t6FrxHHzsahNpEK2bjHSUcgL8wgtee+k+8DdOnSVoVcjPIiO0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764009131; c=relaxed/relaxed;
-	bh=M59jBTlMWczJQD7h71oNJP0VNXPKRi+lC/fpcU8Vahg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jjVhpKHfNKPn5iY/cF464VbQ4hdhE28GH8zwaxC3KB9tuAnVsJeRozlB95RPhQc5DriqHaS9qPiOAcar7YRkKR3FOvOAU+9f9Dq3HuVDhbdwKCPn3iJ9NGyzKfEQnsoRv3/LQT2VDXcduwtRszdVWN38Hw7KnsvJPK+VSdo1L3KEsrro5Vuiy7D/M+g6dyt6X+E/ajuBmzKo0pEzHjDW/HMIRdXQirXt3Nbw6lrY48MQ3+ribyh8b/qb+YFedxwr2G0bBJ62JzswfswuE3Hdqkldse6VX765ypzXJ2p1FX5LgE9xuvpIeLQbffSuuYhamKDwj8lc3fqM34bKPDi5NQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jLAQ3DMp; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1764011755; c=relaxed/relaxed;
+	bh=tFNtQO4MJezSq1Da7LRhRWoB6TraF4nvtRNwdskfv0c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ArUyhFjv71LleokNtXZAnNRdnU3ZH5arRQswqVE5wFnN3Lmu/XVu/qy+4imErK+irXznWIV53VIYZ4TSSEPX2cNPC5ZD4Y9V1/+8n2qCgQJhYLzlBEm3apQEXFnRRKiKcVEbFkyE876GZXg6ecSUBvnAI4dcfiyWev8ILaitxrZPqJ2amP7gEHKcFq6d9GdGN8TS/ORQ27jqXx/bh7Ef7PwsGZ0fz1sTiCk4oSqqRhDvCOD3ia6Ysx5K6gkxmG0G4PcIiD1DWX+HF67R6D3rriZg0SCm953NogCxci7rHlJsxbMwtY89NAsRR9f3O4A82gjxkTAe4z+8RRWsX8ua6A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=AN/txhTo; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=BUHhE29l; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jLAQ3DMp;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=AN/txhTo;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=BUHhE29l;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFZDV529Cz2xP9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 05:32:10 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A841960103
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Nov 2025 18:32:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B19CC4AF09
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Nov 2025 18:32:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764009128;
-	bh=/NNuAYjA+cYKSE9C8Z/aWVlDCUjpFcRWSApeHcQnHYI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=jLAQ3DMpkoY3jTQNcOsQy59Be1x32wIvLPy9UoKXHoPwXRhS4YUXc2IvsrgWka2vp
-	 0BOrPE4yBt/sU6u2oJI2mv1IMmpmsmljpJWMRvOC1gJqIgfEOGTkbtPodzOx0R/4Kw
-	 IynuzsLpf2xA9EmPMfOR00JOkpX7vXeIXK/1AYf+kiNEZqsB1fCLMoKmmVWo+kwbal
-	 /rMVxYdWBTXj678DYU2szKQwIvsXiiAGip8uGVWIOBAbHs+SayvnNHtpyLNboIRV84
-	 Zx54Pqq9qNrNpmfz6Ip0e2x30y4W6oNUC34WZyLDWgRqszc6d5Ocy1ZbM020Oexoye
-	 TX2Zd4KyMLEjg==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b7373fba6d1so742811866b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Nov 2025 10:32:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUIF6ST9p7OV9wKZxTRqh0pibuRx6ntHMvGE3lTcCvjHVz20qo4YPENd382cxlfdx+1QYD7zVZgFDPThNA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yza8cDqOHB9P4aKmeTrsDj27z5XKZB73Go5a3GJUItPGqmAPCYV
-	thwewvM07ISO3ytmjAiLEuxvJTDVcMU7mfRvoXiBwXABK4gKmdU2CNpIqJRlbZFLDGB7z3nnBqn
-	8ztBLB0EAPBSWveTcPv9dNnFSctsDvg==
-X-Google-Smtp-Source: AGHT+IEh009jWSdBFeUOPGdJeDnuYIa9j8P2N/bAYKPkQ1XCz8ABsOOB8jgwCEmn7v1HdDdcnspoFpo/DZfNOcP3l6Q=
-X-Received: by 2002:a17:907:6e9e:b0:b76:2f40:a307 with SMTP id
- a640c23a62f3a-b7671b1a00dmr1349357766b.57.1764009126896; Mon, 24 Nov 2025
- 10:32:06 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFbBx4fWPz2xQD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 06:15:53 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1764011748;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tFNtQO4MJezSq1Da7LRhRWoB6TraF4nvtRNwdskfv0c=;
+	b=AN/txhToM6VlnwEgn7HGPRictojfH48IrjrQmrfx8FKoMe1uAPwHyw9DVXi9+p/zBA4OL1
+	GjcGXbDQxc+wtE/nTiHWgzAahjG9JmRcY0zwQElGZAl6ao3WjA7xgG2wVgn/7TLVtKFFXM
+	Egk201XAqXpEjCivCkaQwqEa7CoVeKRb2tsuV69zjlykGLOxSNiNuBxLKls83K6AkzIjOr
+	Xj1rANFRnN5K0wfExrcRYzdFEsdabGo5kr8ZsKOBr+hlGcoRlFDS8bDR8qe4mnCB0gBXwY
+	rprUBY1b5Y9EN3OcSAOlXsOkQ+KyM4nInQI/fuAKv58k7u7XNWYCqYipSTn8uA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1764011748;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tFNtQO4MJezSq1Da7LRhRWoB6TraF4nvtRNwdskfv0c=;
+	b=BUHhE29l2/cUl/S02UwFWAk8sb5W32l+hFpPVkHbR/s4lrnRqcOvRh24aTl+iTO7o9hQ8C
+	7rWaGHg6/XZcxeCA==
+To: kernel test robot <lkp@intel.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ linux-kernel@vger.kernel.org, x86@kernel.org, Ingo Molnar
+ <mingo@kernel.org>, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linuxppc-dev@lists.ozlabs.org, Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [tip:core/rseq 25/39] include/linux/rseq_entry.h:132:3: error:
+ invalid operand for instruction
+In-Reply-To: <202511250134.i0Jm8d7I-lkp@intel.com>
+References: <202511250134.i0Jm8d7I-lkp@intel.com>
+Date: Mon, 24 Nov 2025 20:15:46 +0100
+Message-ID: <874iqji6n1.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,62 +74,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20251029174047.1620073-1-robh@kernel.org>
-In-Reply-To: <20251029174047.1620073-1-robh@kernel.org>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 24 Nov 2025 12:31:55 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKYbxwAXpMbMX20Hc_QJqbXiduUAmTbY1PX_omf5tQDvA@mail.gmail.com>
-X-Gm-Features: AWmQ_bkZvqXE-tZHu7OBPqVDUl8SnKWLjarS0mV1FH5iYaoM94SwTd58b8OxJ20
-Message-ID: <CAL_JsqKYbxwAXpMbMX20Hc_QJqbXiduUAmTbY1PX_omf5tQDvA@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/prom_init: Fixup missing #size-cells on PowerMac
- media-bay nodes
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Stan Johnson <userm57@yahoo.com>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Oct 29, 2025 at 12:41=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org=
-> wrote:
+On Tue, Nov 25 2025 at 01:37, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git core/rseq
+> head:   21782b3a5cd40892cb2995aa1ec3e74dd1112f1d
+> commit: abc850e7616c91ebaa3f5ba3617ab0a104d45039 [25/39] rseq: Provide and use rseq_update_user_cs()
+> config: powerpc-randconfig-002-20251124 (https://download.01.org/0day-ci/archive/20251125/202511250134.i0Jm8d7I-lkp@intel.com/config)
+> compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251125/202511250134.i0Jm8d7I-lkp@intel.com/reproduce)
 >
-> Similar to other PowerMac mac-io devices, the media-bay node is missing t=
-he
-> "#size-cells" property.
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202511250134.i0Jm8d7I-lkp@intel.com/
 >
-> Depends-on: commit 045b14ca5c36 ("of: WARN on deprecated #address-cells/#=
-size-cells handling")
-> Reported-by: Stan Johnson <userm57@yahoo.com>
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  arch/powerpc/kernel/prom_init.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> All errors (new ones prefixed by >>):
+>
+>    In file included from kernel/rseq.c:75:
+>>> include/linux/rseq_entry.h:132:3: error: invalid operand for instruction
+>                    unsafe_get_user(start_ip, &ucs->start_ip, efault);
+>                    ^
+>    include/linux/uaccess.h:606:2: note: expanded from macro 'unsafe_get_user'
+>            arch_unsafe_get_user(x, ptr, local_label);      \
+>            ^
+>    arch/powerpc/include/asm/uaccess.h:458:2: note: expanded from macro 'arch_unsafe_get_user'
+>            __get_user_size_goto(__gu_val, __gu_addr, sizeof(*(p)), e); \
+>            ^
+>    arch/powerpc/include/asm/uaccess.h:282:2: note: expanded from macro '__get_user_size_goto'
+>            __get_user_size_allowed(x, ptr, size, __gus_retval);    \
+>            ^
+>    arch/powerpc/include/asm/uaccess.h:273:10: note: expanded from macro '__get_user_size_allowed'
+>            case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;  \
+>                    ^
+>    arch/powerpc/include/asm/uaccess.h:256:4: note: expanded from macro '__get_user_asm2'
+>                    "       li %1+1,0\n"                    \
+>                     ^
+>    <inline asm>:7:5: note: instantiated into assembly here
+>            li 31+1,0
 
-Ping!
+Definitely not a problem of tip core/rseq. It just ends up in
+__get_user_asm2() and then the compiler gets unhappy about the PowerPC
+inline assembly for whatever reason.
 
->
-> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_i=
-nit.c
-> index 827c958677f8..f26e80cbc615 100644
-> --- a/arch/powerpc/kernel/prom_init.c
-> +++ b/arch/powerpc/kernel/prom_init.c
-> @@ -2893,7 +2893,8 @@ static void __init fixup_device_tree_pmac(void)
->         for (node =3D 0; prom_next_node(&node); ) {
->                 type[0] =3D '\0';
->                 prom_getprop(node, "device_type", type, sizeof(type));
-> -               if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s")=
-)
-> +               if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s")=
- &&
-> +                   prom_strcmp(type, "media-bay"))
->                         continue;
->
->                 if (prom_getproplen(node, "#size-cells") !=3D PROM_ERROR)
-> --
-> 2.51.0
->
+Thanks,
+
+        tglx
+ 
+
 
