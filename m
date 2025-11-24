@@ -1,60 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-14461-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14462-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C65DC81CA0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 18:05:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 827AEC81E18
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 18:24:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dFXJ62Jysz30B4;
-	Tue, 25 Nov 2025 04:05:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dFXkW2334z2xQs;
+	Tue, 25 Nov 2025 04:24:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764003910;
-	cv=none; b=hLaKsmCoRmfduD78PFI7ktjTC65gw3Kf7uD2tQK+iT5A7J5G9/xNiBJqeZBwWtVp4KGFIglcEt+27h2vD9zy5jXns81SGyRFbOBPgZ7TKMsT0gZ0Ncv5QZSydKK3NSDL/+jJuK6pSc2AmY9zp+8NYfa+yOuPr0RUx0gY65wpaM8VJBt2Lh3+YcAlwP45M0IbZaX3RA488w4Axh8LMDa9xefwsRjXBK9Wl6oAn+BjHCYA1W4AVJRnhWjTLRjhRY0YDxBUd8sF3CSDCWftNqrqc+Wxjv00VGny+Y9ov6EgYo65ITb8a0DHYEgkmq4bD1vCTnJBnK/TC9aAfOV9YGHOaw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=216.40.44.16
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764005075;
+	cv=none; b=bKOuFzWluKld7JTgwZVCGWKjqeHcEnckNRkm0x+ebe5mmq77x/2ZLVZkQ8F7WLMdPwejP/jpiRU/dJ9e7ZVcEQbgL0WNMQttQBMNTHh7RJLvVrxuH1m5TR8U2xEOA/TrIi74Dki2IXUQmKihYEyWXCCG2A0issPP3wMhdKtHG5kKVdL4N0YoqCgV45Au1tX53o6LWw1qOGOqeFSQ+SmQKBaLlrhIFR+4wrGrtT96iyCCLqjxpUrBtkkRlCXxzWuWH16zqpgJJg3HiLtCHmBX9jMVjguVOq55lVv2XQjIcHrse6n1vVmlHRd4iDqqJpj5U0XMx44TN+OTxGGXni/HdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764003910; c=relaxed/relaxed;
-	bh=6d1Eh1ili1NP0ctEBSfz61thfSkOLbKMxnLdKQNCoPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YKKT3JDePjdeJ2lSUD/0J3pvFBKBD1VPp0G6BDBy2bLvbv0aj1qbkLaGsEYe2EWGkWGpr+uwKUoiDZIPFQEuvL5mrXam6dI+0ftgkEbgkMY23uDu+d5zc5UguQea0G99cXEmjLCkC8l4N1qp4nGhtlhDv4FpXGXztTSrjAgsHvsD2YGoCzUFC7nnQAHGkRQJ3TOa+m4Pmm3nc0/hfM/cym5HuE632/pM94ER/xhyxaTlRfRMnDcRDn+HGO0RGwXgZpMKGD3+ZrF+Q1PjzRbd2mwldr2gDoMFSRg0EUnG6dLdPAgpHQWZUT61myJ0upb+G/kUPvAnV20shVGh6SPBmw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=K+421HU7; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=K+421HU7;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	t=1764005075; c=relaxed/relaxed;
+	bh=VIFgQ3+VZdLCNpE3XnBxX2jgVCOtYCywCECelacpc3g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NkcolN7tV+UaP7JPvjhadEXTFHCpGdQxgxX3gGE5JaXGZ8YqEzTDY/fKBvo/rMKmwUE51eJrEBXQFFY1d0w9WBlqLSgMQGiiF5N1KKYTJEBa8gD/N6j5a5y+4PiRNxtuOsB0O+GwBrVffvwWI3lV+Smd3UlHDJeMK0/mpbsqSLwxyRGPQJc3AxkT5tUvCMYA9A4lJJN1jH+DgdJYY1AJiBgpnJ7whnyRVNLO0blXbgRkaFtl4Yg/eWYLcDyi0APGpXgCDgjXVhKurk+wnlT1gHnEK0W5vFLHQuwv+zYoANFbrmeka5A4Y4vk/dQKGirUuWrs7B/VOHtkBmSbzxnfRA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=216.40.44.16; helo=relay.hostedemail.com; envelope-from=rostedt@goodmis.org; receiver=lists.ozlabs.org) smtp.mailfrom=goodmis.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=goodmis.org (client-ip=216.40.44.16; helo=relay.hostedemail.com; envelope-from=rostedt@goodmis.org; receiver=lists.ozlabs.org)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFXJ54rDYz305M
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 04:05:09 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 183AB60173;
-	Mon, 24 Nov 2025 17:05:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DE1C4CEF1;
-	Mon, 24 Nov 2025 17:05:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764003906;
-	bh=D3KrTWBY6jm2x9Hlo2t7wMeEpeX0KvUBsFsMbqIhc2o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K+421HU7jXKTq/rssClIwxW2gbgjEygTlAxVGxzWNzfE3uBv2/vh8nYpCKJqPhUif
-	 h+k5xJaRSeYq0Y4yt0OaMMTDiCTzySK7AC21uyjvR76Ts4TRrDiam7ViR0Uwuwop/o
-	 1mlMGnNYVUN1lu29pzRqmRmjIhLbxBGvuWI8legg=
-Date: Mon, 24 Nov 2025 18:05:04 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, tglx@linutronix.de,
-	yury.norov@gmail.com, maddy@linux.ibm.com, srikar@linux.ibm.com,
-	pbonzini@redhat.com, seanjc@google.com, kprateek.nayak@amd.com,
-	vschneid@redhat.com, iii@linux.ibm.com, huschle@linux.ibm.com,
-	rostedt@goodmis.org, dietmar.eggemann@arm.com,
-	christophe.leroy@csgroup.eu
-Subject: Re: [PATCH 00/17] Paravirt CPUs and push task for less vCPU
- preemption
-Message-ID: <2025112454-phonics-crept-5b98@gregkh>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFXkV0gY6z2xPB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 04:24:31 +1100 (AEDT)
+Received: from omf07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 64CFB1A048E;
+	Mon, 24 Nov 2025 17:24:22 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf07.hostedemail.com (Postfix) with ESMTPA id 5D8882002D;
+	Mon, 24 Nov 2025 17:24:18 +0000 (UTC)
+Date: Mon, 24 Nov 2025 12:24:59 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, mingo@redhat.com, peterz@infradead.org,
+ juri.lelli@redhat.com, vincent.guittot@linaro.org, tglx@linutronix.de,
+ yury.norov@gmail.com, maddy@linux.ibm.com, srikar@linux.ibm.com,
+ pbonzini@redhat.com, seanjc@google.com, kprateek.nayak@amd.com,
+ vschneid@redhat.com, iii@linux.ibm.com, huschle@linux.ibm.com,
+ dietmar.eggemann@arm.com, christophe.leroy@csgroup.eu
+Subject: Re: [PATCH 16/17] sysfs: Provide write method for paravirt
+Message-ID: <20251124122459.00e86457@gandalf.local.home>
+In-Reply-To: <2025112409-rockstar-shortcake-1892@gregkh>
 References: <20251119124449.1149616-1-sshegde@linux.ibm.com>
+	<20251119124449.1149616-17-sshegde@linux.ibm.com>
+	<2025112409-rockstar-shortcake-1892@gregkh>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,32 +60,36 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251119124449.1149616-1-sshegde@linux.ibm.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5D8882002D
+X-Stat-Signature: msosemjfs5izcaa5syr1cacuy4zecxcu
+X-Spam-Status: No, score=0.0 required=3.0 tests=RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
+X-Rspamd-Server: rspamout02
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+PtbfSO8No2VxBfFE9Az28BBPK4aJGwvg=
+X-HE-Tag: 1764005058-12337
+X-HE-Meta: U2FsdGVkX1/ktXBgKb1HCNd24ocoggejqqOx9ujxbOHAQF/f9Z0mT3GUZZ138NLLZq9eTI1SFSAZUBTvfUIxgCIbQsWqpBgB0pjBdtke0LVt8B3iJDU/W/WvtVXgNPlOqQOXSMI9RDic3YXXGNNdZi9BQKzUKw4Wq5qZ7IJPbY5eBzlrrggJIv7wAyq0N+ekZbLQVGHaJ70hO+oJ+YgRaHx+fbbscKlUSe1X/0I0pRZx3znPySvUX4xcR16RbBr/R7pF5+IfoiALblkr79ii6Pz3zcniWsLslhDReJ8pNTcDk1HIc85agKtqPnylbkge75zmoaUrtA21EKGlSTK9EPp0+Ef7q+WkSORX6pUbawg+kM9xnKFp15261j5BK55l
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Nov 19, 2025 at 06:14:32PM +0530, Shrikanth Hegde wrote:
-> Detailed problem statement and some of the implementation choices were 
-> discussed earlier[1].
-> 
-> [1]: https://lore.kernel.org/all/20250910174210.1969750-1-sshegde@linux.ibm.com/
-> 
-> This is likely the version which would be used for LPC2025 discussion on
-> this topic. Feel free to provide your suggestion and hoping for a solution
-> that works for different architectures and it's use cases.
-> 
-> All the existing alternatives such as cpu hotplug, creating isolated
-> partitions etc break the user affinity. Since number of CPUs to use change
-> depending on the steal time, it is not driven by User. Hence it would be
-> wrong to break the affinity. This series allows if the task is pinned
-> only paravirt CPUs, it will continue running there.
-> 
-> Changes compared v3[1]:
+On Mon, 24 Nov 2025 18:04:48 +0100
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-There is no "v" for this series :(
+> As you added this to this series, if it is picked up, it WILL be merged
+> :(
+> 
+> Please try a "Nacked-by:" or something else to keep patches from being
+> applied.  Or better yet, send them as a totally separate series.
+
+Agreed. But when I do this to a patch in a series, I usually add in subject:
+
+  [PATCH 16/17][DO NOT APPLY!!!] sysfs: Provide write method for paravirt
+
+in order to make it stand out, and not a footnote after the tags.
+
+-- Steve
+
 
 
