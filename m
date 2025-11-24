@@ -1,66 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14465-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14466-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A366FC8240E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 20:15:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1953C8252F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 20:45:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dFbBz3Yb9z2xS2;
-	Tue, 25 Nov 2025 06:15:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dFbrm66C9z2xS2;
+	Tue, 25 Nov 2025 06:45:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764011755;
-	cv=none; b=E/oX8UPHXwfAB1ZZwEKIdlJ+CxN4PPmNGnJhG4sC4cKqaMOwMX266gFuN2iJ5dmldhYCM2PHnoU6SfwUt+lWQ58+XuFcbV7qUMRKCu+qvAJqhxMhp3w3pO/LStBUz0iQ2e1eXr5ER2SoNTIwyOyBt3t+4CYgXZiSpdqTS7DBnieO/RVTMWfbMe4gur4NSvJOBag5sU+UrcL2Sy3FDvEj0+/OniLibUeKEYB3ouK1wkUkEYf/VPqFXVhDeHwtU2Ipru0xnkXe6GKNINv+PQzpSC2ysw2W9RP/ZW75t6FrxHHzsahNpEK2bjHSUcgL8wgtee+k+8DdOnSVoVcjPIiO0A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764013512;
+	cv=none; b=PYAvdu0jOFpNqXJt0gXfuKkmUNaekjrt4BWWFREetDdLA+HhGhuHfOeO4weQkIUr+r/joKMXVUq8SAA2ESL5bmAL4pKtYccfdxhR2d0k1bziC0KQciyAKlggtwwmcXPQAUcAx61bz4/AnlWlJZc3e0LN+2yaallL38iGww1JdYebx/3hmJPHNPtG2MIM1lriz1W2U1omTnp9DuzVm6p0RiifxgdwNPRY1vgBUgYrRllqiuhpI6LWA6+3N2lPRsRfTSXVYrCeaFRiOeA/WGgdpm0pE9rc45oM2J4il5zsx5GnqdkWjClMqnK1vYyPfVd8TGmU2DhOeZUTYOAQp7D9bw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764011755; c=relaxed/relaxed;
-	bh=tFNtQO4MJezSq1Da7LRhRWoB6TraF4nvtRNwdskfv0c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ArUyhFjv71LleokNtXZAnNRdnU3ZH5arRQswqVE5wFnN3Lmu/XVu/qy+4imErK+irXznWIV53VIYZ4TSSEPX2cNPC5ZD4Y9V1/+8n2qCgQJhYLzlBEm3apQEXFnRRKiKcVEbFkyE876GZXg6ecSUBvnAI4dcfiyWev8ILaitxrZPqJ2amP7gEHKcFq6d9GdGN8TS/ORQ27jqXx/bh7Ef7PwsGZ0fz1sTiCk4oSqqRhDvCOD3ia6Ysx5K6gkxmG0G4PcIiD1DWX+HF67R6D3rriZg0SCm953NogCxci7rHlJsxbMwtY89NAsRR9f3O4A82gjxkTAe4z+8RRWsX8ua6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=AN/txhTo; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=BUHhE29l; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1764013512; c=relaxed/relaxed;
+	bh=Z9NRbvbrhjIdo5mzli/NoWW87vzoGkyvyjPgyspuECw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Ke/wiCmYHXg4quG0vimaZIiLvmor2eXHaYiYAyiLkSPcpgc3JGwDQZgaNdE4pTQUGFnafIfBGHpi0k+7PgXz/Gd7teYjbzwuE0kKDCYwETPNNGLrGEwNTTyG2FN1nOxE2IfRF5qGylu9PdQ2McYeyRUmrjYn0z6Rf73fxJjxkGn/5vS7TCEte9GP0smuB6ThdxtId4I3SBL/XYc3okzcTOK1NbBUXvcrOGOcjtYXYMIbYHgFXNdSYi5eUTPbJfswzbivmGiY4KbZyL5yvRtifzU6EyqIwzzSeSSwsyfkzGEqlV2Y12LrWqL4iy7GMXNYMYvTSQmLYxAkEg2u/s+zdg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ONZ8dMDr; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=AN/txhTo;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=BUHhE29l;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ONZ8dMDr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFbBx4fWPz2xQD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 06:15:53 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1764011748;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tFNtQO4MJezSq1Da7LRhRWoB6TraF4nvtRNwdskfv0c=;
-	b=AN/txhToM6VlnwEgn7HGPRictojfH48IrjrQmrfx8FKoMe1uAPwHyw9DVXi9+p/zBA4OL1
-	GjcGXbDQxc+wtE/nTiHWgzAahjG9JmRcY0zwQElGZAl6ao3WjA7xgG2wVgn/7TLVtKFFXM
-	Egk201XAqXpEjCivCkaQwqEa7CoVeKRb2tsuV69zjlykGLOxSNiNuBxLKls83K6AkzIjOr
-	Xj1rANFRnN5K0wfExrcRYzdFEsdabGo5kr8ZsKOBr+hlGcoRlFDS8bDR8qe4mnCB0gBXwY
-	rprUBY1b5Y9EN3OcSAOlXsOkQ+KyM4nInQI/fuAKv58k7u7XNWYCqYipSTn8uA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1764011748;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tFNtQO4MJezSq1Da7LRhRWoB6TraF4nvtRNwdskfv0c=;
-	b=BUHhE29l2/cUl/S02UwFWAk8sb5W32l+hFpPVkHbR/s4lrnRqcOvRh24aTl+iTO7o9hQ8C
-	7rWaGHg6/XZcxeCA==
-To: kernel test robot <lkp@intel.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org, Ingo Molnar
- <mingo@kernel.org>, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linuxppc-dev@lists.ozlabs.org, Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [tip:core/rseq 25/39] include/linux/rseq_entry.h:132:3: error:
- invalid operand for instruction
-In-Reply-To: <202511250134.i0Jm8d7I-lkp@intel.com>
-References: <202511250134.i0Jm8d7I-lkp@intel.com>
-Date: Mon, 24 Nov 2025 20:15:46 +0100
-Message-ID: <874iqji6n1.ffs@tglx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFbrm0b89z2xQq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 06:45:12 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D4816431CE;
+	Mon, 24 Nov 2025 19:45:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAD7C4CEF1;
+	Mon, 24 Nov 2025 19:45:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764013509;
+	bh=f2y7eo38yC/1lx5V3MylKrP9n9Jsl8oI8vUn8UUJJws=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=ONZ8dMDrCtiEw2jlS6Esh1rqesyQ4eLZhTgzgpEK/KAdEXQBJCtXoryYkM2PCLT6C
+	 C5HIWe3AzoJgSq74hbItQsOEd0rHLSeutU4NQ13PZQ5kJojo/WJcdaw+4HCfcrZRV0
+	 cpl7yjo4XUxoCYwXf/LR9qpnbzObLUUGo6QpB6zVFC/b+4HnNCS67FOW8rVvM8xy04
+	 k1QjW4asfrq+4nPyvlz4hZPG+ELT7zA7ro7fwC6jYWMGOx97z9kJ0hcDvOV3xsjtMB
+	 nazKz6X6sLUpSMbQxkEwf+LPPMuPjzosVTQqbY5KFS8eAXRRtYUYQdyBwKMzKkwp99
+	 FO0NFvzn2l3lA==
+Message-ID: <c40ea685-39c2-41a1-95d7-435d4dfcc58e@kernel.org>
+Date: Mon, 24 Nov 2025 20:45:03 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,56 +58,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Downgrade ocxl to Odd Fixes
+To: Andrew Donnellan <ajd@linux.ibm.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Christophe Lombard <clombard@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20251120-ocxl-odd-fixes-v1-1-8b766f114621@linux.ibm.com>
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Content-Language: fr-FR
+In-Reply-To: <20251120-ocxl-odd-fixes-v1-1-8b766f114621@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Nov 25 2025 at 01:37, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git core/rseq
-> head:   21782b3a5cd40892cb2995aa1ec3e74dd1112f1d
-> commit: abc850e7616c91ebaa3f5ba3617ab0a104d45039 [25/39] rseq: Provide and use rseq_update_user_cs()
-> config: powerpc-randconfig-002-20251124 (https://download.01.org/0day-ci/archive/20251125/202511250134.i0Jm8d7I-lkp@intel.com/config)
-> compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251125/202511250134.i0Jm8d7I-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202511250134.i0Jm8d7I-lkp@intel.com/
->
-> All errors (new ones prefixed by >>):
->
->    In file included from kernel/rseq.c:75:
->>> include/linux/rseq_entry.h:132:3: error: invalid operand for instruction
->                    unsafe_get_user(start_ip, &ucs->start_ip, efault);
->                    ^
->    include/linux/uaccess.h:606:2: note: expanded from macro 'unsafe_get_user'
->            arch_unsafe_get_user(x, ptr, local_label);      \
->            ^
->    arch/powerpc/include/asm/uaccess.h:458:2: note: expanded from macro 'arch_unsafe_get_user'
->            __get_user_size_goto(__gu_val, __gu_addr, sizeof(*(p)), e); \
->            ^
->    arch/powerpc/include/asm/uaccess.h:282:2: note: expanded from macro '__get_user_size_goto'
->            __get_user_size_allowed(x, ptr, size, __gus_retval);    \
->            ^
->    arch/powerpc/include/asm/uaccess.h:273:10: note: expanded from macro '__get_user_size_allowed'
->            case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;  \
->                    ^
->    arch/powerpc/include/asm/uaccess.h:256:4: note: expanded from macro '__get_user_asm2'
->                    "       li %1+1,0\n"                    \
->                     ^
->    <inline asm>:7:5: note: instantiated into assembly here
->            li 31+1,0
+Hi,
 
-Definitely not a problem of tip core/rseq. It just ends up in
-__get_user_asm2() and then the compiler gets unhappy about the PowerPC
-inline assembly for whatever reason.
+Le 20/11/2025 à 04:16, Andrew Donnellan a écrit :
+> There hasn't been any substantive work on the ocxl driver since 2020, and
+> all patches since then have been minor fixes or part of treewide or
+> arch-wide changes. Frederic and I are no longer spending much time on this
+> driver.
+> 
+> Downgrade the status of the ocxl driver to Odd Fixes, to reflect the
+> current reality.
 
-Thanks,
+There one patch in patchwork at the time being, will you handle it ?
 
-        tglx
- 
+"ocxl: Fix race leading to use-after-free in file operations"
+
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20251024010228.1667904-1-danisjiang@gmail.com/
+
+Christophe
+
+> 
+> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> ---
+>   MAINTAINERS | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ea8194ac8970d0e34421670b663347b4678a34de..3d558554f074916364b013855dc0a82cfb6e73f2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18755,7 +18755,7 @@ OCXL (Open Coherent Accelerator Processor Interface OpenCAPI) DRIVER
+>   M:	Frederic Barrat <fbarrat@linux.ibm.com>
+>   M:	Andrew Donnellan <ajd@linux.ibm.com>
+>   L:	linuxppc-dev@lists.ozlabs.org
+> -S:	Supported
+> +S:	Odd Fixes
+>   F:	Documentation/userspace-api/accelerators/ocxl.rst
+>   F:	arch/powerpc/include/asm/pnv-ocxl.h
+>   F:	arch/powerpc/platforms/powernv/ocxl.c
+> 
+> ---
+> base-commit: 23cb64fb76257309e396ea4cec8396d4a1dbae68
+> change-id: 20251120-ocxl-odd-fixes-6a87a68dd270
+> 
+> 
+> --
+> Andrew Donnellan    OzLabs, ADL Canberra
+> ajd@linux.ibm.com   IBM Australia Limited
+> 
+> 
 
 
