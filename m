@@ -1,52 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-14462-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14463-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827AEC81E18
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 18:24:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C746C82173
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 19:23:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dFXkW2334z2xQs;
-	Tue, 25 Nov 2025 04:24:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dFZ2q2RGKz2xS2;
+	Tue, 25 Nov 2025 05:23:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=216.40.44.16
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764005075;
-	cv=none; b=bKOuFzWluKld7JTgwZVCGWKjqeHcEnckNRkm0x+ebe5mmq77x/2ZLVZkQ8F7WLMdPwejP/jpiRU/dJ9e7ZVcEQbgL0WNMQttQBMNTHh7RJLvVrxuH1m5TR8U2xEOA/TrIi74Dki2IXUQmKihYEyWXCCG2A0issPP3wMhdKtHG5kKVdL4N0YoqCgV45Au1tX53o6LWw1qOGOqeFSQ+SmQKBaLlrhIFR+4wrGrtT96iyCCLqjxpUrBtkkRlCXxzWuWH16zqpgJJg3HiLtCHmBX9jMVjguVOq55lVv2XQjIcHrse6n1vVmlHRd4iDqqJpj5U0XMx44TN+OTxGGXni/HdQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764008627;
+	cv=none; b=i6gbbGiJEDRaCMXXssTKLNWLk0dyb3QSOK+B7NHDeA6afDv7nHHNnmFRKPvDtBmMjWYICT6n+RezyYoAS0E2aTFMxIqzcm1BKjD3vQBHanbpi3yINE5gif5P04FRt/z5EtSntUntzh8+ZXGT0jHnPig4ZNhXYHeR5wGnBhavE+g7aKABf1IZvjqSlb0QOCtYgIbMi7a6LMYZIsab4hvwgnClGQXXi3O4pkhBLj5ItAuqQJAWU04hYiI/NOotOCMwCFYRNd4n9uEJQ9ZV4J+DWXG4lXgBPLia4twaCDqt3KGE84w+o2kwnewTMSrCISwGx5OLs308yBMQl0kHMpbs+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764005075; c=relaxed/relaxed;
-	bh=VIFgQ3+VZdLCNpE3XnBxX2jgVCOtYCywCECelacpc3g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NkcolN7tV+UaP7JPvjhadEXTFHCpGdQxgxX3gGE5JaXGZ8YqEzTDY/fKBvo/rMKmwUE51eJrEBXQFFY1d0w9WBlqLSgMQGiiF5N1KKYTJEBa8gD/N6j5a5y+4PiRNxtuOsB0O+GwBrVffvwWI3lV+Smd3UlHDJeMK0/mpbsqSLwxyRGPQJc3AxkT5tUvCMYA9A4lJJN1jH+DgdJYY1AJiBgpnJ7whnyRVNLO0blXbgRkaFtl4Yg/eWYLcDyi0APGpXgCDgjXVhKurk+wnlT1gHnEK0W5vFLHQuwv+zYoANFbrmeka5A4Y4vk/dQKGirUuWrs7B/VOHtkBmSbzxnfRA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=216.40.44.16; helo=relay.hostedemail.com; envelope-from=rostedt@goodmis.org; receiver=lists.ozlabs.org) smtp.mailfrom=goodmis.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=goodmis.org (client-ip=216.40.44.16; helo=relay.hostedemail.com; envelope-from=rostedt@goodmis.org; receiver=lists.ozlabs.org)
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	t=1764008627; c=relaxed/relaxed;
+	bh=SBOz8Rtkn+byh//l52OHao8V7CqSa1HP0EcLiw6p6CE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TH5fwHxXc+24+d42jHvyj3ADuikCkzWNOXwqjeRXeBk2JMTTRS1uwUhj7xqvXGH59/NGS1643tl6mm6RGWhQEmbNtdjwmnY8GMl8iWtvnpBikl2eg8tUstrC5ayd3LmbRq2FYWN9wnSWYzFEHbDwb9k9L0t6jN4/AnPDdAdPRJ2rXRFV2DPDWinEawLLgh5At/cUF9E0E8bxFfkuoVShZZ8O37CdOsck7OgwZ7RKTB2XNIpvzs5aURqERlsUH9BzTmSgoFRmrGDgr0bqbIht0H9NZM1c0i8zd5vZnjJxryPEFuibgHZscogHwiW6uszkXM9z9d93CZeLFEsCxdFJ5g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pcW16dNa; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pcW16dNa;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFXkV0gY6z2xPB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 04:24:31 +1100 (AEDT)
-Received: from omf07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 64CFB1A048E;
-	Mon, 24 Nov 2025 17:24:22 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf07.hostedemail.com (Postfix) with ESMTPA id 5D8882002D;
-	Mon, 24 Nov 2025 17:24:18 +0000 (UTC)
-Date: Mon, 24 Nov 2025 12:24:59 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, mingo@redhat.com, peterz@infradead.org,
- juri.lelli@redhat.com, vincent.guittot@linaro.org, tglx@linutronix.de,
- yury.norov@gmail.com, maddy@linux.ibm.com, srikar@linux.ibm.com,
- pbonzini@redhat.com, seanjc@google.com, kprateek.nayak@amd.com,
- vschneid@redhat.com, iii@linux.ibm.com, huschle@linux.ibm.com,
- dietmar.eggemann@arm.com, christophe.leroy@csgroup.eu
-Subject: Re: [PATCH 16/17] sysfs: Provide write method for paravirt
-Message-ID: <20251124122459.00e86457@gandalf.local.home>
-In-Reply-To: <2025112409-rockstar-shortcake-1892@gregkh>
-References: <20251119124449.1149616-1-sshegde@linux.ibm.com>
-	<20251119124449.1149616-17-sshegde@linux.ibm.com>
-	<2025112409-rockstar-shortcake-1892@gregkh>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFZ2p2DDVz2xQq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 05:23:46 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C7CCE60176
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Nov 2025 18:23:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0A7C19425
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Nov 2025 18:23:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764008623;
+	bh=2FX7rZXKca4g/J0UloZ6GYe00mJx2wV1IHK1gF3C2SY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=pcW16dNaGiF6s5vT4XTzPkGay8JLppf19s8pSJ047d+L+LgCwIxWzqt6YMH7lQcM2
+	 GIWpqDETt2LsAaYcskOBlzfsLmu/C3Hm9y9x1aWsF4oWaIfFEB3A1qzdfIlN5Psimc
+	 S96qMPVKWDujYE+s8zYqlh52jOUE3gaE2oLQnb7O/soEHrcVO5nUm3ohI7NmzoGblr
+	 sNcWD3kJM1nxUSp+d/dybSKfbD6qyoRQcD1LL+NaGpCs2PYIs+/M5Nbv4EDHAsg03V
+	 XlFDgO1CaErFZccsvMXUsF8HE0U0qK2y56k9mUjb4AhAZHBcmOz5n4SdiejBtkMEhs
+	 oVR5hk/OF7EnA==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-3ebd1b07919so1075172fac.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Nov 2025 10:23:43 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUjzHpvmJuQ2sWMg4Bbs7mQPbBAEAtwF4v3nCeautghEP+DtBjqbSvryuxaSaTferRaxppHOLWKVTrs6uA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyrwVgCXLWjQXJYD8bTCRjTXayjmYLm57vjqu9MOaJqE/06Rut0
+	WyJl3/KuZRliM94LDxmiROccZwHnG9eV8USPhMLwEO721WEasdxzJmbUs3EfJua2DdQRomjRIrZ
+	Uv+Jwehata4c9a6WI+mwpfXAeYhREErY=
+X-Google-Smtp-Source: AGHT+IE8USfY1TlzVhoxR68d6+kuU+3Zqd4gD73B+rh8Fu3seOp2TD6CFzvqRKbzETbK58xBjN4YE3uILspEa5NgttU=
+X-Received: by 2002:a05:6808:f8e:b0:450:ca65:ef63 with SMTP id
+ 5614622812f47-45115981923mr3951804b6e.24.1764008622715; Mon, 24 Nov 2025
+ 10:23:42 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,36 +66,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5D8882002D
-X-Stat-Signature: msosemjfs5izcaa5syr1cacuy4zecxcu
-X-Spam-Status: No, score=0.0 required=3.0 tests=RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
-X-Rspamd-Server: rspamout02
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1+PtbfSO8No2VxBfFE9Az28BBPK4aJGwvg=
-X-HE-Tag: 1764005058-12337
-X-HE-Meta: U2FsdGVkX1/ktXBgKb1HCNd24ocoggejqqOx9ujxbOHAQF/f9Z0mT3GUZZ138NLLZq9eTI1SFSAZUBTvfUIxgCIbQsWqpBgB0pjBdtke0LVt8B3iJDU/W/WvtVXgNPlOqQOXSMI9RDic3YXXGNNdZi9BQKzUKw4Wq5qZ7IJPbY5eBzlrrggJIv7wAyq0N+ekZbLQVGHaJ70hO+oJ+YgRaHx+fbbscKlUSe1X/0I0pRZx3znPySvUX4xcR16RbBr/R7pF5+IfoiALblkr79ii6Pz3zcniWsLslhDReJ8pNTcDk1HIc85agKtqPnylbkge75zmoaUrtA21EKGlSTK9EPp0+Ef7q+WkSORX6pUbawg+kM9xnKFp15261j5BK55l
+References: <077596ba70202be0e43fdad3bb9b93d356cbe4ec.1763746079.git.lukas@wunner.de>
+In-Reply-To: <077596ba70202be0e43fdad3bb9b93d356cbe4ec.1763746079.git.lukas@wunner.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 24 Nov 2025 19:23:29 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iSokgFwYLrXd-ZMYO8PABZwvfZBO-p5gKbETTcURp-oQ@mail.gmail.com>
+X-Gm-Features: AWmQ_blp4g0-S_IAjsDssU-F-OFcJ2Imj6eg_vHajqJ-TUa2ZdlupXjD1KnDNJw
+Message-ID: <CAJZ5v0iSokgFwYLrXd-ZMYO8PABZwvfZBO-p5gKbETTcURp-oQ@mail.gmail.com>
+Subject: Re: [PATCH] Documentation: PCI: Amend error recovery doc with
+ pci_save_state() rules
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Farhan Ali <alifm@linux.ibm.com>, 
+	Benjamin Block <bblock@linux.ibm.com>, Niklas Schnelle <schnelle@linux.ibm.com>, 
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org, 
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Linas Vepstas <linasvepstas@gmail.com>, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 24 Nov 2025 18:04:48 +0100
-Greg KH <gregkh@linuxfoundation.org> wrote:
+On Fri, Nov 21, 2025 at 6:31=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrot=
+e:
+>
+> After recovering from a PCI error through reset, affected devices are in
+> D0_uninitialized state and need to be brought into D0_active state by
+> re-initializing their Config Space registers (PCIe r7.0 sec 5.3.1.1).
+>
+> To facilitate that, the PCI core provides pci_restore_state() and
+> pci_save_state() helpers.  Document rules governing their usage.
+>
+> As Bjorn notes, so far no file in "Documentation/ includes anything about
+> the idea of a driver using pci_save_state() to capture the state it wants
+> to restore after an error", even though it is a common pattern in drivers=
+.
+> So that's obviously a gap that should be closed.
+>
+> Reported-by: Bjorn Helgaas <helgaas@kernel.org>
+> Closes: https://lore.kernel.org/r/20251113161556.GA2284238@bhelgaas/
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
 
-> As you added this to this series, if it is picked up, it WILL be merged
-> :(
-> 
-> Please try a "Nacked-by:" or something else to keep patches from being
-> applied.  Or better yet, send them as a totally separate series.
+It looks good to me, so
 
-Agreed. But when I do this to a patch in a series, I usually add in subject:
+Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
 
-  [PATCH 16/17][DO NOT APPLY!!!] sysfs: Provide write method for paravirt
-
-in order to make it stand out, and not a footnote after the tags.
-
--- Steve
-
-
+> ---
+>  Documentation/PCI/pci-error-recovery.rst | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/Documentation/PCI/pci-error-recovery.rst b/Documentation/PCI=
+/pci-error-recovery.rst
+> index 5df481a..43bc4e3 100644
+> --- a/Documentation/PCI/pci-error-recovery.rst
+> +++ b/Documentation/PCI/pci-error-recovery.rst
+> @@ -326,6 +326,21 @@ be recovered, there is nothing more that can be done=
+;  the platform
+>  will typically report a "permanent failure" in such a case.  The
+>  device will be considered "dead" in this case.
+>
+> +Drivers typically need to call pci_restore_state() after reset to
+> +re-initialize the device's config space registers and thereby
+> +bring it from D0\ :sub:`uninitialized` into D0\ :sub:`active` state
+> +(PCIe r7.0 sec 5.3.1.1).  The PCI core invokes pci_save_state()
+> +on enumeration after initializing config space to ensure that a
+> +saved state is available for subsequent error recovery.
+> +Drivers which modify config space on probe may need to invoke
+> +pci_save_state() afterwards to record those changes for later
+> +error recovery.  When going into system suspend, pci_save_state()
+> +is called for every PCI device and that state will be restored
+> +not only on resume, but also on any subsequent error recovery.
+> +In the unlikely event that the saved state recorded on suspend
+> +is unsuitable for error recovery, drivers should call
+> +pci_save_state() on resume.
+> +
+>  Drivers for multi-function cards will need to coordinate among
+>  themselves as to which driver instance will perform any "one-shot"
+>  or global device initialization. For example, the Symbios sym53cxx2
+> --
+> 2.51.0
+>
 
