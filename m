@@ -1,50 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-14457-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14458-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD286C80F66
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 15:18:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F72FC81100
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 15:37:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dFSbY41nsz30Vm;
-	Tue, 25 Nov 2025 01:18:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dFT1S14TJz30Vf;
+	Tue, 25 Nov 2025 01:37:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763993897;
-	cv=none; b=bIjXM3ROYlhuDFldd0/TFdJ4Qbt2MHFtercyz2cV9cgm4CdbID2lhEC/StHvx6lciGjFlo7MxEoQheZ3CMr5UnxgmnIiCdSF9t+grPZfmpnu+5+73SS8u7EQ9c6KB24FKJHjitXnCX5kCOPkfEjHdHOXK8Vg+JTOkfZn/9y/4CncE5ARz/rrNyILl+LmXQCbqLkYt6ABKfvu4d33H6aRAtf3q82Et5l07FX5pDUX2fMZsT5//ZW+H0Mm6U6cn9mRA52QlcWRXTEEhNKoCh6C+SQj5Exo5f2+pl8lcbeuT6swGhpPpOXA4qGaspfMg4TRAiy0tPUFk8LUysOioaPmLw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763995036;
+	cv=none; b=YrrEMuH81FVDz8wlz1VAVH/y5jMEF9Fxan6V+o0GkdQco6JywlQQh/CJUBkFCHeC1mUB8eH0Z6VTYp9UsAkNETLKN5r+YqXr/YdC6zBA76WjpIyQn9UWM00BxzJVhpzPQ6FVLY9Lk81YZRs0af/uZDTwuMOf3Vr/7pSp4DXrhfmaT7sO8Fk6p8CT2W3yIWynzqULYwBh8L7EJhwjgbUskjUaiD3XtKeJPaPpTOmTUFgdDm/bWEZA3PNLrgj9SvebeK5ncm7aTjZUbWostSluLouQsDdlX/w3j3wYB8klmQkVLdBSDpGebiTwSH0YZpDrak9D0FJXzOOtkQd8+vmzvg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763993897; c=relaxed/relaxed;
-	bh=iIVOeLlAMzSzkUicW6ueGU9frfBx2birDEczttcvHHE=;
+	t=1763995036; c=relaxed/relaxed;
+	bh=YJ471huPf3AbbCsoCzRDaoFvk+dd/VjhisJknTSiicY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iJSqwRV53ADFOqgcU/Ih3p+bERnwtCAsYA4lak2pGU9shhhFKvvYe4oda+WPfM1i4jVlzsdTrk9Iwd5g1qvgPYVmE5QYKuvCf2a+1FyfBBD3WFYiFm4y95dNdET87aqgB+wRY3arXA9+KFRAXRv6zdyvTw5tn0ARKkJEd+ewoyUpzE4+Bxt+Gi1vprbHuCrDfxHVDGxwCa+ThfXDY7rx1dpIPiwifJg+x3AbGe42ZAMaenm2b7KDLkgC+QDeq41O9z//IVxxkZ2nhtQvrz/96RuCojOseu/mMlETbsnW+QHmivlUlu8nHCTCbi+Ur5bQL1JuJ07W0yWm28zo7CcB2g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jwY/4Czd; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jwY/4Czd;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFSbX6btzz2yw7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 01:18:16 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1230D44070;
-	Mon, 24 Nov 2025 14:18:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C2BC4CEF1;
-	Mon, 24 Nov 2025 14:18:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763993894;
-	bh=a/6C0mF2h1YMNLw+DoImoO4DgoQDEX8r5mtUDpbvJqc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jwY/4CzdWYY3yql3el0w+panwPS8eTjG7NM5YCf3L3YhAsy5JwYjh7Es6LPXbY89K
-	 UzT72wJIiWxPTXvC40ejjtyyoevI1urf2RHf3q2IQUAdx3ePP+T4aUCoLSuGBW+5t9
-	 AyiGGmZu06pHbDaUwcXprsC2/AOzkRIQV4P+9nx22kKeJxYI/6ZX91Ahx+H6MJ6otw
-	 r5N1JbHHbfGXrrxqIl8Vle4agRInm92WILAzWl7GR78JqldJ+4Ahy0TaoQXDl+8qyU
-	 P/r56C1XkT4MDr3u/nrxsHIOTWIbg9bUxLNNU6+mmG6IXjp3Uu9lJEaRSB+6XeQQRZ
-	 piKMF1RKiWZwg==
-Message-ID: <53a032d0-a394-4040-ba9b-79610ec4b791@kernel.org>
-Date: Mon, 24 Nov 2025 15:18:02 +0100
+	 In-Reply-To:Content-Type; b=YprkUSk/FI88kiRn7tc8J1L+qbv8FvqP4p6PHc5kDREMXpKBGg2L3YkpBwfxWcREL8/dUfDrqEu6Zo2SCXxu3qFzuZ8kl2fw2C2xMaaBWcO28lCtkp1E6UHI1aX7UwOogtfoMNDTVT3vroSnJvKzyG13GopVA9BVLVxvl79p5E8n3T20jJlyg+h72W6dyhHIM1NKBIgaKlKai1m8R/8NS6CNdCCBQ6PDzj1hsIt8WD018D3TCq1hQI2NHDnf5KD1hK4Tszy912tsfusH4cQSnyTTP7+J4VeqePUqNTFyaTXAa4GvGeTJ68WwowrOJeg3cjb4zs/d5PHoFeI5KUoCTg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dFT1Q6mDpz302l
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 01:37:12 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 80775497;
+	Mon, 24 Nov 2025 06:36:32 -0800 (PST)
+Received: from [10.57.88.238] (unknown [10.57.88.238])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 94CBA3F6A8;
+	Mon, 24 Nov 2025 06:36:34 -0800 (PST)
+Message-ID: <b52726c7-ea9c-4743-a68d-3eafce4e5c61@arm.com>
+Date: Mon, 24 Nov 2025 14:36:32 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,8 +44,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 12/12] x86/xen: use lazy_mmu_state when
- context-switching
+Subject: Re: [PATCH v4 06/12] mm: introduce generic lazy_mmu helpers
+Content-Language: en-GB
 To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -69,54 +54,79 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
  Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
+ <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
  Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
  Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
  linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
  xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251124132228.622678-1-kevin.brodsky@arm.com>
- <20251124132228.622678-13-kevin.brodsky@arm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251124132228.622678-13-kevin.brodsky@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-7-kevin.brodsky@arm.com>
+ <71418b31-aedb-4600-9558-842515dd6c44@arm.com>
+ <b44825dd-aef9-4d3e-91fd-a44122264c23@arm.com>
+ <f36ebc15-c724-487a-8e4a-9ca95edc544a@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <f36ebc15-c724-487a-8e4a-9ca95edc544a@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 11/24/25 14:22, Kevin Brodsky wrote:
-> We currently set a TIF flag when scheduling out a task that is in
-> lazy MMU mode, in order to restore it when the task is scheduled
-> again.
+On 24/11/2025 12:47, Kevin Brodsky wrote:
+> On 10/11/2025 11:45, Kevin Brodsky wrote:
+>>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>>>> index b8d37eb037fc..d9c8e94f140f 100644
+>>>> --- a/arch/arm64/mm/mmu.c
+>>>> +++ b/arch/arm64/mm/mmu.c
+>>>> @@ -731,7 +731,7 @@ int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
+>>>>  		return -EINVAL;
+>>>>  
+>>>>  	mutex_lock(&pgtable_split_lock);
+>>>> -	arch_enter_lazy_mmu_mode();
+>>>> +	lazy_mmu_mode_enable();
+>>>>  
+>>>>  	/*
+>>>>  	 * The split_kernel_leaf_mapping_locked() may sleep, it is not a
+>>> This is a bit unfortunate, IMHO. The rest of this comment explains that although
+>>> you're not supposed to sleep inside lazy mmu mode, it's fine for arm64's
+>>> implementation. But we are no longer calling arm64's implementation; we are
+>>> calling a generic function, which does who knows what.
+>>>
+>>> I think it all still works, but we are no longer containing our assumptions in
+>>> arm64 code. We are relying on implementation details of generic code.
+>> I see your point. The change itself is still correct (and required
+>> considering patch 8), but maybe the documentation of the generic
+>> interface should be clarified to guarantee that the generic layer can
+>> itself cope with sleeping - without any guarantee regarding the
+>> behaviour of arch_*_lazy_mmu_mode.
 > 
-> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
-> mode in task_struct::lazy_mmu_state. We can therefore check that
-> state when switching to the new task, instead of using a separate
-> TIF flag.
+> Re-reading the existing comment in <linux/pgtable.h>, I think it already
+> makes clear that sleeping is not forbidden by design:
 > 
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
+>>  * In the general case, no lock is guaranteed to be held between entry
+>> and exit
+>>  * of the lazy mode. So the implementation must assume preemption may
+>> be enabled
+>>  * and cpu migration is possible; it must take steps to be robust
+>> against this.
+> 
+> The arch implementation may disable preemption, but arm64 code can rely
+> on the arm64 implementation allowing sleeping.
 
-Nothing jumped at me, hoping for another pair of eyes from the XEN folks
+Yeah ok, I buy that!
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> 
+> - Kevin
+> 
 
--- 
-Cheers
-
-David
 
