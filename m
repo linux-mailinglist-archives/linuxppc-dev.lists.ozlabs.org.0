@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14454-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14455-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD37C80EC9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 15:10:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23AA1C80EEA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Nov 2025 15:11:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dFSQ42CN8z2xQD;
-	Tue, 25 Nov 2025 01:10:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dFSRF19fsz2xQs;
+	Tue, 25 Nov 2025 01:11:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763993404;
-	cv=none; b=giC97a83Sv7k5cWsK5fIRsH4YSjzVDuW/p6ufNTKF1gd+o20eNzcQxl+vymA1Sfe0mbDBVyQpT8rV/XYv5+ksUcyimC4S4+GFIPOJ2K7BC+kmxXwwOU1WaI+9p5DSaguTKoLXje2t2W/81mBmkAd1Ux9flfvqzbWfQj827bkfq6hRY3v4v3Piyu071+e9AX9Vt9812xS23VY/DKaqBvorBzVB0EvY+OKBDBWiLweCBxCMOjJUfAgQ1SWEP8XVTwUA7C2PjWQYURnp6Vggb97Fj/qOeMOhW41AuMoUdCCTUzXYB8GdlNUcEgfDaer7+es1QsRPsiWCuFbBz2frcfczA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1763993465;
+	cv=none; b=QFAR2spvKelB2JhlV7sXoFg0QUvKrGfv/4gI1V0Ro2FaCQz5KVhzky0vUk05EgntmDmXQpA0iyh1fj7/MHgO8PKYA4OnBXra2mG7pEaewGrk44vyqyCX7kdZgKxFeAVIQ7gJ+WTMCXmLfGjlkABPb0Gs19BrAp9gcid5Knw62pFR2mk7phrXNXygSn9qxHwW9FgCcNyLGDF5+eUQEwKCdLy6JBkbYhdG8T+eBnRq91WVU+iWVJsHqijgEts3fRzytiI0Xzam1p1qEOnCyzdvcTPhg13b+8Gly9sLlUH+W0jNZFmWtyOkTAXqm4cGRIMyOxqsSiTvKsxDoJ+BPVpK/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1763993404; c=relaxed/relaxed;
-	bh=8G5fnunS4XtYzsuHwEAt2+VrWQNWQA1EjOphxoaxaK0=;
+	t=1763993465; c=relaxed/relaxed;
+	bh=jSkF3ZRD0txUuUowRzgmTMI1fvINIcu6kZL0IrYQPWs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IKv5tpuni7diXAeFDDZHs4xyz8B9oSgbHqmUlyHWYQJKBzg0UEgUTn7LXKEEYk6ZZUfJ/0jjzvkTOUn1g1EHMSzKx8gtdsbu10bYW1hVHXPkEG1qbzLjhglmf6rx7pzCNtyFR/i7e2QZToKMudr5gu+PjT6CpV9ZSCEUOT9Qslkrglox2RLuLyQHHjNCbVzgmwGTgE5SegZ2NUoD7PkmXm/eXwkMrFmeeJN4j2K9bFL4vxmkUCXPmEI5RNb3UBV+T6QCZt0Mv2VJTw6c2YvfSQe2SmkwPpq8x2e1WQmMaTuG2xIR7BI2Bs1t8zPhGT0aoohpEU7a9OgfxCIWFMDf1A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fn+KCCRj; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=ePPBXsY971TtZJTcRkEJIU+ajD2hUWFtlqj5MVEJ1TenBbRAv4sULVvFuI0lhlJyw5UjG5mv4eX8f7v7R8jEYDRdSUB+UcdSG52hFF85kf+w78y4xPHk3Lwk+MD4PU3xqBgHpAnbCTMNP2fhkD7t6kffLPTmxiELRA4C7mW3Gc8DHqKM4hrq72NQvfEOHuSKxE9VG3rTYjs/QCJBAcPcegpaDIXo4dwdbfBuCvkm0x34OSGCQuCqQAQUwCwNUNkNylCI73vihf3w5nmoG+16PwI0gsMC4Jh2nM9NE+C7vxmchTNS20dTxCx4rrKp1lwSZmUCqd03vN6fCKM4AKd1lQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ToE45XUa; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fn+KCCRj;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ToE45XUa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFSQ30L2Yz2xPy
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 01:10:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFSRD3cNqz2xQ6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 01:11:04 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8396A4195B;
-	Mon, 24 Nov 2025 14:09:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1F8C116C6;
-	Mon, 24 Nov 2025 14:09:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C0786601DF;
+	Mon, 24 Nov 2025 14:11:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6DAC4CEF1;
+	Mon, 24 Nov 2025 14:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763993399;
-	bh=TWEkufK+gYKT1sSMXcHmAUd4hn/Rf+NblbWiRzqjYXE=;
+	s=k20201202; t=1763993461;
+	bh=9kXuey4j1iyNfngrjmnOHDtQji8gClrywMZaIofSoSs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Fn+KCCRjb50rns8DRSbP5eHwsxgoY/Kml4PeEgcCJeD26M9vYXui7/aT7inSMbIxf
-	 YzKx3Oxi12/SHccP4zqiAZBpkawAjBIrdIq6ojtNJ3MqzZIZs/6LWUcWZiW8b0FuJE
-	 Ml+dVSCPPiz4nA0kHauPvd8caafMtHO4bKeEncACk6GoCcx0j21HPCEQRfm6P0giCM
-	 Ly/blKcvqn2emQo6jii0GCNdl30wtJ7h2LuC/4FBTV86yMpoaQeq2/Vb5EVoAwqxwk
-	 Ook4PMLPReVXf+dc0dSemeN/A7u7VMwVtjwjGYoNs7r8xWNS2kh156oqM6wjxrgdtJ
-	 4TjfjsfNIahLg==
-Message-ID: <886f8f49-f113-445f-8f1e-3cdaabf7b38d@kernel.org>
-Date: Mon, 24 Nov 2025 15:09:48 +0100
+	b=ToE45XUaNEKKgD2WXInctkwlv3+HBQ1TWbbC/9sEmPQZUN1wYevCeBRVBAV0rozFL
+	 I7wUvi5bxWcACKzxrEjR9VQMVUyaT8qQ5kFVhrVVlB89kgJUI6qWdrkHnaxN18F/OQ
+	 mF0tJs2Sp8oYTUiLgE5alNCnrBVLa6AKCyHt+H//u0eb1VNFNAFg7+La3UkcsIK7YK
+	 bQXVkMezHzr95Qf3Ef+lnUif4ZyWCABBRpSmPiFrnUGowf1Rr2Xo8pRrZ38LeAit4M
+	 dcuirEqLwFTeqTAFHiWTbkf/ytXN0PIulzMPv+dkinYGeRr/hIAHNbLek15LEi+dsr
+	 2rHEM1RGj8ISg==
+Message-ID: <ef07b0f4-1f77-4c6b-9c67-8228632b1fec@kernel.org>
+Date: Mon, 24 Nov 2025 15:10:49 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,7 +59,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 08/12] mm: enable lazy_mmu sections to nest
+Subject: Re: [PATCH v5 09/12] arm64: mm: replace TIF_LAZY_MMU with
+ in_lazy_mmu_mode()
 To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -86,76 +87,31 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
  xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251124132228.622678-1-kevin.brodsky@arm.com>
- <20251124132228.622678-9-kevin.brodsky@arm.com>
+ <20251124132228.622678-10-kevin.brodsky@arm.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251124132228.622678-9-kevin.brodsky@arm.com>
+In-Reply-To: <20251124132228.622678-10-kevin.brodsky@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 11/24/25 14:22, Kevin Brodsky wrote:
-> Despite recent efforts to prevent lazy_mmu sections from nesting, it
-> remains difficult to ensure that it never occurs - and in fact it
-> does occur on arm64 in certain situations (CONFIG_DEBUG_PAGEALLOC).
-> Commit 1ef3095b1405 ("arm64/mm: Permit lazy_mmu_mode to be nested")
-> made nesting tolerable on arm64, but without truly supporting it:
-> the inner call to leave() disables the batching optimisation before
-> the outer section ends.
+> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
+> mode. As a result we no longer need a TIF flag for that purpose -
+> let's use the new in_lazy_mmu_mode() helper instead.
 > 
-> This patch actually enables lazy_mmu sections to nest by tracking
-> the nesting level in task_struct, in a similar fashion to e.g.
-> pagefault_{enable,disable}(). This is fully handled by the generic
-> lazy_mmu helpers that were recently introduced.
-> 
-> lazy_mmu sections were not initially intended to nest, so we need to
-> clarify the semantics w.r.t. the arch_*_lazy_mmu_mode() callbacks.
-> This patch takes the following approach:
-> 
-> * The outermost calls to lazy_mmu_mode_{enable,disable}() trigger
->    calls to arch_{enter,leave}_lazy_mmu_mode() - this is unchanged.
-> 
-> * Nested calls to lazy_mmu_mode_{enable,disable}() are not forwarded
->    to the arch via arch_{enter,leave} - lazy MMU remains enabled so
->    the assumption is that these callbacks are not relevant. However,
->    existing code may rely on a call to disable() to flush any batched
->    state, regardless of nesting. arch_flush_lazy_mmu_mode() is
->    therefore called in that situation.
-> 
-> A separate interface was recently introduced to temporarily pause
-> the lazy MMU mode: lazy_mmu_mode_{pause,resume}(). pause() fully
-> exits the mode *regardless of the nesting level*, and resume()
-> restores the mode at the same nesting level.
-> 
-> pause()/resume() are themselves allowed to nest, so we actually
-> store two nesting levels in task_struct: enable_count and
-> pause_count. A new helper in_lazy_mmu_mode() is introduced to
-> determine whether we are currently in lazy MMU mode; this will be
-> used in subsequent patches to replace the various ways arch's
-> currently track whether the mode is enabled.
-> 
-> In summary (enable/pause represent the values *after* the call):
-> 
-> lazy_mmu_mode_enable()		-> arch_enter()	    enable=1 pause=0
->      lazy_mmu_mode_enable()	-> ø		    enable=2 pause=0
-> 	lazy_mmu_mode_pause()	-> arch_leave()     enable=2 pause=1
-> 	lazy_mmu_mode_resume()	-> arch_enter()     enable=2 pause=0
->      lazy_mmu_mode_disable()	-> arch_flush()     enable=1 pause=0
-> lazy_mmu_mode_disable()		-> arch_leave()     enable=0 pause=0
-> 
-> Note: in_lazy_mmu_mode() is added to <linux/sched.h> to allow arch
-> headers included by <linux/pgtable.h> to use it.
+> The explicit check for in_interrupt() is no longer necessary either
+> as in_lazy_mmu_mode() always returns false in interrupt context.
 > 
 > Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
 
-Nothing jumped at me, so
+Nothing jumped at me
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-
-Hoping we can get some more eyes to have a look.
 
 -- 
 Cheers
