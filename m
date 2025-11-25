@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14476-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14477-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925E3C83BF1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Nov 2025 08:38:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A9CC83C85
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Nov 2025 08:49:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dFvhC6BFDz2yw7;
-	Tue, 25 Nov 2025 18:38:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dFvvx5bQZz2yw7;
+	Tue, 25 Nov 2025 18:49:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764056331;
-	cv=none; b=lLSYURL4FZUBv2dcod7RIUBHd4xJPdUo6PA04s5GqdT2psEvTsAXhRYwd1lkuEeEM0ud75KK4ELnClAJF97ODj9J0UgRHlTghVWzj981xAUNeWZT5tbTY7Shq2ca5zGP22fQKZ8GkBUMcLLgUQFFS2TnraoBuBbErH0CFJXBkOl3QVnjcgl/I51G1g5TmqsluyetbF3UI7qyAo/T2jM0vYer5QMP1vZ+e0+uXd6py/M8T13wNlXmRE5YMkbM+x0cqsLxYIvHDHmuWGNt2iiJ2ZW1E55rlPbX1rSrlPkgAIAP9pTWadodcK3ZzPR8crmI9jO1gxStsCc1d900KpZX1Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764056941;
+	cv=none; b=D0QR8s2dE1W6BVtKcZHClweDjp9M9L0hEp1FjRP+8skttm79WKzL9nK0cQJMyYdJhk/JkmkeKfYozWJn2zLfusYlSIp2kNMMd2t6TEpV9eOodn3RGwu8qALGNpg3EGqQqf4D3h4ksupYXYfoFp872z/TvA4USCmLzyZte+SU0rBlyDxlc8JZ/6DRanGMDzBaTbMMoMp70chRNLlgCWTr6XCvp3aXByJ4g2AMTXbb1MrKAuiV8Z9O8H/3AIvI+/JnMiDty9h8z1fPwB5Yiay0NdZmd++MiMjM+56KZszJU7ZfQ13aEmQzKd6Xzi+dLAZ1+6hP1PHXJXPyucncCukqgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764056331; c=relaxed/relaxed;
-	bh=p4pBkH0YWfKJN5q6WL03Qhp4upTmcflVePx/OPirsio=;
+	t=1764056941; c=relaxed/relaxed;
+	bh=/jTSbPnUaQvnRPr39f/fYnzHU2qvfniFMScHxC0ltAI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iydavXG23XPDsApgzi+IsJ9sFuSMDwV6RbM1IwrhY9zpFMIkH404ApdJric/Oxe/CpOeJDw9XehdmfFmvmX0uf5xgvQjPaXcq0zsJYLDxper3da7YrJg2pVjIyT8P80V3ZuwO0QxMBSmWwdUX3ejY1YULhTrMEDCvDgzr7TXx5dkRRKLD0SQRL+11EsbaUq9AKTk5wKtb7gFM6Ve5jDWWOvTulgSeSFL+iClQlwp9kxSbt0oBP8sE8ACBBo2y+bcdEWqUvDU6HovQRZY5LZEqAWGPUKNpSKtQyLYhq9UoB7jccsdrpru2zyW6O/s4FNm8sws7aDwKFm9OtCq7TOFig==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Gy3jEZ6G; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=IHUBJ8YhwzZyJ4BdMh3AIjgz9EtZ0Uunc8kwDgHOkzivUc7L9Yfqs4I36hvBv+H27riC1HRjtZ6Y4Id2LJRsqfI6uWbKYMs1ZIGV6j5jC/hW42QkI8pdhKomJg2O5nW4AivziJvW+22AYIlTJH+p1BE7TiQLUIv+IfvMqKZe1Q9p+zEomv2LqEmGTpUlm9Nw2LBRlTkB7T3z7qa8hh9qWemJ8MAha2M8yHJDzPMNTVkA7R7WUNJ6rsSj3JOOxXE36il43eHHaT/LbqxZ+jgetnudpO3pCJskQhUAbsg9+GIahZFM5Xz/CUiudSvMuhINEVDqHD1zVxt7ktz85zxAig==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G6JmKqWL; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Gy3jEZ6G;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G6JmKqWL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFvhB44Pbz2yrT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 18:38:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFvvw6snKz2yrT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 18:49:00 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 331C3404E1;
-	Tue, 25 Nov 2025 07:38:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312EAC4CEF1;
-	Tue, 25 Nov 2025 07:38:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EF6C160189;
+	Tue, 25 Nov 2025 07:48:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B5DC116D0;
+	Tue, 25 Nov 2025 07:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764056328;
-	bh=V446la7lPJcpR4QJvyHjkwF5F2AFxzrJ0W2j6ahgRHI=;
+	s=k20201202; t=1764056937;
+	bh=Yp2OICC+dT3r7A+LJziJy0dfokkbEcEq7u2c/S/UchU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gy3jEZ6GGZG2+oYYBtMo5H8l2Cm8oY0NhDnhxHYpLnqN/GwaE2MZUDoHOFFlkhWzC
-	 Vjb/u/SwMq51pdfaE6nrYFGlNXMVRKyLIZkaG9N4xR7G/bewrsB1G5rxfJcYwSH8Lg
-	 ei7pT19+gv400Y1myjfV1y+rkZ9oQyiVa1NbeAUcu8EJqLOoAD7JyVg3eVc3oVHG7Q
-	 KqzHDTVAGWkHHMxYgeeUKABly272YQr3dcIb9uUjenxZSx1rlvVzMLe1TkJhnmUYSs
-	 OU2BD1ETmngg6y2Msqlg42+5bNNSmqkPVR0jhOr3rNWhRYg60S7TF1/vrjFUJMO10K
-	 /qJGrmrPhYCvQ==
-Message-ID: <897c6ba7-e27d-4170-be56-4d0f544bfa42@kernel.org>
-Date: Tue, 25 Nov 2025 08:38:40 +0100
+	b=G6JmKqWLZhFBI9aXUmpm3W4crt2Mkk+UAPHJjw2X20I7G6hICzp3MqkUpkxvHS9fi
+	 WO2v2p4c5QnoeiYUHvzzbU09dkQr790hRjZf3/DYHgaaSHuwMLMmcf3cjraZkArKgf
+	 46/2ZNFX4wvXeCTqEwAJ5yf0JqxMe6iEW7GDEjP+6LnDkOEjQ1Qk+ayi/e9x5LnPBy
+	 uODOmI9jh0yabgHyffiC4TECqPl+lGoPe0mQt+6f7d/h80ncMPoONHDI8A57B9AYqK
+	 sg566nRAq/FeMu+Hw4Yvo+YU0F80FzEIL0CU7TvwNqVfM2dOmFJ6HdlyUToEukL9Ko
+	 wVqqbrQE1Ua8w==
+Message-ID: <0f53d5b8-dbb7-4265-940a-2f2be3d0154d@kernel.org>
+Date: Tue, 25 Nov 2025 08:48:48 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,18 +59,23 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [tip:core/rseq 25/39] include/linux/rseq_entry.h:132:3: error:
- invalid operand for instruction
-To: Thomas Gleixner <tglx@linutronix.de>, kernel test robot <lkp@intel.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org, Ingo Molnar
- <mingo@kernel.org>, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linuxppc-dev@lists.ozlabs.org, Nathan Chancellor <nathan@kernel.org>
-References: <202511250134.i0Jm8d7I-lkp@intel.com> <874iqji6n1.ffs@tglx>
+Subject: Re: [PATCH 00/17] Paravirt CPUs and push task for less vCPU
+ preemption
+To: Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Greg KH <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, tglx@linutronix.de, yury.norov@gmail.com,
+ maddy@linux.ibm.com, srikar@linux.ibm.com, pbonzini@redhat.com,
+ seanjc@google.com, kprateek.nayak@amd.com, vschneid@redhat.com,
+ iii@linux.ibm.com, huschle@linux.ibm.com, rostedt@goodmis.org,
+ dietmar.eggemann@arm.com
+References: <20251119124449.1149616-1-sshegde@linux.ibm.com>
+ <2025112454-phonics-crept-5b98@gregkh>
+ <4b83b443-baa8-4218-8412-ddfb0dda8ac3@linux.ibm.com>
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
 Content-Language: fr-FR
-In-Reply-To: <874iqji6n1.ffs@tglx>
+In-Reply-To: <4b83b443-baa8-4218-8412-ddfb0dda8ac3@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -78,70 +83,51 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hi Shrikanth,
 
-
-Le 24/11/2025 à 20:15, Thomas Gleixner a écrit :
-> On Tue, Nov 25 2025 at 01:37, kernel test robot wrote:
->> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git core/rseq
->> head:   21782b3a5cd40892cb2995aa1ec3e74dd1112f1d
->> commit: abc850e7616c91ebaa3f5ba3617ab0a104d45039 [25/39] rseq: Provide and use rseq_update_user_cs()
->> config: powerpc-randconfig-002-20251124 (https://download.01.org/0day-ci/archive/20251125/202511250134.i0Jm8d7I-lkp@intel.com/config)
->> compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
->> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251125/202511250134.i0Jm8d7I-lkp@intel.com/reproduce)
->>
->> If you fix the issue in a separate patch/commit (i.e. not just a new version of
->> the same patch/commit), kindly add following tags
->> | Reported-by: kernel test robot <lkp@intel.com>
->> | Closes: https://lore.kernel.org/oe-kbuild-all/202511250134.i0Jm8d7I-lkp@intel.com/
->>
->> All errors (new ones prefixed by >>):
->>
->>     In file included from kernel/rseq.c:75:
->>>> include/linux/rseq_entry.h:132:3: error: invalid operand for instruction
->>                     unsafe_get_user(start_ip, &ucs->start_ip, efault);
->>                     ^
->>     include/linux/uaccess.h:606:2: note: expanded from macro 'unsafe_get_user'
->>             arch_unsafe_get_user(x, ptr, local_label);      \
->>             ^
->>     arch/powerpc/include/asm/uaccess.h:458:2: note: expanded from macro 'arch_unsafe_get_user'
->>             __get_user_size_goto(__gu_val, __gu_addr, sizeof(*(p)), e); \
->>             ^
->>     arch/powerpc/include/asm/uaccess.h:282:2: note: expanded from macro '__get_user_size_goto'
->>             __get_user_size_allowed(x, ptr, size, __gus_retval);    \
->>             ^
->>     arch/powerpc/include/asm/uaccess.h:273:10: note: expanded from macro '__get_user_size_allowed'
->>             case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;  \
->>                     ^
->>     arch/powerpc/include/asm/uaccess.h:256:4: note: expanded from macro '__get_user_asm2'
->>                     "       li %1+1,0\n"                    \
->>                      ^
->>     <inline asm>:7:5: note: instantiated into assembly here
->>             li 31+1,0
+Le 25/11/2025 à 03:39, Shrikanth Hegde a écrit :
+> Hi Greg.
 > 
-> Definitely not a problem of tip core/rseq. It just ends up in
-> __get_user_asm2() and then the compiler gets unhappy about the PowerPC
-> inline assembly for whatever reason.
+> On 11/24/25 10:35 PM, Greg KH wrote:
+>> On Wed, Nov 19, 2025 at 06:14:32PM +0530, Shrikanth Hegde wrote:
+>>> Detailed problem statement and some of the implementation choices were
+>>> discussed earlier[1].
+>>>
+>>> [1]: https://eur01.safelinks.protection.outlook.com/? 
+>>> url=https%3A%2F%2Flore.kernel.org%2Fall%2F20250910174210.1969750-1- 
+>>> sshegde%40linux.ibm.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cc7e5a5830fcb4c796d4808de2bcbe09d%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638996351808032890%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=cV8RTPdV3So1GwQ9uVYgUuGxSfxutSezpaNBq6RYn%2FI%3D&reserved=0
+>>>
+>>> This is likely the version which would be used for LPC2025 discussion on
+>>> this topic. Feel free to provide your suggestion and hoping for a 
+>>> solution
+>>> that works for different architectures and it's use cases.
+>>>
+>>> All the existing alternatives such as cpu hotplug, creating isolated
+>>> partitions etc break the user affinity. Since number of CPUs to use 
+>>> change
+>>> depending on the steal time, it is not driven by User. Hence it would be
+>>> wrong to break the affinity. This series allows if the task is pinned
+>>> only paravirt CPUs, it will continue running there.
+>>>
+>>> Changes compared v3[1]:
+>>
+>> There is no "v" for this series :(
+>>
+> 
+> I thought about adding v1.
+> 
+> I made it as PATCH from RFC PATCH since functionally it should
+> be complete now with arch bits. Since it is v1, I remember usually 
+> people send out without adding v1. after v1 had tags such as v2.
+> 
+> I will keep v2 for the next series.
+> 
 
-I see it is a CLANG build.
+But you are listing changes compared to v3, how can it be a v1 ? 
+Shouldn't it be a v4 ? Or in reality a v5 as you already sent a v4 here [1].
 
-CLANG might be less flexible, can you test with following change ?
+[1] 
+https://lore.kernel.org/all/20251119062100.1112520-1-sshegde@linux.ibm.com/
 
-diff --git a/arch/powerpc/include/asm/uaccess.h 
-b/arch/powerpc/include/asm/uaccess.h
-index 4f5a46a77fa2..33d5f7ade254 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -253,7 +253,7 @@ __gus_failed:								\
-  		".section .fixup,\"ax\"\n"		\
-  		"4:	li %0,%3\n"			\
-  		"	li %1,0\n"			\
--		"	li %1+1,0\n"			\
-+		"	li %L1,0\n"			\
-  		"	b 3b\n"				\
-  		".previous\n"				\
-  		EX_TABLE(1b, 4b)			\
-
-
-Thanks
 Christophe
 
