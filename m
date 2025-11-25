@@ -1,54 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-14485-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14486-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84B0C85D6F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Nov 2025 16:51:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8DEC85DB2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Nov 2025 17:02:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dG6d11h80z2yFW;
-	Wed, 26 Nov 2025 02:51:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dG6sd0Jyzz2yFW;
+	Wed, 26 Nov 2025 03:02:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=216.40.44.11
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764085909;
-	cv=none; b=SM1PxoSpilIu/cTtn3k1fE7v848kVvHKcB2WoX+gMBM4mm6VIvGcQub7pqNT9Whgk6TSZgbicYNWg1gESISmA8l/wTu7gTUNdp6KezZ66y6CcNrdCLmBixZuvLVF4tOV8yuSMY75/5W7kaG0uTUgEZgzv4fe9G20AlgBf2NllHH4BRbu9cTwM4yMxEGYueZeXOzqMLuhHl45Kl4bQe86fQ8jLAbHUmc4Seg8yRvIk5fRlcHPvHo6MZ9zZGVxnlZNphoh4gvSmLj96VkrfkkoblCvBqt3V3CaLIWDo3eqv0XZEiHlNK/93l2GXEZ1d2eh1W61wTfBSjaYKYj4HZPHKA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764086564;
+	cv=none; b=ZpbTAHyMsVjVBj9oW4NPyKwn6Dfff0WYOe/o+YYpjALrHDFg/SkKLTJ038G4E7FpN5U699bmUcmKMaNBryssSSmAfzrY2HF0Wtle2J68cF59/DbeAyaH3XWnZRdfiKFbZjsCZLNS6OtRDwNXAY1S55CoDMRAf9RcHGzTjRGV7VfqKZji0mnX+NoMULozuRluI/RVwzpWIslyasS+g4Q60ObtDoVA5pNneAIsFHfEglBfm6WyERUnGEBithGvtxrMqKWF+vR0OOt/EmC+grriCRvFeFMKdjJkJp+p2G9D/qAnT9WKsMhuY6fla++m3S25BLHRvciMlw+eJUxdeWomSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764085909; c=relaxed/relaxed;
-	bh=wM07m2/nPQw9koEwooqtmdW+7keaf2b0EdhYswO2eCo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zs2aO1WttdfB8GFHmKoC9kVO3ULrGwmasA6Y1QWm4KBo3JpEsuAuGeUE0sOcfI/PQHsShGeMdv9HQXGrUu+Czp2tHqApx0otBMakBv6lJXliKnUAfzmbaQp+CeZRNo+cHSaVnI/7TG0cwtjc5o2yD0kp5k/x/K6qO1dXq8LLgQkQmDZbOkjBdSDV5FNguEHQAFY0A7I4sqarJ0UVbBSDa8HHQMuE3UYFJY3jJD2zU6y8eBXgE9rs9sBabGExq8X6qRGkb869ftmlL+Os4AHDECjY55t57lddrJJQHhOOwOIXIx8MZjATbS3IAxGQjO+g5T0gGUuCq77r/J6VPHmQzA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=216.40.44.11; helo=relay.hostedemail.com; envelope-from=rostedt@goodmis.org; receiver=lists.ozlabs.org) smtp.mailfrom=goodmis.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=goodmis.org (client-ip=216.40.44.11; helo=relay.hostedemail.com; envelope-from=rostedt@goodmis.org; receiver=lists.ozlabs.org)
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	t=1764086564; c=relaxed/relaxed;
+	bh=kLqzBHBRZIViZfupkNR1XEVuxSan3wPvA9DhX80YEwM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RIoCsEI1m6Zomjp6+/0a6ZU/BIeE5k1oLJKuiMQvr7wlFZp+QrJXURqQPhEUnE0yPkITF/li5PDZ2V/mYcVcCdJIuFEX3iYJH9Bs78sAltPgvqzzvMfl20INPFRYn0NiZR/5mnE5khH8DbmYwSnq4G6lJDjRDWbw8ImRV+LYbxFipzsbp0E0AM7cYAAzrx+9S+ZMRbstqjS1vtTUdy5ztXMXk4Ck1Bp9Qt/y9YGVRL3J+VSjkGG6+Gm6ZSm3ZZCTAvt7LZWew7qFB3KkEAC2VIIxf+YI/Z2CD+8YA6qa756Qu1GVY06K81bKCm+AuS71YO8FJkOUZ24xBj+hbLD1gw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=AqestlBj; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=konstantin@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=AqestlBj;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=konstantin@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dG6cz5Vj6z2xPy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Nov 2025 02:51:46 +1100 (AEDT)
-Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9910E160255;
-	Tue, 25 Nov 2025 15:51:40 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf17.hostedemail.com (Postfix) with ESMTPA id 847991A;
-	Tue, 25 Nov 2025 15:51:36 +0000 (UTC)
-Date: Tue, 25 Nov 2025 10:52:18 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, mingo@redhat.com, peterz@infradead.org,
- juri.lelli@redhat.com, vincent.guittot@linaro.org, tglx@linutronix.de,
- yury.norov@gmail.com, maddy@linux.ibm.com, srikar@linux.ibm.com,
- pbonzini@redhat.com, seanjc@google.com, kprateek.nayak@amd.com,
- vschneid@redhat.com, iii@linux.ibm.com, huschle@linux.ibm.com,
- dietmar.eggemann@arm.com, christophe.leroy@csgroup.eu
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dG6sb2Zhvz2xPy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Nov 2025 03:02:42 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1C776442C8;
+	Tue, 25 Nov 2025 16:02:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9312C4CEF1;
+	Tue, 25 Nov 2025 16:02:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1764086560;
+	bh=y98Rjj+JDR8pOd29SAXVLJq75oLKL/C8e4WzdtqSZos=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AqestlBjzJ4eEIoe6mN9iTG4DLalIGw2lgMRU9xm2STnrHWGqjNHcD+6g7D1aV+uB
+	 nrHIAsGL2dIgrFNic4u/mDspYAbRUN6RMDj6gZcJulNTXWd3MHZY6rUtsgAZD3CrXu
+	 j6WV63zPw/7UCmTnE3lZlva6KHePZ/0ekr4DYkGA=
+Date: Tue, 25 Nov 2025 11:02:38 -0500
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Shrikanth Hegde <sshegde@linux.ibm.com>, 
+	Greg KH <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, tglx@linutronix.de, yury.norov@gmail.com, maddy@linux.ibm.com, 
+	srikar@linux.ibm.com, pbonzini@redhat.com, seanjc@google.com, kprateek.nayak@amd.com, 
+	vschneid@redhat.com, iii@linux.ibm.com, huschle@linux.ibm.com, 
+	dietmar.eggemann@arm.com, christophe.leroy@csgroup.eu
 Subject: Re: [PATCH 16/17] sysfs: Provide write method for paravirt
-Message-ID: <20251125105218.4a1e02ad@gandalf.local.home>
-In-Reply-To: <e20dee2b-4876-4181-8b45-dc73b61e3202@linux.ibm.com>
+Message-ID: <20251125-heavenly-agile-seahorse-161893@lemur>
 References: <20251119124449.1149616-1-sshegde@linux.ibm.com>
-	<20251119124449.1149616-17-sshegde@linux.ibm.com>
-	<2025112409-rockstar-shortcake-1892@gregkh>
-	<20251124122459.00e86457@gandalf.local.home>
-	<e20dee2b-4876-4181-8b45-dc73b61e3202@linux.ibm.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ <20251119124449.1149616-17-sshegde@linux.ibm.com>
+ <2025112409-rockstar-shortcake-1892@gregkh>
+ <20251124122459.00e86457@gandalf.local.home>
+ <e20dee2b-4876-4181-8b45-dc73b61e3202@linux.ibm.com>
+ <20251125105218.4a1e02ad@gandalf.local.home>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,44 +71,26 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3w1k9cj453gms59zo6acwh84jmz3x3xt
-X-Rspamd-Server: rspamout01
-X-Rspamd-Queue-Id: 847991A
-X-Spam-Status: No, score=0.0 required=3.0 tests=RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18vKqSwXHiifm+LzwJIE/LNyT+yqGBGavU=
-X-HE-Tag: 1764085896-39560
-X-HE-Meta: U2FsdGVkX1+aJdcNXT2FPGLUIAUeiWFuMICDtO+Uu52qKbWo787Nnzlwsjkf5IdvKeMtEiiOwCxOotXLI+7o4rbFOjspiYF+9/cMaxnA+4pxXX3ZbQSmBhOu9MUqMfpF/SRfp9qe58MrlSRjjtfWxNMvpjyFTD2psylv65qXd5GjdOcpmE9khFeGKZ8NBBmLUe714oRrqTNBBe1BV8C5E7L+9qxT+G2JGEr2n9gmp3VmPBlfTLFR/MZA20gi24x8ZsGBj1xQAjQCwlvdzDEX3L8vQIahZVlwgnn9PNx+ST+MtcMjiv6aACouvL/nGbs/U8zkLSiG4N1wUKcWKKRDkR5tT6A+HxCf
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251125105218.4a1e02ad@gandalf.local.home>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 25 Nov 2025 08:19:45 +0530
-Shrikanth Hegde <sshegde@linux.ibm.com> wrote:
-
-> >    [PATCH 16/17][DO NOT APPLY!!!] sysfs: Provide write method for paravirt
-> > 
-> > in order to make it stand out, and not a footnote after the tags.
-> > 
-> > -- Steve
-> >   
+On Tue, Nov 25, 2025 at 10:52:18AM -0500, Steven Rostedt wrote:
+> You may also want remove the [ ] and use '--' instead:
 > 
-> I can follow this.
+>   [PATCH 16/17] -- DO NOT APPLY!!! -- sysfs: Provide write method for paravirt
 > 
-> PS: I was skeptical after last series mistake.
+> Because if someone were to do a b4 pull it would strip out the text within
+> the brackets. Using -- DO NOT APPLY!!! -- instead, would keep it in the
+> commit message. And then seeing that in the shortlog would be a really big
+> red flag ;-)
 
-You may also want remove the [ ] and use '--' instead:
+Small correction -- it's git itself that strips all content inside [], not b4
+specifically.
 
-  [PATCH 16/17] -- DO NOT APPLY!!! -- sysfs: Provide write method for paravirt
-
-Because if someone were to do a b4 pull it would strip out the text within
-the brackets. Using -- DO NOT APPLY!!! -- instead, would keep it in the
-commit message. And then seeing that in the shortlog would be a really big
-red flag ;-)
-
--- Steve
-
-PS. I plan on changing my usages to use '--' instead of '[' ']'
+-K
 
