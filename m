@@ -1,89 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-14489-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14490-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13471C86441
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Nov 2025 18:43:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026A7C872EF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Nov 2025 22:03:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dG95L6N67z2yG5;
-	Wed, 26 Nov 2025 04:43:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dGFXX5HX5z2xqg;
+	Wed, 26 Nov 2025 08:03:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=65.109.113.108
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764092582;
-	cv=none; b=ZT9lEy3uE1bAbAolwBrHleaHeJf3khb2sfm66PEdyqTF7oCr64bYgNp/R2OrEpSYKcMK1RpGYdkC6lfCRxTfxnKKhu7wr3ZpHdZR1vm0ciD0P2BrUDJ9wwrWC7Lk0KDS8j4mHqj+xofmA7VIE+K7Xjam5vNCKSHsjl9zzw8YiKmbNu6Lu637twInHugw0wSrrs4No/fGp/R/UpA86dT7opkjSanND3Okoh4J6NDkoDfPYudu7exi7ZzYu3je+s9zUxCq7s4JDTPqwWogocvY74DXzXiVsIpukNSyxQ02blJATlT5atrkuFZ4DYOke1mZ69hr0vWIOBuN0J4UncAkBQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764104604;
+	cv=none; b=ACPvmqojkd6exUqCRFFCtZTtXz9n2KPQek/ecNR9xZruPX3uRKyaIWQWoaeWYj2OwRsbUHNmFUxFrSHp+AtKCkgJSF0ib+KBxtmyPO/DSMuyG3uKFy/jdkIpGe8SG/EOJwq3856koHljIJKoYSlefXfgjZRoo/r2L+0reW5C1e2EjJtzQPigaR5O0VWzuxKrmErIGu1qPhcFN/z4oq6J8WOd8OVVHOKQHcG8cauFjWJQSFB4tZ58EOANTh0Lw0fGLbWiBDcQomkXH5C2u4o3XgdJZSxk3K9+XrwGEptLNzrUnoxTZLPf+AUAcesYe7paLZI+hMdZB9TK6erSoG/ijA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764092582; c=relaxed/relaxed;
-	bh=Flf67ZijIH8cHplKxTy2qaA6YRgNZ0as3pFMcflAhlI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dkmwn9UX0IYqZoMpeHPJHR+4l4M+5kB1tiEIPeAeNmfvVYA+dJN5bu2uFhHqS1Co4Tx4OekntwXS4wDqeCpx+1Ij64LXOSzsgUfcOB4Ui0p4S3DuplzQDbaU7YVFoIh/v/GSevZMkOPTSZT22rv1+TGAIldUttzmIWY0OPbruN6c++3Q7tW26s26fpeldwkUYEHj3FSZXJgpLgnIE9BT7reW8ZAs6z9rN7aYu0VYOZEdMTaWW9V0C6HfMMGHb4+Ofd0+Z2++oMqMoeBRohqxdeOCN/Qgpan3+kTFRetYanPsyocjyMjk7QiSZoPe2GPBpwxvMb6crLhUYpZ6AA8U1Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de; dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jfig/jpu; dkim-atps=neutral; spf=pass (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org) smtp.mailfrom=alien8.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+	t=1764104604; c=relaxed/relaxed;
+	bh=117wtrsjcxdwFUoW4UFNVfYV9nWbJw8O+n28Ilf3sAU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=E7AGRJG2riQqNTQV+zQi1dDX4kIFIJ68L7cAvzHrrv7FfZWtKu7JqDRv/Ra2pp5fKH7sLrd+JmdXi7CvydER7s5DTZtWGz0aMxfmbZREdmYX0tu34TrrC78JQu1d8r1dmMjr/TRSdUeV2r1Nf24D2r8ugXuBRi0my3pycWkokemcAXQ3A/AdcN1lSVYsWXcq7zvdoz/S76lwxS1QgLGiqL+ogH+ln1HhMZJhhYid6GmCW/78i+I3vgir+rT9b16g8qNsONIv41RqULW7XaUN6C/9aT2L7yKTV8G+P93USIqsKcTXkrDH9Yl9jUoEqEYyoQqhH8a74BtDMB2PXLiv+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZtpeZ+Lx; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jfig/jpu;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZtpeZ+Lx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dG95J24qNz2xqf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Nov 2025 04:42:58 +1100 (AEDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AC03640E0253;
-	Tue, 25 Nov 2025 17:42:52 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id To3KnAzsrizz; Tue, 25 Nov 2025 17:42:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1764092566; bh=Flf67ZijIH8cHplKxTy2qaA6YRgNZ0as3pFMcflAhlI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jfig/jpuvuAzxZouWtelYFbmMFFHxJ7ybHn8YOnj59P6YChLrwbQWwni5nlQpSTSs
-	 bvB0xGsVpaXuVuxQIHKRHJrCMcbR/8UIOkp3o/5vWJY1p4U05ycL7Xf8V2mwPd9Ysd
-	 2N/dsxxMZLLQ+sbecT2+TzFjuQQpnAaB0FE7InXjDiekXjcMYVi75X5IZIFqPTp5rx
-	 SjQ6wkoQKeIdix2Hb6aDtl/4fLsqegxkJJcAwQ72jil2HjY0aNwSNvKIp5EyMxiIUm
-	 pFsk0svA5WyubEzPDwun1ybZzgQQ5NWbj1QFmQz2Nwf/W5vb4MJa4r3FdPqyJ7NJZi
-	 Jb7o5Sm5U6IHTmQ00HlXHUyc9wSb4KGbPlHz5ugmohz3eFGFsZYvglXeJHZOvLatVG
-	 2hH/bHOFZBGc6Dp79RY0iYHubByFihteXMTQzInm6OIc5EoEoM1JDhoFNuoczlvLQF
-	 O7yTMorRdwPGmA6D9asEgU7j4rKaqUnQ8AWUA1mmQWLFlf9GaI43ASOzy167gjY9jD
-	 gI5yky67zV9afaW92sKmwuHdnykIYm9ktxVAHYiinDogo1jzo64TrcKPwVl/Fyv+hT
-	 lTjQR5i4RqPcE4U56eBICJw8j0i3g1w3rtD8VYlCrgua2OZBRfQ4ijERPEzkll/t8Z
-	 nAlDqigrayea84xsUnnD8vVs=
-Received: from zn.tnic (p57969402.dip0.t-ipconnect.de [87.150.148.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 5046E40E015B;
-	Tue, 25 Nov 2025 17:42:19 +0000 (UTC)
-Date: Tue, 25 Nov 2025 18:42:11 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Breno Leitao <leitao@debian.org>, tony.luck@intel.com,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev, osandov@osandov.com,
-	xueshuai@linux.alibaba.com, konrad.wilk@oracle.com,
-	linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org, kernel-team@meta.com,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-	Robert Moore <robert.moore@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dGFXW4XrMz2xQs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Nov 2025 08:03:23 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5C99742A14;
+	Tue, 25 Nov 2025 21:03:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F089C4CEF1;
+	Tue, 25 Nov 2025 21:03:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764104601;
+	bh=Id26wiJS3ZBzN4+TDSno8bnwLN/spJCiR/oQ+uP7xFI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ZtpeZ+Lx8V1B8GTqX/dBXV5m00Zb7+3qS+ZrBfoDreM5YZ5nZoia3wfywfmTvDVN3
+	 jK9FPaSFcHqs+02t30dAcDrdBw2cPSKSA4N5taB5a95Az8x+cAFmkHPWJL4u2YHgrm
+	 rDKpQLzsyiqplS/wSS2Ddg0JucCgMCbmv4QT+TCf2VRyMFTdBzL/eyAm9SZg0Ezyui
+	 O4s+RxHxmLkYcLi88xy/+suwyASuMbj2Ws7onXeCxZpXLSNk1rnUDo3sSLAjeXZZmm
+	 p8x1Dsv+6xSp/7/GLzOVMY0f+0f7m0qW04W/8D8IkKVwFc7rvTW+LFJuxslp4T2Crp
+	 xWg+gtsj987Bw==
+Date: Tue, 25 Nov 2025 15:03:19 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Riana Tauro <riana.tauro@intel.com>,
+	"Sean C. Dardis" <sean.c.dardis@intel.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Benjamin Block <bblock@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alek Du <alek.du@intel.com>,
 	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH RESEND v5] vmcoreinfo: Track and log recoverable hardware
- errors
-Message-ID: <20251125174211.GIaSXqc1tAdGejYYwh@fat_crate.local>
-References: <20251010-vmcore_hw_error-v5-1-636ede3efe44@debian.org>
- <vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
- <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
- <20251125093211.081d4ba0e18f1f9a85a0de5f@linux-foundation.org>
+	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] PCI: Universal error recoverability of devices
+Message-ID: <20251125210319.GA2767956@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,28 +71,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251125093211.081d4ba0e18f1f9a85a0de5f@linux-foundation.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+In-Reply-To: <cover.1763483367.git.lukas@wunner.de>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Nov 25, 2025 at 09:32:11AM -0800, Andrew Morton wrote:
-> I don't feel I'll add much value here so please take it via the
-> appropriate tree.
+On Wed, Nov 19, 2025 at 09:50:00AM +0100, Lukas Wunner wrote:
+> This series intends to replace commit 1dc302f7fccc ("PCI: Ensure error
+> recoverability at all times") on the pci/err topic branch:
+> 
+> https://git.kernel.org/pci/pci/c/1dc302f7fccc
+> 
+> The commit is assigning "dev->state_saved = false" in pci_bus_add_device()
+> and during review there were requests to explain the assignment more
+> clearly in a code comment.
+> 
+> However the assignment is (only) necessitated by missing assignments in
+> pci_legacy_suspend() and pci_pm_freeze(), so I propose to instead add
+> *those* assignments (patch [1/3]) and thus avoid the need for the
+> assignment in pci_bus_add_device(), together with its code comment.
+> 
+> Furthermore the commit is *removing* an assignment in pci_device_add().
+> I am separating that out to new patch [2/3].
+> 
+> So patch [3/3] is identical to the commit, but without the addition
+> of an assignment in pci_bus_add_device() and without the removal
+> of an assignment in pci_device_add().
+> 
+> I am looking into improving the documentation on pci_save_state()
+> in a separate series.
+> 
+> Lukas Wunner (3):
+>   PCI/PM: Reinstate clearing state_saved in legacy and !pm codepaths
+>   PCI/PM: Stop needlessly clearing state_saved on enumeration and thaw
+>   PCI/ERR: Ensure error recoverability at all times
+> 
+>  drivers/pci/bus.c        | 3 +++
+>  drivers/pci/pci-driver.c | 6 ++++--
+>  drivers/pci/pci.c        | 3 ---
+>  drivers/pci/probe.c      | 2 --
+>  4 files changed, 7 insertions(+), 7 deletions(-)
 
-Yeah, that's the thing - judging from the diffstat your tree is probably the
-most fitting one. So I think we're on the right track here.
-
-:-)
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Applied on pci/err for v6.19, thanks!
 
