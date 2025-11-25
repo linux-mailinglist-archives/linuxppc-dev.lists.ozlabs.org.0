@@ -1,69 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-14488-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14489-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2BCBC8637B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Nov 2025 18:32:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13471C86441
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Nov 2025 18:43:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dG8s24XScz2yG5;
-	Wed, 26 Nov 2025 04:32:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dG95L6N67z2yG5;
+	Wed, 26 Nov 2025 04:43:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764091942;
-	cv=none; b=Ey5irYSoboVG6UK3EAFMNxFhtEe4ccsHUQzN37gALUr4E3eoj0WzgIUSy5/hjDokeEa9PPmPNG00JZulj6TqKDbx3taH0SULGWOFX+2bZ2PW10ujVSi32tnfoflEk/7fEnSW/IFMnBJ+15E5vUpTCI/MABo9Qf5/tDB4iaP+7CFTe3xgJNbSrGYePWSmvGcngAmeJ5psTWoyqozLVSzj3g7swsp8X/Q+zyY5BqStWNVPyc74si8zlx5jBxg0jGJWd4HYXQ/lOOVoNleWDSYxnEs4FM8POQtgPQXhF6uVxeQScfRQXzSPvWJTjUv0nn7tYhK5qBhfUniVIliPbsR9gQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=65.109.113.108
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764092582;
+	cv=none; b=ZT9lEy3uE1bAbAolwBrHleaHeJf3khb2sfm66PEdyqTF7oCr64bYgNp/R2OrEpSYKcMK1RpGYdkC6lfCRxTfxnKKhu7wr3ZpHdZR1vm0ciD0P2BrUDJ9wwrWC7Lk0KDS8j4mHqj+xofmA7VIE+K7Xjam5vNCKSHsjl9zzw8YiKmbNu6Lu637twInHugw0wSrrs4No/fGp/R/UpA86dT7opkjSanND3Okoh4J6NDkoDfPYudu7exi7ZzYu3je+s9zUxCq7s4JDTPqwWogocvY74DXzXiVsIpukNSyxQ02blJATlT5atrkuFZ4DYOke1mZ69hr0vWIOBuN0J4UncAkBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764091942; c=relaxed/relaxed;
-	bh=owLmR4S/oaLdVE3nlx9TsbZXLQStwKHuP3nkO6I+PE4=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=oKcyqTys4eX3vpWcY90U5jZ7HCcEZTeUQ77Q4eQrRwpbxvBCexzZSogv/m8UIHuEaFl5AwmbcWSfzadAhtCzc5c1YWDn/saC6SLHJxoZIyQZd95USO/NTgR1xOd9Y7WLgt5deufHwFKO4djmnJJMjScjpWd3crIhzDa+2Gew1pjegKbnWT8zsK5OvubQ7W7g46pR0/skSoLmfS87cCUVX0sVKQ20mkDI8seXo/3QxVS+oZLXFys5PTed9GJ3Lb8D7Rg7BZ2QThiSfSbrAZ+NKKHeRp6KjywXjaW+ZoTjRsskqkyNCvG0/oXENCvXVaVg5RlT3p9G7T79iQty1SxB9A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=nr6cZGfS; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1764092582; c=relaxed/relaxed;
+	bh=Flf67ZijIH8cHplKxTy2qaA6YRgNZ0as3pFMcflAhlI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dkmwn9UX0IYqZoMpeHPJHR+4l4M+5kB1tiEIPeAeNmfvVYA+dJN5bu2uFhHqS1Co4Tx4OekntwXS4wDqeCpx+1Ij64LXOSzsgUfcOB4Ui0p4S3DuplzQDbaU7YVFoIh/v/GSevZMkOPTSZT22rv1+TGAIldUttzmIWY0OPbruN6c++3Q7tW26s26fpeldwkUYEHj3FSZXJgpLgnIE9BT7reW8ZAs6z9rN7aYu0VYOZEdMTaWW9V0C6HfMMGHb4+Ofd0+Z2++oMqMoeBRohqxdeOCN/Qgpan3+kTFRetYanPsyocjyMjk7QiSZoPe2GPBpwxvMb6crLhUYpZ6AA8U1Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de; dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jfig/jpu; dkim-atps=neutral; spf=pass (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org) smtp.mailfrom=alien8.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=nr6cZGfS;
+	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jfig/jpu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dG8s13MCCz2xqf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Nov 2025 04:32:20 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B4C460250;
-	Tue, 25 Nov 2025 17:32:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC08C4CEF1;
-	Tue, 25 Nov 2025 17:32:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764091932;
-	bh=nnAEPQ59gqP0qnrmNI3FJEAbvJ+MZOEUAcLlq2prKCE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nr6cZGfS3O34sgUcHJr7KtS+Mp52RlENxbRA2dOu/d4YFQzwnvtmp3Sq5//ODUpfl
-	 +JTv5kdtE8yRGxiVrRPo0z9izXQ4Qd7pOleXhGLoV+myrsB8q9Z1Q0r5elNASWV8mA
-	 SkTNueFUG1lHdCCOI0S/bo6eQeJ5jJCa5HA65TtY=
-Date: Tue, 25 Nov 2025 09:32:11 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Borislav Petkov <bp@alien8.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dG95J24qNz2xqf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Nov 2025 04:42:58 +1100 (AEDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AC03640E0253;
+	Tue, 25 Nov 2025 17:42:52 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id To3KnAzsrizz; Tue, 25 Nov 2025 17:42:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1764092566; bh=Flf67ZijIH8cHplKxTy2qaA6YRgNZ0as3pFMcflAhlI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jfig/jpuvuAzxZouWtelYFbmMFFHxJ7ybHn8YOnj59P6YChLrwbQWwni5nlQpSTSs
+	 bvB0xGsVpaXuVuxQIHKRHJrCMcbR/8UIOkp3o/5vWJY1p4U05ycL7Xf8V2mwPd9Ysd
+	 2N/dsxxMZLLQ+sbecT2+TzFjuQQpnAaB0FE7InXjDiekXjcMYVi75X5IZIFqPTp5rx
+	 SjQ6wkoQKeIdix2Hb6aDtl/4fLsqegxkJJcAwQ72jil2HjY0aNwSNvKIp5EyMxiIUm
+	 pFsk0svA5WyubEzPDwun1ybZzgQQ5NWbj1QFmQz2Nwf/W5vb4MJa4r3FdPqyJ7NJZi
+	 Jb7o5Sm5U6IHTmQ00HlXHUyc9wSb4KGbPlHz5ugmohz3eFGFsZYvglXeJHZOvLatVG
+	 2hH/bHOFZBGc6Dp79RY0iYHubByFihteXMTQzInm6OIc5EoEoM1JDhoFNuoczlvLQF
+	 O7yTMorRdwPGmA6D9asEgU7j4rKaqUnQ8AWUA1mmQWLFlf9GaI43ASOzy167gjY9jD
+	 gI5yky67zV9afaW92sKmwuHdnykIYm9ktxVAHYiinDogo1jzo64TrcKPwVl/Fyv+hT
+	 lTjQR5i4RqPcE4U56eBICJw8j0i3g1w3rtD8VYlCrgua2OZBRfQ4ijERPEzkll/t8Z
+	 nAlDqigrayea84xsUnnD8vVs=
+Received: from zn.tnic (p57969402.dip0.t-ipconnect.de [87.150.148.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 5046E40E015B;
+	Tue, 25 Nov 2025 17:42:19 +0000 (UTC)
+Date: Tue, 25 Nov 2025 18:42:11 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Breno Leitao <leitao@debian.org>, tony.luck@intel.com,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- acpica-devel@lists.linux.dev, osandov@osandov.com,
- xueshuai@linux.alibaba.com, konrad.wilk@oracle.com,
- linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org, kernel-team@meta.com, "Rafael J. Wysocki"
- <rafael@kernel.org>, Len Brown <lenb@kernel.org>, James Morse
- <james.morse@arm.com>, Robert Moore <robert.moore@intel.com>, Thomas
- Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver
- O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH RESEND v5] vmcoreinfo: Track and log recoverable
- hardware errors
-Message-Id: <20251125093211.081d4ba0e18f1f9a85a0de5f@linux-foundation.org>
-In-Reply-To: <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linux.dev, osandov@osandov.com,
+	xueshuai@linux.alibaba.com, konrad.wilk@oracle.com,
+	linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org, kernel-team@meta.com,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+	Robert Moore <robert.moore@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH RESEND v5] vmcoreinfo: Track and log recoverable hardware
+ errors
+Message-ID: <20251125174211.GIaSXqc1tAdGejYYwh@fat_crate.local>
 References: <20251010-vmcore_hw_error-v5-1-636ede3efe44@debian.org>
-	<vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
-	<20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ <vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
+ <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
+ <20251125093211.081d4ba0e18f1f9a85a0de5f@linux-foundation.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,30 +96,29 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251125093211.081d4ba0e18f1f9a85a0de5f@linux-foundation.org>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 18 Nov 2025 15:10:02 +0100 Borislav Petkov <bp@alien8.de> wrote:
+On Tue, Nov 25, 2025 at 09:32:11AM -0800, Andrew Morton wrote:
+> I don't feel I'll add much value here so please take it via the
+> appropriate tree.
 
-> On Tue, Nov 18, 2025 at 05:01:47AM -0800, Breno Leitao wrote:
-> > Do you know what is the right tree for this patch?
-> > 
-> > I am wondering if it should go through Kdump, x86 or RAS/MCE tree?
-> 
-> I can take it if akpm wants me to...
-> 
+Yeah, that's the thing - judging from the diffstat your tree is probably the
+most fitting one. So I think we're on the right track here.
 
-I don't feel I'll add much value here so please take it via the
-appropriate tree.
+:-)
 
-I'll toss it in mm.git for linux-next exposure and shall drop it again
-when it appears in -next via another route.
+Thx.
 
-It's a shame it took us two weeks to get onto this - it's a bit late
-for the upcoming merge window.
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
