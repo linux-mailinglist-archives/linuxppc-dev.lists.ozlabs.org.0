@@ -1,68 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14480-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14481-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E7EC8437E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Nov 2025 10:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F8FC84578
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Nov 2025 11:02:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dFy5d24g7z2xqf;
-	Tue, 25 Nov 2025 20:27:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dFyst6M4Cz30FR;
+	Tue, 25 Nov 2025 21:02:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41b8:202:deb::311:108"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764062853;
-	cv=none; b=YclMKxeLD1IChz1O3RvCqBom4WnqjgMw0JETZv/QD2YNR8q+NSpvd/CCBoW5BRVJOMNqbzJbnZxWDxMv9JFU7ak+Z1wUksEsm6pTHMK5jQH2NN6u0BsFvPRK0dZ4NTEdwZPGok7iUxx7IliDOsIElrWFhFu2L2RLjGgEMlYLaIVs3LOKi3Z8uInLAw9cx8RHBpvAkoaJ2FLWuu1zMSIdLMzvCBQXexR0oH5IyF9bpvI53as+yYct48kV0po5lK6YytB+Ckpy59AbfbRfM0+eHfvSbdY6xbNhBSwlAHwowaPx6JEJssUVgMK/w2JtowqjsdC2BX0TlyHe0MpA26m6Og==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764064946;
+	cv=none; b=TPha3qwJb8RtXPF5Bck9J9DBfKt7/OQ7M5e25HuE/zLcTA9wxcv2KNJG4bRQKgFKTo5rV4JPNJj+Y0UzYl55IZG+prtzkmKbX0c0G09Yth0sK0VilnighfmuKfT7fYAmGaiKanTpk2E7CHNIDoA7HT2Pss/IWYsbL5TYIMH5LxNSS4TW1CXsvUVncOqAnQEW8+5hRpSawdQtuvS7WnwcD4z5KGDKcZVPOV9D82ZvJTkelmkxA3Z++bX+89HU55TgYkF9eiee1OG/I/lZk+koHbRrkVfa8TIPsBEhy7/GBPc+BzlVMIYdAxekcGG9KrM4365wPqKMgDSYSSi+WTpOSg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764062853; c=relaxed/relaxed;
-	bh=k/+2LtzZDQDT/XIIJmpYRUvrcP2KDj85kUn+MGkQNJM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BXPr/j8Gr7o9KvhKNma2pKc+/O0E60to6YqSs6HLDEde6Av7N+8kRlWwPXVkOItwYTzjMXujyDUBX8uk3/tF9GTYw+TIsDjj9oMC9dVc9cleeOuDkbv3+1XccnuZgsZ9bLtGGESY4H68Yfg/t90v77cIt1iXeDvlUXC3BwCqO7BKdzQRtTSYeEUyihQl/+UakoYiMxOAUZ8zuah0E4flOTGIZj80ZvpLFvmUO40Ro/LgjQ1jjcJTyE4WkWMltNOThQHPPRU1LLGt2Hu3Fwxp9W1T1uPZYRRtRp8rdsy8m8m/AZXxO2wvB2t6tejnp4MGrja4KlVcXDzdKkLPvWu2qw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; dkim=pass (2048-bit key; secure) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=Ujh5Xxgt; dkim-atps=neutral; spf=none (client-ip=2001:41b8:202:deb::311:108; helo=stravinsky.debian.org; envelope-from=leitao@debian.org; receiver=lists.ozlabs.org) smtp.mailfrom=debian.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
+	t=1764064946; c=relaxed/relaxed;
+	bh=BCwCc9DTg0fBV53wPZE7nB5TVjQSgOOy050SA+ruDAc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E7p08NInBRNcsnVd0o9aXopuADAeESLZ3AAel5DIz4OnqdlJK7un4DI8Z4wr1/fDm73u8cFAi9QiClSKi5B3TY8zecflzVK9oscswJzSz+cJdl0NgyNhCfRLlJStTf2nJ++kOMvRD9LIxDizP7Ghqp9zRj8uyB/0K3gXkFb5pOcE3VEqQLLL4zbYtVzCdNG7/3BLybY/ryW27LUq1DrAFedzZ9W3nfHruPDfi/lpZpK/rHOeRaBLJhv17OK3Kt7xuJj0hEr6wHNGFIBXPExr6Akqr030qkDBxpdFEB+maRYWtxXz+y3so9E9amH/qhvudDruKmgm8HH5gpfADFDoow==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YOosHrQO; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=Ujh5Xxgt;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YOosHrQO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=debian.org (client-ip=2001:41b8:202:deb::311:108; helo=stravinsky.debian.org; envelope-from=leitao@debian.org; receiver=lists.ozlabs.org)
-Received: from stravinsky.debian.org (stravinsky.debian.org [IPv6:2001:41b8:202:deb::311:108])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFy5c188tz2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 20:27:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=k/+2LtzZDQDT/XIIJmpYRUvrcP2KDj85kUn+MGkQNJM=; b=Ujh5XxgtWd8jr9zZcd2oA5syOx
-	Cwt9IJjcT2z4O5nC1oTDkZz2phCS+d5yfzIkGRu+3qoqEO2RlWYiUacquZZfBmTVSUBoRbs2suKMb
-	tgNMMpisQA++79/GIAH54dlpgo6eDFiYCm+51O/uVjZGIk4WsbQUyxEdYxcDg802H6xhoFfnanQHH
-	9ssOiu60VP0hjxpyMc5BSbNgLUL69A3AfZGGp6YTPhBEe6KGim/4BfYTG36omzLqBzqEPxcbwEr1u
-	RUnLeqwU2gSJrzxpg6hLMJbWkXHRZJ1RayRA4ZqkwA+pmawb3gg1rEUtggbyAIsM1erOI2idwpGJb
-	W3EEC88g==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vNpKA-003ICO-9j; Tue, 25 Nov 2025 09:27:02 +0000
-Date: Tue, 25 Nov 2025 01:26:55 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Borislav Petkov <bp@alien8.de>, akpm@linux-foundation.org
-Cc: tony.luck@intel.com, akpm@linux-foundation.org, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	osandov@osandov.com, xueshuai@linux.alibaba.com, konrad.wilk@oracle.com, 
-	linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
-	kernel-team@meta.com, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
-	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH RESEND v5] vmcoreinfo: Track and log recoverable hardware
- errors
-Message-ID: <zbqtqndpicedldf37c7t74cikasqruzkv2rqt2eh6ufjbj4exb@3p7ajieb6ovr>
-References: <20251010-vmcore_hw_error-v5-1-636ede3efe44@debian.org>
- <vpilvvscosdl4o4cvbmtsrrp4btfwr5iidywmuiawfrgtlcwrr@ubtdbxfqyqpu>
- <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dFyss6VQNz30B4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Nov 2025 21:02:25 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0655C60007;
+	Tue, 25 Nov 2025 10:02:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE17C4CEF1;
+	Tue, 25 Nov 2025 10:02:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764064942;
+	bh=oxKQBafDlsGK4Tb3liQhHwe/MwCuDbCdtq7GrpW29HY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YOosHrQOulAFT3yRgBySi9dL0VSDpGYZ/TW3IosH3l3PhqYJTzBjgBq05JSmX5voR
+	 haL3sjx6T1BRzXA3oFrz6v0XdvYCIGrYfPFYQPiSXTssqkzuOO0qIDj5f9WuJI4hgS
+	 cK/JR/2sFK1gbcCcJ6ruUZIHzsU3acHTiUUGlVPTU3yCfQcUoHBtIoOl/zSPW+BpDU
+	 bt3Z10Acj/AjG54vSiTUR6tdRz/RZ6iDkLu7pwP8Qxfow8kYO5q8RB+rz6alfi00bn
+	 NAPTbqKu/lcPS1CsDQqloP4AGfRtNjNrnMTgt8XLJtqVwEjMgad/crEVXSlbU07cTF
+	 4il40N+bYqDGw==
+Message-ID: <1a14025c-6cd5-4e04-b49d-cd65b8b35e68@kernel.org>
+Date: Tue, 25 Nov 2025 11:02:12 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,27 +58,123 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251118141002.GEaRx-Oge8ZxtR4Vzi@fat_crate.local>
-X-Debian-User: leitao
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next v2 1/2] powerpc64/bpf: Support internal-only MOV
+ instruction to resolve per-CPU addrs
+To: Saket Kumar Bhaskar <skb99@linux.ibm.com>, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
+ andrii@kernel.org, eddyz87@gmail.com, ast@kernel.org, daniel@iogearbox.net,
+ martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
+ john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+ haoluo@google.com, jolsa@kernel.org, naveen@kernel.org, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com
+References: <cover.1762422548.git.skb99@linux.ibm.com>
+ <e58dc8bfd5be16f95684d35fd68919ea83c7e322.1762422548.git.skb99@linux.ibm.com>
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Content-Language: fr-FR
+In-Reply-To: <e58dc8bfd5be16f95684d35fd68919ea83c7e322.1762422548.git.skb99@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello Andrew,
 
-On Tue, Nov 18, 2025 at 03:10:02PM +0100, Borislav Petkov wrote:
-> On Tue, Nov 18, 2025 at 05:01:47AM -0800, Breno Leitao wrote:
-> > Do you know what is the right tree for this patch?
-> > 
-> > I am wondering if it should go through Kdump, x86 or RAS/MCE tree?
+
+Le 17/11/2025 à 07:52, Saket Kumar Bhaskar a écrit :
+> With the introduction of commit 7bdbf7446305 ("bpf: add special
+> internal-only MOV instruction to resolve per-CPU addrs"),
+> a new BPF instruction BPF_MOV64_PERCPU_REG has been added to
+> resolve absolute addresses of per-CPU data from their per-CPU
+> offsets. This update requires enabling support for this
+> instruction in the powerpc JIT compiler.
 > 
-> I can take it if akpm wants me to...
+> As of commit 7a0268fa1a36 ("[PATCH] powerpc/64: per cpu data
+> optimisations"), the per-CPU data offset for the CPU is stored in
+> the paca.
+> 
+> To support this BPF instruction in the powerpc JIT, the following
+> powerpc instructions are emitted:
+> 
+> ld tmp1_reg, 48(13)		//Load per-CPU data offset from paca(r13) in tmp1_reg.
+> add dst_reg, src_reg, tmp1_reg	//Add the per cpu offset to the dst.
+> mr dst_reg, src_reg		//Move src_reg to dst_reg, if src_reg != dst_reg
 
-Would you prefer to have this patch on your tree, or on Borislav's?
+Must be something wrong here. The 'add' was done into the dst_reg so 
+here you erase the result of the addition by the source register.
 
-Thanks
---breno
+> 
+> To evaluate the performance improvements introduced by this change,
+> the benchmark described in [1] was employed.
+> 
+> Before Change:
+> glob-arr-inc   :   41.580 ± 0.034M/s
+> arr-inc        :   39.592 ± 0.055M/s
+> hash-inc       :   25.873 ± 0.012M/s
+> 
+> After Change:
+> glob-arr-inc   :   42.024 ± 0.049M/s
+> arr-inc        :   55.447 ± 0.031M/s
+> hash-inc       :   26.565 ± 0.014M/s
+> 
+> [1] https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2Fanakryiko%2Flinux%2Fcommit%2F8dec900975ef&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C2f16cef7d35341c9683608de25a5ee3b%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638989591756011820%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=dNHc3FAFJkZpHq%2Be1hTv5CfBrGEXxWTKrLGSHaUw%2BRk%3D&reserved=0
+> 
+> Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+> ---
+>   arch/powerpc/net/bpf_jit_comp.c   | 5 +++++
+>   arch/powerpc/net/bpf_jit_comp64.c | 9 +++++++++
+>   2 files changed, 14 insertions(+)
+> 
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index 88ad5ba7b87f..2f2230ae2145 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -466,6 +466,11 @@ bool bpf_jit_supports_insn(struct bpf_insn *insn, bool in_arena)
+>   	return true;
+>   }
+>   
+> +bool bpf_jit_supports_percpu_insn(void)
+> +{
+> +	return IS_ENABLED(CONFIG_PPC64);
+> +}
+> +
+>   void *arch_alloc_bpf_trampoline(unsigned int size)
+>   {
+>   	return bpf_prog_pack_alloc(size, bpf_jit_fill_ill_insns);
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index 1fe37128c876..21486706b5ea 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -918,6 +918,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>   		case BPF_ALU | BPF_MOV | BPF_X: /* (u32) dst = src */
+>   		case BPF_ALU64 | BPF_MOV | BPF_X: /* dst = src */
+>   
+> +			if (insn_is_mov_percpu_addr(&insn[i])) {
+> +				if (IS_ENABLED(CONFIG_SMP)) {
+> +					EMIT(PPC_RAW_LD(tmp1_reg, _R13, offsetof(struct paca_struct, data_offset)));
+> +					EMIT(PPC_RAW_ADD(dst_reg, src_reg, tmp1_reg));
+> +				} else {
+> +					EMIT(PPC_RAW_MR(dst_reg, src_reg));
+
+You should make sure dst_reg is different from src_reg before emitting 
+this, you may otherwise generate one of the following instructions that 
+change the thread priority:
+
+#define HMT_very_low()		asm volatile("or 31, 31, 31	# very low priority")
+#define HMT_low()		asm volatile("or 1, 1, 1	# low priority")
+#define HMT_medium_low()	asm volatile("or 6, 6, 6	# medium low priority")
+#define HMT_medium()		asm volatile("or 2, 2, 2	# medium priority")
+#define HMT_medium_high()	asm volatile("or 5, 5, 5	# medium high priority")
+#define HMT_high()		asm volatile("or 3, 3, 3	# high priority")
+
+
+> +				}
+> +			}
+> +
+>   			if (insn_is_cast_user(&insn[i])) {
+>   				EMIT(PPC_RAW_RLDICL_DOT(tmp1_reg, src_reg, 0, 32));
+>   				PPC_LI64(dst_reg, (ctx->user_vm_start & 0xffffffff00000000UL));
+
 
