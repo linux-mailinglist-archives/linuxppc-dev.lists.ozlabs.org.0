@@ -1,57 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-14519-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14520-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B3BC8D433
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 08:58:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FA2C8DD43
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 11:45:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dH81x2xDwz2yvW;
-	Thu, 27 Nov 2025 18:58:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dHCkx1tVfz2yvV;
+	Thu, 27 Nov 2025 21:45:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764230309;
-	cv=none; b=cDNoDS80qizp+AA9FrmwIcXPICO90E7GZf/PW/Q/LPnvEPspVJbCBTttGsxHJAbJzgf/dv37hAPaIMLoTPfSMXfySML5jzdShYYVc3b0ktGwUM4r9j8d99ZidCE1dDjANYfJyuaDgw2VAo/HDOKJfVSGw0DS6JxbL01lIy3a+OIAtQc0GzUR0CF8Mr5qr69oKPkgwsXmHMxZReQegCjGs0dVmizkUwVk8LFLdlTba+pnUxK28wH1KEiq7eAShtAYfGzDM0Zxy392qZGIiELXr8YwxxCVXonrv+NbJhMQGIf9NbgkDNeCZ23n0YsOzeIs3KoRo9/axDM1h4Lii+MH4Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764240345;
+	cv=none; b=C9pR+zF1mob1SesfOsODucMZx8eWGehpWEUoOFB4riEwR8Bib6c6aYb0dBK1NaoZVhiOWWzZazIqxPcaTHE8nJi2k3pRbpmVYvtG6ewVv2uXeT4jSaIg6KNmPwbWxIznPEZ4L+BBPy4i6f/PoCMo+XtTRCz8g2Cp7IRDJ3yWzwd1+5oVziDyU3TEIORqocDlX/KQ669+eKxTvhmPSREYODhlyBKJy3w/beVu2SZ4kuLOrS2LmS2SRKtyCbfkq8jTvkAuvPx7nhMaJACqldugYurAzjfS8d/VZVXUDI1fWBIkERR31wcmXt27NX29rPzqLosPRIz+ym7v6dq5/g5Ukw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764230309; c=relaxed/relaxed;
-	bh=1tg7x7BR+0m5P6k/50iPT9CNKarSbXO1O6KiLVdmuhE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kykKqrULkAxSnqP0YcbFJ4SZ0AwjejC6R2jD9JAsMmRjYU+TeIdXsKeJiILW0jRDEQFArYNTCjQwrEfYlcxKEYhuDxYJmuVRM2X9/CSVwVVuFE0Fd9ye4aIVoR1/upgTbbXx0MqU3vjSJBPxDpZ2H/Y2y9UVZxM6hlQxg1I5m7guo1wEsglglnI1bd8/7E9cdOuftVZGNhEcZaNZ72F02pNn3kV2VyrWbxUWNhpiqBXAGFthwP1tFyqD1Q2Nlrj+Cyx9yXsKOiSCsAjaFlVexUsZr9YtRJlTeqq6fvLl8BQ4o7rZLfBtj0fqpwfleDVtWvrz+2aHzjagba/dataygA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1764240345; c=relaxed/relaxed;
+	bh=4ICIa0Mjhj6kj078Uv9HnCJvFvWXapkbtirqNw//vto=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J+czrNeQ2Zi5zqKWYAc6jwOH7436bc5Kbh0OBQ4vlncMXxtM6+3r3aa+vERYaqzpYvD78B3bY1iUxtb7TcYjuYuHkP1ezC1pMfbEW1Bxryr2upSRcAjs7WQ5abC66WGwoaZNjYTSvZwSIcgvhKm1iBlSZnrAAnac8QPUj8xTEukZUCegQrYHsK3BiZz5KRypm7/iZretLdDZH7spHpranhgX84Ve19VGdylgA9eh+ZyE2dKEfIvMj2zlVfyVVWS2wYoHp6NIgcPGES3C7O/6slm4JRz1s0vNs7GevenZ4yWw8299d9auGVp0290m/FbNKapwp4UpIdCmDM7g4TgGAw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pU1ikMz5; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pU1ikMz5;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dH81w1GhWz2xP9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 18:58:26 +1100 (AEDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
-	 client-signature ECDSA (secp384r1) client-digest SHA384)
-	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 534712C000A8;
-	Thu, 27 Nov 2025 08:58:22 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 2F6661D8E7; Thu, 27 Nov 2025 08:58:22 +0100 (CET)
-Date: Thu, 27 Nov 2025 08:58:22 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Riana Tauro <riana.tauro@intel.com>,
-	"Sean C. Dardis" <sean.c.dardis@intel.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Benjamin Block <bblock@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Alek Du <alek.du@intel.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] PCI/PM: Reinstate clearing state_saved in legacy
- and !pm codepaths
-Message-ID: <aSgEnt12QQLXCfWr@wunner.de>
-References: <aSb3Qt6n55Fsl7IF@wunner.de>
- <20251126234603.GA2832326@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dHCkv5bN8z2yl2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 21:45:43 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AR28H2A011061;
+	Thu, 27 Nov 2025 10:45:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=4ICIa0
+	Mjhj6kj078Uv9HnCJvFvWXapkbtirqNw//vto=; b=pU1ikMz5E2DkF8fgfNHlSK
+	9XCMOJK5UD8r6j0aB/vgcvVMrv8MAXiHyRPXn0o28OMpRy8AonsIqU7jCw9PJrqn
+	VpfVAAR19Tl0VLTylhPe5BXyCl+KOfYoGBGTE0ZNAPodpctI8wqqPwo3Y+VthD6S
+	fbcdGb+zW+HDSej5KI95ZbFxMSq0b2F3dWbHx2ULxHbDF1FYotZCn8+m/EQvgE6k
+	I/VaGxzdmOBnHzlGkfqoXUrBpitaqQAl62de0PfsIaRjQ6odydI50h9r83zeo3fV
+	5nb4u2H8z9S7uswP5+xajzmJEiouLnYNikGMxu0+Dkb/3U/Las676ikHZaZouyRw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4w9s5ft-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Nov 2025 10:45:08 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ARAedYM023234;
+	Thu, 27 Nov 2025 10:45:06 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4w9s5fq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Nov 2025 10:45:06 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AR8A8Gc025108;
+	Thu, 27 Nov 2025 10:45:05 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4akt71qbuv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Nov 2025 10:45:05 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5ARAj06p57082252
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 27 Nov 2025 10:45:01 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C443D2004F;
+	Thu, 27 Nov 2025 10:45:00 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0DB8920040;
+	Thu, 27 Nov 2025 10:44:57 +0000 (GMT)
+Received: from [9.109.215.252] (unknown [9.109.215.252])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 27 Nov 2025 10:44:56 +0000 (GMT)
+Message-ID: <52811199-742a-40fc-8bf2-9cb4397afda4@linux.ibm.com>
+Date: Thu, 27 Nov 2025 16:14:56 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,196 +86,176 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251126234603.GA2832326@bhelgaas>
-X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/17] Paravirt CPUs and push task for less vCPU
+ preemption
+To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, tglx@linutronix.de, yury.norov@gmail.com,
+        maddy@linux.ibm.com, srikar@linux.ibm.com, gregkh@linuxfoundation.org,
+        pbonzini@redhat.com, seanjc@google.com, kprateek.nayak@amd.com,
+        vschneid@redhat.com, iii@linux.ibm.com, huschle@linux.ibm.com,
+        rostedt@goodmis.org, dietmar.eggemann@arm.com,
+        christophe.leroy@csgroup.eu
+References: <20251119124449.1149616-1-sshegde@linux.ibm.com>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20251119124449.1149616-1-sshegde@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIyMDAyMSBTYWx0ZWRfXyEi4MA1r7NQP
+ gONJN1v5nMQsKQZYH0zVp0pPK8/Huw5C7KXbetvZcam/0tnaNVbdCn518Kiqp6oqQhh5K/GzR6U
+ /OuWIPr/AkNPswjZ95aDfwccyTC/cTe0ZzC+STILvo5fd1rYg6crknjeP4m0Rm2jHzOHhgTOWl/
+ xL80HdZF9xW1I2yBeS9HNjrmWznJrgb5umO6EAeUXEge3yKHIQLViO1x8oIuex3gzfuXV0aguG7
+ 6PYzGA3qwQ7aATHIx9DwMMdvy0xLG9TjqcCn/GwtINOAUhfRQ/OSYW6UnXwc/YgUO/DIeK6/O3r
+ cvcMyt6P7Dfa5JVeyU11IgPKQPWBgQC1J5AXmnQs+3etNbKVFlVEKmz7VKVUiSzcpF0SfwuaKrz
+ mm7FZyBdeWXTZmecib+l6ETc1j99KQ==
+X-Proofpoint-ORIG-GUID: lkRp_QuanJVxs8mbPfaVoeIspuwuud5S
+X-Proofpoint-GUID: BPbLBkyKhmMyNVnffdeE5jdDykugeYDz
+X-Authority-Analysis: v=2.4 cv=TMJIilla c=1 sm=1 tr=0 ts=69282bb4 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=mV9VRH-2AAAA:8 a=uMLcZr6R_3pDnm8Uh0cA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 phishscore=0 impostorscore=0 clxscore=1015
+ adultscore=0 bulkscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511220021
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Nov 26, 2025 at 05:46:03PM -0600, Bjorn Helgaas wrote:
-> On Wed, Nov 26, 2025 at 01:49:06PM +0100, Lukas Wunner wrote:
-> > In the patch, I made the "pci_dev->state_saved = false" assignment
-> > conditional on !pm_runtime_suspended() in the "freeze" codepath.
-> > I didn't do the same in the legacy codepath because none of the
-> > drivers using legacy PM callbacks seem to be using runtime PM.
-> 
-> Maybe it's moot because we hope there will be no new users of PCI
-> legacy PM with runtime PM, but I don't think there's anything to
-> *prevent* that or to protect against out-of-tree drivers.
-> 
-> The implicit assumption that there are no such drivers makes it look
-> like there's something magic involving state_saved, legacy PM, and
-> runtime PM.  It might be worth doing the same in the legacy PM path
-> just for readability.
 
-Drivers having both legacy callbacks and modern callbacks (including
-runtime PM callbacks) cause emission of a WARN splat in
-pci_has_legacy_pm_support().
 
-Drivers need to activate runtime PM by dropping a runtime PM reference
-on probe (see the code comment in local_pci_probe()).  In theory a
-driver could have legacy callbacks but no modern callbacks and still
-use runtime PM by calling pm_runtime_put_noidle() on probe.  So I
-compiled a list of drivers implementing legacy callbacks (included
-at the end of this e-mail for reference), grep'ed through them
-for any "pm_runtime" occurrences and found none.
+On 11/19/25 6:14 PM, Shrikanth Hegde wrote:
+> Detailed problem statement and some of the implementation choices were
+> discussed earlier[1].
 
-Hence it seems very unlikely that drivers using legacy callbacks and
-runtime PM exist.  We probably shouldn't accommodate for such use cases
-but should rather try to incentivize conversion to modern callbacks.
 
-When compiling the list I sadly noticed that new drivers do exist
-which use legacy callbacks.  A case in point is:
+Performance data on x86 and PowerPC:
 
-drivers/net/ethernet/google/gve/gve_main.c
+++++++++++++++++++++++++++++++++++++++++++++++++
+PowerPC: LPAR(VM) Running on powerVM hypervisor
+++++++++++++++++++++++++++++++++++++++++++++++++
 
-... which started using legacy callbacks in 2021 with commit 974365e51861
-("gve: Implement suspend/resume/shutdown").
+Host: 126 cores available in pool.
+VM1: 96VP/64EC - 768 CPUs
+VM2: 72VP/48EC - 576 CPUs
+(VP- Virtual Processor core), (EC - Entitled Cores)
+steal_check_frequency:1
+steal_ratio_high:400
+steal_ratio_low:150
 
-I guess there is no real incentive to convert to modern PM callbacks and
-finding someone who has the hardware and can test patches is hard
-(most drivers are for ATA, some for really old 1990s hardware).
-Plus, a lot of detailed knowledge about PCI PM is necessary to avoid
-breakage, making this a task that can't easily be delegated to new
-contributors.  And everyone with the knowledge is overworked already.
-So we keep dragging this tech debt along which complicates codepaths. :(
+Scenarios:
+Secario 1: (Major improvement)
+VM1 is running daytrader[1] and VM2 is running stress-ng --cpu=$(nproc)
+Note: High gains. In the upstream the steal time was around 15%. With series it comes down
+to 3%. With further tuning it could be reduced.
 
-> Stepping back, I guess that when drivers use generic PM, we already
-> save config state during suspend and restore that state during resume,
-> and do the same when entering/leaving hibernation.
-> 
-> And the point of this patch is to do the same when drivers lack PM or
-> use legacy PCI PM, or when devices have no driver?
+				upstream		+series
+daytrader	   	   	1x			  1.7x     <<- 70% gain
+throughput
 
-Right.  To have a consistent logic that state_saved is always cleared
-before commencing the suspend sequence, in all codepaths.
+-----------
+Scenario 2: (improves thread_count < num_cpus)
+VM1 is running schbench and VM2 is running stress-ng --cpu=$(nproc)
+Note: Values are average of 5 runs and they are wakeup latencies
 
-> Maybe third try is the charm?
-> 
->   For drivers using PCI legacy suspend, save config state at suspend
->   so that state, not any earlier state from enumeration, probe, or
->   error recovery, will be restored when resuming.
-> 
->   For devices with no driver or a driver that lacks PM, save config
->   state at hibernate so that state, not any earlier state from
->   enumeration, probe, or error recovery, will be restored when
->   resuming.
+schbench -t 400			upstream		+series
+50.0th:				  18.00			  16.60
+90.0th:				 174.00			  46.80
+99.0th:				3197.60                  928.80
+99.9th:				6203.20                 4539.20
+average rps:                   39665.61		       42334.65
+  
+schbench -t 600			upstream		+series
+50.0th:				  23.80 		  19.80
+90.0th:				 917.20                  439.00
+99.0th:				5582.40                 3869.60
+99.9th:				8982.40      		6574.40
+average rps:		       39541.00		       40018.11
 
-Perfect.
+-----------
+Scenario 3: (Improves)
+VM1 is running hackbench and VM2 is running  stress-ng --cpu=$(nproc)
+Note: Values are average of 10 runs and 20000 loops.
 
-> IIUC, after "Ensure error recoverability", the PCI core will always
-> save the state during enumeration, so drivers shouldn't use
-> pci_save_state() at all unless they make config changes that they want
-> restored during error recovery?
-> 
-> Or, I guess (sigh) if they do their own power management?
+Process 10 groups          	  2.84               2.62
+Process 20 groups          	  5.39               4.48
+Process 30 groups          	  7.51               6.29
+Process 40 groups          	  9.88               7.42
+Process 50 groups    	  	 12.46               9.54
+Process 60 groups          	 14.76              12.09
+thread  10 groups          	  2.93               2.70
+thread  20 groups          	  5.79               4.78
+Process(Pipe) 10 groups    	  2.31               2.18
+Process(Pipe) 20 groups  	  3.32               3.26
+Process(Pipe) 30 groups  	  4.19               4.14
+Process(Pipe) 40 groups  	  5.18               5.53
+Process(Pipe) 50 groups 	  6.57               6.80
+Process(Pipe) 60 groups  	  8.21               8.13
+thread(Pipe)  10 groups 	  2.42               2.24
+thread(Pipe)  20 groups 	  3.62               3.42
 
-Exactly right.
+-----------
+Notes:
 
-> > Also, in case the meaning of "freeze", "thaw", "restore" isn't clear,
-> > here's the order of a hibernation sequence (suspend to disk):
-[...]
-> Thanks, this is extremely helpful.
+Numbers might be very favorable since VM2 is constantly running and has some CPUs
+marked as paravirt when there is steal time and thresholds also might have played a role.
+Will plan to run same workload i.e hackbench and schbench on both VM's and see the behavior.
 
-FWIW, this is the sequence of suspend-to-memory, obviously much simpler:
+VM1 is CPUs distributed equally across Nodes, while VM2 is not. Since CPUs are marked paravirt
+based on core count, some nodes on VM2 would have left unused and that could have added a boot for
+VM1 performance specially for daytrader.
 
-  pci_pm_prepare()
-  pci_pm_suspend()
-  pci_pm_suspend_late()
-  pci_pm_suspend_noirq()
-  pci_pm_resume_noirq()
-  pci_pm_resume_early()
-  pci_pm_resume()
-  pci_pm_complete()
+[1]: Daytrader is real life benchmark which does stock trading simulation.
+https://www.ibm.com/docs/en/linux-on-systems?topic=descriptions-daytrader-benchmark-application
+https://cwiki.apache.org/confluence/display/GMOxDOC12/Daytrader
 
-And runtime PM:
+TODO: Get numbers with very high concurrency of hackbench/schbench.
 
-  pci_pm_runtime_suspend()
-  pci_pm_runtime_resume()
++++++++++++++++++++++++++++++++
+on x86_64 (Laptop running KVMs)
++++++++++++++++++++++++++++++++
+Host: 8 CPUs.
+Two VM. Each spawned with -smp 8.
+-----------
+Scenario 1:
+Both VM's are running hackbench 10 process 10000 loops.
+Values are average of 3 runs. High steal of close 50% was seen when
+running upstream. So marked 4-7 as paravirt by writing to sysfs file.
+Since laptop has lot of host tasks running, there will be still be steal time.
 
-Thanks,
+hackbench 10 groups		upstream		+series (4-7 marked as paravirt)
+(seconds)		 	  58			   54.42			
 
-Lukas
+Note: Having 5 groups helps too. But when concurrency goes such as very high(40 groups), it regress.
 
--- >8 --
+-----------
+Scenario 2:
+Both VM's are running schbench. Values are average of 2 runs. 		
+"schbench -t 4 -r 30 -i 30" (latencies improve but rps is slightly less)
 
-Drivers with legacy PCI PM callbacks:
+wakeup latencies		upstream		+series(4-7 marked as paravirt)
+50.0th				  25.5		  		13.5
+90.0th				  70.0				30.0
+99.0th				2588.0			      1992.0
+99.9th				3844.0			      6032.0
+average rps:			   338				326
 
-  drivers/ata/acard-ahci.c
-  drivers/ata/ata_generic.c
-  drivers/ata/ata_piix.c
-  drivers/ata/pata_acpi.c
-  drivers/ata/pata_ali.c
-  drivers/ata/pata_amd.c
-  drivers/ata/pata_artop.c
-  drivers/ata/pata_atiixp.c
-  drivers/ata/pata_atp867x.c
-  drivers/ata/pata_cmd640.c
-  drivers/ata/pata_cmd64x.c
-  drivers/ata/pata_cs5520.c
-  drivers/ata/pata_cs5530.c
-  drivers/ata/pata_cs5535.c
-  drivers/ata/pata_cs5536.c
-  drivers/ata/pata_cypress.c
-  drivers/ata/pata_efar.c
-  drivers/ata/pata_hpt366.c
-  drivers/ata/pata_hpt3x3.c
-  drivers/ata/pata_it8213.c
-  drivers/ata/pata_it821x.c
-  drivers/ata/pata_jmicron.c
-  drivers/ata/pata_macio.c
-  drivers/ata/pata_marvell.c
-  drivers/ata/pata_mpiix.c
-  drivers/ata/pata_netcell.c
-  drivers/ata/pata_ninja32.c
-  drivers/ata/pata_ns87410.c
-  drivers/ata/pata_ns87415.c
-  drivers/ata/pata_oldpiix.c
-  drivers/ata/pata_opti.c
-  drivers/ata/pata_optidma.c
-  drivers/ata/pata_pdc2027x.c
-  drivers/ata/pata_pdc202xx_old.c
-  drivers/ata/pata_piccolo.c
-  drivers/ata/pata_radisys.c
-  drivers/ata/pata_rdc.c
-  drivers/ata/pata_rz1000.c
-  drivers/ata/pata_sc1200.c
-  drivers/ata/pata_sch.c
-  drivers/ata/pata_serverworks.c
-  drivers/ata/pata_sil680.c
-  drivers/ata/pata_sis.c
-  drivers/ata/pata_sl82c105.c
-  drivers/ata/pata_triflex.c
-  drivers/ata/pata_via.c
-  drivers/ata/sata_inic162x.c
-  drivers/ata/sata_mv.c
-  drivers/ata/sata_nv.c
-  drivers/ata/sata_sil.c
-  drivers/ata/sata_sil24.c
-  drivers/ata/sata_sis.c
-  drivers/ata/sata_via.c
-  drivers/bluetooth/hci_bcm4377.c
-  drivers/gpio/gpio-bt8xx.c
-  drivers/message/fusion/mptfc.c
-  drivers/message/fusion/mptsas.c
-  drivers/message/fusion/mptspi.c
-  drivers/mtd/nand/raw/cafe_nand.c
-  drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-  drivers/net/ethernet/atheros/atlx/atl2.c
-  drivers/net/ethernet/google/gve/gve_main.c
-  drivers/net/ethernet/microsoft/mana/gdma_main.c
-  drivers/net/ethernet/toshiba/tc35815.c
-  drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-  drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-  drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-  drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-  drivers/scsi/nsp32.c
-  drivers/scsi/qedf/qedf_main.c
-  drivers/scsi/qedi/qedi_main.c
-  drivers/scsi/stex.c
-  drivers/tty/serial/serial_txx9.c
-  drivers/video/fbdev/chipsfb.c
-  drivers/video/fbdev/i810/i810_main.c
+schbench -t 8 -r 30 -i 30    (Major degradation of rps)
+wakeup latencies		upstream		+series(4-7 marked as paravirt)
+50.0th				  15.0				11.5
+90.0th				1630.0			      2844.0
+99.0th				4314.0			      6624.0
+99.9th				8572.0			     10896.0
+average rps:			 393			       240.5
+
+Anything higher also regress. Need to see why it might be? Maybe too many context
+switches since number of threads are too high and CPUs available is less.
 
