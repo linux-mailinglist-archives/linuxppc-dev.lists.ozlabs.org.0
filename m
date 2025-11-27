@@ -1,71 +1,127 @@
-Return-Path: <linuxppc-dev+bounces-14515-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14516-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68FE8C8CCE2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 05:42:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E44C8D00F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 08:09:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dH3h11H5Mz30HQ;
-	Thu, 27 Nov 2025 15:42:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dH6wr4gSDz302b;
+	Thu, 27 Nov 2025 18:09:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::e36"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764218561;
-	cv=none; b=MapZpDhVR+v24XjUgjs0gsN+JPqMpG+izr3vtRf8V4u8cSZSb8YoIRr5Z8oabP3QYAhkqaXZ75R6o1c9M9VSx0lZuGAPkjxbwBLVT8qrR+cjVRGpQ4DY/TSTa+fJPhKQliFDVHw2lFX7gz4M5aLHBZ4OoVuJRvZCkeoDHIqPsGuS4HfUbWflTMhCDL0SqXZCMQWTr+8wt8jpvpqOWhBG2mBrqPl+3T9LwX9NWcnVS1TCDwB9HHnIdicieM6HKjxYe8MeCVyF3zlHSOTuG3tm2K5tbDqo1oFvp72ZAti+kNpeP3xDLfz1I4Z9sFDrYftX7UzNvbzjQEj3G3Uo4h1DWg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764227340;
+	cv=none; b=e8xZNQAFD+qzSoIWUcDi1m+4VvtJtMLi0vr5xgVfeTM/g9+WP2d6inkqmAc7cWM4lqX0F0YixDPyhI5pT2HjKH6v/g3W4eeGFkx3A684QnOpg3Tp8dtKST1c216zUgkebAywsNw1sFMTWB+DGSsI8lP+SoeYZQhuSnFZ8dBuzW6JSR0G1vjSTgppcu1Vy+WcKwsG0jkdy+IKc3SN6av3Rye323b9X4qjlBT1tTxHCdWnHWK209eAYVojHHgsw9rJgdQ115tgCS5forO/yp/noAPtjxHF0V8Ud8MiUG/AW5TRo/ZXA5TElceMPOJ+YK2hbcL9DJ5h4sfRD7iDXshG8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764218561; c=relaxed/relaxed;
-	bh=bEhopEuyFNhgXqkSaWLWBfzS2UzIUD/ULoq0kMipD7w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ikj0u0BYAAQF69Rx7f1ixmRI3sQOeogWpwFuxLxs95Crd7oml8E78aWnV6ilQXoKdRsW1vRagyGeNi1NHl+N5DweV9gg0ObfntHGX3HI4y7bvSkzEWv2PBXEI9efCD0d6NIZBTHF9snNXyTxqQDiVbgLIBonttvlLvGh8L2fNj9aHliJyt/E8Vu+0+PPHcmjzVcMPJZg1rzly7DJOUiR9Iwt27D2/8mPKD4gryWdJsekC9E4jjyLiYG4hKaPFbclejVlc7NVxXn8ZQKg/Nd4b8vgniySj6msD8/zldNm9NAuiKSdAh+QUdhD8Jp/1E9Ngmb3XOgHm60k6OLacQYqag==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kIcCgqX4; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::e36; helo=mail-vs1-xe36.google.com; envelope-from=21cnbao@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1764227340; c=relaxed/relaxed;
+	bh=GkYN9sQBp6dFq1RSSSZnuQ9AZ+VFB0EPlCzVmqFi3YU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=URXBZjj8ZOgjWa/+WvKoGOulMhI4+9OQFehHloy93IXXf9AKheUkitDEETGNr8UEMWizmwsOblWnk1xhuC8w+XovIhTN+PyYnIjKu1s2z60YE2CZxo+cZ4ZkkucxWy30z1yhK3SPW0wT+tYXwXZoz+heOGaxB34wD4XHphTqmo5qoJp5AI8TgNsZHtu0K8aiWc+3oJZBSg0PkDF8yd60owXOKQ2N+IKk4ez4GFe2iigdFYtqgDGz9jECbfrKD01AyMNexh1lJB3AmEZjNJagPWFKsP04OO5tqw12Bx4sZGF3ETnXGkKz0GyYUH/ewkPMvDbRc2yHluH9Mh2iybNsDQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=NRFjlEQE; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=uKKXG1H+; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kIcCgqX4;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=NRFjlEQE;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=uKKXG1H+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::e36; helo=mail-vs1-xe36.google.com; envelope-from=21cnbao@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dH3gz5hl9z30FR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 15:42:38 +1100 (AEDT)
-Received: by mail-vs1-xe36.google.com with SMTP id ada2fe7eead31-5dbd8bb36fcso430778137.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Nov 2025 20:42:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764218556; x=1764823356; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bEhopEuyFNhgXqkSaWLWBfzS2UzIUD/ULoq0kMipD7w=;
-        b=kIcCgqX47mr5MmCo/Idj+k+0R5QKOknw2AZ4Vi4CvJ98yC7bOToZP8rYfTxII+lrgD
-         C2Q2D+NyRcdLoYffilHIclOC1AmDZ5I9pUcMntoXuoX0Rf1ufS5lAHj5vgZ8znErQiz0
-         sD+cw3PgBmowTbZQsAswCHeQQNAKWIHzby8T1R1KObPiNBqPDEzkigwfyU5nVI66eNxj
-         XXjnCf4+VEBez2FavfdCD2DFmWM5aqk+pWBybE7HILUB4GQA+pSkSP5xXjhLfp213CX9
-         cbqQwz2SLrJkvj+o4UdgXwD2N1aRBFiGv2H+e9TyFsEaph/IZUFqeSqLlaKY+vfUYm6w
-         EWxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764218556; x=1764823356;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bEhopEuyFNhgXqkSaWLWBfzS2UzIUD/ULoq0kMipD7w=;
-        b=dAmG6Y1U3tXoe18XqJ0mbJPoOZBFyyb0NF2+06frlsUpN6pRGGOJP45Wig9lCvy2Cy
-         2AgE5YI0tvHzsJYReOtMi5hV4IqsKagxtVLVqfRAVcJE50VnfJgL5z9zl4ldNSEv9P1s
-         gtCMyRgN7jHKqGu5lsb6O2PcrvuctKQhwBnODj+Wxg8Jno7TIyUWXnh3Luu8WTy4o6H8
-         InEXeFUG025DtqOJyQDSCXFEL+iph488Xtd1YdkqoByQ6vdSg47K+3dS/kiTS+TrzrkR
-         gFrydVMb7bcw1HHaMEgYL50LYt5vsTi3A7LkPnFZRNYUMTqGES7LeUSqHzwv1Lwlu3j1
-         7jwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5SFR/vcqYNoY/7SxnSCFwCEj3RexRfqTCACf6ma+szhrC13IXof2EtxfjrQnS56AUABOotUIZ7Mq2NtQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyRy+Wh1RR1znSCIiz8PTMKmiSzdT4NeW0o293mhIw8/PMXuaC+
-	Dz2dsChCoaOWmy0sffEm7DAL/FHDdmkLX9JteuALuRZPO9sMzCUMICZMhXvbGnJWPyV11GYGg58
-	ap/IGuaFm0C+/ko2RR9rBj6PtJxYW39M=
-X-Gm-Gg: ASbGncvHwdflfDFe9h27EIq/0tT4ClKp0/eeDFbNSSOcHP8cyJtmbE5shY5+5gT9vLC
-	xNR7SiLOQph1p0DuYzzWHgmInbyn1GX1Pw/R4ZiVf+w6xS5NUKTKs3G6hiH08mK0viY+QCb1nNX
-	09IE9nRFlt1vACijcrGNKO3XK0+vBcORw+GKChSGFWiE1tMXTMdg8FaALQwtZ/f1WS/XzflFvhg
-	SWDdNkuVc69oyKoswIsoVeNswFI1BtM7mknEKfZLkuqAWsJsIY9/GoggJSRUUsc3dhDrw==
-X-Google-Smtp-Source: AGHT+IGH43TrgsJFNtUr5ao/vogWT9GdRhnXVZ07KbbMX+jdayVJE8Rn0KQfN/TjkQoluZkh1Kzptkw+oLx2u2WmID0=
-X-Received: by 2002:a05:6102:54a2:b0:5db:3c3b:7767 with SMTP id
- ada2fe7eead31-5e1dcfaca59mr9155596137.16.1764218556121; Wed, 26 Nov 2025
- 20:42:36 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dH6wp5qKKz2yrX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 18:08:57 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 508465BCC4;
+	Thu, 27 Nov 2025 07:08:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1764227329; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=GkYN9sQBp6dFq1RSSSZnuQ9AZ+VFB0EPlCzVmqFi3YU=;
+	b=NRFjlEQEFRUF7MB0YXXuWH+hccvSptPQkIWcQIN42Eujd+3DypnWRVBsEJOEQpawsBHhRT
+	DZCAXZ/+rWHpMsRmIsSSJO7Q0/+CGg09JHud8frJouhM+o9x2Jc+uC8CI7ytj0uFvKEN6J
+	1q+u7R80ryYQ3g0sjK8vydN/B0Qf08k=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=uKKXG1H+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1764227328; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=GkYN9sQBp6dFq1RSSSZnuQ9AZ+VFB0EPlCzVmqFi3YU=;
+	b=uKKXG1H+6MZGr/tZefnbzOsYOgrhg2akWRcpCnauAJm2xDHwX7cweR+dsw1lfTmF6IjuH5
+	vzBWHYIhEpeDfzWOo6Kp6y/QHgKEtErU0VGcSns5/+PZDcnsbDi9V133ATlarmPHbh0An/
+	TbbVvbnfugeXzU5GIet2NqMAuAkNa1o=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CCCEF3EA63;
+	Thu, 27 Nov 2025 07:08:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +HFzMP74J2lYXAAAD6G6ig
+	(envelope-from <jgross@suse.com>); Thu, 27 Nov 2025 07:08:46 +0000
+From: Juergen Gross <jgross@suse.com>
+To: linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	linux-hyperv@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: Juergen Gross <jgross@suse.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Waiman Long <longman@redhat.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	xen-devel@lists.xenproject.org,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Oleg Nesterov <oleg@redhat.com>
+Subject: [PATCH v4 00/21] paravirt: cleanup and reorg
+Date: Thu, 27 Nov 2025 08:08:23 +0100
+Message-ID: <20251127070844.21919-1-jgross@suse.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,129 +135,189 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20251127011438.6918-1-21cnbao@gmail.com> <aSfO7fA-04SBtTug@casper.infradead.org>
- <CAGsJ_4zyZeLtxVe56OSYQx0OcjETw2ru1FjZjBOnTszMe_MW2g@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zyZeLtxVe56OSYQx0OcjETw2ru1FjZjBOnTszMe_MW2g@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 27 Nov 2025 12:42:24 +0800
-X-Gm-Features: AWmQ_blP9KP_04bFNRiiSxH6Z8Vu2JxzZ1V6hdafxe8pxPoB5frW9rAs1E64Uhk
-Message-ID: <CAGsJ_4w8550U+1dah2VoZNuvLT7D15ktC6704AEmz6eui60YwA@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] mm: continue using per-VMA lock when retrying
- page faults after I/O
-To: Matthew Wilcox <willy@infradead.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	Barry Song <v-songbaohua@oppo.com>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Pedro Falcato <pfalcato@suse.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Oscar Salvador <osalvador@suse.de>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
-	Oven Liyang <liyangouwen1@oppo.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>, Robin Murphy <robin.murphy@arm.com>, 
-	=?UTF-8?Q?Kristina_Mart=C5=A1enko?= <kristina.martsenko@arm.com>, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, Yeoreum Yun <yeoreum.yun@arm.com>, 
-	Wentao Guan <guanwentao@uniontech.com>, Thorsten Blum <thorsten.blum@linux.dev>, 
-	Steven Rostedt <rostedt@goodmis.org>, Yunhui Cui <cuiyunhui@bytedance.com>, 
-	Nam Cao <namcao@linutronix.de>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[suse.com,kernel.org,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com,microsoft.com,infradead.org,gmail.com,oracle.com,lists.xenproject.org,broadcom.com,armlinux.org.uk,arm.com,xen0n.name,linux.ibm.com,ellerman.id.au,csgroup.eu,dabbelt.com,eecs.berkeley.edu,ghiti.fr,linaro.org,goodmis.org,google.com,suse.de,lists.infradead.org,epam.com];
+	DKIM_TRACE(0.00)[suse.com:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[57];
+	R_RATELIMIT(0.00)[to_ip_from(RLkdkdrsxe9hqhhs5ask8616i6)];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Level: 
+X-Spam-Score: -1.51
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 508465BCC4
+X-Rspamd-Action: no action
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Nov 27, 2025 at 12:22=E2=80=AFPM Barry Song <21cnbao@gmail.com> wro=
-te:
->
-> On Thu, Nov 27, 2025 at 12:09=E2=80=AFPM Matthew Wilcox <willy@infradead.=
-org> wrote:
-> >
-> > On Thu, Nov 27, 2025 at 09:14:36AM +0800, Barry Song wrote:
-> > > There is no need to always fall back to mmap_lock if the per-VMA
-> > > lock was released only to wait for pagecache or swapcache to
-> > > become ready.
-> >
-> > Something I've been wondering about is removing all the "drop the MM
-> > locks while we wait for I/O" gunk.  It's a nice amount of code removed:
->
-> I think the point is that page fault handlers should avoid holding the VM=
-A
-> lock or mmap_lock for too long while waiting for I/O. Otherwise, those
-> writers and readers will be stuck for a while.
->
-> >
-> >  include/linux/pagemap.h |  8 +---
-> >  mm/filemap.c            | 98 ++++++++++++-----------------------------=
---------
-> >  mm/internal.h           | 21 -----------
-> >  mm/memory.c             | 13 +------
-> >  mm/shmem.c              |  6 ---
-> >  5 files changed, 27 insertions(+), 119 deletions(-)
-> >
-> > and I'm not sure we still need to do it with per-VMA locks.  What I
-> > have here doesn't boot and I ran out of time to debug it.
->
-> I agree there=E2=80=99s room for improvement, but merely removing the "dr=
-op the MM
-> locks while waiting for I/O" code is unlikely to improve performance.
->
+Some cleanups and reorg of paravirt code and headers:
 
-One idea I have is that we could conditionally remove the "drop lock and
-retry page fault" step if we are reasonably sure the I/O has already
-completed:
+- The first 2 patches should be not controversial at all, as they
+  remove just some no longer needed #include and struct forward
+  declarations.
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 57dfd2211109..151f6d38c284 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3517,7 +3517,9 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
-                }
-        }
+- The 3rd patch is removing CONFIG_PARAVIRT_DEBUG, which IMO has
+  no real value, as it just changes a crash to a BUG() (the stack
+  trace will basically be the same). As the maintainer of the main
+  paravirt user (Xen) I have never seen this crash/BUG() to happen.
 
--       if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
-+       if (folio_test_uptodate(folio))
-+               folio_lock(folio);
-+       else if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
-                goto out_retry;
+- The 4th patch is just a movement of code.
 
-        /* Did it get truncated? */
-diff --git a/mm/memory.c b/mm/memory.c
-index 7f70f0324dcf..355ed02560fd 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4758,7 +4758,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-        }
+- I don't know for what reason asm/paravirt_api_clock.h was added,
+  as all archs supporting it do it exactly in the same way. Patch
+  5 is removing it.
 
-        swapcache =3D folio;
--       ret |=3D folio_lock_or_retry(folio, vmf);
-+       if (folio_test_uptodate(folio))
-+               folio_lock(folio);
-+       else
-+               ret |=3D folio_lock_or_retry(folio, vmf);
-        if (ret & VM_FAULT_RETRY) {
-                if (fault_flag_allow_retry_first(vmf->flags) &&
-                    !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT) &&
+- Patches 6-14 are streamlining the paravirt clock interfaces by
+  using a common implementation across architectures where possible
+  and by moving the related code into common sched code, as this is
+  where it should live.
 
-In that case, we are likely just waiting for the mapping to be completed by
-another process. I may develop the above idea as an incremental patch after
-this patchset.
+- Patches 15-20 are more like RFC material preparing the paravirt
+  infrastructure to support multiple pv_ops function arrays.
+  As a prerequisite for that it makes life in objtool much easier
+  with dropping the Xen static initializers of the pv_ops sub-
+  structures, which is done in patches 15-17.
+  Patches 18-20 are doing the real preparations for multiple pv_ops
+  arrays and using those arrays in multiple headers.
 
-Thanks
-Barry
+- Patch 21 is an example how the new scheme can look like using the
+  PV-spinlocks.
+
+Changes in V2:
+- new patches 13-18 and 20
+- complete rework of patch 21
+
+Changes in V3:
+- fixed 2 issues detected by kernel test robot
+
+Changes in V4:
+- fixed one build issue
+
+Juergen Gross (21):
+  x86/paravirt: Remove not needed includes of paravirt.h
+  x86/paravirt: Remove some unneeded struct declarations
+  x86/paravirt: Remove PARAVIRT_DEBUG config option
+  x86/paravirt: Move thunk macros to paravirt_types.h
+  paravirt: Remove asm/paravirt_api_clock.h
+  sched: Move clock related paravirt code to kernel/sched
+  arm/paravirt: Use common code for paravirt_steal_clock()
+  arm64/paravirt: Use common code for paravirt_steal_clock()
+  loongarch/paravirt: Use common code for paravirt_steal_clock()
+  riscv/paravirt: Use common code for paravirt_steal_clock()
+  x86/paravirt: Use common code for paravirt_steal_clock()
+  x86/paravirt: Move paravirt_sched_clock() related code into tsc.c
+  x86/paravirt: Introduce new paravirt-base.h header
+  x86/paravirt: Move pv_native_*() prototypes to paravirt.c
+  x86/xen: Drop xen_irq_ops
+  x86/xen: Drop xen_cpu_ops
+  x86/xen: Drop xen_mmu_ops
+  objtool: Allow multiple pv_ops arrays
+  x86/paravirt: Allow pv-calls outside paravirt.h
+  x86/paravirt: Specify pv_ops array in paravirt macros
+  x86/pvlocks: Move paravirt spinlock functions into own header
+
+ arch/Kconfig                                  |   3 +
+ arch/arm/Kconfig                              |   1 +
+ arch/arm/include/asm/paravirt.h               |  22 --
+ arch/arm/include/asm/paravirt_api_clock.h     |   1 -
+ arch/arm/kernel/Makefile                      |   1 -
+ arch/arm/kernel/paravirt.c                    |  23 --
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/paravirt.h             |  14 -
+ arch/arm64/include/asm/paravirt_api_clock.h   |   1 -
+ arch/arm64/kernel/paravirt.c                  |  11 +-
+ arch/loongarch/Kconfig                        |   1 +
+ arch/loongarch/include/asm/paravirt.h         |  13 -
+ .../include/asm/paravirt_api_clock.h          |   1 -
+ arch/loongarch/kernel/paravirt.c              |  10 +-
+ arch/powerpc/include/asm/paravirt.h           |   3 -
+ arch/powerpc/include/asm/paravirt_api_clock.h |   2 -
+ arch/powerpc/platforms/pseries/setup.c        |   4 +-
+ arch/riscv/Kconfig                            |   1 +
+ arch/riscv/include/asm/paravirt.h             |  14 -
+ arch/riscv/include/asm/paravirt_api_clock.h   |   1 -
+ arch/riscv/kernel/paravirt.c                  |  11 +-
+ arch/x86/Kconfig                              |   8 +-
+ arch/x86/entry/entry_64.S                     |   1 -
+ arch/x86/entry/vsyscall/vsyscall_64.c         |   1 -
+ arch/x86/hyperv/hv_spinlock.c                 |  11 +-
+ arch/x86/include/asm/apic.h                   |   4 -
+ arch/x86/include/asm/highmem.h                |   1 -
+ arch/x86/include/asm/mshyperv.h               |   1 -
+ arch/x86/include/asm/paravirt-base.h          |  29 ++
+ arch/x86/include/asm/paravirt-spinlock.h      | 146 ++++++++
+ arch/x86/include/asm/paravirt.h               | 331 +++++-------------
+ arch/x86/include/asm/paravirt_api_clock.h     |   1 -
+ arch/x86/include/asm/paravirt_types.h         | 269 +++++++-------
+ arch/x86/include/asm/pgtable_32.h             |   1 -
+ arch/x86/include/asm/ptrace.h                 |   2 +-
+ arch/x86/include/asm/qspinlock.h              |  89 +----
+ arch/x86/include/asm/spinlock.h               |   1 -
+ arch/x86/include/asm/timer.h                  |   1 +
+ arch/x86/include/asm/tlbflush.h               |   4 -
+ arch/x86/kernel/Makefile                      |   2 +-
+ arch/x86/kernel/apm_32.c                      |   1 -
+ arch/x86/kernel/callthunks.c                  |   1 -
+ arch/x86/kernel/cpu/bugs.c                    |   1 -
+ arch/x86/kernel/cpu/vmware.c                  |   1 +
+ arch/x86/kernel/kvm.c                         |  13 +-
+ arch/x86/kernel/kvmclock.c                    |   1 +
+ arch/x86/kernel/paravirt-spinlocks.c          |  26 +-
+ arch/x86/kernel/paravirt.c                    |  42 +--
+ arch/x86/kernel/tsc.c                         |  10 +-
+ arch/x86/kernel/vsmp_64.c                     |   1 -
+ arch/x86/lib/cache-smp.c                      |   1 -
+ arch/x86/mm/init.c                            |   1 -
+ arch/x86/xen/enlighten_pv.c                   |  82 ++---
+ arch/x86/xen/irq.c                            |  20 +-
+ arch/x86/xen/mmu_pv.c                         | 100 ++----
+ arch/x86/xen/spinlock.c                       |  11 +-
+ arch/x86/xen/time.c                           |   2 +
+ drivers/clocksource/hyperv_timer.c            |   2 +
+ drivers/xen/time.c                            |   2 +-
+ include/linux/sched/cputime.h                 |  18 +
+ kernel/sched/core.c                           |   5 +
+ kernel/sched/cputime.c                        |  13 +
+ kernel/sched/sched.h                          |   3 +-
+ tools/objtool/arch/x86/decode.c               |   8 +-
+ tools/objtool/check.c                         |  78 ++++-
+ tools/objtool/include/objtool/check.h         |   2 +
+ 66 files changed, 661 insertions(+), 826 deletions(-)
+ delete mode 100644 arch/arm/include/asm/paravirt.h
+ delete mode 100644 arch/arm/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/arm/kernel/paravirt.c
+ delete mode 100644 arch/arm64/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/loongarch/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/powerpc/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/riscv/include/asm/paravirt_api_clock.h
+ create mode 100644 arch/x86/include/asm/paravirt-base.h
+ create mode 100644 arch/x86/include/asm/paravirt-spinlock.h
+ delete mode 100644 arch/x86/include/asm/paravirt_api_clock.h
+
+-- 
+2.51.0
+
 
