@@ -1,98 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-14518-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14519-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF49C8D024
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 08:09:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B3BC8D433
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 08:58:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dH6xW6ht6z30B7;
-	Thu, 27 Nov 2025 18:09:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dH81x2xDwz2yvW;
+	Thu, 27 Nov 2025 18:58:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764227375;
-	cv=none; b=Wo42C4kcfylrsRCONuoXXvhX090lbEzQG8dkoHZC0FHvYTphaCQ5LBeqmJGVIer7OMEB6vddL7lwSxwnBZ7uhgNt+12kJgQQIDRmAHFWBhHCb8TyqJb9uEsRhJpsNpUmbE3qPsl5qoHUiFoT+sm93DTapt6qYcFz8vvnCMfxDmnmDyhbF40QeMB0kS6MLc5/APUXzj7H3+sEiN0ez65KFlmYAQ95n4ndpBZFl1H7JgqNPKEd0RvPMXtwp7LsNsNvlDdL1WOKADZUpGIw0WkGhy1GfZM85xW8tH2UWAbO1taIDNSkzqMQLq3v9uRJwrddnvSRhQEvy++KJjNJFmhUnQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764230309;
+	cv=none; b=cDNoDS80qizp+AA9FrmwIcXPICO90E7GZf/PW/Q/LPnvEPspVJbCBTttGsxHJAbJzgf/dv37hAPaIMLoTPfSMXfySML5jzdShYYVc3b0ktGwUM4r9j8d99ZidCE1dDjANYfJyuaDgw2VAo/HDOKJfVSGw0DS6JxbL01lIy3a+OIAtQc0GzUR0CF8Mr5qr69oKPkgwsXmHMxZReQegCjGs0dVmizkUwVk8LFLdlTba+pnUxK28wH1KEiq7eAShtAYfGzDM0Zxy392qZGIiELXr8YwxxCVXonrv+NbJhMQGIf9NbgkDNeCZ23n0YsOzeIs3KoRo9/axDM1h4Lii+MH4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764227375; c=relaxed/relaxed;
-	bh=19VfFf1zSDwbpYUZcul8YLN/xT6uz1qhPpwXX0z82N4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVRd3pSv+rSts7sfR7nLK0bSH31neXaZRdBWmm38Mc0wU0vrJfY78lw8RO05sNGn/qt+F4yKCRY7cc0OhI/hlD1LOzBBtTF8ttakS7GvYpsmbPp6yg4FtcBMYporCau/X91IAwbYsPJ44icTkSqkPfP79TGcNSAPv6+fvv2ANrVJn4RdEZ+hJDdAjrXrlu+SNc+inZpyfkJAhNHcCX5USH4c8emXof79O4ne+md0dUywFFsOsUcwZXw3Xy/6eT7kQSH+IfJpmgj1X3RNhTjMrto9+9ZcX3OM1QVuaYBOyNzp0Pk5R+cMT9chUR4nVVak2QzRjcx9W+e+6vkrZJTrAg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	t=1764230309; c=relaxed/relaxed;
+	bh=1tg7x7BR+0m5P6k/50iPT9CNKarSbXO1O6KiLVdmuhE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kykKqrULkAxSnqP0YcbFJ4SZ0AwjejC6R2jD9JAsMmRjYU+TeIdXsKeJiILW0jRDEQFArYNTCjQwrEfYlcxKEYhuDxYJmuVRM2X9/CSVwVVuFE0Fd9ye4aIVoR1/upgTbbXx0MqU3vjSJBPxDpZ2H/Y2y9UVZxM6hlQxg1I5m7guo1wEsglglnI1bd8/7E9cdOuftVZGNhEcZaNZ72F02pNn3kV2VyrWbxUWNhpiqBXAGFthwP1tFyqD1Q2Nlrj+Cyx9yXsKOiSCsAjaFlVexUsZr9YtRJlTeqq6fvLl8BQ4o7rZLfBtj0fqpwfleDVtWvrz+2aHzjagba/dataygA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dH6xW04Vrz2yvV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 18:09:35 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dH81w1GhWz2xP9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 18:58:26 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D97F333691;
-	Thu, 27 Nov 2025 07:09:24 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B0BB93EA63;
-	Thu, 27 Nov 2025 07:09:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fAinKSP5J2mCXAAAD6G6ig
-	(envelope-from <jgross@suse.com>); Thu, 27 Nov 2025 07:09:23 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	virtualization@lists.linux.dev,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	kvm@vger.kernel.org
-Cc: Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH v4 06/21] sched: Move clock related paravirt code to kernel/sched
-Date: Thu, 27 Nov 2025 08:08:29 +0100
-Message-ID: <20251127070844.21919-7-jgross@suse.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251127070844.21919-1-jgross@suse.com>
-References: <20251127070844.21919-1-jgross@suse.com>
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 534712C000A8;
+	Thu, 27 Nov 2025 08:58:22 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 2F6661D8E7; Thu, 27 Nov 2025 08:58:22 +0100 (CET)
+Date: Thu, 27 Nov 2025 08:58:22 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Riana Tauro <riana.tauro@intel.com>,
+	"Sean C. Dardis" <sean.c.dardis@intel.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Benjamin Block <bblock@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alek Du <alek.du@intel.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] PCI/PM: Reinstate clearing state_saved in legacy
+ and !pm codepaths
+Message-ID: <aSgEnt12QQLXCfWr@wunner.de>
+References: <aSb3Qt6n55Fsl7IF@wunner.de>
+ <20251126234603.GA2832326@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,394 +65,196 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLkdkdrsxe9hqhhs5ask8616i6)]
-X-Rspamd-Queue-Id: D97F333691
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126234603.GA2832326@bhelgaas>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Paravirt clock related functions are available in multiple archs.
+On Wed, Nov 26, 2025 at 05:46:03PM -0600, Bjorn Helgaas wrote:
+> On Wed, Nov 26, 2025 at 01:49:06PM +0100, Lukas Wunner wrote:
+> > In the patch, I made the "pci_dev->state_saved = false" assignment
+> > conditional on !pm_runtime_suspended() in the "freeze" codepath.
+> > I didn't do the same in the legacy codepath because none of the
+> > drivers using legacy PM callbacks seem to be using runtime PM.
+> 
+> Maybe it's moot because we hope there will be no new users of PCI
+> legacy PM with runtime PM, but I don't think there's anything to
+> *prevent* that or to protect against out-of-tree drivers.
+> 
+> The implicit assumption that there are no such drivers makes it look
+> like there's something magic involving state_saved, legacy PM, and
+> runtime PM.  It might be worth doing the same in the legacy PM path
+> just for readability.
 
-In order to share the common parts, move the common static keys
-to kernel/sched/ and remove them from the arch specific files.
+Drivers having both legacy callbacks and modern callbacks (including
+runtime PM callbacks) cause emission of a WARN splat in
+pci_has_legacy_pm_support().
 
-Make a common paravirt_steal_clock() implementation available in
-kernel/sched/cputime.c, guarding it with a new config option
-CONFIG_HAVE_PV_STEAL_CLOCK_GEN, which can be selected by an arch
-in case it wants to use that common variant.
+Drivers need to activate runtime PM by dropping a runtime PM reference
+on probe (see the code comment in local_pci_probe()).  In theory a
+driver could have legacy callbacks but no modern callbacks and still
+use runtime PM by calling pm_runtime_put_noidle() on probe.  So I
+compiled a list of drivers implementing legacy callbacks (included
+at the end of this e-mail for reference), grep'ed through them
+for any "pm_runtime" occurrences and found none.
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- arch/Kconfig                           |  3 +++
- arch/arm/include/asm/paravirt.h        |  4 ----
- arch/arm/kernel/paravirt.c             |  3 ---
- arch/arm64/include/asm/paravirt.h      |  4 ----
- arch/arm64/kernel/paravirt.c           |  4 +---
- arch/loongarch/include/asm/paravirt.h  |  3 ---
- arch/loongarch/kernel/paravirt.c       |  3 +--
- arch/powerpc/include/asm/paravirt.h    |  3 ---
- arch/powerpc/platforms/pseries/setup.c |  4 +---
- arch/riscv/include/asm/paravirt.h      |  4 ----
- arch/riscv/kernel/paravirt.c           |  4 +---
- arch/x86/include/asm/paravirt.h        |  4 ----
- arch/x86/kernel/cpu/vmware.c           |  1 +
- arch/x86/kernel/kvm.c                  |  1 +
- arch/x86/kernel/paravirt.c             |  3 ---
- drivers/xen/time.c                     |  1 +
- include/linux/sched/cputime.h          | 18 ++++++++++++++++++
- kernel/sched/core.c                    |  5 +++++
- kernel/sched/cputime.c                 | 13 +++++++++++++
- kernel/sched/sched.h                   |  2 +-
- 20 files changed, 47 insertions(+), 40 deletions(-)
+Hence it seems very unlikely that drivers using legacy callbacks and
+runtime PM exist.  We probably shouldn't accommodate for such use cases
+but should rather try to incentivize conversion to modern callbacks.
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 61130b88964b..e3e39c2efa90 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1059,6 +1059,9 @@ config HAVE_IRQ_TIME_ACCOUNTING
- 	  Archs need to ensure they use a high enough resolution clock to
- 	  support irq time accounting and then call enable_sched_clock_irqtime().
- 
-+config HAVE_PV_STEAL_CLOCK_GEN
-+	bool
-+
- config HAVE_MOVE_PUD
- 	bool
- 	help
-diff --git a/arch/arm/include/asm/paravirt.h b/arch/arm/include/asm/paravirt.h
-index 95d5b0d625cd..69da4bdcf856 100644
---- a/arch/arm/include/asm/paravirt.h
-+++ b/arch/arm/include/asm/paravirt.h
-@@ -5,10 +5,6 @@
- #ifdef CONFIG_PARAVIRT
- #include <linux/static_call_types.h>
- 
--struct static_key;
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
--
- u64 dummy_steal_clock(int cpu);
- 
- DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
-diff --git a/arch/arm/kernel/paravirt.c b/arch/arm/kernel/paravirt.c
-index 7dd9806369fb..3895a5578852 100644
---- a/arch/arm/kernel/paravirt.c
-+++ b/arch/arm/kernel/paravirt.c
-@@ -12,9 +12,6 @@
- #include <linux/static_call.h>
- #include <asm/paravirt.h>
- 
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
--
- static u64 native_steal_clock(int cpu)
- {
- 	return 0;
-diff --git a/arch/arm64/include/asm/paravirt.h b/arch/arm64/include/asm/paravirt.h
-index 9aa193e0e8f2..c9f7590baacb 100644
---- a/arch/arm64/include/asm/paravirt.h
-+++ b/arch/arm64/include/asm/paravirt.h
-@@ -5,10 +5,6 @@
- #ifdef CONFIG_PARAVIRT
- #include <linux/static_call_types.h>
- 
--struct static_key;
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
--
- u64 dummy_steal_clock(int cpu);
- 
- DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
-diff --git a/arch/arm64/kernel/paravirt.c b/arch/arm64/kernel/paravirt.c
-index aa718d6a9274..943b60ce12f4 100644
---- a/arch/arm64/kernel/paravirt.c
-+++ b/arch/arm64/kernel/paravirt.c
-@@ -19,14 +19,12 @@
- #include <linux/slab.h>
- #include <linux/types.h>
- #include <linux/static_call.h>
-+#include <linux/sched/cputime.h>
- 
- #include <asm/paravirt.h>
- #include <asm/pvclock-abi.h>
- #include <asm/smp_plat.h>
- 
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
--
- static u64 native_steal_clock(int cpu)
- {
- 	return 0;
-diff --git a/arch/loongarch/include/asm/paravirt.h b/arch/loongarch/include/asm/paravirt.h
-index 3f4323603e6a..d219ea0d98ac 100644
---- a/arch/loongarch/include/asm/paravirt.h
-+++ b/arch/loongarch/include/asm/paravirt.h
-@@ -5,9 +5,6 @@
- #ifdef CONFIG_PARAVIRT
- 
- #include <linux/static_call_types.h>
--struct static_key;
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
- 
- u64 dummy_steal_clock(int cpu);
- DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
-diff --git a/arch/loongarch/kernel/paravirt.c b/arch/loongarch/kernel/paravirt.c
-index b1b51f920b23..8caaa94fed1a 100644
---- a/arch/loongarch/kernel/paravirt.c
-+++ b/arch/loongarch/kernel/paravirt.c
-@@ -6,11 +6,10 @@
- #include <linux/kvm_para.h>
- #include <linux/reboot.h>
- #include <linux/static_call.h>
-+#include <linux/sched/cputime.h>
- #include <asm/paravirt.h>
- 
- static int has_steal_clock;
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
- static DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
- DEFINE_STATIC_KEY_FALSE(virt_spin_lock_key);
- 
-diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
-index b78b82d66057..92343a23ad15 100644
---- a/arch/powerpc/include/asm/paravirt.h
-+++ b/arch/powerpc/include/asm/paravirt.h
-@@ -23,9 +23,6 @@ static inline bool is_shared_processor(void)
- }
- 
- #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
--
- u64 pseries_paravirt_steal_clock(int cpu);
- 
- static inline u64 paravirt_steal_clock(int cpu)
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index b10a25325238..50b26ed8432d 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -42,6 +42,7 @@
- #include <linux/memblock.h>
- #include <linux/swiotlb.h>
- #include <linux/seq_buf.h>
-+#include <linux/sched/cputime.h>
- 
- #include <asm/mmu.h>
- #include <asm/processor.h>
-@@ -83,9 +84,6 @@ DEFINE_STATIC_KEY_FALSE(shared_processor);
- EXPORT_SYMBOL(shared_processor);
- 
- #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
--
- static bool steal_acc = true;
- static int __init parse_no_stealacc(char *arg)
- {
-diff --git a/arch/riscv/include/asm/paravirt.h b/arch/riscv/include/asm/paravirt.h
-index c0abde70fc2c..17e5e39c72c0 100644
---- a/arch/riscv/include/asm/paravirt.h
-+++ b/arch/riscv/include/asm/paravirt.h
-@@ -5,10 +5,6 @@
- #ifdef CONFIG_PARAVIRT
- #include <linux/static_call_types.h>
- 
--struct static_key;
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
--
- u64 dummy_steal_clock(int cpu);
- 
- DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
-diff --git a/arch/riscv/kernel/paravirt.c b/arch/riscv/kernel/paravirt.c
-index fa6b0339a65d..d3c334f16172 100644
---- a/arch/riscv/kernel/paravirt.c
-+++ b/arch/riscv/kernel/paravirt.c
-@@ -16,15 +16,13 @@
- #include <linux/printk.h>
- #include <linux/static_call.h>
- #include <linux/types.h>
-+#include <linux/sched/cputime.h>
- 
- #include <asm/barrier.h>
- #include <asm/page.h>
- #include <asm/paravirt.h>
- #include <asm/sbi.h>
- 
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
--
- static u64 native_steal_clock(int cpu)
- {
- 	return 0;
-diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index 1344d2fb2b86..0ef797ea8440 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -30,10 +30,6 @@ static __always_inline u64 paravirt_sched_clock(void)
- 	return static_call(pv_sched_clock)();
- }
- 
--struct static_key;
--extern struct static_key paravirt_steal_enabled;
--extern struct static_key paravirt_steal_rq_enabled;
--
- __visible void __native_queued_spin_unlock(struct qspinlock *lock);
- bool pv_is_native_spin_unlock(void);
- __visible bool __native_vcpu_is_preempted(long cpu);
-diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index cb3f900c46fc..a3e6936839b1 100644
---- a/arch/x86/kernel/cpu/vmware.c
-+++ b/arch/x86/kernel/cpu/vmware.c
-@@ -29,6 +29,7 @@
- #include <linux/efi.h>
- #include <linux/reboot.h>
- #include <linux/static_call.h>
-+#include <linux/sched/cputime.h>
- #include <asm/div64.h>
- #include <asm/x86_init.h>
- #include <asm/hypervisor.h>
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index b67d7c59dca0..d54fd2bc0402 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -29,6 +29,7 @@
- #include <linux/syscore_ops.h>
- #include <linux/cc_platform.h>
- #include <linux/efi.h>
-+#include <linux/sched/cputime.h>
- #include <asm/timer.h>
- #include <asm/cpu.h>
- #include <asm/traps.h>
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index ab3e172dcc69..a3ba4747be1c 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -60,9 +60,6 @@ void __init native_pv_lock_init(void)
- 		static_branch_enable(&virt_spin_lock_key);
- }
- 
--struct static_key paravirt_steal_enabled;
--struct static_key paravirt_steal_rq_enabled;
--
- static u64 native_steal_clock(int cpu)
- {
- 	return 0;
-diff --git a/drivers/xen/time.c b/drivers/xen/time.c
-index 5683383d2305..d360ded2ef39 100644
---- a/drivers/xen/time.c
-+++ b/drivers/xen/time.c
-@@ -8,6 +8,7 @@
- #include <linux/gfp.h>
- #include <linux/slab.h>
- #include <linux/static_call.h>
-+#include <linux/sched/cputime.h>
- 
- #include <asm/paravirt.h>
- #include <asm/xen/hypervisor.h>
-diff --git a/include/linux/sched/cputime.h b/include/linux/sched/cputime.h
-index 5f8fd5b24a2e..e90efaf6d26e 100644
---- a/include/linux/sched/cputime.h
-+++ b/include/linux/sched/cputime.h
-@@ -2,6 +2,7 @@
- #ifndef _LINUX_SCHED_CPUTIME_H
- #define _LINUX_SCHED_CPUTIME_H
- 
-+#include <linux/static_call_types.h>
- #include <linux/sched/signal.h>
- 
- /*
-@@ -180,4 +181,21 @@ static inline void prev_cputime_init(struct prev_cputime *prev)
- extern unsigned long long
- task_sched_runtime(struct task_struct *task);
- 
-+#ifdef CONFIG_PARAVIRT
-+struct static_key;
-+extern struct static_key paravirt_steal_enabled;
-+extern struct static_key paravirt_steal_rq_enabled;
-+
-+#ifdef CONFIG_HAVE_PV_STEAL_CLOCK_GEN
-+u64 dummy_steal_clock(int cpu);
-+
-+DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
-+
-+static inline u64 paravirt_steal_clock(int cpu)
-+{
-+	return static_call(pv_steal_clock)(cpu);
-+}
-+#endif
-+#endif
-+
- #endif /* _LINUX_SCHED_CPUTIME_H */
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index f754a60de848..9e7472646233 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -769,6 +769,11 @@ struct rq *task_rq_lock(struct task_struct *p, struct rq_flags *rf)
-  * RQ-clock updating methods:
-  */
- 
-+/* Use CONFIG_PARAVIRT as this will avoid more #ifdef in arch code. */
-+#ifdef CONFIG_PARAVIRT
-+struct static_key paravirt_steal_rq_enabled;
-+#endif
-+
- static void update_rq_clock_task(struct rq *rq, s64 delta)
- {
- /*
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index 7097de2c8cda..ed8f71e08047 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -251,6 +251,19 @@ void __account_forceidle_time(struct task_struct *p, u64 delta)
-  * ticks are not redelivered later. Due to that, this function may on
-  * occasion account more time than the calling functions think elapsed.
-  */
-+#ifdef CONFIG_PARAVIRT
-+struct static_key paravirt_steal_enabled;
-+
-+#ifdef CONFIG_HAVE_PV_STEAL_CLOCK_GEN
-+static u64 native_steal_clock(int cpu)
-+{
-+	return 0;
-+}
-+
-+DEFINE_STATIC_CALL(pv_steal_clock, native_steal_clock);
-+#endif
-+#endif
-+
- static __always_inline u64 steal_account_process_time(u64 maxtime)
- {
- #ifdef CONFIG_PARAVIRT
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index ccd0d92ff7d1..bd1e5b55ba32 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -82,7 +82,7 @@ struct rt_rq;
- struct sched_group;
- struct cpuidle_state;
- 
--#ifdef CONFIG_PARAVIRT
-+#if defined(CONFIG_PARAVIRT) && !defined(CONFIG_HAVE_PV_STEAL_CLOCK_GEN)
- # include <asm/paravirt.h>
- #endif
- 
--- 
-2.51.0
+When compiling the list I sadly noticed that new drivers do exist
+which use legacy callbacks.  A case in point is:
 
+drivers/net/ethernet/google/gve/gve_main.c
+
+... which started using legacy callbacks in 2021 with commit 974365e51861
+("gve: Implement suspend/resume/shutdown").
+
+I guess there is no real incentive to convert to modern PM callbacks and
+finding someone who has the hardware and can test patches is hard
+(most drivers are for ATA, some for really old 1990s hardware).
+Plus, a lot of detailed knowledge about PCI PM is necessary to avoid
+breakage, making this a task that can't easily be delegated to new
+contributors.  And everyone with the knowledge is overworked already.
+So we keep dragging this tech debt along which complicates codepaths. :(
+
+> Stepping back, I guess that when drivers use generic PM, we already
+> save config state during suspend and restore that state during resume,
+> and do the same when entering/leaving hibernation.
+> 
+> And the point of this patch is to do the same when drivers lack PM or
+> use legacy PCI PM, or when devices have no driver?
+
+Right.  To have a consistent logic that state_saved is always cleared
+before commencing the suspend sequence, in all codepaths.
+
+> Maybe third try is the charm?
+> 
+>   For drivers using PCI legacy suspend, save config state at suspend
+>   so that state, not any earlier state from enumeration, probe, or
+>   error recovery, will be restored when resuming.
+> 
+>   For devices with no driver or a driver that lacks PM, save config
+>   state at hibernate so that state, not any earlier state from
+>   enumeration, probe, or error recovery, will be restored when
+>   resuming.
+
+Perfect.
+
+> IIUC, after "Ensure error recoverability", the PCI core will always
+> save the state during enumeration, so drivers shouldn't use
+> pci_save_state() at all unless they make config changes that they want
+> restored during error recovery?
+> 
+> Or, I guess (sigh) if they do their own power management?
+
+Exactly right.
+
+> > Also, in case the meaning of "freeze", "thaw", "restore" isn't clear,
+> > here's the order of a hibernation sequence (suspend to disk):
+[...]
+> Thanks, this is extremely helpful.
+
+FWIW, this is the sequence of suspend-to-memory, obviously much simpler:
+
+  pci_pm_prepare()
+  pci_pm_suspend()
+  pci_pm_suspend_late()
+  pci_pm_suspend_noirq()
+  pci_pm_resume_noirq()
+  pci_pm_resume_early()
+  pci_pm_resume()
+  pci_pm_complete()
+
+And runtime PM:
+
+  pci_pm_runtime_suspend()
+  pci_pm_runtime_resume()
+
+Thanks,
+
+Lukas
+
+-- >8 --
+
+Drivers with legacy PCI PM callbacks:
+
+  drivers/ata/acard-ahci.c
+  drivers/ata/ata_generic.c
+  drivers/ata/ata_piix.c
+  drivers/ata/pata_acpi.c
+  drivers/ata/pata_ali.c
+  drivers/ata/pata_amd.c
+  drivers/ata/pata_artop.c
+  drivers/ata/pata_atiixp.c
+  drivers/ata/pata_atp867x.c
+  drivers/ata/pata_cmd640.c
+  drivers/ata/pata_cmd64x.c
+  drivers/ata/pata_cs5520.c
+  drivers/ata/pata_cs5530.c
+  drivers/ata/pata_cs5535.c
+  drivers/ata/pata_cs5536.c
+  drivers/ata/pata_cypress.c
+  drivers/ata/pata_efar.c
+  drivers/ata/pata_hpt366.c
+  drivers/ata/pata_hpt3x3.c
+  drivers/ata/pata_it8213.c
+  drivers/ata/pata_it821x.c
+  drivers/ata/pata_jmicron.c
+  drivers/ata/pata_macio.c
+  drivers/ata/pata_marvell.c
+  drivers/ata/pata_mpiix.c
+  drivers/ata/pata_netcell.c
+  drivers/ata/pata_ninja32.c
+  drivers/ata/pata_ns87410.c
+  drivers/ata/pata_ns87415.c
+  drivers/ata/pata_oldpiix.c
+  drivers/ata/pata_opti.c
+  drivers/ata/pata_optidma.c
+  drivers/ata/pata_pdc2027x.c
+  drivers/ata/pata_pdc202xx_old.c
+  drivers/ata/pata_piccolo.c
+  drivers/ata/pata_radisys.c
+  drivers/ata/pata_rdc.c
+  drivers/ata/pata_rz1000.c
+  drivers/ata/pata_sc1200.c
+  drivers/ata/pata_sch.c
+  drivers/ata/pata_serverworks.c
+  drivers/ata/pata_sil680.c
+  drivers/ata/pata_sis.c
+  drivers/ata/pata_sl82c105.c
+  drivers/ata/pata_triflex.c
+  drivers/ata/pata_via.c
+  drivers/ata/sata_inic162x.c
+  drivers/ata/sata_mv.c
+  drivers/ata/sata_nv.c
+  drivers/ata/sata_sil.c
+  drivers/ata/sata_sil24.c
+  drivers/ata/sata_sis.c
+  drivers/ata/sata_via.c
+  drivers/bluetooth/hci_bcm4377.c
+  drivers/gpio/gpio-bt8xx.c
+  drivers/message/fusion/mptfc.c
+  drivers/message/fusion/mptsas.c
+  drivers/message/fusion/mptspi.c
+  drivers/mtd/nand/raw/cafe_nand.c
+  drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+  drivers/net/ethernet/atheros/atlx/atl2.c
+  drivers/net/ethernet/google/gve/gve_main.c
+  drivers/net/ethernet/microsoft/mana/gdma_main.c
+  drivers/net/ethernet/toshiba/tc35815.c
+  drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+  drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+  drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+  drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+  drivers/scsi/nsp32.c
+  drivers/scsi/qedf/qedf_main.c
+  drivers/scsi/qedi/qedi_main.c
+  drivers/scsi/stex.c
+  drivers/tty/serial/serial_txx9.c
+  drivers/video/fbdev/chipsfb.c
+  drivers/video/fbdev/i810/i810_main.c
 
