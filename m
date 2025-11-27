@@ -1,71 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-14522-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14523-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D52C8E125
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 12:39:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C47DC8E40F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 13:29:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dHDwx0Z3mz2yvW;
-	Thu, 27 Nov 2025 22:39:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dHG2z0Fmsz2yvQ;
+	Thu, 27 Nov 2025 23:29:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::72e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764243568;
-	cv=none; b=GOrVhjM84OMInX/s0kM0r0Aup/jwCA8G6+6m+uYAw4NkyLzBHpMMlBuHwHaNonzDcvGDnQSrLj+mKNeivjdU8EQtJsFAw83tYsIU0Q2GILebQBAehzFe5EXBfujazvjMOqp3gb7mmJ1Zmb1IDF+XAXsrGUXKW/7CIM1Yk46vtmMueIrOONDvp33NYwoWfqyxK3OqT71toFbvcdoAhv7Dkn93+cut4TDEgiSL5WlZixY+3NoYE4JPhkR+WV9S7hcrwOvqWkxsDja1sNRXLAMzjImDEStY7u84qePEvBLh6EquvwOSQQ600uPJx387pZxm1Regf16as5mU0HciJ1ECHA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764246586;
+	cv=none; b=l0VgtcQf8gXKtCOK9jIWj1qw6e6/8qH2uGpHuF1ao9zvEbLIYg3hVQBm7iOwf+EGtw3R3lwS+oYh4nPZw1pAaX9kS1QznVMC5v9GqQcwi2RK1WyE6d/HBjh5TydvMVDZVUN7s6gQ3jfla/xuTg6ZBOL5uPQiOzYjuKfx2R0iAsDX30wcIqA+bx31/NG7HV7b5IiCP2SsS2m4IpxIxFq0aCDJa/qmxmwEUioQoxnLSHqMGlksEslTJHPbHf33rdO0tmNba1Ye2K3+U0wPhViRfHtuCYMqqdkxMjwbCT5h/Pdf9+mvtRl90L3fKh9SnOdUOz6ruBiR+si+4ilvkisoNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764243568; c=relaxed/relaxed;
-	bh=lTgQXrnGbp8yRV1ffH5aOGb73MnxpAvx9lMPfkiZ/pE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n1AQq1ga8RW7OBTSygIWUWLXHXEXFxm44Yu2uj6wPnSGLRE26kBDm1ItYWmCQJZAfuIXzJYz9hD3ZTvVumn6rY4QDNbJF/2hAcRuCy5qHfh5sq1/XvStJqSd5aV117888rx4aXxmg2Gg9xCOkSGuy6V47k7Vi3gmeEtbhaMtKkh98pl2BjFBYKZlXlomBdAR0smbx/uHPslZsDXz000EvbMUi1UDkxYnuh4dGl61YqTKWlShXfaPdUeTwQZ+MsfJAMMjSNu4DMckm5zJPKQ6a3vL6maJZq758q+qNX5QUn9OCztmimXp6hbQbADYIKeC6Y17t2xb/gOD2VEK6d9ABg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jNp2hhqN; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::72e; helo=mail-qk1-x72e.google.com; envelope-from=21cnbao@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1764246586; c=relaxed/relaxed;
+	bh=eXD2cwlAtYeDmB9Ya9od8jMbCoC885HlZofFoFv5haQ=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=Yq02K1l3ry1oeTmpgiHVAZ0s/M2ZUX+Tv3YIA33D5nZh/dc3CO8m7wZDGe3K6CE1vPg3NF5Fk59eS7cpKSVzaIPNoPv15Y6uA1ITPQI7W+qB+2xuh2kK+08YsvCNrZZuh/FBgt+KjE6bRKbD0veMw6xIGIoGoyFITS5/frm5RzBoEIWcTE9s+B2xtLr0WmapZo/2ks2L2KUW/YR3eupfoEiysiY1MToLcYVZDmQYMYM5oVGUXtNJSFFXLrewP+g6wKDd6HlWhRlx1vM6Tz39WcsNNaZ9K05Vme5w0HBxAHh5Lc9b6UDqEn8gcPOK3JEBxj7sOdDoujoV9lSkZqQbdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HH9DIgoX; dkim-atps=neutral; spf=pass (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jNp2hhqN;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HH9DIgoX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72e; helo=mail-qk1-x72e.google.com; envelope-from=21cnbao@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dHDwv3pPkz2xP9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 22:39:26 +1100 (AEDT)
-Received: by mail-qk1-x72e.google.com with SMTP id af79cd13be357-8b2f0f9e4cbso66202785a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 03:39:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764243562; x=1764848362; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lTgQXrnGbp8yRV1ffH5aOGb73MnxpAvx9lMPfkiZ/pE=;
-        b=jNp2hhqNSZzRndBpJI6/ojf8Or9n/JCviETZu7/e8azKDEkvH4uz+BNJg8l59N7bCx
-         BxMvh35v1tvpus0kXRqI4XJjCrqvwutKadBylI1NWrPEMvH9KMJSjxTqUuJJ1uaJKnVa
-         fkw+Xd/ajdBZ6aEYPX9eU1IcOsnv1QxNVa7LUNbeAo/Mo9cH/eP+Yg8ql5klAL+HOy/3
-         oiQXErqeESYyVnndfCFAObZPGLtYihCuaZn/i4hhQ+KJ97JS4DBU/sPyzOfus1KI4Dye
-         PxQGhiO6KG0ZIgMleRQINIZrP/+m4A+VfoHFeb/9cL/IthFFqvHNnJoYaJ9S8NHUEl5U
-         ltNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764243562; x=1764848362;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lTgQXrnGbp8yRV1ffH5aOGb73MnxpAvx9lMPfkiZ/pE=;
-        b=YLCZiRzxqvR6yhocoXkQgTvEsArvMiIBi3Ljc3OxBIEuWCor0Z4887igkToTNKG6a+
-         ImJHreRn2MGxPqiDHka49tAIyslfTtBfwBDXGkbuHcI7tZiDMpr+5fLcTrFDb3BEy4k6
-         TindGUyepMoEKiXgKUc4b7LryZM3YyJt/9pPpCoh9b5hDEG5GKoPA/F5mdHbFNlgtFx4
-         0RCIhFJlNXDpTg536VIc+y3GYJ1s27xyn1fMP4tfI5g6zMsGO01m7tTXkrZur+qwBHA0
-         JYNwj6oxuM8OXGuXr36azvEs8NSwAvnad2ogqZLEsjA/IxtcoEF9In8tyxm7XAtd9/0H
-         ZIlA==
-X-Forwarded-Encrypted: i=1; AJvYcCVTNOSF+2dyORXmHBd6DX2nmRnPYhrLTHPG3xA3eB/JXoF5cOb+OO+bMz266s8SxZDppI/C93ngduf2CSc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzSVr6MTYGRUgG0tK1vl9hUALZGzwo7HIqbsXnFjigWHP75ftJ7
-	xgZ4cRUeK8ySrYwhJKEiEzN8ismxTVbUvQLGo08mxBfBfQl6qZInYK4PBqxVR9WE4sy56LBBFGr
-	YfOl+S82rtIfBtYEbgqgcAWOFOg5Lt3c=
-X-Gm-Gg: ASbGncvDAcWvKKVx6W0V0keeBHKehAk+QGAhx3hjkYG70Ptm1p3rnb1mKs0FlH6X2ID
-	xToxolD2w4jCfMoRHhrmDQcPPc90fXwm7mdSKfVuOwYtjeCOCw7kF6lNdTzCjSN15xVPD+Leh5O
-	JmqOSGAzbfF+sftLUozKKVC9PLuQUbqem0/Y9PYN4xnd7isJqOtDG0G/n/1cpIOfDfMMJy2y7ub
-	VxJJSCi0VPHbnttL8F+zsQOr9bvZGmEzYfMdD4IVqoey0zw65r7uooSx9chTvRI3pB+VQ==
-X-Google-Smtp-Source: AGHT+IF8AX3QuwU8PWoyMHubrE0YEf7OwwbSbZImelOgI0KoQ85t34HoENkNaCeescbBRgk60ctOqyrcZAkFR1pI8MI=
-X-Received: by 2002:a05:620a:4094:b0:8b2:3484:8e22 with SMTP id
- af79cd13be357-8b32a8d7accmr3051143885a.0.1764243562227; Thu, 27 Nov 2025
- 03:39:22 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dHG2v6X6lz2xQq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 23:29:41 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764246584; x=1795782584;
+  h=date:from:to:cc:subject:message-id;
+  bh=pLHJvLVptiDOagxqQ9mPCjf4Zis6/W7gt7g78XW7Xww=;
+  b=HH9DIgoX8pyv4WeMmAeT1A0GLut0XfIdM/2RUS2mQtUeS0kHH20pc86R
+   FasHaH3NJ2rkb0f/m16FdrpiOiytowKxEXownmlAKONEOR8+1JQdWFYpk
+   9YWphrWSFzUh0/2eyTATTmxDtwNW8g9LRFDYoZVJRXWndzdOjWmWvAoKW
+   fWwNqV6/xg7qbd7qhdcc6bIZLrBL+j4xDAzd4F6aBhtkD2Ebqvz+b1B9o
+   DMU1fSr5bc/oX1sRibMv/9TCRVifCy8bbjwczljE1JXHBX52qka5hgO7E
+   QiODDhsjZqEo3L5vPz02gD03q6pj0ZrF9x6QK/CXGHyJaNN8rPugID4Um
+   w==;
+X-CSE-ConnectionGUID: 1Jeg0HWlSVytlUp/4VgZJg==
+X-CSE-MsgGUID: sLXgUvOhTeGC5q4OlmnVDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="83685827"
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
+   d="scan'208";a="83685827"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 04:29:38 -0800
+X-CSE-ConnectionGUID: Ak79aRbdRHGJ9bKcZsMUXw==
+X-CSE-MsgGUID: mcyWZubvQjavYFYmQYcO0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
+   d="scan'208";a="192475573"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 27 Nov 2025 04:29:36 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vOb7t-000000004kR-3ieO;
+	Thu, 27 Nov 2025 12:29:33 +0000
+Date: Thu, 27 Nov 2025 20:29:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:merge] BUILD SUCCESS
+ 333e781b0037e912109f0a879dffe0ecdbbaf0d6
+Message-ID: <202511272002.3hv6VncS-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,146 +80,81 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20251127011438.6918-1-21cnbao@gmail.com> <20251127011438.6918-2-21cnbao@gmail.com>
- <5by7tko4v3kqvvpu4fdsgpw42yl5ed5qisbaz3la4an52hq4j2@v75fagey6gva>
-In-Reply-To: <5by7tko4v3kqvvpu4fdsgpw42yl5ed5qisbaz3la4an52hq4j2@v75fagey6gva>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 27 Nov 2025 19:39:11 +0800
-X-Gm-Features: AWmQ_bmMHpk-p6E2I_jCY1Xqg4XmWm0x9ikXHEjIDdMSrcjAo4PIsH4k_44adgY
-Message-ID: <CAGsJ_4xQKARuEuhrVuV+WmBC7+NCNd==Zi9nGmze5mfSjF1kdw@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] mm/filemap: Retry fault by VMA lock if the lock
- was released for I/O
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	Oven Liyang <liyangouwen1@oppo.com>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Matthew Wilcox <willy@infradead.org>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>, Robin Murphy <robin.murphy@arm.com>, 
-	=?UTF-8?Q?Kristina_Mart=C5=A1enko?= <kristina.martsenko@arm.com>, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, Yeoreum Yun <yeoreum.yun@arm.com>, 
-	Wentao Guan <guanwentao@uniontech.com>, Thorsten Blum <thorsten.blum@linux.dev>, 
-	Steven Rostedt <rostedt@goodmis.org>, Yunhui Cui <cuiyunhui@bytedance.com>, 
-	Nam Cao <namcao@linutronix.de>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <v-songbaohua@oppo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Nov 27, 2025 at 6:52=E2=80=AFPM Pedro Falcato <pfalcato@suse.de> wr=
-ote:
->
-> On Thu, Nov 27, 2025 at 09:14:37AM +0800, Barry Song wrote:
-> > From: Oven Liyang <liyangouwen1@oppo.com>
-> >
-> > If the current page fault is using the per-VMA lock, and we only releas=
-ed
-> > the lock to wait for I/O completion (e.g., using folio_lock()), then wh=
-en
-> > the fault is retried after the I/O completes, it should still qualify f=
-or
-> > the per-VMA-lock path.
-> >
-> <snip>
-> > Signed-off-by: Oven Liyang <liyangouwen1@oppo.com>
-> > Signed-off-by: Barry Song <v-songbaohua@oppo.com>
-> > ---
-> >  arch/arm/mm/fault.c       | 5 +++++
-> >  arch/arm64/mm/fault.c     | 5 +++++
-> >  arch/loongarch/mm/fault.c | 4 ++++
-> >  arch/powerpc/mm/fault.c   | 5 ++++-
-> >  arch/riscv/mm/fault.c     | 4 ++++
-> >  arch/s390/mm/fault.c      | 4 ++++
-> >  arch/x86/mm/fault.c       | 4 ++++
->
-> If only we could unify all these paths :(
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 333e781b0037e912109f0a879dffe0ecdbbaf0d6  Automatic merge of 'next' into merge (2025-11-22 15:22)
 
-Right, it=E2=80=99s a pain, but we do have bots for that?
-And it=E2=80=99s basically just copy-and-paste across different architectur=
-es.
+elapsed time: 7322m
 
->
-> >  include/linux/mm_types.h  | 9 +++++----
-> >  mm/filemap.c              | 5 ++++-
-> >  9 files changed, 39 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> > index b71625378ce3..12b2d65ef1b9 100644
-> > --- a/include/linux/mm_types.h
-> > +++ b/include/linux/mm_types.h
-> > @@ -1670,10 +1670,11 @@ enum vm_fault_reason {
-> >       VM_FAULT_NOPAGE         =3D (__force vm_fault_t)0x000100,
-> >       VM_FAULT_LOCKED         =3D (__force vm_fault_t)0x000200,
-> >       VM_FAULT_RETRY          =3D (__force vm_fault_t)0x000400,
-> > -     VM_FAULT_FALLBACK       =3D (__force vm_fault_t)0x000800,
-> > -     VM_FAULT_DONE_COW       =3D (__force vm_fault_t)0x001000,
-> > -     VM_FAULT_NEEDDSYNC      =3D (__force vm_fault_t)0x002000,
-> > -     VM_FAULT_COMPLETED      =3D (__force vm_fault_t)0x004000,
-> > +     VM_FAULT_RETRY_VMA      =3D (__force vm_fault_t)0x000800,
->
-> So, what I am wondering here is why we need one more fault flag versus
-> just blindly doing this on a plain-old RETRY. Is there any particular
-> reason why? I can't think of one.
+configs tested: 60
+configs skipped: 0
 
-Because in some cases we retry simply due to needing to take mmap_lock.
-For example:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-/**
- * __vmf_anon_prepare - Prepare to handle an anonymous fault.
- * @vmf: The vm_fault descriptor passed from the fault handler.
- *
- * When preparing to insert an anonymous page into a VMA from a
- * fault handler, call this function rather than anon_vma_prepare().
- * If this vma does not already have an associated anon_vma and we are
- * only protected by the per-VMA lock, the caller must retry with the
- * mmap_lock held.  __anon_vma_prepare() will look at adjacent VMAs to
- * determine if this VMA can share its anon_vma, and that's not safe to
- * do with only the per-VMA lock held for this VMA.
- *
- * Return: 0 if fault handling can proceed.  Any other value should be
- * returned to the caller.
- */
-vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
-{
-...
-}
+tested configs:
+alpha                   allnoconfig    gcc-15.1.0
+alpha                  allyesconfig    gcc-15.1.0
+arc                    allmodconfig    gcc-15.1.0
+arc                     allnoconfig    gcc-15.1.0
+arc                    allyesconfig    gcc-15.1.0
+arc         randconfig-001-20251123    gcc-15.1.0
+arc         randconfig-002-20251123    gcc-12.5.0
+arm                     allnoconfig    clang-22
+arm         randconfig-001-20251123    clang-22
+arm         randconfig-002-20251123    clang-22
+arm         randconfig-003-20251123    gcc-10.5.0
+arm         randconfig-004-20251123    clang-22
+arm64                   allnoconfig    gcc-15.1.0
+arm64       randconfig-001-20251123    gcc-8.5.0
+arm64       randconfig-002-20251123    gcc-11.5.0
+arm64       randconfig-003-20251123    clang-22
+arm64       randconfig-004-20251123    clang-22
+csky                   allmodconfig    gcc-15.1.0
+csky                    allnoconfig    gcc-15.1.0
+csky        randconfig-001-20251123    gcc-15.1.0
+csky        randconfig-002-20251123    gcc-15.1.0
+hexagon                allmodconfig    clang-17
+hexagon                 allnoconfig    clang-22
+hexagon     randconfig-001-20251122    clang-22
+hexagon     randconfig-002-20251122    clang-17
+i386                    allnoconfig    gcc-14
+loongarch              allmodconfig    clang-19
+loongarch               allnoconfig    clang-22
+loongarch   randconfig-001-20251122    gcc-12.5.0
+loongarch   randconfig-002-20251122    gcc-14.3.0
+m68k                   allmodconfig    gcc-15.1.0
+m68k                    allnoconfig    gcc-15.1.0
+m68k                   allyesconfig    gcc-15.1.0
+microblaze              allnoconfig    gcc-15.1.0
+mips                    allnoconfig    gcc-15.1.0
+nios2                   allnoconfig    gcc-11.5.0
+nios2       randconfig-001-20251122    gcc-11.5.0
+nios2       randconfig-002-20251122    gcc-8.5.0
+openrisc                allnoconfig    gcc-15.1.0
+parisc                 allmodconfig    gcc-15.1.0
+parisc                  allnoconfig    gcc-15.1.0
+powerpc                 allnoconfig    gcc-15.1.0
+riscv                   allnoconfig    gcc-15.1.0
+riscv       randconfig-001-20251123    clang-20
+riscv       randconfig-002-20251123    gcc-8.5.0
+s390                   allmodconfig    clang-18
+s390                    allnoconfig    clang-22
+s390                   allyesconfig    gcc-15.1.0
+s390        randconfig-001-20251123    gcc-8.5.0
+s390        randconfig-002-20251123    clang-22
+sh                     allmodconfig    gcc-15.1.0
+sh                      allnoconfig    gcc-15.1.0
+sh                     allyesconfig    gcc-15.1.0
+sh          randconfig-001-20251123    gcc-12.5.0
+sh          randconfig-002-20251123    gcc-14.3.0
+sparc                   allnoconfig    gcc-15.1.0
+um                      allnoconfig    clang-22
+um                     allyesconfig    gcc-14
+x86_64                  allnoconfig    clang-20
+xtensa                  allnoconfig    gcc-15.1.0
 
-Thus, we have to check each branch one by one, but I/O wait is the most
-frequent path, so we handle it first.
-
->
-> I would also like to see performance numbers.
-
-Yes. From what I understand, this patchset should improve performance in a
-fairly straightforward way.
-But yes, I can certainly include some data in v2.
-
->
-> The rest of the patch looks OK to me.
-
-Thanks
-Barry
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
