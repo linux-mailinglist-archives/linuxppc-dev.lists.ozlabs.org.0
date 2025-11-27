@@ -1,72 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-14514-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14515-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D189C8CCBE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 05:22:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68FE8C8CCE2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 05:42:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dH3Dp22lWz30HQ;
-	Thu, 27 Nov 2025 15:22:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dH3h11H5Mz30HQ;
+	Thu, 27 Nov 2025 15:42:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::72f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764217354;
-	cv=none; b=h17gp46InIZtkp41Crckibu0xsrfI4X/6kaEKDSA7KEEc8Dp2Q3N7F2bnuvnFpn4nFX53A1UDMMMeirRf6TM/nc19zwKBgp8A60P00MRElT+AD/R0XwvMT8W1GdtRhrY9cYsw9tYCNCR4Mib7DKqP5uttXnAytRIYq3sXXYs7YQEYXLpIfEdkylOQ2ZjzMIoqnyraS2Luj36cELp+1k+QmXf2tJCLfey6EwhZzzmYppIXIs1rRjJ/KC8zM4QN0P0VcnywSOezpBtrhUG/HaiFbHXo2uFZQu0bGXNwDnLjH6VeE0dVB1BcDgqnHgcjLeeOLmHvuPUhksekK5utRYmZA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::e36"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764218561;
+	cv=none; b=MapZpDhVR+v24XjUgjs0gsN+JPqMpG+izr3vtRf8V4u8cSZSb8YoIRr5Z8oabP3QYAhkqaXZ75R6o1c9M9VSx0lZuGAPkjxbwBLVT8qrR+cjVRGpQ4DY/TSTa+fJPhKQliFDVHw2lFX7gz4M5aLHBZ4OoVuJRvZCkeoDHIqPsGuS4HfUbWflTMhCDL0SqXZCMQWTr+8wt8jpvpqOWhBG2mBrqPl+3T9LwX9NWcnVS1TCDwB9HHnIdicieM6HKjxYe8MeCVyF3zlHSOTuG3tm2K5tbDqo1oFvp72ZAti+kNpeP3xDLfz1I4Z9sFDrYftX7UzNvbzjQEj3G3Uo4h1DWg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764217354; c=relaxed/relaxed;
-	bh=WBY2hGlp5xDNa7Ek85Hj92aNDRHVnR99QGNyQtFdIz8=;
+	t=1764218561; c=relaxed/relaxed;
+	bh=bEhopEuyFNhgXqkSaWLWBfzS2UzIUD/ULoq0kMipD7w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WF9SY0vf/5VxjdVBMsyXsjlCNiZUZs/+brpP/ZbADbnkjMGBMdQ+mxWLhuV1j7kRklfAytGdHs9ICGdwvzVVOTWCxcJQNTWQ+pWlEVCf04xUpS7Nfgm2wWT8cgmAptjm9lnFA+P4njk15CzGbUqkTvkY28WccxwvaksWinPW1VWWfx/hRC6gft0+bzGhIV/ZcNrU0OPaRhh68/80i1VRurkYMBOX8rgOsa3jY9lOT1rj125067MtfirEQaNGqi0sRmAw7DBgQadnZF5J1VjJ+anRMhS1RrL4KHwippbRUxNA9Mp9YYjvmX9ZfbBt1WBhFQeowmid0obPPaGAjWt0Lw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=k9s1B1D9; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::72f; helo=mail-qk1-x72f.google.com; envelope-from=21cnbao@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=ikj0u0BYAAQF69Rx7f1ixmRI3sQOeogWpwFuxLxs95Crd7oml8E78aWnV6ilQXoKdRsW1vRagyGeNi1NHl+N5DweV9gg0ObfntHGX3HI4y7bvSkzEWv2PBXEI9efCD0d6NIZBTHF9snNXyTxqQDiVbgLIBonttvlLvGh8L2fNj9aHliJyt/E8Vu+0+PPHcmjzVcMPJZg1rzly7DJOUiR9Iwt27D2/8mPKD4gryWdJsekC9E4jjyLiYG4hKaPFbclejVlc7NVxXn8ZQKg/Nd4b8vgniySj6msD8/zldNm9NAuiKSdAh+QUdhD8Jp/1E9Ngmb3XOgHm60k6OLacQYqag==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kIcCgqX4; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::e36; helo=mail-vs1-xe36.google.com; envelope-from=21cnbao@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=k9s1B1D9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kIcCgqX4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72f; helo=mail-qk1-x72f.google.com; envelope-from=21cnbao@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::e36; helo=mail-vs1-xe36.google.com; envelope-from=21cnbao@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dH3Dm3rrqz30FR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 15:22:31 +1100 (AEDT)
-Received: by mail-qk1-x72f.google.com with SMTP id af79cd13be357-8b220ddc189so47644885a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Nov 2025 20:22:31 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dH3gz5hl9z30FR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 15:42:38 +1100 (AEDT)
+Received: by mail-vs1-xe36.google.com with SMTP id ada2fe7eead31-5dbd8bb36fcso430778137.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Nov 2025 20:42:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764217349; x=1764822149; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1764218556; x=1764823356; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WBY2hGlp5xDNa7Ek85Hj92aNDRHVnR99QGNyQtFdIz8=;
-        b=k9s1B1D9a8cev3GJsquuu9E+Ze5P12WwdJCp9N8AXr9ccgtjNJfavtjOxu4pXHUzX6
-         Pl6tzOjOcjYUVwqvLHqq0O8nPE2rB0GZ6Hpg2fMmo3BWRxwFiAs5F/5ZahJRvSbgkv/Z
-         XDuS2EXCPjx2smUcoGeMsMdcQSNjASIdS1c2Gw6ukV6XiTq+DeU8kjEWDQaXra2gcot8
-         CgXl0yluNZXbKKn8K5aQhBVLYH2pvfmtK7iax1l6p7422mik2G9dqmWS5rBNQGl0lNtD
-         k2kMsXGXL4HfvHyUx7x7M9F3LcDSfQjUHsTlHT1vMlPJjfQNKi0+BOzSBmyqpPSdYEJb
-         pKwA==
+        bh=bEhopEuyFNhgXqkSaWLWBfzS2UzIUD/ULoq0kMipD7w=;
+        b=kIcCgqX47mr5MmCo/Idj+k+0R5QKOknw2AZ4Vi4CvJ98yC7bOToZP8rYfTxII+lrgD
+         C2Q2D+NyRcdLoYffilHIclOC1AmDZ5I9pUcMntoXuoX0Rf1ufS5lAHj5vgZ8znErQiz0
+         sD+cw3PgBmowTbZQsAswCHeQQNAKWIHzby8T1R1KObPiNBqPDEzkigwfyU5nVI66eNxj
+         XXjnCf4+VEBez2FavfdCD2DFmWM5aqk+pWBybE7HILUB4GQA+pSkSP5xXjhLfp213CX9
+         cbqQwz2SLrJkvj+o4UdgXwD2N1aRBFiGv2H+e9TyFsEaph/IZUFqeSqLlaKY+vfUYm6w
+         EWxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764217349; x=1764822149;
+        d=1e100.net; s=20230601; t=1764218556; x=1764823356;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=WBY2hGlp5xDNa7Ek85Hj92aNDRHVnR99QGNyQtFdIz8=;
-        b=YtqIsbqlx3rV3nwchvimmgG9wI290yUAdsd/tprbKextnG1nIPw/fxnJRJuxBGfT2q
-         OXG47FEMQACWlMh5ZPQa42Kq3Jm0ObJKB+JCkeYkm7bQZV5Ok8aPIlz0k2HQ6/JrgqC3
-         VFgGR7qj8Ha3Q/CLYBwaNv9V8qvPOyw0FVJLmKvtg2bByQ0km5WDiSU2LWZX5mRRTCco
-         z18+ibxDUFSqKSGYTUel22BN3EUtUR2RMskJmqZX3+8At5702XihrsKphNOVNuYRuBmQ
-         jGiPkM/KxbneCCl6cyWk43SGYHU0rqWWlF1nHuMY6JtLJN4X3EdywlBuWWLk+6CS/NoC
-         2Bbg==
-X-Forwarded-Encrypted: i=1; AJvYcCXiveleh+b3eWU0SCxHEpGEolP8ek5OfY0/LoXB2QTyd8AKN1zPih1uBsJD5Ryk/AZp9zq4+j+4FIiMbsA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxgUgh/27ypgZIeoeq3Qt15IuIRU/ije6NLgdV6I25rZ3xpMB8U
-	Ym5OSByUbX1BEY4ynKi34lo34gWvfAUZwKmrqeknLrD0JIezPxIidncQMAUox5YgTOhChk0q2lc
-	xcFFoByRDnManAY1zmYWi63yWsqSYaN8=
-X-Gm-Gg: ASbGncsHUcq0YITLYDa6heznbBvg0jhkVOJ9pd92f+B+6nlUmt9f1eDeEUWjKUM31ex
-	4MFTDe23Dlx3PhR6lcAm9XYdtJB2c4C7qMZg8SsTSMbEmwtSuaj6w0FECld1NpSqZsbKHSQ558+
-	VjXQDIP23bKvj7ko4JNv2gcs+mFJXhjQiO4q6dX161dPywP+O4CRpUflN1NiHiHHPIh3X6WPEtq
-	nAqwbSsurlmpI3vXeut+/ZiH1FEZO4vXTmziRBzGbcodmdJPxK/Lla8+bw5r/OLc0MuNPGNDwQb
-	Z4sG
-X-Google-Smtp-Source: AGHT+IF/2OHEG3LUgPMXOJw4DDaFf/N1kDbkxj4PlQ+jOCs1AfpUOxHzVBEY8oHxETzeiPPKmtGSMi/k9qIz1abldeY=
-X-Received: by 2002:a05:620a:44d4:b0:8b2:f9ac:a893 with SMTP id
- af79cd13be357-8b33d49a4c6mr3106281485a.66.1764217348492; Wed, 26 Nov 2025
- 20:22:28 -0800 (PST)
+        bh=bEhopEuyFNhgXqkSaWLWBfzS2UzIUD/ULoq0kMipD7w=;
+        b=dAmG6Y1U3tXoe18XqJ0mbJPoOZBFyyb0NF2+06frlsUpN6pRGGOJP45Wig9lCvy2Cy
+         2AgE5YI0tvHzsJYReOtMi5hV4IqsKagxtVLVqfRAVcJE50VnfJgL5z9zl4ldNSEv9P1s
+         gtCMyRgN7jHKqGu5lsb6O2PcrvuctKQhwBnODj+Wxg8Jno7TIyUWXnh3Luu8WTy4o6H8
+         InEXeFUG025DtqOJyQDSCXFEL+iph488Xtd1YdkqoByQ6vdSg47K+3dS/kiTS+TrzrkR
+         gFrydVMb7bcw1HHaMEgYL50LYt5vsTi3A7LkPnFZRNYUMTqGES7LeUSqHzwv1Lwlu3j1
+         7jwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV5SFR/vcqYNoY/7SxnSCFwCEj3RexRfqTCACf6ma+szhrC13IXof2EtxfjrQnS56AUABOotUIZ7Mq2NtQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyRy+Wh1RR1znSCIiz8PTMKmiSzdT4NeW0o293mhIw8/PMXuaC+
+	Dz2dsChCoaOWmy0sffEm7DAL/FHDdmkLX9JteuALuRZPO9sMzCUMICZMhXvbGnJWPyV11GYGg58
+	ap/IGuaFm0C+/ko2RR9rBj6PtJxYW39M=
+X-Gm-Gg: ASbGncvHwdflfDFe9h27EIq/0tT4ClKp0/eeDFbNSSOcHP8cyJtmbE5shY5+5gT9vLC
+	xNR7SiLOQph1p0DuYzzWHgmInbyn1GX1Pw/R4ZiVf+w6xS5NUKTKs3G6hiH08mK0viY+QCb1nNX
+	09IE9nRFlt1vACijcrGNKO3XK0+vBcORw+GKChSGFWiE1tMXTMdg8FaALQwtZ/f1WS/XzflFvhg
+	SWDdNkuVc69oyKoswIsoVeNswFI1BtM7mknEKfZLkuqAWsJsIY9/GoggJSRUUsc3dhDrw==
+X-Google-Smtp-Source: AGHT+IGH43TrgsJFNtUr5ao/vogWT9GdRhnXVZ07KbbMX+jdayVJE8Rn0KQfN/TjkQoluZkh1Kzptkw+oLx2u2WmID0=
+X-Received: by 2002:a05:6102:54a2:b0:5db:3c3b:7767 with SMTP id
+ ada2fe7eead31-5e1dcfaca59mr9155596137.16.1764218556121; Wed, 26 Nov 2025
+ 20:42:36 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,11 +80,12 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 References: <20251127011438.6918-1-21cnbao@gmail.com> <aSfO7fA-04SBtTug@casper.infradead.org>
-In-Reply-To: <aSfO7fA-04SBtTug@casper.infradead.org>
+ <CAGsJ_4zyZeLtxVe56OSYQx0OcjETw2ru1FjZjBOnTszMe_MW2g@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zyZeLtxVe56OSYQx0OcjETw2ru1FjZjBOnTszMe_MW2g@mail.gmail.com>
 From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 27 Nov 2025 12:22:16 +0800
-X-Gm-Features: AWmQ_bnJyCR-GwS1_fTaB2mJ8nbB2MiVvoC0dBi_6l0nwDIR-Nl2i2LJsMX4LWo
-Message-ID: <CAGsJ_4zyZeLtxVe56OSYQx0OcjETw2ru1FjZjBOnTszMe_MW2g@mail.gmail.com>
+Date: Thu, 27 Nov 2025 12:42:24 +0800
+X-Gm-Features: AWmQ_blP9KP_04bFNRiiSxH6Z8Vu2JxzZ1V6hdafxe8pxPoB5frW9rAs1E64Uhk
+Message-ID: <CAGsJ_4w8550U+1dah2VoZNuvLT7D15ktC6704AEmz6eui60YwA@mail.gmail.com>
 Subject: Re: [RFC PATCH 0/2] mm: continue using per-VMA lock when retrying
  page faults after I/O
 To: Matthew Wilcox <willy@infradead.org>
@@ -126,55 +126,81 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Nov 27, 2025 at 12:09=E2=80=AFPM Matthew Wilcox <willy@infradead.or=
-g> wrote:
+On Thu, Nov 27, 2025 at 12:22=E2=80=AFPM Barry Song <21cnbao@gmail.com> wro=
+te:
 >
-> On Thu, Nov 27, 2025 at 09:14:36AM +0800, Barry Song wrote:
-> > There is no need to always fall back to mmap_lock if the per-VMA
-> > lock was released only to wait for pagecache or swapcache to
-> > become ready.
+> On Thu, Nov 27, 2025 at 12:09=E2=80=AFPM Matthew Wilcox <willy@infradead.=
+org> wrote:
+> >
+> > On Thu, Nov 27, 2025 at 09:14:36AM +0800, Barry Song wrote:
+> > > There is no need to always fall back to mmap_lock if the per-VMA
+> > > lock was released only to wait for pagecache or swapcache to
+> > > become ready.
+> >
+> > Something I've been wondering about is removing all the "drop the MM
+> > locks while we wait for I/O" gunk.  It's a nice amount of code removed:
 >
-> Something I've been wondering about is removing all the "drop the MM
-> locks while we wait for I/O" gunk.  It's a nice amount of code removed:
-
-I think the point is that page fault handlers should avoid holding the VMA
-lock or mmap_lock for too long while waiting for I/O. Otherwise, those
-writers and readers will be stuck for a while.
-
+> I think the point is that page fault handlers should avoid holding the VM=
+A
+> lock or mmap_lock for too long while waiting for I/O. Otherwise, those
+> writers and readers will be stuck for a while.
 >
->  include/linux/pagemap.h |  8 +---
->  mm/filemap.c            | 98 ++++++++++++-------------------------------=
-------
->  mm/internal.h           | 21 -----------
->  mm/memory.c             | 13 +------
->  mm/shmem.c              |  6 ---
->  5 files changed, 27 insertions(+), 119 deletions(-)
+> >
+> >  include/linux/pagemap.h |  8 +---
+> >  mm/filemap.c            | 98 ++++++++++++-----------------------------=
+--------
+> >  mm/internal.h           | 21 -----------
+> >  mm/memory.c             | 13 +------
+> >  mm/shmem.c              |  6 ---
+> >  5 files changed, 27 insertions(+), 119 deletions(-)
+> >
+> > and I'm not sure we still need to do it with per-VMA locks.  What I
+> > have here doesn't boot and I ran out of time to debug it.
 >
-> and I'm not sure we still need to do it with per-VMA locks.  What I
-> have here doesn't boot and I ran out of time to debug it.
+> I agree there=E2=80=99s room for improvement, but merely removing the "dr=
+op the MM
+> locks while waiting for I/O" code is unlikely to improve performance.
+>
 
-I agree there=E2=80=99s room for improvement, but merely removing the "drop=
- the MM
-locks while waiting for I/O" code is unlikely to improve performance.
+One idea I have is that we could conditionally remove the "drop lock and
+retry page fault" step if we are reasonably sure the I/O has already
+completed:
 
-For example, we could change the flow to:
-1. Release the VMA lock or mmap_lock
-2. Lock the folio
-3. Re-acquire the VMA lock or mmap_lock
-4. Re-check whether we can still map the PTE
-5. Map the PTE
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 57dfd2211109..151f6d38c284 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3517,7 +3517,9 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
+                }
+        }
 
-Currently, the flow is always:
+-       if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
++       if (folio_test_uptodate(folio))
++               folio_lock(folio);
++       else if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
+                goto out_retry;
 
-1. Release the VMA lock or mmap_lock
-2. Lock the folio
-3. Unlock the folio
-4. Re-enter the page fault handling from the beginning
+        /* Did it get truncated? */
+diff --git a/mm/memory.c b/mm/memory.c
+index 7f70f0324dcf..355ed02560fd 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4758,7 +4758,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+        }
 
-The change would be much more complex, so I=E2=80=99d prefer to land the cu=
-rrent
-patchset first. At least this way, we avoid falling back to mmap_lock and
-causing contention or priority inversion, with minimal changes.
+        swapcache =3D folio;
+-       ret |=3D folio_lock_or_retry(folio, vmf);
++       if (folio_test_uptodate(folio))
++               folio_lock(folio);
++       else
++               ret |=3D folio_lock_or_retry(folio, vmf);
+        if (ret & VM_FAULT_RETRY) {
+                if (fault_flag_allow_retry_first(vmf->flags) &&
+                    !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT) &&
+
+In that case, we are likely just waiting for the mapping to be completed by
+another process. I may develop the above idea as an incremental patch after
+this patchset.
 
 Thanks
 Barry
