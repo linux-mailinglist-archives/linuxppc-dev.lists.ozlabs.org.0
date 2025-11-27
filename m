@@ -1,78 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-14520-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14521-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FA2C8DD43
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 11:45:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F37C8DDCD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 11:58:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dHCkx1tVfz2yvV;
-	Thu, 27 Nov 2025 21:45:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dHD1H4gR7z2yvW;
+	Thu, 27 Nov 2025 21:58:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764240345;
-	cv=none; b=C9pR+zF1mob1SesfOsODucMZx8eWGehpWEUoOFB4riEwR8Bib6c6aYb0dBK1NaoZVhiOWWzZazIqxPcaTHE8nJi2k3pRbpmVYvtG6ewVv2uXeT4jSaIg6KNmPwbWxIznPEZ4L+BBPy4i6f/PoCMo+XtTRCz8g2Cp7IRDJ3yWzwd1+5oVziDyU3TEIORqocDlX/KQ669+eKxTvhmPSREYODhlyBKJy3w/beVu2SZ4kuLOrS2LmS2SRKtyCbfkq8jTvkAuvPx7nhMaJACqldugYurAzjfS8d/VZVXUDI1fWBIkERR31wcmXt27NX29rPzqLosPRIz+ym7v6dq5/g5Ukw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764241091;
+	cv=none; b=a8klXAhmXFWfL6Cq4ZUG5R/8qW5Megq+wUCHP/OEBYA4a+VYft6mh75CaFSbwL3uBIFN8awHIT0jgfTq5Gk1nyGklRvo97TnaP5BWpchF3211CkMpSDWJJ4P3ZJwubzKfoRiLAZ7aa8f1EUs0j3Gx/uouE35QzcfoAVSREo45WNODi/vSM0Ea953lnPLkClNE4uoC09KejUay3VbPgE4vIcK2Ye/8nuvqMnGi9F1YWIayEUn2BshgONcUMO8Xnp1s8hPEHHdhzVkBi1er0kjHgHDC2zNU4OMV1TRzkTefgaOjUmRBqovMQRDpczb9KhvcZ0SNLJnyjU4nCnftbID3w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764240345; c=relaxed/relaxed;
-	bh=4ICIa0Mjhj6kj078Uv9HnCJvFvWXapkbtirqNw//vto=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J+czrNeQ2Zi5zqKWYAc6jwOH7436bc5Kbh0OBQ4vlncMXxtM6+3r3aa+vERYaqzpYvD78B3bY1iUxtb7TcYjuYuHkP1ezC1pMfbEW1Bxryr2upSRcAjs7WQ5abC66WGwoaZNjYTSvZwSIcgvhKm1iBlSZnrAAnac8QPUj8xTEukZUCegQrYHsK3BiZz5KRypm7/iZretLdDZH7spHpranhgX84Ve19VGdylgA9eh+ZyE2dKEfIvMj2zlVfyVVWS2wYoHp6NIgcPGES3C7O/6slm4JRz1s0vNs7GevenZ4yWw8299d9auGVp0290m/FbNKapwp4UpIdCmDM7g4TgGAw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pU1ikMz5; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pU1ikMz5;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1764241091; c=relaxed/relaxed;
+	bh=dSkfS1PH0V2GqQ7JwCU589oUysx1YAYg5wc2qE7DJO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i2Rgv6fMT8RP0kJV9PuTTcOUoLtiX72QbNButc2bdET4fEiA7rkLgbLKR+9UWc3xiv4J0cxeKeFtw10RbO9iHUnNWI0YJTxUM8JiVUdxVeyiZFuMJpKtyWxQ1tnjZxsRI2jZOMtLejcxGXhM29a4bxCzhWSpxPWkWw+xx2ZxeS8d8Eblmy0Q5RFy8QAZ0isQH+GHjskKcnjLkjCXNDc2XErHmX6iXBImUai8a08ElwuZAib2+dk/SG8gA8bYZpdJb8mUEJQuF48s9W+RuW8Y5Lc+2xuucvlMdiaFIe8jVzxLVUrscDfPUL4Q+HG2gh8ybH6d2qcDhiIfouGXFhHL/w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=pfalcato@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=pfalcato@suse.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 313 seconds by postgrey-1.37 at boromir; Thu, 27 Nov 2025 21:58:10 AEDT
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dHCkv5bN8z2yl2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 21:45:43 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AR28H2A011061;
-	Thu, 27 Nov 2025 10:45:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=4ICIa0
-	Mjhj6kj078Uv9HnCJvFvWXapkbtirqNw//vto=; b=pU1ikMz5E2DkF8fgfNHlSK
-	9XCMOJK5UD8r6j0aB/vgcvVMrv8MAXiHyRPXn0o28OMpRy8AonsIqU7jCw9PJrqn
-	VpfVAAR19Tl0VLTylhPe5BXyCl+KOfYoGBGTE0ZNAPodpctI8wqqPwo3Y+VthD6S
-	fbcdGb+zW+HDSej5KI95ZbFxMSq0b2F3dWbHx2ULxHbDF1FYotZCn8+m/EQvgE6k
-	I/VaGxzdmOBnHzlGkfqoXUrBpitaqQAl62de0PfsIaRjQ6odydI50h9r83zeo3fV
-	5nb4u2H8z9S7uswP5+xajzmJEiouLnYNikGMxu0+Dkb/3U/Las676ikHZaZouyRw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4w9s5ft-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Nov 2025 10:45:08 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ARAedYM023234;
-	Thu, 27 Nov 2025 10:45:06 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4w9s5fq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Nov 2025 10:45:06 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AR8A8Gc025108;
-	Thu, 27 Nov 2025 10:45:05 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4akt71qbuv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Nov 2025 10:45:05 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5ARAj06p57082252
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 27 Nov 2025 10:45:01 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C443D2004F;
-	Thu, 27 Nov 2025 10:45:00 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0DB8920040;
-	Thu, 27 Nov 2025 10:44:57 +0000 (GMT)
-Received: from [9.109.215.252] (unknown [9.109.215.252])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 27 Nov 2025 10:44:56 +0000 (GMT)
-Message-ID: <52811199-742a-40fc-8bf2-9cb4397afda4@linux.ibm.com>
-Date: Thu, 27 Nov 2025 16:14:56 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dHD1G5Cywz2xQq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 21:58:10 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7B48433693;
+	Thu, 27 Nov 2025 10:52:54 +0000 (UTC)
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B0C7F3EA63;
+	Thu, 27 Nov 2025 10:52:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id xrDGJ4ItKGlFNgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 27 Nov 2025 10:52:50 +0000
+Date: Thu, 27 Nov 2025 10:52:49 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Barry Song <21cnbao@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	Oven Liyang <liyangouwen1@oppo.com>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Matthew Wilcox <willy@infradead.org>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Oscar Salvador <osalvador@suse.de>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Ada Couprie Diaz <ada.coupriediaz@arm.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kristina =?utf-8?Q?Mart=C5=A1enko?= <kristina.martsenko@arm.com>, 
+	Kevin Brodsky <kevin.brodsky@arm.com>, Yeoreum Yun <yeoreum.yun@arm.com>, 
+	Wentao Guan <guanwentao@uniontech.com>, Thorsten Blum <thorsten.blum@linux.dev>, 
+	Steven Rostedt <rostedt@goodmis.org>, Yunhui Cui <cuiyunhui@bytedance.com>, 
+	Nam Cao <namcao@linutronix.de>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <v-songbaohua@oppo.com>
+Subject: Re: [RFC PATCH 1/2] mm/filemap: Retry fault by VMA lock if the lock
+ was released for I/O
+Message-ID: <5by7tko4v3kqvvpu4fdsgpw42yl5ed5qisbaz3la4an52hq4j2@v75fagey6gva>
+References: <20251127011438.6918-1-21cnbao@gmail.com>
+ <20251127011438.6918-2-21cnbao@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,176 +96,74 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/17] Paravirt CPUs and push task for less vCPU
- preemption
-To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, tglx@linutronix.de, yury.norov@gmail.com,
-        maddy@linux.ibm.com, srikar@linux.ibm.com, gregkh@linuxfoundation.org,
-        pbonzini@redhat.com, seanjc@google.com, kprateek.nayak@amd.com,
-        vschneid@redhat.com, iii@linux.ibm.com, huschle@linux.ibm.com,
-        rostedt@goodmis.org, dietmar.eggemann@arm.com,
-        christophe.leroy@csgroup.eu
-References: <20251119124449.1149616-1-sshegde@linux.ibm.com>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20251119124449.1149616-1-sshegde@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIyMDAyMSBTYWx0ZWRfXyEi4MA1r7NQP
- gONJN1v5nMQsKQZYH0zVp0pPK8/Huw5C7KXbetvZcam/0tnaNVbdCn518Kiqp6oqQhh5K/GzR6U
- /OuWIPr/AkNPswjZ95aDfwccyTC/cTe0ZzC+STILvo5fd1rYg6crknjeP4m0Rm2jHzOHhgTOWl/
- xL80HdZF9xW1I2yBeS9HNjrmWznJrgb5umO6EAeUXEge3yKHIQLViO1x8oIuex3gzfuXV0aguG7
- 6PYzGA3qwQ7aATHIx9DwMMdvy0xLG9TjqcCn/GwtINOAUhfRQ/OSYW6UnXwc/YgUO/DIeK6/O3r
- cvcMyt6P7Dfa5JVeyU11IgPKQPWBgQC1J5AXmnQs+3etNbKVFlVEKmz7VKVUiSzcpF0SfwuaKrz
- mm7FZyBdeWXTZmecib+l6ETc1j99KQ==
-X-Proofpoint-ORIG-GUID: lkRp_QuanJVxs8mbPfaVoeIspuwuud5S
-X-Proofpoint-GUID: BPbLBkyKhmMyNVnffdeE5jdDykugeYDz
-X-Authority-Analysis: v=2.4 cv=TMJIilla c=1 sm=1 tr=0 ts=69282bb4 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=mV9VRH-2AAAA:8 a=uMLcZr6R_3pDnm8Uh0cA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-25_02,2025-11-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 phishscore=0 impostorscore=0 clxscore=1015
- adultscore=0 bulkscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511220021
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251127011438.6918-2-21cnbao@gmail.com>
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
+X-Rspamd-Queue-Id: 7B48433693
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Score: -4.00
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Thu, Nov 27, 2025 at 09:14:37AM +0800, Barry Song wrote:
+> From: Oven Liyang <liyangouwen1@oppo.com>
+> 
+> If the current page fault is using the per-VMA lock, and we only released
+> the lock to wait for I/O completion (e.g., using folio_lock()), then when
+> the fault is retried after the I/O completes, it should still qualify for
+> the per-VMA-lock path.
+> 
+<snip>
+> Signed-off-by: Oven Liyang <liyangouwen1@oppo.com>
+> Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+> ---
+>  arch/arm/mm/fault.c       | 5 +++++
+>  arch/arm64/mm/fault.c     | 5 +++++
+>  arch/loongarch/mm/fault.c | 4 ++++
+>  arch/powerpc/mm/fault.c   | 5 ++++-
+>  arch/riscv/mm/fault.c     | 4 ++++
+>  arch/s390/mm/fault.c      | 4 ++++
+>  arch/x86/mm/fault.c       | 4 ++++
 
+If only we could unify all these paths :(
 
-On 11/19/25 6:14 PM, Shrikanth Hegde wrote:
-> Detailed problem statement and some of the implementation choices were
-> discussed earlier[1].
+>  include/linux/mm_types.h  | 9 +++++----
+>  mm/filemap.c              | 5 ++++-
+>  9 files changed, 39 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index b71625378ce3..12b2d65ef1b9 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1670,10 +1670,11 @@ enum vm_fault_reason {
+>  	VM_FAULT_NOPAGE         = (__force vm_fault_t)0x000100,
+>  	VM_FAULT_LOCKED         = (__force vm_fault_t)0x000200,
+>  	VM_FAULT_RETRY          = (__force vm_fault_t)0x000400,
+> -	VM_FAULT_FALLBACK       = (__force vm_fault_t)0x000800,
+> -	VM_FAULT_DONE_COW       = (__force vm_fault_t)0x001000,
+> -	VM_FAULT_NEEDDSYNC      = (__force vm_fault_t)0x002000,
+> -	VM_FAULT_COMPLETED      = (__force vm_fault_t)0x004000,
+> +	VM_FAULT_RETRY_VMA      = (__force vm_fault_t)0x000800,
 
+So, what I am wondering here is why we need one more fault flag versus
+just blindly doing this on a plain-old RETRY. Is there any particular
+reason why? I can't think of one. 
 
-Performance data on x86 and PowerPC:
+I would also like to see performance numbers.
 
-++++++++++++++++++++++++++++++++++++++++++++++++
-PowerPC: LPAR(VM) Running on powerVM hypervisor
-++++++++++++++++++++++++++++++++++++++++++++++++
+The rest of the patch looks OK to me.
 
-Host: 126 cores available in pool.
-VM1: 96VP/64EC - 768 CPUs
-VM2: 72VP/48EC - 576 CPUs
-(VP- Virtual Processor core), (EC - Entitled Cores)
-steal_check_frequency:1
-steal_ratio_high:400
-steal_ratio_low:150
-
-Scenarios:
-Secario 1: (Major improvement)
-VM1 is running daytrader[1] and VM2 is running stress-ng --cpu=$(nproc)
-Note: High gains. In the upstream the steal time was around 15%. With series it comes down
-to 3%. With further tuning it could be reduced.
-
-				upstream		+series
-daytrader	   	   	1x			  1.7x     <<- 70% gain
-throughput
-
------------
-Scenario 2: (improves thread_count < num_cpus)
-VM1 is running schbench and VM2 is running stress-ng --cpu=$(nproc)
-Note: Values are average of 5 runs and they are wakeup latencies
-
-schbench -t 400			upstream		+series
-50.0th:				  18.00			  16.60
-90.0th:				 174.00			  46.80
-99.0th:				3197.60                  928.80
-99.9th:				6203.20                 4539.20
-average rps:                   39665.61		       42334.65
-  
-schbench -t 600			upstream		+series
-50.0th:				  23.80 		  19.80
-90.0th:				 917.20                  439.00
-99.0th:				5582.40                 3869.60
-99.9th:				8982.40      		6574.40
-average rps:		       39541.00		       40018.11
-
------------
-Scenario 3: (Improves)
-VM1 is running hackbench and VM2 is running  stress-ng --cpu=$(nproc)
-Note: Values are average of 10 runs and 20000 loops.
-
-Process 10 groups          	  2.84               2.62
-Process 20 groups          	  5.39               4.48
-Process 30 groups          	  7.51               6.29
-Process 40 groups          	  9.88               7.42
-Process 50 groups    	  	 12.46               9.54
-Process 60 groups          	 14.76              12.09
-thread  10 groups          	  2.93               2.70
-thread  20 groups          	  5.79               4.78
-Process(Pipe) 10 groups    	  2.31               2.18
-Process(Pipe) 20 groups  	  3.32               3.26
-Process(Pipe) 30 groups  	  4.19               4.14
-Process(Pipe) 40 groups  	  5.18               5.53
-Process(Pipe) 50 groups 	  6.57               6.80
-Process(Pipe) 60 groups  	  8.21               8.13
-thread(Pipe)  10 groups 	  2.42               2.24
-thread(Pipe)  20 groups 	  3.62               3.42
-
------------
-Notes:
-
-Numbers might be very favorable since VM2 is constantly running and has some CPUs
-marked as paravirt when there is steal time and thresholds also might have played a role.
-Will plan to run same workload i.e hackbench and schbench on both VM's and see the behavior.
-
-VM1 is CPUs distributed equally across Nodes, while VM2 is not. Since CPUs are marked paravirt
-based on core count, some nodes on VM2 would have left unused and that could have added a boot for
-VM1 performance specially for daytrader.
-
-[1]: Daytrader is real life benchmark which does stock trading simulation.
-https://www.ibm.com/docs/en/linux-on-systems?topic=descriptions-daytrader-benchmark-application
-https://cwiki.apache.org/confluence/display/GMOxDOC12/Daytrader
-
-TODO: Get numbers with very high concurrency of hackbench/schbench.
-
-+++++++++++++++++++++++++++++++
-on x86_64 (Laptop running KVMs)
-+++++++++++++++++++++++++++++++
-Host: 8 CPUs.
-Two VM. Each spawned with -smp 8.
------------
-Scenario 1:
-Both VM's are running hackbench 10 process 10000 loops.
-Values are average of 3 runs. High steal of close 50% was seen when
-running upstream. So marked 4-7 as paravirt by writing to sysfs file.
-Since laptop has lot of host tasks running, there will be still be steal time.
-
-hackbench 10 groups		upstream		+series (4-7 marked as paravirt)
-(seconds)		 	  58			   54.42			
-
-Note: Having 5 groups helps too. But when concurrency goes such as very high(40 groups), it regress.
-
------------
-Scenario 2:
-Both VM's are running schbench. Values are average of 2 runs. 		
-"schbench -t 4 -r 30 -i 30" (latencies improve but rps is slightly less)
-
-wakeup latencies		upstream		+series(4-7 marked as paravirt)
-50.0th				  25.5		  		13.5
-90.0th				  70.0				30.0
-99.0th				2588.0			      1992.0
-99.9th				3844.0			      6032.0
-average rps:			   338				326
-
-schbench -t 8 -r 30 -i 30    (Major degradation of rps)
-wakeup latencies		upstream		+series(4-7 marked as paravirt)
-50.0th				  15.0				11.5
-90.0th				1630.0			      2844.0
-99.0th				4314.0			      6624.0
-99.9th				8572.0			     10896.0
-average rps:			 393			       240.5
-
-Anything higher also regress. Need to see why it might be? Maybe too many context
-switches since number of threads are too high and CPUs available is less.
+-- 
+Pedro
 
