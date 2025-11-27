@@ -1,73 +1,111 @@
-Return-Path: <linuxppc-dev+bounces-14523-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14524-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C47DC8E40F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 13:29:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A9F9C8E445
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Nov 2025 13:34:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dHG2z0Fmsz2yvQ;
-	Thu, 27 Nov 2025 23:29:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dHG8X3RWcz2xP9;
+	Thu, 27 Nov 2025 23:34:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764246586;
-	cv=none; b=l0VgtcQf8gXKtCOK9jIWj1qw6e6/8qH2uGpHuF1ao9zvEbLIYg3hVQBm7iOwf+EGtw3R3lwS+oYh4nPZw1pAaX9kS1QznVMC5v9GqQcwi2RK1WyE6d/HBjh5TydvMVDZVUN7s6gQ3jfla/xuTg6ZBOL5uPQiOzYjuKfx2R0iAsDX30wcIqA+bx31/NG7HV7b5IiCP2SsS2m4IpxIxFq0aCDJa/qmxmwEUioQoxnLSHqMGlksEslTJHPbHf33rdO0tmNba1Ye2K3+U0wPhViRfHtuCYMqqdkxMjwbCT5h/Pdf9+mvtRl90L3fKh9SnOdUOz6ruBiR+si+4ilvkisoNQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764246876;
+	cv=none; b=ZNs1qytGMQ3Bp8D9lRJ93dHnvhIv3DIZ4gjKLN+sMdXrPvuNny20/OE7536nny3YmCYiHs+ABMv1xVGu7fXWe77U5ubw3W2t7GvyiawxCLaHbTGhb9r2vN4sx3ekVIr0TlHjkBFmYHsztz0RW3ig3OW+PrmEAnSEvp7ORyqpiG3y4vqQsz9AlqYfHhHO5Qpa/4qCeAEWJubCU0YVWs+Et17GofnSb2FP/A3GSfXCzDzgLB/TAm65aNllsdWt+r4eE1XOanLa580jINJYdXmfk+2qs25MSjmIGYfv6N2SXtq45YJ3boXDsOd3SdXCCx9GUv68LOC34mcWRjVmjFhJog==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764246586; c=relaxed/relaxed;
-	bh=eXD2cwlAtYeDmB9Ya9od8jMbCoC885HlZofFoFv5haQ=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Yq02K1l3ry1oeTmpgiHVAZ0s/M2ZUX+Tv3YIA33D5nZh/dc3CO8m7wZDGe3K6CE1vPg3NF5Fk59eS7cpKSVzaIPNoPv15Y6uA1ITPQI7W+qB+2xuh2kK+08YsvCNrZZuh/FBgt+KjE6bRKbD0veMw6xIGIoGoyFITS5/frm5RzBoEIWcTE9s+B2xtLr0WmapZo/2ks2L2KUW/YR3eupfoEiysiY1MToLcYVZDmQYMYM5oVGUXtNJSFFXLrewP+g6wKDd6HlWhRlx1vM6Tz39WcsNNaZ9K05Vme5w0HBxAHh5Lc9b6UDqEn8gcPOK3JEBxj7sOdDoujoV9lSkZqQbdA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HH9DIgoX; dkim-atps=neutral; spf=pass (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1764246876; c=relaxed/relaxed;
+	bh=U/SiOGxBruZSPDZESgyMeWRoh9i3M0q8OwIPHZ+5svo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Emow/RNeMJDtnXkx1BHJQmP/5nS2ZMzULM+XCpcEQC/ztZbBrt1i9R7EuX/Mp08tn68gUHG5YhEAnsELg+QEat4s+SJg2/SWzmgEzU/I+mGXPVqxxmke/WZBfDTEzvNfp3kek1oIUYfWS9SKPLdHl/RpfmaopwoLgSO1xU8nB8wRJoUogHo21oY7nfMVYR7btHTSzZr/9DqM84yruQkZKcBZhq3rSw4/321ZSahscebR0F9Q3M6Noe3MiNfmKCDfeqtkqGhHOEr/WaKMGBydwN8JWmcOmZ+kjQbaZy9qj69xDfZrnUpNTCGkjsya1+gPKUfB8ULcAMJWSEfofuDdIg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J4oL5vFe; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HH9DIgoX;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J4oL5vFe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dHG2v6X6lz2xQq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 23:29:41 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764246584; x=1795782584;
-  h=date:from:to:cc:subject:message-id;
-  bh=pLHJvLVptiDOagxqQ9mPCjf4Zis6/W7gt7g78XW7Xww=;
-  b=HH9DIgoX8pyv4WeMmAeT1A0GLut0XfIdM/2RUS2mQtUeS0kHH20pc86R
-   FasHaH3NJ2rkb0f/m16FdrpiOiytowKxEXownmlAKONEOR8+1JQdWFYpk
-   9YWphrWSFzUh0/2eyTATTmxDtwNW8g9LRFDYoZVJRXWndzdOjWmWvAoKW
-   fWwNqV6/xg7qbd7qhdcc6bIZLrBL+j4xDAzd4F6aBhtkD2Ebqvz+b1B9o
-   DMU1fSr5bc/oX1sRibMv/9TCRVifCy8bbjwczljE1JXHBX52qka5hgO7E
-   QiODDhsjZqEo3L5vPz02gD03q6pj0ZrF9x6QK/CXGHyJaNN8rPugID4Um
-   w==;
-X-CSE-ConnectionGUID: 1Jeg0HWlSVytlUp/4VgZJg==
-X-CSE-MsgGUID: sLXgUvOhTeGC5q4OlmnVDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="83685827"
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="83685827"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 04:29:38 -0800
-X-CSE-ConnectionGUID: Ak79aRbdRHGJ9bKcZsMUXw==
-X-CSE-MsgGUID: mcyWZubvQjavYFYmQYcO0A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
-   d="scan'208";a="192475573"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 27 Nov 2025 04:29:36 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vOb7t-000000004kR-3ieO;
-	Thu, 27 Nov 2025 12:29:33 +0000
-Date: Thu, 27 Nov 2025 20:29:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- 333e781b0037e912109f0a879dffe0ecdbbaf0d6
-Message-ID: <202511272002.3hv6VncS-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dHG8W4w5gz2xNj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Nov 2025 23:34:35 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AR28C0C010976;
+	Thu, 27 Nov 2025 12:33:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=U/SiOGxBruZSPDZESgyMeWRoh9i3M0
+	q8OwIPHZ+5svo=; b=J4oL5vFegHjiNGUagzBApHvzd8MR3jsToqRXuYwO6O9Ano
+	CfVy3024jZCEuLyMaeUHzi2cgBCQ5T6x4HVWA8NCfO7ZlKXGxRcy5YmZX37Zh2xF
+	MzA5rDBMW3cmhVdAQSTeXH+hFh2FRdgAuqx1Jzqmk4tt/2ktJ1SEh2NYPAZO1/7q
+	jBIoJv5xvHry1ZrUt9bk/no4UIxF0+pD3jnN2daFgo+pwGrp+lKi0J01wvI25Zwo
+	Y+JFSohSzDUkcOH+osfpgqNaWu3TBtAGEL12D2LyBmVKPVw6tBHfq6+fKyW1yPof
+	wj8Xue+B/9P6KlMUmOSnnh8qz3jHMVFftGHP1S7Q==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4w9smjt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Nov 2025 12:33:12 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ARCRff3010922;
+	Thu, 27 Nov 2025 12:33:12 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ak4w9smjg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Nov 2025 12:33:12 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AR9paJp030755;
+	Thu, 27 Nov 2025 12:33:10 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4akqgsr7cw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Nov 2025 12:33:10 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5ARCX7Gu41746800
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 27 Nov 2025 12:33:07 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 00AAE20040;
+	Thu, 27 Nov 2025 12:33:07 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BACC920049;
+	Thu, 27 Nov 2025 12:33:05 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 27 Nov 2025 12:33:05 +0000 (GMT)
+Date: Thu, 27 Nov 2025 13:33:04 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Andreas Larsson <andreas@gaisler.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+        Yeoreum Yun <yeoreum.yun@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        x86@kernel.org
+Subject: Re: [PATCH v5 08/12] mm: enable lazy_mmu sections to nest
+Message-ID: <4d0eab1a-e1dc-49cf-8640-727c9734233d-agordeev@linux.ibm.com>
+References: <20251124132228.622678-1-kevin.brodsky@arm.com>
+ <20251124132228.622678-9-kevin.brodsky@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,81 +118,108 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251124132228.622678-9-kevin.brodsky@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIyMDAyMSBTYWx0ZWRfX9NOF0yN0lw1S
+ 0SZ2o+OA5NhSGQn0BtdyjjidP8fZgVZF6bKGYqOeYaerArXU5/eYaH6mjoMO836BpL61X8D4vHm
+ UI4sk8Hx5RARonWYhreWmyHWARU9ObUiHo1rZ1488kywlyb4p1nLQviUeZWU5jHTK6ubjCRzp3f
+ +lzNrZUD6k4MitmXkxXE1FBSz+t2k8OrxvuQ9N1qtEU671rSSdQQZW3OzxL73gwtwodSoKuCAd5
+ zVlpdX6K+l3L9DoCrkZWL523cXAZ3K0nqrWUQOBp/3nUGHINn5pOunRbOHLW3tYBKmoRFSshw2u
+ kphg/WcqiohDerAKQWOcIW/5lvy2GLS3clWCMDLpqje+49pqSaVI+EbpcYECNk2qFOMpAmxlrdh
+ QN7hJqHTshMIrpIpwd78rJv0I72AAQ==
+X-Proofpoint-ORIG-GUID: jxCWpMIwO3U273NtNuZU0G48jrPAegj4
+X-Proofpoint-GUID: 4fLOgGROG6bc0vkQxWmm4vD-nC0jkq3o
+X-Authority-Analysis: v=2.4 cv=TMJIilla c=1 sm=1 tr=0 ts=69284509 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l97El5uum0sds0BcBlYA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 phishscore=0 impostorscore=0 clxscore=1015
+ adultscore=0 bulkscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511220021
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 333e781b0037e912109f0a879dffe0ecdbbaf0d6  Automatic merge of 'next' into merge (2025-11-22 15:22)
+On Mon, Nov 24, 2025 at 01:22:24PM +0000, Kevin Brodsky wrote:
 
-elapsed time: 7322m
+Hi Kevin,
 
-configs tested: 60
-configs skipped: 0
+...
+> +/**
+> + * lazy_mmu_mode_pause() - Pause the lazy MMU mode.
+> + *
+> + * Pauses the lazy MMU mode; if it is currently active, disables it and calls
+> + * arch_leave_lazy_mmu_mode().
+> + *
+> + * Must be paired with a call to lazy_mmu_mode_resume(). Calls to the
+> + * lazy_mmu_mode_* API have no effect until the matching resume() call.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Sorry if it was discussed already - if yes, I somehow missed it. If I read
+the whole thing correctly enter()/pause() interleaving is not forbidden?
 
-tested configs:
-alpha                   allnoconfig    gcc-15.1.0
-alpha                  allyesconfig    gcc-15.1.0
-arc                    allmodconfig    gcc-15.1.0
-arc                     allnoconfig    gcc-15.1.0
-arc                    allyesconfig    gcc-15.1.0
-arc         randconfig-001-20251123    gcc-15.1.0
-arc         randconfig-002-20251123    gcc-12.5.0
-arm                     allnoconfig    clang-22
-arm         randconfig-001-20251123    clang-22
-arm         randconfig-002-20251123    clang-22
-arm         randconfig-003-20251123    gcc-10.5.0
-arm         randconfig-004-20251123    clang-22
-arm64                   allnoconfig    gcc-15.1.0
-arm64       randconfig-001-20251123    gcc-8.5.0
-arm64       randconfig-002-20251123    gcc-11.5.0
-arm64       randconfig-003-20251123    clang-22
-arm64       randconfig-004-20251123    clang-22
-csky                   allmodconfig    gcc-15.1.0
-csky                    allnoconfig    gcc-15.1.0
-csky        randconfig-001-20251123    gcc-15.1.0
-csky        randconfig-002-20251123    gcc-15.1.0
-hexagon                allmodconfig    clang-17
-hexagon                 allnoconfig    clang-22
-hexagon     randconfig-001-20251122    clang-22
-hexagon     randconfig-002-20251122    clang-17
-i386                    allnoconfig    gcc-14
-loongarch              allmodconfig    clang-19
-loongarch               allnoconfig    clang-22
-loongarch   randconfig-001-20251122    gcc-12.5.0
-loongarch   randconfig-002-20251122    gcc-14.3.0
-m68k                   allmodconfig    gcc-15.1.0
-m68k                    allnoconfig    gcc-15.1.0
-m68k                   allyesconfig    gcc-15.1.0
-microblaze              allnoconfig    gcc-15.1.0
-mips                    allnoconfig    gcc-15.1.0
-nios2                   allnoconfig    gcc-11.5.0
-nios2       randconfig-001-20251122    gcc-11.5.0
-nios2       randconfig-002-20251122    gcc-8.5.0
-openrisc                allnoconfig    gcc-15.1.0
-parisc                 allmodconfig    gcc-15.1.0
-parisc                  allnoconfig    gcc-15.1.0
-powerpc                 allnoconfig    gcc-15.1.0
-riscv                   allnoconfig    gcc-15.1.0
-riscv       randconfig-001-20251123    clang-20
-riscv       randconfig-002-20251123    gcc-8.5.0
-s390                   allmodconfig    clang-18
-s390                    allnoconfig    clang-22
-s390                   allyesconfig    gcc-15.1.0
-s390        randconfig-001-20251123    gcc-8.5.0
-s390        randconfig-002-20251123    clang-22
-sh                     allmodconfig    gcc-15.1.0
-sh                      allnoconfig    gcc-15.1.0
-sh                     allyesconfig    gcc-15.1.0
-sh          randconfig-001-20251123    gcc-12.5.0
-sh          randconfig-002-20251123    gcc-14.3.0
-sparc                   allnoconfig    gcc-15.1.0
-um                      allnoconfig    clang-22
-um                     allyesconfig    gcc-14
-x86_64                  allnoconfig    clang-20
-xtensa                  allnoconfig    gcc-15.1.0
+lazy_mmu_mode_enable()
+	lazy_mmu_mode_pause()
+		lazy_mmu_mode_enable()
+		...
+		lazy_mmu_mode_disable()
+	lazy_mmu_mode_resume()
+lazy_mmu_mode_disable()
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> + *
+> + * Has no effect if called:
+> + * - While paused (inside another pause()/resume() pair)
+> + * - In interrupt context
+> + */
+>  static inline void lazy_mmu_mode_pause(void)
+>  {
+> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> +
+>  	if (in_interrupt())
+>  		return;
+>  
+> -	arch_leave_lazy_mmu_mode();
+> +	VM_WARN_ON_ONCE(state->pause_count == U8_MAX);
+> +
+> +	if (state->pause_count++ == 0 && state->enable_count > 0)
+> +		arch_leave_lazy_mmu_mode();
+>  }
+>  
+> +/**
+> + * lazy_mmu_mode_pause() - Resume the lazy MMU mode.
+                    resume() ?
+> + *
+> + * Resumes the lazy MMU mode; if it was active at the point where the matching
+> + * call to lazy_mmu_mode_pause() was made, re-enables it and calls
+> + * arch_enter_lazy_mmu_mode().
+> + *
+> + * Must match a call to lazy_mmu_mode_pause().
+> + *
+> + * Has no effect if called:
+> + * - While paused (inside another pause()/resume() pair)
+> + * - In interrupt context
+> + */
+>  static inline void lazy_mmu_mode_resume(void)
+>  {
+> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> +
+>  	if (in_interrupt())
+>  		return;
+>  
+> -	arch_enter_lazy_mmu_mode();
+> +	VM_WARN_ON_ONCE(state->pause_count == 0);
+> +
+> +	if (--state->pause_count == 0 && state->enable_count > 0)
+> +		arch_enter_lazy_mmu_mode();
+>  }
+...
+Thanks!
 
