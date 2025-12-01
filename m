@@ -1,71 +1,99 @@
-Return-Path: <linuxppc-dev+bounces-14556-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14557-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3093AC96ACC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 01 Dec 2025 11:34:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B27C97313
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 01 Dec 2025 13:16:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dKgJ25Qc9z2yvD;
-	Mon, 01 Dec 2025 21:34:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dKjZ070TSz2yvD;
+	Mon, 01 Dec 2025 23:16:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::832"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764585266;
-	cv=none; b=U0mmtZF36jv/x1/cZKAxE+YabnOCX7hkiYiSC4YOA6bA4pAaxZABtuHsQDFByQs8VuqasDtY4eZT/veYf74LwMV5wNd1EzFKVYiYdp4t26Tpooan7Vj43YKs1nqut3V2UP5e5eJu8MKFbMc8uE65KLSYcB/tm7ovzxDXuoPDJt91AM4q2Z+cdi2Zlyx5rTWnpePdDj6hhnh4zo0xr2b0/0zQrDnUQOYJrN1VJSVKdLYFDsG7Sdg8pEl1eD7Xdzj0yHD1TrFLkt6bOq01+EtnUOJG0urherWQcq3I9NfV+E9lg1BxzhFWiKnkgzxWo5I57YKnwjCfRVytTAckm8pH2w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764591400;
+	cv=none; b=NxnpXpsQBHwAch2OK1jKWPd7CsORJxBHk0Hf6KS/zg/A0qXy/ZWTWYhoCuJ0xAa2LQ9SLDIudDZO4e2lBS+Job/yaa+tVfPTq0z+luEzKGNrdTFiyb3k8PCBhiQ0WRQuAO3AHXwPKA5T/t/ss5di67tP8RhdwY1OfFXJ0XL/u4/15UcOuLuI1iKT44hQ7DWz4kz6q+K/ALJOrw4rFkTAUARa+MfP3H3dAuQK/VF2ODC1NPFAmWsiHwIejkxQQNYGZyzXwFBPSS4gfOyXg74LovuZ4YqPrWjGp1GT6ZaHvC06gge2T+pJQ74skyCoxu/Ea8+0BYTN7MvIC2oQwO304g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764585266; c=relaxed/relaxed;
-	bh=/NFC26iZ51Jq0FMro6cx4anMEPoTOz73Uuc7um5nw/A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G6MhpsaxDJlfnFao9I15vQRK7LkfAkyGNrpl9QC/9CFmRWaUuKvg2nc9bPEIklCZaKpuds3NvcFwR/93UzqvY+xzHcrjVJoK5i7LE/R5WScb4XScjDZbUWo3VEDrdi8FMB275ixPVGU8u8LZTsESk3x0uS6q7QgM1ZIBS3UNnRLKliIQVwc/FN87vLLoOLFy7fjWfCy6DTHXuDofSXIK2L56iTVOH4+qEWNGeRtOhva14/rmGy1YKjchfY/ditDci7TzWde/qjoE74/quSxHvpYIciQwtwkG+LjCWOqF9PJUdxcDy7FO/cUKg41sm6ZMDvc7ooyl8T1zMyNjFp+0Aw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=zgbI3kIH; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::832; helo=mail-qt1-x832.google.com; envelope-from=edumazet@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1764591400; c=relaxed/relaxed;
+	bh=CvzUt5RPAqT5bwAL9q2UFTk5c6O8i8Nt+LMRpAZzjTY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IgYS3JtI6SCh6R0OSSfNCVLULIfpMzery+yt+rYuJuK3hYQYtWY8tk77TfQgLQdXeWIsuuFKeb1nkMYOBGkreShPWk26IMzagJifzdYk6NRhGkKR+o4uQ20GTSBQ9r3GNNu6yVUf0JLqe3X4+SiRipvn5I2Ib/acahKzy5b1DtDqb4sWCq7U+peE/Hcp9vnJHf6M/An8kODXaTpgFku9lkvl3O59ADQrLdX37WA+GBVknxll8quPfiI/CoU9SemxkXH3oEuKOtb3a5SvM7DyVx82gThHS8ThAdyz4RG9SIFN7hqMgbL2lVoxL5YZBXNdwnZtF3qZFwlp4rzy/uPKlw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RfcdWgwn; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=zgbI3kIH;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RfcdWgwn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::832; helo=mail-qt1-x832.google.com; envelope-from=edumazet@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dKgJ1048rz2yqP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Dec 2025 21:34:24 +1100 (AEDT)
-Received: by mail-qt1-x832.google.com with SMTP id d75a77b69052e-4ee13dc0c52so34062611cf.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Dec 2025 02:34:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764585261; x=1765190061; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/NFC26iZ51Jq0FMro6cx4anMEPoTOz73Uuc7um5nw/A=;
-        b=zgbI3kIHbCHPygQj345oTtmTn0042FwF75qS2b9Tb76MnyNaOVHqohrRxcvB85osbe
-         emdDeS4XfoOcd/tetNorbbPy6ZxZeJC3nwJ8sK15TmtrOq10jsgIChOlaXuj09CAbWhx
-         Wq9pH3fYENhgQ58dRcGkJN5/xXySMmQ+ADqg4ZQenBjB5fR0dvzys3fWns3kb7bUXAk8
-         Wq3SL4RWglya839wZdPiJ1yJc3uAehDOYQ1/HjClR2zvPBIUBpC1MdkxKC6SaB+vPBJc
-         SqtM7P1NCBzQ4QTaoyxLQBNbjMD1fRSK5gncHem8TnFhjLLwEp2roGWJMPQmoNUcosDc
-         F9pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764585261; x=1765190061;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/NFC26iZ51Jq0FMro6cx4anMEPoTOz73Uuc7um5nw/A=;
-        b=qGn2A3W15ZB783ZE7cd9DFZl3JZwTGZ4zp0E2k7JeEbPlCXnFgHVSx00iZa/8rkqFU
-         g5FDjvMjBhdLJLmUwGeiJ+yy8wn5UkkiHphhgfk3y/3YEvYkGLjgJAPjLZsyIsBiy5+/
-         y4ERcRlhtLq2OtH26U2aDzke1OmnYArVgj+8wikV+7UylVe/P8eAEWiCNtqClTQ2vxQ6
-         JX3qUZFzR1RWwN3MICQj4RTs6lp8bx2vZS3ub40mue3adn8ribobWRoqoMl5HlpjZEkC
-         VciYMaa7DdxUxx234Exb7B14JiNEq/3LIZHsMnqr3oXnUna+NkkgKtvouAZKR5MY5WDl
-         WD9g==
-X-Forwarded-Encrypted: i=1; AJvYcCXSGv5awsoOMobMw0oGsSldB8ZRi20iCIfgO7m7PnAdRVHnJC+kkHMnM5Uk5jjKHcam1WI2/5zNTl+ZTuk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyVGRb9JwpMIiVKFItP/1lrwdh3lPdMfxkRTD1/pk4HQJ4hUmIn
-	HNroJyYGTUksr04YHhuh1Kol3rxMffXZp5r7oCWgR/aei05VZKZshiDv+4kvZKGmi6uOXMwHuhM
-	zLJYhHGWi6BZRn4dYYOUOHF+l9I7lBkBvLnIrg2Yy
-X-Gm-Gg: ASbGncvaf0HrtyApihsytxy4GPykTnEF3+LdnL0fzFcGwmzFx4pijBCtmb0gkTOBhnY
-	LJVsJFBTSBvTVeHiVc/T+DJWriV/yMW5f7ZLrb6hIo871nLUxOeufp5nVRZnZN32FxmkOHyk/jK
-	AQlozIJa1R5uwSrDH4FRRzDqXt/LATylUqLF2k+LgJcye6i5PZMKRCfZVbzQDoajTZXuWyPYkxz
-	v1MyHysJjscvaNVtE9RTrjtE+znBrp4T6zToICNjzj9GmNdVcHt6i6RPhFyxR7jM5H7Yr8=
-X-Google-Smtp-Source: AGHT+IHrOCxJDylsnf5RjbZYp5/hq9LRYZJVRZTrh485sxhY1zvrz1HEnuJgz8DasBfdSKWNNqOGg7kYZ0BBwnjm3h0=
-X-Received: by 2002:ac8:5ace:0:b0:4ee:1d3e:6aba with SMTP id
- d75a77b69052e-4ee58b29568mr578454331cf.74.1764585260665; Mon, 01 Dec 2025
- 02:34:20 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dKjYz3kxqz2ypW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Dec 2025 23:16:38 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B1BilaR001393;
+	Mon, 1 Dec 2025 12:15:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:to; s=pp1; bh=CvzUt5RPAqT5bwAL9q2UF
+	Tk5c6O8i8Nt+LMRpAZzjTY=; b=RfcdWgwnrBkgX4PRtI+vM3BZOU/oisDfAd1RG
+	P/Pd1ujTSy7FjsVrNmovH1Ci6pshxOUFngfsuTSj/2G+ifLeYhi0OVttWBXw72kk
+	0J+rtL1FBbYhvehN3Fts64LBjqKWsX7KwogLNyCClmFSNm0FTRX+7bKhLShSoJv3
+	a+z9rGB7hBrLH0ZgjzoccRAI7CeRyvbmDi/rjb9wbpF/aSIukKi8RiEhk+QwoSl0
+	cni+KhzpM4KgQFLx5dQ2ztbtMzKQ7FMjXpX6WCYUQmnuF7nM4eMnMN4jmPScZyIr
+	jAhtlkoGEXB+VIiJvTg5MHvwYYynD+qDDo++DvfFUqCvn6GuQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqq8uexbr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Dec 2025 12:15:48 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5B1CC6En015611;
+	Mon, 1 Dec 2025 12:15:47 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqq8uexbn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Dec 2025 12:15:47 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B1C1NiQ024080;
+	Mon, 1 Dec 2025 12:15:46 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4arb5s6evw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Dec 2025 12:15:46 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B1CFfZ923724366
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 1 Dec 2025 12:15:41 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 75D162004D;
+	Mon,  1 Dec 2025 12:15:41 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 48EBE20043;
+	Mon,  1 Dec 2025 12:15:38 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.126.150.29])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon,  1 Dec 2025 12:15:38 +0000 (GMT)
+Date: Mon, 1 Dec 2025 17:45:37 +0530
+From: Srikar Dronamraju <srikar@linux.ibm.com>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Ben Segall <bsegall@google.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Ingo Molnar <mingo@kernel.org>, Juri Lelli <juri.lelli@redhat.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Valentin Schneider <vschneid@redhat.com>
+Subject: Re: [PATCH v2 2/2] powerpc/smp: Disable steal from updating CPU
+ capacity
+Message-ID: <aS2G6XDdGse5RYw5@linux.ibm.com>
+Reply-To: Srikar Dronamraju <srikar@linux.ibm.com>
+References: <20251029060757.2007601-1-srikar@linux.ibm.com>
+ <20251029060757.2007601-2-srikar@linux.ibm.com>
+ <CAKfTPtDW9rApEm+4qSrEpRDMA+68BnVOgegKUZUa5S-gKnR--A@mail.gmail.com>
+ <aQHQ7UyaK849BKV8@linux.ibm.com>
+ <CAKfTPtDtfy7=rb6rPVMAk1+Bq4w=+opiWuo_Y+3dy3me--6KsA@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,99 +107,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20251130194155.1950980-1-fuchsfl@gmail.com>
-In-Reply-To: <20251130194155.1950980-1-fuchsfl@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 1 Dec 2025 02:34:09 -0800
-X-Gm-Features: AWmQ_bkHbwPbn9xWGDfCo5ilV01Qvn8Z_JeT-bzbJliOYcgsFkjYCR2lM1YMuIM
-Message-ID: <CANn89i+q_KBrrhY-PjqdG9gxkdYyWy88Vbgu=PAr=SqDmvOyUw@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: ps3_gelic_net: Use napi_alloc_skb() and napi_gro_receive()
-To: Florian Fuchs <fuchsfl@gmail.com>
-Cc: Geoff Levand <geoff@infradead.org>, netdev@vger.kernel.org, 
-	Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <CAKfTPtDtfy7=rb6rPVMAk1+Bq4w=+opiWuo_Y+3dy3me--6KsA@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: HNs7Y5ATDJRfXHPva5QLC9S__2RJjgkN
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDAwOCBTYWx0ZWRfX+gGdOfJ1Z5UN
+ ADdMqsTzCZijIQNCIDpG4gGmLZB8KPoGYXEJgYBCCMlJFDpxgCrBTk/grWwIpLMRaWz7a8Cu4mN
+ qpo4Y3gQIETv4OtvHmHyTm14xTlZyBIEjBl01cmq7fFy/UItJBaSRijspyjm6bMstk606Shoujv
+ ivTfsYRrETS3fUHDHe0c35Qq4+FfKtFkOGm49kC9ujO1mUtr7fBjERjAbgkNoyanmXJAkVs/wQC
+ mrCP1KLRKQMoqpXIkyjv9X8gZWYXtEoGBMrukewJjU8NNQYk2z8dT7sC6v8JppHM/MMUGANbSte
+ x0tvVs8S0Pb8wXqgI+TT5zL17lVpkBKr2CmYPDI+3Lo1g7RQM9x1WkIclv7oXTOWehEX+mq83Hi
+ xTcrBKwCxNx89zUh2IYhiBdq2JJZ9w==
+X-Authority-Analysis: v=2.4 cv=Scz6t/Ru c=1 sm=1 tr=0 ts=692d86f4 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=8nJEP1OIZ-IA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=KKAkSRfTAAAA:8 a=VnNF1IyMAAAA:8 a=aOk6NyUQ4sEGh1re8dIA:9 a=wPNLvfGTeEIA:10
+ a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: jmidmTeuBNEF7zmVGgWupDBfbwogCPbu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-28_08,2025-11-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 spamscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511290008
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sun, Nov 30, 2025 at 11:51=E2=80=AFAM Florian Fuchs <fuchsfl@gmail.com> =
-wrote:
->
-> Use the napi functions napi_alloc_skb() and napi_gro_receive() instead
-> of netdev_alloc_skb() and netif_receive_skb() for more efficient packet
-> receiving. The switch to napi aware functions increases the RX
-> throughput, reduces the occurrence of retransmissions and improves the
-> resilience against SKB allocation failures.
->
-> Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
-> ---
-> Note: This change has been tested on real hardware Sony PS3 (CECHL04 PAL)=
-,
-> the patch was tested for many hours, with continuous system load, high
-> network transfer load and injected failslab errors.
->
-> In my tests, the RX throughput increased up to 100% and reduced the
-> occurrence of retransmissions drastically, with GRO enabled:
->
-> iperf3 before and after the commit, where PS3 (with this driver) is on
-> the receiving side:
-> Before: [  5]   0.00-10.00  sec   551 MBytes   462 Mbits/sec receiver
-> After:  [  5]   0.00-10.00  sec  1.09 GBytes   939 Mbits/sec receiver
->
-> stats from the sending client to the PS3:
-> Before: [  5]   0.00-10.00  sec   552 MBytes   463 Mbits/sec  3151 sender
-> After:  [  5]   0.00-10.00  sec  1.09 GBytes   940 Mbits/sec   37  sender
->
->  drivers/net/ethernet/toshiba/ps3_gelic_net.c | 15 ++++++++++-----
->  1 file changed, 10 insertions(+), 5 deletions(-)
+* Vincent Guittot <vincent.guittot@linaro.org> [2025-11-03 09:46:26]:
 
-Patch looks fine to me. My PS3 died years ago, so I can not test it :)
+> Hi Sikar,
+> 
+> On Wed, 29 Oct 2025 at 09:32, Srikar Dronamraju <srikar@linux.ibm.com> wrote:
+> >
+> > * Vincent Guittot <vincent.guittot@linaro.org> [2025-10-29 08:43:34]:
+> >
+> > > Hi Srikar,
+> > >
+> > > On Wed, 29 Oct 2025 at 07:09, Srikar Dronamraju <srikar@linux.ibm.com> wrote:
+> > > >
+> > > > In a shared LPAR with SMT enabled, it has been observed that when a CPU
+> > > > experiences steal time, it can trigger task migrations between sibling
+> > > > CPUs. The idle CPU pulls a runnable task from its sibling that is
+> > > > impacted by steal, making the previously busy CPU go idle. This reversal
+> > >
+> > > IIUC, the migration is triggered by the reduced capacity case when
+> > > there is 1 task on the CPU
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Hi Peter, Vincent
 
-BTW, I think we can cleanup gelic_descr_prepare_rx() a bit :
+Do you have any more inputs on this?
+If not can this pulled into the scheduler code.
 
-diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-index 5ee8e8980393c3491bf9cf91eb8e0dbb2df0f427..f4f34e9ed49c5b7fd1cf4ea3f5b=
-fe7297e97ea23
-100644
---- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-+++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-@@ -392,10 +392,8 @@ static int gelic_descr_prepare_rx(struct gelic_card *c=
-ard,
-        descr->hw_regs.payload.size =3D 0;
-
-        descr->skb =3D netdev_alloc_skb(*card->netdev, rx_skb_size);
--       if (!descr->skb) {
--               descr->hw_regs.payload.dev_addr =3D 0; /* tell DMAC
-don't touch memory */
-+       if (!descr->skb)
-                return -ENOMEM;
--       }
-
-        offset =3D ((unsigned long)descr->skb->data) &
-                (GELIC_NET_RXBUF_ALIGN - 1);
-@@ -404,13 +402,12 @@ static int gelic_descr_prepare_rx(struct gelic_card *=
-card,
-        /* io-mmu-map the skb */
-        cpu_addr =3D dma_map_single(ctodev(card), descr->skb->data,
-                                  GELIC_NET_MAX_FRAME, DMA_FROM_DEVICE);
--       descr->hw_regs.payload.dev_addr =3D cpu_to_be32(cpu_addr);
-+
-        if (dma_mapping_error(ctodev(card), cpu_addr)) {
-                dev_kfree_skb_any(descr->skb);
-                descr->skb =3D NULL;
-                dev_info(ctodev(card),
-                         "%s:Could not iommu-map rx buffer\n", __func__);
--               gelic_descr_set_status(descr, GELIC_DESCR_DMA_NOT_IN_USE);
-                return -ENOMEM;
-        }
+--
+Thanks and Regards
+Srikar Dronamraju
 
