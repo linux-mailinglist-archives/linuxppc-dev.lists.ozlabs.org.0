@@ -1,93 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-14553-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14554-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4942C95440
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Nov 2025 20:52:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A63CFC95C9C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 01 Dec 2025 07:22:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dKHjx25Pmz2yvV;
-	Mon, 01 Dec 2025 06:52:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dKYj42yLLz2yv1;
+	Mon, 01 Dec 2025 17:22:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::332"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764532325;
-	cv=none; b=YyogiLE2ifAsdOMNfk40f7wq1Xriz/ESIm7I40FgZk/7HmaJG4fndvtLokMO317ccl0uQ9JldH1QQO/PfZGSW3wWVD5n3/Bcu6NdnC9p/VHN5yyJpFyhRBjnGlOJgeY/5W7EXCh4APFRAHxTY9wM2/cJqTEzm81VEB7nPhOdv8Wext1VBputRcmIETGVaza8PTQBGQgZtc8rHE8yjJm/nXLHF+0NiRis+svA9I9RBlfSUQ2IHxelbYeQJPP0IcEg4ogHRTy3Jxud4DMJF0NBNH9ZHNMgpIMGN5PmeEDNkHyDyUbzJDvgOnKYF0+ZNArXEH4d2nVJzQLtunPvUxHWZA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764570136;
+	cv=none; b=BOs8eB8V3U6qiSdVRKIKFjKBGibB4WOoDO0+JzUXy43576mfm2veEravehCCQA96cApuzMoQNrL5goyIKJMYR7/UdhBXJ3GIsNutNUIP0gUkZmun6vxnNGgN4UENOpUTa3jjC80XQu0yBRNHLz4DvHzIjXHelA4E3MoFT561x96nBXdBcwT19YqbhI7qaTXUjsMXmB7E5+KfRvOcG/Tux+9UE5AfbIQ3d2hfP5e0Ms4MuUNJ8PkX8b5dexa9jJcuomMMeXfJg1vdhnzUqWTyejJVLALiFeT1UZYvjFAc+2l6EmHVQL6RYjnm0BkR5/u2h/YIsk3NKNTUaMObBf/G1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764532325; c=relaxed/relaxed;
-	bh=/DEo1+0Da+YijlU/Zfn1c1EqlK38ud5yDKP0+nxdYn8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KNoUSTmgkYiJslDxbJ9CHef6zPrQCaTt6hHDMNkkvaVEInlwjZSecLEa4ev1FK6ivgoK3nwR3I1y4T4DgngNPSKCFBQ5W7De6fsYbvSrzdZ2xsazDKrNFw90yzn+HnsGu8Hm0t/o1m9Y7vO7ExXy4iFxQnAG0AFO9GyDYZrWohwbQQXQOX5aYaWcy8fJRU0TPl9XDaTYZzrAPvBdBAZzP5sv2yJcap4RksSODbOQAegBfF7c+YKReoi6wqLERjfT1zX6BXA5A09awazFspJx2AmJAKZcgxyOO+rf9ZBbn4VUi4FdlmJ3/NelLjqWx56hQu9SuKDvMCK8eSDYPI+J2Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=iwzEVREI; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::332; helo=mail-wm1-x332.google.com; envelope-from=fuchsfl@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=iwzEVREI;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::332; helo=mail-wm1-x332.google.com; envelope-from=fuchsfl@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dKHjt6B3mz2yqP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Dec 2025 06:52:01 +1100 (AEDT)
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-4779cc419b2so34014005e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Nov 2025 11:52:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764532318; x=1765137118; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/DEo1+0Da+YijlU/Zfn1c1EqlK38ud5yDKP0+nxdYn8=;
-        b=iwzEVREIdTmMuZejo3yEGsri+2PpXN7wGHtak5jL1ahr8E2nzHaNw+rxw56kCtKwiF
-         gynpr969lfC5e+waFTIgWTHhMer9XCaA9DSQQUdswL6Qzp+ToXYIXcDDnwS9G3gH0sHF
-         RytGCuGisSvrodfxKuG6O5rVAp25W9V0K3on40yxydnzNQyd6DHK3mDwWZhmm9GXdY4m
-         MZ8X2jz/ng0qgbToN825JpVty2tfM63lLqGbfMIM2i8uF6mv8ey/QJx9p5RcuRDB2T8Y
-         ejOy1992S3dych4B/Gnt2wZ80xGSEoGbwFIdyz5SNwGzGfdEdq08n5DOMREuBo+kt9cl
-         1mag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764532318; x=1765137118;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/DEo1+0Da+YijlU/Zfn1c1EqlK38ud5yDKP0+nxdYn8=;
-        b=HWQBY/b5+C5SlYq9nYWcbD4ayChPrIAkavaePsZdvqr53gzVSyCA0PTswzkJuHspzH
-         3WT9FQbXWR82Gxt/vJG3SXOPir5rEfk/I4MmlXB50VBqLLAdsNEKbQ6+ACIFYMN22X9Q
-         XV0ZemPs5IwpXjbOgDKPBPAm9VLnSJMhontKlLZ3wNXrXvOUmWvo2xn01mfEUt8JZDi8
-         i0fYNJduk0FPMRCW6vwWQiz+2r0fgIgue3F9VqXcHv2F7Ixy4gUaWCoj8vbgfYLwsXCT
-         HmpNjuxcsCi4eKDhB1JxEPgg7p1bNdMdju45wL4qCsaf+gHIft+phgf8+BcuxtZU32Gr
-         3xHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWenvmKp7V0iCXoxfavp3cVh97PYUq0yvZ0wVwBdsvSRsZuX5Z42bIvKAmdM8n3PoXaAXjYUDCc9duNh4M=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwJwW6INN0uHYet8A2GdTKEYQ70dgH8eZriO+D7J5BD6AdVzcDx
-	nu4s0TKWNhtxyPrFC0gs3pzA0XcV2O8nmkShZRLuePwafR5CJkJoMmw=
-X-Gm-Gg: ASbGncsGvgVXzblYR8/BBx2mWbGqWWRAKpxhQHEv/6LW1HQHEiBRIELFkfpmsh0y+W8
-	fNBezAIo/Eth34FeaLWigq3SuOKhrGti9ykyS0ssTqXvfLbi3uJ7ZbQiyjL4KpD2LIaAngeCSWe
-	QzQNWKENhYtVdcsWtiU8kd+p3jRQcpn82V+mjpK3nZfDhyx/Lf+dSL6x0DD2kC1HZT9R2trWhvs
-	e9ELxjOkQ+Eo1sjxxNgi/DJhBmHPcF03WoSGFhYTZkYNFP1zHgqHbZU7Mzwgx3m/KcOYP7rk+yY
-	Aeo2PgZxYZtcRpxA8UONh1XqRl7cstepnEuad/xf2le1slwGFUdYipckNHdwcgnxaCm1MTUQVTD
-	+KGY8mszrkBQmSK8wy4uyua84PwS2u85vzSuB3geWB0awT6bKJdLcKfifK19vkM07+FgQijnWLH
-	l1P9ej8PC//EEbr9p59yG3jjQU7i5xXQ+eNP5SjMKEY0c72OHnxlcFmdbpUz0Dg//IyA9h
-X-Google-Smtp-Source: AGHT+IHpMEnKorixDu8qIt6p2z3sKWM6DYKhdWytPD6KeENQCqF5f7FvWF1BtO+epXxKsRq5U6IKMw==
-X-Received: by 2002:a05:600c:3543:b0:477:1ae1:fa5d with SMTP id 5b1f17b1804b1-477c1142268mr303410735e9.20.1764532317801;
-        Sun, 30 Nov 2025 11:51:57 -0800 (PST)
-Received: from localhost ([2a02:810d:4a94:b300:c379:32d5:1107:4f59])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4790b0cc1d6sm258597365e9.12.2025.11.30.11.51.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Nov 2025 11:51:57 -0800 (PST)
-From: Florian Fuchs <fuchsfl@gmail.com>
-To: Geoff Levand <geoff@infradead.org>,
-	netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	fuchsfl@gmail.com
-Subject: [PATCH net-next] net: ps3_gelic_net: Use napi_alloc_skb() and napi_gro_receive()
-Date: Sun, 30 Nov 2025 20:41:55 +0100
-Message-ID: <20251130194155.1950980-1-fuchsfl@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	t=1764570136; c=relaxed/relaxed;
+	bh=GwZqCci0XesdEsRMxqflMc5VG3lhqbE3Ht/3ezIyxL4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IT63Uf9sHs/hiRYeJJZXkooMzT8LWGij6Od0et8C2VW3zxYBCF1J+HDP/Mti+aQ5kKOIfi8xfw231jOnbkmwgOdTb1DgE2kkTsqpuCv/x589reZo6wHG4fjrJgXh0B+R6Ih3YijXD0zE0ORpxvQOckdTB7NoANcHNm4GZ/qmqj2xkIRFZjGdCwF6q8xYiA/1rf5L2fFbcz2de5VQcjT6PUtHHZieELitxnUBQ+z9ME6rll7Ol+m0BmiR6rLQTdAVVmyob2moOm3xIwHW1raV4mjFVlYuVkRy/7x7mQ33QAA5oDafLNZvAmxNwKR83a9s6p9x7PIWG+y1HiiVWPiG2g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dKYj318Vxz2yG3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Dec 2025 17:22:13 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 755C2497;
+	Sun, 30 Nov 2025 22:21:33 -0800 (PST)
+Received: from [10.163.49.14] (unknown [10.163.49.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1C9083F73B;
+	Sun, 30 Nov 2025 22:21:29 -0800 (PST)
+Message-ID: <8d9ed1f1-77da-45af-85b5-78a5da66f1cc@arm.com>
+Date: Mon, 1 Dec 2025 11:51:26 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,103 +43,236 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 05/12] mm: introduce CONFIG_ARCH_HAS_LAZY_MMU_MODE
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251124132228.622678-1-kevin.brodsky@arm.com>
+ <20251124132228.622678-6-kevin.brodsky@arm.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20251124132228.622678-6-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Use the napi functions napi_alloc_skb() and napi_gro_receive() instead
-of netdev_alloc_skb() and netif_receive_skb() for more efficient packet
-receiving. The switch to napi aware functions increases the RX
-throughput, reduces the occurrence of retransmissions and improves the
-resilience against SKB allocation failures.
+On 24/11/25 6:52 PM, Kevin Brodsky wrote:
+> Architectures currently opt in for implementing lazy_mmu helpers by
+> defining __HAVE_ARCH_ENTER_LAZY_MMU_MODE.
+> 
+> In preparation for introducing a generic lazy_mmu layer that will
+> require storage in task_struct, let's switch to a cleaner approach:
+> instead of defining a macro, select a CONFIG option.
+> 
+> This patch introduces CONFIG_ARCH_HAS_LAZY_MMU_MODE and has each
+> arch select it when it implements lazy_mmu helpers.
+> __HAVE_ARCH_ENTER_LAZY_MMU_MODE is removed and <linux/pgtable.h>
+> relies on the new CONFIG instead.
+> 
+> On x86, lazy_mmu helpers are only implemented if PARAVIRT_XXL is
+> selected. This creates some complications in arch/x86/boot/, because
+> a few files manually undefine PARAVIRT* options. As a result
+> <asm/paravirt.h> does not define the lazy_mmu helpers, but this
+> breaks the build as <linux/pgtable.h> only defines them if
+> !CONFIG_ARCH_HAS_LAZY_MMU_MODE. There does not seem to be a clean
+> way out of this - let's just undefine that new CONFIG too.
+> 
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>  arch/arm64/Kconfig                                 | 1 +
+>  arch/arm64/include/asm/pgtable.h                   | 1 -
+>  arch/powerpc/include/asm/book3s/64/tlbflush-hash.h | 2 --
+>  arch/powerpc/platforms/Kconfig.cputype             | 1 +
+>  arch/sparc/Kconfig                                 | 1 +
+>  arch/sparc/include/asm/tlbflush_64.h               | 2 --
+>  arch/x86/Kconfig                                   | 1 +
+>  arch/x86/boot/compressed/misc.h                    | 1 +
+>  arch/x86/boot/startup/sme.c                        | 1 +
+>  arch/x86/include/asm/paravirt.h                    | 1 -
+>  include/linux/pgtable.h                            | 2 +-
+>  mm/Kconfig                                         | 3 +++
+>  12 files changed, 10 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 6663ffd23f25..74be32f5f446 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -34,6 +34,7 @@ config ARM64
+>  	select ARCH_HAS_KCOV
+>  	select ARCH_HAS_KERNEL_FPU_SUPPORT if KERNEL_MODE_NEON
+>  	select ARCH_HAS_KEEPINITRD
+> +	select ARCH_HAS_LAZY_MMU_MODE
+>  	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+>  	select ARCH_HAS_MEM_ENCRYPT
+>  	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 0944e296dd4a..54f8d6bb6f22 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -80,7 +80,6 @@ static inline void queue_pte_barriers(void)
+>  	}
+>  }
+>  
+> -#define  __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+>  static inline void arch_enter_lazy_mmu_mode(void)
+>  {
+>  	/*
+> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+> index 2d45f57df169..565c1b7c3eae 100644
+> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
+> @@ -24,8 +24,6 @@ DECLARE_PER_CPU(struct ppc64_tlb_batch, ppc64_tlb_batch);
+>  
+>  extern void __flush_tlb_pending(struct ppc64_tlb_batch *batch);
+>  
+> -#define __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+> -
+>  static inline void arch_enter_lazy_mmu_mode(void)
+>  {
+>  	struct ppc64_tlb_batch *batch;
+> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+> index 4c321a8ea896..f399917c17bd 100644
+> --- a/arch/powerpc/platforms/Kconfig.cputype
+> +++ b/arch/powerpc/platforms/Kconfig.cputype
+> @@ -93,6 +93,7 @@ config PPC_BOOK3S_64
+>  	select IRQ_WORK
+>  	select PPC_64S_HASH_MMU if !PPC_RADIX_MMU
+>  	select KASAN_VMALLOC if KASAN
+> +	select ARCH_HAS_LAZY_MMU_MODE
+>  
+>  config PPC_BOOK3E_64
+>  	bool "Embedded processors"
+> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+> index a630d373e645..2bad14744ca4 100644
+> --- a/arch/sparc/Kconfig
+> +++ b/arch/sparc/Kconfig
+> @@ -112,6 +112,7 @@ config SPARC64
+>  	select NEED_PER_CPU_PAGE_FIRST_CHUNK
+>  	select ARCH_SUPPORTS_SCHED_SMT if SMP
+>  	select ARCH_SUPPORTS_SCHED_MC  if SMP
+> +	select ARCH_HAS_LAZY_MMU_MODE
+>  
+>  config ARCH_PROC_KCORE_TEXT
+>  	def_bool y
+> diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
+> index 925bb5d7a4e1..4e1036728e2f 100644
+> --- a/arch/sparc/include/asm/tlbflush_64.h
+> +++ b/arch/sparc/include/asm/tlbflush_64.h
+> @@ -39,8 +39,6 @@ static inline void flush_tlb_range(struct vm_area_struct *vma,
+>  
+>  void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+>  
+> -#define __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+> -
+>  void flush_tlb_pending(void);
+>  void arch_enter_lazy_mmu_mode(void);
+>  void arch_flush_lazy_mmu_mode(void);
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index a3700766a8c0..db769c4addf9 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -805,6 +805,7 @@ config PARAVIRT
+>  config PARAVIRT_XXL
+>  	bool
+>  	depends on X86_64
+> +	select ARCH_HAS_LAZY_MMU_MODE
+>  
+>  config PARAVIRT_DEBUG
+>  	bool "paravirt-ops debugging"
+> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+> index db1048621ea2..cdd7f692d9ee 100644
+> --- a/arch/x86/boot/compressed/misc.h
+> +++ b/arch/x86/boot/compressed/misc.h
+> @@ -11,6 +11,7 @@
+>  #undef CONFIG_PARAVIRT
+>  #undef CONFIG_PARAVIRT_XXL
+>  #undef CONFIG_PARAVIRT_SPINLOCKS
+> +#undef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>  #undef CONFIG_KASAN
+>  #undef CONFIG_KASAN_GENERIC
+>  
+> diff --git a/arch/x86/boot/startup/sme.c b/arch/x86/boot/startup/sme.c
+> index e7ea65f3f1d6..b76a7c95dfe1 100644
+> --- a/arch/x86/boot/startup/sme.c
+> +++ b/arch/x86/boot/startup/sme.c
+> @@ -24,6 +24,7 @@
+>  #undef CONFIG_PARAVIRT
+>  #undef CONFIG_PARAVIRT_XXL
+>  #undef CONFIG_PARAVIRT_SPINLOCKS
+> +#undef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>  
+>  /*
+>   * This code runs before CPU feature bits are set. By default, the
+> diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+> index b5e59a7ba0d0..13f9cd31c8f8 100644
+> --- a/arch/x86/include/asm/paravirt.h
+> +++ b/arch/x86/include/asm/paravirt.h
+> @@ -526,7 +526,6 @@ static inline void arch_end_context_switch(struct task_struct *next)
+>  	PVOP_VCALL1(cpu.end_context_switch, next);
+>  }
+>  
+> -#define  __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+>  static inline void arch_enter_lazy_mmu_mode(void)
+>  {
+>  	PVOP_VCALL0(mmu.lazy_mode.enter);
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index b13b6f42be3c..de7d2c7e63eb 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -231,7 +231,7 @@ static inline int pmd_dirty(pmd_t pmd)
+>   * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
+>   * and the mode cannot be used in interrupt context.
+>   */
+> -#ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+> +#ifndef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>  static inline void arch_enter_lazy_mmu_mode(void) {}
+>  static inline void arch_leave_lazy_mmu_mode(void) {}
+>  static inline void arch_flush_lazy_mmu_mode(void) {}
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index bd0ea5454af8..a7486fae0cd3 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1464,6 +1464,9 @@ config PT_RECLAIM
+>  config FIND_NORMAL_PAGE
+>  	def_bool n
+>  
+> +config ARCH_HAS_LAZY_MMU_MODE
+> +	bool
+> +
 
-Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
----
-Note: This change has been tested on real hardware Sony PS3 (CECHL04 PAL),
-the patch was tested for many hours, with continuous system load, high
-network transfer load and injected failslab errors.
+Might be worth adding a help description for the new config option.
 
-In my tests, the RX throughput increased up to 100% and reduced the
-occurrence of retransmissions drastically, with GRO enabled:
-
-iperf3 before and after the commit, where PS3 (with this driver) is on
-the receiving side:
-Before: [  5]   0.00-10.00  sec   551 MBytes   462 Mbits/sec receiver
-After:  [  5]   0.00-10.00  sec  1.09 GBytes   939 Mbits/sec receiver
-
-stats from the sending client to the PS3:
-Before: [  5]   0.00-10.00  sec   552 MBytes   463 Mbits/sec  3151 sender
-After:  [  5]   0.00-10.00  sec  1.09 GBytes   940 Mbits/sec   37  sender
-
- drivers/net/ethernet/toshiba/ps3_gelic_net.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-index 591866fc9055..d35d1f3c10a1 100644
---- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-+++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-@@ -364,6 +364,7 @@ static int gelic_card_init_chain(struct gelic_card *card,
-  * gelic_descr_prepare_rx - reinitializes a rx descriptor
-  * @card: card structure
-  * @descr: descriptor to re-init
-+ * @napi_mode: is it running in napi poll
-  *
-  * return 0 on success, <0 on failure
-  *
-@@ -374,7 +375,8 @@ static int gelic_card_init_chain(struct gelic_card *card,
-  * must be a multiple of GELIC_NET_RXBUF_ALIGN.
-  */
- static int gelic_descr_prepare_rx(struct gelic_card *card,
--				  struct gelic_descr *descr)
-+				  struct gelic_descr *descr,
-+				  bool napi_mode)
- {
- 	static const unsigned int rx_skb_size =
- 		ALIGN(GELIC_NET_MAX_FRAME, GELIC_NET_RXBUF_ALIGN) +
-@@ -392,7 +394,10 @@ static int gelic_descr_prepare_rx(struct gelic_card *card,
- 	descr->hw_regs.payload.dev_addr = 0;
- 	descr->hw_regs.payload.size = 0;
- 
--	descr->skb = netdev_alloc_skb(*card->netdev, rx_skb_size);
-+	if (napi_mode)
-+		descr->skb = napi_alloc_skb(&card->napi, rx_skb_size);
-+	else
-+		descr->skb = netdev_alloc_skb(*card->netdev, rx_skb_size);
- 	if (!descr->skb) {
- 		descr->hw_regs.payload.dev_addr = 0; /* tell DMAC don't touch memory */
- 		return -ENOMEM;
-@@ -464,7 +469,7 @@ static int gelic_card_fill_rx_chain(struct gelic_card *card)
- 
- 	do {
- 		if (!descr->skb) {
--			ret = gelic_descr_prepare_rx(card, descr);
-+			ret = gelic_descr_prepare_rx(card, descr, false);
- 			if (ret)
- 				goto rewind;
- 		}
-@@ -964,7 +969,7 @@ static void gelic_net_pass_skb_up(struct gelic_descr *descr,
- 	netdev->stats.rx_bytes += skb->len;
- 
- 	/* pass skb up to stack */
--	netif_receive_skb(skb);
-+	napi_gro_receive(&card->napi, skb);
- }
- 
- /**
-@@ -1069,7 +1074,7 @@ static int gelic_card_decode_one_descr(struct gelic_card *card)
- 	/*
- 	 * this call can fail, propagate the error
- 	 */
--	prepare_rx_ret = gelic_descr_prepare_rx(card, descr);
-+	prepare_rx_ret = gelic_descr_prepare_rx(card, descr, true);
- 	if (prepare_rx_ret)
- 		return prepare_rx_ret;
- 
-
-base-commit: ff736a286116d462a4067ba258fa351bc0b4ed80
--- 
-2.43.0
+>  source "mm/damon/Kconfig"
+>  
+>  endmenu
 
 
