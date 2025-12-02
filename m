@@ -1,86 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-14567-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14570-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A5DC9C1BD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 02 Dec 2025 17:08:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D85DC9C9C8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 02 Dec 2025 19:22:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dLQfQ1lmGz3c1C;
-	Wed, 03 Dec 2025 03:07:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dLTd92z4dz3c44;
+	Wed, 03 Dec 2025 05:22:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::529"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764691678;
-	cv=none; b=GeT3Tx0v720sGbeN3RbxPcIXYnLKA1YIzNYzf3tmbYerYa/91SqwpMmmqwZCkCWx9BpoHCYPAH38TD5lno61YJg5pg2032mZe/wjjrk7tgRRvB9sy2EregvEBupVaJpVsLT2A5zTMHUaZncdc1Xba5E99Rr6FJfIvE7d6Klx05Rld0n28Z/5MqfxRZIapSh8nwOa4IycFJUMJ0nKpywQFjwa1J6QLIu2LEeIoaarogV7isntOh1j15RKYgKam16KonE184V1bDzsS/vQoRk4LAOWRFhaSBHIbV8Xg7apiJEsSiomSrYbXQPbq4UADoDmrTQgyX/EGqh2o5h6VO45cw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::429"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764697504;
+	cv=none; b=JNQG6IvBW8C8O3Gvb6g+s7WZNvUS3sgog8XKsPzdW6A83YniznYDAB7+puxK9iCec7pEAtRN84XcDnTDudIPglfh+v1EZ34cTYJbHhsWGYNz7rQt/qpH/G1PTRAPssrqw6KDaomN5Vn2gVZ8nu5qfUTRddBvIn3H9nqmkvtfpM6HJPTi4HqqU3c6aMZVVgkDqpLplfWWhcVz8G8qkWb6aJ7RcUf/6b/Ik4nMSjamxX2PJBPZYHBCMiDbSYm1LF35ern+XFt5J6L3FsALQyplujuciPHDq6FO+JqTa+h8mAKweCLUQa1boxxfYMqc3FlVAnYF60Ju9cNbrqMetfiWdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764691678; c=relaxed/relaxed;
-	bh=mASuH6zYJW4kgCFORENn/gDtkFiL6qvAC/Ijov/g+XU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MQW3NC7OBRG65+2M1mJgWOrFmm12shoToqxZXN691KoLpyHlztx9HDOjkQ+NKsKEHDVgqBIpxHNjtWqGzC63nmkfZCbWZvPGVi0zGS/ssnnLRr4kTgsm2qojB/waYX3QtmbVm5D/9OZ0jffmcCQ2gIGKaFV7wKlnE0yByV9Yu1mW83BUqLKcHbd1Dr6/pwU+EXeeetMH/OZ4enSPEWn/mysdd6iIknArpZ29vjf9v6TUl/jD976fyyG0nv4Nm8Pp2+NAV8Mvp+X1BXSuO1a9sJgAIEqeyKiwxepVuNXuplY77hLD0F2DJb1d58/u04o+OjyP3bTGAOHmC6NdqOX4aA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com; dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=o0CAADB2; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::529; helo=mail-ed1-x529.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org) smtp.mailfrom=baylibre.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+	t=1764697504; c=relaxed/relaxed;
+	bh=ED9tSGVJh0x09FYQjOL2o8g73Yk/StYFmkwh8LhI7Qs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hUNzei70dTvCm6ihdXGf4vcjS047Y88t6P58H2uadtobHqSHd/Ml9v9fRr3cWAqQ2rnphQE7CPlVZPh5poi3dOnAAM6wfJxsKwVTCubWgSEklSE7S4wZ1N4Tg6eAM6s4NKQaDyyj8s6B0oO9oQhFOgDoyoWkqpJPjQ+Lqh/QvG8antfhCO/Xztw7mBmGoZgNmksLf9Tpb8aSNQWQYWhkRHJyGvt0DPrFB+5t48/LgextbtwODnhYrfsfp8aSgUs0StfEg0seE0t1rVgZOWEHfxLx/u27AKBpczOrJ7WCagjP7MMolq5tqcEGTfSgQsKs7Y+zHbRK5bwkjjV9h61p1Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KRcJtbqa; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=hanguidong02@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=o0CAADB2;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KRcJtbqa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baylibre.com (client-ip=2a00:1450:4864:20::529; helo=mail-ed1-x529.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=hanguidong02@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dLQfM5Ptlz3bn8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Dec 2025 03:07:54 +1100 (AEDT)
-Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-6418738efa0so9300819a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Dec 2025 08:07:54 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dLSpQ3ShNz3bxC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Dec 2025 04:45:01 +1100 (AEDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-7c66822dd6dso43910b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Dec 2025 09:45:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1764691670; x=1765296470; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mASuH6zYJW4kgCFORENn/gDtkFiL6qvAC/Ijov/g+XU=;
-        b=o0CAADB2No1+f01YIFSuZ8xtIDaASZKHvoAXN2tfiXtJOW+IyS1UtjwFDH5akB5qEh
-         s3heUTwA3JQIqICAzs8fdt2MY2VULJLrhWeMSQNDPMmbcTur8XLnSlYHWdMp6gslJdip
-         Bfr85sQh1ZfNFO587FTFSb2JSADFNirM1M2G+D+HS2BSNDpf382dBLF+liJmvGqMLU05
-         Kycurvv/Q6p3fYMUyPIQkf1yYoOhlmMArIziMyKmJ51SwOxnrskiYH62UdOL3ZVXlfh8
-         W2p7yMwIA9SHvoIEmS6J7svYojKyF+WhneWQAxd8s9qA0CAkKZo0iCLDMpE6Ys/E9+wY
-         Gwdw==
+        d=gmail.com; s=20230601; t=1764697499; x=1765302299; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ED9tSGVJh0x09FYQjOL2o8g73Yk/StYFmkwh8LhI7Qs=;
+        b=KRcJtbqaTFkyieGGB6p1iiWprMRLO1ft2B6sVtmrup8gkEUbj9w3Bel51WA4ynYMQg
+         BEX7SZplnT9XqxRg7paOiJP0ODYQ0oeHA3N9su9zkeSUguy75g9g7ITmSut/guOoGsiN
+         i6ehi/KzDO9pLzo3GGj4eeJbALxpffSdQ0yrx7RNnE3ds8qgB5Bp4ppk/jb9WEPt6c2z
+         yyKXiiygGapkGlMmxXmjSKKT5hFKQKoOu/7NXyzyRevfkDZSGUD86bRHP2SjFvi7ohW6
+         2ZcWPfkLzXgwllDBkwWRnHgPNzCEMVYV1RnhvqH0rLLjAbXCON151JV530FDGuS7TwEj
+         sPiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764691670; x=1765296470;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mASuH6zYJW4kgCFORENn/gDtkFiL6qvAC/Ijov/g+XU=;
-        b=Czw2QAexbSBejdnCnLsg+cUKqJRLW1jbihCvTgRju7fTN0u27Trt24boq/DCoU5QBJ
-         RbCjI7d98/HKkD86ddXfxV4tX7nrgiTrsvdLJik4cTawU/1gGiDD8E9W0uiee3Kk2CE+
-         iamSFYgqyr7RXql+gX6slL0YJKa6ObyClmAPfoavL2LgCvDYNRbFz0XRS6ySl+kGGIOu
-         ofcBZpOve8Ys3QDcl/PhH/iMYoKvms8JX0GhcYivwklEvMi3CySbUr8urj19tHZw+jdh
-         aH4HSL4x5aNw5N+HrXiWjPw+4P8CsVLI9BWPtJIbDog6XUv7LnlzdMe0601ldrw3T8eT
-         /lCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuFyOBvNnnbveas9fW6Q7T5d/AIVyZUbfZOjkrVUPjwjlP4PmE6U9lx5VAcidGc1exudfBQ/olUjyN09w=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yxv/0iM4LiK9zjqUs/G2BrqTKy6kh50w6afdC2E6G5+b2DJ/2AM
-	4d1RetZFUi8mL3UIjv/obp4WPGgCyr7i2rXMXWEtbc/QWbSLdggit5PxNuSP2OwoXeg=
-X-Gm-Gg: ASbGnctunAzdz9c5T1J7Ph3QSgUk+p5aE0FuZYj0LOKy6VG7lnx04fk7F4imiojeBeg
-	6GPMD9ojbGIPYFIqiZ6iWqqPje6KhG197SDxZIcGeLcHU4EYoLQl0ANaikK4dLgiW5H+jrsyA9K
-	kdce2wQ4JdordzskuMvAC2q3n3aIFGphdr0fNxYK9ptNpx/7f1jRnc/kpPUZ9bu3/CzLsykFsVq
-	uY4AuEc0wGvzKPHQJlaUI6JBWpkskIulprjEKiX1Qg3wsqMXdJJ8/MTPS9IG6fEvbTHHWQnuPLn
-	DwTmkgKI7qHNRE2AP7lwkXpDLnBxTdRv5VSNVn9HHSUgU4uSrtHOIwZ2UUMjiGHcmOCmVbAFCzr
-	OLf606RKpWKTPT4OGmjVXfLmi4NwlsdJTiyjbq0mZjUM3iRhr/mTK+8DutganvFUQvHC5B7CA/b
-	hBYxvweN2v66B7rk07R1AbHU5prAxyabYmno8ZcZ5VMV+ymkJ3jOmW5Np6LkOg1t0mbjh9BivfA
-	Uc=
-X-Google-Smtp-Source: AGHT+IFh/5tJb19bNqnddbaYmnbwkI79t+1frciQEHhJt/tYxMN1h/8py4CbgA/+4cIeR/x4Zc6QEw==
-X-Received: by 2002:a05:6402:1e91:b0:62f:8274:d6bd with SMTP id 4fb4d7f45d1cf-64794f2f6bcmr112557a12.8.1764691669711;
-        Tue, 02 Dec 2025 08:07:49 -0800 (PST)
-Received: from localhost (p200300f65f006608cf714cc86879bb1e.dip0.t-ipconnect.de. [2003:f6:5f00:6608:cf71:4cc8:6879:bb1e])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-64751035d4csm15547965a12.21.2025.12.02.08.07.48
+        d=1e100.net; s=20230601; t=1764697499; x=1765302299;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ED9tSGVJh0x09FYQjOL2o8g73Yk/StYFmkwh8LhI7Qs=;
+        b=mq8+4dMFWHpE1zQdQQ/A5Fg24FcTAN7V7Wv1zo7HyeqLEd2FsfDfnaJkffUQ7JjzZL
+         +0hZedSegFDqeIJn3zL+683Ue3Q+y9FggQJhmuBmwKStsoGQpHH5bWZsywaN3dY4OBGI
+         AelM5kO4bLhleWfT5UF4cQrE55bnVkC06q+qR9KAFpNLMxr8WwRwWklk0yDPZl6ceNWm
+         pUwuleNGfeAp2TqIkLob5Q0+Hs+zT25n4dZd+VFj4RrCRt46yUpwe4GPodwbT3BowgzU
+         cPvfZ3BcsIuU0WVebEme/yvAHi6F5ZiIqCdUGGn8lqgint4VtF7BAupn/JzY1/aAid8T
+         buqg==
+X-Gm-Message-State: AOJu0YyboSqqelJCQapbwdch2G2CM+aT1sTQcug3yXFVkspN4ujkkMqr
+	Yj246CovjcYP1yYCKzOPe8fOtEBpxV4xdiyjqQBaaFrOh++UL2hrsHlh
+X-Gm-Gg: ASbGncsrJauljGKRabLn8JF/5WgwW7Yqz4CsQ0GAL3o+8/NFjF2CdHyrku5jgWvyCRJ
+	ZGGIDcn2lh/D1YQ+sZTe13YM4uEuZjWVT4lAIrp1mS5vsUIEMKFW8qaM1Nf487zD5AWwtDzi1lM
+	6wY55HV9EeKHXLexG4tfWqlDFzH1dk4ZvQ/ceFoOcDqec2UL2RKTKrR+ZlPSkmQERcx+6Ky0qYr
+	24qA5JKGw+2fiOOJEg7odMRImdCA7SL9T3igYLzJLxW5c3n3vv9XBOKGfzRDc6IMuqsum6e2wPH
+	GR36A4RziPuZFAvF+KC4o3qk3Eackwin/JlHVmCAaFqrUaWKEAVB/lyX1h68VrfRHTK4e2TLFRG
+	NPGCbiBVIrY/5m8bEoqWL8LLB/4XTQaENMDIqyO+VLN5KDS7pCQfBAwmV4Y7yXhgqDWPhr5s1Du
+	eJ+cSvJKCZFLNlSWoDE8AWBkLkFPRTzGnHhFybEYL4Lfd9YeluQsr/eezNeecvPPBLq62Ne5Elr
+	ZkFJfyWQuJV9ULsf/9BdTCHUsTgewU5StFuTsJjFV2RG8nVrbnvjZ6wfw1X
+X-Google-Smtp-Source: AGHT+IEJA6ge4wFCANfbRxKoKiXJwQLoc+/E8FFao7Y7q4CuOUiy2Rbn+7WQlpnH2DFciZOyBF+QWg==
+X-Received: by 2002:a17:90b:4b8f:b0:343:6a63:85d5 with SMTP id 98e67ed59e1d1-34907fa9e16mr3588267a91.16.1764697498834;
+        Tue, 02 Dec 2025 09:44:58 -0800 (PST)
+Received: from 2045D.localdomain (191.sub-75-229-198.myvzw.com. [75.229.198.191])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-349106cf36dsm56865a91.10.2025.12.02.09.44.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Dec 2025 08:07:49 -0800 (PST)
-Date: Tue, 2 Dec 2025 17:07:48 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 2/2] bus: fsl-mc: Convert to bus callbacks
-Message-ID: <crbruv2pp24ljufun5ki3ow3ips326tpuitxch464b2iuhwwem@i2yf5wynizvl>
-References: <cover.1764684327.git.u.kleine-koenig@baylibre.com>
- <848fffe5c479d899c04a4c99ccb5f0128ccc942d.1764684327.git.u.kleine-koenig@baylibre.com>
- <2025120253-bullseye-diaper-8bd9@gregkh>
+        Tue, 02 Dec 2025 09:44:58 -0800 (PST)
+From: Gui-Dong Han <hanguidong02@gmail.com>
+To: ioana.ciornei@nxp.com
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] bus: fsl-mc: fix use-after-free in driver_override_show()
+Date: Wed,  3 Dec 2025 01:44:38 +0800
+Message-ID: <20251202174438.12658-1-hanguidong02@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,59 +93,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="uvld6mh7map67iie"
-Content-Disposition: inline
-In-Reply-To: <2025120253-bullseye-diaper-8bd9@gregkh>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+The driver_override_show() function reads the driver_override string
+without holding the device_lock. However, driver_override_store() uses
+driver_set_override(), which modifies and frees the string while holding
+the device_lock.
 
---uvld6mh7map67iie
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 2/2] bus: fsl-mc: Convert to bus callbacks
-MIME-Version: 1.0
+This can result in a concurrent use-after-free if the string is freed
+by the store function while being read by the show function.
 
-Hello Greg,
+Fix this by holding the device_lock around the read operation.
 
-On Tue, Dec 02, 2025 at 03:48:05PM +0100, Greg Kroah-Hartman wrote:
-> On Tue, Dec 02, 2025 at 03:09:20PM +0100, Uwe Kleine-K=F6nig wrote:
-> > With the eventual goal to drop .probe(), .remove() and .shutdown() from
-> > struct device_driver, convert the fsl bus to use bus methods.
->=20
-> We can drop those functions?  Ok, that would be nice, didn't realize it
-> would be possible!
+Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+---
+I verified this with a stress test that continuously writes/reads the
+attribute. It triggered KASAN and leaked bytes like a0 f4 81 9f a3 ff ff
+(likely kernel pointers). Since driver_override is world-readable (0644),
+this allows unprivileged users to leak kernel pointers and bypass KASLR.
+Similar races were fixed in other buses (e.g., commits 9561475db680 and
+91d44c1afc61). Currently, 9 of 11 buses handle this correctly; this patch
+fixes one of the remaining two.
+---
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-I think we discussed that some time ago when I tackled making the
-remove callbacks return void. When I said I want to make
-device_driver->remove also return void I think it was you who said
-to better convert the users to bus functions. So that's me doing what
-you said :-)
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index 25845c04e562..a97baf2cbcdd 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -202,8 +202,12 @@ static ssize_t driver_override_show(struct device *dev,
+ 				    struct device_attribute *attr, char *buf)
+ {
+ 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
++	ssize_t len;
+ 
+-	return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
++	device_lock(dev);
++	len = sysfs_emit(buf, "%s\n", mc_dev->driver_override);
++	device_unlock(dev);
++	return len;
+ }
+ static DEVICE_ATTR_RW(driver_override);
+ 
+-- 
+2.43.0
 
-I wonder what the merge plan for this series is. The last changes to
-drivers/fsl-mc were merged by Christophe Leroy (added to Cc:)
-
-Best regards
-Uwe
-
---uvld6mh7map67iie
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmkvDtEACgkQj4D7WH0S
-/k49AAf/SEKUaRDO33sb70nHO+gtfnI4RN51x4KdDWZ3wx3iVroCQV0uijpzu97O
-CvlUoVJboCG1fBzsqoFPZutZiERFq/X5TAOZCRG3+LzhKXgMisC3l9yFTFZdfeWs
-fnD0FKnR8b048L2pyUJw0MTgEQQbU8EXqkqG2A+r/oYnjApNvSvyOWlesL9fi5p6
-zWltvUB6/U+4iHHaGOmbAVxvaU2yp9pZC66stYIfqESRufZWeutWARG6H1VkGBRh
-Y8ySLppzPVCPO6MPpmnDqk5hD60j4QR9DjqNnEbc3yNkWdjmbEQMZ4Bc6GXMbrKO
-bTnFPln+//y8xWuiz0aRvxYN5wCwTQ==
-=qLf8
------END PGP SIGNATURE-----
-
---uvld6mh7map67iie--
 
