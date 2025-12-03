@@ -1,93 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-14578-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14579-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48977C9E936
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 03 Dec 2025 10:48:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB08C9F224
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 03 Dec 2025 14:28:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dLtBJ3hb5z2y5T;
-	Wed, 03 Dec 2025 20:48:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dLz4753y4z2yrl;
+	Thu, 04 Dec 2025 00:28:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764755320;
-	cv=none; b=aKXqlJ3tCZb3N6D01nYwZD839NRmoSscGxJTM65Nfq6aeAPesonPik6tkJUddyMspsxhvA2tXVJlK8XRAgfQtz2zjRcIGozlYiLashfArZo3df/TyezoSIqMkh/uYe+CwjMzOyGmbHuyLCyeJtl2EQq7xQmmVX11coPZKzv4ge41japdzcMAbWaeZK2nfilC2VWGUbbDSDpsvW5jbCy2pY3rlADbyscP6jhSTwkWGWYlNvFfGcFHXyWMehSVcDVcoQ/+J4y4crCQkNz6o8srx1WYXmf89aOuvGIs7JDEM8EfU2E2YShdsZy3QHuyRJ8uOYJkM6I3BZ2Fts5NhwL7tg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764768519;
+	cv=none; b=VOzu6hdBfOGRrQKjy6XAXvsvcNgTjEr5e4TLnZq22M40ZPHkmo1dNvNBfk6fxkqa2TWTA1NISkIOPqUKJFMQ5uyjPLlodhFI+QjIqdsfN/lnSLb8SrXD3JXTalycEe0x1qqm/j91AIfVaGCo7GJVZcr1v3VQuc/lRwqIn6FGL2iiOaFVvRXeVmyMpIwEylCTq2g2dKO3KDUTEtkrQcwGVQ2tRXP2w8GIaikDo7YYuFjl7zDjo6KcZEPxT/WzZKkZYdR5DccAYJfya5Sh4VDadza3e0ac0NLNmiyYn7PvmK77Po86l4I26hlDasRcBV+Qm0pYpROpa2FZS+nH4DwGGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764755320; c=relaxed/relaxed;
-	bh=jMklE75l6GaMVcd4C1v+LCE/bBGy39/DlaYOsA1/3Zk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HyEpPkQhbNuGNSoJ+MvRghmfMRaxt3uSRVGgv0dAXfK7cFM/Cm1SiLPABsOD7FopJc+p6EVdQfTD0wcd7W1uRT5MzWod1JcBGIiZ5Qke4Zj+Tf+2dGNiP7JJxUyu3D8AYeUFVSkoAqq2MWcxNCraqWnd5NSB14Z7nTKSOwRDWAR2pZBznJZxo2fCZPZk5aVGVP+UODuEORhsUUTFrJ/bKvHTmbUmvaORuwDI3iF7SyfbrSoDsA3+nvdLjUaynCr7qJW7+xGTU6JqsUGEc2e1bebTKQypYphdPo/rn9Tfb/S0jzsvBPeXJt1G48RMZ3UvLyNqYup6nHmFsDYj+xhAFw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=q9ggn/Uk; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Hevzi5jK; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fl6oD9YP; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=yyrXVf2j; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+	t=1764768519; c=relaxed/relaxed;
+	bh=3r8m3ujySEwGzvYYFlCm8bT+TejmpDgozSw5ZyVBiLI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BEPKO4zjNb/PaO36bBMAfW6E++CDKqnBDUl/WocirNwLGS/Fja2auMxv2A+DM5oCKNlyUpDTq2uso/NO3SFQ7WO3qXt+lB0uSvOZw3EF+YNAYNO+oT1FtwkKQqTICe9rOavskD/+Bm0eEiWm7frMRGo7kMzWX+miqywR2qIoXKbMAmCABEqyoNMjybEu3ns1ZxMjAh6cpKqjfkCY/yphGYJWz9llt54b/ktY4lfWpzvtuLfHH+pB+ii/CUp7G9xoOOvxiM2kOC1+xdezVHecJRE2EeLAIPkD2gt9gzWJvzZgDiL/o/j96/W3PgmtefNt+sNY2sttL3MNPkifsoeWHw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F6+MDQHc; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=q9ggn/Uk;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Hevzi5jK;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fl6oD9YP;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=yyrXVf2j;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F6+MDQHc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dLtBG2Dg3z2xqf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Dec 2025 20:48:37 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1A40A336F3;
-	Wed,  3 Dec 2025 09:48:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764755313; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jMklE75l6GaMVcd4C1v+LCE/bBGy39/DlaYOsA1/3Zk=;
-	b=q9ggn/UkTCB79GJ4KVtdGa9Q+z0G5uNuJjM7PDKefzMMQaOQfy8yyoo36oALZ8x14H9paZ
-	R9Qy9lYlaFhKDxD7HaLv9UtQb+2c7jYCdQiB03rgOMxliB4YgTOxPwrqySy/Cc7d/QYH9b
-	3sWVuq+81r42kZ2zssycAchQjU1+RnE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764755313;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jMklE75l6GaMVcd4C1v+LCE/bBGy39/DlaYOsA1/3Zk=;
-	b=Hevzi5jKGiaFwjg42fh9bUCmvWs8MPf6CcP3/L+vnpuuNfFENTk9PlrXvlMbbnvLU3PlKA
-	A6e/f0coy/2r5UDA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fl6oD9YP;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yyrXVf2j
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764755312; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jMklE75l6GaMVcd4C1v+LCE/bBGy39/DlaYOsA1/3Zk=;
-	b=fl6oD9YPB9PWsaP/3NTR4PHW5NrBqH79wBhJmIwnsyTm7oOh68qYDtGbaGspidNjXZ7x2m
-	E7ZNkUOPEPrLAV7I1nYIWbDgNKgI3FrHGi5rwpKJ5ZThm/64FjzpydvmaQkSNbdH+anv4d
-	JGtpXnmNqda1gBUOJfdMqujgaS0XdZw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764755312;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jMklE75l6GaMVcd4C1v+LCE/bBGy39/DlaYOsA1/3Zk=;
-	b=yyrXVf2jFM8qDrT+ebFbqGRaagNeAFs1iWbNG+odoWfB++B9HIcdHW/4toplqsfaTClJ9p
-	nLC+i1QPEro3ltDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EE6F43EA65;
-	Wed,  3 Dec 2025 09:48:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id mjS+OG8HMGk1IAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 03 Dec 2025 09:48:31 +0000
-Message-ID: <6e851fa0-5cca-4575-b5d8-b3fe99cf4c4d@suse.de>
-Date: Wed, 3 Dec 2025 10:48:31 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dLz4543wsz2xPB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Dec 2025 00:28:36 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B3BtPR3006545;
+	Wed, 3 Dec 2025 13:28:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=3r8m3ujySEwGzvYYFlCm8bT+TejmpDgozSw5ZyVBi
+	LI=; b=F6+MDQHcs+NTQ8uS7dIQT8nRI6NhwwzznnYWUjHwcriPaVnPRoJ2H6juu
+	8Ws8m+mX2JQfXSO6lyYOdwKnKLlaYXYha26dWbAPbAIlTDNhy5h4qtEbURv/YTk9
+	H8f+y5qmRI3gHXW64Ri8rTan2e9cM4PV89mxc06HztrT67gROcFpgTR959BF8NSW
+	0xhNmNz3IEGqf3e9fXvwHsbsiRvC/wxticfuFLoUSKNTv24d2+VJRvRqcF0REcyR
+	XOWWcZGMMC+eW8VuqxLLD193Ajd/UprusjyTJNSBH32sp+RWkfgbaBv9I7QqMELT
+	VMrOm+J8YuMePm8V7eAFo8U0di8CQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqq8utgab-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Dec 2025 13:28:19 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5B3DKXlA007237;
+	Wed, 3 Dec 2025 13:28:18 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqq8utga7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Dec 2025 13:28:18 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B3CA7rq024098;
+	Wed, 3 Dec 2025 13:28:17 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4arb5sjctd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Dec 2025 13:28:17 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B3DSDxg25952710
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 3 Dec 2025 13:28:13 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5F6B120043;
+	Wed,  3 Dec 2025 13:28:13 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C33FF20040;
+	Wed,  3 Dec 2025 13:28:09 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.93.147])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  3 Dec 2025 13:28:09 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: maddy@linux.ibm.com, vaibhav@gmail.com, npiggin@gmail.com,
+        mpe@ellerman.id.au, christophe.leroy@csgroup.eu
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: PPC: Add the missing character/behaviour bits for KVM_PPC_GET_CPU_CHAR ioctl
+Date: Wed,  3 Dec 2025 18:58:03 +0530
+Message-ID: <20251203132804.16692-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,112 +91,91 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] Fix AST2500 graphics on ppc64 systems in big-endian
- mode
-To: Timothy Pearson <tpearson@raptorengineering.com>,
- Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <407388289.1798972.1760725035958.JavaMail.zimbra@raptorengineeringinc.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <407388289.1798972.1760725035958.JavaMail.zimbra@raptorengineeringinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:url];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 1A40A336F3
-X-Spam-Score: -4.51
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: MOyR1RV_mJtTNWylyerCyANyXdgGe9XO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDAwOCBTYWx0ZWRfX1iS6lacoqI21
+ Dd/4IHQVQ0NQhQ6Mt1X8X+rz1pAhAU9oVSfraHhymH8jAcNFq1uKlqXL2hMo1iD5PQUQzg8IzhG
+ 6Xdx/aYqkdDQZWRV3rgVgzx0Ir20mLONB7PmPQZ6XstZtD+e5xsPjkb3Nibu6+ZQ4jh18pGLLZl
+ NI10vuzv0qfcih89NDO/lg98X8qbq9YCKPXhdwktOc4QaHwSuYhn221jqEEGlhgR2E/MUz2zWLW
+ x0i7RZdTOce20VbjLovnVjdwKGEzmrVo6sAyS8ik80CAlEVBVaLikYABdRF5EX+Vr8ar0WwvcSr
+ KxTFTtu/4jhZdwd27Vd7gCoh9IT8w9Dv0FnlEdoLGm1PKavfEoTDFcYx6l1RHw+sM5kX8voZYRs
+ FpkmKKiujlKqOJMmFR7p3yBXlN1nyA==
+X-Authority-Analysis: v=2.4 cv=Scz6t/Ru c=1 sm=1 tr=0 ts=69303af3 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
+ a=TlQordfOB7iyn_4i_zgA:9
+X-Proofpoint-GUID: yD6JfmJtiEzK7Rb1S0UuQWWQAjVT6kwV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-03_01,2025-11-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 spamscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511290008
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS,UPPERCASE_50_75 autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
+Add the missing bits for the character and behaviour masks used to
+indicate the valid bits in the result of KVM_PPC_GET_CPU_CHAR ioctl
+used by KVM guests to know the host mitigation status.
 
-please take a look at the patch at [1]. Testing is welcome, if you can.
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+---
+ arch/powerpc/include/uapi/asm/kvm.h |  6 ++++++
+ arch/powerpc/kvm/powerpc.c          | 10 ++++++++--
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-Best regards
-Thomas
-
-[1] 
-https://lore.kernel.org/dri-devel/20251202.170626.2134482663677806825.rene@exactco.de/
-
-Am 17.10.25 um 20:17 schrieb Timothy Pearson:
-> On ppc64 systems that use the AST2500 graphics device, such as the Blackbird
-> POWER9 system, the red and blue channels are inverted when the host is running
-> in big endian mode.  This is due to a ppc64 hardware quirk, which when combined
-> with a hardware design fault in the AST2500 VGA controller results in a need
-> to use software-based red-blue channel swapping.
->
-> Tested to fix color graphics on Debian sid/ppc64 on a Blackbird system.
->
-> Timothy Pearson (2):
->    PCI: Add CONFIG_PCI_ARCH_ENDIAN_AUTOSWAP
->    drm/ast: Fix framebuffer color swapping on ppc64 systems
->
->   arch/powerpc/Kconfig           |  1 +
->   drivers/gpu/drm/ast/ast_mode.c | 33 +++++++++++++++++++++++++++++++--
->   drivers/pci/Kconfig            |  4 ++++
->   3 files changed, 36 insertions(+), 2 deletions(-)
->
-
+diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
+index 077c5437f521..19ad60fb9147 100644
+--- a/arch/powerpc/include/uapi/asm/kvm.h
++++ b/arch/powerpc/include/uapi/asm/kvm.h
+@@ -450,11 +450,17 @@ struct kvm_ppc_cpu_char {
+ #define KVM_PPC_CPU_CHAR_MTTRIG_THR_RECONF	(1ULL << 57)
+ #define KVM_PPC_CPU_CHAR_COUNT_CACHE_DIS	(1ULL << 56)
+ #define KVM_PPC_CPU_CHAR_BCCTR_FLUSH_ASSIST	(1ull << 54)
++#define KVM_PPC_CPU_CHAR_BCCTR_LINK_FLUSH_ASSIST (1ull << 52)
+ 
+ #define KVM_PPC_CPU_BEHAV_FAVOUR_SECURITY	(1ULL << 63)
+ #define KVM_PPC_CPU_BEHAV_L1D_FLUSH_PR		(1ULL << 62)
+ #define KVM_PPC_CPU_BEHAV_BNDS_CHK_SPEC_BAR	(1ULL << 61)
++#define KVM_PPC_CPU_BEHAV_FAVOUR_SECURITY_H	(1ull << 60)
+ #define KVM_PPC_CPU_BEHAV_FLUSH_COUNT_CACHE	(1ull << 58)
++#define KVM_PPC_CPU_BEHAV_FLUSH_LINK_STACK	(1ull << 57)
++#define KVM_PPC_CPU_BEHAV_NO_L1D_FLUSH_ENTRY	(1ull << 56)
++#define KVM_PPC_CPU_BEHAV_NO_L1D_FLUSH_UACCESS (1ull << 55)
++#define KVM_PPC_CPU_BEHAV_NO_STF_BARRIER	(1ull << 54)
+ 
+ /* Per-vcpu XICS interrupt controller state */
+ #define KVM_REG_PPC_ICP_STATE	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x8c)
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 2ba057171ebe..642740c86272 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -2261,11 +2261,17 @@ static int pseries_get_cpu_char(struct kvm_ppc_cpu_char *cp)
+ 			KVM_PPC_CPU_CHAR_BR_HINT_HONOURED |
+ 			KVM_PPC_CPU_CHAR_MTTRIG_THR_RECONF |
+ 			KVM_PPC_CPU_CHAR_COUNT_CACHE_DIS |
+-			KVM_PPC_CPU_CHAR_BCCTR_FLUSH_ASSIST;
++			KVM_PPC_CPU_CHAR_BCCTR_FLUSH_ASSIST |
++			KVM_PPC_CPU_CHAR_BCCTR_LINK_FLUSH_ASSIST;
+ 		cp->behaviour_mask = KVM_PPC_CPU_BEHAV_FAVOUR_SECURITY |
+ 			KVM_PPC_CPU_BEHAV_L1D_FLUSH_PR |
+ 			KVM_PPC_CPU_BEHAV_BNDS_CHK_SPEC_BAR |
+-			KVM_PPC_CPU_BEHAV_FLUSH_COUNT_CACHE;
++			KVM_PPC_CPU_BEHAV_FAVOUR_SECURITY_H |
++			KVM_PPC_CPU_BEHAV_FLUSH_COUNT_CACHE |
++			KVM_PPC_CPU_BEHAV_FLUSH_LINK_STACK |
++			KVM_PPC_CPU_BEHAV_NO_L1D_FLUSH_ENTRY |
++			KVM_PPC_CPU_BEHAV_NO_L1D_FLUSH_UACCESS |
++			KVM_PPC_CPU_BEHAV_NO_STF_BARRIER;
+ 	}
+ 	return 0;
+ }
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
+2.50.1 (Apple Git-155)
 
 
