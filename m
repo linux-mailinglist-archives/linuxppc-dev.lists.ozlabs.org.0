@@ -1,87 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-14572-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14573-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04A4C9D380
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 02 Dec 2025 23:34:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E69BDC9DB00
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 03 Dec 2025 04:59:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dLbD624VMz3c4y;
-	Wed, 03 Dec 2025 09:34:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dLkRW3tCdz2y5T;
+	Wed, 03 Dec 2025 14:59:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764714854;
-	cv=none; b=b00dchxJ4Xsn5kUFIZD8b9WQvzpHgHSfBOL0pbJzyxRnYEjajNiIpc193xh+V0NcyaPcniqGGjOWFmH9WlLJ2SOhYFdLtR9RRqQCuFnpO4J4K6jbNI+i1IXnv2mr8IaJ/MTNLNK1337RzMIVC+hYayYduR49EoXNvyVf8CFPnZzNW6SR9d92RYRZeRl8FvpIG9uz1xbkrnAHRd0ebL4Fwf5j+AEqmTmHxIGxm9TJLBXlS7FLDPZlsxnanjS1tqq/uK+0jPFb5FS/1B9KdyZ73ZrUQcy4BaeZL1oHqmLMzEdtbOLV4/1UoBmlDFGiWIgrllZClrSx8PaxQVAL/oHG1g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764734375;
+	cv=none; b=aM5NUy7Cb2kRaCm2m7CYlcOTYjpuUGKO7fK96BOHKKPPxG5jK+OkpLmeRzlIl62fU1CtJhgBwZaZp2PEuPdcB6O8+Rf24pE+FxZCKZanwbZiVLVn8Th1ffKjtJYbknZkIPNGEkKeP1+R/o6/TDwU27zX6P6tuTEkLB9cSPaRjQMtZyuVi17MtkN6N6X1iMWdVYWoS0ye6nXHmBGLFx5ym7Aji4igAHRChLKdAvFtiG8hkzA2DNvbM9nu5gHQniPbKzcexDuZs34ox9C9UJJiUjRav9NokO+aAyz7XVdVYhhuplLR0AahV7zWUKXMw9cd/EfMa/i9UNekm19zYZP9qQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764714854; c=relaxed/relaxed;
-	bh=i1iWK7HzBETWByZIaP7P7npHDZXzi12UJs1BJ0A4xzs=;
+	t=1764734375; c=relaxed/relaxed;
+	bh=XRpflWjLAZbcV1TesItRlY20E0UFKYQHwkSqtBES+XU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=on+i/ubgJx9eXJcjXIapMce2X27NPmdK3rV3x2PTqwm5gR8W/KGqUsRJiTmiBbnlFQOD0D2J7xG4lH0pfS8e/WqSavZtuRfGJxZ7h2woqOvHOvErrfzOJOQZK0WLJw95lJEdbhKxV3qny+MXmrWSkm1H8oJAq2+l6MlX3czjcKi/PwpyeS4mKHT4D6W8R1O4TvGYSdhdhfnRAO5VIsAA8dnr9ESiHA4I+0TCxZLKYDhLDQ7CYk5vJWDpERMlGuBrTq7w6L232ewFtFUgLjqsW/TuKp9X54dGn6fJU7lsaor7rgH4Ag1GsmLQqBf5vnflyjX/FrQmz7BEFbBjt4sn4A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com; dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=2vz05kRM; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62b; helo=mail-ej1-x62b.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org) smtp.mailfrom=baylibre.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=DOsKO0XYjw9mbmTiIM5x1wvI7C0s/eNlDqKcV+o6sFtoFg9uH9nA3HQNL1Q55rqftksLXu45BttBNjV7oT5/nDeKW9p6zccD9RemRnuCKEuP3Bu18/ivmLVi4o5ovo/Qb1ZuJIwHOLJRbD1M1I5GOTHvpkM8vK8yxWq/8i2Rf3GoT2MdHLqvsnPV9drijTLxStlSMSE34DlyY4pp1I8vC+Yk1V/ifTfQxu/HtVRdlvwDmwveHsVu+80D3snM3XowuwqrHoYqmVPU+A2Xg3QYZgVqDxznDZS3890h3A2PgLbb8mONQQLxgOAdlRWKa5nMiPRfLVgZ5+Ty0mEUDxezHQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZbRhmyO0; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=2vz05kRM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZbRhmyO0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baylibre.com (client-ip=2a00:1450:4864:20::62b; helo=mail-ej1-x62b.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dLbD368vNz3bn8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Dec 2025 09:34:10 +1100 (AEDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-b79b9113651so316352466b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Dec 2025 14:34:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1764714845; x=1765319645; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=i1iWK7HzBETWByZIaP7P7npHDZXzi12UJs1BJ0A4xzs=;
-        b=2vz05kRMqO4fq8KBtURf7KQ036FRa2WQWq46WJXfKiZezXjGPE2tM7qyWcVB17yZ+6
-         QqW3fTogRpXQDNmNiWr2VYvnKxdm0oy+RGOXI9nkpMlK7pdSyNbltd9zFLy8QHeIZbv7
-         SX9z1Fxy6c54GdGpPoIuqDpCzzW2KnBkVpCbayszhuSB2TocicGCW9xnqWmoCm9JpGlV
-         n8qUnWjogmfjKU19vueHMqKtUAtvyJ0mSmy86uAirJBle+smuxiNge773aAzzNzWCg0W
-         CW1934fvtr9SWZFxc3Nq+IC7Lgfc2z8UQ8D3TJlVi9XwRAzcUNE+yd5DGQ900zObmhaJ
-         Vd/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764714845; x=1765319645;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i1iWK7HzBETWByZIaP7P7npHDZXzi12UJs1BJ0A4xzs=;
-        b=HafG636yES0ZbpVbdJl5STd3zgglFnUXwr50A1xRL+eSvNSMssrpgae59efB4Zb3EU
-         ne59XZk2Lc+9GAejD4u2aHtmFquFB8smgCQFRinLwKVCe6NP6tvfXBRXeObkqGQdrc8F
-         UawvAc4YTgcRbVG7Du5EPK2uoWV7Ttbf8NEqJWoA9r+2MqfAcDMtJt5KkTe2MQBweS0a
-         Uw5EHWqIiRHaesmzav/uRjg0fHIILQR+RP6MZ7GaLN2jMGZQM1+q0HGb11ZEfNYYnQCP
-         4QvWq97w3kEeRgNa29M/T8SavtPW2W0fGEjtAQNZQJxGnY6n0GYBi2hHoGO4h4/06xLm
-         IGTg==
-X-Forwarded-Encrypted: i=1; AJvYcCUw7ETDCeioy/OPchZBuxgzif3bGm5Q9bjuDBr/msz41pFjf+ZoxxgjadK5AxK4cwsj52KOGnZ8he6ZLK8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyRCrRXgxbNBiTLKSDi6Qg7+9SZ9aiSVPJ8sjKiEhFboyIYfJ0I
-	o4jMaxcRQoQLGsuUeVIENYgPUnsCSa/D2TbJNQTp7I/e1jZvIzoYWmryipkqx2eFFNs=
-X-Gm-Gg: ASbGnctsCN0+/DmlovBFCw3Txo9PL5aoMqeOGYO3xNZRFXmH4fSVRbT9pnKFCGpwn1F
-	Ck9OlhceLsr4CvYDztxAL1oAk8S5rPuNs/Ye9rDNCgNijPXtImxwd/BINZLtZIQTlVDL8/dj1Rn
-	fDRHxlWM4SVT2bavC2D7a8a3hm6AukHH/c6tILOW1cOGA5eJRZ3kFm9M+ynyoMFQEsQc/Vex+P5
-	O7mvUo5Sgi2OAoGb+u+hA4Z04GMdDx6BfPOTlZ760pFgkakcDkNG6C591qYcEWRdF4sxRDlYT1d
-	QiMfbqnf71wXRFxY6bSjtmlUw7Ky1/3AdnLOsMMIqPjejzi7V4t/z/tl23Q09oTqFqWlIp9r0d9
-	covCr1b99aN7hZF77uLlsSBJs80QAQRo8n79XP/mPMcgEWSHPlL8ZnwtT1pHC0OsZgNycyyfex8
-	dRO3hGOCPMBF9w0hZE
-X-Google-Smtp-Source: AGHT+IEhD3Zywc+9GoO6m5s6v97El3zg9UavfzIOuA3BhbneVmlAi+ti1PX/xaT32pN3YSr/QKkGVQ==
-X-Received: by 2002:a17:907:6ea4:b0:b72:b433:1bb2 with SMTP id a640c23a62f3a-b79dbec8a63mr1272866b.7.1764714844713;
-        Tue, 02 Dec 2025 14:34:04 -0800 (PST)
-Received: from localhost ([2a02:8071:b783:6940:1d24:d58d:2b65:c291])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b76f59a6a74sm1631218266b.45.2025.12.02.14.34.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Dec 2025 14:34:04 -0800 (PST)
-Date: Tue, 2 Dec 2025 23:34:02 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Ioana Ciornei <ioana.ciornei@nxp.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] bus: fsl-mc: Convert to bus callbacks
-Message-ID: <l6m65shnnd2ulgzmbaydtowrdmuskjvy6c7lxjgie6x5okxgt5@fa56vfytbszn>
-References: <cover.1764684327.git.u.kleine-koenig@baylibre.com>
- <848fffe5c479d899c04a4c99ccb5f0128ccc942d.1764684327.git.u.kleine-koenig@baylibre.com>
- <2025120253-bullseye-diaper-8bd9@gregkh>
- <crbruv2pp24ljufun5ki3ow3ips326tpuitxch464b2iuhwwem@i2yf5wynizvl>
- <667c52f6-ee74-4d8b-b683-c1c7027467d0@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dLkRV5CJdz2xqL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Dec 2025 14:59:34 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7368743C4B;
+	Wed,  3 Dec 2025 03:59:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7B9C4CEFB;
+	Wed,  3 Dec 2025 03:59:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764734372;
+	bh=g+dBvTqjRvEWiMkknmx06lRzwy16qcKghhBvHr86sAU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZbRhmyO0PXJUXOVHVQyoOnk3h/gGuQF88LjKmnsxCHnPC6tf1MHCjX2pdjskVgeLz
+	 SEoZD0pTZIk8fl8vfPH7CqDRBmwRi558vwcDXybTJuaaJ3iPpcnkD8QBkWzr73xbnE
+	 JJ+KnSb/+oVpzfqZk4XiDDQ5kSUPPxOTYMOHe9gdvQd3Br1mEwY1ZuNF2VGqX0GFNJ
+	 dWw9lNDwV7DNrHGOEEu7YrdqrbUhCdIPPOViYL2Zv9UgMoorZUxjziXWdpYX37uDKQ
+	 rd/DQSdxA03INZunfZ43D55VKGKIvLfDY648E5b4Ed2tzkdX39SyDZoU7e1oOIbi8H
+	 GI0VsSPBdxUIQ==
+Date: Wed, 3 Dec 2025 09:29:25 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Jan Stancek <jstancek@redhat.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, 
+	christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org, joe.lawrence@redhat.com
+Subject: Re: [PATCH RESEND] powerpc/tools: drop `-o pipefail` in gcc check
+ scripts
+Message-ID: <caut6db7r6loimb2bk4zoqkqmfd3mhvzmv6ntsltf3tr4k4c2n@fbyhls233oys>
+References: <cc6cdd116c3ad9d990df21f13c6d8e8a83815bbd.1758641374.git.jstancek@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,63 +66,67 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="i4xjjg3cyowidsmm"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <667c52f6-ee74-4d8b-b683-c1c7027467d0@kernel.org>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+In-Reply-To: <cc6cdd116c3ad9d990df21f13c6d8e8a83815bbd.1758641374.git.jstancek@redhat.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Tue, Sep 23, 2025 at 05:32:16PM +0200, Jan Stancek wrote:
+> We've been observing rare non-deterministic kconfig failures during
+> olddefconfig, where ARCH_USING_PATCHABLE_FUNCTION_ENTRY was getting
+> disabled and with it number of other config options that depend on it.
+> 
+> The reason is that gcc-check-fpatchable-function-entry.sh can fail
+> if `grep -q` (or scripts/dummy-tools/gcc) is fast enough to exit while
+> there is still someone writing on other side of pipe. `pipefail`
+> propagates that error up to kconfig.
+> 
+> This can be seen for example with:
+>   # (set -e; set -o pipefail; yes | grep -q y); echo $?
+>   141
+> 
+> or by running the actual check script in loop extensively:
+>   ----------------------------- 8< -------------------------------
+>   function kconfig()
+>   {
+>     for i in `seq 1 100`; do
+>       arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh \
+>         ./scripts/dummy-tools/gcc -mlittle-endian \
+>         || { echo "Oops"; exit 1; }
+>     done
+>   }
+> 
+>   for ((i=0; i<$(nproc); i++)); do kconfig & done
+>   wait; echo "Done"
+>   ----------------------------- >8 -------------------------------
+> 
+> Fixes: 0f71dcfb4aef ("powerpc/ftrace: Add support for -fpatchable-function-entry")
+> Fixes: b71c9ffb1405 ("powerpc: Add arch/powerpc/tools directory")
 
---i4xjjg3cyowidsmm
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 2/2] bus: fsl-mc: Convert to bus callbacks
-MIME-Version: 1.0
+The latter fixes tag should probably tag one of the below commits which 
+actually introduced pipefail, or introduced it in Kconfig:
+Fixes: 8c50b72a3b4f ("powerpc/ftrace: Add Kconfig & Make glue for mprofile-kernel")
+  or:
+Fixes: abba759796f9 ("powerpc/kbuild: move -mprofile-kernel check to Kconfig")
 
-Hello Christophe,
+> Reported-by: Joe Lawrence <joe.lawrence@redhat.com>
+> Acked-by: Joe Lawrence <joe.lawrence@redhat.com>
+> Signed-off-by: Jan Stancek <jstancek@redhat.com>
+> ---
+>  arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh | 1 -
+>  arch/powerpc/tools/gcc-check-mprofile-kernel.sh           | 1 -
+>  2 files changed, 2 deletions(-)
 
-On Tue, Dec 02, 2025 at 06:47:52PM +0100, Christophe Leroy (CS GROUP) wrote:
-> Le 02/12/2025 =E0 17:07, Uwe Kleine-K=F6nig a =E9crit=A0:
-> > I wonder what the merge plan for this series is. The last changes to
-> > drivers/fsl-mc were merged by Christophe Leroy (added to Cc:)
->=20
-> As per https://lore.kernel.org/all/2xzljdzktgpsyag5jhfwbxc2sroaacljecsq36=
-hlxefu6jnz6g@zlorxu7niqnq/
->=20
-> Also see commit 586739b1e8b1 ("MAINTAINERS: add the linuppc-dev list to t=
-he
-> fsl-mc bus entry")
+Other than that, thanks for fixing this. This LGTM.
+Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
 
-Ok, the fact that was unexpected by me is, that you, as the one who
-picks up patches, are not listed in MAINTAINERS. But it seems to work
-fine.
+Maddy/Michael,
+Can you please pick this up?
 
-> It is a bit late for v6.19 though, will go in v6.20 ?
 
-I'm in no hurry, getting it into 6.20 is completely fine for me. Thanks
-for picking my patches up.
-
-Best regards
-Uwe
-
---i4xjjg3cyowidsmm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmkvaU4ACgkQj4D7WH0S
-/k605AgApNBwNGKrsH0Vkh8KrXIDV5+Y3NbwlyJ2z4eZ+ELZpnidpZ3GAT+yprvi
-hMkgkq4NOk+McXXAxX70nffMF5vtQbXXNssobl+elRKGsTIgbEPHQSfdZABmNGP9
-Uz3swqTcRhUGgA3f84HCeABCFyfaWO26Xo35/sGmENaCt+C7C30qDGeNihD9dXft
-xLKu3K56pNAuLUa7LgFH065QSgiRHRzTUxzo9O32lfac5ql3meRLS42hvyPSLUG0
-n9COxUJMz3cWYQ3v0UhttRAdrnfiozTZlEz/cdi80sDjefbk7FtMe8sHajVr6nWw
-APfmxqnhaYWoYzZUEKuFgSff02j4kg==
-=ocyn
------END PGP SIGNATURE-----
-
---i4xjjg3cyowidsmm--
+Thanks,
+Naveen
 
