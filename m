@@ -1,101 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14623-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14625-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CB0CA4D5D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 04 Dec 2025 18:58:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC732CA5258
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 04 Dec 2025 20:39:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dMhz945gkz2xS5;
-	Fri, 05 Dec 2025 04:56:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dMlF90TRCz2xJ8;
+	Fri, 05 Dec 2025 06:39:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764871013;
-	cv=none; b=kGDkwDzJGSa/088oYcUc6KfMs3hKjU5oQCMso1bIq4lilynRi1/pLQc5JGTghZb/O0KEUjq0IxVg2afokXm7j+f/WGxEBxKC3AxaNPv9TU4g0j1wjaCN4Lcu42UEIZx2KtdUufkMiM9bE3jgAD4Xhsuyi6h9cpUTzqSEkdP3V/WrUlUVdGl4LxO+DrhDv7jStNgn/m6A0cA8W1oMaPhVizK3oBfWP4xr79/wt7PCkgGMGfetgpIizKRKbOWo05PgfvhsAskOQ+rNn4qhlqeHxGdt91RNQiR86s+q6CwEk6NmPDo+BQXJMnG1XMqZrCmBKqkRjAKgqTLfd6yvPVIbgw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764877148;
+	cv=none; b=mhMuElx+sHNab+PlUlH12UplLepWyGaStjVZixUS9aDHDHWIYHf5zLP3wMykyjjtQpuwxN6yFSo6+dHk9bcnLN1g5J/qNySoocI1xLgDZpKNIFmWMKQLYVSQ7/zC+vLut4+xSs0QYLX+WyB35pSrx61wHjtz3yiS04OsCkCWCPxwQZX6La0t1NcW05Iawv6m9hXjmtfvwezdj3dMfK/QIQq2tT/qOp3vnUWPJv7gqeU21ZntY63DXJpas7hxtOvHPmXVDDPt2SXwWw0aXNPQzAr2wXTsLV8qgip+c7psTUDcSvqsCAb20pEH01lckz2XnYEylIiXkC6VFdB62Sc2dQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764871013; c=relaxed/relaxed;
-	bh=UikS5TkXcNc8h8b6tYpk0p5GLnY/uUu63XCX0ekANJg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUGH6RG/97bmN4aQXS6eLGZlYuedRxKHDMuaFasdkELZURVYazNkU0i5o44snMOFp40/fVryFel1yJ9YI1p/OZ+RYCSn7CXtLnBYW9rwCtWKjNcp+eVw8KWxPlt/oE4vfFUs3PZlo+g/GCxo+o2WPZ2WEcKNggBLYSYfIO+zrHOrVjFB0jIhy28EO+KXAoGfokk9atOcfpt8aTGIJZV+dmXNZGP9MmGgjHB/FqdLKfWZtTNJAOeNHi5FxAT9T0fyeL2UtvSutOt5/fPGcmy8Av7hdpG2Fj8N93MVOnKSfoRY2W81ess2VkatfPrCuLxaVE5HiZkjMYUoYN8SgISXlA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j5S4S+1V; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1764877148; c=relaxed/relaxed;
+	bh=zlnt8UMquDekV44NsGIqu3q4V2h5Bg8dHyh34gkZfkg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D777yYotVqFXCdekpidXm8xNo6qdSTv17I0ezTxD2uST33UJv4ou/8/dk2VzAO7+iQcbAC+/BEXRJm4bPVco+2v1PCiXj/M+TGewhA82IIUF65aWKBR95ZolZ/opI3TCGBlBX3VbCUsNbR41Gxq2TZnKiCWY4IwFUpYNINVQ2iZXePNHb1glPvHyQrZPqytKp5uLklR/nRdEwA3X74hI/BXDvL5gTJQGLE7EB5u+fUnypB6YXfcDfubdURgzYQZcLfrbb8cGWsmxbJZgP0+pUnloUsvAruTRSvGaZQIoozhHwnK1x68VxRL7i5j/plfGhW+vcFn11la5ONMDZZpWOQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lxo07IQA; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j5S4S+1V;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lxo07IQA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dMhz84h8Gz2xR4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Dec 2025 04:56:52 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B4B2KH1014613;
-	Thu, 4 Dec 2025 17:56:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=UikS5TkXcNc8h8b6t
-	Ypk0p5GLnY/uUu63XCX0ekANJg=; b=j5S4S+1Vesxx/U6OLSeAMzAqXhWOOKxyc
-	Q6J53knusEKWbJ4dfjj847npJHkLSoMT9x0qxDSt10uZD+yMvFakcH8KwkFCBFSa
-	3uP6cKzhsuKtNTthexJWlNX+y0iziW8++2ybKQtW2I91gZAigvDGjvo77yzn4eXO
-	3kZKZAgOEK/5chR+Ncg+NLrdF0Axki4sdW2tnQWHgnTujooeBUYlhnmv9VvUukDv
-	rgQzO/3uWb4MQHWG8YXxhB/grkEQc9IKMkj7MsQu/QRHFXP8GaX2v3FrI6cTq/G8
-	CGyL0EiIlK5yXQ8PpqsKSvW9wO5wQSERzl7Q61MnjMnUnLCYe5gvA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqrja1tc0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Dec 2025 17:56:24 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5B4HuNYp011085;
-	Thu, 4 Dec 2025 17:56:23 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqrja1tbu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Dec 2025 17:56:23 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B4FXrQs010240;
-	Thu, 4 Dec 2025 17:56:22 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4arcnkh2v3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Dec 2025 17:56:21 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B4HuI8u45744424
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 Dec 2025 17:56:18 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0822E2004B;
-	Thu,  4 Dec 2025 17:56:18 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 87CC220040;
-	Thu,  4 Dec 2025 17:56:14 +0000 (GMT)
-Received: from sapthagiri.in.ibm.com (unknown [9.39.29.188])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  4 Dec 2025 17:56:14 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Peter Zijlstra <peterz@infradead.org>
-Cc: Ben Segall <bsegall@google.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ingo Molnar <mingo@kernel.org>, Juri Lelli <juri.lelli@redhat.com>,
-        K Prateek Nayak <kprateek.nayak@amd.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>,
-        Srikar Dronamraju <srikar@linux.ibm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Swapnil Sapkal <swapnil.sapkal@amd.com>,
-        Thomas Huth <thuth@redhat.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        virtualization@lists.linux.dev, Yicong Yang <yangyicong@hisilicon.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 17/17] pseries/lpar: Add debug interface to set steal interval
-Date: Thu,  4 Dec 2025 23:24:05 +0530
-Message-ID: <20251204175405.1511340-18-srikar@linux.ibm.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251204175405.1511340-1-srikar@linux.ibm.com>
-References: <20251204175405.1511340-1-srikar@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dMlF66lK6z2xHt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Dec 2025 06:39:06 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8FC8D43D05;
+	Thu,  4 Dec 2025 19:39:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED09C4CEFB;
+	Thu,  4 Dec 2025 19:38:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764877143;
+	bh=7xoWfZb/rQlOyV51uYCWOVPmwkaZ4pvqIYT0hW3+62M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Lxo07IQAhkWMt2l8zQ9z0zjXSecELZqm/Sl/HVxpGQ3HrR32VZ/HcjuZZIECRJyuc
+	 b9AzhJXdV5j/DiFeh1DcrpWMQCqz/W0KmqtebGB5fy6P7btaWJ2f325YRNUM085/yT
+	 8ax/GnH3DxXkdSyLt/Wkxp+BHtMijuaoql6FBscs/4yJUFlyB78XqPA/3MI/alf+Ga
+	 zCzXcq75PuK2Yx/PGKMG+wUeST30nFTCs+39VviL+9YHWYnLqEmJgSWHEyOtKHT6X9
+	 rMeg0TNesxFsC8wSY69xa/Dtn+qNfbKDxsspDfh93eWHo51STHZK6sqNvm3w8dX4gG
+	 T2SwhXwLTyAhQ==
+Message-ID: <8a5b59b9-112d-44cf-b81e-6f79f59bb999@kernel.org>
+Date: Thu, 4 Dec 2025 20:38:56 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,104 +58,225 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ni3vhbmp42pzMrrHuc6bnF_Kzql4ImFA
-X-Proofpoint-ORIG-GUID: DAgezDF_G1mL2zRPjpvzMWkMiCPNhsPZ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDAyMCBTYWx0ZWRfX2HJrKpeW8ZP3
- S8JNVf73b2KIBPAzcIfTRQ7qp4G/iE/NRxRbPMSG2YsgmfNB+jOt4JIto+3k1M2wDJhyWqQQdN0
- uGSW2ZGq8Glj3wRmBTiIbXFDbDK9OtA0B7E1iTEED4HWXsXr8xL0a4h75Cjp+rxn+C8GoWLNQY/
- aq417TvC/ewmG6jNeYZoxT0/MyrFFDNiezE114VFNKRABSVvsWaeLhuSYHQmsoipOVpwSTVdIwr
- TXOqkjnrFlzz0mk6xtH9LcgyevRUfI+WHt8CYSMLBFxzXdyiJe+lIUtniFVd5eQocIIK/3rQ2j+
- Hg8BYcTrxFE4H6pLE58lrIkg5LZpWA6R6IG84e40Z+DTiB3wz8wZPNyL/MF7dS+itIUmjctCPfd
- Z3HEccxcu089gz02Ao4YIYbV4uM7tw==
-X-Authority-Analysis: v=2.4 cv=dYGNHHXe c=1 sm=1 tr=0 ts=6931cb48 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=WutiPhbOZldT-Hsz3twA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-04_04,2025-12-04_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 suspectscore=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511290020
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with
+ hugetlb"
+To: Shuah Khan <skhan@linuxfoundation.org>, Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ npiggin@gmail.com, christophe.leroy@csgroup.eu, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+ masahiroy@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20251204023358.54107-1-skhan@linuxfoundation.org>
+ <0b007374-1058-487c-8033-4f0d2830dc89@kernel.org>
+ <aTErsX-wfnxkNJ1G@kernel.org>
+ <78af7da4-d213-42c6-8ca6-c2bdca81f233@linuxfoundation.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <78af7da4-d213-42c6-8ca6-c2bdca81f233@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Currently steal metrics are processed on CPU 0 at a 2 second interval.
-However the right value for processing the steal interval has yet to be
-discovered. If a too small value is provided, LPAR may end up adjusting
-too frequently and also the steal metrics may also be unreliable. If
-too large value is provided, LPAR may lose the opportunity for soft
-online and offline. Hence enable a debug interface for privileged users to
-specify steal interval.
+On 12/4/25 18:03, Shuah Khan wrote:
+> On 12/3/25 23:35, Mike Rapoport wrote:
+>> On Thu, Dec 04, 2025 at 07:17:06AM +0100, David Hildenbrand (Red Hat) wrote:
+>>> Hi,
+>>>
+>>> On 12/4/25 03:33, Shuah Khan wrote:
+>>>> This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
+>>>
+>>> That was supposed to fix powerpc handling though. So I think we have to
+>>> understand what is happening here.
+> 
+> This patch changes include/linux/mm.h and mm/Kconfig in addition to
+> arch/powerpc/Kconfig and arch/powerpc/platforms/Kconfig.cputype
+> 
+> With this patch HAVE_GIGANTIC_FOLIOS is enabled on x86_64 config
+> 
+> The following mm/Kconfig isn't arch specific. This makes this
+> not powerpc specific and this is enabled on x86_64
 
-Signed-off-by: Srikar Dronamraju <srikar@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/lpar.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+Yes, and as the patch explains that's expected. See below.
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index f5caf1137707..4f7b217a4eb3 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -660,8 +660,8 @@ machine_device_initcall(pseries, vcpudispatch_stats_procfs_init);
- 
- #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
- #define STEAL_MULTIPLE (STEAL_RATIO * STEAL_RATIO)
--#define PURR_UPDATE_TB tb_ticks_per_sec
- 
-+static u8 steal_interval = 1;
- 
- static bool should_cpu_process_steal(int cpu)
- {
-@@ -674,8 +674,8 @@ static bool should_cpu_process_steal(int cpu)
- extern bool process_steal_enable;
- static void process_steal(int cpu)
- {
-+	unsigned long steal_ratio, delta_tb, interval_tb;
- 	static unsigned long next_tb, prev_steal;
--	unsigned long steal_ratio, delta_tb;
- 	unsigned long tb = mftb();
- 	unsigned long steal = 0;
- 	unsigned int i;
-@@ -696,14 +696,18 @@ static void process_steal(int cpu)
- 		steal += be64_to_cpu(READ_ONCE(lppaca->enqueue_dispatch_tb));
- 	}
- 
-+	if (!steal_interval)
-+		steal_interval = 1;
-+
-+	interval_tb = steal_interval * tb_ticks_per_sec;
- 	if (next_tb && prev_steal) {
--		delta_tb = max(tb - (next_tb - PURR_UPDATE_TB), 1);
-+		delta_tb = max(tb - (next_tb - interval_tb), 1);
- 		steal_ratio = (steal - prev_steal) * STEAL_MULTIPLE;
- 		steal_ratio /= (delta_tb * num_online_cpus());
- 		trigger_softoffline(steal_ratio);
- 	}
- 
--	next_tb = tb + PURR_UPDATE_TB;
-+	next_tb = tb + interval_tb;
- 	prev_steal = steal;
- }
- 
-@@ -2081,6 +2085,9 @@ static int __init vpa_debugfs_init(void)
- 		debugfs_create_file(name, 0400, vpa_dir, (void *)i, &vpa_fops);
- 	}
- 
-+#ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
-+	debugfs_create_u8("steal_interval_secs", 0600, arch_debugfs_dir, &steal_interval);
-+#endif
- 	return 0;
- }
- machine_arch_initcall(pseries, vpa_debugfs_init);
+> 
+> +#
+> +# We can end up creating gigantic folio.
+> +#
+> +config HAVE_GIGANTIC_FOLIOS
+> +       def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
+> +                (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+> +
+> 
+> The following change in include/linux/mm.h is also generic
+> and applies to x86_64 as well.
+> 
+> -#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
+> +#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
+> 
+> Is this not intended on all architectures?
+
+All expected. See below.
+
+> 
+>>>
+>>>>
+>>>> Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
+>>>> systems. git fetch-pack fails when cloning large repos and make hangs
+>>>> or errors out of Makefile.build with Error: 139. These failures are
+>>>> random with git clone failing after fetching 1% of the objects, and
+>>>> make hangs while compiling random files.
+>>>
+>>> On which architecture do we see these issues and with which kernel configs?
+>>> Can you share one?
+> 
+> Config attached.
+
+Okay, let's walk this through. The config has:
+
+CONFIG_HAVE_GIGANTIC_FOLIOS=y
+CONFIG_HUGETLB_PAGE=y
+CONFIG_ARCH_HAS_GIGANTIC_PAGE=y
+CONFIG_ZONE_DEVICE=y
+CONFIG_SPARSEMEM=y
+CONFIG_SPARSEMEM_VMEMMAP=y
+
+
+In the old code:
+
+#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
+/*
+  * We don't expect any folios that exceed buddy sizes (and consequently
+  * memory sections).
+  */
+#define MAX_FOLIO_ORDER         MAX_PAGE_ORDER
+#elif defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
+/*
+  * Only pages within a single memory section are guaranteed to be
+  * contiguous. By limiting folios to a single memory section, all folio
+  * pages are guaranteed to be contiguous.
+  */
+#define MAX_FOLIO_ORDER         PFN_SECTION_SHIFT
+#else
+/*
+  * There is no real limit on the folio size. We limit them to the maximum we
+  * currently expect (e.g., hugetlb, dax).
+  */
+#define MAX_FOLIO_ORDER         PUD_ORDER
+#endif
+
+
+We would get MAX_FOLIO_ORDER = PUD_ORDER = 18
+
+
+In the new code we will get:
+
+#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
+/*
+  * We don't expect any folios that exceed buddy sizes (and consequently
+  * memory sections).
+  */
+#define MAX_FOLIO_ORDER         MAX_PAGE_ORDER
+#elif defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
+/*
+  * Only pages within a single memory section are guaranteed to be
+  * contiguous. By limiting folios to a single memory section, all folio
+  * pages are guaranteed to be contiguous.
+  */
+#define MAX_FOLIO_ORDER         PFN_SECTION_SHIFT
+#elif defined(CONFIG_HUGETLB_PAGE)
+/*
+  * There is no real limit on the folio size. We limit them to the maximum we
+  * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
+  * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
+  */
+#define MAX_FOLIO_ORDER         get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
+#else
+/*
+  * Without hugetlb, gigantic folios that are bigger than a single PUD are
+  * currently impossible.
+  */
+#define MAX_FOLIO_ORDER         PUD_ORDER
+#endif
+
+
+MAX_FOLIO_ORDER = get_order(SZ_16G) = 22
+
+
+That's expected and okay (raising the maximum we expect), as we only want to set a
+rough upper cap on the maximum folio size.
+
+As I raised, observe how MAX_FOLIO_ORDER is only used to
+* trigger warnings if we observe an unexpectedly large folio size. Safety checks.
+* use it when dumping a folio to detect possible folio corruption on unexpected folio sizes
+
+
+> 
+>>>
+>>>>
+>>>> The blow is is one of the git clone failures:
+>>>>
+>>>> git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
+>>>> Cloning into 'linux_6.19'...
+>>>> remote: Enumerating objects: 11173575, done.
+>>>> remote: Counting objects: 100% (785/785), done.
+>>>> remote: Compressing objects: 100% (373/373), done.
+>>>> remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
+>>>> Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
+>>>> Resolving deltas: 100% (9195212/9195212), done.
+>>>> fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
+>>>> fatal: fetch-pack: invalid index-pack output
+>>>
+>>> If I would have to guess, these symptoms match what we saw between commit
+>>> adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
+>>> and commit 5bebe8de1926 ("mm/huge_memory: Fix initialization of huge zero folio").
+>>>
+>>> 5bebe8de1926 went into v6.18-rc7.
+>>>
+>>> Just to be sure, are you sure we were able to reproduce this issue with a
+>>> v6.18-rc7 or even v6.18 that contains 5bebe8de1926?
+>>>
+>>> Bisecting might give you wrong results, as the problems of adfb6609c680 do not
+>>> reproduce reliably.
+>>    
+>> I can confirm that bisecting gives odd results between v6.18-rc5 and
+>> v6.18-rc6. I was seeing failures in some tests, bisected a few times and
+>> got a bunch of bogus commits including 3470715e5c22 ("MAINTAINERS: update
+>> David Hildenbrand's email address") :)
+> 
+> I am sure this patch is the cause oh the problems I have seen on my two
+> systems. Reverting this commit solved issues since this commit does
+> impact all architectures enabling HAVE_GIGANTIC_FOLIOS if the conditions
+> are right.
+> 
+>>
+>> And 5bebe8de1926 actually solved the issue for me.
+> 
+> Were you seeing the problems I reported without 5bebe8de1926?
+> Is 5bebe8de1926 is 6.18?
+
+We were seeing all kinds of different segmentation faults or corruptions.
+In my case, every-time I tried to login something would segfault. For others,
+compilers stopped working or they got different random segfaults.
+
+Assume you think you have a shared zero page, but every time you reboot it's filled
+with other garbage data. Not good when your app assumes something contains 0s.
+
+> 
+> I can try this commit with 39231e8d6ba7f794b566fd91ebd88c0834a23b98
+> and see what happens on my system.
+
+Yes, please. I cannot yet make sense of how MAX_FOLIO_ORDER would make any
+difference.
+
+Unless you would actually be seeing one of the WARNINGS that are based on
+MAX_FOLIO_ORDER / MAX_FOLIO_NR_PAGES. But I guess none showed up in dmesg?
+
 -- 
-2.43.7
+Cheers
 
+David
 
