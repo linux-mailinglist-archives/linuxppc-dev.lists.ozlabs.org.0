@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-14621-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14620-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BD4CA4D54
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 04 Dec 2025 18:57:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1136CA4D51
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 04 Dec 2025 18:57:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dMhyv128Hz2yhD;
-	Fri, 05 Dec 2025 04:56:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dMhyt0kBHz2ynh;
+	Fri, 05 Dec 2025 04:56:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764870999;
-	cv=none; b=byjUX3qe10HhjgXJOvJ8CMdhvcPvYJ+umMwXyfvWhiOCqt8ZkKlR4Q9tccasTwqZ0TdTKFiN7qPuXxU7QGr/lVXZWtQZAl/JDdIcvgjb2SgTE0nXKzT8S9ldqNm+wTugCuGWEHuW23z8xYHYoeMk9tQu80Dgb+DSKnUFfzOLVOyJkNg6e0bbGNNqlDs/yzgqKfebBpku1+S18q/TxcOzXgbHhXb37QpfzvyO7O7FdWVcvS+KlvVapOsFwM78wnbxSoMXJbK7M7jS9O7IsrcYP6EdXU7zYTW0tibXpWQWYh1U/6kXTh2zS2U7b6Df/AG8/RwftILRfqAmE6TQlPkahA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764870998;
+	cv=none; b=HSC8WJeIBmBnb6GE3ROyG9BTIopJysTXLubpdbdNqVRvNX5PPRdeZFqZxY/Kx7048V36/6+IHxSXamJ70pFjuVk0v/WIfne83e1EFdBJuPl5yOK8hmEzFW04m0xZ7/0izKX/BqpC7pTMOHRMv+B6J1On1wdSu3/A8cqCuTdOu0afHxJNP5+TLXAMJ/zKzye7zytzhP2jS29PVIaK2jXi5ZvrDL7rtMS2riLC1TtxD6Oi5RRRRhxyU7VYvmBa9G6EAPG+mkqonjLw2axrlHuLBo2F549zF45h3ahqUUuiRTf44AyTIi3ouo8c6/qkT91SLYAoa4qt7trstuIo/BrFag==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764870999; c=relaxed/relaxed;
-	bh=COHvKYjgKzz9JnJqBR21qXREb5HwbfkQOktMhWdqSPg=;
+	t=1764870998; c=relaxed/relaxed;
+	bh=gBvk4eMk6v6ZAOxTBGwue2xrVUEEoxsJgnPd2ac/fyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwzKXkcxTXH4SjrHK9rxgI940OloBKWKg1s4sOdkvFkfygEqjdp0g/Z8GkWp9/T9wMXYVnNJee+oN5P147WBwVn9B8q2zTZb9jASJ6fQCcv8p8sYg2cRHQMefnstP56XxgHFWLTK6ef5wiQufFwasWFf6sHvREezxi2caTLet8SxVUba1XCVGU5vspsVxASRbDaN74KO7I9W3I1pU9KWRHIEpGaQxHbz/RLHPXMMq1tm7lypZxU1msSsMN4RXhWRCNVomK6FZB2kOY4HrvcmHBiUoG4MLwfaWIDd9wAdc2LsVUcIV+/GW2z/r6gEeIoabBd9/eY1YapN86fYo147hQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eRg9eVDa; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=NUilpicbzvsP8fWc9EPATrf9KgiEVdvsgeH6G2Qs9gJ/u0pGrbATJuStB2IlKeLq92Ozs9+wndioy2CodlKrTir526l1JuTWAp0jMRbB56zBteldGR+eyF+Ht/4uvb5Blw4kP9hKcPltpj11wGYOv9G7mIsEJXpzhJmVQDzR5edmO4s6Tpacyylj5Dxjulx5ZlCl4kmk/mkupXvIluaBAzWAh8GVz0AXZkMYqiwGmXGl6ZY1skDBkVZLsk7l/gUk0Xyyqteyc7rFHXnqqF+2smNuwCgC1Q2/og0kiQTTnU67iDrq959IeIjG8HAGx39n3WlrXd7Z1W5cLBTLAHAghw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=npNBkVM1; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eRg9eVDa;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=npNBkVM1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dMhyt2QYjz2ypw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Dec 2025 04:56:38 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B4CVwkE013518;
-	Thu, 4 Dec 2025 17:56:10 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dMhys1RBqz2yhD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Dec 2025 04:56:36 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B4CIoHr010190;
+	Thu, 4 Dec 2025 17:56:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=COHvKYjgKzz9JnJqB
-	R21qXREb5HwbfkQOktMhWdqSPg=; b=eRg9eVDan64NzQCgvAJQD28SRJsfbWhFL
-	RKVlLM81qofcj9iQBMfadDhwCTHfDPWcV87c1IMgV5ZWzrheA57/NqSxlVNFzcvT
-	ZfE/RxF/2pe6S/ZKEZBxT3Mn4EnuW6t3sspqE5yHZYViV7dhlOhSy31cs3Pc8RLc
-	uKJEgeT7rz3mv/b2Z6I8TvJiUfJhkKmuzInUw/FmuVimKqrRb0G/Y1T6IGXIDFSS
-	weBWApxaScBHHxEZ8ZaQmMql1VY1CybOkleI/MHNBfzeTCObka7H7y3LHdJpYsMB
-	L+LlrwfamzWwmw1DnB1iTThkTsYMKOiUgpkwXnr0NQ65tmpNKXiOA==
+	:mime-version:references:subject:to; s=pp1; bh=gBvk4eMk6v6ZAOxTB
+	Gwue2xrVUEEoxsJgnPd2ac/fyw=; b=npNBkVM1tbJ3JUr5HJrj6rtcZD3Ab+qOM
+	9uXk/lGJ/Rh708lBvFROVXK2LJ6tz7dmbLOPjsoUeMgg9t96lXztNlpxpMCuVzSC
+	DrbJl1yE08ZlB6hFzRpY82Bw5RcAxhuJ59Aebtg/2yRLo0Q+8jIYCEXr497Ou6hU
+	W+StBDZ9cd3BfGiDkWEDwFrVklGV2J65uzMkf8p6VR5brdh2Y1cjRZJLF8oOFniw
+	IK+P0TuNPxlK1OpWYvpX5s+G/4dURlQrbB2pq+LguRLDOGUuBRxUcTQrugNbYPvk
+	24qDCvbSM2A+G8qsvP5SBwKV0foQ4Juf3LoAIdMmWZ37Xg2Z5S8iw==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqrh79vv5-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqp8q9e6j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Dec 2025 17:56:09 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5B4Hg50q026211;
-	Thu, 4 Dec 2025 17:56:08 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqrh79vv2-1
+	Thu, 04 Dec 2025 17:56:12 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5B4HuBdw018464;
+	Thu, 4 Dec 2025 17:56:11 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqp8q9e6g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Dec 2025 17:56:08 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B4G8xq8021690;
-	Thu, 4 Dec 2025 17:56:07 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4at8c6jbbv-1
+	Thu, 04 Dec 2025 17:56:11 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B4G1MLm029338;
+	Thu, 4 Dec 2025 17:56:10 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ardv1rvcu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Dec 2025 17:56:07 +0000
+	Thu, 04 Dec 2025 17:56:10 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B4Hu3Cd16318956
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B4Hu6FR46203282
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 Dec 2025 17:56:03 GMT
+	Thu, 4 Dec 2025 17:56:06 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E77B520043;
-	Thu,  4 Dec 2025 17:56:02 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B3F6320043;
+	Thu,  4 Dec 2025 17:56:06 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6FB0820040;
-	Thu,  4 Dec 2025 17:55:59 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 3C6B920040;
+	Thu,  4 Dec 2025 17:56:03 +0000 (GMT)
 Received: from sapthagiri.in.ibm.com (unknown [9.39.29.188])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  4 Dec 2025 17:55:59 +0000 (GMT)
+	Thu,  4 Dec 2025 17:56:03 +0000 (GMT)
 From: Srikar Dronamraju <srikar@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         Peter Zijlstra <peterz@infradead.org>
@@ -90,9 +90,9 @@ Cc: Ben Segall <bsegall@google.com>,
         Vincent Guittot <vincent.guittot@linaro.org>,
         virtualization@lists.linux.dev, Yicong Yang <yangyicong@hisilicon.com>,
         Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 13/17] pseries/smp: Account cores when triggering softoffline
-Date: Thu,  4 Dec 2025 23:24:01 +0530
-Message-ID: <20251204175405.1511340-14-srikar@linux.ibm.com>
+Subject: [PATCH 14/17] powerpc/smp: Assume preempt if CPU is inactive.
+Date: Thu,  4 Dec 2025 23:24:02 +0530
+Message-ID: <20251204175405.1511340-15-srikar@linux.ibm.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251204175405.1511340-1-srikar@linux.ibm.com>
 References: <20251204175405.1511340-1-srikar@linux.ibm.com>
@@ -111,109 +111,123 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=dK+rWeZb c=1 sm=1 tr=0 ts=6931cb39 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDAwMCBTYWx0ZWRfX3yL8M1FQVfis
+ im8nnAvYJT/jR7qKWigQ4v15uxYEjhX7o1H6AaQJVmaTX6M3tKWqJRJn4IenYRfAw2QFUc0B+G6
+ Qyg1cGu/5jChU1xSMkQuJdXg4z+dZD3ApBi9+uzDDbDN8D1w9IGm/qAusaaHvc/elrZHheGHPeQ
+ kUYwvvp3y7B7BwWVgB3o3JlqH3d95zwN63IRRm14xX6Y0z79NWW7WtcE1QplMtgHs0Zuul0y36i
+ ua2GbxKLer7R1I+aU2Jj9pBP7J3Ydk7POaVsXVAuD4kaatkb3HgwKNZWbbRzy7T2P+w4rXI4qI8
+ U/U43IoAbX3xu1sUjkH+sLrmoKLf2HKmbm/0s1dc4DXrvUCtZIeSAN716rPc6KnCxtgnskCHVe6
+ cZGv6i/w2CoKx0B6kMYIp81BWkrc+A==
+X-Authority-Analysis: v=2.4 cv=dIerWeZb c=1 sm=1 tr=0 ts=6931cb3c cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=hMrejquCwrOoUXIZ0_UA:9
-X-Proofpoint-GUID: _vx2ZrcX-PNX-n7NeBZdzw1v8eHZdwRE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDAyMCBTYWx0ZWRfXz1o2mbP6IcH1
- OmMQ0MzVFzMZbjMEoDw3dXCwAhhF71D93YxPTBXSEOdtzs+smnbCvCM3LM2SHCaKDHXouLZZEBw
- hfxsigcRyxYK8u0dn2f0UYTI8lqS5oQ+8SnrVHfLNrCBF8mvRNq7oyE1k8lZnaHjpcoz4jbGbsR
- evuuEppTlo5nZqh/qQYkW4dYrBL4vLzgfPofmGcYxtnYwK011ETidVWxfaHVJtZT0B65WG6z7im
- RGg5YCa4GWPQZ1V4r1s5iZwP2V4K4JlTpqLhjEH4M8nByIiA9PSoeoyAn3MFmAZed8UTt/koxJd
- /L0hwxrp1pvPbOGqlyFUDmLGTf6xKJ2OED16UdrOEtOKc0bw7avlV3+TaKAymFQpoPIyJDbZTKv
- Kr7LNVbUdsQjzcWjat/KDP6cErtzvQ==
-X-Proofpoint-ORIG-GUID: Y6oyYVlwPGDCHU8eIffBBUvXwfclhGHw
+ a=R1vJ1bMZ7EzTfBZCLQ4A:9
+X-Proofpoint-ORIG-GUID: sZ-3IVy9C2T-DcjEVeXc27zHs0lFgv6u
+X-Proofpoint-GUID: I5KCaBuqR44QxaNU3pBk_7-8f26bzBvN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-04_04,2025-12-04_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
- bulkscore=0 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 suspectscore=0 adultscore=0 bulkscore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511290020
+ definitions=main-2511290000
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On a shared LPAR is entitled to certain number of cores, i.e the number
-of cores that PowerVM hypervisor is committed to provide at any point of
-time. Hence based on steal metrics, soft offline such that at least
-soft-offline cores are available.
-
-Also when soft-onlining cores, unless DLPAR, ensure system can only
-online up to max virtual cores.
+When a vCPU is marked inactive, it qualifies as preempted vCPU.
+And when a vCPU is marked active, we should hope that its not going to
+be preempted. Also with lower steal times, the chances of active vCPU
+being preempted reduces too.
 
 Signed-off-by: Srikar Dronamraju <srikar@linux.ibm.com>
 ---
- arch/powerpc/platforms/pseries/smp.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/paravirt.h | 62 +++++------------------------
+ 1 file changed, 9 insertions(+), 53 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
-index 4c83749018d0..69e209880b6f 100644
---- a/arch/powerpc/platforms/pseries/smp.c
-+++ b/arch/powerpc/platforms/pseries/smp.c
-@@ -327,25 +327,45 @@ void trigger_softoffline(unsigned long steal_ratio)
- {
- 	int currcpu = smp_processor_id();
- 	static int prev_direction;
-+	int success = 0;
- 	int cpu, i;
+diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
+index b78b82d66057..93c4e4f57cb3 100644
+--- a/arch/powerpc/include/asm/paravirt.h
++++ b/arch/powerpc/include/asm/paravirt.h
+@@ -145,6 +145,15 @@ static inline bool vcpu_is_preempted(int cpu)
+ 	if (!is_shared_processor())
+ 		return false;
  
++#ifdef CONFIG_PPC_SPLPAR
 +	/*
-+	 * Compare delta runtime versus delta steal time.
-+	 *  [0]<----------->[EC]--------->[VP]
-+	 *  [0]<------------------>{AC}-->[VP]
-+	 *  EC == Entitled Cores
-+	 *  VP == Virtual Processors
-+	 *  AC == Available Cores Varies between 0 to EC/VP.
-+	 * If Steal time is high, then reduce Available Cores.
-+	 * If steal time is low, increase Available Cores
++	 * Assume the target CPU to be preempted if it is above soft
++	 * entitlement limit
 +	 */
- 	if (steal_ratio >= STEAL_RATIO_HIGH && prev_direction > 0) {
- 		/*
- 		 * System entitlement was reduced earlier but we continue to
--		 * see steal time. Reduce entitlement further.
-+		 * see steal time. Reduce entitlement further if possible.
- 		 */
-+		if (available_cores <= entitled_cores)
-+			return;
++	if (!is_kvm_guest())
++		return !cpu_active(cpu);
++#endif
 +
- 		cpu = cpumask_last(cpu_active_mask);
- 		for_each_cpu_andnot(i, cpu_sibling_mask(cpu), cpu_sibling_mask(currcpu)) {
- 			struct offline_worker *worker = &per_cpu(offline_workers, i);
+ 	/*
+ 	 * If the hypervisor has dispatched the target CPU on a physical
+ 	 * processor, then the target CPU is definitely not preempted.
+@@ -159,59 +168,6 @@ static inline bool vcpu_is_preempted(int cpu)
+ 	if (!is_vcpu_idle(cpu))
+ 		return true;
  
- 			worker->offline = 1;
- 			schedule_work_on(i, &worker->work);
-+			success = 1;
- 		}
-+		if (success)
-+			available_cores--;
- 	} else if (steal_ratio <= STEAL_RATIO_LOW && prev_direction < 0) {
- 		/*
- 		 * System entitlement was increased but we continue to see
--		 * less steal time. Increase entitlement further.
-+		 * less steal time. Increase entitlement further if possible.
- 		 */
-+		if (available_cores >= max_virtual_cores)
-+			return;
-+
- 		cpumask_andnot(cpus, cpu_online_mask, cpu_active_mask);
- 		if (cpumask_empty(cpus))
- 			return;
-@@ -356,7 +376,10 @@ void trigger_softoffline(unsigned long steal_ratio)
+-#ifdef CONFIG_PPC_SPLPAR
+-	if (!is_kvm_guest()) {
+-		int first_cpu, i;
+-
+-		/*
+-		 * The result of vcpu_is_preempted() is used in a
+-		 * speculative way, and is always subject to invalidation
+-		 * by events internal and external to Linux. While we can
+-		 * be called in preemptable context (in the Linux sense),
+-		 * we're not accessing per-cpu resources in a way that can
+-		 * race destructively with Linux scheduler preemption and
+-		 * migration, and callers can tolerate the potential for
+-		 * error introduced by sampling the CPU index without
+-		 * pinning the task to it. So it is permissible to use
+-		 * raw_smp_processor_id() here to defeat the preempt debug
+-		 * warnings that can arise from using smp_processor_id()
+-		 * in arbitrary contexts.
+-		 */
+-		first_cpu = cpu_first_thread_sibling(raw_smp_processor_id());
+-
+-		/*
+-		 * The PowerVM hypervisor dispatches VMs on a whole core
+-		 * basis. So we know that a thread sibling of the executing CPU
+-		 * cannot have been preempted by the hypervisor, even if it
+-		 * has called H_CONFER, which will set the yield bit.
+-		 */
+-		if (cpu_first_thread_sibling(cpu) == first_cpu)
+-			return false;
+-
+-		/*
+-		 * The specific target CPU was marked by guest OS as idle, but
+-		 * then also check all other cpus in the core for PowerVM
+-		 * because it does core scheduling and one of the vcpu
+-		 * of the core getting preempted by hypervisor implies
+-		 * other vcpus can also be considered preempted.
+-		 */
+-		first_cpu = cpu_first_thread_sibling(cpu);
+-		for (i = first_cpu; i < first_cpu + threads_per_core; i++) {
+-			if (i == cpu)
+-				continue;
+-			if (vcpu_is_dispatched(i))
+-				return false;
+-			if (!is_vcpu_idle(i))
+-				return true;
+-		}
+-	}
+-#endif
+-
+-	/*
+-	 * None of the threads in target CPU's core are running but none of
+-	 * them were preempted too. Hence assume the target CPU to be
+-	 * non-preempted.
+-	 */
+ 	return false;
+ }
  
- 			worker->offline = 0;
- 			schedule_work_on(i, &worker->work);
-+			success = 1;
- 		}
-+		if (success)
-+			available_cores++;
- 	}
- 	if (steal_ratio >= STEAL_RATIO_HIGH)
- 		prev_direction = 1;
 -- 
 2.43.7
 
