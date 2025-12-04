@@ -1,60 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14628-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14629-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C232CA5933
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 04 Dec 2025 22:57:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E16CA5970
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 04 Dec 2025 23:12:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dMpKD6NMTz2xJ6;
-	Fri, 05 Dec 2025 08:57:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dMpdt1dGPz2xQ1;
+	Fri, 05 Dec 2025 09:12:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764885472;
-	cv=none; b=VF27Lh3EdcRhRNteIv4dPBOCcxbRMGhRK605PzGPnr3UiAozIwvuqwbIfSGTmOmbzV1pPUd0himmQ7PzwOjvgzdGmHNfHUNeI5QOY2GHEh59CxW9+9BjWTjMOoFXLoXXVXrjlv5j3YSJsWjdhbAokL08LgX4/urYTnQkUg5kL5P8bqv7u0hV7ByFUlvNmzacI5k0KVT5/UzPA+u2EQsck4xRjmGeHb/BB2DSW28tMatgq8N6AwaAOxGy+KXMwH4EEq/xJ3banG7g79id2rrSKKYERMvRzoZM1F7oFKKIl9imMQTLeLQ9Yz/TZPZRINLmS4GZRncHm261Jmu9DsEXdA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764886338;
+	cv=none; b=HB3D8fLimZj3zJVVrMYRIPzq+l7XtNd9rLmnnaPceyJthHzcdPRpdtHv0eAYjEZFDuyTNDleCs6NMCX/hQiE7h5vuTg16lQrzJSIZv/xVQig39aYClhF2SrqzthuQqgTXipB/NJzlhVPes6e6+lsi1OgoCQ+JKifNUFCI4WbLWfMsNjs8m2pS8/QG2gPTxovgHoUZe/G9edJZSYE0vNnWbdbNCq0Kjgqs5f5F08vdv3fjq0OcqgDNGQgCDmwyCZjVDoXrhE5M0Tocx2SGlriqU2Niyk221QcpU8RxPr7HqQ+4iFnvg95DS2Ley3XrZWFQaLdH7jo0kbJMi4t0JftMg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764885472; c=relaxed/relaxed;
-	bh=u+UR/Bh5+3hB8Nh74pUKsNs06AZ2/n3PTN5NT1oU0pw=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Ad1Qpkx/xpsZYqPJBievN4tqOOSnOf1HGAszW8Fx5FGXMjMV3nyNMpIDkUVjNds0Sr2UqgBm8vTJ+QzSW4ywDbjoZQpO7EK1YBqVPv68RMiZEklCL42ii8PN7w4Yox5R2Lr/fuGixkXuMVDb6+WTeaRlwZ11/qMemNfzSKFzDJg7fgwcwFrcTEtK2tfLSBK0hrOVpROJcwZdIGMNFuHOi1dXwqduKVF99HPL7+Mefsj44rQQU9JHVhxcAGB4Yqicf1RV6IGiYeg1BctwsC8b5AlFg3a/nhmbAF1JPfNUOkZXdTorewIr6m22YgxOVO1sVmKQhvXVXBZiHR/z0dWxfw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=k9q35YFw; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1764886338; c=relaxed/relaxed;
+	bh=f6o6wb1SzKvDVPK/vKLO178hrGck2AjfeqCB0/HR958=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WuCfc30fFIrW03FQ9PcKSTNHtd4kWI3pacl2aCKpjo1ShATYoMmy4WEKxzkGnADu9n7l5i7Ss67Wg+Q8N9Fvxt2q4LO+kpggo7GiyCgwST75r8bn2EIcqoGlV+978BikU7Br/hasFY3rTHR5edRC5TuqDRUKbQudH0MckTi4wR15OwtVG9b5UEoifF7RA0Bwoj0C7bicgyD19/LppQM3Bcb2LSw+G3t4aZsSMRGxtFAoPSaMi7C1aB4JG8+dKZr+RsRbGMPgTeUN0xTwtqQHzMBAqijj61JQEA1VFRuJoYD0GjpCxUAmrJ5cey2h82Rv0e5JHJ1TJ4D17wKKRBBHyw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IAzw1OUH; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=k9q35YFw;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IAzw1OUH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dMpKC56Rhz2xHG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Dec 2025 08:57:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dMpds1cdLz2xHG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Dec 2025 09:12:17 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5C38460202;
-	Thu,  4 Dec 2025 21:57:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8EFC4CEFB;
-	Thu,  4 Dec 2025 21:57:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764885468;
-	bh=X9n/SI6IKvE+F0NdeSHaFU7vcgdgXOCeq4cTbmL1cFw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=k9q35YFw4ap/XLACqc1kqO+8+Ix4RJb9p5Wre06HB3UZOOw6lkzrZFHB/kRL5DRvS
-	 9jYimUKT7EXuHJx89pikNeF1l9K/ZdtSDsNHRFZOgqkT47Wblto8ZYyM9jyIP5tyxf
-	 rMM48sJsTXyDerFSED8Eaa2bIRcDIGTfhpX8ibAE=
-Date: Thu, 4 Dec 2025 13:57:46 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: david@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, masahiroy@kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH] Revert
- "mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb"
-Message-Id: <20251204135746.6d291cc861b4507b1fe95aaa@linux-foundation.org>
-In-Reply-To: <20251204023358.54107-1-skhan@linuxfoundation.org>
-References: <20251204023358.54107-1-skhan@linuxfoundation.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by tor.source.kernel.org (Postfix) with ESMTP id CD13C601ED;
+	Thu,  4 Dec 2025 22:12:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17168C113D0;
+	Thu,  4 Dec 2025 22:12:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764886334;
+	bh=ubLwl5+CgitwUP+ApeREHrjaIt9HSqJeqF496mwgdzU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IAzw1OUHYgUWBP5mdicRgkXgo68l062ZNu3AOYLPZXPFoAEtFD1fhoIwy2uRycPZY
+	 96wUtdi8CnoG3eZUHlVW37tSpWW6YJl6D8dn2jqFgwB+4tDZ9jzkbADts5LgJ94LKX
+	 9u5T6aFzJsO61OIQXrXQfZqjRX+qVBy1/I2z7Vxe1H/OExo7dhtAtfnEkgg69CRkGk
+	 4VGCkxc6Zf/JDHGdwrUYFCpVp6pb3dBU9b5LZBoBse7FvyGmKojZRmzdvvgpvpiMpb
+	 mF5For1ffogsUFSD6jGYvu7hFZWxq0+HwB5Y85vSctNh9hlsn5Ox6Mku0zKBmni9Mb
+	 F1Twn2KYLcVzg==
+Message-ID: <b64f1627-0627-4e4a-b547-5e54167f318e@kernel.org>
+Date: Thu, 4 Dec 2025 23:12:06 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,57 +57,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with
+ hugetlb"
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Shuah Khan <skhan@linuxfoundation.org>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, masahiroy@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Linus Torvalds <torvalds@linux-foundation.org>
+References: <20251204023358.54107-1-skhan@linuxfoundation.org>
+ <20251204135746.6d291cc861b4507b1fe95aaa@linux-foundation.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251204135746.6d291cc861b4507b1fe95aaa@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed,  3 Dec 2025 19:33:56 -0700 Shuah Khan <skhan@linuxfoundation.org> wrote:
-
-> This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
+On 12/4/25 22:57, Andrew Morton wrote:
+> On Wed,  3 Dec 2025 19:33:56 -0700 Shuah Khan <skhan@linuxfoundation.org> wrote:
 > 
-> Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
-> systems. git fetch-pack fails when cloning large repos and make hangs
-> or errors out of Makefile.build with Error: 139. These failures are
-> random with git clone failing after fetching 1% of the objects, and
-> make hangs while compiling random files.
+>> This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
+>>
+>> Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
+>> systems. git fetch-pack fails when cloning large repos and make hangs
+>> or errors out of Makefile.build with Error: 139. These failures are
+>> random with git clone failing after fetching 1% of the objects, and
+>> make hangs while compiling random files.
+>>
+>> The blow is is one of the git clone failures:
+>>
+>> git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
+>> Cloning into 'linux_6.19'...
+>> remote: Enumerating objects: 11173575, done.
+>> remote: Counting objects: 100% (785/785), done.
+>> remote: Compressing objects: 100% (373/373), done.
+>> remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
+>> Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
+>> Resolving deltas: 100% (9195212/9195212), done.
+>> fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
+>> fatal: fetch-pack: invalid index-pack output
 > 
-> The blow is is one of the git clone failures:
+> 39231e8d6ba7 simply shuffles ifdefs and Kconfig items, so I assume it
+> exposed a pre-existing bug.
 > 
-> git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
-> Cloning into 'linux_6.19'...
-> remote: Enumerating objects: 11173575, done.
-> remote: Counting objects: 100% (785/785), done.
-> remote: Compressing objects: 100% (373/373), done.
-> remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
-> Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
-> Resolving deltas: 100% (9195212/9195212), done.
-> fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
-> fatal: fetch-pack: invalid index-pack output
+> Reverting 39231e8d6ba7 will re-hide that bug.
+> 
+> And that isn't a bad thing.  If we re-hide the bug in 6.18.x and in
+> mainline then that relieves the people who are hitting this and it
+> takes the pressure off David, Mike and yourself to get the underlying
+> bug fixed in a hurry.
+> 
+> So I think I'll queue this as a hotfix, plan to send it Linuswards in a
+> couple of days.
+> 
+> Or Linus may choose to apply it directly or to do a local revert of
+> 39231e8d6ba7.  But I don't see how a local revert will get communicated
+> to the 6.18.x maintainers.
+> 
+> David, Linus, opinions please?
 
-39231e8d6ba7 simply shuffles ifdefs and Kconfig items, so I assume it
-exposed a pre-existing bug.
+I have so far no indication that this patch here would change anything 
+relevant to the problem we are seeing, all it does is changing 
+MAX_FOLIO_ORDER that does not affect any logic we would really care 
+about here (safety checks and snapshot_page()).
 
-Reverting 39231e8d6ba7 will re-hide that bug.
+Can we please wait a bit so we have confirmation that it's not a 
+leftover from the huge-zero-folio thingy or something different?
 
-And that isn't a bad thing.  If we re-hide the bug in 6.18.x and in
-mainline then that relieves the people who are hitting this and it
-takes the pressure off David, Mike and yourself to get the underlying
-bug fixed in a hurry.
+As Mike reports, he found ways to reproduce something similar even with 
+39231e8d6ba7 reverted.
 
-So I think I'll queue this as a hotfix, plan to send it Linuswards in a
-couple of days.
+-- 
+Cheers
 
-Or Linus may choose to apply it directly or to do a local revert of
-39231e8d6ba7.  But I don't see how a local revert will get communicated
-to the 6.18.x maintainers.
-
-David, Linus, opinions please?
-
-> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-
-Let's have a cc:stable here, just to be sure.
+David
 
