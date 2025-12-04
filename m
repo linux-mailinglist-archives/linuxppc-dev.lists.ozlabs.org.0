@@ -1,57 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-14597-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14596-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43350CA3506
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 04 Dec 2025 11:52:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A240ACA34B8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 04 Dec 2025 11:48:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dMWYj40Q6z2xJ1;
-	Thu, 04 Dec 2025 21:52:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dMWT56gW3z2xGg;
+	Thu, 04 Dec 2025 21:48:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=117.135.210.3
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764845561;
-	cv=none; b=dZ8v5rv1pftpK/32nvHeaK3Y6IVN2Wlp9gMptDujdNyKOMWeY7H0lQRZFj+rizdckrHewgxe9lX2j+Jvim4o5NGP0lhXI7tDl2FGIAl/Ntgg7dnZdiLezaJZF6yW7cMGSjuR2CNcHoQ5LBg/tLuBQhiJOS73ddAfum+vt7pz6tyGy460q/nvvdaoHrEgcUuA/WiWfvRzwge3M0s3nMd7eiFHfhV/7j4RYrqx4bmu+24gNz2x2xWvBzLVkjCcYcWcWtvMQpEYXRVM3bOtsOiVy5FGMZA+UNla3NnVX7TuEQA8O3F4L5wkkqfHqWnq5nQcWpdZKRlSwCMqeLpNvfr7TA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764845321;
+	cv=none; b=BzBQ8XbyO2xF7gvGllTJ9+vHUxUq/ZR0K1ZOLb1swB5z3t9LceSwrcd98eKEy+jJnsI2l6KDcjlriaXin4z5f7tORHBOb6yRaME7SKAulrzbfSs0PkCADIkkr6D9lfBY6IJodKPxMx0vMnVTbYSmEXLhApcd1KjuVHLd7XBMDacJj45ClK/BGnUEHJMbBAHVlM00GTageE1zkJ84dT4oG8ON5UCce7fXjtKG6tRNaeeZFdFoTqWQyZiq0yXmi4JiPD5Q/3iCRSkFoMMz8eiqruoEtY+yD+uOU2NpGIq2wPThNv7WOEDAn61x0w7giMCTpS20d7gHuiMh6cyk0dF5SA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764845561; c=relaxed/relaxed;
-	bh=oObGAmjdi3JvAty33o5ujX20oFjqkuDLoWzF8n+fhio=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WTe1ka5W8dDZQrDMZwRCnKAjPrnAJ2wV6iCnVnE5Il19SlA6WvysnHXUZ3aLhTmS6duzs0Azb4bEMmI8A0/BGwMnNeDJ/ZOeIliFF6wivXWpjEtZ/6arU3041gqxgquoQrBqIbioycuco1HvQCponi+1TOx7tDGY8tvuZLyxJcpI/uPUV6N8wI+YzEiL3hDsA7xjE+bXwSxLNz7FeXSPKK6a99mZOnqT8Gzzt15ent1BzRuY9geGaEwQxatdL5ar4VilOj1AmdyQ9jmsBQfOymN3r4VGpPQqg0q1t2GsnmvFAJQ5XTH9z07olP0Q9i6A+iIpWPInIRmVLqps8fyRDg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=CK7uQmx7; dkim-atps=neutral; spf=pass (client-ip=117.135.210.3; helo=m16.mail.163.com; envelope-from=haoxiang_li2024@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com
+	t=1764845321; c=relaxed/relaxed;
+	bh=zsR3r9aqDhGcgbcWiFA4n+1mhNVg/YnZy7yLS/c5SpM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HejNEOlp09D0ZHL9hyLqGYTmlnErjWrwavMAIgcy3no11keg0xLFzkNAxACVSSoDOCyUozupvOHu8v9ofszPGiwerSMdKEcG4r4bG21TjMoHnCz7LcTMoNM+khXClTFA/d8panx78XkRnQJiFXW9dsKoA811jHr2e0yqYjkK3tSlgXFQukjgDNYh3XqbcUVrVtaIqN8NrlGziIZtuyAU/2AFVvJXfqELPE1zWTuJPWljBYKRDjdd+JWrHnWY/jNYHFILM4Mxv7VuF61H8rgrRYpOjfNtmoE/DJouAEPGYXFCKniVKnokBz4sIay2f5oqHFUfAa7au3SK3JiymjT8yQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EejxskfV; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=lcJkEDBD; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=CK7uQmx7;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EejxskfV;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=lcJkEDBD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=117.135.210.3; helo=m16.mail.163.com; envelope-from=haoxiang_li2024@163.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1225 seconds by postgrey-1.37 at boromir; Thu, 04 Dec 2025 21:52:37 AEDT
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dMWYd48Xmz2xFn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Dec 2025 21:52:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=oO
-	bGAmjdi3JvAty33o5ujX20oFjqkuDLoWzF8n+fhio=; b=CK7uQmx7goPzoD/MiE
-	tDBXU7gEFOEACEFRZYgWqstqOaA2sLL0iRnpVLxSirNbIjCB22s8YR+g0qhHqM7E
-	EBj1J8GFfsde7zG9lf1Qfu+q19ANLxGJKxs5lNT46Y5UT3Drg/SXj1iLUxbsUfyh
-	eF8cQXHX0bMhLV/4KJV6x9dls=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wAXcVyBYDFph89sEg--.16629S4;
-	Thu, 04 Dec 2025 18:20:50 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	haoxiang_li2024@163.com,
-	kay.sievers@vrfy.org,
-	gregkh@suse.de
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] powerpc: cell: Fix a reference leak bug in create_spu()
-Date: Thu,  4 Dec 2025 18:20:47 +0800
-Message-Id: <20251204102047.85545-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dMWT366T9z2xC3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Dec 2025 21:48:39 +1100 (AEDT)
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1764845305;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zsR3r9aqDhGcgbcWiFA4n+1mhNVg/YnZy7yLS/c5SpM=;
+	b=EejxskfV2zM6m+UtiD8RINAbnMrJ7dtxXkeHpywGNM6m4W2dYnZtHK7AOqye20+lPVNNlN
+	CE3STjvHuQl85JhgZQgYEjkPZkmjL4ofMl6t1D3/wWfrc/leuHiuaCwAvMtF2z+bRhOZZB
+	w2hAxCZjC3fKc8HRJ5qqpasxfooRuk6P7e25U3UFIcq3oEw41EgJWF0lYcMGOUFZHdnpI6
+	+LtL8ZAGXjTOuS/5NVryl3WNOxXs3K9z+salJqbX7GZxvxORHz9X9pFQY+Y4HHKoHlZ6g2
+	Wj02SUud7RA3ltPpQkx1zMX1dX+6FJwCSDYRU9u0TMiNwoaGIpXGXIR5fu2Kgw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1764845305;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zsR3r9aqDhGcgbcWiFA4n+1mhNVg/YnZy7yLS/c5SpM=;
+	b=lcJkEDBDEt7ndcVmwzMSrOZNHL3WnvWmOvSoGBJS7YSuyWzPhq+LFFk6MgrrvlOwDOkI5D
+	qfOfXXf5H1tFSvCQ==
+To: Nilay Shroff <nilay@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ npiggin@gmail.com, christophe.leroy@csgroup.eu, tglx@linutronix.de,
+ maz@kernel.org, gautam@linux.ibm.com, Gregory Joyce <gjoyce@ibm.com>
+Subject: Re: [bug report] powerpc: per device MSI irq domain
+In-Reply-To: <6af2c4c2-97f6-4758-be33-256638ef39e5@linux.ibm.com>
+References: <6af2c4c2-97f6-4758-be33-256638ef39e5@linux.ibm.com>
+Date: Thu, 04 Dec 2025 11:48:24 +0100
+Message-ID: <87qztawmiv.fsf@yellow.woof>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,47 +73,36 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXcVyBYDFph89sEg--.16629S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7JrWDAr43GFyruFWfZFW3trb_yoWDGwc_Kw
-	1xu3WDWr48Grs2vrnIya4fXr1UAws2gr48Kw4Iqa17Jay5Xan0gr4fZFW3GF13Wa1Ikrsx
-	JF4kGF9rAa4S9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRMxR67UUUUU==
-X-Originating-IP: [36.112.3.223]
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbCxgLeTWkxYIJyvAAA3j
-X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS,UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-spu_create_dev() calls device_register(), if it fails, put_device()
-is required to drop the device reference.
+Hi Nilay,
 
-Fixes: 8a25a2fd126c ("cpu: convert 'cpu' and 'machinecheck' sysdev_class to a regular subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- arch/powerpc/platforms/cell/spu_base.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Nilay Shroff <nilay@linux.ibm.com> writes:
+> I have been using an NVMe disk on my PowerPC system that supports up to
+> 129 MSI-X interrupt vectors. Everything worked fine until Linux kernel
+> v6.18, after which the NVMe driver stopped detecting the disk because
+> the driver probe now fails.
+>
+> After further investigation, I found that the probe failure in v6.18
+> occurs during PCI/MSI-X vector allocation. A git bisect identified
+> commit daaa574aba6f (=E2=80=9Cpowerpc/pseries/msi: Switch to msi_create_p=
+arent_
+> irq_domain()=E2=80=9D) as the first bad commit.
 
-diff --git a/arch/powerpc/platforms/cell/spu_base.c b/arch/powerpc/platforms/cell/spu_base.c
-index 2c07387201d0..18145142d3ac 100644
---- a/arch/powerpc/platforms/cell/spu_base.c
-+++ b/arch/powerpc/platforms/cell/spu_base.c
-@@ -581,8 +581,10 @@ static int __init create_spu(void *data)
- 		goto out_destroy;
- 
- 	ret = spu_create_dev(spu);
--	if (ret)
-+	if (ret) {
-+		put_device(&spu->dev);
- 		goto out_free_irqs;
-+	}
- 
- 	mutex_lock(&cbe_spu_info[spu->node].list_mutex);
- 	list_add(&spu->cbe_list, &cbe_spu_info[spu->node].spus);
--- 
-2.25.1
+Thanks for the report. I can (kind of) reproduce the problem with QEMU.
 
+I think moving rtas_prepare_msi_irqs() into pseries_irq_domain_alloc()
+should resolve the problem. But I'm not sure because I don't understand
+how RTAS works.
+
+Does IBM have some documentation describing the RTAS API? I failed to
+google it.
+
+Best regards,
+Nam
 
