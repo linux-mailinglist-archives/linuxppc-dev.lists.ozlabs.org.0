@@ -1,49 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14651-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14662-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DC3CA7E05
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 05 Dec 2025 15:01:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9C0DCA9618
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 05 Dec 2025 22:22:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dNCjB1bYQz2xrk;
-	Sat, 06 Dec 2025 01:01:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dNPV11Dqqz2xKh;
+	Sat, 06 Dec 2025 08:22:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764943294;
-	cv=none; b=FAb5HOMuo/tnnWMmtAJkCcJQbCnyFqdazUbkj4M2vInFXFq5gBWeIuAPY81FMqIUY0NUIquzCKbh2Wge9RtbbKInI3abD4KHSLr2Oea+c+fNPiRo3uOoLqim9ShYt4X8iFeXetniYZ1Hjxk6Fq2DGzOJjT/F+0dvMaye84eQ0n9umOYQrBUsxaisuyOuoYzbJzxJRiuBq3K3Q7+TzEc1PFzhPpuFyF04rFO5t3o8ibTmtsxluYku2Es5Lx3NkInem+0ec6QwX3mJ8OJP32nkw7THXz3zfPrZslhIw4G2axcWHpjbJZV29L+GlUyld3nf43KuiF/YsAAZ+vmg2H899g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764943363;
+	cv=none; b=fkl24mQwEMzGLo+D0cAqr/nv5MW5HlbgMJ8ArNMUwuJrQVeD74jZH/yGbk2/Lox1JDKa1qodB6HX3iHaUd7dhZl35dVVPdaZbK/FRRpbLX9biB2lD6WOWpE6FRgdSaiUci6pd2k6DyrSu5eLk2cGPlXjIH5gHkDbga7f/x5dej2LIAygt+0M6NY6mAxrjxizWMKdVajBrcCVrPsuCuxyIQ2pCvn3nPuRJ79Q1Ni6awIyttD9zMR/zodAvWehZI2Dtix7q/bRKXbXEgESg2qKQAknc5BcKjgiQyrqnn2yGACjFxw+f1JGHEMEJBuvC5LnMpb74zj66QMg72+PRBgkTQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764943294; c=relaxed/relaxed;
-	bh=2Ofd1u2v8csF5qiWqr2Ez4YDbmnVD+zIlcrT0RswdoE=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=h7/JJkeQ4dKt7W4FjeWr8DD73+celJ/6UKDihye1u+R6TWyUC9JkNb98M8dAG9jlWsvDAqSrCkw8fDINbaAqcnBNooiKuu9D5hSJa1PxSnRY5zoeVXvFARJ1kioFbEX/fOuwX/pswTS/NPiiW4aHT8sbKnqOaHJZEM1SukhVXUQk4kn/SmO1lxDNaWmhoYCfmz2eJjla2Cz+PKP+Ib2VLFXXYs0jz4cXyF5yJEaQ1G+0KAg8KB0+zeBf3Nqr/JxYjEEoMwiCGyF9zmg9JEL+iGQeNPWTpT3gdOSOCKTrucgx2c5f8FODQfN4/wp4pRD6KVDRJQ1vPR85selNSNfPvg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VyDLLfHv; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1764943363; c=relaxed/relaxed;
+	bh=p2H2VHNSrBbxX195Ji6nHe5n+GM0W17tCpeJzOTt7Ig=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=S/o6e8HPL8YQDrH/JGOE48CxOAhhboo92i2pKqf8xrbxwhj9mA7yf6GMnlTo8/zXDkswXwethIbJ1sAWvz01B3rrqmOHS6p+hmmZ/J3S+rS8ZJzzG+dLQAz0HI7P82gSOfKiKKvkKmcFbbC9VYM+wM8YtfC9Dlms0ostcevep5tbfmL7Y/nFsG//zVehpEKZ0/DcZPOvlTANi+ju9HX8UPo4UfJ3mfwBR6CfKFSaziHf8elqgRqBrMicHo1AfnZlt6X75HRkgyDJR7JlgS30gWfYb1x3PNuo5dcoXRMJQld87Ml+EOliuW+RlizzSbq+GYp+DapV3ER+yTf3aP8oOw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XUnv2TaF; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=linusw@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VyDLLfHv;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XUnv2TaF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=linusw@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNCj91HYBz2xPT
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 01:01:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNCkW2GVsz2xc2
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 01:02:43 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78A864417E;
-	Fri,  5 Dec 2025 14:01:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C877C4CEF1;
-	Fri,  5 Dec 2025 14:01:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 32425601EF;
+	Fri,  5 Dec 2025 14:02:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B38C4CEF1;
+	Fri,  5 Dec 2025 14:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764943289;
-	bh=TrAgTSCpSKLsxNjx4lejjyOcT5oTXu93a4+3+YTmZ3w=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=VyDLLfHvRoVuPjT70NTIft3b3xSkl+nI6nikeo3MyRxk6zRaNPXlNBKx6Wz6WBAHc
-	 Zkk5yZZCTPhHBbMq6CG/aPlmM14FHSik+eIpZLtil7LtvDc4tNtYkmiR/WsK8xylI6
-	 eUQQO6/l5pZQArBOMRHQTaUktho4y8UCpIJdih7wkXBc8Fo5W+/jE2GutZJDp3+6mu
-	 kudUyP63pxf42kOpdfCd1o6oiIxP2r9dNiAzxbTV5AoJPYiTBI2OmnZPOMNbAwRZY8
-	 e1JgXAEyT/SJ7nAPf5X2oqQFhplzBWf8D8KozHFyV93+IlDFJ1t7CJnhoP/IA3PrDG
-	 gypy4Cv4CLZJQ==
-Content-Type: multipart/mixed; boundary="===============8834443675323528757=="
+	s=k20201202; t=1764943360;
+	bh=SKw64R/PJq7cCRC8RMbyoOVOZqDH8JcOsKxQ411mFQI=;
+	h=From:Date:Subject:To:Cc:From;
+	b=XUnv2TaFcfDkR2/znGkxkegOpXX7MfUc4E5Z+s+YdfbjGVxedvobI8Sg8XTL3uFkZ
+	 WIHxgJ14UZCPCiTGC7mKkEeBcWEhyzgIBWBMSRfjVDQ92CZEhk0TD2oZ5dvNgxJPwn
+	 IWIHI4uOG8Qbs5HgX9QhWTe5hcfYEp6Kg7x+ZvGABtnihv9AUjbwJogYedLh6X0dZE
+	 QvEuO2oKybtTgz1zgX+6oTbl4ABo8ohhay/OEKG36mP3rkGlhFp5zvboXJFkLf0wnp
+	 YYH7J5QJhblSGAqQdtrDooe4dIAjrjc0gzeNKlNBD9+0nI8UNo/ETlbf59nhanPLEY
+	 7OMowbMdFf8Uw==
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 05 Dec 2025 15:02:34 +0100
+Subject: [PATCH] powerpc/g5: Enable all windfarms by default
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,93 +58,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <cc13dfdbbcdde12aeebc6970e354b8dbbb81454f063a7861e54fbde1b510dc06@mail.kernel.org>
-In-Reply-To: <1957532cd4b87b450a2efc0e9d732f448bcf9706.1764930425.git.skb99@linux.ibm.com>
-References: <1957532cd4b87b450a2efc0e9d732f448bcf9706.1764930425.git.skb99@linux.ibm.com>
-Subject: Re: [PATCH bpf-next v3 1/2] powerpc64/bpf: Support internal-only MOV instruction to resolve per-CPU addrs
-From: bot+bpf-ci@kernel.org
-To: skb99@linux.ibm.com,bpf@vger.kernel.org,linuxppc-dev@lists.ozlabs.org,linux-kernel@vger.kernel.org
-Cc: hbathini@linux.ibm.com,sachinpb@linux.ibm.com,venkat88@linux.ibm.com,andrii@kernel.org,eddyz87@gmail.com,ast@kernel.org,daniel@iogearbox.net,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,john.fastabend@gmail.com,kpsingh@kernel.org,sdf@fomichev.me,haoluo@google.com,jolsa@kernel.org,christophe.leroy@csgroup.eu,naveen@kernel.org,maddy@linux.ibm.com,mpe@ellerman.id.au,npiggin@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Fri,  5 Dec 2025 14:01:27 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251205-powermac-g5-config-v1-1-8609aa97c1c0@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avIrBtIy6iuEi3EJptFKgoVSHdPW
+ r7F/wUyJaYMsyiQ6OLMwVfIRoA9jHeEvFWDapWWqtUYw03pNBadRhv8zg6HSaqRpm7TYw81jIl
+ 2fv7psr7vBxTTdShkAAAA
+X-Change-ID: 20251205-powermac-g5-config-69128e93d584
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+ Linus Walleij <linusw@kernel.org>
+X-Mailer: b4 0.14.3
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
---===============8834443675323528757==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The G5 defconfig is clearly intended for the G5 Powermac
+series, and that should enable all the available
+windfarm drivers, or the machine will overheat a short
+while after booting and shut itself down, which is
+annoying.
 
-> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-> index 5e976730b2f5..d53e9cd7563f 100644
-> --- a/arch/powerpc/net/bpf_jit_comp.c
-> +++ b/arch/powerpc/net/bpf_jit_comp.c
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+ arch/powerpc/configs/g5_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-[ ... ]
-
-> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-> index 1fe37128c876..816f9d7d9e5d 100644
-> --- a/arch/powerpc/net/bpf_jit_comp64.c
-> +++ b/arch/powerpc/net/bpf_jit_comp64.c
-> @@ -918,6 +918,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
->  	case BPF_ALU | BPF_MOV | BPF_X: /* (u32) dst = src */
->  	case BPF_ALU64 | BPF_MOV | BPF_X: /* dst = src */
->
-> +		if (insn_is_mov_percpu_addr(&insn[i])) {
-> +			if (IS_ENABLED(CONFIG_SMP)) {
-> +				EMIT(PPC_RAW_LD(tmp1_reg, _R13, offsetof(struct paca_struct, data_offset)));
-> +				EMIT(PPC_RAW_ADD(dst_reg, src_reg, tmp1_reg));
-> +			} else if (src_reg != dst_reg) {
-> +				EMIT(PPC_RAW_MR(dst_reg, src_reg));
-> +			}
-> +		}
-> +
-
-Does this code need a break statement here? After handling the per-CPU
-MOV instruction, execution falls through to the subsequent MOV handling
-code. In the common case where dst_reg != src_reg with CONFIG_SMP
-enabled, the code first emits ADD to compute the per-CPU address in
-dst_reg, but then continues to the final else-if in this case statement
-which emits MR dst_reg, src_reg, overwriting the computed address.
-
-Other architectures (x86 and arm64) use break after their per-CPU
-instruction handling in bpf_jit_build_body()->BPF_MOV case.
-
->  		if (insn_is_cast_user(&insn[i])) {
->  			EMIT(PPC_RAW_RLDICL_DOT(tmp1_reg, src_reg, 0, 32));
->  			PPC_LI64(dst_reg, (ctx->user_vm_start & 0xffffffff00000000UL));
->  			PPC_BCC_SHORT(COND_EQ, (ctx->idx + 2) * 4);
->  			EMIT(PPC_RAW_OR(tmp1_reg, dst_reg, tmp1_reg));
->  			EMIT(PPC_RAW_MR(dst_reg, tmp1_reg));
->  			break;
->  		}
->
->  		if (imm == 1) {
->  			/* special mov32 for zext */
->  			EMIT(PPC_RAW_RLWINM(dst_reg, dst_reg, 0, 0, 31));
->  			break;
->  		} else if (off == 8) {
->  			EMIT(PPC_RAW_EXTSB(dst_reg, src_reg));
->  		} else if (off == 16) {
->  			EMIT(PPC_RAW_EXTSH(dst_reg, src_reg));
->  		} else if (off == 32) {
->  			EMIT(PPC_RAW_EXTSW(dst_reg, src_reg));
->  		} else if (dst_reg != src_reg)
-                        ^^^^
-			This condition can be true for per-CPU instructions
-			(which have off == -1), causing the computed per-CPU
-			address to be overwritten with src_reg.
-
->  			EMIT(PPC_RAW_MR(dst_reg, src_reg));
->  		goto bpf_alu32_trunc;
-
+diff --git a/arch/powerpc/configs/g5_defconfig b/arch/powerpc/configs/g5_defconfig
+index 428f17b45513..2fe8ca266b5f 100644
+--- a/arch/powerpc/configs/g5_defconfig
++++ b/arch/powerpc/configs/g5_defconfig
+@@ -85,6 +85,8 @@ CONFIG_PMAC_SMU=y
+ CONFIG_MAC_EMUMOUSEBTN=y
+ CONFIG_WINDFARM=y
+ CONFIG_WINDFARM_PM81=y
++CONFIG_WINDFARM_PM72=y
++CONFIG_WINDFARM_RM31=y
+ CONFIG_WINDFARM_PM91=y
+ CONFIG_WINDFARM_PM112=y
+ CONFIG_WINDFARM_PM121=y
 
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+base-commit: 559e608c46553c107dbba19dae0854af7b219400
+change-id: 20251205-powermac-g5-config-69128e93d584
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/19964922727
+Best regards,
+-- 
+Linus Walleij <linusw@kernel.org>
 
---===============8834443675323528757==--
 
