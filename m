@@ -1,35 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-14642-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14643-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23380CA7AC6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 05 Dec 2025 14:01:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48519CA7CD4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 05 Dec 2025 14:41:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dNBMk5Gjmz2xs1;
-	Sat, 06 Dec 2025 00:01:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dNCG64c8mz2xc2;
+	Sat, 06 Dec 2025 00:41:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764939682;
-	cv=none; b=c04RhwO3/SZDm3FkOpQqwXH9f8id2TlWWhe6l890H49H5L4VTQMFQCeY0/tVbXS3IKeENktEMdliemvvEKiuEvz4PGh5rML0w9bEDbjO9w4XzikNEKFfIJKaGpvYtekUNqdBgUkrqJXnRnOWRP9pia/Uj+Fbz0FMog/Ighi8ft3ek/S8j3J1T0omSjuqKeFt+8x7n52Y0DbafJsMINfiNsZHA07heBl1BmnAAZC92tATnF7ZZ1MhWCdofw/pXvey18MMdt4kOqXZS4yV7QZfvYJflGuh68nCubLUxyXZw6Nqf7tYZCFm7oTvGRefQthkvUEK7ou2c437BJvmIFD+ig==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764942094;
+	cv=none; b=ejkosALK+B66kSsCMoRGMn64oAzAVtyrt8Ext21R+ncVA3ojcNYVq9eGdFj2NLP+Rr1aJbiMQWrr4bz293/u07Fc7E1ISNk9L0knUnErNHs5dnFEgsdMcRrFO9aED8opgEdu0KhUKJuG/GmcVMs+nXty7iq9W4w/OYU59eJmE/zVydB+FKfB71986AI7YCjAl6i43wf8HUw0/XYx5NyqVxvu+GWpDE9ntfMqG6YqrQErlUieDIyJyVzhdcNBZ8pxxUIiYuTUmtqgR1e8zenlcD3JgjGQtmAigpvwGvqi/z2x067ZNNsBv1iFfXtQvsSkQGMNKlNoAyjYLuUcjc5gWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764939682; c=relaxed/relaxed;
-	bh=O/A7vZpgIBnKA8LnxsqL7KkP6nyGfOKKNJo36CMVlRE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gOlRZj+kc9DA8iNHWQ+11EbCTcVCM6LXx18I5SNkWYvfFK2Q3je5KbCqVke3LyCH5zXHWuMKFjrRSMymoXNv2B51MU8jYPvHoUevpR5khdWrMuETlVz/BeEJOGyLe+wwJmgtjY4NVGG3DaZDSBs5YUZG9GmIrFW2r5Xm/cZe1yXI8X3+Tz1VnRrBByUaZfjzY4BVW3YyauQZKaW8qP1GwC2InXmuJoRjUCSCPztmuf2uGzs7wY5jMvpUX3ojATvI9vDrdvsjt/BbzGZfRVFUN3z6hioTBDqzTI5rMUljGuIznfEmZ1vdYbyZqUb6MmEi38itQouEf86wGiqBJymXTA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dNBMh70HYz2xP8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 00:01:20 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A482F19F6;
-	Fri,  5 Dec 2025 05:00:42 -0800 (PST)
-Received: from [10.44.160.68] (e126510-lin.lund.arm.com [10.44.160.68])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 164973F59E;
-	Fri,  5 Dec 2025 05:00:39 -0800 (PST)
-Message-ID: <f07f5f70-eb4c-4e45-b7d6-96c8455255d2@arm.com>
-Date: Fri, 5 Dec 2025 14:00:37 +0100
+	t=1764942094; c=relaxed/relaxed;
+	bh=YLhyL3IvXOaOUXg9Qsq3itltYFrij1c4ehNNTcsHjvA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nw/d/FYQQPhsEHrBYTQitwBjOkgJnpfSclmu7uCvnzJamrZli9/HI0MgzuuW4kdlzw3FmQbcTSR19uOOfp3KXoEtwpHQ/G9rETgMQ58W4xWHQ7giQkojbcQwSVwIv7ilzOU/OL3kuFxL5VWKAiHRyAnY3MHQ5EqpnFT8hhEqZdYrCKAd9RLQ8pSwZPlI7v/GIWGga3vtuKrnPE3fVNFXj09jrTTmUnq3hCCAI0RNjBr+Z+oJQybyEsNG9EOl/Zl+0eQqalqRDoq2E7lKTQdOawI160YRChJ5X1i9VuFNcwxucfXFHtIMbqQmNlW+s2+pymDZIeBzfZqIqyLr6KWeCQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A4kk7Zeb; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A4kk7Zeb;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNCG46cMwz2xGY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 00:41:31 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B5Ajs1s013242;
+	Fri, 5 Dec 2025 13:40:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=YLhyL3IvXOaOUXg9Qsq3itltYFri
+	j1c4ehNNTcsHjvA=; b=A4kk7ZebKzNXRfmEBOMBjEO3ZS3qgoNJ1DueH6S1FrM2
+	uyPz4+yWGNS8lk4IWotk89ag303O04E3Dz7HLufR91v7IvfNpnQyRajIsrxxRpgo
+	oeZckoj0CXjO1a8Mc4AlCO0IQKcaMWyi7BTbm6THHnCy9EAyaGF1kSA87FNzUzq1
+	Sn88fadNfylNpv42hOcXIzGPIlFO3Fn1B9RcQxthzTcVfMFKIXAl/v8rQ9DXW6ij
+	DydA2aOwmvF8md9LBwSdR5RnTlvw+5XiLOsswBRoNdP2iMjJdsEeO5r/Dwj6KSpo
+	X9abK23DWmzliSRR4VgogCFHBldHcDyQ60QufY4J5w==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqq8v5795-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Dec 2025 13:40:52 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5B5DZ4jx005493;
+	Fri, 5 Dec 2025 13:40:51 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqq8v5792-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Dec 2025 13:40:51 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B5AP3Qj019133;
+	Fri, 5 Dec 2025 13:40:50 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4arbhydhf7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Dec 2025 13:40:50 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B5DekJb38666746
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 5 Dec 2025 13:40:46 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AD4AD2004B;
+	Fri,  5 Dec 2025 13:40:46 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 63E1920043;
+	Fri,  5 Dec 2025 13:40:42 +0000 (GMT)
+Received: from li-621bac4c-27c7-11b2-a85c-c2bf7c4b3c07.ibm.com.com (unknown [9.43.65.165])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  5 Dec 2025 13:40:42 +0000 (GMT)
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+To: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
+        andrii@kernel.org, eddyz87@gmail.com, ast@kernel.org,
+        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com
+Subject: [PATCH bpf-next v3 0/2] powerpc64/bpf: Inline helper in powerpc JIT
+Date: Fri,  5 Dec 2025 19:10:39 +0530
+Message-ID: <cover.1764930425.git.skb99@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -43,70 +96,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/12] Nesting support for lazy MMU mode
-To: Venkat <venkat88@linux.ibm.com>
-Cc: linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251124132228.622678-1-kevin.brodsky@arm.com>
- <94889730-1AEF-458F-B623-04092C0D6819@linux.ibm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <94889730-1AEF-458F-B623-04092C0D6819@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: VQYKML7JH8kUl66KVGxABaAeI6Y16Ig-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDAwOCBTYWx0ZWRfX+K90K2A2vcXV
+ KrwRZ+uYv9l4apOqOKYSfUK3S5cDrXDKwKnQv+kB4MsGPym++JcES7egXawdhnO5KYkpa6hVW+z
+ JyugvBlKtTM4RPaHXrSHI8u5IA76uVUqSJB/YWIXqqNziJ2dRKX+TgwPDiemRduQxPmd2HtdYbX
+ D9ZU7j5pPwuJP4hRqblKMeopRXlk22JLJiqlTua0k7thMheNBMpQsw0Logk67IzVeo3bzs2Wq3h
+ g9KQcUmc+urPXVP1dRlozkwnFmHAT8I6xewc2281/GNGbz0F6ymvgdjndBfA7uymAaHtUUqzmy4
+ 7DSBpf7lmr8KV92ffhsbxkUXnxhI0qoaTUTXNmN7Z+4BvsZr0j9Mcv273hVooseStu2I1vhQFwj
+ bg+YNaE+YVziVVa6Gg0pd2On8vUNIQ==
+X-Authority-Analysis: v=2.4 cv=Scz6t/Ru c=1 sm=1 tr=0 ts=6932e0e4 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=u2jAAMxGmqqbKrY86BEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: ZeaUm8ft7PYqmLoM4K0n4FcQEgNctKYM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-05_04,2025-12-04_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 spamscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511290008
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 03/12/2025 17:08, Venkat wrote:
-> [...]
-> Tested this patch series by applying on top of mm-unstable, on both HASH and RADIX MMU, and all tests are passed on both MMU’s.
->
-> Ran: cache_shape, copyloops, mm from linux source, selftests/powerpc/ and ran memory-hotplug from selftests/. Also ran below tests from avocado misc-test repo.
->
-> Link to repo: https://github.com/avocado-framework-tests/avocado-misc-tests
->
-> avocado-misc-tests/memory/stutter.py
-> avocado-misc-tests/memory/eatmemory.py
-> avocado-misc-tests/memory/hugepage_sanity.py
-> avocado-misc-tests/memory/fork_mem.py
-> avocado-misc-tests/memory/memory_api.py
-> avocado-misc-tests/memory/mprotect.py
-> avocado-misc-tests/memory/vatest.py avocado-misc-tests/memory/vatest.py.data/vatest.yaml
-> avocado-misc-tests/memory/transparent_hugepages.py
-> avocado-misc-tests/memory/transparent_hugepages_swapping.py
-> avocado-misc-tests/memory/transparent_hugepages_defrag.py
-> avocado-misc-tests/memory/ksm_poison.py
->
-> If its good enough, please add below tag for PowerPC changes.
->
-> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+This series add support for internal only per-CPU instructions,
+inlines the bpf_get_smp_processor_id() and bpf_get_current_task()
+helper calls for powerpc BPF JIT.
 
-Many thanks for the testing! Will add your tag to patch 1, 3 and 10.
+Changes since v2:
+* Collected Reviewed-by tag.
+* Inlined bpf_get_current_task/btf().
+* Fixed addressing of src_reg and BPF_REG_0. (Christophe) 
+* Fixed condition for non smp case as suggested by Christophe.
 
-- Kevin
+v2: https://lore.kernel.org/all/cover.1762422548.git.skb99@linux.ibm.com/
+
+Changes since v1:
+* Addressed Christophe's comments.
+* Inlined bpf_get_current_task() as well.
+
+v1: https://lore.kernel.org/all/20250311160955.825647-1-skb99@linux.ibm.com/ 
+Saket Kumar Bhaskar (2):
+  powerpc64/bpf: Support internal-only MOV instruction to resolve
+    per-CPU addrs
+  powerpc64/bpf: Inline bpf_get_smp_processor_id() and
+    bpf_get_current_task/_btf()
+
+ arch/powerpc/net/bpf_jit_comp.c   | 17 +++++++++++++++++
+ arch/powerpc/net/bpf_jit_comp64.c | 20 ++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
+
+-- 
+2.51.0
+
 
