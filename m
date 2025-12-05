@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14652-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14653-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA53CA84E6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 05 Dec 2025 17:04:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A368BCA84FE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 05 Dec 2025 17:07:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dNGQf1pmpz2y7b;
-	Sat, 06 Dec 2025 03:04:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dNGVZ6yHyz2y7b;
+	Sat, 06 Dec 2025 03:07:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764950650;
-	cv=none; b=W0JAHTJZu6dmLnwvmpcwjcjbJqGqf5mRD6BdCaIggzqlAMimyGJ+n9zCSWrcYyrWfuuvDisMzcA6BE8NlaA/jUM8wx+Ofye60tR451os7buPtHupeJfYW8kP5kFXxr0wxlVhIQvJ+DW1c8GzF0WHSXv6r5Ad5KZUTMk2E96fFcpLhwVODXaLq5tuA8vb7q/KzufpDitCC3lPfsXp8+izZd0qM86Bssf2Fa+y1yPJJ3XFAZSmz6yp5TGlCnplkqMXaEBi30endaWinWp9Laxn/HN2RedCqU6ejokuQIpLhUNcIish339gHMWMWRZglPaldditRYd6GKHso7GTSHdgKw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764950854;
+	cv=none; b=EKa5Ic2HJpGxatWdfCRKe+DPyWi1+QPsTYCNbYBeyBQs5nu89Cf9hw/v4v3l8W8zF1zgDpgaQIPCHY3Xy6eN3vN0VIMEuKP6c0BFD8hmQX17gzvRZhgxGkqdAAUlCVGVCCTvGZ8y85j6RduG5+47PLzw3oBLKTgsBvEt7aQVCCXi2cnNKgy8bURUvkcferqQVP6ExsHF2Gq/116OZ9ICSqBFPtvdENiswNxXBGAhmbf/WGM+/vAepIpQ3WJSb+Z/U9xLMctkSOIdlunJiKtFyUvps/U8+7Hwj6xlaGcfs/tovyWIj7XjJYsZQlKE4rQOLxhFcOs4BF0hdOyRRmFkQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764950650; c=relaxed/relaxed;
-	bh=O2XwwJOH6ID2KTGfUPig7IAOjY7ik8syIuFJLCrFZsM=;
+	t=1764950854; c=relaxed/relaxed;
+	bh=ckQBtq+4Y7vdp+TM9yy2DQcYJ6E6z7FHH/8z11ZMWKE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=btyu5e8IHqV5CZEZJ+x93B4Qa3QyNmnl9uh2++MY9oG9G1PQZfGNvjixBX/oAruJmySEedJLr5CcMjZcjiti7pSVYU3hevmpKUmmF4hJYVDO3sw9pl2srToHxNpJU42g0gNn4vKrl9zkONO8TAuhKRWUed1QhZm6SsMHXBOQhbY9XUa6+NezgVC3wmPw/fk671W/gSFcMjPbAgnEZIzzbRfyAoo+yN3B9xSJ46YtN63SH7x7JAhbD3LHLl0MJoxgAq0zuuKZGskTQ4WwNUNBNwhMansTN8ieSpBFAuWhlHwKpE8Rv/nr1jWq68XJYcP9mcOwsNUmt1AEORnnaTne2A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=XZT8TMJL; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=SINjb2RWXNv9SSvfLx93odPnBVCDTzLhOPcqq9RNzQpncx9OLVs3v0bHkb4t+aJ9Ysk2eV+Ipcb4MrL8wDqaO/lBpVyMi9C8FfTBJHre5wFcDoURY+LtbN3HEj6iF2e2habM2s4LB4aZ1CEUEw55/uc3M8FMSoktkWrNUhxSEdKt7+6Nh3sTRKZuGc1bdYNYRhhtoWkn+eNwTYOEbVuCZq+HrzusQY/C4wHOxGDXNJ0yx//ZJYh4YatpqPgUQ7oKzkMjY5W0sNoNMvBIewADgjQLSLKO9+QkuBsMbNBx6tzm6JjBdvKJYTQB4NBzpyTb0mZLjBv9577rpaBoyUh2Rw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=oZ/A7dKF; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=XZT8TMJL;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=oZ/A7dKF;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNGQW1Nqnz2xrk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 03:03:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNGVZ0y7wz2xrk
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 03:07:34 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=O2XwwJOH6ID2KTGfUPig7IAOjY7ik8syIuFJLCrFZsM=; b=XZT8TMJLJlodKVHuJqbR8fDWBb
-	wmDBIUFBCQLzqfbfdnqTkJIuhgpGH2enuLja4p45aH+xSleZBwjjTePR3hejPKpQacwaZS37DzG3P
-	VLyWXI6bgG2FY2KRybG6Z4IWQslyQX0CSGLlqdY3c9mXk6raOpsEuAL1v59tglQ2OKAt4ABe7iSlO
-	oc5k1e5mjcY1lcYct/OOu9/oI3M8cuTqciEC1E3tXfK2dC65okBPjd8TU7u885fj6l4+I0z+6l/KM
-	iv1UiZJyKvzLtm5RSGBkg2Jh3HJAneUjCuTaPMharkDFNrCNcvycNr3mIhO7ngMlkAbSEnjbR2xSd
-	GiDVtexg==;
+	bh=ckQBtq+4Y7vdp+TM9yy2DQcYJ6E6z7FHH/8z11ZMWKE=; b=oZ/A7dKFntf+0XHPiw4bQOKQCp
+	ukDRjqI9iCRiV6BIFrOBiIXibk1yOtCfzEfsKxmKLRz0/aBv7RNJnbvASUF+JyeAzqAgp+60VwHAk
+	9+qJWxLNsJCl9jaL+Ti25jPwQvnr5biHgTAb9mDJvjLBNW/3KcDaIM1VV5RrZr7znV1++/3M2jr0s
+	j/+hhvWToyVNloYubOQbb46IckrqusIVVQPfZj2UUMUGJ1xZftHstw+op5W25ZpSLPh8HNVKsM/fm
+	pR9nHEVh2+MtOJV9bJlaQ5ihkJCOxGyNPco7U7Vj3OWFruBfr748iYyveLdzyg5e4dhJ7wXqVtI4F
+	eOkQ3HEQ==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vRYHH-00000005uqU-34rg;
-	Fri, 05 Dec 2025 16:03:27 +0000
+	id 1vRYL5-00000005v8L-3UD5;
+	Fri, 05 Dec 2025 16:07:23 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 9CE533003C4; Fri, 05 Dec 2025 17:03:26 +0100 (CET)
-Date: Fri, 5 Dec 2025 17:03:26 +0100
+	id 626F4300499; Fri, 05 Dec 2025 17:07:23 +0100 (CET)
+Date: Fri, 5 Dec 2025 17:07:23 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: Srikar Dronamraju <srikar@linux.ibm.com>
 Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
@@ -66,7 +66,7 @@ Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
 	Yicong Yang <yangyicong@hisilicon.com>,
 	Ilya Leoshkevich <iii@linux.ibm.com>
 Subject: Re: [PATCH 08/17] sched/core: Implement CPU soft offline/online
-Message-ID: <20251205160326.GF2528459@noisy.programming.kicks-ass.net>
+Message-ID: <20251205160723.GG2528459@noisy.programming.kicks-ass.net>
 References: <20251204175405.1511340-1-srikar@linux.ibm.com>
  <20251204175405.1511340-9-srikar@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -91,101 +91,32 @@ X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On Thu, Dec 04, 2025 at 11:23:56PM +0530, Srikar Dronamraju wrote:
+> Scheduler already supports CPU online/offline. However for cases where
+> scheduler has to offline a CPU temporarily, the online/offline cost is
+> too high. Hence here is an attempt to come-up with soft-offline that
+> almost looks similar to offline without actually having to do the
+> full-offline. Since CPUs are not to be used temporarily for a short
+> duration, they will continue to be part of the CPU topology.
+> 
+> In the soft-offline, CPU will be marked as inactive, i.e removed from
+> the cpu_active_mask, CPUs capacity would be reduced and non-pinned tasks
+> would be migrated out of the CPU's runqueue.
+> 
+> Similarly when onlined, CPU will be remarked as active, i.e. added to
+> cpu_active_mask, CPUs capacity would be restored.
+> 
+> Soft-offline is almost similar as 1st step of offline except rebuilding
+> the sched-domains. Since the other steps are not done including
+> rebuilding the sched-domain, the overhead of soft-offline would be less
+> compared to regular offline. A new cpumask is used to indicate
+> soft-offline is in progress and hence skips rebuilding the
+> sched-domains.
 
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index 89efff1e1ead..f66fd1e925b0 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -8177,13 +8177,16 @@ static void balance_push(struct rq *rq)
->  	 * Only active while going offline and when invoked on the outgoing
->  	 * CPU.
->  	 */
-> -	if (!cpu_dying(rq->cpu) || rq != this_rq())
-> +	if (cpu_active(rq->cpu) || rq != this_rq())
->  		return;
->  
->  	/*
-> -	 * Ensure the thing is persistent until balance_push_set(.on = false);
-> +	 * Unless soft-offline, Ensure the thing is persistent until
-> +	 * balance_push_set(.on = false); In case of soft-offline, just
-> +	 * enough to push current non-pinned tasks out.
->  	 */
-> -	rq->balance_callback = &balance_push_callback;
-> +	if (cpu_dying(rq->cpu) || rq->nr_running)
-> +		rq->balance_callback = &balance_push_callback;
->  
->  	/*
->  	 * Both the cpu-hotplug and stop task are in this case and are
-> @@ -8392,6 +8395,8 @@ static inline void sched_smt_present_dec(int cpu)
->  #endif
->  }
->  
-> +static struct cpumask cpu_softoffline_mask;
-> +
->  int sched_cpu_activate(unsigned int cpu)
->  {
->  	struct rq *rq = cpu_rq(cpu);
-> @@ -8411,7 +8416,10 @@ int sched_cpu_activate(unsigned int cpu)
->  	if (sched_smp_initialized) {
->  		sched_update_numa(cpu, true);
->  		sched_domains_numa_masks_set(cpu);
-> -		cpuset_cpu_active();
-> +
-> +		/* For CPU soft-offline, dont need to rebuild sched-domains */
-> +		if (!cpumask_test_cpu(cpu, &cpu_softoffline_mask))
-> +			cpuset_cpu_active();
->  	}
->  
->  	scx_rq_activate(rq);
-> @@ -8485,7 +8493,11 @@ int sched_cpu_deactivate(unsigned int cpu)
->  		return 0;
->  
->  	sched_update_numa(cpu, false);
-> -	cpuset_cpu_inactive(cpu);
-> +
-> +	/* For CPU soft-offline, dont need to rebuild sched-domains */
-> +	if (!cpumask_test_cpu(cpu, &cpu_softoffline_mask))
-> +		cpuset_cpu_inactive(cpu);
-> +
->  	sched_domains_numa_masks_clear(cpu);
->  	return 0;
->  }
-> @@ -10928,3 +10940,25 @@ void sched_enq_and_set_task(struct sched_enq_and_set_ctx *ctx)
->  		set_next_task(rq, ctx->p);
->  }
->  #endif /* CONFIG_SCHED_CLASS_EXT */
-> +
-> +void set_cpu_softoffline(int cpu, bool soft_offline)
-> +{
-> +	struct sched_domain *sd;
-> +
-> +	if (!cpu_online(cpu))
-> +		return;
-> +
-> +	cpumask_set_cpu(cpu, &cpu_softoffline_mask);
-> +
-> +	rcu_read_lock();
-> +	for_each_domain(cpu, sd)
-> +		update_group_capacity(sd, cpu);
-> +	rcu_read_unlock();
-> +
-> +	if (soft_offline)
-> +		sched_cpu_deactivate(cpu);
-> +	else
-> +		sched_cpu_activate(cpu);
-> +
-> +	cpumask_clear_cpu(cpu, &cpu_softoffline_mask);
-> +}
+Note that your thing still very much includes the synchronize_rcu() that
+a lot of the previous 'hotplug is too slow' crowd have complained about.
 
-What happens if you then offline one of these softoffline CPUs? Doesn't
-that do sched_cpu_deactivate() again?
+So I'm taking it that your steal time thing really isn't that 'fast'.
 
-Also, the way this seems to use softoffline_mask is as a hidden argument
-to sched_cpu_{de,}activate() instead of as an actual mask.
-
-Moreover, there does not seem to be any sort of serialization vs
-concurrent set_cpu_softoffline() callers. At the very least
-update_group_capacity() would end up with indeterminate results.
-
-This all doesn't look 'robust'.
+It might be good to mention the frequency at which you expect cores to
+come and go with your setup.
 
