@@ -1,91 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-14663-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14652-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17731CA9621
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 05 Dec 2025 22:23:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA53CA84E6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 05 Dec 2025 17:04:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dNPWK1PLjz2xS5;
-	Sat, 06 Dec 2025 08:23:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dNGQf1pmpz2y7b;
+	Sat, 06 Dec 2025 03:04:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764944979;
-	cv=none; b=g5sCCASREusdxbyoaFIiaOKRf30TcjFvvRQPFem5plwXYOuGQ3AKk24R8IcXBpJzDs4l3QIPZqaE0MsFVnX85I3c9hLkVF99HJTT8958nH3Kg291ww6Y47rpUK1q//DopU52w9Ijaxuur1TgcyS8caqWVbVwlbOECms/a+APoE78ZG7hF8TE45pH7IqHk2i7FHvejCSxMcBEfGQemtmKE0LdJxjlPzKiuAbNXkOKXhvMhdz79bkhgxnOHVq19BhQesWburOSW/j6xdGKE1bWaRHpGDaaWl/rVzfi6QVr7ddbBd3erABb3fu3q9S818uBoHpJOy/AGmQk6DHDU0+a7g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764950650;
+	cv=none; b=W0JAHTJZu6dmLnwvmpcwjcjbJqGqf5mRD6BdCaIggzqlAMimyGJ+n9zCSWrcYyrWfuuvDisMzcA6BE8NlaA/jUM8wx+Ofye60tR451os7buPtHupeJfYW8kP5kFXxr0wxlVhIQvJ+DW1c8GzF0WHSXv6r5Ad5KZUTMk2E96fFcpLhwVODXaLq5tuA8vb7q/KzufpDitCC3lPfsXp8+izZd0qM86Bssf2Fa+y1yPJJ3XFAZSmz6yp5TGlCnplkqMXaEBi30endaWinWp9Laxn/HN2RedCqU6ejokuQIpLhUNcIish339gHMWMWRZglPaldditRYd6GKHso7GTSHdgKw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764944979; c=relaxed/relaxed;
-	bh=/dXcxfSlF774i0xjufzkyQASJ8OfL3gMQTfDsWayaJE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DvmTsb0LPrtSV6tgo7tyBH4+EQieguyb+paNahFqJzlQY0fo1nZRP0LblMr28i9Jq4tLI2SuZT7wMbmn0MGBql6SeyjKecj/VppnWQAoMBP/+fGQwSL2mDmC4fC2KDy0gG7axr8nOhsv4oqqShFFhM2dvHoIXG3H8K1/74kUyy6oiHTNBPoswbY+vtgiZPcDOAb3NgmlTy2NStrt735SlFp0vDmwL9B67n+ZV0msfAwmflPAH5pPU34pbsTQCktXBj5QEWlszlX0slX2YZc9jqRgIvAnbLSZVzDp00C+wa4I+T0PRQlmFwDv8FA82tK9vhzneEhqFXqb0vRg9Nq1ew==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nejW9fuR; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=shivangu@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1764950650; c=relaxed/relaxed;
+	bh=O2XwwJOH6ID2KTGfUPig7IAOjY7ik8syIuFJLCrFZsM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=btyu5e8IHqV5CZEZJ+x93B4Qa3QyNmnl9uh2++MY9oG9G1PQZfGNvjixBX/oAruJmySEedJLr5CcMjZcjiti7pSVYU3hevmpKUmmF4hJYVDO3sw9pl2srToHxNpJU42g0gNn4vKrl9zkONO8TAuhKRWUed1QhZm6SsMHXBOQhbY9XUa6+NezgVC3wmPw/fk671W/gSFcMjPbAgnEZIzzbRfyAoo+yN3B9xSJ46YtN63SH7x7JAhbD3LHLl0MJoxgAq0zuuKZGskTQ4WwNUNBNwhMansTN8ieSpBFAuWhlHwKpE8Rv/nr1jWq68XJYcP9mcOwsNUmt1AEORnnaTne2A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=XZT8TMJL; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nejW9fuR;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=XZT8TMJL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=shivangu@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNDKZ54Hyz2xGY
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 01:29:38 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B51vjHg014375;
-	Fri, 5 Dec 2025 14:29:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=/dXcxfSlF774i0xjufzkyQASJ8OfL3gMQTfDsWaya
-	JE=; b=nejW9fuRXsE40wykHd24iIiggj0f2eIM9+Lck/SdkZSrRoVJEMe4iH7SP
-	B8CX+F5D75nB2YIslef15/MtRLdCreNw4Nnly/DN04DCSbWzxoCK5d0zjZa6GHaz
-	xFDpH+wFlWz+hD8wmwIlxiSOixnp5Bo+kK83l8iSATZXVlu5IhchvpWwpMHtKmvY
-	ymHwQKF1h/Yv+jt+xIL1L5vli0l9qBN1JckWWQQ8qPDsj07eRYfFyae6gJkh7oKY
-	2hI1jmOJoYTgNIc3g1hIuu7c9Cphyf+YdJvKJZ1OXCqItd7Whg1Uw9QZGExazOKT
-	K0Vwi67pW33pfjkgyNSZihYKnTR1g==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqrh7e677-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Dec 2025 14:29:27 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5B5EADig029789;
-	Fri, 5 Dec 2025 14:29:27 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aqrh7e673-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Dec 2025 14:29:27 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B5C29Se003853;
-	Fri, 5 Dec 2025 14:29:26 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ardck5f83-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Dec 2025 14:29:26 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B5ETMuX26739088
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 5 Dec 2025 14:29:22 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AEFB12004B;
-	Fri,  5 Dec 2025 14:29:22 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9AC5D20040;
-	Fri,  5 Dec 2025 14:29:19 +0000 (GMT)
-Received: from shivang.com (unknown [9.39.16.183])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  5 Dec 2025 14:29:19 +0000 (GMT)
-From: Shivang Upadhyay <shivangu@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Cc: Shivang Upadhyay <shivangu@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Srikar Dronamraju <srikar@linux.ibm.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>,
-        "Nysal Jan K.A." <nysal@linux.ibm.com>,
-        Vishal Chourasia <vishalc@linux.ibm.com>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Sourabh Jain <sourabhjain@linux.ibm.com>
-Subject: [PATCH] pseries/kexec: skip resetting CPUs added by firmware but not started by the kernel
-Date: Fri,  5 Dec 2025 19:58:25 +0530
-Message-ID: <20251205142825.44698-1-shivangu@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNGQW1Nqnz2xrk
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 03:03:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=O2XwwJOH6ID2KTGfUPig7IAOjY7ik8syIuFJLCrFZsM=; b=XZT8TMJLJlodKVHuJqbR8fDWBb
+	wmDBIUFBCQLzqfbfdnqTkJIuhgpGH2enuLja4p45aH+xSleZBwjjTePR3hejPKpQacwaZS37DzG3P
+	VLyWXI6bgG2FY2KRybG6Z4IWQslyQX0CSGLlqdY3c9mXk6raOpsEuAL1v59tglQ2OKAt4ABe7iSlO
+	oc5k1e5mjcY1lcYct/OOu9/oI3M8cuTqciEC1E3tXfK2dC65okBPjd8TU7u885fj6l4+I0z+6l/KM
+	iv1UiZJyKvzLtm5RSGBkg2Jh3HJAneUjCuTaPMharkDFNrCNcvycNr3mIhO7ngMlkAbSEnjbR2xSd
+	GiDVtexg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vRYHH-00000005uqU-34rg;
+	Fri, 05 Dec 2025 16:03:27 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 9CE533003C4; Fri, 05 Dec 2025 17:03:26 +0100 (CET)
+Date: Fri, 5 Dec 2025 17:03:26 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Srikar Dronamraju <srikar@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Ben Segall <bsegall@google.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@kernel.org>, Juri Lelli <juri.lelli@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Swapnil Sapkal <swapnil.sapkal@amd.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	virtualization@lists.linux.dev,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: Re: [PATCH 08/17] sched/core: Implement CPU soft offline/online
+Message-ID: <20251205160326.GF2528459@noisy.programming.kicks-ass.net>
+References: <20251204175405.1511340-1-srikar@linux.ibm.com>
+ <20251204175405.1511340-9-srikar@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,100 +82,110 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=dK+rWeZb c=1 sm=1 tr=0 ts=6932ec47 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
- a=1UX6Do5GAAAA:8 a=3RTAq5kX-fAwh9RnVlgA:9 a=Et2XPkok5AAZYJIKzHr1:22
-X-Proofpoint-GUID: zGd6o2ekTCGfSVNiy1j5dtWoNEsWi11v
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI5MDAyMCBTYWx0ZWRfX5eSUDGdlFr58
- Qdv0kloc2k/vEWO3j+XJNxvti24Fvqb7XdrsO5xhwWeeORKs61PcVECtCN8fPgm8o4n3Mkt7WT3
- dgYCRvwd+W6J68/+C0xWMbj90YJaiFhg7ANtizEdDN9yUYTfeBUpg6oaznCVeDCmiKxnE71JYX0
- WniQ4kSjSk4hAT+Q+saglK56XHrflbsRlMHOLNNlV7XrWur1s0e4hCZaJezxxmJDiQhyNw+g17e
- wPtIfLyXWGQVa/AE9hn7kDfGYGm/yzQB7h/1g1AfJvx/GMYKODggyY2rxqW1cT57aXS51MNChoE
- Y3ExQyMfm21Qs+3sQizx7KWHfAUpOOXcKI9vvpirVG+UCZ1JuAYME55kC8ygPrKoqRo5gXc7Now
- pwu6BNf4KLi6ZjhvEYB6dnqGHtNzwA==
-X-Proofpoint-ORIG-GUID: uXwQqtdSuqCqhOB0cXhCO8NEWpppFadK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-05_04,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 clxscore=1011 priorityscore=1501
- bulkscore=0 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511290020
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251204175405.1511340-9-srikar@linux.ibm.com>
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-During DLPAR operations, The newly added CPUs will start in halted mode.
-Kernel will then take sometime to initialize those cpu interally and
-start them using "start-cpu" rtas call. However if a kexec-crash is
-occurred in between this window (till the new cpu has been initialized),
-The kexec nmi will try to reset all-other-cpus from the crashing cpu,
-Which will lead to firmware starting the uninitialized cpus aswell. This
-will lead to kdump kernel to hang during bringup.
+On Thu, Dec 04, 2025 at 11:23:56PM +0530, Srikar Dronamraju wrote:
 
-Sample Log:
-  [175993.028231][ T1502] NIP [00007fffb953f394] 0x7fffb953f394
-  [175993.028314][ T1502] LR [00007fffb953f394] 0x7fffb953f394
-  [175993.028390][ T1502] --- interrupt: 3000
-  [    5.519483][    T1] Processor 0 is stuck.
-  [   11.089481][    T1] Processor 1 is stuck.
+> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> index 89efff1e1ead..f66fd1e925b0 100644
+> --- a/kernel/sched/core.c
+> +++ b/kernel/sched/core.c
+> @@ -8177,13 +8177,16 @@ static void balance_push(struct rq *rq)
+>  	 * Only active while going offline and when invoked on the outgoing
+>  	 * CPU.
+>  	 */
+> -	if (!cpu_dying(rq->cpu) || rq != this_rq())
+> +	if (cpu_active(rq->cpu) || rq != this_rq())
+>  		return;
+>  
+>  	/*
+> -	 * Ensure the thing is persistent until balance_push_set(.on = false);
+> +	 * Unless soft-offline, Ensure the thing is persistent until
+> +	 * balance_push_set(.on = false); In case of soft-offline, just
+> +	 * enough to push current non-pinned tasks out.
+>  	 */
+> -	rq->balance_callback = &balance_push_callback;
+> +	if (cpu_dying(rq->cpu) || rq->nr_running)
+> +		rq->balance_callback = &balance_push_callback;
+>  
+>  	/*
+>  	 * Both the cpu-hotplug and stop task are in this case and are
+> @@ -8392,6 +8395,8 @@ static inline void sched_smt_present_dec(int cpu)
+>  #endif
+>  }
+>  
+> +static struct cpumask cpu_softoffline_mask;
+> +
+>  int sched_cpu_activate(unsigned int cpu)
+>  {
+>  	struct rq *rq = cpu_rq(cpu);
+> @@ -8411,7 +8416,10 @@ int sched_cpu_activate(unsigned int cpu)
+>  	if (sched_smp_initialized) {
+>  		sched_update_numa(cpu, true);
+>  		sched_domains_numa_masks_set(cpu);
+> -		cpuset_cpu_active();
+> +
+> +		/* For CPU soft-offline, dont need to rebuild sched-domains */
+> +		if (!cpumask_test_cpu(cpu, &cpu_softoffline_mask))
+> +			cpuset_cpu_active();
+>  	}
+>  
+>  	scx_rq_activate(rq);
+> @@ -8485,7 +8493,11 @@ int sched_cpu_deactivate(unsigned int cpu)
+>  		return 0;
+>  
+>  	sched_update_numa(cpu, false);
+> -	cpuset_cpu_inactive(cpu);
+> +
+> +	/* For CPU soft-offline, dont need to rebuild sched-domains */
+> +	if (!cpumask_test_cpu(cpu, &cpu_softoffline_mask))
+> +		cpuset_cpu_inactive(cpu);
+> +
+>  	sched_domains_numa_masks_clear(cpu);
+>  	return 0;
+>  }
+> @@ -10928,3 +10940,25 @@ void sched_enq_and_set_task(struct sched_enq_and_set_ctx *ctx)
+>  		set_next_task(rq, ctx->p);
+>  }
+>  #endif /* CONFIG_SCHED_CLASS_EXT */
+> +
+> +void set_cpu_softoffline(int cpu, bool soft_offline)
+> +{
+> +	struct sched_domain *sd;
+> +
+> +	if (!cpu_online(cpu))
+> +		return;
+> +
+> +	cpumask_set_cpu(cpu, &cpu_softoffline_mask);
+> +
+> +	rcu_read_lock();
+> +	for_each_domain(cpu, sd)
+> +		update_group_capacity(sd, cpu);
+> +	rcu_read_unlock();
+> +
+> +	if (soft_offline)
+> +		sched_cpu_deactivate(cpu);
+> +	else
+> +		sched_cpu_activate(cpu);
+> +
+> +	cpumask_clear_cpu(cpu, &cpu_softoffline_mask);
+> +}
 
-To Fix this, Only issue the system-reset hcall to CPUs that have
-actually been started by the kernel.
+What happens if you then offline one of these softoffline CPUs? Doesn't
+that do sched_cpu_deactivate() again?
 
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Srikar Dronamraju <srikar@linux.ibm.com>
-Cc: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: Nysal Jan K.A. <nysal@linux.ibm.com>
-Cc: Vishal Chourasia <vishalc@linux.ibm.com>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Shivang Upadhyay <shivangu@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/smp.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+Also, the way this seems to use softoffline_mask is as a hidden argument
+to sched_cpu_{de,}activate() instead of as an actual mask.
 
-diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
-index db99725e752b..e5518cf71094 100644
---- a/arch/powerpc/platforms/pseries/smp.c
-+++ b/arch/powerpc/platforms/pseries/smp.c
-@@ -173,10 +173,24 @@ static void dbell_or_ic_cause_ipi(int cpu)
- 
- static int pseries_cause_nmi_ipi(int cpu)
- {
--	int hwcpu;
-+	int hwcpu, k;
- 
- 	if (cpu == NMI_IPI_ALL_OTHERS) {
--		hwcpu = H_SIGNAL_SYS_RESET_ALL_OTHERS;
-+
-+		for_each_present_cpu(k) {
-+			if (k != smp_processor_id()) {
-+				hwcpu = get_hard_smp_processor_id(k);
-+
-+				/* it is possible that cpu is present,
-+				 * but not started yet
-+				 */
-+				if (paca_ptrs[hwcpu]->cpu_start == 1)
-+					plpar_signal_sys_reset(hwcpu);
-+			}
-+		}
-+
-+		return 1;
-+
- 	} else {
- 		if (cpu < 0) {
- 			WARN_ONCE(true, "incorrect cpu parameter %d", cpu);
--- 
-2.52.0
+Moreover, there does not seem to be any sort of serialization vs
+concurrent set_cpu_softoffline() callers. At the very least
+update_group_capacity() would end up with indeterminate results.
 
+This all doesn't look 'robust'.
 
