@@ -1,64 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-14669-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14670-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B8C5CA9FDA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 06 Dec 2025 04:46:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 327D1CAA175
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 06 Dec 2025 06:31:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dNZ0c5vZcz2xQK;
-	Sat, 06 Dec 2025 14:46:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dNcKS0RMtz2xPL;
+	Sat, 06 Dec 2025 16:30:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=44.202.169.35
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764992768;
-	cv=none; b=PwwdKsD0Hzlm2zRrXQO8Q5Jwh1OVMdGcaiOMeU8NdyaSRAxpTHO3aoCm0geh8qxOp5Ba+wUiTCjzM/vxWJ+qa9kJz/eW/MRuszlMIjOlZ9KdrE1UiWMc0/iF4Kc8APS/546NpK6sDIyakXSZyEfj6E51WIitJaI/rNg8kPCpx1sn7VbQMO8d4vwLr8HmM/gCrjqqYSJht1J63yfcCprtkd80PggidsESWmhq7l/h8xgzqaEQL46A+i99L7Vel0Y43nGH480Dv6m0HEauo+7L6JE9NHF4uMXYnlSmZVlmo+aaYJe0awLt3ZJx8GTAMA3vyJHApL8rCbKwuXHsk39mgg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.21
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764999051;
+	cv=none; b=FNK5G+x7zT8xYm0fVGOD3oEHfRaq4NjLS1nNJgY0OOsgqDM8kPVzC0bfUoRaMB16JtKVNGzAeb0fx3jM+7/nCyn3mS3jqCXb/eCjER/RPENZvaZH4Ot6C84zpZYXuNC2Z8MPcr4G6ZV0My6ak3TxUQ+CLG7IcL/UglaKDxQtwX3a2ZqmyNzwU10u9REhgaoU4k7Yg6Yx3xYBtf1MqiwvgQqvW+KiP/w8+F0qaq+ezo872ZX+G0IENXL0bg/8yt+E8y93KcE5QS8pCZUZlsOHozzSNO1EOMkm3gH8SLxb0N+2V64jq+EKUe1ql6okWsIqm0OvwqAszmorCCB2Ekratw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764992768; c=relaxed/relaxed;
-	bh=KoD1NRD0QaV+f74bc5iSUT0wwYVNJpat/RcP0vQRNuI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dri3G5AFxlhriTJuDGQT5AnlZuMqI+g8vS6POVY6K7em7FZplF8tAndnhPq75OgedmsqgbET4sWOy5Y/N2Bh+IEJJpyKiIlYOM0NzndLe8216sMNPzaf32JkEwHVOC8w8KGy4RjSzglJiJGn+gitOneuHe2MigiQMZMTTQ++bT63iOR1tL4S+7N6HGxv/7XvDG3FwXMtuO+D0boBmEskokz9QPP/MlNOusVh2iJL0qyg6RafaZYTWi5gtJSt3H2tjjEhxAuUQbesaT0AolV5HbDfSGOHHCKH/+SuGXtx46fLCJbqLan/BOPGc953oKVT2KXJPHyUmErp8vIX0wVT4Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; dkim=pass (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=coIeJHot; dkim-atps=neutral; spf=pass (client-ip=44.202.169.35; helo=omta036.useast.a.cloudfilter.net; envelope-from=gustavo@embeddedor.com; receiver=lists.ozlabs.org) smtp.mailfrom=embeddedor.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+	t=1764999051; c=relaxed/relaxed;
+	bh=m3tK0GPx6twV5ndXXBLl1Kw5rYyx+AVJ8C23noj8Yak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=alLXMh2NVgxgfr3KCbZphFKiJJX8leA5FU4CsWGVH133jXGCpKT0FgCYimfMA5HYGYCHBTBNZpAQwSqQ42IoR7EzAX2xl5C0RMq6JU4rFyGKVgofJdmrssFHRu0To5DP2S2GuNDQgXOFh1vpdrmve8H8uxtknlLUsq5e5NJ+6f+TqYPhVNK7riDjjFT/k52GUZsiR11oI4WlAoX5aN5Ax60crFtWf1lkBr9cg6eqfCdot+iBsdQMNLrS9lEcAcjdZDwaBeub0s2vHogxbmls4FxSspaqZFRY4uw3NvKnzZKcCv3xo3PNjZy4/U9if7vA0L25rSSIsoc5pZHztn7Piw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nQjtH5md; dkim-atps=neutral; spf=pass (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=coIeJHot;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nQjtH5md;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=embeddedor.com (client-ip=44.202.169.35; helo=omta036.useast.a.cloudfilter.net; envelope-from=gustavo@embeddedor.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 339 seconds by postgrey-1.37 at boromir; Sat, 06 Dec 2025 14:46:02 AEDT
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNZ0V2kjlz2xGY
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 14:46:01 +1100 (AEDT)
-Received: from eig-obgw-6001b.ext.cloudfilter.net ([10.0.30.143])
-	by cmsmtp with ESMTPS
-	id RdqOvFYSJKXDJRj8Bv35kM; Sat, 06 Dec 2025 03:38:47 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id Rj8AvLQt6cu11Rj8Avic2K; Sat, 06 Dec 2025 03:38:46 +0000
-X-Authority-Analysis: v=2.4 cv=bKYWIO+Z c=1 sm=1 tr=0 ts=6933a546
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=ujWNxKVE5dX343uAl30YYw==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
- a=1XWaLZrsAAAA:8 a=_lKBnUPEwlkEFLTacEwA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
- a=xYX6OU9JNrHFPr8prv8u:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=KoD1NRD0QaV+f74bc5iSUT0wwYVNJpat/RcP0vQRNuI=; b=coIeJHotksEB6dU0JU8LIyi2+L
-	uaDb55h2Mt1UuG3h/KfXxkyCM9kNkUWFXfKhHQ4o8JDSD7EQAoRXlQNhy2MPsqj9G6CEDFz/Atw+9
-	ZgQjnWppwz+a1nyxKyA8oa3XON37XtoLsHEsqBF7NciO4/cTYHyJsaGDdkZ1q96dXAR3vN+Ajgd8E
-	26oVQjWOBLooorvXiIFmWbm5h0W8vYG/Im+2W7ub8NiQ1hVB5GfsOo4OHyrJbTvh1tDzKIt53tiIR
-	QYbVpumaH0gvsFCV4zcXTBdq2yPsnMuu7hmsfqp+jYwJ4mvpvuF9UPJnj4fcmmFTX5nHWOJenYOGa
-	9yhq7lSQ==;
-Received: from i118-18-233-1.s41.a027.ap.plala.or.jp ([118.18.233.1]:61266 helo=[10.83.24.44])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1vRj86-00000002EOT-2JGv;
-	Fri, 05 Dec 2025 21:38:43 -0600
-Message-ID: <0018d1c0-58ec-4b31-b016-472795990923@embeddedor.com>
-Date: Sat, 6 Dec 2025 12:38:14 +0900
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNcKP0nGMz2xFn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 16:30:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764999050; x=1796535050;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lRJ2bi0OZ3a1NFRQAl+mYzWHwAYaRizFgFjHvS49zp0=;
+  b=nQjtH5mdekaZd2/2t+KZ69kBNCbgCPKaaUxu4AXSChJAGN7IVJCJYfs0
+   Hx7V1zVU4Sve4gt9+43yTfbYHSL5RFJW23T6SmB46N1J6PdUJyQJcC0lY
+   jiluJV0BkhSIrJFCunwrcHTIxdBxFlgB8XZRn5t4XPRaJ6S9yt5MwGGq5
+   jH7yd+fAXGL9wWHVk8+zyHJ+hKJdHoCXuucbVXrcnczrMnXfCI5o9CbhA
+   mgPIQwsFKjnVEevlpsAGk7UjRsyHTwSrm33DzyWVieWNI0m+q12+ZzPc3
+   NDNUibISkk8P88E/mH6qmUUPz0btdtz0Mt5NZiRygre6lgC3ucqbyONuj
+   A==;
+X-CSE-ConnectionGUID: OMoTtbwpQPG9ZahVQqCpIg==
+X-CSE-MsgGUID: EBGNzSniTVW7Cq8MGzZ2EQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="66965234"
+X-IronPort-AV: E=Sophos;i="6.20,254,1758610800"; 
+   d="scan'208";a="66965234"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 21:30:45 -0800
+X-CSE-ConnectionGUID: +l0rSMMFQK+CUtj89KtVRg==
+X-CSE-MsgGUID: wR4GIIU8Ru+EH0RUhMj+EA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,254,1758610800"; 
+   d="scan'208";a="195538003"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 05 Dec 2025 21:30:40 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vRksP-00000000FtJ-3bbE;
+	Sat, 06 Dec 2025 05:30:37 +0000
+Date: Sat, 6 Dec 2025 13:30:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Narayana Murty N <nnmlinux@linux.ibm.com>, mahesh@linux.ibm.com,
+	maddy@linux.ibm.com, mpe@ellerman.id.au,
+	christophe.leroy@csgroup.eu, gregkh@linuxfoundation.org,
+	oohall@gmail.com, npiggin@gmail.com
+Cc: oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, tyreld@linux.ibm.com,
+	vaibhav@linux.ibm.com, sbhat@linux.ibm.com, ganeshgr@linux.ibm.com,
+	sourabhjain@linux.ibm.com
+Subject: Re: [PATCH 3/4] powerpc/pseries: Add RTAS error injection validation
+ helpers
+Message-ID: <202512061324.kG0T41Tg-lkp@intel.com>
+References: <20251205094510.4671-4-nnmlinux@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,77 +85,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: Remove subtle "struct kvm_stats_desc" pseudo-overlay
-To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oupton@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- "Gustavo A . R . Silva" <gustavoars@kernel.org>
-References: <20251205232655.445294-1-seanjc@google.com>
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20251205232655.445294-1-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - lists.ozlabs.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 118.18.233.1
-X-Source-L: No
-X-Exim-ID: 1vRj86-00000002EOT-2JGv
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: i118-18-233-1.s41.a027.ap.plala.or.jp ([10.83.24.44]) [118.18.233.1]:61266
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 5
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfEdZQdtWfJVa5qONViHKKv4i+eLGXgZAeOmc+OzorTf6m7FcBUOcNsM3XR9OuRC0zCPbakqKpEfdjQ3+WjafPJKn9cKSzGI7OchCeiRcSR2L91Nc+rH5
- KoiwmhUjxohbGV1Cd/48SGvFw+FEmmQoC02fHwxhfrpPU7DUvYs0ztMvgyUv109xR5F3nMcbL/Cr9FHSJplq9DYlRnLADRoC4q4Q7QqNM3/ka07kKvguj+l4
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251205094510.4671-4-nnmlinux@linux.ibm.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hi Narayana,
 
+kernel test robot noticed the following build warnings:
 
-On 12/6/25 08:26, Sean Christopherson wrote:
-> Remove KVM's internal pseudo-overlay of kvm_stats_desc, which subtly
-> aliases the flexible name[] in the uAPI definition with a fixed-size array
-> of the same name.  The unusual embedded structure results in compiler
-> warnings due to -Wflex-array-member-not-at-end, and also necessitates an
-> extra level of dereferencing in KVM.  To avoid the "overlay", define the
-> uAPI structure to have a fixed-size name when building for the kernel.
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on powerpc/fixes linus/master v6.18 next-20251205]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Nice. Thanks for this.
+url:    https://github.com/intel-lab-lkp/linux/commits/Narayana-Murty-N/powerpc-rtas-Handle-special-return-format-for-RTAS_FN_IBM_OPEN_ERRINJCT/20251205-214855
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20251205094510.4671-4-nnmlinux%40linux.ibm.com
+patch subject: [PATCH 3/4] powerpc/pseries: Add RTAS error injection validation helpers
+config: powerpc64-randconfig-001-20251206 (https://download.01.org/0day-ci/archive/20251206/202512061324.kG0T41Tg-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251206/202512061324.kG0T41Tg-lkp@intel.com/reproduce)
 
-> 
-> Opportunistically clean up the indentation for the stats macros, and
-> replace spaces with tabs.
-> 
-> No functional change intended.
-> 
-> Reported-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Closes: https://lore.kernel.org/all/aPfNKRpLfhmhYqfP@kspp
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512061324.kG0T41Tg-lkp@intel.com/
 
-Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+All warnings (new ones prefixed by >>):
 
--Gustavo
+>> Warning: arch/powerpc/platforms/pseries/eeh_pseries.c:906 function parameter '__maybe_unused' not described in 'validate_corrupted_page'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
