@@ -1,69 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-14668-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14669-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11873CA9D82
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 06 Dec 2025 02:24:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8C5CA9FDA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 06 Dec 2025 04:46:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dNVrg0Nxpz2y8Z;
-	Sat, 06 Dec 2025 12:24:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dNZ0c5vZcz2xQK;
+	Sat, 06 Dec 2025 14:46:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764984242;
-	cv=none; b=dvzUBHw9jfjdDQDMH5iuYkn+CVDNnxwqKZqNH3l7RHUuc+e5mxPekhX1WpOh9K//tTDREsnqBGrxTYZhKVtA1j+sfC+A/9dOdtoLSAnxxCDYbcxQCk43YXE3c+U0LA9QQIEEjsTGRC2uG9ObU4hBtHd3l799rKJU0qo++M0dBQyq2q5y7Ee4k5CeWORLRRzA9wpR3mUVd1JuApalKJvMSd/cE0uZrCSvUnpnBspLKjoBwFy9PCJevyfilFZdjV0BWuhjYtzU2ie+YgeXZChK0vOdQpEthezas85+tML7ungzY3ImxE7l0GtzXf84B/yeEdZqGpsHR3p3UY2aY1Nk7A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=44.202.169.35
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1764992768;
+	cv=none; b=PwwdKsD0Hzlm2zRrXQO8Q5Jwh1OVMdGcaiOMeU8NdyaSRAxpTHO3aoCm0geh8qxOp5Ba+wUiTCjzM/vxWJ+qa9kJz/eW/MRuszlMIjOlZ9KdrE1UiWMc0/iF4Kc8APS/546NpK6sDIyakXSZyEfj6E51WIitJaI/rNg8kPCpx1sn7VbQMO8d4vwLr8HmM/gCrjqqYSJht1J63yfcCprtkd80PggidsESWmhq7l/h8xgzqaEQL46A+i99L7Vel0Y43nGH480Dv6m0HEauo+7L6JE9NHF4uMXYnlSmZVlmo+aaYJe0awLt3ZJx8GTAMA3vyJHApL8rCbKwuXHsk39mgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1764984242; c=relaxed/relaxed;
-	bh=tDaD17ZvKT0de3x022ZEOe5LlcYfWQMFI+UwTFt6iP4=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Ikx8+WwVKsyatfYqMirqf1gu3qPqrhsKBdF1TuZ9GNi6fKHOitw2SVXp6GEtPKnM14/WFwxm0ib0G4KBTD0TZKhFe8aj7M6NIsrnmNksYytpa3sqTSyIg5vhANWVr5O0nNm9TsmvZRuII/9GdanYOZ321jSrzLB+lxMVTGPate1JvghLWBZZAYiX5W1w6x0rwqpYCEitOqyTT1YXw8OPQSH+7fTAfcRLGkMWBKwl9jyVrM/+Ecd+24WYNnZEUqnedkCXpeFwUUMEHJDYVTG3fFXFHmCZr67eUmsrVgQJ1Q8WXZHQorn5/5pMxUkBEkk0aUvucMtfXWB0lDpX5++MPA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m6pZRzFm; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1764992768; c=relaxed/relaxed;
+	bh=KoD1NRD0QaV+f74bc5iSUT0wwYVNJpat/RcP0vQRNuI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dri3G5AFxlhriTJuDGQT5AnlZuMqI+g8vS6POVY6K7em7FZplF8tAndnhPq75OgedmsqgbET4sWOy5Y/N2Bh+IEJJpyKiIlYOM0NzndLe8216sMNPzaf32JkEwHVOC8w8KGy4RjSzglJiJGn+gitOneuHe2MigiQMZMTTQ++bT63iOR1tL4S+7N6HGxv/7XvDG3FwXMtuO+D0boBmEskokz9QPP/MlNOusVh2iJL0qyg6RafaZYTWi5gtJSt3H2tjjEhxAuUQbesaT0AolV5HbDfSGOHHCKH/+SuGXtx46fLCJbqLan/BOPGc953oKVT2KXJPHyUmErp8vIX0wVT4Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; dkim=pass (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=coIeJHot; dkim-atps=neutral; spf=pass (client-ip=44.202.169.35; helo=omta036.useast.a.cloudfilter.net; envelope-from=gustavo@embeddedor.com; receiver=lists.ozlabs.org) smtp.mailfrom=embeddedor.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m6pZRzFm;
+	dkim=pass (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=coIeJHot;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=embeddedor.com (client-ip=44.202.169.35; helo=omta036.useast.a.cloudfilter.net; envelope-from=gustavo@embeddedor.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 339 seconds by postgrey-1.37 at boromir; Sat, 06 Dec 2025 14:46:02 AEDT
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNVrf1MFxz2xGg
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 12:24:02 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B368944223;
-	Sat,  6 Dec 2025 01:23:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACA8C4CEF1;
-	Sat,  6 Dec 2025 01:23:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764984239;
-	bh=GNi8raII27p2ilJnsAHZ6tHQYqE9GgBXpfSNiHp5hXg=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=m6pZRzFmlxHSt6JqP2XTkCzmHrYgHI4zN4JWqXQHu501v5TKC729upQO5+CuZuRfm
-	 p7kQgcYEaGMoE8ng9WZGlK8t7tn7LczPj8yCqH+4ByluJKHtwXlARW+fT9+dK518Yx
-	 V1hFtBDtf2/toWuAf/SzMLTqeB35D83Hjg+udvVXS92/VkOx0hBmT2AnZ75+DKSdug
-	 wQXxYzo4uOEJpE3YrpkToEhScScgU2eLHeXjE4B3bvU3zlgDgyPBqXWcIIt3XqX5QT
-	 HgIHhUcuCyRxHNN/iKhZNJx5c6EdbGDK+kyGOc4PvCL+mhBFHIbKriIA7v94qHCJ/7
-	 dc/c75aEVCN7A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B94A3808200;
-	Sat,  6 Dec 2025 01:20:58 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.19-1 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87zf7y1o4r.fsf@mpe.ellerman.id.au>
-References: <87zf7y1o4r.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87zf7y1o4r.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.19-1
-X-PR-Tracked-Commit-Id: 9b36c7fc5aa5f2c6e6eeb9f312fdfe61b4291c9f
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: ad952db4a865e96ec98d4c5874a4699fe3286d56
-Message-Id: <176498405676.1907434.6281833551067920040.pr-tracker-bot@kernel.org>
-Date: Sat, 06 Dec 2025 01:20:56 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, antonio.feijoo@suse.com, bcollins@kernel.org, chentao@kylinos.cn, dave@vasilevsky.ca, donettom@linux.ibm.com, j.ne@posteo.net, leo.lilong@huawei.com, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, nathan@kernel.org, ritesh.list@gmail.com, sourabhjain@linux.ibm.com, srikar@linux.ibm.com, tzimmermann@suse.de, unixbhaskar@gmail.com
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNZ0V2kjlz2xGY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 14:46:01 +1100 (AEDT)
+Received: from eig-obgw-6001b.ext.cloudfilter.net ([10.0.30.143])
+	by cmsmtp with ESMTPS
+	id RdqOvFYSJKXDJRj8Bv35kM; Sat, 06 Dec 2025 03:38:47 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id Rj8AvLQt6cu11Rj8Avic2K; Sat, 06 Dec 2025 03:38:46 +0000
+X-Authority-Analysis: v=2.4 cv=bKYWIO+Z c=1 sm=1 tr=0 ts=6933a546
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=ujWNxKVE5dX343uAl30YYw==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
+ a=1XWaLZrsAAAA:8 a=_lKBnUPEwlkEFLTacEwA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
+ a=xYX6OU9JNrHFPr8prv8u:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=KoD1NRD0QaV+f74bc5iSUT0wwYVNJpat/RcP0vQRNuI=; b=coIeJHotksEB6dU0JU8LIyi2+L
+	uaDb55h2Mt1UuG3h/KfXxkyCM9kNkUWFXfKhHQ4o8JDSD7EQAoRXlQNhy2MPsqj9G6CEDFz/Atw+9
+	ZgQjnWppwz+a1nyxKyA8oa3XON37XtoLsHEsqBF7NciO4/cTYHyJsaGDdkZ1q96dXAR3vN+Ajgd8E
+	26oVQjWOBLooorvXiIFmWbm5h0W8vYG/Im+2W7ub8NiQ1hVB5GfsOo4OHyrJbTvh1tDzKIt53tiIR
+	QYbVpumaH0gvsFCV4zcXTBdq2yPsnMuu7hmsfqp+jYwJ4mvpvuF9UPJnj4fcmmFTX5nHWOJenYOGa
+	9yhq7lSQ==;
+Received: from i118-18-233-1.s41.a027.ap.plala.or.jp ([118.18.233.1]:61266 helo=[10.83.24.44])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1vRj86-00000002EOT-2JGv;
+	Fri, 05 Dec 2025 21:38:43 -0600
+Message-ID: <0018d1c0-58ec-4b31-b016-472795990923@embeddedor.com>
+Date: Sat, 6 Dec 2025 12:38:14 +0900
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,17 +71,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: Remove subtle "struct kvm_stats_desc" pseudo-overlay
+To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oupton@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ "Gustavo A . R . Silva" <gustavoars@kernel.org>
+References: <20251205232655.445294-1-seanjc@google.com>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <20251205232655.445294-1-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - lists.ozlabs.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 118.18.233.1
+X-Source-L: No
+X-Exim-ID: 1vRj86-00000002EOT-2JGv
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: i118-18-233-1.s41.a027.ap.plala.or.jp ([10.83.24.44]) [118.18.233.1]:61266
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 5
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfEdZQdtWfJVa5qONViHKKv4i+eLGXgZAeOmc+OzorTf6m7FcBUOcNsM3XR9OuRC0zCPbakqKpEfdjQ3+WjafPJKn9cKSzGI7OchCeiRcSR2L91Nc+rH5
+ KoiwmhUjxohbGV1Cd/48SGvFw+FEmmQoC02fHwxhfrpPU7DUvYs0ztMvgyUv109xR5F3nMcbL/Cr9FHSJplq9DYlRnLADRoC4q4Q7QqNM3/ka07kKvguj+l4
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The pull request you sent on Thu, 04 Dec 2025 22:29:24 +1100:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.19-1
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/ad952db4a865e96ec98d4c5874a4699fe3286d56
+On 12/6/25 08:26, Sean Christopherson wrote:
+> Remove KVM's internal pseudo-overlay of kvm_stats_desc, which subtly
+> aliases the flexible name[] in the uAPI definition with a fixed-size array
+> of the same name.  The unusual embedded structure results in compiler
+> warnings due to -Wflex-array-member-not-at-end, and also necessitates an
+> extra level of dereferencing in KVM.  To avoid the "overlay", define the
+> uAPI structure to have a fixed-size name when building for the kernel.
 
-Thank you!
+Nice. Thanks for this.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+> 
+> Opportunistically clean up the indentation for the stats macros, and
+> replace spaces with tabs.
+> 
+> No functional change intended.
+> 
+> Reported-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Closes: https://lore.kernel.org/all/aPfNKRpLfhmhYqfP@kspp
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+
+-Gustavo
 
