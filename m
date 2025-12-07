@@ -1,71 +1,123 @@
-Return-Path: <linuxppc-dev+bounces-14673-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14674-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80DF5CAB1A4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 07 Dec 2025 06:14:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 048DCCAB415
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 07 Dec 2025 13:18:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dPCwD0xmhz2xQK;
-	Sun, 07 Dec 2025 16:14:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dPPJs0hm3z2xrk;
+	Sun, 07 Dec 2025 23:18:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::c2d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765084476;
-	cv=none; b=YsMvsw4/wzxVgwt6Hg8cHWUmJCupqz5ZiDqU33z0OOU1xw5nGG1xn9a8fgQqUlp2lhcQDvS/WW6MSRfEGbTlB9+rzAPVTb4HF8r3fu9Ivno0OtL7FBQ49ng4qDHI89yL416Px6Cz/Z8OWl/iWiuHk2DPYi6PFVXeWf3Rz+YCxRWz6MUKaaFwDHCR3tEEe5c/nf/iBgYURT9ChSOHb8A/MpAvkp+A3qK+oVr4PiAWsWiRW9T5m6K8EIyy4UiMITLqCJx+VEmH00mJOVn+/IUIhJuIM3Blen3yYkm6f2RxQl9jmcZ70CUcbsWhOhDZku1Shb0pUvMQykV4xKm5t1+veA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765109884;
+	cv=none; b=F3uhQLs0GcbIJVr9j8Wx+YBKnAkbP8ZBYazweAvUdvnSPRSjcgCsUlPYJkvPmZw9f1Uc+/0j5XB1oxHdf5XAmDXiSSmCFA3PtktqpLgeb/hYBZoAiAzPn4rO2L///Fg6ZfMmK0Q9mgt1znG2eh0R/Gpc4LNLvABRBhjNcnUOdi3cf418i4Jncx5+uUVA98PQAx1wfsyLTpe5D7HYx5ys3jjChEzUSZ8LWcdIXq/AZoxjPfbKkjul3vXLQDHQ/qvCjl6offBJNx7YatCYWzRqM2sjsyrSu0rSoGf824piNySM0itTlD/SQvXUOEe5lfeNwFU2wQ+1lANDf6hNXRrCMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765084476; c=relaxed/relaxed;
-	bh=gIr6vMU+1WXTpE+kuQ5XIOvR7lhOKuME2h0aehuNw7U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bZkrbrUDokLCk3ynb56txkfOilWgs6bmky7byEH6ypN4jJk9f20lVb5fb86L1KxmFAskLX29XPB0HZ+zNAPzpeSTObAaLMH65cQDLcNEu9vbtPZ7BcO/9ASXBRDQOkz3mIhQNkPlAWPVz1RNx4Nfxz1HRD5nIjLUw0OGq9OGQfszSoWZ0TUomBLo2M/ectkn89qUcLJcyRJC4ajhyYrrCAkbGD5/MV2ll/a4/ftRxrGhedTBHMILWx7RZowbsbjlPOA9DOJJNM/tVoNoFTIzajnI7gSfNnVXwrWSdJ2aJu4EXGfyRxcjU1RoaScIpHly3TbD4RoV0fO6Nmx8an4e9Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=brainfault.org; dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=phrkxkMd; dkim-atps=neutral; spf=none (client-ip=2607:f8b0:4864:20::c2d; helo=mail-oo1-xc2d.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org) smtp.mailfrom=brainfault.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+	t=1765109884; c=relaxed/relaxed;
+	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WoNwBYmjjpEIuv8shR6SsgZExhOZaO8xnNtql30t0qkReBos5uuQum5W0z/RG/s8mWsnKbL9fSXQkOVI9A5/oFHuM8uisAq+mVyonCd4bDdcOwuFGIGVFhfw3+MfWdrdYMchrtW/80wxvVDmGDRRCBBNfZorN2PtDmtacD47xZT8c1QiUfYm/rtkhcmA3m9bapMY4MUVEteXJD5fWTLFj1S9ts0DQxDHWJt5+kCw+qxhHIOKUt6C8zGDtFjb3JQzFk7fK/mkQrL5cBhkBWBl5/2VQu5Psdu8BssQlNv+HqfdorDLexyx2s6A2Ylm0iY9OXzbVghm0PB2yLpP4hfE6A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ptJ+j6YP; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=VkgzOLXv; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=0YuJJ3XF; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=yM/pJrbc; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=phrkxkMd;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ptJ+j6YP;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=VkgzOLXv;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=0YuJJ3XF;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=yM/pJrbc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::c2d; helo=mail-oo1-xc2d.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
-Received: from mail-oo1-xc2d.google.com (mail-oo1-xc2d.google.com [IPv6:2607:f8b0:4864:20::c2d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dPCw96R5bz2xBV
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Dec 2025 16:14:31 +1100 (AEDT)
-Received: by mail-oo1-xc2d.google.com with SMTP id 006d021491bc7-657c68a08a7so1790157eaf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 21:14:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1765084464; x=1765689264; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gIr6vMU+1WXTpE+kuQ5XIOvR7lhOKuME2h0aehuNw7U=;
-        b=phrkxkMdxezlXcCdgRSSwtFrvoGJRvYBZYbuqLrmqzzovr2WSUum7mn+Wq15OPVsMr
-         NjkiouPHZ3IntEUwK14Ol+g3MipmNpaRaxHCQBSMkHKxpcaONaUhavk7TaC3l99wQgA5
-         VOXCfetdBmSNEZevGi80NTSYcg+8xq/E133i2FGJ90wMyQRDoa6Axpw811ITTPxSK0tI
-         g+2fIZijbtd7q1F9e/8OfZPcPV2pwhN69crwKp4J9tJPCNK8FWq87xC65uH4yMPnSYo5
-         HtmtTLtl6LH8SIQpQy5Etv+OhwYircJuTaU3+gtelsjyZgLfclsk423QwdxSqhU9Oad1
-         4AWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765084464; x=1765689264;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gIr6vMU+1WXTpE+kuQ5XIOvR7lhOKuME2h0aehuNw7U=;
-        b=m0BC7GeOQWZSIddfvfdhF0IRqRi4b1z1hBilAdSr1mlAui0rnSM/cHkVXwi7aWbnui
-         J5H+hHfDeECFPVQ0pczAreSQ3uIQJIYMXuR4nCpO8TWLRUdD2FgtHjhjfkpAdKN4IEIJ
-         wOeB1Cj8GtDpuo0DZa47kQ3+ylOMz1d4eT42HTUYUUtaQZ9l4PuSTLQ1LsVhOQcqg7e2
-         17OAar6PSDEQCqaytP3H3uHjXVPdif/Fl5GUh9yjuI+yVnEhVxTiFouZxPNHHYMcWVp1
-         cvTydyUUT9VF/dR4rUfqdqGbJjF1/qM/9qeCDSxo7cqH0QL7nlucWVl81fM8Rij9cXvg
-         jHNw==
-X-Forwarded-Encrypted: i=1; AJvYcCV6G05pZzDT/JuXnadY5Q6Agw4RghVwyOnTbzlt+pUOqqDSrIyW9tpnwYdjfRjnDNrK4NuQutloXvCUx+A=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz/FRZNGgufe+lMXSJ2s+kAIHjWmb5C89XkZVZ5L7BDCqdF52kr
-	vpW1ED0Wyt4i4AU3nGUWqEXy8w2iiedZktXX77KUIOOm94fjcWLyfKlZdrEsSjePcBoiif3IoHA
-	3IX5tdBer5+OJ4O34aMFHarkUhenbe8exaG/vogauhw==
-X-Gm-Gg: ASbGncuni9WxHNQK1eMBPWeYBot3nUDaipv6DL7+R1tc6OzMZ6uprBvkdzjGcJfqlTU
-	7R0XFn+nIjLTjRzXfUtj0KI0Em9jA7JzzlAxClZktByoVYmMKhCY3GLat2Zw1U/psqkTpVqLTVF
-	ImMMvKNWwNSHzFAWb2ZdZebs6emIRGcP6l1UqTOAPH7Q9pq3lDVe3K8rG/mZoi+acuNNMLLNx5w
-	lufqRIZqJ7IdQE3G9MkSdRaxRwEHEfnfzhm7pzN4j+036iCPe1s4Yau+RAjWS6AtAJg26iP
-X-Google-Smtp-Source: AGHT+IH3teezYiglKMW0l9sCwPDXKzHK/uYMVzLl99zBL+8tY4BEmXzPQzc7f6ucWRYnVm2fOg07KrRcgASdUHrgci4=
-X-Received: by 2002:a05:6820:f030:b0:659:9a49:8f73 with SMTP id
- 006d021491bc7-6599a973da4mr2018657eaf.56.1765084463840; Sat, 06 Dec 2025
- 21:14:23 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dPPJp6W9Mz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Dec 2025 23:18:02 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 16A455BCFD;
+	Sun,  7 Dec 2025 12:17:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765109879; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
+	b=ptJ+j6YPX4g+bVfgoE8ZGTjROuh8vTpSPNCv/qp0Q1ZljH1k6a8NBRAl9PuRb/OAq+XIDy
+	Ms3IQNYL1UGQXarbvyUzIeXgSBkeivNsvAZU9knIC1uAehc4VZSgwD6WyKttisOejkucd4
+	wsZ8RlWhvRqiXF3CkmGsZ4ILGDkvVZo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765109879;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
+	b=VkgzOLXvVzmsNyshw1DtVQoAoqZnxBQbXa/ajCsN5DdEWhfMRf3OddfIE276hMSQ5nWGvz
+	qgzw3pUkeCxWoFDw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0YuJJ3XF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="yM/pJrbc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765109878; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
+	b=0YuJJ3XFWR17M6QyJQov2+FyIAhSdoGYPfrmbxb1xuXppPswhnxE1s6EE+4EqIbTRZu8Bp
+	8EX1Rjq6OSEDARqS9qICqkYEYcKjU0uA/07KnY5JMh6XQQnbIagxjjj5mgDtxZuknqyCQ7
+	S6z6B7TTfVPYuJuL+MrjDPCS+IZkj04=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765109878;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
+	b=yM/pJrbcO/dEmDdgL7ZVTAFBtzM7UxjjJqeIgGuIINwlyBUV6fSD7Tb1eGcAL+4S1SR8dQ
+	ln3+ze8SfTkZ/GCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 67A4E3EA63;
+	Sun,  7 Dec 2025 12:17:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gID+FnVwNWl9JAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Sun, 07 Dec 2025 12:17:57 +0000
+Date: Sun, 07 Dec 2025 13:17:57 +0100
+Message-ID: <87pl8qv62y.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: david@ixit.cz,
+	David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sh@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH] ALSA: Do not build obsolete API
+In-Reply-To: <20251203-old-alsa-v1-1-ac80704f52c3@ixit.cz>
+References: <20251203-old-alsa-v1-1-ac80704f52c3@ixit.cz>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.1 Mule/6.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,56 +130,62 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20251205232655.445294-1-seanjc@google.com>
-In-Reply-To: <20251205232655.445294-1-seanjc@google.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Sun, 7 Dec 2025 10:44:13 +0530
-X-Gm-Features: AQt7F2qP99gde5P8lRQoinF2DOSDMpaUpigWBx6hvnDvXPL66vGpk9e2egXMZ2I
-Message-ID: <CAAhSdy1cPnxjntaR=cwZqG+oVgFpZKM0rKYAEdkHUCToMvN0Ag@mail.gmail.com>
-Subject: Re: [PATCH] KVM: Remove subtle "struct kvm_stats_desc" pseudo-overlay
-To: Sean Christopherson <seanjc@google.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Score: -2.01
+X-Rspamd-Queue-Id: 16A455BCFD
+X-Spamd-Result: default: False [-2.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[armlinux.org.uk,mleia.com,timesys.com,iki.fi,gmail.com,atomide.com,nvidia.com,alpha.franken.de,linux.ibm.com,ellerman.id.au,kernel.org,users.sourceforge.jp,libc.org,physik.fu-berlin.de,perex.cz,suse.com,lists.infradead.org,vger.kernel.org,lists.ozlabs.org];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[david.ixit.cz];
+	R_RATELIMIT(0.00)[to_ip_from(RLin1spj7ezzoz4e1zj94tyerm)];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat, Dec 6, 2025 at 4:57=E2=80=AFAM Sean Christopherson <seanjc@google.c=
-om> wrote:
->
-> Remove KVM's internal pseudo-overlay of kvm_stats_desc, which subtly
-> aliases the flexible name[] in the uAPI definition with a fixed-size arra=
-y
-> of the same name.  The unusual embedded structure results in compiler
-> warnings due to -Wflex-array-member-not-at-end, and also necessitates an
-> extra level of dereferencing in KVM.  To avoid the "overlay", define the
-> uAPI structure to have a fixed-size name when building for the kernel.
->
-> Opportunistically clean up the indentation for the stats macros, and
-> replace spaces with tabs.
->
-> No functional change intended.
->
-> Reported-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Closes: https://lore.kernel.org/all/aPfNKRpLfhmhYqfP@kspp
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Wed, 03 Dec 2025 23:34:10 +0100,
+David Heidelberg via B4 Relay wrote:
+> 
+> From: David Heidelberg <david@ixit.cz>
+> 
+> ALSA 0.9.0-rc3 is from 2002, 23 years old.
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+> Maybe I could drop also the code and Kconfig option?
 
-For KVM RISC-V:
-Acked-by: Anup Patel <anup@brainfault.org>
+Thanks, applied now.
 
-Thanks,
-Anup
+I believe it's safer to have this default only off for 6.19, then
+disable for 6.20, eventually drop the dead code later.
+
+
+Takashi
 
