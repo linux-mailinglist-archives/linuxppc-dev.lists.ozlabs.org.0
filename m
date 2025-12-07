@@ -1,123 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-14674-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14675-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048DCCAB415
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 07 Dec 2025 13:18:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50CCDCAB79D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 07 Dec 2025 17:18:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dPPJs0hm3z2xrk;
-	Sun, 07 Dec 2025 23:18:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dPVdZ4zMNz2y65;
+	Mon, 08 Dec 2025 03:17:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765109884;
-	cv=none; b=F3uhQLs0GcbIJVr9j8Wx+YBKnAkbP8ZBYazweAvUdvnSPRSjcgCsUlPYJkvPmZw9f1Uc+/0j5XB1oxHdf5XAmDXiSSmCFA3PtktqpLgeb/hYBZoAiAzPn4rO2L///Fg6ZfMmK0Q9mgt1znG2eh0R/Gpc4LNLvABRBhjNcnUOdi3cf418i4Jncx5+uUVA98PQAx1wfsyLTpe5D7HYx5ys3jjChEzUSZ8LWcdIXq/AZoxjPfbKkjul3vXLQDHQ/qvCjl6offBJNx7YatCYWzRqM2sjsyrSu0rSoGf824piNySM0itTlD/SQvXUOEe5lfeNwFU2wQ+1lANDf6hNXRrCMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765109884; c=relaxed/relaxed;
-	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WoNwBYmjjpEIuv8shR6SsgZExhOZaO8xnNtql30t0qkReBos5uuQum5W0z/RG/s8mWsnKbL9fSXQkOVI9A5/oFHuM8uisAq+mVyonCd4bDdcOwuFGIGVFhfw3+MfWdrdYMchrtW/80wxvVDmGDRRCBBNfZorN2PtDmtacD47xZT8c1QiUfYm/rtkhcmA3m9bapMY4MUVEteXJD5fWTLFj1S9ts0DQxDHWJt5+kCw+qxhHIOKUt6C8zGDtFjb3JQzFk7fK/mkQrL5cBhkBWBl5/2VQu5Psdu8BssQlNv+HqfdorDLexyx2s6A2Ylm0iY9OXzbVghm0PB2yLpP4hfE6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ptJ+j6YP; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=VkgzOLXv; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=0YuJJ3XF; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=yM/pJrbc; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.220 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765124274;
+	cv=pass; b=G6xVmfJyc5usJGbOXuENDlQiR56FzxuOuz5EAGGD76umSgkIyBKhKxcF/6gqO4fMIku6v37rvS1Qz2LL/SslgGXkJ7h8id8qAFolDv15vZoZWxeIPv7IeUq2i18TGh3iXSVovhcu7IpbaENAoA5fcbwx2Kki3leF6qFq3YT7XtKCE1UVt7T0IOhlgZfwR2AAq8BIoOhXdZPJXnCuCFnCHjOBEKRtVuWnzsoJrCvh26aai5NweDqrZMi6+vEWlXyA3Ij/zwS7dqTqAeJHiXnN9UQ+zsga3I9upvNhvjTO+WkZlAPWBGZAvYbqT4kzGLlmS3V33hibSUMYIPg84fIzkg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1765124274; c=relaxed/relaxed;
+	bh=h+np9xoSXFdkeuZ19zjNKyfnwaw/sp/o6VzfvsAV2gY=;
+	h=To:From:Subject:Message-ID:Date:MIME-Version:Content-Type; b=aBe+zsdB1dr8fl07qUwGhDlGSsXgxtngokIT6lC7Tq4ykGilrhDYzUaovATqtTurEoyDOXGrIvdtNT7XC5xdi9Xubg/WV6HZNu6bzJqyMBMW5nWkWQIcFi+bw+zFofXo8k4bG3jNIuWt6N6ybLLcjZxGzGlVzyRGNjpFodiFN2MzEx9/0NJ1hT9ky9NOpG8T4o4+TDuOX0g5DecsBuEsmL8mXXz4O0DSlR3+2swiNF68SzsrUOWV6GFCxbj5HfOW2xz/NE08sWmjMtnKHeL2mD8vBegO0ojZ5cpsuCuKTOfHgzKzXvv9gA4Kys1VLYYi83ot9w1eqbq13l8g9rfphg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=bZfNAR+i; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=eGzQevnf; dkim-atps=neutral; spf=pass (client-ip=81.169.146.220; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p00-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ptJ+j6YP;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=VkgzOLXv;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=0YuJJ3XF;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=yM/pJrbc;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=bZfNAR+i;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=eGzQevnf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=81.169.146.220; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.220])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dPPJp6W9Mz2xQK
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Dec 2025 23:18:02 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 16A455BCFD;
-	Sun,  7 Dec 2025 12:17:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1765109879; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
-	b=ptJ+j6YPX4g+bVfgoE8ZGTjROuh8vTpSPNCv/qp0Q1ZljH1k6a8NBRAl9PuRb/OAq+XIDy
-	Ms3IQNYL1UGQXarbvyUzIeXgSBkeivNsvAZU9knIC1uAehc4VZSgwD6WyKttisOejkucd4
-	wsZ8RlWhvRqiXF3CkmGsZ4ILGDkvVZo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1765109879;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
-	b=VkgzOLXvVzmsNyshw1DtVQoAoqZnxBQbXa/ajCsN5DdEWhfMRf3OddfIE276hMSQ5nWGvz
-	qgzw3pUkeCxWoFDw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0YuJJ3XF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="yM/pJrbc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1765109878; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
-	b=0YuJJ3XFWR17M6QyJQov2+FyIAhSdoGYPfrmbxb1xuXppPswhnxE1s6EE+4EqIbTRZu8Bp
-	8EX1Rjq6OSEDARqS9qICqkYEYcKjU0uA/07KnY5JMh6XQQnbIagxjjj5mgDtxZuknqyCQ7
-	S6z6B7TTfVPYuJuL+MrjDPCS+IZkj04=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1765109878;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
-	b=yM/pJrbcO/dEmDdgL7ZVTAFBtzM7UxjjJqeIgGuIINwlyBUV6fSD7Tb1eGcAL+4S1SR8dQ
-	ln3+ze8SfTkZ/GCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 67A4E3EA63;
-	Sun,  7 Dec 2025 12:17:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gID+FnVwNWl9JAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Sun, 07 Dec 2025 12:17:57 +0000
-Date: Sun, 07 Dec 2025 13:17:57 +0100
-Message-ID: <87pl8qv62y.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: david@ixit.cz,
-	David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH] ALSA: Do not build obsolete API
-In-Reply-To: <20251203-old-alsa-v1-1-ac80704f52c3@ixit.cz>
-References: <20251203-old-alsa-v1-1-ac80704f52c3@ixit.cz>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.1 Mule/6.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dPVdV4PzJz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Dec 2025 03:17:48 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1765124262; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=bIhd6XmuILCskbnB7IfOAM0MJ6ElUpaf8mcwy3jPZqKVtVyK5CsqYy62vzhn1dKmD0
+    j3cM1fXcAAVC7yeAA0ALZeG7AYs2fEMf/ms2bYtVhhuqfYhx7gsYIQgUzrJgdAYiTC+z
+    AOh7vuV9KQqdX6c6xyo1F25aF9dhaqw3GXiUGTUR1ONUrhQnPA9pzvEXpBn0NOUMErIH
+    yHXrlgGN9vTc5a9ZlhQL61LomGg3K4CHQWFT+86dVRIvEbLJ8qTzPG+P0smVabjFD8Ss
+    AgGwiaxITMh6sA5sOrUfL6c1+WYTJQDdgWshnPCjENybk0U4WHs16jP+G1y80MPva/WI
+    8c0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1765124262;
+    s=strato-dkim-0002; d=strato.com;
+    h=Date:Message-ID:Subject:From:To:Cc:Date:From:Subject:Sender;
+    bh=h+np9xoSXFdkeuZ19zjNKyfnwaw/sp/o6VzfvsAV2gY=;
+    b=FLnWs+KwHndLljJtZlOuZLlHbbZr9VB68VeirnE3IZtykoEH8SvupWBlMuIl1+OekG
+    iD32VmN5bfOUtX6saBGVDW/lNhGLbZWgxOqgAbCzUt2BCexQOpVKRxvrCeXJs1qZwneU
+    ax31i7bDumUBobggz+8b4KvNo+rui9uixDPQg9zwIrI+Kr9Frml7H8MaT1cHUYSqdVZy
+    PLDgerjZlccYK1XaVNIeo85bRyZGElV9mWqOhX8Y4Rx20SwvjFuQmP0PEPA/Sll9OoBX
+    G1yUQJI8gCnYDE04fgktw4PO9UUnGj2cppKZ1BO75uuNZEI4AmEVuNyXbBKbqJ66gRQ8
+    GLeA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1765124262;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=Date:Message-ID:Subject:From:To:Cc:Date:From:Subject:Sender;
+    bh=h+np9xoSXFdkeuZ19zjNKyfnwaw/sp/o6VzfvsAV2gY=;
+    b=bZfNAR+inykZut4BeQCZqH7VC8UCwRVSYZxfzoXRiolVODiWJ3abgK/sp3kPbU/SOk
+    Jdx5OLdizV+e4g/1WUMed4Nr2Ctr0PB7kOKeeAk81Aux2ifIONZMRvTyXh0pDuRhE0cn
+    /HgQZs5ibwmw6Jfv066qJUyhnpKCuiwQIIQBVark2cq7qiSDy8B+yps6KYwzW4e1pS5y
+    bLuoclngzrqDnpnGkM8wUyvfQA1kuP0twGJ6yN9xcyj/dRO3x7/HoyQewNsdTXQRwi+H
+    tabfBo5Doynt9nHik+ymPPzJc1IIuLHHcZ5rX39h7Ia3s3NUjKbecu44uj85CcapvJtB
+    6XhA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1765124262;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=Date:Message-ID:Subject:From:To:Cc:Date:From:Subject:Sender;
+    bh=h+np9xoSXFdkeuZ19zjNKyfnwaw/sp/o6VzfvsAV2gY=;
+    b=eGzQevnfsK0D9D2zNugttjbFXYMTi97UaAwV7Yh1sUIr3L0y0CVl/qCB5U7w4zSwZ5
+    yGWg428R6cxJzKoSMUDw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr4thIFiqT9BURIS+m7B/g"
+Received: from void-ppc.a-eon.tld
+    by smtp.strato.de (RZmta 54.0.0 DYNA|AUTH)
+    with ESMTPSA id ed69d81B7GHf9UN
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sun, 7 Dec 2025 17:17:41 +0100 (CET)
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>,
+ Christian Zigotzky <info@xenosoft.de>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: [PPC] [e5500] Boot issues after the PowerPC updates 6.19-1
+Organization: A-EON Open Source
+Message-ID: <4d0bd05d-6158-1323-3509-744d3fbe8fc7@xenosoft.de>
+Date: Sun, 7 Dec 2025 17:17:41 +0100
+X-Mailer: BrassMonkey/33.9.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -130,62 +94,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Score: -2.01
-X-Rspamd-Queue-Id: 16A455BCFD
-X-Spamd-Result: default: False [-2.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[armlinux.org.uk,mleia.com,timesys.com,iki.fi,gmail.com,atomide.com,nvidia.com,alpha.franken.de,linux.ibm.com,ellerman.id.au,kernel.org,users.sourceforge.jp,libc.org,physik.fu-berlin.de,perex.cz,suse.com,lists.infradead.org,vger.kernel.org,lists.ozlabs.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[david.ixit.cz];
-	R_RATELIMIT(0.00)[to_ip_from(RLin1spj7ezzoz4e1zj94tyerm)];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 03 Dec 2025 23:34:10 +0100,
-David Heidelberg via B4 Relay wrote:
-> 
-> From: David Heidelberg <david@ixit.cz>
-> 
-> ALSA 0.9.0-rc3 is from 2002, 23 years old.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
-> Maybe I could drop also the code and Kconfig option?
+Hello,
 
-Thanks, applied now.
+The latest Git kernel doesn't boot anymore on our e5500 machines (QEMU, 
+X5000, Mirari etc) after the PowerPC updates 6.19-1. [1]
 
-I believe it's safer to have this default only off for 6.19, then
-disable for 6.20, eventually drop the dead code later.
+Error messages (QEMU e5500 VM):
+
+Bad kernel stack pointer 4d694c01a88270 at c0000000000003bc
+Oops: Bad kernel stack pointer, sig: 6 [#1]
+BE PAGE_SIZE=4K  SMP NR_CPUS=4 QEMU e500
+Modules linked in:
+CPU: 2 UID: 0 PID: 2788 Comm: udevd Not tainted 
+6.19.0-a4-powerpc64-smp-g416f99c3b16f-dirty #1 VOLUNTARY
+Hardware name: QEMU ppce500 e5500 0x80240012 QEMU e500
+NIP:  c0000000000003bc LR: 0000000000230760 CTR: 0000000000230754
+REGS: c00000003ff9bd20 TRAP: 0300   Not tainted 
+(6.19.0-a4-powerpc64-smp-g416f99c3b16f-dirty)
+MSR:  0000000090029000 <CE,EE,ME>  CR: 48842888  XER: 20000000
+DEAR: 004d694c01a882f0 ESR: 0000000000000000 IRQMASK: 1
+GPR00: 01a56ad000000000 004d694c01a88270 ffd86ca00046c958 ffd86c89ffffffff
+GPR04: 0000000000000000 00000000ffffffff 0000000000000000 0000000000000007
+GPR08: 000000000037a60c 0000000000000000 0000000000000000 0000000000230754
+GPR12: 0000000004000000 c00000003fff7900 0000000000000004 0000000001a88270
+GPR16: 00000000020397f0 0000000000bc287c 00000000004d009c 0000000000000000
+GPR20: 0000000000000000 0000000000000000 00000000ffd86d5c 0000000001a4a130
+GPR24: 00000000004d0040 00000000ffd86bdc 0000000000000000 00000000ffd86ab4
+GPR28: 00000000004d009c 0000000001a807e0 0000000000379fc0 0000000001a84b50
+NIP [c0000000000003bc] interrupt_return_srr_user+0x80/0xf4
+LR [0000000000230760] 0x230760
+Call Trace:
+Code: 38000000 e8e100a8 e90100b0 e92100b8 e94100c0 e96100c8 e98100d0 
+e9a100d8 7c6ff120 7c8803a6 7ca903a6 7cc103a6 <e8410080> e8610088 
+e8810090 e8a10098
+---[ end trace 0000000000000000 ]---
+
+note: udevd[2788] exited with irqs disabled
+
+---
+
+Please check the PowerPC updates 6.19-1. [1]
+
+You can check it yourself with QEMU. ;-)
+
+Thanks,
+Christian
 
 
-Takashi
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ad952db4a865e96ec98d4c5874a4699fe3286d56
+
+-- 
+Sent with BrassMonkey 33.9.1 (https://github.com/chzigotzky/Web-Browsers-and-Suites-for-Linux-PPC/releases/tag/BrassMonkey_33.9.1)
+
 
