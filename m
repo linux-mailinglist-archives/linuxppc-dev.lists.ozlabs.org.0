@@ -1,65 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-14672-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14673-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C250CAA8A9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 06 Dec 2025 15:39:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80DF5CAB1A4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 07 Dec 2025 06:14:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dNrVK5zwqz2xpl;
-	Sun, 07 Dec 2025 01:39:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dPCwD0xmhz2xQK;
+	Sun, 07 Dec 2025 16:14:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765031961;
-	cv=none; b=VwfG7RG0L+uia8DeQppYZJoWFipBMmc5f3rXSC87b9yZ+USKVjx4YorNPLLC9CLPJpSjEXITSqTGTMk2s33p3B2OggOcDy3/kIS2JMmTUsyReRkxKxnvm+0mIgkSSLwjqm/BrexgEMP9iqMXxCulrFusYei96vt2p+gB8VNCJvBfNPz420JXLlZyULhtubDwAyU0JIIQ0R5ZOM7TekL6zXmsef/73RM33Ja1Sb+Kgo7Vml0IdMrhnwMJJFhDz6WqDwMbBsYvrvcrfq93ncVPQYrETgZjSuUxLZ6lrcba5wAWoWIK+jLmq79wYSvCPdHXd/A/+E9cNsDKraHfC/M6Lg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::c2d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765084476;
+	cv=none; b=YsMvsw4/wzxVgwt6Hg8cHWUmJCupqz5ZiDqU33z0OOU1xw5nGG1xn9a8fgQqUlp2lhcQDvS/WW6MSRfEGbTlB9+rzAPVTb4HF8r3fu9Ivno0OtL7FBQ49ng4qDHI89yL416Px6Cz/Z8OWl/iWiuHk2DPYi6PFVXeWf3Rz+YCxRWz6MUKaaFwDHCR3tEEe5c/nf/iBgYURT9ChSOHb8A/MpAvkp+A3qK+oVr4PiAWsWiRW9T5m6K8EIyy4UiMITLqCJx+VEmH00mJOVn+/IUIhJuIM3Blen3yYkm6f2RxQl9jmcZ70CUcbsWhOhDZku1Shb0pUvMQykV4xKm5t1+veA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765031961; c=relaxed/relaxed;
-	bh=EggVBhQVxr4sw5CIp1bFASO3vEsWBXTPAXy9MI/s5eI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=NkMJlEE9SaWdIw90udZLqALazsSu2gMxVK2mv1xYB0kTQ19wqRHBotAIHFX9uj8bo7BxhwckRutU5Jkeag869r/gcAOTWlX/qpbtAQFJeV3yo4mLHzRAlwPOehET7b3cTcJ99WLkfByQMSpXaAp0Iyn+FuUTNOj79hd/PZwjKQ69ktqZ9dB1v3tO+gU1QV7J9b38sJdjYxPVyR1s2/NS9EcZCOc0zQe7f25jqZjkzKPGoaE4cz62DxaZIMILguoH1MJopofg+VBrmYUt1xiITAS2Rjn/0Ak5rh8MRkz/7eIU4Knlhf88XxxLz7gUAamunMNT2qZ9AVJ0CkLcvlS6SQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ugF5ZRVi; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=q+vECNFo; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1765084476; c=relaxed/relaxed;
+	bh=gIr6vMU+1WXTpE+kuQ5XIOvR7lhOKuME2h0aehuNw7U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bZkrbrUDokLCk3ynb56txkfOilWgs6bmky7byEH6ypN4jJk9f20lVb5fb86L1KxmFAskLX29XPB0HZ+zNAPzpeSTObAaLMH65cQDLcNEu9vbtPZ7BcO/9ASXBRDQOkz3mIhQNkPlAWPVz1RNx4Nfxz1HRD5nIjLUw0OGq9OGQfszSoWZ0TUomBLo2M/ectkn89qUcLJcyRJC4ajhyYrrCAkbGD5/MV2ll/a4/ftRxrGhedTBHMILWx7RZowbsbjlPOA9DOJJNM/tVoNoFTIzajnI7gSfNnVXwrWSdJ2aJu4EXGfyRxcjU1RoaScIpHly3TbD4RoV0fO6Nmx8an4e9Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=brainfault.org; dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=phrkxkMd; dkim-atps=neutral; spf=none (client-ip=2607:f8b0:4864:20::c2d; helo=mail-oo1-xc2d.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org) smtp.mailfrom=brainfault.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ugF5ZRVi;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=q+vECNFo;
+	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=phrkxkMd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::c2d; helo=mail-oo1-xc2d.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
+Received: from mail-oo1-xc2d.google.com (mail-oo1-xc2d.google.com [IPv6:2607:f8b0:4864:20::c2d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dNrVH138dz2xlF
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Dec 2025 01:39:19 +1100 (AEDT)
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765031938;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EggVBhQVxr4sw5CIp1bFASO3vEsWBXTPAXy9MI/s5eI=;
-	b=ugF5ZRViUhrj+hM4jZ6Njmm1VIzrK/SAqbJ0nSbSJnj9HY2kcGyVFQSTyD5ZNPshS5S7q/
-	6T7S5BteirJBQ6sN67Et2NQ5nMDu52fmrnmADKhzem/jj40OC1I0XhGQASpfnUPc9hEAyG
-	tnCZ6wX4GQWXtFzk+PJnrmYZuXL9WrYvfEeE5+ahoxihjlbfH3hulBpIy+XTOFqpKyJhh2
-	GA0M7auanj846Sum5O1gBULcHxj2wice0FUZEaCYALhtFBdVhhN+1opCOcnCz/ihRCkSYR
-	bMLgz98qdcUwOaxY099dBfNEXLICQl3G8jTOtIDstgTHwu7x8OEWZGF704t3Ig==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765031938;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EggVBhQVxr4sw5CIp1bFASO3vEsWBXTPAXy9MI/s5eI=;
-	b=q+vECNFoeflg8tmIPJEKZSEti6baZZYjstytbwCY2A/OlQTqbKOjuEhaDDom+ynw/qA73N
-	Rj+A7PrqBre9ILBQ==
-To: Nilay Shroff <nilay@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu, tglx@linutronix.de,
- maz@kernel.org, gautam@linux.ibm.com, Gregory Joyce <gjoyce@ibm.com>
-Subject: Re: [bug report] powerpc: per device MSI irq domain
-In-Reply-To: <f82d1224-509f-446c-8dee-13e28429b52b@linux.ibm.com>
-References: <6af2c4c2-97f6-4758-be33-256638ef39e5@linux.ibm.com>
- <87qztawmiv.fsf@yellow.woof>
- <f82d1224-509f-446c-8dee-13e28429b52b@linux.ibm.com>
-Date: Sat, 06 Dec 2025 15:38:56 +0100
-Message-ID: <87jyyzisjj.fsf@yellow.woof>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dPCw96R5bz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Dec 2025 16:14:31 +1100 (AEDT)
+Received: by mail-oo1-xc2d.google.com with SMTP id 006d021491bc7-657c68a08a7so1790157eaf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Dec 2025 21:14:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1765084464; x=1765689264; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gIr6vMU+1WXTpE+kuQ5XIOvR7lhOKuME2h0aehuNw7U=;
+        b=phrkxkMdxezlXcCdgRSSwtFrvoGJRvYBZYbuqLrmqzzovr2WSUum7mn+Wq15OPVsMr
+         NjkiouPHZ3IntEUwK14Ol+g3MipmNpaRaxHCQBSMkHKxpcaONaUhavk7TaC3l99wQgA5
+         VOXCfetdBmSNEZevGi80NTSYcg+8xq/E133i2FGJ90wMyQRDoa6Axpw811ITTPxSK0tI
+         g+2fIZijbtd7q1F9e/8OfZPcPV2pwhN69crwKp4J9tJPCNK8FWq87xC65uH4yMPnSYo5
+         HtmtTLtl6LH8SIQpQy5Etv+OhwYircJuTaU3+gtelsjyZgLfclsk423QwdxSqhU9Oad1
+         4AWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765084464; x=1765689264;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gIr6vMU+1WXTpE+kuQ5XIOvR7lhOKuME2h0aehuNw7U=;
+        b=m0BC7GeOQWZSIddfvfdhF0IRqRi4b1z1hBilAdSr1mlAui0rnSM/cHkVXwi7aWbnui
+         J5H+hHfDeECFPVQ0pczAreSQ3uIQJIYMXuR4nCpO8TWLRUdD2FgtHjhjfkpAdKN4IEIJ
+         wOeB1Cj8GtDpuo0DZa47kQ3+ylOMz1d4eT42HTUYUUtaQZ9l4PuSTLQ1LsVhOQcqg7e2
+         17OAar6PSDEQCqaytP3H3uHjXVPdif/Fl5GUh9yjuI+yVnEhVxTiFouZxPNHHYMcWVp1
+         cvTydyUUT9VF/dR4rUfqdqGbJjF1/qM/9qeCDSxo7cqH0QL7nlucWVl81fM8Rij9cXvg
+         jHNw==
+X-Forwarded-Encrypted: i=1; AJvYcCV6G05pZzDT/JuXnadY5Q6Agw4RghVwyOnTbzlt+pUOqqDSrIyW9tpnwYdjfRjnDNrK4NuQutloXvCUx+A=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz/FRZNGgufe+lMXSJ2s+kAIHjWmb5C89XkZVZ5L7BDCqdF52kr
+	vpW1ED0Wyt4i4AU3nGUWqEXy8w2iiedZktXX77KUIOOm94fjcWLyfKlZdrEsSjePcBoiif3IoHA
+	3IX5tdBer5+OJ4O34aMFHarkUhenbe8exaG/vogauhw==
+X-Gm-Gg: ASbGncuni9WxHNQK1eMBPWeYBot3nUDaipv6DL7+R1tc6OzMZ6uprBvkdzjGcJfqlTU
+	7R0XFn+nIjLTjRzXfUtj0KI0Em9jA7JzzlAxClZktByoVYmMKhCY3GLat2Zw1U/psqkTpVqLTVF
+	ImMMvKNWwNSHzFAWb2ZdZebs6emIRGcP6l1UqTOAPH7Q9pq3lDVe3K8rG/mZoi+acuNNMLLNx5w
+	lufqRIZqJ7IdQE3G9MkSdRaxRwEHEfnfzhm7pzN4j+036iCPe1s4Yau+RAjWS6AtAJg26iP
+X-Google-Smtp-Source: AGHT+IH3teezYiglKMW0l9sCwPDXKzHK/uYMVzLl99zBL+8tY4BEmXzPQzc7f6ucWRYnVm2fOg07KrRcgASdUHrgci4=
+X-Received: by 2002:a05:6820:f030:b0:659:9a49:8f73 with SMTP id
+ 006d021491bc7-6599a973da4mr2018657eaf.56.1765084463840; Sat, 06 Dec 2025
+ 21:14:23 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,126 +79,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20251205232655.445294-1-seanjc@google.com>
+In-Reply-To: <20251205232655.445294-1-seanjc@google.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Sun, 7 Dec 2025 10:44:13 +0530
+X-Gm-Features: AQt7F2qP99gde5P8lRQoinF2DOSDMpaUpigWBx6hvnDvXPL66vGpk9e2egXMZ2I
+Message-ID: <CAAhSdy1cPnxjntaR=cwZqG+oVgFpZKM0rKYAEdkHUCToMvN0Ag@mail.gmail.com>
+Subject: Re: [PATCH] KVM: Remove subtle "struct kvm_stats_desc" pseudo-overlay
+To: Sean Christopherson <seanjc@google.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Nilay Shroff <nilay@linux.ibm.com> writes:
-> Yes you can find the architecture document here: 
-> https://github.com/linuxppc/public-docs/blob/main/LoPAPR/LoPAR-20200812.pdf
+On Sat, Dec 6, 2025 at 4:57=E2=80=AFAM Sean Christopherson <seanjc@google.c=
+om> wrote:
 >
-> You may refer section 7 in the above document, which describes RTAS API.
+> Remove KVM's internal pseudo-overlay of kvm_stats_desc, which subtly
+> aliases the flexible name[] in the uAPI definition with a fixed-size arra=
+y
+> of the same name.  The unusual embedded structure results in compiler
+> warnings due to -Wflex-array-member-not-at-end, and also necessitates an
+> extra level of dereferencing in KVM.  To avoid the "overlay", define the
+> uAPI structure to have a fixed-size name when building for the kernel.
+>
+> Opportunistically clean up the indentation for the stats macros, and
+> replace spaces with tabs.
+>
+> No functional change intended.
+>
+> Reported-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Closes: https://lore.kernel.org/all/aPfNKRpLfhmhYqfP@kspp
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Thank you, that helped a lot.
+For KVM RISC-V:
+Acked-by: Anup Patel <anup@brainfault.org>
 
-Can you please confirm that the below diff fixes the problem? It brings
-back the "fallback" thing that you mentioned.
-
-Best regards,
-Nam
-
-diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
-index a82aaa786e9e..8898a968a59b 100644
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -19,6 +19,11 @@
- 
- #include "pseries.h"
- 
-+struct pseries_msi_device {
-+	unsigned int msi_quota;
-+	unsigned int msi_used;
-+};
-+
- static int query_token, change_token;
- 
- #define RTAS_QUERY_FN		0
-@@ -433,8 +438,26 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
- 	struct msi_domain_info *info = domain->host_data;
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 	int type = (info->flags & MSI_FLAG_PCI_MSIX) ? PCI_CAP_ID_MSIX : PCI_CAP_ID_MSI;
-+	int ret;
-+
-+	struct pseries_msi_device *pseries_dev __free(kfree)
-+		= kmalloc(sizeof(*pseries_dev), GFP_KERNEL);
-+	if (!pseries_dev)
-+		return -ENOMEM;
-+
-+	ret = rtas_prepare_msi_irqs(pdev, nvec, type, arg);
-+	if (ret > 0) {
-+		nvec = ret;
-+		ret = rtas_prepare_msi_irqs(pdev, nvec, type, arg);
-+	}
-+	if (ret < 0)
-+		return ret;
- 
--	return rtas_prepare_msi_irqs(pdev, nvec, type, arg);
-+	pseries_dev->msi_quota = nvec;
-+	pseries_dev->msi_used = 0;
-+
-+	arg->scratchpad[0].ptr = no_free_ptr(pseries_dev);
-+	return 0;
- }
- 
- /*
-@@ -443,9 +466,13 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
-  */
- static void pseries_msi_ops_teardown(struct irq_domain *domain, msi_alloc_info_t *arg)
- {
-+	struct pseries_msi_device *pseries_dev = arg->scratchpad[0].ptr;
- 	struct pci_dev *pdev = to_pci_dev(domain->dev);
- 
- 	rtas_disable_msi(pdev);
-+
-+	WARN_ON(pseries_dev->msi_used);
-+	kfree(pseries_dev);
- }
- 
- static void pseries_msi_shutdown(struct irq_data *d)
-@@ -546,12 +573,18 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
- 				    unsigned int nr_irqs, void *arg)
- {
- 	struct pci_controller *phb = domain->host_data;
-+	struct pseries_msi_device *pseries_dev;
- 	msi_alloc_info_t *info = arg;
- 	struct msi_desc *desc = info->desc;
- 	struct pci_dev *pdev = msi_desc_to_pci_dev(desc);
- 	int hwirq;
- 	int i, ret;
- 
-+	pseries_dev = info->scratchpad[0].ptr;
-+
-+	if (pseries_dev->msi_used + nr_irqs > pseries_dev->msi_quota)
-+		return -ENOSPC;
-+
- 	hwirq = rtas_query_irq_number(pci_get_pdn(pdev), desc->msi_index);
- 	if (hwirq < 0) {
- 		dev_err(&pdev->dev, "Failed to query HW IRQ: %d\n", hwirq);
-@@ -567,9 +600,10 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
- 			goto out;
- 
- 		irq_domain_set_hwirq_and_chip(domain, virq + i, hwirq + i,
--					      &pseries_msi_irq_chip, domain->host_data);
-+					      &pseries_msi_irq_chip, pseries_dev);
- 	}
- 
-+	pseries_dev->msi_used++;
- 	return 0;
- 
- out:
-@@ -582,9 +616,11 @@ static void pseries_irq_domain_free(struct irq_domain *domain, unsigned int virq
- 				    unsigned int nr_irqs)
- {
- 	struct irq_data *d = irq_domain_get_irq_data(domain, virq);
--	struct pci_controller *phb = irq_data_get_irq_chip_data(d);
-+	struct pseries_msi_device *pseries_dev = irq_data_get_irq_chip_data(d);
-+	struct pci_controller *phb = domain->host_data;
- 
- 	pr_debug("%s bridge %pOF %d #%d\n", __func__, phb->dn, virq, nr_irqs);
-+	pseries_dev->msi_used -= nr_irqs;
- 	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
- }
- 
+Thanks,
+Anup
 
