@@ -1,85 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-14678-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14679-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9691ACAC19D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 08 Dec 2025 06:51:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C966CAC1D9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 08 Dec 2025 07:06:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dPrhk31kvz2yFc;
-	Mon, 08 Dec 2025 16:51:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dPs1p3BDqz2yG0;
+	Mon, 08 Dec 2025 17:06:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765173110;
-	cv=none; b=BR9TPy3GYfcKEC5JHMGvSp3g1ZRNlMkQnVSCxLRFqXRBrMgWDgzWTvV/N92Bl6x3YeLGucfRPNJc+YlNiU1TO8EXMIOD8TpnViNQbDaXXcPgqbui+gYag5ZlUtbw5rIFqFYYjvn52FY6vUYKj70mjdAo6i1jZYwfXnGYKV0gUafxBrPacjz46GbyEZgM+JekEcZZ4NloOd0eaSm2FU/FmqdxYDl/0E09yQcKB7QM3YlfxDPn9TkVxon+SExuI2Eo0KNPyKhJJYpr6tFxv2ewydDaiW351tKECNQL5sQYktvRGIG72Uz5GBd64qSA/HaqTs5tEsAUiLvdQBhnfBy0Pg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765173110; c=relaxed/relaxed;
-	bh=hWLRtsjqPH4RBHBeThBGlAyA38kNEpe0djHjZbbDQxM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bIKBNSisYCGxZ6ECw4vvxJt9eATzi0RG2t3E37c7ZwP841nlFnUlJJpb7t3lCSVwoadg7NZ2SUtH3kx5GbKfESx2mn7g/j5Qxujm5A3EbCsOujJmiB7QgbQ58lp18c3FCTTnsJoGKFzYxQvz3OsmkuUwpXDXdaHvO3XCNl8MOPfL3iWV9AmC6+jtu+fe4K7mxI4nvGD8B+sbdw7RHLT983NWqOTTbvUInl44eYe3kp6a/RyeLj66cIVBMtPd0MsYF3UMeOGrFTnZE1Km3QLXEpOmyF5ClDtyOQqBMJAZzZg6VGZW10ppJPNAk1SS3xQAosKP92KIpjAm13io8mAEcA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pPVeeVCt; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.162 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765173998;
+	cv=pass; b=RAFOTu8WPLWmFtxmqblcuuBXySdGogLMYew0Oj/CIHufcEukHGXgzsxcEnlLv53ybopHwDTF+DDaWwgqh3olvnCS2QQ1rtfAmQKPyYCW2j/zH0UpFZTqa3ys5VPryR8HDlsoX8S+1tIVsP66UUB5yZ7p5RbEsurvGQVJqXL4zfxTgExWQaef8u0rsjmpcBzlvzrm5ytccArMrFcvcRexnLqd1hOntMfOUrcxMu43OXp9AuHFXtJT69wN/PB2hYBNr/E8WfLlVtpf3aA85L1ZxvSzpGk/fkLStW0CMnUE1ADxLjJUfJDmHifzR0uGOJEiu7/OjRq1acvOKoY6KQoWGg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1765173998; c=relaxed/relaxed;
+	bh=pCjOUBk4MIqEg5KqMTWyHYz6eERzfV9i4nO30bn9TVQ=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=LKimfk1IeqXpK3CRHpN9c2ujLE5mKrb3rt0319kyBXXvzDR6sE9yM5uT+nH22h2osdBESO8BM5iTfRXOMrVHuJuT5siq11z+r6REmvn2T5xAY0wJSjKyDVJa0VGsG54i/ry7iLU91r03Rp7Iump4vMsa2St3KO9PGIaONQZSXEBNu3mFMAvViJx3Bn00XURvliTSLyj3RStXuUKk23VdS6/ULkFIBWCMv80GxZS7eIJPz08/GTfWr9cY75k1STbxx/UtG+GSguCXOzTjME/80t3x4JnlzgXBIBkrCIbg5l0+r+fVArAmgvKIPD/ccDE0jFf7VeIGv67XQF1gl7QmmA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=nA+wom/I; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=R6rBZHF4; dkim-atps=neutral; spf=pass (client-ip=81.169.146.162; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p00-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pPVeeVCt;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=nA+wom/I;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=R6rBZHF4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=81.169.146.162; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dPrhh6m00z2xrk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Dec 2025 16:51:48 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5B7JqBLa024916;
-	Mon, 8 Dec 2025 05:51:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=hWLRtsjqPH4RBHBeThBGlAyA38kNEp
-	e0djHjZbbDQxM=; b=pPVeeVCtDhFRzTVCQrMHnkxjSyWIu+riIkKTSjK38/E3NS
-	nHBVigQr24RTBpfhAjKVkp4AQ2kGnZaE8ShGZyUWvOlNxdYT/P1sG3L3MiL5Kesc
-	Xss6j4V2rlGmdUg//A4q2q7aptmuhzkZJiRrqUJbPSbeq0Lp6zsuhWjjgxRYa+vc
-	l5UQk8fHqA7oOkYo1UC4NJAKHFhmWW3Yeg8plgRDvYnIztI4ZFvk+IL7u+tc6DSi
-	SK7IPUXzgRh0/ulDBBhyQ6nnrjEDWa9YfTW7XhV/wT/iNC2o/htDCeNhgb/MZDnx
-	M3ttyCyZP3AtkA+cN5VJ6ySfPIRwhdrZFtEiaooQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc535te6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Dec 2025 05:51:45 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5B85l7Tu007124;
-	Mon, 8 Dec 2025 05:51:45 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc535te5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Dec 2025 05:51:45 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5B8467hJ026807;
-	Mon, 8 Dec 2025 05:51:44 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aw1h0uuaw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Dec 2025 05:51:44 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5B85pg6739452934
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 8 Dec 2025 05:51:42 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AC7D820043;
-	Mon,  8 Dec 2025 05:51:42 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DC36A20040;
-	Mon,  8 Dec 2025 05:51:40 +0000 (GMT)
-Received: from Gautams-MacBook-Pro.local (unknown [9.43.101.24])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  8 Dec 2025 05:51:40 +0000 (GMT)
-Date: Mon, 8 Dec 2025 11:21:32 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        mad skateman <madskateman@gmail.com>,
-        Christian Zigotzky <info@xenosoft.de>
-Subject: Re: [PPC] [e5500] Boot issues after the PowerPC updates 6.19-1
-Message-ID: <aTZnZHYdZMXI-FE8@Gautams-MacBook-Pro.local>
-References: <4d0bd05d-6158-1323-3509-744d3fbe8fc7@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dPs1k2SSGz2yFj
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Dec 2025 17:06:32 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1765173985; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=dQ/gHD4hKL8x8d43L5q3c1HdbpgVK/FHN5UqFnX1yHWuuhkjW32ZC/sBB6eVt7eJMl
+    rlqdzEz0qvJ3sApuM992z801bHP5k1tlmsn1DzooaKWMOrc37obGS/60PaIjeP2nPt8z
+    qzGiPJAZb0ZtY12LH3lj0jXN2am0+4wrVJsmyTqc0wVY3DEqV8BXZvkmUNWb9s76FcpA
+    5w+FjWxSGeIN4/VRuKYf2DXF5TLhMYjJAHjXQhxbd1Ta+0uNoDTPbxgPbsrBEoqD6gdb
+    rg28mQ6biaaHUqq4BhIP2M2Nasn1g642Wr+XCZ4OPCSvRuiHUqT0Cdxo8X2Vgdfsx5XL
+    fF1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1765173985;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=pCjOUBk4MIqEg5KqMTWyHYz6eERzfV9i4nO30bn9TVQ=;
+    b=CkfUJkMLRVP8Jgme8ZlUURGa+XvadZ//BXM5L+AOF903uTT8OvSZe2emsUB6fayxtr
+    wMdmFMy8FNJoA65PPWVMJHbC6L4iRrWlE5QvFtru+cyZl98JWbDUJKoHFIJPQR1cFA+w
+    YNfpsVXJU5nJH47B57JKXuxytOe8Mv8p6I2YH/UmbKcl+H9etM+MJjZZRf98r2bOKckv
+    DkxyN3OICLisoVo3yp9o5qjzEhrxRiAuo7zhc0+m0bPPc6Z/C96C8agq/48LhWhy/55u
+    CfU/FZgFt/h6OJ03HmKkUGjZzrekyHBUOBaHLBXZZUz4nGZmnHCQG2Rwo2uizSCGo5b7
+    lD6g==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1765173985;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=pCjOUBk4MIqEg5KqMTWyHYz6eERzfV9i4nO30bn9TVQ=;
+    b=nA+wom/I35wFvMh+nIKaYCkPDhspAJF5J0/dk1aojhgBo8+Xwm48gp1KoSdyL1yISA
+    C8CLiTdD79SvwzFvkhawWNUxyhV5kOzFcYW6WPMma80hRloz/dAlYbjrjg06qPIt3mSF
+    cE4AOAYQFXywgdI2i/AIEqdUe/DWz6VUv+h2UPBIJrp1VjbKSOdY9fmQ3mZBkXhmYMLU
+    I8La1xh+CBhZV4lVXx7IgO/CXRJz4iS8erYhl44T5yK+rf75lwNopz6XSUp6JIIRisfO
+    FTWmEtOJL46hzZSTYzx+MN0gwmnfhOb7AEHGcqbC0+rIh3w2mFTIWHn8ck1tCIxPGkgz
+    CqEw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1765173985;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=pCjOUBk4MIqEg5KqMTWyHYz6eERzfV9i4nO30bn9TVQ=;
+    b=R6rBZHF4P3ya89HYvi6Pb5uYy7FOqg8yUpQapysbt1FkePcEv+Sf4K2W5NXAbHdNjb
+    wa9jcVZYNwqpBm0pBvCA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5q0s37CXH2VaK7wscHzjYZbkQTUvfpfdB3ufXY="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 54.0.0 AUTH)
+    with ESMTPSA id ed69d81B866PADJ
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 8 Dec 2025 07:06:25 +0100 (CET)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,42 +92,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4d0bd05d-6158-1323-3509-744d3fbe8fc7@xenosoft.de>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyMCBTYWx0ZWRfXx+ddEaIM7aJn
- JTUL19DyYANejUvKroXBlHgFAmAz60qDR5vqV+GeD5I/MUAcjqq1fKj8naG+4Ln/umLvn1IZGK1
- bNuZvqHya5x1LyYNEfk6l9oT8lOM3Co/+2gTqDWF5u42rKYW7XzvEUmgnKPE5kTEzsc0YJbmzI0
- LbXHuIrnXc6QuT9jjp6vfyNZfNnwfbCQVL53maB+DtzXM6Vt3OhlZ+hLu2Q7ggC/14Z2mu/Nm+h
- wbpHxD/wsH+cuxw+utl4jSxj9kMnfSBba78CV1knuR9cvsDJ7snkYgndKzBbP+UgSuyPYH0J8Lz
- 6oLTROAeJGTqzKJtOTT7eXl9KNwK8GJpGqa+UgFYbFuJSmELtSo2s555USTUhGp9L9md8nogHv5
- zVsEPsNpNDpdQoUzpaJkqGzAEXwHWA==
-X-Authority-Analysis: v=2.4 cv=S/DUAYsP c=1 sm=1 tr=0 ts=69366771 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Sw7Pw-7F6sdIvn3m9HUA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: w1FgkrOy0DQc5Ek8LlZWIXv9AzMFn5Dv
-X-Proofpoint-GUID: Y4bAfJI5RnFG1qX7xGmoEbMAPaX75M_Y
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1011 impostorscore=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060020
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PPC] [e5500] Boot issues after the PowerPC updates 6.19-1
+Date: Mon, 8 Dec 2025 07:06:14 +0100
+Message-Id: <B654DA82-1EEF-4D2C-8003-BAF32C5DE2E2@xenosoft.de>
+References: <aTZnZHYdZMXI-FE8@Gautams-MacBook-Pro.local>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>,
+ Christian Zigotzky <info@xenosoft.de>
+In-Reply-To: <aTZnZHYdZMXI-FE8@Gautams-MacBook-Pro.local>
+To: Gautam Menghani <gautam@linux.ibm.com>
+X-Mailer: iPhone Mail (23B85)
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Christian,
 
-Thanks for the report. Can you also please share the QEMU command line
-you were using? That would be helpful.
+> On 08 December 2025 at 06:51 am, Gautam Menghani <gautam@linux.ibm.com> wr=
+ote:
+>=20
+> =EF=BB=BFHi Christian,
+>=20
+> Thanks for the report. Can you also please share the QEMU command line
+> you were using? That would be helpful.
+>=20
+> Thanks,
+> Gautam
+
+Hi Gautam,
+
+Here is the command line:
+
+qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage -drive format=
+=3Draw,file=3Dvoid-live-powerpc-20230317.img,index=3D0,if=3Dvirtio -netdev u=
+ser,id=3Dmynet0 -device virtio-net,netdev=3Dmynet0 -append "rw root=3D/dev/v=
+da" -device virtio-gpu-pci -device virtio-mouse-pci -device virtio-keyboard-=
+pci -device pci-ohci,id=3Dnewusb -audiodev id=3Dsndbe,driver=3Dpa,server=3D/=
+run/user/1000/pulse/native -device usb-audio,bus=3Dnewusb.0 -enable-kvm -smp=
+ 4 -fsdev local,security_model=3Dpassthrough,id=3Dfsdev0,path=3D/home/amigao=
+ne/Music -device virtio-9p-pci,id=3Dfs0,fsdev=3Dfsdev0,mount_tag=3Dhostshare=
+ -display gtk
 
 Thanks,
-Gautam
+Christian=
+
 
