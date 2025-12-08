@@ -1,85 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-14685-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14686-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD640CAD0A4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 08 Dec 2025 13:07:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95370CAD2FE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 08 Dec 2025 13:44:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dQ11z1C7xz2ySV;
-	Mon, 08 Dec 2025 23:07:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dQ1rC3WGPz2yTH;
+	Mon, 08 Dec 2025 23:43:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.163 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765195639;
-	cv=pass; b=SGDuZozgeRkXtLMTgpJrtDeG/57H1oFdmnEdern1fkb+EB6sqxhGCvkH/2242lLWnsZL5uuNk8s2i97atzmGWnKQ5Kea9x9g7cNEuEpSXvUOBjmhxFci2ZMYo70ilvUcbNqCQJVJiwU+xCK6FrM42cFyWfz6QIPB2tP4otYhJAt/MCoEyCVjik7OMELkUEm2DWWRWW21A1eMD6XIJP1oa1PbAZNvXBsJuteTuK+eFaxz0hkYB/jD9iP3v8PLLjytrac3QN+WhPXmNZduLX2oDLJZDZ3ZYfmNgIbSK97NUHS6Aqdx5Jl/TaMEDDZTiU+X8VFl+ZK8MRv5qn6kV/bwiw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765195639; c=relaxed/relaxed;
-	bh=iRfVRKGMWU/8v5lJ3CJFoeiF6tukm10n+2IuvTirtvc=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=CCtzC0EsWhOQRWnRAKtO0423FBzvphWKA5e33jnNwh6+A+GC1lWrMp7uAtjm259SlzId4BUDs5R8UcRzxCg8u7ti1sP4UUlSOzY8ApWo/4d0AKhN75ywpIHfY0G+JR/qFY4rlG4LxLBq98U6RjUitQ/KeJ3y37gpxlw1k6BokoP0iB4dDnQdgGk/72CDs5c9bJZ04/sMDWeqxpq/FV6jFXGfbCmDbYJxtyfQb36uol4Iw4bdNCcchHOBXSjsKiMvMin+Dn4lXL5pixgSj/RYtKYBi6riN8s+kx2DKTMIWD7xzJvf2lFISHmLH4GCgjzuQ9HpMJ7pFr4/zRd2+8ZH9A==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=YstFes4p; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=h4Fr7C5E; dkim-atps=neutral; spf=pass (client-ip=81.169.146.163; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p00-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.10.151
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765197835;
+	cv=none; b=gRey4YAVu6qCpcq7/rAMM7fJPLY7/nzUx9WkZLvluDEwwmSQwPqx2SVIuvQxxCw1cTQjW0eWK18wJvubdqiGN3Igo+iOGbJdOJwrjG2qv9IzJsao8a/BS0/n8rmsCL8JNArkrxtVLPQA+QYmCq6QmHEIulurnd04u9r8TNZMWltjsHcqGdXsMjMEJfnVlkMiuOxDkETAS0RcJ8cd5KFnyM8E6QNCvyB7jR06JTTaVcwtE9urubcyNr3yxWfqQGfgfzZBDBhQIhah2kzOyyaIoihc+fSJT5tN7MGjoB/HymVIh+DnNZYNEA8iFiRwsGGtyO+0QPk0wpnI6SvNx+Y2+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1765197835; c=relaxed/relaxed;
+	bh=VyMnHMLigeJSl7gdbsKnzHstHtVolnjGqq5HWVtQk40=;
+	h=Date:Message-Id:To:Cc:Subject:From:Mime-Version:Content-Type; b=lRzUhi3VrILBru1GuYIrVmIo7kutfnhWQbhdwvjWlszaxNLVuhpz/yUy/HychqKjtRw3TXMkeZCqmkAHu8N4pyu4pPqZunVBRwMSFn8OrzW3vnS9Gegw475hCWPTS44J2hl5gct6qc1G3C2BCBVnApDu7SWx4S2RGtfH/0oBRxmsofzwFVBGaMJ85vh7UKndHydlQdm4nIId+UhEhv17frtZa4ANl+tKAKH+gs4XkwjlSKRNmryqwqkPoWRCBItcg1XFBw9uAjxtDuhLC3WF5wC7+n/4buWnvzojy+BEbH7j9A+7rLigeU9dksrWTgxWVvxzBo3htwMi+J4GSwktLw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de; dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=fLgsf9FN; dkim-atps=neutral; spf=pass (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org) smtp.mailfrom=exactco.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=YstFes4p;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=h4Fr7C5E;
+	dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=fLgsf9FN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=81.169.146.163; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.163])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=exactco.de (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org)
+Received: from exactco.de (exactco.de [176.9.10.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dQ11v6XTBz2yRF
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Dec 2025 23:07:13 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1765195619; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=dog3NxaqgB2LJEfATWYDMyjBfyZfrYtvwpxHu8Cj+CrwXXUGVr1BpjXgZQXWEHJ4rW
-    0NjrOdRVTTge5YOqQeONkOEDsk+k+fKpUpXKmemkjLGjLJFGpQEVIJ8vIwGBeoTysjRV
-    8+Jwp5r3pN8VgW6a5+dp7wTXqEtJ5WNxlMUKaGKJ4r2vCfI1MPvhGOtgANp35+W3e+8S
-    TbRtxH0NAI4rlY08euUb6DodMwTLWwOgbU8opMh2DRHuNM/NiwgaMlujdQi3jTGy1BII
-    oUG0voeq2a9YisuYamvfrO1K8Zf3pt45LscA6UejCNNLTkRjslW68IjwWp3EJ7ZKuIJV
-    57ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1765195619;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=iRfVRKGMWU/8v5lJ3CJFoeiF6tukm10n+2IuvTirtvc=;
-    b=romAaJiFGHcTpMPW4yYtiGfFp11J0Ey2U6VZSOEwC4Pb47sKTGFcw0M7CvvEvgCKyc
-    pOG773EbZED07aG1zvdy04olGJib4Pt4OOe/sDneBaDmfUJYOfevaBIyrNnN68H7C6Fw
-    ZLb/OIjesIVlL2QUeMRfU6AA9aUAqKs5XVCD2X61YTX6ulk7Ge6nx9AQFpOyBlTmuQPR
-    j7pNp2Wu4VHOcVVG/M6dTldk2wtZdQR1zy6C4dP9JP3chTmr2g5WJYbYQl8SJMGFERB2
-    Lt2pYrFzQ6Kgv/GgiaUi/4rjeVYN8rCqY5vng3TESLJ6K+vFlGLPNMNlt0zInOIlx53A
-    1zFA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1765195619;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=iRfVRKGMWU/8v5lJ3CJFoeiF6tukm10n+2IuvTirtvc=;
-    b=YstFes4pAtmBAVynGDoncd1wAwg5BOojJOyMjuwahzpvMLWbFtEDZ0MoEFiCPAz1TB
-    /G048HcouH+fys0yigcBoRai1mhEzw0wSw+TFmW0HP8t7gJ+RlNcqLZRxXrbeqRhHILv
-    G+OY4BHaXCCKQaTHS80pYPaYF9mbzVUiYqU2CcsS+sRzlZtQU0VKoytRfkwG7vaL7knT
-    5DpdJKUgEgle3tEx+fvCnYU9hm1229jNVDLTAOagE72/DyMzaEhC9PooEQvPqmB45ktA
-    Boe7798eRAdjHokBZJXGBI7N5Um+xLBXWNzAuisetLOCH3hS4O9frhVdJnrOgmEq9xCt
-    5Hkw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1765195619;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=iRfVRKGMWU/8v5lJ3CJFoeiF6tukm10n+2IuvTirtvc=;
-    b=h4Fr7C5EnZgMYnt0+gkGYWxIw3jqJf0yEMbz2moJhwiWqUn+vMfLFbnfb5n3kV/ysF
-    hTkouw0iQ/J4046aTlBQ==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5q0s37CXH2VZPiq48H/i2+1L88ixBiTBtCDvtI="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 54.0.0 AUTH)
-    with ESMTPSA id ed69d81B8C6xCQO
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 8 Dec 2025 13:06:59 +0100 (CET)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dQ1r71fPdz2yRC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Dec 2025 23:43:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
+	s=x; h=Content-Transfer-Encoding:Content-Type:Mime-Version:From:Subject:Cc:To
+	:Message-Id:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
+	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
+	List-Owner:List-Archive; bh=VyMnHMLigeJSl7gdbsKnzHstHtVolnjGqq5HWVtQk40=; b=f
+	Lgsf9FNjEYZo89e4Btd1E2KDsQ0o20PPm2PIfFCppesj181yCwTdto1KOYDUibgMqHcV9qPYRD1bP
+	qT0OuBpdzD916uSnKtRElod/tlN4e49f4Dmmr7HYcchbXcvMM/LP9COKTHBS9XyltdXyJMl3vLHQD
+	S277R9e3jn9sLoj+zKsymTrfy+h4c97kx74PhofWFczNKWfTd1kIRxKVX6LwTbyy4qjM08pawvlct
+	vRyurQlPkV0GsCE76JT17K7ZQi6ZmQVA0P5a+0A1OJZmeKnopMu5ZNWmC55PIF+jspXEz3ns56VJE
+	HklDj9KjYOxO60fkrO8hoqbI+GUpM2s3g==;
+Date: Mon, 08 Dec 2025 13:43:49 +0100 (CET)
+Message-Id: <20251208.134349.455605632609082340.rene@exactco.de>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
+ <mpe@ellerman.id.au>
+Subject: [PATCH RESEND] drivers: Add missing MODULE_DESCRIPTION to PowerMac
+ drivers
+From: =?iso-8859-1?Q?Ren=E9?= Rebe <rene@exactco.de>
+X-Mailer: Mew version 6.10 on Emacs 30.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,51 +59,53 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PPC] [e5500] Boot issues after the PowerPC updates 6.19-1
-Date: Mon, 8 Dec 2025 13:06:40 +0100
-Message-Id: <102879D6-E08F-4645-A2F6-DEA2C3E6C0D1@xenosoft.de>
-References: <52ef7162-5578-4e73-9c46-2bae0be8df61@kernel.org>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>,
- Christian Zigotzky <info@xenosoft.de>
-In-Reply-To: <52ef7162-5578-4e73-9c46-2bae0be8df61@kernel.org>
-To: Christophe Leroy <chleroy@kernel.org>
-X-Mailer: iPhone Mail (23B85)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 08 December 2025 at 10:54 am, Christophe Leroy (CS GROUP) <chleroy@kernel=
-.org> wrote:
+Noticing modpost: missing MODULE_DESCRIPTION() in our PPC T2/Linux CI:
 
-=EF=BB=BFHello,
+MODPOST Module.symvers
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/block/swim3.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/macintosh/ans-lcd.o
 
-Can you provide more details on your problem, the full messages before the O=
-ops, and your .config ?
+Fix by adding missing MODULE_DESCRIPTION().
 
-Thanks
-Christophe
+Signed-off-by: René Rebe <rene@exactco.de>
+---
+RESEND w/ forgotten Signed-off-by
+---
+ drivers/block/swim3.c       | 1 +
+ drivers/macintosh/ans-lcd.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-- - -
+diff --git a/drivers/block/swim3.c b/drivers/block/swim3.c
+index 01f7aef3fcfb..6f986ef62b94 100644
+--- a/drivers/block/swim3.c
++++ b/drivers/block/swim3.c
+@@ -1290,4 +1290,5 @@ module_init(swim3_init)
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Paul Mackerras");
++MODULE_DESCRIPTION("SWIM3 PowerMac floppy driver");
+ MODULE_ALIAS_BLOCKDEV_MAJOR(FLOPPY_MAJOR);
+diff --git a/drivers/macintosh/ans-lcd.c b/drivers/macintosh/ans-lcd.c
+index fa904b24a600..10921b41e684 100644
+--- a/drivers/macintosh/ans-lcd.c
++++ b/drivers/macintosh/ans-lcd.c
+@@ -203,3 +203,4 @@ anslcd_exit(void)
+ module_init(anslcd_init);
+ module_exit(anslcd_exit);
+ MODULE_LICENSE("GPL v2");
++MODULE_DESCRIPTION("Apple Network Servers LCD driver");
+-- 
+2.52.0
 
-Hello Christophe,
-
-Here is the kernel config:
-
-https://raw.githubusercontent.com/chzigotzky/kernels/refs/heads/main/configs=
-/e5500_defconfig
-
-[PPC] [e5500] Boot issues after the PowerPC updates 6.19-1 #18: https://gith=
-ub.com/chzigotzky/kernels/issues/18
-
-git revert ad952db4a865e96ec98d4c5874a4699fe3286d56 -m=20
-
-After a compiling the kernel boots again.
-
-Thanks,
-Christian=
-
+-- 
+René Rebe, ExactCODE GmbH, Berlin, Germany
+https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
 
