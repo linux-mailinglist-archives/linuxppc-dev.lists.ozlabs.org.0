@@ -1,85 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-14699-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14700-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D23ACAF9F2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 09 Dec 2025 11:23:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2492CAFD80
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 09 Dec 2025 13:01:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dQZh32VZNz2yD4;
-	Tue, 09 Dec 2025 21:23:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dQcrP0Fhyz2yFW;
+	Tue, 09 Dec 2025 23:01:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.216 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765275827;
-	cv=pass; b=WbLh5QHYtaRHx0CU1aDY7vo9LFFDR3Ifb18HPJjBXSSoos6H2mCAv3N8jzlcbqK1f/n1NUBqQic+AObNjOf8c0cd8HIiJnPXBCFBLyy4MW+RYBXesSxA7Qk2fi3YUZIdE2Ddj3gne03/dKTHqxGGRl7uQsCALyt+kMkrdarDjYxuKVgB1HnPhDFq/HWTgED/JZ3MqhozuWqL2HlboLDag3F9vuhPV0UtV6oSWSD1ETo4mrxeS45Q75VCB0LivcjTyCgHI0rgN3YlvzSJBWYQaNZC7fwvoj9ZRLjeeDHkQOrduprI1c8svvK3yt5qzW7EcWk2pkkazARQ3oXQ239oSg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765275827; c=relaxed/relaxed;
-	bh=24nBF+4UPWM1LyVXTCZX7fit72DdDwed1XXhw3xKTt4=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=G81dZyX6USACZiU91tOz/HTEl6oKReQrZ64CqMiXxgxECxoJNS6K5/gfCYkanhuDgMGy0zOQ3yNMPGvjtQ5c4CdHuFdZY5J0Hq6bTiAge/zMpHeMZCW+Gd6Mffc/maz3yAQlibCHIhSLPLnypPVa6o5wGqQdeYXavASd792qY/amKbbIVed4bP6yeIrr5OJp1TYdYmBgRfTA4oJQtMcjkjIp3uxvlEtT2FtXx8GQxv+mv/8etCvbnH2SyZ2a694K80qRGipqqdfwIkAERNcd4GcbKoBaK+ML4aY8J1LSt5rU2Z/fRmz/uwUOAyGLQFJChOVBl1ws7b7AyZTt+qjjXA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=QO1Ip5+w; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=pxc4uL0G; dkim-atps=neutral; spf=pass (client-ip=81.169.146.216; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p00-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.218.47
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765281668;
+	cv=none; b=GecIt0fQgxgKW1puU/AETql0XB4MpvnJDi5o1cTzGwLq2ickatySSNbmiT/fyxFzkGqKCR7nfCJEOd0qclnDWz+Okn9shNLu730qy5xXtMhd9nlyrTMTS4QfwS00WMoDc3btMRj1MHlprqNjaGaRdtKkRCefiHevBgCTMlwva7ty6r0TcYFhCQmnKT1ZIIXmUy2AHCjtnCbQ+slSh+T6B1zqkw+LyiFd6TZLvxpq4WMXmHcoicLOcu4BnutKnXDqqJczVSD0BbI1iQLOhfKXKt3LFYYgSiFLQoUBqs+wsYGa2O44fSgIWT6WvDJiSUCmEdF2o2WxJEvyC29jSkRRmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1765281668; c=relaxed/relaxed;
+	bh=tooAGZtbgdZjjhD9HMU80T91Y7IuvPUrt9iA6ZDBNz0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=T4oaZk0i871+u0njTQ05lCFlX+BvGXCmOr1V+Pc4EQ/X4w7hkf0Kk1ONXOP1skBbLU+wjvDZ7j8OFmILi9zCoglDBR1rnugL04UuHRrxze8gScRueddXzCG3DSMkR+B+Ogfz0pBKJUwbrjicj/WQqG8X210bv99nXHF/sIipWTlePbpHdN3hhrZHO4i5jFov5uchMD71W5WA+3ixtEeSJA9hF4z0LBZbfBPpEHIr2DVmkL0erxoyNcHWxHhhuYmj75LmhLoHKF8SHWL2EfHwuQpZIx83r1kDBhgCVLYiARfJAa7S3RU4wIyzgfY72LOB18DR/ZAf682edDISlPtBiA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com; dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=QtFdf83s; dkim-atps=neutral; spf=pass (client-ip=209.85.218.47; helo=mail-ej1-f47.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org) smtp.mailfrom=baylibre.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=QO1Ip5+w;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=pxc4uL0G;
+	dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=QtFdf83s;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=81.169.146.216; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.216])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baylibre.com (client-ip=209.85.218.47; helo=mail-ej1-f47.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dQZh00X0wz2xs1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Dec 2025 21:23:42 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1765275809; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=WAp9dYegdKWKGLrV7HSC3SvXT6LORnIpYQ4lMJlNefYH+ABzjw46UuyhDfSnERczZP
-    m5rbfLWJi/DUfscGas+1u2ZEeLywWOAIpcbMCDefQTWfWlwMcBmswQ4ODeNTcIiBIQRt
-    4aBm3QvY323ICBgGw+ScaUEwxvIK7Yf2WQ2WhLBHYMxZ+G3EwKPzAKHLP4AN2f2Gxkdv
-    K7FfyvubBk+JziRPjX8+SuV8BR2SQgcnxnQhTKSdd4hFAwI8PBYkZCtqYvlVHI6qEswN
-    61mTZSi9rTwoUHLuVnMGnGdnOaGg8xh0rKZvhGlu668yuBjgztw7gohl8dg8lJCjW0e8
-    fFlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1765275809;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=24nBF+4UPWM1LyVXTCZX7fit72DdDwed1XXhw3xKTt4=;
-    b=Rdplr89IM36vB/U7LmcC8z8/+zYcd3Jf8rMiJGz6iY8bRt4/9A/5G3YMIUPokpdxex
-    +Ray6K1WMlkYhAx6/hjyMJqZtSajzzzNdw4QTMT/GgvUISVT5tOkxzzfNPZjDEwUsSAW
-    lgO/EXiZvaoLsYWJ7yaEbmmhvOz6D2BWKqPwPampCfCLbdK6NuqAFjiOke/QqR8ceNXe
-    jgRKNP5BeIy/z9XnDc0W8xo5xHRjg/lLQver6LlnK6D00f1HP4S8ccOv5OBVlAr61nwC
-    GdVs9H0JqbFoXqP0tKYcsJ9rY2+KoahHjwBGof40v6H4z60CjbeI5w3XfDFltMzTjPZa
-    gJZA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1765275809;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=24nBF+4UPWM1LyVXTCZX7fit72DdDwed1XXhw3xKTt4=;
-    b=QO1Ip5+wCv6BSp+Ky5xDyrRqkXRiGUqU1WncK6nFv14QrLopuT08Ba/o+hkBR18Fi1
-    sXo0tXeecYCBKga6a2wmjrAv2iHxaYc4lT9nZQ4vKYul+kezdpmI1QILX1dQelITG2dR
-    SbVjWgHyzAHQZzIy+E5YfCcZ/qNBe1yhy1p3yhWl/RXqNNCaKiqQdJl8XvPA526yc/fn
-    mUIqHattGt9m9IkMynCntG1gchWeH0VszwQfam6S57BDJvOPizM5p/Hi6eBmAO93m4uI
-    r6pIXYRqzRCmG2iAWFM17rN2iQVZoxElFpNB7QIzNLr436HxUq3Bqgyqn7IiHnK7X1Xj
-    L6pw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1765275809;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=24nBF+4UPWM1LyVXTCZX7fit72DdDwed1XXhw3xKTt4=;
-    b=pxc4uL0GsCQnfnaQoDowRGGbvOgh9xt204cO0MYAzxJfS1PtmFpZuMziLD0BtndQSY
-    qhx/Oabj4CBWmfTEbXCA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5mxsyjMXnXptmt6xq1TL1Rm/8PW4ZEn0pHPQv8="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 54.0.0 AUTH)
-    with ESMTPSA id ed69d81B9ANTG7G
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Tue, 9 Dec 2025 11:23:29 +0100 (CET)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dQcrM3c8yz2xs1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Dec 2025 23:01:06 +1100 (AEDT)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b76b5afdf04so880730166b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Dec 2025 04:01:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765281603; x=1765886403; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tooAGZtbgdZjjhD9HMU80T91Y7IuvPUrt9iA6ZDBNz0=;
+        b=QtFdf83sii3RaO+NKHf/hYhqvD1dzPMBEWJgojL3ixk3OCjrX4nOWuKLgw1wAzyuXu
+         03y9X59CwqSWLfwEwZPjS5X1K+QksFB/kW/mVDiy8bE2l+0XU6Ky9zW64j452gml4UJK
+         gMEsMDafg9p0yJ3scojk6NjEtYeq2jv+5VcH2L1qKx9bWOrJYA6WoUiUA8wuMyKCWdBq
+         3KsGDgU3PPOvwJhBD6+ibqKuxSIM+xxiawK8gL/tZATd7yHO6WD499/tB+KWvx98x/Cp
+         62XATTiMpvmHg63y48VN3/g5WCtZ+ANZnPaFtAsnMfb3maR9mkX9Vc86BNf29owGbUAR
+         DJDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765281603; x=1765886403;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tooAGZtbgdZjjhD9HMU80T91Y7IuvPUrt9iA6ZDBNz0=;
+        b=r//OCS8qmqnbyLAVy0O8b2ikLMn1ZHq5eImKVD3wecAD3SVVr9yT9Hr6epfU7Sys+B
+         I9lvwRTmG+l+SYjgkvEuQ5/51IYlL3j9FLHcvboxrVb3zF/DGJTv9oNaTA0rYf+z/39r
+         /hzm5K6/saQYPLafjIxJIH/r2KZxlkuGO3ivDAVyCcF0aiDOPLCOAjfHagW4Xl8/bS6w
+         li/RlL3wGIfGY1i74+X+DKY+eeUYcUGWwTIfvPyUx3fPd7Lh9viBQjg6bo0fNsR2ARYT
+         hOtwK1wrZ+4vfLfQNRXmg+X24KLwix6/JdPqpz/3GSdqJTdIkl6yGSkKOZqCfZgDdqcs
+         PS0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWz67INERT7vxcSDpn33/2N7jh5wQ8ULqymRYszj5q+bxVoao13qSnzLQDQ1Qb5LKpT6LrqQGIMhn9/qLE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxiMfTReO3aUaxhW7Qt3MhrbObOiEzA2Hiyi9aBGctBy2ScWaNN
+	jlFfCmm9iCr9vgSok46h5QThXKUt/wWVTQ/vsrfghGf5X24+pxb8mJOlmpMmpC9Nt7RFlgQSXtb
+	9xBBS
+X-Gm-Gg: ASbGncsrOq3sQU0FYsN4bPgjhtmf22K01WcGdBGJWwnQ4B8YgXFq6nJQm/ioEHe4/0L
+	gIfYeE38TVPlnYMqCk2ex6adginZO2K9ES/aO/OWTQ/3jAAwdJCXID5JZWuXlFIdZyS5YhZQ48M
+	+Csj8t3xKNIWGSM/CHbBcyY03iN0CtdeohhQw6BVTuydum3QkLZ1HE5QDmdpvP3NT7HKCzFYmdW
+	vL7wQSoPznutY1R+qSUb4pYbhSq4aU/pxi73bATreIk5N4TFKWJgyIyg0Xq68OS5ytSPatRCCzG
+	xKmJ2GJ57pPShAwQqCdCqm0SuFloSsdiA9NL3HIEUHUFfZSvUXAeMPbdkmeijBiwyikAP2W5j4z
+	9ZVJZ2v4CVa3PC1T+e06oE/ZFWa7Yatx6LvWcxpUI0fpPxSMKBK2N0HdjiLO6eXGL9WePKH1p+7
+	739F25cTj0lGrp6zJvlctEjygEIKZrZUonFv+zxKDhOZFwmKgHl7s3kyH9XPTnCneaeBSXyglbc
+	O8=
+X-Google-Smtp-Source: AGHT+IFgETqaC11zCIghKXmz8a2Du8BZsnSjgwTiIV4/AwfFC0cLtuFvwMtSg09tu/Is1VZI3/5I7Q==
+X-Received: by 2002:a17:907:9494:b0:b73:780d:2bcf with SMTP id a640c23a62f3a-b7a2432fd1amr1148519166b.16.1765281602948;
+        Tue, 09 Dec 2025 04:00:02 -0800 (PST)
+Received: from localhost (p200300f65f00660846b2ba6e435ad603.dip0.t-ipconnect.de. [2003:f6:5f00:6608:46b2:ba6e:435a:d603])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b79f4498947sm1338972766b.15.2025.12.09.04.00.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Dec 2025 04:00:02 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] bus: fsl-mc: Cope for unbound devices in fsl_mc_shutdown
+Date: Tue,  9 Dec 2025 12:59:47 +0100
+Message-ID: <20251209115950.3382308-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,202 +93,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PPC] [e5500] Boot issues after the PowerPC updates 6.19-1
-Date: Tue, 9 Dec 2025 11:23:18 +0100
-Message-Id: <3CA22041-688B-4237-BD85-B3B3CB523C75@xenosoft.de>
-References: <12A4C332-4517-41A0-B3F4-103970E1B829@xenosoft.de>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>,
- Christian Zigotzky <info@xenosoft.de>
-In-Reply-To: <12A4C332-4517-41A0-B3F4-103970E1B829@xenosoft.de>
-To: Christophe Leroy <chleroy@kernel.org>
-X-Mailer: iPhone Mail (23B85)
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1256; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=D+TP//wjPltlG0/Y49/xfy2Rewaag9dC3HNcA+UOyQo=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpOA823BEGyNQrUN6u3myCd6N6bdWfKs1ZFblBd 9v+hzs9veqJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaTgPNgAKCRCPgPtYfRL+ TkrACAClnqHkRti/GhhFX2g8Cvpp+VW727Q9wsexzhfcUxB92YXNil6Dm+HZ4l0OZfJL+kfS7Iq PZ4IczMKbeAfFFqJeUXTgKkWg60xVNYC/df+BvO54HN0CdCVqJ+daJTHsyKPdFqaX1X2Ej97bl2 6CSFgmk3HI7qRjSs0a4VsNqjb/i3hUn/g7aMe8FNDic/GATldzG4tHVp+1tvaCkyzrznEsxKcbX WB1e0lyK1o9u3aMyVpmLiWexLXMhiZ7U8BsIsM26IUptUEK0i4idQDjOW4PiZBSlk6m6sjIZhTz DYPjBQZ8qnSUwIoDjkZw3iGsb9muWbGbQhAKuSdF74Y3FtXb
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Other than a driver's shutdown callback the bus shutdown callback is
+also called for unbound drivers. So check for the device being bound
+before following the pointer to its driver.
 
-> On 09 December 2025 at 10:03 am, Christian Zigotzky <chzigotzky@xenosoft.d=
-e> wrote:
->=20
-> =EF=BB=BFI bisected today.
->=20
-> 1. git clone https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux=
-.git -b powerpc-6.19-1 a
->=20
-> 2. cd a
->=20
-> 3. git log
->=20
-> Output:
->=20
-> commit 9b36c7fc5aa5f2c6e6eeb9f312fdfe61b4291c9f (HEAD, tag: powerpc-6.19-1=
-, origin/next-test, origin/next)
->=20
-> ...
->=20
-> 4. git bisect start
->=20
-> 5. git bisect good f850568efe3a7a9ec4df357cfad1f997f0058924
->=20
-> Merge tag 'i2c-for-6.18-rc5'
->=20
-> 6. git bisect bad 9b36c7fc5aa5f2c6e6eeb9f312fdfe61b4291c9f
->=20
-> macintosh/via-pmu-backlight: Include <linux/fb.h> and <linux/of.h>
->=20
-> 7. git bisect bad
->=20
-> 8. git bisect bad
->=20
-> 9. git bisect good
->=20
-> 10. git bisect bad
->=20
-> 11. git bisect good
->=20
-> 2997876c4a1a5864baa13d7393c2b68cf5b51183 is the first bad commit
-> commit 2997876c4a1a5864baa13d7393c2b68cf5b51183
-> Author: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Date:   Thu Sep 11 14:30:12 2025 +0200
->=20
->    powerpc/32: Restore clearing of MSR[RI] at interrupt/syscall exit
->=20
->    Commit 13799748b957 ("powerpc/64: use interrupt restart table to speed
->    up return from interrupt") removed the inconditional clearing of
->    MSR[RI] when returning from interrupt into kernel. But powerpc/32
->    doesn't implement interrupt restart table hence still need MSR[RI]
->    to be cleared.
->=20
->    It could be added back in interrupt_exit_kernel_prepare() but it is
->    easier and better to add it back in entry_32.S for following reasons:
->    - Writing to MSR must be followed by a synchronising instruction
->    - The smaller the non recoverable section is the better it is
->=20
->    So add a macro called clr_ri and use it in the three places that play
->    up with SRR0/SRR1. Use it just before another mtspr for synchronisation=
+Fixes: ef980bda574d ("bus: fsl-mc: Convert to bus callbacks")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+Hello,
 
->    to avoid having to add an isync.
->=20
->    Now that's done in entry_32.S, exit_must_hard_disable() can return
->    false for non book3s/64, taking into account that BOOKE doesn't have
->    MSR_RI.
->=20
->    Also add back blacklisting syscall_exit_finish for kprobe. This was
->    initially added by commit 7cdf44013885 ("powerpc/entry32: Blacklist
->    syscall exit points for kprobe.") then lost with
->    commit 6f76a01173cc ("powerpc/syscall: implement system call
->    entry/exit logic in C for PPC32").
->=20
->    Fixes: 6f76a01173cc ("powerpc/syscall: implement system call entry/exit=
- logic in C for PPC32")
->    Fixes: 13799748b957 ("powerpc/64: use interrupt restart table to speed u=
-p return from interrupt")
->    Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->    Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->    Link: https://patch.msgid.link/66d0ab070563ad460ed481328ab0887c27f21a2c=
-.1757593807.git.christophe.leroy@csgroup.eu
->=20
-> arch/powerpc/kernel/entry_32.S  | 18 +++++++++++++++++-
-> arch/powerpc/kernel/interrupt.c |  2 +-
-> 2 files changed, 18 insertions(+), 2 deletions(-)
->=20
-> 12. git revert 2997876c4a1a5864baa13d7393c2b68cf5b51183
->=20
-> After reverting the first bad commit, the kernel boots without any problem=
-s.
->=20
+I pointed out this issue a few days ago in the thread that resulted in
+commit ef980bda574d, but didn't receive a reaction so far. Given that
+ef980bda574d is contained in next, I guess it's time for a proper patch
+to fix the issue. Here it is.
 
-I created a patch for reverting the first bad commit.
+Best regards
+Uwe
 
-After patching, the kernel boots without any problems.
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff -rupN a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S=
-
---- a/arch/powerpc/kernel/entry_32.S	2025-12-09 06:57:20.681347393 +0100=
-
-+++ b/arch/powerpc/kernel/entry_32.S	2025-12-09 10:24:37.357301725 +0100=
-
-@@ -101,17 +101,6 @@ SYM_FUNC_END(__kuep_unlock)
- .endm
- #endif
-=20
--.macro	clr_ri trash
--#ifndef CONFIG_BOOKE
--#ifdef CONFIG_PPC_8xx
--	mtspr   SPRN_NRI, \trash
--#else
--	li	\trash, MSR_KERNEL & ~MSR_RI
--	mtmsr	\trash
--#endif
--#endif
--.endm
--
- 	.globl	transfer_to_syscall
- transfer_to_syscall:
- 	stw	r3, ORIG_GPR3(r1)
-@@ -160,7 +149,6 @@ ret_from_syscall:
- 	cmpwi	r3,0
- 	REST_GPR(3, r1)
- syscall_exit_finish:
--	clr_ri	r4
- 	mtspr	SPRN_SRR0,r7
- 	mtspr	SPRN_SRR1,r8
-=20
-@@ -180,7 +168,6 @@ syscall_exit_finish:
- 	REST_GPR(0, r1)
- 	REST_GPRS(3, 12, r1)
- 	b	1b
--_ASM_NOKPROBE_SYMBOL(syscall_exit_finish)
-=20
- #ifdef CONFIG_44x
- .L44x_icache_flush:
-@@ -237,11 +224,10 @@ fast_exception_return:
- 	/* Clear the exception marker on the stack to avoid confusing stack=
-trace */
- 	li	r10, 0
- 	stw	r10, 8(r11)
--	clr_ri	r10
-+	REST_GPR(10, r11)
- 	mtspr	SPRN_SRR1,r9
- 	mtspr	SPRN_SRR0,r12
- 	REST_GPR(9, r11)
--	REST_GPR(10, r11)
- 	REST_GPR(12, r11)
- 	REST_GPR(11, r11)
- 	rfi
-@@ -270,7 +256,6 @@ interrupt_return:
- .Lfast_user_interrupt_return:
- 	lwz	r11,_NIP(r1)
- 	lwz	r12,_MSR(r1)
--	clr_ri	r4
- 	mtspr	SPRN_SRR0,r11
- 	mtspr	SPRN_SRR1,r12
-=20
-@@ -313,7 +298,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRE
- 	cmpwi	cr1,r3,0
- 	lwz	r11,_NIP(r1)
- 	lwz	r12,_MSR(r1)
--	clr_ri	r4
- 	mtspr	SPRN_SRR0,r11
- 	mtspr	SPRN_SRR1,r12
-=20
-diff -rupN a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt=
-.c
---- a/arch/powerpc/kernel/interrupt.c	2025-12-09 06:57:20.717347165 +0100=
-
-+++ b/arch/powerpc/kernel/interrupt.c	2025-12-09 10:24:37.357301725 +0100=
-
-@@ -38,7 +38,7 @@ static inline bool exit_must_hard_disabl
- #else
- static inline bool exit_must_hard_disable(void)
- {
--	return false;
-+	return true;
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index 6bc163d2ca49..c08c04047ae2 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -162,7 +162,7 @@ static void fsl_mc_shutdown(struct device *dev)
+ 	struct fsl_mc_driver *mc_drv = to_fsl_mc_driver(dev->driver);
+ 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
+ 
+-	if (mc_drv->shutdown)
++	if (dev->driver && mc_drv->shutdown)
+ 		mc_drv->shutdown(mc_dev);
  }
- #endif=
+ 
+
+base-commit: ef980bda574d3a2ebaa297def62f03d2222e6ef3
+-- 
+2.47.3
 
 
