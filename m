@@ -1,64 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-14704-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14702-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E62CB1151
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 09 Dec 2025 22:02:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78126CB052C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 09 Dec 2025 15:45:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dQrrh1ByQz2xWS;
-	Wed, 10 Dec 2025 08:02:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dQhVJ29Mhz2yFK;
+	Wed, 10 Dec 2025 01:45:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.187
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765285269;
-	cv=none; b=AvDzkvUXzokAs9uoo1Wmi0zjkkEhunSKtXoAd8iQ4Ai8AtU2sgNkMYzgaAOi11TodogDuCskMvOO+Avp48K8V8T38ckz0aZHF8RxtUwbtGuSSmk2r7iSRG4WZdycDZK56t0aYZbE/dJ66+VvGPwGA9gNbF9Vxo8CpGoDZMPo+CNjPaGSxqRuzJ4uawYM6ozQVGoT1pqZyrG3WRXXMeBsznLl6cZ/cAihOYas5nCWTXUdsLi1UOC3ZuGDKZo7NcUDssH1OzFOKrRV45qn3ySq9DslCDZkxq1mZvydgH3BoG1CgXZ/yj9mFAqvFQwviUtb+6oZHx1KapsLWDEhtX7SLg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.218.50
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765291544;
+	cv=none; b=Yz8XPfeXiruj4U/eCqLzBSPpi9PfDdJp/Vr6l0WUKXaj9IocUGE3gaKHXfHvkOS64tl+pTrLzUP+j9HZY4T0TpXKa7q8tbNwn7uUnfabve95hGKLN1VieZTrs85srIx6T3FcvglWrXlFlYsqV11LKPdWMvwanY1JvoOzo1zCbxf27uj9oJMiWQmxscKpQN3F5ynJW+j4KBtZZr5xIM50elvpC5hOnpwhFoodoJpAaWGCejWgWhL1vQ2keBzENp8GHjRsCX1/JEfVjrYvx5IJJOpriOeNs1sdfxQl+x0JCAYvSPhaJ6rTn+r4SywfzrGJ6pPd3h/7arQyDMYwN2TLVg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765285269; c=relaxed/relaxed;
-	bh=Xo7OeA33tWRYz8zbfLCc2jeO2ZGq0wF+pXykwItiK5M=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=dwbmo6D7bdBpQTPk1x5KawYb+Kyxbmhr9jfthgJ1tAeHjvoEfZHQgcweWmS+SmJPjBgodo0cdYVHVOLPHefp6w8QkZsGJ6pc+mIagCnc8GWp0Kj/ad5f5GbKeAXhpbXcuZWfsvkmMcOd/IbLhlwfzQEWcorV2MuZiPmiHU/BTRZeVDCg1TSsu9H6zG+NlsXEUUDXCdCI0yIAxlTnqWjW/CNSJJi0mxyZaeZpIsdXnvXG7ynVijYZL3Pi6xhVspXAOWZhmaDWK58oq+QpOMDPzMP/rKIrM4y9MxnRrOg00XWoqYxYcE1IFNtLFI/nZs1NJvUOWYWCZm8ymN3HZYrYTQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=clYTpwfZ; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=clYTpwfZ; dkim-atps=neutral; spf=pass (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=mawupeng1@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+	t=1765291544; c=relaxed/relaxed;
+	bh=kVOhHzVscYty/G+BBWATwCjtSn+LiTKUykdCwHdrR88=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ODz/TprsGYeB4qX6uJLRco/j5nOEtoPgKtLSGVfPQyORiwA4d/1Ldte59eR15Zp2o78+Wzbl8DUPzuMSSKodLQYS+kKty33wU6RsbEZ+ae8jLQmyNmwuVJgqlcrH4KX4YvEEoU6VMcaS+AsTa1kxVDLm85gn2rsRABwzr+pbhQDCpz/p0EfiYxskgTZ7zFsCOon2sHbaohoByi2Js26V6AjYp5j7bH6NOXUuNGk4Ug6qQPwy0zhX1GIJ6DG3zvGCKjiEWic8jkZJ1OUNWFbiEcMqhI0aCaRPolW2bcXTggpBSGdaIteuK1WKBb+6dcyig+3HufCsUG8/pcpycjt8gw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com; dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=jWgJPiAw; dkim-atps=neutral; spf=pass (client-ip=209.85.218.50; helo=mail-ej1-f50.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org) smtp.mailfrom=baylibre.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=clYTpwfZ;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=clYTpwfZ;
+	dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=jWgJPiAw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=mawupeng1@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1061 seconds by postgrey-1.37 at boromir; Wed, 10 Dec 2025 00:01:02 AEDT
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baylibre.com (client-ip=209.85.218.50; helo=mail-ej1-f50.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dQf9V1mn4z2xs1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Dec 2025 00:00:58 +1100 (AEDT)
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Xo7OeA33tWRYz8zbfLCc2jeO2ZGq0wF+pXykwItiK5M=;
-	b=clYTpwfZL7BLpYpG966W4Z3meJO2GuveIHY1V8afaFkQv6+c8D1xzKjNlDxLLDp6aZzDp8Rld
-	bTEB2btV77TGaLxBe5hSORFlJy9L5TE4c2MIMURTFsOZQxxpMzh8bWLXtNPO1npeuCKBdvXhmgU
-	lIWpGZjOroINa0EC1GIn78g=
-Received: from canpmsgout03.his.huawei.com (unknown [172.19.92.159])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTPS id 4dQdmq4McKz1BGJ5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Dec 2025 20:43:07 +0800 (CST)
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Xo7OeA33tWRYz8zbfLCc2jeO2ZGq0wF+pXykwItiK5M=;
-	b=clYTpwfZL7BLpYpG966W4Z3meJO2GuveIHY1V8afaFkQv6+c8D1xzKjNlDxLLDp6aZzDp8Rld
-	bTEB2btV77TGaLxBe5hSORFlJy9L5TE4c2MIMURTFsOZQxxpMzh8bWLXtNPO1npeuCKBdvXhmgU
-	lIWpGZjOroINa0EC1GIn78g=
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4dQdjr166lzpStQ;
-	Tue,  9 Dec 2025 20:40:32 +0800 (CST)
-Received: from kwepemj100016.china.huawei.com (unknown [7.202.194.10])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5EC90180BD5;
-	Tue,  9 Dec 2025 20:43:02 +0800 (CST)
-Received: from [10.174.178.114] (10.174.178.114) by
- kwepemj100016.china.huawei.com (7.202.194.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Dec 2025 20:43:01 +0800
-Message-ID: <fc00c53c-ab54-42a2-979b-0ecb49ff6b48@huawei.com>
-Date: Tue, 9 Dec 2025 20:43:01 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dQhVF5bghz2xs1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Dec 2025 01:45:39 +1100 (AEDT)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b73545723ebso965327666b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Dec 2025 06:45:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765291476; x=1765896276; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kVOhHzVscYty/G+BBWATwCjtSn+LiTKUykdCwHdrR88=;
+        b=jWgJPiAwB5tKFYVLG1LXrKaSd8qNZ1goR0YWzDaU9I+L5sxfi8fOhQHXxtg+C0pZ7d
+         utA+ysmi+3yPCQgMuDOWYoT4phfwmpW64nfYa0i9/lAErIHz0TIZPoWzPZ1XCrLd/PRY
+         HTuyNOzD0b3kjij892ie9Bszx8sIhiAYxIGRBhW2USQF3aNe1XLiwTL6sXM6UkOBNX6r
+         BSiv95WC8ZJFaoPdIpBWo/mUL22kqI9bIkLYrvJfC6mvJzLdf97WnJftcPs2I81F2z77
+         sgGWAEVUw6AoLMEUFdWc5cAxgdfk6Zb3hO3qiCLLap3nNvA8QNFLQJEewefHeIBaZJvY
+         4+5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765291476; x=1765896276;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kVOhHzVscYty/G+BBWATwCjtSn+LiTKUykdCwHdrR88=;
+        b=UCQfwjX8XujJL7RAuDZADQA1TcJSKtmtrs+xVwcHBmS8hykmTfbUxyzuMjnq3nulcW
+         7dpk5au+V4cjmnboGDETd7CMLd5mtINsoCTKSOOPFbiau3H66mvjiNsvrTh1/STqZS2t
+         grfSUPVAwlwATRQ+21lLYzqzOVy4YQYilfeeIR49PJAa3atdmekHADuh9Qt2iJXG6V9k
+         Lx3T4gbHtL6S+U3okUgKCFsZHND97q+kwbzqiWBPil6FAFmHkN8LQ+7LTsh8I5hd8cuJ
+         xc4elEjJE5ZgtTMBbsM35YghwQcxgDLFcQm6eXm5qDo4XEpBwSp453E6r7vb2ioi3XLc
+         qTWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVUqONDT2zyjN+h69aLXW1QXL6Kp8shX8s4J8YfICYoGML66fQSdXGnc//GUfGzC5Vbdku3RvpvgLD+YaA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyxqNXYTU24+S6ix+weaA5SwiYwvrMdTjxmIEWWStUaCfPuhDCg
+	5mNACTBN9Kq9s0LAJB2BBz8s48/eLsNUDLU/ymi+NZdx7iL4ov4CP0Wmzw2YKPacyts=
+X-Gm-Gg: ASbGncvrJX2NTyf3rZxRxGPIexNqYlWawcmA8dPqNTYWqhyK6Gw+XGGlpz4I+x2+p0S
+	26Pqw2Cc6w7HEHHw/JAZpKH9ek7IJzVjXtAxYbzvlKpJpHn/GiDIXpJVLRy0rz+7m/oSgZQSsCC
+	YV7hNxKixtpcjxrY/vn+yPwjnAKXMkLazXeLwvjzRWyW4owSxFVW1IhKnnPn/kK7VJ2jlSITuAM
+	BSDmbpNulGWjj1crCyrgrcN5CEzceVMjoHx5E53mbb7EiwKYKVMPjfOAH9FXBGvuuNC1QNAdsnZ
+	r7Ggx0QmZ/GF9IhMcOrEXi75FgLv/5WHPfdHlp/66/9kn/BbbQLApYCQenW6MGQyYkscwAJSgAM
+	YY+3a+Ca7fxnl66PMkScbAgFDv97Pdad51Qmab2oOZ26rAg5rEKtKCrYkeh17wpgztcih57TTb5
+	jGgcieaTVii1xIJMxG5Vq4fmDELS5m4tX89dOVMf1mnkMsBjr8kW3zDdwJZJWfAwqot8ORsRDjr
+	Co=
+X-Google-Smtp-Source: AGHT+IGniSPCVWdbAdR6lXWT2hrO2Vb2FI+DEc4Pfx5sd8xCIn9sZrCMfwA/MnGMuGUmxfgYWSBPlg==
+X-Received: by 2002:a17:907:8e96:b0:b79:fc29:ebd2 with SMTP id a640c23a62f3a-b7a242bebe8mr1161488266b.3.1765291476544;
+        Tue, 09 Dec 2025 06:44:36 -0800 (PST)
+Received: from localhost (p200300f65f00660846b2ba6e435ad603.dip0.t-ipconnect.de. [2003:f6:5f00:6608:46b2:ba6e:435a:d603])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b79f44597e6sm1410280966b.12.2025.12.09.06.44.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Dec 2025 06:44:35 -0800 (PST)
+Date: Tue, 9 Dec 2025 15:44:34 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Ioana Ciornei <ioana.ciornei@nxp.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] bus: fsl-mc: Cope for unbound devices in fsl_mc_shutdown
+Message-ID: <jibl526ybakduh3rw6u4e4apij2yny3isdhmgcirbk6vj2kilv@ans2qvz2tcvd>
+References: <20251209115950.3382308-2-u.kleine-koenig@baylibre.com>
+ <c51882f6-500d-481f-adf3-c257fb7ea47a@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,226 +93,70 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <mawupeng1@huawei.com>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-trace-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<kernel-team@meta.com>
-Subject: Re: [RFC LPC2025 PATCH 0/4] Deprecate zone_reclaim_mode
-To: <joshua.hahnjy@gmail.com>, <willy@infradead.org>, <david@kernel.org>
-References: <20251205233217.3344186-1-joshua.hahnjy@gmail.com>
-From: mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <20251205233217.3344186-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.114]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemj100016.china.huawei.com (7.202.194.10)
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wkc5pao2ioxlxdwa"
+Content-Disposition: inline
+In-Reply-To: <c51882f6-500d-481f-adf3-c257fb7ea47a@kernel.org>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
+--wkc5pao2ioxlxdwa
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] bus: fsl-mc: Cope for unbound devices in fsl_mc_shutdown
+MIME-Version: 1.0
 
-On 2025/12/6 7:32, Joshua Hahn wrote:
-> Hello folks, 
-> This is a code RFC for my upcoming discussion at LPC 2025 in Tokyo [1].
-> 
-> <preface>
-> You might notice that the RFC that I'm sending out is different from the
-> proposed abstract. Initially when I submitted my proposal, I was interested
-> in addressing how fallback allocations work under pressure for
-> NUMA-restricted allocations. Soon after, Johannes proposed a patch [2] which
-> addressed the problem I was investigating, so I wanted to explore a different
-> direction in the same area of fallback allocations.
-> 
-> At the same time, I was also thinking about zone_reclaim_mode [3]. I thought
-> that LPC would be a good opportunity to discuss deprecating zone_reclaim_mode,
-> so I hope to discuss this topic at LPC during my presentation slot.
-> 
-> Sorry for the patch submission so close to the conference as well. I thought
-> it would still be better to send this RFC out late, instead of just presenting
-> the topic at the conference without giving folks some time to think about it.
-> </preface>
-> 
-> zone_reclaim_mode was introduced in 2005 to prevent the kernel from facing
-> the high remote access latency associated with NUMA systems. With it enabled,
-> when the kernel sees that the local node is full, it will stall allocations and
-> trigger direct reclaim locally, instead of making a remote allocation, even
-> when there may still be free memory. Thsi is the preferred way to consume memory
-> if remote memory access is more expensive than performing direct reclaim.
-> The choice is made on a system-wide basis, but can be toggled at runtime.
-> 
-> This series deprecates the zone_reclaim_mode sysctl in favor of other NUMA
-> aware mechanisms, such as NUMA balancing, memory.reclaim, membind, and
-> tiering / promotion / demotion. Let's break down what differences there are
-> in these mechanisms, based on workload characteristics.
-> 
-> Scenario 1) Workload fits in a single NUMA node
-> In this case, if the rest of the NUMA node is unused, the zone_reclaim_mode
-> does nothing. On the other hand, if there are several workloads competing
-> for memory in the same NUMA node, with sum(workload_mem) > mem_capacity(node),
-> then zone_reclaim_mode is actively harmful. Direct reclaim is aggressively
-> triggered whenever one workload makes an allocation that goes over the limit,
-> and there is no fairness mechanism to prevent one workload from completely
-> blocking the other workload from making progress.
-> 
-> Scenario 2) Workload does not fit in a single NUMA node
-> Again, in this case, zone_reclaim_mode is actively harmful. Direct reclaim
-> will constantly be triggered whenever memory goes above the limit, leading
-> to memory thrashing. Moreover, even if the user really wants avoid remote
-> allocations, membind is a better alternative in this case; zone_reclaim_mode
-> forces the user to make the decision for all workloads on the system, whereas
-> membind gives per-process granularity.
-> 
-> Scenario 3) Workload size is approximately the same as the NUMA capacity
-> This is probably the case for most workloads. When it is uncertain whether
-> memory consumption will exceed the capacity, it doesn't really make a lot
-> of sense to make a system-wide bet on whether direct reclaim is better or
-> worse than remote allocations. In other words, it might make more sense to
-> allow memory to spill over to remote nodes, and let the kernel handle the
-> NUMA balancing depending on how cold or hot the newly allocated memory is.
-> 
-> These examples might make it seem like zone_reclaim_mode is harmful for
-> all scenarios. But that is not the case:
-> 
-> Scenario 4) Newly allocated memory is going to be hot
-> This is probably the scenario that makes zone_reclaim_mode shine the most.
-> If the newly allocated memory is going to be hot, then it makes much more
-> sense to try and reclaim locally, which would kick out cold(er) memory and
-> prevent eating any remote memory access latency frequently.
-> 
-> Scenario 5) Tiered NUMA system makes remote access latency higher
-> In some tiered memory scenarios, remote access latency can be higher for
-> lower memory tiers. In these scenarios, the cost of direct reclaim may be
-> cheaper, relative to placing hot memory on a remote node with high access
-> latency.
-> 
-> Now, let me try and present a case for deprecating zone_reclaim_mode, despite
-> these two scenarios where it performs as intended.
-> In scenario 4, the catch is that the system is not an oracle that can predict
-> that newly allocated memory is going to be hot. In fact, a lot of the kernel
-> assumes that newly allocated memory is cold, and it has to "prove" that it
-> is hot through accesses. In a perfect world, the kernel would be able to
-> selectively trigger direct reclaim or allocate remotely, based on whehter the
-> current allocation will be cold or hot in the future.
-> 
-> But without these insights, it is difficult to make a system-wide bet and
-> always trigger direct reclaim locally, when we might be reclaiming or
-> evicting relatively hotter memory from the local node in order to make room.
-> 
-> In scenario 5, remote access latency is higher, which means the cost of
-> placing hot memory in remote nodes is higher. But today, we have many
-> strategies that can help us overcome the higher cost of placing hot memory in
-> remote nodes. If the system has tiered memory with different memory
-> access characteristics per-node, then the user is probably already enabling
-> promotion and demotion mechanisms that can quickly correct the placement of
-> hot pages in lower tiers. In these systems, it might make more sense to allow
-> the kernel to naturally consume all of the memory it can (whether it is local
-> or on a lower tier remote node), then allow the kernel to then take corrective
-> action based on what it finds as hot or cold memory.
-> 
-> Of course, demonstrating that there are alternatives is not enough to warrant
-> a deprecation. I think that the real benefit of this patch comes in reduced
-> sysctl maintenance and what I think is much easier code to read.
-> 
-> This series which has 466 deletions and 9 insertions:
-> - Deprecates the zone_reclaim_mode sysctl (patch 4)
-> - Deprecates the min_slab_ratio sysctl (patch 3)
-> - Deprecates the min_unmapped_ratio sysctl (patch 3)
-> - Removes the node_reclaim() function and simplifies the get_page_from_freelist
->   watermark checks (which is already a very large function) (patch 2)
-> - Simplifies hpage_collapse_scan_{pmd, file} (patch 1).
-> - There are also more opportunities for future cleanup, like removing
->   __node_reclaim and converting its last caller to use try_to_free_pages
->   (suggested by Johannes Weiner)
-> 
-> Here are some discussion points that I hope to discuss at LPC:
-> - For workloads that are assumed to fit in a NUMA node, is membind really
->   enough to achieve the same effect?
+On Tue, Dec 09, 2025 at 01:05:50PM +0100, Christophe Leroy (CS GROUP) wrote:
+>=20
+>=20
+> Le 09/12/2025 =E0 12:59, Uwe Kleine-K=F6nig a =E9crit=A0:
+> > Other than a driver's shutdown callback the bus shutdown callback is
+> > also called for unbound drivers. So check for the device being bound
+> > before following the pointer to its driver.
+> >=20
+> > Fixes: ef980bda574d ("bus: fsl-mc: Convert to bus callbacks")
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+> > ---
+> > Hello,
+> >=20
+> > I pointed out this issue a few days ago in the thread that resulted in
+> > commit ef980bda574d, but didn't receive a reaction so far. Given that
+> > ef980bda574d is contained in next, I guess it's time for a proper patch
+> > to fix the issue. Here it is.
+>=20
+> Thanks for the fixup.
+>=20
+> Nobody reacted against what you pointed out a few days ago so I guess this
+> fix is OK.
 
-In real-world scenarios, we have observed on a dual-socket (2P) server with multiple
-NUMA nodes—each having relatively limited local memory capacity—that page cache
-negatively impacts overall performance. The zone_reclaim_node feature is used to
-alleviate performance issues.
+Always the optimist, I think it means nobody bothered :-)
 
-The main reason is that page cache consumes free memory on the local node, causing
-processes without mbind restrictions to fall back to other nodes that still have free
-memory. Accessing remote memory comes with a significant latency penalty. In extreme
-testing, if a system is fully populated with page cache beforehand, Spark application
-performance can drop by 80%. However, with zone_reclaim enabled, the performance
-degradation is limited to only about 30%.
+> Unless you mind I will squash it into previous patch to avoid having to
+> manage the Fixes: tag update when I rebase to 6.19rc1
 
-Furthermore, for typical HPC applications, memory pressure tends to be balanced
-across NUMA nodes. Yet page cache is often generated by background tasks—such as
-logging modules—which breaks memory locality and adversely affects overall performance.
+No objection from my side.
 
-At the same time, there are a large number of __GFP_THISNODE memory allocation requests in
-the system. Anonymous pages that fall back from other nodes cannot be migrated or easily
-reclaimed (especially when swap is disabled), leading to uneven distribution of available
-memory within a single node. By enabling zone_reclaim_mode, the kernel preferentially reclaims
-file pages within the local NUMA node to satisfy local anonymous-page allocations, which
-effectively avoids warn_alloc problems caused by uneven distribution of anonymous pages.
+Best regards
+Uwe
 
-In such scenarios, relying solely on mbind may offer limited flexibility.
+--wkc5pao2ioxlxdwa
+Content-Type: application/pgp-signature; name="signature.asc"
 
-We have also experimented with proactively waking kswapd to improve synchronous reclaim
-efficiency. Our actual tests show that this can roughly double the memory allocation rate[1].
+-----BEGIN PGP SIGNATURE-----
 
-We could also discuss whether there are better solutions for such HPC scenarios.
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmk4NcUACgkQj4D7WH0S
+/k64Ggf/cTuXXm1dYWrAq71Z5O1Fg8gsTcQZ3naAwNkkb57K9oKd486/861nzcGi
+/BtQjQkWl/mDaCCFIPmqaYiguPw16EVpz5GgUV8uSO2+CgT9IEztz6/eh+i/IbaA
+SfnPNufUr6jsHgGNS8uWl4XqgK0ny7tYXYRQrT5rL4u7A9Ol10sUhos8OKV5yPvx
+aA6bMcP5LaEUoS22exe6alLuq/I0NuHOsMhtmiSJ6VclQWc+sITwTpHjhn9B6R7g
+IbkDGgyUdwEaoC7h6qTjc0tWOzdnaedJXA2Z3iqr6YHzsZgGxNSwhhZVu7a78ORY
+OP8nOKTruSrYWhlje6lG1wqsMJcTRA==
+=5b1I
+-----END PGP SIGNATURE-----
 
-[1]: https://lore.kernel.org/all/20251011062043.772549-1-mawupeng1@huawei.com/
-
-> - Is NUMA balancing good enough to correct action when memory spills over to
->   remote nodes, and end up being accessed frequently?
-> - How widely is zone_reclaim_mode currently being used?
-> - Are there usecases for zone_reclaim_mode that cannot be replaced by any
->   of the mentioned alternatives?
-> - Now that node_reclaim() is deprecated in patch 2, patch 3 deprecates
->   min_slab_ratio and min_unmapped_ratio. Does this change make sense?
->   IOW, should proactive reclaim via memory.reclaim still care about
->   these thresholds before making a decision to reclaim?
-> - If we agree that there are better alternatives to zone_reclaim_mode, how
->   should we make the transition to deprecate it, along with the other
->   sysctls that are deprecated in this series (min_{slab, unmapped}_ratio)?
-> 
-> Please also note that I've excluded all individual email addresses for the
-> Cc list. It was ~30 addresses, as I just wanted to avoid spamming
-> maintainers and reviewers, so I've just left the mailing list targets.
-> The individuals are Cc-ed in the relevant patches, though.
-> 
-> Thank you everyone. I'm looking forward to discussing this idea with you all!
-> Joshua
-> 
-> [1] https://lpc.events/event/19/contributions/2142/
-> [2] https://lore.kernel.org/linux-mm/20250919162134.1098208-1-hannes@cmpxchg.org/
-> [3] https://lore.kernel.org/all/20250805205048.1518453-1-joshua.hahnjy@gmail.com/
-> 
-> Joshua Hahn (4):
->   mm/khugepaged: Remove hpage_collapse_scan_abort
->   mm/vmscan/page_alloc: Remove node_reclaim
->   mm/vmscan/page_alloc: Deprecate min_{slab, unmapped}_ratio
->   mm/vmscan: Deprecate zone_reclaim_mode
-> 
->  Documentation/admin-guide/sysctl/vm.rst       |  78 ---------
->  Documentation/mm/physical_memory.rst          |   9 -
->  .../translations/zh_CN/mm/physical_memory.rst |   8 -
->  arch/powerpc/include/asm/topology.h           |   4 -
->  include/linux/mmzone.h                        |   8 -
->  include/linux/swap.h                          |   5 -
->  include/linux/topology.h                      |   6 -
->  include/linux/vm_event_item.h                 |   4 -
->  include/trace/events/huge_memory.h            |   1 -
->  include/uapi/linux/mempolicy.h                |  14 --
->  mm/internal.h                                 |  22 ---
->  mm/khugepaged.c                               |  34 ----
->  mm/page_alloc.c                               | 120 +------------
->  mm/vmscan.c                                   | 158 +-----------------
->  mm/vmstat.c                                   |   4 -
->  15 files changed, 9 insertions(+), 466 deletions(-)
-> 
-> 
-> base-commit: e4c4d9892021888be6d874ec1be307e80382f431
-
+--wkc5pao2ioxlxdwa--
 
