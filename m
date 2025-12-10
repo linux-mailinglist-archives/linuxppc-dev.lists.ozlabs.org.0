@@ -1,87 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-14714-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14715-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF634CB2DC7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Dec 2025 12:57:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E69DCB2E4C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Dec 2025 13:31:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dRDjg5Cyzz2yHB;
-	Wed, 10 Dec 2025 22:57:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dRFSZ6DlFz2yKr;
+	Wed, 10 Dec 2025 23:31:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765367847;
-	cv=none; b=nYZUc+FKUT/T55uvCrVlGFJSa7ph5X9OQV8kucAIqYDu4qlN1dkq2NTVr3cOr/Bu/piofICJQK8YotP9RMT5QQ+GRZ7mKW3hSWaS9wxJBgGfJ9FMRLdZmHZhJMmt0Y8YeCkKH/wqMQDEv/S34pIBoPeRrVQrZkbbHSYivCc3NmMZ3nJUwKmwaN20Maqt3AGF4839NnGIYzrD5C1Ag71iG+CQV6Px3F/lnYjfzjFX1Ruta8Lxp4iGtJSpQbdWiXFPUd54UZmW3cNgtEvL+Tb+jqxKs9WSC13nMNb63gsMOndeZ3Mu4FKXilHNyS7cC/se2966bF9yRRbNClyFgcBxtg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=74.125.224.43
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765369870;
+	cv=none; b=lG/5YWPCa0evJRK55c8yHH9fvKG8dT6eiG89eAABd0xVM82BoWlD0oHg7UuXaCT23ArD+p0skaPGtsooSnEgCEH9hc8N9IWS99vFuXojbK2Z0YpHAJMhNUVVzpokuA2s6ZaKoM3V+EAmEQ0oYIOa5rzGJLXH3C6IrR9M+BBR65WH1qlOVOyON9fIipkKH2YlY9g+zsBMDGB4RCIaSTmgyaMAY+zdZwd1phiZqqz23I+aa314dSnRyX6PAunViu5yJW5UWcY7kMXvCLbXJQDo1T6Cs6XPDPTFZxluV+FP0hVqvFGFJG3NRaZr6A7FNbFsC8tgZQPuf3M4Eki6DKO/Gw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765367847; c=relaxed/relaxed;
-	bh=ETRy+2ypvCJXF3A6U5P1copfBYu/3pizIMMdLHJyU+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mU+A1I8hR8esnoAWDbV6acr8tRt5ut+rvTSo1dHTwvUn6HHNsifvSv+G4x7TmUZyO7PmzxXpYuDFUB9hisI3SHS/KnifygAlwRPJabaPCck/Oh56tHJyxqjVDGQXWUQvMquu/Ja/wqiXI89Tr36IRmHOHLpka82Rt7RkYsaGaSwXRFMfRFGBdC4jP+qfhq8f0kCIQ3+zantIi8NyOCc1ZV//0SlF56OJ9eGAcuEr/fMQdVLVvulhtSlygd2stFa92l5mbOwETun39k5fSAF3rJn3De45tIcPbMI1SyRWgNa1/xAmTGFBlS7DRxfg1O3vF/8CMnzh9S8KkZCTLcsdZg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Opv1Cv69; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1765369870; c=relaxed/relaxed;
+	bh=bs4Nvh7wcafrSDigF6jb9/xBl2rvyHdC6iSByDm1J7c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DsPuwyDKfSwsin0aZcFTpbA95G5avMNGpQaNhfXekhQs364EGxqqAUPJ8GJ5PcH0iQeWvQBpTuA3wvXvuV3SE98vJzRPBIMSFYxnIQFTE3Y2/ZYvmtf/Hz1VzuQkFQfLKZQrFcKx7xgSIgTE7VJYxxPCHP06kY9ODCDqOyCg6VHSIvL3glluFlgAcQ2lTGKA2sQFV6EiuQnAwQb8dN2jb+k4TOsxY1Z0e1QuQnfIP7aprNy82ajFAgkdRPF1E4HVPrAG76d90qiuu9vQIjLW/izgFSBhd+lvoM/+TaHZkvq+G/LHVKf2SZaSWjMjQWk0jY8F0tiBrdqk6BCmbPjnKQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fESva4RG; dkim-atps=neutral; spf=pass (client-ip=74.125.224.43; helo=mail-yx1-f43.google.com; envelope-from=joshua.hahnjy@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Opv1Cv69;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fESva4RG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=74.125.224.43; helo=mail-yx1-f43.google.com; envelope-from=joshua.hahnjy@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dRDjf2d5Xz2yDY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Dec 2025 22:57:25 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BA90gJK001890;
-	Wed, 10 Dec 2025 11:57:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ETRy+2
-	ypvCJXF3A6U5P1copfBYu/3pizIMMdLHJyU+0=; b=Opv1Cv69PW/8D/GVaUbSnR
-	OWqM3g3VyXFxAf8GoIlmrq3gmFABWqvwqBjX1OBKzAfI4a6Kxo48Az7TKA7ydVih
-	RDZTJagxFRvxidp2Z5nJAI3UwHlqFJb2TsabGD7skRmkZt/u0wM62Y2SqT/e//7e
-	b7YWMJvcx1cfnVeshk90FwwBzpydy/zYy54/cOAfINLGXV58WomiREDjLms1sZDZ
-	hMS4r6TDbCQNHmttyLVFR306bZqgWj0KQ+d3STRC0GpcQHlsFr10JVi9gOGue2QZ
-	E1c/Mrei6DXvm5kM0PfpZHHonDnAckmLwfd5uKeBeo9b9Uu33hmCbjmkd6Umu+Vg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc53hhk5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Dec 2025 11:57:21 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BABcjtr029338;
-	Wed, 10 Dec 2025 11:57:21 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4avc53hhk0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Dec 2025 11:57:21 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BAA2ADa002053;
-	Wed, 10 Dec 2025 11:57:20 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aw11jg6qw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Dec 2025 11:57:20 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BABvIPU24773078
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Dec 2025 11:57:19 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D140B20043;
-	Wed, 10 Dec 2025 11:57:18 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8193D20040;
-	Wed, 10 Dec 2025 11:57:17 +0000 (GMT)
-Received: from Gautams-MacBook-Pro.local (unknown [9.43.64.128])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 10 Dec 2025 11:57:17 +0000 (GMT)
-Date: Wed, 10 Dec 2025 17:27:10 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "R.T.Dickinson" <rtd2@xtra.co.nz>,
-        mad skateman <madskateman@gmail.com>,
-        Christian Zigotzky <info@xenosoft.de>
-Subject: Re: [PPC] [e5500] Boot issues after the PowerPC updates 6.19-1
-Message-ID: <aTlgFi0m6GyZ0XUa@Gautams-MacBook-Pro.local>
-References: <aTe7I_nVw8xp4az9@Gautams-MacBook-Pro.local>
- <E1392190-6049-4128-BC65-42C90DA95047@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dRFSY18z6z2yHD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Dec 2025 23:31:07 +1100 (AEDT)
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-64472ea7d18so370041d50.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Dec 2025 04:31:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765369805; x=1765974605; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bs4Nvh7wcafrSDigF6jb9/xBl2rvyHdC6iSByDm1J7c=;
+        b=fESva4RGgakA5+Yaww1eVu1xPDMahy9414A4voZofPvgAth9beLsdRfz73cg9xNj3t
+         HXtlwF6TeyZL1n1WAG3chtoC2fKVcdsh8v1D06ujnADFUhgKUtJkHcm5O5M7tr5Vregf
+         jpID+79K8npEVpyCwTNLyQf+cwULBv04EMDHy535bvgdDCyFnsblJ3kpJvN+/D6+NOUw
+         6fOOlGWGhZxOx7DHouzD/Nk4BL/ev5J9Y/7XfpMv4zy5cO6ZyLE7kwFtitN8dssH/1OC
+         vq0vrky4YweMO7+K3bA0nb+bMsGRJVUe9NpQGSrgfO2s0D78XucNwzUIZYIa3cAqn1x0
+         w86A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765369805; x=1765974605;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bs4Nvh7wcafrSDigF6jb9/xBl2rvyHdC6iSByDm1J7c=;
+        b=KvfCLc2ERH/4GN//avji1sC+CTWA15PJQNg6eyrBATzYL///rp+3q2hqYn1WYuCQ+x
+         3KVwA6YNCKIWe/bUBPGAjfJnvIQzCkan3I4i8fLLr5PSQli+EIbkojHKfxluW+3ng6zd
+         yjW/0G++e1o+pMd2ygxQCuSvPcEyP/51cmxlzuVjQ5ImYk+TCCoS5cFQSirTc+C+YjgP
+         xKArBsTwBS+4cUwX2a9truSSuEtzpBecsZ12Sse9I0dz6w1zaD1A/806rr/ezD7mx33K
+         CwCqjFUR8RJqX1S2hBJ9z7AOUNBf9aUE+rnsz1kB8fwTYjhHmhcTUl9X2IP6wDTjifgS
+         kA2w==
+X-Forwarded-Encrypted: i=1; AJvYcCXwKLRaPnBzbVDdJ3/EN5SCBEgAOA8TMT+A/OY4zn4xCZKUIhkbDPTL38oIY5RZaRlLUVPmDiGcWZaOw2Y=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzLUkaNJoPbnJPK/2wZgY11G4uzV+3Ce/nIOF5IBU4OXj6CZjU5
+	I6vbFQzcGzdhGzMGIKDnFkx5qpJ0Z+H5KpNjZESt6HiOpro1oTE6Pu0K
+X-Gm-Gg: AY/fxX5FRunNa9WHEqKtDy6c2hJovMLb25gLMFcJcU1dwc8H4ZdMyhWDsTkgKrJlMLV
+	l991hLXoijjVXvjqGxfCw1sT1jcMUMlkvx0bI0hOvU5Wt0eZAERAabpNXD/cAyXBW4THDYN8aU2
+	ilYt5uDAbhPxppz8Qb0zgvZMKXtmsunS/fYLRmLlmdDJvJGEk/Nxoht8Ms0Xf5TSycTcLK5cO6k
+	PKN45KFjqGYfNHvJVj/gHzXU6skOPEhJeBsnejWjtT1yiA78nfAA3z25qLS3iV3JK2vKPv1fDJm
+	SiOb0LR7yy5KVOL5c2cR2yYqicc22wudmrr6/b/mOjLyDdGTzim7Dzs2h1yD/Xnp2VpKhTPi/Ru
+	HoVJtSEFiV/yV7TKZfotyDE1zuVTgtoBXLaqlHbIPJo/UgW+8eZtm7ho4v84AJFjeqyuWuJrZKt
+	/E1moQuRKgIPehgsKd/4YUJV8QPWa3OPW9
+X-Google-Smtp-Source: AGHT+IFNh53RYGhBm0spY9cGU4hrvZl3rVUUUljhOpXEUJgWRnGD1AENe9Wq19Qn4XXLgG15AaZkgw==
+X-Received: by 2002:a05:690e:2597:b0:63f:c52c:3828 with SMTP id 956f58d0204a3-6446e98333amr1349152d50.26.1765369805247;
+        Wed, 10 Dec 2025 04:30:05 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:5c::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78c1b4ac94dsm70695807b3.9.2025.12.10.04.30.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Dec 2025 04:30:04 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: mawupeng <mawupeng1@huawei.com>
+Cc: joshua.hahnjy@gmail.com,
+	willy@infradead.org,
+	david@kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kernel-team@meta.com
+Subject: Re: [RFC LPC2025 PATCH 0/4] Deprecate zone_reclaim_mode
+Date: Wed, 10 Dec 2025 04:30:01 -0800
+Message-ID: <20251210123003.424248-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <fc00c53c-ab54-42a2-979b-0ecb49ff6b48@huawei.com>
+References: 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,117 +101,156 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <E1392190-6049-4128-BC65-42C90DA95047@xenosoft.de>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA2MDAyMCBTYWx0ZWRfX1seq6BPjjnOk
- XtqxmPqzzDReAQSCZ9vUZBE+VpO/vJhXtuuDkbm+5v8jCrsUAclJLR7VsDWQq77kpUDAH88oCr9
- 3Fo0xXNbV+jbyB0FC40FrIRyYx9W6PLREyJjUPu7aalW0U12Dz6Uff/KmKhaEqu69vass9jgewW
- OHxbKWT6sVwqTG00Ywgk/VzhSWjhteo88KhzR6wiFraWndWbri1t8EOfVMKGmPPve6WlVPPd31O
- WYVlipmQzfV2MyGtzazEIt9P3TEGSwTrZs8DnJhZioTfqR/WOqkVj/wuKn+SLglW791kah52ib2
- AzWrlcIWzLiQbRCi4GaKnC8GCYvtHshpyQEEWB/0clvUEwFXnbxfxUcrwAqLCQNhH69y7H4TazS
- 16bibDCuVZX+tEvu89npmGyI6Udj/g==
-X-Authority-Analysis: v=2.4 cv=S/DUAYsP c=1 sm=1 tr=0 ts=69396021 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=jhone-cy8azpxuG5v6IA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: hsCeQXNyWKgHmXZX5S_vRVPlUi0HULZg
-X-Proofpoint-GUID: 4F5emLI9DMBR_WljzMrFS_TNtKNbbFGo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-09_05,2025-12-09_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512060020
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Dec 09, 2025 at 09:34:11AM +0100, Christian Zigotzky wrote:
+On Tue, 9 Dec 2025 20:43:01 +0800 mawupeng <mawupeng1@huawei.com> wrote:
 > 
-> 
-> > On 09 December 2025 at 07:01 am, Gautam Menghani <gautam@linux.ibm.com> wrote:
+> On 2025/12/6 7:32, Joshua Hahn wrote:
+> > Hello folks, 
+> > This is a code RFC for my upcoming discussion at LPC 2025 in Tokyo [1].
+> >
+> > zone_reclaim_mode was introduced in 2005 to prevent the kernel from facing
+> > the high remote access latency associated with NUMA systems. With it enabled,
+> > when the kernel sees that the local node is full, it will stall allocations and
+> > trigger direct reclaim locally, instead of making a remote allocation, even
+> > when there may still be free memory. Thsi is the preferred way to consume memory
+> > if remote memory access is more expensive than performing direct reclaim.
+> > The choice is made on a system-wide basis, but can be toggled at runtime.
 > > 
-> > ﻿On Mon, Dec 08, 2025 at 07:06:14AM +0100, Christian Zigotzky wrote:
-> >> 
-> >>>> On 08 December 2025 at 06:51 am, Gautam Menghani <gautam@linux.ibm.com> wrote:
-> >>> 
-> >>> ﻿Hi Christian,
-> >>> 
-> >>> Thanks for the report. Can you also please share the QEMU command line
-> >>> you were using? That would be helpful.
-> >>> 
-> >>> Thanks,
-> >>> Gautam
-> >> 
-> >> Hi Gautam,
-> >> 
-> >> Here is the command line:
-> >> 
-> >> qemu-system-ppc64 -M ppce500 -cpu e5500 -m 1024 -kernel uImage -drive format=raw,file=void-live-powerpc-20230317.img,index=0,if=virtio -netdev user,id=mynet0 -device virtio-net,netdev=mynet0 -append "rw root=/dev/vda" -device virtio-gpu-pci -device virtio-mouse-pci -device virtio-keyboard-pci -device pci-ohci,id=newusb -audiodev id=sndbe,driver=pa,server=/run/user/1000/pulse/native -device usb-audio,bus=newusb.0 -enable-kvm -smp 4 -fsdev local,security_model=passthrough,id=fsdev0,path=/home/amigaone/Music -device virtio-9p-pci,id=fs0,fsdev=fsdev0,mount_tag=hostshare -display gtk
-> > 
-> > 
-> > Were you running a KVM guest? Did you see the problem with the latest
-> > kernel installed in the guest?
+> > This series deprecates the zone_reclaim_mode sysctl in favor of other NUMA
+> > aware mechanisms, such as NUMA balancing, memory.reclaim, membind, and
+> > tiering / promotion / demotion. Let's break down what differences there are
+> > in these mechanisms, based on workload characteristics.
+
+[...snip...]
+
+Hello mawupeng, thank you for your feedback on this RFC.
+
+I was wondering if you were planning to attend LPC this year. If so, I'll be
+discussing this idea at the MM microconference tomorrow (December 11th) and
+would love to discuss this after the presentation with you in the hallway.
+I want to make sure that I'm not missing any important nuances or use cases
+for zone_reclaim_mode. After all, my only motivation for deprecating this is
+to simplify the code allocation path and reduce maintenence burden, both of
+which definitely does not outweigh valid usecases. On the other hand if we can
+find out that we can deprecate zone_reclaim_mode, and also find some
+alternatives that lead to better performance on your end, that sounds
+like the ultimate win-win scenario for me : -)
+
+> In real-world scenarios, we have observed on a dual-socket (2P) server with multiple
+> NUMA nodes—each having relatively limited local memory capacity—that page cache
+> negatively impacts overall performance. The zone_reclaim_node feature is used to
+> alleviate performance issues.
 > 
-> Yes, the latest git kernel doesn’t boot.
+> The main reason is that page cache consumes free memory on the local node, causing
+> processes without mbind restrictions to fall back to other nodes that still have free
+> memory. Accessing remote memory comes with a significant latency penalty. In extreme
+> testing, if a system is fully populated with page cache beforehand, Spark application
+> performance can drop by 80%. However, with zone_reclaim enabled, the performance
+> degradation is limited to only about 30%.
+
+This sounds right to me. In fact, I have observed similar results in some
+experiments that I ran myself, where on a 2-NUMA system with 125GB memory each,
+I fill up one node with 100G of garbage filecache and try to run a 60G anon
+workload in it. Here are the average access latency results:
+
+- zone_reclaim_mode enabled: 56.34 ns/access
+- zone_reclaim_mode disabled: 67.86 ns/access
+
+However, I was able to achieve better results by disabling zone_reclaim_mode
+and using membind instead:
+
+- zone_reclaim_mode disabled + membind: 52.98 ns/access
+
+Of course, these are on my specific system with my specific workload so the
+numbers (and results) may be different on your end. You specifically mentioned
+"processes without mbind restrictions". Is there a reason why these workloads
+cannot be membound to a node?
+
+On that note, I had another follow-up question. If remote latency really is a
+big concern, I am wondering if you have seen remote allocations despite
+enabling zone_reclaim_mode. From my understanding of the code, zone_reclaim_mode
+is not a strict guarantee of memory locality. If direct reclaim fails and
+we fail to reclaim enough, the allocation is serviced from a remote node anyways.
+
+Maybe I did not make this clear in my RFC, but I definitely believe that there
+are workloads out there that benefit from zone_reclaim_mode. However, I
+also believe that membind is just a better alternative for all the scenarios
+that I can think of, so it would really be helpful for my education to learn
+about workloads that benefit from zone_reclaim_mode but cannot use membind.
+
+> Furthermore, for typical HPC applications, memory pressure tends to be balanced
+> across NUMA nodes. Yet page cache is often generated by background tasks—such as
+> logging modules—which breaks memory locality and adversely affects overall performance.
+
+I see. From my very limited understanding of HPC applications, they tend to be
+perfectly sized for the nodes they run on, so having logging agents generate
+additional page cache really does sound like a problem to me. 
+
+> At the same time, there are a large number of __GFP_THISNODE memory allocation requests in
+> the system. Anonymous pages that fall back from other nodes cannot be migrated or easily
+> reclaimed (especially when swap is disabled), leading to uneven distribution of available
+> memory within a single node. By enabling zone_reclaim_mode, the kernel preferentially reclaims
+> file pages within the local NUMA node to satisfy local anonymous-page allocations, which
+> effectively avoids warn_alloc problems caused by uneven distribution of anonymous pages.
 > 
-> But the final kernel 6.18.0 boots without any problems.
+> In such scenarios, relying solely on mbind may offer limited flexibility.
 
-I tried booting a TCG ppce500 guest with your config and I can see that
-the commit 2997876c4a1a5 causes a boot failure. Reverting it works fine.
+I see. So if I understand your scenario correctly, what you want is something
+between mbind which is strict in guaranteeing that memory comes locally, and
+the default memory allocation preference, which prefers allocating from
+remote nodes when the local node runs out of memory.
 
-Command line used:
+I have some follow-up questions here.
+It seems like the fact that anonymous memory from remote processes leaking
+their memory into the current node is actually caused by two characteristics
+of zone_reclaim_mode. Namely, that it does not guarantee memory locality,
+and that it is a system-wide setting. Under your scenario, we cannot have
+a mixture of HPC workloads that cannot handle remote memory access latency,
+as well as non-HPC workloads that would actually benefit from being able to
+consume free memory from remote nodes before triggering reclaim.
 
-qemu-system-ppc64 -M ppce500 -cpu e5500 -smp 1 -m 4G \
-    -display none -serial stdio \
-    -kernel /home/gautam/src/linux/arch/powerpc/boot/uImage \
-    -drive file=/home/gautam/src/qemu-ppc-boot/buildroot/qemu_ppc64_e5500-latest/rootfs.ext2,if=virtio,format=raw \
-    -append "console=ttyS0 rootwait root=/dev/vda" \
+So in a scenario where we have multiple HPC workloads running on a multi-NUMA
+system, we can just size each workload to fit the nodes, and membind them so
+that we don't have to worry about migrating or reclaiming remote processes'
+anonymous memory.
 
+In a scenario where we have an HPC workload + non-HPC workloads, we can membind
+the HPC workload to a single node, and exclude that node from the other
+workloads' nodemasks to prevent anonymous memory from leaking into it.
 
-But I was not able to boot a KVM guest on top of this TCG guest. I even
-went back all the way to 5.15
+> We have also experimented with proactively waking kswapd to improve synchronous reclaim
+> efficiency. Our actual tests show that this can roughly double the memory allocation rate[1].
 
-./qemu-system-ppc64 \
-        -M ppce500 -cpu e5500 \
-        --enable-kvm  \
-        -m 1024 -kernel uImage \
-        -drive file=/tmp/rootfs.ext2,if=virtio,format=raw \
-        -append "console=ttyS0 rootwait root=/dev/vda" -serial mon:stdio -nographic
+Personally I believe that this could be the way forward. However, there are
+still some problems that we have to address, the biggest one being: pagecache
+can be considered "garbage" in both your HPC workloads and my microbenchmark.
+However, the pagecache can be very valuable in certain scenarios. What if
+the workload will access the pagecache in the future? I'm not really sure if
+it makes sense to clean up that pagecache and allocate locally, when the
+worst-case scenario is that we have to incur much more latency reading from
+disk and bringing in those pages again, when there is free memory still
+available in the system.
 
-Bad kernel stack pointer fffff8 at 0
-Oops: Bad kernel stack pointer, sig: 6 [#1]
-BE PAGE_SIZE=4K  SMP NR_CPUS=4 QEMU e500
-Modules linked in:
-CPU: 0 UID: 0 PID: 1508 Comm: qemu-system-ppc Not tainted 6.18.0-a4-powerpc64-smp #45 VOLUNTARY
-Hardware name: QEMU ppce500 e5500 0x80240020 QEMU e500
-NIP:  0000000000000000 LR: 0000000000000000 CTR: 0000000000000000
-REGS: c00000003fffbd20 TRAP: 0400   Not tainted  (6.18.0-a4-powerpc64-smp)
-MSR:  0000000010000000 <>  CR: 00000000  XER: 00000000
-IRQMASK: 0
-GPR00: 0000000000000000 0000000000fffff8 0000000000000000 0000000002c00000
-GPR04: 0000000000000000 0000000000000000 0000000045504150 0000000004000000
-GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR12: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-GPR28: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-NIP [0000000000000000] 0x0
-LR [0000000000000000] 0x0
-Call Trace:
-Code: XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
----[ end trace 0000000000000000 ]---
+Perhaps the real solution is to deprecate zone_reclaim_mode and offer more
+granular (per-workload basis), and sane (guarantee memory locality and also
+perform kswapd when the ndoe is full) options for the user.
 
-note: qemu-system-ppc[1508] exited with irqs disabled
+> We could also discuss whether there are better solutions for such HPC scenarios.
 
+Yes, I really hope that we can reach the win-win scenario that I mentioned at
+the beginning of the reply. I really want to help users achieve the best
+performance they can, and also help keep the kernel easy to maintain in the
+long-run. Thank you for sharing your perspective, I really learned a lot.
+Looking forward to your response, or if you are coming to LPC, would love to
+grab a coffee. Have a grat day!
+Joshua
 
-Thanks,
-Gautam
+> [1]: https://lore.kernel.org/all/20251011062043.772549-1-mawupeng1@huawei.com/
 
