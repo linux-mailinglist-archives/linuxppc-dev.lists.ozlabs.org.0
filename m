@@ -1,33 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-14777-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14778-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D58CBEEDF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Dec 2025 17:36:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D12CBEEE5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Dec 2025 17:36:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dVQg21YkXz2xHP;
-	Tue, 16 Dec 2025 03:36:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dVQg46mr7z2yJ5;
+	Tue, 16 Dec 2025 03:36:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765816574;
-	cv=none; b=EKaXLYdtRyMP7GBq1/lsvc/IZzgHU6/qCNUsHIJlyKIIOczcxd8jmFdL5RexYRNADPNLe+bOdIo6Pmm99GTxCL/ePdNtn1AJfflTaxXy8HMg1iYFRc9IY2q9E6bK7eb8iWZzWJYx0kx4dzfyFABCdHcTp7YUVAa9PLgoqsG6wqB8iwO70QyvJA1Y/KicypOOGiKXWNvWQtZjPhrmmHyKvdBi8k6KRcU6DDxqSlEckUYuLl3/AVUZzzYWsrv8E+RpPCoVFaaDD27/tdPA1RCVUv6Qjdx3Hfz8uLRrihLCgqY6pF95CGhuPyn8zHqq+upQEzIlWSFZLRMBOvu1pQNNtA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765816576;
+	cv=none; b=lWC6BXLNsx8+fZcU7m9t6mMrtwp66sbNhh8c06Jq8rckzbhqGzg0C9LD/I2SICjPWaaSAYafZG/KC7TVTySBb6lO98m+kxNsOIYLsNYpF+ABrDDshGZM9gpvLrqScthsBy3er6NWsQhOcUmwE4WTq5WZuPXUm0Jdw8mVR7piC8sDWnc98pTsFtTLDPRMHbnrIFwYSoLa4xV6MtPUFqLjakGyPcDbzJ1ymSlBwgejqQ8kHp9bo3Kn+B6zuy9tssYDE1H4H8UZ6CvNcFmO/rns1l67uOOhao/X91+4KLUOOJgHqoLe6kg0attrUuoNhXGN9RqNqjHdv0vlszBB2GZdJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765816574; c=relaxed/relaxed;
-	bh=RtbITRm6zOpQIb9w9+3F3R2Bg/gq/ywbMdSecaseHLs=;
+	t=1765816576; c=relaxed/relaxed;
+	bh=MWto1Q0kowHhw4FoeBdAHUQM9hEeAI3jz0BnUWumgVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OOmKIsTvSPnBwoQbHDvOAA/n3Xcwz8dJFeoa/kGj6tTuU+BLj50hiWHOV8KcAlMCRyY2rpsxpJscgS8oJKmA+WkErB2Gj5TutC6/e8TnFq6wQLaXHxUN4NfwseySPLV3onVvas5WroL/a2SjVXWCrevue9StLU6X/ZNPO7AVNOPaHDtr9TlELx8M4necjhsjcIfRvCwRpO/eWbu/19AvF28bDxHI3tQcvCAsB0yqz38+vVFX5Iy/19p5IBw98id0MivCh5DHMlyR4JWcarH78MlP+ddy/FYSvk4w6TuI5sby/L9ctXlMHug0TFww2E0G7S4vLWkB/atMnSmsL3Zfig==
+	 MIME-Version; b=JUmxbY+AD5/lPrwRlaMp66TV0lpp6Fafs2g8mwy0s0hbw/0xaqC8bUd35L09hfVjrFybATfxKVGl0xBShXaaDmDIEVouf6+IbKCKF6HV13GoSW1EKQamlD2pbO1CDUNzi38VwkRnocznPETQWHRhsdmKqQEWT3gQtOv9X2Yv3bJh53VUS7lKTpvTYTkZ58HpZAATATzg4Vvd8ZRW2n1U5zxevFWHQELTjdx04eQnqinInkoUXVgx+mFJSyu2rxphyW3NUMngNFnbHAqISCTbepn1RCbKbxYYiTw6DW+DrmybHhQFkpoRPxb92EtsIg9iW+dwnGKIQHzrmykbfYUCkA==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dVQg03J0Qz2xJT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Dec 2025 03:36:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dVQg41v2Jz2xJT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Dec 2025 03:36:16 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 308D61655;
-	Mon, 15 Dec 2025 08:35:34 -0800 (PST)
-Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 624B03F694;
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F0FE8165C;
 	Mon, 15 Dec 2025 08:35:37 -0800 (PST)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 992853F694;
+	Mon, 15 Dec 2025 08:35:41 -0800 (PST)
 From: Ryan Roberts <ryan.roberts@arm.com>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -58,11 +58,10 @@ Cc: Ryan Roberts <ryan.roberts@arm.com>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-riscv@lists.infradead.org,
 	linux-s390@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/3] randomize_kstack: Maintain kstack_offset per task
-Date: Mon, 15 Dec 2025 16:35:15 +0000
-Message-ID: <20251215163520.1144179-2-ryan.roberts@arm.com>
+	linux-hardening@vger.kernel.org
+Subject: [PATCH v2 2/3] prandom: Convert prandom_u32_state() to __always_inline
+Date: Mon, 15 Dec 2025 16:35:16 +0000
+Message-ID: <20251215163520.1144179-3-ryan.roberts@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251215163520.1144179-1-ryan.roberts@arm.com>
 References: <20251215163520.1144179-1-ryan.roberts@arm.com>
@@ -84,156 +83,78 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-kstack_offset was previously maintained per-cpu, but this caused a
-couple of issues. So let's instead make it per-task.
+We will shortly use prandom_u32_state() to implement kstack offset
+randomization and some arches need to call it from non-instrumentable
+context. Given the function is just a handful of operations and doesn't
+call out to any other functions, let's take the easy path and make it
+__always_inline.
 
-Issue 1: add_random_kstack_offset() and choose_random_kstack_offset()
-expected and required to be called with interrupts and preemption
-disabled so that it could manipulate per-cpu state. But arm64, loongarch
-and risc-v are calling them with interrupts and preemption enabled. I
-don't _think_ this causes any functional issues, but it's certainly
-unexpected and could lead to manipulating the wrong cpu's state, which
-could cause a minor performance degradation due to bouncing the cache
-lines. By maintaining the state per-task those functions can safely be
-called in preemptible context.
-
-Issue 2: add_random_kstack_offset() is called before executing the
-syscall and expands the stack using a previously chosen rnadom offset.
-choose_random_kstack_offset() is called after executing the syscall and
-chooses and stores a new random offset for the next syscall. With
-per-cpu storage for this offset, an attacker could force cpu migration
-during the execution of the syscall and prevent the offset from being
-updated for the original cpu such that it is predictable for the next
-syscall on that cpu. By maintaining the state per-task, this problem
-goes away because the per-task random offset is updated after the
-syscall regardless of which cpu it is executing on.
-
-Fixes: 39218ff4c625 ("stack: Optionally randomize kernel stack offset each syscall")
-Closes: https://lore.kernel.org/all/dd8c37bc-795f-4c7a-9086-69e584d8ab24@arm.com/
-Cc: stable@vger.kernel.org
 Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 ---
- include/linux/randomize_kstack.h | 26 +++++++++++++++-----------
- include/linux/sched.h            |  4 ++++
- init/main.c                      |  1 -
- kernel/fork.c                    |  2 ++
- 4 files changed, 21 insertions(+), 12 deletions(-)
+ include/linux/prandom.h | 19 ++++++++++++++++++-
+ lib/random32.c          | 19 -------------------
+ 2 files changed, 18 insertions(+), 20 deletions(-)
 
-diff --git a/include/linux/randomize_kstack.h b/include/linux/randomize_kstack.h
-index 1d982dbdd0d0..5d3916ca747c 100644
---- a/include/linux/randomize_kstack.h
-+++ b/include/linux/randomize_kstack.h
-@@ -9,7 +9,6 @@
+diff --git a/include/linux/prandom.h b/include/linux/prandom.h
+index ff7dcc3fa105..e797b3709f5c 100644
+--- a/include/linux/prandom.h
++++ b/include/linux/prandom.h
+@@ -17,7 +17,24 @@ struct rnd_state {
+ 	__u32 s1, s2, s3, s4;
+ };
  
- DECLARE_STATIC_KEY_MAYBE(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
- 			 randomize_kstack_offset);
--DECLARE_PER_CPU(u32, kstack_offset);
- 
- /*
-  * Do not use this anywhere else in the kernel. This is used here because
-@@ -50,15 +49,14 @@ DECLARE_PER_CPU(u32, kstack_offset);
-  * add_random_kstack_offset - Increase stack utilization by previously
-  *			      chosen random offset
-  *
-- * This should be used in the syscall entry path when interrupts and
-- * preempt are disabled, and after user registers have been stored to
-- * the stack. For testing the resulting entropy, please see:
-- * tools/testing/selftests/lkdtm/stack-entropy.sh
-+ * This should be used in the syscall entry path after user registers have been
-+ * stored to the stack. Preemption may be enabled. For testing the resulting
-+ * entropy, please see: tools/testing/selftests/lkdtm/stack-entropy.sh
-  */
- #define add_random_kstack_offset() do {					\
- 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
- 				&randomize_kstack_offset)) {		\
--		u32 offset = raw_cpu_read(kstack_offset);		\
-+		u32 offset = current->kstack_offset;			\
- 		u8 *ptr = __kstack_alloca(KSTACK_OFFSET_MAX(offset));	\
- 		/* Keep allocation even after "ptr" loses scope. */	\
- 		asm volatile("" :: "r"(ptr) : "memory");		\
-@@ -69,9 +67,9 @@ DECLARE_PER_CPU(u32, kstack_offset);
-  * choose_random_kstack_offset - Choose the random offset for the next
-  *				 add_random_kstack_offset()
-  *
-- * This should only be used during syscall exit when interrupts and
-- * preempt are disabled. This position in the syscall flow is done to
-- * frustrate attacks from userspace attempting to learn the next offset:
-+ * This should only be used during syscall exit. Preemption may be enabled. This
-+ * position in the syscall flow is done to frustrate attacks from userspace
-+ * attempting to learn the next offset:
-  * - Maximize the timing uncertainty visible from userspace: if the
-  *   offset is chosen at syscall entry, userspace has much more control
-  *   over the timing between choosing offsets. "How long will we be in
-@@ -85,14 +83,20 @@ DECLARE_PER_CPU(u32, kstack_offset);
- #define choose_random_kstack_offset(rand) do {				\
- 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
- 				&randomize_kstack_offset)) {		\
--		u32 offset = raw_cpu_read(kstack_offset);		\
-+		u32 offset = current->kstack_offset;			\
- 		offset = ror32(offset, 5) ^ (rand);			\
--		raw_cpu_write(kstack_offset, offset);			\
-+		current->kstack_offset = offset;			\
- 	}								\
- } while (0)
-+
-+static inline void random_kstack_task_init(struct task_struct *tsk)
+-u32 prandom_u32_state(struct rnd_state *state);
++/**
++ * prandom_u32_state - seeded pseudo-random number generator.
++ * @state: pointer to state structure holding seeded state.
++ *
++ * This is used for pseudo-randomness with no outside seeding.
++ * For more random results, use get_random_u32().
++ */
++static __always_inline u32 prandom_u32_state(struct rnd_state *state)
 +{
-+	tsk->kstack_offset = 0;
-+}
- #else /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
- #define add_random_kstack_offset()		do { } while (0)
- #define choose_random_kstack_offset(rand)	do { } while (0)
-+#define random_kstack_task_init(tsk)		do { } while (0)
- #endif /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
- 
- #endif
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index d395f2810fac..9e0080ed1484 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1591,6 +1591,10 @@ struct task_struct {
- 	unsigned long			prev_lowest_stack;
- #endif
- 
-+#ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
-+	u32				kstack_offset;
-+#endif
++#define TAUSWORTHE(s, a, b, c, d) ((s & c) << d) ^ (((s << a) ^ s) >> b)
++	state->s1 = TAUSWORTHE(state->s1,  6U, 13U, 4294967294U, 18U);
++	state->s2 = TAUSWORTHE(state->s2,  2U, 27U, 4294967288U,  2U);
++	state->s3 = TAUSWORTHE(state->s3, 13U, 21U, 4294967280U,  7U);
++	state->s4 = TAUSWORTHE(state->s4,  3U, 12U, 4294967168U, 13U);
 +
- #ifdef CONFIG_X86_MCE
- 	void __user			*mce_vaddr;
- 	__u64				mce_kflags;
-diff --git a/init/main.c b/init/main.c
-index b84818ad9685..27fcbbde933e 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -830,7 +830,6 @@ static inline void initcall_debug_enable(void)
- #ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
- DEFINE_STATIC_KEY_MAYBE_RO(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
- 			   randomize_kstack_offset);
--DEFINE_PER_CPU(u32, kstack_offset);
++	return (state->s1 ^ state->s2 ^ state->s3 ^ state->s4);
++}
++
+ void prandom_bytes_state(struct rnd_state *state, void *buf, size_t nbytes);
+ void prandom_seed_full_state(struct rnd_state __percpu *pcpu_state);
  
- static int __init early_randomize_kstack_offset(char *buf)
- {
-diff --git a/kernel/fork.c b/kernel/fork.c
-index b1f3915d5f8e..b061e1edbc43 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -95,6 +95,7 @@
- #include <linux/thread_info.h>
- #include <linux/kstack_erase.h>
- #include <linux/kasan.h>
-+#include <linux/randomize_kstack.h>
- #include <linux/scs.h>
- #include <linux/io_uring.h>
- #include <linux/bpf.h>
-@@ -2231,6 +2232,7 @@ __latent_entropy struct task_struct *copy_process(
- 	if (retval)
- 		goto bad_fork_cleanup_io;
+diff --git a/lib/random32.c b/lib/random32.c
+index 24e7acd9343f..d57baf489d4a 100644
+--- a/lib/random32.c
++++ b/lib/random32.c
+@@ -42,25 +42,6 @@
+ #include <linux/slab.h>
+ #include <linux/unaligned.h>
  
-+	random_kstack_task_init(p);
- 	stackleak_task_init(p);
- 
- 	if (pid != &init_struct_pid) {
+-/**
+- *	prandom_u32_state - seeded pseudo-random number generator.
+- *	@state: pointer to state structure holding seeded state.
+- *
+- *	This is used for pseudo-randomness with no outside seeding.
+- *	For more random results, use get_random_u32().
+- */
+-u32 prandom_u32_state(struct rnd_state *state)
+-{
+-#define TAUSWORTHE(s, a, b, c, d) ((s & c) << d) ^ (((s << a) ^ s) >> b)
+-	state->s1 = TAUSWORTHE(state->s1,  6U, 13U, 4294967294U, 18U);
+-	state->s2 = TAUSWORTHE(state->s2,  2U, 27U, 4294967288U,  2U);
+-	state->s3 = TAUSWORTHE(state->s3, 13U, 21U, 4294967280U,  7U);
+-	state->s4 = TAUSWORTHE(state->s4,  3U, 12U, 4294967168U, 13U);
+-
+-	return (state->s1 ^ state->s2 ^ state->s3 ^ state->s4);
+-}
+-EXPORT_SYMBOL(prandom_u32_state);
+-
+ /**
+  *	prandom_bytes_state - get the requested number of pseudo-random bytes
+  *
 -- 
 2.43.0
 
