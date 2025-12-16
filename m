@@ -1,72 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-14809-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14810-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AFDDCC34AD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Dec 2025 14:41:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C387FCC3AD6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Dec 2025 15:43:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dVyky4Drdz2yDY;
-	Wed, 17 Dec 2025 00:41:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dW06024rLz2yDY;
+	Wed, 17 Dec 2025 01:43:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.167.46
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765892490;
-	cv=none; b=ZCc5Vwbl52GTWj7VM2LR98TcgDkeDYzWOm5S2trJV2ZvJOoFNmp2V2YzgfCXuZgqFaDVb/YAGvtNFu95rn8txBp0fVpJyCP3+TyKR0Thg8bLZmwthHWp9PaMu+/7xrFMNLGtth/+CKkkaWynvhw/tQmT53+Rf8d8D2rT9/jTXzDIVdyWk38M5Hx2ar8papHd43FFs0aQrCtIYPPry3v6GK3sKGLIgnhkuE6Ef0YPvC03f+jVpYwjdwMpoxYTiN80Afm7MQDuauFyBxR/atK8xEZZVRQF7mP0YmSAQATMQ2FsbVuy36hiXRRWslhVBFEWQHdgPCjQm2TAgi1r47e0Qg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765896184;
+	cv=none; b=eUoRETjJcAQhTfQaVW4a8MMQaCoSwGlAMDkInkRnn18Ps5suIKciqfPqGTZ91j5CB+dzTT6SvKNAsyUcyyZrsDAN0HLCeP6ozemLFvv/Tqq0b8NN9Wwb2quAe3rWDvTFvewXI8fjQy/ALUrzXK1FGTz4xmOIwlB/aBTWHXyNZFVzMrbblrxLDzVknQyaGpzUmQeKBdDx1UE1+z+XbPYuMmJTO5id5+YGi06MaSUXzp4mX8pAaF6mPhP8P0IJT8kIdSnAL+xEGhr3QzW4jaXuEb5JXM6u7UqRA/XDk2EouftLMF8Np9rdyuOnzRGTcpjme018xoIfcxdmkuwZ+XReSg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765892490; c=relaxed/relaxed;
-	bh=5ee4Zz0D9ytcS7H682D9wvk4H4KdC+3KAMY2EuDrq4c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UcK/ZabIcdSh5iIHHE/sf7f86xkW6tYGv5ux3t+TwYezZJ9cTnY3Kp0CLp9PSEifu+mJtoYO1eQLOllBUQedVpHEJ5qzDPj4uSjv+HOImwq2oSw8igSnrR4OPk+NPlmXaj3G0hRFpVP1QPkoOKoKJxJXZY/xi+GKlNLwr8mGG72HAtB66TtrXO6m1QAYsWjpgMYl83KhEZcElvtETnLYhwieTcxh0NrkYOUHCJL7MvaUcEfr2WvK7RzMZMN6+cEUzW0iSW+gzT7vEyrQHwcoXXtCUX2mYQfift3JNWIcnop+D5ZnVDJ9rzhkiksBB1aVq/TuHA52BrtVGXvtguTNTg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QWUWvuE+; dkim-atps=neutral; spf=pass (client-ip=209.85.167.46; helo=mail-lf1-f46.google.com; envelope-from=festevam@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1765896184; c=relaxed/relaxed;
+	bh=y0oNyoHx5MrEqswbHRCKSh8ZceJBKkuGaNlD5ECeAjI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b4O1n9iOT1UFsLP+pH55iWaw/UdocaMUt+uF1rjgkHB3+X9ADvybsUYl6Fx2o+NzJleWLao9k5fsBUR/0XJPCCHCAy+lIzCdd6CMMLRvkCwc7tgUoQv/tlrHc07AOZEwndPZbz/EohsdEDSiYSlvpC9jecWcyBb2vFPqITPfR0Jjt/A7T5zeEIJtZeiRZxiHTBvgrdzR3qEn90K9gZ2J/yhavdF5VEVoV8MMdL7yHDTn/nsZapxEQdtVjsVnQrgjLIMm/hsalY3EflpntxlUZ6VdIJNSuEPrkatH6Pd1KxP9W+ESnQvx+DO34+r1r+KOBuh5CJgKZK7FgkQ4yTVrpQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p5OEeHXI; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mkchauras@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QWUWvuE+;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p5OEeHXI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.46; helo=mail-lf1-f46.google.com; envelope-from=festevam@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mkchauras@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dVykw67r8z2xqf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Dec 2025 00:41:27 +1100 (AEDT)
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5943d20f352so5849527e87.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Dec 2025 05:41:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765892424; x=1766497224; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5ee4Zz0D9ytcS7H682D9wvk4H4KdC+3KAMY2EuDrq4c=;
-        b=QWUWvuE+0n3Q8OaYXd1ECu84vlO3GIOQpKf3mLFBEOMpAffbqtryGwGqqiea9y52KZ
-         LofRSgYGsUhDH6U0LHC3EO7BfsSlG/2gcBcg0gcmP2TKQEdGAvWxrHcH8xtHZ0+Ulq7l
-         oJsqJQVWUzTiyf6wqHIa7tkERjZ+qSzEXEbuT2EkB38NKWzCTZnBbuRZFJAM8TFhDl3h
-         y028VM69/wGR10roChiuCnPzCXGDlg5Y/GYq5nx1JfHSvvsIXS0gUCudGzL6aNSstF8K
-         7KBmIm+jIvVK5EFW3TLO2jvOh8SryBtdcoX37PoEx3CVen8T9wa+CAejSUiruvHNedIE
-         wwpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765892424; x=1766497224;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5ee4Zz0D9ytcS7H682D9wvk4H4KdC+3KAMY2EuDrq4c=;
-        b=lHOx5okw1pZ7mGUx06nqIu6rn2aCf1zNSCJ5BLnpD1aiG9HD+knGQf7Ng/YIbbtD47
-         ZMu/7Fs7+uLCKrnNfw5UmkXCmQnqZLswzrTfwo54i8oOg45yNblJVfMUDxyIgX9Hr6zw
-         ct5HoK+NBw0ukYKItT6ZRWmlab+wkAqzVlppAKi7aZOUYGxbtQgGvwV0uZWOcfQugDcO
-         NSG82C0KU2Tn2r8g91DTYlf10Cd+vqRF2ZvaUz5PGvOE8xKYUBNFsoVP6it9NE5GgOW3
-         a2cK0BdueGFFgSMbtZK9qsQBGIcmCxkClLzzwl4QDyLUwb6hdTlOeDXLJrLy+9e4rT4i
-         bEtg==
-X-Forwarded-Encrypted: i=1; AJvYcCWNOFA6Hy0I597rTVqkV92fHqnrCKuNgUKt2+5A41v0AVgZlwOh+McH0WQSVclnan79JZGMye64ZgsmmYk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzkjh04ixuzD1aPQQONbXl+s6cDeOWcZSj+wNbH0eGX2sRe/3s8
-	5uFEsnlRKy9Cebo6MuFSlg6YYi/PmKnz888ZDfwjzRmVKpP6asTTQmLXJsZ10wnVbBFyMR68c36
-	sSAp3/jBSLTqCj/EPqImS3JFNKPIh5oY=
-X-Gm-Gg: AY/fxX5tqk3AOc3goIpEPRFNT1HV6ojIjPuUbcZtu47ayqf7Ai/EiZSD8CA3O1Ao6C+
-	sRHtQkPrEj6dTkAJQXVj1MoONcSjAl0Xr5iPeyVmBkdym8b+7z5FIMriAlKLnxYB7Hrvi8KCm5t
-	LlQMBxU0GrnOPrNs/WqRncvV5gF+Hkrh7ri/ALIl69RC/v7H8bvuOIvQdqegCt4mjTVMPy0+4rs
-	mbxZKQoh6SdORrsI1GGQUlLG1rlF7IWn5N6UwcsLN4XzlTk38q9+KYuh0kHIgSEuAz3JB5+Sd+h
-	N2EVKkS6/Ziju7B990SbvnidFA==
-X-Google-Smtp-Source: AGHT+IG6PHKV93VLlDgo3F9ExLDBvuvEH2IBl9c0XAav+v5vKoNk/HgkxZLxn472r/mSjzFUQm2ILxTteHPp2+/RnlM=
-X-Received: by 2002:a05:6512:2207:b0:594:2ff7:9d29 with SMTP id
- 2adb3069b0e04-598faa33bd2mr4880294e87.13.1765892423460; Tue, 16 Dec 2025
- 05:40:23 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dW05z0f5Rz2xm5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Dec 2025 01:43:02 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BGBxPD1015930;
+	Tue, 16 Dec 2025 14:42:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=y0oNyo
+	Hx5MrEqswbHRCKSh8ZceJBKkuGaNlD5ECeAjI=; b=p5OEeHXI6JfldaO9OO4LFQ
+	1pCk/GdixT+nZpAS6piBCwcXLrv81shii2TL7cG1LrHTJXzi7GDCidMuQFTuXXSm
+	Rol3VLKrAz4GKo8f/vi5w36BavkUV3perxWIa9tnczoqYXlbMfyOLSf2n1/jo3fD
+	SPjMbD63jRg2+lk5XtcaecOSe8qhVnSss6gNrOUEfEcIs2dxtWOf2pTEap+W1f6p
+	mfUgMBlygeRs6ra0tJwyxAG8dQ3BM0vmqILgb0Q3rnuyVeJiSRAwED6rBKE9xniD
+	onnenw8h2gfYbRueSYslv9Itm4qrlV4Nt02Vz/s3+XOO804wdw2Uh3BqF62l9g+g
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yt1evut-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Dec 2025 14:42:23 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BGET5P5018791;
+	Tue, 16 Dec 2025 14:42:23 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yt1evun-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Dec 2025 14:42:23 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BGE7ZsY003049;
+	Tue, 16 Dec 2025 14:42:22 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1kfn4je5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Dec 2025 14:42:22 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BGEgIeX48890320
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Dec 2025 14:42:18 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 654AC20043;
+	Tue, 16 Dec 2025 14:42:18 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1647520040;
+	Tue, 16 Dec 2025 14:42:12 +0000 (GMT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com (unknown [9.124.210.89])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 16 Dec 2025 14:42:11 +0000 (GMT)
+Date: Tue, 16 Dec 2025 20:12:09 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@linux.ibm.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        oleg@redhat.com, kees@kernel.org, luto@amacapital.net,
+        wad@chromium.org, mchauras@linux.ibm.com, thuth@redhat.com,
+        sshegde@linux.ibm.com, charlie@rivosinc.com, macro@orcam.me.uk,
+        akpm@linux-foundation.org, ldv@strace.io, deller@gmx.de,
+        ankur.a.arora@oracle.com, segher@kernel.crashing.org,
+        tglx@linutronix.de, thomas.weissschuh@linutronix.de,
+        peterz@infradead.org, menglong8.dong@gmail.com, bigeasy@linutronix.de,
+        namcao@linutronix.de, kan.liang@linux.intel.com, mingo@kernel.org,
+        atrajeev@linux.vnet.ibm.com, mark.barnett@arm.com,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/8] powerpc: Prepare to build with generic entry/exit
+ framework
+Message-ID: <qulxc3toxkjsiljvwz23hixlxe4qrnbzekv4oqtmuch5kgzsaj@xv6oqpmhbi5w>
+References: <20251214130245.43664-1-mkchauras@linux.ibm.com>
+ <20251214130245.43664-3-mkchauras@linux.ibm.com>
+ <cddd0a2c-10e1-493a-9a02-521a1770c675@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,60 +104,149 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20251216094045.623184-1-alexander.stein@ew.tq-group.com>
-In-Reply-To: <20251216094045.623184-1-alexander.stein@ew.tq-group.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 16 Dec 2025 10:40:12 -0300
-X-Gm-Features: AQt7F2qZF3f-L8eLmpiAwAAP8lHE9tMfxenOhSlQvdf4WCcx_Deg76JxdUu8eKI
-Message-ID: <CAOMZO5B1Wf0zmOA23VNLrNW5rsB1at_qHoMk3ytj8aU8eM26Sg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] ASoC: fsl_easrc: Fix duplicate debufs entries
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
-	Nicolin Chen <nicoleotsuka@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cddd0a2c-10e1-493a-9a02-521a1770c675@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: MPwlXQCVxN96z8wko7ucw_a9fMIDFaaP
+X-Proofpoint-ORIG-GUID: 5-lmX_IHyD68zJQY_kS5I9cs4k_Z1M3E
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAyMyBTYWx0ZWRfXwrmL/h7AW3nK
+ nVZ3NArck2ztHKXKI1YzHs+afOovCrjxlFkskoumznmmOulC6VBNnHIBCeU+sSSyAHurk6+vWbx
+ am9HrMccZQaS9KZQ46yWSPWjI9YeaIl5KnvHo6DS0wJje+R9huapw9U6LR1HW10yrF26avur7L8
+ k6os8UwnKpk9QzajWjmMuEwY0RQChFJhLQH2d2Z8h3LkEWWXdxydNQ19n0ZwK+SDqiyNDWF5aZg
+ hmVB6897YykZljyezCU3KSwzlEU4T1LubaUDh10zTcR5HXIV9GAd8o3+b6rlvpDzkhZaWIr1A8P
+ bhexF/3xJgAakj7agc+ME+m6y+14Vs+kkq5nATBmbGHG+fkUg1B8UC8siBp/1/hVDUZA5qsPnpW
+ QscXaQLqwmWKfE1Q8IaxAP/8TlDEiQ==
+X-Authority-Analysis: v=2.4 cv=L/MQguT8 c=1 sm=1 tr=0 ts=69416fcf cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=8M7aN9AZkhnCfIqxXbEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-16_02,2025-12-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501
+ clxscore=1011 lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130023
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Alexander,
+On Tue, Dec 16, 2025 at 10:27:55AM +0100, Christophe Leroy (CS GROUP) wrote:
+> 
+> 
+> Le 14/12/2025 à 14:02, Mukesh Kumar Chaurasiya a écrit :
+> > From: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+> > 
+> > This patch introduces preparatory changes needed to support building
+> > PowerPC with the generic entry/exit (irqentry) framework.
+> > 
+> > The following infrastructure updates are added:
+> >   - Add a syscall_work field to struct thread_info to hold SYSCALL_WORK_* flags.
+> >   - Provide a stub implementation of arch_syscall_is_vdso_sigreturn(),
+> >     returning false for now.
+> >   - Introduce on_thread_stack() helper to detect if the current stack pointer
+> >     lies within the task’s kernel stack.
+> > 
+> > These additions enable later integration with the generic entry/exit
+> > infrastructure while keeping existing PowerPC behavior unchanged.
+> > 
+> > No functional change is intended in this patch.
+> > 
+> > Signed-off-by: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+> > ---
+> >   arch/powerpc/include/asm/entry-common.h | 11 +++++++++++
+> >   arch/powerpc/include/asm/stacktrace.h   |  6 ++++++
+> >   arch/powerpc/include/asm/syscall.h      |  5 +++++
+> >   arch/powerpc/include/asm/thread_info.h  |  1 +
+> >   4 files changed, 23 insertions(+)
+> >   create mode 100644 arch/powerpc/include/asm/entry-common.h
+> > 
+> > diff --git a/arch/powerpc/include/asm/entry-common.h b/arch/powerpc/include/asm/entry-common.h
+> > new file mode 100644
+> > index 000000000000..3af16d821d07
+> > --- /dev/null
+> > +++ b/arch/powerpc/include/asm/entry-common.h
+> > @@ -0,0 +1,11 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +
+> > +#ifndef _ASM_PPC_ENTRY_COMMON_H
+> > +#define _ASM_PPC_ENTRY_COMMON_H
+> > +
+> > +#ifdef CONFIG_GENERIC_IRQ_ENTRY
+> 
+> Why do you need this #ifdef ? I see no reason, the build works well without
+> this #ifdef.
+> 
+> At the time being, CONFIG_GENERIC_IRQ_ENTRY is never selected by powerpc,
+> meaning you are introducing dead code. If really needed it would be more
+> explicit to add a "#if 0"
+> 
+Yes you are correct. I intended it to be a dead code till we introduce
+the implementation. I'll remove this in next iteration.
+> > +
+> > +#include <asm/stacktrace.h>
+> > +
+> > +#endif /* CONFIG_GENERIC_IRQ_ENTRY */
+> > +#endif /* _ASM_PPC_ENTRY_COMMON_H */
+> > diff --git a/arch/powerpc/include/asm/stacktrace.h b/arch/powerpc/include/asm/stacktrace.h
+> > index 6149b53b3bc8..a81a9373d723 100644
+> > --- a/arch/powerpc/include/asm/stacktrace.h
+> > +++ b/arch/powerpc/include/asm/stacktrace.h
+> > @@ -10,4 +10,10 @@
+> >   void show_user_instructions(struct pt_regs *regs);
+> > +static inline bool on_thread_stack(void)
+> 
+> Shouldn't it be __always_inline ?
+> 
+Yes it should. Will fix this too.
+> > +{
+> > +	return !(((unsigned long)(current->stack) ^ current_stack_pointer)
+> > +			& ~(THREAD_SIZE - 1));
+> > +}
+> > +
+> >   #endif /* _ASM_POWERPC_STACKTRACE_H */
+> > diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
+> > index 4b3c52ed6e9d..834fcc4f7b54 100644
+> > --- a/arch/powerpc/include/asm/syscall.h
+> > +++ b/arch/powerpc/include/asm/syscall.h
+> > @@ -139,4 +139,9 @@ static inline int syscall_get_arch(struct task_struct *task)
+> >   	else
+> >   		return AUDIT_ARCH_PPC64;
+> >   }
+> > +
+> > +static inline bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
+> > +{
+> > +	return false;
+> > +}
+> >   #endif	/* _ASM_SYSCALL_H */
+> > diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+> > index b0f200aba2b3..9c8270354f0b 100644
+> > --- a/arch/powerpc/include/asm/thread_info.h
+> > +++ b/arch/powerpc/include/asm/thread_info.h
+> > @@ -57,6 +57,7 @@ struct thread_info {
+> >   #ifdef CONFIG_SMP
+> >   	unsigned int	cpu;
+> >   #endif
+> > +	unsigned long	syscall_work;		/* SYSCALL_WORK_ flags */
+> 
+> This is not used, why add it here ?
+> 
+I wanted it to be in a separate patch from where it's used coz if there
+are any cache alignment issues, during the bisect we can be sure that
+it's introduced by this variable not due to any implementation.
+Do you think it should be along with the implementation?
 
-On Tue, Dec 16, 2025 at 6:41=E2=80=AFAM Alexander Stein
-<alexander.stein@ew.tq-group.com> wrote:
->
-> Hi,
->
-> this series fixes the error regarding duplicate debugfs directory creatio=
-n on
-> TQMa8MPxL (imx8mp) when easrc is enabled:
->   debugfs: '30c90000.easrc' already exists in 'tqm-tlv320aic32'
->
-> This is caused because fsl_easrc adds two components which use the device=
- name
-> as component name. Debugfs directories for each component is created, res=
-ulting
-> on name conflict. Fix this by adding the debugfs_prefix for both componen=
-t
-> drivers.
->
-> Before:
-> $ ls /sys/kernel/debug/asoc/tqm-tlv320aic32/
-> 30c30000.sai  30c90000.easrc  HiFi-ASRC-FE  dapm  dapm_pop_time
-> dma:30c30000.sai  tlv320aic32x4.1-0018
->
-> After:
-> $ ls /sys/kernel/debug/asoc/tqm-tlv320aic32/
-> 30c30000.sai  HiFi-ASRC-FE  asrc:30c90000.easrc  dapm  dapm_pop_time
-> dma:30c30000.sai  easrc:30c90000.easrc  tlv320aic32x4.1-0018
+I appreciate the review.
 
-Thanks for fixing these error messages.
+Regards,
+Mukesh
 
-For the series:
-
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
+> >   	unsigned long	local_flags;		/* private flags for thread */
+> >   #ifdef CONFIG_LIVEPATCH_64
+> >   	unsigned long *livepatch_sp;
+> 
 
