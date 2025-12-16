@@ -1,93 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-14821-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14822-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F11CC44E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Dec 2025 17:32:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA84CC4D38
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Dec 2025 19:18:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dW2Wz6Rrmz2yF1;
-	Wed, 17 Dec 2025 03:32:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dW4t45cWMz2yF1;
+	Wed, 17 Dec 2025 05:18:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.18
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765902735;
-	cv=none; b=bDdKMAjm5AS+34eC3MIawZKu6hACAsUoE7OWu1byk62bKn/UbwVg1oCPVjEwLJJcr2p+z6mV+MhcldHj8fwztE0bGGPLp0xrZ+9rgdwJF5mef2upvtOf+k6wTV0DG/SakOunwzXJn/Km4I7H6uUwRos+nTTzlMrXL2+eKLuSIM9Q56mRHwRemLpoulFWKoHzRicV9u1uR9OR4jUTPXfbeLvECzVunXCH5lurr2ZfrMlJvqG014kosspRsIwI/mpD0FTFwFlRqPP9AYfxu1aRSQiQ8+aaUbd+lx7QM6TQ08srSk3hS6Txgp4lpWOQCbNGUc6ZBs7oEyOJ+EJcxy6aRA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.210.179
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765909084;
+	cv=none; b=CzBt+DW0rfeYAveNX5iKnqv1hWurH/tYOdf9/qw0SJIN9McjsjY7qEeHZVnY/q6SfXR6aLQ26+/BKybvlfqY9HhgLqF9/1Fl4KEEioIZOGYkvq576uEFSZv1GyvJWokBKacrxQNSlJ/O30oFg7Hg6S6YUKGItve0lX8WrfiJWkdU3EGqUQaX+5LYu+rpgICoJg18MfPhaaYOEkxlR+YsfWKE63RayZjx6im0sp8yRi/8Fzbzwi3Bf6Q1EZgaWE+ODKSZg3DL5S6qOlDs5imSwWBLLsvuABfo93rDutG9EomA8MHfNHkR/jqYPEl9LZ02/rWUucoE8uA/Y/n0KqQptQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765902735; c=relaxed/relaxed;
-	bh=eZRUio5zfRZF4Wp0TXIUZCi5a4FZapbOokb+FP2/ep4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lb2sCJRe1+ghasdTLwutsXs4tlZYLx0vEQaczeVbfQNP6MKhnFz37yMl7bJizHND9csT7kuOpelcpoSXNuYoSqGCl+tdk7N1CuGhH1spdGee0bVz4HI3c6AwpMlJitpSS8KnH7qqcrXoK+iuAnIKio8X0qvJcnUx9EMfht2flMtvAdrLMtc8jUJ3Rpk657tY057svEQR8kwOUJkNl1dsHSJhw3XY5imC1aNHErPnAp410YNJ3m/WKCbRLeEPxSwwzZGlA2/GXTW2HUoy37WNPfdFw9A+KeeBYV8YLOQqHfrFCmYqa9GN+VtxVrxM7DMwTO73FsgeomcklT2uIwM3RA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Z+99b0hC; dkim-atps=neutral; spf=pass (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1765909084; c=relaxed/relaxed;
+	bh=DqdwfT9jQv14SWCzH+5xSCjiylSXLId1RXHgfGmZ+fk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jeASadfbLmUR1c8WNbgxjCiXwdmxgtaK5OBy58sH5zs3wPzioJ0tF9LzYMQhXjmzILjvED/hey7XSbhLyoIVm14fDcxsdLrlVAXYJX0eFEJhBpEbejk0Rr3ceP9W7HLSzO8UJLhpbdTZ1wKYU5s9Re6yc69gqxydVUNgSgyemMxf0GFDHiNd1qAuaDwwqZNp3vAEioIRoH7bRyZUifVMOqVhSx+oeFA9OJZSIucBC0LSf85XCk7K+7JCF6ITowcyJ0X14R+BxN2tSuWZV3i4jhoZb9FRScUPzuUGQ5h1+tbuN5PLBDjqhxiIBmKLBq3r23FN8a+BLrwEcIZk1VQhnQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=a/9UYtyT; dkim-atps=neutral; spf=pass (client-ip=209.85.210.179; helo=mail-pf1-f179.google.com; envelope-from=andrii.nakryiko@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Z+99b0hC;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=a/9UYtyT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.179; helo=mail-pf1-f179.google.com; envelope-from=andrii.nakryiko@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dW2Ww6gYKz2xm5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Dec 2025 03:32:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765902733; x=1797438733;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BYYyvPXCv/z3Zv/yIQlMx58UIuXYnnZWL+o4/ZYGJM8=;
-  b=Z+99b0hC+e2NnQDrBkBq0MNdXkdSehLOevLD9AyTjyIHAvjd+3F4nEru
-   wJtkhchXww24a4QjqF2fzTcBFj4NyJsEQ+OxTIThIutW4aD3J2EC+iWR8
-   aUTBhfxSQiXtAaiq5IT/AcqkDt+XTQ3ZIFUsu6yF+DO94xsBYoZYEzKXc
-   oltcmYfVHUAaWdXWcUgcDTp5NL74JICJHtorpB6JOxORlDkzWqoSETOEn
-   rfiOdSjTiuzCWyWNxM0AmvGp6qH+tB9tw/wPx2W1YL75LZNIvDZPFLDzX
-   DeC7f3vJnMCZ3Yy1zY1lF1Vd/dHOpbCqEZOr4OrzZPtv0dzSj322412Q6
-   w==;
-X-CSE-ConnectionGUID: aoRVZK3iQ0KnuPTACqvYeg==
-X-CSE-MsgGUID: TdHgEYftRtOoLqXQjAjBlw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="67868239"
-X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; 
-   d="scan'208";a="67868239"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 08:32:07 -0800
-X-CSE-ConnectionGUID: hOe0vqPVR7CciV+fTWvORw==
-X-CSE-MsgGUID: v02B96M3SIa8VhPps1uokQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; 
-   d="scan'208";a="197808734"
-Received: from lkp-server02.sh.intel.com (HELO 034c7e8e53c3) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 16 Dec 2025 08:32:00 -0800
-Received: from kbuild by 034c7e8e53c3 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vVXxu-000000003YO-0J5B;
-	Tue, 16 Dec 2025 16:31:58 +0000
-Date: Wed, 17 Dec 2025 00:31:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ryan Roberts <ryan.roberts@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Jeremy Linton <jeremy.linton@arm.com>
-Cc: oe-kbuild-all@lists.linux.dev, Ryan Roberts <ryan.roberts@arm.com>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] randomize_kstack: Unify random source across
- arches
-Message-ID: <202512170038.vJZdUhEN-lkp@intel.com>
-References: <20251215163520.1144179-4-ryan.roberts@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dW4t31h4xz2xdV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Dec 2025 05:18:01 +1100 (AEDT)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7f1243792f2so3294072b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Dec 2025 10:18:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765909020; x=1766513820; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DqdwfT9jQv14SWCzH+5xSCjiylSXLId1RXHgfGmZ+fk=;
+        b=a/9UYtyTk1g+qWOoqYCp8XoOS4T0foI7XDaaxY/vva0nmaS1zfS9Hjy5gqVGF+xppf
+         fZcx5KZMk2wC4OxfXRBPuS+rBy0AhN1MoKab7JElLHwOYgsgNuHeZNMlvTtzyYa8HGDk
+         2GEhxgG0enx9bYMcFtK++rxgOULP2udBf9lDf/V2VzK6fk8U5OgGwsgvyooG770GxSGk
+         hGSsOjiNEVQFqmDa5x4PqJ3sSiPF3feiBFkOeOtUP8Dc6h1cN1d03JigAehQF/foUxsT
+         gFEIwb4SczbN2sSCJu1I0a7Ye8pfgWR9I3wFo01FyTu7OhI7PriJ4c5aPIc/gLuXPR20
+         +Ptw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765909020; x=1766513820;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=DqdwfT9jQv14SWCzH+5xSCjiylSXLId1RXHgfGmZ+fk=;
+        b=jYx71+VJ/1ZKQXM7X31u/YrsjF/RvPVaPi2wOAvvBVOzMddZzO7v0aUWlzEJqcKahv
+         IYXcJJKfYCqdPJC68MxWL65gSE0RJggQln3/vXA6XpiGHommRdLQkrwqK601LAjgBZ3V
+         o1pDpZ5StfZfmtbjZJg5DCE2ja3r5Gmvdn31E/Z+NWKf/vfBt9BAItcgVmtXvvpwtbxa
+         30QiSNm2GLlr+OLyjip6EmvRooq+HXijAhb6QhITEfUwmHHi793Bl3dcHa9nG9DYZ7RJ
+         iIveaWbY5ck7Z4i1c1hBjh+tUnOrvBxYDPhdQT6koo+SyHIWA+RiNqs/8/MTJ4LsLC87
+         4pEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXaYvMJtYQRIS3simOgzK97hvfxKlktOtgdE7SjWNdxeKt+TqGJjkETzZ6MYQO+ZrLREVb2CsRH5ZUTZB8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyBFgGq8slx2rHzqXp8cAxPsrCD3JyIGE7pYTM4vRfsryXKUMS4
+	ffDoq9xXe4KkpakhZAIp1QOfVp/WWIrfzUL/qGGgSm7VZD+B18AeyswGyzQOVKZpDUbdOITOS1L
+	FmuNLH0ujVdDAV2fjPSp3gj2Hskmu5Gg=
+X-Gm-Gg: AY/fxX4sXf9sceae0No+6rrLu0GR7I/b+wpskW3zYdxqI6tasQCkXgHLt+ub7TwvhUe
+	bmiqe8EoclyQAXPB/k/dDkNZSLO3JQ1DHG2gXkMBQLOIqBttNvQiuN7rmjB8/4RWrIsoxdrnpuG
+	Mcj0d6P5N4QxXcfz3P7petlmDfESjdeLhfbYe47an9Shyhh6V/6laDfmfzlLL3KwkAVLjegplsY
+	4krigdje0G3IJeWTbwBYasZiKvYbTiW4NvTCStZRGDrdpwOz3e43bf8ZudtsGD0h44db6VScKoq
+	wm4LYaJ6dME=
+X-Google-Smtp-Source: AGHT+IGPlVPwrzSdeGZl65PGmpEh+HjErNUvKnuS53Fu7z5APtZFChtUYfm2RrnzI0QL7QktR/aAVL+xvxr1o7nZbfA=
+X-Received: by 2002:a05:6a20:2443:b0:35d:d477:a7e9 with SMTP id
+ adf61e73a8af0-369ae0ac3acmr16280227637.35.1765909019519; Tue, 16 Dec 2025
+ 10:16:59 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,125 +80,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251215163520.1144179-4-ryan.roberts@arm.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <cover.1765343385.git.skb99@linux.ibm.com>
+In-Reply-To: <cover.1765343385.git.skb99@linux.ibm.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Tue, 16 Dec 2025 10:16:47 -0800
+X-Gm-Features: AQt7F2rnNRMrfQOUmQAMtLTW3ciVgE59OOt1kNPKB6b0_n4gpnuuStY7i-VF9zM
+Message-ID: <CAEf4BzbiyJwSoaSRDtSRetze-yST-NQX83FyECSmRex9szx0NQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v4 0/2] powerpc64/bpf: Inline helper in powerpc JIT
+To: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, hbathini@linux.ibm.com, sachinpb@linux.ibm.com, 
+	venkat88@linux.ibm.com, andrii@kernel.org, eddyz87@gmail.com, ast@kernel.org, 
+	daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org, 
+	yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org, 
+	sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, 
+	christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com, 
+	mpe@ellerman.id.au, npiggin@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Ryan,
+On Tue, Dec 9, 2025 at 10:51=E2=80=AFPM Saket Kumar Bhaskar <skb99@linux.ib=
+m.com> wrote:
+>
+> This series add support for internal only per-CPU instructions,
+> inlines the bpf_get_smp_processor_id() and bpf_get_current_task()
+> helper calls for powerpc BPF JIT.
+>
 
-kernel test robot noticed the following build errors:
+This is marked for bpf-next tree, but I think this should actually go
+through ppc64-specific tree, is that right?
 
-[auto build test ERROR on tip/sched/core]
-[also build test ERROR on akpm-mm/mm-everything linus/master v6.19-rc1 next-20251216]
-[cannot apply to kees/for-next/hardening kees/for-next/execve]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Ryan-Roberts/prandom-Convert-prandom_u32_state-to-__always_inline/20251216-013546
-base:   tip/sched/core
-patch link:    https://lore.kernel.org/r/20251215163520.1144179-4-ryan.roberts%40arm.com
-patch subject: [PATCH v2 3/3] randomize_kstack: Unify random source across arches
-config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/20251217/202512170038.vJZdUhEN-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251217/202512170038.vJZdUhEN-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512170038.vJZdUhEN-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
->> arch/x86/boot/startup/sev-startup.o: warning: objtool: section .discard.addressable has absolute relocation at offset 0x0
---
-   In file included from include/linux/device/driver.h:21,
-                    from include/linux/device.h:32,
-                    from include/linux/blk_types.h:11,
-                    from include/linux/writeback.h:13,
-                    from include/linux/memcontrol.h:23,
-                    from include/linux/resume_user_mode.h:8,
-                    from include/linux/entry-virt.h:6,
-                    from include/linux/kvm_host.h:5,
-                    from arch/x86/kvm/svm/svm.c:3:
->> include/linux/module.h:132:49: error: redefinition of '__inittest'
-     132 |         static inline initcall_t __maybe_unused __inittest(void)                \
-         |                                                 ^~~~~~~~~~
-   arch/x86/kvm/svm/svm.c:5509:1: note: in expansion of macro 'module_init'
-    5509 | module_init(svm_init)
-         | ^~~~~~~~~~~
-   include/linux/module.h:132:49: note: previous definition of '__inittest' with type 'int (*(void))(void)'
-     132 |         static inline initcall_t __maybe_unused __inittest(void)                \
-         |                                                 ^~~~~~~~~~
-   include/linux/module.h:125:41: note: in expansion of macro 'module_init'
-     125 | #define late_initcall(fn)               module_init(fn)
-         |                                         ^~~~~~~~~~~
-   include/linux/randomize_kstack.h:86:1: note: in expansion of macro 'late_initcall'
-      86 | late_initcall(random_kstack_init);
-         | ^~~~~~~~~~~~~
->> include/linux/module.h:134:13: error: redefinition of 'init_module'
-     134 |         int init_module(void) __copy(initfn)                    \
-         |             ^~~~~~~~~~~
-   arch/x86/kvm/svm/svm.c:5509:1: note: in expansion of macro 'module_init'
-    5509 | module_init(svm_init)
-         | ^~~~~~~~~~~
-   include/linux/module.h:134:13: note: previous definition of 'init_module' with type 'int(void)'
-     134 |         int init_module(void) __copy(initfn)                    \
-         |             ^~~~~~~~~~~
-   include/linux/module.h:125:41: note: in expansion of macro 'module_init'
-     125 | #define late_initcall(fn)               module_init(fn)
-         |                                         ^~~~~~~~~~~
-   include/linux/randomize_kstack.h:86:1: note: in expansion of macro 'late_initcall'
-      86 | late_initcall(random_kstack_init);
-         | ^~~~~~~~~~~~~
---
-   ld: arch/x86/kvm/vmx/main.o: in function `vt_init':
->> arch/x86/kvm/vmx/main.c:1038: multiple definition of `init_module'; arch/x86/kvm/vmx/vmx.o:include/linux/randomize_kstack.h:81: first defined here
---
-   In file included from drivers/misc/sgi-xp/xpc_main.c:47:
->> include/linux/module.h:132:49: error: redefinition of '__inittest'
-     132 |         static inline initcall_t __maybe_unused __inittest(void)                \
-         |                                                 ^~~~~~~~~~
-   drivers/misc/sgi-xp/xpc_main.c:1285:1: note: in expansion of macro 'module_init'
-    1285 | module_init(xpc_init);
-         | ^~~~~~~~~~~
-   include/linux/module.h:132:49: note: previous definition of '__inittest' with type 'int (*(void))(void)'
-     132 |         static inline initcall_t __maybe_unused __inittest(void)                \
-         |                                                 ^~~~~~~~~~
-   include/linux/module.h:125:41: note: in expansion of macro 'module_init'
-     125 | #define late_initcall(fn)               module_init(fn)
-         |                                         ^~~~~~~~~~~
-   include/linux/randomize_kstack.h:86:1: note: in expansion of macro 'late_initcall'
-      86 | late_initcall(random_kstack_init);
-         | ^~~~~~~~~~~~~
->> include/linux/module.h:134:13: error: redefinition of 'init_module'
-     134 |         int init_module(void) __copy(initfn)                    \
-         |             ^~~~~~~~~~~
-   drivers/misc/sgi-xp/xpc_main.c:1285:1: note: in expansion of macro 'module_init'
-    1285 | module_init(xpc_init);
-         | ^~~~~~~~~~~
-   include/linux/module.h:134:13: note: previous definition of 'init_module' with type 'int(void)'
-     134 |         int init_module(void) __copy(initfn)                    \
-         |             ^~~~~~~~~~~
-   include/linux/module.h:125:41: note: in expansion of macro 'module_init'
-     125 | #define late_initcall(fn)               module_init(fn)
-         |                                         ^~~~~~~~~~~
-   include/linux/randomize_kstack.h:86:1: note: in expansion of macro 'late_initcall'
-      86 | late_initcall(random_kstack_init);
-         | ^~~~~~~~~~~~~
-
-
-vim +1038 arch/x86/kvm/vmx/main.c
-
-d6bee7813752b3 Kai Huang 2025-01-22  1036  
-d6bee7813752b3 Kai Huang 2025-01-22  1037  static int __init vt_init(void)
-d6bee7813752b3 Kai Huang 2025-01-22 @1038  {
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> Changes since v3:
+> * Added break after computing per cpu address so that the computed
+>   address is not overwritten by src_reg as suggested by AI bot.
+>
+> v3: https://lore.kernel.org/all/cover.1764930425.git.skb99@linux.ibm.com/
+>
+> Changes since v2:
+> * Collected Reviewed-by tag.
+> * Inlined bpf_get_current_task/btf().
+> * Fixed addressing of src_reg and BPF_REG_0. (Christophe)
+> * Fixed condition for non smp case as suggested by Christophe.
+>
+> v2: https://lore.kernel.org/all/cover.1762422548.git.skb99@linux.ibm.com/
+>
+> Changes since v1:
+> * Addressed Christophe's comments.
+> * Inlined bpf_get_current_task() as well.
+>
+> v1: https://lore.kernel.org/all/20250311160955.825647-1-skb99@linux.ibm.c=
+om/
+>
+> Saket Kumar Bhaskar (2):
+>   powerpc64/bpf: Support internal-only MOV instruction to resolve
+>     per-CPU addrs
+>   powerpc64/bpf: Inline bpf_get_smp_processor_id() and
+>     bpf_get_current_task/_btf()
+>
+>  arch/powerpc/net/bpf_jit_comp.c   | 17 +++++++++++++++++
+>  arch/powerpc/net/bpf_jit_comp64.c | 21 +++++++++++++++++++++
+>  2 files changed, 38 insertions(+)
+>
+> --
+> 2.51.0
+>
 
