@@ -1,99 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-14785-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14786-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A891ACC0FE1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Dec 2025 06:18:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EDD0CC11A6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Dec 2025 07:30:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dVlZ0269Lz2yDY;
-	Tue, 16 Dec 2025 16:18:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dVn9m4JFnz2yDk;
+	Tue, 16 Dec 2025 17:30:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.210.178
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765862280;
-	cv=none; b=RngiSsLHZQSG6y1JTZYa29vfVmz827FRXFsY20gZgfIH0eHlkxz6fJU5fytaFBs2q7k59NrCaHTurJVQXeL35J7bbQw5ty6tEgDRdGyGG4ppVfMCTWI6/HtKbhbKGnlnNUrnbeDVR4karukSe5gUA4fKMz2ikHQgSzfQ3HDjAo1N9EswFS2PcP0l6ngwQK8wk3jaWTIJr+ujTCQKmgvbo26QLe+Ww/wuCaLOhd+6IVcOg+2jLxmeNp3S+r6cIlunpETI4S/RAmST8umPH3OX72YamYmZvqnoIZGHuqiTnHwsJu0pFpm0NII8GvoHuHWJgX2ewsAqQ9AKyr/B+hJFpQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.19
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765866636;
+	cv=none; b=cqWMvf/0p0TziDplQ+QPBCgHy3cH50W3EK/1jBOBpk97ZDD24VKwqyy9IgyTIrHsDYE+pNz+tDgQ5pf+RSTO0WfqBwdU1bCh8FiPMJoeAVyiisb8wznSyWZ1MpZk829D46tRSArXDcWRPRuKqGw36FFlPlfUsyo9igtS7RRzriDrusTMV6ABcZsjNPMTxnDj6wxhZETIYI3pJQcyZ+YZaQ5Vh2WjEtzO8rBmC6aFh+w97mYLFlKITAbs8ZIh2PZ1T05/g/QYUOuuwX6tjZ+4H6F4PbvRsQx+xgbfRG/Kc+N8uhM/FBQf/ooh/G3Vy30KIuzgDRcOlOTV2FHkV+zcLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765862280; c=relaxed/relaxed;
-	bh=xjD+cNbyJGOMAKpBo5e8LJBh9aFpu4/6uuuLCwZXOF0=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=CwrSmLWAFEZoaSFiiYeZShyptAOVBy7x8nDwznUCohz0iJQSvkozsBJn3sWhgz/1xea/haInj5fK0f26OrBXhunz+zXWDxfYzSvx22HoXTJg+Tl+6nMJMohJPTptyqncISoTI+mHwAdwniaqyO+EaP59aYdOL+X5liYObWTSdRxx7tNcEemNe9QaoigQRk1q4KLGZD/nXzwMdrvGp6WwkfN11Mx5OQ1kpwTjrpblOvw+dwZr1yhiaMPKdjf/FFazE+elt+0ic2mw0KeWWqBJUMXxduQJ0tzC2fSUP/w1+hBwsUdmUzc7kLkXCo4ooURkXLgjF4FMce8Rqx341Xkfww==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JntFh8hm; dkim-atps=neutral; spf=pass (client-ip=209.85.210.178; helo=mail-pf1-f178.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1765866636; c=relaxed/relaxed;
+	bh=BVoU667HBulD83Hhh+bWnVFRAnLWkD2k2ycc5CxylL8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A0CZuSnjHp9YRhos5+Po+Me8DzjZtS2B458f+zaQLnPjkvwaIfAuQDv89SsyGoTDcEUHRWUqK/YQ8lb2rceZYhHorWCmamRB8Q9uHhzqANIc6/gLNQP+M7QRslnsCjOv/KbSYZ++A+eXV15Rv88atT92wGt3pwiPyxtuN0BVJ0RA+qki6rq3kaI5cuVruURBgGsvkboCG43dgM6uDlb9Tu2xXMPj7vIDjtlInYYuJNxPrKVFs5yoVPKDlXN42SKjzNFHWKhEn6bwMvpzOX3qj8pggg9p6b9E/Zy7MGh/wWYqNAbScxvqWy2jCI5CaMIa2sn540B+sHJJ3ZCDM9sV9g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hZiPT2wB; dkim-atps=neutral; spf=pass (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JntFh8hm;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hZiPT2wB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.178; helo=mail-pf1-f178.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dVlYy1Xw0z2xJ6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Dec 2025 16:17:57 +1100 (AEDT)
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7ade456b6abso3206194b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Dec 2025 21:17:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765862214; x=1766467014; darn=lists.ozlabs.org;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xjD+cNbyJGOMAKpBo5e8LJBh9aFpu4/6uuuLCwZXOF0=;
-        b=JntFh8hm+98w9Ypn1+GwF2OQ/hFSgC9BtFYWEEz6rjMxDlC3XbKe/+Gu9IjUiLRwb5
-         XMXprsj65p9wXhRtd5mAMu0nR7KHfh8noOuUe5EKdnS0voXhKQY7+Axhy+s0Z0Sppmg2
-         IPtdcfyGnZE3P+fSCF2UZ7u+oMKyK3oicL8YYm8QykU8wr1lcfNbVFAPw7I8nABB5u8V
-         enXpxdOZxrpngo03duh+Ub1wQ7CbEZ2PO5jEVX7VPCJh8WeLY0C2oQ0oBj+mNUrSLH1x
-         PG35gITyLxDFUPSQtQnFqY6AQsn8Jqgbf0Lfmre5xBtxrFOnJTLMo1WsHL85rjXKTuqH
-         f2+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765862214; x=1766467014;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xjD+cNbyJGOMAKpBo5e8LJBh9aFpu4/6uuuLCwZXOF0=;
-        b=KjS78i2QdjlJvdR8EcNxhveFWlNJ7YFEcmwqCBBOXe8pbSZmmxPrnWbkZQDnVJDsRt
-         1DD/RidklVy5OWDytwUe0tZfBivFlQ5WxiQvB8j7jwokYVIt/Madn5KN4NGOYXWOhSwT
-         byHTyvnj3upNvHbWPR3GscXUDw54RqRTFuGIzklLUJeO9EUCCSlsrT9NMfD5Z+vunkhz
-         CcT9O2/qHpK5HYyBF6ZaR8MoeM8DIREHmw+vSLtn+Y6OGSdmErP2lTH/ekuNZV5gXpqE
-         FQdUnLCLa1GyOdiI4uwhV1bpUqyX995mOsEVWiLSCqAoTJCmyLpYv7iZ+Mq5EYDtdSn3
-         mwbw==
-X-Forwarded-Encrypted: i=1; AJvYcCUWvtfCxqfU7ena4zpNCSaUZcXAddjvE1ld/henUu2tMTNyGJ7LzNzLhk32T1tPTiCSZ/uZmBviyIlTy5c=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyJkrlkY2BFyVZyFeMSMf29YDU21OEmWmw7Uy7iCLnzOwnCtkYb
-	HcJvK4w3owwDCk1iopP9JHlLD9gBBwMT5bc0Y1mvtA0ds58wyaDXGC2g
-X-Gm-Gg: AY/fxX7wWKKahz9GEW+7zBqU+sGuuUc7yG99erYNpM+LMoh9BR3Y9NeHf3g8eQmBu5y
-	xN1vk9Doo+cq5ymnLypVJdvVUFUEo49r5AFuAMJdG5+e+A8vEThyjyGw0UDKKUCZcwSStgbGvUH
-	RkXvl7/YN81o76jiDYv0C8YkQ62TCeLxe+lD8AYAPowYHoUKsSnFJjnDabuCk3PJogwGPTnTdk1
-	sOW6V24GRGi4rJDEMaF8mCsZIQK4PAimfyWpirxm5ZH27qHpamUHZ19yEdSxoWbBORqrOQMzdGz
-	DHUoOaqTEakKuxyegQOEUR9BYMIOO45U+UV7qqije04uxdKbAJyInaZolmpArPUbnV99N5kwTeJ
-	yWPbd9QO55vwMDF8Rv0UXD+hHWSrypJL4Crw/Msmw4vfV4q+/Z7Q1a+p0tWPnkxl3IET0bVAuej
-	DJuNv0
-X-Google-Smtp-Source: AGHT+IFRNBpu36xO7SS++RmJSf+Yd0YivNXXnhzhZN3Px6CmR0fp7AX2KZRojw083jfNpLsrb718Lg==
-X-Received: by 2002:a05:6a20:5491:b0:366:14b0:4b05 with SMTP id adf61e73a8af0-369afc00407mr13380900637.65.1765862214371;
-        Mon, 15 Dec 2025 21:16:54 -0800 (PST)
-Received: from dw-tp ([203.81.242.64])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c25a87487sm14064659a12.7.2025.12.15.21.16.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 21:16:53 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Anshuman Khandual <anshuman.khandual@arm.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov <bp@alien8.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>, 
-	Juergen Gross <jgross@suse.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Nicholas Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-Subject: Re: [PATCH v6 03/14] powerpc/mm: implement arch_flush_lazy_mmu_mode()
-In-Reply-To: <20251215150323.2218608-4-kevin.brodsky@arm.com>
-Date: Tue, 16 Dec 2025 10:44:45 +0530
-Message-ID: <87345b6m9m.ritesh.list@gmail.com>
-References: <20251215150323.2218608-1-kevin.brodsky@arm.com> <20251215150323.2218608-4-kevin.brodsky@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dVn9j6M4Qz2xqj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Dec 2025 17:30:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765866634; x=1797402634;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=caW85dJssnXMUQwTaxj47W5KTeAnRQzB3ILQfDFWr4I=;
+  b=hZiPT2wBOxpUvNA08rMXGv9D71L+mge/QQ1FoRrbaf6dMj/INpvboMfE
+   RHSBmmElAjOBp3TlUkDgvSDYagKmj1KJaMuoVIILzUwsYd0n1SxU4VTSj
+   R+MHlBxErS/NRBY9U13xBzxM6/DBkRD2xwsIxyVuM5nf5UG7gXg0Z62qa
+   ID2qPwh2U3defNs8PJDTCOltpfs9kIC+gp5YdYmvAO86tSvW7Hq76ow9V
+   EpoF0pZLyqrrMEG2o/SwgcpnHO/lgrDt7YqTiCcMvoeMp2VMUAa0UVKor
+   sldwzZulaAFN4vFKHaa9+IEFl0v/iFGqQHWxhc3nKtxBvOxBIcZt1yxdC
+   Q==;
+X-CSE-ConnectionGUID: d1fxMDRuTbupWa3JHZIoFg==
+X-CSE-MsgGUID: vopkuN24TVKoTXD2EWyFPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="66765599"
+X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; 
+   d="scan'208";a="66765599"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 22:30:29 -0800
+X-CSE-ConnectionGUID: eJmQZk+DQ3+IZ2RMN6S80A==
+X-CSE-MsgGUID: ZcQ8O+SWR+ubj9r2aUmoZw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; 
+   d="scan'208";a="197213659"
+Received: from lkp-server02.sh.intel.com (HELO 034c7e8e53c3) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 15 Dec 2025 22:30:21 -0800
+Received: from kbuild by 034c7e8e53c3 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vVOZe-000000001FF-3x6a;
+	Tue, 16 Dec 2025 06:30:18 +0000
+Date: Tue, 16 Dec 2025 14:29:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mukesh Kumar Chaurasiya <mkchauras@linux.ibm.com>, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+	oleg@redhat.com, kees@kernel.org, luto@amacapital.net,
+	wad@chromium.org, mchauras@linux.ibm.com, thuth@redhat.com,
+	sshegde@linux.ibm.com, charlie@rivosinc.com, macro@orcam.me.uk,
+	akpm@linux-foundation.org, ldv@strace.io, deller@gmx.de,
+	ankur.a.arora@oracle.com, segher@kernel.crashing.org,
+	tglx@linutronix.de, thomas.weissschuh@linutronix.de,
+	peterz@infradead.org, menglong8.dong@gmail.com,
+	bigeasy@linutronix.de, namcao@linutronix.de, mingo@kernel.org,
+	atrajeev@linux.vnet.ibm.com, mark.barnett@arm.com,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 7/8] powerpc: Enable IRQ generic entry/exit path.
+Message-ID: <202512161441.xlMhHxvl-lkp@intel.com>
+References: <20251214130245.43664-8-mkchauras@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -107,44 +89,135 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251214130245.43664-8-mkchauras@linux.ibm.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Kevin Brodsky <kevin.brodsky@arm.com> writes:
+Hi Mukesh,
 
-> Upcoming changes to the lazy_mmu API will cause
-> arch_flush_lazy_mmu_mode() to be called when leaving a nested
-> lazy_mmu section.
->
-> Move the relevant logic from arch_leave_lazy_mmu_mode() to
-> arch_flush_lazy_mmu_mode() and have the former call the latter. The
-> radix_enabled() check is required in both as
-> arch_flush_lazy_mmu_mode() will be called directly from the generic
-> layer in a subsequent patch.
->
-> Note: the additional this_cpu_ptr() and radix_enabled() calls on the
-> arch_leave_lazy_mmu_mode() path will be removed in a subsequent
-> patch.
->
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
->  .../powerpc/include/asm/book3s/64/tlbflush-hash.h | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
+kernel test robot noticed the following build warnings:
 
-Sorry I was away for a while. 
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on powerpc/fixes linus/master v6.19-rc1]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks for taking care of the radix path as we had discussed previously
-here [1]. 
+url:    https://github.com/intel-lab-lkp/linux/commits/Mukesh-Kumar-Chaurasiya/powerpc-rename-arch_irq_disabled_regs/20251214-210813
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20251214130245.43664-8-mkchauras%40linux.ibm.com
+patch subject: [PATCH v2 7/8] powerpc: Enable IRQ generic entry/exit path.
+config: powerpc-randconfig-r072-20251215 (https://download.01.org/0day-ci/archive/20251216/202512161441.xlMhHxvl-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 8.5.0
 
-[1]: https://lore.kernel.org/all/87jz044xn4.ritesh.list@gmail.com/
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512161441.xlMhHxvl-lkp@intel.com/
 
-The change looks good to me. So, please feel free to add:
+smatch warnings:
+arch/powerpc/include/asm/entry-common.h:433 arch_enter_from_user_mode() warn: inconsistent indenting
 
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+vim +433 arch/powerpc/include/asm/entry-common.h
+
+2b0f05f77f11f8 Mukesh Kumar Chaurasiya 2025-12-14  396  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  397  static __always_inline void arch_enter_from_user_mode(struct pt_regs *regs)
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  398  {
+37ad0d88d9bff7 Mukesh Kumar Chaurasiya 2025-12-14  399  	kuap_lock();
+37ad0d88d9bff7 Mukesh Kumar Chaurasiya 2025-12-14  400  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  401  	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  402  		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  403  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  404  	BUG_ON(regs_is_unrecoverable(regs));
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  405  	BUG_ON(!user_mode(regs));
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  406  	BUG_ON(regs_irqs_disabled(regs));
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  407  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  408  #ifdef CONFIG_PPC_PKEY
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  409  	if (mmu_has_feature(MMU_FTR_PKEY) && trap_is_syscall(regs)) {
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  410  		unsigned long amr, iamr;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  411  		bool flush_needed = false;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  412  		/*
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  413  		 * When entering from userspace we mostly have the AMR/IAMR
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  414  		 * different from kernel default values. Hence don't compare.
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  415  		 */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  416  		amr = mfspr(SPRN_AMR);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  417  		iamr = mfspr(SPRN_IAMR);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  418  		regs->amr  = amr;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  419  		regs->iamr = iamr;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  420  		if (mmu_has_feature(MMU_FTR_KUAP)) {
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  421  			mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  422  			flush_needed = true;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  423  		}
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  424  		if (mmu_has_feature(MMU_FTR_BOOK3S_KUEP)) {
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  425  			mtspr(SPRN_IAMR, AMR_KUEP_BLOCKED);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  426  			flush_needed = true;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  427  		}
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  428  		if (flush_needed)
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  429  			isync();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  430  	} else
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  431  #endif
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  432  		kuap_assert_locked();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14 @433  	booke_restore_dbcr0();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  434  	account_cpu_user_entry();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  435  	account_stolen_time();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  436  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  437  	/*
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  438  	 * This is not required for the syscall exit path, but makes the
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  439  	 * stack frame look nicer. If this was initialised in the first stack
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  440  	 * frame, or if the unwinder was taught the first stack frame always
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  441  	 * returns to user with IRQS_ENABLED, this store could be avoided!
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  442  	 */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  443  	irq_soft_mask_regs_set_state(regs, IRQS_ENABLED);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  444  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  445  	/*
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  446  	 * If system call is called with TM active, set _TIF_RESTOREALL to
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  447  	 * prevent RFSCV being used to return to userspace, because POWER9
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  448  	 * TM implementation has problems with this instruction returning to
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  449  	 * transactional state. Final register values are not relevant because
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  450  	 * the transaction will be aborted upon return anyway. Or in the case
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  451  	 * of unsupported_scv SIGILL fault, the return state does not much
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  452  	 * matter because it's an edge case.
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  453  	 */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  454  	if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  455  	    unlikely(MSR_TM_TRANSACTIONAL(regs->msr)))
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  456  		set_bits(_TIF_RESTOREALL, &current_thread_info()->flags);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  457  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  458  	/*
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  459  	 * If the system call was made with a transaction active, doom it and
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  460  	 * return without performing the system call. Unless it was an
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  461  	 * unsupported scv vector, in which case it's treated like an illegal
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  462  	 * instruction.
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  463  	 */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  464  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  465  	if (unlikely(MSR_TM_TRANSACTIONAL(regs->msr)) &&
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  466  	    !trap_is_unsupported_scv(regs)) {
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  467  		/* Enable TM in the kernel, and disable EE (for scv) */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  468  		hard_irq_disable();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  469  		mtmsr(mfmsr() | MSR_TM);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  470  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  471  		/* tabort, this dooms the transaction, nothing else */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  472  		asm volatile(".long 0x7c00071d | ((%0) << 16)"
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  473  			     :: "r"(TM_CAUSE_SYSCALL | TM_CAUSE_PERSISTENT));
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  474  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  475  		/*
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  476  		 * Userspace will never see the return value. Execution will
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  477  		 * resume after the tbegin. of the aborted transaction with the
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  478  		 * checkpointed register state. A context switch could occur
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  479  		 * or signal delivered to the process before resuming the
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  480  		 * doomed transaction context, but that should all be handled
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  481  		 * as expected.
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  482  		 */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  483  		return;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  484  	}
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  485  #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  486  }
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  487  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
