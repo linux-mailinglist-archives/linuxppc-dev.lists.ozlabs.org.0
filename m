@@ -1,35 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14794-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14795-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411BECC1B73
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Dec 2025 10:17:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC0ECC1C7D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Dec 2025 10:28:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dVrtW54rnz2yDY;
-	Tue, 16 Dec 2025 20:17:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dVs6j3T0pz2yDY;
+	Tue, 16 Dec 2025 20:28:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765876659;
-	cv=none; b=VUVqFM9AhQSBLPBra7CRfGdHxfs2Qpoq5+n+NdLp/dRNCh8l+9OiR/wyIrjds8cHQklPbynwVgpWKibD7xFY9m+jk4BBX856VSlv41ffKtc7YaQ0YDX5wKUltKxppiFDWpT9EQVdOEPugvl7pWkIevdXESeJMQwnTQd5qWdJU4cgdHW3E51dMWcItGY79iZam/fgLdFi3j8tlDg1KsiHFYkjIq0r4+urJTi0TE72bEAW2Qd4BObAVkYXye2jVFBwLkDBMKMMQeXWTfXfcECM1wy91cHf/c1MtrfTc4BQSPi9t/myz8I6jkv5Wv1IkHLSSwtS8EClYUhlkDCA1s6BYw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765877293;
+	cv=none; b=E2X9uV3PqzI1nulh8huzcXj8CRoEd/mvcNed32RthsEzpgoega+WDw5KnBWD2LvYHsO7kxEFpvjAaKh1nfQ8OfqlA94Epk847SUFsoNu4y/e8RVJZZrcNP/clv0BI9IFllwtnWBI9RIse+QrdQDS0pViDjEIWiGOcdaUD11IXoaqFq2/GbxSfe+sN6tsSJBMpcDeT1xLI+z0XmUSZk0DBCMNnnvk/dZABvJ8HaKsro6VpDwnc+BhOu99OR4yZI9AF0xUTKwwzlVKUDGMLy56Qrg6CpSa4BQIoRqbDMaxjKfn042LtQeAODTmvQmR4Yq1sQThNZJ0TDePCt8+/5Dg+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765876659; c=relaxed/relaxed;
-	bh=X/Aom6chS33TIh8mLSIFX4YdwHTUMCc86eyTMxHImJM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jjIRJaZtYK9olqyPMkGROD+6zh+RyzJb05bQidZiHjOV549Fu3InnP05rpsEezkPbJBYHWZvwnaQFaFreI66ojXgXOc4HlfwC80kjjbB5lfUwQA1jNVt2MdZu1v6Sf99mYnHRxd3jscvhWpaV//0eYW+TMIxbT0d41Fyn1PMfFDAtRlBbxIAy+EX50LEmTPiadk5FqqAxSBRTbu5NIOgFCcAxNNmJCf2ql9KKtZmpL/iVN6q8pFodbrI/pUQ7vKnEF/lugNGsuuSN2bdHlqxnNj0a+8yiYrhRJBP468ltReXgNUZACfMQdIb8ZupmJWHfWh8fNmMe9ZPx2CNRWgCqA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dVrtV4MZ4z2xJ6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Dec 2025 20:17:36 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B6985FEC;
-	Tue, 16 Dec 2025 01:16:57 -0800 (PST)
-Received: from [10.57.91.77] (unknown [10.57.91.77])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E956C3F73B;
-	Tue, 16 Dec 2025 01:16:59 -0800 (PST)
-Message-ID: <9ae8655f-e537-43bb-ae0e-3067d2481d79@arm.com>
-Date: Tue, 16 Dec 2025 09:16:58 +0000
+	t=1765877293; c=relaxed/relaxed;
+	bh=KsXTvpgITYNFaINVMe9eA2xnV4cOVXwaNRovKXYc3iI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=DNYA0Am1OhVoz5p9xhBzqRXoy6vtdmYXjlQ7wbfH2p6bUUHEXzFmUcrzFNeEnmW+26nzKjmdNTxxNZWgZ9BqKGMHDR1MwED7W81Eof97toTF0jV1A74izY6sOE2nulTFPa/mykA6RGGgcp6lgWnHe5KL77Sk4D6XphgFJ6o5IiNuZ0LcYtJjXz26W3YI4IS6tfl3lk+cIYgTNF0EmsSnQhxdG6Q4w2J5smqXZqdSKtequNKsGnx2UL6WHm3lrSF4hcsYaryG6GDcg5XjV3yx89nHdxN4dYe6lnwQXuZ9OxPB9jRTQdHbHMOVyTXU6taeyjiq6+0XCdXg18NnwU91eA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sWRkCu9N; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sWRkCu9N;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dVs6h1sZrz2xJ6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Dec 2025 20:28:12 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2BA3560010;
+	Tue, 16 Dec 2025 09:28:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C02C4CEF1;
+	Tue, 16 Dec 2025 09:27:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765877288;
+	bh=nskcN7+91SwtgZwPitOrm1ZJ0MeQwA3xHMNEFW8+0oY=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=sWRkCu9NOgjPX6PNLc8hQbcOAZYgA8KLJlG7Si2JGSSTZ8YYXl6NZdRTjutUC6oU9
+	 iXFTseEBFKZd0zEnk3sSFPyxaM/oDTiYAUxTxluTcZJeaUE0+TEfIPbcppgL/PyNSl
+	 6bqUwev1dpznsxBkgwIqWNYlhh8BW7PD1TIIP3BqG+8ND6YFcg/wgXgavowJAm9ODf
+	 fwzpjSHZSvSIBMkuRDz1wHWUZu+vgXYGnD/2CTYu+5f/0Pt0G0CjKzJ+pFCgTtRr1A
+	 n4GuCBASCZkULN9uitTBDXcD0jYcgnYEb/ZEvf8YYDF1LmbX0p9Gcvo71pg5KgnKdT
+	 IstK6WR+LQU6g==
+Message-ID: <cddd0a2c-10e1-493a-9a02-521a1770c675@kernel.org>
+Date: Tue, 16 Dec 2025 10:27:55 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -44,98 +59,131 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] randomize_kstack: Unify random source across
- arches
-Content-Language: en-GB
-To: Ard Biesheuvel <ardb@kernel.org>, Kees Cook <kees@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, Arnd Bergmann
- <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>, Jeremy Linton
- <jeremy.linton@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20251215163520.1144179-1-ryan.roberts@arm.com>
- <20251215163520.1144179-4-ryan.roberts@arm.com>
- <202512160024.B688A8D0@keescook>
- <CAMj1kXHaqfEqDpvC-iC1fUn+JpTj=oqfM2sh+sbaC8_PBVHBUQ@mail.gmail.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <CAMj1kXHaqfEqDpvC-iC1fUn+JpTj=oqfM2sh+sbaC8_PBVHBUQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Subject: Re: [PATCH v2 2/8] powerpc: Prepare to build with generic entry/exit
+ framework
+To: Mukesh Kumar Chaurasiya <mkchauras@linux.ibm.com>, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com, oleg@redhat.com, kees@kernel.org,
+ luto@amacapital.net, wad@chromium.org, mchauras@linux.ibm.com,
+ thuth@redhat.com, sshegde@linux.ibm.com, charlie@rivosinc.com,
+ macro@orcam.me.uk, akpm@linux-foundation.org, ldv@strace.io, deller@gmx.de,
+ ankur.a.arora@oracle.com, segher@kernel.crashing.org, tglx@linutronix.de,
+ thomas.weissschuh@linutronix.de, peterz@infradead.org,
+ menglong8.dong@gmail.com, bigeasy@linutronix.de, namcao@linutronix.de,
+ kan.liang@linux.intel.com, mingo@kernel.org, atrajeev@linux.vnet.ibm.com,
+ mark.barnett@arm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20251214130245.43664-1-mkchauras@linux.ibm.com>
+ <20251214130245.43664-3-mkchauras@linux.ibm.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20251214130245.43664-3-mkchauras@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 16/12/2025 08:30, Ard Biesheuvel wrote:
-> On Tue, 16 Dec 2025 at 09:27, Kees Cook <kees@kernel.org> wrote:
->>
->> On Mon, Dec 15, 2025 at 04:35:17PM +0000, Ryan Roberts wrote:
->>> [...]
->>> @@ -45,9 +46,22 @@ DECLARE_STATIC_KEY_MAYBE(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
->>>  #define KSTACK_OFFSET_MAX(x) ((x) & 0b1111111100)
->>>  #endif
->>>
->>> +DECLARE_PER_CPU(struct rnd_state, kstack_rnd_state);
->>> +
->>> +static __always_inline u32 get_kstack_offset(void)
->>> +{
->>> +     struct rnd_state *state;
->>> +     u32 rnd;
->>> +
->>> +     state = &get_cpu_var(kstack_rnd_state);
->>> +     rnd = prandom_u32_state(state);
->>> +     put_cpu_var(kstack_rnd_state);
->>> +
->>> +     return rnd;
->>> +}
->>> [...]
->>> -static inline void random_kstack_task_init(struct task_struct *tsk)
->>> +static int random_kstack_init(void)
->>>  {
->>> -     tsk->kstack_offset = 0;
->>> +     prandom_seed_full_state(&kstack_rnd_state);
->>> +     return 0;
->>>  }
->>> +
->>> +late_initcall(random_kstack_init);
->>
->> Doesn't this need to be run for every CPU? (And how does hotplug work
->> for such things?) And doesn't it need a get_cpu_var?
->>
+
+
+Le 14/12/2025 à 14:02, Mukesh Kumar Chaurasiya a écrit :
+> From: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
 > 
+> This patch introduces preparatory changes needed to support building
+> PowerPC with the generic entry/exit (irqentry) framework.
 > 
->  prandom_seed_full_state() takes a 'struct rnd_state __percpu
-> *pcpu_state', and performs the initialization for all possible CPUs.
+> The following infrastructure updates are added:
+>   - Add a syscall_work field to struct thread_info to hold SYSCALL_WORK_* flags.
+>   - Provide a stub implementation of arch_syscall_is_vdso_sigreturn(),
+>     returning false for now.
+>   - Introduce on_thread_stack() helper to detect if the current stack pointer
+>     lies within the task’s kernel stack.
+> 
+> These additions enable later integration with the generic entry/exit
+> infrastructure while keeping existing PowerPC behavior unchanged.
+> 
+> No functional change is intended in this patch.
+> 
+> Signed-off-by: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+> ---
+>   arch/powerpc/include/asm/entry-common.h | 11 +++++++++++
+>   arch/powerpc/include/asm/stacktrace.h   |  6 ++++++
+>   arch/powerpc/include/asm/syscall.h      |  5 +++++
+>   arch/powerpc/include/asm/thread_info.h  |  1 +
+>   4 files changed, 23 insertions(+)
+>   create mode 100644 arch/powerpc/include/asm/entry-common.h
+> 
+> diff --git a/arch/powerpc/include/asm/entry-common.h b/arch/powerpc/include/asm/entry-common.h
+> new file mode 100644
+> index 000000000000..3af16d821d07
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/entry-common.h
+> @@ -0,0 +1,11 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#ifndef _ASM_PPC_ENTRY_COMMON_H
+> +#define _ASM_PPC_ENTRY_COMMON_H
+> +
+> +#ifdef CONFIG_GENERIC_IRQ_ENTRY
 
-Yes, indeed, prandom_seed_full_state() is initializing all possible CPUs so it
-doesn't matter if it gets migrated. I believe this is correct as is.
+Why do you need this #ifdef ? I see no reason, the build works well 
+without this #ifdef.
 
-void prandom_seed_full_state(struct rnd_state __percpu *pcpu_state)
-{
-	int i;
+At the time being, CONFIG_GENERIC_IRQ_ENTRY is never selected by 
+powerpc, meaning you are introducing dead code. If really needed it 
+would be more explicit to add a "#if 0"
 
-	for_each_possible_cpu(i) {
-		struct rnd_state *state = per_cpu_ptr(pcpu_state, i);
-		u32 seeds[4];
+> +
+> +#include <asm/stacktrace.h>
+> +
+> +#endif /* CONFIG_GENERIC_IRQ_ENTRY */
+> +#endif /* _ASM_PPC_ENTRY_COMMON_H */
+> diff --git a/arch/powerpc/include/asm/stacktrace.h b/arch/powerpc/include/asm/stacktrace.h
+> index 6149b53b3bc8..a81a9373d723 100644
+> --- a/arch/powerpc/include/asm/stacktrace.h
+> +++ b/arch/powerpc/include/asm/stacktrace.h
+> @@ -10,4 +10,10 @@
+>   
+>   void show_user_instructions(struct pt_regs *regs);
+>   
+> +static inline bool on_thread_stack(void)
 
-		get_random_bytes(&seeds, sizeof(seeds));
-		state->s1 = __seed(seeds[0],   2U);
-		state->s2 = __seed(seeds[1],   8U);
-		state->s3 = __seed(seeds[2],  16U);
-		state->s4 = __seed(seeds[3], 128U);
+Shouldn't it be __always_inline ?
 
-		prandom_warmup(state);
-	}
-}
+> +{
+> +	return !(((unsigned long)(current->stack) ^ current_stack_pointer)
+> +			& ~(THREAD_SIZE - 1));
+> +}
+> +
+>   #endif /* _ASM_POWERPC_STACKTRACE_H */
+> diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
+> index 4b3c52ed6e9d..834fcc4f7b54 100644
+> --- a/arch/powerpc/include/asm/syscall.h
+> +++ b/arch/powerpc/include/asm/syscall.h
+> @@ -139,4 +139,9 @@ static inline int syscall_get_arch(struct task_struct *task)
+>   	else
+>   		return AUDIT_ARCH_PPC64;
+>   }
+> +
+> +static inline bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
+> +{
+> +	return false;
+> +}
+>   #endif	/* _ASM_SYSCALL_H */
+> diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+> index b0f200aba2b3..9c8270354f0b 100644
+> --- a/arch/powerpc/include/asm/thread_info.h
+> +++ b/arch/powerpc/include/asm/thread_info.h
+> @@ -57,6 +57,7 @@ struct thread_info {
+>   #ifdef CONFIG_SMP
+>   	unsigned int	cpu;
+>   #endif
+> +	unsigned long	syscall_work;		/* SYSCALL_WORK_ flags */
+
+This is not used, why add it here ?
+
+>   	unsigned long	local_flags;		/* private flags for thread */
+>   #ifdef CONFIG_LIVEPATCH_64
+>   	unsigned long *livepatch_sp;
 
 
