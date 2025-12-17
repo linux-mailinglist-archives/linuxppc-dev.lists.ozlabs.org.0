@@ -1,50 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-14854-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14855-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75E6CC915D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Dec 2025 18:40:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F44CC99BE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Dec 2025 22:33:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dWgzv6xbkz30Vq;
-	Thu, 18 Dec 2025 04:40:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dWn966fdRz2yxl;
+	Thu, 18 Dec 2025 08:33:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765993211;
-	cv=none; b=EgWST/t4fTXBzJRqltFG5YzOpWmy0SJriSmYvWLL/GdYYfHC1Cu1j7PKgQn2JRWb6X6znTKW0H4B/SDRT028iRBY+B1zoI0P9oCmCji/vOH0SzvrGLglsKjExOEysN9shqiBRSJIGAlUSXzUW+K9GAuFKNiWwacso9cncC/W4DeNyX9MREy8+4N2f2WPDJRn3mEsJRl4OmyjEULgLyC0VvDIGPT29F1kA4+7zsnIOWqa5uymQF+fFihPMEZhlO/6JrDaUdA2rZMlOr5kriVWUKGpcAEsgLsVrQQK+rkq/VewwHZtuMuk9qYvHGokhtQi5BynSxM5F/EcXs47OMD3aw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.16
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766007210;
+	cv=none; b=QPJwhX1MsYS2QKS8akWACb0aSBGEv6AtrMCXmFMgrOJG40sYdXnWPWPfhow8UmKQ3OYN0os8okSusyCyHLKEC5xdcgTMs0mtx8j2OaZFj/8C0T32CaxA0Cifq4AxHhpR/Jz5pNtLfFyMW0vQSkmunp+Mu6VdtMhLh0lv+8K+7tizWzss67Vmv1k/AOi1azPnudcV0E/UEoGvByejwLvIVCX4YDezDgsNBMUuxDRLvug2r78l1paGHTk3+ACTKVum/hbWHQ0Q1DMUzXIqJabLdS+X0IEYpSPSgF928mwElSFLBWNetRsv7BgW1rR6/1PeTNZgolshIygBNvc6GFsbZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765993211; c=relaxed/relaxed;
-	bh=4yhvszXwgSYXxZddNKGLUE9jmt0WZWEUD7/gDeFq9hk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fmWN7RfNyU0Mavv2XIsPqO2xqNdf9OWMWD2XPJ/AccYiXcF868wa8RB3n1WmZZcECpz4DazrvxCYQ4jo6jmTHJj0lxVUrsez2eCI9pJ4HdC7Sf6OYs9ACP8u8G79nEKAhrnstCnKCUUU2HvlqcpNbSsZklrONmIO3FOUcx2H+esgOumQX+GnR6TtnSRtsoZh0avzAW0lww2EMu/WQ7l2I4iUn9G5XssLa/qFlLtqe0CpEigPtfcpteXm4CRvAZsuK2osBMVbEwE62udXJSNw1NRIjTrANji4O/zqFXcmZx3rKPsXqDwFS7/dayQbuU12cusEA8nCiTOhiRT/ZOBHsw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fUOVH443; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1766007210; c=relaxed/relaxed;
+	bh=Ow8//qsCcuelLrbsE4O0StW3qCZJ65iLK7aQO8FqjyI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g+lXkfxDrHm6dIggbWxA2Xoya4N2ZVYzFLWctn3DCWDsL/f/pDTWx8T6Y03YwOda3ocPOYmWsdipzAesjVXT2H18eJaRR4s4b8WnoXhini4rxxoItiLm/PUOex2vLZd/0/tZNjyMh3NcfqjtCdNcK859z4GIOvw3g0Sd3ncMDJKbgSAaEolGQ22GRvOS03/JOW4CoM1REwYJcghFkbK1bT4UM/i/kPfhn60G7sjtFzsT4gqFIn5Dl66jjV860R+8zdNswat6osbENohLDntXpIJeZ7jI53bRRYg5zb7/9X/jGdhrdh8AQmkk7/+jwSnUL8TUY3IwAl9FtVkmvVCOHw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F6nrURRB; dkim-atps=neutral; spf=pass (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fUOVH443;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F6nrURRB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dWgzt021bz30Tx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 04:40:09 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3027A40D83;
-	Wed, 17 Dec 2025 17:39:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6F6C4CEF5;
-	Wed, 17 Dec 2025 17:39:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765993178;
-	bh=CuLVx8Lnr4M45WzghD6+KOQBzv92E5mdpsGjCRcE9cs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fUOVH443DHmorIyTRjMBJ3vsomxj5Anlhrrgd0+/9kkjCN77bQLItXLxHJthFzLpl
-	 Ayngq+jaZa6GiS3A19qlz4jcf607JOcqllcD/rTXTlHxY1AyoRr7awyq+/R2DEJ2Js
-	 +sKNZ0TPr4jE9diGnnWXzU503t3bOzIsf5Kg4PT+gZLdfzSwU3qhXvsuaCpxNl/q6G
-	 TeO6cdB6h8VGRBpYByx2QhsXFx/3WayAoj8Z6LHLDkgiCQzIl5bmLW9/cWlKumTot+
-	 UvldrPVtEFflAAWWiBb8gXNZ7teZGGhIzYjA8CletkB6kIdr/2Ir6b4mli50vkTCnA
-	 uqSweN4F0iORA==
-Message-ID: <42a219c7-917f-43d1-b5d3-4a721d6aec24@kernel.org>
-Date: Wed, 17 Dec 2025 18:39:33 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dWn940WDZz2yvK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 08:33:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766007209; x=1797543209;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KI/pJJBmd9FTaqVL0hOjBx5fxyGgCPnyWLfv/cJvvgw=;
+  b=F6nrURRBczNhZrlprB7gfHYM9uNjMjPiDW1wVJ5FxMMvQuSGNSAYRna8
+   dAO8EgFu5pffFu4VxexuTwcArIS8MmzpTCYx62XCThAvUNjtVDqSWOAb/
+   8xvQbdpvWAprZ4i1kumQX3t908x5v7ogsaYZVKu1bttx89tNj3Qa3kW3h
+   UJ1eFaN4IHwcqWwGNIZ6YmGLzTf21eJhfgFqu8faRlC4AhC0/Bf9xpzdd
+   CKdUtliPZ2j37tRqP1T0XszzBdgcjJcK29QyJCgKw9JUGaVAwD/0+LjSm
+   CdspqJaOzTT1iWI8LO3NpydIrNein+Hm1Hdoxa6jkQpO5WEQhn7Yytqwu
+   A==;
+X-CSE-ConnectionGUID: qozA1GY/QbivM5h15Yu6KQ==
+X-CSE-MsgGUID: KWpqVe/xR76LpZ+68gqsEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="68113457"
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
+   d="scan'208";a="68113457"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 13:33:22 -0800
+X-CSE-ConnectionGUID: jcVqsdN+R7KbXMDgqSixlA==
+X-CSE-MsgGUID: MKzA1W5hTT+k24Tt+Y4N2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
+   d="scan'208";a="202606426"
+Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 17 Dec 2025 13:33:14 -0800
+Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vVz8x-000000001GH-2PvL;
+	Wed, 17 Dec 2025 21:33:11 +0000
+Date: Thu, 18 Dec 2025 05:32:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mukesh Kumar Chaurasiya <mkchauras@linux.ibm.com>, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+	oleg@redhat.com, kees@kernel.org, luto@amacapital.net,
+	wad@chromium.org, mchauras@linux.ibm.com, thuth@redhat.com,
+	sshegde@linux.ibm.com, charlie@rivosinc.com, macro@orcam.me.uk,
+	akpm@linux-foundation.org, ldv@strace.io, deller@gmx.de,
+	ankur.a.arora@oracle.com, segher@kernel.crashing.org,
+	tglx@linutronix.de, thomas.weissschuh@linutronix.de,
+	peterz@infradead.org, menglong8.dong@gmail.com,
+	bigeasy@linutronix.de, namcao@linutronix.de, mingo@kernel.org,
+	atrajeev@linux.vnet.ibm.com, mark.barnett@arm.com,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 7/8] powerpc: Enable IRQ generic entry/exit path.
+Message-ID: <202512180511.ujibhcpR-lkp@intel.com>
+References: <20251214130245.43664-8-mkchauras@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,115 +89,135 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] powerpc/32: Restore clearing of MSR[RI] at
- interrupt/syscall exit
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <66d0ab070563ad460ed481328ab0887c27f21a2c.1757593807.git.christophe.leroy@csgroup.eu>
- <6b05eb1c-fdef-44e0-91a7-8286825e68f1@roeck-us.net>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <6b05eb1c-fdef-44e0-91a7-8286825e68f1@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251214130245.43664-8-mkchauras@linux.ibm.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
+Hi Mukesh,
 
-Le 17/12/2025 à 17:03, Guenter Roeck a écrit :
-> Hi,
-> 
-> On Thu, Sep 11, 2025 at 02:30:12PM +0200, Christophe Leroy wrote:
->> Commit 13799748b957 ("powerpc/64: use interrupt restart table to speed
->> up return from interrupt") removed the inconditional clearing of
->> MSR[RI] when returning from interrupt into kernel. But powerpc/32
->> doesn't implement interrupt restart table hence still need MSR[RI]
->> to be cleared.
->>
->> It could be added back in interrupt_exit_kernel_prepare() but it is
->> easier and better to add it back in entry_32.S for following reasons:
->> - Writing to MSR must be followed by a synchronising instruction
->> - The smaller the non recoverable section is the better it is
->>
->> So add a macro called clr_ri and use it in the three places that play
->> up with SRR0/SRR1. Use it just before another mtspr for synchronisation
->> to avoid having to add an isync.
->>
->> Now that's done in entry_32.S, exit_must_hard_disable() can return
->> false for non book3s/64, taking into account that BOOKE doesn't have
->> MSR_RI.
->>
->> Also add back blacklisting syscall_exit_finish for kprobe. This was
->> initially added by commit 7cdf44013885 ("powerpc/entry32: Blacklist
->> syscall exit points for kprobe.") then lost with
->> commit 6f76a01173cc ("powerpc/syscall: implement system call
->> entry/exit logic in C for PPC32").
->>
->> Fixes: 6f76a01173cc ("powerpc/syscall: implement system call entry/exit logic in C for PPC32")
->> Fixes: 13799748b957 ("powerpc/64: use interrupt restart table to speed up return from interrupt")
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> 
-> This patch causes several of my ppc64:ppce500 boot tests with e5500 CPU
-> to stall.
-> 
-> I have not found a common denominator (the proboem seems independent
-> of boot media and network interface) , but the problem is repeatable.
-> Roughtly 50-70% of boot attempts stall.
+kernel test robot noticed the following build warnings:
 
-I know the issue, was reported by Erhard.
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on powerpc/fixes linus/master v6.19-rc1]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I have a fix under test, will likely send it tomorrow or on friday.
+url:    https://github.com/intel-lab-lkp/linux/commits/Mukesh-Kumar-Chaurasiya/powerpc-rename-arch_irq_disabled_regs/20251214-210813
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20251214130245.43664-8-mkchauras%40linux.ibm.com
+patch subject: [PATCH v2 7/8] powerpc: Enable IRQ generic entry/exit path.
+config: powerpc-randconfig-r072-20251215 (https://download.01.org/0day-ci/archive/20251218/202512180511.ujibhcpR-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 8.5.0
 
-Thanks
-Christophe
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512180511.ujibhcpR-lkp@intel.com/
 
-> 
-> Reverting this patch fixes the problem.
-> 
-> Bisect log is attached for reference.
-> 
-> Thanks,
-> Guenter
-> 
-> ---
-> # bad: [8f0b4cce4481fb22653697cced8d0d04027cb1e8] Linux 6.19-rc1
-> # good: [7d0a66e4bb9081d75c82ec4957c50034cb0ea449] Linux 6.18
-> git bisect start 'HEAD' 'v6.18'
-> # good: [6dfafbd0299a60bfb5d5e277fdf100037c7ded07] Merge tag 'drm-next-2025-12-03' of https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgitlab.freedesktop.org%2Fdrm%2Fkernel&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C1c5d3eacabe74f8fcd5f08de3d92c779%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639015897805615312%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=nEi%2F%2ByYYAhR5G2p23tHcDMlfi11SyRFs%2BOXU5PPCWIQ%3D&reserved=0
-> git bisect good 6dfafbd0299a60bfb5d5e277fdf100037c7ded07
-> # bad: [09cab48db950b6fb8c114314a20c0fd5a80cf990] Merge tag 'soc-arm-6.19' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
-> git bisect bad 09cab48db950b6fb8c114314a20c0fd5a80cf990
-> # good: [6044a1ee9dca906a807ba786421dc4254191ffd5] Merge tag 'devicetree-for-6.19' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
-> git bisect good 6044a1ee9dca906a807ba786421dc4254191ffd5
-> # good: [ac20755937e037e586b1ca18a6717d31b1cbce93] Merge tag 'sysctl-6.19-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/sysctl/sysctl
-> git bisect good ac20755937e037e586b1ca18a6717d31b1cbce93
-> # good: [4b9d25b4d38035b7b2624afd6852dfe4684f0226] Merge tag 'vfs-6.19-rc1.fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs
-> git bisect good 4b9d25b4d38035b7b2624afd6852dfe4684f0226
-> # good: [63a9b0bc65d5d3ea96a57e7985ea22a8582fbbe5] Merge tag 'kvm-riscv-6.19-1' of https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2Fkvm-riscv%2Flinux&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C1c5d3eacabe74f8fcd5f08de3d92c779%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639015897805638856%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=cMLT0je4tG%2FOlzSrrv5Qtrg9UG0CEq%2BuTtJ9Mqjyi0c%3D&reserved=0 into HEAD
-> git bisect good 63a9b0bc65d5d3ea96a57e7985ea22a8582fbbe5
-> # good: [e0c26d47def7382d7dbd9cad58bc653aed75737a] Merge tag 'kvm-s390-next-6.19-1' of https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fkvms390%2Flinux&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C1c5d3eacabe74f8fcd5f08de3d92c779%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639015897805654700%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=%2FG7w4h3HaMV%2FZ%2Bk3sLINdVjnrdS4bjkNX8ORcpl7Fkk%3D&reserved=0 into HEAD
-> git bisect good e0c26d47def7382d7dbd9cad58bc653aed75737a
-> # bad: [07025b51c1149951d64804c73014499bb3564dca] Merge tag 'riscv-for-linus-6.19-mw1' of git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux
-> git bisect bad 07025b51c1149951d64804c73014499bb3564dca
-> # bad: [b296fda58d1d095c95c8207b09856b2ceafa1397] powerpc/64s/hash: Update directMap page counters for Hash
-> git bisect bad b296fda58d1d095c95c8207b09856b2ceafa1397
-> # bad: [39fe29e7f2fd38b0fee9bf987d180dee976dd2c7] powerpc: 86xx: Rename wdt@ nodes to watchdog@
-> git bisect bad 39fe29e7f2fd38b0fee9bf987d180dee976dd2c7
-> # bad: [10e1c77c3636d815db802ceef588522c2d2d947c] powerpc/32: Fix unpaired stwcx. on interrupt exit
-> git bisect bad 10e1c77c3636d815db802ceef588522c2d2d947c
-> # good: [7afe2383eff05f76f4ce2cfda658b7889c89f101] powerpc/kdump: Fix size calculation for hot-removed memory ranges
-> git bisect good 7afe2383eff05f76f4ce2cfda658b7889c89f101
-> # bad: [2997876c4a1a5864baa13d7393c2b68cf5b51183] powerpc/32: Restore clearing of MSR[RI] at interrupt/syscall exit
-> git bisect bad 2997876c4a1a5864baa13d7393c2b68cf5b51183
-> # good: [98fa236044ca4f8841107382fb03832101fa7328] powerpc/8xx: Remove specific code from fast_exception_return
-> git bisect good 98fa236044ca4f8841107382fb03832101fa7328
-> # first bad commit: [2997876c4a1a5864baa13d7393c2b68cf5b51183] powerpc/32: Restore clearing of MSR[RI] at interrupt/syscall exit
-> 
+smatch warnings:
+arch/powerpc/include/asm/entry-common.h:433 arch_enter_from_user_mode() warn: inconsistent indenting
 
+vim +433 arch/powerpc/include/asm/entry-common.h
+
+2b0f05f77f11f8 Mukesh Kumar Chaurasiya 2025-12-14  396  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  397  static __always_inline void arch_enter_from_user_mode(struct pt_regs *regs)
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  398  {
+37ad0d88d9bff7 Mukesh Kumar Chaurasiya 2025-12-14  399  	kuap_lock();
+37ad0d88d9bff7 Mukesh Kumar Chaurasiya 2025-12-14  400  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  401  	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  402  		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  403  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  404  	BUG_ON(regs_is_unrecoverable(regs));
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  405  	BUG_ON(!user_mode(regs));
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  406  	BUG_ON(regs_irqs_disabled(regs));
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  407  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  408  #ifdef CONFIG_PPC_PKEY
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  409  	if (mmu_has_feature(MMU_FTR_PKEY) && trap_is_syscall(regs)) {
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  410  		unsigned long amr, iamr;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  411  		bool flush_needed = false;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  412  		/*
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  413  		 * When entering from userspace we mostly have the AMR/IAMR
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  414  		 * different from kernel default values. Hence don't compare.
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  415  		 */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  416  		amr = mfspr(SPRN_AMR);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  417  		iamr = mfspr(SPRN_IAMR);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  418  		regs->amr  = amr;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  419  		regs->iamr = iamr;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  420  		if (mmu_has_feature(MMU_FTR_KUAP)) {
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  421  			mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  422  			flush_needed = true;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  423  		}
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  424  		if (mmu_has_feature(MMU_FTR_BOOK3S_KUEP)) {
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  425  			mtspr(SPRN_IAMR, AMR_KUEP_BLOCKED);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  426  			flush_needed = true;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  427  		}
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  428  		if (flush_needed)
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  429  			isync();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  430  	} else
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  431  #endif
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  432  		kuap_assert_locked();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14 @433  	booke_restore_dbcr0();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  434  	account_cpu_user_entry();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  435  	account_stolen_time();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  436  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  437  	/*
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  438  	 * This is not required for the syscall exit path, but makes the
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  439  	 * stack frame look nicer. If this was initialised in the first stack
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  440  	 * frame, or if the unwinder was taught the first stack frame always
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  441  	 * returns to user with IRQS_ENABLED, this store could be avoided!
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  442  	 */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  443  	irq_soft_mask_regs_set_state(regs, IRQS_ENABLED);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  444  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  445  	/*
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  446  	 * If system call is called with TM active, set _TIF_RESTOREALL to
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  447  	 * prevent RFSCV being used to return to userspace, because POWER9
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  448  	 * TM implementation has problems with this instruction returning to
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  449  	 * transactional state. Final register values are not relevant because
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  450  	 * the transaction will be aborted upon return anyway. Or in the case
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  451  	 * of unsupported_scv SIGILL fault, the return state does not much
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  452  	 * matter because it's an edge case.
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  453  	 */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  454  	if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  455  	    unlikely(MSR_TM_TRANSACTIONAL(regs->msr)))
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  456  		set_bits(_TIF_RESTOREALL, &current_thread_info()->flags);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  457  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  458  	/*
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  459  	 * If the system call was made with a transaction active, doom it and
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  460  	 * return without performing the system call. Unless it was an
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  461  	 * unsupported scv vector, in which case it's treated like an illegal
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  462  	 * instruction.
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  463  	 */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  464  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  465  	if (unlikely(MSR_TM_TRANSACTIONAL(regs->msr)) &&
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  466  	    !trap_is_unsupported_scv(regs)) {
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  467  		/* Enable TM in the kernel, and disable EE (for scv) */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  468  		hard_irq_disable();
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  469  		mtmsr(mfmsr() | MSR_TM);
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  470  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  471  		/* tabort, this dooms the transaction, nothing else */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  472  		asm volatile(".long 0x7c00071d | ((%0) << 16)"
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  473  			     :: "r"(TM_CAUSE_SYSCALL | TM_CAUSE_PERSISTENT));
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  474  
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  475  		/*
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  476  		 * Userspace will never see the return value. Execution will
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  477  		 * resume after the tbegin. of the aborted transaction with the
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  478  		 * checkpointed register state. A context switch could occur
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  479  		 * or signal delivered to the process before resuming the
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  480  		 * doomed transaction context, but that should all be handled
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  481  		 * as expected.
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  482  		 */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  483  		return;
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  484  	}
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  485  #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  486  }
+1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  487  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
