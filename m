@@ -1,78 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-14828-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14829-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B046CC5FE6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Dec 2025 06:01:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCDCACC6025
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Dec 2025 06:12:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dWM9005J3z2yVL;
-	Wed, 17 Dec 2025 16:01:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dWMNq71vbz2yY9;
+	Wed, 17 Dec 2025 16:12:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765947715;
-	cv=none; b=dOQc/nsunRSfmq0TdP44XIv8yqApfPw8l1SpkuMs0EYeYJJ87HLf0opwjx/dVLIdGeu3puuQj+/Ss7OynKaZ0EyDgid+iisCBJxviYetgdpNck7y+uWwsziELzq5TCBAdkfB6dwc7iAZCsRFetA6xBqRe0FW4h36KOohDfP4sRFR15I2a9gEkGdR91j0bZ5/KQbhmVDAR83jow8ZZS1+uGw04pzp4QhfyWPyujOzVpyb23Y+4CD5CdY/7uHXdTzPgQwN/DZjNzPIJLUfuvJ19E6I49aFd87/LytOok7HMIu9me1dntcGuOII2rme+xBNR2g8M33g7CLOns8wuiI46w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765948331;
+	cv=none; b=WEqWDswkQOQ/yEHxTXdOckq9ptCdvKMyYFX/pVc4PGqr4hwPdHRM8pz1mBJzQRq59xLZN8mMulRNEcdjGmRrD3t+P7/D/7WjnBeqqmL3h1GG6hbch3+fXPYG+7GBC6g6HTn5ZzQf9FJMlsn5EM7iNeTNk75V9b5ECmzts1exe1K0jmnuUYv9BKbK5mYNR5FNi0RxNwgNdlViFi42f8DTVGuEc6KwWn+a9bGouKu0Chk0BPqMe9UySjHsniK8SWOL9G0NOORi8k5i19tkla1Qqpq3OitTdGKngFNWNGiuVHPyzOofBjl/2s0EQLHlpZLHClxJtJL2eg7LXTq3vnrcdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765947715; c=relaxed/relaxed;
-	bh=z0o3JEXoaXAGj787hSOs5+uXJPXiMmvn7D+z1iaLckM=;
+	t=1765948331; c=relaxed/relaxed;
+	bh=2oE606FfQv5MjWtb8qKWqbj2vXcNS8WU0s3KoSoSCAc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kus9YXGjRi9e7dpiCRpKd9/YJ4xhbmE/pvRUIg53bksQ3LRrG6EnwRhMEujUE89KDEGp3bEo0lnH9tdnWowOYsOoEvjtqf/zyxcRZkIU3tbzG98xOP56KId20YkxyEmVDwBK2zPQz0W0iKHqOw9smP8Rw29Lxj7lJrV/LBv3wAHQsJ5JYvga7MSnNvaL7eV8rDv/yO8XuK4imZcGQQvpy1UTwUdLjNxEYpoEX0RlB3PRlcA8PFmsh9hLQU4McztLJVdcaVpJWyysBGVpFC3EmZIBycyWWnB6+QI+u3zTydwbPrIjSGG9nNL9EJubCqBWDzOZjMaFJSvcP1gou5AAaw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QLAzMhzM; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nnmlinux@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=ho3fmhVt0RLGMynENd5H/5z9TKCDg6YjFYchJ0fckG9X7aw90b9pqAWEJXNPVaA9ea59FLDnNJ5yGpkIzmDg5NxPgEXuDytAm5EWApmhV+pYlu3ZdtAPfSHFc0HME/4v0bAoPLGnIh4rsEQ+8YIoVpMlKRt5zHlUcqesw5vbPT3rbdx4nXjPPEkZdzGE1F2dKK30pDIE/tSSTy2vpFYTLNzw8TQSkpxjWmdpYVwykCjvKgnCAvDYSCBmcl62efm0ZPKo7/dKVCehPiWEHG8jjaQeJIu6ICG+AiinHp4GBMHC//NqxMl0rgds3Im1bLHkLwziCMXYk7/PrTilHKVHCg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=apE6gVKP; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QLAzMhzM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=apE6gVKP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nnmlinux@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dWM8y6cy3z2ySB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Dec 2025 16:01:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dWMNp71xLz2yVM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Dec 2025 16:12:10 +1100 (AEDT)
 Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BGKjbGm009495;
-	Wed, 17 Dec 2025 05:01:44 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BGHq1OS011837;
+	Wed, 17 Dec 2025 05:11:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=z0o3JE
-	XoaXAGj787hSOs5+uXJPXiMmvn7D+z1iaLckM=; b=QLAzMhzMlz6hO0M+haC0lC
-	JipyfuqjkkMM5JQPMnI5dE4ZMvi+4Ye5G1qTemWttOzbJFesxFy71r7Zx2obUObV
-	i7Wa7A+0TCQAix5l184HTHFJwP5E88TQSavyrAtw1rBCKiBEWH+2J59CbU/gU8+V
-	5VAirPWcmTzhZYWO4Jwtym1b6JNT/bryA8dex+Gd9gL2BnTaMqmGdGKRB9L0P4o6
-	h2M6HPIFBFobUkm/qVNrodmebgcdE42HCvget2wgvlHZ49Bg9bqRRC/569HVRue9
-	k2CVcEHi4qiDAJ2jpt/viLWHeqFPXoDbXovRo3c+AmcTSHqjlZe6O3n+irhcXbEw
+	:message-id:mime-version:references:subject:to; s=pp1; bh=2oE606
+	FfQv5MjWtb8qKWqbj2vXcNS8WU0s3KoSoSCAc=; b=apE6gVKPU7htNUGNWxVdqG
+	a3L9V9c9fdw03wl0Tl5IKK7s3BbxdQdy7jujVbpP9B8xsF6kPPW23xLfQFXU7UUL
+	D4R4IxWhqTMmGRqWABNco/sk6GrDeRkKt8KA+ZxmkUch+keE2AVWMkKRm5rZDIz6
+	9EokTqgOdPO5yHSTXWZkQLK9FU3ZoNLgtq4hq/956OgsamRFeCR+i3a+IU1gZ+WL
+	yhe88MQ++8zs9S7sY8C1llVX8KutW5/UoCn5GfWQ5BOlwkkq3+Rewgyil65fmDob
+	UAOAW3q2yuiIJaPH83ckxTbbaxOahnuM/pTYsc6+Axb/sujpK48I0pzO8hS/BEiw
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yt1j5gs-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yt1j6yn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 05:01:44 +0000 (GMT)
+	Wed, 17 Dec 2025 05:11:27 +0000 (GMT)
 Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BH4uhJU013706;
-	Wed, 17 Dec 2025 05:01:43 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yt1j5gp-1
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BH4xCHI018169;
+	Wed, 17 Dec 2025 05:11:27 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yt1j6yj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 05:01:43 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BH15saf012810;
-	Wed, 17 Dec 2025 05:01:42 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1juy8kh7-1
+	Wed, 17 Dec 2025 05:11:27 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BH2Z9In003049;
+	Wed, 17 Dec 2025 05:11:26 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1kfn8fwy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 05:01:42 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BH51ch637224830
+	Wed, 17 Dec 2025 05:11:26 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BH5BMMR31260934
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Dec 2025 05:01:38 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD4842004B;
-	Wed, 17 Dec 2025 05:01:38 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 33EC420043;
-	Wed, 17 Dec 2025 05:01:32 +0000 (GMT)
-Received: from [9.61.244.51] (unknown [9.61.244.51])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 17 Dec 2025 05:01:31 +0000 (GMT)
-Message-ID: <1ea29e17-654a-41fd-b80c-0fc2a50ca49f@linux.ibm.com>
-Date: Wed, 17 Dec 2025 10:31:29 +0530
+	Wed, 17 Dec 2025 05:11:22 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6BE3020040;
+	Wed, 17 Dec 2025 05:11:22 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C789120043;
+	Wed, 17 Dec 2025 05:11:18 +0000 (GMT)
+Received: from [9.109.222.214] (unknown [9.109.222.214])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 17 Dec 2025 05:11:18 +0000 (GMT)
+Message-ID: <ea212ba7-5118-409c-b082-efe3e360d73f@linux.ibm.com>
+Date: Wed, 17 Dec 2025 10:41:17 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,49 +87,45 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] powerpc/eeh: fix recursive pci_lock_rescan_remove
- locking in EEH event handling
-To: Timothy Pearson <tpearson@raptorengineering.com>
-Cc: mahesh <mahesh@linux.ibm.com>, Oliver <oohall@gmail.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, npiggin <npiggin@gmail.com>,
-        christophe leroy <christophe.leroy@csgroup.eu>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        vaibhav
- <vaibhav@linux.ibm.com>,
-        Shivaprasad G Bhat <sbhat@linux.ibm.com>, ganeshgr@linux.ibm.com
-References: <20251210142559.8874-1-nnmlinux@linux.ibm.com>
- <1869613445.153778.1765467944808.JavaMail.zimbra@raptorengineeringinc.com>
+Subject: Re: [PATCH bpf-next v4 1/2] powerpc64/bpf: Support internal-only MOV
+ instruction to resolve per-CPU addrs
+To: Saket Kumar Bhaskar <skb99@linux.ibm.com>, bpf@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: sachinpb@linux.ibm.com, venkat88@linux.ibm.com, andrii@kernel.org,
+        eddyz87@gmail.com, ast@kernel.org, daniel@iogearbox.net,
+        martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
+        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+        haoluo@google.com, jolsa@kernel.org, christophe.leroy@csgroup.eu,
+        naveen@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        npiggin@gmail.com
+References: <cover.1765343385.git.skb99@linux.ibm.com>
+ <667fdaa19c1564141f6cd82e75b2be86a42c0f96.1765343385.git.skb99@linux.ibm.com>
 Content-Language: en-US
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
-In-Reply-To: <1869613445.153778.1765467944808.JavaMail.zimbra@raptorengineeringinc.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <667fdaa19c1564141f6cd82e75b2be86a42c0f96.1765343385.git.skb99@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dA1wSUvMfOb1pD0OAAarOBRsSEnlletH
-X-Proofpoint-ORIG-GUID: W_LSskXAYj4D-pO-g4QKAqoT97rnc1Fo
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAyMyBTYWx0ZWRfXzdkpF1AWAu0q
- cA6DYpZfZ4ez+jDNldiB3HbUk5GA2W7U7Vl5GhSYFpqBLZM3844KygDQoB1wE5xrKpP48RqQf8u
- SBlG8DWm4VUfMzMlEiJ1ELm9zJxsjxcE05tCqRYxplm2DOhYoQ6sxjCU+Ech82msnt/MojGU5dc
- gmZysToyHvrIjv3XsrZUnXx86ILiCNJL89rw8FANH2p5HMGxvFtl1VG2zZtc02F+hzp4DCLlHwr
- MX1PoxddFku1u9gAy8OtdbCqfr7OacenwHyfnV/q2ZEibg5C0bu08vLui8K7xt5Vg+8ZdfEMnEh
- qB2RO3XdHTVyiMl5zJ42XznsmYvjapBrQYvVlMPM0VNqUMOVCUyGjf/cI3vwfxK+nDElvEmPGPN
- QSgKJt0CJ6UaqPpXruWtJjiBUJieIg==
-X-Authority-Analysis: v=2.4 cv=L/MQguT8 c=1 sm=1 tr=0 ts=69423938 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-GUID: RvI6DLK40gWHN2rvZ2DYnUphMEMeiO_-
+X-Proofpoint-ORIG-GUID: m3v8Y0sL58iDAFhJph_-NsV0Iw9-M7GP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAyMyBTYWx0ZWRfX9fALa1sKEvIT
+ xhUXW2p5J1Iz91DxYO673BHAwr8zTuKTa4y6hnRowoI59AkKtqc8IYWnLeJpx4phy0CoIMAUCk2
+ 7fnyh3R/SkaPUykjpoorjxZ3fGEYpb66498h0sITwPQrBknBohJ6h2fJveC0m3H44dLJRb2Twx7
+ tbJMuhBwZrK3gtrE5JJuVqJYoocpe4oAGR45Ou6H7IJqoDOfupZS+wW73BwK3ysCfOLI9+YMCvn
+ skNIWfvY+5zcwpQXCYvjcJ/l73NYnKnI9vzcRYypEb5g/Y2bxBAkbFidnfzUdWaVzyKZNahQivw
+ 44X6n/RqNY/VnM9To/NhniI1WLQmSIdqx8cfxZJDlNqzs217qKFp3fBKb4tJ3ZjEYqiUmotXhv6
+ YW5FKcz461cDB6P4RO/V+V8tqmFmQg==
+X-Authority-Analysis: v=2.4 cv=L/MQguT8 c=1 sm=1 tr=0 ts=69423b7f cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=1UX6Do5GAAAA:8 a=1XWaLZrsAAAA:8
- a=_AprYWD3AAAA:8 a=voM4FWlXAAAA:8 a=VwQbUJbxAAAA:8 a=As8EeNG6lE4Wsrx9IP4A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=Et2XPkok5AAZYJIKzHr1:22
- a=fKH2wJO7VO9AkD4yHysb:22 a=IC2XNlieTeVoXbcui8wp:22
+ a=NEAV23lmAAAA:8 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=Wj4u7s7dtEynkXKrbAAA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-16_03,2025-12-16_05,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  impostorscore=0 phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501
- clxscore=1015 lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0
+ clxscore=1011 lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130023
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -138,61 +134,91 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
-On 11/12/25 9:15 PM, Timothy Pearson wrote:
->
-> ----- Original Message -----
->> From: "Narayana Murty N" <nnmlinux@linux.ibm.com>
->> To: "mahesh" <mahesh@linux.ibm.com>, "Oliver" <oohall@gmail.com>, "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Michael
->> Ellerman" <mpe@ellerman.id.au>, "npiggin" <npiggin@gmail.com>, "christophe leroy" <christophe.leroy@csgroup.eu>
->> Cc: "Bjorn Helgaas" <bhelgaas@google.com>, "Timothy Pearson" <tpearson@raptorengineering.com>, "linuxppc-dev"
->> <linuxppc-dev@lists.ozlabs.org>, "linux-kernel" <linux-kernel@vger.kernel.org>, "vaibhav" <vaibhav@linux.ibm.com>,
->> "Shivaprasad G Bhat" <sbhat@linux.ibm.com>, ganeshgr@linux.ibm.com
->> Sent: Wednesday, December 10, 2025 8:25:59 AM
->> Subject: [PATCH v2 1/1] powerpc/eeh: fix recursive pci_lock_rescan_remove locking in EEH event handling
->> The recent commit 1010b4c012b0 ("powerpc/eeh: Make EEH driver device
->> hotplug safe") restructured the EEH driver to improve synchronization
->> with the PCI hotplug layer.
->>
->> However, it inadvertently moved pci_lock_rescan_remove() outside its
->> intended scope in eeh_handle_normal_event(), leading to broken PCI
->> error reporting and improper EEH event triggering. Specifically,
->> eeh_handle_normal_event() acquired pci_lock_rescan_remove() before
->> calling eeh_pe_bus_get(), but eeh_pe_bus_get() itself attempts to
->> acquire the same lock internally, causing nested locking and disrupting
->> normal EEH event handling paths.
->>
->> This patch adds a boolean parameter do_lock to _eeh_pe_bus_get(),
->> with two public wrappers:
->>     eeh_pe_bus_get() with locking enabled.
->>     eeh_pe_bus_get_nolock() that skips locking.
->>
->> Callers that already hold pci_lock_rescan_remove() now use
->> eeh_pe_bus_get_nolock() to avoid recursive lock acquisition.
->>
->> Additionally, pci_lock_rescan_remove() calls are restored to the correct
->> position—after eeh_pe_bus_get() and immediately before iterating affected
->> PEs and devices. This ensures EEH-triggered PCI removes occur under proper
->> bus rescan locking without recursive lock contention.
->>
->> The eeh_pe_loc_get() function has been split into two functions:
->>     eeh_pe_loc_get(struct eeh_pe *pe) which retrieves the loc for given PE.
->>     eeh_pe_loc_get_bus(struct pci_bus *bus) which retrieves the location
->>     code for given bus.
-> Conceptually the patch sounds OK, but given the complexity of these subsystems it's difficult to forsee all interactions.  Was the patch verified not to break NVMe hotplug on PowerNV systems using actual hardware?  If not, I will need to do so before sending an ack.  Thanks!
-It has not been specifically tested for NVMe hotplug on PowerNV hardware.
 
-However, this change does not remove or relax any of the existing locking
+On 10/12/25 12:20 pm, Saket Kumar Bhaskar wrote:
+> With the introduction of commit 7bdbf7446305 ("bpf: add special
+> internal-only MOV instruction to resolve per-CPU addrs"),
+> a new BPF instruction BPF_MOV64_PERCPU_REG has been added to
+> resolve absolute addresses of per-CPU data from their per-CPU
+> offsets. This update requires enabling support for this
+> instruction in the powerpc JIT compiler.
+> 
+> As of commit 7a0268fa1a36 ("[PATCH] powerpc/64: per cpu data
+> optimisations"), the per-CPU data offset for the CPU is stored in
+> the paca.
+> 
+> To support this BPF instruction in the powerpc JIT, the following
+> powerpc instructions are emitted:
+> if (IS_ENABLED(CONFIG_SMP))
+> ld tmp1_reg, 48(13)		//Load per-CPU data offset from paca(r13) in tmp1_reg.
+> add dst_reg, src_reg, tmp1_reg	//Add the per cpu offset to the dst.
+> else if (src_reg != dst_reg)
+> mr dst_reg, src_reg		//Move src_reg to dst_reg, if src_reg != dst_reg
+> 
+> To evaluate the performance improvements introduced by this change,
+> the benchmark described in [1] was employed.
+> 
+> Before Change:
+> glob-arr-inc   :   41.580 ± 0.034M/s
+> arr-inc        :   39.592 ± 0.055M/s
+> hash-inc       :   25.873 ± 0.012M/s
+> 
+> After Change:
+> glob-arr-inc   :   42.024 ± 0.049M/s
+> arr-inc        :   55.447 ± 0.031M/s
+> hash-inc       :   26.565 ± 0.014M/s
+> 
+> [1] https://github.com/anakryiko/linux/commit/8dec900975ef
+> 
 
-around EEH handling, so the NVMe hotplug paths should continue to see
+Looks good to me.
 
-the same serialization as before.
+Acked-by: Hari Bathini <hbathini@linux.ibm.com>
 
-If you have a convenient setup for NVMe hotplug on PowerNV, additional 
-testing
 
-there would definitely be helpful before merging.
-
-Thanks,
-Narayana Murty
+> Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
+> Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+> ---
+>   arch/powerpc/net/bpf_jit_comp.c   |  5 +++++
+>   arch/powerpc/net/bpf_jit_comp64.c | 10 ++++++++++
+>   2 files changed, 15 insertions(+)
+> 
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index 5e976730b2f5..d53e9cd7563f 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -466,6 +466,11 @@ bool bpf_jit_supports_insn(struct bpf_insn *insn, bool in_arena)
+>   	return true;
+>   }
+>   
+> +bool bpf_jit_supports_percpu_insn(void)
+> +{
+> +	return IS_ENABLED(CONFIG_PPC64);
+> +}
+> +
+>   void *arch_alloc_bpf_trampoline(unsigned int size)
+>   {
+>   	return bpf_prog_pack_alloc(size, bpf_jit_fill_ill_insns);
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index 1fe37128c876..37723ee9344e 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -918,6 +918,16 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>   		case BPF_ALU | BPF_MOV | BPF_X: /* (u32) dst = src */
+>   		case BPF_ALU64 | BPF_MOV | BPF_X: /* dst = src */
+>   
+> +			if (insn_is_mov_percpu_addr(&insn[i])) {
+> +				if (IS_ENABLED(CONFIG_SMP)) {
+> +					EMIT(PPC_RAW_LD(tmp1_reg, _R13, offsetof(struct paca_struct, data_offset)));
+> +					EMIT(PPC_RAW_ADD(dst_reg, src_reg, tmp1_reg));
+> +				} else if (src_reg != dst_reg) {
+> +					EMIT(PPC_RAW_MR(dst_reg, src_reg));
+> +				}
+> +				break;
+> +			}
+> +
+>   			if (insn_is_cast_user(&insn[i])) {
+>   				EMIT(PPC_RAW_RLDICL_DOT(tmp1_reg, src_reg, 0, 32));
+>   				PPC_LI64(dst_reg, (ctx->user_vm_start & 0xffffffff00000000UL));
 
 
