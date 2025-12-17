@@ -1,84 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-14843-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14844-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278CFCC8DE6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Dec 2025 17:51:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF94CCC90A1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Dec 2025 18:25:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dWfvs4rJDz307V;
-	Thu, 18 Dec 2025 03:51:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dWgfy0yDCz308P;
+	Thu, 18 Dec 2025 04:25:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.214.182
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765990297;
-	cv=none; b=hex9DY4dT7sBOuQHKSWyD3nN/On+IXuck8Q3FYFNxU0cjb46trDBAQXrpvrfU2Oat7AIVsftjOE4I1sA2HuR0gfkfTm2hxEw25s0eSXOJn0dGxvSwtdTIFb/dX5n6hCGiOwVtejlX7DSgCRV+LBV0Y3nmGbJqxxhxbjyXKTjp2j7ZQUC+qJRsxXuMMm1d+GGN81wTFLO/wCnt9ufW68X0ToYTe0r7UmDoy3PYlnUft8sSk5tkWKy+HmPC4N8fvxPXq1idXbPPrCfZMWWYppOJUDhNB15OxUZhMj1pEmd80yWVnUS/az7+xw1SAQ6vB1N57jx2sQ96IWTeWNIZKAuzw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765992330;
+	cv=none; b=YGYquDrcZDItGHKu0HBq5yb4/yExsCXmbFSyGV3Qbk3JBH9zkS9e061Crsg4Tahn5M/mkW+LUVXb9BdwrAwL35mL75DAYz6YtWZTgP+8B85QDsFmJK9zHZHh4xIHCVJ/M44hf9UQZtzwoU9KhWxYwIZXVObJGOtcOr/jAoKSwu5Sv7frDAFM/Oyb4/IQXylpDNS8SHT0N4jdAjebDtmFvqNn0WNqBI6Rw71JlY0nnFoX7eW8gbUmWA2exYOVs+tVVAvWCQbZIJZbChdK1Pn9adhR1LSehrb/ZhajtnI+r/PRzOuKJy1A/Ic8jh3P+g7K4JEmcPaEFKKnRHvpgoKGUw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765990297; c=relaxed/relaxed;
-	bh=PAsD2vPOWvukoB2byMq+XQ93o9WOXXcOD9dnTih7p44=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-version:Content-type; b=DpmMJ31aiY8sg6b1PkFMxSl2zKBp33UaHb3R4n1ruI1C1zmzR9P7tD/T6VaSiHqL4i8pTKbqKIVL6BOAz7wKiQdChlim6URG0srhbiI6bwXUXOQ/f+ARKr/UB0PJLggT8lyQrhzu42vv2TLdSQhaQKnjbmGUknubTkdYKN6crLFtYrHjOgiIBMZh30qCkKdFKe75bo94toC1c+Y6cHa/fWEsFT63InWhIbilLXhJ0+UaWEkXyrmJHRgThYpYEHgEYI+FeTijAWsiMkehLyKgvDrfFyh+0wa0mV21GiznmYJzxBwGabpOjGMWGb6hTwaRFSx1HTeEZxNMIqqtRhbZFA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EvA5HoAW; dkim-atps=neutral; spf=pass (client-ip=209.85.214.182; helo=mail-pl1-f182.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1765992330; c=relaxed/relaxed;
+	bh=zbrErzyD8vgY33IzcsfRDYNsS9W7T81XI3oOqRxzZN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X+AXoo4sJyDoJaMqrmV6zWmkV0PE8cKuG1SlbHytNJZkpUpMk0OiXky9RSKs6iEry0ntt3vABm8GLNjYR3wPy+C6p8CQMOnRrAu0Asufk3kEjzAgg8pRfv4tsNykriOwlP9VgSjtliPH+O4u57wN+G/mmmW+xTNF08pIvUfErm6QaZ9k1jGMA7ASiyK+F7oEq/bTORVj3UQKTgNzDU+QrJkRLD6f574xMfGc6NluyOafc907K3Y2roW22JUSLYqH0Np1hiFsq5D1DHnJzjLsAPH1nHbQuLYDtY1mNtS4RbkawcXCjSxtAD5RJcd01cVb0xd+Sdiho4cMfu6liC9XjA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s7U0OgFZ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EvA5HoAW;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s7U0OgFZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.214.182; helo=mail-pl1-f182.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dWfvr11hwz304l
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 03:51:35 +1100 (AEDT)
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a09d981507so6675915ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Dec 2025 08:51:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765990233; x=1766595033; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PAsD2vPOWvukoB2byMq+XQ93o9WOXXcOD9dnTih7p44=;
-        b=EvA5HoAWoWr6mFK8G7XI5WQkQHO0iq1owSUcU33AgjFzqCLwt5bnJEaeX+vbQUjdp+
-         cNYymcX6dDJ5Q8XoLRDQXy/YzB3mUVBx8BTAN46yR86x5ST56ZdLxra2c/baG3UTgTCO
-         2L6UNiOfDRf0QzhsLXk2qT1E8AWNEm85L6p7h4TAFjGf1N/3P5WX1ggJhp/FQu8pokIx
-         9rJDuDrN/n4CNIqEoEpdW02UyPNDNLtMqKrnFBjEoLKRX+ijDnSmqudDNYN0hjyqEm6O
-         fGgMihLG0x6hqjrNTVd2eXTMyhr1TF2/Comg3Bp0eWSdY77h5Bb8GwsUal7P73m7fmeO
-         sk+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765990233; x=1766595033;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=PAsD2vPOWvukoB2byMq+XQ93o9WOXXcOD9dnTih7p44=;
-        b=D0wgwHPuSDhA1MrxYc12Rdfm204w8j/RCEtNz3TePXiuV2Sd7ws2lqXmDmzr+S2w8j
-         4WWIf62jrPV6KHg9+VFjYdOdmnEgM7bBBBdzis7wS79Bn/GfPc3fb5E9JEsDhPSaXpph
-         Zl01J1znNboqDTIF4yJ3dChVJ6M8UffNgx+9LHzFVsWIjPVDBxAExFvCSFkM6N+Fan6A
-         reS/UAdHY9w0IibKw9r+PoT0baWJy44efm9q04IRpZc/8EGJ752X8rn9Dt7eEiKW6NHf
-         04OqFNm9fodrM1hB0GCWeUVtxXp1Hs6jIL2UM8TA320WhWW6JGeZOz2c3QtBuZgY0X2s
-         NlCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXiRZZ6Bx7CSSaaK67os/o4IPCUNBZNLF2ixSlRrRKHWBlcOl3pKPMAofKDxKu9t7yWl85Y4tSG1R338N4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz50WiF/AHiqVGHYz01sCkaJw0rAEeH969egSCc2W1+py8USmuS
-	z+6+20nZKtFO3RSwVPLhBkcfawzesj8brshC9WJkBR7K/gn97BNtDoZ+ovYawc1a
-X-Gm-Gg: AY/fxX5p3nMCiRC3NaubofKkLiUit7EYcw/gt0k77jcsFdVLWuKT0Sx+bEeVSH5p86d
-	7t6DFh8lcJz9WIRTE0PZAq5nZuBPL9curbxozv+BgJG3iVjY/ThPw3yPSWqQyraicOFyrf1HcrC
-	GayerN6ZSH6/yknZLKq0MknrjezEAj2UvaPwneCKihSaMxWvsHH6+jTr01CcIdd4XG7IN/KXyg5
-	JkjNMCbhNGsan28PGqj7uIR7nb8u7NKrtMXagG40PEdvl3ahTzkGPD4+gIplef2xPaWvNBqR4Mq
-	f5+Ec+XVYZWZofFoW43oISaNZe4HYkCcIxGuVNygPkStAKbM8xumwN9FPIOl6i7Q0ivk8rF+5b4
-	Behmt+M6pejJOivLzT/PtwGDOG8CCPvMQddrSHHy994RmUBd3FYF2UCOvufStfDg5qrSYKwp/US
-	gJPp2VBQ==
-X-Google-Smtp-Source: AGHT+IEVED3e+KdGXZXVcYIldELMqcKzBvn3EudeqgTtF1rVnKCzdaDs50jLdVQ3ZTdPF69nS2yCCg==
-X-Received: by 2002:a17:902:d542:b0:2a0:b467:a7d0 with SMTP id d9443c01a7336-2a2cab16184mr316675ad.16.1765990232877;
-        Wed, 17 Dec 2025 08:50:32 -0800 (PST)
-Received: from dw-tp ([171.76.225.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29f177ff327sm172094595ad.101.2025.12.17.08.50.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 08:50:32 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Kevin Brodsky <kevin.brodsky@arm.com>
-Subject: Re: [PATCH] powerpc/mm: export symbols for lazy_mmu_mode KUnit tests
-In-Reply-To: <20251217163812.2633648-1-kevin.brodsky@arm.com>
-Date: Wed, 17 Dec 2025 22:15:16 +0530
-Message-ID: <878qf1kqg3.ritesh.list@gmail.com>
-References: <20251216201403.4647a4f9861d3122ee9e90d7@linux-foundation.org> <20251217163812.2633648-1-kevin.brodsky@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dWgfx1MWNz304l
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 04:25:28 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BH81FSo006963;
+	Wed, 17 Dec 2025 17:25:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=zbrErzyD8vgY33IzcsfRDYNsS9W7T81XI3oOqRxzZ
+	N8=; b=s7U0OgFZ0pHOh23yRYQfyFq4tZG2gsKYwQOh1mFnWVx9vLWfmslyJyzjT
+	8XzRkwrn73RduKq/XFPrYwyPdw+YEtf2Zg3ficsWE4V/ybOGu3iVmhpLKESAV2K+
+	YpofCxfTZGzicmhTXZujLj4ioXb+6I4XAupJtguHsIZZSDa/esbSHsXa6Klq7p87
+	XRZuT0IAgyK3GWwg7FdPLx6INCGuGNgKtKdTafqpEhq6mWc/K3at0b6U3UKC0yS2
+	Z9STz6zSQlmDe0DRNOLpEYxLbJw9+S38PpYO+U2V7ImbiHAAyqh7c0fZUiTbNrHr
+	F5yw8yZ0Um70PaOVvr5TLFW54kZFg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0xjm5ggu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Dec 2025 17:25:14 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BHHOIMA001198;
+	Wed, 17 Dec 2025 17:25:14 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0xjm5ggp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Dec 2025 17:25:14 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BHGvVkP002755;
+	Wed, 17 Dec 2025 17:25:13 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1kfnbjwu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Dec 2025 17:25:13 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BHHP9ck15466814
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 17 Dec 2025 17:25:09 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7F87B20043;
+	Wed, 17 Dec 2025 17:25:09 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 86AED20040;
+	Wed, 17 Dec 2025 17:25:06 +0000 (GMT)
+Received: from li-fc74f8cc-3279-11b2-a85c-ef5828687581.ibm.com.com (unknown [9.124.211.226])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 17 Dec 2025 17:25:06 +0000 (GMT)
+From: Srish Srinivasan <ssrish@linux.ibm.com>
+To: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, James.Bottomley@HansenPartnership.com,
+        jarkko@kernel.org, zohar@linux.ibm.com, nayna@linux.ibm.com,
+        rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, ssrish@linux.ibm.com
+Subject: [PATCH v2 0/6] Extend "trusted" keys to support a new trust source named the PowerVM Key Wrapping Module (PKWM)
+Date: Wed, 17 Dec 2025 22:54:59 +0530
+Message-ID: <20251217172505.112398-1-ssrish@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,83 +93,103 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: VSTkWLS8TsGeIEBy3UFTYnViii_McLn3
+X-Authority-Analysis: v=2.4 cv=CLgnnBrD c=1 sm=1 tr=0 ts=6942e77b cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=OZ_REq_LgKhKeL2JI8IA:9
+X-Proofpoint-GUID: GTwg7vnZ0mqCuwG581jvbKGKT43tt6L2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAwOSBTYWx0ZWRfXzqRhp8kl6o0K
+ +yddQmY6uwNiq/5yIsQCGWoB40ycFrJPNJ3u/bxIUcWUETTTGF3150TSGfOLm1VqWmLk1teVcPi
+ fTLG+xrp8eAsm+4lhyVKjtiHnL+qmS8U/xe5ufj8DjjEza8Q+g8lOjYAipIc6gPAbx/MApq8y7Q
+ M+9y4AhqZ4FXJ90KZNfd1pKGeOYQHBI51/3CMDJzzRN+6YXxvh6IwLh1lLrb1Rz9naJIaUtlVRm
+ ZjV4iMj453AlQK6LnVAMEiCGv2zYDLE78/jixvtXBqXMv/lkS70CSIcQUeDZAbW41flyMNssOu9
+ p0+ouaeGQLL1J/Mwx2yQQPJqBDCC757S1D8GAcg1STYfIAOSzyC8SGsIH1F8fvoX3RdoVYiguXL
+ //RN/yX++Jc99iUVPOt1VIBkVnn54Q==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-17_03,2025-12-16_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ phishscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130009
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Kevin Brodsky <kevin.brodsky@arm.com> writes:
+Power11 has introduced a feature called the PowerVM Key Wrapping Module
+(PKWM), where PowerVM in combination with Power LPAR Platform KeyStore
+(PLPKS) [1] supports a new feature called "Key Wrapping" [2] to protect
+user secrets by wrapping them using a hypervisor generated wrapping key.
+This wrapping key is an AES-GCM-256 symmetric key that is stored as an
+object in the PLPKS. It has policy based protections that prevents it from
+being read out or exposed to the user. This wrapping key can then be used
+by the OS to wrap or unwrap secrets via hypervisor calls.
 
-> Upcoming KUnit tests will call lazy_mmu_mode_{enable,disable}.
-> These tests may be built as a module, and because of inlining this
-> means that symbols referenced by arch_{enter,leave}_lazy_mmu_mode
-> need to be exported.
->
-> Suggested-by: Ryan Roberts <ryan.roberts@arm.com>
-> Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
+This patchset intends to add the PKWM, which is a combination of IBM
+PowerVM and PLPKS, as a new trust source for trusted keys. The wrapping key
+does not exist by default and its generation is requested by the kernel at
+the time of PKWM initialization. This key is then persisted by the PKWM and
+is used for wrapping any kernel provided key, and is never exposed to the
+user. The kernel is aware of only the label to this wrapping key.
 
+Along with the PKWM implementation, this patchset includes two preparatory
+patches: one fixing the kernel-doc incosistencies in the PLPKS code and
+another reorganizing PLPKS config variables in the sysfs.
 
-Hi Kevin, 
+Changelog:
 
-I guess, this can give following errors:
+v2:
 
-../arch/powerpc/mm/book3s64/hash_tlb.c:33:1: error: data definition has no type or storage class [-Werror]
-   33 | EXPORT_SYMBOL_IF_KUNIT(ppc64_tlb_batch); /* For lazy_mmu_mode KUnit tests */
-      | ^~~~~~~~~~~~~~~~~~~~~~
-../arch/powerpc/mm/book3s64/hash_tlb.c:33:1: error: type defaults to ‘int’ in declaration of ‘EXPORT_SYMBOL_IF_KUNIT’ [-Werror=implicit-int]
-../arch/powerpc/mm/book3s64/hash_tlb.c:33:1: error: parameter names (without types) in function declaration [-Werror]
-../arch/powerpc/mm/book3s64/hash_tlb.c:158:1: error: data definition has no type or storage class [-Werror]
-  158 | EXPORT_SYMBOL_IF_KUNIT(__flush_tlb_pending); /* For lazy_mmu_mode KUnit tests */
-      | ^~~~~~~~~~~~~~~~~~~~~~
-../arch/powerpc/mm/book3s64/hash_tlb.c:158:1: error: type defaults to ‘int’ in declaration of ‘EXPORT_SYMBOL_IF_KUNIT’ [-Werror=implicit-int]
-../arch/powerpc/mm/book3s64/hash_tlb.c:158:1: error: parameter names (without types) in function declaration [-Werror]
-  AR      init/built-in.a
-cc1: all warnings being treated as errors
-make[6]: *** [../scripts/Makefile.build:287: arch/powerpc/mm/book3s64/hash_tlb.o] Error 1
-make[5]: *** [../scripts/Makefile.build:556: arch/powerpc/mm/book3s64] Error 2
+* Patch 2:
+  - Fix build warning detected by the kernel test bot
 
+* Patch 5:
+  - Use pr_debug inside dump_options
+  - Replace policyhande with wrap_flags inside dump_options
+  - Provide meaningful error messages with error codes
 
-IMO, we will need the following header in hash_tlb.c
+Nayna Jain (1):
+  docs: trusted-encryped: add PKWM as a new trust source
 
-+#include <kunit/visibility.h>
+Srish Srinivasan (5):
+  pseries/plpks: fix kernel-doc comment inconsistencies
+  powerpc/pseries: move the PLPKS config inside its own sysfs directory
+  pseries/plpks: expose PowerVM wrapping features via the sysfs
+  pseries/plpks: add HCALLs for PowerVM Key Wrapping Module
+  keys/trusted_keys: establish PKWM as a trusted source
 
--ritesh
+ .../ABI/testing/sysfs-firmware-plpks          |  58 ++
+ Documentation/ABI/testing/sysfs-secvar        |  65 --
+ .../admin-guide/kernel-parameters.txt         |   1 +
+ Documentation/arch/powerpc/papr_hcalls.rst    |  43 ++
+ .../security/keys/trusted-encrypted.rst       |  50 ++
+ MAINTAINERS                                   |   9 +
+ arch/powerpc/include/asm/hvcall.h             |   4 +-
+ arch/powerpc/include/asm/plpks.h              |  95 +--
+ arch/powerpc/include/asm/secvar.h             |   1 -
+ arch/powerpc/kernel/secvar-sysfs.c            |  21 +-
+ arch/powerpc/platforms/pseries/Makefile       |   2 +-
+ arch/powerpc/platforms/pseries/plpks-secvar.c |  29 -
+ arch/powerpc/platforms/pseries/plpks-sysfs.c  |  96 +++
+ arch/powerpc/platforms/pseries/plpks.c        | 689 +++++++++++++++++-
+ include/keys/trusted-type.h                   |   7 +-
+ include/keys/trusted_pkwm.h                   |  22 +
+ security/keys/trusted-keys/Kconfig            |   8 +
+ security/keys/trusted-keys/Makefile           |   2 +
+ security/keys/trusted-keys/trusted_core.c     |   6 +-
+ security/keys/trusted-keys/trusted_pkwm.c     | 168 +++++
+ 20 files changed, 1175 insertions(+), 201 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-plpks
+ create mode 100644 arch/powerpc/platforms/pseries/plpks-sysfs.c
+ create mode 100644 include/keys/trusted_pkwm.h
+ create mode 100644 security/keys/trusted-keys/trusted_pkwm.c
 
->
-> Andrew, please add this patch just before the last patch in the series
-> ("mm: Add basic tests for lazy_mmu"). Thanks!
-> ---
->  arch/powerpc/mm/book3s64/hash_tlb.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/arch/powerpc/mm/book3s64/hash_tlb.c b/arch/powerpc/mm/book3s64/hash_tlb.c
-> index fbdeb8981ae7..9e622519a423 100644
-> --- a/arch/powerpc/mm/book3s64/hash_tlb.c
-> +++ b/arch/powerpc/mm/book3s64/hash_tlb.c
-> @@ -30,6 +30,7 @@
->  #include <trace/events/thp.h>
->  
->  DEFINE_PER_CPU(struct ppc64_tlb_batch, ppc64_tlb_batch);
-> +EXPORT_SYMBOL_IF_KUNIT(ppc64_tlb_batch); /* For lazy_mmu_mode KUnit tests */
->  
->  /*
->   * A linux PTE was changed and the corresponding hash table entry
-> @@ -154,6 +155,7 @@ void __flush_tlb_pending(struct ppc64_tlb_batch *batch)
->  		flush_hash_range(i, local);
->  	batch->index = 0;
->  }
-> +EXPORT_SYMBOL_IF_KUNIT(__flush_tlb_pending); /* For lazy_mmu_mode KUnit tests */
->  
->  void hash__tlb_flush(struct mmu_gather *tlb)
->  {
->
-> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> -- 
-> 2.51.2
+-- 
+2.47.3
+
 
