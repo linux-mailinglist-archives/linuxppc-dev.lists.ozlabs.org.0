@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-14849-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14850-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D658DCC90B5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Dec 2025 18:26:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5E9CC90B8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Dec 2025 18:26:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dWggF15htz3bb2;
-	Thu, 18 Dec 2025 04:25:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dWggH44Bvz3bfF;
+	Thu, 18 Dec 2025 04:25:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765992345;
-	cv=none; b=P+9ERR9P49RRAU9XMpYHgRbDB/qVsFO6dqF0/LoTGRqcAT6MVN6oYFmQA+6zZn84OOYxXC4bjKxIiZBurgXAMmZ4/kAy8w8nhD9vgswnH2sAHO85BeXfOfTKBTWmoY1c1o6AiOtXRZIo5PFpxjym4hCLS9JrUgiahlr+RHEq/PesE7rJQHdTy5sRt9WGO6hAWKczcuBYdqtN5XVHzRSUYvxpdsuM+Jrdkp7KJ4g/96lK+DHF1qEMNModtJsk/iQDADnAKxyersY4U4+qF8eE7TBUHPUio8e8VO1lasCsi0u/xlRTWX/Zo4jhGWLOV13IQqtX66UM0CDxef2TjNunDQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1765992347;
+	cv=none; b=KyiFJnl3gUVq84rLYqZfqXJvXvLjL+pjHsuGaPqjfFs5FA4QH3EQ4zh6MuCN/fvRaqu03BQOvUEYBXIPhHEmRDlKdtROWkzFTLMYt11Vfml7vJUqycYk/zahLCZSQ++CihBol62CWMNtsc0KS5zavfrFVzqGlzHPu4bqSwaBbk2N8otFIUIEP++jiAi3V0/38/PuUm4J00ycyg7dg2FS8v3GyFiDDw1Mjw8MXn3g+YMg9LWqMzqCNAIm9Hvat61BGojNnw/wPkAtnb0CNrFoF6wmx6yR9mWJN54dCK/C6H+WNLmHZNWudbuZaqnUeEvMgT/5kUP/0N7c95O1mwPHXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1765992345; c=relaxed/relaxed;
-	bh=VofaA8q/4ABtaWVAdbWNse/SgziEVn30CfP4o9F2G2g=;
+	t=1765992347; c=relaxed/relaxed;
+	bh=Bkv9uUW89YkDzEWaHv1ObgoIXGJD2YqlGrw2O8ISsIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vv7iFxesJoa75Ft+5rb3w5plZ+ggmOKSLk75nVxlPtK9tzDsu0yy232WD97gARyqYUH2viHQ5vqWgfZUnjNJnUtbUsAmr5l3ROk1j3KDVNsIMVwsQbuOzU/u8wLRpO+tB879l+rbiNY8WOYCqmp+qaTkVu8SmXqSGRl6UTluccQ2pnYsCWKq8IqYPzO68HFAwez6GrVeTeMSyfj82IldAghK65zcp6A7HrNjeNugbX1ofpYzgTNdNnDxpX/1JiuBZ9gyJ2piPLHby2Ei80tK1/ex2j8xLMek0ZuLKswXVWeI9M2HBeiK9wxbP9dUDHZCSFJm0DAIgeo8u8R26BKj4g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WjtlfQhd; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=jKqq53524saB9ZAvXRBPG1Toz/vVdCsQ8W/EIeraobJuANrRZ4AXv7lEDr+DCxiugXnGOJ1e+3U5pAqmWuAHi17/m9jostvW2aLak637mthW/AlUAfBzaxjUjKLXeRA7+bZn5sBqewZhycAs3qD4odXR45JtVdQKbsQcwEUmxLsIbRaoBzBu9DCzIAb/RQgust17J17RP6T0fFyQQAbAcbIUqYjKxYVs14/Zo0R919+KHZXQMZZH4Tr6OwptY/tO0aSwuaLzCecx0NmOCy/nUTvtQZaCthMoR/XrYbM4wuqlkxPSlL7RHqc3ep7YlU5tlluRyknlnxmSLVUsQqvsyg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rwm9Aewd; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WjtlfQhd;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rwm9Aewd;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dWggD206Fz30TL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 04:25:43 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BHBDZp0018154;
-	Wed, 17 Dec 2025 17:25:32 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dWggG5r5Cz30TL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 04:25:46 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BHAksvY006284;
+	Wed, 17 Dec 2025 17:25:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=VofaA8q/4ABtaWVAd
-	bWNse/SgziEVn30CfP4o9F2G2g=; b=WjtlfQhdW71UC6ku7wPdIXUG0iyc4uQXG
-	slMLawU7QoaFfl+3VE05pU2pPjHklLiRmo+h/YBx4RRaRQ4KPKKGyBrMHqkxz3RR
-	DVBKgIamQqjF91igFsUelvPy+Sb7xzwzeW1li+pOAngA5ObzoZbKzjID/+86Wz12
-	qcJQnXUFZCZftngcKQrtNR1BJdmFrlU/PqgAG3/ybAScqk1xbwqhOfkMlt5UeJ4U
-	A2lLjTKpccNYdjaYsojE2eP+e+YpsPz8dv2sfXSgqN6I9lNEV+E7D0bA/uZyelyx
-	IP9uIZQgxBjg9quCiqB7oOC6Z317+vEt2b6vgbB2kyxSfiH7nDtZw==
+	:mime-version:references:subject:to; s=pp1; bh=Bkv9uUW89YkDzEWaH
+	v1ObgoIXGJD2YqlGrw2O8ISsIM=; b=Rwm9AewdjgZ6PVtdnfehaWoypjOkFlRTq
+	KkPumMFBEQH3TXVwFkA7pOdfrHqPQYtiXEnOwJZHfYvEtDAdNfgi8r20+aJdUv6B
+	KeXyl4qJise6kXn4QvlYFbXj94JIGmuowXfYxM4Jlv+83lDhD3q4sxOFlh8btkOl
+	D+yl7mbpbuX+pzxke7tqLnFOR+IPRQCGUUKO3+gjP1rqY/WyEEzc7tdxrlO0R9NN
+	ul6bkV1FdAgCXeat+M5dD1fK4EB3Sn5r+kvv3TFob4jBWJD5LQsok6EQq53ixvxK
+	pnSvZeHUf7qmSX4k+hub1SRyg/cK22SqBjTlpfbrAt0BsSfKg9dTA==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yt1nbk8-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0xjm5gm4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 17:25:31 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BHHDmqd009332;
-	Wed, 17 Dec 2025 17:25:31 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yt1nbk0-1
+	Wed, 17 Dec 2025 17:25:35 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BHHKHj5026044;
+	Wed, 17 Dec 2025 17:25:35 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0xjm5gkx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 17:25:31 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BHEkA4U014406;
-	Wed, 17 Dec 2025 17:25:30 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b1mpk3afs-1
+	Wed, 17 Dec 2025 17:25:34 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BHH9ZqO002960;
+	Wed, 17 Dec 2025 17:25:34 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1kykuf9x-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 17:25:30 +0000
+	Wed, 17 Dec 2025 17:25:34 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BHHPQ8M26542526
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BHHPUL529622806
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Dec 2025 17:25:26 GMT
+	Wed, 17 Dec 2025 17:25:30 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 977152004B;
+	by IMSVA (Postfix) with ESMTP id 0F34320043;
+	Wed, 17 Dec 2025 17:25:30 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F01C820040;
 	Wed, 17 Dec 2025 17:25:26 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AD3D920040;
-	Wed, 17 Dec 2025 17:25:23 +0000 (GMT)
 Received: from li-fc74f8cc-3279-11b2-a85c-ef5828687581.ibm.com.com (unknown [9.124.211.226])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 17 Dec 2025 17:25:23 +0000 (GMT)
+	Wed, 17 Dec 2025 17:25:26 +0000 (GMT)
 From: Srish Srinivasan <ssrish@linux.ibm.com>
 To: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org
@@ -78,9 +78,9 @@ Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
         jarkko@kernel.org, zohar@linux.ibm.com, nayna@linux.ibm.com,
         rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
         linux-security-module@vger.kernel.org, ssrish@linux.ibm.com
-Subject: [PATCH v2 5/6] keys/trusted_keys: establish PKWM as a trusted source
-Date: Wed, 17 Dec 2025 22:55:04 +0530
-Message-ID: <20251217172505.112398-6-ssrish@linux.ibm.com>
+Subject: [PATCH v2 6/6] docs: trusted-encryped: add PKWM as a new trust source
+Date: Wed, 17 Dec 2025 22:55:05 +0530
+Message-ID: <20251217172505.112398-7-ssrish@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251217172505.112398-1-ssrish@linux.ibm.com>
 References: <20251217172505.112398-1-ssrish@linux.ibm.com>
@@ -99,387 +99,153 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: j92BvtY8jI_MrRpFlQT2MO_SpqYwH-b4
-X-Proofpoint-ORIG-GUID: rFPkEKvzYdDBUz6OSgPZKktOL4Y-vj_m
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAyMyBTYWx0ZWRfXwT65vapD1Vhr
- PMFYUn4BhX1SN9oBKkcfPuYCAIVJwsNzMSocet92RoCzPJ62xt+s8cU28o2+V+6w/0Bswi6p9ut
- xC8G3GaQCJ12C230eTWGsilaYfuLtDdlsSpvefLwAnuaXVGpUQT0UOwCCFetYHIXhfp2aMMjPTO
- hF9xEo9KlYuVooS9F+ueyzP6XBPLSUQTafb4C+riQ5uXT9yTMi/7mmt1cof/UfGWyqKMfiab0hN
- vsh+VIVMthaZz++Do4vuEPWRGPXRAXg8/TKCcsqKwp6GRLLJUs1uBBMtZg+/mOGw56ZPDX26v6T
- Hti6ofj+VV8q9J2gdCX33vPy3j1aryJhjkJdva+w2zChId+oCC4CvsZ6OYv9mDEXaIJHKP46FcG
- 1K9op2RrWXJOpndXYvgul7ZRSlse1Q==
-X-Authority-Analysis: v=2.4 cv=L/MQguT8 c=1 sm=1 tr=0 ts=6942e78b cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=SGwaXr-4V_wxwTcTBwMA:9
+X-Proofpoint-ORIG-GUID: ceeOyiP6uF2BvNLHd10ohXNW5vn1otzm
+X-Authority-Analysis: v=2.4 cv=CLgnnBrD c=1 sm=1 tr=0 ts=6942e78f cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
+ a=T8Lk_pw-g3mOOJD1yd4A:9
+X-Proofpoint-GUID: vOmHre_G-yGWxqiKVb5Ic0lRl4uaAeUZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAwOSBTYWx0ZWRfX+yNIHZ5fBBmo
+ DmuJLc+Fr+H4Xxc07KwI4ji8pJzhohjS3GVMuqPh/MRk2QBZ7mWVgk1vvcUmNV4guytylTcluW4
+ G5WJVi8pthzWmd8EvLI+XOVHFp8zj46CuFznMz1bSfNc+XP3bVi0M7D5GJ/WLrHyLiNXZMD551y
+ Mk9eY3K3D3n2WKCUDdv3juvy0mZGrEDEGxvXCgtufl3T5rWJ7rYvDPr1ho+PJnY482ZoURA+z14
+ nv6kWo00MdtKX2aRKn007yd4Nk1I9xY5CGGbCUD2L6wWMGFcPrRJNPrqoZSaUuYHK6XdCmr0LSH
+ EgVMRDhDi5pyQyDXwd8qe2DJq0FE0os0/K1ooa9Y4sJA9Ret5SL+9JE7GAFPckTyqkqHCe+HnAC
+ NAPI5niPw0eu1Mf/UuRFL/W/3l6Veg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-17_03,2025-12-16_05,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501
- clxscore=1015 lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0
+ spamscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ phishscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130023
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130009
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The wrapping key does not exist by default and is generated by the
-hypervisor as a part of PKWM initialization. This key is then persisted by
-the hypervisor and is used to wrap trusted keys. These are variable length
-symmetric keys, which in the case of PowerVM Key Wrapping Module (PKWM) are
-generated using the kernel RNG. PKWM can be used as a trust source through
-the following example keyctl command
+From: Nayna Jain <nayna@linux.ibm.com>
 
-keyctl add trusted my_trusted_key "new 32" @u
+Update Documentation/security/keys/trusted-encrypted.rst and Documentation/
+admin-guide/kernel-parameters.txt with PowerVM Key Wrapping Module (PKWM)
+as a new trust source
 
-Use the wrap_flags command option to set the secure boot requirement for
-the wrapping request through the following keyctl commands
-
-case1: no secure boot requirement. (default)
-keyctl usage: keyctl add trusted my_trusted_key "new 32" @u
-	      OR
-	      keyctl add trusted my_trusted_key "new 32 wrap_flags=0x00" @u
-
-case2: secure boot required to in either audit or enforce mode. set bit 0
-keyctl usage: keyctl add trusted my_trusted_key "new 32 wrap_flags=0x01" @u
-
-case3: secure boot required to be in enforce mode. set bit 1
-keyctl usage: keyctl add trusted my_trusted_key "new 32 wrap_flags=0x02" @u
-
-NOTE:
--> Setting the secure boot requirement is NOT a must.
--> Only either of the secure boot requirement options should be set. Not
-both.
--> All the other bits are requied to be not set.
--> Set the kernel parameter trusted.source=pkwm to choose PKWM as the
-backend for trusted keys implementation.
--> CONFIG_PSERIES_PLPKS must be enabled to build PKWM.
-
-Add PKWM, which is a combination of IBM PowerVM and Power LPAR Platform
-KeyStore, as a new trust source for trusted keys.
-
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
 Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
 ---
- MAINTAINERS                               |   9 ++
- include/keys/trusted-type.h               |   7 +-
- include/keys/trusted_pkwm.h               |  22 +++
- security/keys/trusted-keys/Kconfig        |   8 ++
- security/keys/trusted-keys/Makefile       |   2 +
- security/keys/trusted-keys/trusted_core.c |   6 +-
- security/keys/trusted-keys/trusted_pkwm.c | 168 ++++++++++++++++++++++
- 7 files changed, 220 insertions(+), 2 deletions(-)
- create mode 100644 include/keys/trusted_pkwm.h
- create mode 100644 security/keys/trusted-keys/trusted_pkwm.c
+ .../admin-guide/kernel-parameters.txt         |  1 +
+ .../security/keys/trusted-encrypted.rst       | 50 +++++++++++++++++++
+ 2 files changed, 51 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c9e416ba74c6..be4f561ec28a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13994,6 +13994,15 @@ S:	Supported
- F:	include/keys/trusted_dcp.h
- F:	security/keys/trusted-keys/trusted_dcp.c
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index a8d0afde7f85..ccb9c2f502fb 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -7755,6 +7755,7 @@ Kernel parameters
+ 			- "tee"
+ 			- "caam"
+ 			- "dcp"
++			- "pkwm"
+ 			If not specified then it defaults to iterating through
+ 			the trust source list starting with TPM and assigns the
+ 			first trust source as a backend which is initialized
+diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
+index eae6a36b1c9a..ddff7c7c2582 100644
+--- a/Documentation/security/keys/trusted-encrypted.rst
++++ b/Documentation/security/keys/trusted-encrypted.rst
+@@ -81,6 +81,14 @@ safe.
+          and the UNIQUE key. Default is to use the UNIQUE key, but selecting
+          the OTP key can be done via a module parameter (dcp_use_otp_key).
  
-+KEYS-TRUSTED-PLPKS
-+M:	Srish Srinivasan <ssrish@linux.ibm.com>
-+M:	Nayna Jain <nayna@linux.ibm.com>
-+L:	linux-integrity@vger.kernel.org
-+L:	keyrings@vger.kernel.org
-+S:	Supported
-+F:	include/keys/trusted_plpks.h
-+F:	security/keys/trusted-keys/trusted_pkwm.c
++     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
 +
- KEYS-TRUSTED-TEE
- M:	Sumit Garg <sumit.garg@kernel.org>
- L:	linux-integrity@vger.kernel.org
-diff --git a/include/keys/trusted-type.h b/include/keys/trusted-type.h
-index 4eb64548a74f..45c6c538df22 100644
---- a/include/keys/trusted-type.h
-+++ b/include/keys/trusted-type.h
-@@ -19,7 +19,11 @@
++         Rooted to a unique, per-LPAR key, which is derived from a system-wide,
++         randomly generated LPAR root key. Both the per-LPAR keys and the LPAR
++         root key are stored in hypervisor-owned secure memory at runtime,
++         and the LPAR root key is additionally persisted in secure locations
++         such as the processor SEEPROMs and encrypted NVRAM.
++
+   *  Execution isolation
  
- #define MIN_KEY_SIZE			32
- #define MAX_KEY_SIZE			128
--#define MAX_BLOB_SIZE			512
-+#if IS_ENABLED(CONFIG_TRUSTED_KEYS_PKWM)
-+#define MAX_BLOB_SIZE			1152
-+#else
-+#define MAX_BLOB_SIZE                   512
-+#endif
- #define MAX_PCRINFO_SIZE		64
- #define MAX_DIGEST_SIZE			64
+      (1) TPM
+@@ -102,6 +110,14 @@ safe.
+          environment. Only basic blob key encryption is executed there.
+          The actual key sealing/unsealing is done on main processor/kernel space.
  
-@@ -46,6 +50,7 @@ struct trusted_key_options {
- 	uint32_t policydigest_len;
- 	unsigned char policydigest[MAX_DIGEST_SIZE];
- 	uint32_t policyhandle;
-+	uint16_t wrap_flags;
- };
++     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
++
++         Fixed set of cryptographic operations done on on-chip hardware
++         cryptographic acceleration unit NX. Keys for wrapping and unwrapping
++         are managed by PowerVM Platform KeyStore, which stores keys in an
++         isolated in-memory copy in secure hypervisor memory, as well as in a
++         persistent copy in hypervisor-encrypted NVRAM.
++
+   * Optional binding to platform integrity state
  
- struct trusted_key_ops {
-diff --git a/include/keys/trusted_pkwm.h b/include/keys/trusted_pkwm.h
-new file mode 100644
-index 000000000000..c7249d08b4d8
---- /dev/null
-+++ b/include/keys/trusted_pkwm.h
-@@ -0,0 +1,22 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __PKWM_TRUSTED_KEY_H
-+#define __PKWM_TRUSTED_KEY_H
-+
-+#include <keys/trusted-type.h>
-+
-+extern struct trusted_key_ops pkwm_trusted_key_ops;
-+
-+static inline void dump_options(struct trusted_key_options *o)
-+{
-+	bool sb_audit_or_enforce_bit = o->wrap_flags & BIT(0);
-+	bool sb_enforce_bit = o->wrap_flags & BIT(1);
-+
-+	if (sb_audit_or_enforce_bit)
-+		pr_debug("secure boot mode required: audit or enforce");
-+	else if (sb_enforce_bit)
-+		pr_debug("secure boot mode required: enforce");
-+	else
-+		pr_debug("secure boot mode required: disabled");
-+}
-+
-+#endif
-diff --git a/security/keys/trusted-keys/Kconfig b/security/keys/trusted-keys/Kconfig
-index 204a68c1429d..9e00482d886a 100644
---- a/security/keys/trusted-keys/Kconfig
-+++ b/security/keys/trusted-keys/Kconfig
-@@ -46,6 +46,14 @@ config TRUSTED_KEYS_DCP
- 	help
- 	  Enable use of NXP's DCP (Data Co-Processor) as trusted key backend.
+      (1) TPM
+@@ -129,6 +145,11 @@ safe.
+          Relies on Secure/Trusted boot process (called HAB by vendor) for
+          platform integrity.
  
-+config TRUSTED_KEYS_PKWM
-+	bool "PKWM-based trusted keys"
-+	depends on PSERIES_PLPKS >= TRUSTED_KEYS
-+	default y
-+	select HAVE_TRUSTED_KEYS
-+	help
-+	  Enable use of IBM PowerVM Key Wrapping Module (PKWM) as a trusted key backend.
++     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
 +
- if !HAVE_TRUSTED_KEYS
- 	comment "No trust source selected!"
- endif
-diff --git a/security/keys/trusted-keys/Makefile b/security/keys/trusted-keys/Makefile
-index f0f3b27f688b..5fc053a21dad 100644
---- a/security/keys/trusted-keys/Makefile
-+++ b/security/keys/trusted-keys/Makefile
-@@ -16,3 +16,5 @@ trusted-$(CONFIG_TRUSTED_KEYS_TEE) += trusted_tee.o
- trusted-$(CONFIG_TRUSTED_KEYS_CAAM) += trusted_caam.o
++         Relies on secure and trusted boot process of IBM Power systems for
++         platform integrity.
++
+   *  Interfaces and APIs
  
- trusted-$(CONFIG_TRUSTED_KEYS_DCP) += trusted_dcp.o
-+
-+trusted-$(CONFIG_TRUSTED_KEYS_PKWM) += trusted_pkwm.o
-diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
-index b1680ee53f86..2d328de170e8 100644
---- a/security/keys/trusted-keys/trusted_core.c
-+++ b/security/keys/trusted-keys/trusted_core.c
-@@ -12,6 +12,7 @@
- #include <keys/trusted_caam.h>
- #include <keys/trusted_dcp.h>
- #include <keys/trusted_tpm.h>
-+#include <keys/trusted_pkwm.h>
- #include <linux/capability.h>
- #include <linux/err.h>
- #include <linux/init.h>
-@@ -31,7 +32,7 @@ MODULE_PARM_DESC(rng, "Select trusted key RNG");
+      (1) TPM
+@@ -149,6 +170,11 @@ safe.
+          Vendor-specific API that is implemented as part of the DCP crypto driver in
+          ``drivers/crypto/mxs-dcp.c``.
  
- static char *trusted_key_source;
- module_param_named(source, trusted_key_source, charp, 0);
--MODULE_PARM_DESC(source, "Select trusted keys source (tpm, tee, caam or dcp)");
-+MODULE_PARM_DESC(source, "Select trusted keys source (tpm, tee, caam, dcp or pkwm)");
++     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
++
++         Platform Keystore has well documented interfaces in PAPR document.
++         Refer to ``Documentation/arch/powerpc/papr_hcalls.rst``
++
+   *  Threat model
  
- static const struct trusted_key_source trusted_key_sources[] = {
- #if defined(CONFIG_TRUSTED_KEYS_TPM)
-@@ -46,6 +47,9 @@ static const struct trusted_key_source trusted_key_sources[] = {
- #if defined(CONFIG_TRUSTED_KEYS_DCP)
- 	{ "dcp", &dcp_trusted_key_ops },
- #endif
-+#if defined(CONFIG_TRUSTED_KEYS_PKWM)
-+	{ "pkwm", &pkwm_trusted_key_ops },
-+#endif
- };
+      The strength and appropriateness of a particular trust source for a given
+@@ -191,6 +217,10 @@ selected trust source:
+      a dedicated hardware RNG that is independent from DCP which can be enabled
+      to back the kernel RNG.
  
- DEFINE_STATIC_CALL_NULL(trusted_key_seal, *trusted_key_sources[0].ops->seal);
-diff --git a/security/keys/trusted-keys/trusted_pkwm.c b/security/keys/trusted-keys/trusted_pkwm.c
-new file mode 100644
-index 000000000000..d822b81afacf
---- /dev/null
-+++ b/security/keys/trusted-keys/trusted_pkwm.c
-@@ -0,0 +1,168 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2025 IBM Corporation, Srish Srinivasan <ssrish@linux.ibm.com>
-+ */
++   * PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
 +
-+#include <keys/trusted_pkwm.h>
-+#include <keys/trusted-type.h>
-+#include <linux/build_bug.h>
-+#include <linux/key-type.h>
-+#include <linux/parser.h>
-+#include <asm/plpks.h>
++     The normal kernel random number generator is used to generate keys.
 +
-+enum {
-+	Opt_err,
-+	Opt_wrap_flags,
-+};
+ Users may override this by specifying ``trusted.rng=kernel`` on the kernel
+ command-line to override the used RNG with the kernel's random number pool.
+ 
+@@ -321,6 +351,26 @@ Usage::
+ specific to this DCP key-blob implementation.  The key length for new keys is
+ always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
+ 
++Trusted Keys usage: PKWM
++------------------------
 +
-+static const match_table_t key_tokens = {
-+	{Opt_wrap_flags, "wrap_flags=%s"},
-+	{Opt_err, NULL}
-+};
++Usage::
 +
-+static int getoptions(char *datablob, struct trusted_key_options **opt)
-+{
-+	substring_t args[MAX_OPT_ARGS];
-+	char *p = datablob;
-+	int token;
-+	int res;
-+	unsigned long wrap_flags;
-+	unsigned long token_mask = 0;
++    keyctl add trusted name "new keylen [options]" ring
++    keyctl add trusted name "load hex_blob" ring
++    keyctl print keyid
 +
-+	if (!datablob)
-+		return 0;
++    options:
++       wrap_flags=   ascii hex value of security policy requirement
++                       0x00: no secure boot requirement (default)
++                       0x01: require secure boot to be in either audit or
++                             enforced mode
++                       0x02: require secure boot to be in enforced mode
 +
-+	while ((p = strsep(&datablob, " \t"))) {
-+		if (*p == '\0' || *p == ' ' || *p == '\t')
-+			continue;
++"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
++specific to PKWM key-blob implementation.  The key length for new keys is
++always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
 +
-+		token = match_token(p, key_tokens, args);
-+		if (test_and_set_bit(token, &token_mask))
-+			return -EINVAL;
-+
-+		switch (token) {
-+		case Opt_wrap_flags:
-+			res = kstrtoul(args[0].from, 16, &wrap_flags);
-+			if (res < 0 || wrap_flags > 2)
-+				return -EINVAL;
-+			(*opt)->wrap_flags = wrap_flags;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+	}
-+	return 0;
-+}
-+
-+static struct trusted_key_options *trusted_options_alloc(void)
-+{
-+	struct trusted_key_options *options;
-+
-+	options = kzalloc(sizeof(*options), GFP_KERNEL);
-+	return options;
-+}
-+
-+static int trusted_pkwm_seal(struct trusted_key_payload *p, char *datablob)
-+{
-+	struct trusted_key_options *options = NULL;
-+	u8 *input_buf, *output_buf;
-+	u32 output_len, input_len;
-+	int rc;
-+
-+	options = trusted_options_alloc();
-+	if (!options)
-+		return -ENOMEM;
-+
-+	rc = getoptions(datablob, &options);
-+	if (rc < 0)
-+		goto out;
-+	dump_options(options);
-+
-+	input_len = p->key_len;
-+	input_buf = kmalloc(ALIGN(input_len, 4096), GFP_KERNEL);
-+	if (!input_buf) {
-+		pr_err("Input buffer allocation failed. Returning -ENOMEM.");
-+		return -ENOMEM;
-+	}
-+
-+	memcpy(input_buf, p->key, p->key_len);
-+
-+	rc = plpks_wrap_object(&input_buf, input_len, options->wrap_flags,
-+			       &output_buf, &output_len);
-+	if (!rc) {
-+		memcpy(p->blob, output_buf, output_len);
-+		p->blob_len = output_len;
-+		dump_payload(p);
-+	} else {
-+		pr_err("Wrapping of payload key failed: %d\n", rc);
-+	}
-+
-+	kfree(input_buf);
-+	kfree(output_buf);
-+
-+out:
-+	kfree_sensitive(options);
-+	return rc;
-+}
-+
-+static int trusted_pkwm_unseal(struct trusted_key_payload *p, char *datablob)
-+{
-+	u8 *input_buf, *output_buf;
-+	u32 input_len, output_len;
-+	int rc;
-+
-+	input_len = p->blob_len;
-+	input_buf = kmalloc(ALIGN(input_len, 4096), GFP_KERNEL);
-+	if (!input_buf) {
-+		pr_err("Input buffer allocation failed. Returning -ENOMEM.");
-+		return -ENOMEM;
-+	}
-+
-+	memcpy(input_buf, p->blob, p->blob_len);
-+
-+	rc = plpks_unwrap_object(&input_buf, input_len, &output_buf,
-+				 &output_len);
-+	if (!rc) {
-+		memcpy(p->key, output_buf, output_len);
-+		p->key_len = output_len;
-+		dump_payload(p);
-+	} else {
-+		pr_err("Unwrapping of payload failed: %d\n", rc);
-+	}
-+
-+	kfree(input_buf);
-+	kfree(output_buf);
-+
-+	return rc;
-+}
-+
-+static int trusted_pkwm_init(void)
-+{
-+	int ret;
-+
-+	if (!plpks_wrapping_is_supported()) {
-+		pr_err("H_PKS_WRAP_OBJECT interface not supported\n");
-+		return -ENODEV;
-+	}
-+
-+	ret = plpks_gen_wrapping_key();
-+	if (ret) {
-+		pr_err("Failed to generate default wrapping key\n");
-+		return -EINVAL;
-+	}
-+
-+	return register_key_type(&key_type_trusted);
-+}
-+
-+static void trusted_pkwm_exit(void)
-+{
-+	unregister_key_type(&key_type_trusted);
-+}
-+
-+struct trusted_key_ops pkwm_trusted_key_ops = {
-+	.migratable = 0, /* non-migratable */
-+	.init = trusted_pkwm_init,
-+	.seal = trusted_pkwm_seal,
-+	.unseal = trusted_pkwm_unseal,
-+	.exit = trusted_pkwm_exit,
-+};
+ Encrypted Keys usage
+ --------------------
+ 
 -- 
 2.47.3
 
