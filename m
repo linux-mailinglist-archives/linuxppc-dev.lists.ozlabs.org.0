@@ -1,78 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-14865-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14866-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9732FCCBEC3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 14:07:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1942CCC3BE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 15:17:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dX9v25X2yz2xrM;
-	Fri, 19 Dec 2025 00:07:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dXCRl1frtz2xrM;
+	Fri, 19 Dec 2025 01:17:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766063262;
-	cv=none; b=W3jNLwWowf/ZZHLrVZNp07on62xQqpHH6KZPbpZ46KCKbh0ueeNnyfSnTuaFoVcu0lqSE9+vQzsURZlcrvg5w7jMmM0d+kKfIFLlFHG1evKDi4q5AFfq9Tm51RX7VCSnEp0jiOcdfaVQWZiJ+Jr4MaZ2v82MP2WcdqX1skjG9AX5bToUBILlYiZCsa9HGuZyug7TbuKjy6kQadXT0hP9SveGeUWqSymJ3eg6tsBQFAJm/wOl1LNAV/t2z+73KX8IbUtEhUf9SgS1GvLdAysLaxuQ98KmsBueT0/rvRt7rKj7NyUSq9U/mfRDU02Z5yedTN2cVEvQjL2ELi2Jl9NusA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=74.125.224.50
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766067459;
+	cv=none; b=arLu2XLmRSUue6ozrSBKf8O8K2r2/8P/mHXpGug5UEpFWpTbF7W1brLn9qTNFgsdmCSpXgpgYDuJFz9GjWt6qZ9aE7718Hqjld89qmMwYZjgsnI0VA5gmU7fPhfMZYNmP2dEeYKLa5W3Pdvkp9RVmhjRDaHqfKzvN4X7nEEbWIvye9tWnymOU5xJpDdY6IVvDTWPvEHeaOk0t8+KNZcMN/G7koDGFzU9W5383BKL03bU4STdr97UW7Qanf4YaX8TyeslKfcLtHGwrD+TlnrW+lwiDfOSdS+TgsLIlUxwt2C1HHauZ26MBysLC5Dv1BwS848me5O7cAPemck55tY+iQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766063262; c=relaxed/relaxed;
-	bh=9bVjFftHVS7uWdZpW9/LtnWIGLoCJqI5JblUIwN+Kv4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zhf1V0rziHdxGwLEjob0XF7RTXl+rwvxYMcwVJQvS90zc19YIpm5cDP1szFFUKjMWj2//sTgt032pYk4W9sexsJkXaKvpevuFPpGvR3kg/6J6Qt+xTDu3DOMWoM9dYaEzVuoTfheO8CW47W8JKrMf7ZplawenQ526/+dYCO1MiJD5A5irK7tSe3QH8yzN6iMUav/IpAt9u5MDs3TceY9ouxQAODSeXKpx1C41lAWb/Tzte1V/qsG1ecmzHb5DgiFsjEqTxxAELHGAKS5Uv6EpyI4jukkA+/ORJaUNaz7+MY2gJx+d8aDF95Y34vxu46yfM3XqLpwebSSgWETNzoY5Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oL2wrKYV; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1766067459; c=relaxed/relaxed;
+	bh=fXzxKl4n/8RvMAsuC5o0CHJyqBCSHbh1Hg5d0ZUuzDk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=GWkBm8q0ot7BUXPv7DmVwrltu+7flrrj6NlC1WXjY5tScb+ERne7i7JUHc9d8F74tnOztWrTrhDEkb0F8KRXISwfySFI31iMqRxBKaxmH1cPnGUS2Dw+K/XadG3Z1vDYSNDeTuOrtNUTnyrxPgEeqfFce2VfFOhqAkj0f+s5IcMX0HAKsLrd8Op7TgYdfk6/5j876+TrSwHuOrU/bQNsYQfA2NfOqkmfnwlIeSCrH8aPL7YlRw6mqlL8kZBSqWLzOPq0ZVMQ6JauPNmNNlalOpvFq37kct9T5jKdTyE9dllLfvnCyyS+RD9v2h0wN91pkcBcSqK5EHimbXMQAPJHTw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KCtayaKS; dkim-atps=neutral; spf=pass (client-ip=74.125.224.50; helo=mail-yx1-f50.google.com; envelope-from=seakeel@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oL2wrKYV;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KCtayaKS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=74.125.224.50; helo=mail-yx1-f50.google.com; envelope-from=seakeel@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dX9v06xY1z2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Dec 2025 00:07:40 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BIAJhM4011462;
-	Thu, 18 Dec 2025 13:06:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=9bVjFf
-	tHVS7uWdZpW9/LtnWIGLoCJqI5JblUIwN+Kv4=; b=oL2wrKYVOkb6Hv4O5sGlX1
-	rjEWnNqOztiynELQMggvGq8sx4nrgdq1QaK6OB19ZDDyZwz0rKWJHidtJUhCMaJu
-	B7LcNUlO3wMkXNs7e7ec/P/qxoDBRhsVrfopSTRnPAv8UK1zyc14VnF09QBNQIEm
-	lczyTTVcO68kdK/IHwk4dNMSPA20vfmz1QH06R34ov9HdfFUoXmXbZ0OYUZmhVDx
-	7YbmVhdj6WtdVmjGfabIeYHScdtHQ8IAkLDWMyOKQPNxLAk8mdHnVzQgjMq5Qgbj
-	Tbl9d74sAxgcGJj+UNAaSflpuWhcgigBGelVggjXhlcK1BmuP/iDBPNKaLBKflGA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0xjm9ur6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Dec 2025 13:06:56 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BID6TwE012531;
-	Thu, 18 Dec 2025 13:06:56 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0xjm9ur0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Dec 2025 13:06:56 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BIBAuvo002863;
-	Thu, 18 Dec 2025 13:06:55 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1kfngdew-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Dec 2025 13:06:55 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BID6pOB37159190
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Dec 2025 13:06:51 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 58C302004B;
-	Thu, 18 Dec 2025 13:06:51 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC06A20040;
-	Thu, 18 Dec 2025 13:06:47 +0000 (GMT)
-Received: from [9.39.19.14] (unknown [9.39.19.14])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 18 Dec 2025 13:06:47 +0000 (GMT)
-Message-ID: <1fddcf72-26f7-4fb4-84b8-1328e486d58e@linux.ibm.com>
-Date: Thu, 18 Dec 2025 18:36:46 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXCRj03rVz2xqm
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Dec 2025 01:17:36 +1100 (AEDT)
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64475c16a11so775971d50.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 06:17:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766067393; x=1766672193; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fXzxKl4n/8RvMAsuC5o0CHJyqBCSHbh1Hg5d0ZUuzDk=;
+        b=KCtayaKS3nVPYHupOEQNu2a/gig4yO5I/3UdXvXe2CMzodQv/nZ33Lb3YEoDYPRHoG
+         nwK0xarpzRdqp2F0NWX0gUOVFs61HIxjhXe4qvWEM7Ds+9Xbf1ixTSiors+UgTTbJD/0
+         Nt1yskHd0/+pl7BhszsKtq5KVAWm58sUQ7qTLv3qQY4zXos2rdfL/YpqKAdkBywW+Y5g
+         YvtvHxyOwHR5bWnG0cvF2J03OCIcxI1WmtYSffgBO7jM3YhS2Re0ijMvJc6uyVQ+XpEZ
+         ffFcujlJMLdfIcMPG7D1SUs+wcDobv+0z5BTC0a18Y6CPIPohY+dOnuG+yUocg5cxU2u
+         P//g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766067393; x=1766672193;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fXzxKl4n/8RvMAsuC5o0CHJyqBCSHbh1Hg5d0ZUuzDk=;
+        b=ZGUIST6Pk5RdTsAiFppQzUrdqG92vn8+1ClJ9vaLprpBrnEp8KGnnZKVe80ftP3L+B
+         XmjegRX20/wYIWZ17LcVebXlJFUrquYVxZ6CNsPw8iWC0Xwf3mSF8l6qRZZq6yjbbY4l
+         1xGgtYYi0pziAE1s2MDjlDtrCCkcYwmPV/lqHHTV5jbyJOUWeSa0FLKBXlWk6QLplTlY
+         rXe9fI4iDmmul/tJLjkSRHtBJ+OiCOt4qEemXaeyHkexxKflcXfH/4EHdfT6YwI4qwan
+         qTlB8i1C/ftlIWwEPnTfOrpEUa3dd6JmKFX7kiJNAmp8oIuiEBbQFxXD9CfUWTUcED8Q
+         MF5A==
+X-Forwarded-Encrypted: i=1; AJvYcCVwFsz7uRR0VpDmsxFN3Tny2rt6vOGyaA2950qkhTCmH2qfw2ET0yNTt9s+IIfYJ1NZFugpU8F5XNThtVY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwP4E7Fk+cWqbule0ms2prpccd16b1A1fORssh3fSEwfUsV6wND
+	NOIRoWbvQoldpX8E4fi5Lfcy1hmsg54SjgQnrhkgu/YpRO5u2TYcpmaH
+X-Gm-Gg: AY/fxX5P0omal9jW42de4/GuzfAlaZR2x9y/vUitD+rQftVNmrI9/Rc32+l261/BoyW
+	PN9JijOkNaw51JMLmbyIfruQot0u934GsKfOMdnOwAaj6VSTMfiWelwk8zVwbCXUkg8TE4bJJo9
+	wqwq4aukPV9abP4uclPMZsLA6ste7164GGiZ5nf/PABmsiWbSLs/Gsn9rOHRb8A0FK1Vc0qhtmt
+	TfOrYIKGALJItf5AranqTL5wMlSJJBnp0hWYjrDfjA0NU6j94CVFzvHI680ZW+5S+0KnCuzqLOa
+	3/yqx4vIbqy4WFqYg2uWcOIWpoaWqUJP3WSrd8F+EtaA4+AcgqM3TsdiGSFRO9do7AOqNAM9YUA
+	1bjpSsNwmC0pqmEiICUEuORgcs8If5mOZzNyVNdCGk9EMg84cr/qurc88OyjVtvplKMja1/jf6X
+	nAFgRsrscK3TNhY4KKIXThDA094CpNXuFTGOI6lQ==
+X-Google-Smtp-Source: AGHT+IHiyiDMA9Ch4dS+LVHDAxXzncC3LuoMgD0ZQuZ+G9ON0TWb1O0iMOdyZnWTo8KMI06Ox9pplg==
+X-Received: by 2002:a05:690e:4086:b0:645:5a9f:8002 with SMTP id 956f58d0204a3-6455a9f836bmr15444591d50.6.1766067392483;
+        Thu, 18 Dec 2025 06:16:32 -0800 (PST)
+Received: from [192.168.2.226] (104.194.78.75.16clouds.com. [104.194.78.75])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fa72b48efsm8363757b3.51.2025.12.18.06.16.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Dec 2025 06:16:31 -0800 (PST)
+Message-ID: <4249e49a-c91a-4e9c-92c1-79c272627540@gmail.com>
+Date: Thu, 18 Dec 2025 22:16:05 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,167 +88,86 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mm/hugetlb: ignore hugepage kernel args if hugepages
- are unsupported
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-        linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Borislav Petkov
- <bp@alien8.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        x86@kernel.org, linux-arm64@lists.infradead.org,
-        linux-riscv@lists.infradead.org
-References: <20251218114154.228484-1-sourabhjain@linux.ibm.com>
- <83920c44-47f5-4a46-bfa7-76713197d7e4@kernel.org>
+Subject: Re: [RFC PATCH 1/2] mm/pgtable: use ptdesc for pmd_huge_pte
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, alexs@kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, "David S . Miller"
+ <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Thomas Huth <thuth@redhat.com>,
+ Will Deacon <will@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Magnus Lindholm <linmag7@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org
+References: <20251214065546.156209-1-alexs@kernel.org>
+ <52e2c1eb-67cf-41ee-9088-760fb6258153@gmail.com>
+ <ee42b057-b2d1-4a61-a6b0-39f81f78a918@kernel.org>
 Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <83920c44-47f5-4a46-bfa7-76713197d7e4@kernel.org>
+From: Alex Shi <seakeel@gmail.com>
+In-Reply-To: <ee42b057-b2d1-4a61-a6b0-39f81f78a918@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IOMjxDdqC_INVd8pD7lbLmjPG0vfkoRD
-X-Authority-Analysis: v=2.4 cv=CLgnnBrD c=1 sm=1 tr=0 ts=6943fc70 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=GZ12N8NoI2vug0DTctEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: rGJZSZAJBQua-nl0FXSZ6hN3il9LBdnD
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAwOSBTYWx0ZWRfX81IRjmUONXph
- vRAcgAYV2crAU/QbOJ7+PfueA+I8tNHkip0kvKVvQuphwhyC7oqrgSAukbSdpdjxuNYI5umCGCf
- K5+w/qkxfOWhS8HgN14q7okSGpEUZPEtvWx8GpHcGsHSgXZ/Shnj02rFvKJO0xre4+CKtuCEoiP
- dB/GPOCFuV2MF7RA2vZ/lJCBgpIf0a6AsuMAiXDOksBsJQAZ6BxUndMDhkNRxtGXrQ+5MRzP/f0
- AAzNUoSX1crFlsF+mhqU6AVJ7Lzod1K8N/ryvc5l/6RHwdO7me0NDg3htWywFTtQjNefRZQ5SKC
- ikJN5U/o/W0IHViZx/Iiyjg/YIxIUhQ4Nw1yEeALa1D+Ehzv78TUPYuXU8Z2O09tp4XTChyShNV
- qpiBfzUVNwRMF7hOaLwoM49FW/BVRA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-18_01,2025-12-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0 suspectscore=0
- phishscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130009
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=1.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_BL_SPAMCOP_NET,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 
-On 18/12/25 17:32, David Hildenbrand (Red Hat) wrote:
-> On 12/18/25 12:41, Sourabh Jain wrote:
->> Skip processing hugepage kernel arguments (hugepagesz, hugepages, and
->> default_hugepagesz) when hugepages are not supported by the
->> architecture.
+On 2025/12/18 18:01, David Hildenbrand (Red Hat) wrote:
+> On 12/15/25 01:53, Alex Shi wrote:
 >>
->> Some architectures may need to disable hugepages based on conditions
->> discovered during kernel boot. The hugepages_supported() helper allows
->> architecture code to advertise whether hugepages are supported.
 >>
->> Currently, normal hugepage allocation is guarded by
->> hugepages_supported(), but gigantic hugepages are allocated regardless
->> of this check. This causes problems on powerpc for fadump (firmware-
->> assisted dump).
+>> On 2025/12/14 14:55, alexs@kernel.org wrote:
+>>> From: Alex Shi<alexs@kernel.org>
+>>>
+>>> 'pmd_huge_pte' are pgtable variables, but used 'pgtable->lru'
+>>> instead of pgtable->pt_list in pgtable_trans_huge_deposit/withdraw
+>>> functions, That's a bit weird.
+>>>
+>>> So let's convert the pgtable_t to precise 'struct ptdesc *' for
+>>> ptdesc->pmd_huge_pte, and mm->pmd_huge_pte, then convert function
+>>> pgtable_trans_huge_deposit() to use correct ptdesc.
+>>>
+>>> This convertion works for most of arch, but failed on s390/sparc/powerpc
+>>> since they use 'pte_t *' as pgtable_t. Is there any suggestion for these
+>>> archs? If we could have a solution, we may remove the pgtable_t for 
+>>> other
+>>> archs.
 >>
->> In the fadump (firmware-assisted dump) scenario, a production kernel
->> crash causes the system to boot into a special kernel whose sole
->> purpose is to collect the memory dump and reboot. Features such as
->> hugepages are not required in this environment and should be
->> disabled.
->>
->> For example, fadump kernel booting with the kernel arguments
->> default_hugepagesz=1GB hugepagesz=1GB hugepages=200 prints the
->> following logs:
->>
->> HugeTLB: allocating 200 of page size 1.00 GiB failed.  Only allocated 
->> 58 hugepages.
->> HugeTLB support is disabled!
->> HugeTLB: huge pages not supported, ignoring associated command-line 
->> parameters
->> hugetlbfs: disabling because there are no supported hugepage sizes
->>
->> Even though the logs say that hugetlb support is disabled, gigantic
->> hugepages are still getting allocated, which causes the fadump kernel
->> to run out of memory during boot.
->
-> Yeah, that's suboptimal.
->
->>
->> To fix this, the gigantic hugepage allocation should come under
->> hugepages_supported().
->>
->> To bring gigantic hugepage allocation under hugepages_supported(), two
->> approaches were previously proposed:
->> [1] Check hugepages_supported() in the generic code before allocating
->> gigantic hugepages.
->> [2] Make arch_hugetlb_valid_size() return false for all hugetlb sizes.
->>
->> Approach [2] has two minor issues:
->> 1. It prints misleading logs about invalid hugepage sizes
->> 2. The kernel still processes hugepage kernel arguments unnecessarily
->>
->> To control gigantic hugepage allocation, it is proposed to skip
->> processing the hugepage kernel arguments (hugepagesz, hugepages, and
->> default_hugepagesz) when hugepages_support() returns false.
->
-> You could briefly mention the new output here, so one has a 
-> before-after comparison.
+>> If s390/sparc/powerpc can't align pgtable_t with others, we have to keep
+>> the pgtable_t to bridge different types. But we could take step to
+>> change pgtable_t as 'struct ptdesc *' in other archs. That could
+>> simplify and clarify related code too, isn't it?
+> 
+> Not sure. s390 and friends squeeze multiple actual page tables into a 
+> single page and that single page has a single ptdesc.
+> 
+> I was rather hoping that we can make the code more consistent by making 
+> everybody just point at the start of the page table? (that is, make it 
+> consistent for all, not use ptdesc for some and pte_t * for others)
+> 
 
-Here is the fadump kernel boot logs after this patch applied:
-kernel command had: default_hugepagesz=1GB hugepagesz=1GB hugepages=200
+Got it. That would be great if owners of these archs like to work on this.
 
-HugeTLB: hugepages unsupported, ignoring default_hugepagesz=1GB cmdline
-HugeTLB: hugepages unsupported, ignoring hugepagesz=1GB cmdline
-HugeTLB: hugepages unsupported, ignoring hugepages=200 cmdline
-HugeTLB support is disabled!
-hugetlbfs: disabling because there are no supported hugepage sizes
-
-I will wait for a day or two before sending v2 with the above logs 
-included in
-the commit message.
-
->
-> Curious, should we at least add a Fixes: tag? Allocating memory when 
-> it's completely unusable sounds wrong.
-
-Not sure which commit I should use for Fixes. This issue has
-been present for a long time, possibly since the beginning.
-
-I also noticed an interesting issue related to excessive memory
-allocation, where the production/first kernel failed to boot.
-While testing this patch, I configured a very high hugepages (hugepagesz=2M)
-count, and the first kernel failed to boot as a result. I will report 
-this issue separately.
-
->
-> [...]
->
->> +    if (!hugepages_supported()) {
->> +        pr_warn("HugeTLB: hugepages unsupported, ignoring 
->> default_hugepagesz=%s cmdline\n",
->> +            s);
->> +        return 0;
->> +    }
->> +
->>       parsed_valid_hugepagesz = false;
->>       if (parsed_default_hugepagesz) {
->>           pr_err("HugeTLB: default_hugepagesz previously specified, 
->> ignoring %s\n", s);
->
->
-> LGTM!
->
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
->
-
-Thanks for the Ack David.
-
-- Sourabh Jain
+Thanks
+Alex
 
