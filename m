@@ -1,60 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14885-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14887-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F0ACCD20C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 19:18:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BACCCD2CB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 19:30:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dXJn43JvGz2yFg;
-	Fri, 19 Dec 2025 05:18:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dXK3D3Zq7z2xrM;
+	Fri, 19 Dec 2025 05:30:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766081880;
-	cv=none; b=VPMeR3bAVJoTsDP3rkJmxWtym+jCzhN51QvHIUFRdDXwF8S3uImiLa0NpepDZY3y6GlK6JW4B6YF+NYGgOJua0t5maGmc4C9yKaplSr8HrR7szbIj7S82NJFXFM+fMjcp883d2D11dxxqKEz9sC7SOdhs0MVZF4UjnrUkjAw3O4SSJO/7pBGEu5M/OD4sobaDUtmZxf7CIDz6EVKkgMZK+SST+S822r7KpbNm4WfLC0srmvRfEgxrnLbg6I5dBwlSWSnI5Vvdpl7xApHwS3A8DCJMY7Ee2qxuz1x0IGM9amPKi+rLu6eeRHVwoPGOoFur1fyljA+ChigEZFHYBaThg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766082616;
+	cv=none; b=nXL+vq8Nfgf5AOyD4xIVCl2ZZWA5fpyzJKrQ6g4uj9dh5mIm88y0idir4QjDqOYOxqYVYr04Kx84WZz3B7kNcDNr/JVTl2LnllyW5Gp6uhUB9ZgseliVXuQRBJVIukgmLfn1ana9THbush4lkAZxWe/W5pfPEasX64c1OdaCNOzq4MQgwt6yl/22Ol04uZb08XcSCA3S2JuNZqFeF5X+kh+Vkdl5+9dXQ3ONcmMrCKi/aeFQN28fBNT+usSakOA/y5wyqlsmpSJA9kCUUAge+9dOxz42I05b0hKsKFcTgk0zqVMmmosptwXknpQuwLpUOlHY+Q1/91faE3/bgv71pA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766081880; c=relaxed/relaxed;
-	bh=JZbEZLltgSx+3+la4R8/eGRr+cuu6iTQmCVeHjfkkO8=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=EI1i7TnmMpr8hqPa9SvCKbl7rvjTEFDpwfZJBzAltscJe12Sbhc9AMXFlvDWupJ9oB6J8W3t4fpHEn5oGc/5FGZIU4vakudgg1CR+3kvkhFDZMgwE2ABV3imBJmGi6w2Tp/SD+mGBJCekUlCR+Qr2WA3bk6pG2z31CvDG6HpheRFkrKHzwUKRNDRtXh659yjBhME6ip7h0wQ1eawZPzyAKJhAP+iSyE9V2Zh1WXEslCXCBdG9vnIcj4RGko/+DCzIyZw3MGViVbPlfMi+vl2jhXmWxn5KJCnnXN53np/jA/eImfxa0C6rPkJKAywIfDUDJZl3oh9MXvPVzg1SGT+hQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V9MG8j3m; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1766082616; c=relaxed/relaxed;
+	bh=M6TPqQs1Ewkm5e3A0oEahNyrrkVyyYEQ0io6xTIMF0c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=oaF7lBORDU/NxdEm96RQhB4QxeVYJh4YBHFFMzGyHckftM939j1pYUQhSb/8cI9U8ATlvZ0w9/N18pxLkUYjCpU6UkQkdDk/UEa0THsNBgAyfgpfRYKZOSiUEUgK+1ukIZqe2u0N+TH5aJZpIex0SE1ls/MIy19RC+tQKT4BlErUnXYnRgSd/jDj4uDpAA1IwiU11A01Nd64i4x7pLKo6yS+J5ETjjqnJats++owHUpxLgsnG8qw9a1Te6xFWzjY4sWT/XkTxoa5GC3+sCcf5APlkXv34pr58hvvwMtD0Bqfv0Tf/vHmzFwcrqilrqDsufD8aPCTc9TTpN3gOrmT1Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=D95qJ/uS; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V9MG8j3m;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=D95qJ/uS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXJn36jbnz2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Dec 2025 05:17:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXK3C5FFHz2xpm
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Dec 2025 05:30:15 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6953B60149;
-	Thu, 18 Dec 2025 18:17:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A97C4CEFB;
-	Thu, 18 Dec 2025 18:17:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6A8F660055;
+	Thu, 18 Dec 2025 18:29:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63623C4CEFB;
+	Thu, 18 Dec 2025 18:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766081877;
-	bh=pWxzxV2ERpNbrD9L8kun4z2fQ/h+mC0aWXfZj1yYrPQ=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=V9MG8j3mb6EY3/o7CNWxaul3cOszPImUcKNbIxbU5vAHTZga4UXlQZsCUcNeFyO56
-	 bg/26ZU7OBbsnAgL64+yHdBriENsXHAJeLWO8wmIVwqAgOgBc8KgLN/bMTithUftfR
-	 lQGJgXzO7i7RFsr8tV2+fhH1v9yWEfIw6Ln4vgD6U2bsrralKt2ZuyDDAqz6Sn6/hs
-	 tNDurw4NV9FWQGuKsmeHWclM5iangoulyqSv7dBNmArVKctQRyAw/Fw8NAOGEYjAbs
-	 n/KNExArBNizQ8D3LAYoyJ9cyTe2KdCMBDEk8KPU+KtwrbANUF+Bq7fhLwAPkGlMlZ
-	 GItvzLME36mQw==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, imx@lists.linux.dev, 
- Chancel Liu <chancel.liu@nxp.com>
-In-Reply-To: <20251216071656.648412-1-chancel.liu@nxp.com>
-References: <20251216071656.648412-1-chancel.liu@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl-asoc-card: Use of_property_present() for
- non-boolean properties
-Message-Id: <176608187468.237766.15246617240590815373.b4-ty@kernel.org>
-Date: Thu, 18 Dec 2025 18:17:54 +0000
+	s=k20201202; t=1766082583;
+	bh=TjBcGwW4a9QOJ3BdOoSuXFyGMXz0Im1VV4W7/QtXkIk=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=D95qJ/uSD8if8jZbBlp8YhG/CuxaSReXnHgs1jHXsNQ/ljXjoFRi1XYxX2j+pSjEs
+	 yex82vI/6qZ3Yiakv4L+Zl0kcxCpIMZs3dLlcCl7fXVmsHV9vIR0KCb0H1garXem8b
+	 Mfkgz5p5H/qYoBEawEDZrCPlzNDqpCb9Mc/3iBfIKqMLcQ+5L9PZ8kTrro0CzrEwK2
+	 Xg2NSj5eJrzbwscEqQfySuR1zzaKAjZtmrwCpUdlZNhSprPywFEdTQeqPGnfvdrEe3
+	 2Ii+x59UF3g/W/F640VvTzb6DyjUxTQ9lQGdMSedIapMiRNOYKFC89/2sBUo4qI+wC
+	 nbQ9q+PDk4TLA==
+Message-ID: <2462a770-7da3-4b42-99ed-6ffd4d44b4f4@kernel.org>
+Date: Thu, 18 Dec 2025 19:29:39 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,50 +58,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/mm: Use pte_advance_pfn() in set_huge_pte_at()
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20251219-set_huge_pte_at_pte_advance_pfn-v1-1-e3378845af7d@linux.ibm.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20251219-set_huge_pte_at_pte_advance_pfn-v1-1-e3378845af7d@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 16 Dec 2025 16:16:56 +0900, Chancel Liu wrote:
-> The use of of_property_read_bool() for non-boolean properties is
-> deprecated in favor of of_property_present() when testing for property
-> presence.
-> Otherwise there'll be kernel warning:
-> [   29.018081] OF: /sound-wm8962: Read of boolean property 'hp-det-gpios' with a value.
+Hi Andrew,
+
+Le 18/12/2025 à 17:21, Andrew Donnellan a écrit :
+> In set_huge_pte_at(), replace the existing open coded pte value
+> calculation with the new helper pte_advance_pfn().
+> 
+> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> ---
+>   arch/powerpc/mm/pgtable.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+> index 56d7e8960e77d877390d6bcbf0d8a305cc222101..9073e373e1e8a88f904cae592e1e8c34707545e6 100644
+> --- a/arch/powerpc/mm/pgtable.c
+> +++ b/arch/powerpc/mm/pgtable.c
+> @@ -365,7 +365,7 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
+>   
+>   	for (i = 0; i < sz / pdsize; i++, ptep++, addr += pdsize) {
+>   		__set_pte_at(mm, addr, ptep, pte, 0);
+> -		pte = __pte(pte_val(pte) + ((unsigned long long)pdsize / PAGE_SIZE << PFN_PTE_SHIFT));
+> +		pte = pte_advance_pfn(pte, pdsize / PAGE_SIZE);
+
+How can this work ?
+
+pdsize is 4M, PAGE_SIZE is 4k so pdsize/PAGE_SIZE is 0x400.
+
+PFN_PTE_SHIFT is 24.
+
+0x400 << 24 is more than what an unsigned long can contain in 
+pte_advance_pfn()
+
+Christophe
+
+>   	}
+>   }
+>   #endif
+> 
+> ---
+> base-commit: ea1013c1539270e372fc99854bc6e4d94eaeff66
+> change-id: 20251219-set_huge_pte_at_pte_advance_pfn-0ae18078fcca
 > 
 > 
-> [...]
-
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: fsl-asoc-card: Use of_property_present() for non-boolean properties
-      commit: fa43ab13c59f4c047c479673792ed033ab567c65
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+> --
+> Andrew Donnellan    OzLabs, ADL Canberra
+> ajd@linux.ibm.com   IBM Australia Limited
+> 
 
 
