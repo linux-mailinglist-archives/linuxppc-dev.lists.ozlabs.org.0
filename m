@@ -1,79 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-14866-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14867-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1942CCC3BE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 15:17:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA5FCCCB95
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 17:22:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dXCRl1frtz2xrM;
-	Fri, 19 Dec 2025 01:17:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dXGCQ2NKQz2xrk;
+	Fri, 19 Dec 2025 03:22:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=74.125.224.50
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766067459;
-	cv=none; b=arLu2XLmRSUue6ozrSBKf8O8K2r2/8P/mHXpGug5UEpFWpTbF7W1brLn9qTNFgsdmCSpXgpgYDuJFz9GjWt6qZ9aE7718Hqjld89qmMwYZjgsnI0VA5gmU7fPhfMZYNmP2dEeYKLa5W3Pdvkp9RVmhjRDaHqfKzvN4X7nEEbWIvye9tWnymOU5xJpDdY6IVvDTWPvEHeaOk0t8+KNZcMN/G7koDGFzU9W5383BKL03bU4STdr97UW7Qanf4YaX8TyeslKfcLtHGwrD+TlnrW+lwiDfOSdS+TgsLIlUxwt2C1HHauZ26MBysLC5Dv1BwS848me5O7cAPemck55tY+iQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766074930;
+	cv=none; b=PGWNl1LfYIixIKyDvRFjlBZZOWsQCb8mcLRmcJ2Ljcbcnv2XE67+tdr7ivx5BhR0Fj4KVFx71+iFRii/IBzg2rjjkLEfrlKRWyFilqjU6nZPykGjfU+0SuMY/epI0z8Cv/nDTyVQ9m3N8zx8j7HuBBJ5rUn+DT5FoLynobhlIDDPCTUf87/Lwf8DlfusqHSSWv5WBiV+Xy/uI5G3Cz8iNvdzEhkW2Ac4VAsA/ikKRbS4EaVNfOxQVPmR1YkipcoPhKps1/UkUzsgzL3EiwKVeOBIY1qojtEcGGAVPUv9w8qXkqGbqG8JfQe43XiCjI/FdHrDxyP0vghS6McaVft/+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766067459; c=relaxed/relaxed;
-	bh=fXzxKl4n/8RvMAsuC5o0CHJyqBCSHbh1Hg5d0ZUuzDk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=GWkBm8q0ot7BUXPv7DmVwrltu+7flrrj6NlC1WXjY5tScb+ERne7i7JUHc9d8F74tnOztWrTrhDEkb0F8KRXISwfySFI31iMqRxBKaxmH1cPnGUS2Dw+K/XadG3Z1vDYSNDeTuOrtNUTnyrxPgEeqfFce2VfFOhqAkj0f+s5IcMX0HAKsLrd8Op7TgYdfk6/5j876+TrSwHuOrU/bQNsYQfA2NfOqkmfnwlIeSCrH8aPL7YlRw6mqlL8kZBSqWLzOPq0ZVMQ6JauPNmNNlalOpvFq37kct9T5jKdTyE9dllLfvnCyyS+RD9v2h0wN91pkcBcSqK5EHimbXMQAPJHTw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KCtayaKS; dkim-atps=neutral; spf=pass (client-ip=74.125.224.50; helo=mail-yx1-f50.google.com; envelope-from=seakeel@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1766074930; c=relaxed/relaxed;
+	bh=G4CtP4H1VMJ0P7n7fJEEDyi8qInM67QjrH0wof4WfOs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZV1hOMGv2PhbgoLm0KAiP4DW5G86P21CNJB3mTIZGDVlCvFI4Tq6xqSe3Pk7JfnE9WbElPLkuQ3yG8WxeGQJ3uIz/J5eExuuq/+jT36THPTVlxOcXtMVNd1qJBQ0QGTGsr4vZi2GUASMx21eReGQJuxGA0VH5/PVhiRp/72037bMCR/THiX/BXJ84ec8kUniDK+vm1wPWrwahcGVUdKA+K9CORDtofXdyRg3DziFrXbuikvV7hZkhcpQh1/XJ63ElzekHjYGFo8SLIeoBoAEk8ZQpHpL99UphSz7R8nSq9cGcH3xkjAzxaoBFn/p2wFAC/Cy9LBwXFSsIjjPE+DBJQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KaBPjcQU; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KCtayaKS;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KaBPjcQU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=74.125.224.50; helo=mail-yx1-f50.google.com; envelope-from=seakeel@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXCRj03rVz2xqm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Dec 2025 01:17:36 +1100 (AEDT)
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64475c16a11so775971d50.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 06:17:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766067393; x=1766672193; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fXzxKl4n/8RvMAsuC5o0CHJyqBCSHbh1Hg5d0ZUuzDk=;
-        b=KCtayaKS3nVPYHupOEQNu2a/gig4yO5I/3UdXvXe2CMzodQv/nZ33Lb3YEoDYPRHoG
-         nwK0xarpzRdqp2F0NWX0gUOVFs61HIxjhXe4qvWEM7Ds+9Xbf1ixTSiors+UgTTbJD/0
-         Nt1yskHd0/+pl7BhszsKtq5KVAWm58sUQ7qTLv3qQY4zXos2rdfL/YpqKAdkBywW+Y5g
-         YvtvHxyOwHR5bWnG0cvF2J03OCIcxI1WmtYSffgBO7jM3YhS2Re0ijMvJc6uyVQ+XpEZ
-         ffFcujlJMLdfIcMPG7D1SUs+wcDobv+0z5BTC0a18Y6CPIPohY+dOnuG+yUocg5cxU2u
-         P//g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766067393; x=1766672193;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fXzxKl4n/8RvMAsuC5o0CHJyqBCSHbh1Hg5d0ZUuzDk=;
-        b=ZGUIST6Pk5RdTsAiFppQzUrdqG92vn8+1ClJ9vaLprpBrnEp8KGnnZKVe80ftP3L+B
-         XmjegRX20/wYIWZ17LcVebXlJFUrquYVxZ6CNsPw8iWC0Xwf3mSF8l6qRZZq6yjbbY4l
-         1xGgtYYi0pziAE1s2MDjlDtrCCkcYwmPV/lqHHTV5jbyJOUWeSa0FLKBXlWk6QLplTlY
-         rXe9fI4iDmmul/tJLjkSRHtBJ+OiCOt4qEemXaeyHkexxKflcXfH/4EHdfT6YwI4qwan
-         qTlB8i1C/ftlIWwEPnTfOrpEUa3dd6JmKFX7kiJNAmp8oIuiEBbQFxXD9CfUWTUcED8Q
-         MF5A==
-X-Forwarded-Encrypted: i=1; AJvYcCVwFsz7uRR0VpDmsxFN3Tny2rt6vOGyaA2950qkhTCmH2qfw2ET0yNTt9s+IIfYJ1NZFugpU8F5XNThtVY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwP4E7Fk+cWqbule0ms2prpccd16b1A1fORssh3fSEwfUsV6wND
-	NOIRoWbvQoldpX8E4fi5Lfcy1hmsg54SjgQnrhkgu/YpRO5u2TYcpmaH
-X-Gm-Gg: AY/fxX5P0omal9jW42de4/GuzfAlaZR2x9y/vUitD+rQftVNmrI9/Rc32+l261/BoyW
-	PN9JijOkNaw51JMLmbyIfruQot0u934GsKfOMdnOwAaj6VSTMfiWelwk8zVwbCXUkg8TE4bJJo9
-	wqwq4aukPV9abP4uclPMZsLA6ste7164GGiZ5nf/PABmsiWbSLs/Gsn9rOHRb8A0FK1Vc0qhtmt
-	TfOrYIKGALJItf5AranqTL5wMlSJJBnp0hWYjrDfjA0NU6j94CVFzvHI680ZW+5S+0KnCuzqLOa
-	3/yqx4vIbqy4WFqYg2uWcOIWpoaWqUJP3WSrd8F+EtaA4+AcgqM3TsdiGSFRO9do7AOqNAM9YUA
-	1bjpSsNwmC0pqmEiICUEuORgcs8If5mOZzNyVNdCGk9EMg84cr/qurc88OyjVtvplKMja1/jf6X
-	nAFgRsrscK3TNhY4KKIXThDA094CpNXuFTGOI6lQ==
-X-Google-Smtp-Source: AGHT+IHiyiDMA9Ch4dS+LVHDAxXzncC3LuoMgD0ZQuZ+G9ON0TWb1O0iMOdyZnWTo8KMI06Ox9pplg==
-X-Received: by 2002:a05:690e:4086:b0:645:5a9f:8002 with SMTP id 956f58d0204a3-6455a9f836bmr15444591d50.6.1766067392483;
-        Thu, 18 Dec 2025 06:16:32 -0800 (PST)
-Received: from [192.168.2.226] (104.194.78.75.16clouds.com. [104.194.78.75])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78fa72b48efsm8363757b3.51.2025.12.18.06.16.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Dec 2025 06:16:31 -0800 (PST)
-Message-ID: <4249e49a-c91a-4e9c-92c1-79c272627540@gmail.com>
-Date: Thu, 18 Dec 2025 22:16:05 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXGCP2N7Hz2xqm
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Dec 2025 03:22:09 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BICIjcm011903;
+	Thu, 18 Dec 2025 16:22:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=G4CtP4H1VMJ0P7n7fJEEDyi8qInM
+	67QjrH0wof4WfOs=; b=KaBPjcQUPiyMsPBv3Iuc+WLeGO/o/2nZzdoDTuUwcW8Y
+	l0WR3InyPT3SBYaX1hL61rvPmR7zrw2dEAHYk0/VNcdNuDR7820Pmn7d6fuDynLM
+	hR73mbe5hOPJ4Zenj/39ddf6T9g785vTFnnUyiiK1b/m3KQVV8fUktJTrXg/O+oh
+	EBjfN764E3YBSIxeaAIZPprdfgo1ZzWYt13GI7FwCbtGNxG17Y8lqstRIkSqREJ1
+	gPqmgYSlb2zoIqH522PcNIA32FYkE541IGi3WmNxD4mk7KdLbctChvs7pFwYnxfT
+	Jfob79A6WBBnYO204MWAJ9+GGmx01ZArmrq84Yanew==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yn8uqnu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Dec 2025 16:22:05 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BIG9Pto026777;
+	Thu, 18 Dec 2025 16:22:04 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b1jfsskcd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Dec 2025 16:22:04 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BIGM3eP65929656
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 18 Dec 2025 16:22:04 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9C85258054;
+	Thu, 18 Dec 2025 16:22:03 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8E7C35804E;
+	Thu, 18 Dec 2025 16:22:02 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (unknown [9.36.16.51])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 18 Dec 2025 16:22:02 +0000 (GMT)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Fri, 19 Dec 2025 03:21:56 +1100
+Subject: [PATCH] powerpc/mm: Use pte_advance_pfn() in set_huge_pte_at()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,87 +78,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] mm/pgtable: use ptdesc for pmd_huge_pte
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, alexs@kernel.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, "David S . Miller"
- <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Thomas Huth <thuth@redhat.com>,
- Will Deacon <will@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Magnus Lindholm <linmag7@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org
-References: <20251214065546.156209-1-alexs@kernel.org>
- <52e2c1eb-67cf-41ee-9088-760fb6258153@gmail.com>
- <ee42b057-b2d1-4a61-a6b0-39f81f78a918@kernel.org>
-Content-Language: en-US
-From: Alex Shi <seakeel@gmail.com>
-In-Reply-To: <ee42b057-b2d1-4a61-a6b0-39f81f78a918@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=1.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_BL_SPAMCOP_NET,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Level: *
+Message-Id: <20251219-set_huge_pte_at_pte_advance_pfn-v1-1-e3378845af7d@linux.ibm.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWNQQrDIBRErxL+uoIKJUmvUop8zJj8jQ1qQ0C8e
+ yVZPd5bzFTKSIJMr6FSwiFZvrGLeQzkN44rlCzdyWr7NNbMKqO47bfC7QWOy43l4Oh7ClFphpn
+ 0OAXvmfrKnhDkvB7en9b+2wRVtXEAAAA=
+X-Change-ID: 20251219-set_huge_pte_at_pte_advance_pfn-0ae18078fcca
+To: linuxppc-dev@lists.ozlabs.org
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+X-Mailer: b4 0.14.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAxOCBTYWx0ZWRfX4nt5JwFrmbTF
+ 6oPv9/bHQbWYypNVKk9NNV3oh5gs11BWh1UNKo6jTOwr43QRQ1By/yhUG/KeBmYw4YSQNE2ip4n
+ IK11yYrh2NEN68Lbf9DCPax0n2k+MBC6iimH23VjNzFUC5bUjCCz+uclhzOX1aDJYvzTaK2K1wK
+ o6DHfA1trgJwjgnJsuqZ70uK2FaMLo5BtmxdqdPKpypOuSJQ3gez+UIHk2N7oG8B91U5OfshK4v
+ KntgX2iIZRZYnJKzCB1B0kJkz5OW1q2Uqc76bfu12GQJnldzRhDKdY+9zltkCrzLszI2zH3YLG4
+ DtrPJBWpkkChtCuBqp+hbmbE4xh335297LFcgjoMRdSM1PDldppUQIrqGCnMc/y80ryPdi5rHfH
+ UzAFiMPJKAnBXLIrUvV2Y0Sexwg1cg==
+X-Proofpoint-GUID: CYPCyyKsYZyUYJsRRJ8Dsdw4E_cvczpG
+X-Proofpoint-ORIG-GUID: CYPCyyKsYZyUYJsRRJ8Dsdw4E_cvczpG
+X-Authority-Analysis: v=2.4 cv=LbYxKzfi c=1 sm=1 tr=0 ts=69442a2d cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=szuQGY2sWp9FMgvQqn4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-18_02,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 phishscore=0 clxscore=1015 suspectscore=0
+ adultscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2512130018
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+In set_huge_pte_at(), replace the existing open coded pte value
+calculation with the new helper pte_advance_pfn().
+
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+---
+ arch/powerpc/mm/pgtable.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+index 56d7e8960e77d877390d6bcbf0d8a305cc222101..9073e373e1e8a88f904cae592e1e8c34707545e6 100644
+--- a/arch/powerpc/mm/pgtable.c
++++ b/arch/powerpc/mm/pgtable.c
+@@ -365,7 +365,7 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
+ 
+ 	for (i = 0; i < sz / pdsize; i++, ptep++, addr += pdsize) {
+ 		__set_pte_at(mm, addr, ptep, pte, 0);
+-		pte = __pte(pte_val(pte) + ((unsigned long long)pdsize / PAGE_SIZE << PFN_PTE_SHIFT));
++		pte = pte_advance_pfn(pte, pdsize / PAGE_SIZE);
+ 	}
+ }
+ #endif
+
+---
+base-commit: ea1013c1539270e372fc99854bc6e4d94eaeff66
+change-id: 20251219-set_huge_pte_at_pte_advance_pfn-0ae18078fcca
 
 
-On 2025/12/18 18:01, David Hildenbrand (Red Hat) wrote:
-> On 12/15/25 01:53, Alex Shi wrote:
->>
->>
->> On 2025/12/14 14:55, alexs@kernel.org wrote:
->>> From: Alex Shi<alexs@kernel.org>
->>>
->>> 'pmd_huge_pte' are pgtable variables, but used 'pgtable->lru'
->>> instead of pgtable->pt_list in pgtable_trans_huge_deposit/withdraw
->>> functions, That's a bit weird.
->>>
->>> So let's convert the pgtable_t to precise 'struct ptdesc *' for
->>> ptdesc->pmd_huge_pte, and mm->pmd_huge_pte, then convert function
->>> pgtable_trans_huge_deposit() to use correct ptdesc.
->>>
->>> This convertion works for most of arch, but failed on s390/sparc/powerpc
->>> since they use 'pte_t *' as pgtable_t. Is there any suggestion for these
->>> archs? If we could have a solution, we may remove the pgtable_t for 
->>> other
->>> archs.
->>
->> If s390/sparc/powerpc can't align pgtable_t with others, we have to keep
->> the pgtable_t to bridge different types. But we could take step to
->> change pgtable_t as 'struct ptdesc *' in other archs. That could
->> simplify and clarify related code too, isn't it?
-> 
-> Not sure. s390 and friends squeeze multiple actual page tables into a 
-> single page and that single page has a single ptdesc.
-> 
-> I was rather hoping that we can make the code more consistent by making 
-> everybody just point at the start of the page table? (that is, make it 
-> consistent for all, not use ptdesc for some and pte_t * for others)
-> 
+--
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 
-Got it. That would be great if owners of these archs like to work on this.
-
-Thanks
-Alex
 
