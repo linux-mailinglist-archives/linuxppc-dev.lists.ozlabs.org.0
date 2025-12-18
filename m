@@ -1,84 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14859-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14860-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF224CCAF2C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 09:40:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CDECCB4A6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 11:02:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dX3yL6PDjz2xrM;
-	Thu, 18 Dec 2025 19:40:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dX5n26zL5z2xrM;
+	Thu, 18 Dec 2025 21:02:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766047210;
-	cv=none; b=bqX2Bzpl+7NN3YtatvVVtINttDJrjXEyQSIYi3wCrQ6OIe91UNGdTfBHCkHpw6/ZQuoWd0DxaX8UM5+4KqF4v40yd08Z1Ty6/i17J8U2FgFpZIcuc7aTvV9NfP0+9KLNrH008WkBgUS6/lBApwfGIEVgx5bpvGDFLnODAxnm2jRXQpoTZCw0EGpG/Vf/3z5/UKze/aoXprvYdsh+Aum/BzRhxoDl5sgh1NKSDlubN/AMxk0YYg+FRqP/x107wz/goNiWSPk8xxGjHhJAy0xJ/xAI8xirkjsd4zMW8iUeDm9ptX3nG1bl347gaEdyn4+DyndMn2wfa+wBiClAPXbDVg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766052134;
+	cv=none; b=GL1RK/NNiZA/dch/73W3q7huxHUJ01wRBRGa1Ni1bNngTyq5wKlYV4qMr3Rqiu+o6CT7SY1qjEB2KevsqbGFU6eF9VSscs0g6NGOzO59STBsXC/QM42BGVEhR8/S4uP/5dUDsKRyOw74kHATfZNPMIQuDf5nlh/+x7ngmWYI2nsHMO19Am8SqUqtFnOhLt4qX/WvejSKPaobdRW/PXcjDdwFexl4ohZkPfklk0XGaUwRhjZuzg02wmJ8JuhbY7ufqc5PPZv7ziAiNiSiS6j8+i5x/gS1q59EAbsT+EPu0jogiMlIPW1GPg96/KKoBYtf1hWTw/RaLlWGN0WPyB8lfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766047210; c=relaxed/relaxed;
-	bh=4mxIe2RWCdQyoniiqHbqT+fSW/1ncegpctg5OKn3wFA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GncunJwl4hLPZw3KsxgQ/jGuWg+uBw1/T+OEfd2OeA3nMstmEibWDjpr+aqUUbWEb5LmHV6QjXgrUGFLH115BgzGsDg+BnoY1FL4sFs1pxeXRhZvgYnSNzFXWHF6EH0XdftoWa0IniKDdNJRqYRYNPC9djwckEuYUkB/TqV1pSU3fW58NozH1tjWSdmcDU/YdAYIs75NsDsdP57auHvfbGgK4cT8yHUf+Ou/7mPadM49gOiW31NaDujzz/77cYjkRs/joVnHn7CGYR4hYaGCkoMJMyqTcsWBubweirmoU0dvyOqgQpET3XqE5cgjOhLUAfsJq5qDRULxovYuR2+vkg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rmVVJePJ; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1766052134; c=relaxed/relaxed;
+	bh=jXayoTaQ77V2XANAImmfYENdHOut0SX0pqYydj8KJmQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=BHm0C2MU2oV/ImGluguDyN5kpxUHsE/Saatsuqh6mXQy8aVRQ4jwoTlJsnrVns/wdTxqLDnJYfLq0TjY465mMHAU+zTKKi+AFtmF1phDVnJYc9iAZzmRPkM/dX+N7IzVDtOGwR9IgkbPIIE1AC56iTkwQsAgVZ3f2DELzSKMb7JLVF7xnMhvk0h8okEn7ZT+rEQaxLWiTU4nmcT0MFqexXHz8BxUTPXtaYfdXIsluRaEBNkzAglYGgxK4odw6IZO0GRJXfjYn/JRbtX6ThN5M7xUKM2ttffRkD5gqA+oBtrVXE7Rpi0GNiWC3l1Elwf3KLGxK617dt2h6r0ixfiTRg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qUxR5p9n; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rmVVJePJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qUxR5p9n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dX3yL0NXCz2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 19:40:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dX5n14Phyz2xqm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 21:02:13 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D01A4405A;
-	Thu, 18 Dec 2025 08:40:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4B5C4CEFB;
-	Thu, 18 Dec 2025 08:40:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6565060008;
+	Thu, 18 Dec 2025 10:02:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05ADCC4CEFB;
+	Thu, 18 Dec 2025 10:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766047207;
-	bh=ofPz3WZxF0qhrxc5N6KO0WklVZWUMGP/4at4uzuCx5s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rmVVJePJGXR+kQkm3+r1Kbt0GyikF3QfUnymI7CCZrHKsRgARfO2o2ba2kB+bpPCT
-	 UHrvTWZoxuQAIRQXxc9I5NeoAcCrZBmmcrAlJnug5BaQTQvVwVqvaJjDuY33ZMzoy6
-	 BAr6jLOIpi2I8WC82e6kp81I8nrCa8WqCHQlSBTqZwv7g1LhXawg+JG4WGZSyz9t7l
-	 lUOt/NCn0KCw0dStvCGVQTawL+HWAy5Lrwn0Gx39IwmYRZLbytZdLLUDYSPzigtubq
-	 ZxR25apmkkEWekeoA8W1U6GFN06j4Og1ARDAkIDWxQbraNlGOfxULa77Gl1qMs8cke
-	 OZqPmHVBTqbAw==
-Date: Thu, 18 Dec 2025 10:40:02 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Geoff Levand <geoff@infradead.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	xen-devel@lists.xenproject.org, linux-alpha@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-	Jason Gunthorpe <jgg@ziepe.ca>, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v5 09/14] parisc: Convert DMA map_page to map_phys
- interface [qemu test failure]
-Message-ID: <20251218084002.GD39046@unreal>
-References: <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
- <20251015-remove-map-page-v5-9-3bbfe3a25cdf@kernel.org>
- <b184f1bf-96dc-4546-8512-9cba5ecb58f7@roeck-us.net>
+	s=k20201202; t=1766052130;
+	bh=Nw8/xPqRtJ3jr9PSKxoQ1BcdKB0FWuTnbRQXps9AJuA=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=qUxR5p9nLaGIa2IPol7GwO939YNt4cI6BRodAmVjF0+8L62Ffd2H5W0CeL07eFj3X
+	 5farBmoQooRnqvZDzrtSUiOU43l64FLfBe4wILCSDYkNOXbYuEgUsUT8X6CXQYq2cQ
+	 Maxo/huPBXAcATB8n7EoL9p7yl22QHDPL1PZ4p/EnQPnyzHfHNGXaFyCdixFqMSukR
+	 dBoQm42UODTkVcUfdc8SdQw/3dmKFNwPiEa9rLlZ/tgVTTPCYWK3JR+UMJpxPMp2mz
+	 y0Ox1jt27Qr7NiXyK6nzHn5U7juAH31r1UuHLge7X4DKioWpwQCiZx0bJFhjs7FUNw
+	 XxqgeEWeLeGTg==
+Message-ID: <ee42b057-b2d1-4a61-a6b0-39f81f78a918@kernel.org>
+Date: Thu, 18 Dec 2025 11:01:59 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,32 +58,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b184f1bf-96dc-4546-8512-9cba5ecb58f7@roeck-us.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/2] mm/pgtable: use ptdesc for pmd_huge_pte
+To: Alex Shi <seakeel@gmail.com>, alexs@kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, "David S . Miller"
+ <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Thomas Huth <thuth@redhat.com>,
+ Will Deacon <will@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Magnus Lindholm <linmag7@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org
+References: <20251214065546.156209-1-alexs@kernel.org>
+ <52e2c1eb-67cf-41ee-9088-760fb6258153@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <52e2c1eb-67cf-41ee-9088-760fb6258153@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Dec 17, 2025 at 04:17:38AM -0800, Guenter Roeck wrote:
-> Hi,
+On 12/15/25 01:53, Alex Shi wrote:
 > 
-> On Wed, Oct 15, 2025 at 12:12:55PM +0300, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > Perform mechanical conversion from .map_page to .map_phys callback.
-> > 
-> > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 > 
-> This patch causes all my 32-bit parisc qemu tests with C3700 machine
-> to fail. Network interface tests fail, and all boot attempts from
-> any kind of hard drive (scsi, usb) fail with this patch in the tree.
+> On 2025/12/14 14:55, alexs@kernel.org wrote:
+>> From: Alex Shi<alexs@kernel.org>
+>>
+>> 'pmd_huge_pte' are pgtable variables, but used 'pgtable->lru'
+>> instead of pgtable->pt_list in pgtable_trans_huge_deposit/withdraw
+>> functions, That's a bit weird.
+>>
+>> So let's convert the pgtable_t to precise 'struct ptdesc *' for
+>> ptdesc->pmd_huge_pte, and mm->pmd_huge_pte, then convert function
+>> pgtable_trans_huge_deposit() to use correct ptdesc.
+>>
+>> This convertion works for most of arch, but failed on s390/sparc/powerpc
+>> since they use 'pte_t *' as pgtable_t. Is there any suggestion for these
+>> archs? If we could have a solution, we may remove the pgtable_t for other
+>> archs.
+> 
+> If s390/sparc/powerpc can't align pgtable_t with others, we have to keep
+> the pgtable_t to bridge different types. But we could take step to
+> change pgtable_t as 'struct ptdesc *' in other archs. That could
+> simplify and clarify related code too, isn't it?
 
-Thanks for the report. I have a fix ready; I'll clean it up and send it out
-by EOD.
+Not sure. s390 and friends squeeze multiple actual page tables into a 
+single page and that single page has a single ptdesc.
 
-> 
-> Guenter
+I was rather hoping that we can make the code more consistent by making 
+everybody just point at the start of the page table? (that is, make it 
+consistent for all, not use ptdesc for some and pte_t * for others)
+
+-- 
+Cheers
+
+David
 
