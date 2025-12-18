@@ -1,50 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-14863-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14864-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E5ACCBB5D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 13:03:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8452ACCBBD9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 13:12:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dX8SX1r1nz2xrM;
-	Thu, 18 Dec 2025 23:03:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dX8fn5p1Rz2xrM;
+	Thu, 18 Dec 2025 23:12:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766059388;
-	cv=none; b=APJ2excZQpxzGxPNP3AWHSmVHJ/JdAMlMI6QRN8nFW9XyK0B1O7Y/cUI0lAFb3T9mftkVb+2CKcnwnBZ6b6d8FIxRklHhPmfg8IoDtzGgM6zPN+/7N76GAEF2Ee25uq+m52nh2rUWoyF0QIztfic1rWTpIm4oY8Qs0KzPynk7+f0m6eNYg5fxotv/2TPlbG8DQ6UccX1XmEng1+cV+1Iw+3t63btbzgOltbLwQDl7/ESbAc1ez+cwQGhBgTTTZ3QPHW1ngbbBLwbRaFjmEHCtuOxrLsKCO/VDVZ+biS8zs8LoLO16GB2MwfLc+Sw1ZRAuN18c2WHdXyVTjRfeCElnA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766059921;
+	cv=none; b=IJZI55LvdGC9CeCfOW1uihfq5ZR6KnRRpZfl4RVK7I/ciegSPyCyR6TxfG1a1wlQQgljlah4DtSHB2xyReI07yf9ZR+taWNriEI5RlLc/KkoYvpQg87ublE4uRmw2hNtKJCKGnNIcADAg8R2Ey2j02PUpSZVteoTecjBqEzOdvYJjAVPk/APYFB0nAlkeG5uulf0pnHYsgsDj26nfSF4fRzanG+XSdTzwV5ITvIcX5oUf+caO9BrVMz5B/A7vk1dgC3opE6ZlPWH0OykKjJhIkCZyhuhqN1pMstT8FMTNJcGZ2u1uderHZzmVWL9LPni2Y90X7hSoc0/zae+/cRuWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766059388; c=relaxed/relaxed;
-	bh=rNz6uG4a6bdn8IWV8d2tAVBbvKM+B1bG7nY3P4aag5I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V/HFt0w1Sne/LvD6Vzm9yY1dIyPJso6oUN7ciQxpII5mzLW8ISjawSmKJ0h+lYnoGWUk6Wd3FM5lyP1oUcBf77RvWIoGoET/A96QJPXsbJ43U2ywxl45fRYLcamGVDxSqYjWVElAoMXZWH4UBTlQt7pdfmlxH67V6WGxrvBcZMM8oeAnO8aFZhUEi7l0gMDM4vQ/j36pwyJEhs21/c31fsy0Xhu0uvmSYauW/WtLkt7lD9+dA500kGbSFmbS6o2HsOk1RL9xO7NB2c5Nxi+uGaoA8+LYdtQBktUAYkVd7gCHXrGUmXDadSGYFIEAOLebJBXjOlcu+djRhLOXjVnWhQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iEW+IUHe; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1766059921; c=relaxed/relaxed;
+	bh=GyebNfzeCgpKC74F6qdDfkAx0zKHrIp7zs6SdWi0Lzk=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=gW8Ie6pSm4FDl71XzUSJRoXJ8r/EoXsYwV/X7dI0nDW98wbQthICffKTfrP0SQaqIhu1FhQ6DyX/VM9a/QVLBgczBGS0Q6fbMMeV8VcRgMjEQb2WZS9doXMvRMu5JQgMpmQVq0WDSJk3JuSPtyVBr74H13uXR8xnEPHzxnuU/LyawMH9HR1Ae60GQF5ZH/vnMOHu0k9gjAK9xjk8MwUKah5H8hv/9zD8IUj7n74K8+Ml7GmvgTAX7lVDXatO8f6q86Q7KnsX2VSOgFrg8EfUaM6POU8kTmaAM5LUN+Vg1vnONFhxsGrgettODApI0ysb5HS7pgCnlVrQ+YyPh7n+Eg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Pbfm1N29; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iEW+IUHe;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Pbfm1N29;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dX8SW0GpZz2xqm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 23:03:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dX8fm6c7Pz2xqm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 23:12:00 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 40A1F60129;
-	Thu, 18 Dec 2025 12:02:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577E6C4CEFB;
-	Thu, 18 Dec 2025 12:02:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D786E43F57;
+	Thu, 18 Dec 2025 12:11:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0079C116B1;
+	Thu, 18 Dec 2025 12:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766059354;
-	bh=RX3bRnBmhpBc13or7Zw0e7NytvYT8ZV6+njf/aHokrY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iEW+IUHegTvXC6YsIp5YDGxKhjcCFE6QWykQXEbSEO4Z1PXHYavcyeMkTg4uqJ8nZ
-	 ejHYcPvuA5ASP9jFe9iZ3TwAMvle38YKKJSHnGoYwzsVRpI4urQgNRWsJNfUsyZ/5K
-	 beNc8V8+rA5WLvJbhxuEcbYE5f2KPDgToQ0wuBD88hVSIPBMdic16GZbxzIFYPkDNP
-	 /pDxwW1FThBGzY4cdk8jy0GOP2jGci186EFo/jq1S/Fju+VAbPS+wVNo2blJV7MlS5
-	 57qKqEycr2COf62xvyJYM2MFvoPySKgD8nLAKsSwNvtMXP2Wggq2Q+Pw8keIaJvnGy
-	 LxYtRqncYAJiA==
-Message-ID: <83920c44-47f5-4a46-bfa7-76713197d7e4@kernel.org>
-Date: Thu, 18 Dec 2025 13:02:25 +0100
+	s=k20201202; t=1766059918;
+	bh=XGQ+7SgEew4iClGYURs+C9L0stXJTBsZbjZ2oG7UIc0=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=Pbfm1N29OV600qM6UTmHFrWBgKAAPaEIi8H31U8/D7Fy4/yQH7DtTr8fjL1JU2ZGr
+	 6nwz3dwH1V2m2ot6sPml3YHiTkco7la+c2nu+l+SxzciJta8kjjah21YI0wd4vAeV1
+	 isA2l1yKhqypiDWu4LQeHt4ykcmpaBp/ImSwyvJVre9a3pRs4GXVsIRHvw6x+1fCZ3
+	 aTjQTA27ccRELqk9h2L0kraeNtbMTR5EzRmpbnJomxT+NeArdctTyUhXcuNcwN7S86
+	 MwPNLvKu3CLTwt2KbzjkGo2I4spjFwLzTY0Numflrkc7wTVrfPPFNtqzCFaA++T+6a
+	 inlbyNZVWvrqA==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BD61AF40069;
+	Thu, 18 Dec 2025 07:11:56 -0500 (EST)
+Received: from phl-imap-08 ([10.202.2.84])
+  by phl-compute-04.internal (MEProxy); Thu, 18 Dec 2025 07:11:56 -0500
+X-ME-Sender: <xms:jO9DafeY02D3zYoswm455JApvwyXo9N__fUotOJi51wAZtuEx-h72w>
+    <xme:jO9DaQDfyGYFoXV11b_RfSRExwBkMCEzZBimiIe7NMQwesYYigYemrJGclZL6-nUN
+    5nH6_xmiiK7evyXwi9tI-nHYYwNuyJSE2e3okgtOjc_KJ6UT8WLB40>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegheeflecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdfnvghonhcu
+    tfhomhgrnhhovhhskhihfdcuoehlvghonheskhgvrhhnvghlrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeekgfduveffueffveduleefgfejhfevfeduueeiueetleeugeeivdfhfedv
+    geeuhfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheplhgvohhnodhmvghsmhhtphgruhhthhhp
+    vghrshhonhgrlhhithihqdduvdeftdehfeelkeegqddvjeejleejjedvkedqlhgvohhnpe
+    epkhgvrhhnvghlrdhorhhgsehlvghonhdrnhhupdhnsggprhgtphhtthhopeefiedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpth
+    htohepthhssghoghgvnhgusegrlhhphhgrrdhfrhgrnhhkvghnrdguvgdprhgtphhtthho
+    pehrohgsihhnrdhmuhhrphhhhiesrghrmhdrtghomhdprhgtphhtthhopehlihhnuhigse
+    grrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhl
+    vghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegurghvvghmsegurghvvghmlh
+    hofhhtrdhnvghtpdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghupdhr
+    tghpthhtohepohhlvghkshgrnhgurhgpthihshhhtghhvghnkhhosegvphgrmhdrtghomh
+    dprhgtphhtthhopegrnhgurhgvrghssehgrghishhlvghrrdgtohhm
+X-ME-Proxy: <xmx:jO9DaW3ei8lQ9gcPxNPUeQZve5kN2H4YDdliFX36bDRD9uMeDsZ4KA>
+    <xmx:jO9DaUpMFxuOPj7_hGyyy_s579il17M-kR5TgcqcXniyOzdDRg_9ow>
+    <xmx:jO9DaWJBfSyOkp-S-guhU4sCQMQj21t9ZeDTKlB6MTu_eAniobrx8g>
+    <xmx:jO9DaQMmPwxjAIxGEGDyRXW1Dza8HIb57oy-5TquwYRW4FNWdPdjfg>
+    <xmx:jO9DaU3nohCadRXkzPkJY71Xjbbz3hpclv3AJ-2YED3d89Ht1quCx0PH>
+Feedback-ID: i927946fb:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 7DD622CE0072; Thu, 18 Dec 2025 07:11:56 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,110 +91,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mm/hugetlb: ignore hugepage kernel args if hugepages
- are unsupported
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Borislav Petkov
- <bp@alien8.de>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, x86@kernel.org, linux-arm64@lists.infradead.org,
- linux-riscv@lists.infradead.org
-References: <20251218114154.228484-1-sourabhjain@linux.ibm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251218114154.228484-1-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-ThreadId: AsrGuGndWMm3
+Date: Thu, 18 Dec 2025 14:11:35 +0200
+From: "Leon Romanovsky" <leon@kernel.org>
+To: "Guenter Roeck" <linux@roeck-us.net>
+Cc: "Marek Szyprowski" <m.szyprowski@samsung.com>,
+ "Robin Murphy" <robin.murphy@arm.com>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Juergen Gross" <jgross@suse.com>,
+ "Stefano Stabellini" <sstabellini@kernel.org>,
+ "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>,
+ "Richard Henderson" <richard.henderson@linaro.org>,
+ "Matt Turner" <mattst88@gmail.com>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Helge Deller" <deller@gmx.de>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Geoff Levand" <geoff@infradead.org>,
+ "David Miller" <davem@davemloft.net>,
+ "Andreas Larsson" <andreas@gaisler.com>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ xen-devel@lists.xenproject.org, linux-alpha@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "Jason Gunthorpe" <jgg@nvidia.com>
+Message-Id: <77e73a01-9f7e-475b-a810-278f931910ed@app.fastmail.com>
+In-Reply-To: <20251218084002.GD39046@unreal>
+References: <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
+ <20251015-remove-map-page-v5-9-3bbfe3a25cdf@kernel.org>
+ <b184f1bf-96dc-4546-8512-9cba5ecb58f7@roeck-us.net>
+ <20251218084002.GD39046@unreal>
+Subject: Re: [PATCH v5 09/14] parisc: Convert DMA map_page to map_phys interface [qemu
+ test failure]
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 12/18/25 12:41, Sourabh Jain wrote:
-> Skip processing hugepage kernel arguments (hugepagesz, hugepages, and
-> default_hugepagesz) when hugepages are not supported by the
-> architecture.
-> 
-> Some architectures may need to disable hugepages based on conditions
-> discovered during kernel boot. The hugepages_supported() helper allows
-> architecture code to advertise whether hugepages are supported.
-> 
-> Currently, normal hugepage allocation is guarded by
-> hugepages_supported(), but gigantic hugepages are allocated regardless
-> of this check. This causes problems on powerpc for fadump (firmware-
-> assisted dump).
-> 
-> In the fadump (firmware-assisted dump) scenario, a production kernel
-> crash causes the system to boot into a special kernel whose sole
-> purpose is to collect the memory dump and reboot. Features such as
-> hugepages are not required in this environment and should be
-> disabled.
-> 
-> For example, fadump kernel booting with the kernel arguments
-> default_hugepagesz=1GB hugepagesz=1GB hugepages=200 prints the
-> following logs:
-> 
-> HugeTLB: allocating 200 of page size 1.00 GiB failed.  Only allocated 58 hugepages.
-> HugeTLB support is disabled!
-> HugeTLB: huge pages not supported, ignoring associated command-line parameters
-> hugetlbfs: disabling because there are no supported hugepage sizes
-> 
-> Even though the logs say that hugetlb support is disabled, gigantic
-> hugepages are still getting allocated, which causes the fadump kernel
-> to run out of memory during boot.
-
-Yeah, that's suboptimal.
-
-> 
-> To fix this, the gigantic hugepage allocation should come under
-> hugepages_supported().
-> 
-> To bring gigantic hugepage allocation under hugepages_supported(), two
-> approaches were previously proposed:
-> [1] Check hugepages_supported() in the generic code before allocating
-> gigantic hugepages.
-> [2] Make arch_hugetlb_valid_size() return false for all hugetlb sizes.
-> 
-> Approach [2] has two minor issues:
-> 1. It prints misleading logs about invalid hugepage sizes
-> 2. The kernel still processes hugepage kernel arguments unnecessarily
-> 
-> To control gigantic hugepage allocation, it is proposed to skip
-> processing the hugepage kernel arguments (hugepagesz, hugepages, and
-> default_hugepagesz) when hugepages_support() returns false.
-
-You could briefly mention the new output here, so one has a before-after 
-comparison.
-
-Curious, should we at least add a Fixes: tag? Allocating memory when 
-it's completely unusable sounds wrong.
-
-[...]
-
-> +	if (!hugepages_supported()) {
-> +		pr_warn("HugeTLB: hugepages unsupported, ignoring default_hugepagesz=%s cmdline\n",
-> +			s);
-> +		return 0;
-> +	}
-> +
->   	parsed_valid_hugepagesz = false;
->   	if (parsed_default_hugepagesz) {
->   		pr_err("HugeTLB: default_hugepagesz previously specified, ignoring %s\n", s);
 
 
-LGTM!
+On Thu, Dec 18, 2025, at 10:40, Leon Romanovsky wrote:
+> On Wed, Dec 17, 2025 at 04:17:38AM -0800, Guenter Roeck wrote:
+>> Hi,
+>> 
+>> On Wed, Oct 15, 2025 at 12:12:55PM +0300, Leon Romanovsky wrote:
+>> > From: Leon Romanovsky <leonro@nvidia.com>
+>> > 
+>> > Perform mechanical conversion from .map_page to .map_phys callback.
+>> > 
+>> > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+>> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+>> 
+>> This patch causes all my 32-bit parisc qemu tests with C3700 machine
+>> to fail. Network interface tests fail, and all boot attempts from
+>> any kind of hard drive (scsi, usb) fail with this patch in the tree.
+>
+> Thanks for the report. I have a fix ready; I'll clean it up and send it out
+> by EOD.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+The fix is available here
+https://lore.kernel.org/all/20251218-fix-parisc-conversion-v1-1-4a04d26b0168@nvidia.com/T/#u
 
--- 
-Cheers
+Thanks
 
-David
+>
+>> 
+>> Guenter
 
