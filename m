@@ -1,72 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-14881-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14882-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20E2CCD04F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 18:50:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E80CCD058
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 18:51:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dXJ9g0mvqz2xrM;
-	Fri, 19 Dec 2025 04:50:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dXJBQ05Xjz2y6G;
+	Fri, 19 Dec 2025 04:51:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.208.42
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766080246;
-	cv=none; b=RgJoorS+4hjcvsbFCzo/gBLOErnjjIX0NQcsyTFdEpNNnZTRMTDjCMMzgjHh1vkR/SjtCjWxHAv7qfQ78UBxI4bWHLVvmxwwu16nxvc++duS6Vp6xDQzx5NnMxXSOmPrWsKch+iNA/6u94tqQ2qwAkomdER0Jq2OlGzAatW0UChzbWTLX0EYdYIDGziJGQP1ScHyMVB/+wLiXBZ/64Y53VSy6FofsclKfzRq7wcphTdv2UDDNGJM+v/q2uzF3ey2XYyEpMcPdLM7MqMGnWXO0/iSGYBXQpKwExr7o7Jg5Bu7KoMGlAtp/559ewJoGLwmlGNTGLeBysWmJOrmzRt4jQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.208.46
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766080285;
+	cv=none; b=KR/4RGoAYsefwETtMQpy3uMGH4n44lVrwx4TmcVKhkkAmCA1NuAqDWUPDrVZr+JaoB6z6uqI8gePz1uKcW1Uzo7ADwrjd/A43OoNvhVSgvM2VBsqAt8wbE3HvDz4xn6qUKoVkUddIiHh9Zllsli/1VES/auHDB0bdCD7IRlMyrdJfKlgJ6BhJknoqSfiRdgador166Syi4P5zTQIEmWwbpabsXU3qq2Ux2dMMffX2CPNAFPo/QUjN4rUcoJU1rk3LbNhpRF1wwcq5rhPFcRBGP/rFD3ife7i2Hlxp/ztGh+1bKMNkuuAFv2F3QzMXPxd8U/Znh1l0zIj4tWboLA3cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766080246; c=relaxed/relaxed;
-	bh=xEGX9NCRxVFvkAo1SyCOWmoT8Y8UVkLNsscKPRE6j7c=;
+	t=1766080285; c=relaxed/relaxed;
+	bh=34kJXR8Z1l9xoA5XQbc7lSV8iSBzpyKM6gKf5HXGiIw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XdBaw7eAotcqQl182a1SSl2bVyISHW+JOi+H2PXagx8aJiCl6kelamRpffsxipRnaTSm05qwn7B0v9i/kKaP7cZzLK41OzxIjiynWVQnVx3A18dEog8T2lbRnXsstPAzw/QwylvqKtL7IA+xJ6TFKAWk7xAfMj/cI61jBtTfVvcKZMM1zthbkVV1GF8JIvMM6Sl0LmkuaXZVMXeuprVKAGbPQnJatbeijoKQPoTIPzBjqc4+6kc+8f0natsiLBae9Fg/v6JzgqhYMjp7JjlN/nyq5SKj5w3FbmgQxG0KBJr77WQ1zcddILi9flmMRU5+6JiMVR0RsfR/C16mnulnYg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; dkim=pass (2048-bit key; unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=dYnQAE0s; dkim-atps=neutral; spf=pass (client-ip=209.85.208.42; helo=mail-ed1-f42.google.com; envelope-from=pasha.tatashin@soleen.com; receiver=lists.ozlabs.org) smtp.mailfrom=soleen.com
+	 To:Cc:Content-Type; b=GK8s2H/O3Hr9Ch+rQ7sstZ58g96+716pKdAXmuSJoYcvf6dSG7piDZbYLdiFsHK/e/MoCURAHg5Usy5HOsK8M90hsgS8uZipL7aE5Lte9hvK5CJMDr+BhHKb5buHCib0V09PH6/sMd2Z6y/gBox8+IYMAMk98nH9bxb8mVKaw9JuFYNIof4FMHWV9BOjFr2XjdbxIGXDMtg1sLfmAwMnXlAtDe9rKv1I65hDFhN9gLMKQ27//u8rFCk1lrCBvfAbf90yV1swkaXgUCi0K9BDN2xlpI1V0R7QiTnvMi7k5OOvNXsh5/jD6ICg8DUxxJRzUqXKiYdYPmj4wAKko841OQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; dkim=pass (2048-bit key; unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=GSM77Y4a; dkim-atps=neutral; spf=pass (client-ip=209.85.208.46; helo=mail-ed1-f46.google.com; envelope-from=pasha.tatashin@soleen.com; receiver=lists.ozlabs.org) smtp.mailfrom=soleen.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=dYnQAE0s;
+	dkim=pass (2048-bit key; unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=GSM77Y4a;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=soleen.com (client-ip=209.85.208.42; helo=mail-ed1-f42.google.com; envelope-from=pasha.tatashin@soleen.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=soleen.com (client-ip=209.85.208.46; helo=mail-ed1-f46.google.com; envelope-from=pasha.tatashin@soleen.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXJ9d0YPZz2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Dec 2025 04:50:44 +1100 (AEDT)
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-64981b544a1so1229360a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 09:50:44 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXJBN75kmz2xpm
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Dec 2025 04:51:24 +1100 (AEDT)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6419aaced59so1385813a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 09:51:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1766080180; x=1766684980; darn=lists.ozlabs.org;
+        d=soleen.com; s=google; t=1766080222; x=1766685022; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xEGX9NCRxVFvkAo1SyCOWmoT8Y8UVkLNsscKPRE6j7c=;
-        b=dYnQAE0sAmoFUrTOCbu5ujl2S8ONz+7OwHhVKMmAXHdSUw/H7HY3qruHxsww6YjMR4
-         I/tFGZS0HIheBwW1JDbhRkVMIIG8EZZ3l1J8sHiCMrj7CUb7wEGEfeyhSt6Dul7nq8Xv
-         SvXr5Vijow9B9+cw0NQ9Vo8VGHrDY0oMWhveoSLrbcc40xR7hy5LqU6qZeUQbZKBa5X1
-         1WldAwqjn7AioLSuQM4M0X7xebsn8UC/0O9wlWmifIhlfUuDDzhdfiPvleFwrUS9sVAm
-         DPiawtRBHiyN77/i/aYCxNrvKDQUlNPOJGE6Cb55C10t6SUkCD2SoRRzzAOsa+d6j9rp
-         +2/A==
+        bh=34kJXR8Z1l9xoA5XQbc7lSV8iSBzpyKM6gKf5HXGiIw=;
+        b=GSM77Y4aTPyTAcUE4dKW2BtUfyFk8jI7eX2GcE1bmluBnJ/oqdgLehR5cD/iQm7XH1
+         qI8mc5UR674U67l5E9TLdW7wYSYheOavDDn2Xi9LAji54Oh2YRQTqSevewtmeogRo9cy
+         e4vfRgeTqCExaOE5D4mol4e34wsc5MxbZjQeTl6iJMcHBTSJdcQ4kmBeXR3MagSva0/J
+         urVibrHQM80CwqcWAFssO2xUMlh3u9XN9hNL1U/sL4fscFFevfc52k40IaaBQH0EPPjP
+         HjQ2lPP3Jkn7AbEOyXubwV79IQu2+jb3sqy84kU3BOB/KXBMZMqmr7OMkNtwixaXnhJf
+         aHgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766080180; x=1766684980;
+        d=1e100.net; s=20230601; t=1766080222; x=1766685022;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=xEGX9NCRxVFvkAo1SyCOWmoT8Y8UVkLNsscKPRE6j7c=;
-        b=AtkSbA1nVMLE+sChHD/pmeyOEJ9fnJNGOkwWY4coyOIjisYlN3uSvyP9bfxeaUT5VW
-         +ctJkuaxXTPnGtQhJcDRlECaGxXL5HxExMX7XWlQqblHk66STaaF5uKuDWphTKwE9A6O
-         PuyW21a+Rf8ripttQ79A3sHDGk7a/9fBlfE3Iv+NY4HRBXt5TAJHRNf9RppAZ1h3hhKi
-         isoh3wPxXcUVuMqgxbCjI9jnlTm/0/Neo/DzvkoJ8MZ6VR5gCZ3jCf25JOkaV6Ly12Gf
-         lX3ACPr6ZQ4Mx9YJfmO+5wwK4h/E8M88KZkeZ5jYoSw+H5/LoV+Mk2L9R5yHhjBqLOo8
-         dNLg==
-X-Forwarded-Encrypted: i=1; AJvYcCW7txpLb0R6XO3HB7DGj8/d9jOzGQRvRMh59mkTVpd//Qtk/87mbKtk8xcClDoVf0mlW+E6fdOa8g71gSE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzi+WogychuYFu0keRPdFnqbyzABHHXaUAk/b+Vj3piDoj6hJUs
-	3Oq9M2rsAUVb3KCULv9063gilZlI6T3UpbinbReVy6u0GItEVUFfCWKLLTZEkG0QFpaRZ2/722K
-	cQLSv0bKSHnhaVaCfOBSA1ijB7jlLjg4T0AV3bHPIuA==
-X-Gm-Gg: AY/fxX6FXknxTikhUyJ2Usw1lb7maRD9BaExMULS6f0GMwN2i6jFPgvhiFrUeELY6lw
-	1UN1NRu0wwF9kqFJ+cUttNUCvxrqpGNskeIoDIgVbI6PNdh0qH05CcfpMGtgGTmfQrwm2tFGVY+
-	+ex6gs1LTzFSxfcFBxxA0gvRohfCaJmjIg3ehbisLFBwvEYr7kvX40BVC6qA0s5PZGMOv1SNRkD
-	HQVFUoTXml3yCbFfokwHIqYY/WcHUgw8+YwRTJDrkrtEu6M3nxFyVa3lUcwXSGihHvcEKjdyy4W
-	HMFtrjtZ9olYoXiQQUytKF+d
-X-Google-Smtp-Source: AGHT+IGj1ZcHTui7KBWUYP4FXCtel/5ayalcHtcXFNH9hEXSeqZ0F+Z3lWPo8TWqbx8PXpNtXrjwPKCaynSUAFZ631g=
-X-Received: by 2002:a05:6402:1e92:b0:649:8b6f:99c5 with SMTP id
- 4fb4d7f45d1cf-64b8eb7194amr231643a12.15.1766080179958; Thu, 18 Dec 2025
- 09:49:39 -0800 (PST)
+        bh=34kJXR8Z1l9xoA5XQbc7lSV8iSBzpyKM6gKf5HXGiIw=;
+        b=XSFEU5aW+HzDL8G7DLn6iMcOtZgxBiWEV/kxEEQiGHx71uI/oXAbMCzusLtpaAGul0
+         pfcu4s/3xqgW46ix/zcqnQ2XWZnFNKx6NJ74/z4bH0pkWcmZWDWVIOc28EwP1to6RiJw
+         vKcsbgBDdxnbAzR042+w2AuylKM88mb4uKJ/LKqbA7/xNZQCLnG6ThJ17EkQfe8ZoE49
+         QCPS1p0Kb2q72pkgX2iGb6upwH6P+3xDWclclYsDd1lEth4BYIE0OPxiWN1kFDasKAvM
+         43AM5nDUAqsjpur6z8HX7pDRucGbkG2wjgvn1Wa0YEL9OaLMffY7K8H1SUiq0lWFLpk6
+         LSXg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRVEUwoz9URFaV1x/dVMDVannXgsifoAmd3LNIb7YesSTKAkrkWXhWR6nEFME0BiGFs8K5INf//ZSzBfE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyvO1Zm8NWjglo3WnqPEBv3HYridxRzCi0CNJwDmychZ0867mPK
+	jdZgxQ9R+/BKHyHFd5/L/ij5p3PL57eykwRAnNYsM/p4hB3KtTnRmu6DQKKGlkB+fzpfrpInCZe
+	if4GikjlNi5w7G+vFhP2RsdHGUU5yGcGia2BVOpRq8Q==
+X-Gm-Gg: AY/fxX7IDwjuT9nC8qZuDvS3CN10vPd5+Tf/hcP2jX7LNpta9hZtBhcmYCPxrZFa06k
+	Xq1cjqe3JLIDGosaqh4OCTTt/xJocfVog8IHOJ2aOJIs6Srh0bcOXXiPlmvxCeNho4jHgos3DXw
+	N5Ws8blcAQaO3waprFPfWCO2pI/ot2qwY8QUmcITeXMZwfwAFIBSMD1IWMnlqzzPGVBibqx/A04
+	2JBxlyr2ey1cBKLvnPBh2nFrsxdTiLJruhYV7duQP8UdXcf712HhKS0gJ5lBFhsdHGdT3qMzpRX
+	DyovLfl4Qz4C1EibpZbfsnKg
+X-Google-Smtp-Source: AGHT+IENlmR0sc0Xb7DhLwn0Vq765F8OyXjE3fAqqAeGP9hcTJDm+HMWSnu0fNRLLx3SXw/1GBSLkwKC99ivJnubJVM=
+X-Received: by 2002:a05:6402:34cf:b0:641:15d:6b97 with SMTP id
+ 4fb4d7f45d1cf-64b8e94713bmr224102a12.2.1766080222160; Thu, 18 Dec 2025
+ 09:50:22 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,13 +81,13 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 References: <20251219-pgtable_check_v18rebase-v18-0-755bc151a50b@linux.ibm.com>
- <20251219-pgtable_check_v18rebase-v18-1-755bc151a50b@linux.ibm.com>
-In-Reply-To: <20251219-pgtable_check_v18rebase-v18-1-755bc151a50b@linux.ibm.com>
+ <20251219-pgtable_check_v18rebase-v18-2-755bc151a50b@linux.ibm.com>
+In-Reply-To: <20251219-pgtable_check_v18rebase-v18-2-755bc151a50b@linux.ibm.com>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 18 Dec 2025 12:49:03 -0500
-X-Gm-Features: AQt7F2r7kiXa3gHIKUaDejuDxi7v3d-8CVx2-W_EwfFsV1tLHpl2uarz70Sl-ZA
-Message-ID: <CA+CK2bA-3p1iy9ryaQSthV0MhpxzuMVK91F1YF45qw90PUtG3g@mail.gmail.com>
-Subject: Re: [PATCH v18 01/12] arm64/mm: Add addr parameter to __set_ptes_anysz()
+Date: Thu, 18 Dec 2025 12:49:45 -0500
+X-Gm-Features: AQt7F2oazAcKk3yq-_8d8SYNXUmWrpPknuvuaCQSw2vGEhneFPgafk9uUlx-JHE
+Message-ID: <CA+CK2bD2FdFdM+=tcvf6L2x-j=b4HnixUwf4irWp-eNwQUeFrg@mail.gmail.com>
+Subject: Re: [PATCH v18 02/12] arm64/mm: Add addr parameter to __ptep_get_and_clear_anysz()
 To: Andrew Donnellan <ajd@linux.ibm.com>
 Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, 
 	Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
@@ -110,131 +110,12 @@ m> wrote:
 > To provide support for page table check on powerpc, we need to reinstate =
 the
 > address parameter in several functions, including
-> page_table_check_{ptes,pmds,puds}_set().
+> page_table_check_{pte,pmd,pud}_clear().
 >
-> In preparation for this, add the addr parameter to arm64's __set_ptes_any=
-sz()
-> and change its callsites accordingly.
+> In preparation for this, add the addr parameter to arm64's
+> __ptep_get_and_clear_anysz() and change its callsites accordingly.
 >
 > Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-
-> ---
-> v15: new patch
-> v16: rebase
-> ---
->  arch/arm64/include/asm/pgtable.h | 19 ++++++++-----------
->  arch/arm64/mm/hugetlbpage.c      | 10 +++++-----
->  2 files changed, 13 insertions(+), 16 deletions(-)
->
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pg=
-table.h
-> index 445e18e92221c98eef717888aeac71d1d6b1da06..52f3ea07427cef399e68bea0d=
-bab39d03ea83060 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -673,8 +673,8 @@ static inline pgprot_t pud_pgprot(pud_t pud)
->         return __pgprot(pud_val(pfn_pud(pfn, __pgprot(0))) ^ pud_val(pud)=
-);
->  }
->
-> -static inline void __set_ptes_anysz(struct mm_struct *mm, pte_t *ptep,
-> -                                   pte_t pte, unsigned int nr,
-> +static inline void __set_ptes_anysz(struct mm_struct *mm, unsigned long =
-addr,
-> +                                   pte_t *ptep, pte_t pte, unsigned int =
-nr,
->                                     unsigned long pgsize)
->  {
->         unsigned long stride =3D pgsize >> PAGE_SHIFT;
-> @@ -709,26 +709,23 @@ static inline void __set_ptes_anysz(struct mm_struc=
-t *mm, pte_t *ptep,
->         __set_pte_complete(pte);
->  }
->
-> -static inline void __set_ptes(struct mm_struct *mm,
-> -                             unsigned long __always_unused addr,
-> +static inline void __set_ptes(struct mm_struct *mm, unsigned long addr,
->                               pte_t *ptep, pte_t pte, unsigned int nr)
->  {
-> -       __set_ptes_anysz(mm, ptep, pte, nr, PAGE_SIZE);
-> +       __set_ptes_anysz(mm, addr, ptep, pte, nr, PAGE_SIZE);
->  }
->
-> -static inline void __set_pmds(struct mm_struct *mm,
-> -                             unsigned long __always_unused addr,
-> +static inline void __set_pmds(struct mm_struct *mm, unsigned long addr,
->                               pmd_t *pmdp, pmd_t pmd, unsigned int nr)
->  {
-> -       __set_ptes_anysz(mm, (pte_t *)pmdp, pmd_pte(pmd), nr, PMD_SIZE);
-> +       __set_ptes_anysz(mm, addr, (pte_t *)pmdp, pmd_pte(pmd), nr, PMD_S=
-IZE);
->  }
->  #define set_pmd_at(mm, addr, pmdp, pmd) __set_pmds(mm, addr, pmdp, pmd, =
-1)
->
-> -static inline void __set_puds(struct mm_struct *mm,
-> -                             unsigned long __always_unused addr,
-> +static inline void __set_puds(struct mm_struct *mm, unsigned long addr,
->                               pud_t *pudp, pud_t pud, unsigned int nr)
->  {
-> -       __set_ptes_anysz(mm, (pte_t *)pudp, pud_pte(pud), nr, PUD_SIZE);
-> +       __set_ptes_anysz(mm, addr, (pte_t *)pudp, pud_pte(pud), nr, PUD_S=
-IZE);
->  }
->  #define set_pud_at(mm, addr, pudp, pud) __set_puds(mm, addr, pudp, pud, =
-1)
->
-> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> index 1d90a7e753336d86314fee0f753e8779d6a6bc12..1003b502075208d4252c27ffd=
-acb1aaf4928639b 100644
-> --- a/arch/arm64/mm/hugetlbpage.c
-> +++ b/arch/arm64/mm/hugetlbpage.c
-> @@ -225,8 +225,8 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned l=
-ong addr,
->         ncontig =3D num_contig_ptes(sz, &pgsize);
->
->         if (!pte_present(pte)) {
-> -               for (i =3D 0; i < ncontig; i++, ptep++)
-> -                       __set_ptes_anysz(mm, ptep, pte, 1, pgsize);
-> +               for (i =3D 0; i < ncontig; i++, ptep++, addr +=3D pgsize)
-> +                       __set_ptes_anysz(mm, addr, ptep, pte, 1, pgsize);
->                 return;
->         }
->
-> @@ -234,7 +234,7 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned l=
-ong addr,
->         if (pte_cont(pte) && pte_valid(__ptep_get(ptep)))
->                 clear_flush(mm, addr, ptep, pgsize, ncontig);
->
-> -       __set_ptes_anysz(mm, ptep, pte, ncontig, pgsize);
-> +       __set_ptes_anysz(mm, addr, ptep, pte, ncontig, pgsize);
->  }
->
->  pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
-> @@ -449,7 +449,7 @@ int huge_ptep_set_access_flags(struct vm_area_struct =
-*vma,
->         if (pte_young(orig_pte))
->                 pte =3D pte_mkyoung(pte);
->
-> -       __set_ptes_anysz(mm, ptep, pte, ncontig, pgsize);
-> +       __set_ptes_anysz(mm, addr, ptep, pte, ncontig, pgsize);
->         return 1;
->  }
->
-> @@ -473,7 +473,7 @@ void huge_ptep_set_wrprotect(struct mm_struct *mm,
->         pte =3D get_clear_contig_flush(mm, addr, ptep, pgsize, ncontig);
->         pte =3D pte_wrprotect(pte);
->
-> -       __set_ptes_anysz(mm, ptep, pte, ncontig, pgsize);
-> +       __set_ptes_anysz(mm, addr, ptep, pte, ncontig, pgsize);
->  }
->
->  pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
->
-> --
-> 2.52.0
->
->
 
