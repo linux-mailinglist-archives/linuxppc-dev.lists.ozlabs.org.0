@@ -1,81 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-14855-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14856-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F44CC99BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Dec 2025 22:33:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6A8CCA504
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Dec 2025 06:23:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dWn966fdRz2yxl;
-	Thu, 18 Dec 2025 08:33:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dWzbw4v6gz2xqm;
+	Thu, 18 Dec 2025 16:23:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.16
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766007210;
-	cv=none; b=QPJwhX1MsYS2QKS8akWACb0aSBGEv6AtrMCXmFMgrOJG40sYdXnWPWPfhow8UmKQ3OYN0os8okSusyCyHLKEC5xdcgTMs0mtx8j2OaZFj/8C0T32CaxA0Cifq4AxHhpR/Jz5pNtLfFyMW0vQSkmunp+Mu6VdtMhLh0lv+8K+7tizWzss67Vmv1k/AOi1azPnudcV0E/UEoGvByejwLvIVCX4YDezDgsNBMUuxDRLvug2r78l1paGHTk3+ACTKVum/hbWHQ0Q1DMUzXIqJabLdS+X0IEYpSPSgF928mwElSFLBWNetRsv7BgW1rR6/1PeTNZgolshIygBNvc6GFsbZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766035436;
+	cv=none; b=ExYaMF2F63JgHoPkAVbBzymIJ7uQOjyMPDnijbKt/s5HYorYNlk5mO8dutgvfHPvBOjANfW4SyCpWvKtGII6jXo7GG6nxI5NgCgXIhsJ7hVLg6PzanV6YRebS8i7+29vfnV0HAFBBVPDMW8oGI7k3W9iZXB9+Yuu2WEnalD/q09R46jIroCyG95hOCDJ6I5eAF2pCmd2ph8DzRwjSwf7/qiOsxAE3waS08AEYsEc6nzjhTIKNSozm3zVGUMIaeyE8k3j/4hxaIps07XMPUf/cIi+etoYeEPfw/4cDGvD/RWFzCR6aFKkK8dh9UzvKGmMF2wTXskcfe7zRuVlWpJWcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766007210; c=relaxed/relaxed;
-	bh=Ow8//qsCcuelLrbsE4O0StW3qCZJ65iLK7aQO8FqjyI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g+lXkfxDrHm6dIggbWxA2Xoya4N2ZVYzFLWctn3DCWDsL/f/pDTWx8T6Y03YwOda3ocPOYmWsdipzAesjVXT2H18eJaRR4s4b8WnoXhini4rxxoItiLm/PUOex2vLZd/0/tZNjyMh3NcfqjtCdNcK859z4GIOvw3g0Sd3ncMDJKbgSAaEolGQ22GRvOS03/JOW4CoM1REwYJcghFkbK1bT4UM/i/kPfhn60G7sjtFzsT4gqFIn5Dl66jjV860R+8zdNswat6osbENohLDntXpIJeZ7jI53bRRYg5zb7/9X/jGdhrdh8AQmkk7/+jwSnUL8TUY3IwAl9FtVkmvVCOHw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F6nrURRB; dkim-atps=neutral; spf=pass (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1766035436; c=relaxed/relaxed;
+	bh=ZzZcTG0OmDBiEmcskoM2ObPGdD017Xm02WOoMNyv6gc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FXX4kXwuUIkRodndPB3aV720adF24e7O9iHypTMTvHQqJy2NJuoz5Vywp2ASRHO3Kl3u1DJCLYCEBt/rHQEDgrqugFXFlgNzNhjfhK2I0H95G03JpWym20hSJzdSk5j/PFRHBNbLUbDpNcauOJH6yq8elsHjxPBbxJEFz5cPFre8+WtaZgemVAxJLA0oFRV+H27XFx4Xr6u0ntu5a1y145rj8RjU6exMNrQASQcPFnpYGWbsLbMiIWZS7zhH48/+9Lc0J9mauaJJ0aUcjNwnOc1wBI/TT2Ds1F6c+yutnfxOBKNFlpjsDittZimX3pzG8mES11APH/ZZwPzLx48vfA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dcTZwNRs; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F6nrURRB;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dcTZwNRs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dWn940WDZz2yvK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 08:33:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766007209; x=1797543209;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KI/pJJBmd9FTaqVL0hOjBx5fxyGgCPnyWLfv/cJvvgw=;
-  b=F6nrURRBczNhZrlprB7gfHYM9uNjMjPiDW1wVJ5FxMMvQuSGNSAYRna8
-   dAO8EgFu5pffFu4VxexuTwcArIS8MmzpTCYx62XCThAvUNjtVDqSWOAb/
-   8xvQbdpvWAprZ4i1kumQX3t908x5v7ogsaYZVKu1bttx89tNj3Qa3kW3h
-   UJ1eFaN4IHwcqWwGNIZ6YmGLzTf21eJhfgFqu8faRlC4AhC0/Bf9xpzdd
-   CKdUtliPZ2j37tRqP1T0XszzBdgcjJcK29QyJCgKw9JUGaVAwD/0+LjSm
-   CdspqJaOzTT1iWI8LO3NpydIrNein+Hm1Hdoxa6jkQpO5WEQhn7Yytqwu
-   A==;
-X-CSE-ConnectionGUID: qozA1GY/QbivM5h15Yu6KQ==
-X-CSE-MsgGUID: KWpqVe/xR76LpZ+68gqsEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="68113457"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="68113457"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 13:33:22 -0800
-X-CSE-ConnectionGUID: jcVqsdN+R7KbXMDgqSixlA==
-X-CSE-MsgGUID: MKzA1W5hTT+k24Tt+Y4N2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="202606426"
-Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 17 Dec 2025 13:33:14 -0800
-Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vVz8x-000000001GH-2PvL;
-	Wed, 17 Dec 2025 21:33:11 +0000
-Date: Thu, 18 Dec 2025 05:32:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mukesh Kumar Chaurasiya <mkchauras@linux.ibm.com>, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-	oleg@redhat.com, kees@kernel.org, luto@amacapital.net,
-	wad@chromium.org, mchauras@linux.ibm.com, thuth@redhat.com,
-	sshegde@linux.ibm.com, charlie@rivosinc.com, macro@orcam.me.uk,
-	akpm@linux-foundation.org, ldv@strace.io, deller@gmx.de,
-	ankur.a.arora@oracle.com, segher@kernel.crashing.org,
-	tglx@linutronix.de, thomas.weissschuh@linutronix.de,
-	peterz@infradead.org, menglong8.dong@gmail.com,
-	bigeasy@linutronix.de, namcao@linutronix.de, mingo@kernel.org,
-	atrajeev@linux.vnet.ibm.com, mark.barnett@arm.com,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2 7/8] powerpc: Enable IRQ generic entry/exit path.
-Message-ID: <202512180511.ujibhcpR-lkp@intel.com>
-References: <20251214130245.43664-8-mkchauras@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dWzbt62kSz2xPB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Dec 2025 16:23:54 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BHIbHC0015244;
+	Thu, 18 Dec 2025 05:22:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ZzZcTG
+	0OmDBiEmcskoM2ObPGdD017Xm02WOoMNyv6gc=; b=dcTZwNRsmuLFSU1HBFvDNH
+	ihn8R/quSeNPcV3BhuWfBVZKES0WW1UI+6ZnxunAPQApiOvt+lDJeRl88eju8a80
+	XmB3KAvSfaJoikHZUIi/HIZtWnFfloP7hiCQOkBRnbgQyRq/8JSJNlIq61cX98bn
+	D9xnN65Ts9z5N2SI50j5RmhGqzl+E20jmecMN94Mcm8NWibpOcGyUwGUQXeo4jp9
+	6Rl7tN4sH7vrLnl1Zo/B1wttNYFne4g7c3BVr/cqYqZlquxyh2FprTSW7fImQ9ed
+	Z/CNqleFQ23sg9yevpfhTLy1SSW/FDgx9r82UC6u0v3dehVOVO9KvNgrhtZUajNQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yvbgv8y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Dec 2025 05:22:55 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BI5MtMl000695;
+	Thu, 18 Dec 2025 05:22:55 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0yvbgv8w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Dec 2025 05:22:54 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BI22H2G002835;
+	Thu, 18 Dec 2025 05:22:53 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1kfnejkh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Dec 2025 05:22:53 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BI5Mn7B43778526
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 18 Dec 2025 05:22:49 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 99F3820040;
+	Thu, 18 Dec 2025 05:22:49 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 504F720043;
+	Thu, 18 Dec 2025 05:22:45 +0000 (GMT)
+Received: from [9.109.215.252] (unknown [9.109.215.252])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 18 Dec 2025 05:22:45 +0000 (GMT)
+Message-ID: <b8d6d83c-00d8-4b66-8470-62cc528e1d6b@linux.ibm.com>
+Date: Thu, 18 Dec 2025 10:52:44 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,135 +86,135 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251214130245.43664-8-mkchauras@linux.ibm.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/17] Paravirt CPUs and push task for less vCPU
+ preemption
+To: Yury Norov <yury.norov@gmail.com>, vincent.guittot@linaro.org
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, tglx@linutronix.de, maddy@linux.ibm.com,
+        srikar@linux.ibm.com, gregkh@linuxfoundation.org, pbonzini@redhat.com,
+        seanjc@google.com, kprateek.nayak@amd.com, vschneid@redhat.com,
+        huschle@linux.ibm.com, rostedt@goodmis.org, dietmar.eggemann@arm.com,
+        christophe.leroy@csgroup.eu, linux-s390@vger.kernel.org
+References: <20251119124449.1149616-1-sshegde@linux.ibm.com>
+ <4ddbb5a1244cf444f330cc73b7d573f47b02f7eb.camel@linux.ibm.com>
+ <8368868e-48aa-4a90-95d1-1be4de9879e8@linux.ibm.com> <aUBHw7MvOQYusuuA@yury>
+Content-Language: en-US
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+In-Reply-To: <aUBHw7MvOQYusuuA@yury>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=V/JwEOni c=1 sm=1 tr=0 ts=69438faf cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jJrOw3FHAAAA:8 a=vF6UPvp_E7XLvFInzeAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: krSORBQ2V2XXnx5eYIGc9CtvNKZ1mC_M
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAyMyBTYWx0ZWRfX0eguy5oAFUvC
+ ctDt8XKS6O0Jv+lQn5RwEBEpkoLk9i4PHenpTrhQ1wCCiFuk97oKdiAGRRVn7shFSS6/z3SJrXJ
+ qNrKdeaS/9BSOcMLQq8nk7PHEips7b4yNn85j6D50pMixG931+t71cE3Pnr1rew8HsFK/glksaE
+ tQHn/WSOJRERIzct3G/zK2i1uAgEXUok9Zjzmy8YEwpog5yCyx9VMWzH9pNZ/EOig9PUCT8aBQp
+ 2k5FJX8M0vfhj3y5LR+y9UGmbEfHOSR6EYylkvfQ/ds7XIVDAjEIsj8tt+YvjpbN+URjYxE90R4
+ gGGW1Mey1Gyka03LJXKeEheot4k3ACm11A8gh4sBtCN74gialR4JT36uUNjqWoCISeetgm5zImj
+ MZvVzpYVZj94claj5SJHyCtRGbe3WQ==
+X-Proofpoint-ORIG-GUID: Odaz5qhoeBRCHpE_BMjML7cvEGDqeNys
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-18_01,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
+ clxscore=1015 bulkscore=0 spamscore=0 lowpriorityscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130023
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Mukesh,
+Hi, Sorry for delay in response. Just landed yesterday from LPC.
 
-kernel test robot noticed the following build warnings:
+>>> Others have already commented on the naming, and I would agree that
+>>> "paravirt" is really misleading. I cannot say that the previous "cpu-
+>>> avoid" one was perfect, but it was much better.
+>   
+> It was my suggestion to switch names. cpu-avoid is definitely a
+> no-go. Because it doesn't explain anything and only confuses.
+> 
+> I suggested 'paravirt' (notice - only suggested) because the patch
+> series is mainly discussing paravirtualized VMs. But now I'm not even
+> sure that the idea of the series is:
+> 
+> 1. Applicable only to paravirtualized VMs; and
+> 2. Preemption and rescheduling throttling requires another in-kernel
+>     concept other than nohs, isolcpus, cgroups and similar.
+> 
+> Shrikanth, can you please clarify the scope of the new feature? Would
+> it be useful for non-paravirtualized VMs, for example? Any other
+> task-cpu bonding problems?
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on powerpc/fixes linus/master v6.19-rc1]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Current scope of the feature in virtulaized environment where the idea is
+to do co-operative folding in each VM based on hint(either HW hint or steal time).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mukesh-Kumar-Chaurasiya/powerpc-rename-arch_irq_disabled_regs/20251214-210813
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/20251214130245.43664-8-mkchauras%40linux.ibm.com
-patch subject: [PATCH v2 7/8] powerpc: Enable IRQ generic entry/exit path.
-config: powerpc-randconfig-r072-20251215 (https://download.01.org/0day-ci/archive/20251218/202512180511.ujibhcpR-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 8.5.0
+If you see from macro level, this is framework which allows one to avoid some vCPUs(In
+Guest) to achieve better throughput or latency. So one could come up with more usecases
+even in non-paravirtualized VMs. For example, one crazy idea such as avoid using SMT siblings
+when the system utilization is low to achieve higher ipc(instruction per cycle) value.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512180511.ujibhcpR-lkp@intel.com/
+> 
+> On previous rounds you tried to implement the same with cgroups, as
+> far as I understood. Can you discuss that? What exactly can't be done
+> with the existing kernel APIs?
+> 
+> Thanks,
+> Yury
+> 
 
-smatch warnings:
-arch/powerpc/include/asm/entry-common.h:433 arch_enter_from_user_mode() warn: inconsistent indenting
+We discussed this in Sched-MC this year.
+https://youtu.be/zf-MBoUIz1Q?t=8581
 
-vim +433 arch/powerpc/include/asm/entry-common.h
 
-2b0f05f77f11f8 Mukesh Kumar Chaurasiya 2025-12-14  396  
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  397  static __always_inline void arch_enter_from_user_mode(struct pt_regs *regs)
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  398  {
-37ad0d88d9bff7 Mukesh Kumar Chaurasiya 2025-12-14  399  	kuap_lock();
-37ad0d88d9bff7 Mukesh Kumar Chaurasiya 2025-12-14  400  
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  401  	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  402  		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  403  
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  404  	BUG_ON(regs_is_unrecoverable(regs));
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  405  	BUG_ON(!user_mode(regs));
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  406  	BUG_ON(regs_irqs_disabled(regs));
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  407  
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  408  #ifdef CONFIG_PPC_PKEY
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  409  	if (mmu_has_feature(MMU_FTR_PKEY) && trap_is_syscall(regs)) {
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  410  		unsigned long amr, iamr;
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  411  		bool flush_needed = false;
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  412  		/*
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  413  		 * When entering from userspace we mostly have the AMR/IAMR
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  414  		 * different from kernel default values. Hence don't compare.
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  415  		 */
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  416  		amr = mfspr(SPRN_AMR);
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  417  		iamr = mfspr(SPRN_IAMR);
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  418  		regs->amr  = amr;
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  419  		regs->iamr = iamr;
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  420  		if (mmu_has_feature(MMU_FTR_KUAP)) {
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  421  			mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  422  			flush_needed = true;
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  423  		}
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  424  		if (mmu_has_feature(MMU_FTR_BOOK3S_KUEP)) {
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  425  			mtspr(SPRN_IAMR, AMR_KUEP_BLOCKED);
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  426  			flush_needed = true;
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  427  		}
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  428  		if (flush_needed)
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  429  			isync();
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  430  	} else
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  431  #endif
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  432  		kuap_assert_locked();
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14 @433  	booke_restore_dbcr0();
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  434  	account_cpu_user_entry();
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  435  	account_stolen_time();
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  436  
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  437  	/*
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  438  	 * This is not required for the syscall exit path, but makes the
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  439  	 * stack frame look nicer. If this was initialised in the first stack
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  440  	 * frame, or if the unwinder was taught the first stack frame always
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  441  	 * returns to user with IRQS_ENABLED, this store could be avoided!
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  442  	 */
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  443  	irq_soft_mask_regs_set_state(regs, IRQS_ENABLED);
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  444  
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  445  	/*
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  446  	 * If system call is called with TM active, set _TIF_RESTOREALL to
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  447  	 * prevent RFSCV being used to return to userspace, because POWER9
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  448  	 * TM implementation has problems with this instruction returning to
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  449  	 * transactional state. Final register values are not relevant because
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  450  	 * the transaction will be aborted upon return anyway. Or in the case
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  451  	 * of unsupported_scv SIGILL fault, the return state does not much
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  452  	 * matter because it's an edge case.
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  453  	 */
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  454  	if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  455  	    unlikely(MSR_TM_TRANSACTIONAL(regs->msr)))
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  456  		set_bits(_TIF_RESTOREALL, &current_thread_info()->flags);
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  457  
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  458  	/*
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  459  	 * If the system call was made with a transaction active, doom it and
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  460  	 * return without performing the system call. Unless it was an
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  461  	 * unsupported scv vector, in which case it's treated like an illegal
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  462  	 * instruction.
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  463  	 */
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  464  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  465  	if (unlikely(MSR_TM_TRANSACTIONAL(regs->msr)) &&
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  466  	    !trap_is_unsupported_scv(regs)) {
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  467  		/* Enable TM in the kernel, and disable EE (for scv) */
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  468  		hard_irq_disable();
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  469  		mtmsr(mfmsr() | MSR_TM);
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  470  
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  471  		/* tabort, this dooms the transaction, nothing else */
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  472  		asm volatile(".long 0x7c00071d | ((%0) << 16)"
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  473  			     :: "r"(TM_CAUSE_SYSCALL | TM_CAUSE_PERSISTENT));
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  474  
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  475  		/*
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  476  		 * Userspace will never see the return value. Execution will
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  477  		 * resume after the tbegin. of the aborted transaction with the
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  478  		 * checkpointed register state. A context switch could occur
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  479  		 * or signal delivered to the process before resuming the
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  480  		 * doomed transaction context, but that should all be handled
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  481  		 * as expected.
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  482  		 */
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  483  		return;
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  484  	}
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  485  #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  486  }
-1a5661537226c3 Mukesh Kumar Chaurasiya 2025-12-14  487  
+Currently explored options.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+1. CPU Hotplug - slow. Some efforts underway to speed it up.
+2. Creating isolated cpusets - Faster. still involves sched domain rebuilds.
+
+The reason why they both won't work is that they break user affinities in the guest.
+i.e guest can do "taskset -c <some_vcpus> <workload>, when the
+last vCPU goes offline(guest vCPU hotplug) in that list of vCPUs
+the affinity mask is reset and workload can run on online vCPUs and it
+doesn't set back to earlier value. That is okay for hotlug or isolated cpusets
+since it is driven by user in the guest. So user is aware of it.
+
+Whereas here, the change is driven by the system than user in the guest.
+So it cannot break user-space affinities.
+So we need a new interface to drive this. I think it is better if it is
+non cgroup based framework since cgroup is usually user driven.
+(correct me if i am wrong).
+
+PS:
+There were some confusion around this affinity breaking. Note it is guest vCPU being marked and
+guest vCPU being hotplugged. Task affinied workload was running in guest. Host CPUs(pCPU) are not
+hotplugged.
+
+---
+
+I had discussion with vincent in hallway, idea is to use the push framework bits and set the
+CPU Capacity=1 (lowest value and consider it as special value) and use a static key check to do
+this stuff only when HW says to do so.
+Such as (considering name as paravirt):
+
+static inline bool cpu_paravirt(int cpu)
+{
+	if (static_branch_unlikely(&cpu_paravirt_framework))
+		return arch_scale_cpu_capacity(cpu) == 1;
+
+	return false;
+}
+
+Rest of the bits remain same. I found an issue with current series where setting affinity
+is going wrong after cpu is marked paravirt, i will fix it next version. will do some more
+testing and send next version in 2026.
+
+Happy Holidays!
 
