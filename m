@@ -1,51 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-14892-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14893-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1375CCEE8F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Dec 2025 09:13:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536D0CCEE9B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Dec 2025 09:13:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dXgJw5Vqhz2yG2;
-	Fri, 19 Dec 2025 19:13:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dXgK14ddWz2yFq;
+	Fri, 19 Dec 2025 19:13:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766132000;
-	cv=none; b=Tn7W7dUy99bpCkfTDiLeY3f/apFrD0jdIMlnFX9+snS7lRVThENHj9FB/yJQNNr4ulKYOGqKr9ZhjYsI6Nq5UdSXWrHhRE1hyeIvjpmBzR0SkgcZrfChsiddpgkSQkCl6m9hvPPSXC02tccdTUOhT5VxV7Yo6t7z/mP7z2/zzHNSep0XRNdMshSPZRo3n2RRiFoUVTgpnQuUI42Gf4D9IOQN5nlLOtfZDI+COHtZMc1cT7f0Jwv8RyrtKYGp0ffxIn96gr/L3C4qTZPiAf/EwMzF/ByGMWEJlQZJULZgdUTFVuA93WACg0XjqLS0E8pwrNF/gFV3DoSHynOeg/HQYg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766132005;
+	cv=none; b=b+dosARp16iiQUVRuAbNeqFNl+fYqMSaINRKf3U7Ru+lM4mjX/dPYzBMxFdZKt0NpA/1V4T7dC5GzgI035h0Xg54jHK4CJosTGNT3x7nM1+mHT2O7l08MNJhLcXSG/hA3Ri0RG7nPE95PGr3bHqjMwXxHoDhMa6Lhd6Uwsi/R6NExpqVImgYoVCWGB/8Z6U8smdnOkhxzYGSsnwx+njXf3OBNS8+Uhps1O23QR7RzhO1I6MmqI0Lx1E6mNaIVYPhW7Os+tAkviGkgC+aoWu5sxWoia3uU7Y/Z0Lr82TqtnwcGLZwDLyGs6gZ4GtmQzOc/wio/crs0iG9P07kph45Zw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766132000; c=relaxed/relaxed;
-	bh=KMXfMjR4WxAUzVj6h596i+8ywzrPvR4Oget7Rn4OOrU=;
+	t=1766132005; c=relaxed/relaxed;
+	bh=tNgLZRN3p12XEm1zXEDJmEBXEOAtqg4c0hsEDM4bDDo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IajUdDdz2jt+1A0ebrlFDW4IBYakMuI5Cbl5FqhQMkAc20oY+5bTIKEh/xA1TymHP+UxlA6Q4sbXXOoQGgQ7AXQ+tOQ226HR+d1nKqjf3IrFlCzyLbY2zEV6R6+la/8Eq4nlGljFHrtHM8aqcNkb5WsxpobSxTswYEXFa7dvD988tzICNN/iRVkvQSmFsbbfaZsC1nIsRSzIYTAJ1FWwKnNUCeqA3S3C3qm9y3z11PuZslWExwQZoCpbd+1J4HyR46sBgQR0GECGzVbaNYGq9/N9Zb6fAml7Kjg28fV/hWu3l+XelmFjxFVPRjcCjhpM3iVGbS6y381nHBVpzGQl0Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GLiYOmvP; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=kZrEFcfyUzjqK03HWmA6IhSm5pkdlI+KBtZoToDPXkN84+J5rCVChHWHMI6AoWFw4WhKFj6kcM0HINQDTK0qraWYeJGtXOwWU4F4xJVzC/z6f1VKcOjA+IjIQ/2DXzzretLLBjnNZRgmtXUbmlgtNwcJWe6l1MtwAEN1wUlSL4bDNIdyB3lOPNUL1asB2hTFoALiVJJS1YgDZbqJoSVfbXi6EzX1ibBYaTF2MuF9IiMVw2+Wfj1Mar/oaUNdD402BuKVA2wKzDCU79kavktdOpOO8/0mu5qfx0xrfYjm3kJPT+bCwfZd/trSvknXMIAzjEjmqwDdA7+11BL77/TaqA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KrQ01xcr; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GLiYOmvP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KrQ01xcr;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXgJw03ltz2xfK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Dec 2025 19:13:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXgK119CVz2xfK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Dec 2025 19:13:25 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6699744265;
-	Fri, 19 Dec 2025 08:13:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DA1C4CEF1;
-	Fri, 19 Dec 2025 08:13:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C95044067;
+	Fri, 19 Dec 2025 08:13:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B07DC116D0;
+	Fri, 19 Dec 2025 08:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766131998;
-	bh=ZpBHca7oN52iVgWXthIDFgDhI9A0INgKqTumn5Wu6+Y=;
+	s=k20201202; t=1766132003;
+	bh=Nh4bNCxQArVNKStHwunAd0nAadgCxl/5Y0MhYvrhhA4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=GLiYOmvPUPoGBBkA0Ts0/kjAyBBbJ5CVV866J5BiVEgPJj3OYjRgC+9kPctyKNkbY
-	 OTmQcFlqulWRizG9DOeVMcBBx3TMpnVx8OsXdwOLS+oyRNZ43rplVORNJeOQQd5TCz
-	 VpcmAphzU3UsvkI5L30JzY+yn/H0KfEWqpVte7ln/hSbjF1dNKhUJB0U1REatJzEyR
-	 lb/rrla5Oq6RnkhwpZlVihV4NT0itGutxX9yV+3Mu7xreaNE+7eVmbadIEeUslLbKZ
-	 K6SjjazHiexJwS8UcYibsLYI3osV5J/1Mf1cfAxG4KlgZXMP2+gQZEcu1CfsRsvhQs
-	 DlwDgJSLvSrwg==
+	b=KrQ01xcrbwQWKQ0F78yn78ahzA97qwvNR9Pw+Q526pBm5+X6gDYIO9CNYymLeRk0E
+	 ZeoqNVNLts2A+jqw1Ovp2vk6AC67N40g4CisyTOpmgLZDRQvLQIQ2pVjoUpj09ivIa
+	 ZcimKcA+6epLIHHxV3HeX1HwAtuKRCpw0OvtH/glgC0VDYtkFi4iWqIV4yBFZ218s9
+	 mL4+6Zqvfgf0isksNC3MpFvm5K/GsLNwiogk1x5iopcqLeLmW5vG9EJo7nunl8dFd3
+	 zerwTiyf2THJDZXOCHtaB1n9UonvrcWmWLjKN7yFolOruk8m3r1hGw9jual2pfz+eG
+	 kw8fQM72Fuiuw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7872A380AA50;
-	Fri, 19 Dec 2025 08:10:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B5B12380AA50;
+	Fri, 19 Dec 2025 08:10:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -61,13 +61,14 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [patch V5 00/12] uaccess: Provide and use scopes for user access
+Subject: Re: [patch V3 00/12] uaccess: Provide and use scopes for user masked
+ access
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <176613180728.3684357.15978002339429469981.git-patchwork-notify@kernel.org>
-Date: Fri, 19 Dec 2025 08:10:07 +0000
-References: <20251027083700.573016505@linutronix.de>
-In-Reply-To: <20251027083700.573016505@linutronix.de>
+ <176613181252.3684357.901874888075051255.git-patchwork-notify@kernel.org>
+Date: Fri, 19 Dec 2025 08:10:12 +0000
+References: <20251017085938.150569636@linutronix.de>
+In-Reply-To: <20251017085938.150569636@linutronix.de>
 To: Thomas Gleixner <tglx@linutronix.de>
 Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  lkp@intel.com, linux@armlinux.org.uk, linux-arm-kernel@lists.infradead.org,
@@ -76,11 +77,10 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, pjw@kernel.org, palmer@dabbelt.com,
  hca@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
  linux-s390@vger.kernel.org, mathieu.desnoyers@efficios.com,
- andrew.cooper3@citrix.com, david.laight.linux@gmail.com,
- Julia.Lawall@inria.fr, nicolas.palix@imag.fr, peterz@infradead.org,
- dvhart@infradead.org, dave@stgolabs.net, andrealmeid@igalia.com,
- viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
- linux-fsdevel@vger.kernel.org
+ andrew.cooper3@citrix.com, Julia.Lawall@inria.fr, nicolas.palix@imag.fr,
+ peterz@infradead.org, dvhart@infradead.org, dave@stgolabs.net,
+ andrealmeid@igalia.com, viro@zeniv.linux.org.uk, brauner@kernel.org,
+ jack@suse.cz, linux-fsdevel@vger.kernel.org
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
@@ -89,44 +89,43 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 Hello:
 
 This series was applied to riscv/linux.git (fixes)
-by Ingo Molnar <mingo@kernel.org>:
+by Peter Zijlstra <peterz@infradead.org>:
 
-On Mon, 27 Oct 2025 09:43:40 +0100 (CET) you wrote:
-> This is a follow up on the V4 feedback:
+On Fri, 17 Oct 2025 12:08:54 +0200 (CEST) you wrote:
+> This is a follow up on the V2 feedback:
 > 
->    https://lore.kernel.org/20251022102427.400699796@linutronix.de
+>    https://lore.kernel.org/20250916163004.674341701@linutronix.de
 > 
-> Changes vs. V4:
-> 
->   - Rename get/put_user_masked() to get/put_user_inline()
+> The main concern over the V2 implementation was the requirement to have
+> the code within the macro itself.
 > 
 > [...]
 
 Here is the summary with links:
-  - [V5,01/12] ARM: uaccess: Implement missing __get_user_asm_dword()
-    https://git.kernel.org/riscv/c/44c5b6768e3a
-  - [V5,02/12] uaccess: Provide ASM GOTO safe wrappers for unsafe_*_user()
+  - [V3,01/12] ARM: uaccess: Implement missing __get_user_asm_dword()
     (no matching commit)
-  - [V5,03/12] x86/uaccess: Use unsafe wrappers for ASM GOTO
-    https://git.kernel.org/riscv/c/14219398e3e1
-  - [V5,04/12] powerpc/uaccess: Use unsafe wrappers for ASM GOTO
-    https://git.kernel.org/riscv/c/5002dd53144f
-  - [V5,05/12] riscv/uaccess: Use unsafe wrappers for ASM GOTO
+  - [V3,02/12] uaccess: Provide ASM GOTO safe wrappers for unsafe_*_user()
+    (no matching commit)
+  - [V3,03/12] x86/uaccess: Use unsafe wrappers for ASM GOTO
+    (no matching commit)
+  - [V3,04/12] powerpc/uaccess: Use unsafe wrappers for ASM GOTO
+    (no matching commit)
+  - [V3,05/12] riscv/uaccess: Use unsafe wrappers for ASM GOTO
     https://git.kernel.org/riscv/c/0988ea18c624
-  - [V5,06/12] s390/uaccess: Use unsafe wrappers for ASM GOTO
-    https://git.kernel.org/riscv/c/43cc54d8dbe6
-  - [V5,07/12] uaccess: Provide scoped user access regions
-    https://git.kernel.org/riscv/c/e497310b4ffb
-  - [V5,08/12] uaccess: Provide put/get_user_inline()
-    https://git.kernel.org/riscv/c/b2cfc0cd68b8
-  - [V5,09/12,RFC] coccinelle: misc: Add scoped_masked_$MODE_access() checker script
+  - [V3,06/12] s390/uaccess: Use unsafe wrappers for ASM GOTO
     (no matching commit)
-  - [V5,10/12] futex: Convert to get/put_user_inline()
-    https://git.kernel.org/riscv/c/e4e28fd6986e
-  - [V5,11/12] x86/futex: Convert to scoped user access
-    https://git.kernel.org/riscv/c/e02718c9865c
-  - [V5,12/12] select: Convert to scoped user access
-    https://git.kernel.org/riscv/c/3ce17e690994
+  - [V3,07/12] uaccess: Provide scoped masked user access regions
+    (no matching commit)
+  - [V3,08/12] uaccess: Provide put/get_user_masked()
+    (no matching commit)
+  - [V3,09/12,RFC] coccinelle: misc: Add scoped_masked_$MODE_access() checker script
+    (no matching commit)
+  - [V3,10/12] futex: Convert to scoped masked user access
+    (no matching commit)
+  - [V3,11/12] x86/futex: Convert to scoped masked user access
+    (no matching commit)
+  - [V3,12/12] select: Convert to scoped masked user access
+    (no matching commit)
 
 You are awesome, thank you!
 -- 
