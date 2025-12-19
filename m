@@ -1,83 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-14911-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14912-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA56CD115B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Dec 2025 18:15:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8EACD1469
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Dec 2025 19:02:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dXvKv2Qr5z2yFY;
-	Sat, 20 Dec 2025 04:14:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dXwPB57BFz2y7b;
+	Sat, 20 Dec 2025 05:02:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=40.93.195.16 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766164499;
-	cv=pass; b=ZPcm2ZZzLFZs9aQQn30k25iSvsVfOLkykxKoX8R6I083iI38QGFIImtkJwMwS/BQ+53fCCXz9YRyJHRMPh7kw5gu7DzWHeqSLI1UAXxK/M9CUUoZ9nblqOueWjgSpY/m3/djTfVQfKuYHJaW5tIguYIt3dNFOgYNq2INoHqSDmP3OF5O3nu93NoG0C9VetEn5B0KB8H5sYxKHG7mE1+ZhF1EwGlqnah+r8FOL6TO73gAmkqjy1fbYbJEX60dqtQQeSQmiG7tLKsmRG3wSNyT/lhTOD306ZbWTaiPeOYNIU8sQMk4P8juq8aBdlNPGyt+HXK/eW42ZdJXN1mPjq5JAw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766164499; c=relaxed/relaxed;
-	bh=znGKi8UiQTrTPxaFFsFeATFkfQNzQdNWlQ/LC3IsWcY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=APCqf+jCBme7DhWoIKgBT89dAdH3ToK0SejJfIW+5SA3ggWNjxhK+5e9oezpt6ytF9XgBvCPnSlTOooTf0/sQ5cI2qe1XW65wKKmX6JkRn2varX/JJPkNmGfcLOmFQeHh2ovggJ6UbDXjD0UD9GT2kbtmUVIa9PxYoyMRrtSinNmvtESszMlq1kCvD3kEWdM6RC9wopKIn3zcWIur32OUZ74EiMIbOmGAfMFJ6k50g78/m1yIQZbh1hM/TZCPqGxf1CTuv6a3LTe4XfLH6rM3kzjGpEBhgjjoIs9l4QHsWyY6i6kvGCOXJpBsQRyRsyNVrIDBeuAg55I6IXPausRMQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=qa/7jITG; dkim-atps=neutral; spf=pass (client-ip=40.93.195.16; helo=sn4pr2101cu001.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.14
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766167374;
+	cv=none; b=CGTlEFu2fxtcjEY2dcd2R/W5yDadV1I2bo05L3nvX8mKos4kuxwZbV6sWy+wo0whVVu9TNuUUnPAHLHBOSqkzJcgzpoRCM8Z7rg+zoRwyy+HsIDK/GTAvm4rR+gROXLQU8dN5DY/7P9MNJ9a5jnJK12+OwQMcicLK5FF3UN1LHSlsQb1lW34cMU7YXqbxXQ3yzV8OpTMruklXUqd2E46hlAkStqfjxsQCDvePKIZokNSDWbYyyy/ZWjRBUipnnZpiOZr0zbNIYOvhLKQ6o+ASEdpzdYK9JYtfP3dccxcjlcSymszBJlwtRSl5uzwiAEjrIkKR0HBfpPOBqbGYfcJZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1766167374; c=relaxed/relaxed;
+	bh=iptTGl+1dG2vshTUeOsi9d9CUpec1GSylLykl5zE7Zw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mgD0SryypHQChAAG2eRo7CThNz7oxSlUuZI11V91vreGmyGGAS1/d9PVEUJiJLsRu2cYsDL656gkCzuSGQRso6SVoLeTeWePvbqzHinKfMiiFMbgYUx0r1zUkAyy8/2eVuK36kjQ1xH2XEBWo45wwPRhaswdKIJDf1rnCDXpVggav6qCJBJs8XXH6fy/KXeFCEhJpA5UwIRoSvEZjcIMdmQFYEDwI5A+DbyjK+7UCpqrieH6tO1pJl0Yv/4r78wZV5n/WwuDkT9RL/Ak4iVp2hrza9Z8PvbMsFxTNHkSAJ0BIAooKDXenDurSBy62K2264ao6jNkbD4HyVdj3pleGg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aJa7ZKoc; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=qa/7jITG;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aJa7ZKoc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.93.195.16; helo=sn4pr2101cu001.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012016.outbound.protection.outlook.com [40.93.195.16])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXvKr3Fqzz2y7b
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Dec 2025 04:14:55 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TsgIpoF48YfBuhN5y/nkMmGH4j190GXSJrVXnyPaWNCJhZj+o27Cif7tjkafmKmvIlhf2mSQY5Yjksv83N7SK4fINPPno9Ly+Y8vlB5yfo9Cl7OdAs+8KDUjlyrsQ6RUQsa4Vwef70Fh4aHjO35vAXBB9YSlqaA9KYkgGON0BIchOZMXMQBbxR6fh9G7XMkpyAsxLnzaiyHc0uqmYsBlvP1Tpw0hNlST6DuGibwp8y0zHuUMv9hYjUoF4tfl5ZnkF7OcVcvfePZPTeThOCqhZNfbykGfLijE7a/NRBP4P7oOek1DAh/73etBb3KFI1T/gzw6bjEjJv7r+iJh2NKk6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=znGKi8UiQTrTPxaFFsFeATFkfQNzQdNWlQ/LC3IsWcY=;
- b=G++ALLuKY5cHvWn1pQlySEfHuBFI4LK6tREJ9I9gJ/5tZqtkwVVs6Kqs9Mq0AmGv65sBDsEcMH0LLR9Y6wwAPsQZPNMwOReZTtkLFQ2VOCjiKwJqk/dQlxSnwg5txc3JuGqBDhT79royLlpXv/9ID2DIaaezqDeF8jLjYiNgRNTyEzNgaLNs7+JtX6N8wdIwGWh3g9jANgEJ0sk/NwitdbID7ruPNR+lZvykqSZzEGkPTlIQWpIKtaO+5j+XnCVjIc1gHp60KrB0qcBiFkG1pMrnAeLcDEY2qNv+O2lnpv+Rn+zeKWe3S4P+mBdZSoNZFKBP95TpD8aiG38F/gG0Sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=znGKi8UiQTrTPxaFFsFeATFkfQNzQdNWlQ/LC3IsWcY=;
- b=qa/7jITGNVUcAopwCAec1hfL8O/n2R4Fa0IIdkvDPzYK/IU4gZwgfA85ep19IqXcxCt1/Ia6BrP53mGRKgMBNlOgcH0cHnnk0O2aUBOXPePprDDIW2l/qEG1H+F52H+sC9FtFyXUBau3ry6csF70NyKPiQPcXn1pf1DK165kPcDIWyc0wRTAaN37jAo43aMVuPafhuKb0UOJeUw5TUHcZXPq8v166DOdhPe4dXchtxfLHDtQQloa43eBDaFnUoVobJsoesDKDzQ62B6bf5mSRsS54YYKUysaddu3K/gUcl26ND4GdOR5IANYuKPvly2AuNdUPIZM9E85peuyhTH7Mw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by CH3PR12MB9100.namprd12.prod.outlook.com (2603:10b6:610:1a8::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.9; Fri, 19 Dec
- 2025 17:14:13 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::1b59:c8a2:4c00:8a2c]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::1b59:c8a2:4c00:8a2c%3]) with mapi id 15.20.9434.009; Fri, 19 Dec 2025
- 17:14:13 +0000
-Date: Fri, 19 Dec 2025 13:14:12 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
-Subject: Re: [PATCH 3/4] ARM: remove support for highmem on VIVT
-Message-ID: <20251219171412.GG254720@nvidia.com>
-References: <20251219161559.556737-1-arnd@kernel.org>
- <20251219161559.556737-4-arnd@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251219161559.556737-4-arnd@kernel.org>
-X-ClientProxiedBy: BL6PEPF00016411.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:22e:400:0:1004:0:9) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXwP74vXxz2x9W
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Dec 2025 05:02:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766167372; x=1797703372;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pbi5j6wJLQ20G3/u3yyZEWII3BRtiMRs/1WHV4lV7B0=;
+  b=aJa7ZKocrMpx2bwe6fMGZ6NfY9VHc8tU6NrmIkYfkYZDyx+Aql+Max7O
+   lFRIJJVM64EhfYbZgPy7ziFOF+hC95CkNWpSzdvLFaP/JTUX8BubHIxe8
+   lvl3BW5a3xsJGUqW8ZajOJqKQ+auRngfNhNY9zsxUyXd6wo/4uixp6w0b
+   72XBLXb+LsPd9ApEqdl+GxUt0pR0ym/zyTvp2qD1AGRTsO6KIFjsgROqo
+   Fno+HqRE8aJqzUhjJ4T9BGK9PZBJn+MYHYJubjEfNilZxh9p7NF62ckaR
+   B4yj6xsz1fgJzL3izEK987jRsRFB5Pb2zcGP5DUhb4RYSxxI8ZkCXaHJ0
+   g==;
+X-CSE-ConnectionGUID: JCrs7K4yTPymbG7miOD6VQ==
+X-CSE-MsgGUID: kedaqe+cQlq7aXvjJ5IsIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="68176833"
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; 
+   d="scan'208";a="68176833"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 10:02:45 -0800
+X-CSE-ConnectionGUID: +BWCN+9ETpCg/FgoJ2ROWQ==
+X-CSE-MsgGUID: wvwL0k54RKWOsIx1nq3Kaw==
+X-ExtLoop1: 1
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.100]) ([10.125.111.100])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 10:02:44 -0800
+Message-ID: <a3f22579-13ee-4479-a5fd-81c29145c3f3@intel.com>
+Date: Fri, 19 Dec 2025 10:02:43 -0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,132 +67,107 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CH3PR12MB9100:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34b79c46-7393-4908-da0f-08de3f22086f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BXh3zxwJSi7ttDCYk5sm07ocDPelSJ3qyHREtk4ZKRZFPY08aWkrK+3k12Nl?=
- =?us-ascii?Q?c4hCbYW7xbZqci+2LAGrMPpbPmWGO9KBeXY0Oo0w1S0nsimYLLXI5pCNE91u?=
- =?us-ascii?Q?pvtdAASrhLsws40Cj5BMobqC05mdy70L5o/vKPmVRZWCZgJkGsL14yJoYy40?=
- =?us-ascii?Q?ayzscvxAQfYbechFuUZc3UgbVSs4L/IoSVd7xJGFAubxGZ1ROF4Xu6eeA3cc?=
- =?us-ascii?Q?z8stWlWUwYPE4jmcY+ZjprlDniKK52XW23yTsINKPvLT+IzYobuI0+W/ilNR?=
- =?us-ascii?Q?Fh3V1frabGlG1A40x854ICSaY3VJ+Rs5zzDO8374bSd8m0EdNtN6UzLl49Zn?=
- =?us-ascii?Q?HPwWBTAnxxpVn1pYNlIbY4F3dyXLkCbMk3Yx1rx7BQbmBKCAN0oMXeIyI1tt?=
- =?us-ascii?Q?3KqBOHl98YIKMs7gt80YYMk13QSalgfT5OHfkF6mdxH5NI4MAHaEnKeaxSra?=
- =?us-ascii?Q?2IY2e+C7JNVi+HZPt+dT4wCd4xaa7lY6jGxm6e7tlHpMRa9EO28tt7mOZOwF?=
- =?us-ascii?Q?ucIEvtXNc4w5CfbQlteWPEwp/4GkwnCdj5vt+nXkLkysB2oquACe6IBVIrVx?=
- =?us-ascii?Q?0Z8ySYxttInTRwJm4iL1I0VyGXBY2QDwIJqF8Bg4fIdXqe6kLpGzw8zZHrjx?=
- =?us-ascii?Q?xVtGk9ytBieH2nVx8MuUes0z/UXXLJGJK5Fq5CL6+I0mLkAI60YqoqEVWJWL?=
- =?us-ascii?Q?WvxrYGK4ICdllxmIqwbA0GdkF98ngBnr9dgDsGqmFQKanbCAR0YvNBddxXm+?=
- =?us-ascii?Q?KI1IrfcTgrsl190r3NMRmdDqpMF7ObAYoun37v5e3L7zCAx8GXHiFzi2AwOm?=
- =?us-ascii?Q?7mdNyWZKnsxRF0d5Cnx/Jdfz95gyESB+eGwB+NZzjGM/otfOBfS3ZhhKQ5Os?=
- =?us-ascii?Q?qWHKNHbBShJDQqeu3CBIRXfPx/M5qe5VB0XhrJSIG0NQnfJpyqRX45ffuvMn?=
- =?us-ascii?Q?1cPF/88ra9t/QMejPINaOWZU/ndvjRUzk9R53ayaWccISdaAIE6QTLegL/Tp?=
- =?us-ascii?Q?b5R5MPHHT4epNmAvkv2Du2EaZ5TiAtKZk9OVSJoymFXfv6qEY9c/MNxzAgM4?=
- =?us-ascii?Q?m/f7yD8jeSNmrxajg71WvW+itYjSOSq8ctyfZ5bieXzg4d+c1CePpYra0+Cv?=
- =?us-ascii?Q?5s31nZgIyzUY2v9VH9ToZC6E6Tl5SjP8fkrlT/j9ALoaSxbPPxVT4cpph1Xa?=
- =?us-ascii?Q?YkT353+Cws0ogsT83rpaNHjxXtNxec/bG4DqJCIvTNPIqiehgrnakB4FIjkk?=
- =?us-ascii?Q?qenrMidYunsfmY0I2uh3yixKt0Zz5sk9j1JQJEkH9jTvj8o0MyXIpAxKVMSh?=
- =?us-ascii?Q?5EgzQ+jE/3mWt/VDe1kqMN4DW6uPJcHD2t0pJQVd7wc1Er/VWJ+D17NMni1L?=
- =?us-ascii?Q?ByHSn8wb80KLCH+s+50LH050cYP3PyAoEvGF7OyP8u9tyyjeD8xFK86tSce0?=
- =?us-ascii?Q?0IpRPRclZs1aLbF7dHJ029QDMB96pMbp?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?sKqTKJlrQus/vPBD6TqqBlXbTl6slhaJ1BL2f5NaJrx8EvLTDV5iJwXjt/QD?=
- =?us-ascii?Q?nVpe6xOB1TeiKnN4+qPPZAeQNM7FDK3y0ut9+sjFteQ95P11SC1DPogZ2Qnv?=
- =?us-ascii?Q?SGSTuxhLXn+DVU3GencQAeuTFTE1aUNmCUirveiaR0227p+WreRK9Gz6lLdC?=
- =?us-ascii?Q?e7v3pL5NPXBuMsceT6bz9DKuVqinRziO2wJI50HUbiEu5g5D5I+ysqkuG3Bj?=
- =?us-ascii?Q?wGcLqOnxiZqs4/RgDrIJlcz9ovF9uUUeb4jGih052ciqzbUIAQqHVyXqVi3d?=
- =?us-ascii?Q?eNClkXYqh10kvN25IK6CCJuXGsQjubFAgk5bz5jFY1VE8iTwERNA19D/jYZX?=
- =?us-ascii?Q?/5BQeHB8lwPTUiPCuB5O2mhzyN8tkqLNVZjuOMh5fwQZCvb3hAu1303Z4W8T?=
- =?us-ascii?Q?9tRz4xFQTH7WA3NEqXlzLHzls1ETrxjkD1ukUg9VQhoxm7UHuNaUufPty4o+?=
- =?us-ascii?Q?6dVjoeW+FDd/TtKJqdKlfrmS1tvKaaHrUX1EtlwPlEyvWsT4WpIlB5t4UncP?=
- =?us-ascii?Q?hSRwZu+gck00B8gC/a4pUk7y6+QyACvN5aHckquWxYVp2WMEK7FIQytcp78j?=
- =?us-ascii?Q?nrgo0fi+OgjCESiOYBmeGoUq8z1syTo5S0GYLsbKnSrRBNLqAh1B7RJSH11U?=
- =?us-ascii?Q?IPZ25TgRHaus92VBqhyEnzMqYFuRIx1SJpZcbLXkcimAo3kqMkg9UZhC4EWB?=
- =?us-ascii?Q?NXDUOK1qxmzSwM/EgzmjOSpZdRzyFRjzMuQ5ikFURJk3Je6sZq7PfAIqDB6Q?=
- =?us-ascii?Q?sZYdkJ8cAjTAxUF1PLEkrbBKRvJfZAVOTdZxl41XVVllGuYKhC6ziRGXa/Qm?=
- =?us-ascii?Q?oCp6aO/c1Xd2Zk271hjKUMSVrrDHsUNgYC7vA/y3hL7C0t3W4CRSZYP0SzHx?=
- =?us-ascii?Q?GruXBOs1Q4qjKaw1cbBrOB4bLusWcHvPt7LW88iYSDnOA3zLOLOGkB/HBYsU?=
- =?us-ascii?Q?iS6Q5SscfwGodOzRsbAtDwa26oZJASt7poyzu47F7WnVcL7FTjqGiZw5+a3H?=
- =?us-ascii?Q?FPfmVwyBiZmVQfh2/d3aXywJe+jFxNbfIv8Yq9psAHjZzqOMg3KMaORnHBBq?=
- =?us-ascii?Q?7sRuG30ZPGez0YlTc3+LbesN7bcUj2gc4wNKaTMUvv0hdpNA4xHjeixZXlUl?=
- =?us-ascii?Q?IkJwFkjFBVL6fIac0A7Sz9cf3Seaq6uJUaY/v/jQKGCiWoLWfqYwBQwqsFji?=
- =?us-ascii?Q?F3xRHAAJ0x/VEVg23FWMwbVk7nPm3ULdhFol5H/0Ow9J65LZmb/z+fVA+3aT?=
- =?us-ascii?Q?TvtqCa3nIOUBfLQZVt7X8+LdvAxhjiH+Q5cvQ1ZaSIRc+YshkatajZwlphAj?=
- =?us-ascii?Q?Rkzt/kBH1AqZDhuWKC26p7UzjYryydgNkVvmb6mp60tgSl/+iy0AvdhKZbup?=
- =?us-ascii?Q?kP0UO5RZL4SP3Rapj/xaT+zSjbk6UPciCKY6Xj4nQPmjYLgue2UBXkaqZv0W?=
- =?us-ascii?Q?8JyIGAhTyB1ZUqegAbWz5BTlVc866mHyDFxlVAKQXeYVOB7TzIqY0xtF+0y6?=
- =?us-ascii?Q?taLp31TAzoYnr01F0eLwYXj2pzYhenczfjWXfkz8gHEwEDQTts+S1s8ObDZy?=
- =?us-ascii?Q?UkE4DvAJ4JK/eWDlYa31BRginuoVk7yL65fGLNmERjRousPVjNM+T2nKXDNy?=
- =?us-ascii?Q?h3ciunw7Sp5qnkbTItNS6YgBjwo/I8O0ByyUrbBnurlETD798yFbkuitxq6k?=
- =?us-ascii?Q?La/40raj6dfZN6rW1UXOq9tMWxZ8MWwQv36EWfmLHrh3fXDK?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34b79c46-7393-4908-da0f-08de3f22086f
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2025 17:14:13.7328
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ev8Ou01oH8lj5dV3BwI+AEgC1imFHHgHEVaoI4KiZ4IFgrVmGFvzUffSO45MsdLz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9100
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] arch/*: increase lowmem size to avoid highmem use
+To: Arnd Bergmann <arnd@kernel.org>, linux-mm@kvack.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Andreas Larsson <andreas@gaisler.com>, Christophe Leroy
+ <chleroy@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Linus Walleij <linus.walleij@linaro.org>,
+ Matthew Wilcox <willy@infradead.org>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Michal Simek <monstr@monstr.eu>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Nishanth Menon <nm@ti.com>, Lucas Stach <l.stach@pengutronix.de>
+References: <20251219161559.556737-1-arnd@kernel.org>
+ <20251219161559.556737-2-arnd@kernel.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20251219161559.556737-2-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Dec 19, 2025 at 05:15:58PM +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> As Jason Gunthorpe noticed, supporting VIVT caches adds some complications
-> to highmem that can be avoided these days:
-> 
-> While all ARMv4 and ARMv5 CPUs use virtually indexed caches, they no
-> longer really need highmem because we have practically discontinued
-> support for large-memory configurations already.  The only machines I
-> could find anywhere for memory on ARMv5 are:
-> 
->  - The Intel IOP platform was used on relatively large memory
->    configurations but we dropped kernel support in 2019 and 2022,
->    respectively.
-> 
->  - The Marvell mv78xx0 platform was the initial user of Arm highmem,
->    with the DB-78x00-BP supporting 2GB of memory. While the platform
->    is still around, the only remaining board file is for
->    Buffalo WLX (Terastation Duo), which has only 512MB.
-> 
->  - The Kirkwood platform supports 2GB, and there are actually boards
->    with that configuration that can still work. However, there are
->    no known users of the OpenBlocks A7, and the Freebox V6 is already
->    using CONFIG_VMSPLIT_2G to avoid enabling highmem.
-> 
-> Remove the Arm specific portions here, making CONFIG_HIGHMEM conditional
-> on modern caches.
-> 
-> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/arm/Kconfig                    |  1 +
->  arch/arm/configs/gemini_defconfig   |  1 -
->  arch/arm/configs/multi_v5_defconfig |  1 -
->  arch/arm/configs/mvebu_v5_defconfig |  1 -
->  arch/arm/include/asm/highmem.h      | 56 ++---------------------------
->  arch/arm/mm/cache-feroceon-l2.c     | 31 ++--------------
->  arch/arm/mm/cache-xsc3l2.c          | 47 +++---------------------
->  arch/arm/mm/dma-mapping.c           | 12 ++-----
->  arch/arm/mm/flush.c                 | 19 +++-------
->  9 files changed, 16 insertions(+), 153 deletions(-)
+On 12/19/25 08:15, Arnd Bergmann wrote:
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -1416,7 +1416,9 @@ config HIGHMEM4G
+>  
+>  choice
+>  	prompt "Memory split" if EXPERT
+> -	default VMSPLIT_3G
+> +	default VMSPLIT_2G_OPT if HIGHMEM && !X86_PAE
+> +	default VMSPLIT_2G if X86_PAE
+> +	default VMSPLIT_3G_OPT
+>  	depends on X86_32
 
-This looks great, but do you think there should be a boot time crash
-if a VIVT and HIGHMEM are enabled, just incase?
+For simplicity, I think this can just be:
 
-Jason
+-	default VMSPLIT_3G
++	default VMSPLIT_2G
+
+I doubt the 2G vs. 2G_OPT matters in very many cases. If it does, folks
+can just set it in their config manually.
+
+But, in the end, I don't this this matters all that much. If you think
+having x86 be consistent with ARM, for example, is more important and
+ARM really wants this complexity, I can live with it.
+
+Either way:
+
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 
