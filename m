@@ -1,90 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-14914-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14915-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB63ECD1C32
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Dec 2025 21:35:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D372ACD1D8F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Dec 2025 21:52:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dXznS2Swdz2xqj;
-	Sat, 20 Dec 2025 07:35:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dY08v2PD8z2xqj;
+	Sat, 20 Dec 2025 07:52:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.149
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766176540;
-	cv=none; b=lG3jv6Nr1sZWhWDlFg/ULKzcxEJ7uhBcZdiwQ/mkPfsp8yCOkVoWkCaB1WCUVqTa4seAViwNaYAbbPYt4PniZPOMbfVDAhvGEA3JNoK4siWZ8kh5tDVOpAcCw9RCX40BO43WeojAJIdDwBw0x/mfmhxBsZwDK9Gp96UoF3kVSy8Lss3UU4oKEyaJY2+8ctv0ox2Wi1KjS5cLbvZ8JXFnRufwJJi9MhvCCCwcH5mQGRRrdvlmJD6GrOxCNOAYYWwrjqfPXzMFBRzK1oFsxYJKUrT2fE1d9W59FjewIcgsnhu3PDJWgIL2+gdnBrDsT3I/vWQsC1MZV67eVF7hbq5Wlw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.9
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766177551;
+	cv=none; b=NgObv5nns0hd+8SF90auxI5UmEKAGBUflo0mWk0YFqM3U/YITnsIixdI4f7rCDEw5pFFZqNsU4AAHTEOSyPqk46+PLIPjQWXcXAGtKsP2jfl668V77ry/ut7L6QZt4OiJc66zM9Tjs7F56CDKcLQTobESM2nFQzBeDdkC8WdcfRSIwvWjG4s1ocpFsSdvf6wQcR3bKC7tz2FaYqpd+aJ7MIKi0mlEvStB83FvSAcnd6RmPvweB/3G2BeRk1wxq7vCGdUcd5ci1TZGKX5Uj5kwoGse1ZIAT5i9v1k3RfnKr4f9SP5oSA828g6RCwE1m0NazogFyHyLNZxCUP6Zt3ixg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766176540; c=relaxed/relaxed;
-	bh=3d9fLzjQ/AZqtv2ZVueKEFb1bGfJIO9edpVZ3H1jqFw=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=ZpQvoz+uSuIThx9C0coFKRQqj6k/OnmWdtucvVNlaUt4leXK15UZyEfxr+ee7+CvyQeRC4Sfs8A8fe6wmr3D0sonn1He3Nj7X5OUCaXOW4XfII4ynogOKX7bEIsn8HdZnSn7wrrNx6elZQQehkyjs9anw9yKqVtqaCfbs/XLxyRu5CQbt8PPuKs8oClJWMEJ68cgrlruhpEfZjI4W85QgtwNkJ0snb5eVCIxLI6PXCiTnwJu4BwZ5MvFMT6Um3oo6jO1Wa23sP9t0j56z3zSUmXVKeABacIeFLdspG7EIn0WREh8Dr/V0/klsuB2ixToc1CjZKQ7I/Z1Rkpt7NXNVQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=kYZHsUm3; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=Rg/gGMV6; dkim-atps=neutral; spf=pass (client-ip=202.12.124.149; helo=fout-b6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1766177551; c=relaxed/relaxed;
+	bh=i1/SJXZ90FI5UUfT5V9hfmtsaDq+2j5bDl9O0wW8jvQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zsjjtz5FMZZGh0EM1gtJr1ii8/5QNHmVUgEsLlNTd+KQsSX8MBrr30uHdiLZ1n5ByWNUozydx8DLZgT/FS/CRSiAV+I+wtgWt4PYOIqk5GjbtOXThNT4KZWcM19mkuT+tMxawMVTg9rDb+aPcfU9U5V899FEM1DEWcm2ogoBLPPzsqqxDAq50rPpRf64xDtT/29LtnfndcX0MCg1TwKcdilNYt22lTt4bTbG5oQ2qg7gXoB7NCbaRHGeTBl8Q4Q8xA5bDlhMOwoQLDXSaw7mlG5Xjw7MjkzZSLQ5nUp6Qc185sP5+FIymgXW1wJfBE/yScTPU1v2t9DrBObrqzQl4w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ESWL6Ve0; dkim-atps=neutral; spf=pass (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=kYZHsUm3;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=Rg/gGMV6;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ESWL6Ve0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.149; helo=fout-b6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dXznR1yFpz2xqG
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Dec 2025 07:35:38 +1100 (AEDT)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 29D571D000A9;
-	Fri, 19 Dec 2025 15:35:36 -0500 (EST)
-Received: from phl-imap-17 ([10.202.2.105])
-  by phl-compute-04.internal (MEProxy); Fri, 19 Dec 2025 15:35:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1766176536;
-	 x=1766262936; bh=3d9fLzjQ/AZqtv2ZVueKEFb1bGfJIO9edpVZ3H1jqFw=; b=
-	kYZHsUm3yqBHaQvpro/+WVGIWBVYSVMFfzAK54GcyEOPEhFKvEFuAPrGR+cJTmUh
-	WuqFNjPxZvQkkBDtAeuRT4Y6eEryMc/WKH8n1pZWJH0y0k42xCztHwa4qzaYSulv
-	c8fjOxu/1OEcujcVhSJRl1VueSwH7a0Ugi7lgTQ5pJVnjDFeQ+QadG4vzWSUDkJf
-	Gl2ii6dZ4T7T5QD5RZhU72HA+grnsmxMyM4UoZW8OJbUnvEkKRNTYf6Dyx7OFD1c
-	z/BtnKw4w6z4ekb5gkp4VO5JU4ctwu672Z8pByzhuSQ+RGzGy4TN2hQsMMQkhZp4
-	yDjEpWPhj/OnA/BzylISAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1766176536; x=
-	1766262936; bh=3d9fLzjQ/AZqtv2ZVueKEFb1bGfJIO9edpVZ3H1jqFw=; b=R
-	g/gGMV6hGJSilE/ezNtky0vmAjZSzpFmvQe4yQSfpUOWkGu4+khqfe+CKsUsbbH/
-	NWhG+aLxCk7W9xlqRRomISPzMad0RNuBJ4JzW8+tV77CvLOrZwYZpBfBxOSSIz9v
-	cJinNF6Ej5OguuUgo8Ffg2liakO4Iuak9WNah7aNB2NdDJH+Agy4cPQGpoTO0R1I
-	E50NjYk69gfh6dHUbDP691rKb0j1Kwmm+hQck5oLYemr4vJt5HIyG0JkVIr8FnPc
-	MEIR7CnWx/AMfasIuVZN8J6smZ16rnvAZK0DfZAWUSQvK/TV++Mw9B67WJ7GlM/n
-	iHzqzayWG1vya99RM3gvg==
-X-ME-Sender: <xms:F7dFaetfjsH_R0FrwIjtYohr1MfQyeE2o_Kf225FkyDcAyfvlGgXag>
-    <xme:F7dFaeTM_mVgkLqy_zis7ZjunWXe23L2cRxu6fojMT-CUeK-upeQDeRRCMxTOLG3t
-    PM_he3EDc61UZJY2PHV6HnMgC-TNEEwy52aM303P8LlBxIBV9FxxI4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegledvkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtth
-    hopegrnhgurhgvrghssehgrghishhlvghrrdgtohhmpdhrtghpthhtohepfihilhhlhies
-    ihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegrrhhnugeskhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheptghhlhgvrhhohieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    giekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtg
-    hkrdhorhhgpdhrtghpthhtoheplhhinhhushdrfigrlhhlvghijheslhhinhgrrhhordho
-    rhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrgh
-X-ME-Proxy: <xmx:F7dFabR9fuVGLS8b2nH0EJEL7gMeVQyE2RmW6pjAmP-j5ztg66sWYA>
-    <xmx:F7dFaSWdbgkitKG_ozO6MG4TRqQ12N7HBRnMw8O3mjcTSiNw9HFycw>
-    <xmx:F7dFaaautW2GXmPM0khIdUKFWjjMT3nNkDSx5fj18akTdZS3YoKf0g>
-    <xmx:F7dFab6-0sXi3QVEQ4kxkCC7Ickcc4xkhCmDssD-fi6cLmyMFZeyFA>
-    <xmx:GLdFaZ8lTCnaSOSLz8dsTEi9P5rYOub2PGkiNAXcyFkNFyLQKKniTZRF>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 3E0EFC40054; Fri, 19 Dec 2025 15:35:35 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dY08r4NLZz2xqG
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Dec 2025 07:52:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766177549; x=1797713549;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1UnP1phlC1N1TzoJ+erXdvhZj4LIIeRmGQfpPPyOIYU=;
+  b=ESWL6Ve0gEqNc6+vYNS/lwsE2b+5TXrOX0ebpKZmm2gQ1Xp7fJl3DYWl
+   XHk4AkWuytYMWWDdXjSHadgsFK0idWgYeRxEq3TkCd6Wc1QH1bCMdlBto
+   PbDJ9hApB1Y3i4ufWd4irMH/vH4jvRrj0IOjjxxzvXYEHcsi4Pe6c03KX
+   MXjkuK+3/9vBThYXtVHPmjHeZSyzBWAbZR0voJPofGP2qeEce2khH6fjp
+   JrJGBXUyFGDulVvsnzCx51tHTsLFDOV4YPKvCbeoDWNKeh4sLGaWUhpTc
+   TEfyz7Eap8Jvu17m+FXreLQBEw8x99nEHbM2i8z/+PkB5NESzQENsDCpD
+   Q==;
+X-CSE-ConnectionGUID: jOmxUPu+Sti8HtlXkQcnKg==
+X-CSE-MsgGUID: 9dvz+KTlS9+5wg95UYdsTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="78856582"
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; 
+   d="scan'208";a="78856582"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 12:52:24 -0800
+X-CSE-ConnectionGUID: 98Uh3zVhTE+23i7eXdgOKA==
+X-CSE-MsgGUID: bx3AzxBJRcaevFLfuS8vuQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; 
+   d="scan'208";a="199196097"
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.100]) ([10.125.111.100])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 12:52:22 -0800
+Message-ID: <a2ce2849-e572-404c-9713-9283a43c09fe@intel.com>
+Date: Fri, 19 Dec 2025 12:52:21 -0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,58 +69,118 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AQxZfb8dcq5J
-Date: Fri, 19 Dec 2025 21:34:33 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Jason Gunthorpe" <jgg@nvidia.com>, "Arnd Bergmann" <arnd@kernel.org>
-Cc: linux-mm@kvack.org, "Andrew Morton" <akpm@linux-foundation.org>,
- "Andreas Larsson" <andreas@gaisler.com>,
- "Christophe Leroy" <chleroy@kernel.org>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Richard Weinberger" <richard@nod.at>,
- "Russell King" <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
-Message-Id: <513078d3-976a-4e6d-b311-dcfcfea99238@app.fastmail.com>
-In-Reply-To: <20251219171412.GG254720@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] arch/*: increase lowmem size to avoid highmem use
+To: Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>,
+ linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Andreas Larsson <andreas@gaisler.com>, Christophe Leroy
+ <chleroy@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Linus Walleij <linus.walleij@linaro.org>,
+ Matthew Wilcox <willy@infradead.org>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Michal Simek <monstr@monstr.eu>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Nishanth Menon <nm@ti.com>, Lucas Stach <l.stach@pengutronix.de>
 References: <20251219161559.556737-1-arnd@kernel.org>
- <20251219161559.556737-4-arnd@kernel.org>
- <20251219171412.GG254720@nvidia.com>
-Subject: Re: [PATCH 3/4] ARM: remove support for highmem on VIVT
-Content-Type: text/plain
+ <20251219161559.556737-2-arnd@kernel.org>
+ <a3f22579-13ee-4479-a5fd-81c29145c3f3@intel.com>
+ <bad18ad8-93e8-4150-a85e-a2852e243363@app.fastmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <bad18ad8-93e8-4150-a85e-a2852e243363@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Dec 19, 2025, at 18:14, Jason Gunthorpe wrote:
-> On Fri, Dec 19, 2025 at 05:15:58PM +0100, Arnd Bergmann wrote:
->>  arch/arm/Kconfig                    |  1 +
->>  arch/arm/configs/gemini_defconfig   |  1 -
->>  arch/arm/configs/multi_v5_defconfig |  1 -
->>  arch/arm/configs/mvebu_v5_defconfig |  1 -
->>  arch/arm/include/asm/highmem.h      | 56 ++---------------------------
->>  arch/arm/mm/cache-feroceon-l2.c     | 31 ++--------------
->>  arch/arm/mm/cache-xsc3l2.c          | 47 +++---------------------
->>  arch/arm/mm/dma-mapping.c           | 12 ++-----
->>  arch/arm/mm/flush.c                 | 19 +++-------
->>  9 files changed, 16 insertions(+), 153 deletions(-)
->
-> This looks great, but do you think there should be a boot time crash
-> if a VIVT and HIGHMEM are enabled, just incase?
+On 12/19/25 12:20, Arnd Bergmann wrote:
+>> For simplicity, I think this can just be:
+>>
+>> -	default VMSPLIT_3G
+>> +	default VMSPLIT_2G
+>>
+>> I doubt the 2G vs. 2G_OPT matters in very many cases. If it does, folks
+>> can just set it in their config manually.
+>>
+>> But, in the end, I don't this this matters all that much. If you think
+>> having x86 be consistent with ARM, for example, is more important and
+>> ARM really wants this complexity, I can live with it.
+> Yes, I think we do want the default of VMSPLIT_3G_OPT for
+> configs that have neither highmem nor lpae, otherwise the most
+> common embedded configs go from 3072 MiB to 1792 MiB of virtual
+> addressing, and that is much more likely to cause regressions
+> than the 2816 MiB default.
+> 
+> It would be nice to not need the VMSPLIT_2G default for PAE/LPAE,
+> but that seems like a larger change.
 
-Do you mean in the common code or just for Arm?
+The only thing we'd "regress" would be someone who is repeatedly
+starting from scratch with a defconfig and expecting defconfig to be the
+same all the time. I honestly think that's highly unlikely.
 
-We could use the Arm specific cache_is_vivt() macro, but it feels like
-the 'dpends on !CPU_CACHE_VIVT' Kconfig check I added is both
-safer and simpler.
+If folks are upgrading and _actually_ exposed to regressions, they've
+got an existing config and won't be hit by these defaults at *all*. They
+won't actually regress.
 
-In common code I don't see a way to detect vivt caches. There is
-cpu_dcache_is_aliasing(), but that also seems to cover ARM11
-processors with aliasing VIPT caches, which are otherwise fine
-here.
+In other words, I think we can be a lot more aggressive about defaults
+than with the feature set we support. I'd much rather add complexity in
+here for solving a real problem, like if we have armies of 32-bit x86
+users constantly starting new projects from scratch and using defconfigs.
 
-     Arnd
+I'd _really_ like to keep the defaults as simple as possible.
 
