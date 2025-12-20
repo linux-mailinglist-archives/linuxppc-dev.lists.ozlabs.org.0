@@ -1,90 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-14919-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14920-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE652CD2EA6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Dec 2025 13:18:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CB5CD2F6F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Dec 2025 13:58:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dYNjm17Stz2yFQ;
-	Sat, 20 Dec 2025 23:18:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dYPbd3Zq3z2yFQ;
+	Sat, 20 Dec 2025 23:58:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.151
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766233132;
-	cv=none; b=Fy78lEX/VmS98TuDwbJflo+Wc7clI8F8lxdG2o/RXOTGMEw/OdKvTNJl0t0WdE6q63LlchuzzMopvAw7NN0jAS4UhSgoO1xDPtTATrpKfdfrKXh3WgPmCSMHuwEOitWnrYpAwch9hFR7Wo8wlN+BilmFiO1kWnDpP4cmljVeoONk9O5QQFM1Jk7CHy5UFpcNSXaKYzgvb2qxAnZkQT50QpBY91G8LnOKx8CRuABVFumeUKR5ergzzAgv7DzNI94iCv5ZYYUPfJ2d1Rw5ExI5RnA+mdMJ9gcn32mrUil+vC3+Ekq2AQfNrAEJxkQdsTPKvPjE8oK0w3CX5lP1cFBcMQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.10.151
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766235517;
+	cv=none; b=HV8BNQkIy7DOixt1wBoW3dCCewAODgRbN9Cut8JDfrlC67VS75WdE5FPTwP2Qtvti79fpnzGWcFUGN7oJmHh8K+mVeUq9RMdDoPFRC9mfwHTImDHr38q0+ZPGYCfQFJuh+hPINJ8h8n7qTFfPpUk+Z3d0dNxObQZckA1SC9CN/Z9Ih9pYlzjZtKEIHkf2DVzkBeetkkH4IMG8dwS7wgWlWKYM1TqIblfqRwAETzhoSqdaVLfProTgVm5sb0GNNdhiqOeu0Q9B2oO+bzTlji46cGWHlM+/og6NyttQMbkxeW50LChZ8P2UbXxrqaxbXczmNcolEXzXHYB2fGos9IPxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766233132; c=relaxed/relaxed;
-	bh=J0+iYPCNdQLGxjMdcbwA/gTR2x+sGNDsrapagDJOjyk=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=W7Pw3h0WaUBmFPB0wETk2tlxPT4ybLwbLG94BV9iedrw3bOoRZmH9kqqJvbJpA8ssxbJjF680KntWCmRbrgmaTmtfEFsb4e+YbcJo39jxzdQrIgshir2G+HG03y+vp8C48B7EivLrDo1yv8745mfbZa/yUtt5za2qaSfdXjSSV6IEIqxiWIIONfyRklZYmNHx4ysg6ViLpvJ5C/kPc/OtvlIr7mguJSY25cCztA8JVBowETq837KnJW8wNNUcUYE5Cdd1ffdk/d4enYo6+ICviP9xPjmQqYYjT8Kg8uDirybPPf6iDm5BFcKqGenWJrAj6lBT2ulfcO/vXguPTbhaw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=ZMNUJHqa; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=qZCZMqRF; dkim-atps=neutral; spf=pass (client-ip=103.168.172.151; helo=fout-a8-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1766235517; c=relaxed/relaxed;
+	bh=bIk7+Oeov4iE49MSABnClqVr3hXCaOM4JLVr8/OtUKg=;
+	h=Date:Message-Id:To:Cc:Subject:From:Mime-Version:Content-Type; b=i251FzU1aNa2dKZDlDP3wWgA64yQp+OT5bLzv8Y38/yfLPUWymrpaXDUSrNLqf1QojhJWLQHxTZheDvDt6ctZFpQ9QiUJi6K1bJQQsna6aTalj8ipznwXrlwo+Zh+H6VrLGDTLoNOkqwoaEx7IAh80qytgSH0GVbcwsjwgP/Vwl+p+ljh2Q2AK/piRFNjTNww2XAQVV3O/oXh5MXVHyKSLl6ItI4T1zcVAJfmwyk/yc1dU6EBpzHnki0OvQDoZPfEoaKjQzCMemrGDf2+6pwvLDeYkQWWDmugJvXAYpw9H7Tw8uqQfBuFZmmk4LhbA1kwQ7+EcZsB99E4xi5rwtUhw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de; dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=nuXbbARs; dkim-atps=neutral; spf=pass (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org) smtp.mailfrom=exactco.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=exactco.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=ZMNUJHqa;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=qZCZMqRF;
+	dkim=pass (2048-bit key; unprotected) header.d=exactco.de header.i=@exactco.de header.a=rsa-sha256 header.s=x header.b=nuXbbARs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.151; helo=fout-a8-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=exactco.de (client-ip=176.9.10.151; helo=exactco.de; envelope-from=rene@exactco.de; receiver=lists.ozlabs.org)
+Received: from exactco.de (exactco.de [176.9.10.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dYNjg5MZ3z2xc8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Dec 2025 23:18:46 +1100 (AEDT)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 38167EC00C6;
-	Sat, 20 Dec 2025 07:18:42 -0500 (EST)
-Received: from phl-imap-17 ([10.202.2.105])
-  by phl-compute-04.internal (MEProxy); Sat, 20 Dec 2025 07:18:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1766233122;
-	 x=1766319522; bh=J0+iYPCNdQLGxjMdcbwA/gTR2x+sGNDsrapagDJOjyk=; b=
-	ZMNUJHqaIlhxOZxNF5kSN9cyqEffKO1N6c+BEpBlv8VjXQMbHQE7yoALKJ0HjI/b
-	XvGAc6Nr/uXvXo9lym6t/FhNbTT8hJ0mSSBz+fmaESsNJJOl7jlu7LgAT+0sDIu3
-	9Ki9V/JcUOfgAwGFROotsToxiJrzZ2HbHUg/qvUaZIsoyJuKUij2LQthPHxIVZHT
-	8dPzn3VcdepxgSOgThr/jM4iCzdR6eBphXPpTptuUXHjKJRJy4wlZja4j/aSTymk
-	QtqFEZPslcpgA2KOsgjQagojGoMci4HnQdqU53UAPoZV6TEruD3xNxW9FNgzp4rX
-	rCThjZ3LfEUaBUqtpw6mWQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1766233122; x=
-	1766319522; bh=J0+iYPCNdQLGxjMdcbwA/gTR2x+sGNDsrapagDJOjyk=; b=q
-	ZCZMqRFfdIVy+pv6ds6PnALhXDnC0sRLUaAmzj3s4eVEqx67+Ol363oA9MOttWV2
-	j6hXQPA/CRtlNilvr4HTv16wkfHYlGm9V6j7lI69yUJ3XWv2O6KxcLjZB0OGGlW7
-	9Pb6sKpvPbvw3pOLBVtxWWn+Gos1HAh5Vj93mri1hme7FUkzJuZiJJ0PCEni5MfC
-	6qQ40JesdRdWISaTK2J+CavcrMWFx0ijMPey4PXY9Owlvp6KchmrR39qmMPIz3Ra
-	164FxKRCIRTCLjUZGZtgfcqqiEVjq0sisy6FgxS0o+vS4efs1uxSgU2KGk1LftxX
-	zoQDQ7mzZgTT8pMwzmq3Q==
-X-ME-Sender: <xms:H5RGaeWggCPW-3VtQo0jpC7-99pN-EJCk2wblScdGz1-ni6zzovHpQ>
-    <xme:H5RGaVYT_XLO9OmSwEzEJsXvW2S4qWUO59PT1vBDEEtjuR17lQ2yRdmUOnh16NRBk
-    N4b2YhYcXMwf3mfadzQdQvw6TUuKClb1exusXGWb9um0WliqAYI0RC9>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdehudduiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeeffedpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtoheplhhinhhugiesrg
-    hrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdr
-    ihgurdgruhdprhgtphhtthhopegrnhgurhgvrghssehgrghishhlvghrrdgtohhmpdhrtg
-    hpthhtohepnhhpihhgghhinhesghhmrghilhdrtghomhdprhgtphhtthhopehsuhhrvghn
-    sgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrug
-    drohhrghdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehinhhtvghlrdgtohhmpdhr
-    tghpthhtoheprghrnhgusehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:H5RGaQN7rv5zp-HFb4nG5aaO04M6xP8R7qsDCEyc91z_HfiEw9u7pw>
-    <xmx:H5RGabPeugWqp3_PtYsF-HqGb-Qi4TuBmur4HsG9oKOJ7JXp_YbzCw>
-    <xmx:H5RGaUNckeV1xAQTE2DLNCcunDp1dlhBcx2IoeXkPzkj3nzshhpIWw>
-    <xmx:H5RGaXb7G2ORik0ZKe9tiOzWwycV_3Ybzkw_-C8JbPSkIm3ilKdNHg>
-    <xmx:IpRGaSEvRduNosmd8e790xMBHZoVrcyCL5X-_b1o6s4G1yFIMK_FSZ54>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id C2004C40054; Sat, 20 Dec 2025 07:18:39 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dYPbZ4Q8vz2xlF
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Dec 2025 23:58:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
+	s=x; h=Content-Transfer-Encoding:Content-Type:Mime-Version:From:Subject:Cc:To
+	:Message-Id:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
+	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
+	List-Owner:List-Archive; bh=bIk7+Oeov4iE49MSABnClqVr3hXCaOM4JLVr8/OtUKg=; b=n
+	uXbbARs7+OzEqb/SX/d7JYixx44tQue1PfiJJQfM0Ibf8xntcNgzRuDlN5DHUgpaSrRTyhJKPBg/p
+	5m2kHFMfvNqpgaT2/SlMApm0miM04utkzLuffw3Cy3BMcZM8asxxVvxZlhI6/eH+DllUeylEARjyZ
+	JlbUepXnnYAKLrzuuXY7BJvawrn72mzLNPVtjbUkRoeVVsdaHQWPdrU6UoQJ1fXUFjLy/YH7qNdOh
+	DSRr/87W++NuMXsbIY0IefwePu8WTtGc9fOQG0Liz34dzGqBzi8wvkUGVx7/gMsH5AMvq2elEhs6O
+	6FSCkXv+vESFGSzw6yvMaK2o0HHEX06qQ==;
+Date: Sat, 20 Dec 2025 13:58:41 +0100 (CET)
+Message-Id: <20251220.135841.1580468505634251616.rene@exactco.de>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] partitions: mac: fix exposing free space as partitions
+From: =?iso-8859-1?Q?Ren=E9?= Rebe <rene@exactco.de>
+X-Mailer: Mew version 6.10 on Emacs 30.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,114 +57,88 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-X-ThreadId: AhgucsMdbVXw
-Date: Sat, 20 Dec 2025 13:17:14 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Dave Hansen" <dave.hansen@intel.com>, "Arnd Bergmann" <arnd@kernel.org>,
- linux-mm@kvack.org
-Cc: "Andrew Morton" <akpm@linux-foundation.org>,
- "Andreas Larsson" <andreas@gaisler.com>,
- "Christophe Leroy" <chleroy@kernel.org>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Jason Gunthorpe" <jgg@nvidia.com>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Richard Weinberger" <richard@nod.at>,
- "Russell King" <linux@armlinux.org.uk>,
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>, "Michal Simek" <monstr@monstr.eu>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Mike Rapoport" <rppt@kernel.org>,
- "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Nishanth Menon" <nm@ti.com>,
- "Lucas Stach" <l.stach@pengutronix.de>
-Message-Id: <25642e76-43d6-4b17-94a9-e7dc53512223@app.fastmail.com>
-In-Reply-To: <a2ce2849-e572-404c-9713-9283a43c09fe@intel.com>
-References: <20251219161559.556737-1-arnd@kernel.org>
- <20251219161559.556737-2-arnd@kernel.org>
- <a3f22579-13ee-4479-a5fd-81c29145c3f3@intel.com>
- <bad18ad8-93e8-4150-a85e-a2852e243363@app.fastmail.com>
- <a2ce2849-e572-404c-9713-9283a43c09fe@intel.com>
-Subject: Re: [PATCH 1/4] arch/*: increase lowmem size to avoid highmem use
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Dec 19, 2025, at 21:52, Dave Hansen wrote:
-> On 12/19/25 12:20, Arnd Bergmann wrote:
->>> But, in the end, I don't this this matters all that much. If you think
->>> having x86 be consistent with ARM, for example, is more important and
->>> ARM really wants this complexity, I can live with it.
->> Yes, I think we do want the default of VMSPLIT_3G_OPT for
->> configs that have neither highmem nor lpae, otherwise the most
->> common embedded configs go from 3072 MiB to 1792 MiB of virtual
->> addressing, and that is much more likely to cause regressions
->> than the 2816 MiB default.
->
-> The only thing we'd "regress" would be someone who is repeatedly
-> starting from scratch with a defconfig and expecting defconfig to be the
-> same all the time. I honestly think that's highly unlikely.
+The mac partitions code creates partitions for unallocated, free
+space, and even the partition map itself. Fix by checking the VALID
+and ALLOCATED bits. Fix checkpatch trailing whitespace error while at
+it.
 
-The entire vmsplit selection is guarded by a CONFIG_EXPERT conditional,
-so I would expect it to change both for embedded distros that store
-a project specific defconfig and for individual users that have a full
-.config. If someone sets CONFIG_EXPERT, they do indeed keep any
-previous defaults, but I'm also less worried about them.
+t2:/# parted /dev/sda print free
+Disk /dev/sda: 34.4GB
+Sector size (logical/physical): 512B/512B
+Partition Table: mac
+Disk Flags:
+Number  Start   End     Size    File system  Name   Flags
+ 1      512B    32.8kB  32.3kB               Apple
+        32.8kB  99.6MB  99.6MB  Free Space
+ 2      99.6MB  1000MB  901MB                linux
+        1000MB  34.4GB  33.4GB  Free Space
 
-In the Arm version, the 'choice' statement itself does not depend
-on CONFIG_EXPERT, but I've added 'depends on !HIGHMEM || EXPERT'
-in VMSPLIT_3G and VMSPLIT_3G_OPT for a similar effect.
+before:
+[   67.108282]  sda: [mac] sda1 sda2 sda3 sda4
 
-> If folks are upgrading and _actually_ exposed to regressions, they've
-> got an existing config and won't be hit by these defaults at *all*. They
-> won't actually regress.
->
-> In other words, I think we can be a lot more aggressive about defaults
-> than with the feature set we support. I'd much rather add complexity in
-> here for solving a real problem, like if we have armies of 32-bit x86
-> users constantly starting new projects from scratch and using defconfigs.
->
-> I'd _really_ like to keep the defaults as simple as possible.
+patched:
+[   67.108110]  sda: [mac] sda2
 
-I'm fine with 
+Signed-off-by: René Rebe <rene@exactco.de>
+---
+ block/partitions/mac.c | 9 ++++++---
+ block/partitions/mac.h | 2 ++
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-	default VMSPLIT_2G_OPT if !X86_LPAE
-	default VMSPLIT_2G
+diff --git a/block/partitions/mac.c b/block/partitions/mac.c
+index b02530d98629..fc0ba1c8ec6e 100644
+--- a/block/partitions/mac.c
++++ b/block/partitions/mac.c
+@@ -96,9 +96,12 @@ int mac_partition(struct parsed_partitions *state)
+ 		part = (struct mac_partition *) (data + pos%512);
+ 		if (be16_to_cpu(part->signature) != MAC_PARTITION_MAGIC)
+ 			break;
++		if ((be32_to_cpu(part->status) & (MAC_STATUS_VALID | MAC_STATUS_ALLOCATED)) !=
++		    (MAC_STATUS_VALID | MAC_STATUS_ALLOCATED))
++			continue;
+ 		put_partition(state, slot,
+-			be32_to_cpu(part->start_block) * (secsize/512),
+-			be32_to_cpu(part->block_count) * (secsize/512));
++				be32_to_cpu(part->start_block) * (secsize/512),
++				be32_to_cpu(part->block_count) * (secsize/512));
+ 
+ 		if (!strncasecmp(part->type, "Linux_RAID", 10))
+ 			state->parts[slot].flags = ADDPART_FLAG_RAID;
+@@ -112,7 +115,7 @@ int mac_partition(struct parsed_partitions *state)
+ 
+ 			mac_fix_string(part->processor, 16);
+ 			mac_fix_string(part->name, 32);
+-			mac_fix_string(part->type, 32);					
++			mac_fix_string(part->type, 32);
+ 		    
+ 			if ((be32_to_cpu(part->status) & MAC_STATUS_BOOTABLE)
+ 			    && strcasecmp(part->processor, "powerpc") == 0)
+diff --git a/block/partitions/mac.h b/block/partitions/mac.h
+index 0e41c9da7532..10828c5d53d2 100644
+--- a/block/partitions/mac.h
++++ b/block/partitions/mac.h
+@@ -30,6 +30,8 @@ struct mac_partition {
+ 	/* there is more stuff after this that we don't need */
+ };
+ 
++#define MAC_STATUS_VALID	1	/* partition is valid */
++#define MAC_STATUS_ALLOCATED	2	/* partition is allocated */
+ #define MAC_STATUS_BOOTABLE	8	/* partition is bootable */
+ 
+ #define MAC_DRIVER_MAGIC	0x4552
+-- 
+2.52.0
 
-and dropping the VMSPLIT_3G_OPT default for non-highmem x86
-builds if you think that's better. I still think we need the
-special case for X86_LPAE/NX users to get to the point of having
-VMSPLIT_2G_OPT as the default across architectures for current
-HIGHMEM users that have exactly 2GB.
 
-I honestly don't know enough about x86-32 users to have
-a good idea who should be optimizing for. The embedded systems
-(vortex86 and geode) seem to mostly have 512MB or less and no
-PAE, so it probably works either way. As with similar
-Arm configurations, these seemed like the highest priority
-to me.
-
-I see there are a few rare vortex86dx3 boards and the
-upcoming vortex86ex3 that can have 2GB and would be using
-HIGHMEM=y but PAE=n today, and these really want the 2G_OPT
-split by default, not VMSPLIT_2G.
-
-Hobbyists running on vintage PC systems instead may have
-intentionally seeked out the few machines that actually support
-2GB or 3.5GB of RAM on late Pentium-M or early Atom CPUs,
-though most of the historic machines between the i486 and
-the last 32-bit desktops would likely have much less.
-
-    Arnd
+-- 
+René Rebe, ExactCODE GmbH, Berlin, Germany
+https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
 
