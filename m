@@ -1,50 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-14917-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14918-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1ACFCD2D75
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Dec 2025 11:45:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8910CCD2E0D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Dec 2025 12:18:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dYLdq3bvfz2yFQ;
-	Sat, 20 Dec 2025 21:45:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dYMN90s4Qz2yFQ;
+	Sat, 20 Dec 2025 22:18:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766227519;
-	cv=none; b=ZvNQHiK3gI690hfQGZB3tyYCqW0drv4H3ucveJh2B21nLGW6XSelhR+Z5fAmG9hcYp8PUlYXNh0vZtUbFEWrPQHeX0ech4acSJd1rKmQRwJMOI15waXNjHEqScPWQ+M6ZMn0ysCsyfP9zHH/qb+GdA59QPPG4j+VW3KoCpTv3zrH7T/BsEZ2tYMzKrwLNDX1NXLx/3sVqo28dbElgcjtW/BQH9D9lF3PiAOqTVBc8SzmyIKiUl8jGN6ljtoeT7mWrvPXbq0BUZ5pb5btYATP1GFA3Zt9pl8uKLbm/bMr32viwUC0dW0TB6tbNqbpVGD7iRyYDGr81WAphWC2VTLzVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766227519; c=relaxed/relaxed;
-	bh=dDVJ1lNXe5miYeb7Pa/YktQaMCfraxS4pds/E6jFn8M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jfhHeP+uoJ8SliCUEBOc1p+4A5wVhtCnHI/gDWMLJmJbdXzUTPTLa3kVn13k5eSw6c++FLhnhacw8Oofru6TJr/R2b4KVsWcPmKw7DHmqWExeBwg8UNEO27BBAGDE8h4nPKea9zY/WtpE2wqKDKQMO5MaeLsbBJ+YKpfNI/TVv5/h9Zf7LA7I949Z288TQeLwnp23Hef1adX5CmxQ1UKs/sMAReTVi21/myCgTdSmQTca9OOr3q4BH3x1ppmy6ug/Zdo/1kuAQ8yGzKUg/TLFWP05eV2OZ9yQTP5IteJb3/LmosWFlnpL4z48OPEtpCE1E5Ve7Ca7FsGAm/4AFa5mQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bRB0hHm4; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.50 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766229513;
+	cv=pass; b=PRNqNO3j8misMGECtgyNyWXZJZOpuGZ6odR6NAwjBUm2UzIP7S7pdHCgCxtSXv4r9XfDfUOf/vDOhsMxy5g3l56a08lctaapAlYirwrLPTg13VZI0iiZ0Luhnz1mqVKQPu8WyptTGYRbaGbsO/7tg4xA4e8AdcovHGkBlTWISZMsu8c0VPPP+s9DFMcTnm45Blp2IhrRZ8a+CUgZLURE3HU5+eoUqrNI9i/i1QDARkoIsn9/dp83GE4N50dFWkGV5YQIzXvQSB6Dtu3K1KQ/YQLJeLMlE+HL2+1H4hc0ZU8N/rPxsVIR/Ew6EjMtqwPriLqyvjaiwQjMMPFf9sKTmg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1766229513; c=relaxed/relaxed;
+	bh=9EnJJOFz0YxV4Mx+dW+7qgAk7LiNUV4sgcP4KAKrUTU=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=DE6lfA+n8PQt3rhQJ3avY9ouUY8nlQOtG/NQWGIy8uUZOWn/N2k4v1NvrWmKXJ6wHugTBBRCTdGnu/IC53QYOOx7Nbl9lxL2mHcSGL8GfudPEPf+PZfDpXFYxlkfY1DXtzgZTnNrFyFT0+3QUP5ngYnEdIxelAh3K4Do1hJtj7MxFCHTqcvuq9rQty03/4YDvLVE1LizNCMIKeFtBhYt6bUJzibS/d8LfZ71zG0wjWKpBq66o4c0Bt7gk9Zg8a2M2sAH//56ivUGR1jQJYGU2lBcF+jDZB7f6xUcXVQJTsvD8I4A6FhA+QaB5/TX3mudlucU/+Oe8RHIhZW5zYIJ3A==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Ppi04v4n; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=uyfkbg+J; dkim-atps=neutral; spf=pass (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bRB0hHm4;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Ppi04v4n;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=uyfkbg+J;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dYLdp1mxlz2xlF
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Dec 2025 21:45:18 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 456854067B;
-	Sat, 20 Dec 2025 10:45:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0BDC4CEF5;
-	Sat, 20 Dec 2025 10:45:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766227514;
-	bh=V5P5vXWLkKnry4xZROdXvmrEOjVqCHKY6ocQB130z6o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bRB0hHm4nUD2k0rwJVhjtIgZd3iS4PLr4Rw8rW4AJNs1BKldZkf1PKdePJEY+10Sc
-	 38oKr67givnzWArEIxU29dHrHuwhOzMwa+UxE3AIPTnidDfP44t/Yp3msEWXb/xzOu
-	 G6Fpn28pjGMsvuO6yOSWSMtxWr4I59kJStCPyqNJxjgvAuuBxIHv0jCnWakKWt1Ybi
-	 912GbWJKweARZSrRNXHCrmjydzrIIqeYtTJchNfYF4boarfyUwbZJLSCwP3hQBPOTK
-	 bsmsWCWyJj08XFDM2yt/hHwPWhqXVufXvayHjEm6hkGdxLN5GspkhqCYGJ9I1gfHDX
-	 +TJI5mvws5yvA==
-Message-ID: <b371cc50-4b3d-4b0c-8948-6af78baac041@kernel.org>
-Date: Sat, 20 Dec 2025 11:45:10 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dYMN460hCz2xlF
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Dec 2025 22:18:26 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1766229477; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=tQBDHzifMy22i4OjSgA+4C6GzSLa1mHQVS0yoyk4IIgiulYk4b09TZf9lmjmvUD9kp
+    LkrQ1w91omYo6nJkhip0qir660qIlW2NWfnrTQTxPACtWusFew5T2NCnUOgMrEDfwlpZ
+    kejjyRsR7AokFah3IdNgVBCeIqlbIL/G0z5GgSV1giWJrVeyFm3YLnkciwIoqbCanSaW
+    KxLtQ5HR4OMBCMrvnwZEZ4je9wD12zve1Zuodcdi+EVvX8fG85+G5VV10kutp1Hys45A
+    gTdp9OIfkHW6NxG+YP3Q2YgEti3Auc42dgOiTc2lHPKZVZA5haEaXanYIaPKEElT1Yp/
+    7hjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1766229477;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=9EnJJOFz0YxV4Mx+dW+7qgAk7LiNUV4sgcP4KAKrUTU=;
+    b=gAl9QZq66A1h7OQpW++C1jzJTvvcOQn8CMLJsr1ofysRXb0EsV9abXPxst0MKz0s74
+    eImcylceENA9SNlPYvZyK0P1WQYcd2JBdUlIwPS3/zsUTmFGC/abxWwsEsGelh28ndB6
+    Rvn/IPYFSiQ6K/jBcqHX/ODQoU/7NvIg+nme7refW0HdhZCVH8lijrcIEskdwpf2QRng
+    qKiTTGjOTP3PkYvMXr4uuT2YCIUXApJ/ND9QbxRsNo4UxknteHbqsmH7v4VleDRUOajG
+    yqT5vVL8pIn4HnMo5QH57UsmqPl+sceS3CcWYSDUHjkJfbWCEs0ZbnXTKgnGvfzcYbnZ
+    tOuw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1766229477;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=9EnJJOFz0YxV4Mx+dW+7qgAk7LiNUV4sgcP4KAKrUTU=;
+    b=Ppi04v4nsBh7iY3ZGE2oILxtG1P+KcHaRPtNEgvP/FgcZ+3IE8rXuUoLSYkbePK9k6
+    fYAuLntSGhPUX+9KP8fB9DMymyEikIA5T6gv4pr6TUCv1zYAJbYIHLcXwWcubdm6mL56
+    1eCmM8CqQmBCSBMaykz8xbof+SULC7MSqv9xR+2ueKBNpreyhytqeLvPXS0SLJ8IlGIR
+    i2H7Psl53ZWilNWcryg0Pijv/pKYO2GCQnBTfCd/Pj5QRGo3fMqy8qaBxXXdvz3mgO9P
+    KH/r7SNY+6ea0ay9HgeYA3Xa+en7lskqTI/aCK2KVvzrGhtwo3vwvJR2fN3TQCymMQRP
+    pC1A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1766229477;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=9EnJJOFz0YxV4Mx+dW+7qgAk7LiNUV4sgcP4KAKrUTU=;
+    b=uyfkbg+JdqUjEe+W+tPxECO0HUyYEI3euwc7PxIuEt+lUhCDzvUsp53g2QRy/u1CRz
+    9pu+CsNZBniWs56yhZDw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr4thIFiqT9BURIS+l7x3g"
+Received: from void-ppc.a-eon.tld
+    by smtp.strato.de (RZmta 54.1.0 DYNA|AUTH)
+    with ESMTPSA id efe0e51BKBHtZD1
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sat, 20 Dec 2025 12:17:55 +0100 (CET)
+Subject: Re: [PATCH] powerpc/32: Restore disabling of interrupts at
+ interrupt/syscall exit
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Guenter Roeck <linux@roeck-us.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ mad skateman <madskateman@gmail.com>, hypexed@yahoo.com.au,
+ Christian Zigotzky <info@xenosoft.de>
+References: <585ea521b2be99d293b539bbfae148366cfb3687.1766146895.git.chleroy@kernel.org>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Organization: A-EON Open Source
+Message-ID: <0cce7da7-9524-05c6-11bb-2f0f1977ca94@xenosoft.de>
+Date: Sat, 20 Dec 2025 12:17:55 +0100
+X-Mailer: BrassMonkey/33.9.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,96 +105,149 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/fsl_rio: fix a improper release in
- fsl_rio_setup()
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, maddy@linux.ibm.com,
- mpe@ellerman.id.au, npiggin@gmail.com, mporter@kernel.crashing.org,
- alex.bou9@gmail.com
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20251219141033.632153-1-lihaoxiang@isrc.iscas.ac.cn>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20251219141033.632153-1-lihaoxiang@isrc.iscas.ac.cn>
+In-Reply-To: <585ea521b2be99d293b539bbfae148366cfb3687.1766146895.git.chleroy@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-Le 19/12/2025 à 15:10, Haoxiang Li a écrit :
-> [Vous ne recevez pas souvent de courriers de lihaoxiang@isrc.iscas.ac.cn. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> If rio_register_mport() fails, put_device() is the correct way
-> to drop the device reference.
-> To prevent a double free, remove put_device() in rio_register_mport()
-> Also, add a put_device() in tsi721_setup_mport() to prevent reference
-> leak.
-
-Your explanation is unclear. It is correct that put_device() is the 
-correct way to drop the device reference, and it is already what 
-rio_register_mport() does. Why do you need to move it out of 
-rio_register_mport() ? This is what you have to explain.
-
-> 
-> Found by code review.
-
-AI code review or human code review ?
-
-> 
-> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+On 19/12/25 13:23, Christophe Leroy (CS GROUP) wrote:
+> Commit 2997876c4a1a ("powerpc/32: Restore clearing of MSR[RI] at
+> interrupt/syscall exit") delayed clearing of MSR[RI], but missed that
+> both MSR[RI] and MSR[EE] are cleared at the same time, so the commit
+> also delayed the disabling of interrupts, leading to unexpected
+> behaviour.
+>
+> To fix that, mostly revert the blamed commit and restore the clearing
+> of MSR[RI] in interrupt_exit_kernel_prepare() instead. For 8xx it
+> implies adding a synchronising instruction after the mtspr in order to
+> make sure no instruction counter interrupt (used for perf events) will
+> fire just after clearing MSR[RI].
+>
+> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> Closes: https://lore.kernel.org/all/4d0bd05d-6158-1323-3509-744d3fbe8fc7@xenosoft.de/
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Closes: https://lore.kernel.org/all/6b05eb1c-fdef-44e0-91a7-8286825e68f1@roeck-us.net/
+> Fixes: 2997876c4a1a ("powerpc/32: Restore clearing of MSR[RI] at interrupt/syscall exit")
+> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 > ---
->   arch/powerpc/sysdev/fsl_rio.c    | 2 +-
->   drivers/rapidio/devices/tsi721.c | 1 +
->   drivers/rapidio/rio.c            | 1 -
->   3 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/sysdev/fsl_rio.c b/arch/powerpc/sysdev/fsl_rio.c
-> index f9b214b299e7..f6226b2619ed 100644
-> --- a/arch/powerpc/sysdev/fsl_rio.c
-> +++ b/arch/powerpc/sysdev/fsl_rio.c
-> @@ -697,7 +697,7 @@ static int fsl_rio_setup(struct platform_device *dev)
->                  if (rio_register_mport(port)) {
->                          release_resource(&port->iores);
->                          kfree(priv);
-> -                       kfree(port);
+>   arch/powerpc/include/asm/hw_irq.h |  2 +-
+>   arch/powerpc/include/asm/reg.h    |  1 +
+>   arch/powerpc/kernel/entry_32.S    | 15 ---------------
+>   arch/powerpc/kernel/interrupt.c   |  5 ++++-
+>   4 files changed, 6 insertions(+), 17 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
+> index 1078ba88efaf..9cd945f2acaf 100644
+> --- a/arch/powerpc/include/asm/hw_irq.h
+> +++ b/arch/powerpc/include/asm/hw_irq.h
+> @@ -90,7 +90,7 @@ static inline void __hard_EE_RI_disable(void)
+>   	if (IS_ENABLED(CONFIG_BOOKE))
+>   		wrtee(0);
+>   	else if (IS_ENABLED(CONFIG_PPC_8xx))
+> -		wrtspr(SPRN_NRI);
+> +		wrtspr_sync(SPRN_NRI);
+>   	else if (IS_ENABLED(CONFIG_PPC_BOOK3S_64))
+>   		__mtmsrd(0, 1);
+>   	else
+> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+> index 3fe186635432..3449dd2b577d 100644
+> --- a/arch/powerpc/include/asm/reg.h
+> +++ b/arch/powerpc/include/asm/reg.h
+> @@ -1400,6 +1400,7 @@ static inline void mtmsr_isync(unsigned long val)
+>   				     : "r" ((unsigned long)(v)) \
+>   				     : "memory")
+>   #define wrtspr(rn)	asm volatile("mtspr " __stringify(rn) ",2" : : : "memory")
+> +#define wrtspr_sync(rn)	asm volatile("mtspr " __stringify(rn) ",2; sync" : : : "memory")
+>   
+>   static inline void wrtee(unsigned long val)
+>   {
+> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+> index 16f8ee6cb2cd..d8426251b1cd 100644
+> --- a/arch/powerpc/kernel/entry_32.S
+> +++ b/arch/powerpc/kernel/entry_32.S
+> @@ -101,17 +101,6 @@ SYM_FUNC_END(__kuep_unlock)
+>   .endm
+>   #endif
+>   
+> -.macro	clr_ri trash
+> -#ifndef CONFIG_BOOKE
+> -#ifdef CONFIG_PPC_8xx
+> -	mtspr   SPRN_NRI, \trash
+> -#else
+> -	li	\trash, MSR_KERNEL & ~MSR_RI
+> -	mtmsr	\trash
+> -#endif
+> -#endif
+> -.endm
+> -
+>   	.globl	transfer_to_syscall
+>   transfer_to_syscall:
+>   	stw	r3, ORIG_GPR3(r1)
+> @@ -160,7 +149,6 @@ ret_from_syscall:
+>   	cmpwi	r3,0
+>   	REST_GPR(3, r1)
+>   syscall_exit_finish:
+> -	clr_ri	r4
+>   	mtspr	SPRN_SRR0,r7
+>   	mtspr	SPRN_SRR1,r8
+>   
+> @@ -237,7 +225,6 @@ fast_exception_return:
+>   	/* Clear the exception marker on the stack to avoid confusing stacktrace */
+>   	li	r10, 0
+>   	stw	r10, 8(r11)
+> -	clr_ri	r10
+>   	mtspr	SPRN_SRR1,r9
+>   	mtspr	SPRN_SRR0,r12
+>   	REST_GPR(9, r11)
+> @@ -270,7 +257,6 @@ interrupt_return:
+>   .Lfast_user_interrupt_return:
+>   	lwz	r11,_NIP(r1)
+>   	lwz	r12,_MSR(r1)
+> -	clr_ri	r4
+>   	mtspr	SPRN_SRR0,r11
+>   	mtspr	SPRN_SRR1,r12
+>   
+> @@ -313,7 +299,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
+>   	cmpwi	cr1,r3,0
+>   	lwz	r11,_NIP(r1)
+>   	lwz	r12,_MSR(r1)
+> -	clr_ri	r4
+>   	mtspr	SPRN_SRR0,r11
+>   	mtspr	SPRN_SRR1,r12
+>   
+> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+> index aea6f7e8e9c6..e63bfde13e03 100644
+> --- a/arch/powerpc/kernel/interrupt.c
+> +++ b/arch/powerpc/kernel/interrupt.c
+> @@ -38,7 +38,7 @@ static inline bool exit_must_hard_disable(void)
+>   #else
+>   static inline bool exit_must_hard_disable(void)
+>   {
+> -	return false;
+> +	return true;
+>   }
+>   #endif
+>   
+> @@ -443,6 +443,9 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
+>   
+>   		if (unlikely(stack_store))
+>   			__hard_EE_RI_disable();
+> +#else
+> +	} else {
+> +		__hard_EE_RI_disable();
+>   #endif /* CONFIG_PPC64 */
+>   	}
+>   
 
-Why do you remove this kfree() ? By doing this you will leak the port 
-pointer allocated earlier in the loop by kzalloc()
+The patched kernel 6.19.0-rc1 boots without any problems. Thank you.
 
-> +                       put_device(&port->dev);
->                          continue;
->                  }
->                  active_ports++;
-> diff --git a/drivers/rapidio/devices/tsi721.c b/drivers/rapidio/devices/tsi721.c
-> index 4b84270a8906..17c2bcf29c5c 100644
-> --- a/drivers/rapidio/devices/tsi721.c
-> +++ b/drivers/rapidio/devices/tsi721.c
-> @@ -2758,6 +2758,7 @@ static int tsi721_setup_mport(struct tsi721_device *priv)
->          err = rio_register_mport(mport);
->          if (err) {
->                  tsi721_unregister_dma(priv);
-> +               put_device(&mport->dev);
->                  goto err_exit;
->          }
-> 
-> diff --git a/drivers/rapidio/rio.c b/drivers/rapidio/rio.c
-> index 46daf32ea13b..026b2328afd7 100644
-> --- a/drivers/rapidio/rio.c
-> +++ b/drivers/rapidio/rio.c
-> @@ -2089,7 +2089,6 @@ int rio_register_mport(struct rio_mport *port)
->                  mutex_lock(&rio_mport_list_lock);
->                  list_del(&port->node);
->                  mutex_unlock(&rio_mport_list_lock);
-> -               put_device(&port->dev);
->          } else {
->                  dev_dbg(&port->dev, "RIO: registered mport%d\n", port->id);
->          }
-> --
-> 2.25.1
-> 
+Tested-by Christian Zigotzky <chzigotzky@xenosoft.de>
+
+-- 
+Sent with BrassMonkey 33.9.1 (https://github.com/chzigotzky/Web-Browsers-and-Suites-for-Linux-PPC/releases/tag/BrassMonkey_33.9.1)
 
 
