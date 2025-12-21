@@ -1,65 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-14929-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14930-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607E5CD4431
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Dec 2025 19:49:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD49CD4759
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Dec 2025 00:42:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dZ9LJ0Vjbz2xlF;
-	Mon, 22 Dec 2025 05:49:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dZHrC5jxrz2xqL;
+	Mon, 22 Dec 2025 10:42:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766342983;
-	cv=none; b=S2xfxlTJhDjuWsx1Dca+rOVtQVM0F3LH4i45RIj5EZ402//XkmW/o9JFNkYJn7jZO3QzqCLFPDXc1RriFTy80xKvijkGMreBNKnyKqoK6mEty9y79I4N/F5kv7hlLtICPWVYdxISvQz4iGf6DguV83OgoQprwlKoFJ8Rl5wfPuUPVxMX5CWV9JYJiAQfYvcqb4QFeuVmu8oOXfNStxwHmYqdBtDofCR1q2AQXBA7K4J3r8qBDk6L6+focc1g6AlZVB0CU57q1Mcbp2vk5jPzLnBcye+ZleQCU02om8ITASw1AHhnDkI4PTB+HKonpAYT5pTZ5xPxfTMbDXvc6u4kZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766360555;
+	cv=none; b=Xc9E3dMxYQnGnhwzM0blrHQmL+Qx3tKJwHLEJuCKuTxAwJ6V4D8X7LzuC7MLJg7JZh4mwXPODbNPRRYsKrWwygJCghsasgXoXSugCl/WliRsGQQgl3pxW5Ay+7VUYNhSDI/2e10vV3+239a5hIL1IV7cjT7Pd/mFRGKbS4Cu3qjZXrqUr31tkdFNC+5OFE/OMb+iAWqfrxsszeSkWK0S5I2gxk2l1C6pWQYnaTkLNtxHIfdKMuzTNI/K3EHiIOrU7dQS5LNJ0kOwhlXIg5qaKSNj82BkmUmzTsbi3gCtJIpbHGwT7L7qJ7JtZWz8G7hFiZAJWMKsn0NUi+C9pibmXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766342983; c=relaxed/relaxed;
-	bh=Ka0RVuUzcoyLTnWLXL6FupyMPRC2ai/Qs3l4AmXzsY0=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=foVgtwZdNfMrXYTLVAzfIzeNv5n3ANDr3rFclHtaZDv7kksSXp6DqmQY0cpRb6eg86zQmKpkxKhLYNnNo98o+fja1V7DPGSugvZ7VvPCJTXzQjXytWDuUgyD6xZRx6MgRQBJtItx60biiBaTw0fjmW4fjnuf/ofLT+Aop6cTmw7besTNWLT9mYJ7iYWOQmwKTToyLkG2xp3Cs5fVl86bxk6TnRXEIks2AnnsSofQOMX+PLmQ/wYj4QCAwi6UTwBpXyyVGILcTqeqwz6lEjtgQOc9jBN1yqYQhv05JydhMqpHCL/yMjCmkDCnALqBBE0E2AmfTGKDPmKn/bGhSOWANw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=nJr+00XR; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1766360555; c=relaxed/relaxed;
+	bh=VXV/4YXkIuBowvca7hFWsL0aDHJ+pblILf22L+sGA+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F3bwPSoY7MWaHsNjnqHUz8t7PhpsSXro+SAJFKY6jZ+kfjEJzf/2s0RrcN/BEo9THCTuxq7jrLuz8SS3PzfH6DbWmItBDrH+nkwQsaok6K4XWIgpW5GzoxHXYb1EBYBzsJ53/ZIXr6yy/IHUXC7ofXs8o+rRfw9nxB8ZSdt7rAoDme2TeB5S9qyA3We/ZXJo+hB92d2ACYElRGaZsLghQBOc7IHCfGAua0Z7k+Jytf1WhfcC7VG5QFi+fwz8XrV7N5j571B9a+qtCEv1OaviGiBHtPN6KQqkLeGreV2UuDmr309ZQFgZlgrU8oI04JNPyMktAK/clT5lM5JxjjLd5A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J+1NNZ5S; dkim-atps=neutral; spf=pass (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=nJr+00XR;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J+1NNZ5S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dZ9LG3pZ7z2xdL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Dec 2025 05:49:41 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F0B7F6001D;
-	Sun, 21 Dec 2025 18:49:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87ECC4CEFB;
-	Sun, 21 Dec 2025 18:49:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1766342948;
-	bh=IJXA+QzQQpGmzrjmRsOKwVn2upf0r1hQr276K/HQbNg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nJr+00XRdPtzlvH9JOjETY8okc5IoS3PxdQmW9oo668Rvqkalq9mXrLUjB0AbsyW/
-	 eIKKrW8sm5ef9jKskfyVXa7x3lRrVXMySdJZN2ki5xU01eOomWskWSJRcFhhR668sx
-	 3LiGEKDsBGq2NxgVr0zHtc+LHnCm1WTs0bAiuqPg=
-Date: Sun, 21 Dec 2025 10:49:07 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, Sourabh Jain
- <sourabhjain@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, Christophe
- Leroy <christophe.leroy@csgroup.eu>, Heiko Carstens <hca@linux.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Thomas Gleixner <tglx@linutronix.de>,
- Vasily Gorbik <gor@linux.ibm.com>, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, x86@kernel.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6] mm/hugetlb: ignore hugepage kernel args if hugepages
- are unsupported
-Message-Id: <20251221104907.032abf56c67f3e50c9c94e31@linux-foundation.org>
-In-Reply-To: <655cc605-2ce1-4ccb-8cc0-a0a31a9c89fd@kernel.org>
-References: <20251221053611.441251-1-sourabhjain@linux.ibm.com>
-	<87a4zcml36.ritesh.list@gmail.com>
-	<655cc605-2ce1-4ccb-8cc0-a0a31a9c89fd@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dZHr82QwNz2xnl
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Dec 2025 10:42:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766360552; x=1797896552;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gGxGbnasspaVRRI7by5dOPE84jKe4QonzMZG00rj0ik=;
+  b=J+1NNZ5Sfwx/FAd/r+26XqoJVY8V6BpFSs76QSUMXGTAY149aNpJ24ck
+   9T4ppCFP6RrymM30vmbWFEmUR9U05S2U69MzrBotnuYziZBKC4h3q4sF6
+   diP5mCRr+PXy2dykNKrIIIRduicj8cxA+a2pLGuka/Ne10m2Mxr3/UpE8
+   tZslsqfn6NM3W2C4G2NFiHGboh/DGChNSLvvGgB0cQERVplop45A+AcLx
+   Pqc9oFCYCV8ejVNvELrVKFxI4KTvr8+PPDFdepNlmKny/XxNwpwzKsY2e
+   hwezvZw308XSOusLiUxxJAEOnoPpSC87l3OKPB2eQbc4E62Rj0xGNq6pT
+   Q==;
+X-CSE-ConnectionGUID: qXJaGNf7Rtu+WdBkfxQLOQ==
+X-CSE-MsgGUID: /EpbchO4QgWQJ4X9CiB5xA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="79588030"
+X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
+   d="scan'208";a="79588030"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2025 15:42:26 -0800
+X-CSE-ConnectionGUID: r93/8ivDRxKA/B+8tTPRGA==
+X-CSE-MsgGUID: 0Kw/AbA4S4SkWxcQYJvWJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
+   d="scan'208";a="199403859"
+Received: from lkp-server01.sh.intel.com (HELO 0713df988ca2) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 21 Dec 2025 15:42:24 -0800
+Received: from kbuild by 0713df988ca2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vXT49-000000000It-2tdX;
+	Sun, 21 Dec 2025 23:42:21 +0000
+Date: Mon, 22 Dec 2025 07:42:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, Ryan Roberts <ryan.roberts@arm.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	Kevin Brodsky <kevin.brodsky@arm.com>
+Subject: Re: [PATCH] powerpc/mm: export symbols for lazy_mmu_mode KUnit tests
+Message-ID: <202512220735.UL4ukFLo-lkp@intel.com>
+References: <20251217163812.2633648-1-kevin.brodsky@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,37 +83,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251217163812.2633648-1-kevin.brodsky@arm.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sun, 21 Dec 2025 10:22:44 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+Hi Kevin,
 
-> > 
-> > My main concern was -
-> > A fixes tag means it might get auto backported to stable kernels too,
-> 
-> Not in the MM world -- IIRC. I think there is the agreement, that we 
-> decide what should go into stable and what not.
-> 
-> Andrew can correct me if my memory is wrong.
+kernel test robot noticed the following build warnings:
 
-Yes, -stable maintainers have been asked to only backport patches where
-the MM developers asked for that, with cc:stable.  There may be
-slipups, but as far as I know this is working.
 
-I don't actually know how they determine which patches need this
-special treatment.  Pathname?  Signed-off-by:akpm?
 
-> But we can always jump in and say that something should not go to stable 
-> trees.
+url:    https://github.com/intel-lab-lkp/linux/commits/UPDATE-20251218-003955/Kevin-Brodsky/powerpc-64s-Do-not-re-activate-batched-TLB-flush/20251215-230757
+base:   the 14th patch of https://lore.kernel.org/r/20251215150323.2218608-15-kevin.brodsky%40arm.com
+patch link:    https://lore.kernel.org/r/20251217163812.2633648-1-kevin.brodsky%40arm.com
+patch subject: [PATCH] powerpc/mm: export symbols for lazy_mmu_mode KUnit tests
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20251222/202512220735.UL4ukFLo-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251222/202512220735.UL4ukFLo-lkp@intel.com/reproduce)
 
-Yes, please jump in if there are any thoughts about
-ordering/priority/timing.  In fact, please jump in if there are any
-thoughts at all ;)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512220735.UL4ukFLo-lkp@intel.com/
 
+All warnings (new ones prefixed by >>):
+
+>> arch/powerpc/mm/book3s64/hash_tlb.c:33:1: warning: data definition has no type or storage class
+      33 | EXPORT_SYMBOL_IF_KUNIT(ppc64_tlb_batch); /* For lazy_mmu_mode KUnit tests */
+         | ^~~~~~~~~~~~~~~~~~~~~~
+   arch/powerpc/mm/book3s64/hash_tlb.c:33:1: error: type defaults to 'int' in declaration of 'EXPORT_SYMBOL_IF_KUNIT' [-Wimplicit-int]
+   arch/powerpc/mm/book3s64/hash_tlb.c:33:1: error: parameter names (without types) in function declaration [-Wdeclaration-missing-parameter-type]
+   arch/powerpc/mm/book3s64/hash_tlb.c:158:1: warning: data definition has no type or storage class
+     158 | EXPORT_SYMBOL_IF_KUNIT(__flush_tlb_pending); /* For lazy_mmu_mode KUnit tests */
+         | ^~~~~~~~~~~~~~~~~~~~~~
+   arch/powerpc/mm/book3s64/hash_tlb.c:158:1: error: type defaults to 'int' in declaration of 'EXPORT_SYMBOL_IF_KUNIT' [-Wimplicit-int]
+   arch/powerpc/mm/book3s64/hash_tlb.c:158:1: error: parameter names (without types) in function declaration [-Wdeclaration-missing-parameter-type]
+
+
+vim +33 arch/powerpc/mm/book3s64/hash_tlb.c
+
+    31	
+    32	DEFINE_PER_CPU(struct ppc64_tlb_batch, ppc64_tlb_batch);
+  > 33	EXPORT_SYMBOL_IF_KUNIT(ppc64_tlb_batch); /* For lazy_mmu_mode KUnit tests */
+    34	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
