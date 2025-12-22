@@ -1,57 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-14936-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14940-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA671CD4C9E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Dec 2025 07:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2D0CD7368
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Dec 2025 22:39:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dZSfx2XQ9z2yFY;
-	Mon, 22 Dec 2025 17:20:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dZs444lf8z2xHW;
+	Tue, 23 Dec 2025 08:39:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766384409;
-	cv=none; b=LfONGwqQ/gnkfXLMfwgu+HKtj3qDL6osX2emu2jpscYsH4e9JoT1fz/T08fdyaRO4mHL0y93TuACdAvVCPzP+f3w7EXz7Uf4M7wwheFBQ3jSX4SzCznCZUv1kamga+JNvMwkzcQiGVospwrEPs/LIXzC56eJEv9Fo6WESH9C4GPsj+HyK4WdaWXaWW1lyz8h8gGDZcjZTkHSMuKmarenzmH5koOUBHI9PRPEeUMbOdcSats5Q0ddUHEpSTrfRpgUTMUFoBcL4vG55TY7MchC0bIRoLn5sDShlx5zGnpKzZ+hNV/BdjUebVoHxxQ6ofzZQZapyXmiOVtoX0ikhVEIGQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.81
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766389811;
+	cv=none; b=OB0Bf7RQxicpK2WawoSCQUbzHAXxGEgnsNX6p5OqXpXN15l6513CgkDyJhXacq/wxodAOoFK7+uCV9qIdqlqsVvu/k4EE0k6PtJyHyyq5re8eRJDT2okyJ1BVkSV7Z9flLlOaxCbbywEO4ToUpYmc8WqRP/2ippHkovL1HHUGA1rqTcBDcFsvc3l7A57/Pqf3Zb57JFkBUN+IJ6DHoPUtJzQIp2GvUR/ibjVDfnxStj7uD01iIEcculQthpXzURmUcl/pNpCVUZ5mgnwVTZ0Ycj+epmthKCKe8EcTuZTnOo/Q+BaMvvxVa7gLVsT63fYwpdc0G012eb1tib3Wo09Ag==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766384409; c=relaxed/relaxed;
-	bh=3fKYtWqofbkCgnPNsL8R/DUbeuU98UiEjsylA+ETtWg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KDGiLDcMSrbLpvPGifBcfAQwV8T3rE380iZfdIbiCtvloDbKLIv8q9ja5p6/Kvzv42V0yiRLDJmrMyXiJ/pdf5IskLNoHOBoCKJAQqT9Wa5PRrFOEfw8b66MJKHdy2doCD7wLzkcLGUG/VylqstABlepYbtKMmWA3sV9/mUSMuJjVNLWrdkniOmkb/CA5KnKc6m8NjUCyHG6OC4aKdCKoJIc5OvL6+3KNLR7w2k4+03/Vu+0AwRZYBOMHugzZ4pUEo1K+GDUE3eGxXRw6vSUfnkZ18zuoLS1oGE4p3cQdeT9wxLZmmudjDK0PgYCOzI0HJoCbHE9vqq/52LykHWIpg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=VIPSrzns; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=VIPSrzns;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	t=1766389811; c=relaxed/relaxed;
+	bh=mL4u8EF2hdg5j5GFccqUCLPSU7Svccm4F9ccJzYt7qU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WUgyDhuZ7bLuB9LB41MkSiXBgaaegob/fIKR1rii5PLU4PWPmwHlpjIRg09tfbWrEvHQ+SlfJirVByj3Z4op2d1R/kwko176WnMIREg5x8tOS8DG6/QjjM1CEnWMbuhuCPnIOHNlaYP7Z8NwchDO0rm9Dhoge3bpS3f93UCqXaIj4sYJTvsZ6REMGPxD8utg2+ozizNRgLx7orzQJu+QUWhKp4JRVLrhkSJ00UFuzGUM03bYhflKKMMnanL2P2ZFFSbrzebNUIRJHFXJ1nwHllSaCzsttZScx1Dmr/yqk+Q5SCID9AqVqBdVGDwGELwmAu0UPF43jv0dE5UouMxFEw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass (client-ip=159.226.251.81; helo=cstnet.cn; envelope-from=lihaoxiang@isrc.iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=isrc.iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=isrc.iscas.ac.cn (client-ip=159.226.251.81; helo=cstnet.cn; envelope-from=lihaoxiang@isrc.iscas.ac.cn; receiver=lists.ozlabs.org)
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dZSfw0SVnz2xSX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Dec 2025 17:20:07 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 093E260052;
-	Mon, 22 Dec 2025 06:20:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E4DC4CEF1;
-	Mon, 22 Dec 2025 06:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1766384404;
-	bh=YGkELqsIKU8rBjyfo2gCT07jzGxgx9BW3JXVX/lfT4g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VIPSrznsWaB+SAA4R19WJuv7g80xiVd+ss+g9racXlGqm4Mec73FjxMdxs+yrcvTj
-	 rltvWpowMowB5dMDGV8MioAjDN4uJoyfvHanYm1xZdqQhwHWHzVthxQ9ydtHTo/CGd
-	 W+90/8K4xw7uj5PbaJztrKle88fhwLklOmOIQCBM=
-Date: Mon, 22 Dec 2025 07:20:01 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	chleroy@kernel.org, akpm@linux-foundation.org, david@kernel.org,
-	ritesh.list@gmail.com, byungchul@sk.com, abarnas@google.com,
-	kay.sievers@vrfy.org, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] powerpc/pseries/cmm: fix the error handling in
- cmm_sysfs_register()
-Message-ID: <2025122248-obsession-urgent-648f@gregkh>
-References: <20251222031225.968472-1-lihaoxiang@isrc.iscas.ac.cn>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dZVfp0h1Rz2xFn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Dec 2025 18:50:09 +1100 (AEDT)
+Received: from localhost.localdomain (unknown [36.112.3.209])
+	by APP-03 (Coremail) with SMTP id rQCowAAXMNcn+EhpfBmPAQ--.53390S2;
+	Mon, 22 Dec 2025 15:49:59 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: ioana.ciornei@nxp.com
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Su Hui <suhui@nfschina.com>
+Subject: [PATCH] bus: fsl-mc: fix an error handling in fsl_mc_device_add()
+Date: Mon, 22 Dec 2025 15:49:58 +0800
+Message-Id: <20251222074958.992911-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,54 +51,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251222031225.968472-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAAXMNcn+EhpfBmPAQ--.53390S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrurykCrW8Aw4rCr45ZFyrJFb_yoWDAwbEyr
+	4Yvw47X3yDtrnrtw4ag3WSvrZ09w10gr4xXr43tFyfWrWYv398ZrZ5tr95Cw13uayIkr98
+	Aw17Jr1rJw1DWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb48FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjuHq7UUUU
+	U==
+X-Originating-IP: [36.112.3.209]
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiDAYEE2lIrR76BgAAsz
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Dec 22, 2025 at 11:12:25AM +0800, Haoxiang Li wrote:
-> If device_register() fails, put_device() should be called to drop
-> the device reference.
-> Thus add put_device() after subsys_unregister label and change
-> device_unregister() to device_del() in fail label.
-> 
-> Found by code review.
-> 
-> Fixes: 6c9d29095264 ("power: cmm - convert sysdev_class to a regular subsystem")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-> ---
->  arch/powerpc/platforms/pseries/cmm.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-> index 4cbbe2ee58ab..0666d3300bdb 100644
-> --- a/arch/powerpc/platforms/pseries/cmm.c
-> +++ b/arch/powerpc/platforms/pseries/cmm.c
-> @@ -419,8 +419,9 @@ static int cmm_sysfs_register(struct device *dev)
->  fail:
->  	while (--i >= 0)
->  		device_remove_file(dev, cmm_attrs[i]);
-> -	device_unregister(dev);
-> +	device_del(dev);
->  subsys_unregister:
-> +	put_device(dev);
->  	bus_unregister(&cmm_subsys);
->  	return rc;
->  }
+If device_add() fails, call put_device() to drop the device
+reference and do the cleanp.
 
-this does not look to be correct, how was it tested?
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/b767348e-d89c-416e-acea-1ebbff3bea20@stanley.mountain/
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+---
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Also, why not fix all of this up properly by calling the correct
-functions so that you don't have to manually add/remove the sysfs files?
-That would resolve the "problem" you seem to think is here in a much
-simpler way, and also fix the real bug in this function (i.e. it races
-with userspace and looses.)
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index 25845c04e562..90a2107a9905 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -896,7 +896,8 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
+ 		dev_err(parent_dev,
+ 			"device_add() failed for device %s: %d\n",
+ 			dev_name(&mc_dev->dev), error);
+-		goto error_cleanup_dev;
++		put_device(&mc_dev->dev)
++		return error;
+ 	}
+ 
+ 	dev_dbg(parent_dev, "added %s\n", dev_name(&mc_dev->dev));
+-- 
+2.25.1
 
-thanks,
-
-greg k-h
 
