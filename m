@@ -1,51 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-14942-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14944-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DEFCD7383
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Dec 2025 22:45:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1727CD7389
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Dec 2025 22:45:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dZsBV4bjCz2yFy;
-	Tue, 23 Dec 2025 08:45:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dZsBj0DQSz2yP8;
+	Tue, 23 Dec 2025 08:45:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766410843;
-	cv=none; b=UJFpa+C9n2DaIw/Qu5LjutdfqLJwEoRFU68fbIcR+b9cZsqOlUBOxqAlMrqKZmK4bwQyggfOC3lbO0XAotcIYpHli0k2sCXKb01gPHwfpRe0I9TMAKdX1fsrnJwI38Ur7BG+hfjKZQI6+/V6Y90tb6sJHOpoA6J0UbHD+OuD4CFt2gZwSmUFVSqy6AzNH01ZoRVa/hspF0svdb/9e5KeOsd4bXC4rmc0enJKOm/nNejYfmAs8aP/kzQqkHdjBbJZjm9zQ3qIgODUBzsgDyN9BtHsrQ2ckiz/ADWgozGexf/2XeNNcwjKEn0cGz4mqslqflyvYdR+YttOQH3x9+XvZQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766410848;
+	cv=none; b=WW7QnOYTng8fPNtIb5wYAdGLN072h7O0TqREmeLKKSZ5vscMdjD4lo6tlLsICkABf+/o0FT7QvoTEO7woD2yvljpEBgIJ5CgSnmSFTjtCK3Jl7+rCSBtW1nKlrlW4U/Zf+YGVH0Cb9Jol9fauy6Wnd3BVHGcV8nbgIKF+XSXdyzjvSkK/ZtxbPLmEYTYPbVeJOGGT/TKkBFPY/s0SLoLCX3kss1d0PBtqp9fJHZnE26HJUR+d93DKbPjiiWu6Q4f5T1soKhLQdbR6w6OVdBxzFWLWaflMFybWYKHMVLAhblqHldxwTdyPghnK+uesfu7lFkgXsT5og1I39k4mSFNNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766410843; c=relaxed/relaxed;
-	bh=457j4mXN2OxzLkX41S+PK2mTip5HKvn6E+f+s8P0swg=;
+	t=1766410848; c=relaxed/relaxed;
+	bh=NJ/ZFzWFkuZoFnGeHnU0VIpDOmF05pU5wZX9TQRDdrE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=b1IJzfBsuHwAYcizFF9lRNquV9u2JRq74ASoOgcPKbjsMR0XxyJAxMd6UFz9ioHuA2dwOLpSJX9uoag8scKwpmwSvUUHHDwf4xdwam34D4U5VzGu6npfEOsim9tCqWJDOCRPUYd8hDjNLw1hGEkLeURJWYn2kI87WhRe3CqCrzLFnUCSZdAXABgyqN1n5Iv6DKD9Dbrhb6Ek2J1zHFjLxbPRc/QugiRE4YMeMXwtBbIVIrSQDZMlbcZSLpL5B4GOJw1ziFzqIhVC4XIEQXubJntehKHHFRGiZ6kmoQBfYeDX58lodOjDOR89Wq1q9FUcjb+WIpsZhjF6D+9R+9gVbw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QIcyOygu; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=tamird@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=hsK5plEX+alMfEgUMtt01mNW5if4VOT9tPK364y3OSMqTpiFjYTlX0OTVIESkeNE/+Emmwa3Sj2SBYEFGNWAAcPB6qA4K/aCz/LlIfR8UPv9MtQ/oac/9zXuft8As3FVZTMwXMki/LPbnMee0A99C5aJMWzSWl8T2rn6qSpegZeBAiKiopXD/pReFe8k6F6gyIbVGDUQca04Rcb5XaEJ/Ezg1Yrotk9hK+/s5134uxPQliQgy/Etk/nBuE2KWNuiwWn6Ot7fxG84eor0jfJaryNvCXGHhuwMEPtuJ8CHvihh8Wi+V/MLJHOIb/zpg22zznKjs9df33wMrM5v3+68BQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=las0/PUW; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=tamird@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QIcyOygu;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=las0/PUW;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=tamird@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dZfRG50cNz2xQK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Dec 2025 00:40:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dZfRM0FZdz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Dec 2025 00:40:47 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8038D4444F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7200044391;
+	Mon, 22 Dec 2025 13:40:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30D2C113D0;
 	Mon, 22 Dec 2025 13:40:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5F7C4CEF1;
-	Mon, 22 Dec 2025 13:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766410810;
-	bh=mtS8Kvu9/mONxUUwl2Nlym25iZ9mTaL+M/fwiwknd1c=;
+	s=k20201202; t=1766410815;
+	bh=Fck6QCm4lRn9feW0cqwawqwexF+LaJCPXTdCc4YpUI0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=QIcyOygu4QXSvh5kbxH4W9KKoJp6FVUgO5+mABqtp9oUGzu+w4CNLor2JFs4HOT1V
-	 09dkOrXUQ0hiYLM2GZNLBclCyKkUjNiS0OEYPN3k9UnaDiKBJa0FpMpcvDhXrhdp3+
-	 Dw6yOaxkE/RAkF7qkZasm7l8nbE+XKf2j/AAGXlAWssXpB4+yC4O4UG9cArnEywaRN
-	 TyE/YLbhOZZmFbOeGkYBaKPUJZQ4julhQbPV8/vERDfgXiveRxTnTlImSeRch8dPKI
-	 k1CLCJtk8nMixGjO/iKUQIpM/dcRI4HVJ+6dPX587iDuWvUyRMYp631vIuWOGr6kvY
-	 DMXhu0w1SxzYg==
+	b=las0/PUW9UIBRukwGgnSSdvhTqJHj7RWS/aSToUKJKjqKnkkW02wLPJJdOPZFWomf
+	 hrJ0pj6kwodAGaYvoLkOJrfBMEIhtJ+EsDci0MfCGOVVu0uUz37J6/V1BpSdbwIiSt
+	 XvAfpy0rNwlsMOIk2J9qYEnMSCOMDRxPWDwxLgvzyTFTAsK7AgkFxEgSeoTcCJLG7y
+	 ufiUwxJI3m2Ra7IUjjS7GNkDHhh3ySfocb2VNVp3vB59MO5fZeStqpAbYSWsM/BQeu
+	 Zt1TUzxx7dkLnX8KIqujwE0rDevax8zz7Ii8QkPVg8RgVbSsqAh/UIZYKrm466vQRW
+	 ryTSsICOjWphQ==
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 22 Dec 2025 14:39:54 +0100
-Subject: [PATCH v2 1/3] test_bitmap: extract benchmark module
+Date: Mon, 22 Dec 2025 14:39:55 +0100
+Subject: [PATCH v2 2/3] bitmap: convert self-test to KUnit
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,7 +61,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251222-bitmap-kunit-convert-v2-1-6a61a5330eff@gmail.com>
+Message-Id: <20251222-bitmap-kunit-convert-v2-2-6a61a5330eff@gmail.com>
 References: <20251222-bitmap-kunit-convert-v2-0-6a61a5330eff@gmail.com>
 In-Reply-To: <20251222-bitmap-kunit-convert-v2-0-6a61a5330eff@gmail.com>
 To: David Gow <davidgow@google.com>, John Hubbard <jhubbard@nvidia.com>, 
@@ -75,16 +75,15 @@ To: David Gow <davidgow@google.com>, John Hubbard <jhubbard@nvidia.com>,
 Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>, 
  linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
  linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>, 
- Alexander Potapenko <glider@google.com>
+ Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1766410800; l=6436;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1766410800; l=27676;
  i=tamird@gmail.com; h=from:subject:message-id;
- bh=GMqVJX7sYDmccv8BUc6BjwKaZE9btULzDU952wHq7kU=;
+ bh=sJ3OdEWi9YJ1bnERcUkXCxxz/tWC7+1ieKlbUbqTtoE=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QN1w0lwI4EDkjSCyvbmTMG0+z/zTkm5yd4Nv6KtVEft48jXkSO8zk7SfPpZMbZ/9tuYSrr8xcfZ
- FiM4s3AVcHgc=
+ QIIQqAEwSsrFZBMmgW1EM52h/ifW76lgDCD9t+xAVW4osFUabtBMB9f4UpCCfDqwCn54V1ppLzV
+ 9sWtHErvZAAI=
 X-Developer-Key: i=tamird@gmail.com; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -94,229 +93,839 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Tamir Duberstein <tamird@gmail.com>
 
-Add CONFIG_BITMAP_BENCHMARK to build benchmarks separately from unit
-tests. The new module is marked authored by the author of commit
-991e5583647d ("lib/test_bitmap: add tests for bitmap_{read,write}()")
-which added these benchmarks.
+Convert the bitmap() self-test to a KUnit test.
 
-Extract duplicated code between `test_bitmap_{read,write}_perf`.
+In the interest of keeping the patch reasonably-sized this doesn't
+refactor the tests into proper parameterized tests - it's all one big
+test case.
 
-Cc: Alexander Potapenko <glider@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
- MAINTAINERS            |  1 +
- lib/Kconfig.debug      |  8 +++++
- lib/Makefile           |  1 +
- lib/bitmap_benchmark.c | 89 ++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/test_bitmap.c      | 50 ----------------------------
- 5 files changed, 99 insertions(+), 50 deletions(-)
+ MAINTAINERS                           |   2 +-
+ lib/Kconfig.debug                     |  16 +-
+ lib/Makefile                          |   4 +-
+ lib/{test_bitmap.c => bitmap_kunit.c} | 314 +++++++++++++---------------------
+ tools/testing/selftests/lib/Makefile  |   2 +-
+ tools/testing/selftests/lib/bitmap.sh |   3 -
+ tools/testing/selftests/lib/config    |   1 -
+ 7 files changed, 135 insertions(+), 207 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b11839cba9d..4ddaef15b408 100644
+index 4ddaef15b408..bb5269ff2bcd 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -4426,6 +4426,7 @@ F:	include/uapi/linux/bits.h
- F:	include/vdso/bits.h
- F:	lib/bitmap-str.c
- F:	lib/bitmap.c
-+F:	lib/bitmap_benchmark.c
+@@ -4430,7 +4430,7 @@ F:	lib/bitmap_benchmark.c
  F:	lib/cpumask.c
  F:	lib/find_bit.c
  F:	lib/find_bit_benchmark.c
+-F:	lib/test_bitmap.c
++F:	lib/tests/bitmap_kunit.c
+ F:	lib/tests/cpumask_kunit.c
+ F:	tools/include/linux/bitfield.h
+ F:	tools/include/linux/bitmap.h
 diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index ba36939fda79..60434b31a940 100644
+index 60434b31a940..e7a4991e5395 100644
 --- a/lib/Kconfig.debug
 +++ b/lib/Kconfig.debug
-@@ -2492,6 +2492,14 @@ config FFS_KUNIT_TEST
- config TEST_KSTRTOX
- 	tristate "Test kstrto*() family of functions at runtime"
+@@ -2438,6 +2438,15 @@ config ASYNC_RAID6_TEST
+ config TEST_HEXDUMP
+ 	tristate "Test functions located in the hexdump module at runtime"
  
-+config BITMAP_BENCHMARK
-+	tristate "Benchmark bitmap_*() family of functions"
++config BITMAP_KUNIT_TEST
++	tristate "KUnit test bitmap_*() family of functions at runtime" if !KUNIT_ALL_TESTS
++	depends on KUNIT
++	default KUNIT_ALL_TESTS
 +	help
-+	  This builds the "bitmap_benchmark_test" module that measure bitmap_*()
-+	  family of functions performance.
++	  Enable this option to test the bitmap functions at runtime.
 +
 +	  If unsure, say N.
 +
- config TEST_BITMAP
- 	tristate "Test bitmap_*() family of functions at runtime"
- 	help
+ config PRINTF_KUNIT_TEST
+ 	tristate "KUnit test printf() family of functions at runtime" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT
+@@ -2500,13 +2509,6 @@ config BITMAP_BENCHMARK
+ 
+ 	  If unsure, say N.
+ 
+-config TEST_BITMAP
+-	tristate "Test bitmap_*() family of functions at runtime"
+-	help
+-	  Enable this option to test the bitmap functions at boot.
+-
+-	  If unsure, say N.
+-
+ config TEST_UUID
+ 	tristate "Test functions located in the uuid module at runtime"
+ 
 diff --git a/lib/Makefile b/lib/Makefile
-index aaf677cf4527..892cb3152b65 100644
+index 892cb3152b65..683084afb793 100644
 --- a/lib/Makefile
 +++ b/lib/Makefile
-@@ -61,6 +61,7 @@ obj-y += string_helpers.o
- obj-y += hexdump.o
- obj-$(CONFIG_TEST_HEXDUMP) += test_hexdump.o
- obj-y += kstrtox.o
-+obj-$(CONFIG_BITMAP_BENCHMARK) += bitmap_benchmark.o
- obj-$(CONFIG_FIND_BIT_BENCHMARK) += find_bit_benchmark.o
- obj-$(CONFIG_FIND_BIT_BENCHMARK_RUST) += find_bit_benchmark_rust.o
- obj-$(CONFIG_TEST_BPF) += test_bpf.o
-diff --git a/lib/bitmap_benchmark.c b/lib/bitmap_benchmark.c
-new file mode 100644
-index 000000000000..47f4cea4e831
---- /dev/null
-+++ b/lib/bitmap_benchmark.c
-@@ -0,0 +1,89 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Benchmarks for bitmap API.
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <linux/bitmap.h>
-+#include <linux/init.h>
-+#include <linux/ktime.h>
-+#include <linux/module.h>
-+#include <linux/printk.h>
-+
-+/*
-+ * Test bitmap should be big enough to include the cases when start is not in
-+ * the first word, and start+nbits lands in the following word.
-+ */
-+#define TEST_BIT_LEN (1000)
-+
-+typedef void (*bitmap_bench_fn)(unsigned long *bitmap, unsigned long i, unsigned long nbits);
-+
-+static void __init bench_bitmap(bitmap_bench_fn bench_fn, const char *name)
-+{
-+	DECLARE_BITMAP(bitmap, TEST_BIT_LEN);
-+	unsigned int cnt, nbits, i;
-+	ktime_t time;
-+
-+	bitmap_fill(bitmap, TEST_BIT_LEN);
-+	time = ktime_get();
-+	for (cnt = 0; cnt < 5; cnt++) {
-+		for (nbits = 1; nbits <= BITS_PER_LONG; nbits++) {
-+			for (i = 0; i < TEST_BIT_LEN; i++) {
-+				if (i + nbits > TEST_BIT_LEN)
-+					break;
-+				bench_fn(bitmap, i, nbits);
-+			}
-+		}
-+	}
-+	time = ktime_get() - time;
-+	pr_info("Time spent in %s:\t%llu\n", name, time);
-+}
-+
-+#undef TEST_BIT_LEN
-+
-+static inline void bitmap_read_bench(unsigned long *bitmap, unsigned long i, unsigned long nbits)
-+{
-+	unsigned long val;
-+	/*
-+	 * Prevent the compiler from optimizing away the
-+	 * bitmap_read() by using its value.
-+	 */
-+	WRITE_ONCE(val, bitmap_read(bitmap, i, nbits));
-+}
-+
-+static void __init test_bitmap_read_perf(void)
-+{
-+	bench_bitmap(bitmap_read_bench, __func__);
-+}
-+
-+static inline void bitmap_write_bench(unsigned long *bitmap, unsigned long i, unsigned long nbits)
-+{
-+	unsigned long val = 0xfeedface;
-+
-+	bitmap_write(bitmap, val, i, nbits);
-+}
-+
-+static void __init test_bitmap_write_perf(void)
-+{
-+	bench_bitmap(bitmap_write_bench, __func__);
-+}
-+
-+static int __init bitmap_benchmark_init(void)
-+{
-+	test_bitmap_read_perf();
-+	test_bitmap_write_perf();
-+
-+	return 0;
-+}
-+module_init(bitmap_benchmark_init);
-+
-+static void __exit bitmap_benchmark_exit(void)
-+{
-+	pr_info("Unloaded\n");
-+}
-+module_exit(bitmap_benchmark_exit);
-+
-+MODULE_AUTHOR("Alexander Potapenko <glider@google.com>");
-+MODULE_DESCRIPTION("Benchmarks for bitmap API");
-+MODULE_LICENSE("GPL");
-diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
-index c83829ef557f..f728b6485c88 100644
+@@ -84,10 +84,10 @@ obj-$(CONFIG_TEST_STATIC_KEYS) += test_static_keys.o
+ obj-$(CONFIG_TEST_STATIC_KEYS) += test_static_key_base.o
+ obj-$(CONFIG_TEST_DYNAMIC_DEBUG) += test_dynamic_debug.o
+ 
+-obj-$(CONFIG_TEST_BITMAP) += test_bitmap.o
++obj-$(CONFIG_BITMAP_KUNIT_TEST) += bitmap_kunit.o
+ ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_KASAN),yy)
+ # FIXME: Clang breaks test_bitmap_const_eval when KASAN and GCOV are enabled
+-GCOV_PROFILE_test_bitmap.o := n
++GCOV_PROFILE_bitmap_kunit.o := n
+ endif
+ 
+ obj-$(CONFIG_TEST_UUID) += test_uuid.o
+diff --git a/lib/test_bitmap.c b/lib/bitmap_kunit.c
+similarity index 83%
+rename from lib/test_bitmap.c
+rename to lib/bitmap_kunit.c
+index f728b6485c88..3a71e2039c1f 100644
 --- a/lib/test_bitmap.c
-+++ b/lib/test_bitmap.c
-@@ -1372,54 +1372,6 @@ static void __init test_bitmap_read_write(void)
- 		test_bitmap_write_helper(pattern[pi]);
++++ b/lib/bitmap_kunit.c
+@@ -3,10 +3,8 @@
+  * Test cases for bitmap API.
+  */
+ 
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+-
++#include <kunit/test.h>
+ #include <linux/bitmap.h>
+-#include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/printk.h>
+@@ -14,16 +12,17 @@
+ #include <linux/string.h>
+ #include <linux/uaccess.h>
+ 
+-#include "../tools/testing/selftests/kselftest_module.h"
+-
+ #define EXP1_IN_BITS	(sizeof(exp1) * 8)
+ 
+-KSTM_MODULE_GLOBALS();
++static char pbl_buffer[PAGE_SIZE];
++static char print_buf[PAGE_SIZE * 2];
++
++static struct kunit *kunittest;
+ 
+-static char pbl_buffer[PAGE_SIZE] __initdata;
+-static char print_buf[PAGE_SIZE * 2] __initdata;
++#define tc_err(fmt, ...) \
++	KUNIT_FAIL(kunittest, fmt, ##__VA_ARGS__)
+ 
+-static const unsigned long exp1[] __initconst = {
++static const unsigned long exp1[] = {
+ 	BITMAP_FROM_U64(1),
+ 	BITMAP_FROM_U64(2),
+ 	BITMAP_FROM_U64(0x0000ffff),
+@@ -41,130 +40,63 @@ static const unsigned long exp1[] __initconst = {
+ 	BITMAP_FROM_U64(0x80000000),
+ };
+ 
+-static const unsigned long exp2[] __initconst = {
++static const unsigned long exp2[] = {
+ 	BITMAP_FROM_U64(0x3333333311111111ULL),
+ 	BITMAP_FROM_U64(0xffffffff77777777ULL),
+ };
+ 
+ /* Fibonacci sequence */
+-static const unsigned long exp2_to_exp3_mask[] __initconst = {
++static const unsigned long exp2_to_exp3_mask[] = {
+ 	BITMAP_FROM_U64(0x008000020020212eULL),
+ };
+ /* exp3_0_1 = (exp2[0] & ~exp2_to_exp3_mask) | (exp2[1] & exp2_to_exp3_mask) */
+-static const unsigned long exp3_0_1[] __initconst = {
++static const unsigned long exp3_0_1[] = {
+ 	BITMAP_FROM_U64(0x33b3333311313137ULL),
+ };
+ /* exp3_1_0 = (exp2[1] & ~exp2_to_exp3_mask) | (exp2[0] & exp2_to_exp3_mask) */
+-static const unsigned long exp3_1_0[] __initconst = {
++static const unsigned long exp3_1_0[] = {
+ 	BITMAP_FROM_U64(0xff7fffff77575751ULL),
+ };
+ 
+-static bool __init
+-__check_eq_ulong(const char *srcfile, unsigned int line,
+-		 const unsigned long exp_ulong, unsigned long x)
+-{
+-	if (exp_ulong != x) {
+-		pr_err("[%s:%u] expected %lu, got %lu\n",
+-			srcfile, line, exp_ulong, x);
+-		return false;
+-	}
+-	return true;
+-}
+-
+-static bool __init
+-__check_eq_bitmap(const char *srcfile, unsigned int line,
+-		  const unsigned long *exp_bmap, const unsigned long *bmap,
+-		  unsigned int nbits)
+-{
+-	if (!bitmap_equal(exp_bmap, bmap, nbits)) {
+-		pr_warn("[%s:%u] bitmaps contents differ: expected \"%*pbl\", got \"%*pbl\"\n",
+-			srcfile, line,
+-			nbits, exp_bmap, nbits, bmap);
+-		return false;
+-	}
+-	return true;
+-}
+-
+-static bool __init
+-__check_eq_pbl(const char *srcfile, unsigned int line,
+-	       const char *expected_pbl,
+-	       const unsigned long *bitmap, unsigned int nbits)
+-{
+-	snprintf(pbl_buffer, sizeof(pbl_buffer), "%*pbl", nbits, bitmap);
+-	if (strcmp(expected_pbl, pbl_buffer)) {
+-		pr_warn("[%s:%u] expected \"%s\", got \"%s\"\n",
+-			srcfile, line,
+-			expected_pbl, pbl_buffer);
+-		return false;
+-	}
+-	return true;
+-}
+-
+-static bool __init __check_eq_clump8(const char *srcfile, unsigned int line,
+-				    const unsigned int offset,
+-				    const unsigned int size,
+-				    const unsigned char *const clump_exp,
+-				    const unsigned long *const clump)
+-{
+-	unsigned long exp;
+-
+-	if (offset >= size) {
+-		pr_warn("[%s:%u] bit offset for clump out-of-bounds: expected less than %u, got %u\n",
+-			srcfile, line, size, offset);
+-		return false;
+-	}
+-
+-	exp = clump_exp[offset / 8];
+-	if (!exp) {
+-		pr_warn("[%s:%u] bit offset for zero clump: expected nonzero clump, got bit offset %u with clump value 0",
+-			srcfile, line, offset);
+-		return false;
+-	}
+-
+-	if (*clump != exp) {
+-		pr_warn("[%s:%u] expected clump value of 0x%lX, got clump value of 0x%lX",
+-			srcfile, line, exp, *clump);
+-		return false;
+-	}
+-
+-	return true;
+-}
+-
+-static bool __init
+-__check_eq_str(const char *srcfile, unsigned int line,
+-		const char *exp_str, const char *str,
+-		unsigned int len)
+-{
+-	bool eq;
+-
+-	eq = strncmp(exp_str, str, len) == 0;
+-	if (!eq)
+-		pr_err("[%s:%u] expected %s, got %s\n", srcfile, line, exp_str, str);
+-
+-	return eq;
+-}
+-
+-#define __expect_eq(suffix, ...)					\
+-	({								\
+-		int result = 0;						\
+-		total_tests++;						\
+-		if (!__check_eq_ ## suffix(__FILE__, __LINE__,		\
+-					   ##__VA_ARGS__)) {		\
+-			failed_tests++;					\
+-			result = 1;					\
++#define expect_eq_ulong(exp_ulong, x)	KUNIT_EXPECT_EQ(kunittest, exp_ulong, x)
++
++#define expect_eq_bitmap(exp_bmap, bmap, nbits)							\
++	KUNIT_EXPECT_TRUE_MSG(kunittest, bitmap_equal(exp_bmap, bmap, nbits),			\
++			      "bitmaps contents differ: expected \"%*pbl\", got \"%*pbl\"",	\
++					nbits, exp_bmap, nbits, bmap)
++
++#define expect_eq_pbl(expected_pbl, bitmap, nbits) do {						\
++		{										\
++			snprintf(pbl_buffer, sizeof(pbl_buffer), "%*pbl", nbits, bitmap);	\
++			KUNIT_EXPECT_STREQ(kunittest, expected_pbl, pbl_buffer);		\
++		}										\
++	} while (0)
++
++#define expect_eq_clump8(offset, size, clump_exp, clump) do {				\
++		{									\
++			unsigned long exp;						\
++											\
++			KUNIT_EXPECT_LT_MSG(kunittest, offset, size,			\
++					    "bit offset for clump out-of-bounds");	\
++											\
++			exp = clump_exp[offset / 8];					\
++			KUNIT_EXPECT_NE_MSG(kunittest, exp, 0,				\
++					    "bit offset %u for zero clump", offset);	\
++											\
++			KUNIT_EXPECT_EQ(kunittest, *clump, exp);			\
++		}									\
++	} while (0)
++
++#define expect_eq_str(exp_str, str, len)				\
++	{								\
++		if (strncmp(exp_str, str, len) != 0) {			\
++			tc_err("expected %s, got %s", exp_str, str);	\
+ 		}							\
+-		result;							\
+-	})
++	}
+ 
+-#define expect_eq_ulong(...)		__expect_eq(ulong, ##__VA_ARGS__)
+ #define expect_eq_uint(x, y)		expect_eq_ulong((unsigned int)(x), (unsigned int)(y))
+-#define expect_eq_bitmap(...)		__expect_eq(bitmap, ##__VA_ARGS__)
+-#define expect_eq_pbl(...)		__expect_eq(pbl, ##__VA_ARGS__)
+-#define expect_eq_u32_array(...)	__expect_eq(u32_array, ##__VA_ARGS__)
+-#define expect_eq_clump8(...)		__expect_eq(clump8, ##__VA_ARGS__)
+-#define expect_eq_str(...)		__expect_eq(str, ##__VA_ARGS__)
+ 
+-static void __init test_zero_clear(void)
++static void test_zero_clear(void)
+ {
+ 	DECLARE_BITMAP(bmap, 1024);
+ 
+@@ -193,7 +125,7 @@ static void __init test_zero_clear(void)
+ 	expect_eq_pbl("", bmap, 1024);
  }
  
--static void __init test_bitmap_read_perf(void)
--{
--	DECLARE_BITMAP(bitmap, TEST_BIT_LEN);
--	unsigned int cnt, nbits, i;
--	unsigned long val;
--	ktime_t time;
--
--	bitmap_fill(bitmap, TEST_BIT_LEN);
--	time = ktime_get();
--	for (cnt = 0; cnt < 5; cnt++) {
--		for (nbits = 1; nbits <= BITS_PER_LONG; nbits++) {
--			for (i = 0; i < TEST_BIT_LEN; i++) {
--				if (i + nbits > TEST_BIT_LEN)
--					break;
--				/*
--				 * Prevent the compiler from optimizing away the
--				 * bitmap_read() by using its value.
--				 */
--				WRITE_ONCE(val, bitmap_read(bitmap, i, nbits));
--			}
--		}
--	}
--	time = ktime_get() - time;
--	pr_info("Time spent in %s:\t%llu\n", __func__, time);
--}
--
--static void __init test_bitmap_write_perf(void)
--{
--	DECLARE_BITMAP(bitmap, TEST_BIT_LEN);
--	unsigned int cnt, nbits, i;
--	unsigned long val = 0xfeedface;
--	ktime_t time;
--
--	bitmap_zero(bitmap, TEST_BIT_LEN);
--	time = ktime_get();
--	for (cnt = 0; cnt < 5; cnt++) {
--		for (nbits = 1; nbits <= BITS_PER_LONG; nbits++) {
--			for (i = 0; i < TEST_BIT_LEN; i++) {
--				if (i + nbits > TEST_BIT_LEN)
--					break;
--				bitmap_write(bitmap, val, i, nbits);
--			}
--		}
--	}
--	time = ktime_get() - time;
--	pr_info("Time spent in %s:\t%llu\n", __func__, time);
--}
--
+-static void __init test_find_nth_bit(void)
++static void test_find_nth_bit(void)
+ {
+ 	unsigned long b, bit, cnt = 0;
+ 	DECLARE_BITMAP(bmap, 64 * 3);
+@@ -234,7 +166,7 @@ static void __init test_find_nth_bit(void)
+ 	}
+ }
+ 
+-static void __init test_fill_set(void)
++static void test_fill_set(void)
+ {
+ 	DECLARE_BITMAP(bmap, 1024);
+ 
+@@ -263,7 +195,7 @@ static void __init test_fill_set(void)
+ 	expect_eq_pbl("0-1023", bmap, 1024);
+ }
+ 
+-static void __init test_copy(void)
++static void test_copy(void)
+ {
+ 	DECLARE_BITMAP(bmap1, 1024);
+ 	DECLARE_BITMAP(bmap2, 1024);
+@@ -302,7 +234,7 @@ static void __init test_copy(void)
+ 	expect_eq_pbl("0-108,128-1023", bmap2, 1024);
+ }
+ 
+-static void __init test_bitmap_region(void)
++static void test_bitmap_region(void)
+ {
+ 	int pos, order;
+ 
+@@ -327,7 +259,7 @@ static void __init test_bitmap_region(void)
+ 
+ #define EXP2_IN_BITS	(sizeof(exp2) * 8)
+ 
+-static void __init test_replace(void)
++static void test_replace(void)
+ {
+ 	unsigned int nbits = 64;
+ 	unsigned int nlongs = DIV_ROUND_UP(nbits, BITS_PER_LONG);
+@@ -352,23 +284,23 @@ static void __init test_replace(void)
+ 	expect_eq_bitmap(bmap, exp3_1_0, nbits);
+ }
+ 
+-static const unsigned long sg_mask[] __initconst = {
++static const unsigned long sg_mask[] = {
+ 	BITMAP_FROM_U64(0x000000000000035aULL),
+ };
+ 
+-static const unsigned long sg_src[] __initconst = {
++static const unsigned long sg_src[] = {
+ 	BITMAP_FROM_U64(0x0000000000000667ULL),
+ };
+ 
+-static const unsigned long sg_gather_exp[] __initconst = {
++static const unsigned long sg_gather_exp[] = {
+ 	BITMAP_FROM_U64(0x0000000000000029ULL),
+ };
+ 
+-static const unsigned long sg_scatter_exp[] __initconst = {
++static const unsigned long sg_scatter_exp[] = {
+ 	BITMAP_FROM_U64(0x000000000000021aULL),
+ };
+ 
+-static void __init test_bitmap_sg(void)
++static void test_bitmap_sg(void)
+ {
+ 	unsigned int nbits = 64;
+ 	DECLARE_BITMAP(bmap_gather, 100);
+@@ -404,7 +336,7 @@ struct test_bitmap_parselist{
+ 	const int flags;
+ };
+ 
+-static const struct test_bitmap_parselist parselist_tests[] __initconst = {
++static const struct test_bitmap_parselist parselist_tests[] = {
+ #define step (sizeof(u64) / sizeof(unsigned long))
+ 
+ 	{0, "0",			&exp1[0], 8, 0},
+@@ -489,7 +421,7 @@ static const struct test_bitmap_parselist parselist_tests[] __initconst = {
+ 
+ };
+ 
+-static void __init test_bitmap_parselist(void)
++static void test_bitmap_parselist(void)
+ {
+ 	int i;
+ 	int err;
+@@ -504,30 +436,28 @@ static void __init test_bitmap_parselist(void)
+ 		time = ktime_get() - time;
+ 
+ 		if (err != ptest.errno) {
+-			pr_err("parselist: %d: input is %s, errno is %d, expected %d\n",
++			tc_err("parselist: %d: input is %s, errno is %d, expected %d",
+ 					i, ptest.in, err, ptest.errno);
+-			failed_tests++;
+ 			continue;
+ 		}
+ 
+ 		if (!err && ptest.expected
+ 			 && !__bitmap_equal(bmap, ptest.expected, ptest.nbits)) {
+-			pr_err("parselist: %d: input is %s, result is 0x%lx, expected 0x%lx\n",
++			tc_err("parselist: %d: input is %s, result is 0x%lx, expected 0x%lx",
+ 					i, ptest.in, bmap[0],
+ 					*ptest.expected);
+-			failed_tests++;
+ 			continue;
+ 		}
+ 
+ 		if (ptest.flags & PARSE_TIME)
+-			pr_info("parselist: %d: input is '%s' OK, Time: %llu\n",
++			kunit_info(kunittest, "parselist: %d: input is '%s' OK, Time: %llu",
+ 					i, ptest.in, time);
+ 
+ #undef ptest
+ 	}
+ }
+ 
+-static void __init test_bitmap_printlist(void)
++static void test_bitmap_printlist(void)
+ {
+ 	unsigned long *bmap = kmalloc(PAGE_SIZE, GFP_KERNEL);
+ 	char *buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+@@ -548,37 +478,35 @@ static void __init test_bitmap_printlist(void)
+ 	time = ktime_get() - time;
+ 
+ 	if (ret != slen + 1) {
+-		pr_err("bitmap_print_to_pagebuf: result is %d, expected %d\n", ret, slen);
+-		failed_tests++;
++		tc_err("bitmap_print_to_pagebuf: result is %d, expected %d", ret, slen);
+ 		goto out;
+ 	}
+ 
+ 	if (strncmp(buf, expected, slen)) {
+-		pr_err("bitmap_print_to_pagebuf: result is %s, expected %s\n", buf, expected);
+-		failed_tests++;
++		tc_err("bitmap_print_to_pagebuf: result is %s, expected %s", buf, expected);
+ 		goto out;
+ 	}
+ 
+-	pr_info("bitmap_print_to_pagebuf: input is '%s', Time: %llu\n", buf, time);
++	kunit_info(kunittest, "bitmap_print_to_pagebuf: input is '%s', Time: %llu", buf, time);
+ out:
+ 	kfree(buf);
+ 	kfree(bmap);
+ }
+ 
+-static const unsigned long parse_test[] __initconst = {
++static const unsigned long parse_test[] = {
+ 	BITMAP_FROM_U64(0),
+ 	BITMAP_FROM_U64(1),
+ 	BITMAP_FROM_U64(0xdeadbeef),
+ 	BITMAP_FROM_U64(0x100000000ULL),
+ };
+ 
+-static const unsigned long parse_test2[] __initconst = {
++static const unsigned long parse_test2[] = {
+ 	BITMAP_FROM_U64(0x100000000ULL), BITMAP_FROM_U64(0xdeadbeef),
+ 	BITMAP_FROM_U64(0x100000000ULL), BITMAP_FROM_U64(0xbaadf00ddeadbeef),
+ 	BITMAP_FROM_U64(0x100000000ULL), BITMAP_FROM_U64(0x0badf00ddeadbeef),
+ };
+ 
+-static const struct test_bitmap_parselist parse_tests[] __initconst = {
++static const struct test_bitmap_parselist parse_tests[] = {
+ 	{0, "",				&parse_test[0 * step], 32, 0},
+ 	{0, " ",			&parse_test[0 * step], 32, 0},
+ 	{0, "0",			&parse_test[0 * step], 32, 0},
+@@ -605,7 +533,7 @@ static const struct test_bitmap_parselist parse_tests[] __initconst = {
+ #undef step
+ };
+ 
+-static void __init test_bitmap_parse(void)
++static void test_bitmap_parse(void)
+ {
+ 	int i;
+ 	int err;
+@@ -621,28 +549,26 @@ static void __init test_bitmap_parse(void)
+ 		time = ktime_get() - time;
+ 
+ 		if (err != test.errno) {
+-			pr_err("parse: %d: input is %s, errno is %d, expected %d\n",
++			tc_err("parse: %d: input is %s, errno is %d, expected %d",
+ 					i, test.in, err, test.errno);
+-			failed_tests++;
+ 			continue;
+ 		}
+ 
+ 		if (!err && test.expected
+ 			 && !__bitmap_equal(bmap, test.expected, test.nbits)) {
+-			pr_err("parse: %d: input is %s, result is 0x%lx, expected 0x%lx\n",
++			tc_err("parse: %d: input is %s, result is 0x%lx, expected 0x%lx",
+ 					i, test.in, bmap[0],
+ 					*test.expected);
+-			failed_tests++;
+ 			continue;
+ 		}
+ 
+ 		if (test.flags & PARSE_TIME)
+-			pr_info("parse: %d: input is '%s' OK, Time: %llu\n",
++			kunit_info(kunittest, "parse: %d: input is '%s' OK, Time: %llu",
+ 					i, test.in, time);
+ 	}
+ }
+ 
+-static void __init test_bitmap_arr32(void)
++static void test_bitmap_arr32(void)
+ {
+ 	unsigned int nbits, next_bit;
+ 	u32 arr[EXP1_IN_BITS / 32];
+@@ -658,10 +584,8 @@ static void __init test_bitmap_arr32(void)
+ 		next_bit = find_next_bit(bmap2,
+ 				round_up(nbits, BITS_PER_LONG), nbits);
+ 		if (next_bit < round_up(nbits, BITS_PER_LONG)) {
+-			pr_err("bitmap_copy_arr32(nbits == %d:"
+-				" tail is not safely cleared: %d\n",
++			tc_err("bitmap_copy_arr32(nbits == %d: tail is not safely cleared: %d",
+ 				nbits, next_bit);
+-			failed_tests++;
+ 		}
+ 
+ 		if (nbits < EXP1_IN_BITS - 32)
+@@ -670,7 +594,7 @@ static void __init test_bitmap_arr32(void)
+ 	}
+ }
+ 
+-static void __init test_bitmap_arr64(void)
++static void test_bitmap_arr64(void)
+ {
+ 	unsigned int nbits, next_bit;
+ 	u64 arr[EXP1_IN_BITS / 64];
+@@ -686,17 +610,15 @@ static void __init test_bitmap_arr64(void)
+ 
+ 		next_bit = find_next_bit(bmap2, round_up(nbits, BITS_PER_LONG), nbits);
+ 		if (next_bit < round_up(nbits, BITS_PER_LONG)) {
+-			pr_err("bitmap_copy_arr64(nbits == %d:"
+-				" tail is not safely cleared: %d\n", nbits, next_bit);
+-			failed_tests++;
++			tc_err("bitmap_copy_arr64(nbits == %d: tail is not safely cleared: %d",
++				nbits, next_bit);
+ 		}
+ 
+ 		if ((nbits % 64) &&
+ 		    (arr[(nbits - 1) / 64] & ~GENMASK_ULL((nbits - 1) % 64, 0))) {
+-			pr_err("bitmap_to_arr64(nbits == %d): tail is not safely cleared: 0x%016llx (must be 0x%016llx)\n",
++			tc_err("bitmap_to_arr64(nbits == %d): tail is not safely cleared: 0x%016llx (must be 0x%016llx)",
+ 			       nbits, arr[(nbits - 1) / 64],
+ 			       GENMASK_ULL((nbits - 1) % 64, 0));
+-			failed_tests++;
+ 		}
+ 
+ 		if (nbits < EXP1_IN_BITS - 64)
+@@ -704,7 +626,7 @@ static void __init test_bitmap_arr64(void)
+ 	}
+ }
+ 
+-static void noinline __init test_mem_optimisations(void)
++static noinline void test_mem_optimisations(void)
+ {
+ 	DECLARE_BITMAP(bmap1, 1024);
+ 	DECLARE_BITMAP(bmap2, 1024);
+@@ -718,30 +640,25 @@ static void noinline __init test_mem_optimisations(void)
+ 			bitmap_set(bmap1, start, nbits);
+ 			__bitmap_set(bmap2, start, nbits);
+ 			if (!bitmap_equal(bmap1, bmap2, 1024)) {
+-				printk("set not equal %d %d\n", start, nbits);
+-				failed_tests++;
++				tc_err("set not equal %d %d", start, nbits);
+ 			}
+ 			if (!__bitmap_equal(bmap1, bmap2, 1024)) {
+-				printk("set not __equal %d %d\n", start, nbits);
+-				failed_tests++;
++				tc_err("set not __equal %d %d", start, nbits);
+ 			}
+ 
+ 			bitmap_clear(bmap1, start, nbits);
+ 			__bitmap_clear(bmap2, start, nbits);
+ 			if (!bitmap_equal(bmap1, bmap2, 1024)) {
+-				printk("clear not equal %d %d\n", start, nbits);
+-				failed_tests++;
++				tc_err("clear not equal %d %d", start, nbits);
+ 			}
+ 			if (!__bitmap_equal(bmap1, bmap2, 1024)) {
+-				printk("clear not __equal %d %d\n", start,
+-									nbits);
+-				failed_tests++;
++				tc_err("clear not __equal %d %d", start, nbits);
+ 			}
+ 		}
+ 	}
+ }
+ 
+-static const unsigned char clump_exp[] __initconst = {
++static const unsigned char clump_exp[] = {
+ 	0x01,	/* 1 bit set */
+ 	0x02,	/* non-edge 1 bit set */
+ 	0x00,	/* zero bits set */
+@@ -752,7 +669,7 @@ static const unsigned char clump_exp[] __initconst = {
+ 	0x05,	/* non-adjacent 2 bits set */
+ };
+ 
+-static void __init test_for_each_set_clump8(void)
++static void test_for_each_set_clump8(void)
+ {
+ #define CLUMP_EXP_NUMBITS 64
+ 	DECLARE_BITMAP(bits, CLUMP_EXP_NUMBITS);
+@@ -774,7 +691,7 @@ static void __init test_for_each_set_clump8(void)
+ 		expect_eq_clump8(start, CLUMP_EXP_NUMBITS, clump_exp, &clump);
+ }
+ 
+-static void __init test_for_each_set_bit_wrap(void)
++static void test_for_each_set_bit_wrap(void)
+ {
+ 	DECLARE_BITMAP(orig, 500);
+ 	DECLARE_BITMAP(copy, 500);
+@@ -799,7 +716,7 @@ static void __init test_for_each_set_bit_wrap(void)
+ 	}
+ }
+ 
+-static void __init test_for_each_set_bit(void)
++static void test_for_each_set_bit(void)
+ {
+ 	DECLARE_BITMAP(orig, 500);
+ 	DECLARE_BITMAP(copy, 500);
+@@ -821,7 +738,7 @@ static void __init test_for_each_set_bit(void)
+ 	expect_eq_bitmap(orig, copy, 500);
+ }
+ 
+-static void __init test_for_each_set_bit_from(void)
++static void test_for_each_set_bit_from(void)
+ {
+ 	DECLARE_BITMAP(orig, 500);
+ 	DECLARE_BITMAP(copy, 500);
+@@ -851,7 +768,7 @@ static void __init test_for_each_set_bit_from(void)
+ 	}
+ }
+ 
+-static void __init test_for_each_clear_bit(void)
++static void test_for_each_clear_bit(void)
+ {
+ 	DECLARE_BITMAP(orig, 500);
+ 	DECLARE_BITMAP(copy, 500);
+@@ -873,7 +790,7 @@ static void __init test_for_each_clear_bit(void)
+ 	expect_eq_bitmap(orig, copy, 500);
+ }
+ 
+-static void __init test_for_each_clear_bit_from(void)
++static void test_for_each_clear_bit_from(void)
+ {
+ 	DECLARE_BITMAP(orig, 500);
+ 	DECLARE_BITMAP(copy, 500);
+@@ -903,7 +820,7 @@ static void __init test_for_each_clear_bit_from(void)
+ 	}
+ }
+ 
+-static void __init test_for_each_set_bitrange(void)
++static void test_for_each_set_bitrange(void)
+ {
+ 	DECLARE_BITMAP(orig, 500);
+ 	DECLARE_BITMAP(copy, 500);
+@@ -925,7 +842,7 @@ static void __init test_for_each_set_bitrange(void)
+ 	expect_eq_bitmap(orig, copy, 500);
+ }
+ 
+-static void __init test_for_each_clear_bitrange(void)
++static void test_for_each_clear_bitrange(void)
+ {
+ 	DECLARE_BITMAP(orig, 500);
+ 	DECLARE_BITMAP(copy, 500);
+@@ -947,7 +864,7 @@ static void __init test_for_each_clear_bitrange(void)
+ 	expect_eq_bitmap(orig, copy, 500);
+ }
+ 
+-static void __init test_for_each_set_bitrange_from(void)
++static void test_for_each_set_bitrange_from(void)
+ {
+ 	DECLARE_BITMAP(orig, 500);
+ 	DECLARE_BITMAP(copy, 500);
+@@ -977,7 +894,7 @@ static void __init test_for_each_set_bitrange_from(void)
+ 	}
+ }
+ 
+-static void __init test_for_each_clear_bitrange_from(void)
++static void test_for_each_clear_bitrange_from(void)
+ {
+ 	DECLARE_BITMAP(orig, 500);
+ 	DECLARE_BITMAP(copy, 500);
+@@ -1048,7 +965,7 @@ static struct test_bitmap_cut test_cut[] = {
+ 	},
+ };
+ 
+-static void __init test_bitmap_cut(void)
++static void test_bitmap_cut(void)
+ {
+ 	unsigned long b[5], *in = &b[1], *out = &b[0];	/* Partial overlap */
+ 	int i;
+@@ -1071,14 +988,14 @@ struct test_bitmap_print {
+ 	const char *list;
+ };
+ 
+-static const unsigned long small_bitmap[] __initconst = {
++static const unsigned long small_bitmap[] = {
+ 	BITMAP_FROM_U64(0x3333333311111111ULL),
+ };
+ 
+-static const char small_mask[] __initconst = "33333333,11111111\n";
+-static const char small_list[] __initconst = "0,4,8,12,16,20,24,28,32-33,36-37,40-41,44-45,48-49,52-53,56-57,60-61\n";
++static const char small_mask[] = "33333333,11111111\n";
++static const char small_list[] = "0,4,8,12,16,20,24,28,32-33,36-37,40-41,44-45,48-49,52-53,56-57,60-61\n";
+ 
+-static const unsigned long large_bitmap[] __initconst = {
++static const unsigned long large_bitmap[] = {
+ 	BITMAP_FROM_U64(0x3333333311111111ULL), BITMAP_FROM_U64(0x3333333311111111ULL),
+ 	BITMAP_FROM_U64(0x3333333311111111ULL), BITMAP_FROM_U64(0x3333333311111111ULL),
+ 	BITMAP_FROM_U64(0x3333333311111111ULL), BITMAP_FROM_U64(0x3333333311111111ULL),
+@@ -1101,7 +1018,7 @@ static const unsigned long large_bitmap[] __initconst = {
+ 	BITMAP_FROM_U64(0x3333333311111111ULL), BITMAP_FROM_U64(0x3333333311111111ULL),
+ };
+ 
+-static const char large_mask[] __initconst = "33333333,11111111,33333333,11111111,"
++static const char large_mask[] = "33333333,11111111,33333333,11111111,"
+ 					"33333333,11111111,33333333,11111111,"
+ 					"33333333,11111111,33333333,11111111,"
+ 					"33333333,11111111,33333333,11111111,"
+@@ -1122,7 +1039,7 @@ static const char large_mask[] __initconst = "33333333,11111111,33333333,1111111
+ 					"33333333,11111111,33333333,11111111,"
+ 					"33333333,11111111,33333333,11111111\n";
+ 
+-static const char large_list[] __initconst = /* more than 4KB */
++static const char large_list[] = /* more than 4KB */
+ 	"0,4,8,12,16,20,24,28,32-33,36-37,40-41,44-45,48-49,52-53,56-57,60-61,64,68,72,76,80,84,88,92,96-97,100-101,104-1"
+ 	"05,108-109,112-113,116-117,120-121,124-125,128,132,136,140,144,148,152,156,160-161,164-165,168-169,172-173,176-1"
+ 	"77,180-181,184-185,188-189,192,196,200,204,208,212,216,220,224-225,228-229,232-233,236-237,240-241,244-245,248-2"
+@@ -1164,12 +1081,12 @@ static const char large_list[] __initconst = /* more than 4KB */
+ 	"2489,2492-2493,2496,2500,2504,2508,2512,2516,2520,2524,2528-2529,2532-2533,2536-2537,2540-2541,2544-2545,2548-25"
+ 	"49,2552-2553,2556-2557\n";
+ 
+-static const struct test_bitmap_print test_print[] __initconst = {
++static const struct test_bitmap_print test_print[] = {
+ 	{ small_bitmap, sizeof(small_bitmap) * BITS_PER_BYTE, small_mask, small_list },
+ 	{ large_bitmap, sizeof(large_bitmap) * BITS_PER_BYTE, large_mask, large_list },
+ };
+ 
+-static void __init test_bitmap_print_buf(void)
++static void test_bitmap_print_buf(void)
+ {
+ 	int i;
+ 
+@@ -1201,7 +1118,7 @@ static void __init test_bitmap_print_buf(void)
+  * FIXME: Clang breaks compile-time evaluations when KASAN and GCOV are enabled.
+  * To workaround it, GCOV is force-disabled in Makefile for this configuration.
+  */
+-static void __init test_bitmap_const_eval(void)
++static void test_bitmap_const_eval(void)
+ {
+ 	DECLARE_BITMAP(bitmap, BITS_PER_LONG);
+ 	unsigned long initvar = BIT(2);
+@@ -1269,7 +1186,7 @@ static void __init test_bitmap_const_eval(void)
+ /*
+  * Helper function to test bitmap_write() overwriting the chosen byte pattern.
+  */
+-static void __init test_bitmap_write_helper(const char *pattern)
++static void test_bitmap_write_helper(const char *pattern)
+ {
+ 	DECLARE_BITMAP(bitmap, TEST_BIT_LEN);
+ 	DECLARE_BITMAP(exp_bitmap, TEST_BIT_LEN);
+@@ -1323,7 +1240,7 @@ static void __init test_bitmap_write_helper(const char *pattern)
+ 	}
+ }
+ 
+-static void __init test_bitmap_read_write(void)
++static void test_bitmap_read_write(void)
+ {
+ 	unsigned char *pattern[3] = {"", "all:1/2", "all"};
+ 	DECLARE_BITMAP(bitmap, TEST_BIT_LEN);
+@@ -1374,8 +1291,10 @@ static void __init test_bitmap_read_write(void)
+ 
  #undef TEST_BIT_LEN
  
- static void __init selftest(void)
-@@ -1440,8 +1392,6 @@ static void __init selftest(void)
- 	test_bitmap_print_buf();
- 	test_bitmap_const_eval();
- 	test_bitmap_read_write();
--	test_bitmap_read_perf();
--	test_bitmap_write_perf();
+-static void __init selftest(void)
++static void bitmap_test(struct kunit *test)
+ {
++	kunittest = test;
++
+ 	test_zero_clear();
+ 	test_fill_set();
+ 	test_copy();
+@@ -1406,7 +1325,18 @@ static void __init selftest(void)
+ 	test_for_each_set_bit_wrap();
+ }
  
- 	test_find_nth_bit();
- 	test_for_each_set_bit();
+-KSTM_MODULE_LOADERS(test_bitmap);
++static struct kunit_case bitmap_test_cases[] = {
++	KUNIT_CASE(bitmap_test),
++	{}
++};
++
++static struct kunit_suite bitmap_test_suite = {
++	.name = "bitmap",
++	.test_cases = bitmap_test_cases,
++};
++
++kunit_test_suite(bitmap_test_suite);
++
+ MODULE_AUTHOR("david decotigny <david.decotigny@googlers.com>");
+ MODULE_DESCRIPTION("Test cases for bitmap API");
+ MODULE_LICENSE("GPL");
+diff --git a/tools/testing/selftests/lib/Makefile b/tools/testing/selftests/lib/Makefile
+index f876bf4744e1..e4617f153542 100644
+--- a/tools/testing/selftests/lib/Makefile
++++ b/tools/testing/selftests/lib/Makefile
+@@ -4,5 +4,5 @@
+ # No binaries, but make sure arg-less "make" doesn't trigger "run_tests"
+ all:
+ 
+-TEST_PROGS := bitmap.sh
++TEST_PROGS :=
+ include ../lib.mk
+diff --git a/tools/testing/selftests/lib/bitmap.sh b/tools/testing/selftests/lib/bitmap.sh
+deleted file mode 100755
+index 00a416fbc0ef..000000000000
+--- a/tools/testing/selftests/lib/bitmap.sh
++++ /dev/null
+@@ -1,3 +0,0 @@
+-#!/bin/sh
+-# SPDX-License-Identifier: GPL-2.0
+-$(dirname $0)/../kselftest/module.sh "bitmap" test_bitmap
+diff --git a/tools/testing/selftests/lib/config b/tools/testing/selftests/lib/config
+index 377b3699ff31..3792212895e5 100644
+--- a/tools/testing/selftests/lib/config
++++ b/tools/testing/selftests/lib/config
+@@ -1,3 +1,2 @@
+-CONFIG_TEST_BITMAP=m
+ CONFIG_PRIME_NUMBERS=m
+ CONFIG_TEST_BITOPS=m
 
 -- 
 2.52.0
