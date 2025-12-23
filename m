@@ -1,85 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-14953-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14954-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F71ECD9986
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Dec 2025 15:19:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B06CD99C2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Dec 2025 15:24:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dbHFj2vMrz2yF1;
-	Wed, 24 Dec 2025 01:19:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dbHLr6gnbz2yFY;
+	Wed, 24 Dec 2025 01:24:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766499577;
-	cv=none; b=klVGNZnZcYSZ1tyFf4UzLPgu/RghAWe6yuvfUW3ceKQ8HIdWAFE8xIopW4vJBt8stvILnv8ENLc5J/iJK3gg8n+AbE8hmMvYCmg7tZ8c/R2H6IxKQAveKTj/8ilN2nh5hjjonUUvgE/eoy/pJg6eZutKxTFohPIG6quRHlTxAJdVKtWIBsgCVlabiwckVnkCxa643eEim6ZLco61V5ox8lr3TwAI4NOCLkjPIQqf2Kp078+29oHOIPDKJHx6DEosyvUmnQhNxxQFbmYGzwpWS1/vaNCnNx/BwTxT18uxzw5CkL1DT3dUj8yiSNiedNfF9KYShlOwMy40aML+pu1CXw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766499844;
+	cv=none; b=da6aXIq8nudZMvNvMtOQM/21IBKj9eZvceqCQC7sb/sB/irqgc8eKFTtWpQ0Yr1BLW1ah0QCm7yylsMI0WyimdFpArLyI+btPvxBs0CxvYgUoIMrJgeLNOAbq6kUMlxiok+uYvzWB5SzxXheO0uPEhlFn0p+SoX79WwPyeC1CruzT3cfdfEt6uhmNz23NY6VPEbVoJRgvLUX7P8gj8zdR8y39hxxOPT68ZwCRpyGlUOeHpUOS08+CeTkkQgK0f/nEHDf8dBXV4OU8XPTgkA17cXThhH+hiAtKfN3iXKXDUg9YdjikbTr3fydGGX+rdmnkATqr/+6KXNWHs55VKQZUw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766499577; c=relaxed/relaxed;
-	bh=gXvlcOaXAIQVq0t9xJIXeKMuDJHoQWiYerhVoYVIFzk=;
+	t=1766499844; c=relaxed/relaxed;
+	bh=ICmam0m9XXB2moqNxOPa2+pC0cmBSXKD1nCIxD4Mx1U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QZD8+yjngZSmS3EThKKHL32S2P6TTAggFmI83oyfM5DNq67iZBfzoXt6b9dDKLpx6yeq8n2kAE9kl5QYbrSMVITUKCoJ79PqvzzuJmVEpOKleQ+559s1mUo+KWeMrIRKo3wqfCKx5TfxJSZ2mx62ayIJjwPWjWEZfHiv9XVBJ8c/5u3SjROkW76W6oSFyxqWCcu+SAx2oIhBuSYRr2nie0Lh23/1ECCEWkzlJfwL/DoiNtrehIedvfssVm6bF7PYgL8FyousjVMpq3cyUITwjMVvg9tOvk6MeTkuDH8hnI+u7V9pbFhKJwXTzTAeH6jYy5EeKHyWHtM9kieNTHqPbQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KNgbKrgy; dkim-atps=neutral; spf=pass (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=EA0KiaySDyVBHBWxoGXLAriRMxd+xtHPUjAp0nRjeP4Ds5/T5LnCHlypddLthfW6/BT6KPbl6oa2FE5wPhqjOrTpShusuDBtKPZQOvfiY0P2MuPI7W5JmDTNXGgpUGfTCct32zYwCRnDYGcvuEkVgbjMJf8PO72w2kduz49iH5Pe4r7yBeqrdSu9BOstP7dP+E5AQKHov8B2hOKzYbgM8SmiNCNPpnvFhDaGakXjsixDqvC+sbCNgL93luKEmFYNk96aJ1+P2+YKPTzPdftUV9l6w+XkvYgJfZZrCuAYdOV3hNvTWoGi7F9Pt9N99NZG1zI8iblPqZhRULuQr96vEg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T2BqBSVE; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=johan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KNgbKrgy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T2BqBSVE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=johan@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbHFf3FC4z2xdY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 01:19:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766499574; x=1798035574;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZZQg8s4/nNF1ZlkzREeuw4bYSFY91iLUDaAHPJx09QE=;
-  b=KNgbKrgygcTxPcwQAJR4CiViA0zMXq2ZvWh2e8rjz+IwdkCCLoC9pwmW
-   mjZtau4TWnXUvK5CL/xg8+Xd+PYvhS1Z+TWsYXaF1jwiMr1ED9jPg463N
-   of32NZtg1xmIM7ZkxvmqpRZVu7bWOmVCswvGHVq61rfOnpcD2lOhMzRvW
-   rXRnghYo/jQX44hTisc8cKT5TQWVbX7BO1AAnQ1Jq5ZBr4anZEc9QudBq
-   C4jt/BOBEkCgVdNh8nTpdRE0+52a9ub4kZRsUx3gG7it0oKg+7k0SxBw/
-   E5Np7dTmwlsgkBNrkuvS7IMkI7s9uTSscISMLcA1W4WVcJM0C5UGooAIw
-   g==;
-X-CSE-ConnectionGUID: 0513HVtAR4+oBo9oi4m/Gw==
-X-CSE-MsgGUID: OGljONO9TTKTjUJk6J6Wlg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11651"; a="79463741"
-X-IronPort-AV: E=Sophos;i="6.21,171,1763452800"; 
-   d="scan'208";a="79463741"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 06:19:27 -0800
-X-CSE-ConnectionGUID: Vg9Iuvx1SiG+8Rwxb+2JDA==
-X-CSE-MsgGUID: nMqDeak8TR2g8NmJnysUGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,171,1763452800"; 
-   d="scan'208";a="230813594"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 23 Dec 2025 06:19:23 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vY3EO-00000000217-3Qms;
-	Tue, 23 Dec 2025 14:19:20 +0000
-Date: Tue, 23 Dec 2025 22:18:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Tamir Duberstein <tamird@kernel.org>, David Gow <davidgow@google.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbHLr0g77z2xlP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 01:24:04 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 93A0640806;
+	Tue, 23 Dec 2025 14:24:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67551C113D0;
+	Tue, 23 Dec 2025 14:24:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766499841;
+	bh=LVIPzMudx/3KFt0kpQO0KjKHpoGH1y/OUS9xlATtlVo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T2BqBSVEvD8+egd2DKh0M7CRaA07nAPvAIGKjOh7dXuv92V35/4lUGDfIix3vJJOH
+	 czLv1diFXWHMpuNqZOAhFZChYdIuHY+tDBVVzzZgV5ZlNznGxvTOBj6gQ1HZL+1RRn
+	 ciFQUYyqf9ZKutUfnwb+tzowRzQc7rx3Dnlf3nyXGwKLfaDfs8gstN7zHth8wwAEiH
+	 gMsEdVuEdYYz49ksnN/blIurAI7UHMrJ/fUJlv9jQWJ0mwlo0EGyuRVKwHnBJsV5vW
+	 0TnFS3XwiqLf4367PRa9pYG5wOO3w6CGtBH57P6Vvf4JrokPtbdx3aetWFutDVt6nM
+	 w0H5zVnptbNpA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vY3Is-0000000036w-41rb;
+	Tue, 23 Dec 2025 15:23:59 +0100
+Date: Tue, 23 Dec 2025 15:23:58 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Khalil Blaiech <kblaiech@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>, Jean Delvare <jdelvare@suse.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>, Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <kees@kernel.org>,
-	Christophe Leroy <chleroy@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
-	Tamir Duberstein <tamird@gmail.com>
-Subject: Re: [PATCH v2 3/3] bitmap: break kunit into test cases
-Message-ID: <202512232235.vUHmJH7T-lkp@intel.com>
-References: <20251222-bitmap-kunit-convert-v2-3-6a61a5330eff@gmail.com>
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-actions@lists.infradead.org,
+	Bartosz Golaszewski <brgl@kernel.org>
+Subject: Re: [PATCH 00/12] i2c: add and start using i2c_adapter-specific
+ printk helpers
+Message-ID: <aUql_tZisfH8E1bq@hovoldconsulting.com>
+References: <20251223-i2c-printk-helpers-v1-0-46a08306afdb@oss.qualcomm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,66 +85,46 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251222-bitmap-kunit-convert-v2-3-6a61a5330eff@gmail.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20251223-i2c-printk-helpers-v1-0-46a08306afdb@oss.qualcomm.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Tamir,
+On Tue, Dec 23, 2025 at 11:02:22AM +0100, Bartosz Golaszewski wrote:
+> It's been another year of discussing the object life-time problems at
+> conferences. I2C is one of the offenders and its problems are more
+> complex than those of some other subsystems. It seems the revocable[1]
+> API may make its way into the kernel this year but even with it in
+> place, I2C won't be able to use it as there's currently nothing to
+> *revoke*. The struct device is embedded within the i2c_adapter struct
+> whose lifetime is tied to the provider device being bound to its driver.
+> 
+> Fixing this won't be fast and easy but nothing's going to happen if we
+> don't start chipping away at it. The ultimate goal in order to be able
+> to use an SRCU-based solution (revocable or otherwise) is to convert the
+> embedded struct device in struct i2c_adapter into an __rcu pointer that
+> can be *revoked*. To that end we need to hide all dereferences of
+> adap->dev in drivers.
 
-kernel test robot noticed the following build warnings:
+No, this is not the way to do it. You start with designing and showing
+what the end result will look like *before* you start rewriting world
+like you are doing here.
 
-[auto build test WARNING on 8f0b4cce4481fb22653697cced8d0d04027cb1e8]
+We should not be making driver code less readable just to address some
+really niche corner cases like hot pluggable i2c controllers.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Tamir-Duberstein/test_bitmap-extract-benchmark-module/20251222-214306
-base:   8f0b4cce4481fb22653697cced8d0d04027cb1e8
-patch link:    https://lore.kernel.org/r/20251222-bitmap-kunit-convert-v2-3-6a61a5330eff%40gmail.com
-patch subject: [PATCH v2 3/3] bitmap: break kunit into test cases
-config: arm64-randconfig-004-20251223 (https://download.01.org/0day-ci/archive/20251223/202512232235.vUHmJH7T-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 9.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251223/202512232235.vUHmJH7T-lkp@intel.com/reproduce)
+But in any case, don't get ahead of things by posting changes that we
+most likely don't want in the end anyway.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512232235.vUHmJH7T-lkp@intel.com/
+> This series addresses the usage of adap->dev in device printk() helpers
+> (dev_err() et al). It introduces a set of i2c-specific helpers and
+> starts using them across bus drivers. For now just 12 patches but I'll
+> keep on doing it if these get accepted. Once these get upstream for
+> v6.20/7.0, we'll be able to also start converting i2c drivers outside of
+> drivers/i2c/.
 
-All warnings (new ones prefixed by >>):
+Same comment applies to the other two series you posted today.
 
-   lib/bitmap_kunit.c: In function 'test_bitmap_printlist':
->> lib/bitmap_kunit.c:468:2: warning: 'memset' used with length equal to number of elements without multiplication by element size [-Wmemset-elt-size]
-     468 |  memset(bmap, -1, PAGE_SIZE);
-         |  ^~~~~~
-
-
-vim +/memset +468 lib/bitmap_kunit.c
-
-6ea86bdfc169ba lib/test_bitmap.c  Yury Norov       2019-05-14  459  
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  460  static void test_bitmap_printlist(struct kunit *kunittest)
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  461  {
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  462  	static long bmap[PAGE_SIZE];
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  463  	static char buf[PAGE_SIZE];
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  464  	char expected[256];
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  465  	int ret, slen;
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  466  	ktime_t time;
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  467  
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14 @468  	memset(bmap, -1, PAGE_SIZE);
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  469  	slen = snprintf(expected, sizeof(expected), "0-%ld\n", PAGE_SIZE * 8 - 1);
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  470  	KUNIT_ASSERT_GT(kunittest, slen, 0);
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  471  
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  472  	time = ktime_get();
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  473  	ret = bitmap_print_to_pagebuf(true, buf, bmap, PAGE_SIZE * 8);
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  474  	time = ktime_get() - time;
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  475  
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  476  	KUNIT_ASSERT_EQ(kunittest, ret, slen);
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  477  	KUNIT_ASSERT_STREQ(kunittest, buf, expected);
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  478  
-8ef3340af7139f lib/bitmap_kunit.c Tamir Duberstein 2025-12-22  479  	kunit_info(kunittest, "Time: %llu", time);
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  480  }
-db7313005e9c2d lib/test_bitmap.c  Yury Norov       2021-08-14  481  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Johan
 
