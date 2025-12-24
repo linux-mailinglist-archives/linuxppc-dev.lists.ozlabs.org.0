@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-14997-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14998-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133EECDC1B5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Dec 2025 12:21:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E29C1CDC1B3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Dec 2025 12:21:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dbqFl3Hz6z2yYq;
-	Wed, 24 Dec 2025 22:21:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dbqFn3PZ5z2yhP;
+	Wed, 24 Dec 2025 22:21:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766575291;
-	cv=none; b=JlvvcMGkugLy7r6lJIiDnCzrlSHSiDMnKSt3OkEsCVw+ST10u/G3KiADoVGQcOxSkrdI9FLLC4TMITRKYH0jrjb5ATc844qU/GEEr15KFjoA2snDLpiPAd4yE71SjNEKwaYePOI7fPb2Uj5Ka3ih5cZNRRbQ3t6MOuYDf+UoKS99GfceLZZJr/xzy7t4IFgS2+ADZBGvT+UyJf094NXsKqdmu8osOaPMApzTjaa8g2NDqUn3544rx0WI7+cDn/FX9x9hZMBlkxHNUp0nhjDXLFdtJhEIx+9PMXXPEcW/oy6h+hUah5a5JqcTsc/XCFpGLvTZfU0r6hYLTHNHUZ0OhA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766575293;
+	cv=none; b=V+JMGQ6CFVCdI3Ghqdi6mK0pnednEef+iLyyA0s+5+nNfpbOND6kvBRMTNzADYLtwKCUBQZg+7+lvz4P/NeZDjd39omL32UscAqV6u7T4PSmyxm/Z/7Q8LaLmR9RvUgaQ5c/aBRP0jda1uHa4HGhls+5REi4gvvMdHbvIZHfHEIEL0AMFgen0WcBhYw6Zu+iCzbVFA5X25KPHCRLT6H+Eoz230bJloixEgI7nXbEQm5Fo2eAmSjGPok+nMkRqoRQPZp2O28Nt/ibcs3Lc1Nx91y12auiZHk4BOa4ya1HUqky23ZJbPOzfFI0Rh/muGolG1tnlh1k4ST85K09NgKA7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766575291; c=relaxed/relaxed;
-	bh=qaC/orMm3SJXkkBZ2ukDlztDciZD3ly4UwR0RsuHBC0=;
+	t=1766575293; c=relaxed/relaxed;
+	bh=NjEXufxZw5tv7ki0x7pKamxcFbb0tTGx6/CUYaxH+UM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NT3zkI4uT5DBTSlcCS6SsBP3mDn40SQ7E1kUgXOtRRJkYQYvryGHVI5oV9II5utND5laAT5BVmTBqQfYIOdellz4UQsYBYdXkst81Eg/VCNorKROUvdeHF/gcLkkFKEhYiOnY9KD7aAHxriwERo0OOZA+Qo/z87g3g4PvMWdnQ/nviG+OG4n3ecPUilQKo/Bc9CGWpxU8H+LzIASc3Y/WNp03apXT+AFyZSbvMlu6vXdxdovl05K/wJdGLoOAQKNo9E+AXueLgfM4ItBqNofBcpz1vCQjpA1aI84JngJ6w3L6A1Rrq+xpO1gXKehg7FfpBkNHf/tbZtOLkpT0Hg1wA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iWPeDBA8; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=k3zIB+zGW8oHiyqghACahTfXB2p4gZ+hUn1evjpfFub5BUHS4h06HNvOx0hmPz5qTDX5oCbCvN8bkPBVhFW9niNCbaZ41fHvn8lm11/6B/FEOoWJ1rzgOKmyBwEdOa6h0hpz2/EYlbxukGvq2VifLmBczk/N7A4mI76oOU1n6K9trTxDSPlk1R9GC50+Z84XPkEDFG2kwe74GSk5CbJtWGczldC2I1y5+hzhPDNHX/GjvPNMUGxk+VTjPU0oaFtw+1/uszBWhQ4yQAtCbQHap2fW4T3l4uWMJ4NVFH4/PSFQZ8DgbWPm1VUfVHPvXFPtC66jLjHZ6vkJZCjX+Tw87A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iJm1yeKY; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iWPeDBA8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iJm1yeKY;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbqFk4JmXz2yYK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 22:21:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbqFm5VLKz2yYK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 22:21:32 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F135143A1D;
-	Wed, 24 Dec 2025 11:21:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B32C16AAE;
-	Wed, 24 Dec 2025 11:21:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C47A4438B;
+	Wed, 24 Dec 2025 11:21:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7DDC116D0;
+	Wed, 24 Dec 2025 11:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766575288;
-	bh=wKTECL+uhV2GewMTUnLeAs+N2tpCOWuQ3qmRO31AzZU=;
+	s=k20201202; t=1766575291;
+	bh=fnbw5f66PyzI9FgHERL1dSAdSF91hdUdpx2k7uZy1Ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iWPeDBA8oLNW9eDp4PsxIG5ToDSE+K5B19Dz2tJYX9VEH8JjPH+TI2pohxIIc5kbm
-	 AqF9Vu/NaSMUZXvsMUUqzNM8HRHvocup8CUVTaYJ0cgtY8cz/s6/B0+67wDcRFE5HM
-	 6wpguaQzAWUd1CMY6S43aBsW7lsFFtEc5KwFpuTvMEug/OnNVHQS7YGXhC+dI65pr5
-	 jC6Mhrx7zRi93oWBKyLxFQ492l1i0RrmuAOurXYUgXn5+5pig4gUHQBRnaIykNjOtA
-	 u64SNV+s0cPd1Hx+hCMIm/4s5NgYBhbcs3u+qKhXWq5HwrWPMRvGxrDwrYvUWHUmkw
-	 dPN81g3JcMNOg==
+	b=iJm1yeKY4bpFT3f4o2eXep6c1mySpNJd9qmHsiM1pml7xPwumN549wJkXjVnuJosi
+	 X5UKrt72oGIrbT7c4XQWE/iJRv1TU6kfS1vJvKlWPBg1UKLy3BiwtK46D85gNsysBP
+	 5uGf7Kgpg5KbSVjuxW6rFGLLygdy3nq760tUBxoIm20cy4LCqOGbZzC0j++rAJ2vzK
+	 PPrz9VqrMX2dDDgH86bl/IAxn6F+7v4XrkhxOWMw9xeRdExw1LTRpmKO0CLfPShYdC
+	 LSYI6D6+we6HuhRbDa7YNIyzYxRX9vXHm0D4Noq/m5jpfow5nm1Hjm4KaTs5VFpziz
+	 cyBBKKiwT+ysg==
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -50,9 +50,9 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 6/7] powerpc/32: Automatically adapt TASK_SIZE based on constraints
-Date: Wed, 24 Dec 2025 12:20:54 +0100
-Message-ID: <6a2575420770d075cd090b5a316730a2ffafdee4.1766574657.git.chleroy@kernel.org>
+Subject: [PATCH v5 7/7] powerpc/uaccess: Implement masked user access
+Date: Wed, 24 Dec 2025 12:20:55 +0100
+Message-ID: <8f418183d9125cc0bf23922bc2ef2a1130d8b63a.1766574657.git.chleroy@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1766574657.git.chleroy@kernel.org>
 References: <cover.1766574657.git.chleroy@kernel.org>
@@ -69,7 +69,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6156; i=chleroy@kernel.org; h=from:subject:message-id; bh=9s+oMFBAX9h3xrMQNyahO4dDCw3Exg61uapF1kwcX3o=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWR6n5mj+b055mGMtUj/A/4S78f7Be3XHpMsCbjFHD3lK MuflRNXdJSyMIhxMciKKbIc/8+9a0bXl9T8qbv0YeawMoEMYeDiFICJKExl+GedeoltpqxiZg8D x/fJDt+tUnaxb+udzcm0dpP8f54b2y4yMrTrdOkvfvfGN8YkapY7j/px1hqHVy6sP555tx/ninp bww4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9880; i=chleroy@kernel.org; h=from:subject:message-id; bh=a3aZ+OkGSPpLvEE6ZUhpuB+9SriLXpJrMyl4L+YDAeY=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWR6n5l78Yz63/1fjtpP92q6brk2sNt+uYv/bRvLvOf3G LkPbNpU3FHKwiDGxSArpshy/D/3rhldX1Lzp+7Sh5nDygQyhIGLUwAm8uk4w//0M/Y2u5pYKqL6 Nmz7etTi7Y6N7JtZ/SqqT6+Pn8u/ITyR4a8st8ueS0vaGExy5nOdt4r6893X2dF8rWCTRP2sxC0 cnQwA
 X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -79,166 +79,276 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-At the time being, TASK_SIZE can be customized by the user via Kconfig
-but it is not possible to check all constraints in Kconfig. Impossible
-setups are detected at compile time with BUILD_BUG() but that leads
-to build failure when setting crazy values. It is not a problem on its
-own because the user will usually either use the default value or set
-a well thought value. However build robots generate crazy random
-configs that lead to build failures, and build robots see it as a
-regression every time a patch adds such a constraint.
+Masked user access avoids the address/size verification by access_ok().
+Allthough its main purpose is to skip the speculation in the
+verification of user address and size hence avoid the need of spec
+mitigation, it also has the advantage of reducing the amount of
+instructions required so it even benefits to platforms that don't
+need speculation mitigation, especially when the size of the copy is
+not know at build time.
 
-So instead of failing the build when the custom TASK_SIZE is too
-big, just adjust it to the maximum possible value matching the setup.
+So implement masked user access on powerpc. The only requirement is
+to have memory gap that faults between the top user space and the
+real start of kernel area.
 
-Several architectures already calculate TASK_SIZE based on other
-parameters and options.
+On 64 bits platforms the address space is divided that way:
 
-In order to do so, move MODULES_VADDR calculation into task_size_32.h
-and ensure that:
-- On book3s/32, userspace and module area have their own segments (256M)
-- On 8xx, userspace has its own full PGDIR entries (4M)
+	0xffffffffffffffff	+------------------+
+				|                  |
+				|   kernel space   |
+ 		 		|                  |
+	0xc000000000000000	+------------------+  <== PAGE_OFFSET
+				|//////////////////|
+				|//////////////////|
+	0x8000000000000000	|//////////////////|
+				|//////////////////|
+				|//////////////////|
+	0x0010000000000000	+------------------+  <== TASK_SIZE_MAX
+				|                  |
+				|    user space    |
+				|                  |
+	0x0000000000000000	+------------------+
 
-Then TASK_SIZE is guaranteed to be correct so remove related
-BUILD_BUG()s.
+Kernel is always above 0x8000000000000000 and user always
+below, with a gap in-between. It leads to a 3 instructions sequence:
+
+ 150:	7c 69 fe 76 	sradi   r9,r3,63
+ 154:	79 29 00 40 	clrldi  r9,r9,1
+ 158:	7c 63 48 78 	andc    r3,r3,r9
+
+This sequence leaves r3 unmodified when it is below 0x8000000000000000
+and clamps it to 0x8000000000000000 if it is above.
+
+On 32 bits it is more tricky. In theory user space can go up to
+0xbfffffff while kernel will usually start at 0xc0000000. So a gap
+needs to be added in-between. Allthough in theory a single 4k page
+would suffice, it is easier and more efficient to enforce a 128k gap
+below kernel, as it simplifies the masking.
+
+e500 has the isel instruction which allows selecting one value or
+the other without branch and that instruction is not speculative, so
+use it. Allthough GCC usually generates code using that instruction,
+it is safer to use inline assembly to be sure. The result is:
+
+  14:	3d 20 bf fe 	lis     r9,-16386
+  18:	7c 03 48 40 	cmplw   r3,r9
+  1c:	7c 69 18 5e 	iselgt  r3,r9,r3
+
+On other ones, when kernel space is over 0x80000000 and user space
+is below, the logic in mask_user_address_simple() leads to a
+3 instruction sequence:
+
+  64:	7c 69 fe 70 	srawi   r9,r3,31
+  68:	55 29 00 7e 	clrlwi  r9,r9,1
+  6c:	7c 63 48 78 	andc    r3,r3,r9
+
+This is the default on powerpc 8xx.
+
+When the limit between user space and kernel space is not 0x80000000,
+mask_user_address_32() is used and a 6 instructions sequence is
+generated:
+
+  24:	54 69 7c 7e 	srwi    r9,r3,17
+  28:	21 29 57 ff 	subfic  r9,r9,22527
+  2c:	7d 29 fe 70 	srawi   r9,r9,31
+  30:	75 2a b0 00 	andis.  r10,r9,45056
+  34:	7c 63 48 78 	andc    r3,r3,r9
+  38:	7c 63 53 78 	or      r3,r3,r10
+
+The constraint is that TASK_SIZE be aligned to 128K in order to get
+the most optimal number of instructions.
+
+When CONFIG_PPC_BARRIER_NOSPEC is not defined, fallback on the
+test-based masking as it is quicker than the 6 instructions sequence
+but not quicker than the 3 instructions sequences above.
+
+As an exemple, allthough barrier_nospec() voids on the 8xx, this
+change has the following impact on strncpy_from_user(): the length of
+the function is reduced from 488 to 340 bytes:
+
+Start of the function with the patch:
+
+00000000 <strncpy_from_user>:
+   0:	7c ab 2b 79 	mr.     r11,r5
+   4:	40 81 01 40 	ble     144 <strncpy_from_user+0x144>
+   8:	7c 89 fe 70 	srawi   r9,r4,31
+   c:	55 29 00 7e 	clrlwi  r9,r9,1
+  10:	7c 84 48 78 	andc    r4,r4,r9
+  14:	3d 20 dc 00 	lis     r9,-9216
+  18:	7d 3a c3 a6 	mtspr   794,r9
+  1c:	2f 8b 00 03 	cmpwi   cr7,r11,3
+  20:	40 9d 00 b4 	ble     cr7,d4 <strncpy_from_user+0xd4>
+...
+
+Start of the function without the patch:
+
+00000000 <strncpy_from_user>:
+   0:	7c a0 2b 79 	mr.     r0,r5
+   4:	40 81 01 10 	ble     114 <strncpy_from_user+0x114>
+   8:	2f 84 00 00 	cmpwi   cr7,r4,0
+   c:	41 9c 01 30 	blt     cr7,13c <strncpy_from_user+0x13c>
+  10:	3d 20 80 00 	lis     r9,-32768
+  14:	7d 24 48 50 	subf    r9,r4,r9
+  18:	7f 80 48 40 	cmplw   cr7,r0,r9
+  1c:	7c 05 03 78 	mr      r5,r0
+  20:	41 9d 01 00 	bgt     cr7,120 <strncpy_from_user+0x120>
+  24:	3d 20 80 00 	lis     r9,-32768
+  28:	7d 25 48 50 	subf    r9,r5,r9
+  2c:	7f 84 48 40 	cmplw   cr7,r4,r9
+  30:	38 e0 ff f2 	li      r7,-14
+  34:	41 9d 00 e4 	bgt     cr7,118 <strncpy_from_user+0x118>
+  38:	94 21 ff e0 	stwu    r1,-32(r1)
+  3c:	3d 20 dc 00 	lis     r9,-9216
+  40:	7d 3a c3 a6 	mtspr   794,r9
+  44:	2b 85 00 03 	cmplwi  cr7,r5,3
+  48:	40 9d 01 6c 	ble     cr7,1b4 <strncpy_from_user+0x1b4>
+...
+ 118:	7c e3 3b 78 	mr      r3,r7
+ 11c:	4e 80 00 20 	blr
+ 120:	7d 25 4b 78 	mr      r5,r9
+ 124:	3d 20 80 00 	lis     r9,-32768
+ 128:	7d 25 48 50 	subf    r9,r5,r9
+ 12c:	7f 84 48 40 	cmplw   cr7,r4,r9
+ 130:	38 e0 ff f2 	li      r7,-14
+ 134:	41 bd ff e4 	bgt     cr7,118 <strncpy_from_user+0x118>
+ 138:	4b ff ff 00 	b       38 <strncpy_from_user+0x38>
+ 13c:	38 e0 ff f2 	li      r7,-14
+ 140:	4b ff ff d8 	b       118 <strncpy_from_user+0x118>
+...
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/Kconfig                         |  3 +--
- arch/powerpc/include/asm/book3s/32/pgtable.h |  4 ---
- arch/powerpc/include/asm/nohash/32/mmu-8xx.h |  4 ---
- arch/powerpc/include/asm/task_size_32.h      | 26 ++++++++++++++++++++
- arch/powerpc/mm/book3s32/mmu.c               |  2 --
- arch/powerpc/mm/mem.c                        |  2 --
- arch/powerpc/mm/nohash/8xx.c                 |  2 --
- 7 files changed, 27 insertions(+), 16 deletions(-)
+v4: Rebase on top of core-scoped-uaccess tag and simplified as suggested by Gabriel
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 9537a61ebae0..b8d36a261009 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -1293,9 +1293,8 @@ config TASK_SIZE_BOOL
- 	  Say N here unless you know what you are doing.
- 
- config TASK_SIZE
--	hex "Size of user task space" if TASK_SIZE_BOOL
-+	hex "Size of maximum user task space" if TASK_SIZE_BOOL
- 	default "0x80000000" if PPC_8xx
--	default "0xb0000000" if PPC_BOOK3S_32 && EXECMEM
- 	default "0xc0000000"
- 
- config MODULES_SIZE_BOOL
-diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
-index 87dcca962be7..41ae404d0b7a 100644
---- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-@@ -195,10 +195,6 @@ void unmap_kernel_page(unsigned long va);
- #define VMALLOC_END	ioremap_bot
- #endif
- 
--#define MODULES_END	ALIGN_DOWN(PAGE_OFFSET, SZ_256M)
--#define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
--#define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
--
- #ifndef __ASSEMBLER__
- #include <linux/sched.h>
- #include <linux/threads.h>
-diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-index f19115db8072..74ad32e1588c 100644
---- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-@@ -170,10 +170,6 @@
- 
- #define mmu_linear_psize	MMU_PAGE_8M
- 
--#define MODULES_END	PAGE_OFFSET
--#define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
--#define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
--
- #ifndef __ASSEMBLER__
- 
- #include <linux/mmdebug.h>
+v3: Rewrite mask_user_address_simple() for a smaller result on powerpc64, suggested by Gabriel
+
+v2: Added 'likely()' to the test in mask_user_address_fallback()
+---
+ arch/powerpc/include/asm/task_size_32.h |  6 +-
+ arch/powerpc/include/asm/uaccess.h      | 76 +++++++++++++++++++++++++
+ 2 files changed, 79 insertions(+), 3 deletions(-)
+
 diff --git a/arch/powerpc/include/asm/task_size_32.h b/arch/powerpc/include/asm/task_size_32.h
-index 30edc21f71fb..42a64bbd1964 100644
+index 42a64bbd1964..725ddbf06217 100644
 --- a/arch/powerpc/include/asm/task_size_32.h
 +++ b/arch/powerpc/include/asm/task_size_32.h
-@@ -2,11 +2,37 @@
- #ifndef _ASM_POWERPC_TASK_SIZE_32_H
- #define _ASM_POWERPC_TASK_SIZE_32_H
+@@ -13,7 +13,7 @@
+ #define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
+ #define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
+ #define MODULES_BASE	(MODULES_VADDR & ~(UL(SZ_4M) - 1))
+-#define USER_TOP	MODULES_BASE
++#define USER_TOP	(MODULES_BASE - SZ_4M)
+ #endif
+ 
+ #ifdef CONFIG_PPC_BOOK3S_32
+@@ -21,11 +21,11 @@
+ #define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
+ #define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
+ #define MODULES_BASE	(MODULES_VADDR & ~(UL(SZ_256M) - 1))
+-#define USER_TOP	MODULES_BASE
++#define USER_TOP	(MODULES_BASE - SZ_4M)
+ #endif
+ 
+ #ifndef USER_TOP
+-#define USER_TOP	ASM_CONST(CONFIG_PAGE_OFFSET)
++#define USER_TOP	((ASM_CONST(CONFIG_PAGE_OFFSET) - SZ_128K) & ~(UL(SZ_128K) - 1))
+ #endif
+ 
+ #if CONFIG_TASK_SIZE < USER_TOP
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 721d65dbbb2e..ba1d878c3f40 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -2,6 +2,8 @@
+ #ifndef _ARCH_POWERPC_UACCESS_H
+ #define _ARCH_POWERPC_UACCESS_H
  
 +#include <linux/sizes.h>
 +
- #if CONFIG_TASK_SIZE > CONFIG_KERNEL_START
- #error User TASK_SIZE overlaps with KERNEL_START address
- #endif
+ #include <asm/processor.h>
+ #include <asm/page.h>
+ #include <asm/extable.h>
+@@ -435,6 +437,80 @@ static __must_check __always_inline bool __user_access_begin(const void __user *
+ #define user_access_save	prevent_user_access_return
+ #define user_access_restore	restore_user_access
  
-+#ifdef CONFIG_PPC_8xx
-+#define MODULES_END	ASM_CONST(CONFIG_PAGE_OFFSET)
-+#define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
-+#define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
-+#define MODULES_BASE	(MODULES_VADDR & ~(UL(SZ_4M) - 1))
-+#define USER_TOP	MODULES_BASE
-+#endif
++/*
++ * Masking the user address is an alternative to a conditional
++ * user_access_begin that can avoid the fencing. This only works
++ * for dense accesses starting at the address.
++ */
++static inline void __user *mask_user_address_simple(const void __user *ptr)
++{
++	unsigned long addr = (unsigned long)ptr;
++	unsigned long mask = (unsigned long)(((long)addr >> (BITS_PER_LONG - 1)) & LONG_MAX);
 +
-+#ifdef CONFIG_PPC_BOOK3S_32
-+#define MODULES_END	(ASM_CONST(CONFIG_PAGE_OFFSET) & ~(UL(SZ_256M) - 1))
-+#define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
-+#define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
-+#define MODULES_BASE	(MODULES_VADDR & ~(UL(SZ_256M) - 1))
-+#define USER_TOP	MODULES_BASE
-+#endif
++	return (void __user *)(addr & ~mask);
++}
 +
-+#ifndef USER_TOP
-+#define USER_TOP	ASM_CONST(CONFIG_PAGE_OFFSET)
-+#endif
++static inline void __user *mask_user_address_isel(const void __user *ptr)
++{
++	unsigned long addr;
 +
-+#if CONFIG_TASK_SIZE < USER_TOP
- #define TASK_SIZE ASM_CONST(CONFIG_TASK_SIZE)
++	asm("cmplw %1, %2; iselgt %0, %2, %1" : "=r"(addr) : "r"(ptr), "r"(TASK_SIZE) : "cr0");
++
++	return (void __user *)addr;
++}
++
++/* TASK_SIZE is a multiple of 128K for shifting by 17 to the right */
++static inline void __user *mask_user_address_32(const void __user *ptr)
++{
++	unsigned long addr = (unsigned long)ptr;
++	unsigned long mask = (unsigned long)((long)((TASK_SIZE >> 17) - 1 - (addr >> 17)) >> 31);
++
++	addr = (addr & ~mask) | (TASK_SIZE & mask);
++
++	return (void __user *)addr;
++}
++
++static inline void __user *mask_user_address_fallback(const void __user *ptr)
++{
++	unsigned long addr = (unsigned long)ptr;
++
++	return (void __user *)(likely(addr < TASK_SIZE) ? addr : TASK_SIZE);
++}
++
++static inline void __user *mask_user_address(const void __user *ptr)
++{
++#ifdef MODULES_VADDR
++	const unsigned long border = MODULES_VADDR;
 +#else
-+#define TASK_SIZE USER_TOP
++	const unsigned long border = PAGE_OFFSET;
 +#endif
- 
- /*
-  * This decides where the kernel will search for a free chunk of vm space during
-diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-index 37eefc6786a7..07660e8badbd 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -223,8 +223,6 @@ int mmu_mark_initmem_nx(void)
- 
- 	update_bats();
- 
--	BUILD_BUG_ON(ALIGN_DOWN(MODULES_VADDR, SZ_256M) < TASK_SIZE);
--
- 	for (i = ALIGN(TASK_SIZE, SZ_256M) >> 28; i < 16; i++) {
- 		/* Do not set NX on VM space for modules */
- 		if (is_module_segment(i << 28))
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 3ddbfdbfa941..bc0f1a9eb0bc 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -401,8 +401,6 @@ struct execmem_info __init *execmem_arch_setup(void)
- #ifdef MODULES_VADDR
- 	unsigned long limit = (unsigned long)_etext - SZ_32M;
- 
--	BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
--
- 	/* First try within 32M limit from _etext to avoid branch trampolines */
- 	if (MODULES_VADDR < PAGE_OFFSET && MODULES_END > limit) {
- 		start = limit;
-diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index ab1505cf42bf..a9d3f4729ead 100644
---- a/arch/powerpc/mm/nohash/8xx.c
-+++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -209,8 +209,6 @@ void __init setup_initial_memory_limit(phys_addr_t first_memblock_base,
- 
- 	/* 8xx can only access 32MB at the moment */
- 	memblock_set_current_limit(min_t(u64, first_memblock_size, SZ_32M));
--
--	BUILD_BUG_ON(ALIGN_DOWN(MODULES_VADDR, PGDIR_SIZE) < TASK_SIZE);
- }
- 
- int pud_clear_huge(pud_t *pud)
++
++	if (IS_ENABLED(CONFIG_PPC64))
++		return mask_user_address_simple(ptr);
++	if (IS_ENABLED(CONFIG_E500))
++		return mask_user_address_isel(ptr);
++	if (TASK_SIZE <= UL(SZ_2G) && border >= UL(SZ_2G))
++		return mask_user_address_simple(ptr);
++	if (IS_ENABLED(CONFIG_PPC_BARRIER_NOSPEC))
++		return mask_user_address_32(ptr);
++	return mask_user_address_fallback(ptr);
++}
++
++static __always_inline void __user *__masked_user_access_begin(const void __user *p,
++							       unsigned long dir)
++{
++	void __user *ptr = mask_user_address(p);
++
++	might_fault();
++	allow_user_access(ptr, dir);
++
++	return ptr;
++}
++
++#define masked_user_access_begin(p) __masked_user_access_begin(p, KUAP_READ_WRITE)
++#define masked_user_read_access_begin(p) __masked_user_access_begin(p, KUAP_READ)
++#define masked_user_write_access_begin(p) __masked_user_access_begin(p, KUAP_WRITE)
++
+ #define arch_unsafe_get_user(x, p, e) do {			\
+ 	__long_type(*(p)) __gu_val;				\
+ 	__typeof__(*(p)) __user *__gu_addr = (p);		\
 -- 
 2.49.0
 
