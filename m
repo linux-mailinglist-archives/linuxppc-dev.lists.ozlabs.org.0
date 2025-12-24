@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15000-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15001-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F042CDC1C2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Dec 2025 12:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E053CCDC1C8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Dec 2025 12:22:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dbqGB0gKsz2yRl;
-	Wed, 24 Dec 2025 22:21:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dbqGF3JJ9z2ypk;
+	Wed, 24 Dec 2025 22:21:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766575313;
-	cv=none; b=PVJykD66UGOSgS2SZ1HGyUq8epeIQfZNXEEKO66v1qIld0WDF+avfnrpRvpjlFK3NpkvSmQownvDWLezl2jMm9BtxKDwxuwnXUZtDPyZKtYy4kbvJOqWNQew3fXvIXwTU01VeSVmqn1hu8Pz9CZtvsA9H7njPtrmDP3JjU0LeaoGnx1bbWGSGxwljbQQYc9h8NACWb+VcNRbQDM45hGdCqALz1KekvtpUCRwTQhrSLi3W+/ccblmGPG5cqhiYu8uEz4Svo3fpR5kpRuxqUHfuUNY6tL3OWt3CnYCz3ocMsLvNo9xSeK8R8S0k7q2clntxTgK29G4QMnvn0IvLvsvmA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766575317;
+	cv=none; b=RHiPCyYQ1jPr5hrErFyHrEBpZzVTqgIoPO0xbEWDcTzEUdu0wmtHq0lmbUoiiZudpVdubG18ZKJFFS6HfXlrxWdPkoKkBtmJOfrsODP179x+ZQpCELgy61fc25Hi/MdN8Up2b4nHQlLs0sAXuKJj5/XDR5IqYMQCLerpIV02hm7tphuDLqGlzrtpveVZab89Y8Cy5b3rOTf9KkqEW9SezOo6SDT+63Vczs9/o+eHsJMpV3BTPlJt+WY+kT/+JMx4BtrH8twakH27/VOsakY8k3HBLZxxeaOllk228Ndnqh/yJ/7I8zH1qGBF+RGUzHNf5gO75kt/ZyAB01+pwxzUjA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766575313; c=relaxed/relaxed;
-	bh=xb5lH6iL5jpeqnM/ODw15dWpWrlWfE54+yS9bm2XS34=;
+	t=1766575317; c=relaxed/relaxed;
+	bh=xzJ8g+i4bky+SMjn9R60IY4D1FhWIdcXpXc4AV66axg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+Ir/YyM9H0XOpWRIkuJYSBpbBXz2eMnqV9Nmro6q2wQWfqXOcIOLUV4oPoFybGTY/ZYn6convbje2+iTGjkf5RRPqQQ/4X09kaVyMbzRKhcPcQWVv3uMofinwi/4PTYu1Mz7SXq3fwkI2PORVgvRSbCXFIyFWfA7Xww10pP763YLk3GLOmRPaiaBWk2h+ipygryQwsRfo52wZOuzxieYM5xYMV7n9k/EMXY9voRGuEJwyr3E0qowbEFdXCNQvJMnsTwLMWvk3rSo/HdvnCo9MFYfj3RdnA/6oATg21M6o3brYm06P7ZdKQBM/se4uvWqJAcniis1VX2+vC+hOim7w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E4KwOWX9; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=DH2V7+jrJ6P6tQ5uwZZ7eXKnvikjYVu0kFP8UTj6/W28BTnqKvFm8eXBMwuQf6t3qdEdBlyk3T0FG0pwo6UNYhRnnTMGJaLsgpRiTwqLL2Bfgrtns49PBKvc9NItiNyGB9DIcC9DYJQGnKrJ7NZjRsi+n8+qLFu/MtB8bWjyqb+DKOWmWeaC/UDusJJY5uJHeJGVMUzYzunvY0Y+SxtyZynDzHNc3vNRoHvnQEGaYYeCSvUNX+URDDHmLFDKYZOkJ20gCu4iI1UIUyVv8tjFTi8LJCmyZTHf4N4N9nCN673hq1qqUhtAa5YWkm48PX/r6HWIb6GBk17nc+HxAvv3qg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W0ltaU6W; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E4KwOWX9;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W0ltaU6W;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbqG92qqRz2yFy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 22:21:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbqGD4KMFz2yFy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 22:21:56 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C67E644350;
+	by tor.source.kernel.org (Postfix) with ESMTP id 6DA3C60125;
+	Wed, 24 Dec 2025 11:21:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DCEC116D0;
 	Wed, 24 Dec 2025 11:21:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C1BC16AAE;
-	Wed, 24 Dec 2025 11:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766575281;
-	bh=ESEGqXaGhpxMotbWIttQKWdNWuiCABOjsQflksA3dTw=;
+	s=k20201202; t=1766575284;
+	bh=uML6mmNL9b32c/J5n2U0d68VLsHlLeW3trcOev0qgcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4KwOWX9yu344E22SVqW/xGZNgPqc9ru9JvNBMp1C1AhWDivFskmtr7Nqd2j150/u
-	 IWzTCe7qyDX9LbajSATwsK/73P0wG6p4hp0haQ/AUV00/Cc49nZxN3ZvA6Zu9vgIYx
-	 nWPWvHD9qHlijaHAVwdICWYqGlQUMmRfglejIxUJUB+/MbS90tg0YAAh4VdE0SafXi
-	 zrT56b7fH/V1CB7jYZ9GQmTNW2LjxiOxLZOR8oOjIGOLU52MmcBH4WuoPiu9smlKKO
-	 R6+f8aR37PIqubfRqflfIn5LZ+pv+r0PgM7SOqhrOql4te5dFfRNptUqXEfAH0ZiAj
-	 HbcWB1WK7jbcw==
+	b=W0ltaU6WOVXR9KTWeXHCk5FsTxNsCgJ5bYP8Pwe2JbSkGGNvpCSAeBl015Pcu3Gnm
+	 yv42gybIbXYrOIc/NKnhrdUjbJPr96Hv4nUKAWiWeV9JN87H/ZHpRPOLvozCgWSJTP
+	 dTv5m0tWTA2/5E4WnJ5j8zL8OCqw2BfsmDssJAei4A8743BrPQ74A4268B4V3KVIQk
+	 rLuIX/CDeoHCtp5xUIHBL2hsdhaO5ZfWp8MCXkiU4O6RlLSljqilwCfj/sfd72N/UC
+	 +D5/b66NtqfoXpCJmmPLVjaeMio8eKVOTdFZYLsRRyJ257HEgEqZX9vKyg3e0UnnZe
+	 UeIR9OYdk7Beg==
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -50,9 +50,9 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 3/7] powerpc/uaccess: Remove {allow/prevent}_{read/write/read_write}_{from/to/}_user()
-Date: Wed, 24 Dec 2025 12:20:51 +0100
-Message-ID: <70971f0ba81eab742a120e5bfdeff6b42d08fd98.1766574657.git.chleroy@kernel.org>
+Subject: [PATCH v5 4/7] powerpc/uaccess: Refactor user_{read/write/}_access_begin()
+Date: Wed, 24 Dec 2025 12:20:52 +0100
+Message-ID: <2b4f9d4e521e0b56bf5cb239916b4a178c4d2007.1766574657.git.chleroy@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1766574657.git.chleroy@kernel.org>
 References: <cover.1766574657.git.chleroy@kernel.org>
@@ -69,7 +69,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5381; i=chleroy@kernel.org; h=from:subject:message-id; bh=goSQ1fgNuMGS1XC/s9hVFP24kRreahITIRfIPqNcCd0=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWR6n5mdp9tRVuL+ZnfPh+fW1o+KVixeFHHe+wj7TrvpF /42rJwS1lHKwiDGxSArpshy/D/3rhldX1Lzp+7Sh5nDygQyhIGLUwAmMmc+I8P/XN1dDOddT+Zo eHzmLssr9RGI/BAk+Fslo45t09r1+Y8Z/nsGhdz8269Rsqvx+NclBXvkzs5TDdiY4BeXrt1euur CWm4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3583; i=chleroy@kernel.org; h=from:subject:message-id; bh=Hs0S56epi8xUTo2XJTHx0BIIvWB8/BwLXBAnBe9oLow=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWR6n5nz8IZah4hzWoyy18eWZRp8T0OtJuunGyxSEFyUm dmUr7ugo5SFQYyLQVZMkeX4f+5dM7q+pOZP3aUPM4eVCWQIAxenAEykX5vhf+7EzZbnPP4992nm +vTRu7Z9TdvcVxNM3BMX/OlsDGeq9WBkeH3bLTvuwKR9Cwv3ef3TYno4S7bVMPNdWvea7SuWXu/ X5gMA
 X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -79,178 +79,105 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-The six following functions have become simple single-line fonctions
-that do not have much added value anymore:
-- allow_read_from_user()
-- allow_write_to_user()
-- allow_read_write_user()
-- prevent_read_from_user()
-- prevent_write_to_user()
-- prevent_read_write_user()
+user_read_access_begin() and user_write_access_begin() and
+user_access_begin() are now very similar. Create a common
+__user_access_begin() that takes direction as parameter.
 
-Directly call allow_user_access() and prevent_user_access(), it doesn't
-reduce the readability and it removes unnecessary middle functions.
+In order to avoid a warning with the conditional call of
+barrier_nospec() which is sometimes an empty macro, change it to a
+do {} while (0).
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
+v4: Rebase on top of core-scoped-uaccess tag
+
 v2: New
 ---
- arch/powerpc/include/asm/kup.h     | 47 ------------------------------
- arch/powerpc/include/asm/uaccess.h | 30 +++++++++----------
- 2 files changed, 15 insertions(+), 62 deletions(-)
+ arch/powerpc/include/asm/barrier.h |  2 +-
+ arch/powerpc/include/asm/uaccess.h | 46 +++++++++---------------------
+ 2 files changed, 14 insertions(+), 34 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index 3963584ac1cf..4a4145a244f2 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -131,53 +131,6 @@ static __always_inline void kuap_assert_locked(void)
- 		kuap_get_and_assert_locked();
- }
+diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
+index 9e9833faa4af..9d2f612cfb1d 100644
+--- a/arch/powerpc/include/asm/barrier.h
++++ b/arch/powerpc/include/asm/barrier.h
+@@ -102,7 +102,7 @@ do {									\
  
--static __always_inline void allow_read_from_user(const void __user *from, unsigned long size)
--{
--	allow_user_access(NULL, KUAP_READ);
--}
--
--static __always_inline void allow_write_to_user(void __user *to, unsigned long size)
--{
--	allow_user_access(to, KUAP_WRITE);
--}
--
--static __always_inline void allow_read_write_user(void __user *to, const void __user *from,
--						  unsigned long size)
--{
--	allow_user_access(to, KUAP_READ_WRITE);
--}
--
--static __always_inline void prevent_read_from_user(const void __user *from, unsigned long size)
--{
--	prevent_user_access(KUAP_READ);
--}
--
--static __always_inline void prevent_write_to_user(void __user *to, unsigned long size)
--{
--	prevent_user_access(KUAP_WRITE);
--}
--
--static __always_inline void prevent_read_write_user(void __user *to, const void __user *from,
--						    unsigned long size)
--{
--	prevent_user_access(KUAP_READ_WRITE);
--}
--
--static __always_inline void prevent_current_access_user(void)
--{
--	prevent_user_access(KUAP_READ_WRITE);
--}
--
--static __always_inline void prevent_current_read_from_user(void)
--{
--	prevent_user_access(KUAP_READ);
--}
--
--static __always_inline void prevent_current_write_to_user(void)
--{
--	prevent_user_access(KUAP_WRITE);
--}
--
- #endif /* !__ASSEMBLER__ */
+ #else /* !CONFIG_PPC_BARRIER_NOSPEC */
+ #define barrier_nospec_asm
+-#define barrier_nospec()
++#define barrier_nospec()	do {} while (0)
+ #endif /* CONFIG_PPC_BARRIER_NOSPEC */
  
- #endif /* _ASM_POWERPC_KUAP_H_ */
+ /*
 diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 3e622e647d62..7846ee59e374 100644
+index 7846ee59e374..721d65dbbb2e 100644
 --- a/arch/powerpc/include/asm/uaccess.h
 +++ b/arch/powerpc/include/asm/uaccess.h
-@@ -45,14 +45,14 @@
- 	do {							\
- 		__label__ __pu_failed;				\
- 								\
--		allow_write_to_user(__pu_addr, __pu_size);	\
-+		allow_user_access(__pu_addr, KUAP_WRITE);	\
- 		__put_user_size_goto(__pu_val, __pu_addr, __pu_size, __pu_failed);	\
--		prevent_write_to_user(__pu_addr, __pu_size);	\
-+		prevent_user_access(KUAP_WRITE);		\
- 		__pu_err = 0;					\
- 		break;						\
- 								\
- __pu_failed:							\
--		prevent_write_to_user(__pu_addr, __pu_size);	\
-+		prevent_user_access(KUAP_WRITE);		\
- 		__pu_err = -EFAULT;				\
- 	} while (0);						\
- 								\
-@@ -302,9 +302,9 @@ do {								\
- 								\
- 	might_fault();					\
- 	barrier_nospec();					\
--	allow_read_from_user(__gu_addr, __gu_size);		\
-+	allow_user_access(NULL, KUAP_READ);		\
- 	__get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err);	\
--	prevent_read_from_user(__gu_addr, __gu_size);		\
-+	prevent_user_access(KUAP_READ);				\
- 	(x) = (__typeof__(*(ptr)))__gu_val;			\
- 								\
- 	__gu_err;						\
-@@ -331,9 +331,9 @@ raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
- 	unsigned long ret;
+@@ -410,50 +410,30 @@ copy_mc_to_user(void __user *to, const void *from, unsigned long n)
+ extern long __copy_from_user_flushcache(void *dst, const void __user *src,
+ 		unsigned size);
  
- 	barrier_nospec();
--	allow_read_write_user(to, from, n);
-+	allow_user_access(to, KUAP_READ_WRITE);
- 	ret = __copy_tofrom_user(to, from, n);
--	prevent_read_write_user(to, from, n);
-+	prevent_user_access(KUAP_READ_WRITE);
- 	return ret;
- }
- #endif /* __powerpc64__ */
-@@ -343,9 +343,9 @@ static inline unsigned long raw_copy_from_user(void *to,
+-static __must_check __always_inline bool user_access_begin(const void __user *ptr, size_t len)
++static __must_check __always_inline bool __user_access_begin(const void __user *ptr, size_t len,
++							     unsigned long dir)
  {
- 	unsigned long ret;
- 
--	allow_read_from_user(from, n);
-+	allow_user_access(NULL, KUAP_READ);
- 	ret = __copy_tofrom_user((__force void __user *)to, from, n);
--	prevent_read_from_user(from, n);
-+	prevent_user_access(KUAP_READ);
- 	return ret;
- }
- 
-@@ -354,9 +354,9 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
- {
- 	unsigned long ret;
- 
--	allow_write_to_user(to, n);
-+	allow_user_access(to, KUAP_WRITE);
- 	ret = __copy_tofrom_user(to, (__force const void __user *)from, n);
--	prevent_write_to_user(to, n);
-+	prevent_user_access(KUAP_WRITE);
- 	return ret;
- }
- 
-@@ -367,9 +367,9 @@ static inline unsigned long __clear_user(void __user *addr, unsigned long size)
- 	unsigned long ret;
+ 	if (unlikely(!access_ok(ptr, len)))
+ 		return false;
  
  	might_fault();
--	allow_write_to_user(addr, size);
-+	allow_user_access(addr, KUAP_WRITE);
- 	ret = __arch_clear_user(addr, size);
--	prevent_write_to_user(addr, size);
-+	prevent_user_access(KUAP_WRITE);
- 	return ret;
+ 
+-	barrier_nospec();
+-	allow_read_write_user((void __user *)ptr, ptr, len);
++	if (dir & KUAP_READ)
++		barrier_nospec();
++	allow_user_access((void __user *)ptr, dir);
+ 	return true;
  }
+-#define user_access_begin	user_access_begin
+-#define user_access_end		prevent_current_access_user
+-#define user_access_save	prevent_user_access_return
+-#define user_access_restore	restore_user_access
  
-@@ -397,9 +397,9 @@ copy_mc_to_user(void __user *to, const void *from, unsigned long n)
- {
- 	if (check_copy_size(from, n, true)) {
- 		if (access_ok(to, n)) {
--			allow_write_to_user(to, n);
-+			allow_user_access(to, KUAP_WRITE);
- 			n = copy_mc_generic((void __force *)to, from, n);
--			prevent_write_to_user(to, n);
-+			prevent_user_access(KUAP_WRITE);
- 		}
- 	}
+-static __must_check __always_inline bool
+-user_read_access_begin(const void __user *ptr, size_t len)
+-{
+-	if (unlikely(!access_ok(ptr, len)))
+-		return false;
++#define user_access_begin(p, l)		__user_access_begin(p, l, KUAP_READ_WRITE)
++#define user_read_access_begin(p, l)	__user_access_begin(p, l, KUAP_READ)
++#define user_write_access_begin(p, l)	__user_access_begin(p, l, KUAP_WRITE)
  
+-	might_fault();
+-
+-	barrier_nospec();
+-	allow_read_from_user(ptr, len);
+-	return true;
+-}
+-#define user_read_access_begin	user_read_access_begin
+-#define user_read_access_end		prevent_current_read_from_user
++#define user_access_end()		prevent_user_access(KUAP_READ_WRITE)
++#define user_read_access_end()		prevent_user_access(KUAP_READ)
++#define user_write_access_end()		prevent_user_access(KUAP_WRITE)
+ 
+-static __must_check __always_inline bool
+-user_write_access_begin(const void __user *ptr, size_t len)
+-{
+-	if (unlikely(!access_ok(ptr, len)))
+-		return false;
+-
+-	might_fault();
+-
+-	allow_write_to_user((void __user *)ptr, len);
+-	return true;
+-}
+-#define user_write_access_begin	user_write_access_begin
+-#define user_write_access_end		prevent_current_write_to_user
++#define user_access_save	prevent_user_access_return
++#define user_access_restore	restore_user_access
+ 
+ #define arch_unsafe_get_user(x, p, e) do {			\
+ 	__long_type(*(p)) __gu_val;				\
 -- 
 2.49.0
 
