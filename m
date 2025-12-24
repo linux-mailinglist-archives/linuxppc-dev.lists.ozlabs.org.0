@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15001-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15002-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E053CCDC1C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Dec 2025 12:22:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F46CDC1CE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Dec 2025 12:22:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dbqGF3JJ9z2ypk;
-	Wed, 24 Dec 2025 22:21:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dbqGG6mccz2yth;
+	Wed, 24 Dec 2025 22:21:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766575317;
-	cv=none; b=RHiPCyYQ1jPr5hrErFyHrEBpZzVTqgIoPO0xbEWDcTzEUdu0wmtHq0lmbUoiiZudpVdubG18ZKJFFS6HfXlrxWdPkoKkBtmJOfrsODP179x+ZQpCELgy61fc25Hi/MdN8Up2b4nHQlLs0sAXuKJj5/XDR5IqYMQCLerpIV02hm7tphuDLqGlzrtpveVZab89Y8Cy5b3rOTf9KkqEW9SezOo6SDT+63Vczs9/o+eHsJMpV3BTPlJt+WY+kT/+JMx4BtrH8twakH27/VOsakY8k3HBLZxxeaOllk228Ndnqh/yJ/7I8zH1qGBF+RGUzHNf5gO75kt/ZyAB01+pwxzUjA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766575318;
+	cv=none; b=RJwkDJZG4x//OyEhRN7NJwfrY43ru+WGcNUSQ9hdcGx0zXzZXnrn42sWMTSyYhh759qEBrP332a4HJazgUy7LTppk084/nIaQl59ywtkf0wEzl6VS6zXI5ETbi0KEByVoCLx041pBc2otKCeoEuli/YUMgxJ4MYXt+/ZvdnzanyDFOduEBj80DLwMVup6yFNzFsCLcZaWT2DB56Ys2krNAKTuFU7GAAxfmWeu2u7B4LBGW2kNQrNZKXn1IIFG/SOWBpWIZFRRJS3mlCW1ZArAn3sbCre03eZSaR4q0T9kSjvQ7ohpO1xV1VDBPBFMjGTm3G+BE2wSKVpZTYlCdzJLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766575317; c=relaxed/relaxed;
-	bh=xzJ8g+i4bky+SMjn9R60IY4D1FhWIdcXpXc4AV66axg=;
+	t=1766575318; c=relaxed/relaxed;
+	bh=z7fDlnt/LqilRpQpJcPsgCerOUBQFMMO6BSjSlzN/r0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DH2V7+jrJ6P6tQ5uwZZ7eXKnvikjYVu0kFP8UTj6/W28BTnqKvFm8eXBMwuQf6t3qdEdBlyk3T0FG0pwo6UNYhRnnTMGJaLsgpRiTwqLL2Bfgrtns49PBKvc9NItiNyGB9DIcC9DYJQGnKrJ7NZjRsi+n8+qLFu/MtB8bWjyqb+DKOWmWeaC/UDusJJY5uJHeJGVMUzYzunvY0Y+SxtyZynDzHNc3vNRoHvnQEGaYYeCSvUNX+URDDHmLFDKYZOkJ20gCu4iI1UIUyVv8tjFTi8LJCmyZTHf4N4N9nCN673hq1qqUhtAa5YWkm48PX/r6HWIb6GBk17nc+HxAvv3qg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W0ltaU6W; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=A56xCOn8R7wxuJjsG/+FEdEJTxQZfiF1OxIV9JKgbi7cVBlLq/EDGvL+RRaGM4su9Veb8hMqjz3Opowpj/PnAfw9apFlhfnUlevcTt1p3TW1anfA/KRUB75F5OR4wUoy9dR4yDAigIQj46dBb6h2eSyKFcUfuU9CjsvScolwXd49QJYFEKNOsHO7jH5fSe5RUCylvzKQdfu0RdSatusA59R5aI0jXpqbC7OajA5WFnsdnQcanWrfTOjSNJOhOpJPAGqRNGR5gIUd6v4gAEuVA7gp9a/2eHp3Lp1TBuDXhMS+VJmRAYmTrmitbcIPBZX6c+rLnFizxzppcOGSqW2Zlw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ofh7zz7X; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W0ltaU6W;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ofh7zz7X;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbqGD4KMFz2yFy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 22:21:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbqGG16Qfz2yrg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 22:21:58 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6DA3C60125;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8F15D42DE8;
+	Wed, 24 Dec 2025 11:21:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96ABFC4CEFB;
 	Wed, 24 Dec 2025 11:21:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DCEC116D0;
-	Wed, 24 Dec 2025 11:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766575284;
-	bh=uML6mmNL9b32c/J5n2U0d68VLsHlLeW3trcOev0qgcc=;
+	s=k20201202; t=1766575286;
+	bh=sMpjUe/hhb/piJnpNO9t/nbJ3zmkkCHnDq8UFDbXN3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0ltaU6WOVXR9KTWeXHCk5FsTxNsCgJ5bYP8Pwe2JbSkGGNvpCSAeBl015Pcu3Gnm
-	 yv42gybIbXYrOIc/NKnhrdUjbJPr96Hv4nUKAWiWeV9JN87H/ZHpRPOLvozCgWSJTP
-	 dTv5m0tWTA2/5E4WnJ5j8zL8OCqw2BfsmDssJAei4A8743BrPQ74A4268B4V3KVIQk
-	 rLuIX/CDeoHCtp5xUIHBL2hsdhaO5ZfWp8MCXkiU4O6RlLSljqilwCfj/sfd72N/UC
-	 +D5/b66NtqfoXpCJmmPLVjaeMio8eKVOTdFZYLsRRyJ257HEgEqZX9vKyg3e0UnnZe
-	 UeIR9OYdk7Beg==
+	b=ofh7zz7X+ylwXIgwjRZjioTZIAvCjNRStNAv+l8zG4cpSGHrEsKYZLcFdlxdwj+Ej
+	 BzPTMUJ2UB5SlXTIZyizOH0b20iMiaWr9BDSfMdOn6x0K6CWHXEBD03ctI/CjhsO9m
+	 77F0EKSD2MdeJ5GBvURJzc6ctC3rwG8N9zHC0ZpvOnWVvip9+N8uCremlx+9pq8Gwq
+	 nv1WFfSWqthHeqIXWFpM35MVkY1W1wb3wJF+z705AaH3t/RoansN+h9/0PbLD9NLh0
+	 4XhMSOQcpHcqjczp7fCgfF+h+Si4jbJa9IaDRPBC/E9K5rllDqRY452AodsSbSOca8
+	 9CnghKOS5D65A==
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -50,9 +50,9 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 4/7] powerpc/uaccess: Refactor user_{read/write/}_access_begin()
-Date: Wed, 24 Dec 2025 12:20:52 +0100
-Message-ID: <2b4f9d4e521e0b56bf5cb239916b4a178c4d2007.1766574657.git.chleroy@kernel.org>
+Subject: [PATCH v5 5/7] powerpc/32s: Fix segments setup when TASK_SIZE is not a multiple of 256M
+Date: Wed, 24 Dec 2025 12:20:53 +0100
+Message-ID: <8928d906079e156c59794c41e826a684eaaaebb4.1766574657.git.chleroy@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1766574657.git.chleroy@kernel.org>
 References: <cover.1766574657.git.chleroy@kernel.org>
@@ -69,7 +69,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3583; i=chleroy@kernel.org; h=from:subject:message-id; bh=Hs0S56epi8xUTo2XJTHx0BIIvWB8/BwLXBAnBe9oLow=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWR6n5nz8IZah4hzWoyy18eWZRp8T0OtJuunGyxSEFyUm dmUr7ugo5SFQYyLQVZMkeX4f+5dM7q+pOZP3aUPM4eVCWQIAxenAEykX5vhf+7EzZbnPP4992nm +vTRu7Z9TdvcVxNM3BMX/OlsDGeq9WBkeH3bLTvuwKR9Cwv3ef3TYno4S7bVMPNdWvea7SuWXu/ X5gMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4811; i=chleroy@kernel.org; h=from:subject:message-id; bh=UMeT/KUp8+woidCjPqCoL1mGuuOWLtvzg8TYGXLU1xw=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWR6n5kj6+CyYFaBjOmtuNx3ex1//NgmrKataLVn/Qv36 saZrd+rO0pZGMS4GGTFFFmO/+feNaPrS2r+1F36MHNYmUCGMHBxCsBEeMoY/qcVCQc+EGWr/PLc 6ubp4FuTAoWOf7EJZ/q539416NWH9lJGhrls2oKeu+wbhN/YZs6rP5O2MHWn41kh5sPbP/Jb1ba XcAEA
 X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -79,105 +79,129 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-user_read_access_begin() and user_write_access_begin() and
-user_access_begin() are now very similar. Create a common
-__user_access_begin() that takes direction as parameter.
+For book3s/32 it is assumed that TASK_SIZE is a multiple of 256 Mbytes,
+but Kconfig allows any value for TASK_SIZE.
 
-In order to avoid a warning with the conditional call of
-barrier_nospec() which is sometimes an empty macro, change it to a
-do {} while (0).
+In all relevant calculations, align TASK_SIZE to the upper 256 Mbytes
+boundary.
+
+Also use ASM_CONST() in the definition of TASK_SIZE to ensure it is
+seen as an unsigned constant.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v4: Rebase on top of core-scoped-uaccess tag
+ arch/powerpc/include/asm/book3s/32/mmu-hash.h | 5 ++++-
+ arch/powerpc/include/asm/task_size_32.h       | 2 +-
+ arch/powerpc/kernel/asm-offsets.c             | 2 +-
+ arch/powerpc/kernel/head_book3s_32.S          | 6 +++---
+ arch/powerpc/mm/book3s32/mmu.c                | 2 +-
+ arch/powerpc/mm/ptdump/segment_regs.c         | 2 +-
+ 6 files changed, 11 insertions(+), 8 deletions(-)
 
-v2: New
----
- arch/powerpc/include/asm/barrier.h |  2 +-
- arch/powerpc/include/asm/uaccess.h | 46 +++++++++---------------------
- 2 files changed, 14 insertions(+), 34 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/barrier.h b/arch/powerpc/include/asm/barrier.h
-index 9e9833faa4af..9d2f612cfb1d 100644
---- a/arch/powerpc/include/asm/barrier.h
-+++ b/arch/powerpc/include/asm/barrier.h
-@@ -102,7 +102,7 @@ do {									\
+diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
+index 8435bf3cdabf..387d370c8a35 100644
+--- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
++++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
+@@ -192,12 +192,15 @@ extern s32 patch__hash_page_B, patch__hash_page_C;
+ extern s32 patch__flush_hash_A0, patch__flush_hash_A1, patch__flush_hash_A2;
+ extern s32 patch__flush_hash_B;
  
- #else /* !CONFIG_PPC_BARRIER_NOSPEC */
- #define barrier_nospec_asm
--#define barrier_nospec()
-+#define barrier_nospec()	do {} while (0)
- #endif /* CONFIG_PPC_BARRIER_NOSPEC */
++#include <linux/sizes.h>
++#include <linux/align.h>
++
+ #include <asm/reg.h>
+ #include <asm/task_size_32.h>
+ 
+ static __always_inline void update_user_segment(u32 n, u32 val)
+ {
+-	if (n << 28 < TASK_SIZE)
++	if (n << 28 < ALIGN(TASK_SIZE, SZ_256M))
+ 		mtsr(val + n * 0x111, n << 28);
+ }
+ 
+diff --git a/arch/powerpc/include/asm/task_size_32.h b/arch/powerpc/include/asm/task_size_32.h
+index de7290ee770f..30edc21f71fb 100644
+--- a/arch/powerpc/include/asm/task_size_32.h
++++ b/arch/powerpc/include/asm/task_size_32.h
+@@ -6,7 +6,7 @@
+ #error User TASK_SIZE overlaps with KERNEL_START address
+ #endif
+ 
+-#define TASK_SIZE (CONFIG_TASK_SIZE)
++#define TASK_SIZE ASM_CONST(CONFIG_TASK_SIZE)
  
  /*
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 7846ee59e374..721d65dbbb2e 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -410,50 +410,30 @@ copy_mc_to_user(void __user *to, const void *from, unsigned long n)
- extern long __copy_from_user_flushcache(void *dst, const void __user *src,
- 		unsigned size);
+  * This decides where the kernel will search for a free chunk of vm space during
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index a4bc80b30410..46149f326fd4 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -331,7 +331,7 @@ int main(void)
  
--static __must_check __always_inline bool user_access_begin(const void __user *ptr, size_t len)
-+static __must_check __always_inline bool __user_access_begin(const void __user *ptr, size_t len,
-+							     unsigned long dir)
- {
- 	if (unlikely(!access_ok(ptr, len)))
- 		return false;
+ #ifndef CONFIG_PPC64
+ 	DEFINE(TASK_SIZE, TASK_SIZE);
+-	DEFINE(NUM_USER_SEGMENTS, TASK_SIZE>>28);
++	DEFINE(NUM_USER_SEGMENTS, ALIGN(TASK_SIZE, SZ_256M) >> 28);
+ #endif /* ! CONFIG_PPC64 */
  
- 	might_fault();
+ 	/* datapage offsets for use by vdso */
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
+index cb2bca76be53..c1779455ea32 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -420,7 +420,7 @@ InstructionTLBMiss:
+ 	lwz	r2,0(r2)		/* get pmd entry */
+ #ifdef CONFIG_EXECMEM
+ 	rlwinm	r3, r0, 4, 0xf
+-	subi	r3, r3, (TASK_SIZE >> 28) & 0xf
++	subi	r3, r3, NUM_USER_SEGMENTS
+ #endif
+ 	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
+ 	beq-	InstructionAddressInvalid	/* return if no mapping */
+@@ -475,7 +475,7 @@ DataLoadTLBMiss:
+ 	lwz	r2,0(r1)		/* get pmd entry */
+ 	rlwinm	r3, r0, 4, 0xf
+ 	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
+-	subi	r3, r3, (TASK_SIZE >> 28) & 0xf
++	subi	r3, r3, NUM_USER_SEGMENTS
+ 	beq-	2f			/* bail if no mapping */
+ 1:	rlwimi	r2,r0,22,20,29		/* insert next 10 bits of address */
+ 	lwz	r2,0(r2)		/* get linux-style pte */
+@@ -554,7 +554,7 @@ DataStoreTLBMiss:
+ 	lwz	r2,0(r1)		/* get pmd entry */
+ 	rlwinm	r3, r0, 4, 0xf
+ 	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
+-	subi	r3, r3, (TASK_SIZE >> 28) & 0xf
++	subi	r3, r3, NUM_USER_SEGMENTS
+ 	beq-	2f			/* bail if no mapping */
+ 1:
+ 	rlwimi	r2,r0,22,20,29		/* insert next 10 bits of address */
+diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+index c42ecdf94e48..37eefc6786a7 100644
+--- a/arch/powerpc/mm/book3s32/mmu.c
++++ b/arch/powerpc/mm/book3s32/mmu.c
+@@ -225,7 +225,7 @@ int mmu_mark_initmem_nx(void)
  
--	barrier_nospec();
--	allow_read_write_user((void __user *)ptr, ptr, len);
-+	if (dir & KUAP_READ)
-+		barrier_nospec();
-+	allow_user_access((void __user *)ptr, dir);
- 	return true;
- }
--#define user_access_begin	user_access_begin
--#define user_access_end		prevent_current_access_user
--#define user_access_save	prevent_user_access_return
--#define user_access_restore	restore_user_access
+ 	BUILD_BUG_ON(ALIGN_DOWN(MODULES_VADDR, SZ_256M) < TASK_SIZE);
  
--static __must_check __always_inline bool
--user_read_access_begin(const void __user *ptr, size_t len)
--{
--	if (unlikely(!access_ok(ptr, len)))
--		return false;
-+#define user_access_begin(p, l)		__user_access_begin(p, l, KUAP_READ_WRITE)
-+#define user_read_access_begin(p, l)	__user_access_begin(p, l, KUAP_READ)
-+#define user_write_access_begin(p, l)	__user_access_begin(p, l, KUAP_WRITE)
+-	for (i = TASK_SIZE >> 28; i < 16; i++) {
++	for (i = ALIGN(TASK_SIZE, SZ_256M) >> 28; i < 16; i++) {
+ 		/* Do not set NX on VM space for modules */
+ 		if (is_module_segment(i << 28))
+ 			continue;
+diff --git a/arch/powerpc/mm/ptdump/segment_regs.c b/arch/powerpc/mm/ptdump/segment_regs.c
+index 9df3af8d481f..c06704b18a2c 100644
+--- a/arch/powerpc/mm/ptdump/segment_regs.c
++++ b/arch/powerpc/mm/ptdump/segment_regs.c
+@@ -31,7 +31,7 @@ static int sr_show(struct seq_file *m, void *v)
+ 	int i;
  
--	might_fault();
--
--	barrier_nospec();
--	allow_read_from_user(ptr, len);
--	return true;
--}
--#define user_read_access_begin	user_read_access_begin
--#define user_read_access_end		prevent_current_read_from_user
-+#define user_access_end()		prevent_user_access(KUAP_READ_WRITE)
-+#define user_read_access_end()		prevent_user_access(KUAP_READ)
-+#define user_write_access_end()		prevent_user_access(KUAP_WRITE)
+ 	seq_puts(m, "---[ User Segments ]---\n");
+-	for (i = 0; i < TASK_SIZE >> 28; i++)
++	for (i = 0; i < ALIGN(TASK_SIZE, SZ_256M) >> 28; i++)
+ 		seg_show(m, i);
  
--static __must_check __always_inline bool
--user_write_access_begin(const void __user *ptr, size_t len)
--{
--	if (unlikely(!access_ok(ptr, len)))
--		return false;
--
--	might_fault();
--
--	allow_write_to_user((void __user *)ptr, len);
--	return true;
--}
--#define user_write_access_begin	user_write_access_begin
--#define user_write_access_end		prevent_current_write_to_user
-+#define user_access_save	prevent_user_access_return
-+#define user_access_restore	restore_user_access
- 
- #define arch_unsafe_get_user(x, p, e) do {			\
- 	__long_type(*(p)) __gu_val;				\
+ 	seq_puts(m, "\n---[ Kernel Segments ]---\n");
 -- 
 2.49.0
 
