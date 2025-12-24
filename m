@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15002-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14997-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F46CDC1CE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Dec 2025 12:22:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 133EECDC1B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Dec 2025 12:21:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dbqGG6mccz2yth;
-	Wed, 24 Dec 2025 22:21:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dbqFl3Hz6z2yYq;
+	Wed, 24 Dec 2025 22:21:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766575318;
-	cv=none; b=RJwkDJZG4x//OyEhRN7NJwfrY43ru+WGcNUSQ9hdcGx0zXzZXnrn42sWMTSyYhh759qEBrP332a4HJazgUy7LTppk084/nIaQl59ywtkf0wEzl6VS6zXI5ETbi0KEByVoCLx041pBc2otKCeoEuli/YUMgxJ4MYXt+/ZvdnzanyDFOduEBj80DLwMVup6yFNzFsCLcZaWT2DB56Ys2krNAKTuFU7GAAxfmWeu2u7B4LBGW2kNQrNZKXn1IIFG/SOWBpWIZFRRJS3mlCW1ZArAn3sbCre03eZSaR4q0T9kSjvQ7ohpO1xV1VDBPBFMjGTm3G+BE2wSKVpZTYlCdzJLA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766575291;
+	cv=none; b=JlvvcMGkugLy7r6lJIiDnCzrlSHSiDMnKSt3OkEsCVw+ST10u/G3KiADoVGQcOxSkrdI9FLLC4TMITRKYH0jrjb5ATc844qU/GEEr15KFjoA2snDLpiPAd4yE71SjNEKwaYePOI7fPb2Uj5Ka3ih5cZNRRbQ3t6MOuYDf+UoKS99GfceLZZJr/xzy7t4IFgS2+ADZBGvT+UyJf094NXsKqdmu8osOaPMApzTjaa8g2NDqUn3544rx0WI7+cDn/FX9x9hZMBlkxHNUp0nhjDXLFdtJhEIx+9PMXXPEcW/oy6h+hUah5a5JqcTsc/XCFpGLvTZfU0r6hYLTHNHUZ0OhA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766575318; c=relaxed/relaxed;
-	bh=z7fDlnt/LqilRpQpJcPsgCerOUBQFMMO6BSjSlzN/r0=;
+	t=1766575291; c=relaxed/relaxed;
+	bh=qaC/orMm3SJXkkBZ2ukDlztDciZD3ly4UwR0RsuHBC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A56xCOn8R7wxuJjsG/+FEdEJTxQZfiF1OxIV9JKgbi7cVBlLq/EDGvL+RRaGM4su9Veb8hMqjz3Opowpj/PnAfw9apFlhfnUlevcTt1p3TW1anfA/KRUB75F5OR4wUoy9dR4yDAigIQj46dBb6h2eSyKFcUfuU9CjsvScolwXd49QJYFEKNOsHO7jH5fSe5RUCylvzKQdfu0RdSatusA59R5aI0jXpqbC7OajA5WFnsdnQcanWrfTOjSNJOhOpJPAGqRNGR5gIUd6v4gAEuVA7gp9a/2eHp3Lp1TBuDXhMS+VJmRAYmTrmitbcIPBZX6c+rLnFizxzppcOGSqW2Zlw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ofh7zz7X; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=NT3zkI4uT5DBTSlcCS6SsBP3mDn40SQ7E1kUgXOtRRJkYQYvryGHVI5oV9II5utND5laAT5BVmTBqQfYIOdellz4UQsYBYdXkst81Eg/VCNorKROUvdeHF/gcLkkFKEhYiOnY9KD7aAHxriwERo0OOZA+Qo/z87g3g4PvMWdnQ/nviG+OG4n3ecPUilQKo/Bc9CGWpxU8H+LzIASc3Y/WNp03apXT+AFyZSbvMlu6vXdxdovl05K/wJdGLoOAQKNo9E+AXueLgfM4ItBqNofBcpz1vCQjpA1aI84JngJ6w3L6A1Rrq+xpO1gXKehg7FfpBkNHf/tbZtOLkpT0Hg1wA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iWPeDBA8; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ofh7zz7X;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iWPeDBA8;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbqGG16Qfz2yrg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 22:21:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbqFk4JmXz2yYK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 22:21:30 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F15D42DE8;
+	by sea.source.kernel.org (Postfix) with ESMTP id F135143A1D;
+	Wed, 24 Dec 2025 11:21:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B32C16AAE;
 	Wed, 24 Dec 2025 11:21:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96ABFC4CEFB;
-	Wed, 24 Dec 2025 11:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766575286;
-	bh=sMpjUe/hhb/piJnpNO9t/nbJ3zmkkCHnDq8UFDbXN3E=;
+	s=k20201202; t=1766575288;
+	bh=wKTECL+uhV2GewMTUnLeAs+N2tpCOWuQ3qmRO31AzZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofh7zz7X+ylwXIgwjRZjioTZIAvCjNRStNAv+l8zG4cpSGHrEsKYZLcFdlxdwj+Ej
-	 BzPTMUJ2UB5SlXTIZyizOH0b20iMiaWr9BDSfMdOn6x0K6CWHXEBD03ctI/CjhsO9m
-	 77F0EKSD2MdeJ5GBvURJzc6ctC3rwG8N9zHC0ZpvOnWVvip9+N8uCremlx+9pq8Gwq
-	 nv1WFfSWqthHeqIXWFpM35MVkY1W1wb3wJF+z705AaH3t/RoansN+h9/0PbLD9NLh0
-	 4XhMSOQcpHcqjczp7fCgfF+h+Si4jbJa9IaDRPBC/E9K5rllDqRY452AodsSbSOca8
-	 9CnghKOS5D65A==
+	b=iWPeDBA8oLNW9eDp4PsxIG5ToDSE+K5B19Dz2tJYX9VEH8JjPH+TI2pohxIIc5kbm
+	 AqF9Vu/NaSMUZXvsMUUqzNM8HRHvocup8CUVTaYJ0cgtY8cz/s6/B0+67wDcRFE5HM
+	 6wpguaQzAWUd1CMY6S43aBsW7lsFFtEc5KwFpuTvMEug/OnNVHQS7YGXhC+dI65pr5
+	 jC6Mhrx7zRi93oWBKyLxFQ492l1i0RrmuAOurXYUgXn5+5pig4gUHQBRnaIykNjOtA
+	 u64SNV+s0cPd1Hx+hCMIm/4s5NgYBhbcs3u+qKhXWq5HwrWPMRvGxrDwrYvUWHUmkw
+	 dPN81g3JcMNOg==
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -50,9 +50,9 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 5/7] powerpc/32s: Fix segments setup when TASK_SIZE is not a multiple of 256M
-Date: Wed, 24 Dec 2025 12:20:53 +0100
-Message-ID: <8928d906079e156c59794c41e826a684eaaaebb4.1766574657.git.chleroy@kernel.org>
+Subject: [PATCH v5 6/7] powerpc/32: Automatically adapt TASK_SIZE based on constraints
+Date: Wed, 24 Dec 2025 12:20:54 +0100
+Message-ID: <6a2575420770d075cd090b5a316730a2ffafdee4.1766574657.git.chleroy@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1766574657.git.chleroy@kernel.org>
 References: <cover.1766574657.git.chleroy@kernel.org>
@@ -69,7 +69,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4811; i=chleroy@kernel.org; h=from:subject:message-id; bh=UMeT/KUp8+woidCjPqCoL1mGuuOWLtvzg8TYGXLU1xw=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWR6n5kj6+CyYFaBjOmtuNx3ex1//NgmrKataLVn/Qv36 saZrd+rO0pZGMS4GGTFFFmO/+feNaPrS2r+1F36MHNYmUCGMHBxCsBEeMoY/qcVCQc+EGWr/PLc 6ubp4FuTAoWOf7EJZ/q539416NWH9lJGhrls2oKeu+wbhN/YZs6rP5O2MHWn41kh5sPbP/Jb1ba XcAEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6156; i=chleroy@kernel.org; h=from:subject:message-id; bh=9s+oMFBAX9h3xrMQNyahO4dDCw3Exg61uapF1kwcX3o=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWR6n5mj+b055mGMtUj/A/4S78f7Be3XHpMsCbjFHD3lK MuflRNXdJSyMIhxMciKKbIc/8+9a0bXl9T8qbv0YeawMoEMYeDiFICJKExl+GedeoltpqxiZg8D x/fJDt+tUnaxb+udzcm0dpP8f54b2y4yMrTrdOkvfvfGN8YkapY7j/px1hqHVy6sP555tx/ninp bww4A
 X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -79,129 +79,166 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-For book3s/32 it is assumed that TASK_SIZE is a multiple of 256 Mbytes,
-but Kconfig allows any value for TASK_SIZE.
+At the time being, TASK_SIZE can be customized by the user via Kconfig
+but it is not possible to check all constraints in Kconfig. Impossible
+setups are detected at compile time with BUILD_BUG() but that leads
+to build failure when setting crazy values. It is not a problem on its
+own because the user will usually either use the default value or set
+a well thought value. However build robots generate crazy random
+configs that lead to build failures, and build robots see it as a
+regression every time a patch adds such a constraint.
 
-In all relevant calculations, align TASK_SIZE to the upper 256 Mbytes
-boundary.
+So instead of failing the build when the custom TASK_SIZE is too
+big, just adjust it to the maximum possible value matching the setup.
 
-Also use ASM_CONST() in the definition of TASK_SIZE to ensure it is
-seen as an unsigned constant.
+Several architectures already calculate TASK_SIZE based on other
+parameters and options.
+
+In order to do so, move MODULES_VADDR calculation into task_size_32.h
+and ensure that:
+- On book3s/32, userspace and module area have their own segments (256M)
+- On 8xx, userspace has its own full PGDIR entries (4M)
+
+Then TASK_SIZE is guaranteed to be correct so remove related
+BUILD_BUG()s.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/book3s/32/mmu-hash.h | 5 ++++-
- arch/powerpc/include/asm/task_size_32.h       | 2 +-
- arch/powerpc/kernel/asm-offsets.c             | 2 +-
- arch/powerpc/kernel/head_book3s_32.S          | 6 +++---
- arch/powerpc/mm/book3s32/mmu.c                | 2 +-
- arch/powerpc/mm/ptdump/segment_regs.c         | 2 +-
- 6 files changed, 11 insertions(+), 8 deletions(-)
+ arch/powerpc/Kconfig                         |  3 +--
+ arch/powerpc/include/asm/book3s/32/pgtable.h |  4 ---
+ arch/powerpc/include/asm/nohash/32/mmu-8xx.h |  4 ---
+ arch/powerpc/include/asm/task_size_32.h      | 26 ++++++++++++++++++++
+ arch/powerpc/mm/book3s32/mmu.c               |  2 --
+ arch/powerpc/mm/mem.c                        |  2 --
+ arch/powerpc/mm/nohash/8xx.c                 |  2 --
+ 7 files changed, 27 insertions(+), 16 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-index 8435bf3cdabf..387d370c8a35 100644
---- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-+++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-@@ -192,12 +192,15 @@ extern s32 patch__hash_page_B, patch__hash_page_C;
- extern s32 patch__flush_hash_A0, patch__flush_hash_A1, patch__flush_hash_A2;
- extern s32 patch__flush_hash_B;
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 9537a61ebae0..b8d36a261009 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -1293,9 +1293,8 @@ config TASK_SIZE_BOOL
+ 	  Say N here unless you know what you are doing.
  
-+#include <linux/sizes.h>
-+#include <linux/align.h>
-+
- #include <asm/reg.h>
- #include <asm/task_size_32.h>
+ config TASK_SIZE
+-	hex "Size of user task space" if TASK_SIZE_BOOL
++	hex "Size of maximum user task space" if TASK_SIZE_BOOL
+ 	default "0x80000000" if PPC_8xx
+-	default "0xb0000000" if PPC_BOOK3S_32 && EXECMEM
+ 	default "0xc0000000"
  
- static __always_inline void update_user_segment(u32 n, u32 val)
- {
--	if (n << 28 < TASK_SIZE)
-+	if (n << 28 < ALIGN(TASK_SIZE, SZ_256M))
- 		mtsr(val + n * 0x111, n << 28);
- }
+ config MODULES_SIZE_BOOL
+diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
+index 87dcca962be7..41ae404d0b7a 100644
+--- a/arch/powerpc/include/asm/book3s/32/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
+@@ -195,10 +195,6 @@ void unmap_kernel_page(unsigned long va);
+ #define VMALLOC_END	ioremap_bot
+ #endif
  
+-#define MODULES_END	ALIGN_DOWN(PAGE_OFFSET, SZ_256M)
+-#define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
+-#define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
+-
+ #ifndef __ASSEMBLER__
+ #include <linux/sched.h>
+ #include <linux/threads.h>
+diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
+index f19115db8072..74ad32e1588c 100644
+--- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
+@@ -170,10 +170,6 @@
+ 
+ #define mmu_linear_psize	MMU_PAGE_8M
+ 
+-#define MODULES_END	PAGE_OFFSET
+-#define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
+-#define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
+-
+ #ifndef __ASSEMBLER__
+ 
+ #include <linux/mmdebug.h>
 diff --git a/arch/powerpc/include/asm/task_size_32.h b/arch/powerpc/include/asm/task_size_32.h
-index de7290ee770f..30edc21f71fb 100644
+index 30edc21f71fb..42a64bbd1964 100644
 --- a/arch/powerpc/include/asm/task_size_32.h
 +++ b/arch/powerpc/include/asm/task_size_32.h
-@@ -6,7 +6,7 @@
+@@ -2,11 +2,37 @@
+ #ifndef _ASM_POWERPC_TASK_SIZE_32_H
+ #define _ASM_POWERPC_TASK_SIZE_32_H
+ 
++#include <linux/sizes.h>
++
+ #if CONFIG_TASK_SIZE > CONFIG_KERNEL_START
  #error User TASK_SIZE overlaps with KERNEL_START address
  #endif
  
--#define TASK_SIZE (CONFIG_TASK_SIZE)
-+#define TASK_SIZE ASM_CONST(CONFIG_TASK_SIZE)
++#ifdef CONFIG_PPC_8xx
++#define MODULES_END	ASM_CONST(CONFIG_PAGE_OFFSET)
++#define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
++#define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
++#define MODULES_BASE	(MODULES_VADDR & ~(UL(SZ_4M) - 1))
++#define USER_TOP	MODULES_BASE
++#endif
++
++#ifdef CONFIG_PPC_BOOK3S_32
++#define MODULES_END	(ASM_CONST(CONFIG_PAGE_OFFSET) & ~(UL(SZ_256M) - 1))
++#define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
++#define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
++#define MODULES_BASE	(MODULES_VADDR & ~(UL(SZ_256M) - 1))
++#define USER_TOP	MODULES_BASE
++#endif
++
++#ifndef USER_TOP
++#define USER_TOP	ASM_CONST(CONFIG_PAGE_OFFSET)
++#endif
++
++#if CONFIG_TASK_SIZE < USER_TOP
+ #define TASK_SIZE ASM_CONST(CONFIG_TASK_SIZE)
++#else
++#define TASK_SIZE USER_TOP
++#endif
  
  /*
   * This decides where the kernel will search for a free chunk of vm space during
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index a4bc80b30410..46149f326fd4 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -331,7 +331,7 @@ int main(void)
- 
- #ifndef CONFIG_PPC64
- 	DEFINE(TASK_SIZE, TASK_SIZE);
--	DEFINE(NUM_USER_SEGMENTS, TASK_SIZE>>28);
-+	DEFINE(NUM_USER_SEGMENTS, ALIGN(TASK_SIZE, SZ_256M) >> 28);
- #endif /* ! CONFIG_PPC64 */
- 
- 	/* datapage offsets for use by vdso */
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index cb2bca76be53..c1779455ea32 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -420,7 +420,7 @@ InstructionTLBMiss:
- 	lwz	r2,0(r2)		/* get pmd entry */
- #ifdef CONFIG_EXECMEM
- 	rlwinm	r3, r0, 4, 0xf
--	subi	r3, r3, (TASK_SIZE >> 28) & 0xf
-+	subi	r3, r3, NUM_USER_SEGMENTS
- #endif
- 	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
- 	beq-	InstructionAddressInvalid	/* return if no mapping */
-@@ -475,7 +475,7 @@ DataLoadTLBMiss:
- 	lwz	r2,0(r1)		/* get pmd entry */
- 	rlwinm	r3, r0, 4, 0xf
- 	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
--	subi	r3, r3, (TASK_SIZE >> 28) & 0xf
-+	subi	r3, r3, NUM_USER_SEGMENTS
- 	beq-	2f			/* bail if no mapping */
- 1:	rlwimi	r2,r0,22,20,29		/* insert next 10 bits of address */
- 	lwz	r2,0(r2)		/* get linux-style pte */
-@@ -554,7 +554,7 @@ DataStoreTLBMiss:
- 	lwz	r2,0(r1)		/* get pmd entry */
- 	rlwinm	r3, r0, 4, 0xf
- 	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
--	subi	r3, r3, (TASK_SIZE >> 28) & 0xf
-+	subi	r3, r3, NUM_USER_SEGMENTS
- 	beq-	2f			/* bail if no mapping */
- 1:
- 	rlwimi	r2,r0,22,20,29		/* insert next 10 bits of address */
 diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-index c42ecdf94e48..37eefc6786a7 100644
+index 37eefc6786a7..07660e8badbd 100644
 --- a/arch/powerpc/mm/book3s32/mmu.c
 +++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -225,7 +225,7 @@ int mmu_mark_initmem_nx(void)
+@@ -223,8 +223,6 @@ int mmu_mark_initmem_nx(void)
  
- 	BUILD_BUG_ON(ALIGN_DOWN(MODULES_VADDR, SZ_256M) < TASK_SIZE);
+ 	update_bats();
  
--	for (i = TASK_SIZE >> 28; i < 16; i++) {
-+	for (i = ALIGN(TASK_SIZE, SZ_256M) >> 28; i < 16; i++) {
+-	BUILD_BUG_ON(ALIGN_DOWN(MODULES_VADDR, SZ_256M) < TASK_SIZE);
+-
+ 	for (i = ALIGN(TASK_SIZE, SZ_256M) >> 28; i < 16; i++) {
  		/* Do not set NX on VM space for modules */
  		if (is_module_segment(i << 28))
- 			continue;
-diff --git a/arch/powerpc/mm/ptdump/segment_regs.c b/arch/powerpc/mm/ptdump/segment_regs.c
-index 9df3af8d481f..c06704b18a2c 100644
---- a/arch/powerpc/mm/ptdump/segment_regs.c
-+++ b/arch/powerpc/mm/ptdump/segment_regs.c
-@@ -31,7 +31,7 @@ static int sr_show(struct seq_file *m, void *v)
- 	int i;
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index 3ddbfdbfa941..bc0f1a9eb0bc 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -401,8 +401,6 @@ struct execmem_info __init *execmem_arch_setup(void)
+ #ifdef MODULES_VADDR
+ 	unsigned long limit = (unsigned long)_etext - SZ_32M;
  
- 	seq_puts(m, "---[ User Segments ]---\n");
--	for (i = 0; i < TASK_SIZE >> 28; i++)
-+	for (i = 0; i < ALIGN(TASK_SIZE, SZ_256M) >> 28; i++)
- 		seg_show(m, i);
+-	BUILD_BUG_ON(TASK_SIZE > MODULES_VADDR);
+-
+ 	/* First try within 32M limit from _etext to avoid branch trampolines */
+ 	if (MODULES_VADDR < PAGE_OFFSET && MODULES_END > limit) {
+ 		start = limit;
+diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+index ab1505cf42bf..a9d3f4729ead 100644
+--- a/arch/powerpc/mm/nohash/8xx.c
++++ b/arch/powerpc/mm/nohash/8xx.c
+@@ -209,8 +209,6 @@ void __init setup_initial_memory_limit(phys_addr_t first_memblock_base,
  
- 	seq_puts(m, "\n---[ Kernel Segments ]---\n");
+ 	/* 8xx can only access 32MB at the moment */
+ 	memblock_set_current_limit(min_t(u64, first_memblock_size, SZ_32M));
+-
+-	BUILD_BUG_ON(ALIGN_DOWN(MODULES_VADDR, PGDIR_SIZE) < TASK_SIZE);
+ }
+ 
+ int pud_clear_huge(pud_t *pud)
 -- 
 2.49.0
 
