@@ -1,89 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-14975-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-14976-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE8ECDADE0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Dec 2025 00:59:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C630CDB1DF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Dec 2025 02:58:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dbX6L6Z4xz2yFk;
-	Wed, 24 Dec 2025 10:59:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dbZlz0V9pz2xlM;
+	Wed, 24 Dec 2025 12:58:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.11
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766534346;
-	cv=none; b=GcDb3+u/XiGT5xb4te7DrM37S+oFAhbkNPBipOurjZXFKi1sfpJA/neOC5lcvF9f0nQ7c3KJju+Gzcpth0xUDkUo08zB3damH51NDvJDfMfF+pp3wsDsD8XEqHiNatYs1DCbI+4MU/YShK7MCTj2QLi+sfe5JhF5WpOCB8fOuuaffNXavnafs5TDFW5y1TxinSBiqGiblhcdeZLPQW1pE/9gx7vIAMsHZqyGXEW/a7Agtpr+RYuucifBy+4Fq1T9msV9n8Q2p+mcjI+fncXm5lhhUGTsBwleir5/d0PQVMU+BgSaMv2Hd/v3ZbfCwKaXFZX68KSEpHtg9WDyLv5aFA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.119
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766541502;
+	cv=none; b=FqdSvBRjReQvoBeHYbgqxB7TXTZNxgRiT2+fly5QZvUPgjla7sCTe5/kR7QUKlSgkFcN8bRBofEqy/C0YiapFdQMFG7YiK2WL7jkFqWTFxDe+hZtgP3xjm106uyBGXWYmAVrrJLaN+YHP0hr8en/jENt7m8wfSlBMgRsOR3c37DkcV3o4OUfDcIoLdqPrZG87S6FwQ/RJjGBaySDjn/tZdv+SMXCXGht4AOGdsa/09DWApmulPxC4tEqihbwQt5qUZjwP2QYp2Mhuav1x1ttPvyHj/pee+JP+pMu/vBsbc99yL8wLJafow/44vYlGlLkZ1am9DZW5weJpIhDEbnqWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766534346; c=relaxed/relaxed;
-	bh=mTMg56ZDGn5WmVJgmytedDB/C3xb8tmH4L62F5YNQ90=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ObLMpn9BLRocpThE9G5S6ZYuyhhItqA7axs5HUXFaWzrenKt4UWlcKBmE0fzNlmq6NdxrJqm3Fsa2XdP+XuZ5zFvpZ9g+0KK0VdzMEaobpwALwr4jD+u63YlCbtcmIBlb0g97/h0q8a2sdAN04x4w10EenUEd0GhkNZYFejN7ODasWVfUd15livUx2wcsQ2pcft7Xa63nbnSH5XUjayT0BFJesBaACSRAE1p00mpnJ6AtXkITjv6JM4OIdKn0+uv2WU0GqgHlF3o5JTq9BBX5nhh/fLFWYTj8m6fmsXrgQHN9jnNn3HUbZ0MCZinN4WgsLlxcIQW2KtW62jWOeeXRw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VGz5sBhE; dkim-atps=neutral; spf=pass (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1766541502; c=relaxed/relaxed;
+	bh=vpb/Ndy+7I56xYp04RK+U275InGboh5GyjLPiBNNVmE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kKY68HHeb1WAkLS33zH0MsEDleojtiW8NmuX01AR0X+qTYZHZWIQjU9ADdeOF7KKwta/qDQgqOp4GUqMLDC5DPj6Jc/jIvgiFTGmyeFVGkQW1qmt4BEskV6yzhXicI2r3MgkAtGFJukJeWydF5r8klizyIcMLfrR1PwcD1RkUBGZaI6LHxBdhVtmD4Ms/IPrIi834aHeHFVqSom4s+umShrDaddJys6Dz2+9mUJx5Ccyia+kXrqxr0KrseqIMhjg8dkXH6N9vfgp4ML6Kc+b7zplrTD3AwvnWSPC34tygs18CgOC6MjH7rYMnBcKERspbDAAIy/OelXnv9j0ZAvWcw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=BGvBXEBr; dkim-atps=neutral; spf=pass (client-ip=115.124.30.119; helo=out30-119.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VGz5sBhE;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=BGvBXEBr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.119; helo=out30-119.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbX6H6FwTz2yFd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 10:59:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766534344; x=1798070344;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wbLqI2F7wg0GAZJFEKzvgXl0WujlC0eAlfgVTwT4Pnc=;
-  b=VGz5sBhEUcV9evkTPj7LoumpL6yvX4A8o5qfXNUKLoD1IDW2/MG2ToGB
-   KtSZ2gML2TykOsfq1GMJZ52gRTYemK9fIlBzT5jP8t52d5+5o/k0niPC5
-   CtHD1lKCcvfJTf+5Z3wOrVXozkqC3mJs96FqzhQQ65TP935akZP3EJ/3n
-   CDpUJ3/+okIrGwVqaX2vH0j6hPkwY/vzJ2xnWxjazRZJDmofmEkXJ7HOk
-   lTRagH6xfSdHeBhHvPksdft82imZWJhkqYm0Qe8VxOvK82WPkwI0rDHth
-   58JPHHUluxSSro+RmZCZQmHel4KYtT+Irqc3e3jKqG8uJabC/QbrhUIp4
-   Q==;
-X-CSE-ConnectionGUID: Wpx8IFx/RA6Vu68JZy26Qw==
-X-CSE-MsgGUID: gYq/VgcKS+qsUP4puRo1xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11651"; a="79016469"
-X-IronPort-AV: E=Sophos;i="6.21,172,1763452800"; 
-   d="scan'208";a="79016469"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 15:58:58 -0800
-X-CSE-ConnectionGUID: TcJUReP5Qwy+NGFGsQ85Gg==
-X-CSE-MsgGUID: K0cnw6bARF6boThsyEe6Hw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,172,1763452800"; 
-   d="scan'208";a="199870155"
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 23 Dec 2025 15:58:52 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vYCHC-000000002Uf-0n58;
-	Tue, 23 Dec 2025 23:58:50 +0000
-Date: Wed, 24 Dec 2025 07:58:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
-	linux-cxl@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Rafael J Wysocki <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
-	Borislav Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-media@vger.kernel.org, Shuai Xue <xueshuai@linux.alibaba.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <helgaas@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org,
-	"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Subject: Re: [PATCH 3/5 v8] acpi/ghes: Add helper for CPER CXL protocol
- errors checks
-Message-ID: <202512240711.Iv57ik8I-lkp@intel.com>
-References: <20251219124042.3759749-4-fabio.m.de.francesco@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dbZlw40bvz2xP9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Dec 2025 12:58:18 +1100 (AEDT)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1766541492; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=vpb/Ndy+7I56xYp04RK+U275InGboh5GyjLPiBNNVmE=;
+	b=BGvBXEBrWR7/KzLo2KNjbkw5hBC+NeQjOor44Ea/i4fwe+9Sseo/aRhcEZO5d41nrUkXDYX8CR9uE5EeUr4Ay0Rrync7/93xEhtU281Ft3ERmDK/7bAdId6KneMrW8NJNeI5Zs5JA3k4CQpjScbXF4sqTUtZdpeGbkZTb0m9ctg=
+Received: from 30.246.163.226(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WvZQeTD_1766541489 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 24 Dec 2025 09:58:10 +0800
+Message-ID: <b1b0071f-ce69-41ac-adc8-54fb0bdb7116@linux.alibaba.com>
+Date: Wed, 24 Dec 2025 09:58:09 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,81 +51,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251219124042.3759749-4-fabio.m.de.francesco@linux.intel.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5 v8] ACPI: extlog: Trace CPER Non-standard Section Body
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
+ linux-cxl@vger.kernel.org
+Cc: Rafael J Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+References: <20251219124042.3759749-1-fabio.m.de.francesco@linux.intel.com>
+ <20251219124042.3759749-2-fabio.m.de.francesco@linux.intel.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20251219124042.3759749-2-fabio.m.de.francesco@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Fabio,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on ea1013c1539270e372fc99854bc6e4d94eaeff66]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Fabio-M-De-Francesco/ACPI-extlog-Trace-CPER-Non-standard-Section-Body/20251219-204338
-base:   ea1013c1539270e372fc99854bc6e4d94eaeff66
-patch link:    https://lore.kernel.org/r/20251219124042.3759749-4-fabio.m.de.francesco%40linux.intel.com
-patch subject: [PATCH 3/5 v8] acpi/ghes: Add helper for CPER CXL protocol errors checks
-config: arm64-defconfig (https://download.01.org/0day-ci/archive/20251224/202512240711.Iv57ik8I-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251224/202512240711.Iv57ik8I-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512240711.Iv57ik8I-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/acpi/apei/ghes_helpers.c: In function 'cxl_cper_sec_prot_err_valid':
->> drivers/acpi/apei/ghes_helpers.c:9:17: error: implicit declaration of function 'pr_err_ratelimited' [-Wimplicit-function-declaration]
-       9 |                 pr_err_ratelimited("CXL CPER invalid agent type\n");
-         |                 ^~~~~~~~~~~~~~~~~~
->> drivers/acpi/apei/ghes_helpers.c:27:17: error: implicit declaration of function 'pr_warn_ratelimited' [-Wimplicit-function-declaration]
-      27 |                 pr_warn_ratelimited(FW_WARN
-         |                 ^~~~~~~~~~~~~~~~~~~
->> drivers/acpi/apei/ghes_helpers.c:27:37: error: 'FW_WARN' undeclared (first use in this function)
-      27 |                 pr_warn_ratelimited(FW_WARN
-         |                                     ^~~~~~~
-   drivers/acpi/apei/ghes_helpers.c:27:37: note: each undeclared identifier is reported only once for each function it appears in
->> drivers/acpi/apei/ghes_helpers.c:27:44: error: expected ')' before string constant
-      27 |                 pr_warn_ratelimited(FW_WARN
-         |                                    ~       ^
-         |                                            )
-      28 |                                     "CXL CPER no device serial number\n");
-         |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-vim +/pr_err_ratelimited +9 drivers/acpi/apei/ghes_helpers.c
+On 12/19/25 8:39 PM, Fabio M. De Francesco wrote:
+> ghes_do_proc() has a catch-all for unknown or unhandled CPER formats
+> (UEFI v2.11 Appendix N 2.3), extlog_print() does not. This gap was
+> noticed by a RAS test that injected CXL protocol errors which were
+> notified to extlog_print() via the IOMCA (I/O Machine Check
+> Architecture) mechanism. Bring parity to the extlog_print() path by
+> including a similar log_non_standard_event().
+> 
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+> ---
+>   drivers/acpi/acpi_extlog.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+> index f6b9562779de0..47d11cb5c9120 100644
+> --- a/drivers/acpi/acpi_extlog.c
+> +++ b/drivers/acpi/acpi_extlog.c
+> @@ -183,6 +183,12 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
+>   			if (gdata->error_data_length >= sizeof(*mem))
+>   				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
+>   						       (u8)gdata->error_severity);
+> +		} else {
+> +			void *err = acpi_hest_get_payload(gdata);
+> +
+> +			log_non_standard_event(sec_type, fru_id, fru_text,
+> +					       gdata->error_severity, err,
+> +					       gdata->error_data_length);
+>   		}
+>   	}
+>   
 
-     5	
-     6	int cxl_cper_sec_prot_err_valid(struct cxl_cper_sec_prot_err *prot_err)
-     7	{
-     8		if (!(prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS)) {
-   > 9			pr_err_ratelimited("CXL CPER invalid agent type\n");
-    10			return -EINVAL;
-    11		}
-    12	
-    13		if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
-    14			pr_err_ratelimited("CXL CPER invalid protocol error log\n");
-    15			return -EINVAL;
-    16		}
-    17	
-    18		if (prot_err->err_len != sizeof(struct cxl_ras_capability_regs)) {
-    19			pr_err_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
-    20					   prot_err->err_len);
-    21			return -EINVAL;
-    22		}
-    23	
-    24		if ((prot_err->agent_type == RCD || prot_err->agent_type == DEVICE ||
-    25		     prot_err->agent_type == LD || prot_err->agent_type == FMLD) &&
-    26		    !(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
-  > 27			pr_warn_ratelimited(FW_WARN
+Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks.
+Shuai
 
