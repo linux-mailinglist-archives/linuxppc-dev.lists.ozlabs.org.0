@@ -1,64 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-15009-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15010-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF729CDE079
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Dec 2025 19:31:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9048CDE118
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Dec 2025 20:35:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dccld07Wdz2xC3;
-	Fri, 26 Dec 2025 05:31:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dcf8s5ktcz2xC3;
+	Fri, 26 Dec 2025 06:35:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.9
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766687500;
-	cv=none; b=Uq9ah7rDRhDyZg0uWcar7y4uztfZl0RpQ1oJJznMQapLfF/lBVPNzT/f37wjCB+JC6gzmJHpMQgpIbjIXzBRP5IRj0wV+qlX9fE4RJBz6wHUx9ivFObBAx6n1HoWP9w82y+HmeMUYByL3XHNmtjC6Lytzug17i7U2ugk+JYjs0RHk7NMte8XIImV+YCadTJs464cjSq17nx9AoB4nr0dF5/VOTUBRxPjWNeXx3PCXxxT2FKVoQW+S+dj/3Nha5CQhOREDVN9MKPQqFFlCiE5SRV9Q58YR/fBjsDatil9T68MywReEhYvRW+wh3PKWPskuTvcUs35A0j1mtgke7WE0g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.9
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766691309;
+	cv=none; b=XKI9jr+oxbLSvNi8ROXWY/8N5JCV6rDYOBkiB8zeTVbstOdDCsrflSmRBqHJ8sbdBmMriomStaI2YAZSVLR8e8/I5RsvenoFttSlMtB4k/lO9Yo0yjHDLUKLj7fxAlZM6arEcaQQtev12/K9WmSXCtLWyyh20fSlf5lOoXjQG61WfQzEjbLmPp7S7CdfbKWWZcL63z2PuoG8yHgMuMhPjx64+GG3yp/NuBFq6wF9ERHDhevjfA+TXFgEtLGxIukuMzLW9zIYwtRAH/rKgVwQlV7LnH304Zxuhbdk40ENhTOcBpYLuNjc/sJJz5c+Hq+KFO6nrj7YoClgP+MFPAtT8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766687500; c=relaxed/relaxed;
-	bh=1xfbycelZ75qa+Dx6xRKK2JQ4OPBoymebBMBKQZ4tCM=;
+	t=1766691309; c=relaxed/relaxed;
+	bh=VA94RCjiCWOhe4Ngi8gAvTZuUkcu1qengPVZYjV0WZQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jqHXd0/tbL8jXFu2nukiGxIcb7zw0Br0HXS9d4/iswJCsIQzxq9oMseEPZGzeLGaxPps+5ftu1s4ZnoRqXqwkMGrga3r7nRu7hSp+QYFd+ojaluBwE9ewbClwDStZdxbCnhIutuTgOsgG8NNBsBgmw/09StlPv9U2Cn2QLSF2y1rW1YWCPvJ+NF2t6XOOsVyVJAhMW9hakHBq9DY8bCqVTkZfJRPCNkdSuSadgkw369i/DmDZWxcXZSuW8ylsOGIMZqLhXls5agpNNdGAJXFOjYrH4m2beQaHEfja9pRpTf3JY4US+KURRxuJ5FThP4QjXpUxtBN8tVGURsI0zESqw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=My8De8hD; dkim-atps=neutral; spf=pass (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=bl9Knle1ltbHm0eN2XiALtZ0L4VGYrtcoCNu5xY+vlJzPZ8RY6UKcpGZ34JTPPJG8pOlDKQYPclNPkvRy4PRAI2jfYyQXksTz4mr5DDZ3bTmwVxaNlgLbanLAWcpcBVjKcOEVPrLppXNWPl9ZiR0FIT7jWVQYyApqSqzb5LLVEkIDVQPH24TbW1DRHaaxPGuG7pHhm73clA/Gkntrp+CsvkNEjLJUkbBsTCHyR8Ckkv4UGYKfBEvwBo8ycLu79z8K+Csilyi/RrJIsWRAA0sptJiUzyeFalfaUURgU+SvIQo49TonSG9pfNx3J7J66hVkZU/x9VkNXWYYsgNqh6yvw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fuc3dsnU; dkim-atps=neutral; spf=temperror (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=My8De8hD;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fuc3dsnU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Authentication-Results: lists.ozlabs.org; spf=temperror (SPF Temporary Error: DNS Timeout) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dcclZ1bbWz2x9W
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Dec 2025 05:31:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dcf8q1Fvmz2x99
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Dec 2025 06:34:45 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766687498; x=1798223498;
+  t=1766691307; x=1798227307;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=yqnePlyRgEquO4uP2YmSaSpuW1av6DY6o/KZmR59zYs=;
-  b=My8De8hDhc7P+HsQTWoP8M4RkdKJFy+EVOLms16lC+ZDDl/8tJ6LxKZu
-   8Hb55LUCz+0IJeBKYwpFhRQCRgdoeEEGdW2F462h6gfO53bXQJA4HOIHw
-   16pdMmMMau0WLuDsAtRZyM4w+bave8dG83BG8PD+irtQ9lDlq1rv3iel2
-   4J/6q/rubhm3L21Rda1dLTcDyY13Xe9oAwA0xwYzQ4CMyDG29U9c9FrrG
-   Ar/ljDPOku1RVdDktkDHw+jonCchVO4EhpKGcWiF6SsMItv95wxP6UKaF
-   ffBr+aGVwl6WmjbpUpt+5tIc2ugJPuIOmyds9gOkqbfN5gsf0TaUHevFe
-   w==;
-X-CSE-ConnectionGUID: VxEBhaegQK6GfSv4FtcxZQ==
-X-CSE-MsgGUID: nXyaVZy5Sh+DpxlLEe7MSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11652"; a="91131218"
+  bh=ofgh9KwqcvyPHGJk9JcqQvbMV1hNNHkzTXzpIoXFyf4=;
+  b=fuc3dsnUdBR8G1H9vZrc1swqRMswWsukO5RYn9sC23i88oIMi+t6Q9Jh
+   1oU5bAkD3S2kXIhUO9DvHmEJ7ieNXSkLL+c3v7WlaeJ/rR4mR2vikU9Zs
+   j197ObFjATP0PLPaF+CUEUmAl9tKt43kMHDtP9MqdJg19J65Ytm/BjbhF
+   5NSmYBHpm2DKvVmVSNCIJwoWoll2knLdTlgaw8sWwhUMCJxF5g1uu94FF
+   m7sIB//vMhYrH4sJgaF1vP2jQ/eWTRlFFqYsqyLS3THJ/XI02khj/eOMs
+   dKN99W+joPhB0TvD1VaCTeTi89QSbrkApwPmqnEO70p/iXSPqtrT3M78G
+   Q==;
+X-CSE-ConnectionGUID: 2S2AMeCFSJqk1EO2zsk/dA==
+X-CSE-MsgGUID: MpWUGV/TQEyOcapAcHqlVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11652"; a="79202576"
 X-IronPort-AV: E=Sophos;i="6.21,177,1763452800"; 
-   d="scan'208";a="91131218"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Dec 2025 10:31:32 -0800
-X-CSE-ConnectionGUID: OUwZDa35RUKTYtnAQpRyrg==
-X-CSE-MsgGUID: qkIViPLzR9y7Zfey6SE2FQ==
+   d="scan'208";a="79202576"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Dec 2025 11:34:42 -0800
+X-CSE-ConnectionGUID: LGfeeNPqSG2YVJuVAIHuUg==
+X-CSE-MsgGUID: 9T8ro8cvQtWOoKl7kiFAwQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,177,1763452800"; 
-   d="scan'208";a="201171557"
+   d="scan'208";a="200280863"
 Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 25 Dec 2025 10:31:26 -0800
+  by orviesa008.jf.intel.com with ESMTP; 25 Dec 2025 11:34:36 -0800
 Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vYq7Q-000000004NB-2qAZ;
-	Thu, 25 Dec 2025 18:31:24 +0000
-Date: Fri, 26 Dec 2025 02:30:49 +0800
+	id 1vYr6Q-000000004Ph-2y69;
+	Thu, 25 Dec 2025 19:34:29 +0000
+Date: Fri, 26 Dec 2025 03:33:36 +0800
 From: kernel test robot <lkp@intel.com>
 To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Wolfram Sang <wsa-dev@sang-engineering.com>,
@@ -73,13 +73,13 @@ To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
 	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
 	Manivannan Sadhasivam <mani@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-actions@lists.infradead.org,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org, linux-actions@lists.infradead.org,
 	Bartosz Golaszewski <brgl@kernel.org>
 Subject: Re: [PATCH 01/12] i2c: add i2c_adapter-specific printk helpers
-Message-ID: <202512260206.C1TExj8d-lkp@intel.com>
+Message-ID: <202512260303.nUGs1vi7-lkp@intel.com>
 References: <20251223-i2c-printk-helpers-v1-1-46a08306afdb@oss.qualcomm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -112,35 +112,34 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Bartosz-Golaszewski/i2c-a
 base:   cc3aa43b44bdb43dfbac0fcb51c56594a11338a8
 patch link:    https://lore.kernel.org/r/20251223-i2c-printk-helpers-v1-1-46a08306afdb%40oss.qualcomm.com
 patch subject: [PATCH 01/12] i2c: add i2c_adapter-specific printk helpers
-config: parisc-allyesconfig (https://download.01.org/0day-ci/archive/20251226/202512260206.C1TExj8d-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251226/202512260206.C1TExj8d-lkp@intel.com/reproduce)
+config: x86_64-randconfig-013-20251225 (https://download.01.org/0day-ci/archive/20251226/202512260303.nUGs1vi7-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251226/202512260303.nUGs1vi7-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512260206.C1TExj8d-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512260303.nUGs1vi7-lkp@intel.com/
 
 All warnings (new ones prefixed by >>):
 
->> drivers/media/pci/saa7134/saa7134-i2c.c:31:9: warning: 'i2c_dbg' redefined
+>> drivers/media/pci/saa7134/saa7134-i2c.c:31:9: warning: 'i2c_dbg' macro redefined [-Wmacro-redefined]
       31 | #define i2c_dbg(level, fmt, arg...) do { \
-         |         ^~~~~~~
-   In file included from drivers/media/pci/saa7134/saa7134.h:14,
-                    from drivers/media/pci/saa7134/saa7134-i2c.c:10:
-   include/linux/i2c.h:775:9: note: this is the location of the previous definition
+         |         ^
+   include/linux/i2c.h:775:9: note: previous definition is here
      775 | #define i2c_dbg(adap, fmt, ...) dev_dbg(&(adap)->dev, fmt, ##__VA_ARGS__)
-         |         ^~~~~~~
+         |         ^
+   1 warning generated.
 
 
 vim +/i2c_dbg +31 drivers/media/pci/saa7134/saa7134-i2c.c
 
-^1da177e4c3f41 drivers/media/video/saa7134/saa7134-i2c.c Linus Torvalds        2005-04-16  30  
-45f38cb3b80311 drivers/media/pci/saa7134/saa7134-i2c.c   Mauro Carvalho Chehab 2015-05-13 @31  #define i2c_dbg(level, fmt, arg...) do { \
-45f38cb3b80311 drivers/media/pci/saa7134/saa7134-i2c.c   Mauro Carvalho Chehab 2015-05-13  32  	if (i2c_debug == level) \
-45f38cb3b80311 drivers/media/pci/saa7134/saa7134-i2c.c   Mauro Carvalho Chehab 2015-05-13  33  		printk(KERN_DEBUG pr_fmt("i2c: " fmt), ## arg); \
-45f38cb3b80311 drivers/media/pci/saa7134/saa7134-i2c.c   Mauro Carvalho Chehab 2015-05-13  34  	} while (0)
-45f38cb3b80311 drivers/media/pci/saa7134/saa7134-i2c.c   Mauro Carvalho Chehab 2015-05-13  35  
+^1da177e4c3f415 drivers/media/video/saa7134/saa7134-i2c.c Linus Torvalds        2005-04-16  30  
+45f38cb3b80311a drivers/media/pci/saa7134/saa7134-i2c.c   Mauro Carvalho Chehab 2015-05-13 @31  #define i2c_dbg(level, fmt, arg...) do { \
+45f38cb3b80311a drivers/media/pci/saa7134/saa7134-i2c.c   Mauro Carvalho Chehab 2015-05-13  32  	if (i2c_debug == level) \
+45f38cb3b80311a drivers/media/pci/saa7134/saa7134-i2c.c   Mauro Carvalho Chehab 2015-05-13  33  		printk(KERN_DEBUG pr_fmt("i2c: " fmt), ## arg); \
+45f38cb3b80311a drivers/media/pci/saa7134/saa7134-i2c.c   Mauro Carvalho Chehab 2015-05-13  34  	} while (0)
+45f38cb3b80311a drivers/media/pci/saa7134/saa7134-i2c.c   Mauro Carvalho Chehab 2015-05-13  35  
 
 -- 
 0-DAY CI Kernel Test Service
