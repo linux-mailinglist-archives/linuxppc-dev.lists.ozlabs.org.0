@@ -1,79 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-15034-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15036-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E099CE02C6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 23:39:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ACC0CE02CC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 23:40:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ddy8j4syFz2yrZ;
-	Sun, 28 Dec 2025 09:39:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ddy8s3vQmz2yFl;
+	Sun, 28 Dec 2025 09:39:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.54
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766838010;
-	cv=none; b=PJz+2HZDfUxmpX+1QlVaRheA+0BvLTOq/A3qO67JTMbQRnNBhFPv+tH2cAZo/7lZyC0QlYYWhjU06+189gujbhWYtoHfBKW+Fl+ANY6iLjQiq2w0Cqe3bZyS5uM1501a08DbTQGauLbzotKJi3t2xsUxh0kdifGgG3B1HTTpeVsz0NJb/OGWHC2y6ednAG2eJ2g+cV9l1uvf8LdquOXAbWOTTvQUcoqM9qvYn/yuPOqjPuDk/jLJWRg5a2PtY51ccqb1D49Br55yM0y2Q0omNOobovKvaHCAgWA3KRTO0Q6nZm/MzII30Rek17e60SlbZVuciGO6cGc2NvOuUeYRsA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.49
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766838019;
+	cv=none; b=SrWDD5OWmCMnu56ZpBn8OMvBSvP0alqNH2Z5/GD3ANeBpqPLHCPaorHYEtOMBNsyP3HuSHboQzElKaU4h3n0F06hBSrYJQcAICooOy53jAgEDn1tUAzSRjRi5RQ/pbfsdM2nJeFoNjZ0fCCOjA93YZy5CVhHkm2hq0wrBxStgw4wQNNOYyqTx9xjoX7jwu8JVb6e50q4OYIMmsM6V5+ocq9j+XVNSiJDq3+WiU02YU3o/hXJOfulNKB9GhtwUJo87Av4UhfcY2QvrwhjeIvVgXl3P7KnnU/dYllffLYEdMkDDcMFxl2taNZqfV7Cf6cpjKn40+Hoi+KGm+/6RfP3+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766838010; c=relaxed/relaxed;
-	bh=Svns8VRTDcd692NVX/iQ+u99f8RURxgaz6jdCSTwtGo=;
+	t=1766838019; c=relaxed/relaxed;
+	bh=ejU77izjbpiitWXY1CFRfcJAx1qt+ylV9tDV0w1mOdk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BFdBLj06vAGQYtSUnV9UsD/golYLTCyh6HDhLgvPEI+qNba00pHVCyS41ebbY6icVOi/LZCY9mQqN6gENY9CZoqjea551E0MvNUvobO40MumNNp9G/d7PG7jEL544yPb3ZQJkDXFVSr//JBmGZRxZWI1SFxL23OStwgPiYcJtOm3AKCwfdZkYdYSGlI9mKOsoqb1/nSnrnuOVceQCqgWgwyyKmOxvayoZCdDG4TdAPwnHNGazC3NjRMrQ0/roE3RmABzSKUpA59fGt1hZEDgIM4lR5BdUtY99gjHhA7WwXD1GwTo9lVDc5Ng3CZTeyYSQUjLwgKdmHhjtWRqcoBbHg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=EuFF7qrd; dkim-atps=neutral; spf=pass (client-ip=209.85.128.54; helo=mail-wm1-f54.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+	 In-Reply-To:To:Cc; b=CHfKB7+Fn9Jui0J/DnTSwxlKzp4o5xaob1+n82RvH6N71LfRb/YsQ3LIGXP+8P31L0pmi8a6XWKjlbjI2ua4vRCOqyVeldHUiqyARsD35hj3auprxJ1z6OZYMourNCfzMjbWVMo1QlpMXh8tPcV/WBNwBNr0AteFETt4AFMgL32rFfWbLkEdMcFz8+Q5VmFU92YzKpNEelm3iPek605JfgpLmKQL7uuvwErAaI9wjpXpbMEjYWMHoX7LG3Rjmgv+3xooULT+RQIMF7g/b5P2Et5A9JtyVz+NMZ3aHxzutp9IVZHfkTsqRIRnO2no4jgE94rA2JsL47efykc4o6YjTg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=SqpxOS9X; dkim-atps=neutral; spf=pass (client-ip=209.85.128.49; helo=mail-wm1-f49.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=EuFF7qrd;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=SqpxOS9X;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.54; helo=mail-wm1-f54.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.49; helo=mail-wm1-f49.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddhQ11d99z2xQK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 23:20:09 +1100 (AEDT)
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-477a2ab455fso75774575e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 04:20:09 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddhQB3Dhrz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 23:20:18 +1100 (AEDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4775e891b5eso31865765e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 04:20:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1766837946; x=1767442746; darn=lists.ozlabs.org;
+        d=suse.com; s=google; t=1766837956; x=1767442756; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Svns8VRTDcd692NVX/iQ+u99f8RURxgaz6jdCSTwtGo=;
-        b=EuFF7qrdifpXBrCKogzJ/JN1qoGuN+fQpROsGkN94UV+4XtbHlgJ3jtasrEQvQflid
-         DrVfHpXuMQCPpcFBUHYYw8jf0LGLrhu0RiddGtIJaIlJaMPd88P15w3EADB/zfNapPAO
-         e82YOQbospXKOhusbZKRga/CQZWSXysAyBwZ1Lx4XO3w0jj9qJZZ6iB7J286Cxb0s/CU
-         nvLncjcsRxxuDS5YKyIfydywlgKWoi9+JYzgYS99ozcycCDiEeFMCjwzzF5CaiuBXTuP
-         xwLB9wRRrB0HHSTjYuw6UF2RizF5ejTJf/gMT9Xk8qch8PPcWXcq1gs1rdNgBDy/SDpz
-         o7HA==
+        bh=ejU77izjbpiitWXY1CFRfcJAx1qt+ylV9tDV0w1mOdk=;
+        b=SqpxOS9XSNOs6syBWSU2h5kTaLS953qG57WRNP5yEvUlh9FnYhTt11Nx7odFj++pmf
+         hhi9L2dINtfme8MimjqQQ26vI0X/FZYap//qyfkZbDOujA8n/8EK4JbzWmOKFv6+7yk+
+         /T2yrTQxQ/c3WMzfKwGKFv8jDs15FxXuQ52mcv2lOLID3pvGbjjv0L/V6V0omQoYYw5p
+         EtgQnBvKMGnuDeTnWuSQkuvwz8OtNLcAefosUlSPtn7cj6u4oUdSjBBgXWjSA2AM6dVr
+         qgDI90gXJRViA2clVyOSnqYnGrSjXyH4BKK1QoDleZMkVylC2u7W6fZZg7XnXwMp5QXD
+         oB1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766837946; x=1767442746;
+        d=1e100.net; s=20230601; t=1766837956; x=1767442756;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Svns8VRTDcd692NVX/iQ+u99f8RURxgaz6jdCSTwtGo=;
-        b=XQEPoaRo3Pd9rxZnUeebH6X22hynFynqSONE3EmiVWZxw0HG1VgfindDllsez2K36k
-         gDaa6jiBm4zCgfkbJjjUabAIv/BhaywBhrk1R07Dked034NrDLqkRhFExzedpoeufcss
-         uwHLRbSdIQlbpV5VOPLN2JWYhGF+qdI+AVIA7QkngqXbiW53OmuNGloJ4l23f8kQRf4p
-         nZh5mj6p+sd0wJDnSXeJzfIX3NXPoXJR48YjSoqFMTXlAnoieV/NKHDmzO+gwtcfHID3
-         R6bBKu3LbRrqAX2t6jPt9H2ub3nbl4O6/ThLognV0O/7rM1QXHOoQEWHwmUAuX2VCdzd
-         DdOg==
-X-Forwarded-Encrypted: i=1; AJvYcCWARq3DdUy93JO10u/TM5Sh7h3BFAx+Z7YFhq0Ad0N8rm804ma+SxuzNp/a8PPyQh0s91rl9njO70+aboo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwnMRuW38XVqiX1fvM05ELCDKIvlk36FgR9JeJ7GOj4J8lh95ef
-	6i9aFjgjj02bKrHfQT8l0aUJDZk9SYBzyL1+qdBG4gmzvm+1ynhW+5AQhTYnJpFmT9I=
-X-Gm-Gg: AY/fxX4gGkwqFn4wMO+n6gtW//kJpIr7TO/Rl9hwXfhJKJaSYSx6/lV7wZ+McrIKV5G
-	D9DHZEsmSmO5q1+0GiEecTq5dBcFAqAQkTnQe7TnOkM3wwSS6zsmnLPY0zTOHNvZEIQ7Yi4+GV+
-	UQeokeWM7pWCiaT+YIIWJGRYlKw09Tz4m4jM20Iywqzt4anzl3KYJthJVKko/XGxvPaWYWaGFQf
-	YhvFZf/wHGDEIXIk4mhfYtZdVLjnyDTeX9BSQ5CU1HLwGEjVD/9bNINRfvra/XVFNjqAiHvKxns
-	p5Cewq4F1jMiQl2kGdxmG9Vy9Jl/RrSc06YSZu0KKBaGa5KjXT6SMFZ/os3GUkD88bf9Le9N3JY
-	CWGygdc9Es0FcTTUAiKSSJNiyYJzm/B8j3zJ3UQEDQZEriWCuz2L7e7tq2HOHywWbqkUF6+QWqd
-	00LPtIWPOd
-X-Google-Smtp-Source: AGHT+IFQPHp9+ZXnfJ9gaFXvmbmtROboeRiL3XR0blYfmQMI8wXzbSWqjXdBS1sjkb/JteTKHl2ZOA==
-X-Received: by 2002:a05:600c:5303:b0:479:3a86:dc1a with SMTP id 5b1f17b1804b1-47d195c2d7fmr223567305e9.36.1766837946357;
-        Sat, 27 Dec 2025 04:19:06 -0800 (PST)
+        bh=ejU77izjbpiitWXY1CFRfcJAx1qt+ylV9tDV0w1mOdk=;
+        b=wG96t47QjOO8z8n41SdOw9/uM//itfp2JQrIm4tDFrx6dSRxXMArnOV1EV7VzyNJMY
+         +IRB+lgI7hU1n7eFTd0SQXPDizrsNd0dVwm+5XDKLfcNjsMDECgVg4eGwczWgPVT+wzK
+         OHt1wbXu5g9Es+xkj4D1ydGI0t2mdGhVQbBPZ/R0sEIl+/PP4Hap+/iMMMEtxBeAncHd
+         sN9qHVUYnvdzhd5SM6Cold04HkbTodqGGXH28dcsb2nFi+V1Zh2SJt/P7nr8QYhAUhqd
+         uJW9SFaVmnVNWqkaCq7xyfLJ191Dv3k87mVB7IY+nW6HLY8nVrfbYc3cE0sjAY/wcV9q
+         3x3A==
+X-Forwarded-Encrypted: i=1; AJvYcCXaiL2yH1iS4A6LhS2v4DJzpJnz32YXI6OLacfiWhqyLt96OqtzTgKicGq96ggLbKFSp1XX47ESK07m5No=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyHwYZ+R0/D68BgMRLwuTnYnljTxReB6wm0yQJ2V/JKQwIiqJFy
+	Jrv/SIRy8S9riTk6Y/NYHpFc29RRewKf/YVsHGey8x2CLQfPY1AjJBlH39mEmD13aY8=
+X-Gm-Gg: AY/fxX71Sj+L2KS3RjFRCuBmOK4viWLMdme+/yXyhKsBaRb8EzZt/ROEbK1h4r0c3zt
+	Z/ZXJUyhshe93hNJnHp2LgH7gELw1/vi31K282DMnGOLNqf6fn794J7nGltllF6akfwXSzXqI6H
+	eUCr7yEP9EpFVhXTIFOiXOcfdNVooCpRBV1CarxMIxtafP+qHMUYYhrKNvBdZv2kqNXEVuxpNu4
+	DkwYAlEwYp7wnuyOR7eeunMfj3cwjRlvBZpwKQmYf8U16ZjKi1v452TqONKhkin1LVighQGCBml
+	lMPS9MB2tUgDzOE/xSoMwl1XGAM9VS1EVo0AeKn48pxc6LkhogkSwaevLYzgtspWTwB51KvGUKV
+	B2fQ4RpZxfFPzJ6Gx+Ut6XV5igorpddIJ0RWa3aRMnR1zdDoBZ6yqVt7dRjCNtB8bNYpUWRl9RX
+	FSP2D5uNBJ
+X-Google-Smtp-Source: AGHT+IGcVRETU5SGb8qIhgBdGnot/sm969/AEg3tWF/SLDrOBPXwM9NZtaV8oGtTOpkC0w9sxSvHbQ==
+X-Received: by 2002:a05:600c:3148:b0:479:3a86:dc1e with SMTP id 5b1f17b1804b1-47d1958e459mr275597435e9.36.1766837955551;
+        Sat, 27 Dec 2025 04:19:15 -0800 (PST)
 Received: from [127.0.0.1] ([2804:5078:811:d400:58f2:fc97:371f:2])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfdd0sm97940127c88.4.2025.12.27.04.18.57
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfdd0sm97940127c88.4.2025.12.27.04.19.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Dec 2025 04:19:05 -0800 (PST)
+        Sat, 27 Dec 2025 04:19:15 -0800 (PST)
 From: Marcos Paulo de Souza <mpdesouza@suse.com>
-Date: Sat, 27 Dec 2025 09:16:22 -0300
-Subject: [PATCH 15/19] drivers: tty: serial: mux.c: Migrate to
+Date: Sat, 27 Dec 2025 09:16:23 -0300
+Subject: [PATCH 16/19] drivers: tty: serial: ma35d1_serial: Migrate to
  register_console_force helper
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -90,7 +90,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251227-printk-cleanup-part3-v1-15-21a291bcf197@suse.com>
+Message-Id: <20251227-printk-cleanup-part3-v1-16-21a291bcf197@suse.com>
 References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
 In-Reply-To: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
 To: Richard Weinberger <richard@nod.at>, 
@@ -127,11 +127,11 @@ Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  Marcos Paulo de Souza <mpdesouza@suse.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1766837798; l=1068;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766837798; l=1239;
  i=mpdesouza@suse.com; s=20231031; h=from:subject:message-id;
- bh=8apb8xIF3Rmf3METSNa3/bIFoDSqesuSeq+cEdBJRMg=;
- b=SOQn5veC0enOSDBgUA8xgjFU36YeIU5ltm01mWbteI/FsjC7wSIvDCGkCl9Jt9bptuqtwUiUT
- XJt5OJVOiy0DmhgN+BFidqaWmVu/I5CuRGxAmhAzWOivaZFVrPO2ZNN
+ bh=jiVyzdGaYwwOjViBefbG/4tnbA+IZ6VTt4S6NyPkSWY=;
+ b=Y3ytKQigesyzk6xu3oPXbBS5mHTUJ1mX1rT6WRhai16pDTDKrILE6MzhKcIyuYvYQYYU9QQLY
+ +jUI84bHhmDDBPQbqZ6BL7ROSTnYW/5U7XoL9eZmy1wASQ14fgiWD4j
 X-Developer-Key: i=mpdesouza@suse.com; a=ed25519;
  pk=/Ni/TsKkr69EOmdZXkp1Q/BlzDonbOBRsfPa18ySIwU=
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -147,31 +147,31 @@ No functional changes.
 
 Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
 ---
- drivers/tty/serial/mux.c | 4 ++--
+ drivers/tty/serial/ma35d1_serial.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/mux.c b/drivers/tty/serial/mux.c
-index b417faead20f..5a2d706b9cbc 100644
---- a/drivers/tty/serial/mux.c
-+++ b/drivers/tty/serial/mux.c
-@@ -390,7 +390,7 @@ static struct console mux_console = {
- 	.write =	mux_console_write,
- 	.device =	uart_console_device,
- 	.setup =	mux_console_setup,
--	.flags =	CON_ENABLED | CON_PRINTBUFFER,
-+	.flags =	CON_PRINTBUFFER,
- 	.index =	0,
- 	.data =		&mux_driver,
+diff --git a/drivers/tty/serial/ma35d1_serial.c b/drivers/tty/serial/ma35d1_serial.c
+index 285b0fe41a86..d1e03dee5579 100644
+--- a/drivers/tty/serial/ma35d1_serial.c
++++ b/drivers/tty/serial/ma35d1_serial.c
+@@ -633,7 +633,7 @@ static struct console ma35d1serial_console = {
+ 	.write   = ma35d1serial_console_write,
+ 	.device  = uart_console_device,
+ 	.setup   = ma35d1serial_console_setup,
+-	.flags   = CON_PRINTBUFFER | CON_ENABLED,
++	.flags   = CON_PRINTBUFFER,
+ 	.index   = -1,
+ 	.data    = &ma35d1serial_reg,
  };
-@@ -547,7 +547,7 @@ static int __init mux_init(void)
- 		mod_timer(&mux_timer, jiffies + MUX_POLL_DELAY);
- 
- #ifdef CONFIG_SERIAL_MUX_CONSOLE
--	        register_console(&mux_console);
-+		register_console_force(&mux_console);
- #endif
- 	}
- 
+@@ -657,7 +657,7 @@ static void ma35d1serial_console_init_port(void)
+ static int __init ma35d1serial_console_init(void)
+ {
+ 	ma35d1serial_console_init_port();
+-	register_console(&ma35d1serial_console);
++	register_console_force(&ma35d1serial_console);
+ 	return 0;
+ }
+ console_initcall(ma35d1serial_console_init);
 
 -- 
 2.52.0
