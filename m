@@ -1,79 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-15032-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15033-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C94CE02C0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 23:39:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C99CE02C3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 23:39:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ddy8Z3R1hz2yN2;
-	Sun, 28 Dec 2025 09:39:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ddy8g52sGz2yqW;
+	Sun, 28 Dec 2025 09:39:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.44
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766837955;
-	cv=none; b=lBRyZoyM9scppG4TkT9IEcpARM0WjzV1O8iTE3ejgnG7LNLeFQ8DW+tSjMN9L7tA1kS9ZVYo3A707ph+xY5BNogLlYqJUWyjvnxbgw7jjQz/Wl6U5EB5GWnX0ehXWNspV1EgYq40y8Etv7Kx7SnhPbfGYzwHSf8SGCZoEgi9y/708G9q7qJKfWIGsry4T7kxiIJ907EdK4vFg4LapzmCIY5d/2UNee3y8IbkuB8/FVHq7UgEzoRWpdKivQW4RgUD0qoRpfjOfwX6quAe4Wka8QDMdtFkiCGikH68kT9ZUfRdt/hw1KdMjblnGRVyMXE9JRge2Kq4yCy/7nR9+Kkzsg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.66
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766837964;
+	cv=none; b=hWCr6+XiF7GnHiDZI011nKGjpCOiSsYzlulbbDgGDca/Fq7qIEbBrzEdm32joHVx9o56C6GWYnMsRUiqgUzgR4s4CrACH6oAIXKz6XBq2gKQ7ovCdT4sJEim+yYFVsD79FZY3iibTsYbk2ANUBGEfW2a2KoJPNCbtQ7ROqhLPQDdqB4KY5BVROe5rkB+TG/RWJZGrc3Sz6xYN1fnY6vlFX4z5nGhLvQSys0FzaP1U6nXlUzHLf3XKBb5qq8P3lBEDIJ1SddFR8blfqr0hHBmnDmtO/EUFBo+j4S60nq/dhW8buzni9Rub0jROEAlZUhwD9bBp3JM9y90ZbKUbshNqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766837955; c=relaxed/relaxed;
-	bh=OB3+8VIsiv4yLcVB9h3kEd58M2RQJv95rPNYEtVMoiQ=;
+	t=1766837964; c=relaxed/relaxed;
+	bh=oUj1yTYG2OsJA5NR0t10qcegAjlFezEaj2Q6zpglNnU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FHiu471I1oogpx01GZ4LBYVVjq/LM+0QuWSzAhnkgQrVaKs7+iQcBNP916qtpKUI8sREf9k9i7bEDlx4M37sXID42OuEnahnS34JlOPEfSzM6RUtzJRMRrGhpq4MMT/lmvaitftHrHHLZHRDqdpuDx5E67rfRctC+kTbVlU3CFs5h+PV3ZPmuI4suhkswVhD2LyfPXkMa/2WHF5PUPTrAudf/S9RBBN6BG+aWnVeL76qhLXpfLWIkYpThk0vXiYNR92aX1xLZ58IXWcix2sp9gqT1ljyMnHQTGd40gJsNiTQm0JmCEYz+9HeiItX5Yq0RxecNgRP7myicOrGRd2ghw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=biO1Pl+B; dkim-atps=neutral; spf=pass (client-ip=209.85.128.44; helo=mail-wm1-f44.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+	 In-Reply-To:To:Cc; b=IuIjk7gsFz6Vfw52Gs2m0tmrQrRnDpSVLyHQA88/MVT3BmHyk0koVXyVAgZzu+lmw6vmXvj/e7HPJokzBCY6CPAlRqN2AlgGfg39kv1Y7kNOuiveDPVRwl7aIB9ujqbMNyQEHzJXDCWI8a17QX388iSsoVlQVPpWrcZyQbXtQ1c83t1fUsQoEWbJyvxwH1uVCQD4wdAZCfsbD65iN9Ks0u7X3qQuQoiGlXtlVtUmpcl9H0TH+L+aGShlIuAa/C6hGcrzMvCTsB+qD62OxP9vZpBTEffqvPd4V+IZX4g4hSPO2WRezt53b8FOreIt+p7FQSyOwMacIBPCxSlj6BXaJw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=grUHxSjD; dkim-atps=neutral; spf=pass (client-ip=209.85.128.66; helo=mail-wm1-f66.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=biO1Pl+B;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=grUHxSjD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.44; helo=mail-wm1-f44.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.66; helo=mail-wm1-f66.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddhNx73v4z2xQK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 23:19:13 +1100 (AEDT)
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47774d3536dso61935645e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 04:19:13 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddhP71nfqz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 23:19:23 +1100 (AEDT)
+Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-4779a4fc95aso42194345e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 04:19:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1766837891; x=1767442691; darn=lists.ozlabs.org;
+        d=suse.com; s=google; t=1766837900; x=1767442700; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OB3+8VIsiv4yLcVB9h3kEd58M2RQJv95rPNYEtVMoiQ=;
-        b=biO1Pl+BZCXL4TzCTzuBzXUXI5kzWmwP+CeGSJbrTLh4dMfAFcnsjlM6FXdF1GLkOb
-         Lxu4FBU5D9IsnqPfpRkqreYI2tgjEJ3SzHjnqMTbO/YfslGtVkLIFVPvN+vXlDvvhU52
-         oK50YHDinX7wjUDI67pDUDgLJV0njz7igW92gcHfjOryjsgPlY9kTdBYBMs65Vcr0aYl
-         7RFusjdFOc9kq/zf7+WxVnkQWhi7YfMBkTsZRLhpFULyW8tXKJmKvmh9N/aCWSe/qDBN
-         +X1zpsp7Pftd/5hK4h8g+7hY+FRxmX/CCr7avL3t91uOy+Vh4bZtmisz8aCv6n8BHDF4
-         mC0w==
+        bh=oUj1yTYG2OsJA5NR0t10qcegAjlFezEaj2Q6zpglNnU=;
+        b=grUHxSjDbhoi1PRxc+VfiTbN3bN8cyzpVNUQSigRbsbOwja4fjrqvOd1zZMM+3BXln
+         Nis/FOV+XuKr8gf2BNWD/ZmmmoSxouUX4jNHoGnhkBRSktnV+X50RB/iTO5LhfVPURbL
+         JGQzUWR6Io+EjDRyVbkicL/RZswbUjrc53dQe3z4iRjwdZRd6JLqwCrmoujaCaAU6AbG
+         pNZd6CYac3XdKoxmgGnCr4L0DSuC5JHn+dVU2GDnzGXuW6J54Bqqbg/YoXe5vEcwjT4b
+         ax+PMN+LY56nSlweqaBXMQIqZkH5uJMXc3Sor+pxDIKa/D2FL/WajgS+vjRBdggkIkTJ
+         dsbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766837891; x=1767442691;
+        d=1e100.net; s=20230601; t=1766837900; x=1767442700;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=OB3+8VIsiv4yLcVB9h3kEd58M2RQJv95rPNYEtVMoiQ=;
-        b=YjTrzKfYl5ckyHR8VaPzl2aTvmRYZe57DBlE9KaG/2hvVG9pmkuYew077MMmHj46lX
-         B8ExXFT/QMxvJJN9wuQyZwCygOXzFFTgJXlHPGU5bSv586oVew7l5R+SUIsUAEzCACFT
-         zBLjUmpGUDyhbr7LGD81DulyenkvLzqKMLSZBJmwt3aYDxDX+GIEP5F9FNRxed7apK9Z
-         nN0X/i57ScBoTOlOkmFuWvWZmNKvsTYsio5mPaBgvIIDc1RhtI1f321X6/AjJV2E5TtV
-         E8B0PzyI/Q+My6b6dOGn36gOQRFgxPqcgVwDmDj3vGuJg229UlAx/jtmRPYVK6FD9Kno
-         gAsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUthWbeTlbzjUxV8woOLOH3qdemlxgVr3GvhDDcZdZexl/WyiCnDlcW3ycESYEA1LvI3JDRfewDJkpwcB0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxcH4mcj+du0fzNhOtAkaK3lHmCeiw2Odhg0KpjfsIOmjGRHgqs
-	yTV0WzbOvgQElIHKI+AaT1KW8QvjDm5IhH3o5f3uP6CYh8D4KBOB50wHLXNiyb3+eSs=
-X-Gm-Gg: AY/fxX6lNc2L4P20kk8OfazNUbF+V7RFVO6OMo6B3kzNVobyS/2Wjfqq5l/PQDh2SVF
-	uAJnKyLFsj1tsWS3/U0Y2T/hNdS/dLAr3hgQ2vgx/CQHvw71qpWOFqU3xHdrhoNbcnioEGLTkEC
-	3he4jVRJ56wZlJPIE26yToTdhS2rqBLU6CfQN7qYjmbEbA8rF1J6VPmlokf2MRPEq9dzuRHRsFD
-	710DXPeLHAkQztNqUWMvFXdtQPejKW9O3LMzEM+kGo/XPW0coJAxbD69GrRpQzcbsD8H406A3JP
-	5r9dGSjBVVhptXnfZ/CGa7bq5EiV0pZHPxgQx9HyhyDIl9UacudMaglYkipl8fdsVblznyKemTU
-	INdVcrY2d6aQS2ll6aH/K09P3rJvBNtaKkWEhzI6XiNlaOe4X/3R7K7K23YCcd5vowujBGAVlUw
-	0wSoZavLcg
-X-Google-Smtp-Source: AGHT+IFJeR5Bq3e314KIMXwkrZhqd3SM0Gtgef2ZKhyuTvMEsyAQgTg0idlkENoTE/A1RwLAaI6A4g==
-X-Received: by 2002:a05:600c:a30f:b0:47d:52ef:c572 with SMTP id 5b1f17b1804b1-47d52efc7bdmr6320155e9.1.1766837890917;
-        Sat, 27 Dec 2025 04:18:10 -0800 (PST)
+        bh=oUj1yTYG2OsJA5NR0t10qcegAjlFezEaj2Q6zpglNnU=;
+        b=HtvHFn5vMyrzjs6FlSaoEFKMRldboEBMepdz26X80plvjgYlLR95WSG8xAEuTGoKil
+         qybBMp7iMO8WtJkf6XJV5dFMVqU+FAxRBZXCsNf3AawFbnWpBQRxdEum92U/Hiu8SwOI
+         A9koFz8y3aGcG1ub1o1YUqQa1++tOjzU3V+WaGpjtHBYXYnH1FL1+HByTymlCOeOVOxg
+         kJhRuhEj3NsJ4ah7eMv7zNoupnV3mlOrW+eMya9i35vvKxMVxZi8aBgqwx6hunoU+P/G
+         ql3e4nJmhR2tTmXHROn2Eika9rojLw5eAOkzXl3jqDxBPZVtJkCHj6dHpVRNcvKJH6gU
+         vQBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5PvwaAw16nBBqxCIKk+G008v/zKOh62A8MyPwnXL08UlGCQzLZ3sGdloKXojCwL6vYyg59HoJFQNg1jY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzOHx6bMFsuX44u8FFDluOgHDpzrDnOmSkxf+mDh1+TxaWkKo7d
+	pbqhUHtbjpdLAR/NEC+tNOZJl6cWt5SekB3I3Ekz0LkWhHDNIfFHyJEXPSpG8svcG2Q=
+X-Gm-Gg: AY/fxX5UDa8V/AUGFaEIubKCqe9hXlKq0/MDptfFTuIQXZPaqnHRJ2HriT/jEe/MN6l
+	xXG7cv/KWz+6tI4k2LnO/2hAfxGgzkV3kWQZcRPWS2dzlQxpffn5qmKbRNBIkTxldOJasX18Luw
+	AVbYrVQZzZYkGfRWh4xlJ7jjqfoaA80QBiiSIJ8EZz48OxPatUzUhy+SvnpaRLj7GKSAW8a6RVi
+	RkJJEkkrz87lKk7QdQYxRwn1ujZZG9UCnujQ96+eoE+7DpLctkZdUwsNdm8j5BZPqWyRu8X4eIc
+	iecYzRCcbA9E90jsQQEjMy2TlHUCjYiDqEdWwRwVk/qqjZE9PIS3KHwTj0CVi+KbfoGA5q7srm4
+	srf+sTwGhCf0hxhEK/1swM9Mv2bQJrjWLqcS0jLk+3LuEa7EoFdPLazzbeQm0EQCDowUKNNtAhJ
+	eRFtVp0VyF
+X-Google-Smtp-Source: AGHT+IFXI+q7UVcETj2xrgWEDOplaD2DQfL+z5FfnKK5mI2lAjBc9EF1caRTkYKVAlNOUIoqedA3Qg==
+X-Received: by 2002:a05:600c:4d98:b0:475:d7fd:5c59 with SMTP id 5b1f17b1804b1-47be29f362amr221645875e9.16.1766837900191;
+        Sat, 27 Dec 2025 04:18:20 -0800 (PST)
 Received: from [127.0.0.1] ([2804:5078:811:d400:58f2:fc97:371f:2])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfdd0sm97940127c88.4.2025.12.27.04.18.02
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfdd0sm97940127c88.4.2025.12.27.04.18.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Dec 2025 04:18:10 -0800 (PST)
+        Sat, 27 Dec 2025 04:18:19 -0800 (PST)
 From: Marcos Paulo de Souza <mpdesouza@suse.com>
-Date: Sat, 27 Dec 2025 09:16:16 -0300
-Subject: [PATCH 09/19] m68k: emu: nfcon.c: Migrate to
+Date: Sat, 27 Dec 2025 09:16:17 -0300
+Subject: [PATCH 10/19] fs: pstore: platform: Migrate to
  register_console_force helper
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -90,7 +90,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251227-printk-cleanup-part3-v1-9-21a291bcf197@suse.com>
+Message-Id: <20251227-printk-cleanup-part3-v1-10-21a291bcf197@suse.com>
 References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
 In-Reply-To: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
 To: Richard Weinberger <richard@nod.at>, 
@@ -127,11 +127,11 @@ Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  Marcos Paulo de Souza <mpdesouza@suse.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1766837798; l=997;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766837798; l=1079;
  i=mpdesouza@suse.com; s=20231031; h=from:subject:message-id;
- bh=aTPPRUdelJJPNRSRbq/P3Dh/ezSRl1NcFqsysqipRcI=;
- b=bFiYD37gtcultSa+DtuWsZDZsqldtTEWNQGlnO3f8qpUTnHo9LyYg6/jnVTrFnBYz5Wno6rCP
- MIg9mT6KNXdApenqW2Pg83sbMRC0cE454dAXf3m0peqNYruoithEiNk
+ bh=3dvgtN1V/Te+qiB9DfrS6Ouyxfyny3L7qK8ewpooDVE=;
+ b=vEVEr1V/PLyTXU5DKxPct4kmpsEX80YaTpb8m+k5Ll/RykRPcPf3SC/5piYXBTRWgZnh2jkWP
+ FQP0jQiJpLBB9Qo/wJGJV1aoieFgYcnUso9xzkOCnscVwaYm3IY9A0b
 X-Developer-Key: i=mpdesouza@suse.com; a=ed25519;
  pk=/Ni/TsKkr69EOmdZXkp1Q/BlzDonbOBRsfPa18ySIwU=
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -147,26 +147,27 @@ No functional changes.
 
 Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
 ---
- arch/m68k/emu/nfcon.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/pstore/platform.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/m68k/emu/nfcon.c b/arch/m68k/emu/nfcon.c
-index d41260672e24..3504bbb4aedc 100644
---- a/arch/m68k/emu/nfcon.c
-+++ b/arch/m68k/emu/nfcon.c
-@@ -110,10 +110,9 @@ static int __init nf_debug_setup(char *arg)
- 		/*
- 		 * The console will be enabled when debug=nfcon is specified
- 		 * as a kernel parameter. Since this is a non-standard way
--		 * of enabling consoles, it must be explicitly enabled.
-+		 * of enabling consoles, it must be explicitly forced.
- 		 */
--		nf_console.flags |= CON_ENABLED;
--		register_console(&nf_console);
-+		register_console_force(&nf_console);
- 	}
+diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
+index f8b9c9c73997..9d42c0f2de9e 100644
+--- a/fs/pstore/platform.c
++++ b/fs/pstore/platform.c
+@@ -418,10 +418,10 @@ static void pstore_register_console(void)
+ 		sizeof(pstore_console.name));
+ 	/*
+ 	 * Always initialize flags here since prior unregister_console()
+-	 * calls may have changed settings (specifically CON_ENABLED).
++	 * calls may have changed settings.
+ 	 */
+-	pstore_console.flags = CON_PRINTBUFFER | CON_ENABLED | CON_ANYTIME;
+-	register_console(&pstore_console);
++	pstore_console.flags = CON_PRINTBUFFER | CON_ANYTIME;
++	register_console_force(&pstore_console);
+ }
  
- 	return 0;
+ static void pstore_unregister_console(void)
 
 -- 
 2.52.0
