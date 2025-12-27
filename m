@@ -1,80 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-15028-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15032-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FE4CE02B4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 23:38:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C94CE02C0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 23:39:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ddy7t37Zpz2yGq;
-	Sun, 28 Dec 2025 09:38:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ddy8Z3R1hz2yN2;
+	Sun, 28 Dec 2025 09:39:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.51
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766837945;
-	cv=none; b=awK5nYz4jlKUWWa4WhymiIvzhdCjOnBwKLDk57JdYj4xeFYea7Prx69BH+lCd0YTT86V1csdgQeqFVHBwotCV+a3pxJ7DEwLonDgMXsqvhoECCOnlcjniY0lDA/cwfrmSNtWynUQXw9z5jn8g8O5Y95VI61oIdv4K0/XMyHDTxaef9Tzjppeq/wfbqSQbb8TH8u1AxGd2RbG6wlOV4zqaYKfMGp0H0COhxXI1c1JV2qVtYBX1IganLg5T9/MaBUiyMPllyAqWO8TANUn8Pzsd8XtScdcb+MwoSEWZcIJ4Hdspsv0tpM3m9fLsKscd7PR8+QuKa6Y/PJyuZiwcn0K6Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.44
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766837955;
+	cv=none; b=lBRyZoyM9scppG4TkT9IEcpARM0WjzV1O8iTE3ejgnG7LNLeFQ8DW+tSjMN9L7tA1kS9ZVYo3A707ph+xY5BNogLlYqJUWyjvnxbgw7jjQz/Wl6U5EB5GWnX0ehXWNspV1EgYq40y8Etv7Kx7SnhPbfGYzwHSf8SGCZoEgi9y/708G9q7qJKfWIGsry4T7kxiIJ907EdK4vFg4LapzmCIY5d/2UNee3y8IbkuB8/FVHq7UgEzoRWpdKivQW4RgUD0qoRpfjOfwX6quAe4Wka8QDMdtFkiCGikH68kT9ZUfRdt/hw1KdMjblnGRVyMXE9JRge2Kq4yCy/7nR9+Kkzsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766837945; c=relaxed/relaxed;
-	bh=YPj481dav1h3nWeyVMYXYXTPRZgLS1US6KZdyNyRyzc=;
+	t=1766837955; c=relaxed/relaxed;
+	bh=OB3+8VIsiv4yLcVB9h3kEd58M2RQJv95rPNYEtVMoiQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SZloltyElUsnfh5K5S6oYKRxnw0Ogj0Pf6+gUfd3XAVp4N1E2p4GbKBef9ClQTEO/rLaZuuavDBRshcer36WAE8B/375qvfVVFjx/MnjqMj0DTJb0iK9Slw/dCCHlGyu8/nq1wHvKlOcJdhnNuPjD9kBNJ6jEUICKT6hQ9i1yENUFFzYe+y2/UPE+HRJSlfEpcAyyrNLRF0iCuBswQNnVxhSBrpCtnn1/yE7hfqqNPSQlMWUdbu7xJsUtMB/QijfhJxW2xVyID65qpod35uSirxNfb88nWxFYKk2J9cHxRMN52SI6/VXtay0N6Pz+pjOrGeLRfVvC4y0SivYD3w9jQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Q5TEPpCZ; dkim-atps=neutral; spf=pass (client-ip=209.85.128.51; helo=mail-wm1-f51.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+	 In-Reply-To:To:Cc; b=FHiu471I1oogpx01GZ4LBYVVjq/LM+0QuWSzAhnkgQrVaKs7+iQcBNP916qtpKUI8sREf9k9i7bEDlx4M37sXID42OuEnahnS34JlOPEfSzM6RUtzJRMRrGhpq4MMT/lmvaitftHrHHLZHRDqdpuDx5E67rfRctC+kTbVlU3CFs5h+PV3ZPmuI4suhkswVhD2LyfPXkMa/2WHF5PUPTrAudf/S9RBBN6BG+aWnVeL76qhLXpfLWIkYpThk0vXiYNR92aX1xLZ58IXWcix2sp9gqT1ljyMnHQTGd40gJsNiTQm0JmCEYz+9HeiItX5Yq0RxecNgRP7myicOrGRd2ghw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=biO1Pl+B; dkim-atps=neutral; spf=pass (client-ip=209.85.128.44; helo=mail-wm1-f44.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Q5TEPpCZ;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=biO1Pl+B;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.51; helo=mail-wm1-f51.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.44; helo=mail-wm1-f44.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddhNm5qT6z2xQK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 23:19:04 +1100 (AEDT)
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477bf34f5f5so57868795e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 04:19:04 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddhNx73v4z2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 23:19:13 +1100 (AEDT)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47774d3536dso61935645e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 04:19:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1766837882; x=1767442682; darn=lists.ozlabs.org;
+        d=suse.com; s=google; t=1766837891; x=1767442691; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YPj481dav1h3nWeyVMYXYXTPRZgLS1US6KZdyNyRyzc=;
-        b=Q5TEPpCZtf9/x819/1w6SnibeQd7bNzxVBPqIvPf3R+yAMMjbEK1IrCbFwbiolvIjQ
-         58CSNih82hc3KqFq+XCRuONwFt2as6bsbNxLrH88avhg3AB8T3MJncA2awit7VtD9ulT
-         opwFgvqDbWcN91IaUNlKopRljd7zqz0pVHrINTGgOzA90Yz6VNtPu9ARgnA7BxUexILn
-         Gik8I8FavJ6QHOYhgdyaXwuEqUfT66qHWYaxZFClZWv0IqKH8pghXH423gmFInNPlcIV
-         Zsv49jDMmVN6TetOoPMnu9KP0uUURK6Ah/eztEcW7io/hPC33QxZs5IJWE5qK8/n/uBs
-         3qiQ==
+        bh=OB3+8VIsiv4yLcVB9h3kEd58M2RQJv95rPNYEtVMoiQ=;
+        b=biO1Pl+BZCXL4TzCTzuBzXUXI5kzWmwP+CeGSJbrTLh4dMfAFcnsjlM6FXdF1GLkOb
+         Lxu4FBU5D9IsnqPfpRkqreYI2tgjEJ3SzHjnqMTbO/YfslGtVkLIFVPvN+vXlDvvhU52
+         oK50YHDinX7wjUDI67pDUDgLJV0njz7igW92gcHfjOryjsgPlY9kTdBYBMs65Vcr0aYl
+         7RFusjdFOc9kq/zf7+WxVnkQWhi7YfMBkTsZRLhpFULyW8tXKJmKvmh9N/aCWSe/qDBN
+         +X1zpsp7Pftd/5hK4h8g+7hY+FRxmX/CCr7avL3t91uOy+Vh4bZtmisz8aCv6n8BHDF4
+         mC0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766837882; x=1767442682;
+        d=1e100.net; s=20230601; t=1766837891; x=1767442691;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=YPj481dav1h3nWeyVMYXYXTPRZgLS1US6KZdyNyRyzc=;
-        b=feDBixdoeGWYnGjSGTIWmsesla4oB8O5Tv4jZLWNX8c/4XpdhrAZOWwBzBn7AFZIur
-         PFc5HRSvuwiTChVBh+psH40GFC+b5TztZcBggCx/qhxTwsUqZ0qzKmJyOdReRgiwAmLZ
-         tGLK7W5L3G3dtQ88sEGDtpfNXy8cIZOFaSej5vypwXv0WrWTPxo6oX21gasApVOkX1N1
-         +dcM/wcDf/GUns3bD6Ku9FiMwAAmMvGRtZLiEEY3YC0X7Y7cmZIyWOIqorxR0qpzrpNS
-         oucWPtZul2Nls288JHo0WDJg0ca51xsF5oPH6hI5IiVVufVbxx+stwOZE8ngdNSvbEA5
-         q8mw==
-X-Forwarded-Encrypted: i=1; AJvYcCVQjsF0Fb7KlP6FRkkOFK52Dy1MH2DxmIGYJhXXP0A/D/lHXLqcu1gzc/b3ZxRvj+mn/eNdccCIzUB7icA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyydUgR9bDUgTpTiiBhopFZM4urNygUTji6F9PGv5hMqtwawkj/
-	YKpuOIY1VroJwjtnOoZY5lXOrEULn3EWwR5i0VvBTNYBuLw9ml2eARcC9fztOioMvLY=
-X-Gm-Gg: AY/fxX5gyJoc4C6eS1ZssP0haGX8uZCR+zEazjAkkYPKq3UYCwf0LHrTWr8Z270deCo
-	mefj0hZNdL+Pt1A30qr8IlQcv1awI8axzckDiqHxULt2dOSaUgWiO2SACfBeI9xwNNQiwFniwbx
-	+oMBa+4ld/uwEbq1O5HY9AGKyWe9yzZWGCbDrRV1QFo+nzxqwkLkoQSWu0BOgc4xRj46kF8zi4d
-	Quz/i8z1qF6cRz/bZpXh+A07Swcuxhps+1yj2O1QfOnnTKNjE/scW3C07PwQRbvoAJwCG2kQUxY
-	bbnO1Zv4Rxrm4YsMfcqAAIoEG2TVqC1oahfvZahyw6C4z9uLDlXcKypvQ3GecULuVLsYQfmM9xI
-	CKJqILWEZm5sG8SVsKX6YFSfHuW+Sd53XUqFMJMyXanw4/Rm6KStM0JS4EhRamrvV76thd2TCPW
-	LGZSPYcuJA
-X-Google-Smtp-Source: AGHT+IG0mR7FQaw+l23lNeDI3HZ2oGPwNQnJRaTrq28MQwyhH5VRn+b1LrDgTvBXBb163N6NepB/tA==
-X-Received: by 2002:a05:600c:198b:b0:477:9fcf:3fe3 with SMTP id 5b1f17b1804b1-47d1df12f84mr272520785e9.0.1766837881680;
-        Sat, 27 Dec 2025 04:18:01 -0800 (PST)
+        bh=OB3+8VIsiv4yLcVB9h3kEd58M2RQJv95rPNYEtVMoiQ=;
+        b=YjTrzKfYl5ckyHR8VaPzl2aTvmRYZe57DBlE9KaG/2hvVG9pmkuYew077MMmHj46lX
+         B8ExXFT/QMxvJJN9wuQyZwCygOXzFFTgJXlHPGU5bSv586oVew7l5R+SUIsUAEzCACFT
+         zBLjUmpGUDyhbr7LGD81DulyenkvLzqKMLSZBJmwt3aYDxDX+GIEP5F9FNRxed7apK9Z
+         nN0X/i57ScBoTOlOkmFuWvWZmNKvsTYsio5mPaBgvIIDc1RhtI1f321X6/AjJV2E5TtV
+         E8B0PzyI/Q+My6b6dOGn36gOQRFgxPqcgVwDmDj3vGuJg229UlAx/jtmRPYVK6FD9Kno
+         gAsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUthWbeTlbzjUxV8woOLOH3qdemlxgVr3GvhDDcZdZexl/WyiCnDlcW3ycESYEA1LvI3JDRfewDJkpwcB0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxcH4mcj+du0fzNhOtAkaK3lHmCeiw2Odhg0KpjfsIOmjGRHgqs
+	yTV0WzbOvgQElIHKI+AaT1KW8QvjDm5IhH3o5f3uP6CYh8D4KBOB50wHLXNiyb3+eSs=
+X-Gm-Gg: AY/fxX6lNc2L4P20kk8OfazNUbF+V7RFVO6OMo6B3kzNVobyS/2Wjfqq5l/PQDh2SVF
+	uAJnKyLFsj1tsWS3/U0Y2T/hNdS/dLAr3hgQ2vgx/CQHvw71qpWOFqU3xHdrhoNbcnioEGLTkEC
+	3he4jVRJ56wZlJPIE26yToTdhS2rqBLU6CfQN7qYjmbEbA8rF1J6VPmlokf2MRPEq9dzuRHRsFD
+	710DXPeLHAkQztNqUWMvFXdtQPejKW9O3LMzEM+kGo/XPW0coJAxbD69GrRpQzcbsD8H406A3JP
+	5r9dGSjBVVhptXnfZ/CGa7bq5EiV0pZHPxgQx9HyhyDIl9UacudMaglYkipl8fdsVblznyKemTU
+	INdVcrY2d6aQS2ll6aH/K09P3rJvBNtaKkWEhzI6XiNlaOe4X/3R7K7K23YCcd5vowujBGAVlUw
+	0wSoZavLcg
+X-Google-Smtp-Source: AGHT+IFJeR5Bq3e314KIMXwkrZhqd3SM0Gtgef2ZKhyuTvMEsyAQgTg0idlkENoTE/A1RwLAaI6A4g==
+X-Received: by 2002:a05:600c:a30f:b0:47d:52ef:c572 with SMTP id 5b1f17b1804b1-47d52efc7bdmr6320155e9.1.1766837890917;
+        Sat, 27 Dec 2025 04:18:10 -0800 (PST)
 Received: from [127.0.0.1] ([2804:5078:811:d400:58f2:fc97:371f:2])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfdd0sm97940127c88.4.2025.12.27.04.17.52
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfdd0sm97940127c88.4.2025.12.27.04.18.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Dec 2025 04:18:00 -0800 (PST)
+        Sat, 27 Dec 2025 04:18:10 -0800 (PST)
 From: Marcos Paulo de Souza <mpdesouza@suse.com>
-Date: Sat, 27 Dec 2025 09:16:15 -0300
-Subject: [PATCH 08/19] debug: debug_core: Migrate to register_console_force
- helper
+Date: Sat, 27 Dec 2025 09:16:16 -0300
+Subject: [PATCH 09/19] m68k: emu: nfcon.c: Migrate to
+ register_console_force helper
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,7 +90,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251227-printk-cleanup-part3-v1-8-21a291bcf197@suse.com>
+Message-Id: <20251227-printk-cleanup-part3-v1-9-21a291bcf197@suse.com>
 References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
 In-Reply-To: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
 To: Richard Weinberger <richard@nod.at>, 
@@ -127,11 +127,11 @@ Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  Marcos Paulo de Souza <mpdesouza@suse.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1766837798; l=1369;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766837798; l=997;
  i=mpdesouza@suse.com; s=20231031; h=from:subject:message-id;
- bh=i+edMET6/ej5N2K5avM5O831EcMojt2VSHcuUrQdfTw=;
- b=frjUdDlkDnmz9ghHbQI85g3SWQC6r698VmLv/vY5BaR0ZhD0fZI/A4RKNedga5QpYNhkZRCmF
- 1wOfSuqi/z5ASQwxAphrFcarhmThsZ8zA4jjeiyha2OJh22t8WzJ4PJ
+ bh=aTPPRUdelJJPNRSRbq/P3Dh/ezSRl1NcFqsysqipRcI=;
+ b=bFiYD37gtcultSa+DtuWsZDZsqldtTEWNQGlnO3f8qpUTnHo9LyYg6/jnVTrFnBYz5Wno6rCP
+ MIg9mT6KNXdApenqW2Pg83sbMRC0cE454dAXf3m0peqNYruoithEiNk
 X-Developer-Key: i=mpdesouza@suse.com; a=ed25519;
  pk=/Ni/TsKkr69EOmdZXkp1Q/BlzDonbOBRsfPa18ySIwU=
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -147,40 +147,26 @@ No functional changes.
 
 Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
 ---
- kernel/debug/debug_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/m68k/emu/nfcon.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/debug/debug_core.c b/kernel/debug/debug_core.c
-index 0b9495187fba..4bf736e5a059 100644
---- a/kernel/debug/debug_core.c
-+++ b/kernel/debug/debug_core.c
-@@ -941,7 +941,7 @@ static void kgdb_console_write(struct console *co, const char *s,
- static struct console kgdbcons = {
- 	.name		= "kgdb",
- 	.write		= kgdb_console_write,
--	.flags		= CON_PRINTBUFFER | CON_ENABLED,
-+	.flags		= CON_PRINTBUFFER,
- 	.index		= -1,
- };
- 
-@@ -950,7 +950,7 @@ static int __init opt_kgdb_con(char *str)
- 	kgdb_use_con = 1;
- 
- 	if (kgdb_io_module_registered && !kgdb_con_registered) {
--		register_console(&kgdbcons);
-+		register_console_force(&kgdbcons);
- 		kgdb_con_registered = 1;
+diff --git a/arch/m68k/emu/nfcon.c b/arch/m68k/emu/nfcon.c
+index d41260672e24..3504bbb4aedc 100644
+--- a/arch/m68k/emu/nfcon.c
++++ b/arch/m68k/emu/nfcon.c
+@@ -110,10 +110,9 @@ static int __init nf_debug_setup(char *arg)
+ 		/*
+ 		 * The console will be enabled when debug=nfcon is specified
+ 		 * as a kernel parameter. Since this is a non-standard way
+-		 * of enabling consoles, it must be explicitly enabled.
++		 * of enabling consoles, it must be explicitly forced.
+ 		 */
+-		nf_console.flags |= CON_ENABLED;
+-		register_console(&nf_console);
++		register_console_force(&nf_console);
  	}
  
-@@ -1071,7 +1071,7 @@ static void kgdb_register_callbacks(void)
- 		register_sysrq_key('g', &sysrq_dbg_op);
- #endif
- 		if (kgdb_use_con && !kgdb_con_registered) {
--			register_console(&kgdbcons);
-+			register_console_force(&kgdbcons);
- 			kgdb_con_registered = 1;
- 		}
- 	}
+ 	return 0;
 
 -- 
 2.52.0
