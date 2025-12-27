@@ -1,79 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-15041-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15021-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A51CE02DB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 23:40:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F965CDFDCF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 15:36:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ddy9w48cXz2yGQ;
-	Sun, 28 Dec 2025 09:40:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ddlR83j5qz2xpg;
+	Sun, 28 Dec 2025 01:36:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.41
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766838047;
-	cv=none; b=L86p1qkRN+X95m/ggT3WQv+kh89KpXgmICmKg3SbNcJk6XGthosJhZvkfj18ylhiygJ94mzvyN5YBNBaIVCuOzLmAoRGR1nB3lGaszUuoW6dWo5fA6IFVR/pGLNonCPUySI+HJMeDzgmskqtjiAiJi/XbbO+UEYKecns61S4AmXZzpHcXcLRabkYdV3Ghl26xoI3SpN3Fs5MqAQraRsx++9R6FdWtbiCH6lBm5oS6PZBJ6O0QcJkxwKGsmKKmiFIYSqlAA5XXwPkidzu5BTHX8iigVVMkzdmfHHjjK6j2C2NN/Z3s/a1KXnI3DaPkXZ3rEBEoByAkcYUb0U4Nx+qnQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.7
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766846180;
+	cv=none; b=ew/8eqj84EbmGdUkheqGy4cOxol7HU2LLlVOSF0TQtPxvYn3X947I2sqdsdXIDe67Jr/1PsvLrS5SJOh/nbMOHvwWfZSJZafbCe9NcuBZDcQvq/+lpS9WuzWAArLBHcrWOeoafpAPmD+LGXfLJyK5NiRz+ZGNc0FpFhgwcZHwN/MAKbFe55LWsPXWvOwlwnlqbEPtgle/Rp5uFtK4q9a1UHIVg8hs2jrD3r0uhKL0OyJ6Bn05jzlQd+fHisD2YluQa9LOSdOzjuUIqOSdDU0cLDg6lTIMe39EVhUcymdznuNdYstDUQNRnZfQdjey22KrTumK580cohAfBoq9koUjA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766838047; c=relaxed/relaxed;
-	bh=xV/54pzRS8Etay7a+DmZn75b0ho6rdI/NPswC/OMCoI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=M0Zl5PpQ5HghTIDUNAjbE8Rm473lV/SvBytAm+FVcj79cQrhgmrCzrzerkIgeLEjSA1dlPNHKzVpn2Zz9e0gAN7ftXK5Xq0bOIMPmUXF0RIgdcduaY5gbEp1b+EhwXAv6VkoqO6XHjRCldW+fhSjMi5nZVZaXTo6c3YGxUIPN3Q1NUZ6j/1/fpq56kBlSCsJ584XiZOyBqGlYv8iVX+ytjFsFIixckJH7chfdWDcHuMJDxAPx7rF9bZ51dR7EBSxADbzbiafNqxtJm2W/oO6CePqIsGJXnZJ4qq14KRwelssKMmbSxZyVBOZM8y7PUU9b7cfd2qc9RnSmsJeiSm9YQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=MXXxZXLb; dkim-atps=neutral; spf=pass (client-ip=209.85.128.41; helo=mail-wm1-f41.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+	t=1766846180; c=relaxed/relaxed;
+	bh=IYNG2JvwQp7/xyTUlwApxfFOMKfMS7rsdQ2y5vNt3yA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=my1QSr21cw7dboN1eRVwyAjULZJQcYxtpS+wblNa5sfqNg7SrNVCwdkwrdZ6A/JnAEp29Ln9n8LOIVbdnLwSDhf6Jdnz1dtWVPeoZmMyWH8zzoM98xG09io8owupMZEF/2pcEL7MxXstEuV+fKUDcpzjVeGfPD2YdNfPGESOdYPL8IexWdjQwl6BkfNVcRg4J0N5ILQbIGlsBOqS8yuQAqIBQtx0ru2XjDQ1O0wmwkGxgsFge4/VPRqyqIlnwfxuUVpa5WEV6WS+RtJySmF8qiL4zzsmvguXgYnONoW8F0iSfTDLXLiDQTZTRU7HH/ruXEWsjyUTJ7xwms9CMj4f3A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W+HB2jLP; dkim-atps=neutral; spf=pass (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=MXXxZXLb;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W+HB2jLP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.41; helo=mail-wm1-f41.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddhQk1flZz2xQK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 23:20:46 +1100 (AEDT)
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-47775fb6cb4so46309405e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 04:20:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1766837983; x=1767442783; darn=lists.ozlabs.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xV/54pzRS8Etay7a+DmZn75b0ho6rdI/NPswC/OMCoI=;
-        b=MXXxZXLbvyCxe4TRBWJoqImMM92D+3QSd69z5j+wbutkZea4b5BoUfPv2ZyAZclMOL
-         UYOZgNSbBRfGFQ/WbMICUrS0Ek72dYix+Wm1N3flQR0eq1XXD0O/C6gXzhelgACzkKkS
-         WHRffo9RmsqVxlmtsD+toB8b+FpW39Ag4b2zu700Pm+HPOu4ESbWmENgHeAipqaglCpT
-         F6VSlvAPgPwxMqSXkZU5xzOquLrSb3kdoLm3a4y09N/Rr3siL13k6jVJbXjnAiSnL9oF
-         16uxrsbJnpFhfwbHaSzWU9czSaRoyzJBXEPwHqGSu4g/DTK6c7fMcRSoBHdgloS7xFun
-         rMDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766837983; x=1767442783;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xV/54pzRS8Etay7a+DmZn75b0ho6rdI/NPswC/OMCoI=;
-        b=JkxiIdWR7YCTysu6pgTLXC/hkXBY3nXtOkCM0fHsyd2Y2XwtAR28sWhG4Su3MTdILo
-         L4eib47jkJ7RHbZnxs78sltN1d5/4q39nasJ4UkYej62Bhz816y1IzMNtGNfYaG30R6N
-         FV6Z282ykNMikEQlcq+oGaqJCKPFiVW4uEtXqgowR6ZQJF31B0z/clG/TwI1LFl81Bbf
-         akCacq2zALgWWAz0+2hZMFDb68YUjZsEVwVYNLbj9kRkxt5rrK31PrAIP8j1utIC5Nze
-         5vv4S+YXk58vh3hvyPZPw/XM32CLyXXkOIqmWhax9HY81lTmdelxfc7Wf8pr2Af3nq+A
-         nU9w==
-X-Forwarded-Encrypted: i=1; AJvYcCXgPN63JEfg0XMpJ+5a2d4LoO2EJNJFRS1E3CQ2do3RZ7cIvYKZR+2D/51lGbdznqqR5AdeUTJraQE3E9A=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxfKMej78dAO1ikxhCeDFaXoza5CLN2MSETaCjp52vzpRMnE5ZP
-	zNukbnCuJPyY/GYScH2mgh5KMoYyY2FlMqdQGVCuqGYn50QcIZ3CJoMKn2PvnK96uJ0=
-X-Gm-Gg: AY/fxX7uS5c+DMta3ZmwnvqwuY5MKhQ5P43hqxYonVVVKChO3eWsAv2rXQvVTqTqiEk
-	igFDOq9LOW3amaiCS9zTVpxspJHsU2oPwdsxHZxRRT9eWOB70LFo+Cs0yUGqYLjgUko6wmziXzj
-	zjg61zTQi1uZOH4EUW1jk4YApXEFDSi/mL3O33c3lNFOREcsMZMEkgLuoEEgFjzYhraLrGHGHZF
-	YOeXASzwmye9dlLY/1Hu35oFQUvzY/5sGYfznTpCkJpMXnvvfjX9NrEeJQ9ubCEqv6hbUusD210
-	QUHnNh7jcrbp+Wz8MtKDyLKpTZU9Euu017BWNVPmyfvMelzJzmZ4Watdcp/2J1p8bblGfzO7RF+
-	S/fHwvYe9L8pggepbTdn2znc1fh+cXkRWDGnz/GT+5PBH/SVuPv0CNHU5e/M5l7n6PLtT1XUCV5
-	LDof0joz3voyc+5nc0cVE=
-X-Google-Smtp-Source: AGHT+IH8iMWTGKOo0ODMODi1rEzmJGgWpFcndwFU+BLf6Q6Oiy3SLl7fhkZeY72om2wNWMGGrFeTWQ==
-X-Received: by 2002:a05:600d:8:b0:477:5897:a0c4 with SMTP id 5b1f17b1804b1-47d1c13fcfdmr225764485e9.4.1766837983269;
-        Sat, 27 Dec 2025 04:19:43 -0800 (PST)
-Received: from [127.0.0.1] ([2804:5078:811:d400:58f2:fc97:371f:2])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfdd0sm97940127c88.4.2025.12.27.04.19.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Dec 2025 04:19:42 -0800 (PST)
-From: Marcos Paulo de Souza <mpdesouza@suse.com>
-Date: Sat, 27 Dec 2025 09:16:26 -0300
-Subject: [PATCH 19/19] printk: Remove CON_ENABLED flag
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddlR55tDnz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 01:36:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766846178; x=1798382178;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XruNjXDQ+pLSmZykNsY99NzSIdjR9hrgODcg6kqeGpQ=;
+  b=W+HB2jLPy2L2QKiSnIQ6akwVNPQ7g+k5tENOIAlx07WdNHGQ+c1OyfbC
+   kLPLEOgoZEV4EgqamjwCziNeoCw2NyQ0z9kQG+/juteovjKsBBhQ8yGx6
+   1iVqPmO61QsxmXbw8Z2yHfqfnOx9+7GPO0vb63sYqfPUrpN1zpPYsrBBk
+   E+ljj09TXek5U5BLOJ83txufOoHHk04qr4MRIMBXLqZ1V7qqjyafhxzPh
+   lT/wpFKkLhM7mmedCc6jUYEHIlD3eh1hrjGBJ/fZL4bx/iuE+l48Eomb3
+   oTrG7xnjfiR8+D4cCwoJjnWp3x+vSsB4RXWslle87Lt60J825lgjbHtA/
+   Q==;
+X-CSE-ConnectionGUID: 93Vwz0RvRkuT6x12GpHjJQ==
+X-CSE-MsgGUID: X5nJFozjQiO5pMr7LUVw6A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11654"; a="94014693"
+X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
+   d="scan'208";a="94014693"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2025 06:36:12 -0800
+X-CSE-ConnectionGUID: ytWJBh5gQ0SgHankNUyK4Q==
+X-CSE-MsgGUID: Lzx5E9MqRXeniwUYM6lSQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
+   d="scan'208";a="200581167"
+Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 27 Dec 2025 06:36:08 -0800
+Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vZVOn-000000005sn-1JCs;
+	Sat, 27 Dec 2025 14:36:05 +0000
+Date: Sat, 27 Dec 2025 22:35:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Coiby Xu <coxu@redhat.com>, kexec@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Thomas Staudt <tstaudt@de.ibm.com>,
+	Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>,
+	Baoquan he <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
+	Kairui Song <ryncsn@gmail.com>, Pingfan Liu <kernelfans@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc/kdump: pass dm-crypt keys to kdump kernel
+Message-ID: <202512272218.ghBaSjzO-lkp@intel.com>
+References: <20251226140636.1378505-1-coxu@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,210 +90,203 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251227-printk-cleanup-part3-v1-19-21a291bcf197@suse.com>
-References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
-In-Reply-To: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
-To: Richard Weinberger <richard@nod.at>, 
- Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
- Johannes Berg <johannes@sipsolutions.net>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jason Wessel <jason.wessel@windriver.com>, 
- Daniel Thompson <danielt@kernel.org>, 
- Douglas Anderson <dianders@chromium.org>, Petr Mladek <pmladek@suse.com>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- John Ogness <john.ogness@linutronix.de>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, 
- Jiri Slaby <jirislaby@kernel.org>, Breno Leitao <leitao@debian.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Geert Uytterhoeven <geert@linux-m68k.org>, Kees Cook <kees@kernel.org>, 
- Tony Luck <tony.luck@intel.com>, 
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Andreas Larsson <andreas@gaisler.com>, 
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
- Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org, 
- kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org, 
- netdev@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
- linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- sparclinux@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
- Marcos Paulo de Souza <mpdesouza@suse.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1766837798; l=5342;
- i=mpdesouza@suse.com; s=20231031; h=from:subject:message-id;
- bh=jfxXivsE45EkgkvCbI8I2BEVFtLSwL83e0mmBVPuH+w=;
- b=L4bmhgBbhK4MabaljXOFYoWoPA/F2Ms1Hw5KRZJ0wiLbS51oCxDTE2j2nmUG21whYB1lNSvfW
- KXB3PChlBf2AMEmTwaAmskLdw1SadRBF3zXvV826sJWL27JOeadfagz
-X-Developer-Key: i=mpdesouza@suse.com; a=ed25519;
- pk=/Ni/TsKkr69EOmdZXkp1Q/BlzDonbOBRsfPa18ySIwU=
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251226140636.1378505-1-coxu@redhat.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-All remaining usages of CON_ENABLED were removed from console drivers
-that were being registered without being specified on boot using console=
-argument.
+Hi Coiby,
 
-The usefulness of the flag was questionable since at first it meant that
-the console was ready to print records. Later on, console drivers started
-to set the flag when registering the console to make sure that the
-console would be registered even without being specified by a kernel
-argument.
+kernel test robot noticed the following build errors:
 
-With the inclusion a global state for system wide suspend/resume
-in place, with console_{suspend,resume} handling CON_SUSPEND, and with
-console_is_usable helper being more used, the CON_ENABLED flag can be
-safely removed.
+[auto build test ERROR on ccd1cdca5cd433c8a5dff78b69a79b31d9b77ee1]
 
-Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
----
- fs/proc/consoles.c      |  1 -
- include/linux/console.h | 27 ++++++++++-----------------
- kernel/printk/printk.c  | 15 ++-------------
- 3 files changed, 12 insertions(+), 31 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Coiby-Xu/powerpc-kdump-pass-dm-crypt-keys-to-kdump-kernel/20251226-220726
+base:   ccd1cdca5cd433c8a5dff78b69a79b31d9b77ee1
+patch link:    https://lore.kernel.org/r/20251226140636.1378505-1-coxu%40redhat.com
+patch subject: [PATCH] powerpc/kdump: pass dm-crypt keys to kdump kernel
+config: powerpc64-randconfig-001-20251227 (https://download.01.org/0day-ci/archive/20251227/202512272218.ghBaSjzO-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 4ef602d446057dabf5f61fb221669ecbeda49279)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251227/202512272218.ghBaSjzO-lkp@intel.com/reproduce)
 
-diff --git a/fs/proc/consoles.c b/fs/proc/consoles.c
-index b7cab1ad990d..b6916ed7957b 100644
---- a/fs/proc/consoles.c
-+++ b/fs/proc/consoles.c
-@@ -18,7 +18,6 @@ static int show_console_dev(struct seq_file *m, void *v)
- 		short flag;
- 		char name;
- 	} con_flags[] = {
--		{ CON_ENABLED,		'E' },
- 		{ CON_CONSDEV,		'C' },
- 		{ CON_BOOT,		'B' },
- 		{ CON_NBCON,		'N' },
-diff --git a/include/linux/console.h b/include/linux/console.h
-index 7d374a29a625..0ab02f7ba307 100644
---- a/include/linux/console.h
-+++ b/include/linux/console.h
-@@ -164,9 +164,6 @@ static inline void con_debug_leave(void) { }
-  *			consoles or read by userspace via syslog() syscall.
-  * @CON_CONSDEV:	Indicates that the console driver is backing
-  *			/dev/console.
-- * @CON_ENABLED:	Indicates if a console is allowed to print records. If
-- *			false, the console also will not advance to later
-- *			records.
-  * @CON_BOOT:		Marks the console driver as early console driver which
-  *			is used during boot before the real driver becomes
-  *			available. It will be automatically unregistered
-@@ -192,14 +189,13 @@ static inline void con_debug_leave(void) { }
- enum cons_flags {
- 	CON_PRINTBUFFER		= BIT(0),
- 	CON_CONSDEV		= BIT(1),
--	CON_ENABLED		= BIT(2),
--	CON_BOOT		= BIT(3),
--	CON_ANYTIME		= BIT(4),
--	CON_BRL			= BIT(5),
--	CON_EXTENDED		= BIT(6),
--	CON_SUSPENDED		= BIT(7),
--	CON_NBCON		= BIT(8),
--	CON_NBCON_ATOMIC_UNSAFE	= BIT(9),
-+	CON_BOOT		= BIT(2),
-+	CON_ANYTIME		= BIT(3),
-+	CON_BRL			= BIT(4),
-+	CON_EXTENDED		= BIT(5),
-+	CON_SUSPENDED		= BIT(6),
-+	CON_NBCON		= BIT(7),
-+	CON_NBCON_ATOMIC_UNSAFE	= BIT(8),
- };
- 
- /**
-@@ -522,9 +518,9 @@ extern bool consoles_suspended;
-  *
-  * Requires console_srcu_read_lock to be held, which implies that @con might
-  * be a registered console. The purpose of holding console_srcu_read_lock is
-- * to guarantee that the console state is valid (CON_SUSPENDED/CON_ENABLED)
-- * and that no exit/cleanup routines will run if the console is currently
-- * undergoing unregistration.
-+ * to guarantee that the console state is valid (CON_SUSPENDED) and that no
-+ * exit/cleanup routines will run if the console is currently undergoing
-+ * unregistration.
-  *
-  * If the caller is holding the console_list_lock or it is _certain_ that
-  * @con is not and will not become registered, the caller may read
-@@ -706,9 +702,6 @@ static inline bool __console_is_usable(struct console *con, short flags,
- 	if (all_suspended)
- 		return false;
- 
--	if (!(flags & CON_ENABLED))
--		return false;
--
- 	if ((flags & CON_SUSPENDED))
- 		return false;
- 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index c5c05e4d0a67..9cb0911997e5 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -3890,21 +3890,17 @@ static int try_enable_preferred_console(struct console *newcon,
- 			if (err)
- 				return err;
- 		}
--		newcon->flags |= CON_ENABLED;
- 		if (i == preferred_console)
- 			newcon->flags |= CON_CONSDEV;
- 		return 0;
- 	}
- 
--	if (force)
--		newcon->flags |= CON_ENABLED;
--
- 	/*
- 	 * Some consoles, such as pstore and netconsole, can be enabled even
- 	 * without matching. Accept the pre-enabled consoles only when match()
- 	 * and setup() had a chance to be called.
- 	 */
--	if (newcon->flags & CON_ENABLED && c->user_specified == user_specified)
-+	if (force && c->user_specified == user_specified)
- 		return 0;
- 
- 	return -ENOENT;
-@@ -3919,8 +3915,6 @@ static void try_enable_default_console(struct console *newcon)
- 	if (console_call_setup(newcon, NULL) != 0)
- 		return;
- 
--	newcon->flags |= CON_ENABLED;
--
- 	if (newcon->device)
- 		newcon->flags |= CON_CONSDEV;
- }
-@@ -3977,10 +3971,8 @@ static u64 get_init_console_seq(struct console *newcon, bool bootcon_registered)
- 				for_each_console(con) {
- 					u64 seq;
- 
--					if (!(con->flags & CON_BOOT) ||
--					    !(con->flags & CON_ENABLED)) {
-+					if (!(con->flags & CON_BOOT))
- 						continue;
--					}
- 
- 					if (con->flags & CON_NBCON)
- 						seq = nbcon_seq_read(con);
-@@ -4233,9 +4225,6 @@ static int unregister_console_locked(struct console *console)
- 				     consoles_suspended, NBCON_USE_ATOMIC))
- 		__pr_flush(console, 1000, true);
- 
--	/* Disable it unconditionally */
--	console_srcu_write_flags(console, console->flags & ~CON_ENABLED);
--
- 	if (res < 0)
- 		return res;
- 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512272218.ghBaSjzO-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> arch/powerpc/kexec/elf_64.c:95:9: error: call to undeclared function 'crash_load_dm_crypt_keys'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+      95 |                 ret = crash_load_dm_crypt_keys(image);
+         |                       ^
+   1 error generated.
+
+
+vim +/crash_load_dm_crypt_keys +95 arch/powerpc/kexec/elf_64.c
+
+    27	
+    28	static void *elf64_load(struct kimage *image, char *kernel_buf,
+    29				unsigned long kernel_len, char *initrd,
+    30				unsigned long initrd_len, char *cmdline,
+    31				unsigned long cmdline_len)
+    32	{
+    33		int ret;
+    34		unsigned long kernel_load_addr;
+    35		unsigned long initrd_load_addr = 0, fdt_load_addr;
+    36		void *fdt;
+    37		const void *slave_code;
+    38		struct elfhdr ehdr;
+    39		char *modified_cmdline = NULL;
+    40		struct crash_mem *rmem = NULL;
+    41		struct kexec_elf_info elf_info;
+    42		struct kexec_buf kbuf = { .image = image, .buf_min = 0,
+    43					  .buf_max = ppc64_rma_size };
+    44		struct kexec_buf pbuf = { .image = image, .buf_min = 0,
+    45					  .buf_max = ppc64_rma_size, .top_down = true,
+    46					  .mem = KEXEC_BUF_MEM_UNKNOWN };
+    47	
+    48		ret = kexec_build_elf_info(kernel_buf, kernel_len, &ehdr, &elf_info);
+    49		if (ret)
+    50			return ERR_PTR(ret);
+    51	
+    52		if (IS_ENABLED(CONFIG_CRASH_DUMP) && image->type == KEXEC_TYPE_CRASH) {
+    53			/* min & max buffer values for kdump case */
+    54			kbuf.buf_min = pbuf.buf_min = crashk_res.start;
+    55			kbuf.buf_max = pbuf.buf_max =
+    56					((crashk_res.end < ppc64_rma_size) ?
+    57					 crashk_res.end : (ppc64_rma_size - 1));
+    58		}
+    59	
+    60		ret = kexec_elf_load(image, &ehdr, &elf_info, &kbuf, &kernel_load_addr);
+    61		if (ret)
+    62			goto out;
+    63	
+    64		kexec_dprintk("Loaded the kernel at 0x%lx\n", kernel_load_addr);
+    65	
+    66		ret = kexec_load_purgatory(image, &pbuf);
+    67		if (ret) {
+    68			pr_err("Loading purgatory failed.\n");
+    69			goto out;
+    70		}
+    71	
+    72		kexec_dprintk("Loaded purgatory at 0x%lx\n", pbuf.mem);
+    73	
+    74		/* Load additional segments needed for panic kernel */
+    75		if (IS_ENABLED(CONFIG_CRASH_DUMP) && image->type == KEXEC_TYPE_CRASH) {
+    76			ret = load_crashdump_segments_ppc64(image, &kbuf);
+    77			if (ret) {
+    78				pr_err("Failed to load kdump kernel segments\n");
+    79				goto out;
+    80			}
+    81	
+    82			/* Setup cmdline for kdump kernel case */
+    83			modified_cmdline = setup_kdump_cmdline(image, cmdline,
+    84							       cmdline_len,
+    85							       "elfcorehdr",
+    86							       image->elf_load_addr);
+    87			if (!modified_cmdline) {
+    88				pr_err("Setting up cmdline for kdump kernel failed\n");
+    89				ret = -EINVAL;
+    90				goto out;
+    91			}
+    92			cmdline = modified_cmdline;
+    93			cmdline_len = strlen(cmdline) + 1;
+    94	
+  > 95			ret = crash_load_dm_crypt_keys(image);
+    96			if (ret == -ENOENT) {
+    97				kexec_dprintk("No dm crypt key to load\n");
+    98			} else if (ret) {
+    99				pr_err("Failed to load dm crypt keys\n");
+   100				return ERR_PTR(ret);
+   101			}
+   102	
+   103			if (image->dm_crypt_keys_addr != 0) {
+   104				modified_cmdline = setup_kdump_cmdline(image, cmdline,
+   105								       cmdline_len,
+   106								       "dmcryptkeys",
+   107								       image->dm_crypt_keys_addr);
+   108				if (!modified_cmdline) {
+   109					pr_err("Setting up cmdline for kdump kernel failed\n");
+   110					ret = -EINVAL;
+   111					goto out;
+   112				}
+   113				cmdline = modified_cmdline;
+   114			}
+   115		}
+   116	
+   117		if (initrd != NULL) {
+   118			kbuf.buffer = initrd;
+   119			kbuf.bufsz = kbuf.memsz = initrd_len;
+   120			kbuf.buf_align = PAGE_SIZE;
+   121			kbuf.top_down = false;
+   122			kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+   123			ret = kexec_add_buffer(&kbuf);
+   124			if (ret)
+   125				goto out;
+   126			initrd_load_addr = kbuf.mem;
+   127	
+   128			kexec_dprintk("Loaded initrd at 0x%lx\n", initrd_load_addr);
+   129		}
+   130	
+   131		ret = get_reserved_memory_ranges(&rmem);
+   132		if (ret)
+   133			goto out;
+   134	
+   135		fdt = of_kexec_alloc_and_setup_fdt(image, initrd_load_addr,
+   136						   initrd_len, cmdline,
+   137						   kexec_extra_fdt_size_ppc64(image, rmem));
+   138		if (!fdt) {
+   139			pr_err("Error setting up the new device tree.\n");
+   140			ret = -EINVAL;
+   141			goto out;
+   142		}
+   143	
+   144		ret = setup_new_fdt_ppc64(image, fdt, rmem);
+   145		if (ret)
+   146			goto out_free_fdt;
+   147	
+   148		if (!IS_ENABLED(CONFIG_CRASH_HOTPLUG) || image->type != KEXEC_TYPE_CRASH)
+   149			fdt_pack(fdt);
+   150	
+   151		kbuf.buffer = fdt;
+   152		kbuf.bufsz = kbuf.memsz = fdt_totalsize(fdt);
+   153		kbuf.buf_align = PAGE_SIZE;
+   154		kbuf.top_down = true;
+   155		kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+   156		ret = kexec_add_buffer(&kbuf);
+   157		if (ret)
+   158			goto out_free_fdt;
+   159	
+   160		/* FDT will be freed in arch_kimage_file_post_load_cleanup */
+   161		image->arch.fdt = fdt;
+   162	
+   163		fdt_load_addr = kbuf.mem;
+   164	
+   165		kexec_dprintk("Loaded device tree at 0x%lx\n", fdt_load_addr);
+   166	
+   167		slave_code = elf_info.buffer + elf_info.proghdrs[0].p_offset;
+   168		ret = setup_purgatory_ppc64(image, slave_code, fdt, kernel_load_addr,
+   169					    fdt_load_addr);
+   170		if (ret)
+   171			pr_err("Error setting up the purgatory.\n");
+   172	
+   173		goto out;
+   174	
+   175	out_free_fdt:
+   176		kvfree(fdt);
+   177	out:
+   178		kfree(rmem);
+   179		kfree(modified_cmdline);
+   180		kexec_free_elf_info(&elf_info);
+   181	
+   182		return ret ? ERR_PTR(ret) : NULL;
+   183	}
+   184	
 
 -- 
-2.52.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
