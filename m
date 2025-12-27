@@ -1,93 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-15020-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15022-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9BEECDF40C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 05:24:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B325CE02A2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 23:37:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ddTsM3S7Xz2yFg;
-	Sat, 27 Dec 2025 15:24:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ddy6W5yFKz2y8c;
+	Sun, 28 Dec 2025 09:37:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766809479;
-	cv=none; b=ZeUHQ0mueYJd0gv9j+Qt94jZwDtQDDmS4BXL7SzSjDToFJkueck/xN75slXrki+5yBtg7pt7FQf3EkHD5LiKOKdIGQN7o7sNDcK0wsjkrAluq3EXXn9e+LH3gCPA4lDetteyeXYbUxN3sRyfT827lpP0dfnp3pWBN3DD77HTwNceZPJIWWSgo572jQDc19a7D7xPgurWLiZkZTJfUiI4yWlR0OpM/sIAq+SeBelCWECJ9IAJU4IUdhCHd/jxGMTMiBOn6OcmnQS8w6Fr/OPY/+lfYsPVq/DopaKDpJ/3ezvwq/6t3sdoPjkPw158yvG2fhxgc5nNng8TKO0ety/npA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.67
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766837874;
+	cv=none; b=FJYrjBchrcBpTbW1IiNx5ouajNQv33MTVeO87069aYhXoHkLQXUlTUt9mtelVm4NHSGn5yh0z99BU0fJ1vgns835UNYE10Ux1yey2+oc30DQY2Ywkvuzgyc+Sf9fL7pRmIuAvSWxN+ExKKi+3bO4VlXm8VKJsIHoInFZaaP9n5mdN1LgH2vvXByd5TfzfSt4R0mIvGHH1HCEibjZ5gSYnWHlIZjdnKCieOxDpt7pFATyMuQsNVYEd7Ze+TFtXm4fmPxIjYNtHMWyWsL7ArCggQCrcyfb60Wvul0oApxIM2a0uJatjfTRov5fD2JD7X62ij+KOhhHAeQumFIJJ8Z+zA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766809479; c=relaxed/relaxed;
-	bh=ePhDfSshvlfo2Ir0eSdlg+kEMF2sd54yQxG4zxGlF2s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ltFq+adqrJBETN6D0Ykm/vwuv+MxtnWM0fmZu/Q0CFdv9Mas/cpZRMyIqi/2hDiqzVvZGEYjIqEbGZa1D7l+zw4c8Rpx5hliaVf282fslNP8SeQr8Uo9t27sRvHLMwm2WG2m4ocPX2O6zdXE4GuQVV3RUsLib0506P9hWnJ9x++nSiIEoFTu9B5QWFIVW4Opfl7IaOD7eFagwjFEz5qPWtiPbgGaKiIujxNwik1IId1oLFn2ZqDUBA+RMlFd/qaaKTi1WCz6qhsvtKlnEpGKpOTQNIKZt1WIAXr5NoL2qFpph5lnNZK+3R2KAZuEBQExQRLcNtW8t524pSxvMbjhDA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BIA1799F; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1766837874; c=relaxed/relaxed;
+	bh=ZTn0eoJ78H/BcwAZAT5V21TN0j41vlUozcdKxdaozdI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bLIuya5HePpfQm3iWU/+0IXrAZH0TiATFaPu++4bKp6Nm0hVD+Fd0NG5yT+Yzd2FDr9OPOX3ySZhIeEZMaxcsPbVPO+C1J3UzRPY+vaY0ikTnPHefadNho2eUZ4hQn8Atm8lpivFIE/ALavpoFDV/lPW1/dpZ9rVioWyXEYmb242LQExuckNaCh/he/euoafwmUhjorRHOmTrxbW/ZlwsJzMZL+KBOU2RiFk5tD6AUhSoYhiyx/zSmcuZJJq3k4nRNJ54wfdzlHEnK3NjrgZFFSE+GIFUgDGuyepzgilFeDP79YmIIs1DpByvNGWk2yge6FCh53hH4L3i41grAnDTw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=exK0ncpg; dkim-atps=neutral; spf=pass (client-ip=209.85.128.67; helo=mail-wm1-f67.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BIA1799F;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=exK0ncpg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.67; helo=mail-wm1-f67.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddTsL4sW2z2xl0
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 15:24:38 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BR31nOL028470;
-	Sat, 27 Dec 2025 04:24:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ePhDfS
-	shvlfo2Ir0eSdlg+kEMF2sd54yQxG4zxGlF2s=; b=BIA1799FGhXa91S6TnkbkH
-	S55q5EWf/9fVolpPfYtuj+t57hF6fsci/4sYfUAj9IEqsmwMWENDLt6+THeL4Vec
-	7kJZOzD5DDEzgnnv8hogJwZnG87DpGWPatnOUL4ZlPTvzgt1HkvKjOG5/RAoioID
-	w/P5TUKgYABLvcflhWECUlPwN/8kbjxgatdmk5jrfrfZmLxS728dMb5971BaNwCy
-	fnkiItDUQo82pmhi57Qd6vxrgTsWpGqrqPDYTOkOCi4neitZP+FP0HCN2QBCRk//
-	vP2gDNYuNB42ACWb63lZ/X3Xriy5EvgD4Hh2AejODj8YhGF2BqLzzsHqwDXy0slg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba764g4td-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Dec 2025 04:24:16 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BR4OFjq003551;
-	Sat, 27 Dec 2025 04:24:15 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba764g4tb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Dec 2025 04:24:15 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BR2v5pU001095;
-	Sat, 27 Dec 2025 04:24:14 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4b664stnyn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Dec 2025 04:24:14 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BR4OA7R27459848
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 27 Dec 2025 04:24:10 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7D12920049;
-	Sat, 27 Dec 2025 04:24:10 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B44220040;
-	Sat, 27 Dec 2025 04:24:07 +0000 (GMT)
-Received: from Linuxdev.ibmuc.com (unknown [9.124.212.100])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 27 Dec 2025 04:24:07 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Christophe Leroy <chleroy@kernel.org>,
-        "Nysal Jan K.A." <nysal@linux.ibm.com>
-Cc: Srikar Dronamraju <srikar@linux.ibm.com>,
-        Sachin P Bappalige <sachinpb@linux.ibm.com>, stable@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Laurent Dufour <ldufour@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] powerpc/kexec: Enable SMT before waking offline CPUs
-Date: Sat, 27 Dec 2025 09:54:06 +0530
-Message-ID: <176680916364.22434.16517409166672279903.b4-ty@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251028105516.26258-1-nysal@linux.ibm.com>
-References: <20251025080512.85690-1-nysal@linux.ibm.com> <20251028105516.26258-1-nysal@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddhMP1NQVz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 23:17:51 +1100 (AEDT)
+Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-47bdbc90dcaso49496515e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 04:17:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1766837808; x=1767442608; darn=lists.ozlabs.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZTn0eoJ78H/BcwAZAT5V21TN0j41vlUozcdKxdaozdI=;
+        b=exK0ncpg66KSHDB3j9Be3Vocrfuox57IJ/11eOMrqyGd0+9fJBxraSs6K6BDm58Qvk
+         ZhugSDJq7xEpqduq0+3t2u5d0fLjKEgwWRdk6dbhH1By99J3uRtyvOl77es6thNqqHMB
+         /Icyz/DznU8Uk9vRRvhFNHPfbpNxGqPoV2b/TIk24sPFFgPt2GtrDgfWeB15lGDkfwMQ
+         hZeibYTlYFNSvreaCrmUsNKf4s6gAKcgiq8h/z/6ZCriOiJfs9QIrLu0hhzBKGbxmI9E
+         epj07EcOG2xPwclIpOQ96nMMcl9mtWvTSidBOa/2KfIVB+ZUZZhGKhuCxlHObfX7Y5Q7
+         0nXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766837808; x=1767442608;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZTn0eoJ78H/BcwAZAT5V21TN0j41vlUozcdKxdaozdI=;
+        b=eCEOwuL6I4K3/9S1aUNzK0EePUz020TBVXcUMRyDgESMIO/XgP5/7kesQwBWeOMzCV
+         c0Er3SY+LNB4B7/cQh5oyErY3yX5SNHuLf34VaPrb5z1LJRnk43gLnSwvDIvHjbyfFm+
+         iOUuMkZhYnEQRymaWFZJexufXRz6cf8og1YEJwBbiF9IG+l4BCUtMQDgwre+aILf1T5N
+         79yvZnjy9LXW5lbl70dCfUh7rKGeWlt4vtt8xp+BSIFOuPIcTiyszPUmWiqG8rXsCg8N
+         Q5gO8s4xo1jQCEWNDdvaHkYNG+rmyeZp5NfRQyzuV6gqpJeYzqWtWRvcUMyJaYWYl0hz
+         qzVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXr5D+yEOIATDpdnhIOUfCS1LpReZbZ4oE7Hzh1UItct2bb7ZtsQUdOMalDn/75CfAY6vnT+aXBeSjN6t8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy/Pt90qkmpe9SySZbmV+t6fBDPNHaEICz38U56TgyH1w6sYBV2
+	9BYrqQvFJND4LR5uBthn62BIQu2C96JlvRwhRkDOaZ/6QQE5nLhb0nAqimgd4E6rCFU=
+X-Gm-Gg: AY/fxX4aZFuyOXv14Ah1t+jHllHnVVEnDHjnLNhbFWcpmIriiYIZCxMSZA7CIx24noV
+	rqG+kkQ1ag5W7BvELGFZ5iRJT+TeqbQE2X2mVVYbnScBqZVDEiZ468JBaqU8LnmTEddzJd+2miC
+	Aa3mXYo0790CN6O2OT8IOjA1czVvX3KDNrAQz5zcD2XSuCh0lPgsXZAWLDuPbDPxZ1cNrxRQQqJ
+	6dHKT+v8oA+W+f0Ksrypp86PqtNLUIrlSAgnN+dxXKDP+idtz6NwmJd7yLCBCUi4d6xT8V3B1aP
+	tCgqbEUefmSIa1AfNdiDgL7RU1SUyaklxI/UYaXaENBYW1Q5owV4CH1NZ96J1AXBUlrBMDJz2dA
+	ME6vAX7V+vm5loQkpALNormmKFVc1nFtL4KVUz0QCJde715R0QZIC0+/f5W6tBdV3jhNwktmfh+
+	9opvzSNS2BeTNJdb1cous=
+X-Google-Smtp-Source: AGHT+IGAwYPYNfJmaY9Q33nFH+RhwoM5QU0IvIHlZhMLVrSDLSWfjJCihtYGJekOl50CWdODgpBmVA==
+X-Received: by 2002:a05:600c:c086:b0:47b:e0ff:60f9 with SMTP id 5b1f17b1804b1-47d19577114mr202487205e9.20.1766837807525;
+        Sat, 27 Dec 2025 04:16:47 -0800 (PST)
+Received: from [127.0.0.1] ([2804:5078:811:d400:58f2:fc97:371f:2])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfdd0sm97940127c88.4.2025.12.27.04.16.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Dec 2025 04:16:46 -0800 (PST)
+From: Marcos Paulo de Souza <mpdesouza@suse.com>
+Subject: [PATCH 00/19] printk cleanup - part 3
+Date: Sat, 27 Dec 2025 09:16:07 -0300
+Message-Id: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,60 +87,133 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI3MDAzNSBTYWx0ZWRfXzJgJaxsXzA9+
- ffV98M42/HwQ9SmTnuASeAi51Q3XcxXW6ZlIkUZwY8n5PtjSuL8LuMDrT5iqrsY4dNyi0D/xSBv
- c7lEGxpAAUraMwKXysEnjaOM2iCaypbGdOCEMZgUvhWIOnjVWT/xPY8dhWp03Ob+km4LYdDNto2
- 2/G/tqzQGOVrWkQ3S5UhU3qxgNNvdGJtAVDN9z7hGf7SgZe8S/IkVrPPKH+F2Qhczt5ZF7mtxJq
- wIwvlaPz1jcC+4Ukb/7UdPzmM+OCaKfhi0S3EGChA/YUBFNE2qv0ouR2lyffQk+FHFXaH1P6cQJ
- KAVctCXytOrqLirqHvGt0GPyXYigCy1QiWAG6AMMm7i7iX5Z57zpLW0y18jD1+NyJQ3HKDChGUB
- zI6JMRhzmoINBUfsyhuhX8IgkNneLmK0mNZExU9AxEBae/bFnj75fFW+L7LnL4Pk8Sc9ROQrRd2
- YvWO1yvsFsQ/FI1ieBw==
-X-Proofpoint-GUID: HQLyhqxDp4o88OLMzo7fqsYtK5z4IQRQ
-X-Authority-Analysis: v=2.4 cv=B4+0EetM c=1 sm=1 tr=0 ts=694f5f70 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=_Tyy8SHsIPC3FbPClSgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: aFtEUnZ596LH-19Zm1x0XrXTKzmzB0KC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-27_02,2025-12-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 phishscore=0 bulkscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
- definitions=main-2512270035
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAfOT2kC/x2MwQpAQBBAf0VzNmVsHPyKHAaDidY2i5T8u83l1
+ Tu890AUU4nQZA+YXBp190koz2BY2M+COiaHsigrSsBg6o8Vh03YnwED2+FQmKjuiXrHNaQ0mEx
+ 6/9u2e98PHmJw7WYAAAA=
+X-Change-ID: 20251202-printk-cleanup-part3-ea116b11b3a6
+To: Richard Weinberger <richard@nod.at>, 
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jason Wessel <jason.wessel@windriver.com>, 
+ Daniel Thompson <danielt@kernel.org>, 
+ Douglas Anderson <dianders@chromium.org>, Petr Mladek <pmladek@suse.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ John Ogness <john.ogness@linutronix.de>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Breno Leitao <leitao@debian.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Geert Uytterhoeven <geert@linux-m68k.org>, Kees Cook <kees@kernel.org>, 
+ Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Andreas Larsson <andreas@gaisler.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ sparclinux@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+ Marcos Paulo de Souza <mpdesouza@suse.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766837798; l=4070;
+ i=mpdesouza@suse.com; s=20231031; h=from:subject:message-id;
+ bh=pGCwrx7s/pzxpnqEvxnowKr5kIMRsCkFnk8/FBkLNPk=;
+ b=DtTvQmWwxI8nBiz56K8JWeAXva4ZUTP1TZfMsHc/t23MukO3Q9HDBbWL5zjE/2eZrLFOXevOl
+ 63plshGMBJVDC6pfWYfhJHhdbEMnrJWz9+G+dP9Hv10iWAGuGbiHgYC
+X-Developer-Key: i=mpdesouza@suse.com; a=ed25519;
+ pk=/Ni/TsKkr69EOmdZXkp1Q/BlzDonbOBRsfPa18ySIwU=
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 28 Oct 2025 16:25:12 +0530, Nysal Jan K.A. wrote:
-> If SMT is disabled or a partial SMT state is enabled, when a new kernel
-> image is loaded for kexec, on reboot the following warning is observed:
-> 
-> kexec: Waking offline cpu 228.
-> WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
-> [snip]
->  NIP kexec_prepare_cpus+0x1b0/0x1bc
->  LR  kexec_prepare_cpus+0x1a0/0x1bc
->  Call Trace:
->   kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
->   default_machine_kexec+0x160/0x19c
->   machine_kexec+0x80/0x88
->   kernel_kexec+0xd0/0x118
->   __do_sys_reboot+0x210/0x2c4
->   system_call_exception+0x124/0x320
->   system_call_vectored_common+0x15c/0x2ec
-> 
-> [...]
+The parts 1 and 2 can be found here [1] and here[2].
 
-Applied to powerpc/fixes.
+The changes proposed in this part 3 are mostly to clarify the usage of
+the interfaces for NBCON, and use the printk helpers more broadly.
+Besides it, it also introduces a new way to register consoles
+and drop thes the CON_ENABLED flag. It seems too much, but in reality
+the changes are not complex, and as the title says, it's basically a
+cleanup without changing the functional changes.
 
-[1/1] powerpc/kexec: Enable SMT before waking offline CPUs
-      https://git.kernel.org/powerpc/c/c2296a1e42418556efbeb5636c4fa6aa6106713a
+This patchset includes a patch from part 2 that needed more work [3], as
+suggested by Petr Mladek.
 
-cheers
+These changes were tested by reverting f79b163c4231
+("Revert "serial: 8250: Switch to nbcon console""), and used qemu to test
+suspend/resume cycles, and everything worked as expected.
+
+PS: b4 --auto-to-cc added a bunch of people as CC, so I'm not sure if
+I should remove some or not, so I'm leaving the list as it is. If the
+patchset needs a v2, and you feel that you don't need to copied, just
+let me know.
+
+Thanks for checking the patches, and happy holidays!
+
+[1]: https://lore.kernel.org/lkml/20250226-printk-renaming-v1-0-0b878577f2e6@suse.com/#t
+[2]: https://lore.kernel.org/linux-serial/20251121-printk-cleanup-part2-v2-0-57b8b78647f4@suse.com/
+[3]: https://lore.kernel.org/linux-serial/aSgeqM3DWvR8-cMY@pathway.suse.cz/
+
+Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
+---
+Marcos Paulo de Souza (19):
+      printk/nbcon: Use an enum to specify the required callback in console_is_usable()
+      printk: Introduce console_is_nbcon
+      printk: Drop flags argument from console_is_usable
+      printk: Reintroduce consoles_suspended global state
+      printk: Add more context to suspend/resume functions
+      printk: Introduce register_console_force
+      drivers: netconsole: Migrate to register_console_force helper
+      debug: debug_core: Migrate to register_console_force helper
+      m68k: emu: nfcon.c: Migrate to register_console_force helper
+      fs: pstore: platform: Migrate to register_console_force helper
+      powerpc: kernel: udbg: Migrate to register_console_force helper
+      sparc: kernel: btext: Migrate to register_console_force helper
+      um: drivers: mconsole_kern.c: Migrate to register_console_force helper
+      drivers: hwtracing: stm: console.c: Migrate to register_console_force helper
+      drivers: tty: serial: mux.c: Migrate to register_console_force helper
+      drivers: tty: serial: ma35d1_serial: Migrate to register_console_force helper
+      drivers: tty: ehv_bytechan: Migrate to register_console_force helper
+      drivers: braille: console: Drop CON_ENABLED console flag
+      printk: Remove CON_ENABLED flag
+
+ arch/m68k/emu/nfcon.c                           |   5 +-
+ arch/powerpc/kernel/udbg.c                      |   4 +-
+ arch/sparc/kernel/btext.c                       |   4 +-
+ arch/um/drivers/mconsole_kern.c                 |   3 +-
+ arch/um/kernel/kmsg_dump.c                      |   2 +-
+ drivers/accessibility/braille/braille_console.c |   1 -
+ drivers/hwtracing/stm/console.c                 |   4 +-
+ drivers/net/netconsole.c                        |  13 +--
+ drivers/tty/ehv_bytechan.c                      |   4 +-
+ drivers/tty/serial/ma35d1_serial.c              |   4 +-
+ drivers/tty/serial/mux.c                        |   4 +-
+ drivers/tty/tty_io.c                            |   6 +-
+ fs/proc/consoles.c                              |   1 -
+ fs/pstore/platform.c                            |   6 +-
+ include/linux/console.h                         | 143 +++++++++++++++++++-----
+ kernel/debug/debug_core.c                       |   6 +-
+ kernel/debug/kdb/kdb_io.c                       |   6 +-
+ kernel/printk/nbcon.c                           |  17 +--
+ kernel/printk/printk.c                          | 140 ++++++++++++-----------
+ 19 files changed, 230 insertions(+), 143 deletions(-)
+---
+base-commit: 93d65587479cfc97c0d7e41b5e8c6378ca681632
+change-id: 20251202-printk-cleanup-part3-ea116b11b3a6
+
+Best regards,
+--  
+Marcos Paulo de Souza <mpdesouza@suse.com>
+
 
