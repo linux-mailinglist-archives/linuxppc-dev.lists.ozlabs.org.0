@@ -1,79 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-15024-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15026-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE248CE02A8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 23:37:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC89CE02AE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Dec 2025 23:38:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ddy6g6ZkVz2yHB;
-	Sun, 28 Dec 2025 09:37:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ddy7h35FRz2yFs;
+	Sun, 28 Dec 2025 09:38:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.47
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766837889;
-	cv=none; b=X2pkPw/qUduVFWf/bNxtlXlcEAcsgZEKhSaL203PmAh6AVn1U5UQPPMMKnv3/w79Nq2UHGV2N/u6GO6azNNTj15W6Zz3jtll4XuybO4BpJbGN5r/3kOdSeBKlUMqG7VVGRxpRUrgkR+9+OojeYdgcvbREPNBbFHNJjuBgwVfjiY+5gYLUgLW/dhlp/pLeqpubE2e61KWuXUaH1YngiU3KYw19L7w++iJOHZLroKRO/q6Wsr9juI9R8GdcNjKH00v42Ky69HvFU8XHw43M0PnkUy947W6gkeC1lkhdDmXeoM2qYObxmbZKF346r/Ll5lTbGZximRRiQA/+oc1HBhEnw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.49
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766837899;
+	cv=none; b=EC/UuSNCbeADCSnodQPH3ETRuNS7nhWC9QJ+n2qRv05RysUMgqxbOI7OctlJWamLKl5nKWruLE4BXJHZ1KeCTNVThL55Ii3hvYutPUa3FEQh0oHkSSN64t7NT9A1W0HE4yCef5aqXI8juuuG8d4rMNAU34eb3aec02C4puWEI78lLtB1/dJtJRV5jgNRH6BBi9prBeSuKjq6e3UGU4UHrqJzsSeTMw9aDt2Ib1nmdI8keMH27lHyMUGJsbMWsw7TZhOCvuX/MPl+RuA17oyNTXb6ljPK7/drrhHR3RCXY+5SM9krd2bI8EikvAFOr/hRUt9GLgpjS4JIC9Hl4JeU9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766837889; c=relaxed/relaxed;
-	bh=rhFoe+/fNVQYtucZwNZBdpwy2GyzZc29S0jBT7dXZmU=;
+	t=1766837899; c=relaxed/relaxed;
+	bh=uTPebJjNeKwkChbLQ9kmEHnfHiLVqL0OXrUmcfcwYxQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=i4ZKvybrKlucSzHNaMYBBJn7iDmGNd+aBk1yzNHqR5vvojRmZ0NiPBWQdy5R3z3QIMh7j0GNnFzIIun947l3upcK90AC7ovz9pTjddtiA/6MMQKwTXmxxSwbmsWr/ErELVWYcYH0oq/ecLKOyFcCjGZplktj7fXNAF2vZbqjJGR11OFRKfJOGucQXGYo/mX/MGVO0RURxYDYS2EiwY++6JufuFM5PiQNFGbMotwHWYV1a0LoUc1edgemgdq5AvR+hmT+ryhbS5HqxTVAEcnQa6uzMri+OVrFOtOj+PnyxESCy7yK05D9+CiQljPwIVJ/ANpRLKcJV5GuES7ol76+kA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=DERuz8Au; dkim-atps=neutral; spf=pass (client-ip=209.85.128.47; helo=mail-wm1-f47.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+	 In-Reply-To:To:Cc; b=IMYjNZym/ypNgFH/OEnAZMPgjjFQiMszDOMGX7EccUDFSKVNU9Zbto2RuXQgsxAkiLuKEQXBUfRQG5CTLDcSt4bcrkrqgYSKXvgQzuBI8uxW/2nQC9N0DdjWNMxNUV6zRvEmYoSC7BxoiQYeH1s3ITloCsCUp+fdttdPXavhnjrVUU2sHg4gVkOrWTQXLTUNhoApBgZuqBgzY+tZ/hDaCld8t2cRiGvpizpXtkdYKvyphYV0fYG4VgTR0cEY4E/CtlHvmEKG8KzjNUW2TgCHkZny4O5S4s4RTgPcpcRXW80/0+PQrxV126deUUkhfGk4DzpnLz/LNM8o1vhVHG5oHw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=DO1fhiU0; dkim-atps=neutral; spf=pass (client-ip=209.85.128.49; helo=mail-wm1-f49.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=DERuz8Au;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=DO1fhiU0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.47; helo=mail-wm1-f47.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.49; helo=mail-wm1-f49.google.com; envelope-from=mpdesouza@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddhMj0V67z2xQK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 23:18:08 +1100 (AEDT)
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4779cc419b2so61961625e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 04:18:08 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ddhMt01lqz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 23:18:17 +1100 (AEDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-477bf34f5f5so57866305e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Dec 2025 04:18:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1766837826; x=1767442626; darn=lists.ozlabs.org;
+        d=suse.com; s=google; t=1766837835; x=1767442635; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rhFoe+/fNVQYtucZwNZBdpwy2GyzZc29S0jBT7dXZmU=;
-        b=DERuz8AuUPRovzhW5xqJ8xpxNRb1b/hkchmJqGBgJP815FriTcPyrTln5rNfKcYb+A
-         woN7jeotGFsikq7PQvJqOAtY44tFJiSH1UZRVxDkLbZ99AzGH+0u1Hb0oI8QK3QOb2kW
-         0DdVS8/GQEQg0NkUOKC6MKL0VyfmvV/4mWksolSx/uWWGDLvmAIUXEkJvzBtUtDL3/Nh
-         nr+9J/gYpvooOLuTeoBF4zzOXWX6zkh0eE0esDSJ4zx8QbKonEUG1nFOb9F/fzC0QMGJ
-         WCs9XWQbNj4CWMlB5oIddYY+VCL1qyTIhzJu1gg4sF4IFnGRiN/UU1DSBKct1YVilMpG
-         AUuw==
+        bh=uTPebJjNeKwkChbLQ9kmEHnfHiLVqL0OXrUmcfcwYxQ=;
+        b=DO1fhiU0elqafVqy6EdkS3t9I1iYiHDIB9pneaGgfeSu0+H6mSZEbJTOCOY7yTBEpI
+         3N39EnmH9Cq1+pzSQ8mU3bav3+HjmZTXNZKJ7loldeR9UPthny5FCNDmTcLmuYyIKxU0
+         5BN+bEYd5U/1n9AwZWlUCpqE8FqMl1H5k5+JjFesY6VyBl6zJ7sfEke3mO2pdnpxJrZY
+         F2Vxun1JZ+ha2XJnJ5cgmCF73saQs5as10P3eb786HtkcQY+T8NHSXas0zYtmjgsmOC1
+         MqicnMyKgb4hXazFeBgC8rd8G1NmNptMHsF29aKicCM7SSsCWo6ZTRYPyBvvAo8f0KGx
+         evEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766837826; x=1767442626;
+        d=1e100.net; s=20230601; t=1766837835; x=1767442635;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=rhFoe+/fNVQYtucZwNZBdpwy2GyzZc29S0jBT7dXZmU=;
-        b=bG0bqyzoErumgR4UByUdQJJ3O2/jInhH9w4Rt3guQ9Z6ArPJx2XIcsOLSWBtqfMCqo
-         mdal2toX7CBmNbOQePm0Ft/m+47bql7UB4vqKCfBRa9YjW7LyKrRRQvLofwKcMT4Fvh+
-         br7+OaouvYnpZ2uLD8vTH+dYTUYEYplaJvGxLTTMkyTHTDmLb8HfPEIUsGWNw265m+9N
-         uqWECDO/ApkbOmCMTfyPDLe8LkQKTUo3Uc6WzqMPmO5Od2wzUmSsPu/ZT89QD2GWuizV
-         5FYIxmxMML3uZNbh9pfumM0f3GwGD17UDXl4BP9iF0oVsEuXEpoDtUaSSL1fcrRGpX19
-         neQg==
-X-Forwarded-Encrypted: i=1; AJvYcCU2bLXTIdZlGlf/+OVSxNLhJ/TDzG36YttJPuC9klW/Q8EAGAg30afcPiaeprzDbvKj2G0Yx/UlpPLX9Jc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx5L+duoflyOno0SdnGymm+u/8Uq2LmwT6GApSQHzzVx8oN3EJ2
-	NFVzCTHn5Sg6Jx0GboPZ9Ug0kVdt4WvdqycRUjtxVgoe+zJcmtvKrIUEdtvavcFtF4k=
-X-Gm-Gg: AY/fxX5UKgYvcJvrfewnjw1A4f2n/lRjB1qXhNOqliP2DyqnjtcM2ggf3q1OL0eA+1a
-	HzatLHjZa5UVMfBM8TeHVbEieg/A/G/ShhA2e1M45cP16kEgUIGFZs709+9sK6jfyMXtgbMMQPi
-	avkU7AjEFu2j+VY+lZPWEvfAeRVWgbHp/ei1KVM5XHY1Z7plZ72OlF5wIxb0N7MHHTzHTdHrYps
-	gUzRoBCAZRY00G+d/lujLrzmnfHVmPdytRUjoAEjodTbNECOxv2lXGB2Q8JiVs0kBMVicUXiTYT
-	oOfOeiX+TGCeT7UhInb+BU6etkrQ9mwe9ngtL0M73ldKg48qCNmgtYvxiO9EWY1jGzmlOapPt0m
-	kZfQy3Id7JGpYRAJRXEOF8kgMLmO4VCxBrxaHe/bSzdao6pgmfJBs8zNK1iTYOxRJX9xlBvVGh3
-	5zUNVgcYxI
-X-Google-Smtp-Source: AGHT+IHT9M2beqQrZzp9xbbyJud8/h6Q+UOZtBpjbh3fLwHrPjz2pLTjAJscQz+yaZcvqZw8y6NMSQ==
-X-Received: by 2002:a05:600c:3b88:b0:47a:814c:ee95 with SMTP id 5b1f17b1804b1-47d19556cf7mr356539265e9.12.1766837826003;
-        Sat, 27 Dec 2025 04:17:06 -0800 (PST)
+        bh=uTPebJjNeKwkChbLQ9kmEHnfHiLVqL0OXrUmcfcwYxQ=;
+        b=WsqRB7wFM4ABWxKqPBH9U04pTFfrJ4iWT0QEBvA9YfSqldXj0vVXDlcyFF2Ycyw9ty
+         dCu4VNHU7VtYi2QMto108aEDLTemE2O19N7I6j8/mtHKcNeoCkzaKF400EeI3E0581y3
+         ItGfjWRpUU7/y+D4KGj7to4u5VjsQ9UhMi04VyK6ovpf63bEuEv4PvGc0GVBdSrlqMp9
+         MBUCO/Fg5TQCcfdcCyHrK4nnCcjvfc3wn3rxv2Mv6+k8qSvAkqhK3nrYC4U38+zrbbSx
+         OYi5jv07fLgYSN7MRoMCXq0xoLcIzg8ko01K4Jz9fuVNWlxUuoTxUThyvg6u/n1s8Jqj
+         Wl4g==
+X-Forwarded-Encrypted: i=1; AJvYcCW8nwWC3+DPi0KpFPqrJ3YhG5yZgTtPgBlNbOQZGbCVvZWsOX+sOheGynaosTI3fxwTVjT6s4ErrDsRlWw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxMXYopcj/VueDsLCIkLb+MK7GD+eY2iLI/UEkvK9Vk9PSZI9Sm
+	Pe7Vfbgt64uibHYy1QDPGFnne502fqJVyZZbvhCoFfLnJdwkzh589wUsVAeI/YExswU=
+X-Gm-Gg: AY/fxX6ZvrZzKlJJB60fyUw+NbSP0WJIq9c8EuAsnfE4qvptbRBkqdRYtlwg6buQ8uv
+	rXnNzZ0229vmtr7sibNSFz5d0vzE7gRXyPqC+07qr0yoHKT4lsPb326UpZm91V+49Q9Iduv0DVo
+	P3eOBhuFi659If4erX1TfindKr/OXdAJbCTgWwICG+YT5CIx+uBZhdkp5UegSDGz62alJTeSPOI
+	XT933gnKUxoSijXJowwB3TSAFAhvfjLMBOHQYqXHdE4/YSl3EoBvEFz0+9+LLUql417XUAo8ICs
+	gybalFJyvzwGcr7I3ZH3eNTjgvQB3+yfo2ziaaZYXgmW4+wxRW7TAbD8IXJqjCC4QkGP3H8Mv0Z
+	4YRDwI2Bl0D3uSg0kyWi2Ul+0enD79qulWjLGDS9z7PxRrfZrr9z5YD00yNzi58DseD/4z1AKub
+	VzaRws7bFDnC7s1Tz8i7M=
+X-Google-Smtp-Source: AGHT+IGwp3EjluLXDesoC0JEyXRGphsbQ8YoWlvkj2Od8DQXEn5G/ySQT/x4pqGRl4etLgLjbGQKkA==
+X-Received: by 2002:a05:600c:1912:b0:477:89d5:fdac with SMTP id 5b1f17b1804b1-47d1959f714mr329425925e9.31.1766837835139;
+        Sat, 27 Dec 2025 04:17:15 -0800 (PST)
 Received: from [127.0.0.1] ([2804:5078:811:d400:58f2:fc97:371f:2])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfdd0sm97940127c88.4.2025.12.27.04.16.57
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724cfdd0sm97940127c88.4.2025.12.27.04.17.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Dec 2025 04:17:05 -0800 (PST)
+        Sat, 27 Dec 2025 04:17:14 -0800 (PST)
 From: Marcos Paulo de Souza <mpdesouza@suse.com>
-Date: Sat, 27 Dec 2025 09:16:09 -0300
-Subject: [PATCH 02/19] printk: Introduce console_is_nbcon
+Date: Sat, 27 Dec 2025 09:16:10 -0300
+Subject: [PATCH 03/19] printk: Drop flags argument from console_is_usable
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,7 +89,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251227-printk-cleanup-part3-v1-2-21a291bcf197@suse.com>
+Message-Id: <20251227-printk-cleanup-part3-v1-3-21a291bcf197@suse.com>
 References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
 In-Reply-To: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
 To: Richard Weinberger <richard@nod.at>, 
@@ -126,11 +126,11 @@ Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
  Marcos Paulo de Souza <mpdesouza@suse.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1766837798; l=5401;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766837798; l=9456;
  i=mpdesouza@suse.com; s=20231031; h=from:subject:message-id;
- bh=neUSae1tSSd9ZUIMhNnIsDOes9ZbVtbWmizb8QV3UdY=;
- b=gCYQ59/fzh5QOgA05PXMV/E/oNmzy4c9swZbzFlKNzJFERHXZDcBlPYBdYFwyrufnetFktUrT
- qugGUjzspdLDAy+AfxtSwqRvBilWtZIJfksSlShjgsgxcBNFgQvlHOk
+ bh=vcl36sWudeP+4+BFFAGNAn9YWtzCJyjmd2BzAWTnD/U=;
+ b=iD+souMtKfrrqeYTmzgK7GoB+YnYwBZz+b3u1u3z79Hjhj/LyjffFTb6T+KYy3fwP+rT9y9HK
+ hjNxNGyaArtAX5IV24Lh1tykQ434DvLfReICQgaATUhSR+uxoFOqy3O
 X-Developer-Key: i=mpdesouza@suse.com; a=ed25519;
  pk=/Ni/TsKkr69EOmdZXkp1Q/BlzDonbOBRsfPa18ySIwU=
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -138,157 +138,260 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Besides checking if the current console is NBCON or not, console->flags
-is also being read in order to serve as argument of the console_is_usable
-function.
+The flags argument was also used to check if CON_NBCON was set, but their
+usage was fixed in the last commit. All current users are reading the
+variable just to call console_is_usable.
 
-But CON_NBCON flag is unique: it's set just once in the console
-registration and never cleared. In this case it can be possible to read
-the flag when console_srcu_lock is held (which is the case when using
-for_each_console).
+By calling console_srcu_read_flags inside console_is_usable makes the
+code cleaner and removes one argument from the function.
 
-This change makes possible to remove the flags argument from
-console_is_usable in the next patches.
+Along with it, create a variant called __console_is_usable that can be
+used under console_list_lock(), like unregister_console_locked.
 
-Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
 ---
- include/linux/console.h   | 27 +++++++++++++++++++++++++++
- kernel/debug/kdb/kdb_io.c |  2 +-
- kernel/printk/nbcon.c     |  2 +-
- kernel/printk/printk.c    | 15 ++++++---------
- 4 files changed, 35 insertions(+), 11 deletions(-)
+ arch/um/kernel/kmsg_dump.c |  3 +--
+ include/linux/console.h    | 25 +++++++++++++++++--------
+ kernel/debug/kdb/kdb_io.c  |  4 +---
+ kernel/printk/nbcon.c      | 15 ++++-----------
+ kernel/printk/printk.c     | 20 +++++++-------------
+ 5 files changed, 30 insertions(+), 37 deletions(-)
 
+diff --git a/arch/um/kernel/kmsg_dump.c b/arch/um/kernel/kmsg_dump.c
+index 8ae38308b67c..ca80232cfa2a 100644
+--- a/arch/um/kernel/kmsg_dump.c
++++ b/arch/um/kernel/kmsg_dump.c
+@@ -31,8 +31,7 @@ static void kmsg_dumper_stdout(struct kmsg_dumper *dumper,
+ 		 * expected to output the crash information.
+ 		 */
+ 		if (strcmp(con->name, "ttynull") != 0 &&
+-		    console_is_usable(con, console_srcu_read_flags(con),
+-				      NBCON_USE_ATOMIC)) {
++		    console_is_usable(con, NBCON_USE_ATOMIC)) {
+ 			break;
+ 		}
+ 	}
 diff --git a/include/linux/console.h b/include/linux/console.h
-index 35c03fc4ed51..dd4ec7a5bff9 100644
+index dd4ec7a5bff9..648cf10e3f93 100644
 --- a/include/linux/console.h
 +++ b/include/linux/console.h
-@@ -561,6 +561,33 @@ static inline void console_srcu_write_flags(struct console *con, short flags)
- 	WRITE_ONCE(con->flags, flags);
+@@ -656,13 +656,8 @@ extern bool nbcon_kdb_try_acquire(struct console *con,
+ 				  struct nbcon_write_context *wctxt);
+ extern void nbcon_kdb_release(struct nbcon_write_context *wctxt);
+ 
+-/*
+- * Check if the given console is currently capable and allowed to print
+- * records. Note that this function does not consider the current context,
+- * which can also play a role in deciding if @con can be used to print
+- * records.
+- */
+-static inline bool console_is_usable(struct console *con, short flags,
++/* Variant of console_is_usable() when the console_list_lock is held. */
++static inline bool __console_is_usable(struct console *con, short flags,
+ 				     enum nbcon_write_cb nwc)
+ {
+ 	if (!(flags & CON_ENABLED))
+@@ -707,6 +702,18 @@ static inline bool console_is_usable(struct console *con, short flags,
+ 	return true;
  }
  
-+/**
-+ * console_srcu_is_nbcon - Locklessly check whether the console is nbcon
-+ * @con:	struct console pointer of console to check
-+ *
-+ * Requires console_srcu_read_lock to be held, which implies that @con might
-+ * be a registered console. The purpose of holding console_srcu_read_lock is
-+ * to guarantee that no exit/cleanup routines will run if the console
-+ * is currently undergoing unregistration.
-+ *
-+ * If the caller is holding the console_list_lock or it is _certain_ that
-+ * @con is not and will not become registered, the caller may read
-+ * @con->flags directly instead.
-+ *
-+ * Context: Any context.
-+ * Return: True when CON_NBCON flag is set.
++/*
++ * Check if the given console is currently capable and allowed to print
++ * records. Note that this function does not consider the current context,
++ * which can also play a role in deciding if @con can be used to print
++ * records.
 + */
-+static inline bool console_is_nbcon(const struct console *con)
++static inline bool console_is_usable(struct console *con,
++				     enum nbcon_write_cb nwc)
 +{
-+	WARN_ON_ONCE(!console_srcu_read_lock_is_held());
-+
-+	/*
-+	 * The CON_NBCON flag is statically initialized and is never
-+	 * set or cleared at runtime.
-+	 */
-+	return data_race(con->flags & CON_NBCON);
++	return __console_is_usable(con, console_srcu_read_flags(con), nwc);
 +}
 +
- /* Variant of console_is_registered() when the console_list_lock is held. */
- static inline bool console_is_registered_locked(const struct console *con)
- {
+ #else
+ static inline void nbcon_cpu_emergency_enter(void) { }
+ static inline void nbcon_cpu_emergency_exit(void) { }
+@@ -719,7 +726,9 @@ static inline void nbcon_reacquire_nobuf(struct nbcon_write_context *wctxt) { }
+ static inline bool nbcon_kdb_try_acquire(struct console *con,
+ 					 struct nbcon_write_context *wctxt) { return false; }
+ static inline void nbcon_kdb_release(struct nbcon_write_context *wctxt) { }
+-static inline bool console_is_usable(struct console *con, short flags,
++static inline bool __console_is_usable(struct console *con, short flags,
++				       enum nbcon_write_cb nwc) { return false; }
++static inline bool console_is_usable(struct console *con,
+ 				     enum nbcon_write_cb nwc) { return false; }
+ #endif
+ 
 diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
-index 6ffb962392a4..d6de512b433a 100644
+index d6de512b433a..642eab746577 100644
 --- a/kernel/debug/kdb/kdb_io.c
 +++ b/kernel/debug/kdb/kdb_io.c
-@@ -596,7 +596,7 @@ static void kdb_msg_write(const char *msg, int msg_len)
+@@ -589,9 +589,7 @@ static void kdb_msg_write(const char *msg, int msg_len)
+ 	 */
+ 	cookie = console_srcu_read_lock();
+ 	for_each_console_srcu(c) {
+-		short flags = console_srcu_read_flags(c);
+-
+-		if (!console_is_usable(c, flags, NBCON_USE_ATOMIC))
++		if (!console_is_usable(c, NBCON_USE_ATOMIC))
+ 			continue;
  		if (c == dbg_io_ops->cons)
  			continue;
- 
--		if (flags & CON_NBCON) {
-+		if (console_is_nbcon(c)) {
- 			struct nbcon_write_context wctxt = { };
- 
- 			/*
 diff --git a/kernel/printk/nbcon.c b/kernel/printk/nbcon.c
-index 13865ef85990..f0f42e212caa 100644
+index f0f42e212caa..f0659c1e50ed 100644
 --- a/kernel/printk/nbcon.c
 +++ b/kernel/printk/nbcon.c
-@@ -1647,7 +1647,7 @@ static void __nbcon_atomic_flush_pending(u64 stop_seq)
- 	for_each_console_srcu(con) {
- 		short flags = console_srcu_read_flags(con);
+@@ -1164,7 +1164,6 @@ static bool nbcon_emit_one(struct nbcon_write_context *wctxt, bool use_atomic)
+ static bool nbcon_kthread_should_wakeup(struct console *con, struct nbcon_context *ctxt)
+ {
+ 	bool ret = false;
+-	short flags;
+ 	int cookie;
  
--		if (!(flags & CON_NBCON))
-+		if (!console_is_nbcon(con))
+ 	if (kthread_should_stop())
+@@ -1183,8 +1182,7 @@ static bool nbcon_kthread_should_wakeup(struct console *con, struct nbcon_contex
+ 
+ 	cookie = console_srcu_read_lock();
+ 
+-	flags = console_srcu_read_flags(con);
+-	if (console_is_usable(con, flags, NBCON_USE_THREAD)) {
++	if (console_is_usable(con, NBCON_USE_THREAD)) {
+ 		/* Bring the sequence in @ctxt up to date */
+ 		ctxt->seq = nbcon_seq_read(con);
+ 
+@@ -1209,7 +1207,6 @@ static int nbcon_kthread_func(void *__console)
+ 		.ctxt.prio	= NBCON_PRIO_NORMAL,
+ 	};
+ 	struct nbcon_context *ctxt = &ACCESS_PRIVATE(&wctxt, ctxt);
+-	short con_flags;
+ 	bool backlog;
+ 	int cookie;
+ 
+@@ -1249,9 +1246,7 @@ static int nbcon_kthread_func(void *__console)
+ 		 */
+ 		cookie = console_srcu_read_lock();
+ 
+-		con_flags = console_srcu_read_flags(con);
+-
+-		if (console_is_usable(con, con_flags, NBCON_USE_THREAD))
++		if (console_is_usable(con, NBCON_USE_THREAD))
+ 			backlog = nbcon_emit_one(&wctxt, false);
+ 
+ 		console_srcu_read_unlock(cookie);
+@@ -1645,12 +1640,10 @@ static void __nbcon_atomic_flush_pending(u64 stop_seq)
+ 
+ 	cookie = console_srcu_read_lock();
+ 	for_each_console_srcu(con) {
+-		short flags = console_srcu_read_flags(con);
+-
+ 		if (!console_is_nbcon(con))
  			continue;
  
- 		if (!console_is_usable(con, flags, NBCON_USE_ATOMIC))
+-		if (!console_is_usable(con, flags, NBCON_USE_ATOMIC))
++		if (!console_is_usable(con, NBCON_USE_ATOMIC))
+ 			continue;
+ 
+ 		if (nbcon_seq_read(con) >= stop_seq)
+@@ -1904,7 +1897,7 @@ void nbcon_device_release(struct console *con)
+ 	 */
+ 	cookie = console_srcu_read_lock();
+ 	printk_get_console_flush_type(&ft);
+-	if (console_is_usable(con, console_srcu_read_flags(con), NBCON_USE_ATOMIC) &&
++	if (console_is_usable(con, NBCON_USE_ATOMIC) &&
+ 	    !ft.nbcon_offload &&
+ 	    prb_read_valid(prb, nbcon_seq_read(con), NULL)) {
+ 		/*
 diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 5f4b84f9562e..bd0d574be3cf 100644
+index bd0d574be3cf..b03ffc23c27c 100644
 --- a/kernel/printk/printk.c
 +++ b/kernel/printk/printk.c
-@@ -3200,7 +3200,7 @@ static bool console_flush_one_record(bool do_cond_resched, u64 *next_seq, bool *
- 		 * nbcon consoles when the nbcon consoles cannot print via
- 		 * their atomic or threaded flushing.
- 		 */
--		if ((flags & CON_NBCON) && (ft.nbcon_atomic || ft.nbcon_offload))
-+		if (console_is_nbcon(con) && (ft.nbcon_atomic || ft.nbcon_offload))
+@@ -3191,7 +3191,6 @@ static bool console_flush_one_record(bool do_cond_resched, u64 *next_seq, bool *
+ 
+ 	cookie = console_srcu_read_lock();
+ 	for_each_console_srcu(con) {
+-		short flags = console_srcu_read_flags(con);
+ 		u64 printk_seq;
+ 		bool progress;
+ 
+@@ -3203,9 +3202,8 @@ static bool console_flush_one_record(bool do_cond_resched, u64 *next_seq, bool *
+ 		if (console_is_nbcon(con) && (ft.nbcon_atomic || ft.nbcon_offload))
  			continue;
  
- 		if (!console_is_usable(con, flags,
-@@ -3209,7 +3209,7 @@ static bool console_flush_one_record(bool do_cond_resched, u64 *next_seq, bool *
+-		if (!console_is_usable(con, flags,
+-				       do_cond_resched ? NBCON_USE_THREAD
+-						       : NBCON_USE_ATOMIC))
++		if (!console_is_usable(con, do_cond_resched ? NBCON_USE_THREAD
++							    : NBCON_USE_ATOMIC))
  			continue;
  		any_usable = true;
  
--		if (flags & CON_NBCON) {
-+		if (console_is_nbcon(con)) {
- 			progress = nbcon_legacy_emit_next_record(con, handover, cookie,
- 								 !do_cond_resched);
- 			printk_seq = nbcon_seq_read(con);
-@@ -3458,7 +3458,6 @@ void console_unblank(void)
- static void __console_rewind_all(void)
- {
- 	struct console *c;
--	short flags;
- 	int cookie;
- 	u64 seq;
+@@ -3394,7 +3392,7 @@ void console_unblank(void)
+ 	 */
+ 	cookie = console_srcu_read_lock();
+ 	for_each_console_srcu(c) {
+-		if (!console_is_usable(c, console_srcu_read_flags(c), NBCON_USE_ATOMIC))
++		if (!console_is_usable(c, NBCON_USE_ATOMIC))
+ 			continue;
  
-@@ -3466,9 +3465,7 @@ static void __console_rewind_all(void)
+ 		if (c->unblank) {
+@@ -3434,7 +3432,7 @@ void console_unblank(void)
  
  	cookie = console_srcu_read_lock();
  	for_each_console_srcu(c) {
--		flags = console_srcu_read_flags(c);
--
--		if (flags & CON_NBCON) {
-+		if (console_is_nbcon(c)) {
- 			nbcon_seq_force(c, seq);
- 		} else {
- 			/*
-@@ -3632,13 +3629,13 @@ static bool legacy_kthread_should_wakeup(void)
- 		 * consoles when the nbcon consoles cannot print via their
- 		 * atomic or threaded flushing.
- 		 */
--		if ((flags & CON_NBCON) && (ft.nbcon_atomic || ft.nbcon_offload))
-+		if (console_is_nbcon(con) && (ft.nbcon_atomic || ft.nbcon_offload))
+-		if (!console_is_usable(c, console_srcu_read_flags(c), NBCON_USE_ATOMIC))
++		if (!console_is_usable(c, NBCON_USE_ATOMIC))
  			continue;
  
- 		if (!console_is_usable(con, flags, NBCON_USE_THREAD))
+ 		if (c->unblank)
+@@ -3621,7 +3619,6 @@ static bool legacy_kthread_should_wakeup(void)
+ 
+ 	cookie = console_srcu_read_lock();
+ 	for_each_console_srcu(con) {
+-		short flags = console_srcu_read_flags(con);
+ 		u64 printk_seq;
+ 
+ 		/*
+@@ -3632,7 +3629,7 @@ static bool legacy_kthread_should_wakeup(void)
+ 		if (console_is_nbcon(con) && (ft.nbcon_atomic || ft.nbcon_offload))
  			continue;
  
--		if (flags & CON_NBCON) {
-+		if (console_is_nbcon(con)) {
- 			printk_seq = nbcon_seq_read(con);
- 		} else {
- 			/*
-@@ -4490,7 +4487,7 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
- 			if (!console_is_usable(c, flags, NBCON_USE_ANY))
+-		if (!console_is_usable(con, flags, NBCON_USE_THREAD))
++		if (!console_is_usable(con, NBCON_USE_THREAD))
+ 			continue;
+ 
+ 		if (console_is_nbcon(con)) {
+@@ -4203,7 +4200,7 @@ static int unregister_console_locked(struct console *console)
+ 
+ 	if (!console_is_registered_locked(console))
+ 		res = -ENODEV;
+-	else if (console_is_usable(console, console->flags, NBCON_USE_ATOMIC))
++	else if (__console_is_usable(console, console->flags, NBCON_USE_ATOMIC))
+ 		__pr_flush(console, 1000, true);
+ 
+ 	/* Disable it unconditionally */
+@@ -4430,7 +4427,6 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
+ 	struct console *c;
+ 	u64 last_diff = 0;
+ 	u64 printk_seq;
+-	short flags;
+ 	int cookie;
+ 	u64 diff;
+ 	u64 seq;
+@@ -4477,14 +4473,12 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
+ 			if (con && con != c)
  				continue;
  
--			if (flags & CON_NBCON) {
-+			if (console_is_nbcon(c)) {
- 				printk_seq = nbcon_seq_read(c);
- 			} else {
- 				printk_seq = c->seq;
+-			flags = console_srcu_read_flags(c);
+-
+ 			/*
+ 			 * If consoles are not usable, it cannot be expected
+ 			 * that they make forward progress, so only increment
+ 			 * @diff for usable consoles.
+ 			 */
+-			if (!console_is_usable(c, flags, NBCON_USE_ANY))
++			if (!console_is_usable(c, NBCON_USE_ANY))
+ 				continue;
+ 
+ 			if (console_is_nbcon(c)) {
 
 -- 
 2.52.0
