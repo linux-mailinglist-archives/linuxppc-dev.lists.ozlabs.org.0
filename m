@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15046-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15048-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B469CCE4C57
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 13:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C3CCE4C61
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 13:41:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dfJr35Pbmz2yKn;
-	Sun, 28 Dec 2025 23:41:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dfJrL3m6bz2yFp;
+	Sun, 28 Dec 2025 23:41:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766925683;
-	cv=none; b=RnhzNtfjFMkbPPwQ7qEa4BleMhJm4/qmYtytIvMvrT/KDij4oqX8KTrKP1HtcQa+iMCpmtjjXU5k+UU1OENxq7oEEjQ+9AaPvGcvFZfCShR8Rm6OF5zHApn59WYJFtQQ4bz15cgLsNcskiCS2FTHazH13hxhrroBqpXraj6kTzjhkSpJm2q6+PwdW3sINf8PhYuoiqBUzPrXk8H1eTvBAjMolK/Nz6aAcwPpFIdE71UD/mJjBK++3ywOWPRNzhLTjG4P2Xr1S6i3a7K8tTWg0tnrfXgfIksAt9z10PWaGQqRCi5PYSAFtpVJ+inbiDa80g44qIVBouLwhLJr//+6Xg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766925698;
+	cv=none; b=bpCzJip8Bjkq7LOMh5DxjB37qAbRnS4rD4nneX4U025uXzyx+Vd9jsEe0SIRkbGkb89+hob1MDtM4DeAfY0xut81XzHTet2TDYGNFRsZBYMFbTwmCDMCQ4HlN1ImrQWX0k30Jfa1zXFqk5z3IlzFzEfu1m8uWRF/frhmhTboBI05UkPiRCI2dxtnhU/fynswRSv7VHe6fwNXIO7YZQUOkOBgZbTw4x3w2h/2Y8v3xnvSsCjl4/3sqE4u81PMfgn2PzGCnKD7oc5YGbND52cdoaQcG4aHddIITjJJexsFKMzGERKI6g7LxgGRxXqVopN562JmCTiN51xvaiduaMiJFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766925683; c=relaxed/relaxed;
-	bh=m5gBzVEKGZBYJG6a1xNcNq9/H+kuM96Zeopb+7R3cQ8=;
+	t=1766925698; c=relaxed/relaxed;
+	bh=b4qD+cVO4njaR2WMTsE5cyiXB7W0CbhxQFlHvnJsSI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGVtm+/PIQzESr+scN/DN0xOUYRF7ZY7pjPIZ5LeAimEjL/V1qmNCS4ODcMH3yFO/M/g/Y8zNEHgYAJGbIpOIm+Q/2i5j/2gZdFk2/gtWx40SBYDdwCKHqJ3lgQ2369hTcRDc9jix+Igf+TdmUsp118iPozhs3GFCi0MDPoV+hd7D8FrlLy2TPi34yU/q7XzfkVuCa5Br56hOwyAuXKWF8kece7qR+ZDJYKYpiV0nDUxR4ldPH0FEOHrd/nOIAEg8mIxDRE8775Bc6wVNHaJgmLFX09usof5k32kalTAFlyfEoCoWs8geCMEIMHQGDosfAI3pt8kWhvj4t+Xeqbj8w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LhVU7m6a; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=GClE7KAElRIwjbqwcdzxh6gyGIV9v1E8wpPCJpfu7IQbLPCh1Msna309N41SHDwceCuqtPaGohfFXtg2+bYnIFVWbd66abwwv6QIFyeDrAcrYiLErZcyxJWF5cKhGvQ74D8vz5njHju301VANXsp8RQEeXOhoLXTCGqMtdXDpiDvHIr2n9IjbR6DQ8TRKqoq0yx19qQsem2PgejyDu+RFDP/NDoctG1q+J/uYSaGAmICjNdK3BaPhDzKWNHVraEul9nhby+Jh8wyD6sw0fv0Yika/Vkcz4PLMVJq9H3SO30L5c1mG0L/EBxyzi3rokhZdIIDqAkWMk3frG2726CLNg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c3xxAC9y; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LhVU7m6a;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c3xxAC9y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dfJr30rM5z2xJT
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 23:41:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dfJrK5PZSz2yRl
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 23:41:37 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7D0454098F;
+	by tor.source.kernel.org (Postfix) with ESMTP id AE5F9600AA;
+	Sun, 28 Dec 2025 12:41:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3ADCC113D0;
 	Sun, 28 Dec 2025 12:40:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDAFFC4CEFB;
-	Sun, 28 Dec 2025 12:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766925651;
-	bh=2qjSzGfqzjt078/1pNLigg8dFf1Az5AvC+tppJFEDck=;
+	s=k20201202; t=1766925665;
+	bh=sY65/RaZssilanqAkKMZORd+RGdNjje1eX8P0rlpw6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhVU7m6aMNTawbMgUYHYAGWf8tGvLDWJQnrYR9M9iZEDtX9rUa6AkiSPgLsKGpHEu
-	 yqhg7rauWEgFfzeSjajMBB35m0wYexkotTqL86Fr8KzxxLKjSPwpwTRy6/ZU+JswRx
-	 w9CA4wIctpL+HLRH8FdDCR/Zi/H28EoHxdzHxR/0KwaQ3XnPArjAXjmL6/E3kX3KCA
-	 hRlv0cjWbs2iPZsWPWQkiY1piHErzRLSCgcfsrlIPlkZiX+FNt7Y9rx+tUYQd81TYz
-	 ZDGhdTCcXHwVcM7pnnpQz7HoCD2XoFV9cVUbPQqPJaOgkDuhJ6/H1rQE7Q5NtaHsre
-	 Dfp85vgM1xv/A==
+	b=c3xxAC9yYJldcaI9CW5HdZFsKaIhXOs3RKw+R5Lo//mlmsZgZlShsXbbbEVSQd7YA
+	 bMehhr0xf8GWVrAGCiCKPypO+pRDio1AnUEQIebWoWBbOHlFaUGIVJZfzRNubW0uHx
+	 MeYBFDVT7e/YjcVN+I8OX+Ps4M9e6vCnrQY26l/j9WUBZhfqmFeb2LTZI/UGM24NMH
+	 plWqe0SpmBn4PszXdoUfV9Ad/mF90eeHiKRn+EgiV6/5ZmOZksbvcGLQDSaTQCnmCp
+	 aywnwsI1i+Tw5CR6pIwl01InAR68MIZBnjpmwsb5YzVjpJd2Sq1IvvHEwhtZZhU20q
+	 aD+aUhIyRHBdQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -109,9 +109,9 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH 02/28] arc: introduce arch_zone_limits_init()
-Date: Sun, 28 Dec 2025 14:39:32 +0200
-Message-ID: <20251228124001.3624742-3-rppt@kernel.org>
+Subject: [PATCH 03/28] arm: introduce arch_zone_limits_init()
+Date: Sun, 28 Dec 2025 14:39:33 +0200
+Message-ID: <20251228124001.3624742-4-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251228124001.3624742-1-rppt@kernel.org>
 References: <20251228124001.3624742-1-rppt@kernel.org>
@@ -145,68 +145,40 @@ call free_area_init() from every architecture.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/arc/mm/init.c | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ arch/arm/mm/init.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
-index a73cc94f806e..ff7974d38011 100644
---- a/arch/arc/mm/init.c
-+++ b/arch/arc/mm/init.c
-@@ -75,6 +75,25 @@ void __init early_init_dt_add_memory_arch(u64 base, u64 size)
- 		base, TO_MB(size), !in_use ? "Not used":"");
+diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
+index 54bdca025c9f..bdcc3639681f 100644
+--- a/arch/arm/mm/init.c
++++ b/arch/arm/mm/init.c
+@@ -107,18 +107,23 @@ void __init setup_dma_zone(const struct machine_desc *mdesc)
+ #endif
  }
  
+-static void __init zone_sizes_init(unsigned long min, unsigned long max_low,
+-	unsigned long max_high)
 +void __init arch_zone_limits_init(unsigned long *max_zone_pfn)
-+{
-+	/*----------------- node/zones setup --------------------------*/
+ {
+-	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+-
+ #ifdef CONFIG_ZONE_DMA
+-	max_zone_pfn[ZONE_DMA] = min(arm_dma_pfn_limit, max_low);
++	max_zone_pfn[ZONE_DMA] = min(arm_dma_pfn_limit, max_low_pfn);
+ #endif
+-	max_zone_pfn[ZONE_NORMAL] = max_low;
 +	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
-+
-+#ifdef CONFIG_HIGHMEM
-+	/*
-+	 * max_high_pfn should be ok here for both HIGHMEM and HIGHMEM+PAE.
-+	 * For HIGHMEM without PAE max_high_pfn should be less than
-+	 * min_low_pfn to guarantee that these two regions don't overlap.
-+	 * For PAE case highmem is greater than lowmem, so it is natural
-+	 * to use max_high_pfn.
-+	 *
-+	 * In both cases, holes should be handled by pfn_valid().
-+	 */
-+	max_zone_pfn[ZONE_HIGHMEM] = max_high_pfn;
-+#endif
+ #ifdef CONFIG_HIGHMEM
+-	max_zone_pfn[ZONE_HIGHMEM] = max_high;
++	max_zone_pfn[ZONE_HIGHMEM] = max_pfn;
+ #endif
 +}
 +
- /*
-  * First memory setup routine called from setup_arch()
-  * 1. setup swapper's mm @init_mm
-@@ -122,9 +141,6 @@ void __init setup_arch_memory(void)
- 
- 	memblock_dump_all();
- 
--	/*----------------- node/zones setup --------------------------*/
--	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
--
- #ifdef CONFIG_HIGHMEM
- 	/*
- 	 * On ARC (w/o PAE) HIGHMEM addresses are actually smaller (0 based)
-@@ -139,21 +155,11 @@ void __init setup_arch_memory(void)
- 	min_high_pfn = PFN_DOWN(high_mem_start);
- 	max_high_pfn = PFN_DOWN(high_mem_start + high_mem_sz);
- 
--	/*
--	 * max_high_pfn should be ok here for both HIGHMEM and HIGHMEM+PAE.
--	 * For HIGHMEM without PAE max_high_pfn should be less than
--	 * min_low_pfn to guarantee that these two regions don't overlap.
--	 * For PAE case highmem is greater than lowmem, so it is natural
--	 * to use max_high_pfn.
--	 *
--	 * In both cases, holes should be handled by pfn_valid().
--	 */
--	max_zone_pfn[ZONE_HIGHMEM] = max_high_pfn;
--
- 	arch_pfn_offset = min(min_low_pfn, min_high_pfn);
- 	kmap_init();
- #endif /* CONFIG_HIGHMEM */
- 
++static void __init zone_sizes_init(unsigned long min, unsigned long max_low,
++	unsigned long max_high)
++{
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
++
 +	arch_zone_limits_init(max_zone_pfn);
  	free_area_init(max_zone_pfn);
  }
