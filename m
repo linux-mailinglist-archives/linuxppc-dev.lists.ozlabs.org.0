@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15067-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15068-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B1ACE4D50
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 13:46:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A393CE4D53
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 13:46:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dfJxl6vpdz30RN;
-	Sun, 28 Dec 2025 23:46:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dfJy06w2Rz2ynT;
+	Sun, 28 Dec 2025 23:46:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766925979;
-	cv=none; b=Rdk4g/iR9QTyzikayFp5dAXJfyIQVlccWUwINcd8OCK+453nPaW6Qtry7voe3giIPD6B/ZUcYGBixigRUO1ZXI/aYceQQQI2dhUvQBAZqWHDdq2xd2doUFD4p3ZFpRRYOyovQD5pnvZ1zXk1Rvnn8hKm4S+mTA3YGp0+efkouDAcb1NNJpCMpq2A+F1qQpntvO6G8bxlmv28tM4dL0R2GpCaDOdJGoe8hnv9JovJHhMXT27gi8TS12th3vdWQ++C66jSO6K2FqPhxNVYSmcQtspEj0tsX/jwszdTGMsi5CHzbEFvLfl3XbfH9bRCU/TAFv0g0Q3znbWJX0ke+KH4kg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766925992;
+	cv=none; b=UUDlJ4j3Y0+CAkLD4RyS8rky0PAwscT+qhOVkd9yKXV+zhj38/ImNOvwT7pAJf5kqbS4zSd9/gGk1D1A3t3unw7j4oJ0RQWiXmGoYuu93362JlaSyFSudYhTEOYqPPK7r12Nr4/AVCAA3Ducf9RH4vz2C4EYDqcBMtZfLLb73jVkIimwN+zHtloEoTkEpeOnWWcLCg/xM1APRypJwT1l38MfsBUvL86PAwVbPbw807aADlrkFVvDOfO/YabnIhZ++AO5KeTBk7rUQfmj+aPQ+z+OoqOUXcjjPc0IF8FUefUUzrjhyoQEfsrSZg4ugUuzmnKy5k//FcCqpRIANM6SuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766925979; c=relaxed/relaxed;
-	bh=R6E2XbBp7qoGv40BCObW0l1XGnLz9yIeSTt2/+/Pmew=;
+	t=1766925992; c=relaxed/relaxed;
+	bh=kBBKJwrcTjhhjxH1pyy/2Lv9SOwm9YyMZRAlSFGYa0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M9JWFo2gO17mpNY6O/wGh3RoFZpdNmdM2MHDfH9KANmBFY1eDYT4BtMaV9QkjsjF+svQI+V/n7T6jI0o8g/U0kYmnJyUE+445AGB4fxSM1ZTQuK4getv7Bxgwtc/I9M+T9dnnDEgNImjywo3N36uLek+IHMTs1ml9JUCRDUmzOOmAmfLzcAUIP2/UxLvOxqxk2hig4ecswHKGh/dCy4cvoLLmODq/ialFsnx8QGBkTnd/C6DUR8ISAze8M4IHPQEtNFFHvOurg0AXif0wonJEXd+uND2kJOX7QdDU8d4d8a5PyEKBxi3N1mkxroi6Sf5LBN6+qyJ2rmAlZpQj6tt1A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W8ovXZyK; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=Cp+AcGsnECEbhBtDa7DvVp4EnjxJgPxuXy+77Jn+o3R6ZXlLvz43auVy1QmmJ/OpjLbnWyI+p8jU+OPCsCgVOyw3vBbqpiZbSnFxGKwJovku5Ra7aQvG2InN2gPuZU4slOlNaV1RELCXoQTNQWlLtwb4Okb4Kd2LxYaFmF3lSgJMOzf/42VezlJNvnBUN1UvUHo2DWuandeChZhiyTZJSVB3wymBPPfYDnzs0wugLbjdt5FIVoNZALuEKSU9LrT4piB4Cm2E8oa1oUKiEmYrDOGgqZq/uJQw+8aybqEvfYiQAJ0IcTMB6+fcA8cYp8ud1XOifmF7PisrL4OVKeNkow==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sfjQZ4Ma; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W8ovXZyK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sfjQZ4Ma;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dfJxl0plWz2yFW
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 23:46:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dfJy00xq5z2yFW
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 23:46:32 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 87B87600AA;
+	by sea.source.kernel.org (Postfix) with ESMTP id 59337435FE;
+	Sun, 28 Dec 2025 12:46:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37A8C19422;
 	Sun, 28 Dec 2025 12:45:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FB5C19421;
-	Sun, 28 Dec 2025 12:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766925946;
-	bh=7OrsGKiYWf1/5FuSOQP615xNlPjZShIySrgunFegnEo=;
+	s=k20201202; t=1766925960;
+	bh=zd5p0i2OlJkjqXnS1oV6Bjn1onLoj8/4tNSvugcI3Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8ovXZyKrhZDx7hwiPJnBkkwmA3MbpIk8QA7gZPyPCnNvLGBP7YLM49+jgBdef82B
-	 D7yNoTQ8GvyrPUE3BR9VxrkmnZq/iWNYHfZ8mEo6hrdoYsQhl2wOYHRrXkQ1baFs3b
-	 XHzSAh8/+CPv5bV6W8IibueanbvC/OwsIT7uExxzMwm2X+87JWXupgI6LqJ5Qa7hMA
-	 HBLuLOOwoDfuy+mLrax6bbv+z4BGYQZTHUnFW3saKUNenmYy93a4OB6RkU6WsP0EnN
-	 T/Dw6dFK49+vp3VWFCwjaRvI6MiQqDmGuUXj9BhV2X79NImRlBvwjXRTMnkKLWVJd3
-	 MM/E3dlY7rTQg==
+	b=sfjQZ4MaJbYdgWueLdXcBmDVU38OdK56kgVm+DeDe8fqmqjt1fCb6ErJZO9P1rIEt
+	 GRJeqLqBy0TlDwsKktTLsNK6umjRi12aUfepLg+2ZgTGR4HU1zTAT8cadFa1bbcPqk
+	 Hq02jezoVzB3ovYJaouQxYn4EhXEyd4p42VaB8FalDOHjiuDHtBmE8SXFzsb3Qybvs
+	 zT2EI02+yjpeL+u6PNj5jGcA5nKlMhyKwQknu5W+D7x1RuSUvncx+6LFSDf0i+7zI2
+	 faRLXte7BWgSIT3A3h5I1dHTU7z2ib/JULlm1VMjgFv4M9KdIUcHy4u9xMyfE/W3EK
+	 7OoAMM9Lvwh6Q==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -109,9 +109,9 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH 23/28] arch, mm: consolidate initialization of SPARSE memory model
-Date: Sun, 28 Dec 2025 14:39:53 +0200
-Message-ID: <20251228124001.3624742-24-rppt@kernel.org>
+Subject: [PATCH 24/28] mips: drop paging_init()
+Date: Sun, 28 Dec 2025 14:39:54 +0200
+Message-ID: <20251228124001.3624742-25-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251228124001.3624742-1-rppt@kernel.org>
 References: <20251228124001.3624742-1-rppt@kernel.org>
@@ -128,7 +128,6 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
@@ -137,354 +136,113 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Every architecture calls sparse_init() during setup_arch() although the
-data structures created by sparse_init() are not used until the
-initialization of the core MM.
+All three variants of paging_init() on MIPS are wrappers for
+pagetable_init().
 
-Beside the code duplication, calling sparse_init() from architecture
-specific code causes ordering differences of vmemmap and HVO initialization
-on different architectures.
-
-Move the call to sparse_init() from architecture specific code to
-mm_core_init() to ensure that vmemmap and HVO initialization order is
-always the same.
+Instead of having three identical wrappers, call pagetable_init() directly
+from setup_arch() and remove the unnecessary paging_init() functions.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- Documentation/mm/memory-model.rst                    |  3 ---
- Documentation/translations/zh_CN/mm/memory-model.rst |  2 --
- arch/alpha/kernel/setup.c                            |  1 -
- arch/arm/mm/init.c                                   |  6 ------
- arch/arm64/mm/init.c                                 |  6 ------
- arch/csky/kernel/setup.c                             |  2 --
- arch/loongarch/kernel/setup.c                        |  8 --------
- arch/mips/kernel/setup.c                             | 11 -----------
- arch/parisc/mm/init.c                                |  2 --
- arch/powerpc/include/asm/setup.h                     |  4 ++++
- arch/powerpc/mm/mem.c                                |  5 -----
- arch/powerpc/mm/numa.c                               |  2 --
- arch/riscv/mm/init.c                                 |  1 -
- arch/s390/mm/init.c                                  |  1 -
- arch/sh/mm/init.c                                    |  2 --
- arch/sparc/mm/init_64.c                              |  2 --
- arch/x86/mm/init_32.c                                |  1 -
- arch/x86/mm/init_64.c                                |  2 --
- include/linux/mmzone.h                               |  2 --
- mm/internal.h                                        |  6 ++++++
- mm/mm_init.c                                         |  2 ++
- 21 files changed, 12 insertions(+), 59 deletions(-)
+ arch/mips/include/asm/pgalloc.h  | 2 --
+ arch/mips/include/asm/pgtable.h  | 2 +-
+ arch/mips/kernel/setup.c         | 4 ++--
+ arch/mips/loongson64/numa.c      | 5 -----
+ arch/mips/mm/init.c              | 5 -----
+ arch/mips/sgi-ip27/ip27-memory.c | 5 -----
+ 6 files changed, 3 insertions(+), 20 deletions(-)
 
-diff --git a/Documentation/mm/memory-model.rst b/Documentation/mm/memory-model.rst
-index 7957122039e8..199b11328f4f 100644
---- a/Documentation/mm/memory-model.rst
-+++ b/Documentation/mm/memory-model.rst
-@@ -97,9 +97,6 @@ sections:
-   `mem_section` objects and the number of rows is calculated to fit
-   all the memory sections.
+diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
+index 7a04381efa0b..6efd4a58bf10 100644
+--- a/arch/mips/include/asm/pgalloc.h
++++ b/arch/mips/include/asm/pgalloc.h
+@@ -101,6 +101,4 @@ static inline void p4d_populate(struct mm_struct *mm, p4d_t *p4d, pud_t *pud)
  
--The architecture setup code should call sparse_init() to
--initialize the memory sections and the memory maps.
+ #endif /* __PAGETABLE_PUD_FOLDED */
+ 
+-extern void pagetable_init(void);
 -
- With SPARSEMEM there are two possible ways to convert a PFN to the
- corresponding `struct page` - a "classic sparse" and "sparse
- vmemmap". The selection is made at build time and it is determined by
-diff --git a/Documentation/translations/zh_CN/mm/memory-model.rst b/Documentation/translations/zh_CN/mm/memory-model.rst
-index 77ec149a970c..c0c5d8ecd880 100644
---- a/Documentation/translations/zh_CN/mm/memory-model.rst
-+++ b/Documentation/translations/zh_CN/mm/memory-model.rst
-@@ -83,8 +83,6 @@ SPARSEMEM模型将物理内存显示为一个部分的集合。一个区段用me
-   每一行包含价值 `PAGE_SIZE` 的 `mem_section` 对象，行数的计算是为了适应所有的
-   内存区。
+ #endif /* _ASM_PGALLOC_H */
+diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
+index 9c06a612d33a..fa7b935f947c 100644
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -56,7 +56,7 @@ extern unsigned long zero_page_mask;
+ 	(virt_to_page((void *)(empty_zero_page + (((unsigned long)(vaddr)) & zero_page_mask))))
+ #define __HAVE_COLOR_ZERO_PAGE
  
--架构设置代码应该调用sparse_init()来初始化内存区和内存映射。
--
- 通过SPARSEMEM，有两种可能的方式将PFN转换为相应的 `struct page` --"classic sparse"和
-  "sparse vmemmap"。选择是在构建时进行的，它由 `CONFIG_SPARSEMEM_VMEMMAP` 的
-  值决定。
-diff --git a/arch/alpha/kernel/setup.c b/arch/alpha/kernel/setup.c
-index bebdffafaee8..f0af444a69a4 100644
---- a/arch/alpha/kernel/setup.c
-+++ b/arch/alpha/kernel/setup.c
-@@ -607,7 +607,6 @@ setup_arch(char **cmdline_p)
- 	/* Find our memory.  */
- 	setup_memory(kernel_end);
- 	memblock_set_bottom_up(true);
--	sparse_init();
- 
- 	/* First guess at cpu cache sizes.  Do this before init_arch.  */
- 	determine_cpu_caches(cpu->type);
-diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
-index a8f7b4084715..0cc1bf04686d 100644
---- a/arch/arm/mm/init.c
-+++ b/arch/arm/mm/init.c
-@@ -207,12 +207,6 @@ void __init bootmem_init(void)
- 
- 	early_memtest((phys_addr_t)min_low_pfn << PAGE_SHIFT,
- 		      (phys_addr_t)max_low_pfn << PAGE_SHIFT);
--
--	/*
--	 * sparse_init() tries to allocate memory from memblock, so must be
--	 * done after the fixed reservations
--	 */
--	sparse_init();
- }
+-extern void paging_init(void);
++extern void pagetable_init(void);
  
  /*
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 3641e88ea871..9d271aff7652 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -321,12 +321,6 @@ void __init bootmem_init(void)
- #endif
- 
- 	kvm_hyp_reserve();
--
--	/*
--	 * sparse_init() tries to allocate memory from memblock, so must be
--	 * done after the fixed reservations
--	 */
--	sparse_init();
- 	dma_limits_init();
- 
- 	/*
-diff --git a/arch/csky/kernel/setup.c b/arch/csky/kernel/setup.c
-index 4bf3c01ead3a..45c98dcf7f50 100644
---- a/arch/csky/kernel/setup.c
-+++ b/arch/csky/kernel/setup.c
-@@ -123,8 +123,6 @@ void __init setup_arch(char **cmdline_p)
- 	setup_smp();
- #endif
- 
--	sparse_init();
--
- 	fixaddr_init();
- 
- #ifdef CONFIG_HIGHMEM
-diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-index 708ac025db71..d6a1ff0e16f1 100644
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -402,14 +402,6 @@ static void __init arch_mem_init(char **cmdline_p)
- 
- 	check_kernel_sections_mem();
- 
--	/*
--	 * In order to reduce the possibility of kernel panic when failed to
--	 * get IO TLB memory under CONFIG_SWIOTLB, it is better to allocate
--	 * low memory as small as possible before swiotlb_init(), so make
--	 * sparse_init() using top-down allocation.
--	 */
--	memblock_set_bottom_up(false);
--	sparse_init();
- 	memblock_set_bottom_up(true);
- 
- 	swiotlb_init(true, SWIOTLB_VERBOSE);
+  * Conversion functions: convert a page and protection to a page entry,
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 11b9b6b63e19..d36d89d01fa4 100644
+index d36d89d01fa4..7622aad0f0b3 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -614,7 +614,6 @@ static void __init bootcmdline_init(void)
+@@ -614,7 +614,7 @@ static void __init bootcmdline_init(void)
   * kernel but generic memory management system is still entirely uninitialized.
   *
   *  o bootmem_init()
-- *  o sparse_init()
-  *  o paging_init()
+- *  o paging_init()
++ *  o pagetable_init()
   *  o dma_contiguous_reserve()
   *
-@@ -665,16 +664,6 @@ static void __init arch_mem_init(char **cmdline_p)
- 	mips_parse_crashkernel();
- 	device_tree_init();
+  * At this stage the bootmem allocator is ready to use.
+@@ -778,7 +778,7 @@ void __init setup_arch(char **cmdline_p)
+ 	prefill_possible_map();
  
--	/*
--	 * In order to reduce the possibility of kernel panic when failed to
--	 * get IO TLB memory under CONFIG_SWIOTLB, it is better to allocate
--	 * low memory as small as possible before plat_swiotlb_setup(), so
--	 * make sparse_init() using top-down allocation.
--	 */
--	memblock_set_bottom_up(false);
--	sparse_init();
--	memblock_set_bottom_up(true);
--
- 	plat_swiotlb_setup();
+ 	cpu_cache_init();
+-	paging_init();
++	pagetable_init();
  
- 	dma_contiguous_reserve(PFN_PHYS(max_low_pfn));
-diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-index ce6f09ab7a90..6a39e031e5ff 100644
---- a/arch/parisc/mm/init.c
-+++ b/arch/parisc/mm/init.c
-@@ -706,8 +706,6 @@ void __init paging_init(void)
- 	fixmap_init();
- 	flush_cache_all_local(); /* start with known state */
- 	flush_tlb_all_local(NULL);
--
--	sparse_init();
+ 	memblock_dump_all();
+ 
+diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
+index 2cd95020df08..16ffb32cca50 100644
+--- a/arch/mips/loongson64/numa.c
++++ b/arch/mips/loongson64/numa.c
+@@ -160,11 +160,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+ 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
  }
  
- static void alloc_btlb(unsigned long start, unsigned long end, int *slot,
-diff --git a/arch/powerpc/include/asm/setup.h b/arch/powerpc/include/asm/setup.h
-index 50a92b24628d..6d60ea4868ab 100644
---- a/arch/powerpc/include/asm/setup.h
-+++ b/arch/powerpc/include/asm/setup.h
-@@ -20,7 +20,11 @@ extern void reloc_got2(unsigned long);
- 
- void check_for_initrd(void);
- void mem_topology_setup(void);
-+#ifdef CONFIG_NUMA
- void initmem_init(void);
-+#else
-+static inline void initmem_init(void) {}
-+#endif
- void setup_panic(void);
- #define ARCH_PANIC_TIMEOUT 180
- 
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 72d4993192a6..30f56d601e56 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -182,11 +182,6 @@ void __init mem_topology_setup(void)
- 	memblock_set_node(0, PHYS_ADDR_MAX, &memblock.memory, 0);
- }
- 
--void __init initmem_init(void)
+-void __init paging_init(void)
 -{
--	sparse_init();
+-	pagetable_init();
 -}
 -
- /* mark pages that don't exist as nosave */
- static int __init mark_nonram_nosave(void)
+ /* All PCI device belongs to logical Node-0 */
+ int pcibus_to_node(struct pci_bus *bus)
  {
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index 603a0f652ba6..f4cf3ae036de 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -1213,8 +1213,6 @@ void __init initmem_init(void)
- 		setup_node_data(nid, start_pfn, end_pfn);
- 	}
- 
--	sparse_init();
--
- 	/*
- 	 * We need the numa_cpu_lookup_table to be accurate for all CPUs,
- 	 * even before we online them, so that we can use cpu_to_{node,mem}
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 79b4792578c4..11ac4041afc0 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -1430,7 +1430,6 @@ void __init misc_mem_init(void)
- {
- 	early_memtest(min_low_pfn << PAGE_SHIFT, max_low_pfn << PAGE_SHIFT);
- 	arch_numa_init();
--	sparse_init();
- #ifdef CONFIG_SPARSEMEM_VMEMMAP
- 	/* The entire VMEMMAP region has been populated. Flush TLB for this region */
- 	local_flush_tlb_kernel_range(VMEMMAP_START, VMEMMAP_END);
-diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-index 9ec608b5cbb1..3c20475cbee2 100644
---- a/arch/s390/mm/init.c
-+++ b/arch/s390/mm/init.c
-@@ -98,7 +98,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
- void __init paging_init(void)
- {
- 	vmem_map_init();
--	sparse_init();
- 	zone_dma_limit = DMA_BIT_MASK(31);
- }
- 
-diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-index 3edee854b755..464a3a63e2fa 100644
---- a/arch/sh/mm/init.c
-+++ b/arch/sh/mm/init.c
-@@ -227,8 +227,6 @@ static void __init do_init_bootmem(void)
- 	node_set_online(0);
- 
- 	plat_mem_setup();
--
--	sparse_init();
- }
- 
- static void __init early_reserve_mem(void)
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index 931f872ce84a..4f7bdb18774b 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -1615,8 +1615,6 @@ static unsigned long __init bootmem_init(unsigned long phys_base)
- 
- 	/* XXX cpu notifier XXX */
- 
--	sparse_init();
--
- 	return end_pfn;
- }
- 
-diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-index b55172118c91..0908c44d51e6 100644
---- a/arch/x86/mm/init_32.c
-+++ b/arch/x86/mm/init_32.c
-@@ -654,7 +654,6 @@ void __init paging_init(void)
- 	 * NOTE: at this point the bootmem allocator is fully available.
- 	 */
- 	olpc_dt_build_devicetree();
--	sparse_init();
- }
- 
- /*
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 4daa40071c9f..df2261fa4f98 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -833,8 +833,6 @@ void __init initmem_init(void)
- 
- void __init paging_init(void)
- {
--	sparse_init();
--
- 	/*
- 	 * clear the default setting with node 0
- 	 * note: don't use nodes_clear here, that is really clearing when
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 75ef7c9f9307..6a7db0fee54a 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -2285,9 +2285,7 @@ static inline unsigned long next_present_section_nr(unsigned long section_nr)
- #define pfn_to_nid(pfn)		(0)
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index c479c42141c3..cd04200d0573 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -415,11 +415,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
  #endif
+ }
  
--void sparse_init(void);
- #else
--#define sparse_init()	do {} while (0)
- #define sparse_index_init(_sec, _nid)  do {} while (0)
- #define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
- #define sparse_vmemmap_init_nid_late(_nid) do {} while (0)
-diff --git a/mm/internal.h b/mm/internal.h
-index e430da900430..dc5316c68664 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -860,6 +860,12 @@ void memmap_init_range(unsigned long, int, unsigned long, unsigned long,
- 		unsigned long, enum meminit_context, struct vmem_altmap *, int,
- 		bool);
- 
-+#ifdef CONFIG_SPARSEMEM
-+void sparse_init(void);
-+#else
-+static inline void sparse_init(void) {}
-+#endif /* CONFIG_SPARSEMEM */
-+
- #if defined CONFIG_COMPACTION || defined CONFIG_CMA
- 
- /*
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 43ef7a3501b9..027d53073393 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1900,6 +1900,8 @@ static void __init free_area_init(void)
- 	unsigned long start_pfn, end_pfn;
- 	int i, nid;
- 
-+	sparse_init();
-+
- 	/*
- 	 * Initialize the subsection-map relative to active online memory
- 	 * ranges to enable future "sub-section" extensions of the memory map.
+-void __init paging_init(void)
+-{
+-	pagetable_init();
+-}
+-
+ #ifdef CONFIG_64BIT
+ static struct kcore_list kcore_kseg0;
+ #endif
+diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+index 082651facf4f..4317f5ae1fd1 100644
+--- a/arch/mips/sgi-ip27/ip27-memory.c
++++ b/arch/mips/sgi-ip27/ip27-memory.c
+@@ -410,8 +410,3 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+ {
+ 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+ }
+-
+-void __init paging_init(void)
+-{
+-	pagetable_init();
+-}
 -- 
 2.51.0
 
