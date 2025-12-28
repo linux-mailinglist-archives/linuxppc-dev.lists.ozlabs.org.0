@@ -1,120 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-15071-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15072-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D84CE4D5C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 13:47:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8931ACE50A5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 14:31:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dfJz55TmFz2ypw;
-	Sun, 28 Dec 2025 23:47:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dfKxR5bq9z2yF1;
+	Mon, 29 Dec 2025 00:31:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766926049;
-	cv=none; b=Xvpr7CfbSEYwJZULH417rL7orPeh/7xvZkr4r2dYUtnm8/GifYYsRD4f+n8mwCaI0RKMY7JoyCcv3O5ga96nk5QKG60N3FvLt8cwa893SxwvHJuNtlXWm80Rn6gp5eXffUxPRF/DYQoow9BNuPGbhXilxWfETnGOzuNTTGaWWav3pe1tzyHFpWviyYExDt7VF+krjdf4v34RjQ4dM7b/4QHxPUzeyW236kzkOTGuqHEzRU9K0BSIjaBTp2daM2iCzTOX2odl7/hQLMKoUKxvb7loRUVTur6rLDlM0Qs1GrOiMwL0svsQYDveJf2j2xNUwqclotZQhDZJxAOJJ4a7nA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.167.54
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766928667;
+	cv=none; b=UM6Kvd4kkNF5rxVyLrA95IWCPpZRfCw8MQ0dMmnV3apxlT+xuDyk004t8EnwsgEZXHRaCGMeaXPLqdGDmWaSQTwuXqssNzyScPC/S80nHunYoUyJQ79Lu74t7qTRCG6zydOs/xD1BuU32lTMSlRFT15T5cwJUokWJMdJI9tVKEc4/6nWeJjpM2x4PLySr9cy+tj/Y2EFKBbAZqXLh3JI9TDySgxbASDzGqQzT/1vnCkq6x2idm+FXAzALyYXkSh8jKmoGN2NZY0C3qjWS8lOYKNtOaYqpHpT/X8ZYH4dtjMFeYudLr4+T4UOtrrxxLOb54USQzo7UO8AgAfvxW96HQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766926049; c=relaxed/relaxed;
-	bh=OA0kYSCHWPTEWVF3qtan8c1YW24ugV0bVMLBsJ5bJns=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=enLmdYfwKxXG8Ecw97tQWZz6QqiFRQv8PqgmyHaHVg/WWsu+wyW+goe/lnmKr103DaAMdXRk/eqEyncUZCfD81bZToTmuTTSFDpvewuJWAWpdwBxidzMU3DAODUzRArXLfELA/hpak6DahdijVJzfHPKyIeS4XQSYN0gpJsNxQHtqNwbglWLd/DpjnnL5jzABVhrz+738I5LAuBk+Di1aJOM3l6BfeaDvoMa1p8KX7t/zxKdqi69liGkX7Nui9TnuNBTXtV8Dlghms/o3J88DvCrCWz+UUv1buweKoKHyT12Lo1vnOpOH+IFEeh+wauqoqiHup/KcFPt13+/3nFISg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CUM35TWv; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1766928667; c=relaxed/relaxed;
+	bh=7lWyQqsYJqWc7lm9cTjRQLwXSVE/IuAz3ei2okz3340=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b0zspIeH43V2lwG/2xoOMCZgQ968VHOxlfzAlSfutT+4K2oMsHbeCRcBh0N1P56OGmeZXfbTqwVEUTrLAhnrK5MXqHzFmr7QLBjoBrykVUvyd7tBmpa/nfg03lUVOEnYbh0xmuiqy8RpOJ6ALFAOIVgWF5nWzTVsOLjcUx1VZ9yYWERX4eJ2edeFVjxj3TtehUnwL/eGgtRPq/pc+fIGiiR+WeMnG1ROb2DarqNfN6YkXFTwmNjODw4gRJHViBR8cziVbP4yA88bx84vhTNJw+srssnkHJw3sV7uHU3OvBiDwwY8WECIitV64a6cOrpBfWffabaeDMNjE4kyMPA+ag==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Yn8/Kyno; dkim-atps=neutral; spf=pass (client-ip=209.85.167.54; helo=mail-lf1-f54.google.com; envelope-from=sergei.shtylyov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CUM35TWv;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Yn8/Kyno;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.54; helo=mail-lf1-f54.google.com; envelope-from=sergei.shtylyov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dfJz460c7z2yFs
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 23:47:28 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 77B79600AA;
-	Sun, 28 Dec 2025 12:46:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9132C4CEFB;
-	Sun, 28 Dec 2025 12:46:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766926016;
-	bh=zJEIy7O/CTkdhQmMkACZcULIRougkhyexygWc4ZDAXg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CUM35TWv/cMbcrOeR73n+XHNIa0BmyPC6QF36LaL20Yna6xWY0BSLgjEuB9NNQVFs
-	 xNgPahJssiqOsbE9daKLMR7RnvAjtHzSJrJwXaBKr1VZ2hmtoHuKqqj/Ei3WWyVnyR
-	 Wh9FJBMTwNv7vmoGVNVBHufARIfuWEgzOKFYbpxpdKPvSpUfd7Cv9IO1T53Wmkuk0g
-	 eTkgXuXNAJmvtbrLMYLsdFLyK5kO0YcuaWIYnLXROnMlWOeCSui3e7muw2Lh0uwkGX
-	 kMLPW+nF7Pn138We0BaiaTiOz67ixNks7n7EVEQ8aFn6s9NF7PTZZssQ5hCt3c+BXR
-	 5rgqGKWhVXizA==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alex Shi <alexs@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Brian Cain <bcain@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>,
-	Michal Simek <monstr@monstr.eu>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Stafford Horne <shorne@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Will Deacon <will@kernel.org>,
-	x86@kernel.org,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org
-Subject: [PATCH 28/28] Revert "mm/hugetlb: deal with multiple calls to hugetlb_bootmem_alloc"
-Date: Sun, 28 Dec 2025 14:39:58 +0200
-Message-ID: <20251228124001.3624742-29-rppt@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251228124001.3624742-1-rppt@kernel.org>
-References: <20251228124001.3624742-1-rppt@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dfKxK4KRTz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Dec 2025 00:31:00 +1100 (AEDT)
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5959187c5a9so7259879e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 05:31:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766928597; x=1767533397; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7lWyQqsYJqWc7lm9cTjRQLwXSVE/IuAz3ei2okz3340=;
+        b=Yn8/Kynobz3sWr7BMVaYnNFzo8NkNP2SWrOxLcoHXcqC/FB5ffdgF2VF1d/xiNVtJH
+         pXlli0VvEQbka6oVHIKKqCSjbvilY5FAugu03B+Vb0jOdQNOPj+kuZqBdhb4q3X/9R1E
+         iv6BMqJnQafkNlj+kccI3bgEfgojCmPbe85RJ6bXZGyqTSkzpATypfrGVQUalg2SQVmA
+         wkKGPovBKP8hU4OkLtoZOuFk/m/4koQLld7NQdmpvoR+QG30XQ/7X74LaIRelkManmf7
+         VoBYy54yhVKqkRk6jisAY+l616kIsKhSe50pPMmu3pNywqGJ/OIn3tYXW4tLTr/VI3mT
+         Tyig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766928597; x=1767533397;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7lWyQqsYJqWc7lm9cTjRQLwXSVE/IuAz3ei2okz3340=;
+        b=njDoo7zy572CCTn5aAO45hWJCg9EdevJ6FILwGMTApbVXOT6C9Gka969t8OhPKwmGP
+         ofkwy6dBuo26yL9JKRQh4SZ1Og7kcMHniZ+rk5n2miRMuLiZMYTDrt7VKQU/SLPpr2Tv
+         MEdHbQKwJ6l0Hp1r/RfntBeQkiNKeYYfwPZWQIt4FNQ+BIwDZPmm6P8/pSkxjAffEj51
+         rXov1+fvJR8bM6gUX4BCeMLqBtj05++Cpc/tzJxdSL0ctAxy/LYmMv31eR3B4Ep8DX47
+         rHog3zSdoQm11HFFtp5qYoY9t2QGaKTooEC5XjafecC8gQO5vmzR/3o7LcBVacVZ9090
+         5XAg==
+X-Forwarded-Encrypted: i=1; AJvYcCXk49sy4fdkjAg7k4NlmNLX9tzwX6SGgZAlVstNo/sMyZz+ptKgcO6uVCzoTZ+O3Cy/ADPKWDCAEADfeZo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw1M4iipVcUiCUR9YsgL/U5uG6t5g0JAnM/rm/UNuTIyRT4ajLC
+	yTk9xWzKBSZXJJOIM2rgB9pBh7X2A5cpWzsZRgPYZLaHi/5erqWJLRqU
+X-Gm-Gg: AY/fxX7B8wAIH7QVbqZjcICXA4FkbqbsOWxWu/43r1W38XWaO/kVkIKy89D4v6iVnnF
+	4lLLc7N9pQlG6RXnSwcO1KUiP4uA/suzax1N4Bcu0hd4mYFGilqetlzvwA4rAxfK+ae4PGkZ7bk
+	fNl16x9u/oyQI93Ju4B2c9cqmNBoknCEESsA/ZgoZzKPmOQbOL80fY7+YDL4q0IpeH33pP1AjDL
+	QTLmPb7ctoD6x0OCw4GRW2IGUxMRZsy+y/XWk8mPbd+HndZu6pSpQQwI0u7sGUcaIxmqA1B3LiZ
+	715w7dFWNkYtAJEeEH3fDx725gutEF1THA1rTEWj2lz7PezJ8Yg/2rkHK1zx+yCa+sWXBQBfeZb
+	cpOIEOOOfC3xPtoxlVtf/xcPgbBaHFQOzYhGM9HIltAkV/t9G0Ll5jyz/a4ZYkRK00aAtX1Iu4s
+	+ISJVBhkHftlId6KqBP0KRoK8CFAJWa3NJGjVsGdeW6Wym2qYSwMxjfC0bMb3N/iMyc7CfowJ3n
+	hpcYLSL
+X-Google-Smtp-Source: AGHT+IGo/pr+AQ2VNaaG2TyhewLh2BG0nsRAoXdF/d33J1EZZvYOr8FxE2Re2WZCgj4kGCoIAYrr8g==
+X-Received: by 2002:a05:6512:3b0c:b0:59a:11b2:2c08 with SMTP id 2adb3069b0e04-59a17dd5fb7mr9312428e87.43.1766928596662;
+        Sun, 28 Dec 2025 05:29:56 -0800 (PST)
+Received: from ?IPV6:2a00:1fa0:425c:b771:d34f:d055:3147:bcd9? ([2a00:1fa0:425c:b771:d34f:d055:3147:bcd9])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a185d602fsm8238417e87.11.2025.12.28.05.29.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 28 Dec 2025 05:29:55 -0800 (PST)
+Message-ID: <d58d6cfa-d9d1-47fd-91e4-533756f3b3bd@gmail.com>
+Date: Sun, 28 Dec 2025 16:29:49 +0300
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -128,120 +88,93 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 25/28] x86: don't reserve hugetlb memory in setup_arch()
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Shi <alexs@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
+ Brian Cain <bcain@kernel.org>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
+ Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+ Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Jonathan Corbet <corbet@lwn.net>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
+ Stafford Horne <shorne@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>,
+ Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, x86@kernel.org, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ sparclinux@vger.kernel.org
+References: <20251228124001.3624742-1-rppt@kernel.org>
+ <20251228124001.3624742-26-rppt@kernel.org>
+Content-Language: en-US
+From: Sergey Shtylyov <sergei.shtylyov@gmail.com>
+In-Reply-To: <20251228124001.3624742-26-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On 12/28/25 3:39 PM, Mike Rapoport wrote:
 
-hugetlb_bootmem_alloc() is called only once, no need to check if it was
-called aready at its entry.
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> Commit 665eaf313314 ("x86/setup: call hugetlb_bootmem_alloc early")
+> added an early call to hugetlb_bootmem_alloc() to setup_arch() to allow
+> HVO style pre-initialization of vmemmap on x86.
+> 
+> With the ordering of hugetlb reservation vs memory map initiaization
+> sorted out in core MM this no longer needs to be an architecture specific
+> quirk.
+> 
+> Drop the call to hugetlb_bootmem_alloc() from x86::setup_arch().
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  arch/x86/kernel/setup.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+> index 1b2edd07a3e1..e2318fa9b1bb 100644
+> --- a/arch/x86/kernel/setup.c
+> +++ b/arch/x86/kernel/setup.c
+> @@ -1191,7 +1191,6 @@ void __init setup_arch(char **cmdline_p)
+>  
+>  	if (boot_cpu_has(X86_FEATURE_GBPAGES)) {
+>  		hugetlb_cma_reserve(PUD_SHIFT - PAGE_SHIFT);
+> -		hugetlb_bootmem_alloc();
+>  	}
 
-Other checks performed during HVO initialization are also no longer
-necessary because sparse_init() that calls hugetlb_vmemmap_init_early()
-and hugetlb_vmemmap_init_late() is alaways called after
-hugetlb_bootmem_alloc().
+   You need to drop {} now, no? But seeing that this *if* gets dropped
+altogether in the next patch, you may as well ignore me... :-)
 
-This reverts commit d58b2498200724e4f8c12d71a5953da03c8c8bdf.
+[...]
 
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- include/linux/hugetlb.h |  6 ------
- mm/hugetlb.c            | 12 ------------
- mm/hugetlb_vmemmap.c    | 11 -----------
- 3 files changed, 29 deletions(-)
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 08fc332e88a7..c8b1a6dd2d46 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -175,7 +175,6 @@ extern int sysctl_hugetlb_shm_group __read_mostly;
- extern struct list_head huge_boot_pages[MAX_NUMNODES];
- 
- void hugetlb_bootmem_alloc(void);
--bool hugetlb_bootmem_allocated(void);
- extern nodemask_t hugetlb_bootmem_nodes;
- void hugetlb_bootmem_set_nodes(void);
- 
-@@ -1300,11 +1299,6 @@ static inline bool hugetlbfs_pagecache_present(
- static inline void hugetlb_bootmem_alloc(void)
- {
- }
--
--static inline bool hugetlb_bootmem_allocated(void)
--{
--	return false;
--}
- #endif	/* CONFIG_HUGETLB_PAGE */
- 
- static inline spinlock_t *huge_pte_lock(struct hstate *h,
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 82b322ae3fdc..e5a350c83d75 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4470,21 +4470,11 @@ void __init hugetlb_bootmem_set_nodes(void)
- 	}
- }
- 
--static bool __hugetlb_bootmem_allocated __initdata;
--
--bool __init hugetlb_bootmem_allocated(void)
--{
--	return __hugetlb_bootmem_allocated;
--}
--
- void __init hugetlb_bootmem_alloc(void)
- {
- 	struct hstate *h;
- 	int i;
- 
--	if (__hugetlb_bootmem_allocated)
--		return;
--
- 	hugetlb_bootmem_set_nodes();
- 
- 	for (i = 0; i < MAX_NUMNODES; i++)
-@@ -4498,8 +4488,6 @@ void __init hugetlb_bootmem_alloc(void)
- 		if (hstate_is_gigantic(h))
- 			hugetlb_hstate_alloc_pages(h);
- 	}
--
--	__hugetlb_bootmem_allocated = true;
- }
- 
- /*
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index 9d01f883fd71..a9280259e12a 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -794,14 +794,6 @@ void __init hugetlb_vmemmap_init_early(int nid)
- 	struct huge_bootmem_page *m = NULL;
- 	void *map;
- 
--	/*
--	 * Noting to do if bootmem pages were not allocated
--	 * early in boot, or if HVO wasn't enabled in the
--	 * first place.
--	 */
--	if (!hugetlb_bootmem_allocated())
--		return;
--
- 	if (!READ_ONCE(vmemmap_optimize_enabled))
- 		return;
- 
-@@ -847,9 +839,6 @@ void __init hugetlb_vmemmap_init_late(int nid)
- 	struct hstate *h;
- 	void *map;
- 
--	if (!hugetlb_bootmem_allocated())
--		return;
--
- 	if (!READ_ONCE(vmemmap_optimize_enabled))
- 		return;
- 
--- 
-2.51.0
+MBR, Sergey
 
 
