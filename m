@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15059-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15061-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC0DCE4D0B
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 13:44:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C96CE4D20
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 13:44:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dfJvX4fTCz2yGq;
-	Sun, 28 Dec 2025 23:44:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dfJvp4cg4z2yvK;
+	Sun, 28 Dec 2025 23:44:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766925864;
-	cv=none; b=K/bQ2SVFQ4DLv6fGq/lk5z1smuVucemvOvpcuRrO7GCoq3S7OPLHkU9o+Y22fbqaJ3jz13pgcciJ3A9o3nO7BU4+q1RUV0dxFdmQBk/5yCYfzlMRw8c7b1QCIwDtPVuqiGg/7Ks49Uhe7xXQSZ0jLFs+MjQwm/EStHUFaoKYF6NjmDAAnCA+B9A4yvpJWboAjNOB7IxizvyhsSdcgHVBYyVUQNfQ2noJfreEd0e0F8kr06e56nhXky6kw10KlyC884scj/bXfOlqSuEyEZ6HdNwmDTKB3BExpXfoGQpq74PWHgMYcoCYRguhwTSJwrHCH5JTAwoamBTmHU6lrvzyMQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766925878;
+	cv=none; b=DB3154c2naglBSKExLbwKD1DxMJ2athXK1TZRZ8Wg89jr64GK3EQYsw1GJgWApw+8wTbvawkixa2dey9ha9hSO71Hl3NbKVf7JBJQSYSjsre0hoLrYJGjaix+S3aGJIHIAM/mZpdblnG3IaTNSdrwxoR5/4xwGhRoc4Rg/h7jXVvtfTILrIF8EKD93FCLvPNuz9BUO1ge/4H4L9EepSAW8tNcOXRVXNr+TWqO2oen2GEIm5oS3x7EGViy2mGNdVxBARKw3dXWKE0d5e/oDOvfmWGHmzazIlTJ5HcQey2XiWBIyMv1La+ugTSNfKsCthICZRdgrosxFhiVOUNuWH7Dg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766925864; c=relaxed/relaxed;
-	bh=tokfLp/e6I58cppZJNFjurjxkamTTnFniADDaVWJ9jM=;
+	t=1766925878; c=relaxed/relaxed;
+	bh=XCeW4b5bx6EOK5QjFUW3uRjrRx8sG0IrVuSe7S4JU8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bi+DhgivLcREzH76rxU2IpzB91frpVHwLZ3kG3jHaYVyPf1YMHnPyrMR5vMwI5qm+EU8KzfXIcDm8V/AXs812ynrWViqklqOqvwgLMngwnmND0CZj+XUMKfmTUMsSHu2yMhR9A9t1BLvDcfG3KtDwdPSLM6p6TO5xk4iTeupeoA7JRc/es1/kMgs9MBAubtH7gI124rl82SiNoh/cbBWW9/ULXcfD+TcPne76OBS2NH9pRElCs0lMyhdAcK9AlruJjzxWCRD4F43Hy4vwxi4g7R19BscoZDdFsiZMPVJFrZmIyaPVOIrP0mGa6o4anOcIJiB0DlYZc1xD878hiaWjg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PWcfZU+2; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=DT3Usrgpqeucnfg5jRVfZeQXonYa4NMBbCmTh2sSoHyKlRgZMBrP9bYb1/LeBL7PlWO/t0l2Ipxhf5YBbZ74YFnourR/BlBAc0jGiN/u2/CT4CYnyPn40PX1S2frkz0QyE0p4i91xmoyT1i+lnf1EcJFE9//FSB4DPuzPpBHSotFehURfdWajT5PbHffXw7u5b6vBd4KPNvgTJHPFL1f+LF34IVkElNdwVZASjhJmpWRs2zU7tE/NsmyzTbwzbh6tMKRT2mri2l4OkoOEwPOE/qjpvuo1urUJbRINcA3sN8ioOMWppjcAqbnfIKNUMYZWcpuCHjLqZILZPHN9WY8iQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GEARsU2p; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PWcfZU+2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GEARsU2p;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dfJvW4WVnz2yGb
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 23:44:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dfJvn6Bksz2yvH
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 23:44:37 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0FD2141935;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1625B4013A;
+	Sun, 28 Dec 2025 12:44:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A573C113D0;
 	Sun, 28 Dec 2025 12:44:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F5CC4CEFB;
-	Sun, 28 Dec 2025 12:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766925861;
-	bh=8ogz7O8vNIuYttKuy/nGG2q6czMHDvEeQHxuChR5AAc=;
+	s=k20201202; t=1766925875;
+	bh=oB6QCqWGlUcVzO7N8KoxEGaOaNJpg/wuZYHeNsCpdgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWcfZU+2dfSmPonN+ojloWMuXR8wApGKZB56mwDUFX5VHDqcuYWfkB2bX/D9oSFOR
-	 0/4roWdMJnvzzJzf2/eTrkvzh2m8Ranl98O5T9/k8reMXzVYA21HegvENCuvsBq2xU
-	 qG+ShBZQemB5PNZ2frhyX7l2FipQQSyMIAXIHvy959DjDUdNwcZmQOEqNjZ9CXn2lZ
-	 8IjmzKSaG5v7LKDCAZdyhWFOoApWbegXh+2OGuM9Zc7Jjq2vTdj2jypeSBoCNxvEsl
-	 h0+O8HRS5CY7HUXj9i3o7zwjUEzUzUDixmaxM6vfcFq+jSkwy05oXfyvzEsA3l97iS
-	 neRab7Culxx2g==
+	b=GEARsU2p+EZgFjCyr9uyzZ8hj2re6eD/C923QhGvMMzHuSCkKZytNmeZxflu9jkn+
+	 Ppetcw1V5leg6VH3ggoT2pItHYZTxfo/oyIWHLFsGUZ8jPgjmd2ugFiVcvcbuH43oy
+	 c94di+9wYXVA02fLVIEPud2jr2wZF6CazDTX4rNh22wu5gpZ7KtiuBI4xhIBXDOmSL
+	 RRif8oZtzD3AqNLNQidA7D3P3awFsxGTATE8jB0P7elm42vJSPqaqhGg1UJnjG1bnj
+	 3RnJniQjMgOHBMWKI7HkIR9dVwVy/YdaTbCkFX4tkcz8jitWxQWcWWx91604v63IVd
+	 Ng+6vXu0vT9NQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -109,9 +109,9 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH 17/28] sh: introduce arch_zone_limits_init()
-Date: Sun, 28 Dec 2025 14:39:47 +0200
-Message-ID: <20251228124001.3624742-18-rppt@kernel.org>
+Subject: [PATCH 18/28] sparc: introduce arch_zone_limits_init()
+Date: Sun, 28 Dec 2025 14:39:48 +0200
+Message-ID: <20251228124001.3624742-19-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251228124001.3624742-1-rppt@kernel.org>
 References: <20251228124001.3624742-1-rppt@kernel.org>
@@ -145,34 +145,64 @@ call free_area_init() from every architecture.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/sh/mm/init.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/sparc/mm/init_64.c |  6 ++++++
+ arch/sparc/mm/srmmu.c   | 12 ++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-index 99e302eeeec1..5e7e63642611 100644
---- a/arch/sh/mm/init.c
-+++ b/arch/sh/mm/init.c
-@@ -264,6 +264,11 @@ static void __init early_reserve_mem(void)
- 	reserve_crashkernel();
+diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+index df9f7c444c39..fbaad449dfc9 100644
+--- a/arch/sparc/mm/init_64.c
++++ b/arch/sparc/mm/init_64.c
+@@ -2279,6 +2279,11 @@ static void __init reduce_memory(phys_addr_t limit_ram)
+ 	memblock_enforce_memory_limit(limit_ram);
  }
  
 +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
 +{
-+	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
++	max_zone_pfns[ZONE_NORMAL] = last_valid_pfn;
 +}
 +
  void __init paging_init(void)
  {
- 	unsigned long max_zone_pfns[MAX_NR_ZONES];
-@@ -322,7 +327,7 @@ void __init paging_init(void)
- 	kmap_coherent_init();
+ 	unsigned long end_pfn, shift, phys_base;
+@@ -2461,6 +2466,7 @@ void __init paging_init(void)
  
- 	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
--	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-+	arch_zone_limits_init(max_zone_pfns);
- 	free_area_init(max_zone_pfns);
+ 		max_zone_pfns[ZONE_NORMAL] = end_pfn;
+ 
++		arch_zone_limits_init(max_zone_pfns);
+ 		free_area_init(max_zone_pfns);
+ 	}
+ 
+diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
+index f8fb4911d360..81e90151db90 100644
+--- a/arch/sparc/mm/srmmu.c
++++ b/arch/sparc/mm/srmmu.c
+@@ -884,6 +884,13 @@ static void __init map_kernel(void)
+ 
+ void (*poke_srmmu)(void) = NULL;
+ 
++void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
++{
++	max_zone_pfns[ZONE_DMA] = max_low_pfn;
++	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
++	max_zone_pfns[ZONE_HIGHMEM] = highend_pfn;
++}
++
+ void __init srmmu_paging_init(void)
+ {
+ 	int i;
+@@ -967,10 +974,7 @@ void __init srmmu_paging_init(void)
+ 	{
+ 		unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+ 
+-		max_zone_pfn[ZONE_DMA] = max_low_pfn;
+-		max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
+-		max_zone_pfn[ZONE_HIGHMEM] = highend_pfn;
+-
++		arch_zone_limits_init(max_zone_pfn);
+ 		free_area_init(max_zone_pfn);
+ 	}
  }
- 
 -- 
 2.51.0
 
