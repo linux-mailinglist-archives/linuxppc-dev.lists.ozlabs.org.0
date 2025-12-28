@@ -1,47 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15043-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15044-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F10CE4BE9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 13:40:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C253CE4C2A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 13:41:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dfJpz6fkcz2yF1;
-	Sun, 28 Dec 2025 23:40:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dfJqq6M0Dz2yFW;
+	Sun, 28 Dec 2025 23:41:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766925627;
-	cv=none; b=YcDBlRVBdJqvX7zLw6bbHqfMv7qm0ZCwJXy/iPw0t05XZdnEKIpdVXI9tcwCPifEwNCzwsX3SLMrCRHrmoyHvYpzalJpRZWBeNt42IJABYgS6y1BGpNgM0UqefYQ5Juyp6zDtSADuI8u1tQSYXlcTfnxS7MVwCYsYxND4RY1qVyftl9G9T41AJVRlZY6XK8z6ZZl3yQ9Z96IRY7TR4GOCXFXT7ZPX+h0qhrT9QkWDSVLAgXWx1wUZJMVBqmIYJVpAEYWtbhqOSWJWdh2I1M9x+EWh5ObQgz736d73Xk6gxjC+FYpEeLUvH7HY9hrMcLcwEu0w5C4Xzh05V6IUBF2HQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766925671;
+	cv=none; b=cJMwUNbspd78yAA6XLNllw6Q8Y+wgGBjizkh0BA5Du0x+bmE1OKDwwGjGwYsiFkrvAN2GnvpTJk112+irX3RLm9DMTiuaT43zR8YfSxN9VF6Y8l4h/kZuRIyEKx7A7AgBxNWlu6G2xk3L5mgZRXzFRpyVQhh2UmmJ2c1Oqau3pd9fO7KDMxIW5OXSgNbgXG1kqwx627+7LKDWSvR9R/WvjX/RZyrAWSzNi6cimNfvPn6WImIq/95HlJisze86hyNU/zkQV9Hxf0P1BQlKS3jh900KqYQYs1WXL9ebzM9sqD3F5+YIyDjO+BxeO/u2F177669sv/Z048GZPELv7Tt2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766925627; c=relaxed/relaxed;
-	bh=IjGeO/B0++hlcCY+CNjpbur/tbcBqQHREI1B8jdkOt8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fx/DYRmFdcJA+mfJx4T/OPOET0vGdYg/md8ZY20EnTYDtB/tEK7bOO1PyDxpFpHsnFD7o0ZSs8PX1U3x0IeKE2XmdJ5NdNUliSilTy5rHBtOCbqNAEKbl4LoMOVZX9dvib0OfJHpLFO1ACQaL8xE7eougprYaRqI6uXmL0auPDLUvjcrqtZxK+Mxp1ntP0cT3t++pPRsSPfkVty89s0rv9GKCR7R86yUAUcHPiW/y0s7nQTPVrBTHELlWPFnChlN3pAW/nthj6+/KpqDJluixNxFviqQEs+YZYC5dFUN05GEXs3MCQIHv4TLxoMqSutQ8oB52oE5EU9TuYPNBjDqIQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JXSMQI8l; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1766925671; c=relaxed/relaxed;
+	bh=CDKGVymK57uzH9g/ob69grxMs4/CHVMEy4WJGOI0ovg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kztevMbAGjJvG5BqBJp5Jih2okpct5dOph4yEeh+HKlyyiafUjUB+Z7ibwjD0UaHkwApRK/dNQ2jbMqJaTTBofXHmd40p+OeyHxaNcmfHJNQ8xKxApMAunHkFX0N7xOBgteaO8mTtas1O9dUgEjbyn9mhaC6Y9pcaiVsaazP2S2OTGHHQJ3YCC4+QDltyMa2VDReyvT/kxvU8o2h0Fe6QdWPGrOfMCakd5ej2g6cMw/IrQxvvO//DoyrwCJRd1nbhMGFvgiMugQ82qiZ8N1DEkKoD1E1zZPWDA/NB3rcX3RgZq+Xm/1LpZqk9xBJtxwTB421derWa2Dq5nUHjMtNWg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ny5n8bhx; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JXSMQI8l;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ny5n8bhx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dfJpy3brrz2xJT
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 23:40:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dfJqq0D0Cz2xJT
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 23:41:10 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 735C943DA5;
+	by tor.source.kernel.org (Postfix) with ESMTP id A04C560055;
+	Sun, 28 Dec 2025 12:40:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A2FC19421;
 	Sun, 28 Dec 2025 12:40:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F68C4CEFB;
-	Sun, 28 Dec 2025 12:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766925623;
-	bh=sXg/eGtpStxuOg/YYnTnKHLFWH8EKXy5iyUYi++8khY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=JXSMQI8l5FZolejTk5mJv6quraHJlKmuF8twD40ZAWMOQZK+U7pyVygxOROMFe1B0
-	 tr8vJLMrqIcrt++LIAENoYcVcJb437aztawcxW2Ryt48u9sfI48SxSG0pjE0ivfh5n
-	 65ZIVAkGJycQK0LAPdjNnYFxj6kv4hkgMf38zWq6L2c161HN/YenbghDeWTPGysWbw
-	 SFyckrxDWUHpRNZNS/PPTejvpAV5uJxzs8W19ji6hxViDYqKZqU23ZM1n/3rjhokjT
-	 6QAFreOcfXfdT+EBPFCtGE3JapCzoxuwD9DDmvJ5sANYode+bX0kc9S3wM1fu5EwB5
-	 pxYkAtiZ4jyJQ==
+	s=k20201202; t=1766925637;
+	bh=pGrH7LSUy/RWWaEZflrH8bSRmOyGysCgjYGTdbg1VRo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ny5n8bhx4lGhdGkVESizKnB9s5NjTXyCzl/BNa3Ba9ZKpEvM/CZIdOIL7SOU9jff2
+	 f9d7/RukDwQyZrvibX87GAMUHRnuu/jtE9lSsKII3JWBEOTYX6j4sd74c2ECetV/1v
+	 efQADf10esO0n890dt3sP+OjZZ5uE3wI6PVBS5SExv55d39h4H7myjY/QFX0EizXtg
+	 HUNJvz/qP4wR81roHy4qlL+10S1f9sDiJSTgMup03fwig5pGyQw/EYhxfP+eCAenCJ
+	 7aBgLKnMx0G4Zdx1Cpyfjl9xvXr5bgSz5ylt3rHblj4ACGNjYm3Y/wasBOIdAic2Wg
+	 pDiCOhnxJVisQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -108,10 +109,12 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH 00/28] arch, mm: consolidate hugetlb early reservation
-Date: Sun, 28 Dec 2025 14:39:30 +0200
-Message-ID: <20251228124001.3624742-1-rppt@kernel.org>
+Subject: [PATCH 01/28] alpha: introduce arch_zone_limits_init()
+Date: Sun, 28 Dec 2025 14:39:31 +0200
+Message-ID: <20251228124001.3624742-2-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251228124001.3624742-1-rppt@kernel.org>
+References: <20251228124001.3624742-1-rppt@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -133,140 +136,67 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Hi,
+Move calculations of zone limits to a dedicated arch_zone_limits_init()
+function.
 
-Order in which early memory reservation for hugetlb happens depends on
-architecture, on configuration options and on command line parameters.
+Later MM core will use this function as an architecture specific callback
+during nodes and zones initialization and thus there won't be a need to
+call free_area_init() from every architecture.
 
-Some architectures rely on the core MM to call hugetlb_bootmem_alloc()
-while others call it very early to allow pre-allocation of HVO-style
-vmemmap.
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ arch/alpha/mm/init.c | 15 ++++++++++-----
+ include/linux/mm.h   |  1 +
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
-When hugetlb_cma is supported by an architecture it is initialized during
-setup_arch() and then later hugetlb_init code needs to understand did it
-happen or not.
-
-To make everything consistent and unified, both reservation of hugetlb
-memory from bootmem and creation of CMA areas for hugetlb must be called
-from core MM initialization and it would have been a simple change.
-However, HVO-style pre-initialization ordering requirements slightly
-complicate things and for HVO pre-init to work sparse and memory map should
-be initialized after hugetlb reservations.
-
-This required pulling out the call to free_area_init() out of setup_arch()
-path and moving it MM initialization and this is what the first 23 patches
-do.
-
-These changes are deliberately split into per-arch patches that change how
-the zone limits are calculated for each architecture and the patches 22 and
-23 just remove the calls to free_area_init() and sprase_init() from arch/*.
-
-Patch 24 is a simple cleanup for MIPS.
-
-Patches 25 and 26 actually consolidate hugetlb reservations and patches 27
-and 28 perform some aftermath cleanups.
-
-I tried to trim the distribution list and although it's still quite long
-if you feel that someone was wrongly excluded please add them back.
-
-The changes also available in git:
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=hugetlb-init/v1
-
-Mike Rapoport (Microsoft) (28):
-  alpha: introduce arch_zone_limits_init()
-  arc: introduce arch_zone_limits_init()
-  arm: introduce arch_zone_limits_init()
-  arm64: introduce arch_zone_limits_init()
-  csky: introduce arch_zone_limits_init()
-  hexagon: introduce arch_zone_limits_init()
-  loongarch: introduce arch_zone_limits_init()
-  m68k: introduce arch_zone_limits_init()
-  microblaze: introduce arch_zone_limits_init()
-  mips: introduce arch_zone_limits_init()
-  nios2: introduce arch_zone_limits_init()
-  openrisc: introduce arch_zone_limits_init()
-  parisc: introduce arch_zone_limits_init()
-  powerpc: introduce arch_zone_limits_init()
-  riscv: introduce arch_zone_limits_init()
-  s390: introduce arch_zone_limits_init()
-  sh: introduce arch_zone_limits_init()
-  sparc: introduce arch_zone_limits_init()
-  um: introduce arch_zone_limits_init()
-  x86: introduce arch_zone_limits_init()
-  xtensa: introduce arch_zone_limits_init()
-  arch, mm: consolidate initialization of nodes, zones and memory map
-  arch, mm: consolidate initialization of SPARSE memory model
-  mips: drop paging_init()
-  x86: don't reserve hugetlb memory in setup_arch()
-  mm, arch: consolidate hugetlb CMA reservation
-  mm/hugetlb: drop hugetlb_cma_check()
-  Revert "mm/hugetlb: deal with multiple calls to hugetlb_bootmem_alloc"
-
- .../driver-api/cxl/linux/early-boot.rst       |  2 +-
- Documentation/mm/memory-model.rst             |  3 -
- .../translations/zh_CN/mm/memory-model.rst    |  2 -
- arch/alpha/kernel/setup.c                     |  1 -
- arch/alpha/mm/init.c                          | 16 ++--
- arch/arc/mm/init.c                            | 37 ++++----
- arch/arm/mm/init.c                            | 25 +----
- arch/arm64/include/asm/hugetlb.h              |  2 -
- arch/arm64/mm/hugetlbpage.c                   | 10 +-
- arch/arm64/mm/init.c                          | 39 ++++----
- arch/csky/kernel/setup.c                      | 16 ++--
- arch/hexagon/mm/init.c                        | 19 +---
- arch/loongarch/include/asm/pgtable.h          |  2 -
- arch/loongarch/kernel/setup.c                 | 10 --
- arch/loongarch/mm/init.c                      |  6 +-
- arch/m68k/mm/init.c                           |  8 +-
- arch/m68k/mm/mcfmmu.c                         |  3 -
- arch/m68k/mm/motorola.c                       |  6 +-
- arch/m68k/mm/sun3mmu.c                        |  9 --
- arch/microblaze/mm/init.c                     | 22 ++---
- arch/mips/include/asm/pgalloc.h               |  2 -
- arch/mips/include/asm/pgtable.h               |  2 +-
- arch/mips/kernel/setup.c                      | 15 +--
- arch/mips/loongson64/numa.c                   | 10 +-
- arch/mips/mm/init.c                           |  8 +-
- arch/mips/sgi-ip27/ip27-memory.c              |  8 +-
- arch/nios2/mm/init.c                          | 12 +--
- arch/openrisc/mm/init.c                       | 10 +-
- arch/parisc/mm/init.c                         | 11 +--
- arch/powerpc/include/asm/hugetlb.h            |  5 -
- arch/powerpc/include/asm/setup.h              |  4 +
- arch/powerpc/kernel/setup-common.c            |  1 -
- arch/powerpc/mm/hugetlbpage.c                 | 11 +--
- arch/powerpc/mm/mem.c                         | 27 ++----
- arch/powerpc/mm/numa.c                        |  2 -
- arch/riscv/mm/hugetlbpage.c                   |  8 ++
- arch/riscv/mm/init.c                          | 10 +-
- arch/s390/kernel/setup.c                      |  2 -
- arch/s390/mm/hugetlbpage.c                    |  8 ++
- arch/s390/mm/init.c                           | 13 ++-
- arch/sh/mm/init.c                             | 12 +--
- arch/sparc/mm/init_64.c                       | 17 +---
- arch/sparc/mm/srmmu.c                         | 17 ++--
- arch/um/kernel/mem.c                          | 10 +-
- arch/x86/kernel/setup.c                       |  5 -
- arch/x86/mm/hugetlbpage.c                     |  8 ++
- arch/x86/mm/init.c                            |  8 +-
- arch/x86/mm/init_32.c                         |  2 -
- arch/x86/mm/init_64.c                         |  4 -
- arch/x86/mm/mm_internal.h                     |  1 -
- arch/xtensa/mm/init.c                         | 14 +--
- include/linux/hugetlb.h                       | 12 +--
- include/linux/mm.h                            |  5 +-
- include/linux/mmzone.h                        |  2 -
- init/main.c                                   |  1 +
- mm/hugetlb.c                                  | 13 ---
- mm/hugetlb_cma.c                              | 33 ++++---
- mm/hugetlb_cma.h                              |  5 -
- mm/hugetlb_vmemmap.c                          | 11 ---
- mm/internal.h                                 |  6 ++
- mm/mm_init.c                                  | 94 +++++++++++--------
- 61 files changed, 263 insertions(+), 424 deletions(-)
-
-
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+diff --git a/arch/alpha/mm/init.c b/arch/alpha/mm/init.c
+index 4c5ab9cd8a0a..cd0cb1abde5f 100644
+--- a/arch/alpha/mm/init.c
++++ b/arch/alpha/mm/init.c
+@@ -208,12 +208,8 @@ callback_init(void * kernel_end)
+ 	return kernel_end;
+ }
+ 
+-/*
+- * paging_init() sets up the memory map.
+- */
+-void __init paging_init(void)
++void __init arch_zone_limits_init(unsigned long *max_zone_pfn)
+ {
+-	unsigned long max_zone_pfn[MAX_NR_ZONES] = {0, };
+ 	unsigned long dma_pfn;
+ 
+ 	dma_pfn = virt_to_phys((char *)MAX_DMA_ADDRESS) >> PAGE_SHIFT;
+@@ -221,8 +217,17 @@ void __init paging_init(void)
+ 
+ 	max_zone_pfn[ZONE_DMA] = dma_pfn;
+ 	max_zone_pfn[ZONE_NORMAL] = max_pfn;
++}
++
++/*
++ * paging_init() sets up the memory map.
++ */
++void __init paging_init(void)
++{
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = {0, };
+ 
+ 	/* Initialize mem_map[].  */
++	arch_zone_limits_init(max_zone_pfn);
+ 	free_area_init(max_zone_pfn);
+ 
+ 	/* Initialize the kernel's ZERO_PGE. */
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 15076261d0c2..628c0e0ac313 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3552,6 +3552,7 @@ static inline unsigned long get_num_physpages(void)
+  * free_area_init(max_zone_pfns);
+  */
+ void free_area_init(unsigned long *max_zone_pfn);
++void arch_zone_limits_init(unsigned long *max_zone_pfn);
+ unsigned long node_map_pfn_alignment(void);
+ extern unsigned long absent_pages_in_range(unsigned long start_pfn,
+ 						unsigned long end_pfn);
 -- 
 2.51.0
 
