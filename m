@@ -1,76 +1,117 @@
-Return-Path: <linuxppc-dev+bounces-15042-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15043-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0393CCE4865
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 04:13:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F10CE4BE9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Dec 2025 13:40:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4df4F321tBz2yF1;
-	Sun, 28 Dec 2025 14:13:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dfJpz6fkcz2yF1;
+	Sun, 28 Dec 2025 23:40:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766891623;
-	cv=none; b=EOm5Lz6zr3bT3M22WURr4vlXS3CET4D8jfRw3H9/ewP/BECf1ubbvX2M4ibkDs6vPCn6GCMo9n0JVfLhpE/CzpLAAuVgP5MCbkY9BbQ9NygpPL+7ghSqkSYqnV8fyfqqlbucmJkueprhEriXyV0KkRBU1KF3ZW3APeF48EMBq+pryk3R6bABToDo0+fBUdWU4hqjHM6fpWXL9DjzEYPbvbTOSEdhzJqMCwAuFl6XixiDySZuRedb+oBmUBzsOGGpKmfZYMssUDxoxAn4ozvrruMmLom61fGBfTgMM9jTUSbTkTnyZQqo+el2PIHOcUTVkdFygOyR6F4cY75vfQU9Xw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1766925627;
+	cv=none; b=YcDBlRVBdJqvX7zLw6bbHqfMv7qm0ZCwJXy/iPw0t05XZdnEKIpdVXI9tcwCPifEwNCzwsX3SLMrCRHrmoyHvYpzalJpRZWBeNt42IJABYgS6y1BGpNgM0UqefYQ5Juyp6zDtSADuI8u1tQSYXlcTfnxS7MVwCYsYxND4RY1qVyftl9G9T41AJVRlZY6XK8z6ZZl3yQ9Z96IRY7TR4GOCXFXT7ZPX+h0qhrT9QkWDSVLAgXWx1wUZJMVBqmIYJVpAEYWtbhqOSWJWdh2I1M9x+EWh5ObQgz736d73Xk6gxjC+FYpEeLUvH7HY9hrMcLcwEu0w5C4Xzh05V6IUBF2HQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1766891623; c=relaxed/relaxed;
-	bh=bTCkb7KATtlowPKZP21aQrEHLXo95miDY2Ls6w/uqzY=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=I+qjGbQenQ6Pzr0LRtx3Nsa4J/q4p/BjUKjQf66xjUIBwlsXqaQ/E+gDifb+0n+jiJsVucddNurWRZWwNdD+y8UPqd7Lr3gGQr24pYIVJ9vzmT/GRxCmUjAtFsrff6Z7iJ2GHpctQuZ6WjZwXXX4awAAsl5t2PlyPLFrmxzoj2EqRXIW4xvfqb9LcntvoGh0wxyxzXX/DxOp2BW76oXsjhg3b12/aZzSaDL/Nhs9RK+NTOPvKjJHqsZ8IZYUMgNEK9IzjgFyY5zAt4km0fSapFVbIvHqnJL0HXoAA2+kVB3wrO/qPOnco2wgnAAOEbfnyUmZ5QNKa5DxhX7bPGKNXg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lnI4WHMm; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1766925627; c=relaxed/relaxed;
+	bh=IjGeO/B0++hlcCY+CNjpbur/tbcBqQHREI1B8jdkOt8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fx/DYRmFdcJA+mfJx4T/OPOET0vGdYg/md8ZY20EnTYDtB/tEK7bOO1PyDxpFpHsnFD7o0ZSs8PX1U3x0IeKE2XmdJ5NdNUliSilTy5rHBtOCbqNAEKbl4LoMOVZX9dvib0OfJHpLFO1ACQaL8xE7eougprYaRqI6uXmL0auPDLUvjcrqtZxK+Mxp1ntP0cT3t++pPRsSPfkVty89s0rv9GKCR7R86yUAUcHPiW/y0s7nQTPVrBTHELlWPFnChlN3pAW/nthj6+/KpqDJluixNxFviqQEs+YZYC5dFUN05GEXs3MCQIHv4TLxoMqSutQ8oB52oE5EU9TuYPNBjDqIQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JXSMQI8l; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lnI4WHMm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JXSMQI8l;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4df4F163R6z2yD4
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 14:13:41 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BS0rkE6008354;
-	Sun, 28 Dec 2025 03:13:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=bTCkb7KATtlowPKZP21aQrEHLXo9
-	5miDY2Ls6w/uqzY=; b=lnI4WHMmfTRGzY/CwJXArCooFdPui+e2uLlvYQx0LW8Y
-	kx/oNQ+THymKfede7xMvBpel08xE7VKfadv1qS1/KCrUiHMxsEAAq6scjCxW7u/K
-	cNtjznoNa3dB2STHeomaS8SM7SwQnbrMCAnZKAJV4+7RlGTI338goOzfv+pmURoi
-	41Y8xTso66I/uG6yOomdAdV9uuKcdJO0Ycy0+E1uY22nuFcY4OVCGLH8XtcW6pxR
-	O2PJV+jQY4ld8HkNowuDlNbWJf2HXRFEa0zxOvUVCvmK6lG3PlSUREAodShcTEcv
-	THqjKYi7A2xP2IpTnXyN6jT4kxm7ytMGVkfs4aQnuQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba73vje44-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 28 Dec 2025 03:13:17 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BS3DGCm016214;
-	Sun, 28 Dec 2025 03:13:16 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba73vje42-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 28 Dec 2025 03:13:16 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BS1JOiv026066;
-	Sun, 28 Dec 2025 03:13:15 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4batsn08ef-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 28 Dec 2025 03:13:15 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BS3DEbZ23397092
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 28 Dec 2025 03:13:14 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 331AC58059;
-	Sun, 28 Dec 2025 03:13:14 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D31BD58058;
-	Sun, 28 Dec 2025 03:13:08 +0000 (GMT)
-Received: from [9.124.211.103] (unknown [9.124.211.103])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 28 Dec 2025 03:13:08 +0000 (GMT)
-Message-ID: <4c4d93f6-efcf-4195-8f6a-1954b227d81d@linux.ibm.com>
-Date: Sun, 28 Dec 2025 08:43:06 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dfJpy3brrz2xJT
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Dec 2025 23:40:26 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 735C943DA5;
+	Sun, 28 Dec 2025 12:40:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F68C4CEFB;
+	Sun, 28 Dec 2025 12:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766925623;
+	bh=sXg/eGtpStxuOg/YYnTnKHLFWH8EKXy5iyUYi++8khY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JXSMQI8l5FZolejTk5mJv6quraHJlKmuF8twD40ZAWMOQZK+U7pyVygxOROMFe1B0
+	 tr8vJLMrqIcrt++LIAENoYcVcJb437aztawcxW2Ryt48u9sfI48SxSG0pjE0ivfh5n
+	 65ZIVAkGJycQK0LAPdjNnYFxj6kv4hkgMf38zWq6L2c161HN/YenbghDeWTPGysWbw
+	 SFyckrxDWUHpRNZNS/PPTejvpAV5uJxzs8W19ji6hxViDYqKZqU23ZM1n/3rjhokjT
+	 6QAFreOcfXfdT+EBPFCtGE3JapCzoxuwD9DDmvJ5sANYode+bX0kc9S3wM1fu5EwB5
+	 pxYkAtiZ4jyJQ==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Shi <alexs@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>,
+	Michal Simek <monstr@monstr.eu>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Will Deacon <will@kernel.org>,
+	x86@kernel.org,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org
+Subject: [PATCH 00/28] arch, mm: consolidate hugetlb early reservation
+Date: Sun, 28 Dec 2025 14:39:30 +0200
+Message-ID: <20251228124001.3624742-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,131 +125,149 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: aboorvad@linux.ibm.com, chleroy@kernel.org, christophe.leroy@csgroup.eu,
-        fthain@linux-m68k.org, joe.lawrence@redhat.com, jstancek@redhat.com,
-        krishnagopi487@gmail.com, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, naveen@kernel.org,
-        npiggin@gmail.com, nysal@linux.ibm.com
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.19-2 tag
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IZSUJs0MiIQ9nRgdBiSvsmDeO2Xhx-Pu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI4MDAyNSBTYWx0ZWRfX+tIQ5sekfsUG
- IFDVGtPcvHeWs73QzjScrsMgCdtgrjAzTewqXgje5A6qqzGFv6e1m6BfWSqSblUh+GHzFxTSdXW
- IwU7DzoNXw3BNaJ5hQANMi8TmStU+tb7rpTraE8Cm7GMv6ZVvaX2ssHNS8oFAHYuz174LH2lQWd
- WeiqZ6P0mTkRnDdRYNEUSYp+YhjZz7JuQ+fU2CAevSZqIp+Hyepyc4DhZalKY9sB3iool/JraXG
- 6Dssaexf38nUpSE1PECdr5w9idrz3IqjrPWFannrYn8HCZul+6eeqgnmrqKvNjHeEQmtBnNmfNn
- LvTGZf5uqCTaD5wGHo8rXJLgn9ZNlHyN1KKDfkazkUHKGACGYVDTD3dULC4/HajQnz9n5e2LCjv
- 1xAiMmSIty5+HXiZCtfc6XbfWpaNJcRXya8upoI/v1Ny8wXniXwlQWKKpn6wsjiGW0YFC/5qBbH
- 1BnpfFERg/BQX9Ylyiw==
-X-Authority-Analysis: v=2.4 cv=fobRpV4f c=1 sm=1 tr=0 ts=6950a04d cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=-7xwBA7kt0Eq77gYiToA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 1u4qXVhLyjFBsEglGWaX9WhDqBPgu7R_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-28_01,2025-12-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 adultscore=0 malwarescore=0
- spamscore=0 bulkscore=0 impostorscore=0 priorityscore=1501 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2512280025
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA512
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Hi Linus,
+Hi,
 
-Please pull powerpc fixes for 6.19:
+Order in which early memory reservation for hugetlb happens depends on
+architecture, on configuration options and on command line parameters.
 
-The following changes since commit 9448598b22c50c8a5bb77a9103e2d49f134c9578:
+Some architectures rely on the core MM to call hugetlb_bootmem_alloc()
+while others call it very early to allow pre-allocation of HVO-style
+vmemmap.
 
-   Linux 6.19-rc2 (2025-12-21 15:52:04 -0800)
+When hugetlb_cma is supported by an architecture it is initialized during
+setup_arch() and then later hugetlb_init code needs to understand did it
+happen or not.
 
-are available in the git repository at:
+To make everything consistent and unified, both reservation of hugetlb
+memory from bootmem and creation of CMA areas for hugetlb must be called
+from core MM initialization and it would have been a simple change.
+However, HVO-style pre-initialization ordering requirements slightly
+complicate things and for HVO pre-init to work sparse and memory map should
+be initialized after hugetlb reservations.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git 
-tags/powerpc-6.19-2
+This required pulling out the call to free_area_init() out of setup_arch()
+path and moving it MM initialization and this is what the first 23 patches
+do.
 
-for you to fetch changes up to 608328ba5b0619cbc28b409296b5e3840bcb97b6:
+These changes are deliberately split into per-arch patches that change how
+the zone limits are calculated for each architecture and the patches 22 and
+23 just remove the calls to free_area_init() and sprase_init() from arch/*.
 
-   powerpc/32: Restore disabling of interrupts at interrupt/syscall exit 
-(2025-12-22 18:25:07 +0530)
+Patch 24 is a simple cleanup for MIPS.
 
-- ------------------------------------------------------------------
-powerpc fixes for 6.19 #2
+Patches 25 and 26 actually consolidate hugetlb reservations and patches 27
+and 28 perform some aftermath cleanups.
 
-  - Fix for kexec warning due to SMT disable or partial SMT enabled
-  - Handle font bitmap pointer with reloc_offset to fix boot crash
-  - Fix to enable cpuidle state for Power11
-  - Couple of misc fixes
+I tried to trim the distribution list and although it's still quite long
+if you feel that someone was wrongly excluded please add them back.
 
-Thanks to: Aboorva Devarajan, Aditya Bodkhe, Cedar Maxwell, Christian 
-Zigotzky, Christophe Leroy, Christophe Leroy (CS GROUP), Finn Thain, 
-Gopi Krishna Menon, Guenter Roeck, Jan Stancek, Joe Lawrence, Josh 
-Poimboeuf, Justin M. Forbes, Madadi Vineeth Reddy, Naveen N Rao (AMD), 
-Nysal Jan K.A., Sachin P Bappalige, Samir M, Sourabh Jain, Srikar 
-Dronamraju, Stan Johnson
+The changes also available in git:
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=hugetlb-init/v1
 
-- ------------------------------------------------------------------
-Aboorva Devarajan (1):
-       powerpc/powernv: Enable cpuidle state detection for POWER11
+Mike Rapoport (Microsoft) (28):
+  alpha: introduce arch_zone_limits_init()
+  arc: introduce arch_zone_limits_init()
+  arm: introduce arch_zone_limits_init()
+  arm64: introduce arch_zone_limits_init()
+  csky: introduce arch_zone_limits_init()
+  hexagon: introduce arch_zone_limits_init()
+  loongarch: introduce arch_zone_limits_init()
+  m68k: introduce arch_zone_limits_init()
+  microblaze: introduce arch_zone_limits_init()
+  mips: introduce arch_zone_limits_init()
+  nios2: introduce arch_zone_limits_init()
+  openrisc: introduce arch_zone_limits_init()
+  parisc: introduce arch_zone_limits_init()
+  powerpc: introduce arch_zone_limits_init()
+  riscv: introduce arch_zone_limits_init()
+  s390: introduce arch_zone_limits_init()
+  sh: introduce arch_zone_limits_init()
+  sparc: introduce arch_zone_limits_init()
+  um: introduce arch_zone_limits_init()
+  x86: introduce arch_zone_limits_init()
+  xtensa: introduce arch_zone_limits_init()
+  arch, mm: consolidate initialization of nodes, zones and memory map
+  arch, mm: consolidate initialization of SPARSE memory model
+  mips: drop paging_init()
+  x86: don't reserve hugetlb memory in setup_arch()
+  mm, arch: consolidate hugetlb CMA reservation
+  mm/hugetlb: drop hugetlb_cma_check()
+  Revert "mm/hugetlb: deal with multiple calls to hugetlb_bootmem_alloc"
 
-Christophe Leroy (CS GROUP) (1):
-       powerpc/32: Restore disabling of interrupts at interrupt/syscall exit
+ .../driver-api/cxl/linux/early-boot.rst       |  2 +-
+ Documentation/mm/memory-model.rst             |  3 -
+ .../translations/zh_CN/mm/memory-model.rst    |  2 -
+ arch/alpha/kernel/setup.c                     |  1 -
+ arch/alpha/mm/init.c                          | 16 ++--
+ arch/arc/mm/init.c                            | 37 ++++----
+ arch/arm/mm/init.c                            | 25 +----
+ arch/arm64/include/asm/hugetlb.h              |  2 -
+ arch/arm64/mm/hugetlbpage.c                   | 10 +-
+ arch/arm64/mm/init.c                          | 39 ++++----
+ arch/csky/kernel/setup.c                      | 16 ++--
+ arch/hexagon/mm/init.c                        | 19 +---
+ arch/loongarch/include/asm/pgtable.h          |  2 -
+ arch/loongarch/kernel/setup.c                 | 10 --
+ arch/loongarch/mm/init.c                      |  6 +-
+ arch/m68k/mm/init.c                           |  8 +-
+ arch/m68k/mm/mcfmmu.c                         |  3 -
+ arch/m68k/mm/motorola.c                       |  6 +-
+ arch/m68k/mm/sun3mmu.c                        |  9 --
+ arch/microblaze/mm/init.c                     | 22 ++---
+ arch/mips/include/asm/pgalloc.h               |  2 -
+ arch/mips/include/asm/pgtable.h               |  2 +-
+ arch/mips/kernel/setup.c                      | 15 +--
+ arch/mips/loongson64/numa.c                   | 10 +-
+ arch/mips/mm/init.c                           |  8 +-
+ arch/mips/sgi-ip27/ip27-memory.c              |  8 +-
+ arch/nios2/mm/init.c                          | 12 +--
+ arch/openrisc/mm/init.c                       | 10 +-
+ arch/parisc/mm/init.c                         | 11 +--
+ arch/powerpc/include/asm/hugetlb.h            |  5 -
+ arch/powerpc/include/asm/setup.h              |  4 +
+ arch/powerpc/kernel/setup-common.c            |  1 -
+ arch/powerpc/mm/hugetlbpage.c                 | 11 +--
+ arch/powerpc/mm/mem.c                         | 27 ++----
+ arch/powerpc/mm/numa.c                        |  2 -
+ arch/riscv/mm/hugetlbpage.c                   |  8 ++
+ arch/riscv/mm/init.c                          | 10 +-
+ arch/s390/kernel/setup.c                      |  2 -
+ arch/s390/mm/hugetlbpage.c                    |  8 ++
+ arch/s390/mm/init.c                           | 13 ++-
+ arch/sh/mm/init.c                             | 12 +--
+ arch/sparc/mm/init_64.c                       | 17 +---
+ arch/sparc/mm/srmmu.c                         | 17 ++--
+ arch/um/kernel/mem.c                          | 10 +-
+ arch/x86/kernel/setup.c                       |  5 -
+ arch/x86/mm/hugetlbpage.c                     |  8 ++
+ arch/x86/mm/init.c                            |  8 +-
+ arch/x86/mm/init_32.c                         |  2 -
+ arch/x86/mm/init_64.c                         |  4 -
+ arch/x86/mm/mm_internal.h                     |  1 -
+ arch/xtensa/mm/init.c                         | 14 +--
+ include/linux/hugetlb.h                       | 12 +--
+ include/linux/mm.h                            |  5 +-
+ include/linux/mmzone.h                        |  2 -
+ init/main.c                                   |  1 +
+ mm/hugetlb.c                                  | 13 ---
+ mm/hugetlb_cma.c                              | 33 ++++---
+ mm/hugetlb_cma.h                              |  5 -
+ mm/hugetlb_vmemmap.c                          | 11 ---
+ mm/internal.h                                 |  6 ++
+ mm/mm_init.c                                  | 94 +++++++++++--------
+ 61 files changed, 263 insertions(+), 424 deletions(-)
 
-Finn Thain (1):
-       powerpc: Add reloc_offset() to font bitmap pointer used for 
-bootx_printf()
 
-Gopi Krishna Menon (1):
-       selftests/powerpc/pmu/: Add check_extended_reg_test to .gitignore
-
-Jan Stancek (1):
-       powerpc/tools: drop `-o pipefail` in gcc check scripts
-
-Nysal Jan K.A. (1):
-       powerpc/kexec: Enable SMT before waking offline CPUs
-
-
-  arch/powerpc/include/asm/hw_irq.h  |  2 +-
-  arch/powerpc/include/asm/reg.h |  1 +
-  arch/powerpc/kernel/btext.c  |  3 ++-
-  arch/powerpc/kernel/entry_32.S                                | 15 
----------------
-  arch/powerpc/kernel/interrupt.c  |  5 ++++-
-  arch/powerpc/kexec/core_64.c                                  | 19 
-+++++++++++++++++++
-  arch/powerpc/platforms/powernv/idle.c  |  9 +++++----
-  arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh  |  1 -
-  arch/powerpc/tools/gcc-check-mprofile-kernel.sh  |  1 -
-  tools/testing/selftests/powerpc/pmu/sampling_tests/.gitignore |  1 +
-  10 files changed, 33 insertions(+), 24 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEqX2DNAOgU8sBX3pRpnEsdPSHZJQFAmlQn60ACgkQpnEsdPSH
-ZJR/Sw/8DiY43o+/FAU3RWwi9Nh2wrvMaNbN/9hWu2UnHMGNnKTgDd19NHW4LWmh
-C7kBPCNqyePEjPbqT99JiRCkTQkrGasi/jpWjUSNDURcm3dS+MasL0En21KQV3X6
-GVpwjLPpEzDTajliKiAh+UFkMECSeh1kxmm3k77nU8sxg/fshB6sjymnW0R9M+Wf
-vB3C+w6xZYHqIHiGXeo2IDAi/cAH+KKmyXyWmnrm5FAJyOYMDC73xqxYz+wvkSvu
-M4mabXl80cPMqinhghwHpC545ok41SccgVAPoFDYt+d4r9JJXfy3PsCI4Od8vw9W
-FqBsKIosYTikULilqBavPRU51gSux3adeC2l9v+vEzUpLmb7WNMkLw+WLCbJjkPR
-n+q4psJLTKt5FKBStZA9ZWDQc43cgSzH/JSmPFhdzH2ChT6HRSfO/NimDrNcMKHu
-NicwVHpm9jkEvkv36WZkFbbk5jHgn6vcivDZf5HA4ipvZ2gIIhtuI7vnBhbxBIvZ
-2cteL41s1Xl+3CDPkL3kL4qzaBUXmU04+8t/eHMaumWEK7mP7uT7N0BrM2Y2J+9j
-wVwGx5x43XgyEitokybblatPl59TTL3c4TfzvhFJfwUFu0BOHXpci5h6aqlgs+3D
-MSmZ275FPB2kuo9dsBDYutFvWq3ZmTvoykGpXcUK8NbFarInk7A=
-=d8CF
------END PGP SIGNATURE-----
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+-- 
+2.51.0
 
 
