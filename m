@@ -1,71 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-15093-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15094-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D063ACE8276
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Dec 2025 21:42:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16678CE835F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Dec 2025 22:24:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dg7SD2XSpz2xqj;
-	Tue, 30 Dec 2025 07:42:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dg8Nh3FVgz2xHW;
+	Tue, 30 Dec 2025 08:24:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767040924;
-	cv=none; b=VEIK/UHSMqUPF1+0HzFYkMhs4ZQxzA7alcBE+e/cVMAsF6a8mlS9DaOJKuY1WYp9V7TE8ijDENXDHcaiAsny0RMM+hGB7LqCTet6Kdpwaj4KYDyHndxqOxmkkDkJF6+IBqI6M1iEF6Ai0BodbJHNbnROWNGBsdkU3vf+EYOCy7EfCyuyJ/dQAPbb4jL7+URu8A/I0ssN+uNKvTHyKNw5yMX2MghJ1HXsOnfsRbl0JsG8l+m4U6Ya+prmW3NBEgLWyNLfAPZuJ9r6FOcgrlMHkgrNK7V/RWmyUz/Zr8FI3FByp67ABizDOX5oRlBBLwiIGahuGTuVFaEGI/kdtg5xVQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767026343;
+	cv=none; b=S//030emf7HXS0mG0dKH7gwwvRhpi76qDHdF13Wyuu7h36Kw/Y7RLNo9i/PRnFMw3h7UYLjXuUXmhyq28eJUxHDJisc23CkIRolcx5FFmkBsCMqIDcKp0hkutmElPMDZIsTrgkJXq40IN9QxGLuvA3zEeayKoHJLLCs8jW+i6HdQ1v0MXLHmA/tujs8Tr84U6ENnrQkoJHoCv+s7yBNbx4ukLQlcgHaQeW1sbh60Zp4kcr/GTESZmFca/+AumQ5M7EPwwkZg4+bbOj7+37OFdnOAas2osZKuUoFSA4VxXMR4kfzRD2y87H1zuPeGi0mpZJOVOCuOujNmoAW6SN1/Ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767040924; c=relaxed/relaxed;
-	bh=ZmZssKPM+S2HJhyKQHBY9PFi7F/yMdlrGGqCoMigMsY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VmCqJG1RgsMDsNS6mxI+ghC2wBUVhLqrcFYhCVfY21GDJ/FBA3W7c0SvxjG6RB4/M/bGYpn2aBPDt5+Zak0BXfqYj9kPt19OFORbQR+C1cjSwH20spX9sJAiW3b8wOrdCKsXJjsoXgsgGoawA4pdBT+OJkhKMOG33q/Pg0Ya782B+c90HgTc6f/2ndj/MlaDB6rRJ02HzABvjCSmC+xFWyG/DIIb70Y/9IRhi2HvRS/YnnSLkcSKKjV/Fkb0px+F8ufjuwmPpaZm4GorTQ3ordFvecQH7Kw1ecwitB+w6jfzwzdL7R6GW+qRTx3DNng7Fb2ZpXy0caDqzHbEsjz1Zw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QSRG7hvx; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1767026343; c=relaxed/relaxed;
+	bh=ZgWzdiycLWXtNP/ypbyhFNU1Abco6QZKQ+FTqiuFB98=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=G1cNdRekrW7o+oRZXsf+NYk65EBljjdWJ7oKRuVGkVEXnHY3R0zbJh2dbUzyCk6zIpPUcN0pTrkNLncRZUjgbs+kjCJPS6D8RlyHdzH0QKG3uwwtqyTN0IIay3H3LpyspEc75MKeLJiTYCRi8TQMmR8+WeNtXo6g9mMQhQ5wWMCauzqGKdzfpxyd6FIhPucq3WYUYUFSY3ynJRh99hcgAJJTcr1uyn58106154DY9ecSNCVn+BqhD9Nd8/fHRRomJ4MrrHcUPVTGbBIXZ69Gm/CiY+NE4rx3cq0DYELscBX0QpNPfYsVaSuWwUtR3LxrR6PwleWieYso+RAQc8thIg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HLkNdk4h; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=healgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QSRG7hvx;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HLkNdk4h;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=healgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dg7SC3pr6z2xgv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Dec 2025 07:42:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dg23p3wBTz2xdV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Dec 2025 03:39:02 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EAA664183E;
-	Mon, 29 Dec 2025 20:41:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9322EC4CEF7;
-	Mon, 29 Dec 2025 20:41:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E6C76000A;
+	Mon, 29 Dec 2025 16:39:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5B3C4CEF7;
+	Mon, 29 Dec 2025 16:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767040890;
-	bh=GZ+1KKfaWUAEcxuxIpgqLNo0r9p6egS5f7P9gKbzco0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QSRG7hvxBwQ796IfjClt8gqnHeEg9FV3z8mjQpYJOHPTnhcOUr+/cnAT4eS+xWhcw
-	 Ry/Yz2NJZ5DA5UhE7xlqILcigyZGgJoMpuIuB0HMrcb7Ey7m1vgaCm9xAfhtLSz4bn
-	 sbTYmz31UIAeLJcFVaXN7OOZdttuepR+uxZUfFaBQo541btafW7mlmwhzqU1GM58MY
-	 M1UJdK4hRPnph8apO7+VSUObxlZC5iMC2GiurW2KC0C0UTBxkCWb1C8TBghjVP78ye
-	 lD82sIfiiyao8xdsYvHQc2rwHPPIbHwa6sC1CjLJJW0iqFCco3pfM0oBcDvtUsNP3Z
-	 l3grsjsZqTnwg==
-Date: Mon, 29 Dec 2025 15:41:29 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
-	Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+	s=k20201202; t=1767026339;
+	bh=GpifLfwkiu9eoC3V+KocP5lCF2mgL1SywA1OCMccwi8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=HLkNdk4hdwpfIXAI2Ox8hJv88WpG39J80SwhesPDoJ8n+Bzn38A0UaHPEnUuOMeVU
+	 BvWpV7oD+nueOW4XtOhACKEFN0CB5X2IQ9kpSGPrJSGJLhgrV2OHwlFEhhsgQBJRnN
+	 RSpc353okdJRve6qkaSCdQC8AQouDVQ/5FHMdvQ9dWGnzY7hjxDfq4BTxCRGeSyOFU
+	 uefrw/XXHOYS++YnbEK0t6qyqtfM6vWkI/sJ/VYuPA+aStojG6sWrdmHvOs4a14SjF
+	 +nUh2sdJbwKuRKX2QXYtz6rZzlBNGXC3VDf/nguI5vBfyVxxZQE7Q9SNd8kp4/SLz0
+	 MQXpxA7/s5ywg==
+Date: Mon, 29 Dec 2025 10:38:58 -0600
+From: Bjorn Helgaas <healgaas@kernel.org>
+To: Marco Crivellari <marco.crivellari@suse.com>
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Michal Hocko <mhocko@suse.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	x86@kernel.org, linux-riscv@lists.infradead.org,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: Re: [PATCH v7] mm/hugetlb: ignore hugepage kernel args if hugepages
- are unsupported
-Message-ID: <aVLneaA6gaGUaBJS@laps>
-References: <20251224115524.1272010-1-sourabhjain@linux.ibm.com>
- <20251228143533.33e2be2d6282d036f55e12cb@linux-foundation.org>
- <398ca47d-19d4-4b26-98db-2bf283b6b0cb@kernel.org>
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH] PCI: pnv_php: add WQ_PERCPU to alloc_workqueue users
+Message-ID: <20251229163858.GA63361@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,65 +72,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <398ca47d-19d4-4b26-98db-2bf283b6b0cb@kernel.org>
+In-Reply-To: <20251107143335.242342-1-marco.crivellari@suse.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Dec 29, 2025 at 07:35:18PM +0100, Christophe Leroy (CS GROUP) wrote:
->
->
->Le 28/12/2025 à 23:35, Andrew Morton a écrit :
->>On Wed, 24 Dec 2025 17:25:24 +0530 Sourabh Jain <sourabhjain@linux.ibm.com> wrote:
->>
->>>Note for backporting: This fix is a partial retrieval of the commit
->>>mentioned in the Fixes tag. It is only valid once the change referenced
->>>by the Depends-on tag is present. When backporting this patch, the
->>>commit mentioned in the Depends-on tag must be included first.
->>>
->>>Link: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2F20250121150419.1342794-1-sourabhjain%40linux.ibm.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C93a8f925fc024ff9c3fe08de46616c3b%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639025581404027066%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3iVUdaMBWhExKkDiV%2BBfYufPTKva1dVikhyQShOq7mc%3D&reserved=0 [1]
->>>Link: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2F20250128043358.163372-1-sourabhjain%40linux.ibm.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C93a8f925fc024ff9c3fe08de46616c3b%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639025581404053206%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=GamDe2R87SdpFurnj9Cmt9wOQtkGLgIO1z7nl5QPxgY%3D&reserved=0 [2]
->>>Fixes: c2833a5bf75b ("hugetlbfs: fix changes to command line processing")
->>>Depends-on: 2354ad252b66 ("powerpc/mm: Update default hugetlb size early")
->>
->>This will be the first "Depends-on:" in history.  Which is a hint that
->>we're doing something wrong.  This innovation will surely fool any
->>downstream automation.  Let's use existing tools if possible.
->
->What do you mean by "first in history" ? Do you mean it's never been 
->used before ? As far as I can see it has been used several times 
->already. First one was in 2014 with commit a0855054e59b ("iwlwifi: 
->dvm: drop non VO frames when flushing")
->
->Sasha, do tools use it ?
+On Fri, Nov 07, 2025 at 03:33:35PM +0100, Marco Crivellari wrote:
+> Currently if a user enqueues a work item using schedule_delayed_work() the
+> used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
+> WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
+> schedule_work() that is using system_wq and queue_work(), that makes use
+> again of WORK_CPU_UNBOUND.
+> This lack of consistency cannot be addressed without refactoring the API.
+> 
+> alloc_workqueue() treats all queues as per-CPU by default, while unbound
+> workqueues must opt-in via WQ_UNBOUND.
+> 
+> This default is suboptimal: most workloads benefit from unbound queues,
+> allowing the scheduler to place worker threads where theyâ€™re needed and
+> reducing noise when CPUs are isolated.
+> 
+> This continues the effort to refactor workqueue APIs, which began with
+> the introduction of new workqueues and a new alloc_workqueue flag in:
+> 
+> commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+> commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
+> 
+> This change adds a new WQ_PERCPU flag to explicitly request
+> alloc_workqueue() to be per-cpu when WQ_UNBOUND has not been specified.
+> 
+> With the introduction of the WQ_PERCPU flag (equivalent to !WQ_UNBOUND),
+> any alloc_workqueue() caller that doesnâ€™t explicitly specify WQ_UNBOUND
+> must now use WQ_PERCPU.
+> 
+> Once migration is complete, WQ_UNBOUND can be removed and unbound will
+> become the implicit default.
 
-The standard way to annotate dependencies is outlined in the docs:
+Thanks for these patches.  We have:
 
-   To send additional instructions to the stable team, use a shell-style inline comment to pass arbitrary or predefined notes:
+  [PATCH] PCI: endpoint: add WQ_PERCPU to alloc_workqueue users
+  [PATCH] PCI: endpoint: epf-mhi: add WQ_PERCPU to alloc_workqueue users
+  [PATCH] PCI: endpoint: pci-epf-test: add WQ_PERCPU to alloc_workqueue users
+  [PATCH] PCI: pnv_php: add WQ_PERCPU to alloc_workqueue users
+  [PATCH] PCI: shpchp: add WQ_PERCPU to alloc_workqueue users
+  [PATCH] PCI: endpoint: replace use of system_wq with system_percpu_wq
 
-   Specify any additional patch prerequisites for cherry picking:
+IIUC these are all part of the same effort to refactor the workqueue
+API and don't really have anything to do with the endpoint or hotplug
+drivers themselves.
 
-   Cc: <stable@vger.kernel.org> # 3.3.x: a1f84a3: sched: Check for idle
-   Cc: <stable@vger.kernel.org> # 3.3.x: 1b9508f: sched: Rate-limit newidle
-   Cc: <stable@vger.kernel.org> # 3.3.x: fd21073: sched: Fix affinity logic
-   Cc: <stable@vger.kernel.org> # 3.3.x
-   Signed-off-by: Ingo Molnar <mingo@elte.hu>
+So I put these all on pci/workqueue and squashed the WQ_PERCPU patches
+together because they do the same thing, they have the same commit
+log, and there's not really any point in reviewing them separately.
 
-   The tag sequence has the meaning of:
-
-   git cherry-pick a1f84a3
-   git cherry-pick 1b9508f
-   git cherry-pick fd21073
-   git cherry-pick <this commit>
-
-My tools don't look at Depends-on: and I don't think that Greg's tools do that
-either.
-
--- 
-Thanks,
-Sasha
+> Suggested-by: Tejun Heo <tj@kernel.org>
+> Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+> ---
+>  drivers/pci/hotplug/pnv_php.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+> index c5345bff9a55..35f1758126c6 100644
+> --- a/drivers/pci/hotplug/pnv_php.c
+> +++ b/drivers/pci/hotplug/pnv_php.c
+> @@ -802,7 +802,7 @@ static struct pnv_php_slot *pnv_php_alloc_slot(struct device_node *dn)
+>  	}
+>  
+>  	/* Allocate workqueue for this slot's interrupt handling */
+> -	php_slot->wq = alloc_workqueue("pciehp-%s", 0, 0, php_slot->name);
+> +	php_slot->wq = alloc_workqueue("pciehp-%s", WQ_PERCPU, 0, php_slot->name);
+>  	if (!php_slot->wq) {
+>  		SLOT_WARN(php_slot, "Cannot alloc workqueue\n");
+>  		kfree(php_slot->name);
+> -- 
+> 2.51.1
+> 
 
