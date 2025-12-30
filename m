@@ -1,55 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-15095-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15096-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC46CE8D98
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Dec 2025 08:06:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF18CE9C6D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Dec 2025 14:23:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dgPK7321lz2yF1;
-	Tue, 30 Dec 2025 18:06:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dgYh0336Pz2yF1;
+	Wed, 31 Dec 2025 00:23:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767078411;
-	cv=none; b=Xbq+Pd4W95x+OoX1czZHwV2JukRmSyxwtJ64D/gqxUHKyPaHlzuSu/F74jrlqsnhvf8yA9q1WxhTK00mynYo5aOM6JtmSKrTMUXoyM0fH6mPl6ObXoDp0Z6QAw+xWNvdzLku2eotDEYJNvjvMTfCYsE8cGtF94h/d/p6Yof8XXEpSh67lgsCyb+kxzitSeQCeRoSH4Oubl93vXTcIWJ1is6tx5Nx4W+wE1XwKSLUXB8Sq3HeJ2c1xGVbLN5CNpIKAlYkN/GNYElUG7Gm6AuK7vX7O7UB4huMRrrJP2CskG318wWnLG04+K/xBTG+XFlWVqEzKL3K3qGGekIiKqInPA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767101024;
+	cv=none; b=ApGySQrV6a8Q7kSIEKukryaqXJ6XTSm398DXWDoR3rTti30cfw6t4pfLjzOsxTTE7HiC+ZWjwji+3CFyis0jFZkdQmyptYXx67J0CrFdcX4jZiDFztxhwE4EATxFrekGfQJlfUqQdLJ/yP/1egETXd0UFRTTp6An2iYjSW5DHRt42kaUUuRuCIZFADPqZPGbaSTuqwB/hfMNhJtsBUwxcKci9Nqkus2SWquIzH91jYQvqIgbRnRR7BFlW4AF4pXZNOsIp1PMr0Tp7HaMXuzZguAm+7R5Bae8C+NoIdMsuOX67Gae7/VFIS6nHoxm9bUNFw+33yy28adZ82l7qGQ+yA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767078411; c=relaxed/relaxed;
-	bh=b1xPGbzuTr1LSu9nNPB/3ljn0u/93ZcpdrYp3MCRdIM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Lr7g4E2Gf3ibAgvnEeoYSOKnU4cudMjlCpHY7VrN4VUiwdpPvAvkLjvpqMJ0VztIvjQskdGQivz7GtbYW2BVMu8/yuDdJLiZ/PgQJ9Ej/XXg6ShQgFXJ7kXkMiAgmcFkehXGHUFTLyzvoGJVBfqDIePyrffiaUnObV5zi4xYKuv+Fmx0YLpoNnxRxi7GLd991jhO3SFRztvgRrux12KLwTqTLn9fRZS0DXYMkQPNu7gdceXsGcOdRs88EuK4dPNuZkuUBt6xtPsIPa1Akg2TeCNGuIr8HYvQGQcSfpnAvPc5Sf6aPx/pDYOiYr3lB+O6pAVq7k4XaQymfgUvxYwFTw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=hh16YiRM; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=2GG6MLyM; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1767101024; c=relaxed/relaxed;
+	bh=Pc0ox4ESGIq30I6mjo++iRGPDZAx38k/CT3rd9q3OyE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZOa0WwZz5IbfkP0c2Bd8fjr0HOmNwuKDqP4Dd4nALgdqFyLfdq5R6CmquG39+18Y92oaOfqdC3PEjrvbQdyIdN7dGaN8yCf8WhJ55LssPR2/NJHqRvWVMyqTHfdVjkTG0WT3hhG22swKI1Ht2ccu0i/RnAJKczlmdnlN/+teZDEeV/nMhrj4cMwzdO5ZGQS+HwEjotzVIuW0W/Yc93jxmK6nVRtutVcRtbDlWsAycOvOnZxloHoBTFONe+DUz3mtzUdcJnW/ds7eppDcxDsbMZLFN7ixPUggfVz8p+OFTVgLIVtA8zkEu+m1KVAjj3VyGsHckaYJBVjcisIeMBNUwQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hw9up642; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=hh16YiRM;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=2GG6MLyM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hw9up642;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dgPK54rcmz2xdV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Dec 2025 18:06:49 +1100 (AEDT)
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1767078372;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=b1xPGbzuTr1LSu9nNPB/3ljn0u/93ZcpdrYp3MCRdIM=;
-	b=hh16YiRMsRLlucVT/KU+FWt6580yhZHH0JME4PWxj1VDt0L7iHxHKkdrnAv/Amj1riBvtb
-	v/jLMPsPdKlrv/4Pgv8WBRooFT+Vwnelckx218OdfalKOnLzzWHdkVmncq55NZTmAnTBxC
-	WtUdFka1roZ6jtADwgmMTXtC4iOF/OeRrIrq6FMo1rDmSBzH42SS67bGBHdOevjk/Nh1uK
-	KjwnsysTXyWK3w90ftWi7Diarhha2e1jNoXifDEIpNllLvN1E2msLDwAOAxZAgPwtDYKKc
-	47tkre6pr/GtFG+eebuUYXAhWgoPlyaD3k1rIpQyHmVj9id6Pf+LTZFTS7CsNQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1767078372;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=b1xPGbzuTr1LSu9nNPB/3ljn0u/93ZcpdrYp3MCRdIM=;
-	b=2GG6MLyMb9wEU/FbzflYTWjI6Lpa0ipt7+VIXps4mqaG0avsEvYc37EZt3Ed6NCgMBc0wN
-	TgkmWGWou53OBaDQ==
-Date: Tue, 30 Dec 2025 08:06:10 +0100
-Subject: [PATCH] powerpc: Implement ARCH_HAS_CC_CAN_LINK
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dgYgz1LV7z2xdV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Dec 2025 00:23:43 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D3ED0442A0;
+	Tue, 30 Dec 2025 13:23:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B33C116C6;
+	Tue, 30 Dec 2025 13:23:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767100990;
+	bh=ZLaVsim+IvTm4fJtQ1k/xMj2D9RQt+TcGP+c5MdnmPQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hw9up6427EaSETsqoDKvjLxZzQGGgVXBkCJDNu6ckhInp+TeUlV6DPJXJwjTAgjIU
+	 omdTO5snToqah7QR8gd2wFaMyrX3ybb5wrc9CrgCjLwDw9PdVEq3WECTg7KhHPaSDG
+	 p11WvJxbeJycqVrUAV/2S6vZsECvosf9Pw4nc13N+ZDuytSaR2sSV9poVJsnqdjYLM
+	 KUdMIcFmAt6Bb4BfQgOXpztbo03V62e3031GqmAOLp75zXkBqFRlTmyo09jAl3A+N0
+	 qraKm4Ui5Phh7rpn2maGgWsIhKZ/EwTBZ+39VWKDJ9zzJ/Xa6sGhJbBQvZRt3ZyC4O
+	 Lz6/yCXxCwnCg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.18-5.10] ASoC: fsl_sai: Add missing registers to cache default
+Date: Tue, 30 Dec 2025 08:22:57 -0500
+Message-ID: <20251230132303.2194838-4-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251230132303.2194838-1-sashal@kernel.org>
+References: <20251230132303.2194838-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,81 +72,147 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.2
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251230-cc-can-link-powerpc-v1-1-82298df6e3bf@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIAOJ5U2kC/x3MQQoCMQxA0auUrA3YYAW9irioSToGpS0tOEKZu
- 0+Z5Vv8P6BrM+1wdwOa/qxbyRP+5IDfMS+KJtNAZwqeiJAZOWb8Wv5gLau2yhhEhC7XW5Lwgln
- Wpsn+x/Xx3LYdwwPPmmUAAAA=
-X-Change-ID: 20251222-cc-can-link-powerpc-5ddd2469fd5b
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767078370; l=1829;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=E4HkiIB9B7tc63pFuMTGeDGcq4l+vohVXKTRCjI0+pw=;
- b=vHjWSkP643fsjY0SlPDhJ7dt0o1ZUXOG/WzzQRKB+M4jY8dNxaNjb6qF4v+FB32s3MDsCN9uj
- CXLkKV2HNgmDNn01CAuwAzx5FM2Da93yBAcwUX5N54tNVvSNvB3SilQ
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The generic CC_CAN_LINK detection does not handle different byte orders.
-This may lead to userprogs which are not actually runnable on the target
-kernel.
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-Use architecture-specific logic supporting byte orders instead.
+[ Upstream commit 90ed688792a6b7012b3e8a2f858bc3fe7454d0eb ]
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Drivers does cache sync during runtime resume, setting all writable
+registers. Not all writable registers are set in cache default, resulting
+in the erorr message:
+  fsl-sai 30c30000.sai: using zero-initialized flat cache, this may cause
+  unexpected behavior
+
+Fix this by adding missing writable register defaults.
+
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://patch.msgid.link/20251216102246.676181-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/Kconfig | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 9537a61ebae0..6bb2f90e97ea 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -127,6 +127,7 @@ config PPC
- 	select ARCH_DMA_DEFAULT_COHERENT	if !NOT_COHERENT_CACHE
- 	select ARCH_ENABLE_MEMORY_HOTPLUG
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE
-+	select ARCH_HAS_CC_CAN_LINK
- 	select ARCH_HAS_COPY_MC			if PPC64
- 	select ARCH_HAS_CURRENT_STACK_POINTER
- 	select ARCH_HAS_DEBUG_VIRTUAL
-@@ -1342,6 +1343,20 @@ endif
- config PPC_LIB_RHEAP
- 	bool
- 
-+config ARCH_CC_CAN_LINK
-+	bool
-+	default $(cc_can_link_user,$(m64-flag) -mlittle-endian) if 64BIT && CPU_LITTLE_ENDIAN
-+	default $(cc_can_link_user,$(m64-flag) -mbig-endian) if 64BIT && CPU_BIG_ENDIAN
-+	default $(cc_can_link_user,$(m32-flag) -mlittle-endian) if CPU_LITTLE_ENDIAN
-+	default $(cc_can_link_user,$(m32-flag) -mbig-endian) if CPU_BIG_ENDIAN
-+
-+config ARCH_USERFLAGS
-+	string
-+	default "$(m64-flag) -mlittle-endian" if 64BIT && CPU_LITTLE_ENDIAN
-+	default "$(m64-flag) -mbig-endian" if 64BIT && CPU_BIG_ENDIAN
-+	default "$(m32-flag) -mlittle-endian" if CPU_LITTLE_ENDIAN
-+	default "$(m32-flag) -mbig-endian" if CPU_BIG_ENDIAN
-+
- source "arch/powerpc/kvm/Kconfig"
- 
- source "kernel/livepatch/Kconfig"
+LLM Generated explanations, may be completely bogus:
 
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20251222-cc-can-link-powerpc-5ddd2469fd5b
+## Analysis Summary
 
-Best regards,
+### 1. What Problem Does This Commit Solve?
+
+This commit fixes a bug where the FSL SAI driver's regmap cache was
+incomplete. During runtime resume, the driver performs a cache sync that
+writes all writable registers. Two writable registers (`FSL_SAI_TTCTL`
+and `FSL_SAI_RTCTL`) were missing from the cache defaults array,
+causing:
+
+1. A warning message: `fsl-sai 30c30000.sai: using zero-initialized flat
+   cache, this may cause unexpected behavior`
+2. Potentially incorrect behavior during suspend/resume cycles
+
+### 2. Root Cause Analysis
+
+The bug was introduced in commit `0b2cbce68986` ("ASoC: fsl_sai: Add new
+added registers and new bit definition") from September 2020, which:
+- Added `FSL_SAI_TTCTL` and `FSL_SAI_RTCTL` to `fsl_sai_writeable_reg()`
+  (lines 1234-1235)
+- But **failed** to add them to `fsl_sai_reg_defaults_ofs0[]` and
+  `fsl_sai_reg_defaults_ofs8[]`
+
+The current commit completes what should have been done in the original
+commit.
+
+### 3. Code Change Assessment
+
+The fix is minimal and surgical:
+- Adds `{FSL_SAI_TTCTL, 0}` to `fsl_sai_reg_defaults_ofs0[]` (+1 line)
+- Adds `{FSL_SAI_TTCTL, 0}` to `fsl_sai_reg_defaults_ofs8[]` (+1 line)
+- Adds `{FSL_SAI_RTCTL, 0}` to `fsl_sai_reg_defaults_ofs8[]` (+1 line)
+
+Total: 3 lines added, all initializing registers to default value 0.
+
+### 4. Stable Criteria Check
+
+| Criteria | Assessment |
+|----------|------------|
+| Obviously correct | ✅ Yes - completing missing register defaults |
+| Fixes real bug | ✅ Yes - fixes warning and potential misbehavior |
+| Small scope | ✅ Yes - only 3 lines added to static arrays |
+| No new features | ✅ Yes - purely fixes incomplete initialization |
+| Tested | ✅ Accepted by subsystem maintainer (Mark Brown) |
+
+### 5. Risk Assessment
+
+**Risk: Very Low**
+- No logic changes, only adds entries to static const arrays
+- Default values are 0 (standard hardware reset value)
+- The registers already existed and were marked writable
+- Change is purely additive to existing data structures
+
+### 6. Affected Stable Trees
+
+The bug exists in kernels v5.10+ (when commit 0b2cbce68986 was merged).
+Relevant stable trees:
+- 5.10.y (LTS)
+- 5.15.y (LTS)
+- 6.1.y (LTS)
+- 6.6.y (LTS)
+- 6.11.y and newer
+
+### 7. User Impact
+
+Affects users of NXP/Freescale i.MX processors using SAI audio
+interfaces, particularly those using suspend/resume (common on embedded
+systems, tablets, etc.).
+
+### Conclusion
+
+This is an excellent stable backport candidate. It's a minimal, low-risk
+fix that corrects a longstanding bug in driver initialization. The fix
+simply completes the register cache defaults that should have been
+included when the registers were made writable in 2020. The warning
+message indicates potential undefined behavior, and the fix is as simple
+and safe as adding entries to a static array.
+
+**YES**
+
+ sound/soc/fsl/fsl_sai.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 72bfc91e21b9..090354a0f711 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -1075,6 +1075,7 @@ static const struct reg_default fsl_sai_reg_defaults_ofs0[] = {
+ 	{FSL_SAI_TDR6, 0},
+ 	{FSL_SAI_TDR7, 0},
+ 	{FSL_SAI_TMR, 0},
++	{FSL_SAI_TTCTL, 0},
+ 	{FSL_SAI_RCR1(0), 0},
+ 	{FSL_SAI_RCR2(0), 0},
+ 	{FSL_SAI_RCR3(0), 0},
+@@ -1098,12 +1099,14 @@ static const struct reg_default fsl_sai_reg_defaults_ofs8[] = {
+ 	{FSL_SAI_TDR6, 0},
+ 	{FSL_SAI_TDR7, 0},
+ 	{FSL_SAI_TMR, 0},
++	{FSL_SAI_TTCTL, 0},
+ 	{FSL_SAI_RCR1(8), 0},
+ 	{FSL_SAI_RCR2(8), 0},
+ 	{FSL_SAI_RCR3(8), 0},
+ 	{FSL_SAI_RCR4(8), 0},
+ 	{FSL_SAI_RCR5(8), 0},
+ 	{FSL_SAI_RMR, 0},
++	{FSL_SAI_RTCTL, 0},
+ 	{FSL_SAI_MCTL, 0},
+ 	{FSL_SAI_MDIV, 0},
+ };
 -- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+2.51.0
 
 
