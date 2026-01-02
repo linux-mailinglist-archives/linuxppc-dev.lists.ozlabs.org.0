@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15130-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15131-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C8ACEDBAD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 02 Jan 2026 08:02:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E40CEDBBF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 02 Jan 2026 08:02:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4djF4H6QBcz2yG7;
-	Fri, 02 Jan 2026 18:02:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4djF4Z1CZqz2yHB;
+	Fri, 02 Jan 2026 18:02:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767337327;
-	cv=none; b=btWXivJfIe2VW6UjBFEXdCROJmFA5TKtuL5d6A3RQUZbeI0vfqPvIpoJET/FI8/cKH5gWbwg3UYJGipWxr1BRd6c7fJk1fDP+mm1ZZXSFZb0wGuNAgzwlYkeHk7PAdIe3t+6tIbBVa1w5tbC4sdUjJuhkaTFGtqxpxNEGGf6nnKKiPp5K7SYHvufFYFdpGua6OprZoiQWTY4lvVsa2EwryLRBWvkm5SEqQD+NH5wuIqmBnG1CYNnXdya2tQJkbrltjtZwVwWvCquRuqjmURMuTrTsO194zRnNlePYNeS7uOwUpLf+TUTG/QTVrpoCQAzbt431O4DbU+5JIuy5oeRfQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767337342;
+	cv=none; b=WO36Wg/qfDRj5RdgDFNl3zwTvg5T9qlgB04B2fxiALGzQU4dmWDOIMzcdfgesirIQGOtwQ6l5zAPDTt8hrZXHVmAie86OL7yHEcHpmsexbgzpF76aYir+5Nrv8J5HO1tYlhvTa6FMtbA7/1HibujWWAa5NlljyG+cvTgmlBpk2cYH9l3ny6NBh9TRnazNuEAQSlpixRQF+XUNTdEorDF1/iAANGXkuBTISqVNmOezkE4GCYPO0U++J3s7u/FqwPSq3WZV+60j2BIBd9SF8TCkeQEpiG4d2X/6WUBRalbaTEaVh140LO9mrseirV1gNFSgYV894fFUdDCm2og4O6kJg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767337327; c=relaxed/relaxed;
-	bh=HfcqmLQbnSJvVIv+k+pxkWmR5Wm/caGZYknBWk1pJXo=;
+	t=1767337342; c=relaxed/relaxed;
+	bh=OJatOTiXEPNp/W52LlXUaW1EIsFN/BNV7MmBuJg1xZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WfKRHnlBP7RX5/4/ZXUoSOEIvnxHLykL1iCNcULei6ToLciVshj1HQBhfA+MCYg+66J59oXZT0fidktVDZaH2mZgwjQur62hZvU04aXaYwYkMgpFAQSSSRFu3FC8NMYJ6nSvoe3m+Va2vC/lQ0XscEvHDKzLzMwZ2YCPNm+sMu+rr23mTtfnNE67bU75w3jEb2LS1qyyhAvjS6VzXdSMGr/J6D++sSASdBQ10Lk+KGq/dFVzpdbXW4cxnyDmLp4gLM9aT4MPy8K8q/2w+bxKPAHUZclFCEXKDNrf/EuRAz2Xx3kC8V2KpmbeTH8Y5sLLWhA+sw8YpwdEns8MG0hv9w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I50MNQ79; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=bVQ3l9bJhjlaVipAipLNGO488SNOIqaK82R3IPu3JXfKgD5aw64wZf8u7d48bKfvjFDCp2hX14beHTWYUhGleq+K0do392WxkIGBgRp0gnn68Ed7jcU6KFFThPqqvfacWmFi6pxyEVREHlb4S7jGRPxl9Ttm0Resb07hd0hZVF1bTS09a5ylkMQdIoGMsdJGii6Kqi4oImzZ5XB3bZc3sN1XJPN78qw9aYUMYt67ubrBwpW/ftGTC2/vV2jENCuMH4XBoPv6ecgsDg5irRAFQOTfPnG3C6VhAcucnK4CjxoU1zt3N9XdofAUgkVEjBncY6O2x7zrCB8BnyzyBEPJXQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YgVfRMOP; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I50MNQ79;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YgVfRMOP;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4djF4G71v4z2xpg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Jan 2026 18:02:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4djF4Y2R6yz2xpg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Jan 2026 18:02:21 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5974D404CB;
+	by sea.source.kernel.org (Postfix) with ESMTP id B5C4D417BC;
+	Fri,  2 Jan 2026 07:02:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C2DC19422;
 	Fri,  2 Jan 2026 07:02:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192F8C116D0;
-	Fri,  2 Jan 2026 07:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767337325;
-	bh=3bBcyNtfu29ffLXJ+V2J2og1TMjw9NsnHxGDp+htXro=;
+	s=k20201202; t=1767337339;
+	bh=qGV3crV7vYfN1DCsmhF37VWmOXuApg3MmNmGXJVotqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I50MNQ790Zq95b8S0yQ0CXud0hBoT6XVttorK01jD4dcGhZcOfyErKBL9h+EZnFDK
-	 JHpZbgNFfrGqSCJsvV0SuvqTBSorWby5FN0AQbHPlcZFbXZg8iRp4E6Op8x8VrlW3g
-	 9NAxGlLvXsqDB9F2a65PIkUijJJKGfTVkxyw2aMxSTILIXs/q9wM+VKBXV3SjlSswf
-	 pQqujD2MT/xKyGZT/PmnUKYz5qbhZkyAKaa3W7rRWzAn7mVMvUA3plpREVkon38b5U
-	 e2uX7Gr1v3oz4QsDuUSPNQrfRFHFJmPdNoVSlmks4iPatW/a/34a2AYSRwM9QtV+LJ
-	 dAmwK3MJ/gIkQ==
+	b=YgVfRMOPs1HT136LQlxti3CjGqTiAYYJHHhtujbmeeW9b5Sp1uzqGIqNcaFKtEYaD
+	 gUmONK9l5FeSIrhyFOIzw67O8yh8iZKtBESs03lQBObKmxcbhraIYFS3aMlk9cEYI7
+	 UQZCAbWMn28QX2knHvCNY0hoM7rRnorxLD1hUlMhn4nvfhTTDVvqdCBfWuLVwntHPn
+	 D3vo7BUCLsuI0NFNIALchXt/QJhsX/uYfd5qmIcvxrNCz/vI6hg+EVI9NGaui2qCrN
+	 wI/OqtpL8AlxnLMhaisftFHIoT2W/7a7/Vyg9nZsG6O2ocQDHVkFf36gQ0LssTm0rp
+	 3nnspmYHu59yA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -109,9 +109,9 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH v2 07/28] loongarch: introduce arch_zone_limits_init()
-Date: Fri,  2 Jan 2026 08:59:43 +0200
-Message-ID: <20260102070005.65328-8-rppt@kernel.org>
+Subject: [PATCH v2 08/28] m68k: introduce arch_zone_limits_init()
+Date: Fri,  2 Jan 2026 08:59:44 +0200
+Message-ID: <20260102070005.65328-9-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260102070005.65328-1-rppt@kernel.org>
 References: <20260102070005.65328-1-rppt@kernel.org>
@@ -143,38 +143,81 @@ Later MM core will use this function as an architecture specific callback
 during nodes and zones initialization and thus there won't be a need to
 call free_area_init() from every architecture.
 
+Since all variants of m68k add all memory to ZONE_DMA, it is possible to
+use unified implementation for arch_zone_limits_init() that sets the end
+of ZONE_DMA to memblock_end_of_DRAM().
+
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/loongarch/mm/init.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/m68k/mm/init.c     | 7 ++++++-
+ arch/m68k/mm/mcfmmu.c   | 2 +-
+ arch/m68k/mm/motorola.c | 2 +-
+ arch/m68k/mm/sun3mmu.c  | 2 +-
+ 4 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
-index 0946662afdd6..17235f87eafb 100644
---- a/arch/loongarch/mm/init.c
-+++ b/arch/loongarch/mm/init.c
-@@ -60,15 +60,19 @@ int __ref page_is_ram(unsigned long pfn)
- 	return memblock_is_memory(addr) && !memblock_is_reserved(addr);
- }
+diff --git a/arch/m68k/mm/init.c b/arch/m68k/mm/init.c
+index 488411af1b3f..6b1d9d2434b5 100644
+--- a/arch/m68k/mm/init.c
++++ b/arch/m68k/mm/init.c
+@@ -40,6 +40,11 @@
+ void *empty_zero_page;
+ EXPORT_SYMBOL(empty_zero_page);
  
--void __init paging_init(void)
 +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
- {
--	unsigned long max_zone_pfns[MAX_NR_ZONES];
--
- #ifdef CONFIG_ZONE_DMA32
- 	max_zone_pfns[ZONE_DMA32] = MAX_DMA32_PFN;
- #endif
- 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
++{
++	max_zone_pfns[ZONE_DMA] = PFN_DOWN(memblock_end_of_DRAM());
 +}
 +
-+void __init paging_init(void)
-+{
-+	unsigned long max_zone_pfns[MAX_NR_ZONES];
+ #ifdef CONFIG_MMU
  
-+	arch_zone_limits_init(max_zone_pfns);
- 	free_area_init(max_zone_pfns);
+ int m68k_virt_to_node_shift;
+@@ -69,7 +74,7 @@ void __init paging_init(void)
+ 	high_memory = (void *) end_mem;
+ 
+ 	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
+-	max_zone_pfn[ZONE_DMA] = end_mem >> PAGE_SHIFT;
++	arch_zone_limits_init(max_zone_pfn);
+ 	free_area_init(max_zone_pfn);
  }
  
+diff --git a/arch/m68k/mm/mcfmmu.c b/arch/m68k/mm/mcfmmu.c
+index 19a75029036c..24a6f7bbd1ce 100644
+--- a/arch/m68k/mm/mcfmmu.c
++++ b/arch/m68k/mm/mcfmmu.c
+@@ -73,7 +73,7 @@ void __init paging_init(void)
+ 	}
+ 
+ 	current->mm = NULL;
+-	max_zone_pfn[ZONE_DMA] = PFN_DOWN(_ramend);
++	arch_zone_limits_init(max_zone_pfn);
+ 	free_area_init(max_zone_pfn);
+ }
+ 
+diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
+index 62283bc2ed79..d6ccd23caf61 100644
+--- a/arch/m68k/mm/motorola.c
++++ b/arch/m68k/mm/motorola.c
+@@ -517,6 +517,6 @@ void __init paging_init(void)
+ 		if (node_present_pages(i))
+ 			node_set_state(i, N_NORMAL_MEMORY);
+ 
+-	max_zone_pfn[ZONE_DMA] = memblock_end_of_DRAM();
++	arch_zone_limits_init(max_zone_pfn);
+ 	free_area_init(max_zone_pfn);
+ }
+diff --git a/arch/m68k/mm/sun3mmu.c b/arch/m68k/mm/sun3mmu.c
+index 1ecf6bdd08bf..fdd69cc4240c 100644
+--- a/arch/m68k/mm/sun3mmu.c
++++ b/arch/m68k/mm/sun3mmu.c
+@@ -82,7 +82,7 @@ void __init paging_init(void)
+ 	current->mm = NULL;
+ 
+ 	/* memory sizing is a hack stolen from motorola.c..  hope it works for us */
+-	max_zone_pfn[ZONE_DMA] = ((unsigned long)high_memory) >> PAGE_SHIFT;
++	arch_zone_limits_init(max_zone_pfn);
+ 
+ 	/* I really wish I knew why the following change made things better...  -- Sam */
+ 	free_area_init(max_zone_pfn);
 -- 
 2.51.0
 
