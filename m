@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15145-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15146-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB19CEDCBB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 02 Jan 2026 08:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F42CEDCC1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 02 Jan 2026 08:06:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4djF8S4SMkz2ywy;
-	Fri, 02 Jan 2026 18:05:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4djF8l2lJVz2yjm;
+	Fri, 02 Jan 2026 18:05:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767337544;
-	cv=none; b=j8JMAyYBjxV2oTQfn3jG1yO60OPJbH3WV7a0BCT0nAzyrUWehkVROPK5+ksplcPl45ucf2BlpMmhR304OglCuwg0Va0/wFf+V655O496IReBfLuxBZr7sbhjvqirwFmdS6qhN3n2rnIMRTbNABDL/pGIWpxq1gLkJE3r6e84/oNOp5jmu2m0r4en7/d9JEMu/tVestC4w0k+H94F9Pbjj+Jh3lw+QbZ5jvRMLvcWf81o3viSiRbehwwqZnG2vyJ/x+ycnPxuZrr8rrhdsxogb/oLUgparilwAnxtXR6eb85vqBehKkD4HgSkWngcFoJ27Ek2THTdCAL0MU0TvSD1VQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767337559;
+	cv=none; b=IRjZxpMACZMnX8vNNK3b6yb7AKlVkABu9gfhJ2OkwLWipEnsykdpN07OkKaE2Oq+uyCeF5TKmfufaVdHBKX83afRmBgrtYED56q2GX8pDXFqT4o0NauhPfBt46z5BY4RO5SbNNWxTXIPbDp8bIWg+lEcAjA3tmaCrPa/Hxx5WPW2bpx9zMiPZw6294aUwjyh2siyCJP5RU5z3pVmRpxahx0p9EHCg2fk7VhXP2TrDEqOJjXv+ShS5iUB0Zhdj/Ou0BNTvRnZESVdd9jGCk38N+QqeituEa/xvKGJHkko9EzJAM3ElvD5cJDRyUIsrZDwi6uKBMFnAg8DWtXcORVmpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767337544; c=relaxed/relaxed;
-	bh=azukzfgsXgu/EZDimou0ymklRTxVzT+QThHCfbcQvB4=;
+	t=1767337559; c=relaxed/relaxed;
+	bh=1chzHxsrADOvWvHnGxP4KUnDWT2YzEh4P+Cw7lJ2EsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAqBbdK6MGW/ODidSpdoEwzGTZexHKKuYaeUnYE/wWyWuuJm6oTAwZjF2doUENAuwt/qXDx/GhPdhJObsnNen8JK5HC99Jx1pYeC+AYZQAiqCd0pLJ+hDtUS08VUMQ54h8aP8Aqcqe9jZrcwi2P+i0OaZP4tIPes0N7vbl7fIssBAt8yHCfXZEcC7JrfY10RJissFV7f1YHHoRRYTB5n0yEu869WTTIaqZSBpzgjcjaauGQEmff4AHKB9kksYuo8BBf8UNOnz53un9tntTD58xlaRzK+Estefnb79LBIBFcHMMHMFzOg3UaOuJQKzCQlj35OgKpgfLYHcKADS7dsrA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X4nEWJ/0; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=PU2XdUgmfiA+8/gIpEQl/N8iu5q8WAnY3JIOyjexhoiwH8vq+fJg+g5B8kjz+EXNg/K2IAC3XzmUyysYo4VSrpMBRW5tJpD20eI2tnBJAWDvbZDOH5b6tJmCeJXFT80Z360w/NI9mKLD4CXdjFEDrun6t8Y+xvby6DtNbji4j0jjKzLvUFNsFXCOoi4IRl0hhFM8Ek1UogyieBqgUYEeeFeAq2T38lejvVqMgAseiQJ5bEqXcmxCnCGST+LdHYSlMjXtNY6fRfyt2jtog228GjjuyfpPamR3MQuhvcspKyclFsGZkYFy6s0Ci8A2ZFvDySmTqbF5X9RG6tG7wN+iFw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aVMy1uEj; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X4nEWJ/0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aVMy1uEj;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4djF8R6cQTz2yGq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Jan 2026 18:05:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4djF8k3gc9z2yGq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Jan 2026 18:05:58 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4B0B541912;
+	by sea.source.kernel.org (Postfix) with ESMTP id ADAAB436EC;
+	Fri,  2 Jan 2026 07:05:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A822AC19421;
 	Fri,  2 Jan 2026 07:05:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5C2C116B1;
-	Fri,  2 Jan 2026 07:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767337512;
-	bh=4MJzw8wq/vYacVlPos8SheQzjEj4nCDptI3YxDfhXAU=;
+	s=k20201202; t=1767337526;
+	bh=RfrVgNIj9rxp9R6SGMWNq/5X+PJ8wzbzZyqbje0LIeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4nEWJ/0L+n3VAFD31SZ9u/rL4Rw0XhJxVYC7R+OXsmo1R+f6/lf31rINifRbzeb+
-	 E7q+YbYslJsdX+mgT/DJOnTzdA8r1GLCYhATQ/6o7s0IJ73Te45CcPz4wjEFvvM/n3
-	 ThGwO2GIstpYmbDXYc1dqebuTUIdt2HiOryT/ZvS5M8ujm1ShtTfK4zRsWEwkJ/FNF
-	 8m/LHQ3fd5LrjZY8b6caOj2ahTu9OG/0IsdS9Q3L4EJW65MYUSuOxby2ogAIsiG7aF
-	 EFowjrwFr63a8VLMXiTaiTSYHWDOX7bOW4u2qYH3Zafy+sjM5mjfd7Q7v9egCc3YOp
-	 jgbCi3HZCBEVw==
+	b=aVMy1uEjz+i8JVR5vvetsdLlgetPkDBi4pcNoZ4vjSKDBc19eAiwfNmFLk+7mga3L
+	 CoRj28PGPQFLtYhjpAFGOpcJutt4IEAphYnmmrXUanPJV/sEjuRaYp5ErdlMYFMwBa
+	 y7Tx3dNUc/RzrtMBd/C++WHUWIgC4F/tyXDOwS85cAPJvO+XvNSexJlAVbEAIac8yK
+	 7B8AnG2S4pCOhihUnC0FMc3yT8kq9pvWxyPULUe8cP34d112OYpiJ6uofrGOoed7ZQ
+	 J3GRwa/R04BfG9D1qMTYLWoomnB7hJ4FZjufi3DB/KiokHvaSbus/icytAHD/NLK2p
+	 CLxFTDSXhTUeA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -109,9 +109,9 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH v2 20/28] x86: introduce arch_zone_limits_init()
-Date: Fri,  2 Jan 2026 08:59:56 +0200
-Message-ID: <20260102070005.65328-21-rppt@kernel.org>
+Subject: [PATCH v2 21/28] xtensa: introduce arch_zone_limits_init()
+Date: Fri,  2 Jan 2026 08:59:57 +0200
+Message-ID: <20260102070005.65328-22-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260102070005.65328-1-rppt@kernel.org>
 References: <20260102070005.65328-1-rppt@kernel.org>
@@ -145,43 +145,39 @@ call free_area_init() from every architecture.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/x86/mm/init.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ arch/xtensa/mm/init.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index 8bf6ad4b9400..e7ef605a18d6 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -997,12 +997,8 @@ void __init free_initrd_mem(unsigned long start, unsigned long end)
+diff --git a/arch/xtensa/mm/init.c b/arch/xtensa/mm/init.c
+index cc52733a0649..60299f359a3c 100644
+--- a/arch/xtensa/mm/init.c
++++ b/arch/xtensa/mm/init.c
+@@ -116,15 +116,19 @@ static void __init print_vm_layout(void)
+ 		(unsigned long)(__bss_stop - __bss_start) >> 10);
  }
- #endif
  
--void __init zone_sizes_init(void)
+-void __init zones_init(void)
 +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
  {
--	unsigned long max_zone_pfns[MAX_NR_ZONES];
--
--	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
--
- #ifdef CONFIG_ZONE_DMA
- 	max_zone_pfns[ZONE_DMA]		= min(MAX_DMA_PFN, max_low_pfn);
- #endif
-@@ -1013,7 +1009,15 @@ void __init zone_sizes_init(void)
+-	/* All pages are DMA-able, so we put them all in the DMA zone. */
+-	unsigned long max_zone_pfn[MAX_NR_ZONES] = {
+-		[ZONE_NORMAL] = max_low_pfn,
++	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
  #ifdef CONFIG_HIGHMEM
- 	max_zone_pfns[ZONE_HIGHMEM]	= max_pfn;
+-		[ZONE_HIGHMEM] = max_pfn,
++	max_zone_pfns[ZONE_HIGHMEM] = max_pfn;
  #endif
+-	};
 +}
 +
-+void __init zone_sizes_init(void)
++void __init zones_init(void)
 +{
-+	unsigned long max_zone_pfns[MAX_NR_ZONES];
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0, };
 +
-+	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
- 
-+	arch_zone_limits_init(max_zone_pfns);
- 	free_area_init(max_zone_pfns);
++	arch_zone_limits_init(max_zone_pfn);
+ 	free_area_init(max_zone_pfn);
+ 	print_vm_layout();
  }
- 
 -- 
 2.51.0
 
