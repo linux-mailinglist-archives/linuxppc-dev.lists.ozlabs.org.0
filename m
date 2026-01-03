@@ -1,67 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-15178-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15179-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B846ACEFA5E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 04:22:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE029CEFA6D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 04:34:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4djm8T1g6yz2yFh;
-	Sat, 03 Jan 2026 14:22:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4djmQF16h3z2yFh;
+	Sat, 03 Jan 2026 14:34:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.11
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767410553;
-	cv=none; b=bMas/JnZf9g9d+uO2ZzTGzvbffmHkMxZ+/gqlFux1ecK+PBaQ+Fson75uzaF8tRpEg9aNlq+QKTyuMcoYzq5ECANLqz9MN/2hSyKyYQNiJR5ZCQYv+n7mB1LWl0pEAWqaM7+M1m95Cpz5lNj/jJ50xb2vSH8MymSPfTif9ZKmPow0NOfnQtk1pgaDaGwmMWAPC6bAXNz2jl2hNxiD+R/pvD+wI7bvlqGiWNe2fRgvxOO9u+U56oqbiM3K+vYLd0VXHHHpnY3XonGvElBrt1WuIypv7zcQiiCHPYe3ODFHUT1LxfZ4WYsxkmQlabVGK0nR5mp+DLoksyOrsc1QfIsCw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.13
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767411269;
+	cv=none; b=PPpX372AZtdsUJvln337vkdyVhXMUjUbFkmiACXKM6Hm8j5Tn7Lftbn3lzsYFDmGBalh/dn08U/Y/DNMVVSdBFGrBreiI0KeT7h67j0mWYisxbEbeXz+ciyYb/FnUbSSdkm6SjR8ew1eb/TmyUT17ovN4djPIPZW1yYhpBqvULaXhmtB/6cJnCo61WNDtA7IK4wTrIKG+NG5htDLlnt5PTdj2QWEonwsgvyUTFl8IEn7UJAbW3Gzjqq+5pZJXJl4XfqfZPenwWhRvx259un5Wl5Y6wTEQY2f3zTjac5GuX+Vq3DBUBQ+f5R6skikK0fA3Y/NtHVVa2vga7y2sqdH3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767410553; c=relaxed/relaxed;
-	bh=MgpS+6/IreObuLCKzsh1Bik8rDmoVQZh7BPw6zp5St0=;
+	t=1767411269; c=relaxed/relaxed;
+	bh=11BZl/3hxu6ybybdpKdweKWE3uh7itVnzD8q3xLG56I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DWodWZzhk+FuUFLMkUSUYhU8V80ib2B633hI+EjJRAp1IJfIM9bVq0rQ48mm5Mqxf84UYwUHU0jGMvG+/v0mIUW8+ckbFAWIoE3GpepQvi5nqBjd58gg01wsFfH+WBnvU3YOdJTAWPw0Jhb4oG8FJiyNesdd3TxlMgyg/tPziq7WbPdcNeGAQWqo2i4V0GJ/ddd4Z+F7rNh6K0Djal4VycS+3b3UDffACccaL6fEJbU/07qM2vg2KSMiwbRVMFcYRN48i4sWBrWb03/WBvuu9euVa6z7UdsjgMIeNRfOSneYNSt+P9NWuWurFj41VasTE6t3TCHsOhTPdNdWoQ3EMw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jW+cq2sT; dkim-atps=neutral; spf=pass (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=iriVDCSn2VbNqlNd2PS/nlkdh0HTnE1Vh1WteJjg0Iwoee5K19XGJ301VGGDYsFbpcU0r3YfoddK5jXEMD4sAyRrl0aeobBj5nz+FB1Zwpudz8cr7WrzP8xYmKY+hcQSxTAS53YlUYZEOPunATlGzUaYuauMNZOEOLDL8BmPGUJu8nH3BsDcKQyyIDMMZja+qilYlQUQF4tIza2mG2yzOotciVy3Gs9jMRTnleFfWsBf2Ox7b24CjCHtnBHtP/FxdqMIgF0m8c9v/pyno/9HBnRfBNsr1dzwZ5puSVUPqqAI+mQgaalHHRANIjI/4BE9pjxq0DtXrZaaBwz9FBU7wg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kpbIgscD; dkim-atps=neutral; spf=pass (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jW+cq2sT;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kpbIgscD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4djm8Q25m7z2yFW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 14:22:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4djmQC4x3mz2yFW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 14:34:27 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767410550; x=1798946550;
+  t=1767411268; x=1798947268;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=/KS68S1wUbRid/TxE3cBE6LAtmAlf9OSK2uLviI4c3E=;
-  b=jW+cq2sTG7EvDs58u3H+hYngAv/dCz4WD0YQ/3Mmn4E5blAF6j3U6pq4
-   A7mZU5hHOQzD2XTH5fpNeTj4Cmm2MtNaslOzqVBW6A1/i0RWrRvaiawqL
-   TcpWz+3L01PePJsafL1/hDQdhZKHc+b6UC2BX7Lf6xmbHF/SHoekposX+
-   q3rMpHmmfi9D2gyHoTXI9WDK9fQPTxUr27Ww8uqh+eUDumBsVeqfB3zsC
-   Jw8Kg1tZT+6YhnTmK8VGacL6l/mVbzDQ9O1mt7NXGqn3mVy3c8zp3DUAf
-   +TiPljEVtrrqV6U8eOOTMTpUPG+7pgIue8H3yTkceo1STJaBJ6EkWz7+O
-   A==;
-X-CSE-ConnectionGUID: I21MUC9jQiWBobKm+thtlw==
-X-CSE-MsgGUID: OZIGVoMFT9moMkZzqWpJnw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="79187732"
+  bh=csYK7RCPSHPoz/5MB1fELyelv1I54HjB4geF/Uuzq4w=;
+  b=kpbIgscD/Rr+VRUjDQnRWSTvO65J+HyjRzlmOWXX8zSA4rT4qyeADJA0
+   zndwhPa9ok3gRnGUcvhLCPuqnVaVvDNBio6SlWwktl26In/nvMBezwOcw
+   /Tjfe8HqRw/5JbRB8mV4rRSXz10obrBzmAzYQE4l3vBBO8eMUTm18gjYc
+   ZbHWxZXGWaPRkr4kh8pJzpjuV+U5ZaNNNIQhO2Bk0PxoXYvNkmqnWD6TB
+   scpqEbspiXmEQIKVqVJvrGbR7Z4FUU33AzkTalUcIsgyR7tE/uCe5pjbw
+   R+7pLgPJvfdNH6AZEk93iIIFutqGrNK/9QMVrR2uOZlpJ+yn0h47H1BNR
+   g==;
+X-CSE-ConnectionGUID: yc6tydgGRjKSZPyBgBT6Gg==
+X-CSE-MsgGUID: w8EluvbSTh2zQX0toSWAFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="71465970"
 X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
-   d="scan'208";a="79187732"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 19:22:24 -0800
-X-CSE-ConnectionGUID: mTwaqU1ZRMuhiPcw+/oVTw==
-X-CSE-MsgGUID: Kg9tDkPASDKxssLZ4IjbwA==
+   d="scan'208";a="71465970"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 19:34:25 -0800
+X-CSE-ConnectionGUID: PycnsbgIQrS09W4Z1BbpnQ==
+X-CSE-MsgGUID: ZkTbTrcgQ5eke62DbUKzFA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
-   d="scan'208";a="206071317"
+   d="scan'208";a="239387734"
 Received: from lkp-server01.sh.intel.com (HELO c9aa31daaa89) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 02 Jan 2026 19:22:18 -0800
+  by orviesa001.jf.intel.com with ESMTP; 02 Jan 2026 19:34:19 -0800
 Received: from kbuild by c9aa31daaa89 with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vbsDY-000000002Yb-2k3D;
-	Sat, 03 Jan 2026 03:22:16 +0000
-Date: Sat, 3 Jan 2026 11:22:13 +0800
+	id 1vbsPA-000000002Yv-3ibi;
+	Sat, 03 Jan 2026 03:34:16 +0000
+Date: Sat, 3 Jan 2026 11:34:08 +0800
 From: kernel test robot <lkp@intel.com>
 To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, balbirs@nvidia.com,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, balbirs@nvidia.com,
 	matthew.brost@intel.com, akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
 	david@redhat.com, ziy@nvidia.com, apopple@nvidia.com,
@@ -72,7 +72,7 @@ Cc: oe-kbuild-all@lists.linux.dev, balbirs@nvidia.com,
 	jgg@ziepe.ca, Felix.Kuehling@amd.com
 Subject: Re: [PATCH v1 3/8] mm: Add helpers to create migration entries from
  struct pages
-Message-ID: <202601030958.73URABlJ-lkp@intel.com>
+Message-ID: <202601030957.g8ml6bSY-lkp@intel.com>
 References: <20251231043154.42931-4-jniethe@nvidia.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -105,26 +105,33 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Jordan-Niethe/mm-migrate_
 base:   f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da
 patch link:    https://lore.kernel.org/r/20251231043154.42931-4-jniethe%40nvidia.com
 patch subject: [PATCH v1 3/8] mm: Add helpers to create migration entries from struct pages
-config: openrisc-allnoconfig (https://download.01.org/0day-ci/archive/20260103/202601030958.73URABlJ-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260103/202601030958.73URABlJ-lkp@intel.com/reproduce)
+config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260103/202601030957.g8ml6bSY-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260103/202601030957.g8ml6bSY-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601030958.73URABlJ-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601030957.g8ml6bSY-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   mm/rmap.c: In function 'try_to_migrate_one':
->> mm/rmap.c:2542:41: error: implicit declaration of function 'make_writable_migration_entry_from_page'; did you mean 'make_readable_migration_entry_from_page'? [-Wimplicit-function-declaration]
+>> mm/rmap.c:2542:13: error: call to undeclared function 'make_writable_migration_entry_from_page'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
     2542 |                                 entry = make_writable_migration_entry_from_page(
-         |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                                         make_readable_migration_entry_from_page
->> mm/rmap.c:2542:41: error: incompatible types when assigning to type 'swp_entry_t' from type 'int'
+         |                                         ^
+   mm/rmap.c:2542:13: note: did you mean 'make_readable_migration_entry_from_page'?
+   include/linux/swapops.h:240:27: note: 'make_readable_migration_entry_from_page' declared here
+     240 | static inline swp_entry_t make_readable_migration_entry_from_page(struct page *page)
+         |                           ^
+>> mm/rmap.c:2542:11: error: assigning to 'swp_entry_t' from incompatible type 'int'
+    2542 |                                 entry = make_writable_migration_entry_from_page(
+         |                                       ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    2543 |                                                         subpage);
+         |                                                         ~~~~~~~~
+   2 errors generated.
 
 
-vim +2542 mm/rmap.c
+vim +/make_writable_migration_entry_from_page +2542 mm/rmap.c
 
   2275	
   2276	/*
