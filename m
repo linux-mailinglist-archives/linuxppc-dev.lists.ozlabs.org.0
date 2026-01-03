@@ -1,111 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-15175-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15177-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2D8CEF7B7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 00:34:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46843CEFA35
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 03:20:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4djg5T5r5kz2xpl;
-	Sat, 03 Jan 2026 10:34:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4djkn562H9z2yFd;
+	Sat, 03 Jan 2026 13:20:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.167.45
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767396877;
-	cv=none; b=HJCslXy47xqATWMzDwi1qekbIwmPDcFHNW//rMOklZxtei/ExrTnW11px2JijPHJnl8rPYC0Pg5fvpfaQiPySmy8EERUNE7O6GPGUnmue2J4nTLJXOs9ivMT4TeTeJBpF+QAliZFzMI676Syc50rOzxBOoOV9AQqWXTSJJmmZow9l6fJrP8Jac7Gl+IMST2kEAN+Yj6gFq+ofKU3b9DIVHP2OEOKpSfpZDtLxYV+o7lEjVnyj+HcuGRt6vMkFKhwMPhoSFB8ILq8gbwIvFJp9Oo+d7kZHA08z+JPmXQ8vSkNge8cxtH2Nw50r5fzGVOB7lNidz17CdncJFAikK07qQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.17
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767406841;
+	cv=none; b=YKru/vWwAY6WKi74v6bzT2OsOC1HsPbzLLPFsdHz57PjNprR0JkKZdqa5cXUixYaInmoczbSV4pbYD3dRJF5K2nAEhwC7g+pCOreVt0pfD7T5eiZB00LIXURhlvH/rBfJKl3Ca0T0S8FqUDL3tauZJ+Wl2UMcdF4qN/Myopz8aFbu72HvLTed2kJK2A5YTq2R+Tn7JxxSl+E/bXoMYdhK5s4Nf0Wv9+L/MOFFwat/CkbsdZEzmXVIF6zr2h1gIu7rjUMPI0XBnsWBAZjCSjYmgVM0zClAzcWJ64apcPiBIPNGhMXUTI5ktG4DS9z6SJhiG2m+QhEwNJnH+Dh2cX6RQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767396877; c=relaxed/relaxed;
-	bh=7oJkD+3I1ySqG2dU6TJV84R7uGtBSIJL6aFjqNNbCRs=;
+	t=1767406841; c=relaxed/relaxed;
+	bh=wSbwW0RnlgdvzoJ5Y3X5/CCt2YoP1gq3trPPBi9V/FY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dq+U0DRZQTs/tgsXqWGwmgj04KlcaXGOJuooscIL4vvxmx2UpLh4WkI4gMzhn9j2R/6hci7UqzA9B6xqkitnCvf2QzbycO3OkZZqTKfhPBuEm6J3i76AhSaSKAJ9PUCVzWASTM/bUcBnX69n4mLRGI/1pgXn9umEV6qLYgNCDN6OYhkZkPLgEstBIBBSVxuMdc55z6Lt4g2yDA7AvpJjpwZuB/Z3N6gR3euljeglafnf9Pn3VROQdGKJjf2dpzR8lKOw3w8skS4aRgAqNXIIFuDQPax9j9Q1t5qmwbuJyzmt4U0kYkjliqbCO50WKLjjZAVEOEc2q9SDrh09AiowPQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=hzZrXjn+; dkim-atps=neutral; spf=pass (client-ip=209.85.167.45; helo=mail-lf1-f45.google.com; envelope-from=klarasmodin@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=oGXnIakUxNbUmSdzkHi7aIZIKVGY3UjIlKYMrGgyZnqKbQsQWKTbsiR7ExooTC03ah709A6M0FPGRnuf19o0/cGNV7XjLSPopJXHGkukyJCBIUyMjViShaUafEYIHEh6k0Ol+EK9XEjCbOC6IdSspROvxknWs1eM6fiLFFnGHA8N85jCxOKxviwWitixi+y/bALSuzPDleSc2bhCnzH4zlSxn4+8NsQumfwhbOmEQ/eqbnSnrNFr/+I7hk+nm0/afyUwElpUpbK62oMMdhwkUOGCqo+8hxzkeImDjjBrW/MltEAw/dcbaTp46PZptfH15OUfzewUeHdT9it+UmcQiQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nbTCTJIU; dkim-atps=neutral; spf=pass (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=hzZrXjn+;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nbTCTJIU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.45; helo=mail-lf1-f45.google.com; envelope-from=klarasmodin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4djg5S1Jdtz2x99
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 10:34:35 +1100 (AEDT)
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5959187c5a9so10729453e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Jan 2026 15:34:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767396811; x=1768001611; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7oJkD+3I1ySqG2dU6TJV84R7uGtBSIJL6aFjqNNbCRs=;
-        b=hzZrXjn+bySBa2KkTidT1NZrJAGZ9KFM5SHJH/U0gH5tYppDflyMRNutw9nBPsRYcI
-         DHgkXkbfEhlK3e4wBxs2I5LRiSPqSoB0TBsE0stu2X6p+86BUE+0u8MKB6GmNnhaOQsf
-         isSin7sJWrz9hla+jPYmrztfJc9pgctsqGeQWG16tnnGBIbXDDztvs6UKv9sHst8gD6b
-         8on0bVakutA8hZwTeRgMRKe/tdewhyCRj/pMjMmUCBIDDl8EMnx3403Vas1JmV70eCXf
-         UIcWm+xaeoVj2ruSSGb9KperdQXQYVLsz2Qk40EfGMDWLaN7d26cEPE1SvUolgMfrRcS
-         Dvnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767396811; x=1768001611;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7oJkD+3I1ySqG2dU6TJV84R7uGtBSIJL6aFjqNNbCRs=;
-        b=MUAl5RnxdSRs7gk+szdruD38Ega854aXFL+J1NA99sM2+gLMev6mcJ5KlucumQgrka
-         ovcD7vQzWnILhZq+PJmFx6cpq/KxYIE472kERbwqedm2PfcszK8Bf9B3KLnQ3q6YJANr
-         Rb1aO9QxikRL3FPDR3ZDnlhWNhYGxlfc5Hmw36bwgmeKa3ObmZyMXo/HfHYkCKe9k+Do
-         aeQMDZlLRFIfoU7NaBiF/CfvIrZhZ+lMn1g5/Kb415NVGwSSClyyrHD8LmLyalri59Ro
-         FYyBakiKEBVjlvzp+ZczUwkdKwnREGJlag2DSWUByugx3oLQ3lcWQWDOx7XO/RMH4FRB
-         +OeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWsMbDw+5+2s2y2xpL4MvjYRDaZfJ8THJNISaexJPtcGrcU93uA6ToxCT+3Rz/92ubsMSIY+SCdZdBS6dE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzlorGzS9CfBgr8Y9Fl/BdUODHmuG4Xgy5ibBxyHvk7W1i3PAkZ
-	3HjprHgrZ3nNvDdf85LuTf+N52Lr8KHSj2zfi/YXoi/ku2li/zMx2PJH
-X-Gm-Gg: AY/fxX4IFhjQ4bkV5POPUHmaBXw/boCpeZ4hMOi97ilDA0vcEqfZqIg3XkrYIHSwvGU
-	B4A3bzzT+ceDurRGQLwJcbhBx32Gj9uKVu7jnx8B42kf7R6trlcAREkl3W18FFavJ2p8KiJDoDA
-	SkdcBPFkE9sbYsLiou93dnr2eUD2dqJa1SQVsTUAILrPC4tJvqPUhQIzQL7OyAOP9tvoHea7rPl
-	WDUzj40pdet8HqnhVxaKZv/w02lTIb2EpZTBKrxbzLy7tnbFKl4x3R5EyMSzSrjfDCiI8ur9YW8
-	PP6S37aJXM8L/x460Ek5SLXOYeM8Snk7T4m9FYkMn4M0m93DOwiHIeUZX2R3LddjQyx6HWw9zYk
-	vubpnss3X8AqeEROJvrRkUDG2MuGoCp1XhnuH4wDG+IpmY/dTkA96O9RzXW5if3qJLpFl/BahKS
-	Za4ULSD02ZzLbatqumRVIEsRdm
-X-Google-Smtp-Source: AGHT+IH2H1z9QVIhTu3A3MPtZYT5DDmpE6MbcXNtDvemf/egyv4QEgcDqeHHJdIO1qKRKt95zoj43Q==
-X-Received: by 2002:ac2:4e08:0:b0:594:93b8:88b6 with SMTP id 2adb3069b0e04-59a17db705bmr11802619e87.38.1767396810454;
-        Fri, 02 Jan 2026 15:33:30 -0800 (PST)
-Received: from localhost (soda.int.kasm.eu. [2001:678:a5c:1202:4fb5:f16a:579c:6dcb])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a185ea248sm12368060e87.43.2026.01.02.15.33.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jan 2026 15:33:29 -0800 (PST)
-Date: Sat, 3 Jan 2026 00:33:29 +0100
-From: Klara Modin <klarasmodin@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, 
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	"David S. Miller" <davem@davemloft.net>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Jonathan Corbet <corbet@lwn.net>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, 
-	Stafford Horne <shorne@gmail.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>, x86@kernel.org, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-mm@kvack.org, linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	loongarch@lists.linux.dev, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2 22/28] arch, mm: consolidate initialization of nodes,
- zones and memory map
-Message-ID: <aVhN2NgQEKe0yzva@soda.int.kasm.eu>
-References: <20260102070005.65328-1-rppt@kernel.org>
- <20260102070005.65328-23-rppt@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4djkn26nnwz2xl0
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 13:20:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767406839; x=1798942839;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=GAz6lVW9pP3EQThoU4Z64Wm4ELMF1S0wejso0L8U92Y=;
+  b=nbTCTJIUK5nC4de7NfMXxXIoY8bIxU2o2BJu7N2KCyyH9l8Y1AOBKw4p
+   AZM9h3MlDTIsJqkftBmtBes/aA6yFvulzvNj4NZymo8UVwCrl/gT8hM5Z
+   iSb8yYk+7JsW78QRssea3WBtYlu1V/6/rwrvoUpj3XSjFllnobeX1wsic
+   jBFj0WThRHul21SnSuS2w0EzvQ5s8Bhnef7zWFtoQYIG6vUKZibbMY3on
+   mmQgTnrA468ph41GB70ZY9C4cNCm/xknp7EBXhT2BVa0zjr5Cf3KPtuNl
+   Ey4BfR8a/svUGtJ6M+zmeNRDcKaXCPlNwXJlAIk51bE6q3wwA9l1hh0WH
+   w==;
+X-CSE-ConnectionGUID: /De0YuqnTcWRIxl3W8Vqjg==
+X-CSE-MsgGUID: TDv4d5WFT9WgVp3YSHuRHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="68788111"
+X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
+   d="scan'208";a="68788111"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 18:20:32 -0800
+X-CSE-ConnectionGUID: cYzilF2MT8G/+TeZ4kaVtw==
+X-CSE-MsgGUID: R9/AmzffTsaCv10Cn1bAHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
+   d="scan'208";a="201556561"
+Received: from lkp-server01.sh.intel.com (HELO c9aa31daaa89) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 02 Jan 2026 18:20:17 -0800
+Received: from kbuild by c9aa31daaa89 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vbrFX-000000002Xt-23O6;
+	Sat, 03 Jan 2026 02:20:15 +0000
+Date: Sat, 3 Jan 2026 10:19:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, balbirs@nvidia.com,
+	matthew.brost@intel.com, akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	david@redhat.com, ziy@nvidia.com, apopple@nvidia.com,
+	lorenzo.stoakes@oracle.com, lyude@redhat.com, dakr@kernel.org,
+	airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
+	mpenttil@redhat.com, jgg@nvidia.com, willy@infradead.org,
+	linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org,
+	jgg@ziepe.ca, Felix.Kuehling@amd.com
+Subject: Re: [PATCH v1 8/8] mm: Remove device private pages from the physical
+ address space
+Message-ID: <202601030906.9lgtN5Gq-lkp@intel.com>
+References: <20251231043154.42931-9-jniethe@nvidia.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -119,253 +87,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260102070005.65328-23-rppt@kernel.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251231043154.42931-9-jniethe@nvidia.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
+Hi Jordan,
 
-On 2026-01-02 08:59:58 +0200, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> To initialize node, zone and memory map data structures every architecture
-> calls free_area_init() during setup_arch() and passes it an array of zone
-> limits.
-> 
-> Beside code duplication it creates "interesting" ordering cases between
-> allocation and initialization of hugetlb and the memory map. Some
-> architectures allocate hugetlb pages very early in setup_arch() in certain
-> cases, some only create hugetlb CMA areas in setup_arch() and sometimes
-> hugetlb allocations happen mm_core_init().
-> 
-> With arch_zone_limits_init() helper available now on all architectures it
-> is no longer necessary to call free_area_init() from architecture setup
-> code. Rather core MM initialization can call arch_zone_limits_init() in a
-> single place.
-> 
-> This allows to unify ordering of hugetlb vs memory map allocation and
-> initialization.
-> 
-> Remove the call to free_area_init() from architecture specific code and
-> place it in a new mm_core_init_early() function that is called immediately
-> after setup_arch().
-> 
-> After this refactoring it is possible to consolidate hugetlb allocations
-> and eliminate differences in ordering of hugetlb and memory map
-> initialization among different architectures.
-> 
-> As the first step of this consolidation move hugetlb_bootmem_alloc() to
-> mm_core_early_init().
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+kernel test robot noticed the following build warnings:
 
-This breaks boot on my Raspberry Pi 1. The reason seems to be the use of
-page_folio() when initializing the dynamically allocated zero page in
-arm, which doesn't work when free_area_init() hasn't been called yet.
+[auto build test WARNING on f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da]
 
-The following oopses are generated:
+url:    https://github.com/intel-lab-lkp/linux/commits/Jordan-Niethe/mm-migrate_device-Add-migrate-PFN-flag-to-track-device-private-pages/20251231-123453
+base:   f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da
+patch link:    https://lore.kernel.org/r/20251231043154.42931-9-jniethe%40nvidia.com
+patch subject: [PATCH v1 8/8] mm: Remove device private pages from the physical address space
+config: s390-allnoconfig (https://download.01.org/0day-ci/archive/20260103/202601030906.9lgtN5Gq-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project f43d6834093b19baf79beda8c0337ab020ac5f17)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260103/202601030906.9lgtN5Gq-lkp@intel.com/reproduce)
 
- Booting Linux on physical CPU 0x0
- Linux version 6.19.0-rc3-03898-g7975b0084358 (klara@soda.int.kasm.eu) (armv6j-unknown-linux-gnueabihf-gcc (Gentoo 15.2.1_p20251122 p3) 15.2.1 20251122, GNU ld (Gentoo 2.45.1 p1) 2.45.1) #451 Fri Jan  2 20:26:00 CET 2026
- CPU: ARMv6-compatible processor [410fb767] revision 7 (ARMv7), cr=00c5387d
- CPU: PIPT / VIPT nonaliasing data cache, VIPT nonaliasing instruction cache
- OF: fdt: Machine model: Raspberry Pi Model B Rev 2
- earlycon: pl11 at MMIO32 0x20201000 (options '')
- printk: legacy bootconsole [pl11] enabled
- Memory policy: Data cache writeback
- Reserved memory: created CMA memory pool at 0x19400000, size 64 MiB
- OF: reserved mem: initialized node linux,cma, compatible id shared-dma-pool
- OF: reserved mem: 0x19400000..0x1d3fffff (65536 KiB) map reusable linux,cma
- 8<--- cut here ---
- Unable to handle kernel paging request at virtual address 003dfb44 when read
- [003dfb44] *pgd=00000000
- Internal error: Oops: 5 [#1] ARM
- CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.19.0-rc3-03898-g7975b0084358 #451 NONE
- Hardware name: BCM2835
- PC is at paging_init (include/linux/page-flags.h:284 (discriminator 2) arch/arm/mm/mmu.c:1790 (discriminator 2))
- LR is at paging_init (arch/arm/mm/mmu.c:1789 (discriminator 1))
- pc :    lr :    psr: 600000d3
- sp : c0d01ef8  ip : defdb000  fp : 0000000b
- r10: 00200000  r9 : d9400000  r8 : ffe00000
- r7 : c0d09050  r6 : c0d0902c  r5 : c0d43d40  r4 : 0001efda
- r3 : c0dab20c  r2 : 00000000  r1 : 003dfb40  r0 : 00000000
- Flags: nZCv  IRQs off  FIQs off  Mode SVC_32  ISA ARM  Segment none
- Control: 00c5387d  Table: 00004008  DAC: 00000051
- Register r0 information: NULL pointer
- Register r1 information: non-paged memory
- Register r2 information: NULL pointer
- Register r3 information:
- 8<--- cut here ---
- Unable to handle kernel paging request at virtual address 0001b564 when read
- [0001b564] *pgd=00000000
- Internal error: Oops: 5 [#2] ARM
- CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.19.0-rc3-03898-g7975b0084358 #451 NONE
- Hardware name: BCM2835
- PC is at kmem_dump_obj (mm/slab.h:142 (discriminator 2) mm/slab.h:178 (discriminator 2) mm/slab_common.c:609 (discriminator 2))
- LR is at 0x1
- pc :    lr :    psr: 200001d3
- sp : c0d01cc8  ip : 00000000  fp : 0000000b
- r10: 00200000  r9 : c0dab1dc  r8 : 00000000
- r7 : 00000005  r6 : 00000dab  r5 : 0001b560  r4 : c0dab20c
- r3 : c0dc2058  r2 : 1f000000  r1 : 00c00000  r0 : 00000001
- Flags: nzCv  IRQs off  FIQs off  Mode SVC_32  ISA ARM  Segment none
- Control: 00c5387d  Table: 00004008  DAC: 00000051
- Register r0 information: non-paged memory
- Register r1 information: non-paged memory
- Register r2 information: non-paged memory
- Register r3 information:
- 8<--- cut here ---
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601030906.9lgtN5Gq-lkp@intel.com/
 
-and the second one repeats for some time afterwards.
+All warnings (new ones prefixed by >>):
 
-I experimented a little by allocating the zero page statically as many
-other arches do which fixes the issue as it does not need to be
-initialized at this point anymore, though I have no idea if that's
-appropriate.
+   In file included from arch/s390/purgatory/purgatory.c:10:
+   In file included from include/linux/kexec.h:18:
+   In file included from include/linux/vmcore_info.h:6:
+   In file included from include/linux/elfcore.h:11:
+   In file included from include/linux/ptrace.h:10:
+   In file included from include/linux/pid_namespace.h:7:
+   In file included from include/linux/mm.h:33:
+>> include/linux/memremap.h:148:2: warning: field '' with variable sized type 'union dev_pagemap::(anonymous at include/linux/memremap.h:148:2)' not at the end of a struct or class is a GNU extension [-Wgnu-variable-sized-type-not-at-end]
+     148 |         union {
+         |         ^
+   1 warning generated.
 
-Regards,
-Klara Modin
 
-...
+vim +148 include/linux/memremap.h
 
-> diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
-> index bdcc3639681f..a8f7b4084715 100644
-> --- a/arch/arm/mm/init.c
-> +++ b/arch/arm/mm/init.c
-> @@ -118,15 +118,6 @@ void __init arch_zone_limits_init(unsigned long *max_zone_pfn)
->  #endif
->  }
->  
-> -static void __init zone_sizes_init(unsigned long min, unsigned long max_low,
-> -	unsigned long max_high)
-> -{
-> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
-> -
-> -	arch_zone_limits_init(max_zone_pfn);
-> -	free_area_init(max_zone_pfn);
-> -}
-> -
->  #ifdef CONFIG_HAVE_ARCH_PFN_VALID
->  int pfn_valid(unsigned long pfn)
->  {
-> @@ -222,13 +213,6 @@ void __init bootmem_init(void)
->  	 * done after the fixed reservations
->  	 */
->  	sparse_init();
-> -
-> -	/*
-> -	 * Now free the memory - free_area_init needs
-> -	 * the sparse mem_map arrays initialized by sparse_init()
-> -	 * for memmap_init_zone(), otherwise all PFNs are invalid.
-> -	 */
-> -	zone_sizes_init(min_low_pfn, max_low_pfn, max_pfn);
->  }
->  
->  /*
+514caf23a70fd6 Christoph Hellwig   2019-06-26  113  
+9476df7d80dfc4 Dan Williams        2016-01-15  114  /**
+9476df7d80dfc4 Dan Williams        2016-01-15  115   * struct dev_pagemap - metadata for ZONE_DEVICE mappings
+4b94ffdc4163ba Dan Williams        2016-01-15  116   * @altmap: pre-allocated/reserved memory for vmemmap allocations
+5c2c2587b13235 Dan Williams        2016-01-15  117   * @ref: reference count that pins the devm_memremap_pages() mapping
+b80892ca022e9e Christoph Hellwig   2021-10-28  118   * @done: completion for @ref
+0c32c9f7a58e77 John Groves         2024-02-05  119   * @type: memory type: see MEMORY_* above in memremap.h
+514caf23a70fd6 Christoph Hellwig   2019-06-26  120   * @flags: PGMAP_* flags to specify defailed behavior
+c4386bd8ee3a92 Joao Martins        2022-01-14  121   * @vmemmap_shift: structural definition of how the vmemmap page metadata
+c4386bd8ee3a92 Joao Martins        2022-01-14  122   *      is populated, specifically the metadata page order.
+c4386bd8ee3a92 Joao Martins        2022-01-14  123   *	A zero value (default) uses base pages as the vmemmap metadata
+c4386bd8ee3a92 Joao Martins        2022-01-14  124   *	representation. A bigger value will set up compound struct pages
+c4386bd8ee3a92 Joao Martins        2022-01-14  125   *	of the requested order value.
+1e240e8d4a7d92 Christoph Hellwig   2019-06-26  126   * @ops: method table
+f894ddd5ff01d3 Christoph Hellwig   2020-03-16  127   * @owner: an opaque pointer identifying the entity that manages this
+f894ddd5ff01d3 Christoph Hellwig   2020-03-16  128   *	instance.  Used by various helpers to make sure that no
+f894ddd5ff01d3 Christoph Hellwig   2020-03-16  129   *	foreign ZONE_DEVICE memory is accessed.
+0386df765967ce Jordan Niethe       2025-12-31  130   * @nr_range: number of ranges to be mapped. Always == 1 for
+0386df765967ce Jordan Niethe       2025-12-31  131   *	MEMORY_DEVICE_PRIVATE.
+0386df765967ce Jordan Niethe       2025-12-31  132   * @range: range to be mapped when nr_range == 1. Used as an output param for
+0386df765967ce Jordan Niethe       2025-12-31  133   *	MEMORY_DEVICE_PRIVATE.
+b7b3c01b191596 Dan Williams        2020-10-13  134   * @ranges: array of ranges to be mapped when nr_range > 1
+0386df765967ce Jordan Niethe       2025-12-31  135   * @nr_pages: number of pages requested to be mapped for MEMORY_DEVICE_PRIVATE.
+0386df765967ce Jordan Niethe       2025-12-31  136   * @pages: array of nr_pages initialized for MEMORY_DEVICE_PRIVATE.
+9476df7d80dfc4 Dan Williams        2016-01-15  137   */
+9476df7d80dfc4 Dan Williams        2016-01-15  138  struct dev_pagemap {
+e7744aa25cffe2 Logan Gunthorpe     2017-12-29  139  	struct vmem_altmap altmap;
+b80892ca022e9e Christoph Hellwig   2021-10-28  140  	struct percpu_ref ref;
+24917f6b1041a7 Christoph Hellwig   2019-06-26  141  	struct completion done;
+5042db43cc26f5 Jérôme Glisse       2017-09-08  142  	enum memory_type type;
+514caf23a70fd6 Christoph Hellwig   2019-06-26  143  	unsigned int flags;
+c4386bd8ee3a92 Joao Martins        2022-01-14  144  	unsigned long vmemmap_shift;
+1e240e8d4a7d92 Christoph Hellwig   2019-06-26  145  	const struct dev_pagemap_ops *ops;
+f894ddd5ff01d3 Christoph Hellwig   2020-03-16  146  	void *owner;
+b7b3c01b191596 Dan Williams        2020-10-13  147  	int nr_range;
+b7b3c01b191596 Dan Williams        2020-10-13 @148  	union {
+b7b3c01b191596 Dan Williams        2020-10-13  149  		struct range range;
+06919d226d0113 Gustavo A. R. Silva 2022-09-03  150  		DECLARE_FLEX_ARRAY(struct range, ranges);
+b7b3c01b191596 Dan Williams        2020-10-13  151  	};
+0386df765967ce Jordan Niethe       2025-12-31  152  	unsigned long nr_pages;
+0386df765967ce Jordan Niethe       2025-12-31  153  	struct page *pages;
+9476df7d80dfc4 Dan Williams        2016-01-15  154  };
+9476df7d80dfc4 Dan Williams        2016-01-15  155  
 
-...
-
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 628c0e0ac313..64d6f9c15ef1 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -45,6 +45,7 @@ struct pt_regs;
->  struct folio_batch;
->  
->  void arch_mm_preinit(void);
-> +void mm_core_init_early(void);
->  void mm_core_init(void);
->  void init_mm_internals(void);
->  
-> @@ -3536,7 +3537,7 @@ static inline unsigned long get_num_physpages(void)
->  }
->  
->  /*
-> - * Using memblock node mappings, an architecture may initialise its
-> + * FIXME: Using memblock node mappings, an architecture may initialise its
->   * zones, allocate the backing mem_map and account for memory holes in an
->   * architecture independent manner.
->   *
-> @@ -3551,7 +3552,6 @@ static inline unsigned long get_num_physpages(void)
->   *	memblock_add_node(base, size, nid, MEMBLOCK_NONE)
->   * free_area_init(max_zone_pfns);
->   */
-> -void free_area_init(unsigned long *max_zone_pfn);
->  void arch_zone_limits_init(unsigned long *max_zone_pfn);
->  unsigned long node_map_pfn_alignment(void);
->  extern unsigned long absent_pages_in_range(unsigned long start_pfn,
-> diff --git a/init/main.c b/init/main.c
-> index b84818ad9685..445b5643ecec 100644
-> --- a/init/main.c
-> +++ b/init/main.c
-> @@ -1025,6 +1025,7 @@ void start_kernel(void)
->  	page_address_init();
->  	pr_notice("%s", linux_banner);
->  	setup_arch(&command_line);
-> +	mm_core_init_early();
->  	/* Static keys and static calls are needed by LSMs */
->  	jump_label_init();
->  	static_call_init();
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index fc2a6f1e518f..ffc4a0f1fee9 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1810,7 +1810,6 @@ static void __init set_high_memory(void)
->  
->  /**
->   * free_area_init - Initialise all pg_data_t and zone data
-> - * @max_zone_pfn: an array of max PFNs for each zone
->   *
->   * This will call free_area_init_node() for each active node in the system.
->   * Using the page ranges provided by memblock_set_node(), the size of each
-> @@ -1821,17 +1820,14 @@ static void __init set_high_memory(void)
->   * starts where the previous one ended. For example, ZONE_DMA32 starts
->   * at arch_max_dma_pfn.
->   */
-> -void __init free_area_init(unsigned long *max_zone_pfn)
-> +static void __init free_area_init(void)
->  {
-> +	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
->  	unsigned long start_pfn, end_pfn;
->  	int i, nid, zone;
->  	bool descending;
->  
-> -	/* Record where the zone boundaries are */
-> -	memset(arch_zone_lowest_possible_pfn, 0,
-> -				sizeof(arch_zone_lowest_possible_pfn));
-> -	memset(arch_zone_highest_possible_pfn, 0,
-> -				sizeof(arch_zone_highest_possible_pfn));
-> +	arch_zone_limits_init(max_zone_pfn);
->  
->  	start_pfn = PHYS_PFN(memblock_start_of_DRAM());
->  	descending = arch_has_descending_max_zone_pfns();
-> @@ -2681,13 +2677,19 @@ void __init __weak mem_init(void)
->  {
->  }
->  
-> +void __init mm_core_init_early(void)
-> +{
-> +	hugetlb_bootmem_alloc();
-> +
-> +	free_area_init();
-> +}
-> +
->  /*
->   * Set up kernel memory allocators
->   */
->  void __init mm_core_init(void)
->  {
->  	arch_mm_preinit();
-> -	hugetlb_bootmem_alloc();
->  
->  	/* Initializations relying on SMP setup */
->  	BUILD_BUG_ON(MAX_ZONELISTS > 2);
-> -- 
-> 2.51.0
-> 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
