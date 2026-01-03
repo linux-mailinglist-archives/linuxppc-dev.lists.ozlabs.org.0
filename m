@@ -1,55 +1,103 @@
-Return-Path: <linuxppc-dev+bounces-15190-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15186-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F46CF0474
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 19:58:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5316CF043E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 19:54:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dk8vb4FHHz2yZ5;
-	Sun, 04 Jan 2026 05:57:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dk8rB0cDnz2yK7;
+	Sun, 04 Jan 2026 05:54:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767466667;
-	cv=none; b=HWAr+J1KSti4NHrZ6whF0zM9uvu6oxLaGqkdQ1a7e8Ub9nUuQG5NkGIF1rBSPJrpyRfsTZtGH9N0YZeSYnXT3CRQtiTk2zGqTxJuBrsTY7C4DJg8keWv/jk/lhhvmkWw/v19y/uk6x9esaZU7cdIPIK+6A4r04lZZbz1vpcxhZYYWb23HT398l2+lcYYFkI7X7LKBTkbhM3HTJF+pzTPuWxk1MzflZCUcj8sUm5iTSZsOqQ3dfSuKA3+iaTVRpNJWwMXP2RhR9vTGigvbqHLd2zrElnuiKHU0A1y3zwSWs8AiweVge/bFlDpOkR19Kqvh9ijtXp8fgJlKAL8u2ubDA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767466489;
+	cv=none; b=UWN+L/DaCdJwF4wpPf7GGZd5wH6e1bhnprPeC4xx/F69vr33sL59U3prmsLm+SHl2CtjQ0oEvWjO/0jMOGJA+FjPtznhve4ylI8KWmk8SoM9RW2aMvtE96pWwfADB7Bmvbr9JD2tHGmIMALgcyLBuxhOz8uB9QLHOtSAZAsr9Xp5FIEeUo6skPR5fYaZjMJtTFB51OvJm/Jg3Bp5vBkBpxyF10OcYZJv8W8ZbcnQ+E/5iQ9gOWt4JScNjC7RsGgCYCzmIL/aincJZP2DSgSx3DIpf77IPysy8vTXzoSPU2G1YiqC+ezYNj4gejBt6SJ308HycjRvAWWOAmI0FM00xg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767466667; c=relaxed/relaxed;
-	bh=mSecvzXgXhb3FzfToJUcHowd+qYFOFssxKdrzOYbfGc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aHk0Fp4pNp79pAbhljuTox4D3KOkX2I/U4QE4cT7Trld1Xi+yoxoa2SBvGsZDZKFdB4OG+E4GOZsEpke0z65tCK2qd4630oKJnGd9oCtT1ItShTthSquy+xZSnwbyFgEgMmMvV2PrSFHviXfFs2N0ZRD2b7jdZlLO+UIjjuVFXNt8kjasb7sbTh2kMtYDCQcAW+IlWaz5E9TGYnbYKkLAPvetx7ZILmUBUrLiLvmCLY1bu1gZvgwpvWS6FMXwlt4WMeyCXFYIo1mCBqo0ouzBfQOPfweNiqwzUDBJb6wIVRmaCXP7AQ08vPNJjcmaLf0rltCBxdNiSgxMYoucDvXrA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FaERaJ0A; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1767466489; c=relaxed/relaxed;
+	bh=WWLqVQ/pPQ1naqkMgxEFRjUWoHX6yre2yeQ2FeZ1a5Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VR1PSUlbr8tXfuQT0JbInl+GYvQAu9msb6MSQCmJoXTadosSKOOzpxUCQwCIFMdqHzdgB8NTN2ZTA2qS8yh/1s7MpBb0GcX+kRa5BvKp4+Of1Ra7TOgD6j04+BuFcdZIW31qni3cVm2VzWDejDtT+m0T9sa2tQu5W/EiQiG9aVqut7Op2KwS2m/t+YYAPYB3VKF2n9N08oJGeBrE8iX1hVeXGRBci+9L0e1dgGpW/qw8OlYk/E45d2YfSZLDYx0p5AtvL15Xguvf6Ml/vTqK/gMhphBN0hhw8hBR8TZrbBaWioc6exTY6ZMMJKq2mSXGONzxhmaUyFRssxDQ5GXm0w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ntpZea6S; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FaERaJ0A;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ntpZea6S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dk8vZ6Zj0z2yKn
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Jan 2026 05:57:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dk8r86B4rz2yGl
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Jan 2026 05:54:48 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BED094435C;
-	Sat,  3 Jan 2026 18:57:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 841B4C2BCB5;
-	Sat,  3 Jan 2026 18:57:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1784D40423;
+	Sat,  3 Jan 2026 18:54:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09051C113D0;
+	Sat,  3 Jan 2026 18:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767466662;
-	bh=53CsSpZsyc7xs+AdaMCHhS93fwYu+PSSE3vaZp2mGiU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=FaERaJ0AIu5BeWmwL7Mkm9o8Osg7MQpO6s4C0RpmPQ0F+7gODO+GewYdc3m8ocajN
-	 WkLSEKg4gO7MTeMA77D85x3RzPTihJzpV5zSwu/cJewguWVVh5dqmxHoIEBZTZeb37
-	 CpgLw5mVdLKgR6mCX21P/cWlZmLZLk2BWpPXtUHu+8gCA3eU6oAji7sJjglGj3+N4H
-	 ssVzC36mHe2fmFbUyv8gQHXECDPfA8MErGnzP6Hp1wf6oLpHjvC9kHFwVBB9gMdqn2
-	 xWi16pzOhSyfPdvn+AWJGAtw6DrGKgySnmTyBHp5mxG/w6n0CBW3JlDu/ZGdwchWzc
-	 wPXHynU1xt5tg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A545FC6182;
-	Sat,  3 Jan 2026 18:57:42 +0000 (UTC)
-From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
-Date: Sat, 03 Jan 2026 19:54:09 +0100
-Subject: [PATCH v2 5/5] powerpc: dts: mpc83xx: Add unit addresses to
- /memory
+	s=k20201202; t=1767466485;
+	bh=JJi0MIW7ufay+ZZEo6EH5bf/kqP+vRBsByx4CICNQCs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ntpZea6Sa23o++gxekMhG3I2QU/XUTWc5nMNjfwy8Zyi3NxPf/H771f3L1fK5G+JV
+	 BrIkjrHnTIa77Opbod1/wKDGPBT3rKbTairESVy5GIn6kLNbwjXgkey0AYjrLhGdtm
+	 1WmiT9BvnPKoouYAqUVpZ8pMait9YtcjloPtOthbURuem94A6kCmWXPP6kGGR5TMsk
+	 u58EQYc7patXv3IP/W4ZCBdZ3acr/VkBhoQVGrCvo13QtDF90hlUSKKPF5FMbB73Cg
+	 bSz/V5A/Jkpw/H2SFDajyAjOcb+N26PpJKiNlYzPGaxtX/S68RKs74BHnvORKROqCy
+	 PVF9NX0W2W0Vg==
+Date: Sat, 3 Jan 2026 20:54:23 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Klara Modin <klarasmodin@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+	x86@kernel.org, linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 22/28] arch, mm: consolidate initialization of nodes,
+ zones and memory map
+Message-ID: <aVll339wim7dCIaQ@kernel.org>
+References: <20260102070005.65328-1-rppt@kernel.org>
+ <20260102070005.65328-23-rppt@kernel.org>
+ <aVhN2NgQEKe0yzva@soda.int.kasm.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,218 +111,203 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260103-mpc83xx-cleanup-v2-5-b2a13c0a0d63@posteo.net>
-References: <20260103-mpc83xx-cleanup-v2-0-b2a13c0a0d63@posteo.net>
-In-Reply-To: <20260103-mpc83xx-cleanup-v2-0-b2a13c0a0d63@posteo.net>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767466660; l=5576;
- i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
- bh=t9Y71lb+NmFSZt3uA171w86/UdO38JD0i35P7z+18Q0=;
- b=u0ya6NMRWPK/wrUQ53gvmrKN3VhXv2Bwj+XdEikWeYHrvnEwjL4nMP1QIV9lbUb5aM3VczOYR
- LXp8ZqjIhPfAdv2wMBGtvqIJ6Vnb5mdk54wscvWdIIqGcw+GKpZbfWZ
-X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
- pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
-X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
- auth_id=156
-X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-Reply-To: j.ne@posteo.net
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aVhN2NgQEKe0yzva@soda.int.kasm.eu>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: "J. Neuschäfer" <j.ne@posteo.net>
+Hi,
 
-This fixes dtschema warnings such as the following:
+On Sat, Jan 03, 2026 at 12:33:29AM +0100, Klara Modin wrote:
+> On 2026-01-02 08:59:58 +0200, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > To initialize node, zone and memory map data structures every architecture
+> > calls free_area_init() during setup_arch() and passes it an array of zone
+> > limits.
+> > 
+> > Beside code duplication it creates "interesting" ordering cases between
+> > allocation and initialization of hugetlb and the memory map. Some
+> > architectures allocate hugetlb pages very early in setup_arch() in certain
+> > cases, some only create hugetlb CMA areas in setup_arch() and sometimes
+> > hugetlb allocations happen mm_core_init().
+> > 
+> > With arch_zone_limits_init() helper available now on all architectures it
+> > is no longer necessary to call free_area_init() from architecture setup
+> > code. Rather core MM initialization can call arch_zone_limits_init() in a
+> > single place.
+> > 
+> > This allows to unify ordering of hugetlb vs memory map allocation and
+> > initialization.
+> > 
+> > Remove the call to free_area_init() from architecture specific code and
+> > place it in a new mm_core_init_early() function that is called immediately
+> > after setup_arch().
+> > 
+> > After this refactoring it is possible to consolidate hugetlb allocations
+> > and eliminate differences in ordering of hugetlb and memory map
+> > initialization among different architectures.
+> > 
+> > As the first step of this consolidation move hugetlb_bootmem_alloc() to
+> > mm_core_early_init().
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> 
+> This breaks boot on my Raspberry Pi 1. The reason seems to be the use of
+> page_folio() when initializing the dynamically allocated zero page in
+> arm, which doesn't work when free_area_init() hasn't been called yet.
 
-  arch/powerpc/boot/dts/mpc8315erdb.dtb: /: memory: False schema
-  does not allow {'device_type': ['memory'], 'reg': [[0, 134217728]]}
+I believe the reason is rather the use of virt_to_phys() that now happens
+before the memory map is ready.
 
-Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> The following oopses are generated:
+> 
+>  8<--- cut here ---
+>  Unable to handle kernel paging request at virtual address 003dfb44 when read
+>  [003dfb44] *pgd=00000000
+>  Internal error: Oops: 5 [#1] ARM
+>  CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.19.0-rc3-03898-g7975b0084358 #451 NONE
+>  Hardware name: BCM2835
+>  PC is at paging_init (include/linux/page-flags.h:284 (discriminator 2) arch/arm/mm/mmu.c:1790 (discriminator 2))
+>  LR is at paging_init (arch/arm/mm/mmu.c:1789 (discriminator 1))
+
+...
+
+>  8<--- cut here ---
+> 
+> and the second one repeats for some time afterwards.
+> 
+> I experimented a little by allocating the zero page statically as many
+> other arches do which fixes the issue as it does not need to be
+> initialized at this point anymore, though I have no idea if that's
+> appropriate.
+
+Do you mean putting the zero in the BSS like, e.g. arm64? I don't see a
+reason why this shouldn't work.
+
+I also have a patch with some minor changes that still keeps
+empty_zero_page allocated, but avoids virt_to_page() and folio_page()
+dance. Can you please test it in your setup?
+
+From 8a213c13211106d592fbe96b68ee29879ed739f8 Mon Sep 17 00:00:00 2001
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Sat, 3 Jan 2026 20:40:09 +0200
+Subject: [PATCH] arm: make initialization of zero page independent of the
+ memory map
+
+Unlike most architectures, arm keeps a struct page pointer to the
+empty_zero_page and to initialize it requires conversion of a virtual
+address to page which makes it necessary to have memory map initialized
+before creating the empty_zero_page.
+
+Make empty_zero_page a void * to decouple it's initialization from the
+initialization of the memory map.
+
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/powerpc/boot/dts/asp834x-redboot.dts | 2 +-
- arch/powerpc/boot/dts/mpc8308_p1m.dts     | 2 +-
- arch/powerpc/boot/dts/mpc8308rdb.dts      | 2 +-
- arch/powerpc/boot/dts/mpc8313erdb.dts     | 2 +-
- arch/powerpc/boot/dts/mpc8315erdb.dts     | 2 +-
- arch/powerpc/boot/dts/mpc832x_rdb.dts     | 2 +-
- arch/powerpc/boot/dts/mpc8349emitx.dts    | 2 +-
- arch/powerpc/boot/dts/mpc8349emitxgp.dts  | 2 +-
- arch/powerpc/boot/dts/mpc8377_rdb.dts     | 2 +-
- arch/powerpc/boot/dts/mpc8377_wlan.dts    | 2 +-
- arch/powerpc/boot/dts/mpc8378_rdb.dts     | 2 +-
- arch/powerpc/boot/dts/mpc8379_rdb.dts     | 2 +-
- 12 files changed, 12 insertions(+), 12 deletions(-)
+ arch/arm/include/asm/pgtable.h |  4 ++--
+ arch/arm/mm/mmu.c              | 10 +++-------
+ arch/arm/mm/nommu.c            | 10 +++-------
+ 3 files changed, 8 insertions(+), 16 deletions(-)
 
-diff --git a/arch/powerpc/boot/dts/asp834x-redboot.dts b/arch/powerpc/boot/dts/asp834x-redboot.dts
-index 33ddb17d18760d..c541bd3679831f 100644
---- a/arch/powerpc/boot/dts/asp834x-redboot.dts
-+++ b/arch/powerpc/boot/dts/asp834x-redboot.dts
-@@ -37,7 +37,7 @@ PowerPC,8347@0 {
- 		};
- 	};
+diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
+index 86378eec7757..08bbd2aed6c9 100644
+--- a/arch/arm/include/asm/pgtable.h
++++ b/arch/arm/include/asm/pgtable.h
+@@ -15,8 +15,8 @@
+  * ZERO_PAGE is a global shared page that is always zero: used
+  * for zero-mapped memory areas etc..
+  */
+-extern struct page *empty_zero_page;
+-#define ZERO_PAGE(vaddr)	(empty_zero_page)
++extern void *empty_zero_page;
++#define ZERO_PAGE(vaddr)	(virt_to_page(empty_zero_page))
+ #endif
  
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x8000000>;	// 128MB at 0
- 	};
-diff --git a/arch/powerpc/boot/dts/mpc8308_p1m.dts b/arch/powerpc/boot/dts/mpc8308_p1m.dts
-index 2638555afcc454..41f917f97dab8d 100644
---- a/arch/powerpc/boot/dts/mpc8308_p1m.dts
-+++ b/arch/powerpc/boot/dts/mpc8308_p1m.dts
-@@ -37,7 +37,7 @@ PowerPC,8308@0 {
- 		};
- 	};
+ #include <asm-generic/pgtable-nopud.h>
+diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
+index 8bac96e205ac..867258f1ae09 100644
+--- a/arch/arm/mm/mmu.c
++++ b/arch/arm/mm/mmu.c
+@@ -45,7 +45,7 @@ extern unsigned long __atags_pointer;
+  * empty_zero_page is a special page that is used for
+  * zero-initialized data and COW.
+  */
+-struct page *empty_zero_page;
++void *empty_zero_page;
+ EXPORT_SYMBOL(empty_zero_page);
  
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x08000000>;	// 128MB at 0
- 	};
-diff --git a/arch/powerpc/boot/dts/mpc8308rdb.dts b/arch/powerpc/boot/dts/mpc8308rdb.dts
-index af2ed8380a867c..39ed26fba41093 100644
---- a/arch/powerpc/boot/dts/mpc8308rdb.dts
-+++ b/arch/powerpc/boot/dts/mpc8308rdb.dts
-@@ -38,7 +38,7 @@ PowerPC,8308@0 {
- 		};
- 	};
+ /*
+@@ -1754,8 +1754,6 @@ static void __init early_fixmap_shutdown(void)
+  */
+ void __init paging_init(const struct machine_desc *mdesc)
+ {
+-	void *zero_page;
+-
+ #ifdef CONFIG_XIP_KERNEL
+ 	/* Store the kernel RW RAM region start/end in these variables */
+ 	kernel_sec_start = CONFIG_PHYS_OFFSET & SECTION_MASK;
+@@ -1782,12 +1780,10 @@ void __init paging_init(const struct machine_desc *mdesc)
+ 	top_pmd = pmd_off_k(0xffff0000);
  
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x08000000>;	// 128MB at 0
- 	};
-diff --git a/arch/powerpc/boot/dts/mpc8313erdb.dts b/arch/powerpc/boot/dts/mpc8313erdb.dts
-index 137217d377e91b..c9fe4dabc80a78 100644
---- a/arch/powerpc/boot/dts/mpc8313erdb.dts
-+++ b/arch/powerpc/boot/dts/mpc8313erdb.dts
-@@ -39,7 +39,7 @@ PowerPC,8313@0 {
- 		};
- 	};
+ 	/* allocate the zero page. */
+-	zero_page = early_alloc(PAGE_SIZE);
++	empty_zero_page = early_alloc(PAGE_SIZE);
++	__cpuc_flush_dcache_area(empty_zero_page, PAGE_SIZE);
  
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x08000000>;	// 128MB at 0
- 	};
-diff --git a/arch/powerpc/boot/dts/mpc8315erdb.dts b/arch/powerpc/boot/dts/mpc8315erdb.dts
-index 0b087180e1815f..7ba1159f880311 100644
---- a/arch/powerpc/boot/dts/mpc8315erdb.dts
-+++ b/arch/powerpc/boot/dts/mpc8315erdb.dts
-@@ -40,7 +40,7 @@ PowerPC,8315@0 {
- 		};
- 	};
+ 	bootmem_init();
+-
+-	empty_zero_page = virt_to_page(zero_page);
+-	__flush_dcache_folio(NULL, page_folio(empty_zero_page));
+ }
  
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x08000000>;	// 128MB at 0
- 	};
-diff --git a/arch/powerpc/boot/dts/mpc832x_rdb.dts b/arch/powerpc/boot/dts/mpc832x_rdb.dts
-index ba7caaf98fd58f..06f134490d9574 100644
---- a/arch/powerpc/boot/dts/mpc832x_rdb.dts
-+++ b/arch/powerpc/boot/dts/mpc832x_rdb.dts
-@@ -38,7 +38,7 @@ PowerPC,8323@0 {
- 		};
- 	};
+ void __init early_mm_init(const struct machine_desc *mdesc)
+diff --git a/arch/arm/mm/nommu.c b/arch/arm/mm/nommu.c
+index d638cc87807e..f80ff5a69fbb 100644
+--- a/arch/arm/mm/nommu.c
++++ b/arch/arm/mm/nommu.c
+@@ -31,7 +31,7 @@ unsigned long vectors_base;
+  * empty_zero_page is a special page that is used for
+  * zero-initialized data and COW.
+  */
+-struct page *empty_zero_page;
++void *empty_zero_page;
+ EXPORT_SYMBOL(empty_zero_page);
  
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x04000000>;
- 	};
-diff --git a/arch/powerpc/boot/dts/mpc8349emitx.dts b/arch/powerpc/boot/dts/mpc8349emitx.dts
-index 13f17232ba83d5..12d33cb55b72a9 100644
---- a/arch/powerpc/boot/dts/mpc8349emitx.dts
-+++ b/arch/powerpc/boot/dts/mpc8349emitx.dts
-@@ -39,7 +39,7 @@ PowerPC,8349@0 {
- 		};
- 	};
+ #ifdef CONFIG_ARM_MPU
+@@ -156,18 +156,14 @@ void __init adjust_lowmem_bounds(void)
+  */
+ void __init paging_init(const struct machine_desc *mdesc)
+ {
+-	void *zero_page;
+-
+ 	early_trap_init((void *)vectors_base);
+ 	mpu_setup();
  
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x10000000>;
- 	};
-diff --git a/arch/powerpc/boot/dts/mpc8349emitxgp.dts b/arch/powerpc/boot/dts/mpc8349emitxgp.dts
-index eae0afd5abbc39..2998a233a790be 100644
---- a/arch/powerpc/boot/dts/mpc8349emitxgp.dts
-+++ b/arch/powerpc/boot/dts/mpc8349emitxgp.dts
-@@ -37,7 +37,7 @@ PowerPC,8349@0 {
- 		};
- 	};
+ 	/* allocate the zero page. */
+-	zero_page = (void *)memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
++	empty_zero_page = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
++	__cpuc_flush_dcache_area(empty_zero_page, PAGE_SIZE);
  
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x10000000>;
- 	};
-diff --git a/arch/powerpc/boot/dts/mpc8377_rdb.dts b/arch/powerpc/boot/dts/mpc8377_rdb.dts
-index f137ccb8cfdedf..fb311a7eb9f2cb 100644
---- a/arch/powerpc/boot/dts/mpc8377_rdb.dts
-+++ b/arch/powerpc/boot/dts/mpc8377_rdb.dts
-@@ -39,7 +39,7 @@ PowerPC,8377@0 {
- 		};
- 	};
+ 	bootmem_init();
+-
+-	empty_zero_page = virt_to_page(zero_page);
+-	flush_dcache_page(empty_zero_page);
+ }
  
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x10000000>;	// 256MB at 0
- 	};
-diff --git a/arch/powerpc/boot/dts/mpc8377_wlan.dts b/arch/powerpc/boot/dts/mpc8377_wlan.dts
-index ce254dd74dd06b..f736a15cceffad 100644
---- a/arch/powerpc/boot/dts/mpc8377_wlan.dts
-+++ b/arch/powerpc/boot/dts/mpc8377_wlan.dts
-@@ -40,7 +40,7 @@ PowerPC,8377@0 {
- 		};
- 	};
- 
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x20000000>;	// 512MB at 0
- 	};
-diff --git a/arch/powerpc/boot/dts/mpc8378_rdb.dts b/arch/powerpc/boot/dts/mpc8378_rdb.dts
-index 19e5473d4161b5..32c49622b40402 100644
---- a/arch/powerpc/boot/dts/mpc8378_rdb.dts
-+++ b/arch/powerpc/boot/dts/mpc8378_rdb.dts
-@@ -39,7 +39,7 @@ PowerPC,8378@0 {
- 		};
- 	};
- 
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x10000000>;	// 256MB at 0
- 	};
-diff --git a/arch/powerpc/boot/dts/mpc8379_rdb.dts b/arch/powerpc/boot/dts/mpc8379_rdb.dts
-index 61519acca22804..07deb89c5a9bdc 100644
---- a/arch/powerpc/boot/dts/mpc8379_rdb.dts
-+++ b/arch/powerpc/boot/dts/mpc8379_rdb.dts
-@@ -37,7 +37,7 @@ PowerPC,8379@0 {
- 		};
- 	};
- 
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x10000000>;	// 256MB at 0
- 	};
-
+ /*
 -- 
 2.51.0
 
+ 
+> Regards,
+> Klara Modin
+> 
 
+-- 
+Sincerely yours,
+Mike.
 
