@@ -1,79 +1,127 @@
-Return-Path: <linuxppc-dev+bounces-15179-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15180-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE029CEFA6D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 04:34:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C405CEFB51
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 06:37:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4djmQF16h3z2yFh;
-	Sat, 03 Jan 2026 14:34:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4djq8K4Bc5z2yFh;
+	Sat, 03 Jan 2026 16:37:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767411269;
-	cv=none; b=PPpX372AZtdsUJvln337vkdyVhXMUjUbFkmiACXKM6Hm8j5Tn7Lftbn3lzsYFDmGBalh/dn08U/Y/DNMVVSdBFGrBreiI0KeT7h67j0mWYisxbEbeXz+ciyYb/FnUbSSdkm6SjR8ew1eb/TmyUT17ovN4djPIPZW1yYhpBqvULaXhmtB/6cJnCo61WNDtA7IK4wTrIKG+NG5htDLlnt5PTdj2QWEonwsgvyUTFl8IEn7UJAbW3Gzjqq+5pZJXJl4XfqfZPenwWhRvx259un5Wl5Y6wTEQY2f3zTjac5GuX+Vq3DBUBQ+f5R6skikK0fA3Y/NtHVVa2vga7y2sqdH3A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.52
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767418657;
+	cv=none; b=lWjCpzVClVHQsOHCeOTRKMm7kDpPJdbNTe0mUWt65UVpGnwmuQSiZSJ2jTLN+YAqXxCFL4pNIXeCGYjJq5Fj6csl7gPqSvBrDOaTDYOBKIf4kGcKyl7hJlECcvg0qHmQZsSyArb9SyYJhuX3i6uJZNL8wG0ZgpB48ZwcSRDClGrWYK0Go4ew3VSHOAE5DUx65nUhBpWoxXYYvjumEwfOh4ik5C8dFM7kkcjos4H7W6dQG7JFeoxSeUtieaspcPkc1dJ/eBSBDk9bRkFS6m9I7z4SJuMqg3xi1sQYPm+Z3xSQLiI++znr4Tl1W1fORVEZIMOcP5+zEtyXs//KAVnoxw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767411269; c=relaxed/relaxed;
-	bh=11BZl/3hxu6ybybdpKdweKWE3uh7itVnzD8q3xLG56I=;
+	t=1767418657; c=relaxed/relaxed;
+	bh=10gk4kIzv5viXrYP6wsblohOaaYzL8Wh9uCfOfLAyTE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iriVDCSn2VbNqlNd2PS/nlkdh0HTnE1Vh1WteJjg0Iwoee5K19XGJ301VGGDYsFbpcU0r3YfoddK5jXEMD4sAyRrl0aeobBj5nz+FB1Zwpudz8cr7WrzP8xYmKY+hcQSxTAS53YlUYZEOPunATlGzUaYuauMNZOEOLDL8BmPGUJu8nH3BsDcKQyyIDMMZja+qilYlQUQF4tIza2mG2yzOotciVy3Gs9jMRTnleFfWsBf2Ox7b24CjCHtnBHtP/FxdqMIgF0m8c9v/pyno/9HBnRfBNsr1dzwZ5puSVUPqqAI+mQgaalHHRANIjI/4BE9pjxq0DtXrZaaBwz9FBU7wg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kpbIgscD; dkim-atps=neutral; spf=pass (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=dPGsNNXK0tyJRgDcbYlev+9pxvQtDUybfFciCslNuSiKHqZ22eyF/AtWqvyhhJ39kJ59/aOWNKCdlH1+3UdpY9L8bu0Xt1ncTOCcc4ueXZ5vsUvXjVFgezSMXXLbNhOB9v/kGQsTNpSsDwtzsYn4NBhL9sdTCnZA6hiESTvcoAar39Fu3ErETz2w+6cWnk+XGpGgn8b+OdG5JRJfLsQ6hUODoNLIYYwMxJAsb/sDKG0uyXobD9JBdNyomtv4hpItzWrCx4M219TPWZY/2TJVxfzPWrkZujZcUu4h9Z9eRrePJiMZkBlFldfDyHsFZEB+y3uWcS7ddjBGq66A2vXVDg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UXKGj6hF; dkim-atps=neutral; spf=pass (client-ip=209.85.221.52; helo=mail-wr1-f52.google.com; envelope-from=shorne@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kpbIgscD;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UXKGj6hF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.52; helo=mail-wr1-f52.google.com; envelope-from=shorne@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4djmQC4x3mz2yFW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 14:34:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767411268; x=1798947268;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=csYK7RCPSHPoz/5MB1fELyelv1I54HjB4geF/Uuzq4w=;
-  b=kpbIgscD/Rr+VRUjDQnRWSTvO65J+HyjRzlmOWXX8zSA4rT4qyeADJA0
-   zndwhPa9ok3gRnGUcvhLCPuqnVaVvDNBio6SlWwktl26In/nvMBezwOcw
-   /Tjfe8HqRw/5JbRB8mV4rRSXz10obrBzmAzYQE4l3vBBO8eMUTm18gjYc
-   ZbHWxZXGWaPRkr4kh8pJzpjuV+U5ZaNNNIQhO2Bk0PxoXYvNkmqnWD6TB
-   scpqEbspiXmEQIKVqVJvrGbR7Z4FUU33AzkTalUcIsgyR7tE/uCe5pjbw
-   R+7pLgPJvfdNH6AZEk93iIIFutqGrNK/9QMVrR2uOZlpJ+yn0h47H1BNR
-   g==;
-X-CSE-ConnectionGUID: yc6tydgGRjKSZPyBgBT6Gg==
-X-CSE-MsgGUID: w8EluvbSTh2zQX0toSWAFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="71465970"
-X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
-   d="scan'208";a="71465970"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 19:34:25 -0800
-X-CSE-ConnectionGUID: PycnsbgIQrS09W4Z1BbpnQ==
-X-CSE-MsgGUID: ZkTbTrcgQ5eke62DbUKzFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
-   d="scan'208";a="239387734"
-Received: from lkp-server01.sh.intel.com (HELO c9aa31daaa89) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 02 Jan 2026 19:34:19 -0800
-Received: from kbuild by c9aa31daaa89 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vbsPA-000000002Yv-3ibi;
-	Sat, 03 Jan 2026 03:34:16 +0000
-Date: Sat, 3 Jan 2026 11:34:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, balbirs@nvidia.com,
-	matthew.brost@intel.com, akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	david@redhat.com, ziy@nvidia.com, apopple@nvidia.com,
-	lorenzo.stoakes@oracle.com, lyude@redhat.com, dakr@kernel.org,
-	airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
-	mpenttil@redhat.com, jgg@nvidia.com, willy@infradead.org,
-	linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org,
-	jgg@ziepe.ca, Felix.Kuehling@amd.com
-Subject: Re: [PATCH v1 3/8] mm: Add helpers to create migration entries from
- struct pages
-Message-ID: <202601030957.g8ml6bSY-lkp@intel.com>
-References: <20251231043154.42931-4-jniethe@nvidia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4djq8H5HRFz2yFW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 16:37:34 +1100 (AEDT)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42fb0fc5aa9so5132001f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Jan 2026 21:37:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767418591; x=1768023391; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=10gk4kIzv5viXrYP6wsblohOaaYzL8Wh9uCfOfLAyTE=;
+        b=UXKGj6hFCPN7mJ3MyLjnMDj2RSBDexiMt0nb67oQVXPmb221B7pyKVCppxiGKQgSPx
+         +M/Fl0pxC1lYaTLI4rxgJ2L0niuapk0aaSRy+ywHlNcTcyibfpUs6L1VTx9caNw5QOvU
+         RS/aDKl2mHgbyLnaLN+J+Up4uWfhAduXkt7L5TMQnCUa5cv4RwxDtKP+WjC/3cMsJGpw
+         jyemxXe9jBNYOFadnZq9O1WkRzl2mifygdxqtDNH3jpe+TQTEUcX5TMP88MY8drMpn75
+         nvI49N/6FTT7aLM9YJJjPRyxQR9nghngH9vT0eKQ5yKk5TZ7mPquTIYgRAKwTcjZvTe0
+         eSBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767418591; x=1768023391;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=10gk4kIzv5viXrYP6wsblohOaaYzL8Wh9uCfOfLAyTE=;
+        b=fduMDd1FOfGO0nKlerJwRENkvN42YNSz8IHfMAIWO/idEtzNFJl+S9SSYJTs9beqUj
+         Z5I/HLTXzOU7b9eyMLASu8VoZbqLILllJQjcSq96UjV9tWzbfwBI+kKEotD1JL5pRPKf
+         SwNe0UDGj1L1eu1kfJXv+kIpR2V+SDtBof9yL92f0AYC0NlybBzM6m+iuzZv86ZfPIW/
+         G7lI7dgQ1qJjTszg5AdNyA9R5S2zO9iNccDjFN1nDq35JVAuYnrJlzAalD76atW+XnOk
+         8N91cOatMDbXwHfxpAFuAaM+sb0HwYCMuGU9NSXORQkCIUXB3oFc/5gV9mOwzlXlNq9w
+         Yl0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVcs0hsO7IGnCyT4KAceND7XsScHubi41taAADAdBMKYjh4dZDDzONuA/EbRrjyUhk6RmAqXFRVXdIdSqs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yyk1KIxIIyjIrb1jqoWekW7UVyIaenfqewgdc9kY4FhSNAsTw8Z
+	vjL3phsxqqLWWmaQtdGN5PfjENP+p1TpSN46U7PD4pwYy6B43+MjTt3p
+X-Gm-Gg: AY/fxX4qJ/gkPfANq943DasSvVpfl1DiW6h1+Nry7g/qOinKrB/LW7hFjsbM403F/+Y
+	QjbRMou/3PnfqDpVWNG9GVbB6RK8YNamh/nqsXC0xw1+4dMa9v0UxbtCsrRfc64G05mEOtMCiyG
+	+EJKL8bZgEdvW2iQgf7iIW9PoUtImmaWS03iMj9KPIRRbKXLt1pNrUwN2mh5Zz4znTitS1dovZ7
+	KDhaRzNVse9wiI5oHPS9I9XQrMAlh+5QzS/YLR04s3HaSJIW/ug/hJ/xKkjc6sZsUIxH/SACjSK
+	L3J8yh1pomFhgj9jqiBtLSIQuZfAo7GcobTNMF8JwdwiCTlALFk4unMIVW+opVA3DtPwl7/CXar
+	9pScasqdrFyLvy3fAIAYhcghxKE+Ba1vgmaQoSL+Asg0lhMvKbamM2MLAfG151hORHHlvoq3BfU
+	Itiln4gMP37cjCPtwiU7pvXHQ8dR04xlcc4pvMfrCIsR6K8S8ftAhF39zyjyfVwM0/
+X-Google-Smtp-Source: AGHT+IGVfFhDmvRzquITceR9a5MtoKyW2aPxvUx0HbCgVxiLGpVVcSZGOqzt3JsoKLBzXfIUaXLywg==
+X-Received: by 2002:a05:6000:178f:b0:430:fd84:317a with SMTP id ffacd0b85a97d-4324e4fb825mr53362620f8f.38.1767418590643;
+        Fri, 02 Jan 2026 21:36:30 -0800 (PST)
+Received: from localhost (brnt-04-b2-v4wan-170138-cust2432.vm7.cable.virginm.net. [94.175.9.129])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eaa4749sm89007161f8f.37.2026.01.02.21.36.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jan 2026 21:36:28 -0800 (PST)
+Date: Sat, 3 Jan 2026 05:36:26 +0000
+From: Stafford Horne <shorne@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+	x86@kernel.org, linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 12/28] openrisc: introduce arch_zone_limits_init()
+Message-ID: <aViq2vsMk5tltK0f@antec>
+References: <20260102070005.65328-1-rppt@kernel.org>
+ <20260102070005.65328-13-rppt@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,371 +137,58 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251231043154.42931-4-jniethe@nvidia.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20260102070005.65328-13-rppt@kernel.org>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Jordan,
+On Fri, Jan 02, 2026 at 08:59:48AM +0200, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> Move calculations of zone limits to a dedicated arch_zone_limits_init()
+> function.
+> 
+> Later MM core will use this function as an architecture specific callback
+> during nodes and zones initialization and thus there won't be a need to
+> call free_area_init() from every architecture.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  arch/openrisc/mm/init.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/openrisc/mm/init.c b/arch/openrisc/mm/init.c
+> index 9382d9a0ec78..67de93e7a685 100644
+> --- a/arch/openrisc/mm/init.c
+> +++ b/arch/openrisc/mm/init.c
+> @@ -39,15 +39,19 @@
+>  
+>  int mem_init_done;
+>  
+> -static void __init zone_sizes_init(void)
+> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+>  {
+> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+> -
+>  	/*
+>  	 * We use only ZONE_NORMAL
+>  	 */
+> -	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
+> +	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+> +}
+> +
+> +static void __init zone_sizes_init(void)
+> +{
+> +	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+>  
+> +	arch_zone_limits_init(max_zone_pfn);
+>  	free_area_init(max_zone_pfn);
+>  }
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Jordan-Niethe/mm-migrate_device-Add-migrate-PFN-flag-to-track-device-private-pages/20251231-123453
-base:   f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da
-patch link:    https://lore.kernel.org/r/20251231043154.42931-4-jniethe%40nvidia.com
-patch subject: [PATCH v1 3/8] mm: Add helpers to create migration entries from struct pages
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260103/202601030957.g8ml6bSY-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260103/202601030957.g8ml6bSY-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601030957.g8ml6bSY-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> mm/rmap.c:2542:13: error: call to undeclared function 'make_writable_migration_entry_from_page'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    2542 |                                 entry = make_writable_migration_entry_from_page(
-         |                                         ^
-   mm/rmap.c:2542:13: note: did you mean 'make_readable_migration_entry_from_page'?
-   include/linux/swapops.h:240:27: note: 'make_readable_migration_entry_from_page' declared here
-     240 | static inline swp_entry_t make_readable_migration_entry_from_page(struct page *page)
-         |                           ^
->> mm/rmap.c:2542:11: error: assigning to 'swp_entry_t' from incompatible type 'int'
-    2542 |                                 entry = make_writable_migration_entry_from_page(
-         |                                       ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    2543 |                                                         subpage);
-         |                                                         ~~~~~~~~
-   2 errors generated.
+Thanks, this looks like a good cleanup.
 
 
-vim +/make_writable_migration_entry_from_page +2542 mm/rmap.c
-
-  2275	
-  2276	/*
-  2277	 * @arg: enum ttu_flags will be passed to this argument.
-  2278	 *
-  2279	 * If TTU_SPLIT_HUGE_PMD is specified any PMD mappings will be split into PTEs
-  2280	 * containing migration entries.
-  2281	 */
-  2282	static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
-  2283			     unsigned long address, void *arg)
-  2284	{
-  2285		struct mm_struct *mm = vma->vm_mm;
-  2286		DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
-  2287		bool anon_exclusive, writable, ret = true;
-  2288		pte_t pteval;
-  2289		struct page *subpage;
-  2290		struct mmu_notifier_range range;
-  2291		enum ttu_flags flags = (enum ttu_flags)(long)arg;
-  2292		unsigned long pfn;
-  2293		unsigned long hsz = 0;
-  2294	
-  2295		/*
-  2296		 * When racing against e.g. zap_pte_range() on another cpu,
-  2297		 * in between its ptep_get_and_clear_full() and folio_remove_rmap_*(),
-  2298		 * try_to_migrate() may return before page_mapped() has become false,
-  2299		 * if page table locking is skipped: use TTU_SYNC to wait for that.
-  2300		 */
-  2301		if (flags & TTU_SYNC)
-  2302			pvmw.flags = PVMW_SYNC;
-  2303	
-  2304		/*
-  2305		 * For THP, we have to assume the worse case ie pmd for invalidation.
-  2306		 * For hugetlb, it could be much worse if we need to do pud
-  2307		 * invalidation in the case of pmd sharing.
-  2308		 *
-  2309		 * Note that the page can not be free in this function as call of
-  2310		 * try_to_unmap() must hold a reference on the page.
-  2311		 */
-  2312		range.end = vma_address_end(&pvmw);
-  2313		mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
-  2314					address, range.end);
-  2315		if (folio_test_hugetlb(folio)) {
-  2316			/*
-  2317			 * If sharing is possible, start and end will be adjusted
-  2318			 * accordingly.
-  2319			 */
-  2320			adjust_range_if_pmd_sharing_possible(vma, &range.start,
-  2321							     &range.end);
-  2322	
-  2323			/* We need the huge page size for set_huge_pte_at() */
-  2324			hsz = huge_page_size(hstate_vma(vma));
-  2325		}
-  2326		mmu_notifier_invalidate_range_start(&range);
-  2327	
-  2328		while (page_vma_mapped_walk(&pvmw)) {
-  2329			/* PMD-mapped THP migration entry */
-  2330			if (!pvmw.pte) {
-  2331				__maybe_unused unsigned long pfn;
-  2332				__maybe_unused pmd_t pmdval;
-  2333	
-  2334				if (flags & TTU_SPLIT_HUGE_PMD) {
-  2335					split_huge_pmd_locked(vma, pvmw.address,
-  2336							      pvmw.pmd, true);
-  2337					ret = false;
-  2338					page_vma_mapped_walk_done(&pvmw);
-  2339					break;
-  2340				}
-  2341	#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
-  2342				pmdval = pmdp_get(pvmw.pmd);
-  2343				if (likely(pmd_present(pmdval)))
-  2344					pfn = pmd_pfn(pmdval);
-  2345				else
-  2346					pfn = softleaf_to_pfn(softleaf_from_pmd(pmdval));
-  2347	
-  2348				subpage = folio_page(folio, pfn - folio_pfn(folio));
-  2349	
-  2350				VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
-  2351						!folio_test_pmd_mappable(folio), folio);
-  2352	
-  2353				if (set_pmd_migration_entry(&pvmw, subpage)) {
-  2354					ret = false;
-  2355					page_vma_mapped_walk_done(&pvmw);
-  2356					break;
-  2357				}
-  2358				continue;
-  2359	#endif
-  2360			}
-  2361	
-  2362			/* Unexpected PMD-mapped THP? */
-  2363			VM_BUG_ON_FOLIO(!pvmw.pte, folio);
-  2364	
-  2365			/*
-  2366			 * Handle PFN swap PTEs, such as device-exclusive ones, that
-  2367			 * actually map pages.
-  2368			 */
-  2369			pteval = ptep_get(pvmw.pte);
-  2370			if (likely(pte_present(pteval))) {
-  2371				pfn = pte_pfn(pteval);
-  2372			} else {
-  2373				const softleaf_t entry = softleaf_from_pte(pteval);
-  2374	
-  2375				pfn = softleaf_to_pfn(entry);
-  2376				VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
-  2377			}
-  2378	
-  2379			subpage = folio_page(folio, pfn - folio_pfn(folio));
-  2380			address = pvmw.address;
-  2381			anon_exclusive = folio_test_anon(folio) &&
-  2382					 PageAnonExclusive(subpage);
-  2383	
-  2384			if (folio_test_hugetlb(folio)) {
-  2385				bool anon = folio_test_anon(folio);
-  2386	
-  2387				/*
-  2388				 * huge_pmd_unshare may unmap an entire PMD page.
-  2389				 * There is no way of knowing exactly which PMDs may
-  2390				 * be cached for this mm, so we must flush them all.
-  2391				 * start/end were already adjusted above to cover this
-  2392				 * range.
-  2393				 */
-  2394				flush_cache_range(vma, range.start, range.end);
-  2395	
-  2396				/*
-  2397				 * To call huge_pmd_unshare, i_mmap_rwsem must be
-  2398				 * held in write mode.  Caller needs to explicitly
-  2399				 * do this outside rmap routines.
-  2400				 *
-  2401				 * We also must hold hugetlb vma_lock in write mode.
-  2402				 * Lock order dictates acquiring vma_lock BEFORE
-  2403				 * i_mmap_rwsem.  We can only try lock here and
-  2404				 * fail if unsuccessful.
-  2405				 */
-  2406				if (!anon) {
-  2407					VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
-  2408					if (!hugetlb_vma_trylock_write(vma)) {
-  2409						page_vma_mapped_walk_done(&pvmw);
-  2410						ret = false;
-  2411						break;
-  2412					}
-  2413					if (huge_pmd_unshare(mm, vma, address, pvmw.pte)) {
-  2414						hugetlb_vma_unlock_write(vma);
-  2415						flush_tlb_range(vma,
-  2416							range.start, range.end);
-  2417	
-  2418						/*
-  2419						 * The ref count of the PMD page was
-  2420						 * dropped which is part of the way map
-  2421						 * counting is done for shared PMDs.
-  2422						 * Return 'true' here.  When there is
-  2423						 * no other sharing, huge_pmd_unshare
-  2424						 * returns false and we will unmap the
-  2425						 * actual page and drop map count
-  2426						 * to zero.
-  2427						 */
-  2428						page_vma_mapped_walk_done(&pvmw);
-  2429						break;
-  2430					}
-  2431					hugetlb_vma_unlock_write(vma);
-  2432				}
-  2433				/* Nuke the hugetlb page table entry */
-  2434				pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
-  2435				if (pte_dirty(pteval))
-  2436					folio_mark_dirty(folio);
-  2437				writable = pte_write(pteval);
-  2438			} else if (likely(pte_present(pteval))) {
-  2439				flush_cache_page(vma, address, pfn);
-  2440				/* Nuke the page table entry. */
-  2441				if (should_defer_flush(mm, flags)) {
-  2442					/*
-  2443					 * We clear the PTE but do not flush so potentially
-  2444					 * a remote CPU could still be writing to the folio.
-  2445					 * If the entry was previously clean then the
-  2446					 * architecture must guarantee that a clear->dirty
-  2447					 * transition on a cached TLB entry is written through
-  2448					 * and traps if the PTE is unmapped.
-  2449					 */
-  2450					pteval = ptep_get_and_clear(mm, address, pvmw.pte);
-  2451	
-  2452					set_tlb_ubc_flush_pending(mm, pteval, address, address + PAGE_SIZE);
-  2453				} else {
-  2454					pteval = ptep_clear_flush(vma, address, pvmw.pte);
-  2455				}
-  2456				if (pte_dirty(pteval))
-  2457					folio_mark_dirty(folio);
-  2458				writable = pte_write(pteval);
-  2459			} else {
-  2460				const softleaf_t entry = softleaf_from_pte(pteval);
-  2461	
-  2462				pte_clear(mm, address, pvmw.pte);
-  2463	
-  2464				writable = softleaf_is_device_private_write(entry);
-  2465			}
-  2466	
-  2467			VM_WARN_ON_FOLIO(writable && folio_test_anon(folio) &&
-  2468					!anon_exclusive, folio);
-  2469	
-  2470			/* Update high watermark before we lower rss */
-  2471			update_hiwater_rss(mm);
-  2472	
-  2473			if (PageHWPoison(subpage)) {
-  2474				VM_WARN_ON_FOLIO(folio_is_device_private(folio), folio);
-  2475	
-  2476				pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
-  2477				if (folio_test_hugetlb(folio)) {
-  2478					hugetlb_count_sub(folio_nr_pages(folio), mm);
-  2479					set_huge_pte_at(mm, address, pvmw.pte, pteval,
-  2480							hsz);
-  2481				} else {
-  2482					dec_mm_counter(mm, mm_counter(folio));
-  2483					set_pte_at(mm, address, pvmw.pte, pteval);
-  2484				}
-  2485			} else if (likely(pte_present(pteval)) && pte_unused(pteval) &&
-  2486				   !userfaultfd_armed(vma)) {
-  2487				/*
-  2488				 * The guest indicated that the page content is of no
-  2489				 * interest anymore. Simply discard the pte, vmscan
-  2490				 * will take care of the rest.
-  2491				 * A future reference will then fault in a new zero
-  2492				 * page. When userfaultfd is active, we must not drop
-  2493				 * this page though, as its main user (postcopy
-  2494				 * migration) will not expect userfaults on already
-  2495				 * copied pages.
-  2496				 */
-  2497				dec_mm_counter(mm, mm_counter(folio));
-  2498			} else {
-  2499				swp_entry_t entry;
-  2500				pte_t swp_pte;
-  2501	
-  2502				/*
-  2503				 * arch_unmap_one() is expected to be a NOP on
-  2504				 * architectures where we could have PFN swap PTEs,
-  2505				 * so we'll not check/care.
-  2506				 */
-  2507				if (arch_unmap_one(mm, vma, address, pteval) < 0) {
-  2508					if (folio_test_hugetlb(folio))
-  2509						set_huge_pte_at(mm, address, pvmw.pte,
-  2510								pteval, hsz);
-  2511					else
-  2512						set_pte_at(mm, address, pvmw.pte, pteval);
-  2513					ret = false;
-  2514					page_vma_mapped_walk_done(&pvmw);
-  2515					break;
-  2516				}
-  2517	
-  2518				/* See folio_try_share_anon_rmap_pte(): clear PTE first. */
-  2519				if (folio_test_hugetlb(folio)) {
-  2520					if (anon_exclusive &&
-  2521					    hugetlb_try_share_anon_rmap(folio)) {
-  2522						set_huge_pte_at(mm, address, pvmw.pte,
-  2523								pteval, hsz);
-  2524						ret = false;
-  2525						page_vma_mapped_walk_done(&pvmw);
-  2526						break;
-  2527					}
-  2528				} else if (anon_exclusive &&
-  2529					   folio_try_share_anon_rmap_pte(folio, subpage)) {
-  2530					set_pte_at(mm, address, pvmw.pte, pteval);
-  2531					ret = false;
-  2532					page_vma_mapped_walk_done(&pvmw);
-  2533					break;
-  2534				}
-  2535	
-  2536				/*
-  2537				 * Store the pfn of the page in a special migration
-  2538				 * pte. do_swap_page() will wait until the migration
-  2539				 * pte is removed and then restart fault handling.
-  2540				 */
-  2541				if (writable)
-> 2542					entry = make_writable_migration_entry_from_page(
-  2543								subpage);
-  2544				else if (anon_exclusive)
-  2545					entry = make_readable_exclusive_migration_entry_from_page(
-  2546								subpage);
-  2547				else
-  2548					entry = make_readable_migration_entry_from_page(
-  2549								subpage);
-  2550				if (likely(pte_present(pteval))) {
-  2551					if (pte_young(pteval))
-  2552						entry = make_migration_entry_young(entry);
-  2553					if (pte_dirty(pteval))
-  2554						entry = make_migration_entry_dirty(entry);
-  2555					swp_pte = swp_entry_to_pte(entry);
-  2556					if (pte_soft_dirty(pteval))
-  2557						swp_pte = pte_swp_mksoft_dirty(swp_pte);
-  2558					if (pte_uffd_wp(pteval))
-  2559						swp_pte = pte_swp_mkuffd_wp(swp_pte);
-  2560				} else {
-  2561					swp_pte = swp_entry_to_pte(entry);
-  2562					if (pte_swp_soft_dirty(pteval))
-  2563						swp_pte = pte_swp_mksoft_dirty(swp_pte);
-  2564					if (pte_swp_uffd_wp(pteval))
-  2565						swp_pte = pte_swp_mkuffd_wp(swp_pte);
-  2566				}
-  2567				if (folio_test_hugetlb(folio))
-  2568					set_huge_pte_at(mm, address, pvmw.pte, swp_pte,
-  2569							hsz);
-  2570				else
-  2571					set_pte_at(mm, address, pvmw.pte, swp_pte);
-  2572				trace_set_migration_pte(address, pte_val(swp_pte),
-  2573							folio_order(folio));
-  2574				/*
-  2575				 * No need to invalidate here it will synchronize on
-  2576				 * against the special swap migration pte.
-  2577				 */
-  2578			}
-  2579	
-  2580			if (unlikely(folio_test_hugetlb(folio)))
-  2581				hugetlb_remove_rmap(folio);
-  2582			else
-  2583				folio_remove_rmap_pte(folio, subpage, vma);
-  2584			if (vma->vm_flags & VM_LOCKED)
-  2585				mlock_drain_local();
-  2586			folio_put(folio);
-  2587		}
-  2588	
-  2589		mmu_notifier_invalidate_range_end(&range);
-  2590	
-  2591		return ret;
-  2592	}
-  2593	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Acked-by: Stafford Horne <shorne@gmail.com>
 
