@@ -1,53 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-15185-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15191-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F550CF03E9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 19:08:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9297CF047B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 19:58:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dk7p41FpTz2yK7;
-	Sun, 04 Jan 2026 05:07:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dk8w724mVz2yPM;
+	Sun, 04 Jan 2026 05:58:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767463676;
-	cv=none; b=jYfQ1mMBQs4GYkmP6XWMc2nFGnhs/CAM1yRnyfqxrjPQmpVOU2/DthFx4TK1BowFqLyxCP3bjU+Mh+3kRaC1+kbQHLXF1iCLLzwqAnbNJTj48h8aO5G74uuff3ct0EomvIfhdkVsJbW/ZXbCWbcO2RZgIE7fvBf8dvpRTEApBDam0U3YLZ6yXhqrXgpXsC9jDJzwRusKfDGqrRu48a97S9XzisPV/qSiDdxINDp2mq7qBnUe3XwHsjo3/PP9yRsr/X6mK7e2QsOn5DQkmmmgXDL42BP7BDQgB8xIGQlSwhhZzDJ9mJevgTYKkRsNXaWPO29ANGz7HmbHu0sq5DYfkg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767466695;
+	cv=none; b=LiL2UspTiYyy5snh3hfvLseuXUQswf512hcEthIUGiFFLCBWPvKZWRsKYHznIPf0caLQfCuYYG76L8SCweSOviBXrM4DjRVdicBzOawTNS8P3ydnct2mHuF3JEyRWYwC69WRB5reHfXMV7qNdxBv3WHE3Dy/CgwDq1hHDcnZgTSLVwem3z+nEjp9LdY0mtvvRRUDRZNIoUbJQ1/IIBbCVXzaShJvogX1WA+TQdQOB+9bDtnrDKOKoozrU2XCZeZ3tZ1ynWqHnIhMvEOIkJ8qR32/kJfZeU+uO4tFCKuNyLpJ2Z2ElBDZ0KlnkyIbOvvaQ+Wme1jwydurakRqGn1Q0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767463676; c=relaxed/relaxed;
-	bh=YB7W/b1VQn0kvNgrqs3UC9ByQmqXrG7dIuJcfO3um30=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lwxiPt7b3CjY1Ms+CnX4FtervHD3ouIL1G+RkwBiKqm3rQ8bJWPrSXldIgekwZdboft36AEKAs7NhXcVoRT/Lnd3MNMUW8meUkai+GSnsjcFt5tMC/JwQt2NCLOy5lARfknfXpHoZcoVb8vWQYLjqiYBMq8JvMpdtnxCdKIGX2Iu8fXk1wQCxY4SmJm9R4QJ4GScEq0M6U9tyGeI7vVjb94t9zzEQU/p2mhl6mWUR1Wxl0Hjqa5rebbm/26/e5J3PF8uPWKbWt07F55EPc0jQRC5hnSVl5c2WVE/0Q9trmmX1I+U0oYA35I/+C4cM0zYNrafqcawQZj/zzG4EdDR6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rFnMyNDR; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1767466695; c=relaxed/relaxed;
+	bh=nhYbY9JpemZA/SSNPnIlbeSZ1rFMmu1MfW/XoDAMS/Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oXeSKfjcoHFIUh6R+4wGSkOk6Rs60pwMYKXtpxDmyoO4hIN9dFX/TDWAeeS2krIEPCBm5kVgWrCvawAkicUcmwwxnwMs3JmIkyrwdvfl2ipqnkcVnIuCQwG2Fab79OUZeak+EQSe8Zax1jRokHuXK9KXa4kV6W7dgp9suJHo+77pAXqT6bJfVcLg0OaXwX9iufZ8TClGvzanGHB3ri4fkheexDOc0aO0lm0v/Yx8vG17Cy3oufVk8aswRoP+83HLrOpGshAnMXfl3kdxLrl2fhcnNNYlILhN1wNiIiMVgxkS88DO+R0iXgnRO92/VaYWXdYWPU22KpkvADbOWZM7Bw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qFblRkXw; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rFnMyNDR;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qFblRkXw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dk7p23Twjz2yGq
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Jan 2026 05:07:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dk8w62m0rz2yKp
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Jan 2026 05:58:14 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 909F060017;
-	Sat,  3 Jan 2026 18:07:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1429CC113D0;
-	Sat,  3 Jan 2026 18:07:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 85F084334D;
+	Sat,  3 Jan 2026 18:57:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4BDD9C113D0;
+	Sat,  3 Jan 2026 18:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767463671;
-	bh=R4w6+sdSTrHVY71plBapF63HN9oGwBYSt5kWxnbsngU=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=rFnMyNDRFlcI/lialH+mfL/RI3VGqwNIriD+IFJEzfosiGi+v1kYfWYaSX1bdQNAl
-	 3tZ7heGvD6lzZqLIRe1OcNpUsRH2+NnY7xSXIYJDXwRwJRsKVnxVJanOX3zgI6dfr9
-	 yuhDjYsisQhGVahFe4gjB6856chyIfZGxw9eG+wWecseXK4698WfnB/ke8E5vwGzHF
-	 c1ONhMPKTJjQxwq4n3dFojuuA3MIR85kGEkDi5TSOsHXLM/PwMKchDjxgTwQhIc0mF
-	 UtOnGS3b667WPBraaB0zgU3+ba3bDi7zY8F1I6z/7WLTS1wxiIUEjKLIDE+EUjzz2k
-	 eO9AyIZ/G7FoQ==
+	s=k20201202; t=1767466662;
+	bh=79m/nJ/QDMP8KLr5bX+4nacC2eKgzRySRWsaV7zH+GM=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=qFblRkXwKvNrauVIYruUzKIkXE5Z9rjuvRYR+oXJ0tDHFoYyOtyhWubXF+gS+2Ri5
+	 tuJReFhQOAv4ypBR9IshOyJpWmU23qiwaGSmWW0wtwRzM7Bvwylo6TudYT146NAx2J
+	 PwAAQvjE3w32AuyZMUYkNf4q3NFQI9AhC4r2TM5mLaTc2kPzvjyRgbfah7aI3to5+U
+	 Ubx4RRfmHm1PIt+eoQBQ4fw51lYZm+KKJBqbYdi0FhSYYjwFwG0sMFL1y+plfzV9Qd
+	 WCeTPvSXb6YoViikdNafFNGo09Bq/FKWbiC44HyfNRH/W/teCJsI3zZWzNmxwHbRpE
+	 23WyW+4lgKfZQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 023C7FC617F;
-	Sat,  3 Jan 2026 18:07:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32024FC6182;
+	Sat,  3 Jan 2026 18:57:42 +0000 (UTC)
 From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
-Date: Sat, 03 Jan 2026 19:07:41 +0100
-Subject: [PATCH] powerpc: Move GameCube/Wii options under EMBEDDED6xx
+Subject: [PATCH v2 0/5] PowerPC: A few cleanups in MPC83xx devicetrees
+Date: Sat, 03 Jan 2026 19:54:04 +0100
+Message-Id: <20260103-mpc83xx-cleanup-v2-0-b2a13c0a0d63@posteo.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,22 +64,24 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260103-gcwii-kconfig-v1-1-9c56518190a5@posteo.net>
-X-B4-Tracking: v=1; b=H4sIAOxaWWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDQwNj3fTk8sxM3ezk/Ly0zHRdg6RE0yQTQ9MkS8skJaCegqLUtMwKsHn
- RsbW1AGWNClJfAAAA
-X-Change-ID: 20260103-gcwii-kconfig-0ba5b415b99b
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+X-B4-Tracking: v=1; b=H4sIAMxlWWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDIzMDQwND3dyCZAvjigrd5JzUxLzSAl2TlFSLlDQjS4Nkc1MloK6CotS0zAq
+ widGxtbUAsAtLrmEAAAA=
+X-Change-ID: 20260101-mpc83xx-cleanup-4de8df290c75
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
  Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
  "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-kernel@vger.kernel.org, 
  =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767463670; l=2106;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767466660; l=1655;
  i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
- bh=Xmi3nHsOpx0ZMFbJp+lFFK0uM65XCmoMsN2vzb2RwRI=;
- b=y7w/FrbhG2XQSxdrDNab1OL+gCa5EyXqlWW0/7hcczAE1Dkgw80QeFKV0NE4cHWv8NXZP/Jln
- fVeQRSXewVgDIy+ncRV4XbkrlAAts4Gw7fdaOn8Ba6+wnKMNeRrwCd/
+ bh=79m/nJ/QDMP8KLr5bX+4nacC2eKgzRySRWsaV7zH+GM=;
+ b=4uOPvJj2DCAbQMXQnEmxLy/rrOrQ91EW1qu20Q340P7+2tkitZyITztORk1/v/mZ+jrLVcWvS
+ SOvnF2zbdoCBJr1qVEjChBmg7Hr+jxKp/4KWsbdUA6G6ZbvepQAeBYe
 X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
  pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
 X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
@@ -90,71 +93,39 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: "J. Neuschäfer" <j.ne@posteo.net>
+This series contains a few cleanups for mpc8315erdb.dts and other
+PowerPC devicetrees, which are hopefully uncontroversial.
 
-Move CONFIG_GAMECUBE and CONFIG_WII directly below other embedded6xx
-boards, and above options such as TSI108_BRIDGE. This has two
-advantages for the GC/Wii options:
-
- - They won't be moved around by USBGECKO_UDBG appearing or disappearing
- - They will be intendented in menuconfig/nconfig, to make it clear they
-   are part of the embedded6xx platforms
+Some of the patches were previously part of another, larger series,
+titled "powerpc: MPC83xx cleanup and LANCOM NWAPP2 board", but that
+series became too unwieldy to carry on. For this reason, this series
+starts at version 2.
 
 Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
 ---
- arch/powerpc/platforms/embedded6xx/Kconfig | 31 +++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+J. Neuschäfer (5):
+      powerpc: dts: mpc8313erdb: Use IRQ_TYPE_* macros
+      powerpc: dts: mpc8315erdb: Use IRQ_TYPE_* macros
+      powerpc: dts: mpc8315erdb: Rename LED nodes to comply with schema
+      powerpc: dts: mpc8315erdb: Add missing #cells properties to SPI bus
+      powerpc: dts: mpc83xx: Add unit addresses to /memory
 
-diff --git a/arch/powerpc/platforms/embedded6xx/Kconfig b/arch/powerpc/platforms/embedded6xx/Kconfig
-index c6adff216fe633..f406b3c7936b23 100644
---- a/arch/powerpc/platforms/embedded6xx/Kconfig
-+++ b/arch/powerpc/platforms/embedded6xx/Kconfig
-@@ -51,6 +51,22 @@ config MVME5100
- 	  This option enables support for the Motorola (now Emerson) MVME5100
- 	  board.
- 
-+config GAMECUBE
-+	bool "Nintendo-GameCube"
-+	depends on EMBEDDED6xx
-+	select GAMECUBE_COMMON
-+	help
-+	  Select GAMECUBE if configuring for the Nintendo GameCube.
-+	  More information at: <http://gc-linux.sourceforge.net/>
-+
-+config WII
-+	bool "Nintendo-Wii"
-+	depends on EMBEDDED6xx
-+	select GAMECUBE_COMMON
-+	help
-+	  Select WII if configuring for the Nintendo Wii.
-+	  More information at: <http://gc-linux.sourceforge.net/>
-+
- config TSI108_BRIDGE
- 	bool
- 	select FORCE_PCI
-@@ -77,18 +93,3 @@ config USBGECKO_UDBG
- 
- 	  If in doubt, say N here.
- 
--config GAMECUBE
--	bool "Nintendo-GameCube"
--	depends on EMBEDDED6xx
--	select GAMECUBE_COMMON
--	help
--	  Select GAMECUBE if configuring for the Nintendo GameCube.
--	  More information at: <http://gc-linux.sourceforge.net/>
--
--config WII
--	bool "Nintendo-Wii"
--	depends on EMBEDDED6xx
--	select GAMECUBE_COMMON
--	help
--	  Select WII if configuring for the Nintendo Wii.
--	  More information at: <http://gc-linux.sourceforge.net/>
-
+ arch/powerpc/boot/dts/asp834x-redboot.dts |   2 +-
+ arch/powerpc/boot/dts/mpc8308_p1m.dts     |   2 +-
+ arch/powerpc/boot/dts/mpc8308rdb.dts      |   2 +-
+ arch/powerpc/boot/dts/mpc8313erdb.dts     |  61 ++++++++-------
+ arch/powerpc/boot/dts/mpc8315erdb.dts     | 119 ++++++++++++++++--------------
+ arch/powerpc/boot/dts/mpc832x_rdb.dts     |   2 +-
+ arch/powerpc/boot/dts/mpc8349emitx.dts    |   2 +-
+ arch/powerpc/boot/dts/mpc8349emitxgp.dts  |   2 +-
+ arch/powerpc/boot/dts/mpc8377_rdb.dts     |   2 +-
+ arch/powerpc/boot/dts/mpc8377_wlan.dts    |   2 +-
+ arch/powerpc/boot/dts/mpc8378_rdb.dts     |   2 +-
+ arch/powerpc/boot/dts/mpc8379_rdb.dts     |   2 +-
+ 12 files changed, 109 insertions(+), 91 deletions(-)
 ---
-base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
-change-id: 20260103-gcwii-kconfig-0ba5b415b99b
+base-commit: d3f2d8e7de622d2a2d4283cb545e51745d87f0c5
+change-id: 20260101-mpc83xx-cleanup-4de8df290c75
 
 Best regards,
 -- 
