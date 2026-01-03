@@ -1,50 +1,103 @@
-Return-Path: <linuxppc-dev+bounces-15182-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15183-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B1FCEFE37
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 11:39:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5F5CEFEE3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 13:43:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4djxrS50sfz2yFh;
-	Sat, 03 Jan 2026 21:39:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dk0bS5cJrz2yFk;
+	Sat, 03 Jan 2026 23:43:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767436760;
-	cv=none; b=Y6NdzBvCG9wxPUW6PBlPwgF2JlQvEgGhCqIeolO4Mdc4KBBD9eju7lj9hDLPK12TsGYd8sVr5PoU7Myx/A2W69dIz5X1MLUO9W57HNrtczWxRDUvo5CuLHokC50+tJBK0ASu0Z1QjbRqmjLB32j+nZIz/veAhdPJC27QfNbvUOFH3af/CgqbnMVgxI7qypwb3BRxIP05a5Y2A9p78cJf2jC1mYvTON+sSlbGi47ENanIgyNPnFz/ptGR+pm13BBRaaAja+gQsX4kkwXBAJBBGmotKEEI30g6U8dXdHRAj2ieGvS0F7yQ5qlKqzsDILgLaPSiybkyzZNCPjeVrTVhrg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.167.50
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767444196;
+	cv=none; b=ciCy732NBWweeEmXzcYPgszfrxxaGwCQ1BXxljehX5PQ9W7pn4kSQMroN0Bv5xkJtgI//IKXxpD4NuyKAh5mmVdF+3/2nnEsEMTMr9TbhFs+XOMMTJz4qNsAbAFEOeiEOOEzuz9UVNqCcobN37boKTDPxn5AzTzKdm/QZRTwxrox+Xhb7VZBd2tlpfzEnlYNsf4idqhbbf1J5C17UFDZstSXT5dtC9RCLlhbwkJ8cMy9YVfJhEeicdMwwSuit5zDtvoGfFzYq1DULvnjz1QZWk+Ln+d7QLfFEOAOkHy+MTzGvIYlhYYf1it3C6j5KEcQf9WMckbIaiDsDIPZQbuBmg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767436760; c=relaxed/relaxed;
-	bh=TMsj1kYzVVF9a86NYvMtp9zyQLGIVbJNrRERdMeL7GU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W7YBgBEpHvob0DUKCqohCxSP6Fs7TaZuolDpOoYcNqv9AlHtuKZr02hZjuuySn5zfNZXJyj2ltJBP7JUxs/C8O97bL90pE3UfpmHZ8ZBtQQFBFQ9sN2lhgwiVBtkTVySqIw/AFb1IsPZKrpHcMnPsiq9w0R717oX9dFVhrKQVEilVPNceTD/hBgzLUF4H65s2zpi5gRtPIe9Kfrr/Pk4doQ6eljXXVFmHj3gwMMTTM8LvZsUWQssGOS1iX9nr9Gwd+LoSBL00jHtqcKMUtgaOYVQse8YOlIHMMaLjDVZAHSjk4g4YabIv0MBMFOInVFlMBv6sdFxqOk8WZtI548inA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z1jg//JS; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1767444196; c=relaxed/relaxed;
+	bh=7AGEQXVff4Cjra/LEG8aFJKzdBMi+jbn5H5NG2dDiwk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dDPeC7tvpnJGRp3WvlX7qo/YR1vkjctcnopH/Zq5OndbeWdlq4HSHWFlY7Ej+fj2h1gCv6sRPmuE9VLzhNRHNWOARdu/0LZWpikzNdOxUehNBcqtEXgCk3bFrh4JQAi72ar0mDK0rAzYBb2h8azYwQEGhg31poxBjqNveQi2bGKGpY3WD3AlZWXyBpuTP95iKRtMPy0TYjCfCcXmE+HE3A2SoI0lBPSxsLase6AmoY14v9i5pyaIJ6QzfLgAB20zfPW7pG/oGVRzvUgEZVDliLElb+gul538Y3yB2dv1F3YduZShsvr1SJzxn7F25TFAS0SzUqlQvpR4Gj2GXZ8EAA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=er1zlT8D; dkim-atps=neutral; spf=pass (client-ip=209.85.167.50; helo=mail-lf1-f50.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z1jg//JS;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=er1zlT8D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.50; helo=mail-lf1-f50.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4djxrR5Lbvz2yFd
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 21:39:19 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 60BB54399B;
-	Sat,  3 Jan 2026 10:39:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1FBC113D0;
-	Sat,  3 Jan 2026 10:39:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767436757;
-	bh=6eyfh3jMX1J1eZ7cZHsALtCQzKd/TkTN6PNL8Hj5FaU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Z1jg//JS4ytc62BBpngrMbSU5yGEKn1srAHRgCUkCO9fj65ls944bDewGE6zLeu4P
-	 vMci6Bsfe/NN6E34wTKgOEl8rDzMIJmU3tM7OJwmYRlMyvf4CDc/ER122LZRipU2Vz
-	 RF2e8N6FPyB7SsHdCwuyHLIwOAfiVnrz4x28jAzC1tE2SQQYsGBMv3fMPDrsjveAnJ
-	 Fa3zL7nlvEe1J37mftVhLG5204nGmJT6UiwOeZajvO2XCErEHsigcl3XQpMgCXgWy7
-	 aywOE/mrgaLfqaGnBdoGrEP4ctDyywE/NpIRHCXQfVTFZ8sScz2e2QMSVgx42nRT21
-	 pWZGjdvpZ9ZKg==
-Message-ID: <f51557ff-412b-46e4-b968-78b4e4d9872d@kernel.org>
-Date: Sat, 3 Jan 2026 11:39:12 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dk0bR1fHWz2yFh
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 23:43:14 +1100 (AEDT)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-59583505988so1005075e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 04:43:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767444131; x=1768048931; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7AGEQXVff4Cjra/LEG8aFJKzdBMi+jbn5H5NG2dDiwk=;
+        b=er1zlT8Dd4BR7ZIucHIjWqI/Gap7cYuM049gO3+kmUyGH9FKiwRakLtG6e7aXi7kdT
+         x/neXNI29jbYx5W7G8uLGUn7W0QnOb9dirI/1uaGIIgQdbH6AcC9bDujG0SJG/gzY5Xv
+         sPdwxZ/+4uGFxV4+ncl7Rz6hNAknpSH8P9Luo5ZNHXH7AJLa3PHTRo/wvsEQmMoDVclQ
+         1B4KkOk1BJC18+eu9lOG4TwkA1pPji85ajlD7f1AGkqxp/EDl0+gPw2QPGZGnClDJyzx
+         5DP9zqlxAOFh5MIr+J8w5MzKX/34jcw9/kBjSMG+UKsqus5taErPBv1nAAuvwNjQYaxl
+         10cQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767444131; x=1768048931;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7AGEQXVff4Cjra/LEG8aFJKzdBMi+jbn5H5NG2dDiwk=;
+        b=s8+ABv9iaDRuxVW84qtD09U0D1fNmkYoNvYfHJNkCV0jLPKtAbPPk/2W2Zddi2dE8W
+         p70Yk1BcDJ+gvA3d0VcjNW2NRq0hu58IJ2o3jtB8at8XQDzH1+zExICqfiTBr1QIsodo
+         8fG0E99n2z36l783Sw9IAN21AGZJqaqI4D4bs8L24ly341Kl+J2e5AmIG9UihxoZgzB+
+         T+uS6qj4xyNU59aZmKw9V78UAhFSv+POGVl28i/xSj+5nncKvttwIxTyq6vfOEYK4Ptg
+         ruGQ2Jcy5hDyGTX1+/zxnq5t6ASvAhGmvlQkGWg+0G2AcIrHeePBpQJcAX9W4zMW2I+X
+         s8Nw==
+X-Forwarded-Encrypted: i=1; AJvYcCUk22X0D1RrGYZs1N91Ug18LbiHfkRkn/r7h/1TU8XDVPkHC6rAkgB8jJPAWKlo+G1Ob9VTu2Ot0VS22aE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyWaJXjjZXkX7QTc2Jw3LLBmohof0HZi7troblM4z7iGgo0GO1/
+	/DO4f7wTToYXuYqq6RXG8L52xZjByXVB6ILcRRLFuRO2thl3xLkWMqS4I6X0oQ==
+X-Gm-Gg: AY/fxX7oMFDS5kFLGP0VA2T92J6jC/bP9lzg5OHBFw+N5myO94iDCylLswkRPF5coXl
+	h+zE0Y5hXOeRAJ3bFObRTszS2eGE5C/Lzbqi4YeRRBvi8IM1+RJ9qEfH7NNG0mWu9WofulgKEW+
+	ZZ7+JEGYzvfh44w+vEtHKbgKhNRdQXCWS3xcUJ2W7TDzS617E4uu9wyf2ffR1bSTY6izD4Nejj9
+	mqgjocLTzSLmQAo1bj81OmueVz861dtuqjMlek72yGxbbFlPAR79LjUTU29ijyTT7TBEe9U7vhb
+	McEdplb/nGnhFU2p5qWn7p3BvMIOD4NiY20KkLWwdxWDKZnskwT/JcJkHdw+IlW140NX65BGjzw
+	MXj3F7rv5TMhEjaFoDNeY8kJ3uKSB+S3KtDc+4/XjfX3CLNTN11DSs16/g7ROeLVuSullDT9mcf
+	WHUUJc4Aa4XuH5fQOxDFn7hosR17ce2xOrByq66hQEFIyVrVbfUAcx
+X-Google-Smtp-Source: AGHT+IGuPwj5c90N/yOSzvW/fHyvSi9BbZ6Md54mttsoAORSkjxjxsJYQaWeJvjkrO56uLXSAEKKNQ==
+X-Received: by 2002:a05:600c:198a:b0:477:9fa0:7495 with SMTP id 5b1f17b1804b1-47d6c803ca7mr16959765e9.14.1767437190097;
+        Sat, 03 Jan 2026 02:46:30 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d6c0c148bsm13448405e9.18.2026.01.03.02.46.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Jan 2026 02:46:29 -0800 (PST)
+Date: Sat, 3 Jan 2026 10:46:27 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Huacai Chen
+ <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, Paul Walmsley <pjw@kernel.org>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Heiko
+ Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander
+ Gordeev <agordeev@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Kees Cook <kees@kernel.org>, "Gustavo A. R.
+ Silva" <gustavoars@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Mark Rutland
+ <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, Jeremy Linton
+ <jeremy.linton@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] prandom: Convert prandom_u32_state() to
+ __always_inline
+Message-ID: <20260103104627.2f385d20@pumpkin>
+In-Reply-To: <719b7b99-3615-46cd-84d9-8b8fc21e3ce9@arm.com>
+References: <20260102131156.3265118-1-ryan.roberts@arm.com>
+	<20260102131156.3265118-3-ryan.roberts@arm.com>
+	<CAHmME9qHiVZwf4TAringRHSZ-yqHuPwmP=Wnx98n09jv7Vu_Rg@mail.gmail.com>
+	<719b7b99-3615-46cd-84d9-8b8fc21e3ce9@arm.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,84 +111,196 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Implement ARCH_HAS_CC_CAN_LINK
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20251230-cc-can-link-powerpc-v1-1-82298df6e3bf@linutronix.de>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20251230-cc-can-link-powerpc-v1-1-82298df6e3bf@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Fri, 2 Jan 2026 14:09:26 +0000
+Ryan Roberts <ryan.roberts@arm.com> wrote:
 
+> On 02/01/2026 13:39, Jason A. Donenfeld wrote:
+> > Hi Ryan,
+> >=20
+> > On Fri, Jan 2, 2026 at 2:12=E2=80=AFPM Ryan Roberts <ryan.roberts@arm.c=
+om> wrote: =20
+> >> context. Given the function is just a handful of operations and doesn'=
+t =20
+> >=20
+> > How many? What's this looking like in terms of assembly?  =20
+>=20
+> 25 instructions on arm64:
+>=20
+> 0000000000000000 <prandom_u32_state>:
+>    0:	29401403 	ldp	w3, w5, [x0]
+>    4:	aa0003e1 	mov	x1, x0
+>    8:	29410002 	ldp	w2, w0, [x0, #8]
+>    c:	531e74a4 	lsl	w4, w5, #2
+>   10:	530e3468 	lsl	w8, w3, #18
+>   14:	4a0400a5 	eor	w5, w5, w4
+>   18:	4a031863 	eor	w3, w3, w3, lsl #6
+>   1c:	53196047 	lsl	w7, w2, #7
+>   20:	53134806 	lsl	w6, w0, #13
+>   24:	4a023442 	eor	w2, w2, w2, lsl #13
+>   28:	4a000c00 	eor	w0, w0, w0, lsl #3
+>   2c:	121b6884 	and	w4, w4, #0xffffffe0
+>   30:	120d3108 	and	w8, w8, #0xfff80000
+>   34:	121550e7 	and	w7, w7, #0xfffff800
+>   38:	120c2cc6 	and	w6, w6, #0xfff00000
+>   3c:	2a456c85 	orr	w5, w4, w5, lsr #27
+>   40:	2a433504 	orr	w4, w8, w3, lsr #13
+>   44:	2a4254e3 	orr	w3, w7, w2, lsr #21
+>   48:	2a4030c2 	orr	w2, w6, w0, lsr #12
+>   4c:	4a020066 	eor	w6, w3, w2
+>   50:	4a050080 	eor	w0, w4, w5
+>   54:	4a0000c0 	eor	w0, w6, w0
+>   58:	29001424 	stp	w4, w5, [x1]
+>   5c:	29010823 	stp	w3, w2, [x1, #8]
+>   60:	d65f03c0 	ret
 
-Le 30/12/2025 à 08:06, Thomas Weißschuh a écrit :
-> The generic CC_CAN_LINK detection does not handle different byte orders.
-> This may lead to userprogs which are not actually runnable on the target
-> kernel.
+That is gcc, clang seems to generate something horrid (from godbolt).
+I'm not sure what it has tried to do (and maybe it can't in kernel)
+but it clearly doesn't help!
+.LCPI0_0:
+        .word   18
+        .word   2
+        .word   7
+        .word   13
+.LCPI0_1:
+        .word   6
+        .word   2
+        .word   13
+        .word   3
+.LCPI0_2:
+        .word   4294443008
+        .word   4294967264
+        .word   4294965248
+        .word   4293918720
+.LCPI0_3:
+        .word   4294967283
+        .word   4294967269
+        .word   4294967275
+        .word   4294967284
+prandom_u32_state:
+        adrp    x9, .LCPI0_1
+        ldr     q0, [x0]
+        adrp    x10, .LCPI0_3
+        ldr     q1, [x9, :lo12:.LCPI0_1]
+        adrp    x9, .LCPI0_0
+        ldr     q3, [x10, :lo12:.LCPI0_3]
+        ldr     q2, [x9, :lo12:.LCPI0_0]
+        adrp    x9, .LCPI0_2
+        mov     x8, x0
+        ushl    v1.4s, v0.4s, v1.4s
+        ushl    v2.4s, v0.4s, v2.4s
+        eor     v0.16b, v1.16b, v0.16b
+        ldr     q1, [x9, :lo12:.LCPI0_2]
+        and     v1.16b, v2.16b, v1.16b
+        ushl    v0.4s, v0.4s, v3.4s
+        orr     v0.16b, v0.16b, v1.16b
+        ext     v1.16b, v0.16b, v0.16b, #8
+        str     q0, [x8]
+        eor     v1.8b, v0.8b, v1.8b
+        fmov    x9, d1
+        lsr     x10, x9, #32
+        eor     w0, w9, w10
+        ret
 
-Isn't the kernel supposed to handle any userland endianess ? Macro 
-SET_ENDIAN() is there for that as far as I understand.
+The x86 versions are a little longer (arm's barrel shifter helps a lot).
 
-And if you want to be complete, I think you should also check whether 
-the ELF ABI is v1 or v2.
+>=20
+> > It'd also be
+> > nice to have some brief analysis of other call sites to have
+> > confirmation this isn't blowing up other users. =20
+>=20
+> I compiled defconfig before and after this patch on arm64 and compared th=
+e text
+> sizes:
+>=20
+> $ ./scripts/bloat-o-meter -t vmlinux.before vmlinux.after
+> add/remove: 3/4 grow/shrink: 4/1 up/down: 836/-128 (708)
+> Function                                     old     new   delta
+> prandom_seed_full_state                      364     932    +568
+> pick_next_task_fair                         1940    2036     +96
+> bpf_user_rnd_u32                             104     196     +92
+> prandom_bytes_state                          204     260     +56
+> e843419@0f2b_00012d69_e34                      -       8      +8
+> e843419@0db7_00010ec3_23ec                     -       8      +8
+> e843419@02cb_00003767_25c                      -       8      +8
+> bpf_prog_select_runtime                      448     444      -4
+> e843419@0aa3_0000cfd1_1580                     8       -      -8
+> e843419@0aa2_0000cfba_147c                     8       -      -8
+> e843419@075f_00008d8c_184                      8       -      -8
+> prandom_u32_state                            100       -    -100
+> Total: Before=3D19078072, After=3D19078780, chg +0.00%
+>=20
+> So 708 bytes more after inlining.
 
-Christophe
+Doesn't look like there are many calls.
 
-> 
-> Use architecture-specific logic supporting byte orders instead.
-> 
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-> ---
->   arch/powerpc/Kconfig | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 9537a61ebae0..6bb2f90e97ea 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -127,6 +127,7 @@ config PPC
->   	select ARCH_DMA_DEFAULT_COHERENT	if !NOT_COHERENT_CACHE
->   	select ARCH_ENABLE_MEMORY_HOTPLUG
->   	select ARCH_ENABLE_MEMORY_HOTREMOVE
-> +	select ARCH_HAS_CC_CAN_LINK
->   	select ARCH_HAS_COPY_MC			if PPC64
->   	select ARCH_HAS_CURRENT_STACK_POINTER
->   	select ARCH_HAS_DEBUG_VIRTUAL
-> @@ -1342,6 +1343,20 @@ endif
->   config PPC_LIB_RHEAP
->   	bool
->   
-> +config ARCH_CC_CAN_LINK
-> +	bool
-> +	default $(cc_can_link_user,$(m64-flag) -mlittle-endian) if 64BIT && CPU_LITTLE_ENDIAN
-> +	default $(cc_can_link_user,$(m64-flag) -mbig-endian) if 64BIT && CPU_BIG_ENDIAN
-> +	default $(cc_can_link_user,$(m32-flag) -mlittle-endian) if CPU_LITTLE_ENDIAN
-> +	default $(cc_can_link_user,$(m32-flag) -mbig-endian) if CPU_BIG_ENDIAN
-> +
-> +config ARCH_USERFLAGS
-> +	string
-> +	default "$(m64-flag) -mlittle-endian" if 64BIT && CPU_LITTLE_ENDIAN
-> +	default "$(m64-flag) -mbig-endian" if 64BIT && CPU_BIG_ENDIAN
-> +	default "$(m32-flag) -mlittle-endian" if CPU_LITTLE_ENDIAN
-> +	default "$(m32-flag) -mbig-endian" if CPU_BIG_ENDIAN
-> +
->   source "arch/powerpc/kvm/Kconfig"
->   
->   source "kernel/livepatch/Kconfig"
-> 
-> ---
-> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20251222-cc-can-link-powerpc-5ddd2469fd5b
-> 
-> Best regards,
+> The main cost is prandom_seed_full_state(),
+> which calls prandom_u32_state() 10 times (via prandom_warmup()). I expect=
+ we
+> could turn that into a loop to reduce ~450 bytes overall.
+
+That would always have helped the code size.
+And I suspect the other costs of that code make unrolling the loop pointles=
+s.
+
+>=20
+> I'm not really sure if 708 is good or bad...
+>=20
+> >  =20
+> >> +static __always_inline u32 prandom_u32_state(struct rnd_state *state)=
+ =20
+> >=20
+> > Why not just normal `inline`? Is gcc disagreeing with the inlinability
+> > of this function? =20
+>=20
+> Given this needs to be called from a noinstr function, I didn't want to g=
+ive the
+> compiler the opportunity to decide not to inline it, since in that case, =
+some
+> instrumentation might end up being applied to the function body which wou=
+ld blow
+> up when called in the noinstr context.
+>=20
+> I think the other 2 options are to keep prandom_u32_state() in the c file=
+ but
+> mark it noinstr or rearrange all the users so that thay don't call it unt=
+il
+> instrumentation is allowable. The latter is something I was trying to avo=
+id.
+>=20
+> There is some previous discussion of this at [1].
+>=20
+> [1] https://lore.kernel.org/all/aS65LFUfdgRPKv1l@J2N7QTR9R3/
+>=20
+> Perhaps keeping prandom_u32_state() in the c file and making it noinstr i=
+s the
+> best compromise?
+
+Or define prandom_u32_state_inline() as always_inline and have the
+real function:
+u32 prandom_u32_state(struct rnd_state *state)
+{
+	return prandom_u32_state_inline(state);
+}
+
+So that the callers can pick the inline version if it really matters.
+
+	David
+
+>=20
+> Thanks,
+> Ryan
+>=20
+> >=20
+> > Jason =20
+>=20
+>=20
 
 
