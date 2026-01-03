@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-15181-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15182-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0813BCEFC95
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 09:01:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1B1FCEFE37
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 11:39:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4djtLl0DXVz2yFj;
-	Sat, 03 Jan 2026 19:01:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4djxrS50sfz2yFh;
+	Sat, 03 Jan 2026 21:39:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767427310;
-	cv=none; b=EYNV4KpqwD3r9pXiwxITJoOgR0AadETxZr3SZw8tetZsCksMwnbCuLsFQmG4d68vYz9iY3JPcfg7aB/+HTaXZfdGYxb6/kYwEwEkxJX/uhCvQUzh5ul31ns+9jzXwIQV7NNPgHNzGcGku7HvzLM2k2G+JwVTKQkRaVDGdqBCJehZMWbSsMydBjIiaScybb0UtMbmkz17946vVHpS0FHoDe4JYM6USpWvZFR9RrJqx+PVe+hKqI3UElbEvgknBQ4CjH5R+sRLRJFDOQDd+rmgicC/CL/9sR+GPr7OVdpRYpxgyh5d0bkCoSrobEy/xWk6QL/7dWjIXnSZGFV3CBpCSQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767436760;
+	cv=none; b=Y6NdzBvCG9wxPUW6PBlPwgF2JlQvEgGhCqIeolO4Mdc4KBBD9eju7lj9hDLPK12TsGYd8sVr5PoU7Myx/A2W69dIz5X1MLUO9W57HNrtczWxRDUvo5CuLHokC50+tJBK0ASu0Z1QjbRqmjLB32j+nZIz/veAhdPJC27QfNbvUOFH3af/CgqbnMVgxI7qypwb3BRxIP05a5Y2A9p78cJf2jC1mYvTON+sSlbGi47ENanIgyNPnFz/ptGR+pm13BBRaaAja+gQsX4kkwXBAJBBGmotKEEI30g6U8dXdHRAj2ieGvS0F7yQ5qlKqzsDILgLaPSiybkyzZNCPjeVrTVhrg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767427310; c=relaxed/relaxed;
-	bh=j73oDxy8SiZUpE5Ll9bt+1jsi1FeXMi2dgKae70Pj8A=;
+	t=1767436760; c=relaxed/relaxed;
+	bh=TMsj1kYzVVF9a86NYvMtp9zyQLGIVbJNrRERdMeL7GU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K3yDSjuXx+TzBm3U290ALiPak331iClH+4pnmy6sdMpYRrcsPt6QVjK8HAza+umfHLbC8lobfFGiZeBCw+2e5mSkbavHazrGWxMW4sw25hx+YzllHaRKVUqMQJSVisQyLo9chbS08fI7oad/aXz2nTb7cYzUmzcCTzO9Rg5Uj05kXfEjoO6XpzNw030KcPx/aTi+fxaloGHpVR9MbBg4JAIuingZQskKXVs8WQAHu4/WZCFiF10mViVAkBE5seds9VjyO7mwLUM+MA7VLxnQhEQEXQ8E9U1gFhGxrdN8B6CYzBp9LHquZFfWGS1hHL3mdJoSUdbRVU1F6wy0H2koWQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O2dC+8T8; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=W7YBgBEpHvob0DUKCqohCxSP6Fs7TaZuolDpOoYcNqv9AlHtuKZr02hZjuuySn5zfNZXJyj2ltJBP7JUxs/C8O97bL90pE3UfpmHZ8ZBtQQFBFQ9sN2lhgwiVBtkTVySqIw/AFb1IsPZKrpHcMnPsiq9w0R717oX9dFVhrKQVEilVPNceTD/hBgzLUF4H65s2zpi5gRtPIe9Kfrr/Pk4doQ6eljXXVFmHj3gwMMTTM8LvZsUWQssGOS1iX9nr9Gwd+LoSBL00jHtqcKMUtgaOYVQse8YOlIHMMaLjDVZAHSjk4g4YabIv0MBMFOInVFlMBv6sdFxqOk8WZtI548inA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z1jg//JS; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O2dC+8T8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z1jg//JS;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4djtLj5SyMz2yFd
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 19:01:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4djxrR5Lbvz2yFd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 21:39:19 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6630343EE9;
-	Sat,  3 Jan 2026 08:01:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F995C113D0;
-	Sat,  3 Jan 2026 08:01:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 60BB54399B;
+	Sat,  3 Jan 2026 10:39:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1FBC113D0;
+	Sat,  3 Jan 2026 10:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767427272;
-	bh=KKYEiR4A+67li/fFpjG1HROz1QpvJKjgQzHkEoFFZiE=;
+	s=k20201202; t=1767436757;
+	bh=6eyfh3jMX1J1eZ7cZHsALtCQzKd/TkTN6PNL8Hj5FaU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=O2dC+8T8gLSx916MuYF0Nv/n+kAhEibPvx9RD3n/K6gNRgXeyrwyz4uU8aTklMuqb
-	 ye+atMNGHS6wdxKsPZxvXUEEqpNaatEzj7VjqCwpvrAwz/E/QlXTPBKGgCizdRGEJd
-	 QkzM1rkeUsfMNQCO0uJ1AP+0mPCVJGkTsn87cVlNhtojPICkAQ0yuXsiUwu3RDCUU4
-	 rTJVRVdf/uj6gpCzRpD9lUoldPn2jPoAbKRL5HEwgOCEl4141r4AUnllUH3lZDvAtS
-	 WP/RQb4Bk7X7Xb6a+D6+pim/xregRZElEZqieR+HdyIvI2EGOf21g05IQx1ZAGxkHU
-	 IdhpwKw5S9wog==
-Message-ID: <563a5d0d-c27a-45de-9495-a82403026886@kernel.org>
-Date: Sat, 3 Jan 2026 09:00:55 +0100
+	b=Z1jg//JS4ytc62BBpngrMbSU5yGEKn1srAHRgCUkCO9fj65ls944bDewGE6zLeu4P
+	 vMci6Bsfe/NN6E34wTKgOEl8rDzMIJmU3tM7OJwmYRlMyvf4CDc/ER122LZRipU2Vz
+	 RF2e8N6FPyB7SsHdCwuyHLIwOAfiVnrz4x28jAzC1tE2SQQYsGBMv3fMPDrsjveAnJ
+	 Fa3zL7nlvEe1J37mftVhLG5204nGmJT6UiwOeZajvO2XCErEHsigcl3XQpMgCXgWy7
+	 aywOE/mrgaLfqaGnBdoGrEP4ctDyywE/NpIRHCXQfVTFZ8sScz2e2QMSVgx42nRT21
+	 pWZGjdvpZ9ZKg==
+Message-ID: <f51557ff-412b-46e4-b968-78b4e4d9872d@kernel.org>
+Date: Sat, 3 Jan 2026 11:39:12 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,33 +59,15 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] prandom: Convert prandom_u32_state() to
- __always_inline
-To: Ryan Roberts <ryan.roberts@arm.com>, "Jason A. Donenfeld"
- <Jason@zx2c4.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>,
+Subject: Re: [PATCH] powerpc: Implement ARCH_HAS_CC_CAN_LINK
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>,
- Ard Biesheuvel <ardb@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-hardening@vger.kernel.org
-References: <20260102131156.3265118-1-ryan.roberts@arm.com>
- <20260102131156.3265118-3-ryan.roberts@arm.com>
- <CAHmME9qHiVZwf4TAringRHSZ-yqHuPwmP=Wnx98n09jv7Vu_Rg@mail.gmail.com>
- <719b7b99-3615-46cd-84d9-8b8fc21e3ce9@arm.com>
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20251230-cc-can-link-powerpc-v1-1-82298df6e3bf@linutronix.de>
 Content-Language: fr-FR
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <719b7b99-3615-46cd-84d9-8b8fc21e3ce9@arm.com>
+In-Reply-To: <20251230-cc-can-link-powerpc-v1-1-82298df6e3bf@linutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -95,185 +77,65 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 
-Le 02/01/2026 à 15:09, Ryan Roberts a écrit :
-> On 02/01/2026 13:39, Jason A. Donenfeld wrote:
->> Hi Ryan,
->>
->> On Fri, Jan 2, 2026 at 2:12 PM Ryan Roberts <ryan.roberts@arm.com> wrote:
->>> context. Given the function is just a handful of operations and doesn't
->>
->> How many? What's this looking like in terms of assembly?
-> 
-> 25 instructions on arm64:
+Le 30/12/2025 à 08:06, Thomas Weißschuh a écrit :
+> The generic CC_CAN_LINK detection does not handle different byte orders.
+> This may lead to userprogs which are not actually runnable on the target
+> kernel.
 
-31 instructions on powerpc:
+Isn't the kernel supposed to handle any userland endianess ? Macro 
+SET_ENDIAN() is there for that as far as I understand.
 
-00000000 <prandom_u32_state>:
-    0:	7c 69 1b 78 	mr      r9,r3
-    4:	80 63 00 00 	lwz     r3,0(r3)
-    8:	80 89 00 08 	lwz     r4,8(r9)
-    c:	81 69 00 04 	lwz     r11,4(r9)
-   10:	80 a9 00 0c 	lwz     r5,12(r9)
-   14:	54 67 30 32 	slwi    r7,r3,6
-   18:	7c e7 1a 78 	xor     r7,r7,r3
-   1c:	55 66 10 3a 	slwi    r6,r11,2
-   20:	54 88 68 24 	slwi    r8,r4,13
-   24:	54 63 90 18 	rlwinm  r3,r3,18,0,12
-   28:	7d 6b 32 78 	xor     r11,r11,r6
-   2c:	7d 08 22 78 	xor     r8,r8,r4
-   30:	54 aa 18 38 	slwi    r10,r5,3
-   34:	54 e7 9b 7e 	srwi    r7,r7,13
-   38:	7c e7 1a 78 	xor     r7,r7,r3
-   3c:	51 66 2e fe 	rlwimi  r6,r11,5,27,31
-   40:	54 84 38 28 	rlwinm  r4,r4,7,0,20
-   44:	7d 4a 2a 78 	xor     r10,r10,r5
-   48:	55 08 5d 7e 	srwi    r8,r8,21
-   4c:	7d 08 22 78 	xor     r8,r8,r4
-   50:	7c e3 32 78 	xor     r3,r7,r6
-   54:	54 a5 68 16 	rlwinm  r5,r5,13,0,11
-   58:	55 4a a3 3e 	srwi    r10,r10,12
-   5c:	7d 4a 2a 78 	xor     r10,r10,r5
-   60:	7c 63 42 78 	xor     r3,r3,r8
-   64:	90 e9 00 00 	stw     r7,0(r9)
-   68:	90 c9 00 04 	stw     r6,4(r9)
-   6c:	91 09 00 08 	stw     r8,8(r9)
-   70:	91 49 00 0c 	stw     r10,12(r9)
-   74:	7c 63 52 78 	xor     r3,r3,r10
-   78:	4e 80 00 20 	blr
-
-Among those, 8 instructions are for reading/writing the state in stack. 
-They of course disappear when inlining.
-
-> 
->> It'd also be
->> nice to have some brief analysis of other call sites to have
->> confirmation this isn't blowing up other users.
-> 
-> I compiled defconfig before and after this patch on arm64 and compared the text
-> sizes:
-> 
-> $ ./scripts/bloat-o-meter -t vmlinux.before vmlinux.after
-> add/remove: 3/4 grow/shrink: 4/1 up/down: 836/-128 (708)
-> Function                                     old     new   delta
-> prandom_seed_full_state                      364     932    +568
-> pick_next_task_fair                         1940    2036     +96
-> bpf_user_rnd_u32                             104     196     +92
-> prandom_bytes_state                          204     260     +56
-> e843419@0f2b_00012d69_e34                      -       8      +8
-> e843419@0db7_00010ec3_23ec                     -       8      +8
-> e843419@02cb_00003767_25c                      -       8      +8
-> bpf_prog_select_runtime                      448     444      -4
-> e843419@0aa3_0000cfd1_1580                     8       -      -8
-> e843419@0aa2_0000cfba_147c                     8       -      -8
-> e843419@075f_00008d8c_184                      8       -      -8
-> prandom_u32_state                            100       -    -100
-> Total: Before=19078072, After=19078780, chg +0.00%
-> 
-> So 708 bytes more after inlining. The main cost is prandom_seed_full_state(),
-> which calls prandom_u32_state() 10 times (via prandom_warmup()). I expect we
-> could turn that into a loop to reduce ~450 bytes overall.
-> 
-With following change the increase of prandom_seed_full_state() remains 
-reasonnable and performance wise it is a lot better as it avoids the 
-read/write of the state via the stack
-
-diff --git a/lib/random32.c b/lib/random32.c
-index 24e7acd9343f6..28a5b109c9018 100644
---- a/lib/random32.c
-+++ b/lib/random32.c
-@@ -94,17 +94,11 @@ EXPORT_SYMBOL(prandom_bytes_state);
-
-  static void prandom_warmup(struct rnd_state *state)
-  {
-+	int i;
-+
-  	/* Calling RNG ten times to satisfy recurrence condition */
--	prandom_u32_state(state);
--	prandom_u32_state(state);
--	prandom_u32_state(state);
--	prandom_u32_state(state);
--	prandom_u32_state(state);
--	prandom_u32_state(state);
--	prandom_u32_state(state);
--	prandom_u32_state(state);
--	prandom_u32_state(state);
--	prandom_u32_state(state);
-+	for (i = 0; i < 10; i++)
-+		prandom_u32_state(state);
-  }
-
-  void prandom_seed_full_state(struct rnd_state __percpu *pcpu_state)
-
-The loop is:
-
-  248:	38 e0 00 0a 	li      r7,10
-  24c:	7c e9 03 a6 	mtctr   r7
-  250:	55 05 30 32 	slwi    r5,r8,6
-  254:	55 46 68 24 	slwi    r6,r10,13
-  258:	55 27 18 38 	slwi    r7,r9,3
-  25c:	7c a5 42 78 	xor     r5,r5,r8
-  260:	7c c6 52 78 	xor     r6,r6,r10
-  264:	7c e7 4a 78 	xor     r7,r7,r9
-  268:	54 8b 10 3a 	slwi    r11,r4,2
-  26c:	7d 60 22 78 	xor     r0,r11,r4
-  270:	54 a5 9b 7e 	srwi    r5,r5,13
-  274:	55 08 90 18 	rlwinm  r8,r8,18,0,12
-  278:	54 c6 5d 7e 	srwi    r6,r6,21
-  27c:	55 4a 38 28 	rlwinm  r10,r10,7,0,20
-  280:	54 e7 a3 3e 	srwi    r7,r7,12
-  284:	55 29 68 16 	rlwinm  r9,r9,13,0,11
-  288:	7d 64 5b 78 	mr      r4,r11
-  28c:	7c a8 42 78 	xor     r8,r5,r8
-  290:	7c ca 52 78 	xor     r10,r6,r10
-  294:	7c e9 4a 78 	xor     r9,r7,r9
-  298:	50 04 2e fe 	rlwimi  r4,r0,5,27,31
-  29c:	42 00 ff b4 	bdnz    250 <prandom_seed_full_state+0x7c>
-
-Which replaces the 10 calls to prandom_u32_state()
-
-   fc:	91 3f 00 0c 	stw     r9,12(r31)
-  100:	7f e3 fb 78 	mr      r3,r31
-  104:	48 00 00 01 	bl      104 <prandom_seed_full_state+0x88>
-			104: R_PPC_REL24	prandom_u32_state
-  108:	7f e3 fb 78 	mr      r3,r31
-  10c:	48 00 00 01 	bl      10c <prandom_seed_full_state+0x90>
-			10c: R_PPC_REL24	prandom_u32_state
-  110:	7f e3 fb 78 	mr      r3,r31
-  114:	48 00 00 01 	bl      114 <prandom_seed_full_state+0x98>
-			114: R_PPC_REL24	prandom_u32_state
-  118:	7f e3 fb 78 	mr      r3,r31
-  11c:	48 00 00 01 	bl      11c <prandom_seed_full_state+0xa0>
-			11c: R_PPC_REL24	prandom_u32_state
-  120:	7f e3 fb 78 	mr      r3,r31
-  124:	48 00 00 01 	bl      124 <prandom_seed_full_state+0xa8>
-			124: R_PPC_REL24	prandom_u32_state
-  128:	7f e3 fb 78 	mr      r3,r31
-  12c:	48 00 00 01 	bl      12c <prandom_seed_full_state+0xb0>
-			12c: R_PPC_REL24	prandom_u32_state
-  130:	7f e3 fb 78 	mr      r3,r31
-  134:	48 00 00 01 	bl      134 <prandom_seed_full_state+0xb8>
-			134: R_PPC_REL24	prandom_u32_state
-  138:	7f e3 fb 78 	mr      r3,r31
-  13c:	48 00 00 01 	bl      13c <prandom_seed_full_state+0xc0>
-			13c: R_PPC_REL24	prandom_u32_state
-  140:	7f e3 fb 78 	mr      r3,r31
-  144:	48 00 00 01 	bl      144 <prandom_seed_full_state+0xc8>
-			144: R_PPC_REL24	prandom_u32_state
-  148:	80 01 00 24 	lwz     r0,36(r1)
-  14c:	7f e3 fb 78 	mr      r3,r31
-  150:	83 e1 00 1c 	lwz     r31,28(r1)
-  154:	7c 08 03 a6 	mtlr    r0
-  158:	38 21 00 20 	addi    r1,r1,32
-  15c:	48 00 00 00 	b       15c <prandom_seed_full_state+0xe0>
-			15c: R_PPC_REL24	prandom_u32_state
-
-
-So approx the same number of instructions in size, while better performance.
-
-> I'm not really sure if 708 is good or bad...
-
-That's in the noise compared to the overall size of vmlinux, but if we 
-change it to a loop we also reduce pressure on the cache.
+And if you want to be complete, I think you should also check whether 
+the ELF ABI is v1 or v2.
 
 Christophe
+
+> 
+> Use architecture-specific logic supporting byte orders instead.
+> 
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> ---
+>   arch/powerpc/Kconfig | 15 +++++++++++++++
+>   1 file changed, 15 insertions(+)
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 9537a61ebae0..6bb2f90e97ea 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -127,6 +127,7 @@ config PPC
+>   	select ARCH_DMA_DEFAULT_COHERENT	if !NOT_COHERENT_CACHE
+>   	select ARCH_ENABLE_MEMORY_HOTPLUG
+>   	select ARCH_ENABLE_MEMORY_HOTREMOVE
+> +	select ARCH_HAS_CC_CAN_LINK
+>   	select ARCH_HAS_COPY_MC			if PPC64
+>   	select ARCH_HAS_CURRENT_STACK_POINTER
+>   	select ARCH_HAS_DEBUG_VIRTUAL
+> @@ -1342,6 +1343,20 @@ endif
+>   config PPC_LIB_RHEAP
+>   	bool
+>   
+> +config ARCH_CC_CAN_LINK
+> +	bool
+> +	default $(cc_can_link_user,$(m64-flag) -mlittle-endian) if 64BIT && CPU_LITTLE_ENDIAN
+> +	default $(cc_can_link_user,$(m64-flag) -mbig-endian) if 64BIT && CPU_BIG_ENDIAN
+> +	default $(cc_can_link_user,$(m32-flag) -mlittle-endian) if CPU_LITTLE_ENDIAN
+> +	default $(cc_can_link_user,$(m32-flag) -mbig-endian) if CPU_BIG_ENDIAN
+> +
+> +config ARCH_USERFLAGS
+> +	string
+> +	default "$(m64-flag) -mlittle-endian" if 64BIT && CPU_LITTLE_ENDIAN
+> +	default "$(m64-flag) -mbig-endian" if 64BIT && CPU_BIG_ENDIAN
+> +	default "$(m32-flag) -mlittle-endian" if CPU_LITTLE_ENDIAN
+> +	default "$(m32-flag) -mbig-endian" if CPU_BIG_ENDIAN
+> +
+>   source "arch/powerpc/kvm/Kconfig"
+>   
+>   source "kernel/livepatch/Kconfig"
+> 
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20251222-cc-can-link-powerpc-5ddd2469fd5b
+> 
+> Best regards,
+
 
