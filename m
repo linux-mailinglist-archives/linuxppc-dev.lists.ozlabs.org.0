@@ -1,127 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-15180-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15181-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C405CEFB51
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 06:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0813BCEFC95
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 03 Jan 2026 09:01:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4djq8K4Bc5z2yFh;
-	Sat, 03 Jan 2026 16:37:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4djtLl0DXVz2yFj;
+	Sat, 03 Jan 2026 19:01:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.52
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767418657;
-	cv=none; b=lWjCpzVClVHQsOHCeOTRKMm7kDpPJdbNTe0mUWt65UVpGnwmuQSiZSJ2jTLN+YAqXxCFL4pNIXeCGYjJq5Fj6csl7gPqSvBrDOaTDYOBKIf4kGcKyl7hJlECcvg0qHmQZsSyArb9SyYJhuX3i6uJZNL8wG0ZgpB48ZwcSRDClGrWYK0Go4ew3VSHOAE5DUx65nUhBpWoxXYYvjumEwfOh4ik5C8dFM7kkcjos4H7W6dQG7JFeoxSeUtieaspcPkc1dJ/eBSBDk9bRkFS6m9I7z4SJuMqg3xi1sQYPm+Z3xSQLiI++znr4Tl1W1fORVEZIMOcP5+zEtyXs//KAVnoxw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767427310;
+	cv=none; b=EYNV4KpqwD3r9pXiwxITJoOgR0AadETxZr3SZw8tetZsCksMwnbCuLsFQmG4d68vYz9iY3JPcfg7aB/+HTaXZfdGYxb6/kYwEwEkxJX/uhCvQUzh5ul31ns+9jzXwIQV7NNPgHNzGcGku7HvzLM2k2G+JwVTKQkRaVDGdqBCJehZMWbSsMydBjIiaScybb0UtMbmkz17946vVHpS0FHoDe4JYM6USpWvZFR9RrJqx+PVe+hKqI3UElbEvgknBQ4CjH5R+sRLRJFDOQDd+rmgicC/CL/9sR+GPr7OVdpRYpxgyh5d0bkCoSrobEy/xWk6QL/7dWjIXnSZGFV3CBpCSQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767418657; c=relaxed/relaxed;
-	bh=10gk4kIzv5viXrYP6wsblohOaaYzL8Wh9uCfOfLAyTE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dPGsNNXK0tyJRgDcbYlev+9pxvQtDUybfFciCslNuSiKHqZ22eyF/AtWqvyhhJ39kJ59/aOWNKCdlH1+3UdpY9L8bu0Xt1ncTOCcc4ueXZ5vsUvXjVFgezSMXXLbNhOB9v/kGQsTNpSsDwtzsYn4NBhL9sdTCnZA6hiESTvcoAar39Fu3ErETz2w+6cWnk+XGpGgn8b+OdG5JRJfLsQ6hUODoNLIYYwMxJAsb/sDKG0uyXobD9JBdNyomtv4hpItzWrCx4M219TPWZY/2TJVxfzPWrkZujZcUu4h9Z9eRrePJiMZkBlFldfDyHsFZEB+y3uWcS7ddjBGq66A2vXVDg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UXKGj6hF; dkim-atps=neutral; spf=pass (client-ip=209.85.221.52; helo=mail-wr1-f52.google.com; envelope-from=shorne@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1767427310; c=relaxed/relaxed;
+	bh=j73oDxy8SiZUpE5Ll9bt+1jsi1FeXMi2dgKae70Pj8A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K3yDSjuXx+TzBm3U290ALiPak331iClH+4pnmy6sdMpYRrcsPt6QVjK8HAza+umfHLbC8lobfFGiZeBCw+2e5mSkbavHazrGWxMW4sw25hx+YzllHaRKVUqMQJSVisQyLo9chbS08fI7oad/aXz2nTb7cYzUmzcCTzO9Rg5Uj05kXfEjoO6XpzNw030KcPx/aTi+fxaloGHpVR9MbBg4JAIuingZQskKXVs8WQAHu4/WZCFiF10mViVAkBE5seds9VjyO7mwLUM+MA7VLxnQhEQEXQ8E9U1gFhGxrdN8B6CYzBp9LHquZFfWGS1hHL3mdJoSUdbRVU1F6wy0H2koWQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O2dC+8T8; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UXKGj6hF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O2dC+8T8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.52; helo=mail-wr1-f52.google.com; envelope-from=shorne@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4djq8H5HRFz2yFW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 16:37:34 +1100 (AEDT)
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42fb0fc5aa9so5132001f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Jan 2026 21:37:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767418591; x=1768023391; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=10gk4kIzv5viXrYP6wsblohOaaYzL8Wh9uCfOfLAyTE=;
-        b=UXKGj6hFCPN7mJ3MyLjnMDj2RSBDexiMt0nb67oQVXPmb221B7pyKVCppxiGKQgSPx
-         +M/Fl0pxC1lYaTLI4rxgJ2L0niuapk0aaSRy+ywHlNcTcyibfpUs6L1VTx9caNw5QOvU
-         RS/aDKl2mHgbyLnaLN+J+Up4uWfhAduXkt7L5TMQnCUa5cv4RwxDtKP+WjC/3cMsJGpw
-         jyemxXe9jBNYOFadnZq9O1WkRzl2mifygdxqtDNH3jpe+TQTEUcX5TMP88MY8drMpn75
-         nvI49N/6FTT7aLM9YJJjPRyxQR9nghngH9vT0eKQ5yKk5TZ7mPquTIYgRAKwTcjZvTe0
-         eSBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767418591; x=1768023391;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=10gk4kIzv5viXrYP6wsblohOaaYzL8Wh9uCfOfLAyTE=;
-        b=fduMDd1FOfGO0nKlerJwRENkvN42YNSz8IHfMAIWO/idEtzNFJl+S9SSYJTs9beqUj
-         Z5I/HLTXzOU7b9eyMLASu8VoZbqLILllJQjcSq96UjV9tWzbfwBI+kKEotD1JL5pRPKf
-         SwNe0UDGj1L1eu1kfJXv+kIpR2V+SDtBof9yL92f0AYC0NlybBzM6m+iuzZv86ZfPIW/
-         G7lI7dgQ1qJjTszg5AdNyA9R5S2zO9iNccDjFN1nDq35JVAuYnrJlzAalD76atW+XnOk
-         8N91cOatMDbXwHfxpAFuAaM+sb0HwYCMuGU9NSXORQkCIUXB3oFc/5gV9mOwzlXlNq9w
-         Yl0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVcs0hsO7IGnCyT4KAceND7XsScHubi41taAADAdBMKYjh4dZDDzONuA/EbRrjyUhk6RmAqXFRVXdIdSqs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyk1KIxIIyjIrb1jqoWekW7UVyIaenfqewgdc9kY4FhSNAsTw8Z
-	vjL3phsxqqLWWmaQtdGN5PfjENP+p1TpSN46U7PD4pwYy6B43+MjTt3p
-X-Gm-Gg: AY/fxX4qJ/gkPfANq943DasSvVpfl1DiW6h1+Nry7g/qOinKrB/LW7hFjsbM403F/+Y
-	QjbRMou/3PnfqDpVWNG9GVbB6RK8YNamh/nqsXC0xw1+4dMa9v0UxbtCsrRfc64G05mEOtMCiyG
-	+EJKL8bZgEdvW2iQgf7iIW9PoUtImmaWS03iMj9KPIRRbKXLt1pNrUwN2mh5Zz4znTitS1dovZ7
-	KDhaRzNVse9wiI5oHPS9I9XQrMAlh+5QzS/YLR04s3HaSJIW/ug/hJ/xKkjc6sZsUIxH/SACjSK
-	L3J8yh1pomFhgj9jqiBtLSIQuZfAo7GcobTNMF8JwdwiCTlALFk4unMIVW+opVA3DtPwl7/CXar
-	9pScasqdrFyLvy3fAIAYhcghxKE+Ba1vgmaQoSL+Asg0lhMvKbamM2MLAfG151hORHHlvoq3BfU
-	Itiln4gMP37cjCPtwiU7pvXHQ8dR04xlcc4pvMfrCIsR6K8S8ftAhF39zyjyfVwM0/
-X-Google-Smtp-Source: AGHT+IGVfFhDmvRzquITceR9a5MtoKyW2aPxvUx0HbCgVxiLGpVVcSZGOqzt3JsoKLBzXfIUaXLywg==
-X-Received: by 2002:a05:6000:178f:b0:430:fd84:317a with SMTP id ffacd0b85a97d-4324e4fb825mr53362620f8f.38.1767418590643;
-        Fri, 02 Jan 2026 21:36:30 -0800 (PST)
-Received: from localhost (brnt-04-b2-v4wan-170138-cust2432.vm7.cable.virginm.net. [94.175.9.129])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eaa4749sm89007161f8f.37.2026.01.02.21.36.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jan 2026 21:36:28 -0800 (PST)
-Date: Sat, 3 Jan 2026 05:36:26 +0000
-From: Stafford Horne <shorne@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-	x86@kernel.org, linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2 12/28] openrisc: introduce arch_zone_limits_init()
-Message-ID: <aViq2vsMk5tltK0f@antec>
-References: <20260102070005.65328-1-rppt@kernel.org>
- <20260102070005.65328-13-rppt@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4djtLj5SyMz2yFd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jan 2026 19:01:49 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6630343EE9;
+	Sat,  3 Jan 2026 08:01:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F995C113D0;
+	Sat,  3 Jan 2026 08:01:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767427272;
+	bh=KKYEiR4A+67li/fFpjG1HROz1QpvJKjgQzHkEoFFZiE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=O2dC+8T8gLSx916MuYF0Nv/n+kAhEibPvx9RD3n/K6gNRgXeyrwyz4uU8aTklMuqb
+	 ye+atMNGHS6wdxKsPZxvXUEEqpNaatEzj7VjqCwpvrAwz/E/QlXTPBKGgCizdRGEJd
+	 QkzM1rkeUsfMNQCO0uJ1AP+0mPCVJGkTsn87cVlNhtojPICkAQ0yuXsiUwu3RDCUU4
+	 rTJVRVdf/uj6gpCzRpD9lUoldPn2jPoAbKRL5HEwgOCEl4141r4AUnllUH3lZDvAtS
+	 WP/RQb4Bk7X7Xb6a+D6+pim/xregRZElEZqieR+HdyIvI2EGOf21g05IQx1ZAGxkHU
+	 IdhpwKw5S9wog==
+Message-ID: <563a5d0d-c27a-45de-9495-a82403026886@kernel.org>
+Date: Sat, 3 Jan 2026 09:00:55 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -135,60 +58,222 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260102070005.65328-13-rppt@kernel.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] prandom: Convert prandom_u32_state() to
+ __always_inline
+To: Ryan Roberts <ryan.roberts@arm.com>, "Jason A. Donenfeld"
+ <Jason@zx2c4.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+References: <20260102131156.3265118-1-ryan.roberts@arm.com>
+ <20260102131156.3265118-3-ryan.roberts@arm.com>
+ <CAHmME9qHiVZwf4TAringRHSZ-yqHuPwmP=Wnx98n09jv7Vu_Rg@mail.gmail.com>
+ <719b7b99-3615-46cd-84d9-8b8fc21e3ce9@arm.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <719b7b99-3615-46cd-84d9-8b8fc21e3ce9@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Jan 02, 2026 at 08:59:48AM +0200, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Move calculations of zone limits to a dedicated arch_zone_limits_init()
-> function.
-> 
-> Later MM core will use this function as an architecture specific callback
-> during nodes and zones initialization and thus there won't be a need to
-> call free_area_init() from every architecture.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  arch/openrisc/mm/init.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/openrisc/mm/init.c b/arch/openrisc/mm/init.c
-> index 9382d9a0ec78..67de93e7a685 100644
-> --- a/arch/openrisc/mm/init.c
-> +++ b/arch/openrisc/mm/init.c
-> @@ -39,15 +39,19 @@
->  
->  int mem_init_done;
->  
-> -static void __init zone_sizes_init(void)
-> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
->  {
-> -	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
-> -
->  	/*
->  	 * We use only ZONE_NORMAL
->  	 */
-> -	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
-> +	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-> +}
-> +
-> +static void __init zone_sizes_init(void)
-> +{
-> +	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
->  
-> +	arch_zone_limits_init(max_zone_pfn);
->  	free_area_init(max_zone_pfn);
->  }
-
-Thanks, this looks like a good cleanup.
 
 
-Acked-by: Stafford Horne <shorne@gmail.com>
+Le 02/01/2026 à 15:09, Ryan Roberts a écrit :
+> On 02/01/2026 13:39, Jason A. Donenfeld wrote:
+>> Hi Ryan,
+>>
+>> On Fri, Jan 2, 2026 at 2:12 PM Ryan Roberts <ryan.roberts@arm.com> wrote:
+>>> context. Given the function is just a handful of operations and doesn't
+>>
+>> How many? What's this looking like in terms of assembly?
+> 
+> 25 instructions on arm64:
+
+31 instructions on powerpc:
+
+00000000 <prandom_u32_state>:
+    0:	7c 69 1b 78 	mr      r9,r3
+    4:	80 63 00 00 	lwz     r3,0(r3)
+    8:	80 89 00 08 	lwz     r4,8(r9)
+    c:	81 69 00 04 	lwz     r11,4(r9)
+   10:	80 a9 00 0c 	lwz     r5,12(r9)
+   14:	54 67 30 32 	slwi    r7,r3,6
+   18:	7c e7 1a 78 	xor     r7,r7,r3
+   1c:	55 66 10 3a 	slwi    r6,r11,2
+   20:	54 88 68 24 	slwi    r8,r4,13
+   24:	54 63 90 18 	rlwinm  r3,r3,18,0,12
+   28:	7d 6b 32 78 	xor     r11,r11,r6
+   2c:	7d 08 22 78 	xor     r8,r8,r4
+   30:	54 aa 18 38 	slwi    r10,r5,3
+   34:	54 e7 9b 7e 	srwi    r7,r7,13
+   38:	7c e7 1a 78 	xor     r7,r7,r3
+   3c:	51 66 2e fe 	rlwimi  r6,r11,5,27,31
+   40:	54 84 38 28 	rlwinm  r4,r4,7,0,20
+   44:	7d 4a 2a 78 	xor     r10,r10,r5
+   48:	55 08 5d 7e 	srwi    r8,r8,21
+   4c:	7d 08 22 78 	xor     r8,r8,r4
+   50:	7c e3 32 78 	xor     r3,r7,r6
+   54:	54 a5 68 16 	rlwinm  r5,r5,13,0,11
+   58:	55 4a a3 3e 	srwi    r10,r10,12
+   5c:	7d 4a 2a 78 	xor     r10,r10,r5
+   60:	7c 63 42 78 	xor     r3,r3,r8
+   64:	90 e9 00 00 	stw     r7,0(r9)
+   68:	90 c9 00 04 	stw     r6,4(r9)
+   6c:	91 09 00 08 	stw     r8,8(r9)
+   70:	91 49 00 0c 	stw     r10,12(r9)
+   74:	7c 63 52 78 	xor     r3,r3,r10
+   78:	4e 80 00 20 	blr
+
+Among those, 8 instructions are for reading/writing the state in stack. 
+They of course disappear when inlining.
+
+> 
+>> It'd also be
+>> nice to have some brief analysis of other call sites to have
+>> confirmation this isn't blowing up other users.
+> 
+> I compiled defconfig before and after this patch on arm64 and compared the text
+> sizes:
+> 
+> $ ./scripts/bloat-o-meter -t vmlinux.before vmlinux.after
+> add/remove: 3/4 grow/shrink: 4/1 up/down: 836/-128 (708)
+> Function                                     old     new   delta
+> prandom_seed_full_state                      364     932    +568
+> pick_next_task_fair                         1940    2036     +96
+> bpf_user_rnd_u32                             104     196     +92
+> prandom_bytes_state                          204     260     +56
+> e843419@0f2b_00012d69_e34                      -       8      +8
+> e843419@0db7_00010ec3_23ec                     -       8      +8
+> e843419@02cb_00003767_25c                      -       8      +8
+> bpf_prog_select_runtime                      448     444      -4
+> e843419@0aa3_0000cfd1_1580                     8       -      -8
+> e843419@0aa2_0000cfba_147c                     8       -      -8
+> e843419@075f_00008d8c_184                      8       -      -8
+> prandom_u32_state                            100       -    -100
+> Total: Before=19078072, After=19078780, chg +0.00%
+> 
+> So 708 bytes more after inlining. The main cost is prandom_seed_full_state(),
+> which calls prandom_u32_state() 10 times (via prandom_warmup()). I expect we
+> could turn that into a loop to reduce ~450 bytes overall.
+> 
+With following change the increase of prandom_seed_full_state() remains 
+reasonnable and performance wise it is a lot better as it avoids the 
+read/write of the state via the stack
+
+diff --git a/lib/random32.c b/lib/random32.c
+index 24e7acd9343f6..28a5b109c9018 100644
+--- a/lib/random32.c
++++ b/lib/random32.c
+@@ -94,17 +94,11 @@ EXPORT_SYMBOL(prandom_bytes_state);
+
+  static void prandom_warmup(struct rnd_state *state)
+  {
++	int i;
++
+  	/* Calling RNG ten times to satisfy recurrence condition */
+-	prandom_u32_state(state);
+-	prandom_u32_state(state);
+-	prandom_u32_state(state);
+-	prandom_u32_state(state);
+-	prandom_u32_state(state);
+-	prandom_u32_state(state);
+-	prandom_u32_state(state);
+-	prandom_u32_state(state);
+-	prandom_u32_state(state);
+-	prandom_u32_state(state);
++	for (i = 0; i < 10; i++)
++		prandom_u32_state(state);
+  }
+
+  void prandom_seed_full_state(struct rnd_state __percpu *pcpu_state)
+
+The loop is:
+
+  248:	38 e0 00 0a 	li      r7,10
+  24c:	7c e9 03 a6 	mtctr   r7
+  250:	55 05 30 32 	slwi    r5,r8,6
+  254:	55 46 68 24 	slwi    r6,r10,13
+  258:	55 27 18 38 	slwi    r7,r9,3
+  25c:	7c a5 42 78 	xor     r5,r5,r8
+  260:	7c c6 52 78 	xor     r6,r6,r10
+  264:	7c e7 4a 78 	xor     r7,r7,r9
+  268:	54 8b 10 3a 	slwi    r11,r4,2
+  26c:	7d 60 22 78 	xor     r0,r11,r4
+  270:	54 a5 9b 7e 	srwi    r5,r5,13
+  274:	55 08 90 18 	rlwinm  r8,r8,18,0,12
+  278:	54 c6 5d 7e 	srwi    r6,r6,21
+  27c:	55 4a 38 28 	rlwinm  r10,r10,7,0,20
+  280:	54 e7 a3 3e 	srwi    r7,r7,12
+  284:	55 29 68 16 	rlwinm  r9,r9,13,0,11
+  288:	7d 64 5b 78 	mr      r4,r11
+  28c:	7c a8 42 78 	xor     r8,r5,r8
+  290:	7c ca 52 78 	xor     r10,r6,r10
+  294:	7c e9 4a 78 	xor     r9,r7,r9
+  298:	50 04 2e fe 	rlwimi  r4,r0,5,27,31
+  29c:	42 00 ff b4 	bdnz    250 <prandom_seed_full_state+0x7c>
+
+Which replaces the 10 calls to prandom_u32_state()
+
+   fc:	91 3f 00 0c 	stw     r9,12(r31)
+  100:	7f e3 fb 78 	mr      r3,r31
+  104:	48 00 00 01 	bl      104 <prandom_seed_full_state+0x88>
+			104: R_PPC_REL24	prandom_u32_state
+  108:	7f e3 fb 78 	mr      r3,r31
+  10c:	48 00 00 01 	bl      10c <prandom_seed_full_state+0x90>
+			10c: R_PPC_REL24	prandom_u32_state
+  110:	7f e3 fb 78 	mr      r3,r31
+  114:	48 00 00 01 	bl      114 <prandom_seed_full_state+0x98>
+			114: R_PPC_REL24	prandom_u32_state
+  118:	7f e3 fb 78 	mr      r3,r31
+  11c:	48 00 00 01 	bl      11c <prandom_seed_full_state+0xa0>
+			11c: R_PPC_REL24	prandom_u32_state
+  120:	7f e3 fb 78 	mr      r3,r31
+  124:	48 00 00 01 	bl      124 <prandom_seed_full_state+0xa8>
+			124: R_PPC_REL24	prandom_u32_state
+  128:	7f e3 fb 78 	mr      r3,r31
+  12c:	48 00 00 01 	bl      12c <prandom_seed_full_state+0xb0>
+			12c: R_PPC_REL24	prandom_u32_state
+  130:	7f e3 fb 78 	mr      r3,r31
+  134:	48 00 00 01 	bl      134 <prandom_seed_full_state+0xb8>
+			134: R_PPC_REL24	prandom_u32_state
+  138:	7f e3 fb 78 	mr      r3,r31
+  13c:	48 00 00 01 	bl      13c <prandom_seed_full_state+0xc0>
+			13c: R_PPC_REL24	prandom_u32_state
+  140:	7f e3 fb 78 	mr      r3,r31
+  144:	48 00 00 01 	bl      144 <prandom_seed_full_state+0xc8>
+			144: R_PPC_REL24	prandom_u32_state
+  148:	80 01 00 24 	lwz     r0,36(r1)
+  14c:	7f e3 fb 78 	mr      r3,r31
+  150:	83 e1 00 1c 	lwz     r31,28(r1)
+  154:	7c 08 03 a6 	mtlr    r0
+  158:	38 21 00 20 	addi    r1,r1,32
+  15c:	48 00 00 00 	b       15c <prandom_seed_full_state+0xe0>
+			15c: R_PPC_REL24	prandom_u32_state
+
+
+So approx the same number of instructions in size, while better performance.
+
+> I'm not really sure if 708 is good or bad...
+
+That's in the noise compared to the overall size of vmlinux, but if we 
+change it to a loop we also reduce pressure on the cache.
+
+Christophe
 
