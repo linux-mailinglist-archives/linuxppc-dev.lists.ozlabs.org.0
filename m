@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15216-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15235-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F33CCF1E2D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 06:16:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 407F3CF1EBC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 06:19:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dl2YX0WNTz2yx7;
-	Mon, 05 Jan 2026 16:15:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dl2Z23xcFz3bWn;
+	Mon, 05 Jan 2026 16:15:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767590111;
-	cv=none; b=ID63y2/GT6LAAa4CWnWEGo44el4TTs3ciU8sFYTjK9AzuS13lJ/8wLpTnzIFS4FxhdpdRO+MbFB6ix5FBKNcdoqWwyAZFkx8jTcuzGBhvzhKDN2i2274Zoj5DXIrgX45pyXGYDvE92Cjn1nSQwsJXBlJJeKnswrA/j1pu/tr7dYwPvWti73cr2LHUQgLuNrBD8g65IgL7/2Iw1xHLyv6poA6maaVZ1ZNZ1nPwOw+OiT/pWhCwKj8mCwlipGR2w23zHPaGIbwzo41KVDdj9vzZe5TJD8Kd+6FMSTqW7BoI2ODU6oey/WyUHyibhZUuxWMtD+KI0NcP8xUJGudP1HYJg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767590138;
+	cv=none; b=MKgjVp4GJb9/pfMGq6C1ejS1Y8Yl6A91ZQDD2tPI74b85oGNEACS/W4Qbkp0Dv68/S8TyzQMfRNLfymsgAuWSxP6wWKInr4HCAa5ub691BTagprI5lTZLKXxoN2siOjPcbhJuTi8ttcRq7nkMXFkUMupfWwD+rtaw7BtDsEWeeNDHoNETZfbjOJ13jPToed48nblqiLZMIvbs7fmFzLw96/S+5TtoYd0jublNVWwrcLP9xPwNQKbX5MvggB4aw5mKYPvLgNTrZi+GQmyCWWjWSIxS4Yf1iQzmo9umKjWQI6wvsQ6MPMxA8bja0xPiItrGaVGJADBOgUMhrfUzWJPIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767590111; c=relaxed/relaxed;
-	bh=k4CPf2ZJynm0JU5P5TMioqoG4hO+NATA51L2XquL3Tw=;
+	t=1767590138; c=relaxed/relaxed;
+	bh=QtGf9AiI9Nwq/oGqxtHvIvrxYhG/Oukz+SHY0bYH7BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFCJPh06C7jrcKtOmrwQ0UOl9cGRf8VU80YoMbT16TpHA49xKAkLrHLLGIeWoXjlWEJ8dAAPaNNRmA6cRSXAhBcavRdRBwfKT7sr4vFNntWD4hMKARsYAoFPxDZy/6MF8tQnBP7d2ncZFKLztlf3zZpU6FbwFPF0O/tW/lyV+kdrV+6M2BXoBS4wKEoBa4XtaT1HYIJGmXURMAIPT0RyfHGW2NNnAA/5KVEEstNVZ498DxXKWq0ok5rTqJmml/i8I/0QNl0SmSerXh8cqDJeO7jjoh+Ki0bDAgBYh5/M9f7IX7aThRaWmuc2aM7K6cFYfGIIRNI4OB1OjvZz14rz6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G3G0Bk0G; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=RUb1VRVWVcdjH7C77JTw8RRM4GthsUngz4CY7zSiLsriNEzxO3Z/oiDe4mijqrv+We9Y+MbnM6tefptPb6os5C//g6oR53cOgbiBb01GUorJ7YjKbk7di2KQrHfFkJuwN0Pru0aoN5uwtj2/PGx+ceBPbU1Yvc4PMW//byzefigYUj2nl+q6NovGMNt/xusTbjI6/hsaPZMzxYbfecryRl8Gvsw+d1a26Qt0RtjY3hV7XL7dhNZiQYMQFo6CmgXKd1JoCD5ZF+bmdEQTFHvDsJJbh75+CW3TSudX3GrvQpU+mnB1meeCA5WCKCDJp3G4v0o0RPR1oiryDLt9VUQxgw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vEUIRbux; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G3G0Bk0G;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vEUIRbux;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dl2YS5W1Hz2ytx
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 16:15:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dl2Z14bzrz2yN1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 16:15:37 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E3E4E44345;
-	Mon,  5 Jan 2026 05:15:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DBAC19425;
+	by tor.source.kernel.org (Postfix) with ESMTP id C870260010;
+	Mon,  5 Jan 2026 05:15:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED002C116D0;
 	Mon,  5 Jan 2026 05:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767590104;
-	bh=QrYuLwUNu/mVSc/Yo9MLheYVuGpn5hYaMt0fTaKLTGY=;
+	s=k20201202; t=1767590105;
+	bh=4EW0N35+HHe/JqWcRGzDlUw5apTDeyYhZ2K2O9GZlcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3G0Bk0G56Ktu3wG+6a9uAZH1lAOba80s4ElWn2pJFGgFmNV/Cvh+Z4L4klecwAfJ
-	 4A4jYZkIX5u/TAbMBp2/t6kvMz1vfkfl6kK8wTbdYEMZzD48byZukOJjTQls80D1Xy
-	 4WkndmU3Qn4EkS0p+n03CEKYzEJ0P2Wu+x5eAaKoh0QJtMhWu243+nRHSrwnSBLnET
-	 /USJVwZLIvP7OD84paOmDdk+WrENSjRQUTX3tIVS55nIybRN4WLxj52YLt7MKHOYg9
-	 LR99hxKJTTahowUoQL9JPYKxznndT0rryjV8qUaCJhK4rY0IHuWnAW46qVo1Gxtx6a
-	 1WQW7lG89tSYQ==
+	b=vEUIRbuxPtyDpcgmvaJX3BlnFYwziFzZ5LfbmtiO1eZS18vDNbYb6RE8wz6jnFJBr
+	 kvSoc+6RJvlqMWm6zGwwF3J8K9CRcgRwTFqq5ruJiQHv9pKFl6sisZiRTmU5umyMV6
+	 5y/D8y9+nH/tgL9Zzp8ALotiaPDgASAI8NUwirGnKJt0rW0IFK0YFO4Kwq/4OiZeaA
+	 qpBlNBlePkfHmuyQURnujm3lufzjXc0b8jB0p/K4gDvjHb7mJ6JjrKq79aDQ2hjan6
+	 vDml3XCcwpnT15sp+GsYP8x5G92t4t4yFwKshaqoy+fQHo6AU+dXUug8XcyQd//w8l
+	 9Nt6JW399D6kA==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Holger Dengler <dengler@linux.ibm.com>,
 	Harald Freudenberger <freude@linux.ibm.com>,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 21/36] net: phy: mscc: macsec: Use new AES library API
-Date: Sun,  4 Jan 2026 21:12:54 -0800
-Message-ID: <20260105051311.1607207-22-ebiggers@kernel.org>
+Subject: [PATCH 22/36] staging: rtl8723bs: core: Use new AES library API
+Date: Sun,  4 Jan 2026 21:12:55 -0800
+Message-ID: <20260105051311.1607207-23-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260105051311.1607207-1-ebiggers@kernel.org>
 References: <20260105051311.1607207-1-ebiggers@kernel.org>
@@ -94,37 +94,87 @@ callers of the old aes_encrypt() have been updated.
 
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- drivers/net/phy/mscc/mscc_macsec.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_security.c | 20 +++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/phy/mscc/mscc_macsec.c b/drivers/net/phy/mscc/mscc_macsec.c
-index 4f39ba63a9a9..bcb7f5a4a8fd 100644
---- a/drivers/net/phy/mscc/mscc_macsec.c
-+++ b/drivers/net/phy/mscc/mscc_macsec.c
-@@ -502,19 +502,19 @@ static u32 vsc8584_macsec_flow_context_id(struct macsec_flow *flow)
- 
- /* Derive the AES key to get a key for the hash autentication */
- static int vsc8584_macsec_derive_key(const u8 *key, u16 key_len, u8 hkey[16])
+diff --git a/drivers/staging/rtl8723bs/core/rtw_security.c b/drivers/staging/rtl8723bs/core/rtw_security.c
+index 2f941ffbd465..79825324e70f 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_security.c
++++ b/drivers/staging/rtl8723bs/core/rtw_security.c
+@@ -635,15 +635,15 @@ u32 rtw_tkip_decrypt(struct adapter *padapter, u8 *precvframe)
+ /* Performs a 128 bit AES encrypt with  */
+ /* 128 bit data.                        */
+ /****************************************/
+ static void aes128k128d(u8 *key, u8 *data, u8 *ciphertext)
  {
- 	const u8 input[AES_BLOCK_SIZE] = {0};
 -	struct crypto_aes_ctx ctx;
 +	struct aes_enckey aes;
+ 
+-	aes_expandkey(&ctx, key, 16);
+-	aes_encrypt(&ctx, ciphertext, data);
+-	memzero_explicit(&ctx, sizeof(ctx));
++	aes_prepareenckey(&aes, key, 16);
++	aes_encrypt_new(&aes, ciphertext, data);
++	memzero_explicit(&aes, sizeof(aes));
+ }
+ 
+ /************************************************/
+ /* construct_mic_iv()                           */
+ /* Builds the MIC IV from header fields and PN  */
+@@ -1404,17 +1404,17 @@ static void gf_mulx(u8 *pad)
+  * (SP) 800-38B.
+  */
+ static int omac1_aes_128_vector(u8 *key, size_t num_elem,
+ 				u8 *addr[], size_t *len, u8 *mac)
+ {
+-	struct crypto_aes_ctx ctx;
++	struct aes_enckey aes;
+ 	u8 cbc[AES_BLOCK_SIZE], pad[AES_BLOCK_SIZE];
+ 	u8 *pos, *end;
+ 	size_t i, e, left, total_len;
  	int ret;
  
--	ret = aes_expandkey(&ctx, key, key_len);
-+	ret = aes_prepareenckey(&aes, key, key_len);
+-	ret = aes_expandkey(&ctx, key, 16);
++	ret = aes_prepareenckey(&aes, key, 16);
  	if (ret)
- 		return ret;
+ 		return -1;
+ 	memset(cbc, 0, AES_BLOCK_SIZE);
  
--	aes_encrypt(&ctx, hkey, input);
+ 	total_len = 0;
+@@ -1434,16 +1434,16 @@ static int omac1_aes_128_vector(u8 *key, size_t num_elem,
+ 				pos = addr[e];
+ 				end = pos + len[e];
+ 			}
+ 		}
+ 		if (left > AES_BLOCK_SIZE)
+-			aes_encrypt(&ctx, cbc, cbc);
++			aes_encrypt_new(&aes, cbc, cbc);
+ 		left -= AES_BLOCK_SIZE;
+ 	}
+ 
+ 	memset(pad, 0, AES_BLOCK_SIZE);
+-	aes_encrypt(&ctx, pad, pad);
++	aes_encrypt_new(&aes, pad, pad);
+ 	gf_mulx(pad);
+ 
+ 	if (left || total_len == 0) {
+ 		for (i = 0; i < left; i++) {
+ 			cbc[i] ^= *pos++;
+@@ -1457,12 +1457,12 @@ static int omac1_aes_128_vector(u8 *key, size_t num_elem,
+ 		gf_mulx(pad);
+ 	}
+ 
+ 	for (i = 0; i < AES_BLOCK_SIZE; i++)
+ 		pad[i] ^= cbc[i];
+-	aes_encrypt(&ctx, pad, mac);
 -	memzero_explicit(&ctx, sizeof(ctx));
-+	aes_encrypt_new(&aes, hkey, input);
++	aes_encrypt_new(&aes, pad, mac);
 +	memzero_explicit(&aes, sizeof(aes));
  	return 0;
  }
  
- static int vsc8584_macsec_transformation(struct phy_device *phydev,
- 					 struct macsec_flow *flow,
+ /**
+  * omac1_aes_128 - One-Key CBC MAC (OMAC1) hash with AES-128 (aka AES-CMAC)
 -- 
 2.52.0
 
