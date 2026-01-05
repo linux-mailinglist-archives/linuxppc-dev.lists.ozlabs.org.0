@@ -1,53 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-15241-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15242-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACABCF1ED9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 06:19:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D30CF24BE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 09:02:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dl2ZH0fQTz3dKL;
-	Mon, 05 Jan 2026 16:15:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dl6GF1Fx5z2yCL;
+	Mon, 05 Jan 2026 19:02:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767590150;
-	cv=none; b=LudXhDbF1b5AW3zBeSut6U8OftiS5yNr2eOf+5TBduS7z1VD6BgQ52BbuXJURk5BkKXYRvbDxJsTaG+jyGplSU00+8NCmymXl4GKhWV6CA1AEnjCuhOy+DZ2Kx13X8Zs5/M2C+fgh0wI9ImSf0MB8lDreh65uzYQSMRxSaKhr0+FcrBeSSQ/BRiq4EXvwwg9WH4zWUqG0Y2yn1UM6HKU6NDeaj4JKk/h3olnnuxoMmME09A0bHzH+e9iEfDC9dyuvm3KDTF3ZTs0dKGzaZXrfeBWpbyNQHlQLgln8fqtD5RJdHKLOwveBdgwZjA68MlRM0qHbUgsm/NTC3oD6p5Vww==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.215.179
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767599316;
+	cv=none; b=JLVfGz69no/TGeJSWMRW7QTX9dLUIYX81kLGZ0h3zuay6swzR+haGHnaVdvOaB3gj6wJFcDPxB/EIgcXNUb1hCTlqvPehjLreodPqiZDOBs7bYo/vZrya8COUtKXz8D8uJHsEZVV4LzD4rDTEi00FyueerC+ahLahgjRx3n1lcd7vYDtmqpKYh/jkM3djmr8O5MpC9rFKgDpDR3nK14PKkCzIslttxtyOjjvgopbiVlvVacwsv+qn8RyER1AnoVhJhIL2BGTVZ92OFwvYcrda4vemr/7r0PYa2f9uY6l2sV6MIN8VItd6eDq7OX2BMaBBbW7pcHu2V3YfzEy3K1dlw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767590150; c=relaxed/relaxed;
-	bh=5EgHCXMOz5gRh7eMughW4cZ4zBOrTNxJx4cu/aaTqL8=;
+	t=1767599316; c=relaxed/relaxed;
+	bh=2Smn7G9NNF4TKpSBrLZt6/rkru/ozPf2jYkxgsCOt/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kaou8VYWo7o8iP73l6Yq0u/V6908L6McCBrFbKxAnp0hgcodpDF7gKyMl9Q/x3/FaYP99tuiLXpczbTbVSmDnQcomUGnkmE22z9qF5/eR+stPjlrPXrbNaC02KKg4V2PWEF+P6219yD6DLJTbibtZiSSHm/bSjeLM0vn+hdzZ623ZLQFeBapW1TNKCB4A0lGLw/hdUcV0KlJ9DZ7nM3kkxhze9Z1f6VGB8N3v13rKFoWT7Li27BatXASV8XsIBcEJguOlu1liqQKplU1/rWBEqTis5jXv4r2XOcW2X3KXzIqTa8L4DzBjVS6TXEpaTBFQ8Aa3tETjidj1J/G3aftgg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rOAhnKYR; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 MIME-Version; b=YF+8ldZc5VHAAThQ/j09BxfiGKzQ8Y5nx4HMX4vPp/1xoyD/rMZAXoJDh3Ck9ZwRRKBE8gABbRf1iNLiQP56L7Lvjr8pGjEzbIXRmiWePbJK9qovbr+LUYw004SyzsP7HNizuRCUeXrKUfUhinbZXs7IOoEVrx8H8JWwB3GleiWUK4ULbJMi8ynbosfG0jt24l2LtxZTvcFrigNoy/FALB047LYseeU3SVKylLYBg4icWutroDHDnXfBKAzzDHvKh3jSOxPJfCUDQm8vEtG9b0OXQQkeJUgBRJVZNrbES62edaFeu2IxiiMFgu/KosRTB4yvqXLYOcxynvot9TNWwA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H74uRyhD; dkim-atps=neutral; spf=pass (client-ip=209.85.215.179; helo=mail-pg1-f179.google.com; envelope-from=dqfext@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rOAhnKYR;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H74uRyhD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.215.179; helo=mail-pg1-f179.google.com; envelope-from=dqfext@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dl2ZG15pSz3bmN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 16:15:50 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7EF5760150;
-	Mon,  5 Jan 2026 05:15:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF948C19421;
-	Mon,  5 Jan 2026 05:15:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767590114;
-	bh=0EBUEmVTe0e4bzKdqvPELWwoIgTHdjzdDZHfkwljOsg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOAhnKYROQMEoMD81Em7mWQ61HyLgE3WDv40a+uauy0zXQQ0mHHhwqwczGz06JzjM
-	 BdNHtV7nIaURBKsF+oSa2rFdIAEXQ7LByXqGJRKmIrdfOf6QiEc5WT1lC9vh/BhW9a
-	 IQ9OEsk+eGFsSOCFKi5iDvmfEmKDGx5jd+GTG1pUfu7myy1vVeHI3pUsbThA4X2oyu
-	 lJCDZSbKqwRYYUw6a5frOfQp/Jv2FxRovn8kxjvrIGakLOdH6Z1+7/6yA/2TAaFePp
-	 BbafT19y5VWI6JSqqbcyOypU34Iu6dDnPvbkNn++RQT2plgft3r939P/tX35BnbGzF
-	 L9/mowQabouBA==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dl5yW5gtxz2xS7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 18:48:34 +1100 (AEDT)
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-bc274b8b15bso14822977a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Jan 2026 23:48:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767599252; x=1768204052; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2Smn7G9NNF4TKpSBrLZt6/rkru/ozPf2jYkxgsCOt/U=;
+        b=H74uRyhDJ8zNaf4/tj+ESil298NWzTTRbFD2YeesTWxEr2GHwKQH/Fw/vdHLUE8XuV
+         i/o5BQ1z3Y+DjkE+9N1zdQzPRDtKmpIy6M22AutG6CjrJiLk6Yo4rzXkLD1SIKWwhG3b
+         2aenPznXl5Tbectu4RqV50qMVouUfhejt8nOYxoygy/wS7IAT+w+fZDigOVFflFHMGa8
+         dPuYTFOgjLCNgim6rVQCMcM7Y2hZ2e4oy/YwpnflGQPklgxQoE1U078r0NJgWpGAVtjb
+         q0U1+rmZhAWMMmVqxwdSq7FuvPR45PUC8BGvKmU1LPjr1LjevN2dPHt+7ZsMfJbelD2o
+         1p5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767599252; x=1768204052;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2Smn7G9NNF4TKpSBrLZt6/rkru/ozPf2jYkxgsCOt/U=;
+        b=kVDyVsGiLjhTPd2AXo8LL9ubsecrQ/3H3pDonq1RW8Qf+HPuMZBY0zMqkFj9qZYHCu
+         sEOZ2+3PgTAJJwhi8t51qxZwsnkyZEj4cY5sYm8F6vRQlkha/wJmpf5tkAweXiLRGR42
+         1QJcRldSVII4Qb7N+/AnLvqLecsRnQc9T0rt8OYEMOScRyWm+1aA3LnLgeSQsDWg498E
+         PurIwLxy3NqxVYCt2V6mIxSkhufc45NmV8L1gqgvAGYx2Sf/pxhD2CtGY/lzhnlqUomh
+         aZGM9ZL22/bp4bFSTLyOWdSw0mT9R/mqQRIuwrRBCvbGyvgovj5aeav0sKqtzt75chJv
+         VhRA==
+X-Forwarded-Encrypted: i=1; AJvYcCXcCgStMCCM6Zl6+f9WXIJNSIu4esyFoTS4Cqseqe6bAJ/6twczcMad0xbdn6+uI5smusqlixJzuj7y5ig=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzz+oh2nLKLvN4cTZg7MaxWv9WpLTyuxrTY3WMhGSthcL+i4Ybq
+	9mT3h35/yTVW+L5bdTrMuSuehnhMZfPSeJAT1TVp9ByHHUdv95FEqSne
+X-Gm-Gg: AY/fxX7/7wHdRfWe//zovPMKxlBD66tXskanE6LU8TIyjF/nJK4Zu53IMJdsmp8ZzMQ
+	CYA2oJy3BfMvDUOmSwKZnIJvtE7BmnLrMPs2fTJxv+KIr/i9zVVXk2jO3LOoPEAA3b5nIrBSRYn
+	9pehdIhsczvciNoPBXwCQ5omuaV8hRAT1SeQdyhgrUxuzIa0C/N9HbbhHIC59BAKjb5ukzVfATP
+	xIOeujW6q2XbXxHQCfzj6tg8oOO03uzUUomjIxRLIJNn1voJUG1f/aMp574EYI+F64G5Yp5F2wd
+	zOMT8+QnzlvFOeo+6rF8WM15yS0odf7OohpVAseIqudOr4a2m/sqOadEcvO0NumKjptA0yLVgdH
+	84ETvLvsg8jqF/qHIgcIyJF+8Rrw1X/QAfilnHQu7wXzColF73cggk1qlSadf2r1wiMfZ2l6MZQ
+	==
+X-Google-Smtp-Source: AGHT+IHVaBHzL3ldcoq10mQ0DvSoQNAzO29+h1IBrSy2gZY7Qh6quSoh5XWNmgIvhDzcT+gz+HyNHQ==
+X-Received: by 2002:a05:693c:8008:b0:2b0:4f8e:3273 with SMTP id 5a478bee46e88-2b05ebd7223mr36936529eec.6.1767599252090;
+        Sun, 04 Jan 2026 23:47:32 -0800 (PST)
+Received: from gmail.com ([2a09:bac5:1f0f:28::4:33f])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b05ffad66fsm101610210eec.4.2026.01.04.23.47.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Jan 2026 23:47:31 -0800 (PST)
+From: Qingfang Deng <dqfext@gmail.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	linux-arm-kernel@lists.infradead.org,
 	linuxppc-dev@lists.ozlabs.org,
@@ -56,14 +85,13 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org,
 	Holger Dengler <dengler@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 36/36] lib/crypto: aes: Drop 'volatile' from aes_sbox and aes_inv_sbox
-Date: Sun,  4 Jan 2026 21:13:09 -0800
-Message-ID: <20260105051311.1607207-37-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260105051311.1607207-1-ebiggers@kernel.org>
-References: <20260105051311.1607207-1-ebiggers@kernel.org>
+	Harald Freudenberger <freude@linux.ibm.com>
+Subject: Re: [PATCH 02/36] lib/crypto: aes: Introduce improved AES library
+Date: Mon,  5 Jan 2026 15:47:12 +0800
+Message-ID: <20260105074712.498-1-dqfext@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260105051311.1607207-3-ebiggers@kernel.org>
+References: <20260105051311.1607207-1-ebiggers@kernel.org> <20260105051311.1607207-3-ebiggers@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,69 +106,25 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The volatile keyword is no longer necessary or useful on aes_sbox and
-aes_inv_sbox, since the table prefetching is now done using a helper
-function that casts to volatile itself and also includes an optimization
-barrier.  Since it prevents some compiler optimizations, remove it.
-
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
- lib/crypto/aes.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
-
-diff --git a/lib/crypto/aes.c b/lib/crypto/aes.c
-index 98ade1758735..e85c905296f1 100644
---- a/lib/crypto/aes.c
-+++ b/lib/crypto/aes.c
-@@ -9,15 +9,11 @@
- #include <linux/crypto.h>
- #include <linux/export.h>
- #include <linux/module.h>
- #include <linux/unaligned.h>
+On 4 Jan 2026 21:12:35 -0800, Eric Biggers wrote:
+>  extern const u8 crypto_aes_sbox[];
+>  extern const u8 crypto_aes_inv_sbox[];
+> +extern const u32 __cacheline_aligned aes_enc_tab[256];
+> +extern const u32 __cacheline_aligned aes_dec_tab[256];
  
--/*
-- * Emit the sbox as volatile const to prevent the compiler from doing
-- * constant folding on sbox references involving fixed indexes.
-- */
--static volatile const u8 __cacheline_aligned aes_sbox[] = {
-+static const u8 __cacheline_aligned aes_sbox[] = {
- 	0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
- 	0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
- 	0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
- 	0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
- 	0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc,
-@@ -48,11 +44,11 @@ static volatile const u8 __cacheline_aligned aes_sbox[] = {
- 	0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
- 	0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68,
- 	0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
- };
- 
--static volatile const u8 __cacheline_aligned aes_inv_sbox[] = {
-+static const u8 __cacheline_aligned aes_inv_sbox[] = {
- 	0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38,
- 	0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
- 	0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87,
- 	0x34, 0x8e, 0x43, 0x44, 0xc4, 0xde, 0xe9, 0xcb,
- 	0x54, 0x7b, 0x94, 0x32, 0xa6, 0xc2, 0x23, 0x3d,
-@@ -428,11 +424,11 @@ static void __maybe_unused aes_decrypt_generic(const u32 inv_rndkeys[],
- 		w[1] = w1;
- 		w[2] = w2;
- 		w[3] = w3;
- 	} while (--n);
- 
--	aes_prefetch((const void *)aes_inv_sbox, sizeof(aes_inv_sbox));
-+	aes_prefetch(aes_inv_sbox, sizeof(aes_inv_sbox));
- 	put_unaligned_le32(declast_quarterround(w, 0, *rkp++), &out[0]);
- 	put_unaligned_le32(declast_quarterround(w, 1, *rkp++), &out[4]);
- 	put_unaligned_le32(declast_quarterround(w, 2, *rkp++), &out[8]);
- 	put_unaligned_le32(declast_quarterround(w, 3, *rkp++), &out[12]);
- }
--- 
-2.52.0
+__cacheline_aligned puts the array in ".data..cacheline_aligned"
+section. As a const array, it should be in ".rodata" section, so
+____cacheline_aligned (note the extra underscores) should be used
+instead.
+You can also apply the same to crypto_aes_sbox and crypto_aes_inv_sbox
+while at it.
 
+Regards,
+Qingfang
 
