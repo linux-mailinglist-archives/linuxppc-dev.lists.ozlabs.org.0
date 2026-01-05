@@ -1,47 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15229-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15205-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15BBDCF1E91
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 06:18:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE79CF1DAF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 06:14:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dl2Yl3xdtz2yMJ;
-	Mon, 05 Jan 2026 16:15:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dl2YB4Yw2z2xqk;
+	Mon, 05 Jan 2026 16:14:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767590123;
-	cv=none; b=UAVG62g++W5np0U+8OwVEhliWYCO2O6eiXiLsuiPBLQNc1qKiKFIHkDH8X9kQUWqf3WPDzRklJK7NsrXF4TJNJukJerlVlvkm+PRc/5c9DyxXZqowsvdIvOgLOOR0LbVYCs0PxjeDfm4x5qUXEUP5/7mupXeNg2ozoFcOm3rLzBNtL9qPF5npKU0hXDXBqdUubfYfjaKiffoI+DGrk5Dcxe38LRPSAEzvyk9qTC8LmSuPuPAkoQ4m/XaFq4FzfvASl5DezE0Sd7bO1/HpjnQ2/CxAv/iJcj6g2ipJKJXy/6M4O8BgzatkmbKcMOWfULTbSpUjvMcTynLfnEpN27GXg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767590094;
+	cv=none; b=VMs5kSX0bh/YIoIimsVOPYQoktU13yveAK33xLLo/c/7qx/W5K/Fla8R5I1fMjV1xVwekmE3n6Hxl+mwbBbib+o/I6+qLXYa70AMOsiOma/H4ojSzsMGSZ4DqqIkfLLFd/ygNhLLy/RebiZM4bhC43p38ezjelqCrxzh1ZGD6nZlbBtebw+ZDLbTvmTPIzrSB/DfehHKM+KgKG1wezRC1P7KiqdJDTtNgEwg1VSQUm3JDUCec3RaBO6gaBeXiYBIPAzeUxjWPhHs9ih+DQvTepXnzkNYiwPBg49L7E3r/J/HME0ZLWoo5wJAcdqgymv3a6JifXiT9GMByRgRIU0UTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767590123; c=relaxed/relaxed;
-	bh=nHZrnwZbj2sSRKKoV9Q9HWk63wQ8MdpqFLPep3wHbuI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OvvWBLVVBL1z4RcqrfsKYjpg7gXY4qfhbRGphEGwP0fGALWehGSVtDE5UmWkS7/AWzYZ6lyEFkjlgQmZBoBgNzrHGag69bFzWINMN5D6Bf7qsVhOt+byODcUrIL2/3Otjn0MMi0hY49n14XMf6QL7NKLRZmRm4vwiKaqBw158u2/hD/jlGdOHnNwQ5TqfJnl8IdSYq2FDLi1we2EB/8IADr5R2CAmdeNlR4aJh2P0HKmrR0SoWt/JXoOgYAk8pbPCt7DO6CQnWHXv+itxUNlnjGG+BUyN92Lsgorn3HNoI3C9nYH5ay8SV8uNdIUPquveRELdE9euONz38dYXHE1Sg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fu8qhM5F; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1767590094; c=relaxed/relaxed;
+	bh=JVchaga48/tJEyPGmS9gUewrXvyfa7XPkG6JRIj5qsI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ayNyomUIMmv8AdN9ZPb+bSwlmon9hQwbCYRP2+M6NiYICPOEoLvhXlcIkzA7u+80CP8fUNRSNUYdBYzBaS7UZwCwAJWHytji0CDG7wNTSqlE6HwpefDP3utJgFNmTCtTgtQBH/zg4MKGU5W5pdCuJvhxBvettGbRQLRvD8RE0Wkpszz09e5zSF0Y8t4XkBZfJHfYmY61BRZrHW9t/AA94ghcNPGoRZ3a47V7XS+WgqHTyTvNJc2/1GVLMmHPUj0HHmTWRDSvYjP05OAItGgUUaQlumhfnKLbKQFvGJ+i+jXYyiHyNARXyBO38VZhRwtOdskiAsqvyRNAJfnnszsaHA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ijd+I7op; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fu8qhM5F;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ijd+I7op;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dl2Yk5QBKz30LS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 16:15:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dl2Y90jhqz2xm5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 16:14:52 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ACCC140D58;
-	Mon,  5 Jan 2026 05:14:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE0CC19425;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3B3A044123;
+	Mon,  5 Jan 2026 05:14:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A769FC2BCB1;
 	Mon,  5 Jan 2026 05:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767590090;
-	bh=StJt3xuecPAD8gCDDLpBDdo1qszetc4wL56Ja1aU7eg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fu8qhM5Ft3pw7VaFT+fsZIZ+SQbI04ehZUXLNpcgAHhHoO7gJ5Wtbwx8S80oA/QKo
-	 d+ym6al5YdnAf3FULvgkNKgQ0VGcBwObYhcROn6NF2DeXOfNDEJD7qWjLXOSM3oWO6
-	 B7Ok+wrKDHl4+fbARcer/f63/TT+Cc83nZ0jAj33YQD6GlRBz7dK5gdlrcTM1xi82D
-	 u4dxkqqClswwmukHj3O1jPjT/cjYSp1HpOuY6vswCNa1iFxmKL7cF3NVYbBPdb6JtS
-	 1/s5w8FfPNa+PbyHxMOkCqfg5QXZvVni1O0hfR7pNK879AOioS9eG5DJoPBuhdr3S2
-	 DO/dGy+/zKtDQ==
+	s=k20201202; t=1767590091;
+	bh=LgDbklGtIZFHjM4cuU4zrZQcyIE2hb0ascSpMxwTuKE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ijd+I7op5lmUKmk5siN9yLBtx/9k6AgkTruGEiLPcRGwEnQMxlLCxqX8pywV5GfoN
+	 tsBAnhPaMBaFTSP28NAe1luTRwpp2pepivmaJuj0U3w+9l8tt4BoMZon1eDSPWJB/3
+	 ixqKtW8L6wJNKC6zKnVH2XGD1Z7xpH2r9lqNLJaF8E3YC+ZE63dSTUP00KZnr6xOk/
+	 NAtoHW7Uew++VxBJ2sTNG1FMLDxVg+Xrvb1C2h9ttJ1kMRrZWuu7+Iip6dnqGcRe1T
+	 XviKWGaNVEUdpOmcKj0/MhKJk2lIzVOli5+z36mLRKHUUDgb/+WCYf9f34Ddkdec22
+	 hvdBT5uSXtmZg==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -57,10 +58,12 @@ Cc: linux-kernel@vger.kernel.org,
 	Holger Dengler <dengler@linux.ibm.com>,
 	Harald Freudenberger <freude@linux.ibm.com>,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 00/36] AES library improvements
-Date: Sun,  4 Jan 2026 21:12:33 -0800
-Message-ID: <20260105051311.1607207-1-ebiggers@kernel.org>
+Subject: [PATCH 01/36] crypto: powerpc/aes - Rename struct aes_key
+Date: Sun,  4 Jan 2026 21:12:34 -0800
+Message-ID: <20260105051311.1607207-2-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260105051311.1607207-1-ebiggers@kernel.org>
+References: <20260105051311.1607207-1-ebiggers@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,232 +83,173 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This series applies to libcrypto-next.  It can also be retrieved from:
+Rename struct aes_key in aesp8-ppc.h and aes-gcm-p10-glue.c to
+p8_aes_key and p10_aes_key, respectively.  This frees up the name to use
+in the library API in <crypto/aes.h>.
 
-    git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git aes-lib-v1
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+ arch/powerpc/crypto/aes-gcm-p10-glue.c |  4 ++--
+ arch/powerpc/crypto/aes.c              |  4 ++--
+ arch/powerpc/crypto/aes_cbc.c          |  4 ++--
+ arch/powerpc/crypto/aes_ctr.c          |  2 +-
+ arch/powerpc/crypto/aes_xts.c          |  6 +++---
+ arch/powerpc/crypto/aesp8-ppc.h        | 23 ++++++++++++-----------
+ 6 files changed, 22 insertions(+), 21 deletions(-)
 
-This series makes three main improvements to the kernel's AES library:
-
-  1. Make it use the kernel's existing architecture-optimized AES code,
-     including AES instructions, when available.  Previously, only the
-     traditional crypto API gave access to the optimized AES code.
-     (As a reminder, AES instructions typically make AES over 10 times
-     as fast as the generic code.  They also make it constant-time.)
-
-  2. Support preparing an AES key for only the forward direction of the
-     block cipher, using about half as much memory.  This is a helpful
-     optimization for many common AES modes of operation.  It also helps
-     keep structs small enough to be allocated on the stack, especially
-     considering potential future library APIs for AES modes.
-
-  3. Replace the library's generic AES implementation with a much faster
-     one that is almost as fast as "aes-generic", while still keeping
-     the table size reasonably small and maintaining some constant-time
-     hardening.  This allows removing "aes-generic", unifying the
-     current two generic AES implementations in the kernel tree.
-
-(1) and (2) end up being interrelated: the existing
-'struct crypto_aes_ctx' does not work for either one (in general).
-Thus, this series reworks the AES library to be based around new data
-types 'struct aes_key' and 'struct aes_enckey'.
-
-As has been the case for other algorithms, to achieve (1) without
-duplicating the architecture-optimized code, it had to be moved into
-lib/crypto/ rather than copied.  To allow actually removing the
-arch-specific crypto_cipher "aes" algorithms, a consolidated "aes-lib"
-crypto_cipher algorithm which simply wraps the library is also added.
-That's most easily done with it replacing "aes-generic" too, so that is
-done too.  (That's another reason for doing (3) at the same time.)
-
-As usual, care is taken to support all the existing arch-optimized code.
-This makes it possible for users of the traditional crypto API to switch
-to the library API, which is generally much easier to use, without being
-concerned about performance regressions.
-
-That being said, this series only deals with the bare (single-block) AES
-library.  Future patchsets are expected to build on this work to provide
-architecture-optimized library APIs for specific AES modes of operation.
-
-Eric Biggers (36):
-  crypto: powerpc/aes - Rename struct aes_key
-  lib/crypto: aes: Introduce improved AES library
-  crypto: arm/aes-neonbs - Use AES library for single blocks
-  crypto: arm/aes - Switch to aes_enc_tab[] and aes_dec_tab[]
-  crypto: arm64/aes - Switch to aes_enc_tab[] and aes_dec_tab[]
-  crypto: arm64/aes - Select CRYPTO_LIB_SHA256 from correct places
-  crypto: aegis - Switch from crypto_ft_tab[] to aes_enc_tab[]
-  crypto: aes - Remove aes-fixed-time / CONFIG_CRYPTO_AES_TI
-  crypto: aes - Replace aes-generic with wrapper around lib
-  lib/crypto: arm/aes: Migrate optimized code into library
-  lib/crypto: arm64/aes: Migrate optimized code into library
-  lib/crypto: powerpc/aes: Migrate SPE optimized code into library
-  lib/crypto: powerpc/aes: Migrate POWER8 optimized code into library
-  lib/crypto: riscv/aes: Migrate optimized code into library
-  lib/crypto: s390/aes: Migrate optimized code into library
-  lib/crypto: sparc/aes: Migrate optimized code into library
-  lib/crypto: x86/aes: Add AES-NI optimization
-  crypto: x86/aes - Remove the superseded AES-NI crypto_cipher
-  Bluetooth: SMP: Use new AES library API
-  chelsio: Use new AES library API
-  net: phy: mscc: macsec: Use new AES library API
-  staging: rtl8723bs: core: Use new AES library API
-  crypto: arm/ghash - Use new AES library API
-  crypto: arm64/ghash - Use new AES library API
-  crypto: x86/aes-gcm - Use new AES library API
-  crypto: ccp - Use new AES library API
-  crypto: chelsio - Use new AES library API
-  crypto: crypto4xx - Use new AES library API
-  crypto: drbg - Use new AES library API
-  crypto: inside-secure - Use new AES library API
-  crypto: omap - Use new AES library API
-  lib/crypto: aescfb: Use new AES library API
-  lib/crypto: aesgcm: Use new AES library API
-  lib/crypto: aes: Remove old AES en/decryption functions
-  lib/crypto: aes: Drop "_new" suffix from en/decryption functions
-  lib/crypto: aes: Drop 'volatile' from aes_sbox and aes_inv_sbox
-
- arch/arm/configs/milbeaut_m10v_defconfig      |    1 -
- arch/arm/configs/multi_v7_defconfig           |    2 +-
- arch/arm/configs/omap2plus_defconfig          |    2 +-
- arch/arm/configs/pxa_defconfig                |    2 +-
- arch/arm/crypto/Kconfig                       |   19 -
- arch/arm/crypto/Makefile                      |    2 -
- arch/arm/crypto/aes-cipher-glue.c             |   69 -
- arch/arm/crypto/aes-cipher.h                  |   13 -
- arch/arm/crypto/aes-neonbs-glue.c             |   29 +-
- arch/arm/crypto/ghash-ce-glue.c               |   14 +-
- arch/arm64/crypto/Kconfig                     |   29 +-
- arch/arm64/crypto/Makefile                    |    6 -
- arch/arm64/crypto/aes-ce-ccm-glue.c           |    2 -
- arch/arm64/crypto/aes-ce-glue.c               |  178 ---
- arch/arm64/crypto/aes-ce-setkey.h             |    6 -
- arch/arm64/crypto/aes-cipher-glue.c           |   63 -
- arch/arm64/crypto/aes-glue.c                  |    2 -
- arch/arm64/crypto/ghash-ce-glue.c             |   27 +-
- arch/m68k/configs/amiga_defconfig             |    1 -
- arch/m68k/configs/apollo_defconfig            |    1 -
- arch/m68k/configs/atari_defconfig             |    1 -
- arch/m68k/configs/bvme6000_defconfig          |    1 -
- arch/m68k/configs/hp300_defconfig             |    1 -
- arch/m68k/configs/mac_defconfig               |    1 -
- arch/m68k/configs/multi_defconfig             |    1 -
- arch/m68k/configs/mvme147_defconfig           |    1 -
- arch/m68k/configs/mvme16x_defconfig           |    1 -
- arch/m68k/configs/q40_defconfig               |    1 -
- arch/m68k/configs/sun3_defconfig              |    1 -
- arch/m68k/configs/sun3x_defconfig             |    1 -
- arch/powerpc/crypto/Kconfig                   |    2 +-
- arch/powerpc/crypto/Makefile                  |    9 +-
- arch/powerpc/crypto/aes-gcm-p10-glue.c        |    4 +-
- arch/powerpc/crypto/aes-spe-glue.c            |   88 +-
- arch/powerpc/crypto/aes.c                     |  134 --
- arch/powerpc/crypto/aes_cbc.c                 |    4 +-
- arch/powerpc/crypto/aes_ctr.c                 |    2 +-
- arch/powerpc/crypto/aes_xts.c                 |    6 +-
- arch/powerpc/crypto/aesp8-ppc.h               |   22 -
- arch/powerpc/crypto/vmx.c                     |   10 +-
- arch/riscv/crypto/Kconfig                     |    2 -
- arch/riscv/crypto/aes-macros.S                |   12 +-
- arch/riscv/crypto/aes-riscv64-glue.c          |   78 +-
- arch/riscv/crypto/aes-riscv64-zvkned.S        |   27 -
- arch/s390/configs/debug_defconfig             |    2 +-
- arch/s390/configs/defconfig                   |    2 +-
- arch/s390/crypto/Kconfig                      |    2 -
- arch/s390/crypto/aes_s390.c                   |  113 --
- arch/sparc/crypto/Kconfig                     |    2 +-
- arch/sparc/crypto/Makefile                    |    2 +-
- arch/sparc/crypto/aes_glue.c                  |  140 +-
- arch/x86/crypto/Kconfig                       |    2 -
- arch/x86/crypto/aes-gcm-aesni-x86_64.S        |   33 +-
- arch/x86/crypto/aes-gcm-vaes-avx2.S           |   21 +-
- arch/x86/crypto/aes-gcm-vaes-avx512.S         |   25 +-
- arch/x86/crypto/aesni-intel_asm.S             |   25 -
- arch/x86/crypto/aesni-intel_glue.c            |  119 +-
- crypto/Kconfig                                |   23 +-
- crypto/Makefile                               |    4 +-
- crypto/aegis.h                                |    2 +-
- crypto/aes.c                                  |   66 +
- crypto/aes_generic.c                          | 1320 -----------------
- crypto/aes_ti.c                               |   83 --
- crypto/crypto_user.c                          |    2 +-
- crypto/df_sp80090a.c                          |   30 +-
- crypto/drbg.c                                 |   12 +-
- crypto/testmgr.c                              |   43 +-
- drivers/char/tpm/tpm2-sessions.c              |   10 +-
- drivers/crypto/amcc/crypto4xx_alg.c           |   10 +-
- drivers/crypto/ccp/ccp-crypto-aes-cmac.c      |    4 +-
- drivers/crypto/chelsio/chcr_algo.c            |   10 +-
- .../crypto/inside-secure/safexcel_cipher.c    |   12 +-
- drivers/crypto/inside-secure/safexcel_hash.c  |   14 +-
- drivers/crypto/omap-aes-gcm.c                 |    6 +-
- drivers/crypto/omap-aes.h                     |    2 +-
- drivers/crypto/starfive/jh7110-aes.c          |   10 +-
- drivers/crypto/xilinx/xilinx-trng.c           |    8 +-
- .../inline_crypto/ch_ipsec/chcr_ipsec.c       |    4 +-
- .../chelsio/inline_crypto/ch_ktls/chcr_ktls.c |    8 +-
- .../chelsio/inline_crypto/chtls/chtls_hw.c    |    4 +-
- drivers/net/phy/mscc/mscc_macsec.c            |    8 +-
- drivers/staging/rtl8723bs/core/rtw_security.c |   20 +-
- include/crypto/aes.h                          |  279 +++-
- include/crypto/df_sp80090a.h                  |    2 +-
- include/crypto/gcm.h                          |    2 +-
- lib/crypto/Kconfig                            |   12 +
- lib/crypto/Makefile                           |   43 +-
- lib/crypto/aes.c                              |  473 ++++--
- lib/crypto/aescfb.c                           |   30 +-
- lib/crypto/aesgcm.c                           |   12 +-
- .../crypto/arm}/aes-cipher-core.S             |    4 +-
- lib/crypto/arm/aes.h                          |   56 +
- .../crypto => lib/crypto/arm64}/aes-ce-core.S |    0
- .../crypto/arm64}/aes-cipher-core.S           |    4 +-
- lib/crypto/arm64/aes.h                        |  164 ++
- lib/crypto/powerpc/.gitignore                 |    2 +
- .../crypto/powerpc}/aes-spe-core.S            |    0
- .../crypto/powerpc}/aes-spe-keys.S            |    0
- .../crypto/powerpc}/aes-spe-modes.S           |    0
- .../crypto/powerpc}/aes-spe-regs.h            |    0
- .../crypto/powerpc}/aes-tab-4k.S              |    0
- lib/crypto/powerpc/aes.h                      |  238 +++
- .../crypto/powerpc}/aesp8-ppc.pl              |    1 +
- lib/crypto/riscv/aes-riscv64-zvkned.S         |   84 ++
- lib/crypto/riscv/aes.h                        |   63 +
- lib/crypto/s390/aes.h                         |  106 ++
- lib/crypto/sparc/aes.h                        |  149 ++
- .../crypto => lib/crypto/sparc}/aes_asm.S     |    0
- lib/crypto/x86/aes-aesni.S                    |  261 ++++
- lib/crypto/x86/aes.h                          |   85 ++
- net/bluetooth/smp.c                           |    8 +-
- 111 files changed, 2202 insertions(+), 2957 deletions(-)
- delete mode 100644 arch/arm/crypto/aes-cipher-glue.c
- delete mode 100644 arch/arm/crypto/aes-cipher.h
- delete mode 100644 arch/arm64/crypto/aes-ce-glue.c
- delete mode 100644 arch/arm64/crypto/aes-ce-setkey.h
- delete mode 100644 arch/arm64/crypto/aes-cipher-glue.c
- delete mode 100644 arch/powerpc/crypto/aes.c
- create mode 100644 crypto/aes.c
- delete mode 100644 crypto/aes_generic.c
- delete mode 100644 crypto/aes_ti.c
- rename {arch/arm/crypto => lib/crypto/arm}/aes-cipher-core.S (97%)
- create mode 100644 lib/crypto/arm/aes.h
- rename {arch/arm64/crypto => lib/crypto/arm64}/aes-ce-core.S (100%)
- rename {arch/arm64/crypto => lib/crypto/arm64}/aes-cipher-core.S (96%)
- create mode 100644 lib/crypto/arm64/aes.h
- create mode 100644 lib/crypto/powerpc/.gitignore
- rename {arch/powerpc/crypto => lib/crypto/powerpc}/aes-spe-core.S (100%)
- rename {arch/powerpc/crypto => lib/crypto/powerpc}/aes-spe-keys.S (100%)
- rename {arch/powerpc/crypto => lib/crypto/powerpc}/aes-spe-modes.S (100%)
- rename {arch/powerpc/crypto => lib/crypto/powerpc}/aes-spe-regs.h (100%)
- rename {arch/powerpc/crypto => lib/crypto/powerpc}/aes-tab-4k.S (100%)
- create mode 100644 lib/crypto/powerpc/aes.h
- rename {arch/powerpc/crypto => lib/crypto/powerpc}/aesp8-ppc.pl (99%)
- create mode 100644 lib/crypto/riscv/aes-riscv64-zvkned.S
- create mode 100644 lib/crypto/riscv/aes.h
- create mode 100644 lib/crypto/s390/aes.h
- create mode 100644 lib/crypto/sparc/aes.h
- rename {arch/sparc/crypto => lib/crypto/sparc}/aes_asm.S (100%)
- create mode 100644 lib/crypto/x86/aes-aesni.S
- create mode 100644 lib/crypto/x86/aes.h
-
+diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+index 85f4fd4b1bdc..f3417436d3f7 100644
+--- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
++++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+@@ -42,11 +42,11 @@ asmlinkage void aes_p10_gcm_decrypt(const u8 *in, u8 *out, size_t len,
+ asmlinkage void gcm_init_htable(unsigned char htable[], unsigned char Xi[]);
+ asmlinkage void gcm_ghash_p10(unsigned char *Xi, unsigned char *Htable,
+ 			      unsigned char *aad, unsigned int alen);
+ asmlinkage void gcm_update(u8 *iv, void *Xi);
+ 
+-struct aes_key {
++struct p10_aes_key {
+ 	u8 key[AES_MAX_KEYLENGTH];
+ 	u64 rounds;
+ };
+ 
+ struct gcm_ctx {
+@@ -61,11 +61,11 @@ struct Hash_ctx {
+ 	u8 H[16];	/* subkey */
+ 	u8 Htable[256];	/* Xi, Hash table(offset 32) */
+ };
+ 
+ struct p10_aes_gcm_ctx {
+-	struct aes_key enc_key;
++	struct p10_aes_key enc_key;
+ 	u8 nonce[RFC4106_NONCE_SIZE];
+ };
+ 
+ static void vsx_begin(void)
+ {
+diff --git a/arch/powerpc/crypto/aes.c b/arch/powerpc/crypto/aes.c
+index 3f1e5e894902..b7192ee719fc 100644
+--- a/arch/powerpc/crypto/aes.c
++++ b/arch/powerpc/crypto/aes.c
+@@ -19,12 +19,12 @@
+ 
+ #include "aesp8-ppc.h"
+ 
+ struct p8_aes_ctx {
+ 	struct crypto_cipher *fallback;
+-	struct aes_key enc_key;
+-	struct aes_key dec_key;
++	struct p8_aes_key enc_key;
++	struct p8_aes_key dec_key;
+ };
+ 
+ static int p8_aes_init(struct crypto_tfm *tfm)
+ {
+ 	const char *alg = crypto_tfm_alg_name(tfm);
+diff --git a/arch/powerpc/crypto/aes_cbc.c b/arch/powerpc/crypto/aes_cbc.c
+index 5f2a4f375eef..4a9f285f0970 100644
+--- a/arch/powerpc/crypto/aes_cbc.c
++++ b/arch/powerpc/crypto/aes_cbc.c
+@@ -19,12 +19,12 @@
+ 
+ #include "aesp8-ppc.h"
+ 
+ struct p8_aes_cbc_ctx {
+ 	struct crypto_skcipher *fallback;
+-	struct aes_key enc_key;
+-	struct aes_key dec_key;
++	struct p8_aes_key enc_key;
++	struct p8_aes_key dec_key;
+ };
+ 
+ static int p8_aes_cbc_init(struct crypto_skcipher *tfm)
+ {
+ 	struct p8_aes_cbc_ctx *ctx = crypto_skcipher_ctx(tfm);
+diff --git a/arch/powerpc/crypto/aes_ctr.c b/arch/powerpc/crypto/aes_ctr.c
+index e27c4036e711..7dbd06f442db 100644
+--- a/arch/powerpc/crypto/aes_ctr.c
++++ b/arch/powerpc/crypto/aes_ctr.c
+@@ -19,11 +19,11 @@
+ 
+ #include "aesp8-ppc.h"
+ 
+ struct p8_aes_ctr_ctx {
+ 	struct crypto_skcipher *fallback;
+-	struct aes_key enc_key;
++	struct p8_aes_key enc_key;
+ };
+ 
+ static int p8_aes_ctr_init(struct crypto_skcipher *tfm)
+ {
+ 	struct p8_aes_ctr_ctx *ctx = crypto_skcipher_ctx(tfm);
+diff --git a/arch/powerpc/crypto/aes_xts.c b/arch/powerpc/crypto/aes_xts.c
+index 9440e771cede..b4c760e465ea 100644
+--- a/arch/powerpc/crypto/aes_xts.c
++++ b/arch/powerpc/crypto/aes_xts.c
+@@ -20,13 +20,13 @@
+ 
+ #include "aesp8-ppc.h"
+ 
+ struct p8_aes_xts_ctx {
+ 	struct crypto_skcipher *fallback;
+-	struct aes_key enc_key;
+-	struct aes_key dec_key;
+-	struct aes_key tweak_key;
++	struct p8_aes_key enc_key;
++	struct p8_aes_key dec_key;
++	struct p8_aes_key tweak_key;
+ };
+ 
+ static int p8_aes_xts_init(struct crypto_skcipher *tfm)
+ {
+ 	struct p8_aes_xts_ctx *ctx = crypto_skcipher_ctx(tfm);
+diff --git a/arch/powerpc/crypto/aesp8-ppc.h b/arch/powerpc/crypto/aesp8-ppc.h
+index 5764d4438388..0bea010128cb 100644
+--- a/arch/powerpc/crypto/aesp8-ppc.h
++++ b/arch/powerpc/crypto/aesp8-ppc.h
+@@ -1,10 +1,10 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #include <linux/types.h>
+ #include <crypto/aes.h>
+ 
+-struct aes_key {
++struct p8_aes_key {
+ 	u8 key[AES_MAX_KEYLENGTH];
+ 	int rounds;
+ };
+ 
+ extern struct shash_alg p8_ghash_alg;
+@@ -12,19 +12,20 @@ extern struct crypto_alg p8_aes_alg;
+ extern struct skcipher_alg p8_aes_cbc_alg;
+ extern struct skcipher_alg p8_aes_ctr_alg;
+ extern struct skcipher_alg p8_aes_xts_alg;
+ 
+ int aes_p8_set_encrypt_key(const u8 *userKey, const int bits,
+-			   struct aes_key *key);
++			   struct p8_aes_key *key);
+ int aes_p8_set_decrypt_key(const u8 *userKey, const int bits,
+-			   struct aes_key *key);
+-void aes_p8_encrypt(const u8 *in, u8 *out, const struct aes_key *key);
+-void aes_p8_decrypt(const u8 *in, u8 *out, const struct aes_key *key);
++			   struct p8_aes_key *key);
++void aes_p8_encrypt(const u8 *in, u8 *out, const struct p8_aes_key *key);
++void aes_p8_decrypt(const u8 *in, u8 *out, const struct p8_aes_key *key);
+ void aes_p8_cbc_encrypt(const u8 *in, u8 *out, size_t len,
+-			const struct aes_key *key, u8 *iv, const int enc);
+-void aes_p8_ctr32_encrypt_blocks(const u8 *in, u8 *out,
+-				 size_t len, const struct aes_key *key,
+-				 const u8 *iv);
++			const struct p8_aes_key *key, u8 *iv, const int enc);
++void aes_p8_ctr32_encrypt_blocks(const u8 *in, u8 *out, size_t len,
++				 const struct p8_aes_key *key, const u8 *iv);
+ void aes_p8_xts_encrypt(const u8 *in, u8 *out, size_t len,
+-			const struct aes_key *key1, const struct aes_key *key2, u8 *iv);
++			const struct p8_aes_key *key1,
++			const struct p8_aes_key *key2, u8 *iv);
+ void aes_p8_xts_decrypt(const u8 *in, u8 *out, size_t len,
+-			const struct aes_key *key1, const struct aes_key *key2, u8 *iv);
++			const struct p8_aes_key *key1,
++			const struct p8_aes_key *key2, u8 *iv);
 
 base-commit: e78a3142fa5875126e477fdfe329b0aeb1b0693f
 -- 
