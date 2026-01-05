@@ -1,49 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-15262-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15263-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E48CF32E2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 12:15:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1799CF37C3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 13:20:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dlBYc2xsVz2yFW;
-	Mon, 05 Jan 2026 22:15:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dlCzp4b0tz2yK7;
+	Mon, 05 Jan 2026 23:20:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767611748;
-	cv=none; b=PHnOFqaDbtZBH2oIVoOOVTIiUMruVUYUzwaeC7IPliQbTW5vir1HgMV9b4h74BAzbE2LXoY62lkOnrlA9A4CnZClVJsGjXqw0Wt0w7TQfnwvV+Q4Vc736jStJ6vlonMypyVLHurZ15D0krjZA1QUc6uZP3oWIvTV7qCIwmYz9zdZ/QOKrSvs37Ka9L3jyhMqxYz69FTbChHNvL8DElUYiVsVlDvqAMRQ4CdMdS9pLSwYTizDWos3Db93kNhVhCFeZtgu/WfFEKuQGZ4zc6km0bBhlpOwKoy3GDEJpj9lPke5EIUjS9ejtycgkSNBdmFKDG7bpzpB7OQv/1d2ZBy0rg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.246.84.56
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767615606;
+	cv=none; b=Q3Tgrk4deeYsLFgKyORI3CzE5B95Q8sXlXVKF+9E+MaXejx0BDhNrLTgmHz5YO3v/nFmnD14cPEx2o+qziDFpEc4zfEB+5x5IO7SPeBQdBiLzlhmKHaAIXswhpF10Qa/fy1rjuoGmh6TQqrYmPJXnM/NLfo74BugjewcuPhewNjGseLMianl42LdgdxkHHPyDM0tn82jK7EyQ7UTWFb1LV9yk6R9BpvRJbGFnO2aUyAusiNyO9vASTPAF0gJitcsUI4CgI0V+mAlsBfMMc3eD/MqsvQvA3IMQvTamJUHGYVdzLAiKx+DcrRgoxhFK9tlDa0oTDMsCpwddc/fVX79SA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767611748; c=relaxed/relaxed;
-	bh=InMg9PgYthb0nWfCwpg2WM2wHZYJLMPlkUc4J7jMTXQ=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=iFvNxZbu6Gp+j3ymRptILLfQsmDNfyCEHrMyVRFMqRtdx3Lgi2U/A2CkEcJBn9k5upCXct0MfbGw+ezuu9lmjVI+6iRaz3kPcXxFcUB2nRb2Aqne8DQBjzaQlyI+QB5t8INNRMmUXn/IAsNrFAMvpDzRTFKR8mimEvb3fB5k1fx9uS8Dvkx7Uw5DqxNKpCSVGYxlOygZ8cvhp4yz9anbTeNOd++gFBYMzjW9mhCuK73ccr4wMw/qWyidbXfqhJAB2z9fv2uFTpb63Z7y+ZRZKLsg8mxTdnb92IjyUgg3L9wdZfiaas7gWTBMq7EPUuz6ajz5HrCfNuBY18mb9A3snw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IN3mASKs; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1767615606; c=relaxed/relaxed;
+	bh=m5LYmxF46So4teTC+/oCRVtVgBkfT7UaMLi9v+OV7s4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GyZkicBHZnFfsFXnvz5Drw0oSn5q44BvSDDvrj44XGuHYctPuG1xFmTPTnV6PPBUVin2zWXaweOkSCEX2TmTQSgUs0pzRkzQZZU7g4B1ZdfoN3o8Lgs2iI+RwzNm8dM+mSIXGv2E6zjXFVQiDibwo4PRz6gBSW08EXcaxnx7P35mYzmHeUWpLqqrQM7SwgJjhMyzpaeEFbgTB8HCsfdhaIBSsDF3S1j8xIqjFgiLFDWYs4dMMb9xuBjeTkJuHcckh+QmOlMBesEmT1UzK7YFnyDM7qCwLc8ZCKTFuPBYrqOm9BwOWv0aEfVS/AiXuOZSX0YMe7wg4CcpZFrKLEiecA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=hDaCXN/Q; dkim-atps=neutral; spf=pass (client-ip=185.246.84.56; helo=smtpout-02.galae.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IN3mASKs;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=hDaCXN/Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=185.246.84.56; helo=smtpout-02.galae.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 534 seconds by postgrey-1.37 at boromir; Mon, 05 Jan 2026 23:20:04 AEDT
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlBYb3Whwz2yCL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 22:15:47 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0681D43DD7;
-	Mon,  5 Jan 2026 11:15:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40353C116D0;
-	Mon,  5 Jan 2026 11:15:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767611714;
-	bh=gOPFCv6XsvdNRFL2RgDvRLwWfshb/oHcO2mTVP7fwUc=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=IN3mASKs9ZOdY3UWX865ZG6aB6zxt/yT04bcUJ7cuxkRQCHiOoJYOHXltLVYGrWnX
-	 sLyyjN/mVfbdelfPtvuCgsuYc3e3xIs8WYSVdBfKfSdGRr7XCEYeoUVwx63W2eeyR1
-	 YsnFKsk5+hPaqSv1yzLkJ4S4OTgLG6rS3lu4D8KK2SlOY/0lKgXSRV11vvvL2rVqWI
-	 XcY69MIXG2csR5WWdunoLtYAYD6tqtRCAdOsZtO1xZXB2dLHSsAi9C2yiYDvkyXOqc
-	 f7mR+nylEUhtKx6jI6FOEwEfDTmGJ57eATPOxskUiFgXDTbQrewzUkLONqDGvjlsYT
-	 x269dn3xwSWxg==
-Content-Type: multipart/mixed; boundary="===============0721075218538269164=="
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlCzm4YpHz2yFW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 23:20:03 +1100 (AEDT)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A02171A265C;
+	Mon,  5 Jan 2026 12:11:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6B4EC60726;
+	Mon,  5 Jan 2026 12:11:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CD090103C84E1;
+	Mon,  5 Jan 2026 13:10:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1767615061; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=m5LYmxF46So4teTC+/oCRVtVgBkfT7UaMLi9v+OV7s4=;
+	b=hDaCXN/QDa3HyGkKumXh/rRN3I3owCmfG7llh88Kw+9vkZSCIlHM9BnDzCteX2UMLY3HvT
+	Uq013YD+P0GDQOrhbw0cpfNAsNpgwv/1q7t5uwXkhDQ2cWj103bR5zDqIUvjjIU4xmZR0e
+	1/6vkwmaJBNF9TS1jFUu8cn0lBHxXMRJvrqZ8a8o6SnUuucQkAe0zqAwKNp2pybs1Dmu7R
+	u1KhCWWFUw0JBcOLS3+WIdByDf/vgZGAXSwMtGcumAzoevI1F5OCJIIA3DAOGGFiLRs2k6
+	UU9iXegSZfu/qDYIk/iFHlridOzNdeeDpsEo7EbnZwUYesM+Rh8RKJfsgRBGZw==
+Date: Mon, 5 Jan 2026 13:10:56 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] soc: fsl: qe: Simplify with scoped for each OF child
+ loop
+Message-ID: <20260105131056.391904af@bootlin.com>
+In-Reply-To: <20260102124754.64122-2-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20260102124754.64122-2-krzysztof.kozlowski@oss.qualcomm.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,99 +72,31 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <655a960bb1b98cf56777481bd84ce53c2a17e527a8230edf9ad7523e98cce565@mail.kernel.org>
-In-Reply-To: <20260105105212.136645-3-adubey@linux.ibm.com>
-References: <20260105105212.136645-3-adubey@linux.ibm.com>
-Subject: Re: [PATCH 2/6] powerpc64/bpf: Tailcall handling with trampolines
-From: bot+bpf-ci@kernel.org
-To: adubey@linux.ibm.com,bpf@vger.kernel.org,linuxppc-dev@lists.ozlabs.org,linux-kselftest@vger.kernel.org,linux-kernel@vger.kernel.org
-Cc: hbathini@linux.ibm.com,sachinpb@linux.ibm.com,venkat88@linux.ibm.com,andrii@kernel.org,eddyz87@gmail.com,mykolal@fb.com,ast@kernel.org,daniel@iogearbox.net,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,john.fastabend@gmail.com,kpsingh@kernel.org,sdf@fomichev.me,haoluo@google.com,jolsa@kernel.org,christophe.leroy@csgroup.eu,naveen@kernel.org,maddy@linux.ibm.com,mpe@ellerman.id.au,npiggin@gmail.com,memxor@gmail.com,iii@linux.ibm.com,shuah@kernel.org,adubey@linux.ibm.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Mon,  5 Jan 2026 11:15:14 +0000 (UTC)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
---===============0721075218538269164==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Krzysztof,
 
-> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-> index 069a8822c30d..4aaa0a287a45 100644
-> --- a/arch/powerpc/net/bpf_jit_comp.c
-> +++ b/arch/powerpc/net/bpf_jit_comp.c
+On Fri,  2 Jan 2026 13:47:55 +0100
+Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com> wrote:
 
-[ ... ]
+> Use scoped for-each loop when iterating over device nodes to make code a
+> bit simpler.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> ---
+>  drivers/soc/fsl/qe/qmc.c | 13 ++-----------
+>  1 file changed, 2 insertions(+), 11 deletions(-)
 
-> -static void bpf_trampoline_setup_tail_call_cnt(u32 *image, struct codegen_context *ctx,
-> -					       int func_frame_offset, int r4_off)
-> +static void bpf_trampoline_setup_tail_call_info(u32 *image, struct codegen_context *ctx,
-> +					       int func_frame_offset,
-> +					       int bpf_dummy_frame_size, int r4_off)
->  {
->  	if (IS_ENABLED(CONFIG_PPC64)) {
->  		/* See bpf_jit_stack_tailcallinfo_offset() */
-> -		int tailcallcnt_offset = 7 * 8;
-> +		int tailcallinfo_offset = BPF_PPC_STACK_SAVE + SZL;
+Thanks for the patch.
 
-[ ... ]
+Acked-by: Herve Codina <herve.codina@bootlin.com>
 
-> +		EMIT(PPC_RAW_STL(_R3, _R1, func_frame_offset
-> +				- bpf_dummy_frame_size - tailcallinfo_offset));
-                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The new setup function stores tail_call_info at offset
-(func_frame_offset - bpf_dummy_frame_size - tailcallinfo_offset) from R1.
-Since func_frame_offset = bpf_dummy_frame_size + bpf_frame_size, this
-resolves to (bpf_frame_size - 56), which is a positive offset from R1.
-
-However, the corresponding bpf_trampoline_restore_tail_call_cnt() function
-was not updated. It still reads from (R1 - 56):
-
-    static void bpf_trampoline_restore_tail_call_cnt(...)
-    {
-        if (IS_ENABLED(CONFIG_PPC64)) {
-            int tailcallcnt_offset = 7 * 8;
-            EMIT(PPC_RAW_LL(_R3, _R1, -tailcallcnt_offset));
-                                      ^^^^^^^^^^^^^^^^^^
-            ...
-        }
-    }
-
-Is there an offset mismatch here? The setup function stores at
-R1 + (bpf_frame_size - 56) while restore reads from R1 - 56. These point
-to different memory locations since bpf_frame_size is a positive value
-(at minimum ~200 bytes given the frame contents).
-
-When BPF_TRAMP_F_TAIL_CALL_CTX is set, the restore function would read
-incorrect data after the traced function returns, potentially causing
-wrong tail call context to be propagated.
-
-> @@ -801,6 +830,12 @@ static int __arch_prepare_bpf_trampoline(...)
->  		}
->  	}
->
-> +	/* Room for 64-bit tail_call_cnt */
-> +	bpf_frame_size += SZL;
-> +
-> +	/* Room for nvr save area */
-> +	bpf_frame_size += BPF_PPC_STACK_SAVE;
-> +
->  	/* Padding to align stack frame, if any */
->  	bpf_frame_size = round_up(bpf_frame_size, SZL * 2);
-
-The frame size is increased by 56 bytes (SZL + BPF_PPC_STACK_SAVE = 8 + 48)
-for the tail_call_info and nvr save area. This affects all calculations
-using bpf_frame_size, including the store offset in the setup function,
-but the restore function continues to use a hardcoded negative offset.
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/20713322833
-
---===============0721075218538269164==--
+Best regards,
+Hervé
 
