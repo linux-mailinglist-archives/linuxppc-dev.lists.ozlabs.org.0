@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15211-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15214-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5BCCF1DF8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 06:15:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2DDCF1E21
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 06:16:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dl2YQ2VGcz2yqF;
-	Mon, 05 Jan 2026 16:15:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dl2YT65yMz2yvC;
+	Mon, 05 Jan 2026 16:15:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767590106;
-	cv=none; b=KjYqCY1sg6IObtbk3QC/39cRZQWU85xsZszpePCcscQqESEGiwTh4fB0vZATAFqA+BPueFLjl48bsuWFXTGHAPuyzBTGXn2IF62i2iocw7RbmgLvEO5x1ZKExENU7LAzkeiNJWh4aO5/C6gnyZ9CfFPV9KYBk9CpWBntQ6aRHMU505a+2jQfWohZ2mpIPtxVw9SmgX4GusA9VZ7A+Lxo7viCWwROtpFk6ZLMANn70blwJem4iX8tgzaWw3dou2lKUdLFakCnXmEN9YI490AkBSsVXpOpdpD8JUGBINI2aPp7OhC0UpzkaMJFi6NV3LfiqczIvA7wbYkC3I+frNHjYw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767590109;
+	cv=none; b=NA3jSHxnmyEiTx20sdv0CJnmDD5vuQW5eBLJJLUK8vlG9gAVYlTCcNip301ZH+DN9771qC6hkxUeES6Y8TRjcnUJBxg21Fe0hb18C42yfVBnp9ZZHFLcZRtuO8GQBEem++ZYq1cSmErdrvt0NeIL6Mvo6CVelFGgsLgcyDQfj2bjFfk1iRhvyG7ZigttC6WaR+9KMd4HvEqQlY8FQBGEt510jo+pvP9c2tzzMQ4sUQftXDJb3akps3ORtF0IWCQPWrWqTvUcAtC5YVYHiNHo17Svh0Rk6LwgF90DPYheIX7WFDXQ+HMHq1TUIIrdSu5EJ538S0lTbD+n4/Ub+XBrnw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767590106; c=relaxed/relaxed;
-	bh=cu/OYem5JfBfUKKlqH54nv7PEAeXYvWGR7DSoN01Sic=;
+	t=1767590109; c=relaxed/relaxed;
+	bh=gH9JPI/fS/wgvuRpKdnfQZesiFsvKua0/Tr9w1t6x2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ui4alIvzCSGzIM4QhX3riU1jmLhkb0EnQ0Ww1MvG5/K5osw6N5o3RRZr3MCSgOxWzLmEDkP0VeYX3IPdrjD2OoRaDpSqdXgKwrnWIWQYsFp45W96hYNo92+jpeFWLInSRNx2XCaaHUMmIUXpmbaQ5y71ls/1sLD559lLyRmtGOLppSCvtxiKN31OHfOXpQFONjvy7TxXmoNy5eHP9F1DQXpMfn1FZm8OAIsyc9sSsV+Fb2i2oZxXkYEbf7fuie3mbE/UtQctCA5YT69/oKRgyVM+5C3ruJ0QFSN5fJsB1PigmguyaG89q2t6hEAViguLn8gbI44THra9jxMWcRTGfw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d1CIbrQy; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version:Content-Type; b=kjW+/tIF0srjU4AjxVkvQyiJUGYa55lf5A02Ufsl6R8LeSlrKU2k+9/roHP2tgaTAohf0nMgipl1EBEyKOmzHdlZfaYAdNuBh6z6uaFinp2qbVh8qI6ZjLQrNDDkZX8wl1A/BKBmv2EniO/TBEzeUV0O6KzuOKb+iZRyGDHcEMnOzwPVrgvjcPGAnNb/dGkv8pxQ75D1HIJ7PzpWh3fKpGwE2LFvtBPyr/iMEL1cxHiAW/mG7B8/lvphHkCjsrze7VdVJxzvKLhehro+gEklBBU6YRhlRXgxyR6Q8iCoSdryiYVzyOwDIWoFccrv6V6l/BzkEL495Vm2KURSsijpTQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HYEPxEEL; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d1CIbrQy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HYEPxEEL;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dl2YJ4jKVz2yhP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 16:15:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dl2YK6xGJz2yl2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 16:15:01 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 768A14430E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4C0554430C;
+	Mon,  5 Jan 2026 05:14:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C70FC116D0;
 	Mon,  5 Jan 2026 05:14:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68A6C4AF0F;
-	Mon,  5 Jan 2026 05:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767590098;
-	bh=6o3GJgNO3+qhDeZcBcOFMC7mOIMcNsXDI5dORGkm4b8=;
+	s=k20201202; t=1767590099;
+	bh=zT5da4wtZ207ehQuGdU88e6ZhYy7QpzWx5B47Z9y3Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1CIbrQyE+09yYQYpmoUoYrRIuPsxLgFqB9fe79FMlgPMcy6I4ddG+GBVc1FgHx/R
-	 hWMxCxgnP3J/TqJ8gUECjXS1u9P7eT4lqFHUaxZDl9yArB8qGWfBGYRi9sRCRIH6Jd
-	 mpQxJRZvG46ly9iK9/KlMDvJI/u0hIXUCIGaP2pKlAezF/Bi9jQ89RpN2CN5cPom1M
-	 8De8z8ZomaCaFAMGBMx/eQu+l7fGLGULuLKf3lIjys/08dvSIDVifZxUUvuU8xGOrn
-	 D8jA4vHyCuLWPGfp5vylvssw1JATSfW5oRWThnGyzcfYNBzW+bpxkPCJmNBiImaPRB
-	 XpcY5IoBNJZEQ==
+	b=HYEPxEELQkvEVKog6DSHYN/Vq8uSnddwAnmdDca4mhGRvv+jY+b+A0bFSuvQRu3fV
+	 hHmASQpzA8wDck/p7tCLuRmH35F1QdwY94/HmKgmcF/Gad8UhJMtqHsC6R74EYHbxn
+	 HFQJCvrWqNc10tz1mpC3eE4iWv9UFaaGnUwkoX0FN2L0bOn9fQ/eRYQra2OSCGFoZz
+	 Fc9MtWjMhiqFMXMdXYWK9L5n5wjZEiuU3J9/rWFXyD4eVE/J1zKYnx3c5KRmtKQ/08
+	 10NfRfalJYTpo6cyk6E/6JAI/JLZ6JyvwJn/VSaMWD5mQBFl6KdxX2X2uns87UWcuG
+	 7jeZ9aiQEKugg==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Holger Dengler <dengler@linux.ibm.com>,
 	Harald Freudenberger <freude@linux.ibm.com>,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 13/36] lib/crypto: powerpc/aes: Migrate POWER8 optimized code into library
-Date: Sun,  4 Jan 2026 21:12:46 -0800
-Message-ID: <20260105051311.1607207-14-ebiggers@kernel.org>
+Subject: [PATCH 14/36] lib/crypto: riscv/aes: Migrate optimized code into library
+Date: Sun,  4 Jan 2026 21:12:47 -0800
+Message-ID: <20260105051311.1607207-15-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260105051311.1607207-1-ebiggers@kernel.org>
 References: <20260105051311.1607207-1-ebiggers@kernel.org>
@@ -77,634 +77,524 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Move the POWER8 AES assembly code into lib/crypto/, wire the key
-expansion and single-block en/decryption functions up to the AES library
-API, and remove the superseded "p8_aes" crypto_cipher algorithm.
+Move the aes_encrypt_zvkned() and aes_decrypt_zvkned() assembly
+functions into lib/crypto/, wire them up to the AES library API, and
+remove the "aes-riscv64-zvkned" crypto_cipher algorithm.
 
-The result is that both the AES library and crypto_cipher APIs are now
-optimized for POWER8, whereas previously only crypto_cipher was (and
-optimizations weren't enabled by default, which this commit fixes too).
+To make this possible, change the prototypes of these functions to
+take (rndkeys, key_len) instead of a pointer to crypto_aes_ctx, and
+change the RISC-V AES-XTS code to implement tweak encryption using the
+AES library instead of directly calling aes_encrypt_zvkned().
 
-Note that many of the functions in the POWER8 assembly code are still
-used by the AES mode implementations in arch/powerpc/crypto/.  For now,
-just export these functions.  These exports will go away once the AES
-modes are migrated to the library as well.  (Trying to split up the
-assembly file seemed like much more trouble than it would be worth.)
-
-Another challenge with this code is that the POWER8 assembly code uses a
-custom format for the expanded AES key.  Since that code is imported
-from OpenSSL and is also targeted to POWER8 (rather than POWER9 which
-has better data movement and byteswap instructions), that is not easily
-changed.  For now I've just kept the custom format.  To maintain full
-correctness, this requires executing some slow fallback code in the case
-where the usability of VSX changes between key expansion and use.  This
-should be tolerable, as this case shouldn't happen in practice.
+The result is that both the AES library and crypto_cipher APIs use
+RISC-V's AES instructions, whereas previously only crypto_cipher did
+(and it wasn't enabled by default, which this commit fixes as well).
 
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- arch/powerpc/crypto/Makefile                  |   7 +-
- arch/powerpc/crypto/aes.c                     | 134 --------------
- arch/powerpc/crypto/aesp8-ppc.h               |  23 ---
- arch/powerpc/crypto/vmx.c                     |  10 +-
- include/crypto/aes.h                          |  41 +++++
- lib/crypto/Kconfig                            |   2 +-
- lib/crypto/Makefile                           |  14 +-
- lib/crypto/powerpc/.gitignore                 |   2 +
- lib/crypto/powerpc/aes.h                      | 164 ++++++++++++++++++
- .../crypto/powerpc}/aesp8-ppc.pl              |   1 +
- 10 files changed, 226 insertions(+), 172 deletions(-)
- delete mode 100644 arch/powerpc/crypto/aes.c
- create mode 100644 lib/crypto/powerpc/.gitignore
- rename {arch/powerpc/crypto => lib/crypto/powerpc}/aesp8-ppc.pl (99%)
+ arch/riscv/crypto/Kconfig              |  2 -
+ arch/riscv/crypto/aes-macros.S         | 12 +++-
+ arch/riscv/crypto/aes-riscv64-glue.c   | 78 ++----------------------
+ arch/riscv/crypto/aes-riscv64-zvkned.S | 27 ---------
+ lib/crypto/Kconfig                     |  2 +
+ lib/crypto/Makefile                    |  1 +
+ lib/crypto/riscv/aes-riscv64-zvkned.S  | 84 ++++++++++++++++++++++++++
+ lib/crypto/riscv/aes.h                 | 63 +++++++++++++++++++
+ 8 files changed, 165 insertions(+), 104 deletions(-)
+ create mode 100644 lib/crypto/riscv/aes-riscv64-zvkned.S
+ create mode 100644 lib/crypto/riscv/aes.h
 
-diff --git a/arch/powerpc/crypto/Makefile b/arch/powerpc/crypto/Makefile
-index e22310da86b5..3ac0886282a2 100644
---- a/arch/powerpc/crypto/Makefile
-+++ b/arch/powerpc/crypto/Makefile
-@@ -9,11 +9,11 @@ obj-$(CONFIG_CRYPTO_AES_PPC_SPE) += aes-ppc-spe.o
- obj-$(CONFIG_CRYPTO_AES_GCM_P10) += aes-gcm-p10-crypto.o
- obj-$(CONFIG_CRYPTO_DEV_VMX_ENCRYPT) += vmx-crypto.o
+diff --git a/arch/riscv/crypto/Kconfig b/arch/riscv/crypto/Kconfig
+index 14c5acb935e9..22d4eaab15f3 100644
+--- a/arch/riscv/crypto/Kconfig
++++ b/arch/riscv/crypto/Kconfig
+@@ -4,15 +4,13 @@ menu "Accelerated Cryptographic Algorithms for CPU (riscv)"
  
- aes-ppc-spe-y := aes-spe-glue.o
- aes-gcm-p10-crypto-y := aes-gcm-p10-glue.o aes-gcm-p10.o ghashp10-ppc.o aesp10-ppc.o
--vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes_xts.o ghash.o
-+vmx-crypto-objs := vmx.o ghashp8-ppc.o aes_cbc.o aes_ctr.o aes_xts.o ghash.o
+ config CRYPTO_AES_RISCV64
+ 	tristate "Ciphers: AES, modes: ECB, CBC, CTS, CTR, XTS"
+ 	depends on 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
+ 		   RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+-	select CRYPTO_ALGAPI
+ 	select CRYPTO_LIB_AES
+ 	select CRYPTO_SKCIPHER
+ 	help
+-	  Block cipher: AES cipher algorithms
+ 	  Length-preserving ciphers: AES with ECB, CBC, CTS, CTR, XTS
  
- ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
- override flavour := linux-ppc64le
- else
- ifdef CONFIG_PPC64_ELF_ABI_V2
-@@ -24,17 +24,16 @@ endif
- endif
+ 	  Architecture: riscv64 using:
+ 	  - Zvkned vector crypto extension
+ 	  - Zvbb vector extension (XTS)
+diff --git a/arch/riscv/crypto/aes-macros.S b/arch/riscv/crypto/aes-macros.S
+index d1a258d04bc7..1384164621a5 100644
+--- a/arch/riscv/crypto/aes-macros.S
++++ b/arch/riscv/crypto/aes-macros.S
+@@ -49,12 +49,14 @@
+ //   - If AES-128, loads round keys into v1-v11 and jumps to \label128.
+ //   - If AES-192, loads round keys into v1-v13 and jumps to \label192.
+ //   - If AES-256, loads round keys into v1-v15 and continues onwards.
+ //
+ // Also sets vl=4 and vtype=e32,m1,ta,ma.  Clobbers t0 and t1.
+-.macro	aes_begin	keyp, label128, label192
++.macro	aes_begin	keyp, label128, label192, key_len
++.ifb \key_len
+ 	lwu		t0, 480(\keyp)	// t0 = key length in bytes
++.endif
+ 	li		t1, 24		// t1 = key length for AES-192
+ 	vsetivli	zero, 4, e32, m1, ta, ma
+ 	vle32.v		v1, (\keyp)
+ 	addi		\keyp, \keyp, 16
+ 	vle32.v		v2, (\keyp)
+@@ -74,16 +76,24 @@
+ 	vle32.v		v9, (\keyp)
+ 	addi		\keyp, \keyp, 16
+ 	vle32.v		v10, (\keyp)
+ 	addi		\keyp, \keyp, 16
+ 	vle32.v		v11, (\keyp)
++.ifb \key_len
+ 	blt		t0, t1, \label128	// If AES-128, goto label128.
++.else
++	blt		\key_len, t1, \label128	// If AES-128, goto label128.
++.endif
+ 	addi		\keyp, \keyp, 16
+ 	vle32.v		v12, (\keyp)
+ 	addi		\keyp, \keyp, 16
+ 	vle32.v		v13, (\keyp)
++.ifb \key_len
+ 	beq		t0, t1, \label192	// If AES-192, goto label192.
++.else
++	beq		\key_len, t1, \label192	// If AES-192, goto label192.
++.endif
+ 	// Else, it's AES-256.
+ 	addi		\keyp, \keyp, 16
+ 	vle32.v		v14, (\keyp)
+ 	addi		\keyp, \keyp, 16
+ 	vle32.v		v15, (\keyp)
+diff --git a/arch/riscv/crypto/aes-riscv64-glue.c b/arch/riscv/crypto/aes-riscv64-glue.c
+index f814ee048555..e1b8b0d70666 100644
+--- a/arch/riscv/crypto/aes-riscv64-glue.c
++++ b/arch/riscv/crypto/aes-riscv64-glue.c
+@@ -13,25 +13,17 @@
+  */
  
- quiet_cmd_perl = PERL    $@
-       cmd_perl = $(PERL) $< $(flavour) > $@
- 
--targets += aesp10-ppc.S ghashp10-ppc.S aesp8-ppc.S ghashp8-ppc.S
-+targets += aesp10-ppc.S ghashp10-ppc.S ghashp8-ppc.S
- 
- $(obj)/aesp10-ppc.S $(obj)/ghashp10-ppc.S: $(obj)/%.S: $(src)/%.pl FORCE
- 	$(call if_changed,perl)
- 
--$(obj)/aesp8-ppc.S $(obj)/ghashp8-ppc.S: $(obj)/%.S: $(src)/%.pl FORCE
-+$(obj)/ghashp8-ppc.S: $(obj)/%.S: $(src)/%.pl FORCE
- 	$(call if_changed,perl)
- 
- OBJECT_FILES_NON_STANDARD_aesp10-ppc.o := y
- OBJECT_FILES_NON_STANDARD_ghashp10-ppc.o := y
--OBJECT_FILES_NON_STANDARD_aesp8-ppc.o := y
- OBJECT_FILES_NON_STANDARD_ghashp8-ppc.o := y
-diff --git a/arch/powerpc/crypto/aes.c b/arch/powerpc/crypto/aes.c
-deleted file mode 100644
-index b7192ee719fc..000000000000
---- a/arch/powerpc/crypto/aes.c
-+++ /dev/null
-@@ -1,134 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * AES routines supporting VMX instructions on the Power 8
-- *
-- * Copyright (C) 2015 International Business Machines Inc.
-- *
-- * Author: Marcelo Henrique Cerri <mhcerri@br.ibm.com>
-- */
--
--#include <asm/simd.h>
--#include <asm/switch_to.h>
--#include <crypto/aes.h>
--#include <crypto/internal/cipher.h>
--#include <crypto/internal/simd.h>
--#include <linux/err.h>
--#include <linux/kernel.h>
--#include <linux/module.h>
--#include <linux/uaccess.h>
--
--#include "aesp8-ppc.h"
--
--struct p8_aes_ctx {
--	struct crypto_cipher *fallback;
--	struct p8_aes_key enc_key;
--	struct p8_aes_key dec_key;
--};
--
--static int p8_aes_init(struct crypto_tfm *tfm)
--{
--	const char *alg = crypto_tfm_alg_name(tfm);
--	struct crypto_cipher *fallback;
--	struct p8_aes_ctx *ctx = crypto_tfm_ctx(tfm);
--
--	fallback = crypto_alloc_cipher(alg, 0, CRYPTO_ALG_NEED_FALLBACK);
--	if (IS_ERR(fallback)) {
--		printk(KERN_ERR
--		       "Failed to allocate transformation for '%s': %ld\n",
--		       alg, PTR_ERR(fallback));
--		return PTR_ERR(fallback);
--	}
--
--	crypto_cipher_set_flags(fallback,
--				crypto_cipher_get_flags((struct
--							 crypto_cipher *)
--							tfm));
--	ctx->fallback = fallback;
--
--	return 0;
--}
--
--static void p8_aes_exit(struct crypto_tfm *tfm)
--{
--	struct p8_aes_ctx *ctx = crypto_tfm_ctx(tfm);
--
--	if (ctx->fallback) {
--		crypto_free_cipher(ctx->fallback);
--		ctx->fallback = NULL;
--	}
--}
--
--static int p8_aes_setkey(struct crypto_tfm *tfm, const u8 *key,
--			 unsigned int keylen)
--{
--	int ret;
--	struct p8_aes_ctx *ctx = crypto_tfm_ctx(tfm);
--
--	preempt_disable();
--	pagefault_disable();
--	enable_kernel_vsx();
--	ret = aes_p8_set_encrypt_key(key, keylen * 8, &ctx->enc_key);
--	ret |= aes_p8_set_decrypt_key(key, keylen * 8, &ctx->dec_key);
--	disable_kernel_vsx();
--	pagefault_enable();
--	preempt_enable();
--
--	ret |= crypto_cipher_setkey(ctx->fallback, key, keylen);
--
--	return ret ? -EINVAL : 0;
--}
--
--static void p8_aes_encrypt(struct crypto_tfm *tfm, u8 *dst, const u8 *src)
--{
--	struct p8_aes_ctx *ctx = crypto_tfm_ctx(tfm);
--
--	if (!crypto_simd_usable()) {
--		crypto_cipher_encrypt_one(ctx->fallback, dst, src);
--	} else {
--		preempt_disable();
--		pagefault_disable();
--		enable_kernel_vsx();
--		aes_p8_encrypt(src, dst, &ctx->enc_key);
--		disable_kernel_vsx();
--		pagefault_enable();
--		preempt_enable();
--	}
--}
--
--static void p8_aes_decrypt(struct crypto_tfm *tfm, u8 *dst, const u8 *src)
--{
--	struct p8_aes_ctx *ctx = crypto_tfm_ctx(tfm);
--
--	if (!crypto_simd_usable()) {
--		crypto_cipher_decrypt_one(ctx->fallback, dst, src);
--	} else {
--		preempt_disable();
--		pagefault_disable();
--		enable_kernel_vsx();
--		aes_p8_decrypt(src, dst, &ctx->dec_key);
--		disable_kernel_vsx();
--		pagefault_enable();
--		preempt_enable();
--	}
--}
--
--struct crypto_alg p8_aes_alg = {
--	.cra_name = "aes",
--	.cra_driver_name = "p8_aes",
--	.cra_module = THIS_MODULE,
--	.cra_priority = 1000,
--	.cra_type = NULL,
--	.cra_flags = CRYPTO_ALG_TYPE_CIPHER | CRYPTO_ALG_NEED_FALLBACK,
--	.cra_alignmask = 0,
--	.cra_blocksize = AES_BLOCK_SIZE,
--	.cra_ctxsize = sizeof(struct p8_aes_ctx),
--	.cra_init = p8_aes_init,
--	.cra_exit = p8_aes_exit,
--	.cra_cipher = {
--		       .cia_min_keysize = AES_MIN_KEY_SIZE,
--		       .cia_max_keysize = AES_MAX_KEY_SIZE,
--		       .cia_setkey = p8_aes_setkey,
--		       .cia_encrypt = p8_aes_encrypt,
--		       .cia_decrypt = p8_aes_decrypt,
--	},
--};
-diff --git a/arch/powerpc/crypto/aesp8-ppc.h b/arch/powerpc/crypto/aesp8-ppc.h
-index 0bea010128cb..6862c605cc33 100644
---- a/arch/powerpc/crypto/aesp8-ppc.h
-+++ b/arch/powerpc/crypto/aesp8-ppc.h
-@@ -1,31 +1,8 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #include <linux/types.h>
+ #include <asm/simd.h>
+ #include <asm/vector.h>
  #include <crypto/aes.h>
+-#include <crypto/internal/cipher.h>
+ #include <crypto/internal/simd.h>
+ #include <crypto/internal/skcipher.h>
+ #include <crypto/scatterwalk.h>
+ #include <crypto/xts.h>
+ #include <linux/linkage.h>
+ #include <linux/module.h>
  
--struct p8_aes_key {
--	u8 key[AES_MAX_KEYLENGTH];
--	int rounds;
+-asmlinkage void aes_encrypt_zvkned(const struct crypto_aes_ctx *key,
+-				   const u8 in[AES_BLOCK_SIZE],
+-				   u8 out[AES_BLOCK_SIZE]);
+-asmlinkage void aes_decrypt_zvkned(const struct crypto_aes_ctx *key,
+-				   const u8 in[AES_BLOCK_SIZE],
+-				   u8 out[AES_BLOCK_SIZE]);
+-
+ asmlinkage void aes_ecb_encrypt_zvkned(const struct crypto_aes_ctx *key,
+ 				       const u8 *in, u8 *out, size_t len);
+ asmlinkage void aes_ecb_decrypt_zvkned(const struct crypto_aes_ctx *key,
+ 				       const u8 *in, u8 *out, size_t len);
+ 
+@@ -84,54 +76,18 @@ static int riscv64_aes_setkey(struct crypto_aes_ctx *ctx,
+ 	 *   struct crypto_aes_ctx and aes_expandkey() everywhere.
+ 	 */
+ 	return aes_expandkey(ctx, key, keylen);
+ }
+ 
+-static int riscv64_aes_setkey_cipher(struct crypto_tfm *tfm,
+-				     const u8 *key, unsigned int keylen)
+-{
+-	struct crypto_aes_ctx *ctx = crypto_tfm_ctx(tfm);
+-
+-	return riscv64_aes_setkey(ctx, key, keylen);
+-}
+-
+ static int riscv64_aes_setkey_skcipher(struct crypto_skcipher *tfm,
+ 				       const u8 *key, unsigned int keylen)
+ {
+ 	struct crypto_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
+ 
+ 	return riscv64_aes_setkey(ctx, key, keylen);
+ }
+ 
+-/* Bare AES, without a mode of operation */
+-
+-static void riscv64_aes_encrypt(struct crypto_tfm *tfm, u8 *dst, const u8 *src)
+-{
+-	const struct crypto_aes_ctx *ctx = crypto_tfm_ctx(tfm);
+-
+-	if (crypto_simd_usable()) {
+-		kernel_vector_begin();
+-		aes_encrypt_zvkned(ctx, src, dst);
+-		kernel_vector_end();
+-	} else {
+-		aes_encrypt(ctx, dst, src);
+-	}
+-}
+-
+-static void riscv64_aes_decrypt(struct crypto_tfm *tfm, u8 *dst, const u8 *src)
+-{
+-	const struct crypto_aes_ctx *ctx = crypto_tfm_ctx(tfm);
+-
+-	if (crypto_simd_usable()) {
+-		kernel_vector_begin();
+-		aes_decrypt_zvkned(ctx, src, dst);
+-		kernel_vector_end();
+-	} else {
+-		aes_decrypt(ctx, dst, src);
+-	}
+-}
+-
+ /* AES-ECB */
+ 
+ static inline int riscv64_aes_ecb_crypt(struct skcipher_request *req, bool enc)
+ {
+ 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
+@@ -336,21 +292,21 @@ static int riscv64_aes_ctr_crypt(struct skcipher_request *req)
+ 
+ /* AES-XTS */
+ 
+ struct riscv64_aes_xts_ctx {
+ 	struct crypto_aes_ctx ctx1;
+-	struct crypto_aes_ctx ctx2;
++	struct aes_enckey tweak_key;
+ };
+ 
+ static int riscv64_aes_xts_setkey(struct crypto_skcipher *tfm, const u8 *key,
+ 				  unsigned int keylen)
+ {
+ 	struct riscv64_aes_xts_ctx *ctx = crypto_skcipher_ctx(tfm);
+ 
+ 	return xts_verify_key(tfm, key, keylen) ?:
+ 	       riscv64_aes_setkey(&ctx->ctx1, key, keylen / 2) ?:
+-	       riscv64_aes_setkey(&ctx->ctx2, key + keylen / 2, keylen / 2);
++	       aes_prepareenckey(&ctx->tweak_key, key + keylen / 2, keylen / 2);
+ }
+ 
+ static int riscv64_aes_xts_crypt(struct skcipher_request *req, bool enc)
+ {
+ 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
+@@ -364,13 +320,11 @@ static int riscv64_aes_xts_crypt(struct skcipher_request *req, bool enc)
+ 
+ 	if (req->cryptlen < AES_BLOCK_SIZE)
+ 		return -EINVAL;
+ 
+ 	/* Encrypt the IV with the tweak key to get the first tweak. */
+-	kernel_vector_begin();
+-	aes_encrypt_zvkned(&ctx->ctx2, req->iv, req->iv);
+-	kernel_vector_end();
++	aes_encrypt_new(&ctx->tweak_key, req->iv, req->iv);
+ 
+ 	err = skcipher_walk_virt(&walk, req, false);
+ 
+ 	/*
+ 	 * If the message length isn't divisible by the AES block size and the
+@@ -454,27 +408,10 @@ static int riscv64_aes_xts_decrypt(struct skcipher_request *req)
+ 	return riscv64_aes_xts_crypt(req, false);
+ }
+ 
+ /* Algorithm definitions */
+ 
+-static struct crypto_alg riscv64_zvkned_aes_cipher_alg = {
+-	.cra_flags = CRYPTO_ALG_TYPE_CIPHER,
+-	.cra_blocksize = AES_BLOCK_SIZE,
+-	.cra_ctxsize = sizeof(struct crypto_aes_ctx),
+-	.cra_priority = 300,
+-	.cra_name = "aes",
+-	.cra_driver_name = "aes-riscv64-zvkned",
+-	.cra_cipher = {
+-		.cia_min_keysize = AES_MIN_KEY_SIZE,
+-		.cia_max_keysize = AES_MAX_KEY_SIZE,
+-		.cia_setkey = riscv64_aes_setkey_cipher,
+-		.cia_encrypt = riscv64_aes_encrypt,
+-		.cia_decrypt = riscv64_aes_decrypt,
+-	},
+-	.cra_module = THIS_MODULE,
 -};
 -
- extern struct shash_alg p8_ghash_alg;
--extern struct crypto_alg p8_aes_alg;
- extern struct skcipher_alg p8_aes_cbc_alg;
- extern struct skcipher_alg p8_aes_ctr_alg;
- extern struct skcipher_alg p8_aes_xts_alg;
--
--int aes_p8_set_encrypt_key(const u8 *userKey, const int bits,
--			   struct p8_aes_key *key);
--int aes_p8_set_decrypt_key(const u8 *userKey, const int bits,
--			   struct p8_aes_key *key);
--void aes_p8_encrypt(const u8 *in, u8 *out, const struct p8_aes_key *key);
--void aes_p8_decrypt(const u8 *in, u8 *out, const struct p8_aes_key *key);
--void aes_p8_cbc_encrypt(const u8 *in, u8 *out, size_t len,
--			const struct p8_aes_key *key, u8 *iv, const int enc);
--void aes_p8_ctr32_encrypt_blocks(const u8 *in, u8 *out, size_t len,
--				 const struct p8_aes_key *key, const u8 *iv);
--void aes_p8_xts_encrypt(const u8 *in, u8 *out, size_t len,
--			const struct p8_aes_key *key1,
--			const struct p8_aes_key *key2, u8 *iv);
--void aes_p8_xts_decrypt(const u8 *in, u8 *out, size_t len,
--			const struct p8_aes_key *key1,
--			const struct p8_aes_key *key2, u8 *iv);
-diff --git a/arch/powerpc/crypto/vmx.c b/arch/powerpc/crypto/vmx.c
-index 0b725e826388..7d2beb774f99 100644
---- a/arch/powerpc/crypto/vmx.c
-+++ b/arch/powerpc/crypto/vmx.c
-@@ -25,17 +25,13 @@ static int __init p8_init(void)
- 
- 	ret = crypto_register_shash(&p8_ghash_alg);
- 	if (ret)
- 		goto err;
- 
--	ret = crypto_register_alg(&p8_aes_alg);
--	if (ret)
--		goto err_unregister_ghash;
--
- 	ret = crypto_register_skcipher(&p8_aes_cbc_alg);
- 	if (ret)
--		goto err_unregister_aes;
-+		goto err_unregister_ghash;
- 
- 	ret = crypto_register_skcipher(&p8_aes_ctr_alg);
- 	if (ret)
- 		goto err_unregister_aes_cbc;
- 
-@@ -47,12 +43,10 @@ static int __init p8_init(void)
- 
- err_unregister_aes_ctr:
- 	crypto_unregister_skcipher(&p8_aes_ctr_alg);
- err_unregister_aes_cbc:
- 	crypto_unregister_skcipher(&p8_aes_cbc_alg);
--err_unregister_aes:
--	crypto_unregister_alg(&p8_aes_alg);
- err_unregister_ghash:
- 	crypto_unregister_shash(&p8_ghash_alg);
- err:
- 	return ret;
- }
-@@ -60,11 +54,10 @@ static int __init p8_init(void)
- static void __exit p8_exit(void)
+ static struct skcipher_alg riscv64_zvkned_aes_skcipher_algs[] = {
+ 	{
+ 		.setkey = riscv64_aes_setkey_skcipher,
+ 		.encrypt = riscv64_aes_ecb_encrypt,
+ 		.decrypt = riscv64_aes_ecb_decrypt,
+@@ -572,19 +509,15 @@ static int __init riscv64_aes_mod_init(void)
  {
- 	crypto_unregister_skcipher(&p8_aes_xts_alg);
- 	crypto_unregister_skcipher(&p8_aes_ctr_alg);
- 	crypto_unregister_skcipher(&p8_aes_cbc_alg);
--	crypto_unregister_alg(&p8_aes_alg);
- 	crypto_unregister_shash(&p8_ghash_alg);
+ 	int err = -ENODEV;
+ 
+ 	if (riscv_isa_extension_available(NULL, ZVKNED) &&
+ 	    riscv_vector_vlen() >= 128) {
+-		err = crypto_register_alg(&riscv64_zvkned_aes_cipher_alg);
+-		if (err)
+-			return err;
+-
+ 		err = crypto_register_skciphers(
+ 			riscv64_zvkned_aes_skcipher_algs,
+ 			ARRAY_SIZE(riscv64_zvkned_aes_skcipher_algs));
+ 		if (err)
+-			goto unregister_zvkned_cipher_alg;
++			return err;
+ 
+ 		if (riscv_isa_extension_available(NULL, ZVKB)) {
+ 			err = crypto_register_skcipher(
+ 				&riscv64_zvkned_zvkb_aes_skcipher_alg);
+ 			if (err)
+@@ -605,12 +538,10 @@ static int __init riscv64_aes_mod_init(void)
+ 	if (riscv_isa_extension_available(NULL, ZVKB))
+ 		crypto_unregister_skcipher(&riscv64_zvkned_zvkb_aes_skcipher_alg);
+ unregister_zvkned_skcipher_algs:
+ 	crypto_unregister_skciphers(riscv64_zvkned_aes_skcipher_algs,
+ 				    ARRAY_SIZE(riscv64_zvkned_aes_skcipher_algs));
+-unregister_zvkned_cipher_alg:
+-	crypto_unregister_alg(&riscv64_zvkned_aes_cipher_alg);
+ 	return err;
  }
  
- module_cpu_feature_match(PPC_MODULE_FEATURE_VEC_CRYPTO, p8_init);
- module_exit(p8_exit);
-@@ -72,6 +65,5 @@ module_exit(p8_exit);
- MODULE_AUTHOR("Marcelo Cerri<mhcerri@br.ibm.com>");
- MODULE_DESCRIPTION("IBM VMX cryptographic acceleration instructions "
- 		   "support on Power 8");
- MODULE_LICENSE("GPL");
- MODULE_VERSION("1.0.0");
--MODULE_IMPORT_NS("CRYPTO_INTERNAL");
-diff --git a/include/crypto/aes.h b/include/crypto/aes.h
-index 49ce2d1e086e..e6082b7c6443 100644
---- a/include/crypto/aes.h
-+++ b/include/crypto/aes.h
-@@ -16,26 +16,51 @@
- #define AES_KEYSIZE_256		32
- #define AES_BLOCK_SIZE		16
- #define AES_MAX_KEYLENGTH	(15 * 16)
- #define AES_MAX_KEYLENGTH_U32	(AES_MAX_KEYLENGTH / sizeof(u32))
+ static void __exit riscv64_aes_mod_exit(void)
+ {
+@@ -618,11 +549,10 @@ static void __exit riscv64_aes_mod_exit(void)
+ 		crypto_unregister_skcipher(&riscv64_zvkned_zvbb_zvkg_aes_skcipher_alg);
+ 	if (riscv_isa_extension_available(NULL, ZVKB))
+ 		crypto_unregister_skcipher(&riscv64_zvkned_zvkb_aes_skcipher_alg);
+ 	crypto_unregister_skciphers(riscv64_zvkned_aes_skcipher_algs,
+ 				    ARRAY_SIZE(riscv64_zvkned_aes_skcipher_algs));
+-	crypto_unregister_alg(&riscv64_zvkned_aes_cipher_alg);
+ }
  
-+/*
-+ * The POWER8 VSX optimized AES assembly code is borrowed from OpenSSL and
-+ * inherits OpenSSL's AES_KEY format, which stores the number of rounds after
-+ * the round keys.  That assembly code is difficult to change.  So for
-+ * compatibility purposes we reserve space for the extra nrounds field on PPC64.
-+ *
-+ * Note: when prepared for decryption, the round keys are just the reversed
-+ * standard round keys, not the round keys for the Equivalent Inverse Cipher.
-+ */
-+struct p8_aes_key {
-+	u32 rndkeys[AES_MAX_KEYLENGTH_U32];
-+	int nrounds;
-+};
-+
- union aes_enckey_arch {
- 	u32 rndkeys[AES_MAX_KEYLENGTH_U32];
- #ifdef CONFIG_CRYPTO_LIB_AES_ARCH
- #if defined(CONFIG_PPC) && defined(CONFIG_SPE)
- 	/* Used unconditionally (when SPE AES code is enabled in kconfig) */
- 	u32 spe_enc_key[AES_MAX_KEYLENGTH_U32] __aligned(8);
-+#elif defined(CONFIG_PPC)
-+	/*
-+	 * Kernels that include the POWER8 VSX optimized AES code use this field
-+	 * when that code is usable at key preparation time.  Otherwise they
-+	 * fall back to rndkeys.  In the latter case, p8.nrounds (which doesn't
-+	 * overlap rndkeys) is set to 0 to differentiate the two formats.
-+	 */
-+	struct p8_aes_key p8;
- #endif
- #endif /* CONFIG_CRYPTO_LIB_AES_ARCH */
- };
+ module_init(riscv64_aes_mod_init);
+ module_exit(riscv64_aes_mod_exit);
  
- union aes_invkey_arch {
- 	u32 inv_rndkeys[AES_MAX_KEYLENGTH_U32];
- #ifdef CONFIG_CRYPTO_LIB_AES_ARCH
- #if defined(CONFIG_PPC) && defined(CONFIG_SPE)
- 	/* Used unconditionally (when SPE AES code is enabled in kconfig) */
- 	u32 spe_dec_key[AES_MAX_KEYLENGTH_U32] __aligned(8);
-+#elif defined(CONFIG_PPC)
-+	/* Used conditionally, analogous to aes_enckey_arch::p8 */
-+	struct p8_aes_key p8;
- #endif
- #endif /* CONFIG_CRYPTO_LIB_AES_ARCH */
- };
+diff --git a/arch/riscv/crypto/aes-riscv64-zvkned.S b/arch/riscv/crypto/aes-riscv64-zvkned.S
+index 23d063f94ce6..d0fc4581a380 100644
+--- a/arch/riscv/crypto/aes-riscv64-zvkned.S
++++ b/arch/riscv/crypto/aes-riscv64-zvkned.S
+@@ -54,37 +54,10 @@
+ #define INP		a1
+ #define OUTP		a2
+ #define LEN		a3
+ #define IVP		a4
  
- /**
-@@ -153,10 +178,26 @@ void ppc_crypt_ctr(u8 *out, const u8 *in, u32 *key_enc, u32 rounds, u32 bytes,
- 		   u8 *iv);
- void ppc_encrypt_xts(u8 *out, const u8 *in, u32 *key_enc, u32 rounds, u32 bytes,
- 		     u8 *iv, u32 *key_twk);
- void ppc_decrypt_xts(u8 *out, const u8 *in, u32 *key_dec, u32 rounds, u32 bytes,
- 		     u8 *iv, u32 *key_twk);
-+int aes_p8_set_encrypt_key(const u8 *userKey, const int bits,
-+			   struct p8_aes_key *key);
-+int aes_p8_set_decrypt_key(const u8 *userKey, const int bits,
-+			   struct p8_aes_key *key);
-+void aes_p8_encrypt(const u8 *in, u8 *out, const struct p8_aes_key *key);
-+void aes_p8_decrypt(const u8 *in, u8 *out, const struct p8_aes_key *key);
-+void aes_p8_cbc_encrypt(const u8 *in, u8 *out, size_t len,
-+			const struct p8_aes_key *key, u8 *iv, const int enc);
-+void aes_p8_ctr32_encrypt_blocks(const u8 *in, u8 *out, size_t len,
-+				 const struct p8_aes_key *key, const u8 *iv);
-+void aes_p8_xts_encrypt(const u8 *in, u8 *out, size_t len,
-+			const struct p8_aes_key *key1,
-+			const struct p8_aes_key *key2, u8 *iv);
-+void aes_p8_xts_decrypt(const u8 *in, u8 *out, size_t len,
-+			const struct p8_aes_key *key1,
-+			const struct p8_aes_key *key2, u8 *iv);
- #endif
- 
- /**
-  * aes_preparekey() - Prepare an AES key for encryption and decryption
-  * @key: (output) The key structure to initialize
+-.macro	__aes_crypt_zvkned	enc, keylen
+-	vle32.v		v16, (INP)
+-	aes_crypt	v16, \enc, \keylen
+-	vse32.v		v16, (OUTP)
+-	ret
+-.endm
+-
+-.macro	aes_crypt_zvkned	enc
+-	aes_begin	KEYP, 128f, 192f
+-	__aes_crypt_zvkned	\enc, 256
+-128:
+-	__aes_crypt_zvkned	\enc, 128
+-192:
+-	__aes_crypt_zvkned	\enc, 192
+-.endm
+-
+-// void aes_encrypt_zvkned(const struct crypto_aes_ctx *key,
+-//			   const u8 in[16], u8 out[16]);
+-SYM_FUNC_START(aes_encrypt_zvkned)
+-	aes_crypt_zvkned	1
+-SYM_FUNC_END(aes_encrypt_zvkned)
+-
+-// Same prototype and calling convention as the encryption function
+-SYM_FUNC_START(aes_decrypt_zvkned)
+-	aes_crypt_zvkned	0
+-SYM_FUNC_END(aes_decrypt_zvkned)
+-
+ .macro	__aes_ecb_crypt	enc, keylen
+ 	srli		t0, LEN, 2
+ 	// t0 is the remaining length in 32-bit words.  It's a multiple of 4.
+ 1:
+ 	vsetvli		t1, t0, e32, m8, ta, ma
 diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
-index 50057f534aec..ddd3fe826b81 100644
+index ddd3fe826b81..a8c0b02a4fb0 100644
 --- a/lib/crypto/Kconfig
 +++ b/lib/crypto/Kconfig
-@@ -14,11 +14,11 @@ config CRYPTO_LIB_AES
- config CRYPTO_LIB_AES_ARCH
+@@ -15,10 +15,12 @@ config CRYPTO_LIB_AES_ARCH
  	bool
  	depends on CRYPTO_LIB_AES && !UML && !KMSAN
  	default y if ARM
  	default y if ARM64
--	default y if PPC && SPE
-+	default y if PPC && (SPE || (PPC64 && VSX))
+ 	default y if PPC && (SPE || (PPC64 && VSX))
++	default y if RISCV && 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
++		     RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
  
  config CRYPTO_LIB_AESCFB
  	tristate
  	select CRYPTO_LIB_AES
  	select CRYPTO_LIB_UTILS
 diff --git a/lib/crypto/Makefile b/lib/crypto/Makefile
-index d68fde004104..16140616ace8 100644
+index 16140616ace8..811b60787dd5 100644
 --- a/lib/crypto/Makefile
 +++ b/lib/crypto/Makefile
-@@ -33,11 +33,23 @@ ifeq ($(CONFIG_PPC),y)
- ifeq ($(CONFIG_SPE),y)
- libaes-y += powerpc/aes-spe-core.o \
- 	    powerpc/aes-spe-keys.o \
- 	    powerpc/aes-spe-modes.o \
- 	    powerpc/aes-tab-4k.o
--endif
-+else
-+libaes-y += powerpc/aesp8-ppc.o
-+aes-perlasm-flavour-y := linux-ppc64
-+aes-perlasm-flavour-$(CONFIG_PPC64_ELF_ABI_V2) := linux-ppc64-elfv2
-+aes-perlasm-flavour-$(CONFIG_CPU_LITTLE_ENDIAN) := linux-ppc64le
-+quiet_cmd_perlasm_aes = PERLASM $@
-+      cmd_perlasm_aes = $(PERL) $< $(aes-perlasm-flavour-y) $@
-+# Use if_changed instead of cmd, in case the flavour changed.
-+$(obj)/powerpc/aesp8-ppc.S: $(src)/powerpc/aesp8-ppc.pl FORCE
-+	$(call if_changed,perlasm_aes)
-+targets += powerpc/aesp8-ppc.S
-+OBJECT_FILES_NON_STANDARD_powerpc/aesp8-ppc.o := y
-+endif # !CONFIG_SPE
+@@ -48,10 +48,11 @@ $(obj)/powerpc/aesp8-ppc.S: $(src)/powerpc/aesp8-ppc.pl FORCE
+ targets += powerpc/aesp8-ppc.S
+ OBJECT_FILES_NON_STANDARD_powerpc/aesp8-ppc.o := y
+ endif # !CONFIG_SPE
  endif # CONFIG_PPC
  
++libaes-$(CONFIG_RISCV) += riscv/aes-riscv64-zvkned.o
  endif # CONFIG_CRYPTO_LIB_AES_ARCH
  
  ################################################################################
-diff --git a/lib/crypto/powerpc/.gitignore b/lib/crypto/powerpc/.gitignore
-new file mode 100644
-index 000000000000..598ca7aff6b1
---- /dev/null
-+++ b/lib/crypto/powerpc/.gitignore
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+aesp8-ppc.S
-diff --git a/lib/crypto/powerpc/aes.h b/lib/crypto/powerpc/aes.h
-index cf22020f9050..42e0a993c619 100644
---- a/lib/crypto/powerpc/aes.h
-+++ b/lib/crypto/powerpc/aes.h
-@@ -1,17 +1,20 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-  * Copyright (c) 2015 Markus Stockhausen <stockhausen@collogia.de>
-+ * Copyright (C) 2015 International Business Machines Inc.
-  * Copyright 2026 Google LLC
-  */
- #include <asm/simd.h>
- #include <asm/switch_to.h>
- #include <linux/cpufeature.h>
- #include <linux/jump_label.h>
- #include <linux/preempt.h>
- #include <linux/uaccess.h>
  
-+#ifdef CONFIG_SPE
+ obj-$(CONFIG_CRYPTO_LIB_AESCFB)			+= libaescfb.o
+diff --git a/lib/crypto/riscv/aes-riscv64-zvkned.S b/lib/crypto/riscv/aes-riscv64-zvkned.S
+new file mode 100644
+index 000000000000..0d988bc3d37b
+--- /dev/null
++++ b/lib/crypto/riscv/aes-riscv64-zvkned.S
+@@ -0,0 +1,84 @@
++/* SPDX-License-Identifier: Apache-2.0 OR BSD-2-Clause */
++//
++// This file is dual-licensed, meaning that you can use it under your
++// choice of either of the following two licenses:
++//
++// Copyright 2023 The OpenSSL Project Authors. All Rights Reserved.
++//
++// Licensed under the Apache License 2.0 (the "License"). You can obtain
++// a copy in the file LICENSE in the source distribution or at
++// https://www.openssl.org/source/license.html
++//
++// or
++//
++// Copyright (c) 2023, Christoph Müllner <christoph.muellner@vrull.eu>
++// Copyright (c) 2023, Phoebe Chen <phoebe.chen@sifive.com>
++// Copyright (c) 2023, Jerry Shih <jerry.shih@sifive.com>
++// Copyright 2024 Google LLC
++// All rights reserved.
++//
++// Redistribution and use in source and binary forms, with or without
++// modification, are permitted provided that the following conditions
++// are met:
++// 1. Redistributions of source code must retain the above copyright
++//    notice, this list of conditions and the following disclaimer.
++// 2. Redistributions in binary form must reproduce the above copyright
++//    notice, this list of conditions and the following disclaimer in the
++//    documentation and/or other materials provided with the distribution.
++//
++// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 +
- EXPORT_SYMBOL_GPL(ppc_expand_key_128);
- EXPORT_SYMBOL_GPL(ppc_expand_key_192);
- EXPORT_SYMBOL_GPL(ppc_expand_key_256);
- EXPORT_SYMBOL_GPL(ppc_generate_decrypt_key);
- EXPORT_SYMBOL_GPL(ppc_encrypt_ecb);
-@@ -70,5 +73,166 @@ static void aes_decrypt_arch(const struct aes_key *key,
- {
- 	spe_begin();
- 	ppc_decrypt_aes(out, in, key->inv_k.spe_dec_key, key->nrounds / 2 - 1);
- 	spe_end();
- }
++// The generated code of this file depends on the following RISC-V extensions:
++// - RV64I
++// - RISC-V Vector ('V') with VLEN >= 128
++// - RISC-V Vector AES block cipher extension ('Zvkned')
 +
-+#else /* CONFIG_SPE */
++#include <linux/linkage.h>
 +
-+static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_vec_crypto);
++.text
++.option arch, +zvkned
 +
-+EXPORT_SYMBOL_GPL(aes_p8_set_encrypt_key);
-+EXPORT_SYMBOL_GPL(aes_p8_set_decrypt_key);
-+EXPORT_SYMBOL_GPL(aes_p8_encrypt);
-+EXPORT_SYMBOL_GPL(aes_p8_decrypt);
-+EXPORT_SYMBOL_GPL(aes_p8_cbc_encrypt);
-+EXPORT_SYMBOL_GPL(aes_p8_ctr32_encrypt_blocks);
-+EXPORT_SYMBOL_GPL(aes_p8_xts_encrypt);
-+EXPORT_SYMBOL_GPL(aes_p8_xts_decrypt);
++#include "../../arch/riscv/crypto/aes-macros.S"
 +
-+static inline bool is_vsx_format(const struct p8_aes_key *key)
-+{
-+	return key->nrounds != 0;
-+}
++#define RNDKEYS		a0
++#define KEY_LEN		a1
++#define OUTP		a2
++#define INP		a3
 +
++.macro	__aes_crypt_zvkned	enc, keybits
++	vle32.v		v16, (INP)
++	aes_crypt	v16, \enc, \keybits
++	vse32.v		v16, (OUTP)
++	ret
++.endm
++
++.macro	aes_crypt_zvkned	enc
++	aes_begin	RNDKEYS, 128f, 192f, KEY_LEN
++	__aes_crypt_zvkned	\enc, 256
++128:
++	__aes_crypt_zvkned	\enc, 128
++192:
++	__aes_crypt_zvkned	\enc, 192
++.endm
++
++// void aes_encrypt_zvkned(const u32 rndkeys[], int key_len,
++//			   u8 out[AES_BLOCK_SIZE], const u8 in[AES_BLOCK_SIZE]);
++SYM_FUNC_START(aes_encrypt_zvkned)
++	aes_crypt_zvkned	1
++SYM_FUNC_END(aes_encrypt_zvkned)
++
++// void aes_decrypt_zvkned(const u32 rndkeys[], int key_len,
++//			   u8 out[AES_BLOCK_SIZE], const u8 in[AES_BLOCK_SIZE]);
++SYM_FUNC_START(aes_decrypt_zvkned)
++	aes_crypt_zvkned	0
++SYM_FUNC_END(aes_decrypt_zvkned)
+diff --git a/lib/crypto/riscv/aes.h b/lib/crypto/riscv/aes.h
+new file mode 100644
+index 000000000000..0b26f58faf2b
+--- /dev/null
++++ b/lib/crypto/riscv/aes.h
+@@ -0,0 +1,63 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * Convert a round key from VSX to generic format by reflecting the 16 bytes,
-+ * and (if apply_inv_mix=true) applying InvMixColumn to each column.
-+ *
-+ * It would be nice if the VSX and generic key formats would be compatible.  But
-+ * that's very difficult to do, with the assembly code having been borrowed from
-+ * OpenSSL and also targeted to POWER8 rather than POWER9.
-+ *
-+ * Fortunately, this conversion should only be needed in extremely rare cases,
-+ * possibly not at all in practice.  It's just included for full correctness.
++ * Copyright (C) 2023 VRULL GmbH
++ * Copyright (C) 2023 SiFive, Inc.
++ * Copyright 2024 Google LLC
 + */
-+static void rndkey_from_vsx(u32 out[4], const u32 in[4], bool apply_inv_mix)
-+{
-+	u32 k0 = swab32(in[0]);
-+	u32 k1 = swab32(in[1]);
-+	u32 k2 = swab32(in[2]);
-+	u32 k3 = swab32(in[3]);
 +
-+	if (apply_inv_mix) {
-+		k0 = inv_mix_columns(k0);
-+		k1 = inv_mix_columns(k1);
-+		k2 = inv_mix_columns(k2);
-+		k3 = inv_mix_columns(k3);
-+	}
-+	out[0] = k3;
-+	out[1] = k2;
-+	out[2] = k1;
-+	out[3] = k0;
-+}
++#include <asm/simd.h>
++#include <asm/vector.h>
++
++static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_zvkned);
++
++void aes_encrypt_zvkned(const u32 rndkeys[], int key_len,
++			u8 out[AES_BLOCK_SIZE], const u8 in[AES_BLOCK_SIZE]);
++void aes_decrypt_zvkned(const u32 rndkeys[], int key_len,
++			u8 out[AES_BLOCK_SIZE], const u8 in[AES_BLOCK_SIZE]);
 +
 +static void aes_preparekey_arch(union aes_enckey_arch *k,
 +				union aes_invkey_arch *inv_k,
 +				const u8 *in_key, int key_len, int nrounds)
 +{
-+	const int keybits = 8 * key_len;
-+	int ret;
-+
-+	if (static_branch_likely(&have_vec_crypto) && likely(may_use_simd())) {
-+		preempt_disable();
-+		pagefault_disable();
-+		enable_kernel_vsx();
-+		ret = aes_p8_set_encrypt_key(in_key, keybits, &k->p8);
-+		/*
-+		 * aes_p8_set_encrypt_key() should never fail here, since the
-+		 * key length was already validated.
-+		 */
-+		WARN_ON_ONCE(ret);
-+		if (inv_k) {
-+			ret = aes_p8_set_decrypt_key(in_key, keybits,
-+						     &inv_k->p8);
-+			/* ... and likewise for aes_p8_set_decrypt_key(). */
-+			WARN_ON_ONCE(ret);
-+		}
-+		disable_kernel_vsx();
-+		pagefault_enable();
-+		preempt_enable();
-+	} else {
-+		aes_expandkey_generic(k->rndkeys,
-+				      inv_k ? inv_k->inv_rndkeys : NULL,
-+				      in_key, key_len);
-+		/* Mark the key as using the generic format. */
-+		k->p8.nrounds = 0;
-+		if (inv_k)
-+			inv_k->p8.nrounds = 0;
-+	}
++	aes_expandkey_generic(k->rndkeys, inv_k ? inv_k->inv_rndkeys : NULL,
++			      in_key, key_len);
 +}
 +
 +static void aes_encrypt_arch(const struct aes_enckey *key,
 +			     u8 out[AES_BLOCK_SIZE],
 +			     const u8 in[AES_BLOCK_SIZE])
 +{
-+	if (static_branch_likely(&have_vec_crypto) &&
-+	    likely(is_vsx_format(&key->k.p8) && may_use_simd())) {
-+		preempt_disable();
-+		pagefault_disable();
-+		enable_kernel_vsx();
-+		aes_p8_encrypt(in, out, &key->k.p8);
-+		disable_kernel_vsx();
-+		pagefault_enable();
-+		preempt_enable();
-+	} else if (unlikely(is_vsx_format(&key->k.p8))) {
-+		/*
-+		 * This handles (the hopefully extremely rare) case where a key
-+		 * was prepared using the VSX optimized format, then encryption
-+		 * is done in a context that cannot use VSX instructions.
-+		 */
-+		u32 rndkeys[AES_MAX_KEYLENGTH_U32];
-+
-+		for (int i = 0; i < 4 * (key->nrounds + 1); i += 4)
-+			rndkey_from_vsx(&rndkeys[i],
-+					&key->k.p8.rndkeys[i], false);
-+		aes_encrypt_generic(rndkeys, key->nrounds, out, in);
++	if (static_branch_likely(&have_zvkned) && likely(may_use_simd())) {
++		kernel_vector_begin();
++		aes_encrypt_zvkned(key->k.rndkeys, key->len, out, in);
++		kernel_vector_end();
 +	} else {
 +		aes_encrypt_generic(key->k.rndkeys, key->nrounds, out, in);
 +	}
 +}
 +
-+static void aes_decrypt_arch(const struct aes_key *key, u8 out[AES_BLOCK_SIZE],
++static void aes_decrypt_arch(const struct aes_key *key,
++			     u8 out[AES_BLOCK_SIZE],
 +			     const u8 in[AES_BLOCK_SIZE])
 +{
-+	if (static_branch_likely(&have_vec_crypto) &&
-+	    likely(is_vsx_format(&key->inv_k.p8) && may_use_simd())) {
-+		preempt_disable();
-+		pagefault_disable();
-+		enable_kernel_vsx();
-+		aes_p8_decrypt(in, out, &key->inv_k.p8);
-+		disable_kernel_vsx();
-+		pagefault_enable();
-+		preempt_enable();
-+	} else if (unlikely(is_vsx_format(&key->inv_k.p8))) {
-+		/*
-+		 * This handles (the hopefully extremely rare) case where a key
-+		 * was prepared using the VSX optimized format, then decryption
-+		 * is done in a context that cannot use VSX instructions.
-+		 */
-+		u32 inv_rndkeys[AES_MAX_KEYLENGTH_U32];
-+		int i;
-+
-+		rndkey_from_vsx(&inv_rndkeys[0],
-+				&key->inv_k.p8.rndkeys[0], false);
-+		for (i = 4; i < 4 * key->nrounds; i += 4) {
-+			rndkey_from_vsx(&inv_rndkeys[i],
-+					&key->inv_k.p8.rndkeys[i], true);
-+		}
-+		rndkey_from_vsx(&inv_rndkeys[i],
-+				&key->inv_k.p8.rndkeys[i], false);
-+		aes_decrypt_generic(inv_rndkeys, key->nrounds, out, in);
++	/*
++	 * Note that the Zvkned code uses the standard round keys, while the
++	 * fallback uses the inverse round keys.  Thus both must be present.
++	 */
++	if (static_branch_likely(&have_zvkned) && likely(may_use_simd())) {
++		kernel_vector_begin();
++		aes_decrypt_zvkned(key->k.rndkeys, key->len, out, in);
++		kernel_vector_end();
 +	} else {
 +		aes_decrypt_generic(key->inv_k.inv_rndkeys, key->nrounds,
 +				    out, in);
@@ -714,31 +604,10 @@ index cf22020f9050..42e0a993c619 100644
 +#define aes_mod_init_arch aes_mod_init_arch
 +static void aes_mod_init_arch(void)
 +{
-+	if (cpu_has_feature(CPU_FTR_ARCH_207S) &&
-+	    (cur_cpu_spec->cpu_user_features2 & PPC_FEATURE2_VEC_CRYPTO))
-+		static_branch_enable(&have_vec_crypto);
++	if (riscv_isa_extension_available(NULL, ZVKNED) &&
++	    riscv_vector_vlen() >= 128)
++		static_branch_enable(&have_zvkned);
 +}
-+
-+#endif /* !CONFIG_SPE */
-diff --git a/arch/powerpc/crypto/aesp8-ppc.pl b/lib/crypto/powerpc/aesp8-ppc.pl
-similarity index 99%
-rename from arch/powerpc/crypto/aesp8-ppc.pl
-rename to lib/crypto/powerpc/aesp8-ppc.pl
-index f729589d792e..253a06758057 100644
---- a/arch/powerpc/crypto/aesp8-ppc.pl
-+++ b/lib/crypto/powerpc/aesp8-ppc.pl
-@@ -103,10 +103,11 @@ if ($flavour =~ /64/) {
- $LITTLE_ENDIAN = ($flavour=~/le$/) ? $SIZE_T : 0;
- 
- $0 =~ m/(.*[\/\\])[^\/\\]+$/; $dir=$1;
- ( $xlate="${dir}ppc-xlate.pl" and -f $xlate ) or
- ( $xlate="${dir}../../perlasm/ppc-xlate.pl" and -f $xlate) or
-+( $xlate="${dir}../../../arch/powerpc/crypto/ppc-xlate.pl" and -f $xlate) or
- die "can't locate ppc-xlate.pl";
- 
- open STDOUT,"| $^X $xlate $flavour ".shift || die "can't call $xlate: $!";
- 
- $FRAME=8*$SIZE_T;
 -- 
 2.52.0
 
