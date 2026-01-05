@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15206-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15208-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 210B0CF1DC1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 06:15:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C03ACCF1DCD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 05 Jan 2026 06:15:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dl2YF2BrKz2yPR;
-	Mon, 05 Jan 2026 16:14:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dl2YG3gSHz2ySb;
+	Mon, 05 Jan 2026 16:14:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767590097;
-	cv=none; b=TAmBb9IvITI2COsbIlIPjfJqtXXGLyLs9IT9ICZy41M/04looZPzSpnpsbq6jgP9gH42JLNhjVMDa8nB22liGLN7BqHQ2s31aHuIs26pnqDvdDsoiWEfzIfHHZoA+ZqaTqOAI2clmEFjKMmnUj6rou+fKOKq/EEwqAYmV6paLMXEDuAkc2Wiy55DWsGBVRnPTZqet4gAsqmhvR0H6XDrXRuukXHyGQW+gKfL9BGvXQaXZxeoEEVOKK5mhU4QR0MHPu93Q7fajC+OV7XBPq3wACTscAzNCJemZ4DX/uwKSuAVX+rwwqpWpwzh0NBIQObzvD//XLrYumYQAxPAI0T1SQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767590098;
+	cv=none; b=DEHM1r58kl0STAhsJA/CMLtfPa0dVg2IZPtLyeswMN+CcUDzewro7Bxm8tQ461h4E1yf0B0riNmLNsLG/bCFLja4/5+f9IdLp6Y2OIZgz00NYwbXc3v1A5mJAsLLXVFwtqnDW/DKO1YXtdFHi+P/9w6yQMTElQ/gcd0Y/6L0vlMxAmZ8TVHkmaUojB+xr4HqBVrVmr1N+jAMXlz4Cjhn0lwHDzZWqe7G7lHRz8jUa/BYTMBLSzq9fgAGTMOIa92zSXbfnf0e/yjc6FXg2y8r8Df4Yfj91OWK9O2DY5K/4sPTcIeIGMTcaIriu4AblNh3JctA+CIxNYJJG1C6FXr47Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767590097; c=relaxed/relaxed;
-	bh=8A5s08j9C620oqGFPCl12LgSyPZskDWpf26EFaiB/u4=;
+	t=1767590098; c=relaxed/relaxed;
+	bh=GE/ik1wAzAwTyudQNL1qpPhVU7extNOPBrRt3K/rmXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8UBjqY82CcFlyC4SB2gqJ/18ipXl0W6SfoJrkpCjPK9Q/pMz5mJvHunO1wFZK88jdi6CzLrCurh7+PUDs8lowg/wSpASdTvAsgzU9OzdiAq7AgWR21+MQyVGpq9Vq9DRaVVLgeYtlHpNAt8f1fdeKcccenM/QXj4zIVmuej2oGcqTQ18o90rFxMO457g9kIm/JEkzqw7dhrIdgJmekzfj7iaY3APkWM5Eye8I8DPvphlToCrcrRnGotLODI1pvio7tJc9PmXjgnzg86Bvs7x6irlGz26UjdzIBzwoWoL6ghQsfFm3/SfUvwOmMUWP6/hAgVPrwClwvfltGZ27lLeQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=igzB1iG3; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=dymtA6TrauP6r/jdvCNrviw6Lc0gf4l/ilRu3Yx3w8v98dcsQ9SotOJTMbiXxopnuM+ZtdH5g8Fysc/aQdAGrtwCNlUqxFFUBvrukKXgv8xhsjda1+Nz6sJwDsWbjCLEpPSGEuhFHhNqvjme2qRkVM5XVNbY38nmHBgrMRplWoHM5yZHe1SwOpryLomOF9Czjs93vf2UIHQLgEc4UrAr7BNGKF0lk9tXzzpJdV0P5VcsVcZkRUqKOZOhC6UBZNcbavO3rO6YjNoHADQj4NuDHf3cqiSL6vQ9VwtnkFfJ1hpyScKZsdzCRNyvxFH6uTfF00AAudWKsDh7i3/LawDurg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ha2Mg2lm; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=igzB1iG3;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ha2Mg2lm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dl2YD0gXzz2yNX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 16:14:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dl2YD6sBmz2xm5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 16:14:56 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A1CE4430B;
+	by tor.source.kernel.org (Postfix) with ESMTP id D84D36011E;
 	Mon,  5 Jan 2026 05:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9360AC19424;
-	Mon,  5 Jan 2026 05:14:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5DAC116D0;
+	Mon,  5 Jan 2026 05:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1767590094;
-	bh=NaJeCMt68rOEMjT7oGa1VxCfK2+6f9/LQJxPSOh0Gn4=;
+	bh=r+Qzw8crmbVQ6JrhV/JdglMrrXxEutC0ymCPwabmY4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igzB1iG36I5ddwcCBE6IyNjLvWLYZddcUzh3vYUDSgjc80fDHOeJgz4Ttks7krqct
-	 Xaj+2+Pd+DV44mOpYKoOdnjBs63BiWnHvapVzcjGu4Lueu2IvUOOJLTjDWT7qdeS+0
-	 r2Wqpt2qb3tX0hWPzIB9Sl/T2zeTBmaSX2YRUxnTSWGcH7egQzFmEw1xenEG2kRiN3
-	 sr1FQe6dnkZ70RTBR6ok0orcHW3XKrfBwnq7jWs/q9gtch1mvSPjAPzIUciiTs2LiM
-	 vcQCl+yMtyokIL//1b7maM2ojnVhXhqx8Ol3cvyjugy8onEJpcWWz4iUR479Pbfeb4
-	 c6dikBpXXTx7Q==
+	b=Ha2Mg2lmVEyVLJsqAxVeeF3Hs64jrH9zp2Xowl6MfoO/WjdTlOUp7UNsCTZkTJtfU
+	 2AYsyz02/MC1BAUuUuoBZAAKn6CAkbwzdKIP9v/9RaFaVlsPUTBR1Woohd2oKK9FMO
+	 5Rot1rQ1o2dNTQtuIt/afr1Uq6xrxjiZyQ+IT5GvmdQgtjAHrsK8GdwhELc8E7+eRv
+	 9pHjeEyKHYLlQcEY3FNTJCSA4nzsOny+dsca1a4hl1RnrQpY5UnvlJGyvhEzgNgW8y
+	 /GwmtZUqbDRE9WdmGEsKpgpkR36Z61nAyxx0OD8nadJY+jrz/URE7Bdw4del+ewJqI
+	 vkYTEb2DdJScQ==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Holger Dengler <dengler@linux.ibm.com>,
 	Harald Freudenberger <freude@linux.ibm.com>,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 06/36] crypto: arm64/aes - Select CRYPTO_LIB_SHA256 from correct places
-Date: Sun,  4 Jan 2026 21:12:39 -0800
-Message-ID: <20260105051311.1607207-7-ebiggers@kernel.org>
+Subject: [PATCH 07/36] crypto: aegis - Switch from crypto_ft_tab[] to aes_enc_tab[]
+Date: Sun,  4 Jan 2026 21:12:40 -0800
+Message-ID: <20260105051311.1607207-8-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260105051311.1607207-1-ebiggers@kernel.org>
 References: <20260105051311.1607207-1-ebiggers@kernel.org>
@@ -83,58 +83,50 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The call to sha256() occurs in code that is built when either
-CRYPTO_AES_ARM64_CE_BLK or CRYPTO_AES_ARM64_NEON_BLK.  The option
-CRYPTO_AES_ARM64 is unrelated, notwithstanding its documentation.  I'll
-be removing CRYPTO_AES_ARM64 soon anyway, but before doing that, fix
-where CRYPTO_LIB_SHA256 is selected from.
+Instead of crypto_ft_tab[0] from aes_generic.c, use aes_enc_tab from
+lib/crypto/aes.c.  These contain the same data, so the result is the
+same.  This will allow aes_generic.c to eventually be removed.
 
-Fixes: 01834444d972 ("crypto: arm64/aes - use SHA-256 library instead of crypto_shash")
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- arch/arm64/crypto/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ crypto/Kconfig | 2 +-
+ crypto/aegis.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/crypto/Kconfig b/arch/arm64/crypto/Kconfig
-index da1c9ea8ea83..4453dff8f0c1 100644
---- a/arch/arm64/crypto/Kconfig
-+++ b/arch/arm64/crypto/Kconfig
-@@ -38,11 +38,10 @@ config CRYPTO_SM3_ARM64_CE
- 	  - ARMv8.2 Crypto Extensions
+diff --git a/crypto/Kconfig b/crypto/Kconfig
+index 12a87f7cf150..443fe8e016fd 100644
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -764,11 +764,11 @@ endmenu
+ menu "AEAD (authenticated encryption with associated data) ciphers"
  
- config CRYPTO_AES_ARM64
- 	tristate "Ciphers: AES, modes: ECB, CBC, CTR, CTS, XCTR, XTS"
- 	select CRYPTO_AES
--	select CRYPTO_LIB_SHA256
+ config CRYPTO_AEGIS128
+ 	tristate "AEGIS-128"
+ 	select CRYPTO_AEAD
+-	select CRYPTO_AES  # for AES S-box tables
++	select CRYPTO_LIB_AES  # for AES S-box tables
  	help
- 	  Block ciphers: AES cipher algorithms (FIPS-197)
- 	  Length-preserving ciphers: AES with ECB, CBC, CTR, CTS,
- 	    XCTR, and XTS modes
- 	  AEAD cipher: AES with CBC, ESSIV, and SHA-256
-@@ -64,10 +63,11 @@ config CRYPTO_AES_ARM64_CE
- config CRYPTO_AES_ARM64_CE_BLK
- 	tristate "Ciphers: AES, modes: ECB/CBC/CTR/XTS (ARMv8 Crypto Extensions)"
- 	depends on KERNEL_MODE_NEON
- 	select CRYPTO_SKCIPHER
- 	select CRYPTO_AES_ARM64_CE
-+	select CRYPTO_LIB_SHA256
- 	help
- 	  Length-preserving ciphers: AES cipher algorithms (FIPS-197)
- 	  with block cipher modes:
- 	  - ECB (Electronic Codebook) mode (NIST SP800-38A)
- 	  - CBC (Cipher Block Chaining) mode (NIST SP800-38A)
-@@ -81,10 +81,11 @@ config CRYPTO_AES_ARM64_CE_BLK
- config CRYPTO_AES_ARM64_NEON_BLK
- 	tristate "Ciphers: AES, modes: ECB/CBC/CTR/XTS (NEON)"
- 	depends on KERNEL_MODE_NEON
- 	select CRYPTO_SKCIPHER
- 	select CRYPTO_LIB_AES
-+	select CRYPTO_LIB_SHA256
- 	help
- 	  Length-preserving ciphers: AES cipher algorithms (FIPS-197)
- 	  with block cipher modes:
- 	  - ECB (Electronic Codebook) mode (NIST SP800-38A)
- 	  - CBC (Cipher Block Chaining) mode (NIST SP800-38A)
+ 	  AEGIS-128 AEAD algorithm
+ 
+ config CRYPTO_AEGIS128_SIMD
+ 	bool "AEGIS-128 (arm NEON, arm64 NEON)"
+diff --git a/crypto/aegis.h b/crypto/aegis.h
+index 6ef9c174c973..ffcf8e85ea69 100644
+--- a/crypto/aegis.h
++++ b/crypto/aegis.h
+@@ -60,11 +60,11 @@ static __always_inline void crypto_aegis_block_and(union aegis_block *dst,
+ static __always_inline void crypto_aegis_aesenc(union aegis_block *dst,
+ 						const union aegis_block *src,
+ 						const union aegis_block *key)
+ {
+ 	const u8  *s  = src->bytes;
+-	const u32 *t = crypto_ft_tab[0];
++	const u32 *t = aes_enc_tab;
+ 	u32 d0, d1, d2, d3;
+ 
+ 	d0 = t[s[ 0]] ^ rol32(t[s[ 5]], 8) ^ rol32(t[s[10]], 16) ^ rol32(t[s[15]], 24);
+ 	d1 = t[s[ 4]] ^ rol32(t[s[ 9]], 8) ^ rol32(t[s[14]], 16) ^ rol32(t[s[ 3]], 24);
+ 	d2 = t[s[ 8]] ^ rol32(t[s[13]], 8) ^ rol32(t[s[ 2]], 16) ^ rol32(t[s[ 7]], 24);
 -- 
 2.52.0
 
