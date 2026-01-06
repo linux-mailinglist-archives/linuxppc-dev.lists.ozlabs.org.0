@@ -1,78 +1,105 @@
-Return-Path: <linuxppc-dev+bounces-15291-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15292-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD934CF6BD0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 06:10:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A402ACF6E69
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 07:30:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dlfP81GqRz2yKr;
-	Tue, 06 Jan 2026 16:10:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dlhB36nWVz2yKr;
+	Tue, 06 Jan 2026 17:30:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767676204;
-	cv=none; b=BZlrKIPpZJwHV4u7hh54cAEgPiV2s1R94jo3LZsUQoskEw20QrttLPitXeBL0/oU61FhHf0bnRZ0XGyWFV5lZ4ObWNGw3LYceNcceLdmpSKJURFJYLjtzu8on0rKh4dJN1yiiAIUSNU8nkFCTIfOYS1mvkzuwQNWYHFfgcJgGpmwGtPB1nOXd/D2Ob1Pzaoucw5AlrZ721vNP8B6GKhuoiVL9fFxUTuEaKVXE/3Wxwn/4O8KY4WOFalhaKR/RaHcccrifRbC+F0M6qfi1WJE3ed5ksTa/UEy6SHsUBwks+odEh4vtYvJvHro3uh2j5IOH1FVE5lSa6vGcPJ6UXiA9Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767681035;
+	cv=none; b=n+9ocqooLuIRTE6ECJCS4/DZ+I0zpO1mjSFxpYnyAOf7JvpqYPgLdxxGAqPqXU/dYe+tRuI9g3418risiBJf9C/3inMUchu1BW/KYa7EaMEUhlr/pHsq5rhaxmZ5X/nlru9gI/kFp8oIa+KC1eXU3o319wlrVCAlhHkWApHBJeDhZRitIOWbVgorMkGXAipggjZnaAwokxJSyTl9WYvK2WUsbsf9+gxxmjkrUuHjV4jmDqFtB2ayKLM+Ii2ktnFWFaxjYsYkrQYbSRjilJIlh4QdBFwst6xsCbSm4lVwr9QTOZrJf2pjliV5jl9ZG7my7/ZyhHQFP1mdPkCuZfKvAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767676204; c=relaxed/relaxed;
-	bh=+kaidPU2r9UG5d+cT39AxQa40CxkXVRvwfc0y61s5NY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EGqmOtXJJrksuGV4MqWtI4/gUR3S0fCfBgiH1D/H2h4YPlx7X1theaAfN6EN0eIszXfdaa9kMtyterwD4hdUncXeqIEnXwl1mkeD8Zu5chro9vaqtWH4uGPB3RdpiLRpyk0kuZhdZMjTT6VhE045khEvUf+H3q7cAFItHT+y9ceajKfmlT+NWSMwCYgZ6FQYHeHQdT0snevZJQo4lyRFNMZf+YHlcsX6R4OMQEQ5PzlW2rxbUHkf4h5It26rIn/mkIMFjiNFgLeAeNwzsLlnX3G2NQEKgi2m6SrDBS4yu5ZLm606zMZknOg36jJeH5Q0O7WNc8+4BcwAG5AYolUV5A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pL6YUpXz; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1767681035; c=relaxed/relaxed;
+	bh=5odIQwPJjuX5od5ef4AjZuxMCllVPli7nQhOJ/OzpYQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=KsbvsdbKtBOzHuEhh4n014kyRn5hUnTuk/SEZ+OFuBJCLP0Q86zZSrZaNedESnSvuzeSXcf/FJ1AylKYHE61CCgQbVeaSKyyF4uB9pGtBf/ajLCrd3XIvxfn2L/ZhOk/by25qW6xgA3KASJMYE4oT+Mi3YvAG/FR4QuIUAySh1C0xMZtOIjFwALgkNhPDME/KXalG2Ta+IDDQdf54AXeu/R64+kezbntUM/5zDCU8nA+3iSDppcN7oYNbRlrhWrusMYIjnjfI3Qc/groFBOBDRCXEwMFvf80OPRC4NUWBIZHuejfJ+ltU1t1mMmou1A21FrIFOHuO+ctg61nt4SJTQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=I1EngBiF; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SGx+zoPl; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pL6YUpXz;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=I1EngBiF;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SGx+zoPl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlfP72Fvqz2xRv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 16:10:03 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 605EhWbe014268;
-	Tue, 6 Jan 2026 05:09:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+kaidP
-	U2r9UG5d+cT39AxQa40CxkXVRvwfc0y61s5NY=; b=pL6YUpXzSa0p3Q4ELWkgvo
-	2ayEZ8sy/I2POBTvkYsEEKLpRbwpiTlQRj12ncjP6bHdvVqI0cOr+IQyz+pIdUNe
-	h054D9+Y12xnK40SGEsuOl1ZsrjoISBmg2FCqaqM+Q218sUhdgw7IZrg9JZTcXzF
-	rQ/s7UJ+W8XEQHygPqqmDPMEGAC2suLNeBibDVhzKXL/6wHWb5xz9Owxs77xIzlO
-	Rv9nzty8xnLnPDFPSNeZuR2gaL62EtN/jPMkkuOKMF5HrvvS9DyIaaEzRZ0beqKy
-	JwiucgW85tCly96kPv3+u3jVz1i/qsMknKwIHKN4jSUo2DkN4QVnQzFuOope+FPA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu62dfq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 05:09:51 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60659pns013961;
-	Tue, 6 Jan 2026 05:09:51 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu62dfm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 05:09:51 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6064nbDs023501;
-	Tue, 6 Jan 2026 05:09:50 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bg3rm67ed-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 05:09:50 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60659mcC4064084
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 6 Jan 2026 05:09:49 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ACCC258051;
-	Tue,  6 Jan 2026 05:09:48 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B46985805A;
-	Tue,  6 Jan 2026 05:09:44 +0000 (GMT)
-Received: from [9.124.214.6] (unknown [9.124.214.6])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  6 Jan 2026 05:09:44 +0000 (GMT)
-Message-ID: <9f2f041d-37a7-42ed-bc06-540b65e8b54f@linux.ibm.com>
-Date: Tue, 6 Jan 2026 10:39:42 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlhB23xCZz2xqr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 17:30:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767681024;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5odIQwPJjuX5od5ef4AjZuxMCllVPli7nQhOJ/OzpYQ=;
+	b=I1EngBiFDOnnvbLjY2nkYiUMqGrkw6B1/wJEghp7522pbUkDo8H9GJpU1Z3i0MUr4iA+JG
+	1EHw6rTi993KyaaKcPIOGOWjmkl6gAbpkUje/65zPPGuAZXjpiQxyO9NRH/QSf9kfKRlxi
+	AIULZM5kg0EeoHDRYHfS7rliYIxXK2A=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767681025;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5odIQwPJjuX5od5ef4AjZuxMCllVPli7nQhOJ/OzpYQ=;
+	b=SGx+zoPlHhSxY/Cpc1qpxNdLCU3lXbdafOxNIWPVvCwJTSdjqjY1RJCtRPIVSn1Uab5ChR
+	1UYSfZsqu1bc4AJqNxZQ1A8x08M1qH6/ZsaTbA4LFF5vz3K6BXPv8yPY+JQZAAi4HKOc5h
+	AZZGh8YpIphkWRKTOW9LS0dyLMMl7S4=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-183-_seYVl2hMkqkPXadi7XfNQ-1; Tue, 06 Jan 2026 01:30:23 -0500
+X-MC-Unique: _seYVl2hMkqkPXadi7XfNQ-1
+X-Mimecast-MFC-AGG-ID: _seYVl2hMkqkPXadi7XfNQ_1767681022
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-815f9dc8f43so1375990b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 22:30:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767681022; x=1768285822;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5odIQwPJjuX5od5ef4AjZuxMCllVPli7nQhOJ/OzpYQ=;
+        b=KnrDntXz3jKSMYfkQydVzrO6yHSUD/YGw8OnNVWl/HGGSCDTu2Kn1Oj2ZrXn2roQCT
+         3ZjCOV1U4W52CZA8m61ViHzm4V68C7gD1CjUjvyfBEJCc/SAZ4cHKfIUxSpKDKwwO3Kl
+         gI2ZUjCAKMwCRx2/TUk+csqYzrULAuJuhz3HOwrupZz0/0J2rz2aOClHvF1bLmlaCSg/
+         gk7pECRMN9fIW9Mdv924G7knduIol8AcPKTQoRBq6Cqxm3Wf9ITbyAGf4jscjuVVEFoZ
+         U9B/kRPPo9BhlwhEdXhN0fHuz6DISbHLOoSeo6a3WnVz+tMtX91ZBD4EiPNh7MwnsUJt
+         /ViQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXigYURmVtGfPEUUFb4Jyg1DQCIAiDkcB9dvtdcgUQ3ehNrf4sEJhtR4aCOrGesg0CAGRGB0eBTwhYbVWc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy9rdW8cj5o+F0KK5/gnYJx7l+vnJPmUCCYhusNJAOx5tIQISXR
+	RSppF6tOsCldq7kEUhRmdI3Dm6F2nHhAH1mYj6Ah9mCSz1Ax+OQgkrQf2cvOXXnYFzEOJ0zlsny
+	bGZO9Cdx+zltTnjc3dljyjbcMu6HXGBzWbISmQhJNnBSBaVIrG9TUWAH+wG7Q4Q5HW3A=
+X-Gm-Gg: AY/fxX5hjRgGn4RHqYK+FzZmMZ3HeifaGjtdkYXqiTAEM+SKu58+taVLwTUJVy471wH
+	pMzg9q20rakbh+XBErvEEhviWkcNpF8iRgei96AMjymMlPuWmNhBkPOjBm4c8cmxlpP0qV+KUL/
+	dcYUbnh0ApfmvKvJUSQBjk2bMgz7ltgX2/82fN447Bu6Qo5aRyUF74cZdLZ2r12WvlMW6Uj05El
+	JDGedWkFkBblG8/sMjVOmV1JgGpy2SjyFxRCyIuF1yhE0kbJHH6+j6afJCEqgdSvsYdLtLGfI7s
+	j1MVvLaISQL7Xn6+3xayTdb9wcpMJTehtPEzCLvQKMl04vdgaMcu6gmPr3JSp+zPbQWrJFPBX68
+	4
+X-Received: by 2002:a05:6a21:33a2:b0:366:14ac:e20d with SMTP id adf61e73a8af0-389823ccaeamr1702272637.75.1767681021943;
+        Mon, 05 Jan 2026 22:30:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF9cfpUUe1HFlsOEg/hJrnV4Zf0Q08lNkGZQR8DEVWxFHSM5lZqtkm1xu9aYzl5/kpjJzLI2w==
+X-Received: by 2002:a05:6a21:33a2:b0:366:14ac:e20d with SMTP id adf61e73a8af0-389823ccaeamr1702228637.75.1767681021396;
+        Mon, 05 Jan 2026 22:30:21 -0800 (PST)
+Received: from localhost ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cc8d29592sm1233261a12.22.2026.01.05.22.30.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 22:30:20 -0800 (PST)
+Date: Tue, 6 Jan 2026 14:26:45 +0800
+From: Coiby Xu <coxu@redhat.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: kexec@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	Thomas Staudt <tstaudt@de.ibm.com>, Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>, 
+	Baoquan he <bhe@redhat.com>, Dave Young <dyoung@redhat.com>, Kairui Song <ryncsn@gmail.com>, 
+	Pingfan Liu <kernelfans@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] powerpc/kdump: pass dm-crypt keys to kdump kernel
+Message-ID: <aVyqc_0FALlTV8Ad@Rk>
+References: <20251226140636.1378505-1-coxu@redhat.com>
+ <e32554c8-774e-416d-92e4-306aec42b953@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,108 +113,172 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] keys/trusted_keys: establish PKWM as a trusted
- source
-To: Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, James.Bottomley@HansenPartnership.com,
-        jarkko@kernel.org, nayna@linux.ibm.com, rnsastry@linux.ibm.com,
-        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-References: <20251217172505.112398-1-ssrish@linux.ibm.com>
- <20251217172505.112398-6-ssrish@linux.ibm.com>
- <14a30e37e0cf8ef373b63d3b905ec1a7d807118a.camel@linux.ibm.com>
-Content-Language: en-US
-From: Srish Srinivasan <ssrish@linux.ibm.com>
-In-Reply-To: <14a30e37e0cf8ef373b63d3b905ec1a7d807118a.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=QbNrf8bv c=1 sm=1 tr=0 ts=695c9920 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=zoI4ALCl8jw1XMAjGw4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: DmxY2bha4venHbUU40UgUVK-KtoI7j_Z
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDAzOCBTYWx0ZWRfXyoFXHwCbfM8y
- YBwaQNxTCM7fVJXN60Rlnw7lJH33D64qhnZfrRs05T1KkyDWLS/wXJJLN/GGNFIoayvipBiOMIN
- E1qkxWkrPY5xiXbfCGVFLUqza/yUMWxtAfmUaffqjDh9smmhSkASZQtk9zY5kVbZPDlM8kd+hwb
- 8lP0NRSejJ9XwCII0dPhcdC8mlybz/I4xNgwJ/pRqUDT/iYe124ljOmTxbyhSAE4BouooWEwLly
- tsFFaak7NVQhE1MNtVr4hJya42s948amnOX2YNoYuqlzcEdhyggxkoRg0SoV2qBeBAp+aBWEBPM
- uFv2iUR238zwSiqqrYPh81L5fKKrrBGlR4FlQ+HNwPVKxFfBagh+Frivur4oNZGWqwMDhRy1faF
- Rhz/aFU7VtqEG1BWAlNEWufY3TissCCL1yim5ZJDymICCgFm5hAA6KivxYnvVfIPybFIStRKmHn
- c6gN534DrKdD8lE9Fiw==
-X-Proofpoint-GUID: s2y3tF9tsH2IQgG83SdIEOTTrg7_KjkK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-05_02,2026-01-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
- adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601060038
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <e32554c8-774e-416d-92e4-306aec42b953@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: UziHo2EdWG0ggqo77AJ5Hvaj4rBQgMNytF9R72w1BvM_1767681022
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Mimi,
-thanks for taking a look.
+On Thu, Jan 01, 2026 at 08:36:09PM +0530, Sourabh Jain wrote:
+>
+>
+>On 26/12/25 19:36, Coiby Xu wrote:
+>>Based on the CONFIG_CRASH_DM_CRYPT feature, this patch adds
+>>LUKS-encrypted device dump target support to PowerPC by addressing two
+>>challenges [1],
+>>  - Kdump kernel may not be able to decrypt the LUKS partition. For some
+>>    machines, a system administrator may not have a chance to enter the
+>>    password to decrypt the device in kdump initramfs after the 1st kernel
+>>    crashes
+>>
+>>  - LUKS2 by default use the memory-hard Argon2 key derivation function
+>>    which is quite memory-consuming compared to the limited memory reserved
+>>    for kdump.
+>>
+>>1st kernel will build up the kernel command parameter dmcryptkeys as
+>>similar to elfcorehdr to pass the memory address of the stored info of
+>>dm-crypt keys to the kdump kernel.
+>>
+>>[1] https://lore.kernel.org/all/20250502011246.99238-1-coxu@redhat.com/
+>>
+>>Cc: Thomas Staudt <tstaudt@de.ibm.com>
+>>Cc: Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>
+>>Cc: Baoquan he <bhe@redhat.com>
+>>Cc: Dave Young <dyoung@redhat.com>
+>>Cc: Kairui Song <ryncsn@gmail.com>
+>>Cc: Pingfan Liu <kernelfans@gmail.com>
+>>Cc: Andrew Morton <akpm@linux-foundation.org>
+>>Signed-off-by: Coiby Xu <coxu@redhat.com>
+>>---
+>>  arch/powerpc/include/asm/kexec.h |  3 ++-
+>>  arch/powerpc/kexec/elf_64.c      | 26 +++++++++++++++++++++++++-
+>>  arch/powerpc/kexec/file_load.c   | 19 +++++++++++--------
+>>  3 files changed, 38 insertions(+), 10 deletions(-)
+>>
+>>diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+>>index bd4a6c42a5f3..f3d098d543b4 100644
+>>--- a/arch/powerpc/include/asm/kexec.h
+>>+++ b/arch/powerpc/include/asm/kexec.h
+>>@@ -80,7 +80,8 @@ struct kimage_arch {
+>>  };
+>>  char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
+>>-			  unsigned long cmdline_len);
+>>+			  unsigned long cmdline_len,
+>>+			  char *name, unsigned long addr);
+>>  int setup_purgatory(struct kimage *image, const void *slave_code,
+>>  		    const void *fdt, unsigned long kernel_load_addr,
+>>  		    unsigned long fdt_load_addr);
+>>diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+>>index 5d6d616404cf..57cb3361d91b 100644
+>>--- a/arch/powerpc/kexec/elf_64.c
+>>+++ b/arch/powerpc/kexec/elf_64.c
+>>@@ -81,13 +81,37 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>>  		/* Setup cmdline for kdump kernel case */
+>>  		modified_cmdline = setup_kdump_cmdline(image, cmdline,
+>>-						       cmdline_len);
+>>+						       cmdline_len,
+>>+						       "elfcorehdr",
+>>+						       image->elf_load_addr);
+>>  		if (!modified_cmdline) {
+>>  			pr_err("Setting up cmdline for kdump kernel failed\n");
+>>  			ret = -EINVAL;
+>>  			goto out;
+>>  		}
+>>  		cmdline = modified_cmdline;
+>>+		cmdline_len = strlen(cmdline) + 1;
+>>+
+>>+		ret = crash_load_dm_crypt_keys(image);
+>>+		if (ret == -ENOENT) {
+>>+			kexec_dprintk("No dm crypt key to load\n");
+>>+		} else if (ret) {
+>>+			pr_err("Failed to load dm crypt keys\n");
+>>+			return ERR_PTR(ret);
+>>+		}
+>>+
+>>+		if (image->dm_crypt_keys_addr != 0) {
+>>+			modified_cmdline = setup_kdump_cmdline(image, cmdline,
+>>+							       cmdline_len,
+>>+							       "dmcryptkeys",
+>>+							       image->dm_crypt_keys_addr);
+>>+			if (!modified_cmdline) {
+>>+				pr_err("Setting up cmdline for kdump kernel failed\n");
+>>+				ret = -EINVAL;
+>>+				goto out;
+>>+			}
+>>+			cmdline = modified_cmdline;
+>>+		}
+>>  	}
+>>  	if (initrd != NULL) {
+>>diff --git a/arch/powerpc/kexec/file_load.c b/arch/powerpc/kexec/file_load.c
+>>index 4284f76cbef5..e1c08050286d 100644
+>>--- a/arch/powerpc/kexec/file_load.c
+>>+++ b/arch/powerpc/kexec/file_load.c
+>>@@ -23,38 +23,41 @@
+>>  #define SLAVE_CODE_SIZE		256	/* First 0x100 bytes */
+>>  /**
+>>- * setup_kdump_cmdline - Prepend "elfcorehdr=<addr> " to command line
+>>+ * setup_kdump_cmdline - Prepend "<name>=<addr> " to command line
+>>   *                       of kdump kernel for exporting the core.
+>>   * @image:               Kexec image
+>>   * @cmdline:             Command line parameters to update.
+>>   * @cmdline_len:         Length of the cmdline parameters.
+>>+ * @name:                Name e.g elfcorehdr.
+>>+ * @addr:                Memory address.
+>>   *
+>>   * kdump segment must be setup before calling this function.
+>>   *
+>>   * Returns new cmdline buffer for kdump kernel on success, NULL otherwise.
+>>   */
+>>  char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
+>>-			  unsigned long cmdline_len)
+>>+			  unsigned long cmdline_len,
+>>+			  char *name, unsigned long addr)
+>>  {
+>>-	int elfcorehdr_strlen;
+>>+	unsigned long parameter_len;
+>>  	char *cmdline_ptr;
+>>  	cmdline_ptr = kzalloc(COMMAND_LINE_SIZE, GFP_KERNEL);
+>>  	if (!cmdline_ptr)
+>>  		return NULL;
+>>-	elfcorehdr_strlen = sprintf(cmdline_ptr, "elfcorehdr=0x%lx ",
+>>-				    image->elf_load_addr);
+>>+	parameter_len = sprintf(cmdline_ptr, "%s=0x%lx ", name, addr);
+>>-	if (elfcorehdr_strlen + cmdline_len > COMMAND_LINE_SIZE) {
+>>-		pr_err("Appending elfcorehdr=<addr> exceeds cmdline size\n");
+>>+	if (parameter_len + cmdline_len > COMMAND_LINE_SIZE) {
+>>+		pr_err("Appending %s=<addr> exceeds cmdline size\n", name);
+>>  		kfree(cmdline_ptr);
+>>  		return NULL;
+>>  	}
+>>-	memcpy(cmdline_ptr + elfcorehdr_strlen, cmdline, cmdline_len);
+>>+	memcpy(cmdline_ptr + parameter_len, cmdline, cmdline_len);
+>>  	// Ensure it's nul terminated
+>>  	cmdline_ptr[COMMAND_LINE_SIZE - 1] = '\0';
+>>+	kfree(cmdline);
+>
+>When setup_kdump_cmdline() is called for elfcorehdr, cmdline holds the
+>same pointer as image->cmdline_buf. Freeing it here may therefore
+>cause issues, right?
 
-On 1/2/26 11:14 PM, Mimi Zohar wrote:
-> On Wed, 2025-12-17 at 22:55 +0530, Srish Srinivasan wrote:
->> The wrapping key does not exist by default and is generated by the
->> hypervisor as a part of PKWM initialization. This key is then persisted by
->> the hypervisor and is used to wrap trusted keys. These are variable length
->> symmetric keys, which in the case of PowerVM Key Wrapping Module (PKWM) are
->> generated using the kernel RNG. PKWM can be used as a trust source through
->> the following example keyctl command
-> -> commands:
-
-Yes, I will fix this.
+Yes, you are right, I'll drop the above kfree in next version.
 
 >
->> keyctl add trusted my_trusted_key "new 32" @u
->>
->> Use the wrap_flags command option to set the secure boot requirement for
->> the wrapping request through the following keyctl commands
->>
->> case1: no secure boot requirement. (default)
->> keyctl usage: keyctl add trusted my_trusted_key "new 32" @u
->> 	      OR
->> 	      keyctl add trusted my_trusted_key "new 32 wrap_flags=0x00" @u
->>
->> case2: secure boot required to in either audit or enforce mode. set bit 0
->> keyctl usage: keyctl add trusted my_trusted_key "new 32 wrap_flags=0x01" @u
->>
->> case3: secure boot required to be in enforce mode. set bit 1
->> keyctl usage: keyctl add trusted my_trusted_key "new 32 wrap_flags=0x02" @u
->>
->> NOTE:
->> -> Setting the secure boot requirement is NOT a must.
->> -> Only either of the secure boot requirement options should be set. Not
->> both.
->> -> All the other bits are requied to be not set.
-> -> required
+>Currently, image->cmdline_buf is not used after calling the
+>architecture-specific load function (elf64_load on powerpc).
+>However, kimage_file_post_load_cleanup() later calls kfree() on
+>the same address.
 
-Noted.
-Will fix this.
+I missed kimage_file_post_load_cleanup. Thanks for pointing it out!
 
->
->> -> Set the kernel parameter trusted.source=pkwm to choose PKWM as the
->> backend for trusted keys implementation.
->> -> CONFIG_PSERIES_PLPKS must be enabled to build PKWM.
->>
->> Add PKWM, which is a combination of IBM PowerVM and Power LPAR Platform
->> KeyStore, as a new trust source for trusted keys.
->>
->> Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
-> Thanks, Srish.  Other than fixing the typo and other suggestion above,
-> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
 
-Thanks for the review Mimi.
-Will fix these typos and send out v3.
+-- 
+Best regards,
+Coiby
 
-thanks,
-Srish.
 
