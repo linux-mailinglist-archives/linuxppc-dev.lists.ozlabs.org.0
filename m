@@ -1,99 +1,116 @@
-Return-Path: <linuxppc-dev+bounces-15295-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15296-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178BFCF6FAE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 08:11:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4089BCF7140
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 08:40:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dlj4j3FKfz2yKr;
-	Tue, 06 Jan 2026 18:11:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dljl93VCwz2yKr;
+	Tue, 06 Jan 2026 18:40:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=205.220.168.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767683461;
-	cv=none; b=jC96gRtjfCIKXz9ozAwuv1oB2JRktQwmW54kqSg5JSao7UG+xoClfEI8vB68qeBTFvZ2wKB9l+/fRjzPifbg+cMUeymPWcnU3UQnhuxYS0FOzmjqMj90lEzA5BepDvM25PTUPrrncAB9Fu6KEfVAX3ehleX8YXhoLVxhTcbY1gUVjHkEEJMnIhlJFkMgJmeXCAtEqVq/TCZ0E3qAf+toVoBHhqizP7zWpfZE9Ykmqhcd25GaqPIufCNHUGaOlSncAYbuGB88VZR03Cb4QsVc1YgPxn4Cv4N7yJiehIiIWS/MGb8euuQCgoFi/jKwU/FtzmFPfFAnPG8XVNRqG6z3CQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767685253;
+	cv=none; b=jVP8H68m8vDLzQgKm6x0jfL/GDIHmOtkmKhHxv9XTgYVOgK/z+RdpmlreRXJg52skYLY9GNXJdnWbVaXuQuxHuZVEmBrdZLXhLaiz9JS4onSOgmoHixo3uHCip/99g0ubIZPT4XW/rM/dMpUMHzVbzrLFetpYc17gU+mc7ir97Upbu3xLfoLqsR475Wi0iNlv6sIlhP8lzovE/URWPZ1XsrbXVtnvXwaRsGKDqNIbU3TgV/M6E8y2m2zYhizrmHM92D0gpNm1NO+VWiwCoOnFQjyrlAE14gegWOr6S4RxrE5IeKB33H5cXKFRtLso611Afi8+QN5VaY+4o3eP10WyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767683461; c=relaxed/relaxed;
-	bh=yR+2kAsivE/Rvdu/9KWZ7We8zTZVWkvuerZ6CyrQIVY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BLwQhwxkywMX77LMorTRs/JQ2YET9Hxj4EIFkQjNtcUlyC5k39WB/TLc2prg+Vw6ZueqwfPqbf6PvQXSSE+rU592oDznBju6Lh4kxBKb+xLKVS4MX74ywwBmAjn+3lcwlcHqkSIYlsAoKoAmWKTMB9J4NPpFpANYrjwhpO4SZIvhtF4fmckD64ybyF3VYB6iUnEMQjglfDI1vPwtBWogaSjjgEv/Nv3xnT6ZTj7ojwbYE8jmmDxU/vbwxp1/JjgpGlI3xZq2M2rC00rV/ExIpN6ejdhTkvZQ9K5k0VHB0ryIdhgRDP0fAK+swIeTclwqTsMFKgEQDcPrRBLDKEGrcQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=X2rhLxsg; dkim=pass (2048-bit key; unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=gtaqvN3e; dkim-atps=neutral; spf=pass (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=krzysztof.kozlowski@oss.qualcomm.com; receiver=lists.ozlabs.org) smtp.mailfrom=oss.qualcomm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+	t=1767685253; c=relaxed/relaxed;
+	bh=T2K+6XYuDT2faPkgFNRf0MMgXkPW9/hzNvicOemZ75A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=VzPukUyg9JOWev82nxAsrQT23m7ka8V4Xerlxq4c4tj5OLdSz1PvYQn3sHwbWoDvbRFdJGbUX3bCfxUWuegSbt2Ju/508InuK56Xm6awvjB9uvn6jSwqtFKF8Iy3kROVQVFESze2ChbJkSZVAHT/7SxkQqvxpeShEC1VKnl2k0CFqVsU5+5OTYevuMC+iPerO4u+WIKs55Qb2jtyVIsyyTBzwyeEEm/ix9Iwgj/vXIi6TOLKsbp6fK4pCKD0P0jlSh4KZe7q3vyUpMvrdljPQXRp8Kf4sR4l+DkCGbL3OqIKQf7mK94fx6QpJKbQJmog5GWa8C3QenRyhkRAnkUfLA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=At4LGi6Q; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=At4LGi6Q; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=X2rhLxsg;
-	dkim=pass (2048-bit key; unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=gtaqvN3e;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=At4LGi6Q;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=At4LGi6Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oss.qualcomm.com (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=krzysztof.kozlowski@oss.qualcomm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlj4g4P0qz2xqr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 18:10:58 +1100 (AEDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6063QFB52922792
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 6 Jan 2026 07:10:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	yR+2kAsivE/Rvdu/9KWZ7We8zTZVWkvuerZ6CyrQIVY=; b=X2rhLxsgYoyoE5AY
-	L4b4cQJTQ3YgIfJCOY2LOJVoBKGe5vLK1LpNNiDsUPfYPZFJrCvR5L6HKf8GR76o
-	8Xem8H7csVtFQUIFSXCaZou94+irylPnnV29sMLXiknpFDdgHOFgL+jg3vNiCh+U
-	u8uJoDzslcYsqpOZb8u3b16lzO2UczbNws/eJs15FDtstTOCjhv8bpMg7IBiBdsU
-	zE7CqkcaOz/1l++v2Uo3JcN+XNUAHfVn3rtogIk4FRDqu1x5eiisquylcuSGquLf
-	JjcY9vRoINW1D1IPJp/i+YibBXgIyJDSEo3kApXRCtijUJfeLCFyzeiGe3OegeMW
-	i1Zuwg==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bgscy8rcu-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 07:10:56 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4ed6ceab125so20290821cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 23:10:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767683455; x=1768288255; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=yR+2kAsivE/Rvdu/9KWZ7We8zTZVWkvuerZ6CyrQIVY=;
-        b=gtaqvN3ewpCUDzL+j71Ms+1bAZDd7n36siOt+jcwYGm6SXKqah0ada80SlDJuddoIx
-         KU7XN9wbH6nhYT9P+xsI0PE5a4f3Kin+tTYjjt5K/eWwDCvDTFrOVBn+Su18Y9e5UHNC
-         7Pt+80qdGk2tL1m1fmmh1guAgM4suUeelDIrCc67on9F3o/ASIkFJ7Kvtq68JwL1JT8A
-         bFk3TZFqGMxIwI486gBaLZLuJxPnUY/RPawhqSSs489UwBixyadkHBSx/eP8zzKKeVPb
-         2c7ZREujGAs9iWlfWLudBz9SFo3tuXzw1WdpKug72SJ+MAmas4Wi2ADMrOSsXfu9zbhF
-         gT7w==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dljl81K3zz2xSX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 18:40:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767685247;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T2K+6XYuDT2faPkgFNRf0MMgXkPW9/hzNvicOemZ75A=;
+	b=At4LGi6QRfqkI0AQfk55/zKYlYLb3H3ICSMZaCTUEyRp6IqLqNGVS55Vji0xBBAfWZ+Y11
+	mJgbh+5gx58UvhM/XuDbOkt3g0EnslY1/xXY0GKvZJoDgSBV+KT65rsllEHVtvl05Yp8H2
+	a5Hz1jgcX6jWcga4R2xqpBI6PO14l4I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767685247;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T2K+6XYuDT2faPkgFNRf0MMgXkPW9/hzNvicOemZ75A=;
+	b=At4LGi6QRfqkI0AQfk55/zKYlYLb3H3ICSMZaCTUEyRp6IqLqNGVS55Vji0xBBAfWZ+Y11
+	mJgbh+5gx58UvhM/XuDbOkt3g0EnslY1/xXY0GKvZJoDgSBV+KT65rsllEHVtvl05Yp8H2
+	a5Hz1jgcX6jWcga4R2xqpBI6PO14l4I=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-451-aDpN5sOxNueGtijma9ZzDg-1; Tue, 06 Jan 2026 02:40:45 -0500
+X-MC-Unique: aDpN5sOxNueGtijma9ZzDg-1
+X-Mimecast-MFC-AGG-ID: aDpN5sOxNueGtijma9ZzDg_1767685244
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-34aa1d06456so2181819a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 23:40:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767683455; x=1768288255;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yR+2kAsivE/Rvdu/9KWZ7We8zTZVWkvuerZ6CyrQIVY=;
-        b=TUR8zioEafR/eakS7298jq6o3CsH85FHgxmxF5UjS0udWwjrfXyDuDhmMWD92vOHy7
-         VLF7t9HdN0Z3oJw9EEAmKnbXt8VEWlo8GewnglL7LYx3M679+rHo8hoklOZ7+mQN/KYN
-         k1JYCqYOxz1pd3X6Ln5rXz+JkKjbjjofX4bBdjdgrCffallnHMSFL7IJdnydH3CQI9Dd
-         Dk4QijyX+vVj+jpsJH1xWDxFcLpxu5GxrawMhqEq8/j3LlCvrR381xPM7u4bTpe2nyJ8
-         J3z18O/2veXIa04IVSrUtLkCegGAw358yxbypAphZ94cp27Itf89nd46lx+tVG6rsvVN
-         pUqw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnOO1uMUKG9kS6B/wf/XOQlKKaLdpwVjxesrpsrohC+uX1DKM8klZLt+ZuaG31w8zlMOPt/kJns+U+Agw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzPSXcafGNshbD4to1pK+puyAASRjZbhMvhFtsuUQXKJxD4WhIh
-	gJ9v7N+jugZ3FqXbv6+H7vyFmQseWEx0we6uYZSmhXbSCeoP/Q9bCs+SqAIGbEhgwjyVN/4GOkv
-	UxBSgE/wTam8TcA0gFd5+eVv34lKa6HktAteGbTkIYDdDsx39gaNgB3WML7H2qADMm5/Y
-X-Gm-Gg: AY/fxX5Pto3HZHOrE2wl/d7NyPon5l0Fzxg3IjUhvTq9dTs3Vwtd6S6FFX8t7okn9JT
-	GULtZk3pwjvPNvOEF6k6ea1p0kPdB5KOG9+u1livW88OXH7kXT1dyEUO2lbDSdHMCw5czTpsEdw
-	p73/0jBQewKVKVZGKU5Aqhtz5/+19nm0R+umXZcY9t+0BOGVD2/qNcDr8hxyfVSYtCrRlgk6l/a
-	hC2FWrmriAwTxb1iZvc0vyHiaUIUKEXIKibE4ewyMV8xLmMpD4NJjjptC9OE/56NhoWwxZRs4G0
-	MG1lLQ4CpoSRXX7S2/xm7fCziz3keMO22UqxRCyAZltSqZzJtgoxNd2Cm/omNHDtQNZz2ROJPpC
-	hEWTHzZiomGaymr7HccYgBw6fY6ZhpSTJfTsTpw==
-X-Received: by 2002:a05:622a:2449:b0:4ee:ce3:6c9d with SMTP id d75a77b69052e-4ffa76ccec7mr26847751cf.19.1767683455270;
-        Mon, 05 Jan 2026 23:10:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG8XFjy35zyxBfC3DOLW8LBR5cVdZzZlCAUK/f6DleVwXoBDQ8jjn4JwiDCBEIoRdJUfETm7w==
-X-Received: by 2002:a05:622a:2449:b0:4ee:ce3:6c9d with SMTP id d75a77b69052e-4ffa76ccec7mr26847261cf.19.1767683454846;
-        Mon, 05 Jan 2026 23:10:54 -0800 (PST)
-Received: from [192.168.1.29] ([178.197.218.229])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5ee870sm2690447f8f.36.2026.01.05.23.10.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Jan 2026 23:10:54 -0800 (PST)
-Message-ID: <f8e6666c-86cc-4123-b1f5-681b656ccf9d@oss.qualcomm.com>
-Date: Tue, 6 Jan 2026 08:10:51 +0100
+        d=1e100.net; s=20230601; t=1767685244; x=1768290044;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=T2K+6XYuDT2faPkgFNRf0MMgXkPW9/hzNvicOemZ75A=;
+        b=u/PxWAYN5ioMCm+fdPBppSIhfkWBXZGx2QjoPygchQIgvq9krX2tFaIFr9CCiDbq23
+         ejH4mWcHKj2Uq62rWbiR58XrEL1uBYEHFdefPlCPVEf7jAfRwQpzpJORHTYAVsNJpru+
+         me7fmxrKDLguCqnFiriAyYyFK7Xjc5sWR8BrVCVK4q1s8GgAA9Q5/ffYajArwble9HGF
+         0LfNiFOmQu8LLFA8WrH1VU9V9OBzrtwHwFzTOQNFr6GKgnCFalFW+kd/OsZVLR7zjh9Z
+         15+NLm7ntrsf6xPZftxSiPfNrg2Iipf+6nchBvyROL2dQ23JMeS4fT0CoAQfQg0JG4+J
+         +yyw==
+X-Forwarded-Encrypted: i=1; AJvYcCWzaJ07IY1FDiXV/3Wp9U6asuI35zimd90+6yhpIhvDd43bCBv87vgb5rntkvRM+gK2SyprOa95iDqIeGQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwScfpVbnz81WmsskjKLeery8Cr1l4xppCw8USRKnfN0oPUvo7a
+	Npqd51xyyo06qn5JcbyTncCs0+J8hF/bERFuBnwkBVHl/D7z2gqCvallfj6PBi51gcsqyr1I18K
+	mFUI0Q1beY1FWopGG2FMICKqhdGXtOTQecvDMNhdYn1giTOhQE+o8ZrEFaV2ubndDxU0=
+X-Gm-Gg: AY/fxX4zOK06BSL6K8z9UQcebYmibsCCrLc9Dfu5cm2fikgeAYBlevQUQwQhck9NINb
+	ifR1AbBHZZyfBNLnh8od+i5835QAt5eHBJ+mtXp/UhuSyU2ezlv7Gtc5NWBDPilwv621rkW3Muj
+	ult/54+dvIGeSP8BedOf2j7i4uMB38COlJKdg9DS8WjAZV/PDJdRAnyefML6g3z2e/JJmCnraDx
+	g1An7PxZF4gYNy5PdOGFEvqmCNEP/N5ILFmd8k0LBW9RpARxzu9Hv1Bk7EtTuZlQQ71zX62k1Wd
+	b+YKd9U2eWcdc1c7yzbk+waVXRNh7pI9+nUH6V3JBI+B7xWIAeZvdb9NKmulLFdsV/cOTIEP1SR
+	s
+X-Received: by 2002:a05:6a21:6d98:b0:35d:c68e:1b07 with SMTP id adf61e73a8af0-389823e5d3fmr1735572637.54.1767685244275;
+        Mon, 05 Jan 2026 23:40:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHVUzWKzSkNqbLbBe+L/snCjJ0oavUrUixh1GN3s9rZlQu+O972p1pSFAutekovPq/olCdVFQ==
+X-Received: by 2002:a05:6a21:6d98:b0:35d:c68e:1b07 with SMTP id adf61e73a8af0-389823e5d3fmr1735547637.54.1767685243733;
+        Mon, 05 Jan 2026 23:40:43 -0800 (PST)
+Received: from localhost ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c3a2a3sm13338605ad.13.2026.01.05.23.40.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 23:40:43 -0800 (PST)
+From: Coiby Xu <coxu@redhat.com>
+To: kexec@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: Thomas Staudt <tstaudt@de.ibm.com>,
+	Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>,
+	Baoquan he <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Kairui Song <ryncsn@gmail.com>,
+	Pingfan Liu <kernelfans@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v2] powerpc/kdump: pass dm-crypt keys to kdump kernel
+Date: Tue,  6 Jan 2026 15:40:38 +0800
+Message-ID: <20260106074039.564707-1-coxu@redhat.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251226140636.1378505-1-coxu@redhat.com>
+References: <20251226140636.1378505-1-coxu@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -107,146 +124,204 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/11] of: Add for_each_compatible_node_scoped() helper
-To: Rob Herring <robh@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Saravana Kannan <saravanak@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Alim Akhtar
- <alim.akhtar@samsung.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Nipun Gupta <nipun.gupta@amd.com>,
-        Nikhil Agarwal <nikhil.agarwal@amd.com>,
-        Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
- <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Vinod Koul <vkoul@kernel.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, llvm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-clk@vger.kernel.org, imx@lists.linux.dev,
-        dmaengine@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-pm@vger.kernel.org,
-        Jonathan Cameron <jonathan.cameron@huawei.com>
-References: <20260105-of-for-each-compatible-scoped-v1-0-24e99c177164@oss.qualcomm.com>
- <20260105-of-for-each-compatible-scoped-v1-1-24e99c177164@oss.qualcomm.com>
- <20260105223644.GA3633916-robh@kernel.org>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@oss.qualcomm.com; keydata=
- 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
- cwzYbmi/Et7T2+47PN9NZAOyb771QoVr8A==
-In-Reply-To: <20260105223644.GA3633916-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: IjaReVwCsyxznI6UFj3OlbrHsYsgRZJu
-X-Authority-Analysis: v=2.4 cv=fOw0HJae c=1 sm=1 tr=0 ts=695cb580 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=Eb9f15NH/cHKzfGOmZSO4Q==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=i0EeH86SAAAA:8 a=EUspDBNiAAAA:8
- a=o3VLu0Hs6I0nX9ffGz0A:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-ORIG-GUID: IjaReVwCsyxznI6UFj3OlbrHsYsgRZJu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDA1OSBTYWx0ZWRfX7eXRSq8FQv6q
- 08iJB2cmraT8nohEfIUt7/26k4/AD43+x84d4L0Be4ndjXEnn/b0/1oKD/vLI5MbnSaWwJWTAbr
- Hi2vrzNqSGN7AFMRqApWFFSHRlnXuFpJ+VhNm71C99XJwL5KvIHL998AfrH5jcwCtOwccFg1h2o
- rnW67F6EcNWQEvOPV92qyN7H6fJ5jstH3yZ4i0dY9MDWFMa7V4xG0jP1qriBw6ZGzjFXS9mLexM
- eMMv6E7mk3A1gs1Y8TS9Uu7ffsbne9kTvteorlAew79l506Vu9dWm/JBmoMuzTblaaqNkj0BGwG
- TN/DLkao91lRkHoCF3sA9cAq87+dBfAmlZIbpKjJeO/kOH8aoArnYJjAxY7DvxWHdRAvuvtgscZ
- tpObC0uwdUL1iZHTbG3F0iUXEvDTy2/dn6AI6Tzjt8PNRBp0ztmXt5B2cBM72lngkU+dGinJdsk
- UCuTUoA/2N85OwiSQrA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-05_02,2026-01-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 suspectscore=0 bulkscore=0 malwarescore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601060059
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: c43Sj8o6WiLKha30CxaMV7ya_zuaNkQKL33BRYDRdL0_1767685244
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 05/01/2026 23:36, Rob Herring wrote:
-> On Mon, Jan 05, 2026 at 02:33:39PM +0100, Krzysztof Kozlowski wrote:
->> Just like looping through children and available children, add a scoped
->> helper for for_each_compatible_node() so error paths can drop
->> of_node_put() leading to simpler code.
->>
->> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
->>
->> ---
->>
->> Prerequisite for all further patches.
->> ---
->>  .clang-format      | 1 +
->>  include/linux/of.h | 7 +++++++
->>  2 files changed, 8 insertions(+)
-> 
-> You need to update scripts/dtc/dt-extract-compatibles
+CONFIG_CRASH_DM_CRYPT has been introduced to support LUKS-encrypted
+device dump target by addressing two challenges [1],
+ - Kdump kernel may not be able to decrypt the LUKS partition. For some
+   machines, a system administrator may not have a chance to enter the
+   password to decrypt the device in kdump initramfs after the 1st kernel
+   crashes
 
-Right, ack.
+ - LUKS2 by default use the memory-hard Argon2 key derivation function
+   which is quite memory-consuming compared to the limited memory reserved
+   for kdump.
 
-Best regards,
-Krzysztof
+To also enable this feature for PowerPC, we only need to let 1st kernel
+build up the kernel command parameter dmcryptkeys as similar to
+elfcorehdr to pass the memory address of the stored info of dm-crypt
+keys to the kdump kernel.
+
+Note to avoid a building failure [2] caused by undeclared function
+crash_load_dm_crypt_keys when CONFIG_CRASH_DUMP is not enabled,
+realign the function declaration with CONFIG_CRASH_DM_CRYPT.
+
+[1] https://lore.kernel.org/all/20250502011246.99238-1-coxu@redhat.com/
+[2] https://lore.kernel.org/oe-kbuild-all/202512272218.ghBaSjzO-lkp@intel.com/
+
+Cc: Thomas Staudt <tstaudt@de.ibm.com>
+Cc: Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>
+Cc: Baoquan he <bhe@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Pingfan Liu <kernelfans@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+Signed-off-by: Coiby Xu <coxu@redhat.com>
+---
+v2:
+- fix double kfree issue [Sourabh]
+- corretly kfree old modified_cmdline
+- use imperative mood for commit message
+- fix a compiling error caught by kernel test robot
+
+ arch/powerpc/include/asm/kexec.h |  3 ++-
+ arch/powerpc/kexec/elf_64.c      | 27 ++++++++++++++++++++++++++-
+ arch/powerpc/kexec/file_load.c   | 18 ++++++++++--------
+ include/linux/crash_core.h       | 14 +++++++-------
+ 4 files changed, 45 insertions(+), 17 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+index bd4a6c42a5f3..f3d098d543b4 100644
+--- a/arch/powerpc/include/asm/kexec.h
++++ b/arch/powerpc/include/asm/kexec.h
+@@ -80,7 +80,8 @@ struct kimage_arch {
+ };
+ 
+ char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
+-			  unsigned long cmdline_len);
++			  unsigned long cmdline_len,
++			  char *name, unsigned long addr);
+ int setup_purgatory(struct kimage *image, const void *slave_code,
+ 		    const void *fdt, unsigned long kernel_load_addr,
+ 		    unsigned long fdt_load_addr);
+diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+index 5d6d616404cf..995d7e8e98e1 100644
+--- a/arch/powerpc/kexec/elf_64.c
++++ b/arch/powerpc/kexec/elf_64.c
+@@ -81,13 +81,38 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+ 
+ 		/* Setup cmdline for kdump kernel case */
+ 		modified_cmdline = setup_kdump_cmdline(image, cmdline,
+-						       cmdline_len);
++						       cmdline_len,
++						       "elfcorehdr",
++						       image->elf_load_addr);
+ 		if (!modified_cmdline) {
+ 			pr_err("Setting up cmdline for kdump kernel failed\n");
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+ 		cmdline = modified_cmdline;
++		cmdline_len = strlen(cmdline) + 1;
++
++		ret = crash_load_dm_crypt_keys(image);
++		if (ret == -ENOENT) {
++			kexec_dprintk("No dm crypt key to load\n");
++		} else if (ret) {
++			pr_err("Failed to load dm crypt keys\n");
++			return ERR_PTR(ret);
++		}
++
++		if (image->dm_crypt_keys_addr != 0) {
++			modified_cmdline = setup_kdump_cmdline(image, cmdline,
++							       cmdline_len,
++							       "dmcryptkeys",
++							       image->dm_crypt_keys_addr);
++			kfree(cmdline);
++			if (!modified_cmdline) {
++				pr_err("Setting up cmdline for kdump kernel failed\n");
++				ret = -EINVAL;
++				goto out;
++			}
++			cmdline = modified_cmdline;
++		}
+ 	}
+ 
+ 	if (initrd != NULL) {
+diff --git a/arch/powerpc/kexec/file_load.c b/arch/powerpc/kexec/file_load.c
+index 4284f76cbef5..9964c57785f5 100644
+--- a/arch/powerpc/kexec/file_load.c
++++ b/arch/powerpc/kexec/file_load.c
+@@ -23,36 +23,38 @@
+ #define SLAVE_CODE_SIZE		256	/* First 0x100 bytes */
+ 
+ /**
+- * setup_kdump_cmdline - Prepend "elfcorehdr=<addr> " to command line
++ * setup_kdump_cmdline - Prepend "<name>=<addr> " to command line
+  *                       of kdump kernel for exporting the core.
+  * @image:               Kexec image
+  * @cmdline:             Command line parameters to update.
+  * @cmdline_len:         Length of the cmdline parameters.
++ * @name:                Name e.g elfcorehdr.
++ * @addr:                Memory address.
+  *
+  * kdump segment must be setup before calling this function.
+  *
+  * Returns new cmdline buffer for kdump kernel on success, NULL otherwise.
+  */
+ char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
+-			  unsigned long cmdline_len)
++			  unsigned long cmdline_len,
++			  char *name, unsigned long addr)
+ {
+-	int elfcorehdr_strlen;
++	unsigned long parameter_len;
+ 	char *cmdline_ptr;
+ 
+ 	cmdline_ptr = kzalloc(COMMAND_LINE_SIZE, GFP_KERNEL);
+ 	if (!cmdline_ptr)
+ 		return NULL;
+ 
+-	elfcorehdr_strlen = sprintf(cmdline_ptr, "elfcorehdr=0x%lx ",
+-				    image->elf_load_addr);
++	parameter_len = sprintf(cmdline_ptr, "%s=0x%lx ", name, addr);
+ 
+-	if (elfcorehdr_strlen + cmdline_len > COMMAND_LINE_SIZE) {
+-		pr_err("Appending elfcorehdr=<addr> exceeds cmdline size\n");
++	if (parameter_len + cmdline_len > COMMAND_LINE_SIZE) {
++		pr_err("Appending %s=<addr> exceeds cmdline size\n", name);
+ 		kfree(cmdline_ptr);
+ 		return NULL;
+ 	}
+ 
+-	memcpy(cmdline_ptr + elfcorehdr_strlen, cmdline, cmdline_len);
++	memcpy(cmdline_ptr + parameter_len, cmdline, cmdline_len);
+ 	// Ensure it's nul terminated
+ 	cmdline_ptr[COMMAND_LINE_SIZE - 1] = '\0';
+ 	return cmdline_ptr;
+diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
+index d35726d6a415..e128270c703f 100644
+--- a/include/linux/crash_core.h
++++ b/include/linux/crash_core.h
+@@ -34,13 +34,6 @@ static inline void arch_kexec_protect_crashkres(void) { }
+ static inline void arch_kexec_unprotect_crashkres(void) { }
+ #endif
+ 
+-#ifdef CONFIG_CRASH_DM_CRYPT
+-int crash_load_dm_crypt_keys(struct kimage *image);
+-ssize_t dm_crypt_keys_read(char *buf, size_t count, u64 *ppos);
+-#else
+-static inline int crash_load_dm_crypt_keys(struct kimage *image) {return 0; }
+-#endif
+-
+ #ifndef arch_crash_handle_hotplug_event
+ static inline void arch_crash_handle_hotplug_event(struct kimage *image, void *arg) { }
+ #endif
+@@ -96,4 +89,11 @@ static inline void crash_save_cpu(struct pt_regs *regs, int cpu) {};
+ static inline int kimage_crash_copy_vmcoreinfo(struct kimage *image) { return 0; };
+ #endif /* CONFIG_CRASH_DUMP*/
+ 
++#ifdef CONFIG_CRASH_DM_CRYPT
++int crash_load_dm_crypt_keys(struct kimage *image);
++ssize_t dm_crypt_keys_read(char *buf, size_t count, u64 *ppos);
++#else
++static inline int crash_load_dm_crypt_keys(struct kimage *image) { return 0; }
++#endif
++
+ #endif /* LINUX_CRASH_CORE_H */
+
+base-commit: 7f98ab9da046865d57c102fd3ca9669a29845f67
+-- 
+2.52.0
+
 
