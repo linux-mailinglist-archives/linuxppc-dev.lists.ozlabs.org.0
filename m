@@ -1,81 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-15288-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15289-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA49CF6B7F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 06:00:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B990BCF6B85
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 06:02:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dlf9q25M6z2yKr;
-	Tue, 06 Jan 2026 16:00:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dlfDn21DZz2yKr;
+	Tue, 06 Jan 2026 16:02:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767675615;
-	cv=none; b=SxBMTd/djIJKy6cuKJhFNYyt3sxzKJ5JW+rto41zzVTMiZh9DoYnyXE2MqeRAsZBWL1LH9RtJHFdP2R+pwvzlyCRvSCNbRz8HEIrEYvHeUBzb96sMvzU9U1dNK7hC4EzdLB4RIN4+GtUMZR0YnLHv6BK6JuMRhRIjKAmL0dO4beRtY7WNM/lvrxrcSC/5/8H89rBkFRFrWQQU+r30wdiXqlD9AdGdDDlXnN4q7UoSZDxZRbyGYQSYT0WCku1C8+HZ/0scPweKzr2VrXpxGdxY+cL2caW1YMicdERci8tzqjCRfcv7pK7QslraoUnQ5jYZlZKjhHtwBnXtfqnVu65sg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767675769;
+	cv=none; b=BjMgJtAA1/hyxFvfzoNoRLRqv5Ahum0f5n+9t7KKvbTzBsA3ujwaoBypPH2OeIb5cs9fyHTK5CS9GTIfTfBhHt50hX+Wy+Q/nIBenMiyS1C/Qth/0KmICwEbwZ2Lq0syoKtUnia5ypf3HBwFkOcUis+7aYCz+eMgZEhxvwdHErgWNPsscFbPgyjHElqmrTtNaTLW053i0q/rWOrx/1Olbs5UfGMpHvkUm72J7a1S+pQjr+ZrennA+U+Z/RSmwOqdKsHQZ/JfM80TCul9pVYSatFgmdwJo6dO/I+nTVSvBLxcOezHpMpg6HXvvTGQlWDL9vsQombH+pGheAQwOX+y+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767675615; c=relaxed/relaxed;
-	bh=ID1U7wiAUmT+Tng6FT6H2wduhH65EY17q4FB/LKZ+VY=;
+	t=1767675769; c=relaxed/relaxed;
+	bh=WYvPE8wn6m//EXH8bI5M7DlVKn+bytqO5ALxmQiU2oQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mjyx5dZkEUKh6HPDAcHpGRXUA77DcsBQzxANijwYDmjO7B7nbjZ/SMe/WSShi801Rut4mRyJc8cHQXQxKqdu9HQwlTEjuxSNASJ7Ocu9PyPVITDT+7Yfa0LG4snCsNKkZYz9ryf4AO3qAzeMaNMOKqny3bKMXhdWdBf7K1JVsZmPMFIfmGrLYHzrPTPGl7jYRRLcdIMQ8M2u4s24arZQUl8IifNzyPJdSbgFUav/H5IukbyxeT10+FvtFFN5rOMyG8jz3UkmAdNOP03tlVq2F1Bdr7fTwyZBje7ZnxIaiLDbshd6B4dSxKHW1A01Fh0OaLuTFGYTRJ5EGpXuhOzzUA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cmjsLLuF; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mkchauras@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=i0ddxP0EZLI3lRtATroEekWbQTU4KPgku6TUeKxbVdKvd7e+opQ0+B7j0t/mgmMlUyNWgmIKTBJh/0UbgPH2jCtBTo1TeXFMsqFfNMSnWCUy5Bfks1Oq2pKqV3kFkqWPY/2DpVqD0gsbmu4lZt5TzLkWyHON2SP6yH7G/h3kS3hNRMzhk98TSpCsWIw+utCa6EMfSKeomHJI10c+4LRdsyZGK6zlHUpPoghK6RG+91oTE9yOFyzD3zMGYGcs0Jq6tGKoesKVOI7M7P5DeJOQmGs7agkpLhkRw0gNbTdgXs53jEt+QhgPzdAtELM4eRVPHq8ml3WmnkREeJ1pBAlSPQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IM+xqryI; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mkchauras@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cmjsLLuF;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IM+xqryI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mkchauras@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mkchauras@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlf9p0WPBz2xqr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 16:00:13 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6063Dx7Q013132;
-	Tue, 6 Jan 2026 04:59:43 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlfDm2Kngz2xqr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 16:02:48 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6064Zt4o030298;
+	Tue, 6 Jan 2026 05:02:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ID1U7w
-	iAUmT+Tng6FT6H2wduhH65EY17q4FB/LKZ+VY=; b=cmjsLLuFcZ/vGhpA1dNYRD
-	GZ1gF5wQ9lO4tyoTpc4IeYpWfK3D1Xgb2DLTSefm5/yZwukoWoZ8XFALgiILUybj
-	09RG2DqicS7HG1V6p9N4qXbOj3nZXaP9Ee6WtqTkTPfSe/jqhaoLrZtd3afzwazB
-	7Tj6KJ3D1Uf5FXwQpf1z84CwgPxy4yf/OLcHrvKCde3CtxyVHPqLJF2BqvFdr0W6
-	1NeCu5yS1f9cTFt9pfogqtJApmXTxJWxmlLJwKbBCICsipwqzQ0Ct4eZJV4JFbQw
-	d+a9F7j38v/o12V0LuLOsbuzrT5iDTjh9ykJEBpIpnT5e7AS/tVyXFi6m5hhJpyw
-	==
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=WYvPE8wn6m//EXH8bI5M7DlVKn+byt
+	qO5ALxmQiU2oQ=; b=IM+xqryIVUMZzp9n4aL5yuwR5F/hlaPm7ewULWzmYLdX34
+	0FI4JNrXrmdsJMSTYAKc/YtcvXW7X3yGbwAv0l63nL34purMiaiWjG1UZv4x+IzU
+	Y01el4eVZQ41HyYKwFF4T8axvcrMogLk1tFw5i2oHD+E0BPoK5rpM9yicTNOqeEl
+	WrnQSjSk3JQmQKRy+pr6Y8Khz9m1oMMZmgcUgPFWXIhY6v/M0gxve1AcYlYO4M2M
+	h8UzIadCSWdWGslAAPCTNUtx4SPm8uRAaGuVihsq/yNVvdicFa7F0S/psR96lMe6
+	UyoJFvGYzEfLrUIluEv4WM/xjmCGvIOqHDZN2GqA==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu62c92-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4beshesqdh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 04:59:43 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 6064xgva026765;
-	Tue, 6 Jan 2026 04:59:42 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu62c8y-1
+	Tue, 06 Jan 2026 05:02:11 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60652AAp027753;
+	Tue, 6 Jan 2026 05:02:10 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4beshesqde-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 04:59:42 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6060mmUD005206;
-	Tue, 6 Jan 2026 04:59:41 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bfexk1fx9-1
+	Tue, 06 Jan 2026 05:02:10 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60650n8D015197;
+	Tue, 6 Jan 2026 05:02:09 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfdes9qb8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 04:59:40 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6064xaDk44826940
+	Tue, 06 Jan 2026 05:02:09 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 606525rx59113886
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 6 Jan 2026 04:59:36 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC8A920043;
-	Tue,  6 Jan 2026 04:59:36 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DF0E820040;
-	Tue,  6 Jan 2026 04:59:31 +0000 (GMT)
+	Tue, 6 Jan 2026 05:02:05 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 406C22004D;
+	Tue,  6 Jan 2026 05:02:05 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 474962004B;
+	Tue,  6 Jan 2026 05:01:59 +0000 (GMT)
 Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com (unknown [9.124.213.216])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  6 Jan 2026 04:59:31 +0000 (GMT)
-Date: Tue, 6 Jan 2026 10:29:28 +0530
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  6 Jan 2026 05:01:58 +0000 (GMT)
+Date: Tue, 6 Jan 2026 10:31:56 +0530
 From: Mukesh Kumar Chaurasiya <mkchauras@linux.ibm.com>
 To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: chleroy@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        npiggin@gmail.com, oleg@redhat.com, kees@kernel.org,
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        chleroy@kernel.org, oleg@redhat.com, kees@kernel.org,
         luto@amacapital.net, wad@chromium.org, mchauras@linux.ibm.com,
         thuth@redhat.com, akpm@linux-foundation.org, macro@orcam.me.uk,
         deller@gmx.de, ldv@strace.io, charlie@rivosinc.com,
@@ -83,11 +82,10 @@ Cc: chleroy@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
         peterz@infradead.org, namcao@linutronix.de, tglx@linutronix.de,
         kan.liang@linux.intel.com, mark.barnett@arm.com,
         linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 7/8] powerpc: Enable IRQ generic entry/exit path.
-Message-ID: <aVyWWMoNBZ_APBXS@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+Subject: Re: [PATCH v3 0/8] Generic IRQ entry/exit support for powerpc
+Message-ID: <aVyW1ZTkEPppRsuk@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
 References: <20251229045416.3193779-1-mkchauras@linux.ibm.com>
- <20251229045416.3193779-8-mkchauras@linux.ibm.com>
- <25b443c7-cdbc-43c4-8db0-4c5eb3435687@linux.ibm.com>
+ <06f2a88f-3425-4b0e-b17a-b858d81ee6c9@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,31 +99,30 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <25b443c7-cdbc-43c4-8db0-4c5eb3435687@linux.ibm.com>
+In-Reply-To: <06f2a88f-3425-4b0e-b17a-b858d81ee6c9@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=QbNrf8bv c=1 sm=1 tr=0 ts=695c96bf cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=5_UflZDDiSmAe-Q9fPEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: GYPApWY_EM1E_V1cLspa62NFv8YQJEP9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDAzOCBTYWx0ZWRfX5zR5H2G0Sxml
- 6ex++pvVKFOBd/x2qfP0Q3PqB08Y7r/hnmXLSAUiGjsWo2VbOcTo1LxNRZojtF/r6ekuRRlyszr
- IWfBw+2J2Z+uJfkJZirfLslWnbsCbx5CCJM4zd/PvdOnrQvpaEMUnQhWe+HwUutHuHmjiTbNsyu
- Gtv/3tO1k3wV+AZ+3iqg0TnROSe2L9f/nvkDVInrXl3USen96VOWAwzDj7Jk8F3htxFTqzLXPqI
- 0OrLz5KpblQFVXPhLaXKL+bOk3Hzs0WmUL68Eg3ycrecI7kvAcRT0j7j5zk+KqLHL8vddZPgqVb
- cW06RqGxPR6YdBLtvPuui1QLTm4fQkjHkETEoc/9UrI9Zxun5OcUPiMJfZhUQiHOBzJTulJz4w7
- RGZFjbP2viqrfVQCL4h7dhNS2J5nCr0LW9U+bxPAiCRPGaKKUB1w4kEWiuNP1hkyXq5/BXXFIOb
- tKiqF/pRh3eMsWhhyiA==
-X-Proofpoint-GUID: PG7A8-FMZdTR5enlaWcviWv5V1cSkDmn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDAzOCBTYWx0ZWRfXxorrlnTc/ujE
+ D032iojUi22YtJPlsa+XniQS0LC+/5dDEozWPVyc/dWwvJQKhiWir9Mm9mKHNexPJC/WeQHheDd
+ W88CJ2LWqL/rZzO7/HYR7OfU0JxHUjVXYT29nUh5i6kPgmNjlH7/EQBplJ4maK364levuGiqyWw
+ DwA8h8YEEOYCTHjxy41QF+DjWn0OgSwuc9M3yYWorWbd/UGgnTuF5RXb6zF1rdFXsufdNUskvY7
+ gCgt+MSyd0ezQ4xxXn0vsdkIWRK2ZqMwzRCdfkXbmOoq+y4SNIM+2810TmhEjqig9/MDAAtDc/7
+ L+ca6zyQyIyvVxdEBsLO4kY1LnxEF2MOtIZs/qrQumd/GnKBarTxYVxDVuXZ4A1ASJRaMxCT3Fb
+ qzdRHDQPWZHH8mPIIYypXNIDfTbLhiIA420DU0IVUTMqpLMb7CoYMnSBHKp5Eq5Ckm7KtVgcrqM
+ /p/hWfOrpvH1vxGAJTw==
+X-Proofpoint-GUID: a4JoK361jFfs7LoJUL_4JoSdHsKpzXXj
+X-Proofpoint-ORIG-GUID: 6KIQjonOZfI0PviZ32u6ISWKO8xKRHFg
+X-Authority-Analysis: v=2.4 cv=AOkvhdoa c=1 sm=1 tr=0 ts=695c9753 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Aqa5ouP8DLI9dGudwXAA:9 a=CjuIK1q_8ugA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-05_02,2026-01-05_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
- adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 malwarescore=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 impostorscore=0
+ clxscore=1015 suspectscore=0 bulkscore=0 phishscore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601060038
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -133,86 +130,65 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Jan 01, 2026 at 11:01:08PM +0530, Shrikanth Hegde wrote:
+On Thu, Jan 01, 2026 at 02:37:41PM +0530, Shrikanth Hegde wrote:
 > 
 > 
 > On 12/29/25 10:24 AM, Mukesh Kumar Chaurasiya wrote:
-> > From: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+> > Adding support for the generic irq entry/exit handling for PowerPC. The
+> > goal is to bring PowerPC in line with other architectures that already
+> > use the common irq entry infrastructure, reducing duplicated code and
+> > making it easier to share future changes in entry/exit paths.
 > > 
-> > Enable the generic IRQ entry/exit infrastructure on PowerPC by selecting
-> > GENERIC_IRQ_ENTRY and integrating the architecture-specific interrupt
-> > handlers with the generic entry/exit APIs.
+> > This is slightly tested of ppc64le and ppc32.
 > > 
-> > This change replaces PowerPC’s local interrupt entry/exit handling with
-> > calls to the generic irqentry_* helpers, aligning the architecture with
-> > the common kernel entry model. The macros that define interrupt, async,
-> > and NMI handlers are updated to use irqentry_enter()/irqentry_exit()
-> > and irqentry_nmi_enter()/irqentry_nmi_exit() where applicable.
+> > The performance benchmarks are below:
 > > 
-> > Key updates include:
-> >   - Select GENERIC_IRQ_ENTRY in Kconfig.
-> >   - Replace interrupt_enter/exit_prepare() with arch_interrupt_* helpers.
-> >   - Integrate irqentry_enter()/exit() in standard and async interrupt paths.
-> >   - Integrate irqentry_nmi_enter()/exit() in NMI handlers.
-> >   - Remove redundant irq_enter()/irq_exit() calls now handled generically.
-> >   - Use irqentry_exit_cond_resched() for preemption checks.
-> >   - Remove unused code.
+> > perf bench syscall usec/op
 > > 
-> > This change establishes the necessary wiring for PowerPC to use the
-> > generic IRQ entry/exit framework while maintaining existing semantics.
+> > | Syscall | Base       | New        | change % |
+> > | ------- | ---------- | ---------- | -------- |
+> > | basic   | 0.173212   | 0.133294   | -23.05   |
+> > | execve  | 363.176190 | 357.148150 | -1.66    |
+> > | fork    | 853.657880 | 840.268800 | -1.57    |
+> > | getpgid | 0.174832   | 0.135372   | -22.57   |
 > > 
-> > Signed-off-by: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
-> > ---
-> >   arch/powerpc/Kconfig                    |   1 +
-> >   arch/powerpc/include/asm/entry-common.h |  61 +--
-> >   arch/powerpc/include/asm/interrupt.h    | 484 +++---------------------
-> >   arch/powerpc/kernel/interrupt.c         |  15 +-
-> >   4 files changed, 72 insertions(+), 489 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > index 9537a61ebae0..398cef868c14 100644
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -207,6 +207,7 @@ config PPC
-> >   	select GENERIC_GETTIMEOFDAY
-> >   	select GENERIC_IDLE_POLL_SETUP
-> >   	select GENERIC_IOREMAP
-> > +	select GENERIC_IRQ_ENTRY
-> >   	select GENERIC_IRQ_SHOW
-> >   	select GENERIC_IRQ_SHOW_LEVEL
-> >   	select GENERIC_PCI_IOMAP		if PCI
 > 
-> There is no need for GENERIC_IRQ_ENTRY. I don't see a reason why
-> we need to have both.
+> Could you please add a description for whether its an improvement
+> or regression.
 > 
-> Enabling GENERIC_ENTRY which is done in next patch will enable this.
-> It does the same thing and one less kconfig to worry about.
+> Looking at it, it seems time taken for operation to complete. So it is
+> an improvement. Seeing negative numbers one might think its a regression.
 > 
-> This would allow some easier code refactoring IMO.
-> 
-> - You can keep adding code to asm/entry-common.h. This will help avoid
->   moving to interrupt.h in between.
-> 
-Yeah this would be good, will send out in next revision.
-> - You can add another patch as cleanup post GENERIC_ENTRY for
-> easier review for seccomp/ptrace.
-> 
-Sure.
-> ...
-> 
-> - Some more ct_warning in arch/powerpc are probably not necessary
->   (can be done post the series too)
-> 
-> - Some more cleanups can be done w.r.t to lockdep and tracing hardirq etc.
->   For example in next_interrupt. I think replay soft interrupts will end
->   up making irqentry_enter/exit calls which does same or similar thing.
->   (can be done post the series too)
-> 
-> - can we move syscall_exit_prepare/ into kernel/syscall.c?
->   (can be done post the series too)
-
-Sure will do all of above in a separate series.
+Sure will add an explanation.
+> Also, are these average numbers?
+Yes, as there was very high run to run variation i took an avg of
+100 runs.
+> Could you get the numbers with preempt=lazy and with context tracking on?
+Sure will do those too.
 
 Regards,
 Mukesh
+
+> 
+> > perf bench syscall ops/sec
+> > 
+> > | Syscall | Base    | New     | change % |
+> > | ------- | ------- | ------- | -------- |
+> > | basic   | 6006021 | 7502236 | +24.91   |
+> > | execve  | 2753    | 2800    | +1.71    |
+> > | fork    | 1171    | 1190    | +1.62    |
+> > | getpgid | 5942117 | 7387040 | +24.32   |
+> > 
+> > IPI latency benchmark
+> > 
+> > | Metric         | Base (ns)     | Test (ns)     | change % |
+> > | -------------- | ------------- | ------------- | -------- |
+> > | Dry-run        | 206652.45     | 209317.37     | +1.29    |
+> > | Self-IPI       | 3567895.23    | 3590444.77    | +0.63    |
+> > | Normal IPI     | 148570416.17  | 148564173.40  | -0.00    |
+> > | Broadcast IPI  | 4033489673.38 | 4007319512.62 | -0.65    |
+> > | Broadcast lock | 4011023005.48 | 4010267885.93 | -0.02    |
+> > 
+> > 
+> 
 
