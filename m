@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-15319-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15320-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0FCCF7C1D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 11:21:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D5DCF7C54
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 11:23:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dlnK05PCqz2yKr;
-	Tue, 06 Jan 2026 21:21:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dlnMD5fb0z2yVL;
+	Tue, 06 Jan 2026 21:23:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767694916;
-	cv=none; b=FP+NJBaa3znEDlFWZxMX16hREDqiPB7CL7xt+tpduQOeD6A8xQNpTN65ruMkyW/BEvdi2XiudVv/qV7HUENTU0X8tg+3bePoCplZYPHuclTfwZLM4y247Tu3HRIvLwDgKPS5sI7qoGL8j1eqk4s91GVZiUNFClcpsjdUTEOxoo/QP1fjJCf2vYqx0Q+c3XcMJ0cYWJyrDOKqozvooq6JHW6paUEKjKUal7QwmPJQwZL3WuibOhLP1lS1ajfCGXCnNFWuJkI/Mx1qG6BjPzm+xQZ2dB6jTlH1XgPbS7XBIhToNp/LrfOf2ieNDVJyuMeBrbPIjDEP3Zo9AswD+8j0tw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767695032;
+	cv=none; b=RwaMFc8/EWlKUnCcsemDeM3Bc1vckKK9UveX9w3eUAqpsWBX1htuO/cHrJ10YjXFVr1CdOJT+iIAueyOF9vEBhMESkyduLeB0wyBkBL9Xy9mzEjSmN/p92HrdPHYTy7n2pKONVZcGmNtliIdzDLWBvaJSCJrr2fOdsNSsI/FXGi1aGaOeJwpcvz0z/prjCqp3/OoeAbxXpQqkKoSSR2icF+/TFYoU40d9mgbGaFz529vyyrkzRsPs4i+qk08MwXLcfzFdS5DSvB7aFhCkx30OJLNgrpYySHIwfsg+TXraw1n05D5zMMj20kcSxyqGNanSbWDAy1FMMxbNTR1syNk8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767694916; c=relaxed/relaxed;
-	bh=80JGuCaryORikQJCv6k0KCMTsV9HvIMB99VFFcCg9cM=;
+	t=1767695032; c=relaxed/relaxed;
+	bh=RPktYUhL8dq/Qfmo71IZceXt7DDBZATodRE6QZLbjHI=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OFx2d95TOVfWuOYhdwXHK80DeUDeqHYRQQz2bnbhYieI0UQqLiIWva14KLPzGth+ctMDQpmHpKBb9FBe7xJBIa2FbOrTTwJq9IaEEqb5d0MPyRCO/Szfe4rkM8zm7ZmD/OpJ7f7SSPzHc4gpbtVDbb7CX113fiSijKtBWxOCuqsPQL564U8e79Fr0L8DzKiAJInmvDNJbrnNj2nKlCQqeoWR/NURZcTtbWYFCcKARIWcnZIBXKRa/536QBZ1yraetlligVj3D1//DU02YQ24V1ZWuxCjLIwCuDGXxjhXldgKSH6Z15sZvcreJKWseHQqTmme2kdbDLUdT5QhVGT2yg==
+	 MIME-Version:Content-Type; b=DIieoydo24I+6lFQg6Upz1nTDadu05884OkonQS/OPqjvv3Huy5yz9iaoNLV7tJChbdZRtctR/CpwPFajdPEQ9ivAwPdZtlqye8xEpINpfk2TE7sPmDDnQORZg98/e6IBhhvsOQAxJ/fyZztdzjZ6KyLkJUMSyT23lwPxU5NJauRMOYh7lMPH2qB+L9KxKxFP+1jdQT4IxQOxK5dI44OITKEBWeHLeI3ItVsSPCFaQGlc1NRdZbZFVurnG4tjbMCLJnu6nKNgw8dOm6mbgAOskq6qan+lS2DI92PlUZ/7tddXguCqgT5154qkc/rm2oVbqLIL2ltHX4G/OLwBIT+Qw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
@@ -23,19 +23,19 @@ Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlnJz57PPz2xLR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 21:21:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlnMC54JCz2yRM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 21:23:51 +1100 (AEDT)
 Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dlnJs33ywzJ46sy;
-	Tue,  6 Jan 2026 18:21:49 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dlnM661F0zJ4703;
+	Tue,  6 Jan 2026 18:23:46 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id CBDD740570;
-	Tue,  6 Jan 2026 18:21:50 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 3D53640570;
+	Tue,  6 Jan 2026 18:23:48 +0800 (CST)
 Received: from localhost (10.48.149.114) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 6 Jan
- 2026 10:21:48 +0000
-Date: Tue, 6 Jan 2026 10:21:46 +0000
+ 2026 10:23:45 +0000
+Date: Tue, 6 Jan 2026 10:23:44 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 CC: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, "Saravana
@@ -62,12 +62,12 @@ CC: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, "Saravana
 	<linux-clk@vger.kernel.org>, <imx@lists.linux.dev>,
 	<dmaengine@vger.kernel.org>, <linux-media@vger.kernel.org>,
 	<linux-pm@vger.kernel.org>
-Subject: Re: [PATCH 07/11] clk: imx: imx27: Simplify with scoped for each OF
+Subject: Re: [PATCH 08/11] clk: imx: imx31: Simplify with scoped for each OF
  child loop
-Message-ID: <20260106102146.00005bfb@huawei.com>
-In-Reply-To: <20260105-of-for-each-compatible-scoped-v1-7-24e99c177164@oss.qualcomm.com>
+Message-ID: <20260106102344.00003201@huawei.com>
+In-Reply-To: <20260105-of-for-each-compatible-scoped-v1-8-24e99c177164@oss.qualcomm.com>
 References: <20260105-of-for-each-compatible-scoped-v1-0-24e99c177164@oss.qualcomm.com>
-	<20260105-of-for-each-compatible-scoped-v1-7-24e99c177164@oss.qualcomm.com>
+	<20260105-of-for-each-compatible-scoped-v1-8-24e99c177164@oss.qualcomm.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -92,7 +92,7 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 05 Jan 2026 14:33:45 +0100
+On Mon, 05 Jan 2026 14:33:46 +0100
 Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com> wrote:
 
 > Use scoped for-each loop when iterating over device nodes to make code a
@@ -100,10 +100,10 @@ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com> wrote:
 > 
 > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-This is one that had me thinking for a (short) while about what pattern
-required this double match was there for.  A comment would have been useful!
 
-Ah well, nothing to do with your patch which is good.
+I guess this is papering over similar compatibility issues with old DT
+as the previous one (so fsl,imx-osc26m which may or may not have fallback
+compatible to fixed-clock).
 
 Jonathan
 
@@ -112,28 +112,29 @@ Jonathan
 > 
 > Depends on first patch.
 > ---
->  drivers/clk/imx/clk-imx27.c | 7 ++-----
+>  drivers/clk/imx/clk-imx31.c | 7 ++-----
 >  1 file changed, 2 insertions(+), 5 deletions(-)
 > 
-> diff --git a/drivers/clk/imx/clk-imx27.c b/drivers/clk/imx/clk-imx27.c
-> index 99618ded0939..f2f0d3fe5c52 100644
-> --- a/drivers/clk/imx/clk-imx27.c
-> +++ b/drivers/clk/imx/clk-imx27.c
-> @@ -171,17 +171,14 @@ static void __init _mx27_clocks_init(unsigned long fref)
+> diff --git a/drivers/clk/imx/clk-imx31.c b/drivers/clk/imx/clk-imx31.c
+> index 4c8d9ff0b2ad..962eccac63ce 100644
+> --- a/drivers/clk/imx/clk-imx31.c
+> +++ b/drivers/clk/imx/clk-imx31.c
+> @@ -123,18 +123,15 @@ static void __init _mx31_clocks_init(void __iomem *base, unsigned long fref)
 >  
->  static void __init mx27_clocks_init_dt(struct device_node *np)
+>  static void __init mx31_clocks_init_dt(struct device_node *np)
 >  {
-> -	struct device_node *refnp;
+> -	struct device_node *osc_np;
 >  	u32 fref = 26000000; /* default */
+>  	void __iomem *ccm;
 >  
-> -	for_each_compatible_node(refnp, NULL, "fixed-clock") {
-> +	for_each_compatible_node_scoped(refnp, NULL, "fixed-clock") {
->  		if (!of_device_is_compatible(refnp, "fsl,imx-osc26m"))
+> -	for_each_compatible_node(osc_np, NULL, "fixed-clock") {
+> +	for_each_compatible_node_scoped(osc_np, NULL, "fixed-clock") {
+>  		if (!of_device_is_compatible(osc_np, "fsl,imx-osc26m"))
 >  			continue;
 >  
-> -		if (!of_property_read_u32(refnp, "clock-frequency", &fref)) {
-> -			of_node_put(refnp);
-> +		if (!of_property_read_u32(refnp, "clock-frequency", &fref))
+> -		if (!of_property_read_u32(osc_np, "clock-frequency", &fref)) {
+> -			of_node_put(osc_np);
+> +		if (!of_property_read_u32(osc_np, "clock-frequency", &fref))
 >  			break;
 > -		}
 >  	}
