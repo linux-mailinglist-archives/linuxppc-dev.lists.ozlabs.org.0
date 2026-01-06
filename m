@@ -1,65 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-15293-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15294-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653AECF6E9C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 07:36:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF61CCF6F11
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 07:58:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dlhJy5HvKz2yKr;
-	Tue, 06 Jan 2026 17:36:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dlhpS2crqz2yKr;
+	Tue, 06 Jan 2026 17:58:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767681394;
-	cv=none; b=ET1kU9pC4v2kGrAuJTTEfOIkT91bTRmB0N3KtpvSpQMTac6qxBRBW/nsp6Ihg97N9nRScLJh6KpTB2Jpw/dHRIZfMCoi61UuSjuUViguT22PjbPpfJGXHEXHgFHhAYEq29SwgfUuwiidk0MTxTbNtQjzcRQXx1tpqDcJ1dkJeHHIyYH7PZgZ0lrKdD2btTPfd2DAXb7zq4laerG/wLrVyNRM2cfQbW3ffrY6w5DkLeHFzt1Jbekn1YBn+ng1b/tX89/Vn6258cgSZPaO7+dc4O8cZL4sLsQh/Hs056UwN3EMFgUUsqzMHsPkDkKKL1MfR2EHAjGjnGckx38cbOyr2Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767682720;
+	cv=none; b=SSVQ9kY63lFeNf1e8hsw7xM3Oht2ja7OKOyaFNzl9q98eHq8x/92invPvKA1heD1AtjoIbQ8cgSH1vtdB73UO36FSDeFSjltj5N89uxg9MunsnhjScGsmCoQPrtIrAbcX0DRquLenLdXoLXAb1O8qzFAkRMt6tbfzPkx5mAQAG/JCT35rLFEpXG33LQb3tF96LKO5SbT6q8ZiZvOcustX2R/0JE5Dcoz0ffrAE8Yv8WN0otNRKbvpLy1lbAm7jngLVfPiPRAeXPr7mF3fP74szgfJk4dRNOtXS0LmenuSpImtfefSR+XfkvBaqvcbQ/dtTUg2exGxpuc9QJaAxWddg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767681394; c=relaxed/relaxed;
-	bh=AY/d2gdeayfRcfMlW4Nszshzlp0aOs/XRVfUarrKrqw=;
+	t=1767682720; c=relaxed/relaxed;
+	bh=FpitPUAOqRhHNiQu5/A59labdYmuVavqAeylGVyamP4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fkyEqxXFkW7WzdVvNUPOHzYKY1G8QfK89wEe0ZP2DlGg+DhBCxkAb2zRdrF7yAgl0dQawbRdMqoK7Gd5zU4VsO2j+/ebCOrqKIYwFDKm221HZszLYO4p6K9KrS/oI17AwaZBeaQK6bl0XfvkBBkZH73VE/WImkyxchrwBI5lNFmEqizAORZ3NHfaWEtcbwgD78WK+JTSg3lwLy7bzG6/igDBPu9vJsR69eKKesWok1CmKcMKRHHtyL4vSFOkhn8i1KEe6CtbLVGqNYcamqzLMBaxACPsHz4vAEuG0uGRNAWq0eywHKUNaI5JsPTk8xDJJdF+YiyMq+UW/hTCIgdhwA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S3JAZfQT; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=I4ZPyowAdZHasqMQ0mPkiunfLHRqSKT4dvoq0J1w9M82CVnrI8Ph6Rcte8wxuBlVI1zatdI58f7qNr5YjWKunOCBtyx0gHdAOeSe80/LncjOHR6p047RGxDLdZn5LsbwWHdnfGH7RxzIX1DGdeUThFi2+9uB/J0FS1MIJhPwW5dTIqm5LhY2YO9HNPnRIjoAshLkSJjMhccJvT4GCfMoBu51h4Bth3/s1bhz6SM+CtKIsdushHQx98+oePpeOzJv7ju2+QKNHBzk+cLZJXoLkpJLdq9gyLpnIiacSl9wQsFb1Ir+QGVGgNEHvfSWrGH4cXOtxO/dlgxu95H+6/3+1Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gH/mbhwW; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S3JAZfQT;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gH/mbhwW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlhJx5LTSz2xqr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 17:36:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlhpR1rswz2xqr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 17:58:39 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5B65240DD9;
-	Tue,  6 Jan 2026 06:36:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65CAC116C6;
-	Tue,  6 Jan 2026 06:36:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BDCEF6011E;
+	Tue,  6 Jan 2026 06:58:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076F4C116C6;
+	Tue,  6 Jan 2026 06:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767681391;
-	bh=rdREKMSltpuBRXrhF+R1a8MfGIPmnymt3Sxftd/Knsk=;
+	s=k20201202; t=1767682716;
+	bh=QQtOk2YRE84AoYQ+kSLZyLAyg4ikVDFr3IES1pY5ozA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S3JAZfQTQkdf3Szw+a/pV9YfijdR5VYyedZ8Y6EdU3MWnO6UcihH1xnxeFDL1x09k
-	 ZuoY6of7XUhlA3+YlMbCj1sUISpfaSaDiYIPWaDNs04OrAKL/rFfQrs73OU/8w0Kl2
-	 tN6ULSVQtHvDFxYzKonJ6O4zblqc4nITcveRLbcvhNvaXZCCa4WYKx86yFx2eaUVF2
-	 rgU+tOAD76DU2buz1IUO0oCZoA11dXmKVoQHu4XmEXiIQtHyLHF3xalYdx+IVPWyrD
-	 nm+cR6SrwOhHH9zKliIG8/CYHUjE571e9edTX4FLKyzXL8KAvjz6s5pLAlRkHgwdT3
-	 U863fAfhVXoKg==
-Date: Mon, 5 Jan 2026 22:36:12 -0800
+	b=gH/mbhwWcmbSviWB2aCXqeJKPYzexAoK01Yg6s6cLwpp5mznoR4J9YtzBX0+JaB2Q
+	 RGzl1CWYt5ctBprLFLGJSvPejfop4znvHRnWwqgqpJHcHC0j9ob/Np83XrO9+Cl3TX
+	 VS8m3uLgzCzbvtCwipbPzokR0Dek9Wxm/0Ippytis8vLZ/I6x2I70gfKMwQbmEhFro
+	 NAdguE5T18zqwp0QS2kDwlBde/OWsN6qjyPmGKZIp7wCv7/K32g7gRemPHItu6WY9g
+	 OF83QkAKrc+JLLzKj3XjbpThHQLvD4g3n1HMYbOp1iZmU15u/EOi4JVaYquL+5oCoh
+	 XLNrjl71mrNfw==
+Date: Mon, 5 Jan 2026 22:58:17 -0800
 From: Eric Biggers <ebiggers@kernel.org>
-To: Qingfang Deng <dqfext@gmail.com>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, Jason@zx2c4.com,
+	ardb@kernel.org, dengler@linux.ibm.com, freude@linux.ibm.com,
+	herbert@gondor.apana.org.au, linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, x86@kernel.org,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>
-Subject: Re: [PATCH 02/36] lib/crypto: aes: Introduce improved AES library
-Message-ID: <20260106063612.GA2630@sol>
-References: <20260105051311.1607207-1-ebiggers@kernel.org>
- <20260105051311.1607207-3-ebiggers@kernel.org>
- <20260105074712.498-1-dqfext@gmail.com>
+	linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+	x86@kernel.org
+Subject: Re: [PATCH 19/36] Bluetooth: SMP: Use new AES library API
+Message-ID: <20260106065817.GB2630@sol>
+References: <20260105051311.1607207-20-ebiggers@kernel.org>
+ <859377de-cb72-4e87-8ee5-97f8c58a5720@citrix.com>
+ <20260105190503.53cc31dd@pumpkin>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,38 +71,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260105074712.498-1-dqfext@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260105190503.53cc31dd@pumpkin>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Jan 05, 2026 at 03:47:12PM +0800, Qingfang Deng wrote:
-> On 4 Jan 2026 21:12:35 -0800, Eric Biggers wrote:
-> >  extern const u8 crypto_aes_sbox[];
-> >  extern const u8 crypto_aes_inv_sbox[];
-> > +extern const u32 __cacheline_aligned aes_enc_tab[256];
-> > +extern const u32 __cacheline_aligned aes_dec_tab[256];
->  
-> __cacheline_aligned puts the array in ".data..cacheline_aligned"
-> section. As a const array, it should be in ".rodata" section, so
-> ____cacheline_aligned (note the extra underscores) should be used
-> instead.
-> You can also apply the same to crypto_aes_sbox and crypto_aes_inv_sbox
-> while at it.
+On Mon, Jan 05, 2026 at 07:05:03PM +0000, David Laight wrote:
+> On Mon, 5 Jan 2026 15:40:22 +0000
+> Andrew Cooper <andrew.cooper3@citrix.com> wrote:
 > 
-> Regards,
-> Qingfang
+> > >  	/* Most significant octet of plaintextData corresponds to data[0] */
+> > >  	swap_buf(r, data, 16);
+> > >  
+> > > - aes_encrypt(&ctx, data, data); + aes_encrypt_new(&aes, data, data);  
+> > 
+> > One thing you might want to consider, which reduces the churn in the series.
+> > 
+> > You can use _Generic() to do type-based dispatch on the first pointer. 
+> > Something like this:
+> > 
+> > void aes_encrypt(const struct crypto_aes_ctx *ctx, u8 *out, const u8 *in);
+> > void aes_encrypt_new(aes_encrypt_arg key, u8 out[at_least AES_BLOCK_SIZE],
+> >              const u8 in[at_least AES_BLOCK_SIZE]);
+> > 
+> > #define aes_encrypt(ctx, out, in)                                       \
+> >     _Generic(ctx,                                                       \
+> >              const struct crypto_aes_ctx *: aes_encrypt(ctx, out, in),  \
+> >              aes_encrypt_arg: aes_encrypt_new(ctx, out, in))
+> > 
+> > 
+> > i.e. it keeps the _new()-ism in a single header, without needing to
+> > change the drivers a second time.
+> 
+> You'll need to cast the 'ctx' argument in both calls.
+> All the code in an _Generic() must compile cleanly in all the cases.
+> (Totally annoying....)
+> 
+> 	David
 
-Good catch!  So the result is that MMU protection isn't applied to the
-const data as intended.
+It seems it would actually have to be:
 
-I guess I'll change these to the four-underscore ____cacheline_aligned.
+#define aes_encrypt(key, out, in) \
+_Generic(key, \
+	 struct crypto_aes_ctx *: aes_encrypt_old((const struct crypto_aes_ctx *)key, out, in), \
+	 const struct crypto_aes_ctx *: aes_encrypt_old((const struct crypto_aes_ctx *)key, out, in), \
+	 struct aes_enckey *: aes_encrypt_new((const struct aes_enckey *)key, out, in), \
+	 const struct aes_enckey *: aes_encrypt_new((const struct aes_enckey *)key, out, in), \
+	 struct aes_key *: aes_encrypt_new((const struct aes_key *)key, out, in), \
+	 const struct aes_key *: aes_encrypt_new((const struct aes_key *)key, out, in))
 
-Though, I'm tempted to instead just do __aligned(SMP_CACHE_BYTES), to
-stay well away from this footgun.
+#define aes_decrypt(key, out, in) \
+_Generic(key, \
+	 struct crypto_aes_ctx *: aes_decrypt_old((const struct crypto_aes_ctx *)key, out, in), \
+	 const struct crypto_aes_ctx *: aes_decrypt_old((const struct crypto_aes_ctx *)key, out, in), \
+	 struct aes_key *: aes_decrypt_new((const struct aes_key *)key, out, in), \
+	 const struct aes_key *: aes_decrypt_new((const struct aes_key *)key, out, in))
+
+Note that both const and non-const args need to be handled.
+
+It also doesn't work for any callers passing a 'void *' or
+'const void *' and relying on an implicit cast.  I didn't notice any,
+but that needs to be considered too.
+
+I guess maybe it would still be worth it to avoid the "*_new" name
+temporarily leaking into too many files.  (It goes away by the end of
+the series anyway.)  It's just not quite as simple as you're suggesting,
+and all the callers have to be checked for compatibility with it.
 
 - Eric
 
