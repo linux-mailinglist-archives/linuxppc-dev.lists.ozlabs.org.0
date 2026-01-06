@@ -1,89 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-15337-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15338-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27DCACF8F82
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 16:06:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59753CF90E7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 16:27:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dlvdl5ndnz2yPq;
-	Wed, 07 Jan 2026 02:06:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dlw5V4YQwz2y7c;
+	Wed, 07 Jan 2026 02:27:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767712011;
-	cv=none; b=k13hun+iRBmuUQfW3rBW3Cuf4H5HJqFsn6Tvz4vIcsOtEuNH5L04gGHnQFwdaCWTBpDMTdL2n6t/iQt1f6tZgO9ZATfsutfP5RwYQhCTedqtDChv3RLUq1bRi67oD6ULRuy1py7rh1mFc3o0QO+pmOHcbBpRYLcjHPdVW0gyX/fUWjfLQqOhAXXb/NLjQBASKBNZLMK0HBxjKRPuG6aDx9nw3aaNEfP9jD4oimMfwbkByiheTQ71bbz/YcBVEMAMo20uLjiLXE/0c8Ogl+NfsifStWUF4UxPNf+uxsajVOLvgfEYLx/mqPd8RLjqG5edBaN2Jr3FOrggWOXl8Z4vDA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767713246;
+	cv=none; b=m4mOvsA2fEMHCISmgupeuuFpyx1/tH8j7VxepKdb5jsQz6XOer2Oh6HO2DatCz09XR3GAs1E5MUbsMJEHsVn0FY1E+d1hectmur+rhJgiNb3QKX4Og3HDrOPiTL3A51yd4p7yCc1iveI4u6KIXcSw1DCijzSxDe+fAOSTBUL5BpIk0Sdyse5fHC/tASO2zphA0ewQSQ1/hqjUZAsNIIqv4WQFlmS8n8TyG9OVGIJ3B1UCGoEX/xfssur995v5PPtUMAbCyMURHkUr2U7+VGR5P52Xo0kuqQJTJO4cxz3ofgow8Vp38hJfmpZHJjupr3o/1PoLee2wpfGZVEHEzPi+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767712011; c=relaxed/relaxed;
-	bh=56BhBO+/eHWjmoR1c5fXFEtI4KtKouXiVgC1S4fhn/U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxiRbf0xFbUl2/GMn3ES5R81eLzleGNmjdQm3vxeWhFu1Y7HUwuvg5HBYVWHd5WxWVx5pLspficTKoLDM11jlPPFi5i+wGOgxEdoYoeFoVOWmY3O6pgLb7QSWae/dyrqhc4EkiLEEyn25jE/yyUKYirT75cGwSb33zxqt5/5b335FpUIfZswzx89+6e5j1Udc4LstVnaJqAlrlXoDwTBe8HgBkaO4H/+bqg1xFhBXx8g0Xp1Xe9JnTNkSarsOingpxpTmTRHMDe9CV/XxqLSIr0j350SsI0lxoiOwEGw6S9+Pr1LFtMD1kC/gCLtQKytXwhxAKOmfVkYK2nKyxAB4A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CF14Dwj3; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1767713246; c=relaxed/relaxed;
+	bh=R3g1xdqsIydOVlsHzRFif8qmfkih+keWqJLyycvi8Go=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=VIiAtOflZiUtsrKlp/IkrdC3GzJ7e+HQktMxdS3TFalMbBt3cSnL5ZFy/cI72jVbirijbePvI5FNV43wMFwowR3LoYgrr2rYoWK09oPQQrj/YadQrO4PTi+tQInofHXbzQPY0+ggP8+nK+9QcFzwv258Ym7Xb8OjiHSGI4DtVUMbH3I37qrWso2g3ohhOs0sDJyTy64kQvX6h+aPJlF08Otgvoyvfj1fgL6TA429HB4SKmcbhg+yrW/+GiaOZNskFLBFdVsYqGzzydzYbsBc5llWZY3kAy0dgObYVXuPFnt1XT+KuH2CSKKBijJq4hMsxuljNwgUos8lHYigxr0dSQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R9v2x7ws; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nilay@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CF14Dwj3;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R9v2x7ws;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nilay@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlvdl0Y7Sz2yPM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jan 2026 02:06:50 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60635BNb004619;
-	Tue, 6 Jan 2026 15:06:40 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlw5T3dNKz2xPB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jan 2026 02:27:25 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 606EGmkn022322;
+	Tue, 6 Jan 2026 15:27:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=56BhBO+/eHWjmoR1c
-	5fXFEtI4KtKouXiVgC1S4fhn/U=; b=CF14Dwj3UBUJgn98kZLWz8PbqMgTOZvi6
-	eg/mbWzRWBkX/K1VQckCKljgjnb+Suw6YGyijipPuZdzNycU9j9y/fLAbaxK3rrp
-	jGYvcn0RWQY78AHK71yqaMRjbpIs/foxojLH3DboEeFU68iejA+hSBu5Hh/m/Fp5
-	nZeon83ZZ55mAkzxZow6pUAMAr25XI4ovOLdYzV6WCt7rXK71DLkPmSifj+891ac
-	oelmfgMk0YlCjK2M3VXbFzi6fjGHBgeRMxPwJiiBK7bKLcPRAQ+0Hs+yUYIJGEE3
-	5+m0uSd51SXUmLAunqoteaFNspCGVwgfjn9f0XBXTWrgA5Uppwg6A==
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=R3g1xd
+	qsIydOVlsHzRFif8qmfkih+keWqJLyycvi8Go=; b=R9v2x7wsqVOdvLw6M7BwEM
+	//YttWBi078+fVSanTSVyExh1aXqULPlpRf/OdpIX1p8xcToQtIlKRkb4OSeBrSv
+	q8issTKG4UXPILbe1gKThNBgbk6Q/VDXQj8vXweOGsAVHSsg7JV//lVAKCbIKkyu
+	TunDVuzWANEVXM3hyornt5G6ve8/6SvFf+8un+hMkEubF848K3f/2kU+rVJIEQ8l
+	shaKAeV4PgGM2oVfzgL2zDQJ8cEfw4IOE29IYL7XHoiU/mhC01COxWpcIbFKWUDU
+	CCgVUmCcWQGeSsyGsPyg4I52eCL2bX787bRq5MFmdEXtF+Fvta0ApVBpNQ05CqFg
+	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betsq4fge-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhk3x5s-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 15:06:39 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 606EtRVX027333;
-	Tue, 6 Jan 2026 15:06:39 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betsq4fg9-1
+	Tue, 06 Jan 2026 15:27:10 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 606FR9Na008086;
+	Tue, 6 Jan 2026 15:27:09 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhk3x5q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 15:06:39 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 606EMRIa019171;
-	Tue, 6 Jan 2026 15:06:38 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfg513q9k-1
+	Tue, 06 Jan 2026 15:27:09 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 606DjbnK012590;
+	Tue, 6 Jan 2026 15:27:08 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bffnjbvjp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 15:06:38 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 606F6YSw29819208
+	Tue, 06 Jan 2026 15:27:08 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 606FR6RR14352938
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 6 Jan 2026 15:06:34 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 66C3D20043;
-	Tue,  6 Jan 2026 15:06:34 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7777720040;
-	Tue,  6 Jan 2026 15:06:26 +0000 (GMT)
-Received: from li-fc74f8cc-3279-11b2-a85c-ef5828687581.ibm.com.com (unknown [9.124.214.6])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  6 Jan 2026 15:06:23 +0000 (GMT)
-From: Srish Srinivasan <ssrish@linux.ibm.com>
-To: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, James.Bottomley@HansenPartnership.com,
-        jarkko@kernel.org, zohar@linux.ibm.com, nayna@linux.ibm.com,
-        rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, ssrish@linux.ibm.com
-Subject: [PATCH v3 6/6] docs: trusted-encryped: add PKWM as a new trust source
-Date: Tue,  6 Jan 2026 20:35:27 +0530
-Message-ID: <20260106150527.446525-7-ssrish@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106150527.446525-1-ssrish@linux.ibm.com>
-References: <20260106150527.446525-1-ssrish@linux.ibm.com>
+	Tue, 6 Jan 2026 15:27:07 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BC92458065;
+	Tue,  6 Jan 2026 15:27:06 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 61B715805D;
+	Tue,  6 Jan 2026 15:27:02 +0000 (GMT)
+Received: from [9.111.89.66] (unknown [9.111.89.66])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  6 Jan 2026 15:27:01 +0000 (GMT)
+Message-ID: <c0718b2d-a4dc-4945-a372-4b0344ef5e29@linux.ibm.com>
+Date: Tue, 6 Jan 2026 20:57:00 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,159 +86,190 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [bug report] powerpc: per device MSI irq domain
+From: Nilay Shroff <nilay@linux.ibm.com>
+To: Nam Cao <namcao@linutronix.de>
+Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, tglx@linutronix.de,
+        maz@kernel.org, gautam@linux.ibm.com, Gregory Joyce <gjoyce@ibm.com>
+References: <6af2c4c2-97f6-4758-be33-256638ef39e5@linux.ibm.com>
+ <87qztawmiv.fsf@yellow.woof>
+ <f82d1224-509f-446c-8dee-13e28429b52b@linux.ibm.com>
+ <87jyyzisjj.fsf@yellow.woof>
+ <d142f044-a560-4b59-8dd8-5568d5b9d21f@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <d142f044-a560-4b59-8dd8-5568d5b9d21f@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0vCL7wsg6svZqr5ra1KM-xkw_vyouRul
-X-Authority-Analysis: v=2.4 cv=Jvf8bc4C c=1 sm=1 tr=0 ts=695d24ff cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=ULK339cd-4IVAxCgyX4A:9
-X-Proofpoint-ORIG-GUID: _zB0Xh2NfwnIXkSUHuJUf7fE77svI2yA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDEyOSBTYWx0ZWRfX4cag9wppnDX3
- OhNgl1SMEIJiXQz/+dCFJpz3OCKVH8okJK7mEqeTHnoPwuF6M4MB06/pHWqI9AMawKskbX9oEHV
- LGlLlbtNlDYnAA/SeLzCiEPOuW6FyH0aLZ86CKoR1tSathgGDAE83F9p6hqsMVqs18G+tnc1LE4
- 98JoBnvjnNPQHPFS0aD/bGrRtRdrG++t7gxVjYeDG6cMSf5pHZLhivqcKSzSWxFKkAfdFDTls0S
- J9zxKxgyZEXsy7hsMICaZnNAwFLqbV5woodN5NgpdvjjsLxBBuOzlBNBclNhhAMisPQJnXyRigr
- YLwEy5k2HmytlD26SUDOXeFUPLhz7Ig6EPMgFOeSjjt/Cw1ly8tsa6zNnALFtsB7iSnsfbaM5yF
- dnlcqzaczZg1tptLvjVwrl20J3YMeyQaMgqZRhj4iXShLoOWcCm5RMNgOAMvb3shj+A7VG3S/3S
- +gf6v+p26MrVPRZrp3Q==
+X-Authority-Analysis: v=2.4 cv=P4s3RyAu c=1 sm=1 tr=0 ts=695d29ce cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=zBSMDy8UAAAA:20 a=VnNF1IyMAAAA:8 a=y8B_DGwhVr09_50C0i0A:9 a=QEXdDO2ut3YA:10
+ a=bA3UWDv6hWIuX7UZL3qL:22
+X-Proofpoint-ORIG-GUID: T-he1FnJzzqg4phReKg4bzM3STccA1xO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDEzMyBTYWx0ZWRfX8oy90sD77top
+ bpYz3SSh7aBAg7m6speZoxDe+hx9KVUpd5+QOZA02d9hdpunnBaUfX1Uwy4Gm3To7VGWSNXcR53
+ SmsZti9WMkjQkvpttVLVgecZlLJjkZh/+l3b5NJvf5JzjDYW/kxkpNV/i2raHZdxZnwwP7Kd4S4
+ tFnVwHdDCpm/WUQhyW4ePmQR6gAD7Sq9WZbTe+kRs/NKw9FxsDbYrnfu+XRSQlg1mJEfGBRfUSX
+ 3ixzNK+KLNX6ryc0Cvm7zKv9CwXVxnJOT6QXLF3XTtvtK5GFzB0pZ9vzNaKPx+RZwKIYa3Q5fm1
+ W4cTJclYOiUdsq96A2elsx0+8mQlKWgQaphLzEs88IkvaaYPzuH3heFhvFbMm14NivI6Rr6vkBL
+ vp6HzRXg+85BTEQ/bwOtNsg+s4Uy04jjZWUi0iRphWyQSNhy5quc9m9yE+qHV8BfTxTddVYpqv4
+ s2YlVj7FzJXOd6xW8Gg==
+X-Proofpoint-GUID: 95H2nWNGk-xWNoArZlOYRH4Wg05f9LEN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-06_01,2026-01-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 bulkscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
- definitions=main-2601060129
+ malwarescore=0 bulkscore=0 priorityscore=1501 clxscore=1015 suspectscore=0
+ phishscore=0 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601060133
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Nayna Jain <nayna@linux.ibm.com>
+Hi Nam,
 
-Update Documentation/security/keys/trusted-encrypted.rst and Documentation/
-admin-guide/kernel-parameters.txt with PowerVM Key Wrapping Module (PKWM)
-as a new trust source
+A gentle ping on this one...
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
----
- .../admin-guide/kernel-parameters.txt         |  1 +
- .../security/keys/trusted-encrypted.rst       | 50 +++++++++++++++++++
- 2 files changed, 51 insertions(+)
+I just rebased to the latest kernel and found that this patch is not 
+yet made to the upstream. So may I ask you to submit this change now 
+formally to the upstream?
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a8d0afde7f85..ccb9c2f502fb 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7755,6 +7755,7 @@ Kernel parameters
- 			- "tee"
- 			- "caam"
- 			- "dcp"
-+			- "pkwm"
- 			If not specified then it defaults to iterating through
- 			the trust source list starting with TPM and assigns the
- 			first trust source as a backend which is initialized
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index eae6a36b1c9a..ddff7c7c2582 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -81,6 +81,14 @@ safe.
-          and the UNIQUE key. Default is to use the UNIQUE key, but selecting
-          the OTP key can be done via a module parameter (dcp_use_otp_key).
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Rooted to a unique, per-LPAR key, which is derived from a system-wide,
-+         randomly generated LPAR root key. Both the per-LPAR keys and the LPAR
-+         root key are stored in hypervisor-owned secure memory at runtime,
-+         and the LPAR root key is additionally persisted in secure locations
-+         such as the processor SEEPROMs and encrypted NVRAM.
-+
-   *  Execution isolation
- 
-      (1) TPM
-@@ -102,6 +110,14 @@ safe.
-          environment. Only basic blob key encryption is executed there.
-          The actual key sealing/unsealing is done on main processor/kernel space.
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Fixed set of cryptographic operations done on on-chip hardware
-+         cryptographic acceleration unit NX. Keys for wrapping and unwrapping
-+         are managed by PowerVM Platform KeyStore, which stores keys in an
-+         isolated in-memory copy in secure hypervisor memory, as well as in a
-+         persistent copy in hypervisor-encrypted NVRAM.
-+
-   * Optional binding to platform integrity state
- 
-      (1) TPM
-@@ -129,6 +145,11 @@ safe.
-          Relies on Secure/Trusted boot process (called HAB by vendor) for
-          platform integrity.
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Relies on secure and trusted boot process of IBM Power systems for
-+         platform integrity.
-+
-   *  Interfaces and APIs
- 
-      (1) TPM
-@@ -149,6 +170,11 @@ safe.
-          Vendor-specific API that is implemented as part of the DCP crypto driver in
-          ``drivers/crypto/mxs-dcp.c``.
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Platform Keystore has well documented interfaces in PAPR document.
-+         Refer to ``Documentation/arch/powerpc/papr_hcalls.rst``
-+
-   *  Threat model
- 
-      The strength and appropriateness of a particular trust source for a given
-@@ -191,6 +217,10 @@ selected trust source:
-      a dedicated hardware RNG that is independent from DCP which can be enabled
-      to back the kernel RNG.
- 
-+   * PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+     The normal kernel random number generator is used to generate keys.
-+
- Users may override this by specifying ``trusted.rng=kernel`` on the kernel
- command-line to override the used RNG with the kernel's random number pool.
- 
-@@ -321,6 +351,26 @@ Usage::
- specific to this DCP key-blob implementation.  The key length for new keys is
- always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
- 
-+Trusted Keys usage: PKWM
-+------------------------
-+
-+Usage::
-+
-+    keyctl add trusted name "new keylen [options]" ring
-+    keyctl add trusted name "load hex_blob" ring
-+    keyctl print keyid
-+
-+    options:
-+       wrap_flags=   ascii hex value of security policy requirement
-+                       0x00: no secure boot requirement (default)
-+                       0x01: require secure boot to be in either audit or
-+                             enforced mode
-+                       0x02: require secure boot to be in enforced mode
-+
-+"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
-+specific to PKWM key-blob implementation.  The key length for new keys is
-+always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-+
- Encrypted Keys usage
- --------------------
- 
--- 
-2.47.3
+Thanks,
+--Nilay
+
+On 12/8/25 5:33 PM, Nilay Shroff wrote:
+> 
+> 
+> On 12/6/25 8:08 PM, Nam Cao wrote:
+>> Nilay Shroff <nilay@linux.ibm.com> writes:
+>>> Yes you can find the architecture document here: 
+>>> https://github.com/linuxppc/public-docs/blob/main/LoPAPR/LoPAR-20200812.pdf
+>>>
+>>> You may refer section 7 in the above document, which describes RTAS API.
+>>
+>> Thank you, that helped a lot.
+>>
+>> Can you please confirm that the below diff fixes the problem? It brings
+>> back the "fallback" thing that you mentioned.
+>>
+>> Best regards,
+>> Nam
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
+>> index a82aaa786e9e..8898a968a59b 100644
+>> --- a/arch/powerpc/platforms/pseries/msi.c
+>> +++ b/arch/powerpc/platforms/pseries/msi.c
+>> @@ -19,6 +19,11 @@
+>>  
+>>  #include "pseries.h"
+>>  
+>> +struct pseries_msi_device {
+>> +	unsigned int msi_quota;
+>> +	unsigned int msi_used;
+>> +};
+>> +
+>>  static int query_token, change_token;
+>>  
+>>  #define RTAS_QUERY_FN		0
+>> @@ -433,8 +438,26 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
+>>  	struct msi_domain_info *info = domain->host_data;
+>>  	struct pci_dev *pdev = to_pci_dev(dev);
+>>  	int type = (info->flags & MSI_FLAG_PCI_MSIX) ? PCI_CAP_ID_MSIX : PCI_CAP_ID_MSI;
+>> +	int ret;
+>> +
+>> +	struct pseries_msi_device *pseries_dev __free(kfree)
+>> +		= kmalloc(sizeof(*pseries_dev), GFP_KERNEL);
+>> +	if (!pseries_dev)
+>> +		return -ENOMEM;
+>> +
+>> +	ret = rtas_prepare_msi_irqs(pdev, nvec, type, arg);
+>> +	if (ret > 0) {
+>> +		nvec = ret;
+>> +		ret = rtas_prepare_msi_irqs(pdev, nvec, type, arg);
+>> +	}
+>> +	if (ret < 0)
+>> +		return ret;
+>>  
+>> -	return rtas_prepare_msi_irqs(pdev, nvec, type, arg);
+>> +	pseries_dev->msi_quota = nvec;
+>> +	pseries_dev->msi_used = 0;
+>> +
+>> +	arg->scratchpad[0].ptr = no_free_ptr(pseries_dev);
+>> +	return 0;
+>>  }
+>>  
+>>  /*
+>> @@ -443,9 +466,13 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
+>>   */
+>>  static void pseries_msi_ops_teardown(struct irq_domain *domain, msi_alloc_info_t *arg)
+>>  {
+>> +	struct pseries_msi_device *pseries_dev = arg->scratchpad[0].ptr;
+>>  	struct pci_dev *pdev = to_pci_dev(domain->dev);
+>>  
+>>  	rtas_disable_msi(pdev);
+>> +
+>> +	WARN_ON(pseries_dev->msi_used);
+>> +	kfree(pseries_dev);
+>>  }
+>>  
+>>  static void pseries_msi_shutdown(struct irq_data *d)
+>> @@ -546,12 +573,18 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+>>  				    unsigned int nr_irqs, void *arg)
+>>  {
+>>  	struct pci_controller *phb = domain->host_data;
+>> +	struct pseries_msi_device *pseries_dev;
+>>  	msi_alloc_info_t *info = arg;
+>>  	struct msi_desc *desc = info->desc;
+>>  	struct pci_dev *pdev = msi_desc_to_pci_dev(desc);
+>>  	int hwirq;
+>>  	int i, ret;
+>>  
+>> +	pseries_dev = info->scratchpad[0].ptr;
+>> +
+>> +	if (pseries_dev->msi_used + nr_irqs > pseries_dev->msi_quota)
+>> +		return -ENOSPC;
+>> +
+>>  	hwirq = rtas_query_irq_number(pci_get_pdn(pdev), desc->msi_index);
+>>  	if (hwirq < 0) {
+>>  		dev_err(&pdev->dev, "Failed to query HW IRQ: %d\n", hwirq);
+>> @@ -567,9 +600,10 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+>>  			goto out;
+>>  
+>>  		irq_domain_set_hwirq_and_chip(domain, virq + i, hwirq + i,
+>> -					      &pseries_msi_irq_chip, domain->host_data);
+>> +					      &pseries_msi_irq_chip, pseries_dev);
+>>  	}
+>>  
+>> +	pseries_dev->msi_used++;
+>>  	return 0;
+>>  
+>>  out:
+>> @@ -582,9 +616,11 @@ static void pseries_irq_domain_free(struct irq_domain *domain, unsigned int virq
+>>  				    unsigned int nr_irqs)
+>>  {
+>>  	struct irq_data *d = irq_domain_get_irq_data(domain, virq);
+>> -	struct pci_controller *phb = irq_data_get_irq_chip_data(d);
+>> +	struct pseries_msi_device *pseries_dev = irq_data_get_irq_chip_data(d);
+>> +	struct pci_controller *phb = domain->host_data;
+>>  
+>>  	pr_debug("%s bridge %pOF %d #%d\n", __func__, phb->dn, virq, nr_irqs);
+>> +	pseries_dev->msi_used -= nr_irqs;
+>>  	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
+>>  }
+>>  
+> 
+> Thnaks for the patch! I tested it on my system and I confirmed that
+> this patch fixes the bug reported earlier. That said, if you're
+> planning to send a formal patch upstream with the above change then
+> please feel free to add,
+> 
+> Acked-by: Nilay Shroff <nilay@inux.ibm.com>
+
+
 
 
