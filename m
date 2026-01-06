@@ -1,116 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-15296-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15297-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4089BCF7140
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 08:40:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B0DCF7173
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 08:42:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dljl93VCwz2yKr;
-	Tue, 06 Jan 2026 18:40:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dljn51pM4z2yMJ;
+	Tue, 06 Jan 2026 18:42:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767685253;
-	cv=none; b=jVP8H68m8vDLzQgKm6x0jfL/GDIHmOtkmKhHxv9XTgYVOgK/z+RdpmlreRXJg52skYLY9GNXJdnWbVaXuQuxHuZVEmBrdZLXhLaiz9JS4onSOgmoHixo3uHCip/99g0ubIZPT4XW/rM/dMpUMHzVbzrLFetpYc17gU+mc7ir97Upbu3xLfoLqsR475Wi0iNlv6sIlhP8lzovE/URWPZ1XsrbXVtnvXwaRsGKDqNIbU3TgV/M6E8y2m2zYhizrmHM92D0gpNm1NO+VWiwCoOnFQjyrlAE14gegWOr6S4RxrE5IeKB33H5cXKFRtLso611Afi8+QN5VaY+4o3eP10WyQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.84
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767685353;
+	cv=none; b=YdQ8+6zRci4ZLgUhsIl+O3EeF8MpV1r0jqoNLN+romkE5FrzAbBe6R1pvzPg8Km6sQQAjNIhxx7eK2CYc/AanNIwMrUIQTqfU8ba/ZIdg7QBFeGtDJeSq54xs5HAzBRD4blWB53WMGst7lUj38O9y/2m2BlXAxRPkNfeexhpUguc9J4jvweBXKPmEjolxJkgvDfkSB64zykL0XNH/ivrx11tfYkbMIVOoQXVIIY6fCM9U2QwW2f8iOBT1+kXjTkVIP/q85bKm9jzU+1fRDUHZnwpJvJhfE4Rv0wjH9mPS3cwlWVJyjFhuBuYiAdw12T3Iabr83UuBgeOQBhfNgz4Kw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767685253; c=relaxed/relaxed;
-	bh=T2K+6XYuDT2faPkgFNRf0MMgXkPW9/hzNvicOemZ75A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=VzPukUyg9JOWev82nxAsrQT23m7ka8V4Xerlxq4c4tj5OLdSz1PvYQn3sHwbWoDvbRFdJGbUX3bCfxUWuegSbt2Ju/508InuK56Xm6awvjB9uvn6jSwqtFKF8Iy3kROVQVFESze2ChbJkSZVAHT/7SxkQqvxpeShEC1VKnl2k0CFqVsU5+5OTYevuMC+iPerO4u+WIKs55Qb2jtyVIsyyTBzwyeEEm/ix9Iwgj/vXIi6TOLKsbp6fK4pCKD0P0jlSh4KZe7q3vyUpMvrdljPQXRp8Kf4sR4l+DkCGbL3OqIKQf7mK94fx6QpJKbQJmog5GWa8C3QenRyhkRAnkUfLA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=At4LGi6Q; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=At4LGi6Q; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=At4LGi6Q;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=At4LGi6Q;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	t=1767685353; c=relaxed/relaxed;
+	bh=42Za0mJdUXFI5KgbkuVhKybdOu15+XkbIkHZYuOVt+k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=heOx8NqxtGHIMTpKAf+NTz6f13cjmkOI1i9NAjxmRD+whAGZ520T9BDqX4eKebUWLCf2dNVqJWsHxRgmApzEXrl93j1muS1HLwJl+Ce1ARMbyxh5I3mQqop9ZkpEg8Vt8wOm8VzIpHoaat4O0qQDWlkLV23cSuoBerO/W4GDgf6JyUXYhW1EJP1IVftd+8wj/WpTHdIAJQ7xQiaU5isLwa1CuVBpFqTatQFPfL1OS8E+ZC4M1tUdVDkFct7GkAm7sFddZ0cHSykZPmJHthz2OU+CRPx4R/nVCh6C9qKJ0HOH+BCK9jYjZd2CrcS61Y43gyh6Nh45DTfRbscYlZ3Z7A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=wangruikang@iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=wangruikang@iscas.ac.cn; receiver=lists.ozlabs.org)
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dljl81K3zz2xSX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 18:40:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767685247;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T2K+6XYuDT2faPkgFNRf0MMgXkPW9/hzNvicOemZ75A=;
-	b=At4LGi6QRfqkI0AQfk55/zKYlYLb3H3ICSMZaCTUEyRp6IqLqNGVS55Vji0xBBAfWZ+Y11
-	mJgbh+5gx58UvhM/XuDbOkt3g0EnslY1/xXY0GKvZJoDgSBV+KT65rsllEHVtvl05Yp8H2
-	a5Hz1jgcX6jWcga4R2xqpBI6PO14l4I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767685247;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T2K+6XYuDT2faPkgFNRf0MMgXkPW9/hzNvicOemZ75A=;
-	b=At4LGi6QRfqkI0AQfk55/zKYlYLb3H3ICSMZaCTUEyRp6IqLqNGVS55Vji0xBBAfWZ+Y11
-	mJgbh+5gx58UvhM/XuDbOkt3g0EnslY1/xXY0GKvZJoDgSBV+KT65rsllEHVtvl05Yp8H2
-	a5Hz1jgcX6jWcga4R2xqpBI6PO14l4I=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-451-aDpN5sOxNueGtijma9ZzDg-1; Tue, 06 Jan 2026 02:40:45 -0500
-X-MC-Unique: aDpN5sOxNueGtijma9ZzDg-1
-X-Mimecast-MFC-AGG-ID: aDpN5sOxNueGtijma9ZzDg_1767685244
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-34aa1d06456so2181819a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jan 2026 23:40:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767685244; x=1768290044;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=T2K+6XYuDT2faPkgFNRf0MMgXkPW9/hzNvicOemZ75A=;
-        b=u/PxWAYN5ioMCm+fdPBppSIhfkWBXZGx2QjoPygchQIgvq9krX2tFaIFr9CCiDbq23
-         ejH4mWcHKj2Uq62rWbiR58XrEL1uBYEHFdefPlCPVEf7jAfRwQpzpJORHTYAVsNJpru+
-         me7fmxrKDLguCqnFiriAyYyFK7Xjc5sWR8BrVCVK4q1s8GgAA9Q5/ffYajArwble9HGF
-         0LfNiFOmQu8LLFA8WrH1VU9V9OBzrtwHwFzTOQNFr6GKgnCFalFW+kd/OsZVLR7zjh9Z
-         15+NLm7ntrsf6xPZftxSiPfNrg2Iipf+6nchBvyROL2dQ23JMeS4fT0CoAQfQg0JG4+J
-         +yyw==
-X-Forwarded-Encrypted: i=1; AJvYcCWzaJ07IY1FDiXV/3Wp9U6asuI35zimd90+6yhpIhvDd43bCBv87vgb5rntkvRM+gK2SyprOa95iDqIeGQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwScfpVbnz81WmsskjKLeery8Cr1l4xppCw8USRKnfN0oPUvo7a
-	Npqd51xyyo06qn5JcbyTncCs0+J8hF/bERFuBnwkBVHl/D7z2gqCvallfj6PBi51gcsqyr1I18K
-	mFUI0Q1beY1FWopGG2FMICKqhdGXtOTQecvDMNhdYn1giTOhQE+o8ZrEFaV2ubndDxU0=
-X-Gm-Gg: AY/fxX4zOK06BSL6K8z9UQcebYmibsCCrLc9Dfu5cm2fikgeAYBlevQUQwQhck9NINb
-	ifR1AbBHZZyfBNLnh8od+i5835QAt5eHBJ+mtXp/UhuSyU2ezlv7Gtc5NWBDPilwv621rkW3Muj
-	ult/54+dvIGeSP8BedOf2j7i4uMB38COlJKdg9DS8WjAZV/PDJdRAnyefML6g3z2e/JJmCnraDx
-	g1An7PxZF4gYNy5PdOGFEvqmCNEP/N5ILFmd8k0LBW9RpARxzu9Hv1Bk7EtTuZlQQ71zX62k1Wd
-	b+YKd9U2eWcdc1c7yzbk+waVXRNh7pI9+nUH6V3JBI+B7xWIAeZvdb9NKmulLFdsV/cOTIEP1SR
-	s
-X-Received: by 2002:a05:6a21:6d98:b0:35d:c68e:1b07 with SMTP id adf61e73a8af0-389823e5d3fmr1735572637.54.1767685244275;
-        Mon, 05 Jan 2026 23:40:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHVUzWKzSkNqbLbBe+L/snCjJ0oavUrUixh1GN3s9rZlQu+O972p1pSFAutekovPq/olCdVFQ==
-X-Received: by 2002:a05:6a21:6d98:b0:35d:c68e:1b07 with SMTP id adf61e73a8af0-389823e5d3fmr1735547637.54.1767685243733;
-        Mon, 05 Jan 2026 23:40:43 -0800 (PST)
-Received: from localhost ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c3a2a3sm13338605ad.13.2026.01.05.23.40.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 23:40:43 -0800 (PST)
-From: Coiby Xu <coxu@redhat.com>
-To: kexec@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org
-Cc: Thomas Staudt <tstaudt@de.ibm.com>,
-	Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>,
-	Baoquan he <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Kairui Song <ryncsn@gmail.com>,
-	Pingfan Liu <kernelfans@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2] powerpc/kdump: pass dm-crypt keys to kdump kernel
-Date: Tue,  6 Jan 2026 15:40:38 +0800
-Message-ID: <20260106074039.564707-1-coxu@redhat.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251226140636.1378505-1-coxu@redhat.com>
-References: <20251226140636.1378505-1-coxu@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dljn40J7Pz2y7c
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 18:42:29 +1100 (AEDT)
+Received: from [192.168.0.114] (unknown [114.241.82.145])
+	by APP-05 (Coremail) with SMTP id zQCowABX6AvAvFxpa_ebAw--.32437S2;
+	Tue, 06 Jan 2026 15:41:52 +0800 (CST)
+Message-ID: <c652e45c-fedc-4bcd-9310-fc428e0e6c57@iscas.ac.cn>
+Date: Tue, 6 Jan 2026 15:41:52 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -124,204 +43,234 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: c43Sj8o6WiLKha30CxaMV7ya_zuaNkQKL33BRYDRdL0_1767685244
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] PCI/MSI: Conservatively generalize no_64bit_msi into
+ msi_addr_mask
+To: "Creeley, Brett" <bcreeley@amd.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Brett Creeley <brett.creeley@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>
+Cc: Han Gao <gaohan@iscas.ac.cn>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org
+References: <20251224-pci-msi-addr-mask-v1-0-05a6fcb4b4c0@iscas.ac.cn>
+ <20251224-pci-msi-addr-mask-v1-1-05a6fcb4b4c0@iscas.ac.cn>
+ <641c55d4-5c18-4b81-be04-404e6bb3fbb1@amd.com>
+Content-Language: en-US
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <641c55d4-5c18-4b81-be04-404e6bb3fbb1@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:zQCowABX6AvAvFxpa_ebAw--.32437S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxtF17AF4DGF4UKr1ruF43trb_yoWxAw4fpa
+	ykGFWSyFW8K3yUta9Fy3WUZF1Yva1qgrWrWrW7K3sa93ZIvFy8JFnayry3Gwn7Xr4kCF40
+	qr1jgw1jgFnIk3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IY64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY
+	04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
+	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
+	b7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
+	vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
+	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
+	nxnUUI43ZEXa7sRidbbtUUUUU==
+X-Originating-IP: [114.241.82.145]
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-CONFIG_CRASH_DM_CRYPT has been introduced to support LUKS-encrypted
-device dump target by addressing two challenges [1],
- - Kdump kernel may not be able to decrypt the LUKS partition. For some
-   machines, a system administrator may not have a chance to enter the
-   password to decrypt the device in kdump initramfs after the 1st kernel
-   crashes
+On 1/6/26 02:05, Creeley, Brett wrote:
+> On 12/23/2025 7:10 PM, Vivian Wang wrote:
+>> Caution: This message originated from an External Source. Use proper c=
+aution when opening attachments, clicking links, or responding.
+>>
+>>
+>> Some PCI devices have PCI_MSI_FLAGS_64BIT in the MSI capability, but
+>> implement less than 64 address bits. This breaks on platforms where su=
+ch
+>> a device is assigned an MSI address higher than what's reachable.
+>>
+>> Currently, we deal with this with a single no_64bit_msi flag, and
+>> (notably on powerpc) use 32-bit MSI address for these devices. However=
+,
+>> on some platforms the MSI doorbell address is above 32-bit but within
+>> device ability.
+>>
+>> As a first step, conservatively generalize the single-bit flag
+>> no_64bit_msi into msi_addr_mask. (The name msi_addr_mask is chosen to
+>> avoid confusion with msi_mask.)
+>>
+>> The translation is essentially:
+>>
+>> - no_64bit_msi =3D 1    ->    msi_addr_mask =3D DMA_BIT_MASK(32)
+>> - no_64bit_msi =3D 0    ->    msi_addr_mask =3D DMA_BIT_MASK(64)
+>> - if (no_64bit_msi)   ->    if (msi_addr_mask < DMA_BIT_MASK(64))
+>>
+>> Since no values other than DMA_BIT_MASK(32) and DMA_BIT_MASK(64) is
+>> used, no functional change is intended. Future patches that make use o=
+f
+>> intermediate values of msi_addr_mask will follow, allowing devices tha=
+t
+>> cannot use full 64-bit addresses for MSI to work on platforms with MSI=
 
- - LUKS2 by default use the memory-hard Argon2 key derivation function
-   which is quite memory-consuming compared to the limited memory reserved
-   for kdump.
+>> doorbell above 32-bit address space.
+>>
+>> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+>>
+>> ---
+>>
+>> checkpatch complains about the comment include/linux/pci.h, which I ha=
+ve
+>> formatted similarly with other comments in the vicinity.
+>> ---
+>>   arch/powerpc/platforms/powernv/pci-ioda.c           | 2 +-
+>>   arch/powerpc/platforms/pseries/msi.c                | 4 ++--
+>>   drivers/gpu/drm/radeon/radeon_irq_kms.c             | 2 +-
+>>   drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 2 +-
+>>   drivers/pci/msi/msi.c                               | 2 +-
+>>   drivers/pci/msi/pcidev_msi.c                        | 2 +-
+>>   drivers/pci/probe.c                                 | 7 +++++++
+>>   include/linux/pci.h                                 | 8 +++++++-
+>>   sound/hda/controllers/intel.c                       | 2 +-
+>>   9 files changed, 22 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/=
+platforms/powernv/pci-ioda.c
+>> index b0c1d9d16fb5..1c78fdfb7b03 100644
+>> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+>> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+>> @@ -1666,7 +1666,7 @@ static int __pnv_pci_ioda_msi_setup(struct pnv_p=
+hb *phb, struct pci_dev *dev,
+>>                  return -ENXIO;
+>>
+>>          /* Force 32-bit MSI on some broken devices */
+>> -       if (dev->no_64bit_msi)
+>> +       if (dev->msi_addr_mask < DMA_BIT_MASK(64))
+>>                  is_64 =3D 0;
+>>
+>>          /* Assign XIVE to PE */
+>> diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platf=
+orms/pseries/msi.c
+>> index a82aaa786e9e..7473c7ca1db0 100644
+>> --- a/arch/powerpc/platforms/pseries/msi.c
+>> +++ b/arch/powerpc/platforms/pseries/msi.c
+>> @@ -383,7 +383,7 @@ static int rtas_prepare_msi_irqs(struct pci_dev *p=
+dev, int nvec_in, int type,
+>>           */
+>>   again:
+>>          if (type =3D=3D PCI_CAP_ID_MSI) {
+>> -               if (pdev->no_64bit_msi) {
+>> +               if (pdev->msi_addr_mask < DMA_BIT_MASK(64)) {
+>>                          rc =3D rtas_change_msi(pdn, RTAS_CHANGE_32MSI=
+_FN, nvec);
+>>                          if (rc < 0) {
+>>                                  /*
+>> @@ -409,7 +409,7 @@ static int rtas_prepare_msi_irqs(struct pci_dev *p=
+dev, int nvec_in, int type,
+>>                  if (use_32bit_msi_hack && rc > 0)
+>>                          rtas_hack_32bit_msi_gen2(pdev);
+>>          } else {
+>> -               if (pdev->no_64bit_msi)
+>> +               if (pdev->msi_addr_mask < DMA_BIT_MASK(64))
+>>                          rc =3D rtas_change_msi(pdn, RTAS_CHANGE_32MSI=
+X_FN, nvec);
+>>                  else
+>>                          rc =3D rtas_change_msi(pdn, RTAS_CHANGE_MSIX_=
+FN, nvec);
+>> diff --git a/drivers/gpu/drm/radeon/radeon_irq_kms.c b/drivers/gpu/drm=
+/radeon/radeon_irq_kms.c
+>> index 9961251b44ba..d550554a6f3f 100644
+>> --- a/drivers/gpu/drm/radeon/radeon_irq_kms.c
+>> +++ b/drivers/gpu/drm/radeon/radeon_irq_kms.c
+>> @@ -252,7 +252,7 @@ static bool radeon_msi_ok(struct radeon_device *rd=
+ev)
+>>           */
+>>          if (rdev->family < CHIP_BONAIRE) {
+>>                  dev_info(rdev->dev, "radeon: MSI limited to 32-bit\n"=
+);
+>> -               rdev->pdev->no_64bit_msi =3D 1;
+>> +               rdev->pdev->msi_addr_mask =3D DMA_BIT_MASK(32);
+>>          }
+>>
+>>          /* force MSI on */
+>> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/dri=
+vers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+>> index 70d86c5f52fb..0671deae9a28 100644
+>> --- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+>> +++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+>> @@ -331,7 +331,7 @@ static int ionic_probe(struct pci_dev *pdev, const=
+ struct pci_device_id *ent)
+>>
+>>   #ifdef CONFIG_PPC64
+>>          /* Ensure MSI/MSI-X interrupts lie within addressable physica=
+l memory */
+>> -       pdev->no_64bit_msi =3D 1;
+>> +       pdev->msi_addr_mask =3D DMA_BIT_MASK(32);
+> I know this is just an intermediate commit in the series, but does this=
 
-To also enable this feature for PowerPC, we only need to let 1st kernel
-build up the kernel command parameter dmcryptkeys as similar to
-elfcorehdr to pass the memory address of the stored info of dm-crypt
-keys to the kdump kernel.
+> retain the original intent?
+I do believe so, yes. The no_64bit_msi bit's meaning is the negation of
+this bit found in the MSI capability:
 
-Note to avoid a building failure [2] caused by undeclared function
-crash_load_dm_crypt_keys when CONFIG_CRASH_DUMP is not enabled,
-realign the function declaration with CONFIG_CRASH_DM_CRYPT.
+=C2=A0 =C2=A0 #define=C2=A0 PCI_MSI_FLAGS_64BIT=C2=A0 =C2=A0 0x0080=C2=A0=
+ =C2=A0 /* 64-bit addresses allowed */
 
-[1] https://lore.kernel.org/all/20250502011246.99238-1-coxu@redhat.com/
-[2] https://lore.kernel.org/oe-kbuild-all/202512272218.ghBaSjzO-lkp@intel.com/
+PCI_MSI_FLAGS_64BIT is set if this function handles PCI_MSI_ADDRESS_HI
+and cleared if doesn't handle=C2=A0PCI_MSI_ADDRESS_HI. So=C2=A0with "no 6=
+4bit",
+only PCI_MSI_ADDRESS_LO is usable, and MSI is limited to 32 bits. See
+also old handling here:
 
-Cc: Thomas Staudt <tstaudt@de.ibm.com>
-Cc: Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>
-Cc: Baoquan he <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: Pingfan Liu <kernelfans@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Coiby Xu <coxu@redhat.com>
----
-v2:
-- fix double kfree issue [Sourabh]
-- corretly kfree old modified_cmdline
-- use imperative mood for commit message
-- fix a compiling error caught by kernel test robot
+>> diff --git a/drivers/pci/msi/pcidev_msi.c b/drivers/pci/msi/pcidev_msi=
+=2Ec
+>> index 5520aff53b56..0b0346813092 100644
+>> --- a/drivers/pci/msi/pcidev_msi.c
+>> +++ b/drivers/pci/msi/pcidev_msi.c
+>> @@ -24,7 +24,7 @@ void pci_msi_init(struct pci_dev *dev)
+>>          }
+>>
+>>          if (!(ctrl & PCI_MSI_FLAGS_64BIT))
+>> -               dev->no_64bit_msi =3D 1;
+>> +               dev->msi_addr_mask =3D DMA_BIT_MASK(32);
+>>   }
+>>
+>>   void pci_msix_init(struct pci_dev *dev)
+=2E.. and the old definition of the flag here, where the comment
+explicitly says no_64bit_msi means 32-bit:
+>> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+>> index 41183aed8f5d..a2bff57176a3 100644
+>> --- a/drivers/pci/probe.c
+>> +++ b/drivers/pci/probe.c
+>>
+>> [...]
+>>
+>> @@ -441,7 +448,6 @@ struct pci_dev {
+>>
+>>          unsigned int    is_busmaster:1;         /* Is busmaster */
+>>          unsigned int    no_msi:1;               /* May not use MSI */=
 
- arch/powerpc/include/asm/kexec.h |  3 ++-
- arch/powerpc/kexec/elf_64.c      | 27 ++++++++++++++++++++++++++-
- arch/powerpc/kexec/file_load.c   | 18 ++++++++++--------
- include/linux/crash_core.h       | 14 +++++++-------
- 4 files changed, 45 insertions(+), 17 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index bd4a6c42a5f3..f3d098d543b4 100644
---- a/arch/powerpc/include/asm/kexec.h
-+++ b/arch/powerpc/include/asm/kexec.h
-@@ -80,7 +80,8 @@ struct kimage_arch {
- };
- 
- char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
--			  unsigned long cmdline_len);
-+			  unsigned long cmdline_len,
-+			  char *name, unsigned long addr);
- int setup_purgatory(struct kimage *image, const void *slave_code,
- 		    const void *fdt, unsigned long kernel_load_addr,
- 		    unsigned long fdt_load_addr);
-diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-index 5d6d616404cf..995d7e8e98e1 100644
---- a/arch/powerpc/kexec/elf_64.c
-+++ b/arch/powerpc/kexec/elf_64.c
-@@ -81,13 +81,38 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 
- 		/* Setup cmdline for kdump kernel case */
- 		modified_cmdline = setup_kdump_cmdline(image, cmdline,
--						       cmdline_len);
-+						       cmdline_len,
-+						       "elfcorehdr",
-+						       image->elf_load_addr);
- 		if (!modified_cmdline) {
- 			pr_err("Setting up cmdline for kdump kernel failed\n");
- 			ret = -EINVAL;
- 			goto out;
- 		}
- 		cmdline = modified_cmdline;
-+		cmdline_len = strlen(cmdline) + 1;
-+
-+		ret = crash_load_dm_crypt_keys(image);
-+		if (ret == -ENOENT) {
-+			kexec_dprintk("No dm crypt key to load\n");
-+		} else if (ret) {
-+			pr_err("Failed to load dm crypt keys\n");
-+			return ERR_PTR(ret);
-+		}
-+
-+		if (image->dm_crypt_keys_addr != 0) {
-+			modified_cmdline = setup_kdump_cmdline(image, cmdline,
-+							       cmdline_len,
-+							       "dmcryptkeys",
-+							       image->dm_crypt_keys_addr);
-+			kfree(cmdline);
-+			if (!modified_cmdline) {
-+				pr_err("Setting up cmdline for kdump kernel failed\n");
-+				ret = -EINVAL;
-+				goto out;
-+			}
-+			cmdline = modified_cmdline;
-+		}
- 	}
- 
- 	if (initrd != NULL) {
-diff --git a/arch/powerpc/kexec/file_load.c b/arch/powerpc/kexec/file_load.c
-index 4284f76cbef5..9964c57785f5 100644
---- a/arch/powerpc/kexec/file_load.c
-+++ b/arch/powerpc/kexec/file_load.c
-@@ -23,36 +23,38 @@
- #define SLAVE_CODE_SIZE		256	/* First 0x100 bytes */
- 
- /**
-- * setup_kdump_cmdline - Prepend "elfcorehdr=<addr> " to command line
-+ * setup_kdump_cmdline - Prepend "<name>=<addr> " to command line
-  *                       of kdump kernel for exporting the core.
-  * @image:               Kexec image
-  * @cmdline:             Command line parameters to update.
-  * @cmdline_len:         Length of the cmdline parameters.
-+ * @name:                Name e.g elfcorehdr.
-+ * @addr:                Memory address.
-  *
-  * kdump segment must be setup before calling this function.
-  *
-  * Returns new cmdline buffer for kdump kernel on success, NULL otherwise.
-  */
- char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
--			  unsigned long cmdline_len)
-+			  unsigned long cmdline_len,
-+			  char *name, unsigned long addr)
- {
--	int elfcorehdr_strlen;
-+	unsigned long parameter_len;
- 	char *cmdline_ptr;
- 
- 	cmdline_ptr = kzalloc(COMMAND_LINE_SIZE, GFP_KERNEL);
- 	if (!cmdline_ptr)
- 		return NULL;
- 
--	elfcorehdr_strlen = sprintf(cmdline_ptr, "elfcorehdr=0x%lx ",
--				    image->elf_load_addr);
-+	parameter_len = sprintf(cmdline_ptr, "%s=0x%lx ", name, addr);
- 
--	if (elfcorehdr_strlen + cmdline_len > COMMAND_LINE_SIZE) {
--		pr_err("Appending elfcorehdr=<addr> exceeds cmdline size\n");
-+	if (parameter_len + cmdline_len > COMMAND_LINE_SIZE) {
-+		pr_err("Appending %s=<addr> exceeds cmdline size\n", name);
- 		kfree(cmdline_ptr);
- 		return NULL;
- 	}
- 
--	memcpy(cmdline_ptr + elfcorehdr_strlen, cmdline, cmdline_len);
-+	memcpy(cmdline_ptr + parameter_len, cmdline, cmdline_len);
- 	// Ensure it's nul terminated
- 	cmdline_ptr[COMMAND_LINE_SIZE - 1] = '\0';
- 	return cmdline_ptr;
-diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
-index d35726d6a415..e128270c703f 100644
---- a/include/linux/crash_core.h
-+++ b/include/linux/crash_core.h
-@@ -34,13 +34,6 @@ static inline void arch_kexec_protect_crashkres(void) { }
- static inline void arch_kexec_unprotect_crashkres(void) { }
- #endif
- 
--#ifdef CONFIG_CRASH_DM_CRYPT
--int crash_load_dm_crypt_keys(struct kimage *image);
--ssize_t dm_crypt_keys_read(char *buf, size_t count, u64 *ppos);
--#else
--static inline int crash_load_dm_crypt_keys(struct kimage *image) {return 0; }
--#endif
--
- #ifndef arch_crash_handle_hotplug_event
- static inline void arch_crash_handle_hotplug_event(struct kimage *image, void *arg) { }
- #endif
-@@ -96,4 +89,11 @@ static inline void crash_save_cpu(struct pt_regs *regs, int cpu) {};
- static inline int kimage_crash_copy_vmcoreinfo(struct kimage *image) { return 0; };
- #endif /* CONFIG_CRASH_DUMP*/
- 
-+#ifdef CONFIG_CRASH_DM_CRYPT
-+int crash_load_dm_crypt_keys(struct kimage *image);
-+ssize_t dm_crypt_keys_read(char *buf, size_t count, u64 *ppos);
-+#else
-+static inline int crash_load_dm_crypt_keys(struct kimage *image) { return 0; }
-+#endif
-+
- #endif /* LINUX_CRASH_CORE_H */
-
-base-commit: 7f98ab9da046865d57c102fd3ca9669a29845f67
--- 
-2.52.0
+>> -       unsigned int    no_64bit_msi:1;         /* May only use 32-bit=
+ MSIs */
+>>          unsigned int    block_cfg_access:1;     /* Config space acces=
+s blocked */
+>>          unsigned int    broken_parity_status:1; /* Generates false po=
+sitive parity */
+>>          unsigned int    irq_reroute_variant:2;  /* Needs IRQ reroutin=
+g variant */
+Vivian "dramforever" Wang
 
 
