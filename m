@@ -1,58 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-15340-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15341-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4B6CF9C89
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 18:43:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B069CFA26C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 19:29:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dlz5z6JX9z2xjb;
-	Wed, 07 Jan 2026 04:43:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dm07m117dz2xQB;
+	Wed, 07 Jan 2026 05:29:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767721383;
-	cv=none; b=EHR0NYDwu7zv+ValT/x5NhM2cnnn+MMYiBxDe+NzhoyYdPeX/elvkoSXDPi4lVkaWArcbQCc7pZi/mlT5hLgLZxLnj3cUC3hC6vwSUNCNtfe7qOsJNHoWLL8ZY2myrOOheZA2BHiwcIiTi9u7wwGqKXW96Ur2RqY3eFMMVOvQAAwi65qswEQdH+osneuhGv8Nv7TWBgqeRkpUSPsFvKEN9Ar3Tz2qlUo6vY8xlKCwYJtAtDICBP4Nibk59da+r89ohh9pmuGkMu2LRqH6e/SdssGEnplUPYb4/K5F38hYzGpjAWTxbSwrf/j06RZbXw44Dqcc7nVyT53uXSczGZsbg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767724180;
+	cv=none; b=djWJPQpzFgdoaphKKr/zgIkp28nlUF7AKs3eyJ3oCg3+o1ZWjExwKPv0LHXXue2a94mRNngtZH+uyspYrrCRBE9gBX8+kZ1k3hdrH/pGTj715+dNRfSb4OsgyrtxyY+/8AqMaLraSPhmlmByeJUQqtUzOPI7ixlk5lL40MONFpbc6XmZmKzzcQBW0a3eIgF4Pog6gQMAXmHWvREbRKexJVKyojYyW6PCzDBvziXQhIkIj1oe2lnpC+5yXXcd5DOfmoZDu7axKi7w+hqsVPlbDfJsLOuTaI8276c5kkPtJM/c60fKEI4bOMd6y6pWZ/GITYsY2z8rgpCgUXwWa4brmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767721383; c=relaxed/relaxed;
-	bh=btqj5s3RwXZ+ykRcneBs40bT/CH/diivMei4HNp6zi8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PzIQB+3k7IkohKXC6nVaI+lU8wTuQBrYLiAzaK4SpCwv6jeCBjbVGKBBVIsW59e3ytFtlf9OpdQuz6dg8e8WiQqQvRaQ0SkJEtKMvDk7uSHTiNB1uPbxKvwk1mXK4/HQWwbLjrLpH8cGAiOFEbRrbsYMppzRJudWbIm49YHNhA2o78GuYFP4SWv/LtiTOBap68BN7gyhpEcWSWyqngr+nNeHfhlVVTLb7QjY0Lsd014qVyymi1BqtcrDarxd2GhZDiWWkTSVsBZpVPwwye0ejGuMFn4i+k8bR7vOTqL6INR0btVeZ8WkLg3QIoAiBk06skD3+P+ENxUVfgF/9r3yow==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cJxaSYjy; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1767724180; c=relaxed/relaxed;
+	bh=C6qFHxqoWBG7IV6u8Cbs7on3ylcj5l0UA0SsRBcTYU4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AjYgSxbjTTVmDB0bAMV+uDv5iG66ga7FOBaGvR7j5AUisWLPTYdmkcdNoSpyNiM2w+uV97VHkHS0fjdgx0dRICeo3Jl/b3cjh0d0ULY7YMxufnhOGdFrIlnArVHA+Z0lXvwz7JEF4JZzEGu7QKMnw8UnysyqUkrklAs/Jy4zBKZieggOiHl7zUZcM9I2f/T4R5dSJx5dIpZt4Bd5HeUioKnibw1TN+bNleuWYcnOnCheUfLnwt73gAjABaKzPVv26HlPadjxSuqMEufCa8tehRP6nOcjLSyG+wPuagsHUUkLv5hpUC2ffuycjXHlctBM0w6ecAyHpCh+O85tRtQTJA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SyQv0/FV; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cJxaSYjy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SyQv0/FV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dlz5y4PrMz2xGY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jan 2026 04:43:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dm07l0kz2z2xLR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jan 2026 05:29:38 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F0A0843425;
-	Tue,  6 Jan 2026 17:42:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1003C19423;
-	Tue,  6 Jan 2026 17:42:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 113EB60144;
+	Tue,  6 Jan 2026 18:29:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3793EC116C6;
+	Tue,  6 Jan 2026 18:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767721348;
-	bh=PGryFCKmulgdFO29UgDF6OG2BZYbGg3Rh3yem2fewh8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cJxaSYjyQ3x6X8zZVBKJfFkjnp33Tvx3nyh2WSwt3hnRE4QTD5XIJOCS9y6nN/699
-	 Sz5uNvU0q3+wOEDE0eRq3sWpfKot9q3X81jafFFWyzV6E3YqGZQIv5Tn1h6HD93g4l
-	 ZdYOp5oCyGAoSI/RA/9WV4iiDHxbJb/JTcWqtWBGYr+sTxE5Tz3yw7VeDlsSAbc20u
-	 X6W5Byt1I4XzC448NFLQjGtY1B6umeUx5L4m0ID/gWX8BobxphiF3JnYFAruMG/pBM
-	 s05xXbgU6IrYaMVCm+S9QRFYy5whPh+n0jQRyFrh36qQzOrfZQwG7UM8GINS3FMtgo
-	 LlbXphVod05IQ==
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/e500: Always use 64 bits PTE
-Date: Tue,  6 Jan 2026 18:40:19 +0100
-Message-ID: <04a658209ea78dcc0f3dbde6b2c29cf1939adfe9.1767721208.git.chleroy@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	s=k20201202; t=1767724145;
+	bh=viOFB4/yDJPmlUVK9aA8lHxdD5KZeK3qCbk9U703L4E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SyQv0/FVAuHmLLwaUjLZZIbKRJ0Ehmu9FcOAuL/Te9JbKsrsAcuaCb+Hh5YGxuW6G
+	 VkVl8ulqlqE9lEttQE8XxMTMSYEK1D96atzzOY+t6d3yb53OVWzVVs2F2Ptfg7EOAU
+	 zeGB/Vs5BjrBO6KddnnwOZJag4OPAytBPKke+X49hvirea36YlOw3RKtTaZ/hhidQ8
+	 Rn1333x7VB3pOwB+julHkI3YIxt7CFmNBtmk40LsDlrG0YeDPkkm45Pe7DCpPKl1hw
+	 WOFU9KcQzE2WHLhzt+ILx6VR9mPYNNg+IHyLj4uk6TMckdb/PicweYTbTqAwAu5Mp3
+	 yFArfhjPITKdA==
+Message-ID: <da2988cf-8f4b-4f85-a915-d83ebcb9923e@kernel.org>
+Date: Tue, 6 Jan 2026 19:29:00 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,291 +58,120 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9338; i=chleroy@kernel.org; h=from:subject:message-id; bh=80bF3pcvCRtm03UZMrXs4LU+hbl+Vula5niCDKhoSAA=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWTGejKfDm6LFFAS3bLy23XPs7J3jJ7klR28Iiv37pzaj r9u8tNNOkpZGMS4GGTFFFmO/+feNaPrS2r+1F36MHNYmUCGMHBxCsBElh1jZJhn9fqxgyZPke0t x5nNBUFnow3DZAuqbrLGbzwS0Hag0pPhf9Kn+7d5raVrHq2sZgmf4Fe2jNnRdfXGqzfvbD7z+uT tBGYA
-X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soc: fsl: qbman: fix race condition in qman_destroy_fq
+To: Richard Genoud <richard.genoud@bootlin.com>,
+ Marco Crivellari <marco.crivellari@suse.com>, Kees Cook <kees@kernel.org>,
+ Roy Pledge <roy.pledge@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Scott Wood <oss@buserror.net>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20251223072549.397625-1-richard.genoud@bootlin.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20251223072549.397625-1-richard.genoud@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Today there are two PTE formats for e500:
-- The 64 bits format, used
- - On 64 bits kernel
- - On 32 bits kernel with 64 bits physical addresses
- - On 32 bits kernel with support of huge pages
-- The 32 bits format, used in other cases
 
-Maintaining two PTE formats means unnecessary maintenance burden
-because every change needs to be implemented and tested for both
-formats.
+Le 23/12/2025 à 08:25, Richard Genoud a écrit :
+> [Vous ne recevez pas souvent de courriers de richard.genoud@bootlin.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> When QMAN_FQ_FLAG_DYNAMIC_FQID is set, there's a race condition between
+> fq_table[fq->idx] state and freeing/allocating from the pool and
+> WARN_ON(fq_table[fq->idx]) in qman_create_fq() gets triggered.
+> 
+> Indeed, we can have:
+>           Thread A                             Thread B
+>      qman_destroy_fq()                    qman_create_fq()
+>        qman_release_fqid()
+>          qman_shutdown_fq()
+>          gen_pool_free()
+>             -- At this point, the fqid is available again --
+>                                             qman_alloc_fqid()
+>             -- so, we can get the just-freed fqid in thread B --
+>                                             fq->fqid = fqid;
+>                                             fq->idx = fqid * 2;
+>                                             WARN_ON(fq_table[fq->idx]);
+>                                             fq_table[fq->idx] = fq;
+>       fq_table[fq->idx] = NULL;
+> 
+> And adding some logs between qman_release_fqid() and
+> fq_table[fq->idx] = NULL makes the WARN_ON() trigger a lot more.
+> 
+> To prevent that, ensure that fq_table[fq->idx] is set to NULL before
+> gen_pool_free() is called by using smp_wmb().
 
-Remove the 32 bits PTE format. The memory usage increase due to
-larger PTEs is minimal (approx. 0,1% of memory).
+You dismantle/reimplement qman_release_fqid(). Is that the only possible 
+approach ?
+Isn't it possible to just clear fq_table[fq->idx] _before_ calling 
+qman_release_fqid() ?
 
-This also means that from now on huge pages are supported also
-with 32 bits physical addresses.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/nohash/32/pgtable.h  |  4 +-
- arch/powerpc/include/asm/nohash/32/pte-85xx.h | 59 -------------------
- arch/powerpc/include/asm/pgtable-types.h      |  2 +-
- arch/powerpc/kernel/head_85xx.S               | 46 +--------------
- arch/powerpc/platforms/Kconfig.cputype        |  4 +-
- 5 files changed, 5 insertions(+), 110 deletions(-)
- delete mode 100644 arch/powerpc/include/asm/nohash/32/pte-85xx.h
-
-diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
-index 2d71e4b7cd09c..496ecc65ac255 100644
---- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-@@ -120,10 +120,8 @@
- 
- #if defined(CONFIG_44x)
- #include <asm/nohash/32/pte-44x.h>
--#elif defined(CONFIG_PPC_85xx) && defined(CONFIG_PTE_64BIT)
--#include <asm/nohash/pte-e500.h>
- #elif defined(CONFIG_PPC_85xx)
--#include <asm/nohash/32/pte-85xx.h>
-+#include <asm/nohash/pte-e500.h>
- #elif defined(CONFIG_PPC_8xx)
- #include <asm/nohash/32/pte-8xx.h>
- #endif
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-85xx.h b/arch/powerpc/include/asm/nohash/32/pte-85xx.h
-deleted file mode 100644
-index 14d64b4f3f14a..0000000000000
---- a/arch/powerpc/include/asm/nohash/32/pte-85xx.h
-+++ /dev/null
-@@ -1,59 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _ASM_POWERPC_NOHASH_32_PTE_85xx_H
--#define _ASM_POWERPC_NOHASH_32_PTE_85xx_H
--#ifdef __KERNEL__
--
--/* PTE bit definitions for Freescale BookE SW loaded TLB MMU based
-- * processors
-- *
--   MMU Assist Register 3:
--
--   32 33 34 35 36  ... 50 51 52 53 54 55 56 57 58 59 60 61 62 63
--   RPN......................  0  0 U0 U1 U2 U3 UX SX UW SW UR SR
--
--   - PRESENT *must* be in the bottom two bits because swap PTEs use
--     the top 30 bits.
--
--*/
--
--/* Definitions for FSL Book-E Cores */
--#define _PAGE_READ	0x00001	/* H: Read permission (SR) */
--#define _PAGE_PRESENT	0x00002	/* S: PTE contains a translation */
--#define _PAGE_WRITE	0x00004	/* S: Write permission (SW) */
--#define _PAGE_DIRTY	0x00008	/* S: Page dirty */
--#define _PAGE_EXEC	0x00010	/* H: SX permission */
--#define _PAGE_ACCESSED	0x00020	/* S: Page referenced */
--
--#define _PAGE_ENDIAN	0x00040	/* H: E bit */
--#define _PAGE_GUARDED	0x00080	/* H: G bit */
--#define _PAGE_COHERENT	0x00100	/* H: M bit */
--#define _PAGE_NO_CACHE	0x00200	/* H: I bit */
--#define _PAGE_WRITETHRU	0x00400	/* H: W bit */
--#define _PAGE_SPECIAL	0x00800 /* S: Special page */
--
--#define _PMD_PRESENT	0
--#define _PMD_PRESENT_MASK (PAGE_MASK)
--#define _PMD_BAD	(~PAGE_MASK)
--#define _PMD_USER	0
--
--#define _PTE_NONE_MASK	0
--
--#define PTE_WIMGE_SHIFT (6)
--
--/*
-- * We define 2 sets of base prot bits, one for basic pages (ie,
-- * cacheable kernel and user pages) and one for non cacheable
-- * pages. We always set _PAGE_COHERENT when SMP is enabled or
-- * the processor might need it for DMA coherency.
-- */
--#define _PAGE_BASE_NC	(_PAGE_PRESENT | _PAGE_ACCESSED)
--#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
--#define _PAGE_BASE	(_PAGE_BASE_NC | _PAGE_COHERENT)
--#else
--#define _PAGE_BASE	(_PAGE_BASE_NC)
--#endif
--
--#include <asm/pgtable-masks.h>
--
--#endif /* __KERNEL__ */
--#endif /*  _ASM_POWERPC_NOHASH_32_PTE_FSL_85xx_H */
-diff --git a/arch/powerpc/include/asm/pgtable-types.h b/arch/powerpc/include/asm/pgtable-types.h
-index f3086e39e7d2c..e8dec885b6e47 100644
---- a/arch/powerpc/include/asm/pgtable-types.h
-+++ b/arch/powerpc/include/asm/pgtable-types.h
-@@ -49,7 +49,7 @@ static inline unsigned long pud_val(pud_t x)
- #endif /* CONFIG_PPC64 */
- 
- /* PGD level */
--#if defined(CONFIG_PPC_85xx) && defined(CONFIG_PTE_64BIT)
-+#if defined(CONFIG_PPC_85xx)
- typedef struct { unsigned long long pgd; } pgd_t;
- 
- static inline unsigned long long pgd_val(pgd_t x)
-diff --git a/arch/powerpc/kernel/head_85xx.S b/arch/powerpc/kernel/head_85xx.S
-index f9a73fae64641..8867596d35adc 100644
---- a/arch/powerpc/kernel/head_85xx.S
-+++ b/arch/powerpc/kernel/head_85xx.S
-@@ -305,7 +305,6 @@ set_ivor:
-  *   r12 is pointer to the pte
-  *   r10 is the pshift from the PGD, if we're a hugepage
-  */
--#ifdef CONFIG_PTE_64BIT
- #ifdef CONFIG_HUGETLB_PAGE
- #define FIND_PTE	\
- 	rlwinm	r12, r13, 14, 18, 28;	/* Compute pgdir/pmd offset */	\
-@@ -329,15 +328,6 @@ set_ivor:
- 	rlwimi	r12, r13, 23, 20, 28;	/* Compute pte address */	\
- 	lwz	r11, 4(r12);		/* Get pte entry */
- #endif /* HUGEPAGE */
--#else /* !PTE_64BIT */
--#define FIND_PTE	\
--	rlwimi	r11, r13, 12, 20, 29;	/* Create L1 (pgdir/pmd) address */	\
--	lwz	r11, 0(r11);		/* Get L1 entry */			\
--	rlwinm.	r12, r11, 0, 0, 19;	/* Extract L2 (pte) base address */	\
--	beq	2f;			/* Bail if no table */			\
--	rlwimi	r12, r13, 22, 20, 29;	/* Compute PTE address */		\
--	lwz	r11, 0(r12);		/* Get Linux PTE */
--#endif
- 
- /*
-  * Interrupt vector entry code
-@@ -473,21 +463,15 @@ END_BTB_FLUSH_SECTION
- 4:
- 	FIND_PTE
- 
--#ifdef CONFIG_PTE_64BIT
- 	li	r13,_PAGE_PRESENT|_PAGE_BAP_SR
- 	oris	r13,r13,_PAGE_ACCESSED@h
--#else
--	li	r13,_PAGE_PRESENT|_PAGE_READ|_PAGE_ACCESSED
--#endif
- 	andc.	r13,r13,r11		/* Check permission */
- 
--#ifdef CONFIG_PTE_64BIT
- #ifdef CONFIG_SMP
- 	subf	r13,r11,r12		/* create false data dep */
- 	lwzx	r13,r11,r13		/* Get upper pte bits */
- #else
- 	lwz	r13,0(r12)		/* Get upper pte bits */
--#endif
- #endif
- 
- 	bne	2f			/* Bail if permission/valid mismatch */
-@@ -552,12 +536,8 @@ END_BTB_FLUSH_SECTION
- 
- 	FIND_PTE
- 	/* Make up the required permissions for kernel code */
--#ifdef CONFIG_PTE_64BIT
- 	li	r13,_PAGE_PRESENT | _PAGE_BAP_SX
- 	oris	r13,r13,_PAGE_ACCESSED@h
--#else
--	li	r13,_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_EXEC
--#endif
- 	b	4f
- 
- 	/* Get the PGD for the current thread */
-@@ -573,23 +553,17 @@ END_BTB_FLUSH_SECTION
- 
- 	FIND_PTE
- 	/* Make up the required permissions for user code */
--#ifdef CONFIG_PTE_64BIT
- 	li	r13,_PAGE_PRESENT | _PAGE_BAP_UX
- 	oris	r13,r13,_PAGE_ACCESSED@h
--#else
--	li	r13,_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_EXEC
--#endif
- 
- 4:
- 	andc.	r13,r13,r11		/* Check permission */
- 
--#ifdef CONFIG_PTE_64BIT
- #ifdef CONFIG_SMP
- 	subf	r13,r11,r12		/* create false data dep */
- 	lwzx	r13,r11,r13		/* Get upper pte bits */
- #else
- 	lwz	r13,0(r12)		/* Get upper pte bits */
--#endif
- #endif
- 
- 	bne	2f			/* Bail if permission mismatch */
-@@ -683,7 +657,7 @@ interrupt_end:
-  *	r10 - tsize encoding (if HUGETLB_PAGE) or available to use
-  *	r11 - TLB (info from Linux PTE)
-  *	r12 - available to use
-- *	r13 - upper bits of PTE (if PTE_64BIT) or available to use
-+ *	r13 - upper bits of PTE
-  *	CR5 - results of addr >= PAGE_OFFSET
-  *	MAS0, MAS1 - loaded with proper value when we get here
-  *	MAS2, MAS3 - will need additional info from Linux PTE
-@@ -751,7 +725,6 @@ finish_tlb_load:
- 	 * here we (properly should) assume have the appropriate value.
- 	 */
- finish_tlb_load_cont:
--#ifdef CONFIG_PTE_64BIT
- 	rlwinm	r12, r11, 32-2, 26, 31	/* Move in perm bits */
- 	andi.	r10, r11, _PAGE_DIRTY
- 	bne	1f
-@@ -764,26 +737,9 @@ BEGIN_MMU_FTR_SECTION
- 	srwi	r10, r13, 12		/* grab RPN[12:31] */
- 	mtspr	SPRN_MAS7, r10
- END_MMU_FTR_SECTION_IFSET(MMU_FTR_BIG_PHYS)
--#else
--	li	r10, (_PAGE_EXEC | _PAGE_READ)
--	mr	r13, r11
--	rlwimi	r10, r11, 31, 29, 29	/* extract _PAGE_DIRTY into SW */
--	and	r12, r11, r10
--	mcrf	cr0, cr5		/* Test for user page */
--	slwi	r10, r12, 1
--	or	r10, r10, r12
--	rlwinm	r10, r10, 0, ~_PAGE_EXEC	/* Clear SX on user pages */
--	isellt	r12, r10, r12
--	rlwimi	r13, r12, 0, 20, 31	/* Get RPN from PTE, merge w/ perms */
--	mtspr	SPRN_MAS3, r13
--#endif
- 
- 	mfspr	r12, SPRN_MAS2
--#ifdef CONFIG_PTE_64BIT
- 	rlwimi	r12, r11, 32-19, 27, 31	/* extract WIMGE from pte */
--#else
--	rlwimi	r12, r11, 26, 27, 31	/* extract WIMGE from pte */
--#endif
- #ifdef CONFIG_HUGETLB_PAGE
- 	beq	6, 3f			/* don't mask if page isn't huge */
- 	li	r13, 1
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 4c321a8ea8965..2d9b10b2ce8a2 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -275,7 +275,7 @@ config PPC_BOOK3S
- config PPC_E500
- 	select FSL_EMB_PERFMON
- 	bool
--	select ARCH_SUPPORTS_HUGETLBFS if PHYS_64BIT || PPC64
-+	select ARCH_SUPPORTS_HUGETLBFS
- 	select PPC_SMP_MUXED_IPI
- 	select PPC_DOORBELL
- 	select PPC_KUEP
-@@ -336,7 +336,7 @@ config BOOKE
- config PTE_64BIT
- 	bool
- 	depends on 44x || PPC_E500 || PPC_86xx
--	default y if PHYS_64BIT
-+	default y if PPC_E500 || PHYS_64BIT
- 
- config PHYS_64BIT
- 	bool 'Large physical address support' if PPC_E500 || PPC_86xx
--- 
-2.49.0
+> 
+> Fixes: c535e923bb97 ("soc/fsl: Introduce DPAA 1.x QMan device driver")
+> Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
+> ---
+>   drivers/soc/fsl/qbman/qman.c | 24 ++++++++++++++++++++++--
+>   1 file changed, 22 insertions(+), 2 deletions(-)
+> 
+> NB: I'm not 100% sure of the need of a barrier here, since even without
+> it, the WARN_ON() wasn't triggered any more.
+> 
+> diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+> index 6b392b3ad4b1..39a3e7aab6ff 100644
+> --- a/drivers/soc/fsl/qbman/qman.c
+> +++ b/drivers/soc/fsl/qbman/qman.c
+> @@ -1827,6 +1827,8 @@ EXPORT_SYMBOL(qman_create_fq);
+> 
+>   void qman_destroy_fq(struct qman_fq *fq)
+>   {
+> +       int leaked;
+> +
+>          /*
+>           * We don't need to lock the FQ as it is a pre-condition that the FQ be
+>           * quiesced. Instead, run some checks.
+> @@ -1834,11 +1836,29 @@ void qman_destroy_fq(struct qman_fq *fq)
+>          switch (fq->state) {
+>          case qman_fq_state_parked:
+>          case qman_fq_state_oos:
+> -               if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID))
+> -                       qman_release_fqid(fq->fqid);
+> +               /*
+> +                * There's a race condition here on releasing the fqid,
+> +                * setting the fq_table to NULL, and freeing the fqid.
+> +                * To prevent it, this order should be respected:
+> +                */
+> +               if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID)) {
+> +                       leaked = qman_shutdown_fq(fq->fqid);
+> +                       if (leaked)
+> +                               pr_debug("FQID %d leaked\n", fq->fqid);
+> +               }
+> 
+>                  DPAA_ASSERT(fq_table[fq->idx]);
+>                  fq_table[fq->idx] = NULL;
+> +
+> +               if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID) && !leaked) {
+> +                       /*
+> +                        * fq_table[fq->idx] should be set to null before
+> +                        * freeing fq->fqid otherwise it could by allocated by
+> +                        * qman_alloc_fqid() while still being !NULL
+> +                        */
+> +                       smp_wmb();
+> +                       gen_pool_free(qm_fqalloc, fq->fqid | DPAA_GENALLOC_OFF, 1);
+> +               }
+>                  return;
+>          default:
+>                  break;
+> 
+> base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
+> --
+> 2.47.3
+> 
 
 
