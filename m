@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-15316-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15317-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD942CF7B1B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 11:12:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DB3CF7B96
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 06 Jan 2026 11:14:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dln5l4K1Sz2yP8;
-	Tue, 06 Jan 2026 21:12:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dln8N51v5z2xHt;
+	Tue, 06 Jan 2026 21:14:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767694331;
-	cv=none; b=VYqPuJVHO8ek1XjUgg6N0ULbqdtB7bsdNqZVeLBuQ/j95hcd7MEVUF8OrgIQqVlCBHCUJIn0q6FWeBxFHR89Kg+pvxPBMmLpFbOs5RpzB1OL3xzWQelTTBZ9x7sparoo3PrwlLI1rHsSYfoPxrkJ3DSTVRZyiiIeiO9JVYcNBkiAhdm3DkQzHv3ls1GNd1Be1JmqsLR5EuVRb7F/j0G8VhnkR7BIYecY6dgI1N7Fr6W7db5U2y5DzBc8gCtUaSNwSxGXO8E2hyqbZLRaioFFd9YGeYFz7YP2TtxrdUVDdTDr6z4uRg7yljtfWAbHKjDExX3VheovESFlLQ/3u3EvCg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767694468;
+	cv=none; b=e+mcmu6w1hD2386WBO3HDo9eTCtHF5LFQwgGemF0ueEqyqpIXX1NxKdW8lZzB1ymBjnMQIG0CSIbCqEuueVsL6I0mhBiXNZ2NaziUbF1Uuyp3Z/Pk0agJA7cBwq+vxaeubRtZDTfagoLBS1CI4dvn8vhCz+p4lJjKxpUgua51Dh3CtG/7fPcuk2dNighMK1E28+WRQ2kXF/Svm16ApzW1W9kYYGe/RhWNu9RKdGTwtwzq5bUikURl2m18Y9IizTHWCluwJKicSg9klboqO4ISNRWNbfz+4Uqs2ZmkuGvw5+XDOfkFm0KD5zPAcg3dNnK8jTDzTWuXYQcs4x8f2vrUw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767694331; c=relaxed/relaxed;
-	bh=kvVy5G6bPE2H+HqINsoU9sSGR55p2ti1pM3BmgP1m/g=;
+	t=1767694468; c=relaxed/relaxed;
+	bh=Ys3UwqsdicpE4ouX/5SsJYQhWJLEXWQpBWE5KFHjhMc=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R7oj3aLWQs81dqI2sEEAv/zA1b9lnbcxV1o9njjjgf+eDxgUUjmDsVUgq5C3tIynw7FtLrEdY7LiUNpRq+rwqhdsYICuENgSNPb9JjayYUGiL3KjHLDBmXYHQgQ2kw5r6STKQVJC8YJ3nwXgWi0ssgaknvG9zQXIb9g4eJfdsqKZG8U4wUYL1pq5mQf2WZxMcqpIW/gW+k0Zt3fsYyb/HbGoe/9yqWLlpowK5MS1xfj9HQ1y7Rqqth5dL/140a6BHT4mftdAebfNrL7YudZMzloFyml9psXu2JJSJdDWuTSP8987vDnZX5zgWP5qENHGPxB9w9W1NG3aZsAKEQnufA==
+	 MIME-Version:Content-Type; b=jWc38fLyF9OHhTkYknA69arGMzNb+arxTR340+6zZHEtRMOc4GCZdC1c+/PkB61SrZN6er2RwHxLaSvs+EvZA72r5xnRy7lpByDMs0YQtMmRxFvYeoPc0jVVox3+dtHE2UMpgAd8NiTydObMDX1uqzcUqpi2lqHfc/n3773+xKZJc3td8ze64yQR60+osyzsgj+StC7I80F944wSGAt9HkP2PrMxDNinUPMR5PQuebAIANS4U0i2ZoJRN+B5MCmBLtkw8fK/EddIFkiMFRCt26CmFyXamsUIrsaWiQuHHTddlFoW8aaf8KvbIPV3atVGaZru0EmlsApibKt1v0UZhA==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
@@ -23,19 +23,19 @@ Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dln5k5xpGz2yN2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 21:12:10 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dln5f2WCRzJ473W;
-	Tue,  6 Jan 2026 18:12:06 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dln8M6gPkz2xSX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jan 2026 21:14:27 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dln8H3XltzJ46dw;
+	Tue,  6 Jan 2026 18:14:23 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id B693F4056F;
-	Tue,  6 Jan 2026 18:12:07 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id DA3514056A;
+	Tue,  6 Jan 2026 18:14:24 +0800 (CST)
 Received: from localhost (10.48.149.114) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 6 Jan
- 2026 10:12:05 +0000
-Date: Tue, 6 Jan 2026 10:12:04 +0000
+ 2026 10:14:22 +0000
+Date: Tue, 6 Jan 2026 10:14:21 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 CC: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, "Saravana
@@ -62,12 +62,12 @@ CC: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, "Saravana
 	<linux-clk@vger.kernel.org>, <imx@lists.linux.dev>,
 	<dmaengine@vger.kernel.org>, <linux-media@vger.kernel.org>,
 	<linux-pm@vger.kernel.org>
-Subject: Re: [PATCH 04/11] powerpc/fsp2: Simplify with scoped for each OF
+Subject: Re: [PATCH 05/11] powerpc/wii: Simplify with scoped for each OF
  child loop
-Message-ID: <20260106101204.00004a7a@huawei.com>
-In-Reply-To: <20260105-of-for-each-compatible-scoped-v1-4-24e99c177164@oss.qualcomm.com>
+Message-ID: <20260106101421.000007ea@huawei.com>
+In-Reply-To: <20260105-of-for-each-compatible-scoped-v1-5-24e99c177164@oss.qualcomm.com>
 References: <20260105-of-for-each-compatible-scoped-v1-0-24e99c177164@oss.qualcomm.com>
-	<20260105-of-for-each-compatible-scoped-v1-4-24e99c177164@oss.qualcomm.com>
+	<20260105-of-for-each-compatible-scoped-v1-5-24e99c177164@oss.qualcomm.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -92,7 +92,7 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 05 Jan 2026 14:33:42 +0100
+On Mon, 05 Jan 2026 14:33:43 +0100
 Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com> wrote:
 
 > Use scoped for-each loop when iterating over device nodes to make code a
