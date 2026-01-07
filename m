@@ -1,102 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-15384-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15385-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30496CFE277
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 07 Jan 2026 15:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A8ACFE468
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 07 Jan 2026 15:26:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dmVFv0XCrz2yFh;
-	Thu, 08 Jan 2026 01:06:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dmVhM01Y2z2yFh;
+	Thu, 08 Jan 2026 01:26:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.43
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767794802;
-	cv=none; b=LuPfaD9Nqodx7z7TV51mUmQdSS39TYFP9BO7r8Ri1osNYRy5piiEjbomAeHIfeDqgZG+VrfH9TX+bJYmInRQ1TDGATxDK/0ii02jhs801D9gXRQlHpbnrjhHPa03yZ4OutdfnG2GwmHvGC6IviVYU2MA+uQKxm4/zWsuzSteJbrTeH7JYTjB3AJ3enX2vekU8ZKWxhoBBvHC5PQTRJCxxrdyUmmqXlQunCsbjK4GPIU0M8SSvc1JSn+VQ66WSmQmLHMLbhDNu7Gps3vMrLjnoJx329VNmDkn1H1yI+UXhgW/B+VcWJfvhTPAZbSstclyE6SPtewFhjPu8h05YnpNXw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767795970;
+	cv=none; b=JQiqtXoOB9/nyUsMyYhLgMnYmxkyArMQFdxfTncvFmUzQnZ0wCXa8D8fe0O4sZStEWbvstGZMygWZGYYh7cxQ/XWy2eNJP1AvjAAbKGPmaLf6eKPBwLvWtmuixXeqAJa0ZFRjIFOBgTOr5TA9+nrOb6wJW22a/RP/5XUpQ+p5Y8v4iXxEWRo8U6sCGjghRfFA1zviIiAgEG6rA+pvrq2evPzMA/3EiPDYYWpOLsv+dZmegdgJmpWdk16wJEBlsX6LD1C6e9eDJmetLH74uymGZXcrmNDc5dizz4//UwwulJaeDvTOKT2Qds6p+QsmNji9WILRapRAfbPCBlMvbpYjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767794802; c=relaxed/relaxed;
-	bh=nTerFL81XHMixYnvh7u2MldwUCD+ZWdDPLrHKRPjXbw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PD2Vjdj60Dtk0J+XpSLHhB5ZGxQmQcAqnfKXh7/QUDIGH47Akk0WQh6rMy/XoewTAp9nibtE3etpu5ZkkwOd04aG7WoInJkZZ6xuxlY4z2YYGX+m9hi31ARgKTY0JoLHdZUgpQ6cVllA5/JKALpakw2eQw2cEzvkRgPt7csFXxmM5xAObUmp0bPLaCS2VGf+C9yzBkNWOXNMTTJE2LmkG4bAjhfQ9+X3PfQCIb8ssJl69077rbMnqql6GIwSpUfsAPQR7ogscdosbOP2/wie0Xa3cGBrOrHVFcKK/B4hoIETTgBh/6sifhGrCzPnaUnQ/Prb/r7iLdk13JrDWN/6Ew==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lHJmZ/fv; dkim-atps=neutral; spf=pass (client-ip=209.85.128.43; helo=mail-wm1-f43.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1767795970; c=relaxed/relaxed;
+	bh=JWyHqh0cbDpqwkYQwJwz2YOUGHQ98e9j1ks+F+GVVmM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iRDbX2BC1QpTzaSORp/w2/1lFW3gbgHlANEE0zLRToyHpUV1Fo60S8TIcUdgaClfvVBJB2l3C3XjsimAbgQKyNITjHCFl2xA89MGMNrOpWob1B/97AxChrZQlHd7gXgVYDlOU8c9xQao3dExo6Ml/vfPGdIV3VBvbntdSeEHBX8xKmkcWLeiU9aLxvLxQfIAAhNiCmKB/mc4JyPnvqRpLl21kh3e2NFH34IjE/5tt0/BMtRJmsreUOTrYC/kxrQTeERT8zDqs1sJugwCZmjWqj6ZY4ha8F57VoqGIqxbCRhQIq2xn9LIgSUAGyiB0NI7U1mQ7UTgM/1MWP2PKKROQQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OxiffGlr; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nilay@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lHJmZ/fv;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OxiffGlr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.43; helo=mail-wm1-f43.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nilay@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmVFs0zTfz2xZK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 01:06:39 +1100 (AEDT)
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47d493a9b96so12922445e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jan 2026 06:06:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767794737; x=1768399537; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nTerFL81XHMixYnvh7u2MldwUCD+ZWdDPLrHKRPjXbw=;
-        b=lHJmZ/fvrFwuMRQv6NvA9pUiB0NsPefm4+DEI15PjCze/Ez3LCzdEGACw4RlMgmtbV
-         Lf/nRqSvkl39drCafXhxK0Kix8FMfJU7mK352x6c7m2VJCO0u3cIcB4rIiGlR54bWTny
-         atwcW3JoORrkF2vJ83/OjkEMlk4GFcjb9r+G8YNZXNpGN7HURJQPRbC0fH9xVSx4XyLc
-         ynwu6XVe3uON14lFuNwVFjc/+ci1fyjJbmmgokpSMQ48CD1F1Opf9GpTY96OUAJZAbkW
-         RHQ5GiQoh9vCfjhJshGmEZWvbDjb7aCFWpheOqr0ZAEXH9bWZcNl6ccoTY1XhmHGDXLi
-         5SZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767794737; x=1768399537;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nTerFL81XHMixYnvh7u2MldwUCD+ZWdDPLrHKRPjXbw=;
-        b=i63jQUzXCfSKHPVKQPcCvDWpA7MHm95ntE5nCf+FHUxSC9P5culbsZp4ip5jLw/leY
-         QoqdP7lP9NqMwkSZvkhYz2KQljnQKVmqhRERLkPe6v8pfDtCuba0Q6+/4SDWDj6zO6DS
-         83ME8hC5rLiFgrTnkG6XEaS5PrsyhQXw5gkar7PF2BhX67wQ4P8sTP6lBkwmurHRm9Nb
-         VLyTzM21cf51EBhYMFWL0U5+gllHywpYRXRdgUhre7SmIUbpc+0Ma04tVcSlIL40NGQc
-         7s8qi0zxxZT2cMtsI+aL4CTqfx60Nzf5NK/ofg4FaH56rjbD4wAjwnUUquV4bN34E/MB
-         kfvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUbaN35rl1qKqbFXGquK4yEVlNS/nKYnM6ODLYt2SC/3+BhF0wN77wHCriaQiuUNJYTa56HODZjZpwFknE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxIArzJVI5unK/gR/SgwNZSQYFInLYfhJaC/0BG+MuaxMFP3ZRN
-	K1Cod5xBq04bqId+S/O/BI6TMG3sm0CDFLNtF3P3zoRTdW2bn4OO+s78
-X-Gm-Gg: AY/fxX6yHRy4Jnug6nE+fzMsekRzEzS0tqxL/SRbYa7YgKFfVMvvx9cb1idDr2M+9Ne
-	UUWldpgcT2Evv1RnSP5LS8sbT2qs01Cs8pQGCjbAvHXdvpc98ZW0gtzGy6RIOWO0kl+TYoFNhgI
-	fM8UIHkvDTXLjRiDdmPZvb/qJ+/ZCa35Rc0pgt9/R/TPuuR5gUoOHO7V6hkuM01dZ5cNDWb/Fvn
-	/PGjUW6ZWPM12B+rQN0zEFS3FdVTY7bemqlSbPS7R6UfSZa2X/RqFhLlUzDSrI7/87uNwbW41aU
-	TMBuebyz4Lio8cAqGEfP8x7WWXD25tMB4CD/3wiTVdaHftJZtafuPxY9czG7TgqX5YWW92nQ6X5
-	U8WB2OfzLsnvFSD87G2cqqNy+ZImKsy66hh/W2123pbUxrna+UxFkRk4TiIiVf1pKQNeZuVqnsh
-	W3mvwD+D9OIa0oClwIMZzpo5pV7WzM91cf8moEmmJPRhfrNjeLF3g/
-X-Google-Smtp-Source: AGHT+IFJHEaZoRkhHw4zj9EBxNV/rp8ncSP4Ef47XQLiJPMu3j1wMm2BAE3otGmVGJMIybtQwjSgsQ==
-X-Received: by 2002:a05:600c:8b6d:b0:47a:814c:eea1 with SMTP id 5b1f17b1804b1-47d84b4a7b4mr30796025e9.35.1767794736254;
-        Wed, 07 Jan 2026 06:05:36 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d87167832sm13555455e9.7.2026.01.07.06.05.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 06:05:35 -0800 (PST)
-Date: Wed, 7 Jan 2026 14:05:33 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
- <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Paul Walmsley
- <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
- <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Thomas
- Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav
- Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, Kees Cook
- <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Arnd
- Bergmann <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>, "Jason A.
- Donenfeld" <Jason@zx2c4.com>, Ard Biesheuvel <ardb@kernel.org>, Jeremy
- Linton <jeremy.linton@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] randomize_kstack: Unify random source across
- arches
-Message-ID: <20260107140533.2b3c46a1@pumpkin>
-In-Reply-To: <20260104230136.7aaf8886@pumpkin>
-References: <20260102131156.3265118-1-ryan.roberts@arm.com>
-	<20260102131156.3265118-4-ryan.roberts@arm.com>
-	<20260104230136.7aaf8886@pumpkin>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmVhD3r40z2xLR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 01:26:04 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 607EKEbd016642;
+	Wed, 7 Jan 2026 14:25:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=JWyHqh
+	0cbDpqwkYQwJwz2YOUGHQ98e9j1ks+F+GVVmM=; b=OxiffGlr0ulcQeNaRhIB5I
+	KJevXDrykTyGvGb8oh7u3TMqxrO8wSojZkzOeLZwQp3qy8P/icyzmxIGairK6aHT
+	DKULFawFfxSAypdsubTAYNreOnoxaeUqG+e8ESzSrtB0wdQ7tNntotOx1/CBcFOR
+	inlziGFIy/VairHPQE7pqCJ/TlN5v7rg/AYfEVpfLuJkxZtEnCyzFBJJMIE23IX2
+	+1RvEifLn1nAerEzfl5c30QHDTb2FpED7VHsz6QIMWDVARD0an9dHluO4g01LfDb
+	JnmyPZjXAGKhNVjP1xBx7H7DawQZnMsSZIoWtAHYsoRnbuP5s5HbU66JiTHE03Bg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhk8fb3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jan 2026 14:25:46 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 607EBFoh011138;
+	Wed, 7 Jan 2026 14:25:45 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhk8fb1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jan 2026 14:25:45 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 607C09WP005264;
+	Wed, 7 Jan 2026 14:25:45 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bfexk9e1c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jan 2026 14:25:45 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 607EPhDD30081540
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Jan 2026 14:25:43 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 710FD58043;
+	Wed,  7 Jan 2026 14:25:43 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 02CE058053;
+	Wed,  7 Jan 2026 14:25:38 +0000 (GMT)
+Received: from [9.111.20.18] (unknown [9.111.20.18])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Jan 2026 14:25:37 +0000 (GMT)
+Message-ID: <1fda7021-ec31-40ed-bfd8-e0e9b657662f@linux.ibm.com>
+Date: Wed, 7 Jan 2026 19:55:35 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -110,164 +86,211 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] powerpc/pseries: Fix MSI-X allocation failure when
+ quota is exceeded
+To: Nam Cao <namcao@linutronix.de>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Gleixner <tglx@linutronix.de>, maz@kernel.org,
+        gautam@linux.ibm.com, Gregory Joyce <gjoyce@ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20260107100230.1466093-1-namcao@linutronix.de>
+Content-Language: en-US
+From: Nilay Shroff <nilay@linux.ibm.com>
+In-Reply-To: <20260107100230.1466093-1-namcao@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=P4s3RyAu c=1 sm=1 tr=0 ts=695e6cea cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=zwuvnbuwBpirbEp69l4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: r-9MBfHGL3XoHCVF5R9Qs5_jkm7TC-BC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDExMCBTYWx0ZWRfXztqz+xZmX+/C
+ D+TIHiCmy25+0M4v9ObRPDf15giyJ4ZxQxF2Lo/xWzRf2HoUV2So33ToOIUiop3pHbks+hJM44R
+ 4eNRNvUURtR67HSFCXcLHNvOC8GoB/liLxWcKV8tc3c09bkoDuJXSLuCfYEzuO2zufl9fzL20xU
+ W2S12lOrQppMrKq1ah44xPu6wNOatqeq7pnWltYwjm7OFPsTVLXx/K5vVkRiilLir+lzuI8ZRJm
+ d3kYWHZMIhnCFM0lR1H2AdCG96s2XAgfGJQa9Pwgauzf1vNhiNXxu2QbGkZ6U1KBnrZU2e22VGz
+ WXp4B80vFsK0P97FzZYpsTYWKYeF6/pjFWzWO6AUms2zG+p8T/19gEEVsAbPMqJ7Ca496vgovMA
+ pUEn8mZa8JLtYtG6ArS92OP0BrnY9G92ADQgXPKQ+oiduCK0Mq7/iB5m54ylIDtZEYsimjhGNFI
+ plbWtpo7u98dS1TCVKA==
+X-Proofpoint-GUID: ZiQACeOSl4pDbMqbBy8nv-oApTDhYEly
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-07_02,2026-01-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 priorityscore=1501 clxscore=1015 suspectscore=0
+ phishscore=0 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601070110
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sun, 4 Jan 2026 23:01:36 +0000
-David Laight <david.laight.linux@gmail.com> wrote:
 
-> On Fri,  2 Jan 2026 13:11:54 +0000
-> Ryan Roberts <ryan.roberts@arm.com> wrote:
+
+On 1/7/26 3:32 PM, Nam Cao wrote:
+> Nilay reported that since commit daaa574aba6f ("powerpc/pseries/msi: Switch
+> to msi_create_parent_irq_domain()"), the NVMe driver cannot enable MSI-X
+> when the device's MSI-X table size is larger than the firmware's MSI quota
+> for the device.
 > 
-> > Previously different architectures were using random sources of
-> > differing strength and cost to decide the random kstack offset. A number
-> > of architectures (loongarch, powerpc, s390, x86) were using their
-> > timestamp counter, at whatever the frequency happened to be. Other
-> > arches (arm64, riscv) were using entropy from the crng via
-> > get_random_u16().
-> > 
-> > There have been concerns that in some cases the timestamp counters may
-> > be too weak, because they can be easily guessed or influenced by user
-> > space. And get_random_u16() has been shown to be too costly for the
-> > level of protection kstack offset randomization provides.
-> > 
-> > So let's use a common, architecture-agnostic source of entropy; a
-> > per-cpu prng, seeded at boot-time from the crng. This has a few
-> > benefits:
-> > 
-> >   - We can remove choose_random_kstack_offset(); That was only there to
-> >     try to make the timestamp counter value a bit harder to influence
-> >     from user space.
-> > 
-> >   - The architecture code is simplified. All it has to do now is call
-> >     add_random_kstack_offset() in the syscall path.
-> > 
-> >   - The strength of the randomness can be reasoned about independently
-> >     of the architecture.
-> > 
-> >   - Arches previously using get_random_u16() now have much faster
-> >     syscall paths, see below results.
-> > 
-> > There have been some claims that a prng may be less strong than the
-> > timestamp counter if not regularly reseeded. But the prng has a period
-> > of about 2^113. So as long as the prng state remains secret, it should
-> > not be possible to guess. If the prng state can be accessed, we have
-> > bigger problems.  
+> This is because the commit changes how rtas_prepare_msi_irqs() is called:
 > 
-> If you have 128 bits of output from consecutive outputs I think you
-> can trivially determine the full state using (almost) 'school boy' maths
-> that could be done on pencil and paper.
-> (Most of the work only has to be done once.)
+>   - Before, it is called when interrupts are allocated at the global
+>     interrupt domain with nvec_in being the number of allocated interrupts.
+>     rtas_prepare_msi_irqs() can return a positive number and the allocation
+>     will be retried.
 > 
-> The underlying problem is that the TAUSWORTHE() transformation is 'linear'
-> So that TAUSWORTHE(x ^ y) == TAUSWORTHE(x) ^ TAUSWORTHE(y).
-> (This is true of a LFSR/CRC and TOUSWORTH() is doing some subset of CRCs.)
-> This means that each output bit is the 'xor' of some of the input bits.
-> The four new 'state' values are just xor of the the bits of the old ones.
-> The final xor of the four states gives a 32bit value with each bit just
-> an xor of some of the 128 state bits.
-> Get four consecutive 32 bit values and you can solve the 128 simultaneous
-> equations (by trivial substitution) and get the initial state.
-> The solution gives you the 128 128bit constants for:
-> 	u128 state = 0;
-> 	u128 val = 'value returned from 4 calls';
-> 	for (int i = 0; i < 128; i++)
-> 		state |= parity(const128[i] ^ val) << i;
-> You don't need all 32bits, just accumulate 128 bits.  
-> So if you can get the 5bit stack offset from 26 system calls you know the
-> value that will be used for all the subsequent calls.
-
-Some of the state bits don't get used, so you only need 123 bits.
-The stack offset is 6 bits - so you need the values from 19 calls.
-
-> Simply changing the final line to use + not ^ makes the output non-linear
-> and solving the equations a lot harder.
+>   - Now, it is called at the creation of per-device interrupt domain with
+>     nvec_in being the number of interrupts that the device supports. If
+>     rtas_prepare_msi_irqs() returns positive, domain creation just fails.
 > 
-> I might sit down tomorrow and see if I can actually code it...
+> For Nilay's NVMe driver case, rtas_prepare_msi_irqs() returns a positive
+> number (the quota). This causes per-device interrupt domain creation to
+> fail and thus the NVMe driver cannot enable MSI-X.
+> 
+> Rework to make this scenario works again:
+> 
+>   - pseries_msi_ops_prepare() only prepares as many interrupts as the quota
+>     permit.
+> 
+>   - pseries_irq_domain_alloc() fails if the device's quota is exceeded.
+> 
+> Now, if the quota is exceeded, pseries_msi_ops_prepare() will only prepare
+> as allowed by the quota. If device drivers attempt to allocate more
+> interrupts than the quota permits, pseries_irq_domain_alloc() will return
+> an error code and msi_handle_pci_fail() will allow device drivers a retry.
+> 
+> Reported-by: Nilay Shroff <nilay@linux.ibm.com>
+> Closes: https://lore.kernel.org/linuxppc-dev/6af2c4c2-97f6-4758-be33-256638ef39e5@linux.ibm.com/
+> Fixes: daaa574aba6f ("powerpc/pseries/msi: Switch to msi_create_parent_irq_domain()")
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Acked-by: Nilay Shroff <nilay@linux.ibm.com>
+> Cc: stable@vger.kernel.org
+> ---
+> v2:
+>   - change pseries_msi_ops_prepare()'s allocation logic to match the
+>     original logic in __pci_enable_msix_range()
+> 
+>   - fix up Nilay's email address
+> ---
+>  arch/powerpc/platforms/pseries/msi.c | 44 ++++++++++++++++++++++++++--
+>  1 file changed, 41 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
+> index a82aaa786e9e..edc30cda5dbc 100644
+> --- a/arch/powerpc/platforms/pseries/msi.c
+> +++ b/arch/powerpc/platforms/pseries/msi.c
+> @@ -19,6 +19,11 @@
+>  
+>  #include "pseries.h"
+>  
+> +struct pseries_msi_device {
+> +	unsigned int msi_quota;
+> +	unsigned int msi_used;
+> +};
+> +
+>  static int query_token, change_token;
+>  
+>  #define RTAS_QUERY_FN		0
+> @@ -433,8 +438,28 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
+>  	struct msi_domain_info *info = domain->host_data;
+>  	struct pci_dev *pdev = to_pci_dev(dev);
+>  	int type = (info->flags & MSI_FLAG_PCI_MSIX) ? PCI_CAP_ID_MSIX : PCI_CAP_ID_MSI;
+> +	int ret;
+> +
+> +	struct pseries_msi_device *pseries_dev __free(kfree)
+> +		= kmalloc(sizeof(*pseries_dev), GFP_KERNEL);
+> +	if (!pseries_dev)
+> +		return -ENOMEM;
+> +
+> +	while (1) {
+> +		ret = rtas_prepare_msi_irqs(pdev, nvec, type, arg);
+> +		if (!ret)
+> +			break;
+> +		else if (ret > 0)
+> +			nvec = ret;
+> +		else
+> +			return ret;
+> +	}
+>  
+> -	return rtas_prepare_msi_irqs(pdev, nvec, type, arg);
+> +	pseries_dev->msi_quota = nvec;
+> +	pseries_dev->msi_used = 0;
+> +
+> +	arg->scratchpad[0].ptr = no_free_ptr(pseries_dev);
+> +	return 0;
+>  }
+>  
+>  /*
+> @@ -443,9 +468,13 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
+>   */
+>  static void pseries_msi_ops_teardown(struct irq_domain *domain, msi_alloc_info_t *arg)
+>  {
+> +	struct pseries_msi_device *pseries_dev = arg->scratchpad[0].ptr;
+>  	struct pci_dev *pdev = to_pci_dev(domain->dev);
+>  
+>  	rtas_disable_msi(pdev);
+> +
+> +	WARN_ON(pseries_dev->msi_used);
+> +	kfree(pseries_dev);
+>  }
+>  
+>  static void pseries_msi_shutdown(struct irq_data *d)
+> @@ -546,12 +575,18 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+>  				    unsigned int nr_irqs, void *arg)
+>  {
+>  	struct pci_controller *phb = domain->host_data;
+> +	struct pseries_msi_device *pseries_dev;
+>  	msi_alloc_info_t *info = arg;
+>  	struct msi_desc *desc = info->desc;
+>  	struct pci_dev *pdev = msi_desc_to_pci_dev(desc);
+>  	int hwirq;
+>  	int i, ret;
+>  
+> +	pseries_dev = info->scratchpad[0].ptr;
+> +
+> +	if (pseries_dev->msi_used + nr_irqs > pseries_dev->msi_quota)
+> +		return -ENOSPC;
+> +
+>  	hwirq = rtas_query_irq_number(pci_get_pdn(pdev), desc->msi_index);
+>  	if (hwirq < 0) {
+>  		dev_err(&pdev->dev, "Failed to query HW IRQ: %d\n", hwirq);
+> @@ -567,9 +602,10 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+>  			goto out;
+>  
+>  		irq_domain_set_hwirq_and_chip(domain, virq + i, hwirq + i,
+> -					      &pseries_msi_irq_chip, domain->host_data);
+> +					      &pseries_msi_irq_chip, pseries_dev);
+>  	}
+>  
+> +	pseries_dev->msi_used++;
+>  	return 0;
+>  
+>  out:
+> @@ -582,9 +618,11 @@ static void pseries_irq_domain_free(struct irq_domain *domain, unsigned int virq
+>  				    unsigned int nr_irqs)
+>  {
+>  	struct irq_data *d = irq_domain_get_irq_data(domain, virq);
+> -	struct pci_controller *phb = irq_data_get_irq_chip_data(d);
+> +	struct pseries_msi_device *pseries_dev = irq_data_get_irq_chip_data(d);
+> +	struct pci_controller *phb = domain->host_data;
+>  
+>  	pr_debug("%s bridge %pOF %d #%d\n", __func__, phb->dn, virq, nr_irqs);
+> +	pseries_dev->msi_used -= nr_irqs;
+>  	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
+>  }
+>  
 
-Finally done:
+I just tested this change on my system using the latest mainline kernel and it works
+well for me. So with that, please fell free to add,
 
-#include <stdio.h>
-#include <unistd.h>
-#include <fcntl.h>
-
-typedef unsigned int u32;
-typedef unsigned long long u64;
-typedef unsigned __int128 u128;
-
-struct rnd_state { u32 s1; u32 s2; u32 s3; u32 s4; };
-u32 prandom_u32_state(struct rnd_state *state)
-{
-#define TAUSWORTHE(s, a, b, c, d) ((s & c) << d) ^ (((s << a) ^ s) >> b)
-        state->s1 = TAUSWORTHE(state->s1,  6U, 13U, 4294967294U, 18U);
-        state->s2 = TAUSWORTHE(state->s2,  2U, 27U, 4294967288U,  2U);
-        state->s3 = TAUSWORTHE(state->s3, 13U, 21U, 4294967280U,  7U);
-        state->s4 = TAUSWORTHE(state->s4,  3U, 12U, 4294967168U, 13U);
-
-        return (state->s1 ^ state->s2 ^ state->s3 ^ state->s4);
-}
-
-#define X(n, hi, lo) [n] = (u128)0x##hi << 64 | 0x##lo
-u128 map[128] = {
-        X(  1, 23acb122e4a76, e206c3f6fe435cb6),
-	...
-        X(127, 00d3276d8a76a, e560d1975675be24) };
-
-u128 parity_128(u128 v)                 
-{                               
-        return __builtin_parityll(v) ^ __builtin_parityll(v >> 64);
-}
-
-int main(int argc, char **argv)
-{
-        struct rnd_state s = {};
-        u128 s0, v, r = 0;
-
-        read(open("/dev/urandom", O_RDONLY), &s, sizeof s);
-        // Remove low bits that get masked by the (s & c) term.
-        s.s1 &= ~1; s.s2 &= ~7; s.s3 &= ~15; s.s4 &= ~127;
-        s0 = (((u128)s.s4 << 32 | s.s3) << 32 | s.s2) << 32 | s.s1;
-        v = prandom_u32_state(&s);
-        v |= (u128)prandom_u32_state(&s) << 32;
-        v |= (u128)prandom_u32_state(&s) << 64;
-        v |= (u128)prandom_u32_state(&s) << 96;
-
-        for (int n = 0; n < 128; n++)
-                r |= parity_128(v & map[n]) << n;
-
-        printf("%016llx%016llx\n", (u64)(s0 >> 64), (u64)s0);
-        printf("values%s match\n", r == s0 ? "" : " do not");
-
-        return r != s0;
-}
-
-I've trimmed the initialiser - it is very boring.
-The code to create the initialiser is actually slightly smaller than it is.
-Doable by hand provided you can do 128bit shift and xor without making
-any mistakes.
-
-I've just done a quick search through the kernel sources and haven't found
-many uses of prandom_u32_state() outside of test code.
-There is sched_rng() which uses a per-cpu rng to throw a 1024 sized die.
-bpf also has a per-cpu one for 'unprivileged user space'.
-net/sched/sch_netem.c seems to use one - mostly for packet loss generation.
-
-Since the randomize_kstack code is now using a per-task rng (initialised
-by clone?) that could be used instead of all the others provided they
-are run when 'current' is valid.
-
-But the existing prandom_u32_state() needs a big health warning that
-four outputs leak the entire state.
-That is fixable by changing the last line to:
-        return state->s1 + state->s2 + state->s3 + state->s4;
-That only affects the output value, the period is unchanged.
-
-	David
-
+Tested-by: Nilay Shroff <nilay@linux.ibm.com>
 
 
