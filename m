@@ -1,69 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-15377-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15379-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35917CFCD5E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 07 Jan 2026 10:23:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 239EECFD167
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 07 Jan 2026 11:04:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dmMzS5Vbrz2yPM;
-	Wed, 07 Jan 2026 20:23:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dmNt86Wnnz2yGL;
+	Wed, 07 Jan 2026 21:04:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767777828;
-	cv=none; b=HRRpYp7PYxdNqObcqvwU7iV2QihdJBzt8AFyD/L2eOMUlE+ou764P8JmGuH32Vzeyawm0ftmWFjYq0HXQvGrMQofPQtyZ3L7KIs/fKTUDeqN000vHe0L1gx0uUis3iaFrzW2U+kecrU6MSY2lwspdmPqW1xDCHDaHu4oiDwhGA8IBxln93VJSHZBrz/+lNV5zbUZS0mTSdvBMY16/MAi5LjH0AZjhiZZHI41Px+SLU6RhzZgDSqIOtkIqIT1xE6cjg91o00lECGP2GrskaPjk3Tx6TfOBAGH1FrkLAsAPaJ3rc4hwiT5fz7dpQBvHb2IwuG3ngn+Z23ULgjotT//QQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=83.223.95.100
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767780256;
+	cv=none; b=hfZy9P5bh4jf7wAGGeOn0QJGCdSxndvsaYVmKWZBo2y+367ziq/xojo5hCd/KD1fu3IX7h8cwMRJoJyBzDs9WjSu5kFpxtZ263Ms3j/6C8Wh9v90Ar1SlwN9McOAOBjxqWbr0Ynxip0W3nY9oKXT79NQhWBlJ2pOI1+C/14FiQbiiWBgtW9dhm5mOzMftUbNsM0mEfpJxf4bHtb1BNPBL++n5wKOEdE0yp1MHooGHjYdJCU/7V/ikfbsTc9xxf9Q2uCYkU4y1KZkXElAgVo4bdH3R5O+WaNqHA2SFvTSmd0s7YstIx79BJHi2ZP/rJAG53xEI59sqhoopHveCC+uAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767777828; c=relaxed/relaxed;
-	bh=D74NZhmkxNvjfZirK4yhA980pC1krzYCuzfLlGYAVyo=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Cc:Content-Type; b=g7nphLCwPTBB53Z4/gumWuK10IaKn+iiXpx/P0ssU4TVsJWcGi5i4HjdNFjKeRrjmjuZ+2juVwJamCGaXOphZPl9TmLbv5bYH25MNPP71x+VPmdQEuGfh7qUUF9iK2UWyMjYjwiCLaXmJY/KoOus21x7dMHKuwkQqCJSDV/OWy25cVa6O9Eoq++wHHxJ0g7oprQbYJaY9OzzI9CR6SB/TUsLcYji64W+t7RrI/ma+o5Hg2ho5oZrJkHlR7qhKPw+WQ1JXeWsVxnXU+sAyKIWmyqNUrYkf2PZCoQ283DvG7QhMhRx1Gc+1D+lmB9tGluvnv3/1nomnFR5S3Zet0PLHQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tiGcg12L; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tiGcg12L;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1767780256; c=relaxed/relaxed;
+	bh=sCvt8SzGI/CM6Qbw3oeNTx0+CWLOhxX+81HvfIkt6Qc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PCtmpSz9korUrY7oOBYt2XxJx9Zwk/J6N1DeKGZfuvzQE0EhE15OEKxvZmf5Vydf281zTWJxy0ZP1gR5EV0kPTs9OVYhKGuAdseMut2q6kjCFN/JbaLxDbudoPiNLohWdywkNnAFiAkPF9EDX/wiQ9Al2TJaon29T+cnljnIbBjXBYcV+XYe98ZfnT6K8B6G9l43QLFV6XmgfLzOR+4j8ZQmiGCHb4MN1PlPcJbYoQ9yf4zFnhem+6xGKr3SmgCuRWwGTkUFcdhujwlvtB562vuM3JknPxx2cbzKAUihq3eTnt2qhENsd4u9EWvR0JimpQ8pY32JrnJVMXGAhA8tTw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=83.223.95.100; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout1.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout1.hostsharing.net (client-ip=83.223.95.100; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 429 seconds by postgrey-1.37 at boromir; Wed, 07 Jan 2026 21:04:15 AEDT
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmMzR70l0z2yGQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jan 2026 20:23:47 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 606HpTrj009924;
-	Wed, 7 Jan 2026 09:23:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=D74NZhmkxNvjfZirK4yhA980pC1k
-	rzYCuzfLlGYAVyo=; b=tiGcg12LrmZOpWM28ExKhuZNiMi/5JI7srC8kI8GBwWa
-	EzIzYxF8dNbMrvJtL8pg1nEmgdo3FkPXEX2WQCjXVRS7E9etx553HgctpEUIE7kw
-	oqnmo+nRhPdlKXGKEUlvWgsDKDGEzH0xfc+y6Vfj7Vy1FXctbHIxoxGZz4Gvvw4t
-	Tf7ykLVa85AmGjseJDNq7vvjAbtQt+WHMASYuRr55DJrmC5k3tvUkz5lQbhfByG2
-	HaF7dGyJRR3P2O0G06kqGbZOuOANrsoaM7Pyyb0ICQJ+kaHs4b6eOVHOuU3tiiYI
-	cvxj+n5/EpkEcuu7aCLKRqn71UQPaYcW0SG4lZstEQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betsq8229-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Jan 2026 09:23:44 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60771rcB023487;
-	Wed, 7 Jan 2026 09:23:43 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bg3rmcu3a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Jan 2026 09:23:42 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6079NcQa30409112
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 Jan 2026 09:23:38 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BAA832004B;
-	Wed,  7 Jan 2026 09:23:38 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4FDA520040;
-	Wed,  7 Jan 2026 09:23:37 +0000 (GMT)
-Received: from [9.124.216.12] (unknown [9.124.216.12])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  7 Jan 2026 09:23:37 +0000 (GMT)
-Message-ID: <2a71b853-f461-4327-8d44-ef97564b2b91@linux.ibm.com>
-Date: Wed, 7 Jan 2026 14:53:36 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmNt73JdYz2xbQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jan 2026 21:04:15 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id EDF682C06A86;
+	Wed,  7 Jan 2026 10:56:24 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id D862D30996; Wed,  7 Jan 2026 10:56:24 +0100 (CET)
+Date: Wed, 7 Jan 2026 10:56:24 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] PCI/portdev: Disable AER for Titan Ridge 4C 2018
+Message-ID: <aV4tyKPGioCqXTRr@wunner.de>
+References: <20260107081445.1100-1-atharvatiwarilinuxdev@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,131 +62,67 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: powerpc: BUG: Kernel NULL pointer when running with bcc tools
-Cc: Ritesh Harjani <riteshh@linux.ibm.com>,
-        Athira Rajeev <atrajeev@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>, hbathini@linux.ibm.com,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: shIAPMnyxN0deH0xMKhh3igadqGm-qHJ
-X-Authority-Analysis: v=2.4 cv=Jvf8bc4C c=1 sm=1 tr=0 ts=695e2620 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=Ta_QHltgBEVBiHhf9-EA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: shIAPMnyxN0deH0xMKhh3igadqGm-qHJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDA3NSBTYWx0ZWRfX+TesCD0raQ/c
- of2pA8lMMHi9Wh2yXzv9bNFRCEH5j/y1bhSqr2ZkGY+ERzKdZvXtJbpzwEgdHKs+//bYurNwnss
- EhSGNfnW+72Fq7UBRvL3cLAp71fO5kQp4KCgV86+FsNu5Ix/yIif0HAs8VkbRE1S0XTmeq/dib3
- R2O+cKj72YKOawKmq3cYgNLKfoeeuEDES1SrrXy+TZNIAB+fY+0o9W2nMOdiTbmRWry9Ghm1OMg
- 3g8FB4pLZl5/gKMfaju2Fne1gcU5YH29qxl0or88oAnsuqHhamubgculTI/ib0Np7N69CzW5wgz
- E0oc//1zfLgizNkzi6C97X0k3KMsUN0fIj7yu2zoF6gWf8jRaVEuJGmC5bKSEQOs4/NJ2m6UK60
- nR+qo/tuiP7Zmim522vt6a9+tV6R6pQdI3t4cGS1L/BIjZFYr9oPmf0fiCKp26mx05o/91gVukb
- f+cW4ptDzCYHZ/gKTew==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-06_03,2026-01-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
- priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 bulkscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
- definitions=main-2601070075
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107081445.1100-1-atharvatiwarilinuxdev@gmail.com>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello.
+On Wed, Jan 07, 2026 at 08:14:35AM +0000, Atharva Tiwari wrote:
+> Changes since v1:
+> 	Transferred logic to drivers/pci/quicks.c
 
-While doing some tracing, observed this kernel panic on powerpc.
+This should go below the line with the three dashes
+so that it's not included in the commit when the patch
+is applied to the maintainer's git tree.
 
-It is quite easy reproduce this.
-- keep it preempt=full/lazy
-- enable some bcc tools. for example: ./stackcount nohz_balance_exit_idle
-- Run some workload such as "hackbench 10 process 1000 loops"
+> Disable AER for Intel Titan Ridge 4C 2018
+> (used in T2 iMacs, where the warnings appear)
+> that generate continuous pcieport warnings. such as:
+> 
+> pcieport 0000:00:1c.4: AER: Correctable error message received from 0000:07:00.0
+> pcieport 0000:07:00.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Receiver ID)
+> pcieport 0000:07:00.0:   device [8086:15ea] error status/mask=00000080/00002000
+> pcieport 0000:07:00.0:    [ 7] BadDLLP
+> 
+> (see: https://bugzilla.kernel.org/show_bug.cgi?id=220651)
 
-I remember seeing this across other bcc tools.
+Use a Link: or Closes: tag for the bugzilla URL.
 
+> macOS also disables AER for Thunderbolt devices and controllers in their drivers.
 
+Could you provide a link to the xnu source code
+so that we can double-check what they're doing and why?
 
-Seen this on tip/master:
-commit 5d3b0106245d467fd5ba0bd9a373a13356684f6e (HEAD -> master, origin/master, origin/HEAD)
-Merge: 93368366738f e21279b73ef6
-Author: Ingo Molnar <mingo@kernel.org>
-Date:   Tue Jan 6 09:04:47 2026 +0100
+> +++ b/drivers/pci/quirks.c
+> @@ -6340,4 +6340,13 @@ static void pci_mask_replay_timer_timeout(struct pci_dev *pdev)
+>  }
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_GLI, 0x9750, pci_mask_replay_timer_timeout);
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_GLI, 0x9755, pci_mask_replay_timer_timeout);
+> +
+> +static void pci_disable_aer(struct pci_dev *pdev)
+> +{
+> +	pdev->no_aer = 1;
+> +}
+> +DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x15EA, pci_disable_aer);
+> +DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x15EB, pci_disable_aer);
+> +DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x15EC, pci_disable_aer);
+> +
 
-     Merge branch into tip/master: 'x86/sev'
+This will disable AER on all arches for all users, yet you've claimed
+that the issue is confined to T2 Macs and caused by their firmware.
 
+The proper approach would be to move this quirk to arch/x86/pci/fixups.c
+so that it's not compiled on other arches.  Moreover you need a DMI check
+to constrain this to T2 Macs so that AER stays enabled on other machines.
 
+Since this is a discrete Thunderbolt controller, it is important to cc
+Thunderbolt maintainers to get their feedback, yet your v2 patch wasn't
+cc'ed to them.  Please be sure to include them in any follow-up submissions.
 
-Panic log:
-  attempted to read user page (6b8) - exploit attempt? (uid: 0)
-  BUG: Kernel NULL pointer dereference on read at 0x000006b8
-  Faulting instruction address: 0xc00000000013cf10
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  CPU: 38 UID: 0 PID: 2938 Comm: hackbench Kdump: loaded Not tainted 6.19.0-rc4+ #326 PREEMPT(full)
-  NIP:  c00000000013cf10 LR: c00000000013ced0 CTR: c0000000004a7f08
-  REGS: c0000000a7f96b60 TRAP: 0300   Not tainted  (6.19.0-rc4+)
-  MSR:  8000000000001033 <SF,ME,IR,DR,RI,LE>  CR: 88022828  XER: 20040000
-  CFAR: c00000000050490c DAR: 00000000000006b8 DSISR: 40000000 IRQMASK: 3
-  GPR00: c00000000013ced0 c0000000a7f96e00 c000000001c38100 0000000000000000
-  GPR04: 00007fffda01fea8 0000000000000008 0000000000000000 00007fff94f05e84
-  GPR08: c0000000a7f90000 0000000000000000 00007fffda0205d0 0000000000004000
-  GPR12: c000000002dbdddc c0000017fd891c80 c0000000001e08f4 0000000000000000
-  GPR16: 0000000000000000 0000000000000000 0000000000000000 00000d9842ecbda0
-  GPR20: c0000000c5c54a00 0000000000000026 0000000000000000 0000000000000000
-  GPR24: 0000000000000001 fffffffffffffe00 c0000000c5c54a00 000ffffffffffff8
-  GPR28: 00007fffffffffdf 0000000000000000 00007fffda01fea0 c0000000a7f96ef0
-  NIP [c00000000013cf10] perf_callchain_user_64+0x1b0/0x4f0
-  LR [c00000000013ced0] perf_callchain_user_64+0x170/0x4f0
-  Call Trace:
-  perf_callchain_user_64+0x170/0x4f0 (unreliable)
-  perf_callchain_user+0x20/0x3c
-  get_perf_callchain+0x1b0/0x3dc
-  bpf_get_stackid+0x94/0xec
-  bpf_prog_1ca8f9c0bc38eaa6_trace_count+0x70/0x1bc
-  trace_call_bpf+0x124/0x3c4
-  kprobe_perf_func+0x54/0x2f8
-  kprobe_ftrace_handler+0x1dc/0x298
-  ftrace_regs_call+0x4/0xa0
-  nohz_balance_exit_idle+0x10/0x120
-  nohz_balancer_kick+0x50/0x3e4
-  sched_tick+0x140/0x334
-  update_process_times+0xf0/0x144
-  tick_nohz_handler+0xc4/0x274
-  __hrtimer_run_queues+0x1c4/0x480
-  hrtimer_interrupt+0x12c/0x30c
-  timer_interrupt+0x140/0x394
-  __replay_soft_interrupts+0xa0/0x154
-  arch_local_irq_restore.part.0+0x1ac/0x224
-  _raw_spin_unlock_irqrestore+0x50/0xa0
-  try_to_wake_up+0x3e8/0xa58
-  wake_up_q+0x88/0xe4
-  rwsem_wake.isra.0+0x98/0xd8
-  up_write+0xa8/0xb4
-  unlink_file_vma_batch_process+0xc8/0xf0
-  unlink_file_vma_batch_add+0x5c/0xa4
-  free_pgtables+0x110/0x394
-  exit_mmap+0x1a0/0x5a8
-  __mmput+0x64/0x194
-  exit_mm+0xe0/0x170
-  do_exit+0x21c/0x5d0
-  do_group_exit+0x4c/0xc0
-  pid_child_should_wake+0x0/0x7c
-  system_call_exception+0x128/0x390
-  system_call_vectored_common+0x15c/0x2ec
+Thanks,
 
-
-
-Looks like venkat had reported similar one earlier.
-https://lore.kernel.org/all/49cb29fc-003c-422a-98bd-dee8f13aa0b4@linux.ibm.com/
-
-Venkat, can you give above mentioned steps a try on linux-next latest?
+Lukas
 
