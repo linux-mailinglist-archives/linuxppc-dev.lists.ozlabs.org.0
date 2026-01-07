@@ -1,71 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-15355-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15357-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D7ACFC6BD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 07 Jan 2026 08:42:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE4FCFC6E4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 07 Jan 2026 08:44:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dmKkK4x8Qz2yGL;
-	Wed, 07 Jan 2026 18:42:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dmKmt4yPDz2yGQ;
+	Wed, 07 Jan 2026 18:44:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767771737;
-	cv=none; b=lthGy9BSKMNx6mU32qZx1QoMvJy5/twEdJP+vCgarW7G6QGLHyffJOjk/aI5vw/qAU5rChSrm1sWiMSO5EUc23HZWT7iTsCmahZRnz17E9Erb35jfjqEcmnHjm7J4SHAPd57S7SfJRAGfzyjNiwQ3kveJMB78FLF/iMTbVidHUjye51sU3dKJlIe7wISil9lcKhV5mr7X2D+YP2KyCKA+2IG5smsPTUl9FWk4Hju/P6YgM62D+x6NTAIzqnuke6CuNwqTnzgvZx6hRVodfbezbI+K1Ssh0lKzShUz4q4qyetKpjRmY4T7dei3UJXhrByQc4FX+3aLMiJ+Zg3ZkCX/w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767771870;
+	cv=none; b=EzImQXVHO82pVFVpFHlqVHPKMusdltTig5AdRgzxZuVzrsTaSug+anl5rexgepH6XF4TeEes3+zbsDFLcuFSyHn53fx88IXFoDIpUKkucJNiICg4lcTiivungfJTVid17AW8gXRxW3lnodGbiZGaPJ+LyYjeURchaFCwtPDg3f86vF8WTCKca7ZOFLbUQTWRcbptaZsAWK/2SyRrvnH+RK3ALj+BcFRFoTxUI9lk/rNQclBeAOu9lKQBg5DGks+J5ni+iHrNugXMYTRyjZBfN5rzzE/+ARQvJNPGfKx09dFp7FA5yPnEP/D3vCYlkk3q29GrKoEkNvfwLhVxIwge7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767771737; c=relaxed/relaxed;
-	bh=1OZUwcKFlVEp1Wy+fiQBJUjbSRrLG01ise870K7kToI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YBzwf2Y0dLQA7fRTwIlpifAHiJ8xKFNGaGqNwOTneXxjHJkZjpdg1LRWnn5uk3yhMoYa593vz2wnIELWD6JvAba/XM3J7WPjuJzEgRXrjDQqB4NRPucSpH3L1hJxuItx4w1rVxJUIxLOugshmsw8ymyDU3ETsfEUBwDj02t69QKfq3hEwnlylfiQA+uNa7YH89b1iwOhBLE+q7bIx3e8kIlgw0S62zVs+9iexNiGRCtm6e/yBkoY4XhPUAdMvzTniqcBjKldkSqL775BSfVCgCSi3WjAzyliOyhySLUNni3f2ZK699KI0ZeimAm+02KI6fyRt0Jv3E8gR8+yqrh12Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bFsXPVWQ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dengler@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1767771870; c=relaxed/relaxed;
+	bh=g1RYmT08G8K8Ydd9n9w9DLDjdom5NdBubPWt3QgCxSs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dXFLykQ92MCaJMpaP7mt2xKRSiAutuST3Zcv0h4nuLmIHGaT8QEGL5uBtlPnVqWCbtyAhrpsaqSYMHne2pIO6HtmDrwSFBq41CtkB7auOk1hJ29WK+OFHhsYn8b6mCAiX2L8KKbSIjiMJwU8u/JZeIrqni+I4ZHP8bqaOCm89t0wI6QWPA2dZLUxPKrvwNdDwJADWSIc/63D6Nw5/O8GKDvFynFILAZ+3pYqNJh4R4qnguNYxoKFV5NDf8zgjkD2zHdVe5eQmF//tlrnzz3q2lGxWHisrOIKN9T05+QHxkFFZ7VMsTm0Md1NkSj5JyhO4VOw9N0+hV9hrn5bc4QF+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fgSc0Lle; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bFsXPVWQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fgSc0Lle;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dengler@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmKkJ3DRQz2xbQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jan 2026 18:42:16 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 606JHNFG010621;
-	Wed, 7 Jan 2026 07:41:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=1OZUwc
-	KFlVEp1Wy+fiQBJUjbSRrLG01ise870K7kToI=; b=bFsXPVWQffGEjgz43qR9SU
-	oK9i1gKcGibfmctolAf0Q95wRmnUngUTNHd2zM2G59babPu8XdgILHMZoDz0wTAq
-	4eYjSWZgPNgZWVYDTk+OnX/6LCj5+1HiBQ/iP/uakjlCDMjjRGVBsfez5YEDAbXO
-	/cxf/ovbbw7QTTH/ZgMhjz10jPo4lJbKXYM40fkI70r7pVtga2xeU1Vi249nCNK4
-	KaHEo1JhOt7nZ/TTwFjtbW4SoR59yMc9EOw/EB/PI5a86kvDMKfglBi5kb05SFED
-	GVS7bn13G3twfi4Y3S0a7SRsE3R8CbgFviQmZjdfEB1rnMvxqrwaawJSzuiM3WDw
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4beshexq7s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Jan 2026 07:41:05 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6073cmdh005264;
-	Wed, 7 Jan 2026 07:41:05 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bfexk7rkb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Jan 2026 07:41:04 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6077f2aR16122176
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 Jan 2026 07:41:03 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CF7732004E;
-	Wed,  7 Jan 2026 07:41:02 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8A3312004B;
-	Wed,  7 Jan 2026 07:41:02 +0000 (GMT)
-Received: from [9.111.198.188] (unknown [9.111.198.188])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  7 Jan 2026 07:41:02 +0000 (GMT)
-Message-ID: <167cbd49-e0ba-4b1d-a724-e64ab6ee863c@linux.ibm.com>
-Date: Wed, 7 Jan 2026 08:41:02 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmKmt0XRvz2xbQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jan 2026 18:44:29 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id AC6F160007;
+	Wed,  7 Jan 2026 07:44:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F2CC19421;
+	Wed,  7 Jan 2026 07:44:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767771867;
+	bh=sJ6UFNhgdxznEaPlaWVQBro0xL6d8TpL3PTMM/QEoas=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fgSc0LleW1+4ixYN+EkKOwPYZlY5CH3OyFyjgM6BuNcG6MdnmufiI7IjfZxtmeA6g
+	 6QAvMAbrDP96FQEvvKvfcHUk16ojSpSMSUezysNBFdKNx8qTZvhENyhs+pOdnEgigz
+	 r3a5Z2mh8pFBUce7WHW2U47brDllUi4Qnwf8hD/io15MtcLq1R2L0bGS9wezMzEAjx
+	 00kAmSc6Jkmvos8eozilHT+em7NxGnXAsfPeOoqH7ez6TryDIC9gYnM5SBqWzDOagp
+	 2EO9a6Wy4+ZA958KSVY9BgvJGIpRkqWPOd0hKRRwff7EmAOPLe3nk8k3q6VGMwgwR5
+	 wT7rSufiAim8w==
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+To: ioana.ciornei@nxp.com,
+	Gui-Dong Han <hanguidong02@gmail.com>
+Cc: Christophe Leroy <chleroy@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] bus: fsl-mc: fix use-after-free in driver_override_show()
+Date: Wed,  7 Jan 2026 08:41:51 +0100
+Message-ID: <176777167465.2143957.13769286595533147394.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251202174438.12658-1-hanguidong02@gmail.com>
+References: <20251202174438.12658-1-hanguidong02@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,89 +70,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/36] lib/crypto: s390/aes: Migrate optimized code into
- library
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, x86@kernel.org,
-        Harald Freudenberger <freude@linux.ibm.com>,
-        linux-crypto@vger.kernel.org
-References: <20260105051311.1607207-1-ebiggers@kernel.org>
- <20260105051311.1607207-16-ebiggers@kernel.org>
-From: Holger Dengler <dengler@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20260105051311.1607207-16-ebiggers@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=668; i=chleroy@kernel.org; h=from:subject:message-id; bh=iZF3c2s/gwLPk+6gtKcn3ZoWh+VlN+vu0LbNBwJXh5I=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWTG8Tk0v5mkmnZl3UEXw1Mh7FJcwlynXj7qbFIrWbqsz 9gy4OqujlIWBjEuBlkxRZbj/7l3zej6kpo/dZc+zBxWJpAhDFycAjCRpUsZGdrDTuusjjk6Re7G mdKVXckp05e7vkx6ur4ynOcUT33/mgcM/7OTJ/BGrJxh5LT30nmtnjcuu/Z/36a2Qpbdtt5/O/N bdnYA
+X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDA1NyBTYWx0ZWRfX2Ar3kzLBShn/
- kdRHVYkMALEAtFOLTrFv3UfaLcyHGNcf2FudjUR/NeyXQ7HAsrwQwlYZneMJ2N2uGvAupQRk1e/
- TSguKGdM8P/wi3igdzTYXCbt1TuRtcriMIpKGz1q+34bvm2mFZxURCDAEFZ7ryUhKJA/DdD2MAp
- 3o8LQKFDglWsyiT4LMj68s0SN7DVxC4u641BbU+DyD+pblgwJ0jw1Pe5/qmd6ArnP1Z100oAPvL
- a6Add51rNovhsAzGHW4iUYS/l7vtFWxtXxTJVz7G0slY/W7koj28QBNWoTI0rf38mxOrTtj1UCV
- N+zXBL+vzIKjyQNF3RLFspYinN9vgfuVJpQ0nkXy/1ShtyuR4fKH4FNlzq/G6QmdwxV0SdyQavG
- GIgvHZEtzy4g9sk9HKKrGeBGxWK2zEF1eq+89TivB8tIEmzU7X8E2C3eipi9+Bwb9ZDpNNfyMTV
- 7YxdoBUyksPo7u0Y7Rw==
-X-Proofpoint-GUID: ucJZtlyWTiqD4d7TJcTXL99WK-bHXMG1
-X-Proofpoint-ORIG-GUID: ucJZtlyWTiqD4d7TJcTXL99WK-bHXMG1
-X-Authority-Analysis: v=2.4 cv=AOkvhdoa c=1 sm=1 tr=0 ts=695e0e11 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=w46-cfdy0MOtRbFV-QQA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-06_03,2026-01-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 impostorscore=0
- clxscore=1011 suspectscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601070057
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Eric,
 
-first of all: happy New Year! ANd thanks for the series.
-
-On 05/01/2026 06:12, Eric Biggers wrote:
-> Implement aes_preparekey_arch(), aes_encrypt_arch(), and 
-> aes_decrypt_arch() using the CPACF AES instructions.
-
-I'm not sure, it it makes sense to implement this on s390 at all. The CPACF
-instructions cover full modes of operations and are optimized to process more
-than one cipher-block-size (*). For single-block operations, the performance
-might be worth than using the generic functions. I will look into it and do
-some performance tests. If there is a possibility to plug-in to the level
-where the modes of operation are implemented, it would make much more sense
-for s390.
-
-(*) Yes, it's a bit uncommon, but the CPACF instructions on s390 can process
-multiple block with a single instruction call! They are so called long running
-instructions.
-
-> Then, remove the superseded "aes-s390" crypto_cipher.
+On Wed, 03 Dec 2025 01:44:38 +0800, Gui-Dong Han wrote:
+> The driver_override_show() function reads the driver_override string
+> without holding the device_lock. However, driver_override_store() uses
+> driver_set_override(), which modifies and frees the string while holding
+> the device_lock.
 > 
-> The result is that both the AES library and crypto_cipher APIs use the 
-> CPACF AES instructions, whereas previously only crypto_cipher did (and it 
-> wasn't enabled by default, which this commit fixes as well).
+> This can result in a concurrent use-after-free if the string is freed
+> by the store function while being read by the show function.
 > 
-> Note that this preserves the optimization where the AES key is stored in 
-> raw form rather than expanded form.  CPACF just takes the raw key.
-> 
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org> --- arch/s390/crypto/
+> [...]
 
--- Mit freundlichen Grüßen / Kind regards
-Holger Dengler
---
-IBM Systems, Linux on IBM Z Development
-dengler@linux.ibm.com
+Applied, thanks!
 
+[1/1] bus: fsl-mc: fix use-after-free in driver_override_show()
+      commit: 148891e95014b5dc5878acefa57f1940c281c431
+
+Best regards,
+-- 
+Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
