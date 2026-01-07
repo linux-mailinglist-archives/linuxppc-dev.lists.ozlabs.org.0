@@ -1,73 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-15353-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15354-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66D7CFC50D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 07 Jan 2026 08:22:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E14CFC693
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 07 Jan 2026 08:40:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dmKHb13Nvz2yGD;
-	Wed, 07 Jan 2026 18:22:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dmKh35cNrz2yFh;
+	Wed, 07 Jan 2026 18:40:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.17
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767770555;
-	cv=none; b=GG9YX3OMc6SByumE0FaU6CqCE/q94lbSmMqJmutDmnYb1ujEMzPbM7s1PDV3smHrU3r/vAEcTDiEByxO8xFACXYKJ3/xppLrxyQ82p1Dl7HSDy4AMuMSd1J2ac8TSiwzjtUygtmrVsFam69Ab+rQrCd+AtJWp8HpjmyWOpd0+iRuPGMovATO1iCQIpNWYfyC/UQr7eUhgfFZ3toN5tpgwtk9zY6++NEo+PGBYfZaVNmgD7fwUwt6T9ZXcu/O6f2mFd5F5Sn2/WLadyHk0rW71EZNVZ610SPc6oVNBLbArGqaoTqBSpD5TJovBqC8qpy0bohwenWZxzNnKiMe1CbwiQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767771619;
+	cv=none; b=ip39F51lo+8KpQS8uc5+kzCeCK0U8mgGije5O//5HwHbzqia/UD8Q579OhxzKWmwUuAyh7VZtaD7tlrDc/1AHnmmk9PcEkPxV+11rZTMrtvaC8uGBmTUGzX9aKV2/pXxLkKenqq9m25HtJ52ZrmVtWtEEnUhnf9d1TrhP/ygSoOLwlQNjsYREH200hZs559HF89neSl241ViIhuFwapEuE7kpLm8vun0TsP1eSg3g4rEVCgy3sssMWDUvCNfK8VnIrvRF1I4gAGr73/VHFwl0X3jpWhELpywTnuJJ/aHn5adMZxaTd5yk93uQHwWD9JTiW5tJrQhaA8SRaktnyaWNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767770555; c=relaxed/relaxed;
-	bh=8W0WIsKjEZ+ZcLLUhBWu3j2AvFIfo354SWsGTtuLXhk=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=ZIrxVZFirONgG360Kit7ISYCtTZYkmMievGxVam23LMmPaFMujZKyoQGsWv3m6dcHQQzjVVv6/nGuArKT2wsIXQJTbH36L6uUWZMcNY4x6P8uq2cDS7hxg697uh06F6nq21JdklhdLYdsggjI1l7CJR3bfPZt5YTZppvXOX+IUjr4eevEB5cR66toekQVt7V2X3+8ZKqiNAQreMzsjqyzBfTzmLWrFgbznc1QuK3b8wDCp/astI7huo8ugJ/lyifL5vn8GnCgdLMG54VJMdj3UqbN+96I7Wcj9y2IZBKa33psDcwJJBAJZi+qkhmrPJbKg6H4TwX+aRqrs+Ctsa1eA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=baQGzf3t; dkim-atps=neutral; spf=pass (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1767771619; c=relaxed/relaxed;
+	bh=ooL1wAH4oPdafpfbjqfnQTjUCj6zRNCO0crYGwQGqOo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mkr+nAA4IeFmJAPh68Weo9MqL6izk4r7TlenR1Wv9TwdgAms3gsC0MDNvSk3FXxSoc74bHCF5XtA2t8ysf9WVAfE0qLByusZo2kiiqkJTeQdIWqim55iraAkioG/oyGaPcEwU/JBfhZeUBO3ENlsiI2gWWgBfvPq5dB2ZyQeiPP/LbmBEmO41ho2BLh5Z9Vg1+CKdCE9E0k/fYT7U7KGbQUix/uM0ADK5yReVxxz9pTnpp4Lay97HJOglN7xsN1RGmy7B09C+Eg+MBxGlREXVElt3sZLzst+/E7FbaH3C5a9c41ZyEp8GZM4pE1CfRMPeXbQNpm6ImjKYwHW1zPDWw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PPbAo4iP; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=baQGzf3t;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PPbAo4iP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmKHX56Hpz2yFh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jan 2026 18:22:30 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767770553; x=1799306553;
-  h=date:from:to:cc:subject:message-id;
-  bh=4JniRD0yoDFUo8/7InUTuIuogopE9l9ExtZQRHOEp6M=;
-  b=baQGzf3tPh4L970wbJQ2xvYpjb21Eexae7heAj+IbrpRoOCm9TN/Z8Z3
-   mEjXJaUmqT1YMy8YIixpZ2wjweZi++WMrcoxKZvvGW3ihT8N6/Fit4sXd
-   l6RrTFA15aCJt8uz/5Fpz/+CZip1cCHQrsdQqJTMBwyWop16nNgYiGDwb
-   bLJyTtUEE80a84QRwGlozVOoS+uJgseG3m+jbBw1K89NO6fsNGfi6jVPR
-   trOgUlgqC+Xq9yEntVV0RaIgdD3wBRxuWWmEIp83h/hfcymOjzDL8jnow
-   UPlSdGWwA0A+LB8Fptqe99M0bnTMaICp+8d+yWObWCDjYxZWCBNBWHZsM
-   Q==;
-X-CSE-ConnectionGUID: RUTo10hSTwyWDQ4m0ZUxwQ==
-X-CSE-MsgGUID: mm9rN2XKRuKUPFLLyDscAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69047853"
-X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
-   d="scan'208";a="69047853"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 23:22:28 -0800
-X-CSE-ConnectionGUID: irBhA32tTe+zsmQTNeEn6g==
-X-CSE-MsgGUID: +VoJalJkS9aKf4FshLEirA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
-   d="scan'208";a="207388337"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 06 Jan 2026 23:22:27 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vdNs8-000000003YL-3ucx;
-	Wed, 07 Jan 2026 07:22:24 +0000
-Date: Wed, 07 Jan 2026 15:21:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- 27527b2f6bdfdbd251c68e891b4bba0795f1b912
-Message-ID: <202601071547.f1H55NEK-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmKh26BR8z2xHP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jan 2026 18:40:18 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A077D436BA;
+	Wed,  7 Jan 2026 07:39:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B250C4CEF7;
+	Wed,  7 Jan 2026 07:39:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767771586;
+	bh=glPKfl8V1dLid4Uhk4Di9ZmvY/56MYsT7qi92tzjDvw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PPbAo4iPQi8SviPCmjcUeHBWBS8QE7ieS/V5eEyLAvCvAB+kBWPvP1LplTZ1Xnflf
+	 sqrXU3ULOiKZzqkETrLidsidrMEFWSxooIL3alcVfdFkLh3CIWe4K8suzrnxVBEGAY
+	 Od6Mq0DXs+74pMgYgLePQYdREGlsF3drtjjvrD/9xRuOfJ4wvf+mF9KrDjHQ3QRK5k
+	 2m917ZpmvD+Ko++w6oW0awrzcfOxVH9/f4PDywk4q8r6WK+B3Q41XhsKtTkxF/Li/U
+	 lc9ZL07XWb4XEdTJRgGanFOnJCy3VoDY9oolxslROmuRc1MRH3UKs+WwLDiYEcllCX
+	 vJSOWZCdBTPiw==
+Message-ID: <a65f4add-f052-4c51-85e9-317b42802df1@kernel.org>
+Date: Wed, 7 Jan 2026 08:39:41 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,145 +57,127 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] bus: fsl-mc: add missing fsl_mc_bus_dpdbg_type
+ declaration
+To: Ioana Ciornei <ioana.ciornei@nxp.com>
+Cc: Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <fd30e197df618be4444f9d2172ba794e5f49ae87.1767725589.git.chleroy@kernel.org>
+ <2026010755-registrar-agreeably-a626@gregkh>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <2026010755-registrar-agreeably-a626@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 27527b2f6bdfdbd251c68e891b4bba0795f1b912  Automatic merge of 'fixes' into merge (2026-01-06 11:15)
+Hi Ioana,
 
-elapsed time: 1505m
+Le 07/01/2026 à 06:30, Greg Kroah-Hartman a écrit :
+> On Tue, Jan 06, 2026 at 07:54:21PM +0100, Christophe Leroy (CS GROUP) wrote:
+>> Fix following sparse warning:
+>>
+>>    CHECK   drivers/bus/fsl-mc/fsl-mc-bus.c
+>> drivers/bus/fsl-mc/fsl-mc-bus.c:435:26: warning: symbol 'fsl_mc_bus_dpdbg_type' was not declared. Should it be static?
+>>
+>> As it is exported it can't be static. So declare it in mc.h like
+>> all other similar objects.
+>>
+>> Fixes: e70ba1b06c26 ("bus: fsl-mc: add the dpdbg device type")
+>> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+>> ---
+>>   include/linux/fsl/mc.h | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/include/linux/fsl/mc.h b/include/linux/fsl/mc.h
+>> index 897d6211c1635..28441a456bb48 100644
+>> --- a/include/linux/fsl/mc.h
+>> +++ b/include/linux/fsl/mc.h
+>> @@ -451,6 +451,7 @@ extern const struct device_type fsl_mc_bus_dpdcei_type;
+>>   extern const struct device_type fsl_mc_bus_dpaiop_type;
+>>   extern const struct device_type fsl_mc_bus_dpci_type;
+>>   extern const struct device_type fsl_mc_bus_dpdmai_type;
+>> +extern const struct device_type fsl_mc_bus_dpdbg_type;
+> 
+> As it's obviously not used anywhere, this should not be the fix, please
+> just mark it static and remove the EXPORT_SYMBOL_GPL() as well.
 
-configs tested: 124
-configs skipped: 2
+What's your opinion here as Maintainer of this driver, what should we do ?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Greg is right that it is nowhere used, and it is the same for several 
+other types, the only difference being that they have a matching 
+is_fsl_mc_bus_dp..() helper that hides the type, but not all helpers are 
+used, and many of them are not used outside drivers/bus/fsl-mc/ which 
+cannot be built as a module:
 
-tested configs:
-alpha                               defconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                   randconfig-001-20260107    gcc-14.3.0
-arc                   randconfig-002-20260107    gcc-8.5.0
-arm                                 defconfig    clang-22
-arm                      jornada720_defconfig    clang-22
-arm                        neponset_defconfig    gcc-15.1.0
-arm                   randconfig-001-20260107    gcc-10.5.0
-arm                   randconfig-002-20260107    clang-22
-arm                   randconfig-003-20260107    clang-22
-arm                   randconfig-004-20260107    gcc-10.5.0
-arm                           tegra_defconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20260107    clang-22
-arm64                 randconfig-002-20260107    clang-22
-arm64                 randconfig-003-20260107    gcc-8.5.0
-arm64                 randconfig-004-20260107    clang-22
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20260107    gcc-15.1.0
-csky                  randconfig-002-20260107    gcc-9.5.0
-hexagon                             defconfig    clang-22
-hexagon               randconfig-001-20260107    clang-22
-hexagon               randconfig-002-20260107    clang-22
-i386        buildonly-randconfig-001-20260107    gcc-14
-i386        buildonly-randconfig-002-20260107    gcc-14
-i386        buildonly-randconfig-003-20260107    clang-20
-i386        buildonly-randconfig-004-20260107    gcc-14
-i386        buildonly-randconfig-005-20260107    clang-20
-i386        buildonly-randconfig-006-20260107    clang-20
-i386                                defconfig    clang-20
-i386                  randconfig-001-20260107    gcc-14
-i386                  randconfig-002-20260107    gcc-14
-i386                  randconfig-003-20260107    gcc-14
-i386                  randconfig-004-20260107    gcc-14
-i386                  randconfig-005-20260107    gcc-14
-i386                  randconfig-006-20260107    gcc-14
-i386                  randconfig-007-20260107    clang-20
-i386                  randconfig-011-20260107    gcc-13
-i386                  randconfig-012-20260107    gcc-14
-i386                  randconfig-013-20260107    clang-20
-i386                  randconfig-014-20260107    gcc-14
-i386                  randconfig-015-20260107    clang-20
-i386                  randconfig-016-20260107    clang-20
-i386                  randconfig-017-20260107    clang-20
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260107    gcc-15.1.0
-loongarch             randconfig-002-20260107    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-m68k                          hp300_defconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20260107    gcc-8.5.0
-nios2                 randconfig-002-20260107    gcc-8.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20260107    gcc-8.5.0
-parisc                randconfig-002-20260107    gcc-8.5.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                     akebono_defconfig    clang-22
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                      pasemi_defconfig    clang-22
-powerpc               randconfig-001-20260107    clang-22
-powerpc               randconfig-002-20260107    gcc-8.5.0
-powerpc                        warp_defconfig    gcc-15.1.0
-powerpc64             randconfig-001-20260107    gcc-14.3.0
-powerpc64             randconfig-002-20260107    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                               defconfig    clang-22
-riscv                 randconfig-001-20260107    clang-22
-riscv                 randconfig-002-20260107    gcc-9.5.0
-s390                              allnoconfig    clang-22
-s390                                defconfig    clang-22
-s390                  randconfig-001-20260107    clang-22
-s390                  randconfig-002-20260107    clang-22
-sh                                allnoconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                          lboxre2_defconfig    gcc-15.1.0
-sh                    randconfig-001-20260107    gcc-12.5.0
-sh                    randconfig-002-20260107    gcc-12.5.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20260107    gcc-8.5.0
-sparc                 randconfig-002-20260107    gcc-11.5.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20260107    clang-22
-sparc64               randconfig-002-20260107    gcc-10.5.0
-um                                allnoconfig    clang-22
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260107    clang-16
-um                    randconfig-002-20260107    clang-22
-um                           x86_64_defconfig    clang-22
-x86_64                            allnoconfig    clang-20
-x86_64      buildonly-randconfig-001-20260107    gcc-14
-x86_64      buildonly-randconfig-002-20260107    gcc-14
-x86_64      buildonly-randconfig-003-20260107    gcc-14
-x86_64      buildonly-randconfig-004-20260107    clang-20
-x86_64      buildonly-randconfig-005-20260107    gcc-14
-x86_64      buildonly-randconfig-006-20260107    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                randconfig-001-20260107    clang-20
-x86_64                randconfig-002-20260107    clang-20
-x86_64                randconfig-003-20260107    clang-20
-x86_64                randconfig-004-20260107    gcc-13
-x86_64                randconfig-005-20260107    clang-20
-x86_64                randconfig-006-20260107    clang-20
-x86_64                randconfig-011-20260107    gcc-12
-x86_64                randconfig-012-20260107    gcc-14
-x86_64                randconfig-013-20260107    clang-20
-x86_64                randconfig-014-20260107    clang-20
-x86_64                randconfig-015-20260107    clang-20
-x86_64                randconfig-016-20260107    clang-20
-x86_64                randconfig-071-20260107    gcc-14
-x86_64                randconfig-072-20260107    clang-20
-x86_64                randconfig-073-20260107    gcc-14
-x86_64                randconfig-074-20260107    gcc-14
-x86_64                randconfig-075-20260107    clang-20
-x86_64                randconfig-076-20260107    gcc-14
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20260107    gcc-8.5.0
-xtensa                randconfig-002-20260107    gcc-15.1.0
+$ git grep is_fsl_mc_bus_
+drivers/bus/fsl-mc/dprc-driver.c:       if (!is_fsl_mc_bus_dprc(mc_dev))
+drivers/bus/fsl-mc/dprc-driver.c:       if (!is_fsl_mc_bus_dprc(mc_dev))
+drivers/bus/fsl-mc/fsl-mc-allocator.c:  return is_fsl_mc_bus_dpbp(mc_dev) ||
+drivers/bus/fsl-mc/fsl-mc-allocator.c: 
+is_fsl_mc_bus_dpmcp(mc_dev) ||
+drivers/bus/fsl-mc/fsl-mc-allocator.c:         is_fsl_mc_bus_dpcon(mc_dev);
+drivers/bus/fsl-mc/fsl-mc-allocator.c:  if (is_fsl_mc_bus_dprc(mc_dev))
+drivers/bus/fsl-mc/fsl-mc-allocator.c:  if (is_fsl_mc_bus_dprc(mc_dev))
+drivers/bus/fsl-mc/fsl-mc-bus.c:        if (is_fsl_mc_bus_dprc(mc_dev) ||
+drivers/bus/fsl-mc/fsl-mc-bus.c:            is_fsl_mc_bus_dpmcp(mc_dev)) {
+drivers/bus/fsl-mc/fsl-mc-bus.c:        } else if 
+(is_fsl_mc_bus_dpio(mc_dev)) {
+drivers/bus/fsl-mc/fsl-mc-bus.c:                        if 
+(is_fsl_mc_bus_dprc(mc_dev) &&
+drivers/bus/fsl-mc/fsl-mc-bus.c:        if (is_fsl_mc_bus_dprc(mc_dev))
+drivers/vfio/fsl-mc/vfio_fsl_mc.c:              int no_mmap = 
+is_fsl_mc_bus_dprc(mc_dev);
+drivers/vfio/fsl-mc/vfio_fsl_mc.c:      if 
+(is_fsl_mc_bus_dprc(vdev->mc_dev)) {
+drivers/vfio/fsl-mc/vfio_fsl_mc.c:              if 
+(is_fsl_mc_bus_dprc(mc_dev))
+drivers/vfio/fsl-mc/vfio_fsl_mc.c:      if (!is_fsl_mc_bus_dprc(mc_dev)) {
+drivers/vfio/fsl-mc/vfio_fsl_mc.c:      if (!is_fsl_mc_bus_dprc(mc_dev))
+drivers/vfio/fsl-mc/vfio_fsl_mc.c:      if (!is_fsl_mc_bus_dprc(mc_dev))
+drivers/vfio/fsl-mc/vfio_fsl_mc.c:      if (is_fsl_mc_bus_dprc(mc_dev))
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dprc(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpni(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpio(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpsw(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpdmux(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpbp(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpcon(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpmcp(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpmac(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dprtc(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpseci(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpdcei(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpaiop(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpci(const 
+struct fsl_mc_device *mc_dev)
+include/linux/fsl/mc.h:static inline bool is_fsl_mc_bus_dpdmai(const 
+struct fsl_mc_device *mc_dev)
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+And the only outside user is drivers/vfio/fsl-mc/vfio_fsl_mc.c which can 
+be a module, but has been orphaned by commit af6605f87ca5 ("MAINTAINERS: 
+Orphan vfio fsl-mc bus driver") and scheduled for removal by commit 
+1b1d9ca13475 ("vfio/fsl-mc: Mark for removal")
+
+Christophe
 
