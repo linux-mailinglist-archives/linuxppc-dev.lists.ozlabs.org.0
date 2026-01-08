@@ -1,74 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-15417-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15418-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6956ED026F1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 12:37:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3C1D029D1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 13:26:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dn2tx4PC5z2yGl;
-	Thu, 08 Jan 2026 22:37:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dn40D4p49z2yGq;
+	Thu, 08 Jan 2026 23:26:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.11
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767872233;
-	cv=none; b=CqmKAfp4GCcgIgHOIyW9exyNHHXUsBharAyUvqRfQvLZpzgn42qUqv8bF/2dQEcOpW43dSoIMAUojBoZOIWVTjZg0jhG/lgVVe95DxrdMRVf7V9n96hPgIXfGs8nAhUoEm5KlqdHR4ZBCBcJs9xc6/I5jm9CMKSzbAE4zXaSJJTMCeLXOQ/mu29U4mtt2D9CDbLgVqnwH7EdPot1Z+6dM4/iNB6x+ej3wHLfVvkJZgAdWZH/D168bqcdgJv1tDOug3lQ9sAf8LRjMBpilMfMd8FAHkI7/zeF7HQ+zVgTAowNdsS0Q0326L39YzKFFfuxXYEz1FFFM46jGEAOZ7Y/Ow==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.48
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767875212;
+	cv=none; b=GVfbcGGHLeWVUx0zIW4NgB173TRsJu5EfChCJj3FhAM+UfDh7O1UCwzaQmtFHFTnuFZnjs8JNwP9eUPYkYHxRP+n/GbVi/T/IhSXgquTmGsyuLs/ynYFmK6hi8QPhZ6UYjO8fMLPwNWt9E9Vnf4JpRZ4vuJ9FXryHb4A8ohr92pnLIoEDQGh7rVJpW4mjCXRfjaIgtIAfnFwsWr65u8SPJgq2KZPQJXG3HM+XnUdEKf1+CpeMVnZ6P4kWk8/n+VUVIJfoDFbSCUbAhrMGN/iOCtiM4utECfwiDGxh4skYpwDOaTdHvUgcMQAJ49Qm70HtHW1raSSPak+KaBRYQQYOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767872233; c=relaxed/relaxed;
-	bh=jzdYEgrzzEHAbsKGK1TfXPqFuiXDJDpoPhLR/Fd2ZG4=;
+	t=1767875212; c=relaxed/relaxed;
+	bh=oo2CFLtjsV6BAg50pc5av8wJo3LO0NyzTUT5/dN04BQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LsqWwgVeV/CH8QMOBdXyfgnmh/ZZLVroqPRUKuTCvow1FhOKvNt+iaSl9if3fJCib4QkgJGUveyVv3EkiLC4CBPxor0qHhjh7zl9CMfdfzv4SFzL6EGAVeOoMua5fzC4w0H6VrnUI9lW1NukQRbw+XIc5vecF1MA5nhxZ9WZ0V4aCpsOIxb9LpD+hkI7/FnHoeiBI0e0oSjE8dQ3hNjGC1AkA/gPaHleH1jT4q2/Kt0KNHQ26EyIcu2wRurClu0xiTujl0GWvm/pDU82WGchmOJI5fTaN/i8k0TMNhuzN3zbaiChIkt9bfWR/0hGopgVr2EEV+98LTICN4C+taFU9w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Jmq2fw5P; dkim-atps=neutral; spf=pass (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=mika.westerberg@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=elP4iYZJUuUwUD8nqm2y+3AVaRvCcne4XRynOZILWUDyYaur59Fcpz6Xxzc2mdGKHWxTyoEYJZXtZcY6m1tEOAgQWTqjTB4lT+mtsW2WyO7j7jERcquiDWhGzjAwgsmpnN6MEehMoiKQcATzs9WpCXBdBumijgFbGEAhbe7WNNM4nHiW/v8Q+9q7QDo7r0w/S+2GHjRYJrh8od1PMoHksJgT3n3Go4sgEQ57DMdlkXSbdvVst8gBacbD/HfFDtvvJl+B4ArY4eNI1Gx5gswWJTVEtzAaEDBGCNopeduEXSdhKq5lEQedwdC7DpoqJ9GnNHO+MxpM53m1x0kqieBcSg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=bT0Ih3zy; dkim-atps=neutral; spf=pass (client-ip=209.85.128.48; helo=mail-wm1-f48.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Jmq2fw5P;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=bT0Ih3zy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=mika.westerberg@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.48; helo=mail-wm1-f48.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dn2tt3Kqwz2xFn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 22:37:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767872230; x=1799408230;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jzdYEgrzzEHAbsKGK1TfXPqFuiXDJDpoPhLR/Fd2ZG4=;
-  b=Jmq2fw5P6tpUJWn2VEazpNW1N1DR7FYdimnbeYY8+ZOn6kpssG7jgoGm
-   64Lufwc/HdKIOqV4iDJu5egTXTWY90t/PX7ZS+VFIzdT7H3uGoTzz+RC5
-   xGT55IvNqwsOinFsaK6w1cjZW3J+rOiNHPITcqZuGJZX7efVI1wCKA9X4
-   u/RxeFELnOak9WODmyQwrHnRqZsMM8jp/nw3/G7kwRi97cxkVMW1GCD9D
-   OMYt6u6Bv3wz83uT0APdICawEPie4R36IMDikjy1fuJsQMoNmIOdaRa9b
-   8wO+a1m/J3b3XfYjX3koZFWDRTQw75Wp8Ah7kDuQnRngKYMZqsa9aK7mK
-   A==;
-X-CSE-ConnectionGUID: 7MGuo5bJTj6uMD8GYs5brQ==
-X-CSE-MsgGUID: juqY5atbQdW6MF5hU09QWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="79547985"
-X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; 
-   d="scan'208";a="79547985"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 03:37:06 -0800
-X-CSE-ConnectionGUID: S2N2NM28S9ikmBT4twszjA==
-X-CSE-MsgGUID: 1TBz1duORRyaggZDd90VpA==
-X-ExtLoop1: 1
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa003.fm.intel.com with ESMTP; 08 Jan 2026 03:37:02 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id 6C40898; Thu, 08 Jan 2026 12:37:01 +0100 (CET)
-Date: Thu, 8 Jan 2026 12:37:01 +0100
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
-Cc: YehezkelShB@gmail.com, andreas.noever@gmail.com, bhelgaas@google.com,
-	bp@alien8.de, dave.hansen@linux.intel.com,
-	feng.tang@linux.alibaba.com, hpa@zytor.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	lukas@wunner.de, mahesh@linux.ibm.com, mingo@redhat.com,
-	oohall@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	tglx@linutronix.de, westeri@kernel.org, x86@kernel.org
-Subject: Re: [PATCH v4] PCI/portdev: Disable AER for Titan Ridge 4C 2018
-Message-ID: <20260108113701.GR2275908@black.igk.intel.com>
-References: <20260108095303.GQ2275908@black.igk.intel.com>
- <20260108103358.3412-1-atharvatiwarilinuxdev@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dn40B5sBfz2yGL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 23:26:49 +1100 (AEDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-477563e28a3so14281425e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 04:26:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1767875146; x=1768479946; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oo2CFLtjsV6BAg50pc5av8wJo3LO0NyzTUT5/dN04BQ=;
+        b=bT0Ih3zydIuvZy68RoQn4w0Pl21mcOvrDL2kl0oM0f36+yInYt5m8lxsCZWNXHEDWL
+         FJdariO+8khMGO9qSwe45p+uJRLuCZtcpMXy0Jh2Ahh1uerXckdRc6fsu6eNPlVkdxhb
+         cC+Xc5IH6WRzR4fiO3OfjklewwPYVza0/oExJvArQfzWdSomOilD9NN6EGxVuUm+gz4q
+         thVHd/bkp3pKgi1W/FDK8+UmnL0eP4iCVEGW8l5PbkPXAM0rwsubUjzKri4NLaBMth87
+         2iYzMPjsMZYO61IOP1iMxSxOHS6X+Q/pv6AIkRCTt0Nssj+jeyu/SxJtPmVMBFHmfsbn
+         BXDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767875146; x=1768479946;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oo2CFLtjsV6BAg50pc5av8wJo3LO0NyzTUT5/dN04BQ=;
+        b=f5o4WSWOMuMJMBHFcm86pH130/Q9s1jYLqggH0pCleSj0hXOH6dJrQT2SJ4V8WxA7R
+         /n6iFsd58m+WTPjbeNdF2WTsINf035idjyQ5o3HRmNmrPvOzi4CLYafjLSwYWdPVrw3Q
+         p4DrBG9xsbJA1LPtQIld7uSMTGSB13ojIUzmivxcpixe/uV+kFzpuzKXfpl4DiB2VQPa
+         wQ0UvhSeno3IO/rtnvAiiN98GEG656R5UQFe6nAkd+9WRlUaqNE+OHbMr69vmGBtxjpf
+         3/x/dUCWYvxoIMRgntZOKOd6/paD5hsVijcw1/9mWkKW3U4f/f2OWtoDdHLM92ey9Jzr
+         a1hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCX1IyZqGxQwyDJ7G/xOlzIqqdqr3vwBrGkfEP4J+P14MVuoABa9wuG003kwmdPw5UZw0ZeMzdonIJzGY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YznFj7pDjBD6cSVkN5kzMfocC5sOoIf5rVTJDhFjMJZtGnSo8KS
+	NtBBfmrcx2fSuH12WYYdRnSYdGf8faqKTdBlZs90kqlFKzrviksRolcxp9V2cFfnhXg=
+X-Gm-Gg: AY/fxX53zJfQ1pN8VdNaBW3P/k/sf/YC2pBYHEeUHhtTvYdT3Vfb74bDLMbK4oru+/6
+	ESUEv7mESmqCAv4bddvp+dHhoY4DqmrDOXv5XZTJQKjuPz7Mqx3eAEPuPm+c6zQKH6W/1lRrcNV
+	YRa0hNXmNZwr9X/Bp+VnwCZcUFN1lOrbW133QKBqFzeyGDpyKyCfwuo6YJQF6KS6dNMexSfiM1W
+	3a2GeEd+7mzNjWuOgzWRD+FQdRL9/v1ibC5auv4qWRAIJz4OH+0sYggnKhl57/D/QBlfTdtIuWR
+	LfwagO9cqEWRmmXKZuoab+pGOeciRYlTHZarBTFkHyShDHNoELtYdzBnXHU1VIp9XzHggIu5GWL
+	64OIy1M7b3/zDWmPk5fopfkk0JuBjeJczQB8OT/2+XQCX5vwk2C34fpd7X2qZak9sRsze282r9x
+	Icb3k6hQqdIuuqzw==
+X-Google-Smtp-Source: AGHT+IHPOUU3VYG+LDdtS425ZuQtdVwqew0HnOk9sFOgT5yYaX5tS3MzGzSvSUidpw9ZUf5/ur53vg==
+X-Received: by 2002:a05:600c:450a:b0:477:9890:9ab8 with SMTP id 5b1f17b1804b1-47d8483cc37mr64638865e9.3.1767875146300;
+        Thu, 08 Jan 2026 04:25:46 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d86c6ff40sm78786105e9.2.2026.01.08.04.25.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jan 2026 04:25:45 -0800 (PST)
+Date: Thu, 8 Jan 2026 13:25:43 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Feng Tang <feng.tang@linux.alibaba.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nicholas Piggin <npiggin@gmail.com>, chleroy@kernel.org,
+	lkp@intel.com, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc/watchdog: add support for hardlockup_sys_info
+ sysctl
+Message-ID: <aV-iR87kfdZsSZT_@pathway.suse.cz>
+References: <20251231080309.39642-1-feng.tang@linux.alibaba.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,23 +96,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260108103358.3412-1-atharvatiwarilinuxdev@gmail.com>
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+In-Reply-To: <20251231080309.39642-1-feng.tang@linux.alibaba.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Jan 08, 2026 at 10:33:58AM +0000, Atharva Tiwari wrote:
-> I am using a SD-card reader in the thunderbolt port (usb-c)
+On Wed 2025-12-31 16:03:09, Feng Tang wrote:
+> Commit a9af76a78760 ("watchdog: add sys_info sysctls to dump sys info
+> on system lockup") adds 'hardlock_sys_info' systcl knob for general
+> kernel watchdog to control what kinds of system debug info to be dumped
+> on hardlockup.
+> 
+> Add similar support in powerpc watchdog code to make the sysctl knob
+> more general, which also fixes a compiling warning in general watchdog
+> code reported by 0day bot.
+> 
+> Fixes: a9af76a78760 ("watchdog: add sys_info sysctls to dump sys info on system lockup")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202512030920.NFKtekA7-lkp@intel.com/
+> Suggested-by: Petr Mladek <pmladek@suse.com>
+> Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
 
-Okay, so regular USB 3.x device not a USB4/TB.
+I haven't tested the patch. But it seems that it does what it says.
+Feel free to use:
 
-> Unfoutunatly my linux install got bricked because of macOS update,
-> so i cant provide dmesg, but i have lspci saved on macOS:
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 
-I saw that in the bugzilla too but it is missing the capabilities (that's
-why I asked 'sudo lspci -vv' output so it also dumps the capabilities and
-hopefully sheds some light why the AER message flood happens).
+Best Regards,
+Petr
 
