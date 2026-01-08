@@ -1,100 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-15411-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15408-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097BAD01DEF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 10:38:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD761D01C08
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 10:10:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dn0G44H6zz2yGD;
-	Thu, 08 Jan 2026 20:38:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dmzf726wHz2yG7;
+	Thu, 08 Jan 2026 20:10:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.214.180
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767860787;
-	cv=none; b=VIqchScBYqu/unNgRAiQmJmJ+2wfH5RAIvHurnzQtsSEZUZ9zQI7v0tEFFV5Dzi4rP7U2LTmzED5wrR+mnrIDDxMJhZib22IICElghr8v2r6kUYtsxDU5egeoaXx/VmxGQPmxUBAsyq5fsLYRkKrm2lmHP4orr2KMUmDnOUnfQrtxxuv68RShuOKXFO/jcT7Qcs8BO4TjCBYD4K6KXgzFh7DYJYVhaM3EZSacEOk6ledVaqfx2j59MYlSE0gf5O/OBELr3C9tM1iYIz65e5JOKcVY9u1MkL1KHZgyvT2+SFenpolXUfIxC2+yNmIA88d3jlAAV3w76eIZ47M8M32xg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767863455;
+	cv=none; b=nCJCwGIX61k0alKq4JPMqL7sQmbpzcbf0t+TAsL3aFp2OfHp1IEmrSluhvPPJWZu2IlQvpSt7aj8GBHigTCsHSHB8vGGL8dyoL5Mf2qIbF5ndJ85LytiXZDzorBd9gh33QOtpZkYFj2T2PaoKJGFZ1yfdu6GirHSeWK0O1e3PjKg0w5hzBOe7rj74s2XKa+nGmzD8l1fvFF4XZK4wlM/fvOC1frrmnPqp89ogzHV5dupeOI/gQu/Gdb1oqrXjmurksZqdmvYQKeeeRb8lXvYX2tp9UYfSAIZRgkZC7cbCroCBVu4t0PBWGue4k6hXG3x+sh9lOgd1jSopSGZmpV3gQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767860787; c=relaxed/relaxed;
-	bh=x8t1+RviBZBkQiz1+F0jLoZoAGkcEhuc2rfeggUJxJA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c4XrkOQpXR9pjq/mpS9nljHdlX/tDiQ+AgjD/59q6Mm5t8eZDDUfRpvmKLTtGlfsNQfHwHbdZivFhAw+pizfQ3Grv2Afs2/Vmt56GGjxTOBIB8pZhGgp9vrup5bvWlacyc6gGIeiEjqfHQP0HbyZep6LUr663vsBWmYncHqSXCbBsEDtBGQwYOvSqQ6ePvKmTNrUqGbTcpzSsHEw45L08a8+GjN84SRJf5l4QTCTusP7Dp6I9gzmC3L5Qal+dGlnJ7MeOVPStecj2ALw8vFoeEHoRimiE/g0DIXjgton0M3SROu1aDZUlfmH5Ml4KlO+5NnRE/j9CvqeqntHZzsE+Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VlObGF3v; dkim-atps=neutral; spf=pass (client-ip=209.85.214.180; helo=mail-pl1-f180.google.com; envelope-from=atharvatiwarilinuxdev@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1767863455; c=relaxed/relaxed;
+	bh=C3+XNaSDI2xF3PAxj604v/eV3Vxp1rIX5xTH/wFBtxo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=itE7HrROZGHIMLIkxu32VjUCDCELOw9IDqhZMKFF1CXvopLIIsf64wOnUh680Rk0IXK/+mD57w9O6RmNSwHNfuWwF5IlVtE7+JPImwTFbnznGQNgO7l2LMqXbi1mFxD45uctZvasTQQhcdmwE76YD8SMna5hRHAV7dP99VhG2oGYTvPzl+pfQzQL2EpFxzyKQGpjn+ew5oWz8HokKrRtBd9BCV4oZdy0oXZeHVZs0CgRQMvldyY/ic5Jz2lUiK/xOyacidwqlxTRaeuLXJ9HmowzwXXPl1zEaQgzezR3UbENsMmBWcxpUhhdWdH2xBlDU0iKsn89EwGnGjjPPWWzhw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FT/D8P2Z; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mkchauras@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VlObGF3v;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FT/D8P2Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.214.180; helo=mail-pl1-f180.google.com; envelope-from=atharvatiwarilinuxdev@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mkchauras@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmyfp4sNXz2xZK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 19:26:25 +1100 (AEDT)
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0ac29fca1so22960775ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 00:26:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767860724; x=1768465524; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x8t1+RviBZBkQiz1+F0jLoZoAGkcEhuc2rfeggUJxJA=;
-        b=VlObGF3vYzWEBe6fSRKgdM6wxtXpiZOozioHwfVVrKLzk51rKJS79+pHpYrv+vFAbA
-         7P+mAPOIyhgqpXc6axTHvuqNrmW/1Lb2D1PDhc1o+aQSgsjCDCW7J0a6ZIx10mhnb/Tx
-         XxAzACKnHPVu2m4/9+pAjAS9ySJR6ksYSMQBWSXQ2Yp5I9kgZHqbW9J8RklZdZq36ozo
-         F7uOoH9L2sz1W1tWPSjM2K+zZSZFViiIs1G9jDxNxIgYk0TxPf4F+0xw9o7bxQ2MWnl8
-         H5c8ah+pUVceYFoRkwu/caISnMkDHTf14ZcRc95zEVr3vY/jwynZGL9/T54j5JyVgYqd
-         h/2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767860724; x=1768465524;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x8t1+RviBZBkQiz1+F0jLoZoAGkcEhuc2rfeggUJxJA=;
-        b=B7f9GE7tq24fDV/VspyfhCx95qMpkE3WDrxdsfRwKtTwuVgLLJY8vz1S0v0Jv3RzWD
-         MfnX6x6SqdSY3JMQVswjRbeJd27ZkTByANBgts76/JfvekXX3tFr4pngE3mIb7+rDlVF
-         UqqiBhwI/qJxmagjWsTWPgWT0kKnN1cV8DGNFxY3XvWqPkBnRmhD2QeR1PF7lSER0PEz
-         FHdsuaOKDXukl9fc10aNjESa5kfzQsjIny2A52dyC2c/lLh92wNffhmHdQfJzMXnXRwn
-         CAvet7itmrTVGirclKdDJpy7A0XU6cm/QbsqffiZa/m0TI2V8knyGXIA07muQlgc2qkS
-         na2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXEgLaQooEVOZKacWnyVucmwoi1Go0g6HSA7tN6nW3oztoBgZ7E41HGxTOTUin94/jDgbfnZEQRw/ks6ns=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwQErf/EWhTeFGI+aTGHfuVSlsKKrCqu5IOHveGf23gfBkU4DIt
-	hYmqK5Bm6NXFQKH8tTpSZ93zJKZ8u2WHeCRuRjb6hDtEWk0Sm0khbA0=
-X-Gm-Gg: AY/fxX59iE9AOoY/rkp6H+vk71MmXlloQiRHfrwS+f/v0VSgMcDDXOimOUHNF4vkvjx
-	aaIXB/uaADZNltGNAEv3LMp2ww5yAbR+e5/sLJqowdQL2HBmggCP7oF4gpZjLi6nLzm6cRZT0wM
-	teufTk9eMn61DbpqId5xZIgQxnSkB26pCzM4i+CDMZWd8Z253sigvXLsa9IflOil9jhGgTQcoRa
-	5LxdmaqTN/FZc3CWkZ6ENaHOBhFLv/c25Zdm3VowOZrVK4sanM1GjyV69xv0Lg0qjUX5tzGyLQT
-	i/3oaKpgpnjcSiD8jKC1qj5GuihVz2jVMq3UVGfS5PdN4Z8hgts25WsZg2q/yR5qeCOk8WKk554
-	7KOSHbSFYvfdyRuzRg0DuCmJJ6Y4OTbNv3mqBT8qtmXf9sF1eaYeD/cAihlr6SmaDkH3i3ZbymH
-	JaVni5lE9mtikqRHM=
-X-Google-Smtp-Source: AGHT+IFlqu/P/5sh9z5DWE3DsjYa1JH40CTlBeUg8uyttdF4r71Kg5WERp3YCavi1Kt+WDXEmDPaOw==
-X-Received: by 2002:a17:903:3c30:b0:2a0:fe4a:d67c with SMTP id d9443c01a7336-2a3ee437a5dmr49953365ad.10.1767860724001;
-        Thu, 08 Jan 2026 00:25:24 -0800 (PST)
-Received: from at.. ([171.61.166.195])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c47303sm70625825ad.24.2026.01.08.00.25.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 00:25:23 -0800 (PST)
-From: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
-To: 
-Cc: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	"Oliver O'Halloran" <oohall@gmail.com>,
-	Andreas Noever <andreas.noever@gmail.com>,
-	Mika Westerberg <westeri@kernel.org>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH v4] PCI/portdev: Disable AER for Titan Ridge 4C 2018
-Date: Thu,  8 Jan 2026 08:25:03 +0000
-Message-ID: <20260108082509.3028-1-atharvatiwarilinuxdev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmzf568Xbz2xZK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 20:10:53 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 607M5W4g016651;
+	Thu, 8 Jan 2026 09:10:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=C3+XNa
+	SDI2xF3PAxj604v/eV3Vxp1rIX5xTH/wFBtxo=; b=FT/D8P2ZvPCje+7wZXaPOU
+	6JpP2myP4tg+GJQfNthTtY/cqXL+CiBFyl94t4u1fTD7SQU/aISFjYTeNP5ZHVye
+	1+xcMbIkJvy9goJRm627iK80Ntvy2ncyya5HMB+FuDb8nV29yhR6m26POYf9dLFg
+	tmPw9C6hk5A8TAJjgH7ViJdJilRF6C47MUoaVi9rqlwOSe/p63w7E3V2dYq4IIXV
+	z3xMhqyUR3JiACQJx4EkpljMAfvSZZZmMJ5UzqCxU3QvCsbz+2vNz7C0XR6ev+pi
+	g1xoxi73Frv7jTLYzYO9++dNFjkSJ2klXXQAjg78aCwSE/LiXseyDtHNFW2BIBWA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betsqdf1t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jan 2026 09:10:05 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 608969Nu000800;
+	Thu, 8 Jan 2026 09:10:04 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betsqdf1q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jan 2026 09:10:04 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6086NFB9019341;
+	Thu, 8 Jan 2026 09:10:03 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfg51dpcx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jan 2026 09:10:03 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60899xWF21365240
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 8 Jan 2026 09:09:59 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 81BB92004B;
+	Thu,  8 Jan 2026 09:09:59 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 49E6E20040;
+	Thu,  8 Jan 2026 09:09:55 +0000 (GMT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com (unknown [9.109.250.90])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  8 Jan 2026 09:09:55 +0000 (GMT)
+Date: Thu, 8 Jan 2026 14:39:53 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@linux.ibm.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Venkat <venkat88@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, oleg@redhat.com, kees@kernel.org,
+        luto@amacapital.net, wad@chromium.org, mchauras@linux.ibm.com,
+        thuth@redhat.com, Shrikanth Hegde <sshegde@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>, macro@orcam.me.uk,
+        deller@gmx.de, ldv@strace.io, charlie@rivosinc.com,
+        segher@kernel.crashing.org, bigeasy@linutronix.de,
+        namcao@linutronix.de, Thomas Gleixner <tglx@linutronix.de>,
+        Kan Liang <kan.liang@linux.intel.com>, mark.barnett@arm.com,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 0/8] Generic IRQ entry/exit support for powerpc
+Message-ID: <aV90NVNEUjMABRNp@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20251229045416.3193779-1-mkchauras@linux.ibm.com>
+ <3BBCC728-0BF9-484A-85F9-2760DEFD56BD@linux.ibm.com>
+ <e18ac87b-0034-4297-ae15-0dd0a36abb15@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -108,126 +105,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: YES
-X-Spam-Status: Yes, score=3.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+In-Reply-To: <e18ac87b-0034-4297-ae15-0dd0a36abb15@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kjAhBS6LqblIFnGa8V9aLQIxCDmHlrEB
+X-Authority-Analysis: v=2.4 cv=Jvf8bc4C c=1 sm=1 tr=0 ts=695f746d cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=8nJEP1OIZ-IA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=tckgzhkTuugkUmzQtsYA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+X-Proofpoint-ORIG-GUID: BqE6XJzG-6CpC_PizBV9atVnQVvHZqFm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA1OSBTYWx0ZWRfX5gKYUkSs2rwh
+ +0A3dJ3CEqdIbfWPWU8h1vhRVmTVpaZtrRYWsfqHB1afobdRSSnl7/KqJTZKFFJmkQXAICUPG8G
+ /Mmy3ase8NPhXa7OaUptaY4K8yeDnp3WVyBLT603NFffuOKI3gPQ5kdg8N+xXEqKJ0BqUKvxdd/
+ p/V/zJGGBqRaMGfw5bybzZFxp2VzUl6Xay1qKQs+Nj7JrI88oFGT5d9HLt7uh1WYft4FV/UCEJL
+ AlheuWR2QQd+qkwc0081PBMHIiWDTjKdR0T0OU4YW/i1PSWUs+GTrO/ZVtXGJQSmu3EkHtssOSy
+ ep0c8TqvrM3UpnrI9DabPRI9VC8cdR3/BDCZA889Wg2WOjOTIAC8sNMRbsKiWg2nTq3REUDbyWd
+ QKpLFJM6s1GdeBfEe0MsHchv8FK0RWJOVA/RCzQHtiUxYyUVYET1VkTB5he6JoK/wpa4yTcX/Qe
+ OrxmGjkEot1MGkZhw8Q==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-08_01,2026-01-07_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 bulkscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
+ definitions=main-2601080059
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Report: 
-	* -0.0 SPF_PASS SPF: sender matches SPF record
-	*  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-	* -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-	*      envelope-from domain
-	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-	*      valid
-	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
-	*       domain
-	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-	*  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail provider
-	*      [atharvatiwarilinuxdev(at)gmail.com]
-	*  3.6 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-	*      [171.61.166.195 listed in zen.spamhaus.org]
-	*  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
-	*      [209.85.214.180 listed in wl.mailspike.net]
-	* -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at https://www.dnswl.org/, no
-	*      trust
-	*      [209.85.214.180 listed in list.dnswl.org]
-	*  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
-X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Disable AER for Intel Titan Ridge 4C 2018
-(used in T2 iMacs, where the warnings appear)
-that generate continuous pcieport warnings. such as:
+On Thu, Jan 08, 2026 at 07:05:42AM +0100, Christophe Leroy (CS GROUP) wrote:
+> Hi,
+> 
+> Le 08/01/2026 à 06:16, Venkat a écrit :
+> > With this patch set, build fails.
+> > 
+> > Failure logs:
+> > 
+> > ld: init/main.o: in function `do_one_initcall':
+> > /root/linux/init/main.c:1384: undefined reference to `memcpy'
+> 
+> I guess you have KASAN enabled ?
+> 
+> See
+> https://lore.kernel.org/all/0947502d-96e3-4179-ae48-603de74dc7b3@kernel.org/
+> 
+> This is because of commit 69d4c0d32186 ("entry, kasan, x86: Disallow
+> overriding mem*() functions") which changed the core behaviour in 2023
+> without taking care of other architectures than x86 who was the only one
+> with CONFIG_GENERIC_ENTRY ?
+> 
+> For powerpc the expected behaviour introduced in 2019 by commit 26deb04342e3
+> ("powerpc: prepare string/mem functions for KASAN") needs to be modified the
+> same way to fit with the core change.
+> 
+> Christophe
+Hey Christophe, Venkat
 
-pcieport 0000:00:1c.4: AER: Correctable error message received from 0000:07:00.0
-pcieport 0000:07:00.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Receiver ID)
-pcieport 0000:07:00.0:   device [8086:15ea] error status/mask=00000080/00002000
-pcieport 0000:07:00.0:    [ 7] BadDLLP
+I am working on this. I'll send out a new revision soon.
 
-macOS also disables AER for Thunderbolt devices and controllers in their drivers.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220651
-Signed-off-by: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
-
----
-Chnages since v3:
-- Fixed Grammer mistakes
-Changes since v2:
-- Transferred logic to arch/x86/pci/fixup.c to only target x86
-- Added DMI quirk to only target AppleÂ Systems
-Changes since v1:
-- Transferred logic to drivers/pci/quicks.c
----
----
- arch/x86/pci/fixup.c       | 12 ++++++++++++
- drivers/pci/pcie/aer.c     |  3 +++
- drivers/pci/pcie/portdrv.c |  2 +-
- include/linux/pci.h        |  1 +
- 4 files changed, 17 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
-index 25076a5acd96..bd72f7cf5db9 100644
---- a/arch/x86/pci/fixup.c
-+++ b/arch/x86/pci/fixup.c
-@@ -1081,3 +1081,15 @@ static void quirk_tuxeo_rp_d3(struct pci_dev *pdev)
- }
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x1502, quirk_tuxeo_rp_d3);
- #endif /* CONFIG_SUSPEND */
-+
-+#ifdef CONFIG_PCIEAER
-+
-+static void quirk_disable_aer(struct pci_dev *pdev)
-+{
-+	if (dmi_match(DMI_SYS_VENDOR, "Apple"))
-+		pdev->no_aer = 1;
-+}
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x15EA, quirk_disable_aer);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x15EB, quirk_disable_aer);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x15EC, quirk_disable_aer);
-+#endif /* CONFIG_PCIEAER */
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index e0bcaa896803..45604564ce6f 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -389,6 +389,9 @@ void pci_aer_init(struct pci_dev *dev)
- {
- 	int n;
- 
-+	if (dev->no_aer)
-+		return;
-+
- 	dev->aer_cap = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
- 	if (!dev->aer_cap)
- 		return;
-diff --git a/drivers/pci/pcie/portdrv.c b/drivers/pci/pcie/portdrv.c
-index 38a41ccf79b9..ab904a224296 100644
---- a/drivers/pci/pcie/portdrv.c
-+++ b/drivers/pci/pcie/portdrv.c
-@@ -240,7 +240,7 @@ static int get_port_device_capability(struct pci_dev *dev)
- 	if ((pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT ||
-              pci_pcie_type(dev) == PCI_EXP_TYPE_RC_EC) &&
- 	    dev->aer_cap && pci_aer_available() &&
--	    (pcie_ports_native || host->native_aer))
-+	    (pcie_ports_native || host->native_aer) && !dev->no_aer)
- 		services |= PCIE_PORT_SERVICE_AER;
- #endif
- 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 864775651c6f..f447f86c6bdf 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -440,6 +440,7 @@ struct pci_dev {
- 	unsigned int	multifunction:1;	/* Multi-function device */
- 
- 	unsigned int	is_busmaster:1;		/* Is busmaster */
-+	unsigned int	no_aer:1;		/* May not use AER */
- 	unsigned int	no_msi:1;		/* May not use MSI */
- 	unsigned int	no_64bit_msi:1;		/* May only use 32-bit MSIs */
- 	unsigned int	block_cfg_access:1;	/* Config space access blocked */
--- 
-2.43.0
-
+Regards,
+Mukesh
 
