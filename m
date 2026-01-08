@@ -1,58 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-15427-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15428-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F97D05FEE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 21:10:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27873D060AC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 21:26:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dnGHQ5llMz2yFk;
-	Fri, 09 Jan 2026 07:10:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dnGdv4m1gz2yFl;
+	Fri, 09 Jan 2026 07:26:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767903042;
-	cv=none; b=Tu/pHNBjmvbT9tdMU+5k0wiY78LA57orB6hDBfFXZ0wmaR6Io9529ghL3HBqb8+eNJrkAWPomk6B+1y8ZR+f37oZOJuhWjJTrh43so7xUVGDsIaL+zBZGpMUrA8l7sekLF0ntrqoJeUM1entKfgE0kblmd/zG0b+ZivOZHd5PksFh8ijsydrXc9yYID9uWc8hRXkwy9eLyS48OSvimZuAriU5TSHbCbTwqkPon621E5OkN/82S1nzZLMqdZl18B9XkwciUM6/7GLV9ywVZPeK5vtTcTEB4ceX3d2HEHL7adc6NPWNSkackFCB/pUEhHMEO+yYufAhpgUng8Pf99fpQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767904003;
+	cv=none; b=VulTMpyo/edC7k5PHHYUnnZLdg5Q1Gtu37du0F+qCJ/qs6DezPWPjY++RcrFb9KeBk99rObUjMuL/rDljfVO5XN0LbDZTKltPtx9NeOSEvOl7+1sKPw5hu0cOrx7ggnQtinVIs/7CF/l6vafeXwiUS1r1BR2nOUpIoLBD5vBGTrkYN2VNFZzNqAK55Kiq/l1LGPnLaP9/7n0FxgKVdxy8AkmY/jrg2+XUqRZirnyQrsr+9uWB8597Lxh1NlKsHBAJJ3zqJEWHx/vcTn88IfPwGX8jSWyyP2Gc/nZaam6qKgacKBojREka4as6Xx/xbT6aE5tJA8N2G+A+jel9lrW4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767903042; c=relaxed/relaxed;
-	bh=nvh6vFDxnLLRCkd44oRBGvN0fikzmU6YF3y7N7iZ7UI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SIfCEehvjYFBXBuoh+ekOqE1tL6FDOGfe0aej4cY2APrFZLz4MiW8dhzgz1QGgPgkvbEiZNWBVVSKc/HIiUIuVmDBISks7442GsZnI6bDUyY2P8GBrge8SF8U7k9Fl02SGfMOrVWyVDg04tjSoSuI1JEC24hhPUatKHD59H9Nr/HRpP1WdMATjF9hyk/S98Ia8KxBMPGBPBwJiMPCT3l9mtd5h9DpPndkCsVSpu+AOvXxxhk56EtIeGWX6NZSaKJsiTjf0IMNZ6Olo++2u5WzUU2UXGBq6b/7ZhW/8byuhM5iR1CpwOVvZR3K9WAP+02D4GyOIpsVKpdG0oOIzHcuw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VnwMcz3m; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1767904003; c=relaxed/relaxed;
+	bh=t3otNVD7IIfdqZW2Ev5WG9FHN6LT1F9BWrJwjvjMbRc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WhMTo8SB59K+K6Xdm6hnA+IfZNpZlHzWbrb/am+WlnvV/DZ89fPyZ2dOyCiD9dlCs2QRYQrB6owfj3hFqLYvi/giTkhBDNPO0RKBcTNiVFtfZ+rpKH4WIeu1sLGLwtnP6kPm0ywgsjV3oSuOcu/IE7ng6jy2/3VcJjvZVq1eYOK/PVKSPESG05ThUDaUL1vKDu86Xzn2YRwRSENlCEPMdIwW888f92UIvcZkmSqqO34tWX63c6ZnTk32Al/wx1T6sojKqiR1Uzl2QHFXMBavTjEXAwSBQdbUEoN7EW6FewfALTM/LwZANuz8FVqyVgmsC1DIfPZUXkwc6kZJXaIzJw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EyNigXEX; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VnwMcz3m;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EyNigXEX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dnGHP6Jszz2xcB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jan 2026 07:10:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dnGdt3tJzz2xpt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jan 2026 07:26:42 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13CFD419FF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jan 2026 20:10:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C50C16AAE
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jan 2026 20:10:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B75804348E;
+	Thu,  8 Jan 2026 20:26:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C48C116C6;
+	Thu,  8 Jan 2026 20:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767903007;
-	bh=twpVp3jzla1rgtXT0dqZxOaRWr0DQx/Arkcq8HDQVLo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VnwMcz3m353GwyoCTBKxBkVqCsz3Qyd0uSYsbWpDabDqf5AqP9r1elUwhLSdpimgF
-	 /Rs5ht8zVQRuPCDLVhu77WN3AiR93RdFEwytWXd1JpW+2TwCP+xOAS+kMCOTtqK2Rn
-	 HievxgxzcNRqVcdkRLFo92uiP7ZN/k6xEafj6J+H/SGKsZldl3oieqEvBK9AM/4iIc
-	 lk2zXYSLdvm0kneB6qP7mbG6vm/W/4YFaKTH9R1sMpEhb2BjNrycunk6usFUdsJLMD
-	 pE+dpbfLdoMvDsUVsmyvWMEOFCI1/B5ud+4RW2yPEMkO0nOmwiiL8ND2WkNbWPElBh
-	 CWb2EW0GVRf3Q==
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b843d418e37so391024366b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 12:10:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUQb4mtvC/nqOEf+2O1wlwkXOz3lkZaM4gGhHXwkiJyUl2Ouw2NNdxt3TrRLM6TEc21j0O6IJ6sUf4F1oE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywhx+qathKxg4ZhxM4YvMJaeqSep4rmHkYm9qSgHbbjMQi9iDV7
-	utIDOGvtgQ5yt3niSYCyb5XEVpV0SSQxKWV7GWNQGOPvT6stlo7YbO76gO2Qpw7NLin3JIHr6sI
-	Ht12t4Wfuy9JU3Gcdf6O5cYf2Y761eA==
-X-Google-Smtp-Source: AGHT+IEWcso0Tnf8qe72vO8BkFVooAKgs1PSHRAVZTJGZfHsd5GMBoa4Ex7+q1SOboQ2YL+MeIVhXMxTH82k0CgWVFM=
-X-Received: by 2002:a17:907:1b08:b0:b80:344b:421a with SMTP id
- a640c23a62f3a-b8444f43f86mr807433766b.18.1767903006462; Thu, 08 Jan 2026
- 12:10:06 -0800 (PST)
+	s=k20201202; t=1767904000;
+	bh=Lbm1wO5Em7fQQ3GgNoKyxmZwFi9cEzaK6DxC0Hi/YDo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EyNigXEX0DLMaJG0OfQR4OzGuk/of9r8RZK5qiWkOnEYPPsqT0sO1q1s17KEOINIa
+	 NBWSlBfPlmpONGDNCI9fjxzMZ/y80VPpOFRdXRRSXCarUm+xRxIyCQyBO2jMrr/Pje
+	 0xSy3IPcI6jBuNEU0eiYYB2+/koWhKmP6dZuRJsMN9+a79OGGH37b3RJ/9LQes/OUF
+	 mnBoRj1PnxeL4FC9HPYLvmsv6ugYHZMjQ8aen4EJS9tGlvv2R26hZgQdr3CTeZlyOS
+	 YqTHMwNzv2jbc77JdR4R84tXkpLq9i5xMwKqrJCMQwpE/B+HX3bhXiAuLk2eXY560K
+	 X0Kk2IgVhopmQ==
+Date: Thu, 8 Jan 2026 12:26:18 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org, x86@kernel.org,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>
+Subject: Re: [PATCH 00/36] AES library improvements
+Message-ID: <20260108202618.GA2687@sol>
+References: <20260105051311.1607207-1-ebiggers@kernel.org>
+ <CAMj1kXGRTfyXPD3+Ravr7O5ZUMAUeabQw455sW5g7aRy3BU+2Q@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,182 +71,84 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <63f19db21a91729d91b3df336a56a7eb4206e561.1767804922.git.chleroy@kernel.org>
- <7708243d6cca21004de8b3da87369c06dbee3848.1767804922.git.chleroy@kernel.org>
- <20260108190203.GA780464-robh@kernel.org> <8a8c8a31-ebe8-48cb-9836-c69c6d65a545@kernel.org>
-In-Reply-To: <8a8c8a31-ebe8-48cb-9836-c69c6d65a545@kernel.org>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 8 Jan 2026 14:09:54 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLTPOFve5v-V2mmoSqiO9+Woh9vhq4Kof7pMtuVFp2C+g@mail.gmail.com>
-X-Gm-Features: AQt7F2r6GjuLRCY1szfRMCPd1iuSpzfSLJ-3dWB8YNgbFdjDgn4XP8KB1EDvxjE
-Message-ID: <CAL_JsqLTPOFve5v-V2mmoSqiO9+Woh9vhq4Kof7pMtuVFp2C+g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] dt-bindings: soc: fsl: qe: Add an interrupt
- controller for QUICC Engine Ports
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Qiang Zhao <qiang.zhao@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGRTfyXPD3+Ravr7O5ZUMAUeabQw455sW5g7aRy3BU+2Q@mail.gmail.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Jan 8, 2026 at 1:44=E2=80=AFPM Christophe Leroy (CS GROUP)
-<chleroy@kernel.org> wrote:
->
->
->
-> Le 08/01/2026 =C3=A0 20:02, Rob Herring a =C3=A9crit :
-> > On Wed, Jan 07, 2026 at 05:59:10PM +0100, Christophe Leroy (CS GROUP) w=
-rote:
-> >> The QUICC Engine provides interrupts for a few I/O ports. This is
-> >> handled via a separate interrupt ID and managed via a triplet of
-> >> dedicated registers hosted by the SoC.
-> >>
-> >> Implement an interrupt driver for it so that those IRQs can then
-> >> be linked to the related GPIOs.
-> >>
-> >> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-> >> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+On Thu, Jan 08, 2026 at 12:32:00PM +0100, Ard Biesheuvel wrote:
+> On Mon, 5 Jan 2026 at 06:14, Eric Biggers <ebiggers@kernel.org> wrote:
 > >
-> > Already? On a v1?
->
-> This is extracted from a previous series, here:
-> https://lore.kernel.org/all/67987bbf42344398709949cb53e3e8415260ec09.1758=
-212309.git.christophe.leroy@csgroup.eu/
->
-> Should I have called it v7 even if it is only a small part of the
-> initial series ?
-
-Probably. Otherwise, b4 might think v6 is newer.
-
-Regardless, the history matters.
-
->
-> Ack is here:
-> https://lore.kernel.org/all/20250818-babbling-studio-81a974afc169@spud/
->
+> > This series applies to libcrypto-next.  It can also be retrieved from:
 > >
-> >> ---
-> >>   .../soc/fsl/cpm_qe/fsl,qe-ports-ic.yaml       | 51 +++++++++++++++++=
-++
-> >>   1 file changed, 51 insertions(+)
-> >>   create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/=
-fsl,qe-ports-ic.yaml
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-p=
-orts-ic.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-port=
-s-ic.yaml
-> >> new file mode 100644
-> >> index 0000000000000..1f3c652b1569d
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ports-ic=
-.yaml
-> >> @@ -0,0 +1,51 @@
-> >> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> >> +%YAML 1.2
-> >> +---
-> >> +$id: https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F=
-%2Fdevicetree.org%2Fschemas%2Fsoc%2Ffsl%2Fcpm_qe%2Ffsl%2Cqe-ports-ic.yaml%2=
-3&data=3D05%7C02%7Cchristophe.leroy%40csgroup.eu%7C6e4c1b33836d4443b5c608de=
-4ee86aff%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639034957294961534%7C=
-Unknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXa=
-W4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DmH5SPbAw48C6BG=
-cazDPJMtoiM71TXswUGBvSZf15dUQ%3D&reserved=3D0
-> >> +$schema: https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3=
-A%2F%2Fdevicetree.org%2Fmeta-schemas%2Fcore.yaml%23&data=3D05%7C02%7Cchrist=
-ophe.leroy%40csgroup.eu%7C6e4c1b33836d4443b5c608de4ee86aff%7C8b87af7d86474d=
-c78df45f69a2011bb5%7C0%7C0%7C639034957294990994%7CUnknown%7CTWFpbGZsb3d8eyJ=
-FbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIl=
-dUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DRhD807Jcx3MerOAXGWuwgwHkATpTzTkDIQC7lO3=
-t1AA%3D&reserved=3D0
-> >> +
-> >> +title: Freescale QUICC Engine I/O Ports Interrupt Controller
-> >> +
-> >> +maintainers:
-> >> +  - Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-> >> +
-> >> +properties:
-> >> +  compatible:
-> >> +    enum:
-> >> +      - fsl,mpc8323-qe-ports-ic
-> >> +
-> >> +  reg:
-> >> +    maxItems: 1
-> >> +
-> >> +  interrupt-controller: true
-> >> +
-> >> +  '#address-cells':
-> >> +    const: 0
-> >> +
-> >> +  '#interrupt-cells':
-> >> +    const: 1
-> >> +
-> >> +  interrupts:
-> >> +    maxItems: 1
-> >> +
-> >> +required:
-> >> +  - compatible
-> >> +  - reg
-> >> +  - interrupt-controller
-> >> +  - '#address-cells'
-> >> +  - '#interrupt-cells'
-> >> +  - interrupts
-> >> +
-> >> +additionalProperties: false
-> >> +
-> >> +examples:
-> >> +  - |
-> >> +    interrupt-controller@c00 {
-> >> +      compatible =3D "fsl,mpc8323-qe-ports-ic";
-> >> +      reg =3D <0xc00 0x18>;
-> >> +      interrupt-controller;
-> >> +      #address-cells =3D <0>;
-> >> +      #interrupt-cells =3D <1>;
-> >> +      interrupts =3D <74 0x8>;
-> >> +      interrupt-parent =3D <&ipic>;
+> >     git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git aes-lib-v1
 > >
-> > This doesn't look like a separate block, but just part of its parent. S=
-o
-> > just add interrupt-controller/#interrupt-cells to the parent.
->
-> I don't understand what you mean, can you explain with the extract below =
-?
->
-> Extract from device tree including the parent:
->
->         soc8321@b0000000 {
->                 #address-cells =3D <1>;
->                 #size-cells =3D <1>;
->                 device_type =3D "soc";
->                 compatible =3D "simple-bus";
->                 ranges =3D <0x0 0xb0000000 0x00100000>;
->                 reg =3D <0xb0000000 0x00000200>;
->                 bus-frequency =3D <0>;
->
->                 ipic:pic@700 {
->                         interrupt-controller;
->                         #address-cells =3D <0>;
->                         #interrupt-cells =3D <2>;
->                         reg =3D <0x700 0x100>;
->                         device_type =3D "ipic";
->                 };
->
->                 qepic:interrupt-controller@c00 {
->                         compatible =3D "fsl,mpc8323-qe-ports-ic";
->                         reg =3D <0xc00 0x18>;
->                         interrupt-controller;
->                         #address-cells =3D <0>;
->                         #interrupt-cells =3D <1>;
->                         interrupts =3D <74 0x8>;
->                         interrupt-parent =3D <&ipic>;
+> > This series makes three main improvements to the kernel's AES library:
+> >
+> >   1. Make it use the kernel's existing architecture-optimized AES code,
+> >      including AES instructions, when available.  Previously, only the
+> >      traditional crypto API gave access to the optimized AES code.
+> >      (As a reminder, AES instructions typically make AES over 10 times
+> >      as fast as the generic code.  They also make it constant-time.)
+> >
+> >   2. Support preparing an AES key for only the forward direction of the
+> >      block cipher, using about half as much memory.  This is a helpful
+> >      optimization for many common AES modes of operation.  It also helps
+> >      keep structs small enough to be allocated on the stack, especially
+> >      considering potential future library APIs for AES modes.
+> >
+> >   3. Replace the library's generic AES implementation with a much faster
+> >      one that is almost as fast as "aes-generic", while still keeping
+> >      the table size reasonably small and maintaining some constant-time
+> >      hardening.  This allows removing "aes-generic", unifying the
+> >      current two generic AES implementations in the kernel tree.
+> >
+> 
+> Architectures that support memory operands will be impacted by
+> dropping the pre-rotated lookup tables, especially if they have few
+> GPRs.
+> 
+> I suspect that doesn't really matter in practice: if your pre-AESNI
+> IA-32 workload has a bottleneck on "aes-generic", you would have
+> probably moved it to a different machine by now. But the performance
+> delta will likely be noticeable so it is something that deserves a
+> mention.
 
-There's not some overall QuiccEngine node/device? I guess that's
-qe@e0100000, so this is outside of it and is fine. Just move it to
-bindings/interrupt-controller/ since it is not part of anything else.
+Sure.  I only claimed that the new implementation is "almost as fast" as
+aes-generic, not "as fast".
 
-Rob
+By the way, these are the results I get for crypto_cipher_encrypt_one()
+and crypto_cipher_decrypt_one() (averaged together) in a loop on an i386
+kernel patched to not use AES-NI:
+
+    aes-fixed-time: 77 MB/s
+    aes-generic: 192 MB/s
+    aes-lib: 185 MB/s
+
+I'm not sure how relevant these are, considering that this was collected
+on a modern CPU, not one of the (very) old ones that would actually be
+running i386 non-AESNI code.  But if they are even vaguely
+representative, this suggests the new code does quite well: little
+slowdown over aes-generic, while adding some constant-time hardening
+(which arguably was an undeserved shortcut to not include before) and
+also using a lot less dcache.
+
+At the same time, there's clearly a large speedup vs. aes-fixed-time.
+So this will actually be a significant performance improvement on
+systems that were using aes-fixed-time.  Many people may have been doing
+that unintentionally, due to it being set to a higher priority than
+aes-generic in the crypto_cipher API.
+
+I'll also note that the state of the art for parallelizable AES modes on
+CPUs without AES instructions is bit-slicing with vector registers.  The
+kernel has such code for arm and arm64, but not for x86.  If x86 without
+AES-NI was actually important, we should be adding that.  But it seems
+clear that x86 CPUs have moved on, and hardly anyone cares anymore.  If
+for now we can just provide something that's almost as fast as before
+(and maybe even a lot faster in some cases!), that seems fine.
+
+- Eric
 
