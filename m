@@ -1,78 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-15415-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15416-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D4CD02537
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 12:14:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38594D0267C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 12:32:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dn2Ns5vFDz2xGY;
-	Thu, 08 Jan 2026 22:14:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dn2np5WqBz2yGl;
+	Thu, 08 Jan 2026 22:32:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767870877;
-	cv=none; b=h3x8dyKXB2BkoEKOumfrh+c907+ZJ4AJVMOJZ2UVi2STdKJn/JqcIBO3I9OzO7LxunHbxj4j2uqa+uBHW7zuXQZD7Rwht1UZirg2sLO9Zt3dOBEAqlacTCGzJKy8cgSQzQr5/pAeCpwMKmQqfeFV6jbjhONP3mo/CUBy6ZKLoFnFcPQ5+CiUY8bRamyUmWtzgObRXDnEsUd0SNlyaPZvux5KQ1Ioy6WdWkWXQtw2Yo2FbiBIA4h1C6Zm2GZFBj2ZfnuX5LT92e2skq8mqLZYwb57x+xX1PPzXmav9GLAI1CBouCHbYcKCClGtMtz9rNXllWo49/bxqM6pibvNsdD1Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767871966;
+	cv=none; b=G6QtIvjhbtrOwrfm9yRsG4acCPmjtO4GuJLWzoQETgL2chamXBW5BTU8nrfuhcht0nIWdLLe30QMw4guGjvIBV2sXW0+TCSVmlwZQxJBonVF/f6E7UTl0hcfeKOUzMDglRTcyI4G2onIAFClrfwX5bDOqvR54l2CoapslNRHoKqmphHmFqECc4LgoSC5XczxXMcCCpFIeermt9/0eutpY1abjJuQqNZIk8r/W4Lk4t3mPs9eDNa1ktb21NC77hLtS+gBurPhFN5meeHxOZptzDKiW3ujJlpdYEBWyfMaMFI26g6GZElZTNW2KASmyS/k9wwGUUTZ9cdnZewrubm5Ig==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767870877; c=relaxed/relaxed;
-	bh=VOrHBzWPYvLqCnour3T5CPii1OlReIp2gg08NbPqsxE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kIM5LNSPPqCmdc6aUiUds1pOFr+iZpmxB+De1HaHjQCrNuuDz4h2LKcrJ2lVU0NsmcgJtLGy65QQPmpgDh6Ms9S5PO4I9pDzoTxwiyFuKTXDYtvZYSWAlKouMk9IcleyhXF/54VlvyEokYKHi5E2HZ5D9kVQbhI4qPRWdCYQpsCD9fhNAuHjdq8XiOweongVc3TXIOhCFR9p8/lEkTOqIkHmPDe4HzrSxIU9/oI4eFB6RlnLGNhHp39XdB2//s0S/ZQ2HgawZzZ0Z17iuDwlM61yLMGD06b84OUB1UOIiCzypOgAt18Q/4/T7+n6FJBIjqxoyayLslqr718Qzjmj8Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QJmEf5xa; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1767871966; c=relaxed/relaxed;
+	bh=OkEDjCTgjcG1N4pMu7OE1VqtJd5WSLxPjSWKunpWPTk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WO/HrlD4YeyXxApACT2UNhdv3Cij7wfBXBZFweDm5kEw6FwzNakeACCZbFigAVJZ+RftJlytz2grrw+/xpoHtpfB0m562TSJHHmOXToJMiy8rP9OrFRXbsW17XwqD8xV7Vjva+gSzIPx5lERa5B9/vG9OMdt9pEUeQf6k5OtLN/liFsGNESCBZOaPvTFiTFogJAOIFKebO/M5uiDKA4zsklkw1arSktgmirMub/kZVURkIHwcIE9otnaumRWOpXh/ZL1V2dom+bGitauHoWiXGC71YBPjVTiVzxg1qN5lIhBfqzpQnWv1LqkCFrf4m1/TQwaQTzzdY7e5ICpMEkZug==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tt8VmR3V; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QJmEf5xa;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tt8VmR3V;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dn2Nr2Xv6z2xFn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 22:14:35 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6089xbdW011316;
-	Thu, 8 Jan 2026 11:14:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=VOrHBz
-	WPYvLqCnour3T5CPii1OlReIp2gg08NbPqsxE=; b=QJmEf5xaNI8LhBXQvy3vtP
-	vNGW0kjNlbKIEuBxeWI/pLwt7RCnHdoB+vA2rNDnzbAoYiBoWExjlz9U75w821lX
-	B5Ot5PhTfeisSuN2huPFJVW5CKBMMnj++JK6sQeGu5UhYyA98jVllZwgjl9rMQjA
-	/ri8glSjsv/g4B0lIIyXdWgT/6GmgDnKZGGCy2nOpwxlL6vVGoD7yPNdyh51+MD+
-	DprwiaAuEbSH+8nx+uxniwMEq7AblOXepw4QGG/kMYCqZEeKA6MBoxfBij+TnNIo
-	GQ3Fo0xBQTu6NtroXspW+9dgyHlUHqVAHXQ6MApbj7MAKr4+E88JOZbHRJJJoofw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhkcr1t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jan 2026 11:14:06 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 608BE64b013346;
-	Thu, 8 Jan 2026 11:14:06 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhkcr1r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jan 2026 11:14:06 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6088DhBb015242;
-	Thu, 8 Jan 2026 11:14:05 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfdespn14-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jan 2026 11:14:05 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 608BE3j827722362
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Jan 2026 11:14:03 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BA0C658059;
-	Thu,  8 Jan 2026 11:14:03 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9D84F58058;
-	Thu,  8 Jan 2026 11:13:59 +0000 (GMT)
-Received: from [9.109.209.83] (unknown [9.109.209.83])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  8 Jan 2026 11:13:59 +0000 (GMT)
-Message-ID: <ebbc7ae7-2eb5-4b92-99e9-549c289b995c@linux.ibm.com>
-Date: Thu, 8 Jan 2026 16:43:57 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dn2nn4jWcz2xFn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 22:32:45 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id AD29560143
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jan 2026 11:32:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6468EC19424
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jan 2026 11:32:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767871932;
+	bh=pYfshooaQVx14ogaTwRBPlNZFkj/iWvrj8HN1katBFM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Tt8VmR3VshCgHL0sX0ZHoLqIfD0Rl3cLJfl1ZhoX+viQNalklsP3KEGhmpF2PQABL
+	 i/e4fQeEWCP3E8UrGxvJAz3JuiRdFBXe9UimxMdTmRlLsZNu/U5vTUEyP7Ks+4qkxU
+	 XxkejKAY6NBLbl/r1AsLAyAnuNWCjV0RjM7is+V+ou17Bcc2h2b/jwV3sTJ8RfZ0mU
+	 5QCe8I5A9kvK9DS1HJ9oD7trUK76a+ekfIJRJLeJFGPYGgEycSjFxndrstt2RPdvCq
+	 g0kCEYTkOBwHO0b6P+CdVWNXzaaTEiF2vxlnRRUwhG5MIv4f5YIZKepkz/7OWtnjS/
+	 F/DxUh7mTqQMQ==
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-34c565b888dso2684654a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 03:32:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUbHnSGevD2CEHkzps3zhc1hgCRhHwV9+zv1JrepABJW9D7wI6JYajs/czeu0S+dlaaV5zDk/MKIkgElMs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxus68nObj8uQ1KqkSWHT50ZJVpVkUEli7fK54dkrEOBf6NdaBU
+	n806YF226GDSn2zBK81ROv3LN45O2VMtEtQ4wA7rTEQodHucTvqDqkQcRyLRpPYI6LvfaVDnGqq
+	z92cTuA3mv+oKaGQeyQQbEijUm/mvNb4=
+X-Google-Smtp-Source: AGHT+IGDINyxTPkhAN4b7317PDsO1QtIqu1Y45mlnouNM/WvPFlwsh7kX9R86h9783kJT5r1JA/b7Ab2jLcoi2FXZJU=
+X-Received: by 2002:a17:90b:4c46:b0:34c:f92a:ad05 with SMTP id
+ 98e67ed59e1d1-34f68b9a0ffmr5904349a91.11.1767871931935; Thu, 08 Jan 2026
+ 03:32:11 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,215 +66,126 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] powerpc/pseries: Fix MSI-X allocation failure when
- quota is exceeded
-To: Nilay Shroff <nilay@linux.ibm.com>, Nam Cao <namcao@linutronix.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Gleixner <tglx@linutronix.de>, maz@kernel.org,
-        gautam@linux.ibm.com, Gregory Joyce <gjoyce@ibm.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20260107100230.1466093-1-namcao@linutronix.de>
- <1fda7021-ec31-40ed-bfd8-e0e9b657662f@linux.ibm.com>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <1fda7021-ec31-40ed-bfd8-e0e9b657662f@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=P4s3RyAu c=1 sm=1 tr=0 ts=695f917e cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=LTgroE_r0Rx6dzEudaAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: z2DVWXM9WqHD0m2emh8IGzZxxO4ughpL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA3MyBTYWx0ZWRfX/kKWLhLK2qmZ
- Y/83TiBiyihaKZVf6Tip3PbKjUKMLLblw+b/l06NPydiH8WSgHh9TmjlW0zIq4KdJjwSF7xjCeC
- 0mkzDL0ivyc6CzfJizZT68gBEUOSHy6SrpWHmgko+i+bpb2ZyAcMUQhnVig5Vu/gjDdvfrb5tGG
- MRAc9u2D4nAzEsPCSIAhdSH0yCO3AjVYDnxY4c/LzakoT6I/P6+cx2nScP0a2r8I2lAliAh2VYK
- 1GQTIeYGhZJaieuxROrXMSgD5zZJjhnVFtxvdMwECYE3oEgDpoPSUN/YEr9DN03YHPCKKhmREXG
- nQCl8Aa4OqyDwXdluH+Su2OsdKvoTnHe3owj/XHXaKcztBk9hfkMMV+eNOHM3Kfemin7k86rnka
- XZ4H0vqV+HO1iLgm/AknnYz5iF3U4erOob4i0fKHI5rnxnkjnAeTrZwa+4Kt/Rrtrw3CyeuDIla
- N2HRHFcDeH7NhG/Q39A==
-X-Proofpoint-GUID: 7PQIpYKgEczd8DbcgUQj5Dfwg4HDregf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-08_02,2026-01-07_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 priorityscore=1501 clxscore=1015 suspectscore=0
- phishscore=0 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601080073
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20260105051311.1607207-1-ebiggers@kernel.org>
+In-Reply-To: <20260105051311.1607207-1-ebiggers@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 8 Jan 2026 12:32:00 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGRTfyXPD3+Ravr7O5ZUMAUeabQw455sW5g7aRy3BU+2Q@mail.gmail.com>
+X-Gm-Features: AQt7F2osJiUBFnBRtOlALeERCnUAMf6rielCvEbX7HMdjqJIXrz86eWJVpNeDcU
+Message-ID: <CAMj1kXGRTfyXPD3+Ravr7O5ZUMAUeabQw455sW5g7aRy3BU+2Q@mail.gmail.com>
+Subject: Re: [PATCH 00/36] AES library improvements
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Jason A . Donenfeld" <Jason@zx2c4.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	sparclinux@vger.kernel.org, x86@kernel.org, 
+	Holger Dengler <dengler@linux.ibm.com>, Harald Freudenberger <freude@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-On 1/7/26 7:55 PM, Nilay Shroff wrote:
+On Mon, 5 Jan 2026 at 06:14, Eric Biggers <ebiggers@kernel.org> wrote:
 >
-> On 1/7/26 3:32 PM, Nam Cao wrote:
->> Nilay reported that since commit daaa574aba6f ("powerpc/pseries/msi: Switch
->> to msi_create_parent_irq_domain()"), the NVMe driver cannot enable MSI-X
->> when the device's MSI-X table size is larger than the firmware's MSI quota
->> for the device.
->>
->> This is because the commit changes how rtas_prepare_msi_irqs() is called:
->>
->>    - Before, it is called when interrupts are allocated at the global
->>      interrupt domain with nvec_in being the number of allocated interrupts.
->>      rtas_prepare_msi_irqs() can return a positive number and the allocation
->>      will be retried.
->>
->>    - Now, it is called at the creation of per-device interrupt domain with
->>      nvec_in being the number of interrupts that the device supports. If
->>      rtas_prepare_msi_irqs() returns positive, domain creation just fails.
->>
->> For Nilay's NVMe driver case, rtas_prepare_msi_irqs() returns a positive
->> number (the quota). This causes per-device interrupt domain creation to
->> fail and thus the NVMe driver cannot enable MSI-X.
->>
->> Rework to make this scenario works again:
->>
->>    - pseries_msi_ops_prepare() only prepares as many interrupts as the quota
->>      permit.
->>
->>    - pseries_irq_domain_alloc() fails if the device's quota is exceeded.
->>
->> Now, if the quota is exceeded, pseries_msi_ops_prepare() will only prepare
->> as allowed by the quota. If device drivers attempt to allocate more
->> interrupts than the quota permits, pseries_irq_domain_alloc() will return
->> an error code and msi_handle_pci_fail() will allow device drivers a retry.
->>
->> Reported-by: Nilay Shroff <nilay@linux.ibm.com>
->> Closes: https://lore.kernel.org/linuxppc-dev/6af2c4c2-97f6-4758-be33-256638ef39e5@linux.ibm.com/
->> Fixes: daaa574aba6f ("powerpc/pseries/msi: Switch to msi_create_parent_irq_domain()")
->> Signed-off-by: Nam Cao <namcao@linutronix.de>
->> Acked-by: Nilay Shroff <nilay@linux.ibm.com>
->> Cc: stable@vger.kernel.org
->> ---
->> v2:
->>    - change pseries_msi_ops_prepare()'s allocation logic to match the
->>      original logic in __pci_enable_msix_range()
->>
->>    - fix up Nilay's email address
->> ---
->>   arch/powerpc/platforms/pseries/msi.c | 44 ++++++++++++++++++++++++++--
->>   1 file changed, 41 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
->> index a82aaa786e9e..edc30cda5dbc 100644
->> --- a/arch/powerpc/platforms/pseries/msi.c
->> +++ b/arch/powerpc/platforms/pseries/msi.c
->> @@ -19,6 +19,11 @@
->>   
->>   #include "pseries.h"
->>   
->> +struct pseries_msi_device {
->> +	unsigned int msi_quota;
->> +	unsigned int msi_used;
->> +};
->> +
->>   static int query_token, change_token;
->>   
->>   #define RTAS_QUERY_FN		0
->> @@ -433,8 +438,28 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
->>   	struct msi_domain_info *info = domain->host_data;
->>   	struct pci_dev *pdev = to_pci_dev(dev);
->>   	int type = (info->flags & MSI_FLAG_PCI_MSIX) ? PCI_CAP_ID_MSIX : PCI_CAP_ID_MSI;
->> +	int ret;
->> +
->> +	struct pseries_msi_device *pseries_dev __free(kfree)
->> +		= kmalloc(sizeof(*pseries_dev), GFP_KERNEL);
->> +	if (!pseries_dev)
->> +		return -ENOMEM;
->> +
->> +	while (1) {
->> +		ret = rtas_prepare_msi_irqs(pdev, nvec, type, arg);
->> +		if (!ret)
->> +			break;
->> +		else if (ret > 0)
->> +			nvec = ret;
->> +		else
->> +			return ret;
->> +	}
->>   
->> -	return rtas_prepare_msi_irqs(pdev, nvec, type, arg);
->> +	pseries_dev->msi_quota = nvec;
->> +	pseries_dev->msi_used = 0;
->> +
->> +	arg->scratchpad[0].ptr = no_free_ptr(pseries_dev);
->> +	return 0;
->>   }
->>   
->>   /*
->> @@ -443,9 +468,13 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
->>    */
->>   static void pseries_msi_ops_teardown(struct irq_domain *domain, msi_alloc_info_t *arg)
->>   {
->> +	struct pseries_msi_device *pseries_dev = arg->scratchpad[0].ptr;
->>   	struct pci_dev *pdev = to_pci_dev(domain->dev);
->>   
->>   	rtas_disable_msi(pdev);
->> +
->> +	WARN_ON(pseries_dev->msi_used);
->> +	kfree(pseries_dev);
->>   }
->>   
->>   static void pseries_msi_shutdown(struct irq_data *d)
->> @@ -546,12 +575,18 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
->>   				    unsigned int nr_irqs, void *arg)
->>   {
->>   	struct pci_controller *phb = domain->host_data;
->> +	struct pseries_msi_device *pseries_dev;
->>   	msi_alloc_info_t *info = arg;
->>   	struct msi_desc *desc = info->desc;
->>   	struct pci_dev *pdev = msi_desc_to_pci_dev(desc);
->>   	int hwirq;
->>   	int i, ret;
->>   
->> +	pseries_dev = info->scratchpad[0].ptr;
->> +
->> +	if (pseries_dev->msi_used + nr_irqs > pseries_dev->msi_quota)
->> +		return -ENOSPC;
->> +
->>   	hwirq = rtas_query_irq_number(pci_get_pdn(pdev), desc->msi_index);
->>   	if (hwirq < 0) {
->>   		dev_err(&pdev->dev, "Failed to query HW IRQ: %d\n", hwirq);
->> @@ -567,9 +602,10 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
->>   			goto out;
->>   
->>   		irq_domain_set_hwirq_and_chip(domain, virq + i, hwirq + i,
->> -					      &pseries_msi_irq_chip, domain->host_data);
->> +					      &pseries_msi_irq_chip, pseries_dev);
->>   	}
->>   
->> +	pseries_dev->msi_used++;
->>   	return 0;
->>   
->>   out:
->> @@ -582,9 +618,11 @@ static void pseries_irq_domain_free(struct irq_domain *domain, unsigned int virq
->>   				    unsigned int nr_irqs)
->>   {
->>   	struct irq_data *d = irq_domain_get_irq_data(domain, virq);
->> -	struct pci_controller *phb = irq_data_get_irq_chip_data(d);
->> +	struct pseries_msi_device *pseries_dev = irq_data_get_irq_chip_data(d);
->> +	struct pci_controller *phb = domain->host_data;
->>   
->>   	pr_debug("%s bridge %pOF %d #%d\n", __func__, phb->dn, virq, nr_irqs);
->> +	pseries_dev->msi_used -= nr_irqs;
->>   	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
->>   }
->>   
-> I just tested this change on my system using the latest mainline kernel and it works
-> well for me. So with that, please fell free to add,
+> This series applies to libcrypto-next.  It can also be retrieved from:
 >
-> Tested-by: Nilay Shroff <nilay@linux.ibm.com>
-
-Thanks will pull this in.
-Maddy
-
+>     git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git aes-lib-v1
 >
+> This series makes three main improvements to the kernel's AES library:
+>
+>   1. Make it use the kernel's existing architecture-optimized AES code,
+>      including AES instructions, when available.  Previously, only the
+>      traditional crypto API gave access to the optimized AES code.
+>      (As a reminder, AES instructions typically make AES over 10 times
+>      as fast as the generic code.  They also make it constant-time.)
+>
+>   2. Support preparing an AES key for only the forward direction of the
+>      block cipher, using about half as much memory.  This is a helpful
+>      optimization for many common AES modes of operation.  It also helps
+>      keep structs small enough to be allocated on the stack, especially
+>      considering potential future library APIs for AES modes.
+>
+>   3. Replace the library's generic AES implementation with a much faster
+>      one that is almost as fast as "aes-generic", while still keeping
+>      the table size reasonably small and maintaining some constant-time
+>      hardening.  This allows removing "aes-generic", unifying the
+>      current two generic AES implementations in the kernel tree.
+>
+
+Architectures that support memory operands will be impacted by
+dropping the pre-rotated lookup tables, especially if they have few
+GPRs.
+
+I suspect that doesn't really matter in practice: if your pre-AESNI
+IA-32 workload has a bottleneck on "aes-generic", you would have
+probably moved it to a different machine by now. But the performance
+delta will likely be noticeable so it is something that deserves a
+mention.
+
+> (1) and (2) end up being interrelated: the existing
+> 'struct crypto_aes_ctx' does not work for either one (in general).
+> Thus, this series reworks the AES library to be based around new data
+> types 'struct aes_key' and 'struct aes_enckey'.
+>
+> As has been the case for other algorithms, to achieve (1) without
+> duplicating the architecture-optimized code, it had to be moved into
+> lib/crypto/ rather than copied.  To allow actually removing the
+> arch-specific crypto_cipher "aes" algorithms, a consolidated "aes-lib"
+> crypto_cipher algorithm which simply wraps the library is also added.
+> That's most easily done with it replacing "aes-generic" too, so that is
+> done too.  (That's another reason for doing (3) at the same time.)
+>
+> As usual, care is taken to support all the existing arch-optimized code.
+> This makes it possible for users of the traditional crypto API to switch
+> to the library API, which is generally much easier to use, without being
+> concerned about performance regressions.
+>
+> That being said, this series only deals with the bare (single-block) AES
+> library.  Future patchsets are expected to build on this work to provide
+> architecture-optimized library APIs for specific AES modes of operation.
+>
+> Eric Biggers (36):
+>   crypto: powerpc/aes - Rename struct aes_key
+>   lib/crypto: aes: Introduce improved AES library
+>   crypto: arm/aes-neonbs - Use AES library for single blocks
+>   crypto: arm/aes - Switch to aes_enc_tab[] and aes_dec_tab[]
+>   crypto: arm64/aes - Switch to aes_enc_tab[] and aes_dec_tab[]
+>   crypto: arm64/aes - Select CRYPTO_LIB_SHA256 from correct places
+>   crypto: aegis - Switch from crypto_ft_tab[] to aes_enc_tab[]
+>   crypto: aes - Remove aes-fixed-time / CONFIG_CRYPTO_AES_TI
+>   crypto: aes - Replace aes-generic with wrapper around lib
+>   lib/crypto: arm/aes: Migrate optimized code into library
+>   lib/crypto: arm64/aes: Migrate optimized code into library
+>   lib/crypto: powerpc/aes: Migrate SPE optimized code into library
+>   lib/crypto: powerpc/aes: Migrate POWER8 optimized code into library
+>   lib/crypto: riscv/aes: Migrate optimized code into library
+>   lib/crypto: s390/aes: Migrate optimized code into library
+>   lib/crypto: sparc/aes: Migrate optimized code into library
+>   lib/crypto: x86/aes: Add AES-NI optimization
+>   crypto: x86/aes - Remove the superseded AES-NI crypto_cipher
+>   Bluetooth: SMP: Use new AES library API
+>   chelsio: Use new AES library API
+>   net: phy: mscc: macsec: Use new AES library API
+>   staging: rtl8723bs: core: Use new AES library API
+>   crypto: arm/ghash - Use new AES library API
+>   crypto: arm64/ghash - Use new AES library API
+>   crypto: x86/aes-gcm - Use new AES library API
+>   crypto: ccp - Use new AES library API
+>   crypto: chelsio - Use new AES library API
+>   crypto: crypto4xx - Use new AES library API
+>   crypto: drbg - Use new AES library API
+>   crypto: inside-secure - Use new AES library API
+>   crypto: omap - Use new AES library API
+>   lib/crypto: aescfb: Use new AES library API
+>   lib/crypto: aesgcm: Use new AES library API
+>   lib/crypto: aes: Remove old AES en/decryption functions
+>   lib/crypto: aes: Drop "_new" suffix from en/decryption functions
+>   lib/crypto: aes: Drop 'volatile' from aes_sbox and aes_inv_sbox
+>
+
+Nice cleanup
+
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
