@@ -1,74 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-15412-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15411-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52733D01DF2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 10:38:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 097BAD01DEF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 10:38:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dn0GJ0n0Lz2yN2;
-	Thu, 08 Jan 2026 20:38:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dn0G44H6zz2yGD;
+	Thu, 08 Jan 2026 20:38:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.216.42
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767860436;
-	cv=none; b=EbzS7mVr0oYKEUCezruIxgXrWKQTzNMBmO0XnQKnR49vQvSaNnCpNKbg47cDqNdi1RkeB1Mi1Cbgp7pwKBA4WC1PAPwurNCP7w17Bw6NRX+P1SNayxiK5ODKk6dBaB5afzcJNKpuLlJyEy2KEY45qjsGBYFBbK4cq+4E8Awjb5/5kUyz2BI0rZ5g28OTX6uec0G4verNiWDoRkBh+EjNQMBa+ZAjgo0OnZEkrZWVshVwHNu1wlEWw9ILvXcsnc+MiXOmR+yylnnkpS0bdDhj3c1gg0CKR1JTwyikwQOj3sX6MOBsp9NxybkiPI5r4NKFkh74+xzV1WT1qhpUOJat5g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.214.180
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767860787;
+	cv=none; b=VIqchScBYqu/unNgRAiQmJmJ+2wfH5RAIvHurnzQtsSEZUZ9zQI7v0tEFFV5Dzi4rP7U2LTmzED5wrR+mnrIDDxMJhZib22IICElghr8v2r6kUYtsxDU5egeoaXx/VmxGQPmxUBAsyq5fsLYRkKrm2lmHP4orr2KMUmDnOUnfQrtxxuv68RShuOKXFO/jcT7Qcs8BO4TjCBYD4K6KXgzFh7DYJYVhaM3EZSacEOk6ledVaqfx2j59MYlSE0gf5O/OBELr3C9tM1iYIz65e5JOKcVY9u1MkL1KHZgyvT2+SFenpolXUfIxC2+yNmIA88d3jlAAV3w76eIZ47M8M32xg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767860436; c=relaxed/relaxed;
-	bh=fHAmKcdoN135Asq9ijVI3O1LODaST52jtA9RClzYjcQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Jo/fqO5GNopaXChFMZLiw5rG8SHiVIM2101wPhGXkZ64IudiBbm8Ido81j5JBjXk+5yeNWfXJ8ZHnWZB1lLxA4NmHuF5vSATnUyYcZxrr2RvL9eofv138JPqUjmDxoCFtRBCiJ15Q5/3XsNxj+0QzBMvje4XqlxCZoafGHghjcGBjWR+N5pnX6+DPuKgwcl6nTyfOjZMTEgpfukVlplPWxAplhZiJCPFdirJ2rHw+KftNjw4JLEJ+6sIAdLyB/pDYlVAEExvmX/CI3uYsCmI9nVy6Sw5lxR9owcv85DszYDOqKodyOhSGGf+bYnOMv3ZNCIucrur0CxRrrpCIqJk+A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YMOCfPoo; dkim-atps=neutral; spf=pass (client-ip=209.85.216.42; helo=mail-pj1-f42.google.com; envelope-from=atharvatiwarilinuxdev@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1767860787; c=relaxed/relaxed;
+	bh=x8t1+RviBZBkQiz1+F0jLoZoAGkcEhuc2rfeggUJxJA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c4XrkOQpXR9pjq/mpS9nljHdlX/tDiQ+AgjD/59q6Mm5t8eZDDUfRpvmKLTtGlfsNQfHwHbdZivFhAw+pizfQ3Grv2Afs2/Vmt56GGjxTOBIB8pZhGgp9vrup5bvWlacyc6gGIeiEjqfHQP0HbyZep6LUr663vsBWmYncHqSXCbBsEDtBGQwYOvSqQ6ePvKmTNrUqGbTcpzSsHEw45L08a8+GjN84SRJf5l4QTCTusP7Dp6I9gzmC3L5Qal+dGlnJ7MeOVPStecj2ALw8vFoeEHoRimiE/g0DIXjgton0M3SROu1aDZUlfmH5Ml4KlO+5NnRE/j9CvqeqntHZzsE+Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VlObGF3v; dkim-atps=neutral; spf=pass (client-ip=209.85.214.180; helo=mail-pl1-f180.google.com; envelope-from=atharvatiwarilinuxdev@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YMOCfPoo;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VlObGF3v;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.216.42; helo=mail-pj1-f42.google.com; envelope-from=atharvatiwarilinuxdev@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.214.180; helo=mail-pl1-f180.google.com; envelope-from=atharvatiwarilinuxdev@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmyX35tcpz2xjN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 19:20:34 +1100 (AEDT)
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34c1d98ba11so2419526a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 00:20:34 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dmyfp4sNXz2xZK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 19:26:25 +1100 (AEDT)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0ac29fca1so22960775ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 00:26:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767860372; x=1768465172; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1767860724; x=1768465524; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fHAmKcdoN135Asq9ijVI3O1LODaST52jtA9RClzYjcQ=;
-        b=YMOCfPooGSQTMZnu8VLyYZeiVgWTZ9ayPTseN2nbwT6lpjdFDZykyPy3QBEFkG2Wi8
-         H6KKKgyIrgB79RuTwxNVFe+iueOMk6Q7VGi8FMNNfQHU1GU38tsyrMil9vraAv/kPFO9
-         gpUU0g6gWMq1SR/uYvgAT17ZuhmoJvstnzhp7aXPPTmDUHkPbuAY7043jJ+MdaSYr553
-         XFt7j/BicHgFVqWB8RkqtQGMDz1gYrwKxvDyG538s26gCrOo4QFPnMR3xH82FEl8e2bl
-         pld8BgAD3MpWpTrUgTfsxZY423uN/DNquBtbfGDfOnByHNVIarmPAvj/eUiLEH1m5BHp
-         9prQ==
+        bh=x8t1+RviBZBkQiz1+F0jLoZoAGkcEhuc2rfeggUJxJA=;
+        b=VlObGF3vYzWEBe6fSRKgdM6wxtXpiZOozioHwfVVrKLzk51rKJS79+pHpYrv+vFAbA
+         7P+mAPOIyhgqpXc6axTHvuqNrmW/1Lb2D1PDhc1o+aQSgsjCDCW7J0a6ZIx10mhnb/Tx
+         XxAzACKnHPVu2m4/9+pAjAS9ySJR6ksYSMQBWSXQ2Yp5I9kgZHqbW9J8RklZdZq36ozo
+         F7uOoH9L2sz1W1tWPSjM2K+zZSZFViiIs1G9jDxNxIgYk0TxPf4F+0xw9o7bxQ2MWnl8
+         H5c8ah+pUVceYFoRkwu/caISnMkDHTf14ZcRc95zEVr3vY/jwynZGL9/T54j5JyVgYqd
+         h/2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767860372; x=1768465172;
+        d=1e100.net; s=20230601; t=1767860724; x=1768465524;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fHAmKcdoN135Asq9ijVI3O1LODaST52jtA9RClzYjcQ=;
-        b=XQSrgIEE4aeEbwOgmvAwoN5N2X4npuIzXzsdeFD+uGfAxfd6URhOkoKfgq+H0yeg9i
-         IQ4Kulsb+kUjsc1XKJ6rYlqij0ONWznu/vcdvijis/lyzcgYFfm5YHVAcQGInLbz5gXz
-         +VFxSbXTrNj9l/WXeRmU5sWBf7CVMNKw6OsiwubA0Z22yDIGJFRnDolz8Wcem0x+15B2
-         25S+0oG5cXJMjcF4v4P/4UlzkRv5LAu4HRSH4X0RDerhXDFWTX9i+4o32qtD2ohvc7gL
-         b7UGoX/GkTfFCDQm1gSKqFI3O50nIl7fRmEcyXMtKEp/LrqDNrSIXYLH6muD66IVmtse
-         E+HA==
-X-Forwarded-Encrypted: i=1; AJvYcCU5ILrHgBDKn0diy0piWTxznfvSgzPXdNmuz/rHopLz19jOJ0JD6X5ztFy/PvO4KGb6YxU7kAlpu5W3t9U=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyOdJ1+xLsfm5a9THeThKT9ZUJ0M4kxdkze3DI2zWNpCQlYeo5u
-	voiHNuMUQbEu4zVcjBnkcnd2Us2tcPkgjn779Xfnf3SIXdzmHM7PaLM=
-X-Gm-Gg: AY/fxX6zSQv0x1iaT4Bwb4KbhBt4OfmhKHpCPP1GPIOBRDq3IW2xWJebmpB9LfeCPEr
-	T+4mQ+obLzXHRGYIxTGnGJEYD78NsH9KYKdevdmZFwEAoAL5YUuXE/4caTLEAH7t20Q6JY9eAty
-	6A6E+ZenpuPpTA0kgQkzCmV3aDmYfKuIlkG0evC4k3AaduT03jyg297BumMZb4npD/9nHQQDg1I
-	42ZabZjmI/b/6SZHRGXqdcqDxWtpTMGrrA8MWh9EPPXA5T3InCP3uoRkeGeCQLcXCsgbK52tqLu
-	RKJtKuahhJw6n5uMQIJJ/CCCSc/meX0Xl1LL00M7k2N++TwdmB/nN8GwDMG9ITPtHZMp270meHP
-	dNMmEEV6rWabXNKeqyVKrV4yGEtRR4yeuorvEwM9pIKFU4dn3lfbW4rTzKBJlbiBP9tVYACfH0u
-	Ji2+8GUoPgK/zmxvs=
-X-Google-Smtp-Source: AGHT+IFDK5YD6a2Lz09PpXPJx2QnY/5/782hB7zl/Zgtvf8GF5ogkiCdodmnp0MwEz339uVRHb9Okw==
-X-Received: by 2002:a17:90b:4c11:b0:338:3d07:5174 with SMTP id 98e67ed59e1d1-34f68c7a647mr5191292a91.5.1767860371991;
-        Thu, 08 Jan 2026 00:19:31 -0800 (PST)
+        bh=x8t1+RviBZBkQiz1+F0jLoZoAGkcEhuc2rfeggUJxJA=;
+        b=B7f9GE7tq24fDV/VspyfhCx95qMpkE3WDrxdsfRwKtTwuVgLLJY8vz1S0v0Jv3RzWD
+         MfnX6x6SqdSY3JMQVswjRbeJd27ZkTByANBgts76/JfvekXX3tFr4pngE3mIb7+rDlVF
+         UqqiBhwI/qJxmagjWsTWPgWT0kKnN1cV8DGNFxY3XvWqPkBnRmhD2QeR1PF7lSER0PEz
+         FHdsuaOKDXukl9fc10aNjESa5kfzQsjIny2A52dyC2c/lLh92wNffhmHdQfJzMXnXRwn
+         CAvet7itmrTVGirclKdDJpy7A0XU6cm/QbsqffiZa/m0TI2V8knyGXIA07muQlgc2qkS
+         na2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXEgLaQooEVOZKacWnyVucmwoi1Go0g6HSA7tN6nW3oztoBgZ7E41HGxTOTUin94/jDgbfnZEQRw/ks6ns=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwQErf/EWhTeFGI+aTGHfuVSlsKKrCqu5IOHveGf23gfBkU4DIt
+	hYmqK5Bm6NXFQKH8tTpSZ93zJKZ8u2WHeCRuRjb6hDtEWk0Sm0khbA0=
+X-Gm-Gg: AY/fxX59iE9AOoY/rkp6H+vk71MmXlloQiRHfrwS+f/v0VSgMcDDXOimOUHNF4vkvjx
+	aaIXB/uaADZNltGNAEv3LMp2ww5yAbR+e5/sLJqowdQL2HBmggCP7oF4gpZjLi6nLzm6cRZT0wM
+	teufTk9eMn61DbpqId5xZIgQxnSkB26pCzM4i+CDMZWd8Z253sigvXLsa9IflOil9jhGgTQcoRa
+	5LxdmaqTN/FZc3CWkZ6ENaHOBhFLv/c25Zdm3VowOZrVK4sanM1GjyV69xv0Lg0qjUX5tzGyLQT
+	i/3oaKpgpnjcSiD8jKC1qj5GuihVz2jVMq3UVGfS5PdN4Z8hgts25WsZg2q/yR5qeCOk8WKk554
+	7KOSHbSFYvfdyRuzRg0DuCmJJ6Y4OTbNv3mqBT8qtmXf9sF1eaYeD/cAihlr6SmaDkH3i3ZbymH
+	JaVni5lE9mtikqRHM=
+X-Google-Smtp-Source: AGHT+IFlqu/P/5sh9z5DWE3DsjYa1JH40CTlBeUg8uyttdF4r71Kg5WERp3YCavi1Kt+WDXEmDPaOw==
+X-Received: by 2002:a17:903:3c30:b0:2a0:fe4a:d67c with SMTP id d9443c01a7336-2a3ee437a5dmr49953365ad.10.1767860724001;
+        Thu, 08 Jan 2026 00:25:24 -0800 (PST)
 Received: from at.. ([171.61.166.195])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f5f7b19ebsm6979077a91.3.2026.01.08.00.19.26
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c47303sm70625825ad.24.2026.01.08.00.25.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 00:19:31 -0800 (PST)
+        Thu, 08 Jan 2026 00:25:23 -0800 (PST)
 From: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
 To: 
 Cc: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>,
@@ -85,16 +85,15 @@ Cc: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>,
 	Mika Westerberg <westeri@kernel.org>,
 	Yehezkel Bernat <YehezkelShB@gmail.com>,
 	Lukas Wunner <lukas@wunner.de>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Feng Tang <feng.tang@linux.alibaba.com>,
 	linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-usb@vger.kernel.org
-Subject: [PATCH v3] PCI/portdev: Disable AER for Titan Ridge 4C 2018
-Date: Thu,  8 Jan 2026 08:18:53 +0000
-Message-ID: <20260108081904.2881-1-atharvatiwarilinuxdev@gmail.com>
+Subject: [PATCH v4] PCI/portdev: Disable AER for Titan Ridge 4C 2018
+Date: Thu,  8 Jan 2026 08:25:03 +0000
+Message-ID: <20260108082509.3028-1-atharvatiwarilinuxdev@gmail.com>
 X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -131,16 +130,13 @@ X-Spam-Report:
 	*  3.6 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
 	*      [171.61.166.195 listed in zen.spamhaus.org]
 	*  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
-	*      [209.85.216.42 listed in wl.mailspike.net]
+	*      [209.85.214.180 listed in wl.mailspike.net]
 	* -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at https://www.dnswl.org/, no
 	*      trust
-	*      [209.85.216.42 listed in list.dnswl.org]
+	*      [209.85.214.180 listed in list.dnswl.org]
 	*  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
 X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-
-Changes since v1:
-	Transferred log
 
 Disable AER for Intel Titan Ridge 4C 2018
 (used in T2 iMacs, where the warnings appear)
@@ -157,7 +153,9 @@ Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220651
 Signed-off-by: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
 
 ---
-Changes in v2:
+Chnages since v3:
+- Fixed Grammer mistakes
+Changes since v2:
 - Transferred logic to arch/x86/pci/fixup.c to only target x86
 - Added DMI quirk to only target Apple Systems
 Changes since v1:
