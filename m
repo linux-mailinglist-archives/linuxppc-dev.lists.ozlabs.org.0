@@ -1,106 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-15414-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15415-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C12ED0223F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 11:35:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D4CD02537
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 08 Jan 2026 12:14:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dn1Wl3K4jz2yGq;
-	Thu, 08 Jan 2026 21:35:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dn2Ns5vFDz2xGY;
+	Thu, 08 Jan 2026 22:14:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767868531;
-	cv=none; b=cXRdi9glvh0i1c4xyNbqJjgumUHlLAaDyktXpKS/AyHGs+zc5QuMUP7U39nhZCpzi7/e7ove72MSu3NuDkrGYPvaV2t4bmCMLGJn+fJvgHZKuq3F8vmFrUHzpnSiwUSg4JOojF6/VwBbe/R32x2zyM/XEXf/WUnbPpOwjy+tVr3PzUHRYYTjgEDTwx23nGLBHnHaIKID+KDDu/YdapPTlv0JhXKulMuuMSi6NohEREBPzORFfD+bq5XrtttlG/8AXr+myaPrc2nKDkur6ZVL/nsl/hoVIKNdWDZ++dZRMGvHRaJKOpJPBqIXSDC5co67RNSdDWRR2TDMuQ15srUHjQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767870877;
+	cv=none; b=h3x8dyKXB2BkoEKOumfrh+c907+ZJ4AJVMOJZ2UVi2STdKJn/JqcIBO3I9OzO7LxunHbxj4j2uqa+uBHW7zuXQZD7Rwht1UZirg2sLO9Zt3dOBEAqlacTCGzJKy8cgSQzQr5/pAeCpwMKmQqfeFV6jbjhONP3mo/CUBy6ZKLoFnFcPQ5+CiUY8bRamyUmWtzgObRXDnEsUd0SNlyaPZvux5KQ1Ioy6WdWkWXQtw2Yo2FbiBIA4h1C6Zm2GZFBj2ZfnuX5LT92e2skq8mqLZYwb57x+xX1PPzXmav9GLAI1CBouCHbYcKCClGtMtz9rNXllWo49/bxqM6pibvNsdD1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767868531; c=relaxed/relaxed;
-	bh=Q4CgrKoI+gqPjZdUskKAdxCjFm05f46fwS6i3N+5Edg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=gg4FA0xTVTKdb9P252TIsPBlbE0uFJPb2KmLPbLpIdW3Ha2qCCvBnbdtMejU+XwHb5/0UG3OcSnreCQAlCZ3weMFvdPVZ1J6MrUnNNDnusXXFfYX2dbLA7XD2Pm1YdkwwYR4fMr8MbqmQvMkoAOPoY50sSLRVMnsBMC5kO3NtQWUVCV8lqiBZSl/7QnsvV/AsYPSEh3WhgRjvxp3yRJkLCzkeHCbZU5dWI3MrRggw51Ibzsh5fkAJhSvTk7Y6ZIxaUvi2rJm6ofvKWUX6JcsQGbk5qE/rPBmqpK6PVScz75A2wwE//bni/vo3tCdtA1ruLAfpzK0a1G1AlzbH5roKw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a6iNZwtw; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dmVrA472; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1767870877; c=relaxed/relaxed;
+	bh=VOrHBzWPYvLqCnour3T5CPii1OlReIp2gg08NbPqsxE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kIM5LNSPPqCmdc6aUiUds1pOFr+iZpmxB+De1HaHjQCrNuuDz4h2LKcrJ2lVU0NsmcgJtLGy65QQPmpgDh6Ms9S5PO4I9pDzoTxwiyFuKTXDYtvZYSWAlKouMk9IcleyhXF/54VlvyEokYKHi5E2HZ5D9kVQbhI4qPRWdCYQpsCD9fhNAuHjdq8XiOweongVc3TXIOhCFR9p8/lEkTOqIkHmPDe4HzrSxIU9/oI4eFB6RlnLGNhHp39XdB2//s0S/ZQ2HgawZzZ0Z17iuDwlM61yLMGD06b84OUB1UOIiCzypOgAt18Q/4/T7+n6FJBIjqxoyayLslqr718Qzjmj8Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QJmEf5xa; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a6iNZwtw;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dmVrA472;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QJmEf5xa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dn1Wk0W58z2yGL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 21:35:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767868524;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q4CgrKoI+gqPjZdUskKAdxCjFm05f46fwS6i3N+5Edg=;
-	b=a6iNZwtwj68FrR08CGGPfZQ7h7LczQZi0bEvFPAPHNsQ5XLUOA85kAXGfzM1mMJV/9y+h5
-	8Z5fZ8Q1fLiPupAkIRy0eR5k8/1Uq8NcCt/5UyJRMQw91/AMJp+0ukf8EIy+A55W5sxZ43
-	UQpzbIqWWM7Xg0xzxzk97gZF5CvyrOw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767868525;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q4CgrKoI+gqPjZdUskKAdxCjFm05f46fwS6i3N+5Edg=;
-	b=dmVrA472Ul3dmgy2uK3nxATiHJrFrQe19E11oyCWt6hLrLbciVOVX/e9FeFSct7QfzqiFi
-	esR0E94jvN8ZlCWf4g6DRtTmQ1Oby2Af8mV9NGcJHZ0/fyPMV7LA8bCV7U79qSfoRpK/hd
-	wr1dE3X/BXoX7grrOHfhldnLG9IV6VQ=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-471-a38zh-fbPqaOs9EHCLVfwA-1; Thu, 08 Jan 2026 05:35:23 -0500
-X-MC-Unique: a38zh-fbPqaOs9EHCLVfwA-1
-X-Mimecast-MFC-AGG-ID: a38zh-fbPqaOs9EHCLVfwA_1767868522
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-29f1f79d6afso45636725ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 02:35:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767868522; x=1768473322;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q4CgrKoI+gqPjZdUskKAdxCjFm05f46fwS6i3N+5Edg=;
-        b=RHrnZqDWORaGbhOrp6HzjqWd+7pSMQ6/j8jon9+OM0/45S3z802uQJiZfce87OAtYV
-         qzvWEQHgyy4rPPkPIv/U7Q475IRRTMR1NVBNCxdExEnv9F9o93xGHppaacwmBySTY6G2
-         cbWvn3QFp0hrMlWqq235Q7ChU214E4ojGcNrCjdamZZlHxulGBYa95PqYtVbYPtUcD8J
-         ySMimCjbzSQTHo1Q9QiHmM/bQFUqhUrKc6LCCsAf9MMB1cKIX+y+MLGgGLR3dy24atCL
-         S//7fk+NhGqcVBu2/kb/S19Cd+ayGPeFm6gq8ln5EZxQKGB2WVPvJI3cYNQtomBl066K
-         rBiA==
-X-Forwarded-Encrypted: i=1; AJvYcCUdEYNAnfC0JVDsw5INgjAm4IqgaSzZsmHSLMBcfysiSz7dkvekcWFNF5wIzyH0oKBNLFsveRNE3v+RJ5c=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywbln+QfsVUUb8XJTmCPUMFX39kHEJX8iV7vInM0AcxFOetI0N0
-	0txzY5JLU9s1wMlkvittDPCbFvwYELHZsIpLiuAtuXqMn+dFnLFaQ3aSvrdYoVUvu8DP68KJwS1
-	bLX7IjJ0Xms36GGpYof18i5ruh20X5+1OTZzhCARGGChr78qB682O6e0iCcS/gjnRk18=
-X-Gm-Gg: AY/fxX5jnJpoKP4wufYzs/WGa28LhQLJkM1tELA8dOYbT7ZjKEbkQmnGfIm+quRumVW
-	DEcbBETsBmx8YhpUPaxZiYKUdsLfXG4G9Hni4JVfvZptBLyX3DP2/qoriqIbDeYtlybeUnNwt+Z
-	V8IkLRHMln/mm8uxHk9jR4/n6JQrdcNMGqT7HBN+ylrk6XmIWqvT5Y0vQJ7XTEs7m6KYM/60EW0
-	XW4RvNtmo1oH1ASG+8m9zpeuyQPzqcBkVDsJD7oIg+Djx+hWMcT4CqnhM8pIrjQU+xGkVhc9k9w
-	faKwpHZ/tVHQOSHxYbzi5qK5x857WsfZRQFPt2ndNolYAo3SynYg1CY+2uwCb2ghVfJwuySVLgD
-	J
-X-Received: by 2002:a17:903:46c5:b0:2a3:e89c:593e with SMTP id d9443c01a7336-2a3ee41f181mr62398185ad.4.1767868522223;
-        Thu, 08 Jan 2026 02:35:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWb7Nq1EAzfMOaDGj/G/lGftVbslZgXtHq29CNW23TT+aB3wwbYZDR2hEBzPzfJM832bE6sw==
-X-Received: by 2002:a17:903:46c5:b0:2a3:e89c:593e with SMTP id d9443c01a7336-2a3ee41f181mr62397775ad.4.1767868521555;
-        Thu, 08 Jan 2026 02:35:21 -0800 (PST)
-Received: from localhost ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c48c2bsm74465035ad.26.2026.01.08.02.35.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 02:35:21 -0800 (PST)
-Date: Thu, 8 Jan 2026 18:32:55 +0800
-From: Coiby Xu <coxu@redhat.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: kexec@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	Thomas Staudt <tstaudt@de.ibm.com>, Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>, 
-	Baoquan he <bhe@redhat.com>, Dave Young <dyoung@redhat.com>, Kairui Song <ryncsn@gmail.com>, 
-	Pingfan Liu <kernelfans@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Vivek Goyal <vgoyal@redhat.com>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] powerpc/kdump: pass dm-crypt keys to kdump kernel
-Message-ID: <aV5F-T1nNumTTdgK@Rk>
-References: <20251226140636.1378505-1-coxu@redhat.com>
- <20260106074039.564707-1-coxu@redhat.com>
- <9aa592c9-c766-4aac-a60c-25dd5c2f143d@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dn2Nr2Xv6z2xFn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 22:14:35 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6089xbdW011316;
+	Thu, 8 Jan 2026 11:14:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=VOrHBz
+	WPYvLqCnour3T5CPii1OlReIp2gg08NbPqsxE=; b=QJmEf5xaNI8LhBXQvy3vtP
+	vNGW0kjNlbKIEuBxeWI/pLwt7RCnHdoB+vA2rNDnzbAoYiBoWExjlz9U75w821lX
+	B5Ot5PhTfeisSuN2huPFJVW5CKBMMnj++JK6sQeGu5UhYyA98jVllZwgjl9rMQjA
+	/ri8glSjsv/g4B0lIIyXdWgT/6GmgDnKZGGCy2nOpwxlL6vVGoD7yPNdyh51+MD+
+	DprwiaAuEbSH+8nx+uxniwMEq7AblOXepw4QGG/kMYCqZEeKA6MBoxfBij+TnNIo
+	GQ3Fo0xBQTu6NtroXspW+9dgyHlUHqVAHXQ6MApbj7MAKr4+E88JOZbHRJJJoofw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhkcr1t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jan 2026 11:14:06 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 608BE64b013346;
+	Thu, 8 Jan 2026 11:14:06 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhkcr1r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jan 2026 11:14:06 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6088DhBb015242;
+	Thu, 8 Jan 2026 11:14:05 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfdespn14-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jan 2026 11:14:05 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 608BE3j827722362
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 8 Jan 2026 11:14:03 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BA0C658059;
+	Thu,  8 Jan 2026 11:14:03 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9D84F58058;
+	Thu,  8 Jan 2026 11:13:59 +0000 (GMT)
+Received: from [9.109.209.83] (unknown [9.109.209.83])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  8 Jan 2026 11:13:59 +0000 (GMT)
+Message-ID: <ebbc7ae7-2eb5-4b92-99e9-549c289b995c@linux.ibm.com>
+Date: Thu, 8 Jan 2026 16:43:57 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -114,110 +86,215 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <9aa592c9-c766-4aac-a60c-25dd5c2f143d@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: gp0A4nbo-_7qLIgq_ojxmwXk92q3LnQ-xBQmJFhsODA_1767868522
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] powerpc/pseries: Fix MSI-X allocation failure when
+ quota is exceeded
+To: Nilay Shroff <nilay@linux.ibm.com>, Nam Cao <namcao@linutronix.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Gleixner <tglx@linutronix.de>, maz@kernel.org,
+        gautam@linux.ibm.com, Gregory Joyce <gjoyce@ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20260107100230.1466093-1-namcao@linutronix.de>
+ <1fda7021-ec31-40ed-bfd8-e0e9b657662f@linux.ibm.com>
+Content-Language: en-US
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <1fda7021-ec31-40ed-bfd8-e0e9b657662f@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=P4s3RyAu c=1 sm=1 tr=0 ts=695f917e cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=LTgroE_r0Rx6dzEudaAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: z2DVWXM9WqHD0m2emh8IGzZxxO4ughpL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA3MyBTYWx0ZWRfX/kKWLhLK2qmZ
+ Y/83TiBiyihaKZVf6Tip3PbKjUKMLLblw+b/l06NPydiH8WSgHh9TmjlW0zIq4KdJjwSF7xjCeC
+ 0mkzDL0ivyc6CzfJizZT68gBEUOSHy6SrpWHmgko+i+bpb2ZyAcMUQhnVig5Vu/gjDdvfrb5tGG
+ MRAc9u2D4nAzEsPCSIAhdSH0yCO3AjVYDnxY4c/LzakoT6I/P6+cx2nScP0a2r8I2lAliAh2VYK
+ 1GQTIeYGhZJaieuxROrXMSgD5zZJjhnVFtxvdMwECYE3oEgDpoPSUN/YEr9DN03YHPCKKhmREXG
+ nQCl8Aa4OqyDwXdluH+Su2OsdKvoTnHe3owj/XHXaKcztBk9hfkMMV+eNOHM3Kfemin7k86rnka
+ XZ4H0vqV+HO1iLgm/AknnYz5iF3U4erOob4i0fKHI5rnxnkjnAeTrZwa+4Kt/Rrtrw3CyeuDIla
+ N2HRHFcDeH7NhG/Q39A==
+X-Proofpoint-GUID: 7PQIpYKgEczd8DbcgUQj5Dfwg4HDregf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-08_02,2026-01-07_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 priorityscore=1501 clxscore=1015 suspectscore=0
+ phishscore=0 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601080073
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Jan 07, 2026 at 02:32:41PM +0530, Sourabh Jain wrote:
->
->
->On 06/01/26 13:10, Coiby Xu wrote:
->>CONFIG_CRASH_DM_CRYPT has been introduced to support LUKS-encrypted
->>device dump target by addressing two challenges [1],
->>  - Kdump kernel may not be able to decrypt the LUKS partition. For some
->>    machines, a system administrator may not have a chance to enter the
->>    password to decrypt the device in kdump initramfs after the 1st kernel
->>    crashes
->>
->>  - LUKS2 by default use the memory-hard Argon2 key derivation function
->>    which is quite memory-consuming compared to the limited memory reserved
->>    for kdump.
->>
->>To also enable this feature for PowerPC, we only need to let 1st kernel
->>build up the kernel command parameter dmcryptkeys as similar to
->>elfcorehdr to pass the memory address of the stored info of dm-crypt
->>keys to the kdump kernel.
->>
->>Note to avoid a building failure [2] caused by undeclared function
->>crash_load_dm_crypt_keys when CONFIG_CRASH_DUMP is not enabled,
->>realign the function declaration with CONFIG_CRASH_DM_CRYPT.
->>
->>[1] https://lore.kernel.org/all/20250502011246.99238-1-coxu@redhat.com/
->>[2] https://lore.kernel.org/oe-kbuild-all/202512272218.ghBaSjzO-lkp@intel.com/
->>
->>Cc: Thomas Staudt <tstaudt@de.ibm.com>
->>Cc: Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>
->>Cc: Baoquan he <bhe@redhat.com>
->>Cc: Dave Young <dyoung@redhat.com>
->>Cc: Kairui Song <ryncsn@gmail.com>
->>Cc: Pingfan Liu <kernelfans@gmail.com>
->>Cc: Andrew Morton <akpm@linux-foundation.org>
->>Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
->>Signed-off-by: Coiby Xu <coxu@redhat.com>
->>---
->>v2:
->>- fix double kfree issue [Sourabh]
->>- corretly kfree old modified_cmdline
->>- use imperative mood for commit message
->>- fix a compiling error caught by kernel test robot
->>
->>  arch/powerpc/include/asm/kexec.h |  3 ++-
->>  arch/powerpc/kexec/elf_64.c      | 27 ++++++++++++++++++++++++++-
->>  arch/powerpc/kexec/file_load.c   | 18 ++++++++++--------
->>  include/linux/crash_core.h       | 14 +++++++-------
->>  4 files changed, 45 insertions(+), 17 deletions(-)
->>
->>diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
->>index bd4a6c42a5f3..f3d098d543b4 100644
->>--- a/arch/powerpc/include/asm/kexec.h
->>+++ b/arch/powerpc/include/asm/kexec.h
->>@@ -80,7 +80,8 @@ struct kimage_arch {
->>  };
->>  char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
->>-			  unsigned long cmdline_len);
->>+			  unsigned long cmdline_len,
->>+			  char *name, unsigned long addr);
->>  int setup_purgatory(struct kimage *image, const void *slave_code,
->>  		    const void *fdt, unsigned long kernel_load_addr,
->>  		    unsigned long fdt_load_addr);
->>diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
->>index 5d6d616404cf..995d7e8e98e1 100644
->>--- a/arch/powerpc/kexec/elf_64.c
->>+++ b/arch/powerpc/kexec/elf_64.c
->>@@ -81,13 +81,38 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->>  		/* Setup cmdline for kdump kernel case */
->>  		modified_cmdline = setup_kdump_cmdline(image, cmdline,
->>-						       cmdline_len);
->>+						       cmdline_len,
->>+						       "elfcorehdr",
->>+						       image->elf_load_addr);
->>  		if (!modified_cmdline) {
->>  			pr_err("Setting up cmdline for kdump kernel failed\n");
->>  			ret = -EINVAL;
->>  			goto out;
->>  		}
->>  		cmdline = modified_cmdline;
->>+		cmdline_len = strlen(cmdline) + 1;
->
->I have a limited understanding of the new dm-crypt keys, but the way they
->are loaded and the additional command-line options added for the kdump
->kernel look good to me.
->
->Feel free to add:
->Acked-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-Thanks for reviewing and acknowledging the patch!
+On 1/7/26 7:55 PM, Nilay Shroff wrote:
+>
+> On 1/7/26 3:32 PM, Nam Cao wrote:
+>> Nilay reported that since commit daaa574aba6f ("powerpc/pseries/msi: Switch
+>> to msi_create_parent_irq_domain()"), the NVMe driver cannot enable MSI-X
+>> when the device's MSI-X table size is larger than the firmware's MSI quota
+>> for the device.
+>>
+>> This is because the commit changes how rtas_prepare_msi_irqs() is called:
+>>
+>>    - Before, it is called when interrupts are allocated at the global
+>>      interrupt domain with nvec_in being the number of allocated interrupts.
+>>      rtas_prepare_msi_irqs() can return a positive number and the allocation
+>>      will be retried.
+>>
+>>    - Now, it is called at the creation of per-device interrupt domain with
+>>      nvec_in being the number of interrupts that the device supports. If
+>>      rtas_prepare_msi_irqs() returns positive, domain creation just fails.
+>>
+>> For Nilay's NVMe driver case, rtas_prepare_msi_irqs() returns a positive
+>> number (the quota). This causes per-device interrupt domain creation to
+>> fail and thus the NVMe driver cannot enable MSI-X.
+>>
+>> Rework to make this scenario works again:
+>>
+>>    - pseries_msi_ops_prepare() only prepares as many interrupts as the quota
+>>      permit.
+>>
+>>    - pseries_irq_domain_alloc() fails if the device's quota is exceeded.
+>>
+>> Now, if the quota is exceeded, pseries_msi_ops_prepare() will only prepare
+>> as allowed by the quota. If device drivers attempt to allocate more
+>> interrupts than the quota permits, pseries_irq_domain_alloc() will return
+>> an error code and msi_handle_pci_fail() will allow device drivers a retry.
+>>
+>> Reported-by: Nilay Shroff <nilay@linux.ibm.com>
+>> Closes: https://lore.kernel.org/linuxppc-dev/6af2c4c2-97f6-4758-be33-256638ef39e5@linux.ibm.com/
+>> Fixes: daaa574aba6f ("powerpc/pseries/msi: Switch to msi_create_parent_irq_domain()")
+>> Signed-off-by: Nam Cao <namcao@linutronix.de>
+>> Acked-by: Nilay Shroff <nilay@linux.ibm.com>
+>> Cc: stable@vger.kernel.org
+>> ---
+>> v2:
+>>    - change pseries_msi_ops_prepare()'s allocation logic to match the
+>>      original logic in __pci_enable_msix_range()
+>>
+>>    - fix up Nilay's email address
+>> ---
+>>   arch/powerpc/platforms/pseries/msi.c | 44 ++++++++++++++++++++++++++--
+>>   1 file changed, 41 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
+>> index a82aaa786e9e..edc30cda5dbc 100644
+>> --- a/arch/powerpc/platforms/pseries/msi.c
+>> +++ b/arch/powerpc/platforms/pseries/msi.c
+>> @@ -19,6 +19,11 @@
+>>   
+>>   #include "pseries.h"
+>>   
+>> +struct pseries_msi_device {
+>> +	unsigned int msi_quota;
+>> +	unsigned int msi_used;
+>> +};
+>> +
+>>   static int query_token, change_token;
+>>   
+>>   #define RTAS_QUERY_FN		0
+>> @@ -433,8 +438,28 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
+>>   	struct msi_domain_info *info = domain->host_data;
+>>   	struct pci_dev *pdev = to_pci_dev(dev);
+>>   	int type = (info->flags & MSI_FLAG_PCI_MSIX) ? PCI_CAP_ID_MSIX : PCI_CAP_ID_MSI;
+>> +	int ret;
+>> +
+>> +	struct pseries_msi_device *pseries_dev __free(kfree)
+>> +		= kmalloc(sizeof(*pseries_dev), GFP_KERNEL);
+>> +	if (!pseries_dev)
+>> +		return -ENOMEM;
+>> +
+>> +	while (1) {
+>> +		ret = rtas_prepare_msi_irqs(pdev, nvec, type, arg);
+>> +		if (!ret)
+>> +			break;
+>> +		else if (ret > 0)
+>> +			nvec = ret;
+>> +		else
+>> +			return ret;
+>> +	}
+>>   
+>> -	return rtas_prepare_msi_irqs(pdev, nvec, type, arg);
+>> +	pseries_dev->msi_quota = nvec;
+>> +	pseries_dev->msi_used = 0;
+>> +
+>> +	arg->scratchpad[0].ptr = no_free_ptr(pseries_dev);
+>> +	return 0;
+>>   }
+>>   
+>>   /*
+>> @@ -443,9 +468,13 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
+>>    */
+>>   static void pseries_msi_ops_teardown(struct irq_domain *domain, msi_alloc_info_t *arg)
+>>   {
+>> +	struct pseries_msi_device *pseries_dev = arg->scratchpad[0].ptr;
+>>   	struct pci_dev *pdev = to_pci_dev(domain->dev);
+>>   
+>>   	rtas_disable_msi(pdev);
+>> +
+>> +	WARN_ON(pseries_dev->msi_used);
+>> +	kfree(pseries_dev);
+>>   }
+>>   
+>>   static void pseries_msi_shutdown(struct irq_data *d)
+>> @@ -546,12 +575,18 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+>>   				    unsigned int nr_irqs, void *arg)
+>>   {
+>>   	struct pci_controller *phb = domain->host_data;
+>> +	struct pseries_msi_device *pseries_dev;
+>>   	msi_alloc_info_t *info = arg;
+>>   	struct msi_desc *desc = info->desc;
+>>   	struct pci_dev *pdev = msi_desc_to_pci_dev(desc);
+>>   	int hwirq;
+>>   	int i, ret;
+>>   
+>> +	pseries_dev = info->scratchpad[0].ptr;
+>> +
+>> +	if (pseries_dev->msi_used + nr_irqs > pseries_dev->msi_quota)
+>> +		return -ENOSPC;
+>> +
+>>   	hwirq = rtas_query_irq_number(pci_get_pdn(pdev), desc->msi_index);
+>>   	if (hwirq < 0) {
+>>   		dev_err(&pdev->dev, "Failed to query HW IRQ: %d\n", hwirq);
+>> @@ -567,9 +602,10 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+>>   			goto out;
+>>   
+>>   		irq_domain_set_hwirq_and_chip(domain, virq + i, hwirq + i,
+>> -					      &pseries_msi_irq_chip, domain->host_data);
+>> +					      &pseries_msi_irq_chip, pseries_dev);
+>>   	}
+>>   
+>> +	pseries_dev->msi_used++;
+>>   	return 0;
+>>   
+>>   out:
+>> @@ -582,9 +618,11 @@ static void pseries_irq_domain_free(struct irq_domain *domain, unsigned int virq
+>>   				    unsigned int nr_irqs)
+>>   {
+>>   	struct irq_data *d = irq_domain_get_irq_data(domain, virq);
+>> -	struct pci_controller *phb = irq_data_get_irq_chip_data(d);
+>> +	struct pseries_msi_device *pseries_dev = irq_data_get_irq_chip_data(d);
+>> +	struct pci_controller *phb = domain->host_data;
+>>   
+>>   	pr_debug("%s bridge %pOF %d #%d\n", __func__, phb->dn, virq, nr_irqs);
+>> +	pseries_dev->msi_used -= nr_irqs;
+>>   	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
+>>   }
+>>   
+> I just tested this change on my system using the latest mainline kernel and it works
+> well for me. So with that, please fell free to add,
+>
+> Tested-by: Nilay Shroff <nilay@linux.ibm.com>
 
--- 
-Best regards,
-Coiby
+Thanks will pull this in.
+Maddy
 
+>
 
