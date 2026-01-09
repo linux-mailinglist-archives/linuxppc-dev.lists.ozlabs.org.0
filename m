@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-15458-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15459-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1941DD0AC91
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 09 Jan 2026 16:04:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D2ED0ACD9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 09 Jan 2026 16:08:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dnlRg2gWYz2xgv;
-	Sat, 10 Jan 2026 02:04:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dnlWx5JvRz2xm5;
+	Sat, 10 Jan 2026 02:08:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767971071;
-	cv=none; b=e1j+PDjkmr7SGtjtdVstTr6qsdcPrPs+s2bQ08mC7gMIPti8UDJ2tYYLn6jPmNdejLVr4LDVmXdR9WndTXhHTy/fAYKvKyMDkJBHsMIziR9GWxro4LgvruikRA04cI1p/ocDoJyvXmpzzpCOJV53V9B+xCQ8yx7fsOiodMTrTb28GqjNZ/GGv3v0EV1YkawiEZwunCzAF4GL6CUPBE1rchmJJuZTNeZtI9tYfQXNGkkGItTf9OOlXqYQ13FUtNaHU+PNtWNyh7bYrIV0BDHvqLwSe9TLCTrbzpnEyL7LgleqrCyU1wjja+1y8LxowAQdXBdZkGfm65opM0sX7X4i7w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767971293;
+	cv=none; b=LPyUr5PNXaG7d9XnjtfQ7z20EhAKkkPjAe4LvC3joVtcTWgLscJlUZuwayEkHZG+iToX5Bo32vV2Pb4B4+oKBapBA1yth2gTk37Wm7lVQRi5y5nmoupqLWPtTeg/GDdY3q9hBdxFfbNoI4UsqdUQogV5Fycv2iE+EN7MnX79BTGt4iHXGjPmAS+PGyqUF3eUi3os2omzQbHuuoyAoSD/M7i6b2Yi57vFjSF1Bm+4fO1JRTMKJ/gJxXFEOWvOjQwqk9qlftDP9jU5mIMwFkd2EYYQJ0aJq+AVNtv+K+5EbsqVkp3IDSzlafBNb3WkVgVIkoRSjl09s1UBs5S00J27BA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767971071; c=relaxed/relaxed;
-	bh=H6ssEdcHkr4lhwyK2u97S+QH0RFj6bQRJ9iwKKkYmk8=;
+	t=1767971293; c=relaxed/relaxed;
+	bh=2O5PgS3h7rUMfW8zetc6lr+7DUQ51Nxsxl6VimhpPuw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=csl/JDb3wrj2Svve7sPncm10hFL3yo2fjkPiW7hy3SU0sZeC2JiZvbrudct90jqBGsggJ/ApajtpCAaQ0Nv1wLCO+pQ2vhrnuorynM1zD4zkjun4y7aLkWrs560kRiCmWPmb5ndRaAajmAMdLdNWKKXYmCuev9UhvZBLO3TemVJzL2qJ5gBRrO8kF0R38yPAiaZxuZw9A+Yn4DO9IsUizbtSNINVeVyApPQoeEmhAeLusPTNcMcNE0p+1LPjEHYqgTNX8qiV3PjcYh+h0GtqzT+wavFx6Q35QHLQUoUTtrnLz44SzL5qBPD9owIPl1dRVNKG/gjtMdk0VvYCfj5TKA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Uu2xDZmK; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=ILkaj3LltkeopouaLPezU0uSPxM4sIiqf7hcUWe4/vf9fESp/OHh7MVtgCwqedcR+noocKklwortWlbLgNR+YQcAYYlzMTl05zlZ732gcu5he0ypVSgjkk+MSI574+Aklcv4IkyrRN4/dVHfpbPwXL9TMvxhuU8/C1MTSGhYfUd9ubCpKPs7V/RfulE/rg3KOFxEQLCJ1T/TlUAU+UesPATfAS1ZYE0YHOxFXNYhKoMSCVN2I7wOXddlnGsf+hBy/2rmF2X7KFNlRcM7UF5bfpH9RCHbs9I7xaCIXChsSNlGL5SY+5l82TK0mMXtR8A7xJEJlsxBGo3026vQUSAs4w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=D5A49i8X; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Uu2xDZmK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=D5A49i8X;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dnlRf40Sgz2xQ1
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jan 2026 02:04:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dnlWw4V5Bz2xc8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jan 2026 02:08:12 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1F23D41AAF;
-	Fri,  9 Jan 2026 15:03:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B859DC4CEF1;
-	Fri,  9 Jan 2026 15:03:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7CEBC42AC6;
+	Fri,  9 Jan 2026 15:08:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1067FC4CEF1;
+	Fri,  9 Jan 2026 15:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767971038;
-	bh=9LFMVxyFsOw43Q6k6Eff0i7Pwixa+RzRx4DsbI5AqD4=;
+	s=k20201202; t=1767971290;
+	bh=3Z8L26dcTskZ3ZdCQN0iSI+dIODX6q9MdBtGUwgu/Fc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Uu2xDZmK3PKrblsrsZL8LIcmnB0lca1ztGkSrwKnR3k1T+w3GGUw72vEWmRnJLC84
-	 04PN8WJ3tZU0qJxzKPXK/jIY9eHM/FkWJFfqFlKmAMwFCu8bAOMnLGGisVhDa+VPC1
-	 Hkm58qx6FwRjuIwh2iTdkxqN5OiOQDU6WIuS4LlqAy4eDc3QabNZxuLBa/iS/+tV6V
-	 fS5P07RUWs0rl3AKweG2OOOgL7ak053o/aoA2ECEjLInVqvpv88XZvchTU2IlUt4fg
-	 Y4VqP9kXVaCjmME3a4NjLke27874qGSfQHgAkzTpVnrAxfNYoR24aDyxZOKRFuYlCS
-	 Zo9TfPAXHUzMg==
-Message-ID: <0c72913e-9708-4675-a421-06ed82b7802a@kernel.org>
-Date: Fri, 9 Jan 2026 16:03:45 +0100
+	b=D5A49i8XZ+WWgc3yo8WpoToMpiFiiYIORsD5kdhtfLHgOWLJ+teHa3YKmPfqvZQto
+	 EOjbH06xY/Y2D1tuKVkl4Bn9mfBj2pRUINZJHsmiBlwwDKMfmgPNBdydHY/WcoODaP
+	 hXTbfv9bYAipERXqMFeW7thazUf0MBtEe10dcKDUEhB49l5TpS6DuQJGLnLWIPw35L
+	 /A7EpMCyhB3OpiWJ4xcCGJauiqHLzHAPYo90gEXDJEGp6mJ/mQ/yOKD0hyaBuAIhmW
+	 2g9u3gE5rzMBGVklkmAIGwRJV3u8nzhfd1IwpNssclwPUhgU0okSyNsciYIOrvSviH
+	 Q73z6sh0NFzwA==
+Message-ID: <1e123306-0efe-457f-953b-d4a27ce6bc60@kernel.org>
+Date: Fri, 9 Jan 2026 16:07:57 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,7 +59,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 05/14] mm: clarify lazy_mmu sleeping constraints
+Subject: Re: [PATCH v6 14/14] mm: Add basic tests for lazy_mmu
 To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -87,7 +87,7 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
  xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251215150323.2218608-1-kevin.brodsky@arm.com>
- <20251215150323.2218608-6-kevin.brodsky@arm.com>
+ <20251215150323.2218608-15-kevin.brodsky@arm.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,7 +133,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20251215150323.2218608-6-kevin.brodsky@arm.com>
+In-Reply-To: <20251215150323.2218608-15-kevin.brodsky@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -142,44 +142,136 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 12/15/25 16:03, Kevin Brodsky wrote:
-> The lazy MMU mode documentation makes clear that an implementation
-> should not assume that preemption is disabled or any lock is held
-> upon entry to the mode; however it says nothing about what code
-> using the lazy MMU interface should expect.
-> 
-> In practice sleeping is forbidden (for generic code) while the lazy
-> MMU mode is active: say it explicitly.
+> Add basic KUnit tests for the generic aspects of the lazy MMU mode:
+> ensure that it appears active when it should, depending on how
+> enable/disable and pause/resume pairs are nested.
 > 
 > Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 > ---
->   include/linux/pgtable.h | 14 +++++++++-----
->   1 file changed, 9 insertions(+), 5 deletions(-)
+>   mm/Kconfig                     | 12 ++++++
+>   mm/Makefile                    |  1 +
+>   mm/tests/lazy_mmu_mode_kunit.c | 71 ++++++++++++++++++++++++++++++++++
+>   3 files changed, 84 insertions(+)
+>   create mode 100644 mm/tests/lazy_mmu_mode_kunit.c
 > 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 652f287c1ef6..1abc4a1c3d72 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -225,11 +225,15 @@ static inline int pmd_dirty(pmd_t pmd)
->    * up to date.
->    *
->    * In the general case, no lock is guaranteed to be held between entry and exit
-> - * of the lazy mode. So the implementation must assume preemption may be enabled
-> - * and cpu migration is possible; it must take steps to be robust against this.
-> - * (In practice, for user PTE updates, the appropriate page table lock(s) are
-> - * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
-> - * and the mode cannot be used in interrupt context.
-> + * of the lazy mode. (In practice, for user PTE updates, the appropriate page
-> + * table lock(s) are held, but for kernel PTE updates, no lock is held).
-> + * The implementation must therefore assume preemption may be enabled upon
-> + * entry to the mode and cpu migration is possible; it must take steps to be
-> + * robust against this. An implementation may handle this by disabling
-> + * preemption, as a consequence generic code may not sleep while the lazy MMU
-> + * mode is active.
-> + *
-> + * Nesting is not permitted and the mode cannot be used in interrupt context.
->    */
->   #ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
->   static inline void arch_enter_lazy_mmu_mode(void) {}
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 62073bd61544..ac48deb44884 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1471,6 +1471,18 @@ config ARCH_HAS_LAZY_MMU_MODE
+>   	  MMU-related architectural state to be deferred until the mode is
+>   	  exited. See <linux/pgtable.h> for details.
+>   
+> +config LAZY_MMU_MODE_KUNIT_TEST
+> +	tristate "KUnit tests for the lazy MMU mode" if !KUNIT_ALL_TESTS
+> +	depends on ARCH_HAS_LAZY_MMU_MODE
+> +	depends on KUNIT
+> +	default KUNIT_ALL_TESTS
+> +	help
+> +	  Enable this option to check that the lazy MMU mode interface behaves
+> +	  as expected. Only tests for the generic interface are included (not
+> +	  architecture-specific behaviours).
+> +
+> +	  If unsure, say N.
+> +
+>   source "mm/damon/Kconfig"
+>   
+>   endmenu
+> diff --git a/mm/Makefile b/mm/Makefile
+> index 2d0570a16e5b..9175f8cc6565 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -147,3 +147,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
+>   obj-$(CONFIG_EXECMEM) += execmem.o
+>   obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+>   obj-$(CONFIG_PT_RECLAIM) += pt_reclaim.o
+> +obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
+> diff --git a/mm/tests/lazy_mmu_mode_kunit.c b/mm/tests/lazy_mmu_mode_kunit.c
+> new file mode 100644
+> index 000000000000..2720eb995714
+> --- /dev/null
+> +++ b/mm/tests/lazy_mmu_mode_kunit.c
+> @@ -0,0 +1,71 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include <kunit/test.h>
+> +#include <linux/pgtable.h>
+> +
+> +static void expect_not_active(struct kunit *test)
+> +{
+> +	KUNIT_EXPECT_FALSE(test, is_lazy_mmu_mode_active());
+> +}
+> +
+> +static void expect_active(struct kunit *test)
+> +{
+> +	KUNIT_EXPECT_TRUE(test, is_lazy_mmu_mode_active());
+> +}
+> +
+> +static void lazy_mmu_mode_active(struct kunit *test)
+> +{
+> +	expect_not_active(test);
+> +
+> +	lazy_mmu_mode_enable();
+> +	expect_active(test);
+> +
+> +	{
+> +		/* Nested section */
+> +		lazy_mmu_mode_enable();
+> +		expect_active(test);
+> +
+> +		lazy_mmu_mode_disable();
+> +		expect_active(test);
+> +	}
+> +
+> +	{
+> +		/* Paused section */
+> +		lazy_mmu_mode_pause();
+> +		expect_not_active(test);
+> +
+> +		{
+> +			/* No effect (paused) */
+> +			lazy_mmu_mode_enable();
+> +			expect_not_active(test);
+> +
+> +			lazy_mmu_mode_disable();
+> +			expect_not_active(test);
+> +
+> +			lazy_mmu_mode_pause();
+> +			expect_not_active(test);
+> +
+> +			lazy_mmu_mode_resume();
+> +			expect_not_active(test);
+> +		}
+> +
+> +		lazy_mmu_mode_resume();
+> +		expect_active(test);
+> +	}
+> +
+> +	lazy_mmu_mode_disable();
+> +	expect_not_active(test);
+> +}
+> +
+> +static struct kunit_case lazy_mmu_mode_test_cases[] = {
+> +	KUNIT_CASE(lazy_mmu_mode_active),
+> +	{}
+> +};
+> +
+> +static struct kunit_suite lazy_mmu_mode_test_suite = {
+> +	.name = "lazy_mmu_mode",
+> +	.test_cases = lazy_mmu_mode_test_cases,
+> +};
+> +kunit_test_suite(lazy_mmu_mode_test_suite);
+> +
+> +MODULE_DESCRIPTION("Tests for the lazy MMU mode");
+> +MODULE_LICENSE("GPL");
+
+
+Very nice test :)
+
+I think I prefer the EXPORT_SYMBOL_IF_KUNIT over disabling the test for 
+PPC and over making lazy_mmu_mode_enable() non-inlined functions with an 
+exported symbol.
+
+With the EXPORT_SYMBOL_IF_KUNIT stuff added
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
