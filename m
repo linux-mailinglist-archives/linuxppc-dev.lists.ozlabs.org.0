@@ -1,101 +1,120 @@
-Return-Path: <linuxppc-dev+bounces-15482-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15483-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C004AD0D2BC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jan 2026 08:36:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23613D0D2BF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jan 2026 08:36:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dp9SL5CmWz2yFk;
-	Sat, 10 Jan 2026 18:36:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dp9SZ0PXPz2yKr;
+	Sat, 10 Jan 2026 18:36:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.214.181
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767939614;
-	cv=none; b=jkLDs1wqV9VrRmyBx8jADr1n4axSmkdavySgb6Z79qBzq2Fb9oHtEYFtgYKakPqQ2BpaizZzlenJA6jXT47L99XY4Gc4wtRduBuvT0zEu+nuMdWngs84GLiwdZbYlpXzfzatzsesAsYigQDcfXYozEaBoi25z6ciYdme3BXKN8jfryv+Vmt/aRNC2LAPXVK4GP3ItzP4GCe/yAh5ziGgVH0YA7uRGVwGClOV9QQVeFRKF43+szWVq8PTrb/V6EoEzzHvsjopkM+HPj5uc6T6Yg6udbcYk1Q13/XrkSZBox3TGnMzKrEi8LRZShWGxzvgKTS1lKF7LY3d1tHbAYyjJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767939614; c=relaxed/relaxed;
-	bh=mxcIAZdi8DSHabnzsxkENQYm/KIvgyHbwki+UOtqU4s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W2bBWGNVoDgEp3BMJuVPJK1EU2YqFfLyZEX2iqiR5Pcq03bs323C9wKkxv8UopPik0M4Hz+W8xN3WezlSLjOG7O5gJLF9uqTEF9tfLdjuJptThqvOqLRklVRVvWHyLY4R/ZD++4xoC1Ie3orY4F9fM2R5S3znhz5akwp8Ie5qPUq3tsTOnt7kjG5nIr+9DIa0K+CK1gNsyfRelISlB4xAkHDrGflKlgVI81q7GmOnVyXRhuWksmWHaWuPRH7mZkzDgZOYsK27NjOxEIULmTp2zB82Ktmux1mAC7PD/3br87hJfK1q8U+MslFwB6VNtSSaIn1/X7uWEIcEdnjGqffXQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LBIchNj6; dkim-atps=neutral; spf=pass (client-ip=209.85.214.181; helo=mail-pl1-f181.google.com; envelope-from=atharvatiwarilinuxdev@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.14
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767939772;
+	cv=fail; b=QtNmnwutk4QYnHPv62NT54cHAh3mARILVQwHjMuGsC/HP1VkU03ZCM5sfSN/mYnYx3YrV7FEqg6bJLO0rlZIoeGBjVksFcUE10OaIpR+0uGN1at7jll1wQi5KPFb0ZyBaJpm2ppzpq0eo3lj7JrcibunbCNPxV+EFG9wxFSqAdqcsv/frOMzYojdCVUDyGe4tdxfMtQSlLY5JLDbp3jPYGcEZ2esm3mI0V5OI/AGKvRheQ0jw9IlcT4ZntUxL8R/g7soAcXX2bD0xNirmrHqm86ZXBFIsxUXFUQ4l9jaoxCjeWSrvYxANrTWmDr3hnsyAmGzZsAW3uCGlFP4Iq6/kg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1767939772; c=relaxed/relaxed;
+	bh=Rkvi2kCY83EILh+91N1X2y3l/OVVifhh4YWgv8VKHU8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=AckkzIOqjvezP63Ir51UWX9uk5trr/Dc4KjHgwyy3frkOovfmT3GTXtqO4feyWELrYeWEvRpQ7wqDIpDVwwTpF7Y3tVGsVPfMXemDuSgrESwwGRPehEIpiEdVnSGXida6hOZCzQIUHRv1cmJj1WpSbwDh/b1AatI2eXU1xAlJWX50x3Y8BKsJQraoOErVls9sjXVn1m6AjV6e1mlJIQ7Cw7gg5/Ott2598RT0d9TcIzVYokGyOYeiHxREO+B2YJGQiK56FfEXFd3fHSbBhJFKXheIfzauZ9MWl6ZymrFfiVA3mAa/K0yrGvJqQ/iIiFD2V+epTBJfR3hkLua2RFI0w==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DhJnTnG8; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=matthew.brost@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LBIchNj6;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DhJnTnG8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.214.181; helo=mail-pl1-f181.google.com; envelope-from=atharvatiwarilinuxdev@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=matthew.brost@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dnWpj6SkMz2xGF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jan 2026 17:20:13 +1100 (AEDT)
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a0d6f647e2so41809335ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jan 2026 22:20:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767939551; x=1768544351; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mxcIAZdi8DSHabnzsxkENQYm/KIvgyHbwki+UOtqU4s=;
-        b=LBIchNj6130OT6ygm9E7XDOVHVSbGOCQR8Y5eH91cy4eDH90jHZAw7rpyJPvVeOG1a
-         J7ANJa0zk7vSJusZbsLYardnGEYbhL2+b/DDRMYzQXoOkM0VQGMm2ucQptNXn8TXHyW7
-         yP6FG7hetdwmwjJSiqf4Y8YbTMug9N43pZC/Npz85o27pyKiNn3KqL69I8S9exOkUvUy
-         SWblWKc8L6kek4/XqH7JLYigcdyQGHihMzFvjTv770jUlWuf1SBTe1humxP0axHZSO2B
-         wFAMtr1k7LfBrIVUNacJMz3YLjLgkH8bjmYu+W8aedXXImAl6r57dh2I9PwVPPnCkBxa
-         X4kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767939551; x=1768544351;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mxcIAZdi8DSHabnzsxkENQYm/KIvgyHbwki+UOtqU4s=;
-        b=NZmY2rZXHsri+XkjIaJeYj0ZJbVgbuh8quu81ZRmiSRJyayRn80YnDUROBouKeaJG8
-         GhucddY2Q9gE3uRBlIKEUHVgsSm1d/GLJbrQjYQIdahOSkh7uRgg/tpOqiXSYfDvWHF1
-         18q3rY7XRDNP1E3mldejJtsz+nnprVuYVySIRqQR0lBn/zsX6gzAw1453+ZXyYkVk5gE
-         VMTXvwCpoI9d5hKXdWJSrs/v0BS9OUf8nH5RuYmBQcEtGsshDniycTjUsz7vMkB9SnQs
-         lSRy7pBF8yjFs0KflRcTZksxneZ8GgfRIqJAXYoeiFcjljh9ZTl/JTEcunbr1N6LSZRc
-         0Xmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWy0XFFxm8u3QdjrHG4qKab6NgeY0tbZLyhk/smMMtzjl6mNU714YeKtLOSQ1jn+JCU5L697Q+KN1cGHJ0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwHq5NR5ZxcqMISWCftyZW5Ro5wWe7ix/SQ7mDJIbpz9ALI35Oo
-	QqXC6pAhIkvFz2u4AY2BqDVk1k3adoNNLAznAqXyGPj8L+icPSMk0ho=
-X-Gm-Gg: AY/fxX4TCvytyFoE1yDJU2DnKbKhAzwQr53O/BAITZPYH/79i75lNngJdWm/Or3o2V0
-	AkkzE2297pQkPue/8WxByHIC3NQxyOR6MVvzYVn+hVItSLE2x2fTCLqh+In8HqGjzns5ynfsNfh
-	5OO3+2p7K1e16LO/X2W/PRQ+/5gxFXOZX+eSTpPTunQpEyjnJ8IBb40q6kZHBO2J2MCkk+m0njl
-	RInm/C50MlheScZNTFIVbGS3g0u+V6O4LVPVOL3DPRFb3ZIJG1D2pnSVSj6+CXCEdLVslCMSCo1
-	B00IDA5geSR6XdhSmVXDOGrnMqsQgbyWMlwp58wgKhJCcXCgZsgZ5KF4WDo0ECDkYjcwU1o1Mjk
-	Rljz0T2KdSB1ABa3v0rq4FK6T01BhANjtVpA9uVU+zdOA9nFyc3VYYrr+Tw7jn48B75R7g6Gxcs
-	dxktrs12rJeWPrCM8=
-X-Google-Smtp-Source: AGHT+IGN1WYQT2EKc4h3GaCwKE2jZCARir0K7jCaV93K9/r5xtWTUECgPBy7LokTrS9Cz97x/QdO2A==
-X-Received: by 2002:a17:902:ccd0:b0:298:2cdf:56c8 with SMTP id d9443c01a7336-2a3ee4c46d4mr71063545ad.60.1767939551278;
-        Thu, 08 Jan 2026 22:19:11 -0800 (PST)
-Received: from at.. ([171.61.163.202])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c530133csm9272546b3a.31.2026.01.08.22.19.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 22:19:10 -0800 (PST)
-From: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
-To: 
-Cc: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	"Oliver O'Halloran" <oohall@gmail.com>,
-	Andreas Noever <andreas.noever@gmail.com>,
-	Mika Westerberg <westeri@kernel.org>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH v5] PCI/portdev: Disable AER for Titan Ridge 4C 2018
-Date: Fri,  9 Jan 2026 06:18:53 +0000
-Message-ID: <20260109061901.3127-1-atharvatiwarilinuxdev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dnWsj5XWZz2xGF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jan 2026 17:22:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767939770; x=1799475770;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=n1gon94OqzvgrdoVNiYxNDXp2qaZdwEnUKHvIpC5WFA=;
+  b=DhJnTnG8sYoDqo7Op+koP8FfQGCAKKDvli8uSEFD/2ZWKj7h5x6/iJhK
+   x/DduSwqJGXomaJ/8P2AadaAivgCUlF9xtKb2D2qm3ZgGiqCSQGTu6m7s
+   EspG/iffxDjliJISsjQGjj82QsNeJaCeoMe6PHlCrOXwLzgOgJPgLfGlJ
+   razslsy3oCjdNNgAVv1nSu93KlI6tHZlMoH34Hn4U4xIP5NPznviMrX4c
+   Ova7kTF2FDN9wx8aB1N87qkST8R1QGwAWP742NOkKHL3LS+K6WO3ETdf6
+   KGfhYTeTvqgJ/DLp63mrJZoR2TzRsgeZDhHMqA6MCH/BtgiNNaQM0QhLI
+   g==;
+X-CSE-ConnectionGUID: 2Rl3JA7LQdWBlKe1D8CU2A==
+X-CSE-MsgGUID: 3iIthF7GQCOTOiaj5GeOaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="69368227"
+X-IronPort-AV: E=Sophos;i="6.21,212,1763452800"; 
+   d="scan'208";a="69368227"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 22:22:44 -0800
+X-CSE-ConnectionGUID: FWHa15EPSp2Al+6+GoSr9Q==
+X-CSE-MsgGUID: UECvbG0YT3iUq6p5TwkMyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,212,1763452800"; 
+   d="scan'208";a="204223380"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 22:22:43 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 8 Jan 2026 22:22:42 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Thu, 8 Jan 2026 22:22:42 -0800
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.2) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 8 Jan 2026 22:22:42 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ajyolgpW9c4kH5XIuzQ/rxH1RYGNl/Helq5XjdtmzqE+GGrnbq6T2TvAo/WN5rTvHpw72By6OfrxCnuFOJ6Usn6YPXEmgPCKkPdWpbLCaDrHGBTweWDUsln7xFwtMrbd/76tAmZ28PczrAUaIX0QGyLpKzF/qr81uOt9eENarRUESXpWjKysPHlUg4zJ/WlU2mQbNJy6bR4O77sazEOw41mrWtQj29CYP4pJZwfsqwO/o+jQ51Vz4h392uCVRB/XepOpYzaKXmaNy6AkoeH9ZPWnzfTJLMvKE55wJrC2+35ZLNM8HgLk4lIf89DWAztUTFg+M2T0bSt7jx0VlUCZTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Rkvi2kCY83EILh+91N1X2y3l/OVVifhh4YWgv8VKHU8=;
+ b=iGMO1fGF+H1SLtrbTIDh+sQ9F6Bmqxm02u7D7V8HPv2iUN9dzAQLX2q5ztWPxBd8FPQiTyUHY/EDF7CE6YIr8aPxEehvmBYd2CBlbjLqNwYx26rtwgjfObp/034tSAhS2NZd4bn3KYHC8zTrUeC+/21ejXvP0QhOLdbQEnhu+BaD18U+WSwPIOtmwS5Sy/YRop8I6/1quiLrkAafhTJvzIdoxC6onn4gmDz43vZ/GPmXcSmKBlGfpZ1Ny24PEiE/jLx3hIemlL9C51gzzaDx+Z+sx4vYCAxSwzrhOP4LSYDYQ0su+EoSEX2sbEx+KmfBXhAdk5ebsWBGdS9VWgJYqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by SA3PR11MB7485.namprd11.prod.outlook.com (2603:10b6:806:31c::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Fri, 9 Jan
+ 2026 06:22:40 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9456.015; Fri, 9 Jan 2026
+ 06:22:40 +0000
+Date: Thu, 8 Jan 2026 22:22:37 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Jordan Niethe <jniethe@nvidia.com>
+CC: <linux-mm@kvack.org>, <balbirs@nvidia.com>, <akpm@linux-foundation.org>,
+	<linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<david@redhat.com>, <ziy@nvidia.com>, <apopple@nvidia.com>,
+	<lorenzo.stoakes@oracle.com>, <lyude@redhat.com>, <dakr@kernel.org>,
+	<airlied@gmail.com>, <simona@ffwll.ch>, <rcampbell@nvidia.com>,
+	<mpenttil@redhat.com>, <jgg@nvidia.com>, <willy@infradead.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <intel-xe@lists.freedesktop.org>,
+	<jgg@ziepe.ca>, <Felix.Kuehling@amd.com>
+Subject: Re: [PATCH v2 00/11] Remove device private pages from physical
+ address space
+Message-ID: <aWCerW4QP0t7CrC8@lstrano-desk.jf.intel.com>
+References: <20260107091823.68974-1-jniethe@nvidia.com>
+ <aV6nvCw2ugAbSpFL@lstrano-desk.jf.intel.com>
+ <3586d8f1-a25f-4087-a987-162ccd97c25f@nvidia.com>
+ <6a911224-05e5-45ee-8008-e36ef35cbc7b@nvidia.com>
+ <eb45fb36-4f0b-4a83-8852-abac3205a988@nvidia.com>
+ <aWBMbGQApg81Kxba@lstrano-desk.jf.intel.com>
+ <ad2a0fe8-6d00-46a8-8f4c-fd7fb6aac8b1@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ad2a0fe8-6d00-46a8-8f4c-fd7fb6aac8b1@nvidia.com>
+X-ClientProxiedBy: BYAPR05CA0107.namprd05.prod.outlook.com
+ (2603:10b6:a03:e0::48) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,129 +128,197 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: YES
-X-Spam-Status: Yes, score=3.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Report: 
-	* -0.0 SPF_PASS SPF: sender matches SPF record
-	*  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-	* -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-	*      envelope-from domain
-	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-	*      valid
-	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
-	*       domain
-	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-	*  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail provider
-	*      [atharvatiwarilinuxdev(at)gmail.com]
-	* -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at https://www.dnswl.org/, no
-	*      trust
-	*      [209.85.214.181 listed in list.dnswl.org]
-	*  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
-	*      [209.85.214.181 listed in wl.mailspike.net]
-	*  3.6 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-	*      [171.61.163.202 listed in zen.spamhaus.org]
-	*  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
-X-Spam-Level: ***
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SA3PR11MB7485:EE_
+X-MS-Office365-Filtering-Correlation-Id: 63dd662d-6634-490d-67f5-08de4f477d97
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|13003099007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZkI1MXRZTUp2SE9qZFIvVjdwOVJzT2plTmlSaW9BVUJxbmEvTDBkTkd5WCtz?=
+ =?utf-8?B?c0tsQ2phbjFOUmY4aVdTZFpJQVRWVmVMMEFhbVJkM0VrYm5hcUNxZWJvc1V0?=
+ =?utf-8?B?OWtZc3ZmaFJBMEZzb3NNeUhwbExTN21Nb2F1bTFldWgrK0JJTlk1N0hTTTIw?=
+ =?utf-8?B?QmVqQjVLL0hLN3l3NXdBYTNLbE9zQ1ZaRUVocjA3S1lVSXdSZ3JHTUlNaGFK?=
+ =?utf-8?B?YVNtb3lFUVZ2elVMblJTOVV0eUMwMTVUWFA3eHhaaGJDWXNZTGYrajZ2ZEht?=
+ =?utf-8?B?WmFoc1Q1eXZDNU1ySlU2MUUzcnlSLzl1ZjBUNm1OUXVFejhSVzJNSXB5cTFt?=
+ =?utf-8?B?aFRic1QvQ0RWRzlQcjNvdjBvZWN2REUwMHJIa0g3NWpvdVpvRFg0eHM0VWVv?=
+ =?utf-8?B?UUdFd2VKNkZBV0d4aE1NdWdTYXpETk96VDdNYXFtbVpxcW1vbjI3aDRHMWFv?=
+ =?utf-8?B?NGtmV2tkajBya1FZSjlNakhmSkc3ZnlXdVp6cEJqbnpLT0gvTnBMckNpbE9q?=
+ =?utf-8?B?WkpKK2ErcW5xWjZIMnZSb3ljbkM1YzVRL1JKelgydWFCeUtkb0JqWWhOUWhS?=
+ =?utf-8?B?MG05OUVSOHlXRTJDcDloNUNLcXV6MXNPaTcyemZxcWFOc2tNdi9OVUdQSVNw?=
+ =?utf-8?B?Vm83ZHZTWFlzeWVDMWR1QXBoeUx3K09TbEdQL1NXdGxQNkhtcWovNStSSUVn?=
+ =?utf-8?B?aGNtYWJQbHhQYzVKTFRkMElmOUQweTI4M29qOW5jSFkvY1dvTWsvZFFWT0xo?=
+ =?utf-8?B?L292eDhlT0dBVUFKYktyTmdNK3ArQXFUMi9ycm1kY3l0YmZhdW1JcCtYMXNR?=
+ =?utf-8?B?aWpSaGhSUDFGWUoxTllSa3JmZm5XQmt5TTRzWmp2TjAzSWgxemVnaGtNbitV?=
+ =?utf-8?B?U1hTaTZ0U1Y0bzBpaE1DT25nZlFnQ3Z0cEx1QytjU3d1dUF1cW5xSUoycDhr?=
+ =?utf-8?B?b2xtOU5NWDlvWk16bThlSlRkNlRvRk5Wd3doWUVJRHVOcGU0V0RpUXpweGN6?=
+ =?utf-8?B?RWZaNVg5Y1l1dm4vVmpOaEJ3QnBPWHcwcDd5ZmEva2JBa0wwTHdGekIvZDE1?=
+ =?utf-8?B?Zmd1R0FzU0VGeCtWSTc1bW10WHBORk15RTFPZDNzZWErNWVQWlBMUXgrQ0xK?=
+ =?utf-8?B?RVRXRmdkVU5XYkFSUk1DQm9uN0Rqam1QRlEzeU5xcmgwUnRNdEVSeTBvU04w?=
+ =?utf-8?B?ZmlUWWpsTmREbm15bUdYLzhiQndhbnJHTXFOSmIwUk0xQzFVTHI4ZDg5S3JE?=
+ =?utf-8?B?V0h4eWZFWGlWdTFvVG93Uy9seCthUzBlS3VvSXBSb25VY1picW56WXVpVUY4?=
+ =?utf-8?B?UTlMTVV1V0laRXhXWlc3OFV4UDBCOXkxSlJPOWtyc21MZHJ0anpOeTY4cHcy?=
+ =?utf-8?B?REt2bi91YUMraHZiUm5EemxsWmVna0hkOTUzQ0gwTTYrYmZWSkd0dTFkemRW?=
+ =?utf-8?B?MFNUZGl1SHFQR2pGV1IvcGw0WG9Dazc4ekRuVzQ0UUlyQlZwdlMvbU96dDlt?=
+ =?utf-8?B?Q3poWFVJUFY1UU0wZ1JIMGE1VXVjYlYxK25Sb3BtcG92U1dRc0Ewb01XMVhk?=
+ =?utf-8?B?akl0cGdiTXovSWtab2hRbXo4ZGVHeHVhUE1TNVR5b0FWbzE1TzBteGhpbFZ5?=
+ =?utf-8?B?NENJWURIdXRMc2tINUlqMHlNd3hPQkhuTFkxdVR6dFdVV3FNZVl1Q0p2TDBD?=
+ =?utf-8?B?bjFNL1VlMVZyQkRVM3hPUGRhWXdtWHZ5SlB2SHZFRVFzK25pRFo2Ykp1ZWpv?=
+ =?utf-8?B?cXhWSDFqNksxM0E5c2RLVE91UE15VEZwWVh6RDNoZ1hFZVhOQ3dVWkswTjJl?=
+ =?utf-8?B?TnpsT0E1bUFia1hwYlpSN0c3aHFPaEU0akk5L0poQkYzb3NzV0M3TkxvcVlv?=
+ =?utf-8?B?RE9DSDNETkwwc3k1cWxmQVgyR1J5Q0lzaDhmVnlxTWhWWUE9PQ==?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y1JiWWlSeXFUam5vdWZEbGEyaVJ2eDVOM3M3WUh2UFc3bndrVmU0Y2NESzVR?=
+ =?utf-8?B?TUpEWG96UHNDMXZEazVtN08rMHFuSndWMWxsZUl6RE13MC81ZmROdTZBTkdY?=
+ =?utf-8?B?OFJpZXBKSE80SzJIK2F4aUdYVzJDTWgrbWU0Nm14SnRnMndNTmtSTWU4UXNL?=
+ =?utf-8?B?cFRNay90L0diU2Zpb0UrdktBeUlUNUdZMUJTOFQwZVhqWEpjSEtwYzIvUjE5?=
+ =?utf-8?B?VUNxOWh5bTBKRk1LclBHa3NueFg1Wksyb0MyWTRnM2phNjFtU0JSakZxekRo?=
+ =?utf-8?B?Q09naFpWanovUFIrUURRWXpiVEthTW5heFJhR3dBTERRSnNzdlJ0OVNwQXBn?=
+ =?utf-8?B?UGZwUnhnemQ5YWJyTTZWQ3JCaytJT2Q3R0NqNEpEYlQ0clZiNXp0UndhakRR?=
+ =?utf-8?B?a0tJTXhmQXQ4NDdqajBEWXl2bDlNSFdVOTRLSktsckJrNGlUTElXaHh6RTA2?=
+ =?utf-8?B?b2FiVWZmd214dC96UXlOUU9HcnNIemFYU1E4UDczaXM4dmR5cEp5WlJqa1Rn?=
+ =?utf-8?B?WDZscW9VVTQvajdVUUlQMTI0OUJPSUxBMCtPeWFIYVNteXZWbjR1WjF1bE5D?=
+ =?utf-8?B?V0p5QkphWmxCakVYU3l0a216a0R0ZUkvNVh5N2lzS0RuL20xZmtWdUxtaWZK?=
+ =?utf-8?B?MXMyZmxBREwvWUYrS2NGR0FEL0t2ZXlHMHIzMkFSSzlZMHZxZFhnSlAvSmg0?=
+ =?utf-8?B?QTBzMlJMY0x2Q3FyNVZvTGYrOEVHeG5OelRiUHdPYmErc2RDMWJJUjY2UEps?=
+ =?utf-8?B?REVWS3FZcUNwdGxnMDBmZnVDRk9LWVRrYit0ckR0TnVIbjA5cHYxL0JwNXpw?=
+ =?utf-8?B?bkQzTE5HdXRQN0RyYkZFVm90QWh5cnhkT0VRYnN1eVdKT2lFU3lXV0U4Szhm?=
+ =?utf-8?B?b3JVcTBtZWtiTUZsTWw0czEzeVRrYkFwa25WUlU2YlpUQkFwS0dIZENRKzhH?=
+ =?utf-8?B?QXhUWitUZ2MxaVorc1cydUQ4VGdPOE5Ja1RBNlViVWtFVVcyaTFUOWpwV2Nu?=
+ =?utf-8?B?MUFnRjRsMTZsaExmRW9HM2Nselg0Q2RCekNLM0N5NiszblJRS281U0sxU1g3?=
+ =?utf-8?B?VzAyVWZLY3RtY2I4YkxKbGg1SU11aU9iTkw0R1ZvaHo3Y29rVUhNWWRxMkhW?=
+ =?utf-8?B?VS9wV3NNMCtPbXZRYkE0a0xKeXo1cGhiZjdTN0xqTWxNRmR3NnpCWHZkYUh5?=
+ =?utf-8?B?TDZYcUFpVGRwSVE5RXZPWDZXVDUxWUZLNTVOOVlQT1ZGbHl1ZW1uVlU4VGpp?=
+ =?utf-8?B?OTJ2THlPTDlzczJCc2huMkk3MndRZlN0YndHM2VWd08wamkvTTJkZ0duQUlU?=
+ =?utf-8?B?T1hpVmttK2xxZThadHl5cGYrdXJlNlEwMnpuQytzYzRvTjdTdW0vRnRXRDFP?=
+ =?utf-8?B?ZWxzbkthTWlaTVoySlg3eTVKOHczRkw1S2l4S3JrZ0RiTk8vMzJrbWR3NzI0?=
+ =?utf-8?B?dElOTG94SHQ5K0xtVmhCaFowQVZWMTRicU5ZaGVrZ2t4TFVOMmxuWG1QQ05o?=
+ =?utf-8?B?R1dkWWdNd2JIaFc0QnpJWFFyN2RVMkxkaG9pd2VlSFVYdUFKekFjMXhUbkQ2?=
+ =?utf-8?B?eGtWb2ZCZEV1VWV3TnRWTDlML01XYURHNkFCUnpOcDN2cWdlN2ZuTUwvS3ZM?=
+ =?utf-8?B?Zkg4Y2ZpZTZBWlJTc3duYmcrakxSbGRjcXc2VS9rK2c4LytYRUN3ZzhKcEh5?=
+ =?utf-8?B?SDJpcW80YStSTHJxckc4YU9xZGtWQnFwbzV6U0trcmEvODdoUE5kY05OUVlM?=
+ =?utf-8?B?RjIrY0ZVSDF0RkpibnBOcW9paVRkQXRwcys2MXdKbXpvWlJ1QncxbG94OTg5?=
+ =?utf-8?B?SUxnWmNBMGNpOWRjdFF1VTFVcVRqK0tiOWo3bUx2bHlMVGQ0NlNGUTlZTm5z?=
+ =?utf-8?B?Y2VlaDJnaFl4dEtEOEl2cUQyRTEvd1Q1R0o4bXI3QUp2MHV3K2tOckdOck5w?=
+ =?utf-8?B?bzRRYmJmVlJaOEZOd3VmMExoUlRjaW9qY2NtbkFmM3FibXhVNTZTdFlLWStB?=
+ =?utf-8?B?Tjg4ZWlsZzdoU2orTllrbTFqRG1mb0dGRjdjTVlsL1JCc29nb3JGallPZWta?=
+ =?utf-8?B?d0pXUktxN2tNTHd4OTA4aVBsWGY1YWdzZVY4Y0gwT3c5VUIzT3JYMGxDaWhQ?=
+ =?utf-8?B?cTNmQlpOM1JJcGZoYVowYnhsNDZVQVJNV3JwNVNvcms2QmFNTStpMW9YTHoy?=
+ =?utf-8?B?NVNWemhQZW5ZZ0M5akVETU5Tc0ZNQmpteGh0STJQNE5oVE50c0FabHhCYXRl?=
+ =?utf-8?B?Zm4zemEzOHdLZGVsM0hobC9ta3JTK1NVK1Q1NG9hSUNhM1lVZmU1YVpkblk4?=
+ =?utf-8?B?NHhqN3VYY2ZOYnZ6SHJid3k4UHNiczJ3clFDc0ZJTXRvaTRJRVZnVC9uc2Fp?=
+ =?utf-8?Q?8P0nioBBL21z0wLE=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63dd662d-6634-490d-67f5-08de4f477d97
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 06:22:40.2904
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 59GKni88QIpfijgT8o9teiGDhf6fzFUdqtOY+eXC52RRLFew2nSRGmM8XMQkEKk/27zXSscTT0JyCbRrNqsemg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7485
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Disable AER for Intel Titan Ridge 4C 2018
-(used in T2 iMacs, where the warnings appear)
-that generate continuous pcieport warnings. such as:
+On Fri, Jan 09, 2026 at 12:27:50PM +1100, Jordan Niethe wrote:
+> Hi
+> On 9/1/26 11:31, Matthew Brost wrote:
+> > On Fri, Jan 09, 2026 at 11:01:13AM +1100, Jordan Niethe wrote:
+> > > Hi,
+> > > 
+> > > On 8/1/26 16:42, Jordan Niethe wrote:
+> > > > Hi,
+> > > > 
+> > > > On 8/1/26 13:25, Jordan Niethe wrote:
+> > > > > Hi,
+> > > > > 
+> > > > > On 8/1/26 05:36, Matthew Brost wrote:
+> > > > > > 
+> > > > > > Thanks for the series. For some reason Intel's CI couldn't apply this
+> > > > > > series to drm-tip to get results [1]. I'll manually apply this
+> > > > > > and run all
+> > > > > > our SVM tests and get back you on results + review the changes here. For
+> > > > > > future reference if you want to use our CI system, the series must apply
+> > > > > > to drm-tip, feel free to rebase this series and just send to intel-xe
+> > > > > > list if you want CI
+> > > > > 
+> > > > > Thanks, I'll rebase on drm-tip and send to the intel-xe list.
+> > > > 
+> > > > For reference the rebase on drm-tip on the intel-xe list:
+> > > > 
+> > > > https://patchwork.freedesktop.org/series/159738/
+> > > > 
+> > > > Will watch the CI results.
+> > > 
+> > > The series causes some failures in the intel-xe tests:
+> > > https://patchwork.freedesktop.org/series/159738/#rev4
+> > > 
+> > > Working through the failures now.
+> > > 
+> > 
+> > Yea, I saw the failures. I haven't had time look at the patches on my
+> > end quite yet. Scrabling to get a few things in 6.20/7.0 PR, so I may
+> > not have bandwidth to look in depth until mid next week but digging is
+> > on my TODO list.
+> 
+> Sure, that's completely fine. The failures seem pretty directly related to
+> the
+> series so I think I'll be able to make good progress.
+> 
+> For example https://intel-gfx-ci.01.org/tree/intel-xe/xe-pw-159738v4/bat-bmg-2/igt@xe_evict@evict-beng-small.html
+> 
+> It looks like I missed that xe_pagemap_destroy_work() needs to be updated to
+> remove the call to devm_release_mem_region() now we are no longer reserving
+> a mem
+> region.
 
-pcieport 0000:00:1c.4: AER: Correctable error message received from 0000:07:00.0
-pcieport 0000:07:00.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Receiver ID)
-pcieport 0000:07:00.0:   device [8086:15ea] error status/mask=00000080/00002000
-pcieport 0000:07:00.0:    [ 7] BadDLLP
++1
 
-macOS also disables AER for Thunderbolt devices and controllers in their drivers.
+So this is the one I’d be most concerned about [1].
+xe_exec_system_allocator is our SVM test, which does almost all the
+ridiculous things possible in user space to stress SVM. It’s blowing up
+in the core MM—but the source of the bug could be anywhere (e.g., Xe
+SVM, GPU SVM, migrate device layer, or core MM). I’ll try to help when I
+have bandwidth.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220651
-Signed-off-by: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
+Matt
 
----
-Changes since v4:
-- Used lowercase hex letters
-- Used DMI_BOARD_VENDOR instead of DMI_SYS_VENDOR
-Chnages since v3:
-- Fixed Grammer mistakes
-Changes since v2:
-- Transferred logic to arch/x86/pci/fixup.c to only target x86
-- Added DMI quirk to only target Apple Systems
-Changes since v1:
-- Transferred logic to drivers/pci/quicks.c
----
----
- arch/x86/pci/fixup.c       | 12 ++++++++++++
- drivers/pci/pcie/aer.c     |  3 +++
- drivers/pci/pcie/portdrv.c |  2 +-
- include/linux/pci.h        |  1 +
- 4 files changed, 17 insertions(+), 1 deletion(-)
+[1] https://intel-gfx-ci.01.org/tree/intel-xe/xe-pw-159738v4/shard-bmg-9/igt@xe_exec_system_allocator@threads-many-large-execqueues-free-nomemset.html
 
-diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
-index 25076a5acd96..850bfe03a685 100644
---- a/arch/x86/pci/fixup.c
-+++ b/arch/x86/pci/fixup.c
-@@ -1081,3 +1081,15 @@ static void quirk_tuxeo_rp_d3(struct pci_dev *pdev)
- }
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, 0x1502, quirk_tuxeo_rp_d3);
- #endif /* CONFIG_SUSPEND */
-+
-+#ifdef CONFIG_PCIEAER
-+
-+static void quirk_disable_aer(struct pci_dev *pdev)
-+{
-+	if (dmi_match(DMI_BOARD_VENDOR, "Apple"))
-+		pdev->no_aer = 1;
-+}
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x15ea, quirk_disable_aer);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x15eb, quirk_disable_aer);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x15ec, quirk_disable_aer);
-+#endif /* CONFIG_PCIEAER */
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index e0bcaa896803..45604564ce6f 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -389,6 +389,9 @@ void pci_aer_init(struct pci_dev *dev)
- {
- 	int n;
- 
-+	if (dev->no_aer)
-+		return;
-+
- 	dev->aer_cap = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
- 	if (!dev->aer_cap)
- 		return;
-diff --git a/drivers/pci/pcie/portdrv.c b/drivers/pci/pcie/portdrv.c
-index 38a41ccf79b9..ab904a224296 100644
---- a/drivers/pci/pcie/portdrv.c
-+++ b/drivers/pci/pcie/portdrv.c
-@@ -240,7 +240,7 @@ static int get_port_device_capability(struct pci_dev *dev)
- 	if ((pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT ||
-              pci_pcie_type(dev) == PCI_EXP_TYPE_RC_EC) &&
- 	    dev->aer_cap && pci_aer_available() &&
--	    (pcie_ports_native || host->native_aer))
-+	    (pcie_ports_native || host->native_aer) && !dev->no_aer)
- 		services |= PCIE_PORT_SERVICE_AER;
- #endif
- 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 864775651c6f..f447f86c6bdf 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -440,6 +440,7 @@ struct pci_dev {
- 	unsigned int	multifunction:1;	/* Multi-function device */
- 
- 	unsigned int	is_busmaster:1;		/* Is busmaster */
-+	unsigned int	no_aer:1;		/* May not use AER */
- 	unsigned int	no_msi:1;		/* May not use MSI */
- 	unsigned int	no_64bit_msi:1;		/* May only use 32-bit MSIs */
- 	unsigned int	block_cfg_access:1;	/* Config space access blocked */
--- 
-2.43.0
-
+> 
+> 
+> Thanks,
+> Jordan.
+> 
+> > 
+> > Matt
+> > 
+> > > Thanks,
+> > > Jordan.
+> > > 
+> > > > 
+> > > > Thanks,
+> > > > Jordan.
+> > > > 
+> > > > > 
+> > > > > Jordan.
+> > > > > 
+> > > > > > 
+> > > > > > I was also wondering if Nvidia could help review one our core MM patches
+> > > > > > [2] which is gating enabling 2M device pages too?
+> > > > > > 
+> > > > > > Matt
+> > > > > > 
+> > > > > > [1] https://patchwork.freedesktop.org/series/159738/
+> > > > > > [2] https://patchwork.freedesktop.org/patch/694775/?series=159119&rev=1
+> > > > > 
+> > > > > 
+> > > > 
+> > > 
+> 
 
