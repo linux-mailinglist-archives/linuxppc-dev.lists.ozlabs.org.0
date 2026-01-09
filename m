@@ -1,79 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-15446-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15448-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D50D07727
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 09 Jan 2026 07:49:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11443D07790
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 09 Jan 2026 07:58:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dnXSd4yTwz2xSN;
-	Fri, 09 Jan 2026 17:49:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dnXfH4dvhz2xQK;
+	Fri, 09 Jan 2026 17:57:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767941377;
-	cv=none; b=TEaZOSxgartnUk+4HkpNQx/4yOIyirfIbnnzwmyZU+7kFfasdiKLHVyygBoPGyUccE1CN43D0mzsZ+x2+SnwxU9KaTOEIFRzTkulSH/UWpusKOQIRoehys+h4ADjamUgzApl3+yuDxCBeUUjuaN8jxFUaWctIWCcNs4cjY38isKQuyegyk4LzswefZCCSp/4wVaj4S6vkwk+VmUcv+HIr5gZhQJIX1Dy+jcccNq8n+M2a3ymUc9RL5QaMSvkZ7AitoeirE2vXqDhAgJNRNyrKCHrX33fnkUzd2K2ey3ZERovoB3WYhQIYfDb3tpCnjcMv9PP5u7ZCUjjs/PrwEeqIw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.11
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767941879;
+	cv=none; b=CM1i791e4Gofu6B0CcDje6e3jiWqXND7xta3dWdaavN0aEQIm9Wufqq8w1vmuJtZaGIxduWlR2uXJb3E62q0m6kaI8MzuxLoJd14FlKKBsV7fdcRFOCYCj3Mh+fvXZOUnBb5EXHDC67S8yiqieRKM2Rfy9mbDgVJloY1Ao0E2rI96hWdbnoRUwW6w5+JHaOFLjHSa0WjBeb3BNLoT36lNXvM75rPh9sSsNzx08CePIoKOKo6rWvYhciUXi1HoUjQaTNEtNlV9iNNzNrfDKINXKywfRSCRa7RDSQ/6PVjmveMLonGV1ELE88IQqD0omo6REZN/zJAG2Ll+KWr+nMlLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767941377; c=relaxed/relaxed;
-	bh=EE/F0mXkRQbx08e5Ca0sVdZt0d+6CNCxUW15PZ0iPKE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQMXFbdOylQyHZ77wN2rouubFylDWEbhicgW0qAwI92aSTWM+1YyYFv6hFjO3jVbDjJKAMLMNKK3KNR3ilFiemzuQ0+utUbnw/V/3xsCvQYfUal3J2W/dbvpO1ZbVekHeCPasrwf1VxIhbGb+J66MvvKgtc1MYyx36gdDN+OWac9zIGHYXPTaMKHsqMSPefCRl2K3eartGsq5jfPQER4jh1dDoGYdrmSevqgY2oBYyP0zKEhsLsa4gWmoBdADMQvW43IEA3DBhsQUWvgoH04eSrvnAmYaTaj1EJqC4jqgyD1r0Z8m6jViWalY0OInAk0zOMym0Jw3X1moKiKHRfITw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VueMJSSD; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1767941879; c=relaxed/relaxed;
+	bh=Adl4K2ef+7ao2+6tXxxxvZg3Z+41hfQK5470ks3tGhw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B+DIHyeCU/JMn/bIvWXpAzD7IevA5b7bw8WZf2rcS/zpAVcn5txvd7lAQ/WGDZ7otFUWFnHzeaXVhhVnWyf30MjIZy/HRpAMQOUZON6RagBgnXAyiLWKhtlTl4SvAPBegJwI/1clFQs4j36fMXb0441fkplneIfNNAwpZ/tX44DUtKL/4LyZKHnfCE564IzChd+qcsTWf5WSkT36BjY4Ln3ExSM1RVDg+qvqnfmEcFux8zgS6wXUtRYSf4L6Yg6bDtqTYKQHK/LPGyJkEr9NJYVBs7ZT4EyBD4/cjj+DeQfIkxfVGxwMI6w7GBSerDb5j9t/kQYPpoeY+fbsYCMQJQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BtTEl0s1; dkim-atps=neutral; spf=pass (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=mika.westerberg@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VueMJSSD;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BtTEl0s1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=mika.westerberg@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dnXSc4lyhz2xQK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jan 2026 17:49:36 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6092R3KH008176;
-	Fri, 9 Jan 2026 06:49:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=EE/F0mXkRQbx08e5C
-	a0sVdZt0d+6CNCxUW15PZ0iPKE=; b=VueMJSSDdwKI0+wtueb5S6N0NQe6FJFqW
-	HizVgbDKAeXBHGwAN4DTNpnRNX6m+PIAKdEaf6ClDj1eh4FDCCKqc8fZoBY2ULrq
-	M9UTO9sfIL8UG0tkU3ettzSPeOA/vCiPF0s4GUMZsAutuutWYx0V/udhZ74+opOa
-	HgFlhm2o7PQfxOuSNHDiQI0+qCZlB3MPZdIewxa6zTQwJsBgqmGeoP9gbwury1QT
-	mOPhXYWLFw0Sjl3xTbu6KPmh0+OZLfe/nGndKV2QjVXKGhfkE1a3htQAcr/qLnIL
-	Vqi89DX/cvidLbLCtLG2byVxXO2brEFbg4d/Qjs7qZZFhK7zd8uUA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu6hxq0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Jan 2026 06:49:29 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6096jMH6012581;
-	Fri, 9 Jan 2026 06:49:28 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bffnju78k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Jan 2026 06:49:28 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6096nOVM61342006
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 9 Jan 2026 06:49:24 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6AA9620043;
-	Fri,  9 Jan 2026 06:49:24 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 16D5820040;
-	Fri,  9 Jan 2026 06:49:22 +0000 (GMT)
-Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.ibm.com.com (unknown [9.39.17.37])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  9 Jan 2026 06:49:21 +0000 (GMT)
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-To: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, rostedt@goodmis.org,
-        mhiramat@kernel.org
-Cc: sshegde@linux.ibm.com, chleroy@kernel.org, riteshh@linux.ibm.com,
-        linux-kernel@vger.kernel.org, hbathini@linux.ibm.com
-Subject: [PATCH 1/1] powerpc: Fix kuap warnings on lazy/full preemption with tracing
-Date: Fri,  9 Jan 2026 12:19:17 +0530
-Message-ID: <20260109064917.777587-2-sshegde@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260109064917.777587-1-sshegde@linux.ibm.com>
-References: <20260109064917.777587-1-sshegde@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dnXfD20Dkz2xGF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jan 2026 17:57:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767941876; x=1799477876;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FlO0xEN6Jh0wwWYqypG+Z0Vs7hkbD+IyuhpO4YrXzCQ=;
+  b=BtTEl0s1jzzXuQsqWNe4riSOUGXIwxcg5epATxFTGj8jP4UIGasLWclx
+   YprvDMCmhR2JyX+nTUT463LyXavjNyDNqpf2Dobj1h80cBVB9P41qmZcQ
+   av4W8RwT8twb9XaPv+Qtk5Ey6hav/dJ/D88jg4U72pFyQMxmZmztEqcT1
+   FRLbMA09Ljbcie0z7jlfUqefKV6wFnABseHVM/mLc4mluJCzRNIWdBCOz
+   uTONbKtd72BRYZ0cDol+sGjkZtCEtkKu4IhtZCB8zOeBh6KiALANJwYlu
+   RsyLCkOfC0W9zEtBKV8nhTnCmFw0P5iOZ3htSP2zd+K5WkFild3r6/L+m
+   w==;
+X-CSE-ConnectionGUID: PS9UmntQQae/S/YYAAhUSQ==
+X-CSE-MsgGUID: N5PkXL76TCGgQEFbuHQHsg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="79619249"
+X-IronPort-AV: E=Sophos;i="6.21,212,1763452800"; 
+   d="scan'208";a="79619249"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 22:57:51 -0800
+X-CSE-ConnectionGUID: YDNB1ScjQaiMHEmYsfgGfg==
+X-CSE-MsgGUID: wqzbjOnoS9+MoeRdKTcM8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,212,1763452800"; 
+   d="scan'208";a="208236178"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa004.fm.intel.com with ESMTP; 08 Jan 2026 22:57:47 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id 3E18994; Fri, 09 Jan 2026 07:57:46 +0100 (CET)
+Date: Fri, 9 Jan 2026 07:57:46 +0100
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
+Cc: YehezkelShB@gmail.com, andreas.noever@gmail.com, bhelgaas@google.com,
+	bp@alien8.de, dave.hansen@linux.intel.com,
+	feng.tang@linux.alibaba.com, hpa@zytor.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	lukas@wunner.de, mahesh@linux.ibm.com, mingo@redhat.com,
+	oohall@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	tglx@linutronix.de, westeri@kernel.org, x86@kernel.org
+Subject: Re: [PATCH v4] PCI/portdev: Disable AER for Titan Ridge 4C 2018
+Message-ID: <20260109065746.GT2275908@black.igk.intel.com>
+References: <20260108113701.GR2275908@black.igk.intel.com>
+ <20260108141804.1086-1-atharvatiwarilinuxdev@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,189 +84,110 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=QbNrf8bv c=1 sm=1 tr=0 ts=6960a4f9 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=werk9FZ3qabLIBrYCs4A:9
-X-Proofpoint-ORIG-GUID: RZBckwzHWJPVUjt1JcBOmD_Jzd9wh8u6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA5MDA0MiBTYWx0ZWRfX0Ql4mSVouP06
- BeiCBWFTaHrwH7jj8CyI9yIgkmRdnrVwEMZE7sgH3thoMojmedY6KnSDo/FDqV+q4bGmLffx5Sn
- 8rauv0Bv7q2bzeDOHzbFlckd4qFoSuqfUFWWNza9KTirqDHW6MRrM3cqmfXeOUPoNY8GASKi1/3
- bzHI+7xyNufbbEDgkd6NECYsnV6yBYsiN8UfV8VWAXqfvvpQ1GjcMiA6tssBNGlC9fYbD1ijJq5
- LmeseRfNTXI0+f7E5m8MEkrQ6xSNbTrUD0yzZIrabTR1ujD0BByh0KZOcsspVNw3E/IVr3ZqBmb
- o869RXDPn9cOSl725cmnflAemxDI/moQjWJMoSMfN7rKELdyRPKhko/TDm1gUTX/26rfxdUJGvk
- eG2dtBQ/p1h0EbYhc9C/kwBuG/P2aZlVGtHJaalj1xptoTc4osw3vMLB6HII+hKi2U6pUjlHktN
- um1kncGMaKIjYybYUug==
-X-Proofpoint-GUID: RZBckwzHWJPVUjt1JcBOmD_Jzd9wh8u6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-09_02,2026-01-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
- adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601090042
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260108141804.1086-1-atharvatiwarilinuxdev@gmail.com>
+X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-These KUAP bugs/Warnings were seen often when tracing was enabled.
-It happens with preempt=full/lazy. It is easily hit. 
+On Thu, Jan 08, 2026 at 02:18:04PM +0000, Atharva Tiwari wrote:
+> linux mint wouldnt install, because it gives a GRUB error.
+> so i cant compile the kernel, so the lspci is from 6.12:
 
-How to trigger:
-echo lazy > /sys/kernel/debug/sched/preempt
-echo function > /sys/kernel/debug/tracing/current_tracer
-stress-ng --class memory --all 1 -t 3
+That's fine, thanks!
 
+> 00:1c.4/07:00.0 PCI bridge [0604]: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] [8086:15ea] (rev 06) (prog-if 00 [Normal decode])
+> 	Subsystem: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] [8086:0000]
+> 	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+> 	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+> 	Latency: 0
+> 	Interrupt: pin A routed to IRQ 10
+> 	IOMMU group: 14
+> 	Bus: primary=07, secondary=08, subordinate=7c, sec-latency=0
+> 	I/O behind bridge: 5000-8fff [size=16K] [16-bit]
+> 	Memory behind bridge: 81900000-8fafffff [size=226M] [32-bit]
+> 	Prefetchable memory behind bridge: b1800000-bf7fffff [size=224M] [32-bit]
+> 	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- <SERR- <PERR-
+> 	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16- MAbort- >Reset- FastB2B-
+> 		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+> 	Capabilities: [80] Power Management version 3
+> 		Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=375mA PME(D0+,D1+,D2+,D3hot+,D3cold+)
+> 		Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=0 PME-
+> 	Capabilities: [88] MSI: Enable- Count=1/1 Maskable- 64bit+
+> 		Address: 0000000000000000  Data: 0000
+> 	Capabilities: [ac] Subsystem: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] [8086:0000]
+> 	Capabilities: [c0] Express (v2) Upstream Port, MSI 00
+> 		DevCap:	MaxPayload 128 bytes, PhantFunc 0
+> 			ExtTag+ AttnBtn- AttnInd- PwrInd- RBE+ SlotPowerLimit 25W
+> 		DevCtl:	CorrErr+ NonFatalErr+ FatalErr+ UnsupReq+
+> 			RlxdOrd+ ExtTag+ PhantFunc- AuxPwr- NoSnoop+
+> 			MaxPayload 128 bytes, MaxReadReq 512 bytes
+> 		DevSta:	CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ TransPend-
+> 		LnkCap:	Port #0, Speed 8GT/s, Width x4, ASPM L1, Exit Latency L1 <2us
+> 			ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp+
+> 		LnkCtl:	ASPM Disabled; Disabled- CommClk+
+> 			ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+> 		LnkSta:	Speed 8GT/s, Width x4
+> 			TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
+> 		DevCap2: Completion Timeout: Not Supported, TimeoutDis- NROPrPrP- LTR+
+> 			 10BitTagComp- 10BitTagReq- OBFF Not Supported, ExtFmt- EETLPPrefix-
+> 			 EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
+> 			 FRS-
+> 			 AtomicOpsCap: Routing-
+> 		DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis- LTR+ 10BitTagReq- OBFF Disabled,
+> 			 AtomicOpsCtl: EgressBlck-
+> 		LnkCap2: Supported Link Speeds: 2.5-8GT/s, Crosslink- Retimer- 2Retimers- DRS-
+> 		LnkCtl2: Target Link Speed: 8GT/s, EnterCompliance- SpeedDis-
+> 			 Transmit Margin: Normal Operating Range, EnterModifiedCompliance- ComplianceSOS-
+> 			 Compliance Preset/De-emphasis: -6dB de-emphasis, 0dB preshoot
+> 		LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete+ EqualizationPhase1+
+> 			 EqualizationPhase2+ EqualizationPhase3+ LinkEqualizationRequest-
+> 			 Retimer- 2Retimers- CrosslinkRes: unsupported
+> 	Capabilities: [50] Capability ID 0x15 [0000]
+> 	Capabilities: [100 v1] Device Serial Number ee-ad-a4-f1-8e-b3-02-00
+> 	Capabilities: [200 v1] Advanced Error Reporting
+> 		UESta:	DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+> 		UEMsk:	DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+> 		UESvrt:	DLP+ SDES- TLP- FCP+ CmpltTO- CmpltAbrt- UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
+> 		CESta:	RxErr- BadTLP- BadDLLP- Rollover- Timeout- AdvNonFatalErr-
+> 		CEMsk:	RxErr- BadTLP- BadDLLP- Rollover- Timeout- AdvNonFatalErr+
+> 		AERCap:	First Error Pointer: 00, ECRCGenCap- ECRCGenEn- ECRCChkCap- ECRCChkEn-
+> 			MultHdrRecCap- MultHdrRecEn- TLPPfxPres- HdrLogCap-
+> 		HeaderLog: 00000000 00000000 00000000 00000000
+> 	Capabilities: [300 v1] Virtual Channel
+> 		Caps:	LPEVC=0 RefClk=100ns PATEntryBits=1
+> 		Arb:	Fixed- WRR32- WRR64- WRR128-
+> 		Ctrl:	ArbSelect=Fixed
+> 		Status:	InProgress-
+> 		VC0:	Caps:	PATOffset=00 MaxTimeSlots=1 RejSnoopTrans-
+> 			Arb:	Fixed+ WRR32- WRR64- WRR128- TWRR128- WRR256-
+> 			Ctrl:	Enable+ ID=0 ArbSelect=Fixed TC/VC=ff
+> 			Status:	NegoPending- InProgress-
+> 	Capabilities: [400 v1] Power Budgeting <?>
+> 	Capabilities: [500 v1] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+> 	Capabilities: [600 v1] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+> 	Capabilities: [700 v1] Secondary PCI Express
+> 		LnkCtl3: LnkEquIntrruptEn- PerformEqu-
+> 		LaneErrStat: 0
+> 	Capabilities: [800 v1] Latency Tolerance Reporting
+> 		Max snoop latency: 0ns
+> 		Max no snoop latency: 0ns
+> 	Capabilities: [a00 v1] L1 PM Substates
+> 		L1SubCap: PCI-PM_L1.2+ PCI-PM_L1.1+ ASPM_L1.2+ ASPM_L1.1+ L1_PM_Substates+
+> 			  PortCommonModeRestoreTime=0us PortTPowerOnTime=10us
+> 		L1SubCtl1: PCI-PM_L1.2- PCI-PM_L1.1- ASPM_L1.2- ASPM_L1.1-
+> 			   T_CommonMode=0us LTR1.2_Threshold=0ns
+> 		L1SubCtl2: T_PwrOn=10us
+> 	Capabilities: [b00 v1] Precision Time Measurement
+> 		PTMCap: Requester:- Responder:- Root:-
+> 		PTMClockGranularity: Unimplemented
+> 		PTMControl: Enabled:+ RootSelected:-
 
-Bug: Write fault blocked by KUAP!
-WARNING: [] arch/powerpc/mm/fault.c:231 at bad_kernel_fault.constprop.0+0x1a8/0x2c8,
-CPU#9: stress-ng-vm-rw/5477
-NIP [c00000000008cdec] bad_kernel_fault.constprop.0+0x1a8/0x2c8
-Call Trace:
- bad_kernel_fault.constprop.0+0x1a4/0x2c8 (unreliable)
- ___do_page_fault+0x688/0xa54
- do_page_fault+0x30/0x70
- data_access_common_virt+0x210/0x220
----- interrupt: 300 at __copy_tofrom_user_power7+0x410/0x7ac
-NIP [c0000000000b3b44] __copy_tofrom_user_power7+0x410/0x7ac
-LR [c0000000009a7d78] _copy_to_iter+0x134/0x9c4
+At least this shows a similar issue we fixed for Barlow Ridge.
 
-Enabled CONFIG_PPC_KUAP_DEBUG=y, which prints out below warnings.
-
-WARNING: ./arch/powerpc/include/asm/book3s/64/kup.h:93 at _switch+0x80/0x12c,
-CPU#9: stress-ng-vm-rw/5477
-NIP [c000000000013ce4] _switch+0x80/0x12c
-LR [c00000000001f968] __switch_to+0x148/0x230
-Call Trace:
-__switch_to+0x148/0x230
-__schedule+0x270/0x700
-preempt_schedule_notrace+0x64/0xd8
-function_trace_call+0x180/0x204
-ftrace_call+0x4/0x4c
-enter_vmx_usercopy+0x10/0x74
-__copy_tofrom_user_power7+0x278/0x7ac
-_copy_to_iter+0x134/0x9c4
-copy_page_to_iter+0xe4/0x1c4
-process_vm_rw_single_vec.constprop.0+0x1cc/0x3b4
-process_vm_rw_core.constprop.0+0x168/0x30c
-process_vm_rw+0x128/0x184
-system_call_exception+0x128/0x390
-system_call_vectored_common+0x15c/0x2ec
-
-
-enter/exit vmx_usercopy clearly says it shouldn't call schedule.
-Doing so will end up corrupting AMR registers. When function tracer is
-enabled, the entry point, i.e enter_vmx_usercopy could be in preemptible
-context. First thing enter_vmx_usercopy does is, preempt_disable and
-again function exit of exit_vmx_usercopy maybe preemptible too. 
-So make these as notrace to avoid these bug reports.
-
-WARNING: [amr != AMR_KUAP_BLOCKED] ./arch/powerpc/include/asm/book3s/64/kup.h:293
-at arch_local_irq_restore.part.0+0x1e8/0x224, CPU#15: stress-ng-pipe/11623
-NIP [c000000000038830] arch_local_irq_restore.part.0+0x1e8/0x224
-LR [c00000000003871c] arch_local_irq_restore.part.0+0xd4/0x224
-Call Trace:
-return_to_handler+0x0/0x4c (unreliable)
-__rb_reserve_next+0x198/0x4f8
-ring_buffer_lock_reserve+0x1a8/0x51c
-trace_buffer_lock_reserve+0x30/0x80
-__graph_entry.isra.0+0x118/0x140
-function_graph_enter_regs+0x1ec/0x408
-ftrace_graph_func+0x50/0xcc
-ftrace_call+0x4/0x4c
-enable_kernel_altivec+0x10/0xd0
-enter_vmx_usercopy+0x58/0x74
-return_to_handler+0x0/0x4c (__copy_tofrom_user_power7+0x278/0x7ac)
-_copy_from_iter+0x134/0x9bc
-copy_page_from_iter+0xd4/0x1a0
-
-Since AMR registers aren't set to BLOCKED state, warnings could be seen
-if there is any unlock involved, which gets triggered via
-arch_local_irq_restore. So had to for that enable_kernel_altivec too. 
-Similarly for check_if_tm_restore_required, giveup_altivec.
-
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
----
- arch/powerpc/kernel/process.c | 10 +++++-----
- arch/powerpc/lib/vmx-helper.c |  4 ++--
- 2 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index a45fe147868b..7bf2fe3e5878 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -80,7 +80,7 @@
-  */
- bool tm_suspend_disabled __ro_after_init = false;
- 
--static void check_if_tm_restore_required(struct task_struct *tsk)
-+notrace static void check_if_tm_restore_required(struct task_struct *tsk)
- {
- 	/*
- 	 * If we are saving the current thread's registers, and the
-@@ -98,7 +98,7 @@ static void check_if_tm_restore_required(struct task_struct *tsk)
- }
- 
- #else
--static inline void check_if_tm_restore_required(struct task_struct *tsk) { }
-+static __always_inline void check_if_tm_restore_required(struct task_struct *tsk) { }
- #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
- 
- bool strict_msr_control;
-@@ -231,7 +231,7 @@ static inline void __giveup_fpu(struct task_struct *tsk) { }
- #endif /* CONFIG_PPC_FPU */
- 
- #ifdef CONFIG_ALTIVEC
--static void __giveup_altivec(struct task_struct *tsk)
-+notrace static void __giveup_altivec(struct task_struct *tsk)
- {
- 	unsigned long msr;
- 
-@@ -243,7 +243,7 @@ static void __giveup_altivec(struct task_struct *tsk)
- 	regs_set_return_msr(tsk->thread.regs, msr);
- }
- 
--void giveup_altivec(struct task_struct *tsk)
-+notrace void giveup_altivec(struct task_struct *tsk)
- {
- 	check_if_tm_restore_required(tsk);
- 
-@@ -253,7 +253,7 @@ void giveup_altivec(struct task_struct *tsk)
- }
- EXPORT_SYMBOL(giveup_altivec);
- 
--void enable_kernel_altivec(void)
-+notrace void enable_kernel_altivec(void)
- {
- 	unsigned long cpumsr;
- 
-diff --git a/arch/powerpc/lib/vmx-helper.c b/arch/powerpc/lib/vmx-helper.c
-index 54340912398f..a0c041c148e4 100644
---- a/arch/powerpc/lib/vmx-helper.c
-+++ b/arch/powerpc/lib/vmx-helper.c
-@@ -10,7 +10,7 @@
- #include <linux/hardirq.h>
- #include <asm/switch_to.h>
- 
--int enter_vmx_usercopy(void)
-+notrace int enter_vmx_usercopy(void)
- {
- 	if (in_interrupt())
- 		return 0;
-@@ -32,7 +32,7 @@ int enter_vmx_usercopy(void)
-  * This function must return 0 because we tail call optimise when calling
-  * from __copy_tofrom_user_power7 which returns 0 on success.
-  */
--int exit_vmx_usercopy(void)
-+notrace int exit_vmx_usercopy(void)
- {
- 	disable_kernel_altivec();
- 	pagefault_enable();
--- 
-2.47.3
-
+I don't have Titan Ridge host here so cannot try to repro but I wonder if
+you could still try with CONFIG_PCIE_PTM=n and see if that changes
+anything? Of course assuming you get the Linux installation working again.
 
