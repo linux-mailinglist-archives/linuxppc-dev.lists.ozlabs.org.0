@@ -1,117 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-15442-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15443-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 713E7D06A85
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 09 Jan 2026 01:55:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18741D06BC7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 09 Jan 2026 02:27:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dnNc64vqSz2xPL;
-	Fri, 09 Jan 2026 11:55:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dnPJk33bkz2y6G;
+	Fri, 09 Jan 2026 12:27:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.14
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767918714;
-	cv=fail; b=bh68zIEPn72wDvR/Iro+Zrb8rrRMJCiE+NzMtGdo843btyx4mtTGZRos6B0IQ7grryD15X1XOJS/GtLiZddNiw2Pm52PRbkpxIiNX0bQaqfXlnyef77DT3VHgwM+m408kBgnpOg7IUM+ATg+VuK1f4HxqoxUH1OdHE2nEIzDxEDrcTYqyMOVbh1TvsfTY+UOt4lhcOFRy5n6oj+tKQy1YEijZmcS0451NchghZdCsq0OESBmyOehM4pGUAiKBeeCpQGL6TpByCw8FNlK7dcfZ1+6n3bZOmj71UzGpMv1IcZLdm5JKrzKSpiQVCIOm+7Ep1z4zFcIz1wyGs7IOcb/Fw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1767918714; c=relaxed/relaxed;
-	bh=wcoJhXRbWXUEj06rw/RzJG9JYUY6e+jLITIfNzNbmjc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Ot9IMUw8yQX53F62Os4NN54vvEruXqUwT7DSp3BvYrYvN9u5zTMCLO4f5ewJjRs5/Ojnaq1CaUEo6PXmMnkRmN5ivrnbUoUEOGPuhYyzq6OplK7sZI3+2wH1/f/h/r1sOPGUNqK3HJ0uHc9r4+3nxKe32NORqto3RwNY3RLyp3w4GC8YxS8J7wAITUideqSlYYzMC1uKI4Z3XKYhelxNG/xoZTsGCI4Q6CLUM157JJqpQgefTogQPiHXM2iTeqpjkHLIKiWyMGmnzrL0Xurkfdhnrav5CdNbd6f4fQziPLS76fU0C9/GTAbYOJNLm6L+sj87lw+kUZNBvtSh4FbycQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nLrIJw/4; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=matthew.brost@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1767922038;
+	cv=none; b=mgYfGKc0zgH+7MXOFCH1mamQpHB3C3rX+AL3VQSIjk604RKJOVQ7y0zF6nx8Y8va0onUGF1+HW8bevtxa6nNdym6Eb3YYLivmlAvOoaAkWySGnY+7NJ1rKLh4LF1pOjC7m3VaKPidDEydYRMUM6DIHdvtNV3qSOj+MWJGF1l3cfdDB/pYAY6M3/tCPeVP3udital34Yte9UzDFCjdIqlTTS1LHyVn9RJLaEbWIdiTXnrc++SKsf5zjbK3q3zsU1BCkPf9Q99gp+u9/7mYUpQqLRn2ek8eZYdoQm8u86pjNKtFsmjunLOPblIv+F4QkFezktrurOPAzfNjtJ1r3+EJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1767922038; c=relaxed/relaxed;
+	bh=S+edcJQ6qsUosWLmW2pZdLsa+cSgVPdAbKyNWalNKbA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ntnPnlmtrqs0IgcoWoyLv0+ywzZu/KL7BcY6CIGOrFTugpLnOtJjQTVn7DmtnVd+kbztloRFVuk2QbQAuvo+QmM1t24vmu8LpXR1LB/G0c3h9C5jDFiN01CFRsi41DdmGtfPYJlCflRmUtlnvrqoFq25joqoK1zL9k65d7tWX/pUdRVG18EWlP9GaZxnZmNJ/jrRTYCUY4tx/flZFVpEbR+O1+7EVbgwPazRKz2KihoFzArv5uOG+wNpRDcZl92Kr7u32BcgSNyIL8d6ME8U2VxnDIK49Nq4Rry0dVNcvMO1vGbEaCkufaQdCWX3s5medyKgof3P4LnO5pI+3Z36Xg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nTm4iY/9; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nLrIJw/4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nTm4iY/9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=matthew.brost@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dnN4m2nsXz2x9M
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jan 2026 11:31:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767918712; x=1799454712;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=Ll5ZL1Dsgl3u8TfWRO9J5EPkKE5tgG6z5YEKRipD10M=;
-  b=nLrIJw/4dk18imGrugAriCyLwtiU1f70mHU5TwLZVB7nQP3UfA2EF+LM
-   M1RGI4vyOrg2i/v7ch67ZMHeU8ETHETixYxdDvIbM379PfTXQ0lbd/lf9
-   d2kdKIBhxBzktOxmZEqqjxuTgOzZ70qmiLHEfW377ortdNO7sPzpR4lY/
-   6i1b2wE40rk5DY5/wZy7huFBVaK3m27eTrdfRiY+Q1/9raSPX6BkoV+EE
-   1m+3ZR/2NtU/CHiYNuyX4kvsFjJpsFF7XRqnrItvHBp9ZjRsWvA3v0ta0
-   3B7RKzi/tezyHUhkzj6uoONwzSBuFInW6Ewr5YuqsfN03axxbq18OHHfG
-   g==;
-X-CSE-ConnectionGUID: /4H6cLVeRQe7hIz3tjJTag==
-X-CSE-MsgGUID: UEgAHolFRzu4Zw6uSFIRZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="69350214"
-X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
-   d="scan'208";a="69350214"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 16:31:47 -0800
-X-CSE-ConnectionGUID: mijFVALhT9WcweDAlU1Img==
-X-CSE-MsgGUID: qLAuO+XHTBKJMWF4nxZqRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,211,1763452800"; 
-   d="scan'208";a="234512412"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 16:31:47 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 8 Jan 2026 16:31:45 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Thu, 8 Jan 2026 16:31:45 -0800
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.53) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 8 Jan 2026 16:31:45 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UQvHeVHnX/c+GPpbbQOWEcJRyk09eVEVwPWhvwlZn2oJ8DnebQ4fdh7bKnPQahcYj0zYOzCrxg85stBrevRSh12bP8+M/Kir5ZuEZ9NwNr6pHWMPEIHghBN89J986BLcQ3X5tjPf7NZU3irh9hsNbTM50FO9RSEm4vAMPWwCx1rNyRvHg12S2wVfxh1CGE2YtYd8crQpGFQrsOa8Z0BgnzBUNkiWgfUOsxH8ghHYoQSpMRMZVpTFB6tE7ydlHVd34Ok0EhTVSXZ0qMGkzxlf3EjltwX708TTgL/eW7Xg8l6yBxenE0zfW0P7jsDpKX8oaVchksjWYqU3+kC+Ore+zg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wcoJhXRbWXUEj06rw/RzJG9JYUY6e+jLITIfNzNbmjc=;
- b=gHIIDb5Y7PzotheB5g7FPTLDts8kBv0XHoasTiSFesOQaeI9eYu8lls2UMCadm0oQONJA0yMyKRD2U40yhUhNiAsTGknlCUC6W6PDRn74ROVyUVD7vPp3iKtngy0TYZGnlV/LNNW1FOXEfsrHloWDsdx2qCVAcopGvwNTXxfJO3tLy+vdo82bqfuSThnNKfLcVErJK+0wcPvaZp85R30etPVl1N/8s+gMKLSINpfj+veiPctYmBGp+KmB4Q3xmp4HAykDGva4pdUii+b4+bwOHiyzjN5nngrbW6k2nkTSwQmcRu2EWXMMyZRoeOC29k3sI9IxiX6lIbQf0+THczVPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by CH3PR11MB8465.namprd11.prod.outlook.com (2603:10b6:610:1bc::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Fri, 9 Jan
- 2026 00:31:43 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9456.015; Fri, 9 Jan 2026
- 00:31:43 +0000
-Date: Thu, 8 Jan 2026 16:31:40 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Jordan Niethe <jniethe@nvidia.com>
-CC: <linux-mm@kvack.org>, <balbirs@nvidia.com>, <akpm@linux-foundation.org>,
-	<linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<david@redhat.com>, <ziy@nvidia.com>, <apopple@nvidia.com>,
-	<lorenzo.stoakes@oracle.com>, <lyude@redhat.com>, <dakr@kernel.org>,
-	<airlied@gmail.com>, <simona@ffwll.ch>, <rcampbell@nvidia.com>,
-	<mpenttil@redhat.com>, <jgg@nvidia.com>, <willy@infradead.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <intel-xe@lists.freedesktop.org>,
-	<jgg@ziepe.ca>, <Felix.Kuehling@amd.com>
-Subject: Re: [PATCH v2 00/11] Remove device private pages from physical
- address space
-Message-ID: <aWBMbGQApg81Kxba@lstrano-desk.jf.intel.com>
-References: <20260107091823.68974-1-jniethe@nvidia.com>
- <aV6nvCw2ugAbSpFL@lstrano-desk.jf.intel.com>
- <3586d8f1-a25f-4087-a987-162ccd97c25f@nvidia.com>
- <6a911224-05e5-45ee-8008-e36ef35cbc7b@nvidia.com>
- <eb45fb36-4f0b-4a83-8852-abac3205a988@nvidia.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <eb45fb36-4f0b-4a83-8852-abac3205a988@nvidia.com>
-X-ClientProxiedBy: SJ0PR13CA0235.namprd13.prod.outlook.com
- (2603:10b6:a03:2c1::30) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dnPJj34KNz2xFn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jan 2026 12:27:17 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D95B7408AF;
+	Fri,  9 Jan 2026 01:27:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AA3C116C6;
+	Fri,  9 Jan 2026 01:27:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767922034;
+	bh=sGamr4oDumUwof9ouQDHjPD2MuG2QwTZ+qmSKHHoRwI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nTm4iY/9PqHkmCfZPWUCsadXnM0N/kVK095TkUeZS2oGCRp411HnNcSPL1XPuxvrJ
+	 n6u5RSIEVWlKUR7qspcOO+E6TZ8758Z+uhEiw7eqTZKfR8isEktdfLVmWynZaasYdc
+	 8UJ8BS/h7OU7xxWaoReQp4gdEN+zBb3oIcZ0dJuoeZ2Gw6E2Chgyk2OGqSMMrO147m
+	 sYo+fPWiu1einrR19xgYEQiYvHmjGSVaMYzalWFkUQwpkqToFAdtco5KfIhZ9n1S18
+	 HLFhwCVAdWp4zTLRs+lJguGmPQTIZsUZ+NecGhG2BjT+cqMjoRX7UAZSWm0bnyZBSN
+	 8KHYCX6+zQ4tQ==
+Date: Fri, 9 Jan 2026 01:27:12 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org, x86@kernel.org,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>
+Subject: Re: [PATCH 00/36] AES library improvements
+Message-ID: <20260109012712.GA730896@google.com>
+References: <20260105051311.1607207-1-ebiggers@kernel.org>
+ <CAMj1kXGRTfyXPD3+Ravr7O5ZUMAUeabQw455sW5g7aRy3BU+2Q@mail.gmail.com>
+ <20260108202618.GA2687@sol>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -125,145 +72,95 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|CH3PR11MB8465:EE_
-X-MS-Office365-Filtering-Correlation-Id: 26f5005e-b1bd-44a6-44d6-08de4f1676bc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|13003099007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?zHN/8Yi9debhYUIEQcZwcl/VaASTT9trAsb8ub25fureQCmX64p9w84MdMb6?=
- =?us-ascii?Q?K/8VzTzoO3xWvkEQKaiqgvL744+xF2awURYXVtBXFsmEw6ZAY3knpJbnYpzv?=
- =?us-ascii?Q?313kmcyf6pKK3Bpb9mlF6PzxPm3RBhD8Bi1b5Ay9DaOdugRCaylNS0X308Y5?=
- =?us-ascii?Q?+ldz/KPYKm7k41Xx5PQWdaYu4M2vtHcRGGetkKh+CUjtD0AOXDOBU1N70SlQ?=
- =?us-ascii?Q?uff0DUGirIV2ZUTY5ojLaMmGzYRTRIt/mJmjUOx1MZd+AGXpNvj5t0M2Pgfp?=
- =?us-ascii?Q?OnKm0pD8xMXBrEi3ZM2/WutlJTL/hlYuuIJG0lEdmdjKCh58Kal5SnmldjUK?=
- =?us-ascii?Q?+cNmReVRkEao/i5YCVNEOsdb1i+L/dA+YYDmxEA88tJ6FuWtbgP3oWKxdOjy?=
- =?us-ascii?Q?rM/ZpZoIgew+WjKbLDmUycBrx0FdruztfRQVCp+cnDfTC8AOncH66SK/peOi?=
- =?us-ascii?Q?5yoh9bFeb5Jf17CSyVPILmk5enqGe11XqCxmutswITk9EgCGaGoonFLQXDt9?=
- =?us-ascii?Q?LJdUWt/8Vvl+Ny+VKLcwo1f1ZmLBp/PykAEPy9cNcgylHgh8eejMvlulibGW?=
- =?us-ascii?Q?Iau5Wl90qumsD4plyySJa3EfckZbOVlnC9kviwNNskbp3up1wiW+/mN3RvIq?=
- =?us-ascii?Q?BLixqJGeV2l+k3KZnLTMnZMW+wjxhp5DXX5KsHUHrXfU7+OF6rLvKKHuia6z?=
- =?us-ascii?Q?8tAzad40RUnYkAukI3RQy/ygc6W/Mbjpq94mL0LdTZAfAhSpLF9/QBbmU6ft?=
- =?us-ascii?Q?EupK8iuwDYbPeW1VmfsKjY17YALeM9XMuEL5zPdq+254RLGiieBtjTWsd13I?=
- =?us-ascii?Q?LQzEPGL1gC6xvHzjPzzObKxhu/n/97+BQgHaZC/2sDIsggbRth5JUSU8FBeP?=
- =?us-ascii?Q?Pfe3y3qTWQHxqQf1D16D9uVqCXqlzgi1R6ZOOLCeEN2R2bbMc9vY0+Uazx7K?=
- =?us-ascii?Q?VmsxHggak5O17GofzFTdGc+LG++AM4Mwoy//WxADoEvLZE8E7UgeI1ZVv+FE?=
- =?us-ascii?Q?CnFzfSoohmCa6Xu3qK+QUhXm+dWsgwlGdzIR7dsW3GTY2LcV+XpF9nrr8dlj?=
- =?us-ascii?Q?sCCv8uqvF/5RRqkBZpzMXExQOVCx4JXd5XnTGG+LHJLgrl2UVO0ZgNZKLJAl?=
- =?us-ascii?Q?5lRSN9p64MMR3we8ZtVSPfnHMbZKo7EkpLjkDs6NEmhoNhPmmp3nNOnwmH9M?=
- =?us-ascii?Q?D5jAXBRiBRUSv6eNu2pB+uvkl+rc+/IYJd21lCnIjqsowHGNl1cKaBRvpUv9?=
- =?us-ascii?Q?gc1OVhIJWY5ry5duY+xg9S3vf1ErpvxdoDuNUideiMxeRF5a3lqJGWWWKxsL?=
- =?us-ascii?Q?QrecJVd1HfaEremusSb8IN6eFRxSrTaVuRKtlaTZCEXSYB30C2MrinViZX6/?=
- =?us-ascii?Q?Q+QGH7Wt97S2SXq/ErNYNMT4k4w7rRORsjbptnx57VEiSphlDg=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?lgQCQ4aCV5IIxw7eanSmn7eo98S51IEK63AqYV6+qA1VX2wJ3ZbzoqHLwtpX?=
- =?us-ascii?Q?pSEPmLSs5bRKbAaxuacGojpYjcx4MKzFE0X43JrYiIPcZzlfKKXz375f1ZuI?=
- =?us-ascii?Q?0mrw1Arzi3r50Tihcdo5ug6WyGXljg8YPk3ckHQ6bnNTczkiBtry8iwp4D3g?=
- =?us-ascii?Q?yARbOm9Xy39HfIt9VNzoPefEsMO0VimmT2/WdumVtAN1VQUXgDDkY1G8e7IX?=
- =?us-ascii?Q?ndMN2KpfzHyxUee+mNlIHmoSncCUmGQh43zzYb9pygnpnDDazFzgSAviZ1J4?=
- =?us-ascii?Q?SKLOsZBBSB6go2YaZQDpCXxNaky7/HFIRnImBIu8iB5jeLqrS+il0Db94z5Q?=
- =?us-ascii?Q?RYWp/N6HqUnkaChEo3G0AAVpzeJexUslUx+IexvsaRJp5cZkPC/7UMtnBJVD?=
- =?us-ascii?Q?vgX2AbfUnFy5bzmESPOKPtw7EJL3PN1qLlwQmG7oFG67fSPh25meoLRX8t/J?=
- =?us-ascii?Q?nSrBg5A11JwYu2tub57fanlvRVsWfeyP7SdhUVeKGFTxDyVcGLwjJRhgDQLl?=
- =?us-ascii?Q?ZoK/UnMIsmafhfbrkClvxpj4uqrcKcwKkJyx13WaqvUUWnq8Ph3WtFJStnZa?=
- =?us-ascii?Q?TimjUDwajLaJl32PN57MBR/cCozF2CVR2ExZbzXfy4W9PgGvtMfeMRuJxKqv?=
- =?us-ascii?Q?+d8309dsHrDyUCjYExV4uC6mLN/EngOj/AXVAx71sD7A3CO/bHIq6AXau9Bo?=
- =?us-ascii?Q?XzNCYjrEmjDG5bBYZXlvXvo4bZvf4NNTfjTFwpMPxsfS8l2RNwC9wKsvw87E?=
- =?us-ascii?Q?JRve5xWHJvw0s9dPJEF9VaTPgZQTd6N4PrdAUo1G94FRsoO+0X3xrxf18xiX?=
- =?us-ascii?Q?HDBQ3O9KMhajIO8ubv2LCPU4pLJgwLo+6XaVnY7Lumg6kysw99kHs/IIBopK?=
- =?us-ascii?Q?jdgy/UFzVwzJbFES807zyov4E5fRKOMaK0rJ6ycfDnocPMvcslu/0zkezNy5?=
- =?us-ascii?Q?+gBbkVbD0+QHSt0qKxECH85DmLmu4Swmqya1RLRnSaNaMYfctXAGZcoyh/+M?=
- =?us-ascii?Q?rAFQtg9o2wgClHHPEr+hKYkz7mwiY83gAPJv5DmJGig+uvz/MqlqbTCtY6SL?=
- =?us-ascii?Q?PtpOdlOcYI+op8cuib+rggHxUORfCF0P1P1q85vqAy2bRcI0QU0Ih6xwMsEa?=
- =?us-ascii?Q?7KF8gYDZz9bANHK7zEsSJx06NNDk3yTSueOCABRWjg10s4nHPNx/kXTV5VrG?=
- =?us-ascii?Q?TYAv0VmuhHUayQVW8eFwo60A7SLqzle9nCMWCK5hTGnRdme8Kq4gyFegrWkE?=
- =?us-ascii?Q?zgeeYwxRaO4SnaSgC9kWyAPKhLGDj4VOjwRCcKgT/89BJcPMxfs/XaFdD4nJ?=
- =?us-ascii?Q?WF6DNvf9fC05sl4t5+O0bYHyXt+2i9sSGjc0dEIMbH949zeE/lAhhRLM7Z55?=
- =?us-ascii?Q?tL+mDd/+fDrqRgoWG0Vfelj4Bweuc5JYfh5f0hbVP1Kd4OONspXm3F/AFaBc?=
- =?us-ascii?Q?chnXzeWX75c1xHHIg4D7fVDIPaM/qli7+VylWal8vc5HNBjQDXXfdVvO3pJG?=
- =?us-ascii?Q?rvFxPjgNTbAPv1ILVanQgUXikhHFmjjNrpe6c7VTukC5kslV3Ds25hhrQ09l?=
- =?us-ascii?Q?mNpTWo68IfU0z4Xtf/9Xx9D54n9Gqa0NsEUi97/opuWgNCM7epECc9zMdy6t?=
- =?us-ascii?Q?jvoA2a9nlNnbOYpOZJGiULxJmwXNt6sjEOS1c5h+9TfFvfUZlMcKvfUP6TEz?=
- =?us-ascii?Q?S8LMDup5ntvATOIXVRTKwFBf7sr/M56ZPuUsgYDQnsSmO9o/JAUCL14Kjmf0?=
- =?us-ascii?Q?vsh9vfTCsOwr4RfxbftkVa6ihhAEim0=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26f5005e-b1bd-44a6-44d6-08de4f1676bc
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 00:31:43.4693
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i4BJbeostnNl3HsUFunY/Mn8Pb78LwnFOJFb00tQWg1srTNim9SQL1rBdepCW0OXFtL+3PrErlvcg4Le3jpnyw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8465
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260108202618.GA2687@sol>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Jan 09, 2026 at 11:01:13AM +1100, Jordan Niethe wrote:
-> Hi,
-> 
-> On 8/1/26 16:42, Jordan Niethe wrote:
-> > Hi,
+On Thu, Jan 08, 2026 at 12:26:18PM -0800, Eric Biggers wrote:
+> On Thu, Jan 08, 2026 at 12:32:00PM +0100, Ard Biesheuvel wrote:
+> > On Mon, 5 Jan 2026 at 06:14, Eric Biggers <ebiggers@kernel.org> wrote:
+> > >
+> > > This series applies to libcrypto-next.  It can also be retrieved from:
+> > >
+> > >     git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git aes-lib-v1
+> > >
+> > > This series makes three main improvements to the kernel's AES library:
+> > >
+> > >   1. Make it use the kernel's existing architecture-optimized AES code,
+> > >      including AES instructions, when available.  Previously, only the
+> > >      traditional crypto API gave access to the optimized AES code.
+> > >      (As a reminder, AES instructions typically make AES over 10 times
+> > >      as fast as the generic code.  They also make it constant-time.)
+> > >
+> > >   2. Support preparing an AES key for only the forward direction of the
+> > >      block cipher, using about half as much memory.  This is a helpful
+> > >      optimization for many common AES modes of operation.  It also helps
+> > >      keep structs small enough to be allocated on the stack, especially
+> > >      considering potential future library APIs for AES modes.
+> > >
+> > >   3. Replace the library's generic AES implementation with a much faster
+> > >      one that is almost as fast as "aes-generic", while still keeping
+> > >      the table size reasonably small and maintaining some constant-time
+> > >      hardening.  This allows removing "aes-generic", unifying the
+> > >      current two generic AES implementations in the kernel tree.
+> > >
 > > 
-> > On 8/1/26 13:25, Jordan Niethe wrote:
-> > > Hi,
-> > > 
-> > > On 8/1/26 05:36, Matthew Brost wrote:
-> > > > 
-> > > > Thanks for the series. For some reason Intel's CI couldn't apply this
-> > > > series to drm-tip to get results [1]. I'll manually apply this
-> > > > and run all
-> > > > our SVM tests and get back you on results + review the changes here. For
-> > > > future reference if you want to use our CI system, the series must apply
-> > > > to drm-tip, feel free to rebase this series and just send to intel-xe
-> > > > list if you want CI
-> > > 
-> > > Thanks, I'll rebase on drm-tip and send to the intel-xe list.
+> > Architectures that support memory operands will be impacted by
+> > dropping the pre-rotated lookup tables, especially if they have few
+> > GPRs.
 > > 
-> > For reference the rebase on drm-tip on the intel-xe list:
-> > 
-> > https://patchwork.freedesktop.org/series/159738/
-> > 
-> > Will watch the CI results.
+> > I suspect that doesn't really matter in practice: if your pre-AESNI
+> > IA-32 workload has a bottleneck on "aes-generic", you would have
+> > probably moved it to a different machine by now. But the performance
+> > delta will likely be noticeable so it is something that deserves a
+> > mention.
 > 
-> The series causes some failures in the intel-xe tests:
-> https://patchwork.freedesktop.org/series/159738/#rev4
+> Sure.  I only claimed that the new implementation is "almost as fast" as
+> aes-generic, not "as fast".
 > 
-> Working through the failures now.
+> By the way, these are the results I get for crypto_cipher_encrypt_one()
+> and crypto_cipher_decrypt_one() (averaged together) in a loop on an i386
+> kernel patched to not use AES-NI:
 > 
+>     aes-fixed-time: 77 MB/s
+>     aes-generic: 192 MB/s
+>     aes-lib: 185 MB/s
+> 
+> I'm not sure how relevant these are, considering that this was collected
+> on a modern CPU, not one of the (very) old ones that would actually be
+> running i386 non-AESNI code.  But if they are even vaguely
+> representative, this suggests the new code does quite well: little
+> slowdown over aes-generic, while adding some constant-time hardening
+> (which arguably was an undeserved shortcut to not include before) and
+> also using a lot less dcache.
+> 
+> At the same time, there's clearly a large speedup vs. aes-fixed-time.
+> So this will actually be a significant performance improvement on
+> systems that were using aes-fixed-time.  Many people may have been doing
+> that unintentionally, due to it being set to a higher priority than
+> aes-generic in the crypto_cipher API.
+> 
+> I'll also note that the state of the art for parallelizable AES modes on
+> CPUs without AES instructions is bit-slicing with vector registers.  The
+> kernel has such code for arm and arm64, but not for x86.  If x86 without
+> AES-NI was actually important, we should be adding that.  But it seems
+> clear that x86 CPUs have moved on, and hardly anyone cares anymore.  If
+> for now we can just provide something that's almost as fast as before
+> (and maybe even a lot faster in some cases!), that seems fine.
 
-Yea, I saw the failures. I haven't had time look at the patches on my
-end quite yet. Scrabling to get a few things in 6.20/7.0 PR, so I may
-not have bandwidth to look in depth until mid next week but digging is
-on my TODO list.
+It's also worth emphasizing that there are likely to be systems that
+support AES instructions but are not using them due to the corresponding
+kconfig options (e.g. CONFIG_CRYPTO_AES_NI_INTEL) not being set to 'y'.
+As we know, missing the crypto optimization kconfig options is a common
+mistake.  This series fixes that for single-block AES.
 
-Matt 
+So (in addition to the aes-fixed-time case) that's another case that
+just gets faster, and where the difference between aes-generic and the
+new generic code isn't actually relevant.
 
-> Thanks,
-> Jordan.
-> 
-> > 
-> > Thanks,
-> > Jordan.
-> > 
-> > > 
-> > > Jordan.
-> > > 
-> > > > 
-> > > > I was also wondering if Nvidia could help review one our core MM patches
-> > > > [2] which is gating enabling 2M device pages too?
-> > > > 
-> > > > Matt
-> > > > 
-> > > > [1] https://patchwork.freedesktop.org/series/159738/
-> > > > [2] https://patchwork.freedesktop.org/patch/694775/?series=159119&rev=1
-> > > 
-> > > 
-> > 
-> 
+- Eric
 
