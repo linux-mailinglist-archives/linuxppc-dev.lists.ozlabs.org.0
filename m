@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15520-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15521-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3158D0E546
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jan 2026 09:29:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A24D0E552
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jan 2026 09:29:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dppZN6qRVz2ypk;
-	Sun, 11 Jan 2026 19:29:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dppZh1jX9z2yjm;
+	Sun, 11 Jan 2026 19:29:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768120140;
-	cv=none; b=osuAPwNKi23KoMU/hBvSREozyeHSdhRlVou6nh/GcIYHQWNHE/JMsuhfFuS/vBzAmn9vPqPqIImpuNJpBBCHGLxhXl45E/J/Kznw0k4/KRe0o3akLXUuXmmoxSj/FF6PCmDV1bvF51i8cM3RkrA7PxcfHD6pBn+zwkZaLunztyEjyO7H1obdIdgOfUPwybU0c+Z2jOcFWvw0GeDW4Z1d4NIXU+ldBUNty5QvPrQVdbybpGi2WSJ2RFC6fnKVPMBFMhBiHDJo6CdF/i5vbxM1JrtPmf1qgULvlrWrGx1ZuQK3HWs0dEbOOg7t//qtx8QIsMccoc1k2IcWoKYI34a9+g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768120156;
+	cv=none; b=JccQmJ/ZvudzbGTABjlLfp2esUZ7dMjDXbS7Zjx8NIwQGl5RWVidJXwtYJrPd6TMgoycZamsR193EQKZthV5XrFWTPTrV9A46gcj21mW/pFv2hXJNNE6m3ifndYtT5k4SjYPHgovQcJmDKvfRtPFrQl5r4ZazWGf3qslL7KTZMsTZbdUvu9Iv3JrCCyEft72q3r5EcADOtRZACfYC0ziJ6ap/6Xj8gj0XeBS/xL0zJJ1qmvSCqMlPub0jiawub3UTkPHJNN2cXFK2UEIG4J+RjOJy0dYoRS0/s7D35+MHzSa9XgzKXzZTz8Sf2lkGjx+/Tvat1B9+SVBa05vmYQ9vg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768120140; c=relaxed/relaxed;
-	bh=0d/fgmJzUuC3jidaBzidx264jdRyo/z9z8uWc0qcsnY=;
+	t=1768120156; c=relaxed/relaxed;
+	bh=Mw+h00YB7RAVdP7poV7dkiSai2G6Gsw/ByEs2J3Zae8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XC2j1MZTxSz//N1zKg5sM+aW5eM3cIu9Zvj7W+vqzSLwXEd6JZFabWga+ZjaacMOChBvfMtcdiqEUpYNcYWHKEqhpONj1ezAR6m29u3kiYK8m+grL3uxyCAau2ez6sk9F5n5kQg8gl+/pbu0/RHImDO+ABU2Lvi0Z0/Stmk/+Q1nQipLNpvsUQvfxHyqSfM5sVT+KBLFU76bzT0ngdKav8dJr9Ifv+OmOkEwUq6qBmNwRhYc68FVFncSCMmj/wpxfcpp27dDEKT9PuDCuMCFE2CaCsng+GwyTP3jCWCkvVGQL5fw7FMUfNqBwhtstdM+SIF5Sg6s5DVyaGmu2GHaPg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VYPj9b0f; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=YzMnyLO3IwLv0EpqHwgBXOZcj2hzNp4wkmYiv4iyiVUYAOxDxId4tQNv/BqwP9DILm7qTspReiYTLRJFvDpMQg0nIf6iPNc8qf7PW1FrEsXxB95h4TFtXSxSZlRcEsee3V2jKiu+R2Hge/KcrpdvTL1miTSS6xij7I49ZKfNnGnzZSuBCdRzEMewh7OxcL27Cs1DJWuwYx6uwgdt71ex6cb06aksR1m3SkTwlXvyJQC5II1ZBA67yUBMfzoMWaYPWsRTyj9yjfqyWy9gTQOz+Zn4qvUSkBO4tt0rgjG3CJS9oDa8PUTKg+h4oME5qIY6+iGew1gt6fWc++8/Acpd8A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ec2bGwWO; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VYPj9b0f;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ec2bGwWO;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dppZN0Y4jz2yVB
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Jan 2026 19:29:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dppZg1gq5z2yVB
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Jan 2026 19:29:15 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E777D60122;
+	by tor.source.kernel.org (Postfix) with ESMTP id 12DF960142;
+	Sun, 11 Jan 2026 08:28:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274D1C16AAE;
 	Sun, 11 Jan 2026 08:28:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098BDC4CEF7;
-	Sun, 11 Jan 2026 08:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768120107;
-	bh=kMKUIBkqL1O4S3ZKa4SfOsA0W3WTf/VpmW+w2Z3QAsw=;
+	s=k20201202; t=1768120122;
+	bh=HRLMNbJfcIyzccjy/sfTD1k/8iARayV6dPdQfJTMnWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYPj9b0fMhtgyRG3tBVmUyXLPKxdmg5x150SQusjLBH6QHSmY1li0V6oPCPL6xqZU
-	 MEH229e0ZoAbJmeWNRLP1sB8qDlLHorYQdPuaHyK4EVKvweaUln12AkVcyJwjAVueU
-	 jQgOmVx+665lxbPQD+mKBi6zrOHJcbjSgzO6VzA/F64XeumQv5zG8ZIrvb2xtg/sTh
-	 4EeqXNUXciJtl4cNlL7m6I36LbPHvL3zM8JoGAdiJetJld4sNjuiGSfNmtjBYZ+NOJ
-	 CUQK3WJ9+t9B/g7SLLj+wsdLaKXwdPiOjft1xYqs5eoseVy+W6YpOc1XzTcKIp3R/g
-	 2XT1tnE6x3bwA==
+	b=Ec2bGwWOeOjXW+ySUXXKPm6eayFRFkSmbxQ0Yi2N08exR6X1pcnRzRL1jFrEN60gu
+	 EjR2EbdukWQDt0gz83zhTod3BcTK9hToNe52kcKWqr9xEFUT69+VRURPQ8b21IwNRd
+	 rp3gC/u2WEVHsJheESwI5qHhh9E4BZZ1xav9luUXT439xB/CPrZE8H4fLmmGL8QILy
+	 9Yfb6Y/uPZ+yYjsvo1Q90O2WW22H/avuDFr8cB76tUKXJ5Wsc0cale2xr++cTaYOu9
+	 eji+2hoq7YT65edlzcRMhkEPeXUV9Ua93DTgqCtd5AaZJXvzgL4tJVCdJGBVI9moFu
+	 uPmsuMV4ggZaw==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Shi <alexs@kernel.org>,
@@ -111,9 +111,9 @@ Cc: Alex Shi <alexs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org
-Subject: [PATCH v3 28/29] mm/hugetlb: drop hugetlb_cma_check()
-Date: Sun, 11 Jan 2026 10:21:02 +0200
-Message-ID: <20260111082105.290734-29-rppt@kernel.org>
+Subject: [PATCH v3 29/29] Revert "mm/hugetlb: deal with multiple calls to hugetlb_bootmem_alloc"
+Date: Sun, 11 Jan 2026 10:21:03 +0200
+Message-ID: <20260111082105.290734-30-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260111082105.290734-1-rppt@kernel.org>
 References: <20260111082105.290734-1-rppt@kernel.org>
@@ -138,106 +138,112 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-hugetlb_cma_check() was required when the ordering of hugetlb_cma_reserve()
-and hugetlb_bootmem_alloc() was architecture depended.
+This reverts commit d58b2498200724e4f8c12d71a5953da03c8c8bdf.
 
-Since hugetlb_cma_reserve() is always called before hugetlb_bootmem_alloc()
-there is no need to check whether hugetlb_cma_reserve() was already called.
+hugetlb_bootmem_alloc() is called only once, no need to check if it was
+called already at its entry.
 
-Drop unneeded hugetlb_cma_check() function.
+Other checks performed during HVO initialization are also no longer
+necessary because sparse_init() that calls hugetlb_vmemmap_init_early()
+and hugetlb_vmemmap_init_late() is always called after
+hugetlb_bootmem_alloc().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Acked-by: Muchun Song <muchun.song@linux.dev>
 ---
- mm/hugetlb.c     |  1 -
- mm/hugetlb_cma.c | 16 +++-------------
- mm/hugetlb_cma.h |  5 -----
- 3 files changed, 3 insertions(+), 19 deletions(-)
+ include/linux/hugetlb.h |  6 ------
+ mm/hugetlb.c            | 12 ------------
+ mm/hugetlb_vmemmap.c    | 11 -----------
+ 3 files changed, 29 deletions(-)
 
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 08fc332e88a7..c8b1a6dd2d46 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -175,7 +175,6 @@ extern int sysctl_hugetlb_shm_group __read_mostly;
+ extern struct list_head huge_boot_pages[MAX_NUMNODES];
+ 
+ void hugetlb_bootmem_alloc(void);
+-bool hugetlb_bootmem_allocated(void);
+ extern nodemask_t hugetlb_bootmem_nodes;
+ void hugetlb_bootmem_set_nodes(void);
+ 
+@@ -1300,11 +1299,6 @@ static inline bool hugetlbfs_pagecache_present(
+ static inline void hugetlb_bootmem_alloc(void)
+ {
+ }
+-
+-static inline bool hugetlb_bootmem_allocated(void)
+-{
+-	return false;
+-}
+ #endif	/* CONFIG_HUGETLB_PAGE */
+ 
+ static inline spinlock_t *huge_pte_lock(struct hstate *h,
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 51273baec9e5..82b322ae3fdc 100644
+index 82b322ae3fdc..e5a350c83d75 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -4159,7 +4159,6 @@ static int __init hugetlb_init(void)
- 		}
+@@ -4470,21 +4470,11 @@ void __init hugetlb_bootmem_set_nodes(void)
  	}
- 
--	hugetlb_cma_check();
- 	hugetlb_init_hstates();
- 	gather_bootmem_prealloc();
- 	report_hugepages();
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index b1eb5998282c..f5e79103e110 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -85,9 +85,6 @@ hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid, bool node_exact)
- 	return m;
  }
  
+-static bool __hugetlb_bootmem_allocated __initdata;
 -
--static bool cma_reserve_called __initdata;
--
- static int __init cmdline_parse_hugetlb_cma(char *p)
- {
- 	int nid, count = 0;
-@@ -149,8 +146,10 @@ void __init hugetlb_cma_reserve(void)
- 		return;
- 
- 	order = arch_hugetlb_cma_order();
--	if (!order)
-+	if (!order) {
-+		pr_warn("hugetlb_cma: the option isn't supported by current arch\n");
- 		return;
-+	}
- 
- 	/*
- 	 * HugeTLB CMA reservation is required for gigantic
-@@ -159,7 +158,6 @@ void __init hugetlb_cma_reserve(void)
- 	 * breaking this assumption.
- 	 */
- 	VM_WARN_ON(order <= MAX_PAGE_ORDER);
--	cma_reserve_called = true;
- 
- 	hugetlb_bootmem_set_nodes();
- 
-@@ -253,14 +251,6 @@ void __init hugetlb_cma_reserve(void)
- 		hugetlb_cma_size = 0;
- }
- 
--void __init hugetlb_cma_check(void)
+-bool __init hugetlb_bootmem_allocated(void)
 -{
--	if (!hugetlb_cma_size || cma_reserve_called)
+-	return __hugetlb_bootmem_allocated;
+-}
+-
+ void __init hugetlb_bootmem_alloc(void)
+ {
+ 	struct hstate *h;
+ 	int i;
+ 
+-	if (__hugetlb_bootmem_allocated)
 -		return;
 -
--	pr_warn("hugetlb_cma: the option isn't supported by current arch\n");
--}
+ 	hugetlb_bootmem_set_nodes();
+ 
+ 	for (i = 0; i < MAX_NUMNODES; i++)
+@@ -4498,8 +4488,6 @@ void __init hugetlb_bootmem_alloc(void)
+ 		if (hstate_is_gigantic(h))
+ 			hugetlb_hstate_alloc_pages(h);
+ 	}
 -
- bool hugetlb_cma_exclusive_alloc(void)
- {
- 	return hugetlb_cma_only;
-diff --git a/mm/hugetlb_cma.h b/mm/hugetlb_cma.h
-index 2c2ec8a7e134..78186839df3a 100644
---- a/mm/hugetlb_cma.h
-+++ b/mm/hugetlb_cma.h
-@@ -8,7 +8,6 @@ struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
- 				      int nid, nodemask_t *nodemask);
- struct huge_bootmem_page *hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid,
- 						    bool node_exact);
--void hugetlb_cma_check(void);
- bool hugetlb_cma_exclusive_alloc(void);
- unsigned long hugetlb_cma_total_size(void);
- void hugetlb_cma_validate_params(void);
-@@ -31,10 +30,6 @@ struct huge_bootmem_page *hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid,
- 	return NULL;
+-	__hugetlb_bootmem_allocated = true;
  }
  
--static inline void hugetlb_cma_check(void)
--{
--}
+ /*
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index 9d01f883fd71..a9280259e12a 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -794,14 +794,6 @@ void __init hugetlb_vmemmap_init_early(int nid)
+ 	struct huge_bootmem_page *m = NULL;
+ 	void *map;
+ 
+-	/*
+-	 * Noting to do if bootmem pages were not allocated
+-	 * early in boot, or if HVO wasn't enabled in the
+-	 * first place.
+-	 */
+-	if (!hugetlb_bootmem_allocated())
+-		return;
 -
- static inline bool hugetlb_cma_exclusive_alloc(void)
- {
- 	return false;
+ 	if (!READ_ONCE(vmemmap_optimize_enabled))
+ 		return;
+ 
+@@ -847,9 +839,6 @@ void __init hugetlb_vmemmap_init_late(int nid)
+ 	struct hstate *h;
+ 	void *map;
+ 
+-	if (!hugetlb_bootmem_allocated())
+-		return;
+-
+ 	if (!READ_ONCE(vmemmap_optimize_enabled))
+ 		return;
+ 
 -- 
 2.51.0
 
