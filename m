@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15563-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15585-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319C0D14EF2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 20:24:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDDA4D14FD9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 20:27:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dqj380Mc8z2yvH;
-	Tue, 13 Jan 2026 06:23:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dqj3l3CKtz3cYd;
+	Tue, 13 Jan 2026 06:24:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768245811;
-	cv=none; b=eRt2XkwfWcC3h7wRw5NJW9QAn3RXNtjMKNYUBuUJCO+0+BnA39i4g74Upy0aVQNAge1Pqbk3rWUW17rTgeLmhHpuup15Kjl9N1ByzJHtrLfrI57a2WfFpLK7j6h1fzMXNYJR01dkv9n8/mg1dW5BJ77ZufynKNt1KtPilPQ6egQNKh8IJNjv59Yn7I9RIE3EIx8SJ1aKaq2zK3QHOBeuTtutm1/i0Qr4H1gRuUOcVZsQ5t3Bo5Sd6B2bA4lxXanvbev7u3lZQFcCRKvwsJvIucAmJqCugj70rv4gD6BR+8/ny5QrYzag7jusPmKbPGB6N3ukKGc6zzMnN3VF5ZkREA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768245843;
+	cv=none; b=jOFWvQkzCczQcgQL4wHpTmpOGYnOKndlSZmAyorGVQk5m2W5ZkSh4FdbmbcGuBBTnZsHETeY5+d1cPp87627kB06ImUUo+lEkYMYSA6MUxO7DbPtVUn2bMPphYZNSkZehZB71KP5XrYoe8ku6hXwsyrZxoXwD9g9XpTK+Y3a97vH5v3i+B8k8DCguU4gpARs1TrpXITv9dVHkcCJc/kS3yslgYdDPo0SYivuTfp8L2+Mt+008kNv/CCxjz47wNJH21tzSruEXkdNpayTNNJR7rPJutWaY/zXvVuLtTx3ftnwlTSmMuN7I2b4QJdWnDQAf3KetGq020x+hEPeDhCRcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768245811; c=relaxed/relaxed;
-	bh=DQ7M/QwofijnhNwqbcHQFefUTFJMWmyUFt4ledmWH3g=;
+	t=1768245843; c=relaxed/relaxed;
+	bh=03t5xqxXWXQya2vnXvkh4sBRhE7hCvYdebD40Mx8iOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eeAz/vpVdLBb2+iZnVTmqnI28VZ+yYmdq1nXZ7EkG2v6Zyc00p9yjPKrsjXyPxJoL1i33NJlaFiY8HkjMrilMRsDhct+GQrujrEEM/PLA1K0B5z1i6M6XftbZTg2kYAp+35kGKvSn8jgnYfWAqcnm/vrNh93ZpTf+ixF0VH9N72TsFpfRqUqMVU8NU0wtLtWFrhe7aUdPqkRcs2EOPPwztkMijmSv6MJDg3j3Pofg2YAOa9Hqa9Ay9mcLu9lg1aqshfY/HFpBWDrSk2rbmf51YvWFp9du0+LFTsk2M7d//x/laVUsyPMeDrEJ5TfrjTwNkH7o/+oXaulTcnxjSBEKA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ztmz/OJn; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=OsGH4iPjw6aB8tGkYoZEZb+fbXlemUpNfbGQXnUNtI4EnC6F1j6/7RCponkQu/wgsigmlpa4ROkRK2jlULaDr3+HATe7G+JF54mBDPJ9ebAnVZBhsdDOPo++toEZfdg7Vgko9wtNZCr34cVBIPdumQVmaYDvGLdxnahHdNTqvhW1PLusacXnLTe8nl1PZDFVn9ppH9XRmmhrhTzG17Wvy9JMJ5GjFxZ49ZCzoXs0NNUhd16io3qm+RSJjChhCfxAVtjiPSY190Vu2R7TS8QJU+gn+jd/OzB/vxRGIbVCH4jNtilBedy84l6+UNxzWvyxeVXKPOJ27RbqA0QcBf1ULw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qfFo8JDs; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ztmz/OJn;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qfFo8JDs;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqj371fyWz2ytT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 06:23:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqj3k6fdjz3c4r
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 06:24:02 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3AEA960097;
+	by tor.source.kernel.org (Postfix) with ESMTP id BFEB560125;
 	Mon, 12 Jan 2026 19:23:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F11C16AAE;
-	Mon, 12 Jan 2026 19:23:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157D1C19422;
+	Mon, 12 Jan 2026 19:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768245808;
-	bh=xvx6Irt7McLpPRJvPxDb3Q6MTwdCsiaMbdNL/psBoQw=;
+	s=k20201202; t=1768245809;
+	bh=zZjTigRkrr+RJfey+6vJW4bfvWaLAxFdbVVJ4sVGLrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ztmz/OJnF9izXz1+11a8n8ue1FadL6xEIAIHmPJpOtWbTN9uLhp38Q5NZMtTNf8aL
-	 u+iSqUH9pU6VIiYWo3gzNM1xlS7YKdPMY9mbRVfzMqa37dHo65ZjmMu6p85wAVEdAY
-	 bQMwsA23bhIBlPgkuOxsETreww86x/B0/6WYH68Jh94Fyw9pYwW3UUwNKqizt117J0
-	 rxn9PbiGHKUJG859mT4+TqPx0KqNAsb4uGSAm+xwEXDfk1F4iQHO7xwvILfXd2sTKF
-	 8or8T+eKsv4Mt8hE/RXUc9xdpUYb3qL0VJQMVSdcMV8FUB8VLen/q5RT2A26UjvjRw
-	 rPnOlNCQe1Y7w==
+	b=qfFo8JDsoztKnqQM8LDVsG/RZYZxuwTk6m5qZdjQd/xXiyEc7egrbByJjtgR4sZdu
+	 RcpNZKXOvWe5RDLB7hOVlH6OXua6/OEZPnBLFISFOa3J9MSrW455FqrBKQI77CQJcs
+	 y9tlA15wqYgSNGZRxDqsKIsEYbUvlHRl/M6y7e+iul2Ov7gxDV2ezDzKhpNPivrM9P
+	 zwOHwRjPkvT69tX3CGSI6iww5CkwpdRRVVEkHnpxQ2h5oHalu2FfFBkGaWRFvW3rVB
+	 uvUHQfOkJvB3PC+Xs0dSKIdnrH6Xj+YQwsz98IhE5tYp8ma1ZcTvtU9SKRX/Kgvx9M
+	 vIGAYuZKdialA==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Holger Dengler <dengler@linux.ibm.com>,
 	Harald Freudenberger <freude@linux.ibm.com>,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH v2 20/35] chelsio: Use new AES library API
-Date: Mon, 12 Jan 2026 11:20:18 -0800
-Message-ID: <20260112192035.10427-21-ebiggers@kernel.org>
+Subject: [PATCH v2 21/35] net: phy: mscc: macsec: Use new AES library API
+Date: Mon, 12 Jan 2026 11:20:19 -0800
+Message-ID: <20260112192035.10427-22-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112192035.10427-1-ebiggers@kernel.org>
 References: <20260112192035.10427-1-ebiggers@kernel.org>
@@ -97,109 +97,37 @@ calling the new encryption function rather than the old one.
 Acked-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- .../ethernet/chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c  | 4 ++--
- .../ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c    | 8 ++++----
- .../net/ethernet/chelsio/inline_crypto/chtls/chtls_hw.c   | 4 ++--
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/phy/mscc/mscc_macsec.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c b/drivers/net/ethernet/chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c
-index 49b57bb5fac1..074717d4bb16 100644
---- a/drivers/net/ethernet/chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c
-+++ b/drivers/net/ethernet/chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c
-@@ -168,11 +168,11 @@ static int ch_ipsec_setkey(struct xfrm_state *x,
+diff --git a/drivers/net/phy/mscc/mscc_macsec.c b/drivers/net/phy/mscc/mscc_macsec.c
+index 4f39ba63a9a9..9a38a29cf397 100644
+--- a/drivers/net/phy/mscc/mscc_macsec.c
++++ b/drivers/net/phy/mscc/mscc_macsec.c
+@@ -502,19 +502,19 @@ static u32 vsc8584_macsec_flow_context_id(struct macsec_flow *flow)
+ 
+ /* Derive the AES key to get a key for the hash autentication */
+ static int vsc8584_macsec_derive_key(const u8 *key, u16 key_len, u8 hkey[16])
  {
- 	int keylen = (x->aead->alg_key_len + 7) / 8;
- 	unsigned char *key = x->aead->alg_key;
- 	int ck_size, key_ctx_size = 0;
- 	unsigned char ghash_h[AEAD_H_SIZE];
--	struct crypto_aes_ctx aes;
-+	struct aes_enckey aes;
- 	int ret = 0;
- 
- 	if (keylen > 3) {
- 		keylen -= 4;  /* nonce/salt is present in the last 4 bytes */
- 		memcpy(sa_entry->salt, key + keylen, 4);
-@@ -202,11 +202,11 @@ static int ch_ipsec_setkey(struct xfrm_state *x,
- 						 key_ctx_size >> 4);
- 
- 	/* Calculate the H = CIPH(K, 0 repeated 16 times).
- 	 * It will go in key context
- 	 */
--	ret = aes_expandkey(&aes, key, keylen);
-+	ret = aes_prepareenckey(&aes, key, keylen);
- 	if (ret) {
- 		sa_entry->enckey_len = 0;
- 		goto out;
- 	}
- 	memset(ghash_h, 0, AEAD_H_SIZE);
-diff --git a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-index 4e2096e49684..b8ebb56de65e 100644
---- a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-+++ b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-@@ -74,11 +74,11 @@ static int chcr_ktls_save_keys(struct chcr_ktls_info *tx_info,
- {
- 	int ck_size, key_ctx_size, mac_key_size, keylen, ghash_size, ret;
- 	unsigned char ghash_h[TLS_CIPHER_AES_GCM_256_TAG_SIZE];
- 	struct tls12_crypto_info_aes_gcm_128 *info_128_gcm;
- 	struct ktls_key_ctx *kctx = &tx_info->key_ctx;
--	struct crypto_aes_ctx aes_ctx;
-+	struct aes_enckey aes;
- 	unsigned char *key, *salt;
- 
- 	switch (crypto_info->cipher_type) {
- 	case TLS_CIPHER_AES_GCM_128:
- 		info_128_gcm =
-@@ -136,17 +136,17 @@ static int chcr_ktls_save_keys(struct chcr_ktls_info *tx_info,
- 		       roundup(keylen, 16) + ghash_size;
- 	/* Calculate the H = CIPH(K, 0 repeated 16 times).
- 	 * It will go in key context
- 	 */
- 
--	ret = aes_expandkey(&aes_ctx, key, keylen);
-+	ret = aes_prepareenckey(&aes, key, keylen);
- 	if (ret)
- 		goto out;
- 
- 	memset(ghash_h, 0, ghash_size);
--	aes_encrypt(&aes_ctx, ghash_h, ghash_h);
--	memzero_explicit(&aes_ctx, sizeof(aes_ctx));
-+	aes_encrypt(&aes, ghash_h, ghash_h);
-+	memzero_explicit(&aes, sizeof(aes));
- 
- 	/* fill the Key context */
- 	if (direction == TLS_OFFLOAD_CTX_DIR_TX) {
- 		kctx->ctx_hdr = FILL_KEY_CTX_HDR(ck_size,
- 						 mac_key_size,
-diff --git a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_hw.c b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_hw.c
-index fab6df21f01c..d84473ca844d 100644
---- a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_hw.c
-+++ b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_hw.c
-@@ -245,11 +245,11 @@ static int chtls_key_info(struct chtls_sock *csk,
- {
- 	unsigned char key[AES_MAX_KEY_SIZE];
- 	unsigned char *key_p, *salt;
- 	unsigned char ghash_h[AEAD_H_SIZE];
- 	int ck_size, key_ctx_size, kctx_mackey_size, salt_size;
--	struct crypto_aes_ctx aes;
+ 	const u8 input[AES_BLOCK_SIZE] = {0};
+-	struct crypto_aes_ctx ctx;
 +	struct aes_enckey aes;
  	int ret;
  
- 	key_ctx_size = sizeof(struct _key_ctx) +
- 		       roundup(keylen, 16) + AEAD_H_SIZE;
- 
-@@ -289,11 +289,11 @@ static int chtls_key_info(struct chtls_sock *csk,
- 	}
- 
- 	/* Calculate the H = CIPH(K, 0 repeated 16 times).
- 	 * It will go in key context
- 	 */
--	ret = aes_expandkey(&aes, key, keylen);
-+	ret = aes_prepareenckey(&aes, key, keylen);
+-	ret = aes_expandkey(&ctx, key, key_len);
++	ret = aes_prepareenckey(&aes, key, key_len);
  	if (ret)
  		return ret;
  
- 	memset(ghash_h, 0, AEAD_H_SIZE);
- 	aes_encrypt(&aes, ghash_h, ghash_h);
+-	aes_encrypt(&ctx, hkey, input);
+-	memzero_explicit(&ctx, sizeof(ctx));
++	aes_encrypt(&aes, hkey, input);
++	memzero_explicit(&aes, sizeof(aes));
+ 	return 0;
+ }
+ 
+ static int vsc8584_macsec_transformation(struct phy_device *phydev,
+ 					 struct macsec_flow *flow,
 -- 
 2.52.0
 
