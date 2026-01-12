@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15570-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15568-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AEFD14F3D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 20:25:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AB0D14F28
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 20:25:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dqj3D5tymz30WT;
-	Tue, 13 Jan 2026 06:23:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dqj3C6bJVz30VL;
+	Tue, 13 Jan 2026 06:23:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768245816;
-	cv=none; b=lBqLQWGyaVsyW+M0UFOqhep5njeswM4ttCFjNWiK5FZzK0OAnL5THJ2MLhbGxS+Llr4Rz7oKmKTROtTO7vIEwXnfGQYH69HYoxz729c0+4RpLhJvkGMT+sTahXQT8oibWZCCnHm/0jEJOwv6oEpqBCS5gA5V/6Fetb0lEjsuERElujqa/d18Y8v+XEZQdcB54UJ59fD7tdsqeS3JoYFHJ9ezJNNzOxOUC81UlXA0HXA502VkzFqfxU19FGk0yZQ6qwaroz22m/uZLtHFCS9PB2cR/y81ES1XXqKrKRnWzbGsSZ6M0IBurskw55yrYUCZqJue8ATOBlI0L3SJXCAXIw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768245815;
+	cv=none; b=WubY1ycOD0DmgYZy17GzcN6oXCzTMtciy9zAzCq1qu5jRNGZhTO8JfqQdk98rHehgk0suNyI+JL5z3OaUIwp0UMT6ac3NZjHjyTmhzPmREw3rB3kL7ho9xax6S7inqhzbHL7ykSVs9M3nzeHhJPKMIUn7DLZy3hvCwHJ48liaopYJ8ES7XQuLOYaVUOZd9aBdxIBlOQNseQCTLM0XcNOwmvmhvH8LeWcgzHEJCgb1jw8Flcbw0/M/DAiuGU4yQHg6fcTcetJbFGeC6vP6hDzSq8fkZPOUQwwok4vk8t+Ma/cfxsZm1xWP2LtxabuJWst7k0t4++WWBqMecJ4xn1YZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768245816; c=relaxed/relaxed;
-	bh=KpIe2rpQpLZfztXdTuzMDMMPDAEpP3pXswaNe/cBIQE=;
+	t=1768245815; c=relaxed/relaxed;
+	bh=Dcl3UE3umGt/L3RjuznoXNLadh4OW0Sy9sJ/IsckP2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ghti6LW622i6KgQ2T1c0lyqsl4pk7o+VIeFWOs87yTHUTuT8+a8gF4muNfoe/ZJW+nxCi7LcUJTurT2N3eb/6VL1ZH4nZ1WIeqx69utG7DBKDvwwXNYU0hRwpyO4KaLZKN7M4H5KPVDTCQmvrFVUplVDaoezfFw6zLDwxQBtJIEkhe3W6rQih0fbIpBOGzIZ9v/cx0RtdmUGQ2u8j1DjyEWCc0ZY/633/Jopg7F7+WaQMY+wOdU2alBa2Pib392MLvVgtNCrYId11+Qb+dT5kVSLJvzfO7GI2VMi/54BNlKzNd87xIPcU08IAuTHIhJGsv+yR1n460wzdaNTsoX4hA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X+MPGuKb; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=OQu8aDRWsHa9XpPRKxTVdCOOmY9hRGbe2lYsi1qiZrN1uB1OOduiWZ9FwHLIyjOxhEevEULB58uYJN/NNB0ThFQI6YbYMWJOjrEdCBAwBgQTW/crRBlzriOB1Vy9X3rr9uSH2QZUTg8e3AZOk/EaAFrqPfy+BUzbpXzOlxtThtEvg786lkYFhFGQdwpi4E8M7Z661ClPS2hzgQvXcPdDEtR35CmvhSTZxhgmpOZBBiwkVGm/og4Oojvt7xiyICk69q+FlMoQAoS4BOmYoPO9/f8bNZ1/n3E2TkbGKjL13irSoDgpfbN8muFZUwjlhjVKGfSsXWmudahVpD8t3gPleQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JGAY+Svh; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X+MPGuKb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JGAY+Svh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqj3C4Hs3z30V1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqj3C0v5Cz30Pn
 	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 06:23:35 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0DE3C44403;
+	by tor.source.kernel.org (Postfix) with ESMTP id B8095600AE;
 	Mon, 12 Jan 2026 19:23:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED5EC19425;
-	Mon, 12 Jan 2026 19:23:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEABC16AAE;
+	Mon, 12 Jan 2026 19:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768245813;
-	bh=BBKB65xS0OpZpUhmAej3YWy5tO0vX+fEXhT2Dx9/+hQ=;
+	s=k20201202; t=1768245814;
+	bh=2yX1SAnAgKA7xbLH25xiQD42E7Ke51oKK+KgmtTec0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X+MPGuKbhpS7/FgOBDKBzcyb8WMNKxVDlbJDnBswswVQjNTyepUQk3tSVY14vE2zG
-	 UX57SThhUr6Rv+zmecFVUL2A4P+qu9QTjUEyKTZav5Gh2dKxYHvAMSCcQhXmTNnuwP
-	 tLQMKrNcAajFMfItPOX1wSFsknV6Co/uCfzKLKNTgNifbkU7gxwh/q3sATLoURCx2z
-	 gr0Tqh7T9MZCcuPbyEwXmKyevYKB/i8+EKi0FtQ3ug05KV0iq0dR7aeHRx+JyVWpzE
-	 sIlhv3742IeqSPA8e9lIewSPkEJz1LGVfF+7jYw296kTbwivG2Ax+nyMLnnTsZwvdg
-	 lrCYmNH+jyOcg==
+	b=JGAY+SvhLYay2TgvMrif+ANkVrcmyC25n1wXaObgxPNPKPgRoxlQESdodwyIlX2O1
+	 Q7V+wgk/nfCRxUZyBdqtJpnEkJt9FZOZmB5On9rs+UHN8bgEQHxrp9E0K0lczA7srL
+	 6eJ9tBw9XF+0C2b1m7/xwczEdD9UCDYr7j5hz8+y1XDiwjnH7f+y/CNqvw8lACWblO
+	 sYUtSTxUN4kpurSKzm1oIDucrgK73G2ZVnm6TjcmdGSV0lvQyV+gFkFKri+6p6T7cv
+	 NYuvcNGcXlDvOweSxvKR6G27MBmsS4uZWPAbKl9rJo5b+3MJJrWYwA+f9oIUhjDU+a
+	 /ht13DAlXfpLg==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Holger Dengler <dengler@linux.ibm.com>,
 	Harald Freudenberger <freude@linux.ibm.com>,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH v2 29/35] crypto: drbg - Use new AES library API
-Date: Mon, 12 Jan 2026 11:20:27 -0800
-Message-ID: <20260112192035.10427-30-ebiggers@kernel.org>
+Subject: [PATCH v2 30/35] crypto: inside-secure - Use new AES library API
+Date: Mon, 12 Jan 2026 11:20:28 -0800
+Message-ID: <20260112192035.10427-31-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260112192035.10427-1-ebiggers@kernel.org>
 References: <20260112192035.10427-1-ebiggers@kernel.org>
@@ -94,243 +94,125 @@ the key struct type itself, the change in the type of the key struct
 results in aes_encrypt() (which is temporarily a type-generic macro)
 calling the new encryption function rather than the old one.
 
+This driver used crypto_aes_ctx::key_enc, but only to access the copy of
+the raw key that is stored at the beginning of the expanded key.  To
+eliminate the dependency on this field, instead just access the raw key
+directly, which is already available in the relevant functions.
+
 Acked-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- crypto/df_sp80090a.c                | 30 ++++++++++-------------------
- crypto/drbg.c                       | 12 ++++++------
- drivers/crypto/xilinx/xilinx-trng.c |  8 ++++----
- include/crypto/df_sp80090a.h        |  2 +-
- 4 files changed, 21 insertions(+), 31 deletions(-)
+ drivers/crypto/inside-secure/safexcel_cipher.c | 12 +++++-------
+ drivers/crypto/inside-secure/safexcel_hash.c   | 14 +++++++-------
+ 2 files changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/crypto/df_sp80090a.c b/crypto/df_sp80090a.c
-index dc63b31a93fc..b8134be6f7ad 100644
---- a/crypto/df_sp80090a.c
-+++ b/crypto/df_sp80090a.c
-@@ -12,31 +12,21 @@
- #include <linux/string.h>
- #include <crypto/aes.h>
- #include <crypto/df_sp80090a.h>
- #include <crypto/internal/drbg.h>
- 
--static void drbg_kcapi_symsetkey(struct crypto_aes_ctx *aesctx,
--				 const unsigned char *key,
--				 u8 keylen);
--static void drbg_kcapi_symsetkey(struct crypto_aes_ctx *aesctx,
--				 const unsigned char *key, u8 keylen)
--{
--	aes_expandkey(aesctx, key, keylen);
--}
--
--static void drbg_kcapi_sym(struct crypto_aes_ctx *aesctx,
--			   unsigned char *outval,
-+static void drbg_kcapi_sym(struct aes_enckey *aeskey, unsigned char *outval,
- 			   const struct drbg_string *in, u8 blocklen_bytes)
+diff --git a/drivers/crypto/inside-secure/safexcel_cipher.c b/drivers/crypto/inside-secure/safexcel_cipher.c
+index 919e5a2cab95..27b180057417 100644
+--- a/drivers/crypto/inside-secure/safexcel_cipher.c
++++ b/drivers/crypto/inside-secure/safexcel_cipher.c
+@@ -2505,31 +2505,29 @@ static int safexcel_aead_gcm_setkey(struct crypto_aead *ctfm, const u8 *key,
+ 				    unsigned int len)
  {
- 	/* there is only component in *in */
- 	BUG_ON(in->len < blocklen_bytes);
--	aes_encrypt(aesctx, outval, in->buf);
-+	aes_encrypt(aeskey, outval, in->buf);
- }
+ 	struct crypto_tfm *tfm = crypto_aead_tfm(ctfm);
+ 	struct safexcel_cipher_ctx *ctx = crypto_tfm_ctx(tfm);
+ 	struct safexcel_crypto_priv *priv = ctx->base.priv;
+-	struct crypto_aes_ctx aes;
++	struct aes_enckey aes;
+ 	u32 hashkey[AES_BLOCK_SIZE >> 2];
+ 	int ret, i;
  
- /* BCC function for CTR DRBG as defined in 10.4.3 */
+-	ret = aes_expandkey(&aes, key, len);
+-	if (ret) {
+-		memzero_explicit(&aes, sizeof(aes));
++	ret = aes_prepareenckey(&aes, key, len);
++	if (ret)
+ 		return ret;
+-	}
  
--static void drbg_ctr_bcc(struct crypto_aes_ctx *aesctx,
-+static void drbg_ctr_bcc(struct aes_enckey *aeskey,
- 			 unsigned char *out, const unsigned char *key,
- 			 struct list_head *in,
- 			 u8 blocklen_bytes,
- 			 u8 keylen)
- {
-@@ -45,30 +35,30 @@ static void drbg_ctr_bcc(struct crypto_aes_ctx *aesctx,
- 	short cnt = 0;
- 
- 	drbg_string_fill(&data, out, blocklen_bytes);
- 
- 	/* 10.4.3 step 2 / 4 */
--	drbg_kcapi_symsetkey(aesctx, key, keylen);
-+	aes_prepareenckey(aeskey, key, keylen);
- 	list_for_each_entry(curr, in, list) {
- 		const unsigned char *pos = curr->buf;
- 		size_t len = curr->len;
- 		/* 10.4.3 step 4.1 */
- 		while (len) {
- 			/* 10.4.3 step 4.2 */
- 			if (blocklen_bytes == cnt) {
- 				cnt = 0;
--				drbg_kcapi_sym(aesctx, out, &data, blocklen_bytes);
-+				drbg_kcapi_sym(aeskey, out, &data, blocklen_bytes);
+ 	if (priv->flags & EIP197_TRC_CACHE && ctx->base.ctxr_dma) {
+ 		for (i = 0; i < len / sizeof(u32); i++) {
+-			if (le32_to_cpu(ctx->key[i]) != aes.key_enc[i]) {
++			if (ctx->key[i] != get_unaligned((__le32 *)key + i)) {
+ 				ctx->base.needs_inv = true;
+ 				break;
  			}
- 			out[cnt] ^= *pos;
- 			pos++;
- 			cnt++;
- 			len--;
  		}
  	}
- 	/* 10.4.3 step 4.2 for last block */
- 	if (cnt)
--		drbg_kcapi_sym(aesctx, out, &data, blocklen_bytes);
-+		drbg_kcapi_sym(aeskey, out, &data, blocklen_bytes);
- }
  
- /*
-  * scratchpad usage: drbg_ctr_update is interlinked with crypto_drbg_ctr_df
-  * (and drbg_ctr_bcc, but this function does not need any temporary buffers),
-@@ -108,11 +98,11 @@ static void drbg_ctr_bcc(struct crypto_aes_ctx *aesctx,
-  *			possibilities.
-  * refer to crypto_drbg_ctr_df_datalen() to get required length
-  */
+ 	for (i = 0; i < len / sizeof(u32); i++)
+-		ctx->key[i] = cpu_to_le32(aes.key_enc[i]);
++		ctx->key[i] = get_unaligned((__le32 *)key + i);
  
- /* Derivation Function for CTR DRBG as defined in 10.4.2 */
--int crypto_drbg_ctr_df(struct crypto_aes_ctx *aesctx,
-+int crypto_drbg_ctr_df(struct aes_enckey *aeskey,
- 		       unsigned char *df_data, size_t bytes_to_return,
- 		       struct list_head *seedlist,
- 		       u8 blocklen_bytes,
- 		       u8 statelen)
- {
-@@ -185,11 +175,11 @@ int crypto_drbg_ctr_df(struct crypto_aes_ctx *aesctx,
- 		 * holds zeros after allocation -- even the increment of i
- 		 * is irrelevant as the increment remains within length of i
- 		 */
- 		drbg_cpu_to_be32(i, iv);
- 		/* 10.4.2 step 9.2 -- BCC and concatenation with temp */
--		drbg_ctr_bcc(aesctx, temp + templen, K, &bcc_list,
-+		drbg_ctr_bcc(aeskey, temp + templen, K, &bcc_list,
- 			     blocklen_bytes, keylen);
- 		/* 10.4.2 step 9.3 */
- 		i++;
- 		templen += blocklen_bytes;
- 	}
-@@ -199,19 +189,19 @@ int crypto_drbg_ctr_df(struct crypto_aes_ctx *aesctx,
- 	drbg_string_fill(&cipherin, X, blocklen_bytes);
+ 	ctx->key_len = len;
  
- 	/* 10.4.2 step 12: overwriting of outval is implemented in next step */
+ 	/* Compute hash key by encrypting zeroes with cipher key */
+ 	memset(hashkey, 0, AES_BLOCK_SIZE);
+diff --git a/drivers/crypto/inside-secure/safexcel_hash.c b/drivers/crypto/inside-secure/safexcel_hash.c
+index ef0ba4832928..e534b7a200cf 100644
+--- a/drivers/crypto/inside-secure/safexcel_hash.c
++++ b/drivers/crypto/inside-secure/safexcel_hash.c
+@@ -28,11 +28,11 @@ struct safexcel_ahash_ctx {
+ 	bool cbcmac;
+ 	bool do_fallback;
+ 	bool fb_init_done;
+ 	bool fb_do_setkey;
  
- 	/* 10.4.2 step 13 */
--	drbg_kcapi_symsetkey(aesctx, temp, keylen);
-+	aes_prepareenckey(aeskey, temp, keylen);
- 	while (generated_len < bytes_to_return) {
- 		short blocklen = 0;
- 		/*
- 		 * 10.4.2 step 13.1: the truncation of the key length is
- 		 * implicit as the key is only drbg_blocklen in size based on
- 		 * the implementation of the cipher function callback
- 		 */
--		drbg_kcapi_sym(aesctx, X, &cipherin, blocklen_bytes);
-+		drbg_kcapi_sym(aeskey, X, &cipherin, blocklen_bytes);
- 		blocklen = (blocklen_bytes <
- 				(bytes_to_return - generated_len)) ?
- 			    blocklen_bytes :
- 				(bytes_to_return - generated_len);
- 		/* 10.4.2 step 13.2 and 14 */
-diff --git a/crypto/drbg.c b/crypto/drbg.c
-index 1d433dae9955..85cc4549bd58 100644
---- a/crypto/drbg.c
-+++ b/crypto/drbg.c
-@@ -1503,13 +1503,13 @@ static int drbg_kcapi_hash(struct drbg_state *drbg, unsigned char *outval,
- #endif /* (CONFIG_CRYPTO_DRBG_HASH || CONFIG_CRYPTO_DRBG_HMAC) */
- 
- #ifdef CONFIG_CRYPTO_DRBG_CTR
- static int drbg_fini_sym_kernel(struct drbg_state *drbg)
- {
--	struct crypto_aes_ctx *aesctx =	(struct crypto_aes_ctx *)drbg->priv_data;
-+	struct aes_enckey *aeskey = drbg->priv_data;
- 
--	kfree(aesctx);
-+	kfree(aeskey);
- 	drbg->priv_data = NULL;
- 
- 	if (drbg->ctr_handle)
- 		crypto_free_skcipher(drbg->ctr_handle);
- 	drbg->ctr_handle = NULL;
-@@ -1524,20 +1524,20 @@ static int drbg_fini_sym_kernel(struct drbg_state *drbg)
- 	return 0;
- }
- 
- static int drbg_init_sym_kernel(struct drbg_state *drbg)
- {
--	struct crypto_aes_ctx *aesctx;
-+	struct aes_enckey *aeskey;
- 	struct crypto_skcipher *sk_tfm;
- 	struct skcipher_request *req;
- 	unsigned int alignmask;
- 	char ctr_name[CRYPTO_MAX_ALG_NAME];
- 
--	aesctx = kzalloc(sizeof(*aesctx), GFP_KERNEL);
--	if (!aesctx)
-+	aeskey = kzalloc(sizeof(*aeskey), GFP_KERNEL);
-+	if (!aeskey)
- 		return -ENOMEM;
--	drbg->priv_data = aesctx;
-+	drbg->priv_data = aeskey;
- 
- 	if (snprintf(ctr_name, CRYPTO_MAX_ALG_NAME, "ctr(%s)",
- 	    drbg->core->backend_cra_name) >= CRYPTO_MAX_ALG_NAME) {
- 		drbg_fini_sym_kernel(drbg);
- 		return -EINVAL;
-diff --git a/drivers/crypto/xilinx/xilinx-trng.c b/drivers/crypto/xilinx/xilinx-trng.c
-index db0fbb28ff32..5276ac2d82bb 100644
---- a/drivers/crypto/xilinx/xilinx-trng.c
-+++ b/drivers/crypto/xilinx/xilinx-trng.c
-@@ -58,11 +58,11 @@
- 
- struct xilinx_rng {
- 	void __iomem *rng_base;
- 	struct device *dev;
- 	unsigned char *scratchpadbuf;
--	struct crypto_aes_ctx *aesctx;
-+	struct aes_enckey *aeskey;
- 	struct mutex lock;	/* Protect access to TRNG device */
- 	struct hwrng trng;
+-	struct crypto_aes_ctx *aes;
++	struct aes_enckey *aes;
+ 	struct crypto_ahash *fback;
+ 	struct crypto_shash *shpre;
+ 	struct shash_desc *shdesc;
  };
  
- struct xilinx_rng_ctx {
-@@ -196,11 +196,11 @@ static int xtrng_reseed_internal(struct xilinx_rng *rng)
+@@ -1974,11 +1974,11 @@ static int safexcel_xcbcmac_setkey(struct crypto_ahash *tfm, const u8 *key,
+ {
+ 	struct safexcel_ahash_ctx *ctx = crypto_tfm_ctx(crypto_ahash_tfm(tfm));
+ 	u32 key_tmp[3 * AES_BLOCK_SIZE / sizeof(u32)];
+ 	int ret, i;
  
- 	/* collect random data to use it as entropy (input for DF) */
- 	ret = xtrng_collect_random_data(rng, entropy, TRNG_SEED_LEN_BYTES, true);
- 	if (ret != TRNG_SEED_LEN_BYTES)
- 		return -EINVAL;
--	ret = crypto_drbg_ctr_df(rng->aesctx, rng->scratchpadbuf,
-+	ret = crypto_drbg_ctr_df(rng->aeskey, rng->scratchpadbuf,
- 				 TRNG_SEED_LEN_BYTES, &seedlist, AES_BLOCK_SIZE,
- 				 TRNG_SEED_LEN_BYTES);
+-	ret = aes_expandkey(ctx->aes, key, len);
++	ret = aes_prepareenckey(ctx->aes, key, len);
  	if (ret)
  		return ret;
  
-@@ -347,12 +347,12 @@ static int xtrng_probe(struct platform_device *pdev)
- 	if (IS_ERR(rng->rng_base)) {
- 		dev_err(&pdev->dev, "Failed to map resource %pe\n", rng->rng_base);
- 		return PTR_ERR(rng->rng_base);
- 	}
+ 	/* precompute the XCBC key material */
+ 	aes_encrypt(ctx->aes, (u8 *)key_tmp + 2 * AES_BLOCK_SIZE,
+@@ -1988,13 +1988,13 @@ static int safexcel_xcbcmac_setkey(struct crypto_ahash *tfm, const u8 *key,
+ 	aes_encrypt(ctx->aes, (u8 *)key_tmp + AES_BLOCK_SIZE,
+ 		    "\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3");
+ 	for (i = 0; i < 3 * AES_BLOCK_SIZE / sizeof(u32); i++)
+ 		ctx->base.ipad.word[i] = swab32(key_tmp[i]);
  
--	rng->aesctx = devm_kzalloc(&pdev->dev, sizeof(*rng->aesctx), GFP_KERNEL);
--	if (!rng->aesctx)
-+	rng->aeskey = devm_kzalloc(&pdev->dev, sizeof(*rng->aeskey), GFP_KERNEL);
-+	if (!rng->aeskey)
- 		return -ENOMEM;
+-	ret = aes_expandkey(ctx->aes,
+-			    (u8 *)key_tmp + 2 * AES_BLOCK_SIZE,
+-			    AES_MIN_KEY_SIZE);
++	ret = aes_prepareenckey(ctx->aes,
++				(u8 *)key_tmp + 2 * AES_BLOCK_SIZE,
++				AES_MIN_KEY_SIZE);
+ 	if (ret)
+ 		return ret;
  
- 	sb_size = crypto_drbg_ctr_df_datalen(TRNG_SEED_LEN_BYTES, AES_BLOCK_SIZE);
- 	rng->scratchpadbuf = devm_kzalloc(&pdev->dev, sb_size, GFP_KERNEL);
- 	if (!rng->scratchpadbuf) {
-diff --git a/include/crypto/df_sp80090a.h b/include/crypto/df_sp80090a.h
-index 6b25305fe611..cb5d6fe15d40 100644
---- a/include/crypto/df_sp80090a.h
-+++ b/include/crypto/df_sp80090a.h
-@@ -16,11 +16,11 @@ static inline int crypto_drbg_ctr_df_datalen(u8 statelen, u8 blocklen)
- 		blocklen +      /* pad */
- 		blocklen +      /* iv */
- 		statelen + blocklen;  /* temp */
- }
+ 	ctx->alg    = CONTEXT_CONTROL_CRYPTO_ALG_XCBC128;
+ 	ctx->key_sz = AES_MIN_KEY_SIZE + 2 * AES_BLOCK_SIZE;
+@@ -2060,16 +2060,16 @@ static int safexcel_cmac_setkey(struct crypto_ahash *tfm, const u8 *key,
+ 	u64 _const[2];
+ 	u8 msb_mask, gfmask;
+ 	int ret, i;
  
--int crypto_drbg_ctr_df(struct crypto_aes_ctx *aes,
-+int crypto_drbg_ctr_df(struct aes_enckey *aes,
- 		       unsigned char *df_data,
- 		       size_t bytes_to_return,
- 		       struct list_head *seedlist,
- 		       u8 blocklen_bytes,
- 		       u8 statelen);
+ 	/* precompute the CMAC key material */
+-	ret = aes_expandkey(ctx->aes, key, len);
++	ret = aes_prepareenckey(ctx->aes, key, len);
+ 	if (ret)
+ 		return ret;
+ 
+ 	for (i = 0; i < len / sizeof(u32); i++)
+-		ctx->base.ipad.word[i + 8] = swab32(ctx->aes->key_enc[i]);
++		ctx->base.ipad.word[i + 8] = get_unaligned_be32(&key[4 * i]);
+ 
+ 	/* code below borrowed from crypto/cmac.c */
+ 	/* encrypt the zero block */
+ 	memset(consts, 0, AES_BLOCK_SIZE);
+ 	aes_encrypt(ctx->aes, (u8 *)consts, (u8 *)consts);
 -- 
 2.52.0
 
