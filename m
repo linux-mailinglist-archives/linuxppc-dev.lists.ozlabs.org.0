@@ -1,126 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-15533-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15534-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2798D10C7E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 08:03:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61291D10D69
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 08:20:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dqNdK04npz2yv7;
-	Mon, 12 Jan 2026 18:03:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dqP0x12mSz2yvC;
+	Mon, 12 Jan 2026 18:20:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768201412;
-	cv=none; b=eQhMcTKApjLn0ZVPC68ODGccR3GSCh3Z53lYYTE0hHpRFzn0dlEqN5+euXmFbaZUPSm6l1noMncSdub6UeXXqFXDEUhlMBbS/hBzfTArqmXg2uFOdB1Twz014MZHFKw9qp6B39vZiBqRuqSfUMmPq2hAbC5BO4gRdlYu948hbqlLPSCeioN3FgawAiGS3RFc3dgt/Z5Kg88IlHOyL6A4vmcwCQG/Wo8sLc+LFIkCtt02j0zG4BX9TymwALU1BUclGOI5zCrrLA3SiqTaGI3wxvtyo7bWv26kdlnEYy7Iy5fi125M5uQwqy2HTEoMFQjR3Dt1v0GL9jGuGbamG7FQUg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768202433;
+	cv=none; b=NtNbAb88neM53w0OKQwt+LexUeUkaSs8F/+QSmd6teKuRBJY5TuOGk+aje2FJaqDCWSKa8k73Y3ooG2yABULzHZ1JEnlPFm6CvazIsxIpbJ5JHHehjmovi6rqFcqs0fiLhLModaqbys1kgFFlyHBKUnZaxFZNRYPAsmscdqgZslOdZ5V+NAWqxXgO8LJHJ5oXHBugv1xiekTdp6ARK7XXy4OjF9xPaLQANdOUiCUkT+b3xPqX67mCcsgVfliI8F2fFcHCQRzRUp2HSnIshdGwnA041AIsIbBcYGCTJGPncLBxaJoQw2RbaBrAV5Upg6h/UOvQgr/+b9+6ja+neE8OA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768201412; c=relaxed/relaxed;
-	bh=DaR8QIrJoPyGAUdK2XoR50gjX3a8JtQ3y3ZpcU0sC3M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FdIa508H9aknrSHe44MlrJsbh4IywlUvQHVv2huqlwx/6j4cIyCzhWY8dDXf2Y6M/HgK6fNpFM0ijplMNYmuXFvD5Equ7wdxGiWpk0hiv4WNbCiXN8HlmFY0zuDa+EsLgPww9Bd/LHn+S4AGeKuFavastVQVcEJPL74wxFb6GVJWH4E4fiHe9jivb60/lpLAJqelMMkhOxJ6KD4rymjODZaYfIvkSilzrTx0WbdyPTytIHGul9JFMsXIeGn+2zpgXfd4k6pqqrdVe2/F54vQlXZNZPsTlarwqMw0jvDgq+FfegaUcOgfzV7+J1IALwPWSXpEKAP1EuF/wvHQtN3+0w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FnlWHg7y; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1768202433; c=relaxed/relaxed;
+	bh=H2PqziUJYXmy7QHkPaXIqxklHfYrQ5aasDT8/L7raDU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CCYhh2MjOTAtKkPhBHdrzzBohXu97FHOjurzfKphEM+ZN3VO0WWggZVhm5Lg+4MWwuH0/G6eH7dDwTF2hUFVX3LwcbVris+6VuXPvF+jTZL3s29dO4hmGW9o/sYF4YRUFcI5G3eibAGZJkG7ZztiO/fBqGFY4duCsBVcat8KEVZ1ksz1b93XBZxt2zsJBhjFN6FO5uxPrGbITI0oWHNxpBQ2gKHtpSE10tn0rSTj9sN+ZI1acywjZWjA5OyRLCc3lQi5QociXyfL/3kaEJEZuoTtSP1mw6WdiDl6DHHEPl1BkJTTZqA3wyTQXroeehJrrgstxZR+cHGtunlCaeNOYQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eMZIqTAG; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FnlWHg7y;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eMZIqTAG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqNdJ11cdz2yrg
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jan 2026 18:03:31 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60B8SDe5007270;
-	Mon, 12 Jan 2026 07:03:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=DaR8QIrJoPyGAUdK2XoR50gjX3a8Jt
-	Q3y3ZpcU0sC3M=; b=FnlWHg7yF0EhltIiIn9ZnFKG/nvLKG/pF1swSGpJYPCijY
-	W3Rmt5GG9EndclJOkAjsYj7aziAqVbObyNXQkmpQybP1JTD40KYizrnejvBH5N0R
-	uxWhc470C1N521DLBDW/4DIyhAp6m6ddM4POUpDrVis1Hlh6nnlYKZ+MBCseQRuL
-	2/T+gL9VYGZJLh0qjYX71ULRHWwG39FOsJ/hdlnDgOBY/V7LzQa8RoX1JtXisNa8
-	CSva6dlpDA66CEU6Mn19ZO4lOZMC2xpo5csLamqkyzMu14mWfv6OS/UZ3RdAJtGZ
-	P+oSF809jDQ8YtKfRtAb1iHfsp5syvvLc4So3efA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkd6dwpng-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Jan 2026 07:03:00 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60C72xtd026579;
-	Mon, 12 Jan 2026 07:02:59 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkd6dwpne-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Jan 2026 07:02:59 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60C5F3XY014244;
-	Mon, 12 Jan 2026 07:02:58 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm1fxvq99-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Jan 2026 07:02:58 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60C72r9n41288168
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 12 Jan 2026 07:02:53 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C7F1020040;
-	Mon, 12 Jan 2026 07:02:53 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4E39620043;
-	Mon, 12 Jan 2026 07:02:50 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.151.31])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 12 Jan 2026 07:02:50 +0000 (GMT)
-Date: Mon, 12 Jan 2026 08:02:48 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
-        Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
-        Brian Cain <bcain@kernel.org>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@kernel.org>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
-        Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Jonathan Corbet <corbet@lwn.net>, Klara Modin <klarasmodin@gmail.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
-        Michal Simek <monstr@monstr.eu>, Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-        x86@kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 17/29] s390: introduce arch_zone_limits_init()
-Message-ID: <b211f877-f9bb-4892-b67c-d2610048575a-agordeev@linux.ibm.com>
-References: <20260111082105.290734-1-rppt@kernel.org>
- <20260111082105.290734-18-rppt@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqP0w1Tkxz2yv6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jan 2026 18:20:32 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E2A8044465;
+	Mon, 12 Jan 2026 07:19:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB10C116D0;
+	Mon, 12 Jan 2026 07:19:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768202398;
+	bh=k5ZWMJroAH9X6RMhuRdisILf2c/lZu6r5O2cLbbc4Cg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eMZIqTAGXMeBkdP6Gy3xxqAiJKHoBTxBJQXTWn9y/8FxBAap2QqskH4pr73a5dMPZ
+	 OKmeOens5OeTThblZDu/hh3vE41wZpapG/hnfDE008cNcR4xUGA+TN35CMn29x0qbG
+	 zUE9ciRE8A6GwLQh+PwFS+FGPiH7U2w7ypJOb/4OMTfvU2NOQVuKM0a7fxV3keNtbr
+	 /8131lnWyKJIcyWR2plaZcvyV9f230+l7rsrw4Q2tUilCCfj8KfTcFli2QGBef0td5
+	 TII2sZa0ebgND5CNNWv8iXtGtC1G+9KDJ9Vy3O/7xWXfyWwbOsMHjWQ+HiirzDkRR7
+	 6DB1Sx9+w1zqw==
+Message-ID: <d22105ed-01e8-4abd-ade9-86686f48d221@kernel.org>
+Date: Mon, 12 Jan 2026 08:19:51 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -134,65 +58,201 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260111082105.290734-18-rppt@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: bCS-OSZblyIq8lvlPyjEILoO8GzzpHGN
-X-Authority-Analysis: v=2.4 cv=LLxrgZW9 c=1 sm=1 tr=0 ts=69649ca4 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7WlQhDu6A2usLaOTEWYA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA1MSBTYWx0ZWRfX59mP2KNE13j0
- a6aegnon1oN4dcuG8YaVOaJhcRG6s3uUJFEsmdkW+MZ5sZ09v9vfZ00cHaM+sNVIGfNSGFA6TA/
- amYWC8VtNTQv0JRk3gc5rBBltZHgc72KTXGu3prlXckbdY0t0zp5Lo5Yhjr8IF/vYaYhc4GEfSU
- Qn3vnNEGmBOVemoTnAoVuUgIbpnnLrr8prY2Jcsedc9458fa4aIErXN9hSBcQEeZAjafXeGIs3U
- PkSTvWywRsb27htzKZSu/lI9i25vaLSZKrrQYY6kqWC0MKkmjKSiCkMGVZp7eE7xKVafOgrDfKv
- /IgXdjJYtIVn8udUlyOpA1x4MgwEQYsjb20V4FINx3F9Zvbn5I4upMwVWMuGSRYRH4uAOicy3EX
- 58rNjYtR0Ljy4P0wI73tlEk2VHClT7wveMeVEf9wv8ox2a4bReXLiwz96iuRvRG4P5usk/SQFvy
- YK5patORVNK5OiJVC/A==
-X-Proofpoint-ORIG-GUID: Mt_xEhUTi_ZaKY8BdbSWDFf-6SwyebPB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-12_02,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 clxscore=1011 spamscore=0 impostorscore=0
- malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601120051
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/6] powerpc64/bpf: Support exceptions
+To: adubey <adubey@imap.linux.ibm.com>,
+ Saket Kumar Bhaskar <skb99@linux.ibm.com>
+Cc: adubey@linux.ibm.com, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
+ andrii@kernel.org, eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+ daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+ yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+ sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, naveen@kernel.org,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ memxor@gmail.com, iii@linux.ibm.com, shuah@kernel.org
+References: <20260105105212.136645-1-adubey@linux.ibm.com>
+ <20260105105212.136645-6-adubey@linux.ibm.com>
+ <aWSL3DlSf5WA20lf@linux.ibm.com>
+ <9102a4504413501f382cf3e22118e88f@imap.linux.ibm.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <9102a4504413501f382cf3e22118e88f@imap.linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sun, Jan 11, 2026 at 10:20:51AM +0200, Mike Rapoport wrote:
 
-Hi Mike,
 
-...
-> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
-> +{
-> +	max_zone_pfns[ZONE_DMA] = virt_to_pfn(MAX_DMA_ADDRESS);
-> +	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-> +}
-> +
->  /*
->   * paging_init() sets up the page tables
->   */
-> @@ -97,8 +103,7 @@ void __init paging_init(void)
->  	sparse_init();
->  	zone_dma_limit = DMA_BIT_MASK(31);
->  	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
-> -	max_zone_pfns[ZONE_DMA] = virt_to_pfn(MAX_DMA_ADDRESS);
-> -	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-> +	arch_zone_limits_init(max_zone_pfns);
+Le 12/01/2026 à 07:58, adubey a écrit :
+> [Vous ne recevez pas souvent de courriers de adubey@imap.linux.ibm.com. 
+> D?couvrez pourquoi ceci est important ? https://aka.ms/ 
+> LearnAboutSenderIdentification ]
+> 
+> On 2026-01-12 11:21, Saket Kumar Bhaskar wrote:
+>> On Mon, Jan 05, 2026 at 04:22:11PM +0530, adubey@linux.ibm.com wrote:
+>>> From: Abhishek Dubey <adubey@linux.ibm.com>
+>>>
+>>> The modified prologue/epilogue generation code now
+>>> enables exception-callback to use the stack frame of
+>>> the program marked as exception boundary, where callee
+>>> saved registers are stored.
+>>>
+>>> As per ppc64 ABIv2 documentation[1], r14-r31 are callee
+>>> saved registers. BPF programs on ppc64 already saves
+>>> r26-r31 registers. Saving the remaining set of callee
+>>> saved registers(r14-r25) is handled in the next patch.
+>>>
+>>> [1]
+>>> https://eur01.safelinks.protection.outlook.com/? 
+>>> url=https%3A%2F%2Fftp.rtems.org%2Fpub%2Frtems%2Fpeople%2Fsebh%2FABI64BitOpenPOWERv1.1_16July2015_pub.pdf&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cdecf1943ac9949608edb08de51a7f357%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639037978954052961%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=uCfpmnY2bQT7yD3esp8nkyLPGfEzpK9UoCgV2sm0j80%3D&reserved=0
+>>>
+>>> Following is exceptions selftest result on ppc64le:
+>>>
+>>> # ./test_progs -t exceptions
+>>> #100/1   exceptions/exception_throw_always_1:OK
+>>> #100/2   exceptions/exception_throw_always_2:OK
+>>> #100/3   exceptions/exception_throw_unwind_1:OK
+>>> #100/4   exceptions/exception_throw_unwind_2:OK
+>>> #100/5   exceptions/exception_throw_default:OK
+>>> #100/6   exceptions/exception_throw_default_value:OK
+>>> #100/7   exceptions/exception_tail_call:OK
+>>> #100/8   exceptions/exception_ext:OK
+>>> #100/9   exceptions/exception_ext_mod_cb_runtime:OK
+>>> #100/10  exceptions/exception_throw_subprog:OK
+>>> #100/11  exceptions/exception_assert_nz_gfunc:OK
+>>> #100/12  exceptions/exception_assert_zero_gfunc:OK
+>>> #100/13  exceptions/exception_assert_neg_gfunc:OK
+>>> #100/14  exceptions/exception_assert_pos_gfunc:OK
+>>> #100/15  exceptions/exception_assert_negeq_gfunc:OK
+>>> #100/16  exceptions/exception_assert_poseq_gfunc:OK
+>>> #100/17  exceptions/exception_assert_nz_gfunc_with:OK
+>>> #100/18  exceptions/exception_assert_zero_gfunc_with:OK
+>>> #100/19  exceptions/exception_assert_neg_gfunc_with:OK
+>>> #100/20  exceptions/exception_assert_pos_gfunc_with:OK
+>>> #100/21  exceptions/exception_assert_negeq_gfunc_with:OK
+>>> #100/22  exceptions/exception_assert_poseq_gfunc_with:OK
+>>> #100/23  exceptions/exception_bad_assert_nz_gfunc:OK
+>>> #100/24  exceptions/exception_bad_assert_zero_gfunc:OK
+>>> #100/25  exceptions/exception_bad_assert_neg_gfunc:OK
+>>> #100/26  exceptions/exception_bad_assert_pos_gfunc:OK
+>>> #100/27  exceptions/exception_bad_assert_negeq_gfunc:OK
+>>> #100/28  exceptions/exception_bad_assert_poseq_gfunc:OK
+>>> #100/29  exceptions/exception_bad_assert_nz_gfunc_with:OK
+>>> #100/30  exceptions/exception_bad_assert_zero_gfunc_with:OK
+>>> #100/31  exceptions/exception_bad_assert_neg_gfunc_with:OK
+>>> #100/32  exceptions/exception_bad_assert_pos_gfunc_with:OK
+>>> #100/33  exceptions/exception_bad_assert_negeq_gfunc_with:OK
+>>> #100/34  exceptions/exception_bad_assert_poseq_gfunc_with:OK
+>>> #100/35  exceptions/exception_assert_range:OK
+>>> #100/36  exceptions/exception_assert_range_with:OK
+>>> #100/37  exceptions/exception_bad_assert_range:OK
+>>> #100/38  exceptions/exception_bad_assert_range_with:OK
+>>> #100/39  exceptions/non-throwing fentry -> exception_cb:OK
+>>> #100/40  exceptions/throwing fentry -> exception_cb:OK
+>>> #100/41  exceptions/non-throwing fexit -> exception_cb:OK
+>>> #100/42  exceptions/throwing fexit -> exception_cb:OK
+>>> #100/43  exceptions/throwing extension (with custom cb) ->
+>>> exception_cb:OK
+>>> #100/44  exceptions/throwing extension -> global func in
+>>> exception_cb:OK
+>>> #100/45  exceptions/exception_ext_mod_cb_runtime:OK
+>>> #100/46  exceptions/throwing extension (with custom cb) -> global func
+>>> in exception_cb:OK
+>>> #100/47  exceptions/exception_ext:OK
+>>> #100/48  exceptions/non-throwing fentry -> non-throwing subprog:OK
+>>> #100/49  exceptions/throwing fentry -> non-throwing subprog:OK
+>>> #100/50  exceptions/non-throwing fentry -> throwing subprog:OK
+>>> #100/51  exceptions/throwing fentry -> throwing subprog:OK
+>>> #100/52  exceptions/non-throwing fexit -> non-throwing subprog:OK
+>>> #100/53  exceptions/throwing fexit -> non-throwing subprog:OK
+>>> #100/54  exceptions/non-throwing fexit -> throwing subprog:OK
+>>> #100/55  exceptions/throwing fexit -> throwing subprog:OK
+>>> #100/56  exceptions/non-throwing fmod_ret -> non-throwing subprog:OK
+>>> #100/57  exceptions/non-throwing fmod_ret -> non-throwing global
+>>> subprog:OK
+>>> #100/58  exceptions/non-throwing extension -> non-throwing subprog:OK
+>>> #100/59  exceptions/non-throwing extension -> throwing subprog:OK
+>>> #100/60  exceptions/non-throwing extension -> non-throwing subprog:OK
+>>> #100/61  exceptions/non-throwing extension -> throwing global
+>>> subprog:OK
+>>> #100/62  exceptions/throwing extension -> throwing global subprog:OK
+>>> #100/63  exceptions/throwing extension -> non-throwing global
+>>> subprog:OK
+>>> #100/64  exceptions/non-throwing extension -> main subprog:OK
+>>> #100/65  exceptions/throwing extension -> main subprog:OK
+>>> #100/66  exceptions/reject_exception_cb_type_1:OK
+>>> #100/67  exceptions/reject_exception_cb_type_2:OK
+>>> #100/68  exceptions/reject_exception_cb_type_3:OK
+>>> #100/69  exceptions/reject_exception_cb_type_4:OK
+>>> #100/70  exceptions/reject_async_callback_throw:OK
+>>> #100/71  exceptions/reject_with_lock:OK
+>>> #100/72  exceptions/reject_subprog_with_lock:OK
+>>> #100/73  exceptions/reject_with_rcu_read_lock:OK
+>>> #100/74  exceptions/reject_subprog_with_rcu_read_lock:OK
+>>> #100/75  exceptions/reject_with_rbtree_add_throw:OK
+>>> #100/76  exceptions/reject_with_reference:OK
+>>> #100/77  exceptions/reject_with_cb_reference:OK
+>>> #100/78  exceptions/reject_with_cb:OK
+>>> #100/79  exceptions/reject_with_subprog_reference:OK
+>>> #100/80  exceptions/reject_throwing_exception_cb:OK
+>>> #100/81  exceptions/reject_exception_cb_call_global_func:OK
+>>> #100/82  exceptions/reject_exception_cb_call_static_func:OK
+>>> #100/83  exceptions/reject_multiple_exception_cb:OK
+>>> #100/84  exceptions/reject_exception_throw_cb:OK
+>>> #100/85  exceptions/reject_exception_throw_cb_diff:OK
+>>> #100/86  exceptions/reject_set_exception_cb_bad_ret1:OK
+>>> #100/87  exceptions/reject_set_exception_cb_bad_ret2:OK
+>>> #100/88  exceptions/check_assert_eq_int_min:OK
+>>> #100/89  exceptions/check_assert_eq_int_max:OK
+>>> #100/90  exceptions/check_assert_eq_zero:OK
+>>> #100/91  exceptions/check_assert_eq_llong_min:OK
+>>> #100/92  exceptions/check_assert_eq_llong_max:OK
+>>> #100/93  exceptions/check_assert_lt_pos:OK
+>>> #100/94  exceptions/check_assert_lt_zero:OK
+>>> #100/95  exceptions/check_assert_lt_neg:OK
+>>> #100/96  exceptions/check_assert_le_pos:OK
+>>> #100/97  exceptions/check_assert_le_zero:OK
+>>> #100/98  exceptions/check_assert_le_neg:OK
+>>> #100/99  exceptions/check_assert_gt_pos:OK
+>>> #100/100 exceptions/check_assert_gt_zero:OK
+>>> #100/101 exceptions/check_assert_gt_neg:OK
+>>> #100/102 exceptions/check_assert_ge_pos:OK
+>>> #100/103 exceptions/check_assert_ge_zero:OK
+>>> #100/104 exceptions/check_assert_ge_neg:OK
+>>> #100/105 exceptions/check_assert_range_s64:OK
+>>> #100/106 exceptions/check_assert_range_u64:OK
+>>> #100/107 exceptions/check_assert_single_range_s64:OK
+>>> #100/108 exceptions/check_assert_single_range_u64:OK
+>>> #100/109 exceptions/check_assert_generic:OK
+>>> #100/110 exceptions/check_assert_with_return:OK
+>>> #100     exceptions:OK
+>>> Summary: 1/110 PASSED, 0 SKIPPED, 0 FAILED
+>>>
+>> It would be great to include this selftest output in the cover letter
+>> instead, since it makes the git log excessively long.
+>>
+>> Thanks,
+>> Saket
+> 
+> Major contributors in the community routinely include test case results
+> in commit messages, and this is not viewed as problematic.
+> Eg: bpf-next : e59997d9052599feb17419289f2a57ed300e1dfa,
 
-You move initialization of max_zone_pfns[] to a function, name the
-function arch_zone_limits_init(), but leave the initializatio of
-max_zone_pfns[] to zeroes outside. Should not it be brought along?
+This is a merge commit, the message comes from the cover letter of the 
+series: 
+https://lore.kernel.org/all/20240201125225.72796-1-puranjay12@gmail.com/
 
->  	free_area_init(max_zone_pfns);
->  }
+> 6c17a882d3804dce1c66e1fec25f96d39a184067
 
-Thanks!
+In this one the list of tests is rather small compared to the entire 
+commit message.
+
+So I also recommend to move this big list of tests in the cover letter.
+
+Christophe
+
 
