@@ -1,103 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-15531-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15532-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25F0D10993
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 05:51:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01AF8D10A8F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 06:52:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dqKhY1QPDz2yrm;
-	Mon, 12 Jan 2026 15:51:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dqM3l25HRz2yv2;
+	Mon, 12 Jan 2026 16:52:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=40.93.201.24 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768193469;
-	cv=pass; b=XsfqTHQv5kvnqaTKl8zO7a+rRFD7mBXJJHSoVLDO5BHe4nFzVuZrOy2f0Uw5DIl7F6JvNZDLRSfal7YBw3slBp1+8guZHlpqfP4XLdXZEpeLM/D1AdSCa12GpZJtmf1246Fv/blavnZfNIG+sQrHocLyXXdWIs777cfvoLdWChPmRgbuISDK4KG9fRmuFXVvz1r/dCNNS+63pJmi1RlwBu6XOJwZ6cZuWD2BpE2Z0tmPdHGUBOh/z+VxbsH9T0tZIvgmDGcgydkuYUuZc/PUTpjARPicauaihZ1zP1wpUCD4/ECMGAhG3PJlnwVelyrEIS1PBCqtV8fw2DG1RLlJ9A==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768193469; c=relaxed/relaxed;
-	bh=5J2mW+mGII9FKVjFlFjc08EeY9Of0jtDLe8x/G0mFco=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=EQvzYjg0Pkq5ZEXaSu1v9j3XEDsmb/X/ouHHg0ha3LKyadsR/MNjcfm54nFUZ10pWQOV5B4ie8M8kCC6XBi89LYgdrrX6A3ol1UsZsP7OfmLa+kiPuUA6JpAo9iLVZ3VMMpcJU5UBiIMNbzrcUIOGrqIC2aobwQw9T63VcWfOEbldDvdQlM5ZyfRlB/2Y8PHDPVV82y33fO8O8QgoSwPk6AMOaLdBLiUj1y8GUwQLiDVJY3afGP3v4kpQ2Hu4/1ZuotY1TbvnHhq3dRHgjbRLmOfZPILOTE72FVhE29XPTvvUuWvVEfKeacOnosmEMYloGv5tCAt6WeSc57kwHIhoQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=K6COAQvz; dkim-atps=neutral; spf=pass (client-ip=40.93.201.24; helo=cy3pr05cu001.outbound.protection.outlook.com; envelope-from=balbirs@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768197171;
+	cv=none; b=l5DeC6A4c3a0TiLcE5Xpnneh71U7OdtVfqyxoo6RWmgqG4aSwgFDOHXSFm0SxdxTcGz3XOSgvogG1+/LnJqtZTkbje0LO8RKB4vY3ADGjfBSN33NT8+2Gx1j9IcUQe/xaOZFB3ClQHuSazaQGJatx3asW15ymck+oMqeG0AKz53XzBoyNYU6nyD04SfzPQE+0SOABApIADugBC2zD2z91qEONBxXFytDT6RrSAtGAd8TFLP242w7EGUAPmi0ZCG/eCdRx5v+nD2/GfpQvN7i44CWBozCGUGTU/klFL6ZVYGh60GUa8eYMh2uuzv6J4+5D7479xdXZ333hc4YloVLbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1768197171; c=relaxed/relaxed;
+	bh=+Ua6pb9zOj2M4q9+0KWg2eiG6oHegvQJ8kdvcdM9eiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n2fVealtxpWr8igORCMPmB92Y6Gcolr3Ofk0k5wR9G7EaFrgHKr08tWclMJ+bpSYt1gtx1/Mj3k13GEd8fi0NVmpeFiKRchn9bxvU6pdeH69OXVwJj+K8BJ+Y2WBoAuDXPg2FWyfeF3r3U2w6SVSX73Fm0FrKJwC+ENM8kSN7yYaPYTG9UMa0JgPYQMLpVqT45+ovPXlIbvMhl4xCoNV4wc/muFf9q/2aA3tqnCESnLX/3bzjWjWyc/eTJ63lg9g6pkOGKJ0nJSyaGSotIoxchdANt3zm3RGm1FDctIFZEHfd+Wpzs8/sbAIUyII9BwpGimC2CMwUbQO39vXdXoEVg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o4kjtN8r; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=K6COAQvz;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o4kjtN8r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.93.201.24; helo=cy3pr05cu001.outbound.protection.outlook.com; envelope-from=balbirs@nvidia.com; receiver=lists.ozlabs.org)
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013024.outbound.protection.outlook.com [40.93.201.24])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqKhS2zMvz2yMv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jan 2026 15:51:03 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Rq2UX2gnkZUOFsqzEFZniM0ClY3TzL2U7e057qyIx30jOt8/7z43IpNiyN5DtqdUHO/llNMS5XKUqpPO6CkDw7yF0I5c/B7flcNa4Bw3wNx4+BqRD/q+2M1lXIhC0PiZqKTfXwg2GJz44Hxs147veENt2GOSiZSkavhruo71m/lKFGzXWM22DmXkkunKsGJQii/GWROZLfEoPlFxsIOUxV1o1k8JainADReKFangdwJDnCT0SfrB+0TRcc784pLxC8nzezjwbgSY1xcTON0nbjheWQJrN6+Ge5swhrSLc5po8dlK9wjZi8yk+icSV9DnepqsvAuy94aug3V5SBOuhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5J2mW+mGII9FKVjFlFjc08EeY9Of0jtDLe8x/G0mFco=;
- b=I4rx4NJ6K2iwIkluw1OdN7qStooyWMaJpVlJtYx3O0Z4Um6xfjGC/DWQ/Sobujdbd2UksuVPyy35D6QWTiCc/+V3Dbuk6O0mKxaXwYlg0lFMHksD1sVFPTtVT8rWsRsGT3wwU1O1RjCqKG1KZdjLamxrKyXLANItYyvkwWmPcM8ehZRfFlwmRniNX5SVaVw+x7AdFjouQ4PBoZPmMbCd/UpNIIWFUFu+fW72xqPDdAN72Tq0irKIAA/cAnpt7lXSuC8355kxvWBK6dKCZv0/lpq6ombf4ZuYlBwiJrAyrLaiCxDym/ajg0tGudS9vpmd/KMJwVK1HWB6eu5YNvQvkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5J2mW+mGII9FKVjFlFjc08EeY9Of0jtDLe8x/G0mFco=;
- b=K6COAQvzknBfs4Sbvc0+dcfXyu5ssiAF/PhhpdV3DPGxF6NhxjYZv9kRlYW6Ok2eZfIxvJ25QbtsyFDh5+3RkI4wLMrNMg/nD+syvMJSkrOJUcrTV23rblOsYv6INSwhjE2hlZbGMPgiEfpkLh88+D5snRLLS0oRL2T4+rP5tSNkxTl86lT0dYlMuw4TnevIHrPX6A69IYnTvGuiQhcQ81YGa069z3XJLj23gd3SdVbIt6YKTyDnuu5N5gULEAk4kG2jIbuLdyUP34c6/usojeio795hrDMpmieEtu7dZnZtA44+6XjCpaczVkrrrOpKL0MfOwg5FyEO+1ZDrykwjw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by DM4PR12MB7504.namprd12.prod.outlook.com (2603:10b6:8:110::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
- 2026 04:50:23 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
- 04:50:23 +0000
-Message-ID: <1610f592-e383-42bb-a1c8-ec81b9e08037@nvidia.com>
-Date: Mon, 12 Jan 2026 15:50:13 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/7] mm/zone_device: Add order argument to folio_free
- callback
-To: Zi Yan <ziy@nvidia.com>, Matthew Wilcox <willy@infradead.org>
-Cc: Francois Dugast <francois.dugast@intel.com>,
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- Matthew Brost <matthew.brost@intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Felix Kuehling <Felix.Kuehling@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Alistair Popple <apopple@nvidia.com>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
- linux-pci@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
-References: <20260111205820.830410-1-francois.dugast@intel.com>
- <20260111205820.830410-2-francois.dugast@intel.com>
- <aWQlsyIVVGpCvB3y@casper.infradead.org>
- <874d29da-2008-47e6-9c27-6c00abbf404a@nvidia.com>
- <0D532F80-6C4D-4800-9473-485B828B55EC@nvidia.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <0D532F80-6C4D-4800-9473-485B828B55EC@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR03CA0070.namprd03.prod.outlook.com
- (2603:10b6:a03:331::15) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqM3j5dddz2yrS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jan 2026 16:52:49 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60BAZi6h004230;
+	Mon, 12 Jan 2026 05:52:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=+Ua6pb9zOj2M4q9+0KWg2eiG6oHegv
+	QJ8kdvcdM9eiU=; b=o4kjtN8r0vs6DVRx+xbFwkzsRT5dXR84L9TugWAUjUPyHU
+	3SCLTinbFkzqqFJLSQ7hMH2RsdIFHtf5+8aR2ekZmGrptfcChyvr0KI1CVNo+fth
+	kSLoDSFMrMaCN5NFzGoAEQ//L3+imBPXL8EJ48HZCsKRDgwgvgGYhwBEIGAMX/s0
+	S46FvjbtQCZeTyOVNYKr+/j2EX9HIcHlKX+ciw/6T70Z90ZKJfnmkzYGtA6JLJv3
+	1RVBkOMTWZS8spOtBvFdOqJzvXPUMvOpP3Hja6/MAgmeQL8VYzl3Fy/StaaSEEpp
+	F5oLCEf2jokGj7TD4nFA2yg/Cl4XVYtTzE3s8kzw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bke92nnyd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Jan 2026 05:52:08 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60C5q8EQ027755;
+	Mon, 12 Jan 2026 05:52:08 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bke92nny9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Jan 2026 05:52:08 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60C2afT7031255;
+	Mon, 12 Jan 2026 05:52:07 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm3t1c1vu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Jan 2026 05:52:06 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60C5q3Pl49349064
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 12 Jan 2026 05:52:03 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2B76A20040;
+	Mon, 12 Jan 2026 05:52:03 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 93C8F2004B;
+	Mon, 12 Jan 2026 05:51:57 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.109.207.131])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 12 Jan 2026 05:51:57 +0000 (GMT)
+Date: Mon, 12 Jan 2026 11:21:24 +0530
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+To: adubey@linux.ibm.com
+Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
+        andrii@kernel.org, eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
+        iii@linux.ibm.com, shuah@kernel.org
+Subject: Re: [PATCH 5/6] powerpc64/bpf: Support exceptions
+Message-ID: <aWSL3DlSf5WA20lf@linux.ibm.com>
+References: <20260105105212.136645-1-adubey@linux.ibm.com>
+ <20260105105212.136645-6-adubey@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -111,188 +100,310 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|DM4PR12MB7504:EE_
-X-MS-Office365-Filtering-Correlation-Id: 67fb2cdf-1361-4318-674b-08de51961881
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VUZVeU5ZNFB0V2dMYWY4d1IvMTF4THlvTmJjcGdqdFI3T3pDT0licEJwRHJL?=
- =?utf-8?B?YjRYbVo3NUtDcFpvMzJYdEQ2M3hvQVd4YWZkcjRYdTYyVTZvWTFLZzh5UUpp?=
- =?utf-8?B?eUdLNXBWQWt5aHN5NjZRTitpR1hKTElPb2kvMnVqRUFvWkVLaHRTOUE2WE5q?=
- =?utf-8?B?MzdnSm1DN00wdnZlUG0rTm9rcnBlUGxhcDNuaHlMZmVkbVEwamx5d1B2YTRa?=
- =?utf-8?B?R1picXhDRkpzQVd1SGtOTU9ndDJmSTBkMm8zWnMwTlJSSDJLbUN1NEI5MVlz?=
- =?utf-8?B?RytRU3hqZWMxVGM4K0YwL1ZnYnpOcXArN1MyZVlEZ2l1cXdkTG5jWjJGMERk?=
- =?utf-8?B?WnU1Z2RuVXhGSlFaZ1BTTXNMZUFpQXBrMldXWktTdU1jNS90Lzl5Q1IvbFg5?=
- =?utf-8?B?RHVraDNKRWFGYUMvbFptUG0rY3dDSTB5NGZyUklCV0NhUXBUTldqZjJwTDZS?=
- =?utf-8?B?QTkydmNoK20yblhjemZSVGZmdTNIdnZqUjV3WXRoaXVVc3lwbnBLa2lZbktx?=
- =?utf-8?B?RXRqbWJXZ3VYTjdPQTNPcFBEMFV2ZjZiUHRTbWlhL1FqTE4xUFVoc3BhY3VR?=
- =?utf-8?B?cU0xenNlY2VwRnM0VTdvc2xGUzBZcy8xM25yMTRxZy9sVzFxdE80UGlMRTA3?=
- =?utf-8?B?MDJabDk5VmI4K1lyMStkM01qbC9RTEZheWZXR0EwUENuZTBMQnU0UVdYQkJ0?=
- =?utf-8?B?aGl1MzMxZ243UmhsLzBxY0h1NkdvUHdMZ3RrR2h5UUMxeXR1b2piWXJuV1JB?=
- =?utf-8?B?Z083amFiQjFPMlhRNXh3NU4zcVhoL3hsWkxLeE5PVjZ0SUs4KzhaRUc2RUk4?=
- =?utf-8?B?YUJGRWpHMFA1Q3A1YllXZG1tdndRQ1d6MjBZNk0xMmFPN21ld2hUaU4zUFY4?=
- =?utf-8?B?SXYrV2h4YzZzQlNXTFE1dUwzSHlISE1NTW5nWkR1MklvVjJhcWR5UkdaVUdJ?=
- =?utf-8?B?d2l3MlRqOFhTOEdUK1ZLQlZSY3MzMnVLc2daMCtjT3poN0dpUnMzWkNORzFo?=
- =?utf-8?B?Nnh2N2dIU09RRk8vS0Q0WkJjYTdrbHhDZUVvUXpmVVA2RCtodmFJQlVyTW4x?=
- =?utf-8?B?ajl2WksrajNhNXNLYnRWTW9kODEwZDRMRE9nenVFMis1amhuZ01QT3N6VmZk?=
- =?utf-8?B?NnhYVWptdTZyRmVlQlFUc1AyQkR5RnFXY0grRkRJbWI0Kzl0Z0NKcENRSE1v?=
- =?utf-8?B?cVpCUTlRRGhFdm1WeEVkZWNLVUd5UGNVL3kxRUcwNk1hQkF6cXNWejBaamw3?=
- =?utf-8?B?emUwVkpXUUFoUEluenFWS3haL3IvdmpaWHpZM3ZFa0piQlhaSjJjdDBKVWww?=
- =?utf-8?B?MUN1T1g5UFVqUmdMbnlzaHBySHQycU5wbE1NSXBYNU1mcHhIU2lXaU8wVHpa?=
- =?utf-8?B?MjIxUmFQZ2wxQmxiZWh6MkNuTVgwYml1UUQ2VGFpNVd1WU85RnFFcnZjdHpR?=
- =?utf-8?B?ZUYxSEZNN3BPNldYL1lJVHAyUXJGbWNPUjdMQ0tSWGlvaGxnSUNDZ2hCTGdW?=
- =?utf-8?B?TUI3c1ZGM2pQd1h6Tjh6aVFNaFpyUmtjbGNCZG1IWDhRbHZGM1NpYjBBckIw?=
- =?utf-8?B?bW94cXZwclZycEsyNm10amx1ZTl2ejRYb1Y5MHZCVTVLUXhiK01nTmxqeVBh?=
- =?utf-8?B?SDFOa1BZdy9JZEtVUk5Ea0dnd1V2WTlTTHpQYXZNSGVvdHh1bmhmWHEvQlNL?=
- =?utf-8?B?cUF1L1ZJNkFRQnA0R1F6VFlxRThBdzBUY0NGRnlldUtYYXlTUEFmVmZqMmdG?=
- =?utf-8?B?UldvZFk4TmZkWnp3cnNlWGIwYWRrTkViS1FFRnVwYXhNSDZEcmdEd3kwNjNE?=
- =?utf-8?B?bVgzcEw1VkFBT0pTakN1Q3ZyRFUyUkJYOEswakNOaVlRV1pvWklDblV5aUJt?=
- =?utf-8?B?bEpwdTc4Z2dPV3BLSmcxOWdhVXJVT2todFp5TjcrM1EwejlqcGtGMWE5anA2?=
- =?utf-8?Q?6MHIPw+kmnfam1E8nVOn4pwl+eBAGsxD?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cVE3dlQ5all4NHdQTXo1dnBSWnBrSWxsQ29nQTROTjhYcktKM0U1amdTQUxU?=
- =?utf-8?B?QzYwQnB4Ny91ZVhzMUUxSmFaK1FQK0x5cExBZ0k4ak9KUm9zTGh6NVVDYlZn?=
- =?utf-8?B?anJuYmpJY1VuTEplUkgzak1EUzdqcE1XUm1xWkRtbnZJMkZLRFY1bFJhQ2Fr?=
- =?utf-8?B?czdydXhLUGt6WDMvakY2NFpXMXFEMXl3bHVOQ0hjWDNZNXk2R0lrSjFQQURQ?=
- =?utf-8?B?ZkQ2NnhXSXFHNHNGVW83UjZWeEllemJ1SEhxMi83azV1bFhicjZYYWVIZXIv?=
- =?utf-8?B?VUR5ZzdycnI3aGVRU0VUYkdDU1NRZG1jYmRTSzdRNXVwUmVBOFFMbXFaNXBl?=
- =?utf-8?B?OTNwL3hBNzRPNTBjNnZodEc0bStQKzZQQmljcVA0cGJ4dVRPQmIwTWhQYUU1?=
- =?utf-8?B?RDliRURGQVdiUCtKTFZqTDRZYTlQUEN1NWZobjM0STluN0V5VTREMkVFUWwr?=
- =?utf-8?B?czU4eE5WdTRIRzBFdlRzbG15ZmtDbFdVSzZ2OENGRlQwakFQZFF1RXVMdDVn?=
- =?utf-8?B?QXdCNklvRERtMlN3U214SWlBUXBVLzVYWWdSSnVRSk8xR2pmS25SY2lQekVK?=
- =?utf-8?B?WVJXdk1NM3NUc2NZM2V1SEJLWWJmRVZjdWhnaFM0UVlmQWZlSGRDMlF4WFJj?=
- =?utf-8?B?MFJIY3RZVlF1MGZaWlhjbzdDMUh1YWtjNnJUVzBONGd0bEJzM3pGOHo1bzQ4?=
- =?utf-8?B?UWRzWHBHOXZpNVkzVm5UcUVHbCs2MWsvdlJ5NTNreWhMNmxua09JQXA2RHA5?=
- =?utf-8?B?YTNvM3JqQWtzaEVtQndPZEc3QlgyNVYxbjNGblcwbzlJSnRkL09rSWo2MHBs?=
- =?utf-8?B?a05pSEx6TTIwOGRxSEZReDFHSU1SQTdYVUgwYW9KUW9vcHlIaktTM09iK3dx?=
- =?utf-8?B?K2NHNnUxUHlWNjBMODhhNlNwdmhCc2VQRUxHbHRIOGpFc2J2U0UrZDdxc0VL?=
- =?utf-8?B?VUdBdG1yTnhzZFJBbWFjcGpvM2hzQkxqNXUxQnU3Ynd6NTd3dFBrUEd3OTFz?=
- =?utf-8?B?K29ObXJTcHYxZlcrMVFEdmpFTThSaC90Tjg1SDRKTmllTkJMTENJS3A4TkVP?=
- =?utf-8?B?QkpVRzhKOGsvcVdXeEdpUUVxWHdIZzZuQTJiY3E0OVN2NHlqWnpiWkU4YmRK?=
- =?utf-8?B?b3NmZnhybjAwVVZQQUxrakIrRjRlTk42ZE5xa25iM3FyYmovL1F2cUx6QXoz?=
- =?utf-8?B?Si9kckR1d3VGd20xR2JHdzMwSldaYmVlQ0ZTWUdIZnpqWkltczZCVFdkb0E3?=
- =?utf-8?B?VmJoK045djVNK3o2UnJ2MDBqenpVOFo0NmRMeGxvWXNVQWdxSzRNZnZlL1pE?=
- =?utf-8?B?QWg5NXFUaS9ZUlU2UXFPVW1xaXo2ZEhpVEpSZXIxaS8vdzVUb0hZOFpUM29F?=
- =?utf-8?B?LzhWUVZLdVd1TUdkS2xoc28zMmFrMzE2Lyt4STExVFVDYWF3UnVYYm56aUFO?=
- =?utf-8?B?U1p3M05jTWVBQlE4RVRvbGdwQjUyOXhXdmljQkZYR1JjZ09rZHpBRFpyZk5a?=
- =?utf-8?B?L3htR2dTK2V2U3doRWJrNzdtT2d0Vlp0cVQrODZEL0ZNY0Njd3JIdGJ2Q0wy?=
- =?utf-8?B?S1Bld3hXbEVXbTZzdWkwR2pWSTJwVTBvWDFKUHZZejE5N2drSUxENURXMmNE?=
- =?utf-8?B?QStJMTRpNENqM1NvcHgyTi9BcmVybDJoc3loVmczNDUxeXFQbWN4NXc5RFdJ?=
- =?utf-8?B?UUpRWktjYTlZMTlJZENUSWhHMzFUaDBCYnk2by9tZCs5NUUvV1lsVTU0bGdT?=
- =?utf-8?B?NjhvOVgzYVZLcmtRQ21iRXRrT3gweERBNSt5Q3pPSkl3anZ0TzRuNnZwVzhO?=
- =?utf-8?B?eFl0cTEwdVJXRzNYZ3JzcVZBRnNENFFRL0hvdzZCRnhaeTJyUE03aGpLdWtz?=
- =?utf-8?B?ZldDRUEvL1NtY0hra2E5NUZKYmlLREw4d092aGJEb0o1YnhjamduVVBYampI?=
- =?utf-8?B?ajRBbU52UWwvMzlHc3RqM0lWRVVucEJ3cE0zSFpWa1BVVDFLK1MzVmFDMFJT?=
- =?utf-8?B?bG16bnZGN1hXTUZMbWhETFZoY2FRanVrdTlVOUp3MFF6OHpyajd6eFZZWmtK?=
- =?utf-8?B?dEN1UUI5Z3NjRkFtSW40dW9MSE04blcyS0RhNUpvQlVialBWVUN1aXR5aTRl?=
- =?utf-8?B?RzFEYVpSVGsxL1VDSENuUHp3ZkJ5RkF6V0RFd3Y5L1REMEhub2hVL0tuWENW?=
- =?utf-8?B?SDdwTjRRaHVabEFCNzRtbmQ5UXVkUG5pQmF6YWc5THNUNkNIRFdqa3BWNmNH?=
- =?utf-8?B?SE5rWkU3T3J3MHBHdHl1L3VrU3NlZ1JLQ2UrYXVnRitSY25nNURnRWYyMllQ?=
- =?utf-8?B?WnpqWnNoeUYvQUpobW5mVEFkNnZSd1pNUGZzaWo5RzFLbnhZTmpzTzMvaTFy?=
- =?utf-8?Q?ZEvwYJZSWwPPcxb8cDGNiWzPD8ZFDHc8tkY2J8/3SUG0J?=
-X-MS-Exchange-AntiSpam-MessageData-1: bv5Y55Qz9pEZkw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67fb2cdf-1361-4318-674b-08de51961881
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 04:50:23.2780
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dXHrR9Wia0l2g3pYkg8M7dM99Xj0xDHFftr+IuYjYg0guQjkzoQ1zCEOxIa7ly5YrGQ/qYF01o4/jV6Whu15vA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7504
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260105105212.136645-6-adubey@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: we4GdtOeD-dhZUz5j0NAl3H0r_dggRXt
+X-Authority-Analysis: v=2.4 cv=dYyNHHXe c=1 sm=1 tr=0 ts=69648c08 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=DU0EyFXtAAAA:8 a=VnNF1IyMAAAA:8 a=7eL7mY7D3S2MA_tuV2QA:9 a=CjuIK1q_8ugA:10
+ a=UCR5be5CC-YrbG9FbbB0:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA0NCBTYWx0ZWRfX1WygZDgOZfq8
+ se7HPSblEQrJUIta9i5pxpR8KEyDMyeZF31Dg3AyEFf6Gnu/OQJ+kRYxihBXtSpXeROmgLNRybv
+ ZdyLBJxcnPHCdVeE21jaGsBWP3gF6Kb0WJtZC5h8aEBxg350TkcCQi3BnA8zuvRbn9nwCOQRb9F
+ QKxmNR8hDTiazMZPOkeaFK42wLqeTB2YSzDPKOh4tbchQKayjNyRv4rKqHMt1uad1ecBtwMnYam
+ P2HwewQy+7bPnN2W0yYsy0q7X9s+mJqQx7NgnXcYpKx3uVp7WavVLfOiBQ4i+ZKlvSlgUePTYOK
+ rSOx0vlKQGw+bIxWU++rUTcwLi6cjg+GxwnppM0MhzUuZ1uUF39cVMTh+H0RAwxLZzg6Qz5lNOP
+ Kovns+QMjhBYuYwbMzZzPymLo7zIsKqkY8TyFG4x4rWHuyG1IlGB3GOPVl7fzRHx2OB3zMxfydh
+ 0UVtH1cTio0hq5aFYzw==
+X-Proofpoint-GUID: 1jrOj4XPgVEdzEJJUopexmaPWOwuRB1j
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-12_01,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ bulkscore=0 phishscore=0 clxscore=1011 lowpriorityscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601120044
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 1/12/26 10:51, Zi Yan wrote:
-> On 11 Jan 2026, at 19:19, Balbir Singh wrote:
+On Mon, Jan 05, 2026 at 04:22:11PM +0530, adubey@linux.ibm.com wrote:
+> From: Abhishek Dubey <adubey@linux.ibm.com>
 > 
->> On 1/12/26 08:35, Matthew Wilcox wrote:
->>> On Sun, Jan 11, 2026 at 09:55:40PM +0100, Francois Dugast wrote:
->>>> The core MM splits the folio before calling folio_free, restoring the
->>>> zone pages associated with the folio to an initialized state (e.g.,
->>>> non-compound, pgmap valid, etc...). The order argument represents the
->>>> folio’s order prior to the split which can be used driver side to know
->>>> how many pages are being freed.
->>>
->>> This really feels like the wrong way to fix this problem.
->>>
+> The modified prologue/epilogue generation code now
+> enables exception-callback to use the stack frame of
+> the program marked as exception boundary, where callee
+> saved registers are stored.
 > 
-> Hi Matthew,
+> As per ppc64 ABIv2 documentation[1], r14-r31 are callee
+> saved registers. BPF programs on ppc64 already saves
+> r26-r31 registers. Saving the remaining set of callee
+> saved registers(r14-r25) is handled in the next patch.
 > 
-> I think the wording is confusing, since the actual issue is that:
+> [1] https://ftp.rtems.org/pub/rtems/people/sebh/ABI64BitOpenPOWERv1.1_16July2015_pub.pdf
 > 
-> 1. zone_device_page_init() calls prep_compound_page() to form a large folio,
-> 2. but free_zone_device_folio() never reverse the course,
-> 3. the undo of prep_compound_page() in free_zone_device_folio() needs to
->    be done before driver callback ->folio_free(), since once ->folio_free()
->    is called, the folio can be reallocated immediately,
-> 4. after the undo of prep_compound_page(), folio_order() can no longer provide
->    the original order information, thus, folio_free() needs that for proper
->    device side ref manipulation.
+> Following is exceptions selftest result on ppc64le:
 > 
-> So this is not used for "split" but undo of prep_compound_page(). It might
-> look like a split to non core MM people, since it changes a large folio
-> to a bunch of base pages. BTW, core MM has no compound_page_dctor() but
-> open codes it in free_pages_prepare() by resetting page flags, page->mapping,
-> and so on. So it might be why the undo prep_compound_page() is missed
-> by non core MM people.
+> # ./test_progs -t exceptions
+> #100/1   exceptions/exception_throw_always_1:OK
+> #100/2   exceptions/exception_throw_always_2:OK
+> #100/3   exceptions/exception_throw_unwind_1:OK
+> #100/4   exceptions/exception_throw_unwind_2:OK
+> #100/5   exceptions/exception_throw_default:OK
+> #100/6   exceptions/exception_throw_default_value:OK
+> #100/7   exceptions/exception_tail_call:OK
+> #100/8   exceptions/exception_ext:OK
+> #100/9   exceptions/exception_ext_mod_cb_runtime:OK
+> #100/10  exceptions/exception_throw_subprog:OK
+> #100/11  exceptions/exception_assert_nz_gfunc:OK
+> #100/12  exceptions/exception_assert_zero_gfunc:OK
+> #100/13  exceptions/exception_assert_neg_gfunc:OK
+> #100/14  exceptions/exception_assert_pos_gfunc:OK
+> #100/15  exceptions/exception_assert_negeq_gfunc:OK
+> #100/16  exceptions/exception_assert_poseq_gfunc:OK
+> #100/17  exceptions/exception_assert_nz_gfunc_with:OK
+> #100/18  exceptions/exception_assert_zero_gfunc_with:OK
+> #100/19  exceptions/exception_assert_neg_gfunc_with:OK
+> #100/20  exceptions/exception_assert_pos_gfunc_with:OK
+> #100/21  exceptions/exception_assert_negeq_gfunc_with:OK
+> #100/22  exceptions/exception_assert_poseq_gfunc_with:OK
+> #100/23  exceptions/exception_bad_assert_nz_gfunc:OK
+> #100/24  exceptions/exception_bad_assert_zero_gfunc:OK
+> #100/25  exceptions/exception_bad_assert_neg_gfunc:OK
+> #100/26  exceptions/exception_bad_assert_pos_gfunc:OK
+> #100/27  exceptions/exception_bad_assert_negeq_gfunc:OK
+> #100/28  exceptions/exception_bad_assert_poseq_gfunc:OK
+> #100/29  exceptions/exception_bad_assert_nz_gfunc_with:OK
+> #100/30  exceptions/exception_bad_assert_zero_gfunc_with:OK
+> #100/31  exceptions/exception_bad_assert_neg_gfunc_with:OK
+> #100/32  exceptions/exception_bad_assert_pos_gfunc_with:OK
+> #100/33  exceptions/exception_bad_assert_negeq_gfunc_with:OK
+> #100/34  exceptions/exception_bad_assert_poseq_gfunc_with:OK
+> #100/35  exceptions/exception_assert_range:OK
+> #100/36  exceptions/exception_assert_range_with:OK
+> #100/37  exceptions/exception_bad_assert_range:OK
+> #100/38  exceptions/exception_bad_assert_range_with:OK
+> #100/39  exceptions/non-throwing fentry -> exception_cb:OK
+> #100/40  exceptions/throwing fentry -> exception_cb:OK
+> #100/41  exceptions/non-throwing fexit -> exception_cb:OK
+> #100/42  exceptions/throwing fexit -> exception_cb:OK
+> #100/43  exceptions/throwing extension (with custom cb) -> exception_cb:OK
+> #100/44  exceptions/throwing extension -> global func in exception_cb:OK
+> #100/45  exceptions/exception_ext_mod_cb_runtime:OK
+> #100/46  exceptions/throwing extension (with custom cb) -> global func in exception_cb:OK
+> #100/47  exceptions/exception_ext:OK
+> #100/48  exceptions/non-throwing fentry -> non-throwing subprog:OK
+> #100/49  exceptions/throwing fentry -> non-throwing subprog:OK
+> #100/50  exceptions/non-throwing fentry -> throwing subprog:OK
+> #100/51  exceptions/throwing fentry -> throwing subprog:OK
+> #100/52  exceptions/non-throwing fexit -> non-throwing subprog:OK
+> #100/53  exceptions/throwing fexit -> non-throwing subprog:OK
+> #100/54  exceptions/non-throwing fexit -> throwing subprog:OK
+> #100/55  exceptions/throwing fexit -> throwing subprog:OK
+> #100/56  exceptions/non-throwing fmod_ret -> non-throwing subprog:OK
+> #100/57  exceptions/non-throwing fmod_ret -> non-throwing global subprog:OK
+> #100/58  exceptions/non-throwing extension -> non-throwing subprog:OK
+> #100/59  exceptions/non-throwing extension -> throwing subprog:OK
+> #100/60  exceptions/non-throwing extension -> non-throwing subprog:OK
+> #100/61  exceptions/non-throwing extension -> throwing global subprog:OK
+> #100/62  exceptions/throwing extension -> throwing global subprog:OK
+> #100/63  exceptions/throwing extension -> non-throwing global subprog:OK
+> #100/64  exceptions/non-throwing extension -> main subprog:OK
+> #100/65  exceptions/throwing extension -> main subprog:OK
+> #100/66  exceptions/reject_exception_cb_type_1:OK
+> #100/67  exceptions/reject_exception_cb_type_2:OK
+> #100/68  exceptions/reject_exception_cb_type_3:OK
+> #100/69  exceptions/reject_exception_cb_type_4:OK
+> #100/70  exceptions/reject_async_callback_throw:OK
+> #100/71  exceptions/reject_with_lock:OK
+> #100/72  exceptions/reject_subprog_with_lock:OK
+> #100/73  exceptions/reject_with_rcu_read_lock:OK
+> #100/74  exceptions/reject_subprog_with_rcu_read_lock:OK
+> #100/75  exceptions/reject_with_rbtree_add_throw:OK
+> #100/76  exceptions/reject_with_reference:OK
+> #100/77  exceptions/reject_with_cb_reference:OK
+> #100/78  exceptions/reject_with_cb:OK
+> #100/79  exceptions/reject_with_subprog_reference:OK
+> #100/80  exceptions/reject_throwing_exception_cb:OK
+> #100/81  exceptions/reject_exception_cb_call_global_func:OK
+> #100/82  exceptions/reject_exception_cb_call_static_func:OK
+> #100/83  exceptions/reject_multiple_exception_cb:OK
+> #100/84  exceptions/reject_exception_throw_cb:OK
+> #100/85  exceptions/reject_exception_throw_cb_diff:OK
+> #100/86  exceptions/reject_set_exception_cb_bad_ret1:OK
+> #100/87  exceptions/reject_set_exception_cb_bad_ret2:OK
+> #100/88  exceptions/check_assert_eq_int_min:OK
+> #100/89  exceptions/check_assert_eq_int_max:OK
+> #100/90  exceptions/check_assert_eq_zero:OK
+> #100/91  exceptions/check_assert_eq_llong_min:OK
+> #100/92  exceptions/check_assert_eq_llong_max:OK
+> #100/93  exceptions/check_assert_lt_pos:OK
+> #100/94  exceptions/check_assert_lt_zero:OK
+> #100/95  exceptions/check_assert_lt_neg:OK
+> #100/96  exceptions/check_assert_le_pos:OK
+> #100/97  exceptions/check_assert_le_zero:OK
+> #100/98  exceptions/check_assert_le_neg:OK
+> #100/99  exceptions/check_assert_gt_pos:OK
+> #100/100 exceptions/check_assert_gt_zero:OK
+> #100/101 exceptions/check_assert_gt_neg:OK
+> #100/102 exceptions/check_assert_ge_pos:OK
+> #100/103 exceptions/check_assert_ge_zero:OK
+> #100/104 exceptions/check_assert_ge_neg:OK
+> #100/105 exceptions/check_assert_range_s64:OK
+> #100/106 exceptions/check_assert_range_u64:OK
+> #100/107 exceptions/check_assert_single_range_s64:OK
+> #100/108 exceptions/check_assert_single_range_u64:OK
+> #100/109 exceptions/check_assert_generic:OK
+> #100/110 exceptions/check_assert_with_return:OK
+> #100     exceptions:OK
+> Summary: 1/110 PASSED, 0 SKIPPED, 0 FAILED
 > 
->>
->> This stems from a special requirement, freeing is done in two phases
->>
->> 1. Free the folio -> inform the driver (which implies freeing the backing device memory)
->> 2. Return the folio back, split it back to single order folios
-> 
-> Hi Balbir,
-> 
-> Please refrain from using "split" here, since it confuses MM people. A folio
-> is split when it is still in use, but in this case, the folio has been freed
-> and needs to be restored to "free page" state.
-> 
+It would be great to include this selftest output in the cover letter
+instead, since it makes the git log excessively long.
 
-Yeah, the word split came from the initial version that called it folio_split_unref()
-and I was also thinking of the split callback for zone device folios, but I agree
-(re)initialization is a better term.
-
->>
->> The current code does not do 2. 1 followed by 2 does not work for
->> Francois since the backing memory can get reused before we reach step 2.
->> The proposed patch does 2 followed 1, but doing 2 means we've lost the
->> folio order and thus the old order is passed in. Although, I wonder if the
->> backing folio's zone_device_data can be used to encode any order information
->> about the device side allocation.
->>
->> @Francois, I hope I did not miss anything in the explanation above.
->>
->>> I think someone from the graphics side really needs to take the lead on
->>> understanding what the MM is doing (both currently and in the future).
->>> I'm happy to work with you, but it feels like there's a lot of churn right
->>> now because there's a lot of people working on this without understanding
->>> the MM side of things (and conversely, I don't think (m)any people on the
->>> MM side really understand what graphics cards are trying to accomplish).
->>>
->>
->> I suspect you are referring to folio specialization and/or downsizing?
->>
->>> Who is that going to be?  I'm happy to get on the phone with someone.
->>
->> Happy to work with you, but I am not the authority on graphics, I can speak
->> to zone device folios. I suspect we'd need to speak to more than one person.
->>
+Thanks,
+Saket
+> Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
+> ---
+>  arch/powerpc/net/bpf_jit.h        |  2 ++
+>  arch/powerpc/net/bpf_jit_comp.c   |  7 ++++
+>  arch/powerpc/net/bpf_jit_comp64.c | 53 +++++++++++++++++++++----------
+>  3 files changed, 45 insertions(+), 17 deletions(-)
 > 
-> --
-> Best Regards,
-> Yan, Zi
-
+> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+> index 98e8b1f9c2f9..b9316780a501 100644
+> --- a/arch/powerpc/net/bpf_jit.h
+> +++ b/arch/powerpc/net/bpf_jit.h
+> @@ -177,6 +177,8 @@ struct codegen_context {
+>  	u64 arena_vm_start;
+>  	u64 user_vm_start;
+>  	bool is_subprog;
+> +	bool exception_boundary;
+> +	bool exception_cb;
+>  };
+>  
+>  #define bpf_to_ppc(r)	(ctx->b2p[r])
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index b09d294084d4..3c030a7d8e73 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -207,6 +207,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+>  	cgctx.arena_vm_start = bpf_arena_get_kern_vm_start(fp->aux->arena);
+>  	cgctx.user_vm_start = bpf_arena_get_user_vm_start(fp->aux->arena);
+>  	cgctx.is_subprog = bpf_is_subprog(fp);
+> +	cgctx.exception_boundary = fp->aux->exception_boundary;
+> +	cgctx.exception_cb = fp->aux->exception_cb;
+>  
+>  	/* Scouting faux-generate pass 0 */
+>  	if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
+> @@ -436,6 +438,11 @@ void bpf_jit_free(struct bpf_prog *fp)
+>  	bpf_prog_unlock_free(fp);
+>  }
+>  
+> +bool bpf_jit_supports_exceptions(void)
+> +{
+> +       return IS_ENABLED(CONFIG_PPC64);
+> +}
+> +
+>  bool bpf_jit_supports_subprog_tailcalls(void)
+>  {
+>  	return IS_ENABLED(CONFIG_PPC64);
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index 0f3af67914d6..5ec8e3654098 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -85,7 +85,9 @@ static inline bool bpf_has_stack_frame(struct codegen_context *ctx)
+>  	 * - the bpf program uses its stack area
+>  	 * The latter condition is deduced from the usage of BPF_REG_FP
+>  	 */
+> -	return ctx->seen & SEEN_FUNC || bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP));
+> +	return ctx->seen & SEEN_FUNC ||
+> +	       bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)) ||
+> +	       ctx->exception_cb;
+>  }
+>  
+>  /*
+> @@ -180,23 +182,32 @@ void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
+>  		EMIT(PPC_RAW_STDU(_R1, _R1, -(BPF_PPC_STACKFRAME + ctx->stack_size)));
+>  	}
+>  
+> -	/*
+> -	 * Back up non-volatile regs -- BPF registers 6-10
+> -	 * If we haven't created our own stack frame, we save these
+> -	 * in the protected zone below the previous stack frame
+> -	 */
+> -	for (i = BPF_REG_6; i <= BPF_REG_10; i++)
+> -		if (bpf_is_seen_register(ctx, bpf_to_ppc(i)))
+> -			EMIT(PPC_RAW_STD(bpf_to_ppc(i), _R1, bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
+> +	if (!ctx->exception_cb) {
+> +		/*
+> +		 * Back up non-volatile regs -- BPF registers 6-10
+> +		 * If we haven't created our own stack frame, we save these
+> +		 * in the protected zone below the previous stack frame
+> +		 */
+> +		for (i = BPF_REG_6; i <= BPF_REG_10; i++)
+> +			if (ctx->exception_boundary || bpf_is_seen_register(ctx, bpf_to_ppc(i)))
+> +				EMIT(PPC_RAW_STD(bpf_to_ppc(i), _R1,
+> +					bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
+>  
+> -	if (ctx->arena_vm_start)
+> -		EMIT(PPC_RAW_STD(bpf_to_ppc(ARENA_VM_START), _R1,
+> +		if (ctx->exception_boundary || ctx->arena_vm_start)
+> +			EMIT(PPC_RAW_STD(bpf_to_ppc(ARENA_VM_START), _R1,
+>  				 bpf_jit_stack_offsetof(ctx, bpf_to_ppc(ARENA_VM_START))));
+>  
+> -	/* Setup frame pointer to point to the bpf stack area */
+> -	if (bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)))
+> -		EMIT(PPC_RAW_ADDI(bpf_to_ppc(BPF_REG_FP), _R1,
+> +		/* Setup frame pointer to point to the bpf stack area */
+> +		if (bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)))
+> +			EMIT(PPC_RAW_ADDI(bpf_to_ppc(BPF_REG_FP), _R1,
+>  				STACK_FRAME_MIN_SIZE + ctx->stack_size));
+> +	} else {
+> +		/*
+> +		 * Exception callback receives Frame Pointer of main
+> +		 * program as third arg
+> +		 */
+> +		EMIT(PPC_RAW_MR(_R1, _R5));
+> +        }
+>  
+>  	if (ctx->arena_vm_start)
+>  		PPC_LI64(bpf_to_ppc(ARENA_VM_START), ctx->arena_vm_start);
+> @@ -208,17 +219,25 @@ static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx
+>  
+>  	/* Restore NVRs */
+>  	for (i = BPF_REG_6; i <= BPF_REG_10; i++)
+> -		if (bpf_is_seen_register(ctx, bpf_to_ppc(i)))
+> +		if (ctx->exception_cb || bpf_is_seen_register(ctx, bpf_to_ppc(i)))
+>  			EMIT(PPC_RAW_LD(bpf_to_ppc(i), _R1, bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
+>  
+> -	if (ctx->arena_vm_start)
+> +	if (ctx->exception_cb || ctx->arena_vm_start)
+>  		EMIT(PPC_RAW_LD(bpf_to_ppc(ARENA_VM_START), _R1,
+>  				bpf_jit_stack_offsetof(ctx, bpf_to_ppc(ARENA_VM_START))));
+>  
+> +	if (ctx->exception_cb) {
+> +		/*
+> +		 * LR value from boundary-frame is received as second parameter
+> +		 * in exception callback.
+> +		 */
+> +		EMIT(PPC_RAW_MTLR(_R4));
+> +	}
+> +
+>  	/* Tear down our stack frame */
+>  	if (bpf_has_stack_frame(ctx)) {
+>  		EMIT(PPC_RAW_ADDI(_R1, _R1, BPF_PPC_STACKFRAME + ctx->stack_size));
+> -		if (ctx->seen & SEEN_FUNC) {
+> +		if (ctx->seen & SEEN_FUNC || ctx->exception_cb) {
+>  			EMIT(PPC_RAW_LD(_R0, _R1, PPC_LR_STKOFF));
+>  			EMIT(PPC_RAW_MTLR(_R0));
+>  		}
+> -- 
+> 2.48.1
+> 
 
