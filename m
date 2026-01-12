@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-15540-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15541-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9E3D12984
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 13:48:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF244D12995
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 13:48:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dqXHL2t5fz30Pn;
-	Mon, 12 Jan 2026 23:48:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dqXHj6MY4z30TP;
+	Mon, 12 Jan 2026 23:48:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768222110;
-	cv=none; b=ZiVInkWlNaltC8cFyXBPc2Ba+rcMTzblVcy2A12ZnNSqqeZlze8cfmZrqZ0JSxXTzmWkTMdJspMdBkRbo2BcSlWN9CWrpzAkDUsVq0WgnUNz0ci1lTHZvAbBwqoANPLENy6k+2fp9bRoReltq5iozKzO6JyVgnYm/8wr8BJhYcbAmRVNgE+t8Bd6kZvzMA0/Oyk6QSwErROp9bNPG+NpGvsHa6qLcB2/aYaIi0e+P1U+yhizYBHkn4MDgnVWYReqrDpowuXOFHqOGed4JaGnRFNovLmTR2am42twYJ5LS0o/Vb+rYBmm+4S9hLfgoF2DJTTvDfiCMctLavdmR3afeQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768222129;
+	cv=none; b=enrJYEMcCsIXQmaD+0kAfauwduER1yD5lI4rJjfB79jdvud3fZSouXRux9omtpqt9bo3kaYGXoGseDrzdzAbOxJ8MR7cZkXPBpX0i1vYy755z8j93ksPnKpvZWUJYFblHumlDOW2+IZDCZGmlQtJWfV/IjeVXRIu90fhI/sDz877gtDW9syhJ0v82A/XCV4hF9kAvFsXc2U9HqZMlSuNKnckQ/lHsWxN9dK+6hJFf48N4mHR+BdM3ZeXMaSf330w/czNdhyRnAKSDi04W22tgN173Z/pLhrLvaeRO/rTGsZi+tWXFnG5DPo1UWXz4e61IIS9wcahMQ6hhCGQ/IKoFA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768222110; c=relaxed/relaxed;
-	bh=y227+Dq70uj/zUfx9CHnwPhVVQ9IhJDk2aGUpI4Iggw=;
+	t=1768222129; c=relaxed/relaxed;
+	bh=+DyKB1brz0fVxmKdGh6Isl8VZHUqKpjOArKxqRTAXiM=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yur3UyNd9b+E3F4G5URMYzEwjTCBQqOWGZHYIey583DI/r/XBKSezjBy/TFuw4paLiaPPHcQvFJ0EBtD8Y3NxYTqVQhha25sANYMY9cG4u/62qHVKEYAu8mhnwNxPMy5oiHcBiA+CHoG+FkRc8ZPgK7gQTwR+26e5VeeK/HNkE7aGrdPU2uoTuhMTxKiv6Aq+NkN4LT5aJNwmjbaNW4Mg/y/TIZLGGodw9ec/ON3YVjUsJiRFIMF6rSFGOV+YfxtQa3xsrd9UfvgsBC4XddzJLNwvKlm37RYM1Wa5J/F6WDGpvJjRytpH7N04Kcg/d2WKVqkcA6FzmS92UgqbqbLgg==
+	 MIME-Version:Content-Type; b=acgivRgZz6EzR6/N9bYA7ior7g5k2OxR0oM1b3DkXnoWJvMUrN8UJSXr+YMcuaaghBDep+j33bzdYNyBs7ipcrVo4vjMBw6I4sTrqx8ugmGnHhoWxFXJoEB/GIRFSR1PmVdhljP+2yq8Qd68Vp0dUcFGr99xrFL3hIYDDTQnfHZAlJCtg/1T5Zc5WnMbl041kstFjjSSUGlSSEGFdKccuRm+4UsNDLRZwIR6lbuZNtN5flFbxLtbM8nn1xA+5qtvtDA1LC1Dav5aZonq41eTiZHM6h+j79ab5gGoen5x7F4GDeleKXhBZGwkqfq3sOfJX2fv9rjAL8VaAEk6Z5GIvA==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
@@ -23,19 +23,19 @@ Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqXHK3Zlrz30HQ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jan 2026 23:48:29 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dqXGw4LYvzHnH6K;
-	Mon, 12 Jan 2026 20:48:08 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqXHj0jGNz30T2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jan 2026 23:48:49 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dqXHP3MsrzJ468F;
+	Mon, 12 Jan 2026 20:48:33 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9539B40086;
-	Mon, 12 Jan 2026 20:48:24 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id D14BE40570;
+	Mon, 12 Jan 2026 20:48:44 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 12 Jan
- 2026 12:48:22 +0000
-Date: Mon, 12 Jan 2026 12:48:21 +0000
+ 2026 12:48:43 +0000
+Date: Mon, 12 Jan 2026 12:48:41 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 CC: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, "Saravana
@@ -62,12 +62,12 @@ CC: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, "Saravana
 	<linux-clk@vger.kernel.org>, <imx@lists.linux.dev>,
 	<dmaengine@vger.kernel.org>, <linux-media@vger.kernel.org>,
 	<linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v3 06/12] cdx: Simplify with scoped for each OF child
- loop
-Message-ID: <20260112124821.00001a04@huawei.com>
-In-Reply-To: <20260109-of-for-each-compatible-scoped-v3-6-c22fa2c0749a@oss.qualcomm.com>
+Subject: Re: [PATCH v3 07/12] cdx: Use mutex guard to simplify error
+ handling
+Message-ID: <20260112124841.0000781d@huawei.com>
+In-Reply-To: <20260109-of-for-each-compatible-scoped-v3-7-c22fa2c0749a@oss.qualcomm.com>
 References: <20260109-of-for-each-compatible-scoped-v3-0-c22fa2c0749a@oss.qualcomm.com>
-	<20260109-of-for-each-compatible-scoped-v3-6-c22fa2c0749a@oss.qualcomm.com>
+	<20260109-of-for-each-compatible-scoped-v3-7-c22fa2c0749a@oss.qualcomm.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -92,16 +92,14 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, 09 Jan 2026 17:57:50 +0100
+On Fri, 09 Jan 2026 17:57:51 +0100
 Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com> wrote:
 
-> Use scoped for-each loop when iterating over device nodes to make code a
-> bit simpler.
+> Mutex guard allows to drop one goto/break in error handling and the
+> less expected code of assigning -EINVAL to unsigned size_t count
+> variable.
 > 
+> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-but only on basis next one merges as well just for that 'obey the strict
-rules in cleanup.h'.
-
-No bug bug I like not having to think about whether there is or not :)
 
