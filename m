@@ -1,83 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-15537-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15539-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E42DD125B5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 12:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1B7D128B1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jan 2026 13:27:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dqVs24YRlz3060;
-	Mon, 12 Jan 2026 22:44:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dqWpg4QfKz30Ng;
+	Mon, 12 Jan 2026 23:27:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768218246;
-	cv=none; b=VWLdWwJ0R2Rd76zpjklmH6E2w8/jyiKLfV10WvRxrPxpWTkWWAtkNjgbgZVyneQZrTWnoHttR2J9rmdpSrlNVuWWE5pfDa3fGImBbU1P2v22d7jZWeSCT+bv3PE/SO+aUIvkkVFYELFuC+0OpsfsEM6jcmhtQO0TLBnUjAqsGXAyhBkJjiv+f7W7yTvesgz8ONnXstM9bwqmtaA+sVLN315Faq+ZMWEsBqNfNeSuRMXNaIeg4Sx/mhUP+Epgh7+ObZuuS8b4seObMbgcE6Xnc4emPkvnAJG2BFW4PgiEz9IkidGOwaNGKtZbkgX65teYYbJLkM3TC6sEcIWu9LeXpw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768220827;
+	cv=none; b=aGhp0YmSAuq4S9gW4q6Gfv2d0U0UDA4V9liiJfAUH22FuO0ovOMeVcw2B19DPOKOTZJOpWIGJZjh4zZTA/775XItZ1p87hRQzIgKUvVtP19UQC7OUTAz3DU3oLZAfip6v8iZXwdhRjQVZq3uxbJGCkCnFaJcowxGncsuchLjeQES6aIO/Hs+J5Kg4VouKASA7OBSFZS9C94zUIy+slsvbHOULlrC8KTSPSRVXGt0ksLJCgxVqAiRFBDm9XTIfIhs03Fg8XfyfEX4xkOs9Htax/9C8W6RjbJGBDVJ80ej+5M13H2GOBVCfsHBbBk7eXu/2s5H4gK1zxe8wWKInt58pA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768218246; c=relaxed/relaxed;
-	bh=LQuuFAZL1+sdcv6II2cFu76iju0kO+Vj+iY18Ip4PYQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mLmOCDXWRaIuKRj9EDebgVPvBhFlyYdSsnIKzmG6uLkkp1LrgZygqJsCh/whbMwxkKV5VbWMZF9MJoieBBS4P1ay7lKYAuoqRp6VzMoKZc6z6v5yr0N/pVeVEdbi7AybYXHPgVG/xu3YwZ6e74r+8icp/pGisvY64MOhCHEhtuNpoPyNQiwThgNGkN1wuIP2G65E3uwF72pwBuH5r6lmI7LgZshp2+muADIw47o1S60R+1czBjwJrVNbngjhvn8NgBTdVgspwEOwfpITMgi2ASBULbax+uXSmm2medPdfvzcP+FwWNleGTG9Ea4w/053WTakWPl6vV/ZCTtAuBT1FA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BDSFaEjh; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BDSFaEjh;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqVs14MDCz2ynn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jan 2026 22:44:05 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E82E243E75;
-	Mon, 12 Jan 2026 11:44:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02848C16AAE;
-	Mon, 12 Jan 2026 11:43:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768218242;
-	bh=wYxzqaucRGuoMNi3CMgj0x5c6RoysJv8GcSjGMutuIM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BDSFaEjhcr82fZbuOnjBsIysguMmvESRnrY4Tpsv9UGf02g8W7lpkhwWzD3ZIsLOR
-	 7AeG2s+ycAlQNjCw8YvdfZWEU6xGElMYLW6io9YkNrIvlGIPar1iQI7aij9znZaI/6
-	 BxJ/wIFz6DdmbdPiZHbOoiwkZUJv3hQjpiOuavR/2Ua7mkrI3qhF0BRjXMU8U5mBPo
-	 2HMuNGiN0xFNsBs0I4Q2tw3Cwl1R6aWTYi3pXz6xaXjzyFoGuIH7U0OtYGZv4JnSKY
-	 y+AXIMFWSkAK5y7yHajqyXFoHhHBAtAJssYs+UufUpqaqMQPxX/X1j7u9ik4vwXeRY
-	 +s9LbpjkC3sow==
-Date: Mon, 12 Jan 2026 12:43:50 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Koichiro Den <den@valinux.co.jp>
-Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
-	vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com,
-	l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com,
-	mingkai.hu@nxp.com, roy.zang@nxp.com, jesper.nilsson@axis.com,
-	heiko@sntech.de, srikanth.thokala@intel.com,
-	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com,
-	geert+renesas@glider.be, magnus.damm@gmail.com,
-	christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, thierry.reding@gmail.com,
-	jonathanh@nvidia.com, hayashi.kunihiko@socionext.com,
-	mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org,
-	rongqianfeng@vivo.com, 18255117159@163.com,
-	shawn.lin@rock-chips.com, nicolas.frattaroli@collabora.com,
-	linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v5 3/3] PCI: dwc: ep: Support BAR subrange inbound
- mapping via Address Match Mode iATU
-Message-ID: <aWTedhkOclAVvktO@ryzen>
-References: <20260108172403.2629671-1-den@valinux.co.jp>
- <20260108172403.2629671-4-den@valinux.co.jp>
- <aWAZv3ZwdUmo4_wc@ryzen>
- <nqpwi6ewen4kf7jqgon4ljerceqjeaule25dzb6ytas3wslqhp@ddkr3jum6eac>
- <aWC8jGTtKIzVuG-X@ryzen>
- <wvb42kyfcpyii3jql2gm75dd6hqpcd32yat2yb7cg7sl3raw4l@d4mfxk47l6md>
+	t=1768220827; c=relaxed/relaxed;
+	bh=1NByF4KBwn5Wl03L5TAReJyDFw2mFLa47LsnRyfC4To=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cS4AKrYKA22Y+xfzbfHpgBk9JIvOkwhBieplVYGoJSFAjYv2dbcbrIMRKMsUcCFHETkRcafyYNlHgThjuqYU1uJmRhDgWuOj3P4LpHrlvMuNjCxufKRJE1DkwC7t8JeY3ctZQwL/njZscbUmNbbslmpyCSKFPXJvw5fcdV7NA8lnFVOOmpnMGJBaLws5hIZk121Awo6HJVQJLYB4lt55ON+egelIhfdw0UJm58OkFqvbqkKacOAqvr/P21DIacEiakWKjG6lDHe058pIkyFCLEoTSH3U2/15M239Wd0UrOg351bRmgqjRMEKJKJoJRIvLT5djMsza9qmjwqLOMOrlA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dqWpf2H8sz30HQ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jan 2026 23:27:04 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9D88E497;
+	Mon, 12 Jan 2026 04:26:25 -0800 (PST)
+Received: from [10.57.95.123] (unknown [10.57.95.123])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E6C913F59E;
+	Mon, 12 Jan 2026 04:26:27 -0800 (PST)
+Message-ID: <09de87bc-d952-41e7-9657-852c2924aaa7@arm.com>
+Date: Mon, 12 Jan 2026 12:26:26 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,51 +43,212 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <wvb42kyfcpyii3jql2gm75dd6hqpcd32yat2yb7cg7sl3raw4l@d4mfxk47l6md>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] randomize_kstack: Unify random source across
+ arches
+Content-Language: en-GB
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Jeremy Linton <jeremy.linton@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <20260102131156.3265118-1-ryan.roberts@arm.com>
+ <20260102131156.3265118-4-ryan.roberts@arm.com>
+ <20260104230136.7aaf8886@pumpkin> <20260107140533.2b3c46a1@pumpkin>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20260107140533.2b3c46a1@pumpkin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello Koichiro,
-
-On Sat, Jan 10, 2026 at 11:29:06PM +0900, Koichiro Den wrote:
-
-(snip)
-
-> > Your new feature (epc_features->subrange_mapping) in epc_features appears
-> > to depend on epc_features->dynamic_inbound_mapping, so it is a shame that
-> > we don't have a epc_features->dynamic_inbound_mapping bit, so that this new
-> > feature could have depended on that bit.
-> > 
-> > 	if (epf_bar->use_submap &&
-> > 	    !(epc_features->dynamic_inbound_mapping &&
-> > 	      epc_features->subrange_mapping))
-> > 		return -EINVAL;
-> > 
-> > 
-> > I think adding some documentation is a good step.
-> > 
-> > Perhaps we should also introduce a epc_features->dynamic_inbound_mapping bit?
-> > Since you are making DWC glue drivers return a mutable EPC features, we could
-> > set this bit in the DWC driver after that commit. What do you think?
+On 07/01/2026 14:05, David Laight wrote:
+> On Sun, 4 Jan 2026 23:01:36 +0000
+> David Laight <david.laight.linux@gmail.com> wrote:
 > 
-> As you pointed out, support for dynamic_inbound_mapping is needed
-> independently of my series. Given that, it would make sense to handle it
-> either before this series, or to fold it into the next iteration (=v6) of
-> the series if that is preferred.
+>> On Fri,  2 Jan 2026 13:11:54 +0000
+>> Ryan Roberts <ryan.roberts@arm.com> wrote:
+>>
+>>> Previously different architectures were using random sources of
+>>> differing strength and cost to decide the random kstack offset. A number
+>>> of architectures (loongarch, powerpc, s390, x86) were using their
+>>> timestamp counter, at whatever the frequency happened to be. Other
+>>> arches (arm64, riscv) were using entropy from the crng via
+>>> get_random_u16().
+>>>
+>>> There have been concerns that in some cases the timestamp counters may
+>>> be too weak, because they can be easily guessed or influenced by user
+>>> space. And get_random_u16() has been shown to be too costly for the
+>>> level of protection kstack offset randomization provides.
+>>>
+>>> So let's use a common, architecture-agnostic source of entropy; a
+>>> per-cpu prng, seeded at boot-time from the crng. This has a few
+>>> benefits:
+>>>
+>>>   - We can remove choose_random_kstack_offset(); That was only there to
+>>>     try to make the timestamp counter value a bit harder to influence
+>>>     from user space.
+>>>
+>>>   - The architecture code is simplified. All it has to do now is call
+>>>     add_random_kstack_offset() in the syscall path.
+>>>
+>>>   - The strength of the randomness can be reasoned about independently
+>>>     of the architecture.
+>>>
+>>>   - Arches previously using get_random_u16() now have much faster
+>>>     syscall paths, see below results.
+>>>
+>>> There have been some claims that a prng may be less strong than the
+>>> timestamp counter if not regularly reseeded. But the prng has a period
+>>> of about 2^113. So as long as the prng state remains secret, it should
+>>> not be possible to guess. If the prng state can be accessed, we have
+>>> bigger problems.  
+>>
+>> If you have 128 bits of output from consecutive outputs I think you
+>> can trivially determine the full state using (almost) 'school boy' maths
+>> that could be done on pencil and paper.
+>> (Most of the work only has to be done once.)
+>>
+>> The underlying problem is that the TAUSWORTHE() transformation is 'linear'
+>> So that TAUSWORTHE(x ^ y) == TAUSWORTHE(x) ^ TAUSWORTHE(y).
+>> (This is true of a LFSR/CRC and TOUSWORTH() is doing some subset of CRCs.)
+>> This means that each output bit is the 'xor' of some of the input bits.
+>> The four new 'state' values are just xor of the the bits of the old ones.
+>> The final xor of the four states gives a 32bit value with each bit just
+>> an xor of some of the 128 state bits.
+>> Get four consecutive 32 bit values and you can solve the 128 simultaneous
+>> equations (by trivial substitution) and get the initial state.
+>> The solution gives you the 128 128bit constants for:
+>> 	u128 state = 0;
+>> 	u128 val = 'value returned from 4 calls';
+>> 	for (int i = 0; i < 128; i++)
+>> 		state |= parity(const128[i] ^ val) << i;
+>> You don't need all 32bits, just accumulate 128 bits.  
+>> So if you can get the 5bit stack offset from 26 system calls you know the
+>> value that will be used for all the subsequent calls.
+> 
+> Some of the state bits don't get used, so you only need 123 bits.
+> The stack offset is 6 bits - so you need the values from 19 calls.
+> 
+>> Simply changing the final line to use + not ^ makes the output non-linear
+>> and solving the equations a lot harder.
+>>
+>> I might sit down tomorrow and see if I can actually code it...
+> 
+> Finally done:
+> 
+> #include <stdio.h>
+> #include <unistd.h>
+> #include <fcntl.h>
+> 
+> typedef unsigned int u32;
+> typedef unsigned long long u64;
+> typedef unsigned __int128 u128;
+> 
+> struct rnd_state { u32 s1; u32 s2; u32 s3; u32 s4; };
+> u32 prandom_u32_state(struct rnd_state *state)
+> {
+> #define TAUSWORTHE(s, a, b, c, d) ((s & c) << d) ^ (((s << a) ^ s) >> b)
+>         state->s1 = TAUSWORTHE(state->s1,  6U, 13U, 4294967294U, 18U);
+>         state->s2 = TAUSWORTHE(state->s2,  2U, 27U, 4294967288U,  2U);
+>         state->s3 = TAUSWORTHE(state->s3, 13U, 21U, 4294967280U,  7U);
+>         state->s4 = TAUSWORTHE(state->s4,  3U, 12U, 4294967168U, 13U);
+> 
+>         return (state->s1 ^ state->s2 ^ state->s3 ^ state->s4);
+> }
+> 
+> #define X(n, hi, lo) [n] = (u128)0x##hi << 64 | 0x##lo
+> u128 map[128] = {
+>         X(  1, 23acb122e4a76, e206c3f6fe435cb6),
+> 	...
+>         X(127, 00d3276d8a76a, e560d1975675be24) };
+> 
+> u128 parity_128(u128 v)                 
+> {                               
+>         return __builtin_parityll(v) ^ __builtin_parityll(v >> 64);
+> }
+> 
+> int main(int argc, char **argv)
+> {
+>         struct rnd_state s = {};
+>         u128 s0, v, r = 0;
+> 
+>         read(open("/dev/urandom", O_RDONLY), &s, sizeof s);
+>         // Remove low bits that get masked by the (s & c) term.
+>         s.s1 &= ~1; s.s2 &= ~7; s.s3 &= ~15; s.s4 &= ~127;
+>         s0 = (((u128)s.s4 << 32 | s.s3) << 32 | s.s2) << 32 | s.s1;
+>         v = prandom_u32_state(&s);
+>         v |= (u128)prandom_u32_state(&s) << 32;
+>         v |= (u128)prandom_u32_state(&s) << 64;
+>         v |= (u128)prandom_u32_state(&s) << 96;
+> 
+>         for (int n = 0; n < 128; n++)
+>                 r |= parity_128(v & map[n]) << n;
+> 
+>         printf("%016llx%016llx\n", (u64)(s0 >> 64), (u64)s0);
+>         printf("values%s match\n", r == s0 ? "" : " do not");
+> 
+>         return r != s0;
+> }
+> 
+> I've trimmed the initialiser - it is very boring.
+> The code to create the initialiser is actually slightly smaller than it is.
+> Doable by hand provided you can do 128bit shift and xor without making
+> any mistakes.
+> 
+> I've just done a quick search through the kernel sources and haven't found
+> many uses of prandom_u32_state() outside of test code.
+> There is sched_rng() which uses a per-cpu rng to throw a 1024 sized die.
+> bpf also has a per-cpu one for 'unprivileged user space'.
+> net/sched/sch_netem.c seems to use one - mostly for packet loss generation.
+> 
+> Since the randomize_kstack code is now using a per-task rng (initialised
+> by clone?) that could be used instead of all the others provided they
+> are run when 'current' is valid.
+> 
+> But the existing prandom_u32_state() needs a big health warning that
+> four outputs leak the entire state.
+> That is fixable by changing the last line to:
+>         return state->s1 + state->s2 + state->s3 + state->s4;
+> That only affects the output value, the period is unchanged.
 
-Please fold it into the next iteration (=v6).
+Hi David,
 
-It should be a one liner patch in the DWC driver, at least if you put it
-after your "PCI: dwc: Allow glue drivers to return mutable EPC features"
-patch.
+This all seems interesting, but I'm not clear that it is a blocker for this
+series. As I keep saying, we only use 6 bits for offset randmization so it is
+trival to brute force, regardless of how easy it is to recover the prng state.
 
-Thank you for all your efforts on improving the endpoint framework.
+Perhaps we can decouple these 2 things and make them independent:
+
+ - this series, which is motivated by speeding up syscalls on arm64; given 6
+   bits is not hard to brute force, spending a lot of cycles calculating those
+   bits is unjustified.
+
+ - Your observation that that the current prng could be improved to make
+   recoving it's state harder.
+
+What do you think?
+
+Thanks,
+Ryan
 
 
-Kind regards,
-Niklas
+> 
+> 	David
+> 
+> 
+
 
