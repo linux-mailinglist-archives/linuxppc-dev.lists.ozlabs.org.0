@@ -1,95 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-15610-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15611-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0DED16561
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 03:40:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48AC3D16A79
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 06:07:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dqtlp0HPKz2xjK;
-	Tue, 13 Jan 2026 13:40:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dqy0s614lz2xWJ;
+	Tue, 13 Jan 2026 16:07:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=52.101.125.124 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768272053;
-	cv=pass; b=XsGsYXkXEwsvoV3uumpC5ryuqAcnvO1PYGQxtpF4G2d6OL2xK9jNS5MSd63OSEBU88WsUkwPv0hKGr+BrijOsgCLIlTDtpLvKYf2NSk4/97eOGR+NtHvEJzwboEF/DCNmhZa/J13iZ/tvaVo4lj+UX5rWKtsW1+I2/UruKzA6QFQ8NrQvveMeQTcmR4fyC1oCMdGtpq0cLtnd8XeFyO2k6lOopygCiLkaR9X3Z2b9iel+dQ7QKYHN2o27NDsTZRC7moS8vzLbPQuGBFeTVgqgexpa4lclcFOtjMPwu7PYRQRmT2hz/faZOzGkXN5gREmcPBeX1wuLiI642eS1Ck0gg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768272053; c=relaxed/relaxed;
-	bh=ltBdJo5drdtiHi7HLYJKzen/9aJAspcXbTmMt6AEal8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jvW3JqHpNKy8vJeItNE3dZBKXEdAkY9oU0Ksbb4EscYAYdtrVKTMbt3YmjxsT28P+OuvPyi3B6uCPjewVnwPDd4cVlMPcgU1iMlOH0SYtGo/I0m5j8kAtlmW2fE0ucU3VrcvTlitQNXfnyAC8Bu4P1Jweh1dlK1qxki1dgzUnffSVmLdul9EhkVGKKUHJSE6Wy/VU/EyouBY3FOEn41aDWsSS6tCMP3hkqL6xA9p8ubtvzVByEgQW8Ad35BXZ8BOijzmOaWTu4FJwnl9fhXj4olcwcESgtOX4sVBug2IevKgxOTV75s/lXtNNKpckEGXHxtonEpelLyVezzxRFDWDg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; dkim=pass (1024-bit key; unprotected) header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=I5PxOho6; dkim-atps=neutral; spf=pass (client-ip=52.101.125.124; helo=tyvp286cu001.outbound.protection.outlook.com; envelope-from=den@valinux.co.jp; receiver=lists.ozlabs.org) smtp.mailfrom=valinux.co.jp
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768280845;
+	cv=none; b=F4S8JpjCzjJvmhHOsIkD6dx71ONIsZJyPxBsTkvH2uocMW/derJU2BKlfAQlGQK9ERRPOLSL/Z+MZCkQNfjZS7vaOp5ybE+aOdDkB3g4lq1bEGx7SShe0ti73QkkZngEjlFZb9UblC+scmBqRpvt/lM3oSH2IXl5gjd2m3UdxlB79QqF4J8kfevSpQnxK7+q2kKtOIPZPMoYj1Cw96U1Mz1asIL8iClfPJpOeeeYWZPd5ylyACdEb4f6GmI7rsfry76ufm3NT8xVHz28d6xk7gtH5RxlfOtMM4FXcw4tfYnOE+xGDREOqscyiU3iN7yjsLFWtmyi/g9NndiYm7YiDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1768280845; c=relaxed/relaxed;
+	bh=QUgCviFOLHrYpuKk1qmiorApGr1x+WiVD10w4uzZw0A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cSloTxd9z6CHZRtFa+KIdSqzAWJvFoq8lIXopMDJqmBkPzYmNDr8kOwrnhugH/44t90u3d0o1XgIQK7nPh9JuzaSNgVsbv9iN5lVjcmt9KagdjeOOLi5Pkmu7Mxe4H7pWFgRaPrY5DzsGbwO5TkrzeB8/+Duo63nJQZfjDXLRTtVergcd3lovzoMI3b7b7qQDJghqGt1ZTeZ/HNDThR3K6QTej4iMiL7FZ0bfbugey1wSgbhlyQMDE6hN9B65oyK7deUjvbs4/Ud/M7dZOMparh1mJXbr3jEFyvFpgewgKMzbbzIotYKz4rm5gOJCcqy4IwMXbJgUCPFbdaNn4ExCw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kp4NaELB; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=I5PxOho6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kp4NaELB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=valinux.co.jp (client-ip=52.101.125.124; helo=tyvp286cu001.outbound.protection.outlook.com; envelope-from=den@valinux.co.jp; receiver=lists.ozlabs.org)
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021124.outbound.protection.outlook.com [52.101.125.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqtln2fqjz2xKx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 13:40:53 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qcUaWO0jDlVWBRgje9SnwPUP1xCJ9mwpOxVCe6fKV8dr6uRH9PL3YkPOalVm6TWO92orDCSYaWDkl8rryNd3J79fh9SlfY5Y8Gp0uF1TNowzwvSvdwxH+s/z+GqoS7Hod8+QFM6nm62cS5B4F22racpOosARrZNkUKG/sVfTAcixSzl5Dy3fInq89LxAP2+RxAGqGJvpevo3deBeE5klWe+yswZG2VGLUpo4oqFE9v+nLIJPda49cpHk70Zwwkf/ERb7idWs34EbZJyRU/i2Eayn4amim3pPCet9teDoztg1B2JD62yX1/Vh2j/6RxuzPVAl7GA1pNeS0eswJ+OgAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ltBdJo5drdtiHi7HLYJKzen/9aJAspcXbTmMt6AEal8=;
- b=eCst/QRDFA1X4yAZDqaMAaEYBr20CmgQ3CE9s+W2hs5j6flEOcOAhJVzMSbEPL+2PqDj7SSFdMqRUUhG1gWcVCrr4jdNw4Tfwgqah6lQ+dpEFUv4D0FFfeZnAf0xAikfRQGnUXBPTYkKm4lckkGsYlzMrtvB7VxJFJqd5eQ5JA6WxwV8Xdl5fcaS9gxrdk49wj43JA1uqdCiQ5cLMGcLUVKh1jq4Uvp+q15W8+MoYyuBVOXHqZ8d3mUoa7UCG/I70j2u5t5ES6FyNoA4PXX8C43+ABjbNUCzcZ2A02V07kNQ669ue2Rv4iwhgQscz6aNf7ftuit8Q4qlHGmdaqAlGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ltBdJo5drdtiHi7HLYJKzen/9aJAspcXbTmMt6AEal8=;
- b=I5PxOho6FjieQn9G2BXeOOgdpQtiFVp+lGOzpZB4a5XuOguljJuz+N/oV02ux0XG7AHPU8oz6Sy2K5ppcgUSae0nLIiRyNhdGfcEPD1yDQSw2qRe3BOElFgtuJ5N4NIYk0ebblXhfGATptvmhK1NWifZxjrM9DiivkKGpTgQO4k=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
- by TY7P286MB6708.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:323::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Tue, 13 Jan
- 2026 02:40:14 +0000
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
- 02:40:14 +0000
-Date: Tue, 13 Jan 2026 11:40:13 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, vigneshr@ti.com, 
-	s-vadapalli@ti.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com, 
-	jesper.nilsson@axis.com, heiko@sntech.de, srikanth.thokala@intel.com, 
-	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com, geert+renesas@glider.be, 
-	magnus.damm@gmail.com, christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com, 
-	alexandre.torgue@foss.st.com, thierry.reding@gmail.com, jonathanh@nvidia.com, 
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org, 
-	rongqianfeng@vivo.com, 18255117159@163.com, shawn.lin@rock-chips.com, 
-	nicolas.frattaroli@collabora.com, linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com, 
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v5 3/3] PCI: dwc: ep: Support BAR subrange inbound
- mapping via Address Match Mode iATU
-Message-ID: <wtzaqjd3rrzohicar6pkiampzoi7mgazenb37uu6qh2aawl427@tfm2wn3hx7ei>
-References: <20260108172403.2629671-1-den@valinux.co.jp>
- <20260108172403.2629671-4-den@valinux.co.jp>
- <aWAZv3ZwdUmo4_wc@ryzen>
- <nqpwi6ewen4kf7jqgon4ljerceqjeaule25dzb6ytas3wslqhp@ddkr3jum6eac>
- <aWC8jGTtKIzVuG-X@ryzen>
- <wvb42kyfcpyii3jql2gm75dd6hqpcd32yat2yb7cg7sl3raw4l@d4mfxk47l6md>
- <aWTedhkOclAVvktO@ryzen>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aWTedhkOclAVvktO@ryzen>
-X-ClientProxiedBy: TY4PR01CA0023.jpnprd01.prod.outlook.com
- (2603:1096:405:2bf::16) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:38f::10)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dqy0r3zWHz2xJF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 16:07:23 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60D2A3gu023089
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 05:07:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=QUgCvi
+	FOLHrYpuKk1qmiorApGr1x+WiVD10w4uzZw0A=; b=kp4NaELBJMbkWNmrsiYajV
+	Vua1G+3GRTJIoWgC5SoOiVX77wIOaqfJvK1XF17u85kC2+E7n52L6O9fvhVjAQpB
+	tl7jodgIHeYNBZlD1S12aDQpUqQabrkWQ8+hOXCSuCYYg/EN8wl7K7Sd3ctRpoLi
+	iyb7kvw7R1Lzjk9OAigjrcAqY284f5qXXCUZhEoGZ7sYkDL0+z/VbHuQ+z9sPVVS
+	CbAATycCLiRVmDuINnZWV4gv9oquBPcfhIJgSeH5CMr2jc5fLS6h4SyPebVI6dGj
+	R7bNHyM6elHjIGubHmUWR8/g6aqGM497YKtRAVOQwVYy9CLcTfVp8hERvWXfsT0Q
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkd6e2k0j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 05:07:20 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60D3hx6S031250
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 05:07:19 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm3t1hy8v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 05:07:19 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60D57I2k32899718
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Jan 2026 05:07:18 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B7E8858052;
+	Tue, 13 Jan 2026 05:07:18 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 056AE58065;
+	Tue, 13 Jan 2026 05:07:17 +0000 (GMT)
+Received: from [9.98.108.237] (unknown [9.98.108.237])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 13 Jan 2026 05:07:16 +0000 (GMT)
+Message-ID: <a0ad408a-988b-4baf-84d1-1af4584d8f7f@linux.ibm.com>
+Date: Tue, 13 Jan 2026 10:37:15 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,135 +79,426 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TY7P286MB6708:EE_
-X-MS-Office365-Filtering-Correlation-Id: da5138cb-f69f-496b-5526-08de524d147d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qmJAA5QAJo4iiyEccs9lbFA3b+Gsm5dv58X3h5kI4hGu6dyMfKvyfszLy2V3?=
- =?us-ascii?Q?E6T8oj4IWGyYz3FlvzhQ8JyClzDyJ8QiRaw/B6dUMjiskBQajqn+QpgAby6e?=
- =?us-ascii?Q?E4RunsuvkMJHnetSDoP2zdLnwACl1IMt/6JTYCDOVvts7UKnPSut4cW/8MMV?=
- =?us-ascii?Q?sYE/KsFRzoP2awhtN/CoM5Mn1b9Axi0QBpnLoJFqdhMnn07koXMndMcYgCjI?=
- =?us-ascii?Q?RMTjxeup+IpFudR/eDIDnoP6tXAx18nRTm899ZzpWlNFr7/X9E41RMpM+saR?=
- =?us-ascii?Q?xgpwtljh9AApyFtGtiE5Ay0nAilVzwOfL9RVN3nOnMZX13Yv7KYf7ERQLg/B?=
- =?us-ascii?Q?0I8fY61bOqvyYxeMFTjRgUyiSc56zYhOhIZ26A4pq4Uxpw8DqGuQD/dPtDM2?=
- =?us-ascii?Q?CPvj6mIhQ/5c6xEHdFWRyEdbCrwGUwZGU3IdWaInZ1yOtkyDc5wRwZEDf0hf?=
- =?us-ascii?Q?klRFdlAKuC1V5zRy/lyIV2GZLjEYVlDPkAweAycOSzAgYz6cLiItX+6WbCMH?=
- =?us-ascii?Q?XmsG4ixh8VF5yHz7sjvp1G3F551/zd7YNtHoBKGr5u+wu2qUtQ57Qmn8IGGm?=
- =?us-ascii?Q?Xx/sgVQoKOq5Kiq9p7p45hZA61+o8Ub+3jFzn6ikINI19eiZItF6SMHdZ4LL?=
- =?us-ascii?Q?q48dzJGhGoQAVMe4ceQ5MAL+j5xLrLaf6JTPVWOW0++VqgPdxYDLxS/9/Z+B?=
- =?us-ascii?Q?zpklHHWGVybssanEqoYDG3INWVAs5IXeUQhY4B1FS0Kt8xcsuUTYiIm9mneL?=
- =?us-ascii?Q?8c0qw1aVJzrN77mcUdfIN0ICysEhxf/Lrzjs4AU4zzXzd3YyZnd6ZPKou0AI?=
- =?us-ascii?Q?frzHc/u6tW1VeQXkGPfnK+jjbDlvB8mOGSAvC6TVFId2Nd5r/4MkZdkASdrt?=
- =?us-ascii?Q?E9Ni0gli5E87a3KiOSCHuGjRJLZn44muJPZMJOycP8s/t3XwkQ3sIfEoGz3Y?=
- =?us-ascii?Q?GqBHZP9hNtGSxTWLrTTbpDGbFIYH52cPNZNXEjpLkNj5X8a+h3HBQ9Ku/8BS?=
- =?us-ascii?Q?YYOvTx15W7SxdzqIbs6T9azill6jrCL1HzzA4EIBxsRz6RBMi9TvNJVddvOy?=
- =?us-ascii?Q?fH7vxBLZIuSKCgKr8MwA3gu7KQSh4aPa+2Mirl25Ew2Ijww8L91TrNE0DhPw?=
- =?us-ascii?Q?MPKkhNMaaCPV3Xp4huTKxr17Sp/SnWevg5CelxxoiGltiy7mcX3nv94hYiI6?=
- =?us-ascii?Q?p7/2kG6IymS4m1TkLPZTNIaKTn2JzP00eEFW3IgTEgOzSya1c3GmFvLSV5MJ?=
- =?us-ascii?Q?TdUCu6ydcZ9UeTB9pANvgSTcSKGBSbe+na+9/vfvV3qGjgGw651ZrikhBw+x?=
- =?us-ascii?Q?tCENGSGxlB8k6tXfYhBLC0MUULBu7Detr6sX+qcurt6AM33JABJwHcgOkkaG?=
- =?us-ascii?Q?9G5kGWacdT06FGWnC2/YILhitqSLDxawpy9tI35VRdFaG0ccVeVpMYmkkTXQ?=
- =?us-ascii?Q?PeJt76SQNdIk/VGZ8Gg7HeJ/cShSmwHi2sVXBZCa90chxWDbs61ybQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(7416014)(376014)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?78d7RcKlAyEmsc57wek1W6zRAdQ8kbcRO9q2Lj9Z4pL3yKKk0/VhdecI0wRU?=
- =?us-ascii?Q?c/lAJDc6P9U61JWeoVznJRcpZj2aqH9EbTt2unkiSRW7o72UX64J2UDnfqCm?=
- =?us-ascii?Q?fj4bimH9oapaDqcjCxiu2MnrtsbhcLTGBk8dy4ZeT04XNR/o+I49uI+mw4xl?=
- =?us-ascii?Q?wH5HUOHifAcGAJmst1fnv9HUTG/ZuMDWZaPgW+VgraEAP/IueAY5CqgELnir?=
- =?us-ascii?Q?kB27yp95B5XoOI4Hebj8Ir477DBzp1iMdSNpoP6aLhpDK2AddfODvdD3SR0S?=
- =?us-ascii?Q?/rPCrZOVkvIwdvjdRYtA2BelOVFiQrnTrMdbWzTBdX7sWNACAu35eDpD5Htg?=
- =?us-ascii?Q?aGYf9K87KpoOrtMvDs3kXoiO2dBTvle8FKbU1v/eV1jeXdAhcgxeNWOPmsJj?=
- =?us-ascii?Q?WoZYbQndtEICSChUIyafKTcAcykp3HaPJjY++ukbJclekybpiumFtqQaApo6?=
- =?us-ascii?Q?vA+4J+uEoa9K27TBRO8c/K3eyuuTtCaXmSNe4C/R7Il0Q45823W/B0dhVtGk?=
- =?us-ascii?Q?UEXf95xPaIqzr37lxGYetCQ3wrY0mVFfSHUS9ci9qtUPk71p7Z4OWq3kyZOX?=
- =?us-ascii?Q?1qZ+Dr8hDYc2JqiTbjhHM5Ngi1TIl74ZeokHpNLKD8Fp5SoeK8kVELaK5ux5?=
- =?us-ascii?Q?TUbC5glUy+esfFJq2kp3SWHSlWIkJ1SBUwX/7+fVA1CX4raX9PQDt7iCNvdF?=
- =?us-ascii?Q?8jbQowKC58cdTcx8HLP4vy/xJAfxjNQObIWjQwfolQsB+RjSbgEkkRUxB0nU?=
- =?us-ascii?Q?/CK+u0p0bxQKOos+TLU+L98jcl9V39dTsnr9LHp6olWQqWYsPWKLICmLK59/?=
- =?us-ascii?Q?pUk48vMI0E2s67+XsECVg6L3MClUB4DiDAEEjZZL8XAUcOVV5m7OrcO4M5XO?=
- =?us-ascii?Q?CO2bEonA/Vp8mKo5TTniFS/i2pkHGRTwBnaD2eA8ePZbgnVtQe4M4Srw+XHB?=
- =?us-ascii?Q?erO9buWEAuGWXhCPuBXsBrUNeALci9gkcaSO/zgaW4BjeqO67dQYLvNwvIV+?=
- =?us-ascii?Q?xj7+F1hdGL/6xjOFuCEUMsXy8JgWr6NVI8A/9OSrZsKJ+wHrecSmEjAWDwii?=
- =?us-ascii?Q?jpx4CiMkX7rvTAniOu9/srrjt3i8rw9plqnrZVFiubTEr/xADbkJUpEBkXYu?=
- =?us-ascii?Q?cs4gBV02rc5E58rQFXxTwrir/WM0SLeq/jmUAw+tjyfMPUBFQk0cIoMmAU0k?=
- =?us-ascii?Q?7ijvIgSamVpZ/j+f8hk9FWTvm1mRnyOW69FUBv12u5j5HN+KphpZdnDkPtSa?=
- =?us-ascii?Q?PEC2bOOBC8953OEfxYVwpREaA6er0v00MmS3QcgVl0OGWTmkAilLaeWgJAzV?=
- =?us-ascii?Q?Edg0fd+psgFhZbBS7bYNrNGF8IokQBXzBXnusS1S8EJPi1Ca9n9Dy55ydoig?=
- =?us-ascii?Q?N1vUD+Bq4kpr0DWyRDctFPSfcRhReWJQUABWUG8K0ps0aDDEuSWzGpkIPmFB?=
- =?us-ascii?Q?qh047JvLaDgzyqLLTseONgC/E8Z11OXCbSb/g4Hip4FYPIpGa6Hk2jUffNXM?=
- =?us-ascii?Q?nQYQ8W0bJ49IEvHC3EpK0SB6g+M7XH/Z/oG1r/DjA+ZQ2avsjY0LSZwclydn?=
- =?us-ascii?Q?BINBY1y/O3NGw97T45jCEZfGN1K04marDsxl3qujqmdTBHQAD1ZR6/YFGmAu?=
- =?us-ascii?Q?R+pL+AarL4wF4DS0Z7BqFGl3yfNH+FWO8XvB3yZDUTgPaEPjvoJqXoGfvInI?=
- =?us-ascii?Q?QX4hMOlvQn4L3/s37dXBHL64FwW19xU3ZZcRIoRBQMsLrWq4ZhPIFqzpAA0A?=
- =?us-ascii?Q?tmxvWkEx7oJjGoxA3JO1RbC7Ze7u/keKd7OP1J735KfZA3+he7fw?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: da5138cb-f69f-496b-5526-08de524d147d
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 02:40:14.3605
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z/i0xtbap0ZH1hCEA7MnhOPQIwWsCmqiYd9yMVuAwERTacMEp93SbnVvdZomgrgV7ORP8n/qvKHB+ml3pjX8Mw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY7P286MB6708
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [mainline] KDUMP/FADUMP is broken on the mainline kernel on P11
+ System
+Content-Language: en-GB
+To: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+References: <1dee8891-8bcc-46b4-93f3-fc3a774abd5b@linux.ibm.com>
+ <9e1ba7b3-7204-4db8-9876-c1cef20141c9@linux.ibm.com>
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <9e1ba7b3-7204-4db8-9876-c1cef20141c9@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: LHcQoi3lGC7UTxHvmyZcJX2RZdOllRVx
+X-Authority-Analysis: v=2.4 cv=LLxrgZW9 c=1 sm=1 tr=0 ts=6965d308 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=74_OhrOYAAAA:8 a=AFsVlz9-bFb1VpNkZY8A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=sXAPJFFmzZfmHMDDykbx:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDAzNyBTYWx0ZWRfX76zuDf5U9Ez6
+ LWJiQNOX8VuFVOMSnwj9iTN8xAcsUAOy+7Tgr+wajSawH209VLxSQYacDoXqqz8Ym53vZfwWgX5
+ PbdMgyBWx6ndJk5unolVlmF+BBSwBsgMVflPIwmczQgnY88L5RV4ak643GbA7Rf/XCHiDyv4wn/
+ VMotSthtE+8r5W1neErSrg0eO5hE8jtDrBZxDsEikm8M5s9gp/eNOFaWIrxgedrIH+ieCE4jfX0
+ 6SLbmRJettP1GjlRTPKeJvoerAqgLalcTpg83hNUq8Msan7QwevMrywxBV8PKmMqYcJltvRqOQc
+ bXTalL/Ckhpwy+dhkCytY067Bt8PKwdy2kmONOM/xczN++Y8bGGRRmkzUPAJdfT1TqDXNfKNSjk
+ OVVs/Prd2LYLOy1v9Nh8D8QP2CKYYil1wUZhlFz9x4vnc4Y8Vg0I0ADwAPkCza/Uw4+AUL1fmds
+ lV5AHgdBWuW+qH7OOrw==
+X-Proofpoint-ORIG-GUID: LHcQoi3lGC7UTxHvmyZcJX2RZdOllRVx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-12_07,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0 impostorscore=0
+ malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601130037
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Jan 12, 2026 at 12:43:50PM +0100, Niklas Cassel wrote:
-> Hello Koichiro,
-> 
-> On Sat, Jan 10, 2026 at 11:29:06PM +0900, Koichiro Den wrote:
-> 
-> (snip)
-> 
-> > > Your new feature (epc_features->subrange_mapping) in epc_features appears
-> > > to depend on epc_features->dynamic_inbound_mapping, so it is a shame that
-> > > we don't have a epc_features->dynamic_inbound_mapping bit, so that this new
-> > > feature could have depended on that bit.
-> > > 
-> > > 	if (epf_bar->use_submap &&
-> > > 	    !(epc_features->dynamic_inbound_mapping &&
-> > > 	      epc_features->subrange_mapping))
-> > > 		return -EINVAL;
-> > > 
-> > > 
-> > > I think adding some documentation is a good step.
-> > > 
-> > > Perhaps we should also introduce a epc_features->dynamic_inbound_mapping bit?
-> > > Since you are making DWC glue drivers return a mutable EPC features, we could
-> > > set this bit in the DWC driver after that commit. What do you think?
-> > 
-> > As you pointed out, support for dynamic_inbound_mapping is needed
-> > independently of my series. Given that, it would make sense to handle it
-> > either before this series, or to fold it into the next iteration (=v6) of
-> > the series if that is preferred.
-> 
-> Please fold it into the next iteration (=v6).
-> 
-> It should be a one liner patch in the DWC driver, at least if you put it
-> after your "PCI: dwc: Allow glue drivers to return mutable EPC features"
-> patch.
-> 
-> Thank you for all your efforts on improving the endpoint framework.
 
-I just submitted v6:
-https://lore.kernel.org/all/20260113023715.3463724-1-den@valinux.co.jp/
+On 12/01/26 3:34 pm, Sourabh Jain wrote:
+> Hello Venkat,
+>
+> Thanks for sharing the bug report.
+>
+> Can you please provide additional data about the environment.
+>
+> 1. What was the top commit in your git branch?
+> 2. Kernel command-line of first/production kernel.
+> 3. Is this issue specific to P11?
+> 4. Since you used kdump service to load the capture kernel may I know 
+> what distro was used?
 
-Thank you very much for the review,
-Koichiro
 
-> 
-> 
-> Kind regards,
-> Niklas
+1. commit-id: 0f61b1860cc3f52aef9036d7235ed1f017632193
+
+2. cat /proc/cmdline
+BOOT_IMAGE=(ieee1275//vdevice/v-scsi@30000069/disk@8100000000000000,msdos3)/boot/vmlinuz-6.19.0-rc5 
+root=UUID=6a163e3c-3a88-4cc6-800d-8d037bd4f0b0 ro 
+  crashkernel=2G-4G:384M,4G-16G:512M,16G-64G:1G,64G-128G:2G,128G-:4G
+
+3. Yes, on P9, its working.
+
+4. "Red Hat Enterprise Linux 9.5 Beta (Plow)"
+
+>
+>
+> On 12/01/26 08:51, Venkat Rao Bagalkote wrote:
+>> Greetings!!
+>>
+>>
+>> KDUMP and FADUMP is broken on P11 system. After configuring 
+>> KDUMP/FADUMP on the system, upon reboot, system dosent reboot to 
+>> collect the vmcore. Its just stuck. Need to trigger reboot from HMC.
+>
+> What do you mean upon reboot? Did you on system crash?
+
+Sorry, my bad. Upon triggering crash, system doesnt reboot to collect 
+the vmcore.
+
+>
+>>
+>>
+>>
+>> # makedumpfile -v
+>> makedumpfile: version 1.7.7 (released on 21 Apr 2025)
+>> lzo    enabled
+>> snappy    enabled
+>> zstd    disabled
+>>
+>> cd /root/
+>> # makedumpfile -v
+>> makedumpfile: version 1.7.7 (released on 21 Apr 2025)
+>> lzo    enabled
+>> snappy    enabled
+>> zstd    disabled
+>>
+>> # systemctl stop kdump.service
+>> # systemctl start kdump.service
+>>  systemctl status kdump.service --no-pager
+>> ● kdump.service - Crash recovery kernel arming
+>>      Loaded: loaded (/usr/lib/systemd/system/kdump.service; enabled; 
+>> preset: enabled)
+>>      Active: active (exited) since Fri 2026-01-09 09:12:01 CST; 7s ago
+>>     Process: 2071 ExecStart=/usr/bin/kdumpctl start (code=exited, 
+>> status=0/SUCCESS)
+>>    Main PID: 2071 (code=exited, status=0/SUCCESS)
+>>         CPU: 41.857s
+>>
+>> Jan 09 09:11:55 ltcden8-lp5.ltc.tadn.ibm.com dracut[2839]: *** 
+>> Install squash…**
+>> Jan 09 09:11:56 ltcden8-lp5.ltc.tadn.ibm.com dracut[2839]: *** 
+>> Stripping file…**
+>> Jan 09 09:11:56 ltcden8-lp5.ltc.tadn.ibm.com dracut[2839]: *** 
+>> Stripping file…**
+>> Jan 09 09:11:56 ltcden8-lp5.ltc.tadn.ibm.com dracut[2839]: *** 
+>> Squashing the …**
+>> Jan 09 09:11:58 ltcden8-lp5.ltc.tadn.ibm.com dracut[2839]: *** 
+>> Squashing the …**
+>> Jan 09 09:11:58 ltcden8-lp5.ltc.tadn.ibm.com dracut[2839]: *** 
+>> Creating image…**
+>> Jan 09 09:11:58 ltcden8-lp5.ltc.tadn.ibm.com dracut[2839]: *** 
+>> Creating initr…**
+>> Jan 09 09:12:01 ltcden8-lp5.ltc.tadn.ibm.com kdumpctl[2074]: kdump: 
+>> kexec: lo…el
+>> Jan 09 09:12:01 ltcden8-lp5.ltc.tadn.ibm.com kdumpctl[2074]: kdump: 
+>> Starting …K]
+>> Jan 09 09:12:01 ltcden8-lp5.ltc.tadn.ibm.com systemd[1]: Finished 
+>> Crash recov…g.
+>> Hint: Some lines were ellipsized, use -l to show in full.
+>> # echo 10 > /proc/sys/kernel/panic
+>> # echo 1 > /proc/sys/kernel/sysrq
+>> # echo c > /proc/sysrq-trigger
+>> [  595.605706] sysrq: Trigger a crash
+>> [  595.605721] Kernel panic - not syncing: sysrq triggered crash
+>> [  595.605729] CPU: 0 UID: 0 PID: 1840 Comm: bash Kdump: loaded Not 
+>> tainted 6.17.0 #6 VOLUNTARY
+>> [  595.605739] Hardware name: IBM,9080-HEX Power11 (architected) 
+>> 0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+>> [  595.605747] Call Trace:
+>> [  595.605752] [c0000000a0e17920] [c00000000184c0e8] 
+>> dump_stack_lvl+0xd0/0xe8 (unreliable)
+>> [  595.605769] [c0000000a0e17950] [c0000000001b2434] vpanic+0x498/0x518
+>> [  595.605781] [c0000000a0e17a00] [c0000000001b2504] nmi_panic+0x0/0x13c
+>> [  595.605791] [c0000000a0e17a20] [c000000000e95d8c] 
+>> sysrq_handle_crash+0x30/0x34
+>> [  595.605804] [c0000000a0e17a80] [c000000000e96c98] 
+>> __handle_sysrq+0x124/0x384
+>> [  595.605814] [c0000000a0e17b40] [c000000000e97a9c] 
+>> write_sysrq_trigger+0x184/0x228
+>> [  595.605826] [c0000000a0e17bc0] [c0000000009f1c54] 
+>> proc_reg_write+0x18c/0x240
+>> [  595.605838] [c0000000a0e17c10] [c000000000896588] 
+>> vfs_write+0x148/0x7d8
+>> [  595.605848] [c0000000a0e17cf0] [c000000000896eb4] 
+>> ksys_write+0xa0/0x184
+>> [  595.605858] [c0000000a0e17d50] [c0000000000393d0] 
+>> system_call_exception+0x1e0/0x460
+>> [  595.605869] [c0000000a0e17e50] [c00000000000d05c] 
+>> system_call_vectored_common+0x15c/0x2ec
+>> [  595.605882] ---- interrupt: 3000 at 0x7fff9ab33e74
+>> [  595.605890] NIP:  00007fff9ab33e74 LR: 00007fff9ab33e74 CTR: 
+>> 0000000000000000
+>> [  595.605897] REGS: c0000000a0e17e80 TRAP: 3000   Not tainted (6.17.0)
+>> [  595.605904] MSR:  800000000280f033 
+>> <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44422408  XER: 00000000
+>> [  595.605936] IRQMASK: 0
+>> [  595.605936] GPR00: 0000000000000004 00007fffc3c7fab0 
+>> 0000000135727e00 0000000000000001
+>> [  595.605936] GPR04: 000000014b93c040 0000000000000002 
+>> 0000000000000010 0000000000000001
+>> [  595.605936] GPR08: 0000000000000001 0000000000000000 
+>> 0000000000000000 0000000000000000
+>> [  595.605936] GPR12: 0000000000000000 00007fff9adfab60 
+>> 000000014b9fc1d0 00000001357287b8
+>> [  595.605936] GPR16: 00000001357294d8 0000000020000000 
+>> 0000000000000000 0000000135639070
+>> [  595.605936] GPR20: 00000001356cbeb8 00007fffc3c7fc54 
+>> 00000001356cf8a0 00000001357289bc
+>> [  595.605936] GPR24: 0000000135728a50 0000000000000000 
+>> 000000014b93c040 0000000000000002
+>> [  595.605936] GPR28: 0000000000000002 00007fff9ac318e0 
+>> 000000014b93c040 0000000000000002
+>> [  595.606034] NIP [00007fff9ab33e74] 0x7fff9ab33e74
+>> [  595.606040] LR [00007fff9ab33e74] 0x7fff9ab33e74
+>> [  595.606046] ---- interrupt: 3000
+>> 8:41
+>> # cat /etc/kdump.conf
+>> # This file contains a series of commands to perform (in order) in 
+>> the kdump
+>> # kernel after a kernel crash in the crash kernel(1st kernel) has 
+>> happened.
+>> #
+>> # Directives in this file are only applicable to the kdump initramfs, 
+>> and have
+>> # no effect once the root filesystem is mounted and the normal init 
+>> scripts are
+>> # processed.
+>> #
+>> # Currently, only one dump target and path can be specified.  If the 
+>> dumping to
+>> # the configured target fails, the failure action which can be 
+>> configured via
+>> # the "failure_action" directive will be performed.
+>> #
+>> # Supported options:
+>> #
+>> # auto_reset_crashkernel <yes|no>
+>> #           - whether to reset kernel crashkernel to new default value
+>> #             or not when kexec-tools updates the default crashkernel 
+>> value and
+>> #             existing kernels using the old default kernel 
+>> crashkernel value.
+>> #             The default value is yes.
+>> #
+>> # raw <partition>
+>> #           - Will dd /proc/vmcore into <partition>.
+>> #             Use persistent device names for partition devices,
+>> #             such as /dev/vg/<devname>.
+>> #
+>> # nfs <nfs mount>
+>> #           - Will mount nfs to <mnt>, and copy /proc/vmcore to
+>> #             <mnt>/<path>/%HOST-%DATE/, supports DNS.
+>> #
+>> # ssh <user@server>
+>> #           - Will save /proc/vmcore to 
+>> <user@server>:<path>/%HOST-%DATE/,
+>> #             supports DNS.
+>> #             NOTE: make sure the user has write permissions on the 
+>> server.
+>> #
+>> # sshkey <path>
+>> #           - Will use the sshkey to do ssh dump.
+>> #             Specify the path of the ssh key to use when dumping
+>> #             via ssh. The default value is /root/.ssh/kdump_id_rsa.
+>> #
+>> # <fs type> <partition>
+>> #           - Will mount -t <fs type> <partition> <mnt>, and copy
+>> #             /proc/vmcore to <mnt>/<path>/%HOST_IP-%DATE/.
+>> #             NOTE: <partition> can be a device node, label or uuid.
+>> #             It's recommended to use persistent device names
+>> #             such as /dev/vg/<devname>.
+>> #             Otherwise it's suggested to use label or uuid.
+>> #             Supported fs types: ext[234], xfs, btrfs, minix, virtiofs
+>> #
+>> # path <path>
+>> #           - "path" represents the file system path in which vmcore
+>> #             will be saved.  If a dump target is specified in
+>> #             kdump.conf, then "path" is relative to the specified
+>> #             dump target.
+>> #
+>> #             Interpretation of "path" changes a bit if the user didn't
+>> #             specify any dump target explicitly in kdump.conf. In this
+>> #             case, "path" represents the absolute path from root. The
+>> #             dump target and adjusted path are arrived at automatically
+>> #             depending on what's mounted in the current system.
+>> #
+>> #             Ignored for raw device dumps.  If unset, will use the 
+>> default
+>> #             "/var/crash".
+>> #
+>> # core_collector <command> <options>
+>> #           - This allows you to specify the command to copy
+>> #             the vmcore.  The default is makedumpfile, which on
+>> #             some architectures can drastically reduce vmcore size.
+>> #             See /sbin/makedumpfile --help for a list of options.
+>> #             Note that the -i and -g options are not needed here,
+>> #             as the initrd will automatically be populated with a
+>> #             config file appropriate for the running kernel.
+>> #             The default core_collector for raw/ssh dump is:
+>> #             "makedumpfile -F -l --message-level 7 -d 31".
+>> #             The default core_collector for other targets is:
+>> #             "makedumpfile -l --message-level 7 -d 31".
+>> #
+>> #             "makedumpfile -F" will create a flattened vmcore.
+>> #             You need to use "makedumpfile -R" to rearrange the dump 
+>> data to
+>> #             a normal dumpfile readable with analysis tools. For 
+>> example:
+>> #             "makedumpfile -R vmcore < vmcore.flat".
+>> #
+>> #             For core_collector format details, you can refer to
+>> #             kexec-kdump-howto.txt or kdump.conf manpage.
+>> #
+>> # kdump_post <binary | script>
+>> #           - This directive allows you to run a executable binary
+>> #             or script after the vmcore dump process terminates.
+>> #             The exit status of the current dump process is fed to
+>> #             the executable binary or script as its first argument.
+>> #             All files under /etc/kdump/post.d are collectively sorted
+>> #             and executed in lexical order, before binary or script
+>> #             specified kdump_post parameter is executed.
+>> #
+>> # kdump_pre <binary | script>
+>> #           - Works like the "kdump_post" directive, but instead of 
+>> running
+>> #             after the dump process, runs immediately before it.
+>> #             Exit status of this binary is interpreted as follows:
+>> #               0 - continue with dump process as usual
+>> #               non 0 - run the final action (reboot/poweroff/halt)
+>> #             All files under /etc/kdump/pre.d are collectively 
+>> sorted and
+>> #             executed in lexical order, after binary or script 
+>> specified
+>> #             kdump_pre parameter is executed.
+>> #             Even if the binary or script in /etc/kdump/pre.d directory
+>> #             returns non 0 exit status, the processing is continued.
+>> #
+>> # extra_bins <binaries | shell scripts>
+>> #           - This directive allows you to specify additional 
+>> binaries or
+>> #             shell scripts to be included in the kdump initrd.
+>> #             Generally they are useful in conjunction with a kdump_post
+>> #             or kdump_pre binary or script which depends on these 
+>> extra_bins.
+>> #
+>> # extra_modules <module(s)>
+>> #           - This directive allows you to specify extra kernel modules
+>> #             that you want to be loaded in the kdump initrd.
+>> #             Multiple modules can be listed, separated by spaces, 
+>> and any
+>> #             dependent modules will automatically be included.
+>> #
+>> # failure_action <reboot | halt | poweroff | shell | dump_to_rootfs>
+>> #           - Action to perform in case dumping fails.
+>> #             reboot:   Reboot the system.
+>> #             halt:     Halt the system.
+>> #             poweroff: Power down the system.
+>> #             shell:    Drop to a bash shell.
+>> #                       Exiting the shell reboots the system by default,
+>> #                       or perform "final_action".
+>> #             dump_to_rootfs:  Dump vmcore to rootfs from initramfs 
+>> context and
+>> #                       reboot by default or perform "final_action".
+>> #                       Useful when non-root dump target is specified.
+>> #             The default option is "reboot".
+>> #
+>> # default <reboot | halt | poweroff | shell | dump_to_rootfs>
+>> #           - Same as the "failure_action" directive above, but this 
+>> directive
+>> #             is obsolete and will be removed in the future.
+>> #
+>> # final_action <reboot | halt | poweroff>
+>> #           - Action to perform in case dumping succeeds. Also performed
+>> #             when "shell" or "dump_to_rootfs" failure action finishes.
+>> #             Each action is same as the "failure_action" directive 
+>> above.
+>> #             The default is "reboot".
+>> #
+>> # force_rebuild <0 | 1>
+>> #           - By default, kdump initrd will only be rebuilt when 
+>> necessary.
+>> #             Specify 1 to force rebuilding kdump initrd every time 
+>> when kdump
+>> #             service starts.
+>> #
+>> # force_no_rebuild <0 | 1>
+>> #           - By default, kdump initrd will be rebuilt when necessary.
+>> #             Specify 1 to bypass rebuilding of kdump initrd.
+>> #
+>> #             force_no_rebuild and force_rebuild options are mutually
+>> #             exclusive and they should not be set to 1 simultaneously.
+>> #
+>> # override_resettable <0 | 1>
+>> #           - Usually an unresettable block device can't be a dump 
+>> target.
+>> #             Specifying 1 when you want to dump even though the block
+>> #             target is unresettable
+>> #             By default, it is 0, which will not try dumping 
+>> destined to fail.
+>> #
+>> # dracut_args <arg(s)>
+>> #           - Pass extra dracut options when rebuilding kdump initrd.
+>> #
+>> # fence_kdump_args <arg(s)>
+>> #           - Command line arguments for fence_kdump_send (it can 
+>> contain
+>> #             all valid arguments except hosts to send notification to).
+>> #
+>> # fence_kdump_nodes <node(s)>
+>> #           - List of cluster node(s) except localhost, separated by 
+>> spaces,
+>> #             to send fence_kdump notifications to.
+>> #             (this option is mandatory to enable fence_kdump).
+>> #
+>>
+>> #raw /dev/vg/lv_kdump
+>> #ext4 /dev/vg/lv_kdump
+>> #ext4 LABEL=/boot
+>> #ext4 UUID=03138356-5e61-4ab3-b58e-27507ac41937
+>> #virtiofs myfs
+>> #nfs my.server.com:/export/tmp
+>> #nfs [2001:db8::1:2:3:4]:/export/tmp
+>> #ssh user@my.server.com
+>> #ssh user@2001:db8::1:2:3:4
+>> #sshkey /root/.ssh/kdump_id_rsa
+>> auto_reset_crashkernel yes
+>> path /var/crash
+>> core_collector makedumpfile -l --message-level 7 -d 31
+>> #core_collector scp
+>> #kdump_post /var/crash/scripts/kdump-post.sh
+>> #kdump_pre /var/crash/scripts/kdump-pre.sh
+>> #extra_bins /usr/bin/lftp
+>> #extra_modules gfs2
+>> #failure_action shell
+>> #force_rebuild 1
+>> #force_no_rebuild 1
+>> #dracut_args --omit-drivers "cfg80211 snd" --add-drivers "ext2 ext3"
+>> #fence_kdump_args -p 7410 -f auto -c 0 -i 10
+>> #fence_kdump_nodes node1 node2
+>>
+>>
+>>
+>> Regards,
+>>
+>> Venkat.
+>>
+>
 
