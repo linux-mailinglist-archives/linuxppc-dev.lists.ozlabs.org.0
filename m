@@ -1,44 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-15641-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15635-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75CD6D18E4D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 13:47:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F985D18E2C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 13:46:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dr8C02tqrz2yv2;
-	Tue, 13 Jan 2026 23:46:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dr8BQ3PfQz2yRC;
+	Tue, 13 Jan 2026 23:46:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.69.126.157
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768308412;
-	cv=none; b=WvnEjBqF6pdsRlGhhlQfJHBJxugN1zkMmfMik1dmFCSA/+BYtQ0GiZUuKjMfYFWR7eItwfGFq1y11vu9ArVe07510wkKr8a/vJCUblid3T94akP1RBPXqeH8E1OHeQ+yazk1O8WgY4us4N42NIQfgAzfMsHN0RPjEk8+lx0ytV5+NjvoIWDCpjX996WeksKxQuPDHJt0inrzo6wu+MYORseyZgWL27paEO69r0m6MA+a/Ee22eLEq7SXFcCUFsL18UHFLXC8oPbwSGWIyODKvsKcxRRGeNipODN66LOCstxptBfJ8A+rxZ+LjiiA5hwt3zV81vGYQPr+Ex/seopXaA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768308382;
+	cv=none; b=n99w2moe2yVWXpdLqmQyitZUERkUIjh2YvgwnTxDl2zEU1NI2g8wJAD7BCaNhYCmekx37ImKcbOU4PP2OZOmUOW+2HoMhMzwr5czy428ydPwxx5Qx8e2vpMozvR4Uffjr9XWSiB0JBIeJrRRbSOHbZwy7BitoDEhaU6mjfhVnfW23t3SH57NYiLu4kQwcTK+oggey25FZJwLaOHJjScxAGew4v/Kyvf/B9GsK4OkeFsiViMGExwTrpzuIh+tM3hCXeWrT/uBeXYWWbUUJcRtYh2UBeINLrD9k3eqdUA8d7ezX3eomOC/DZCAFO/Y8I2yv2mIIXBAMMQag2iTqqRPbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768308412; c=relaxed/relaxed;
-	bh=sjvZ6ExXZKIsGr0LtGmK9CiSA8CcuTr0wY4xdHiLd6E=;
+	t=1768308382; c=relaxed/relaxed;
+	bh=JLfQ93ordRTDsTPx+LC+83v3+tYhsvui6tA+KjQgqkQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZeiIXUCmC0Fsk3xX3ytp316iI0KmSUFMa8XmsEou5ayRl8sF82opPSYCUouq4/5EVO/t9OAyrNybJK/5AhJmWj78/pBmBiQjRawvvV3MoEqOz0jaD249/cTcnVljpBcnshbDSfNt04ZCXlrNx6otHsbojRN2c9s0sg7JJ5KUWDop5BLjQjzDClsTxJL3XwZpGO6OnwZqG4ZoADFtPNWmGUU4trQZ3RYGXAPOVkF7BKUiSlFRwWrbVPUX57hK66VXAQSvx/ZLqJtP27iPmR+0eK7rOS1cm3WwS7Ndczn1nZw0UTcqJ/zZsoPjmdWR9ztlkSW/893pq6dKx04ovRD5+Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=U1KnkUqV; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
+	 In-Reply-To:To:Cc; b=B8eFODoocKTd5ld/7Xqae2lzLmPBrG70DVXzIO0cdek4YMdrJOtVtq7kx1VtXExEY/ykN57o+vjZSpVPH9XLLjELj4Mg0E3/LVcRpMqTfBvbq7STZToa0kQlVJ3rLjDJrcbtcgUru/ZhE2/mZy0oAG4g2OBkJHwWLFJg+SMaD1p1fHXdkxludmYAw0NOnN4MBvFdeSZLff3flkibLTCgkWqdj54y7WLlCdOHQdv47C1ze7xh8e/NBPmDmnM3JrXMa9CTPOiYQX+o439PFikVxklpc0JXlYTqVswqXJ76vJcRA3PNQwzESeTyDWPg4vB7WQoa68FpFzVcAegZ9oi1+A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=O9Xe+RO7; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=U1KnkUqV;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=O9Xe+RO7;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dr8Bz5rgmz2yks
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 23:46:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dr8BP6FThz2xWJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 23:46:21 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1768307861;
-	bh=b2TM6fz30nYE4pXc7lphgAZV10HkjJO6Y6M5OUfLXpI=;
+	bh=Ws8Eb0NwBaSsIELRvPFLQCi4wI4t0JSg+rOArDpr4jQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=U1KnkUqV1THtBM/FnYjupYo4PNuIDXrDa9wv1DZZEcE2tF6N/S6c6EF/7n1DbgEIo
-	 qOks4JyottD1KEeI5d5Su4cVMYj6/huuFG1gQCYx8NWdP5UZzwImedmtvEXcdV9YUP
-	 QToV2OswA9J3WiLqB4jdefpF4mhb4HxgZoFv100U=
+	b=O9Xe+RO75UPCb36u5nzxwzV4aFggvjHY0s8dnC9SRndh/IQGhUfIuuT5vLRHHP6Mc
+	 K1sGiiSW4ebwVx+7Utb4cgjie5ndXNJBjH7Lg49kYigRXnXpkxRbcHBRO0bqcmXgZj
+	 MgNncGcUilz/vm19oRV49rtYw8DPUlXsLyytbp+Y=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 13 Jan 2026 13:29:00 +0100
-Subject: [PATCH v4 16/17] kbuild: move handling of module stripping to
- Makefile.lib
+Date: Tue, 13 Jan 2026 13:29:01 +0100
+Subject: [PATCH v4 17/17] kbuild: make CONFIG_MODULE_HASHES compatible with
+ module stripping
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,7 +54,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260113-module-hashes-v4-16-0b932db9b56b@weissschuh.net>
+Message-Id: <20260113-module-hashes-v4-17-0b932db9b56b@weissschuh.net>
 References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
 In-Reply-To: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
 To: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
@@ -86,11 +86,11 @@ Cc: =?utf-8?q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
  linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768307859; l=3531;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768307859; l=3767;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=b2TM6fz30nYE4pXc7lphgAZV10HkjJO6Y6M5OUfLXpI=;
- b=Xez2lBrIjdFMFK8Oh5pBpyprlmOXfIFf5MbbX1IYj3vnIscUbHikzrmsTG8b9pMw9G8LxfD6v
- TVK+2le9j2rBEgHkmELEMe8iyvQ9/x6dQX0oXApfSpXVDLL5sLXzdtE
+ bh=Ws8Eb0NwBaSsIELRvPFLQCi4wI4t0JSg+rOArDpr4jQ=;
+ b=oEsyx/jtBizezIcvSkje+0qtObz/4ddhy8qPoVzSRgXe5bKNpF2FVLAcW5REc98tF23qYcGl2
+ oWzLDhETAiYD5GsTguxB0tE2w91SHoXCLNfs4qDbap5w+MSSx88FHYp
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -98,134 +98,109 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-To allow CONFIG_MODULE_HASHES in combination with INSTALL_MOD_STRIP,
-this logc will also be used by Makefile.modfinal.
+CONFIG_MODULE_HASHES needs to process the modules at build time in the
+exact form they will be loaded at runtime. If the modules are stripped
+afterwards they will not be loadable anymore.
 
-Move it to a shared location to enable reuse.
+Also evaluate INSTALL_MOD_STRIP at build time and build the hashes based
+on modules stripped this way.
+
+If users specify inconsistent values of INSTALL_MOD_STRIP between build
+and installation time, an error is reported.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- scripts/Makefile.lib     | 32 ++++++++++++++++++++++++++++++++
- scripts/Makefile.modinst | 37 +++++--------------------------------
- 2 files changed, 37 insertions(+), 32 deletions(-)
+ .gitignore                | 1 +
+ kernel/module/Kconfig     | 5 +++++
+ scripts/Makefile.modfinal | 9 +++++++--
+ scripts/Makefile.modinst  | 4 ++--
+ scripts/Makefile.vmlinux  | 1 +
+ 5 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 28a1c08e3b22..7fcf3c43e408 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -474,6 +474,38 @@ define sed-offsets
- 	s:->::; p;}'
- endef
+diff --git a/.gitignore b/.gitignore
+index 299c54083672..900251c72ade 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -29,6 +29,7 @@
+ *.gz
+ *.i
+ *.ko
++*.ko.stripped
+ *.lex.c
+ *.ll
+ *.lst
+diff --git a/kernel/module/Kconfig b/kernel/module/Kconfig
+index c00ca830330c..9fd34765ce2c 100644
+--- a/kernel/module/Kconfig
++++ b/kernel/module/Kconfig
+@@ -425,6 +425,11 @@ config MODULE_HASHES
  
-+#
-+# Module Installation
-+#
-+quiet_cmd_install_mod = INSTALL $@
-+      cmd_install_mod = cp $< $@
-+
-+# Module Strip
-+# ---------------------------------------------------------------------------
-+#
-+# INSTALL_MOD_STRIP, if defined, will cause modules to be stripped after they
-+# are installed. If INSTALL_MOD_STRIP is '1', then the default option
-+# --strip-debug will be used. Otherwise, INSTALL_MOD_STRIP value will be used
-+# as the options to the strip command.
-+ifeq ($(INSTALL_MOD_STRIP),1)
-+mod-strip-option := --strip-debug
-+else
-+mod-strip-option := $(INSTALL_MOD_STRIP)
-+endif
-+
-+# Strip
-+ifdef INSTALL_MOD_STRIP
-+
-+quiet_cmd_strip_mod = STRIP   $@
-+      cmd_strip_mod = $(STRIP) $(mod-strip-option) $@
-+
-+else
-+
-+quiet_cmd_strip_mod =
-+      cmd_strip_mod = :
-+
-+endif
-+
- # Use filechk to avoid rebuilds when a header changes, but the resulting file
- # does not
- define filechk_offsets
-diff --git a/scripts/Makefile.modinst b/scripts/Makefile.modinst
-index ba4343b40497..07380c7233a0 100644
---- a/scripts/Makefile.modinst
-+++ b/scripts/Makefile.modinst
-@@ -8,6 +8,7 @@ __modinst:
+ 	  Also see the warning in MODULE_SIG about stripping modules.
  
- include $(objtree)/include/config/auto.conf
- include $(srctree)/scripts/Kbuild.include
-+include $(srctree)/scripts/Makefile.lib
- 
- install-y :=
- 
-@@ -36,7 +37,7 @@ install-y += $(addprefix $(MODLIB)/, modules.builtin modules.builtin.modinfo)
- install-$(CONFIG_BUILTIN_MODULE_RANGES) += $(MODLIB)/modules.builtin.ranges
- 
- $(addprefix $(MODLIB)/, modules.builtin modules.builtin.modinfo modules.builtin.ranges): $(MODLIB)/%: % FORCE
--	$(call cmd,install)
-+	$(call cmd,install_mod)
- 
++# To validate the consistency of INSTALL_MOD_STRIP for MODULE_HASHES
++config MODULE_INSTALL_STRIP
++	string
++	default "$(INSTALL_MOD_STRIP)"
++
+ config MODULE_ALLOW_MISSING_NAMESPACE_IMPORTS
+ 	bool "Allow loading of modules with missing namespace imports"
+ 	help
+diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
+index 5b8e94170beb..890724edac69 100644
+--- a/scripts/Makefile.modfinal
++++ b/scripts/Makefile.modfinal
+@@ -63,10 +63,14 @@ ifdef CONFIG_DEBUG_INFO_BTF_MODULES
  endif
+ 	+$(call cmd,check_tracepoint)
  
-@@ -65,40 +66,12 @@ install-$(CONFIG_MODULES) += $(modules)
- __modinst: $(install-y)
- 	@:
- 
--#
--# Installation
--#
--quiet_cmd_install = INSTALL $@
--      cmd_install = cp $< $@
--
--# Strip
--#
--# INSTALL_MOD_STRIP, if defined, will cause modules to be stripped after they
--# are installed. If INSTALL_MOD_STRIP is '1', then the default option
--# --strip-debug will be used. Otherwise, INSTALL_MOD_STRIP value will be used
--# as the options to the strip command.
--ifdef INSTALL_MOD_STRIP
--
- ifdef CONFIG_MODULE_HASHES
- ifeq ($(KBUILD_EXTMOD),)
-+ifdef INSTALL_MOD_STRIP
- $(error CONFIG_MODULE_HASHES and INSTALL_MOD_STRIP are mutually exclusive)
- endif
- endif
--
--ifeq ($(INSTALL_MOD_STRIP),1)
--strip-option := --strip-debug
--else
--strip-option := $(INSTALL_MOD_STRIP)
--endif
--
--quiet_cmd_strip = STRIP   $@
--      cmd_strip = $(STRIP) $(strip-option) $@
--
--else
--
--quiet_cmd_strip =
--      cmd_strip = :
--
- endif
- 
- #
-@@ -133,8 +106,8 @@ endif
- $(foreach dir, $(sort $(dir $(install-y))), $(shell mkdir -p $(dir)))
- 
- $(dst)/%.ko: %.ko FORCE
--	$(call cmd,install)
--	$(call cmd,strip)
++%.ko.stripped: %.ko $(wildcard include/config/MODULE_INSTALL_STRIP)
 +	$(call cmd,install_mod)
 +	$(call cmd,strip_mod)
- 	$(call cmd,sign)
++
+ quiet_cmd_merkle = MERKLE  $@
+-      cmd_merkle = $(objtree)/scripts/modules-merkle-tree $@ .ko
++      cmd_merkle = $(objtree)/scripts/modules-merkle-tree $@ $(if $(CONFIG_MODULE_INSTALL_STRIP),.ko.stripped,.ko)
  
- ifdef CONFIG_MODULES
+-.tmp_module_hashes.c: $(modules:%.o=%.ko) $(objtree)/scripts/modules-merkle-tree FORCE
++.tmp_module_hashes.c: $(if $(CONFIG_MODULE_INSTALL_STRIP),$(modules:%.o=%.ko.stripped),$(modules:%.o=%.ko)) $(objtree)/scripts/modules-merkle-tree $(wildcard include/config/MODULE_INSTALL_STRIP) FORCE
+ 	$(call cmd,merkle)
+ 
+ ifdef CONFIG_MODULE_HASHES
+@@ -75,6 +79,7 @@ endif
+ 
+ targets += $(modules:%.o=%.ko) $(modules:%.o=%.mod.o) .module-common.o
+ targets += $(modules:%.o=%.merkle) .tmp_module_hashes.c
++targets += $(modules:%.o=%.ko.stripped)
+ 
+ # Add FORCE to the prerequisites of a target to force it to be always rebuilt.
+ # ---------------------------------------------------------------------------
+diff --git a/scripts/Makefile.modinst b/scripts/Makefile.modinst
+index 07380c7233a0..45606f994ad9 100644
+--- a/scripts/Makefile.modinst
++++ b/scripts/Makefile.modinst
+@@ -68,8 +68,8 @@ __modinst: $(install-y)
+ 
+ ifdef CONFIG_MODULE_HASHES
+ ifeq ($(KBUILD_EXTMOD),)
+-ifdef INSTALL_MOD_STRIP
+-$(error CONFIG_MODULE_HASHES and INSTALL_MOD_STRIP are mutually exclusive)
++ifneq ($(INSTALL_MOD_STRIP),$(CONFIG_MODULE_INSTALL_STRIP))
++$(error Inconsistent values for INSTALL_MOD_STRIP between build and installation)
+ endif
+ endif
+ endif
+diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
+index f4e38b953b01..4ce849f6253a 100644
+--- a/scripts/Makefile.vmlinux
++++ b/scripts/Makefile.vmlinux
+@@ -81,6 +81,7 @@ endif
+ ifdef CONFIG_MODULE_HASHES
+ vmlinux.unstripped: $(objtree)/scripts/modules-merkle-tree
+ vmlinux.unstripped: modules.order
++vmlinux.unstripped: $(wildcard include/config/MODULE_INSTALL_STRIP)
+ endif
+ 
+ # vmlinux
 
 -- 
 2.52.0
