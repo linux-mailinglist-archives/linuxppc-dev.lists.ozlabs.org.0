@@ -1,44 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-15631-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15636-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1F5D18CC9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 13:39:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6939D18E32
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 13:46:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dr82M2N2tz2yFl;
-	Tue, 13 Jan 2026 23:39:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dr8BR0M19z2ySY;
+	Tue, 13 Jan 2026 23:46:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.69.126.157
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768307963;
-	cv=none; b=i9vnjm4m+X5SsKaI8o7WNnObr8Sy725UnkX9QgMgv6gyvSKOPdl6iy5HxJd2clPCyk1Y+X/KLOh+gCLVJLx8kzeI5trqACMKcQcIOJWDHObjb9pdx3/lQRC9VxT08/Nwi4EZq94pY6wONguH7NgIUhMmCbBP9RWBviwYNhgxa4gRo1ZcZI4elySv7S+R82D8tHjqm7RAZiVU1LobfNe3Tpw4cwY/YZBDHEbrY3NEIV1dVGr0A6h4hbASCXfTIg0KwQhWcz9rtgNg1PivLn4w8vGvDSiz7ABnbpYRCIUtQOLgYvelXPCxAiZNcI73Xj708Yt70p3cDzb1wq/JIwYJWg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768308382;
+	cv=none; b=HmK1HOjrMY0xEmN7RgUXlCyv+rwqBCrd7BwwZG4aH2Myd8v3zWJqHIUYSgW/KAqD5z9f68+HhNKMun4gOu63iNP430dPee/OOXHu9x6O+GMJNEiWOpUUeZoZyTVgotoa9/+qu5pxb68iUZmb0T/OUJMzFi0rRxDa9CWcL2DOyIyU3RhQiNZ8LsvJM/O414B+TjrMysOc9+vyyc6/+3nsmXFyU+2EGhQW3toS7YhO5X+60JeHK8g/NwaBjjVDyMhhyxi3cBi82/Y8XRnPG92AyGCBOH9bZ8FU2JzFIfvGYPbFReydVRyMU/mOfO/2N/2wONLo8Vpmu6Rdes0uoI45rQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768307963; c=relaxed/relaxed;
-	bh=oQQonewcZ52jJ8YlJZmAIUFBKIoH7DJ4pVXHwsY1lUo=;
+	t=1768308382; c=relaxed/relaxed;
+	bh=kMn3B7qp34OWeHCmn2/bD8nIHWQBi0sO8Qb6N4wdW48=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KNuJiVeMFlCs2yWIpk26RUR1dYNpnynBVESxJEVXjE126k5ZJM9fNwLc5tPhHHgRef9FLtUMc/z6kY/jmUxbWtDcylgXHmbXBr98pempjlE/gBrH4FaJMVkKwGIq4wENGuKzTdNu5gZqIIr9AVi/IZ/15KaODQp5FV+7Z/6Hr42E0Xcvlk4p0NO1D4f+1adpegvGeDpiQrexImULOeWHzNEqhE4UjrsdK7iktKaCiRsGvU/ZbbyCcbdI77rPtcChtYI6jdzkCQKafOdPu8BgJWkhw/E4cuX2R48E3PHIE3aTtglK130x9Ms0aa52j50mTGFZk5lW0/HPyXA/u2KLKw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=l9994pIG; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
+	 In-Reply-To:To:Cc; b=E5KEXJxZWykSdj+klCT1sAqSdepGEiWfoRWCqGWdrGytGrOPP2FOnqBOqH8yS7BazgFnNrbZOE7h+2P/pAnIYHtqDqzUWsVjjqX47/DE94xl1r3Sd/WxKFebifCHjzppChhr/Na8FNSI1guwJX2WgSthGQvpm9G/cCt4f0FGO6Qvr4K3bJactZ+iJc+wWN0k/LzrLO8RNlWUz/VgwxkY+Up+am8w2Fs7mywvahvDu+RqSjsO/8P8nctuIiG+hBgA+5GLwOZV0IiAXjg9N9WI69G18ez2HRhKtISWNYTEMixA35cpMZj6sMJ/LfW9CauoxsvgsUKUjNQrcSkyCStp3A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=SQt5bsbc; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=l9994pIG;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=SQt5bsbc;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dr82L594zz2xjb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 23:39:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dr8BQ2Ff4z2xWP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 23:46:22 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1768307860;
-	bh=JwM9XO7r7ZwPZmNYUvzPqz3+qo59nyUUWymAQNZfvpo=;
+	bh=CQhD/KGKFcEkKh29q46LO6yIz88u0jgba+z/o0psTK8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=l9994pIGKwmExvE4gCFwYJW8YrkjrNZSltVWgoZ9dwmLszngXobPMLnFy4MM+XzKw
-	 oZ4dkOSX7fmw7biNWd8XPq82MZT9vnWWdszYXSYPq4h1aPT8NbRBIc6A3k3LRWNAW5
-	 4J3J4GA0Fp4GIdhYnyAHXqWxjgGyzj+Kq+0uzvx0=
+	b=SQt5bsbcTnZS6yVdJ+LbYNoNhZEev1knGv0MjS71iiJfYlcuZyQ0aclRnK2Kr2PEq
+	 pavJTbLtAToGXld4GXml/FzTK76fJkWiqqk/Kz8PX+XPWi3Lxu2deHodM7LlKElFYY
+	 diHZjbVi1BV4pnlweGQP0Xpvny06OHosoDM+JiQE=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 13 Jan 2026 13:28:51 +0100
-Subject: [PATCH v4 07/17] kbuild: generate module BTF based on
- vmlinux.unstripped
+Date: Tue, 13 Jan 2026 13:28:52 +0100
+Subject: [PATCH v4 08/17] module: Deduplicate signature extraction
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,7 +53,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260113-module-hashes-v4-7-0b932db9b56b@weissschuh.net>
+Message-Id: <20260113-module-hashes-v4-8-0b932db9b56b@weissschuh.net>
 References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
 In-Reply-To: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
 To: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
@@ -86,11 +85,11 @@ Cc: =?utf-8?q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
  linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768307859; l=1527;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768307859; l=6766;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=JwM9XO7r7ZwPZmNYUvzPqz3+qo59nyUUWymAQNZfvpo=;
- b=g6Ey3pXzp3Z5/IG+TMiYkH+ibJrOnrhRN1yTqeSUxErPazBTG67wvilm9r1m2g0DvKyRqsGVX
- +0CeXumvNPNCwwSRSpBSpnfmI9vv05PLlcldegrpKZHEQFBGXa5BnO1
+ bh=CQhD/KGKFcEkKh29q46LO6yIz88u0jgba+z/o0psTK8=;
+ b=Lgwo+6a5vIb8KpZTzvY+IyZL0lz4STVveaUDYDrKMqidgIHufGS8BuIXNHMAXiv7IHzs4yXTq
+ YDRiGJTfok3AifwJoS+EQEosFVHWUVaOei8HsTi+t5sMgtnUNgIVDKo
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -98,37 +97,219 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The upcoming module hashes functionality will build the modules in
-between the generation of the BTF data and the final link of vmlinux.
-At this point vmlinux is not yet built and therefore can't be used for
-module BTF generation. vmlinux.unstripped however is usable and
-sufficient for BTF generation.
+The logic to extract the signature bits from a module file are
+duplicated between the module core and IMA modsig appraisal.
+
+Unify the implementation.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- scripts/Makefile.modfinal | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/module_signature.h    |  4 +--
+ kernel/module/signing.c             | 52 +++++++------------------------------
+ kernel/module_signature.c           | 41 +++++++++++++++++++++++++++--
+ security/integrity/ima/ima_modsig.c | 24 ++++-------------
+ 4 files changed, 56 insertions(+), 65 deletions(-)
 
-diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
-index adfef1e002a9..930db0524a0a 100644
---- a/scripts/Makefile.modfinal
-+++ b/scripts/Makefile.modfinal
-@@ -40,11 +40,11 @@ quiet_cmd_ld_ko_o = LD [M]  $@
+diff --git a/include/linux/module_signature.h b/include/linux/module_signature.h
+index 7eb4b00381ac..186a55effa30 100644
+--- a/include/linux/module_signature.h
++++ b/include/linux/module_signature.h
+@@ -40,7 +40,7 @@ struct module_signature {
+ 	__be32	sig_len;	/* Length of signature data */
+ };
  
- quiet_cmd_btf_ko = BTF [M] $@
-       cmd_btf_ko = 							\
--	if [ ! -f $(objtree)/vmlinux ]; then				\
--		printf "Skipping BTF generation for %s due to unavailability of vmlinux\n" $@ 1>&2; \
-+	if [ ! -f $(objtree)/vmlinux.unstripped ]; then			\
-+		printf "Skipping BTF generation for %s due to unavailability of vmlinux.unstripped\n" $@ 1>&2; \
- 	else								\
--		LLVM_OBJCOPY="$(OBJCOPY)" $(PAHOLE) -J $(PAHOLE_FLAGS) $(MODULE_PAHOLE_FLAGS) --btf_base $(objtree)/vmlinux $@; \
--		$(RESOLVE_BTFIDS) -b $(objtree)/vmlinux $@;		\
-+		LLVM_OBJCOPY="$(OBJCOPY)" $(PAHOLE) -J $(PAHOLE_FLAGS) $(MODULE_PAHOLE_FLAGS) --btf_base $(objtree)/vmlinux.unstripped $@; \
-+		$(RESOLVE_BTFIDS) -b $(objtree)/vmlinux.unstripped $@;	\
- 	fi;
+-int mod_check_sig(const struct module_signature *ms, size_t file_len,
+-		  const char *name);
++int mod_split_sig(const void *buf, size_t *buf_len, bool mangled,
++		  size_t *sig_len, const u8 **sig, const char *name);
  
- # Same as newer-prereqs, but allows to exclude specified extra dependencies
+ #endif /* _LINUX_MODULE_SIGNATURE_H */
+diff --git a/kernel/module/signing.c b/kernel/module/signing.c
+index fe3f51ac6199..6d64c0d18d0a 100644
+--- a/kernel/module/signing.c
++++ b/kernel/module/signing.c
+@@ -37,54 +37,22 @@ void set_module_sig_enforced(void)
+ 	sig_enforce = true;
+ }
+ 
+-/*
+- * Verify the signature on a module.
+- */
+-static int mod_verify_sig(const void *mod, struct load_info *info)
+-{
+-	struct module_signature ms;
+-	size_t sig_len, modlen = info->len;
+-	int ret;
+-
+-	pr_devel("==>%s(,%zu)\n", __func__, modlen);
+-
+-	if (modlen <= sizeof(ms))
+-		return -EBADMSG;
+-
+-	memcpy(&ms, mod + (modlen - sizeof(ms)), sizeof(ms));
+-
+-	ret = mod_check_sig(&ms, modlen, "module");
+-	if (ret)
+-		return ret;
+-
+-	sig_len = be32_to_cpu(ms.sig_len);
+-	modlen -= sig_len + sizeof(ms);
+-	info->len = modlen;
+-
+-	return verify_pkcs7_signature(mod, modlen, mod + modlen, sig_len,
+-				      VERIFY_USE_SECONDARY_KEYRING,
+-				      VERIFYING_MODULE_SIGNATURE,
+-				      NULL, NULL);
+-}
+-
+ int module_sig_check(struct load_info *info, int flags)
+ {
+-	int err = -ENODATA;
+-	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
++	int err;
+ 	const char *reason;
+ 	const void *mod = info->hdr;
++	size_t sig_len;
++	const u8 *sig;
+ 	bool mangled_module = flags & (MODULE_INIT_IGNORE_MODVERSIONS |
+ 				       MODULE_INIT_IGNORE_VERMAGIC);
+-	/*
+-	 * Do not allow mangled modules as a module with version information
+-	 * removed is no longer the module that was signed.
+-	 */
+-	if (!mangled_module &&
+-	    info->len > markerlen &&
+-	    memcmp(mod + info->len - markerlen, MODULE_SIG_STRING, markerlen) == 0) {
+-		/* We truncate the module to discard the signature */
+-		info->len -= markerlen;
+-		err = mod_verify_sig(mod, info);
++
++	err = mod_split_sig(info->hdr, &info->len, mangled_module, &sig_len, &sig, "module");
++	if (!err) {
++		err = verify_pkcs7_signature(mod, info->len, sig, sig_len,
++					     VERIFY_USE_SECONDARY_KEYRING,
++					     VERIFYING_MODULE_SIGNATURE,
++					     NULL, NULL);
+ 		if (!err) {
+ 			info->sig_ok = true;
+ 			return 0;
+diff --git a/kernel/module_signature.c b/kernel/module_signature.c
+index 00132d12487c..b2384a73524c 100644
+--- a/kernel/module_signature.c
++++ b/kernel/module_signature.c
+@@ -8,6 +8,7 @@
+ 
+ #include <linux/errno.h>
+ #include <linux/printk.h>
++#include <linux/string.h>
+ #include <linux/module_signature.h>
+ #include <asm/byteorder.h>
+ 
+@@ -18,8 +19,8 @@
+  * @file_len:	Size of the file to which @ms is appended.
+  * @name:	What is being checked. Used for error messages.
+  */
+-int mod_check_sig(const struct module_signature *ms, size_t file_len,
+-		  const char *name)
++static int mod_check_sig(const struct module_signature *ms, size_t file_len,
++			 const char *name)
+ {
+ 	if (be32_to_cpu(ms->sig_len) >= file_len - sizeof(*ms))
+ 		return -EBADMSG;
+@@ -44,3 +45,39 @@ int mod_check_sig(const struct module_signature *ms, size_t file_len,
+ 
+ 	return 0;
+ }
++
++int mod_split_sig(const void *buf, size_t *buf_len, bool mangled,
++		  size_t *sig_len, const u8 **sig, const char *name)
++{
++	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
++	struct module_signature ms;
++	size_t modlen = *buf_len;
++	int ret;
++
++	/*
++	 * Do not allow mangled modules as a module with version information
++	 * removed is no longer the module that was signed.
++	 */
++	if (!mangled &&
++	    *buf_len > markerlen &&
++	    memcmp(buf + modlen - markerlen, MODULE_SIG_STRING, markerlen) == 0) {
++		/* We truncate the module to discard the signature */
++		modlen -= markerlen;
++	}
++
++	if (modlen <= sizeof(ms))
++		return -EBADMSG;
++
++	memcpy(&ms, buf + (modlen - sizeof(ms)), sizeof(ms));
++
++	ret = mod_check_sig(&ms, modlen, name);
++	if (ret)
++		return ret;
++
++	*sig_len = be32_to_cpu(ms.sig_len);
++	modlen -= *sig_len + sizeof(ms);
++	*buf_len = modlen;
++	*sig = buf + modlen;
++
++	return 0;
++}
+diff --git a/security/integrity/ima/ima_modsig.c b/security/integrity/ima/ima_modsig.c
+index 3265d744d5ce..a57342d39b07 100644
+--- a/security/integrity/ima/ima_modsig.c
++++ b/security/integrity/ima/ima_modsig.c
+@@ -40,44 +40,30 @@ struct modsig {
+ int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t buf_len,
+ 		    struct modsig **modsig)
+ {
+-	const size_t marker_len = strlen(MODULE_SIG_STRING);
+-	const struct module_signature *sig;
++	size_t buf_len_sz = buf_len;
+ 	struct modsig *hdr;
+ 	size_t sig_len;
+-	const void *p;
++	const u8 *sig;
+ 	int rc;
+ 
+-	if (buf_len <= marker_len + sizeof(*sig))
+-		return -ENOENT;
+-
+-	p = buf + buf_len - marker_len;
+-	if (memcmp(p, MODULE_SIG_STRING, marker_len))
+-		return -ENOENT;
+-
+-	buf_len -= marker_len;
+-	sig = (const struct module_signature *)(p - sizeof(*sig));
+-
+-	rc = mod_check_sig(sig, buf_len, func_tokens[func]);
++	rc = mod_split_sig(buf, &buf_len_sz, true, &sig_len, &sig, func_tokens[func]);
+ 	if (rc)
+ 		return rc;
+ 
+-	sig_len = be32_to_cpu(sig->sig_len);
+-	buf_len -= sig_len + sizeof(*sig);
+-
+ 	/* Allocate sig_len additional bytes to hold the raw PKCS#7 data. */
+ 	hdr = kzalloc(struct_size(hdr, raw_pkcs7, sig_len), GFP_KERNEL);
+ 	if (!hdr)
+ 		return -ENOMEM;
+ 
+ 	hdr->raw_pkcs7_len = sig_len;
+-	hdr->pkcs7_msg = pkcs7_parse_message(buf + buf_len, sig_len);
++	hdr->pkcs7_msg = pkcs7_parse_message(sig, sig_len);
+ 	if (IS_ERR(hdr->pkcs7_msg)) {
+ 		rc = PTR_ERR(hdr->pkcs7_msg);
+ 		kfree(hdr);
+ 		return rc;
+ 	}
+ 
+-	memcpy(hdr->raw_pkcs7, buf + buf_len, sig_len);
++	memcpy(hdr->raw_pkcs7, sig, sig_len);
+ 
+ 	/* We don't know the hash algorithm yet. */
+ 	hdr->hash_algo = HASH_ALGO__LAST;
 
 -- 
 2.52.0
