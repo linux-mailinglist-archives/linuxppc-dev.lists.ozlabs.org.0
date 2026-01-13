@@ -1,119 +1,121 @@
-Return-Path: <linuxppc-dev+bounces-15649-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15651-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E556D1A397
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 17:27:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E62D1A3E5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 17:28:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drF523gMRz2xl0;
-	Wed, 14 Jan 2026 03:27:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drF6J1Qf2z2xrk;
+	Wed, 14 Jan 2026 03:28:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.51
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768321622;
-	cv=none; b=Cj6i0AatBmdQBLTUk2AWmgI02c5cABkixzFY5By11JJV/tJq4BmcYockLbH9bVjnrG2sCY2J9ueI+vaA9ITSDpTdjpd4hhHjcQtzz1FHiKboZElZWRmkjiZBc1EpMY6mWhzydbQlGQ26c2K56gT0GfD4Xz8cd8jtMtEfR1pU5cYmQ86C16nGCPzjtFh3GM2Ev/Ju4VvI9ZmIEqpMDn1hgexmnppB/5l0fKFJHbWcD1W6BtX+Fr1waTtCRLIpJxMuOhvX7RLynS8Uo/DS+8jwfyw8Asl1Iy5dtXEduGYcPFk/3G7GMwJnGJ0d5amJxZZ+sulcdleklzZEPMoJ6x1thQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768321622; c=relaxed/relaxed;
-	bh=y9kSWtn88k+QkPqpOG7NN6Fxk/gRH5gvJVVHZoYjlVA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ltEZkYXS4d5cMukwEXZ6JEBES9D6fL4wJT7fzAFm+3uNkteUFnyj2wIf+Zuej39BQ3hBg8q/4jaLpkHkZzQa30OYjY1pG19/PkCn6UGueKObr2aeLH68VIO73GPLQFzRG68BxRDBENkaPxEJzA7UX4ZEblSM272ptQF/XemTe2QlsgMHWE76sRX3d/VLLjWsISd9FDiAgD/4tPFV9WltkNwSJcdlMnwAV3VrGsq69D2iDrXnAEmZXQBtHwK6Py51OsQ9qH3LvUr7GCfFg7MiLgM6JRTRdYpEXIhDcalXk4b5llACWg2y+kZLr/bueBNYyYI75cDUzp5H7fWnaUHezA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=RgM06nLN; dkim-atps=neutral; spf=pass (client-ip=209.85.128.51; helo=mail-wm1-f51.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=52.101.229.90 arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768321688;
+	cv=pass; b=YpipEOCc/1SSmApZGlpZXJ5yU9AWBy8HVr8BJBKPrUHafINYd7TCL5auaFmMeBFZsBo7kySFQUDADfCTCzguFLTovLF0kaJCyDxfjd93/fSBsDlh4wEbOks6k9H+4/3c61SOefySE9ZXirwxfad4I5aIOm2YzXmMR4/9dGXuYadNi7mDZy53BPlW3Qhl+e1gfwYoJm2aimorrJMGCaDUdojguuYtNuJCOBlximf4nwtRF9vlhB94d4LJ8jOh6oyoe3yaeqyjElA3lL55Ac00ra0u70nr+NRd5HUo8fecPvaponKi6tvL0Cls5FcWFPwXTrRvXksNZfVZ+B54ioHWhw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1768321688; c=relaxed/relaxed;
+	bh=SKydzTgvTCa1zYB0yieRBorpZeMVX60WKsYpzkEsXxI=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Mi0vv1ZK8rtfsRhIlQq0VwP5atwaVCAnXoZJ4eJOBDMNDrRBBnJQC94ihk3JsgI9hj04kX9Ulo/hr8kuGJZKLBS7rVRocgfaQcBz3jPoJY4aWhtDp1JeQiqVlradBsSf7IiTzUaahKVbXld1nEKgD0u692PDMnm2xe5ubQyVbBCdLYL03qZKY3KaSzz54th0nlhfHpp9ku44xdIVPzZfV1PCQDUA7ZHLVqNcVI2d/ketsB9H1fdzzaoXuk7toR4n/c+853kXTolxB1Cytw/bL8nC9VMIZdBu3wblyyEJRUsmI1sMLBcG8C9YIEi91BrQ4nH4kKPic7YgepbECOWORg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; dkim=pass (1024-bit key; unprotected) header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=Jc61lukE; dkim-atps=neutral; spf=pass (client-ip=52.101.229.90; helo=ty3p286cu002.outbound.protection.outlook.com; envelope-from=den@valinux.co.jp; receiver=lists.ozlabs.org) smtp.mailfrom=valinux.co.jp
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=RgM06nLN;
+	dkim=pass (1024-bit key; unprotected) header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=Jc61lukE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.51; helo=mail-wm1-f51.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=valinux.co.jp (client-ip=52.101.229.90; helo=ty3p286cu002.outbound.protection.outlook.com; envelope-from=den@valinux.co.jp; receiver=lists.ozlabs.org)
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11020090.outbound.protection.outlook.com [52.101.229.90])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drF511fwzz2xjK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 03:27:00 +1100 (AEDT)
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47d3ffa6720so71218545e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 08:27:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768321556; x=1768926356; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=y9kSWtn88k+QkPqpOG7NN6Fxk/gRH5gvJVVHZoYjlVA=;
-        b=RgM06nLNuoXQOP0k0AU9S5/gqQs5mxDljMujnneMeSS+yNx+3e93SP2p12xaTMaoPc
-         n8vxzg0gd54v1wDNRz/ca3yLMhGzAp2KUtp6z6IHR7a6sPoJFTKcvgr4KQDVViYCMFI0
-         G1bb7X7PuHd4dbozMJjKQZRgaabgs/VUmjrJIw4DagGjRc+wzct6H7idDG4SGGEneb9I
-         eC0oiltSEsi4gn235O5Y/E5qzRGrTtUj10clR/ic66OiwlrZfgcpuw//0P2x5+woSk1X
-         2OS5f4YZBIhhcuPuNERAVodZS1QHGiUi15qqllDjwpWZGViM0AU+0E8hk8t9ZeRGQeoY
-         lJyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768321556; x=1768926356;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y9kSWtn88k+QkPqpOG7NN6Fxk/gRH5gvJVVHZoYjlVA=;
-        b=ZHluSwIgOkU55Pv4f7qwE9KeY7a/RVz+6snG4i/vtFhkKIxWWu595krsRfHwJcPft3
-         TYU850Vfm9tRPD56NzHVSRyxIzrb2jNe5RDLmE/0y8nRApiVik7qqWUxaIImuw9Kix8p
-         XKIudA1CjbRIeFdPfLfHnT/qxHj+jRO/PL/97lXabK98+mx5q8MZ4mWqT84DluD/dXQq
-         LxjJTN25R7hAP3p48Qg3MfcZwKohpZ76MjIGG8RPf87/RWt1F31sJXp5WjvYxoH3u0rm
-         v19zK9MHbleCjpooN7fww7soLExo6Tdqdhj6tUeBx0AGpA64HsSow/Iaz5/51eQo+fxv
-         95FA==
-X-Forwarded-Encrypted: i=1; AJvYcCVfhcJG7mwGn7YmoD+YfhRPg3urt4MmjZwNs33Ft6TcnwllhSbpFJMLkDYMXdh92jO+NIXGGL8W1jqz8gY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzc5EI/ugse/hhw4h0NjIVd3P/iQnKSjXbCSfrnHH7gHPvkHR17
-	85kR8QwJvA8f6xFrqqIJ9Cfbnd9kPPhfAPxnYg+UcMjzMOtJ8qspTQIARcztQKJWkV8=
-X-Gm-Gg: AY/fxX6oXPwIL39sEV8/SYxS0WngwfxBw9XrwRCnRwyNB5ZWwA8jgArJ0Fe/bKj23Pp
-	wgIb5MlATslugZOMTRxdTH5P6vBnO6bAmog9Do5Q1AgC50lTUErq6hDZvbyCKF2A3NKPPimtPBm
-	a9pXijF4+voyl4kPRAp4Ufcpo9VS5V7cUFTRRx24KqlG/JoEozcD+2YVBPn0KOB18E0tIBTmsd4
-	65ZDjHSCC12sPIGO+pkiqPzXUGMBrNFTSRfQb5l3n3A9fEe1MrL9Qd3X/tIRkLvTH0QIW2lIBn4
-	EJ/B1lTUmxdhG1xdJdZWJrTr7noL4IKHlguL9xIOuxtax8T9h1CyTRhxeywYnesDN1crickX1tb
-	X1sOSfZOrs8+lcJY4MMjAbhwNuUVh/QycduFjJvEda6aIhEXFKngf9steicV2SMrrrUzznZlYI2
-	PeIHP80X8gikLfIr6hiCWqLFMs
-X-Google-Smtp-Source: AGHT+IG4o2sMRbjal/wNqE1AyBhrQEhgOmuQP9i1Wb50Y85ZgDNaJvwCCbv/cl0e10bMkrsnwOfPLQ==
-X-Received: by 2002:a05:600c:1e1c:b0:477:58af:a91d with SMTP id 5b1f17b1804b1-47d84b0aa4bmr229523325e9.5.1768321556267;
-        Tue, 13 Jan 2026 08:25:56 -0800 (PST)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0dad8bsm45637605f8f.8.2026.01.13.08.25.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 08:25:55 -0800 (PST)
-Date: Tue, 13 Jan 2026 17:25:52 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jason Wessel <jason.wessel@windriver.com>,
-	Daniel Thompson <danielt@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jiri Slaby <jirislaby@kernel.org>, Breno Leitao <leitao@debian.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
-	netdev@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	sparclinux@vger.kernel.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drF6G3J0hz2xjK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 03:28:06 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=X+qKJ413iop8ATM1MF4AtJSxsuSMcvkeRnRbHgY74l1s4YVuKne+R8q2xWa79sW3sDr/cY5Oa1RMAWoeYgZdnYE0HpSdb5zjqwaSJ/8fwXGEISPZd6dq0t7sfYuMcyTJlCR51tBV92eH82uz8s4f4hAH6mBZSeV87Ro7kTwuhCIilWPzKmkZLMXndR6CnSFfOleU4riUOiPzfedOB4WEO7e1Serpb0ziDCkIChB0KdpvPhg13B5daWLZue996mJWqmkHA0iuThBuIoNJq6gx/ctEMCxICDiqEjfDB7v/QzQVsmPWeQuBTV5jydhpu3ToHae2lzBCf/sk/T5X3yu8pA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SKydzTgvTCa1zYB0yieRBorpZeMVX60WKsYpzkEsXxI=;
+ b=O9JWWG/3Z7LkihAGnFLc/kqzzJmX95ShSAYlnYlyjPJ9TRDSc741yUinbiDbJQt8toBki5rXno5yciCLmT4ovZXBpJyLoYEAv2zIXOMrSWYHGMgta6SrTRWS0EbGNkq91/7T4sFaOlqPLHn6gXoBZHyTnMUa0esoj+TtZH0QccQrQ4X6z3pi3Qsm38GNJ+FJvNTLZPqVS5rgB70Ij4qbi1MInU23UjWaBYXXzhr6aTTcDJvc4kSEMpwoIgKCSYgprn/gBsO0NPA1ZaFWt6vYRE2xqBW/F4nU77Fkr8+GRlAV3OzLzsp8FsjAScaWgapl29tKx5KNSZAW9Cbzfw0UiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SKydzTgvTCa1zYB0yieRBorpZeMVX60WKsYpzkEsXxI=;
+ b=Jc61lukEwVWbuLSAIHC9LLhxEVbVwRcGLQWrkNM0QNwJrzv3dVdWxrj95XjwaLlXfme4YsD0zPluhNDy4c1S+ruKHZqsd4yfQAZzF8xYUgaG22zSlfPaX/J3Bb1AL7tSjbR+0PV4G5bEtHN3e91XJ5qp0pcrsJmsUCAZBQ+w4gs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TYWP286MB3400.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:2dd::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Tue, 13 Jan
+ 2026 16:27:25 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
+ 16:27:25 +0000
+From: Koichiro Den <den@valinux.co.jp>
+To: jingoohan1@gmail.com,
+	mani@kernel.org,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	cassel@kernel.org
+Cc: vigneshr@ti.com,
+	s-vadapalli@ti.com,
+	hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com,
+	roy.zang@nxp.com,
+	jesper.nilsson@axis.com,
+	heiko@sntech.de,
+	srikanth.thokala@intel.com,
+	marek.vasut+renesas@gmail.com,
+	yoshihiro.shimoda.uh@renesas.com,
+	geert+renesas@glider.be,
+	magnus.damm@gmail.com,
+	christian.bruel@foss.st.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com,
+	hayashi.kunihiko@socionext.com,
+	mhiramat@kernel.org,
+	kishon@kernel.org,
+	jirislaby@kernel.org,
+	rongqianfeng@vivo.com,
+	18255117159@163.com,
+	shawn.lin@rock-chips.com,
+	nicolas.frattaroli@collabora.com,
+	linux.amoon@gmail.com,
+	vidyas@nvidia.com,
+	Frank.Li@nxp.com,
+	linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 01/19] printk/nbcon: Use an enum to specify the required
- callback in console_is_usable()
-Message-ID: <aWZyEHsOJFLRLRKT@pathway.suse.cz>
-References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
- <20251227-printk-cleanup-part3-v1-1-21a291bcf197@suse.com>
+	linux-tegra@vger.kernel.org
+Subject: [PATCH v7 0/6] PCI: endpoint: BAR subrange mapping support
+Date: Wed, 14 Jan 2026 01:27:13 +0900
+Message-ID: <20260113162719.3710268-1-den@valinux.co.jp>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYCP286CA0102.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b4::9) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -127,85 +129,217 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251227-printk-cleanup-part3-v1-1-21a291bcf197@suse.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYWP286MB3400:EE_
+X-MS-Office365-Filtering-Correlation-Id: dafcb2cf-69d3-46cb-e927-08de52c0a2c2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?zHaVy+tbiR075tGEzCLse254zFq2nAcdkJDL02nFfaIAmKEx+XmUhHFvUBih?=
+ =?us-ascii?Q?2oErmW2bltubg6yXl9IJmrklZV44i/rC9HGenGOMrZJ2d8mK9Ew0/ZDzlugU?=
+ =?us-ascii?Q?c7hmsyBej/+Co2ZXAsblsUuEuhIl90Ipv78W/OHdGMwtet33912o+Jv9t009?=
+ =?us-ascii?Q?xzDiVQXLMTgu3JvvtKiAB4ZiuDB8Kr2be9LJ9R6H8cp3/vvAk0j4Sef/QycI?=
+ =?us-ascii?Q?UvhceDrjX23YAuJom3ig+kJSwx6D8gOaOEl6GhgGXjLA7+rwYwhzzgENVUts?=
+ =?us-ascii?Q?m/rdj4kXReKtVMoHCy7rQEK6HYrrVmXNkzbLip1oJvVjKtxZFwh6Vt0DLu+S?=
+ =?us-ascii?Q?UaXURPCLqQ/l0RhTHdeZFhxipaFE1zFjBiYYBwcESFETiRvdPIzMLu+EmWp4?=
+ =?us-ascii?Q?JBuog/1kKzwuxDmrY+Eo9udVJ4fRc+gfW0IIUev5Ipb+uxbA+OWDg3sGrcDw?=
+ =?us-ascii?Q?5X1pp+OvWbK8ZFolIkKgASE7g07XBEwLhwO11rAJto069i7WcoX5ahW95Tqq?=
+ =?us-ascii?Q?H327P8+RJXOe2mqVKqBhPgkwaTuLjYMTNzB78OsnoR+7GJtAHL6hb/DYSVcP?=
+ =?us-ascii?Q?b4G9BXaYqfNUsGF3gGap9H6SOrxmuyI2aXqJa0DIhUc481QhDH62Yp1xjVmQ?=
+ =?us-ascii?Q?cMf1RwPtdNtHuklCTgYIWNl3tATe0H6SaoC/joRebPwQUnqVRtNei/RQ9hSU?=
+ =?us-ascii?Q?4KfMQwbmseHbHLsg/aVdnk2tswV7vdrsR9bUUGlQ5emazykBtkQptK4aN0FK?=
+ =?us-ascii?Q?Zl+rB9M5opHXoda6CJaDBEnEGxrt8miPVXraOguhW7Zt9k+DdGM+8fxr8+pX?=
+ =?us-ascii?Q?E018cR5EE8qJKa4WQ3LbHk+GNsjTyCJNwOFRE7m6ZyIwNHRd9kienjQqg8CK?=
+ =?us-ascii?Q?bF3XLBrj8IiF4TODqG1VB1NzUgIDevnI+A2V81ojr//LvV1+GINheAjKlQtB?=
+ =?us-ascii?Q?UbWsH8TIiwLmfYPXRy26omjlpvTYvahVIvvVtv9/ACXW8RuTMrxpNoCEpYC0?=
+ =?us-ascii?Q?fP6tUugwUfFwsdqCF3ROf51qxzfHJMgqUQTJisQCRBKmx4/cbcNBdKHznM21?=
+ =?us-ascii?Q?uyORJzLcJtKxyPJS48K8+/AQ6nNDqnXwTjv3N+FvalBKcVSkfDlmkkejZzOM?=
+ =?us-ascii?Q?gtOBg16Q/xFhr7b6T7NieRVSARYaEHMDNLRlV7VBqbzdoeSEJq9sU4b/gExK?=
+ =?us-ascii?Q?kWGBliEGBDptUbeZgiY2srbfT/hE/Bzcq2CfY4fNv3gCVE35g/r3nmNIDD3P?=
+ =?us-ascii?Q?GD/rUzXg2Hp2Q0na+2ua0DZ5oqAN54cPW+6wKI6EOQqlzQbXFxEzZ/0AGPXJ?=
+ =?us-ascii?Q?n7req7qSXlsZ7S/6NUYpNxE0gSTkKMs+y95nMp3SzDSX85PzMQZ3hA2fQvbj?=
+ =?us-ascii?Q?CWIx09qwWeMHHaKfbK4FRjtueYEiuwBX/X4Kz0sNOBu+2QPQ6IAlTfFNUqcG?=
+ =?us-ascii?Q?PVhgG4zSzbYqxeH4pptD3K0m9NLeTj33?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?nni88LhrRAqOWj+fjFngZOCTrnRWmCUXq9cRa1RbxsRjsdvVcqfOnLFRUqq7?=
+ =?us-ascii?Q?JFpEm1/iBUd6bmp7SSB7L/qLD/E3rqvEzznFGYgfGkBUQMcD/9b6rM6QDysi?=
+ =?us-ascii?Q?/Fb51w8Q0ceieutOhWzIkW0ZqhH5w9bAnMidmJkRPJCrQDtcwWG8Q2LJXcNL?=
+ =?us-ascii?Q?ExBs9GRq+04Dbq4CaDxhlr50g4VnfjkW97Q3tSQCl/kcmcDgTf+zxqS/FSlJ?=
+ =?us-ascii?Q?2k7mHGqb/3aLUncfYreR2FTKN74ZZQekQVGU4FoaM67qFCiAqrz7NJ9nAJ0b?=
+ =?us-ascii?Q?E6D0wl0U72Ct4UwpcgqOjwR2iqnJtYl0f9xihDZZf8em/G4dA7cdxdLcRkx4?=
+ =?us-ascii?Q?PeoNeZD20PdjUBeQA3+cHYs2aoq7WN39mP2CPNYVF17Gu5XHBQ1UgBjX4qUW?=
+ =?us-ascii?Q?Yny50tHSCYoPj9n0EUP+25vRk9y160IynHQxvaKCt+jInp5BirHxf50tYc7q?=
+ =?us-ascii?Q?s97s5py1Nf/o95TPivLGGofSKATSgLgv5kCDutRhv1RNZnc74PiUcNeP2tEz?=
+ =?us-ascii?Q?hjR2UK30nQTyh/h2Mfg1uYuZh9WaXLGcStaxY/eymIMhNXdDqPylFnn+fOml?=
+ =?us-ascii?Q?pAwERIR/3OvWqdahS76SI0VVFFsvwmU70V+1+JG7NWef7UL/KT8wcjPpKoiG?=
+ =?us-ascii?Q?7+AQYjn30X69sNiDJqrJtbaAvEYcL4zMDhF0MZEv4LK7J2tPjVwAo2hknoo1?=
+ =?us-ascii?Q?oaa/vGrPJXPcriPXeP64rGxK1FEnD2CBRGVgtfbdI2SNFZ659iTRnGmxSC0e?=
+ =?us-ascii?Q?N2P7CVLTbeJXdWGCz32nJKCqK7uUYNwCJEuHFNPxyliKxD6f6Fn1WOl0NCEZ?=
+ =?us-ascii?Q?0wuFM/ftgVBD1NISK1PdDAp78siUL57CiECJPphcLKX9axtzw5iMiBMj8rAY?=
+ =?us-ascii?Q?vPlg+5OhJljRkvmBV/z0Ylh0QuDf2qgR9MVOUo58kH3FgQqAxOVM2YxoNnpF?=
+ =?us-ascii?Q?fzZyEEPvXSLyBDJlHYCeBYS5nP+K97xgRZfSWsxkNuqVFcRtcLOxxM7isiCt?=
+ =?us-ascii?Q?fdjGCPNwqGSUUBN36hXFWwR21mTJNakPcsVJ+AYt+0BTL3QjEXmk5ppNGWm+?=
+ =?us-ascii?Q?UWyVgr5ufEIM3ma3zFdCZE0UqBPlKx+7Ifpf/uy4S4NWRXYzArwyENCwQ/w4?=
+ =?us-ascii?Q?dc5fWQvYNw5CwRTj4fbvY7KMCpnsoQvpWuCp9j19eOr4l8xSOEX6q0GWTf78?=
+ =?us-ascii?Q?qhQYbzaOW6qAYZ8ebRdw8K4+qCWxT2l+23KnXo1U8smTNSwAQ9pxeCkJ+q3m?=
+ =?us-ascii?Q?X9SdFrgsxVaRDBzw3ltFoc3MI3MmXnP5QzuyU/fBc3uSOhrKS2UNF0W1X02k?=
+ =?us-ascii?Q?qugjTBfaOre51IKsmfriEHRqWMV+18o6lh8qGjwbAwqJvBZ9t7UOTKi7v/wh?=
+ =?us-ascii?Q?WROohTeSMdMA9T6LkS46zfyfpdAjuznHkMJm2BcxdGerWyP3DG+D7ydIpXei?=
+ =?us-ascii?Q?JPmgTAUfisyEqgpRGVwp/urdQbJxEgJDh2yVEG5FweUk6/U4NnBbiI2ZBf2v?=
+ =?us-ascii?Q?OkE1kCuOLzNpYXqa4W3J1i0Ywf7V7Xo3VqCtQqf7jWHq7sq1egjDRb08FhxZ?=
+ =?us-ascii?Q?+yhUBhgOZktG1hSQ7+QG9r0EbHd5UPrrg4rJju2q5gjisvUzlAwqakQX59c0?=
+ =?us-ascii?Q?i4+laJZa9s6VUiA4yzVE/JqDdKzMP59kZmSSHtfGqlPn8MAeO7jYgNcTkWoh?=
+ =?us-ascii?Q?96N7fYWzJ5KbIfHxIy0YfeCIvxPeGCLbG6vKO7Wao87ZV5bJUZDkoEvBzDpQ?=
+ =?us-ascii?Q?ERFurGjdotvt1VfYGAyB67MgZGkkBE278q3lT3E4XsYhgvb/V7ep?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: dafcb2cf-69d3-46cb-e927-08de52c0a2c2
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 16:27:25.1802
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fU6+3nan56ZB71NeXcUDxyUn8pnRYzwnL68t1Z/PJvjLmXCgtIECLQxrdUcuIjc/XxU9nDcKq5MJg3IMZNcCJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWP286MB3400
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat 2025-12-27 09:16:08, Marcos Paulo de Souza wrote:
-> The current usage of console_is_usable() is clumsy. The parameter
-> @use_atomic is boolean and thus not self-explanatory. The function is
-> called twice in situations when there are no-strict requirements.
-> 
-> Replace it with enum nbcon_write_cb which provides a more descriptive
-> values for all 3 situations: atomic, thread or any.
-> 
-> Note that console_is_usable() checks only NBCON_USE_ATOMIC because
-> .write_thread() callback is mandatory. But the other two values still
-> make sense because they describe the intention of the caller.
-> 
-> --- a/include/linux/console.h
-> +++ b/include/linux/console.h
-> @@ -202,6 +202,19 @@ enum cons_flags {
->  	CON_NBCON_ATOMIC_UNSAFE	= BIT(9),
->  };
->  
-> +/**
-> + * enum nbcon_write_cb - Defines which nbcon write() callback must be used based
-> + *                       on the caller context.
-> + * @NBCON_USE_ATOMIC: Use con->write_atomic().
-> + * @NBCON_USE_THREAD: Use con->write_thread().
-> + * @NBCON_USE_ANY:    The caller does not have any strict requirements.
-> + */
-> +enum nbcon_write_cb {
-> +	NBCON_USE_ATOMIC,
-> +	NBCON_USE_THREAD,
-> +	NBCON_USE_ANY,
+This series proposes support for mapping subranges within a PCIe endpoint
+BAR and enables controllers to program inbound address translation for
+those subranges.
 
-AFAIK, this would define NBCON_USE_ATOMIC as zero. See below.
+- Patch 1/6 introduces dynamic_inbound_mapping feature bit. This can be
+  used as a safeguard to check whether a BAR can really be reconfigured
+  without clearing/resetting it.
 
-> +};
-> +
->  /**
->   * struct nbcon_state - console state for nbcon consoles
->   * @atom:	Compound of the state fields for atomic operations
-> @@ -622,7 +635,8 @@ extern void nbcon_kdb_release(struct nbcon_write_context *wctxt);
->   * which can also play a role in deciding if @con can be used to print
->   * records.
->   */
-> -static inline bool console_is_usable(struct console *con, short flags, bool use_atomic)
-> +static inline bool console_is_usable(struct console *con, short flags,
-> +				     enum nbcon_write_cb nwc)
->  {
->  	if (!(flags & CON_ENABLED))
->  		return false;
-> @@ -631,7 +645,7 @@ static inline bool console_is_usable(struct console *con, short flags, bool use_
->  		return false;
->  
->  	if (flags & CON_NBCON) {
-> -		if (use_atomic) {
-> +		if (nwc & NBCON_USE_ATOMIC) {
+- Patch 2/6 introduces generic BAR subrange mapping support in the PCI
+  endpoint core.
 
-This will always be false because NBCON_USE_ATOMIC is zero.
-I think that it was defined as "0x1" in the original proposal.
+- Patch 3/6 changes dw_pcie_ep_ops.get_features() to return a mutable
+  struct pci_epc_features * and updates all DWC-based glue drivers
+  accordingly. This is preparatory work for subsequent patches.
 
-Let's keep it defined by as zero and use here:
+- Patch 4/6 advertises dynamic inbound mapping support centrally for all
+  DWC-based glue drivers.
 
-		if (nwc == NBCON_USE_ATOMIC) {
+- Patch 5/6 adds an implementation for the DesignWare PCIe endpoint
+  controller using Address Match Mode IB iATU. It also advertises
+  subrange_mapping support from the DWC EP midlayer.
 
-Note that we do _not_ want to return "false" for "NBCON_USE_ANY"
-when con->write_atomic does not exist.
+- Patch 6/6 updates a documentation for pci_epc_set_bar().
 
->  			/* The write_atomic() callback is optional. */
->  			if (!con->write_atomic)
->  				return false;
+This series is originally a spin-off from a larger RFC series posted
+earlier:
+https://lore.kernel.org/all/20251217151609.3162665-4-den@valinux.co.jp/
+The first user will likely be Remote eDMA-backed NTB transport,
+demonstrated in that RFC series.
+
+Kernel base:
+  - repo: git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git
+  - branch: controller/dwc
+  - commit: 68ac85fb42cf ("PCI: dwc: Use cfg0_base as iMSI-RX target address
+                           to support 32-bit MSI devices")
+
+Changelog:
+* v6->v7 changes:
+  - Added missing check of dynamic_inbound_mapping feature bit in
+    pci_epc_set_bar() when use_submap is set true.
+  - Addressed the remaining review comments from Niklas (patch reordering,
+    splitting, and source code comment/documentation refinements).
+
+* v5->v6 changes:
+  - Added a new feature bit dynamic_inbound_mapping and set it centrally
+    in dw_pcie_ep_get_features() for all DWC-based glue drivers.
+  - Updated documentation for pci_epc_set_bar().
+  - Dropped a needless and harmful dw_pcie_ep_clear_bar() call on the error
+    path.
+  - Fixed "Bar Match Mode" to "BAR Match Mode" in a source code comment.
+
+* v4->v5 changes:
+  - Added subrange_mapping to struct pci_epc_features and enforced a
+    strict capability check in pci_epc_set_bar() (reject use_submap when
+    unsupported).
+  - Changed DWC-based glue drivers to return a mutable features pointer
+    and set subrange_mapping centrally at the DWC midlayer.
+  - Split the series into 3 patches accordingly.
+
+* v3->v4 changes:
+  - Drop unused includes that should have been removed in v3
+
+* v2->v3 changes:
+  - Remove submap copying and sorting from dw_pcie_ep_ib_atu_addr(), and
+    require callers to pass a sorted submap. The related source code
+    comments are updated accordingly.
+  - Refine source code comments and commit messages, including normalizing
+    "Address Match Mode" wording.
+  - Add const qualifiers where applicable.
+
+* v1->v2 changes:
+  - Introduced stricter submap validation: no holes/overlaps and the
+    subranges must exactly cover the whole BAR. Added
+    dw_pcie_ep_validate_submap() to enforce alignment and full-coverage
+    constraints.
+  - Enforced one-shot (all-or-nothing) submap programming to avoid leaving
+    half-programmed BAR state:
+    * Dropped incremental/overwrite logic that is no longer needed with the
+      one-shot design.
+    * Added dw_pcie_ep_clear_ib_maps() and used it from multiple places to
+      tear down BAR match / address match inbound mappings without code
+      duplication.
+  - Updated kernel source code comments and commit messages, including a
+    small refinement made along the way.
+  - Changed num_submap type to unsigned int.
+
+v6: https://lore.kernel.org/all/20260113023715.3463724-1-den@valinux.co.jp/
+v5: https://lore.kernel.org/all/20260108172403.2629671-1-den@valinux.co.jp/
+v4: https://lore.kernel.org/all/20260108044148.2352800-1-den@valinux.co.jp/
+v3: https://lore.kernel.org/all/20260108024829.2255501-1-den@valinux.co.jp/
+v2: https://lore.kernel.org/all/20260107041358.1986701-1-den@valinux.co.jp/
+v1: https://lore.kernel.org/all/20260105080214.1254325-1-den@valinux.co.jp/
 
 
-Otherwise, it looks good to me.
+Thank you for reviewing,
 
-Best Regards,
-Petr
+
+Koichiro Den (6):
+  PCI: endpoint: Add dynamic_inbound_mapping EPC feature
+  PCI: endpoint: Add BAR subrange mapping support
+  PCI: dwc: Allow glue drivers to return mutable EPC features
+  PCI: dwc: Advertise dynamic inbound mapping support
+  PCI: dwc: ep: Support BAR subrange inbound mapping via Address Match
+    Mode iATU
+  Documentation: PCI: endpoint: Clarify pci_epc_set_bar() usage
+
+ Documentation/PCI/endpoint/pci-endpoint.rst   |  24 ++
+ drivers/pci/controller/dwc/pci-dra7xx.c       |   4 +-
+ drivers/pci/controller/dwc/pci-imx6.c         |  10 +-
+ drivers/pci/controller/dwc/pci-keystone.c     |   4 +-
+ .../pci/controller/dwc/pci-layerscape-ep.c    |   2 +-
+ drivers/pci/controller/dwc/pcie-artpec6.c     |   4 +-
+ .../pci/controller/dwc/pcie-designware-ep.c   | 240 +++++++++++++++++-
+ .../pci/controller/dwc/pcie-designware-plat.c |   4 +-
+ drivers/pci/controller/dwc/pcie-designware.h  |   4 +-
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c |   8 +-
+ drivers/pci/controller/dwc/pcie-keembay.c     |   4 +-
+ drivers/pci/controller/dwc/pcie-qcom-ep.c     |   4 +-
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c   |   4 +-
+ drivers/pci/controller/dwc/pcie-stm32-ep.c    |   4 +-
+ drivers/pci/controller/dwc/pcie-tegra194.c    |   4 +-
+ drivers/pci/controller/dwc/pcie-uniphier-ep.c |  58 +++--
+ drivers/pci/endpoint/pci-epc-core.c           |   5 +
+ include/linux/pci-epc.h                       |   9 +
+ include/linux/pci-epf.h                       |  31 +++
+ 19 files changed, 360 insertions(+), 67 deletions(-)
+
+-- 
+2.51.0
+
 
