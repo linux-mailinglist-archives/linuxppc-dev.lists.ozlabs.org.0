@@ -1,79 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-15659-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15660-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3719D1AE02
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 19:45:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB46D1AE23
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 19:47:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drJ8T3G8nz2xWP;
-	Wed, 14 Jan 2026 05:45:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drJC5613Vz2xWP;
+	Wed, 14 Jan 2026 05:47:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768329913;
-	cv=none; b=P99lD+x1tzD7JcM71OpBxX6253vhKRiKa+VgzGIMOqKqfZqurHxcHskDYWedrPQ+7SWWmoAhEC7VihBxD5hCW6GWL3Db44QjZ8gstzC7rgsckoOp5j/rCIGk5wmtXTtvn4vspYTgO3Tbk+8M0bys2TV3QwhJtU4K7HidzW8q1lfrXMnMb+P2hDWoY0od0WugGnPdNdT2hWC5vxXfbqexe5qBby5akM3+ICVrOsla2sS1lghNReshqhh4+DtGGKJhd4NJHHKOEcKbUjbcW3oSZahcruRN4kdoJkRIHPh/ray1wgiGiJPlq0zavHQObLqJHZQL2p2CA9blhQvjqhmhuQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=78.32.30.218
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768330049;
+	cv=none; b=ox3S+1Ub0FBZeMtAHst9XXqMxr1LO3I6yT6sYk2kxr2hEGMBP1boz1n24+wLjG52FfKsQiJHTAaU/1FT5wqiLa6hfTd3kZYxDheM44i7tM2XBn+uxQy57y7oBcHUPt3yzuKu+yGB5ZgVJai3VxjEaBKUL5jhYt/extFNPUwXRx7CxC+XteI1l/9uOFzx1OWz25McrTKMPHZLZcejnK/qlB6W7yHZ4yZ7SgNv9bp+yK2FkQyFw7Mhd069E0tY8X1OBPOC25ABHVTRYVjSnSCU49EQrzhEem6kXR0Q0UdrZLGsIXlI26KpJsKvKfDbscCJilYZUDwdKKxMyDoy8jekfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768329913; c=relaxed/relaxed;
-	bh=Tax1+m6bXoUYj8E2m620WPi66Dw62eUrySU1vzxBsaQ=;
+	t=1768330049; c=relaxed/relaxed;
+	bh=jKtoDk43UnDtrx3CwO7HNH0Si8rMrFbLT6eAxKpAHcA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kh6cmp/xBYEAHo9ryH6Ko5xZYJKkM4egduPXXzrsCzywy/gCOE+kwilbGM/JVWiQJtA60Eqs01+PRPipUC5KmXKZQ3xfDDA8diKgjknH5iukpi2l6rj6792yE3WYEORIEYkbfpO9Hpz/i6DLkJ1D4LoCgYDZCpNhqXiSQEUuM+qhg9jrpE+zbfM6XzLu2YtPin6axeLrnSu+aSmnZJPAC6gFtwAq7pnuvwAjc2fBzly4qAcHtd1EKGi//K/3NjeM9RqTl3Me8o86Pbr2MUaqBDw/vl0tCfVoJifSKY6a5L1Selvopx3+i6QBXm9x9ELn//BtcaX8Ye+9MlPW3G6ybw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mJ/epLMx; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=ADeyPo0JEZH7EaRaRHHGPe3kwhJ6FOLGxHWdVqToehEJeCHnQ5EP7GIEHEmr0Wnz4CcOf5mXbHazQ1R2SgGOb9FFhj6SZi7S7PQetBR7M0XQQe8nLAT1cjM69j2t7IDtuQxZ9NafkoVsfgKFhQ76Tokn6ieJ8Zk0LV5JCxjb5PKrMXlMdUH2dTPxyTtEbXmX8VakolihH3hFXvw7VXZB9zKCDgvheWt/WVVFC8RYvjBPcIHqEEpN7l89OM1bbjoUElKxhHfvN8kaNMhxmR0mzrvUWCtI3B/XQ72m35t6h4DH19SR6g6NgZHFQq450PbQm7jHlGvkvzk7ijaTnj7vXQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=x5L4mwpy; dkim-atps=neutral; spf=none (client-ip=78.32.30.218; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=armlinux.org.uk
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mJ/epLMx;
+	dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=x5L4mwpy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk (client-ip=78.32.30.218; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=lists.ozlabs.org)
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drJ8R6j5vz2xQB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 05:45:11 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2A8F76000A;
-	Tue, 13 Jan 2026 18:44:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC54FC116C6;
-	Tue, 13 Jan 2026 18:44:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768329878;
-	bh=guH+X5X5Zw5RK4+z7WReUiSq/PEpKm6VSIBaw1TF1Wk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mJ/epLMx61KYA6qPjpRXqerwQQ3NcjyRncy5NLUppRcvNbs2ALyBM6FjEhD9uCvW2
-	 eg+DxvUNeugL74YCHEYOOv4VS+A/BfA6G/dMZqmg4UIxaOswYQMpqwbpy7mH2VJssd
-	 pryhg1yTNddK0bWY9Uq9gE7ggwr1D0Kf4ak8pCyjAuuQxjtChOyO00kugpRuZ29n40
-	 WzTS8Cd0E4qQJrBcO9qMgrhYRyavxl9eWt+/iAY5yX2qEdebOKThI+hfkrhzfqh5HQ
-	 VQ0q4gLY53Z/GZ66GOvRjkXfxIKgJEY7/T6uorHk2QfWRmmEUeUhwAT/SFYMOSF+KF
-	 80DfzL+JVf/oA==
-Date: Tue, 13 Jan 2026 19:44:25 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Koichiro Den <den@valinux.co.jp>
-Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
-	vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com,
-	l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com,
-	mingkai.hu@nxp.com, roy.zang@nxp.com, jesper.nilsson@axis.com,
-	heiko@sntech.de, srikanth.thokala@intel.com,
-	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com,
-	geert+renesas@glider.be, magnus.damm@gmail.com,
-	christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, thierry.reding@gmail.com,
-	jonathanh@nvidia.com, hayashi.kunihiko@socionext.com,
-	mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org,
-	rongqianfeng@vivo.com, 18255117159@163.com,
-	shawn.lin@rock-chips.com, nicolas.frattaroli@collabora.com,
-	linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v7 4/6] PCI: dwc: Advertise dynamic inbound mapping
- support
-Message-ID: <aWaSggUJpnxjAPA_@ryzen>
-References: <20260113162719.3710268-1-den@valinux.co.jp>
- <20260113162719.3710268-5-den@valinux.co.jp>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drJC22NG9z2xQB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 05:47:24 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jKtoDk43UnDtrx3CwO7HNH0Si8rMrFbLT6eAxKpAHcA=; b=x5L4mwpyvVpXTleXSTA4E7TB3x
+	PqA0EFm3g+ADDRa9RRrchtOtp6ieun8dXwnrsSCngYksIOzLTsbduJGHO93EJ5sOmTiopDikrI2W1
+	Q8ax2P98YDpsczL0Zc0iK7HY9RCHuKVTZVtqdNu73ghhxJVok54d0lPGUxUjqkfTn1U6uJVhV0fZz
+	m+jTOB9IGzXsFfAtxqO7S7Y9km8DXM5EvpxKlPFYsnxmZdRCk91uYE3SLfMJZDZHjfWS2hwp2QEX9
+	NihTgk+QmcNcL9S75eoUCpaLW0+DpTXskcwjiqgJh+s8Bnb6Kvtoc9KXPZiORwxY6qyROiEx6dYal
+	5yterFBA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50244)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vfjNs-000000007ks-3HYJ;
+	Tue, 13 Jan 2026 18:44:53 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vfjNl-000000000u1-2HNB;
+	Tue, 13 Jan 2026 18:44:45 +0000
+Date: Tue, 13 Jan 2026 18:44:45 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH net] net: freescale: ucc_geth: Return early when TBI
+ found can't be found
+Message-ID: <aWaSnRbINHoAerGo@shell.armlinux.org.uk>
+References: <20260113074316.145077-1-maxime.chevallier@bootlin.com>
+ <d89cb3a7-3a55-4bdf-805a-b3386572b220@bootlin.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,31 +82,57 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260113162719.3710268-5-den@valinux.co.jp>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <d89cb3a7-3a55-4bdf-805a-b3386572b220@bootlin.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Jan 14, 2026 at 01:27:17AM +0900, Koichiro Den wrote:
-> The DesignWare EP core has supported updating the inbound iATU mapping
-> for an already configured BAR (i.e. allowing pci_epc_set_bar() to be
-> called again without a prior pci_epc_clear_bar()) since
-> commit 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update
-> inbound map address").
+On Tue, Jan 13, 2026 at 09:16:29AM +0100, Maxime Chevallier wrote:
+> Hi,
 > 
-> Now that the EPC layer exposes this capability via the
-> dynamic_inbound_mapping feature bit, set the bit centrally in the
-> DesignWare EP layer so that all DWC-based EP glue drivers report it
-> consistently, without duplicating the same flag in each individual
-> driver.
+> On 13/01/2026 08:43, Maxime Chevallier wrote:
+> > In ucc_geth's .mac_config(), we configure the TBI block represented by a
+> > struct phy_device that we get from firmware.
+> > 
+> > While porting to phylink, a check was missed to make sure we don't try
+> > to access the TBI PHY if we can't get it. Let's add it and return early
+> > in case of error
+> > 
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > Closes: https://lore.kernel.org/r/202601130843.rFGNXA5a-lkp@intel.com/
+> > Fixes: 53036aa8d031 ("net: freescale: ucc_geth: phylink conversion")
+> > Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 > 
-> No functional change intended. This only advertises existing behavior to
-> EPF drivers.
+> Heh that's what I get from sending patches while having mild fever, the
+> patch title is all wrong and should be :
 > 
-> Suggested-by: Niklas Cassel <cassel@kernel.org>
-> Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> ---
+> net: freescale: ucc_geth: Return early when TBI PHY can't be found
+> 
+> I'll wait for the 24h cooldown, grab some honey + milk and resend after :)
 
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+A question - based on dwmac:
+
+When implementing dwmac to support 1000base-X, the dwmac doesn't
+implement the _full_ 1000base-X, but only up to the PCS. The PCS
+provides a TBI interface to the SerDes PHY provided by the SoC
+designer which acts as the PMA layer.
+
+The talk here of TBI makes me wonder whether the same thing is going
+on with ucc_geth. Is the "TBI PHY" in fact the SerDes ?
+
+Traditionally, we've represented the SerDes using drivers/phy rather
+than the drivers/net/phy infrastructure, mainly because implementations
+hvaen't provided anything like an 802.3 PHY register set, but moreover
+because the SerDes tends to be generic across ethernet, PCIe, USB, SATA
+etc (basically, anything that is a high speed balanced pair serial
+communication) and thus the "struct phy" from drivers/phy can be used
+by any of these subsystems.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
