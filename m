@@ -1,70 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-15625-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15626-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DC8D18933
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 12:50:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26571D18B38
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 13:28:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dr6y71NH0z2xjb;
-	Tue, 13 Jan 2026 22:50:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dr7ng4vbNz2xjK;
+	Tue, 13 Jan 2026 23:28:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.117.254.33
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768305039;
-	cv=none; b=kDpzXKP3Pp3ClbTL0XSVZ+0yR/Yb2Q9DXtiY4QvEQyBNM2YyCyz6v68H/G7CwEEShWrzk+9Na0G1BGcVTu6xlpIOjqFhsmAvA5Aw8egiO4Xg3xZLZQt9R3r5+Zgc/wjA9fNyHplFvX1aMkjrEf5jgwzUL8PIZOK6yK1vB0/LbD1DDC+2Vzmda8mPpUQiNsm2CWDlvsnFfosTCVuhz4sIF0P4M3AFoGUVcFpep3VDJ8To441N+rO2+9mXb7mIUHvxzZS2fryjbsmex4vQaOH33CaCZ+wrNXqNd5emmS0FWhTo9/9DnXv2s3fOx0Yo3+EKz5Doyg80QDs85wL/US8Ntw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=94.231.106.210
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768307303;
+	cv=none; b=fygkaEvWDmKnwyMwevfBJs6svRFXxQQjbkRX7LE1FsKUQK9kCBbPrCdDQ3bo0CJ1LDZMM8+AOpeR3TxzxhHO9FhMEYYEiND5K2aqZ7fWc1u9HTiOfk5l7S4gdfPfT3YFu9eBDkkGXhVKaC+mQ3rEwsfqOGyoEDWI6LhSSH4iiXHN/mQiDYqP52J7O8PUH/fKaDGLnqN8juu+VWhCShkT8qoU9oDeGQBp3UydMhToZTh97lp2Y1T3eHAL1duKxDeXUAUECECl4X6OiqMut4sw+BEkQAlASlYLT3FVwny4JJL7ZZD7CNeAqddQmid3e8oUi0f4hF4Bm9oROq9Og9XtCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768305039; c=relaxed/relaxed;
-	bh=n4OVLfYY0h+IhJRy0NAJNM9iTR92XV2VZ5uyTVzCW10=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lP6zTuX2n39LCRDHr8U4YXTRbJiFNjuUmWuK5C0C2ohu94JCuHmuiFUx6lKcLgvxSi0jBysLYnNMZPHfy6goD9PfdtlEnupYUO2j73sn00/IBhSzLhUr+SzVqpcbbM6r1lQ5nkfNaz/z/BumBNEV6bCf3PjoPvvqzauRg9V1uqEFkTJkfDux4XTTam0oWDTF86U+U1z9z9jpRLcOyklXUJEgpzKYTrLFDH4Cxz4k5nW9sbPwnkfMtj7VC+JbQQs69IFw2lD1VhOXTKt/SQtK8LmeGqmhaPpNLFLVthPg3t22rxqUx4sbFheNyu74gjhKpwa5PSRSYiMKJNIetQZ/TQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=IK6cGx34; dkim-atps=neutral; spf=pass (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=sang-engineering.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+	t=1768307303; c=relaxed/relaxed;
+	bh=guD8ZDnRvesT5KvXlXi5P5IpxaFCA5kIle2X5/2VdEk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=liXfeMdT9C8d6WAw9uMp6s0cP/qoJntLt0GHKMw2YAZIgM0VcMlakWpWd9KKBGiU/+Ebzo15k8DeJs/lrMOiUQ7r/L8ltyUnjtaUQDpqoJ4lO/qleRPMNQGy6gt27ARobCSP+3I2i2VtSDfbfvnonO802hcPnPc0uPK0s2TBjPP87LqiVJ+0EFES2vp5RdPnJ7Vc5PG2sCX7NSAVtEEC+AT/lXP0p3Y6Ic5ZMGKvr9FRPGarqB5Ug51QlBMN9jYeSfmT/Joog7ea0HUTlwRXbgFYfvrF4GM+FQYJHhrb7CaNudtvLVatXRBp5ByuOHbiYn4G+DEQgGnE9RV0rSWyew==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; dkim=fail header.d=gaisler.com header.i=@gaisler.com header.a=rsa-sha256 header.s=simplycom2 header.b=NC76RtxI reason="key not found in DNS"; dkim-atps=neutral; spf=pass (client-ip=94.231.106.210; helo=smtp-out3.simply.com; envelope-from=andreas@gaisler.com; receiver=lists.ozlabs.org) smtp.mailfrom=gaisler.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=IK6cGx34;
+	dkim=fail reason="key not found in DNS" header.d=gaisler.com header.i=@gaisler.com header.a=rsa-sha256 header.s=simplycom2 header.b=NC76RtxI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sang-engineering.com (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org)
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gaisler.com (client-ip=94.231.106.210; helo=smtp-out3.simply.com; envelope-from=andreas@gaisler.com; receiver=lists.ozlabs.org)
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dr6y21bpnz2xQB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 22:50:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=n4OV
-	LfYY0h+IhJRy0NAJNM9iTR92XV2VZ5uyTVzCW10=; b=IK6cGx348zX7nPG426bj
-	8pPnKRpaSVk7EenccYs2FR7/yoEeCbW95pRoGqMTBs3I4Rx4GXVA2VKIqoiZm3lP
-	i4KGG6AZ8yTUBSwhhme6M4Tb+jyrWuCOfdoAb2OK1uVl/DGQvEeeN4sTV6b6oUxh
-	JX3+mzlFDfkdfFVHJDTMKv+5v4hiUFNPlM86mcoJc3DCYD6p/P2G0FwdXGDxAyCT
-	X74tcUuRdXObFtGQ6Su9RVR+dLqe+0lCYNQxILagDFy/f6uijcSKThYtmM+ZT+uh
-	NWW/idAeMF6/hdDpaKi+GzTZT2BNpV0/aLndK4mEUffpmWU1arEmQE8L+528wqcS
-	eg==
-Received: (qmail 1666866 invoked from network); 13 Jan 2026 12:50:25 +0100
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 13 Jan 2026 12:50:25 +0100
-X-UD-Smtp-Session: l3s3148p1@FUTjmENItsIujnvx
-Date: Tue, 13 Jan 2026 12:50:25 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Andi Shyti <andi.shyti@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Khalil Blaiech <kblaiech@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>, Jean Delvare <jdelvare@suse.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
-	Manivannan Sadhasivam <mani@kernel.org>, linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-actions@lists.infradead.org
-Subject: Re: [PATCH 00/12] i2c: add and start using i2c_adapter-specific
- printk helpers
-Message-ID: <aWYxgXn_2WlHLcj1@ninjato>
-References: <20251223-i2c-printk-helpers-v1-0-46a08306afdb@oss.qualcomm.com>
- <aWYiJbtueA8g3srn@ninjato>
- <CAMRc=MfseaLWfYuhz=5MxRw9dtBvOM4X6brPwT2PJ4Fq7rGbfg@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dr7nc440Yz2xQB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 23:28:18 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4dr7nT4yQ4z1FDXl;
+	Tue, 13 Jan 2026 13:28:13 +0100 (CET)
+Received: from [192.168.0.25] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4dr7nQ25vMz1DDgf;
+	Tue, 13 Jan 2026 13:28:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1768307293;
+	bh=guD8ZDnRvesT5KvXlXi5P5IpxaFCA5kIle2X5/2VdEk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NC76RtxIq9CvKMBZ8e8fqDdeh4TXwyvNkvf30sHXNOLOnEVZmRBj+bHCDi8FufU/c
+	 kWfZWHOIxSWOKL03enthax76m8YsczdRizVAQDjKjHPFRaRl/L5Y0iqK2UA8boHs2h
+	 YUuM9qT6Ba/QEyyAn4GTFzIGpGi10RKIEp9TlTeLGd8zC+Hr/coq6gBL6LosZXZTF1
+	 gt8Mie1XHzB/bpnFnld9TZavLmhYmlgBWFsXaCVZw4vobFyvtSEkURaEmNJU94ewFm
+	 w3pY4SkxqHFB/QXGBXfUllqNu8tQIWuZ/XTNBQs4TvEhLsgrM+Wzf2b59+1+UOXxo8
+	 bJQ987lvmGGqA==
+Message-ID: <7566eef3-bce4-4100-8a11-d88ef1e887a9@gaisler.com>
+Date: Tue, 13 Jan 2026 13:28:09 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,23 +62,148 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMRc=MfseaLWfYuhz=5MxRw9dtBvOM4X6brPwT2PJ4Fq7rGbfg@mail.gmail.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 19/29] sparc: introduce arch_zone_limits_init()
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Shi <alexs@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
+ Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+ Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Jonathan Corbet <corbet@lwn.net>, Klara Modin <klarasmodin@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Richard Weinberger <richard@nod.at>, Ritesh Harjani <ritesh.list@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>,
+ Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, x86@kernel.org, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ sparclinux@vger.kernel.org
+References: <20260111082105.290734-1-rppt@kernel.org>
+ <20260111082105.290734-20-rppt@kernel.org>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20260111082105.290734-20-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On 2026-01-11 09:20, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> Move calculations of zone limits to a dedicated arch_zone_limits_init()
+> function.
+> 
+> Later MM core will use this function as an architecture specific callback
+> during nodes and zones initialization and thus there won't be a need to
+> call free_area_init() from every architecture.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  arch/sparc/mm/init_64.c |  6 ++++++
+>  arch/sparc/mm/srmmu.c   | 12 ++++++++----
+>  2 files changed, 14 insertions(+), 4 deletions(-)
 
-> Yes, I agree it's too late to queue it for v7.0. I actually wanted to
-> rename my macro to i2c_debug() to avoid a conflict with saa7134 but
-> you're right, I may submit a patch for that instead for v7.0.
+Hi Mike,
 
-Your choice. I think keeping 'i2c_dbg' is more consistent but the
-dependency on media might not be worth it.
+Thanks for this nice cleanup series.
 
-I set your patches to 'Deferred' in patchwork. Meaning that they will be
-handled as agreed above.
+
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index df9f7c444c39..fbaad449dfc9 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -2279,6 +2279,11 @@ static void __init reduce_memory(phys_addr_t limit_ram)
+>  	memblock_enforce_memory_limit(limit_ram);
+>  }
+>  
+> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+> +{
+> +	max_zone_pfns[ZONE_NORMAL] = last_valid_pfn;
+> +}
+> +
+>  void __init paging_init(void)
+>  {
+>  	unsigned long end_pfn, shift, phys_base;
+> @@ -2461,6 +2466,7 @@ void __init paging_init(void)
+>  
+>  		max_zone_pfns[ZONE_NORMAL] = end_pfn;
+
+This old initialization of max_zone_pfns[ZONE_NORMAL] should also be
+removed, right? With that removed it makes the local end_pfn variable
+set but unused, so could you please also remove that one?
+
+I know that this whole code block gets removed later, but the cleanup
+max_zone_pfns[ZONE_NORMAL] and the removal of end_pfn (that is not done
+later in this version of the series) fits logically in this patch.
+
+>  
+> +		arch_zone_limits_init(max_zone_pfns);
+>  		free_area_init(max_zone_pfns);
+>  	}
+>  
+> diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
+> index f8fb4911d360..81e90151db90 100644
+> --- a/arch/sparc/mm/srmmu.c
+> +++ b/arch/sparc/mm/srmmu.c
+> @@ -884,6 +884,13 @@ static void __init map_kernel(void)
+>  
+>  void (*poke_srmmu)(void) = NULL;
+>  
+> +void __init arch_zone_limits_init(unsigned long *max_zone_pfns)
+> +{
+> +	max_zone_pfns[ZONE_DMA] = max_low_pfn;
+> +	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+> +	max_zone_pfns[ZONE_HIGHMEM] = highend_pfn;
+> +}
+> +
+>  void __init srmmu_paging_init(void)
+>  {
+>  	int i;
+> @@ -967,10 +974,7 @@ void __init srmmu_paging_init(void)
+>  	{
+>  		unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+>  
+> -		max_zone_pfn[ZONE_DMA] = max_low_pfn;
+> -		max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
+> -		max_zone_pfn[ZONE_HIGHMEM] = highend_pfn;
+> -
+> +		arch_zone_limits_init(max_zone_pfn);
+>  		free_area_init(max_zone_pfn);
+>  	}
+>  }
+
+With the feedback for arch/sparc/mm/init_64.c addressed:
+
+Acked-by: Andreas Larsson <andreas@gaisler.com>
+
+Cheers,
+Andreas
 
 
