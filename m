@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-15621-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15622-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49059D17F39
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 11:18:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B42CD1801D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 11:27:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dr4vx62czz2xl0;
-	Tue, 13 Jan 2026 21:18:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dr56h2PCvz2xWP;
+	Tue, 13 Jan 2026 21:27:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768299517;
-	cv=none; b=nbmCh3LuJbQmxgthsOtV3BVSOGKtU5KDrIg8B1KKveoLcmbnBkNIN4v4ngu7dX//pHxJAZ3bI5amOTLCdBGGj4G8lUaVXxrQ/ZmXYHAhF9nM+bxcZwxbUo0xslvL/OhjNlpWoNN3kXfBKmdMJfIzHKmIYA/v1Z3EtUEUPNckTPoSBAzSMJ2wSSKx1Tnce52IsHk0zrPCsByCaEKk5KXYDFy6i96mw0OiUAkk9W0xxsUNohRgTC18ErKM008bLk3B8UcXxpP4okmNJuGpAFUU+C/f3g/6757mm65Sc0ze+I6CUEsCWhnLG16I3e1UhqKW2m58WfQBdp7D6bOq8dVrpw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768300076;
+	cv=none; b=S2sN75Lls8M6DoAzQzHzhjVT2m3IjxrhHQMDnhkQGVmK8DKFUR7GdYLghmM3CfXT8YhZgDy4HW4QgD/lID9rCBWVz1Bna037VmRhPkoUEJ1crDDKGffhTgMIg9UWwL7EszctsgqGm8MoL3BwYd5c+qGxcfwVRCJx0hoxVcfMejIoputm9n/Tbcz8GWZV5zydhuQEhq2Xv2R6sW2Twb06L/V/XP2s/ZQYcqZOe8rySyaCJQPuTgnp2gs649a369X+KqCkjcHMvIOiWRJyj9vUqvGjZWnhHMRLk8eIUe0lRiDCa94bWHqjuTtokGo0AQnZVvQmUt4TqPPC+3a7W/7v9Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768299517; c=relaxed/relaxed;
-	bh=7/Ue9IQWKT/lmz8kyZhADFs3Z/lJ99p8FNaLzYAMxRk=;
+	t=1768300076; c=relaxed/relaxed;
+	bh=d1HYZxvS7r9G1oMnzh/rff45Mt9jlohIXLZ64DZw3Us=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DjTySf4BmOvFEtKO6Q/Up+VbqRgx55CB18/IhZNjafRtY1+lwhG0kxeOslLRK+0xlf/GHVuloqq2zB0DyCWuy23nC1hN+yhUcB3DouF+Ao5qTxoTAftM3gd074ObFKfB8wognR1CK9aBY0Crkll3yt70nft6NC9ry+d2KAshDrLX4xG0bP2MIerc0HvLEEkptAQe8xxZJUmjQMGf86n84Ik6LiW1GT/z6DaW6SZZtA6LYWAmXLyn/52+ZX9WpMSjNYhv3wmq5OqtOcAJBdG8adIC6htioJH8s/krkHW2gJ5PxY5Klh7FE8RcaqCVqfT0mznFkJgJn5Qr0mLUzGo4IA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SRp9YMAN; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=G9CaBhgkisCNjN3QzmIp0eQxA5e+/ZcKgcXLFr+bCoE7tzEF5te//jA+KD5wfO6y/8L3310XRqrjw79+n/a66HcOmUOmJKt9XFOv1yyRdDmHOuc8NJI5tKTjub0c7JkR6eY+bwr5dCJum+th2O9OFSGRP8nrGsGTs0nJTpPppq9kcIghX6RypZIJUK+DfoyKoqhyeoiix4rJ5ONBtOttieOd9Znv9B2HV2DnZGFH5IU7UnWghAswU3wk0Jb3wJTuehN165s8TmAKeJXi4GvJD/0yBeh3LyQrpzPq/2UlGVZeAL0/4cMBf4OPe66pQ6NGDAp8ZyNFOm3L7Zq4S22PWA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KHVExecN; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SRp9YMAN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KHVExecN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dr4vx07ZBz2xQB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 21:18:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dr56g0vpHz2xQB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 21:27:55 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9FFCB6000A;
-	Tue, 13 Jan 2026 10:18:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE25C116C6;
-	Tue, 13 Jan 2026 10:17:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 615B74075A;
+	Tue, 13 Jan 2026 10:27:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FB0C116C6;
+	Tue, 13 Jan 2026 10:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768299484;
-	bh=0fpbeQGAJF9xjq5Byej/gkDKIoAX4CGtzrNcpesJoYY=;
+	s=k20201202; t=1768300073;
+	bh=C8UgsS+YrsZDchnel7CNOtadN1mg/ONjw32g4J6+OCI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SRp9YMANteq690cw3Tc7KijMkA6B5f5vSRAv1KYS88CI6bYfRan3AunIB+7E3+4Zf
-	 mH6JR+bx1yw1zxCxKPf3N1DLKskJu82uTfBstubAf28agXhdqU772iiBJkM5LgXEpy
-	 plOKWgaX4KN/pF6w30vo35DCBordFKJeLgvSIIfExlQb5H2XThPtbweNqsw40BnW02
-	 gumS3q0YECyjFfZOW1nnxfwdEnGYxO1CC4ikdXYnd7c3XwQmF7m/5skQdCXx7sdxre
-	 E0Rgup+mH27I+3bpVVUf7q1WahO6w+oqQMKt64/Evzkesa8eBewcfSH5ATrS9liPkS
-	 BVWMV4ydfdzuQ==
-Date: Tue, 13 Jan 2026 11:17:51 +0100
+	b=KHVExecNeP0XkZg6xghaAQoJqr/q0z3GdC0x9jlfMNdwId0ErGseOxuOiGwv29fD7
+	 AvHvAxAYhEhEwlTtZ/HzVBPzak/DCiPS0cy2tK74aPn60U+CPG+/5TqEOYVmIpPOB+
+	 t0lfLQrTlza7crImIQKqJobRsLqGMk0r+g0eXbY9SIXRxX+hMLbFEU7eN5Xkq1qwjt
+	 tqZncLDnAqJDaSQnuMYsFLITR5wWfSPuJ4e3LtNOMwEMkXQnDUSM9mD8VFTfDQepbM
+	 3idXM1YFBgiHX990n6orktQZK0baqsg7qxAQ9euVwMmyZF8sanjixl845BLKqFX5sj
+	 jWW9lS8W7E+tQ==
+Date: Tue, 13 Jan 2026 11:27:40 +0100
 From: Niklas Cassel <cassel@kernel.org>
 To: Koichiro Den <den@valinux.co.jp>
 Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
@@ -69,11 +69,12 @@ Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
 	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v6 5/5] Documentation: PCI: endpoint: Clarify
- pci_epc_set_bar() usage
-Message-ID: <aWYbzzAeDSLYJJcB@ryzen>
+Subject: Re: [PATCH v6 4/5] PCI: dwc: ep: Support BAR subrange inbound
+ mapping via Address Match Mode iATU
+Message-ID: <aWYeHNoPEl9T-Qo-@ryzen>
 References: <20260113023715.3463724-1-den@valinux.co.jp>
- <20260113023715.3463724-6-den@valinux.co.jp>
+ <20260113023715.3463724-5-den@valinux.co.jp>
+ <aWYbTt6UjlXb9Uk-@ryzen>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,87 +90,45 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260113023715.3463724-6-den@valinux.co.jp>
+In-Reply-To: <aWYbTt6UjlXb9Uk-@ryzen>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Jan 13, 2026 at 11:37:15AM +0900, Koichiro Den wrote:
-> The current documentation implies that pci_epc_set_bar() is only used
-> before the host enumerates the endpoint.
+On Tue, Jan 13, 2026 at 11:15:42AM +0100, Niklas Cassel wrote:
+> On Tue, Jan 13, 2026 at 11:37:14AM +0900, Koichiro Den wrote:
+> > @@ -626,11 +831,22 @@ static const struct pci_epc_features*
+> >  dw_pcie_ep_get_features(struct pci_epc *epc, u8 func_no, u8 vfunc_no)
+> >  {
+> >  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+> > +	struct pci_epc_features *features;
+> >  
+> >  	if (!ep->ops->get_features)
+> >  		return NULL;
+> >  
+> > -	return ep->ops->get_features(ep);
+> > +	features = ep->ops->get_features(ep);
+> > +	if (!features)
+> > +		return NULL;
+> > +
+> > +	/* All DWC-based glue drivers support dynamic inbound mapping */
+> > +	features->dynamic_inbound_mapping = true;
 > 
-> In practice, some Endpoint Controllers support calling pci_epc_set_bar()
-> multiple times for the same BAR (without clearing it) in order to update
-> inbound address translations after the host has programmed the BAR base
-> address, which some Endpoint Functions such as vNTB already relies on.
-> Add document text for that.
+> I think you should create a separate patch, before this patch, that simply
+> sets:
+> features->dynamic_inbound_mapping = true;
 > 
-> Also document the expected call flow for BAR subrange mapping
-> (pci_epf_bar.use_submap / pci_epf_bar.submap), which may require
-> a second pci_epc_set_bar() call after the host has programmed the BAR base
-> address.
-> 
-> Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> ---
->  Documentation/PCI/endpoint/pci-endpoint.rst | 22 +++++++++++++++++++++
->  1 file changed, 22 insertions(+)
-> 
-> diff --git a/Documentation/PCI/endpoint/pci-endpoint.rst b/Documentation/PCI/endpoint/pci-endpoint.rst
-> index 0741c8cbd74e..d3d9abbbc71e 100644
-> --- a/Documentation/PCI/endpoint/pci-endpoint.rst
-> +++ b/Documentation/PCI/endpoint/pci-endpoint.rst
-> @@ -95,6 +95,28 @@ by the PCI endpoint function driver.
->     Register space of the function driver is usually configured
->     using this API.
->  
-> +   Some endpoint controllers also support calling pci_epc_set_bar() again
-> +   for the same BAR (without calling pci_epc_clear_bar()) to update inbound
-> +   address translations after the host has programmed the BAR base address.
-> +   Endpoint function drivers can check this capability via the
-> +   dynamic_inbound_mapping EPC feature bit.
-> +
-> +   When pci_epf_bar.use_submap is set, the endpoint function driver is
-> +   requesting BAR subrange mapping using pci_epf_bar.submap. This requires
-> +   the EPC to advertise support via the subrange_mapping EPC feature bit.
-> +
-> +   If the EPF driver wants to program inbound subrange mappings that are
-> +   based on the BAR base address programmed by the host during enumeration,
-> +   it needs to call pci_epc_set_bar() twice for the same BAR (requires
-> +   dynamic_inbound_mapping): first with use_submap cleared to configure the
-> +   BAR size, then after the PCIe link is up and the host enumerates the
-> +   endpoint and programs the BAR base address, again with use_submap set.
+> Since that is technically a different feature, independent of this
+> feature, so it deserves its own patch.
 
-"If the EPF driver wants to ..."
-
-Here you have phrased it in a way where it almost seems like this is an
-alternative way that you could use this feature.
-
-But in reality, dw_pcie_ep_ib_atu_addr() will return an error if
-dw_pcie_ep_read_bar_assigned() does not return an assigned PCI address.
-
-So perhaps write it something like:
-"When an EPF driver wants to make use of the inbound subrange mapping
-feature, it requires that the BAR base address has been programmed by
-the host during enumeration. Thus, it needs to ..."
+The commit message for that separate patch should mention that the reason
+why there are no code changes when exposing/enabling support for the
+dynamic_inbound_mapping feature, is because the actual code changes to the
+the DWC driver already in commit 4284c88fff0e ("PCI: designware-ep: Allow
+pci_epc_set_bar() update inbound map address").
 
 
-> +
-> +   Note that in this flow, the EPF driver must not call pci_epc_clear_bar()
-> +   between the two pci_epc_set_bar() calls, because clearing the BAR can
-> +   clear/disable the BAR register or BAR decode on the endpoint while the
-> +   host still expects the assigned BAR address to remain valid.
-
-"Note that in this flow, ..."
-
-This also somehow sounds like this is an alternative way, when it is the
-only way.
-
-Perhaps simply something like:
-"Note that when making use of the inbound subrange mapping feature,
-the EPF driver must not call pci_epc_clear_bar() ..."
-
-
-With that fixed, this looks good to me:
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Kind regards,
+Niklas
 
