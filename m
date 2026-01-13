@@ -1,90 +1,119 @@
-Return-Path: <linuxppc-dev+bounces-15648-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15649-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD22D1A17C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 17:08:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E556D1A397
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jan 2026 17:27:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drDgW6twPz2xl0;
-	Wed, 14 Jan 2026 03:08:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drF523gMRz2xl0;
+	Wed, 14 Jan 2026 03:27:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=52.101.228.138 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768320503;
-	cv=pass; b=Q0ERvcW6L3ZwZq2jKIGcfEJDEuxLSi/i0b4YXFufgsgqEO+hrYWPqAsnknwPDLhD9jeoGXeEmf2EPSCQCIY+UrbAdMqC01v44cfkikclWVhAopmCpjTT01YUNaLbKK57GBvpVysUoIYgxcS91raH3N13UhxUkyXDybcjxBfSOZ3Ft6/L1Rze0Ee2CNwjSU1ED6R3aaFxB+mRFhtQ5vcAUrav4FnEAmQLEJeDyeS6FrQfbs9WmLaKfp5Y3tjx76HEleUY0XvY9lO+jGtqwL65It5KxNX3/k+PMHkvC/5PX32jmhYN+QIUw04DmjMCm5LQfDEcyLRrP+EWyH81pAiIaA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768320503; c=relaxed/relaxed;
-	bh=949QPzK8boFEecRA0fKPbQZdTAJAIVuK3CJTgsdmwBo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nd6t+NaruhV3AOfir2Lck4lte4pzJhsYTftL3LsLBNj3gxRo733aOrJzPtQGS/SNmfb6Oq6jhE7UmNV5WoOCFL4oOqNCHxMUnWMse/iIa+NNpc8fVS5T4VOeUC2zb4N1qT5d+n24for4HcP9Wh1Qxe8Mva5WBy5A/2OUdorpxomdh/oYLO6qJ2W8dT6VlkE4yNgPDHg5EmcZ9Jm4v6exyTmoyiC/GjBPdTjoMIp+QtR0EcjmAzMj4eRMCrqOLmMadFcpzszawNVh7aexVW1cyA+wR4AOjx1xADkM7k/A2XcJ37DxbEEEE/obwJ9ZBrCEW/F46sfgg8ndDw8/BijK8w==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; dkim=pass (1024-bit key; unprotected) header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=GkD+pgie; dkim-atps=neutral; spf=pass (client-ip=52.101.228.138; helo=os0p286cu011.outbound.protection.outlook.com; envelope-from=den@valinux.co.jp; receiver=lists.ozlabs.org) smtp.mailfrom=valinux.co.jp
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.51
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768321622;
+	cv=none; b=Cj6i0AatBmdQBLTUk2AWmgI02c5cABkixzFY5By11JJV/tJq4BmcYockLbH9bVjnrG2sCY2J9ueI+vaA9ITSDpTdjpd4hhHjcQtzz1FHiKboZElZWRmkjiZBc1EpMY6mWhzydbQlGQ26c2K56gT0GfD4Xz8cd8jtMtEfR1pU5cYmQ86C16nGCPzjtFh3GM2Ev/Ju4VvI9ZmIEqpMDn1hgexmnppB/5l0fKFJHbWcD1W6BtX+Fr1waTtCRLIpJxMuOhvX7RLynS8Uo/DS+8jwfyw8Asl1Iy5dtXEduGYcPFk/3G7GMwJnGJ0d5amJxZZ+sulcdleklzZEPMoJ6x1thQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1768321622; c=relaxed/relaxed;
+	bh=y9kSWtn88k+QkPqpOG7NN6Fxk/gRH5gvJVVHZoYjlVA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ltEZkYXS4d5cMukwEXZ6JEBES9D6fL4wJT7fzAFm+3uNkteUFnyj2wIf+Zuej39BQ3hBg8q/4jaLpkHkZzQa30OYjY1pG19/PkCn6UGueKObr2aeLH68VIO73GPLQFzRG68BxRDBENkaPxEJzA7UX4ZEblSM272ptQF/XemTe2QlsgMHWE76sRX3d/VLLjWsISd9FDiAgD/4tPFV9WltkNwSJcdlMnwAV3VrGsq69D2iDrXnAEmZXQBtHwK6Py51OsQ9qH3LvUr7GCfFg7MiLgM6JRTRdYpEXIhDcalXk4b5llACWg2y+kZLr/bueBNYyYI75cDUzp5H7fWnaUHezA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=RgM06nLN; dkim-atps=neutral; spf=pass (client-ip=209.85.128.51; helo=mail-wm1-f51.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=GkD+pgie;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=RgM06nLN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=valinux.co.jp (client-ip=52.101.228.138; helo=os0p286cu011.outbound.protection.outlook.com; envelope-from=den@valinux.co.jp; receiver=lists.ozlabs.org)
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11020138.outbound.protection.outlook.com [52.101.228.138])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.128.51; helo=mail-wm1-f51.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drDgT2k47z2xjK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 03:08:20 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nOtGEw3bha7rHQpTKF8I6Muy58zcgZY7aJa9YXemyTT/vP0Lil1vEWUrFradiqhMJk3Ivhaz1LRudk1f8he7sTo2DCJEcYQID59lXHFcYO1TYvXykZARJghfp2pcA4B7NITbq948RlcHFRpP0tw16OmULDHDroJ3XtEFJJ44Hlb2vuoUHnUCht4N6pq/kFhAFHp11PiEdL5G+wfrvzWWcGafhjw9xJ6uSFwrBdu6ZnCQr6TDLU49J2syzl9kPC0HB+otzq9WLxhOO3IVMmPTAh9TSCusjJoCij6P85IfiEepho7Gt+s/FrLtWTwDTtYam4B73EY9CIXORCP9Ofev3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=949QPzK8boFEecRA0fKPbQZdTAJAIVuK3CJTgsdmwBo=;
- b=vsOkY8Mq2U/9uot1H6WwPKq8jD+ksefNnZfi3RHpkkIP0FZGjqowanzzqSTwe0C5APC3W7bIxL3+Ep0wsMR06gMmdQVQcx7a5xPmdleGZObuJvDgzwpi7UlwRG+qYEPTWIQ43Q1b4yICbAj286kaQLOR1h/fG593ELW9BSrUe11kVQD0ksW8u6KIDulHXC6rH23xxBaKfLTuXkaq91ZONia1KBEOYaAAu7xT2E+m6cvyNxgYvo1aPWHghDIrngFhYozJQxwXlpoU4l6sCrqKL6xiRclZZLYwb6ikUTVmPJc8K55KhoCeRy/sVilGdLNi7TXeFlud6fSQA+BUGnqG5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=949QPzK8boFEecRA0fKPbQZdTAJAIVuK3CJTgsdmwBo=;
- b=GkD+pgieXHvxFxKFRQAXrhQ08Wp3rGPqWzuMAa3f8veNb7ofvTCDj6WbZdZDpIJ9bP5EtbbZX7lbfJQTOCUWNJAYdkn5jfXI47MYhMGCNMKP6G9wjoRaz/3RCZXOERaYHRf1q7Xq0Zt7VGfziFvVA3pppOVJxe204mCI4tLf4XU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
- by TYYP286MB1689.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:112::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Tue, 13 Jan
- 2026 16:07:39 +0000
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
- 16:07:38 +0000
-Date: Wed, 14 Jan 2026 01:07:36 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, vigneshr@ti.com, 
-	s-vadapalli@ti.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com, 
-	jesper.nilsson@axis.com, heiko@sntech.de, srikanth.thokala@intel.com, 
-	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com, geert+renesas@glider.be, 
-	magnus.damm@gmail.com, christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com, 
-	alexandre.torgue@foss.st.com, thierry.reding@gmail.com, jonathanh@nvidia.com, 
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org, 
-	rongqianfeng@vivo.com, 18255117159@163.com, shawn.lin@rock-chips.com, 
-	nicolas.frattaroli@collabora.com, linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com, 
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] PCI: endpoint: Add BAR subrange mapping support
-Message-ID: <6dplmb2csjthlzbzqrca34a5px5osavj5ziij7snfyxbhpumlb@b4wupbsld7ph>
-References: <20260113023715.3463724-1-den@valinux.co.jp>
- <20260113023715.3463724-2-den@valinux.co.jp>
- <aWYa59GgcB7jOfQq@ryzen>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aWYa59GgcB7jOfQq@ryzen>
-X-ClientProxiedBy: TY4P286CA0021.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:2b0::6) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:38f::10)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drF511fwzz2xjK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 03:27:00 +1100 (AEDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47d3ffa6720so71218545e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jan 2026 08:27:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768321556; x=1768926356; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=y9kSWtn88k+QkPqpOG7NN6Fxk/gRH5gvJVVHZoYjlVA=;
+        b=RgM06nLNuoXQOP0k0AU9S5/gqQs5mxDljMujnneMeSS+yNx+3e93SP2p12xaTMaoPc
+         n8vxzg0gd54v1wDNRz/ca3yLMhGzAp2KUtp6z6IHR7a6sPoJFTKcvgr4KQDVViYCMFI0
+         G1bb7X7PuHd4dbozMJjKQZRgaabgs/VUmjrJIw4DagGjRc+wzct6H7idDG4SGGEneb9I
+         eC0oiltSEsi4gn235O5Y/E5qzRGrTtUj10clR/ic66OiwlrZfgcpuw//0P2x5+woSk1X
+         2OS5f4YZBIhhcuPuNERAVodZS1QHGiUi15qqllDjwpWZGViM0AU+0E8hk8t9ZeRGQeoY
+         lJyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768321556; x=1768926356;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y9kSWtn88k+QkPqpOG7NN6Fxk/gRH5gvJVVHZoYjlVA=;
+        b=ZHluSwIgOkU55Pv4f7qwE9KeY7a/RVz+6snG4i/vtFhkKIxWWu595krsRfHwJcPft3
+         TYU850Vfm9tRPD56NzHVSRyxIzrb2jNe5RDLmE/0y8nRApiVik7qqWUxaIImuw9Kix8p
+         XKIudA1CjbRIeFdPfLfHnT/qxHj+jRO/PL/97lXabK98+mx5q8MZ4mWqT84DluD/dXQq
+         LxjJTN25R7hAP3p48Qg3MfcZwKohpZ76MjIGG8RPf87/RWt1F31sJXp5WjvYxoH3u0rm
+         v19zK9MHbleCjpooN7fww7soLExo6Tdqdhj6tUeBx0AGpA64HsSow/Iaz5/51eQo+fxv
+         95FA==
+X-Forwarded-Encrypted: i=1; AJvYcCVfhcJG7mwGn7YmoD+YfhRPg3urt4MmjZwNs33Ft6TcnwllhSbpFJMLkDYMXdh92jO+NIXGGL8W1jqz8gY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzc5EI/ugse/hhw4h0NjIVd3P/iQnKSjXbCSfrnHH7gHPvkHR17
+	85kR8QwJvA8f6xFrqqIJ9Cfbnd9kPPhfAPxnYg+UcMjzMOtJ8qspTQIARcztQKJWkV8=
+X-Gm-Gg: AY/fxX6oXPwIL39sEV8/SYxS0WngwfxBw9XrwRCnRwyNB5ZWwA8jgArJ0Fe/bKj23Pp
+	wgIb5MlATslugZOMTRxdTH5P6vBnO6bAmog9Do5Q1AgC50lTUErq6hDZvbyCKF2A3NKPPimtPBm
+	a9pXijF4+voyl4kPRAp4Ufcpo9VS5V7cUFTRRx24KqlG/JoEozcD+2YVBPn0KOB18E0tIBTmsd4
+	65ZDjHSCC12sPIGO+pkiqPzXUGMBrNFTSRfQb5l3n3A9fEe1MrL9Qd3X/tIRkLvTH0QIW2lIBn4
+	EJ/B1lTUmxdhG1xdJdZWJrTr7noL4IKHlguL9xIOuxtax8T9h1CyTRhxeywYnesDN1crickX1tb
+	X1sOSfZOrs8+lcJY4MMjAbhwNuUVh/QycduFjJvEda6aIhEXFKngf9steicV2SMrrrUzznZlYI2
+	PeIHP80X8gikLfIr6hiCWqLFMs
+X-Google-Smtp-Source: AGHT+IG4o2sMRbjal/wNqE1AyBhrQEhgOmuQP9i1Wb50Y85ZgDNaJvwCCbv/cl0e10bMkrsnwOfPLQ==
+X-Received: by 2002:a05:600c:1e1c:b0:477:58af:a91d with SMTP id 5b1f17b1804b1-47d84b0aa4bmr229523325e9.5.1768321556267;
+        Tue, 13 Jan 2026 08:25:56 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0dad8bsm45637605f8f.8.2026.01.13.08.25.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jan 2026 08:25:55 -0800 (PST)
+Date: Tue, 13 Jan 2026 17:25:52 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jason Wessel <jason.wessel@windriver.com>,
+	Daniel Thompson <danielt@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jiri Slaby <jirislaby@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
+	netdev@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 01/19] printk/nbcon: Use an enum to specify the required
+ callback in console_is_usable()
+Message-ID: <aWZyEHsOJFLRLRKT@pathway.suse.cz>
+References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
+ <20251227-printk-cleanup-part3-v1-1-21a291bcf197@suse.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,174 +127,85 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYYP286MB1689:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90d2828d-457f-4884-d2cd-08de52bddf37
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2FYQ86KB6a1ICrgGLto/G0aJHzbgC0StDWrNo3KjexOwKW2M7dKMK84DMq1X?=
- =?us-ascii?Q?HeX0dDAlFfMuqhG1Mf8ic5rd0dot1Nfz18T/KFXiHHg7lf6IYuGkNawQNePq?=
- =?us-ascii?Q?DnHrWGsbFvCB/6w3w+XCVfjtYHRXhXWeTn0IGtTil3P7O+9Nj/MgmHGNPH8j?=
- =?us-ascii?Q?ITB70FfsqFWKwy7Huoz/junG0n/T3gP5IhdBe937l6J4JLEVHjLa6RqcRnQ8?=
- =?us-ascii?Q?bXNEmIDrtf7prQfVORfkAsQ9dLO47R9Nbx3crwb+Hk4D8l4e9Ntd0TD5KSud?=
- =?us-ascii?Q?8kZMaSShgegZi2Oqj2k2Kns8qk8jHLZWH7MlWG3JtT/if7AMIeoISzN7L3yD?=
- =?us-ascii?Q?UMLgXs+oN8Jw+ALFzW26YIB8tcc5Hn2X804Car8jYnu7iOxPauVnd/CsQV9n?=
- =?us-ascii?Q?4MuPamlCtSmHHURtaGhIvAPUOegcNCNEHdAWs4V2ywIfjZgqRWVmbwDwrC+S?=
- =?us-ascii?Q?FNzcvc3R0noD0t9YV1X6Q9a0fhQxTw8Ojpt2F0eVlg8SmhH0mAVfEb4mlFi7?=
- =?us-ascii?Q?uFQOdXycYJNpWIUTqMbrkMGSjFBlIZ7omn9lvKdvB7aSkSk2O4XOLksZOC2A?=
- =?us-ascii?Q?V1Z0bZsQbD+mvmEkgie3khc6hxgkVWUfSxDYPTGPgEmwbmTXh6TXvBXjeHvH?=
- =?us-ascii?Q?X46we0FrU0EtkJO4tfL0G+yWxZAFzmM7bbny/ANcYDsnuwW1o4z1Bg3W8NO7?=
- =?us-ascii?Q?IuYF/TNDsyHIMoyLl865UUanfuGiIoshfeFj3Ic1lI4AyD6y1q9vpmho8/QG?=
- =?us-ascii?Q?eIpD0+dECePaF231eZ7AJAu37i9lkTSYfVCAujbkXM4ZEJOFpeuKPS0h+KnU?=
- =?us-ascii?Q?Clx3FZIhzglsaUtKbPVr4KaRZMRTkxgrKdmbhyvBoU7hW4jBxFOUSOUVMYRs?=
- =?us-ascii?Q?Jeh8H+B8csrxdk//hIZ711s8AReJPdHCCCbm42nN3uXNWNfU0G8LQHUTjdyu?=
- =?us-ascii?Q?oLajPGrQ3ucJU5aKRdoptR3EoAObVzFuzBqHZs6mgTdH22CLBThjg40sbIyn?=
- =?us-ascii?Q?sHph/Z+4CVGg/1Zh6YLo7duK/Lh6IXjkuv2a/qh2L4ggwYr34Yc/pbYaSSih?=
- =?us-ascii?Q?UOjse9BoXJDhZnO1LhXcLpwKGdDuegnW14JaLfEaqv5ngdCYpvqm1+PjgftW?=
- =?us-ascii?Q?J9icuda7nelB+PxJWTRAdlHYupMLUjnzzMswtVV5evo+idjKrkcev7gliUSs?=
- =?us-ascii?Q?iZ0zXy2FCR/xcBRKBR/s8r18DbaHGKbMikur7mYlWK5zd4/Dz0WzdMMlrSCo?=
- =?us-ascii?Q?C7/T+vRn8SoF5pZPuWoUOS77OcZsfsi3bUH+hf497JutWloURfhJI6oQyWgU?=
- =?us-ascii?Q?ydLGnjoEzvdL15tCdlVbF5YVwqjivbe86lvNR+0jvH4hhM1Qs1yvwWgOsSSD?=
- =?us-ascii?Q?dWbEEwlODlQtZwqwMU0CByL3sD6tm/U0zeVR1eQnEXH6yZLAJJtmSMBLcTk3?=
- =?us-ascii?Q?2XKDtaocHuE/i8UlJVYoS4iS5ZYuDmk7?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?EcwK6tDPM1zmZ/x2FLZIsr1Y2381zUx/kFrngCnKSzpHo3SFJtGdctv/FwRh?=
- =?us-ascii?Q?Xq1yEiDqnoXxBPRVyJ4DsLdPcyfp/A7aL7x6vpryyTw8YvkAtIU4B3FtEv1P?=
- =?us-ascii?Q?sBVmh2hwJFEvXDk+fjjY+S/XuPBeuv27W5RZ4JJdL0WkcDu96/oaAzsefSY/?=
- =?us-ascii?Q?AncoBAZRQnsiWa5XP64uykRRzPkF6zU2fjuYN2ulB9HLiSOCGvCg0MkqdUeR?=
- =?us-ascii?Q?3Qso96lMp40KxdEKWa/iojLgPzHCf6i2koRg0sH1nIeW4siw0/DKE4WfTvRs?=
- =?us-ascii?Q?ipQ8nCSeICmUyuwgSGlsvpaRLU9Zk7MxBQGaXSEzXROjLU8jInvKDYcee2tz?=
- =?us-ascii?Q?gQJoM7xwlQak2ATkxrIXnL+G8LwC8JB37ewj3L+s/P6qb3GxWes1apD1rUQJ?=
- =?us-ascii?Q?BCTXjCI5dA6D5jwMt1tD5xc0O7UVEYXcS/l/34vyB6eBFbJrRk4Go3aT5AOG?=
- =?us-ascii?Q?6740JcYMzrk0nDA8v99wy/4dmxhAeNUaz4upWrTLIG737u2M9r4vfh427OhJ?=
- =?us-ascii?Q?IUGnn5zHNUr3PiqljEepgHMELg7u2bFaZufi+9KOrBPKoKxuLpS7KHnjsWnD?=
- =?us-ascii?Q?Wxyh18QZXp2LjAIhQsZafSeZEUjvBNoTV/uyLHUCffL3POy1rka6MR9NIR6w?=
- =?us-ascii?Q?HG2pxUazXxkky8Jlc45U0SqZj6eSamqQCXRKBAa1gjs/cbEXpQk0QNpAdE1A?=
- =?us-ascii?Q?vbaOztygHUoi944t0aKzI2ORpZ6813ZN+VxAiled6+wPhkbd5V6t1VNSuOYY?=
- =?us-ascii?Q?tzzDNFGADwsyqUnJUKiAp6A/ptAXZ01ENvsKF0ZJOqMnlbAj8vbRfBW2ByxM?=
- =?us-ascii?Q?xwcJiY9XIly7VW+FdWwgqLjB+9l6CROgOLU7PT/hjJYf5LV3sajf5h0QtkWj?=
- =?us-ascii?Q?iRTEtY/gB0gYBW6ry3qbKY9sVA72Efk9wskM7Zg/WJB4iImWCcfW9zH7wKWN?=
- =?us-ascii?Q?LtfuJpBZIltXLeD4XjoWN3/8jzpOIe6qgXovVULvQsbU0N24sbAufHKM0yn9?=
- =?us-ascii?Q?Angtw5jJiuh64jK/4g7zjuZfvv3Hx1gvjiqsVU3oQM9bblVk+VUZpxjypX6J?=
- =?us-ascii?Q?YOukMufXZgM1SjYipwYWpC4tBDqb3gkvKf/hyw/LpewUCgZ/uAk79ANpjMKl?=
- =?us-ascii?Q?qG6bJKMrCWqPl26r8QIvWykL174eQLVcQIB8yKEXwASJkr+S/nw/kPbZJSDC?=
- =?us-ascii?Q?neji35gNTAh+wXKLohxeDeMbgyrJoG4e4unnZJsyP+0CTk8GMP/HB1iiW4P5?=
- =?us-ascii?Q?ugsqmEMeJVMlv6o+sYeqpk47JN2FCh8tx5/xI69/f2YvvqSIKL/EIuQSMH7D?=
- =?us-ascii?Q?7OfG2zelkA0T2UA/nULKGoEkpY4JR/5HigKWa0LsuV0hZWMwvvLNInPUUiL7?=
- =?us-ascii?Q?X5IWqQKKdQ/I4uD/aGprDkeJp80IWqWKAm7kY4JIfhTydAMP99JhjNv4iw+S?=
- =?us-ascii?Q?9VqH12glt0x7e8AmTuVOA1LSa24v5hGzCgE7wN/yEBIALOGI2xLkC0NcgYkT?=
- =?us-ascii?Q?A7rmaSSKDVm9aKbclGvGt+B87lGTa1zERQhGOw8d1SRlmWYNIZkDLBgPb2BF?=
- =?us-ascii?Q?dewq/nEgY/vJ5WN56HpR6I3fpRneaFfKyLxxSSMgw/8OFQR6LVyZJdw0EFTm?=
- =?us-ascii?Q?RGtYH4E9qt3zm5kjw1r6xsDqcCh1h8U95vIt0KTk3m6DxoeRwaEpFGczcjAA?=
- =?us-ascii?Q?qFJ8J7kePc1a4bshGBDC8EXv/Fze6EhSWnq0gVtD0SaUA9YXw1LWGupJVbkk?=
- =?us-ascii?Q?BCVdLmSr5joMk47nPdksdEa8S/GaJizmF5gJGe9QaoBnU0VzUnL6?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90d2828d-457f-4884-d2cd-08de52bddf37
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 16:07:38.1216
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 76x3HgFb1Ocxk0pCD3R5z0ToHQF0Yw+EDK9VwP4Ckw0qIGeEM+/3ItJewOmn93bhK8e2OPupapsFd0FKoE/kgA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYP286MB1689
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251227-printk-cleanup-part3-v1-1-21a291bcf197@suse.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Jan 13, 2026 at 11:13:59AM +0100, Niklas Cassel wrote:
-> On Tue, Jan 13, 2026 at 11:37:11AM +0900, Koichiro Den wrote:
-> > Extend the PCI endpoint core to support mapping subranges within a BAR.
-> > Introduce a new 'submap' field and a 'use_submap' flag in struct
-> > pci_epf_bar so an endpoint function driver can request inbound mappings
-> > that fully cover the BAR.
-> > 
-> > Add a subrange_mapping feature bit to struct pci_epc_features so EPC
-> > drivers can explicitly advertise support. Make pci_epc_set_bar() reject
-> > use_submap requests (-EINVAL) when the EPC does not advertise
-> > subrange_mapping, to avoid silently accepting a configuration that the
-> > controller cannot implement.
-> > 
-> > The submap array describes the complete BAR layout (no overlaps and no
-> > gaps are allowed to avoid exposing untranslated address ranges). This
-> > provides the generic infrastructure needed to map multiple logical
-> > regions into a single BAR at different offsets, without assuming a
-> > controller-specific inbound address translation mechanism. Also, the
-> > array must be sorted in ascending order by offset.
-> > 
-> > Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> > ---
+On Sat 2025-12-27 09:16:08, Marcos Paulo de Souza wrote:
+> The current usage of console_is_usable() is clumsy. The parameter
+> @use_atomic is boolean and thus not self-explanatory. The function is
+> called twice in situations when there are no-strict requirements.
 > 
-> I think this patch should be after the:
-> "PCI: endpoint: Add dynamic_inbound_mapping EPC feature"
-> patch...
+> Replace it with enum nbcon_write_cb which provides a more descriptive
+> values for all 3 situations: atomic, thread or any.
 > 
+> Note that console_is_usable() checks only NBCON_USE_ATOMIC because
+> .write_thread() callback is mandatory. But the other two values still
+> make sense because they describe the intention of the caller.
 > 
-> >  drivers/pci/endpoint/pci-epc-core.c |  3 +++
-> >  include/linux/pci-epc.h             |  3 +++
-> >  include/linux/pci-epf.h             | 31 +++++++++++++++++++++++++++++
-> >  3 files changed, 37 insertions(+)
-> > 
-> > diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-> > index ca7f19cc973a..8d809a2c3ce9 100644
-> > --- a/drivers/pci/endpoint/pci-epc-core.c
-> > +++ b/drivers/pci/endpoint/pci-epc-core.c
-> > @@ -596,6 +596,9 @@ int pci_epc_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
-> >  	if (!epc_features)
-> >  		return -EINVAL;
-> >  
-> > +	if (epf_bar->use_submap && !epc_features->subrange_mapping)
-> > +		return -EINVAL;
+> --- a/include/linux/console.h
+> +++ b/include/linux/console.h
+> @@ -202,6 +202,19 @@ enum cons_flags {
+>  	CON_NBCON_ATOMIC_UNSAFE	= BIT(9),
+>  };
+>  
+> +/**
+> + * enum nbcon_write_cb - Defines which nbcon write() callback must be used based
+> + *                       on the caller context.
+> + * @NBCON_USE_ATOMIC: Use con->write_atomic().
+> + * @NBCON_USE_THREAD: Use con->write_thread().
+> + * @NBCON_USE_ANY:    The caller does not have any strict requirements.
+> + */
+> +enum nbcon_write_cb {
+> +	NBCON_USE_ATOMIC,
+> +	NBCON_USE_THREAD,
+> +	NBCON_USE_ANY,
 
-Hi Niklas,
+AFAIK, this would define NBCON_USE_ATOMIC as zero. See below.
 
-> 
-> ...then you can change this condition to:
-> 
-> 	if (epf_bar->use_submap &&
-> 	    !(epc_features->dynamic_inbound_mapping &&
-> 	      epc_features->subrange_mapping))
-> 		return -EINVAL;
+> +};
+> +
+>  /**
+>   * struct nbcon_state - console state for nbcon consoles
+>   * @atom:	Compound of the state fields for atomic operations
+> @@ -622,7 +635,8 @@ extern void nbcon_kdb_release(struct nbcon_write_context *wctxt);
+>   * which can also play a role in deciding if @con can be used to print
+>   * records.
+>   */
+> -static inline bool console_is_usable(struct console *con, short flags, bool use_atomic)
+> +static inline bool console_is_usable(struct console *con, short flags,
+> +				     enum nbcon_write_cb nwc)
+>  {
+>  	if (!(flags & CON_ENABLED))
+>  		return false;
+> @@ -631,7 +645,7 @@ static inline bool console_is_usable(struct console *con, short flags, bool use_
+>  		return false;
+>  
+>  	if (flags & CON_NBCON) {
+> -		if (use_atomic) {
+> +		if (nwc & NBCON_USE_ATOMIC) {
 
-Somehow this slipped my mind.. Thanks for pointing this out.
+This will always be false because NBCON_USE_ATOMIC is zero.
+I think that it was defined as "0x1" in the original proposal.
 
-And I don't have any objections to the rest of the points you left comments
-on v6 (patch ordering, splitting, and doc refinements).
+Let's keep it defined by as zero and use here:
 
-I'll address them in v7.
-Thank you for the detailed review.
+		if (nwc == NBCON_USE_ATOMIC) {
 
-Koichiro
+Note that we do _not_ want to return "false" for "NBCON_USE_ANY"
+when con->write_atomic does not exist.
 
-> 
-> 
-> > +
-> >  	if (epc_features->bar[bar].type == BAR_RESIZABLE &&
-> >  	    (epf_bar->size < SZ_1M || (u64)epf_bar->size > (SZ_128G * 1024)))
-> >  		return -EINVAL;
-> > diff --git a/include/linux/pci-epc.h b/include/linux/pci-epc.h
-> > index 4286bfdbfdfa..898a29e7d6f7 100644
-> > --- a/include/linux/pci-epc.h
-> > +++ b/include/linux/pci-epc.h
-> > @@ -223,6 +223,8 @@ struct pci_epc_bar_desc {
-> >  /**
-> >   * struct pci_epc_features - features supported by a EPC device per function
-> >   * @linkup_notifier: indicate if the EPC device can notify EPF driver on link up
-> > + * @subrange_mapping: indicate if the EPC device can map inbound subranges for a
-> > + *                    BAR
-> 
-> This text should probably also mention that this feature depends on the
-> dynamic_inbound_mapping feature.
-> 
-> 
-> With those comments fixed, looks good to me:
-> Reviewed-by: Niklas Cassel <cassel@kernel.org>
+>  			/* The write_atomic() callback is optional. */
+>  			if (!con->write_atomic)
+>  				return false;
+
+
+Otherwise, it looks good to me.
+
+Best Regards,
+Petr
 
