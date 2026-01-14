@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-15721-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15723-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7AFD1E80F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 12:46:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4D7D1E83E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 12:48:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drkqD0yZZz2yFw;
-	Wed, 14 Jan 2026 22:46:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drkrp5KqTz2yP8;
+	Wed, 14 Jan 2026 22:48:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768391208;
-	cv=none; b=AzqyAnuFfuj0IsBvTqYcljxss1jfvPkFHKeSCCUfJJFOlLOPq/IeRv/CLUkUe1hQD+PIM8TqC9VLYNgnF4oQKtPzg0Ypch0ntHz0sl0jSp64xON3AQt9Gpfr7mrdcEQ675wDDGVIeGi8DNhIzn/xlT9Xle5sYzjfUMkHpyFXwVsTSevsrSU8rmre1szCVC9nc7w38LOhuWop1DOFf6dHgt5fXLB6ztT4WUVnvE8IEsqFwe+caGOWf6T6rw9++H7RiwTP6OF5rzjJvWsJ74cXVrmltHaTzlkU0DEFv5QZn1lirGOnroL5nW8aPSl1R3U5tCyyqyZkOc398+ZFXBg6Kg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768391290;
+	cv=none; b=WFEIU1YrVf/tlS2KviO6MWxchbI79CFbXjLUzJQJe8VRlla1x+mq720a7PbdlRoKcvYHp1jtEecBfDJd6G/QsP0csa8oIeOKJ41/knBoUxEN2i0n6r6Z71d8dvbsNdnp693lASODF+iaINqMO+mYCYBWv1CGmkTdleEOU7wNC2EhT1pMkE2bINTl7ARXLBdIBVJoYNo2DGdULdzg1RVlc9MRigpQkT3VJzJ9IkzyXsHq6WagnG4QSdbUPw3ZCFICCq3Ugs0v6K7kKCP3/ZuuY+vEkdCbWptMW6RqLSE1pHVRUikVN8PGp2SZClm6YZdrmi+ItEgL/pBuIULetmycEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768391208; c=relaxed/relaxed;
-	bh=aXJUn3bNZD9fOETwczZ/IV1t0kDAXX4Muw0AQio7os4=;
+	t=1768391290; c=relaxed/relaxed;
+	bh=/+4EsIgqtPyteIyyvwZeUaR3Ld9Je3XCr84TTqvedvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QdNaKsinyIEZiD02yY6PQhraXzKz5tgHZwyL/dTZKOBOKH6f/PzionEDDwDAJ0O8wYs6Iz5mnH/Y20AooUkA+KA+fRm0ho0uqGE4PT1MedEjxW0R6FVOFvx/TkR71bONRrS57qBTXWAyCrG8yhy8m/RB5gEtIwd9aOesnH28Ma9n0ZU4zNgG3GgluP2QiPFwkeoC9vmoNpR2HOANeDPhRirkmyCcQT1knUZSxxbcVnod+6Df4F9aSdE0glkzyo8RiAiPeAaSKIFDbYfMmvsujZuwtF5PgWkw2Q/tV/i4w75SzWkZzu+h6etGrSDq0oHRbW3HDEjskdCTkoE+1/DfkQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lTT2E0Ym; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=LnBjtUHFnKgMWSmDx+jW2S0/v0I/VsKAdNPu2J/QpHwPh/c9CnnugHjaLvAZYv/uLXiDPH1Ni8NSqqgIU1afUGH3Uh5YOa35v2kSP9HLKaWZyuQKox5PzdQGtc4L08y40o9TGlZNYhhu+3t7UCwAdnVBwwiFKXGKYJmbF9CXiRDEOpDwW1pGrKFRPAak6rx42/YBkxiWxtXBjfkj2Mk890gerZdUNtWyRaQf4tsw/1rPGanAbZTkAMMU+C2zlFwz4lCxRmB5Gdzrkd/rSPB0D1kj7F1J/LpI2BX5QesrmMLxCyZriyJH9XWef7qdrlbiVyY/KNX44/6R40zRV0Hlnw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z70Lk7pl; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lTT2E0Ym;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z70Lk7pl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drkqB6hnYz2x9M
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 22:46:46 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60EBVIFw009441;
-	Wed, 14 Jan 2026 11:46:18 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drkrn6W2Jz2x9M
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 22:48:09 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60E3EkWG027978;
+	Wed, 14 Jan 2026 11:46:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=aXJUn3bNZD9fOETwc
-	zZ/IV1t0kDAXX4Muw0AQio7os4=; b=lTT2E0YmAM/iOpFUA42h/oorTWU+K10D5
-	5u7CBO1rDajGULasgPTZ0zr+CFZJeEktvFOsc1RTKH2R7Z+OeT5IPHQaZqlsU/J+
-	XSQYM07S8aG8IMh18xM4nKiA4iG04RaZiODQ2bSh0+CZn8dyk9suGQp28DPbJ2J8
-	DPoE36VgaOlLxanh2ki5oDtft9v0dCf0+YNCnVMlmtuL5RFYb2PotsbjXi7dKfa2
-	VQ0Uhw61FMlIgb+ydoN7DD5zdeirrB/hzKpG+V6upyxiSKP86DIxbFM5qveZEBGo
-	thJ30N18Z9XvXk/icC+LVGxetzpsx8a/e9ID5suGTydyfPwddCgmg==
+	:mime-version:references:subject:to; s=pp1; bh=/+4EsIgqtPyteIyyv
+	wZeUaR3Ld9Je3XCr84TTqvedvQ=; b=Z70Lk7plYxb+RCTiLxZ1BcTzZA7IEUEfw
+	SulQMTheJX+u2xDSCXAYGowgETrk70IsokxiTNzttm6i8rQKJKqoT8WaVjkhfTNn
+	6hdhhoAv7DXcxaP1bdK1ENLuxKU2LGJwIsYZR4tBd7jM10ri0OlC524pJbRwJG8s
+	u1fzshYIvftZMxp9ET0AghpVnrXspMl2I30mbw7k1Fd1QU2kTHkvwezwg+tB5Lv2
+	XHM/ZH7wsqW5Ltoe28yc9j2ybIIGmWWVNJGN/Qe5pzMWpe4SCwYFf70sJhC8Oxpw
+	m8yf8Hvb0r+eKkEpwt4/ot0LzxxZ9INy4baT1MidGpjV0ZWTkhl7A==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bke93155t-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkc6h8xk8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Jan 2026 11:46:17 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60EBWDP2020741;
-	Wed, 14 Jan 2026 11:46:17 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bke93155q-1
+	Wed, 14 Jan 2026 11:46:32 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60EBkWmv012664;
+	Wed, 14 Jan 2026 11:46:32 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkc6h8xk3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Jan 2026 11:46:17 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60EBMTux025961;
-	Wed, 14 Jan 2026 11:46:15 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm23n9ra2-1
+	Wed, 14 Jan 2026 11:46:32 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60EAmaKW025877;
+	Wed, 14 Jan 2026 11:46:28 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm2kkhsb8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Jan 2026 11:46:15 +0000
+	Wed, 14 Jan 2026 11:46:28 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60EBkBUq46072088
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60EBkOPS28115610
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 Jan 2026 11:46:11 GMT
+	Wed, 14 Jan 2026 11:46:24 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3C25E20040;
-	Wed, 14 Jan 2026 11:46:11 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 66A2C20043;
+	Wed, 14 Jan 2026 11:46:24 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AB4B520043;
-	Wed, 14 Jan 2026 11:46:04 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 194C920040;
+	Wed, 14 Jan 2026 11:46:18 +0000 (GMT)
 Received: from abhi.. (unknown [9.124.217.65])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 14 Jan 2026 11:46:04 +0000 (GMT)
+	Wed, 14 Jan 2026 11:46:17 +0000 (GMT)
 From: adubey@linux.ibm.com
 To: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -82,9 +82,9 @@ Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
         mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
         iii@linux.ibm.com, shuah@kernel.org,
         Abhishek Dubey <adubey@linux.ibm.com>
-Subject: [PATCH v2 5/6] powerpc64/bpf: Support exceptions
-Date: Wed, 14 Jan 2026 17:14:49 +0530
-Message-ID: <20260114114450.30405-6-adubey@linux.ibm.com>
+Subject: [PATCH v2 6/6] powerpc64/bpf: Additional NVR handling for bpf_throw
+Date: Wed, 14 Jan 2026 17:14:50 +0530
+Message-ID: <20260114114450.30405-7-adubey@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260114114450.30405-1-adubey@linux.ibm.com>
 References: <20260114114450.30405-1-adubey@linux.ibm.com>
@@ -103,28 +103,29 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Zt7Vyr5IxOTsYF3YS_KghMXvGQFRnPuJ
-X-Authority-Analysis: v=2.4 cv=dYyNHHXe c=1 sm=1 tr=0 ts=69678209 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=DU0EyFXtAAAA:8 a=VnNF1IyMAAAA:8
- a=8rlfmSvwrT77M3U47S8A:9 a=UCR5be5CC-YrbG9FbbB0:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDA5MyBTYWx0ZWRfX9216ceHfLNTy
- f2q9BP5brJFX1ng4HTTga5/7fd8UuEVNs/evVTdD6cNNyz4BKRooftukmA95roVZIZP0QO3EzC0
- aYkkHQ2wc1hCNVx/7lltVXShDgSImtUN4HbzUDUG8WdFb76NSO3in+ciBq3sI26BIjm2hpDtUTB
- MH9FP35PVrLJ/7IXGiUw94U5HY2cx3kSNsqX9phRKHQRuEoq6hGqGSmaHKq1jH7rjfLQhBzgsrm
- /LPoZEi6sllTrhP/2Nhkp3FsRiwhMK5FVj1dxcYUscn4GhqmnKth92EaAQm85vV4Pu5xEoPqNeO
- PHS+DjfSCLCckAO6PlMA69u9lTNDo9Dk/QtdZJtKHNopxAqg6fV8claIqY3ANO85dO+fa0Zep3L
- R2r7tKW/pYye5/jB7yO78mOIw1cmyvgBVa4VGQEdASel8X9L8P5UVczf/ttcW+j6lvocfYAYwgZ
- Of673mxUYFhLLpcij1A==
-X-Proofpoint-GUID: mX_nWFvyyTcU6KkGbHjUDlMtSJl3gZNE
+X-Proofpoint-GUID: 6JGKqhTsQQV73jaKPlA3g_liPYpb3I-p
+X-Proofpoint-ORIG-GUID: AiIBpe9NOnSwn7VhFh1r6A0TWPxAGobS
+X-Authority-Analysis: v=2.4 cv=TaibdBQh c=1 sm=1 tr=0 ts=69678218 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
+ a=2yuXeg4sgMS8061G0UsA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDA5OCBTYWx0ZWRfXwAirCVMD28l5
+ 0Hzm3HZnR0koNk2GPehBaQaxIZZtT/nsws70Gj6IfYTjbdNtGD+TnZf6CM4uIPzQnh7a2X/CsXQ
+ Y3jlcy5eKBgJ363tpRhhcIgHipxoWEGCb9btKvbUUj9x8kIhI3CIYsCSkfJLs/Ge/I4na8iAqlS
+ tPSAdH6ozj3VeTjlQtc0rrbCgvLGcws5I4sBqoKpSCjn8SyAcV1IGoA9PESOF/p08ZvsgYJ2yen
+ tbpmvXTlEzNNskfXAOVD/nYkJktIklIbDanU6sVHltpRaPmDys0WiAdSiqLPwq2beZxm2ut/kk9
+ C1zfD7b+1yf334ykCVWYXbHtyoarIq7/V+ANamD7FP/cZcagbbZIDXDVAFiV/nhLv1FDqS3hsji
+ 4Grnyp8A8itcZeApP2iJq9Eres3pBqQhZZK9FddxSQA4gBF0qnJgKE0xGoN4Fsx9bB12I1lPJ64
+ WR8oqVG84ErG66y34Nw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-14_03,2026-01-09_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 adultscore=0 priorityscore=1501 suspectscore=0
- bulkscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601140093
+ adultscore=0 phishscore=0 impostorscore=0 bulkscore=0 clxscore=1015
+ suspectscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
+ definitions=main-2601140098
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
@@ -132,153 +133,168 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Abhishek Dubey <adubey@linux.ibm.com>
 
-The modified prologue/epilogue generation code now
-enables exception-callback to use the stack frame of
-the program marked as exception boundary, where callee
-saved registers are stored.
+The bpf_throw() function never returns, if it has
+clobbered any callee-saved register, those will
+remain clobbered. The prologue must take care of
+saving all callee-saved registers in the frame of
+exception boundary program. Later these additional
+non volatile registers R14-R25 along with other
+NVRs are restored back in the epilogue of exception
+callback.
 
-As per ppc64 ABIv2 documentation[1], r14-r31 are callee
-saved registers. BPF programs on ppc64 already saves
-r26-r31 registers. Saving the remaining set of callee
-saved registers(r14-r25) is handled in the next patch.
-
-[1] https://ftp.rtems.org/pub/rtems/people/sebh/ABI64BitOpenPOWERv1.1_16July2015_pub.pdf
+To achieve above objective the frame size is
+determined dynamically to accommodate additional
+non volatile registers in exception boundary's frame.
+For non-exception boundary program, the frame size
+remains optimal. The additional instructions to
+save & restore r14-r25 registers are emitted only during
+exception boundary and exception callback respectively.
 
 Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
 ---
- arch/powerpc/net/bpf_jit.h        |  2 ++
- arch/powerpc/net/bpf_jit_comp.c   |  7 ++++
- arch/powerpc/net/bpf_jit_comp64.c | 53 +++++++++++++++++++++----------
- 3 files changed, 45 insertions(+), 17 deletions(-)
+ arch/powerpc/net/bpf_jit_comp64.c | 70 +++++++++++++++++++++++++++----
+ 1 file changed, 63 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-index 5d735bc5e6bd..fb548ae5d143 100644
---- a/arch/powerpc/net/bpf_jit.h
-+++ b/arch/powerpc/net/bpf_jit.h
-@@ -179,6 +179,8 @@ struct codegen_context {
- 	u64 arena_vm_start;
- 	u64 user_vm_start;
- 	bool is_subprog;
-+	bool exception_boundary;
-+	bool exception_cb;
- };
- 
- #define bpf_to_ppc(r)	(ctx->b2p[r])
-diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index e3088cf089d1..26991940d36e 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -207,6 +207,8 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	cgctx.arena_vm_start = bpf_arena_get_kern_vm_start(fp->aux->arena);
- 	cgctx.user_vm_start = bpf_arena_get_user_vm_start(fp->aux->arena);
- 	cgctx.is_subprog = bpf_is_subprog(fp);
-+	cgctx.exception_boundary = fp->aux->exception_boundary;
-+	cgctx.exception_cb = fp->aux->exception_cb;
- 
- 	/* Scouting faux-generate pass 0 */
- 	if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
-@@ -436,6 +438,11 @@ void bpf_jit_free(struct bpf_prog *fp)
- 	bpf_prog_unlock_free(fp);
- }
- 
-+bool bpf_jit_supports_exceptions(void)
-+{
-+	return IS_ENABLED(CONFIG_PPC64);
-+}
-+
- bool bpf_jit_supports_subprog_tailcalls(void)
- {
- 	return IS_ENABLED(CONFIG_PPC64);
 diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index ec58395f74f7..a6083dd9786c 100644
+index a6083dd9786c..941e0818c9ec 100644
 --- a/arch/powerpc/net/bpf_jit_comp64.c
 +++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -89,7 +89,9 @@ static inline bool bpf_has_stack_frame(struct codegen_context *ctx)
- 	 * - the bpf program uses its stack area
- 	 * The latter condition is deduced from the usage of BPF_REG_FP
- 	 */
--	return ctx->seen & SEEN_FUNC || bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP));
-+	return ctx->seen & SEEN_FUNC ||
-+	       bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)) ||
-+	       ctx->exception_cb;
+@@ -32,21 +32,37 @@
+  *
+  *		[	prev sp		] <-------------
+  *		[    tail_call_info	] 8		|
+- *		[   nv gpr save area	] 6*8		|
++ *		[   nv gpr save area	] 6*8 + (12*8)	|
+  *		[    local_tmp_var	] 24		|
+  * fp (r31) -->	[   ebpf stack space	] upto 512	|
+  *		[     frame header	] 32/112	|
+  * sp (r1) --->	[    stack pointer	] --------------
++ *
++ * Additional (12*8) in 'nv gpr save area' only in case of
++ * exception boundary.
+  */
+ 
+ /* for bpf JIT code internal usage */
+ #define BPF_PPC_STACK_LOCALS	24
++/*
++ * for additional non volatile registers(r14-r25) to be saved
++ * at exception boundary
++ */
++#define BPF_PPC_EXC_STACK_SAVE (12*8)
++
+ /* stack frame excluding BPF stack, ensure this is quadword aligned */
+ #define BPF_PPC_STACKFRAME	(STACK_FRAME_MIN_SIZE + \
+ 				 BPF_PPC_STACK_LOCALS + \
+ 				 BPF_PPC_STACK_SAVE   + \
+ 				 BPF_PPC_TAILCALL)
+ 
++/*
++ * same as BPF_PPC_STACKFRAME with save area for additional
++ * non volatile registers saved at exception boundary.
++ * This is quad-word aligned.
++ */
++#define BPF_PPC_EXC_STACKFRAME (BPF_PPC_STACKFRAME + BPF_PPC_EXC_STACK_SAVE)
++
+ /* BPF register usage */
+ #define TMP_REG_1	(MAX_BPF_JIT_REG + 0)
+ #define TMP_REG_2	(MAX_BPF_JIT_REG + 1)
+@@ -103,9 +119,12 @@ static inline bool bpf_has_stack_frame(struct codegen_context *ctx)
+  *		[	  ...       	] 		|
+  * sp (r1) --->	[    stack pointer	] --------------
+  *		[    tail_call_info	] 8
+- *		[   nv gpr save area	] 6*8
++ *		[   nv gpr save area	] 6*8 + (12*8)
+  *		[    local_tmp_var	] 24
+  *		[   unused red zone	] 224
++ *
++ * Additional (12*8) in 'nv gpr save area' only in case of
++ * exception boundary.
+  */
+ static int bpf_jit_stack_local(struct codegen_context *ctx)
+ {
+@@ -114,7 +133,11 @@ static int bpf_jit_stack_local(struct codegen_context *ctx)
+ 		return STACK_FRAME_MIN_SIZE + ctx->stack_size;
+ 	} else {
+ 		/* Stack layout 2 */
+-		return -(BPF_PPC_TAILCALL + BPF_PPC_STACK_SAVE + BPF_PPC_STACK_LOCALS);
++		return -(BPF_PPC_TAILCALL
++			+ BPF_PPC_STACK_SAVE
++			+ (ctx->exception_boundary || ctx->exception_cb ?
++							BPF_PPC_EXC_STACK_SAVE:0)
++			+ BPF_PPC_STACK_LOCALS);
+ 	}
  }
  
- /*
-@@ -190,23 +192,32 @@ void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
- 		EMIT(PPC_RAW_STDU(_R1, _R1, -(BPF_PPC_STACKFRAME + ctx->stack_size)));
- 	}
+@@ -125,9 +148,19 @@ int bpf_jit_stack_tailcallinfo_offset(struct codegen_context *ctx)
  
--	/*
--	 * Back up non-volatile regs -- BPF registers 6-10
--	 * If we haven't created our own stack frame, we save these
--	 * in the protected zone below the previous stack frame
--	 */
--	for (i = BPF_REG_6; i <= BPF_REG_10; i++)
--		if (bpf_is_seen_register(ctx, bpf_to_ppc(i)))
--			EMIT(PPC_RAW_STD(bpf_to_ppc(i), _R1, bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
-+	if (!ctx->exception_cb) {
-+		/*
-+		 * Back up non-volatile regs -- BPF registers 6-10
-+		 * If we haven't created our own stack frame, we save these
-+		 * in the protected zone below the previous stack frame
-+		 */
-+		for (i = BPF_REG_6; i <= BPF_REG_10; i++)
-+			if (ctx->exception_boundary || bpf_is_seen_register(ctx, bpf_to_ppc(i)))
-+				EMIT(PPC_RAW_STD(bpf_to_ppc(i), _R1,
-+					bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
- 
--	if (ctx->arena_vm_start)
--		EMIT(PPC_RAW_STD(bpf_to_ppc(ARENA_VM_START), _R1,
-+		if (ctx->exception_boundary || ctx->arena_vm_start)
-+			EMIT(PPC_RAW_STD(bpf_to_ppc(ARENA_VM_START), _R1,
- 				 bpf_jit_stack_offsetof(ctx, bpf_to_ppc(ARENA_VM_START))));
- 
--	/* Setup frame pointer to point to the bpf stack area */
--	if (bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)))
--		EMIT(PPC_RAW_ADDI(bpf_to_ppc(BPF_REG_FP), _R1,
-+		/* Setup frame pointer to point to the bpf stack area */
-+		if (bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)))
-+			EMIT(PPC_RAW_ADDI(bpf_to_ppc(BPF_REG_FP), _R1,
- 				STACK_FRAME_MIN_SIZE + ctx->stack_size));
-+	} else {
-+		/*
-+		 * Exception callback receives Frame Pointer of main
-+		 * program as third arg
-+		 */
-+		EMIT(PPC_RAW_MR(_R1, _R5));
-+	}
- 
- 	if (ctx->arena_vm_start)
- 		PPC_LI64(bpf_to_ppc(ARENA_VM_START), ctx->arena_vm_start);
-@@ -218,17 +229,25 @@ static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx
- 
- 	/* Restore NVRs */
- 	for (i = BPF_REG_6; i <= BPF_REG_10; i++)
--		if (bpf_is_seen_register(ctx, bpf_to_ppc(i)))
-+		if (ctx->exception_cb || bpf_is_seen_register(ctx, bpf_to_ppc(i)))
- 			EMIT(PPC_RAW_LD(bpf_to_ppc(i), _R1, bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
- 
--	if (ctx->arena_vm_start)
-+	if (ctx->exception_cb || ctx->arena_vm_start)
- 		EMIT(PPC_RAW_LD(bpf_to_ppc(ARENA_VM_START), _R1,
- 				bpf_jit_stack_offsetof(ctx, bpf_to_ppc(ARENA_VM_START))));
- 
-+	if (ctx->exception_cb) {
-+		/*
-+		 * LR value from boundary-frame is received as second parameter
-+		 * in exception callback.
-+		 */
-+		EMIT(PPC_RAW_MTLR(_R4));
+ static int bpf_jit_stack_offsetof(struct codegen_context *ctx, int reg)
+ {
+-	if (reg >= BPF_PPC_NVR_MIN && reg < 32)
++	int min_valid_nvreg = BPF_PPC_NVR_MIN;
++	/* Default frame size for all cases except exception boundary */
++	int frame_nvr_size = BPF_PPC_STACKFRAME;
++
++	/* Consider all nv regs for handling exceptions */
++	if (ctx->exception_boundary || ctx->exception_cb) {
++		min_valid_nvreg = _R14;
++		frame_nvr_size = BPF_PPC_EXC_STACKFRAME;
 +	}
 +
++	if (reg >= min_valid_nvreg && reg < 32)
+ 		return (bpf_has_stack_frame(ctx) ?
+-			(BPF_PPC_STACKFRAME + ctx->stack_size) : 0)
++			(frame_nvr_size + ctx->stack_size) : 0)
+ 				- (8 * (32 - reg)) - BPF_PPC_TAILCALL;
+ 
+ 	pr_err("BPF JIT is asking about unknown registers");
+@@ -189,7 +222,20 @@ void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
+ 			EMIT(PPC_RAW_STD(_R0, _R1, PPC_LR_STKOFF));
+ 		}
+ 
+-		EMIT(PPC_RAW_STDU(_R1, _R1, -(BPF_PPC_STACKFRAME + ctx->stack_size)));
++		int stack_expand = ctx->exception_boundary || ctx->exception_cb ?
++					BPF_PPC_EXC_STACKFRAME : BPF_PPC_STACKFRAME;
++		EMIT(PPC_RAW_STDU(_R1, _R1, -(stack_expand + ctx->stack_size)));
++	}
++
++	/*
++	 * Program acting as exception boundary pushes R14..R25 in addition to
++	 * BPF callee-saved non volatile registers. Exception callback uses
++	 * the boundary program's stack frame, recover additionally saved
++	 * registers in epilogue of exception callback.
++	 */
++	if (ctx->exception_boundary) {
++		for (i = _R14; i <= _R25; i++)
++			EMIT(PPC_RAW_STD(i, _R1, bpf_jit_stack_offsetof(ctx, i)));
+ 	}
+ 
+ 	if (!ctx->exception_cb) {
+@@ -237,6 +283,13 @@ static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx
+ 				bpf_jit_stack_offsetof(ctx, bpf_to_ppc(ARENA_VM_START))));
+ 
+ 	if (ctx->exception_cb) {
++		/*
++		 * Recover additionally saved non volatile registers from stack
++		 * frame of exception boundary program.
++		 */
++		for (i = _R14; i <= _R25; i++)
++			EMIT(PPC_RAW_LD(i, _R1, bpf_jit_stack_offsetof(ctx, i)));
++
+ 		/*
+ 		 * LR value from boundary-frame is received as second parameter
+ 		 * in exception callback.
+@@ -246,7 +299,10 @@ static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx
+ 
  	/* Tear down our stack frame */
  	if (bpf_has_stack_frame(ctx)) {
- 		EMIT(PPC_RAW_ADDI(_R1, _R1, BPF_PPC_STACKFRAME + ctx->stack_size));
--		if (ctx->seen & SEEN_FUNC) {
-+		if (ctx->seen & SEEN_FUNC || ctx->exception_cb) {
+-		EMIT(PPC_RAW_ADDI(_R1, _R1, BPF_PPC_STACKFRAME + ctx->stack_size));
++		int stack_shrink = ctx->exception_cb || ctx->exception_boundary ?
++					BPF_PPC_EXC_STACKFRAME : BPF_PPC_STACKFRAME;
++		EMIT(PPC_RAW_ADDI(_R1, _R1, stack_shrink + ctx->stack_size));
++
+ 		if (ctx->seen & SEEN_FUNC || ctx->exception_cb) {
  			EMIT(PPC_RAW_LD(_R0, _R1, PPC_LR_STKOFF));
  			EMIT(PPC_RAW_MTLR(_R0));
- 		}
 -- 
 2.48.1
 
