@@ -1,79 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-15725-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15717-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14078D1E8EC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 12:53:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A132D1E7ED
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 12:46:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drkyf2mqGz2yJ5;
-	Wed, 14 Jan 2026 22:53:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drkpC62k2z2xPB;
+	Wed, 14 Jan 2026 22:45:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=52.101.66.135 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768388625;
-	cv=pass; b=VxQucE4aXAffmn0UJipXXt5kphpn3GqF31huV9uJFpoJiMVAOogVACO/C4FAxCRXbAomywbbBjePwC/o8cIPnGS5xhMZbH/4WA9LiKI+UJlH7xGvFLiYwl1GF9fEOqlLYkuUgO4b7ACaSvHgKKtxYP0mcUunpNUfostW8YKjAqlIbOTHukQ6uSoNUaW68g8Cz5/bm3M1SRa8TzL6qzvDcRi2V75EREZonXYybCmQn2D9YZDoL+U9Hwe/ViwBABzkovtKa5+scfQiNft6WpPoodK5OPqDKgTw5kDyR5E1gxYPbmr+LlZywCCGFaWpZ9Ay2RhscvK/g3Hmg9UXD2rYPQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768388625; c=relaxed/relaxed;
-	bh=F+u9hMLsJwpot15jGv+6DuobMLs1jlIWrW7gX77cKIo=;
-	h=Message-ID:Date:To:Cc:References:Subject:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=cDASU3dW9a6dcgqYaRyrhBKOYNxYbsgrPkfhEE2rE2NR6xZhuu0fl1ORdNEruiRzQnPcGTkq9zqUpvsCXBFnevdxkFFwdzS+lCizgVPuE0TvY3/rXaJpKJ7pYbnxuX8sx8q4E/qZzGd1C3rL43rtlgBAcv6PMOH3VkSd0ZLlQVZAEJ7eXg1Q+Lvd3Dm5F+0ztsPHcmfxuhwIMuSRefp5hlmpKFnIGNsrp/AjBv99MCyFR+SdkAAs/t7SRW1rLMEZWKH2RQ9VPt6SWsrQ5CR4C2YS6tfE10WZZL1Of/QYVGNZfdvHVkWKqMtBxTnc2MTAJNs359Zt1hk3KoXZVSe4/w==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com; dkim=pass (2048-bit key; unprotected) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-gocontrollcom-onmicrosoft-com header.b=aOawUrSy; dkim-atps=neutral; spf=pass (client-ip=52.101.66.135; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=maudspierings@gocontroll.com; receiver=lists.ozlabs.org) smtp.mailfrom=gocontroll.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768391155;
+	cv=none; b=D64y794DnO9h3Of+d/OYPJpFnOotW7PqqjQmGqqQStssR1FQP17nvGH2Ssk6Nrer1V/4PEg259Q0pCUqu77odrq4WB6g8gzgbgln5N0zwVWLU6h+MpZ1H0rzYOzLVCwXYdaoIf9bxLAyqo8lgrhsbBa5BDbIKQITOkqfBrFeS9MXOvWVQcljgG1lh4I3Y8ZtELqIWZLjwrXVT4dBh31h3/SsEKbneyEgodMxS/mB0QLt7lHP+7femg8b5EAmGlPnBaz/ecDZ+Bny/AyoFBgyAabQkuZcmSYQk+U24UVt5e8UtLME9RfputaR8Ra+ZQzlrtrZUXJj44tgcFDsIOSVoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1768391155; c=relaxed/relaxed;
+	bh=WV+OWYKEIVeMcpz1svAZC+IJRhC6pnf54j2kmIgVQfw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BxOzClIkJ8hiUypwEukQRGVen57LR0r7ur/Dp222FHsNk2Pq5/cazpvMHWOyo2v56qkTzMsnbcBnKbdfC9h7WCMZb3Wy+guwhqfPMsd1Ejvxjpe5jBm9XIVjU7qOrUcADm03DNtF6d29DFp7guKif1thqbq/l8eb7O5+aQX+Xxpva6S8d118HsEmHqmPhaFUM7qoGg/muVUp9DKVUSrKMLvBteJyteGZcGBGgdysV7Hj/hO44glWcjo6zE/38rVBxDSQt2cVeF85JYeVTwfCvR8foJkMdE6F4wD70PM4CBgvCq//XJhJTBbNVYgYj/Dpm7XcXSDgVX07BZH7rH0qhg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Jg5Fy0rA; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-gocontrollcom-onmicrosoft-com header.b=aOawUrSy;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Jg5Fy0rA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gocontroll.com (client-ip=52.101.66.135; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=maudspierings@gocontroll.com; receiver=lists.ozlabs.org)
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022135.outbound.protection.outlook.com [52.101.66.135])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drjsW2L2tz2xFn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 22:03:42 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WSQVIdQCnqBYQva2mPOLq6GWThdIrpylB0K+b1iQ+Snx9JbdfxtdTneSobNGBQxjopTX+y8PKdxUOzu64YJb6gbEvccq7RpShpbC17I2BNoaGCKYfS9LADH6z5TCRFnMFTO8ega25UjrNGAklMdo0esAHz0MpWzpD4Jx4kk9y5N14SR+ZN0da5LSLEv1XL0lnb+ON+ff/rEA/apgfjGxIOUfTT3h/LAz501VuaxRCRHiEAivweEXT0zw/5xH+elzdmTH9qe+UqtQzmQT1/RvScfKV5qQmZvd0xHAOzxJG8P7iOiPJBjZbL5keqJMdtT6SM8Fgl8Pezy9dctLSRAt5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F+u9hMLsJwpot15jGv+6DuobMLs1jlIWrW7gX77cKIo=;
- b=ZtWnw/xCpvmeONgcaa+VmfcYdQpqLGkN6hbJd0iCs8196yMIVlKJ7kHQmhOmdAgsm3g4c7fZ4LY6lNIwq7h5ud7PyAXOF1qf769WO0RXFKCfVuKf0WAly1tUnRqSTtK/jh+UxeCRQ6pdAcpBn1xnVgnxTP7n93hpNQ5IHEj8QsmRWINcfUKIzzm8lcjncsLB+ydVVRK64fYI6r2COIg8X/P6lXvPGjVDrqqOQIQfdmFhRCkyNb3GlEr2vecjet3u/8al6CecuHZzc0GZ8QhG4bvOzmx9wERW9GwmS2/yKUA0da7gEbxastSUrVbih6CeglPQkGEAJw3cu7Gh3kozIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=gocontroll.com; dmarc=pass action=none
- header.from=gocontroll.com; dkim=pass header.d=gocontroll.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gocontrollcom.onmicrosoft.com; s=selector1-gocontrollcom-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F+u9hMLsJwpot15jGv+6DuobMLs1jlIWrW7gX77cKIo=;
- b=aOawUrSy+6wGun7WNyqg1M7gCsp1bSUnvYVK8kiqrMZhk13KuelBTegR05SPdAr+L21DkxcBBTN3XQ/x3+TwnCzzFHBC6My+9a8ryZKhGnQsWuSxmR55MzuKCgrob7lvP3dpmiWgT4hWnH/uKZ0/Tjaj/uI7V4L4FgvemYPvgxf57/H0iB7CCQ9Ybpb36xlZ9hFkzngnC22XBML+puN9TLuf3fIhQ1CYiLh6uR0kEflQn9Jzz1pk0j+jJMAKcsWEsOsNWxFnGKM19iUC5hCeIsdarnIM52ocZlVcLwqjnNDwh0gGSrfAfNwl1vSqDwvDpRbVjSubQyZ0QGwjsX+eog==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=gocontroll.com;
-Received: from AMBPR04MB11741.eurprd04.prod.outlook.com (2603:10a6:20b:6f3::7)
- by DU7PR04MB11233.eurprd04.prod.outlook.com (2603:10a6:10:5b2::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Wed, 14 Jan
- 2026 11:03:01 +0000
-Received: from AMBPR04MB11741.eurprd04.prod.outlook.com
- ([fe80::ee70:7a62:e9f:12b7]) by AMBPR04MB11741.eurprd04.prod.outlook.com
- ([fe80::ee70:7a62:e9f:12b7%7]) with mapi id 15.20.9499.005; Wed, 14 Jan 2026
- 11:03:01 +0000
-Message-ID: <8e86fc06-b162-4591-bc8c-e4b2fd487855@gocontroll.com>
-Date: Wed, 14 Jan 2026 12:03:00 +0100
-User-Agent: Mozilla Thunderbird
-To: shengjiu.wang@nxp.com
-Cc: Xiubo.Lee@gmail.com, broonie@kernel.org, conor+dt@kernel.org,
- devicetree@vger.kernel.org, festevam@gmail.com, krzk+dt@kernel.org,
- lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
- linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- nicoleotsuka@gmail.com, perex@perex.cz, robh@kernel.org,
- shengjiu.wang@gmail.com, tiwai@suse.com
-References: <20260114100655.3885926-3-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 2/2] ASoC: fsl_sai: Add support for i.MX952 platform
-Content-Language: en-US
-From: Maud Spierings <maudspierings@gocontroll.com>
-In-Reply-To: <20260114100655.3885926-3-shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM8P190CA0005.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:219::10) To AMBPR04MB11741.eurprd04.prod.outlook.com
- (2603:10a6:20b:6f3::7)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drkp96mK3z2x9M
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 22:45:53 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60E4cFPg019307;
+	Wed, 14 Jan 2026 11:45:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=WV+OWYKEIVeMcpz1svAZC+IJRhC6pnf54j2kmIgVQ
+	fw=; b=Jg5Fy0rAniaLYbbY6ZRRtdLCi2fylyvGfGpHsxruXs4/VhtW3XzQAfLET
+	LEjcREENkYWRHas7aZoG9ICZKli9Y+AJnOJojUKo8HXqnSl/v50WnGzWvmIdrHCM
+	YUIg1b6K687UJKHmafOtkhAZ5/+PNwpB89UK+MRRVwvr/3gCwqLUwA+QKXeyetlf
+	iPWPw2KJbt1SMLf0EbH9S0W+0XWRrddEAuijptV2yJKVDJMTj64ILCBIRT658tXe
+	K87/bqpnSi6B39AP5VT/B8X9YFYEmYmbS92Y1FX//eqrWRwHR2n20qXQc3jsJpao
+	VdxDxmLC/uuygh3oYQ0tJx5AFOyLw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkd6e8u50-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Jan 2026 11:45:16 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60EBjF0w017939;
+	Wed, 14 Jan 2026 11:45:15 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkd6e8u4v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Jan 2026 11:45:15 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60E9sj6B002510;
+	Wed, 14 Jan 2026 11:45:14 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm13ssy6v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Jan 2026 11:45:14 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60EBjAK551053028
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 14 Jan 2026 11:45:10 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9321D20043;
+	Wed, 14 Jan 2026 11:45:10 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4315A20040;
+	Wed, 14 Jan 2026 11:45:04 +0000 (GMT)
+Received: from abhi.. (unknown [9.124.217.65])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 14 Jan 2026 11:45:04 +0000 (GMT)
+From: adubey@linux.ibm.com
+To: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
+        andrii@kernel.org, eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
+        iii@linux.ibm.com, shuah@kernel.org,
+        Abhishek Dubey <adubey@linux.ibm.com>
+Subject: [PATCH v2 0/6] powerpc64/bpf: Support tailcalls with subprogs & BPF exceptions
+Date: Wed, 14 Jan 2026 17:14:44 +0530
+Message-ID: <20260114114450.30405-1-adubey@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,160 +98,218 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMBPR04MB11741:EE_|DU7PR04MB11233:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e309377-5f6e-4960-ef2f-08de535c7be7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|7416014|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YUhsTUFPd3RmdTlLRjNkaGVhOGZsSzExdFE5YkNSOTJlMGFkbFRFSDFsaDRy?=
- =?utf-8?B?RnpkT2tVU0JDa25GQm9hT3U5QmZaVFVBT0VGMnVaS0Z3N2ZXL2JDdUxBOUFP?=
- =?utf-8?B?MGZ2RU1jdE1ON2Z2L0FGalJMcUt3UFZjM0VrUGJvT095MHdjdnRwSm5PQjNi?=
- =?utf-8?B?clEzUlVKdVpUMTd4UTdTQXVaNzM2TnREdFBjaGlKV3lOTkJCbzVwTjFOWFNG?=
- =?utf-8?B?amcwdlJ0dW1iN2lrcGZiRnh1MVQrdXV6anNaMnk4a0dFUVhoMjd3aVZQK1oz?=
- =?utf-8?B?Y1NBWFZFQlp6SGFZaWhWY1Y4WG04ZlJrR01xOEVDVVlteng1Y2RhZ2tnbWdt?=
- =?utf-8?B?b1VMWnJqalE1TWNDQ2hHVk04aXp6Nk5WY2VzNXB0QTV2SXJCV1FMRHVZaHdK?=
- =?utf-8?B?RE1WbTZsTDd1bzlnVkQ1Y3cxOW5KbzZxVVBybVVxOTc5V2hyVHBqUUQ1NWI0?=
- =?utf-8?B?NThNcHd4K0dDc3hjVHF3ZWhxZnY0QWM2L1FGOGlTWm80UU5NU25RMmUvbnlj?=
- =?utf-8?B?MXVqT2RKMEk4N1htMXIyUUtwdTd5ZlVYQzdzbTVud2UxVC9hK0owa3NpNXE1?=
- =?utf-8?B?aEhMdW5lY2UvVWdaMW9KK2RUR1VUU1JjYXMveVVWR2hWQjlYakFtWkJOeSs2?=
- =?utf-8?B?Ylorcm1WOU9WZ1ZXYXBkSjMvQUdNRStXekIxMG9ObEFZNXNydUZjSk1yZzVO?=
- =?utf-8?B?NjV3V3VBZ1ZpMnQrd3BsVTU0SGpYT2xPRmJRcThNY0pEdVNFMFdCSXhKbERL?=
- =?utf-8?B?UjE5SmN1d0NRMUpTS3BscmJOa0FkSXRIa0pVcEdYNnhpMFpycHRYck5QbzBQ?=
- =?utf-8?B?Z0w5ZGVZdzRnUGVQQmJVUjlFZjR1SUx2NHEyYmJ3aUZoNXF0MnV5TzJaNUJH?=
- =?utf-8?B?QldnbU1WZHhvRG5ZOGpCejlHR3ptaC9NR25MQUNZNWJCZmN0djlnR2srRVlo?=
- =?utf-8?B?UGNKVjNxM2owYXpRRFlUVUxNaW1mUHVtVTFQVk14Y2ZMWFlFbDkyVit3VVVp?=
- =?utf-8?B?ZlBBZ2kyam1GYlE1TUFQU2cxQmk5OVJkK1lxZ0pVb3R6WFFtbFBLS1ZWNWpQ?=
- =?utf-8?B?MnNUdVhBUWFZSHdLK1RydHVvSmZwZStVbFc1ZkxmbUFuTHVSSnhwSW9tUEl3?=
- =?utf-8?B?cjdFUkxrRkpvcHhlMXE5U0gvLzdRbFZVakkvcWFrOGJYL0hlb0cwK2xqUzRr?=
- =?utf-8?B?VHN1S05Xa0diS05yeGRuV0svVUs0ZlNXNmM1YWk4VjhCWi9ZVW5GREdjN09R?=
- =?utf-8?B?VEhYTncxcmtHaTg1NUdjLzNVd0Ivay9rc01NRlBiU2ZyVU1PaVgvUThIWmhY?=
- =?utf-8?B?L2xRRElSeFkwTTBUam8wR0c4L2dXcEFVakxkbzE4TmxtRXVkYktQWlNkc3k2?=
- =?utf-8?B?VXB2QkNVcmJYMjh3YmwrQkpTREE4V3ZROVpZVTlXc0FhQU9WbTFSaENvdmZs?=
- =?utf-8?B?bmhiTGhPS2VXOXFvV2RVR3RDc1crTVhJeVFxWTl0MmpFY2pJcmQwbTUyQW5K?=
- =?utf-8?B?ZFJieHhHUWZld0g4bHBIMmZ1THBXaUZZc2ZaRWVxK0FIRDFabGpsQVhKaFhh?=
- =?utf-8?B?TGF5NDR0c1JwOStsTVNKMGlwUnQzb1poSkV3aExXcnBvU01DSnh6dXdRWE0r?=
- =?utf-8?B?ekZTSWp3RzZ6NnF3TjFDdlVjYm1NVU5IMmloOXhhb2NVMGNrTmNFdHB1aFlP?=
- =?utf-8?B?cHdLMjNhUFVuZWpYYWt6dU9DTld4Zi9haVZvdjJPNjFvd0gvT05sc0F3MWJm?=
- =?utf-8?B?SGxjM3dNbVhlazd3SDE5UmZmRVl1b0JLMm1hcmxwUWlmOXcwazZsNFFIM2w5?=
- =?utf-8?B?amZuNEY1TkI5N3N4dnBPTndFelVqai9VS05EMkVTaU5HTWN3WDJ4cDZyOEl6?=
- =?utf-8?B?Tk9zQ3k0L2RwMHBieGltSkk3NXk2c09sbkhkbHJnZDZCWGNYaFVxbENUc0Vj?=
- =?utf-8?B?OWI5UWhON3VTTUgrNFhNZlhObVpHbUVkMVY1VGt3V2ZrTEF4TkNuYXJxQVJK?=
- =?utf-8?B?VEpvL0lSMGhDL3JGc2RaMUNkdXc5Y3llS2h5NlM3akltRjZtT2JhdjQ4Mnpr?=
- =?utf-8?B?Z2dWbVJjdXdveDN6ak9JeVBBc28zcjIvTXdvMmhBNkVUVk5zRTBGU21DbHYx?=
- =?utf-8?Q?yKvY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AMBPR04MB11741.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aVU3eGk3cDJMRDU0U0xVUUtuMnpWYi8wSW5zYi83Q2g2ZGxOcXp2cm9oRTUy?=
- =?utf-8?B?MmJpdkluaUY4N2JRYUo3NEVvZEg2RWNOc2xtWDhwclIwSUtyc2Y1TU5OUUkw?=
- =?utf-8?B?NTVFR2QrMUo4U0hyRW1CZjRVKzhyY1NNUGdvQVZHK1liS2tnbExNUEludFJu?=
- =?utf-8?B?U1p0VU5sdHZyWWQ3VjdRWmxPaTg1ZEhSZTgvNU1hSk5uemptbjRxWk1GK0Qy?=
- =?utf-8?B?dDdmVHN2SEhDQWV1ZUx2bEluVys1TWFNaWg3TlhYZEtNTWZSWmU0OHU3U0o0?=
- =?utf-8?B?amxhNW91WXdoV0VCZXlyT25FRi9xYWZkam1BMHBHZ1ZvNitxMGxwT2g0bTJC?=
- =?utf-8?B?UDJHR3p4alNJTTgyWVYvckVQdFYxZlFNVTViNWJROVMyWCs4WlRvKzJJdkwv?=
- =?utf-8?B?KzNYMmJib2ROaVVXNlJOQVRueEd1bklpM0ZBWUdhek9rd2ZmUGlmUTlmQkNj?=
- =?utf-8?B?N3d2enlPV0VneU9hNFVZekZ4azkyaU95N1Y1NmVFekZTRG43bk9Cckh2ZFA2?=
- =?utf-8?B?Y08xRnRzbnlsNzNxTTA1YW1SQUpEaDFvUm9GNGFGT1g4UzVubUFsKzkvWFJK?=
- =?utf-8?B?dm5iaXhBSGRMdytxQkpXY3EvcWt5WkpwbFJEMnAyZXcvazY1RGRZUWM4Tk1F?=
- =?utf-8?B?ZzdFcUhHdm1Kd2hWc0JibGZwNjRWaXhzclZGS2YvbGlheGVUTEdpdmM4NDVB?=
- =?utf-8?B?SGlPQnNJMUlSTkNjTXJRV1dFL0h5ZEVSZDZqaGkxMkRlQkMzdjhTZWNxR2dT?=
- =?utf-8?B?cXVTMHNvc1J3L2QrZ0F5NFNhdHNFWitUM2dxSCtnQ1lXZGlEQ3BKbGR4UU5r?=
- =?utf-8?B?c1pjdGhJeGh1SmhyemNaOVZsTkkya3dMNGg2dlorcVl3amw1NGJBbjNadTRr?=
- =?utf-8?B?QnlWQkZ1TitMTzgxaFBPOW5GOHh3UC9NUUlUT0FZbEFTSDVjTnNQUk1nQWIy?=
- =?utf-8?B?WUE3ekFSb0pRbGM2YWtUSVBvdXhkTDNocW93UzQrMnZkREV0S1k0emp5b0tK?=
- =?utf-8?B?TWtqcXpyVjM1ZFJ4NWpCeUd0cDVTL0JjUG0rU1RrdnVCQkcvUzBUdmwzVVVK?=
- =?utf-8?B?UzZtVXpIemZ6eHpCV2lhYzhWN3k5YmcrWGE2TFNicFpGUXN0ZDMvZWpxUUZD?=
- =?utf-8?B?TWpGK2RjSjFpYkFET1hXMkx2NjVWNmdobVN3dDBGSHArbWpEci9DQnNZR2Jo?=
- =?utf-8?B?R1paM0ZzMEpKTWp2Y3dFc0JDWFBSaWtQUjZxZlVEb0UrV1l4ZVBWTTVtMjJ0?=
- =?utf-8?B?MS9PYTNDWDg3VTV3eGlLTitUVGZzT3hVRlhPbm40MDVGN3ZXeTA0WjRHSU9E?=
- =?utf-8?B?RW9hUmxuVXN2a09rQ2NUZlhDUy92MVV1TW1zd3NPdDhUMk9FOXFBZjJMUkdy?=
- =?utf-8?B?RXhFZWpoejY2MVRPOGdPRHplWWJ6MUZ6b2tKMUhUblpyM0gvWWZ2LzRuRkdl?=
- =?utf-8?B?VTlTMHR0YTgwOERmQ2FmLzcyYWo1NUpJdzFPek1YQW55QnRPT3g3azkzVVZD?=
- =?utf-8?B?WENEQU1DR0lwVzVqVXhLS3A5Q0Y1QmtrREN2cXUwcFlFbzhGRFJiZ3lZZTZ5?=
- =?utf-8?B?eGVFcGtiWmZBZVlpNmkyRWcramdYM2hLVnRRR2ZxanF2RG93bnNjc1NGb0pC?=
- =?utf-8?B?Q2FIYlZLTWowZjNJME5EUUU5eWxBdFZBMUdTc2NuNE02U05xeVVEWDY2bnR6?=
- =?utf-8?B?bWd0cEQ1Q0hYYThXVVF4RzE3TCtWRFVtNUxsQXdjSUYrbVZxVUtMNDNZMnJM?=
- =?utf-8?B?WnFhQVNXSmlFNFBjUjJnV0dSZmFnSHgxcTNQUWhvT0ZDVUdiUTA0UzI3TWxs?=
- =?utf-8?B?MzRGZVFpTGNUalB6N2UrbkZPUGRxaEIzd3AwbXZQeGZ2MUcyK0FGZ3JYbTdS?=
- =?utf-8?B?M0w5OXZuWUhuSDFlRDZKNnQ4MEl2eHZ3U0N6eExtVE5xa3RHYmJoUzByWUc0?=
- =?utf-8?B?NUR1NUNGT0wxa0g0M1VXdElhR3VXYlZ5b3hWR2ZqSFBzRmVLYWNBOHMycWY0?=
- =?utf-8?B?aXN2OU54OW5seS9KMVJKSndmSlVWbVFoMjhCZmdINFRBc2plTitKODFHUDk1?=
- =?utf-8?B?TVp0UEl6ZzlGZ0UrWHd2bEhDQzdvL3ZoM2ZhZkRNYzdhY0E3U3crSmhKa2cv?=
- =?utf-8?B?MWtpanY2ZDFkWjdmemY0bHI1Sm1Zb3Y2MUd4Zy9FUUV5MzBqNUkyUG5sdXBP?=
- =?utf-8?B?di8xSG1BSk9jMmN2SzJYcnkzQU8vVFpKL1ROeGhxamlLVUFkL0tpMTF6dzZF?=
- =?utf-8?B?OFdOUDlTK0NKVkl5Z1V0cWQ2N1QzS0huVlNHeUtIMWxsSCtlczVJaWhJRUY3?=
- =?utf-8?B?WTZYaFFKbDZPWEorZDE5QmltUUdUWTBmV1RJV3EzYzdFNXZZRGVLTVRaNGRI?=
- =?utf-8?Q?5k3Yo4H4/FopwUaqeDnbsj9DVyMPkId3uYGzeOCbFHJAC?=
-X-MS-Exchange-AntiSpam-MessageData-1: FF9cJrVkJvgP6MocSq6hTV91Cd0yMRouqBA=
-X-OriginatorOrg: gocontroll.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e309377-5f6e-4960-ef2f-08de535c7be7
-X-MS-Exchange-CrossTenant-AuthSource: AMBPR04MB11741.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 11:03:01.5370
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4c8512ff-bac0-4d26-919a-ee6a4cecfc9d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9az+ATJjfOEBcALWHzL9Vwqy5ldZL0wlVRmUPS2ozF8M5FxvZ5KwP8uCbo6mm2Gq8ul8A8nmNW0KLDna+NfL3TSQuH+09n7J5x547JM1b9M=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PR04MB11233
-X-Spam-Status: No, score=0.0 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kGNkf1GgfCOKnJIkCrA78MFK8kpOj1iH
+X-Authority-Analysis: v=2.4 cv=LLxrgZW9 c=1 sm=1 tr=0 ts=696781cc cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=rhI0E6_HooCo6thlJxMA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDA5MyBTYWx0ZWRfX6/XoNKVkPY0e
+ LBgWiiWI4o6p0bjcjTuYZRqkp0vn/5L/xWkZq0iSfRespIykgCtN6V7K6OOaNrzy3EZtD6/XZmz
+ QZBkd4+0RBvzy27uticjidmqFpcI9hfbDlScu3/nDJc7o+LZxmT5qouoaW6D0/wps8WiuYNi8Lg
+ u11Et8+Siafg6FTlueUSl1+ArAz/qGiitEWLcMYtl4KpEJ1pzzTK7PSZS+bw+SHFOEn/tBjIPX+
+ qfKAWRJvi7DwYRGSwyJH1ldm4oeR2arOzbmjq2Il80NVVxBGe1RACZCLc2UX/gVNyh/OUbvq7+C
+ uLGP8BI4tDPQ5rwV19UJeMlvkZVeNRBX1MXLkd9j1zoJUlfbC8s+WP3McBCIXBN10A1r07Fbdtc
+ vdDbp4PfsEh3YUB3Deh8MlnLtGXQEzCD/nJT3W9cYyLKZSuZSDQDfU+mJPTnKwzAeYTv4M2yo6L
+ 3o3bhnPJ27FxNDNri4Q==
+X-Proofpoint-ORIG-GUID: 6enXm8th8r8d5YXDS4d_YAiTJ1qizIqh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-14_03,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0 impostorscore=0
+ malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601140093
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-> 
-> Add compatible string and specific soc data to support SAI on i.MX952
-> platform.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  sound/soc/fsl/fsl_sai.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> index 2fa14fbdfe1a..c025041dc079 100644
-> --- a/sound/soc/fsl/fsl_sai.c
-> +++ b/sound/soc/fsl/fsl_sai.c
-> @@ -1765,6 +1765,18 @@ static const struct fsl_sai_soc_data fsl_sai_imx95_data = {
->  	.max_burst = {8, 8},
->  };
->  
-> +static const struct fsl_sai_soc_data fsl_sai_imx952_data = {
-> +	.use_imx_pcm = true,
-> +	.use_edma = true,
-> +	.fifo_depth = 128,
-> +	.reg_offset = 8,
-> +	.mclk0_is_mclk1 = false,
-> +	.pins = 8,
-> +	.flags = 0,
-> +	.max_register = FSL_SAI_MCTL,
-> +	.max_burst = {8, 8},
-> +};
-> +
->  static const struct of_device_id fsl_sai_ids[] = {
->  	{ .compatible = "fsl,vf610-sai", .data = &fsl_sai_vf610_data },
->  	{ .compatible = "fsl,imx6sx-sai", .data = &fsl_sai_imx6sx_data },
-> @@ -1778,6 +1790,7 @@ static const struct of_device_id fsl_sai_ids[] = {
->  	{ .compatible = "fsl,imx8mn-sai", .data = &fsl_sai_imx8mn_data },
->  	{ .compatible = "fsl,imx93-sai", .data = &fsl_sai_imx93_data },
->  	{ .compatible = "fsl,imx95-sai", .data = &fsl_sai_imx95_data },
-> +	{ .compatible = "fsl,imx952-sai", .data = &fsl_sai_imx952_data },
->  	{ /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, fsl_sai_ids);
-> -- 
-> 2.34.1
+From: Abhishek Dubey <adubey@linux.ibm.com>
 
-scratch my comment on patch 1, drop this patch. the new data struct is 
-the exact same as the imx95 one.
+This patch series enables support for two BPF JIT features
+on powerpc64. The first three patches target support for
+tail calls with subprogram combinations. The first patch
+supports realignment of tail_call_cnt offset in stack frame.
+Implementation details are provided in the commit messages.
 
-Keep the fallback compatible and let it match against that instead of 
-introducing a new one in the driver.
+The last three patches add support for BPF exceptions. An
+architecture-specific stack walker is implemented to assist
+with stack walk during exceptions.
 
-Kind regards,
-Maud
+All selftests related to tailcalls and exceptions are passing:
+
+# ./test_progs -t tailcalls
+#442/1   tailcalls/tailcall_1:OK
+#442/2   tailcalls/tailcall_2:OK
+#442/3   tailcalls/tailcall_3:OK
+#442/4   tailcalls/tailcall_4:OK
+#442/5   tailcalls/tailcall_5:OK
+#442/6   tailcalls/tailcall_6:OK
+#442/7   tailcalls/tailcall_bpf2bpf_1:OK
+#442/8   tailcalls/tailcall_bpf2bpf_2:OK
+#442/9   tailcalls/tailcall_bpf2bpf_3:OK
+#442/10  tailcalls/tailcall_bpf2bpf_4:OK
+#442/11  tailcalls/tailcall_bpf2bpf_5:OK
+#442/12  tailcalls/tailcall_bpf2bpf_6:OK
+#442/13  tailcalls/tailcall_bpf2bpf_fentry:OK
+#442/14  tailcalls/tailcall_bpf2bpf_fexit:OK
+#442/15  tailcalls/tailcall_bpf2bpf_fentry_fexit:OK
+#442/16  tailcalls/tailcall_bpf2bpf_fentry_entry:OK
+#442/17  tailcalls/tailcall_poke:OK
+#442/18  tailcalls/tailcall_bpf2bpf_hierarchy_1:OK
+#442/19  tailcalls/tailcall_bpf2bpf_hierarchy_fentry:OK
+#442/20  tailcalls/tailcall_bpf2bpf_hierarchy_fexit:OK
+#442/21  tailcalls/tailcall_bpf2bpf_hierarchy_fentry_fexit:OK
+#442/22  tailcalls/tailcall_bpf2bpf_hierarchy_fentry_entry:OK
+#442/23  tailcalls/tailcall_bpf2bpf_hierarchy_2:OK
+#442/24  tailcalls/tailcall_bpf2bpf_hierarchy_3:OK
+#442/25  tailcalls/tailcall_freplace:OK
+#442/26  tailcalls/tailcall_bpf2bpf_freplace:OK
+#442/27  tailcalls/tailcall_failure:OK
+#442/28  tailcalls/reject_tail_call_spin_lock:OK
+#442/29  tailcalls/reject_tail_call_rcu_lock:OK
+#442/30  tailcalls/reject_tail_call_preempt_lock:OK
+#442/31  tailcalls/reject_tail_call_ref:OK
+#442     tailcalls:OK
+Summary: 1/31 PASSED, 0 SKIPPED, 0 FAILED
+
+# ./test_progs -t exceptions
+#105/1   exceptions/exception_throw_always_1:OK
+#105/2   exceptions/exception_throw_always_2:OK
+#105/3   exceptions/exception_throw_unwind_1:OK
+#105/4   exceptions/exception_throw_unwind_2:OK
+#105/5   exceptions/exception_throw_default:OK
+#105/6   exceptions/exception_throw_default_value:OK
+#105/7   exceptions/exception_tail_call:OK
+#105/8   exceptions/exception_ext:OK
+#105/9   exceptions/exception_ext_mod_cb_runtime:OK
+#105/10  exceptions/exception_throw_subprog:OK
+#105/11  exceptions/exception_assert_nz_gfunc:OK
+#105/12  exceptions/exception_assert_zero_gfunc:OK
+#105/13  exceptions/exception_assert_neg_gfunc:OK
+#105/14  exceptions/exception_assert_pos_gfunc:OK
+#105/15  exceptions/exception_assert_negeq_gfunc:OK
+#105/16  exceptions/exception_assert_poseq_gfunc:OK
+#105/17  exceptions/exception_assert_nz_gfunc_with:OK
+#105/18  exceptions/exception_assert_zero_gfunc_with:OK
+#105/19  exceptions/exception_assert_neg_gfunc_with:OK
+#105/20  exceptions/exception_assert_pos_gfunc_with:OK
+#105/21  exceptions/exception_assert_negeq_gfunc_with:OK
+#105/22  exceptions/exception_assert_poseq_gfunc_with:OK
+#105/23  exceptions/exception_bad_assert_nz_gfunc:OK
+#105/24  exceptions/exception_bad_assert_zero_gfunc:OK
+#105/25  exceptions/exception_bad_assert_neg_gfunc:OK
+#105/26  exceptions/exception_bad_assert_pos_gfunc:OK
+#105/27  exceptions/exception_bad_assert_negeq_gfunc:OK
+#105/28  exceptions/exception_bad_assert_poseq_gfunc:OK
+#105/29  exceptions/exception_bad_assert_nz_gfunc_with:OK
+#105/30  exceptions/exception_bad_assert_zero_gfunc_with:OK
+#105/31  exceptions/exception_bad_assert_neg_gfunc_with:OK
+#105/32  exceptions/exception_bad_assert_pos_gfunc_with:OK
+#105/33  exceptions/exception_bad_assert_negeq_gfunc_with:OK
+#105/34  exceptions/exception_bad_assert_poseq_gfunc_with:OK
+#105/35  exceptions/exception_assert_range:OK
+#105/36  exceptions/exception_assert_range_with:OK
+#105/37  exceptions/exception_bad_assert_range:OK
+#105/38  exceptions/exception_bad_assert_range_with:OK
+#105/39  exceptions/non-throwing fentry -> exception_cb:OK
+#105/40  exceptions/throwing fentry -> exception_cb:OK
+#105/41  exceptions/non-throwing fexit -> exception_cb:OK
+#105/42  exceptions/throwing fexit -> exception_cb:OK
+#105/43  exceptions/throwing extension (with custom cb) -> exception_cb:OK
+#105/44  exceptions/throwing extension -> global func in exception_cb:OK
+#105/45  exceptions/exception_ext_mod_cb_runtime:OK
+#105/46  exceptions/throwing extension (with custom cb) -> global func in exception_cb:OK
+#105/47  exceptions/exception_ext:OK
+#105/48  exceptions/non-throwing fentry -> non-throwing subprog:OK
+#105/49  exceptions/throwing fentry -> non-throwing subprog:OK
+#105/50  exceptions/non-throwing fentry -> throwing subprog:OK
+#105/51  exceptions/throwing fentry -> throwing subprog:OK
+#105/52  exceptions/non-throwing fexit -> non-throwing subprog:OK
+#105/53  exceptions/throwing fexit -> non-throwing subprog:OK
+#105/54  exceptions/non-throwing fexit -> throwing subprog:OK
+#105/55  exceptions/throwing fexit -> throwing subprog:OK
+#105/56  exceptions/non-throwing fmod_ret -> non-throwing subprog:OK
+#105/57  exceptions/non-throwing fmod_ret -> non-throwing global subprog:OK
+#105/58  exceptions/non-throwing extension -> non-throwing subprog:OK
+#105/59  exceptions/non-throwing extension -> throwing subprog:OK
+#105/60  exceptions/non-throwing extension -> non-throwing subprog:OK
+#105/61  exceptions/non-throwing extension -> throwing global subprog:OK
+#105/62  exceptions/throwing extension -> throwing global subprog:OK
+#105/63  exceptions/throwing extension -> non-throwing global subprog:OK
+#105/64  exceptions/non-throwing extension -> main subprog:OK
+#105/65  exceptions/throwing extension -> main subprog:OK
+#105/66  exceptions/reject_exception_cb_type_1:OK
+#105/67  exceptions/reject_exception_cb_type_2:OK
+#105/68  exceptions/reject_exception_cb_type_3:OK
+#105/69  exceptions/reject_exception_cb_type_4:OK
+#105/70  exceptions/reject_async_callback_throw:OK
+#105/71  exceptions/reject_with_lock:OK
+#105/72  exceptions/reject_subprog_with_lock:OK
+#105/73  exceptions/reject_with_rcu_read_lock:OK
+#105/74  exceptions/reject_subprog_with_rcu_read_lock:OK
+#105/75  exceptions/reject_with_rbtree_add_throw:OK
+#105/76  exceptions/reject_with_reference:OK
+#105/77  exceptions/reject_with_cb_reference:OK
+#105/78  exceptions/reject_with_cb:OK
+#105/79  exceptions/reject_with_subprog_reference:OK
+#105/80  exceptions/reject_throwing_exception_cb:OK
+#105/81  exceptions/reject_exception_cb_call_global_func:OK
+#105/82  exceptions/reject_exception_cb_call_static_func:OK
+#105/83  exceptions/reject_multiple_exception_cb:OK
+#105/84  exceptions/reject_exception_throw_cb:OK
+#105/85  exceptions/reject_exception_throw_cb_diff:OK
+#105/86  exceptions/reject_set_exception_cb_bad_ret1:OK
+#105/87  exceptions/reject_set_exception_cb_bad_ret2:OK
+#105/88  exceptions/check_assert_eq_int_min:OK
+#105/89  exceptions/check_assert_eq_int_max:OK
+#105/90  exceptions/check_assert_eq_zero:OK
+#105/91  exceptions/check_assert_eq_llong_min:OK
+#105/92  exceptions/check_assert_eq_llong_max:OK
+#105/93  exceptions/check_assert_lt_pos:OK
+#105/94  exceptions/check_assert_lt_zero:OK
+#105/95  exceptions/check_assert_lt_neg:OK
+#105/96  exceptions/check_assert_le_pos:OK
+#105/97  exceptions/check_assert_le_zero:OK
+#105/98  exceptions/check_assert_le_neg:OK
+#105/99  exceptions/check_assert_gt_pos:OK
+#105/100 exceptions/check_assert_gt_zero:OK
+#105/101 exceptions/check_assert_gt_neg:OK
+#105/102 exceptions/check_assert_ge_pos:OK
+#105/103 exceptions/check_assert_ge_zero:OK
+#105/104 exceptions/check_assert_ge_neg:OK
+#105/105 exceptions/check_assert_range_s64:OK
+#105/106 exceptions/check_assert_range_u64:OK
+#105/107 exceptions/check_assert_single_range_s64:OK
+#105/108 exceptions/check_assert_single_range_u64:OK
+#105/109 exceptions/check_assert_generic:OK
+#105/110 exceptions/check_assert_with_return:OK
+#105     exceptions:OK
+Summary: 1/110 PASSED, 0 SKIPPED, 0 FAILED
+
+[v1]: https://lore.kernel.org/all/20260105105212.136645-1-adubey@linux.ibm.com/
+
+Changes v1->v2:
+        Move tail_call_cnt to offset 0 in stack frame
+        Remove trampoline NVR remapping-patch3/6[v1]
+
+Abhishek Dubey (6):
+  powerpc64/bpf: Move tail_call_cnt to bottom of stack frame
+  powerpc64/bpf: Support tailcalls with subprogs
+  powerpc64/bpf: Tailcall handling with trampolines
+  powerpc64/bpf: Add arch_bpf_stack_walk() for BPF JIT
+  powerpc64/bpf: Support exceptions
+  powerpc64/bpf: Additional NVR handling for bpf_throw
+
+ arch/powerpc/net/bpf_jit.h        |  18 ++-
+ arch/powerpc/net/bpf_jit_comp.c   |  98 ++++++++----
+ arch/powerpc/net/bpf_jit_comp64.c | 240 ++++++++++++++++++++++++------
+ 3 files changed, 280 insertions(+), 76 deletions(-)
+
+-- 
+2.48.1
+
 
