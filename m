@@ -1,57 +1,95 @@
-Return-Path: <linuxppc-dev+bounces-15740-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15741-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8705FD201A2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 17:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5BBD203F0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 17:38:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drrjD5M7Wz2xT6;
-	Thu, 15 Jan 2026 03:12:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drsJH01W3z2xT6;
+	Thu, 15 Jan 2026 03:38:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768407120;
-	cv=none; b=eE0fofm5QXQK9MAMPP19Ii6lEG67SVMoT7twjyrw/7g6gMLWmHIvM1rAitLgDUi+hL7MKDbHGeAeEyoL84F4qbqJc2mBdLEvleKqPubNERoV0SdXFAZemEJFxoJIPJmtZcUPXME4RulHh2aK4dT4t268r0PYT+Q59H++Ngh3NhenFH53B+ZKAHtxsyyd8PiRl5ZGJ+tzzqXlVWANAvyQH0w7ckEreFB3xMEJmybelrgPisQXUi+F3COJFlgBeJcMX5nTG1W8zwt5jloa2zl40lshBU2JRQzYhl/AmN0eMKH4BZq+vovEGcIFgJX4J7+uukAjvUuXwKJ7Yft04SRC3Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768408734;
+	cv=none; b=fYnszDbVjQ6kDtLe19r5Lb6qGkvPbHchew57eJWUA/uHk+pSIpwQTFixjdRKt4Dy99+e3sdPxOmFd7N8hHClyIgn8Ob3017JMVEGbmWV/ks7E38yu50yfiC3sv4lxDeGvEMK/7oleURTIHKHXjwpuF5aEmQtV2QRRPyj0eODntlE0w7Pw51vQ589eo9Om5tC+dLew1g35x2yFE+WWRl0d2OFM3M/LmlQDZfQ2r3pyv5oprcWjW97vMA/HHk2r76xj6ckCmJyhT9eNUd4UQfIOyY8DLZKhRbrBvyHgyz6nR8atN32LgfG663aJMMYyOBxN6d3IpX1Zc/Bp2xMRsktDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768407120; c=relaxed/relaxed;
-	bh=q0iijEVWpOa1CaX56XQgSGm1Vv5Wfm3x/KlfzRCaK68=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b220GzSuMe+z2w+L8Oeh2q+eDeLy8YkMlJe4AJDJ3wfeWqVFn0UV2KViUsjLsIDRZT43FMf9mLBkhXILC8joldcPkW+6k6WaVeJPq6w/uSY+juYJcMmzH1b9MZ46IlGUClfoHVyotlWzbvNnKW9Z/vVwFHL+AMqrW9eH1StMSQC5234eqa7n8w5kJNke10sQEY5Q9soJOiYGttmvvGpE3IQ2hWtYlCtcZe+0kqTL2C+Pq8IEvIH2bJD+1OlRqmGFJiLc8OKd/7th8jqxwwV01SL021ECRjl2otxC+g7dca5pi6lSXvdkrpGaTdGtNg3tw3WFybqPmH3fytTqYMOrzQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P/LskQK+; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1768408734; c=relaxed/relaxed;
+	bh=3O46Pj7m8kkRm5o6FCiKeQjNffkaPKNOyTPfHDTuyTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P5EaDATHoMo08MShlsTy2TLH44EqZFtcWZPEal9OCPqNquyb6TvkR1j3FzoaNj5NUS2k+97VWcp7bGI81r08mfFQaMLyyi5kBsfgqkO2sQDhU2GbqgL4DyTFiVHugTU7i0xOvw9KLIB1ptbhtuIg8gQCpwsEd31OQo+HN8shVKW11TbB+l1ypLPReorBMGodygip1xmGpFzMG0Ujf7Z3ipUxrMaPjywOLcPFomHLKG5xi57B4R9q9sZyh4gglB+lcYZ9ZHkI0umSTEMr3Dg0R8R4Voya7kfbql/Q2e1X5sxyf8tjMi4eYGL0iLjNQ0cdK4hOVwb+dTochSRZguVtew==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rX3NXa+Z; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=danielt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P/LskQK+;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rX3NXa+Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=danielt@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drrjC6c6Lz2xNT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 03:11:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drsJD5DT5z2xNT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 03:38:52 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B6B744424A
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 16:11:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B450C2BC87
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 16:11:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A323408E4;
+	Wed, 14 Jan 2026 16:38:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80489C4CEF7;
+	Wed, 14 Jan 2026 16:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768407117;
-	bh=CjGcWeIbnw3YM0US5tjsJUz4YE5ESf3a+4znRW4sVZg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=P/LskQK+X/eiTfNzo6K6Dh3/j7095bmGljh+7hurouMk8iTdWkHHPf5z9Gnf7RQjl
-	 /48oxvCUnpEHezC7Mc5Bo+Sjr0dVUI56U+3kntIy4Rib62e20RFDlJTBfgVrjCRrYB
-	 YwjwfkoiEfrqSVsNBDNwPuRfz+bGDQ2o59sCyx2Gz05ikwOVhSAQ3/H4ldbNI52PgC
-	 WQz0N7idgLULimc7Ux936swpGSpwEyGkQK5QlFynKNmZ8l8X2uY/DXRLSLaMgKWBhh
-	 KEJbjy1ZlBmFMAvYZGzfe2vsU1k06WjC4ERZ4ujX8N7ajjDRKvinI2cIuVPDZJzoTC
-	 3itB94CuLQHYg==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-65cfb4beabcso5531756eaf.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 08:11:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUR/KkkodEP8z9Rri2cGyOFP9Q1DxZAh1uiJmqrAaSMxjeutT+YYU6EW+4sxAfnuUT8MKc09S2biaE/JfM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzpp4LkmaqQn4bwcxnK2PpbHsLzdEh0LbgUBu7XSR1cuYlNhCUm
-	rsTcKPe8DbLvQdV+z65bYdAaSAHijUm7b8e0dIwMu2b13qDgMcya/mtiYrab1beWuxqdS6j3dgQ
-	2vhCm1vwhBg9Tm02W3yaqOqmb7ZHkLgg=
-X-Received: by 2002:a05:6820:1611:b0:65f:6c0f:fb25 with SMTP id
- 006d021491bc7-6610045c234mr2240815eaf.0.1768407116460; Wed, 14 Jan 2026
- 08:11:56 -0800 (PST)
+	s=k20201202; t=1768408730;
+	bh=3O46Pj7m8kkRm5o6FCiKeQjNffkaPKNOyTPfHDTuyTM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rX3NXa+ZIaH3nFwhK4UUCK7Tl+BkdrM7lAWylErEBVX8n4+UiQ4G9G3ZhsgmdM3kk
+	 vN8PXFoQ+O9dscO4bKZ3M3QWmyyXJXre63JLVYqnzZ2NTakKl+OU0g0oj8iEefzjr3
+	 mgengyjgYNSq8vnqi/nIcJdbHx722ODGLyY8W8WF4jD1J44QYJo3q7W39OBPor2Wnp
+	 mtMB1YriAKD7oAMO5DENXpRw1aefTtMKh3nXtSKTmIbbZIhuLzX4/xt9jCGtUk6R4U
+	 0bsnyWbYeo3xcvSjczR5clmShq482fExnV7dzxGfD2Q4FGvs3AgYwtJ9KizIe5aoQq
+	 liWKl6bOegsTQ==
+Date: Wed, 14 Jan 2026 16:38:39 +0000
+From: Daniel Thompson <danielt@kernel.org>
+To: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Daniel Thompson <daniel@riscstar.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jason Wessel <jason.wessel@windriver.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jiri Slaby <jirislaby@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
+	netdev@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 00/19] printk cleanup - part 3
+Message-ID: <aWfGj1eQhj2fAWB-@aspen.lan>
+References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
+ <aVuz_hpbrk8oSCVC@aspen.lan>
+ <aVvF2hivCm0vIlfE@aspen.lan>
+ <a5d83903fe2d2c2eb21de1527007913ff00847c5.camel@suse.com>
+ <89409a0f48e6998ff6dd2245691b9954f0e1e435.camel@suse.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,163 +103,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260114101543.85926-1-fabio.m.de.francesco@linux.intel.com>
-In-Reply-To: <20260114101543.85926-1-fabio.m.de.francesco@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 14 Jan 2026 17:11:45 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0g80j4iFMXYDKek8VBYsa0g35avvw+UK6RxutcmxSX+WA@mail.gmail.com>
-X-Gm-Features: AZwV_QhOS444bZTklJpN97U-FoqtsZx0kcscnMnkoO7PBldoBVm0mhtxLbbJV4Y
-Message-ID: <CAJZ5v0g80j4iFMXYDKek8VBYsa0g35avvw+UK6RxutcmxSX+WA@mail.gmail.com>
-Subject: Re: [PATCH 0/5 v9] Make ELOG and GHES log and trace consistently
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Cc: linux-cxl@vger.kernel.org, Rafael J Wysocki <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
-	Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Shuai Xue <xueshuai@linux.alibaba.com>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Alison Schofield <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>, "Oliver O'Halloran" <oohall@gmail.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <89409a0f48e6998ff6dd2245691b9954f0e1e435.camel@suse.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Jan 14, 2026 at 11:15=E2=80=AFAM Fabio M. De Francesco
-<fabio.m.de.francesco@linux.intel.com> wrote:
+On Tue, Jan 13, 2026 at 09:32:33PM -0300, Marcos Paulo de Souza wrote:
+> I talked with Petr Mladek and it would need to rework the way that we
+> register a console, and he's already working on it. For now I believe
+> that we could take a look in all the patches besides the last one that
+> currently breaks the earlycon with kgdb and maybe other usecases.
 >
-> When Firmware First is enabled, BIOS handles errors first and then it
-> makes them available to the kernel via the Common Platform Error Record
-> (CPER) sections (UEFI 2.10 Appendix N). Linux parses the CPER sections
-> via one of two similar paths, either ELOG or GHES.
->
-> Currently, ELOG and GHES show some inconsistencies in how they print to
-> the kernel log as well as in how they report to userspace via trace
-> events.
->
-> Make the two mentioned paths act similarly for what relates to logging
-> and tracing.
->
-> --- Changes for v9 ---
->
->         - #include linux/printk.h for pr_*_ratelimited() in ghes_helpers.=
-c
->           Reported-by: kernel test robot <lkp@intel.com>
->           Closes: https://lore.kernel.org/oe-kbuild-all/202512240711.Iv57=
-ik8I-lkp@intel.com/
->
-> --- Changes for v8 ---
->
->         - Don't make GHES dependend on PCI and drop patch 3/6 -
->           incidentally it works out the issues that the KTR found with v7
->           (Jonathan, Hanjun)
->         - Don't have EXTLOG dependend on CXL_BUS and move the new helpers
->           to a new file, then link it to ghes.c only if ACPI_APEI_PCIEAER=
- is
->           selected. Placing the new helpers to their own translation unit=
- seems
->           be a more flexible and safer solution than messing with Kconfig=
- or
->           with conditional compilation macros within ghes.c. PCI may not =
-be an
->           option in embedded platforms
->
-> --- Changes for v7 ---
->
->         - Reference UEFI v2.11 (Sathyanarayanan)
->         - Substitute !(A || B) with !(A && B) in an 'if' statement to
->           convey the intended logic (Jonathan)
->         - Make ACPI_APEI_GHES explicitly select PCIAER because the needed
->           ACPI_APEI_PCIEAER doesn't recursively select that prerequisite =
-(Jonathan)
->           Reported-by: kernel test robot <lkp@intel.com>
->           Closes: https://lore.kernel.org/oe-kbuild-all/202510232204.7aYB=
-pl7h-lkp@intel.com/
->           Closes: https://lore.kernel.org/oe-kbuild-all/202510232204.XIXg=
-PWD7-lkp@intel.com/
->         - Don't add the unnecessary cxl_cper_ras_handle_prot_err() wrappe=
-r
->           for cxl_cper_handle_prot_err() (Jonathan)
->         - Make ACPI_EXTLOG explicitly select PCIAER && ACPI_APEI because
->           the needed ACPI_APEI_PCIEAER doesn't recursively select the
->           prerequisites
->         - Make ACPI_EXTLOG select CXL_BUS
->
-> --- Changes for v6 ---
->
->         - Rename the helper that copies the CPER CXL protocol error
->           information to work struct (Dave)
->         - Return -EOPNOTSUPP (instead of -EINVAL) from the two helpers if
->           ACPI_APEI_PCIEAER is not defined (Dave)
->
-> --- Changes for v5 ---
->
->         - Add 3/6 to select ACPI_APEI_PCIEAER for GHES
->         - Add 4,5/6 to move common code between ELOG and GHES out to new
->           helpers use them in 6/6 (Jonathan).
->
-> --- Changes for v4 ---
->
->         - Re-base on top of recent changes of the AER error logging and
->           drop obsoleted 2/4 (Sathyanarayanan)
->         - Log with pr_warn_ratelimited() (Dave)
->         - Collect tags
-> --- Changes for v3 ---
->
->     1/4, 2/4:
->         - collect tags; no functional changes
->     3/4:
->         - Invert logic of checks (Yazen)
->         - Select CONFIG_ACPI_APEI_PCIEAER (Yazen)
->     4/4:
->         - Check serial number only for CXL devices (Yazen)
->         - Replace "invalid" with "unknown" in the output of a pr_err()
->           (Yazen)
->
-> --- Changes for v2 ---
->
->         - Add a patch to pass log levels to pci_print_aer() (Dan)
->         - Add a patch to trace CPER CXL Protocol Errors
->         - Rework commit messages (Dan)
->         - Use log_non_standard_event() (Bjorn)
->
-> --- Changes for v1 ---
->
->         - Drop the RFC prefix and restart from PATCH v1
->         - Drop patch 3/3 because a discussion on it has not yet been
->           settled
->         - Drop namespacing in export of pci_print_aer while() (Dan)
->         - Don't use '#ifdef' in *.c files (Dan)
->         - Drop a reference on pdev after operation is complete (Dan)
->         - Don't log an error message if pdev is NULL (Dan)
->
-> Fabio M. De Francesco (5):
->   ACPI: extlog: Trace CPER Non-standard Section Body
->   ACPI: extlog: Trace CPER PCI Express Error Section
->   acpi/ghes: Add helper for CPER CXL protocol errors checks
->   acpi/ghes: Add helper to copy CPER CXL protocol error info to work
->     struct
->   ACPI: extlog: Trace CPER CXL Protocol Error Section
->
->  drivers/acpi/Kconfig             |  2 +
->  drivers/acpi/acpi_extlog.c       | 64 +++++++++++++++++++++++++++++++
->  drivers/acpi/apei/Makefile       |  1 +
->  drivers/acpi/apei/ghes.c         | 40 +------------------
->  drivers/acpi/apei/ghes_helpers.c | 66 ++++++++++++++++++++++++++++++++
->  drivers/cxl/core/ras.c           |  3 +-
->  drivers/pci/pcie/aer.c           |  2 +-
->  include/cxl/event.h              | 22 +++++++++++
->  8 files changed, 160 insertions(+), 40 deletions(-)
->  create mode 100644 drivers/acpi/apei/ghes_helpers.c
->
->
-> base-commit: b71e635feefc8
-> --
+> Sorry for not catching this issue before. I'll use kgdb next time to
+> make sure that it keeps working :)
 
-Applied as 6.20 material, thanks!
+As I understood things the bug was in earlycon rather then kgdb.
+
+It was picked up by the kgdbtest suite since kgdb does some cool things
+with earlycon (thanks to Doug Anderson) so I added a few earlycon tests
+to the kgdbtest suite. However it wasn't kgdb itself that failed here.
+
+So... if you want to run https://gitlab.com/daniel-thompson/kgdbtest
+then certainly feel free but its probably less effort just to include
+a couple of earlycon checks in your testing.
+
+
+Daniel.
 
