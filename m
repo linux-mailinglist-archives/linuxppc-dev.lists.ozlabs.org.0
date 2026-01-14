@@ -1,54 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-15683-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15684-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 798D0D1CCCB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 08:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BDC2D1CD07
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 08:26:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drcwv0H2Vz2xpm;
-	Wed, 14 Jan 2026 18:21:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drd2h3c6Hz2xpm;
+	Wed, 14 Jan 2026 18:26:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=94.231.106.210
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768375278;
-	cv=none; b=mwa/Vcr9uZUcyN9eBCLHFv21ddbMWnkMSRaqI/tSfdGa1f4E+mRsrHgDFjUbJggpN25JfMhfBtfd4JD89tYhvNs9+URT/FTDiuD/fvXcTRoNv9Mt53Fm/m4CPj3G6liAO8VgC+bHwdpimYPsRtBLw+dNzIFne1qE0VZFqjU+5HsvlvvLGJEnZ5qs91uHMrKyCgCCyDEKlwMEiy1hutDQYdW30T/7OnOxrdWpCcIhq0+bxRN7uYsKQ8QQaUOgzSiESGr6d6BwkGc5XQlVT25te4uIBLY2s3DG0C1iULLgGEOHy5J5M9THjBXEbF8zCcY3CWf1GvNUF/UUWWPyOYjbhw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768375580;
+	cv=none; b=AONJJDw1RAsieBsc+Zst1Osatkhtg6INSRQ+a3Nnoz0n7Tk4/KwORd4Cn7TNEFkdM37GwA6MsDo4Omk2ElXqxaAXPDdxepMoKtVj0AQKNNpY9QwSxUNfsSt14209cxQFfcnKh84uSoH2zstRwaa1H87SV9XBzAYR6+uIjuUym3p6bjtou5BiW+i666H8r9QdK1x3lkyGF0PprcxkvhzkYwSbCj5nj+J7ZZzg7Rbccp40p0nYZhlE1ZZiZghwuqETz8no9ex8GP3DbK8CoLYat7Kgy4ecio9k3yOLRwdtsFNWsuJKjcJoQz+/wMSSR4x0rB2Do+zpx++Cf2pgBAzseg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768375278; c=relaxed/relaxed;
-	bh=USGtV3+n93v8pp6pT/3Zgm6YGfywpo0PJVEBtkCCeSQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jqtu9V3zE8TDBM+dUTZIDB97qP20zve+GdBGU7C1fV91ytot7KK3IOPaEykMA349T4ru92sL9KgQHMZ/9epQ6E4pgphu245QwWR7kdGGBB+DuKY2+cNJOmmcZtkWYYF8L9BePdrD1FvR5DXJYSyDeSzufEReHcljKy9zQ3htp7CN/CPkynaq7JhYACDZ+zWXtbwws+l/Xi9X3D14NUSyrYGE4GSXyFAwZqtPwoWaOTRggMlWsVxUPprAfUUNQiJJ65ax3OXQE0U240AjoMetHVfFGwb6nnsDJxr+0U1pHlvC287MQVLi9eGH8vkpZvMbJT4C8OSK7HNbeUmivEfsrA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; dkim=fail header.d=gaisler.com header.i=@gaisler.com header.a=rsa-sha256 header.s=simplycom2 header.b=GLYRdRw6 reason="key not found in DNS"; dkim-atps=neutral; spf=pass (client-ip=94.231.106.210; helo=smtp-out3.simply.com; envelope-from=andreas@gaisler.com; receiver=lists.ozlabs.org) smtp.mailfrom=gaisler.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
+	t=1768375580; c=relaxed/relaxed;
+	bh=ZNfW6fCJn3/7zRW9ZKkcVeSEbV0IWfCasJe1y+WFrk4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cad5CPAVXFomXKU35eU0ot/zkCrmMBBdlOWpPuG1lOmjUL+aJZPpAJxzXfKxejaMVf6TCZtyMXv108+YTAC7GcbKpw7oUzEWQ5ajKKg6cefaRJ1j2YgCU0gjtnnKNRrQ+uK+8h57r/65KQwr3a7Fldd7F53VTsjRn5ZHK1frRRVJ+NnOBUxZq3TbSrxfb+weDBiWPfl3mBSYS6T39JdAl/j/5S7oYfsaxQcCpQHwW8BE+gAOG68iUplvluhfcB6pAEvkFn8Qbz8uTDJxbOtLcSnByjqyj+5TX90LCU4f/8mIHtOl1Hl57VvLHq/9VsONnpTRbwmYPxnjAjUwPbbb7g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YS+Yueel; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=m0r8Rn4S; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="key not found in DNS" header.d=gaisler.com header.i=@gaisler.com header.a=rsa-sha256 header.s=simplycom2 header.b=GLYRdRw6;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YS+Yueel;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=m0r8Rn4S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gaisler.com (client-ip=94.231.106.210; helo=smtp-out3.simply.com; envelope-from=andreas@gaisler.com; receiver=lists.ozlabs.org)
-Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drcws4jpNz2xHW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 18:21:17 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by smtp.simply.com (Simply.com) with ESMTP id 4drcwp38sWz1DR2b;
-	Wed, 14 Jan 2026 08:21:14 +0100 (CET)
-Received: from [192.168.0.25] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by smtp.simply.com (Simply.com) with ESMTPSA id 4drcwm54NNz1DDXY;
-	Wed, 14 Jan 2026 08:21:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
-	s=simplycom2; t=1768375274;
-	bh=USGtV3+n93v8pp6pT/3Zgm6YGfywpo0PJVEBtkCCeSQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GLYRdRw6BcVYpXpDzS8ZqYhxtT7bZEqyt6FuYL8Og+uuX6KmBzkodf4AAzTgQK8Vj
-	 6QbBYuy/EUx3fCM7vga1p7zdd9seT9SSuJ28fck7TvCAs/Gwc0UpWogq+FDfeMLhxP
-	 Q9tIWi9KAy3JY7vvXnVldebdrOSI6/xQmw6aZqkHZJU9FXjDY0poTHU/LzOD1ekgYF
-	 2nFh0u8d2uWVggyereuQ0MAq07iXxOjlDmJmNDlViRxcJ4I2srsAz+uaxP1y7echmT
-	 rgWILKmtxf/xBcRfC4IBmOKjPaCa/8zHfl4NRJCZIC9TqeetLFcYzLPvsXlK9du/pk
-	 oxIYdU3UlZQgw==
-Message-ID: <544172e4-cdf7-4789-8cad-4dc3c498e497@gaisler.com>
-Date: Wed, 14 Jan 2026 08:21:12 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drd2g3SCSz2xHW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 18:26:19 +1100 (AEDT)
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1768375574;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZNfW6fCJn3/7zRW9ZKkcVeSEbV0IWfCasJe1y+WFrk4=;
+	b=YS+YueelaNxBRCDeORwRFVvGVVt39VrPHYZ6WgmNmBXzBZ6gwZ1e0Kex228U5cm5XhbQz/
+	iq2BDg33eO19NKIf2q+s8ugbr46mYI0R6XpDJGJHjpc5F5NlT2uD9zOVqmnsGXFZIvimqo
+	0oamTq8WYG0l5B17qv5bXO0qv9g3s+ilM0KTC6brWDOeK1GGWl/Zyc50dCtmLXy+U8tQEK
+	SA0nyVz+DUouGTY4ZhFX5Ev2znN8NPHt9VXxARx1JTxN93ubdubONNRueJVZ1+0NlqKLla
+	D2AyeV81VITMV1yhBULLfoh8ETmSEjgllbj9M+VNlke9vHSfbnOfrfnisZVdJQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1768375574;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZNfW6fCJn3/7zRW9ZKkcVeSEbV0IWfCasJe1y+WFrk4=;
+	b=m0r8Rn4Sf9U4xoSQDTooAH5siLDeNt9m4AAVqOY7DUDOJzSU22Iq6RRVMNJhKEKt4QeFRC
+	9FBPjNjK8gVjb6Dw==
+Date: Wed, 14 Jan 2026 08:26:05 +0100
+Subject: [PATCH] powerpc/vdso: Provide clock_getres_time64()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,118 +63,122 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 12/14] sparc/mm: replace batch->active with
- is_lazy_mmu_mode_active()
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org,
- "David Hildenbrand (Red Hat)" <david@kernel.org>
-References: <20251215150323.2218608-1-kevin.brodsky@arm.com>
- <20251215150323.2218608-13-kevin.brodsky@arm.com>
-Content-Language: en-US
-From: Andreas Larsson <andreas@gaisler.com>
-In-Reply-To: <20251215150323.2218608-13-kevin.brodsky@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260114-vdso-powerpc-align-v1-1-acf09373d568@linutronix.de>
+X-B4-Tracking: v=1; b=H4sIAAxFZ2kC/x3MTQqAIBBA4avErBvwJ6S6SrSwnGogVBQqCO+et
+ PwW772QKTFlGJsXEl2cOfgK2TawHtbvhOyqQQllhJQaL5cDxnBTiivak3eP1NOgjemcVQvUMCb
+ a+Pmn01zKB5Pf9lZkAAAA
+X-Change-ID: 20260113-vdso-powerpc-align-e8e93664da2b
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768375572; l=3584;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=O0kt2kF37a6pM7CkVXq0/fhz7df+ATaG10dREhHdPFU=;
+ b=n8LaS2ivdOjDUFXegMaHsAePSXK4aiMyqfl6QHpKYUMvmFsZ7URYFZBsPtVtcFRfY7eIGZAH+
+ yGpd0VcIrGCDcrNikPk8l7cmSxtd6avttr2twi3ynxGaHzPubF8fMlW
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 2025-12-15 16:03, Kevin Brodsky wrote:
-> A per-CPU batch struct is activated when entering lazy MMU mode; its
-> lifetime is the same as the lazy MMU section (it is deactivated when
-> leaving the mode). Preemption is disabled in that interval to ensure
-> that the per-CPU reference remains valid.
-> 
-> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
-> mode. We can therefore use the generic helper
-> is_lazy_mmu_mode_active() to tell whether a batch struct is active
-> instead of tracking it explicitly.
-> 
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
->  arch/sparc/include/asm/tlbflush_64.h | 1 -
->  arch/sparc/mm/tlb.c                  | 9 +--------
->  2 files changed, 1 insertion(+), 9 deletions(-)
-> 
-> diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
-> index 4e1036728e2f..6133306ba59a 100644
-> --- a/arch/sparc/include/asm/tlbflush_64.h
-> +++ b/arch/sparc/include/asm/tlbflush_64.h
-> @@ -12,7 +12,6 @@ struct tlb_batch {
->  	unsigned int hugepage_shift;
->  	struct mm_struct *mm;
->  	unsigned long tlb_nr;
-> -	unsigned long active;
->  	unsigned long vaddrs[TLB_BATCH_NR];
->  };
->  
-> diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
-> index 7b5dfcdb1243..3a852071d260 100644
-> --- a/arch/sparc/mm/tlb.c
-> +++ b/arch/sparc/mm/tlb.c
-> @@ -52,11 +52,7 @@ void flush_tlb_pending(void)
->  
->  void arch_enter_lazy_mmu_mode(void)
->  {
-> -	struct tlb_batch *tb;
-> -
->  	preempt_disable();
-> -	tb = this_cpu_ptr(&tlb_batch);
-> -	tb->active = 1;
->  }
->  
->  void arch_flush_lazy_mmu_mode(void)
-> @@ -69,10 +65,7 @@ void arch_flush_lazy_mmu_mode(void)
->  
->  void arch_leave_lazy_mmu_mode(void)
->  {
-> -	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
-> -
->  	arch_flush_lazy_mmu_mode();
-> -	tb->active = 0;
->  	preempt_enable();
->  }
->  
-> @@ -93,7 +86,7 @@ static void tlb_batch_add_one(struct mm_struct *mm, unsigned long vaddr,
->  		nr = 0;
->  	}
->  
-> -	if (!tb->active) {
-> +	if (!is_lazy_mmu_mode_active()) {
->  		flush_tsb_user_page(mm, vaddr, hugepage_shift);
->  		global_flush_tlb_page(mm, vaddr);
->  		goto out;
+For consistency with __vdso_clock_gettime64() there should also be a
+64-bit variant of clock_getres(). This will allow the extension of
+CONFIG_COMPAT_32BIT_TIME to the vDSO and finally the removal of 32-bit
+time types from the kernel and UAPI.
 
-Acked-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+---
+Based on tip/timers/vdso.
 
-Cheers,
-Andreas
+This was missed in the original vdso_getres_time64() series as powerpc
+does not use include/vdso/gettime.h.
+---
+ arch/powerpc/include/asm/vdso/gettimeofday.h |  2 ++
+ arch/powerpc/kernel/vdso/gettimeofday.S      | 12 ++++++++++++
+ arch/powerpc/kernel/vdso/vdso32.lds.S        |  1 +
+ arch/powerpc/kernel/vdso/vgettimeofday.c     |  6 ++++++
+ 4 files changed, 21 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h b/arch/powerpc/include/asm/vdso/gettimeofday.h
+index ab3df12c8d94..8ea397e26ad0 100644
+--- a/arch/powerpc/include/asm/vdso/gettimeofday.h
++++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
+@@ -135,6 +135,8 @@ int __c_kernel_clock_gettime64(clockid_t clock, struct __kernel_timespec *ts,
+ 			       const struct vdso_time_data *vd);
+ int __c_kernel_clock_getres(clockid_t clock_id, struct old_timespec32 *res,
+ 			    const struct vdso_time_data *vd);
++int __c_kernel_clock_getres_time64(clockid_t clock_id, struct __kernel_timespec *res,
++				   const struct vdso_time_data *vd);
+ #endif
+ int __c_kernel_gettimeofday(struct __kernel_old_timeval *tv, struct timezone *tz,
+ 			    const struct vdso_time_data *vd);
+diff --git a/arch/powerpc/kernel/vdso/gettimeofday.S b/arch/powerpc/kernel/vdso/gettimeofday.S
+index 79c967212444..1c8e51691bf8 100644
+--- a/arch/powerpc/kernel/vdso/gettimeofday.S
++++ b/arch/powerpc/kernel/vdso/gettimeofday.S
+@@ -103,6 +103,18 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
+ 	cvdso_call __c_kernel_clock_getres
+ V_FUNCTION_END(__kernel_clock_getres)
+ 
++/*
++ * Exact prototype of clock_getres_time64()
++ *
++ * int __kernel_clock_getres(clockid_t clock_id, struct __timespec64 *res);
++ *
++ */
++#ifndef __powerpc64__
++V_FUNCTION_BEGIN(__kernel_clock_getres_time64)
++	cvdso_call __c_kernel_clock_getres_time64
++V_FUNCTION_END(__kernel_clock_getres_time64)
++#endif
++
+ 
+ /*
+  * Exact prototype of time()
+diff --git a/arch/powerpc/kernel/vdso/vdso32.lds.S b/arch/powerpc/kernel/vdso/vdso32.lds.S
+index 72a1012b8a20..3f384a2526ae 100644
+--- a/arch/powerpc/kernel/vdso/vdso32.lds.S
++++ b/arch/powerpc/kernel/vdso/vdso32.lds.S
+@@ -124,6 +124,7 @@ VERSION
+ 		__kernel_clock_gettime;
+ 		__kernel_clock_gettime64;
+ 		__kernel_clock_getres;
++		__kernel_clock_getres_time64;
+ 		__kernel_time;
+ 		__kernel_get_tbfreq;
+ 		__kernel_sync_dicache;
+diff --git a/arch/powerpc/kernel/vdso/vgettimeofday.c b/arch/powerpc/kernel/vdso/vgettimeofday.c
+index 6f5167d81af5..3c194e1ab562 100644
+--- a/arch/powerpc/kernel/vdso/vgettimeofday.c
++++ b/arch/powerpc/kernel/vdso/vgettimeofday.c
+@@ -35,6 +35,12 @@ int __c_kernel_clock_getres(clockid_t clock_id, struct old_timespec32 *res,
+ {
+ 	return __cvdso_clock_getres_time32_data(vd, clock_id, res);
+ }
++
++int __c_kernel_clock_getres_time64(clockid_t clock_id, struct __kernel_timespec *res,
++				   const struct vdso_time_data *vd)
++{
++	return __cvdso_clock_getres_data(vd, clock_id, res);
++}
+ #endif
+ 
+ int __c_kernel_gettimeofday(struct __kernel_old_timeval *tv, struct timezone *tz,
+
+---
+base-commit: 0e55e7636697077abceb2301d7d2718d75c34389
+change-id: 20260113-vdso-powerpc-align-e8e93664da2b
+
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
 
