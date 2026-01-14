@@ -1,50 +1,117 @@
-Return-Path: <linuxppc-dev+bounces-15704-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15705-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D6E1D1D1A0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 09:27:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8856AD1D33F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 09:45:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drfPS2fQ1z2xlP;
-	Wed, 14 Jan 2026 19:27:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drfnr01Byz2xlP;
+	Wed, 14 Jan 2026 19:45:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768379260;
-	cv=none; b=mw8nASjQMKqQDE1GBLaYeW6IQYESdQyFFEcG39Jj3r/qeu9bCYwR73KTxrxPdMTV7hGr2EFkeuMU/Lx4XwQ/4VT0vXxyOetcp6Lcg8nPFZOIoou2z42rM1hNsvASrhxiR0KYImc10SY52HSS8alEhKThjHyKg5zcPxLzmk7/vMj1gYZaFeuBRSkl/jdG9LavH+jb5HxJEmGFW510Y2PfBtH6NvUWDraTSd76FtpUHpDWYH2MZ8bLaElAWst4Fr9dhE0Ol3WbLR3cW6dVarvFC+5lxywq9da40JfA6iRayR59Sf5kfTvePs8h0Skz2Xm4rEedvz4Dn1428n6/80R88g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.50
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768380319;
+	cv=none; b=ot3XPfgEzq9MyLXv50ylWH4NmJcu5tS7SvRjaYKD8889jCiTIv+xgdrY0gREemSTA9xLU70vFDykcyxWfNwtVKMdfLIEiKzjGhfUce9Cie3a3nS1jP9vKO4LzTsshs/dSRxAWSAu5gRp1rvGQck4yu74X6jv71hTDO7fSK912qbPgNMbK1WKz8BEYPwZtch94TFIfeaFCPYmEffhl5mnRmEesewToLfhOZv/TifUY4kHADtC6jh/sR+ETHqERYIiSQlea/Ej/f+v+zWRoZDHtNutH0FPQ8gkEV/wv3RCOd/gsmMtgRDLEls6AeDgRt8IDiquKlNTeAu/wMWeJ5b84A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768379260; c=relaxed/relaxed;
-	bh=1QwCcuQ6a1BIxKAAHOyPaYUIVLvaGXhXWQxTl0ImiD4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HQUe4+11nz8qRyPJMIJ9bR7KsYL1nqYDnyr/X+Pxikxz1SoxCSPdDXdeCfszQ0X6AooiZVxT/mX4gCT9axVHoAiMuTexL/Bvb3C3/QNH3e/BU07kJD1QhaBnb4fZQUYk2SbVJb1HDQuFNg8rPOn2XcS4Gjh5XasoEbeE67E1a2Sp1xkIJDkcFSt2BvL0PjZH7iU441vMQTjQsGUInZGnAmeuIOYXuzMfz7WiIzt3h8l5OZqHz8k1ENEPJb44uh/nTWotxMbzJHB8MEvzzoBelaXp8U2oUImFuR19SHKb3J0fWbR3onSToCNfL5re0gPJvwh+3u2amsxFp900jHPBJA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eYpj8Thf; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1768380319; c=relaxed/relaxed;
+	bh=/Nn9M/VPDoeuifL+P7no8o5FApQZk7zNKYvSR+p2CRU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iperdXU0PXaBERTnjVu81gT9QcPSXsKsGYWILOS6c23ykHZaxhvxVsLnK7SKIXGQCF1iktBhNlTI9S96at+sSYLyuZOp5oDRIo7r7z6yJIvuvFocWuNvCb+I4rY466ibWud4nsJJtNcpLNHfmwIqVgdZeMUoooaXJtOkNKPUs4Uo5mxNVWqKSkUM40MUxuyvyCbHKsky/lu/EbO8Kk9V5PjWSlD2LBYWC5NcQHS/TsGBbroM925NsE7IiaKeLgN5IGuebFLdC9st81EDkAjvwwSXSWwcds2vhbbm+euqrTuHSxCoz6OY9zKHLzrI+ARwgvZNxmaEmC46TE6iCfPRGg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=V8yj8V95; dkim-atps=neutral; spf=pass (client-ip=209.85.221.50; helo=mail-wr1-f50.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eYpj8Thf;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=V8yj8V95;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.221.50; helo=mail-wr1-f50.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drfPR25YRz2xFn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 19:27:39 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02D7D4026D;
-	Wed, 14 Jan 2026 08:27:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEF0C4CEF7;
-	Wed, 14 Jan 2026 08:27:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768379256;
-	bh=NA3qo9DrxluI1phzSkZ0+eMoPIthmXtuUNEbkNpNeFM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eYpj8ThfBqr+GuQRVFLvsB9/BOMDgWAk5taqiwI/C0p5RqLoop9A4qmQJnrAx4F2O
-	 Vy7Pt5jB0HwOITRue+s6d6XqMD7jWpiKrZQJY/fgl9fZZ1p9XlyM5m+KoYTETYBYBX
-	 Pd11J3UOSSMXOOQvk8RCz83YFJHf/gVsynValiEsySKaw3Ja/2t8SwFP0i6vkh3W/Y
-	 sDfwPQiV5HjHE0GxQmVAdQyGGK4ujlcuBeoZz7cVHWscRs7eDYQFwBIAgwLb/a9C2X
-	 7iO+V09kSK5Y6cQbsX416oc3pXtjorPqqHTNZwEHNCHZqj58XyXPHKVMYnviK2XRP0
-	 LG95PDHo0Kgzw==
-Message-ID: <b6592afe-a0b2-4af7-9c64-ddd2e1b08a0e@kernel.org>
-Date: Wed, 14 Jan 2026 09:27:33 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drfnp4r3cz2xHW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 19:45:17 +1100 (AEDT)
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-430fbb6012bso6708534f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 00:45:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768380255; x=1768985055; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/Nn9M/VPDoeuifL+P7no8o5FApQZk7zNKYvSR+p2CRU=;
+        b=V8yj8V95pZ+4NOIW0cXCztk2ZL2/QiF1WL5v0nTRWXtmfahdR00VN4E742nvdOU45t
+         VadpDzS9w6mjROxjgI5Qq7mOJn4O3G5ycJ38K1DxiM5pdwvdcMsj0I1OibcUPmjLPQOO
+         SuUW9wajlZB35NA8urxr4GvcxDbKBLK6bpPdZVT0oUVWnQiQc9cwlc7rqm1C/gc5oAP6
+         rVfilvJzarDb/p8tjaN4+SCxgr42vtWAz+rcnpxM38X4Mp2sXEktFYtdNwr/+C4gSSEp
+         VY5q/6KdW9U9B04z3KIzAxOp/oMzo6hNXXzvayNoyAL8CvdEKlCztQlcO65I4jMMbXHH
+         l5rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768380255; x=1768985055;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/Nn9M/VPDoeuifL+P7no8o5FApQZk7zNKYvSR+p2CRU=;
+        b=EoyWpRIXg0kYabrfcgmC6RugaVaJy89B0a855Z9ECCsgI2MlxSNV+EcjruGL5eEY5Y
+         EZGbT1kpWBJ37pzqW2B2lRyRtdPoroIrxAvPQbhOB+d+AvsDRlBoZO4YPUbitES8f5lB
+         FKDQUYMjzzbdNRkyTiuuz+WcvSheYehkIDyoEKOdQqKshdrXAlQgbKmmeqdDQa8MRogs
+         y49+iNhr2FUwwODKSoQa6/NPJVbzE2pDU7cUvwBPqXFYlI7xpUyRmGtD7TdqrgTmesM7
+         0VFOIIpaaNFfYQGvKxqrbLubauk2KpgVu4qtnvQsWYCoOVFOj+xEhf4/nhnMMvKHg3wY
+         eOeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX2rsN8YnLZ8F07PHnlN3dWZIB25uVmD5iIiOXBBrb0wtSKIIXYoekqIuj+X6B2zhoO6pkZTISQfO6eyss=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx1+ZdyXZZN0vRrh7C9nTkJxZD3cYBpBFP9Qya+Pxn2uT35xD0m
+	hOGS/nf8gBN+ywNB8t1e2q3k9wBMsJnVsFS0EY0qYnSMnQBBuyznggcNkUCg9wIRE3I=
+X-Gm-Gg: AY/fxX4cLzCPEN3e8CPkAReYLBp9/+1f+nGKJ8Gp+mqcB/yzWuV2Ba9R4gAUg07sqVA
+	9oZBWjDHJOPU3ZqAoIw0UHCxVaUeIr/PI545DUT63KZJIX87Hk4sV0WKMOcUVYoUH95iwNN5fnQ
+	LluRIoAj/FaHi0ZHE1YEaRDStRAZ4xqTqb8eoh8KE5M9wK2c6i6YXVlns8iAQ1cuXUICJIo/IT8
+	2h1lQofY6VQQZ5SZdsW5jLWT5CiVvooksNHOmybrhlgCz+P+TKuuqjgpkgwovfKugaCdxcrOGCO
+	pwjB/Yjr9OATNlQ6tvdtaB8fxUHrF/ey7Ulx0hBcMMDyVdZsvRMiEAufMtX88wZfMePQxe1dK1F
+	vT7Joh93iiu53qAKbxl9eOmqkMMZ9eCJJ3oZjgvOw5/jITz/H9+7JjKgtRCIqBP06zLzWAyEnsG
+	tFt15vfDoYBwMmtQ==
+X-Received: by 2002:a05:6000:61e:b0:431:a38:c2f7 with SMTP id ffacd0b85a97d-4342c574bedmr1500621f8f.59.1768380254886;
+        Wed, 14 Jan 2026 00:44:14 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5ee5e3sm48685590f8f.35.2026.01.14.00.44.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 00:44:14 -0800 (PST)
+Date: Wed, 14 Jan 2026 09:44:11 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jason Wessel <jason.wessel@windriver.com>,
+	Daniel Thompson <danielt@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jiri Slaby <jirislaby@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
+	netdev@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 03/19] printk: Drop flags argument from console_is_usable
+Message-ID: <aWdXW6ohfQ7_z2B_@pathway.suse.cz>
+References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
+ <20251227-printk-cleanup-part3-v1-3-21a291bcf197@suse.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,119 +125,82 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/vdso: Provide clock_getres_time64()
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20260114-vdso-powerpc-align-v1-1-acf09373d568@linutronix.de>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260114-vdso-powerpc-align-v1-1-acf09373d568@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251227-printk-cleanup-part3-v1-3-21a291bcf197@suse.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-Le 14/01/2026 à 08:26, Thomas Weißschuh a écrit :
-> For consistency with __vdso_clock_gettime64() there should also be a
-> 64-bit variant of clock_getres(). This will allow the extension of
-> CONFIG_COMPAT_32BIT_TIME to the vDSO and finally the removal of 32-bit
-> time types from the kernel and UAPI.
+On Sat 2025-12-27 09:16:10, Marcos Paulo de Souza wrote:
+> The flags argument was also used to check if CON_NBCON was set, but their
+> usage was fixed in the last commit. All current users are reading the
+> variable just to call console_is_usable.
 > 
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-
-> ---
-> Based on tip/timers/vdso.
+> By calling console_srcu_read_flags inside console_is_usable makes the
+> code cleaner and removes one argument from the function.
 > 
-> This was missed in the original vdso_getres_time64() series as powerpc
-> does not use include/vdso/gettime.h.
-> ---
->   arch/powerpc/include/asm/vdso/gettimeofday.h |  2 ++
->   arch/powerpc/kernel/vdso/gettimeofday.S      | 12 ++++++++++++
->   arch/powerpc/kernel/vdso/vdso32.lds.S        |  1 +
->   arch/powerpc/kernel/vdso/vgettimeofday.c     |  6 ++++++
->   4 files changed, 21 insertions(+)
+> Along with it, create a variant called __console_is_usable that can be
+> used under console_list_lock(), like unregister_console_locked.
 > 
-> diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h b/arch/powerpc/include/asm/vdso/gettimeofday.h
-> index ab3df12c8d94..8ea397e26ad0 100644
-> --- a/arch/powerpc/include/asm/vdso/gettimeofday.h
-> +++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
-> @@ -135,6 +135,8 @@ int __c_kernel_clock_gettime64(clockid_t clock, struct __kernel_timespec *ts,
->   			       const struct vdso_time_data *vd);
->   int __c_kernel_clock_getres(clockid_t clock_id, struct old_timespec32 *res,
->   			    const struct vdso_time_data *vd);
-> +int __c_kernel_clock_getres_time64(clockid_t clock_id, struct __kernel_timespec *res,
-> +				   const struct vdso_time_data *vd);
->   #endif
->   int __c_kernel_gettimeofday(struct __kernel_old_timeval *tv, struct timezone *tz,
->   			    const struct vdso_time_data *vd);
-> diff --git a/arch/powerpc/kernel/vdso/gettimeofday.S b/arch/powerpc/kernel/vdso/gettimeofday.S
-> index 79c967212444..1c8e51691bf8 100644
-> --- a/arch/powerpc/kernel/vdso/gettimeofday.S
-> +++ b/arch/powerpc/kernel/vdso/gettimeofday.S
-> @@ -103,6 +103,18 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
->   	cvdso_call __c_kernel_clock_getres
->   V_FUNCTION_END(__kernel_clock_getres)
->   
+> --- a/include/linux/console.h
+> +++ b/include/linux/console.h
+> @@ -656,13 +656,8 @@ extern bool nbcon_kdb_try_acquire(struct console *con,
+>  				  struct nbcon_write_context *wctxt);
+>  extern void nbcon_kdb_release(struct nbcon_write_context *wctxt);
+>  
+> -/*
+> - * Check if the given console is currently capable and allowed to print
+> - * records. Note that this function does not consider the current context,
+> - * which can also play a role in deciding if @con can be used to print
+> - * records.
+> - */
+> -static inline bool console_is_usable(struct console *con, short flags,
+> +/* Variant of console_is_usable() when the console_list_lock is held. */
+
+Nit: The comment is a bit misleading because this function is called
+     also from console_is_usable() under console_srcu_read_lock().
+
+     I would say something like:
+
+/*
+ * The caller must ensure that @con can't disappear either by taking
+ * console_list_lock() or console_srcu_read_lock(). See also
+ * console_is_usable().
+ */
+> +static inline bool __console_is_usable(struct console *con, short flags,
+>  				     enum nbcon_write_cb nwc)
+>  {
+>  	if (!(flags & CON_ENABLED))
+> @@ -707,6 +702,18 @@ static inline bool console_is_usable(struct console *con, short flags,
+>  	return true;
+>  }
+>  
 > +/*
-> + * Exact prototype of clock_getres_time64()
-> + *
-> + * int __kernel_clock_getres(clockid_t clock_id, struct __timespec64 *res);
-> + *
-> + */
-> +#ifndef __powerpc64__
-> +V_FUNCTION_BEGIN(__kernel_clock_getres_time64)
-> +	cvdso_call __c_kernel_clock_getres_time64
-> +V_FUNCTION_END(__kernel_clock_getres_time64)
-> +#endif
-> +
->   
->   /*
->    * Exact prototype of time()
-> diff --git a/arch/powerpc/kernel/vdso/vdso32.lds.S b/arch/powerpc/kernel/vdso/vdso32.lds.S
-> index 72a1012b8a20..3f384a2526ae 100644
-> --- a/arch/powerpc/kernel/vdso/vdso32.lds.S
-> +++ b/arch/powerpc/kernel/vdso/vdso32.lds.S
-> @@ -124,6 +124,7 @@ VERSION
->   		__kernel_clock_gettime;
->   		__kernel_clock_gettime64;
->   		__kernel_clock_getres;
-> +		__kernel_clock_getres_time64;
->   		__kernel_time;
->   		__kernel_get_tbfreq;
->   		__kernel_sync_dicache;
-> diff --git a/arch/powerpc/kernel/vdso/vgettimeofday.c b/arch/powerpc/kernel/vdso/vgettimeofday.c
-> index 6f5167d81af5..3c194e1ab562 100644
-> --- a/arch/powerpc/kernel/vdso/vgettimeofday.c
-> +++ b/arch/powerpc/kernel/vdso/vgettimeofday.c
-> @@ -35,6 +35,12 @@ int __c_kernel_clock_getres(clockid_t clock_id, struct old_timespec32 *res,
->   {
->   	return __cvdso_clock_getres_time32_data(vd, clock_id, res);
->   }
-> +
-> +int __c_kernel_clock_getres_time64(clockid_t clock_id, struct __kernel_timespec *res,
-> +				   const struct vdso_time_data *vd)
-> +{
-> +	return __cvdso_clock_getres_data(vd, clock_id, res);
-> +}
->   #endif
->   
->   int __c_kernel_gettimeofday(struct __kernel_old_timeval *tv, struct timezone *tz,
-> 
-> ---
-> base-commit: 0e55e7636697077abceb2301d7d2718d75c34389
-> change-id: 20260113-vdso-powerpc-align-e8e93664da2b
-> 
-> Best regards,
+> + * Check if the given console is currently capable and allowed to print
+> + * records. Note that this function does not consider the current context,
+> + * which can also play a role in deciding if @con can be used to print
+> + * records.
 
+And I would add here something like:
+
+ *
+ * Context: Must be called under console_srcu_read_lock().
+
+> + */
+> +static inline bool console_is_usable(struct console *con,
+> +				     enum nbcon_write_cb nwc)
+> +{
+> +	return __console_is_usable(con, console_srcu_read_flags(con), nwc);
+> +}
+> +
+>  #else
+>  static inline void nbcon_cpu_emergency_enter(void) { }
+>  static inline void nbcon_cpu_emergency_exit(void) { }
+
+Otherwise, it looks good. It is a nice clean up.
+
+Best Regards,
+Petr
 
