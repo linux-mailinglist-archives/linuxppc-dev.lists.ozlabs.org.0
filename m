@@ -1,117 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-15705-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15706-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8856AD1D33F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 09:45:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD42D1D923
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 10:35:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drfnr01Byz2xlP;
-	Wed, 14 Jan 2026 19:45:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drgvB41xHz2xPB;
+	Wed, 14 Jan 2026 20:35:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.50
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768380319;
-	cv=none; b=ot3XPfgEzq9MyLXv50ylWH4NmJcu5tS7SvRjaYKD8889jCiTIv+xgdrY0gREemSTA9xLU70vFDykcyxWfNwtVKMdfLIEiKzjGhfUce9Cie3a3nS1jP9vKO4LzTsshs/dSRxAWSAu5gRp1rvGQck4yu74X6jv71hTDO7fSK912qbPgNMbK1WKz8BEYPwZtch94TFIfeaFCPYmEffhl5mnRmEesewToLfhOZv/TifUY4kHADtC6jh/sR+ETHqERYIiSQlea/Ej/f+v+zWRoZDHtNutH0FPQ8gkEV/wv3RCOd/gsmMtgRDLEls6AeDgRt8IDiquKlNTeAu/wMWeJ5b84A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768383302;
+	cv=none; b=kXXUsmk/qhSCyFsLAifK4387MotIeawihdx3THTjfBLx8DWXpdu7ktnXkIiNO0ImjH9hU59+FRp6es1zZIY/wD192kewRWN7n73XEN9hCZT15Lun7b5cAWw8SUrHsifNnD3znzIFAJ7Yyxd5rWXKBSzm6CNEsojqCdb/0yavvA758AA/lnHpPXcxolfIjCPaOiO/sgiK3jdScOd0lV9T9Pe2oSDL1ftScw6DMNTPLkCL7JnYUtBlzfkLz5ZhIKnajyE3lHMsllkzAs+WuXEhPuW2TStou4lrnyes9scjixgAfD6wAilm0J9zni9TN/m5veGTHW2pVH5RWOD3G/wvrg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768380319; c=relaxed/relaxed;
-	bh=/Nn9M/VPDoeuifL+P7no8o5FApQZk7zNKYvSR+p2CRU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iperdXU0PXaBERTnjVu81gT9QcPSXsKsGYWILOS6c23ykHZaxhvxVsLnK7SKIXGQCF1iktBhNlTI9S96at+sSYLyuZOp5oDRIo7r7z6yJIvuvFocWuNvCb+I4rY466ibWud4nsJJtNcpLNHfmwIqVgdZeMUoooaXJtOkNKPUs4Uo5mxNVWqKSkUM40MUxuyvyCbHKsky/lu/EbO8Kk9V5PjWSlD2LBYWC5NcQHS/TsGBbroM925NsE7IiaKeLgN5IGuebFLdC9st81EDkAjvwwSXSWwcds2vhbbm+euqrTuHSxCoz6OY9zKHLzrI+ARwgvZNxmaEmC46TE6iCfPRGg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=V8yj8V95; dkim-atps=neutral; spf=pass (client-ip=209.85.221.50; helo=mail-wr1-f50.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+	t=1768383302; c=relaxed/relaxed;
+	bh=RiDCyIt20CzxUvCCc7yr/C6hAGxEwAzu+F3NvxFHJzk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mx9OfgBsWuZ123gJqO0TwEgiOuu4BCsKgrU8NMU5/GzrWEC3MuuVXTnVPweBtSJW7GCzsWiHXbbJLLhf7r4YsO2haOHLIbK0cBoEtYLTi51EpUMTC3zXzOeTA2eWQlhRJZ21h/VXr8X8YHS13tBbgjuLT5ww0zg4BzGBQBJKvc3Ahyxtm0WDgIxatxWPEHj1eTu1UP66KjDq/JjUm5EgCTxaUj6IBt86PYicUiQ54LCMQA5cXzT6Es69va4I10y3PvK3bjrq/JPKDlAFYzvQ/997cPPEZxXgFqNJy1XL3hYlTJwWFvPJCecxupkV/6RT/qzuy70ye8DVsTpriawzEA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dCAcobZU; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=V8yj8V95;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dCAcobZU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=209.85.221.50; helo=mail-wr1-f50.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drfnp4r3cz2xHW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 19:45:17 +1100 (AEDT)
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-430fbb6012bso6708534f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 00:45:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768380255; x=1768985055; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Nn9M/VPDoeuifL+P7no8o5FApQZk7zNKYvSR+p2CRU=;
-        b=V8yj8V95pZ+4NOIW0cXCztk2ZL2/QiF1WL5v0nTRWXtmfahdR00VN4E742nvdOU45t
-         VadpDzS9w6mjROxjgI5Qq7mOJn4O3G5ycJ38K1DxiM5pdwvdcMsj0I1OibcUPmjLPQOO
-         SuUW9wajlZB35NA8urxr4GvcxDbKBLK6bpPdZVT0oUVWnQiQc9cwlc7rqm1C/gc5oAP6
-         rVfilvJzarDb/p8tjaN4+SCxgr42vtWAz+rcnpxM38X4Mp2sXEktFYtdNwr/+C4gSSEp
-         VY5q/6KdW9U9B04z3KIzAxOp/oMzo6hNXXzvayNoyAL8CvdEKlCztQlcO65I4jMMbXHH
-         l5rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768380255; x=1768985055;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/Nn9M/VPDoeuifL+P7no8o5FApQZk7zNKYvSR+p2CRU=;
-        b=EoyWpRIXg0kYabrfcgmC6RugaVaJy89B0a855Z9ECCsgI2MlxSNV+EcjruGL5eEY5Y
-         EZGbT1kpWBJ37pzqW2B2lRyRtdPoroIrxAvPQbhOB+d+AvsDRlBoZO4YPUbitES8f5lB
-         FKDQUYMjzzbdNRkyTiuuz+WcvSheYehkIDyoEKOdQqKshdrXAlQgbKmmeqdDQa8MRogs
-         y49+iNhr2FUwwODKSoQa6/NPJVbzE2pDU7cUvwBPqXFYlI7xpUyRmGtD7TdqrgTmesM7
-         0VFOIIpaaNFfYQGvKxqrbLubauk2KpgVu4qtnvQsWYCoOVFOj+xEhf4/nhnMMvKHg3wY
-         eOeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX2rsN8YnLZ8F07PHnlN3dWZIB25uVmD5iIiOXBBrb0wtSKIIXYoekqIuj+X6B2zhoO6pkZTISQfO6eyss=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx1+ZdyXZZN0vRrh7C9nTkJxZD3cYBpBFP9Qya+Pxn2uT35xD0m
-	hOGS/nf8gBN+ywNB8t1e2q3k9wBMsJnVsFS0EY0qYnSMnQBBuyznggcNkUCg9wIRE3I=
-X-Gm-Gg: AY/fxX4cLzCPEN3e8CPkAReYLBp9/+1f+nGKJ8Gp+mqcB/yzWuV2Ba9R4gAUg07sqVA
-	9oZBWjDHJOPU3ZqAoIw0UHCxVaUeIr/PI545DUT63KZJIX87Hk4sV0WKMOcUVYoUH95iwNN5fnQ
-	LluRIoAj/FaHi0ZHE1YEaRDStRAZ4xqTqb8eoh8KE5M9wK2c6i6YXVlns8iAQ1cuXUICJIo/IT8
-	2h1lQofY6VQQZ5SZdsW5jLWT5CiVvooksNHOmybrhlgCz+P+TKuuqjgpkgwovfKugaCdxcrOGCO
-	pwjB/Yjr9OATNlQ6tvdtaB8fxUHrF/ey7Ulx0hBcMMDyVdZsvRMiEAufMtX88wZfMePQxe1dK1F
-	vT7Joh93iiu53qAKbxl9eOmqkMMZ9eCJJ3oZjgvOw5/jITz/H9+7JjKgtRCIqBP06zLzWAyEnsG
-	tFt15vfDoYBwMmtQ==
-X-Received: by 2002:a05:6000:61e:b0:431:a38:c2f7 with SMTP id ffacd0b85a97d-4342c574bedmr1500621f8f.59.1768380254886;
-        Wed, 14 Jan 2026 00:44:14 -0800 (PST)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5ee5e3sm48685590f8f.35.2026.01.14.00.44.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 00:44:14 -0800 (PST)
-Date: Wed, 14 Jan 2026 09:44:11 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jason Wessel <jason.wessel@windriver.com>,
-	Daniel Thompson <danielt@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jiri Slaby <jirislaby@kernel.org>, Breno Leitao <leitao@debian.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
-	netdev@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	sparclinux@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 03/19] printk: Drop flags argument from console_is_usable
-Message-ID: <aWdXW6ohfQ7_z2B_@pathway.suse.cz>
-References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
- <20251227-printk-cleanup-part3-v1-3-21a291bcf197@suse.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drgv92l2Fz2x99
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 20:35:01 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id BA5FE60051;
+	Wed, 14 Jan 2026 09:34:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6688DC16AAE;
+	Wed, 14 Jan 2026 09:34:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768383267;
+	bh=QCqYpWqKWHECS6LyWQkRM/br5oR6fqyVbwR9TGBPsQQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dCAcobZU3its6pMbxAKLPlKnf/wW0ogAAk03gUzk3dw8FRsPXZFpmmIy7+o9BGUqD
+	 J+ceWtm4YMlCe/qaxRhCRyHBnnAOmA/7+Gl3a8m2JY+a7jlbNtc2RTGbZEB74eJTUM
+	 vrGuVLxUsxv/M7iH+cN8YOBwrGC+QdMGu/P5PKHt2QpgIIMlY/lFfHwECZWtY5xdO4
+	 lKXaDrfvePUhs9pDAT4K54pWT3LSyfER9DAAzq2k9hZaymAZODYzMq3VJCwcOltetO
+	 A1nX0qkMR5rZ7cTmg/kDcKnkJmYZuHNfJLLzTPQ8Z2oqNbAGs7nmoNYu1+xLpTSnO2
+	 Y74paLEWIYJFQ==
+Message-ID: <b6c39059-faed-41a8-80b2-addaa229c143@kernel.org>
+Date: Wed, 14 Jan 2026 10:34:22 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -125,82 +58,127 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251227-printk-cleanup-part3-v1-3-21a291bcf197@suse.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 00/12] Support page table check on PowerPC
+To: Andrew Donnellan <ajd@linux.ibm.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Rohan McLure <rmclure@nvidia.com>,
+ Alexandre Ghiti <alex@ghiti.fr>, x86@kernel.org,
+ Nicholas Miehlbradt <nicholas@linux.ibm.com>,
+ Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+ Andrew Donnellan <andrew+kernel@donnellan.id.au>,
+ Srish Srinivasan <ssrish@linux.ibm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+References: <20251219-pgtable_check_v18rebase-v18-0-755bc151a50b@linux.ibm.com>
+ <CA+CK2bBjoQmheEstv1MacGev_srdx=m5v=hwxdyfAKogbpG3FA@mail.gmail.com>
+ <bf0def77b07a34c00928cedb46030ea17be4fceb.camel@linux.ibm.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <bf0def77b07a34c00928cedb46030ea17be4fceb.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat 2025-12-27 09:16:10, Marcos Paulo de Souza wrote:
-> The flags argument was also used to check if CON_NBCON was set, but their
-> usage was fixed in the last commit. All current users are reading the
-> variable just to call console_is_usable.
+
+
+Le 14/01/2026 à 06:00, Andrew Donnellan a écrit :
+> On Thu, 2025-12-18 at 12:55 -0500, Pasha Tatashin wrote:
+>> Thank you. This series looks good to me.
 > 
-> By calling console_srcu_read_flags inside console_is_usable makes the
-> code cleaner and removes one argument from the function.
+> Thanks for the review!
 > 
-> Along with it, create a variant called __console_is_usable that can be
-> used under console_list_lock(), like unregister_console_locked.
+> Maddy, Christophe: any further comments from the PPC side?
+
+No further comments from my side.
+
 > 
-> --- a/include/linux/console.h
-> +++ b/include/linux/console.h
-> @@ -656,13 +656,8 @@ extern bool nbcon_kdb_try_acquire(struct console *con,
->  				  struct nbcon_write_context *wctxt);
->  extern void nbcon_kdb_release(struct nbcon_write_context *wctxt);
->  
-> -/*
-> - * Check if the given console is currently capable and allowed to print
-> - * records. Note that this function does not consider the current context,
-> - * which can also play a role in deciding if @con can be used to print
-> - * records.
-> - */
-> -static inline bool console_is_usable(struct console *con, short flags,
-> +/* Variant of console_is_usable() when the console_list_lock is held. */
+> Do we think we can get this in in the current cycle? My last day at IBM is this
+> Friday, if a further respin is needed then Srish will need to handle it as I
+> don't have any access to powerpc hardware outside of work (happy to provide what
+> help I can from the outside though).
+> 
 
-Nit: The comment is a bit misleading because this function is called
-     also from console_is_usable() under console_srcu_read_lock().
+What is the merge plan ? I see all powerpc commits are acked by Maddy, 
+will the series be merged by Andrew into the mm tree ?
 
-     I would say something like:
+By the way it doesn't apply on top of powerpc/merge branch:
 
-/*
- * The caller must ensure that @con can't disappear either by taking
- * console_list_lock() or console_srcu_read_lock(). See also
- * console_is_usable().
- */
-> +static inline bool __console_is_usable(struct console *con, short flags,
->  				     enum nbcon_write_cb nwc)
->  {
->  	if (!(flags & CON_ENABLED))
-> @@ -707,6 +702,18 @@ static inline bool console_is_usable(struct console *con, short flags,
->  	return true;
->  }
->  
-> +/*
-> + * Check if the given console is currently capable and allowed to print
-> + * records. Note that this function does not consider the current context,
-> + * which can also play a role in deciding if @con can be used to print
-> + * records.
+$ b4 shazam bf0def77b07a34c00928cedb46030ea17be4fceb.camel@linux.ibm.com
+Grabbing thread from 
+lore.kernel.org/all/bf0def77b07a34c00928cedb46030ea17be4fceb.camel@linux.ibm.com/t.mbox.gz
+Checking for newer revisions
+Grabbing search results from lore.kernel.org
+Analyzing 17 messages in the thread
+Looking for additional code-review trailers on lore.kernel.org
+Analyzing 86 code-review messages
+Checking attestation on all messages, may take a moment...
+---
+   ✓ [PATCH v18 1/12] arm64/mm: Add addr parameter to __set_ptes_anysz()
+     + Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> (✗ 
+DKIM/soleen.com)
+   ✓ [PATCH v18 2/12] arm64/mm: Add addr parameter to 
+__ptep_get_and_clear_anysz()
+     + Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> (✗ 
+DKIM/soleen.com)
+   ✓ [PATCH v18 3/12] mm/page_table_check: Reinstate address parameter 
+in [__]page_table_check_pud[s]_set()
+   ✓ [PATCH v18 4/12] mm/page_table_check: Reinstate address parameter 
+in [__]page_table_check_pmd[s]_set()
+   ✓ [PATCH v18 5/12] mm/page_table_check: Provide addr parameter to 
+page_table_check_ptes_set()
+   ✓ [PATCH v18 6/12] mm/page_table_check: Reinstate address parameter 
+in [__]page_table_check_pud_clear()
+   ✓ [PATCH v18 7/12] mm/page_table_check: Reinstate address parameter 
+in [__]page_table_check_pmd_clear()
+   ✓ [PATCH v18 8/12] mm/page_table_check: Reinstate address parameter 
+in [__]page_table_check_pte_clear()
+   ✓ [PATCH v18 9/12] mm: Provide address parameter to 
+p{te,md,ud}_user_accessible_page()
+   ✓ [PATCH v18 10/12] powerpc/mm: Implement *_user_accessible_page() 
+for ptes
+   ✓ [PATCH v18 11/12] powerpc/mm: Use set_pte_at_unchecked() for 
+internal usages
+   ✓ [PATCH v18 12/12] powerpc/mm: Support page table check
+   ---
+   ✓ Signed: DKIM/ibm.com (From: ajd@linux.ibm.com)
+---
+Total patches: 12
+---
+  Base: base-commit c224625ec6f8a0476ffffc09807f4d717ba9cc93 not known, 
+ignoring
+Application de  arm64/mm: Add addr parameter to __set_ptes_anysz()
+Application de  arm64/mm: Add addr parameter to __ptep_get_and_clear_anysz()
+Application de  mm/page_table_check: Reinstate address parameter in 
+[__]page_table_check_pud[s]_set()
+Application de  mm/page_table_check: Reinstate address parameter in 
+[__]page_table_check_pmd[s]_set()
+Application de  mm/page_table_check: Provide addr parameter to 
+page_table_check_ptes_set()
+Application de  mm/page_table_check: Reinstate address parameter in 
+[__]page_table_check_pud_clear()
+Application de  mm/page_table_check: Reinstate address parameter in 
+[__]page_table_check_pmd_clear()
+l'application de la rustine a échoué à 0007 mm/page_table_check: 
+Reinstate address parameter in [__]page_table_check_pmd_clear()
+erreur : l'application de la rustine a échoué : 
+arch/riscv/include/asm/pgtable.h:999
+erreur : arch/riscv/include/asm/pgtable.h : la rustine ne s'applique pas
+astuce : Utilisez 'git am --show-current-patch=diff' pour visualiser la 
+rustine en échec
+astuce : Quand vous avez résolu ce problème, lancez "git am --continue".
+astuce : Si vous préférez plutôt sauter cette rustine, lancez "git am 
+--skip".
+astuce : Pour restaurer la branche originale et arrêter d'appliquer des 
+rustines, lancez "git am --abort".
+astuce : Disable this message with "git config set advice.mergeConflict 
+false"
 
-And I would add here something like:
-
- *
- * Context: Must be called under console_srcu_read_lock().
-
-> + */
-> +static inline bool console_is_usable(struct console *con,
-> +				     enum nbcon_write_cb nwc)
-> +{
-> +	return __console_is_usable(con, console_srcu_read_flags(con), nwc);
-> +}
-> +
->  #else
->  static inline void nbcon_cpu_emergency_enter(void) { }
->  static inline void nbcon_cpu_emergency_exit(void) { }
-
-Otherwise, it looks good. It is a nice clean up.
-
-Best Regards,
-Petr
+Christophe
 
