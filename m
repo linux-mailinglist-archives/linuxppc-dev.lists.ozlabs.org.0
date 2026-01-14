@@ -1,90 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-15715-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15716-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F326BD1DEED
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 11:16:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CDED1E22A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 11:39:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drhpz1xQfz2yft;
-	Wed, 14 Jan 2026 21:16:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drjKQ3rQgz2xPB;
+	Wed, 14 Jan 2026 21:39:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768385787;
-	cv=none; b=C5m+m32X6i3qI+88RLUemcnDOenCkgqOBsYlGaaWSMpKhnGdr2bHiOOw5KRn/gWladiVSwaN4l8pv5Sd5DT7GjA4RYXe2kSgBtMMtZXwr/E8KIiOPIL5e/8GN65a3kbIxHojjv6e0oAUVhkhdIAV2vPZRgCm2xyjznfFIdkDMofYvBbLE0O4mG9hyk4CyhX5kKrzuqAFPJty7WofkFH+N1TG+sV36B5/2+Xw4kIelGmT+rpaUm6dibiVEXmZRDm9six0wi3SBgOqQBGynIO4d7rytyucCZRsenEGPoNG/QIlzT0X5T3/7SYDDjlK19I7JY9dVwzB0v8l+s3SL1Mzew==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768387162;
+	cv=none; b=O1tn92XIUFSsBXEfTLq7Of67SmrpzBkHVksAlFgSEVS1378w9ypTfXNhgjL1PNaDYnYTUmba+0PZjIS7k/d+Gxn8xxLzqgOpxUhENtS7yp09SUqg4QhtUEo8lXvolHuop9OeizZ13TQDNO8TEkRVFlQ6PYitpQsrkI0cM5JxCvVJfbAO4cs8SHrDcmSbGmTLpPfX5CKSqmkLSOwfDdZsk7inxhKGRJryARuYyPuIWapZjqw2V53E0LwbWxvuH/8R6wtbADS5luVsFNULv9MW3/Wp5enn6lJn+ZkSgbQJUBqXF7twVTqjCW0yQmYYKj634YkHpSFG2hUlAtNOGfWWrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768385787; c=relaxed/relaxed;
-	bh=qfhsC7tVJzP2EF2Tm/8qmc7Z+5pHBO5nbWDSxy3fyqI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mt5FkVYal2qaS0Unu1cGQLkFa3A4ZdtqCrLAzZI6T2frg/HOCpBI0ERlDARqBBE2z/CFTiuSaqgSIYG9PPR2JAXMLfWey/gBvhjN7ouCJixiGc4QGagyDIA70JVo+p94HTssKsF0EyacHLwgsvzyazmW1q1HiKQRy4tU5+PP3iHNUFaosvdXzriR3cwZN+Lexe+HcQWE/HILny/rhAZHhxrEQJZe71d+hwOUzRygYG9y0PeMrY65N0OqeGRMhgy8roCAQJJhIawChhKuj3nYSw5hKR2PThzc1IJLAEEG7lFxUi8dcvTRrCfv6d1cr+mRf9M11+DtDqO4WLzODmXK5A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V+fKJHzH; dkim-atps=neutral; spf=pass (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1768387162; c=relaxed/relaxed;
+	bh=D/s09hn0ccb9yZFvYxUjpULJqF7ImKPJ28RibKMEcgY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c1IySVqgGkp8TqAIKMT02y5OU5ucfjIwv65Zm25zE9h6x4XxsuVCuQXB1ouKVRVotDLOoVP4AND7E19svBoeq98BD68MbejHqw3TjSzpNrfuB5Q6fkWRl+0WMeNKKN4Pwz1D5o7MA9KpqDbP/gRYfgNi2SqR1BQEG/p6CfXAdyZ0BlEcs1hsxpJk35gFS+kTRXl26ndJXeon9/fT8mLagOIwuD3dMXRxV+U2Q0TvolHeFoaVft2uxlJv2Pho1Ejgv9SZaQ3PKHSPkoZl+rKHl39xpQIDJQidicfsPbD2NJ7ppIPRrRb+WN1VFgY4v5KrHbvHdgC3Pbkk6wALkVCTtA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c1cx4AN6; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V+fKJHzH;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c1cx4AN6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drhpy2fYVz2xjN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 21:16:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768385786; x=1799921786;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=YiVlGQCr+FTIJ4B2/AoJNeziKA/MhUEzfyR0foaLu2g=;
-  b=V+fKJHzHw2RrM1lcaXJZ+runuse65yy73sJYcOt9F+ivc1ly734XY5gp
-   NHrJ7gdzcQV+ckmcFryppW9ld/U/v3YHot95jK4rtaJhI/Ep+JeXM/2Z0
-   Zy/z0WqT3LgpyIpJu82m636IIoImDqOAeieStp8lZZ51dlI9SGJ1QAfue
-   icMSj3+J27Htc/ldP0DBcX+FW6xeLWGeZiyOwhehfpwTdt8NJeks5FkLb
-   QWGIlNcQNX4Zz1So/EBU7QgLaR9uipza6rTQJ3Z4Iqyaw411edQYNkWI9
-   1TyCuO4H4uTf1Ms3uA5tF1MigfWYRppXVmgpTs2Nm/Ob0m0F/NcfzwAO0
-   A==;
-X-CSE-ConnectionGUID: TUxaw/LDQxWwS1CK8lsMUw==
-X-CSE-MsgGUID: ugflPy/KT0yfG8xVn/5eAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="69765869"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="69765869"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 02:16:25 -0800
-X-CSE-ConnectionGUID: rE2LwQp9T36u45hrhdgfxg==
-X-CSE-MsgGUID: dKpe5iEjRW2dDBf+x62EXA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="208792833"
-Received: from unknown (HELO fdefranc-mobl3.igk.intel.com) ([10.237.142.167])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 02:16:20 -0800
-From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-To: linux-cxl@vger.kernel.org
-Cc: Rafael J Wysocki <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org,
-	"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH 5/5 v9] ACPI: extlog: Trace CPER CXL Protocol Error Section
-Date: Wed, 14 Jan 2026 11:14:25 +0100
-Message-ID: <20260114101543.85926-6-fabio.m.de.francesco@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260114101543.85926-1-fabio.m.de.francesco@linux.intel.com>
-References: <20260114101543.85926-1-fabio.m.de.francesco@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drjKN5fXKz2x9M
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 21:39:20 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C595C60097;
+	Wed, 14 Jan 2026 10:39:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CFAC4CEF7;
+	Wed, 14 Jan 2026 10:39:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768387157;
+	bh=GXOUS5IVA/W+B1bIiXQJ9wm/cqS9Cfmo4/ZzvR1iFTY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c1cx4AN6qnW//qfPtg+YU+kBK0Fwi1qx7TD4KI7OcyvNk84LcaOGokwsZbcc85njb
+	 qNE/fDPQvFv/hrK3hmEx5+u9dS2ysExw/sZMu59+B6tkrQgcsiR0HoyBLL0SqDaJNl
+	 lZiiHfClvv5U5qlwltVlii620fXgPEmppvSDIBUFS8QaAvEzvcf7lbCi351zOc3W8f
+	 OSyJms1RzaBtduqCcc4R6U9FLBKh2qAsW/1bGu/5Vq+EF+x+/uK/2ZYuVFmug/pbtL
+	 IQE5Pt8WGKFCXfH5aCcnYzBH4PHJ3+KmYKvQ4C17LfDVYZ564TGrXzWP3iZN+7Q5zE
+	 l1TuhhZkNiuDQ==
+Date: Wed, 14 Jan 2026 11:39:03 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Koichiro Den <den@valinux.co.jp>
+Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
+	vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com, roy.zang@nxp.com, jesper.nilsson@axis.com,
+	heiko@sntech.de, srikanth.thokala@intel.com,
+	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com,
+	geert+renesas@glider.be, magnus.damm@gmail.com,
+	christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, hayashi.kunihiko@socionext.com,
+	mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org,
+	rongqianfeng@vivo.com, 18255117159@163.com,
+	shawn.lin@rock-chips.com, nicolas.frattaroli@collabora.com,
+	linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v7 5/6] PCI: dwc: ep: Support BAR subrange inbound
+ mapping via Address Match Mode iATU
+Message-ID: <aWdyR4Xkh2_ZgOf8@fedora>
+References: <20260113162719.3710268-1-den@valinux.co.jp>
+ <20260113162719.3710268-6-den@valinux.co.jp>
+ <5kexuvze2a4m6bd3yhv2cd7yrzo4r6ubbbouktdsurv7n22v7o@7s3pgf6ftgur>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,132 +88,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5kexuvze2a4m6bd3yhv2cd7yrzo4r6ubbbouktdsurv7n22v7o@7s3pgf6ftgur>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-When Firmware First is enabled, BIOS handles errors first and then it
-makes them available to the kernel via the Common Platform Error Record
-(CPER) sections (UEFI 2.11 Appendix N.2.13). Linux parses the CPER
-sections via one of two similar paths, either ELOG or GHES. The errors
-managed by ELOG are signaled to the BIOS by the I/O Machine Check
-Architecture (I/O MCA).
+On Wed, Jan 14, 2026 at 12:54:37PM +0900, Koichiro Den wrote:
+> I realized that I missed one case in v7.
+> 
+> I think dw_pcie_ep_clear_ib_maps() should also be called from
+> dw_pcie_ep_ib_atu_bar() to tear down any existing inbound mappings for the
+> same BAR before re-programming it in BAR Match Mode.
+> 
+> This matters when updating inbound mappings for a BAR without resetting the
+> BAR in between. There are four possible transition patterns, and pattern #4
+> below was overlooked:
+> 
+>   1. BAR Match Mode -> BAR Match Mode
+>      As the current implementation does, the mapping is simply updated
+>      (with the same atu index)
+> 
+>   2. BAR Match Mode -> Address Match Mode
+>      This patch series already ensures the old BAR Match mapping is
+>      torn down before reprogramming.
+> 
+>   3. Address Match Mode -> Address Match Mode
+>      Likewise, existing Address Match mappings are cleared first.
+> 
+>   4. Address Match Mode  -> BAR Match Mode
+>      This case was not handled. The change below adds the missing
+>      teardown so that stale Address Match mappings do not remain active.
+> 
+>      --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+>      +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+>      @@ -148,9 +148,12 @@ static int dw_pcie_ep_ib_atu_bar(struct dw_pcie_ep *ep, u8 func_no, int type,
+>              u32 free_win;
+>              struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>      
+>      -       if (!ep->bar_to_atu[bar])
+>      +       if (!ep->bar_to_atu[bar]) {
+>      +               /* Tear down existing mappings before (re)programming. */
+>      +               dw_pcie_ep_clear_ib_maps(ep, bar);
+>      +
+>                      free_win = find_first_zero_bit(ep->ib_window_map,
+>                                                    pci->num_ib_windows);
+>      -       else
+>      +       } else
+>                      free_win = ep->bar_to_atu[bar] - 1;
 
-Currently, ELOG and GHES show some inconsistencies in how they report to
-userspace via trace events.
+If one of the branches has braces, both branches should have braces:
+https://www.kernel.org/doc/html/latest/process/coding-style.html#placing-braces-and-spaces
 
-Therefore, make the two mentioned paths act similarly by tracing the CPER
-CXL Protocol Error Section.
 
-Cc: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
----
- drivers/acpi/Kconfig       |  2 ++
- drivers/acpi/acpi_extlog.c | 24 ++++++++++++++++++++++++
- drivers/cxl/core/ras.c     |  3 ++-
- include/cxl/event.h        |  2 ++
- 4 files changed, 30 insertions(+), 1 deletion(-)
+> 
+> Unless there are objections, I'll include this fix in v8.
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index ca00a5dbcf750..df0ff0764d0d5 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -494,6 +494,8 @@ config ACPI_EXTLOG
- 	tristate "Extended Error Log support"
- 	depends on X86_MCE && X86_LOCAL_APIC && EDAC
- 	select UEFI_CPER
-+	select ACPI_APEI
-+	select ACPI_APEI_GHES
- 	help
- 	  Certain usages such as Predictive Failure Analysis (PFA) require
- 	  more information about the error than what can be described in
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index 88a2237772c26..7ad3b36013cc6 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -12,6 +12,7 @@
- #include <linux/ratelimit.h>
- #include <linux/edac.h>
- #include <linux/ras.h>
-+#include <cxl/event.h>
- #include <acpi/ghes.h>
- #include <asm/cpu.h>
- #include <asm/mce.h>
-@@ -162,6 +163,23 @@ static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
- #endif
- }
+Isn't it easier/cleaner if we call dw_pcie_ep_clear_ib_maps() in
+dw_pcie_ep_set_bar(), rather than calling it in both dw_pcie_ep_ib_atu_addr()
+and dw_pcie_ep_ib_atu_bar() ?
+
+dw_pcie_ep_set_bar() knows the condition if we are dynamically reprogramming
+a BAR or not, and all the four cases are when dynamically reprogramming a BAR.
+
+I.e. instead of adding additional code to dw_pcie_ep_ib_atu_bar(), we do
+something like:
+
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index b2ea2c2c986f..63ae5471fe13 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -318,9 +318,6 @@ static int dw_pcie_ep_ib_atu_addr(struct dw_pcie_ep *ep, u8 func_no, int type,
+                return -EINVAL;
+        }
  
-+static void
-+extlog_cxl_cper_handle_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-+				int severity)
-+{
-+#ifdef ACPI_APEI_PCIEAER
-+	struct cxl_cper_prot_err_work_data wd;
-+
-+	if (cxl_cper_sec_prot_err_valid(prot_err))
-+		return;
-+
-+	if (cxl_cper_setup_prot_err_work_data(&wd, prot_err, severity))
-+		return;
-+
-+	cxl_cper_handle_prot_err(&wd);
-+#endif
-+}
-+
- static int extlog_print(struct notifier_block *nb, unsigned long val,
- 			void *data)
- {
-@@ -213,6 +231,12 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 			if (gdata->error_data_length >= sizeof(*mem))
- 				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
- 						       (u8)gdata->error_severity);
-+		} else if (guid_equal(sec_type, &CPER_SEC_CXL_PROT_ERR)) {
-+			struct cxl_cper_sec_prot_err *prot_err =
-+				acpi_hest_get_payload(gdata);
-+
-+			extlog_cxl_cper_handle_prot_err(prot_err,
-+							gdata->error_severity);
- 		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
- 			struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
+-       /* Tear down any existing mappings before (re)programming. */
+-       dw_pcie_ep_clear_ib_maps(ep, bar);
+-
+        for (i = 0; i < epf_bar->num_submap; i++) {
+                off = submap[i].offset;
+                size = submap[i].size;
+@@ -571,6 +568,9 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+                    ep->epf_bar[bar]->flags != flags)
+                        return -EINVAL;
  
-diff --git a/drivers/cxl/core/ras.c b/drivers/cxl/core/ras.c
-index 2731ba3a07993..a90480d07c878 100644
---- a/drivers/cxl/core/ras.c
-+++ b/drivers/cxl/core/ras.c
-@@ -63,7 +63,7 @@ static int match_memdev_by_parent(struct device *dev, const void *uport)
- 	return 0;
- }
- 
--static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
-+void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
- {
- 	unsigned int devfn = PCI_DEVFN(data->prot_err.agent_addr.device,
- 				       data->prot_err.agent_addr.function);
-@@ -104,6 +104,7 @@ static void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *data)
- 	else
- 		cxl_cper_trace_uncorr_prot_err(cxlmd, data->ras_cap);
- }
-+EXPORT_SYMBOL_GPL(cxl_cper_handle_prot_err);
- 
- static void cxl_cper_prot_err_work_fn(struct work_struct *work)
- {
-diff --git a/include/cxl/event.h b/include/cxl/event.h
-index 94081aec597ae..ff97fea718d2c 100644
---- a/include/cxl/event.h
-+++ b/include/cxl/event.h
-@@ -340,4 +340,6 @@ cxl_cper_setup_prot_err_work_data(struct cxl_cper_prot_err_work_data *wd,
- }
- #endif
- 
-+void cxl_cper_handle_prot_err(struct cxl_cper_prot_err_work_data *wd);
++               if (ep->epf_bar[bar]->num_submap || epf_bar->num_submap)
++                       dw_pcie_ep_clear_ib_maps(ep, bar);
 +
- #endif /* _LINUX_CXL_EVENT_H */
--- 
-2.52.0
+                /*
+                 * When dynamically changing a BAR, skip writing the BAR reg, as
+                 * that would clear the BAR's PCI address assigned by the host.
+
+
 
 
