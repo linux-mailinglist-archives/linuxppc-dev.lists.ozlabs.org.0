@@ -1,34 +1,34 @@
-Return-Path: <linuxppc-dev+bounces-15698-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15700-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4E0D1CFF1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 09:03:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD22D1CFF9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 09:03:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drdrF6Hwgz2yYY;
-	Wed, 14 Jan 2026 19:02:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drdrJ0Z88z307V;
+	Wed, 14 Jan 2026 19:02:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768377741;
-	cv=none; b=SKpO6Plilug31J953Pna1MTF8Dhhbd8PH4uzuCEOyipshs2nmAbC6YfeWq8UPkcbDjH16aBQM+MelA5xwYLwf4b3piYtRP4Ct1BtRO7uGkWc513LCk/xzKHpPB8T0mlVcnagOJX+qyxDzTryr1uqoYbgbDTb+PMfHxZW69KqmO/6Xsgfwl/OjJD9ET4ik7dTcL8y1VGWPn+7zboQpDhYkLbP24+UdxrJ8ykB3QyolHcU2lYvI8eWgP4BpNM9KsmyNqSV9a51cRPeNnSfcRh9gT3SNV+55fryILI6rPCe/QuZjMRt4c60ng85dmZmdUm2lzQvLxi9sLQG/mM46UHJOg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768377743;
+	cv=none; b=kY8LGWWSc112aETsYN00t1+6h5Yzz2f/FWQwMjtg+vuRgvXGKHasVTcIKfwZ72WDnJ2zDJNwpXl+qn4ob5WWnXX5Rcszwz2BpfJI46wQK0VwCFE+vvxSO3SuLYwBsTs+Ma7zNsKxSI0OR0q4QfmTQQ0gPPELB60hcbIh6nkUSQeGs0W09GUtNbcAdvKBApjsMiLVKL8SHOxqBoOgBjtyZwuO/TNSpAOvEvdJIjjsWhVplhN4XmrmP0cACi6Kb6nM0c8oDa7crpedoA/3o72YgC9mEHGgFdbOYI7qSAs5uUJnCcRAF8jfGccjNuDgwZtn/EApD6B3QLo3xzxL2D4ZAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768377741; c=relaxed/relaxed;
-	bh=sVE7UDpBEJQzs6r1E3Q1QZHCQl3Me/v8mkp8raZ1pVU=;
+	t=1768377743; c=relaxed/relaxed;
+	bh=GGpYGZ/EN2AZqYN0WEm5UmRFd5B8Bamrz8S6pn+n13E=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=T8xAZnKeN0ZYo1tcT/9tqxJJRH+3Mg/av7ZhBYP/iXjzWV5gGPo7os3JmL+6mApWVWAX2emvV8qZ07owh0Xw4eLq1TUzrsPQ7eU+6B6a7lLBiUFGvikENuZZjUhwQJHrWwiNNB40c6B7geMBD2DXBvFZTWNFmoO3w0F9J0rfsQ4JcbanQVTRWq6yLvwFV5TUgtusiQy3NGLpXSwTJngW5YHYaTmsgDT0Zn0+PMTPGbdlD0qNXr6e+rQuU+PcI2SESV3f2MUAqFUlbHOa2mqFN8I03hEJj2ZO4H7rB66Rj68WrEXmRP0SqYI+SYpz8DqWj5JrQ+IvBl0mcI1pKk21qQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=1GWqSl4O; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=RuEHcaus; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=APjhcGax0T5lST6NXlWzEonX0ay0haz8xsxWBw+wNFa8auUODu6VdSlQHWLP3B5iDutqQBj3xXNKFo44xegDWnSc/iHq6xRUVJNzfkEbvctfuJ8KRHhMxL6MZBBkZ1zpJsP0KTU+UULoIhqKZX51XbKzxF3qJdYJ6dzzWTpzkm8IO+Jk2yIoH3auGBEq9wyXxxESM+OCCbeRbiFj758BfR22aa2ne99ci47XekTFmzxI5J87Zj63dBlMrPOlkGXkOXuxTXoZX+Rx/pG0ffoJHqSkG29K7ZLik6MF4q5d4lpjYUxNCD6bw95Z+X/eToCD1Fo/RuCLPU6qpbl9sM6OhA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=4oIgJruX; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=yJSrzBvn; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=1GWqSl4O;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=RuEHcaus;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=4oIgJruX;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=yJSrzBvn;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drdrF27GYz2yvY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 19:02:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drdrH22J6z2yHB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 19:02:23 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1768377708;
@@ -36,23 +36,23 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sVE7UDpBEJQzs6r1E3Q1QZHCQl3Me/v8mkp8raZ1pVU=;
-	b=1GWqSl4O8frkZuGBVEYparTPXcEIULuaQAHPdpWQ0EpnZ8DFU6kG76yfTmEL/uFcrqifGB
-	qDsG7q88iWJAQj9WaVerLrOIX6uiIlNIczRR5QIMCpoZXn00+Y6nQypzcNK12CduQULJMP
-	2cGnMod0mnyeSxq++wou4ZRawxpygSbp9OXO5V0a8pyp7lvXGv9jlueX9Miv4t7Yl7A0JH
-	r0EDzhphdhYKgvX8/msd3XVzAhdG2ibo7AsZMqfuDX76IFb5GM4RQdA0x6mOOKOSf5E6Ck
-	xtKVaFEWDyWi4lAVPU7Up18IphP4ZcYO+Ns4bK65lN2wYKyTqN9M60nGi/R0tg==
+	bh=GGpYGZ/EN2AZqYN0WEm5UmRFd5B8Bamrz8S6pn+n13E=;
+	b=4oIgJruX9Pma58VWDp5HIJutiSb9llrWOkO8f5GeeoDW36Trzbl5sBwpMip4aW5JGAOXX6
+	J2i2qbx5qxIFfruEl5dqDFk92gMuh/vEJX91+t/xTTdlFMWzLJDKrgS1DP8JTejizodoSi
+	gWUzK/4lFD/BXUfnGC0aPcmMKSbCDPAVEQZDDBTallOrB/EEazs7Q3yvzu44EQFbyJK6Nv
+	d0uD5fzNKNBko7wv4oEUdFniXwbSpT9743mg4ACQl1D06tz37IO3MUjNbAxnHDFQQxSh3K
+	vbrMOrCYrlLLVYFNJWYSB4FuwRRtT4z/G4pLMrokuQssj9Z1MnvUjILuZrrDtw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1768377708;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sVE7UDpBEJQzs6r1E3Q1QZHCQl3Me/v8mkp8raZ1pVU=;
-	b=RuEHcausFw0WTFmyY09rtvGUsovhmgPHBLrdaFaqIfLg7PS3Nas2PhsrCcboVycDNO0E9Q
-	C8OYIy64slBZtJCA==
-Date: Wed, 14 Jan 2026 09:01:42 +0100
-Subject: [PATCH 10/15] vdso/gettimeofday: Add explicit includes
+	bh=GGpYGZ/EN2AZqYN0WEm5UmRFd5B8Bamrz8S6pn+n13E=;
+	b=yJSrzBvnUM6qYm9C3OI9GWcdK6AbNFlRyVNEpoMooh8VO4N/VpKJHMLOY5V9rDz7XM2trs
+	UncTbn21uHBkCrCg==
+Date: Wed, 14 Jan 2026 09:01:43 +0100
+Subject: [PATCH 11/15] vdso/helpers: Explicitly include vdso/processor.h
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,7 +68,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260114-vdso-header-cleanups-v1-10-803b80ee97b4@linutronix.de>
+Message-Id: <20260114-vdso-header-cleanups-v1-11-803b80ee97b4@linutronix.de>
 References: <20260114-vdso-header-cleanups-v1-0-803b80ee97b4@linutronix.de>
 In-Reply-To: <20260114-vdso-header-cleanups-v1-0-803b80ee97b4@linutronix.de>
 To: Catalin Marinas <catalin.marinas@arm.com>, 
@@ -85,11 +85,11 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
  linux-mips@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768377702; l=905;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768377702; l=694;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=/PGHbFBRbF87mDQ8qVakdB0oSPGR2/opxI5t5u5CZjA=;
- b=cahlVVRYw0sTKZd1PnS4H0fXwsD3uJLNe4aNXSh3zZLPx5OrpUjhanSW/lZKlX6oG5dZD7lyW
- PAfccetFzyVCvZ50oqWEnCHNxcdvr2SPb78dJglEIcSXMNmi34om0W5
+ bh=6/mNsjAlKjxQ4RplTzUqjF/4vooh/hplxS2bcWKZqDo=;
+ b=WKou+6nB5sbu+Wcr76Etle4+RUtUJQds56pKfoSvq8eG7qKUXBH17sbcep/48mSG8Sid8fFHB
+ t8hjfmA67GLDNiNtzGetCc81wu1tJRHvXqlouD33bhoD+v11ZohncEZ
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -97,35 +97,29 @@ X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Various used symbols are only visible through transitive includes.
-These transitive includes are about to go away.
+The usage of cpu_relax() requires vdso/processor.h. Currently
+this header is included transitively, but that transitive inclusion is
+about to go away.
 
-Explicitly include the necessary headers.
+Explicitly include the header.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- lib/vdso/gettimeofday.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/vdso/helpers.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
-index 95df0153f05a..7b3fbae85544 100644
---- a/lib/vdso/gettimeofday.c
-+++ b/lib/vdso/gettimeofday.c
-@@ -3,8 +3,14 @@
-  * Generic userspace implementations of gettimeofday() and similar.
-  */
- #include <vdso/auxclock.h>
-+#include <vdso/clocksource.h>
- #include <vdso/datapage.h>
- #include <vdso/helpers.h>
-+#include <vdso/ktime.h>
-+#include <vdso/limits.h>
-+#include <vdso/math64.h>
-+#include <vdso/time32.h>
-+#include <vdso/time64.h>
+diff --git a/include/vdso/helpers.h b/include/vdso/helpers.h
+index 1a5ee9d9052c..a1c995af4696 100644
+--- a/include/vdso/helpers.h
++++ b/include/vdso/helpers.h
+@@ -6,6 +6,7 @@
  
- /* Bring in default accessors */
- #include <vdso/vsyscall.h>
+ #include <asm/barrier.h>
+ #include <vdso/datapage.h>
++#include <vdso/processor.h>
+ 
+ static __always_inline u32 vdso_read_begin(const struct vdso_clock *vc)
+ {
 
 -- 
 2.52.0
