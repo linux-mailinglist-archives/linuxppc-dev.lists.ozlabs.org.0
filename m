@@ -1,105 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-15745-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15746-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AE0D21027
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 20:22:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC190D21109
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jan 2026 20:40:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4drwwJ2VVsz30Sv;
-	Thu, 15 Jan 2026 06:21:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4drxLD0FBzz2xT6;
+	Thu, 15 Jan 2026 06:40:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.8
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768418512;
-	cv=none; b=H3fY8XJ0RpEaXmVcIQ0FC9kA5KGF8ZDoOCqZU5tVGz/EcPJZPMKSBEDrvB2si3eaRueZH8vJgzBnK6Cyk8UFyOSVHAhOVuSPEu46Nj9D1zB6yiQF2XpOYjMS5+eOzjc5R5Ysy/V842GCOJJ5fWZ00P11MZoiY47Vd1RW+pm/0JSaz/p0HgDOp48PFW28eUuWxeS/hZgTIU7sTbDboQ7fHAzlcQMFQtcM3H7I+2pgytJRPWRTJUUvIkaZl36wita3Rn16qPy7+NkeTp6F+UTOA8XWLm0YQ49E6ccKQWLwd0QLN76Qq/MO5zkYn2uAkl32jFGLI6ICOf4LlG140blAWg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.15
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768419651;
+	cv=none; b=G6UtH8mx69uThw3wkgAbuyAv7NMxVckUONh4KWJRwHGrqycyuEx3yyfuJsH57vYG6sl1qyV8t72F+p3pt6lwj++MsRj0ga1L6RzDOAzJ1IVQO2VSTuAtCKLXmfP/CgBPIZuXgYJfAVo7swhGFwP0jEz8JJN7IIBq+vhCNS4+o57/N0LQSpfClL59RjA8Ly+cUOp6p9Cz6+VMvZdztj1G11kpWFerChBsWQnRNYs+pU2xRiMN2QmfN9LVtDe2jVK3V6yyQXyWpOULMqAgOmOlC7UDsgYny9OTnnNJjmfd+uSJz/p1LEZV/c1sAqtw4wedvmPdxh0MEKtHylQt5wFv8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768418512; c=relaxed/relaxed;
-	bh=JZwiE/35ZsqgkWDcAHtCrU2hUyIiBiBdqk8v0OUngik=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hnW3qx+e4XuzRJz2vAS4yqGyHQ7bM7hwzfMxXvLVSmlSXZIbenA7FT3ZUhfAjcM3w2vH/+cPg5xHIVsKFDJcSlygmy6mjRhb19FH8zBjI57WSzrdpQa/4NVbIEjKesAe3N0gjtc3S8807ARHu+cPFrJi7XFuLhoXSeAIVKI6/CjWRUW73C+LpKH5cKsB94GvQPnOafjplnzirHE6q+1B3bhHKMAfdvXZfb8UOvP1Ggqp9uJozGRdMePeWs8JFsMSeS9ITw+3xGYH6kk1Zjh+lAASrWG9F+pXU8SGA7FQIp8HsJRprn+Px6P/Z0/IE5Mg8Bq08fRP28uuwGdo022lJw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YAwnh7OY; dkim-atps=neutral; spf=pass (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=francois.dugast@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	t=1768419651; c=relaxed/relaxed;
+	bh=82xeGTi7nQHMheuHXFwD4MGo8PhvN6ArEHvusLLuKIM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bugRx7YF3V9xxkQLk9OYvY/K13cG+A3+EVgs3mGQVNlgcNtKtn9nO6cyzFaG4uquV4PUOJDo+0HngvqBa4qI2Mjk247jtKpbtFWTIBRSjM+iCKOD6xcQIvkKTk7USCZpbKKHHOf0SAOSULeRi6iKKS5yGuV2UQLr0Itga8vvqGxYBkEq8KDG8KCwXY57GmoP1Ote0Mbfy7aE5FiccLowyrC2TP8cvvttsimhG4u+KdBikXNQaSKwxwhmLxTNUOpYuF2GZdSwQSI3iGdLb6QCCNxiMZdFRMxMZdeUaUj4pExAHEzkywnxnudGzvlnQUXy7Cwc1yOOOAJogr7D+sGkCg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cWcU4bqD; dkim-atps=neutral; spf=temperror (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YAwnh7OY;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cWcU4bqD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=francois.dugast@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Authentication-Results: lists.ozlabs.org; spf=temperror (SPF Temporary Error: DNS Timeout) smtp.mailfrom=intel.com (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4drwwH0QzYz309C
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 06:21:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4drxL81m2tz2xMt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 06:40:26 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768418511; x=1799954511;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=jiGWK05xuN192DYv+TPcEdDntEMizLdbArhfYH/lgMA=;
-  b=YAwnh7OYuxCebKk+dsrCpaiqc2v1lT0N/hFVufzET29Zbpftupr6uNPv
-   L9TuDIAk4beGW9qNU7RmS1EYSPgGfs2ZkZLDGfSlr4Ckjj7btihkzlclH
-   DnuTotmScWsXc46B/YhRjkkIUtqhxUr9Akebpp2o0y1k0uAXj0dLgPIB9
-   x06xEaibpT/JfTEXdKmlrVKxsVZGKdmXmN96oPW4rX7hdDf4NOU5CeGEW
-   ZnGBlRXeM5meH+fBfoIq5IWqKIGwhMLlBonmTGodJ1o+qV+vr1wVM4SIZ
-   OCHnWxKycr7elYEVseHd7injQbVSnRf9W7KoQL0i7DdzwcS3BNiGryFo3
-   w==;
-X-CSE-ConnectionGUID: PDEaecZ3RpqfttggexhLwQ==
-X-CSE-MsgGUID: dd+q00vDTeOFApjMv0LtSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="87305741"
+  t=1768419648; x=1799955648;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yxJ1yuBoC2AtK5ufCDSR1KJOWKcLvyq8eTR2PZlXqSc=;
+  b=cWcU4bqDarS68X/5G8dO5Yx3JxMmcYKpS1zm0yLKq/fwP0N/rYdhnveU
+   UoV7C2TZCrm5TKAzIKmWc3OKvSB7Jf6EAAOSLWczsGGilUqawjOfYdrR7
+   xdYSr0B6PI15HmPXt2+GbQGIUHnooGwcLw/lU4gJsX9e/rDBt2hoxBAWz
+   gYrRGhwdY1T+BlakzJd3GFY8u6/6/IF7IOiH4oChIerfAEk42wWVDtavY
+   H7vE8KOdEKeUgWGhHZ/fGTfU0bVgpUJsUB97qn+OsrocfMFUm62UMS+RO
+   lng34jC002038X5I3kDudiQScntd6tF+NmlLSc5L96MYPQmWLwB89qL2A
+   g==;
+X-CSE-ConnectionGUID: zUgxVQZETNiDPzMJGps1eQ==
+X-CSE-MsgGUID: vrYVifynRU+NCNINp2yMvA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="69812179"
 X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="87305741"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 11:21:48 -0800
-X-CSE-ConnectionGUID: UrOFw46sSR+Opbvpw2+jpw==
-X-CSE-MsgGUID: /21BpcAaQ6GbBGCCIQN2Ow==
+   d="scan'208";a="69812179"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 11:40:24 -0800
+X-CSE-ConnectionGUID: 0gNFD7mhTwmJDzX5k4RTRg==
+X-CSE-MsgGUID: ep3If0rfTJGULNiOAdv5xw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="236006831"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO fdugast-desk.intel.com) ([10.245.244.85])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 11:21:42 -0800
-From: Francois Dugast <francois.dugast@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	adhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lyude Paul <lyude@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org,
-	Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH v5 1/5] mm/zone_device: Reinitialize large zone device private folios
-Date: Wed, 14 Jan 2026 20:19:52 +0100
-Message-ID: <20260114192111.1267147-2-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260114192111.1267147-1-francois.dugast@intel.com>
-References: <20260114192111.1267147-1-francois.dugast@intel.com>
+   d="scan'208";a="204550709"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 14 Jan 2026 11:40:17 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vg6j0-00000000GvQ-23re;
+	Wed, 14 Jan 2026 19:40:14 +0000
+Date: Thu, 15 Jan 2026 03:39:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: adubey@linux.ibm.com, bpf@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, hbathini@linux.ibm.com,
+	sachinpb@linux.ibm.com, venkat88@linux.ibm.com, andrii@kernel.org,
+	eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+	daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+	yonghong.song@linux.dev, john.fastabend@gmail.com,
+	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com,
+	jolsa@kernel.org, christophe.leroy@csgroup.eu, naveen@kernel.org,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	memxor@gmail.com, iii@linux.ibm.com, shuah@kernel.org,
+	Abhishek Dubey <adubey@linux.ibm.com>
+Subject: Re: [PATCH v2 3/6] powerpc64/bpf: Tailcall handling with trampolines
+Message-ID: <202601150350.ZftaCBVV-lkp@intel.com>
+References: <20260114114450.30405-4-adubey@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -113,202 +89,112 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260114114450.30405-4-adubey@linux.ibm.com>
 X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Matthew Brost <matthew.brost@intel.com>
+Hi,
 
-Reinitialize metadata for large zone device private folios in
-zone_device_page_init prior to creating a higher-order zone device
-private folio. This step is necessary when the folio’s order changes
-dynamically between zone_device_page_init calls to avoid building a
-corrupt folio. As part of the metadata reinitialization, the dev_pagemap
-must be passed in from the caller because the pgmap stored in the folio
-page may have been overwritten with a compound head.
+kernel test robot noticed the following build errors:
 
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: adhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Balbir Singh <balbirs@nvidia.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: amd-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: nouveau@lists.freedesktop.org
-Cc: linux-mm@kvack.org
-Cc: linux-cxl@vger.kernel.org
-Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
----
- arch/powerpc/kvm/book3s_hv_uvmem.c       |  2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  2 +-
- drivers/gpu/drm/drm_pagemap.c            |  2 +-
- drivers/gpu/drm/nouveau/nouveau_dmem.c   |  2 +-
- include/linux/memremap.h                 |  9 ++++++---
- lib/test_hmm.c                           |  4 +++-
- mm/memremap.c                            | 20 +++++++++++++++++++-
- 7 files changed, 32 insertions(+), 9 deletions(-)
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on powerpc/fixes linus/master v6.19-rc5 next-20260114]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index e5000bef90f2..7cf9310de0ec 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -723,7 +723,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
- 
- 	dpage = pfn_to_page(uvmem_pfn);
- 	dpage->zone_device_data = pvt;
--	zone_device_page_init(dpage, 0);
-+	zone_device_page_init(dpage, &kvmppc_uvmem_pgmap, 0);
- 	return dpage;
- out_clear:
- 	spin_lock(&kvmppc_uvmem_bitmap_lock);
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-index af53e796ea1b..6ada7b4af7c6 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-@@ -217,7 +217,7 @@ svm_migrate_get_vram_page(struct svm_range *prange, unsigned long pfn)
- 	page = pfn_to_page(pfn);
- 	svm_range_bo_ref(prange->svm_bo);
- 	page->zone_device_data = prange->svm_bo;
--	zone_device_page_init(page, 0);
-+	zone_device_page_init(page, page_pgmap(page), 0);
- }
- 
- static void
-diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-index 03ee39a761a4..c497726b0147 100644
---- a/drivers/gpu/drm/drm_pagemap.c
-+++ b/drivers/gpu/drm/drm_pagemap.c
-@@ -201,7 +201,7 @@ static void drm_pagemap_get_devmem_page(struct page *page,
- 					struct drm_pagemap_zdd *zdd)
- {
- 	page->zone_device_data = drm_pagemap_zdd_get(zdd);
--	zone_device_page_init(page, 0);
-+	zone_device_page_init(page, zdd->dpagemap->pagemap, 0);
- }
- 
- /**
-diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-index 58071652679d..3d8031296eed 100644
---- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-@@ -425,7 +425,7 @@ nouveau_dmem_page_alloc_locked(struct nouveau_drm *drm, bool is_large)
- 			order = ilog2(DMEM_CHUNK_NPAGES);
- 	}
- 
--	zone_device_folio_init(folio, order);
-+	zone_device_folio_init(folio, page_pgmap(folio_page(folio, 0)), order);
- 	return page;
- }
- 
-diff --git a/include/linux/memremap.h b/include/linux/memremap.h
-index 713ec0435b48..e3c2ccf872a8 100644
---- a/include/linux/memremap.h
-+++ b/include/linux/memremap.h
-@@ -224,7 +224,8 @@ static inline bool is_fsdax_page(const struct page *page)
- }
- 
- #ifdef CONFIG_ZONE_DEVICE
--void zone_device_page_init(struct page *page, unsigned int order);
-+void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
-+			   unsigned int order);
- void *memremap_pages(struct dev_pagemap *pgmap, int nid);
- void memunmap_pages(struct dev_pagemap *pgmap);
- void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
-@@ -234,9 +235,11 @@ bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
- 
- unsigned long memremap_compat_align(void);
- 
--static inline void zone_device_folio_init(struct folio *folio, unsigned int order)
-+static inline void zone_device_folio_init(struct folio *folio,
-+					  struct dev_pagemap *pgmap,
-+					  unsigned int order)
- {
--	zone_device_page_init(&folio->page, order);
-+	zone_device_page_init(&folio->page, pgmap, order);
- 	if (order)
- 		folio_set_large_rmappable(folio);
- }
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 8af169d3873a..455a6862ae50 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -662,7 +662,9 @@ static struct page *dmirror_devmem_alloc_page(struct dmirror *dmirror,
- 			goto error;
- 	}
- 
--	zone_device_folio_init(page_folio(dpage), order);
-+	zone_device_folio_init(page_folio(dpage),
-+			       page_pgmap(folio_page(page_folio(dpage), 0)),
-+			       order);
- 	dpage->zone_device_data = rpage;
- 	return dpage;
- 
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 63c6ab4fdf08..6f46ab14662b 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -477,10 +477,28 @@ void free_zone_device_folio(struct folio *folio)
- 	}
- }
- 
--void zone_device_page_init(struct page *page, unsigned int order)
-+void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
-+			   unsigned int order)
- {
-+	struct page *new_page = page;
-+	unsigned int i;
-+
- 	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
- 
-+	for (i = 0; i < (1UL << order); ++i, ++new_page) {
-+		struct folio *new_folio = (struct folio *)new_page;
-+
-+		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
-+#ifdef NR_PAGES_IN_LARGE_FOLIO
-+		((struct folio *)(new_page - 1))->_nr_pages = 0;
-+#endif
-+		new_folio->mapping = NULL;
-+		new_folio->pgmap = pgmap;	/* Also clear compound head */
-+		new_folio->share = 0;   /* fsdax only, unused for device private */
-+		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
-+		VM_WARN_ON_FOLIO(!folio_is_zone_device(new_folio), new_folio);
-+	}
-+
- 	/*
- 	 * Drivers shouldn't be allocating pages after calling
- 	 * memunmap_pages().
+url:    https://github.com/intel-lab-lkp/linux/commits/adubey-linux-ibm-com/powerpc64-bpf-Move-tail_call_cnt-to-bottom-of-stack-frame/20260114-195044
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20260114114450.30405-4-adubey%40linux.ibm.com
+patch subject: [PATCH v2 3/6] powerpc64/bpf: Tailcall handling with trampolines
+config: powerpc-randconfig-002-20260114 (https://download.01.org/0day-ci/archive/20260115/202601150350.ZftaCBVV-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 12.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260115/202601150350.ZftaCBVV-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601150350.ZftaCBVV-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   arch/powerpc/net/bpf_jit_comp.c: In function 'bpf_trampoline_setup_tail_call_info':
+>> arch/powerpc/net/bpf_jit_comp.c:644:43: error: 'BPF_PPC_TAILCALL' undeclared (first use in this function); did you mean 'BPF_TAIL_CALL'?
+     644 |                 int tailcallinfo_offset = BPF_PPC_TAILCALL;
+         |                                           ^~~~~~~~~~~~~~~~
+         |                                           BPF_TAIL_CALL
+   arch/powerpc/net/bpf_jit_comp.c:644:43: note: each undeclared identifier is reported only once for each function it appears in
+   arch/powerpc/net/bpf_jit_comp.c: In function '__arch_prepare_bpf_trampoline':
+   arch/powerpc/net/bpf_jit_comp.c:850:41: error: 'BPF_PPC_TAILCALL' undeclared (first use in this function); did you mean 'BPF_TAIL_CALL'?
+     850 |                 bpf_frame_size += SZL + BPF_PPC_TAILCALL;
+         |                                         ^~~~~~~~~~~~~~~~
+         |                                         BPF_TAIL_CALL
+
+
+vim +644 arch/powerpc/net/bpf_jit_comp.c
+
+   625	
+   626	/*
+   627	 * Refer the label 'Generated stack layout' in this file for actual stack
+   628	 * layout during trampoline invocation.
+   629	 *
+   630	 * Refer __arch_prepare_bpf_trampoline() for stack component details.
+   631	 *
+   632	 * The tailcall count/reference is present in caller's stack frame. Its required
+   633	 * to copy the content of tail_call_info before calling the actual function
+   634	 * to which the trampoline is attached.
+   635	 *
+   636	 */
+   637	
+   638	static void bpf_trampoline_setup_tail_call_info(u32 *image, struct codegen_context *ctx,
+   639						       int func_frame_offset,
+   640						       int bpf_dummy_frame_size, int r4_off)
+   641	{
+   642		if (IS_ENABLED(CONFIG_PPC64)) {
+   643			/* See bpf_jit_stack_tailcallinfo_offset() */
+ > 644			int tailcallinfo_offset = BPF_PPC_TAILCALL;
+   645			/*
+   646			 * func_frame_offset =                                   ...(1)
+   647			 *     bpf_dummy_frame_size + trampoline_frame_size
+   648			 */
+   649			EMIT(PPC_RAW_LD(_R4, _R1, func_frame_offset));
+   650			EMIT(PPC_RAW_LD(_R3, _R4, -tailcallinfo_offset));
+   651	
+   652			/*
+   653			 * Setting the tail_call_info in trampoline's frame
+   654			 * depending on if previous frame had value or reference.
+   655			 */
+   656			EMIT(PPC_RAW_CMPLWI(_R3, MAX_TAIL_CALL_CNT));
+   657			PPC_COND_BRANCH(COND_GT, CTX_NIA(ctx) + 8);
+   658			EMIT(PPC_RAW_ADDI(_R3, _R4, bpf_jit_stack_tailcallinfo_offset(ctx)));
+   659			/*
+   660			 * From ...(1) above:
+   661			 * trampoline_frame_bottom =                            ...(2)
+   662			 *     func_frame_offset - bpf_dummy_frame_size
+   663			 *
+   664			 * Using ...(2) derived above:
+   665			 *  trampoline_tail_call_info_offset =                  ...(3)
+   666			 *      trampoline_frame_bottom - tailcallinfo_offset
+   667			 *
+   668			 * From ...(3):
+   669			 * Use trampoline_tail_call_info_offset to write reference of main's
+   670			 * tail_call_info in trampoline frame.
+   671			 */
+   672			EMIT(PPC_RAW_STL(_R3, _R1, (func_frame_offset - bpf_dummy_frame_size)
+   673						- tailcallinfo_offset));
+   674	
+   675		} else {
+   676			/* See bpf_jit_stack_offsetof() and BPF_PPC_TC */
+   677			EMIT(PPC_RAW_LL(_R4, _R1, r4_off));
+   678		}
+   679	}
+   680	
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
