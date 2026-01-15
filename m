@@ -1,78 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-15868-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15870-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1415ED287D9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 21:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E1CD28801
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 21:45:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dsZk965llz309y;
-	Fri, 16 Jan 2026 07:45:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dsZkn5xVkz3bZm;
+	Fri, 16 Jan 2026 07:45:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768509921;
-	cv=none; b=lYg2tdk+BZazUbmqlA8mbC5Bh5HdVCpM3OXwGiSt9OPq3VJbXxfYcnr7cCJcQ+cx5xVqI/I6uUWV1RZD7QrfKxWpHJbHml47Rc1oTHvWQEWTg20hUX1YJIsPHjjBR30mfFFFxqbdpgLsKiRNuLE6BGsCMrQUDgw8Yuos5sqPaQuTwUGs8kNcEu1OVEZVg9hSTkxWsSmFe5vL0ANCZ7J5tgN6yMxfZSffGObY+mnIXFMnhcSESarf6VoDTt5xEtrPxViAK6lXlQeD8CksXTCJ5phjurqDIyaGxoOO4urTpANF3Us7vbT7trA/454Jj9MyGf94E5nEXCAajFlasqfdoQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768509953;
+	cv=none; b=A8PaWEmN+JrDbxiCmIaHiAlKxJ2Ads8Nl+isYy4+qYy+sdv8ON6DZkd7+P080gU7lsjerQVPCD8zcwjJ6le5HoOTtOxX+ReQoNxQju/J1faWsqdNxPLFlbb+VbMkPZ8Ma5jf+X6hmPQ68E7v9y88fwrdW3OXmZzyaDQtvMTGh/0JGikzNX8srS7IcDpORu4sMAXpk/8xDo++ECV6NyX47pouCnv9dTYX6ho8fT1zRaxHfSiRSJh/LMVKBTAi5P+7/XkVLujYo8CLDmVzJyMmj5TJCeX0FMeEd+YVaetWAvbcvVpGS+BLvouLEXXWElj46o1pkd6Gb6t8QARM4zmvKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768509921; c=relaxed/relaxed;
-	bh=0PMOkZbNwswkKJtImwqT66v0OFvkaSTwbfF93FawreU=;
+	t=1768509953; c=relaxed/relaxed;
+	bh=hRfQrTJuS1jHsdDaxAtqsIxWBLoisnR5Js/VTVTV3EE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hoaFEih70wXhPZpErKYrv4lzObS0iQNCpwRkj35y4CtL+3xEiBmBfURiWt4VB9PO5q0M1USXgi4jqHsJ18q/tJTFUHPJVI464OzYl1b12FO8uvSqE12b+01K/7ReER28CJh319vhRfOUOqAD0pragEjQdrdMHCD4tB48leF+arMgeF94W1trwWk9jEj1irW9ScZPA3GyG+YIj/7COHtaCAKPA/JEKhuv/bQt4ECP6G6SuBJp97HSbNQvmjRwEgX6e+fWJjRqssVc+tMiam6GH0Cgs6NjyB9nJApXJmU6eb3CZR+KdjPpS6i/o7Io5s26/8b4lYaLZTuInSb75q2SZg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AAgaF5Hr; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=Rdan3cKXVmKdgAj7wyff92B1yODwPxbE8JiJe/hchsXwFfFnclhmxgI0DVrt/lRH0zxQQu0rKEMBoThv137G6xSz95ZmRuvVWrnTwb0aviSuh1UzLgFEIKOk2EsKfmZO6sPWJjIN8Ai5n5G73sbtRITZOz2ftBLSfIjf+y7+G9jfo1HPp/9xrEPJSWSBip72sV/EvUIMrvKoMlfT4bKLR6IqHoz9FYrbxzN9yC63qhZDbdsj5fkeifLLpKr4Xw6TQxIBxSYSGHLI03SDMkhSlyI4xXWpkpajyYstNUbdBuvUIPyZNdDxdtsgEDO42bYvexm5+V8jwotCQKuiDT/eyg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FlHBSr4u; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AAgaF5Hr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FlHBSr4u;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsZk90Grzz2xNg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 07:45:20 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60FGmqKN019307;
-	Thu, 15 Jan 2026 20:45:09 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsZkm5771z2xNg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 07:45:52 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60FCVsWl026447;
+	Thu, 15 Jan 2026 20:45:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=0PMOkZ
-	bNwswkKJtImwqT66v0OFvkaSTwbfF93FawreU=; b=AAgaF5HrpIltmCF9paTjLO
-	lnWmrjR+u3LFW5kK9hoyCuqHyZBLr+fRtzZc3P4b16AAC9882jy8/QD/bWg5lGvx
-	csferWM6+XsjvlGfWUinI69yMchmDLTZd2rHn8InIPeLbBm3VDDTDNhT6BP9julZ
-	nfHLwJYnQABr/MJJZXWx5M9eCPlvIWQb2xfb4Xn1mkI/cPW1a4okgcZCA2LXTY67
-	nRH41jBVq9iYTtnwO0NsrryI012zMRqX5ow20/nrQQfnMa6kDDJk05H6mFtq0Abb
-	L4sprLl2xtuKGVzo12QE3eP4+DLPRb3CIsayHgnOPM8urcpH2nmkCfifXfhDt6Ww
+	:message-id:mime-version:references:subject:to; s=pp1; bh=hRfQrT
+	JuS1jHsdDaxAtqsIxWBLoisnR5Js/VTVTV3EE=; b=FlHBSr4urK7kZzhxjIroe2
+	WX52IflJBh7XsmV9wDp8JAx6wgAMCU3RdiZrpd24rIUasH/WHOy/vYLLMIXwjLfP
+	azp8aUSoyxVbm8alJPWq8w/3eQp+5e2Ko4ObrkSojPKeRFYzDSkWMZs/fZ95yDM/
+	Ff820wgACryjq3YkBZtmitV9i8adwiVCH1zmi0Pd5I2ydkpeXULVl05AfWXhXC+Q
+	JuN+xs0wG7PhW0UCAESsNkxXXrXUD1WMqpEMwIfb6wCLqDji6Hyq01YMWL1Y0JHC
+	nygFgd8b2NYZNpiBCH+DkOtkY5/DXxXsyDog0RjXWNP82Q9QNIGNegdgGgpVwBZA
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkd6eg7ar-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bpja4n8yr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Jan 2026 20:45:08 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60FKhfHY028637;
-	Thu, 15 Jan 2026 20:45:08 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkd6eg7aj-1
+	Thu, 15 Jan 2026 20:45:38 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60FKgOmZ019686;
+	Thu, 15 Jan 2026 20:45:38 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bpja4n8ym-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Jan 2026 20:45:08 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60FKNXeW002536;
-	Thu, 15 Jan 2026 20:45:07 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm13t2j7b-1
+	Thu, 15 Jan 2026 20:45:38 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60FKeeag025566;
+	Thu, 15 Jan 2026 20:45:37 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm23njb0j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Jan 2026 20:45:07 +0000
+	Thu, 15 Jan 2026 20:45:36 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60FKj5jW11600544
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60FKjZlC21496440
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Jan 2026 20:45:05 GMT
+	Thu, 15 Jan 2026 20:45:35 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 49AC658067;
-	Thu, 15 Jan 2026 20:45:05 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 7AFBA58065;
+	Thu, 15 Jan 2026 20:45:35 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9E1B558065;
-	Thu, 15 Jan 2026 20:45:04 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B81DD58056;
+	Thu, 15 Jan 2026 20:45:34 +0000 (GMT)
 Received: from [9.61.83.249] (unknown [9.61.83.249])
 	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 15 Jan 2026 20:45:04 +0000 (GMT)
-Message-ID: <ef6b9315-f630-442a-b066-362a03c7bfe8@linux.ibm.com>
-Date: Thu, 15 Jan 2026 15:45:04 -0500
+	Thu, 15 Jan 2026 20:45:34 +0000 (GMT)
+Message-ID: <5b29327e-9175-416f-b34b-da4f6ac03a96@linux.ibm.com>
+Date: Thu, 15 Jan 2026 15:45:34 -0500
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,8 +87,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/6] pseries/plpks: expose PowerVM wrapping features
- via the sysfs
+Subject: Re: [PATCH v4 4/6] pseries/plpks: add HCALLs for PowerVM Key Wrapping
+ Module
 To: Srish Srinivasan <ssrish@linux.ibm.com>, linux-integrity@vger.kernel.org,
         keyrings@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
@@ -96,33 +96,34 @@ Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
         jarkko@kernel.org, zohar@linux.ibm.com, rnsastry@linux.ibm.com,
         linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
 References: <20260115100504.488665-1-ssrish@linux.ibm.com>
- <20260115100504.488665-4-ssrish@linux.ibm.com>
+ <20260115100504.488665-5-ssrish@linux.ibm.com>
 Content-Language: en-US
 From: Nayna Jain <nayna@linux.ibm.com>
-In-Reply-To: <20260115100504.488665-4-ssrish@linux.ibm.com>
+In-Reply-To: <20260115100504.488665-5-ssrish@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0mi4ryfsle12mS4H6NVxJOt-frP0pyY4
-X-Authority-Analysis: v=2.4 cv=LLxrgZW9 c=1 sm=1 tr=0 ts=696951d4 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDE1OCBTYWx0ZWRfX6BSWrVoePzTl
+ vjDpvtRPZLYr/1HaibIgh877v+0v0dehJj5rz2sdxM8vm4sNT6yOiwTGH+Pwkv7MV1wfoIDQVkG
+ cz/0jI7QP+o0xOreB3Q06Iwy3hQaJwuYTcI1uBWS4e7PDzsP2R+27rE7IHx3mM+kLknMMz0B0ZP
+ mCqj9ufaaZe49TmyNV9eXlsMZmhE+Rzz0NkITBTQ26E+UyxVZUUMCIN4zd62S2EY5jjtkfImLPj
+ kp5XB+8Plt2gEGfD9KXTTZxZzWhfvUA7gXGeXRo5SGpy0cnGfScEWII8biLQNagnWW6Rz5Zege8
+ tty4cmPULNA4TPc6KTB1s3fCsmVaYziNP0FlK3fvdYH34zV8NHD/Xvg8ZIYznr7xUCBScG/93Kq
+ hJau3t2RAGeGJpfOSGMX7tmV5Z41k5sSgOLyW7ca9SK0u3ndz0Yf31zyHpNUDex8s7TI1RodEnb
+ zWZ8zUzFTHKgVQdTegA==
+X-Proofpoint-ORIG-GUID: -LE2srmRBw0ntKLaGHOoKz7oa8o3p6UE
+X-Proofpoint-GUID: _dTDOFEYyVIdT-DL8QSUHw-741PYqJkY
+X-Authority-Analysis: v=2.4 cv=U4afzOru c=1 sm=1 tr=0 ts=696951f2 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=iuZoUl8qdkSwtEGfI5EA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDE1OCBTYWx0ZWRfX8CpTZyqZoNmM
- 2F5PSJ6R0em79TJaApREa27yKKcoCM6S5p3VlgJ4C4JK6JT/lMXkZAPRHCJUeBVkkXyMgMcAVVL
- Qdrxyceausc+0tysDf2xikf3GRYH97KnI46pBEvQZBgkfJowIr7WBc01CMRpNCO7wjnGrqDQcqJ
- nKf0A38UnFhOXxw4HsWUZF1k1TzcYRspgMXmajL5xQ/JGYJrfXehHHWJfAIVqq9wecoqwnl2yIH
- u0uKjVOJW3fYvpM1DQ+pHFwRHLJKqcuaas3Qw6wxlygxRmixO8+35Uf2BidTDcR5kFj/VDnp7B/
- JBsqGR6OvlBcuNnwDvXB36K9t5btpkWxfF917az2gr64QmgPS1Q3h1UpvNPclGQOIUtqdQwxJTf
- fZseOcdL/WTIGnVHCL89OAD4xxWx4q6LbRTTxFQ1kahH65c1fTxOTbWYJC3BWqWQLZXkE9btR+x
- ZOTR3b5BvN2juQuboGw==
-X-Proofpoint-ORIG-GUID: vU3Ql7jZcxECdscT0Bu5P60B8u1zSQ1c
+ a=VnNF1IyMAAAA:8 a=PyqcxcYqWu9aKqbE-8cA:9 a=POYjf8jjcDEwoKyR:21
+ a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-15_06,2026-01-15_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0 impostorscore=0
- malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
+ spamscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ malwarescore=0 bulkscore=0 phishscore=0 suspectscore=0 impostorscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601150158
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -132,148 +133,494 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 On 1/15/26 5:05 AM, Srish Srinivasan wrote:
-> Starting with Power11, PowerVM supports a new feature called "Key Wrapping"
-> that protects user secrets by wrapping them using a hypervisor generated
-> wrapping key. The status of this feature can be read by the
-> H_PKS_GET_CONFIG HCALL.
+> The hypervisor generated wrapping key is an AES-GCM-256 symmetric key which
+> is stored in a non-volatile, secure, and encrypted storage called the Power
+> LPAR Platform KeyStore. It has policy based protections that prevent it
+> from being read out or exposed to the user.
 >
-> Expose the Power LPAR Platform KeyStore (PLPKS) wrapping features config
-> via the sysfs file /sys/firmware/plpks/config/wrapping_features.
-Thanks for the patch.
+> Implement H_PKS_GEN_KEY, H_PKS_WRAP_OBJECT, and H_PKS_UNWRAP_OBJECT HCALLs
+> to enable using the PowerVM Key Wrapping Module (PKWM) as a new trust
+> source for trusted keys. Disallow H_PKS_READ_OBJECT, H_PKS_SIGNED_UPDATE,
+> and H_PKS_WRITE_OBJECT for objects with the 'wrapping key' policy set.
+> Capture the availability status for the H_PKS_WRAP_OBJECT interface.
 
 Reviewed-by: Nayna Jain <nayna@linux.ibm.com>
 >
 > Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
 > ---
->   .../ABI/testing/sysfs-firmware-plpks          |  8 ++++++++
->   arch/powerpc/include/asm/hvcall.h             |  4 +++-
->   arch/powerpc/include/asm/plpks.h              |  3 +++
->   arch/powerpc/platforms/pseries/plpks-sysfs.c  |  2 ++
->   arch/powerpc/platforms/pseries/plpks.c        | 20 +++++++++++++++++++
->   5 files changed, 36 insertions(+), 1 deletion(-)
+>   Documentation/arch/powerpc/papr_hcalls.rst |  43 +++
+>   arch/powerpc/include/asm/plpks.h           |  10 +
+>   arch/powerpc/platforms/pseries/plpks.c     | 342 ++++++++++++++++++++-
+>   3 files changed, 393 insertions(+), 2 deletions(-)
 >
-> diff --git a/Documentation/ABI/testing/sysfs-firmware-plpks b/Documentation/ABI/testing/sysfs-firmware-plpks
-> index af0353f34115..cba061e4eee2 100644
-> --- a/Documentation/ABI/testing/sysfs-firmware-plpks
-> +++ b/Documentation/ABI/testing/sysfs-firmware-plpks
-> @@ -48,3 +48,11 @@ Description:	Bitmask of flags indicating which algorithms the hypervisor
->   		supports for signed update of objects, represented as a 16 byte
->   		hexadecimal ASCII string. Consult the hypervisor documentation
->   		for what these flags mean.
-> +
-> +What:		/sys/firmware/plpks/config/wrapping_features
-> +Date:		November 2025
-> +Contact:	Srish Srinivasan <ssrish@linux.ibm.com>
-> +Description:	Bitmask of the wrapping features indicating the wrapping
-> +		algorithms that are supported for the H_PKS_WRAP_OBJECT requests
-> +		, represented as a 8 byte hexadecimal ASCII string. Consult the
-> +		hypervisor documentation for what these flags mean.
-> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-> index 9aef16149d92..dff90a7d7f70 100644
-> --- a/arch/powerpc/include/asm/hvcall.h
-> +++ b/arch/powerpc/include/asm/hvcall.h
-> @@ -360,7 +360,9 @@
->   #define H_GUEST_RUN_VCPU	0x480
->   #define H_GUEST_COPY_MEMORY	0x484
->   #define H_GUEST_DELETE		0x488
-> -#define MAX_HCALL_OPCODE	H_GUEST_DELETE
-> +#define H_PKS_WRAP_OBJECT	0x490
-> +#define H_PKS_UNWRAP_OBJECT	0x494
-> +#define MAX_HCALL_OPCODE	H_PKS_UNWRAP_OBJECT
+> diff --git a/Documentation/arch/powerpc/papr_hcalls.rst b/Documentation/arch/powerpc/papr_hcalls.rst
+> index 805e1cb9bab9..14e39f095a1c 100644
+> --- a/Documentation/arch/powerpc/papr_hcalls.rst
+> +++ b/Documentation/arch/powerpc/papr_hcalls.rst
+> @@ -300,6 +300,49 @@ H_HTM supports setup, configuration, control and dumping of Hardware Trace
+>   Macro (HTM) function and its data. HTM buffer stores tracing data for functions
+>   like core instruction, core LLAT and nest.
 >   
->   /* Scope args for H_SCM_UNBIND_ALL */
->   #define H_UNBIND_SCOPE_ALL (0x1)
+> +**H_PKS_GEN_KEY**
+> +
+> +| Input: authorization, objectlabel, objectlabellen, policy, out, outlen
+> +| Out: *Hypervisor Generated Key, or None when the wrapping key policy is set*
+> +| Return Value: *H_SUCCESS, H_Function, H_State, H_R_State, H_Parameter, H_P2,
+> +                H_P3, H_P4, H_P5, H_P6, H_Authority, H_Nomem, H_Busy, H_Resource,
+> +                H_Aborted*
+> +
+> +H_PKS_GEN_KEY is used to have the hypervisor generate a new random key.
+> +This key is stored as an object in the Power LPAR Platform KeyStore with
+> +the provided object label. With the wrapping key policy set the key is only
+> +visible to the hypervisor, while the key's label would still be visible to
+> +the user. Generation of wrapping keys is supported only for a key size of
+> +32 bytes.
+> +
+> +**H_PKS_WRAP_OBJECT**
+> +
+> +| Input: authorization, wrapkeylabel, wrapkeylabellen, objectwrapflags, in,
+> +|        inlen, out, outlen, continue-token
+> +| Out: *continue-token, byte size of wrapped object, wrapped object*
+> +| Return Value: *H_SUCCESS, H_Function, H_State, H_R_State, H_Parameter, H_P2,
+> +                H_P3, H_P4, H_P5, H_P6, H_P7, H_P8, H_P9, H_Authority, H_Invalid_Key,
+> +                H_NOT_FOUND, H_Busy, H_LongBusy, H_Aborted*
+> +
+> +H_PKS_WRAP_OBJECT is used to wrap an object using a wrapping key stored in the
+> +Power LPAR Platform KeyStore and return the wrapped object to the caller. The
+> +caller provides a label to a wrapping key with the 'wrapping key' policy set,
+> +which must have been previously created with H_PKS_GEN_KEY. The provided object
+> +is then encrypted with the wrapping key and additional metadata and the result
+> +is returned to the caller.
+> +
+> +
+> +**H_PKS_UNWRAP_OBJECT**
+> +
+> +| Input: authorization, objectwrapflags, in, inlen, out, outlen, continue-token
+> +| Out: *continue-token, byte size of unwrapped object, unwrapped object*
+> +| Return Value: *H_SUCCESS, H_Function, H_State, H_R_State, H_Parameter, H_P2,
+> +                H_P3, H_P4, H_P5, H_P6, H_P7, H_Authority, H_Unsupported, H_Bad_Data,
+> +                H_NOT_FOUND, H_Invalid_Key, H_Busy, H_LongBusy, H_Aborted*
+> +
+> +H_PKS_UNWRAP_OBJECT is used to unwrap an object that was previously warapped with
+> +H_PKS_WRAP_OBJECT.
+> +
+>   References
+>   ==========
+>   .. [1] "Power Architecture Platform Reference"
 > diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
-> index 8829a13bfda0..8f034588fdf7 100644
+> index 8f034588fdf7..e87f90e40d4e 100644
 > --- a/arch/powerpc/include/asm/plpks.h
 > +++ b/arch/powerpc/include/asm/plpks.h
-> @@ -23,6 +23,7 @@
->   #define PLPKS_IMMUTABLE		PPC_BIT32(5) // Once written, object cannot be removed
->   #define PLPKS_TRANSIENT		PPC_BIT32(6) // Object does not persist through reboot
->   #define PLPKS_SIGNEDUPDATE	PPC_BIT32(7) // Object can only be modified by signed updates
-> +#define PLPKS_WRAPPINGKEY	PPC_BIT32(8) // Object contains a wrapping key
->   #define PLPKS_HVPROVISIONED	PPC_BIT32(28) // Hypervisor has provisioned this object
+> @@ -113,6 +113,16 @@ void plpks_early_init_devtree(void);
+>   int plpks_populate_fdt(void *fdt);
 >   
->   // Signature algorithm flags from signed_update_algorithms
-> @@ -103,6 +104,8 @@ u32 plpks_get_maxlargeobjectsize(void);
->   
->   u64 plpks_get_signedupdatealgorithms(void);
->   
-> +u64 plpks_get_wrappingfeatures(void);
+>   int plpks_config_create_softlink(struct kobject *from);
 > +
->   u16 plpks_get_passwordlen(void);
->   
->   void plpks_early_init_devtree(void);
-> diff --git a/arch/powerpc/platforms/pseries/plpks-sysfs.c b/arch/powerpc/platforms/pseries/plpks-sysfs.c
-> index 01d526185783..c2ebcbb41ae3 100644
-> --- a/arch/powerpc/platforms/pseries/plpks-sysfs.c
-> +++ b/arch/powerpc/platforms/pseries/plpks-sysfs.c
-> @@ -30,6 +30,7 @@ PLPKS_CONFIG_ATTR(used_space, "%u\n", plpks_get_usedspace);
->   PLPKS_CONFIG_ATTR(supported_policies, "%08x\n", plpks_get_supportedpolicies);
->   PLPKS_CONFIG_ATTR(signed_update_algorithms, "%016llx\n",
->   		  plpks_get_signedupdatealgorithms);
-> +PLPKS_CONFIG_ATTR(wrapping_features, "%016llx\n", plpks_get_wrappingfeatures);
->   
->   static const struct attribute *config_attrs[] = {
->   	&attr_version.attr,
-> @@ -38,6 +39,7 @@ static const struct attribute *config_attrs[] = {
->   	&attr_used_space.attr,
->   	&attr_supported_policies.attr,
->   	&attr_signed_update_algorithms.attr,
-> +	&attr_wrapping_features.attr,
->   	NULL,
->   };
->   
+> +bool plpks_wrapping_is_supported(void);
+> +
+> +int plpks_gen_wrapping_key(void);
+> +
+> +int plpks_wrap_object(u8 **input_buf, u32 input_len, u16 wrap_flags,
+> +		      u8 **output_buf, u32 *output_len);
+> +
+> +int plpks_unwrap_object(u8 **input_buf, u32 input_len,
+> +			u8 **output_buf, u32 *output_len);
+>   #else // CONFIG_PSERIES_PLPKS
+>   static inline bool plpks_is_available(void) { return false; }
+>   static inline u16 plpks_get_passwordlen(void) { BUILD_BUG(); }
 > diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-> index 03722fabf9c3..4a08f51537c8 100644
+> index 4a08f51537c8..b97b7750f6a8 100644
 > --- a/arch/powerpc/platforms/pseries/plpks.c
 > +++ b/arch/powerpc/platforms/pseries/plpks.c
-> @@ -38,6 +38,7 @@ static u32 usedspace;
->   static u32 supportedpolicies;
+> @@ -9,6 +9,32 @@
+>   
+>   #define pr_fmt(fmt) "plpks: " fmt
+>   
+> +#define PLPKS_WRAPKEY_COMPONENT	"PLPKSWR"
+> +#define PLPKS_WRAPKEY_NAME	"default-wrapping-key"
+> +
+> +/*
+> + * To 4K align the {input, output} buffers to the {UN}WRAP H_CALLs
+> + */
+> +#define PLPKS_WRAPPING_BUF_ALIGN	4096
+> +
+> +/*
+> + * To ensure the output buffer's length is at least 1024 bytes greater
+> + * than the input buffer's length during the WRAP H_CALL
+> + */
+> +#define PLPKS_WRAPPING_BUF_DIFF	1024
+> +
+> +#define PLPKS_WRAP_INTERFACE_BIT	3
+> +#define PLPKS_WRAPPING_KEY_LENGTH	32
+> +
+> +#define WRAPFLAG_BE_BIT_SET(be_bit) \
+> +	BIT_ULL(63 - (be_bit))
+> +
+> +#define WRAPFLAG_BE_GENMASK(be_bit_hi, be_bit_lo) \
+> +	GENMASK_ULL(63 - (be_bit_hi), 63 - (be_bit_lo))
+> +
+> +#define WRAPFLAG_BE_FIELD_PREP(be_bit_hi, be_bit_lo, val) \
+> +	FIELD_PREP(WRAPFLAG_BE_GENMASK(be_bit_hi, be_bit_lo), (val))
+> +
+>   #include <linux/delay.h>
+>   #include <linux/errno.h>
+>   #include <linux/io.h>
+> @@ -39,6 +65,7 @@ static u32 supportedpolicies;
 >   static u32 maxlargeobjectsize;
 >   static u64 signedupdatealgorithms;
-> +static u64 wrappingfeatures;
+>   static u64 wrappingfeatures;
+> +static bool wrapsupport;
 >   
 >   struct plpks_auth {
 >   	u8 version;
-> @@ -248,6 +249,7 @@ static int _plpks_get_config(void)
->   		__be32 supportedpolicies;
->   		__be32 maxlargeobjectsize;
->   		__be64 signedupdatealgorithms;
-> +		__be64 wrappingfeatures;
->   		u8 rsvd1[476];
->   	} __packed * config;
->   	size_t size;
-> @@ -280,6 +282,7 @@ static int _plpks_get_config(void)
->   	supportedpolicies = be32_to_cpu(config->supportedpolicies);
+> @@ -283,6 +310,7 @@ static int _plpks_get_config(void)
 >   	maxlargeobjectsize = be32_to_cpu(config->maxlargeobjectsize);
 >   	signedupdatealgorithms = be64_to_cpu(config->signedupdatealgorithms);
-> +	wrappingfeatures = be64_to_cpu(config->wrappingfeatures);
+>   	wrappingfeatures = be64_to_cpu(config->wrappingfeatures);
+> +	wrapsupport = config->flags & PPC_BIT8(PLPKS_WRAP_INTERFACE_BIT);
 >   
 >   	// Validate that the numbers we get back match the requirements of the spec
 >   	if (maxpwsize < 32) {
-> @@ -472,6 +475,23 @@ u64 plpks_get_signedupdatealgorithms(void)
->   	return signedupdatealgorithms;
+> @@ -614,6 +642,9 @@ int plpks_signed_update_var(struct plpks_var *var, u64 flags)
+>   	if (!(var->policy & PLPKS_SIGNEDUPDATE))
+>   		return -EINVAL;
+>   
+> +	if (var->policy & PLPKS_WRAPPINGKEY)
+> +		return -EINVAL;
+> +
+>   	// Signed updates need the component to be NULL.
+>   	if (var->component)
+>   		return -EINVAL;
+> @@ -696,6 +727,9 @@ int plpks_write_var(struct plpks_var var)
+>   	if (var.policy & PLPKS_SIGNEDUPDATE)
+>   		return -EINVAL;
+>   
+> +	if (var.policy & PLPKS_WRAPPINGKEY)
+> +		return -EINVAL;
+> +
+>   	auth = construct_auth(PLPKS_OS_OWNER);
+>   	if (IS_ERR(auth))
+>   		return PTR_ERR(auth);
+> @@ -790,6 +824,9 @@ static int plpks_read_var(u8 consumer, struct plpks_var *var)
+>   	if (var->namelen > PLPKS_MAX_NAME_SIZE)
+>   		return -EINVAL;
+>   
+> +	if (var->policy & PLPKS_WRAPPINGKEY)
+> +		return -EINVAL;
+> +
+>   	auth = construct_auth(consumer);
+>   	if (IS_ERR(auth))
+>   		return PTR_ERR(auth);
+> @@ -845,8 +882,309 @@ static int plpks_read_var(u8 consumer, struct plpks_var *var)
 >   }
 >   
-> +/**
-> + * plpks_get_wrappingfeatures() - Returns a bitmask of the wrapping features
-> + * supported by the hypervisor.
+>   /**
+> - * plpks_read_os_var() - Fetch the data for the specified variable that is
+> - * owned by the OS consumer.
+> + * plpks_wrapping_is_supported() - Get the H_PKS_WRAP_OBJECT interface
+> + * availability status for the LPAR.
 > + *
 > + * Successful execution of the H_PKS_GET_CONFIG HCALL during initialization
-> + * reads a bitmask of the wrapping features supported by the hypervisor into the
-> + * file local static wrappingfeatures variable. This is valid only when the
-> + * PLPKS config structure version >= 3.
+> + * sets bit 3 of the flags variable in the PLPKS config structure if the
+> + * H_PKS_WRAP_OBJECT interface is supported.
 > + *
-> + * Return:
-> + *	bitmask of the wrapping features supported by the hypervisor
+> + * Returns: true if the H_PKS_WRAP_OBJECT interface is supported, false if not.
 > + */
-> +u64 plpks_get_wrappingfeatures(void)
+> +bool plpks_wrapping_is_supported(void)
 > +{
-> +	return wrappingfeatures;
+> +	return wrapsupport;
 > +}
 > +
->   /**
->    * plpks_get_passwordlen() - Get the length of the PLPKS password in bytes.
+> +/**
+> + * plpks_gen_wrapping_key() - Generate a new random key with the 'wrapping key'
+> + * policy set.
+> + *
+> + * The H_PKS_GEN_KEY HCALL makes the hypervisor generate a new random key and
+> + * store the key in a PLPKS object with the provided object label. With the
+> + * 'wrapping key' policy set, only the label to the newly generated random key
+> + * would be visible to the user.
+> + *
+> + * Possible reasons for the returned errno values:
+> + *
+> + * -ENXIO	if PLPKS is not supported
+> + * -EIO		if PLPKS access is blocked due to the LPAR's state
+> + *		if PLPKS modification is blocked due to the LPAR's state
+> + *		if an error occurred while processing the request
+> + * -EINVAL	if invalid authorization parameter
+> + *		if invalid object label parameter
+> + *		if invalid object label len parameter
+> + *		if invalid or unsupported policy declaration
+> + *		if invalid output buffer parameter
+> + *		if invalid output buffer length parameter
+> + * -EPERM	if access is denied
+> + * -ENOMEM	if there is inadequate memory to perform this operation
+> + * -EBUSY	if unable to handle the request
+> + * -EEXIST	if the object label already exists
+> + *
+> + * Returns: On success 0 is returned, a negative errno if not.
+> + */
+> +int plpks_gen_wrapping_key(void)
+> +{
+> +	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = { 0 };
+> +	struct plpks_auth *auth;
+> +	struct label *label;
+> +	int rc = 0, pseries_status = 0;
+> +	struct plpks_var var = {
+> +		.name = PLPKS_WRAPKEY_NAME,
+> +		.namelen = strlen(var.name),
+> +		.policy = PLPKS_WRAPPINGKEY,
+> +		.os = PLPKS_VAR_LINUX,
+> +		.component = PLPKS_WRAPKEY_COMPONENT
+> +	};
+> +
+> +	auth = construct_auth(PLPKS_OS_OWNER);
+> +	if (IS_ERR(auth))
+> +		return PTR_ERR(auth);
+> +
+> +	label = construct_label(var.component, var.os, var.name, var.namelen);
+> +	if (IS_ERR(label)) {
+> +		rc = PTR_ERR(label);
+> +		goto out;
+> +	}
+> +
+> +	rc = plpar_hcall(H_PKS_GEN_KEY, retbuf,
+> +			 virt_to_phys(auth), virt_to_phys(label),
+> +			 label->size, var.policy,
+> +			 NULL, PLPKS_WRAPPING_KEY_LENGTH);
+> +
+> +	if (!rc)
+> +		rc = plpks_confirm_object_flushed(label, auth);
+> +
+> +	pseries_status = rc;
+> +	rc = pseries_status_to_err(rc);
+> +
+> +	if (rc && rc != -EEXIST) {
+> +		pr_err("H_PKS_GEN_KEY failed. pseries_status=%d, rc=%d",
+> +		       pseries_status, rc);
+> +	} else {
+> +		rc = 0;
+> +	}
+> +
+> +	kfree(label);
+> +out:
+> +	kfree(auth);
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL_GPL(plpks_gen_wrapping_key);
+> +
+> +/**
+> + * plpks_wrap_object() - Wrap an object using the default wrapping key stored in
+> + * the PLPKS.
+> + * @input_buf: buffer containing the data to be wrapped
+> + * @input_len: length of the input buffer
+> + * @wrap_flags: object wrapping flags
+> + * @output_buf: buffer to store the wrapped data
+> + * @output_len: length of the output buffer
+> + *
+> + * The H_PKS_WRAP_OBJECT HCALL wraps an object using a wrapping key stored in
+> + * the PLPKS and returns the wrapped object to the caller. The caller provides a
+> + * label to the wrapping key with the 'wrapping key' policy set that must have
+> + * been previously created with the H_PKS_GEN_KEY HCALL. The provided object is
+> + * then encrypted with the wrapping key and additional metadata and the result
+> + * is returned to the user. The metadata includes the wrapping algorithm and the
+> + * wrapping key name so those parameters are not required during unwrap.
+> + *
+> + * Possible reasons for the returned errno values:
+> + *
+> + * -ENXIO	if PLPKS is not supported
+> + * -EIO		if PLPKS access is blocked due to the LPAR's state
+> + *		if PLPKS modification is blocked due to the LPAR's state
+> + *		if an error occurred while processing the request
+> + * -EINVAL	if invalid authorization parameter
+> + *		if invalid wrapping key label parameter
+> + *		if invalid wrapping key label length parameter
+> + *		if invalid or unsupported object wrapping flags
+> + *		if invalid input buffer parameter
+> + *		if invalid input buffer length parameter
+> + *		if invalid output buffer parameter
+> + *		if invalid output buffer length parameter
+> + *		if invalid continue token parameter
+> + *		if the wrapping key is not compatible with the wrapping
+> + *		algorithm
+> + * -EPERM	if access is denied
+> + * -ENOENT	if the requested wrapping key was not found
+> + * -EBUSY	if unable to handle the request or long running operation
+> + *		initiated, retry later.
+> + *
+> + * Returns: On success 0 is returned, a negative errno if not.
+> + */
+> +int plpks_wrap_object(u8 **input_buf, u32 input_len, u16 wrap_flags,
+> +		      u8 **output_buf, u32 *output_len)
+> +{
+> +	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = { 0 };
+> +	struct plpks_auth *auth;
+> +	struct label *label;
+> +	u64 continuetoken = 0;
+> +	u64 objwrapflags = 0;
+> +	int rc = 0, pseries_status = 0;
+> +	bool sb_audit_or_enforce_bit = wrap_flags & BIT(0);
+> +	bool sb_enforce_bit = wrap_flags & BIT(1);
+> +	struct plpks_var var = {
+> +		.name = PLPKS_WRAPKEY_NAME,
+> +		.namelen = strlen(var.name),
+> +		.os = PLPKS_VAR_LINUX,
+> +		.component = PLPKS_WRAPKEY_COMPONENT
+> +	};
+> +
+> +	auth = construct_auth(PLPKS_OS_OWNER);
+> +	if (IS_ERR(auth))
+> +		return PTR_ERR(auth);
+> +
+> +	label = construct_label(var.component, var.os, var.name, var.namelen);
+> +	if (IS_ERR(label)) {
+> +		rc = PTR_ERR(label);
+> +		goto out;
+> +	}
+> +
+> +	/* Set the consumer password requirement bit. A must have. */
+> +	objwrapflags |= WRAPFLAG_BE_BIT_SET(3);
+> +
+> +	/* Set the wrapping algorithm bit. Just one algorithm option for now */
+> +	objwrapflags |= WRAPFLAG_BE_FIELD_PREP(60, 63, 0x1);
+> +
+> +	if (sb_audit_or_enforce_bit & sb_enforce_bit) {
+> +		pr_err("Cannot set both audit/enforce and enforce bits.");
+> +		rc = -EINVAL;
+> +		goto out_free_label;
+> +	} else if (sb_audit_or_enforce_bit) {
+> +		objwrapflags |= WRAPFLAG_BE_BIT_SET(1);
+> +	} else if (sb_enforce_bit) {
+> +		objwrapflags |= WRAPFLAG_BE_BIT_SET(2);
+> +	}
+> +
+> +	*output_len = input_len + PLPKS_WRAPPING_BUF_DIFF;
+> +
+> +	*output_buf = kzalloc(ALIGN(*output_len, PLPKS_WRAPPING_BUF_ALIGN),
+> +			      GFP_KERNEL);
+> +	if (!(*output_buf)) {
+> +		pr_err("Output buffer allocation failed. Returning -ENOMEM.");
+> +		rc = -ENOMEM;
+> +		goto out_free_label;
+> +	}
+> +
+> +	do {
+> +		rc = plpar_hcall9(H_PKS_WRAP_OBJECT, retbuf,
+> +				  virt_to_phys(auth), virt_to_phys(label),
+> +				  label->size, objwrapflags,
+> +				  virt_to_phys(*input_buf), input_len,
+> +				  virt_to_phys(*output_buf), *output_len,
+> +				  continuetoken);
+> +
+> +		continuetoken = retbuf[0];
+> +		pseries_status = rc;
+> +		rc = pseries_status_to_err(rc);
+> +	} while (rc == -EBUSY);
+> +
+> +	if (rc) {
+> +		pr_err("H_PKS_WRAP_OBJECT failed. pseries_status=%d, rc=%d",
+> +		       pseries_status, rc);
+> +		kfree(*output_buf);
+> +		*output_buf = NULL;
+> +	} else {
+> +		*output_len = retbuf[1];
+> +	}
+> +
+> +out_free_label:
+> +	kfree(label);
+> +out:
+> +	kfree(auth);
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL_GPL(plpks_wrap_object);
+> +
+> +/**
+> + * plpks_unwrap_object() - Unwrap an object using the default wrapping key
+> + * stored in the PLPKS.
+> + * @input_buf: buffer containing the data to be unwrapped
+> + * @input_len: length of the input buffer
+> + * @output_buf: buffer to store the unwrapped data
+> + * @output_len: length of the output buffer
+> + *
+> + * The H_PKS_UNWRAP_OBJECT HCALL unwraps an object that was previously wrapped
+> + * using the H_PKS_WRAP_OBJECT HCALL.
+> + *
+> + * Possible reasons for the returned errno values:
+> + *
+> + * -ENXIO	if PLPKS is not supported
+> + * -EIO		if PLPKS access is blocked due to the LPAR's state
+> + *		if PLPKS modification is blocked due to the LPAR's state
+> + *		if an error occurred while processing the request
+> + * -EINVAL	if invalid authorization parameter
+> + *		if invalid or unsupported object unwrapping flags
+> + *		if invalid input buffer parameter
+> + *		if invalid input buffer length parameter
+> + *		if invalid output buffer parameter
+> + *		if invalid output buffer length parameter
+> + *		if invalid continue token parameter
+> + *		if the wrapping key is not compatible with the wrapping
+> + *		algorithm
+> + *		if the wrapped object's format is not supported
+> + *		if the wrapped object is invalid
+> + * -EPERM	if access is denied
+> + * -ENOENT	if the wrapping key for the provided object was not found
+> + * -EBUSY	if unable to handle the request or long running operation
+> + *		initiated, retry later.
+> + *
+> + * Returns: On success 0 is returned, a negative errno if not.
+> + */
+> +int plpks_unwrap_object(u8 **input_buf, u32 input_len, u8 **output_buf,
+> +			u32 *output_len)
+> +{
+> +	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = { 0 };
+> +	struct plpks_auth *auth;
+> +	u64 continuetoken = 0;
+> +	u64 objwrapflags = 0;
+> +	int rc = 0, pseries_status = 0;
+> +
+> +	auth = construct_auth(PLPKS_OS_OWNER);
+> +	if (IS_ERR(auth))
+> +		return PTR_ERR(auth);
+> +
+> +	*output_len = input_len - PLPKS_WRAPPING_BUF_DIFF;
+> +	*output_buf = kzalloc(ALIGN(*output_len, PLPKS_WRAPPING_BUF_ALIGN),
+> +			      GFP_KERNEL);
+> +	if (!(*output_buf)) {
+> +		pr_err("Output buffer allocation failed. Returning -ENOMEM.");
+> +		rc = -ENOMEM;
+> +		goto out;
+> +	}
+> +
+> +	do {
+> +		rc = plpar_hcall9(H_PKS_UNWRAP_OBJECT, retbuf,
+> +				  virt_to_phys(auth), objwrapflags,
+> +				  virt_to_phys(*input_buf), input_len,
+> +				  virt_to_phys(*output_buf), *output_len,
+> +				  continuetoken);
+> +
+> +		continuetoken = retbuf[0];
+> +		pseries_status = rc;
+> +		rc = pseries_status_to_err(rc);
+> +	} while (rc == -EBUSY);
+> +
+> +	if (rc) {
+> +		pr_err("H_PKS_UNWRAP_OBJECT failed. pseries_status=%d, rc=%d",
+> +		       pseries_status, rc);
+> +		kfree(*output_buf);
+> +		*output_buf = NULL;
+> +	} else {
+> +		*output_len = retbuf[1];
+> +	}
+> +
+> +out:
+> +	kfree(auth);
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL_GPL(plpks_unwrap_object);
+> +
+> +/**
+> + * plpks_read_os_var() - Fetch the data for the specified variable that is owned
+> + * by the OS consumer.
+>    * @var: variable to be read from the PLPKS
 >    *
+>    * The consumer or the owner of the object is the os kernel. The
 
