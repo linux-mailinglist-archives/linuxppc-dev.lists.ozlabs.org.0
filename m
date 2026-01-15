@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15789-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15790-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35860D236E4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 10:21:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6B5D236ED
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 10:21:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dsHYD6rCqz3bhG;
-	Thu, 15 Jan 2026 20:21:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dsHYM2fmqz3blq;
+	Thu, 15 Jan 2026 20:21:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768468896;
-	cv=none; b=JHf+/a4h2Wm78Op/wPgfYCdDhD6wDoPKT0CaGAynX7TrjhRppgjisy4QOvYiDKvbjqWQ9jR9QT3SGHEuhijqeGUbVu1UFKpYZne09xRBf9yvg7UuWp/rqGU8mBvEwyXxTiQ4tltLfNyx4xUoMAN0ZMhQtPE0JoQEXJld0gMLR/O/idMIEf/tOwBqv0GgLO7rGOAwwdFUIQ7nyhZ6fhIluGrYmj7zmY73LUksFvpshj3OVFzoVOqFsIS7rQmk4q7QYfpT7an6DCTLC9+OC62ThpEACYEzLlIdbDNMmAaNpwm31iKqAUYIaInOsJLpaW0kvU3WDsM4NsyS4cWzV7PyWw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768468903;
+	cv=none; b=mfJfYmP+cmXPOCkPHeqh803mpobXWdTKKC9azTKTy8mjmCVGSq9qEzAz7oE1pAJhNIUzFlRUd97ajvcK9MjAj/AR6Q8XgA8iF0iS52acLBGh8EBoiY2ciGGhpJUm9bFqmcJb+wmP1VxNigQEwJ0PWDmmrsujDjD7lUSfl5dNL9XOjIit5BRYmYtsKUvJrC+n2Siwo8IYo8DRvneNoXuOceoh+iH/cd/PKoNdLFXwNeI4Er/GCviMEo/UHer9cg/ldbE1v+njQjSh3KthEiUg60hSoLGavZF/RcJe8LmgDfQkidYSi2ZrN/L0Hky8oCtDqMFRa1Uks34iVdeCnH4IQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768468896; c=relaxed/relaxed;
-	bh=8EenS6axDsQIs8DcrM4euNT5BSxpIt2vNmE+FFtH6lA=;
+	t=1768468903; c=relaxed/relaxed;
+	bh=yedf5pTsTIH7yZA71uFz0MYlxe8DVcPZiVuQOgyPLN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLghxM4Y46yM0QW9ZJPWba/bz7qdWPfR6DRat4GAFm0BSqZI3i5fvzLk/NADqrp12W9w9io7NF95mdmziriLR7Z7PbiwVhNhzUOZfHY6K6zpunOK8O3PsDcaEbqzYtfD7cUB3w1N2p/iAmZhNVn2p0LU4WiBVyx/tiVooXgZaR9treVJzEoezCrd0UElRAS0Rs3NcQi90Q0dH9C4+qjMRy3RIr7nb0sKNJlVx0R4f/VF0AJrr0MRR6TGErBGMOSNGQqaX11f/nMf3AGM/GiugEFCBZaj4Ulyhgj2/3zdXU4i+86gFXonPuWuQqPMQhMifpgG1pO44pxXNgRbyrp4ug==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qu5cnsss; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=DnrGM+7tTX9e3OgHzT8U5odqYXnGgEpxRHWUmQAw3QrCFC3NKzvrV7xiZa8Q0gcA4X+thczUPu85OMc6L65ir6/XgRXuVqSHn/Z4KhyKdmL3SgB5v3ADlrRCC4eSMCyU2ah6Q+XrF5AEGhqGa5pw0j0dT5Isgsgghc0Y9KrbKkqZFgyzBbJdT+n+IpJXSzAHHYrIaEI5WjZVKfDolAp7cAVBW3bqk4Zs+eliuP/KBXRrlbw9DwFZkHQME+a6cJT2ehRSf/1J3Epea/xqvQ/2Bm3aYgf3TMmmEZjhIZWYfN0X2NaFEQf+/QJdgGwj2Hadbh5loArKbsUjCq9U3zRk3Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gjHo4SPq; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qu5cnsss;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gjHo4SPq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsHYD2dsYz309H
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 20:21:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsHYL3Y5nz309H
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 20:21:42 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 29AE6440E5;
+	by tor.source.kernel.org (Postfix) with ESMTP id 694F5601B2;
+	Thu, 15 Jan 2026 09:21:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84860C116D0;
 	Thu, 15 Jan 2026 09:21:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D840AC19421;
-	Thu, 15 Jan 2026 09:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768468893;
-	bh=6msByTrRia9i6vND/vW1jweXAy1e72/r1CKD4n734CU=;
+	s=k20201202; t=1768468900;
+	bh=7Fok2QOLie23GL34zkS9ujQ08CnApW1sZfbHS9ad6qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qu5cnsssHM0VOA2MGc8aTwkHs5DfKAxz8/KwFTSko1lI+ScylNG3t6KiXREGnGYG4
-	 bbajnHy0fVOa5j3ek1JI70AVPeN+FZW+TEy1INoJw+F2pAFEGzIjvs7q8F0zIqdheB
-	 5SIpjUgk5E9J67b6iBFVQmoZiYC+BeHVbM658tP0rwFlhllNOQDloLuGo7VYiWbeIk
-	 ORaDqAHDYEraa10Y7nrOVGW6wIKuRACCqbuew8ilXlfJ2fEj4fTQYD4OTtSs52Uagr
-	 8ZwIkkfcpdPLwwkRUB5iFUqhulaWwTq3TRtoMlYOChCsWG1c1YUkGSDalb9T3rxaXa
-	 W4fHfh+JcLDbQ==
+	b=gjHo4SPqXCwAV3VLQdXz/juLHBwZNkzTqrcYtbfYSxBaSvH+n5lb5GZqiD2ycVH9Q
+	 TO+0ZInpSdsqpUqW1vje/qktqMIJNqUZasZtMkmbImz/v+3qyrOUvBLbYel/59dZDx
+	 CHaY+HvEtsPTc6G7ult2MmEWMmgpWMOvgO+sq9j3mSWbmchbR6+3m1WPyJdO/H1dDr
+	 xyP5tNDrUHa5hiq/htOY6d+se+LFPUr2DuRQUibb7RzdR+pFQ8MEF7mIJgiyIz7du9
+	 PJ3LVFh7wFYG3SEZEOBq/kYev6Zmqjg9nRgcroBBwNzHwezu+BBiIaey87TRFW5RDP
+	 ahbnv9gDliQ9A==
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -72,9 +72,9 @@ Cc: linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v2 10/23] mm/balloon_compaction: drop fs.h include from balloon_compaction.h
-Date: Thu, 15 Jan 2026 10:20:00 +0100
-Message-ID: <20260115092015.3928975-11-david@kernel.org>
+Subject: [PATCH v2 11/23] drivers/virtio/virtio_balloon: stop using balloon_page_push/pop()
+Date: Thu, 15 Jan 2026 10:20:01 +0100
+Message-ID: <20260115092015.3928975-12-david@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115092015.3928975-1-david@kernel.org>
 References: <20260115092015.3928975-1-david@kernel.org>
@@ -97,27 +97,85 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Ever since commit 68f2736a8583 ("mm: Convert all PageMovable users to
-movable_operations") we no longer store an inode in balloon_dev_info,
-so we can stop including "fs.h".
+Let's stop using these functions so we can remove them. They look like
+belonging to the balloon API for managing the device balloon list when
+really they are just simple helpers only used by virtio-balloon.
+
+Let's just inline them and switch to a proper
+list_for_each_entry_safe().
 
 Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 ---
- include/linux/balloon_compaction.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/virtio/virtio_balloon.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon_compaction.h
-index 7db66c2c86cdc..1452ea0635245 100644
---- a/include/linux/balloon_compaction.h
-+++ b/include/linux/balloon_compaction.h
-@@ -42,7 +42,6 @@
- #include <linux/migrate.h>
- #include <linux/gfp.h>
- #include <linux/err.h>
--#include <linux/fs.h>
- #include <linux/list.h>
+diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+index 15c1cf5fd249c..6ae00de78b61b 100644
+--- a/drivers/virtio/virtio_balloon.c
++++ b/drivers/virtio/virtio_balloon.c
+@@ -242,8 +242,8 @@ static void set_page_pfns(struct virtio_balloon *vb,
+ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
+ {
+ 	unsigned int num_allocated_pages;
++	struct page *page, *next;
+ 	unsigned int num_pfns;
+-	struct page *page;
+ 	LIST_HEAD(pages);
  
- /*
+ 	/* We can only do one array worth at a time. */
+@@ -262,14 +262,15 @@ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
+ 			break;
+ 		}
+ 
+-		balloon_page_push(&pages, page);
++		list_add(&page->lru, &pages);
+ 	}
+ 
+ 	mutex_lock(&vb->balloon_lock);
+ 
+ 	vb->num_pfns = 0;
+ 
+-	while ((page = balloon_page_pop(&pages))) {
++	list_for_each_entry_safe(page, next, &pages, lru) {
++		list_del(&page->lru);
+ 		balloon_page_enqueue(&vb->vb_dev_info, page);
+ 
+ 		set_page_pfns(vb, vb->pfns + vb->num_pfns, page);
+@@ -474,15 +475,19 @@ static inline s64 towards_target(struct virtio_balloon *vb)
+ static unsigned long return_free_pages_to_mm(struct virtio_balloon *vb,
+ 					     unsigned long num_to_return)
+ {
+-	struct page *page;
+-	unsigned long num_returned;
++	unsigned long num_returned = 0;
++	struct page *page, *next;
++
++	if (unlikely(!num_to_return))
++		return 0;
+ 
+ 	spin_lock_irq(&vb->free_page_list_lock);
+-	for (num_returned = 0; num_returned < num_to_return; num_returned++) {
+-		page = balloon_page_pop(&vb->free_page_list);
+-		if (!page)
+-			break;
++
++	list_for_each_entry_safe(page, next, &vb->free_page_list, lru) {
++		list_del(&page->lru);
+ 		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
++		if (++num_returned == num_to_return)
++			break;
+ 	}
+ 	vb->num_free_page_blocks -= num_returned;
+ 	spin_unlock_irq(&vb->free_page_list_lock);
+@@ -717,7 +722,7 @@ static int get_free_page_and_send(struct virtio_balloon *vb)
+ 		}
+ 		virtqueue_kick(vq);
+ 		spin_lock_irq(&vb->free_page_list_lock);
+-		balloon_page_push(&vb->free_page_list, page);
++		list_add(&page->lru, &vb->free_page_list);
+ 		vb->num_free_page_blocks++;
+ 		spin_unlock_irq(&vb->free_page_list_lock);
+ 	} else {
 -- 
 2.52.0
 
