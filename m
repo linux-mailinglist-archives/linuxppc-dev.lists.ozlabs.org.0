@@ -1,127 +1,134 @@
-Return-Path: <linuxppc-dev+bounces-15752-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15753-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4FED21CB0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 00:51:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8DCD21E2F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 01:43:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ds2vZ1VFsz2xS3;
-	Thu, 15 Jan 2026 10:51:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ds43w2m76z2xS3;
+	Thu, 15 Jan 2026 11:43:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.18
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768434698;
-	cv=fail; b=gJBE4pdYsNRQ/KWKU7DaIRwS65q0E2srCyPCq8ldQ38lvsUCVC/aa/glAJmFS+gNUeJ8zTnXJtVG5r52kDV6Dpgd/K8YaVI+QylXvLdOaM5h1uq8s5CRCciHg6nm5m7op3EkCz0/bXUcRX84E6R9kGKaFqfiSe1F65mb6ySxrILXfkUWCsmUjQFyn1ZDtYwYAgyRhBrjkHpf/ANdXJ4ceVScBGommBRNGVtNjydv4HCHgHDF6o/el5CYbvM/rOgueoEIOtgXx2yjpVa/mhBPpP6lk5jwyOUmtCF2COtfjBHAv18mjWOYOyz80NeByTUd3Md7/iMDpw0+6RTY5sp/Lw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768434698; c=relaxed/relaxed;
-	bh=G7n0GD4vskBV4uZ5XKLmIpS8Wy9noTZ87ZQvr4tng9Y=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=j4qPbbcfzj5YVGYHq4Srdw7LSX01IrGz36mcMsJwWtc5SzinAt74fLHi6X8A2evC8ePL4OmWwjglJ7TT+v4hYXJs/KoC28chAYHm7XHTfCwB1OzlMGOaglwB70ajffkLFc9q2YJjyrTallq6v/vIdlJ7CV4lI8x/3qJNRWq6SUssirudlWLkgjqWwemzh1yjMYoZRRzrinbJ2XC1QRiTK8OX6IUDOEfZyZAahbQxGN6axCJU3xWnd6sAFuQxyuy1wPRDH2v/XDmh3GUvaFKiEdKGHpJrknNNgx3CPaO5cedisNI/DGKfExWlXHp7VbNxFoOJO8tfbo/mXd6eS29OBw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IX0NzrAD; dkim-atps=neutral; spf=pass (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=matthew.brost@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768437836;
+	cv=none; b=UYr1cZwIWc24JluaCc8DOMvLwmGeFiPSj++iTPquU3v7OY2CxDMWOWiZSRa+Mc4TzfvlIDzZnjtrOwfCC9J8IlaV1ejRBjTwh7hhU++f7FMQCqcRn0ULZYWZ7pB5tg/PXsac4ISF3s+P1Jhwvha9uoBVx+Zb2Cy4XZiVXF5SbjzGSMDDC1DrBo6MrMBbMMs48cjVeYfndPNVt/JEyULRaTa1Wux/TTB+pGSZmbCWokVFZcl8NdHu5BgL7EcJwZ7Wb59Jvo5k4RVs1qlbnYJpUEJwe2vnsxTJ4owQbtgAyZj8E1ddbauenwii1xYfAnZAyluYCCL9nkMhiiTgUBf4Hw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1768437836; c=relaxed/relaxed;
+	bh=gZMvfwQ4Hlm3TIovlOL6vMdTiejp6wE8OmDKDcw/1gY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=KLlYkGvoEGEv3ufiEraiDKwPNkHOFcvbSexIJtgWrA9c2fXg8N0SV2L3CsFSckF5mspLB3NSqRSiPEfrYIyOXk0JuvRTgrDvYPY+9M1Sg5aXxg1DnsY4TG/hqAocWlwEKM4W6LjEvVoV1HytaPF6XUhy7udScHeZ1e0xE1XOGOCZTPaLk+eIJLV8/WmeIPeVU4tk5X+yTGsMdCBKIxDMhpeVbIL94jz4zNh2aya7NoXgX2Wva/iEYMIfHTe72i2eef3lAJDVvGFtAW0RVqYWti1hlonqkIRRHW1v30XlYSc0dc4qle/NHXBLm7fhr6rY9asQSPma0Mp4lV8BFTf2aA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ROHcDVGR; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hyNHL5Xy; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IX0NzrAD;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ROHcDVGR;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hyNHL5Xy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=matthew.brost@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ds2vW36gGz2xHW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 10:51:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768434695; x=1799970695;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=RSHtL2IVsWfSWQz/HURV6vT7mdg6jKwj7p+aZQCh38g=;
-  b=IX0NzrAD7wUKXy1xnPn6a2AA+yGOJm8tZ4ZLcUud2goSMsqDGw8NHxrN
-   3bow6qvTzHMVcJPFK5zyXw+mnvdi6g+hdLIX5sU88Ra08GmDLdxKKCOyD
-   aQjIm+6mEgcqoVtyQZJC/y+KdaqCGuHfEzV4TIG0zeU5Lb1p6SdFME+9I
-   CgaNbvTDVk5ysKFpEoXZAilzyRpFtT1ZpxFEczc20QhyGK0hHngjzhWWK
-   lnncm1vmZOk63TlK6R9RQ6JLCuOLUhg4ch5VRq2VNfaA1cZajq2nvG/8w
-   26KWAhgND5gMN5gvaNQaRa5E1Q06GtPIRpPBZPBrTsJe2K1reI64o03rZ
-   A==;
-X-CSE-ConnectionGUID: 31vxms0dRg2kSsRYN9HDEA==
-X-CSE-MsgGUID: ERP4u2QxQ9CNZGZVTeDvDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="68950620"
-X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="68950620"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 15:51:29 -0800
-X-CSE-ConnectionGUID: T5JgkYtuQjmoqBByqnj6+g==
-X-CSE-MsgGUID: t9JFJ52qTjuFuGl8wCa5iQ==
-X-ExtLoop1: 1
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 15:51:28 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 14 Jan 2026 15:51:27 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Wed, 14 Jan 2026 15:51:27 -0800
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.61) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 14 Jan 2026 15:51:26 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fa1U7u1NYksEim8Cus9r+dGM7rl2YE6ZOtdXpjamA6Wkh/5LfChYImVYSOFY3UVVPltZiB57glKAOqY9NPwf/+ad3XrAwQ0YgbF3wtH7YqPRmSsTOdBKVoBQK8plFleTdUBbgQrwlxuP72zCt8+11+qH9zJSveVaFR1Fi2tyTrxk6NJ/YhX0kbcoSUMeTtaFH4bi/z9HzisnIk46h0BFzZ4WPeBa5FrKWJRLwBf453v9NB5IcpYnyB205KX6jU6bfIQ8RklcujDdE/1+bKOE1VOTv3KDJkJwlAP4ydbL54EBox+oDWBLhIDOFe5aFRohbKrGJ9RCEwoX+2z5v+DJtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G7n0GD4vskBV4uZ5XKLmIpS8Wy9noTZ87ZQvr4tng9Y=;
- b=cH99+FZMMUO3zu3Z6TIV1I7Cx1WSWoDOEH1cNC2ddTqJLxAZ0WTrceLSc8ldm50jMpkqacOpttxFueT+dCXKt80x4zSmjDXKMWwsCogJUIE5T8/dnEeLXAq3k2fu/vZ3WuD6a9nZtWzHb2hyZb3wTdpmkKgUD3azGH1aa+GK/aYSaAdDzI213ERPPA7fuf2mJ/nuau0e9dpeuw0sYzCiEab9Xu/xEco4sky4cWjosx2fgZYpOVY3SV7ePKvmZF3B8aZHDv3tOI9S1B3py1hzsCQJWXQ6FohVSJ1YU3Wei/jY8Wx/lhyi/MvlnLtnoBPrLprdSrXHHvQQZXB5zlMuCQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by SA2PR11MB4796.namprd11.prod.outlook.com (2603:10b6:806:117::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.4; Wed, 14 Jan
- 2026 23:51:19 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9456.015; Wed, 14 Jan 2026
- 23:51:19 +0000
-Date: Wed, 14 Jan 2026 15:51:16 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: Francois Dugast <francois.dugast@intel.com>,
-	<intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, Zi Yan
-	<ziy@nvidia.com>, Alistair Popple <apopple@nvidia.com>, adhavan Srinivasan
-	<maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman
-	<mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher
-	<alexander.deucher@amd.com>, Christian =?iso-8859-1?Q?K=F6nig?=
-	<christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
-	<simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, "David
- Hildenbrand" <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, "Balbir
- Singh" <balbirs@nvidia.com>, <linuxppc-dev@lists.ozlabs.org>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<amd-gfx@lists.freedesktop.org>, <nouveau@lists.freedesktop.org>,
-	<linux-mm@kvack.org>, <linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH v5 1/5] mm/zone_device: Reinitialize large zone device
- private folios
-Message-ID: <aWgr9Fp+0AeTu4zL@lstrano-desk.jf.intel.com>
-References: <20260114192111.1267147-1-francois.dugast@intel.com>
- <20260114192111.1267147-2-francois.dugast@intel.com>
- <20260114134825.8bf1cb3e897c8e41c73dc8ae@linux-foundation.org>
- <aWgn/THidvOQf9n2@lstrano-desk.jf.intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aWgn/THidvOQf9n2@lstrano-desk.jf.intel.com>
-X-ClientProxiedBy: BY3PR05CA0037.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::12) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ds43s5w6vz2xHW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 11:43:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768437823;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gZMvfwQ4Hlm3TIovlOL6vMdTiejp6wE8OmDKDcw/1gY=;
+	b=ROHcDVGR3TSdgJMnlAKdnNFDsVv85IXeBqcayCLCRWkEnIrFkc50Kk/cYlrJp0dkYNZl2g
+	aC5Lw8FVo0aR2K/3uh2u16RkZDc7td6Jxj8jBNCps4yzKCOhlB1qlMlhF6fgqHOefL0ZUL
+	Pk0cCE3ig4Nl7GeKFv/pnqN6CQEnel8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768437824;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gZMvfwQ4Hlm3TIovlOL6vMdTiejp6wE8OmDKDcw/1gY=;
+	b=hyNHL5Xynm8JZqf4ocplid8BCtTdhsooDG12kEU3KTW2Pj0c47L9BHiUHuwPceGW+AUU3f
+	sk/dN5fyUx6pbryC9qTi1olEh0wHi/QyjwAmLLfv8Vdpw7U6CQVhTa/lAfjXEtRUQThmYa
+	AuhAD5W9PNdr9zm0p3UVLl49wE60SZw=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-354-1ySNKYYrPJWoXJyJkG5_eg-1; Wed, 14 Jan 2026 19:43:42 -0500
+X-MC-Unique: 1ySNKYYrPJWoXJyJkG5_eg-1
+X-Mimecast-MFC-AGG-ID: 1ySNKYYrPJWoXJyJkG5_eg_1768437821
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-34c21341f56so556165a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jan 2026 16:43:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768437819; x=1769042619;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gZMvfwQ4Hlm3TIovlOL6vMdTiejp6wE8OmDKDcw/1gY=;
+        b=D+DF+iJpp8SLfguqxhBjnVAcBW7siZ5ByXsBGCuwN2wJbbr5y4+Tv63tSITgBJNa20
+         HkFQBDQfdCWg/jujlJ8YWrc39LCA7haY65+fdlfZYhu+jwl988j6LQGG6/DhXGBN/f6J
+         iwSeq0yTw2XPHpa0De3fhvGqb9QTshqCjDnmIxFR+6jiJglWrz8mX1Zd47YhPG1joqu7
+         00xQGoqm2DOyNy+fRvPw+kt0hS46o2pVyJSroqB4QR4EyyQzzqcc36imjSy95AwXWXrp
+         RbnTvfk5tBtC0J7/PJuOsuJaXjGQvCcA2tvaBAdBzgLCXG/iCh69Wgps2dIg1ECiwqNu
+         +NCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVi6L50JDSu95gM1S7S9HK7+c4PE6YSmRJJrBaPEswAn84nlTn1Qt5VRWM8UOq23TdepPVkxAPfeJfpF08=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxX2YURL++etc/w2En8yxt90d7JOqISt2v4Ror7vTjK9fz1Ftoe
+	6UYYItDQrmJmv1jUHAur5cIkbsdkQjsSZOoiwAVs5sADfizhHSP/env+3GBJAr1IJGqzxJIGbJt
+	NXdPwp5AC2ga0GK9/g44GnYP2AgGrV/rQsGiFoSk5S7OQWMiEUsn+E2vP/ebjY5gdhsk=
+X-Gm-Gg: AY/fxX4BHff/a/AZBciWEnciCL5fBJZM3JSHx4CD8JK3/XKneAjS5G4O1e+Aeb+pYGR
+	i2PknQnXBy7EJBh0ZhxVHzHs0T8c2E4psAw5lsDh+510QkrpqO9sLFlJ9DQPVYeJy9cJBgMSk3R
+	NUB1Hx3xIQ3e1SS+udWPWYeuJt4lRVQa8sSLo8QmrOrpnk1JcXZ4vz6w/r1kHKgrBPuhv8xeVjE
+	5iTKC/TAdOwHCdBzAmiFCbdr+fzVzAbPMBH2ISEDAEsvJCM15A0WojWIDwLht6WLzJxS5DB+UQR
+	DYq27PyssftC/bn2D/Vni4NYlYW/1v0jbkoxHb5OVVI+DUxVY514UBMYoEhoXLinSDLkq9C6ZIf
+	N
+X-Received: by 2002:a17:90b:4b86:b0:341:8601:d77a with SMTP id 98e67ed59e1d1-35109137fb9mr4491757a91.29.1768437819000;
+        Wed, 14 Jan 2026 16:43:39 -0800 (PST)
+X-Received: by 2002:a17:90b:4b86:b0:341:8601:d77a with SMTP id 98e67ed59e1d1-35109137fb9mr4491722a91.29.1768437818367;
+        Wed, 14 Jan 2026 16:43:38 -0800 (PST)
+Received: from localhost ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-352677ca9acsm511892a91.1.2026.01.14.16.43.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 16:43:38 -0800 (PST)
+From: Coiby Xu <coxu@redhat.com>
+To: linux-integrity@vger.kernel.org
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huaweicloud.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)),
+	linux-kernel@vger.kernel.org (open list),
+	linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)),
+	linux-s390@vger.kernel.org (open list:S390 ARCHITECTURE),
+	linux-efi@vger.kernel.org (open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)),
+	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM),
+	keyrings@vger.kernel.org (open list:KEYS/KEYRINGS_INTEGRITY)
+Subject: [PATCH 1/3] integrity: Make arch_ima_get_secureboot integrity-wide
+Date: Thu, 15 Jan 2026 08:43:23 +0800
+Message-ID: <20260115004328.194142-2-coxu@redhat.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260115004328.194142-1-coxu@redhat.com>
+References: <20260115004328.194142-1-coxu@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -135,145 +142,473 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SA2PR11MB4796:EE_
-X-MS-Office365-Filtering-Correlation-Id: 82b5003e-13df-436e-8938-08de53c7d069
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?QmlEWVc2M25wbGhwZFU4U3kzYW9Bc3gwZGhhRVdWSEhVVWcwN3c2R0Z6MlFi?=
- =?utf-8?B?NTh2dkFnT0s3b0JXWm43S3FsVFZQYS8zN1k2TC9Ndng0a0t1OTUrUnVmUGJQ?=
- =?utf-8?B?b1hBeGtVcUF1S2hXeEpRVkJHYk1ZdWtMWTkxWWZiM1J2NytudWFSQW5CY1E0?=
- =?utf-8?B?bFQ1UmVheHVoUXJTcFhvYWk1UnJqdTEyZzdrSGRhc2Y0QzZpcXVESHlvbVgz?=
- =?utf-8?B?Y0NETnNxdFk0Vzg4NXBFMEcreHBpV3NodXhMSXg3SEpLS3EzY01Edi9OZFE0?=
- =?utf-8?B?eVNiTTRnR3hTZUhzTk01YVF6QWtOdmQxNUVBazNtT2h6SzVScEJDVmJYOEZw?=
- =?utf-8?B?c2pvTmg2Uk1mT1ppS1dWS2RlZUJPVSszdENPeE5ZSThuWFRXYmNOODdBN1V1?=
- =?utf-8?B?dmt2aldTTDdSdXdvcTI1YVVlZDZSZGhUSHlhYXkyU2U1dkszM1RsenA0K2Zx?=
- =?utf-8?B?ZlBuODN3QVlxeDFDNC9oRk5pNmNiMnZ2Ykh6RGhsQVM0VnRrOXI4eFllb2Rj?=
- =?utf-8?B?OVlHL21kMEVjR3FtaW5Lc0xFNUE2cnFvVkY0bkFxcGhLUHhXOUl5MisySmdk?=
- =?utf-8?B?TEpQVVdjVGlPMHZjdUd0NU84MUJJZzI0MUdjcHlsSVMxWWE2b0Z3a2xoWUhj?=
- =?utf-8?B?QVUvbEtCR1hsTXBoODZSeFRKVjd0MndHbmhKR3Ywdzg0dlJBRjlQOUl6YWtE?=
- =?utf-8?B?eUI0ZzJqajd6NDhHMWhFUkRmc3RTcGgxcTZMWFRZRURtODhqUjFuSnhTMWFT?=
- =?utf-8?B?UzQ1STluWFpXOGZBWFdWZGIwdzJ1QzY0Sms5NlIrMmxnWUtRRCt3SDlqRUhR?=
- =?utf-8?B?bis1MExWOFBKV0tNRWtvcjROcXhKT1JjWk5OWjQwR2NublRCRWFqWWhCbkhG?=
- =?utf-8?B?c1RHN1Q0ZXNTNUc4N1Yxd2hkN09rS1I0dkoyc0drTWdobnp6b1FJODZhUTND?=
- =?utf-8?B?NUtvZVJleUxWa2F4WUJJcVhVZmxVR2VBdDJVWE1nZFJpa3NrUWpUZ3g0Tmx2?=
- =?utf-8?B?RlRBNlpidnM5K2dROHgxS3hJalFSa3ZLWGtCUzhpbEoyMEFITk5XTG5YUWQr?=
- =?utf-8?B?bC9DVmIvbXFyZW9XNDJmWmQxZDdJZ1gxMnlobXFXTnR2eEZWK0ZRMFNlRkJI?=
- =?utf-8?B?MHFTa09BU0p2bHpkWkMvQkcxTWtwSkdlU1NaLzZteGlIT2JXdTZrM1dDaFNk?=
- =?utf-8?B?Z0dPL2VFUWREa2tMK2JtblMzWEVOZlNQeUpyYjZIRktNcjN3N0d5VGtwRzFB?=
- =?utf-8?B?eEp1R2tGbWVNSE1JY1phRzd0VkJkclVWSHZBNFNLOEhPRSt1UythWDZMVXl3?=
- =?utf-8?B?TVk0VU92a2ZzWWQxdUZwVm5sc0paTFZqK0p2OWY1Tk45dDZLZUdUTHI3cTVW?=
- =?utf-8?B?eEViRjllajdib0x1RzI4bHFCaU1BVXpwb3Uvd2QvOGUyYUZzalQzaDdGMzg4?=
- =?utf-8?B?ZC9EWEJIRzRsN21ZSmhGeTliSXFyYlJ6TVFWeEVzTnM0L2h2L1A1ZEhmbUJ1?=
- =?utf-8?B?ODNtbFFRWExIblMyUmhzQWE0TE12d2x6eVJsMjdCU2NKUjQvMlA4SkM3OURP?=
- =?utf-8?B?ejh1MWhmRmZZZGVMemM5SmlRZW05cjRBTitoZUo0YmoweTFLc1R5eVBBaTI0?=
- =?utf-8?B?bFZvb09uTXJsUnh0azl2NG81OUpQbUtnQ3Nrbi8yRkpIL3pRRW5nNmhWZEFW?=
- =?utf-8?B?cGpUZmthR2p5UVIycFgwbHpmZmU5clp5Q1FMNjgvZlJ4UmQ3VmplVW9Pd1pm?=
- =?utf-8?B?VHJiQSt5WVIxQkJsMW5hNmRGT1kybFFzRnAxR1RROUxwcWpDVnQvMFkwTnhQ?=
- =?utf-8?B?NU50WFlEUWhnelB1N01xUVdrVGRkeUNtMm1XL1dnRXNEdHBQdWJ4MzQ0SWFL?=
- =?utf-8?B?Tk5yY0JCRFdKNkk2UXl1TStIOUR6M1lYMjFpUVE5UllJblIybkdLTmhYTm45?=
- =?utf-8?B?SEpybG1md2VqVTZCYnk5YWJNRkU4bHhzWHg5ZXJxaHR6bkFYT05mQWtKS3g2?=
- =?utf-8?B?ZjFrV0w3cWxyY0RNRDd1eEx5VHdTakQ2TmZkc0ZOc0pYWENtVHgwd1YwT3Zl?=
- =?utf-8?B?cUJlMVRuV08xRHEvNVBicXBIVEV5bFEzWTRzMThKeXhSNlV3Ti82c1lJOS9T?=
- =?utf-8?Q?q6Z8=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WUFIOUdDYW9QdWpMOUxaZHNBajlUK01FajR5cXNmYWdSTHlVWXM1bDBJZEVs?=
- =?utf-8?B?WWQ3ZTBocnZMU014K2xpejE4ckgveW5UdmVxVi9oS1A2c3VOVHNubUxLZTJ0?=
- =?utf-8?B?ZFJzaWRzWkZ4M2tLMnhRWmJIYzR1SzVqOEVISzVpOVVKNmovek11eEE2dEs5?=
- =?utf-8?B?MDIwaU44N3EwZE9DUE52a21rbnBxdFNHMGl0ZkRLRlp2c1FTdnpGejZ6U0ZT?=
- =?utf-8?B?QlY4YmQ2MWkwamdTRmtmVkEyUW9jNVpUejF3T0lwNVllZWtVR0RleWVJdWJy?=
- =?utf-8?B?dnczUGZXWVVzNFlvL21uSEhnVHZiOGVHN2VKNTRwcDFxV3laNGlMM3hLV0xN?=
- =?utf-8?B?cUtLUEtiSk9QT2llK1RxRWhtWkF3anZWakhZUWtERW5pYUFhOGE2VTZZV01H?=
- =?utf-8?B?MGl5bTlSbHp6TzduNWt5TkV5S01WamJUVWZwMTlEb2Q3N3lmdWVvVndra2pK?=
- =?utf-8?B?b2pqZERVVjR4QkM2TEtsRjZoN2RoSDd4RGp3SzMxRDdBRFFmc2pNeDlYelRt?=
- =?utf-8?B?YVJ4NXRnUWVxL1BiTjdGM3lIQkRRWDQ0SnVGR01xNWl2amZUZE55eDRtU3I1?=
- =?utf-8?B?M1ZzK1dvYzNEUlI4SUQ0RFFvU3Z0TXVRVkRwUUJvaXVVbjZybndLeVhuUVJv?=
- =?utf-8?B?RlE1K21OWDVhU0I2TDJCNXBqaUQzeU0rNjRsdlNsQjl1OUJSTXFKN0xVa3Nr?=
- =?utf-8?B?dUw5SWhlNkpLazh3Z2V3dlBHSDJPUzQyQTJsV1hsSWJjUEZDZHFSa1ovMEEw?=
- =?utf-8?B?YTYzRE53QlVzR0dZd2FrQnpQUmVhTUhQa0p4cTBldW5lZCtsd3RoWStxbGdm?=
- =?utf-8?B?UFhQN0NGeE5xUVRCUk5xcEFNTnZxRHBtY3o0Q0gzczczc3pJVkt6MkUxTFRL?=
- =?utf-8?B?QVgxaEJ4ancwRGJqM2dIUTd1NmplNktUUDhLeWs4Z3RqYVRjMnphQmlMSllX?=
- =?utf-8?B?UVB0bi95V2p1V2I0cHJOYXdFYzRudXFvQ3dKODkzMjJveDg4V01EdUhqRTVC?=
- =?utf-8?B?M1ZtcmFmQWM5ai9EVnRZd2o0MG0xb0crUlZLT2ZmQ3FWT1J5bllPZlhRbzVC?=
- =?utf-8?B?cGVSS05henQwVGdXS2REb2FVTm9UcGlKVXBTR1NYQmtpOWZBcGhUQ1JYcmNz?=
- =?utf-8?B?ZlVBRU1yL1JBSHZ1UitUQU5RaWdRcmk0YXNUcFV5SG01SzlJa2Z5NlF3aWJJ?=
- =?utf-8?B?MlQ4ZW9YaEZkYkpQWkVmUGR3ZjFaa3ptTG0rVmF5QkZLMkZyRWlBRnd3TGdx?=
- =?utf-8?B?VUphWlk3TElteTl0K2ZLbGY5VUJwMTBOZEg3Q0hoQmRIbm5mdlprcUVCUE9F?=
- =?utf-8?B?c29hSk9nZUlLcis0OFF6dUVPMjV5WDJFcjhNWWxPMUJiN1Q2V0FLSmNoaUl6?=
- =?utf-8?B?OTFBUm9RcWlwUW5EMFZ6VmhNT0ppUEFEWUYySTM2Q2cweEQvM25uSXZTeDJp?=
- =?utf-8?B?QmJYbEkzekova01pOG11Q1VXL1liWXZVNXcvRzA3UWVvU0ZwMFVES0xzYW5X?=
- =?utf-8?B?QVZpMUc2RzZIYkxveHRxaUZveUFYalFUc0lpMkt6TGR1WjNrVG1mOENUNkwr?=
- =?utf-8?B?MU1KanR4VWF2RHB5emVyQlUvQnE4U1N0OTAya1dSRHFkRGQ4YUFBaVhqN0Vo?=
- =?utf-8?B?K1NxckJkYnZ3TzBqdUdFRWdYQU91LzBxdlVJM2V1b0E5VU54WWY0KzFkSFYx?=
- =?utf-8?B?b3VvNlhOTHdMREtxRk5VWmJuQkRLUWNHaGE1UjdrK25NeGxSWDJ5bVlxVjBW?=
- =?utf-8?B?SHJMTndmM21FSDRBYmRXKzh0TzVxVVQvT2dWbk1ncnZSV1BpSk92SkpYczFG?=
- =?utf-8?B?Zi93cHpXQkY2YmlXYnVZMkdsaWw3S0UzUStzNXBjNzBwY3Bld1ovZW1PQXhD?=
- =?utf-8?B?WnBRSWZTelZwM1pkbVFtR1VyaWxZV2J4K0U1SzNKY1Z4QTE0Y1hKc2hRQUFE?=
- =?utf-8?B?Sy8wNmtrTDk0V0wyeEFBcEZWYlRDcUQvVE5NUHBQTWx3Q2ZjRXFQY1pZL0dC?=
- =?utf-8?B?OXNHMHIwaVgwM2phZVhqenhkd2JMblM2dEUrT0FMdGNLUGJ5bjFiQXRPOTFF?=
- =?utf-8?B?Q3JQMGRjTWRhSlJMTXVIU0lyeDJxNUdkbEZuTWVZVHEzU0FpdWRKK0lUZ05Q?=
- =?utf-8?B?VzkxZ2NhYStTVml2MDhDdTlRVmVwTmtCS1U3S0VPaytIOC9SQTB1Mm9SZi9M?=
- =?utf-8?B?K1NPTlZsNVhsUWpSNE1YVUpCdU9WallPSDFqanFDWjZ6ZXNnZnRnWGNBWktt?=
- =?utf-8?B?bzRkNjJxK0NxSTNhS21sd2xQRHgyQ3hHdzRkMk9FR2RqL0pMa0tFT0s2Zngv?=
- =?utf-8?B?dURtUnQ4bDFUNDBpL1hGZmp6YWJjS1BhdEJWMmVTd1dUekRsTWwycDZkd1I4?=
- =?utf-8?Q?C5028yi6b8vnG9sM=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82b5003e-13df-436e-8938-08de53c7d069
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 23:51:19.4949
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eIQ194zIB1rI9qRl8zQWVcQUQp6CkhoONlGgmsYQk/nqc03h38d2D8MCfTtKKn9qSfOqAqHGhnsq1iKOXNB5kw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4796
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: mxGWJo92F7QCkawJhtm05x_BXWm2P82dOs8FqDySz9M_1768437821
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Jan 14, 2026 at 03:34:21PM -0800, Matthew Brost wrote:
-> On Wed, Jan 14, 2026 at 01:48:25PM -0800, Andrew Morton wrote:
-> > On Wed, 14 Jan 2026 20:19:52 +0100 Francois Dugast <francois.dugast@intel.com> wrote:
-> > 
-> > > Reinitialize metadata for large zone device private folios in
-> > > zone_device_page_init prior to creating a higher-order zone device
-> > > private folio. This step is necessary when the folio’s order changes
-> > > dynamically between zone_device_page_init calls to avoid building a
-> > > corrupt folio. As part of the metadata reinitialization, the dev_pagemap
-> > > must be passed in from the caller because the pgmap stored in the folio
-> > > page may have been overwritten with a compound head.
-> > 
-> > Thanks.  What are the worst-case userspace-visible effects of the bug?
-> 
-> If you reallocate a subset of pages from what was originally a large
-> device folio, the pgmap mapping becomes invalid because it was
-> overwritten by the compound head, and this can crash the kernel.
-> 
-> Alternatively, consider the case where the original folio had an order
-> of 9 and _nr_pages was set. If you then reallocate the folio plus one as
+EVM and other LSMs need the ability to query the secure boot status of
+the system, without directly calling the IMA arch_ima_get_secureboot
+function. Refactor the secure boot status check into a general,
+integrity-wide function named arch_integrity_get_secureboot.
 
-s/_nr_pages/the order was encoded the page flags.
+Define a new Kconfig option CONFIG_INTEGRITY_SECURE_BOOT, which is
+automatically configured by the supported architectures. The existing
+IMA_SECURE_AND_OR_TRUSTED_BOOT Kconfig loads the architecture specific
+IMA policy based on the refactored secure boot status code.
 
-Not clearing _nr_pages is probably bad too, not sure what the side
-affect of that is, but it can't be good. 
+Reported-and-suggested-by: Mimi Zohar <zohar@linux.ibm.com>
+Suggested-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
+Signed-off-by: Coiby Xu <coxu@redhat.com>
+---
+ arch/arm64/Kconfig                            |  1 +
+ arch/powerpc/Kconfig                          |  1 +
+ arch/powerpc/kernel/Makefile                  |  2 +-
+ arch/powerpc/kernel/ima_arch.c                |  5 --
+ arch/powerpc/kernel/integrity_sb_arch.c       | 13 +++++
+ arch/s390/Kconfig                             |  1 +
+ arch/s390/kernel/Makefile                     |  1 +
+ arch/s390/kernel/ima_arch.c                   |  6 --
+ arch/s390/kernel/integrity_sb_arch.c          |  9 +++
+ arch/x86/Kconfig                              |  1 +
+ arch/x86/include/asm/efi.h                    |  4 +-
+ arch/x86/platform/efi/efi.c                   |  2 +-
+ include/linux/ima.h                           |  7 +--
+ include/linux/integrity.h                     |  8 +++
+ security/integrity/Kconfig                    |  6 ++
+ security/integrity/Makefile                   |  3 +
+ security/integrity/efi_secureboot.c           | 56 +++++++++++++++++++
+ security/integrity/ima/ima_appraise.c         |  2 +-
+ security/integrity/ima/ima_efi.c              | 47 +---------------
+ security/integrity/ima/ima_main.c             |  4 +-
+ security/integrity/platform_certs/load_uefi.c |  2 +-
+ 21 files changed, 111 insertions(+), 70 deletions(-)
+ create mode 100644 arch/powerpc/kernel/integrity_sb_arch.c
+ create mode 100644 arch/s390/kernel/integrity_sb_arch.c
+ create mode 100644 security/integrity/efi_secureboot.c
 
-> an individual page, the flags would still have PG_locked set, causing a
-> hang the next time you try to lock the page.
-> 
-> This is pretty bad if drivers implement a buddy allocator for device
-> pages (Xe does; Nouveau doesn’t, which is why they haven’t hit this
-> issue). Only Nouveau enables large device pages in 6.19 but probably
-> best to have kernel flying around with known issues.
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 93173f0a09c7..4c265b7386bb 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -2427,6 +2427,7 @@ config EFI
+ 	select EFI_STUB
+ 	select EFI_GENERIC_STUB
+ 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT
++	imply INTEGRITY_SECURE_BOOT
+ 	default y
+ 	help
+ 	  This option provides support for runtime services provided
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 9537a61ebae0..878f752c35fb 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -1058,6 +1058,7 @@ config PPC_SECURE_BOOT
+ 	depends on PPC_POWERNV || PPC_PSERIES
+ 	depends on IMA_ARCH_POLICY
+ 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT
++	imply INTEGRITY_SECURE_BOOT
+ 	select PSERIES_PLPKS if PPC_PSERIES
+ 	help
+ 	  Systems with firmware secure boot enabled need to define security
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index 2f0a2e69c607..3bb1fb9a1e0e 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -168,7 +168,7 @@ ifneq ($(CONFIG_PPC_POWERNV)$(CONFIG_PPC_SVM),)
+ obj-y				+= ucall.o
+ endif
+ 
+-obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o ima_arch.o secvar-ops.o
++obj-$(CONFIG_PPC_SECURE_BOOT)	+= secure_boot.o ima_arch.o integrity_sb_arch.o secvar-ops.o
+ obj-$(CONFIG_PPC_SECVAR_SYSFS)	+= secvar-sysfs.o
+ 
+ # Disable GCOV, KCOV & sanitizers in odd or sensitive code
+diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
+index b7029beed847..0d8892a03526 100644
+--- a/arch/powerpc/kernel/ima_arch.c
++++ b/arch/powerpc/kernel/ima_arch.c
+@@ -7,11 +7,6 @@
+ #include <linux/ima.h>
+ #include <asm/secure_boot.h>
+ 
+-bool arch_ima_get_secureboot(void)
+-{
+-	return is_ppc_secureboot_enabled();
+-}
+-
+ /*
+  * The "secure_rules" are enabled only on "secureboot" enabled systems.
+  * These rules verify the file signatures against known good values.
+diff --git a/arch/powerpc/kernel/integrity_sb_arch.c b/arch/powerpc/kernel/integrity_sb_arch.c
+new file mode 100644
+index 000000000000..29f9494391a3
+--- /dev/null
++++ b/arch/powerpc/kernel/integrity_sb_arch.c
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2019 IBM Corporation
++ * Author: Nayna Jain
++ */
++
++#include <linux/integrity.h>
++#include <asm/secure_boot.h>
++
++bool arch_integrity_get_secureboot(void)
++{
++	return is_ppc_secureboot_enabled();
++}
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 0e5fad5f06ca..db0383b19493 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -78,6 +78,7 @@ config S390
+ 	# Note: keep this list sorted alphabetically
+ 	#
+ 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT
++	imply INTEGRITY_SECURE_BOOT
+ 	select ALTERNATE_USER_ADDRESS_SPACE
+ 	select ARCH_32BIT_USTAT_F_TINODE
+ 	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
+diff --git a/arch/s390/kernel/Makefile b/arch/s390/kernel/Makefile
+index 42c83d60d6fa..ee976a27e677 100644
+--- a/arch/s390/kernel/Makefile
++++ b/arch/s390/kernel/Makefile
+@@ -72,6 +72,7 @@ obj-$(CONFIG_KEXEC_FILE)	+= machine_kexec_file.o kexec_image.o
+ obj-$(CONFIG_KEXEC_FILE)	+= kexec_elf.o
+ obj-$(CONFIG_CERT_STORE)	+= cert_store.o
+ obj-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT)	+= ima_arch.o
++obj-$(CONFIG_INTEGRITY_SECURE_BOOT)	+= integrity_sb_arch.o
+ 
+ obj-$(CONFIG_PERF_EVENTS)	+= perf_event.o
+ obj-$(CONFIG_PERF_EVENTS)	+= perf_cpum_cf.o perf_cpum_sf.o
+diff --git a/arch/s390/kernel/ima_arch.c b/arch/s390/kernel/ima_arch.c
+index f3c3e6e1c5d3..6ccbe34ce408 100644
+--- a/arch/s390/kernel/ima_arch.c
++++ b/arch/s390/kernel/ima_arch.c
+@@ -1,12 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ #include <linux/ima.h>
+-#include <asm/boot_data.h>
+-
+-bool arch_ima_get_secureboot(void)
+-{
+-	return ipl_secure_flag;
+-}
+ 
+ const char * const *arch_get_ima_policy(void)
+ {
+diff --git a/arch/s390/kernel/integrity_sb_arch.c b/arch/s390/kernel/integrity_sb_arch.c
+new file mode 100644
+index 000000000000..208a28cb9961
+--- /dev/null
++++ b/arch/s390/kernel/integrity_sb_arch.c
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/integrity.h>
++#include <asm/boot_data.h>
++
++bool arch_integrity_get_secureboot(void)
++{
++	return ipl_secure_flag;
++}
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 80527299f859..5051cc80309a 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -330,6 +330,7 @@ config X86
+ 	select FUNCTION_ALIGNMENT_16B		if X86_64 || X86_ALIGNMENT_16
+ 	select FUNCTION_ALIGNMENT_4B
+ 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
++	imply INTEGRITY_SECURE_BOOT             if EFI
+ 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
+ 	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
+ 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
+diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+index f227a70ac91f..d409f11da331 100644
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -401,9 +401,9 @@ extern int __init efi_memmap_split_count(efi_memory_desc_t *md,
+ extern void __init efi_memmap_insert(struct efi_memory_map *old_memmap,
+ 				     void *buf, struct efi_mem_range *mem);
+ 
+-extern enum efi_secureboot_mode __x86_ima_efi_boot_mode(void);
++enum efi_secureboot_mode __x86_integrity_efi_boot_mode(void);
+ 
+-#define arch_ima_efi_boot_mode	__x86_ima_efi_boot_mode()
++#define arch_integrity_efi_boot_mode __x86_integrity_efi_boot_mode()
+ 
+ #ifdef CONFIG_EFI_RUNTIME_MAP
+ int efi_get_runtime_map_size(void);
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 463b784499a8..94704858f17a 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -921,7 +921,7 @@ umode_t efi_attr_is_visible(struct kobject *kobj, struct attribute *attr, int n)
+ 	return attr->mode;
+ }
+ 
+-enum efi_secureboot_mode __x86_ima_efi_boot_mode(void)
++enum efi_secureboot_mode __x86_integrity_efi_boot_mode(void)
+ {
+ 	return boot_params.secure_boot;
+ }
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index 8e29cb4e6a01..fc0ce1e27a2f 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -11,6 +11,7 @@
+ #include <linux/fs.h>
+ #include <linux/security.h>
+ #include <linux/kexec.h>
++#include <linux/integrity.h>
+ #include <crypto/hash_info.h>
+ struct linux_binprm;
+ 
+@@ -72,14 +73,8 @@ int __init ima_get_kexec_buffer(void **addr, size_t *size);
+ #endif
+ 
+ #ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
+-extern bool arch_ima_get_secureboot(void);
+ extern const char * const *arch_get_ima_policy(void);
+ #else
+-static inline bool arch_ima_get_secureboot(void)
+-{
+-	return false;
+-}
+-
+ static inline const char * const *arch_get_ima_policy(void)
+ {
+ 	return NULL;
+diff --git a/include/linux/integrity.h b/include/linux/integrity.h
+index f5842372359b..39e8961b58dd 100644
+--- a/include/linux/integrity.h
++++ b/include/linux/integrity.h
+@@ -61,5 +61,13 @@ integrity_inode_attrs_changed(const struct integrity_inode_attributes *attrs,
+ 		!inode_eq_iversion(inode, attrs->version));
+ }
+ 
++#ifdef CONFIG_INTEGRITY_SECURE_BOOT
++bool arch_integrity_get_secureboot(void);
++#else
++static inline bool arch_integrity_get_secureboot(void)
++{
++	return false;
++}
++#endif
+ 
+ #endif /* _LINUX_INTEGRITY_H */
+diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
+index 916d4f2bfc44..1c3e54df3b73 100644
+--- a/security/integrity/Kconfig
++++ b/security/integrity/Kconfig
+@@ -97,6 +97,12 @@ config INTEGRITY_CA_MACHINE_KEYRING_MAX
+ 	  will not be loaded. The remaining MOK keys are loaded into the
+ 	  .platform keyring.
+ 
++config INTEGRITY_SECURE_BOOT
++       bool
++       help
++          This option is selected by architectures to provide secure boot
++          related helper functions.
++
+ config LOAD_UEFI_KEYS
+ 	depends on INTEGRITY_PLATFORM_KEYRING
+ 	depends on EFI
+diff --git a/security/integrity/Makefile b/security/integrity/Makefile
+index 92b63039c654..08622460e6fd 100644
+--- a/security/integrity/Makefile
++++ b/security/integrity/Makefile
+@@ -18,6 +18,9 @@ integrity-$(CONFIG_LOAD_IPL_KEYS) += platform_certs/load_ipl_s390.o
+ integrity-$(CONFIG_LOAD_PPC_KEYS) += platform_certs/efi_parser.o \
+                                      platform_certs/load_powerpc.o \
+                                      platform_certs/keyring_handler.o
++ifeq ($(CONFIG_EFI),y)
++integrity-$(CONFIG_INTEGRITY_SECURE_BOOT) += efi_secureboot.o
++endif
+ # The relative order of the 'ima' and 'evm' LSMs depends on the order below.
+ obj-$(CONFIG_IMA)			+= ima/
+ obj-$(CONFIG_EVM)			+= evm/
+diff --git a/security/integrity/efi_secureboot.c b/security/integrity/efi_secureboot.c
+new file mode 100644
+index 000000000000..93d5086217d2
+--- /dev/null
++++ b/security/integrity/efi_secureboot.c
+@@ -0,0 +1,56 @@
++// SPDX-License-Identifier: GPL-1.0+
++/*
++ * Copyright (C) 2018 IBM Corporation
++ */
++#include <linux/efi.h>
++#include <linux/integrity.h>
++#include <asm/efi.h>
++
++#ifndef arch_integrity_efi_boot_mode
++#define arch_integrity_efi_boot_mode efi_secureboot_mode_unset
++#endif
++
++static enum efi_secureboot_mode get_sb_mode(void)
++{
++	enum efi_secureboot_mode mode;
++
++	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
++		pr_info("integrity: secureboot mode unknown, no efi\n");
++		return efi_secureboot_mode_unknown;
++	}
++
++	mode = efi_get_secureboot_mode(efi.get_variable);
++	if (mode == efi_secureboot_mode_disabled)
++		pr_info("integrity: secureboot mode disabled\n");
++	else if (mode == efi_secureboot_mode_unknown)
++		pr_info("integrity: secureboot mode unknown\n");
++	else
++		pr_info("integrity: secureboot mode enabled\n");
++	return mode;
++}
++
++/*
++ * Query secure boot status
++ *
++ * Note don't call this function too early e.g. in __setup hook otherwise the
++ * kernel may hang when calling efi_get_secureboot_mode.
++ *
++ */
++bool arch_integrity_get_secureboot(void)
++{
++	static enum efi_secureboot_mode sb_mode;
++	static bool initialized;
++
++	if (!initialized && efi_enabled(EFI_BOOT)) {
++		sb_mode = arch_integrity_efi_boot_mode;
++
++		if (sb_mode == efi_secureboot_mode_unset)
++			sb_mode = get_sb_mode();
++		initialized = true;
++	}
++
++	if (sb_mode == efi_secureboot_mode_enabled)
++		return true;
++	else
++		return false;
++}
+diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity/ima/ima_appraise.c
+index 5149ff4fd50d..f45106cad443 100644
+--- a/security/integrity/ima/ima_appraise.c
++++ b/security/integrity/ima/ima_appraise.c
+@@ -27,7 +27,7 @@ core_param(ima_appraise, ima_appraise_cmdline_default, charp, 0);
+ void __init ima_appraise_parse_cmdline(void)
+ {
+ 	const char *str = ima_appraise_cmdline_default;
+-	bool sb_state = arch_ima_get_secureboot();
++	bool sb_state = arch_integrity_get_secureboot();
+ 	int appraisal_state = ima_appraise;
+ 
+ 	if (!str)
+diff --git a/security/integrity/ima/ima_efi.c b/security/integrity/ima/ima_efi.c
+index 138029bfcce1..d6545ae446c7 100644
+--- a/security/integrity/ima/ima_efi.c
++++ b/security/integrity/ima/ima_efi.c
+@@ -2,52 +2,8 @@
+ /*
+  * Copyright (C) 2018 IBM Corporation
+  */
+-#include <linux/efi.h>
+ #include <linux/module.h>
+ #include <linux/ima.h>
+-#include <asm/efi.h>
+-
+-#ifndef arch_ima_efi_boot_mode
+-#define arch_ima_efi_boot_mode efi_secureboot_mode_unset
+-#endif
+-
+-static enum efi_secureboot_mode get_sb_mode(void)
+-{
+-	enum efi_secureboot_mode mode;
+-
+-	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
+-		pr_info("ima: secureboot mode unknown, no efi\n");
+-		return efi_secureboot_mode_unknown;
+-	}
+-
+-	mode = efi_get_secureboot_mode(efi.get_variable);
+-	if (mode == efi_secureboot_mode_disabled)
+-		pr_info("ima: secureboot mode disabled\n");
+-	else if (mode == efi_secureboot_mode_unknown)
+-		pr_info("ima: secureboot mode unknown\n");
+-	else
+-		pr_info("ima: secureboot mode enabled\n");
+-	return mode;
+-}
+-
+-bool arch_ima_get_secureboot(void)
+-{
+-	static enum efi_secureboot_mode sb_mode;
+-	static bool initialized;
+-
+-	if (!initialized && efi_enabled(EFI_BOOT)) {
+-		sb_mode = arch_ima_efi_boot_mode;
+-
+-		if (sb_mode == efi_secureboot_mode_unset)
+-			sb_mode = get_sb_mode();
+-		initialized = true;
+-	}
+-
+-	if (sb_mode == efi_secureboot_mode_enabled)
+-		return true;
+-	else
+-		return false;
+-}
+ 
+ /* secureboot arch rules */
+ static const char * const sb_arch_rules[] = {
+@@ -67,7 +23,8 @@ static const char * const sb_arch_rules[] = {
+ 
+ const char * const *arch_get_ima_policy(void)
+ {
+-	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot()) {
++	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) &&
++	    arch_integrity_get_secureboot()) {
+ 		if (IS_ENABLED(CONFIG_MODULE_SIG))
+ 			set_module_sig_enforced();
+ 		if (IS_ENABLED(CONFIG_KEXEC_SIG))
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index 5770cf691912..3f267557dfbe 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -949,8 +949,8 @@ static int ima_load_data(enum kernel_load_data_id id, bool contents)
+ 
+ 	switch (id) {
+ 	case LOADING_KEXEC_IMAGE:
+-		if (IS_ENABLED(CONFIG_KEXEC_SIG)
+-		    && arch_ima_get_secureboot()) {
++		if (IS_ENABLED(CONFIG_KEXEC_SIG) &&
++		    arch_integrity_get_secureboot()) {
+ 			pr_err("impossible to appraise a kernel image without a file descriptor; try using kexec_file_load syscall.\n");
+ 			return -EACCES;
+ 		}
+diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
+index d1fdd113450a..3042a0c536d6 100644
+--- a/security/integrity/platform_certs/load_uefi.c
++++ b/security/integrity/platform_certs/load_uefi.c
+@@ -212,7 +212,7 @@ static int __init load_uefi_certs(void)
+ 	}
+ 
+ 	/* the MOK/MOKx can not be trusted when secure boot is disabled */
+-	if (!arch_ima_get_secureboot())
++	if (!arch_integrity_get_secureboot())
+ 		return 0;
+ 
+ 	mokx = get_cert_list(L"MokListXRT", &mok_var, &mokxsize, &status);
+-- 
+2.52.0
 
-s/best to have kernel/best to not have kernels
-
-Matt
-
-> 
-> Matt
 
