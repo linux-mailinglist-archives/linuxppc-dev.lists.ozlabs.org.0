@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-15820-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15821-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67473D2427E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 12:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DE1D242A2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 12:26:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dsLHz75lrz309H;
-	Thu, 15 Jan 2026 22:25:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dsLKd3ZZYz309H;
+	Thu, 15 Jan 2026 22:26:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768476319;
-	cv=none; b=MOjCNj4tKlFiFnD7refQvqINYa7KsArbSdiYAvFDg+6c41KLDeRWS5ZY6qxUUWIwjOl8n7SXHDo2Be4JcY/3P1Kg7WASuASwN1cLtsxC79GHhUEHIoiH31sGCv5RHtsE5hPyCcxDD8M0clCcIHrlRzNIiXtgQPILmRF2ZGidfewq598cA1l7w05hMy429V1dgPUb1yVkdrtd3PsSRGko9M1ZnePg/mVua4TWXj7zTFKqplPDt19z58oCd/e5VTNaWH56uvJFx7gJUWqdYKalfbSfh/k0ni8yS9m08heKWmoAT0ej1EZFakYTYZgNNMaiG4ci/V+ACbHX5vL7NYnqVA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768476405;
+	cv=none; b=RQK5B8VtTP+STIewMHStqfNlm8uKL3YM7nqAkgayU/s4SuepWWFfpLaqcqfJtsuYItECqs5EFH7pZMAGtXMZJErIfZy1i+hAcyvCJZXdRIwiaRVcs7G1cv3Vj7605/Nxd7tjGfw/iKiZToe8n3PfKx9k31eZGaTOg4XswzNjizUCT0+x1RfRtjzInv38rI/gpKaSWqZhn0xxiIqyFqR4K+ZeCbI5BuGEPNDZ3ZN6PYBGAPhssB0PyIjz+ZeLtCl7H9Myx2l40IEVPPkjRC56eKV9L32UrqJStNPAClS0SDKewXokAj/5GD22RSEtx2zy09PjOhszy1blPKXpU1XAiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768476319; c=relaxed/relaxed;
-	bh=o7lMu88GH9XNq/HvGTaD3HCpLqiOZ/rQwAlGAug/3K0=;
+	t=1768476405; c=relaxed/relaxed;
+	bh=IJYsJTAfX8ak5eFccaPzLwiDeE5hKxgiVmqJGYwFjlM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VCZezBJrp+2fcKx/Ukzf2oA0tK6SwohDtydoIEkD1RgIwi7bd4uPZxM6khEitZxo3WBmYJkWsWIBl7Xxq0WuwFR+cBOq2KdloqpXoGB00/plzk/BJ9pHZ6s8fMWcvidAqYmjJmfPbGev0qvgWZUPzcIvemT8wvrs1QcYqJ5HA3+Z/lccnwCGab8C3yGI1KVv2ZwO7HCHQLE059P0wJlCCi1npBVi/k6WHVpStXbzQYp9dzdukwJPr4xd66Nwb6/TQ85mrQbz3LuW9fR93JiotKQ87iPY5HjmrJAeBoaK9bNm13ahphLrUFNu1Lc1xSh8h72qUQgcNMgnjDHyafonJg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ORih6Y0E; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=Wut6rfAw+Gbitx6Wlk6XIPPbXyG9yod4GKZNZ3Kqg7pfpqvfdDT5ih6cmboMsTIV/s6Hobny0JM1eWoUondVVQnR7FPQMxO5v+iqt2h31NYX7r+4Tmz6MqGhDFhZ8+ifUF3o5rxHoyzU9rlXJL7CXLrfslURST8rSJMqrQr6XQEfMZseRmOyqwSuot63pfbA0lB4ZAwX0fQ3zKuo2PDdQjua5Cx4/0yzWi7R3UQm3H5uSGXybvVzBdZD4Z7T3OH8vuw8h58ih86sOMsxYmV+Ig2F4Fr6olW1ZvrcfKK+SWDPuHxURlG82Uq3SgyP9e8BtW4Um+KdspXgfjxWDkGYMw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s8PhOPdL; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ORih6Y0E;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s8PhOPdL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsLHz0rmSz2xJ6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 22:25:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsLKc4s7xz2xJ6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 22:26:44 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 44ECD433F7;
-	Thu, 15 Jan 2026 11:25:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CE0C116D0;
-	Thu, 15 Jan 2026 11:25:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9D28E601B4;
+	Thu, 15 Jan 2026 11:26:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223E7C116D0;
+	Thu, 15 Jan 2026 11:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768476317;
-	bh=NuUJNg7p9CvssE+wFfb/T6IHWjNCFDhowE2ia/5IzEk=;
+	s=k20201202; t=1768476402;
+	bh=uGIn0uiB7IcuN9gqtjkvIgCdXPQNjB5DOqHCWisIo6A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ORih6Y0EXFhuySDVAym0zw7a4Ro9HhQ5U76opqbKNnk7ft8cB7JfjO4eyVcBpdzUm
-	 Euwm1NacPErtdn3bWR0yhfRKmLZcbB4iCbSPV2IydL3OPEG9NuQ9sCxw6TbzHIM869
-	 thQLNel1cZWzkIjUrepp41qvXQkh80Bj77BR9o0Hq9nS2funrG0WrAUvF+6qMmJZD2
-	 t4yQPtM+vifkuyMZOJpeIWkuTrUGDBZYkxgI8lAdvAkT1BBvOYglNIeMVmaSJ8Zas0
-	 hdc/DrbqiigpQ/dBDd5g4D6FWaqjkDRzeohfNG2/KAOdiRIsIbjDMQByATMAS8bnbB
-	 e83vuA1vazYBQ==
-Message-ID: <284775bd-767d-45f8-b66b-96709dabcc5e@kernel.org>
-Date: Thu, 15 Jan 2026 12:25:08 +0100
+	b=s8PhOPdLs2iDhxXBCFmEZSONVJsxDi7MeVITCsSMpo+fJN8cdm17AFt3IXqxGBp2+
+	 p/ZVHOIhlKg6YPifaA0nbHKTIscyRaQUkchFXGcsekQmiKbAHNck+qYgd0+ohuVhT1
+	 RCxITTx3qUgVwpVFqakzsWdkeiENwAHLLQ2LXs/8K60+1qam6wuEy+bDrFsPzbmcvT
+	 PK501aOwFucfHPiOCvqB+6yIgXhrr1K0OMqqf+DTS2Xuqco8osOpniacO6UE7KtUMX
+	 hwI4QvvL0kKZI+OqCit/SluptX3dOv0hIHU6TcfP8Kq0N6q1GQMoVJiBbIPFYGvQOY
+	 l63cXyljrKIWg==
+Message-ID: <f0091aab-c90e-403c-9f91-f7d82b651985@kernel.org>
+Date: Thu, 15 Jan 2026 12:26:34 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,29 +59,27 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 23/23] MAINTAINERS: move memory balloon infrastructure
- to "MEMORY MANAGEMENT - BALLOON"
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH v2 00/23] mm: balloon infrastructure cleanups
+To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linuxppc-dev@lists.ozlabs.org,
  Broadcom internal kernel review list
  <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
  virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
  Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
  <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
 References: <20260115092015.3928975-1-david@kernel.org>
- <20260115092015.3928975-24-david@kernel.org>
- <f2ce1126-0059-481c-b54f-0b09518666d3@lucifer.local>
+ <20260115043240-mutt-send-email-mst@kernel.org>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,7 +125,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <f2ce1126-0059-481c-b54f-0b09518666d3@lucifer.local>
+In-Reply-To: <20260115043240-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -135,74 +133,34 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 1/15/26 10:39, Lorenzo Stoakes wrote:
-> On Thu, Jan 15, 2026 at 10:20:13AM +0100, David Hildenbrand (Red Hat) wrote:
->> Nowadays, there is nothing virtio-balloon specific anymore about these
->> files, the basic infrastructure is used by multiple memory balloon
->> drivers.
+On 1/15/26 10:32, Michael S. Tsirkin wrote:
+> On Thu, Jan 15, 2026 at 10:19:50AM +0100, David Hildenbrand (Red Hat) wrote:
+>> I started with wanting to remove the dependency of the balloon
+>> infrastructure on the page lock, but ended up performing various other
+>> cleanups, some of which I had on my todo list for years.
 >>
->> For now we'll route it through Andrew's tree, maybe in some future it
->> makes sense to route this through a separate tree.
+>> This series heavily cleans up and simplifies our balloon infrastructure,
+>> including our balloon page migration functionality.
 >>
->> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> 
-> Assuming below fixed + Michael's concern addressed, LGTM so:
-> 
-> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> 
->> ---
->>   MAINTAINERS | 12 ++++++++++--
->>   1 file changed, 10 insertions(+), 2 deletions(-)
+>> With this series, we no longer make use of the page lock for PageOffline
+>> pages as part of the balloon infrastructure (preparing for memdescs
+>> where PageOffline pages won't have any such lock), and simplifies
+>> migration handling such that refcounting can more easily be adjusted
+>> later (long-term focus is for PageOffline pages to not have a refcount
+>> either).
 >>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index de8f89ca1149f..b974f8c1c2225 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -16454,6 +16454,16 @@ T:	quilt git://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new
->>   F:	mm/
->>   F:	tools/mm/
+>> Plenty of related cleanups.
 >>
->> +MEMORY MANAGEMENT - BALLOON
->> +M:	Andrew Morton <akpm@linux-foundation.org>
->> +M:	David Hildenbrand <david@redhat.com>
+>> Heavily compile-tested and heavily runtime-tested with virtio-balloon.
+>> PPC CMM and the VMware balloon are untested and I'd appreciate a helping
+>> hand from people that have suitable environments.
+>>
+>> Not CCing maintainers for the vmscan.c and migrate.c change as they
+>> are rather trivial and I don't want to patchbomb them.
 > 
-> david@kernel.org you mean? ;)
-
-Maybe I just want all the patches to go to /dev/null soon? ;)
-
-The following on top:
-
-
- From 3d344330b1ff6088582fe8e3bbff49d1557eba22 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Date: Thu, 15 Jan 2026 12:23:57 +0100
-Subject: [PATCH] fixup: MAINTAINERS: move memory balloon infrastructure to
-  "MEMORY MANAGEMENT - BALLOON"
-
-CC the virt list and use the proper mail address.
-
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
----
-  MAINTAINERS | 3 ++-
-  1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b974f8c1c2225..11720728d92f2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16456,8 +16456,9 @@ F:	tools/mm/
-  
-  MEMORY MANAGEMENT - BALLOON
-  M:	Andrew Morton <akpm@linux-foundation.org>
--M:	David Hildenbrand <david@redhat.com>
-+M:	David Hildenbrand <david@kernel.org>
-  L:	linux-mm@kvack.org
-+L:	virtualization@lists.linux.dev
-  S:	Maintained
-  W:	http://www.linux-mm.org
-  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
--- 
-2.52.0
+> besides MAINTAINERS thing:
+> 
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
 
 Thanks!
