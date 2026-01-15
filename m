@@ -1,117 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-15822-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15826-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433BCD24479
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 12:47:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F12D245CC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 13:01:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dsLn43qdQz309H;
-	Thu, 15 Jan 2026 22:47:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dsM6B6s1Kz309H;
+	Thu, 15 Jan 2026 23:01:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.177.32 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768477624;
-	cv=pass; b=cgWUpiSTsyz/Y92H4RO5BTtdaZ3WLmH3ONVV/yipWHixczPGgUvYDqqDICrw261GiGXlv5quSmFS6hQ1vmP9MG40vXNmpFsHeMuRzXkTopE/ljwFQR6P4TljqiNV+c9MZx9cUYI2hoNyN8WxyZNdr+SPgPSq3RTbQBSl+E9rSBFLFXFlvSI0iVbEJOqZUpXX1j2Au74gAX7CSrY011EvvjZXH76t6LNQNc4lTQpiVw25lQThBAvHkcKpJ1z8jURrzaXdNXyxJxkVScG5WecxrymKxoihb1Mz/UI1Or610WIphFdCRjtYIYo1wwTJ9IVzsrAI2XwwoHpn63A0y8BACg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768477624; c=relaxed/relaxed;
-	bh=Z73q784EXi17G0oqM8tPUNsqrybVd2SQ4TkBzituy8U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ZQZRpKOKgOsEjlZrbo02/hwqFeilLBcUq9ygaJnkx52YA3kMEC/3pDVnf0gn7c6p0ICnzbEd0h/6VEc68nTWWy0aWpLheksjrykzsUb4XBk0isLTfs0OHjUEvsT6TMqxi4yc+wTcKSCkJJJUE9SXZNp7lMzQ+uzbTYZgfXpMzRcYxRUDomu54gqBjicC1TRsvfPMQAn6aDyiw/NMiruDrg+sbyEiIUQnP8MqTIAYIC8jMQr1z0ro7ustnGgwftISHn0jrsP9jcL57VrPLoLlMu6A0fR9coYL/Ahi26O8vZkgkGm5/eVBVnyUeme0EP//K5OV9UP//nmjZvV4V0RC+g==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=IVQlEtA4; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=sZxs8bGA; dkim-atps=neutral; spf=pass (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=IVQlEtA4;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=sZxs8bGA;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org)
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768478514;
+	cv=none; b=H0g+SzoU+EOy6leuSNQFiqP9K3lfCX+Ut1jEeX5R4avfHfgjyqATev9rBzte/4Po4goh8dlmVwizrEu1rv3An50JphMFrmlR+JqhwXJ1gmCQ83vWSp6nLXE0eScXLbRFeGo+FrvphvOSoOv3lT922Z/AJHR2EXgmuRSzyNez3hSx2GeG/yauR3IX01aW7B20mEBQFhq/uMir51qLjQ5t4fWvKBM3IoFaKEEkhnWYz9Pmco6YRYaWzsOaYOsNR5nxLSZNbIkVMuEc+WbexcFO1FCXbCq0KLb7rtFaqyUSD6t632kbHu+9wtEZ2vwwMOwGGPedj++nTR45TnQHiRG/DA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1768478514; c=relaxed/relaxed;
+	bh=Ud/J85QV+BEQ0bP0JtZ4ngTyr5lpqKGqcXK2k5Mpbe4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SUyfPZEZFCpURbDBObwEcV7RcS+yZGmuhBcqHFpvk9BsnnPVaRyl0nlyT7/kibnVS4fEvy4n4EyCD/DSiNzTYqDmZOM07egXxsMhFM+/ZKPzGbcgKsZcQZeiBRo9/qDMTIC78cCLlyqqFzCzh96whF73hULfI+EPkNH9xaZXB5u2OyF/pnsANut0PSz9nzBgOL/12FdTQkdpLo0WU3syaKC38xfK7CifowZo9Bw24Xyaiu9yDMX7MaJFw+WCS9oJOfh8jbKHdwvu4LsAlb5nV+Cm0xhR+ljEslRLHLTwwl+PTxRGpkgjIfTmeokBwnHwnUMCx7wVb0m0r+Y5sdsKHg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsLn31nxlz2xNg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 22:47:02 +1100 (AEDT)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60FAHW6x1362469;
-	Thu, 15 Jan 2026 11:46:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=Z73q784EXi17G0oqM8
-	tPUNsqrybVd2SQ4TkBzituy8U=; b=IVQlEtA4pP0MQFUD+TxlGEfvQgQwZxLHma
-	4jJetpeuhIpXmWwYfBIHaQvgysJpZYtl7/zn/HeGBTecyz7S5KOK3jVv133CU/I9
-	+8UP4m/rbusnNbtYOz5O8Bqa1vriPpr3/ouVXbulrZv+QkivzKt25hAHAZnkY+AZ
-	TcRrJK9KOfJFES9PQFkKV2YCVqd5agV1y7TE1sT3Wjp7/9ofHPqTJehp8/jXNL/P
-	lbYG4zJ6AHoLx8iAMAamYJi7rnrER2uPkQeA/vmlA4/sJxL4Cz7LkDDqzJRMEn6+
-	Rkrw35ngbC76M/iAuelOt/B5MsW04NpYHukWVnBJ4asPnUB4f8YQ==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bp5vp2sdq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Jan 2026 11:46:32 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60FAWJVc032693;
-	Thu, 15 Jan 2026 11:46:31 GMT
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012006.outbound.protection.outlook.com [40.93.195.6])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd7b8htb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Jan 2026 11:46:31 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a7Cl+rxmwcGmg8bDvlu1Ij7Y+a8b/b8jxS8E/Jc/ui/CdbtpndfX0rGunvNXV32+Qh0XGm+Z+9+u+JoWxftGTbVjma0wkFTE6WM/lCirwp764iALD8nS1wXplbGBzq9LJiFDetzpLnb6qrO9KRGiFpZDr/loRE+zWhGuEb7TzrlNlQzFHH6045MdSBjKiPGS6smm47WIjSySOj+aYtFzZqonZcP54kRMmO5BGgf6aZnW+W+2QDXD2xT1wsuEIR0SQwRCgEXYhs7EwlViqbiF+UjxdHkMgR2Gpajj+9oeVlBiksPLrP2vXJJQ+wKsyuciUZYFj4EHFFveiBe0mjIJCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z73q784EXi17G0oqM8tPUNsqrybVd2SQ4TkBzituy8U=;
- b=NunrHIEhIAqnREctUGwrBSfDFK86+uA3IVNrtm834NsEWVq1Ns7XCidiDsifFIlcU3BwX1iw9H3BUv7wbs0BdW1jikiw4Tv3Qxk7qz+4Ql/sHVVQmI6FkTsBRaZ/zXAw1yDttVDWTW71/8x7at0mlU+C2euCIPC3a4B2PYeKYjmOjOUTZSqKwW29ZB/H6OgSK2EPC8/RHcXtLsqCZ9Se8/R5LCf2DMqjkbPhP5neG4IGCHggsEFC0BLT5OrLCvJ2flkkHfEkFD3UhqXOk21aGUdLqkP9V6q2gp324pzo15YpQ3ghc5pd/up9C4gKK/icD1gbJIkeBbMmgACcq0GaBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z73q784EXi17G0oqM8tPUNsqrybVd2SQ4TkBzituy8U=;
- b=sZxs8bGA+4Nn/RHJDBLQY/MW0JbdvcOgNngv65bb9/ycYXnMFV5iCafVohiiqmimPrEiOS1j37FQ0FqJKywLsam0LvH7jPsAhgBWA0CR63dElIpWDdiZwH7mu6VO764jXUjbV8PwaS6pvIiCQbvaahzfAyAqPD3P4xOoegaTRyo=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by CO6PR10MB5601.namprd10.prod.outlook.com (2603:10b6:303:148::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.6; Thu, 15 Jan
- 2026 11:46:25 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Thu, 15 Jan 2026
- 11:46:25 +0000
-Date: Thu, 15 Jan 2026 11:46:28 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-        Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v2 03/23] powerpc/pseries/cmm: remove
- cmm_balloon_compaction_init()
-Message-ID: <5ed94c8a-35ac-4635-aeac-3fe72d4f9c8e@lucifer.local>
-References: <20260115092015.3928975-1-david@kernel.org>
- <20260115092015.3928975-4-david@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115092015.3928975-4-david@kernel.org>
-X-ClientProxiedBy: LO4P265CA0179.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:311::7) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsM696V2tz2xNg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 23:01:53 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8CEAD3368D;
+	Thu, 15 Jan 2026 12:01:50 +0000 (UTC)
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 543513EA63;
+	Thu, 15 Jan 2026 12:01:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id NDM1FC7XaGnnWwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 15 Jan 2026 12:01:50 +0000
+Message-ID: <2c4c2b2e-bf96-4c4a-a66c-93b66553030c@suse.cz>
+Date: Thu, 15 Jan 2026 13:01:49 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -125,188 +58,162 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|CO6PR10MB5601:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5431a831-c395-45fd-4b25-08de542bb644
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?5Xn6woohHihB64x3MqHwBpSW84/MPIOApHTBvl3Plw/aYFwnqsjV2tQCiKkf?=
- =?us-ascii?Q?iDaKpb9gulsqJcGBxq5rWju3AG8RJcMnwrTBoMBsRnsN0w23lL5XGUJWNY7H?=
- =?us-ascii?Q?14al7dPG6sNjSV4MDXp/rlV8kTqnJSK7FbR8Sl5fExRBF8jeIQWTB5Tx2l/i?=
- =?us-ascii?Q?t1FbZjInL6jTcWWoYiL/m0r2fsTV1IBw95szms964oXNNfcFdp9Fc1YfLON9?=
- =?us-ascii?Q?x7oLHynYgfDzYZuXbx6MqtKd0t/s51xlbeZvo7OkT0iXcGDbOTmG6XVmCXdB?=
- =?us-ascii?Q?c8Pe5EIhdC/zpO4pBUAikbWNV+TQk9K+M56hoGDSR2lt7OL6zpM+B4ZjgoYS?=
- =?us-ascii?Q?pOWE3WgL3f4bCt1hvklwWBfNpWfC0acdsyb874F0kHiuh1zdMF/p91+YhTiV?=
- =?us-ascii?Q?J5o9Dt6r3lH5an26nrOcmJCk4cxH+prMDGpsUe6D1CMUx1r6Sg7aGsa/2tm/?=
- =?us-ascii?Q?ZufXeX0SVTCOwF4oDlEYmeBxcCz80FzhTj1H6hc4nl7+P7TTneQjB+Z1oTc/?=
- =?us-ascii?Q?3ZyzSNeUrIkpkYNglwGvVzoWOOgOL051BPDaOk4V35yh+FkPHg4L3A3S/ffS?=
- =?us-ascii?Q?73CkteFGh3hfLJRmE8vEwTBL7D1eidt75poMsPazVtm5yo7j82e73IEnExiF?=
- =?us-ascii?Q?lp780SAii+ctb4wueinvOE0a00iqKGnYL9eEK/83+gbfkOdRGyUDfo+7aW7V?=
- =?us-ascii?Q?qHUTcezO0RfObGrqug02X+a7tVSyQYliHg/QGQ/fiCJDlZXa6rO8SxDGpR3W?=
- =?us-ascii?Q?yeg3SjOBl7TA/wzXH8eQDXMLmPR0VSAJ9WcUl8nSMCMhv4pe3q0y9Nqqrevk?=
- =?us-ascii?Q?JNHO1+ocPAtmP6BinboQ0Y3HDumDYdFEwX7LsJqKIhlThwj53hz2SJ5mvylr?=
- =?us-ascii?Q?+MQKHaJcT9f+x21vUVeAHqFE9p4K+h2cbGxqbHRykeY5ArHEDBB7EPAlZd0D?=
- =?us-ascii?Q?YWjREZDUJqV19zIAvRGdPK8X7P0b/OKOjCJpVU/sTjorSFMJiXKZRDkZYls9?=
- =?us-ascii?Q?DELsHthansdRuzlmZxnKTjQUt6Dq33rwIE1qjW0WtF4/h/YQ/NHhUdm+ppGS?=
- =?us-ascii?Q?vjjPwdWutsGL0/+TRH84E6z9oQkk1i85/sn/rJ37En8avXSmaSzq8srWSZjW?=
- =?us-ascii?Q?SGBgXbd1qz4G6uu2RPxUCcTqflfWjPReOFwHsYy9lVVSfeYCHkB+ZgQTikmj?=
- =?us-ascii?Q?111Wqz3dzk/sRV9W4SJdMNne7BbpaiF5BT63sPYOOyp1cHsn7DdcXShKzgSu?=
- =?us-ascii?Q?BUxDIjY53BPBq5vT57T1kxvRQerhriBQDQEcvJkz0q5RaB4KHEnrMjYJJJO0?=
- =?us-ascii?Q?ketHaNAEt5YUjdTFmY3kZ+2/tLrAdE8NCgqyHwMYFtukFOnDVIQXlCq/9bmb?=
- =?us-ascii?Q?lXpq4frJnzOkDcRZPAiZkqTeA5T0UlhLTbnJt+z6TvOxiKyT6KxGl712sIe4?=
- =?us-ascii?Q?Flfc05nEyf5tle0dc+TaDF1hp2RbUOPwzResGhRL/MR9e4WAsMLAfkgAGHE9?=
- =?us-ascii?Q?hMfRjOqZpiJNcpSzTx8Uhef82MTfEiuT5j4PAPK+IPWxfCvZ0FNMDl/06Ws/?=
- =?us-ascii?Q?w6FGmkXg8f4kyAGcqZw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?A2gbF/9sacFPQHKT4nWc3gDo9MKRkiQ/eSqPvHEagK0OMtMptmWRUqFEg2Kt?=
- =?us-ascii?Q?Y2ZjUI/Eu1Sc/5eO2l90A2xZT0r0mEj++SMi7HfwPfxXcHgKOteLGZmcgQDT?=
- =?us-ascii?Q?YJ0bcbuY6z9LBIHIHduR6lKQ5jxWYIk1QuwkQFDklcw5QSSIhHp65UNMJqnm?=
- =?us-ascii?Q?Som/LLNxg9RVYY2uSULh+6ZbmUlIXxc0XPAV4nI0zaYttEk3dJVW8+zg3GoC?=
- =?us-ascii?Q?qhHT0aTlfq0hOnZvLMyysR9jh11bipLclgvJG3E1utMcG602zChHXoi5iFTH?=
- =?us-ascii?Q?l0p7KyQ2yZrxbiQ29SoT/X5XK5m8oKOu868UWmytKgw/q/8mGpC/1+CT4Hz0?=
- =?us-ascii?Q?tN7jb4+EjmScYroAkpsWrwZ3+XcTFe71a90KRB6ikVDr0IRwBE7EhlIllI0X?=
- =?us-ascii?Q?G1Bmy9DNyOUJEMyshq3PwrMI8FOGULVYk5nIobTUBKZ8s6Z+vD2dAQEugB+h?=
- =?us-ascii?Q?qCOQYdpJkrQKJHxhM2JlhlBwWWgND5vneapSqBC4MDygOZEj/Ht6pKjpGuzV?=
- =?us-ascii?Q?YXtkAXCGCWmvyCNc7YEIOzE+kGGPLSdDM/StrkvoGsufBleUu1jYDup/NrMZ?=
- =?us-ascii?Q?/vt56cLHWGmyhD7HLvg+Lb90hBUuOMb1B5mu0MwjQ85KNf1szGC8QUcT9MIa?=
- =?us-ascii?Q?fWDUu/sQxgMiZRmTtxOqpAScXAqAUVeLwpDEFcv03PNiXEv6Sq9YnN6DjDP1?=
- =?us-ascii?Q?4FXvkquLvQlmsc3szNWHBaaexmS2N0xCQyGA8jTxjA61BaLDShoFTv2k0wDr?=
- =?us-ascii?Q?+KcT172OpPcxKH43g38Ude9N8Tlw6mHWB4PQ6DCtmZEojnKHUAQFHoG/lvlp?=
- =?us-ascii?Q?8ofGuh8zHTRab1zmlZTzGiIqZGV/kh0nio2l0/5HdKtcvs2Kr6U6ADwWZOo4?=
- =?us-ascii?Q?Sj7PH1r0xXFDthiV5BFFSUgg50D/6HvlFpVpSlgYo/JFJUFaSMkdbcheO1Nq?=
- =?us-ascii?Q?SI0fVUE+UD/KLvx+iSqDLzppcxxLqHYLudXv70j9U7GRKrUB37Za4WSZM9wt?=
- =?us-ascii?Q?pytSegrFG4SBCdADxOUjavJpwjMl9XJH316wNrA63ThCKSzkHRcyZrfZyAxw?=
- =?us-ascii?Q?mqDsJkZshBFHUVkpSgjNCh2G0ETJoHfbW/tNhO8ru7/0M93AgWnKZ9d5z1hA?=
- =?us-ascii?Q?o8BaS6PJ9b+8R43WoRpeF5wLK6ehRBnY9gpNWExZDOsgYePWxOMN/PhNL/pd?=
- =?us-ascii?Q?SKP0NmKsY3SpjdG1olDX4paPxoyiLOVPhh0reKw6aHi87liEAfXNjUfJH/7I?=
- =?us-ascii?Q?cf89T2stTONM25Eg1eVDsATPn6aLNnokl2LJANdlhGtIDOG6Vo0GAkLKuBmg?=
- =?us-ascii?Q?vazAOcXo2qJgIQ6DE62ShQb79j6L/mImgf3Wd23dYEIH6kFLVan6e3ppfRQu?=
- =?us-ascii?Q?LKLrJkqZ5vlkjv+OktC383gxcsQVSzD8wFmGTL3ensLw4gFXRvBjusmlj1CM?=
- =?us-ascii?Q?oKEnt5gyq/ZWCprbXrlPBWgDwfOBYdsvo+MoiU/Ptj+QkOc38nAhWn1QbfvV?=
- =?us-ascii?Q?vNNUM5Y81wjCjtd29luw81DAOCxglrQCrOPQ4L68xED1UA+8do0/MIakk8/e?=
- =?us-ascii?Q?cjByQJ+NCC+D0uQ+WdW2L9MVUSoo+0MJU2ZFOKUjoODtqECt/uLfZaiUnhzY?=
- =?us-ascii?Q?tmspyi1ZyNIxt/I12cK83K/2KX0AxIwB7B/HlFQj+UZ/qGFAY6MQOrgv7zYO?=
- =?us-ascii?Q?Pmttn0+/TJ7NSR8wAzR3tHSZwdYMdJf9BtXa6HGVZ+kkLuuXLarCOtkiEYli?=
- =?us-ascii?Q?eGcPvpVAsvHILXRl8LRg/zMbFqf1dUA=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	q3k/U5kelpR+9HDX7lnJASprF0NVBwdmGXOMteDXgdoHY9HZ5YG4zd0Z2pXrPHmFOtZMH+zqEvL/zSImE43wwqwsphd1AVX8dhHEvUzfmtEEIl6BviO0+IZu2Cje5MtqZcUeoskNj2AvJT6t38IGIbiaE/d1/u11wGWzaamvUmUMmFVy/UJoTnMhULY1Y/mooWf2C1FqKvo8JdZwAZDwGrvhthHjwGV5OCTuuMN/Jw4UJecnNFF9dYFKfGhLjxygld2bJ641LGKF26oIQxerlj/XD20c8MdKnXb2WeTt4MT9ttWBWSdwPUF2EiaQIvgzipbJvTi61OCKpbznlDFWApynhCa+tWQNmPN0k0e0gCnoBGIJcLAPty4VYUtJCaepjHAjfohb0JW+f5yYW8dqyNmu/qy6CBYpksedcyYZrmvurkmiFSJt4/Whq8l+YhX9/RUcW0T8+oPLEYuh0y/Qeor7VoV/D8oqtC7TIhbpACl2RDjzEC+MU5i+hX/o0cnObiwVO1/JaIut8QM4v/SqW0dkLOb4IKH6iYtibkK+Kjqw66bnj2AwqRQo9NxukoiCq2aoARbQaP6LwCFGvnKXydBcVeE2Fsa3mumuXISwQng=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5431a831-c395-45fd-4b25-08de542bb644
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 11:46:25.5646
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kn884+/CaxuTjSHRE+dsmNFlfoyyZnmJqXW5PFAtFMYvZ+v90xOqcIgPm1yZ+RnnLL/fpuW8c5NHpF8BDauPmLbPn0xdRKz28SLGagm+hlM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR10MB5601
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-15_03,2026-01-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 suspectscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
- definitions=main-2601150086
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDA4NiBTYWx0ZWRfX/IccwVP9nebj
- LE/mMCxHnfx7SmV+dLQOlbVvtr8UKZ0BHDJRMt5wmQ9VatHFz6aR3EV7fSikHqqjX8d7nbR2G3X
- H72Z6QiLYzyUd6tOAeZ/dmckb9SaC3JhPU5LI3F1Wn3o+vc9Yhw3QyHySs0IWxs2/MBjpdLDaqp
- Np7URAQ2yKJQpkY6oJiaryppvB2Cof+UufThX+7RcXkgE1TnkA4pifr+lf/Q1Z4Az94+j3Ykffy
- PI0lCZmMelMd6G7Giwm0HJsGBoNEO4/8UCBkuP7S1fjb89z4s20XOFkDAJVi5eqGQJjlVxQLGFc
- cHDDb2zh7qU4IumeuwxcN84OWrJkNpOzXKoPNj6Jss4biWcgBWfMK1NOpwjEn0r/BJtrp1B5q7K
- 8QzLVQlnEuEbUhMVuD3yecq9n6jUJ3QgjAfBDMQ7SL2qeHsncFLb9tTA1/7VDP/LEdXHvHIuSwA
- dv3tZX0dH24KGoG3tuA==
-X-Proofpoint-GUID: I-42T8YJYIqRG3pXYvzo-nOeSrFLIN_j
-X-Authority-Analysis: v=2.4 cv=aZtsXBot c=1 sm=1 tr=0 ts=6968d398 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=ZutnN-bx-cp8jyhSmMkA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: I-42T8YJYIqRG3pXYvzo-nOeSrFLIN_j
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 23/23] MAINTAINERS: move memory balloon infrastructure
+ to "MEMORY MANAGEMENT - BALLOON"
+Content-Language: en-US
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
+ virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
+ <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
+References: <20260115092015.3928975-1-david@kernel.org>
+ <20260115092015.3928975-24-david@kernel.org>
+ <f2ce1126-0059-481c-b54f-0b09518666d3@lucifer.local>
+ <284775bd-767d-45f8-b66b-96709dabcc5e@kernel.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <284775bd-767d-45f8-b66b-96709dabcc5e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Score: -4.00
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 8CEAD3368D
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Jan 15, 2026 at 10:19:53AM +0100, David Hildenbrand (Red Hat) wrote:
-> Now that there is not a lot of logic left, let's just inline setting up
-> the migration function.
->
-> To avoid #ifdef in the caller we can instead use IS_ENABLED() and make
-> the compiler happy by only providing the function declaration.
->
-> Now that the function is gone, drop the "out_balloon_compaction" label.
-> Note that before commit 68f2736a8583 ("mm: Convert all PageMovable users
-> to movable_operations") we actually had to undo something, now not anymore.
->
+On 1/15/26 12:25, David Hildenbrand (Red Hat) wrote:
+> On 1/15/26 10:39, Lorenzo Stoakes wrote:
+>> On Thu, Jan 15, 2026 at 10:20:13AM +0100, David Hildenbrand (Red Hat) wrote:
+>>> Nowadays, there is nothing virtio-balloon specific anymore about these
+>>> files, the basic infrastructure is used by multiple memory balloon
+>>> drivers.
+>>>
+>>> For now we'll route it through Andrew's tree, maybe in some future it
+>>> makes sense to route this through a separate tree.
+>>>
+>>> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>> 
+>> Assuming below fixed + Michael's concern addressed, LGTM so:
+>> 
+>> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> 
+>>> ---
+>>>   MAINTAINERS | 12 ++++++++++--
+>>>   1 file changed, 10 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>> index de8f89ca1149f..b974f8c1c2225 100644
+>>> --- a/MAINTAINERS
+>>> +++ b/MAINTAINERS
+>>> @@ -16454,6 +16454,16 @@ T:	quilt git://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new
+>>>   F:	mm/
+>>>   F:	tools/mm/
+>>>
+>>> +MEMORY MANAGEMENT - BALLOON
+>>> +M:	Andrew Morton <akpm@linux-foundation.org>
+>>> +M:	David Hildenbrand <david@redhat.com>
+>> 
+>> david@kernel.org you mean? ;)
+> 
+> Maybe I just want all the patches to go to /dev/null soon? ;)
+> 
+> The following on top:
+> 
+> 
+>  From 3d344330b1ff6088582fe8e3bbff49d1557eba22 Mon Sep 17 00:00:00 2001
+> From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> Date: Thu, 15 Jan 2026 12:23:57 +0100
+> Subject: [PATCH] fixup: MAINTAINERS: move memory balloon infrastructure to
+>   "MEMORY MANAGEMENT - BALLOON"
+> 
+> CC the virt list and use the proper mail address.
+> 
 > Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-Seems reasonable so:
-
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+for both
 
 > ---
->  arch/powerpc/platforms/pseries/cmm.c | 16 +++++-----------
->  1 file changed, 5 insertions(+), 11 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-> index 4cbbe2ee58aba..9a6efbc80d2ad 100644
-> --- a/arch/powerpc/platforms/pseries/cmm.c
-> +++ b/arch/powerpc/platforms/pseries/cmm.c
-> @@ -548,15 +548,9 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
->
->  	return 0;
->  }
-> -
-> -static void cmm_balloon_compaction_init(void)
-> -{
-> -	b_dev_info.migratepage = cmm_migratepage;
-> -}
->  #else /* CONFIG_BALLOON_COMPACTION */
-> -static void cmm_balloon_compaction_init(void)
-> -{
-> -}
-> +int cmm_migratepage(struct balloon_dev_info *b_dev_info, struct page *newpage,
-> +		    struct page *page, enum migrate_mode mode);
->  #endif /* CONFIG_BALLOON_COMPACTION */
->
->  /**
-> @@ -573,11 +567,12 @@ static int cmm_init(void)
->  		return -EOPNOTSUPP;
->
->  	balloon_devinfo_init(&b_dev_info);
-> -	cmm_balloon_compaction_init();
-> +	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-> +		b_dev_info.migratepage = cmm_migratepage;
->
->  	rc = register_oom_notifier(&cmm_oom_nb);
->  	if (rc < 0)
-> -		goto out_balloon_compaction;
-> +		return rc;
->
->  	if ((rc = register_reboot_notifier(&cmm_reboot_nb)))
->  		goto out_oom_notifier;
-> @@ -606,7 +601,6 @@ static int cmm_init(void)
->  	unregister_reboot_notifier(&cmm_reboot_nb);
->  out_oom_notifier:
->  	unregister_oom_notifier(&cmm_oom_nb);
-> -out_balloon_compaction:
+>   MAINTAINERS | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b974f8c1c2225..11720728d92f2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16456,8 +16456,9 @@ F:	tools/mm/
+>   
+>   MEMORY MANAGEMENT - BALLOON
+>   M:	Andrew Morton <akpm@linux-foundation.org>
+> -M:	David Hildenbrand <david@redhat.com>
+> +M:	David Hildenbrand <david@kernel.org>
+>   L:	linux-mm@kvack.org
+> +L:	virtualization@lists.linux.dev
+>   S:	Maintained
+>   W:	http://www.linux-mm.org
+>   T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-So silly, I assume before there was more that happened here?
-
->  	return rc;
->  }
->
-> --
-> 2.52.0
->
 
