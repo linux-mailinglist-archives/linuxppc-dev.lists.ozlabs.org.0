@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-15817-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15818-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41867D24215
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 12:22:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8A2D24221
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jan 2026 12:22:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dsLD75yJ7z309H;
-	Thu, 15 Jan 2026 22:21:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dsLDc31vwz309N;
+	Thu, 15 Jan 2026 22:22:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768476119;
-	cv=none; b=MefwmLuJMJHJm/FpNgl4+0C4bizSwqxXexfNb/OPx8iT5OJ7hS1H+o3a0h1cO1TanoHXRmZukEARVGu7EgSzpkd+2Bj03gfd2cB/gCoZOWUcLF0ad2jNuUh1OlC2pb14mLKZLRqu4kSsoOi2OJ5nzjj+CTIlM4MSFZziPhun2CDBRwThR9P2M6cOCYRQd/iStnhs3w3KdQV//W8s/t4lNSiCtvdZ5v51XtnRlRaIugejnc+NRoR0AC+VSYxx+JkQ8AQ7Rflp3GnMRbiVavfQpQPve2B3VKdVivaH+qw4Z5+dp6JZpQZN/l8ZNW9PDcrn2kh+216pi3QzLJC/urn9mQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768476144;
+	cv=none; b=SWnfEMcSeeUIYVxjdF7cvqQeHdNTHC2zBUo0+ebQEubD0UKq29nzb5EX4AL3Xi0VvIwLF6/uL6IGzGx+i1WliF7pn83S177xkC7njiQSQ5BNkk6LCPeTdGsMeZUkZ5n2aihTAo6qPnoHtmFnjfS1nqJgjIlJvSaudsY7UqarzfVqAxWn84CvEzu0IZquH81w7JlnGDIDfsooM7K+mOiaxsR1MMYapBfRxf35fF8VrT4LYqbyl9+xHhsTwUOQTWx77uL8VujQhaQ9AbuORpz16ZRxmaDXkae6reHY0Pw436ldmfl7CEjIT94SzDQiRpO95lNQlhEuWXsNqZ3UwN/+4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768476119; c=relaxed/relaxed;
-	bh=H6CowDsFYs22GaLov61wu5wex8dy6IouM4bLjTvqW8A=;
+	t=1768476144; c=relaxed/relaxed;
+	bh=/uqqd9quCH0/nnsuDeC5Y/PVONnzka3eh3yRgCaY2BU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S/6/tFHYyI0DEDLnCnf8m4hlD921YziRz3yDSxqphD+wXONUnPDW6q1FhSSL5MrpjXelzU8lQEZcfcnmAskz38yKGSj7ZC5GoQYD1anv90NqypWbpsBGZE85q/Q0QApmp4K3RVbfylPEgldwczbS6nJoFohTLk7oKw3zzuR5V9M5eM09stoqLrijngqULocfsyHYZMRVJ91OG7OVOqTS4Yjbub4XAMZS2QDTUMMKs0Zyp/8VDebxAvC2GSCp+cLCXhgu0eDvnoLgpbErXgExpiX5sUJ/n2I9F9EBoLClIiMuIQa+8TdRasWoPoiNp7d5GD/rNKE0HanIO9IT2ZG67w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YoE0cDx5; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=SaJUsxFkoT7gLV7SA+yNyEwQzn9j6KkHWsqOZF0gyE3VuPShDnzGtMp0XJXQLG1+Ml9WAQKBRJfSW8uvPliM32DAi9rACKP687/foVmqiMDpj+HfG24xnWb7NyeL2ycOWNuxiSJEmX+Kbb+pyBXC6Ay9NsYtDe+ImY9eAREwVP82QInpQkyIFTEoNEQ1+cjrITLtfqrg5vHb9P+zFikhPwYyaLEUh4gVSOR0nfD3j7cnWqP8e6rrZS4zuL8KM/qrcK6UBFjro1LGb/03fEk/nkytjGq3lkP4BF9eNy2XqzEdj+T5FX6VpFTsrKOAfPJ46BDg3UudIDJGGG3WYL2PyQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Eq345J4z; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YoE0cDx5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Eq345J4z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsLD65Lk8z2xJ6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 22:21:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsLDb4gyzz2xJ6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jan 2026 22:22:23 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4D22D601AF;
-	Thu, 15 Jan 2026 11:21:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD3AC116D0;
-	Thu, 15 Jan 2026 11:21:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A14F84096C;
+	Thu, 15 Jan 2026 11:22:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68ABC116D0;
+	Thu, 15 Jan 2026 11:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768476115;
-	bh=2Z0C9R919FPjOvdBP9DKnEK/UqJnQnMt7nKfehB4BkI=;
+	s=k20201202; t=1768476141;
+	bh=I44va9OEt4jVcZBfMvPSjlSIjgMNsGiYT577FTZiAaA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YoE0cDx50jX40uMmr3HIpKOSOkp/Rg2BfN1hLuF/dzlFyBhJOCmrAZOo+gJVyt0C/
-	 pzAFV9WWBYwonww6PKWLutsK5V508powO6n6juDtlmIjWm7AN3psIaeFGZvyacJuom
-	 ijoqt7/Nf4pkLUAP57zP0FZ53yIw+VvRFUXxxa2S4qudNquTqBgvhWwiWZDcPxvpiu
-	 JZCaSRQDhQA0UXpha8AXI+z/SXs12fKEDrvuNqJ3fN8GsS8rrx46GSE+XrbtbrBraJ
-	 eWkPgnTCKLQBRYVQS0qEP+O3EFESV23lsa321/TFTfYngtU6l0rYJuaZc1rARziX0M
-	 4zW6jNx1OJcSQ==
-Message-ID: <acf9d35a-f8bc-44a6-9092-3a8c719c53c2@kernel.org>
-Date: Thu, 15 Jan 2026 12:21:46 +0100
+	b=Eq345J4zXsoXEojnzBTa/BT5NqCJGPr15PKbHZLjJ49rvtJ3huiO/X14J5xcjPKK5
+	 cVEVw2wQOaTcdC1B7RDfC7bHplcGjapCXtOak1TZCa5uqKikCa/dX6Htp1bE1pQYVM
+	 4g/tFNPRzX6RbccC7WJZuP5sUTRNgCZKrzmgAxAdoUNK+Sr5c6j/BB3e41JrWKLU82
+	 sxwQ/JE05o1SBN/kAVcTTHDvY7hGlX3/BvvL/Uo9DCC5prIIhkxRDASVmdIi8zwoQ5
+	 fXBiiPtW0+ir4Ojxde9w1lykaFQxWYx3njJirBoX8schsoUIBgEcSTOQ/fVkKbyytX
+	 IICNptCv/8+IQ==
+Message-ID: <21ba2222-0b68-4295-b046-77910488fc0e@kernel.org>
+Date: Thu, 15 Jan 2026 12:22:12 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,27 +61,19 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 23/23] MAINTAINERS: move memory balloon infrastructure
  to "MEMORY MANAGEMENT - BALLOON"
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
- virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
- <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
-References: <20260115092015.3928975-1-david@kernel.org>
- <20260115092015.3928975-24-david@kernel.org>
- <20260115043136-mutt-send-email-mst@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, arnd@arndb.de,
+ bcm-kernel-feedback-list@broadcom.com, christophe.leroy@csgroup.eu,
+ corbet@lwn.net, eperezma@redhat.com, gregkh@linuxfoundation.org,
+ jasowang@redhat.com, jerrin.shaji-george@broadcom.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, lorenzo.stoakes@oracle.com,
+ maddy@linux.ibm.com, mhocko@suse.com, mpe@ellerman.id.au, mst@redhat.com,
+ npiggin@gmail.com, osalvador@suse.de, rppt@kernel.org, surenb@google.com,
+ vbabka@suse.cz, virtualization@lists.linux.dev, xuanzhuo@linux.alibaba.com,
+ ziy@nvidia.com
+References: <20260115092015.3928975-24-david@kernel.org>
+ <20260115093827.12557-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,7 +119,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260115043136-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260115093827.12557-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -135,8 +127,9 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 1/15/26 10:32, Michael S. Tsirkin wrote:
-> On Thu, Jan 15, 2026 at 10:20:13AM +0100, David Hildenbrand (Red Hat) wrote:
+On 1/15/26 10:38, Lance Yang wrote:
+> 
+> On Thu, 15 Jan 2026 10:20:13 +0100, David Hildenbrand (Red Hat) wrote:
 >> Nowadays, there is nothing virtio-balloon specific anymore about these
 >> files, the basic infrastructure is used by multiple memory balloon
 >> drivers.
@@ -160,12 +153,10 @@ On 1/15/26 10:32, Michael S. Tsirkin wrote:
 >> +MEMORY MANAGEMENT - BALLOON
 >> +M:	Andrew Morton <akpm@linux-foundation.org>
 >> +M:	David Hildenbrand <david@redhat.com>
->> +L:	linux-mm@kvack.org
 > 
-> I'd still like virtualization@lists.linux.dev included, too.
+> Should it be david@kernel.org instead?
 
-Makes sense.
-
+Yes, the patch is apparently a bit older :)
 -- 
 Cheers
 
