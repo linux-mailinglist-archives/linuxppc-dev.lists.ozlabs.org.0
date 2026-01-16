@@ -1,89 +1,113 @@
-Return-Path: <linuxppc-dev+bounces-15886-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15887-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58D6D2F6B8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 11:18:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74092D30330
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 12:15:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dswlc3prCz309N;
-	Fri, 16 Jan 2026 21:17:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dsy1q6P92z2xrC;
+	Fri, 16 Jan 2026 22:15:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c200::5" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768558668;
-	cv=pass; b=EMwIbpnpfhvmhna6NTyGHMAn86d6iopMzghvunwKEtovaGUPKo3zlcce22OSkI7tAawcU8kAzF21lSqUncnP0rCvHNcqxj4SAgyqG/Ysat5glKv2Rh/ehkott+E6lrPFdWPa29s+hcSf5uhqWRCgG4TzojW/OFxRA/j9NLFvzFxL3skooZ68/a1CEy1hHiIyO3rL+oQGYbzu4CfhtMBBN1znOPlNXSEbj/hqRPTJC2YWcEwzt+sng0Jmyt3NEWVOUbRs9YTa7IVUitY+h70dhdgi5bIIKY20Cs1fxE7IXi/8d/8JXOfHHZU1OKic24WCyxFHp4FIbCg32qkaopEKOA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768558668; c=relaxed/relaxed;
-	bh=KFgaZ4yguYceSjxDyQ3VwA46I/JV+3w5+HcrmGSRvrw=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=moc6bTCfFjnQgndzHSOCj4S6WotNvxCDtwr6fylLkMLAmDBvh1p30hh38sWPbnNVEU1B2cowbtqmDYcH9VUqDhlSzTwJiTHVjEjTLPB463TzNrmoV+1qcHMyEnU5/Lssv3IdNAaVkwZyVSWsOBwznhLngPTI9EMyrtXUIUgB49BogvjtVAtzRYlQ3+M6164bgV1LxKyTtSKrfHEjonS77gENIGjLBYXpS8/Q1Toin4/SlEL1uycV2PkmYEAbyidfqNzQ483VYDsp/PUaCZRc0wTQvaS3Mc4huuR7qpWFXb61xHlr8aolj/qhy559cxS5PdoN0jwwEZUPIJXPlENLmQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=GG8hspaP; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::5; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768562111;
+	cv=none; b=CXWZvwRrCjbH9xsfL+go8uYVwUgiFRo6+wFeaI7O6gpeSLi76rHZnt4nrZU+3U/DoX6Uyi3B6Onib94Rz6SNFPZj6x4No2s5qrgXw/O77OO9p0IiL2XX5lwCcHHkX5GbLl7P7Rb49HuaW5nBMGFIY5yQQ54ZAwSQRfyd7QX7qgeoDsJZrnrGpSHN8TR/ruzYFIIYuD67y8F6xNYOxvL8rnq2MCa6iMsGaF8CZarbMB12qbAJBa7NVFH5APzQUg3SS4CNqpk2Y9soweJUmCGXvmCaQL5UPnOpna5IoRIY5mH+STutSNCdjoShnf3di2rZOLTwtyqSlYXJVhzB/kpyjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1768562111; c=relaxed/relaxed;
+	bh=PjutvA+lrQzQE0taSeiXilOIu9xKwU605NtKOX+sPEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fbEjcvzWibcJY5vTBcUAkX3P0J7mb4NZKCDKq0I6em4o/yjy5zjtjH3ZkblqZqqIaV8nn3Q6WjhTiLJultRD07IkHmSCu+i/lz1gwmEg0pz1txONSiPmEAaqVabYrCoXpstGXn4VqZj8lx5LyorSAuVIhC+k2aD50KXi1EEX6w/TpdmxW/0aB4QxBBu7Tcplw4qlu+aXk19th3v0PveTHAa/s5c1ne87g10aALOtx5BFfAXNX4j6g1uhVLPZo6poeRGymwGFHyisoNDUYSnVdsbWKGklsycrTHTeVpabde1lvbEW2zCMmrK9QOj6h//qwU050NNQqoSGFo1YK6B38w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V8IKyJw9; dkim-atps=neutral; spf=pass (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=francois.dugast@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=GG8hspaP;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V8IKyJw9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::5; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazlp170120005.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=francois.dugast@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Fri, 16 Jan 2026 22:15:08 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dswlb3HDqz3bf2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 21:17:47 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NHRkW0dAERXpCq9x+AUkJ945Lck8I7QbI8dQc6iYtkmbebeIsJ1QJ6H+v9gA6Xt0afIDrCNZqG6C2zBsCR85cY1pnXDowKeqzI1vCopBqVd5TP4nP4xrBa41kqxz+KUfKCgv0YcU1BwKZeEhf2zqFYSzTGRXidWtsr73Iwcm/J8s0yDxkouceUXVcrBScAKP+wZoH7BtZL+IErGTANBuWfx6kzK2hzJ6q89k1346WNNJjgjhB33VpCD0fPazvPjD2+MYywtEFEwnfkZXD8fTDluO+QNEtrSXNBqNjlFEWSvA1JkBh/JQzWEvqsae0d+eOjSoD1IBEvMCyAHpIpFuoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KFgaZ4yguYceSjxDyQ3VwA46I/JV+3w5+HcrmGSRvrw=;
- b=rfwUk8Y8Fwhaa+t+8bG+iFc4Ru2JLJ22QSlBh7I5Crd+YCtAoGUHuuWNqJ2IcLOpxU5zKnsxPphVJ1oXVHuZN7RN6nswBVjmigrnNLcSuqCvWV4fM+x7AhQeH43mHLqAJEDoXEQXH21GEd0aZNODbAC6/cD26UDXdy5GWfvk0vGEeN+mxNAKqLQs2nIXHGLt7ACI0Uir9xceRa8UdWnWRegJae4zkNbHCJ7QaIpeL8NtdESXhuuapn0AZOrEZA9DCaXE1jkJXgk4iRriqmDJsw32BmIpJqFG/hHuz1JNvgL9qlUzx6GwAVoBwxj2RlwJj99ObI+tNt6NxfwqN/5LjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KFgaZ4yguYceSjxDyQ3VwA46I/JV+3w5+HcrmGSRvrw=;
- b=GG8hspaPlaXXTzLjAZQ2vieOHqfZLS7GS9QN04cetnMI9Yylr+uS5f1RPs6+Vau6K+e4ossqhT5LE+KQMKAClMyX+Sh6jF66GTqTD5OCuXX8PEnYOUBInXZd5/MXmo6NbY24sHMajyizYk9izQMannCu1B4HxaaWQApBVWVgfyJhyLzsoEeTsH28Lu4+mL8LGsAYqhQsWPl7JJFuvMHJ7EKbH2rKPtD7EkPl46Tl2e7V1wuGnBHxWWngq44dVeVrWarlHgBnuzrIU+yt2YoJ8NFnVyxupxYfED6jdJRip/FOOYLvDPabzwTQf+pNc27AgjHmbEFjlSDn0i+5UML6hw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
- by DB9PR04MB11598.eurprd04.prod.outlook.com (2603:10a6:10:60f::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Fri, 16 Jan
- 2026 10:17:31 +0000
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::bab2:d15c:fcf8:ef2b]) by AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::bab2:d15c:fcf8:ef2b%7]) with mapi id 15.20.9520.005; Fri, 16 Jan 2026
- 10:17:30 +0000
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsy1m4NHXz2xSN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 22:15:08 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768562109; x=1800098109;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7m7TLs5ms8SsBuRtmgorzV61ohfwt2E3J/DzXKAkq0s=;
+  b=V8IKyJw9dXaqYI+GF2OOs1S53Kjoo8kPSD73wQ08cWbZwbmyD6BfUgaK
+   CwXbKEijxUFQ8mZtvQ/d+PWUymevZPagwMsqolyvAl/MybapR6+GUOjne
+   fhfRjEiystiQsd8WaZ1xJz6xCXjIK20laMtgUeWr/U+y07tbRbUwpIKdI
+   gC1d/FEgkN2DhBCJGdWKo+e9aC20YUvCiq9m26JH4dTs0Zg993UQ7QRQE
+   R7MY00WqiASxtkWiT8vfbYCC/4CXjtTsfb2I2qbd/lHroOoWtNDbyVCE+
+   LxnYwvrEGFjy4JsXZLh/WWTEFVlMG0Ja089rU3Rm69bp8m3h0MptHSJgr
+   g==;
+X-CSE-ConnectionGUID: iZh4lWyVS8GqRzwNkWtLhw==
+X-CSE-MsgGUID: LF/IS048QEGL73yZK3MlAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="69930632"
+X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
+   d="scan'208";a="69930632"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 03:13:59 -0800
+X-CSE-ConnectionGUID: uIPeeNCuTXKTNMh3SaLJKw==
+X-CSE-MsgGUID: 0lzYBIZ5TcqNem+zWWjj8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
+   d="scan'208";a="209713339"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO fdugast-desk.home) ([10.245.245.100])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 03:13:48 -0800
+From: Francois Dugast <francois.dugast@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org,
+	Francois Dugast <francois.dugast@intel.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lyude Paul <lyude@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	=?UTF-8?q?Mika=20Penttil=C3=A4?= <mpenttil@redhat.com>,
 	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 2/2] ASoC: fsl_audmix: Add support for i.MX952 platform
-Date: Fri, 16 Jan 2026 18:16:48 +0800
-Message-Id: <20260116101648.377952-3-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20260116101648.377952-1-shengjiu.wang@nxp.com>
-References: <20260116101648.377952-1-shengjiu.wang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SGXP274CA0024.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::36)
- To AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
+	amd-gfx@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-pci@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH v6 0/5] Enable THP support in drm_pagemap
+Date: Fri, 16 Jan 2026 12:10:15 +0100
+Message-ID: <20260116111325.1736137-1-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,198 +121,116 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|DB9PR04MB11598:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9adbfcb-8a27-4a57-2138-08de54e8750e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|376014|7416014|52116014|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?OSdw/dsspqZtwWe47/+e1RUGQbUrFxgWsiwNyOoBlJFCJOEoHr5zn3RDyyUG?=
- =?us-ascii?Q?6IUhApl0Vj0E8V7tnZj7ULmXKt9Uuz1eHiGsQeWVSXjTGMrIvqQeI3Dnj3Zg?=
- =?us-ascii?Q?tj0DXNgBKwb2DRNpw1NhO9kAY/l3FLmbRTHHEGAYAY2b0dJqA6GAl2hd06m0?=
- =?us-ascii?Q?NfEAcBTU1/JgGQEsbKO3FEmpTFJuAq8a24M+6qsGyRAjhUUvRDstjJSMgA5Y?=
- =?us-ascii?Q?h1VqEnSMjW/iJPrhOinryFMcBfDLTh/acN93SnOurn5fEmhoQbo4shCTrMWb?=
- =?us-ascii?Q?JCnRPso5KDX4Eg3vnTBrfzFeLtnscqsruzldRJVWJzwuSPYZeT7WD+qBBoKr?=
- =?us-ascii?Q?4s80KTfjEzyYmRRtwRGx7LzdbUkxHcvWYWdXE5ZqIVzaterU8ceVoOcUp7pt?=
- =?us-ascii?Q?A8qgwQ4/C37Bul5u7IMu5BOh029ay/mfLZyuXBWnR8FG5U0G58xLYXxwFod0?=
- =?us-ascii?Q?oIpdeNUndppKVoLzsePmTC3YPUSgqR3YWYZ81XMqd5llISYyJG8YAm/3Wfqr?=
- =?us-ascii?Q?qM1ZK3S9DOK3tJXm1turcegvOjlUw+2bt2d3Ag8EQcc78bsACyeP1K9C9vwO?=
- =?us-ascii?Q?tbKtcgtbawrtiCQS2qxR0eL2LA0hEWfcFVU/3iign00DjVYODq5SBtwnMejc?=
- =?us-ascii?Q?ZRw9+vtalwAeEkGSjT6ehM6O8YGpYsZRdk0zBFbR3Z6fk0z07JnW6mnvgDWr?=
- =?us-ascii?Q?8qoGqql8fr47pSvFFAUVjD29eObIubTJL7qoLAZRbZF8ldbV7j0OnQvmo0tz?=
- =?us-ascii?Q?cIGHK6jeSdwx/j+S6kLu01I6yY0dvUIbdvPTv6R/+18JKh32QVnlwCRoWl28?=
- =?us-ascii?Q?yG8aaPQoU3Ye9aB1+rkCFBblpz7iMCQBCzXBV0/oV9VD66g/u4rVGR/ccHQe?=
- =?us-ascii?Q?GK51RwsDTfuE5zu3viyFnkvnVec1xDg9SUGudybQ3Om79+PuKmALgdqm7DRt?=
- =?us-ascii?Q?b+SVvmIzd4O71pYnvo0RX5KNDUZZ11hXiff7LFrX8uIDc9C3LELqreyHgbtb?=
- =?us-ascii?Q?spqZyAYGZVPJvvCX74IemhSL+hiaVpmBMDZed+sdhc4NZsHOLPWb+5seFM2U?=
- =?us-ascii?Q?KsLnC5uodiiNuSNq5iVU7jhnxvL1imFnByVGtuCnfWQbFXG1MadvqISkKQ0s?=
- =?us-ascii?Q?BMzJGwZgsCdTdoUy3m+sw3UBuM6ZzOQwx3I3BS7ppJtpFXgYK5M7Y4OMNikz?=
- =?us-ascii?Q?YX4vOlkL+R4g94kDhUqh5DT19Nue8QYxfYrNUKz2V33ZD94E2Ndjy8Q/rMNz?=
- =?us-ascii?Q?XWgikM44Leg0NYLaF+nXVOlNb0qkZJmyg8ZDMcxyxZecmWI7SmkssJSxS2r5?=
- =?us-ascii?Q?T8pAU4uYohWqNntexk+DW858I8lKH8pItNhDdRmUxNz+tMkf0VtvglDzRW8b?=
- =?us-ascii?Q?r8GgBZLpxmpINyZRQl7JwRJnlo4LQ5sYxsS+mELBnfv014Uq8IyK7jOloz9t?=
- =?us-ascii?Q?YpkxAwe6wyj20uWX2BuEYGh1I/adTnPZLGVxTpQAiLQV1SQftW/wPFm4OVNi?=
- =?us-ascii?Q?EHygVu1TkH7YIgFCbap+7oSDoFYXsvV7QQeJemt5M7GIQ4pv2GAivZ/Umvi6?=
- =?us-ascii?Q?525RWX2mZqV8wtx/APzOri/XtzEpOqqtZcz53jfkTE+2TpPbJwzWFeVC5tkI?=
- =?us-ascii?Q?f/atGVz5zr3QIsiH9UMxtimKUrWriq4Hoz0wygZurxga?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(7416014)(52116014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jSDlwQD9/9CDupMMx2NW4lIbsYyMO7W35kjmxoY9fbaqsP1tQYpRrHe17aMK?=
- =?us-ascii?Q?fRJ2g9/jFcm6sBKpDufZnBzRy502XHQJfC+72mDzxPN9fyu5uZMqrOtOxsAF?=
- =?us-ascii?Q?FcAMrJgUe6d/QFhxIN6vN92dxOW5vKN/zZJv9HgQ3LJqc3mco20y7CyQ6Sfz?=
- =?us-ascii?Q?cT6CV27rGLJBHoih13QKYL52j1e6vtYZ3SqKZceIycHPcispKbCsnTD0h3J4?=
- =?us-ascii?Q?1swYkhm8n3uEI31x4oWxg9Qf+6AMwHiefnhRWjxzifx6IkGxcXOTA0LKqsyG?=
- =?us-ascii?Q?vDiL1zyjHDF50yN/nn3QRdZ148Otfcgci183rZghWm6ybtU2bQTArf/57262?=
- =?us-ascii?Q?oX9jX4rQnxAUt4JRNzuABm0oLIrgrIJn68PA8Zw16E82pCb08PaELfdBloH6?=
- =?us-ascii?Q?4wQBk/aAKiu23c+cdwTrlrH2bj8p5XBIbUT247z9DXukIKfLUXLRMxenA+P+?=
- =?us-ascii?Q?2jBV/q0BKeiAqMEp/LHIKJ9eVkYczehi8D4BdFNW/lMcUHIIYLE4+qnvMtmq?=
- =?us-ascii?Q?lStfGKr7Tga1uMBi76bKhfRX9YbrDS7X26TLIikpJk0RCdeG3g03ks0+AKB2?=
- =?us-ascii?Q?BIFOCHs6bfQAgI2A/AgAs9rufFgrMWjKMZS6w074Ixjl5g+xsQG/IF8Mr6dA?=
- =?us-ascii?Q?A3jjgENxy9A14t36gq8yC75sL7iA7I8eyCRgnrgqsecnwg+kQL4ceqFKhLG3?=
- =?us-ascii?Q?XAFVdRWmA65Y/RPPm83ZM1WwbN0usDzYD6sjmTBlLYkVRVgZjriKu2o6eiYE?=
- =?us-ascii?Q?Pln88PKq4J1BRqyMHtU71AfPmL76KLlkR5UCiK5u8gjs6KsKZ9H9IPmd3DSO?=
- =?us-ascii?Q?3zijLGFELUVym3ZPa/zloXW6gKysehzuZLScneutQS4bD+7HjlKB0pU8dQNT?=
- =?us-ascii?Q?liUFG28NCrh8d8NnEKmfeE0CcPLkSBupSngfiX3foIR0Sx9uFII8vE1DpFpv?=
- =?us-ascii?Q?y+JZi/IrjNW6VIokA6GHuZtwvFinFu8kFVpNsGIWUXa7fC/DvY86UB5QxJR4?=
- =?us-ascii?Q?FkOTNuS/YECQk3yxkBGNnA7Rl0wllCl10X2GhuGgfhIx/OA86nYVAckrZ6Oq?=
- =?us-ascii?Q?rdbB24h/rdQcqjGcMKbNK3iJAFkMj5fq01dedQ8E9Tf/brknB6XvmtKNbf67?=
- =?us-ascii?Q?p7u/6SBxLXmnrIl9IhK6kzv/xIWbdrNqeElMgj+LzK+etgHwdYXOh3XY4l06?=
- =?us-ascii?Q?5+lj+HyD62aSArPC03h0wL8cv9PZazpHT3ImuB3mHZI7kCBoaEW6JfCIahMl?=
- =?us-ascii?Q?xH87jP6/4HYrrbi7PK9//O01ZY9lS8AITxtHcBbl+vqq3Ht0T3Z0euv/BQbJ?=
- =?us-ascii?Q?WY0qJeQJXxC9i+CiJzkpJHB7KxrOdVZQ6W5OyEOyfLjuKaX4ohp6+qtNNLod?=
- =?us-ascii?Q?b/XRMvgM3UOhJGINzfjYbDZ5tYwq00IzjPrifZHEydkQPnMKTgx2pOyYlhCs?=
- =?us-ascii?Q?JaBR9biECwpGsMAH/sIHsm5pOsSJL6R02265tOnn6jLJt4xOkTCJRqmUImna?=
- =?us-ascii?Q?TO8Z/08/e8ktAi2WQCtoE1GK8NvtkSKQ02CwkQh4/WodpeXaatccA32+RJtp?=
- =?us-ascii?Q?USrodQlEyqqlad/a3e7HJzaD43sH5uwpmc6tG0QjCGsi/ksUSSt8tsSdvQxB?=
- =?us-ascii?Q?Cif7z213pJAvihs+1O3yjUWRhg4H/giN3vc4Vdn6b9S6GgX0Vbxf6thmD+Qu?=
- =?us-ascii?Q?Q+XYjrQiTkKo7l+6xW0e4Y18dQ7vL1UH4Ri7k9b/eVHv/iKIcipeArsqAm7y?=
- =?us-ascii?Q?YQHwbp5SeA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9adbfcb-8a27-4a57-2138-08de54e8750e
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 10:17:30.8423
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 82nh5ONGdaZYIbobZDtMf+bjGkPniMVhVa+1R5yeRfTLO3Zhb1mDGP75PrQ6sopvkyuGDHNdeeZJdcCnYyrDxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB11598
-X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Add compatible string to support AUDMIX on i.MX952
+Use Balbir Singh's series for device-private THP support [1] and previous
+preparation work in drm_pagemap [2] to add 2MB/THP support in xe. This leads
+to significant performance improvements when using SVM with 2MB pages.
 
-The audmix module can be bypassed so that SAI signals go directly to
-external pin, which makes the SAI function independent with AUDMIX.
-Add struct fsl_audmix_soc_data for this soc difference.
+[1] https://lore.kernel.org/linux-mm/20251001065707.920170-1-balbirs@nvidia.com/
+[2] https://patchwork.freedesktop.org/series/151754/
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- include/linux/firmware/imx/sm.h |  2 ++
- sound/soc/fsl/fsl_audmix.c      | 28 ++++++++++++++++++++++++++++
- sound/soc/fsl/fsl_audmix.h      |  5 +++++
- 3 files changed, 35 insertions(+)
+v2:
+- rebase on top of multi-device SVM
+- add drm_pagemap_cpages() with temporary patch
+- address other feedback from Matt Brost on v1
 
-diff --git a/include/linux/firmware/imx/sm.h b/include/linux/firmware/imx/sm.h
-index a33b45027356..1e3e0fb1ef81 100644
---- a/include/linux/firmware/imx/sm.h
-+++ b/include/linux/firmware/imx/sm.h
-@@ -26,6 +26,8 @@
- #define SCMI_IMX94_CTRL_SAI3_MCLK	5U	/*!< WAKE SAI3 MCLK */
- #define SCMI_IMX94_CTRL_SAI4_MCLK	6U	/*!< WAKE SAI4 MCLK */
- 
-+#define SCMI_IMX952_CTRL_BYPASS_AUDMIX	8U	/* WAKE AUDMIX */
-+
- #if IS_ENABLED(CONFIG_IMX_SCMI_MISC_DRV)
- int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val);
- int scmi_imx_misc_ctrl_set(u32 id, u32 val);
-diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
-index 7981d598ba13..f2187b45eeec 100644
---- a/sound/soc/fsl/fsl_audmix.c
-+++ b/sound/soc/fsl/fsl_audmix.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/clk.h>
-+#include <linux/firmware/imx/sm.h>
- #include <linux/module.h>
- #include <linux/of_platform.h>
- #include <linux/pm_runtime.h>
-@@ -440,9 +441,22 @@ static const struct regmap_config fsl_audmix_regmap_config = {
- 	.cache_type = REGCACHE_FLAT,
- };
- 
-+static const struct fsl_audmix_soc_data fsl_audmix_imx8qm_data = {
-+	.bypass_index = -1,
-+};
-+
-+static const struct fsl_audmix_soc_data fsl_audmix_imx952_data = {
-+	.bypass_index = SCMI_IMX952_CTRL_BYPASS_AUDMIX,
-+};
-+
- static const struct of_device_id fsl_audmix_ids[] = {
- 	{
- 		.compatible = "fsl,imx8qm-audmix",
-+		.data = &fsl_audmix_imx8qm_data,
-+	},
-+	{
-+		.compatible = "fsl,imx952-audmix",
-+		.data = &fsl_audmix_imx952_data,
- 	},
- 	{ /* sentinel */ }
- };
-@@ -450,6 +464,7 @@ MODULE_DEVICE_TABLE(of, fsl_audmix_ids);
- 
- static int fsl_audmix_probe(struct platform_device *pdev)
- {
-+	const struct fsl_audmix_soc_data *soc_data;
- 	struct device *dev = &pdev->dev;
- 	struct fsl_audmix *priv;
- 	void __iomem *regs;
-@@ -501,6 +516,19 @@ static int fsl_audmix_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	soc_data = of_device_get_match_data(dev);
-+	if (!soc_data) {
-+		dev_err(dev, "failed to match device\n");
-+		goto err_disable_pm;
-+	}
-+
-+	if (of_property_read_bool(pdev->dev.of_node, "fsl,amix-bypass") &&
-+	    soc_data->bypass_index > 0) {
-+		ret = scmi_imx_misc_ctrl_set(soc_data->bypass_index, 0);
-+		if (ret)
-+			goto err_disable_pm;
-+	}
-+
- 	return 0;
- 
- err_disable_pm:
-diff --git a/sound/soc/fsl/fsl_audmix.h b/sound/soc/fsl/fsl_audmix.h
-index 479f05695d53..ad40a959873b 100644
---- a/sound/soc/fsl/fsl_audmix.h
-+++ b/sound/soc/fsl/fsl_audmix.h
-@@ -92,6 +92,11 @@
- #define FSL_AUDMIX_ATSTP_STPCTR_MASK	0x3FFFF
- 
- #define FSL_AUDMIX_MAX_DAIS		2
-+
-+struct fsl_audmix_soc_data {
-+	int bypass_index;
-+};
-+
- struct fsl_audmix {
- 	struct platform_device *pdev;
- 	struct regmap *regmap;
+v3:
+The major change is to remove the dependency to the mm/huge_memory
+helper migrate_device_split_page() that was called explicitely when
+a 2M buddy allocation backed by a large folio would be later reused
+for a smaller allocation (4K or 64K). Instead, the first 3 patches
+provided by Matthew Brost ensure large folios are split at the time
+of freeing.
+
+v4:
+- add order argument to folio_free callback
+- send complete series to linux-mm and MM folks as requested (Zi Yan
+  and Andrew Morton) and cover letter to anyone receiving at least
+  one of the patches (Liam R. Howlett)
+
+v5:
+- update zone_device_page_init() in patch #1 to reinitialize large
+  zone device private folios
+
+v6:
+- fix drm_pagemap change in patch #1 to allow applying to 6.19 and
+  add some comments
+
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Balbir Singh <balbirs@nvidia.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Mika Penttilä <mpenttil@redhat.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: nouveau@lists.freedesktop.org
+Cc: linux-pci@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-cxl@vger.kernel.org
+Cc: nvdimm@lists.linux.dev
+Cc: linux-fsdevel@vger.kernel.org
+
+Francois Dugast (3):
+  drm/pagemap: Unlock and put folios when possible
+  drm/pagemap: Add helper to access zone_device_data
+  drm/pagemap: Enable THP support for GPU memory migration
+
+Matthew Brost (2):
+  mm/zone_device: Reinitialize large zone device private folios
+  drm/pagemap: Correct cpages calculation for migrate_vma_setup
+
+ arch/powerpc/kvm/book3s_hv_uvmem.c       |   2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |   2 +-
+ drivers/gpu/drm/drm_gpusvm.c             |   7 +-
+ drivers/gpu/drm/drm_pagemap.c            | 158 ++++++++++++++++++-----
+ drivers/gpu/drm/nouveau/nouveau_dmem.c   |   2 +-
+ include/drm/drm_pagemap.h                |  15 +++
+ include/linux/memremap.h                 |   9 +-
+ lib/test_hmm.c                           |   4 +-
+ mm/memremap.c                            |  35 ++++-
+ 9 files changed, 195 insertions(+), 39 deletions(-)
+
 -- 
-2.34.1
+2.43.0
 
 
