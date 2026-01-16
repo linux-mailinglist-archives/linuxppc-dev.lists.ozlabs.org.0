@@ -1,57 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-15920-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15921-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CFE4D379FE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 18:27:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDF1D37A05
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 18:27:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dt6HJ3S5Sz2xnj;
-	Sat, 17 Jan 2026 04:27:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dt6Hf4FnRz2ySb;
+	Sat, 17 Jan 2026 04:27:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768584444;
-	cv=none; b=HmgK/ODAD8LOXXfloNe1Ly2XyDM8xuXMFapH94FXbiUvEWTM0HQ7EfLSrVbtlaQwwGl2hqpNnAVczYQRkQ31H7/cfpSwn9SyQm9PXhxhSk5xc72FCHhqmG1o6Exrlp/gEXqKlVk3GNbLAA30PYHVci/eAUonUDvrSsfFclJa/4lcDU97Sp6PA8HAPsvPed98lSxhdJnA2qWSalLenhM8E5ZzQBzsCgbJKmIEqNXgqk4I7jQ6vSnEKcj1XLPnO5ZawCHdWurHO3wv2AdXg0tdkse3Aa82yIEooMU904Cke8BUsga5y73vf26ziTLTasnoArcpzBSGjZGtA7hNuWhVCQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:2"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768584462;
+	cv=none; b=jRMLX2RXkTOut3QZwMrxnxZCedDjG/cbCgeieYvdOfXutXnA7EZ9xIHjIW6GKA4T0u/woPqGxmNnENmZfSQGS2A2L9zKwaS60Tdd0Tbv2b4yKyVba1/+IRvueQBe2790NtKNyHgCN+LgFsjX9u8eRIO7rNCG1JOaGyICQoBCj5PbcsRr5JCh80sY3HmNbB2bNVwPC6H0p8CLYCOf3dk9ofowjsMIsUBqD5DCZFo7FjwLsFyWwUIgy1RxK06zXycGDZpeRueCfj+PnxKReJGNG6CgWDi4QZJoFnXuWymhWaguq4bdg2U+Iek0t/EIUiA0J6XCbk2XX7cCtK6mOuDmZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768584444; c=relaxed/relaxed;
-	bh=JC36QHZorXv8FcwWEAnaZ+uE61dEQEM7MKy0rl4DIQo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ld1IKu1eyUzxa1jCjlumYX4QnhlGqKTp3d9nwDiF2sF8Cu72zjhxGzgGSuFqaMV4G/9gYPBNKAbriR4Vh7vawhXEvbVRRdjTD7PiEv/W8nnyBXiZS+l44rBdBifVFe1wPMEt0A4paIUWFY4IFRUE5XcSmGU0iT9PH49FkEraps1Rh+hBZJsWJzfDPPg5vog/fJCx0NQLrEQRNDKI/HuPZ4EdzLNUBUshV4S3SmQlwuARVxzwQEfx29ZZOMwAMs/R26+8RywCSmxvLd/IJsRMaiuOA7UWBBIx1InvOWme3kaSKFmVN3kKzcCBYvH+mX9c/I/9zjFMvfvV3XJJYexazA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DGuJNVUN; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DGuJNVUN;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	t=1768584462; c=relaxed/relaxed;
+	bh=sOtTf9haEQ9bDW7hx4S6Kpvek/si/81/SSAc2MauChM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XaFjeO1W68qK6tffge6C2LLoi3oy1vT+Ps98Xpc8Jp6DdJ9ifH16Z8A/PyFJuQkN79+KVQNfZC7wZ/ih5agt3vcWL8pMlRtrLwUqvOynvQ5T0P8bnWy1i3FZTiyk95aFzVnw++ZyzsER2MWcl8DqMWL0VJi1DSQo1hpb5/LPkCAFoRsdmIIsHUqqI3ASOOLIFAaiV/Iu/vU25F1L2EVu7noG0z7aPlD20x/wAV3UhKtRQomR5NXUmO09iVYMIgDM+8hBey/I4U2U3hK8xFbA0QtVVHV9dlxEkIRPHRPO0n7fhASWb/8GxXAZ5kYxB8RGHEZLe0l90fK60ty+Vgd2HA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
+X-Greylist: delayed 4827 seconds by postgrey-1.37 at boromir; Sat, 17 Jan 2026 04:27:41 AEDT
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dt6HH22zRz2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jan 2026 04:27:23 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 199C260178
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 17:27:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B82C2BC86
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 17:27:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768584439;
-	bh=vXVwCg3KjnOR9p1kVLMGAnoWPMTaqhAgSkTPdcaX44w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DGuJNVUNKP7jBIIQIn0hq89ok2Z4FHuZBYXas3nCLYpKoB8qmleIvNeAJkClb1YBY
-	 4M9EmTGF4l1Qhmf5Zj0zhSck2rj7AlIhjUM1wfL62OXL2m9kyeU0fqbDzkHyjKSG5E
-	 R04DstJmfMjSCuu9T5+MoQCUv8c5Z5AU1ppVFkC8bEjotESOno7HOtp3kLkWX+aHf3
-	 kBYrzWBb3qfqwem7NiDklfGfrCKSaiKT/0a9xD/JgHrSmjw2+OsKaE7fiX89zeFEwX
-	 nlDolisyCWRt3xKZaCY+W7qU10byXRCwc7KpHITiEOu1PS0oZtIMydThHEPRIlfL8k
-	 VSHYmV4rMOONQ==
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-34c363eb612so1159732a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 09:27:19 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVK1bDrS4E+XWYTZQHHBC1eYqpFhQ8ZsWy0QPbrLkqwFPweQSrUSU0TxGQQNOuJGe+REBZhYb76co1DmNE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx5T5to58raRcORbg3fuSw1a3tb5Ve1VAGM6RerIFE7hYQmw/ZO
-	LUz3OM/Y+dZcE2qtwOxo0+C56Kvf6TR8r/lQPiTU93I6ivrpx/RLIlXw5LRJjDoUKghKPLiVmqr
-	bJ/lsI95ifEOu+8Fztuo3zEupWgUffx4=
-X-Received: by 2002:a17:90b:3d8d:b0:343:e2ba:e8be with SMTP id
- 98e67ed59e1d1-3527316560bmr2913371a91.10.1768584439303; Fri, 16 Jan 2026
- 09:27:19 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dt6Hd5ljbz2xS2
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jan 2026 04:27:41 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 26A185BCEE;
+	Fri, 16 Jan 2026 17:27:38 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D33633EA63;
+	Fri, 16 Jan 2026 17:27:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id /QGJMAl1ammlHgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 17:27:37 +0000
+Message-ID: <4e100125-ed70-4ec9-a0fa-5214bccd7cf3@suse.cz>
+Date: Fri, 16 Jan 2026 18:27:37 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,137 +59,167 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260115004328.194142-1-coxu@redhat.com> <20260115004328.194142-2-coxu@redhat.com>
- <CAMj1kXFXNo1-pMbo-VZrjQ3TYe1tufebrLr_avL12A0nHMSGnA@mail.gmail.com>
- <8bfa859ed3a4f1cf0db0ab64d8c1c3b24684582a.camel@linux.ibm.com>
- <CAMj1kXHsJNZoUEnbD1y=v4Ftuv9d2c08VckRV7ru4k4P83vZbQ@mail.gmail.com> <97b69bc79a5d9246f7a399510908c7b95b2e95e7.camel@linux.ibm.com>
-In-Reply-To: <97b69bc79a5d9246f7a399510908c7b95b2e95e7.camel@linux.ibm.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 16 Jan 2026 18:27:08 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGx4ebaK87W7k0SNUNQnO9+=z1nmYxXC7retmp3OqRRFg@mail.gmail.com>
-X-Gm-Features: AZwV_Qi45ik2p_K9-Rag0B961-yA4Y3UeYMV2L3X0YVNxAN3PGD7hZw7XikMDoE
-Message-ID: <CAMj1kXGx4ebaK87W7k0SNUNQnO9+=z1nmYxXC7retmp3OqRRFg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] integrity: Make arch_ima_get_secureboot integrity-wide
-To: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Coiby Xu <coxu@redhat.com>, linux-integrity@vger.kernel.org, 
-	Heiko Carstens <hca@linux.ibm.com>, Roberto Sassu <roberto.sassu@huaweicloud.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Eric Snowberg <eric.snowberg@oracle.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" <linuxppc-dev@lists.ozlabs.org>, 
-	"open list:S390 ARCHITECTURE" <linux-s390@vger.kernel.org>, 
-	"open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)" <linux-efi@vger.kernel.org>, 
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>, 
-	"open list:KEYS/KEYRINGS_INTEGRITY" <keyrings@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/5] mm/zone_device: Reinitialize large zone device
+ private folios
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Francois Dugast <francois.dugast@intel.com>,
+ intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ Matthew Brost <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ adhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin
+ <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Leon Romanovsky
+ <leon@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Balbir Singh <balbirs@nvidia.com>,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org
+References: <20260116111325.1736137-1-francois.dugast@intel.com>
+ <20260116111325.1736137-2-francois.dugast@intel.com>
+ <ed6ca250-67ee-4f7a-bc3b-66169494549a@suse.cz>
+ <20260116172052.GC961572@ziepe.ca>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260116172052.GC961572@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
+X-Spam-Score: -4.00
+X-Rspamd-Queue-Id: 26A185BCEE
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, 16 Jan 2026 at 17:39, Mimi Zohar <zohar@linux.ibm.com> wrote:
->
-> On Fri, 2026-01-16 at 14:18 +0100, Ard Biesheuvel wrote:
-> > On Fri, 16 Jan 2026 at 14:11, Mimi Zohar <zohar@linux.ibm.com> wrote:
-> > >
-> > > On Fri, 2026-01-16 at 10:41 +0100, Ard Biesheuvel wrote:
-> > > > On Thu, 15 Jan 2026 at 01:43, Coiby Xu <coxu@redhat.com> wrote:
-> > > > >
-> > > > > EVM and other LSMs need the ability to query the secure boot status of
-> > > > > the system, without directly calling the IMA arch_ima_get_secureboot
-> > > > > function. Refactor the secure boot status check into a general,
-> > > > > integrity-wide function named arch_integrity_get_secureboot.
-> > > > >
-> > > > > Define a new Kconfig option CONFIG_INTEGRITY_SECURE_BOOT, which is
-> > > > > automatically configured by the supported architectures. The existing
-> > > > > IMA_SECURE_AND_OR_TRUSTED_BOOT Kconfig loads the architecture specific
-> > > > > IMA policy based on the refactored secure boot status code.
-> > > > >
-> > > > > Reported-and-suggested-by: Mimi Zohar <zohar@linux.ibm.com>
-> > > > > Suggested-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
-> > > > > Signed-off-by: Coiby Xu <coxu@redhat.com>
-> > > > > ---
-> > > > >  arch/arm64/Kconfig                            |  1 +
-> > > > >  arch/powerpc/Kconfig                          |  1 +
-> > > > >  arch/powerpc/kernel/Makefile                  |  2 +-
-> > > > >  arch/powerpc/kernel/ima_arch.c                |  5 --
-> > > > >  arch/powerpc/kernel/integrity_sb_arch.c       | 13 +++++
-> > > > >  arch/s390/Kconfig                             |  1 +
-> > > > >  arch/s390/kernel/Makefile                     |  1 +
-> > > > >  arch/s390/kernel/ima_arch.c                   |  6 --
-> > > > >  arch/s390/kernel/integrity_sb_arch.c          |  9 +++
-> > > > >  arch/x86/Kconfig                              |  1 +
-> > > > >  arch/x86/include/asm/efi.h                    |  4 +-
-> > > > >  arch/x86/platform/efi/efi.c                   |  2 +-
-> > > > >  include/linux/ima.h                           |  7 +--
-> > > > >  include/linux/integrity.h                     |  8 +++
-> > > > >  security/integrity/Kconfig                    |  6 ++
-> > > > >  security/integrity/Makefile                   |  3 +
-> > > > >  security/integrity/efi_secureboot.c           | 56 +++++++++++++++++++
-> > > > >  security/integrity/ima/ima_appraise.c         |  2 +-
-> > > > >  security/integrity/ima/ima_efi.c              | 47 +---------------
-> > > > >  security/integrity/ima/ima_main.c             |  4 +-
-> > > > >  security/integrity/platform_certs/load_uefi.c |  2 +-
-> > > > >  21 files changed, 111 insertions(+), 70 deletions(-)
-> > > > >  create mode 100644 arch/powerpc/kernel/integrity_sb_arch.c
-> > > > >  create mode 100644 arch/s390/kernel/integrity_sb_arch.c
-> > > > >  create mode 100644 security/integrity/efi_secureboot.c
-> > > > >
-> > > > > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> > > > > index 93173f0a09c7..4c265b7386bb 100644
-> > > > > --- a/arch/arm64/Kconfig
-> > > > > +++ b/arch/arm64/Kconfig
-> > > > > @@ -2427,6 +2427,7 @@ config EFI
-> > > > >         select EFI_STUB
-> > > > >         select EFI_GENERIC_STUB
-> > > > >         imply IMA_SECURE_AND_OR_TRUSTED_BOOT
-> > > > > +       imply INTEGRITY_SECURE_BOOT
-> > > >
-> > > > This allows both to be en/disabled individually, which I don't think
-> > > > is what we want. It also results in more churn across the
-> > > > arch-specific Kconfigs than needed.
-> > > >
-> > > > Wouldn't it be better if IMA_SECURE_AND_OR_TRUSTED_BOOT 'select'ed
-> > > > INTEGRITY_SECURE_BOOT in its Kconfig definition?
-> > >
-> > > As much as possible, EVM (and other LSMs) shouldn't be dependent on another LSM,
-> > > in this case IMA, being configured.
-> >
-> > Sure, but that is not my point.
-> >
-> > This arrangement allows for IMA_SECURE_AND_OR_TRUSTED_BOOT to be
-> > enabled without INTEGRITY_SECURE_BOOT, resulting in the stub
-> > implementation of arch_integrity_get_secureboot() being used, which
-> > always returns false.
->
-> I understand your concern, but instead of "select"ing INTEGRITY_SECURE_BOOT from
-> IMA_SECURE_AND_OR_TRUSTED_BOOT, how making IMA_SECURE_AND_OR_TRUSTED_BOOT
-> dependent on both IMA_ARCH_POLICY and INTEGRITY_SECURE_BOOT.
->
+On 1/16/26 18:20, Jason Gunthorpe wrote:
+> On Fri, Jan 16, 2026 at 05:07:09PM +0100, Vlastimil Babka wrote:
+>> On 1/16/26 12:10, Francois Dugast wrote:
+>> > From: Matthew Brost <matthew.brost@intel.com>
+>> > diff --git a/mm/memremap.c b/mm/memremap.c
+>> > index 63c6ab4fdf08..ac7be07e3361 100644
+>> > --- a/mm/memremap.c
+>> > +++ b/mm/memremap.c
+>> > @@ -477,10 +477,43 @@ void free_zone_device_folio(struct folio *folio)
+>> >  	}
+>> >  }
+>> >  
+>> > -void zone_device_page_init(struct page *page, unsigned int order)
+>> > +void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
+>> > +			   unsigned int order)
+>> >  {
+>> > +	struct page *new_page = page;
+>> > +	unsigned int i;
+>> > +
+>> >  	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
+>> >  
+>> > +	for (i = 0; i < (1UL << order); ++i, ++new_page) {
+>> > +		struct folio *new_folio = (struct folio *)new_page;
+>> > +
+>> > +		/*
+>> > +		 * new_page could have been part of previous higher order folio
+>> > +		 * which encodes the order, in page + 1, in the flags bits. We
+>> > +		 * blindly clear bits which could have set my order field here,
+>> > +		 * including page head.
+>> > +		 */
+>> > +		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
+>> > +
+>> > +#ifdef NR_PAGES_IN_LARGE_FOLIO
+>> > +		/*
+>> > +		 * This pointer math looks odd, but new_page could have been
+>> > +		 * part of a previous higher order folio, which sets _nr_pages
+>> > +		 * in page + 1 (new_page). Therefore, we use pointer casting to
+>> > +		 * correctly locate the _nr_pages bits within new_page which
+>> > +		 * could have modified by previous higher order folio.
+>> > +		 */
+>> > +		((struct folio *)(new_page - 1))->_nr_pages = 0;
+>> > +#endif
+>> > +
+>> > +		new_folio->mapping = NULL;
+>> > +		new_folio->pgmap = pgmap;	/* Also clear compound head */
+>> > +		new_folio->share = 0;   /* fsdax only, unused for device private */
+>> > +		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
+>> > +		VM_WARN_ON_FOLIO(!folio_is_zone_device(new_folio), new_folio);
+>> > +	}
+>> > +
+>> >  	/*
+>> >  	 * Drivers shouldn't be allocating pages after calling
+>> >  	 * memunmap_pages().
+>> 
+>> Can't say I'm a fan of this. It probably works now (so I'm not nacking) but
+>> seems rather fragile. It seems likely to me somebody will try to change some
+>> implementation detail in the page allocator and not notice it breaks this,
+>> for example. I hope we can eventually get to something more robust.
+> 
+> These pages shouldn't be in the buddy allocator at all? The driver
+> using the ZONE_DEVICE pages is responsible to provide its own
+> allocator.
+> 
+> Did you mean something else?
 
-Given that INTEGRITY_SECURE_BOOT has no dependencies of its own,
-afaict, selecting it is the least disruptive option, as otherwise,
-existing configs will disable IMA_SECURE_AND_OR_TRUSTED_BOOT as the
-kernel is being upgraded. But conceptually, I agree that they are
-equivalent.
+Yeah sorry that was imprecise. I meant the struct page/folio layout
+implementation details (which may or may not be related to the page allocator).
 
-> Including the "imply INTEGRITY_SECURE_BOOT" here in the arch Kconfig allows EVM
-> to query the secure boot state without relying on IMA_SECURE_AND_OR_TRUSTED_BOOT
-> being configured.
+> Jason
+>  
 
-Yes, I understand that this is the whole point of the exercise. But
-'imply' should be used with care, and in this case, implying both from
-CONFIG_EFI really makes little sense. INTEGRITY_SECURE_BOOT should be
-selected by options that need the functionality, not 'implied' by
-options that might provide it.
 
