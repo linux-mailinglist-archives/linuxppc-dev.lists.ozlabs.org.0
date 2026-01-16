@@ -1,57 +1,118 @@
-Return-Path: <linuxppc-dev+bounces-15882-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15883-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C53D2EE83
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 10:42:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3593D2F2AD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 11:00:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dsvyN214Lz2xm3;
-	Fri, 16 Jan 2026 20:42:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dswMH6XMLz2xm3;
+	Fri, 16 Jan 2026 21:00:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768556524;
-	cv=none; b=AI5DR7FHLbGIP5++nZ1+IXOcoTUTD2VF7jtmgEGj6u2vzl3QRVohiXNQtHpquRw0Kepd7u1vNbnCDBRYENwCydm2gsX10eCSVkzxJrAf3Eyvgv/rjPn+YEabl6d53M5ctUuOvkrJDbzX4M4QgrnaJcR5soGMJhrQpspXLlQZ3Uscq26kKuQI4ArG+T4lcpLC6uar/7G9oHUTwQEf1ETns1qI6o5owzZuGP4g97YdRa5LY5+YBlVQZmtxxDlVL5KLQzBfaEf4xg7hbjJpn1EdwPy863o1ZQ5TyYcieNbPMlFj2RmeBYcjdePXvsN2kUZEDbyWA6cuxvBDBDG/gb1Qqw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768557611;
+	cv=none; b=eKjti21PNyv7HOYukShkEUj8wRHX4xgytWpuGFfD9bLBEZqOV9nRjH0NZmxXm/Nk2XaYjMQrlPaYOJyMv4PaMux8MV3DIO8JCX5YCrALDQZf/fFiXS5jddzqh9n6PKpLoE9NfLxxHEh9cBVNPWAiaYlsF+TPDeCrInZ0I6YQgIFYYrWt1CqZlQMo3cdbRzBJcy3WeYQ3ah6pCA1NnLWjGZI6hS+7TXxs+5n7n+zjLJdLM35GUWLd+tWAIM8+TFtcPFGKlZDrIkSPywz0UDuHSoM6biF+C8TFUoGauasHFApdJyAFvJAHKrupFs1zoVv7Cz5sOp+2r931Nc++U588eg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768556524; c=relaxed/relaxed;
-	bh=hVybfYbe8i3MrpO08VfiZkufpjg080yyEME6uzv1ZzY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PNTzvPnQxtBwez4Q5AEev1XT6wmOz9v2wlwUudR5dnh15icySOG27qjddIV3X2m1lIoD7EB/Xtza31Ofg02bxlyt1mrRdoI0i33kgqV/p1Kf9TTc/OihIeW4AlF870ArNHYvixkpWblQAshZCVcHtgvEHvMt9Hhd5fh8hX1Mda6i6w6fbbTFRBnM8MX5o47EkNBz+teJ2uD4mXPT46xCY/g1pg9xnOxKuL6LvHjb3PmRLUwR2gKVTzTmFKqz3FcPqdsltovOlNsPBXQED/cV13lXbZfxonlsDMfh127ia5g+tdlqS2+LdojYyeN0Fdh8VXrPh0AcntB7nvGz/Vm64g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VPASkmLv; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1768557611; c=relaxed/relaxed;
+	bh=ik7nBSUvqjiZji8p0UMpcxyJ9CmKYvj/STnQwZRmw6o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cRwlgrwBvTo6RwGFJHwJ8VR12lK37rvyHa5QqfbPAVaWdpQ04FsMK9Ki2asFfmJudGzjnOER5nD7sGdOk9anCP9TBCLfq0DI2wZb1pjKZJ1zOR7PWzQM95miRoA1+aSpsQZnVcLXPbFWFbALHWuwUi2dYnWRv+vs0XcHorqn22XD2b6QNdf/iXtaZVI/y20kKnwHFzjyjm8ncyi06GY2qdobm1utYROJ2QrmuOmPjgN4Ppx4I9bizLsfF/jx2YcaJzTh62u4DGhm+sLDsKUJGpKNtGgBWZSSr1LKhw/GAg/YCIq0j+/VKE4msppAOtBduDN408wBVjvBJo9So/W+Ew==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=OUdsDh7L; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42d; helo=mail-wr1-x42d.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VPASkmLv;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=OUdsDh7L;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::42d; helo=mail-wr1-x42d.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsvyM2YGcz2xPL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 20:42:03 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A6F14601B2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 09:42:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DE8C4AF0C
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 09:42:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768556520;
-	bh=/E8pjL1Rg4kjh10yWKXAfqGFi3+btd20CKL87Qc6xYk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VPASkmLvCW/t4XmsQcmEBMDBN6Np6o9rMBqRv0awasGACRhWea5bRnd9A+VLI+NCs
-	 dIOhMy0sajBtbGyDu9uVrXkjyIivOBJELkA5/q/4uW2MVZdwif+Sp2+i0XqCrTiY5V
-	 1KA83r7fBXyaU5DDLzRKsGpWG3+5hmKtEVtCmxu1hgjn3vYeSFlJpj5eVFe/Ievqfl
-	 KZgXntrkuNOXkkx9bZH1SNmuZHxxpA2fODGUvnAxdX2bcG0uDEaKicAUoeBrHNqpUs
-	 FNslAZOVGw7n8A5D4kGOULTX8nF3IzRI4xn4R3dZbn8JeuL3MTbn5K967B+ogy3rK7
-	 zdKB3gNFNNE6A==
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-34c71f462d2so1273746a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 01:42:00 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXu1Uztno0xFMnF+jptu68IQD87U8RTfurLy0PkcUWrDAd+vWznpCQL53Xw4yWxoYPo9gUZpzHc4G+qxYg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxuTLAyCrHg6pgR5lYCm3Fp16x0cPCg56VCgEO1Kwmv10YFD1WI
-	CPGORtnt64BT9RFCXuPIJaeXZNpBZV1S1w6+02OlVHzUsLZPPDMH2r8toCP8VIF3E77Q/lyXTb7
-	L7wD8IvEbpnBRHPIdGxzBuNxcC1uK57k=
-X-Received: by 2002:a17:90b:3dcc:b0:340:c4dc:4b70 with SMTP id
- 98e67ed59e1d1-3527315e60dmr2091280a91.6.1768556519441; Fri, 16 Jan 2026
- 01:41:59 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dswMG12QJz2xPL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 21:00:09 +1100 (AEDT)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-432d2c7dd52so1639860f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 02:00:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768557601; x=1769162401; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ik7nBSUvqjiZji8p0UMpcxyJ9CmKYvj/STnQwZRmw6o=;
+        b=OUdsDh7LaPt6ViYYTEAfQTH3bsiQrjfB8aTyM796hr6iCTQGyO3gK29KpPHBWl7GbS
+         aMhtFyI01oxXdVyQbWPTp8+AD/SbKrxImcPjSri2qLRaa4tmhSRPyjdlckzHssKiNIK5
+         byDol8ftwtXimPQURPcSc0x65w+Wxl0DckGhcxXuS+3fvsZ7WXBIwzK1qVHrlJ/OiROh
+         fklm2qWC705xudoH2U7j7MKbvDs68zahE/xeczh87ZQAbHGUv7Z678oB3uyT+WFN5HYP
+         Tni4a/gwucXHweWkmablgY2tUBVYZJsOlvOKyy8BQrGvzYcv3CM2P8xi00BYDEPmvIuZ
+         Fczw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768557601; x=1769162401;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ik7nBSUvqjiZji8p0UMpcxyJ9CmKYvj/STnQwZRmw6o=;
+        b=JxWD0IHl2M7OGe0f7KIB1MoXSGIIHctDg0PM9ZSsIzL6lMjjLikxAEzKOyoBq21Zo/
+         JtRzZYblsPgiwo9qzAmYDvsV9IQTaX3UTrn2RVC7REdeQAH98fozF1EV40UdC+CtdBSr
+         KmbaVN8AfjcNv1l7pzdjTpYP2UrTVH2jd/6D5jbXKH+2bD0VN3WLYFFUEGy3IVY6l/rK
+         3CIfomXRPNuHthUcCtI35wmcEoRKNIBFqkNx9rqClJceFnPps0dson0Dm8Ldqs+GEixJ
+         mBMgEKIWAezU/cHJd8aa6D3QAYCaF+Ppu6YuLZlfmOMZJ/Sh31YavHqVQhxw1Dq/Txje
+         ttZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVC8hv0MUZ7zK7ZEjLxGeOC+QW7zmqDRndU5rUSY6bb6w1kzngKTiZT/YkM4zT+r5OtlFS0WaYZbpaMMmA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz9VdOYWthZm+QIbkb0AiQvmWmfrgh51lfietZA8uNdnzO0iNse
+	5rYfcFEAEC92iBS+m4fccAqWfkEKJzcc8+rmGZU0bDfJkFyCHyXSjIfGZL/uzXYu6ic=
+X-Gm-Gg: AY/fxX5ypXUgvs8H9pmntEdh5SsK+vO2r6X/gDEZPRWtHsNbHMzBIdkPU8+RnFvIe1w
+	xe6sYZcfvi5BeFA9xgsdf7zy1PSquW9O0iBbtnT6Z8yJZg6QVoX36I+sghWj/c3vx7BOW7v45ek
+	qzKGc0JyH93wDqgM03hqfWuEbJvbiI7i7ZtRgTcE9ZYmQT/wxSVvcACFYZ9HeOFHVgzCQiWjMCy
+	y3kdiFChFQG95iPf7pQVHHoxlFN2GQE0EZy+Tk/qhNpamT/StQ81UnIT85CYeJYUgGHHoXWvlky
+	5ra91lpYTlePtqZhFCCpuNGT1M4/ZGopbtT6TUHOmRyC3L/3JUa5Lta1q3vxIYdVXgB5fHVGbtc
+	gyTMMxmnlmFciLF4/7BHqTJRxRAmKxXWRfGFb09uq3SuySlo1GWObpCkf4XspXodwtvTmqZzTq/
+	jro6GRv8VSfmaR4Q==
+X-Received: by 2002:a05:6000:26ce:b0:432:dfea:1fa8 with SMTP id ffacd0b85a97d-43569bc5767mr3019291f8f.45.1768557601174;
+        Fri, 16 Jan 2026 02:00:01 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43569921f6esm4337797f8f.4.2026.01.16.01.59.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Jan 2026 02:00:00 -0800 (PST)
+Date: Fri, 16 Jan 2026 10:59:57 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jason Wessel <jason.wessel@windriver.com>,
+	Daniel Thompson <danielt@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jiri Slaby <jirislaby@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
+	netdev@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 15/19] drivers: tty: serial: mux.c: Migrate to
+ register_console_force helper
+Message-ID: <aWoMHbbn-BmmbZMg@pathway.suse.cz>
+References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
+ <20251227-printk-cleanup-part3-v1-15-21a291bcf197@suse.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,97 +126,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260115004328.194142-1-coxu@redhat.com> <20260115004328.194142-2-coxu@redhat.com>
-In-Reply-To: <20260115004328.194142-2-coxu@redhat.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 16 Jan 2026 10:41:48 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFXNo1-pMbo-VZrjQ3TYe1tufebrLr_avL12A0nHMSGnA@mail.gmail.com>
-X-Gm-Features: AZwV_QjmUt_PmrwfWvkU01-td52KzVOAwQnoeyg_Oar6lj-mB--Ez-fk2UXAfCg
-Message-ID: <CAMj1kXFXNo1-pMbo-VZrjQ3TYe1tufebrLr_avL12A0nHMSGnA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] integrity: Make arch_ima_get_secureboot integrity-wide
-To: Coiby Xu <coxu@redhat.com>
-Cc: linux-integrity@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, 
-	Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huaweicloud.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Eric Snowberg <eric.snowberg@oracle.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" <linuxppc-dev@lists.ozlabs.org>, 
-	"open list:S390 ARCHITECTURE" <linux-s390@vger.kernel.org>, 
-	"open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)" <linux-efi@vger.kernel.org>, 
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>, 
-	"open list:KEYS/KEYRINGS_INTEGRITY" <keyrings@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251227-printk-cleanup-part3-v1-15-21a291bcf197@suse.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 15 Jan 2026 at 01:43, Coiby Xu <coxu@redhat.com> wrote:
->
-> EVM and other LSMs need the ability to query the secure boot status of
-> the system, without directly calling the IMA arch_ima_get_secureboot
-> function. Refactor the secure boot status check into a general,
-> integrity-wide function named arch_integrity_get_secureboot.
->
-> Define a new Kconfig option CONFIG_INTEGRITY_SECURE_BOOT, which is
-> automatically configured by the supported architectures. The existing
-> IMA_SECURE_AND_OR_TRUSTED_BOOT Kconfig loads the architecture specific
-> IMA policy based on the refactored secure boot status code.
->
-> Reported-and-suggested-by: Mimi Zohar <zohar@linux.ibm.com>
-> Suggested-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
-> Signed-off-by: Coiby Xu <coxu@redhat.com>
-> ---
->  arch/arm64/Kconfig                            |  1 +
->  arch/powerpc/Kconfig                          |  1 +
->  arch/powerpc/kernel/Makefile                  |  2 +-
->  arch/powerpc/kernel/ima_arch.c                |  5 --
->  arch/powerpc/kernel/integrity_sb_arch.c       | 13 +++++
->  arch/s390/Kconfig                             |  1 +
->  arch/s390/kernel/Makefile                     |  1 +
->  arch/s390/kernel/ima_arch.c                   |  6 --
->  arch/s390/kernel/integrity_sb_arch.c          |  9 +++
->  arch/x86/Kconfig                              |  1 +
->  arch/x86/include/asm/efi.h                    |  4 +-
->  arch/x86/platform/efi/efi.c                   |  2 +-
->  include/linux/ima.h                           |  7 +--
->  include/linux/integrity.h                     |  8 +++
->  security/integrity/Kconfig                    |  6 ++
->  security/integrity/Makefile                   |  3 +
->  security/integrity/efi_secureboot.c           | 56 +++++++++++++++++++
->  security/integrity/ima/ima_appraise.c         |  2 +-
->  security/integrity/ima/ima_efi.c              | 47 +---------------
->  security/integrity/ima/ima_main.c             |  4 +-
->  security/integrity/platform_certs/load_uefi.c |  2 +-
->  21 files changed, 111 insertions(+), 70 deletions(-)
->  create mode 100644 arch/powerpc/kernel/integrity_sb_arch.c
->  create mode 100644 arch/s390/kernel/integrity_sb_arch.c
->  create mode 100644 security/integrity/efi_secureboot.c
->
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 93173f0a09c7..4c265b7386bb 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -2427,6 +2427,7 @@ config EFI
->         select EFI_STUB
->         select EFI_GENERIC_STUB
->         imply IMA_SECURE_AND_OR_TRUSTED_BOOT
-> +       imply INTEGRITY_SECURE_BOOT
+On Sat 2025-12-27 09:16:22, Marcos Paulo de Souza wrote:
+> The register_console_force function was introduced to register consoles
+> even on the presence of default consoles, replacing the CON_ENABLE flag
+> that was forcing the same behavior.
+> 
+> --- a/drivers/tty/serial/mux.c
+> +++ b/drivers/tty/serial/mux.c
+> @@ -390,7 +390,7 @@ static struct console mux_console = {
+>  	.write =	mux_console_write,
+>  	.device =	uart_console_device,
+>  	.setup =	mux_console_setup,
+> -	.flags =	CON_ENABLED | CON_PRINTBUFFER,
+> +	.flags =	CON_PRINTBUFFER,
+>  	.index =	0,
+>  	.data =		&mux_driver,
+>  };
+> @@ -547,7 +547,7 @@ static int __init mux_init(void)
+>  		mod_timer(&mux_timer, jiffies + MUX_POLL_DELAY);
+>  
+>  #ifdef CONFIG_SERIAL_MUX_CONSOLE
+> -	        register_console(&mux_console);
+> +		register_console_force(&mux_console);
 
-This allows both to be en/disabled individually, which I don't think
-is what we want. It also results in more churn across the
-arch-specific Kconfigs than needed.
+The situation here is the same as in 16th patch for
+ma35d1serial_console().
 
-Wouldn't it be better if IMA_SECURE_AND_OR_TRUSTED_BOOT 'select'ed
-INTEGRITY_SECURE_BOOT in its Kconfig definition?
+Also "mux_console" is assigned to
+
+static int __init mux_probe(struct parisc_device *dev)
+{
+[...]
+		mux_driver.cons = MUX_CONSOLE;
+
+		status = uart_register_driver(&mux_driver);
+[...]
+		status = uart_add_one_port(&mux_driver, port);
+[...]
+}
+
+So, that it can get registered also by:
+
+  + mux_probe()
+    + uart_add_one_port()
+      + serial_ctrl_register_port()
+	+ serial_core_register_port()
+	  + serial_core_add_one_port()
+	    + uart_configure_port()
+	      + register_console()
+
+And we would need to pass the "force" information via CON_FORCE flag.
+
+Best Regards,
+Petr
 
