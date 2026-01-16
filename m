@@ -1,81 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-15889-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15890-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17CCD30E6A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 13:11:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E74F8D3106F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 13:23:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dszGL6PT2z2xnj;
-	Fri, 16 Jan 2026 23:11:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dszY64pGWz2xnj;
+	Fri, 16 Jan 2026 23:23:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768565466;
-	cv=none; b=SP48Al8NGarAK6naDOIbwBjSbqyFDpqiM1MU7r44NagaTn7tZThAZY3V8TCZNrkcvF7gcDt40Fy6huNty86z72vpPbBnzXa3rWB9+G1GwJgQ8xi0Gu1jPzVpE1usXM8aPaSHpmgjWqrvIFoekxdz4heRz2Ykwr1UeyNPyhQqS5ShJ3d2CyTvRt0q7hjIAdj7pv5cAxn+kUH2+90AITVQIpPXXwCRC8KqFn1pkJ+bREd5K3eREc22uZ1BOqDE498DEknbzPuCheyNs8AAwAa5fWA0xtSQxq3qW24JrqB6+z+/40LDpISNRdLSbVJpilrTpCUfOnXO05qLVqPNb6+LAQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768566234;
+	cv=none; b=lfpAkH1qLxO+y8VXNM+Qcm3VdK+i/A2uJ/buanPrNoRIp1aTgddK+Aw57jGhxhqjBXxiXJsa9K10QU3QZpqSWUUk5VCVp2pgHBSbjst/fwz2yMyFEzwz5rjt3OTfwixECuWRl62kzLbVa/GCouSZXaTv60axygmJ4GIW3c+K1bTQxi7ozX+T42FJYDbrgDZigndL9mK1xCBjHfXT470w/J54yRovXDApZLkD/OeFXtgWATU3SvXsduACcBquGhFjEo5JONAcUNuj9qpeQ1P4oysFvME9Mz7OO9+j8Flu3R8nIY6qV8xlflkHe23ZK4fr3obcvzfOs1/5GdwWJDiCrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768565466; c=relaxed/relaxed;
-	bh=m4xj4CRpx5Rn02x3ca442JNSKW3N63XvSapnCzBXF8o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dwsCBUP9EUzojXEQX3P6pAEx1/bv/iKHFJ1yKNaAtJ3z+fLl/tv4sDh0GxKzn0gQctMecssz72di8bRjkoZbqfNnLlyWI38ktzxn+QrKgJRpn0ecLQqVhQpgsR1+bLZjCozHwbItRQ+D3IPbr1lpEZOwb2/742Ua9qxZr9JhALgtJ5+zaDVM89TJYg0/eHVqoVUYKt91GjJX4UspDawRQumV+EmhlaGEqIKb91mmyD2lYFMlfvT09EdadL2dMH+wRVL30I+W0ue+5SvAa6gqx4E7vH27Fm9ub/EUDxE1ZxOVW9kcv/vsE69h2a804K51cef3qwxAWwhbF5DtZX60pw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=tcY57Ktk; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=RoLHU8R2; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1768566234; c=relaxed/relaxed;
+	bh=Kli5HydauTDl1lbbXXNhZxK29dM2rVfYGLkPTVkyIZQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f/4uDCWijYA93JZ7yE6octrHcoVseFFynxmJGzzXWOW9LdeY3Azca6tn7cxRUJp9WFfB2q5WWcemJ1nKprO1WB5stuZjLaxUR85dU7vqFaXbDoko+Ynp9I9VQaI/5rIYgD/4aN65QqK4ktr6ES2jSnm7uYwwNcjf5YGztu2Fwplum+48S9o51V75WTUZo0A/TnWI9rQgiU4hLJrsfBexbxqy+wWlJzEh6f3UxEIpyMbHVJ3hlIBkyV4DYeHQIWNLmBzEM4Xcl2aQ/PPABmW0fF8lF+bwyeKWalergGfbdOTNpOVJd61Su5faEAGKu+W9TlnrfiKhR3CgM5ALquwa7Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AD1Go/tC; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=tcY57Ktk;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=RoLHU8R2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AD1Go/tC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dszGF3dymz2xSN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 23:11:01 +1100 (AEDT)
-Date: Fri, 16 Jan 2026 13:10:42 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768565444;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m4xj4CRpx5Rn02x3ca442JNSKW3N63XvSapnCzBXF8o=;
-	b=tcY57KtkxrC2Kv4y0HkpbJbC/pQS5RHj9Kp4rg1YyeKUZFPhAszR0J9jXDYqU8XKMRt5yy
-	/cxA+qFjtYuGq3R5ue0ASh4BzD6PkPogDxaC3NG7jOvQXfc6a8y1Mj7UjwdcpmtWm6QmMF
-	P4JSJneYYVjhf0ropRohWWEJusj5z7WghKS+mseOsE/SiZUELdvQaP4mmZXIUcYfG0KM1J
-	SyKqrKtvAZQtbn0EioFiC39BcksrufdUvJKV41PHxEM0/XUOhtZ5Su8mpUxN4BGoJ8QcpA
-	pDPq2VQryd3zYOIkU4e5rPmQSuL5HuVQPwsqa2yeFNGSwpwptypePDBSAzdFGA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768565444;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m4xj4CRpx5Rn02x3ca442JNSKW3N63XvSapnCzBXF8o=;
-	b=RoLHU8R2m4lh+TOUGYaYUhiHbsJz60UbhmEfkq+Ri9skt252VpVK6rulxmT2CKH3E9ZPhM
-	NY+TbhTMPWk9blDA==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Andy Lutomirski <luto@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Arnd Bergmann <arnd@arndb.de>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Nick Alcock <nick.alcock@oracle.com>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	Shuah Khan <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
-	"Jason A. Donenfeld" <Jason@zx2c4.com>, "Russell King (Oracle)" <linux@armlinux.org.uk>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Shannon Nelson <sln@onemain.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v5 00/34] sparc64: vdso: Switch to the generic vDSO
- library
-Message-ID: <20260116124847-4bbc0b99-fa0c-4bd1-a229-1bd248ee8c6b@linutronix.de>
-References: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de>
- <b870aa47-5ed4-4dcf-a407-eca83d1733d8@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dszY53PcCz2xSN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 23:23:53 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 77FC760193;
+	Fri, 16 Jan 2026 12:23:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BC6C19423;
+	Fri, 16 Jan 2026 12:23:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768566230;
+	bh=dJZzs6Lq3VkI/+4oIUplrnQa2CPvD2BKKJWygkxU/1A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=AD1Go/tCTnfRAnzZCmOYxeVLw5/Igv4MLnvo+PeHoJUX0je47inqvion3jWdly6CL
+	 M+5+++4JQt8T/dJIp391EG9N8o2Y5/n5kRsM+Mqgv35Y9lExJW5CnMoHVsWyH4njDU
+	 0ktITN7WPLAj2LUgSX+j+ETzI1EBJk+p6bl3W2hfS+E6YusmA5JYYnF3A8410Vgr63
+	 obals6rpp66+i8jb+4OXuP5hpIZ4/LWSjxjDneS3vFSzWbEDD7+0Pdwr7jba/b/T63
+	 HAObmxucjPfBWnwjukyt7PvxVx0qmcrLCcginlLZtV52J5Q4zsXqB823c8lIUHnGnY
+	 QrKY/M/zttSCQ==
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+To: Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] bus: fsl-mc: declare fsl_mc_bus_dpdbg_type static
+Date: Fri, 16 Jan 2026 13:23:33 +0100
+Message-ID: <628c49881b3a1df76cfd2f8fd2aad976692a465a.1768566053.git.chleroy@kernel.org>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,114 +66,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1153; i=chleroy@kernel.org; h=from:subject:message-id; bh=dJZzs6Lq3VkI/+4oIUplrnQa2CPvD2BKKJWygkxU/1A=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWRm6R5dk3G4vHJBzpQjkz/LnX/xuOdQf47UDIV5eQbxH 2YtTy7i7ChlYRDjYpAVU2Q5/p9714yuL6n5U3fpw8xhZQIZwsDFKQAT+X2VkWHt4j/by1hfCElN nTI3q1XTXFLyuKOYuNMJ7kPyWslHF1cy/BVsXbbkQNsX/cwam44+cefDny0YZcrPRVi4Jj/8vmG VKAcA
+X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b870aa47-5ed4-4dcf-a407-eca83d1733d8@app.fastmail.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
-	T_PHOTO_EDITING_DIRECT autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Andy,
+Fix following sparse warning:
 
-sorry for the long delay.
+  CHECK   drivers/bus/fsl-mc/fsl-mc-bus.c
+drivers/bus/fsl-mc/fsl-mc-bus.c:435:26: warning: symbol 'fsl_mc_bus_dpdbg_type' was not declared. Should it be static?
 
-On Fri, Nov 07, 2025 at 04:17:14PM -0800, Andy Lutomirski wrote:
-> On Thu, Nov 6, 2025, at 2:01 AM, Thomas Weißschuh wrote:
-> > The generic vDSO provides a lot common functionality shared between
-> > different architectures. SPARC is the last architecture not using it,
-> > preventing some necessary code cleanup.
-> >
-> > Make use of the generic infrastructure.
-> >
-> > Follow-up to and replacement for Arnd's SPARC vDSO removal patches:
-> > https://lore.kernel.org/lkml/20250707144726.4008707-1-arnd@kernel.org/
-> >
-> > SPARC64 can not map .bss into userspace, so the vDSO datapages are
-> > switched over to be allocated dynamically. This requires changes to the
-> > s390 and random subsystem vDSO initialization as preparation.
-> > The random subsystem changes in turn require some cleanup of the vDSO
-> > headers to not end up as ugly #ifdef mess.
-> >
-> 
-> I hate to say it, but this patch series seems like a step backwards.  You're
-> adding a whole lot of complexity and opportunity for screwups (boot failure?
-> corruption?) to support SPARC, where other architectures have no problem with
-> the existing code.  And this complexity appears to infect basically every
-> kernel subsystem that supplies data to the vDSO.
+fsl_mc_bus_dpdbg_type is not used outside of fsl-mc-bus.c
 
-Ack.
+Remove the EXPORT_SYMBOL and declare it static.
 
-> Can you at least explain what the problem is and maybe give some discussion
-> of why SPARC has no workaround available?  The closest I found was this bit
-> from "[PATCH v4 24/35] vdso/datastore: Allocate data pages dynamically":
-> 
-> > Allocating the datapages as part of the kernel image does not work on
-> SPARC. It is also problematic with regards to dcache aliasing as there is
-> no guarantee that the virtual addresses used by the kernel are compatible
-> with those used by userspace.
-> 
-> Now I'm not an expert on any architecture that has these aliasing (coloring?)
-> issues, but from my limited understanding, it ought to be possible to choose
-> a correctly colored address to map the vdso data given where it's being
-> mapped from.  If there's an issue with gathering a bunch of basically
-> arbitrarily relatively positioned physical pages into their necessary
-> arrangement in usermode, you could presumably fix it either with some linker
-> script magic or by rearranging the C code to stick everything into a
-> multipage structure.
+Fixes: e70ba1b06c26 ("bus: fsl-mc: add the dpdbg device type")
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+---
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-After I wrote that commit message it turned out to probably not be an
-aliasing issue. Even with matching alignments the error would persist.
-The real reason is unknown. Nobody came up with an explanatin so far.
-
-But another advantage of this dynamic allocation is to enable mlockall()
-on these VMAs. This avoids unexpected page faults and latency spikes for
-realtime applications.
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index 08b99b0b342f3..d9d7f006f92ba 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -432,10 +432,9 @@ const struct device_type fsl_mc_bus_dpdmai_type = {
+ };
+ EXPORT_SYMBOL_GPL(fsl_mc_bus_dpdmai_type);
  
-> Or maybe you could arrange to allocate all these pages during early boot and
-> to fudge up some relocation to get all the existing generic code to find
-> them.  Or create some pointers that all the generic code will use that, on
-> non-sparc architectures, will be statically populated with the right
-> addresses by the linker.  IOW, conceptually,
-> 
-> struct the_type some_vdso_thing;
-> 
-> could change to:
-> 
-> const struct the_type some_vdso_thing = &the_actual_data;
-> 
-> and SPARC could fix up the initialization of the pointer. And generic code
-> would use the pointer instead of the_actual_data.
+-const struct device_type fsl_mc_bus_dpdbg_type = {
++static const struct device_type fsl_mc_bus_dpdbg_type = {
+ 	.name = "fsl_mc_bus_dpdbg"
+ };
+-EXPORT_SYMBOL_GPL(fsl_mc_bus_dpdbg_type);
+ 
+ static const struct device_type *fsl_mc_get_device_type(const char *type)
+ {
+-- 
+2.49.0
 
-These pointers alread exist and are used by the generic code:
-vdso_k_time_data, vdso_k_rng_data, vdso_k_arch_data.
-As proposed elsewhere in this thread, these can point to statically allocated
-memory at first so they can be accessed by the other kernel subsystems.
-Then they after the dynamic allocation we do a mempcy from the static storage
-to the dynamic one and update the pointer. I have the code for that which
-does work nicely.
-
-While we could limit this treatment to SPARC, I prefer to keep the code
-aligned between the different architectures. Otherwise we would need
-duplicate implementations as one uses PFN maps and the other 'struct page'
-maps. Also the mlockall() usecase is architecture-agnostic.
-
-Does this sound acceptable?
-
-> If you really really really need to have non-arch-specific kernel C code
-> running before the vdso data is allocated, can you give a very clear
-> explanation of what, exactly, is wrong on sparc?  And maybe put that
-> explanation into an appropriate comment somewhere so that future kernel
-> programmers don't look at the headers and the code and think "wow, what I
-> mess -- I bet I can clean this up by using statically allocated data".
-
-Ack, will do. But as I mentioned, I do not have an actual root cause.
-
-> (Can SPARC really not map things that existed during early boot into userspace?)
-
-It looks like it.
-
-
-Thomas
 
