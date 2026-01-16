@@ -1,105 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-15888-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15889-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2ADED30335
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 12:15:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E17CCD30E6A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 13:11:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dsy1r5qDNz30T8;
-	Fri, 16 Jan 2026 22:15:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dszGL6PT2z2xnj;
+	Fri, 16 Jan 2026 23:11:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.18
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768562112;
-	cv=none; b=Rv2f0+CAWM51jcKxZnVqmZMpePJsaDlLGah6AsDsdq/I4t5IUe7o+sdyCDNS9HvsmFILkNElAmSYNOTXBaojkHCxQdqn0A5PMywbMGCMWjKMipb51W8X1hOkYxAQoKOmGsBjFp3JDBJsr1L1EizZQhhsIhNoPES5FE1RFvPqAH0PhM8mRDQ6Xg8QKieYAtVCfh9bgNhwZg2xjnrT4b5vZCvk3wBYsbou1DI6dRVjq6G2rIM8bCUY/1qIkY5n6sD6HVqjyEOXm02ugVMFHKLgSB7G2qil+5XlaYFOJvLBdlIUH2KKr+fW5ygSPl/1rx2WXAcNTaKiFM0Drspcaq5Png==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768565466;
+	cv=none; b=SP48Al8NGarAK6naDOIbwBjSbqyFDpqiM1MU7r44NagaTn7tZThAZY3V8TCZNrkcvF7gcDt40Fy6huNty86z72vpPbBnzXa3rWB9+G1GwJgQ8xi0Gu1jPzVpE1usXM8aPaSHpmgjWqrvIFoekxdz4heRz2Ykwr1UeyNPyhQqS5ShJ3d2CyTvRt0q7hjIAdj7pv5cAxn+kUH2+90AITVQIpPXXwCRC8KqFn1pkJ+bREd5K3eREc22uZ1BOqDE498DEknbzPuCheyNs8AAwAa5fWA0xtSQxq3qW24JrqB6+z+/40LDpISNRdLSbVJpilrTpCUfOnXO05qLVqPNb6+LAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768562112; c=relaxed/relaxed;
-	bh=p6W/APdM9Oyy0cV5UpBAmEvhWdE7mtiBYO3W/yS4SnI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xc93ORjYUT5C+0eiu+Tbrm4JBDohJ5pf62etlXzZqTkq2Yddf16K1A9mZ0Fw9PSieU/luOFN1hijhE1E0KvlANl/hoMQbU0SVe0MEMie6eNjXc5JTqHR7if+/TR+/S9KFDGpIoKVD50JScVbS6L17xMS3X5z3Z23KLTmirmqCbWACBvLvAEfl5zqNRfbS4akkHQBTNV5B1VuMo0ZQrqR1887EsPTWgQup15bnv7ZiqAmOhzSUM9xc2xeHWFaCekX4dGN9VoHhyfSyNhrNm8sAbyFmdrpjZURjM93feN6KPJQC3fpzCkZx4ocFQD49moeurQ/ipH3lcS0uYGkXClBXA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eRQD0uTV; dkim-atps=neutral; spf=pass (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=francois.dugast@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1768565466; c=relaxed/relaxed;
+	bh=m4xj4CRpx5Rn02x3ca442JNSKW3N63XvSapnCzBXF8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dwsCBUP9EUzojXEQX3P6pAEx1/bv/iKHFJ1yKNaAtJ3z+fLl/tv4sDh0GxKzn0gQctMecssz72di8bRjkoZbqfNnLlyWI38ktzxn+QrKgJRpn0ecLQqVhQpgsR1+bLZjCozHwbItRQ+D3IPbr1lpEZOwb2/742Ua9qxZr9JhALgtJ5+zaDVM89TJYg0/eHVqoVUYKt91GjJX4UspDawRQumV+EmhlaGEqIKb91mmyD2lYFMlfvT09EdadL2dMH+wRVL30I+W0ue+5SvAa6gqx4E7vH27Fm9ub/EUDxE1ZxOVW9kcv/vsE69h2a804K51cef3qwxAWwhbF5DtZX60pw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=tcY57Ktk; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=RoLHU8R2; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eRQD0uTV;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=tcY57Ktk;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=RoLHU8R2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=francois.dugast@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dsy1q5Wlyz2xm3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 22:15:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768562113; x=1800098113;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=0SRLvn1v5u7eTbuUJ05A/prO4E/QbcRKaOudyYKH0FM=;
-  b=eRQD0uTVUqE/pNKxtXen5D5EyfPV3Yv4dDjkFg1tkDm9EhzMvxDiwzux
-   Y4jpH6KGTX1NO/6RUmCvETM+cKRkxA6+5SBb5c4d67ChMRpusui98p7Ys
-   /66TlJgfi+y7Ar8AcJwZU2C81qE/8dKxalCeVHHb1LMK0SRutErzI/ayV
-   aSBek5QuQSxx747lU3NxvqHxgLwOq2XgCK/mP6qFiR2BOoiodRd98+860
-   cnAV7bv7rUoy6DznXFPgyLndaGrNr4ljiGw+f78hLYrNtmxoH4HpDxH9W
-   6Db8VkQi5rmY2N/cSrdEp0i3d0dUak0n1CdDcW21BUIbAg7V+sdd44Tu4
-   g==;
-X-CSE-ConnectionGUID: FhCW9qiZRLa2Ed2lwppZWg==
-X-CSE-MsgGUID: j2QY9tQ+RsOd9vuSIUuYWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="69930650"
-X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
-   d="scan'208";a="69930650"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 03:14:08 -0800
-X-CSE-ConnectionGUID: EolNQg6USFuQBa0DkCMuow==
-X-CSE-MsgGUID: If0ItoI+QHC6rHFKmUK5Bg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; 
-   d="scan'208";a="209713435"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO fdugast-desk.home) ([10.245.245.100])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 03:13:59 -0800
-From: Francois Dugast <francois.dugast@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	adhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lyude Paul <lyude@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org,
-	Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH v6 1/5] mm/zone_device: Reinitialize large zone device private folios
-Date: Fri, 16 Jan 2026 12:10:16 +0100
-Message-ID: <20260116111325.1736137-2-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260116111325.1736137-1-francois.dugast@intel.com>
-References: <20260116111325.1736137-1-francois.dugast@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dszGF3dymz2xSN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jan 2026 23:11:01 +1100 (AEDT)
+Date: Fri, 16 Jan 2026 13:10:42 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1768565444;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m4xj4CRpx5Rn02x3ca442JNSKW3N63XvSapnCzBXF8o=;
+	b=tcY57KtkxrC2Kv4y0HkpbJbC/pQS5RHj9Kp4rg1YyeKUZFPhAszR0J9jXDYqU8XKMRt5yy
+	/cxA+qFjtYuGq3R5ue0ASh4BzD6PkPogDxaC3NG7jOvQXfc6a8y1Mj7UjwdcpmtWm6QmMF
+	P4JSJneYYVjhf0ropRohWWEJusj5z7WghKS+mseOsE/SiZUELdvQaP4mmZXIUcYfG0KM1J
+	SyKqrKtvAZQtbn0EioFiC39BcksrufdUvJKV41PHxEM0/XUOhtZ5Su8mpUxN4BGoJ8QcpA
+	pDPq2VQryd3zYOIkU4e5rPmQSuL5HuVQPwsqa2yeFNGSwpwptypePDBSAzdFGA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1768565444;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m4xj4CRpx5Rn02x3ca442JNSKW3N63XvSapnCzBXF8o=;
+	b=RoLHU8R2m4lh+TOUGYaYUhiHbsJz60UbhmEfkq+Ri9skt252VpVK6rulxmT2CKH3E9ZPhM
+	NY+TbhTMPWk9blDA==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Andy Lutomirski <luto@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Arnd Bergmann <arnd@arndb.de>, 
+	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	Nick Alcock <nick.alcock@oracle.com>, John Stultz <jstultz@google.com>, 
+	Stephen Boyd <sboyd@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Shuah Khan <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
+	"Jason A. Donenfeld" <Jason@zx2c4.com>, "Russell King (Oracle)" <linux@armlinux.org.uk>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Shannon Nelson <sln@onemain.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH v5 00/34] sparc64: vdso: Switch to the generic vDSO
+ library
+Message-ID: <20260116124847-4bbc0b99-fa0c-4bd1-a229-1bd248ee8c6b@linutronix.de>
+References: <20251106-vdso-sparc64-generic-2-v5-0-97ff2b6542f7@linutronix.de>
+ <b870aa47-5ed4-4dcf-a407-eca83d1733d8@app.fastmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -113,231 +89,114 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <b870aa47-5ed4-4dcf-a407-eca83d1733d8@app.fastmail.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+	T_PHOTO_EDITING_DIRECT autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Matthew Brost <matthew.brost@intel.com>
+Hi Andy,
 
-Reinitialize metadata for large zone device private folios in
-zone_device_page_init prior to creating a higher-order zone device
-private folio. This step is necessary when the folio’s order changes
-dynamically between zone_device_page_init calls to avoid building a
-corrupt folio. As part of the metadata reinitialization, the dev_pagemap
-must be passed in from the caller because the pgmap stored in the folio
-page may have been overwritten with a compound head.
+sorry for the long delay.
 
-Without this fix, individual pages could have invalid pgmap fields and
-flags (with PG_locked being notably problematic) due to prior different
-order allocations, which can, and will, result in kernel crashes.
+On Fri, Nov 07, 2025 at 04:17:14PM -0800, Andy Lutomirski wrote:
+> On Thu, Nov 6, 2025, at 2:01 AM, Thomas Wei�schuh wrote:
+> > The generic vDSO provides a lot common functionality shared between
+> > different architectures. SPARC is the last architecture not using it,
+> > preventing some necessary code cleanup.
+> >
+> > Make use of the generic infrastructure.
+> >
+> > Follow-up to and replacement for Arnd's SPARC vDSO removal patches:
+> > https://lore.kernel.org/lkml/20250707144726.4008707-1-arnd@kernel.org/
+> >
+> > SPARC64 can not map .bss into userspace, so the vDSO datapages are
+> > switched over to be allocated dynamically. This requires changes to the
+> > s390 and random subsystem vDSO initialization as preparation.
+> > The random subsystem changes in turn require some cleanup of the vDSO
+> > headers to not end up as ugly #ifdef mess.
+> >
+> 
+> I hate to say it, but this patch series seems like a step backwards.  You're
+> adding a whole lot of complexity and opportunity for screwups (boot failure?
+> corruption?) to support SPARC, where other architectures have no problem with
+> the existing code.  And this complexity appears to infect basically every
+> kernel subsystem that supplies data to the vDSO.
 
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: adhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Balbir Singh <balbirs@nvidia.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: amd-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: nouveau@lists.freedesktop.org
-Cc: linux-mm@kvack.org
-Cc: linux-cxl@vger.kernel.org
-Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+Ack.
 
----
+> Can you at least explain what the problem is and maybe give some discussion
+> of why SPARC has no workaround available?  The closest I found was this bit
+> from "[PATCH v4 24/35] vdso/datastore: Allocate data pages dynamically":
+> 
+> > Allocating the datapages as part of the kernel image does not work on
+> SPARC. It is also problematic with regards to dcache aliasing as there is
+> no guarantee that the virtual addresses used by the kernel are compatible
+> with those used by userspace.
+> 
+> Now I'm not an expert on any architecture that has these aliasing (coloring?)
+> issues, but from my limited understanding, it ought to be possible to choose
+> a correctly colored address to map the vdso data given where it's being
+> mapped from.  If there's an issue with gathering a bunch of basically
+> arbitrarily relatively positioned physical pages into their necessary
+> arrangement in usermode, you could presumably fix it either with some linker
+> script magic or by rearranging the C code to stick everything into a
+> multipage structure.
 
-The latest revision updates the commit message to explain what is broken
-prior to this patch and also restructures the patch so it applies, and
-works, on both the 6.19 branches and drm-tip, the latter in which includes
-patches for the next kernel release PR. Intel CI passes on both the 6.19
-branches and drm-tip at point of the first patch in this series and the
-last (drm-tip only given subsequent patches in the series require in
-patches drm-tip but not present 6.19).
----
- arch/powerpc/kvm/book3s_hv_uvmem.c       |  2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  2 +-
- drivers/gpu/drm/drm_pagemap.c            |  2 +-
- drivers/gpu/drm/nouveau/nouveau_dmem.c   |  2 +-
- include/linux/memremap.h                 |  9 ++++--
- lib/test_hmm.c                           |  4 ++-
- mm/memremap.c                            | 35 +++++++++++++++++++++++-
- 7 files changed, 47 insertions(+), 9 deletions(-)
+After I wrote that commit message it turned out to probably not be an
+aliasing issue. Even with matching alignments the error would persist.
+The real reason is unknown. Nobody came up with an explanatin so far.
 
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index e5000bef90f2..7cf9310de0ec 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -723,7 +723,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
+But another advantage of this dynamic allocation is to enable mlockall()
+on these VMAs. This avoids unexpected page faults and latency spikes for
+realtime applications.
  
- 	dpage = pfn_to_page(uvmem_pfn);
- 	dpage->zone_device_data = pvt;
--	zone_device_page_init(dpage, 0);
-+	zone_device_page_init(dpage, &kvmppc_uvmem_pgmap, 0);
- 	return dpage;
- out_clear:
- 	spin_lock(&kvmppc_uvmem_bitmap_lock);
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-index af53e796ea1b..6ada7b4af7c6 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-@@ -217,7 +217,7 @@ svm_migrate_get_vram_page(struct svm_range *prange, unsigned long pfn)
- 	page = pfn_to_page(pfn);
- 	svm_range_bo_ref(prange->svm_bo);
- 	page->zone_device_data = prange->svm_bo;
--	zone_device_page_init(page, 0);
-+	zone_device_page_init(page, page_pgmap(page), 0);
- }
- 
- static void
-diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-index 03ee39a761a4..38eca94f01a1 100644
---- a/drivers/gpu/drm/drm_pagemap.c
-+++ b/drivers/gpu/drm/drm_pagemap.c
-@@ -201,7 +201,7 @@ static void drm_pagemap_get_devmem_page(struct page *page,
- 					struct drm_pagemap_zdd *zdd)
- {
- 	page->zone_device_data = drm_pagemap_zdd_get(zdd);
--	zone_device_page_init(page, 0);
-+	zone_device_page_init(page, page_pgmap(page), 0);
- }
- 
- /**
-diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-index 58071652679d..3d8031296eed 100644
---- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-@@ -425,7 +425,7 @@ nouveau_dmem_page_alloc_locked(struct nouveau_drm *drm, bool is_large)
- 			order = ilog2(DMEM_CHUNK_NPAGES);
- 	}
- 
--	zone_device_folio_init(folio, order);
-+	zone_device_folio_init(folio, page_pgmap(folio_page(folio, 0)), order);
- 	return page;
- }
- 
-diff --git a/include/linux/memremap.h b/include/linux/memremap.h
-index 713ec0435b48..e3c2ccf872a8 100644
---- a/include/linux/memremap.h
-+++ b/include/linux/memremap.h
-@@ -224,7 +224,8 @@ static inline bool is_fsdax_page(const struct page *page)
- }
- 
- #ifdef CONFIG_ZONE_DEVICE
--void zone_device_page_init(struct page *page, unsigned int order);
-+void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
-+			   unsigned int order);
- void *memremap_pages(struct dev_pagemap *pgmap, int nid);
- void memunmap_pages(struct dev_pagemap *pgmap);
- void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
-@@ -234,9 +235,11 @@ bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
- 
- unsigned long memremap_compat_align(void);
- 
--static inline void zone_device_folio_init(struct folio *folio, unsigned int order)
-+static inline void zone_device_folio_init(struct folio *folio,
-+					  struct dev_pagemap *pgmap,
-+					  unsigned int order)
- {
--	zone_device_page_init(&folio->page, order);
-+	zone_device_page_init(&folio->page, pgmap, order);
- 	if (order)
- 		folio_set_large_rmappable(folio);
- }
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 8af169d3873a..455a6862ae50 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -662,7 +662,9 @@ static struct page *dmirror_devmem_alloc_page(struct dmirror *dmirror,
- 			goto error;
- 	}
- 
--	zone_device_folio_init(page_folio(dpage), order);
-+	zone_device_folio_init(page_folio(dpage),
-+			       page_pgmap(folio_page(page_folio(dpage), 0)),
-+			       order);
- 	dpage->zone_device_data = rpage;
- 	return dpage;
- 
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 63c6ab4fdf08..ac7be07e3361 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -477,10 +477,43 @@ void free_zone_device_folio(struct folio *folio)
- 	}
- }
- 
--void zone_device_page_init(struct page *page, unsigned int order)
-+void zone_device_page_init(struct page *page, struct dev_pagemap *pgmap,
-+			   unsigned int order)
- {
-+	struct page *new_page = page;
-+	unsigned int i;
-+
- 	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
- 
-+	for (i = 0; i < (1UL << order); ++i, ++new_page) {
-+		struct folio *new_folio = (struct folio *)new_page;
-+
-+		/*
-+		 * new_page could have been part of previous higher order folio
-+		 * which encodes the order, in page + 1, in the flags bits. We
-+		 * blindly clear bits which could have set my order field here,
-+		 * including page head.
-+		 */
-+		new_page->flags.f &= ~0xffUL;	/* Clear possible order, page head */
-+
-+#ifdef NR_PAGES_IN_LARGE_FOLIO
-+		/*
-+		 * This pointer math looks odd, but new_page could have been
-+		 * part of a previous higher order folio, which sets _nr_pages
-+		 * in page + 1 (new_page). Therefore, we use pointer casting to
-+		 * correctly locate the _nr_pages bits within new_page which
-+		 * could have modified by previous higher order folio.
-+		 */
-+		((struct folio *)(new_page - 1))->_nr_pages = 0;
-+#endif
-+
-+		new_folio->mapping = NULL;
-+		new_folio->pgmap = pgmap;	/* Also clear compound head */
-+		new_folio->share = 0;   /* fsdax only, unused for device private */
-+		VM_WARN_ON_FOLIO(folio_ref_count(new_folio), new_folio);
-+		VM_WARN_ON_FOLIO(!folio_is_zone_device(new_folio), new_folio);
-+	}
-+
- 	/*
- 	 * Drivers shouldn't be allocating pages after calling
- 	 * memunmap_pages().
--- 
-2.43.0
+> Or maybe you could arrange to allocate all these pages during early boot and
+> to fudge up some relocation to get all the existing generic code to find
+> them.  Or create some pointers that all the generic code will use that, on
+> non-sparc architectures, will be statically populated with the right
+> addresses by the linker.  IOW, conceptually,
+> 
+> struct the_type some_vdso_thing;
+> 
+> could change to:
+> 
+> const struct the_type some_vdso_thing = &the_actual_data;
+> 
+> and SPARC could fix up the initialization of the pointer. And generic code
+> would use the pointer instead of the_actual_data.
 
+These pointers alread exist and are used by the generic code:
+vdso_k_time_data, vdso_k_rng_data, vdso_k_arch_data.
+As proposed elsewhere in this thread, these can point to statically allocated
+memory at first so they can be accessed by the other kernel subsystems.
+Then they after the dynamic allocation we do a mempcy from the static storage
+to the dynamic one and update the pointer. I have the code for that which
+does work nicely.
+
+While we could limit this treatment to SPARC, I prefer to keep the code
+aligned between the different architectures. Otherwise we would need
+duplicate implementations as one uses PFN maps and the other 'struct page'
+maps. Also the mlockall() usecase is architecture-agnostic.
+
+Does this sound acceptable?
+
+> If you really really really need to have non-arch-specific kernel C code
+> running before the vdso data is allocated, can you give a very clear
+> explanation of what, exactly, is wrong on sparc?  And maybe put that
+> explanation into an appropriate comment somewhere so that future kernel
+> programmers don't look at the headers and the code and think "wow, what I
+> mess -- I bet I can clean this up by using statically allocated data".
+
+Ack, will do. But as I mentioned, I do not have an actual root cause.
+
+> (Can SPARC really not map things that existed during early boot into userspace?)
+
+It looks like it.
+
+
+Thomas
 
