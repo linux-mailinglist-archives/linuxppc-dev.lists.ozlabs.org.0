@@ -1,78 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-15895-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15896-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52817D32409
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 15:00:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A33D32E13
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 15:52:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dt1hs5pZsz2xnj;
-	Sat, 17 Jan 2026 01:00:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dt2rS3fvGz2xm3;
+	Sat, 17 Jan 2026 01:52:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768572045;
-	cv=none; b=b+DQeoIKRgVBJ7R6ziW9mrHgHlT67xj0bwtM8boWGbbPrvdGXS6u2QxRk0pDwKRVjkOWmehGrYZtJ1PZg6GOp1vFnKkWNI49rFx2yBOfMNcAcoFfMFQ4W/Rfo0Iid1b3ufb1R4cQXUYc1O5PJxqFOO3ifA8xNjyVH3fmn7t33bfRPHLZXcsIK5hEpz6la/Jf7k4tyN2KKCFNHH/Zgrg+LeR2aA7g94FqfiTKujZ117uP9iLLsvQN6L9kKgBOSzCMfe1T8jH8L4aQfkAtDTl6igxX/a7JgJ+Yuwsb3wvUX2iLpWXccpoKCadn+fodXcTzfAODv08phJ0f7KYLULEFbQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768575144;
+	cv=none; b=OSU/GQAUdpwM1HmEh69p8WGqi9+qhxWh1zNR3dXCs2k//O986x2jWMFzCtmhPiuBW+xLaBWPysyD6l2lCR29+gHQ9/tI4uJE4rd8qzn1EElxu9eBR8kL16R4Llj5qxxkdDFYE7aUe69uUFVx9RDbggesL95U0a31jFk7+6V9Rfx4nDHOOAZIGLbqW0XCZucYCO3+HSyc3cgYPMk1v1tEGC/zqW82yGms8sohZLMpQ8N2YWpB/JZYq47UjdSi0GuAYNoFsT7oytXg8qMVrYdESrtj1EG0KnP6o5z58twAWpo1Q/rI3uN5kZ1epNDyU9A1WOQGr0P1JFi7DmbePpRGpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768572045; c=relaxed/relaxed;
-	bh=myVOCtChlyLQtK/gurvuHhrtUul1Cjy4qpiGZDFtLmI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i4fU+3HczGvLJwyhH03T3R7pGM5of5cjMraGvqvoE1UuS/gDwK1EfCTt+1f+IjKPkhGJDxaeFkAiCGPPlAvpVyS9u7GeULv5qhcwSYSBc+OxNQaC2wagcqgKwi78MKKBygYgZLQw1BXGE+MpogE0uglXQeRDFkQuQZH7LmyWnKT7p9xuFIvpPtO1lVCyT+D5+KDyX8lDzQbHRTB9VJMV8PbAStpaoOcQoiLqvJPy49uwFovTVUHslzpjCAIlY6fnCsbTYhWPbXVJTSfPv3+asmqzExAdzvCZrF2NohWzWqD/YHoB+3wji6skPSv39g64zK7xtMAqpqvNut77gunapQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E4JNMoGH; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1768575144; c=relaxed/relaxed;
+	bh=4jS2e4My5UHDJ70Bn6LaLfJsqnr0dlhgHVQcAHEowjI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hO4DiZ7KCjLdhwNxYjoZGhSiAmHathpxDYALsmGOmGYRW7GzmmR+bnSaiDOr9vQ0acX/wNKdSToEu8nAENvDv94M5ifkU+07kSsRbG1j/F1q6VwdDbkW0QTGW7l9YAWyT2E1nfsnSAINi+A9DUmKGpxgTDj+aFgzjRyB3CnvzMoF217iW0OGbNFhGxSFyjuWA+fqX6MH33j9R2Wxn7B5B+mhrDQpuL754flTM8xeNPE1rMcD6fq9OW/dwMVPOWureTd2db3W+Vh8qZwfLJaZinhRaVsSXHrE494kK0TLNkVYWxqfbV1bIaqpGgUtcxezQ8cJBXW7V9VGxa8+H+T7xA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i2BL6MXw; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E4JNMoGH;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i2BL6MXw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dt1hs06zPz2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jan 2026 01:00:44 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60GCRw4i031369;
-	Fri, 16 Jan 2026 13:59:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=myVOCt
-	ChlyLQtK/gurvuHhrtUul1Cjy4qpiGZDFtLmI=; b=E4JNMoGH7I9epFA/V3UdGb
-	9h54mFOicaoOHmiB7BYKzNYuJLgJz6+FOJQkQ8q6IdcdqUjvuCS8ecJG8vIlvAi8
-	JuyyxwAKqQEQAdXgGhZ6C+nprlk1MpuLSTS2MPkgCYbWw9fzitMXQgWZ8aMWKEAh
-	k5hho8DCOOTNRlSvu6tVLAy/7SzFOFtLuLAVQHgtY+x+8FETVTQuHARpsPsNxMEl
-	Z8Wih2HZTR8ToNGgkCazJUu6Vob9xT80TNPzkLEfQxy8iBo+v/cj6AHWJoKa4vm9
-	MvWtgheKzewkogMTYjlmTrXEd05PNUqHsTwtHAZ2oks9yB6nN05tkCEah14BDVQQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bq9bmk4b6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Jan 2026 13:59:16 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60GDwqla025224;
-	Fri, 16 Jan 2026 13:59:15 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bq9bmk4b2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Jan 2026 13:59:15 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60GDjiBb014333;
-	Fri, 16 Jan 2026 13:59:14 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm1fypn5h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Jan 2026 13:59:14 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60GDxAwx50921824
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Jan 2026 13:59:10 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0621C20043;
-	Fri, 16 Jan 2026 13:59:10 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E2CE620040;
-	Fri, 16 Jan 2026 13:59:03 +0000 (GMT)
-Received: from [9.43.86.214] (unknown [9.43.86.214])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 16 Jan 2026 13:59:03 +0000 (GMT)
-Message-ID: <051521cf-5dd2-4831-ab4c-b0db32436ba9@linux.ibm.com>
-Date: Fri, 16 Jan 2026 19:29:02 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dt2rR2XTNz2xnj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jan 2026 01:52:23 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A7BAB6016F;
+	Fri, 16 Jan 2026 14:52:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D47C116C6;
+	Fri, 16 Jan 2026 14:52:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768575140;
+	bh=gbLwhTlTxKSDHU4mEFy0F6J11rxQq3aj/1R8qTJjzyc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=i2BL6MXwnFLjT2RhaNjQkDJ02sMztAuNhOvwFzUbF3otqJF3SfbbgB9eMibM19xq2
+	 bl1V6lTECCDYQTxih6izshj472Xyceb6C1+4TOOjIJxAqlpbuCjr5t+V2+cGKaEatc
+	 Wj07CvKvNHrmovrX/+GyuwbAGSFHzoZSbCANmgbmsXkWMCLPNffc6mDP9obUn0+xDl
+	 hZNSDhaNT06745nzkKGJVPIsNwvEnYCF1DzQul/MFByYC+7wYZNnvoLWW7PD1gxx9D
+	 ECWqfjSk3kBoXmsMgIw5RcnD+dTsl1/2cAZcYe/+AeP4owg9GDKzlQmthVBS0V0MRF
+	 fb5r5qUkbrROA==
+From: Frederic Weisbecker <frederic@kernel.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Ben Segall <bsegall@google.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Ingo Molnar <mingo@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Xin Zhao <jackzxcui1989@163.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	linux-pm@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	linux-s390@vger.kernel.org,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 00/15] tick/sched: Refactor idle cputime accounting
+Date: Fri, 16 Jan 2026 15:51:53 +0100
+Message-ID: <20260116145208.87445-1-frederic@kernel.org>
+X-Mailer: git-send-email 2.51.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,195 +95,143 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/6] powerpc64/bpf: Support tailcalls with subprogs
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        adubey <adubey@imap.linux.ibm.com>
-Cc: adubey@linux.ibm.com, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        sachinpb@linux.ibm.com, venkat88@linux.ibm.com, andrii@kernel.org,
-        eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
-        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
-        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
-        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
-        naveen@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        npiggin@gmail.com, memxor@gmail.com, iii@linux.ibm.com,
-        shuah@kernel.org
-References: <20260114114450.30405-1-adubey@linux.ibm.com>
- <20260114114450.30405-3-adubey@linux.ibm.com>
- <42d41a0d-9d26-4eeb-af46-200083261c09@kernel.org>
- <2d242f4476b61373da236d24272b0ec3@imap.linux.ibm.com>
- <78536979-e924-4be3-b847-332802ad82e2@linux.ibm.com>
- <ea66ddc5-984f-4873-993d-9de1140d7e6e@kernel.org>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <ea66ddc5-984f-4873-993d-9de1140d7e6e@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: VuNl7drb6mZuvd-iVxqcmKJ66PXc6Fdf
-X-Proofpoint-ORIG-GUID: jy3gV0NpS5tDjoM9jCk7woG2U7zqPjNr
-X-Authority-Analysis: v=2.4 cv=TrvrRTXh c=1 sm=1 tr=0 ts=696a4434 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=Gp1ZgnKn9qXeJorAczUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDA5NyBTYWx0ZWRfX9y61cOoBodfm
- V56e2FeZp4Ez7hzI/Q0J8IhFR2ker99R3rNCmZ8HZo5fU1Yk4vEmTWckVGEn3YO6c/8ziFDd5aH
- fZv7KrpPyB2Q7fuOaomaDe+i57xzsmhilxAZ980y/LOXKkXKNOKnd7IaBewj9blCHsu2TN7Qm++
- E5pkUYsWiilR0xMkrK34Ohmz2btmkR71BNZB+9BkLmQgIIv5+Knuct/k+0SCSEu+Zunqh4O0xWT
- 3EAXaQ5xxQ2P2x2uuO4vkPxCjGoLtLzjLhbkQED0o6gd5j6r8CiKK0UbEEKjysDZGcDUA1HU3Nh
- 2+jTb6k8K/CMS6Y2UuA/llTfcHe0ApyB0xZf/oWRMb7Kn7Vlh+t3v3v8yCx/T5kGLugVdPazYZz
- HePs4xqLkgaFX4qirP0xLKbUseFtTrTJiDsRP47ffZEl3GifURd8wtsJWQLIsR/zvpwjHIvPYw0
- LdTiKv2xhWpCfWo4tVw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-16_05,2026-01-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0 clxscore=1015
- bulkscore=0 impostorscore=0 malwarescore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601160097
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hi,
 
+After the issue reported here:
 
-On 16/01/26 1:19 pm, Christophe Leroy (CS GROUP) wrote:
-> 
-> 
-> Le 16/01/2026 à 05:50, Hari Bathini a écrit :
-> 
-> Not received this mail that Hari is reponding to.
+	https://lore.kernel.org/all/20251210083135.3993562-1-jackzxcui1989@163.com/
 
-That is weird.
+It occurs that the idle cputime accounting is a big mess that
+accumulates within two concurrent statistics, each having their own
+shortcomings:
 
->>
->>
->> On 14/01/26 6:33 pm, adubey wrote:
->>> On 2026-01-14 17:57, Christophe Leroy (CS GROUP) wrote:
->>>> Le 14/01/2026 à 12:44, adubey@linux.ibm.com a écrit :
->>>>> From: Abhishek Dubey <adubey@linux.ibm.com>
->>>>>
->>>>> Enabling tailcalls with subprog combinations by referencing
->>>>> method. The actual tailcall count is always maintained in the
->>>>> tail_call_info variable present in the frame of main function
->>>>> (also called entry function). The tail_call_info variables in
->>>>> the frames of all other subprog contains reference to the
->>>>> tail_call_info present in frame of main function.
->>>>>
->>>>> Dynamic resolution interprets the tail_call_info either as
->>>>> value or reference depending on the context of active frame
->>>>> while tailcall is invoked.
->>>>>
->>>>> Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
->>>>> ---
->>>>>   arch/powerpc/net/bpf_jit.h        | 12 +++++-
->>>>>   arch/powerpc/net/bpf_jit_comp.c   | 10 ++++-
->>>>>   arch/powerpc/net/bpf_jit_comp64.c | 68 ++++++++++++++++++++++ 
->>>>> +--------
->>>>>   3 files changed, 70 insertions(+), 20 deletions(-)
->>>>>
->>>>> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
->>>>> index 45d419c0ee73..5d735bc5e6bd 100644
->>>>> --- a/arch/powerpc/net/bpf_jit.h
->>>>> +++ b/arch/powerpc/net/bpf_jit.h
->>>>> @@ -51,6 +51,12 @@
->>>>>           EMIT(PPC_INST_BRANCH_COND | (((cond) & 0x3ff) << 16) | 
->>>>> (offset & 0xfffc));                    \
->>>>>       } while (0)
->>>>>   +/* Same as PPC_BCC_SHORT, except valid dest is known prior to 
->>>>> call. */
->>>>> +#define PPC_COND_BRANCH(cond, dest)         \
->>>>> +    do {                                      \
->>>>> +        long offset = (long)(dest) - CTX_NIA(ctx);              \
->>>>> +        EMIT(PPC_INST_BRANCH_COND | (((cond) & 0x3ff) << 16) | 
->>>>> (offset & 0xfffc));    \
->>>>> +    } while (0)
->>>>
->>>> I don't like the idea of duplicating PPC_BCC_SHORT() to just kick the
->>>> verification out. Now we will have two macros doing the exact same
->>>> thing with one handling failure case and one ignoring failure case.
->>>> There is a big risk that one day or another someone will use the wrong
->>>> macro.
->>>>
->>>> Could you change bpf_jit_build_prologue() to return an int add use
->>>> PPC_BCC_SHORT() instead of that new PPC_COND_BRANCH() ?
->>> I implemented exactly same change in bpf_jit_build_prologue(). But, 
->>> during internal review, @HariBathini suggested
->>> to have separate macro with a caution note.
->>>
->>> @Hari please suggest here!
->>
->> Not just about the change of return type but the check seems like an
->> overkill for cases where the offset is known and within branch range.
->> How about using BUILD_BUG_ON() to avoid unecessary checks and
->> return type change for places where the branch offset is known
->> and is a constant?
-> 
-> When offset is a constant known at build time, checks are eliminated by 
-> gcc at build, see exemple below from disasembly of bpf_jit_comp32.o, 
-> there are no checks.
-> 
->                                  PPC_BCC_SHORT(COND_GT, (ctx->idx + 4) * 
-> 4);
->      36d8:       3c 80 41 81     lis     r4,16769
->                                  EMIT(PPC_RAW_CMPLW(src_reg, _R0));
->      36dc:       81 3f 00 04     lwz     r9,4(r31)
->                                  PPC_BCC_SHORT(COND_GT, (ctx->idx + 4) * 
-> 4);
->      36e0:       60 84 00 10     ori     r4,r4,16
->                                  EMIT(PPC_RAW_CMPLW(src_reg, _R0));
->      36e4:       39 29 00 01     addi    r9,r9,1
->                                  PPC_BCC_SHORT(COND_GT, (ctx->idx + 4) * 
-> 4);
->      36e8:       55 23 10 3a     slwi    r3,r9,2
->                                  EMIT(PPC_RAW_CMPLW(src_reg, _R0));
->      36ec:       91 3f 00 04     stw     r9,4(r31)
->                                  PPC_BCC_SHORT(COND_GT, (ctx->idx + 4) * 
-> 4);
->      36f0:       7c 97 19 2e     stwx    r4,r23,r3
->                                  EMIT(PPC_RAW_LI(dst_reg, 0));
->      36f4:       55 49 a9 94     rlwinm  r9,r10,21,6,10
->                                  PPC_BCC_SHORT(COND_GT, (ctx->idx + 4) * 
-> 4);
->      36f8:       80 9f 00 04     lwz     r4,4(r31)
->                                  EMIT(PPC_RAW_LI(dst_reg, 0));
->      36fc:       65 29 38 00     oris    r9,r9,14336
->                                  PPC_BCC_SHORT(COND_GT, (ctx->idx + 4) * 
-> 4);
->      3700:       38 84 00 01     addi    r4,r4,1
->                                  EMIT(PPC_RAW_LI(dst_reg, 0));
->      3704:       54 83 10 3a     slwi    r3,r4,2
->                                  PPC_BCC_SHORT(COND_GT, (ctx->idx + 4) * 
-> 4);
->      3708:       90 9f 00 04     stw     r4,4(r31)
->                                  EMIT(PPC_RAW_LI(dst_reg, 0));
->      370c:       7d 37 19 2e     stwx    r9,r23,r3
-> 
+* The accounting for online CPUs which is based on the delta between
+  tick_nohz_start_idle() and tick_nohz_stop_idle().
 
-Interesting. I do see is_offset_in_cond_branch_range() in action with
-constant offsets too, on ppc64 compile at least. fwiw, I had this
-optimized version in mind for constant offset:
+  Pros:
+       - Works when the tick is off
 
-   #define PPC_BCC_CONST_SHORT(cond, offset) 
-                     \
-         do { 
-                     \
-                 BUILD_BUG_ON(offset < -0x8000 || offset > 0x7fff || 
-(offset & 0x3));        \
-                 EMIT(PPC_INST_BRANCH_COND | (((cond) & 0x3ff) << 16) | 
-(offset & 0xfffc));  \
-         } while (0)
+       - Has nsecs granularity
 
-With that, something like:
+  Cons:
+       - Account idle steal time but doesn't substract it from idle
+         cputime.
 
-     PPC_BCC_SHORT(COND_NE, (ctx->idx + 3) * 4);
+       - Assumes CONFIG_IRQ_TIME_ACCOUNTING by not accounting IRQs but
+         the IRQ time is simply ignored when
+         CONFIG_IRQ_TIME_ACCOUNTING=n
 
-becomes
+       - The windows between 1) idle task scheduling and the first call
+         to tick_nohz_start_idle() and 2) idle task between the last
+         tick_nohz_stop_idle() and the rest of the idle time are
+         blindspots wrt. cputime accounting (though mostly insignificant
+         amount)
 
-     PPC_BCC_CONST_SHORT(COND_NE, 12);
+       - Relies on private fields outside of kernel stats, with specific
+         accessors.
 
-- Hari
+* The accounting for offline CPUs which is based on ticks and the
+  jiffies delta during which the tick was stopped.
+
+  Pros:
+       - Handles steal time correctly
+
+       - Handle CONFIG_IRQ_TIME_ACCOUNTING=y and
+         CONFIG_IRQ_TIME_ACCOUNTING=n correctly.
+
+       - Handles the whole idle task
+
+       - Accounts directly to kernel stats, without midlayer accumulator.
+
+   Cons:
+       - Doesn't elapse when the tick is off, which doesn't make it
+         suitable for online CPUs.
+
+       - Has TICK_NSEC granularity (jiffies)
+
+       - Needs to track the dyntick-idle ticks that were accounted and
+         substract them from the total jiffies time spent while the tick
+         was stopped. This is an ugly workaround.
+
+Having two different accounting for a single context is not the only
+problem: since those accountings are of different natures, it is
+possible to observe the global idle time going backward after a CPU goes
+offline, as reported by Xin Zhao.
+
+Clean up the situation with introducing a hybrid approach that stays
+coherent, fixes the backward jumps and works for both online and offline
+CPUs:
+
+* Tick based or native vtime accounting operate before the tick is
+  stopped and resumes once the tick is restarted.
+
+* When the idle loop starts, switch to dynticks-idle accounting as is
+  done currently, except that the statistics accumulate directly to the
+  relevant kernel stat fields.
+
+* Private dyntick cputime accounting fields are removed.
+
+* Works on both online and offline case.
+
+* Move most of the relevant code to the common sched/cputime subsystem
+
+* Handle CONFIG_IRQ_TIME_ACCOUNTING=n correctly such that the
+  dynticks-idle accounting still elapses while on IRQs.
+
+* Correctly substract idle steal cputime from idle time
+
+git://git.kernel.org/pub/scm/linux/kernel/git/frederic/linux-dynticks.git
+	timers/core
+
+HEAD: 6a3d814ef2f6142714bef862be36def5ca4c9d96
+Thanks,
+	Frederic
+---
+
+Frederic Weisbecker (15):
+      sched/idle: Handle offlining first in idle loop
+      sched/cputime: Remove superfluous and error prone kcpustat_field() parameter
+      sched/cputime: Correctly support generic vtime idle time
+      powerpc/time: Prepare to stop elapsing in dynticks-idle
+      s390/time: Prepare to stop elapsing in dynticks-idle
+      tick/sched: Unify idle cputime accounting
+      cpufreq: ondemand: Simplify idle cputime granularity test
+      tick/sched: Remove nohz disabled special case in cputime fetch
+      tick/sched: Move dyntick-idle cputime accounting to cputime code
+      tick/sched: Remove unused fields
+      tick/sched: Account tickless idle cputime only when tick is stopped
+      tick/sched: Consolidate idle time fetching APIs
+      sched/cputime: Consolidate get_cpu_[idle|iowait]_time_us()
+      sched/cputime: Handle idle irqtime gracefully
+      sched/cputime: Handle dyntick-idle steal time correctly
+
+ arch/powerpc/kernel/time.c         |  41 +++++
+ arch/s390/include/asm/idle.h       |  11 +-
+ arch/s390/kernel/idle.c            |  13 +-
+ arch/s390/kernel/vtime.c           |  57 ++++++-
+ drivers/cpufreq/cpufreq.c          |  29 +---
+ drivers/cpufreq/cpufreq_governor.c |   6 +-
+ drivers/cpufreq/cpufreq_ondemand.c |   7 +-
+ drivers/macintosh/rack-meter.c     |   2 +-
+ fs/proc/stat.c                     |  40 +----
+ fs/proc/uptime.c                   |   8 +-
+ include/linux/kernel_stat.h        |  76 ++++++++--
+ include/linux/tick.h               |   4 -
+ include/linux/vtime.h              |  20 ++-
+ kernel/rcu/tree.c                  |   9 +-
+ kernel/rcu/tree_stall.h            |   7 +-
+ kernel/sched/cputime.c             | 302 +++++++++++++++++++++++++++++++------
+ kernel/sched/idle.c                |  11 +-
+ kernel/sched/sched.h               |   1 +
+ kernel/time/tick-sched.c           | 203 +++++--------------------
+ kernel/time/tick-sched.h           |  12 --
+ kernel/time/timer_list.c           |   6 +-
+ scripts/gdb/linux/timerlist.py     |   4 -
+ 22 files changed, 505 insertions(+), 364 deletions(-)
 
