@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-15901-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15902-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5431D32E3A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 15:53:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB03D32E3D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jan 2026 15:53:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dt2s81y89z30N8;
-	Sat, 17 Jan 2026 01:53:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dt2sH06zjz30T8;
+	Sat, 17 Jan 2026 01:53:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768575180;
-	cv=none; b=DyxOjTqFwdsIyV3ijR1z+x/n8BJEsg5zUxD5uLxEVKq2g75RUJ+oCFn426LYs5xZfZVZER3ZEQGKPCDyZn3HEOAfZg7RVguNj917WrRukeqmA1rJAfpcziWDQ3wymFLZYlxsE+ftzJhYAaLWrpUUrgcCpVjbx8hYC1wHapUYa2rJcP2EBnRTs3a+gM2Y/URcDxXlt5EKvZCm7THDX/1uZnfnFcmBLBWPFG7s8XHDLfenVzp0w6/r+O8Rnkk8kwJwGOMTYr4hVL5nZbOakvAQiW1gMi1FJg8dmQq0jP6aFVqQ16RlTXbbKzZyMAC1PmH2OQZv6rKC+McqdlUuVEfjRA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768575186;
+	cv=none; b=DTVlI7+h0CdzqnWbnRAcTZMaXfU+7L+uIzYjbkm+WGvad6OFIzydAecGtik3E1FAeW0nJxZoiGDOlynY42M85i8mj7rBiOOFPx7lnyS5yq7QoJPecUVBwQQGgZ5j9PQDFNLzXpMZyfWMS761Lrpcf8nnkDJI1BXJCoR/cLWBnR85eCQg08wo3nmQnub7oCqshp0+lXkavq/g2xZRxjj107o7wigl+OowHS7xHnTxzDKyK2WQa8t1NqgpKHMvNbbEeBd1yWnftHXromWSm4s0PlX/0CSe8KvG6HDYYi2dRddicTfgadGHSwLykdGggkqdW9R+8ADA9ucfwUGfktN0Ew==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768575180; c=relaxed/relaxed;
-	bh=7rNBu3JZuwA0BwIsLcdzHZtjjAnqR/sDtodHvIoZeVo=;
+	t=1768575186; c=relaxed/relaxed;
+	bh=PNcSwrAklb9NRC4BxXsxAPImdbynHEQ9ukbw/97eq68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HrXvVd3RVVtR1ioAmYrTLpzfAsmEaUhueq0o37bYSYNalYeKgWkJATj05VmirPRbtlheKSD4X4Xeg9TNynP+MXCtmdQTjz23JTylD+DZY6dfbnBRGMFQReeT5iYaH8ETLH7tQ9WePCnq8ALScqOebv8Mi4v4pLTbISX4wPzeNagYpLVo2eeKjbcYoBqGBqeqWG1oLBBg8rUHdLJ0CY4fo6uVv9gQGkMCQhr+FPrYPHsUvL2Ojg2C3/a2h5tpr1APcttuYf6Yv5bVOLP1ooOjqcDsUszvpfF9/rvbPBuv6JtIvqRCKx11veGxNBIpezsLad2CY9gsfAHv1/UMbvoKzA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lXLhbUJp; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=HamOFcvLvEpOQ2B6Hhx2btc0rB1m+GwK9kdaO2LenWM7XA6Oa/oAlYyK7YWwO0hHhXcrY3Oo6LhuN4vVj2YBqBB+FmZeFTuNMYbLYUK+rAkkUOzUWHCqRdtT8xrQXxeQpdJ3sBcOLOwEzpxlPVLGDoColOTV4zctLbLyhCqKKKfIp+BlKZBcD2xDhl0B888mJ4DPlPX3cAX7WsgH/Ue4M5O5V2nCXEzj3qbN3t0I1sN4Tb6lJmO7muHi2lNolSv8RnDenclUUg8UzGK+502Nqnkidy9AJIm30w/LI9ehkQJW0+qxOB1IPocgx7uCDXCtVGI1HI4omIZtBrshFgsvxQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cG3k2Lez; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lXLhbUJp;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cG3k2Lez;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dt2s737GXz2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jan 2026 01:52:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dt2sG0zdpz2xS2
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jan 2026 01:53:06 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 549E7601B2;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C92940C10;
+	Fri, 16 Jan 2026 14:53:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FAFC16AAE;
 	Fri, 16 Jan 2026 14:52:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6E9C19421;
-	Fri, 16 Jan 2026 14:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768575177;
-	bh=vvbridxIQso7KWjeK226R2O4tHRCA31JE5Z2K7DDlx0=;
+	s=k20201202; t=1768575184;
+	bh=oZRzhhrgyUs9gVhop4a/9/b2H0iyMtqMK1t/RPXY/I0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXLhbUJpSe2jZoljJhKsDC27GLZ/Nje4Dfdzt+9e5A8Qe8HbJQL7AtTSlBBvtQxYD
-	 JEoEUArdN7c3biSjO8pjEpKLgy7I+x7b5EXJ363hnEJgvBoZ7tBYEZi9O1iG8ihbmx
-	 OiKewfemzThz7ZiIqZtX1yp/OwINnAHXAkawnJCl5Uv7QUVyhWRkLIvuoXNMyOqUtp
-	 Wacczq3p1j2eXAzBRjlloY9pra1JLen6QZ8H5kz+I+b/GguE0H5BY85+SBDFweFt9k
-	 IrF8ut5IrXm87oPBfxgY3ztrHxHfFSNiUltGY0wE56dwU1pbhAy5XE2ybMtWzgE/yJ
-	 7QQq0bJS/Kv5g==
+	b=cG3k2LezNgpd5y2yIZznyAvfdol63MOQZGmSmXzeQ7c+Xs6tEjjqbBhOKO4MYDwG2
+	 NSGIeHiQ6LAf2oOiSIC0SvffNzeX9ZAwt/GQ3A6eRccdU2WzZiuUszqGQSAHERu3Xt
+	 qoGqQDhm7ya0VGwPazAn8WHLTy2pohIxJavHDpobIyJQd9uy9/Y19rTAK9AIm/lqZn
+	 2TSjnDWinamgegl2VmUHXLOXKPmRxtEntuSwemfSFl+LuGXGy5rEPOjin8egj0bO1o
+	 9hkkYl41RJ7TJaBkVubemkstw1rYTYTUz/mTmvldK85iTcuLxk3pYaNakbS2N1tz5t
+	 Uyg+i4Z1H9o6w==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -79,9 +79,9 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-pm@vger.kernel.org,
 	linux-s390@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 05/15] s390/time: Prepare to stop elapsing in dynticks-idle
-Date: Fri, 16 Jan 2026 15:51:58 +0100
-Message-ID: <20260116145208.87445-6-frederic@kernel.org>
+Subject: [PATCH 06/15] tick/sched: Unify idle cputime accounting
+Date: Fri, 16 Jan 2026 15:51:59 +0100
+Message-ID: <20260116145208.87445-7-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260116145208.87445-1-frederic@kernel.org>
 References: <20260116145208.87445-1-frederic@kernel.org>
@@ -104,200 +104,476 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Currently the tick subsystem stores the idle cputime accounting in
-private fields, allowing cohabitation with architecture idle vtime
-accounting. The former is fetched on online CPUs, the latter on offline
-CPUs.
+The non-vtime dynticks-idle cputime accounting is a big mess that
+accumulates within two concurrent statistics, each having their own
+shortcomings:
 
-For consolidation purpose, architecture vtime accounting will continue
-to account the cputime but will make a break when the idle tick is
-stopped. The dyntick cputime accounting will then be relayed by the tick
-subsystem so that the idle cputime is still seen advancing coherently
-even when the tick isn't there to flush the idle vtime.
+* The accounting for online CPUs which is based on the delta between
+  tick_nohz_start_idle() and tick_nohz_stop_idle().
 
-Prepare for that and introduce three new APIs which will be used in
-subsequent patches:
+  Pros:
+       - Works when the tick is off
 
-_ vtime_dynticks_start() is deemed to be called when idle enters in
-  dyntick mode. The idle cputime that elapsed so far is accumulated
-  and accounted. Also idle time accounting is ignored.
+       - Has nsecs granularity
 
-- vtime_dynticks_stop() is deemed to be called when idle exits from
-  dyntick mode. The vtime entry clocks are fast-forward to current time
-  so that idle accounting restarts elapsing from now. Also idle time
-  accounting is resumed.
+  Cons:
+       - Account idle steal time but doesn't substract it from idle
+         cputime.
 
-- vtime_reset() is deemed to be called from dynticks idle IRQ entry to
-  fast-forward the clock to current time so that the IRQ time is still
-  accounted by vtime while nohz cputime is paused.
+       - Assumes CONFIG_IRQ_TIME_ACCOUNTING by not accounting IRQs but
+         the IRQ time is simply ignored when
+         CONFIG_IRQ_TIME_ACCOUNTING=n
 
-Also accumulated vtime won't be flushed from dyntick-idle ticks to avoid
-accounting twice the idle cputime, along with nohz accounting.
+       - The windows between 1) idle task scheduling and the first call
+         to tick_nohz_start_idle() and 2) idle task between the last
+         tick_nohz_stop_idle() and the rest of the idle time are
+         blindspots wrt. cputime accounting (though mostly insignificant
+         amount)
 
+       - Relies on private fields outside of kernel stats, with specific
+         accessors.
+
+* The accounting for offline CPUs which is based on ticks and the
+  jiffies delta during which the tick was stopped.
+
+  Pros:
+       - Handles steal time correctly
+
+       - Handle CONFIG_IRQ_TIME_ACCOUNTING=y and
+         CONFIG_IRQ_TIME_ACCOUNTING=n correctly.
+
+       - Handles the whole idle task
+
+       - Accounts directly to kernel stats, without midlayer accumulator.
+
+   Cons:
+       - Doesn't elapse when the tick is off, which doesn't make it
+         suitable for online CPUs.
+
+       - Has TICK_NSEC granularity (jiffies)
+
+       - Needs to track the dyntick-idle ticks that were accounted and
+         substract them from the total jiffies time spent while the tick
+         was stopped. This is an ugly workaround.
+
+Having two different accounting for a single context is not the only
+problem: since those accountings are of different natures, it is
+possible to observe the global idle time going backward after a CPU goes
+offline.
+
+Clean up the situation with introducing a hybrid approach that stays
+coherent and works for both online and offline CPUs:
+
+* Tick based or native vtime accounting operate before the idle loop
+  is entered and resume once the idle loop prepares to exit.
+
+* When the idle loop starts, switch to dynticks-idle accounting as is
+  done currently, except that the statistics accumulate directly to the
+  relevant kernel stat fields.
+
+* Private dyntick cputime accounting fields are removed.
+
+* Works on both online and offline case.
+
+Further improvement will include:
+
+* Only switch to dynticks-idle cputime accounting when the tick actually
+  goes in dynticks mode.
+
+* Handle CONFIG_IRQ_TIME_ACCOUNTING=n correctly such that the
+  dynticks-idle accounting still elapses while on IRQs.
+
+* Correctly substract idle steal cputime from idle time
+
+Reported-by: Xin Zhao <jackzxcui1989@163.com>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- arch/s390/include/asm/idle.h | 11 +++---
- arch/s390/kernel/idle.c      | 13 ++++++--
- arch/s390/kernel/vtime.c     | 65 ++++++++++++++++++++++++++++++------
- 3 files changed, 71 insertions(+), 18 deletions(-)
+ include/linux/kernel_stat.h | 24 ++++++++++---
+ include/linux/vtime.h       |  7 +++-
+ kernel/sched/cputime.c      | 62 ++++++++++++++++----------------
+ kernel/time/tick-sched.c    | 72 +++++++++++--------------------------
+ 4 files changed, 77 insertions(+), 88 deletions(-)
 
-diff --git a/arch/s390/include/asm/idle.h b/arch/s390/include/asm/idle.h
-index 09f763b9eb40..2770c4f761e1 100644
---- a/arch/s390/include/asm/idle.h
-+++ b/arch/s390/include/asm/idle.h
-@@ -12,11 +12,12 @@
- #include <linux/device.h>
- 
- struct s390_idle_data {
--	unsigned long idle_count;
--	unsigned long idle_time;
--	unsigned long clock_idle_enter;
--	unsigned long timer_idle_enter;
--	unsigned long mt_cycles_enter[8];
-+	bool		idle_dyntick;
-+	unsigned long	idle_count;
-+	unsigned long	idle_time;
-+	unsigned long	clock_idle_enter;
-+	unsigned long	timer_idle_enter;
-+	unsigned long	mt_cycles_enter[8];
+diff --git a/include/linux/kernel_stat.h b/include/linux/kernel_stat.h
+index dd020ecaf67b..ba65aad308a1 100644
+--- a/include/linux/kernel_stat.h
++++ b/include/linux/kernel_stat.h
+@@ -34,6 +34,9 @@ enum cpu_usage_stat {
  };
  
- extern struct device_attribute dev_attr_idle_count;
-diff --git a/arch/s390/kernel/idle.c b/arch/s390/kernel/idle.c
-index 39cb8d0ae348..54bb932184dd 100644
---- a/arch/s390/kernel/idle.c
-+++ b/arch/s390/kernel/idle.c
-@@ -35,6 +35,12 @@ void account_idle_time_irq(void)
- 			this_cpu_add(mt_cycles[i], cycles_new[i] - idle->mt_cycles_enter[i]);
- 	}
+ struct kernel_cpustat {
++#ifdef CONFIG_NO_HZ_COMMON
++	int idle_dyntick;
++#endif
+ 	u64 cpustat[NR_STATS];
+ };
  
-+	WRITE_ONCE(idle->idle_count, READ_ONCE(idle->idle_count) + 1);
-+
-+	/* Dyntick idle time accounted by nohz/scheduler */
-+	if (idle->idle_dyntick)
-+		return;
-+
- 	idle_time = lc->int_clock - idle->clock_idle_enter;
- 
- 	lc->steal_timer += idle->clock_idle_enter - lc->last_update_clock;
-@@ -45,7 +51,6 @@ void account_idle_time_irq(void)
- 
- 	/* Account time spent with enabled wait psw loaded as idle time. */
- 	WRITE_ONCE(idle->idle_time, READ_ONCE(idle->idle_time) + idle_time);
--	WRITE_ONCE(idle->idle_count, READ_ONCE(idle->idle_count) + 1);
- 	account_idle_time(cputime_to_nsecs(idle_time));
- }
- 
-@@ -61,8 +66,10 @@ void noinstr arch_cpu_idle(void)
- 	set_cpu_flag(CIF_ENABLED_WAIT);
- 	if (smp_cpu_mtid)
- 		stcctm(MT_DIAG, smp_cpu_mtid, (u64 *)&idle->mt_cycles_enter);
--	idle->clock_idle_enter = get_tod_clock_fast();
--	idle->timer_idle_enter = get_cpu_timer();
-+	if (!idle->idle_dyntick) {
-+		idle->clock_idle_enter = get_tod_clock_fast();
-+		idle->timer_idle_enter = get_cpu_timer();
-+	}
- 	bpon();
- 	__load_psw_mask(psw_mask);
- }
-diff --git a/arch/s390/kernel/vtime.c b/arch/s390/kernel/vtime.c
-index 234a0ba30510..c19528eb4ee3 100644
---- a/arch/s390/kernel/vtime.c
-+++ b/arch/s390/kernel/vtime.c
-@@ -17,6 +17,7 @@
- #include <asm/vtimer.h>
- #include <asm/vtime.h>
- #include <asm/cpu_mf.h>
-+#include <asm/idle.h>
- #include <asm/smp.h>
- 
- #include "entry.h"
-@@ -111,23 +112,30 @@ static void account_system_index_scaled(struct task_struct *p, u64 cputime,
- 	account_system_index_time(p, cputime_to_nsecs(cputime), index);
- }
- 
--/*
-- * Update process times based on virtual cpu times stored by entry.S
-- * to the lowcore fields user_timer, system_timer & steal_clock.
-- */
--static int do_account_vtime(struct task_struct *tsk)
-+static inline void vtime_reset_last_update(struct lowcore *lc)
- {
--	u64 timer, clock, user, guest, system, hardirq, softirq;
--	struct lowcore *lc = get_lowcore();
--
--	timer = lc->last_update_timer;
--	clock = lc->last_update_clock;
- 	asm volatile(
- 		"	stpt	%0\n"	/* Store current cpu timer value */
- 		"	stckf	%1"	/* Store current tod clock value */
- 		: "=Q" (lc->last_update_timer),
- 		  "=Q" (lc->last_update_clock)
- 		: : "cc");
-+}
-+
-+/*
-+ * Update process times based on virtual cpu times stored by entry.S
-+ * to the lowcore fields user_timer, system_timer & steal_clock.
-+ */
-+static int do_account_vtime(struct task_struct *tsk)
-+{
-+	u64 timer, clock, user, guest, system, hardirq, softirq;
-+	struct lowcore *lc = get_lowcore();
-+
-+	timer = lc->last_update_timer;
-+	clock = lc->last_update_clock;
-+
-+	vtime_reset_last_update(lc);
-+
- 	clock = lc->last_update_clock - clock;
- 	timer -= lc->last_update_timer;
- 
-@@ -261,6 +269,43 @@ void vtime_account_hardirq(struct task_struct *tsk)
- 	virt_timer_forward(delta);
+@@ -99,6 +102,20 @@ static inline unsigned long kstat_cpu_irqs_sum(unsigned int cpu)
+ 	return kstat_cpu(cpu).irqs_sum;
  }
  
 +#ifdef CONFIG_NO_HZ_COMMON
-+/**
-+ * vtime_reset - Fast forward vtime entry clocks
-+ *
-+ * Called from dynticks idle IRQ entry to fast-forward the clocks to current time
-+ * so that the IRQ time is still accounted by vtime while nohz cputime is paused.
-+ */
-+void vtime_reset(void)
++extern void kcpustat_dyntick_start(void);
++extern void kcpustat_dyntick_stop(void);
++static inline bool kcpustat_idle_dyntick(void)
 +{
-+	vtime_reset_last_update(get_lowcore());
++	return __this_cpu_read(kernel_cpustat.idle_dyntick);
++}
++#else
++static inline bool kcpustat_idle_dyntick(void)
++{
++	return false;
++}
++#endif /* CONFIG_NO_HZ_COMMON */
++
+ #ifdef CONFIG_VIRT_CPU_ACCOUNTING_GEN
+ extern u64 kcpustat_field(enum cpu_usage_stat usage, int cpu);
+ extern void kcpustat_cpu_fetch(struct kernel_cpustat *dst, int cpu);
+@@ -113,7 +130,7 @@ static inline void kcpustat_cpu_fetch(struct kernel_cpustat *dst, int cpu)
+ 	*dst = kcpustat_cpu(cpu);
+ }
+ 
+-#endif
++#endif /* !CONFIG_VIRT_CPU_ACCOUNTING_GEN */
+ 
+ extern void account_user_time(struct task_struct *, u64);
+ extern void account_guest_time(struct task_struct *, u64);
+@@ -127,14 +144,13 @@ extern u64 get_idle_time(struct kernel_cpustat *kcs, int cpu);
+ #ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
+ static inline void account_process_tick(struct task_struct *tsk, int user)
+ {
+-	vtime_flush(tsk);
++	if (!kcpustat_idle_dyntick())
++		vtime_flush(tsk);
+ }
+ #else
+ extern void account_process_tick(struct task_struct *, int user);
+ #endif
+ 
+-extern void account_idle_ticks(unsigned long ticks);
+-
+ #ifdef CONFIG_SCHED_CORE
+ extern void __account_forceidle_time(struct task_struct *tsk, u64 delta);
+ #endif
+diff --git a/include/linux/vtime.h b/include/linux/vtime.h
+index 10cdb08f960b..43934ff20c4a 100644
+--- a/include/linux/vtime.h
++++ b/include/linux/vtime.h
+@@ -32,6 +32,11 @@ static inline bool vtime_generic_enabled_cpu(int cpu)
+ 	return context_tracking_enabled_cpu(cpu);
+ }
+ 
++static inline bool vtime_generic_enabled_this_cpu(void)
++{
++	return context_tracking_enabled_this_cpu();
 +}
 +
-+/**
-+ * vtime_dyntick_start - Inform vtime about entry to idle-dynticks
-+ *
-+ * Called when idle enters in dyntick mode. The idle cputime that elapsed so far
-+ * is flushed and the tick subsystem takes over the idle cputime accounting.
-+ */
-+void vtime_dyntick_start(void)
+ #ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
+ extern void vtime_account_irq(struct task_struct *tsk, unsigned int offset);
+ extern void vtime_account_softirq(struct task_struct *tsk);
+@@ -90,7 +95,7 @@ static inline bool vtime_accounting_enabled_cpu(int cpu)
+ 
+ static inline bool vtime_accounting_enabled_this_cpu(void)
+ {
+-	return context_tracking_enabled_this_cpu();
++	return vtime_generic_enabled_this_cpu();
+ }
+ 
+ extern void vtime_task_switch_generic(struct task_struct *prev);
+diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
+index f32c169da11a..c10fcc3d65b3 100644
+--- a/kernel/sched/cputime.c
++++ b/kernel/sched/cputime.c
+@@ -400,16 +400,30 @@ static void irqtime_account_process_tick(struct task_struct *p, int user_tick,
+ 	}
+ }
+ 
+-static void irqtime_account_idle_ticks(int ticks)
+-{
+-	irqtime_account_process_tick(current, 0, ticks);
+-}
+ #else /* !CONFIG_IRQ_TIME_ACCOUNTING: */
+-static inline void irqtime_account_idle_ticks(int ticks) { }
+ static inline void irqtime_account_process_tick(struct task_struct *p, int user_tick,
+ 						int nr_ticks) { }
+ #endif /* !CONFIG_IRQ_TIME_ACCOUNTING */
+ 
++#ifdef CONFIG_NO_HZ_COMMON
++void kcpustat_dyntick_start(void)
 +{
-+	__this_cpu_write(s390_idle.idle_dyntick, true);
-+	vtime_flush(current);
++	if (!vtime_generic_enabled_this_cpu()) {
++		vtime_dyntick_start();
++		__this_cpu_write(kernel_cpustat.idle_dyntick, 1);
++	}
 +}
 +
-+/**
-+ * vtime_dyntick_stop - Inform vtime about exit from idle-dynticks
-+ *
-+ * Called when idle exits from dyntick mode. The vtime entry clocks are
-+ * fast-forward to current time and idle accounting resumes.
-+ */
-+void vtime_dyntick_stop(void)
++void kcpustat_dyntick_stop(void)
 +{
-+	vtime_reset_last_update(get_lowcore());
-+	__this_cpu_write(s390_idle.idle_dyntick, false);
++	if (!vtime_generic_enabled_this_cpu()) {
++		__this_cpu_write(kernel_cpustat.idle_dyntick, 0);
++		vtime_dyntick_stop();
++		steal_account_process_time(ULONG_MAX);
++	}
 +}
 +#endif /* CONFIG_NO_HZ_COMMON */
 +
  /*
-  * Sorted add to a list. List is linear searched until first bigger
-  * element is found.
+  * Use precise platform statistics if available:
+  */
+@@ -423,11 +437,15 @@ void vtime_account_irq(struct task_struct *tsk, unsigned int offset)
+ 		vtime_account_hardirq(tsk);
+ 	} else if (pc & SOFTIRQ_OFFSET) {
+ 		vtime_account_softirq(tsk);
+-	} else if (!IS_ENABLED(CONFIG_HAVE_VIRT_CPU_ACCOUNTING_IDLE) &&
+-		   is_idle_task(tsk)) {
+-		vtime_account_idle(tsk);
++	} else if (!kcpustat_idle_dyntick()) {
++		if (!IS_ENABLED(CONFIG_HAVE_VIRT_CPU_ACCOUNTING_IDLE) &&
++		    is_idle_task(tsk)) {
++			vtime_account_idle(tsk);
++		} else {
++			vtime_account_kernel(tsk);
++		}
+ 	} else {
+-		vtime_account_kernel(tsk);
++		vtime_reset();
+ 	}
+ }
+ 
+@@ -469,6 +487,9 @@ void account_process_tick(struct task_struct *p, int user_tick)
+ 	if (vtime_accounting_enabled_this_cpu())
+ 		return;
+ 
++	if (kcpustat_idle_dyntick())
++		return;
++
+ 	if (irqtime_enabled()) {
+ 		irqtime_account_process_tick(p, user_tick, 1);
+ 		return;
+@@ -490,29 +511,6 @@ void account_process_tick(struct task_struct *p, int user_tick)
+ 		account_idle_time(cputime);
+ }
+ 
+-/*
+- * Account multiple ticks of idle time.
+- * @ticks: number of stolen ticks
+- */
+-void account_idle_ticks(unsigned long ticks)
+-{
+-	u64 cputime, steal;
+-
+-	if (irqtime_enabled()) {
+-		irqtime_account_idle_ticks(ticks);
+-		return;
+-	}
+-
+-	cputime = ticks * TICK_NSEC;
+-	steal = steal_account_process_time(ULONG_MAX);
+-
+-	if (steal >= cputime)
+-		return;
+-
+-	cputime -= steal;
+-	account_idle_time(cputime);
+-}
+-
+ /*
+  * Adjust tick based cputime random precision against scheduler runtime
+  * accounting.
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index f1d07a0276a5..74c97ad75856 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -285,8 +285,6 @@ static void tick_sched_handle(struct tick_sched *ts, struct pt_regs *regs)
+ 	if (IS_ENABLED(CONFIG_NO_HZ_COMMON) &&
+ 	    tick_sched_flag_test(ts, TS_FLAG_STOPPED)) {
+ 		touch_softlockup_watchdog_sched();
+-		if (is_idle_task(current))
+-			ts->idle_jiffies++;
+ 		/*
+ 		 * In case the current tick fired too early past its expected
+ 		 * expiration, make sure we don't bypass the next clock reprogramming
+@@ -744,8 +742,12 @@ static void tick_nohz_update_jiffies(ktime_t now)
+ 
+ static void tick_nohz_stop_idle(struct tick_sched *ts, ktime_t now)
+ {
++	u64 *cpustat = kcpustat_this_cpu->cpustat;
+ 	ktime_t delta;
+ 
++	if (vtime_generic_enabled_this_cpu())
++		return;
++
+ 	if (WARN_ON_ONCE(!tick_sched_flag_test(ts, TS_FLAG_IDLE_ACTIVE)))
+ 		return;
+ 
+@@ -753,9 +755,9 @@ static void tick_nohz_stop_idle(struct tick_sched *ts, ktime_t now)
+ 
+ 	write_seqcount_begin(&ts->idle_sleeptime_seq);
+ 	if (nr_iowait_cpu(smp_processor_id()) > 0)
+-		ts->iowait_sleeptime = ktime_add(ts->iowait_sleeptime, delta);
++		cpustat[CPUTIME_IOWAIT] = ktime_add(cpustat[CPUTIME_IOWAIT], delta);
+ 	else
+-		ts->idle_sleeptime = ktime_add(ts->idle_sleeptime, delta);
++		cpustat[CPUTIME_IDLE] = ktime_add(cpustat[CPUTIME_IDLE], delta);
+ 
+ 	ts->idle_entrytime = now;
+ 	tick_sched_flag_clear(ts, TS_FLAG_IDLE_ACTIVE);
+@@ -766,17 +768,21 @@ static void tick_nohz_stop_idle(struct tick_sched *ts, ktime_t now)
+ 
+ static void tick_nohz_start_idle(struct tick_sched *ts)
+ {
++	if (vtime_generic_enabled_this_cpu())
++		return;
++
+ 	write_seqcount_begin(&ts->idle_sleeptime_seq);
+ 	ts->idle_entrytime = ktime_get();
+ 	tick_sched_flag_set(ts, TS_FLAG_IDLE_ACTIVE);
+ 	write_seqcount_end(&ts->idle_sleeptime_seq);
+-
+ 	sched_clock_idle_sleep_event();
+ }
+ 
+-static u64 get_cpu_sleep_time_us(struct tick_sched *ts, ktime_t *sleeptime,
++static u64 get_cpu_sleep_time_us(int cpu, enum cpu_usage_stat idx,
+ 				 bool compute_delta, u64 *last_update_time)
+ {
++	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
++	u64 *cpustat = kcpustat_cpu(cpu).cpustat;
+ 	ktime_t now, idle;
+ 	unsigned int seq;
+ 
+@@ -793,9 +799,9 @@ static u64 get_cpu_sleep_time_us(struct tick_sched *ts, ktime_t *sleeptime,
+ 		if (tick_sched_flag_test(ts, TS_FLAG_IDLE_ACTIVE) && compute_delta) {
+ 			ktime_t delta = ktime_sub(now, ts->idle_entrytime);
+ 
+-			idle = ktime_add(*sleeptime, delta);
++			idle = ktime_add(cpustat[idx], delta);
+ 		} else {
+-			idle = *sleeptime;
++			idle = cpustat[idx];
+ 		}
+ 	} while (read_seqcount_retry(&ts->idle_sleeptime_seq, seq));
+ 
+@@ -822,9 +828,7 @@ static u64 get_cpu_sleep_time_us(struct tick_sched *ts, ktime_t *sleeptime,
+  */
+ u64 get_cpu_idle_time_us(int cpu, u64 *last_update_time)
+ {
+-	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
+-
+-	return get_cpu_sleep_time_us(ts, &ts->idle_sleeptime,
++	return get_cpu_sleep_time_us(cpu, CPUTIME_IDLE,
+ 				     !nr_iowait_cpu(cpu), last_update_time);
+ }
+ EXPORT_SYMBOL_GPL(get_cpu_idle_time_us);
+@@ -848,9 +852,7 @@ EXPORT_SYMBOL_GPL(get_cpu_idle_time_us);
+  */
+ u64 get_cpu_iowait_time_us(int cpu, u64 *last_update_time)
+ {
+-	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
+-
+-	return get_cpu_sleep_time_us(ts, &ts->iowait_sleeptime,
++	return get_cpu_sleep_time_us(cpu, CPUTIME_IOWAIT,
+ 				     nr_iowait_cpu(cpu), last_update_time);
+ }
+ EXPORT_SYMBOL_GPL(get_cpu_iowait_time_us);
+@@ -1250,10 +1252,8 @@ void tick_nohz_idle_stop_tick(void)
+ 		ts->idle_sleeps++;
+ 		ts->idle_expires = expires;
+ 
+-		if (!was_stopped && tick_sched_flag_test(ts, TS_FLAG_STOPPED)) {
+-			ts->idle_jiffies = ts->last_jiffies;
++		if (!was_stopped && tick_sched_flag_test(ts, TS_FLAG_STOPPED))
+ 			nohz_balance_enter_idle(cpu);
+-		}
+ 	} else {
+ 		tick_nohz_retain_tick(ts);
+ 	}
+@@ -1282,6 +1282,7 @@ void tick_nohz_idle_enter(void)
+ 	WARN_ON_ONCE(ts->timer_expires_base);
+ 
+ 	tick_sched_flag_set(ts, TS_FLAG_INIDLE);
++	kcpustat_dyntick_start();
+ 	tick_nohz_start_idle(ts);
+ 
+ 	local_irq_enable();
+@@ -1407,37 +1408,12 @@ unsigned long tick_nohz_get_idle_calls_cpu(int cpu)
+ 	return ts->idle_calls;
+ }
+ 
+-static void tick_nohz_account_idle_time(struct tick_sched *ts,
+-					ktime_t now)
+-{
+-	unsigned long ticks;
+-
+-	ts->idle_exittime = now;
+-
+-	if (vtime_accounting_enabled_this_cpu())
+-		return;
+-	/*
+-	 * We stopped the tick in idle. update_process_times() would miss the
+-	 * time we slept, as it does only a 1 tick accounting.
+-	 * Enforce that this is accounted to idle !
+-	 */
+-	ticks = jiffies - ts->idle_jiffies;
+-	/*
+-	 * We might be one off. Do not randomly account a huge number of ticks!
+-	 */
+-	if (ticks && ticks < LONG_MAX)
+-		account_idle_ticks(ticks);
+-}
+-
+ void tick_nohz_idle_restart_tick(void)
+ {
+ 	struct tick_sched *ts = this_cpu_ptr(&tick_cpu_sched);
+ 
+-	if (tick_sched_flag_test(ts, TS_FLAG_STOPPED)) {
+-		ktime_t now = ktime_get();
+-		tick_nohz_restart_sched_tick(ts, now);
+-		tick_nohz_account_idle_time(ts, now);
+-	}
++	if (tick_sched_flag_test(ts, TS_FLAG_STOPPED))
++		tick_nohz_restart_sched_tick(ts, ktime_get());
+ }
+ 
+ static void tick_nohz_idle_update_tick(struct tick_sched *ts, ktime_t now)
+@@ -1446,8 +1422,6 @@ static void tick_nohz_idle_update_tick(struct tick_sched *ts, ktime_t now)
+ 		__tick_nohz_full_update_tick(ts, now);
+ 	else
+ 		tick_nohz_restart_sched_tick(ts, now);
+-
+-	tick_nohz_account_idle_time(ts, now);
+ }
+ 
+ /**
+@@ -1489,6 +1463,7 @@ void tick_nohz_idle_exit(void)
+ 
+ 	if (tick_stopped)
+ 		tick_nohz_idle_update_tick(ts, now);
++	kcpustat_dyntick_stop();
+ 
+ 	local_irq_enable();
+ }
+@@ -1625,20 +1600,15 @@ void tick_setup_sched_timer(bool hrtimer)
+ void tick_sched_timer_dying(int cpu)
+ {
+ 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
+-	ktime_t idle_sleeptime, iowait_sleeptime;
+ 	unsigned long idle_calls, idle_sleeps;
+ 
+ 	/* This must happen before hrtimers are migrated! */
+ 	if (tick_sched_flag_test(ts, TS_FLAG_HIGHRES))
+ 		hrtimer_cancel(&ts->sched_timer);
+ 
+-	idle_sleeptime = ts->idle_sleeptime;
+-	iowait_sleeptime = ts->iowait_sleeptime;
+ 	idle_calls = ts->idle_calls;
+ 	idle_sleeps = ts->idle_sleeps;
+ 	memset(ts, 0, sizeof(*ts));
+-	ts->idle_sleeptime = idle_sleeptime;
+-	ts->iowait_sleeptime = iowait_sleeptime;
+ 	ts->idle_calls = idle_calls;
+ 	ts->idle_sleeps = idle_sleeps;
+ }
 -- 
 2.51.1
 
