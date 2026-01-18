@@ -1,62 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-15941-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15942-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B7CD38E4D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jan 2026 12:44:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB9AD39575
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Jan 2026 14:51:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dtZcv0s0Yz2y7c;
-	Sat, 17 Jan 2026 22:44:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dvFNv2b14z2yFW;
+	Mon, 19 Jan 2026 00:51:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768650254;
-	cv=none; b=iVbf4UM1sN+YfpLHKmVRk4D1AzkLRdE8/17zOImFyANBZny2aeSbpxM+CGVoQWawybboz5ftKecJzj9423ASwzZBdMHv//Wq+8g7F5Rv3Aav9oC2TUDmKDmGBOUvNvna+uK46KZjMSUqdnVgR+CeGV3FiREM8XT9SbNysNjaaIUMEA+RC0BGihrAVkpB2srdubbmHyNyruiXfWhgQqMRfacXuODFoGiUVkTR07yvf7aB6hezFh7QVQ2b5ZmBuNOnlm1AR+lVbZjBbCmwHLwJ+vf0tZzG5Zbu0pTE0i6IKPqmCGYsLO95+O15xs42dhPq363WMhYGCQHCSQoOox0uCA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=220.197.31.2
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768744271;
+	cv=none; b=O0XXQxOgXeiG7t1uPev6fkhpTj+SF9KpvL7waHyKvPBtgmKlyeI/baalGzc50oVWdyKOkPSYL5WDRwuO0XF1ON2z4vlyt1sKS/NwbWNQBc7QmpPh4vxw021NSbLkEM09cEkvCNjw66dD6UrqpgzWwiDtcDUIaMdRurSGvVQbLGnppRL8svi7ULeMQwuRsdU9zNIJ3ybsxhgIXtGJs1Eoh6h47YCHWhk6+vcKwV0fA2PCqJRvP2xkZrrQ7w/wxKBaWcF6fCMUFLxet2hWwlLCK6gtcW6nMWhZIK/zq6xabsQqkET4eQuN6lUVP6KSq0fdP9nXlO7p66MIFD7Wq8UVvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768650254; c=relaxed/relaxed;
-	bh=bIlCLy3H9h7XtPhvsaV8aA4QnxgU7tAWxH9CgTKOEW8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EQ8kNXeGZx5U5kxTCZkkhP+cn3Ocm0H5UNboJ7yO1RSktizuDynH8hl1bJuOxl5q635BqHL29UAzodz1dq9HvJeeZ1cW7RswR5rdcRj7mKAbeVqpvmuEyYRurvmZDcCTcVbZi+E0X7tDH16EBsaeaLZK8y9iT2RldSfNdTwYX22uBKdEtsEvUONTyr3WSAkTJkZ9mVPxkSTX7vy/j6jVYBackBAEgZ+K0hkIxQSVKc+j8M22YgrjscxWf/puKLl6bF0K+BL9SlVV699i2jEsH0bc2aI/uC1V8wM9Ua/wKnDUen6gGQldPsYNVqJlJGuw7tqUUxj6aXawTVq4PUCFSw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cUrkHI3T; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1768744271; c=relaxed/relaxed;
+	bh=z1piXpiFHso3GGftRgQQooHaij0dQTWZjfWoc2FOYuc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RfClmIKvgtzjI0Iq5l7TPM7cdOBumkIMOmAPVN6D+2YGQl3Lg0XDVubg6bc4slzoiiuw3pAYcPyQJfQNv0i+lO02flG8LYQlnyA0/sRKPjVGlum1yWBuv9uj5+OwY3TywUm62MfeDyAwjhf18Vcip4wgTCvKLNKtOf4N88qS190sUwrs5Adbg1mvISWgw/kDg4cqjCPqXBuYchBMfQ1CWDzTa6pYuekOGgy+OGNjkii79trQjXlZvY6+7o3QQZB/F4cQ8zBCVH4iHEHPt3RGaQs6RYAhvEnPGoL7tsRAGGMwU2pbFtgECRE1+oiCPx8woG1JXcoSRAQjKU1/e2X8qA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ijJdo7Co; dkim-atps=neutral; spf=pass (client-ip=220.197.31.2; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cUrkHI3T;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ijJdo7Co;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=220.197.31.2; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 152 seconds by postgrey-1.37 at boromir; Mon, 19 Jan 2026 00:51:07 AEDT
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dtZcs66Wbz2xQC
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jan 2026 22:44:13 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B5886438D0;
-	Sat, 17 Jan 2026 11:44:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B1EEC4CEF7;
-	Sat, 17 Jan 2026 11:44:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768650249;
-	bh=7lknc6FIsN8kTaQ3hRHqL8L6jIldGI7xwi+wz3k2pVU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cUrkHI3TVz80ah/2V2OAa3YVWKUKlfBKTjrVaFB4AvpYJLenjYw9sIIbogSR970f8
-	 cvGB31uAzYakxyaHsj1BFcCz55w8Mz/hymC0nr0RrfpvsMeLZdfb5ZxTU2A9814g5j
-	 t1loXK3qayAfqBwBD4uwBn/HIh14LsGlngm/Wwm7DzHcqI8DGBM3giqP1+TjCTwFEX
-	 SqlVmei7xQ2O9BMJZFQXZQ75mvE1uaGLhMEdvvTUHmRXhSM7CovoKwl/Hi4f4WaWEO
-	 MGLT1KHJBv3T7Wk0UQgD5CBJ84TbxroJ9OcVHNYDcH4QkIx2XPUzMCWo0FHWVuIaQQ
-	 wK0e+49RC5ceA==
-Date: Sat, 17 Jan 2026 12:44:07 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, 
-	tiwai@suse.com, linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	devicetree@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] ASoC: dt-bindings: fsl,audmix: Add support for
- i.MX952 platform
-Message-ID: <20260117-versed-proficient-pigeon-bd0b2a@quoll>
-References: <20260116101648.377952-1-shengjiu.wang@nxp.com>
- <20260116101648.377952-2-shengjiu.wang@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvFNq3FhYz2xSZ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 00:51:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=z1piXpiFHso3GGftRgQQooHaij0dQTWZjfWoc2FOYuc=;
+	b=ijJdo7CoNK2U4hWMpXSKGmw9hLxWZPVDnqIXWbj6nNtlFY4ZtkKje7FxNdgqdM
+	pP8kj3Hn8NL4N8AsTvH8471pWDoAGcl5oHPuw+UtvFEmjAnM6ksS9o8qhllCP5f5
+	EHSSdue3mZLhql9+tpu9gVfqekEQusDnKscLLX41Yf5uo=
+Received: from [IPV6:240e:b8f:927e:1000:e94b:3b22:e2ce:7986] (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDX+GyK5GxpZrMiGQ--.49932S2;
+	Sun, 18 Jan 2026 21:47:54 +0800 (CST)
+Message-ID: <1d267e9e-5e32-483c-8b53-1454d4dc5e9a@163.com>
+Date: Sun, 18 Jan 2026 21:47:54 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,94 +53,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260116101648.377952-2-shengjiu.wang@nxp.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH v4 0/2] PCI: Introduce pci_clear/set_config_dword()
+To: mahesh@linux.ibm.com, bhelgaas@google.com
+Cc: oohall@gmail.com, mani@kernel.org, lukas@wunner.de,
+ linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251101162219.12016-1-18255117159@163.com>
+Content-Language: en-US
+From: Hans Zhang <18255117159@163.com>
+In-Reply-To: <20251101162219.12016-1-18255117159@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wDX+GyK5GxpZrMiGQ--.49932S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KF4UJr45XryxJr1ftr1DJrb_yoW8Wry5pr
+	Z3Ary3JrW7GFya9FW7GFy2ya45Wa1kJFWrJr17Kwn5Zw13Zry8ZF9agry5AF9rJrWrXw42
+	grs2gFy8uw1qkFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRyEE8UUUUU=
+X-Originating-IP: [240e:b8f:927e:1000:e94b:3b22:e2ce:7986]
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbC6wrQdGls5IqSrAAA3Q
+X-Spam-Status: No, score=0.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	FROM_LOCAL_DIGITS,FROM_LOCAL_HEX,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Jan 16, 2026 at 06:16:47PM +0800, Shengjiu Wang wrote:
-> The specific feature for AUDMIX on i.MX952 is that it can be bypassed,
-> so add fsl,amix-bypass property for this feature, besides this there is
-> no power domain defined on i.MX952, so make power-domains to be
-> dedicated to i.MX8QM.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  .../devicetree/bindings/sound/fsl,audmix.yaml | 35 +++++++++++++++++--
->  1 file changed, 33 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,audmix.yaml b/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
-> index 3ad197b3c82c..50fb08460b4f 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
-> +++ b/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
-> @@ -34,7 +34,9 @@ description: |
->  
->  properties:
->    compatible:
-> -    const: fsl,imx8qm-audmix
-> +    enum:
-> +      - fsl,imx8qm-audmix
-> +      - fsl,imx952-audmix
->  
->    reg:
->      maxItems: 1
-> @@ -75,12 +77,41 @@ properties:
->          unevaluatedProperties: false
->          description: Output port to SAI RX
->  
-> +  fsl,amix-bypass:
-> +    type: boolean
-> +    description:
-> +      The audmix module is bypassed from hardware.
+Hi,
 
-I don't understand why device AUDMIX would have property saying AUDMIX
-(so itself) can by bypassed. If you bypass the device itself, what do
-you configure here?
-
-
-> +
->  required:
->    - compatible
->    - reg
->    - clocks
->    - clock-names
-> -  - power-domains
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - fsl,imx8qm-audmix
-> +    then:
-> +      required:
-> +        - power-domains
-> +      not:
-> +        required:
-> +          - fsl,amix-bypass
-
-fsl,amix-bypass: false
-
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - fsl,imx952-audmix
-> +    then:
-> +      not:
-> +        required:
-> +          - power-domains
-
-Not sure what you want to say here, but disallowing properties is shown
-in example-schema (:false).
+Gentle ping.
 
 Best regards,
-Krzysztof
+Hans
+
+On 2025/11/2 00:22, Hans Zhang wrote:
+> This series introduces auxiliary functions for the PCI configuration space
+> and simplifies the read and write operations of the AER driver, reducing a
+> lot of repetitive code.
+> 
+> Patch 1 adds pci_clear_config_dword() and pci_set_config_dword() helpers
+> to reduce repetitive read-modify-write sequences when modifying PCI config
+> space. These helpers improve code readability and maintainability.
+> 
+> Patch 2 refactors the PCIe AER driver to use these new helpers,
+> eliminating manual read-modify-write patterns and intermediate variable
+> in several functions. This results in cleaner and more concise code.
+> 
+> ---
+> Changes for v4:
+> - Introduce pci_clear/set_config_dword()
+> 
+> Changes for v3:
+> https://patchwork.kernel.org/project/linux-pci/patch/20250816161743.340684-1-18255117159@163.com/
+> 
+> - Rebase to v6.17-rc1.
+> - The patch commit message were modified.
+> - Add Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+> 
+> Changes for v2:
+> - The patch commit message were modified.
+> - New optimizations for the functions disable_ecrc_checking, aer_enable_irq, and aer_disable_irq have been added.
+> ---
+> 
+> Hans Zhang (2):
+>    PCI: Introduce pci_clear/set_config_dword()
+>    PCI/AER: Use pci_clear/set_config_dword to simplify code
+> 
+>   drivers/pci/pcie/aer.c | 29 ++++++++++-------------------
+>   include/linux/pci.h    | 12 ++++++++++++
+>   2 files changed, 22 insertions(+), 19 deletions(-)
+> 
+> 
+> base-commit: 8742b2d8935f476449ef37e263bc4da3295c7b58
 
 
