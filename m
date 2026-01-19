@@ -1,62 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-15959-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15960-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD43D3A367
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 10:41:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C343D3A4E3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 11:24:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dvlpp16X2z2xjb;
-	Mon, 19 Jan 2026 20:41:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dvmlP5BKHz2xjb;
+	Mon, 19 Jan 2026 21:24:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768815714;
-	cv=none; b=f4pIBgc95XExwzaM0q4tVXmsdz/OoKH2TVX/4mXfAkOfb6ZAQHJaE0JC3BThcTOpM8UUD/SV8l1V2LV2xn5CQ/RcFwLyhy10tzclmM0qeFY2kix3i67cjwra7l+PqlY59YD4HVZPGnRD8irWi4TYFEybWMQddDecg6sj58NgY4C/cFzeZ/2D9bn8OPiJvqLnILinliz4TF2cCUGu4vJOyKhWBf13VqsjkcbMOMYulf06boA02crMu/dRJ9EfFPWatGk6nSMvHxBRpreLksmuDKhaeg9CoCUfr8GjNfRA+4vkULWp9ciES7ZqFIfU2fkPi1u/5U6hX5RTWUO6nrJKyA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768818241;
+	cv=none; b=SJBoJsy+v0NKAKpfjeERNANOZ0ZYi9kl2lvnDthrNA/iinldQJqFjOyDvkmZ2zzqO33/BvccZQxRVal9OMxyeQEuI6Y42ztUfFG7tNJtqWHhKhSL0kbIFzXpZzC/eCBBgDMrFr45PrVZe9XaIZHlJ4oAcgHsJki8KZqvoBFTmHCOT0aKGwj309ifWaPC0/aEbQWCUi8WgzKYA6er54d82YNBnzcL7AOEUz2e08omX1ViLBnPpVhR3zzCF159hgR198V4ROoBONl8kOaLgwDnsfBCL2T1eos8OF0VVbe0Kn6T1KZvrNfoJRnL22VR5V0yxobauvyZW8N+Qusd5EyWGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768815714; c=relaxed/relaxed;
-	bh=b6jR+pPpmmxL9GWUs7UU5UKh6Ofo8tk+3ob6BEcKnJg=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hxuNKtDpIyvuFOjhiQ4F2yiq0wIHTZz8OojVESWFFyrgn621ZLGKpBqOpVuBgiRZg30CgloSaCECsnKLTQezYQjNhH0yzCr9tu0Kxy6nxr1Frz3KabLp5GynE1UwwQiZYRLlVMPDVGIrD4A9e1LKLnjv5ubPEvHk85qkU89RQtZ4Z4T+id9z3MEXwjwSLCOkvMbVJIx/5YQT0LCC5yLffCTD3N4BPL/AUXzdH26cqooCeFCL+VA0KJe0mh4fjENdjdkc2ZWuLZo/SXObSMiKPUYJVBj6Id/qnUIShMwrKS0MUObPWpNBDQhKioIO96ggNS9wYs0WqOetkhNvk+EWFg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vjucln0G; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brgl@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vjucln0G;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brgl@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvlpn1JXsz2xHW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 20:41:53 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1051060151
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 09:41:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDD5C16AAE
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 09:41:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768815710;
-	bh=HKQr8whUj/Z04va1LrYo8qpRlzoB2yfYhXr2d+a6mHg=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
-	b=Vjucln0GeeF/zebKoysEJUyYIGCEriqB3ByV6cyEhAadnXsg5myFb7cc192Uz+CnR
-	 VN2aAk+hX2m+Axj0EYL0IUzGoN8HfKj9Pw9fVd88Hy1Ar9loB/voewq+gWljQkPYPa
-	 k8rANj0AEAJAQsWH4Q/7AfPwQTXwQ+Whn5gqwlTbNFJ5TMsAu8WvLL/rG4xBnPBnzZ
-	 g2P9n32SRctF12GYu1kMfGFWFKpK9rCi0z38VTqOGyiI9PIlXDw+DVSgaY1/LN8f+b
-	 /u0oYYRPyfsOyGhNJUh2ABMQV6dI3AJ0uley0OKCpTcdBeMxSgMTuLNA4PYrpMo+kI
-	 5+FCstdaZWE+w==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-383122fbc9bso31664591fa.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 01:41:49 -0800 (PST)
-X-Gm-Message-State: AOJu0Yxj7lLLJeLbIFnoo9sK+vxo7BNlay0FgyKWgEi1uxgigHI7oobQ
-	Ifb1JIEsvY6d0wwWUGDM8E74t6WuUEOzW7vkg8/ABOcenwAS1u9lESUrhXXDtPXNxqHsKGhoxpC
-	JPi5mZyeY3naZuUp9mf25xQpDiYOihpudSHjaY7oL1g==
-X-Received: by 2002:a05:6512:3d0f:b0:59b:b32f:2df3 with SMTP id
- 2adb3069b0e04-59bb32f30e0mr3520280e87.3.1768815708407; Mon, 19 Jan 2026
- 01:41:48 -0800 (PST)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 19 Jan 2026 09:41:46 +0000
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 19 Jan 2026 09:41:46 +0000
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260119061232.889236-1-nichen@iscas.ac.cn>
+	t=1768818241; c=relaxed/relaxed;
+	bh=6rGknulicpb/N5ZHwBgsBvsJXwGZS09gxBTT+qK+3Ww=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fDRQdTklfxdGjImVmyxsNVv3d0KoLL0yAKH/s55KesXZ+3+jQE1dFcv8Zzdc9KWJD7zB7GvD9Y2j3juC0Y0VZ+R4Me2qOxTSgcHR0v5+z4bQpTBr7XMePzhkF/a1+IYGDblMxxzgeObH0dem4dYBgv9E8q7H4CUQ1CCJhU/o6+xUBKApGcnKsPGSfvcwEwfC17PE3+DT01px3ugpiCdTwATstyoEWFtOOHP/bG9/EdAE6/0K5CyZhEkRDukvX1DkYW7EgIMOZKxqd/jr0wqZNMiH3jeDRBK9Y+Ypmbt9dOhjlQI7kwVGY0+oidoXkEsAcrArWE92e6LlSuQlSZsdVg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dvmlN2RTnz2xHW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 21:23:58 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9ABCC1517;
+	Mon, 19 Jan 2026 02:23:18 -0800 (PST)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2614E3F632;
+	Mon, 19 Jan 2026 02:23:19 -0800 (PST)
+Date: Mon, 19 Jan 2026 10:23:14 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Jeremy Linton <jeremy.linton@arm.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-hardening@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] randomize_kstack: Maintain kstack_offset per task
+Message-ID: <aW4GEi9C_F6K9Qck@J2N7QTR9R3>
+References: <20260102131156.3265118-1-ryan.roberts@arm.com>
+ <20260102131156.3265118-2-ryan.roberts@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,54 +70,170 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260119061232.889236-1-nichen@iscas.ac.cn>
-Date: Mon, 19 Jan 2026 09:41:46 +0000
-X-Gmail-Original-Message-ID: <CAMRc=MdcbihCL8MLoh4-WQuQ5L+BEOkurFmgsEB3FszyHYZdyg@mail.gmail.com>
-X-Gm-Features: AZwV_Qhh8A2bghkymii2QxaeEH6AueQ8-ql_o7R_Ox9CPomihBimsTaLBAYSupg
-Message-ID: <CAMRc=MdcbihCL8MLoh4-WQuQ5L+BEOkurFmgsEB3FszyHYZdyg@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/52xx/mpc52xx_gpt: consolidate chained IRQ handler install/remove
-To: Chen Ni <nichen@iscas.ac.cn>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, agust@denx.de, 
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, tglx@kernel.org, brgl@kernel.org, jirislaby@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260102131156.3265118-2-ryan.roberts@arm.com>
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 19 Jan 2026 07:12:32 +0100, Chen Ni <nichen@iscas.ac.cn> said:
-> The driver currently sets the handler data and the chained handler in
-> two separate steps. This creates a theoretical race window where an
-> interrupt could fire after the handler is set but before the data is
-> assigned, leading to a NULL pointer dereference.
->
-> Replace the two calls with irq_set_chained_handler_and_data() to set
-> both the handler and its data atomically under the irq_desc->lock.
->
-> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-> ---
->  arch/powerpc/platforms/52xx/mpc52xx_gpt.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-> index 7748b6641a3c..e8163fdee69a 100644
-> --- a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-> +++ b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-> @@ -253,8 +253,7 @@ mpc52xx_gpt_irq_setup(struct mpc52xx_gpt_priv *gpt, struct device_node *node)
->  		return;
->  	}
->
-> -	irq_set_handler_data(cascade_virq, gpt);
-> -	irq_set_chained_handler(cascade_virq, mpc52xx_gpt_irq_cascade);
-> +	irq_set_chained_handler_and_data(cascade_virq, mpc52xx_gpt_irq_cascade, gpt);
->
->  	/* If the GPT is currently disabled, then change it to be in Input
->  	 * Capture mode.  If the mode is non-zero, then the pin could be
-> --
-> 2.25.1
->
->
+On Fri, Jan 02, 2026 at 01:11:52PM +0000, Ryan Roberts wrote:
+> kstack_offset was previously maintained per-cpu, but this caused a
+> couple of issues. So let's instead make it per-task.
+> 
+> Issue 1: add_random_kstack_offset() and choose_random_kstack_offset()
+> expected and required to be called with interrupts and preemption
+> disabled so that it could manipulate per-cpu state. But arm64, loongarch
+> and risc-v are calling them with interrupts and preemption enabled. I
+> don't _think_ this causes any functional issues, but it's certainly
+> unexpected and could lead to manipulating the wrong cpu's state, which
+> could cause a minor performance degradation due to bouncing the cache
+> lines. By maintaining the state per-task those functions can safely be
+> called in preemptible context.
+> 
+> Issue 2: add_random_kstack_offset() is called before executing the
+> syscall and expands the stack using a previously chosen rnadom offset.
+> choose_random_kstack_offset() is called after executing the syscall and
+> chooses and stores a new random offset for the next syscall. With
+> per-cpu storage for this offset, an attacker could force cpu migration
+> during the execution of the syscall and prevent the offset from being
+> updated for the original cpu such that it is predictable for the next
+> syscall on that cpu. By maintaining the state per-task, this problem
+> goes away because the per-task random offset is updated after the
+> syscall regardless of which cpu it is executing on.
+> 
+> Fixes: 39218ff4c625 ("stack: Optionally randomize kernel stack offset each syscall")
+> Closes: https://lore.kernel.org/all/dd8c37bc-795f-4c7a-9086-69e584d8ab24@arm.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+
+Mark.
+
+> ---
+>  include/linux/randomize_kstack.h | 26 +++++++++++++++-----------
+>  include/linux/sched.h            |  4 ++++
+>  init/main.c                      |  1 -
+>  kernel/fork.c                    |  2 ++
+>  4 files changed, 21 insertions(+), 12 deletions(-)
+> 
+> diff --git a/include/linux/randomize_kstack.h b/include/linux/randomize_kstack.h
+> index 1d982dbdd0d0..5d3916ca747c 100644
+> --- a/include/linux/randomize_kstack.h
+> +++ b/include/linux/randomize_kstack.h
+> @@ -9,7 +9,6 @@
+>  
+>  DECLARE_STATIC_KEY_MAYBE(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
+>  			 randomize_kstack_offset);
+> -DECLARE_PER_CPU(u32, kstack_offset);
+>  
+>  /*
+>   * Do not use this anywhere else in the kernel. This is used here because
+> @@ -50,15 +49,14 @@ DECLARE_PER_CPU(u32, kstack_offset);
+>   * add_random_kstack_offset - Increase stack utilization by previously
+>   *			      chosen random offset
+>   *
+> - * This should be used in the syscall entry path when interrupts and
+> - * preempt are disabled, and after user registers have been stored to
+> - * the stack. For testing the resulting entropy, please see:
+> - * tools/testing/selftests/lkdtm/stack-entropy.sh
+> + * This should be used in the syscall entry path after user registers have been
+> + * stored to the stack. Preemption may be enabled. For testing the resulting
+> + * entropy, please see: tools/testing/selftests/lkdtm/stack-entropy.sh
+>   */
+>  #define add_random_kstack_offset() do {					\
+>  	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
+>  				&randomize_kstack_offset)) {		\
+> -		u32 offset = raw_cpu_read(kstack_offset);		\
+> +		u32 offset = current->kstack_offset;			\
+>  		u8 *ptr = __kstack_alloca(KSTACK_OFFSET_MAX(offset));	\
+>  		/* Keep allocation even after "ptr" loses scope. */	\
+>  		asm volatile("" :: "r"(ptr) : "memory");		\
+> @@ -69,9 +67,9 @@ DECLARE_PER_CPU(u32, kstack_offset);
+>   * choose_random_kstack_offset - Choose the random offset for the next
+>   *				 add_random_kstack_offset()
+>   *
+> - * This should only be used during syscall exit when interrupts and
+> - * preempt are disabled. This position in the syscall flow is done to
+> - * frustrate attacks from userspace attempting to learn the next offset:
+> + * This should only be used during syscall exit. Preemption may be enabled. This
+> + * position in the syscall flow is done to frustrate attacks from userspace
+> + * attempting to learn the next offset:
+>   * - Maximize the timing uncertainty visible from userspace: if the
+>   *   offset is chosen at syscall entry, userspace has much more control
+>   *   over the timing between choosing offsets. "How long will we be in
+> @@ -85,14 +83,20 @@ DECLARE_PER_CPU(u32, kstack_offset);
+>  #define choose_random_kstack_offset(rand) do {				\
+>  	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
+>  				&randomize_kstack_offset)) {		\
+> -		u32 offset = raw_cpu_read(kstack_offset);		\
+> +		u32 offset = current->kstack_offset;			\
+>  		offset = ror32(offset, 5) ^ (rand);			\
+> -		raw_cpu_write(kstack_offset, offset);			\
+> +		current->kstack_offset = offset;			\
+>  	}								\
+>  } while (0)
+> +
+> +static inline void random_kstack_task_init(struct task_struct *tsk)
+> +{
+> +	tsk->kstack_offset = 0;
+> +}
+>  #else /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
+>  #define add_random_kstack_offset()		do { } while (0)
+>  #define choose_random_kstack_offset(rand)	do { } while (0)
+> +#define random_kstack_task_init(tsk)		do { } while (0)
+>  #endif /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
+>  
+>  #endif
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index d395f2810fac..9e0080ed1484 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -1591,6 +1591,10 @@ struct task_struct {
+>  	unsigned long			prev_lowest_stack;
+>  #endif
+>  
+> +#ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
+> +	u32				kstack_offset;
+> +#endif
+> +
+>  #ifdef CONFIG_X86_MCE
+>  	void __user			*mce_vaddr;
+>  	__u64				mce_kflags;
+> diff --git a/init/main.c b/init/main.c
+> index b84818ad9685..27fcbbde933e 100644
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -830,7 +830,6 @@ static inline void initcall_debug_enable(void)
+>  #ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
+>  DEFINE_STATIC_KEY_MAYBE_RO(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
+>  			   randomize_kstack_offset);
+> -DEFINE_PER_CPU(u32, kstack_offset);
+>  
+>  static int __init early_randomize_kstack_offset(char *buf)
+>  {
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index b1f3915d5f8e..b061e1edbc43 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -95,6 +95,7 @@
+>  #include <linux/thread_info.h>
+>  #include <linux/kstack_erase.h>
+>  #include <linux/kasan.h>
+> +#include <linux/randomize_kstack.h>
+>  #include <linux/scs.h>
+>  #include <linux/io_uring.h>
+>  #include <linux/bpf.h>
+> @@ -2231,6 +2232,7 @@ __latent_entropy struct task_struct *copy_process(
+>  	if (retval)
+>  		goto bad_fork_cleanup_io;
+>  
+> +	random_kstack_task_init(p);
+>  	stackleak_task_init(p);
+>  
+>  	if (pid != &init_struct_pid) {
+> -- 
+> 2.43.0
+> 
 
