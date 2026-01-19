@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-16029-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16030-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9EA4D3BB24
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jan 2026 00:02:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DBAD3BB26
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jan 2026 00:02:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dw5Yz1tShz2xm5;
-	Tue, 20 Jan 2026 10:01:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dw5Z53kntz2yFQ;
+	Tue, 20 Jan 2026 10:02:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768863719;
-	cv=none; b=PBNme0ITAq81qrMWYgiEd0oF6hyo0Q6oADpyRu0PPT7SRbMRBSHJKCXoRWLoPfEQQOxrOtyM1UM6+YfRhWRF+CyGiSZ2abftPAj2HOHxaYATiJh4/r+Zq3qbqighnTnJO3GzIhISLB0w3tpJIS+kJajJxqAx4A5RElfxaynZxEr2+sFIyhuskyBj/J9CMLAKP8fPYhJ6CCsy6zCfEXY1npt4gbQnYx+HKmt582lnzoKjSTn+HZ+efpPg8v4FRPK4aQC6giG5QfPthgk0IOCaVM0vejZN2cqZ8579W0zc7y73pBrbNACMGLRMbqaEsh558K0SEQIJEUpn1w/Fr7zYLQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768863725;
+	cv=none; b=HRe/TudxXhFeVultG0UZ+E+h3dEeCaqSOUs7iIKpMDXg1pdp34aErlThyk98wKC1OAuXH6+Y13RwPYo3xzM0vub0zVKaekHkTHtJpdiABMvyvP+L8H82yuLVkCW5h6OBt5kpLK+8qVYBSFf+pnOQzy+eVyJOSyagOdLDftFXn+kgV4i/Eh3GBBdZdVMypy2ik2EYRW+WlEGclLQJCmxrdm8sURRac+DgZEgjG9jRCWhAQy8roj8tPd0E9ShExLoNVmKUcdNuiAZb1UP7/RwxflQWrlClW1JbS4lSC72Vwwl4ae78aHaF/PjAJJOeXb3T2yt4MqQmBltYxrC3sxg1Cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768863719; c=relaxed/relaxed;
-	bh=J1Xj1RX/NA4HAZv7tAdB9l6TMArwAx2JjRBIpQCaQPk=;
+	t=1768863725; c=relaxed/relaxed;
+	bh=qkAMfu14ban9fbdKWJY9K317QICByqTTdI8XjZIo7V4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKpkw08jS2BP/EsRYZXDmqXQXObI6xuNT2TYjgLzsfU4IhJlzM2GDt57DcPiomTcBnAC94b618rjxDpryHawI9jm2wECC2RP9OnJiveKPU59sZlR5Nl4dRS/TgQxPt6erBb9k/sPAhBci0i+lCCmSsXxVCzxvDBMpFclAv76NRqZP95qtGbeuWs3W0X1CR0uuWL6Wr93D/iycMjOoDt88PT1MBkyGv/tTOO6qnFzjQRkRyXwKktzO8Gn710sGFT/JLW/GAXPNDPe7+hNYf9wS4HB/wa01G4kxWblzuiKFzBw7LZ8WYJj5lzDP/gG0JnSwZ2UARZ3CgDjTWzmHpluWg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=it6JXTLD; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=DwP7tow3OROOGLri4RwPJbUziVEk9VhEnqJm9kUzMDrxMVISJRYzbH9KAooV2oNN95GPLeqlcPaQC/bRQDw9Hur4R1wnsR7tyBeo3QnkGCM3XwofFX/MlF+LaZr2DuAigMo7u1NVKJDsLEPqkTp/SJWSRxYSS371b+WUEQYjuJ3+6ZADFq6rJXNk73mD1MdwgGF+gazs3q30ZKQVP2S6l8BLxjCB+x8znz9ZRGMpcgalhbIlPlItv+8Ko3ZwCkY8ueXqhfQBis+C4I9eF3pO28FkQhiTdzTE9Hq90i60iwmol1U4e22L5hidRL5EaWLuqnPVfbEc6w6geDlXL8FSFA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KcsvvCSb; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=it6JXTLD;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KcsvvCSb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dw5Yy2fWYz3bhq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 10:01:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dw5Z441wBz2xpk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 10:02:04 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4829860151;
+	by sea.source.kernel.org (Postfix) with ESMTP id 008F6442D3;
+	Mon, 19 Jan 2026 23:02:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE18C19424;
 	Mon, 19 Jan 2026 23:01:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A858AC19424;
-	Mon, 19 Jan 2026 23:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768863716;
-	bh=zu0MlNB3uojZ+XY2eNxlLUaMnPt4RrYT1MRY12QCzSY=;
+	s=k20201202; t=1768863722;
+	bh=U9h/5fXRDF7W7U0nEHjVvjxN0NehshCtdso7ivmglXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=it6JXTLDKt1WuNFXQ9Ce1X7YpHetBL19JtOQyj2tZ93grW6ScBDmXXEOP5WPBzLwR
-	 xQ4EvMwIVRU3DGciBAEfChSWKPMiG3WcY6iGQxfhEv6ldblsZoy3hkwEtm1zhAY//i
-	 zzS5ZbisMo5WLMJuUzvfKOr0asy6qJZoYH9hIniyfin1T+JY18S+HTHiU1p51xcLPJ
-	 HhvLlwhAEQ0vWvQMhMNmumzc8AyZhR+8sWHtcZ1t38HBXWFLct4D9EdXXm0KrLuR9J
-	 w9qfUy0JmLPcO48+ptAY7t/Yvn8CpMKvaSayoObgChDoH6uXNGimWjcswTRPrSslUV
-	 x58d/Nlt99UJQ==
+	b=KcsvvCSbK+FAI50L4LUCy7S8qMDHa7BZczOG8V34OArhg9CDqc2V99o7JHKrpTQjV
+	 zNbzikPTwWbtWAipBQP/qpedmcfzVJZniN847kfNIHb0ueiGuxV02dEsCdufUu0Mgm
+	 7pYwd3/ivc1I1KVKmPt9HnVuL7asbQd50TAani06TICtRE0Kpxx/9Cd6D394B3sHIl
+	 +XEoM4GL1jrLJTrKt3yYImBndcgY+WEVGXogMP3gOlor6Nbs8cICwyWE/en7a+Be30
+	 FhUclUMPBHmYBJcwElvhXgr6nfEQnR6KQS1JuRWMg6JPVtw4oGhiy/LoIeUJSN5crc
+	 vqAXwFaQSWUKQ==
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -72,9 +72,9 @@ Cc: linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v3 02/24] vmw_balloon: remove vmballoon_compaction_init()
-Date: Tue, 20 Jan 2026 00:01:10 +0100
-Message-ID: <20260119230133.3551867-3-david@kernel.org>
+Subject: [PATCH v3 03/24] powerpc/pseries/cmm: remove cmm_balloon_compaction_init()
+Date: Tue, 20 Jan 2026 00:01:11 +0100
+Message-ID: <20260119230133.3551867-4-david@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119230133.3551867-1-david@kernel.org>
 References: <20260119230133.3551867-1-david@kernel.org>
@@ -98,69 +98,67 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 Now that there is not a lot of logic left, let's just inline setting up
-the migration function and drop all these excessive comments that are
-not really required (or true) anymore.
+the migration function.
 
 To avoid #ifdef in the caller we can instead use IS_ENABLED() and make
 the compiler happy by only providing the function declaration.
+
+Now that the function is gone, drop the "out_balloon_compaction" label.
+Note that before commit 68f2736a8583 ("mm: Convert all PageMovable users
+to movable_operations") we actually had to undo something, now not anymore.
 
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 ---
- drivers/misc/vmw_balloon.c | 30 +++++-------------------------
- 1 file changed, 5 insertions(+), 25 deletions(-)
+ arch/powerpc/platforms/pseries/cmm.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
-index 2cc34c4968fac..07e60a4b846aa 100644
---- a/drivers/misc/vmw_balloon.c
-+++ b/drivers/misc/vmw_balloon.c
-@@ -1833,27 +1833,10 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
- 	up_read(&b->conf_sem);
- 	return ret;
+diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
+index 4cbbe2ee58aba..9a6efbc80d2ad 100644
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -548,15 +548,9 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
+ 
+ 	return 0;
  }
 -
--/**
-- * vmballoon_compaction_init() - initialized compaction for the balloon.
-- *
-- * @b: pointer to the balloon.
-- *
-- * If during the initialization a failure occurred, this function does not
-- * perform cleanup. The caller must call vmballoon_compaction_deinit() in this
-- * case.
-- *
-- * Return: zero on success or error code on failure.
-- */
--static __init void vmballoon_compaction_init(struct vmballoon *b)
+-static void cmm_balloon_compaction_init(void)
 -{
--	b->b_dev_info.migratepage = vmballoon_migratepage;
+-	b_dev_info.migratepage = cmm_migratepage;
 -}
--
  #else /* CONFIG_BALLOON_COMPACTION */
--static inline void vmballoon_compaction_init(struct vmballoon *b)
+-static void cmm_balloon_compaction_init(void)
 -{
 -}
-+int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
-+			  struct page *newpage, struct page *page,
-+			  enum migrate_mode mode);
++int cmm_migratepage(struct balloon_dev_info *b_dev_info, struct page *newpage,
++		    struct page *page, enum migrate_mode mode);
  #endif /* CONFIG_BALLOON_COMPACTION */
  
- static int __init vmballoon_init(void)
-@@ -1873,12 +1856,9 @@ static int __init vmballoon_init(void)
- 	if (error)
- 		return error;
+ /**
+@@ -573,11 +567,12 @@ static int cmm_init(void)
+ 		return -EOPNOTSUPP;
  
--	/*
--	 * Initialization of compaction must be done after the call to
--	 * balloon_devinfo_init() .
--	 */
- 	balloon_devinfo_init(&balloon.b_dev_info);
--	vmballoon_compaction_init(&balloon);
+ 	balloon_devinfo_init(&b_dev_info);
+-	cmm_balloon_compaction_init();
 +	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-+		balloon.b_dev_info.migratepage = vmballoon_migratepage;
++		b_dev_info.migratepage = cmm_migratepage;
  
- 	INIT_LIST_HEAD(&balloon.huge_pages);
- 	spin_lock_init(&balloon.comm_lock);
+ 	rc = register_oom_notifier(&cmm_oom_nb);
+ 	if (rc < 0)
+-		goto out_balloon_compaction;
++		return rc;
+ 
+ 	if ((rc = register_reboot_notifier(&cmm_reboot_nb)))
+ 		goto out_oom_notifier;
+@@ -606,7 +601,6 @@ static int cmm_init(void)
+ 	unregister_reboot_notifier(&cmm_reboot_nb);
+ out_oom_notifier:
+ 	unregister_oom_notifier(&cmm_oom_nb);
+-out_balloon_compaction:
+ 	return rc;
+ }
+ 
 -- 
 2.52.0
 
