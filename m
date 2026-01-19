@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-15977-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15978-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10597D3A63D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 12:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD92D3A646
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 12:07:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dvnj14MMDz30Lv;
-	Mon, 19 Jan 2026 22:07:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dvnjX33NTz30Lv;
+	Mon, 19 Jan 2026 22:07:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768820821;
-	cv=none; b=MMS10rZ7lX1QYZYQqchfPRZt7mkZx+kvHb3/EZWHVnNGFCpL/3OvvX9GXyL2W/qGsOoaBWS3lO4j8rSBA69UFyEND4g2nXY8LxveecDS8nXKa9zQwlgBMgCWSP6bqtrztd0ckJ8TWqYvUR5JG7UnZUmjbE0/cFctUOqSRF+vj96vECHEtsGm5CWJcsdb/qAmeNtKoUqX8rutvFm5Nws8Iy9htUYJn0kqgcNotOdnAsPdhAHkjy5dhuwLvOStGlzxMEQVdHjd2GmYcrobuSfYdZtsO0PyQ1TJifgLelhIWmGU5qbV1l45lUlUERPtjvNdxqhDeBZFgpsVpsD/xAYv9g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768820848;
+	cv=none; b=SZLxXFfJ5ph2H9l99RJZvvIQ5SEJ8HQpCet3Y3X7kMjd/sib0BC70iHIr4i+vh2gAWRC4Yysb6vpGkgVUY9MhTkyrkT8Cen7zk7at+2qGxbyQoGVyVObmdv5hitHT0z6nBVX2U5W6LL2d1Dexh9Dh6LKT1PV9Vi+37sdpn7LGhDoaCgcqwEkEiQqvwW54EIpuKdVkNBoVHo79GgYUonbiZ8E43r2ul2ylj9KDR2WgZcFxE7g3t+ejlmKaaOpQcOL6kDwE3uIXWfjCpND8RvVhDm26YmpA3ONnXTITghVdmsNeGlNOrfDieHTNjmc9yF7qxoRUuOAAQHTlyoTFRlwHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768820821; c=relaxed/relaxed;
-	bh=InzMZ2sKPU+dBiXuXrFvQIinli9OSxMqyO9gWD6Sl84=;
+	t=1768820848; c=relaxed/relaxed;
+	bh=5UVMLN1VUYbL2fz93vyHWvDDcYyJoHLixv8ttRq8yT8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B0+9RadB/epFMF8JKvrboOPNUWOfCY35z3DiQV0hDIgqDP9c1xo6F1ifHmf9/6MrxeQuU4eP+2c4zwFwjw7Xi86VQFw04hiDEyIGXnVBX4COZBomxfpR4scs3RzdHE1TICrWkPSGQ+5kx1gvPgEoFNXRzf+a+1ISeqQxYQeVbt7LJXQRBpXFeWJsIEjKFOEJkDknk/aK+YrzCJwx+pO37iH24iEZ2IQGgZ1MVg2A16XZL56gJ36fMAvVUytR0+H9qNrqxH9ZkrUQpoAzfH5dBxhsKNgdX8E65QJC595/TuFOq3wrVcBqDBLCwjL8s7Z/CAhhg7Ffsy4ezf70keJT6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M/3rPe+V; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=AEExjFC+85GbP/M0s0cf7UASivLo6nZHImBEfHfnAOvUYbN0RElNRNNPogZoe4z+aDw8p8DfVFUIfOeeYjpri+/BrZs3nJW0B8KDbK2wctIV+2eDapS1Zaok/hm7YKMDUDSkP9NOKDReTSXplJr0XAp6hU29z8QR/OrXa7VcW22QOv3390A70os76oM//SeBSfE5mjI/Zp0GaJvqfsPxno3a77aIsjeAdUPDTSGdqze/rH1JIkjPJYaj+/l5yeiQ4QB5cQN+uIJsAZ7ur8kf9sJ9lyzskuCJa2B4hL+7gPBrKqqIj67PRxa3ZQI2cffijx4il/B8Rj6/23D5UlPA1A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EOAvqiNc; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M/3rPe+V;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EOAvqiNc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvnj05jbKz2xHW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 22:07:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvnjW60C4z2xHW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 22:07:27 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 12BBD41A4E;
-	Mon, 19 Jan 2026 11:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEC8C116C6;
-	Mon, 19 Jan 2026 11:06:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4E2FA43814;
+	Mon, 19 Jan 2026 11:07:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C991C2BC86;
+	Mon, 19 Jan 2026 11:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768820818;
-	bh=FSHtm5y+0kZFCu8h7MAlOolnmcLEJiXQsqC8mgqCK0I=;
+	s=k20201202; t=1768820846;
+	bh=cXrQIGq8ghQgg/2tKSWr1ulwNeEYtyDoK9Rxf5XR8Yg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M/3rPe+VeDwVPcMY41CgntHHzX52DrZ0Q9LntDEdhFwNDiNZ+STK82e5P8+fTyKDM
-	 DyPXKjY5ovs4CJIuPMfV4bFzgLkuVtS9YVZxtJVrjT3KTCx6Lt50yKGHNFtwjJiioZ
-	 nRo+/iFAN2Yo41CvjEQUqCEYz+oCH0IdS9UATPlAo/IjYIH20q8aTsdTpeQSk7f+Qz
-	 8eou2/M7Ip9TXxzlIaBsgTffX6DujbxZky1fjiNwbe1DQLng6YsJKWQD40SP/jF/2q
-	 1OLSx6lcmdOrWzcG4u/cDPaN57epDjYD//Wwa+BRG53He0SLZsLR2jz5ALHlw9R7Rn
-	 813vdS2ZEk1iA==
-Message-ID: <ff8db3d9-cb27-4ea3-8953-a7786eb54a01@kernel.org>
-Date: Mon, 19 Jan 2026 12:06:51 +0100
+	b=EOAvqiNc4GCvpD1yjoAwVDRZs2iT3IOHlR+F2UAQgOWkMSzesel6Wo+CtWlDfgLIb
+	 qqHUdETE4YPQTAgxHXz2Oi1pooZondcvSnLIQAJQ3VA4HAXzzNdikqzVnvH6Xp2Jiy
+	 jGUZZrqJnKUSiqvJSxLoBLPuqA09ZDrUfeptW+ykgZvtNOlFtE7cWeGQvgLNRN9Rps
+	 aiBTNnR7reEZiRE+bvdOBbOodjPBb6QCyxISi5V15oNoJMi9e8XOC6wQoxs/mKjUxg
+	 5LhAd/bl1GXRdTVXfeezwp7e7H/AV+WWwSvtEDZtnnkRvV4e5W1O3AK19Nte89q32h
+	 5yUGiBiFsW5BA==
+Message-ID: <70d9ba17-59c2-4fc4-89f8-598667daea73@kernel.org>
+Date: Mon, 19 Jan 2026 12:07:19 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,7 +59,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] of: provide of_machine_get_compatible()
+Subject: Re: [PATCH 2/8] base: soc: order includes alphabetically
 To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
  Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -76,10 +76,10 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
  linux-sunxi@lists.linux.dev
 References: <20260119-soc-of-root-v1-0-32a0fa9a78b4@oss.qualcomm.com>
- <20260119-soc-of-root-v1-1-32a0fa9a78b4@oss.qualcomm.com>
+ <20260119-soc-of-root-v1-2-32a0fa9a78b4@oss.qualcomm.com>
 Content-Language: fr-FR
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260119-soc-of-root-v1-1-32a0fa9a78b4@oss.qualcomm.com>
+In-Reply-To: <20260119-soc-of-root-v1-2-32a0fa9a78b4@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -90,55 +90,43 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 Le 19/01/2026 à 11:40, Bartosz Golaszewski a écrit :
-> Provide a helper function allowing users to read the compatible string
-> of the machine, hiding the access to the root node.
+> For easier readability and maintenance, order the included headers
+> alphabetically.
 > 
 > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
 Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
 > ---
->   drivers/of/base.c  | 13 +++++++++++++
->   include/linux/of.h |  2 ++
->   2 files changed, 15 insertions(+)
+>   drivers/base/soc.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
 > 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 0b65039ece53aa90f30da2420a893a02ab4c6dd8..a7e27d5355929abd6d156b80c52f8f8b08fe6da1 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -434,6 +434,19 @@ bool of_machine_compatible_match(const char *const *compats)
->   }
->   EXPORT_SYMBOL(of_machine_compatible_match);
+> diff --git a/drivers/base/soc.c b/drivers/base/soc.c
+> index 282c38aece0de88049dc1e6e9bea00df52bed1ea..6f42632d2b0fcc8a729484e6ad270f9bcabe4a0b 100644
+> --- a/drivers/base/soc.c
+> +++ b/drivers/base/soc.c
+> @@ -5,16 +5,16 @@
+>    * Author: Lee Jones <lee.jones@linaro.org> for ST-Ericsson.
+>    */
 >   
-> +/**
-> + * of_machine_get_compatible - Get the compatible string of this machine
-> + * @compatible: address at which the compatible string will be stored
-> + *
-> + * Returns:
-> + * 0 on success, negative error number on failure.
-> + */
-> +int of_machine_get_compatible(const char **compatible)
-> +{
-> +	return of_property_read_string(of_root, "compatible", compatible);
-> +}
-> +EXPORT_SYMBOL_GPL(of_machine_get_compatible);
-> +
->   /**
->    * of_machine_device_match - Test root of device tree against a of_device_id array
->    * @matches:	NULL terminated array of of_device_id match structures to search in
-> diff --git a/include/linux/of.h b/include/linux/of.h
-> index 9bbdcf25a2b448ba4ec5ddee8b35a105ca4aab8b..75423fb556ee4c108ce25144a0bdc252a89f7d1d 100644
-> --- a/include/linux/of.h
-> +++ b/include/linux/of.h
-> @@ -426,6 +426,8 @@ static inline bool of_machine_is_compatible(const char *compat)
->   	return of_machine_compatible_match(compats);
->   }
+> -#include <linux/sysfs.h>
+> +#include <linux/err.h>
+> +#include <linux/glob.h>
+> +#include <linux/idr.h>
+>   #include <linux/init.h>
+>   #include <linux/of.h>
+> -#include <linux/stat.h>
+>   #include <linux/slab.h>
+> -#include <linux/idr.h>
+>   #include <linux/spinlock.h>
+> +#include <linux/stat.h>
+> +#include <linux/sysfs.h>
+>   #include <linux/sys_soc.h>
+> -#include <linux/err.h>
+> -#include <linux/glob.h>
 >   
-> +int of_machine_get_compatible(const char **compatible);
-> +
->   extern int of_add_property(struct device_node *np, struct property *prop);
->   extern int of_remove_property(struct device_node *np, struct property *prop);
->   extern int of_update_property(struct device_node *np, struct property *newprop);
+>   static DEFINE_IDA(soc_ida);
+>   
 > 
 
 
