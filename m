@@ -1,57 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-15985-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15986-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545D7D3A8C5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 13:30:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F2DD3A989
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 13:54:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dvqYF0sQtz2yql;
-	Mon, 19 Jan 2026 23:30:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dvr4p4Q66z2xjb;
+	Mon, 19 Jan 2026 23:54:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768825825;
-	cv=none; b=acelpYJYLo3GsfVCo+zGoQNeKn0bgqXnjtGedL07Bgx+OnC1czKBlg1H2HXMyemPzUr6h/0SeD9EQOwIZBI7E5ycfcd4jLuvYdIweFoKL6plJD9+vl7PpSK1koohxE+QYVRqQyEii0De6zHh3yB8XZMxgxIZqYEzwteutRQwNM8f1NWIps8NXHOZC4UFrv/PqexJwixJGrVOT7b77KJaw5ai2dwEJdtkOllXctM/uBqykrdo0MW3QtDLSvz1p6vCenfSmPup60gfAGeDlUV45jAwWrQZQGxhFSNhIu/2pUD0biycNdZYbRIXlpYZYpv5UL8QWk247v2YaCb6+OSMOw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768827258;
+	cv=none; b=ctryMbgSC7kKvQ/gSZpi4ITBUE6OFIN4/BZS6qXkXhA7K5GbDomllf9FY9WRoVe5xWf6kgs6M0Dc2snddJnPtBj1Lk9g+35gzkraUchAnWjJpAKLppfH6v+caPQ0T9X8vtYp47P1QDq11N/jLnkrlQgMaMH6ytMf2LPKpmUx4siAlquYg5ONvV0VsrO3HoHD+7gCzv2T6ofWgbG8Hf/nFLrwjXoDM2yzeTeyvdq8wZp7GA/zOcfPRxdePt7mdYWnhahm6QCyiNikKnJh7CrvNz9FpHHyzvZ5A4H4o/p5OZJeFL0HjQoTQYJfsHh991XLmxWKC92Hwqwwpw4wYYBASg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768825825; c=relaxed/relaxed;
-	bh=rCOoFmmkwZ1RnY4XYTZmb5y+/o+8moqU8+YLz6THgJo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SmxeOP7531sGoGuxk+mmLcBtzjh3nhq/jgwr4cYjU/qaaj5ZC8su5NQI0BsSprs76A3+JmxSpDjbYbEutwYkH3jtkfniMbG8h2pfAUHXRCEAL1WWb0pkIVTTJz6amiaq7lv8eeZfZix0osdY9Fll87ZwNkHK6TI5/LJf6WIh/f9/vjubH/ubrtqCtxur/Xr4SOcFSIjwbdE9T8dDL+Q7NKgw5rZTmqBybqcPL1Sxgt/Qxomswud3zOD4wfTgAAqZE3F6sm+sFW5p1c6GPBbrD9AaVi4pAmRP8oQ/Wp6jI8g9JaSI6zCH6CbgIPz0w8vRLKdMCpbbrH1ckaM0XAzK7g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BUJo4cYk; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1768827258; c=relaxed/relaxed;
+	bh=kMRIv+5PhMX2w16KgQw853ivOAJWaId7zAyJ1dkF8Fs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TPn/X6zLGwx8/GbWbM1EFmicKW3y36v1DKOfEY7pi8o0tnRC/lOdRXqDhOYgex90lQJCIFiLljztjSF38wMtqc3HAs763X54fHLPUCg+m35NOGvbrmPCObxJs/8RW058ujSHJg/ButKBKv7LCa2b899s9VMzFmCCBHTCNrnWj0mF11xAehQl5MUjHdboBztJfRuGZAeZoDQvuiZVPkG0poT64LryKgQzbML0+JpMqukdWGK0qG8VgYnRC3QslQI2+ZJ/Ho5zNqD/5tcmIQVhWp2cbp7HEUjrdJtQHM4B9kdFDoypcwGxeS1RVaU8bsK2h/4RuFGOL0115H68mJV4bQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=vJqhYbqP; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BUJo4cYk;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=vJqhYbqP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvqYD1dSWz2xHW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 23:30:24 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 40D7960131
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 12:30:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E776BC19424
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 12:30:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768825821;
-	bh=AGiSWdIjqcCkIzUWZ+e2XIl/XdcoubBgfAl3S0l0Yy4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BUJo4cYknabYZtdBbL+/mLHuuDSar6nIIwS1EvDKN3SwsYO7sZET9/lQywm1vdesA
-	 OhPiVl7AYa1DO85LIiYFx6ee7r/TzQ7EE+VZtijohfZ4Ec4iFcfRhGWc79gqHwPN+X
-	 IeqXTb9HEwq0wsq3eRGy1DWh3ovF8HFIZkUXNNYMOjcBo/rP8OJQ7z+c2NoL/C8Plv
-	 srVRkJhugAjIPHV7HfCGpiOWlrh1n+De9/CZZ3DwBDiOxtWWIyWtYjIzl1NuttS9CE
-	 r1c+zinZVYu6/oMs6jNjauvLcFmTPUuUXW5n/Tt13c9Gk1twM4dLtaWwlmLIcQFZWG
-	 zgCOvQvcFhteA==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6610e72112bso1959904eaf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 04:30:21 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVYGcmfMGplpVf31i8GNUZVMmxqzaNPKYqN3zOz1747QPrRNsPfFt/audlFf00Egcmsvf9DmKoKdM+4KmY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwqllQromtsoUUOpiIov7tzCoduGI34jN4ewn3DLQ1DYyF89JMS
-	j4ACEFJ5kKQ1EuEzL5uL8R80FAaY4sCMfpIjQqGoWiuqpOIsBNFNke1Xeddn8mnRSK5E1e5J/v+
-	64+qV84DiaaVppEbGJMS7QdRB5xiiDZE=
-X-Received: by 2002:a05:6820:625:b0:661:ae2:95ed with SMTP id
- 006d021491bc7-661189adbd2mr4500479eaf.60.1768825820390; Mon, 19 Jan 2026
- 04:30:20 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvr4j0m2Nz2xHW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 23:54:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=kMRIv+5PhMX2w16KgQw853ivOAJWaId7zAyJ1dkF8Fs=; b=vJqhYbqP6wfcMsUoLbLcFpjsau
+	pI7huCZ4tlxvsg+DVviYeVT2rAjpCdlgMX0xhW6Apw02NRK/rB2eg/iW4NnwEOO0kAErfvYFSPWk9
+	734l0Za/d9cxaeQK2uT1eINH9rhHpbR9GKb152FQimp1T2wZb+GGvuUYykgCLszN3VtJW8Lzk4A5U
+	I7HWRPBi6JP+TQUFwkIhfciFA57j87zbbzYyjAm85/XKFLKNDHEaIovIzqXa5vwraVeJilH+RIe5m
+	eHQCATVnjsYDQz4I6tW/xtza4HMqyNN3M3/QWvIp7iiSqaDuctm2odTrkTJ0rdobU+uL9iBncrkK9
+	qn/+5T6Q==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vholQ-0000000DJVY-0Yog;
+	Mon, 19 Jan 2026 12:53:48 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id A58743006CD; Mon, 19 Jan 2026 13:53:47 +0100 (CET)
+Date: Mon, 19 Jan 2026 13:53:47 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Ben Segall <bsegall@google.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Xin Zhao <jackzxcui1989@163.com>, linux-pm@vger.kernel.org,
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 01/15] sched/idle: Handle offlining first in idle loop
+Message-ID: <20260119125347.GT830755@noisy.programming.kicks-ass.net>
+References: <20260116145208.87445-1-frederic@kernel.org>
+ <20260116145208.87445-2-frederic@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,87 +92,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260116145208.87445-1-frederic@kernel.org> <20260116145208.87445-8-frederic@kernel.org>
-In-Reply-To: <20260116145208.87445-8-frederic@kernel.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 19 Jan 2026 13:30:07 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hn81J_0N0Hy6QYtc3655w-9hDqVgWWY1BVhW=DT56Deg@mail.gmail.com>
-X-Gm-Features: AZwV_QijNtZmi1zR4iwR07o__vPOI-DD5wfQBm2ysAJARvjnZxZ46W3q48jp7lk
-Message-ID: <CAJZ5v0hn81J_0N0Hy6QYtc3655w-9hDqVgWWY1BVhW=DT56Deg@mail.gmail.com>
-Subject: Re: [PATCH 07/15] cpufreq: ondemand: Simplify idle cputime
- granularity test
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	Ben Segall <bsegall@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Juri Lelli <juri.lelli@redhat.com>, Kieran Bingham <kbingham@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Mel Gorman <mgorman@suse.de>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Nicholas Piggin <npiggin@gmail.com>, "Paul E . McKenney" <paulmck@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Uladzislau Rezki <urezki@gmail.com>, Valentin Schneider <vschneid@redhat.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Xin Zhao <jackzxcui1989@163.com>, 
-	linux-pm@vger.kernel.org, linux-s390@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260116145208.87445-2-frederic@kernel.org>
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Jan 16, 2026 at 3:53=E2=80=AFPM Frederic Weisbecker <frederic@kerne=
-l.org> wrote:
->
-> cpufreq calls get_cpu_idle_time_us() just to know if idle cputime
-> accounting has a nanoseconds granularity.
->
-> Use the appropriate indicator instead to make that deduction.
->
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+On Fri, Jan 16, 2026 at 03:51:54PM +0100, Frederic Weisbecker wrote:
 
-Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-
-or please let me know if you want me to take this patch.
-
-> ---
->  drivers/cpufreq/cpufreq_ondemand.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
->
-> diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq=
-_ondemand.c
-> index a6ecc203f7b7..2d52ee035702 100644
-> --- a/drivers/cpufreq/cpufreq_ondemand.c
-> +++ b/drivers/cpufreq/cpufreq_ondemand.c
-> @@ -334,17 +334,12 @@ static void od_free(struct policy_dbs_info *policy_=
-dbs)
->  static int od_init(struct dbs_data *dbs_data)
+>  kernel/sched/idle.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+> index c174afe1dd17..35d79af3286d 100644
+> --- a/kernel/sched/idle.c
+> +++ b/kernel/sched/idle.c
+> @@ -260,6 +260,12 @@ static void do_idle(void)
 >  {
->         struct od_dbs_tuners *tuners;
-> -       u64 idle_time;
-> -       int cpu;
->
->         tuners =3D kzalloc(sizeof(*tuners), GFP_KERNEL);
->         if (!tuners)
->                 return -ENOMEM;
->
-> -       cpu =3D get_cpu();
-> -       idle_time =3D get_cpu_idle_time_us(cpu, NULL);
-> -       put_cpu();
-> -       if (idle_time !=3D -1ULL) {
-> +       if (tick_nohz_enabled) {
->                 /* Idle micro accounting is supported. Use finer threshol=
-ds */
->                 dbs_data->up_threshold =3D MICRO_FREQUENCY_UP_THRESHOLD;
->         } else {
-> --
+>  	int cpu = smp_processor_id();
+>  
+> +	if (cpu_is_offline(cpu)) {
+
+Does it make sense to make that: if (unlikely(cpu_is_offline(cpu))) ?
+
+> +		local_irq_disable();
+
+Also, do we want something like:
+
+		WARN_ON_ONCE(need_resched());
+
+?
+
+> +		cpuhp_report_idle_dead();
+> +		arch_cpu_idle_dead();
+> +	}
+> +
+>  	/*
+>  	 * Check if we need to update blocked load
+>  	 */
+> @@ -311,11 +317,6 @@ static void do_idle(void)
+>  		 */
+>  		local_irq_disable();
+>  
+> -		if (cpu_is_offline(cpu)) {
+> -			cpuhp_report_idle_dead();
+> -			arch_cpu_idle_dead();
+> -		}
+> -
+>  		arch_cpu_idle_enter();
+>  		rcu_nocb_flush_deferred_wakeup();
+>  
+> -- 
 > 2.51.1
->
->
+> 
 
