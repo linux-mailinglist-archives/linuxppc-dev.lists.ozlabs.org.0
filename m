@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-16047-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16048-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC159D3BB5F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jan 2026 00:04:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17211D3BB62
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jan 2026 00:04:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dw5cN2jgDz3c8s;
-	Tue, 20 Jan 2026 10:04:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dw5cW3S92z3c8h;
+	Tue, 20 Jan 2026 10:04:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768863844;
-	cv=none; b=j/s54/a1Ts3YXHTqJtJ8RdLzVF8m6OC09HP+eHRfP9465ZDG4O6QAE/k/9iPSGYx9Qy2spqSvVAWmySnHbUh5Z+jjSSYLCxpqn1eafluUZf1mhmZ9Uu6YI5MbUd4s6JZzXXtkjgjqWUuNErZiahSmzcRqDJxSQDhAdlugk6M2p2iaJWyV4aaH7u0IWJBNFRZIIxZTygL2KQ6a4Gxk3576OMOVx0L96+zob8Gp6tYNAtF81nf5q76OQHPidzumFIlGydd79LYTTHRlHkICsUQUrQQNSnNjjlM7ulOa9dC4UMINlqFTy37IahRRXmKKAH0IgJ1HJquYyp6YU4Xb2eqiA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768863851;
+	cv=none; b=MNjJB1ueuqzSqQd7VAwfHh4KNtAVOEDZr967nR7l/PMoJD3HBM20uxZB6134XxIUjLjg9Jde5X1FvFtHdVx3b5TgyGkabKW9kB5Y4tjMSXvxGZBdbwbaPzzq/H7+5q0xRglswocITXzc6Kbxt/X6+J8HL2x7WHW/3bps5KaTPirORD/w7DdPUIza7GOJYoZHslBS/pIecY6DDbcRvah1Zy78/76MJzEgq0TIENXoE/TMO4VpLlTq0iB/yNdjU+AI4kf9DgOPwNeNjfXE2ybiAUxIYbebkayJ3vtySYsuK6woS1Pb6AdREf9qPgsZRmlpY8rqXoWFb35O+bfH+D2hzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768863844; c=relaxed/relaxed;
-	bh=LZhVjyRcYNTZSvPO8QSpbd7GbHm4b8bxd+/TlCxGPHM=;
+	t=1768863851; c=relaxed/relaxed;
+	bh=8g1HSdarzqijP3/jpnCpDa8vZXIU77GlmxbrXw0pVh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l30VdkbEagHieS9Fd8OhqLNPY7biK/sMneIqMs5NY7XSp1Rtfd3aScsQlB56OIYIPkBm34Dl2VCctTHSzifwTbuW/la4GtyeIMtVUxrosHzgAlNdNqn54SYN1gk4X2jQsy8vNFRznKpWIGpWTE2Aiub8MevC2ufFOV3K24OMuhIoYuISbc8fvWl0M8gbMd6CfvciUS9O+shK4iNo6iazPNz0BUEJzpFCBKSfgTGS7D7Rt3A7GmNCePEtdlTiwh0L1gvBXcP6Hj0MsAeqK0Zk7qdlEhyJ/pfmPpQZj63EK0hxe8ITPpYcH7MwsvMljMKjPcPkExOadmtYaZ95glYr9A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Egk6IAbZ; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=BJrLy5NLNWnFUJ/WyUBpgXgYIc1NTzyyDfFtRe6qgD0IKp+sYUXqG1A/0Z0+aCoJGMLWNus9trO5rO+TOd/kFNVyYY4fA2JBms7pCdAgAo0h9NzxJ2RMRg0tK/mr7zEi3kad5D/stT71rtveJ49SK1EYCYuMybWUhN4SZJTLn7gOdidVEmkl8c1ohDUjOEd+u8Cy6vTdmQTiiIuDRKWdXaw7ylVQhvrRFVXgR5bEFiZhr1y5TV0S/IFc2anhxy17CKrJVJoIiqp1+a3H35OH/t8aS715VvRls30smb46Fy9Eiqnk4RC0g01v1LJvfUG2kZAeggRYYdCJ5gAecBpwuQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ggts6Muq; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Egk6IAbZ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ggts6Muq;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dw5cM3rNYz3c8h
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 10:04:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dw5cV44hGz305M
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 10:04:10 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AE633600CB;
+	by tor.source.kernel.org (Postfix) with ESMTP id 90FA860153;
+	Mon, 19 Jan 2026 23:04:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F420BC19423;
 	Mon, 19 Jan 2026 23:04:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2698C19424;
-	Mon, 19 Jan 2026 23:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768863841;
-	bh=GT7gMb9052k09b7feSno+zVM6CU/qsSXOXmaT6CsVkU=;
+	s=k20201202; t=1768863848;
+	bh=8BBEwEPOV2feM9asWnviMEeN61fjbzDKcbDTnI9BSWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Egk6IAbZ0Z786ez2iuplNWTllT0uMarzPHhKBT5TZiJqtlB1NAfHjfRnXfav89zqN
-	 IZuNVh/TQyEZFMB+SEqEhvAMYHiWSlEI9hGbWlZPR9VmWQGCb1P8u2S3huLb1RrMZ7
-	 /whZLTSUXsQLHaVJB19h/E3ALFef1pmo3tU0nkzaMJl5ylg6TCKtJ3taeyXF/E+rRr
-	 EgSufQo1nUeXpE5NmIYyHnHWrNT6/m+uPxYmKIPTi4EfE9Bwv273iA5QREtx6vPPv4
-	 pJz5ClAL2L58t1rUTTBRoXIRMqQLNxU3RWRN6GUE6OcRKdRxaeWgTahjwjICqaOMkY
-	 YSdJgeMAuzWng==
+	b=ggts6MuqPRmp6JPKI/imH0YjdupgG5Kahp6IN70J2t4YhljglpCtvsW2PUxClQiDt
+	 Wj6Hp7ccAdgQvsCFQZvMpmP7bB96YInjP5Q/zNtIg9AqiTpTECEQpc9kKMrGX4pN0t
+	 g3dDc1LkJMKSq4460pcW4IT+gsEI4J+CDyG2zu6z2gQPaSl6aVVYh302a8Gs1s7yrw
+	 nvBRzFeoUppU9xGXtblIuqvYXVTFyJq2E16Y+kqYPerTaWPq+GM6IU11YHnz8WpJbA
+	 Q1HICF/dmj34sRYrmkAOizVVXHXgufQSJQBq7HwJwOBBpkZ0vSBys3vymkNvqTa/0+
+	 pMNsBWcnlnQXw==
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -72,9 +72,9 @@ Cc: linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v3 20/24] mm: rename balloon_compaction.(c|h) to balloon.(c|h)
-Date: Tue, 20 Jan 2026 00:01:28 +0100
-Message-ID: <20260119230133.3551867-21-david@kernel.org>
+Subject: [PATCH v3 21/24] mm/kconfig: make BALLOON_COMPACTION depend on MIGRATION
+Date: Tue, 20 Jan 2026 00:01:29 +0100
+Message-ID: <20260119230133.3551867-22-david@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119230133.3551867-1-david@kernel.org>
 References: <20260119230133.3551867-1-david@kernel.org>
@@ -97,165 +97,55 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Even without CONFIG_BALLOON_COMPACTION this infrastructure implements
-basic list and page management for a memory balloon.
+Migration support for balloon memory depends on MIGRATION not
+COMPACTION. Compaction is simply another user of page migration.
+
+The last dependency on compaction.c was effectively removed with
+commit 3d388584d599 ("mm: convert "movable" flag in page->mapping to a
+page flag"). Ever since, everything for handling movable_ops page
+migration resides in core migration code.
+
+So let's change the dependency and adjust the description +
+help text.
+
+We'll rename BALLOON_COMPACTION separately next.
 
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 ---
- Documentation/core-api/mm-api.rst                 |  2 +-
- MAINTAINERS                                       |  4 ++--
- arch/powerpc/platforms/pseries/cmm.c              |  2 +-
- drivers/misc/vmw_balloon.c                        |  2 +-
- drivers/virtio/virtio_balloon.c                   |  2 +-
- include/linux/{balloon_compaction.h => balloon.h} | 11 +++++------
- mm/Makefile                                       |  2 +-
- mm/{balloon_compaction.c => balloon.c}            |  7 +++----
- 8 files changed, 15 insertions(+), 17 deletions(-)
- rename include/linux/{balloon_compaction.h => balloon.h} (92%)
- rename mm/{balloon_compaction.c => balloon.c} (98%)
+ mm/Kconfig | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/core-api/mm-api.rst b/Documentation/core-api/mm-api.rst
-index 68193a4cfcf52..aabdd3cba58e8 100644
---- a/Documentation/core-api/mm-api.rst
-+++ b/Documentation/core-api/mm-api.rst
-@@ -130,5 +130,5 @@ More Memory Management Functions
- .. kernel-doc:: mm/vmscan.c
- .. kernel-doc:: mm/memory_hotplug.c
- .. kernel-doc:: mm/mmu_notifier.c
--.. kernel-doc:: mm/balloon_compaction.c
-+.. kernel-doc:: mm/balloon.c
- .. kernel-doc:: mm/huge_memory.c
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0d044a58cbfe0..de8f89ca1149f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -27536,9 +27536,9 @@ M:	David Hildenbrand <david@kernel.org>
- L:	virtualization@lists.linux.dev
- S:	Maintained
- F:	drivers/virtio/virtio_balloon.c
--F:	include/linux/balloon_compaction.h
-+F:	include/linux/balloon.h
- F:	include/uapi/linux/virtio_balloon.h
--F:	mm/balloon_compaction.c
-+F:	mm/balloon.c
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 24a3ff149a1b0..0d13c1b36e1c1 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -599,17 +599,14 @@ config MEMORY_BALLOON
+ #
+ # support for memory balloon compaction
+ config BALLOON_COMPACTION
+-	bool "Allow for balloon memory compaction/migration"
++	bool "Allow for balloon memory migration"
+ 	default y
+-	depends on COMPACTION && MEMORY_BALLOON
+-	help
+-	  Memory fragmentation introduced by ballooning might reduce
+-	  significantly the number of 2MB contiguous memory blocks that can be
+-	  used within a guest, thus imposing performance penalties associated
+-	  with the reduced number of transparent huge pages that could be used
+-	  by the guest workload. Allowing the compaction & migration for memory
+-	  pages enlisted as being part of memory balloon devices avoids the
+-	  scenario aforementioned and helps improving memory defragmentation.
++	depends on MIGRATION && MEMORY_BALLOON
++	help
++	  Allow for migration of pages inflated in a memory balloon such that
++	  they can be allocated from memory areas only available for movable
++	  allocations (e.g., ZONE_MOVABLE, CMA) and such that they can be
++	  migrated for memory defragmentation purposes by memory compaction.
  
- VIRTIO BLOCK AND SCSI DRIVERS
- M:	"Michael S. Tsirkin" <mst@redhat.com>
-diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-index 7fd8b3d7e7637..7a3c4922685ab 100644
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -19,7 +19,7 @@
- #include <linux/stringify.h>
- #include <linux/swap.h>
- #include <linux/device.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon.h>
- #include <asm/firmware.h>
- #include <asm/hvcall.h>
- #include <asm/mmu.h>
-diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
-index 53e9335b6718c..7fd3f709108c2 100644
---- a/drivers/misc/vmw_balloon.c
-+++ b/drivers/misc/vmw_balloon.c
-@@ -29,7 +29,7 @@
- #include <linux/rwsem.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon.h>
- #include <linux/vmw_vmci_defs.h>
- #include <linux/vmw_vmci_api.h>
- #include <asm/hypervisor.h>
-diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index 6ae00de78b61b..de8041c3285a1 100644
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -13,7 +13,7 @@
- #include <linux/delay.h>
- #include <linux/slab.h>
- #include <linux/module.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon.h>
- #include <linux/oom.h>
- #include <linux/wait.h>
- #include <linux/mm.h>
-diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon.h
-similarity index 92%
-rename from include/linux/balloon_compaction.h
-rename to include/linux/balloon.h
-index 7757e0e314fdb..82585542300d6 100644
---- a/include/linux/balloon_compaction.h
-+++ b/include/linux/balloon.h
-@@ -1,8 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- /*
-- * include/linux/balloon_compaction.h
-- *
-- * Common interface definitions for making balloon pages movable by compaction.
-+ * Common interface for implementing a memory balloon, including support
-+ * for migration of pages inflated in a memory balloon.
-  *
-  * Balloon page migration makes use of the general "movable_ops page migration"
-  * feature.
-@@ -35,8 +34,8 @@
-  *
-  * Copyright (C) 2012, Red Hat, Inc.  Rafael Aquini <aquini@redhat.com>
-  */
--#ifndef _LINUX_BALLOON_COMPACTION_H
--#define _LINUX_BALLOON_COMPACTION_H
-+#ifndef _LINUX_BALLOON_H
-+#define _LINUX_BALLOON_H
- #include <linux/pagemap.h>
- #include <linux/page-flags.h>
- #include <linux/migrate.h>
-@@ -75,4 +74,4 @@ static inline void balloon_devinfo_init(struct balloon_dev_info *balloon)
- 	balloon->migratepage = NULL;
- 	balloon->adjust_managed_page_count = false;
- }
--#endif /* _LINUX_BALLOON_COMPACTION_H */
-+#endif /* _LINUX_BALLOON_H */
-diff --git a/mm/Makefile b/mm/Makefile
-index 9175f8cc65658..1e31e0a528dc1 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -122,7 +122,7 @@ obj-$(CONFIG_CMA)	+= cma.o
- obj-$(CONFIG_NUMA) += numa.o
- obj-$(CONFIG_NUMA_MEMBLKS) += numa_memblks.o
- obj-$(CONFIG_NUMA_EMU) += numa_emulation.o
--obj-$(CONFIG_MEMORY_BALLOON) += balloon_compaction.o
-+obj-$(CONFIG_MEMORY_BALLOON) += balloon.o
- obj-$(CONFIG_PAGE_EXTENSION) += page_ext.o
- obj-$(CONFIG_PAGE_TABLE_CHECK) += page_table_check.o
- obj-$(CONFIG_CMA_DEBUGFS) += cma_debug.o
-diff --git a/mm/balloon_compaction.c b/mm/balloon.c
-similarity index 98%
-rename from mm/balloon_compaction.c
-rename to mm/balloon.c
-index bed30c6c1a487..25e2a1e71eba9 100644
---- a/mm/balloon_compaction.c
-+++ b/mm/balloon.c
-@@ -1,15 +1,14 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * mm/balloon_compaction.c
-- *
-- * Common interface for making balloon pages movable by compaction.
-+ * Common interface for implementing a memory balloon, including support
-+ * for migration of pages inflated in a memory balloon.
-  *
-  * Copyright (C) 2012, Red Hat, Inc.  Rafael Aquini <aquini@redhat.com>
-  */
- #include <linux/mm.h>
- #include <linux/slab.h>
- #include <linux/export.h>
--#include <linux/balloon_compaction.h>
-+#include <linux/balloon.h>
- 
- /*
-  * Lock protecting the balloon_dev_info of all devices. We don't really
+ #
+ # support for memory compaction
 -- 
 2.52.0
 
