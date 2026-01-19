@@ -1,85 +1,99 @@
-Return-Path: <linuxppc-dev+bounces-15999-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16000-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60739D3AD18
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 15:53:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20415D3AF3D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 16:36:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dvtkZ6fZMz3blq;
-	Tue, 20 Jan 2026 01:53:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dvvgp3C8Zz3bZm;
+	Tue, 20 Jan 2026 02:36:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1:d65d:64ff:fe57:4e05"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768834422;
-	cv=none; b=C2WU5FWBz9nZaDVn9RhIWepQP5Z3ZmApbqpD0C0YpE04wEmNyBaeAkGywSrwj4SCkH72KKoducUcQ0HBU9ZQY6lmj2bD5gcxqfA1FYy5AOapmRZhEbVV4Q1lG9mP9QTy1PkopDDs6121sZ1bN9+I3zNBo0gg6Ni5NQpG0fWDlN6Ao1/QIn8qBIfZgjeVtQySk4GZpWVfm9CE7lzGkv7A9J7KvFVlObUN2CveiKKK8kOx/o6VVq1TL4RBn0tcvgf5dGahV2Z/RH6KHSHaeMvlTvZkYfDocjmqg2q6nbdWEiNf2aBLzpY7ECreIte5rQAabJ3eKWqg939sDlkhkU2sjw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768836982;
+	cv=none; b=U8jFr/dPEurIcVNQqZq6DnN2f+/2ds0kVKMriQXR/7hylKefQW3z5d1qbE2RbKZ+pKhSJzTykDWe924WFIbZ1Uw2p7QU4pxF6h28IOHqeNcMB878NAGs5+4ELbeDRyge0QcPWK+9wxZP6NltLn2LrKu4gMWZRKC+KWSgJwLWcVSNahMxqdccWKfHMRHKxqt8h5vV475ieRGl6XRzinu8wKWVjbERzgxlbIINgHyR6rgaA9OMRYORyT/upTNCDz9ojOTPt09glqsw/q7YhTRiEuWf2HGsxepZNmZ3NqYjYZUGnuEH2tdRN136IHoZbPRVSd0iXhR2cTKIBqo2qbG0iQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768834422; c=relaxed/relaxed;
-	bh=jrDAxjhFf3FPLMbr/IOqWmWDDR5q/doAeWiuVFjaQvY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TtdkpTn6qFvDM6b/KHBlwp58yxaJh6+Xnj/qof9iZwTWsITA6Pn7sBKpEldepvP/qxoW6vJYadqp1BwG6ty+ufXCJjP4EIcsbi7xH0akOyIS1hekihWr6LTugT1HvCkk20+Cb/9guawS79rTmhSPy1G33AKiNEiKwsjGsE3t0OkiyJsB6ufnFZXrJzfJIYg9zBlhy1mg+keRa6UfBgG5zGFtvHp31oUmy1I/gbtEkYgz4f9jzo78UNTiV6jZR//JnYKe+dtgakFar7u/nV9aYCHG/k/iQXH1nxr0u0N71G74Tw0VSQXnJPg9EVHEBLLELEV8vd7ReZS+/A9MgEgO1A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=ov9hOHxz; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+	t=1768836982; c=relaxed/relaxed;
+	bh=KMJ5nMJfhQBbodCSUw7/slQ7OY7bXr5BnBhnNIrMmcI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BFEuha5lEAPnrig1bx/LQPUYO2S13qR3q1f3o1tq7NjXe6uI9IFbOAKIBACs1LvG6oDwDlupAbeLU8WxKvrrioHWIzFRVZ0MAdk4Pky+nlIydeucDb1WpfGDR17x2PeijAHIzwZwhuWJIFPKG90AkShihtlgU3JDduXqd21NmdjmmxN+MhVJrjh0lRtqNDpQhwPGhzH495gv7zEiG3nl63Z3UFJHDhuP1PEScUYjSUZlveMRyxymRsqnx6GnzevgQFM+cs4ADJqgu8VtMePiyNY/BJAD8Ccn8KPdHpJsdSsxo1BP69YmcAr9QcI8Sf946O1XxyIVEUigg8t8vReXJA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lRRO7DXS; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32a; helo=mail-wm1-x32a.google.com; envelope-from=jernej.skrabec@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=ov9hOHxz;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lRRO7DXS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32a; helo=mail-wm1-x32a.google.com; envelope-from=jernej.skrabec@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvtkZ0blRz3bTf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 01:53:42 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=jrDAxjhFf3FPLMbr/IOqWmWDDR5q/doAeWiuVFjaQvY=; b=ov9hOHxzzbUcf3Ie3aSb0QShDF
-	+YggQwKOQw7guQyXSafiQuLquH2AQbsBQ3vkAOn72zXdtbwnjH7i/NB1rWne47GWzjcFfdit1ZyvC
-	0EMVON8aMu6/psOQ5YiuIsyOgTH88WTbE+Tf7kmQzZbEp1VcvVBUV/KFQIab9FCWncqn5bUdc1lrs
-	uoQND/4S7c4z4KnKbJYBuR+fY0Qipf+lsWIqYo9Hd+Go3BfKLBUf9Xiwmqg6IDtji8FRXBjy1tbBp
-	NTyLzfmVtOnLvPkLTKHfEjWnAtsk/sZ2cqJltxnpRBd6WEidzOCDKMmjzFI2oe57Wwa068Bx9GzuR
-	YPQz3Z2g==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vhqdH-0000000CLEC-0iMk;
-	Mon, 19 Jan 2026 14:53:31 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 959123006CD; Mon, 19 Jan 2026 15:53:30 +0100 (CET)
-Date: Mon, 19 Jan 2026 15:53:30 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Ben Segall <bsegall@google.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Ingo Molnar <mingo@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Xin Zhao <jackzxcui1989@163.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>, linuxppc-dev@lists.ozlabs.org,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Heiko Carstens <hca@linux.ibm.com>, linux-pm@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Nicholas Piggin <npiggin@gmail.com>, linux-s390@vger.kernel.org
-Subject: Re: [PATCH 00/15] tick/sched: Refactor idle cputime accounting
-Message-ID: <20260119145330.GI830229@noisy.programming.kicks-ass.net>
-References: <20260116145208.87445-1-frederic@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvvgn34Xvz2xT4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 02:36:21 +1100 (AEDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-47ee9817a35so24147205e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 07:36:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768836978; x=1769441778; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KMJ5nMJfhQBbodCSUw7/slQ7OY7bXr5BnBhnNIrMmcI=;
+        b=lRRO7DXSQV2ndcTbrb1iwJh20pzyfwyZ9eO2A6ajSt/LJUra4MgDRevK6M1Hu81Ml1
+         21g2lcWxtx8NbGW/dCFHKyNhzDHNkVYig/Au8jHRcE2EE5f0RNvB2i/vgWYIyVSufBfW
+         Mfw4Qi6xGrykWrJ+qPv4zq5r7LX712NPomyrPVgNIUUeiUwuqI7eT5QqNjc3Xkr5d9RU
+         /Fb2uqSJHgOw/V8ixfLw1laGJqEhQaXo/mqyhyI8S33TdhS44AuUXuUS+ZJx7eafNZM9
+         smva+Um6exSlOdPdfjz9bEbL8c7JZvAvvKmQLYmrsokm+adihNFxKgAE2Qc53KKeBWzK
+         RVsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768836978; x=1769441778;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KMJ5nMJfhQBbodCSUw7/slQ7OY7bXr5BnBhnNIrMmcI=;
+        b=Xo8qo9XMNgHo3oBW0kyvOGi/YVBuh9YopdFiUaq+3+1nTy3/c6DHTFkThCXhiPjLgC
+         p8goH/es9TD5Te9XF4ncTegbtOxQcBcETz6X0dWIXEDlV/Okd6LDt0190YZYzozIknEO
+         U0xeE1FUNyR3qGsdL0bN4w0z6IIndd+Bft0nYL0beKczCi9SogVQQiFweBPvNCW6LALl
+         Tjf70Lr0pkW1EaSLRX6qOMJ37qgUywefhhi8v0bIaV0JuPsyRguj96QHIwtMWp3f4Huy
+         GiiDcKouUZQl0FhLcMGdoT/0udVui4wZJjCFhq/ehAqqEKdgrHN2DB6pTCPA/WqqjuFx
+         OD2w==
+X-Forwarded-Encrypted: i=1; AJvYcCXVZMu2dxPSh0AzLUb6Va6Q8h138qtsdinoVoX2r85CafUqz/+DzqgtfWuwwBuCX2bhTXcRA4BmJ41g68k=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwtH7CsjacgdMVE05MKxyaVCQzrI7zY9UZvg5FnH44wLBHnyy/a
+	yL12+A0R2VJAvQy0/A5hl5/LRTdeb9L2gjaiOVojydKh6WC0XP0h9CTI
+X-Gm-Gg: AY/fxX7ZFpSctqs+4IoF+2TL8+5LuGlBxS0QzlIyZFQftyTdtl8SQiVRaHsETYF+s1g
+	QD4SRJepJiXD7mFyrgYpR5ODQMNeI7QwsyDkUxjf02uxlkCpouwOZ9hrDVzrg59I7HzV37JiQdc
+	2vVqWi0q0eEPGtbW1HHVyOk74ioGFdq8TGhxdHsL3xc3R4QONQAwAAu3dkxmNnS3GilZdqs5NYA
+	dKBZF0xxV02ML1Lzq0LCQtdOA9W8TCfHBD8ucBZ3y0NwhdDlLA0IZu65yBas0JR3urkHNOHXt1e
+	WA8E8tkLZkytAsWi0+26WmKVbt5ea/0aCOkzkJYRswuhFhySHNuIxUsg8fyf53LUTd3KIWTmhxU
+	jUoBHORjzLvgmvtXTvMgpwROX35V4X3XxOPQJ27tpw6Yr1bhU4zxT5XN31M1h10mAPqDc1hVWKc
+	WYLXvC6osye8akGdn1/3totM7BXnMwa7HqKZMLH/ZIt4/eQDhgNkijfbSVu+5HgZI/w/Am
+X-Received: by 2002:a05:600c:4584:b0:47b:deb9:15fb with SMTP id 5b1f17b1804b1-4801e350af0mr140088985e9.33.1768836977812;
+        Mon, 19 Jan 2026 07:36:17 -0800 (PST)
+Received: from jernej-laptop.localnet (213-161-4-198.dynamic.telemach.net. [213.161.4.198])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43569926ff1sm23614533f8f.13.2026.01.19.07.36.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 07:36:17 -0800 (PST)
+From: Jernej =?UTF-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
+To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>,
+ Samuel Holland <samuel@sholland.org>,
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+ linux-sunxi@lists.linux.dev,
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: Re: [PATCH 8/8] soc: sunxi: mbus: don't access of_root directly
+Date: Mon, 19 Jan 2026 16:36:15 +0100
+Message-ID: <5957177.DvuYhMxLoT@jernej-laptop>
+In-Reply-To: <20260119-soc-of-root-v1-8-32a0fa9a78b4@oss.qualcomm.com>
+References:
+ <20260119-soc-of-root-v1-0-32a0fa9a78b4@oss.qualcomm.com>
+ <20260119-soc-of-root-v1-8-32a0fa9a78b4@oss.qualcomm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,32 +107,27 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116145208.87445-1-frederic@kernel.org>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Jan 16, 2026 at 03:51:53PM +0100, Frederic Weisbecker wrote:
->  kernel/sched/cputime.c             | 302 +++++++++++++++++++++++++++++++------
+Dne ponedeljek, 19. januar 2026 ob 11:40:19 Srednjeevropski standardni =C4=
+=8Das je Bartosz Golaszewski napisal(a):
+> Don't access of_root directly as it reduces the build test coverage for
+> this driver with COMPILE_TEST=3Dy and OF=3Dn. Use existing helper functio=
+ns
+> to retrieve the relevant information.
+>=20
+> Suggested-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-My editor feels strongly about the below; with that it still has one
-complaint about paravirt_steal_clock() which does not have a proper
-declaration.
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+
+Best regards,
+Jernej
 
 
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index 7ff8dbec7ee3..248232fa6e27 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -2,6 +2,7 @@
- /*
-  * Simple CPU accounting cgroup controller
-  */
-+#include <linux/sched/clock.h>
- #include <linux/sched/cputime.h>
- #include <linux/tsacct_kern.h>
- #include "sched.h"
 
