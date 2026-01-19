@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-16024-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16026-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB090D3BAD8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 23:25:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0881D3BB03
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 23:45:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dw4lj42vGz2xm5;
-	Tue, 20 Jan 2026 09:25:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dw5BL1n4Rz2xm5;
+	Tue, 20 Jan 2026 09:44:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768861521;
-	cv=none; b=iR+4ojVKfZW9K9sXWy458M9nyqIrEKFiIlv1amRHJkm2EF58AiR51p7dW+W3u59FaTgesVdY/6qlWdCyr/LBkiIP8fvzHVlj3IKshDHbu6luzImG7sH2IfQFNUsm9KNTl3HyvqjB/SGRZaqxDXzGorPmzmYoe2jz31oCj/7bPY8MWxL8QbL+3B1zK2m2qGfwCjDOjoy7N5N+LEUv+ss0RgqeefyEdy5L2652zwS5w2Oquxv6h2SuCZnUJBnYAHpUOQUuVUMTHduK9mrZdeCMI05HcWOTY24qq6FRAbj7ZGqIw3X4GDsXappGU3Vw4Bf+qid3LR6Bk4xZE1aI9GEVnw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768862698;
+	cv=none; b=dUu2tDKuaz236urvkZNzsXjIvi0ABhIh1JXPDk8xBAE/ZVpBtwlT5WamTPG4zyWYCb24Azb3e8sUekXetgSDOBaeZVYyz6lzXGwcxgDAqgsViyP9W+Re6ycbAp47KIJ0MrW99dzInDLNhATX13juubyHn/EbzslLbar07svaChC+Zux3VcwRl8r+IbBwzjnqaAIKYhJtJK5FJ1Uhehq1qwrsKdfhrRVcHJ1NYW+wD6+4ARE46BscW4IhNTG6UVuL+L3EEeGbi0oBxTKRRwgmEtftoNdEPo5l0q1X8sA5loyIYOxJzKi37tysHBK1nN5oCaj6WWMbW8xoc0zSOFJO7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768861521; c=relaxed/relaxed;
-	bh=4qS23eudvVzt1ADpbBF5gUBwHId5bYBqcp3NoGL7nts=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=cyroEC8IpmR/UIvMo4yuH3txjXZ1lZvk3VannJMqZAGgi+RQiheB1MUxAxGREYSn6ftlXHeG1x56ap2Sgvzcdh4iejK7N0EcLS4OGR8tsQgb5Rq1dpmHH34iV7P3gNlggfOljRXB5QMVVA2rQcOoD8sTH7ke3ki3IH6mlWELiDPVQJARSpj4HlDMk1Z7+NGn/r6yfE7e/YvIMdn3/PEo5RCbTmeeWfeZu3bWNwnb4d7RRiW8AcvroYYaqQ9nPGrZrrn3zUclxSVoTt2igyRrCh4As1UFvS7KTCCqB1mBwv8+W63n9V4zVwLjvwsDkdHRhgOUpxhntANwO+i6bRG8Xw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WmGzBhmm; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1768862698; c=relaxed/relaxed;
+	bh=gm9dc5F2jfcBg4JViz581iboiF7iqo0o6V9OAwa47g0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mlJVcD49uk8+K6L9qUbKN7sL9fzVZ5VeDKNztqOpUhVbuJA6Dtbc7oOGcAnhOrRNl7SuVFHVhGHubEgdiRG2vgGToYJ7cZB/DjYVqkAQ/CUVboz1vhFYKNAEkIoQiCS43r3NdjAVdyUB4p6xooXoxPDu9ksdFxSwiLM3K9j1N7HDHbvusHLlODBc0cHHx+qz487/Y7PtARlgdFnUENqWQ2yHYi6HdH/cgsS+XZS6YhaN3w4ml9ijbU7zu5beM+y538hr2riOp83U6iIwMK4YeZmpuHoYM/sxj6YSrlQaJrujauoUD4OIDmgYPAYu/LdTRrFO5JKxaYQ1XhXxeKPucw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kzM1N7rr; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WmGzBhmm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kzM1N7rr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=david@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dw4lh5B4zz2xjQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 09:25:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dw5BK31hrz2xjQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 09:44:57 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 662B8600CB;
-	Mon, 19 Jan 2026 22:25:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107A2C116C6;
-	Mon, 19 Jan 2026 22:25:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7EE9642A27;
+	Mon, 19 Jan 2026 22:44:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC3CC116C6;
+	Mon, 19 Jan 2026 22:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768861518;
-	bh=FAhDAb0u3mhKiWuTRu6Dbpf4eWwLQGrJyZKWWKJe3go=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=WmGzBhmmvAQt5l5PbvA8zaQPDgIuoNJskhe2N4F8kWZBPAyFdiTaUh/0OAgssMGd2
-	 wmR9MvAzNiAjh0x3J/R2+upFQVVUoOV7ZvNeRcDxof0gAxpDlGIU3XZhrWxn+d/rXR
-	 VSsdH/bnurWZxA7coDt74Hi4pzAMr1cK42OTzJq3HDfk2DF8vlS81Gq3/Pi3QNBgHY
-	 71HZGZJlIPV0hfC/5Y0hpCXejNXp82PxIRri2qQvnH84xKv+ovHC48pyIa7PUaN2V6
-	 kLD7UHibuKDHv2Y5KmPkLd3dt6r4MamPb71DAKpl4k2EJN4VhbZHHfRJTm8doogByw
-	 BcwE41Ikj3k9A==
-Message-ID: <7cbea892-0ccd-4132-af55-d72abd704d6c@kernel.org>
-Date: Mon, 19 Jan 2026 23:25:10 +0100
+	s=k20201202; t=1768862695;
+	bh=XoSUqnCMf3akJ4bcHDXMf3EcSxhGjttPB+TdRBpbklM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kzM1N7rr7Ang0VD4BF8ItnVdga7joaGshQyjPdaoprj+LIsVrOTh6NTLL3LcRhEDu
+	 w/Ah87KxBbK/AfLbZZsTZmbZoLFgAEwTih8VyEKdS0r3gCUCor/g2fREFge+xBt5f+
+	 VDmUfXrggSHvhE7EE2wbcn1Rcc3Jc5u6iWO8Hr6qm7g4Rve1G1Z/JJuSRtp5Hq8Vrb
+	 XZprHzSJl9mYs1fzJcRc7Com2eFTPbivtKMflYSWPTieY4ZiAlDPJ54WfQmB2kqFHZ
+	 UKZwQLl5UD/82OgegaKgvNT5bxD2hUK2GaaYOd6kABc95He3NmGFihWZHDBb17dIvJ
+	 x5JJ1vqfdw3Ew==
+Message-ID: <47108ae5-fc73-432f-9942-c2fe5fbf4bb5@kernel.org>
+Date: Mon, 19 Jan 2026 23:44:47 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,20 +59,19 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/23] mm/balloon_compaction: centralize basic page
- migration handling
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+Subject: Re: [PATCH v2 03/23] powerpc/pseries/cmm: remove
+ cmm_balloon_compaction_init()
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
  Broadcom internal kernel review list
  <bcm-kernel-feedback-list@broadcom.com>, linux-doc@vger.kernel.org,
  virtualization@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Oscar Salvador <osalvador@suse.de>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
  Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann
  <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -81,8 +80,9 @@ Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
  Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
  <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
 References: <20260115092015.3928975-1-david@kernel.org>
- <20260115092015.3928975-5-david@kernel.org>
- <ca9e4ebb-e6b5-475b-8a21-a261e27c3ca7@kernel.org>
+ <20260115092015.3928975-4-david@kernel.org>
+ <5ed94c8a-35ac-4635-aeac-3fe72d4f9c8e@lucifer.local>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -127,7 +127,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <ca9e4ebb-e6b5-475b-8a21-a261e27c3ca7@kernel.org>
+In-Reply-To: <5ed94c8a-35ac-4635-aeac-3fe72d4f9c8e@lucifer.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -135,35 +135,32 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 1/19/26 23:22, David Hildenbrand (Red Hat) wrote:
-> On 1/15/26 10:19, David Hildenbrand (Red Hat) wrote:
->> Let's update the balloon page references, the balloon page list, the
->> BALLOON_MIGRATE counter and the isolated-pages counter in
->> balloon_page_migrate(), after letting the balloon->migratepage()
->> callback deal with the actual inflation+deflation.
+>> @@ -573,11 +567,12 @@ static int cmm_init(void)
+>>   		return -EOPNOTSUPP;
 >>
->> Note that we now perform the balloon list modifications outside of any
->> implementation-specific locks: which is fine, there is nothing special
->> about these page actions that the lock would be protecting.
+>>   	balloon_devinfo_init(&b_dev_info);
+>> -	cmm_balloon_compaction_init();
+>> +	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
+>> +		b_dev_info.migratepage = cmm_migratepage;
 >>
->> The old page is already no longer in the list (isolated) and the new page
->> is not yet in the list.
+>>   	rc = register_oom_notifier(&cmm_oom_nb);
+>>   	if (rc < 0)
+>> -		goto out_balloon_compaction;
+>> +		return rc;
 >>
->> Let's use -ENOENT to communicate the special "inflation of new page
->> failed after already deflating the old page" to balloon_page_migrate() so
->> it can handle it accordingly.
->>
->> While at it, rename balloon->b_dev_info to make it match the other
->> functions. Also, drop the comment above balloon_page_migrate(), which
->> seems unnecessary.
->>
->> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
->> ---
+>>   	if ((rc = register_reboot_notifier(&cmm_reboot_nb)))
+>>   		goto out_oom_notifier;
+>> @@ -606,7 +601,6 @@ static int cmm_init(void)
+>>   	unregister_reboot_notifier(&cmm_reboot_nb);
+>>   out_oom_notifier:
+>>   	unregister_oom_notifier(&cmm_oom_nb);
+>> -out_balloon_compaction:
 > 
-> Andrew, the following on top:
+> So silly, I assume before there was more that happened here?
 
-Ah no, I'll rather resend the whole thing, as it creates some conflicts 
-in the other patches.
+Right, I commented that above in the patch description.
+
+Thanks!
 
 -- 
 Cheers
