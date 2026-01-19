@@ -1,67 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-16011-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16012-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E14D3B731
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 20:23:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34AF5D3B750
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 20:32:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dw0k06QY6z2xS5;
-	Tue, 20 Jan 2026 06:23:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dw0wd5LZQz2xS5;
+	Tue, 20 Jan 2026 06:32:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.169
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768850616;
-	cv=none; b=ifSYmZS7HVY26DvbNkQW6vjeIex8UPAOmUkmXpriZ5EMSuZtbHqgWAE6J2LLo7O8m8CMRe1hq0UL/3mcirxoM/TRne5eGj4t9w16JLUv310XF1I7CzfyuaoOIipD3cln/FnDQixL18T6Tk6i9GrAGmjc7fyYaOHHRTLU0IVz8eOre4GggZWJDd8VUA5GTCePFuFVXkrbPLeukvyFkBczy2PMEB4aZEcfnH4SM8Wf7qJOb0QOuftm02SyYaH/h78pyJXx2Z1nNdskiQt0Vi7PYWIPpHOXO+jTkFL0C1rbHePiN1GF7oAIoIP6Xfs1OOc0ww+sLnD88G2tQP0n/t35LA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.219.45
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768851169;
+	cv=none; b=EdC0r0l/G4nu0Rl8n5k1iXCJwdFn3pT7E72L1VG6ACWAn3ZAZoAqTPxxPReVbp4tcSa8Amu4LIg6ft23ay2VeMO/T66zZ3+Zcg/oD3JB1Ex0VC4l/2z/BI8RQ8lziWDdePdXoTfQxo8Vme7om5fVFJoQa96heYHHHSEgpMyM1OlN2Wdyeq1DmOvH+NWzgcNi1dQimIdtXvxCHZqHf9vFr14BPORRnMbSFKlnQ9VfdhoNMKmXVauv+r9Qzo4ZBwTsgyLwivqmCS2LLp33TTrohOP/grkVZcX5iIFmtJn0kb3yTyjBB1Z1CLTZpjTJR+KtklXPsq3NjbmF/X/Pj1qI6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768850616; c=relaxed/relaxed;
-	bh=DCb1Q/eNGJuZWnaSy0QMCWG02dACV3WSdsoPlEt9HTE=;
+	t=1768851169; c=relaxed/relaxed;
+	bh=6Y1wTxdZLJ7XhSQYYR0Ku2EXGP2C5XG02vKe6+mSL78=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M8gpuZ/FlISF15K2tGlJTm2hMI2QhZmBGAYpPzdFc204ZbK+J0w7lfpKeydUfV9hE/gjLT6BUz7XZN0ndVwHKZ8SZjUrPQWhsSQgp7SPcPeGxc9Abp6T7oKXqXFpUrGxasqEYK6FYRP2wnTgbOyqQ86F2bqcb271ZTc7DO2y3YfGkZhURcB1nJuNBfsKPw5qEe3YwLpQ+1ApyEvfxKR/NYlP/iccHUCKEcf++/GKP33/qrHkBOYB2EaixJxA5RfKpFZXXrUtprYq7shs0Ynj1G1J5EBYU8DgV5CAwqFnxUCnY9xhxym55NagPWrFmgSwjcxG97+Z7LYw+9CMt3Z7wA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.221.169; helo=mail-vk1-f169.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=S06yDszVfWX+BJqP5PZ69LTZZHDOsvx9b/rSHTMdYqcpFHXmciro2N1j1AlVFdJ7nwHu9x2i1fvUKLq7gkb0EP/voCLAnQLgJBz+et/sUEOFKRIjAwS0s4DhtOGaflL+M8KPp4c9lgV66kWdxyLhQYsw1G/Q0uGaIZ0JGgp1IYTgq5/jVbEYgQ1g4rgELC6DiTZIEKJAaV4a+95GsvgilSRtZ+fh4RWClTo2LfLWq9oiqKla3vMCGAvfLxunKzJrXntfCJ6lR+GHOIoRt1u2b0G4vz63YA3SxchMtE2v5On6mYXukc8xb43FmM2hfig/cjQafqEnz/cbUUDXMfHbww==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.219.45; helo=mail-qv1-f45.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.169; helo=mail-vk1-f169.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.45; helo=mail-qv1-f45.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dw0k0055Kz2xHW
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 06:23:35 +1100 (AEDT)
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5634feea416so3480151e0c.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 11:23:35 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dw0wc5VSgz2xHW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 06:32:48 +1100 (AEDT)
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-88a37cb5afdso78924816d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 11:32:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768850613; x=1769455413;
+        d=1e100.net; s=20230601; t=1768851165; x=1769455965;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DCb1Q/eNGJuZWnaSy0QMCWG02dACV3WSdsoPlEt9HTE=;
-        b=F+DXK5bj4hPz4UwEUTlUEbk+btx/zv2BsqFJEiY6esifAghldB+GKkxo8YsTwVJEUy
-         j8VylQCikenAqxfxjhxSlIdlCmEtvOYTupIGNvI+/4iMlHGAd3V73JAtPx771ZatzBDj
-         Xh5WzdxG5Y74Md7cFN26M4WZSqCFkFJf8LUOGeCrKw6HmBTFj0ldYa6JXwMDfqazbQUa
-         v6VG01Lfbxb3tJuXC51UI+NpG6Dy9mzyPVF77MWXsiYA7eHms46oMA+Nq84csjUlN0Jl
-         N5Cf22LxZTP2pRJ5JZzZ77V7zkNUXxu7UE7QGQxl+ATByy0FwMX2BSEdYgd4nNRSH8vS
-         oA1g==
-X-Forwarded-Encrypted: i=1; AJvYcCUywq5MK9mpOsgtfXnIVmsepY3yPjunklrcnPjsWrL9GGTjQ1aOaddNBBLcZBFXtNYPGV+2+/h2OZ+j2o0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxT+L95S2qtEeagx3acou8ZaeZEQtNdxeubSaFyeLy/aHZw/IkC
-	T8HzIGq3U4XAZoSLcLIo7JRk4XFnZAuYroHJlPpBMDwRTYOOOZn6XFUhZ+1enzxe
-X-Gm-Gg: AY/fxX55hq5RP2cBZaj7PTUYPsdSMgJHu8YlDPV552Z6Luv6wafaaHFQ5Vv41hrdsym
-	RFdjGa/To+I2JqB7WymWBIa6hh+A1W/YzeyvADR/pQ42JRY2im0Tv4dQ28oxts54c0W/GwcNEUj
-	jvTASx8+ez76ggoWS0kLuhXRqMeKkNkedq3b1LvYwPFzJ6TMO08ho8893T383gCTbtChjXh1mBD
-	9VpBZJAEGC6oYv5K4eSXSpDTgvP8hoFzCZtE6XX9Vi7LdQEozU6jIMTvE06kcWUM+q97jhdbewv
-	QCgZeiaQKGiybKal7tbld0jP7zjMCK+QYiRK7f0LFenIPRoR3Erd+dBuk7D9jSwXen4f9BhRblw
-	AEMZxwxBm1pVLf2ddO/vVhPzxGCJ5z0kTsYev3cR5I85uYgf4k7BzbIo5iGbTrVgM0pnn+5LwYz
-	Uhfh0uQvw/pgLZTwRJJjsJ4f/DxOuB9M10gcCIabyoO2GaNpAI
-X-Received: by 2002:a05:6122:829f:b0:55b:305b:4e31 with SMTP id 71dfb90a1353d-563b5cafd1emr4566388e0c.17.1768850612865;
-        Mon, 19 Jan 2026 11:23:32 -0800 (PST)
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com. [209.85.222.54])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-563b70e58cesm3016562e0c.11.2026.01.19.11.23.32
+        bh=6Y1wTxdZLJ7XhSQYYR0Ku2EXGP2C5XG02vKe6+mSL78=;
+        b=X5Jj7nTQ//mixarpEKxxry0ZjaS0KaFHd/F98MSOyWvb+9Tr6CNI5ap77/JgLBrQfw
+         +YpG7pGmr1mVCMcN85Du4wbA2i2j4ki3D2eeT5ial7U7htVPRzdm+6f7NEMOwe2uR+tQ
+         owW749wAzoPLhHZuyqjUETnAOj55KSTkvG0IvXFvDCiXh5ROd+kNk4b2sjUwMUccmR0U
+         6wqsGRXmt7KnPLRA0nKr8dabmqF6lvk2lo5RfXb6MstDVHdPGOOJSzm8NnV1jlc1qoOQ
+         3YdtYptyxSqK7Ivj39BjUsOmh2PRywe+ZIv2VmNwZN76t9Ubihl90+FtXurQhX4s9J8k
+         z9oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUiwkdaGo1FLuBZLQFTK7+v+SD8wF6vFk3GCm+u/YmJKN/DaLYyQ5VxF5b5XcowQxoQN8hnzCRW0RfdYCQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx2lnNlt5nUnqXWCo7kPTjn69xmdnDzjpFpQedXpKQ4FKhFHK0K
+	MD5fXD8fIXWeoMJzqMoY87f1jZL9/u9ERuxbcjW1RMnGzlubL5Gjr90q4OxF+5Lh
+X-Gm-Gg: AZuq6aJqB2No6jWlQv6q7b+yHsC673PZv0gfrSQpttbu79ttazTeJoU2JYVWKbV6hZR
+	T5TJcNnAH238uLPQ6vxFeDt8pe8RMO5MK+4ArsjLgRIdkYnPqCnZxZzR/xHI4MlGw37mOdxsNMk
+	b9EwQYlmLDfaroxNRkO5TMv72jJLQ1vBXXaRa1Fx2NZ8x7nIlQs98r3nDqWNA4A1wfT7m26qxZ9
+	V1Y13CsHO99MMESt4NDkAIwFhHAi1lHjPkVCC51PV1eMOm7jcp9UtIh0H7ltcgNI5u/ujr92r5z
+	LXo3IEE2EfQQaDS/ZPtKjhxfrOHYAvdBEPtdabCxPazSefVV73u96iF2gayifXo32F/8oTYrz54
+	A13IoeYKSKuzwoBHRS7ANuIX3QnSlafILbGujgTrIN1e7kv5KK15jYVPXFI9520ad5fS8GZmz8n
+	fWh+TyQ3SxNAAStWQ4gq4guMS6jCn/WXkfXWVvXbTNVGgMBHalawYh2PsNaPBk8BQ=
+X-Received: by 2002:a05:6214:2b0f:b0:892:6763:3819 with SMTP id 6a1803df08f44-8939825160cmr212565446d6.24.1768851165113;
+        Mon, 19 Jan 2026 11:32:45 -0800 (PST)
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com. [209.85.160.172])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6d6366sm96114126d6.51.2026.01.19.11.32.44
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jan 2026 11:23:32 -0800 (PST)
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-94120e0acbeso2794625241.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 11:23:32 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWbVKpiuIJC3gRt1o4jHD5PKW4i7c4fa7DpB8IthYWmpWDcgQas7/owkBCfE193UunBEdNWnX4/MXntLCA=@lists.ozlabs.org
-X-Received: by 2002:a05:6102:44d2:10b0:5f1:c453:b5ab with SMTP id
- ada2fe7eead31-5f1c453b6acmr1782180137.13.1768850612507; Mon, 19 Jan 2026
- 11:23:32 -0800 (PST)
+        Mon, 19 Jan 2026 11:32:44 -0800 (PST)
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-502a4e3e611so28642861cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 11:32:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXuJMnvgwq7FIqfFbyeiWZc/h8aFsPbXyWWg3rT3rXD6PAKr0M3tt6oTL9MvcDgjbHTyIKwX6weEzz9uTo=@lists.ozlabs.org
+X-Received: by 2002:a05:6102:3e96:b0:5ef:b32c:dff8 with SMTP id
+ ada2fe7eead31-5f1923fb2c1mr5826988137.5.1768850738083; Mon, 19 Jan 2026
+ 11:25:38 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,14 +75,14 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260119-soc-of-root-v1-0-32a0fa9a78b4@oss.qualcomm.com> <20260119-soc-of-root-v1-3-32a0fa9a78b4@oss.qualcomm.com>
-In-Reply-To: <20260119-soc-of-root-v1-3-32a0fa9a78b4@oss.qualcomm.com>
+References: <20260119-soc-of-root-v1-0-32a0fa9a78b4@oss.qualcomm.com> <20260119-soc-of-root-v1-7-32a0fa9a78b4@oss.qualcomm.com>
+In-Reply-To: <20260119-soc-of-root-v1-7-32a0fa9a78b4@oss.qualcomm.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 19 Jan 2026 20:23:21 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXt69AywBVsY3DKH+cS52=Cw1xsvvBDBV3MXirZ+LYj+A@mail.gmail.com>
-X-Gm-Features: AZwV_Qja2okCrIX9za1x2Adx7NBF3Qx2Xd3iJQm2I4PbFkiFeek_zkUKX3woR2E
-Message-ID: <CAMuHMdXt69AywBVsY3DKH+cS52=Cw1xsvvBDBV3MXirZ+LYj+A@mail.gmail.com>
-Subject: Re: [PATCH 3/8] base: soc: export soc_device_get_machine()
+Date: Mon, 19 Jan 2026 20:25:26 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdU56p9jH8OZ5bpwKq8Q31C-8X85YAjiXZm8amYdo+Xotw@mail.gmail.com>
+X-Gm-Features: AZwV_QjRSaQ_qXyXNZN9OqtIjEIE6rAZwNcvdO7jDgxqMH0vtYkLnv2_hmzs9Y4
+Message-ID: <CAMuHMdU56p9jH8OZ5bpwKq8Q31C-8X85YAjiXZm8amYdo+Xotw@mail.gmail.com>
+Subject: Re: [PATCH 7/8] soc: renesas: don't access of_root directly
 To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
@@ -106,55 +106,47 @@ Hi Bartosz,
 
 On Mon, 19 Jan 2026 at 11:40, Bartosz Golaszewski
 <bartosz.golaszewski@oss.qualcomm.com> wrote:
-> Some SoC drivers reimplement the functionality of
-> soc_device_get_machine(). Make this function accessible through the
-> sys_soc.h header. Rework it slightly to return a negative error number
-> on failure to read the machine string (SoC core can keep on ignoring
-> it). While at it: make it use the __free() helper from cleanup.h.
+> Don't access of_root directly as it reduces the build test coverage for
+> this driver with COMPILE_TEST=y and OF=n. Use existing helper functions
+> to retrieve the relevant information.
 >
+> Suggested-by: Rob Herring <robh@kernel.org>
 > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
 Thanks for your patch!
 
-> --- a/drivers/base/soc.c
-> +++ b/drivers/base/soc.c
-> @@ -5,6 +5,7 @@
->   * Author: Lee Jones <lee.jones@linaro.org> for ST-Ericsson.
+> --- a/drivers/soc/renesas/renesas-soc.c
+> +++ b/drivers/soc/renesas/renesas-soc.c
+> @@ -6,6 +6,7 @@
 >   */
 >
+>  #include <linux/bitfield.h>
 > +#include <linux/cleanup.h>
->  #include <linux/err.h>
->  #include <linux/glob.h>
->  #include <linux/idr.h>
-> @@ -111,17 +112,18 @@ static void soc_release(struct device *dev)
->         kfree(soc_dev);
->  }
+>  #include <linux/io.h>
+>  #include <linux/of.h>
+>  #include <linux/of_address.h>
+> @@ -468,7 +469,11 @@ static int __init renesas_soc_init(void)
+>         const char *soc_id;
+>         int ret;
 >
-> -static void soc_device_get_machine(struct soc_device_attribute *soc_dev_attr)
-> +int soc_device_get_machine(struct soc_device_attribute *soc_dev_attr)
->  {
-> -       struct device_node *np;
-> -
->         if (soc_dev_attr->machine)
-> -               return;
-> +               return -EBUSY;
-> +
-> +       struct device_node *np __free(device_node) = of_find_node_by_path("/");
-> +       if (!np)
+> -       match = of_match_node(renesas_socs, of_root);
+> +       struct device_node *root __free(device_node) = of_find_node_by_path("/");
+> +       if (!root)
 > +               return -ENOENT;
->
-> -       np = of_find_node_by_path("/");
-> -       of_property_read_string(np, "model", &soc_dev_attr->machine);
-> -       of_node_put(np);
-> +       return of_property_read_string(np, "model", &soc_dev_attr->machine);
+> +
+> +       match = of_match_node(renesas_socs, root);
 
 I am not so fond of these of_find_node_by_path("/") + something replacements.
-What about adding an of_machine_get_model() helper?
+What about adding an of_match_root() helper?
 
->  }
-> +EXPORT_SYMBOL_GPL(soc_device_get_machine);
+However, in the previous patch you used a different strategy:
+
+-       if (!of_match_node(imx8_soc_match, of_root))
++       if (!of_machine_device_match(imx8_soc_match))
+
+>         if (!match)
+>                 return -ENODEV;
 >
->  static struct soc_device_attribute *early_soc_dev_attr;
 >
 
 Gr{oetje,eeting}s,
