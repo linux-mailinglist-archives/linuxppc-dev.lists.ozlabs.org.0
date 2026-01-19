@@ -1,84 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-16015-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16025-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCC8D3B90A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 22:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C54D3BAFA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 23:40:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dw2yw0WRsz2xHW;
-	Tue, 20 Jan 2026 08:04:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dw54q2vSbz2xm5;
+	Tue, 20 Jan 2026 09:40:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768856695;
-	cv=none; b=GcIa/l1fmA+2lWGbYJw+G1dGrxfaq87p+K3aX+7Q5XmA+XkJU2pHbvPUBTpiQ/aOkZtqZYdYbm0bOpVwpHiW3JpRCj0Ins44YCZyRrrvHJyHFF7MgvEzC6+cpe6Ml9e4tMjuPVMgMY2WWMgF/+PCGIkOR2TcE31wneDt/Pl83angAKSe32t6tJhJX2kB/NADOyOKatxNG3/r5KYhPRcLDCh6r+t97TzRmONBIgefz5bYEFqM4AtnI8v/ajcwxAz+2UefBs2TnWLvUNB18fls/zjlXDP4O2+zoTtu1WBxyPpY1l1/tHxJrJbr0JHfnj2DOUk3KRl8uuLuIG4B7g1Jfw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768848096;
+	cv=none; b=iskBK56tI+V7J91cmAi+XDtGKoetBTuXIxMz19qEw3hv/C8oIfuILCMqajRisduxBsM1QFBPfrJsO3YV8hhXb6RZ0Yze3C3WnqgLsVs3Mui7+lqdz47XyryuEQDmllHFRKZajCiiJ3F4c5UFXkfVSYjVdKisSDqTEqoKShJW/cWpBl5G+HSIDzNC7Dzbj0Mc9HDHvMtB0Cix+MHL0dfVzBByW7yaEIG1zKyM0WQaiU7sw5EBj1AJzY+zWK5vcx/2wB6249ZXWTqwOmbfwRriTA10gvLOlclMfQ8IK/Zy/N+YzYXTbhd0Mj5uE96JrSih5V8oRZYH1gtDRs9lwnjowQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768856695; c=relaxed/relaxed;
-	bh=9JUJuTZ3h84poyhsWYUX7A1RnWWard3k0N9S8sVhk5U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bey2GNPnDu1KT7g6c9xfJmo7vnk1jDa3UIPO/18hEY23/EHKh2t5bKb1mbtDTmgjeRRpxN77Zr2WndYAc9jcDttDNRZHtNg25Glv9W6OlUL6ojWRZX2iuoShs1l+G4Kgjh1Hj8fKr3i8dzU/ChERKyiVkH5ExquFGmfWYu1JHNSaDKGrT4gNvZe66M4BaPYKGY9zr/r0YLZaYq7plAeKelncaXSm/4mydTuyT6bvmHGEmFxeE4asYWQimsWeo8MGeo961Y0XOilA68Vjm8c68Cz9RQgr7AdNpD8PsmS5eWrOkfWegd4GHuLNewB3NuyaVwwZPOjP5556mJ2Ze9QzBQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iXD2y8uy; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1768848096; c=relaxed/relaxed;
+	bh=U9/XO71AuTElkurTuviO9GF+8SqlkQn89YOGV7iXOpM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=CC8q8aIJ8D/zat8yiMmEccS/mMGyxjZ7HVu+PustnrVzDFGg+t8KAiONLl2a/vk6omZN/tR/kwHsPM2GX4lQjUBKvtWVhC/7AMXbD7H3Nut+rH46f2EvFlK9ka9GDdHvmbh+rQiQ0+yFp1YOGiJZDQrTx7LokMnYfEcnRvyEQdUm2bmUzf4Hdo+uQ+DyfxuML2XRGV5hlEGC6RX6g7U5yCxfWS9mjO5Dic26/iEte/6aa4lodmLOEu9YP5kr0BYpaVGe2vC0CLtbWzAhguU7SfJADtFH3vNHI/FjBeHZkZ9KuNyxwWjyPfTDBO4rrehv3kp7/2DUASYDEzecry8l1g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lHvq6RXD; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=dakr@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iXD2y8uy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lHvq6RXD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=dakr@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dw2yv0Wc2z2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 08:04:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvznW5j28z2xHW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 05:41:35 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D55F44129;
-	Mon, 19 Jan 2026 21:04:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7ABEC116C6;
-	Mon, 19 Jan 2026 21:04:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 72CA0600CB;
+	Mon, 19 Jan 2026 18:41:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5D1C19422;
+	Mon, 19 Jan 2026 18:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768856692;
-	bh=6o+770Yuc3JjhJgvTCTVGSnWnwzkyqp25xUHsXx/C6U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iXD2y8uyJXn1wpB61gKSaO/rK1kVC3HviBmxyTELifn8la3q38wzR/8/FAe+5fNYl
-	 ik+9L6OTEhlmGu1UQdY4aD1a5aW7HYIXswoYSgJh7xMmBDk3dBcl2jDRPQ3Gekd589
-	 SW9zUCR9XPe6pZCj0TKHTnObA3HPP0+tHT8d3okl57iIQ4vOrOe60WdPZmfCCXT5Sc
-	 6Z8dPnAGg1Dv34Rm1pypG+/y+3MHgCNUROe90BwGxYzcjF9MSHa3jR/Mg0xsSEaBI0
-	 mYwEoCld9S81GOQ2xQZh3gPzMLIX2nazcrTF/Va1DfE4XpjmaE6W4b3KxEe9XYL5Ud
-	 PiMpAlO96fSFA==
-Date: Mon, 19 Jan 2026 22:04:49 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Ben Segall <bsegall@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Xin Zhao <jackzxcui1989@163.com>, linux-pm@vger.kernel.org,
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 01/15] sched/idle: Handle offlining first in idle loop
-Message-ID: <aW6ccexiQaPLQcS1@pavilion.home>
-References: <20260116145208.87445-1-frederic@kernel.org>
- <20260116145208.87445-2-frederic@kernel.org>
- <20260119125347.GT830755@noisy.programming.kicks-ass.net>
+	s=k20201202; t=1768848093;
+	bh=KAQ8tX8q+bO3qSbrvWwj7NanQMZoHP6DxVRHOxzvxD0=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=lHvq6RXDaA9b+mGiP+hfLlVfpLxQoJ5ai6T8IZhmACaN0XFmkEOTqBqp6dtijlIXM
+	 jDoins0oUai8B1TsnX0UxGqUfuCJuXuUbwMP0yTquI4hRvkJrXVNYQhDYM9KVPEop8
+	 szuuefEpV6lSc6FV+zmlvbtyqM07xd4FZDkjhXOvQbWsCKA+8HjkMWB0lcZYRltPEA
+	 hbQ1qIN12Zyogdm9wGgoX3q2WFzk87QUQWddIi1duDGMdKivQtQSbEEHo1A2NG8kZz
+	 cbnC4CIylOu7udE5EhG0m5VQYED8aYUYjowNVD7SpHgjSgoq4We5ae/J35gN9DY5sz
+	 s9fReWdvH8SNw==
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,50 +55,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260119125347.GT830755@noisy.programming.kicks-ass.net>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 Jan 2026 19:41:26 +0100
+Message-Id: <DFSSBD1SZUDK.Q67HAARLBF1G@kernel.org>
+Cc: "Rob Herring" <robh@kernel.org>, "Saravana Kannan"
+ <saravanak@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha Hauer"
+ <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Geert
+ Uytterhoeven" <geert+renesas@glider.be>, "Magnus Damm"
+ <magnus.damm@gmail.com>, "Chen-Yu Tsai" <wens@kernel.org>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>, "Samuel Holland" <samuel@sholland.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linuxppc-dev@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
+ <imx@lists.linux.dev>, <linux-renesas-soc@vger.kernel.org>,
+ <linux-sunxi@lists.linux.dev>
+To: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 3/8] base: soc: export soc_device_get_machine()
+References: <20260119-soc-of-root-v1-0-32a0fa9a78b4@oss.qualcomm.com>
+ <20260119-soc-of-root-v1-3-32a0fa9a78b4@oss.qualcomm.com>
+ <DFSJ9QN6U81W.19R0VFKTEFZKR@kernel.org>
+In-Reply-To: <DFSJ9QN6U81W.19R0VFKTEFZKR@kernel.org>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Le Mon, Jan 19, 2026 at 01:53:47PM +0100, Peter Zijlstra a écrit :
-> On Fri, Jan 16, 2026 at 03:51:54PM +0100, Frederic Weisbecker wrote:
-> 
-> >  kernel/sched/idle.c | 11 ++++++-----
-> >  1 file changed, 6 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-> > index c174afe1dd17..35d79af3286d 100644
-> > --- a/kernel/sched/idle.c
-> > +++ b/kernel/sched/idle.c
-> > @@ -260,6 +260,12 @@ static void do_idle(void)
-> >  {
-> >  	int cpu = smp_processor_id();
-> >  
-> > +	if (cpu_is_offline(cpu)) {
-> 
-> Does it make sense to make that: if (unlikely(cpu_is_offline(cpu))) ?
+On Mon Jan 19, 2026 at 12:36 PM CET, Danilo Krummrich wrote:
+> On Mon Jan 19, 2026 at 11:40 AM CET, Bartosz Golaszewski wrote:
+>> -static void soc_device_get_machine(struct soc_device_attribute *soc_dev=
+_attr)
+>> +int soc_device_get_machine(struct soc_device_attribute *soc_dev_attr)
+>>  {
+>> -	struct device_node *np;
+>> -
+>>  	if (soc_dev_attr->machine)
+>> -		return;
+>> +		return -EBUSY;
+>> +
+>> +	struct device_node *np __free(device_node) =3D of_find_node_by_path("/=
+");
+>> +	if (!np)
+>> +		return -ENOENT;
+>
+> This should never fail at this point, no? Also, can't we just use of_root=
+?
 
-Yes indeed!
+Regarding of_root, please disregard my earlier comment. I mistakenly assume=
+d
+that it would also be guarded by CONFIG_OF.
 
-> 
-> > +		local_irq_disable();
-> 
-> Also, do we want something like:
-> 
-> 		WARN_ON_ONCE(need_resched());
-> 
-> ?
+But I still think we do not need the NULL check.
 
-Definetly.
-
-Thanks.
-
--- 
-Frederic Weisbecker
-SUSE Labs
+>> -	np =3D of_find_node_by_path("/");
+>> -	of_property_read_string(np, "model", &soc_dev_attr->machine);
+>> -	of_node_put(np);
+>> +	return of_property_read_string(np, "model", &soc_dev_attr->machine);
+>>  }
+>> +EXPORT_SYMBOL_GPL(soc_device_get_machine);
+>
+> If we want to export this, we shouldn't reuse the existing name, which is
+> misleading.
+>
+> soc_device_get_machine() reads as if we return a reference count of somet=
+hing.
+> Additionally, it operates on struct soc_device_attribute instead of struc=
+t
+> soc_device, where the name suggests the latter.
+>
+> Instead this should be soc_device_attribute_read_machine() or if we want =
+a
+> shorter name, just soc_attr_read_machine().
 
