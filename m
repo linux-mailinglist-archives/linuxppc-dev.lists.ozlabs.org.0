@@ -1,43 +1,122 @@
-Return-Path: <linuxppc-dev+bounces-15944-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-15945-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62690D399F9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Jan 2026 22:26:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FF3D39D57
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 05:06:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dvRVj4wHgz2xJ5;
-	Mon, 19 Jan 2026 08:26:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dvcMN0T6wz2xqL;
+	Mon, 19 Jan 2026 15:06:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=57.103.71.27
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768762201;
-	cv=none; b=XlT4CgSqF0gG2EBeQD4MHFYOU4d8wr626wJxfLqmE6lhh1OFKi+7fSKxuwf9X+zSy8Of7sUqRP5Hz4F9dW6MmGl+KvDOg3rcfIaGruOtnFiZ0+o75OKSvbXd6XB8vpoUOlbXbVbUQIoGF+VziEJ9CV98eh3XmCASF7lmQ6RxJwOHNy8zXg9/q6BNJ+wErK4Aw0eFZFgSrdJ02LOEZeY75Y/Bi8N9mWovaeKTZLUEsTTbWuMVoDqrEFr8pqlm8fcnWAh8R0aBplHD24bjzBRUzdEYhg1CdVUJyM2gFj6CUojB11PxFNX60jUl6CqNb18m0B4CL1rxLjSpyF/R4JztXg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768795567;
+	cv=none; b=iAczsc+rz9cSgDu3FQfwGNQSkiVpgFoZz7qtTOLpYJeNTr6IB1aerXw28Y4ykH78p5gzG8Fy6Ex7IdHQ1srHuEzKl5E6w7ntVkXKjwN7MZK7Nms7oz2oaWvMYVqCUFU/1yNvWoUM6y4mnLA1/t5O3qAHIKn0uvPNW6UXmqZrrTnIqqznL1trtrEBrRNQUXcD+Q4sh27RNDPI3W0X9CvRN0qFdNWeiEcTWuuD3N9zgkiOhl5p7slRuCyrW69DJZqYQReZRdeRvYfOiIipaUCZbNP6awa67vjoqL4wZ4mhou2anHdtbW5D91DyLkQrJCGXGkMZSKn2d2ENc4xnj3rkkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768762201; c=relaxed/relaxed;
-	bh=xjvMi6GFGlbqgGmmeOFvWqPwsPoBgy/JjXDenAmtqfw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Uauxn8Ox9GLexbnRktamFM/AMy9YnlXV84awLRbQ9WvHMkJoGG5DsSEC3FbHEYqAkVPJO7TNr56OubW7CBXaabvHU9IE4brigcH9u+zOGtnAcX3jRFlwhsfQKFb4r9GM4ziFGjjpxUe6cmzkRlDyUF8ATq8BCltR8Rpup5V+T+RGWBs0IKMLAlomW88GfeenzpIioVigm2TQH+EEDo5bVEUW06KvZ1mOzxTtriIdG2bMsVbZljz3q5wYC1Y753YzmJIq66ZXXPw+Vhisk2AvEWrfn6Kl7842lELhroCwwDBeXM2qdBm4hE6R/qhWN1QL5sbsTgGtSHTWogtp4ekEjA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=mac.com; dkim=pass (2048-bit key; unprotected) header.d=mac.com header.i=@mac.com header.a=rsa-sha256 header.s=1a1hai header.b=lS58KSQU; dkim-atps=neutral; spf=pass (client-ip=57.103.71.27; helo=outbound.mr.icloud.com; envelope-from=cedarmaxwell@mac.com; receiver=lists.ozlabs.org) smtp.mailfrom=mac.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=mac.com
+	t=1768795567; c=relaxed/relaxed;
+	bh=rQ/pt5veFEgJZqTxKk8ueI9Za/xjDVCyikH3Hycx4Iw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=APZVzqLzbV21dmjLm0QN5ujpYmC7potoy7KbZE0+4DRWphddpfIlVNZM6st1RR9RQul3qpWyFzph2o/WmCTPiNY7VuImoBy7TRAHeyCTk/VKQV/ENPzpyukYp2bWg9Nglr0jxNiAD7WFNz/yIGEq3V0icggAqFNXC8LvaZwl84iWIczNbAtRv+jVAeosrk7l3wCSQAQn9PSxPkPB1b+Z01WD8yU0A/aUAUwuG7cvlcrtZK0XQ3t9lzcb4qYxN8kKV870QjEpY4ZmmOnFQKY/6PVzov0QbkysvqWZAmuZwkzL2MwY3Q543SNpdCdVNWfYebT5Zk5GqTFbvBCjR4KN6Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OQYZ+/M7; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OQYZ+/M7; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=mac.com header.i=@mac.com header.a=rsa-sha256 header.s=1a1hai header.b=lS58KSQU;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OQYZ+/M7;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OQYZ+/M7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mac.com (client-ip=57.103.71.27; helo=outbound.mr.icloud.com; envelope-from=cedarmaxwell@mac.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 490 seconds by postgrey-1.37 at boromir; Mon, 19 Jan 2026 05:49:59 AEDT
-Received: from outbound.mr.icloud.com (p-west2-cluster5-host9-snip4-4.eps.apple.com [57.103.71.27])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=coxu@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvN1g6HMnz2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 05:49:59 +1100 (AEDT)
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-0 (Postfix) with ESMTPS id 51D0518001CC;
-	Sun, 18 Jan 2026 18:41:45 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mac.com; s=1a1hai; bh=xjvMi6GFGlbqgGmmeOFvWqPwsPoBgy/JjXDenAmtqfw=; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme; b=lS58KSQUIXGRZPrvj3fnSokrXvpFexaSb6sRzGfpY/OYR+egnKsRRmUc9ESl+eWQXWwSJNaO8I5zPqGsPL4BgPrUkllQmXj9PoPahiCP4k9ac64btshfIOPENqiABavwfnaowdyZNBFKLaR/Ww0118D2zyKduIcJ0qq4uVkm7MU1A8nOLxCmGxpQrFWNsxQBf9ko5VUlyM8ksme652oJGU92iFYlQPrEHXnDtWOMcesxDIAQ4JETW0RJ+fywKREn/1LkmgZ3tbXF81Dpv4ruurTEzlKDORLONlbiwPUo6yKMa+6ZEmg/UYFIQPaxwgfckwkedI5zQ01pVRd6rkxn0g==
-Received: from [192.168.1.216] (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-0 (Postfix) with ESMTPSA id CBF3218001FD;
-	Sun, 18 Jan 2026 18:41:43 +0000 (UTC)
-Message-ID: <4c70fe51-56c3-4292-9eda-f0f4535718fe@mac.com>
-Date: Sun, 18 Jan 2026 12:41:42 -0600
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvcML4lgyz2xRm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jan 2026 15:06:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768795559;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rQ/pt5veFEgJZqTxKk8ueI9Za/xjDVCyikH3Hycx4Iw=;
+	b=OQYZ+/M7g5n3Y1TTim3LE4V+cYUN47AIZzzJlweKJNdoH+HvVlkjwfA+PPaQj+nT9bbm7G
+	gAaXjfMGMWl//H8XrzprKdBdsmbBeFk7l7jlMwK6cHfq2S+XgCi8npX804mdCvGbmsmsre
+	o3BKnTRdRVhjzPizvWn8LgZuPZLVzLc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768795559;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rQ/pt5veFEgJZqTxKk8ueI9Za/xjDVCyikH3Hycx4Iw=;
+	b=OQYZ+/M7g5n3Y1TTim3LE4V+cYUN47AIZzzJlweKJNdoH+HvVlkjwfA+PPaQj+nT9bbm7G
+	gAaXjfMGMWl//H8XrzprKdBdsmbBeFk7l7jlMwK6cHfq2S+XgCi8npX804mdCvGbmsmsre
+	o3BKnTRdRVhjzPizvWn8LgZuPZLVzLc=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-624-0ht9CepEO0GepJa3Mtk6Xw-1; Sun, 18 Jan 2026 23:05:56 -0500
+X-MC-Unique: 0ht9CepEO0GepJa3Mtk6Xw-1
+X-Mimecast-MFC-AGG-ID: 0ht9CepEO0GepJa3Mtk6Xw_1768795555
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-804c73088daso2575629b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Jan 2026 20:05:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768795555; x=1769400355;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rQ/pt5veFEgJZqTxKk8ueI9Za/xjDVCyikH3Hycx4Iw=;
+        b=to9sTJISO93EEqjZUyJW6ZFeLZMwOa+lnHXc8Q1Fy4AY+3m3GpXtQi9fvC7/33rmNM
+         8CVFCC/9MFadSe2pv4a7k6BpvUfAGKHyCOlzW1o9tmn1HIgbLVxU1wFinqfdB6FNMhue
+         JAfQsfTep6x3tGPzqHBxbK7ZiEp//fZr8xPtuAdZWNA+59RRdS8IL2SJ9aMAGdhRgxz5
+         4ge9kD+TuP0IZNsuTW77mib3uHT6+4DDMKkmaH12/Mva0SaoiHcGcO55BjFPD8Z0Hg7U
+         LrgUTTEggb2okyQEumLdijbOXsxLHNKuPfLLspOLG/9e1e/CYlx4T+QPZY/j+a6W7M/c
+         H3hA==
+X-Forwarded-Encrypted: i=1; AJvYcCUT/ds3wogPWRtJiBmHwXYFBcmQbn/6BkHyRH1RtX7Ft/E3JvPDagbFMp5dNHWzU+SeaO0t7sKDHjzb9Jg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwBSTBn+Rx/4NkA6upbcdkqXjNpZvcYIGE0mbHl8qLqiWhakoUU
+	vC1vIFAggru+yIvsG9qqNVbti+WqqR1PZEWmghpVlMyCseIwx3q1WT2aJowtkXnl3ht9ZPyftlA
+	oofLaZRjs8YINqC+KjXqIXFraYt9QJkStzyypOxyemjqD8KThbCUrRdc9/ipOKBAvkxo=
+X-Gm-Gg: AY/fxX4DlIFr2LT8ZBumELOscMuc3RksZALxYwKGSZZqiZS4rJYi+u587VZCxa7YnLz
+	YY+DuOD/CiYHLC6KoK2dgMg+JEhVnqeidwU+wE/xSc82eCeRrbtPuvHISH/BEf8Fv+67jV7Be1q
+	MfTeXm8B/tnmY2fdYUo4SN+ScDppYBRqWfGZbkuIfFSuYMP8wR0/eCF07gjiUYcPBO0RJMDTOkO
+	/4cFH16eQdLeGPUzXtfDTOC2t/y1wizgeznYpNrKlgBJK6Z2m1zwfu4tqVss9/JtoSbcEj+nen+
+	64Xq/g3zX0p6UE6lD0n+UJkryXGASGVL8d5AniEMbem0NjGNdYMZ793SYb1kZtiOQz8py0o9KzW
+	a
+X-Received: by 2002:aa7:888b:0:b0:81e:b93a:ab09 with SMTP id d2e1a72fcca58-81f8efbbe1amr10668399b3a.1.1768795554638;
+        Sun, 18 Jan 2026 20:05:54 -0800 (PST)
+X-Received: by 2002:aa7:888b:0:b0:81e:b93a:ab09 with SMTP id d2e1a72fcca58-81f8efbbe1amr10668347b3a.1.1768795553931;
+        Sun, 18 Jan 2026 20:05:53 -0800 (PST)
+Received: from localhost ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa10bdc65sm7831738b3a.21.2026.01.18.20.05.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Jan 2026 20:05:53 -0800 (PST)
+Date: Mon, 19 Jan 2026 12:04:04 +0800
+From: Coiby Xu <coxu@redhat.com>
+To: Ard Biesheuvel <ardb@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>
+Cc: linux-integrity@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, 
+	Roberto Sassu <roberto.sassu@huaweicloud.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+	Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, 
+	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" <linuxppc-dev@lists.ozlabs.org>, "open list:S390 ARCHITECTURE" <linux-s390@vger.kernel.org>, 
+	"open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)" <linux-efi@vger.kernel.org>, 
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>, "open list:KEYS/KEYRINGS_INTEGRITY" <keyrings@vger.kernel.org>
+Subject: Re: [PATCH 1/3] integrity: Make arch_ima_get_secureboot
+ integrity-wide
+Message-ID: <aW2i3yacr5TvWU-m@Rk>
+References: <20260115004328.194142-1-coxu@redhat.com>
+ <20260115004328.194142-2-coxu@redhat.com>
+ <CAMj1kXFXNo1-pMbo-VZrjQ3TYe1tufebrLr_avL12A0nHMSGnA@mail.gmail.com>
+ <8bfa859ed3a4f1cf0db0ab64d8c1c3b24684582a.camel@linux.ibm.com>
+ <CAMj1kXHsJNZoUEnbD1y=v4Ftuv9d2c08VckRV7ru4k4P83vZbQ@mail.gmail.com>
+ <97b69bc79a5d9246f7a399510908c7b95b2e95e7.camel@linux.ibm.com>
+ <CAMj1kXGx4ebaK87W7k0SNUNQnO9+=z1nmYxXC7retmp3OqRRFg@mail.gmail.com>
+ <ac5e5e45c12e9b0bda19807e60b06057d74be0b3.camel@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -51,75 +130,196 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] powerpc: Add reloc_offset() to font bitmap pointer
- used for bootx_printf()
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>, Finn Thain <fthain@linux-m68k.org>
-Cc: Stan Johnson <userm57@yahoo.com>,
- "Dr. David Alan Gilbert" <linux@treblig.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, stable@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <22b3b247425a052b079ab84da926706b3702c2c7.1762731022.git.fthain@linux-m68k.org>
- <176680916368.22434.818943585854783800.b4-ty@linux.ibm.com>
-Content-Language: en-US
-From: Cedar Maxwell <cedarmaxwell@mac.com>
-In-Reply-To: <176680916368.22434.818943585854783800.b4-ty@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Info: v=2.4 cv=XrP3+FF9 c=1 sm=1 tr=0 ts=696d2969
- cx=c_apl:c_apl_out:c_pps a=9OgfyREA4BUYbbCgc0Y0oA==:117
- a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
- a=x7bEGLp0ZPQA:10 a=fPXO8E_wjBMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=JXPk7LadgWurrYbJNRoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE4MDE2NCBTYWx0ZWRfXwERN4npg9hhe
- QcSRTksUbDg8c5Aw8/AqjSopXXaAJ0IBhSDzpPGLBk39SaKa+6Yshw4eLS2GY57C/aZbh6SYq8M
- cgYuZqXW/WGKH6k7Srg5FNe1jK49aY9oAvVAF6igfb347JBnRsgN2ZIWmvpc6g+QT3gzusEFntS
- dOUbbLq7G1rUv0scG3vSUNQYI5rMLdJyz81qyJTeunI9+Zotbj37PwcIhuhQXa93Py8rTYVOf6t
- UCiC1q5u0666KCqRIFvcl2XEyMhguV44R5MPCVuRd3Mb16D9W/UX7x2J4j121FS7vKO9FgpsaPt
- vBOKSZGQDy+W3fNQPC4
-X-Proofpoint-GUID: _RSHnb2iLwpQezYNpt68GTNW8-_s-jgY
-X-Proofpoint-ORIG-GUID: _RSHnb2iLwpQezYNpt68GTNW8-_s-jgY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-17_03,2026-01-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- adultscore=0 suspectscore=0 mlxscore=0 malwarescore=0 spamscore=0
- mlxlogscore=999 clxscore=1011 bulkscore=0 classifier=spam authscore=0
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2601180164
-X-JNJ: AAAAAAABp+XWJIMWjaKg1EdVIkMHUHCSmlU1XHxVWa15/VQ0U2VsLzL9GZR7Uo3OClqmbEGo8uoab8ZBBVoVjXkyAgD2Kf9OWSpiapwKQZSsGBC27ZxsHkJqQN9PdSmqs56YIWKktDCNDr19o/w804prbHwLb2gXkZmYh5Zzm11Hcu5FgCt/1PrS8/lYRhkwWjegR9wUrpSfNW/KC1hZsO2FQcbmEN6C+Hy0wdcQg3yVf7EXGp2DVmNb3QvLxTL6btjRN/G0sjC/p/fq71pFA95BlDQc9GFF7IZ6AhbhV/MCxM1xS/Zg+Xw94Kr95eLK2Y3eT+Xv2yapS4NSXziqqw1klsCr35qMCzop4TbazjYevalyoI6XRA1OALJHN7WziTwo3s5nQbMrS/z8sF74EPBep0qVeiBNllvC7+kgGIRI8LHudTtDcg43X3ylciuJPrW+BUVTERC/BYk5YfXKKaLMCjia+hO+f0HSZJN/cpA4nsTsbwEbYXt+JDdNj3YV9OEMnLrVmthgkUqsPkcP+xRZy+kkAQoDt4H6MUe7PqyaIgR1s7uXuWXRhW0Vzrfblf4LTqHsgzWulX2Jn2EVxAZApKhnDqfkUcEJ6BRV+0ZAIRszUGB57WXry25k5ycYGK5lge69BF5Imz48ht134zhv56kpbF2zCHWPLUbb6TzRGB9hnPg2192rRRVNv/gxMETmo6+HVtOzovHPMZya8RJG6/rZ/OdMt/pUKKgqHo7SDA4LHVILM612ziFLpLXeNSBKxbFKKtOT3gqJQy7D97FV6S9t15BQ23PZKdSpw2BassMoCVXhnQZNiSeM68f1Ivb9phegIw==
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <ac5e5e45c12e9b0bda19807e60b06057d74be0b3.camel@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: KAEgrx7ap68zOwhwHi9DF9S4TbUIamSur5vH2EWJKYk_1768795555
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Maddy (and everyone else),
+On Sun, Jan 18, 2026 at 01:25:52PM -0500, Mimi Zohar wrote:
+>On Fri, 2026-01-16 at 18:27 +0100, Ard Biesheuvel wrote:
 
+Hi Ard and Mimi,
 
-Thank you all for your hard work in solving this issue!
+Thanks for your discussion on improving the patch!
 
+>> On Fri, 16 Jan 2026 at 17:39, Mimi Zohar <zohar@linux.ibm.com> wrote:
+>> >
+>> > On Fri, 2026-01-16 at 14:18 +0100, Ard Biesheuvel wrote:
+>> > > On Fri, 16 Jan 2026 at 14:11, Mimi Zohar <zohar@linux.ibm.com> wrote:
+>> > > >
+>> > > > On Fri, 2026-01-16 at 10:41 +0100, Ard Biesheuvel wrote:
+>> > > > > On Thu, 15 Jan 2026 at 01:43, Coiby Xu <coxu@redhat.com> wrote:
+>> > > > > >
+>> > > > > > EVM and other LSMs need the ability to query the secure boot status of
+>> > > > > > the system, without directly calling the IMA arch_ima_get_secureboot
+>> > > > > > function. Refactor the secure boot status check into a general,
+>> > > > > > integrity-wide function named arch_integrity_get_secureboot.
+>> > > > > >
+>> > > > > > Define a new Kconfig option CONFIG_INTEGRITY_SECURE_BOOT, which is
+>> > > > > > automatically configured by the supported architectures. The existing
+>> > > > > > IMA_SECURE_AND_OR_TRUSTED_BOOT Kconfig loads the architecture specific
+>> > > > > > IMA policy based on the refactored secure boot status code.
+>> > > > > >
+>> > > > > > Reported-and-suggested-by: Mimi Zohar <zohar@linux.ibm.com>
+>> > > > > > Suggested-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
+>> > > > > > Signed-off-by: Coiby Xu <coxu@redhat.com>
+>> > > > > > ---
+>> > > > > >  arch/arm64/Kconfig                            |  1 +
+>> > > > > >  arch/powerpc/Kconfig                          |  1 +
+>> > > > > >  arch/powerpc/kernel/Makefile                  |  2 +-
+>> > > > > >  arch/powerpc/kernel/ima_arch.c                |  5 --
+>> > > > > >  arch/powerpc/kernel/integrity_sb_arch.c       | 13 +++++
+>> > > > > >  arch/s390/Kconfig                             |  1 +
+>> > > > > >  arch/s390/kernel/Makefile                     |  1 +
+>> > > > > >  arch/s390/kernel/ima_arch.c                   |  6 --
+>> > > > > >  arch/s390/kernel/integrity_sb_arch.c          |  9 +++
+>> > > > > >  arch/x86/Kconfig                              |  1 +
+>> > > > > >  arch/x86/include/asm/efi.h                    |  4 +-
+>> > > > > >  arch/x86/platform/efi/efi.c                   |  2 +-
+>> > > > > >  include/linux/ima.h                           |  7 +--
+>> > > > > >  include/linux/integrity.h                     |  8 +++
+>> > > > > >  security/integrity/Kconfig                    |  6 ++
+>> > > > > >  security/integrity/Makefile                   |  3 +
+>> > > > > >  security/integrity/efi_secureboot.c           | 56 +++++++++++++++++++
+>> > > > > >  security/integrity/ima/ima_appraise.c         |  2 +-
+>> > > > > >  security/integrity/ima/ima_efi.c              | 47 +---------------
+>> > > > > >  security/integrity/ima/ima_main.c             |  4 +-
+>> > > > > >  security/integrity/platform_certs/load_uefi.c |  2 +-
+>> > > > > >  21 files changed, 111 insertions(+), 70 deletions(-)
+>> > > > > >  create mode 100644 arch/powerpc/kernel/integrity_sb_arch.c
+>> > > > > >  create mode 100644 arch/s390/kernel/integrity_sb_arch.c
+>> > > > > >  create mode 100644 security/integrity/efi_secureboot.c
+>> > > > > >
+>> > > > > > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+>> > > > > > index 93173f0a09c7..4c265b7386bb 100644
+>> > > > > > --- a/arch/arm64/Kconfig
+>> > > > > > +++ b/arch/arm64/Kconfig
+>> > > > > > @@ -2427,6 +2427,7 @@ config EFI
+>> > > > > >         select EFI_STUB
+>> > > > > >         select EFI_GENERIC_STUB
+>> > > > > >         imply IMA_SECURE_AND_OR_TRUSTED_BOOT
+>> > > > > > +       imply INTEGRITY_SECURE_BOOT
+>> > > > >
+>> > > > > This allows both to be en/disabled individually, which I don't think
+>> > > > > is what we want. It also results in more churn across the
+>> > > > > arch-specific Kconfigs than needed.
+>> > > > >
+>> > > > > Wouldn't it be better if IMA_SECURE_AND_OR_TRUSTED_BOOT 'select'ed
+>> > > > > INTEGRITY_SECURE_BOOT in its Kconfig definition?
+>> > > >
+>> > > > As much as possible, EVM (and other LSMs) shouldn't be dependent on another LSM,
+>> > > > in this case IMA, being configured.
+>> > >
+>> > > Sure, but that is not my point.
+>> > >
+>> > > This arrangement allows for IMA_SECURE_AND_OR_TRUSTED_BOOT to be
+>> > > enabled without INTEGRITY_SECURE_BOOT, resulting in the stub
+>> > > implementation of arch_integrity_get_secureboot() being used, which
+>> > > always returns false.
 
-Cedar Maxwell
+Since both INTEGRITY_SECURE_BOOT and IMA_SECURE_AND_OR_TRUSTED_BOOT
+don't define a prompt, they are not user-configurable and will always be
+enable/disabled together with arch-specific secure boot feature. So
+despite the "imply" key word, the case where
+IMA_SECURE_AND_OR_TRUSTED_BOOT is enabled whereas INTEGRITY_SECURE_BOOT
+is disabled won't happen.
 
-On 12/26/25 10:23 PM, Madhavan Srinivasan wrote:
-> On Mon, 10 Nov 2025 10:30:22 +1100, Finn Thain wrote:
->> Since Linux v6.7, booting using BootX on an Old World PowerMac produces
->> an early crash. Stan Johnson writes, "the symptoms are that the screen
->> goes blank and the backlight stays on, and the system freezes (Linux
->> doesn't boot)."
+But I agree an arch may not care much about INTEGRITY_SECURE_BOOT so it
+may be a churn. So limiting it to the scope of the integrity subsystem
+can be a better idea.
+
+>> >
+>> > I understand your concern, but instead of "select"ing INTEGRITY_SECURE_BOOT from
+>> > IMA_SECURE_AND_OR_TRUSTED_BOOT, how making IMA_SECURE_AND_OR_TRUSTED_BOOT
+>> > dependent on both IMA_ARCH_POLICY and INTEGRITY_SECURE_BOOT.
+>> >
 >>
->> Further testing revealed that the failure can be avoided by disabling
->> CONFIG_BOOTX_TEXT. Bisection revealed that the regression was caused by
->> a change to the font bitmap pointer that's used when btext_init() begins
->> painting characters on the display, early in the boot process.
+>> Given that INTEGRITY_SECURE_BOOT has no dependencies of its own,
+>> afaict, selecting it is the least disruptive option, as otherwise,
+>> existing configs will disable IMA_SECURE_AND_OR_TRUSTED_BOOT as the
+>> kernel is being upgraded. But conceptually, I agree that they are
+>> equivalent.
+
+As already pointed out on by Mimi, INTEGRITY_SECURE_BOOT depend on
+arch-specific secure boot feature. So we can't say INTEGRITY_SECURE_BOOT
+has no dependencies. 
+
 >>
->> [...]
-> Applied to powerpc/fixes.
+>> > Including the "imply INTEGRITY_SECURE_BOOT" here in the arch Kconfig allows EVM
+>> > to query the secure boot state without relying on IMA_SECURE_AND_OR_TRUSTED_BOOT
+>> > being configured.
+>>
+>> Yes, I understand that this is the whole point of the exercise. But
+>> 'imply' should be used with care, and in this case, implying both from
+>> CONFIG_EFI really makes little sense. INTEGRITY_SECURE_BOOT should be
+>> selected by options that need the functionality, not 'implied' by
+>> options that might provide it.
+
+But again I agree INTEGRITY_SECURE_BOOT should "not 'implied' by options
+that might provide it".
+
 >
-> [1/1] powerpc: Add reloc_offset() to font bitmap pointer used for bootx_printf()
->        https://git.kernel.org/powerpc/c/b94b73567561642323617155bf4ee24ef0d258fe
+>As not all arch's implement arch_integrity_get_secureboot, the definition in
+>include/linux/integrity.h would need to be updated.  Something like:
 >
-> cheers
+>-#ifdef CONFIG_INTEGRITY_SECURE_BOOT
+>+#if (defined(CONFIG_INTEGRITY_SECURE_BOOT) && \
+>+       (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
+>+        || defined(CONFIG_PPC_SECURE_BOOT))
+>
+>Then IMA_SECURE_AND_OR_TRUSTED_BOOT and EVM could select INTEGRITY_SECURE_BOOT,
+>as suggested.
+
+Since INTEGRITY_SECURE_BOOT has a dependency, select doesn't seem to be
+a good choice. If EVM does select INTEGRITY_SECURE_BOOT,
+INTEGRITY_SECURE_BOOT will be enabled even if arch-specific secure boot
+feature is disabled and this can lead to a building failure. How about
+always enabling INTEGRITY_SECURE_BOOT when secure boot feature is
+enabled and also making IMA_SECURE_AND_OR_TRUSTED_BOOT depend on
+INTEGRITY_SECURE_BOOT?
+
+diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
+index 916d4f2bfc44..cd44b46d0325 100644
+--- a/security/integrity/Kconfig
++++ b/security/integrity/Kconfig
+@@ -97,6 +97,13 @@ config INTEGRITY_CA_MACHINE_KEYRING_MAX
+           will not be loaded. The remaining MOK keys are loaded into the
+           .platform keyring.
+  
++config INTEGRITY_SECURE_BOOT
++       def_bool y
++       depends on EFI || PPC_SECURE_BOOT || S390
++       help
++         Provide secure boot related helper functions like querying the
++         secure boot status.
++
+
+diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+index 976e75f9b9ba..5dce572192d6 100644
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -311,6 +311,7 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
+  config IMA_SECURE_AND_OR_TRUSTED_BOOT
+         bool
+         depends on IMA_ARCH_POLICY
++       depends on INTEGRITY_SECURE_BOOT
+
+
+Another idea is make a tree-wide arch_get_secureboot i.e. to move
+current arch_ima_get_secureboot code to arch-specific secure boot
+implementation. By this way, there will no need for a new Kconfig option
+INTEGRITY_SECURE_BOOT. But I'm not sure if there is any unforeseen
+concern.
+
+-- 
+Best regards,
+Coiby
+
 
