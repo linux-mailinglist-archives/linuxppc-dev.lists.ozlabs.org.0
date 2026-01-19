@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-16017-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16018-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C54D3BA15
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 22:35:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43011D3BA50
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 23:00:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dw3fH6vmdz2xHW;
-	Tue, 20 Jan 2026 08:35:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dw4CG3jnzz2xm5;
+	Tue, 20 Jan 2026 09:00:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768858535;
-	cv=none; b=G+NS2oeBC6svQChf9TN2eoN0DEAzhZ+wpRlYTt2z9vZLoJVdJqF1hTxo9w+FHGC8bLOsII2YPc+Lxr2cv4ExTnmrWwgBGigoVoXALwWFR6aJz5BMKZwzu9FcZvjrCQFRnkMSvzEiyCEXS/HFZWe+qKVctzKo4QMZpiMfjgxia/wphPhvpaMYlAG6P/o8Fir5xWoByTitG8AT0LzZn4jKyvXE+9dwwYM5BFSmy2R0J6jEdJGzfyITlD3BrChL7ekwwjOTnbcEo9xwqJ8ogFgU0D6DU9Pi/AC6v2P9XFEx5iTSvBVsA2mdmbP7Lr4/BXRaJkGs1ounGuM2Zuhrp3zbHA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768860042;
+	cv=none; b=Nn9OAaSCoOsm+BiIS+8MZwUBq2SdjPBHMZSlFVq4Dz7gCh9ROmdIKl3k5v3TcC52ENkqk+UfEzFg+yyD5VlfnsnpEAa2CnISecU+T+aFoXweT8gbpVTrodOsH91D8L5rb1QwNGB+k0GghCeUWDBCmhEOsKLMKIojYGtst8mE2O1Gzp1C9lGa/xTAlxupYRxZvPnH0BIO/RrvY3+WMwjKOLs2OwnDrGK6PJVI878qMKc6KrfXW8zejYcm6L2bsqtUAaJWzzXv2UJasg0ndOdxWRtq0e3/eRDfOpDy8eT/Gc9CBc9TBsOyG1k38KSRrxFlADo4CnW7oYK8ccSMTBekzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768858535; c=relaxed/relaxed;
-	bh=qDZUdLlg7ud9SDG6XgaztdpQT6xpx0vAtTEz0yLWTdo=;
+	t=1768860042; c=relaxed/relaxed;
+	bh=rxmhZqrMSBLRV4qrcglg8rPki9/WiWVIQ+WnkJjx4kU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TumvrqggHqiMPhEhb2RKvVhL9fzgx1hhmcZ+Tbe9C298mj5mQgu/Q0Z0yUW5nkl8XKnAhyheR/CIgSZ+Ci1f0x9iM9nAG8O79E8zoQX+eEAP3PJUZLwylhja7Jxgo+baHmq7+n8/tBuIjqgqE+/N1DwRwp7vh996PW/eJs8OSq6jwU0gs32Wzt1y+5hKd7SKB3VFiUs3yEOsQas44RaTFQyYcD6/I04SSlnEL2BIIFUVS7941jyTu6NfY3EK2qRV9BzbT+qxmR2+MirKqPD+6iTz5Uo6nnlAiv7LQFXJ38UNcRQRCpF++24C1OsYLCOPFywMLXPDih/qK57FOWv5Mg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MSAIwNdQ; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=kDKKMKxNE1kPx9Hp5hX6Gfcr5dTa4gpifermf8VmLn6auChVzm8V9YjeIHWQq+P5rhW8we2p/3UB5KyjcHNbqPZjPHTKdns5W7yJDwPFSKMc1ZJoIQU5amjt+YJs/f//cpKXF2voFv9HmV3eyixwzn76KUNmVpyM3wsA5S7gr4ykmXaqJbpcZwhiUbFRo6BtN3eCuRWy8OGnTRawtxTsWRC7umiXIESyh0j/0x92pIy8AayaRfoT31RKwgSPiFkm6JL/0/U5kYm9BiTsMNu9svU4WT/3nuZZ7VMIttblzatoc/ty00Yor5k0o2V8UnhD/ELSqwGQ6Np35nm+Nz8PQQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gBzzATy6; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MSAIwNdQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gBzzATy6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dw3fG5Dj2z2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 08:35:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dw4CF0jL4z2xjQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 09:00:41 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 047A442E4D;
-	Mon, 19 Jan 2026 21:35:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0C1C116C6;
-	Mon, 19 Jan 2026 21:35:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6D819600CB;
+	Mon, 19 Jan 2026 22:00:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633DEC116C6;
+	Mon, 19 Jan 2026 22:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768858532;
-	bh=0p+D1qtaD6EK8C9QKDFoPkOIUPj6Z1i1of+RsQtd/cY=;
+	s=k20201202; t=1768860037;
+	bh=i93O1wnS4zj4pX0251MiaGhsQUiCSCNVJWX9Zn2+X7k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MSAIwNdQQpkp6oMgDpbCk+aNpAf6NI2V725snnSdP/1pmAdfS3Z0rJzX4h5DcxvFk
-	 he5wkSyrVbdLVDRqeW60oboR/CVs8iv/ehVA9r3xvdBmgy+VucsNGLxHs3bUGOjD28
-	 FmUsaMyToLjzkt3XEayVquD8ffomEAH717Qbbd/fRv1lL5ONzILiAlLSDK5Ns3beKx
-	 Nox0RTElcLc12JWarif0zviVNfKUm5+4QlZHWp2xyULlMmJPnuQ8wl5WMeZVRinLNj
-	 lJ2+BAmYoLVbh37cwBxVyrBaNv3562IluyDYvsPwtjLURINRBu+qCzcQJolzJWV2sW
-	 SWlm3jQOOI5hA==
-Date: Mon, 19 Jan 2026 22:35:30 +0100
+	b=gBzzATy65nCqBqK20u1xQ84huXMH+axu3TXK2L6DC5nd8yziq+TvpuslsmRRobeQT
+	 VH7SNLOdLeNcBRj6UUrfbhXFwGgiKoYEVpjMnlb01pfhCGyz7OXEafYW++2K6D93/o
+	 FYjzCNlDytNmD4UlzSxcoJdOsxCYn+Z/kz4RlVnQcK5VoZRLga2nmSopJTVQ/YQZ4k
+	 dXpEOBgNjZJRJGZ8eFREAdqzrfDqVXrgs/zrjSZSTezsgrTa1GMy5eBjt31vzYB0GM
+	 /hOWyVZ3Xz97w+bSw11NPtmhbdCmx3cxXFkj36kBjpJGxbQzNx0ugkqbn5P/9S2WfF
+	 SWgWuYyaLSlRw==
+Date: Mon, 19 Jan 2026 23:00:35 +0100
 From: Frederic Weisbecker <frederic@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: LKML <linux-kernel@vger.kernel.org>,
@@ -74,12 +74,11 @@ Cc: LKML <linux-kernel@vger.kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
 	Xin Zhao <jackzxcui1989@163.com>, linux-pm@vger.kernel.org,
 	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 03/15] sched/cputime: Correctly support generic vtime
- idle time
-Message-ID: <aW6johe2ZUR9l39Z@pavilion.home>
+Subject: Re: [PATCH 06/15] tick/sched: Unify idle cputime accounting
+Message-ID: <aW6pgzarQ-tnPjl6@pavilion.home>
 References: <20260116145208.87445-1-frederic@kernel.org>
- <20260116145208.87445-4-frederic@kernel.org>
- <20260119130222.GU830755@noisy.programming.kicks-ass.net>
+ <20260116145208.87445-7-frederic@kernel.org>
+ <20260119142607.GG830229@noisy.programming.kicks-ass.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,47 +95,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260119130222.GU830755@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260119142607.GG830229@noisy.programming.kicks-ass.net>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Le Mon, Jan 19, 2026 at 02:02:22PM +0100, Peter Zijlstra a écrit :
-> On Fri, Jan 16, 2026 at 03:51:56PM +0100, Frederic Weisbecker wrote:
+Le Mon, Jan 19, 2026 at 03:26:07PM +0100, Peter Zijlstra a écrit :
+> On Fri, Jan 16, 2026 at 03:51:59PM +0100, Frederic Weisbecker wrote:
 > 
-> > diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-> > index 8ddf74e705d3..f1d07a0276a5 100644
-> > --- a/kernel/time/tick-sched.c
-> > +++ b/kernel/time/tick-sched.c
-> > @@ -780,7 +780,7 @@ static u64 get_cpu_sleep_time_us(struct tick_sched *ts, ktime_t *sleeptime,
-> >  	ktime_t now, idle;
-> >  	unsigned int seq;
-> >  
-> > -	if (!tick_nohz_active)
-> > +	if (!tick_nohz_active || vtime_generic_enabled_cpu(cpu))
-> >  		return -1;
-> >  
-> >  	now = ktime_get();
+> > +#ifdef CONFIG_NO_HZ_COMMON
+> > +void kcpustat_dyntick_start(void)
+> > +{
+> > +	if (!vtime_generic_enabled_this_cpu()) {
+> > +		vtime_dyntick_start();
+> > +		__this_cpu_write(kernel_cpustat.idle_dyntick, 1);
+> > +	}
+> > +}
 > 
-> Is this not broken? IIUC this means that you can no longer use
-> get_cpu_{idle,iowait}_time_us() the moment you have context tracking
-> enabled.
+> Why don't we need to make sure steal time is up-to-date at this point?
 
-It is supported again in patch 13/15. And it's not exactly breaking
-bisection in the meantime because the sole user is cpufreq and cpufreq
-shouldn't be relevant with nohz_full.
+Yes, there could be steal time since the last tick. It will be included
+and accounted in kcpustat_dyntick_stop() and not substracted from system
+or idle cputime (but it should!). This wrong behaviour is the same as the
+current upstream behaviour. So no known regression.
 
-Ok a few subsystem rely on the resulting cpufreq API get_cpu_idle_time():
+But check the last patch of the series that tries to fix that:
 
-- the legacy drivers/macintosh/rack-meter.c
-- drivers/scsi/lpfc/lpfc_init.c
-
-But cpufreq provides a low-resolution version in the worst case for nohz_full
-(again until 13/15).
-
-Hmm, but you're right this is confusing. I think I should be able to fix that
-in this patch.
+    sched/cputime: Handle dyntick-idle steal time correctly
 
 Thanks.
 
