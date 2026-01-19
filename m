@@ -1,59 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-16001-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16002-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE6ED3AFD6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 17:00:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6465D3B010
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jan 2026 17:10:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dvwCD6jgSz3bZm;
-	Tue, 20 Jan 2026 03:00:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dvwRh1Mzrz2yql;
+	Tue, 20 Jan 2026 03:10:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.9
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768838408;
-	cv=none; b=QXM1bEtPEd0e7OLQzE8gA1algHnj/g9c8FNxVKA3VCEar3OEJsQHqBObdNXfTJr1KvzuQDRnjXsOo+KLL1qcArwMTHoKcd3ZKyXRw27akif1cUJzIR3ULNRoiTSIVVDU3lEoulMlA9o7vvB7sMsq90N7ocUcQS2Y21iFovCvbqQiP22MKxti1/RphffXc3gfSvwBaFJOkQJUwUceDd1efRpakUdNBxZMjbkgjtWnRko9YNz054YKdP9Pmo0dFxhvTvG3YSVvQ8eYZbR2HwDwAEPAwuZ+zwSSxy/To7LxVkNrNKjbKuSvIN42yWlqdgHO4g2KIhjzIl5bQYisfW4ZBQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.14
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768839056;
+	cv=none; b=i4PWrYjTyQOC6nkCD4JU5MjbwlmGiRCxOUg/0zBU7EJeEqrP72T0O+JA07b5XSWySFmTYG7WL/G3NcnnDUl/AgdCLTCvYiaiW173BKQVlwrE+9VvYjFjDVF3Sb2h3889KQskQ4MMS9Bk4vwdMP5sjng+9bmqC6uPsDO6LZsXV1uU0qb1u6gWxbR+9E2vetjfzpl+HhKNlvDrJ4tSaNshp0B4NdnrMLtTyzqcBNdnvfSEdTjqWgtDzLTDQtNBwI9UhWDh0hwydUwFZaMKpB741t8W1G6sYahyEZ3TVWoXvQWpilWbrTB7lBnZvdxXFc9DWVo1QX8rsOg5lvv93cYyaw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768838408; c=relaxed/relaxed;
-	bh=rpLshc4Np7GHWTl6wPgZzTCJsyJesB0KJNO/yiUnE8w=;
+	t=1768839056; c=relaxed/relaxed;
+	bh=OCjr+QA/20vWVFPWgBNvfz5d3NRZDSNftZfJJgHsB88=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mM+DyZ793AgHVgaDqERb3eDyEUryRJ/RhYldvymTra79x9ais72TlrScVf4z1fvtaGrJbaf20eTZYtY+IP4E9bBhQ8c7eyeac4xB8J04TWz+OIdngNuRQt96+D1R6tBrz0J18SChkZ8Bsv7EfUSM6FGovgX/m+X/gVXM7DdsZPykOuvbKzb5jCbdhhec91kP5DypkOhLH2qPdO7DDS55hjtk5JuQdpibOAXpdrAQtMR7z+0WmhIP+Ot7+VjZd0kmI3oSC2jHZg5GVH87RCzqLvqSy3oirFQ6tS+XkkZaQdmkamrpquKFv7aDT8wxvnzR0h3GuKi2IsIokWi/abBv8A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M0DUMjd3; dkim-atps=neutral; spf=pass (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=G7TiBw8UHu/S3njCD3AVyjV1/IPMuBYjKkjJfY6nFw53eoFy366zkEX/qjHmHXEEQ3Negwm8rSvHTW6XyjOwhzVUAfeJaZo4wASvqJd40wERDlPyiJ7BRplWjcDN9Sd2ZMzN1Pn9Ulp2kyGxATeMxLQ86vF5bAIyWDkM2HU+JbpInj5PvlziwH/+5UXNyuPc7UBVTU/kRMIpjHRG4MQ4Zs81B6xGepXXBX46csu32j4FIbrtxIk43Es2GOgG7UvL3q8+/6mvZ24YSceQyiX/AoX6D01prsIeWfOZh7IAUXA5PTd1RvUzQQTGlDKnfmlYEhjXpWFnbFr0OAHSkGCpqg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Jir28TIp; dkim-atps=neutral; spf=pass (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M0DUMjd3;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Jir28TIp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvwCB3Ksrz2xT4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 03:00:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dvwRf3BJCz2xHW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 03:10:53 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768838407; x=1800374407;
+  t=1768839054; x=1800375054;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=Yyv3m0ULnW37JqDe3o4/cJ3o5zdP90I/r40PxaOIQdI=;
-  b=M0DUMjd3acCH5Xc4Sill2MA5m70qi8te4jeLyOfVlKAUujFPClJeREgP
-   4EvE5qmgXeBJqKCVn6asQcvl5ebXz2QJPiWaNPRdnsdcVsu4GD2flgveE
-   wGG9Dsn4uSvDySKO6WyEfypwxkvlW4+OooGTGeWxs2tgPKGBF2/a5s+Im
-   6PjcHtDpCXO9Hj57Pgc31xGCfp1+SSJGFDX1unQJFa9x+TLSFvksrzUIA
-   Zq1C1wxGrkiMnEbjfnmJXF/lxsgh+VEa0ETqM1xB0lqgDt0sEsHc5olC2
-   XFZtk7yVyF+gso7aPXKrXOkzYumx2exbkGEY/64FxEmmWg/gIl0IpFlnx
+  bh=dPaEw2aa5u0SVM5+XwHOK0y6nSiExAWMwRY/JJ5VvQ4=;
+  b=Jir28TIpsgG9zB96QYFU0g+FaSTh/r5qTdYuHKejHRU/mOHwa+6trSB5
+   +lbNC9WNqAaBk1Kh1pgkr/wdlgDDk90MeJAlTKvBNaUvJH8kmBLBLKryE
+   0J0kH0jiQ0MOlrJh8Q7Nz3uvik7hxmixCiO5v73q2nbO2DqIMxHw0YmpD
+   ULxnCskbSnzINS/zVgP/0ctqTgyKdEUw0OAnsKZy6ypaHhYnFj/5056tz
+   Q7BYOcRuW+qszSN5MHyxmwTAglnsRZxGoWeCfiN0ZI/OEbaafU/4RtryO
+   W/bQtHcdskbagW2TM1TwbEMtfjbn1tN4+oogARJYrxE7HyG5yQYrLKeaT
    w==;
-X-CSE-ConnectionGUID: 7Ov24/m8S1KV+sHmfRvmEA==
-X-CSE-MsgGUID: PJQI26TwRcalja0dMQf5cA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="80772362"
+X-CSE-ConnectionGUID: wciUaFC7RwqtiRXTJKuw5g==
+X-CSE-MsgGUID: rYUQD+ChSHSfxHAyXNFRvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="73906858"
 X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
-   d="scan'208";a="80772362"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 08:00:02 -0800
-X-CSE-ConnectionGUID: fn69LaQYSYWVbojmE0QC8g==
-X-CSE-MsgGUID: zz9FJ/hMTSe0YLohU0G/fw==
+   d="scan'208";a="73906858"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 08:10:44 -0800
+X-CSE-ConnectionGUID: EjVT2CTdSL+iBJ4OGRaOlQ==
+X-CSE-MsgGUID: 8Px4MFfoQeC7IU/aMGjpQQ==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
+   d="scan'208";a="205150360"
 Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.111.233]) ([10.125.111.233])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 08:00:01 -0800
-Message-ID: <20fb97f1-7e50-485a-bdfd-a2901d20ec84@intel.com>
-Date: Mon, 19 Jan 2026 08:00:00 -0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 08:10:43 -0800
+Message-ID: <85d0d013-eca2-4b9f-bee3-d583d0eeb99e@intel.com>
+Date: Mon, 19 Jan 2026 08:10:42 -0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,8 +70,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] Fix bugs and performance of kstack offset
- randomisation
+Subject: Re: [PATCH v4 1/3] randomize_kstack: Maintain kstack_offset per task
 To: Ryan Roberts <ryan.roberts@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Huacai Chen <chenhuacai@kernel.org>,
@@ -88,8 +89,9 @@ To: Ryan Roberts <ryan.roberts@arm.com>,
 Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-hardening@vger.kernel.org
+ linux-hardening@vger.kernel.org, stable@vger.kernel.org
 References: <20260119130122.1283821-1-ryan.roberts@arm.com>
+ <20260119130122.1283821-2-ryan.roberts@arm.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -135,7 +137,7 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260119130122.1283821-1-ryan.roberts@arm.com>
+In-Reply-To: <20260119130122.1283821-2-ryan.roberts@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -144,21 +146,43 @@ X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 1/19/26 05:01, Ryan Roberts wrote:
-> x86 (AWS Sapphire Rapids):
-> +-----------------+--------------+-------------+---------------+
-> | Benchmark       | Result Class |   v6.18-rc5 | per-task-prng |
-> |                 |              | rndstack-on |               |
-> |                 |              |             |               |
-> +=================+==============+=============+===============+
-> | syscall/getpid  | mean (ns)    |  (R) 13.32% |     (R) 4.60% |
-> |                 | p99 (ns)     |  (R) 13.38% |    (R) 18.08% |
-> |                 | p99.9 (ns)   |      16.26% |    (R) 19.38% |
+...
+> Cc: stable@vger.kernel.org
 
-Like you noted, this is surprising. This would be a good thing to make
-sure it goes in very early after -rc1 and gets plenty of wide testing.
+Since this doesn't fix any known functional issues, if it were me, I'd
+leave stable@ alone. It isn't clear that this is stable material.
 
-But I don't see any problems with the approach, and the move to common
-code looks like a big win as well:
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -1591,6 +1591,10 @@ struct task_struct {
+>  	unsigned long			prev_lowest_stack;
+>  #endif
+>  
+> +#ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
+> +	u32				kstack_offset;
+> +#endif
+> +
+>  #ifdef CONFIG_X86_MCE
+>  	void __user			*mce_vaddr;
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Nit: This seems to be throwing a u32 potentially in between a couple of
+void*/ulong sized objects.
+
+It probably doesn't matter with struct randomization and it's really
+hard to get right among the web of task_struct #ifdefs. But, it would be
+nice to at _least_ nestle this next to another int-sized thing.
+
+Does it really even need to be 32 bits? x86 has this comment:
+
+>         /*
+>          * This value will get limited by KSTACK_OFFSET_MAX(), which is 10
+>          * bits. The actual entropy will be further reduced by the compiler
+>          * when applying stack alignment constraints (see cc_stack_align4/8 in
+>          * arch/x86/Makefile), which will remove the 3 (x86_64) or 2 (ia32)
+>          * low bits from any entropy chosen here.
+>          *
+>          * Therefore, final stack offset entropy will be 7 (x86_64) or
+>          * 8 (ia32) bits.
+>          */
+
 
