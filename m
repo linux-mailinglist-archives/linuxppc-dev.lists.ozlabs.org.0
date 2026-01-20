@@ -1,66 +1,40 @@
-Return-Path: <linuxppc-dev+bounces-16070-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16074-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cH0YDiCvb2lBGgAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16070-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jan 2026 17:36:48 +0100
+	id iP9mID6ub2nxEwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16074-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jan 2026 17:33:02 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E90947B56
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jan 2026 17:36:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 827AF47A16
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jan 2026 17:33:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dwRzx1FsLz3bt7;
-	Tue, 20 Jan 2026 23:52:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dwXtg0tW8z2xS2;
+	Wed, 21 Jan 2026 03:32:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768913533;
-	cv=none; b=DEEoCCqHsiR3q60mZnDBJyXXxDmT6mlys70HNrW9QD/SI9wzxoZ6pgKRps2TwqK7bptYWpANoDp+0cTYFeHXbF1WAji8luOjSAiqaTRjpghWe4G7qyYDGCP8118oI98rlhuJg2ijnye1yYmEHz880Qu/GdL1ZHIgIWkgZOnkHnqZoKTIDE9eNXaw4mxC2dZbiFUJXovYrknr6x00ZIYG9IvIeBcdKHEEL/U9d4o70b1Sn2fmZQkq0mzq98N8sCJ3uQ5Mdoh3abMj8uG9PESZfVukNJz5JdA126wepuhoEs59bUmb7sOrmJI3JXSqreOMkOuA9lVR5gS+jAW2azhI4Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768926779;
+	cv=none; b=ZiL6dDu+oS0XkF/wOQ4hrqM7Cw6IBdjZAA8B8fwO2m/mkgg2kAwCKXEB95n2z65K3WH/BfPNa4p2f+wvqT3lXMV+Qrapz93F8Z+8DCYdUZayLEcZoFAUr+9icWDpTb+DVvSx3S9m861aXeWv5U09a4mMPY1HMfxFj9+b2wXQy/gOkqruIwu5xmUDb5pDsqMFCdSCRS2DMXCaWqkWz3C1BByZPr1kbpkNAknoktj+eV3BqMk3hSprm7L78lpH2a+kwKmD8bWoi3RRDhRZgI+LQMI0RxNWm744au2n+ghhlE/QRM4WgWAZh3Ih9PQZUstwe3sHWypuEENLXhOB/34ozQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768913533; c=relaxed/relaxed;
-	bh=BltawuzbsKcWyyUaJNr62FbHUHiJ9m7IQ2ucaRQoWyY=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=isSdl+qpAZPQuc0LyeSHVrfhg2cwX88CfqaeHAjuE0mly2JOQpKrmi/6GiR8Cd/K8qe8Cimhyz6OZSa5563rh4fGXvTqVVns8VJppVC8ED54HmK98AeXoFtnzmMRS5QjWVCEx/PUcmCsWwSllEsQzQSaBjUz5WxcpLqnuZsFta0g6Nv1yWigpPO2F+uLcnzjipjUSSxJJdvdYWMyLPQFAwmVbMhZXC+OHj7eGEy6YQAgH560h3HWil4Ly3/8AebOBCGgUu93ej1U0zOLKKQafX/hl/nAT+EF144zsvRnURua/kjKTaP8++5ZTGcOb3q0QoVYUCLX2POz75DeoENhOA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RGb5hCrm; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RGb5hCrm;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dwRzw3wN5z3blr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jan 2026 23:52:12 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EDBA5442BB;
-	Tue, 20 Jan 2026 12:52:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40520C2BC9E;
-	Tue, 20 Jan 2026 12:52:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768913530;
-	bh=bc28KWZ4Nes1dVdT5o72sgDVqx84W02iDqzED50KaTA=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=RGb5hCrmbwFcK2OkCJYJo2brNvk5x9DZplXTFTf57NLeH4f+Kl1GAnC3hEGU4lUgC
-	 AD/72LTXbNet5aL6/lpknEYOjrbMCgyB7Nv467G3pUsPFkl1OWCzCR8EAW5nszRari
-	 yWXSKQ5qtS8Yq0Vr60xU1K9HKh3K0eAzs/5v70ZEyVZPRVX16C0Ghx7SJorfqWtglX
-	 pnrDkaoNxknAfVWCuc9+ITPycHLTB09VXke+aeiABgFJ3xluVr3WUzFEbpbHw1ByoW
-	 R1XpRdh6Oc/1RJdmU2xbYCuAHDIRwL16lW/wqAFHC7RUuPzXVbwg5uPVWygvcWvtZt
-	 hSCM7GQXKNj4g==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, devicetree@vger.kernel.org, 
- Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <20260115061418.4131432-1-shengjiu.wang@nxp.com>
-References: <20260115061418.4131432-1-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v2] ASoC: dt-bindings: fsl,sai: Add support for i.MX952
- platform
-Message-Id: <176891352801.86219.3828176720307654580.b4-ty@kernel.org>
-Date: Tue, 20 Jan 2026 12:52:08 +0000
+	t=1768926779; c=relaxed/relaxed;
+	bh=pzCqaWRw4l8YZiXRlEaKsY2UZqzEryF7b+9WjJwCLVI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V/ELUvUGMKXJDhRla5qie3U6yzo/XLAO3Q4eaJmJjpyoOaZuLS+pdTq50ZC/5RW2B3mdMiN4WYG5RVBCbqXBnSiM/MS/4yo/MohQDK6mQU1h/XtE5Co3sG1SHnYrmU49/wMgd0WWj71V5D1fAWQFEc/jIaZtsc98TW1fHpGUN1KDV+MP/9rFzJABfxr8hrjOgsT6Ku4hC8kasM+i4fKM34SxNvSGfPe1rf9EAIRKIrl3ciVPCyxNM7CR88n/Yc5Rf8YcVtYaBCj9+1BCjmoPY4Q1rZCfIQa5AhlbzcDs0Qn5IVpSXHuI4Rs26p+lzEhEUrvtB8N4gzbh6wXZzVa4IQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dwXtd73pvz2x9M
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jan 2026 03:32:56 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6B3771476;
+	Tue, 20 Jan 2026 08:32:16 -0800 (PST)
+Received: from [10.1.39.200] (XHFQ2J9959.cambridge.arm.com [10.1.39.200])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BFE823F694;
+	Tue, 20 Jan 2026 08:32:18 -0800 (PST)
+Message-ID: <785a7d90-babe-43af-93a6-c220c1877bcf@arm.com>
+Date: Tue, 20 Jan 2026 16:32:17 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,81 +48,112 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/3] Fix bugs and performance of kstack offset
+ randomisation
+Content-Language: en-GB
+To: Kees Cook <kees@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, Arnd Bergmann
+ <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Jeremy Linton <jeremy.linton@arm.com>,
+ David Laight <david.laight.linux@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+References: <20260119130122.1283821-1-ryan.roberts@arm.com>
+ <20fb97f1-7e50-485a-bdfd-a2901d20ec84@intel.com>
+ <C502BCE6-2FB2-4A06-93A8-E8DEDFC22914@kernel.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <C502BCE6-2FB2-4A06-93A8-E8DEDFC22914@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Spamd-Result: default: False [-0.71 / 15.00];
+X-Spamd-Result: default: False [0.09 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	MAILLIST(-0.20)[generic];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	MAILLIST(-0.20)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:festevam@gmail.com,m:nicoleotsuka@gmail.com,m:lgirdwood@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:devicetree@vger.kernel.org,m:shengjiu.wang@nxp.com,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,perex.cz,suse.com,vger.kernel.org,lists.ozlabs.org,kernel.org,nxp.com];
+	FORGED_RECIPIENTS(0.00)[m:kees@kernel.org,m:dave.hansen@intel.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:tglx@linutronix.de,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:gustavoars@kernel.org,m:arnd@arndb.de,m:mark.rutland@arm.com,m:Jason@zx2c4.com,m:ardb@kernel.org,m:jeremy.linton@arm.com,m:david.laight.linux@gmail.com,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-s390@vger.kernel.org,m:linux-hardening@vger.kernel.org,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[ryan.roberts@arm.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER(0.00)[broonie@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[31];
+	FREEMAIL_TO(0.00)[kernel.org,intel.com,arm.com,linux.ibm.com,ellerman.id.au,dabbelt.com,eecs.berkeley.edu,linutronix.de,redhat.com,alien8.de,linux.intel.com,arndb.de,zx2c4.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16070-lists,linuxppc-dev=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16074-lists,linuxppc-dev=lfdr.de];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev,dt];
+	FROM_NEQ_ENVFROM(0.00)[ryan.roberts@arm.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
-X-Rspamd-Queue-Id: 4E90947B56
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,arm.com:mid,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+X-Rspamd-Queue-Id: 827AF47A16
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 15 Jan 2026 14:14:18 +0800, Shengjiu Wang wrote:
-> Add a new compatible string 'fsl,imx952-sai' for i.MX952 platform, which
-> is fallback compatible with 'fsl,imx95-sai'.
+On 19/01/2026 16:44, Kees Cook wrote:
 > 
 > 
+> On January 19, 2026 8:00:00 AM PST, Dave Hansen <dave.hansen@intel.com> wrote:
+>> On 1/19/26 05:01, Ryan Roberts wrote:
+>>> x86 (AWS Sapphire Rapids):
+>>> +-----------------+--------------+-------------+---------------+
+>>> | Benchmark       | Result Class |   v6.18-rc5 | per-task-prng |
+>>> |                 |              | rndstack-on |               |
+>>> |                 |              |             |               |
+>>> +=================+==============+=============+===============+
+>>> | syscall/getpid  | mean (ns)    |  (R) 13.32% |     (R) 4.60% |
+>>> |                 | p99 (ns)     |  (R) 13.38% |    (R) 18.08% |
+>>> |                 | p99.9 (ns)   |      16.26% |    (R) 19.38% |
+>>
+>> Like you noted, this is surprising. This would be a good thing to make
+>> sure it goes in very early after -rc1 and gets plenty of wide testing.
+> 
+> Right, we are pretty late in the dev cycle (rc6). It would be prudent to get this into -next after the coming rc1 (1 month from now).
+> 
+> On the other hand, the changes are pretty "binary" in the sense that mistakes should be VERY visible right away. Would it be better to take this into -next immediately instead?
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: dt-bindings: fsl,sai: Add support for i.MX952 platform
-      commit: 2e48020fd7ced9e9953c55b57a5cb608e64deee0
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+I don't think this question was really addressed to me, but I'll give my opinion
+anyway; I agree it's pretty binary - it will either work or it will explode.
+I've tested on arm64 and x86_64 so I have high confidence that it works. If you
+get it into -next ASAP it has 3 weeks to soak before the merge window opens
+right? (Linus said he would do an -rc8 this cycle). That feels like enough time
+to me. But it's your tree ;-)
 
 Thanks,
-Mark
+Ryan
+
+
+> 
+>> But I don't see any problems with the approach, and the move to common
+>> code looks like a big win as well:
+> 
+> Agreed; I think it's looking great.
+> 
 
 
