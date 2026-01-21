@@ -1,62 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-16109-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16111-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDJfJhn+cGmgbAAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16109-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 17:26:01 +0100
+	id SEmOIQsFcWmgbAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16111-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 17:55:39 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2788259DD1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 17:26:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD855A318
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 17:55:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dx8h53Rz6z2xrC;
-	Thu, 22 Jan 2026 03:25:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dx9LH3Flgz2xrC;
+	Thu, 22 Jan 2026 03:55:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769012757;
-	cv=none; b=ccMRsrBBEZRStWf1+CKCH0fP+WWRwfuVwySUPYtXwwrwYxAToFUSX7x8DJlyfwNv+waPoA8HlzFonV1ffY5SbwjYGHeIkH9x/ElCgOHk6L7v3oCZq4jG95DKG+WpAk57LnV5SDwaOnXmiylqqrmyHDNNwxhZfa8aNJ0BlFQOLX/w01BOa1YpcVTkv5FliZ7xOR1vCx2x8jS6CPTd+ldjwW4CSVFxGs8b6ES3rW5Fc+bgtwelP4GOnhjx7AGVeWIl9vJtizOIrmGvP7A3twLM0eq6Yh/3HNGta2HlVI5SHRO5WfcD8XK3EubxkrlmlHriQBaaSnvysKwaYTI6+dnL3A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769014535;
+	cv=none; b=ndmJvpKGCRQ4d0b8Ymbre3U5bCpwiGh92RC2Ctc1MgOLHW6u7UvH9sRZTAMK92s1G/R48x7LPsqQ14VQOGkb9je6CqVgZdkVVSe1V1KRwShWNPWBYDs/vf/2R3UNz1pBjEF38Trq28e7FQqpNkogi9PJ/lr95XbHi+7BfXDORIkOSgjhsDWr9UdZl6da1plj0dR+loIsXmJu0UQXa3OpMKwoQGZ3ASDEqQXbqIWaliIN5ZBs9+kI3n+1f22qvkoj0ey7xcTip5BjWJcWN4ZTr5z1h8JeD1xUqRVyiQgA/3+ByvOBbxdo/Bj4MNkw4w/fLcrJUiG9gYPv/KgMAJyNXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769012757; c=relaxed/relaxed;
-	bh=TI7qGk8SazbxQIUc8/Muvjcn5BnkyjQqw+DTzn+43is=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ORmn47rEGTTSRu/rsrKxj455IM1hIL2DdI1LoCaF+NMj2L0F295v14azXSfSppGx6ICrjGjQaWAsV4bfchHR2efURHndrEudbEhjg8hQOBBOY+EQ+gCzCKdr1AQTs/KCSTv77XbaORp3YmAm+EmiLv7owPUqVr0mfeKiXRLtn4wKq4lgQ/6OCEYIZcV9z66UqI/Qc2pw+ruShklQDVnK8YkAhK2P0slHh/sFbe9rwiigUYTUjzZaUEXMmPK9fdqdFgFyartotJz+nXEDbEB06zphs7bWe1hK9TD5/G4JHvHjoR930lAp5RarKNFRqKXDnq06xLbGD1rSF1s2zdSG5w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NlpFZjd6; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1769014535; c=relaxed/relaxed;
+	bh=bouEFs8AEKR3hpmuCbVACtSfuPWhxI+MJhmhnLd0A5w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GxfEWiMkPp2SbRffRnT/piCkROrAWErVpfffGHiaQA4ILfA3wxCDYy2q1DPvNPOOcfpfzKNixYnMMvzH77Z8+5qwzS5wwiO9Tsl6xsXb2USAxFGIPXAwaqBYt3izFHFGPqLNj1qZYHalrj/IxtYvYqhXz33dR/ebLLfg8rKl0tzPSPTcD94+ufkvrVl5t62SksTtoYywo0/P7b6rHZ3ewdgrwUIfK7g8LgaLLnfn3egMe6/7MfhiNxGl+T+k1CSkSfa5XJ4MNY9j2bNqS4qYghQ1o2NEsMhzJBkI4dqce0NtKBaeXSuTjACei9AINLs4EcYPyisU4zM1/Y+yQ6l8Rw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i4zQlP9q; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NlpFZjd6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i4zQlP9q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dx8h41xBVz2xpk
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 03:25:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dx9LG3q7kz2xpk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 03:55:34 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 672EE44448
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jan 2026 16:25:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDF4C2BC86
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jan 2026 16:25:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 54C7F60130;
+	Wed, 21 Jan 2026 16:55:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F892C4CEF1;
+	Wed, 21 Jan 2026 16:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769012753;
-	bh=sDXZ43cuHWu7fDJemSHBPXvLB0TztHzhjoU8+z2DpEU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NlpFZjd6TpgXF01/VordrzlllHPM/gPrPEksnciVTDQuVgDAmAkxxDWX8wqAavSXp
-	 9OHsSfg6KBzHc2nEQ/Tmshv0HgNOByUug3SnVYVM3M/yj37IcUSiBCM9Vc/Pb3ETTA
-	 3kk9uFaPORF6ZrfhphA2zG+1miXIKiNshuKktOfe06PK5I99+kF8KYmbAtMyswaSVe
-	 oOnpg9Mom7Zr7TyPrppBGXMjFRQwfAC+HI+QIoKl+GyiEajQKmiR7qQko+3o0AhLtH
-	 2Ghq/HyOqTD6X0U+VhUqm5YGqnT7/mekg+pRhX50NQkr946rgOozo4CVsh3MMzNHjW
-	 7iX1i2EIawUjQ==
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a07fac8aa1so13675ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jan 2026 08:25:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVcADqDsWvcS9AZyKqxLDboH7+R31qcXKDtve7tMAC6OxvLkJ707d/BfLP1l1R5I2nLbfHC32t0bBXBQQY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxpYMcLtIruCoMJYrDOWIUfnTFFHSIaL5yCnrP+xwrzSvNyDXUT
-	fIiDu72jN1k/nssjYzNeiKsMm6s2VcK5PHMvpEvgs9VyLpOt4IWMmR+86yry7ZNdk0MAzyTtL1q
-	wKk+10q+cxHPrqPtyLEUH0UU0xeMGUMo=
-X-Received: by 2002:a17:902:ecc6:b0:2a0:afeb:fbbb with SMTP id
- d9443c01a7336-2a768b7a743mr46677125ad.1.1769012752394; Wed, 21 Jan 2026
- 08:25:52 -0800 (PST)
+	s=k20201202; t=1769014531;
+	bh=mxuQx8myh37sFEu9+vJLmpyCKKaNhjPDjdia8zaYzsE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i4zQlP9qJjB6AQvf49Y9Ufsh9lLsJ6bgZDrju7360I1I550ZnhpWAwEhlEoR9En0J
+	 y6/+oLJdJnMdYltuM3MRou3lpBFM3dQjjN6PzEResWJIqV+XkmAk4eyCJq2+1ZLjyD
+	 aQLh3joSmHc4hig6Ewwj3u3Tl6EQRXKppt8VR+cgGDTQdrlYJVRKNFZqvklqakPBWY
+	 OWXFLzFKVuyDHwqGzad53oDQuURAzIfzlqt4EtTh8VHFtXd/0GY3pZh+ePdP1ub/q3
+	 F4FRPA0IyGS9x8qxwRk/fYy0I+TKHGub9a3Sp7PBRLyZBWkY/dcH8M84Au0PkruVH+
+	 OEqS1sr2cxlOg==
+Date: Wed, 21 Jan 2026 17:55:27 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Ben Segall <bsegall@google.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Ingo Molnar <mingo@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Xin Zhao <jackzxcui1989@163.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>, linuxppc-dev@lists.ozlabs.org,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Heiko Carstens <hca@linux.ibm.com>, linux-pm@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Nicholas Piggin <npiggin@gmail.com>, linux-s390@vger.kernel.org,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 00/15] tick/sched: Refactor idle cputime accounting
+Message-ID: <aXEE_5vT03dlTCyN@localhost.localdomain>
+References: <20260116145208.87445-1-frederic@kernel.org>
+ <aWpRxyt8HuXkSuxs@localhost.localdomain>
+ <a4037857-b161-4536-9a2e-2cf4c168736d@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,43 +100,10 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260115004328.194142-1-coxu@redhat.com> <20260115004328.194142-2-coxu@redhat.com>
- <CAMj1kXFXNo1-pMbo-VZrjQ3TYe1tufebrLr_avL12A0nHMSGnA@mail.gmail.com>
- <8bfa859ed3a4f1cf0db0ab64d8c1c3b24684582a.camel@linux.ibm.com>
- <CAMj1kXHsJNZoUEnbD1y=v4Ftuv9d2c08VckRV7ru4k4P83vZbQ@mail.gmail.com>
- <97b69bc79a5d9246f7a399510908c7b95b2e95e7.camel@linux.ibm.com>
- <CAMj1kXGx4ebaK87W7k0SNUNQnO9+=z1nmYxXC7retmp3OqRRFg@mail.gmail.com>
- <ac5e5e45c12e9b0bda19807e60b06057d74be0b3.camel@linux.ibm.com>
- <aW2i3yacr5TvWU-m@Rk> <1a0b6e5601a673a81f8823de0815f92b7afbeb60.camel@linux.ibm.com>
-In-Reply-To: <1a0b6e5601a673a81f8823de0815f92b7afbeb60.camel@linux.ibm.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 21 Jan 2026 17:25:39 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFBMSEdRL8FotASbQO3dcfNG0bpp9Vnm5JPn-yjyDr=GA@mail.gmail.com>
-X-Gm-Features: AZwV_QinD8JFxZrBNY-rXjMhWA_acQR-WgojG7fUerVuX5e99sfTa2O6odTmxSw
-Message-ID: <CAMj1kXFBMSEdRL8FotASbQO3dcfNG0bpp9Vnm5JPn-yjyDr=GA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] integrity: Make arch_ima_get_secureboot integrity-wide
-To: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Coiby Xu <coxu@redhat.com>, Dave Hansen <dave.hansen@intel.com>, 
-	linux-integrity@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, 
-	Roberto Sassu <roberto.sassu@huaweicloud.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Eric Snowberg <eric.snowberg@oracle.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" <linuxppc-dev@lists.ozlabs.org>, 
-	"open list:S390 ARCHITECTURE" <linux-s390@vger.kernel.org>, 
-	"open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)" <linux-efi@vger.kernel.org>, 
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>, 
-	"open list:KEYS/KEYRINGS_INTEGRITY" <keyrings@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a4037857-b161-4536-9a2e-2cf4c168736d@linux.ibm.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
@@ -115,63 +112,65 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-16111-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16109-lists,linuxppc-dev=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:zohar@linux.ibm.com,m:coxu@redhat.com,m:dave.hansen@intel.com,m:linux-integrity@vger.kernel.org,m:hca@linux.ibm.com,m:roberto.sassu@huaweicloud.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:tglx@linutronix.de,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:jarkko@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-s390@vger.kernel.org,m:linux-efi@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:keyrings@vger.kernel.org,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[ardb@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[redhat.com,intel.com,vger.kernel.org,linux.ibm.com,huaweicloud.com,arm.com,kernel.org,ellerman.id.au,gmail.com,linutronix.de,alien8.de,linux.intel.com,zytor.com,huawei.com,oracle.com,paul-moore.com,namei.org,hallyn.com,lists.infradead.org,lists.ozlabs.org];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[frederic@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[35];
+	FORGED_RECIPIENTS(0.00)[m:sshegde@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:rafael@kernel.org,m:boqun.feng@gmail.com,m:tglx@linutronix.de,m:rostedt@goodmis.org,m:chleroy@kernel.org,m:kbingham@kernel.org,m:bsegall@google.com,m:mpe@ellerman.id.au,m:mingo@redhat.com,m:vincent.guittot@linaro.org,m:juri.lelli@redhat.com,m:neeraj.upadhyay@kernel.org,m:jackzxcui1989@163.com,m:maddy@linux.ibm.com,m:mgorman@suse.de,m:vschneid@redhat.com,m:borntraeger@linux.ibm.com,m:jan.kiszka@siemens.com,m:linuxppc-dev@lists.ozlabs.org,m:paulmck@kernel.org,m:viresh.kumar@linaro.org,m:anna-maria@linutronix.de,m:urezki@gmail.com,m:dietmar.eggemann@arm.com,m:hca@linux.ibm.com,m:linux-pm@vger.kernel.org,m:agordeev@linux.ibm.com,m:svens@linux.ibm.com,m:gor@linux.ibm.com,m:joelagnelf@nvidia.com,m:npiggin@gmail.com,m:linux-s390@vger.kernel.org,m:peterz@infradead.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ardb@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[frederic@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,linutronix.de,goodmis.org,google.com,ellerman.id.au,redhat.com,linaro.org,163.com,linux.ibm.com,suse.de,siemens.com,lists.ozlabs.org,arm.com,nvidia.com,infradead.org];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCPT_COUNT_TWELVE(0.00)[36];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 2788259DD1
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[localhost.localdomain:mid,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
+X-Rspamd-Queue-Id: 1FD855A318
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 21 Jan 2026 at 16:41, Mimi Zohar <zohar@linux.ibm.com> wrote:
->
-> On Mon, 2026-01-19 at 12:04 +0800, Coiby Xu wrote:
->
-> > diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-> > index 976e75f9b9ba..5dce572192d6 100644
-> > --- a/security/integrity/ima/Kconfig
-> > +++ b/security/integrity/ima/Kconfig
-> > @@ -311,6 +311,7 @@ config IMA_QUEUE_EARLY_BOOT_KEYS
-> >   config IMA_SECURE_AND_OR_TRUSTED_BOOT
-> >          bool
-> >          depends on IMA_ARCH_POLICY
-> > +       depends on INTEGRITY_SECURE_BOOT
-> >
-> >
-> > Another idea is make a tree-wide arch_get_secureboot i.e. to move
-> > current arch_ima_get_secureboot code to arch-specific secure boot
-> > implementation. By this way, there will no need for a new Kconfig option
-> > INTEGRITY_SECURE_BOOT. But I'm not sure if there is any unforeseen
-> > concern.
->
-> Originally basing IMA policy on the secure boot mode was an exception.  As long
-> as making it public isn't an issue any longer, this sounds to me.  Ard, Dave, do
-> you have any issues with replacing arch_ima_get_secureboot() with
-> arch_get_secureboot()?
+Le Tue, Jan 20, 2026 at 06:12:08PM +0530, Shrikanth Hegde a écrit :
+> 
+> Hi Frederic.
+> 
+> On 1/16/26 8:27 PM, Frederic Weisbecker wrote:
+> > I forgot to mention I haven't yet tested CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
+> > (s390 and powerpc).
+> > 
+> > Thanks.
+> 
+> 
+> tl;dr
+> 
+> I ran this on powerNV(Non virtualized) with 144 CPUs with below config. (default ones)
+> Patch *breaks* the cpu idle stats most of the time. idle values are wrong.
 
-I don't see an issue with that. If there is a legitimate need to
-determine this even if IMA is not enabled, then this makes sense.
+Right I somehow lost the TS_FLAG_INIDLE setting in tick_nohz_idle_enter(),
+which ruins the whole thing.
+
+You probably think I should have detected that with light testing and you're
+right. Not checking dmesg was a bit sloppy from my end...
+
+I'm fixing that and will send a v2 soonish.
+
+Thanks a lot for testing!
+
+-- 
+Frederic Weisbecker
+SUSE Labs
 
