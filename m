@@ -1,106 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-16103-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16101-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNoHGWjBcGmKZgAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16103-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 13:07:04 +0100
+	id IBoeNM6ucGmKZAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16101-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 11:47:42 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779EB567C1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 13:07:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37E25578B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 11:47:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dx2xJ6pR1z2yFg;
-	Wed, 21 Jan 2026 23:07:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dx19l0dz4z2yFg;
+	Wed, 21 Jan 2026 21:47:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768997220;
-	cv=none; b=YaULbPlUOwHfyd3e2yj+6+hsarff9lLhvOL5+rhi9NYIsgIw7RRn4ydM7Tv47AjfPA5YrDT4H2iLp2gzo4xLhUO9ydAK0lKQ1OfoT6dUixjlxZyPpyGhEkrhRUlDn+ZBQ01NZdKVTVgytrPf8Iq8XrfMk78iVsKjC2utYUEZ17EAq+CXVYx705v365OsB4pvMXylcC7tJ28mVxSrHjESOzsZj0YePVR6px/9WmjsrsJxcEHFNCZJysmUwX6uBhdKcIUV1vfc6CN3UpBc3DDX0286F43EHxAACoCMLhvocR0zE502ULomEn/cd43FrqM2zHn2QUHFC44IsOr9bB2R7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768997220; c=relaxed/relaxed;
-	bh=2DGCZ8EIP3Ii+3jUlQj/U+neLJaf8YM5JLMcsfoSkko=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mk9cwBwx6LoUy0jLjavvT3JdfyEjVwxkwV3lnblGi2MizEpf+6PQnJJDBK1XqRJ1FR0FPGrix1fqBhnpMMhVkteF9RN4X9tHHG6AR8e1ttFdp5BId4VJlFF3Jje2nlfzpLm+Nq0/cuB0/sqbJOiYWFZjIIRJuB1MFDver+FXAYAHqKlTa4OcdU4/lbFMKkfU2vx6vdoDGs/6h/MKwv4S4MmgKtnflZx8aRySec4ag+Z60wyHQFDpYSRGFyeOcddQQsny+MjHdKcLtnUb/JxyZmg+NG45tkhphl2HB/DZpUh7M0HNtz7R9EwIAuPMstqMzEIcCQc47gDUi9PrwxhMyQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gPtA9RNj; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12b; helo=mail-lf1-x12b.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::1029" arc.chain=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768992458;
+	cv=pass; b=nZz/EKSMQ6T4Demnh8u1IoHX7hcA0e2fKT5EEAlUXPd+mSDR1fbpAaJIo2uGLovisujtpPnq9x10xQYn+MU8qwKFL83arJO5qK+gKOePHF1/TGKUeVwMg3js69XmuvkR0rNRDZ4jLmtAw96aUTmPNJG4/BLbXqqiizhhSJaDBplLmCZjuN9GNggRZbVzoWNbG9tnD3eeZXjFfrfwgKb/Uuw6GAemzAs278AT/cobCjpn4uxhhChtn5EawcwBx7L9wwQGM+R/D1/xJpom7XBRc94rCYGF+K40hPWV4Caowl+6xD0/PKnZO7tnQniJwJhhtpaCf7rQMOVKpDDqk3aSmQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1768992458; c=relaxed/relaxed;
+	bh=/fMXkDh4NuIGqP7vK0ebKmRodxeqBxQ37RgaLup8t8A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F+aLTuX0uFtZndApY0Ghi3CtxkkI7ixG8u0X6TCjmWYV+iyQ02TxmsGm+V3ANkw2XPbSrSXftYLUjSzcH5n2OCj5pq6AUNcD0Hd7Ax8OBFJr8rgBaND4fMYiXTvhZ9HRTwlysHjLI3eogHSfHq3vcjItMQWTiBpcnEBT9qhw9gNCJKcNnhBoSD8HsM/be8fUbvBIAB6E6e5bh8zOiOhAEQfxCxGqCicNl07vOzDLaFNEq9sRTc/q1nJ71TPpbqbC6Qv9Y1mt73aPkpzF/sGPkeHBz8BTKmFhj5T0n4wlA90lQHGqf0Bn6g4/vKyM6yuXcq7SbnmFhkx8aLVECkGPdQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nAuZU9Ws; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gPtA9RNj;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nAuZU9Ws;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12b; helo=mail-lf1-x12b.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dx2xG4TGDz2xm5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jan 2026 23:06:57 +1100 (AEDT)
-Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-59b6f59c4f5so7413095e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jan 2026 04:06:57 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dx19h0x25z2xm5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jan 2026 21:47:35 +1100 (AEDT)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-35305538592so403808a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jan 2026 02:47:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768992452; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lM4ve5qdm+bzK/kapu3pkX874+YJjvNr0M1cSbmK01rwi79NL3ZscOocg4qDsoYpRL
+         iDZ33pgx32VmJ96JGXFsl7h+cYUMSj03y1UdcHiA4PSzv1tI97hDBQ2lrNgXZ9iE5RfJ
+         70MxpFNbpu/ZSEO5rWG/d+BGl3bOL8uN2DcESeD1bXpAGBIXZs4HaXOLNwnXbhuRjiCp
+         MYO0l5+UUlTqy3wry88VTmKRqeqcoEjRc/dpQKSwbjCnFkDELNnQniYc91V4RVdWRz1N
+         dw/AQ/Rf3vfrX8acQDBMenCpQkW6s+9avoS6lS+zd39l/grkXLgQvFixzZ5juFqLG6Fy
+         0hWA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/fMXkDh4NuIGqP7vK0ebKmRodxeqBxQ37RgaLup8t8A=;
+        fh=2KFU3Pdo2KETrmOOctvS1QYzb2btkmsHbbTRrwbGanE=;
+        b=RCrXvdk5SwngYpEjwT6K8IFWfcnJ3EmjGe/8JJp0S8icw3FTeZjXWxeNgd4mPuLpZe
+         FOk8gHpuNvLxDZZ+u+mVgkUCg/8bP8VP0xJnHiYPA5ceBq9k80J1MDT4za5wBnnTFYA4
+         W9IO8ls5ZgNYz5TA20VbFojUKre29e0tnyp5gFnAKYTLYPIUE2CZFW5uAwY1AcD3I8tP
+         Vb1i61/4Y1MgifW3TUMtnWbpEIlnwyY8DNo5VjnguGwTUzS9Bkl+d70nKOPEtHFJ8+5D
+         BDV5vTKDStDThPnfXwznS7KmRy1nA9NvCUHTGLm58MBAx6hLXzru3BJoZHAiCh7v7KcS
+         GayQ==;
+        darn=lists.ozlabs.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768997213; x=1769602013; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768992452; x=1769597252; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2DGCZ8EIP3Ii+3jUlQj/U+neLJaf8YM5JLMcsfoSkko=;
-        b=gPtA9RNjo8cZivPCUZU192NQPuusocoYxIwr1H4QhOdgTXBd6U2+68PmtcIfQhDSsH
-         pqdcJ7Y5esG8LHrqsqZlz/t35f4q6tzPl4d0uCgRHZ6KH3E92IhX4RS2xnzoofJ0rOOi
-         20QqXW88WmO0+i2e1Pv4WIa/FDb1v0dRMicY/r0/K/g89AxPy0W+nv43nxRUW54aimRK
-         UmQVJa8QXOrYacENIOR2N1S8TyJ6tM1Vo/Yw6HO3QEvNlqZ8otx+E/DWnDWXp2iuUgES
-         A4m6OpY/PXqWAKmyU80BBaZqFgq9jMP9rBPtNMh/O/A/Jy2Jjyf5S6nomlgb+KssJ6u4
-         rBKw==
+        bh=/fMXkDh4NuIGqP7vK0ebKmRodxeqBxQ37RgaLup8t8A=;
+        b=nAuZU9WsqIcG5VXr54IC/hCkKfvfusbdAzKGEYBG3oC21DSEDOeE37HmJz4yRv/otd
+         hDDBtded3daUCuXtb3d9r8Ew6Dtucxt4FoI5dRSxdD0xn4p793ZelRh+Jh49cDDBGQSA
+         4lSTbgP8XilkdtXUuHvpOqvz6Yf/oqt//+T2ccinFkbxaQe0CbnBpJkjewy03/U95AqT
+         cM7NgxvpkI2O0VSVc5SSOb7OSn+51HP+SDOI08pyMEW4v0M9d9rt3dmssR9LcKmJ41+2
+         2e8ZURXpsoqRSghTKH+sFxF0W+XnwowlaYWuo0H1WNUb6VrUj5imZ6VT8D0VExEMWIwJ
+         bH/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768997213; x=1769602013;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1768992452; x=1769597252;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=2DGCZ8EIP3Ii+3jUlQj/U+neLJaf8YM5JLMcsfoSkko=;
-        b=FTYKX3Soulov7XZaZ/xOp6Tiw9MZFxB4JDLC8NwxvcGntqDZw6UZgrst1e0zVEWgUx
-         9yROE1XIKlZorBvJpBvF8Tem8RdeH2hI7b6zT94eATeHrxBcp4cxLoSRQkidA4mjW5ol
-         lfiSMFPWB8zSS8l3Jth0tsTod/7wZtud2jr/kPpe+VLUEhzbm8jUMq2dD/ydw5MCzCIw
-         IBDnX6p8mJs+mQdbGfiSoswUscBTY0DvOc8xyyvqB0mv+ihXwXnnMjYvzWC1D6ICmX+t
-         8EuYTnatrxjl7U5+olA/DfyEdjc5npxtqKwfTNWIXeitMrsj0NvFOm5sQ2q3TV4ypoi9
-         7y1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWC49P16K38GAIk4daJxufvZXnYXzC0AS1CeBuEsm+heKYfamSZoQeqV1ZpyBQrpb6RbRCBhJ+oAyoAQns=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz2wLHDKMeryiYtrT7eMf9IzcmJ326Rxen5KySE1acDYY5pz7Zi
-	8uABK03ttz7aDBubxJ1bVHkmMZgOTaIhZ3DWOmb6ZCz1GEsV5V9ZeTkJlaGnYQ==
-X-Gm-Gg: AZuq6aLYVBO1+V33i9Wf6y0m1X9CLxZ+OKoHWaBUJ7IIw6bBdDuyNLmYrqSpA2O3Cge
-	aIs9FkTzMYVDJvt0A1+6FzfWehhLKo5lLxMWS7qh5y01zMMAO7uYnZK82/NjrORrkLyjx9CMrkS
-	xrnPdr02dBpg/pegUCQ176LPYM6SGvYY14tAKmDfkxnp0gQXMonpF6NRZLmCZSpIdk0/FvGx4ki
-	yLn0oOrtTkPtoM9CLSRXbuM5gyF1ueHgzA+50wZjeEck0SLDP3L6kM3RBA6GYGod8bOnjI32RC2
-	EkaWOLomEUp93/j3E1l4ULxFTWF2VTqB+/NSX1m+5nhL1Y5RzFrPxpoYoGQM065YNHjNPwd/+V6
-	a+TqcExcFwsbEt5PZtDFPAEgnSclqIQiwYb/Jt3jC1vZJybXC8XMrTc4i9IjMwmNqiFKuUNlHor
-	8dWnb/coPYvRT8IZPnbBBTqdHoKcPl5AwRsbc+YC8lhsomVCqW2bjA
-X-Received: by 2002:a05:600c:8b55:b0:477:9f34:17b8 with SMTP id 5b1f17b1804b1-4801e2fbd61mr238692885e9.1.1768990819461;
-        Wed, 21 Jan 2026 02:20:19 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801e8d77besm306630785e9.14.2026.01.21.02.20.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 02:20:19 -0800 (PST)
-Date: Wed, 21 Jan 2026 10:20:17 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: kernel test robot <lkp@intel.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Huacai Chen
- <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman <mpe@ellerman.id.au>, Paul Walmsley <pjw@kernel.org>, Palmer
- Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Heiko
- Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander
- Gordeev <agordeev@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, Kees Cook <kees@kernel.org>, "Gustavo A. R.
- Silva" <gustavoars@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Mark Rutland
- <mark.rutland@arm.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Ard
- Biesheuvel <ardb@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
- llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] randomize_kstack: Unify random source across
- arches
-Message-ID: <20260121102017.539b5531@pumpkin>
-In-Reply-To: <202601210752.6Nsv9et9-lkp@intel.com>
-References: <20260119130122.1283821-4-ryan.roberts@arm.com>
-	<202601210752.6Nsv9et9-lkp@intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        bh=/fMXkDh4NuIGqP7vK0ebKmRodxeqBxQ37RgaLup8t8A=;
+        b=P11MAGA4Q1QT5LZh90E0hFaRjPzShOP0xTdgrlEhSzmyoOn5N+BSA+Fdck8eGxq7ZW
+         VW2FnoZ4iCev4U+u5Nh+W1C0tN7kk0A4S/qC71kD9qV/rH9Rh5IgsY4u8c2Y/vYyV9WR
+         KLj0EgCKd33jXdTHRf4RjrvvtMmLILFV8EOFp0k4bVj8p7zSxkGPlUPKkenxJ2ZpRBfD
+         h/di68nmBGdVxMxt8s4jFQ0evjbEdzoaxwLSVQQ/5mpHEdeePb8aQnbE35ZZdyUaXWr1
+         aKCyUVprgMYIn2eFy5TkYcLk+qzVrAYwGuuR+B4ZWeugK4OrVM2hzqLtRcKbgaONQeqC
+         BynA==
+X-Forwarded-Encrypted: i=1; AJvYcCUbqVnWdw79mmEG6oqCbpPrHYOC+qB8G1G+N1Wp8uBFvGGNG/kE2lu9ra9EXqLpWS+2mdDP8t5E8+Fo2Tc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzHel3e0eEPJZJOMNL2jeLX3KAiw9gR6Zs33YzmGLdMMOYMrQ3O
+	NSXkmbstispcUbVYnQ9c40QyCohqaeLLjUUEZxTQwQ3DQdgOt/TsBrkkt/6AU9hFCZOhbLmBL4N
+	SmPex6s5nC2I3Vde0YMPqQr5PiI6W42g=
+X-Gm-Gg: AZuq6aKv5HCnlWm8ZvHSo+c2jj+reDtXMWE+ot8Rd7yd2eUNrGc+Jr2eM13QI8f1RbX
+	uKBU3kIjxJdwPVU17Gf1mckqGOUR7Zyix+ALXhOchSzGRybnNnxZW46MepwI+Qaqzlfk2irdpYg
+	n/sfH8Od3W6DtZGCOYrlitv1p6mCgZXJx6mNfVWyOPr8l2iK+r1BWvXDWNjBoiFIMqfF6tdofXh
+	ObkucU0VxMwt1ldjByTirWWWZoZdwlQiyTdOJeK9+YpuvM8tiqluugdLyrJQzJmGUTcrYc=
+X-Received: by 2002:a17:90b:3b8d:b0:340:b908:9665 with SMTP id
+ 98e67ed59e1d1-3527329ea06mr14234623a91.37.1768992452459; Wed, 21 Jan 2026
+ 02:47:32 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -114,85 +104,166 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20260120035210.1593742-1-shengjiu.wang@nxp.com>
+ <20260120035210.1593742-3-shengjiu.wang@nxp.com> <20260121-careful-beige-iguana-c32bbd@quoll>
+In-Reply-To: <20260121-careful-beige-iguana-c32bbd@quoll>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Wed, 21 Jan 2026 18:47:19 +0800
+X-Gm-Features: AZwV_QjDpxZv6jt8rBYtLCaZTNVLi3Y8jythwZEftwLkFpk7naOfOY6Hgw_qq24
+Message-ID: <CAA+D8ANy6-e3RkhjSKWfqEcxEnsZrEuJvz7Bmp5q6ZO4x3RfVg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] ASoC: dt-bindings: fsl,sai: Add AUDMIX mode
+ support on i.MX952
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
+	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Spamd-Result: default: False [-1.71 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:lkp@intel.com,m:ryan.roberts@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:tglx@linutronix.de,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:kees@kernel.org,m:gustavoars@kernel.org,m:arnd@arndb.de,m:mark.rutland@arm.com,m:Jason@zx2c4.com,m:ardb@kernel.org,m:jeremy.linton@arm.com,m:llvm@lists.linux.dev,m:oe-kbuild-all@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-s390@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:krzk@kernel.org,m:shengjiu.wang@nxp.com,m:Xiubo.Lee@gmail.com,m:festevam@gmail.com,m:nicoleotsuka@gmail.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:perex@perex.cz,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:devicetree@vger.kernel.org,m:shawnguo@kernel.org,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:XiuboLee@gmail.com,m:conor@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[32];
+	FORGED_SENDER(0.00)[shengjiuwang@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-16101-lists,linuxppc-dev=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16103-lists,linuxppc-dev=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[shengjiuwang@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[nxp.com,gmail.com,kernel.org,perex.cz,suse.com,vger.kernel.org,lists.ozlabs.org,pengutronix.de,lists.linux.dev,lists.infradead.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	TAGGED_RCPT(0.00)[linuxppc-dev,dt];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,01.org:url,git-scm.com:url,lists.ozlabs.org:rdns,lists.ozlabs.org:helo]
-X-Rspamd-Queue-Id: 779EB567C1
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: D37E25578B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 21 Jan 2026 07:50:16 +0800
-kernel test robot <lkp@intel.com> wrote:
+On Wed, Jan 21, 2026 at 4:03=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> On Tue, Jan 20, 2026 at 11:52:08AM +0800, Shengjiu Wang wrote:
+> > The SAI can connect to AUDMIX, but AUDMIX can be bypassed or not on
+> > i.MX952, so add 'fsl,sai-amix-mode' property for this feature, with
+> > this property present, then SAI driver will try to config the setting,
+>
+> I am still not sure this is hardware static property. You say "can be
+> bypassed", so I imagine same board could have it bypassed or not,
+> depending on use case (so mixers).
 
-> Hi Ryan,
-> 
-> kernel test robot noticed the following build warnings:
-> 
-> [auto build test WARNING on akpm-mm/mm-everything]
-> [also build test WARNING on linus/master v6.19-rc6 next-20260119]
-> [cannot apply to tip/sched/core kees/for-next/hardening kees/for-next/execve]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Ryan-Roberts/randomize_kstack-Maintain-kstack_offset-per-task/20260119-210329
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-> patch link:    https://lore.kernel.org/r/20260119130122.1283821-4-ryan.roberts%40arm.com
-> patch subject: [PATCH v4 3/3] randomize_kstack: Unify random source across arches
-> config: x86_64-allmodconfig (https://download.01.org/0day-ci/archive/20260121/202601210752.6Nsv9et9-lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260121/202601210752.6Nsv9et9-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202601210752.6Nsv9et9-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
-> >> vmlinux.o: warning: objtool: do_syscall_64+0x2c: call to preempt_count_add() leaves .noinstr.text section
-> >> vmlinux.o: warning: objtool: __do_fast_syscall_32+0x3d: call to preempt_count_add() leaves .noinstr.text section  
-> 
+Yes, depending on the use case.
+1.  When bypassed,   the SAI output goes to codec directly.
+      like: SAI -> Codec
 
-When CONFIG_DEBUG_PREEMPT or CONFIG_TRACE_PREEMP_TOGGLE is set
-the preempt_count_[en|dis]able() calls inside [put|get]_cpu_var()
-become real functions.
+2.  AUDMIX mode:  the SAI output goes to AUDMIX.
+      like: SAI -> AUDMIX-> Codec
 
-Maybe __preempt_count_[inc|dec]() can be called (with this_cpu_ptr()).
+Will add above info in the commit message.
 
-	David
+>
+> > fsl,sai-amix-mode =3D <0> is bypass mode, fsl,sai-amix-mode =3D <1> is
+> > the AUDMIX mode.
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  .../devicetree/bindings/sound/fsl,sai.yaml       | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl,sai.yaml b/Doc=
+umentation/devicetree/bindings/sound/fsl,sai.yaml
+> > index d838ee0b61cb..7808c324eebc 100644
+> > --- a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> > +++ b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> > @@ -133,6 +133,13 @@ properties:
+> >          - description: dataline mask for 'rx'
+> >          - description: dataline mask for 'tx'
+> >
+> > +  fsl,sai-amix-mode:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+>
+> Anyway, string is more readable.
+
+Ok,  will use string
+>
+> > +    description:
+> > +      The audmix module is bypassed from hardware or not.
+> > +      Bypass AUDMIX(0), AUDMIX mode(1)
+>
+> Drop last sentence and use enum [ bypass, mode-1-whatever-this-means ]
+>
+> > +    enum: [0, 1]
+>
+> What is the default? What is the meaning of lack of this property?
+>
+
+  fsl,sai-amix-mode:
+    $ref: /schemas/types.yaml#/definitions/string
+    description:
+      The audmix module is bypassed from hardware or not.
+    enum: [none, bypass, audmix]
+    default: none
+
+I'd like to use the above definition.  add 'none' for default.
+Which means no audmix connection in hardware. then we don't need to
+bypass or not-bypass audmix.
+
+
+> > +
+> >    fsl,sai-mclk-direction-output:
+> >      description: SAI will output the SAI MCLK clock.
+> >      type: boolean
+> > @@ -180,6 +187,15 @@ allOf:
+> >        properties:
+> >          fsl,sai-synchronous-rx: false
+> >
+> > +  - if:
+> > +      required:
+> > +        - fsl,sai-amix-mode
+> > +    then:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            const: fsl,imx952-sai
+>
+> There is no such compatible.
+
+It is in another patch:
+https://www.spinics.net/lists/kernel/msg6004158.html
+
+Best regards
+Shengjiu Wang
+>
+> > +
+> >  required:
+> >    - compatible
+> >    - reg
+> > --
+> > 2.34.1
+> >
 
