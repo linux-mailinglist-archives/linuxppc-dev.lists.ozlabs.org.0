@@ -1,116 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-16105-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16104-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qErjAdvRcGkOaAAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16105-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 14:17:15 +0100
+	id gEvQGHrHcGkNZwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16104-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 13:32:58 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E9C576B5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 14:17:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7585B56D32
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 13:32:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dx4V81Z8Qz2yFg;
-	Thu, 22 Jan 2026 00:17:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dx3WC0Bbqz308l;
+	Wed, 21 Jan 2026 23:32:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769001424;
-	cv=none; b=Pr/m9M1smJKzrWVHiTaI0Fr98/l3sNyb37IhEmnJhOW1byOUD/GMbisYzK2wwHJwIEGlCvyBpNvx38p9msSiOH7/LlD8PYsZ3yVI4aYoc/s1pIKZsPZEDfSNO7E4d9CzXrRjujO0ZYllU12brISXxOZZBv3+/fsWfrm8I6gwawWsuifYdT4z8Xxvtj9hEZJQf9lgZCCn7/8DmSl6JxHtmibuOqNUElBJ/qkTG+Ha+sN6vfX6k6ygXvbrOeaLLIG1k5wr+f8Cht15p0L0MP79VzwbC5z9qmKvC3tzp2xt/iNtiO2ZVSzlGrWfZjatqjaBOZGwwfevJZ2gmeED4Yx1Rw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768998774;
+	cv=none; b=McREWI6YX9igt9AZmuAORyP/XI3QkyN5u0C99R5pmIGidQ06anTxm05dFUB4hn+j7qQYWgspwy58oHi/1uOV07P3AdvWVv0yG9FMlc7swUWG119igjCfS2SYGOejLYjACxrK+43FqBTDax7lLzZQsfhucfdWYCerQstiTsg6biVZg5EqG9GhOVofy/iupBDsRmOyJ7YPoXCDmkEt/+/R/rsGbptbZHeawCHw91a6475TXXvJJxEXxuMfht/8H6WBam5aWugE2zEooJ39FpgR8fQGvrbsnKUsnHKZWz+o1wQaimwYwhMirJCtsA033UAxTsv0umxjUtxtR4KOYxDPDg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769001424; c=relaxed/relaxed;
-	bh=SSHc8rNHSFQIqufuQ00BO+yiuuLDn3Q7FpAC5GvBRfI=;
+	t=1768998774; c=relaxed/relaxed;
+	bh=qqEAV4XNbENaQF1wnfbJbCZQX0jG6pyPPVu7PJw5gtY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YJWanJ70A6kTnqUq0znF13OUdLmw7pSVQc4NeoYKgHe3BsDpV4UpUBND9RiFMi4IPdZdH//neFjsPGb7sD5Qe0aHEyTP5G3dT9bbfTUwIXXgL698y8PimP1K0QkcwUfX8va3TkFMwwGEfBQy7dkHkC+XUoEqNPz3P+eE4EuNutoO17DMeUrOkCuwj7vHddFpbP3bhAsk+4oQbbmc/H/Mw0pmXaJjqBhrZWSYQSiOgHkE3E1wPBUuQ3VxV463neRttLWiarKRLqO1Dt6cAh/AW8CEdC+CRZCIe0ZLCVeDUSit5AKvQzvkpdVk676cFKRmuNXu4dZl2MYm+EMPsJO8ig==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CIUNl8BE; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CIUNl8BE;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dx4V65W2qz2xpk
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 00:17:02 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60L0VbIW020940;
-	Wed, 21 Jan 2026 12:17:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=SSHc8rNHSFQIqufuQ00BO+yiuuLDn3
-	Q7FpAC5GvBRfI=; b=CIUNl8BEsPFbzX+lw6/2mACDxBDifX+KbzA2rEdGVb9ASC
-	0X27EQdynzSa3jBd/CfUpzZoCJDOOOWJuV//lUYTyg/1TRxx5majL39LXNezeDJ8
-	kQcFXDop0PLEW126UG/NmLu+HJl29A2QwNwCz+YbpM7MS80DBtjAhXMZFT3IbYK7
-	a+TiB6ntpNWbEGoGdAlFGg8v19tTvAp5g2fL9wX3J4HDZr1lKPjIs5L0Hl467T1j
-	3hI2MOgez+UltHPpmuX4yps7IZ5u9xTa4S+umRghz6bTAAOET1hbOywIbO22sgGu
-	WuS2YEaBurnzXgWDVqXb8FjqeNofZSBwHUfF+jww==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br0ufjvr5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Jan 2026 12:17:56 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60LCFvs2031972;
-	Wed, 21 Jan 2026 12:17:55 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br0ufjvr1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Jan 2026 12:17:55 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60LB52Zo009295;
-	Wed, 21 Jan 2026 12:17:54 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4brp8kbqtd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Jan 2026 12:17:54 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60LCHo6f51708412
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 Jan 2026 12:17:50 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 529B120043;
-	Wed, 21 Jan 2026 12:17:50 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D127720040;
-	Wed, 21 Jan 2026 12:17:49 +0000 (GMT)
-Received: from osiris (unknown [9.52.214.206])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 21 Jan 2026 12:17:49 +0000 (GMT)
-Date: Wed, 21 Jan 2026 13:17:48 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Anna-Maria Behnsen <anna-maria@linutronix.de>,
-        Ben Segall <bsegall@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ingo Molnar <mingo@redhat.com>, Jan Kiszka <jan.kiszka@siemens.com>,
-        Joel Fernandes <joelagnelf@nvidia.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Kieran Bingham <kbingham@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
-        Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Xin Zhao <jackzxcui1989@163.com>, linux-pm@vger.kernel.org,
-        linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 05/15] s390/time: Prepare to stop elapsing in
- dynticks-idle
-Message-ID: <20260121121748.9719Bab-hca@linux.ibm.com>
-References: <20260116145208.87445-1-frederic@kernel.org>
- <20260116145208.87445-6-frederic@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gfLT58vG4gR64IP040x6W8OVkvXYq5L6vzHxXFv9JYQXIe62TcdAZRMU7drE8xnEVAAeHItWtTrAsptABd5V8ub33Hg74qtf+MqPnmCUeVFThsQN69q/54SfwI2JpCmJ8m6GUaVPB9pZvfqw1b7sQTLkHFfK4pSeFGC2dLqjbew6IZN6Bkqo7YsGkklLriWullcxWVF4NRUDe2FD3MhQfZPOhuUbljIpBIMdB7qJctybqa+4bX/jBmDd4sGzg5ETz5ZAZtkY8D+A2f5VbN9PSptfSGhp8JE7Ehxo4qZJ++Z9JQcvzi0IUvVi6Viamf8feJTRIt4RDrVXjVWPF4vuBg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dx3W92bJhz2xqD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jan 2026 23:32:51 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D87A81476;
+	Wed, 21 Jan 2026 04:32:12 -0800 (PST)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 16A163F740;
+	Wed, 21 Jan 2026 04:32:13 -0800 (PST)
+Date: Wed, 21 Jan 2026 12:32:08 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: kernel test robot <lkp@intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	David Laight <david.laight.linux@gmail.com>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] randomize_kstack: Unify random source across
+ arches
+Message-ID: <aXDHSIn3hIvESjXg@J2N7QTR9R3>
+References: <20260119130122.1283821-4-ryan.roberts@arm.com>
+ <202601210752.6Nsv9et9-lkp@intel.com>
+ <46c7d109-b076-4bb3-9e6e-36c34c546c20@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -126,144 +81,112 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260116145208.87445-6-frederic@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 4dp3fud74MN0mKdk4Vb2hrDyxWmL7L-f
-X-Proofpoint-ORIG-GUID: uWfZYWtb_gOtkqw0ik-_HqLB8BLcrAKJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIxMDEwMyBTYWx0ZWRfX4z/dW1y0Q/Hd
- EFIZs+4cm6/dy3v0Odb0kj5kmHTUZTltobqWC9UybC2DocWdzHfttH0iyqFOk/VsjYKaZng0Aaa
- HPEgeEzFGCLiVQhsUwQb+O8Gk95ol4S55n7EY89gvXyRw0dkK+IPZTM8CXpqfphb3Rjm8RZSoNb
- 3h83Kawj1VeypKnpJcnPuWyak2coszL8WCgpJ/fzM19i3In3R6ErJkO1qEh9OABDLLW64qB3Yn8
- OAfAaQwkAIZqB5Q6JxC0p4PEbaqMzrZPIlb+f3V8k6YymA1h7/sWfzPMoFsY0JMPc2zJ0f9Il90
- Bf/OmORw5AaE87qhmayZVR0j/c1p+AEt5eavs/1AyuIxm4Rrl0prDah+NpZQ6z+4tWwwvp0eErJ
- JjLZV3Qa3wcA7B+0f0AAcWE0FaEtGFiTNuRgKmFDgZUySeSjU2VuEb/WVkMgQNuNSARf7p6g3Tg
- ulW9/72BDr/n6XWV3CQ==
-X-Authority-Analysis: v=2.4 cv=bopBxUai c=1 sm=1 tr=0 ts=6970c3f4 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=hVwK31ck3tplLBhVBggA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-21_01,2026-01-20_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 adultscore=0 suspectscore=0 impostorscore=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- clxscore=1011 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
- definitions=main-2601210103
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <46c7d109-b076-4bb3-9e6e-36c34c546c20@arm.com>
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Spamd-Result: default: False [0.29 / 15.00];
+X-Spamd-Result: default: False [0.59 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16105-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,linux.ibm.com,linutronix.de,google.com,gmail.com,arm.com,redhat.com,siemens.com,nvidia.com,suse.de,ellerman.id.au,infradead.org,goodmis.org,linaro.org,163.com,lists.ozlabs.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:frederic@kernel.org,m:linux-kernel@vger.kernel.org,m:chleroy@kernel.org,m:rafael@kernel.org,m:agordeev@linux.ibm.com,m:anna-maria@linutronix.de,m:bsegall@google.com,m:boqun.feng@gmail.com,m:borntraeger@linux.ibm.com,m:dietmar.eggemann@arm.com,m:mingo@redhat.com,m:jan.kiszka@siemens.com,m:joelagnelf@nvidia.com,m:juri.lelli@redhat.com,m:kbingham@kernel.org,m:maddy@linux.ibm.com,m:mgorman@suse.de,m:mpe@ellerman.id.au,m:neeraj.upadhyay@kernel.org,m:npiggin@gmail.com,m:paulmck@kernel.org,m:peterz@infradead.org,m:rostedt@goodmis.org,m:svens@linux.ibm.com,m:tglx@linutronix.de,m:urezki@gmail.com,m:vschneid@redhat.com,m:gor@linux.ibm.com,m:vincent.guittot@linaro.org,m:viresh.kumar@linaro.org,m:jackzxcui1989@163.com,m:linux-pm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[hca@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[mark.rutland@arm.com,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16104-lists,linuxppc-dev=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[32];
+	FORGED_RECIPIENTS(0.00)[m:ryan.roberts@arm.com,m:lkp@intel.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:tglx@linutronix.de,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:kees@kernel.org,m:gustavoars@kernel.org,m:arnd@arndb.de,m:Jason@zx2c4.com,m:ardb@kernel.org,m:jeremy.linton@arm.com,m:david.laight.linux@gmail.com,m:llvm@lists.linux.dev,m:oe-kbuild-all@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-s390@vger.kernel.org,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[34];
-	RCVD_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hca@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	R_DKIM_NA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mark.rutland@arm.com,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[intel.com,arm.com,kernel.org,linux.ibm.com,ellerman.id.au,dabbelt.com,eecs.berkeley.edu,linutronix.de,redhat.com,alien8.de,linux.intel.com,arndb.de,zx2c4.com,gmail.com,lists.linux.dev,vger.kernel.org,lists.infradead.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 78E9C576B5
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[git-scm.com:url,lists.ozlabs.org:rdns,lists.ozlabs.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 7585B56D32
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Jan 16, 2026 at 03:51:58PM +0100, Frederic Weisbecker wrote:
-> diff --git a/arch/s390/kernel/idle.c b/arch/s390/kernel/idle.c
-> index 39cb8d0ae348..54bb932184dd 100644
-> --- a/arch/s390/kernel/idle.c
-> +++ b/arch/s390/kernel/idle.c
-> @@ -35,6 +35,12 @@ void account_idle_time_irq(void)
->  			this_cpu_add(mt_cycles[i], cycles_new[i] - idle->mt_cycles_enter[i]);
->  	}
->  
-> +	WRITE_ONCE(idle->idle_count, READ_ONCE(idle->idle_count) + 1);
-> +
-> +	/* Dyntick idle time accounted by nohz/scheduler */
-> +	if (idle->idle_dyntick)
-> +		return;
-> +
->  	idle_time = lc->int_clock - idle->clock_idle_enter;
->  
->  	lc->steal_timer += idle->clock_idle_enter - lc->last_update_clock;
-> @@ -45,7 +51,6 @@ void account_idle_time_irq(void)
->  
->  	/* Account time spent with enabled wait psw loaded as idle time. */
->  	WRITE_ONCE(idle->idle_time, READ_ONCE(idle->idle_time) + idle_time);
-> -	WRITE_ONCE(idle->idle_count, READ_ONCE(idle->idle_count) + 1);
->  	account_idle_time(cputime_to_nsecs(idle_time));
->  }
+On Wed, Jan 21, 2026 at 10:52:21AM +0000, Ryan Roberts wrote:
+> On 20/01/2026 23:50, kernel test robot wrote:
+> > Hi Ryan,
+> > 
+> > kernel test robot noticed the following build warnings:
+> > 
+> > [auto build test WARNING on akpm-mm/mm-everything]
+> > [also build test WARNING on linus/master v6.19-rc6 next-20260119]
+> > [cannot apply to tip/sched/core kees/for-next/hardening kees/for-next/execve]
+> > [If your patch is applied to the wrong git tree, kindly drop us a note.
+> > And when submitting patch, we suggest to use '--base' as documented in
+> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> > 
+> > url:    https://github.com/intel-lab-lkp/linux/commits/Ryan-Roberts/randomize_kstack-Maintain-kstack_offset-per-task/20260119-210329
+> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> > patch link:    https://lore.kernel.org/r/20260119130122.1283821-4-ryan.roberts%40arm.com
+> > patch subject: [PATCH v4 3/3] randomize_kstack: Unify random source across arches
+> > config: x86_64-allmodconfig (https://download.01.org/0day-ci/archive/20260121/202601210752.6Nsv9et9-lkp@intel.com/config)
+> > compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260121/202601210752.6Nsv9et9-lkp@intel.com/reproduce)
+> > 
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202601210752.6Nsv9et9-lkp@intel.com/
+> > 
+> > All warnings (new ones prefixed by >>):
+> > 
+> >>> vmlinux.o: warning: objtool: do_syscall_64+0x2c: call to preempt_count_add() leaves .noinstr.text section
+> >>> vmlinux.o: warning: objtool: __do_fast_syscall_32+0x3d: call to preempt_count_add() leaves .noinstr.text section
+> 
+> Hmm, clearly Dave was correct not to rush this through... yuck. I'll take a
+> look, but I guess there is no rush if this won't go into -next until shortly
+> after -rc1.
 
-This breaks idle time reporting (aka enabled wait psw time) via the per-cpu
-sysfs files (see show_idle_time()). That is: the second WRITE_ONCE() should
-also go above the early return statement; but of course this leads to other
-dependencies...
+Sorry, I should have checked the entry sequencing more thoroughly when I
+reviewed this,.
 
-Not sure what to do with this. I thought about removing those sysfs files
-already in the past, since they are of very limited use; and most likely
-nothing in user space would miss them.
+From a quick look, I suspect the right thing to do is to pull the call
+to add_random_kstack_offset() a bit later in a few cases; after the
+entry logic has run, and after instrumentation_begin() (if the arch code
+uses that), such that it doesn't matter if this gets instrumented.
 
-Anyway, you need to integrate the trivial patch below, so everything compiles
-for s390. It also _seems_ to work.
+Considering the callers of add_random_kstack_offset(), if we did that:
 
-Guess I need to spend some more time on accounting and see what it would take
-to convert to VIRT_CPU_ACCOUNTING_GEN, while keeping the current precision and
-functionality.
+* arm64 is fine as-is.
 
-diff --git a/arch/s390/include/asm/idle.h b/arch/s390/include/asm/idle.h
-index 2770c4f761e1..285b3da318d6 100644
---- a/arch/s390/include/asm/idle.h
-+++ b/arch/s390/include/asm/idle.h
-@@ -8,6 +8,7 @@
- #ifndef _S390_IDLE_H
- #define _S390_IDLE_H
- 
-+#include <linux/percpu-defs.h>
- #include <linux/types.h>
- #include <linux/device.h>
- 
-@@ -20,6 +21,8 @@ struct s390_idle_data {
- 	unsigned long	mt_cycles_enter[8];
- };
- 
-+DECLARE_PER_CPU(struct s390_idle_data, s390_idle);
-+
- extern struct device_attribute dev_attr_idle_count;
- extern struct device_attribute dev_attr_idle_time_us;
- 
-diff --git a/arch/s390/kernel/idle.c b/arch/s390/kernel/idle.c
-index 54bb932184dd..e3fe64e7adbe 100644
---- a/arch/s390/kernel/idle.c
-+++ b/arch/s390/kernel/idle.c
-@@ -19,7 +19,7 @@
- #include <asm/smp.h>
- #include "entry.h"
- 
--static DEFINE_PER_CPU(struct s390_idle_data, s390_idle);
-+DEFINE_PER_CPU(struct s390_idle_data, s390_idle);
- 
- void account_idle_time_irq(void)
- {
+* loongarch is fine as-is.
+
+* powerpc's system_call_exception() would need this moved after the
+  user_exit_irqoff(). Given that function is notrace rather than
+  noinstr, it looks like there are bigger extant issues here.
+
+* riscv is fine as-is.
+
+* s390's __do_syscall() would need this moved after
+  enter_from_user_mode().
+
+* On x86:
+  - do_int80_emulation() is fine as-is.
+  - int80_emulation() is fine as-is.
+  - do_int80_syscall_32() would need this moved after
+    instrumentation_begin().
+  - __do_fast_syscall_32() would need this moved after
+    instrumentation_begin().
+  - do_syscall_64() would need this moved after instrumentation_begin().
+
+Mark.
 
