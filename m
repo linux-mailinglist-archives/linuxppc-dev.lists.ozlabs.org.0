@@ -1,71 +1,107 @@
-Return-Path: <linuxppc-dev+bounces-16104-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16110-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEvQGHrHcGkNZwAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16104-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 13:32:58 +0100
+	id WD86HyUBcWmgbAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16110-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 17:39:01 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7585B56D32
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 13:32:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B6795A01A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jan 2026 17:38:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dx3WC0Bbqz308l;
-	Wed, 21 Jan 2026 23:32:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dx8z30dW7z2xrC;
+	Thu, 22 Jan 2026 03:38:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1768998774;
-	cv=none; b=McREWI6YX9igt9AZmuAORyP/XI3QkyN5u0C99R5pmIGidQ06anTxm05dFUB4hn+j7qQYWgspwy58oHi/1uOV07P3AdvWVv0yG9FMlc7swUWG119igjCfS2SYGOejLYjACxrK+43FqBTDax7lLzZQsfhucfdWYCerQstiTsg6biVZg5EqG9GhOVofy/iupBDsRmOyJ7YPoXCDmkEt/+/R/rsGbptbZHeawCHw91a6475TXXvJJxEXxuMfht/8H6WBam5aWugE2zEooJ39FpgR8fQGvrbsnKUsnHKZWz+o1wQaimwYwhMirJCtsA033UAxTsv0umxjUtxtR4KOYxDPDg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::534"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769013534;
+	cv=none; b=O9KTHVc2zIY7MCyaPIDP7foNSTHQW2aUggxUqFo82PdcMW8+l4dYAmH6xowCcR0vIv/BHl7YZXDCHk/F99x76Ln2CWLGsMm5bqdHiD0+0NE0cuNLxWH9ZYqy8AuqLksTcQ9qTv2ryANWgjnzd6qSbtBYY/oYcb3WyYyA0+mnaz+8onTRv5EQX/ZXFhLX5EPoAaayJ0WMbmT+Zi/dJaPEFy1us4oJsC8KZ3+ZhLx4qX+HwbUSNDnmcm/+zwbxpflPs7H8z3TpxRzHgsk1it0RNccqrJXcK5PFo+upnLaYnUUpR7WwZ3y5hga31gCbqL7gUecHHVg+oqXuRBcfAMGIZw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1768998774; c=relaxed/relaxed;
-	bh=qqEAV4XNbENaQF1wnfbJbCZQX0jG6pyPPVu7PJw5gtY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gfLT58vG4gR64IP040x6W8OVkvXYq5L6vzHxXFv9JYQXIe62TcdAZRMU7drE8xnEVAAeHItWtTrAsptABd5V8ub33Hg74qtf+MqPnmCUeVFThsQN69q/54SfwI2JpCmJ8m6GUaVPB9pZvfqw1b7sQTLkHFfK4pSeFGC2dLqjbew6IZN6Bkqo7YsGkklLriWullcxWVF4NRUDe2FD3MhQfZPOhuUbljIpBIMdB7qJctybqa+4bX/jBmDd4sGzg5ETz5ZAZtkY8D+A2f5VbN9PSptfSGhp8JE7Ehxo4qZJ++Z9JQcvzi0IUvVi6Viamf8feJTRIt4RDrVXjVWPF4vuBg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dx3W92bJhz2xqD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jan 2026 23:32:51 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D87A81476;
-	Wed, 21 Jan 2026 04:32:12 -0800 (PST)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 16A163F740;
-	Wed, 21 Jan 2026 04:32:13 -0800 (PST)
-Date: Wed, 21 Jan 2026 12:32:08 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: kernel test robot <lkp@intel.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	David Laight <david.laight.linux@gmail.com>, llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org
+	t=1769013534; c=relaxed/relaxed;
+	bh=7MFyGEBMKUH9OPAqYqwZCoqkE5S+eIGaZJE0/gf+bsI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OXfDyPB93Qd8G3z+ttEGJ++LstiK4XI48T2X9BwQkoHEdt58wRP9gX8Ch7FQiWYoRinJTK3GuAY5WbF9op7seG8PY2KxV5fVyfiULtlm6xxd17V2iid3xWIzjGo4I7kJMXOrwJruhjnBtUXRohnYvtWXR2z3poXTi+0ag7crjo0iIQP4MvoAFBjD9bQVK0dmne3em7Mdnf0271+L24v2Nf0s8/ZoMuhgMmEdYM7/rpXwKoedMnOTzJ0YssLbFWbHS2L1280s5s/P8OYzby3gs5Chg7R0EP6X+rRHDiOKbcM8s3KDwGf1Hbcaji/kGfjbwkorxE1FuUkuhdXvk75KWA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=SrWk5meI; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=SrWk5meI;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=david.laight.linux@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dx8z13Hw1z2xpk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 03:38:52 +1100 (AEDT)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-64b92abe63aso57027a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jan 2026 08:38:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769013525; x=1769618325; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7MFyGEBMKUH9OPAqYqwZCoqkE5S+eIGaZJE0/gf+bsI=;
+        b=SrWk5meIJCC8BJur3fxb4EOVnFaM5LUP7D8wu92m30lr3ndr8Fuvk3b9yktDrN5uOT
+         lCY+CzVnr2UYoS7VbdXIx36AUyPzf3m5VORS4Ibaj1W3E61SZJydhXm/knqYxZr11EAk
+         q7HsXqYBhvP+c5wlvXcH3h1EHrAQxq4B7q5In+NAX5ztYbPQ2uGw+eNJnrnBhQ0Gec/u
+         ku+c77+q/zclajYH3DztBBCXuV2nZGDRdVfQ87IuW2T6IMvcbv3RcWFFJCKdobG0PHwG
+         AMau9dUdPgG/lidj1enjE0nYEYRzaFwNUgiTtnKMdOLioE2dxIsg27GPskCMaMMwv5iW
+         upow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769013525; x=1769618325;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7MFyGEBMKUH9OPAqYqwZCoqkE5S+eIGaZJE0/gf+bsI=;
+        b=Hr1+0x/3d4FMJwRMyJtNPC+gdfwtPG1eih4XR4mUWyW7+e3KQwYa2qFRNGufLDEEsj
+         HtvooMrDmQ5NanUS8Ify4mkGdKhST4e+oIY2vVKqgTOR4WGWQwiur3BxLojjSCIldwfV
+         qT37lylCDMAEigJrT9qYe/uz4nsx9JzTDsBiGh0zCBSBcMqyIDPLHpqTgCTs2y6rFvYy
+         YST1Krt0BSRcOPDKpBNT0m/yQFjPu/EC60uxNPkGVyosc8N8FWJGyL0q+/whLfcSDslg
+         V1+BK8lquAF+uxdEUmqvoPHozdGOBRz6cqWmxPYSHJLRmUnpJbHwkNzmsf1NJH4yX0lx
+         Yj0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXyPbTa9rXSuW1pr1pjMokBBsd14cg73QY3HwHmTHKmQHgmQo0M6+nrOxdHWwFr5g9Mexdler4j0bduegI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx4nmsYOCNDHZJa+hB55u6TsrH8AcZ6J2H64Buokb8dcVTH6hO6
+	EiwGHeutY2eHmebJOLThBDfdcviHpPsa23U2K4BYQ7fzDvJYPQsz0sLbu/UWlA==
+X-Gm-Gg: AZuq6aIvaQ/NtU30hN5dR795ea+dyL6UjUJ2cyJ51cp2O6lym524ij/87tKhByglCY8
+	lonnbmpn5vXdmWs6GcoBXr0ADw0hOij2fHftlXKKAObSd7wGNM20gunSFFZwpBVcrQwIxJ96+UY
+	9r8/7chz+hdgeuc/Qu/16oH9yBJq8Bj6pPHhGmZVYXNt2XWjGx8XF1qY4GN3fzQw6lezp2qFlJc
+	8sKGFwYywmge1j4FXqZ3DoA0zkjcJAtd5woxnra6TcpQXfRizqIFr/JdeU/UXmMkBdB6Qs3Hhxx
+	hGuql3q/7hM8uwRu4nVKyX1Q7SvhvRZ1J4A7cr9UNcOXXta7K+7GpU95z9ks7Tw90L/XBWTbXC9
+	nlqVaMkHSjPFiGO2xSmxdJrV/TuD0VYl90J2tzo0l+bz1vGhxlxs0Q9KJpkXV0mhKFauMuG2Uq2
+	4L1lVhZ9pCix5xjNKxh6DaNMn1Lacfqy8dd7NCA5BfDJ94rzv8vxrK
+X-Received: by 2002:a05:600c:4fc7:b0:480:41f2:b212 with SMTP id 5b1f17b1804b1-48042f7e0e0mr38897745e9.25.1769006884109;
+        Wed, 21 Jan 2026 06:48:04 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4802dc90068sm274897235e9.7.2026.01.21.06.48.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Jan 2026 06:48:03 -0800 (PST)
+Date: Wed, 21 Jan 2026 14:48:02 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: kernel test robot <lkp@intel.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Huacai Chen
+ <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, Paul Walmsley <pjw@kernel.org>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Heiko
+ Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander
+ Gordeev <agordeev@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Kees Cook <kees@kernel.org>, "Gustavo A. R.
+ Silva" <gustavoars@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Mark Rutland
+ <mark.rutland@arm.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Ard
+ Biesheuvel <ardb@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
 Subject: Re: [PATCH v4 3/3] randomize_kstack: Unify random source across
  arches
-Message-ID: <aXDHSIn3hIvESjXg@J2N7QTR9R3>
+Message-ID: <20260121144802.1287ce3e@pumpkin>
+In-Reply-To: <20260121102017.539b5531@pumpkin>
 References: <20260119130122.1283821-4-ryan.roberts@arm.com>
- <202601210752.6Nsv9et9-lkp@intel.com>
- <46c7d109-b076-4bb3-9e6e-36c34c546c20@arm.com>
+	<202601210752.6Nsv9et9-lkp@intel.com>
+	<20260121102017.539b5531@pumpkin>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,50 +115,53 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46c7d109-b076-4bb3-9e6e-36c34c546c20@arm.com>
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Spamd-Result: default: False [0.59 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[mark.rutland@arm.com,linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16104-lists,linuxppc-dev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[32];
-	FORGED_RECIPIENTS(0.00)[m:ryan.roberts@arm.com,m:lkp@intel.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:tglx@linutronix.de,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:kees@kernel.org,m:gustavoars@kernel.org,m:arnd@arndb.de,m:Jason@zx2c4.com,m:ardb@kernel.org,m:jeremy.linton@arm.com,m:david.laight.linux@gmail.com,m:llvm@lists.linux.dev,m:oe-kbuild-all@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-s390@vger.kernel.org,m:davidlaightlinux@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:lkp@intel.com,m:ryan.roberts@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:chenhuacai@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:tglx@linutronix.de,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:kees@kernel.org,m:gustavoars@kernel.org,m:arnd@arndb.de,m:mark.rutland@arm.com,m:Jason@zx2c4.com,m:ardb@kernel.org,m:jeremy.linton@arm.com,m:llvm@lists.linux.dev,m:oe-kbuild-all@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:loongarch@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-s390@vger.kernel.org,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[32];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	R_DKIM_NA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mark.rutland@arm.com,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[intel.com,arm.com,kernel.org,linux.ibm.com,ellerman.id.au,dabbelt.com,eecs.berkeley.edu,linutronix.de,redhat.com,alien8.de,linux.intel.com,arndb.de,zx2c4.com,gmail.com,lists.linux.dev,vger.kernel.org,lists.infradead.org,lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16110-lists,linuxppc-dev=lfdr.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[git-scm.com:url,lists.ozlabs.org:rdns,lists.ozlabs.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 7585B56D32
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,01.org:url,git-scm.com:url]
+X-Rspamd-Queue-Id: 7B6795A01A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Jan 21, 2026 at 10:52:21AM +0000, Ryan Roberts wrote:
-> On 20/01/2026 23:50, kernel test robot wrote:
+On Wed, 21 Jan 2026 10:20:17 +0000
+David Laight <david.laight.linux@gmail.com> wrote:
+
+> On Wed, 21 Jan 2026 07:50:16 +0800
+> kernel test robot <lkp@intel.com> wrote:
+> 
 > > Hi Ryan,
 > > 
 > > kernel test robot noticed the following build warnings:
@@ -148,45 +187,39 @@ On Wed, Jan 21, 2026 at 10:52:21AM +0000, Ryan Roberts wrote:
 > > | Closes: https://lore.kernel.org/oe-kbuild-all/202601210752.6Nsv9et9-lkp@intel.com/
 > > 
 > > All warnings (new ones prefixed by >>):
-> > 
-> >>> vmlinux.o: warning: objtool: do_syscall_64+0x2c: call to preempt_count_add() leaves .noinstr.text section
-> >>> vmlinux.o: warning: objtool: __do_fast_syscall_32+0x3d: call to preempt_count_add() leaves .noinstr.text section
+> >   
+> > >> vmlinux.o: warning: objtool: do_syscall_64+0x2c: call to preempt_count_add() leaves .noinstr.text section
+> > >> vmlinux.o: warning: objtool: __do_fast_syscall_32+0x3d: call to preempt_count_add() leaves .noinstr.text section    
+> >   
 > 
-> Hmm, clearly Dave was correct not to rush this through... yuck. I'll take a
-> look, but I guess there is no rush if this won't go into -next until shortly
-> after -rc1.
+> When CONFIG_DEBUG_PREEMPT or CONFIG_TRACE_PREEMP_TOGGLE is set
+> the preempt_count_[en|dis]able() calls inside [put|get]_cpu_var()
+> become real functions.
+> 
+> Maybe __preempt_count_[inc|dec]() can be called (with this_cpu_ptr()).
 
-Sorry, I should have checked the entry sequencing more thoroughly when I
-reviewed this,.
+Or the code could just use the per-cpu data without disabling preemption.
+Usually that isn't a good idea at all, but it can't matter in this case.
+Might give a noticeable performance gain, disabling preemption is
+non-trivial and/or an atomic operation on some architectures.
 
-From a quick look, I suspect the right thing to do is to pull the call
-to add_random_kstack_offset() a bit later in a few cases; after the
-entry logic has run, and after instrumentation_begin() (if the arch code
-uses that), such that it doesn't matter if this gets instrumented.
+If anyone is worried about preemption causing the output be repeated, that
+would be (mostly) mitigated by checking that s[1234] haven't changed prior
+to writing the new values.
+I think a 'not locked at all' compare of two of the four values will
+stop everything except two threads doing system calls at the same time
+getting the same output from the prng.
 
-Considering the callers of add_random_kstack_offset(), if we did that:
+The whole thing is very unlikely and there will be much easier ways
+to break the prng.
+Provided s[1234] are only written with valid values (ie ones which aren't
+effectively zero) it will continue generating numbers.
 
-* arm64 is fine as-is.
+	David
 
-* loongarch is fine as-is.
 
-* powerpc's system_call_exception() would need this moved after the
-  user_exit_irqoff(). Given that function is notrace rather than
-  noinstr, it looks like there are bigger extant issues here.
+> 
+> 	David
+> 
 
-* riscv is fine as-is.
-
-* s390's __do_syscall() would need this moved after
-  enter_from_user_mode().
-
-* On x86:
-  - do_int80_emulation() is fine as-is.
-  - int80_emulation() is fine as-is.
-  - do_int80_syscall_32() would need this moved after
-    instrumentation_begin().
-  - __do_fast_syscall_32() would need this moved after
-    instrumentation_begin().
-  - do_syscall_64() would need this moved after instrumentation_begin().
-
-Mark.
 
