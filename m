@@ -1,116 +1,95 @@
-Return-Path: <linuxppc-dev+bounces-16151-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16152-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BxzCZxGcmnpfAAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16151-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 16:47:40 +0100
+	id ePSKNTtXcmkpiwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16152-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 17:58:35 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A746929B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 16:47:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03DE6A843
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 17:58:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dxlnG6whGz30BR;
-	Fri, 23 Jan 2026 02:47:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dxnMD1csDz2yql;
+	Fri, 23 Jan 2026 03:58:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c112::7" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769096850;
-	cv=pass; b=g2rjgCC2LFY1mrTZaAOqx1njDg8oUcnL6HkW4mD5yfydkqcLPcJKpKw/Gz0E0Ki4hyR+W5yxfeXWJqNVtZ+Z/n5eKgp4/4dKe8DlO8n9REvJt1biUJo9uKTCsP0lB9lSVFpxj+3s9H6fR/VS6DnMhQXHYUxLJsYBaBn0er6ZfvMtnc6jjBgQGQcc0Txv+WBLHxatsbePJCNrUwe0Zh3qqg6evsCNbe+cvvHDXoEknVP4WlYz/mUgYQVej7nDMrlKzNgRNxdZL4+H4tGWBoZiz2vuWxPBJFEDlAJCOySXxQgRpamM4er7Eus0kkQJyWJEYWjKz3Jy/GKgSb8t+i8bYw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769096850; c=relaxed/relaxed;
-	bh=urLRoIBEUIKjiUtuMX6/RhXFrlQUu0ljUyUgyCTDCgI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CXir4B2ABt44nRXg3CJWlw19yrjoTdNljRnVdxe5iaywujGrLGNb9mb9RcTltU9hV2o0S0YXsosT4NJ73gVW28Ij8eOsS1zYKSaZuWLQXvoCmdas/ZXA/RtvvnZB7gCwxv//XNM+msJlgoYcy4OM2z3i04wfpZG0X2lNPm9YGHhgFlUF5WJclMNtXbg38WrPHKnodTGlQZYQ3qv/ZDMRR3FgJGlz394MTvwy57j1E1VsWtO16lkeGxoXNAueQlndvhFF5YXVl+1DNO9lVa0YQLjgJJXATYJg494bhwdW+scucLzVD5QlXNoM5Uu4FL6XTnDufpM5Z77V6hfa68MFSg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NeztxjFf; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c112::7; helo=cy3pr05cu001.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769101112;
+	cv=none; b=XCMaqy741zEZ7Vc6DQSGjE7olM3Tw4O+aOB9Gg2Zt+x2N0wfZH3PtYEaeAjCjRI+wNzCcnj1BG03aziFNXojeO2cBtAjCWiAda86XrBqMhhz1kxg9VgXO8Y6qh/o//mS6q0Zjx3i11M5SfIflepmGUVAAnLPAisJv4ZN5dvfVqPWFvIwUYsj1lNeTWmfwdALNfcgrpMVURPk4sttFTUmayIFI2GfjXROSp9pLY9hjYjh5uErr0/wuUokA2Bo8l8S9QWnLf26eVA+MNOsIwBbp0kCG52xXTL9BWxU4ijES3dtINUHoMtL3oWCMNyVkrOwupqYZ9O3CotUH8KSBDEj+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1769101112; c=relaxed/relaxed;
+	bh=sK0RzPLBtd5/Vgml1Md2BGiyAp1ZFl20b9r6NdIl3cY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UVTmbp8xznQRO2Rq4W9fIR0XGRzpKO912BIfrnfegHlLHsG3WXT6vtWKdzuth20XvlDJjr5E2pSFMxxOHFJD0SJlHAMljQz5NOcKRyJ2wJXbI3fWPEVjvA6BEmTqnkNPOv6LqKKJjkpFYO7QyId3cZlyrTJCdOFNghEGm6GfFwzSfbLFRVnxbQwsBuQfQ7+dvX6vBEMbIZspmH/rKdTCNuAmMSyczwtzMKYcHVoMtF+SFOUCws+uezKveJ/rdROBAwB/AScrGBTwPZyDelNv5I/e4+bRh7nHbfaFJ9IIgspM5XJIKUDf8f8PAzN+4N+2DpikmlkT/hL7FphQyDPJeQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J5ZDfDxA; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NeztxjFf;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J5ZDfDxA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:c112::7; helo=cy3pr05cu001.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazlp170130007.outbound.protection.outlook.com [IPv6:2a01:111:f403:c112::7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxlnF2RS4z309H
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jan 2026 02:47:28 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y1hntf+J10Wc+3Hv7poOapR5c8+zLAhhvTiisk8s5Q06AvLBI4+Q+q5xSw0qb+ph5634Y4PP5bnf/ddv6MS+GgxiO5N7/q0wenCky9fmpblNSFiSFaXwARw+f1TKJeKK95u/1qY+UHqiDXt0SHhc3+tnbVSdoUnHYngsULkOUZgLQwYFhUEVRnFo5Gaohf0tOfxh1OCw5zqVvZZQLvLmLLY7ppkcaBgRNImiSj7Dmtdqmk7RXrRcUlEKjEj01LnbHCng0ZMDercma8b3Vda/uJtuSFlBcbXk54D9MCpnObIoEUdQiO9bWI5rhdlIikkTUKPZqh63bSD1sxMRbhOdNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=urLRoIBEUIKjiUtuMX6/RhXFrlQUu0ljUyUgyCTDCgI=;
- b=zBWm1JAqg/d96H6sksdKd4YBdInKj8eUU6/NSPZ0gtcArmTaDNMpeh7oG8Ue/FcPSJbJo0tOZveibmPfYFlfsIfw5GgJJGPS3WykAVXAZhjer4MppHajUBWf3AfAUJEEBU+90y6LVFYi7HOUmIAFqaqL1Puo8D8I7Vh1leGn1gJ+NTB8cNoGoF6GSi4+5sjlqo8PsU+zT2Tq9pknb5WxbEsyW1CtdZus8fbHLCIePJe+kJxv8f4brkAi9jgaHtavUQ56PUxiEpICihXYX13Wzb94HMBzRl0Lg4QAG7PAxi74fbpoosBduPeQWMceT4dOGWrGtMgltKQYLxVSWTX25w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=urLRoIBEUIKjiUtuMX6/RhXFrlQUu0ljUyUgyCTDCgI=;
- b=NeztxjFfb/XCKZywgF1ikrJGBwwFfT6XHaov7k8FJ4XH2JOScFhCxjUfVsbdAsXEY1WzQz38Ze9r5020u+EM6FwhDw9Rdcs1S015xHLv4YMgdwdPnj1c9GjTktDPRoIi5oP21+AST9VjoiPoBRvbtCI93yxDur+FNFkveMbVpoxp1FcOGTP3OrOb4Z3zFidocNRyCp8+WOLaOL5EEzDeLywzVMOPW7KkYBdhg2PsP+b5etRuXkvpQBzBgqGkEhvccGtRmGu0QxeDRXKleXIfJ/nXXltmPLi407y9Xba2atb+0Ikj3WQt4XJjXoOo2xlSTIi/5KD7W65sfMhpkf8Dug==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by IA1PR12MB6556.namprd12.prod.outlook.com (2603:10b6:208:3a0::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Thu, 22 Jan
- 2026 15:46:50 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::1b59:c8a2:4c00:8a2c]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::1b59:c8a2:4c00:8a2c%3]) with mapi id 15.20.9542.010; Thu, 22 Jan 2026
- 15:46:47 +0000
-Date: Thu, 22 Jan 2026 11:46:46 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Balbir Singh <balbirs@nvidia.com>, Matthew Wilcox <willy@infradead.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Francois Dugast <francois.dugast@intel.com>,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	adhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-	linux-mm@kvack.org, linux-cxl@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] mm/zone_device: Reinitialize large zone device
- private folios
-Message-ID: <20260122154646.GQ1134360@nvidia.com>
-References: <eb94d115-18a6-455b-b020-f18f372e283a@nvidia.com>
- <aWsdv6dX2RgqajFQ@lstrano-desk.jf.intel.com>
- <4k72r4n5poss2glrof5fsapczkpcrnpokposeikw5wjvtodbto@wpqsxoxzpvy6>
- <20260119142019.GG1134360@nvidia.com>
- <96926697-070C-45DE-AD26-559652625859@nvidia.com>
- <20260119203551.GQ1134360@nvidia.com>
- <ef6ef1e2-25f1-4f1b-a8d4-98c0d7b4ad0c@nvidia.com>
- <EE2956E3-CCEA-4EF9-A1A4-A483245091FC@nvidia.com>
- <20260120135340.GA1134360@nvidia.com>
- <F7E3DF24-A37B-40A0-A507-CEF4AB76C44D@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <F7E3DF24-A37B-40A0-A507-CEF4AB76C44D@nvidia.com>
-X-ClientProxiedBy: BL1PR13CA0363.namprd13.prod.outlook.com
- (2603:10b6:208:2c0::8) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxnMC1X3Wz2xl0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jan 2026 03:58:30 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60ME76dM019581;
+	Thu, 22 Jan 2026 16:57:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=sK0RzPLBtd5/Vgml1Md2BGiyAp1ZFl20b9r6NdIl3
+	cY=; b=J5ZDfDxAVCRFkBTe0vH7kQdFnsDwFdgCRrLG8bzQNh9GeoL1UhR4osJEv
+	tSpjEISKJg+rqP4pnppwJGS193tsayxysKJ9geSjlZ7FPmnq1QWNeGz+zB/9+DIH
+	7nJuyacDlIgN37JJbuthFi7kPo+gQ+kc9ml1pJoF3kIsFJ8U24VzlX3cvthx2DVX
+	bnwe6IcPQRmhVGXYlcq+MEh/Ph7o+iFYNtUvtlb6ZPLP9qZUJRjgUjO/1Z6OplS8
+	mQAJ9ZztsmKTDITwqCwJ+CmDMcLXs0KKWsySMqkBr1WlGllEsAdjjKbDSEWYKG4m
+	jD+fs1kzseQFILpKquG+PrXtfoUpQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br256axtw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 22 Jan 2026 16:57:54 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60MGvrpI005435;
+	Thu, 22 Jan 2026 16:57:53 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br256axtq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 22 Jan 2026 16:57:53 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60MGjKO1009265;
+	Thu, 22 Jan 2026 16:57:52 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4brp8kkd6b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 22 Jan 2026 16:57:51 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60MGvlfx61473072
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 22 Jan 2026 16:57:47 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B01BD2004E;
+	Thu, 22 Jan 2026 16:57:47 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F11BE20043;
+	Thu, 22 Jan 2026 16:57:38 +0000 (GMT)
+Received: from abhi.. (unknown [9.39.26.73])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 22 Jan 2026 16:57:38 +0000 (GMT)
+From: adubey@linux.ibm.com
+To: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
+        andrii@kernel.org, eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
+        iii@linux.ibm.com, shuah@kernel.org,
+        Abhishek Dubey <adubey@linux.ibm.com>
+Subject: [PATCH v3 0/6] powerpc64/bpf: Support tailcalls with subprogs & BPF exceptions
+Date: Thu, 22 Jan 2026 22:27:10 +0530
+Message-ID: <20260122165716.10508-1-adubey@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -124,178 +103,260 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|IA1PR12MB6556:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6619fffa-3efd-4f3b-38fc-08de59cd739e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Ohj6vJhRcoQx0d14rJ+KUVn630uJ0OjyBmRLufFHoNPDUq9wqhGhBsSWCyHs?=
- =?us-ascii?Q?5YPxYiPGzbTI95G/Tosh/PEWY4YIxyKqM9P0/QFhWN9H+mAkzdX7BMLUzDCH?=
- =?us-ascii?Q?Wn91BCJnDrMXYm4EUJICmdzS0aQofZS16JC0sAQDjt3qTv2N1wtbBCHiNw8I?=
- =?us-ascii?Q?vUhWQIIWF8Qiwf13QX48aeQf61Lr0T7AN4a+nofJnV68KFlMU/1H3sp/tVf7?=
- =?us-ascii?Q?6Uj1NmizFTB6/cO7bWwvKufbN0o64Zi/dul0yyQFl6IZ8hnMBo/nafS5FpZJ?=
- =?us-ascii?Q?eNzuVqNsk9mIUOLmxZwJICLZBZZ6jmjD3HO2LPkxRt/lsRjmVERA6FLE71FP?=
- =?us-ascii?Q?WsPStBDbYELQ/N0BdXyKRV29LLI7Ny8/L12N8NJMqUY3gOw6ka3j3UQUgVHF?=
- =?us-ascii?Q?YHxYfwN8u9zgOznfORp3xh4K/EDQLFIw2qUYuEOwIEdbpNTBkP4xwXw3yzuw?=
- =?us-ascii?Q?qI0NjfzKRhBQtRStUetRK+QZJjHOgAPtSA6wPc8JH5oEqClCOcstWw4WcWpW?=
- =?us-ascii?Q?PwmIAogOgXtCUpr2Qp6CP9X0TufJOp+VkIm1uj9PHuFFeU1+0R8Y93g1qIpN?=
- =?us-ascii?Q?vwbDHpKbKdypgBOD5MHFvFX4JOfc5KHLAVcrcBrIvDi2pOHUNSbPZKKAe0TI?=
- =?us-ascii?Q?/4h8CXIhFPf7em/wcWgkmMaG0Ig9RlvoIWz1XRm+JfytRqhoiLD4gYIJzXKP?=
- =?us-ascii?Q?ZsGRoSSt+WAe4lCSy2sbG6rTCZIuIAKRsdDmh5MwHUy5FbQBmJ67RRgAx36+?=
- =?us-ascii?Q?0j4uuTs7j2ZNJPJbkbDV6b9dFyG4m8Rdm2UL8rbKf+7/wldoB+jStJJ8h9ic?=
- =?us-ascii?Q?kuIKwaz7Q9ZkUL0ih5rIeFisPLf5vWZ6O7V06+TlbqMD+5oYJZCDxoBf9aam?=
- =?us-ascii?Q?3FENRWgqoE/vnsMO9aWgfpckUgP3Kar6EDVCY3AjCbFAZVMb2oyqeA9udkyN?=
- =?us-ascii?Q?m7w2Scy42T4M0KsrKK8Y8XDe5hHecvKaIku5etlKUV4uNiFdw2bULmVVAncB?=
- =?us-ascii?Q?CPbRGF3S+Cw0jWbeTi3fixQWx559sCNbqikUUBAVmsw8RBKSPI+JVPUV7RwF?=
- =?us-ascii?Q?pLWJxni5bB3uZGd3a1aiTPnhrFsrKnZvkZoYpNhiJ1NMLBQ85sd67DH53YY5?=
- =?us-ascii?Q?lB/odiXJhICIDrK0EtAdUy1aCwQsNF8PTI519VIVKDJ+GXZXlDKofSWT0YUd?=
- =?us-ascii?Q?caerQEosFEqZdm6lJGmJkwPet3yllCN3LyPobXKRrxRpgVq6oc/zkPLu6QCC?=
- =?us-ascii?Q?vHGm1ZmSd2yUOaN6VIjjcX+l1kzEfSUJCWYH4hue+IhHpbJKQQBMdfEvqtGc?=
- =?us-ascii?Q?UHlmvKsPF8bHftyzqnCIbTF2UjTAqIoXDw7jEvRWhGFzitJP2y+Tq0v15Gux?=
- =?us-ascii?Q?YKbjfR6F+ylGNATaeXrun93eJzhM+prGXaa+LX6BxtWaQWgV/K35688NF7l2?=
- =?us-ascii?Q?gqailK2Dwl6I8WBRCvmNfYjBvQeCAEx0diyWoLUmt8QGMKB7BvxY1CCRSRQX?=
- =?us-ascii?Q?Ym2O2PVDDKSItKO9pjcjE7WutgsoqKtfGagKU0I/HWLx1s4U0xuQyJmEOue6?=
- =?us-ascii?Q?ftfkYvUaRqSr/VDgWQA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?E5Fs5KJqLjfrfdCxIzohuRce/HV8FgniJIFkYD4lqISS7ma6j3xVErWMm4CA?=
- =?us-ascii?Q?ssbKy8+xYyEDheYDEu80czgFZxfyxrCGnOe4YLJiVD3saDbtU3wdoZIfzEJK?=
- =?us-ascii?Q?asGVYAMLbvgvkVHLwvKGAVcTj+RArzJcSO5Yo+jKmBTRpmI0DMWMVH1H6pjk?=
- =?us-ascii?Q?aQGXK6fP7MLASzuS2r6OQNYaS7UTM8CR/xppROWd5BfDUYoAGBSo928klec7?=
- =?us-ascii?Q?sg9Z1LsIhaxCAvEGpcvZc6FEjQnMUJpCBTIZ4Gxj1FDNRX/OgHXHGkkgC6Cp?=
- =?us-ascii?Q?lt22OYx5eidO7HBBhnNhIapEQh0asyouPbFl/sJ1qtyEszYnEKWtSNSukJNW?=
- =?us-ascii?Q?btraflU4GZHy1R2uf4IQCd/MyMwCy0YTGOGK3UbjK03wAemqq19PiBR33huS?=
- =?us-ascii?Q?bll0+Sx0umj5xU4zHM5rc5JdMFMsBvEyTkW6TesZNmYiMGwqFr7riOLCOgx1?=
- =?us-ascii?Q?j5sFdHv291N95kv/WbpI6jooA6wRHJAS36NE15piwyju3PznC4+OSEQ4lTfc?=
- =?us-ascii?Q?q9PH01RHNZJNHQhbRzeibQPKyAx6Y3FtyT34VGCL9NmIKBBA//AbHVJsES85?=
- =?us-ascii?Q?fCEhtl3+D6P1kAS7RjSKqu9WRGaCNtmTydxJKeEOUQn+l5vuX7ePYXBhsaEM?=
- =?us-ascii?Q?1d4dmhNSOyaPSAkwDbhs6m0VA1Ko4UvhrXJ0FhZe5kW2qX0sU/wD5K+mvAeD?=
- =?us-ascii?Q?kuB7jBYx84y+NQng2Sx6r2qNMDAqPiAyLnKxZGwjySK7ztDNgBIBNOpeicmn?=
- =?us-ascii?Q?LBPsd2axGHGIVKY1cQpjIcVU5ubYaefwmdu043WIg6ijffnoyM4BTSzlJSzE?=
- =?us-ascii?Q?XY8OE+gItu8mNXewXzCtjOIP49xs3i62bmGaHRQRxNB0Uq5A+JzKBS1ARlkG?=
- =?us-ascii?Q?ogGzN13BMsneyWgQWsfEvnXGedVUeG7Q4exZDQcSXAeD7GmG8aXdBKdNj6+U?=
- =?us-ascii?Q?q+oqISKb0MS9aJSMPE1WzS24VrlXCgqCHV2CptoOYdWQ6/iSon6dAe0fQl69?=
- =?us-ascii?Q?RG4Bq0wpjUn6hYYwxWE6VnHiBWQEXOoAZZaXRoY9Z6LZMMRhC4hYAjeJ8lr+?=
- =?us-ascii?Q?ek/Cn18vYZRORri6SiD85LkClJ46PklsEVu3DURgFXwLa2tfHga5C4XUneoV?=
- =?us-ascii?Q?y1vcsuK0Cg6CMBzsKTwjbHyc5FyXcsW+KgPZjNzTAkHeJEERtvOxvDlXTMv6?=
- =?us-ascii?Q?gVsR3469y3KZlcLoTM/661eHBBCkLO6n/sHjqLoSSWorSOEgkCMfSapewc6Q?=
- =?us-ascii?Q?Xnvc7JHSh6hOgM+Sgs9JcIb6XkLx1soLqWQoZa/GI5tgaMQXRYesLe0/hJfq?=
- =?us-ascii?Q?1aOk43ByRVAGMl1vxoXr2+3FO4h4hDwF43F0gyEj7UiwLoLOe5vZEhEHwlHy?=
- =?us-ascii?Q?5rLL/6oxihjaRSog6zrqgBgIKXpui9eerb17ERs5CEgYAIblX34y2dZNAnEC?=
- =?us-ascii?Q?HSL3iFY3eYBZcXjKflIW1BWVpPYpNht1//WJnyaKMDVqYpolMqwNCFM3YOnc?=
- =?us-ascii?Q?+Ce9SmKXLd8f+VV7WoYMuSCUMHcs8ZS4iZRmtYNLbn0msHoyavh7EzGsgKA0?=
- =?us-ascii?Q?pqHgZzRRVm/wJUBb1L/wA7vvQBwEWkkzcv8sG9rjxNx25haKT3hnCQgzMrYD?=
- =?us-ascii?Q?iOH+A5Z98zU3GUJPipZaNiaaxcex0BAvP9+tB1icCV871OqXSjYUvWY1RRtT?=
- =?us-ascii?Q?x+blK5vG4fjOVBDIvK445VpbdQrH3qG+obXZwRJ1iuQcXOfIlUtTQyTAhN3T?=
- =?us-ascii?Q?lUMOZfpMqQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6619fffa-3efd-4f3b-38fc-08de59cd739e
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2026 15:46:47.7886
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 61UuDPbnbQgYaKMW5ue6PUb8TuV9NI6UMg7dVvAEh1C4w7RgdricARs5c63CAC1w
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6556
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIyMDEyOSBTYWx0ZWRfX6s30fZC/NhV6
+ OZvilTEC+HyDCxRuEiNpw1edPgx54N0BST3BLufSnH4UmNBFIATTaE3UBJxjTDagh544SF5h4xd
+ DiYDOGHqqZLF3HfLptObTDck5AxfFtiuxAOtcEHFpyw2PMNDoTpUu06fiQyJI2/v+pkTUGwHssG
+ aMpimOVvobNbSteomMo4xHpZDP+DRA3KCaXnXAjCtQkLIN6Cz4vVAnEG2ktqKO+4LyCz6mSptAE
+ mRUM2UFpaXTQLs6GhZjdMP2xys7nWPkdi+0PLt9jVaMePCsoHhK8OgrWRv1eaCcHa504IL3jIJ3
+ RRVqidbI78MGfX/JPfS9oVd1Gv6eARqQxNoI9nGcbjrsFD2k8jv9M2DmVK9TLbCVkMrSAojjUad
+ WYWG+0g0RTViRT+YNZOOrIL1gRHrNHBnPGXHwIf+1cv7j8Xrwxb7r52AdtZs4vp0bAxIEikvZe/
+ Bg9jTWVgXtwO8qromsQ==
+X-Authority-Analysis: v=2.4 cv=BpSQAIX5 c=1 sm=1 tr=0 ts=69725712 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=iIzsfX1pHA8hvRYzEnUA:9
+X-Proofpoint-GUID: KuW7bYMegJz6bkt5gO4fMccP2vX7PUGb
+X-Proofpoint-ORIG-GUID: FRur8Q3Dy1cPBvQqZULQJ_HZTf5j09_J
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-22_03,2026-01-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 clxscore=1015 adultscore=0 phishscore=0
+ malwarescore=0 impostorscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2601220129
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+X-Spamd-Result: default: False [0.79 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-16152-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16151-lists,linuxppc-dev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[jgg@nvidia.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:bpf@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kselftest@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:hbathini@linux.ibm.com,m:sachinpb@linux.ibm.com,m:venkat88@linux.ibm.com,m:andrii@kernel.org,m:eddyz87@gmail.com,m:mykolal@fb.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:martin.lau@linux.dev,m:song@kernel.org,m:yonghong.song@linux.dev,m:john.fastabend@gmail.com,m:kpsingh@kernel.org,m:sdf@fomichev.me,m:haoluo@google.com,m:jolsa@kernel.org,m:christophe.leroy@csgroup.eu,m:naveen@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:memxor@gmail.com,m:iii@linux.ibm.com,m:shuah@kernel.org,m:adubey@linux.ibm.com,m:johnfastabend@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[39];
-	FORGED_RECIPIENTS(0.00)[m:ziy@nvidia.com,m:balbirs@nvidia.com,m:willy@infradead.org,m:apopple@nvidia.com,m:matthew.brost@intel.com,m:vbabka@suse.cz,m:francois.dugast@intel.com,m:intel-xe@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:Felix.Kuehling@amd.com,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:lyude@redhat.com,m:dakr@kernel.org,m:david@kernel.org,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:leon@kernel.org,m:lorenzo.stoakes@oracle.com,m:Liam.Howlett@oracle.com,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:linuxppc-dev@lists.ozlabs.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:amd-gfx@lists.freedesktop.org,m:nouveau@lists.freedesktop.org,m:linux-mm@kvack.org,m:linux-cxl@vger.kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	FORGED_SENDER(0.00)[adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[nvidia.com,infradead.org,intel.com,suse.cz,lists.freedesktop.org,linux.ibm.com,gmail.com,ellerman.id.au,kernel.org,amd.com,ffwll.ch,linux.intel.com,suse.de,redhat.com,linux-foundation.org,oracle.com,google.com,suse.com,lists.ozlabs.org,vger.kernel.org,kvack.org];
+	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,gmail.com,fb.com,iogearbox.net,linux.dev,fomichev.me,google.com,csgroup.eu,ellerman.id.au];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,nvidia.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 80A746929B
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: E03DE6A843
 X-Rspamd-Action: no action
 
-On Tue, Jan 20, 2026 at 10:01:18PM -0500, Zi Yan wrote:
-> On 20 Jan 2026, at 8:53, Jason Gunthorpe wrote:
-> 
-> > On Mon, Jan 19, 2026 at 09:50:16PM -0500, Zi Yan wrote:
-> >>>> I suppose we want some prep_single_page(page) and some reorg to share
-> >>>> code with the other prep function.
-> >>
-> >> This is just an unnecessary need due to lack of knowledge of/do not want
-> >> to investigate core MM page and folio initialization code.
-> >
-> > It will be better to keep this related code together, not spread all
-> > around.
-> 
-> Or clarify what code is for preparing pages, which would go away at memdesc
-> time, and what code is for preparing folios, which would stay.
+From: Abhishek Dubey <adubey@linux.ibm.com>
 
-That comes back to the question of 'what are the rules for frozen
-pages'
+This patch series enables support for two BPF JIT features
+on powerpc64. The first three patches target support for
+tail calls with subprogram combinations. The first patch
+supports realignment of tail_call_cnt offset in stack frame.
+Implementation details are provided in the commit messages.
 
-Now that we have frozen pages where the frozen owner can use some of
-the struct page memory however it likes that memory needs to be reset
-before the page is thawed and converted back to a folio.
+The last three patches add support for BPF exceptions. An
+architecture-specific stack walker is implemented to assist
+with stack walk during exceptions.
 
-memdesc time is only useful for memory that is not writable by frozen
-owners - basically must be constant forever.
+All selftests related to tailcalls and exceptions are passing:
 
-> >
-> >>>> I don't think so. It should do the above job efficiently and iterate
-> >>>> over the page list exactly once.
-> >>
-> >> folio initialization should not iterate over any page list, since folio is
-> >> supposed to be treated as a whole instead of individual pages.
-> >
-> > The tail pages need to have the right data in them or compound_head
-> > won't work.
-> 
-> That is done by set_compound_head() in prep_compound_tail().
+# ./test_progs -t tailcalls
+#442/1   tailcalls/tailcall_1:OK
+#442/2   tailcalls/tailcall_2:OK
+#442/3   tailcalls/tailcall_3:OK
+#442/4   tailcalls/tailcall_4:OK
+#442/5   tailcalls/tailcall_5:OK
+#442/6   tailcalls/tailcall_6:OK
+#442/7   tailcalls/tailcall_bpf2bpf_1:OK
+#442/8   tailcalls/tailcall_bpf2bpf_2:OK
+#442/9   tailcalls/tailcall_bpf2bpf_3:OK
+#442/10  tailcalls/tailcall_bpf2bpf_4:OK
+#442/11  tailcalls/tailcall_bpf2bpf_5:OK
+#442/12  tailcalls/tailcall_bpf2bpf_6:OK
+#442/13  tailcalls/tailcall_bpf2bpf_fentry:OK
+#442/14  tailcalls/tailcall_bpf2bpf_fexit:OK
+#442/15  tailcalls/tailcall_bpf2bpf_fentry_fexit:OK
+#442/16  tailcalls/tailcall_bpf2bpf_fentry_entry:OK
+#442/17  tailcalls/tailcall_poke:OK
+#442/18  tailcalls/tailcall_bpf2bpf_hierarchy_1:OK
+#442/19  tailcalls/tailcall_bpf2bpf_hierarchy_fentry:OK
+#442/20  tailcalls/tailcall_bpf2bpf_hierarchy_fexit:OK
+#442/21  tailcalls/tailcall_bpf2bpf_hierarchy_fentry_fexit:OK
+#442/22  tailcalls/tailcall_bpf2bpf_hierarchy_fentry_entry:OK
+#442/23  tailcalls/tailcall_bpf2bpf_hierarchy_2:OK
+#442/24  tailcalls/tailcall_bpf2bpf_hierarchy_3:OK
+#442/25  tailcalls/tailcall_freplace:OK
+#442/26  tailcalls/tailcall_bpf2bpf_freplace:OK
+#442/27  tailcalls/tailcall_failure:OK
+#442/28  tailcalls/reject_tail_call_spin_lock:OK
+#442/29  tailcalls/reject_tail_call_rcu_lock:OK
+#442/30  tailcalls/reject_tail_call_preempt_lock:OK
+#442/31  tailcalls/reject_tail_call_ref:OK
+#442     tailcalls:OK
+Summary: 1/31 PASSED, 0 SKIPPED, 0 FAILED
 
-Inside a page loop :)
+# ./test_progs -t exceptions
+#105/1   exceptions/exception_throw_always_1:OK
+#105/2   exceptions/exception_throw_always_2:OK
+#105/3   exceptions/exception_throw_unwind_1:OK
+#105/4   exceptions/exception_throw_unwind_2:OK
+#105/5   exceptions/exception_throw_default:OK
+#105/6   exceptions/exception_throw_default_value:OK
+#105/7   exceptions/exception_tail_call:OK
+#105/8   exceptions/exception_ext:OK
+#105/9   exceptions/exception_ext_mod_cb_runtime:OK
+#105/10  exceptions/exception_throw_subprog:OK
+#105/11  exceptions/exception_assert_nz_gfunc:OK
+#105/12  exceptions/exception_assert_zero_gfunc:OK
+#105/13  exceptions/exception_assert_neg_gfunc:OK
+#105/14  exceptions/exception_assert_pos_gfunc:OK
+#105/15  exceptions/exception_assert_negeq_gfunc:OK
+#105/16  exceptions/exception_assert_poseq_gfunc:OK
+#105/17  exceptions/exception_assert_nz_gfunc_with:OK
+#105/18  exceptions/exception_assert_zero_gfunc_with:OK
+#105/19  exceptions/exception_assert_neg_gfunc_with:OK
+#105/20  exceptions/exception_assert_pos_gfunc_with:OK
+#105/21  exceptions/exception_assert_negeq_gfunc_with:OK
+#105/22  exceptions/exception_assert_poseq_gfunc_with:OK
+#105/23  exceptions/exception_bad_assert_nz_gfunc:OK
+#105/24  exceptions/exception_bad_assert_zero_gfunc:OK
+#105/25  exceptions/exception_bad_assert_neg_gfunc:OK
+#105/26  exceptions/exception_bad_assert_pos_gfunc:OK
+#105/27  exceptions/exception_bad_assert_negeq_gfunc:OK
+#105/28  exceptions/exception_bad_assert_poseq_gfunc:OK
+#105/29  exceptions/exception_bad_assert_nz_gfunc_with:OK
+#105/30  exceptions/exception_bad_assert_zero_gfunc_with:OK
+#105/31  exceptions/exception_bad_assert_neg_gfunc_with:OK
+#105/32  exceptions/exception_bad_assert_pos_gfunc_with:OK
+#105/33  exceptions/exception_bad_assert_negeq_gfunc_with:OK
+#105/34  exceptions/exception_bad_assert_poseq_gfunc_with:OK
+#105/35  exceptions/exception_assert_range:OK
+#105/36  exceptions/exception_assert_range_with:OK
+#105/37  exceptions/exception_bad_assert_range:OK
+#105/38  exceptions/exception_bad_assert_range_with:OK
+#105/39  exceptions/non-throwing fentry -> exception_cb:OK
+#105/40  exceptions/throwing fentry -> exception_cb:OK
+#105/41  exceptions/non-throwing fexit -> exception_cb:OK
+#105/42  exceptions/throwing fexit -> exception_cb:OK
+#105/43  exceptions/throwing extension (with custom cb) -> exception_cb:OK
+#105/44  exceptions/throwing extension -> global func in exception_cb:OK
+#105/45  exceptions/exception_ext_mod_cb_runtime:OK
+#105/46  exceptions/throwing extension (with custom cb) -> global func in exception_cb:OK
+#105/47  exceptions/exception_ext:OK
+#105/48  exceptions/non-throwing fentry -> non-throwing subprog:OK
+#105/49  exceptions/throwing fentry -> non-throwing subprog:OK
+#105/50  exceptions/non-throwing fentry -> throwing subprog:OK
+#105/51  exceptions/throwing fentry -> throwing subprog:OK
+#105/52  exceptions/non-throwing fexit -> non-throwing subprog:OK
+#105/53  exceptions/throwing fexit -> non-throwing subprog:OK
+#105/54  exceptions/non-throwing fexit -> throwing subprog:OK
+#105/55  exceptions/throwing fexit -> throwing subprog:OK
+#105/56  exceptions/non-throwing fmod_ret -> non-throwing subprog:OK
+#105/57  exceptions/non-throwing fmod_ret -> non-throwing global subprog:OK
+#105/58  exceptions/non-throwing extension -> non-throwing subprog:OK
+#105/59  exceptions/non-throwing extension -> throwing subprog:OK
+#105/60  exceptions/non-throwing extension -> non-throwing subprog:OK
+#105/61  exceptions/non-throwing extension -> throwing global subprog:OK
+#105/62  exceptions/throwing extension -> throwing global subprog:OK
+#105/63  exceptions/throwing extension -> non-throwing global subprog:OK
+#105/64  exceptions/non-throwing extension -> main subprog:OK
+#105/65  exceptions/throwing extension -> main subprog:OK
+#105/66  exceptions/reject_exception_cb_type_1:OK
+#105/67  exceptions/reject_exception_cb_type_2:OK
+#105/68  exceptions/reject_exception_cb_type_3:OK
+#105/69  exceptions/reject_exception_cb_type_4:OK
+#105/70  exceptions/reject_async_callback_throw:OK
+#105/71  exceptions/reject_with_lock:OK
+#105/72  exceptions/reject_subprog_with_lock:OK
+#105/73  exceptions/reject_with_rcu_read_lock:OK
+#105/74  exceptions/reject_subprog_with_rcu_read_lock:OK
+#105/75  exceptions/reject_with_rbtree_add_throw:OK
+#105/76  exceptions/reject_with_reference:OK
+#105/77  exceptions/reject_with_cb_reference:OK
+#105/78  exceptions/reject_with_cb:OK
+#105/79  exceptions/reject_with_subprog_reference:OK
+#105/80  exceptions/reject_throwing_exception_cb:OK
+#105/81  exceptions/reject_exception_cb_call_global_func:OK
+#105/82  exceptions/reject_exception_cb_call_static_func:OK
+#105/83  exceptions/reject_multiple_exception_cb:OK
+#105/84  exceptions/reject_exception_throw_cb:OK
+#105/85  exceptions/reject_exception_throw_cb_diff:OK
+#105/86  exceptions/reject_set_exception_cb_bad_ret1:OK
+#105/87  exceptions/reject_set_exception_cb_bad_ret2:OK
+#105/88  exceptions/check_assert_eq_int_min:OK
+#105/89  exceptions/check_assert_eq_int_max:OK
+#105/90  exceptions/check_assert_eq_zero:OK
+#105/91  exceptions/check_assert_eq_llong_min:OK
+#105/92  exceptions/check_assert_eq_llong_max:OK
+#105/93  exceptions/check_assert_lt_pos:OK
+#105/94  exceptions/check_assert_lt_zero:OK
+#105/95  exceptions/check_assert_lt_neg:OK
+#105/96  exceptions/check_assert_le_pos:OK
+#105/97  exceptions/check_assert_le_zero:OK
+#105/98  exceptions/check_assert_le_neg:OK
+#105/99  exceptions/check_assert_gt_pos:OK
+#105/100 exceptions/check_assert_gt_zero:OK
+#105/101 exceptions/check_assert_gt_neg:OK
+#105/102 exceptions/check_assert_ge_pos:OK
+#105/103 exceptions/check_assert_ge_zero:OK
+#105/104 exceptions/check_assert_ge_neg:OK
+#105/105 exceptions/check_assert_range_s64:OK
+#105/106 exceptions/check_assert_range_u64:OK
+#105/107 exceptions/check_assert_single_range_s64:OK
+#105/108 exceptions/check_assert_single_range_u64:OK
+#105/109 exceptions/check_assert_generic:OK
+#105/110 exceptions/check_assert_with_return:OK
+#105     exceptions:OK
+Summary: 1/110 PASSED, 0 SKIPPED, 0 FAILED
 
-	__SetPageHead(page);
-	for (i = 1; i < nr_pages; i++)
-		prep_compound_tail(page, i);
+[v1]: https://lore.kernel.org/all/20260105105212.136645-1-adubey@linux.ibm.com/
+[v2]: https://lore.kernel.org/all/20260114114450.30405-1-adubey@linux.ibm.com/
 
-> Yes. One of the issues is that device private code used to only handles
-> order-0 pages and was converted to use high order folio directly without
-> using high order page (namely compound page) as an intermediate step.
-> This two-step-in-one caused confusion. But the key thing to avoid the
-> confusion is that to form a high order folio, a list of contiguous pages
-> would become a compound page by calling prep_compound_page(), then
-> the compound page becomes a folio by calling folio_set_large_rmappable().
+Changes v1->v2:
+        Move tail_call_cnt to offset 0 in stack frame
+        Remove trampoline NVR remapping-patch3/6[v1]
+Changes v2->v3:
+	Added PPC_BCC_CONST_SHORT for short jumps of constant offset
+	Optimize tailcall allocation for BPF_TRAMP_F_CALL_ORIG flag
+	New helper for stack size calculation during exceptions
+	Prologue JIT optimizations during non exception prog case
 
-That seems logical to me.
+Abhishek Dubey (6):
+  powerpc64/bpf : Moving tail_call_cnt to bottom of frame
+  powerpc64/bpf: Support tailcalls with subprogs
+  powerpc64/bpf: Avoid tailcall restore from trampoline
+  powerpc64/bpf: Add arch_bpf_stack_walk() for BPF JIT
+  powerpc64/bpf: Support exceptions
+  powerpc64/bpf: Additional NVR handling for bpf_throw
 
-Jason
+ arch/powerpc/net/bpf_jit.h        |  16 ++
+ arch/powerpc/net/bpf_jit_comp.c   |  90 ++++++++--
+ arch/powerpc/net/bpf_jit_comp64.c | 262 ++++++++++++++++++++++++------
+ 3 files changed, 303 insertions(+), 65 deletions(-)
+
+-- 
+2.48.1
+
 
