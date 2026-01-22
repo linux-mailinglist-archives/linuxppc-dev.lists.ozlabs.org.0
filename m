@@ -1,83 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-16158-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16160-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MA5/BnRXcmkpiwAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16158-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 17:59:32 +0100
+	id sL+6NP1XcmkpiwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16160-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 18:01:49 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DADA6A8FD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 17:59:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D228F6A9C9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 18:01:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dxnND4WXwz3c9x;
-	Fri, 23 Jan 2026 03:59:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dxnQy2p92z30BR;
+	Fri, 23 Jan 2026 04:01:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769101164;
-	cv=none; b=YMFEuTfwYXP1CyifL0vR1mUJHzCjW7YG/8dNPk7Wq11ut0TcS7hTbro/sul9//rjUqQaXkIa+QPC4GLF7P8KW5LYaxNaO9WJ2XndtxjZBMQfLIi3S4vYQ5IV4SmT+Ct4Ja6fnUtJ9Q6UnBc/BluSow3K2Z7WfmN/y64KhYFe1ISGDtLlz5jx6ggjf7ccLw1gb+cwCKgviuGxe/O4LzmpUE0YJM0mo9CxSjq/VwI37cmGY+9WSTvXMXpPeJumLt8E4OQlH3VEbj9MZmQDtkw7DFUoW9mi08bTi3dX5G7Hoq+CBTEe8rQQX9+7RTbO/t2Zj7JtpWITKy8vaj53UE9fqA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769101306;
+	cv=none; b=U+JthhzipZij7lnXQfDVqBjlpuM+mw8RRWHJDicVWpS4QICGe16CyvvkIm1N8rfooxQDI8REob25CjuYLXk3cIMTSBHjTsbJcam8bT8i9cSj9hUsTAGdUVC4qPUcLYp1mhZ8VXvOPPE/Zbv7UXINQjj3HpvvPTg75fNNI6NIH/SMTiEFvPPkBcDM4yTWYE2gkuBGMQ6n6+7XIFwexWW2xRmgtl7xdAUo02FdLqYnPElKFuYWIZKUHzCkIzhJOouAu1r534iZsznB6pe1m0xlde85l0VrB9PH3fO6n/j+goXaOLtQQh5+Q6qSoIb6cRPEIFoDB2f7uP/MXXRSmLFvNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769101164; c=relaxed/relaxed;
-	bh=ctyaECZ1PTrRA7apezvO6HlUfCV+MlmRr+a4g56cUxU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=eaTuZqgPadNubqjg89hnfEYEX1rDcNGRFuxphFE8Tuyn4/MmmQR3D00itljzLvwvkvTUN+/bj2lEBvadrekpm0MEMbzoJuYnwVJcTRIxeDMEK0hUYgYMMqzUAYHTjVGuywSBrRHubYMF6HQoMAsd8XaQKZJdvUt5M9dA/LLGCOQy6X+Fara3uQuXqmoZdcKT38JdMTByMr75ZolQeBvNbf3ZBc9oR5XPR9WORUa01cMc42p95Z8m8XgDSZoJw0Zs1PCyBnhYXxYoOWdpBHgPJV7GCBaUN1VFp9Co/JQY8OWyRZxZEEmfDiVMFBVGsMxKx/ve06+mcPbEBc1VUkV8lg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WK8Qdiy+; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1769101306; c=relaxed/relaxed;
+	bh=IoC31NcLIKhHl7nnDZao1pp9zOC5/bR7Hpi37dqAcwU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=PtsbN8qqAIjA9O1edifazi9pKETKlyyBFjHFuuup6RrkfPphY6Be4Av2dRB41XIUAu8l89zd4A0p2opgso9SkgUFzomJtgY9p7rMXCSQM5MIDsFG4N4q64ZqD8XQSKtD5sMHmMtga6/WqGMvFP0YLGJzJXQ6YXowBjqasEumTT8OhuQ7ZRzpJ0Ru3Wb4PQb3RskY3erZq/QrmUUzG3Cc37HfPhb6Tx+wc/wzz8cDV96oY8F0AuAyb6AruHg5K8dIEofErrvp3C2SSjPEDHRfZFxhVIKzUP4MBccxGQxy8yc+dkXjyCm07d4YszmBjgCiqaQXE5FvSMMv4BPjWndtKg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VS65rKzA; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WK8Qdiy+;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VS65rKzA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxnNC44t9z2xl0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jan 2026 03:59:23 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D3DFE44229;
-	Thu, 22 Jan 2026 16:59:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E2BC116D0;
-	Thu, 22 Jan 2026 16:59:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769101161;
-	bh=J5VqdBfB3qJLKokwNzHgugj/xR5O2h1qw7xFVlfjZa4=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=WK8Qdiy+OYob7AaCGw51BnlD5QnCxxjuxB5EckU4dxg2pceWfpf2hxcKJkAGzgwFv
-	 OYvOTfFdeWLftjTHM3KIMbaNG3YhhMm3cp18/6v/6az/gI/YGsh+WTX1ANIJxUNjYh
-	 cl/mjuaSdgT3rWYuCgUTf6UHnlg/1tRcJrYbOBdEOp6sNTpKOEKcgzWV5UUBmJd0NX
-	 F4SohSFUcSgon4U5tz/wv89xMjr8qloLQOeEn/d6QBDjT0SbWdWqo9mkOmFYG0Sf7l
-	 MKr9b6ddz/dSiwuBXDx4us3AZ2sp9epXfvMoT66uX2n8zu/GB8+2jbN0aSSOs+eDIg
-	 xXk9RSb1r82KA==
-Date: Thu, 22 Jan 2026 17:59:18 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Koichiro Den <den@valinux.co.jp>
-CC: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
- kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
- vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com,
- l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com,
- mingkai.hu@nxp.com, roy.zang@nxp.com, jesper.nilsson@axis.com,
- heiko@sntech.de, srikanth.thokala@intel.com, marek.vasut+renesas@gmail.com,
- yoshihiro.shimoda.uh@renesas.com, geert+renesas@glider.be,
- magnus.damm@gmail.com, christian.bruel@foss.st.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- thierry.reding@gmail.com, jonathanh@nvidia.com,
- hayashi.kunihiko@socionext.com, mhiramat@kernel.org, kishon@kernel.org,
- jirislaby@kernel.org, rongqianfeng@vivo.com, 18255117159@163.com,
- shawn.lin@rock-chips.com, nicolas.frattaroli@collabora.com,
- linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com,
- linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v9_4/5=5D_PCI=3A_dwc=3A_ep=3A_Support_BAR_sub?=
- =?US-ASCII?Q?range_inbound_mapping_via_Address_Match_Mode_iATU?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <s6bnqkbuugi7oio7ybekdbk3dokpbe2bui2wjltdwajxix2app@wosgmhrfsriv>
-References: <20260122084909.2390865-1-den@valinux.co.jp> <20260122084909.2390865-5-den@valinux.co.jp> <aXHsd7-WWAGyhy_w@ryzen> <s6bnqkbuugi7oio7ybekdbk3dokpbe2bui2wjltdwajxix2app@wosgmhrfsriv>
-Message-ID: <19D609EC-F850-4B43-A83C-0B8C70E641B5@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxnQx4NhLz2xl0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jan 2026 04:01:45 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60MEpexk028705
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 17:01:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=IoC31N
+	cLIKhHl7nnDZao1pp9zOC5/bR7Hpi37dqAcwU=; b=VS65rKzArwSWNHOOm88VyN
+	yUpaN/WZgzPIuHkDOYUB+D2lPGHRM+DkXE9mTr9DpvdAx1+K+zlaRiNYzp59Mr36
+	jdw5IQO7OC4hE2AXe/iVCGIfd0hQM2h9R+ipa8q1wGxW4oGuFwkti+Yg6llQhMBt
+	8OiaemkaojiEak+Hcuc4IhJsTyZHNNFTFAFwPdjBcveqPAwilpEyPPQvbotv82/m
+	MylJiwG0qjqEDLqU3cRpJUldHGZ3imXLMAoOF6BqZsd2HFHd5jxpu/GIcYODxd8+
+	JlqbyfElMg/dA/lb3nSI98VrIdS4ojkxXuVuYKs2aepjd8utYoCRzlU3AlKFVS/Q
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bt60exhch-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 17:01:43 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60MG3fPr027233
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 17:01:42 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4brnrnbfxn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 17:01:42 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60MH1aCg61669838
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 22 Jan 2026 17:01:37 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DC58B2004B;
+	Thu, 22 Jan 2026 17:01:36 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ECD4F20040;
+	Thu, 22 Jan 2026 17:01:35 +0000 (GMT)
+Received: from [9.43.78.102] (unknown [9.43.78.102])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 22 Jan 2026 17:01:35 +0000 (GMT)
+Message-ID: <70cd2d0d-334f-4f08-b568-419d40ebe470@linux.ibm.com>
+Date: Thu, 22 Jan 2026 22:31:35 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,108 +84,156 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [bpf] Observing Kernel Softlock up while running BPF self tests
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+References: <d6926384-0b4e-44e2-a828-1ddb57500b3b@linux.ibm.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <d6926384-0b4e-44e2-a828-1ddb57500b3b@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=WMdyn3sR c=1 sm=1 tr=0 ts=697257f7 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=tVtHZ5YHyPqFQcMM3lEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: jg9Sa-YN3syNOXSdPWlHiwEe2NWN-Qbx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIyMDEyOSBTYWx0ZWRfX/7JU2lO2FY/3
+ bLluFlKZ1tjfzLMeBk0PL6V/IzADkYFo3Uop1eoIHfZaEdE7qQV6cD7BBbS6bQENyg6QNzhLqBX
+ ZJLQswKqsO2Dq6vOHjNMlKt3ihbAyNSPA0FP6r2Wnog7WnMpv79yPQCRG6ayxShqTFiyzpQEQoL
+ bfeMxwrT1GQMxtRV5lTPFUafcL7lgCmm5/7Q4gR09IrzcafNmm26YBUrg872ZonDIENVfZljAiv
+ S58Uk7XHzwoVkg914s8X2DrqKFo4mycqhRYRXUGHnZyeyvxV2b7sbhJfkbN57Rbz7AcO2FkXrqv
+ Me3Ci8UKlpNMnrk74t2kagFUeqqACjtoD/ReqmBJO1EF5yrMn7yMu/js+5kQOZDiv6FGfllco1M
+ kcmyV+YxLw7oitRZfiJNmpi/G4qLek8c+C/dtN+/GIrQlKW0/+abU0TlzOBK4CrU/5l9DpKoN/7
+ KSqj5wa9DCcdBQHDenw==
+X-Proofpoint-ORIG-GUID: jg9Sa-YN3syNOXSdPWlHiwEe2NWN-Qbx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-22_03,2026-01-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 suspectscore=0 bulkscore=0 adultscore=0
+ impostorscore=0 spamscore=0 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2601220129
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.50 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	SUBJ_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16158-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[cassel@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:den@valinux.co.jp,m:jingoohan1@gmail.com,m:mani@kernel.org,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:robh@kernel.org,m:bhelgaas@google.com,m:vigneshr@ti.com,m:s-vadapalli@ti.com,m:hongxing.zhu@nxp.com,m:l.stach@pengutronix.de,m:shawnguo@kernel.org,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:minghuan.Lian@nxp.com,m:mingkai.hu@nxp.com,m:roy.zang@nxp.com,m:jesper.nilsson@axis.com,m:heiko@sntech.de,m:srikanth.thokala@intel.com,m:marek.vasut+renesas@gmail.com,m:yoshihiro.shimoda.uh@renesas.com,m:geert+renesas@glider.be,m:magnus.damm@gmail.com,m:christian.bruel@foss.st.com,m:mcoquelin.stm32@gmail.com,m:alexandre.torgue@foss.st.com,m:thierry.reding@gmail.com,m:jonathanh@nvidia.com,m:hayashi.kunihiko@socionext.com,m:mhiramat@kernel.org,m:kishon@kernel.org,m:jirislaby@kernel.org,m:rongqianfeng@vivo.com,m:18255117159@163.com,m:shawn.lin@rock-chips.com,m:nicolas.frattaroli@collabora.com,m:linux.amoon@gmail.com,m:vidyas@nvidia.com,m
- :Frank.Li@nxp.com,m:linux-omap@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:imx@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-arm-kernel@axis.com,m:linux-rockchip@lists.infradead.org,m:linux-arm-msm@vger.kernel.org,m:linux-renesas-soc@vger.kernel.org,m:linux-stm32@st-md-mailman.stormreply.com,m:linux-tegra@vger.kernel.org,m:marekvasut@gmail.com,m:geert@glider.be,m:magnusdamm@gmail.com,m:mcoquelinstm32@gmail.com,m:thierryreding@gmail.com,m:linuxamoon@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16160-lists,linuxppc-dev=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,google.com,ti.com,nxp.com,pengutronix.de,axis.com,sntech.de,intel.com,renesas.com,glider.be,foss.st.com,nvidia.com,socionext.com,vivo.com,163.com,rock-chips.com,collabora.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org,st-md-mailman.stormreply.com];
+	FORGED_RECIPIENTS(0.00)[m:venkat88@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:skb99@linux.ibm.com,m:maddy@linux.ibm.com,s:lists@lfdr.de];
+	TO_DN_ALL(0.00)[];
+	FORGED_SENDER(0.00)[hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[53];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev,renesas];
+	FROM_NEQ_ENVFROM(0.00)[hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 8DADA6A8FD
+	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: D228F6A9C9
 X-Rspamd-Action: no action
 
-On 22 January 2026 15:29:02 CET, Koichiro Den <den@valinux=2Eco=2Ejp> wrote=
-:
->
->> To make sure that dw_pcie_ep_ib_atu_addr() cannot be called without alr=
-eady
->> having a BAR configured, to we perhaps want something like:
->
->Thanks for the review=2E
->Isn't the existing guard in dw_pcie_ep_ib_atu_addr sufficient?
->
->        [=2E=2E=2E]
->        base =3D dw_pcie_ep_read_bar_assigned(ep, func_no, bar, epf_bar->=
-flags);
->        if (!base) {
->                dev_err(dev,
->                        "BAR%u not assigned, cannot set up sub-range mapp=
-ings\n",
->                        bar);
->                return -EINVAL;
->        }
->
+Hi Venkat,
 
-Well, for a driver that does not call dw_pcie_ep_reset_bar() in their =2Ei=
-nit() to disable all BARs that are enabled in the controller by default, th=
-e host side will assign an PCI address even if no EPF has called set_bar() =
-on that BAR=2E
+Thanks for reporting..
 
-See e=2Eg=2E
-https://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/pci/pci=2Egit/commit/d=
-rivers/pci/controller/dwc/pcie-tegra194=2Ec?h=3Dcontroller/dwc&id=3D42f9c66=
-a6d0cc45758dab77233c5460e1cf003df
+On 20/01/26 2:40 pm, Venkat Rao Bagalkote wrote:
+> Greetings!!!
+> 
+> 
+> IBM CI has reported a kernel softlockup, while running BPF selftests on 
+> PowerPC kernel.
+> 
+> 
+> Traces:
+> 
+> [ 1632.509843] audit: type=1334 audit(1769127975.721:164430): prog- 
+> id=82135 op=LOAD
+> [ 1632.509852] audit: type=1334 audit(1769127975.721:164431): prog- 
+> id=82135 op=UNLOAD
+> [ 1637.016921] Mode = AA
+> [ 1660.780274] watchdog: BUG: soft lockup - CPU#8 stuck for 23s! 
+> [rqsl_w/8:51609]
+> [ 1660.780283] Modules linked in: bpf_test_rqspinlock(OE+) 8021q(E) 
+> garp(E) mrp(E) stp(E) llc(E) vrf(E) tun(E) bpf_testmod(OE) veth(E) 
+> nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) 
+> nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) 
+> bonding(E) nft_ct(E) tls(E) nft_chain_nat(E) rfkill(E) sunrpc(E) 
+> ibmveth(E) hvcs(E) hvcserver(E) pseries_rng(E) vmx_crypto(E) 
+> dm_multipath(E) fuse(E) dm_mod(E) drm(E) drm_panel_orientation_quirks(E) 
+> zram(E) ext4(E) crc16(E) mbcache(E) jbd2(E) sr_mod(E) sd_mod(E) cdrom(E) 
+> ibmvscsi(E) scsi_transport_srp(E) [last unloaded: livepatch_sample(EK)]
+> [ 1660.780352] CPU: 8 UID: 0 PID: 51609 Comm: rqsl_w/8 Tainted: G    OE 
+> K     6.19.0-rc4-g960c1fd29055 #1 VOLUNTARY
+> [ 1660.780359] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE, [K]=LIVEPATCH
+> [ 1660.780362] Hardware name: IBM,8375-42A POWER9 (architected) 0x4e0202 
+> 0xf000005 of:IBM,FW950.80 (VL950_131) hv:phyp pSeries
+> [ 1660.780365] NIP:  c0000000000399a8 LR: c000000000039c24 CTR: 
+> c000000000039ca0
+> [ 1660.780368] REGS: c000000bc19cfd28 TRAP: 0900   Tainted: G      OE K 
+>      (6.19.0-rc4-g960c1fd29055)
+> [ 1660.780372] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE> 
+> CR: 28000288  XER: 0000000a
+> [ 1660.780386] CFAR: 0000000000000000 IRQMASK: 0
+> [ 1660.780386] GPR00: c000000000039c24 c000000bc19cfd00 c000000001f58100 
+> c000000bc19cfcf8
+> [ 1660.780386] GPR04: c000000bc19cfea8 0000000000000000 4000000000000002 
+> c0000013ff916e08
+> [ 1660.780386] GPR08: 00000013fd6c0000 0000000000000049 fffffffffffffffc 
+> c0080000f73e0f98
+> [ 1660.780386] GPR12: c000000000039ca0 c00000002e9b6700 c000000000270808 
+> c000000bad8fe980
+> [ 1660.780386] GPR16: 0000000000000000 0000000000000000 0000000000000000 
+> 0000000000000000
+> [ 1660.780386] GPR20: 0000000000000000 0000000000000000 0000000000000000 
+> 0000000000000000
+> [ 1660.780386] GPR24: 0000000000000000 0000000000000000 c0080000f7360048 
+> 0000000000000000
+> [ 1660.780386] GPR28: 0000000000000008 0000000000000000 000001827223b155 
+> 0000000000000003
+> [ 1660.780433] NIP [c0000000000399a8] __replay_soft_interrupts+0x38/0x150
+> [ 1660.780443] LR [c000000000039c24] 
+> arch_local_irq_restore.part.0+0xe4/0x160
+> [ 1660.780449] Call Trace:
+> [ 1660.780452] [c000000bc19cfd00] [c000000000039a0c] 
+> __replay_soft_interrupts+0x9c/0x150 (unreliable)
+> [ 1660.780460] [c000000bc19cfeb0] [c000000000039c24] 
+> arch_local_irq_restore.part.0+0xe4/0x160
+> [ 1660.780468] [c000000bc19cfef0] [c0080000f73e042c] 
+> rqspinlock_worker_fn+0x244/0x300 [bpf_test_rqspinlock]
+> [ 1660.780476] [c000000bc19cff90] [c000000000270954] kthread+0x154/0x170
+> [ 1660.780482] [c000000bc19cffe0] [c00000000000df78] 
+> start_kernel_thread+0x14/0x18
+> [ 1660.780487] Code: 60000000 7c0802a6 f8010010 f821fe51 e92d0c78 
+> f92101a8 39200000 38610028 892d0933 61290040 992d0933 48102e15 
+> <60000000> 39200000 e9410130 f9210160
+> 
 
-There might be other EPC drivers that don't disable all BARs in their =2Ei=
-nit(), so I would say that simply checking if the BAR has an address is not=
- sufficient to guarantee that an EPF driver has called set_bar()=2E
+Does the system recover after this or is it unresponsive?
 
-
-I think the safest option is my second suggestion because then we know tha=
-t we will only call
-dw_pcie_ep_ib_atu_addr()
-
-When:
-
-1) If ep->epf_bar[bar] is set:
-https://github=2Ecom/torvalds/linux/blob/v6=2E19-rc6/drivers/pci/controlle=
-r/dwc/pcie-designware-ep=2Ec#L363
-
-
-2) All the other requirements to dynamically update a BAR is also met:
-
-https://github=2Ecom/torvalds/linux/blob/v6=2E19-rc6/drivers/pci/controlle=
-r/dwc/pcie-designware-ep=2Ec#L368-L370
-
-
-
-Kind regards,
-Niklas
-
+- Hari
 
