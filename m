@@ -1,54 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-16129-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16130-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QND8Gi/ncWkONAAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16129-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 10:00:31 +0100
+	id 8B+iJfzncWkONAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16130-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 10:03:56 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8483963AF1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 10:00:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 539B1642B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 10:03:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dxZlc0mDhz2ySb;
-	Thu, 22 Jan 2026 20:00:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dxZqW0V3fz2ySb;
+	Thu, 22 Jan 2026 20:03:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769072427;
-	cv=none; b=EonnzQb6qLQNLqyAmgZIWZg7580Aj5JXVu1Yjzrvseas7euS+mYf1cOmKihWS8nQe/rdRatUNo9nDIHshh+lDHOPKcPrFcGb6FKZB7TY0YLmQ+1hNK6q07r9J7bxmheXcGw0J6VpBFRFRDV4d6c8WCd3+5bq3vseNKlqrrdZljX6YL/HhLM0dQLGIxT2hF9b6ie/5nJgVkgDsiNzSg65Yih5xh1Cb+Ow1dR4vg/2fJ2BKOLTfzBkk1DwvfgOGNyu/xKOngTzSKjjhr+xGAB7Ear+ivuszbl7fBVFw9JAqNYqM/Jj93xxYZXA2xRZi6jrCEYqprtAEL+VgWPRGr0dcA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769072630;
+	cv=none; b=MlBxdWvutiNkGhazL6IwPMtCKZ/aWXE224+KMu+73/LCoNFxNsPwt6gDuXovY8vDSXcOFCbWAITdNwTQ0u3F4ssRjd76HhKC0CeF1/UmzpeGTS0JkdJVAvqUi7NMm8H9ApoYKBqxumy28A6rR9MuXCX7j0ur5um0qj6xmfL0aBPS9Gxu/7xFbmrgQ1S95ZVnKLPvyvUSmNRG8kcfPSzmP61zOp1ytIUyqdTB4eKZA9sfSCnjprpywW6XW4iR3izsXiw47AGdofjx1uXo+PplrFiW71dZ1oUyshp9tMf692CirRjyR4zn5VL04v5Kaq/Z7iIPQBhDvPix4bcue90LUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769072427; c=relaxed/relaxed;
-	bh=O69fvAcg0CcdfclIDOUGR4yRfQYhZ4TApHh5YakhXRU=;
+	t=1769072630; c=relaxed/relaxed;
+	bh=SeiWwo15Nl2QP4Gshbe6/rmkv+39cznqDqZx/8qTvMw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kybOeUEOkXYzdKn+g3+bwi/1QvBFIMMLTD/3JV52++mHrCX5oG4YBcZrlFSPMEpoAGtndoHxYj+7brU5eGx8bFgkiTMZhxhPiDkRFaCzb8a5TtigyTgrvd6CX/4vuotZmeV3jx+bNKYD5XxppuEhpDObc+nlu3vNJO6av/wlabLc7hcJfp1MafWp8RdZncXcxYURQIqLbWc5Ar6+SMS078tsCe3o1kbTSQGooQnMpkvAhuJOY35VFY1x4iZpagiWAZBuaPoCowmmmljW9nyQPuQAcmvF7d6Eew2Fi0jostLoO4k2bE0fKjHtz9wzgXUrR9UEBJH+eJO1ZbDZv5lOYA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Mp8ENmYQ; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=nSAGIVS5HGfTbl9gmEooTMueJPOuKCzwJk2COqNgaSlQKZaZLSPYaTnSSs7xtulAYgBR63nPBJwQ6w8N4pR2eQceBViQf3KMHtHfBwroYRDJASwePo5/waHRnjfxvlV7lZs0ltAhSGPUPg5geKWZOLReyGzbYhHhE9+MsJZGEI9m5ueHXaMRwSKYT7URAmGw3JmUJNgGEpcB38b6HBzhYiRxOiN4GGJ6fnJCIvEUqboJWY4gQMN9y8i4RHWddJIgo5M1+SLabZpQIKk6oZ5CsklVxG6Wpy3pk1nKhxXsRcFbCsdN9O+pj8wBl5OZX0RX2wApEOKxcsOtYIn4FX798A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mzS2xZFu; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Mp8ENmYQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mzS2xZFu;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxZlb37G1z2xS5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 20:00:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxZqV1g7Vz2xS5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 20:03:50 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6449A4189B;
-	Thu, 22 Jan 2026 09:00:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C6BC116C6;
-	Thu, 22 Jan 2026 09:00:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F2702408EA;
+	Thu, 22 Jan 2026 09:03:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B24C116C6;
+	Thu, 22 Jan 2026 09:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769072425;
-	bh=AZFYl95tZw83k2fEE48wfdvR4CXEcLULoc8pMv1G/Bo=;
+	s=k20201202; t=1769072627;
+	bh=/MehKJmORgEwpJF+msBgFBXkm59BZbIQr2N6eBZwaBU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mp8ENmYQVtJ1EMYz0X8bkcVxWU+gCr8Fgt+QaEj8GkJ+34FS+nBT+LQC9OkGsQezu
-	 5MApqwdB08KOLxvl+IburfuHXNQwD8Hy3mGkN83wSQCKFWXy8QOF21LPMxQAnImFrV
-	 SkRbS529Iy5egC5SypGHdJ0kyuctrmmCIyqot1zcplQxuH6Qlu5SFF+stcyxOJXr5c
-	 uzdOee9LlPwxuBMCk/ODtg5TSEF4vV4AqMSBKNX0vNQbRYxGG7YWc/VADSk+i4tTdb
-	 9OPXRV7NVJwsOJhuvpYlIs4O+x+cHQX67sgm2Pis2uH67qGA4dAmdBaLXIBiD1b50T
-	 DVt46F3Vf1GSg==
-Date: Thu, 22 Jan 2026 10:00:11 +0100
+	b=mzS2xZFueyQor31YESEgMROI8UCRsNdNneVBo50jCEGgFSMndbkcVLiq094C9Jgwo
+	 35xH5C7NvzIFyWXvYPRYokoInGijcOBS0s7kTSD2rs1/MqN9zduYtpaudJCO+JuAqG
+	 qcWHYywg7hKt7GdHjeGmWDOUYJB6iwtmm/ueYCQLgRuZFzV2GbCuKXuU2MXYlJakLG
+	 aH44EBU6o0ftXLIKcH4ybHu24Fk6i93FHqusQwGGBCq7PliSXGB5LtBmwErA8ofuSI
+	 1bNHoT4dAhRVT8PtymGXeVJ7cNMHyPdS0U6tbkBKYlgKT3Kc03EbDVdYMvih9iEmwv
+	 v/QGCAMt1Lw/Q==
+Date: Thu, 22 Jan 2026 10:03:33 +0100
 From: Niklas Cassel <cassel@kernel.org>
 To: Koichiro Den <den@valinux.co.jp>
 Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
@@ -74,11 +74,10 @@ Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
 	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v9 3/5] PCI: dwc: Advertise dynamic inbound mapping
- support
-Message-ID: <aXHnFskw9InGNuuR@ryzen>
+Subject: Re: [PATCH v9 2/5] PCI: endpoint: Add BAR subrange mapping support
+Message-ID: <aXHn3zuxxfBN1yps@ryzen>
 References: <20260122084909.2390865-1-den@valinux.co.jp>
- <20260122084909.2390865-4-den@valinux.co.jp>
+ <20260122084909.2390865-3-den@valinux.co.jp>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,7 +93,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260122084909.2390865-4-den@valinux.co.jp>
+In-Reply-To: <20260122084909.2390865-3-den@valinux.co.jp>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
@@ -111,7 +110,7 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16129-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16130-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[cassel@kernel.org,linuxppc-dev@lists.ozlabs.org];
@@ -133,26 +132,33 @@ X-Spamd-Result: default: False [-0.21 / 15.00];
 	TAGGED_RCPT(0.00)[linuxppc-dev,renesas];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,valinux.co.jp:email,nxp.com:email]
-X-Rspamd-Queue-Id: 8483963AF1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[valinux.co.jp:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 539B1642B7
 X-Rspamd-Action: no action
 
-On Thu, Jan 22, 2026 at 05:49:07PM +0900, Koichiro Den wrote:
-> The DesignWare EP core has supported updating the inbound iATU mapping
-> for an already configured BAR (i.e. allowing pci_epc_set_bar() to be
-> called again without a prior pci_epc_clear_bar()) since commit
-> 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update
-> inbound map address").
+On Thu, Jan 22, 2026 at 05:49:06PM +0900, Koichiro Den wrote:
+> Some endpoint platforms have only a small number of usable BARs. At the
+> same time, EPF drivers (e.g. vNTB) may need multiple independent inbound
+> regions (control/scratchpad, one or more memory windows, and optionally
+> MSI or other feature-related regions). Subrange mapping allows these to
+> share a single BAR without consuming additional BARs that may not be
+> available, or forcing a fragile layout by aggressively packing into a
+> single contiguous memory range.
 > 
-> Now that this capability is exposed via the dynamic_inbound_mapping EPC
-> feature bit, set it for DWC-based EP glue drivers using a common
-> initializer macro to avoid duplicating the same flag in each driver.
+> Extend the PCI endpoint core to support mapping subranges within a BAR.
+> Add an optional 'submap' field in struct pci_epf_bar so an endpoint
+> function driver can request inbound mappings that fully cover the BAR.
 > 
-> Note that pci-layerscape-ep.c is untouched. It currently constructs the
-> feature struct dynamically in ls_pcie_ep_init(). Once converted to a
-> static feature definition, it will use DWC_EPC_COMMON_FEATURES as well.
+> Introduce a new EPC feature bit, subrange_mapping, and reject submap
+> requests from pci_epc_set_bar() unless the controller advertises both
+> subrange_mapping and dynamic_inbound_mapping features.
 > 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> The submap array describes the complete BAR layout (no overlaps and no
+> gaps are allowed to avoid exposing untranslated address ranges). This
+> provides the generic infrastructure needed to map multiple logical
+> regions into a single BAR at different offsets, without assuming a
+> controller-specific inbound address translation mechanism.
+> 
 > Signed-off-by: Koichiro Den <den@valinux.co.jp>
 > ---
 
