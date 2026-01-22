@@ -1,40 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-16138-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16139-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +C1TO6r6cWmvZwAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16138-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 11:23:38 +0100
+	id 6OzULav7cWmvZwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16139-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 11:27:55 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8197165306
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 11:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C77653FC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 11:27:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dxcbV5lCgz2ySb;
-	Thu, 22 Jan 2026 21:23:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dxchS1z9tz2ySb;
+	Thu, 22 Jan 2026 21:27:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.81
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769077414;
-	cv=none; b=mO9dHy2lLTB1Ra0ES/vSQeP5yWnYJ90gXI3JVlzWwMFynySvusno7j4js6b9J+fIcnwUAuleYAJTAY+UFce6WhyUnC+4Im2Y/ry5iX+0sJ/2EQbt3xEGCwsL5HW5Zdyk4cjR8UYBP1zvubOT9MFJFpCEMZ6t+4p3OTDhAM47eDgghPhCWMr87S092bknH08Caw4TF5Jrp4Gtxka0tEtaEhVoxnp1FgbYIP1DcJZbBDT1GoAqlWNoPonQHcW8sdEzNVPDH1GtbzEYn33HYNS8VoSPDBbe4LgZ7eLJp0oYqtnVdfOlNYZJ6kmXSPXE9+66rfqzcwZFRNpoopWnl2RLTA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769077672;
+	cv=none; b=i0fk7smnKFtqrz0D0avf/7dyR67fPzcMF42L2/WU6GEzk2MjeqkqRLsX5UuB+HrFHgiIyxtjyD6EXXHOk+J3T+BwhRkICZ6Ix5O0P5P1EBf0jUs9B7YMn7udo6ozrc/z99ec/lX8+iB0QmQMujNqqP7ENwwsYxjfeBTEgOKu2IZ5m66bMUflVJ09vQ4u8ludmBxC5/wRDqkDz8JYVwuPJADt50DxTq2dYrUEtaq38Xh+IXOlYE/i2QvXIR7h4potV7zSbhILFxPX98cYuAXVjhsOaa7INvKoHdCxNotEogxqoRtp+61fcpmWE55KFxZsURMG7W4sPvBqkEdH/I+zrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769077414; c=relaxed/relaxed;
-	bh=fm50/tGbng8CPrJ5pxlBGJVNYim53O0nEqjQ/KJUWQw=;
+	t=1769077672; c=relaxed/relaxed;
+	bh=0sdJRuCZ434NsmYlLVeYacu7I3ECJfymgWe6ajqGYbo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oOUcAzCrhltdLTav/FD2jDhncOzeyPWnTvSP4MVMs/2aOz4ppnEnfXUXcdt7bcpXMzxQsDlTylE1JPmU6Sakh9pmja//SBFzq2R+Vmld3JYXKeuMOV8pjWpcAcIz7WqR3ya2AQtqDl7OJHES3JCm1I+EbCR117qUTXxQ0PeThq0oNfWHiasx/oj3Zjes03hCrnwsPDCoeFvEmtKe4dPwUM0qXsThDZxqjq0sfWeuo+1gAvHSESAdoPg/3ikhr4t3pe+LimX2NAuARwLbN39w3CQcMJXhwf4XGX+LvDV+q9Fon1hYPnc2VYYeO/xQeBNRGQiu7riLlK8MzxwQaCgGlA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass (client-ip=159.226.251.81; helo=cstnet.cn; envelope-from=wangruikang@iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=iscas.ac.cn
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.81; helo=cstnet.cn; envelope-from=wangruikang@iscas.ac.cn; receiver=lists.ozlabs.org)
-Received: from cstnet.cn (unknown [159.226.251.81])
+	 In-Reply-To:Content-Type; b=Sb6zyvUh+pZDeuGeLly4g5xjdvYjbIOIM0BYdU7uDbIyOKAmnkF9m2LSMRMFj1HBe9kKkaIvaatEGsGNeWm0V646drCWX1WwFKQXIMtgGyRQ0rzV8wl8vryU/p/Fc22olihCQ83zG5xbeHFI5GGWfEqOMGxo43UYmyjAS6RWa453ZfxKHQFzAn/ZdcB6kQYAyEa7QcJ9GfNVQb53nl9CO7RAaxdl7vNq1ouzGpdDWs6pBCuVaf74sa9/K9y7GTL6Li3qaef/+Ma3FyxR0b8QKeoAD2XfptmXhKx/5cfgOq9lENPd4QllLrc67FgmaNiw07wEQBZJBpK7sNd4ymg1yg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KoJzjRMG; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KoJzjRMG;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxcbT2tZnz2xS5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 21:23:27 +1100 (AEDT)
-Received: from [10.213.20.167] (unknown [210.73.43.101])
-	by APP-03 (Coremail) with SMTP id rQCowABXZ85++nFpwkNDBg--.14326S2;
-	Thu, 22 Jan 2026 18:22:56 +0800 (CST)
-Message-ID: <8e0cae73-3ca0-47a8-8ac7-aa8edba3e0f9@iscas.ac.cn>
-Date: Thu, 22 Jan 2026 18:22:54 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxchR0jrbz2xS5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 21:27:51 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 573AD600C3;
+	Thu, 22 Jan 2026 10:27:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6066C116C6;
+	Thu, 22 Jan 2026 10:27:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769077668;
+	bh=OeivXOaV30guu1PmajmK/XSeMsLGc9hAT6DOW3UEViw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KoJzjRMGMSQqjkZ80Vf0Sr+WbMWa3ustxr0TtvRX6IqT/yZEGklnfa0AuM763mcbQ
+	 k5BSCrrFTmB8KgYQJg9/Wn1t0K4q0+RJBC3pw4kiG8h7k6/mMDeEBynKOGU3vN/VUl
+	 QIROFCdDbbb0xY/vtPTaguBDkbQ7mKoyAXsXaWu9/9H5QWV/LeZ61czDkX1GHd0BRL
+	 E1KyohSR4Ukmmg1Dz1pHx5qEztxa8rD1H9soC0it/eIQIhJ8I0LsCwlE4RkvRxgntA
+	 psSdvhwOPygFQcvayV2mnxZ3Xk4HluqhO6R+ZcHnZFog9bLTgZ3uyIt1dSU1BToIfq
+	 uBgkIfpPxOO8g==
+Message-ID: <f0bee121-41cc-4162-8c02-2b279f54c11f@kernel.org>
+Date: Thu, 22 Jan 2026 11:27:43 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -49,138 +64,138 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] PCI/MSI: Check msi_addr_mask in
- msi_verify_entries()
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- "Creeley, Brett" <bcreeley@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Han Gao <gaohan@iscas.ac.cn>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- netdev@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-riscv@lists.infradead.org,
- sophgo@lists.linux.dev, Thomas Gleixner <tglx@kernel.org>
-References: <20260121233804.GA1221537@bhelgaas>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <20260121233804.GA1221537@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:rQCowABXZ85++nFpwkNDBg--.14326S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tFy3GF15Cr48tryxAFy3twb_yoW8CFyxpa
-	yDKa1qyrsYk3yUJrsFqw1UXF1jvFZYqayfGrWUK34Y9FnIvFnFyrySka47u3srXF1xGw10
-	vF1Yya1UJFs09aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvK14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
-	c2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
-	VjvjDU0xZFpf9x0pRVVbgUUUUU=
-X-Originating-IP: [210.73.43.101]
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
-X-Spam-Status: No, score=-1.0 required=3.0 tests=RCVD_IN_DNSWL_MED,RDNS_NONE,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Subject: Re: [PATCH] powerpc/vdso: Provide clock_getres_time64()
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>
+Cc: "npiggin@gmail.com" <npiggin@gmail.com>, "luto@kernel.org"
+ <luto@kernel.org>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>,
+ "tglx@kernel.org" <tglx@kernel.org>, "mpe@ellerman.id.au"
+ <mpe@ellerman.id.au>, "vincenzo.frascino@arm.com"
+ <vincenzo.frascino@arm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260114-vdso-powerpc-align-v1-1-acf09373d568@linutronix.de>
+ <f45316f65a46da638b3c6aa69effd8980e6677b9.camel@siemens.com>
+ <20260122104257-3124dc96-5916-4d25-bbce-9b868b30ee18@linutronix.de>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260122104257-3124dc96-5916-4d25-bbce-9b868b30ee18@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.01 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:helgaas@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:bcreeley@amd.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:bhelgaas@google.com,m:perex@perex.cz,m:tiwai@suse.com,m:gaohan@iscas.ac.cn,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:netdev@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:sophgo@lists.linux.dev,m:tglx@kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[wangruikang@iscas.ac.cn,linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16138-lists,linuxppc-dev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16139-lists,linuxppc-dev=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:thomas.weissschuh@linutronix.de,m:alexander.sverdlin@siemens.com,m:npiggin@gmail.com,m:luto@kernel.org,m:maddy@linux.ibm.com,m:tglx@kernel.org,m:mpe@ellerman.id.au,m:vincenzo.frascino@arm.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.ibm.com,ellerman.id.au,arm.com,lists.ozlabs.org,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	HAS_XOIP(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wangruikang@iscas.ac.cn,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,amd.com,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,perex.cz,suse.com,iscas.ac.cn,lists.ozlabs.org,vger.kernel.org,lists.freedesktop.org,lists.infradead.org,lists.linux.dev];
-	R_DKIM_NA(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 8197165306
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:url,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linutronix.de:email]
+X-Rspamd-Queue-Id: C8C77653FC
 X-Rspamd-Action: no action
 
+Hi Thomas,
 
-On 1/22/26 07:38, Bjorn Helgaas wrote:
-> [+cc Thomas, thread at https://lore.kernel.org/r/20260121-pci-msi-addr-mask-v2-0-f42593168989@iscas.ac.cn]
->
-> On Wed, Jan 21, 2026 at 11:49:38AM +0800, Vivian Wang wrote:
->> Instead of a 32-bit/64-bit dichotomy, check the MSI address against
->> msi_addr_mask.
+Le 22/01/2026 à 10:50, Thomas Weißschuh a écrit :
+> Hi Alexander,
+> 
+> On Thu, Jan 22, 2026 at 09:39:09AM +0000, Sverdlin, Alexander wrote:
+>> Hi Thomas, Christophe,
 >>
->> This allows platforms with MSI doorbell above 32-bit address space to
->> work with devices without full 64-bit MSI address support, as long as
->> the doorbell is within addressable range of MSI of the device.
+>> On Wed, 2026-01-14 at 08:26 +0100, Thomas Weißschuh wrote:
+>>> For consistency with __vdso_clock_gettime64() there should also be a
+>>> 64-bit variant of clock_getres(). This will allow the extension of
+>>> CONFIG_COMPAT_32BIT_TIME to the vDSO and finally the removal of 32-bit
+>>> time types from the kernel and UAPI.
+>>>
+>>> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 >>
->> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+>> I've bisected this patch to cause the following build failure on my side:
 >>
->> ---
->> v2: No changes
->> ---
->>  drivers/pci/msi/msi.c | 9 ++++++---
->>  1 file changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
->> index 48f5f03d1479..2ecbcd6c436a 100644
->> --- a/drivers/pci/msi/msi.c
->> +++ b/drivers/pci/msi/msi.c
->> @@ -321,14 +321,17 @@ static int msi_setup_msi_desc(struct pci_dev *dev, int nvec,
->>  static int msi_verify_entries(struct pci_dev *dev)
->>  {
->>  	struct msi_desc *entry;
->> +	u64 address;
->>  
->>  	if (dev->msi_addr_mask == DMA_BIT_MASK(64))
->>  		return 0;
->>  
->>  	msi_for_each_desc(entry, &dev->dev, MSI_DESC_ALL) {
->> -		if (entry->msg.address_hi) {
->> -			pci_err(dev, "arch assigned 64-bit MSI address %#x%08x but device only supports 32 bits\n",
->> -				entry->msg.address_hi, entry->msg.address_lo);
->> +		address = (u64)entry->msg.address_hi << 32 |
->> +			  entry->msg.address_lo;
->> +		if (address & ~dev->msi_addr_mask) {
->> +			pci_err(dev, "arch assigned 64-bit MSI address %llx above device MSI address mask %llx\n",
-> Use %#llx so it's clear these addresses are hex.  The previous message
-> did that, not sure why you dropped it.
+>>    LDS     arch/powerpc/kernel/vdso/vdso32.lds
+>>    VDSO32A arch/powerpc/kernel/vdso/sigtramp32-32.o
+>>    VDSO32A arch/powerpc/kernel/vdso/gettimeofday-32.o
+>>    VDSO32A arch/powerpc/kernel/vdso/datapage-32.o
+>>    VDSO32A arch/powerpc/kernel/vdso/cacheflush-32.o
+>>    VDSO32A arch/powerpc/kernel/vdso/note-32.o
+>>    VDSO32A arch/powerpc/kernel/vdso/getcpu-32.o
+>>    VDSO32A arch/powerpc/kernel/vdso/getrandom-32.o
+>>    VDSO32A arch/powerpc/kernel/vdso/vgetrandom-chacha-32.o
+>>    VDSO32C arch/powerpc/kernel/vdso/vgettimeofday-32.o
+>>    VDSO32C arch/powerpc/kernel/vdso/vgetrandom-32.o
+>>    VDSO32A arch/powerpc/kernel/vdso/crtsavres-32.o
+>>    VDSO32L arch/powerpc/kernel/vdso/vdso32.so.dbg
+>> arch/powerpc/kernel/vdso/vdso32.so.dbg: dynamic relocations are not supported
+>> make[2]: *** [arch/powerpc/kernel/vdso/Makefile:79: arch/powerpc/kernel/vdso/vdso32.so.dbg] Error 1
+>> make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
+> 
+> Thanks for the report!
+> 
+>> Does it ring any bells? What could I try/test?
+> 
+> Not immediately, but I'll look into it.
+> 
+>> I'm using gcc-15.2.0 and binutils 2.45.1.
+> 
+> Is this a toolchain from https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fcdn.kernel.org%2Fpub%2Ftools%2Fcrosstool%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C03b93d2aa659407b3e5a08de599bb85e%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639046722536758587%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=b9WoZvMR2V3RUpOwrJtm6kmXrpnLti%2BeMJ6zpyB%2Fv4k%3D&reserved=0 ?
+> Could you also share your configuration?
 
-Thanks for catching. I misunderstood the purpose of the original message
-formatting.
+I've just been able to reproduce it with ppc64_defconfig + 
+CONFIG_CC_OPTIMIZE_FOR_SIZE
 
-I will fix this in v3.
+   VDSO32L arch/powerpc/kernel/vdso/vdso32.so.dbg
+arch/powerpc/kernel/vdso/vdso32.so.dbg: dynamic relocations are not 
+supported
+make[2]: *** [arch/powerpc/kernel/vdso/Makefile:79: 
+arch/powerpc/kernel/vdso/vdso32.so.dbg] Error 1
+make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
 
-Vivian "dramforever" Wang
+I'll investigate
+
+Christophe
+
+> 
+>>> ---
+>>> Based on tip/timers/vdso.
+>>>
+>>> This was missed in the original vdso_getres_time64() series as powerpc
+>>> does not use include/vdso/gettime.h.
+>>> ---
+>>>   arch/powerpc/include/asm/vdso/gettimeofday.h |  2 ++
+>>>   arch/powerpc/kernel/vdso/gettimeofday.S      | 12 ++++++++++++
+>>>   arch/powerpc/kernel/vdso/vdso32.lds.S        |  1 +
+>>>   arch/powerpc/kernel/vdso/vgettimeofday.c     |  6 ++++++
+>>>   4 files changed, 21 insertions(+)
+> 
+> (...)
 
 
