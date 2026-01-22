@@ -1,76 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-16160-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16161-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sL+6NP1XcmkpiwAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16160-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 18:01:49 +0100
+	id +DBuLGdccmn5iwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16161-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 18:20:39 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D228F6A9C9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 18:01:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 160B96B19D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 18:20:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dxnQy2p92z30BR;
-	Fri, 23 Jan 2026 04:01:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dxnrf74wpz2ySb;
+	Fri, 23 Jan 2026 04:20:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769101306;
-	cv=none; b=U+JthhzipZij7lnXQfDVqBjlpuM+mw8RRWHJDicVWpS4QICGe16CyvvkIm1N8rfooxQDI8REob25CjuYLXk3cIMTSBHjTsbJcam8bT8i9cSj9hUsTAGdUVC4qPUcLYp1mhZ8VXvOPPE/Zbv7UXINQjj3HpvvPTg75fNNI6NIH/SMTiEFvPPkBcDM4yTWYE2gkuBGMQ6n6+7XIFwexWW2xRmgtl7xdAUo02FdLqYnPElKFuYWIZKUHzCkIzhJOouAu1r534iZsznB6pe1m0xlde85l0VrB9PH3fO6n/j+goXaOLtQQh5+Q6qSoIb6cRPEIFoDB2f7uP/MXXRSmLFvNg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769102434;
+	cv=none; b=Qo5YvcmxhUDaBrGLuQeHDdpMw9DM/8H1MOA7Ed5KXQbNs7JA2dnsVOq7Q8wkYygZVKxhQwL/MCoudQu47RgufoCm/icEtpMfjLuQjHrgSx9FwKYTnFZfl6CBhk7LwN6flHfJWj0Ygf2OuCWEzMfjaiZRSASeZuWOMppvWn5UXagPfCE0kEicn3LvExETwtN+9d6Ql3L//eaB1pnNOTXv+nbPNmL6EVY49xiOI3+s8hESI6iLjmMacOzT6PXh0oXxU6OfrUlR7BtBdN5bmydfl3KSOIulYBkSrdXJfnaBU7G79edO630psKTlIznVC+Kp3C0jcZjhfK0Hp+7QCSuNIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769101306; c=relaxed/relaxed;
-	bh=IoC31NcLIKhHl7nnDZao1pp9zOC5/bR7Hpi37dqAcwU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=PtsbN8qqAIjA9O1edifazi9pKETKlyyBFjHFuuup6RrkfPphY6Be4Av2dRB41XIUAu8l89zd4A0p2opgso9SkgUFzomJtgY9p7rMXCSQM5MIDsFG4N4q64ZqD8XQSKtD5sMHmMtga6/WqGMvFP0YLGJzJXQ6YXowBjqasEumTT8OhuQ7ZRzpJ0Ru3Wb4PQb3RskY3erZq/QrmUUzG3Cc37HfPhb6Tx+wc/wzz8cDV96oY8F0AuAyb6AruHg5K8dIEofErrvp3C2SSjPEDHRfZFxhVIKzUP4MBccxGQxy8yc+dkXjyCm07d4YszmBjgCiqaQXE5FvSMMv4BPjWndtKg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VS65rKzA; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1769102434; c=relaxed/relaxed;
+	bh=geI3Z3VZuSC+3QFB3AAEV5NDvwqLLUEMuqEM48ID4vk=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=IG8nWYt1C2hAJr/eEjGzOQwdIGcexz3KS4wJu16OtLoajqZPDtgI0ylCEwOcCjFZZw03zghomaMvAxFG0oDfJSHHlJDA7H4t8Srn5830xSOCQ0G1wVDxqrZlkF84J7vt8wLI6TBywXkaiC19YaNbte8EuPfD8xg+JVRaUtxC999a1/Ww6uaE0QtN9l8YvqvGqs8HJmpgiQc3bDPOvQRqAGqKTIg4SMCGyroN6UbJAs49+0/zsoTCBllxTA/KbTqErmVVpWm19A5/wF2AUSV1lbo9KZtfYPs+y5f8+idNb7fzzAp14yoFXHdCgOBcSIiTKB9poV32LRN6C8XML20hnA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fOrQwU6g; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VS65rKzA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fOrQwU6g;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=bot+bpf-ci@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxnQx4NhLz2xl0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jan 2026 04:01:45 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60MEpexk028705
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 17:01:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IoC31N
-	cLIKhHl7nnDZao1pp9zOC5/bR7Hpi37dqAcwU=; b=VS65rKzArwSWNHOOm88VyN
-	yUpaN/WZgzPIuHkDOYUB+D2lPGHRM+DkXE9mTr9DpvdAx1+K+zlaRiNYzp59Mr36
-	jdw5IQO7OC4hE2AXe/iVCGIfd0hQM2h9R+ipa8q1wGxW4oGuFwkti+Yg6llQhMBt
-	8OiaemkaojiEak+Hcuc4IhJsTyZHNNFTFAFwPdjBcveqPAwilpEyPPQvbotv82/m
-	MylJiwG0qjqEDLqU3cRpJUldHGZ3imXLMAoOF6BqZsd2HFHd5jxpu/GIcYODxd8+
-	JlqbyfElMg/dA/lb3nSI98VrIdS4ojkxXuVuYKs2aepjd8utYoCRzlU3AlKFVS/Q
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bt60exhch-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 17:01:43 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60MG3fPr027233
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 17:01:42 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4brnrnbfxn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 17:01:42 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60MH1aCg61669838
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 22 Jan 2026 17:01:37 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DC58B2004B;
-	Thu, 22 Jan 2026 17:01:36 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ECD4F20040;
-	Thu, 22 Jan 2026 17:01:35 +0000 (GMT)
-Received: from [9.43.78.102] (unknown [9.43.78.102])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 22 Jan 2026 17:01:35 +0000 (GMT)
-Message-ID: <70cd2d0d-334f-4f08-b568-419d40ebe470@linux.ibm.com>
-Date: Thu, 22 Jan 2026 22:31:35 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxnrd6LBgz2xl0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jan 2026 04:20:33 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B41F600C3;
+	Thu, 22 Jan 2026 17:20:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371E5C19422;
+	Thu, 22 Jan 2026 17:20:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769102430;
+	bh=R+AGZOzKvwQpWoujXGlEYoRGINMghLh8EMK9qhENUb0=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=fOrQwU6g/8TPH/MEIGQUiwAk8+YsdtosCaHYpgbU6ewCVffXDBX+ef6F2o3ov/cX7
+	 PINGn1QOi+UNjqGhY7olv8XWiiLEVwLtjfoff9u6l7pq7pKmSorFReBz28iHW028Dp
+	 QelHEjqmUMtHJ8yRJHkbbuZccnL5qSoVrB+6NeC+tt++YoVaLh5WW42v01UYPMN6PB
+	 BF2eVS7Y7/DOjqjLzuBrxO6PAJbmFlcqlo3r3HE7zqGs7r6Jg2h2SP9zG3h1UVY/wG
+	 gs+bRON15SCQMHgMBd19XSxDja5BQwPbMgyoDBm0ioNUo8AbZJcXiUD3QH0zDGj0bp
+	 wMxd6AmsV7ZRw==
+Content-Type: multipart/mixed; boundary="===============1735738550655913399=="
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,156 +62,111 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bpf] Observing Kernel Softlock up while running BPF self tests
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Saket Kumar Bhaskar <skb99@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-References: <d6926384-0b4e-44e2-a828-1ddb57500b3b@linux.ibm.com>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <d6926384-0b4e-44e2-a828-1ddb57500b3b@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=WMdyn3sR c=1 sm=1 tr=0 ts=697257f7 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=tVtHZ5YHyPqFQcMM3lEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: jg9Sa-YN3syNOXSdPWlHiwEe2NWN-Qbx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIyMDEyOSBTYWx0ZWRfX/7JU2lO2FY/3
- bLluFlKZ1tjfzLMeBk0PL6V/IzADkYFo3Uop1eoIHfZaEdE7qQV6cD7BBbS6bQENyg6QNzhLqBX
- ZJLQswKqsO2Dq6vOHjNMlKt3ihbAyNSPA0FP6r2Wnog7WnMpv79yPQCRG6ayxShqTFiyzpQEQoL
- bfeMxwrT1GQMxtRV5lTPFUafcL7lgCmm5/7Q4gR09IrzcafNmm26YBUrg872ZonDIENVfZljAiv
- S58Uk7XHzwoVkg914s8X2DrqKFo4mycqhRYRXUGHnZyeyvxV2b7sbhJfkbN57Rbz7AcO2FkXrqv
- Me3Ci8UKlpNMnrk74t2kagFUeqqACjtoD/ReqmBJO1EF5yrMn7yMu/js+5kQOZDiv6FGfllco1M
- kcmyV+YxLw7oitRZfiJNmpi/G4qLek8c+C/dtN+/GIrQlKW0/+abU0TlzOBK4CrU/5l9DpKoN/7
- KSqj5wa9DCcdBQHDenw==
-X-Proofpoint-ORIG-GUID: jg9Sa-YN3syNOXSdPWlHiwEe2NWN-Qbx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-22_03,2026-01-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 suspectscore=0 bulkscore=0 adultscore=0
- impostorscore=0 spamscore=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
- definitions=main-2601220129
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Message-Id: <55608f784fe006db8781a09b89717c4e80c5005b4d451e7e22bb95b956f8296e@mail.kernel.org>
+In-Reply-To: <20260122165716.10508-2-adubey@linux.ibm.com>
+References: <20260122165716.10508-2-adubey@linux.ibm.com>
+Subject: Re: [PATCH v3 1/6] powerpc64/bpf : Moving tail_call_cnt to bottom of frame
+From: bot+bpf-ci@kernel.org
+To: adubey@linux.ibm.com,bpf@vger.kernel.org,linuxppc-dev@lists.ozlabs.org,linux-kselftest@vger.kernel.org,linux-kernel@vger.kernel.org
+Cc: hbathini@linux.ibm.com,sachinpb@linux.ibm.com,venkat88@linux.ibm.com,andrii@kernel.org,eddyz87@gmail.com,mykolal@fb.com,ast@kernel.org,daniel@iogearbox.net,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,john.fastabend@gmail.com,kpsingh@kernel.org,sdf@fomichev.me,haoluo@google.com,jolsa@kernel.org,christophe.leroy@csgroup.eu,naveen@kernel.org,maddy@linux.ibm.com,mpe@ellerman.id.au,npiggin@gmail.com,memxor@gmail.com,iii@linux.ibm.com,shuah@kernel.org,adubey@linux.ibm.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Thu, 22 Jan 2026 17:20:30 +0000 (UTC)
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [0.29 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	CTYPE_MIXED_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16160-lists,linuxppc-dev=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:venkat88@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:skb99@linux.ibm.com,m:maddy@linux.ibm.com,s:lists@lfdr.de];
-	TO_DN_ALL(0.00)[];
-	FORGED_SENDER(0.00)[hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[linux.ibm.com,kernel.org,gmail.com,fb.com,iogearbox.net,linux.dev,fomichev.me,google.com,csgroup.eu,ellerman.id.au,meta.com];
+	TAGGED_FROM(0.00)[bounces-16161-lists,linuxppc-dev=lfdr.de,bpf-ci];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[bot@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+,1:+];
+	FORGED_RECIPIENTS(0.00)[m:adubey@linux.ibm.com,m:bpf@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kselftest@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:hbathini@linux.ibm.com,m:sachinpb@linux.ibm.com,m:venkat88@linux.ibm.com,m:andrii@kernel.org,m:eddyz87@gmail.com,m:mykolal@fb.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:martin.lau@linux.dev,m:song@kernel.org,m:yonghong.song@linux.dev,m:john.fastabend@gmail.com,m:kpsingh@kernel.org,m:sdf@fomichev.me,m:haoluo@google.com,m:jolsa@kernel.org,m:christophe.leroy@csgroup.eu,m:naveen@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:memxor@gmail.com,m:iii@linux.ibm.com,m:shuah@kernel.org,m:martin.lau@kernel.org,m:clm@meta.com,m:ihor.solodrai@linux.dev,m:johnfastabend@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[38];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-0.302];
+	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: D228F6A9C9
+	FROM_NO_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.kernel.org:mid]
+X-Rspamd-Queue-Id: 160B96B19D
 X-Rspamd-Action: no action
 
-Hi Venkat,
+--===============1735738550655913399==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thanks for reporting..
+> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+> index 8334cd667bba..9f6ec00bd02e 100644
+> --- a/arch/powerpc/net/bpf_jit.h
+> +++ b/arch/powerpc/net/bpf_jit.h
+> @@ -24,6 +24,7 @@
+>
+>  #define SZL			sizeof(unsigned long)
+>  #define BPF_INSN_SAFETY		64
+> +#define BPF_PPC_TAILCALL	8
 
-On 20/01/26 2:40 pm, Venkat Rao Bagalkote wrote:
-> Greetings!!!
-> 
-> 
-> IBM CI has reported a kernel softlockup, while running BPF selftests on 
-> PowerPC kernel.
-> 
-> 
-> Traces:
-> 
-> [ 1632.509843] audit: type=1334 audit(1769127975.721:164430): prog- 
-> id=82135 op=LOAD
-> [ 1632.509852] audit: type=1334 audit(1769127975.721:164431): prog- 
-> id=82135 op=UNLOAD
-> [ 1637.016921] Mode = AA
-> [ 1660.780274] watchdog: BUG: soft lockup - CPU#8 stuck for 23s! 
-> [rqsl_w/8:51609]
-> [ 1660.780283] Modules linked in: bpf_test_rqspinlock(OE+) 8021q(E) 
-> garp(E) mrp(E) stp(E) llc(E) vrf(E) tun(E) bpf_testmod(OE) veth(E) 
-> nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) 
-> nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) 
-> bonding(E) nft_ct(E) tls(E) nft_chain_nat(E) rfkill(E) sunrpc(E) 
-> ibmveth(E) hvcs(E) hvcserver(E) pseries_rng(E) vmx_crypto(E) 
-> dm_multipath(E) fuse(E) dm_mod(E) drm(E) drm_panel_orientation_quirks(E) 
-> zram(E) ext4(E) crc16(E) mbcache(E) jbd2(E) sr_mod(E) sd_mod(E) cdrom(E) 
-> ibmvscsi(E) scsi_transport_srp(E) [last unloaded: livepatch_sample(EK)]
-> [ 1660.780352] CPU: 8 UID: 0 PID: 51609 Comm: rqsl_w/8 Tainted: G    OE 
-> K     6.19.0-rc4-g960c1fd29055 #1 VOLUNTARY
-> [ 1660.780359] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE, [K]=LIVEPATCH
-> [ 1660.780362] Hardware name: IBM,8375-42A POWER9 (architected) 0x4e0202 
-> 0xf000005 of:IBM,FW950.80 (VL950_131) hv:phyp pSeries
-> [ 1660.780365] NIP:  c0000000000399a8 LR: c000000000039c24 CTR: 
-> c000000000039ca0
-> [ 1660.780368] REGS: c000000bc19cfd28 TRAP: 0900   Tainted: G      OE K 
->      (6.19.0-rc4-g960c1fd29055)
-> [ 1660.780372] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE> 
-> CR: 28000288  XER: 0000000a
-> [ 1660.780386] CFAR: 0000000000000000 IRQMASK: 0
-> [ 1660.780386] GPR00: c000000000039c24 c000000bc19cfd00 c000000001f58100 
-> c000000bc19cfcf8
-> [ 1660.780386] GPR04: c000000bc19cfea8 0000000000000000 4000000000000002 
-> c0000013ff916e08
-> [ 1660.780386] GPR08: 00000013fd6c0000 0000000000000049 fffffffffffffffc 
-> c0080000f73e0f98
-> [ 1660.780386] GPR12: c000000000039ca0 c00000002e9b6700 c000000000270808 
-> c000000bad8fe980
-> [ 1660.780386] GPR16: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
-> [ 1660.780386] GPR20: 0000000000000000 0000000000000000 0000000000000000 
-> 0000000000000000
-> [ 1660.780386] GPR24: 0000000000000000 0000000000000000 c0080000f7360048 
-> 0000000000000000
-> [ 1660.780386] GPR28: 0000000000000008 0000000000000000 000001827223b155 
-> 0000000000000003
-> [ 1660.780433] NIP [c0000000000399a8] __replay_soft_interrupts+0x38/0x150
-> [ 1660.780443] LR [c000000000039c24] 
-> arch_local_irq_restore.part.0+0xe4/0x160
-> [ 1660.780449] Call Trace:
-> [ 1660.780452] [c000000bc19cfd00] [c000000000039a0c] 
-> __replay_soft_interrupts+0x9c/0x150 (unreliable)
-> [ 1660.780460] [c000000bc19cfeb0] [c000000000039c24] 
-> arch_local_irq_restore.part.0+0xe4/0x160
-> [ 1660.780468] [c000000bc19cfef0] [c0080000f73e042c] 
-> rqspinlock_worker_fn+0x244/0x300 [bpf_test_rqspinlock]
-> [ 1660.780476] [c000000bc19cff90] [c000000000270954] kthread+0x154/0x170
-> [ 1660.780482] [c000000bc19cffe0] [c00000000000df78] 
-> start_kernel_thread+0x14/0x18
-> [ 1660.780487] Code: 60000000 7c0802a6 f8010010 f821fe51 e92d0c78 
-> f92101a8 39200000 38610028 892d0933 61290040 992d0933 48102e15 
-> <60000000> 39200000 e9410130 f9210160
-> 
+[ ... ]
 
-Does the system recover after this or is it unresponsive?
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index 5e976730b2f5..d5757577f933 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -604,8 +604,8 @@ static void bpf_trampoline_setup_tail_call_cnt(u32 *image, struct codegen_contex
+>  					       int func_frame_offset, int r4_off)
+>  {
+>  	if (IS_ENABLED(CONFIG_PPC64)) {
+> -		/* See bpf_jit_stack_tailcallcnt() */
+> -		int tailcallcnt_offset = 7 * 8;
+> +		/* See Generated stack layout */
+> +		int tailcallcnt_offset = BPF_PPC_TAILCALL;
 
-- Hari
+Should bpf_trampoline_restore_tail_call_cnt() also be updated to use
+BPF_PPC_TAILCALL?  That function still has:
+
+    int tailcallcnt_offset = 7 * 8;
+
+The setup function stores tail_call_cnt at offset -8 (BPF_PPC_TAILCALL),
+but the restore function reads from offset -56 (7 * 8). This mismatch
+would cause the restore to read from and write to incorrect stack
+locations when BPF_TRAMP_F_TAIL_CALL_CTX is set.
+
+I note that commit b18ae1c3dadf ("powerpc64/bpf: Avoid tailcall restore
+from trampoline") later in this series removes the PPC64 path from
+bpf_trampoline_restore_tail_call_cnt(), which would resolve this. However,
+intermediate commits between this patch and that fix could have broken
+tail call counting in trampolines if bisected to.
+
+[ ... ]
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/21257691486
+
+--===============1735738550655913399==--
 
