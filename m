@@ -1,78 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-16145-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16173-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBmaM+MMcmksawAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16145-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 12:41:23 +0100
+	id 8IS+IWyccmkFnAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16173-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 22:53:48 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12AD6623F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 12:41:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2E86DF78
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jan 2026 22:53:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dxfKD1vd1z2ySb;
-	Thu, 22 Jan 2026 22:41:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dxvvs1F2Fz3bTf;
+	Fri, 23 Jan 2026 08:53:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769082080;
-	cv=none; b=KP1zX6TfFzdczxUPawiKZVRlUuhVwB55qQkYfTfs2TRiy4DwhS3jX1Ks3IJpvqAhlzhO/qmcAq3omuGtLaXsi8B+I0kqXPHcuIrm2Pw6KHCAluT3jzuYUNL3t7Rzt4iafrqkLY9b+laLTRtlWx/RrIomc82hDdVVrNhEELmLAzRpU5xVnZjzrzLMqhaSec7B2rUYRkeo82Om0gyVj+nuKI/TGAk4bGvzXmaC0ie7RWmdSqPomFSKny+m4zPl83GvpQx8gfawrimDEyx0MqKsEuK+0TPLHTON9HvQeg9lxtSrCz6/2/L4Ene8p24Zj/tVyYigtNvwTk3AfktTfLC9eA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=205.220.165.32
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769087427;
+	cv=none; b=QdiJxs4rjJ5UkbbF5pigpFU9fac9QWxLcWPvtHRPDbeL14WmEgDNkxa0RI9PLg16wXvHPDLAk1BxZ+w3gr5XtvoIbPCxTthGCb3rCQcakb/Qj5XNHwcofHFXA3jIvaFVtzmAsAQ0aN7mS1Kh6WpevmNW9VAxcJBHWRi4QYnAKzfgZaGo7ixxM/i9p8Ws/SCDzE1OedZM1oaqfnodusG5KH7dodbfKBda+PQUg2+DLGOb1+l+cLPQkehpmUMt/hXlf8cIYqdsioStP5Ep8n/uIKXdbPvfFOSGECpI7OPZdNmblzXRbz3i0UwVrjt51fhlwEqhy5vU4JCeHB0Ddy2eDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769082080; c=relaxed/relaxed;
-	bh=IMab9KQtwRSeYSYCSxZO+KgvrgMjgddzhHrKfRsBQ00=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FNHB++/LOA2RcO57Jas53ouMKESrFrb6GZ6ZC5xq5+ILjTND54z19aY2HuBjNF/YeHpt/TjhdlcfszbhIfO8BorUU6b2OJqFB6vCAopY1Qnb02dLlSYXeHClSudLab8/n0nDdGcoWz7ro20Yy+zmieOPYFz09wwKqGxQGu9udtdoLQwlwTiueJIDRIwYweT2/IgwmZmUM+AghlywWYWXGrnkYomO35kzHa9UeC0FFYf7oPjMs2ojLfOA38q5AIJrMGpK7yLkRCmxsCb14HoolHzFx4QPBikHlyV3NXoXASvJNKZNJmidogkFG4dbHA+odVBrfWFrhOr4WJVAsDgqJg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=wT1NYn9V; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=SuQstFOm; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1769087427; c=relaxed/relaxed;
+	bh=nJxYE5tWOaA+nFUgNT+GxlYvfYWT4LvK7kd/62xiFl8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NFRPMNqMgForKYmWrnvNGTlOW8ScxRGbozA2UyNN+Ssh2jTgDIgkF0TlYfhPmrxbO15O0hSJTKXbKpB9ElZePXonYGQyXoQd7zJwx9wRz9eXKEH7VhLc7rt+jZzNmn3xnJ/EfSxjodF0mik8GpkMaG09LTefiQEkC8GqUqn9zOzToI9qx6YzUW6tqtkUPzJo4C3YgJAR1yo0o6kcKuWuyPLv6Br3eFDtk3wiBBwXkp1g8R8JqFB2f7sPVC3kMJSA1Hh0ZFG72dTxHmPFfZpv8PZ/Uj64F6OIG8oeLt4SLGmvqxBnjDs1LhLL67n/XiER+k7jb0HEY/9lsNnYobD6cw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=Ce6CqWDG; dkim-atps=neutral; spf=pass (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=haakon.bugge@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=wT1NYn9V;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=SuQstFOm;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=Ce6CqWDG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=haakon.bugge@oracle.com; receiver=lists.ozlabs.org)
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxfKC1qyRz2xS5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jan 2026 22:41:19 +1100 (AEDT)
-Date: Thu, 22 Jan 2026 12:41:09 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1769082070;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IMab9KQtwRSeYSYCSxZO+KgvrgMjgddzhHrKfRsBQ00=;
-	b=wT1NYn9Vhoq3eSgAO9PZUEG591ottqsH+OpYSQt6vPw6L8VJVw0wP44V9Mk2x7T53TG5ck
-	AcOQcFWmVpWLV69Igndss58C9vGSdBdZyCdbtwRDUBnhTpNPrWYxX16ZQ9bg3lUwRluhpX
-	Fij5aryvb+bTQxM0dPMQx62EOLBJcH6lFQbO+iNMOhq3sFnOqtC0GOG3AmojwTzFcUM3RG
-	5JVo9SdMNNZCxLgbwCb7cxQhY3/V4KH1Z3GQEF2cO8xwaypa1Xuo+J7jA7jGnq+c2maoKy
-	ms+ldYey2gSyTfTpVPtjMg7gZfK9PvokAGA0uJ4Mv1oxn9lYcYKEkyI8vhI1vA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1769082070;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IMab9KQtwRSeYSYCSxZO+KgvrgMjgddzhHrKfRsBQ00=;
-	b=SuQstFOmRNmvuYzo3izgO3mTP6zouU63U/x9seoJDfgOk0I82priyoxmAyMzfzm+8VWkR4
-	Vx6zb8/Twuu21QAg==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>, 
-	"npiggin@gmail.com" <npiggin@gmail.com>, "luto@kernel.org" <luto@kernel.org>, 
-	"maddy@linux.ibm.com" <maddy@linux.ibm.com>, "tglx@kernel.org" <tglx@kernel.org>, 
-	"mpe@ellerman.id.au" <mpe@ellerman.id.au>, "vincenzo.frascino@arm.com" <vincenzo.frascino@arm.com>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] powerpc/vdso: Provide clock_getres_time64()
-Message-ID: <20260122123416-4e3cd7de-5aa0-4fcc-ba64-4b5f089ab83a@linutronix.de>
-References: <20260114-vdso-powerpc-align-v1-1-acf09373d568@linutronix.de>
- <f45316f65a46da638b3c6aa69effd8980e6677b9.camel@siemens.com>
- <20260122104257-3124dc96-5916-4d25-bbce-9b868b30ee18@linutronix.de>
- <f0bee121-41cc-4162-8c02-2b279f54c11f@kernel.org>
- <20260122114217-79f13c16-0931-4c33-b68c-08e884a26004@linutronix.de>
- <230c749f-ebd6-4829-93ee-601d88000a45@kernel.org>
- <20260122120333-59de004f-2273-49d2-ae93-eb3abe498ab1@linutronix.de>
- <6cb02dc1-bbaa-46e6-ace6-15698bc139e1@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dxhJ24cbmz2xl0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jan 2026 00:10:24 +1100 (AEDT)
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60M0IDl93032045;
+	Thu, 22 Jan 2026 13:10:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=nJxYE5tWOaA+nFUgNT+GxlYvfYWT4LvK7kd/62xiFl8=; b=
+	Ce6CqWDGgsthWplFqiSoPjN7iOWmzJ9BcBCaHfGZFvMgeaxDQjJ6G89kowQKMFYA
+	ycRuapFGrc7tR5XwXO3a8P3xhXu1IVdB7MwRssfSa1UT9lLWwACSLq1Tqwq4hSm2
+	8RUdUfaxSolHy2oV7Cpt7jbOEVxJXdJYiN3ujl2KqO+CaPGhTO3xv0d/wZLsUGz9
+	qsJCboQ0keWhNZNu9T5HfJXL1zzFePfxdlmL2NyN5VmlzpBVf13//2DxhKW3gFq1
+	wEqZoObk15CK4sBFFtPsC/TxI4TtOtOCIeJmXareU0P4+v8qlw5ijIOQ16ZtA1r7
+	Dxz4niWOTKgnieLLdBsMwQ==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4br2ypyjub-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 22 Jan 2026 13:10:14 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60MD0XQ1015492;
+	Thu, 22 Jan 2026 13:10:13 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4br0vctgwd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 22 Jan 2026 13:10:13 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60MD5mR3028904;
+	Thu, 22 Jan 2026 13:10:13 GMT
+Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4br0vctgdy-3;
+	Thu, 22 Jan 2026 13:10:12 +0000
+From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+        Johannes Thumshirn <morbidrsa@gmail.com>, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 2/2] PCI/ACPI: Confine program_hpx_type2 to the AER bits
+Date: Thu, 22 Jan 2026 14:09:54 +0100
+Message-ID: <20260122130957.68757-3-haakon.bugge@oracle.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20260122130957.68757-1-haakon.bugge@oracle.com>
+References: <20260122130957.68757-1-haakon.bugge@oracle.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,186 +95,257 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6cb02dc1-bbaa-46e6-ace6-15698bc139e1@kernel.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-22_01,2026-01-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 adultscore=0
+ phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2601220098
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIyMDA5NiBTYWx0ZWRfX52jA4HJu4E7K
+ YXMoMji/HCQuhPKrKAIX/mYswMggY9iCnKrmwdIM/6mn+9Lt3YVsB1DNv0NgvfyqqtthgUvGbm/
+ 57WVWqCXUWdE3pGavY519iKXoAQzJ5boBptsHd+xNVtBhi1k+k3vjMZCywr6jVix+KA495sSPoF
+ l7Dhqn3Jr9uSc3XPQgW2jD/g5vG8jI26FWylNfFMY/qg225wFFNO3ByPJI5azDVqjH9EC2bT8xT
+ e0BrkfVgCslzxwA97ZMDZZ+WPBQK9A/R5/Iw4opFPfqbkkUgLxd40mLACbnV0C+wC6AWY37Bn+j
+ lezvSaI6JStoT0TeCOS/xQHMdl6zj59mWPXRfU9VVNYJuObqI396ieS03eOtgnUgJBQe2SJR1Pk
+ sMlqYZVDWtMtWHirAujY71DqPIz+icPq1EpPqKjOgkelOoBPKaRJ8IRMgQON4OzO5AF7rlMJBki
+ 4SsGD1O19WzV2oehFuQ==
+X-Authority-Analysis: v=2.4 cv=de6NHHXe c=1 sm=1 tr=0 ts=697221b6 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=M51BFTxLslgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8 a=CF6WusRKGoJ8OkfercgA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: yXe7wd63ys3MNZY58qSg4iGD59Ki9CQA
+X-Proofpoint-GUID: yXe7wd63ys3MNZY58qSg4iGD59Ki9CQA
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.65 / 15.00];
+X-Spamd-Result: default: False [-1.21 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	R_MIXED_CHARSET(0.56)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
 	MAILLIST(-0.20)[generic];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16145-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16173-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[siemens.com,gmail.com,kernel.org,linux.ibm.com,ellerman.id.au,arm.com,lists.ozlabs.org,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:alexander.sverdlin@siemens.com,m:npiggin@gmail.com,m:luto@kernel.org,m:maddy@linux.ibm.com,m:tglx@kernel.org,m:mpe@ellerman.id.au,m:vincenzo.frascino@arm.com,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,oracle.com:email,oracle.com:dkim,oracle.com:mid];
+	FREEMAIL_TO(0.00)[google.com,linux.ibm.com,kernel.org,gmail.com,suse.de,jp.fujitsu.com];
+	FORGED_SENDER(0.00)[haakon.bugge@oracle.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_RECIPIENTS(0.00)[m:bhelgaas@google.com,m:schnelle@linux.ibm.com,m:rafael@kernel.org,m:lenb@kernel.org,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:gregkh@suse.de,m:kaneshige.kenji@jp.fujitsu.com,m:alex@shazbot.org,m:morbidrsa@gmail.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-acpi@vger.kernel.org,m:haakon.bugge@oracle.com,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[shazbot.org,gmail.com,vger.kernel.org,oracle.com,lists.ozlabs.org];
+	DKIM_TRACE(0.00)[oracle.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[haakon.bugge@oracle.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	NEURAL_HAM(-0.00)[-0.021];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linutronix.de:dkim,linutronix.de:mid,outlook.com:url]
-X-Rspamd-Queue-Id: D12AD6623F
+	RCVD_COUNT_SEVEN(0.00)[8]
+X-Rspamd-Queue-Id: 9F2E86DF78
 X-Rspamd-Action: no action
 
-On Thu, Jan 22, 2026 at 12:31:32PM +0100, Christophe Leroy (CS GROUP) wrote:
-> Le 22/01/2026 ‡ 12:07, Thomas Weiﬂschuh a Ècrit†:
-> > On Thu, Jan 22, 2026 at 11:58:04AM +0100, Christophe Leroy (CS GROUP) wrote:
-> > > 
-> > > 
-> > > Le 22/01/2026 ‡ 11:49, Thomas Weiﬂschuh a Ècrit†:
-> > > > On Thu, Jan 22, 2026 at 11:27:43AM +0100, Christophe Leroy (CS GROUP) wrote:
-> > > > > Hi Thomas,
-> > > > > 
-> > > > > Le 22/01/2026 ‡ 10:50, Thomas Weiﬂschuh a Ècrit†:
-> > > > > > Hi Alexander,
-> > > > > > 
-> > > > > > On Thu, Jan 22, 2026 at 09:39:09AM +0000, Sverdlin, Alexander wrote:
-> > > > > > > Hi Thomas, Christophe,
-> > > > > > > 
-> > > > > > > On Wed, 2026-01-14 at 08:26 +0100, Thomas Weiﬂschuh wrote:
-> > > > > > > > For consistency with __vdso_clock_gettime64() there should also be a
-> > > > > > > > 64-bit variant of clock_getres(). This will allow the extension of
-> > > > > > > > CONFIG_COMPAT_32BIT_TIME to the vDSO and finally the removal of 32-bit
-> > > > > > > > time types from the kernel and UAPI.
-> > > > > > > > 
-> > > > > > > > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> > > > > > > 
-> > > > > > > I've bisected this patch to cause the following build failure on my side:
-> > > > > > > 
-> > > > > > >      LDS     arch/powerpc/kernel/vdso/vdso32.lds
-> > > > > > >      VDSO32A arch/powerpc/kernel/vdso/sigtramp32-32.o
-> > > > > > >      VDSO32A arch/powerpc/kernel/vdso/gettimeofday-32.o
-> > > > > > >      VDSO32A arch/powerpc/kernel/vdso/datapage-32.o
-> > > > > > >      VDSO32A arch/powerpc/kernel/vdso/cacheflush-32.o
-> > > > > > >      VDSO32A arch/powerpc/kernel/vdso/note-32.o
-> > > > > > >      VDSO32A arch/powerpc/kernel/vdso/getcpu-32.o
-> > > > > > >      VDSO32A arch/powerpc/kernel/vdso/getrandom-32.o
-> > > > > > >      VDSO32A arch/powerpc/kernel/vdso/vgetrandom-chacha-32.o
-> > > > > > >      VDSO32C arch/powerpc/kernel/vdso/vgettimeofday-32.o
-> > > > > > >      VDSO32C arch/powerpc/kernel/vdso/vgetrandom-32.o
-> > > > > > >      VDSO32A arch/powerpc/kernel/vdso/crtsavres-32.o
-> > > > > > >      VDSO32L arch/powerpc/kernel/vdso/vdso32.so.dbg
-> > > > > > > arch/powerpc/kernel/vdso/vdso32.so.dbg: dynamic relocations are not supported
-> > > > > > > make[2]: *** [arch/powerpc/kernel/vdso/Makefile:79: arch/powerpc/kernel/vdso/vdso32.so.dbg] Error 1
-> > > > > > > make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
-> > > > > > 
-> > > > > > Thanks for the report!
-> > > > > > 
-> > > > > > > Does it ring any bells? What could I try/test?
-> > > > > > 
-> > > > > > Not immediately, but I'll look into it.
-> > > > > > 
-> > > > > > > I'm using gcc-15.2.0 and binutils 2.45.1.
-> > > > > > 
-> > > > > > Is this a toolchain from https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fcdn.kernel.org%2Fpub%2Ftools%2Fcrosstool%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C7f1accdfc7ef4d8ea82c08de59a664b8%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639046768343248286%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=7WB%2FCB2ZDhP9bD0GYwEftyRwfDCoRwuQ5uMA98JhfmE%3D&reserved=0 ?
-> > > > > > Could you also share your configuration?
-> > > > > 
-> > > > > I've just been able to reproduce it with ppc64_defconfig +
-> > > > > CONFIG_CC_OPTIMIZE_FOR_SIZE
-> > > > 
-> > > > Thanks for the hint, no I can reproduce it, too.
-> > > > > 
-> > > > >     VDSO32L arch/powerpc/kernel/vdso/vdso32.so.dbg
-> > > > > arch/powerpc/kernel/vdso/vdso32.so.dbg: dynamic relocations are not
-> > > > > supported
-> > > > > make[2]: *** [arch/powerpc/kernel/vdso/Makefile:79:
-> > > > > arch/powerpc/kernel/vdso/vdso32.so.dbg] Error 1
-> > > > > make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
-> > > > > make: *** [Makefile:248: __sub-make] Error 2
-> > > > > 
-> > > > > I'll investigate
-> > > > 
-> > > > It seems the compiler decides to call memset(), which is not valid from the
-> > > > vDSO. We are are using -ffreestanding. Disabling CONFIG_INIT_STACK_ALL_ZERO
-> > > > fixes the issue. So I guess we should a) figure out why -ffreestanding does
-> > > > not seem to work here and b) exclude the vDSO from the stack initialization
-> > > > logic.
-> > > > 
-> > > 
-> > > Ah, ok.
-> > > 
-> > > Reminds me commit b91c8c42ffdd ("lib/vdso: Force inlining of
-> > > __cvdso_clock_gettime_common()")
-> > 
-> > Good pointer.
-> > 
-> > > Problem fixed with:
-> > > 
-> > > diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
-> > > index 95df0153f05ab..4399e143d43a5 100644
-> > > --- a/lib/vdso/gettimeofday.c
-> > > +++ b/lib/vdso/gettimeofday.c
-> > > @@ -421,7 +421,7 @@ static __maybe_unused __kernel_old_time_t
-> > > __cvdso_time(__kernel_old_time_t *time
-> > >   #endif /* VDSO_HAS_TIME */
-> > > 
-> > >   #ifdef VDSO_HAS_CLOCK_GETRES
-> > > -static __maybe_unused
-> > > +static __always_inline
-> > >   bool __cvdso_clock_getres_common(const struct vdso_time_data *vd, clockid_t
-> > > clock,
-> > >   				 struct __kernel_timespec *res)
-> > >   {
-> > 
-> > Do you want to run the measurements for this one, too and submit a fix?
-> > This should get us past the immediate breakage.
-> 
-> I'm travelling at the moment and won't be able to come with measurement
-> before next month. But the performance degradation is obvious.
+program_hpx_type2() is today unconditionally called, despite the fact
+that when the _HPX was added to the ACPI spec. v3.0, the description
+stated:
 
-Ack, then I'll send a patch. Thanks for all the information.
+ OSPM [1] will only evaluate _HPX with Setting Record ‚Äì Type 2 if OSPM
+ is not controlling the PCI Express Advanced Error Reporting
+ capability.
 
-> With the fix, the function is stackless:
+Hence, we only call program_hpx_type2() when the OSPM owns the PCIe
+hotplug capability but not the AER.
 
-(...)
+The Advanced Configuration and Power Interface (ACPI) Specification
+version 6.6 has a provision that gives the OSPM the ability to control
+the other PCIe Device Control bits any way. In a note in section
+6.2.9, it is stated:
 
-> Without the fix, see below, __c_kernel_clock_getres() has to setup a stack
-> in order to call __cvdso_clock_getres_common(), and in addition we see that
-> __cvdso_clock_getres_common() is more or less the same size as
-> __c_kernel_clock_getres() above, so time increase unquestionable.
+"OSPM may override the settings provided by the _HPX object's Type2
+record (PCI Express Settings) or Type3 record (PCI Express Descriptor
+Settings) when OSPM has assumed native control of the corresponding
+feature."
 
-(...)
+So, in order to preserve the non-AER bits in PCIe Device Control, in
+particular the performance sensitive ExtTag and RO, we make sure
+program_hpx_type2() if called, doesn't modify any non-AER bits.
 
-> > I'll still try to get the stack initialization out of the vDSO.
-> > It might bite us at any time in the future. As these options are meant
-> > to prevent information leaks and the vDSO has no sensitive information in
-> > the first place, we might as well filter them out.
-> 
-> Well, from the first day we converted powerpc to C time vdso, we've done our
-> best in order to keep vdso stackless. So I'm not sure it is worth dealing
-> with the above. Indeed if keeping it as is helps us detect everytime a
-> change jeoperdises the stackless approach, that's not bad.
+Also, when program_hpx_type2() is called, we completely avoid
+modifying any bits in the Link Control register. However, if the _HPX
+type 2 records contains bits indicating such modifications, we print
+an info message.
 
-I was not aware about the stacklessness. Then this should be reason enough.
-We should get a better system to detect these additional stacks though.
-I'll think about it a bit more.
+[1] Operating System-directed configuration and Power Management
 
-Note: -finline-stringops=memset would also avoid the issues.
+Fixes: 40abb96c51bb ("[PATCH] pciehp: Fix programming hotplug parameters")
+Signed-off-by: H√•kon Bugge <haakon.bugge@oracle.com>
 
+---
 
-Thomas
+v2 -> v3:
+   * No changes
+
+v1 -> v2:
+   * Fixed comment style
+   * Simplified the and/or logic when programming the Device Control
+     register
+   * Fixed the incorrect and brutal warning about Link Control
+     register bits set and changed it to an info message about _HPX
+     attempting to set/reset bits therein.
+   * Removed the RCB programming from program_hpx_type2()
+   * Moved the PCI_EXP_AER_FLAGS definition from
+     drivers/pci/pcie/aer.c to drivers/pci/pci.h
+---
+ drivers/pci/pci-acpi.c | 61 +++++++++++++++++++-----------------------
+ drivers/pci/pci.h      |  3 +++
+ drivers/pci/pcie/aer.c |  3 ---
+ 3 files changed, 30 insertions(+), 37 deletions(-)
+
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index 9369377725fa0..34ea22f65a410 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -271,21 +271,6 @@ static acpi_status decode_type1_hpx_record(union acpi_object *record,
+ 	return AE_OK;
+ }
+ 
+-static bool pcie_root_rcb_set(struct pci_dev *dev)
+-{
+-	struct pci_dev *rp = pcie_find_root_port(dev);
+-	u16 lnkctl;
+-
+-	if (!rp)
+-		return false;
+-
+-	pcie_capability_read_word(rp, PCI_EXP_LNKCTL, &lnkctl);
+-	if (lnkctl & PCI_EXP_LNKCTL_RCB)
+-		return true;
+-
+-	return false;
+-}
+-
+ /* _HPX PCI Express Setting Record (Type 2) */
+ struct hpx_type2 {
+ 	u32 revision;
+@@ -311,6 +296,7 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
+ {
+ 	int pos;
+ 	u32 reg32;
++	const struct pci_host_bridge *host;
+ 
+ 	if (!hpx)
+ 		return;
+@@ -318,6 +304,15 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
+ 	if (!pci_is_pcie(dev))
+ 		return;
+ 
++	host = pci_find_host_bridge(dev->bus);
++
++	/*
++	 * We only do the HP programming if we own the PCIe native
++	 * hotplug and not the AER ownership
++	 */
++	if (!host->native_pcie_hotplug || host->native_aer)
++		return;
++
+ 	if (hpx->revision > 1) {
+ 		pci_warn(dev, "PCIe settings rev %d not supported\n",
+ 			 hpx->revision);
+@@ -325,33 +320,31 @@ static void program_hpx_type2(struct pci_dev *dev, struct hpx_type2 *hpx)
+ 	}
+ 
+ 	/*
+-	 * Don't allow _HPX to change MPS or MRRS settings.  We manage
+-	 * those to make sure they're consistent with the rest of the
++	 * We only allow _HPX to program the AER registers, namely
++	 * PCI_EXP_DEVCTL_CERE, PCI_EXP_DEVCTL_NFERE,
++	 * PCI_EXP_DEVCTL_FERE, and PCI_EXP_DEVCTL_URRE.
++	 *
++	 * The other settings in PCIe DEVCTL are managed by OS in
++	 * order to make sure they're consistent with the rest of the
+ 	 * platform.
+ 	 */
+-	hpx->pci_exp_devctl_and |= PCI_EXP_DEVCTL_PAYLOAD |
+-				    PCI_EXP_DEVCTL_READRQ;
+-	hpx->pci_exp_devctl_or &= ~(PCI_EXP_DEVCTL_PAYLOAD |
+-				    PCI_EXP_DEVCTL_READRQ);
++	hpx->pci_exp_devctl_and |= ~PCI_EXP_AER_FLAGS;
++	hpx->pci_exp_devctl_or &= PCI_EXP_AER_FLAGS;
+ 
+ 	/* Initialize Device Control Register */
+ 	pcie_capability_clear_and_set_word(dev, PCI_EXP_DEVCTL,
+ 			~hpx->pci_exp_devctl_and, hpx->pci_exp_devctl_or);
+ 
+-	/* Initialize Link Control Register */
++	/* Log if _HPX attempts to modify PCIe Link Control register */
+ 	if (pcie_cap_has_lnkctl(dev)) {
+-
+-		/*
+-		 * If the Root Port supports Read Completion Boundary of
+-		 * 128, set RCB to 128.  Otherwise, clear it.
+-		 */
+-		hpx->pci_exp_lnkctl_and |= PCI_EXP_LNKCTL_RCB;
+-		hpx->pci_exp_lnkctl_or &= ~PCI_EXP_LNKCTL_RCB;
+-		if (pcie_root_rcb_set(dev))
+-			hpx->pci_exp_lnkctl_or |= PCI_EXP_LNKCTL_RCB;
+-
+-		pcie_capability_clear_and_set_word(dev, PCI_EXP_LNKCTL,
+-			~hpx->pci_exp_lnkctl_and, hpx->pci_exp_lnkctl_or);
++		if (hpx->pci_exp_lnkctl_and)
++			pci_info(dev,
++				 "_HPX attempts to reset the following bits in PCIe Link Control: 0x%04x\n",
++				 hpx->pci_exp_lnkctl_and);
++		if (hpx->pci_exp_lnkctl_or)
++			pci_info(dev,
++				 "_HPX attempts to set the following bits in PCIe Link Control: 0x%04x\n",
++				 hpx->pci_exp_lnkctl_or);
+ 	}
+ 
+ 	/* Find Advanced Error Reporting Enhanced Capability */
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 0e67014aa0013..f388d4414dd3a 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -88,6 +88,9 @@ struct pcie_tlp_log;
+ #define PCI_BUS_BRIDGE_MEM_WINDOW	1
+ #define PCI_BUS_BRIDGE_PREF_MEM_WINDOW	2
+ 
++#define	PCI_EXP_AER_FLAGS	(PCI_EXP_DEVCTL_CERE | PCI_EXP_DEVCTL_NFERE | \
++				 PCI_EXP_DEVCTL_FERE | PCI_EXP_DEVCTL_URRE)
++
+ extern const unsigned char pcie_link_speed[];
+ extern bool pci_early_dump;
+ 
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index e0bcaa896803c..9472d86cef552 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -239,9 +239,6 @@ void pcie_ecrc_get_policy(char *str)
+ }
+ #endif	/* CONFIG_PCIE_ECRC */
+ 
+-#define	PCI_EXP_AER_FLAGS	(PCI_EXP_DEVCTL_CERE | PCI_EXP_DEVCTL_NFERE | \
+-				 PCI_EXP_DEVCTL_FERE | PCI_EXP_DEVCTL_URRE)
+-
+ int pcie_aer_is_native(struct pci_dev *dev)
+ {
+ 	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
+-- 
+2.43.5
+
 
