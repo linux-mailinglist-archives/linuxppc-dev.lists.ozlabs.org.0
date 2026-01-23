@@ -1,100 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-16242-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16243-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJ30F6yFc2krxAAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16242-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 15:29:00 +0100
+	id +A9OE7KFc2krxAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16243-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 15:29:06 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9CB770F5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 15:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F03177104
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 15:29:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dyL086hymz2xdY;
-	Sat, 24 Jan 2026 01:28:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dyL0D0T4tz30T8;
+	Sat, 24 Jan 2026 01:29:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c407::3" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769178536;
-	cv=pass; b=JEdqmVPRAgQhl4LXGoCBAqNQtfjwIa8nD8UCbRRIocH+JSplYQ4xH04obzuU+XoA2gIUQw32O0nbyiMDnOxT0yD0h7ajbjsmlFOCXBrwovJteVIRgKvoSt3gGIaJt6o9LThEtyyHPW8XG0Jo3IRNQV3vr8DR+TfkO08Akwj3eY8i4mdjfHUwCx56NUo6/Vzw1ULzoBvTR6aRDYsNP4iuIxHjdAblkFt1m/BR8sBNhBEbOd7nQhnBxn9D2suVpko1EhC/oBwBSZB+sOI4j+nDUXmNWPIIL7CvJIAs5WW6f3M4PZYZElXfLB9BdPZhhzYur6+xvX9YKcoJ0Xi7n1PEtQ==
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c200::3" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769178539;
+	cv=pass; b=VaeHGF+yUaJ+uNdE548vdjVAMcx32FVtk13xxf5k+TVZ2BKdjmlY1mYK8NMjGLjnymdVv/O1El8R9prKuNs2wZZ0O1F3yLmnbnzbYb5TK1wivzMb1vXkJYBxorHwULSc83HAbWcCytjgeqqdcAduBS3caNM9+f9RKepEqJma1vYeQ0hl58fmPQR+xZgCRuGDjyaQDJBmw8xaaOnU/4Mgp4ylk8ONOaqLeTQgXuwOiEpx3M8Zn6osIT2/5lTY+1jI65G+JfKHUFxmMQ06cEn4pnf54zZEdV7tUiPSJuXAlU8e2uFPa5iT+6tLQMEdxsBniuI7DOCvM00MpQTbCHNflw==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769178536; c=relaxed/relaxed;
-	bh=ytnkaAICS/2Id7jXbgU8CoJYMoDKfH/xTA0PQeJfwkE=;
+	t=1769178539; c=relaxed/relaxed;
+	bh=QL0Jeq1SdhVXoHX04Q35k5IDjkEaYzVHGsoe3Rn+E3A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=hmOMPgagyZSmKhW75eEsInEUjVS0FA9iDTFK/lJK3cuhFpgGUsBKtuxMZzQgl2lXZaTKMeMrRM77QGyyM6ro9pw3O1Kya9/cOJAKaIYwf+r7MTdLAtQIbrZ5xJF+vTGtOJR4lrNCVo1jQlBKZ9S4m2zJEglxJfxoNFMy+VJlMt4atS12xTB+DYquJm9PhOXqhaSOoEGJcc0CJNx9Fyq7brogOLEKsXcUkhQ5VIbexj3LRpy1kRDp6CP/huUflo1p8vE1n25lO69rFHqsaG1mTkHiq/nM8Ku9zEvtmFVOHmVtBXDkWsyfWs7lpyZ1lwv8Xnv3X+4BfuyzbMUMuCwG4g==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; dkim=pass (1024-bit key; unprotected) header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=Zi/Gxgb0; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c407::3; helo=os0p286cu011.outbound.protection.outlook.com; envelope-from=den@valinux.co.jp; receiver=lists.ozlabs.org) smtp.mailfrom=valinux.co.jp
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+	 Content-Disposition:In-Reply-To:MIME-Version; b=StSrnLR5ZxYZf5yZicfI6y2ZCNKiOT92rMScZ5weSOjgmW8O/R8SeDFzsrGFdVn4nZfttK7F7un7/oGCIifapKXhubcb1RDMcER384HONhA0FeuKp6bMCWLTJFHqUJuZNA2nNkdpBFiF3L9cK0sKrhcvY1Xi/KAn/sEkTcC/BielKC6/BCst3LyzihlTbihQ8F4YyMgx4UHJEHHDn7J+fd4db6iSyM0/ywTjgdyei0WVGfc/W99l7T4Em3TatAmQvxs5ZT6mKmjQSyqstsuLZ3+aGiJUn389zDzlpcsA3Jl+p8nO/HXWOkh6W3Zz0W1snvc81QFqjBaHxUThD3Ah6g==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=QKtDUQBI; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::3; helo=du2pr03cu002.outbound.protection.outlook.com; envelope-from=ioana.ciornei@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=Zi/Gxgb0;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=QKtDUQBI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=valinux.co.jp (client-ip=2a01:111:f403:c407::3; helo=os0p286cu011.outbound.protection.outlook.com; envelope-from=den@valinux.co.jp; receiver=lists.ozlabs.org)
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazlp170100003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c407::3])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::3; helo=du2pr03cu002.outbound.protection.outlook.com; envelope-from=ioana.ciornei@nxp.com; receiver=lists.ozlabs.org)
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazlp170110003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dyL060f36z2xHt
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Jan 2026 01:28:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dyL0C0v44z2xHt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Jan 2026 01:28:59 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JC7N19/BRTxZYOBTx9pdcb0oIc7/PAL7ipjh2K5iSkizKYiP26gzZIaZSSNTwuQPuMEYw4YHpOZ0T2dNLKQbcDUg2PVR4s7x1ty3eWtGYNj9JUfTRkapzw2wrTeEC7gm3ZlZQLAFHAWZpNnZEZwnrnyPRBLqMBqLACUoz0xEayWNrH8MjJJE5kKLF5Fj2L9FOS+RQBiMzDwIxO7yWoitsr3V5nK14wT6AlkMVgGtCm0ZHmjqb5UlaeNAECcUVYTKIYrLWg8yIQUQHjxXEC2zTdfVQ/dXjqf6IkI8GArmkUZ/grjgaPQWNl6GAGoPh5gY5kg1CRAWZFy5oIgQFaWLig==
+ b=Vtyo1p/tFIlcEqdv2WqYmv0FG+IJZHrF+7DGrjsK+D/LMrN8wjs+9F7kCXKfhq/KUEDx0v+dWcL1EnpedlQiHeN8VtL9ASQLyPGImRrSPR6Vaklp4B5fu4teP8gr2GaCAseFLp8OOxXp1+8VyG4bJ2RqNLFKqZR+0w0nX/CKodv0mv5hcct/j6DBtP46uhZiCr7Dg90Nn96NdR/lzmq6PsAhjHbNcTEr6RGKig0x0hhFqFMsoUPIAmQbgN6zFsmC8p7Bt4OpO8z7aFezC3NaHHf3PCO+lPOqAmSDXTmqRhwtXq5YsQnP4gcvXCcEyHFwT+iWx63oMJAm2kT4ZL5JBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ytnkaAICS/2Id7jXbgU8CoJYMoDKfH/xTA0PQeJfwkE=;
- b=hDJRkh5fDd4+57Pp9Oh6rwvQKXGzLsuvV0ITY+9UUczN4NsKHKIeigA3U+xEcCYEuo5ylj03iBJSOJvVy6MWauvgtKqnbeN7CSRVuxlyLSneHoBPbMIlWHU2MdZdfOlr2k318T6OT0U+qu50Lnm6qH9XoCwVwTCswXL0yPE8k0dmde5Cv1yJSN7O5pdgQiOY98tVz5Hw1ngN1G1A/Op8wIMsHj8+nV4Oeebu8zlKb4zIIOa7Wj1Sw0QZ058Gg6F2CrpHMuUbW3oRdI/VieBAeYjPFrMR6r1Q6iEkpO6QDTkKRQ0Zrp9YgtHSebQjn1Q591HJe5KDJWt4SFKhQLccCA==
+ bh=QL0Jeq1SdhVXoHX04Q35k5IDjkEaYzVHGsoe3Rn+E3A=;
+ b=rNEWgVUx0pOGRrb/j0yGf0nQIyR70OmFpaU5tqNFjc5KtBKkvcYIUVykJ/GAEP93GqX97D22aOOGi+SaYGo1BzY/FOlXmkMj/nV0xZYAlR3NjZWmJSUkKYGQ5nHtUAu0PFO1Dk1jrwYA1I+o/Po91VBFGgBsL3IpcQfrxKaZE8VFDeTgONBMq/Cb+9LZrYSOtNqHKC3c0Wzm92eCqFkHmRDw1UM54P7YAbmC4398N9eTXUYEPiSKMKxwvN4wDXX/jn3H9ldWLiBkZ5scWBI1CMiVEXr2U/ZHVLClRBaMt4KKtUfngZJKGHzgY6ePDFPLXF2F/wGODKF63ovryxTtew==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ytnkaAICS/2Id7jXbgU8CoJYMoDKfH/xTA0PQeJfwkE=;
- b=Zi/Gxgb0R+b9EsSKv9hT3kkZHJe4Wb65YFnhMb6A1ORCF/nIg/4enwWmkqgkGTCkt+FC9odBc/LwBxa4vsnda2z429H8W7kY19K0bL50bDWA/WgwQcCpJ/NS6RwzVML+P8leooJIBU96TmAi8rJljvBXiwTdFOnexNKW7RCn3uM=
+ bh=QL0Jeq1SdhVXoHX04Q35k5IDjkEaYzVHGsoe3Rn+E3A=;
+ b=QKtDUQBIqJIHiJVbvmQM2EvcRTsQGgaSAM1iHNR73+JjeHhtinqKF3TVPmNJqzeoSczULIiJb7sDNxdB4okMHoyFE7CzCXyS+cJyleCxw3SG9HQ112H+zd53WZgFVm/A1rYaK35iH0niJ/PZjzUMO2tU3/Hnmn80fCSnxPlXRaFv54Vc00v+Rp5IEYVUiTHXH0gUK/SEBWzGhKeyblug2q9AXmlFZRHugLeVN/UPQ1AUlbSdlQdNGgp3JeXhSkxSssvewUTWyl1Rg1pCKAffIvsKcSQzxewAh1pp0gQ0LKJeAjrzQwEVedGO7BTLqlEjv5t0zTvhAJGUIsd/xeK2vA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
- by TYRP286MB5430.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:191::12) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8253.eurprd04.prod.outlook.com (2603:10a6:102:1bf::7)
+ by VE1PR04MB7245.eurprd04.prod.outlook.com (2603:10a6:800:1b1::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
- 2026 14:28:30 +0000
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9542.010; Fri, 23 Jan 2026
- 14:28:30 +0000
-Date: Fri, 23 Jan 2026 23:28:28 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, vigneshr@ti.com, 
-	s-vadapalli@ti.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com, 
-	jesper.nilsson@axis.com, heiko@sntech.de, srikanth.thokala@intel.com, 
-	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com, geert+renesas@glider.be, 
-	magnus.damm@gmail.com, christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com, 
-	alexandre.torgue@foss.st.com, thierry.reding@gmail.com, jonathanh@nvidia.com, 
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org, 
-	rongqianfeng@vivo.com, 18255117159@163.com, shawn.lin@rock-chips.com, 
-	nicolas.frattaroli@collabora.com, linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com, 
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v9 4/5] PCI: dwc: ep: Support BAR subrange inbound
- mapping via Address Match Mode iATU
-Message-ID: <tyudbsfjh2b7rzcascz4blv4uhkesemxqby6r5mmvgyfqrms45@mshhj53p53pt>
-References: <20260122084909.2390865-1-den@valinux.co.jp>
- <20260122084909.2390865-5-den@valinux.co.jp>
- <aXHsd7-WWAGyhy_w@ryzen>
- <s6bnqkbuugi7oio7ybekdbk3dokpbe2bui2wjltdwajxix2app@wosgmhrfsriv>
- <19D609EC-F850-4B43-A83C-0B8C70E641B5@kernel.org>
- <l7wknbayighcczjkqfwhbaqrepjtbgxxstgkntoqvnrs7dnm6g@wvmy67ky37pv>
- <aXM2hwCrziK2I8OL@ryzen>
+ 2026 14:28:35 +0000
+Received: from PAXPR04MB8253.eurprd04.prod.outlook.com
+ ([fe80::b853:e05b:c1e5:41b7]) by PAXPR04MB8253.eurprd04.prod.outlook.com
+ ([fe80::b853:e05b:c1e5:41b7%5]) with mapi id 15.20.9542.009; Fri, 23 Jan 2026
+ 14:28:35 +0000
+Date: Fri, 23 Jan 2026 16:28:31 +0200
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	Thomas Gleixner <tglx@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 05/21] bus: fsl-mc: Use default primary handler
+Message-ID: <df4yoq5llgrr4gn6eqnnls5ess66xnszfozdnep27fvw764mkb@v74cpgfiyyt4>
+References: <20260123113708.416727-1-bigeasy@linutronix.de>
+ <20260123113708.416727-6-bigeasy@linutronix.de>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aXM2hwCrziK2I8OL@ryzen>
-X-ClientProxiedBy: TYCP286CA0115.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:29c::19) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:38f::10)
+In-Reply-To: <20260123113708.416727-6-bigeasy@linutronix.de>
+X-ClientProxiedBy: AS4P192CA0006.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5da::7) To PAXPR04MB8253.eurprd04.prod.outlook.com
+ (2603:10a6:102:1bf::7)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,212 +87,134 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYRP286MB5430:EE_
-X-MS-Office365-Filtering-Correlation-Id: 085d56e8-448c-4ba3-5caa-08de5a8badfa
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8253:EE_|VE1PR04MB7245:EE_
+X-MS-Office365-Filtering-Correlation-Id: a49f531e-3e53-4c03-b193-08de5a8bb10e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|7416014;
+	BCL:0;ARA:13230040|1800799024|366016|376014|19092799006|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?teFzt6ongHxglH4Jao1c+WGnHlNpaeP3L3J4xRGbakyLOSXQvEq8DHI2frKB?=
- =?us-ascii?Q?4A6pGE+v5nFX1RVEHSNhMmmSb1Ggg4htHw/EHkbni3fGfYXYSCKgTNlqHs57?=
- =?us-ascii?Q?IR/R9RW8f4zzaTvz8SyMLpvr+U3OjVVZgBEVMhaLyFHvqdfmYdUffURb5xIg?=
- =?us-ascii?Q?9HD/UzRbCG9ju/1PbO1rfrhke0UB1hn+cFhThfjqv5XnOpwec/8kB9RYrwqN?=
- =?us-ascii?Q?sn076+sm4mfy+svM/5GLtBfMFD65PINpAFLhjluXTohyFH9ZOUrsolXzBG4u?=
- =?us-ascii?Q?UTFSMaxBsmHU/iUEfojQFWcobgXLoclnn/l5SJCZ1XP8A25hLp/6G/gpO87h?=
- =?us-ascii?Q?l3W3iJ5AXnZprg5iu80FpaNhSK2qexgKGoCmb55EY+PPtDWDWK8OGJ3FbgS0?=
- =?us-ascii?Q?u6WRGHWPIrrly7cfA9jz+YPhxgpcbDT50xeQlh4bLXhSkgvw9GEl5mOXcEbV?=
- =?us-ascii?Q?JiKHL537V1uGQ+qJ/w3SIu9rWEZuW9dFdG3XkxpeBfTPQ7yWU2W/gAlbmKWE?=
- =?us-ascii?Q?29BeeNHX77KuG4UArskukdVKWkljEOR/7ASLs3h+5SJLbxHb4GNffG+V/9LV?=
- =?us-ascii?Q?/4j8bsuz4SHsVU/itA1PK5Xda7I4nX+vb/mFLWyYhUzXb4wcNKdVTpgcp8OH?=
- =?us-ascii?Q?MUB22J90zL90vijIB3S73GeF0lRnauHtox2e+vGz89nw2IvnHwtd4LAJB7CM?=
- =?us-ascii?Q?dUl9FkxfFE2UBJrRJB6tX4B4p63IA6iIhV05WkVJp6dHjmWY+BN703Rf/Q0o?=
- =?us-ascii?Q?IS2aozGT+PtxP7Ds0tb5pcBqnFMLAKmQliQtDvDk4LjJJFm4K/VWRkLdDFNu?=
- =?us-ascii?Q?f1m7WYPGd1bPT/Wi7yC9LjmPcxFXkSf+TbK9ZaMneOSlF01HZg2//pI1iGX8?=
- =?us-ascii?Q?nCeeBDid8ZRVPZsdRP6RtCjmjXp6b7SyZ+HpTD/t3qu/oLlMOqCRVf47pv3V?=
- =?us-ascii?Q?I12paQ3gqRyciiJouJHp9w/yJTMEsPSOB6t86WUnQQH7JDumOsn/Y8hHdmMI?=
- =?us-ascii?Q?WsUB60Eb1qZv6KoZKNUlAY1C7UC6GCB42qjd88c/yAjCYCK78iF8bp6GV6Hk?=
- =?us-ascii?Q?BbZ6x0Hdp5NNsIcX5gU9OUj6dNR9t2rNDkPEvIVyXOcWf6+3JIAzsWngT39B?=
- =?us-ascii?Q?A+NYBjybImAZ59wcSNqf6xq0e0qrqh7p4wKj0ZtZvGcbnTm5b3cC+PNv+4ay?=
- =?us-ascii?Q?b9Z5/2MvMfDAdYpev6/NOQ0FSR9To2k/DScVVvhL9i8aUFQ1vuDGGEW+Hkt0?=
- =?us-ascii?Q?dM3X6ND96l+1O+przXfB7GgHAct80tpj1ONPxK4pay+MlEcAqTDu08AIUxMz?=
- =?us-ascii?Q?DFA3SoOooa4ecNqoJzrk4rRF5Sn2t5OuSq91/rl+828IsjGBd/libvINpLDD?=
- =?us-ascii?Q?uYIXm+v9zbrgwnbymTrbXib5+MljrzNHk/u1FhMfdHr+Ygx6vMrdlmt7UWau?=
- =?us-ascii?Q?HUdq2LNidVtKdVJ9vCBK7jlcVEjIB/x9XlRClXdmyM6xtwD5UKslS4WHUwVR?=
- =?us-ascii?Q?cmsRKUxECT1H7N3S7Q9hMpFHXS2xEOD/1H8T/igEV2z+r53RLqxOmipj5SwN?=
- =?us-ascii?Q?2y8+0Ubk1goyML7M7SytUk4d5PVOkhBKC6JTB/hz?=
+	=?us-ascii?Q?x0yRiWbr+9EFu66vGPPjuMLmvFY6xOGgX4AJluBPoLnNz6MGnqE9WVgDPyCT?=
+ =?us-ascii?Q?DsTHlZxNml4c2DlUK98tijas3Iqz+0PleBe7OmxFM9L5vFfXORz75glmsGLi?=
+ =?us-ascii?Q?Csxqq9DkTGqRrdRqXLrZqqoYTpuUGB/o7qnXJILvTXrCvmlrMkO5EurdxZgQ?=
+ =?us-ascii?Q?DCTfKUVCrOisATDQ1VQGwHNzSOp1oGPdy1P9p2v6lCLUEL5ht/y6S1dCyCjc?=
+ =?us-ascii?Q?/+gvT8fkqj4HoWhCBkG/f/LJgMzNNWFPNF/Sq3LYokgATimRCFqwm1yIGKw/?=
+ =?us-ascii?Q?YpIZzx/Eq3q8Qcx4itWVkq4+tlndZLF8PEuKBT4xGaZz4JfqPijkdFTY8e8M?=
+ =?us-ascii?Q?x4F4sX5lE8iiD+s6xX+dZM5fr0gKh0mbNrSNB1r9O5OKEfO8O28/wWQ05QU/?=
+ =?us-ascii?Q?87qZcqT3HgAZacyj3EmnvHzD+8o7doYgEpOVoumVSjJe3D+8vJilcT9WsOly?=
+ =?us-ascii?Q?kCSUlQN8qN8O+hFPF1aLgergDwTENdI7+SsS/4syxpp9L7JVk8/d81CcG5ke?=
+ =?us-ascii?Q?2u6wrS2et5S+dGzEPdhalkbvGjoneIRvKTEV6pqa3Jv4FXkkfxGselINcIZs?=
+ =?us-ascii?Q?pdTwlebj1twgBjzReah2x1EGTfEYGEP4HXkkPFezRUiG2l8QdMJk1qCoiNG9?=
+ =?us-ascii?Q?MlxxoJimAhmaYyzGQjv+ck6qMuceXfHUnNbSr7bDbgPUPblYPpgNWl6falAd?=
+ =?us-ascii?Q?aaVJXbGM6VngLd3iNeWoOUNBT0qHhpDVFaKf/pwTPJgdAuL7xjH/uYg2xsJt?=
+ =?us-ascii?Q?I6N6hd3c81z/ghh+nvDXAg0FTtgxPd1nap+3LZTooZtoPiWiGkx9ltrnF5yx?=
+ =?us-ascii?Q?JK6Ai7d3wYJPnFRpR1j6O/2e3odYJqXnQASD8+29lMx1UVYr337eCJSmCYML?=
+ =?us-ascii?Q?7TeT0PS8ioocRNg7KcTYVIYdvYgSEGtkq6jH1TbRRahScdUIOQPxf4WvLLrC?=
+ =?us-ascii?Q?ud1Z4NuG0Y7tdnuV+RynEc9wetyQ8erF8H7dOO5zwwb6SluPkDh8zV2w72BJ?=
+ =?us-ascii?Q?ns1ADpoVwlBRhX6Xkt6GdITXBpoY+PM/ZJ3belXj65IzBuF6BXBNggqzYxpJ?=
+ =?us-ascii?Q?gpj3SsYm1S7fldZ01CJSvbShFbq/XI5orPvQEvNjnq1hcqKzvPYcR9yk+BbD?=
+ =?us-ascii?Q?HySnV41+ByFcVPJaU0ryzDBlUeRqGt/v9dcLRCPDqhabbYs1UimTzxmZnnM3?=
+ =?us-ascii?Q?Js3jq/iw1TLzyY7NWl920r5u6MxfsfHv/y5Ad3pZ6BahJne7pYs1oa/beg6w?=
+ =?us-ascii?Q?Sjju88HXV1rR1tM4fA1hPjx7foP9lU2YCqPhLFNzRivlUzppW8DcR1OFQVta?=
+ =?us-ascii?Q?FELKZRsnTEhkvxnDGbquQ3jeqiNvXRSNsdyKgA6mZe/T114wYbDdtcbCUJ2j?=
+ =?us-ascii?Q?3TIAgsagE8ry7z+0si/dRAzd6b7FEGmayhEyz/X8uYPmGVUghPgJRD+J6dHV?=
+ =?us-ascii?Q?2tc2FHFTCoELaWIMumJdnQoaWjSJqOEgc2IxNgq3RKfwwQ+t1QlbC3Pdj0Rx?=
+ =?us-ascii?Q?0r00MJtzjXFIm4qsh9qvtHhYeSSSfzUBjg4D8TKvHFGUmzUBq/Fq6rVeHq+g?=
+ =?us-ascii?Q?YZsmT6MZ0mHbqKcy8oo=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(7416014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8253.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(19092799006)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+yWVREqRY2nbvDcwzGyoD0OOhdvQ/c0V1015Aof8YRinZxmeOOkKjpv+3soo?=
- =?us-ascii?Q?YMoZO/Nsw2VRv2I24Mhc0t4KAAFp4OUTkvI2zbKimAvjmHIhBw6GE5hMsIFp?=
- =?us-ascii?Q?dj1adkCIxZNV5fso7HZ6vm5k/B49/wVbhJ6dTpWjWHkSLVHslaoLS2sZkexT?=
- =?us-ascii?Q?K77OYfBin5JRzPbSF1YXlOrmXAVcfydDS8dYY2GLOO8EmSM2rsExb9q0JEfy?=
- =?us-ascii?Q?Shtzebxzc9XpaQ2aCsCKC8GRadtKNBXJZ/9fPCmhut4yX73ADhLsQ+sGyaKG?=
- =?us-ascii?Q?KT612o1iiecxtPGcu5zHqJWaHKz4NO4WWr5F13sjx1KUUt2vER9NFs1S+fCL?=
- =?us-ascii?Q?wiwZrBaSie36DX0YivXeo1Yxh5mR9sv1sYEiQd+3OS+yTP6doAzc8ARouoOx?=
- =?us-ascii?Q?v5LRHqjaxjEOHCnvPszcDDMQVvRZ+354n3QVAOPK4vs9S+aJPB6qf+/5sF9V?=
- =?us-ascii?Q?MahGEWubG8KGlHsO1q35sBi+/4EpnFyq0DhVuXdRIqMNJX0sXSvxyr93uxWg?=
- =?us-ascii?Q?wIZ+ncNWDwZAokAg13c41hrz/CfUzNBocVeFwOymeiAqy/zmkpXRL8hphdpZ?=
- =?us-ascii?Q?h0H1alwOUNtOrU1lNbuQn+B+FBygVx8QHmvjVg++FLAYEulIML11aY/Szwbr?=
- =?us-ascii?Q?x2edHytBBjgCN1vNwKW4jxlSP1lDlf2ItcsgpN22J7YEdsWd1hRg9b6ilR7F?=
- =?us-ascii?Q?ATgEKBXIU1wT350L5dEWTdt2sswEosaP9T+p90iAolan7CHW1TxL6JWqwdPz?=
- =?us-ascii?Q?VHzHp1hbaIxkWmAlHOTLqSyI3LnuwfWFn4VQvjXrYtax4LSCpKdwGt7tTutE?=
- =?us-ascii?Q?kdlYxSsI155x5cVzTIj8URV8NQJ9vvRFG6mYyZpGcyMd3oDBKKqWmA87P51E?=
- =?us-ascii?Q?Edy+ITk+KRIdjpEUB8nxLsUQ38li3OFj25HBFysYEoSXuW/AjEddMSzZzd9l?=
- =?us-ascii?Q?fRozVqCE1Ow1D9INYnkXLp2S/T6U13Rv1eMoLd0krqFYgyq+SNqSTwcc5GhA?=
- =?us-ascii?Q?L3/xmM7QcYouvwlBUIPoMwZsVbra3wAY7L40J4yjZV1pjsAGc21G7Zyj0D4b?=
- =?us-ascii?Q?sNBICXD+RajmbjFnfses0J88GMYny5/W8wwtwESNaVS0XCgUENYPKmQ901kX?=
- =?us-ascii?Q?7U+l8iQkyrvPyaa5JoSRAWsT4OCJvBZGtPRn9JgxRIGgiyd+89X5Sjjks7VI?=
- =?us-ascii?Q?LecUzJOTniCYA4FpOM3JqZAlZf+zWdCGG/wbZl4o2vGknqts4yCzN9N56ITb?=
- =?us-ascii?Q?ZOg2lF41w3YX5ydmDY8n7xCIilVhlbIYyk1pMvCCaE7NDyeQ6VLXLoESmKXH?=
- =?us-ascii?Q?Pxu0j+5uKTlbVKBIqqRL/hDb/SjgmmCo1JR4e+tQNcWovlR0u7Oix4j8LMfA?=
- =?us-ascii?Q?jOXRk7x+u/xWY3z/TtmVUtKMz/Eld8U3EiVSh5Nms4acvlZazk9B0r9nKJwK?=
- =?us-ascii?Q?w9PKLnRF8JAuyWUfNV+OJ8baWDPULLmw0nKNA1lM2UnoFDjgasuGJeXpnmI8?=
- =?us-ascii?Q?e4x0gZGxCdaKrM5k40e+3jN66QuZ2Jev5QyG8+IpFZmR8Ls2rJdLMIBM/RTq?=
- =?us-ascii?Q?wIPbziB/F5ZOfG6L/ZSXZGlRancNjPgJXaG4p5gMAnyi9rHnUACnU1qOTUVA?=
- =?us-ascii?Q?BecMiJ7IHjvFB9qIfXqiXNkgUHkGXYdYx/phfPBVCSdELni6xnMxyDf9D4m+?=
- =?us-ascii?Q?qSAXIp2IkXDNGlg96Ixk2FYvcv7A0UglaikzaanfUmuWRrRQjdkFbXM87NNd?=
- =?us-ascii?Q?EP7+gbVFWYfZsb8sPTIjH42ILJHFeGqSg+XDWibTUi0OmXn6w1PA?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: 085d56e8-448c-4ba3-5caa-08de5a8badfa
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+	=?us-ascii?Q?iYV/cf9pvkAUWBw4hVDfRX3V+TAwptuJeAcpMF/gCKIgCpz6w7n+F4XR56JS?=
+ =?us-ascii?Q?I+fbVPKbUYH4FXKWCWtpRcRUjsJKFZcJjumA+WOXAJFJPc9zlZUXnbymG7ni?=
+ =?us-ascii?Q?E682r86lWwQsEk0K4Akwiq7GrRTz/b1kUT212lyGUBq3LpF6mN/kqOXjNt2w?=
+ =?us-ascii?Q?+8aESigRSZreXA+njcOX9C0aKluTa58n5uM3FO+kf/knsyeIaitQF4sWZna8?=
+ =?us-ascii?Q?NYUipVsQX13fUcm2Zzx7PWbuvBjWZiAKSURHSbw48isHb6nAkGSjhAS5vABm?=
+ =?us-ascii?Q?GILxSZZ9bngEifm5Hg3fWLJUkvjOT+e96kjSguplmzoPs7B7Oq2XETmOpUSX?=
+ =?us-ascii?Q?h+RllSN4Xl5G3ddHsc5gko5LCpHqaib2Pwg4hUSQg3QD+5wTL9MBfRerdjpE?=
+ =?us-ascii?Q?10L/BeKl11djK4Ck3MlIJ8Rv+UNxdlLUf5a4/pCecm/o72yDZKaZDWdQhjA6?=
+ =?us-ascii?Q?fd2/BZb714gkKWcBa0T1QrH8cfb3knu2cuN1tQN8H+RXUu49255ENArgxidl?=
+ =?us-ascii?Q?qYBbckqNjpyJROrTNKR0qFlx81PksDWfElCRXggHHkfPmd/7hFBiWP/10WCi?=
+ =?us-ascii?Q?JiaoHc4kC5JTCcnyYDUuf7LYDopxsWMAl3JQigtV4ofjJxJQ8k+jhU4i0KvN?=
+ =?us-ascii?Q?Z8qC9H/zRbQi8f8yWVJqojgGm0CZ/WbMahS0UQV5Uvp0bmqSuZnb8/bP8DFG?=
+ =?us-ascii?Q?3/k1Q2mvCl9PTaRsjtVOkIcJ73NdtBV3vzOC+R7neGgtTLVOhwLGtv2l6lKe?=
+ =?us-ascii?Q?bsnHqKdcc3reoOBFFKqKh0Z9QGOJyCfcnITdPf7TqKgDYo8sbBWYydiEey9/?=
+ =?us-ascii?Q?OUkGdGYYCWWNsAugWRSezNzhnZ/8aKXYRx7N/7cKLQnWdPbX69CYEeLESg4a?=
+ =?us-ascii?Q?FgAYSGWW0viEr0ffoFnVggn7rX9EAdo2cSB8F9VPbYablfAKZzoA/8Ex/1wC?=
+ =?us-ascii?Q?Pu16Cx2UsIDAXDaFJZ5d+PX1i03dRRxzNTrkJ8t0e4PA/iVgK/l/EetDaeyg?=
+ =?us-ascii?Q?EHHzPT360G3WZuUBkqOWf5P8MVOgeCo/2672ZfHJ/S3OxFv1mbg5SNgDrXR2?=
+ =?us-ascii?Q?dc/SctoDtACbeSL6lfVOvJDUfK7Le00FHtY9cbc+YTB8Fa5N13oQi6B4JR6u?=
+ =?us-ascii?Q?a1N8fwfCpH4g3yAEAu67H0FlUGPw23eBrt5cTXux6f0XIRK7kaRLI/J0CPq+?=
+ =?us-ascii?Q?by8MdWuDl1HlSYXbd3EVigYbN9yjsNjtJmIt29evLk0wiD9ZiQjLpLc00BUo?=
+ =?us-ascii?Q?BJW78njsWDw/Ht8XrCbME9UHzZy9oMzYA1vTp9d82p8jLHjXXk0A+nLR7LB5?=
+ =?us-ascii?Q?gkel8WjGmC9flXF+kiqkjP4DP3gbtNKvWzpzTb7b2nwvdZkPg7U70Pm4Ufo6?=
+ =?us-ascii?Q?xTDLmCwOfrgD8sMYiCJYzXSX6DxglUpgjuBBEjVaHqKF7kwcjNNyLK4qvzEb?=
+ =?us-ascii?Q?4CbnHvYnC/wgZhWyf/mGcicU0bNdNndILxmvZpgPy/GFriXuRACiCo5DFdRW?=
+ =?us-ascii?Q?BeZJsz3uc3MI0CwuSbhOPg3kFltOy0Ju0vmA8uuqgbSO4xOpoBxmXMmhXMc3?=
+ =?us-ascii?Q?R6ge3tm+kaaOqnWaikeI72FKpQHv4jOnE+4UYGSIXQzNWg+TKGO4tnkUMWYl?=
+ =?us-ascii?Q?gNHrjx6aeBi6NC/vXRbAEnJbnJIFMl4vlnMPmRc+fMAx/5kQYdgCahLSfa/J?=
+ =?us-ascii?Q?AQLh9s8hWi/X/O7e6MDw9ziTSeKlR3YofIs40pKEvwRLXyxbjq6e7TZ4+X5o?=
+ =?us-ascii?Q?/3N6c41MXA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a49f531e-3e53-4c03-b193-08de5a8bb10e
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8253.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 14:28:29.9571
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 14:28:35.2448
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: InOf8FpzC3J3dvoe1hHhzNoM5Em6OjsdSgQc/nLGN5jLulc3OUmT7PcUJ3G3qOwFi+YO0gH/JV7+JpnGpuxRZg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRP286MB5430
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z+Vc9RnGZ9NstJct2zlTGsKJYjIba6yIU4YHXYbt9bvavU68MMF+8qPsF92a70P+L7IhlaW322mawyW77nP9kw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7245
+X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[valinux.co.jp,none];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
-	R_DKIM_ALLOW(-0.20)[valinux.co.jp:s=selector1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16242-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[den@valinux.co.jp,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:cassel@kernel.org,m:jingoohan1@gmail.com,m:mani@kernel.org,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:robh@kernel.org,m:bhelgaas@google.com,m:vigneshr@ti.com,m:s-vadapalli@ti.com,m:hongxing.zhu@nxp.com,m:l.stach@pengutronix.de,m:shawnguo@kernel.org,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:minghuan.Lian@nxp.com,m:mingkai.hu@nxp.com,m:roy.zang@nxp.com,m:jesper.nilsson@axis.com,m:heiko@sntech.de,m:srikanth.thokala@intel.com,m:marek.vasut+renesas@gmail.com,m:yoshihiro.shimoda.uh@renesas.com,m:geert+renesas@glider.be,m:magnus.damm@gmail.com,m:christian.bruel@foss.st.com,m:mcoquelin.stm32@gmail.com,m:alexandre.torgue@foss.st.com,m:thierry.reding@gmail.com,m:jonathanh@nvidia.com,m:hayashi.kunihiko@socionext.com,m:mhiramat@kernel.org,m:kishon@kernel.org,m:jirislaby@kernel.org,m:rongqianfeng@vivo.com,m:18255117159@163.com,m:shawn.lin@rock-chips.com,m:nicolas.frattaroli@collabora.com,m:linux.amoon@gmail.com,m:vidyas@nvidia.com,m
- :Frank.Li@nxp.com,m:linux-omap@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:imx@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-arm-kernel@axis.com,m:linux-rockchip@lists.infradead.org,m:linux-arm-msm@vger.kernel.org,m:linux-renesas-soc@vger.kernel.org,m:linux-stm32@st-md-mailman.stormreply.com,m:linux-tegra@vger.kernel.org,m:marekvasut@gmail.com,m:geert@glider.be,m:magnusdamm@gmail.com,m:mcoquelinstm32@gmail.com,m:thierryreding@gmail.com,m:linuxamoon@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[ioana.ciornei@nxp.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,google.com,ti.com,nxp.com,pengutronix.de,axis.com,sntech.de,intel.com,renesas.com,glider.be,foss.st.com,nvidia.com,socionext.com,vivo.com,163.com,rock-chips.com,collabora.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org,st-md-mailman.stormreply.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:bigeasy@linutronix.de,m:linux-kernel@vger.kernel.org,m:linux-rt-devel@lists.linux.dev,m:tglx@kernel.org,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16243-lists,linuxppc-dev=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[53];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[den@valinux.co.jp,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[valinux.co.jp:+];
+	FROM_NEQ_ENVFROM(0.00)[ioana.ciornei@nxp.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[nxp.com:+];
+	NEURAL_HAM(-0.00)[-0.124];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev,renesas];
-	NEURAL_SPAM(0.00)[0.265];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,valinux.co.jp:dkim]
-X-Rspamd-Queue-Id: 6A9CB770F5
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linutronix.de:email,nxp.com:email,nxp.com:dkim,ozlabs.org:email]
+X-Rspamd-Queue-Id: 5F03177104
 X-Rspamd-Action: no action
 
-On Fri, Jan 23, 2026 at 09:51:19AM +0100, Niklas Cassel wrote:
-> On Fri, Jan 23, 2026 at 10:16:21AM +0900, Koichiro Den wrote:
-> > >
-> > > There might be other EPC drivers that don't disable all BARs in their .init(), so I would say that simply checking if the BAR has an address is not sufficient to guarantee that an EPF driver has called set_bar().
-> > >
-> >
-> > Even if an EPC driver does not reset the BAR in their .init() and some
-> > default translation is left exposed, wouldn't it be safe as long as
-> > dw_pcie_ep_ib_atu_addr() succeeds in programming inbound mappings for the
-> > entire BAR?
+On Fri, Jan 23, 2026 at 12:36:51PM +0100, Sebastian Andrzej Siewior wrote:
+> There is no added value in dprc_irq0_handler() compared to
+> irq_default_primary_handler().
 > 
-> For e.g. on RK3588, the default HW configuration of the DWC controller has
-> all 5 BARs as enabled, with a size of 1 GB.
+> Use the default primary interrupt handler by specifying NULL.
 > 
-> There is no inbound address translation for these BARs by default.
-> 
-> So for it to be safe, the size of the set_bar() call would have to
-> match the current size of the BAR, but how should the EPF driver know
-> that when it has not called set_bar() yet?
-> 
-> dw_pcie_ep_read_bar_assigned() does not return the current size of the
-> BAR. So you can't verify that the set_bar() call has the same size as
-> the BARs "default size".
+> Cc: Ioana Ciornei <ioana.ciornei@nxp.com>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-I wasn't considering either of the following cases as unsafe:
-- succeeding by chance in programming via a one-shot set_bar() with submaps
-- such a set_bar() failing (due to incorrect size recognition)
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-while as I mentioned in my previous reply, the first case effectively
-becomes a loophole that contradicts the docs and git commit messages.
-
-However, since v8, the second case clears any existing mappings, which
-could indeed lead to an unsafe situtation.
-
-> 
-> 
-> >
-> > That said, such usage apparently contradicts the documented usage (1st
-> > set_bar with no submap, then with submap) described in the docs and commit
-> > messages in this series, and allowing it would make things unnecessarily
-> > complicated. So I agree that adding such a safeguard is the right approach.
-> >
-> > >
-> > > I think the safest option is my second suggestion because then we know that we will only call
-> > > dw_pcie_ep_ib_atu_addr()
-> > >
-> > > When:
-> > >
-> > > 1) If ep->epf_bar[bar] is set:
-> > > https://github.com/torvalds/linux/blob/v6.19-rc6/drivers/pci/controller/dwc/pcie-designware-ep.c#L363
-> > >
-> > >
-> > > 2) All the other requirements to dynamically update a BAR is also met:
-> > >
-> > > https://github.com/torvalds/linux/blob/v6.19-rc6/drivers/pci/controller/dwc/pcie-designware-ep.c#L368-L370
-> > >
-> >
-> > That makes sense, and it ensures that the behavior always accords with the
-> > docs and commit messages in this series.
-> 
-> I think it makes most sense to put the "use_addr_translation = true"
-> 
-> after the check:
-> 
-> 		/*
-> 		 * We can only dynamically change a BAR if the new BAR size and
-> 		 * BAR flags do not differ from the existing configuration.
-> 		 */
-> 		if (ep->epf_bar[bar]->barno != bar ||
-> 		    ep->epf_bar[bar]->size != size ||
-> 		    ep->epf_bar[bar]->flags != flags)
-> 			return -EINVAL;
-> 
-> 
-> So we know that dw_pcie_ep_ib_atu_addr() is only called when the size is the
-> same.
-
-I'll send v10 with the fix, possibly adding a BAR_SUBRANGE_TEST to pci
-endpoint test as well.
-
-Kind regards,
-Koichiro
-
-> 
-> 
-> Kind regards,
-> Niklas
 
