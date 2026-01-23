@@ -1,96 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-16247-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16249-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2M4vKYi3c2ncyAAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16247-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 19:01:44 +0100
+	id kCN1GMnTc2kCywAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16249-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 21:02:17 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84B07950F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 19:01:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D987A728
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 21:02:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dyQjW1VlZz2xdY;
-	Sat, 24 Jan 2026 05:01:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dyTNj5W2Mz2xdY;
+	Sat, 24 Jan 2026 07:02:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c105::5" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769191295;
-	cv=pass; b=UQ1Iq/lbYyFilx2juPoW68hc2ezCb2XdXwWffeoNgMXZdIu7Z81+AmSSQfCbZ5bk7PxkJlZ17gEc+y6nCdUuPWV07oPgNG4rdZccx65JADICXtyF/BqFdjuwiGRbzc8F6Q+CSoqvGvBLT5ZKeIw0M9bbor01ifHjXosXjcKzQFBe5TH/qh6qKexAfNR5P6sp3AfETnJvbaRwNJGbntbvcsRYVGtJj7ktL5raeDehKnCLrUjEuy01ZsWoopr5niuKuAxvNZ4Wy3LGwWUnhc2DG1FWwJm1ARm9WCCIhzZnY7lTJwRHcKeme2isQLfPD3fg7V8RViRrxtyx0XE8nEWS4A==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769191295; c=relaxed/relaxed;
-	bh=pHZQu94wwBqQXz53UineyDsRSVIay85jB/0uNC9nlT8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=aJXTd0LxjF5XRoGpPtZQiWP1ytvVOWHwB9/UsOROQqBL6xpe83D3pjBYNPdyDWxlGwP8Kfv4oxEe2MZYxkSUa2kGm7NmK+K+xF+a8QYWSrrIWfcV6Jp6dL2D9JW25+FOK5IUpRtpWXL/gH1DLEybnkVVtTS4lBDOH47aGyKe8npcButzFlxp8L8rzNHtHNO1utJZDJQs5jfWlKejxEz8SdohTGKlY/lLqRjW6yETUMZ72zP+4BsVTrGiUQXTDYcyYcf2UlscVvowsZeVVSF8ymcSA0SH5Uz0OkT/Z6teIzI0JDkDFQY8cAZSuFrHgfsPc0XCx3iyIsh3Fz9JHAzWtA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=zMmfrX+l; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c105::5; helo=ch5pr02cu005.outbound.protection.outlook.com; envelope-from=brett.creeley@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769198533;
+	cv=none; b=f4u6KfLo22uUhB09KIAGmhYGD+I4F/mW2d86Q5xLf79O5u+ha4cTx87+b6CXXyn/XDeowWqt6BE5ChXFUQ4jgPiTAtF59rIUn6LU+AlbdX1FpId9++JSnpSmzoyXgjxujF578apwM0stHDQWhYaDvrc7k3LQnGIasvCQTQAiU1MNMwq3/RuQXO3GEJePW46Kzut1S/UFtOev/euVis/IesnN30Dv/UtGohJD3SXngeRX8uFnWARQFsHLpqOwwyVBcCd7bKDtcm5LHXBpCBPYs2d7XIidBgpacB145v5Cw4qaWTBy6KvtGiW3zweH8F5b5p3owfD4KvQO8S02F/IzWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1769198533; c=relaxed/relaxed;
+	bh=fOIOBLg4MYGWqHiBMPJ4Clc4Tb1gOD4SbOr28RKnm/I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z1P8DMK3CqV0q8igkWi98j/u5cWjZmoNGiXZCHo0IRzsrjcOzuxjEIUc/+Ed01hpx7N3N87JVT1+/oeeHmIHydlrZzWjqOTihUF//sIf65ri2rl8HouSYgHT3wHvoS1ocNGeOdpLujoskvGnARV0fcJoQJlZbBGmXoifjpzFWupzBoKQM0x7SGyDISaYTOp1NSZSlmrI3SVKXWxoBvJdN5y5Fyw1nFYZp/eOak5AvTu33aBurcn3bEMD8O24H0knKRR8TeqZycyzrN0rQBHCCOP0Xyoqls9hqXA5Tb91EdrhW46IjBpeCy5T0E35/30Wb8RE9zkPGYqj0pLOeWHKew==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EranB1qt; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=zMmfrX+l;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EranB1qt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:c105::5; helo=ch5pr02cu005.outbound.protection.outlook.com; envelope-from=brett.creeley@amd.com; receiver=lists.ozlabs.org)
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazlp170120005.outbound.protection.outlook.com [IPv6:2a01:111:f403:c105::5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dyQjS3DpGz2xHt
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Jan 2026 05:01:31 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZHShlVqufP0EyEGzFvtCjsHsifxQLesLK3nRpFBUW3mi2HeGgC7vIIn9n52tliU/AnmXN31ZVDF4vnNYLZCyT4jwayKlun3GTHHy3M2sWcDGMtWSyQDLrFexOfQ4mS4+2sA+hzsZX8pkL/bcc54s7zvpNU/nmFRs8NZGk5BYRxCDsCWIwycOzLcYIzX4t+YQD1cFHMq5bVzSCKaFIDrLUvSkIweKIY21YEV5p7Q0IsYvpQ73Kszg4kJHef2bA5L3sBHhpCAQv34VGbdggqvNHMZmigdF8qgUkgnv+4L0XkXAdLUjHThZZ13t926R28IHreeZ6WLjxccd5CK1MASBRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pHZQu94wwBqQXz53UineyDsRSVIay85jB/0uNC9nlT8=;
- b=dkfb/j0g18tV89lWKB6uPv+M5FOmRicr0qTltVBLppoxNy14wnziBla+rVM4pPao7sby2pSLLv6Hlf0ojskJ9i/syUR6XAe5uuR/1NGwGoH2GOWtkYTeKA9R0Df/dNgPQOrYRXmzycsvgZ4t1vhfgJKdPTp0pYhiuK9xIgFc15CiwkUOFf5LTD6t2StTKX6vTP2y7WWgSaNkZCiE5XhsYHwePbuYUQ5ffD7diwnQB9oXomDpQzBAOVa6k5kXha3yfgSo91cnZ2yTYrPSUkV2vNCiz3x+wGUWZtF5wBbtclRnBIQxeTeeQ7IcaG9CDLfbIOx8MD0RVJJJp7QcmRiJaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pHZQu94wwBqQXz53UineyDsRSVIay85jB/0uNC9nlT8=;
- b=zMmfrX+lGpMidNCdsPURuIj248pHOSWQp504bW56Ht038xHEWNg6GVogXF4X6NBoXON1yO1feC5M6FZ4vOllJqLer/uQi5mioadB/Shz4MhNK7Mb+XmsbNy/qkziSBJyDo3qpUFi6V/XZvfYZQtq/vsVeIcjQzBFOYdl/YJYOnk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH0PR12MB7982.namprd12.prod.outlook.com (2603:10b6:510:28d::5)
- by SN7PR12MB6790.namprd12.prod.outlook.com (2603:10b6:806:269::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.10; Fri, 23 Jan
- 2026 18:00:59 +0000
-Received: from PH0PR12MB7982.namprd12.prod.outlook.com
- ([fe80::4eda:ca5:8634:5b27]) by PH0PR12MB7982.namprd12.prod.outlook.com
- ([fe80::4eda:ca5:8634:5b27%4]) with mapi id 15.20.9542.008; Fri, 23 Jan 2026
- 18:00:59 +0000
-Message-ID: <53f4dc0f-4d1d-47d4-80c6-84c3562a0310@amd.com>
-Date: Fri, 23 Jan 2026 10:00:55 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] PCI/MSI: Conservatively generalize no_64bit_msi
- into msi_addr_mask
-To: Vivian Wang <wangruikang@iscas.ac.cn>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>
-Cc: Han Gao <gaohan@iscas.ac.cn>, Thomas Gleixner <tglx@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- netdev@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-riscv@lists.infradead.org,
- sophgo@lists.linux.dev, Takashi Iwai <tiwai@suse.de>
-References: <20260123-pci-msi-addr-mask-v3-0-9f9baa048524@iscas.ac.cn>
- <20260123-pci-msi-addr-mask-v3-1-9f9baa048524@iscas.ac.cn>
-Content-Language: en-US
-From: "Creeley, Brett" <bcreeley@amd.com>
-In-Reply-To: <20260123-pci-msi-addr-mask-v3-1-9f9baa048524@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY3PR04CA0013.namprd04.prod.outlook.com
- (2603:10b6:a03:217::18) To PH0PR12MB7982.namprd12.prod.outlook.com
- (2603:10b6:510:28d::5)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dyTNh2JKhz2xHt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Jan 2026 07:02:11 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60NDE5ZY006262;
+	Fri, 23 Jan 2026 18:13:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=fOIOBL
+	g4MYGWqHiBMPJ4Clc4Tb1gOD4SbOr28RKnm/I=; b=EranB1qtErwu+/xtayJwI7
+	mCQ2ALYPdXTGbvfP8tJM2oLw2dI66/iYLU69tmS/2c+WLEmDzfGdVf3XXClZ5Mm8
+	6mbsf03ezvcsz1vmKpTONV0VjULQiHBf+HY6pTjhjC+VkwJOznUY3RcJ73uaNOM2
+	HqO17wSpLlJuwKnQNVnUxa5KSJsS8LKZmxjgfTnDMKUjFJ99RWeF/kniNIGWPNS5
+	n6JzFyqwfL6gZSWJny1o9JnRpFQ25c9LmbjPaX2tsW/3WBtJNfdahumsPf0sORIc
+	Dm2NmsFCpaA1EN1EybXzCHm51kjDR+4gErVA0YOU5ofSKkAijL/57Fiw3hjNSSlQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br23shq49-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 23 Jan 2026 18:13:47 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60NI4uGf001299;
+	Fri, 23 Jan 2026 18:13:47 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br23shq45-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 23 Jan 2026 18:13:47 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60NI1NPL001162;
+	Fri, 23 Jan 2026 18:13:46 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4brpykadux-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 23 Jan 2026 18:13:46 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60NIDgV243712846
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 23 Jan 2026 18:13:42 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 108F620043;
+	Fri, 23 Jan 2026 18:13:42 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 78B9020040;
+	Fri, 23 Jan 2026 18:13:36 +0000 (GMT)
+Received: from [9.43.50.125] (unknown [9.43.50.125])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 23 Jan 2026 18:13:36 +0000 (GMT)
+Message-ID: <ef0c9d64-1742-4ae9-af4e-868287328c06@linux.ibm.com>
+Date: Fri, 23 Jan 2026 23:43:35 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,352 +91,284 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7982:EE_|SN7PR12MB6790:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ef3e18f-7f92-4bcc-9b01-08de5aa95d14
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QXJ2aGtBZ0dOT3kzSDU2RTJ6aVVCelNyWm9scnZxZE8yWkQvZWRSK0tPVU5v?=
- =?utf-8?B?MkgwOGRhb0dhSVFaeXlHZ3orUjl1YkZHL0xTL1lzYVVoQ0QyUStrVXliZkQ3?=
- =?utf-8?B?d29lVldpTUd5a3hTZDZORHc1UVRSbVh3ODNWY05teW9McjlQaittWEZkN1Zm?=
- =?utf-8?B?ODBsK05zR2hxbUR3ZDcvSlQ3ODkwc1BFWEMwZlJBdFdyWThYQ0ViMnlkeDFY?=
- =?utf-8?B?MTVxMG5VMUNjdm9mREFySnpyN1FDVGI3Mm5ML3Fkd2dqbkVFWkdNNEhRYjBt?=
- =?utf-8?B?bWdGd1YrbmpCUVFlSDF0ODZIMjJEZWxrZ2FBbTc2UUs0YWpTZmJ0Z3lDelBL?=
- =?utf-8?B?ZWxiK2U2VFhZdnkvUFBtbDgvQ3V0aWpvU25wbngyaVlBRmlydVZFdGozSW5X?=
- =?utf-8?B?Nkk0dDZSTVVRRVRzRjhiSmdqSDZFc0x5TVhldk9CZCs1eEdhVGxpcGRYMm9R?=
- =?utf-8?B?NndGUkJ6K095a2dKdDlVU2MrMTFJNU5Zd0ZTcHFEWUhMYlRlL0JMemwwZXRk?=
- =?utf-8?B?WGxjcjQzV0Z0cjR1b1lPOGxkdnVzWjJMcFBoRHYwY3BJeFhnQXkrMk52RE5O?=
- =?utf-8?B?VExicjFBRzdzODNDWkpOUmp6amtYb0JXMUxjRWN5NHV1bzNzYWpZa1Y0QW1E?=
- =?utf-8?B?cW5zOVNvQ1lWemgzdVZDeDJ2bUlBM2Z5ZnNkSEJXWWtubjhXTXFDOVFuWVM2?=
- =?utf-8?B?TnZrTnFSVW9UdnJjT0dBRWxDT3ZBUDFsMzd1NGZvKzBCaW5oemYvZ2x1KzRX?=
- =?utf-8?B?UXdaWXg3c1VYK0lraWw4RzBoUXJmSFkvSUpma0hWSk5rOTNrMHQ1VkVsN3ph?=
- =?utf-8?B?N3pNVGQ1ZllySE1XRWJuVGFZdUw1TDUyV2pmQnptMWtXaE5LeFBHZUtOZmJ1?=
- =?utf-8?B?WWx0cjR4dzhYSlFDUktOMjI3MSswTVBWdFVFbFQ5N013ZkUxQmxaNlBnaDVI?=
- =?utf-8?B?WnBBcTVVU0wxOE9aWTdXcTJiazk1RVNkSlBPUDhBNUVEam9PK3BobkQzODFx?=
- =?utf-8?B?cUx1Q1VzNWIzUlRnV3NmTXp1UWRrOUVFWm44Y2JWcTk3bVgwV1JTVGtmV2tW?=
- =?utf-8?B?U1Q3YzVsZDROSlluRy9BYmo4Vk1lRjMySzh3WG9FTHNRNkgvQ0JvVnNqc2Rk?=
- =?utf-8?B?Zkorbjk2ZFA0QzNYVW1vQjBTeHpSOC9LM25NZE04WndieWxIV25EQ3UycWd2?=
- =?utf-8?B?YzhOaXVmeHJmUE9KWGJsZ3RjNklCNjZNakxNQyt3cXR1Q2pqbUtmaUR5VEtv?=
- =?utf-8?B?MDFrbDVTeE1IV3FzbVE1dWlPdmJVeTFFQ0Y5RHFpdUtQQXhlYjBRSlhGODRn?=
- =?utf-8?B?R0lPRW5tQm1kakYvUm5TNmhGeG1ZNVlnd3FkRkVkTmtES2greWRSNlRBZEFV?=
- =?utf-8?B?dUJwd3AwSm1EUjZFdk1peTZ2K1ZkaDExMlhmOWpNWVZ0Zld0czJKTGpGOXhQ?=
- =?utf-8?B?NWZHRE1DaVRsc21WbnBxMkpHak1ocTBUSXBTanFsZkpkQVI2c1Bya0ExVWFZ?=
- =?utf-8?B?d1h6eFhNUFF3L0JGcUxhdGJKNmUyTlVEL3djSmF3d043R2p0OG1aZWtSaHJC?=
- =?utf-8?B?OFF5ZkR3UFBwYURQV0VKQXVUd2JTMTNOekgrTlhIWFBnaGxGQ1ErYTJka3kw?=
- =?utf-8?B?blZ6d0NnS2JvaGNqaWdhNkkydSsyQXMxcFBYUGZRYlBud1lETTJFOHFPazY4?=
- =?utf-8?B?b3lUanFYY0FHYnNEZUkrM0MrK0V1MUg4clY0eUlmSXhHNHdEV2grbDZ3bERJ?=
- =?utf-8?B?QnpxbnVMTWZNMFpselRtL3lvL3lGVWxMYnB2SHZRNmhqVFJVNUVoQi9ZK2xW?=
- =?utf-8?B?MFlxdnM3Mk9oWlM0Ry9mR3BRalNSdG9wVFI1eTVaNU9KdnIrNkxrQUtnYUll?=
- =?utf-8?B?bTU2OFlya3dnN0tSMDZhKzB1RXJ1b2ZYSVJkMlRnaDNmblRGQVZxOWZJOUhW?=
- =?utf-8?B?czhtQWVwK3N0OGVPaWhOVlRNZFRLTTV1cWlqaWo2RmJmc0ZIMi9pTFB1ejBr?=
- =?utf-8?B?d2lxbWdpUk5lNmVuUVluekNxbUl4TStaT1B6L3VmcFlkZjJhVkIzVGFHTW1Z?=
- =?utf-8?B?aVZ5VXVQUlpTZmFyT1dxSVpIT2Q3SnYyR2NWQStjZWhscDlCWURaOWs5V1lR?=
- =?utf-8?B?S3IzdlBPQlExM1hxTDJxMkJsbGN4Q2ZNTFU2QzdVUEtySDFDYlR0SElja0hu?=
- =?utf-8?B?L2c9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7982.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dWxwQ01xaGdCRnZ5QVlpbDkwM0pEVjAvamZXR0gzSnNQVDFsUVBSOUdaVzRt?=
- =?utf-8?B?ZWlBdEwwYjI3TGxuOGlYMGIzNXFmY2NlNXVXTENtSy8rNFVRVGt3RUFnKzNG?=
- =?utf-8?B?WEhMcGtGQkZ0QTV3MElMMzRGRDljZXdTcFBkTkZuMzl5OTllTTNURGMwaG9p?=
- =?utf-8?B?c1FsYXloSGMrYXI3blFVNWc2M00vKzM2b2kyN01xdkY0RHJ5WjNYU1hqVStI?=
- =?utf-8?B?MG1sVXVQTU1yeE9qZG9WRUp5c0lUSlUrTVYyVGlSMGxZMG1UODFaVURtWlY2?=
- =?utf-8?B?SkJpZnljczR3eVdabEV1M0Q1dysyL2ZGQlhMc3dCVGZ4NUdkeEQrYWpPKzNy?=
- =?utf-8?B?M3JjT2IrQjlLbWNUbCtURFdHbUN6ZzVodTBVaXBuTnRiRzhBb1BzaUp6dEFJ?=
- =?utf-8?B?S0hwd3JCNmIxeWZhODFoY3o0bVErWUh4TjA3L2xDL0xJWlNyRGMrRnFERHVi?=
- =?utf-8?B?TGF3SkJPOEdkaFZjNVk5aVFpaUdYaEtLZzM1MFZVOE1qNHVRNUx2WEtIOWdR?=
- =?utf-8?B?ZVJzYmEwd1J2eHdTR1A5dDBza09Sd0tHRWIzK05nOE9saytaVXBzMjY3RU55?=
- =?utf-8?B?djVBSHZqNHYwOHZaTmYzYjNwaXdSTnd1WW10b1Qwcm9hbkRESGRoaVloWFVT?=
- =?utf-8?B?UmtBZGd1NGZzenpqWHZSejlOVDBnR21BemNGb3F3Q1h3Q0kybW9XbUFlczVv?=
- =?utf-8?B?dDg1NC82d25zZW9jakt0Smt6Qmx2R2hJeXVRNVd5dExNMVg3VEtkTk9OeTVO?=
- =?utf-8?B?bXQ0cmhvZHZlbUFOMzhDbXgwUVU5clNQU09IOUpheEV0b0pEVk8zZVNqbGhx?=
- =?utf-8?B?SHhLOFpJakJQYzkyS0JHNGtaTGYzYXdkL1ZZYUlGZGg2OUh5b0xNeFJMOHFJ?=
- =?utf-8?B?MGJweTRPR2x5Z3Q1MDNidGZWQTEvd1VMRmdTZXg0UlZ6RnpVL3hNVTMrclBz?=
- =?utf-8?B?U3B5cElqekFTYkthUTF0MFV2OGt0cHppRUpqWkJjMi9GRjVRcXhzeHR1cXcr?=
- =?utf-8?B?cFpRVzRtbDQ1QXBsMU83YmY1MkJjTGdBVHVUbEJHa1FSYjZ2UDM0ODd4aVNq?=
- =?utf-8?B?eElJcjB2L3lkUGRSYldFWkVSSDZTOHIzMlJTRUQ4UzBNclR5VXgxNWhnYzk1?=
- =?utf-8?B?bUQ3ekxHTEo1dERMTEt6SWFXNmVPMFVqdi9DUDZKeDFCdWtkNW13Tlp0M1Br?=
- =?utf-8?B?b2xsVTZnaXU2TDkzaDB4S2NlTm84R3JaSno3cnZNalZleS9GbTlvMEdGWlYz?=
- =?utf-8?B?RVNQdWVlbXdUKzBzaGRpNzBxY3RiZTdpclRyOG5UMFA3YTRFeXV0dEhEOEpG?=
- =?utf-8?B?UFhpWUZSdzlqbG51aUhXb25jM0Q2eDc4SnJPNE1yRWRyVnA1dldvOG1lL1B2?=
- =?utf-8?B?WXp6OExUanAraTBsaTRjczEvYi9rMkczeUxEc25weTc3MzZVTllxZGtpWFRl?=
- =?utf-8?B?U1hsOVRaaUEwc29CejZOTEoySkh0VzV0RDIvL0FXVUxkajA3cEU1azNJTDFp?=
- =?utf-8?B?L0pLNjJ3MmpMdU5CcmJyay82Qkd0SHFoRWlFdlF6UTVyNW4ybVgvS0tKQ2JU?=
- =?utf-8?B?bEZ3Z01zUHdHZVM1a1lCd09NWHlyR1dScmhaZm1Xdm1UTEFDY0ZFeU01elFr?=
- =?utf-8?B?SEY0VnM1NklLSHEvakFrcVUrdGRHelI1VTJxNkJJOTBvdkVrMEc0bStaT3py?=
- =?utf-8?B?dUFhdjAwSTVuTm02K2tPTCszZHA5OWRab1hhUHhnMFpSU3BvSkN3ZTIxSEsv?=
- =?utf-8?B?ckNBdDA3ekhUVWVlUDdjZnF1ZzBpdzlKMkRhU2FrZStEWmhNTzduT3I5bnFR?=
- =?utf-8?B?ZXZtR0l0Zk5DZjdzdkhlTE5WQWNSSG50RUpZQXRITUZlQVRaV2s0djRUU0xj?=
- =?utf-8?B?UWRGa1FXL1k4czFmN2ZEUG5WMHJKV1lNVUtSZ25WNk9pNVA2ZlpsYlVrRk1l?=
- =?utf-8?B?cWQrZGNnZmRvUlZBMWNMQ2JvdFdVRloxbVI2NGNrUDhWYitsMy9GVHJqUXg2?=
- =?utf-8?B?enJLSk1IYUNCR0l0MlhwdElNTzhRSlgzWG5seEJIMjE5K29lcE5Ndm4zRE8z?=
- =?utf-8?B?ZkFwakpOWFlDVXFOeUN1QWtuMld5djYrSE5CUXNXMldHSEJXRGRkMDRxZ3J6?=
- =?utf-8?B?a3Y1clY0emFLVzhsOWZZSnFLbk9kdk5jY0RXRVNpSWhRNnRjdTAzakwrTlJi?=
- =?utf-8?B?L0F4dTVQeENPSlprNUpoUjVtOGRVZ2U1dDZMb0ZWR2o2Nm5XUEsyNVhqVjVU?=
- =?utf-8?B?QUd6eUtMeVJMSmw5L0JuMDVlZzJXRmlMS1hmRTF2K3FnYWlTMStnTlYrZ2g5?=
- =?utf-8?B?OG0rOXo4eDJkZW0vRWhoNm5haG4wNnRRUVdibTk0cG5uem5EdkFUZz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ef3e18f-7f92-4bcc-9b01-08de5aa95d14
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7982.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 18:00:59.2372
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EmvzPqL3uA1asqBnF15qFhTPIv7yTq6iM+8vBqxaWD3EpIAsFs6y97Rf+TQVcFwNq2NRBkKzDIwJxckqKYPuoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6790
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 5/6] powerpc64/bpf: Support exceptions
+To: adubey <adubey@imap.linux.ibm.com>
+Cc: adubey@linux.ibm.com, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        sachinpb@linux.ibm.com, venkat88@linux.ibm.com, andrii@kernel.org,
+        eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
+        iii@linux.ibm.com, shuah@kernel.org
+References: <20260122211854.5508-1-adubey@linux.ibm.com>
+ <20260122211854.5508-6-adubey@linux.ibm.com>
+ <b805a1c1-58fc-4d76-b26c-542c1285ba4a@linux.ibm.com>
+ <9f35f6799b0b27866259582a2eefecb3@imap.linux.ibm.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <9f35f6799b0b27866259582a2eefecb3@imap.linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: IvIBoCe_iNsiTEEfrBenIHWgFPPUYPRM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIzMDEzNSBTYWx0ZWRfX2B9SmrLNKkDT
+ 5fsdYMV08tEiboG+/KQB9io9BuVI1B55a5y62fbSPFc23HxnKmfNLs1x9JW4Utt8x0ZOAX4eoxP
+ 9jRUblPl6MP98QwJ/qXaCGoWhvNF0TpQY2p4hBe4/I/Y2h4NfctYov1egqaZO47n0SI8bU5bnJR
+ G+CHVqVbbIFgnjaR0lwouoS4dBqju46ybRHqs6tF6JESrQb80KsrFhfDAK5XfdyOEiLGV0HPG5U
+ d21+t9aAMn4Jp7lm/flvYiuHepZkbZzaIqpxNfW8fjJwLS8WLFIBK2nulE9EwFv0z9DiaL0uSYa
+ wSQiQcRKOQk8bARWsSwR1cm4RfvTPWEVtNgskDY4+xmsr17x+GtEqKKPw42EGH9u+1hBvFXMVGQ
+ fQJWRWE1Y2B0M8l1ceJ6v+16J5mB0JMPoT+qtVu4xSjBuvQ0fTyIjeyIS3RHxFplBzCkSXBDcd+
+ 97j3/tXkbSveOGI2xMQ==
+X-Authority-Analysis: v=2.4 cv=J9SnLQnS c=1 sm=1 tr=0 ts=6973ba5b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=DU0EyFXtAAAA:8 a=VnNF1IyMAAAA:8 a=lR2fIWztgbcTg5UndXMA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=UCR5be5CC-YrbG9FbbB0:22
+X-Proofpoint-ORIG-GUID: dtidgtl6CeJ3wLKyS6s7l0VwpT0jTY6s
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-23_03,2026-01-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 adultscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601230135
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[iscas.ac.cn,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,amd.com,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,perex.cz,suse.com];
-	FORGED_SENDER(0.00)[bcreeley@amd.com,linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	FORGED_RECIPIENTS(0.00)[m:wangruikang@iscas.ac.cn,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:bhelgaas@google.com,m:perex@perex.cz,m:tiwai@suse.com,m:gaohan@iscas.ac.cn,m:tglx@kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:netdev@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:sophgo@lists.linux.dev,m:tiwai@suse.de,m:andrew@lunn.ch,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16249-lists,linuxppc-dev=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:adubey@imap.linux.ibm.com,m:adubey@linux.ibm.com,m:bpf@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kselftest@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:sachinpb@linux.ibm.com,m:venkat88@linux.ibm.com,m:andrii@kernel.org,m:eddyz87@gmail.com,m:mykolal@fb.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:martin.lau@linux.dev,m:song@kernel.org,m:yonghong.song@linux.dev,m:john.fastabend@gmail.com,m:kpsingh@kernel.org,m:sdf@fomichev.me,m:haoluo@google.com,m:jolsa@kernel.org,m:christophe.leroy@csgroup.eu,m:naveen@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:memxor@gmail.com,m:iii@linux.ibm.com,m:shuah@kernel.org,m:johnfastabend@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux.ibm.com,vger.kernel.org,lists.ozlabs.org,kernel.org,gmail.com,fb.com,iogearbox.net,linux.dev,fomichev.me,google.com,csgroup.eu,ellerman.id.au];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16247-lists,linuxppc-dev=lfdr.de];
-	DKIM_TRACE(0.00)[amd.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_TWELVE(0.00)[12];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bcreeley@amd.com,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.948];
+	FROM_NEQ_ENVFROM(0.00)[hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	NEURAL_HAM(-0.00)[-0.030];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TAGGED_RCPT(0.00)[linuxppc-dev,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,iscas.ac.cn:email,amd.com:email,amd.com:dkim,amd.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: A84B07950F
+	RCPT_COUNT_TWELVE(0.00)[29];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 61D987A728
 X-Rspamd-Action: no action
 
 
 
-On 1/22/2026 10:07 PM, Vivian Wang wrote:
-> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
->
->
-> Some PCI devices have PCI_MSI_FLAGS_64BIT in the MSI capability, but
-> implement less than 64 address bits. This breaks on platforms where such
-> a device is assigned an MSI address higher than what's reachable.
->
-> Currently, we deal with this with a single no_64bit_msi flag, and
-> (notably on powerpc) forces 32-bit MSI address for these devices.
-> However, on some platforms the MSI doorbell address is above 32-bit but
-> within device ability.
->
-> As a first step to enabling MSI on those combinations of devices and
-> platforms, conservatively generalize the single-bit flag no_64bit_msi
-> into msi_addr_mask. (The name msi_addr_mask is chosen to avoid confusion
-> with msi_mask.)
->
-> The translation is essentially:
->
-> - no_64bit_msi = 1    ->    msi_addr_mask = DMA_BIT_MASK(32)
-> - no_64bit_msi = 0    ->    msi_addr_mask = DMA_BIT_MASK(64)
-> - if (no_64bit_msi)   ->    if (msi_addr_mask < DMA_BIT_MASK(64))
->
-> Since no values other than DMA_BIT_MASK(32) and DMA_BIT_MASK(64) is
-> used, no functional change is intended. Future patches that make use of
-> intermediate values of msi_addr_mask will follow, allowing devices that
-> cannot use full 64-bit addresses for MSI to work on platforms with MSI
-> doorbell above 32-bit address space.
->
-> Acked-by: Takashi Iwai <tiwai@suse.de>
-> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
-> ---
-> v3: Add Acked-by, no code changes
->
-> checkpatch complains about the comment include/linux/pci.h, which I have
-> formatted similarly with other comments in the vicinity.
-> ---
->   arch/powerpc/platforms/powernv/pci-ioda.c           | 2 +-
->   arch/powerpc/platforms/pseries/msi.c                | 4 ++--
->   drivers/gpu/drm/radeon/radeon_irq_kms.c             | 2 +-
->   drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 2 +-
->   drivers/pci/msi/msi.c                               | 2 +-
->   drivers/pci/msi/pcidev_msi.c                        | 2 +-
->   drivers/pci/probe.c                                 | 7 +++++++
->   include/linux/pci.h                                 | 8 +++++++-
->   sound/hda/controllers/intel.c                       | 2 +-
->   9 files changed, 22 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index b0c1d9d16fb5..1c78fdfb7b03 100644
-> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -1666,7 +1666,7 @@ static int __pnv_pci_ioda_msi_setup(struct pnv_phb *phb, struct pci_dev *dev,
->                  return -ENXIO;
->
->          /* Force 32-bit MSI on some broken devices */
-> -       if (dev->no_64bit_msi)
-> +       if (dev->msi_addr_mask < DMA_BIT_MASK(64))
->                  is_64 = 0;
->
->          /* Assign XIVE to PE */
-> diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
-> index a82aaa786e9e..7473c7ca1db0 100644
-> --- a/arch/powerpc/platforms/pseries/msi.c
-> +++ b/arch/powerpc/platforms/pseries/msi.c
-> @@ -383,7 +383,7 @@ static int rtas_prepare_msi_irqs(struct pci_dev *pdev, int nvec_in, int type,
->           */
->   again:
->          if (type == PCI_CAP_ID_MSI) {
-> -               if (pdev->no_64bit_msi) {
-> +               if (pdev->msi_addr_mask < DMA_BIT_MASK(64)) {
->                          rc = rtas_change_msi(pdn, RTAS_CHANGE_32MSI_FN, nvec);
->                          if (rc < 0) {
->                                  /*
-> @@ -409,7 +409,7 @@ static int rtas_prepare_msi_irqs(struct pci_dev *pdev, int nvec_in, int type,
->                  if (use_32bit_msi_hack && rc > 0)
->                          rtas_hack_32bit_msi_gen2(pdev);
->          } else {
-> -               if (pdev->no_64bit_msi)
-> +               if (pdev->msi_addr_mask < DMA_BIT_MASK(64))
->                          rc = rtas_change_msi(pdn, RTAS_CHANGE_32MSIX_FN, nvec);
->                  else
->                          rc = rtas_change_msi(pdn, RTAS_CHANGE_MSIX_FN, nvec);
-> diff --git a/drivers/gpu/drm/radeon/radeon_irq_kms.c b/drivers/gpu/drm/radeon/radeon_irq_kms.c
-> index 9961251b44ba..d550554a6f3f 100644
-> --- a/drivers/gpu/drm/radeon/radeon_irq_kms.c
-> +++ b/drivers/gpu/drm/radeon/radeon_irq_kms.c
-> @@ -252,7 +252,7 @@ static bool radeon_msi_ok(struct radeon_device *rdev)
->           */
->          if (rdev->family < CHIP_BONAIRE) {
->                  dev_info(rdev->dev, "radeon: MSI limited to 32-bit\n");
-> -               rdev->pdev->no_64bit_msi = 1;
-> +               rdev->pdev->msi_addr_mask = DMA_BIT_MASK(32);
->          }
->
->          /* force MSI on */
-> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-> index 70d86c5f52fb..0671deae9a28 100644
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-> @@ -331,7 +331,7 @@ static int ionic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->
->   #ifdef CONFIG_PPC64
->          /* Ensure MSI/MSI-X interrupts lie within addressable physical memory */
-> -       pdev->no_64bit_msi = 1;
-> +       pdev->msi_addr_mask = DMA_BIT_MASK(32);
->   #endif
+On 23/01/26 7:23 pm, adubey wrote:
+> On 2026-01-23 18:24, Hari Bathini wrote:
+>> On 23/01/26 2:48 am, adubey@linux.ibm.com wrote:
+>>> From: Abhishek Dubey <adubey@linux.ibm.com>
+>>>
+>>> The modified prologue/epilogue generation code now
+>>> enables exception-callback to use the stack frame of
+>>> the program marked as exception boundary, where callee
+>>> saved registers are stored.
+>>>
+>>> As per ppc64 ABIv2 documentation[1], r14-r31 are callee
+>>> saved registers. BPF programs on ppc64 already saves
+>>> r26-r31 registers. Saving the remaining set of callee
+>>> saved registers(r14-r25) is handled in the next patch.
+>>>
+>>> [1] https://ftp.rtems.org/pub/rtems/people/sebh/ 
+>>> ABI64BitOpenPOWERv1.1_16July2015_pub.pdf
+>>>
+>>> Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
+>>> ---
+>>>   arch/powerpc/net/bpf_jit.h        |  2 ++
+>>>   arch/powerpc/net/bpf_jit_comp.c   |  7 ++++
+>>>   arch/powerpc/net/bpf_jit_comp64.c | 58 +++++++++++++++++++++----------
+>>>   3 files changed, 48 insertions(+), 19 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+>>> index 56f56fdd4969..82bbf63f0e57 100644
+>>> --- a/arch/powerpc/net/bpf_jit.h
+>>> +++ b/arch/powerpc/net/bpf_jit.h
+>>> @@ -179,6 +179,8 @@ struct codegen_context {
+>>>       u64 arena_vm_start;
+>>>       u64 user_vm_start;
+>>>       bool is_subprog;
+>>> +    bool exception_boundary;
+>>> +    bool exception_cb;
+>>>   };
+>>>     #define bpf_to_ppc(r)    (ctx->b2p[r])
+>>> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/ 
+>>> bpf_jit_comp.c
+>>> index 1a305f0fed27..2607ea0bedef 100644
+>>> --- a/arch/powerpc/net/bpf_jit_comp.c
+>>> +++ b/arch/powerpc/net/bpf_jit_comp.c
+>>> @@ -207,6 +207,8 @@ struct bpf_prog *bpf_int_jit_compile(struct 
+>>> bpf_prog *fp)
+>>>       cgctx.arena_vm_start = bpf_arena_get_kern_vm_start(fp->aux- 
+>>> >arena);
+>>>       cgctx.user_vm_start = bpf_arena_get_user_vm_start(fp->aux->arena);
+>>>       cgctx.is_subprog = bpf_is_subprog(fp);
+>>> +    cgctx.exception_boundary = fp->aux->exception_boundary;
+>>> +    cgctx.exception_cb = fp->aux->exception_cb;
+>>>         /* Scouting faux-generate pass 0 */
+>>>       if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
+>>> @@ -436,6 +438,11 @@ void bpf_jit_free(struct bpf_prog *fp)
+>>>       bpf_prog_unlock_free(fp);
+>>>   }
+>>>   +bool bpf_jit_supports_exceptions(void)
+>>> +{
+>>> +    return IS_ENABLED(CONFIG_PPC64);
+>>> +}
+>>> +
+>>>   bool bpf_jit_supports_subprog_tailcalls(void)
+>>>   {
+>>>       return IS_ENABLED(CONFIG_PPC64);
+>>> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/ 
+>>> bpf_jit_comp64.c
+>>> index c25ba1ad587a..d7cd8ab6559c 100644
+>>> --- a/arch/powerpc/net/bpf_jit_comp64.c
+>>> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+>>> @@ -89,7 +89,9 @@ static inline bool bpf_has_stack_frame(struct 
+>>> codegen_context *ctx)
+>>>        * - the bpf program uses its stack area
+>>>        * The latter condition is deduced from the usage of BPF_REG_FP
+>>>        */
+>>> -    return ctx->seen & SEEN_FUNC || bpf_is_seen_register(ctx, 
+>>> bpf_to_ppc(BPF_REG_FP));
+>>> +    return ctx->seen & SEEN_FUNC ||
+>>> +           bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)) ||
+>>> +           ctx->exception_cb;
+>>>   }
+>>>     /*
+>>
+>>
+>>> @@ -161,8 +163,13 @@ void bpf_jit_build_prologue(u32 *image, struct 
+>>> codegen_context *ctx)
+>>
+>>
+>>
+>>>           EMIT(PPC_RAW_LI(bpf_to_ppc(TMP_REG_1), 0));
+>>>           /* this goes in the redzone */
+>>>           EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, - 
+>>> (BPF_PPC_TAILCALL)));
+>>> -    } else {
+>>> +    } else if (!ctx->exception_cb) {
+>>>           /*
+>>> +         * Tailcall jitting for non exception_cb progs only.
+>>> +         * exception_cb won't require tail_call_info to be setup.
+>>> +         *
+>>> +         * tail_call_info interpretation logic:
+>>> +         *
+>>>            * if tail_call_info < MAX_TAIL_CALL_CNT
+>>>            *      main prog calling first subprog -> copy reference
+>>>            * else
+>>> @@ -177,8 +184,12 @@ void bpf_jit_build_prologue(u32 *image, struct 
+>>> codegen_context *ctx)
+>>>           EMIT(PPC_RAW_STD(bpf_to_ppc(TMP_REG_1), _R1, - 
+>>> (BPF_PPC_TAILCALL)));
+>>>       }
+>>>   -    if (bpf_has_stack_frame(ctx)) {
+>>> +    if (bpf_has_stack_frame(ctx) && !ctx->exception_cb) {
+>>>           /*
+>>> +         * exception_cb uses boundary frame after stack walk.
+>>> +         * It can simply use redzone, this optimization reduces
+>>> +         * stack walk loop by one level.
+>>> +         *
+>>>            * We need a stack frame, but we don't necessarily need to
+>>>            * save/restore LR unless we call other functions
+>>>            */
+>>> @@ -190,23 +201,32 @@ void bpf_jit_build_prologue(u32 *image, struct 
+>>> codegen_context *ctx)
+>>>           EMIT(PPC_RAW_STDU(_R1, _R1, -(BPF_PPC_STACKFRAME + ctx- 
+>>> >stack_size)));
+>>>       }
+>>>   -    /*
+>>> -     * Back up non-volatile regs -- BPF registers 6-10
+>>> -     * If we haven't created our own stack frame, we save these
+>>> -     * in the protected zone below the previous stack frame
+>>> -     */
+>>> -    for (i = BPF_REG_6; i <= BPF_REG_10; i++)
+>>> -        if (bpf_is_seen_register(ctx, bpf_to_ppc(i)))
+>>> -            EMIT(PPC_RAW_STD(bpf_to_ppc(i), _R1, 
+>>> bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
+>>> +    if (!ctx->exception_cb) {
+>>> +        /*
+>>> +         * Back up non-volatile regs -- BPF registers 6-10
+>>> +         * If we haven't created our own stack frame, we save these
+>>> +         * in the protected zone below the previous stack frame
+>>> +         */
+>>> +        for (i = BPF_REG_6; i <= BPF_REG_10; i++)
+>>> +            if (ctx->exception_boundary || bpf_is_seen_register(ctx, 
+>>> bpf_to_ppc(i)))
+>>> +                EMIT(PPC_RAW_STD(bpf_to_ppc(i), _R1,
+>>> +                    bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
+>>>   -    if (ctx->arena_vm_start)
+>>> -        EMIT(PPC_RAW_STD(bpf_to_ppc(ARENA_VM_START), _R1,
+>>> +        if (ctx->exception_boundary || ctx->arena_vm_start)
+>>> +            EMIT(PPC_RAW_STD(bpf_to_ppc(ARENA_VM_START), _R1,
+>>>                    bpf_jit_stack_offsetof(ctx, 
+>>> bpf_to_ppc(ARENA_VM_START))));
+>>>   -    /* Setup frame pointer to point to the bpf stack area */
+>>> -    if (bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)))
+>>> -        EMIT(PPC_RAW_ADDI(bpf_to_ppc(BPF_REG_FP), _R1,
+>>> +        /* Setup frame pointer to point to the bpf stack area */
+>>> +        if (bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)))
+>>> +            EMIT(PPC_RAW_ADDI(bpf_to_ppc(BPF_REG_FP), _R1,
+>>>                   STACK_FRAME_MIN_SIZE + ctx->stack_size));
+>>> +    } else {
+>>> +        /*
+>>> +         * Exception callback receives Frame Pointer of main
+>>> +         * program as third arg
+>>> +         */
+>>> +        EMIT(PPC_RAW_MR(_R1, _R5));
+>>> +    }
+>>>         if (ctx->arena_vm_start)
+>>>           PPC_LI64(bpf_to_ppc(ARENA_VM_START), ctx->arena_vm_start);
+>>
+>> For all practical purposes, the only thing that matters for the prologue
+>> of execption_cb subprog seems to be, to set r1 and move on. The below
+>> snippet before tailcall setup in the prologue should live the rest of
+>> the prologue code unchanged?
+>>
+>> if (ctx->exception_cb) {
+>>     /*
+>>      * Exception callback receives Frame Pointer of main
+>>
+>>      * program as third arg
+>>
+>>      */
+>>     EMIT(PPC_RAW_MR(_R1, _R5));
+>>     return;
+>> }
+> This approach could work, but it may be fragile. If future changes to the
+> callback logic start accessing fields from the active boundary frame, this
+> could lead to incorrect memory access or corruption. Other archs have 
+> kept it.
+> Shall we keep it?
 
-This seems like identical behavior compared to pre-patch, so LGTM.
+True. In fact, exception_cb isn't seem to be restricted from using
+the BPF stack or arena...
 
-For the ionic part: Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+So, the "Setup frame pointer to point to the bpf stack area" part
+may also have to come out of that !exception_cb condition..
 
-Thanks,
-
-Brett
->
->          err = ionic_setup_one(ionic);
-> diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
-> index 34d664139f48..48f5f03d1479 100644
-> --- a/drivers/pci/msi/msi.c
-> +++ b/drivers/pci/msi/msi.c
-> @@ -322,7 +322,7 @@ static int msi_verify_entries(struct pci_dev *dev)
->   {
->          struct msi_desc *entry;
->
-> -       if (!dev->no_64bit_msi)
-> +       if (dev->msi_addr_mask == DMA_BIT_MASK(64))
->                  return 0;
->
->          msi_for_each_desc(entry, &dev->dev, MSI_DESC_ALL) {
-> diff --git a/drivers/pci/msi/pcidev_msi.c b/drivers/pci/msi/pcidev_msi.c
-> index 5520aff53b56..0b0346813092 100644
-> --- a/drivers/pci/msi/pcidev_msi.c
-> +++ b/drivers/pci/msi/pcidev_msi.c
-> @@ -24,7 +24,7 @@ void pci_msi_init(struct pci_dev *dev)
->          }
->
->          if (!(ctrl & PCI_MSI_FLAGS_64BIT))
-> -               dev->no_64bit_msi = 1;
-> +               dev->msi_addr_mask = DMA_BIT_MASK(32);
->   }
->
->   void pci_msix_init(struct pci_dev *dev)
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index 41183aed8f5d..a2bff57176a3 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -2047,6 +2047,13 @@ int pci_setup_device(struct pci_dev *dev)
->           */
->          dev->dma_mask = 0xffffffff;
->
-> +       /*
-> +        * Assume 64-bit addresses for MSI initially. Will be changed to 32-bit
-> +        * if MSI (rather than MSI-X) capability does not have
-> +        * PCI_MSI_FLAGS_64BIT. Can also be overridden by driver.
-> +        */
-> +       dev->msi_addr_mask = DMA_BIT_MASK(64);
-> +
->          dev_set_name(&dev->dev, "%04x:%02x:%02x.%d", pci_domain_nr(dev->bus),
->                       dev->bus->number, PCI_SLOT(dev->devfn),
->                       PCI_FUNC(dev->devfn));
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 864775651c6f..0fe32fef0331 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -377,6 +377,13 @@ struct pci_dev {
->                                             0xffffffff.  You only need to change
->                                             this if your device has broken DMA
->                                             or supports 64-bit transfers.  */
-> +       u64             msi_addr_mask;  /* Mask of the bits of bus address for
-> +                                          MSI that this device implements.
-> +                                          Normally set based on device
-> +                                          capabilities. You only need to
-> +                                          change this if your device claims
-> +                                          to support 64-bit MSI but implements
-> +                                          fewer than 64 address bits. */
->
->          struct device_dma_parameters dma_parms;
->
-> @@ -441,7 +448,6 @@ struct pci_dev {
->
->          unsigned int    is_busmaster:1;         /* Is busmaster */
->          unsigned int    no_msi:1;               /* May not use MSI */
-> -       unsigned int    no_64bit_msi:1;         /* May only use 32-bit MSIs */
->          unsigned int    block_cfg_access:1;     /* Config space access blocked */
->          unsigned int    broken_parity_status:1; /* Generates false positive parity */
->          unsigned int    irq_reroute_variant:2;  /* Needs IRQ rerouting variant */
-> diff --git a/sound/hda/controllers/intel.c b/sound/hda/controllers/intel.c
-> index 1e8e3d61291a..c9542ebdf7e2 100644
-> --- a/sound/hda/controllers/intel.c
-> +++ b/sound/hda/controllers/intel.c
-> @@ -1905,7 +1905,7 @@ static int azx_first_init(struct azx *chip)
->
->          if (chip->msi && chip->driver_caps & AZX_DCAPS_NO_MSI64) {
->                  dev_dbg(card->dev, "Disabling 64bit MSI\n");
-> -               pci->no_64bit_msi = true;
-> +               pci->msi_addr_mask = DMA_BIT_MASK(32);
->          }
->
->          pci_set_master(pci);
->
-> --
-> 2.52.0
->
-
+- Hari
 
