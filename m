@@ -1,26 +1,26 @@
-Return-Path: <linuxppc-dev+bounces-16187-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16189-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBGlOEoQc2klsAAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16187-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 07:08:10 +0100
+	id +FmzDlMQc2klsAAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16189-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 07:08:19 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C2C70BD3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 07:08:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B98A70BE3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 07:08:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dy6t55Wprz3bf4;
-	Fri, 23 Jan 2026 17:07:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dy6t62yl8z3bsC;
+	Fri, 23 Jan 2026 17:07:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.84
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769148477;
-	cv=none; b=Sveccq+OdaM9edX6s630u71hKu14kZuDcQiWh28iFbDYQfNRuBeO0LBbD/8vowFODXi0VcGvTlWlwD/SUZ4yJj6IzFx/Lor9QW+zagrUVKMJMJ/CS81ICo0oT8s6yFhBYPAPlCclWRcWoqFtHu8cH6UwH6HuJYAvJ8BHyQkKVviqb45t5DV/zzzkxMCV1U/8dKK1KdFaESn4CFofz/sfKfomCq1muwm4sONimM97I480G/1Te+D9//XxQN3wBa4L29AMk/3YIcow6Drmieop4T3mQ7uiVOXLaR8HeXvXJdFQo4bHW4+p3qWdatm/wO/kcbrgZ5jZ443k5ZjdfYyeWQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769148478;
+	cv=none; b=ZkpBw0uwXPVba1BKYb9mI2bKFIQPs+iO7wZK/epmYqqyx8X+/Lf/5TiiMwD35iZdlZ6GrvwH+tF0jhw2mqBIznxBOKwU3U7+RmteuTxW+Kg7bjT4FVBWwHe0OzhVqDuTnYhLwOAq+H/3TuZm6rLteUa+9VnnILOfVPfnPCTUGlBEoZYUTtAtHqc5r5n5UbsGyKS5YuQQEpt/M9cx1BR99jN5jrA+61Se3htwYw9uEBp7AGnOHiKyy2fdmRyTLvqpYVCOrQlj64qViCRZ/usIaXtRSOIb8cZ2EknDbpZv8xfAdzliXWOY8kvpgF19Yb/8diQokveXqwBJBO/efBikxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769148477; c=relaxed/relaxed;
-	bh=+Bad8lH4TU6BJz0pPmvv49yWbdDZ24D0e+R8NVmqgUI=;
+	t=1769148478; c=relaxed/relaxed;
+	bh=Z+9caVik8imxXhz/kfL5t9h1pnvPAAvM2jsiUjE02c4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lNOIEA0Rs11p21vNclTwfUMXu614ommtUbN7QVouMYC4E7RYyKDzW/y5UWC9J6vFUBtf4uF/Ojs9iY2veNd2uJQK/5W3mZCv52/Oaz8w2S1c0DIb0lF6xravfn5Gz2UPjHAc3jFYIMQ5WYKRGWEoqlXf/tzB0yrYvEMBu2t8D2Mhi69eVIBJxcy6cLlMT52+jOyQt8WmkEoFaCTkuuFICT1UdtlZeksMNooOx8lH0dInF6gW6HXQ8Tw2csi/p/kA3rJoxQanOnLtmg8JMQEQMvBgc2XglD64pOHKJBuNawNOka4aACocIWWP3AAhcEPv2uWwuhjqeM+qMWDfGFw8YQ==
+	 In-Reply-To:To:Cc; b=gCw9begaR+7Cj3iZDq9mxnXgQPoebkZ7KLpsUG94CckUZM0ikjRJg5KyM8tL0FUyIe0KiUZsp+6izrQN0oXOvaQlu6W5ybp8PZRT3HlIafYD+mVLG1Gtyt/h6zIV+9XawwUbTaHjRTBgHd1A+I+hk6ieIz2i1I9LR3GhaUTbciCMgxUXso7lJ89mj/244/PVrmnEOX8EHt2827ogrNvYOWx1rGAug5UBLtWDI3Lub8xV0bbQQ2JGmthE4vBaoaxwl5ILO4wL4fdSoJXIJfsZSR18avjBb5NjhDY24Rb1tyTjl2Wyp8AW9rqgBf7a+4h3xRLL9kS5CXKItbJ/oBoNUQ==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=wangruikang@iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=iscas.ac.cn
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=wangruikang@iscas.ac.cn; receiver=lists.ozlabs.org)
@@ -28,15 +28,14 @@ Received: from cstnet.cn (unknown [159.226.251.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dy6t31X72z2xKh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jan 2026 17:07:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dy6t31Y03z2yF1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jan 2026 17:07:54 +1100 (AEDT)
 Received: from [127.0.0.2] (unknown [210.73.43.101])
-	by APP-05 (Coremail) with SMTP id zQCowACnPBAiEHNp9tMuBg--.1678S4;
+	by APP-05 (Coremail) with SMTP id zQCowACnPBAiEHNp9tMuBg--.1678S5;
 	Fri, 23 Jan 2026 14:07:32 +0800 (CST)
 From: Vivian Wang <wangruikang@iscas.ac.cn>
-Date: Fri, 23 Jan 2026 14:07:29 +0800
-Subject: [PATCH v3 2/4] PCI/MSI: Check msi_addr_mask in
- msi_verify_entries()
+Date: Fri, 23 Jan 2026 14:07:30 +0800
+Subject: [PATCH v3 3/4] drm/radeon: Raise msi_addr_mask to dma_bits
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -52,7 +51,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260123-pci-msi-addr-mask-v3-2-9f9baa048524@iscas.ac.cn>
+Message-Id: <20260123-pci-msi-addr-mask-v3-3-9f9baa048524@iscas.ac.cn>
 References: <20260123-pci-msi-addr-mask-v3-0-9f9baa048524@iscas.ac.cn>
 In-Reply-To: <20260123-pci-msi-addr-mask-v3-0-9f9baa048524@iscas.ac.cn>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
@@ -73,12 +72,12 @@ Cc: Han Gao <gaohan@iscas.ac.cn>, Vivian Wang <wangruikang@iscas.ac.cn>,
  linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
  linux-riscv@lists.infradead.org, sophgo@lists.linux.dev
 X-Mailer: b4 0.14.3
-X-CM-TRANSID:zQCowACnPBAiEHNp9tMuBg--.1678S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7uFy5JryfGw1kur43Aw45trb_yoW8GF4fpF
-	WqgayDAr4Fkw15JFsxXw1vqF15ZFZ0qa4fGrW8G34a9FsIqwnFyw13K347K3WfXF18Gw15
-	ZFyYyw4UGFs8AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmF14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+X-CM-TRANSID:zQCowACnPBAiEHNp9tMuBg--.1678S5
+X-Coremail-Antispam: 1UD129KBjvJXoW7tF4kGw13JrWxWr48KF4rKrg_yoW8ZF43pF
+	43GFZxtrZIy3WUKay2kay7ZF15Aa18KayrWr4DG39xua45AryUCry3Z3y3J34kXrykXr42
+	qr18G3y5uF1FvF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUm214x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JrWl82xGYIkIc2
 	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
 	Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
 	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
@@ -88,9 +87,9 @@ X-Coremail-Antispam: 1UD129KBjvJXoW7uFy5JryfGw1kur43Aw45trb_yoW8GF4fpF
 	xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
 	JVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
 	kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
-	6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
-	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2
-	KfnxnUUI43ZEXa7sREIzutUUUUU==
+	6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVF
+	xhVjvjDU0xZFpf9x0pRVVbgUUUUU=
 X-Originating-IP: [210.73.43.101]
 X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 X-Spam-Status: No, score=-1.0 required=3.0 tests=RCVD_IN_DNSWL_MED,RDNS_NONE,
@@ -116,7 +115,7 @@ X-Spamd-Result: default: False [-0.01 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16187-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16189-lists,linuxppc-dev=lfdr.de];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
@@ -130,49 +129,60 @@ X-Spamd-Result: default: False [-0.01 / 15.00];
 	TAGGED_RCPT(0.00)[linuxppc-dev,netdev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: E4C2C70BD3
+X-Rspamd-Queue-Id: 8B98A70BE3
 X-Rspamd-Action: no action
 
-Instead of a 32-bit/64-bit dichotomy, check the MSI address against
-msi_addr_mask.
+The code was originally written using no_64bit_msi, which restricts the
+device to 32-bit MSI addresses.
 
-This allows platforms with MSI doorbell above 32-bit address space to
-work with devices without full 64-bit MSI address support, as long as
-the doorbell is within addressable range of MSI of the device.
+Since msi_addr_mask is introduced, use DMA_BIT_MASK(dma_bits) instead of
+DMA_BIT_MASK(32) here for msi_addr_mask, describing the restriction more
+precisely and allowing these devices to work on platforms with MSI
+doorbell address above 32-bit space, as long as it is within the
+hardware's addressable space.
 
 Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
 
 ---
-v3: %llx -> %#llx (Bjorn)
+v3: No changes
 ---
- drivers/pci/msi/msi.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/radeon/radeon_device.c  |  1 +
+ drivers/gpu/drm/radeon/radeon_irq_kms.c | 10 ----------
+ 2 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
-index 48f5f03d1479..77713f89a10b 100644
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -321,14 +321,17 @@ static int msi_setup_msi_desc(struct pci_dev *dev, int nvec,
- static int msi_verify_entries(struct pci_dev *dev)
- {
- 	struct msi_desc *entry;
-+	u64 address;
- 
- 	if (dev->msi_addr_mask == DMA_BIT_MASK(64))
- 		return 0;
- 
- 	msi_for_each_desc(entry, &dev->dev, MSI_DESC_ALL) {
--		if (entry->msg.address_hi) {
--			pci_err(dev, "arch assigned 64-bit MSI address %#x%08x but device only supports 32 bits\n",
--				entry->msg.address_hi, entry->msg.address_lo);
-+		address = (u64)entry->msg.address_hi << 32 |
-+			  entry->msg.address_lo;
-+		if (address & ~dev->msi_addr_mask) {
-+			pci_err(dev, "arch assigned 64-bit MSI address %#llx above device MSI address mask %#llx\n",
-+				address, dev->msi_addr_mask);
- 			break;
- 		}
+diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/radeon_device.c
+index 60afaa8e56b4..5faae0361361 100644
+--- a/drivers/gpu/drm/radeon/radeon_device.c
++++ b/drivers/gpu/drm/radeon/radeon_device.c
+@@ -1374,6 +1374,7 @@ int radeon_device_init(struct radeon_device *rdev,
+ 		pr_warn("radeon: No suitable DMA available\n");
+ 		return r;
  	}
++	rdev->pdev->msi_addr_mask = DMA_BIT_MASK(dma_bits);
+ 	rdev->need_swiotlb = drm_need_swiotlb(dma_bits);
+ 
+ 	/* Registers mapping */
+diff --git a/drivers/gpu/drm/radeon/radeon_irq_kms.c b/drivers/gpu/drm/radeon/radeon_irq_kms.c
+index d550554a6f3f..839d619e5602 100644
+--- a/drivers/gpu/drm/radeon/radeon_irq_kms.c
++++ b/drivers/gpu/drm/radeon/radeon_irq_kms.c
+@@ -245,16 +245,6 @@ static bool radeon_msi_ok(struct radeon_device *rdev)
+ 	if (rdev->flags & RADEON_IS_AGP)
+ 		return false;
+ 
+-	/*
+-	 * Older chips have a HW limitation, they can only generate 40 bits
+-	 * of address for "64-bit" MSIs which breaks on some platforms, notably
+-	 * IBM POWER servers, so we limit them
+-	 */
+-	if (rdev->family < CHIP_BONAIRE) {
+-		dev_info(rdev->dev, "radeon: MSI limited to 32-bit\n");
+-		rdev->pdev->msi_addr_mask = DMA_BIT_MASK(32);
+-	}
+-
+ 	/* force MSI on */
+ 	if (radeon_msi == 1)
+ 		return true;
 
 -- 
 2.52.0
