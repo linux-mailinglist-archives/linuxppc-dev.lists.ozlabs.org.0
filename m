@@ -1,55 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-16227-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16228-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPzEIgpTc2kDuwAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16227-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 11:52:58 +0100
+	id +KRmOJNWc2kDuwAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16228-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 12:08:03 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E7D749A0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 11:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 539A874CAB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jan 2026 12:08:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dyFBv0ZdXz2xKh;
-	Fri, 23 Jan 2026 21:52:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dyFXB5mcMz2xKh;
+	Fri, 23 Jan 2026 22:07:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769165574;
-	cv=none; b=DIZ+C7N8MkP0t21UHwSzGlcKtEYqSuikEV48L9ODA/YPLBoujD2Uxw90h9lbgWx3qd12PPzKj1aLhLxzHK1pd/XDMYs16BhyHrwKGbx2AeUwR7ObZndbWoDfQVf9MswgOjdCgXKyvsrl+C+qZP4TggxQvPm+qkmjtEAkvthCIBOriOZZ9xSfWldR9brQJ18s2zKXYXfZQ2X8ubGHCdS4b7pHm3sC+q3MleIShLhs2l5hhuyVTGw79XNT+emOl0bhQmy7UL38tvHE23Lc7qKLsIk4Ulc+Rr8WnKnT5+Vx7Mk4PJWqkTMkKIhnBdgb8plh6xDf4HAGqeF4P+8QLa582w==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769165574; c=relaxed/relaxed;
-	bh=ve2HFoQhOJ70zqicwb3PD9Zceekow7O+1d/25yLR6eI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jM/9x4A4t/GbS4tlSDg7q9cNELEEU9cgVvQmgC3CF65N+ROYGkrbrH0Zc4WQHppb3zAILQLA0vOd9YCCdJEAwwueQalHW7UMEhOUbwGFFiIrMhsHjCfL+aO1b1BwduRKvIHHb6bn8eX5AsCnIwagsGhlDCk3bntBqRSs9FDVA2XC8amIi1d97ekviw2jO0auuc2EKzbpHtn2rBCbqfqHZVx0eTt6C69LGkfgN2UyBl7FtyIsYt7DvySbmTagtQZS+tfutOee5FGzBjocIGt69JRZqtPAPnN435fTK/gCJ12hMDi9MPO/QRiMI3QFkQP3VgZ2oJPfFmRVmrrF/n7ZEw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s2f2wPSB; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip="2a01:111:f403:c200::5"
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769166474;
+	cv=fail; b=os6lCSWlwlY+ittldSDV2egmtPBLI0o1je6+IH183238EjpBrz9Ii0lGPP+BECujLrQlH+RpZuLa4odV0ap6UeAFVqK/kMpLrxCHZ6YXC5LafmWzOUVqqpgcM+ewgh5PoOQgI619LhFMf+ghXe4U0gZ8tAEjS2GDr4d9L7Sz7WxMH9obvZTknxBA/x5GpPnjLhULBk0Vxf0KtmBc+/kV2WkP7jJQMm3Mr1UjYZZjC3wu8H/9LFzu0Sbdn6gHQBCowmn445TG+IHTeAsplCqbNFqK5zSsD9++O5gxEd3JcXNP/j/XMYzh/h9gboUBoMqmDzcnnralWkGdeM7wUFofow==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1769166474; c=relaxed/relaxed;
+	bh=A80Q0GlVbNIPtnx/vGs2/o6ApeIkoVAO+5lVAgKBwao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mjhzbwfvdbyLqY0ioLNtjtX5RSLVWr+xUf2LjcZziKHirRYxEhp2KfPyX5GjjieAEo/fDh745BxVbexVEqOFmKhtHMznjMVyc0W2XaB5kflF7mGSfp2Xn6xPxao4c9WFqJ84DtQ+t/pcCSQ6zXIs0pnIv70aU16Meo3VG5vooxu2sIEVlOmOZqtrID6JcLXkBV7gtCNpD2SATfko91vYvClDuD3KtbtTc122st2hsdDBU3iTF/zyt5LCzqUuk5pxFdFerJKLNFXy7QRraisQhGI3b7P8oglMmASkpHWcyV1WTsNpg0UCve8/xIqHJQXtRjW2cpl8Y7ptfn/qFxeliA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=nxp.com; dkim=fail (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=TgDkxiin reason="signature verification failed"; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::5; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s2f2wPSB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=TgDkxiin;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::5; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org)
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazlp170120005.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dyFBs4Swsz2x9M
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jan 2026 21:52:53 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4684660010;
-	Fri, 23 Jan 2026 10:52:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADCEC4CEF1;
-	Fri, 23 Jan 2026 10:52:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769165571;
-	bh=ojbfcl6dIvtY+adr7dmxP1SqcnShBLlbESAfM2YXYq0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=s2f2wPSB1By77YZx78G4NYjIc1Edaa8r0GoGZCJpeFJEJOlz2sZP7AuN4jkl7Xic3
-	 qzgHcL9a8Kk7TnPbjdNRkGWjb17KQLah8KGDRttLmr4QOcMphSqa3wW9mkZSakxsLC
-	 1zBUFXPrgGhlFq5RACJOOn3IMf+ZnxPL36kJ2Y/EtX474wyXYeUhXBa5tXuzFa9OlR
-	 ZJc7ZZ56dFOidTDw5mWU+ja41m4km8GQGRxsveK00M3ay8XTyFr2A7RHYHmCU7KpSs
-	 Evn9ImxYCjfFCff2GCXxSQ6UX5uVwGuvlIvU1u9P+OmRg04bdfSrkZZxgFtm3F30dG
-	 uCjff4WMVBJeQ==
-Message-ID: <2b41debd-9a05-4707-b270-a8fa3dd7768c@kernel.org>
-Date: Fri, 23 Jan 2026 11:52:45 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dyFX95RhGz2x9M
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jan 2026 22:07:53 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=G/bBZFhdUaXVU27zGIk5JKzFV65zeqhAwUmFgtvQNHDg1LOGHuUxPdx4FyrD8vW5yXnnTpD3lJvvaZfR8b4Z9ALLqsCsCNMUVr/ZGiI3Ih8H7EzwZl3VuEk0U+vxYYHTtQTWidnwepOIcsq6uEF+KWoGI1wtsfzSleV09ltqLqs8IwDUoBUDdlXzf/+BW6bLiCSNaJCzIFiGnkaZY5rYPJ+BqZREkev+cKXm1pdZnSB0XAR0AgbxZ0tg6Xv+TtKfzUd2XWNiG83wYYCaJPQsFchhlBKQBgVN1DcC72bW8maWvSWHERLNEiQkv5wwoKxfWOO0sTqvjrz5xyqmBlTb+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EOMm6cl6PZkl/SqI9y9XWv5bINrfjekA2JlEHjyOD98=;
+ b=owhmcCKK3oYlln3Gs0sMTH1maM7csn3ZNq7RhJoiFzddoBGhsClheIs6BqnMoDx2m5Ro7LSX9/aB/ZXgUiB/m35zJI2BrrlsRtihupeJvzsQnkg6cgp6FByIB9iaQWFflWLgKtJndLK/pQ3WwUr3bGb29Kk81iGQc77uOEhvKYB8YOskSDs0+uFIgELLvbuL57zW2c3xRRsLbsuzdQ2YsTfpdBBXDFgr4wqUXi7N51RzYoCuvfIhRyiygfKxOEzRk1B/SytERg9UB9r9njhseOwiCeF8W9QS+CMfH2w6qGXz4kAD0J7bLpk/EEHQNfambQgNk9rcc/BvSSE51D/Uxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EOMm6cl6PZkl/SqI9y9XWv5bINrfjekA2JlEHjyOD98=;
+ b=TgDkxiin0KBDNU1ooDQFO6pY7X+/gSX8lvWPtk5FgbmKb2xlf0ypAurRij6wlfnQmp0MZKcCBHswYurnC6Xc7P9JHzTOLgP6Y4cDuh0JsYzhUBjqU2tTbDF0+ejuF9iu7reMW+h/qItin45z42JqUnvar5/E8Bg9f3l2JV1D2kdGapzJcqqLIMJLq6RwvQvx06zvGqZ9XgGfbAoGuGlCt2s7rCEG8dWu3uPSXfeqqgztWw7ouiv7h7xr21029fZY3LEGEg86JNBaUnB/MTgGQmSsBLtZncvkNi78CadI6m/Spt5y2SirjQ8NfJzI1zJsvptNjNsIgqigfxrndqjHgA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
+ by DU2PR04MB9212.eurprd04.prod.outlook.com (2603:10a6:10:2fb::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
+ 2026 11:07:25 +0000
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9520.011; Fri, 23 Jan 2026
+ 11:07:25 +0000
+Date: Fri, 23 Jan 2026 13:07:22 +0200
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>, broonie@kernel.org,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Vinod Koul <vkoul@kernel.org>, linux-phy@lists.infradead.org
+Subject: Re: [next-20260122] Build failure on IBM Power Server
+Message-ID: <20260123110722.l52ei5bfmx3u7wvl@skbuf>
+References: <43ea0202-891d-4582-980b-5cb557b41114@linux.ibm.com>
+ <f07d721f-ac80-4421-86a3-1f7f76ea8e6c@infradead.org>
+ <136ae3bf-b1a3-4ee8-a7ea-dfc90e7b4baf@linux.ibm.com>
+ <fa330d98-653c-4643-aee9-9697068e734a@kernel.org>
+ <20260123103922.sr7m7py7d4afvc2f@skbuf>
+ <2b41debd-9a05-4707-b270-a8fa3dd7768c@kernel.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2b41debd-9a05-4707-b270-a8fa3dd7768c@kernel.org>
+X-ClientProxiedBy: VI1P194CA0025.EURP194.PROD.OUTLOOK.COM
+ (2603:10a6:803:3c::14) To AM9PR04MB8585.eurprd04.prod.outlook.com
+ (2603:10a6:20b:438::13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,217 +99,176 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [next-20260122] Build failure on IBM Power Server
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Randy Dunlap <rdunlap@infradead.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, broonie@kernel.org,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Jakub Kicinski <kuba@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Vinod Koul <vkoul@kernel.org>, linux-phy@lists.infradead.org
-References: <43ea0202-891d-4582-980b-5cb557b41114@linux.ibm.com>
- <f07d721f-ac80-4421-86a3-1f7f76ea8e6c@infradead.org>
- <136ae3bf-b1a3-4ee8-a7ea-dfc90e7b4baf@linux.ibm.com>
- <fa330d98-653c-4643-aee9-9697068e734a@kernel.org>
- <20260123103922.sr7m7py7d4afvc2f@skbuf>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260123103922.sr7m7py7d4afvc2f@skbuf>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|DU2PR04MB9212:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f5862e9-3f68-4d6b-0c3b-08de5a6f96d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|7416014|376014|19092799006|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?bOLF+or4oKulFFFOarKnlm+PRM7ybZjzhl0sJrkbRPXKMRoMPBoJNBmEYn?=
+ =?iso-8859-1?Q?2KpcEEQL+XRfJU3j21s9suy3WY5AJG0pDEO16d5/jZvbVvty4+40wLbmpV?=
+ =?iso-8859-1?Q?LDS0MD1B8FSfJfrhb5lfM8kcDDI/ZKFpF1yO2aSpohJMs2HlAtbs+6cHds?=
+ =?iso-8859-1?Q?AP30h4Ba0uE6Ro8pRCdguy/yBFIKww7TX2dzz5tFuJEU24JoOy0mW8jMy0?=
+ =?iso-8859-1?Q?mbyp+7eXygYzuw1MvccQQ0fJWi6S5BvCe+sqXq2d4zZ2R2A9+P9fqwmfIk?=
+ =?iso-8859-1?Q?2YCeWHFPnpq6Ld4YYvJKbOaYoAIfMn48jw0eikkhFMry6/ZpvmpQjhZJfG?=
+ =?iso-8859-1?Q?HRvBJj9+xTLYTZG35BHU/9zjb9z81E3awdo7CPWqkeVJzgv5FHuZ/KJ4tF?=
+ =?iso-8859-1?Q?GmjWMiNKgWb40Ywq3fqI8I3rhqOaKOqtk20AB1maVXLjoi6eydDjKktgZ2?=
+ =?iso-8859-1?Q?Tz9GDiw9ApYgT2iGetFa/olAfVCtMeuUlXpiL9fpCDGjRuuegHYtRjRAwH?=
+ =?iso-8859-1?Q?Uvu03p8n0AYgCWcq1PrlHo6eU9ifdGHJAkeuVdF1KKiAOZCSVTbwGzgSX1?=
+ =?iso-8859-1?Q?9FxW7rBFWJTldTicP9smIWMK6FwvrrnM6IHydgzjtP49iUX6UKnDLp1/o5?=
+ =?iso-8859-1?Q?xRh7KQa1H0OqbEO8PvFl27CQ1P4Pjg7RfI5VnTgs6dHHMJ57pcMZhF6nBy?=
+ =?iso-8859-1?Q?9meUWomKO4fMbAnSNOhpm/zmSkj6SU4NVqDMqbpY6FA0aVotTOhRsTFhuq?=
+ =?iso-8859-1?Q?y6BC8xvXGipiUi1aRCXl5o/zRu3diHsi5wgwXTbRG/PaDoYdQlSIgKUXGk?=
+ =?iso-8859-1?Q?CBcN1ij30yI7Mc0RBwy0tCbFWWyHEWn5dw87Lc8dOdNNUvDBtyXQnGvYTS?=
+ =?iso-8859-1?Q?omZZ5AKgz8RpL7L+BAyCegzJzvIOMMCbz7UwXRKITXIa6Dkt/DKPs1IbD+?=
+ =?iso-8859-1?Q?NXJ/U7ZL7/tRGg4binzFk2kJJLoowDq/RGlH7f8PeXjn6DkKhnqi5qrCtq?=
+ =?iso-8859-1?Q?hSBqVWfql2QFT+j6pnboLfvrTxbz5Bj8ug4cWnyiTLx7qMk2EkmGW17kJW?=
+ =?iso-8859-1?Q?jHogI98PcGk+J2YD4AqN6Q2t5viLOI6DLa4CYj29xj/mEF6QWcjdwYYWZx?=
+ =?iso-8859-1?Q?FnwPSQ7bAjwY4uPlJHu8lzGVNsNaZ0aP6wnMm6t5mFdUvHnNsMqxBCFesu?=
+ =?iso-8859-1?Q?PODe1tc50bEDzWF0oIxB11DQCpQDvUWHyBe0Jv4DiVG/3mWaIQx0bbXiww?=
+ =?iso-8859-1?Q?SUk7Jyp28Y3v+R+2ubcIBnFjc4A6UPAclXoT0cHMZF+mDGIusxbMKtk3/N?=
+ =?iso-8859-1?Q?T8Y0eOO0eWw9dytxbxeAniSvedtbSgjTRDaAeFUuNjf4Uu+LMjV/LMJuvI?=
+ =?iso-8859-1?Q?XHqp9L1koGaIQ3/J8yvSzxkeFL6aOgvXKKbrQ9miN18dJgJIYxPAHN/7W7?=
+ =?iso-8859-1?Q?X/tbLCB52vzNNuxiD5Nk7v2oy85SOCuQDKcfcOtdB7FORUFXZj9r1ipJzH?=
+ =?iso-8859-1?Q?0JRld+Zk166iVyVueLOq2QDAbNPqnsbFbByZ3wq5k8LnqntLYbyyYvjoTu?=
+ =?iso-8859-1?Q?XYoRoU2XxUTIDZmDbusdVD9SXDVb/+rZjwYnq9bME8TqT38xXHfRwG7wXL?=
+ =?iso-8859-1?Q?HR7DgMT4pRyDw3qQDqCcjrcyWtRFp0fKU3?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(19092799006)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?ln/4r2Bsyi9OkL/4aB+Z1ttUtr3Nu1AjKD0axtI5ub3KC7LFLQut1LnulM?=
+ =?iso-8859-1?Q?yZ+TgiKtcatYZPDztl4P/aZHNGJz/jaZOIuKzBVKPlHhg6pdKUxofvpMMl?=
+ =?iso-8859-1?Q?FVj8cHqZ6yXCY2XQ2u6vdlz9f4Jq4zZcEI6yVwiiKii/HChH5+mPtVy5oC?=
+ =?iso-8859-1?Q?q/k5tjEOkwNTgLtLblExjsV05UZGadSovHS4lTNSH999rcSnFHtqq3EkBc?=
+ =?iso-8859-1?Q?AT7zeDMJF5xlpziNfsEGr3NG0udFqteGkCx0viRrYig7xaqpVQKkwmLrPw?=
+ =?iso-8859-1?Q?YDXfUqlQlx8g17e1JBqxQFFx6CmAjnFgSNjf27Gk8ujWvi3s6kfqIX5um3?=
+ =?iso-8859-1?Q?WjbpopehaXR3k5gv9SPwFZnOwMshhsXofHFqHzNR9mX6Y5oL9QYl4ObDYG?=
+ =?iso-8859-1?Q?2ZdqHDdmim5mGqZzmplDQ7P7Yo8thbcAO3KAgWoNkHY3PeeHn7QBf1eYkc?=
+ =?iso-8859-1?Q?xtSprJTOMNBS5r7miCj6pvLK7+e8abkuyRwGVGBMjLrq0g1vBAYy5TwtBK?=
+ =?iso-8859-1?Q?/PKsGLMJIagdbWrpxlEPlPZYb45GnigetdJF+a9qbjs+fSQT7eooS4S/rF?=
+ =?iso-8859-1?Q?n8qoL12wGeGGoVVXgfHeYIu98pTUAI6ANxfkyEH0Mf40hLAWBlkP209dMG?=
+ =?iso-8859-1?Q?uGfOZl7a9YUMwfuz5RoW+S5i6sQu/AgZVo2rrY/QeTtgfe20RuPsvOCo5V?=
+ =?iso-8859-1?Q?eVPIxQlh4dOqvlLuN9twgpywsLdSSiqIBDiuPu+KJ2VkI1QFGo/4FHtPDf?=
+ =?iso-8859-1?Q?gEk9wCa/8ogoFDLibFXZGN40rKtVOd1H5jRUObWnnKSoy5Ra6SH1V4SYhI?=
+ =?iso-8859-1?Q?A155gTmJNEiFuUtVZ2ykJJrMTYXqsMxOmkxWJdI2fRA4UhfcKQvaJBC6gH?=
+ =?iso-8859-1?Q?iGSNmuz4B+2LNMPKbrDFXGCQJTG11M/aLfAAQwoLnJdX4J5KnTaNx9wwpm?=
+ =?iso-8859-1?Q?NwzKoEBWmlNyCyHH5Qcxf525aQJtSVXseLX2J6Ff05uI2a3ZVOpKdj5jmC?=
+ =?iso-8859-1?Q?iueyrtREXSr/uDzGyhkviHk7kY5PgQEl8SnBdkNgZsmXL/mkSKn7aMEOYU?=
+ =?iso-8859-1?Q?5c8xrLFQR615RsErnGFeoeugYPjTLAnqeJzvXLeuz0I3WlNvTjlc7l/Jx/?=
+ =?iso-8859-1?Q?YueoPmGDqRQZMwfMRvAiPHbr2Zx2hXid+Qq93nJMjEu2HBdwRWFDEQBcFP?=
+ =?iso-8859-1?Q?IsZAjAD9ErPnJ2ENiDoJbZeZEF8J4DdRLekC2I37X9pE6WMipxdphcbfoc?=
+ =?iso-8859-1?Q?2n+QcZY/ZucxRAYDgm9AVL9tSqqrUPZs8wMkn6AXAKSByT6E9B3mgpbfZk?=
+ =?iso-8859-1?Q?VDU0jpZIpcSDBeccJlyOi5hDsBO+/vrKL47n8RXpWKlNq4MHUeI3LNhUjJ?=
+ =?iso-8859-1?Q?Ey/ieD5IH0W8Ek3T2pCeHHx+kImLug/LrrxL/vycpYVnaFdxeB+aD1xwYU?=
+ =?iso-8859-1?Q?CqO8v/l4qw27z5anCLvllhoK/UFULeLS5vf3FOxbNw2PDG3t9gfe3tYVna?=
+ =?iso-8859-1?Q?xb22CWOjPPB+78BoTj4UP7ezKwNnCTumGSO/vF0OV2Bmc5vwZ7dTrmX8o5?=
+ =?iso-8859-1?Q?YJTnL57lqS12T6UMwTIRdzyy6LpOdXxDegQVHMUxj4XIfbfkIXiJVDF0zj?=
+ =?iso-8859-1?Q?MPmEzooYylc23Fc4GuO/yomz6SLY1Q800gv8jq1vqze/K+tS0nEaCBfHQi?=
+ =?iso-8859-1?Q?+txU7UBH2pz+T5+z8uU+Zt5OxUf0/qYuqr0M4xJpZsQsTA5bBSzMxAS0Ob?=
+ =?iso-8859-1?Q?HzOAv1BeZYT650gCEdaUyqykH/8YTy5Sp8zFpdRFURsWG+TQf0cmi8mBbf?=
+ =?iso-8859-1?Q?cP5oNF8bzTeyPqY0nBJLI5KLf8ZUCKYAp0W9nGS/9tGAKbRGh67/AKuCcT?=
+ =?iso-8859-1?Q?AY?=
+X-MS-Exchange-AntiSpam-MessageData-1: yhwnBB/4ZC2Sj59tozCKNaQcs78rk41InzE=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f5862e9-3f68-4d6b-0c3b-08de5a6f96d1
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 11:07:25.2964
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tkKF3jCHrfXnycPN96HKdOKobGIq7le8QwYZEkB4NOGiNMj4jGCaan1Uzuu2D5oBqqtGduTzB61BQvOPzxGYQw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9212
+X-Spam-Status: No, score=1.6 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_INVALID,DKIM_SIGNED,FORGED_SPF_HELO,KHOP_HELO_FCRDNS,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [2.09 / 15.00];
+	R_DKIM_REJECT(1.00)[nxp.com:s=selector1];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16227-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_RECIPIENTS(0.00)[m:vladimir.oltean@nxp.com,m:venkat88@linux.ibm.com,m:rdunlap@infradead.org,m:maddy@linux.ibm.com,m:broonie@kernel.org,m:linux-next@vger.kernel.org,m:maxime.chevallier@bootlin.com,m:kuba@kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:netdev@vger.kernel.org,m:vkoul@kernel.org,m:linux-phy@lists.infradead.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16228-lists,linuxppc-dev=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:venkat88@linux.ibm.com,m:rdunlap@infradead.org,m:maddy@linux.ibm.com,m:broonie@kernel.org,m:linux-next@vger.kernel.org,m:maxime.chevallier@bootlin.com,m:kuba@kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:netdev@vger.kernel.org,m:vkoul@kernel.org,m:linux-phy@lists.infradead.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[vladimir.oltean@nxp.com,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TO_DN_SOME(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[vladimir.oltean@nxp.com,linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.868];
+	DKIM_TRACE(0.00)[nxp.com:-];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 93E7D749A0
+	NEURAL_SPAM(0.00)[0.110];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 539A874CAB
 X-Rspamd-Action: no action
 
-
-
-Le 23/01/2026 Ã  11:39, Vladimir Oltean a Ã©critÂ :
-> On Fri, Jan 23, 2026 at 10:52:49AM +0100, Christophe Leroy (CS GROUP) wrote:
->> +Vladimir, Maxime, Jakub and netdev
->>
->> Le 23/01/2026 Ã  10:11, Venkat Rao Bagalkote a Ã©crit :
->>>
->>> On 23/01/26 1:17 pm, Randy Dunlap wrote:
->>>>
->>>> On 1/22/26 8:15 PM, Venkat Rao Bagalkote wrote:
->>>>> Greetings!!
->>>>>
->>>>> IBM CI has reported build failure of 20260122 on IBM Power server.
->>>>>
->>>>>
->>>>> Error:
->>>>>
->>>>>
->>>>> ERROR: modpost: "phy_get_rx_polarity" [drivers/net/phy/
->>>>> air_en8811h.ko] undefined!
->>>>> ERROR: modpost: "phy_get_tx_polarity" [drivers/net/phy/
->>>>> air_en8811h.ko] undefined!
->>>>> make[2]: *** [scripts/Makefile.modpost:147: Module.symvers] Error 1
->>>>> make[1]: *** [/home/upstreamci/linux/Makefile:2040: modpost] Error 2
->>>>> make: *** [Makefile:248: __sub-make] Error 2
->>
->> Thanks for the config file.
->>
->> The probleme is because allthough CONFIG_PHY_COMMON_PROPS is selected,
->> drivers/phy/phy-common-props.o is not built because CONFIG_GENERIC_PHY
->> is not selected.
->>
->> Likely comes from commit 66d8a334b57e ("net: phy: air_en8811h: deprecate
->> "airoha,pnswap-rx" and "airoha,pnswap-tx"")
->>
->> Christophe
+On Fri, Jan 23, 2026 at 11:52:45AM +0100, Christophe Leroy (CS GROUP) wrote:
+> Le 23/01/2026 à 11:39, Vladimir Oltean a écrit :
+> > On Fri, Jan 23, 2026 at 10:52:49AM +0100, Christophe Leroy (CS GROUP) wrote:
+> > > +Vladimir, Maxime, Jakub and netdev
+> > > 
+> > > Le 23/01/2026 à 10:11, Venkat Rao Bagalkote a écrit :
+> > > > 
+> > > > On 23/01/26 1:17 pm, Randy Dunlap wrote:
+> > > > > 
+> > > > > On 1/22/26 8:15 PM, Venkat Rao Bagalkote wrote:
+> > > > > > Greetings!!
+> > > > > > 
+> > > > > > IBM CI has reported build failure of 20260122 on IBM Power server.
+> > > > > > 
+> > > > > > 
+> > > > > > Error:
+> > > > > > 
+> > > > > > 
+> > > > > > ERROR: modpost: "phy_get_rx_polarity" [drivers/net/phy/
+> > > > > > air_en8811h.ko] undefined!
+> > > > > > ERROR: modpost: "phy_get_tx_polarity" [drivers/net/phy/
+> > > > > > air_en8811h.ko] undefined!
+> > > > > > make[2]: *** [scripts/Makefile.modpost:147: Module.symvers] Error 1
+> > > > > > make[1]: *** [/home/upstreamci/linux/Makefile:2040: modpost] Error 2
+> > > > > > make: *** [Makefile:248: __sub-make] Error 2
+> > > 
+> > > Thanks for the config file.
+> > > 
+> > > The probleme is because allthough CONFIG_PHY_COMMON_PROPS is selected,
+> > > drivers/phy/phy-common-props.o is not built because CONFIG_GENERIC_PHY
+> > > is not selected.
+> > > 
+> > > Likely comes from commit 66d8a334b57e ("net: phy: air_en8811h: deprecate
+> > > "airoha,pnswap-rx" and "airoha,pnswap-tx"")
+> > > 
+> > > Christophe
+> > 
+> > The intention was for drivers/phy/phy-common-props.o to be
+> > buildable/usable without CONFIG_GENERIC_PHY.
+> > 
+> > Does this help?
 > 
-> The intention was for drivers/phy/phy-common-props.o to be
-> buildable/usable without CONFIG_GENERIC_PHY.
+> Yes it fixes the build for me.
 > 
-> Does this help?
+> Christophe
 
-Yes it fixes the build for me.
-
-Christophe
-
-> 
-> diff --git a/drivers/Makefile b/drivers/Makefile
-> index ccc05f1eae3e..53fbd2e0acdd 100644
-> --- a/drivers/Makefile
-> +++ b/drivers/Makefile
-> @@ -10,7 +10,7 @@ obj-y				+= cache/
->   obj-y				+= irqchip/
->   obj-y				+= bus/
->   
-> -obj-$(CONFIG_GENERIC_PHY)	+= phy/
-> +obj-y				+= phy/
->   
->   # GPIO must come after pinctrl as gpios may need to mux pins etc
->   obj-$(CONFIG_PINCTRL)		+= pinctrl/
-> 
->>
->>
->>>>>
->>>>>
->>>>> IBM CI has bisected this issue and below is the bisection log.
->>>>>
->>>>>
->>>>> git bisect log
->>>>> git bisect log
->>>>> git bisect start
->>>>> # status: waiting for both good and bad commits
->>>>> # good: [24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7] Linux 6.19-rc6
->>>>> git bisect good 24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7
->>>>> # status: waiting for bad commit, 1 good commit known
->>>>> # bad: [a0c666c25aeefd16f4b088c6549a6fb6b65a8a1d] Add linux-next
->>>>> specific files for 20260122
->>>>> git bisect bad a0c666c25aeefd16f4b088c6549a6fb6b65a8a1d
->>>>> # good: [2574bcf1765ec13bf3ef469aa5b15cce293aebb6] Merge branch
->>>>> 'master' of  Warning: Removed corrupted safelink.
->>>>> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fbluetooth%2Fbluetooth-next.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C441b227c282845cf2a3308de5a5f8110%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639047563441808471%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=FlVDfg3VVHplFxnQpG4oQNlr5Mm3ZzaCve19hnomYNo%3D&reserved=0
->>>>> git bisect good 2574bcf1765ec13bf3ef469aa5b15cce293aebb6
->>>>> # good: [2ad38467d20c16f38d0cffad711ef4f4acdb8b29] Merge branch 'for-
->>>>> next' of  Warning: Removed corrupted safelink.
->>>>> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Faxboe%2Flinux.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C441b227c282845cf2a3308de5a5f8110%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639047563441834557%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ez4lgXXDn95PjgZNSAjwp%2BWbvJvQYLeHApGrODqs%2Fmc%3D&reserved=0
->>>>> git bisect good 2ad38467d20c16f38d0cffad711ef4f4acdb8b29
->>>>> # good: [a954370fea56ee1bf995524255a34da7a1ddb524] Merge branch 'for-
->>>>> next' of  Warning: Removed corrupted safelink.
->>>>> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fpdx86%2Fplatform-drivers-x86.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C441b227c282845cf2a3308de5a5f8110%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639047563441853661%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=c4Fim5nuBV9O%2BfFTUltpoLTV19%2Fdy394PvzzGBxh8I4%3D&reserved=0
->>>>> git bisect good a954370fea56ee1bf995524255a34da7a1ddb524
->>>>> # good: [c7ec480f05dd0185a26f190471905ddf1215bc52] Merge branch
->>>>> 'staging-next' of  Warning: Removed corrupted safelink.
->>>>> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fgregkh%2Fstaging.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C441b227c282845cf2a3308de5a5f8110%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639047563441870081%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=xgtRCeDKj7BL1EXx%2BSEtCzR5gaN6wKfihyiwh0AFsRM%3D&reserved=0
->>>>> git bisect good c7ec480f05dd0185a26f190471905ddf1215bc52
->>>>> # good: [4427398fed2b8e07a62fd4f3f6fcf9ffcf56829a] Merge branch 'for-
->>>>> next' of  Warning: Removed corrupted safelink.
->>>>> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Flinusw%2Flinux-pinctrl.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C441b227c282845cf2a3308de5a5f8110%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639047563441887814%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=AzoGH2fuDhFyYqK9JxlVZEsx3V7P5x8Yc8%2BuVE%2BBHJ4%3D&reserved=0
->>>>> git bisect good 4427398fed2b8e07a62fd4f3f6fcf9ffcf56829a
->>>>> # good: [852ccea1ca3144beb7003976d4fa04dbf81b307b] Merge branch
->>>>> 'next' of  Warning: Removed corrupted safelink.
->>>>> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fmic%2Flinux.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C441b227c282845cf2a3308de5a5f8110%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639047563441903764%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=%2BTtdFgkDy9QevJOIHlzjk7Jjd1390L6g0Nr5RpSTYp8%3D&reserved=0
->>>>> git bisect good 852ccea1ca3144beb7003976d4fa04dbf81b307b
->>>>> # good: [f174dabd307dfd92edacb34e8bee0384daa1bd2e] Merge branch
->>>>> 'next' of  Warning: Removed corrupted safelink.
->>>>> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Flenb%2Flinux.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C441b227c282845cf2a3308de5a5f8110%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639047563441919983%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=%2BaVHILI%2FJcj%2BedPEPrJ1zFeSRGwuXUKb0VHFpZ%2Bp95s%3D&reserved=0
->>>>> git bisect good f174dabd307dfd92edacb34e8bee0384daa1bd2e
->>>>> # good: [e31f3c967c66cf03eecdf50fe138d05f635e3698] doc: Add
->>>>> housekeeping documentation
->>>>> git bisect good e31f3c967c66cf03eecdf50fe138d05f635e3698
->>>>> # good: [0cc83fc23debf3e2df19c4510a77fe2d60ab2693] gpu: nova-core:
->>>>> don't print raw PMU table entries
->>>>> git bisect good 0cc83fc23debf3e2df19c4510a77fe2d60ab2693
->>>>> # good: [75df6953fed6b7274f9c5080925ae4c8d3e424e6] Merge branch 'for-
->>>>> next' of  Warning: Removed corrupted safelink.
->>>>> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ffrederic%2Flinux-dynticks.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C441b227c282845cf2a3308de5a5f8110%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639047563441936107%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=beNKxNQCA6SYkfbETF9eJYQ7mBFWwCKUFce6cwNbHUA%3D&reserved=0
->>>>> git bisect good 75df6953fed6b7274f9c5080925ae4c8d3e424e6
->>>>> # good: [086714bbb96f63785da251e1f8d1ce3e716a6e42] Merge tag 'v6.19-
->>>>> rc5' into drm-rust-next
->>>>> git bisect good 086714bbb96f63785da251e1f8d1ce3e716a6e42
->>>>> # good: [6ea52b6d8f33ae627f4dcf43b12b6e713a8b9331] drm/tyr: use
->>>>> read_poll_timeout
->>>>> git bisect good 6ea52b6d8f33ae627f4dcf43b12b6e713a8b9331
->>>>> # good: [b956937ce78fae5fa785f6a95f291e2137502c5e] drm: tyr: Mark BROKEN
->>>>> git bisect good b956937ce78fae5fa785f6a95f291e2137502c5e
->>>>> # first bad commit: [a0c666c25aeefd16f4b088c6549a6fb6b65a8a1d] Add
->>>>> linux-next specific files for 20260122
->>>>>
->>>>>
->>>>> If you happen to fix, this please add below tag.
->>>>>
->>>>>
->>>>> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
->>>> I don't think that bisection helps very much.
->>>>
->>>> Can you post the kernel config file?
->>>>
->>>
->>> Attached is the .config file.
->>>
->>>
->>> GCC: gcc version 11.5.0 20240719 (Red Hat 11.5.0-2) (GCC)
->>>
->>> ld: GNU ld version 2.35.2-54.el9
->>>
->>>
->>> Regards,
->>>
->>> Venkat.
->>
-
+Patch sent:
+https://lore.kernel.org/linux-phy/20260123110600.3118561-1-vladimir.oltean@nxp.com/
 
