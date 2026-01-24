@@ -1,55 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-16270-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16271-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DyuL+ubdGnj7wAAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16270-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Jan 2026 11:16:11 +0100
+	id KHUhFB2ddGkO8AAAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16271-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Jan 2026 11:21:17 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13A37D36F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Jan 2026 11:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5337D38D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Jan 2026 11:21:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dyrKz0qvXz2yDk;
-	Sat, 24 Jan 2026 21:16:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dyrRr5RPDz2yDk;
+	Sat, 24 Jan 2026 21:21:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769249767;
-	cv=none; b=RZ+yIuuEOw384G+3xmav3zK5pr/FEBUBbYDmdNG66bZzb7YYqJRpDRhGkE4kk2Bikbwcy4x+vbqWod9WaoYcZYBxrAhGp7K0gcKX0f06m052im7HFXda2eYEvmqdre7gdZatR0CV4Ri0mQD6DpuncvNYqQRnULirzmwrYZltj4OYYD4UglsLyFMRr1a4Zw+WnssSm8uRcf68svQFTBFfjjIP1e0bnXwI8BfZ88djSSEK2Qjv2b7/qcarSbYR6kLK6ZS4zdAfDzM3HgANHPs9me0WGD4WF2qwlEqS/WIO59BggYGbeNK2uE0kAykfCJKJ+fVTOb+gI/zF5pBKSzxukg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.84
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769250072;
+	cv=none; b=ggARbyF9ZrzKIbmAlUjfz9jEk40upTrtTlpF5HGryOF17nz+40pvWzUM6YBtRE9YVu6Ey3pMj0VB5+5ThrcKszKlbDTRffak4NwWO5FN9V8XBV5Ed6AnPoD+O2Wi0Qw8UDRNDVe3w44rpw6pST2ppdtfFu0upNQYdBQqLTNxY/0mOzhHL/Wp7C/NaJ7cy9jf7d/4GsPn6fNfIr2U8CFvpZMFGzvUy1EBw49BbHw/dJyzGCJKWkzKXol2q4DZ66hVm5nYg5M2aSPF0BmXcqwO+y3sUrWubcLe/T2h3aRAf1M7TT+LLU033hGaXZTP5gmt72YRWdlP3WLZp7h3sKiZwA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769249767; c=relaxed/relaxed;
-	bh=W/5NPMb0LZF5TbTdERpsT57n+ZMmWhyHLzllN9jVgX4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g8upDvoiQU2uKs9jh14VgVqdrSemvMV+pbIjpvZq3YwRxjTI4N4cpCZW0KeKU5r5RzJMs2Zgo49AOhZzC6sXPLS2o3TP72IqkD2Ae1t9QV+1o3B0m3+47wnGy/02luG1XeAnl/P4ma0ooSPy4+C+70/RHXhO35O/j3al0pysLEL7Kcj15900BZOLPr7QjK72/D0eRBGgx74A5HK6cI6gg1rCxqYGDK8lU/sYKy7h5Nkvv/V2DZHSQZnJPhb/yYfheWenKo4ZsXbv+9CeH73D0yRbNkd/EPXN8QZSf58lFp4l/5tWgHvIJeDMegJvnXyiaL0rfs8WRayJjR+cv+fJHQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BG+9wd2o; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BG+9wd2o;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	t=1769250072; c=relaxed/relaxed;
+	bh=mNak2CIRP3B0HVfqcvYbnj54XfVxm9osgQifMIX26Oc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hGv1Qda09KA6wB2rjRh1ssC0VJoaIV6uozNUKY3iF7hxrbdZK4KQTXq6uCZZaojLfR/L+Tuwtkaj2vFcyHdG9f1ojoDDwgBn2IunQbNbBcLrBbpS2dw3glxLXCvpAihEL/rZSoyuJCV7OADpb1K0m5iYE7T6f75LXhhqmhL2TtXRn/G4WNY9YWkooSVwWEYdQC5nfSmJTdPJSVTemyKF6xIRluFWyrY0Itto9NtdLFtDO1nIlKMfPDeToodXdZ/EUnHREncknCOTirP5XfxlD7Defjj5tQFZ+kOneVK4RUiegyQasKeWICWhSJ92GDGcShPkvFqc7yUWSpd2FqsTeQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=lihaoxiang@isrc.iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=isrc.iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=isrc.iscas.ac.cn (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=lihaoxiang@isrc.iscas.ac.cn; receiver=lists.ozlabs.org)
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dyrKx1vWvz2xSN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Jan 2026 21:16:05 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7ED6843C9A;
-	Sat, 24 Jan 2026 10:16:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D83BC116D0;
-	Sat, 24 Jan 2026 10:15:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769249762;
-	bh=UPTxfV10NFGsFNMLbllwwGihhByrD9Chz5Ya/aU4aSQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BG+9wd2ovrMG5pu7KsxBmuHPlYw48y+qEQuXSOmuaQ786O9ubyptVjzd3TPikqKEV
-	 MtPvuwrKZtwGgD5G4X1PGRfnjjFohKmYb3O3Y4u5BFFb01X2hKPytrs6tuQ52Dm9nS
-	 fmDIq7vs8J8McangAIFv826LCzRZLNgtf/9d3q8GVASVYzXNiEOedwA61U/TSPBRLw
-	 B/uNVy9iMafbxhVtHeEUGbMQNxTqlAJ8n51n6Tyk+R2myqLHAu834xSBnmo1UVELl7
-	 eeika37+zLOWSlLAtg5QwuglP1fRf1menyZ0BPn8+f6CDzm2bJ29YHmoNsPqWpbZ5/
-	 er2PErNhz4kjQ==
-Message-ID: <02784e9a-d934-44c3-ae24-a83a1bcf678d@kernel.org>
-Date: Sat, 24 Jan 2026 11:15:47 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dyrRq3rwQz2xSN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Jan 2026 21:21:10 +1100 (AEDT)
+Received: from localhost.localdomain (unknown [36.112.3.223])
+	by APP-05 (Coremail) with SMTP id zQCowAAXpgkHnXRpsX9PBg--.7586S2;
+	Sat, 24 Jan 2026 18:20:57 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: ioana.ciornei@nxp.com,
+	stuart.yoder@freescale.com,
+	agraf@suse.de,
+	German.Rivera@freescale.com,
+	gregkh@linuxfoundation.org
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	stable@vger.kernel.org,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Su Hui <suhui@nfschina.com>,
+	Christophe Leroy <chleroy@kernel.org>
+Subject: [PATCH v3] bus: fsl-mc: fix an error handling in fsl_mc_device_add()
+Date: Sat, 24 Jan 2026 18:20:54 +0800
+Message-Id: <20260124102054.1613093-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,189 +62,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable] arch, mm: consolidate empty_zero_page
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
- Brian Cain <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "David S. Miller" <davem@davemloft.net>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
- Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
- Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org
-References: <20260124095628.668870-1-rppt@kernel.org>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260124095628.668870-1-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-CM-TRANSID:zQCowAAXpgkHnXRpsX9PBg--.7586S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zr1ftF1xtryxZry8Ww4kJFb_yoW8XF1rpF
+	1xWa4kAryUtr1UCw4kZFWxua45Ka92y3yF9ry0yw1fu3W5XF1Fq340g34FgFWDZr9Yka1Y
+	vFnFyr1UXF1UJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-Originating-IP: [36.112.3.223]
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiDAcRE2l0JoO7QAAAsK
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.21 / 15.00];
+X-Spamd-Result: default: False [-0.01 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gaisler.com,alien8.de,kernel.org,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16270-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:rppt@kernel.org,m:akpm@linux-foundation.org,m:andreas@gaisler.com,m:bp@alien8.de,m:bcain@kernel.org,m:catalin.marinas@arm.com,m:davem@davemloft.net,m:dave.hansen@linux.intel.com,m:david@kernel.org,m:dinguyen@kernel.org,m:geert@linux-m68k.org,m:guoren@kernel.org,m:deller@gmx.de,m:chenhuacai@kernel.org,m:mingo@redhat.com,m:johannes@sipsolutions.net,m:glaubitz@physik.fu-berlin.de,m:Liam.Howlett@oracle.com,m:lorenzo.stoakes@oracle.com,m:maddy@linux.ibm.com,m:linmag7@gmail.com,m:mattst88@gmail.com,m:jcmvbkbc@gmail.com,m:mpe@ellerman.id.au,m:mhocko@suse.com,m:monstr@monstr.eu,m:palmer@dabbelt.com,m:richard@nod.at,m:linux@armlinux.org.uk,m:shorne@gmail.com,m:surenb@google.com,m:tglx@kernel.org,m:vgupta@kernel.org,m:vbabka@suse.cz,m:will@kernel.org,m:linux-alpha@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-snps-arc@lists.infradead.org,m:linux-arm-kernel@lists.infradead.org,m:linux-csky@vger.kernel.org,m:linux-hexagon@vger.kernel.org,m:loongarch@lists.linu
- x.dev,m:linux-m68k@lists.linux-m68k.org,m:linux-openrisc@vger.kernel.org,m:linux-parisc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-riscv@lists.infradead.org,m:linux-sh@vger.kernel.org,m:sparclinux@vger.kernel.org,m:linux-um@lists.infradead.org,m:linux-mm@kvack.org,m:x86@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:ioana.ciornei@nxp.com,m:stuart.yoder@freescale.com,m:agraf@suse.de,m:German.Rivera@freescale.com,m:gregkh@linuxfoundation.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:lihaoxiang@isrc.iscas.ac.cn,m:stable@vger.kernel.org,m:dan.carpenter@linaro.org,m:suhui@nfschina.com,m:chleroy@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[lihaoxiang@isrc.iscas.ac.cn,linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16271-lists,linuxppc-dev=lfdr.de];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[52];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[lihaoxiang@isrc.iscas.ac.cn,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	HAS_XOIP(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: C13A37D36F
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,nfschina.com:email,linaro.org:email,isrc.iscas.ac.cn:mid]
+X-Rspamd-Queue-Id: 7E5337D38D
 X-Rspamd-Action: no action
 
+In fsl_mc_device_add(), device_initialize() is called first.
+put_device() should be called to drop the reference if error
+occurs. And other resources would be released via put_device
+-> fsl_mc_device_release. So remove redundant kfree() in
+error handling path.
 
+Fixes: bbf9d17d9875 ("staging: fsl-mc: Freescale Management Complex (fsl-mc) bus driver")
+Cc: stable@vger.kernel.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/b767348e-d89c-416e-acea-1ebbff3bea20@stanley.mountain/
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Suggested-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+---
+Changes in v2:
+- fix a patch error. Thanks, Christophe.
+- add specific changelog. Thanks, Dan.
+Changes in v3:
+- Also call put_device() in other error paths. Thanks, Ioana.
+---
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Le 24/01/2026 à 10:56, Mike Rapoport a écrit :
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Reduce 22 declarations of empty_zero_page to 3 and 23 declarations of
-> ZERO_PAGE() to 4.
-> 
-> Every architecture defines empty_zero_page that way or another, but for the
-> most of them it is always a page aligned page in BSS and most definitions
-> of ZERO_PAGE do virt_to_page(empty_zero_page).
-> 
-> Move Linus vetted x86 definition of empty_zero_page and ZERO_PAGE() to the
-> core MM and drop these definitions in architectures that do not implement
-> colored zero page (MIPS and s390).
-> 
-> ZERO_PAGE() remains a macro because turning it to a wrapper for a static
-> inline causes severe pain in header dependencies.
-> 
-> For the most part the change is mechanical, with these being noteworthy:
-> 
-> * alpha: aliased empty_zero_page with ZERO_PGE that was also used for boot
->    parameters. Switching to a generic empty_zero_page removes the aliasing
->    and keeps ZERO_PGE for boot parameters only
-> * arm64: uses __pa_symbol() in ZERO_PAGE() so that definition of
->    ZERO_PAGE() is kept intact.
-> * m68k/parisc/sparc64/um: allocated empty_zero_page from memblock,
->    although they do not support zero page coloring and having it in BSS
->    will work fine.
-> * sh: used empty_zero_page for boot parameters at the very early boot.
->    Rename the parameters page to boot_params_page and let sh use the generic
->    empty_zero_page.
-> * hexagon: had an amusing comment about empty_zero_page
-> 
-> 	/* A handy thing to have if one has the RAM. Declared in head.S */
-> 
->    that unfortunately had to go :)
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->   arch/alpha/include/asm/pgtable.h          |  6 ------
->   arch/arc/include/asm/pgtable.h            |  3 ---
->   arch/arc/mm/init.c                        |  2 --
->   arch/arm/include/asm/pgtable.h            |  9 ---------
->   arch/arm/mm/mmu.c                         |  7 -------
->   arch/arm/mm/nommu.c                       |  7 -------
->   arch/arm64/include/asm/pgtable.h          |  1 -
->   arch/arm64/mm/mmu.c                       |  7 -------
->   arch/csky/include/asm/pgtable.h           |  3 ---
->   arch/csky/mm/init.c                       |  3 ---
->   arch/hexagon/include/asm/pgtable.h        |  6 ------
->   arch/hexagon/kernel/head.S                |  5 -----
->   arch/hexagon/kernel/hexagon_ksyms.c       |  1 -
->   arch/loongarch/include/asm/pgtable.h      |  9 ---------
->   arch/loongarch/mm/init.c                  |  3 ---
->   arch/m68k/include/asm/pgtable_mm.h        |  9 ---------
->   arch/m68k/include/asm/pgtable_no.h        |  7 -------
->   arch/m68k/mm/init.c                       |  9 ---------
->   arch/m68k/mm/mcfmmu.c                     |  2 --
->   arch/m68k/mm/motorola.c                   |  6 ------
->   arch/m68k/mm/sun3mmu.c                    |  2 --
->   arch/microblaze/include/asm/pgtable.h     | 10 ----------
->   arch/microblaze/kernel/head.S             |  4 ----
->   arch/microblaze/kernel/microblaze_ksyms.c |  2 --
->   arch/nios2/include/asm/pgtable.h          |  7 -------
->   arch/nios2/kernel/head.S                  | 10 ----------
->   arch/nios2/kernel/nios2_ksyms.c           |  1 -
->   arch/openrisc/include/asm/pgtable.h       |  4 ----
->   arch/openrisc/kernel/head.S               |  3 ---
->   arch/openrisc/kernel/or32_ksyms.c         |  1 -
->   arch/openrisc/mm/init.c                   |  3 ---
->   arch/parisc/include/asm/pgtable.h         | 11 -----------
->   arch/parisc/mm/init.c                     |  6 ------
->   arch/powerpc/include/asm/pgtable.h        |  6 ------
->   arch/powerpc/mm/mem.c                     |  3 ---
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index 25845c04e562..6d132144ce25 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -905,11 +905,7 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
+ 	return 0;
+ 
+ error_cleanup_dev:
+-	kfree(mc_dev->regions);
+-	if (mc_bus)
+-		kfree(mc_bus);
+-	else
+-		kfree(mc_dev);
++	put_device(&mc_dev->dev);
+ 
+ 	return error;
+ }
+-- 
+2.25.1
 
-For powerpc:
-
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-
->   arch/riscv/include/asm/pgtable.h          |  7 -------
->   arch/riscv/mm/init.c                      |  4 ----
->   arch/sh/include/asm/pgtable.h             |  8 --------
->   arch/sh/include/asm/setup.h               |  3 ++-
->   arch/sh/kernel/head_32.S                  |  4 ++--
->   arch/sh/kernel/sh_ksyms_32.c              |  1 -
->   arch/sh/mm/init.c                         |  1 -
->   arch/sparc/include/asm/pgtable_32.h       |  8 --------
->   arch/sparc/include/asm/pgtable_64.h       |  3 ---
->   arch/sparc/include/asm/setup.h            |  2 --
->   arch/sparc/kernel/head_32.S               |  7 -------
->   arch/sparc/mm/init_32.c                   |  4 ----
->   arch/sparc/mm/init_64.c                   | 15 ---------------
->   arch/um/include/asm/pgtable.h             |  9 ---------
->   arch/um/include/shared/kern_util.h        |  1 -
->   arch/um/kernel/mem.c                      | 16 ----------------
->   arch/um/kernel/um_arch.c                  |  1 -
->   arch/x86/include/asm/pgtable.h            |  8 --------
->   arch/x86/kernel/head_32.S                 |  4 ----
->   arch/x86/kernel/head_64.S                 |  7 -------
->   arch/xtensa/include/asm/pgtable.h         |  4 ----
->   arch/xtensa/kernel/head.S                 |  3 ---
->   arch/xtensa/kernel/xtensa_ksyms.c         |  2 --
->   include/linux/pgtable.h                   |  8 ++++++++
->   mm/mm_init.c                              |  9 +++++++++
->   60 files changed, 21 insertions(+), 296 deletions(-)
-> 
 
