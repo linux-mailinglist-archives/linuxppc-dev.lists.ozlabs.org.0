@@ -1,53 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-16285-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16286-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ay7YMAnkdWksJgEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16285-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jan 2026 10:36:09 +0100
+	id gJpxNxRLdmk6PAEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16286-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jan 2026 17:55:48 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C228011F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jan 2026 10:36:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CAF8182C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jan 2026 17:55:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4dzRPH6mG2z2yGM;
-	Sun, 25 Jan 2026 20:36:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4dzd8W1wD3z2yGM;
+	Mon, 26 Jan 2026 03:55:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:3000::53df:4ef0:0"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769333763;
-	cv=none; b=mVG57aupWejySni42eYyoeYArOeI8k9E+wgrr1E6HOjh/BhW1NXGwSW/u//kgFceDHI8+FJ/ExQ3VyVXqz0VkkzGs3Jp+ofq3hLO0QQMCgvVzNmSsbhSWOvklHYec09YYXEK5/303leT7q9UUg2oV27aEjnP500Vq5kzCAZ1qW1qvrEDG8bmE7tbgXGMvrCVVMaGc8O4GmJiUAfqW3uKatH6bq1cHLWFYG2zIn+7WchDQUCGxsRQgq73KKbr6ynCz/37dt2jxg2l8rLNt0K8YzIDq8EVcxq+nAkrI6QY2gCX7FUUngNLkyMTP7gMi1HfW+dt8NPuIL6S07fOnmCD8w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769360139;
+	cv=none; b=aG2GA87e0w0xH58FwjQ11j+pOBAEN35fvxKV/XeKqvyS5wK8rJnhbMGUElDVDwG8SwjFa22ZtYcOjBLUznlqgCNeGcoR5RGrxO7qHDN5C0i1BWe4XGjVjZz4aqqLMk5n97P7b887Ef2dem/7g2E6Rxb/8gZ8jbmEpAyjcNZ3lu86x5EFc3bjrckzNqaNO6WSvMc8gkrFjOr/5PdoVN41VlzIWDLmh7gXSLLhZ1hNph0wJUAJ879+Kk3vwuLAXJ/SMYwAmY4jGTz0arKLDsWKekkGRG0a0T8CGxzE/6+ge66bRG498tbLJm2THVTJJwpWRpJaHeJuL61E54Plhqg8Ng==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769333763; c=relaxed/relaxed;
-	bh=KVrhJQVa6iNn4A7swj5nUvqUYjfAnLqt/vu43RKw6wY=;
-	h=Message-Id:From:Date:Subject:To:Cc; b=IIIantfk5NMHHLt6GA481+w9QySSfQGde8xvVGBXZy7xl9AAds/NsY+SY4auNQGeoP9ThkClfNb4q9/AUJ3pSE34BKZQgdQCI8Y/daFoXAEUEEosR1xNDBSbl++4olxGk83uvI1tZ+ltAZqbZIp2tmMrkRIAJfzH5/HMCQ+jesKujSx2ZnbJ2yZ+TLdB/FyRkWLmIjP69khgn7TuaL6uHAJNIcYKv2Dc7QdcCpIbql3yYjPrhpe/rX4AhF64LcyEfAQJdGoqx/cjMzpeF7J+9Ixv1bmtpRGYCcqLpQc8x9LhsxWsACKNjxrm01zWxRjB5L9cc9bs8IsShNiIeOP1lw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org) smtp.mailfrom=wunner.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wunner.de (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 600 seconds by postgrey-1.37 at boromir; Sun, 25 Jan 2026 20:36:01 AEDT
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [IPv6:2a01:37:3000::53df:4ef0:0])
+	t=1769360139; c=relaxed/relaxed;
+	bh=U21Fd29dqbokW+KS70MIPRJzDnRnrmC2syVx+T80PJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PYB0Xb84SM2ZcyIIYyUvBE9K0D/8KB+m8LffFZJ3PXeYNdeba69NKJKXrP72mf+fliDaPfvz8cacU8QclsOQBR+mSatEMoSiQQIHPff14/TRrnH99GHROGcOeELw0jwx9XF3AecxF9fNcBsSw43QpNW+L7BKQwND+bWY7IARVy2uVgUWK8kerwAHQ9KXv5YdHi1VX9TVpprdpK4ek0LBRYKDW16A+w94D374gnYPUZ58uYM/HOGBUTMS7a2YTPmpfdjdY7jXqq6oLIiVka5jBr82Hi3m/DezQDrObEeIR9PlzI0kmbgMxtSI4HzBLNJyjRkknwxIsnjyS5AmYg9E2A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eEZOa2Vs; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eEZOa2Vs;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4dzRPF4dYsz2xZK
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jan 2026 20:36:01 +1100 (AEDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
-	 client-signature ECDSA (secp384r1) client-digest SHA384)
-	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 511A52007F87;
-	Sun, 25 Jan 2026 10:25:41 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 2FE622FE8B; Sun, 25 Jan 2026 10:25:41 +0100 (CET)
-Message-Id: <3011c2ed30c11f858e35e29939add754adea7478.1769332702.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Sun, 25 Jan 2026 10:25:51 +0100
-Subject: [PATCH] PCI/AER: Clear stale errors on reporting agents upon probe
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Terry Bowman <terry.bowman@amd.com>, Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, linux-pci@vger.kernel.org, Shuai Xue <xueshuai@linux.alibaba.com>, tianruidong@linux.alibaba.com, Keith Busch <kbusch@kernel.org>, "Mahesh J Salgaonkar" <mahesh@linux.ibm.com>, "Oliver OHalloran" <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
-X-Spam-Status: No, score=-0.7 required=3.0 tests=RCVD_IN_DNSWL_LOW,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4dzd8V2t4Yz2xqD
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jan 2026 03:55:38 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6B740600C3;
+	Sun, 25 Jan 2026 16:55:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494EAC4CEF1;
+	Sun, 25 Jan 2026 16:55:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769360129;
+	bh=e601XR9Ll0fGNQhfmDvffrnFWUouTHvrVak62rZBKlY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eEZOa2Vs4uilLdPA6iMJI6//97wEsCTcLBqoH0VwIzyH0OTUwt7pHxO35O2Mm9fGJ
+	 u55F1AFt6NWDHM74bZUHkinvFdCWZDHdQz3fIQGSw/ppp40qvHE+YJtK6glzlKn8NK
+	 Ue0fp8CbEHnOmN6+wEGSgvfTrEvPvlkwejHPVsWIW457nFF3X6hcl4PmJsnvpvE0Pd
+	 RVrFc1qteJrfP5hjRkwhOORnB/bdgVtPvsRfGtk/hvz6ROatMwMj2kwU2keRZeAgNs
+	 NmvE2uwPb7WgE6lhi4CJBxKcBWhTZCkw7zwSDUtnfilwBDiI3LgOHfZxCbaxq3vKkG
+	 5ydaUTXb1j1PQ==
+Date: Sun, 25 Jan 2026 18:55:25 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Srish Srinivasan <ssrish@linux.ibm.com>
+Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+	James.Bottomley@hansenpartnership.com, zohar@linux.ibm.com,
+	nayna@linux.ibm.com, stefanb@linux.ibm.com, rnsastry@linux.ibm.com,
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH 1/2] keys/trusted_keys: fix handle passed to
+ tpm_buf_append_name during unseal
+Message-ID: <aXZK_aamKlxqNJ3H@kernel.org>
+References: <20260123165504.461607-1-ssrish@linux.ibm.com>
+ <20260123165504.461607-2-ssrish@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,120 +74,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260123165504.461607-2-ssrish@linux.ibm.com>
+X-Spam-Status: No, score=0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+	URI_WP_DIRINDEX autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.01 / 15.00];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16286-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:helgaas@kernel.org,m:terry.bowman@amd.com,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:linux-pci@vger.kernel.org,m:xueshuai@linux.alibaba.com,m:tianruidong@linux.alibaba.com,m:kbusch@kernel.org,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[lukas@wunner.de,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16285-lists,linuxppc-dev=lfdr.de];
+	FORGED_SENDER(0.00)[jarkko@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,hansenpartnership.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_RECIPIENTS(0.00)[m:ssrish@linux.ibm.com,m:linux-integrity@vger.kernel.org,m:keyrings@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:christophe.leroy@csgroup.eu,m:James.Bottomley@hansenpartnership.com,m:zohar@linux.ibm.com,m:nayna@linux.ibm.com,m:stefanb@linux.ibm.com,m:rnsastry@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:linux-security-module@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[amd.com,linux.intel.com,vger.kernel.org,linux.alibaba.com,kernel.org,linux.ibm.com,gmail.com,lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,linuxppc-dev@lists.ozlabs.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.679];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jarkko@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[wunner.de:mid,wunner.de:email,intel.com:email]
-X-Rspamd-Queue-Id: D3C228011F
+	HAS_WP_URI(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: E1CAF8182C
 X-Rspamd-Action: no action
 
-Correctable and Uncorrectable Error Status Registers on reporting agents
-are cleared upon PCI device enumeration in pci_aer_init() to flush past
-events.  They're cleared again when an error is handled by the AER driver.
+On Fri, Jan 23, 2026 at 10:25:03PM +0530, Srish Srinivasan wrote:
+> TPM2_Unseal[1] expects the handle of a loaded data object, and not the
+> handle of the parent key. But the tpm2_unseal_cmd provides the parent
+> keyhandle instead of blob_handle for the session HMAC calculation. This
+> causes unseal to fail.
+> 
+> Fix this by passing blob_handle to tpm_buf_append_name().
+> 
+> Fixes: 6e9722e9a7bf ("tpm2-sessions: Fix out of range indexing in name_size")
+> 
+> References:
+> [1] trustedcomputinggroup.org/wp-content/uploads/
+>     Trusted-Platform-Module-2.0-Library-Part-3-Version-184_pub.pdf
+> 
+> Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+>  security/keys/trusted-keys/trusted_tpm2.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+> index a7ea4a1c3bed..6340823f8b53 100644
+> --- a/security/keys/trusted-keys/trusted_tpm2.c
+> +++ b/security/keys/trusted-keys/trusted_tpm2.c
+> @@ -465,7 +465,7 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+>  }
+>  
+>  /**
+> - * tpm2_unseal_cmd() - execute a TPM2_Unload command
+> + * tpm2_unseal_cmd() - execute a TPM2_Unseal command
+>   *
+>   * @chip: TPM chip to use
+>   * @payload: the key data in clear and encrypted form
+> @@ -498,7 +498,7 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
+>  		return rc;
+>  	}
+>  
+> -	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
+> +	rc = tpm_buf_append_name(chip, &buf, blob_handle, NULL);
+>  	if (rc)
+>  		goto out;
+>  
+> -- 
+> 2.43.0
+> 
 
-If an agent reports a new error after pci_aer_init() and before the AER
-driver has probed on the corresponding Root Port or Root Complex Event
-Collector, that error is not handled by the AER driver:  It clears the
-Root Error Status Register on probe, but neglects to re-clear the
-Correctable and Uncorrectable Error Status Registers on reporting agents.
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-The error will eventually be reported when another error occurs.  Which
-is irritating because to an end user it appears as if the earlier error
-has just happened.
+And applied. I also need to check what is wrong with my QA because
+it should have catched this.
 
-Amend the AER driver to clear stale errors on reporting agents upon probe.
-
-Skip reporting agents which have not invoked pci_aer_init() yet to avoid
-using an uninitialized pdev->aer_cap.  They're recognizable by the error
-bits in the Device Control register still being clear.
-
-Reporting agents may execute pci_aer_init() after the AER driver has
-probed, particularly when devices are hotplugged or removed/rescanned via
-sysfs.  For this reason, it continues to be necessary that pci_aer_init()
-clears Correctable and Uncorrectable Error Status Registers.
-
-Reported-by: Lucas Van <lucas.van@intel.com> # off-list
-Tested-by: Lucas Van <lucas.van@intel.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
----
- drivers/pci/pcie/aer.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index e0bcaa8..4299c55 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -1608,6 +1608,20 @@ static void aer_disable_irq(struct pci_dev *pdev)
- 	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
- }
- 
-+static int clear_status_iter(struct pci_dev *dev, void *data)
-+{
-+	u16 devctl;
-+
-+	/* Skip if pci_enable_pcie_error_reporting() hasn't been called yet */
-+	pcie_capability_read_word(dev, PCI_EXP_DEVCTL, &devctl);
-+	if (!(devctl & PCI_EXP_AER_FLAGS))
-+		return 0;
-+
-+	pci_aer_clear_status(dev);
-+	pcie_clear_device_status(dev);
-+	return 0;
-+}
-+
- /**
-  * aer_enable_rootport - enable Root Port's interrupts when receiving messages
-  * @rpc: pointer to a Root Port data structure
-@@ -1629,9 +1643,19 @@ static void aer_enable_rootport(struct aer_rpc *rpc)
- 	pcie_capability_clear_word(pdev, PCI_EXP_RTCTL,
- 				   SYSTEM_ERROR_INTR_ON_MESG_MASK);
- 
--	/* Clear error status */
-+	/* Clear error status of this Root Port or RCEC */
- 	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_STATUS, &reg32);
- 	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_STATUS, reg32);
-+
-+	/* Clear error status of agents reporting to this Root Port or RCEC */
-+	if (reg32 & AER_ERR_STATUS_MASK) {
-+		if (pci_pcie_type(pdev) == PCI_EXP_TYPE_RC_EC)
-+			pcie_walk_rcec(pdev, clear_status_iter, NULL);
-+		else if (pdev->subordinate)
-+			pci_walk_bus(pdev->subordinate, clear_status_iter,
-+				     NULL);
-+	}
-+
- 	pci_read_config_dword(pdev, aer + PCI_ERR_COR_STATUS, &reg32);
- 	pci_write_config_dword(pdev, aer + PCI_ERR_COR_STATUS, reg32);
- 	pci_read_config_dword(pdev, aer + PCI_ERR_UNCOR_STATUS, &reg32);
--- 
-2.51.0
-
+BR, Jarkko
 
