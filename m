@@ -1,85 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-16290-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16291-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFLNMxNBd2mMdQEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16290-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jan 2026 11:25:23 +0100
+	id kCkfOyJyd2n7ggEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16291-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jan 2026 14:54:42 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6196586D67
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jan 2026 11:25:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A4089250
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jan 2026 14:54:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f04Rg6GRKz2yGM;
-	Mon, 26 Jan 2026 21:25:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f095928Kkz2yGM;
+	Tue, 27 Jan 2026 00:54:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769423119;
-	cv=none; b=UnNBaGcpQLtR8nyfLfVDGVzBgsBQQiFEw/ZthZ9VRACE5DSbjjEu+HhXPEfxGT3vERbFpLnyEtNqKY/lWC2F9c2Hi6ESOrmd4mtzOStO23jSR2GX8nNXkeBr5wr6tqDss3TPNKmjf86rb3/M6O5Tqr/2jsCfqSRUokG8riFyHFr0/yf0SIrCERQK7yv+Fu85qbUQN80cUwoQ7gfoHMB4hR3/q06cKxVc/2XtsdlUZJez++9EMfjlZhNwB9y1Rda8ziOrW8qQl73rlnOxf7cCUxsh9rWjPmP5y4I22DPn83iAq18afyo8g5m/823XK10qv0QWffmqeiBzXguDZUFaGg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769435677;
+	cv=none; b=IYjnjVdPaRZGKJ4P4v5s6iTeh56TYlyZXpSEt/UDMFEjLYrgMIRrM7dL4psTNp/z6JRc7fbRCSW72Ka0KHKL29JoelyKOOMFSXCiDDrKp71EK2EEpW5aTKqODiOnSaYA+WX+80Ajn7id3J03F3n0xHkCcZcwxoOei3vo6S4ZTKKyN24Gp24R3DtXDKP/7uJ8B18yIcmXcMvQa9IEbhrFgSXNPpfhTTKSkYAyQMSK4zRIoMhWNRwT6D/HNCBzlkop5s+CiuyPHvXBShqtooDKIm1FSZQxK+C2YUFaPDwXwUt9wGX4y3lyjutMAETamofiiGjEej3UanvqB8OGJ1IbZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769423119; c=relaxed/relaxed;
-	bh=DUqWl1y7oyh8LiQaIA6uCbvrDP5+dnfBjkDRJwjKaIM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MYWGp9NdNxYvJeUpjHrxSMmhJOzbVtrRzIugc+1YxE8G23jVHhWD9s557HBIKKhtqvbu75mg7PwOhbkVL9kv3ru3NV74rSEuOXJoToi+2rlLrIo17QCXnCkmq36uAu9ic5ZLh+OP9EwCgZNBb/aiUh+9+ZY4xiBVpEoEqgYGIWRRKA3Ts/oTZbspjXpU4oHor6VKVL19EU03a8UxZ4gc9jZsR670OSqROM++DXcESyf8vu/+DlcIgFH3WQiMc5NcowcaxzklijXUHJRITN2//WaZHOeClIbXgiwKYAMa0QQimzWTuVkyOWNn+hDmMNfZ3+JDoOAPDeXxSXoqgZZy+A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kigC4KnP; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1769435677; c=relaxed/relaxed;
+	bh=CFcBAlC1i+T83gIDpUoIuODo1IKNZ4kcTdp9hgHYcIg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nseTdbFCn5FpyLzVe6sbgfywVP8ZQVBr2dAkkHiah6ppXKV3pFbDgVzi8SpGBOKcEwRQTmlLZPsnXezZwp+j5SepbnESzncys5JDUKTzDLGK5Irsdq6lAXA45O6Q22VFNMO4tX8/fxeil1BsXQvbNVojZGlwF5Wu2JweZKjVEmMG6oczrmCTE+4y8UFEgDzR5KIAq+afKPdObgEy7sTrUzRdx1jGvw8ViulZ3TS7jUkMpmIkz3IypP6Nbsn+uwnsQPvs2FctIc+cQQfOHSEd05fumMgcvGBg4BMyVahNluJ0slvH+7tR90j+ZLbCUZJGesr1+npCbdPfiBvL31wWLw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f3rBpq/F; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kigC4KnP;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f3rBpq/F;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f04Rf5DjYz2xpk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jan 2026 21:25:18 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 43EE4600B0;
-	Mon, 26 Jan 2026 10:25:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABA5C116C6;
-	Mon, 26 Jan 2026 10:25:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769423116;
-	bh=X15mCfB1eLkM+Q70lpbeFtmKLy3xRRhtPt0DJGPJd1I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kigC4KnPkwuten2W4vry7/Q7uLnx5jkxhwNDPy0SmE0+vvbSCHF02ake/mqQ6lpDx
-	 k3o+5GdnskVWEhwFv+soH8UL3BFwTStxAXpVkb7npdZKtA0UMIAzg1tVPsbpFK6Rg6
-	 4I1DwGLJocJGNLwVtaDzP5qs/IXjbThjudzizPR9NNoCayirZ5zFwD+EhinoKSrkqO
-	 FEa8FbY08hWJdyw1ez2QCO5ymgyh4sujmDe9gD6sM5qhEicDEJ9FfhMQgnchnA1N6u
-	 xE9gTZtR5iqv2+uoDoCPjx2r7bV7yVpvWCG0stjTBpjqqoqt2A+mm+zAfNOJhw0pf0
-	 WqfejPPvWWhng==
-Date: Mon, 26 Jan 2026 11:25:03 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Koichiro Den <den@valinux.co.jp>
-Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
-	Frank.Li@nxp.com, vigneshr@ti.com, s-vadapalli@ti.com,
-	hongxing.zhu@nxp.com, l.stach@pengutronix.de, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com,
-	jesper.nilsson@axis.com, heiko@sntech.de,
-	srikanth.thokala@intel.com, marek.vasut+renesas@gmail.com,
-	yoshihiro.shimoda.uh@renesas.com, geert+renesas@glider.be,
-	magnus.damm@gmail.com, christian.bruel@foss.st.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	thierry.reding@gmail.com, jonathanh@nvidia.com,
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
-	kishon@kernel.org, jirislaby@kernel.org, rongqianfeng@vivo.com,
-	18255117159@163.com, shawn.lin@rock-chips.com,
-	nicolas.frattaroli@collabora.com, linux.amoon@gmail.com,
-	vidyas@nvidia.com, shuah@kernel.org, linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@axis.com,
-	linux-rockchip@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-tegra@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v10 4/8] PCI: dwc: ep: Support BAR subrange inbound
- mapping via Address Match Mode iATU
-Message-ID: <aXdA_6shI23JBswI@ryzen>
-References: <20260124145012.2794108-1-den@valinux.co.jp>
- <20260124145012.2794108-5-den@valinux.co.jp>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f09564rbgz2xpk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jan 2026 00:54:34 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60PMdDwU004938;
+	Mon, 26 Jan 2026 13:54:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=CFcBAl
+	C1i+T83gIDpUoIuODo1IKNZ4kcTdp9hgHYcIg=; b=f3rBpq/FswZ49t2Ddvx8r4
+	Z898D7vSNsG6ZHROha31Zt+kNIe1K++Z+g+BcUOVKLKWhozxeppPnpzHybgRgxIU
+	YooVBY7NpG9XB2gWBaw3bv+E6LmvYsVDVz7GrGX6hacWhiMX20FviDMSp5WQfxG9
+	GMON+nWennk9KBXK8Ftjp1xEiAApFUnTJFedK5TJdNS1+rLcQ1VqjSI+iVRvsuTg
+	Q4i7p06FBM4qWz5uCPaxtWL41m7MkcEsTCRI9XSqkHDdwIFmbks9XfHwQCzQc91Y
+	yHdufEXGODVQ9aEu7asDYHDOwkfwuJZRN4SeICPTU/54s4ro8/tWtcWzZAtRhMCg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnk6rabm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Jan 2026 13:54:28 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60QDsSWZ029258;
+	Mon, 26 Jan 2026 13:54:28 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnk6rabh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Jan 2026 13:54:28 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60QAZn9n006741;
+	Mon, 26 Jan 2026 13:54:26 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw8sy4v0w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Jan 2026 13:54:26 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60QDsMRU30474984
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 26 Jan 2026 13:54:22 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A294E20043;
+	Mon, 26 Jan 2026 13:54:22 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9464720040;
+	Mon, 26 Jan 2026 13:54:20 +0000 (GMT)
+Received: from [9.124.209.168] (unknown [9.124.209.168])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 26 Jan 2026 13:54:20 +0000 (GMT)
+Message-ID: <26372850-476d-457f-ba97-9119cf81d376@linux.ibm.com>
+Date: Mon, 26 Jan 2026 19:24:19 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,79 +91,170 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260124145012.2794108-5-den@valinux.co.jp>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/1] powerpc: Fix kuap warnings
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, riteshh@linux.ibm.com
+Cc: linux-kernel@vger.kernel.org, hbathini@linux.ibm.com, maddy@linux.ibm.com,
+        linuxppc-dev@lists.ozlabs.org, rostedt@goodmis.org,
+        mhiramat@kernel.org, Nicholas Piggin <npiggin@gmail.com>
+References: <20260109064917.777587-1-sshegde@linux.ibm.com>
+ <a42acab4-274b-4e5e-804b-bb07a26058c7@kernel.org>
+ <fe9b9c66-d1cd-4570-91fa-54329d8c6a37@linux.ibm.com>
+ <336d274e-c831-4af9-ae65-42908b3c2c61@kernel.org>
+Content-Language: en-US
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+In-Reply-To: <336d274e-c831-4af9-ae65-42908b3c2c61@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5IyPpdhM0mTH-Fwp-F2uM9U94O3BiEad
+X-Proofpoint-ORIG-GUID: 5zRq1vsl7zfbSDQk2pUstQDni1W_4SCB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI2MDExNyBTYWx0ZWRfX3Rorn6Dh6jMt
+ 1eZFOUJfw+JQ9cxwsppqfTubxamoM+VI5NCEIaNruxRMxszrGO/jCgasOM7oNnqvdLA1AkPwr0Z
+ 3KmEg3RK5tN65aNVWccbaWCQCCVN3v6cBZrvtDfmC8FCjAjDyB8Pv0WB+WGU5oYJLmbTG5Gxvx9
+ wB0RMznhcXgSGjkjmRCcI5lDGkxXfZJK4hFJGfoaaW/rv+0BOOr8QT+j/9+r/6uWGhC9jyxNYW4
+ LHX1/yWPJLbRFQClu4xH/G6y7mR+KA7q3/iIbGHBOjbF+k/NcOqY4zr1hE27S2mh6cwwe2Mw4XU
+ EF8nLDDwnRtoEpWKip19cmypFFOxcYD0YiETJACM2p64S2x0yKtBdmsuPfc+C6kVi9rKkddrN7Z
+ 2mIAeYFAlJDBYRTUwtPJcwNstbhZnxJN63lYal45b58VuKA+nwWIGAwx7Gpen89hOFPNxXTkpHZ
+ yQBcbPgfEoiO1mB3NmQ==
+X-Authority-Analysis: v=2.4 cv=AMiVTGgp c=1 sm=1 tr=0 ts=69777214 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=ifPovhY8YLxVixpNiMkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-26_03,2026-01-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ adultscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2601260117
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.21 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16290-lists,linuxppc-dev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:den@valinux.co.jp,m:jingoohan1@gmail.com,m:mani@kernel.org,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:robh@kernel.org,m:bhelgaas@google.com,m:Frank.Li@nxp.com,m:vigneshr@ti.com,m:s-vadapalli@ti.com,m:hongxing.zhu@nxp.com,m:l.stach@pengutronix.de,m:shawnguo@kernel.org,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:minghuan.Lian@nxp.com,m:mingkai.hu@nxp.com,m:roy.zang@nxp.com,m:jesper.nilsson@axis.com,m:heiko@sntech.de,m:srikanth.thokala@intel.com,m:marek.vasut+renesas@gmail.com,m:yoshihiro.shimoda.uh@renesas.com,m:geert+renesas@glider.be,m:magnus.damm@gmail.com,m:christian.bruel@foss.st.com,m:mcoquelin.stm32@gmail.com,m:alexandre.torgue@foss.st.com,m:thierry.reding@gmail.com,m:jonathanh@nvidia.com,m:hayashi.kunihiko@socionext.com,m:mhiramat@kernel.org,m:kishon@kernel.org,m:jirislaby@kernel.org,m:rongqianfeng@vivo.com,m:18255117159@163.com,m:shawn.lin@rock-chips.com,m:nicolas.frattaroli@collabora.com,m:linux.amoon@gmail.com,m:
- vidyas@nvidia.com,m:shuah@kernel.org,m:linux-omap@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:imx@lists.linux.dev,m:linuxppc-dev@lists.ozlabs.org,m:linux-arm-kernel@axis.com,m:linux-rockchip@lists.infradead.org,m:linux-arm-msm@vger.kernel.org,m:linux-renesas-soc@vger.kernel.org,m:linux-stm32@st-md-mailman.stormreply.com,m:linux-tegra@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:marekvasut@gmail.com,m:geert@glider.be,m:magnusdamm@gmail.com,m:mcoquelinstm32@gmail.com,m:thierryreding@gmail.com,m:linuxamoon@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,google.com,nxp.com,ti.com,pengutronix.de,axis.com,sntech.de,intel.com,renesas.com,glider.be,foss.st.com,nvidia.com,socionext.com,vivo.com,163.com,rock-chips.com,collabora.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org,st-md-mailman.stormreply.com];
+	FORGED_RECIPIENTS(0.00)[m:chleroy@kernel.org,m:riteshh@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:hbathini@linux.ibm.com,m:maddy@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:rostedt@goodmis.org,m:mhiramat@kernel.org,m:npiggin@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[cassel@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,lists.ozlabs.org,goodmis.org,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-16291-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_TWELVE(0.00)[12];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_GT_50(0.00)[55];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev,renesas];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sshegde@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email]
-X-Rspamd-Queue-Id: 6196586D67
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: C3A4089250
 X-Rspamd-Action: no action
 
-On Sat, Jan 24, 2026 at 11:50:08PM +0900, Koichiro Den wrote:
-> Extend dw_pcie_ep_set_bar() to support inbound mappings for BAR
-> subranges using Address Match Mode IB iATU when pci_epf_bar.num_submap
-> is non-zero.
-> 
-> Rename the existing BAR-match helper into dw_pcie_ep_ib_atu_bar() and
-> introduce dw_pcie_ep_ib_atu_addr() for Address Match Mode. When
-> num_submap is non-zero, read the assigned BAR base address and program
-> one inbound iATU window per subrange. Validate the submap array before
-> programming:
-> - each subrange is aligned to pci->region_align
-> - subranges cover the whole BAR (no gaps and no overlaps)
-> 
-> Track Address Match Mode mappings and tear them down on clear_bar() and
-> on set_bar() error paths to avoid leaving half-programmed state or
-> untranslated BAR holes.
-> 
-> Advertise this capability by extending the common feature bit
-> initializer macro (DWC_EPC_COMMON_FEATURES).
-> 
-> This enables multiple inbound windows within a single BAR, which is
-> useful on platforms where usable BARs are scarce but EPFs need multiple
-> inbound regions.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> ---
+Hi Christophe.
 
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+On 1/9/26 6:24 PM, Christophe Leroy (CS GROUP) wrote:
+> Hi Shrikanth,
+> 
+> Le 09/01/2026 à 13:19, Shrikanth Hegde a écrit :
+>> Hi Christophe.
+>>
+>> On 1/9/26 1:41 PM, Christophe Leroy (CS GROUP) wrote:
+>>>
+>>>
+>>> Le 09/01/2026 à 07:49, Shrikanth Hegde a écrit :
+>>>> Recently stumbled upon these kuap warnings. This happens with
+>>>> preempt=full/lazy kernel with function tracing enabled. What irked
+>>>> me was kernel compilation was getting failed when i had tracing
+>>>> enabled. It doesn't fail everytime. While running stress-ng memory 
+>>>> class
+>>>> it threw same warnings. So that helped to narrow it down.
+>>>> So one possible way is to disable tracing for these enter/exit
+>>>> vmx_usercopy. That seems to fix the bug/warnings. But that will make
+>>>> them as non trace-able. If there is a better way to fix these 
+>>>> warning while
+>>>> keeping them as trace-able, please let me know.
+>>>>
+>>>> Anyone with insights on amr, vmx and tracing, please advise.
+>>>
+>>> The main principle with KUAP is to not call subfunctions once 
+>>> userspace access enabled. There are a few exceptions like 
+>>> __copy_tofrom_user() that are allowed in order to optimise large 
+>>> copies. However this needs to be handled very carefully, and in 
+>>> principle we don't expect __copy_tofrom_user() to call other functions.
+>>>
+>>
+>> I didn't understand. My knowledge is quite limited in this space.
+>> Could you please explain how this will help us avoid the warnings?
+>> or are you saying we have more callsites which needs to worked upon.
+> 
+> Read tools/objtool/Documentation/objtool.txt section "Objtool warning" 
+> item 9.
+> 
+> Unfortunately powerpc doesn't yet implement objtool to detect it, but 
+> the principle applies anyway.
+> 
+>>
+>>> So it might require wider rework but we should narrow as much as 
+>>> possible the period during which access to userspace is opened, with 
+>>> something like:
+>>>
+>>> raw_coy_to_user_power7()
+>>> {
+>>>      enter_vmx_usercopy();
+>>
+>> I think the problem is when it comes here, it has some AMR state, but
+>> it is preemptible. So shouldn't call schedule IIUC.
+> 
+> See commit 00ff1eaac129 ("powerpc: Fix reschedule bug in KUAP-unlocked 
+> user copy")
+> 
+> The problem is because enter_vmx_usercopy() is called _after_ 
+> allow_write_to_user() which changes AMR.
+> 
+> If you call enter_vmx_usercopy() _before_ allow_write_to_user() and call 
+> exit_vmx_usercopy() _after_ prevent_write_to_user() the problem is solved.
+> 
+>>
+>>>      allow_write_to_user(to, n);
+>>>      ret = __copy_tofrom_user_power7();
+>>>      prevent_write_to_user(to, n);
+>>>      exit_vmx_usercopy();
+>>>      return ret;
+>>> }
+>>>
+>>> raw_copy_to_user()
+>>> {
+>>>      if (cpu_has_feature(CPU_FTR_VMX_COPY))
+>>>          raw_copy_to_user_power7();
+>>>
+>>>      allow_write_to_user(to, n);
+>>>      ret = __copy_tofrom_user(to, (__force const void __user *)from, n);
+>>>      prevent_write_to_user(to, n);
+>>>      return ret;
+>>> }
+>>
+> 
+
+Sorry, I forgot to update.
+
+I spoke to ritesh a while ago and someone with better knowledge in
+this area will work on a proper fix for this.
 
