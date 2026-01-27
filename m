@@ -1,26 +1,26 @@
-Return-Path: <linuxppc-dev+bounces-16311-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16312-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gL66FRCWeGnmrAEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16311-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:40:16 +0100
+	id GNfSC1KXeGkWrQEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16312-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:45:38 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036C592F11
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:40:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB0C9316D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:45:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f0hkN42ZZz2yGM;
-	Tue, 27 Jan 2026 21:40:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f0hrZ3vBkz2yGM;
+	Tue, 27 Jan 2026 21:45:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769510412;
-	cv=none; b=Sb0r2ign6JlCV+eaLi3UYOLaizLj6CIR/m+1ENQSgj2sxJ1tSbB0ofC7GiyILjK0OPxG5xFlx7b0yEJTOgGTfPT+RAOfuhrgQqJNgskeXDAtmpnM1oPEBk5XeyeiVf/Wm1LcrPxgq5VTS+fjgvlQWWGi22u7ehtOdbPbiHRp+pvc5RdX1fn9EcVxp0/RhUEQdudnRYpDqO4YkIuBVBL2FHMPbVYbflRW2TulifjNYAMSoCpD/Y/Deeydy1pOLBEqQbD3pK7c9NqBh5e0GZmPuvLiOGT23QMqT3Y0YPVnehPHRGWWJtL2e2RE/nwyNTdaJjYJrBfgOQRCFIrKTHmEyg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769510734;
+	cv=none; b=BK1b4FuyMLpvLZjJ9vA6zNEwH/34hACYn4GcWdFYOAGbQBZve4d/a76KPMDsnMTJaT1mhvQ0xJz5qyY+7zHm5FfzmpjPGW/fuQLL6uWQdYez5qMP8km0gFioEoGaqrS8xLw1JX6MqIi7duhso7zM2IZN15nXO73ArRFEyrl2a7Gq8ZX5e4n5T4COa7dqtd9pbxpjeLrWjaMR3j7khz9Dq5zoDS1e78IFIsxnW1uNrft8W4SrUz3nP3JEphqcSjy5WMcOx8m902lzT+cBVMflYSArNtoXYWfypHz4m9Xk9/F0DvphiJ5GAXB+gDfEAIpsNI9C5nb9wuSUmRXSIVdesQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769510412; c=relaxed/relaxed;
-	bh=2x8Oj9fuy3AK0U2FXXIqAjHj+EvD0gdQqCs5gkumAw8=;
+	t=1769510734; c=relaxed/relaxed;
+	bh=6gx54Ce9sD7vvmlNSJDj2gXVfTeVR4gT1+DQYofJ5hc=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j7qvxQbGhlB279poUc8+u1+ZME+en2GoRoJx17UejEoKAoKoooVWpNXOr8eM0XA4iyEhMnhjVMHsRnl6Wv/scUb2ih5BamtWqIAsGW/MlJKeTAt4ou7hvryoVn4chhBrIomLIStmlJKv+aKZSIPgzWLIXx8VOFa6X5d3ZAaDcOBob3yUQJ1PmfeXk9o8KmyYnw/tDPRvt37pg+3INcFdowgGQM+wPeXZbS5KzE3w4E+kE4AUwohUFDAScycyUPdeXT0adEde4coQiE6s618KYN+JXgl7P2R+dsKnnmFNZQaVVHeBQ9JLogB51umLoRdIZFzFVxFSeiAV1bndly1mPw==
+	 MIME-Version:Content-Type; b=dqGb4h+udAqw10gF4d1hr34J+CHqZfaSZTSMHTt1uDCDIC6mANtrANCmbE68rtdthnE4cLD8ZjLiMw6meKvBZ/fdigf3zSEX2jf0T9s/0K6iKBMzrkTbemBUD71Y+aYP3njzAVO4egOXvqcCklrc0AIYIrc1t27w/3qBnmnk68pu/oZNttYySMhnKHCg9mhSqNwXZ/YtZdyKAnfwt3QzSf9wQMhSnU0hCfUlrpcE193ug+T9tuZ2UaqnUvRzBTUrD0hRSYY8sqTSKVM4onhXkBAwlk9/TJMcyD6Pzda0NB+dywvU3DBh055eA0NFg9zLT0y5cuBXwHMYWW76dtOxRQ==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
@@ -28,19 +28,19 @@ Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0hkM4JxMz2xcB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jan 2026 21:40:11 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f0hjb5JWNzJ46BB;
-	Tue, 27 Jan 2026 18:39:31 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0hrY2XtMz2xcB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jan 2026 21:45:33 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f0hqp2vBWzJ46dV;
+	Tue, 27 Jan 2026 18:44:54 +0800 (CST)
 Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7F1AA40569;
-	Tue, 27 Jan 2026 18:40:07 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 2E6344056A;
+	Tue, 27 Jan 2026 18:45:30 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
  (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 27 Jan
- 2026 10:39:32 +0000
-Date: Tue, 27 Jan 2026 10:39:31 +0000
+ 2026 10:45:22 +0000
+Date: Tue, 27 Jan 2026 10:45:20 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Shuai Xue <xueshuai@linux.alibaba.com>
 CC: <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -48,12 +48,12 @@ CC: <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<sathyanarayanan.kuppuswamy@linux.intel.com>, <mahesh@linux.ibm.com>,
 	<oohall@gmail.com>, <terry.bowman@amd.com>, <tianruidong@linux.alibaba.com>,
 	<lukas@wunner.de>
-Subject: Re: [PATCH v7 4/5] PCI/AER: Clear both AER fatal and non-fatal
- status
-Message-ID: <20260127103931.000058bb@huawei.com>
-In-Reply-To: <20260124074557.73961-5-xueshuai@linux.alibaba.com>
+Subject: Re: [PATCH v7 5/5] PCI/AER: Only clear error bits in
+ pcie_clear_device_status()
+Message-ID: <20260127104520.0000579c@huawei.com>
+In-Reply-To: <20260124074557.73961-6-xueshuai@linux.alibaba.com>
 References: <20260124074557.73961-1-xueshuai@linux.alibaba.com>
-	<20260124074557.73961-5-xueshuai@linux.alibaba.com>
+	<20260124074557.73961-6-xueshuai@linux.alibaba.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -82,11 +82,11 @@ X-Spamd-Result: default: False [-0.01 / 15.00];
 	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16311-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16312-lists,linuxppc-dev=lfdr.de];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,google.com,kernel.org,linux.intel.com,linux.ibm.com,gmail.com,amd.com,linux.alibaba.com,wunner.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:xueshuai@linux.alibaba.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,m:lukas@wunner.de,s:lists@lfdr.de];
@@ -103,54 +103,77 @@ X-Spamd-Result: default: False [-0.01 / 15.00];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,linuxppc-dev@lists.ozlabs.org];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	HAS_XOIP(0.00)[];
 	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:mid,huawei.com:email,alibaba.com:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 036C592F11
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,huawei.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,wunner.de:email]
+X-Rspamd-Queue-Id: 3AB0C9316D
 X-Rspamd-Action: no action
 
-On Sat, 24 Jan 2026 15:45:56 +0800
+On Sat, 24 Jan 2026 15:45:57 +0800
 Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 
-> The DPC driver clears AER fatal status for the port that reported the
-> error, but not for the downstream device that deteced the error.  The
-> current recovery code only clears non-fatal AER status, leaving fatal
-> status bits set in the error device.
+> Currently, pcie_clear_device_status() clears the entire PCIe Device
+> Status register (PCI_EXP_DEVSTA), which includes both error status bits
+> and other status bits such as AUX Power Detected (AUXPD) and
+> Transactions Pending (TRPND).
 > 
-> Use pci_aer_raw_clear_status() to clear both fatal and non-fatal error
-> status in the error device, ensuring all AER status bits are properly
-> cleared after recovery.
+> Clearing non-error status bits can interfere with other drivers or
+> subsystems that may rely on these bits. To fix it, only clear the error
+> bits (0xf) while preserving other status bits.
 > 
-> Fixes: aa344bc8b727 ("PCI/ERR: Clear AER status only when we control AER")
+> Fixes: ec752f5d54d7 ("PCI/AER: Clear device status bits during ERR_FATAL and ERR_NONFATAL")
 > Cc: stable@vger.kernel.org
+> Suggested-by: Lukas Wunner <lukas@wunner.de>
 > Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Shouldn't this be first patch in series to make it easier to backport?
+Similar to previous. Drag to start of series to make backports easier if
+we think this is a fix that affects real cases.  For stuff that's defined
+in the PCI 6.2 spec, AUX power and Transactions Pending are RO, but
+the interesting one is Emergency Power Reduction Detected which is RW1C
+and hence reason this fix is potentially needed  + future features using
+remaining bits.
 
-Otherwise seems reasonable to me, but others know these flows better than me
-so hopefully we'll get some more review.
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+I'd be more explicit in the commit message for that.  Talk about it not
+mattering for AUXPD or TRPND because they are RO, vs the ones we
+aren't using yet in Linux with the emergency power reduction detected
+as an example that clearly shows we need to mask this!
+
+J
+
 
 > ---
->  drivers/pci/pcie/err.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/pci/pci.c             | 2 +-
+>  include/uapi/linux/pci_regs.h | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-> index 0780ea09478b..5e463efc3d05 100644
-> --- a/drivers/pci/pcie/err.c
-> +++ b/drivers/pci/pcie/err.c
-> @@ -285,7 +285,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->  	 */
->  	if (host->native_aer || pcie_ports_native) {
->  		pcie_clear_device_status(dev);
-> -		pci_aer_clear_nonfatal_status(dev);
-> +		pci_aer_raw_clear_status(dev);
->  	}
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 13dbb405dc31..0b947f90c333 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -2246,7 +2246,7 @@ void pcie_clear_device_status(struct pci_dev *dev)
+>  	u16 sta;
 >  
->  	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
+>  	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
+> -	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
+> +	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta & PCI_EXP_DEVSTA_ERR);
+>  }
+>  #endif
+>  
+> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+> index 3add74ae2594..f4b68203bc4e 100644
+> --- a/include/uapi/linux/pci_regs.h
+> +++ b/include/uapi/linux/pci_regs.h
+> @@ -534,6 +534,7 @@
+>  #define  PCI_EXP_DEVSTA_NFED	0x0002	/* Non-Fatal Error Detected */
+>  #define  PCI_EXP_DEVSTA_FED	0x0004	/* Fatal Error Detected */
+>  #define  PCI_EXP_DEVSTA_URD	0x0008	/* Unsupported Request Detected */
+> +#define  PCI_EXP_DEVSTA_ERR	0xf	/* Error bits */
+>  #define  PCI_EXP_DEVSTA_AUXPD	0x0010	/* AUX Power Detected */
+>  #define  PCI_EXP_DEVSTA_TRPND	0x0020	/* Transactions Pending */
+>  #define PCI_CAP_EXP_RC_ENDPOINT_SIZEOF_V1	12	/* v1 endpoints without link end here */
 
 
