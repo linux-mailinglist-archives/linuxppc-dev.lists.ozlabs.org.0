@@ -1,94 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-16320-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16322-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFZfCXTReGmNtQEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16320-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 15:53:40 +0100
+	id 6OuuIsbXeGmUtgEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16322-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 16:20:38 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7D1960F6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 15:53:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F39968E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 16:20:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f0pLV5JRjz3c9j;
-	Wed, 28 Jan 2026 01:53:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f0pxr4218z309N;
+	Wed, 28 Jan 2026 02:20:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769525602;
-	cv=none; b=jGWx4P8br7GjKRIMoXaVA74ux2RKqfZycK/S+QxuVcQzFv36ZXHGPV6jof4LWoUmtS8X2h9WLiOQ9vaBhtfGCZAIPYg/Vhpz1T2eTJ4jBPlJziEoKPkL1LRoJ+3bZk2HEGCm/mQ18BYDMT3GUrbgc5GpPLLr8rZ0U2k2pVOvBSjNLXDgh8w+sMho8iYXGcrVEFl951Ke4vOMzWigstgkfqGUWHKwEshLJ7mFtZ0+AB/yvCorQRvKVv+Yv4zhwZrERuP3kfh6JY98FrmJZVBh4Ah5c5ftS57T29h3m2GaeEYCbWx4QELtjDtbl/ktaoCj1lDoNHLgKvyE/WVYc7AUvg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::335"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769527232;
+	cv=none; b=WUliIXJ0m/xpzbNV0spHgXH5x1ENf3At8oNkU2fkqq0YwNOnq3jQG/P30TI3d7qT6C0vFCmNSJi5EwoaVdJw/Yn0GRiM+1DfDWxBFRUjWRuqh1WGzy72xIyrMeMkM8R1o1CRJeteLO+OFZkMN6RlSDTEtZ+6pDx/Q8NopI0Z5lZzgw3cN6ylkGYQ09RX9DqS8Cm/NOzWNCd8KKDq3bQWc4s+ZnWvXciGi/crL5yI3/TljPEDXlsRT/U2ZWBfAm3pQA5j1VfNtzgB6OZ0cOixYp7U6h64ME3HcSoLls0Gjv7IvB/O1OfaAuPUdNa1bAlgsF/Ya/OmfXun1hE4RfEJAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769525602; c=relaxed/relaxed;
-	bh=3AlJIuHueyJfodCUqPQr+cGMD8wjDvVNfPBSHGCosjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RtrtYDEka7DfOqzAJTIurMmeyqfjwQApdryZz7+Vsd51NBvMQAB745RCpw2DaOfhQDPYG0z+MIng5GlRa/upN7FIr8OUFdVHAEn4buirlrBPpkZQyI9kFaJH5T9RDSncpVFls+vKmOZXX/iOCGNTatcCT9rtX8mb0D2KMz1aDcH1baKTtk/fVNDYSLLlOc3xvqGpL8eJDHsFm47znS8ZyVMC/IMYlnvsO54Hdr2KpBTNrUFdTBAXpiOYzAhn15eZMcAMNM/TJx2BDkR7eEIviiouUzUsffgjhwCH9iHm7YPPAClyEIM61falJ+zdmEwQ3JPHgmYHtWrsTjbioahz8w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aIIK/G6D; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1769527232; c=relaxed/relaxed;
+	bh=TpVju2z52ieKZ9g+UW8bQZ3qR3Ja1fAXqmPTBm/6Msg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BqbCXfw64XeY9O3DjqHzzltatGQfKJn86TKumQLdbnL7esvHDkjacGLofxtOaeIG2LVd0gIMbrCNFSlBmn+2SWT8DPEGB15jGf/F5FHJjhWbSAlL/ffGtq69r1c9vg6hxBnMcq27P703FQXaEOkBKtGtKapwM++aHxZVOtowEKiE6zp7t7ZdjAb/StGx8QuUkTdALJmbf/KaZJBS6cOtlx7jj2X608aAnRRbvdRq6jWWOuQ/xIzZxABxrPieWBKNQ6nHbkj9/VU+cmrHBfoXw8RjcqmJsYIkMO1kLL4PxAjQyOIOskVhbqnZHpG4klYtug6zQTwIJrLdtp3keZWmNg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=BeVRVPqO; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=petr.pavlu@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aIIK/G6D;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=BeVRVPqO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=petr.pavlu@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0pLT6pvLz3c9x
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jan 2026 01:53:21 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60R7ARnZ014072;
-	Tue, 27 Jan 2026 14:53:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=3AlJIuHueyJfodCUq
-	PQr+cGMD8wjDvVNfPBSHGCosjo=; b=aIIK/G6D7xUQhPZveW4m6hEsthJMthQDr
-	dnKuBMl7mIzu97ifjyAm0juOrlxGC9Xa5FeZTBznYyTG6JGKHmGxw+6/cG+oscp+
-	g8MsNpRBG+9ggvewJVnB0Te5ncPkAvxktuKMCG2GuWuWa5MFKAhg3lfcZKpBUAiy
-	RIKFCN1MWfq9lZOdnNPXgPxVw2F5XGRUGql+mbss8IQowuwu/Avx5d0b87bL/UtJ
-	0sMre6oPIvVY0SSFeuVXNY2F5Pte2B9SYDDEXG+68oKW+ojG7H2jUFceecI8tbjZ
-	CMiYlQORWgGOoOJ3PPQIUIXHrzF9SguEAFb04QiLW/kxmJOnZ2t5w==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnrtdvxv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 14:53:10 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60REr9mo016361;
-	Tue, 27 Jan 2026 14:53:10 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnrtdvxr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 14:53:09 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60RD0rg9006737;
-	Tue, 27 Jan 2026 14:53:08 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw8sy94r8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 14:53:08 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60REr4Bq46268850
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 27 Jan 2026 14:53:04 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C46A32004B;
-	Tue, 27 Jan 2026 14:53:04 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5D41220040;
-	Tue, 27 Jan 2026 14:53:01 +0000 (GMT)
-Received: from li-fc74f8cc-3279-11b2-a85c-ef5828687581.ibm.com.com (unknown [9.124.210.108])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 27 Jan 2026 14:53:00 +0000 (GMT)
-From: Srish Srinivasan <ssrish@linux.ibm.com>
-To: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, James.Bottomley@HansenPartnership.com,
-        jarkko@kernel.org, zohar@linux.ibm.com, nayna@linux.ibm.com,
-        rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, ssrish@linux.ibm.com
-Subject: [PATCH v5 6/6] docs: trusted-encryped: add PKWM as a new trust source
-Date: Tue, 27 Jan 2026 20:22:28 +0530
-Message-ID: <20260127145228.48320-7-ssrish@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260127145228.48320-1-ssrish@linux.ibm.com>
-References: <20260127145228.48320-1-ssrish@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0pxn48l6z2xXB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jan 2026 02:20:27 +1100 (AEDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-4801d7c72a5so45417495e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jan 2026 07:20:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1769527219; x=1770132019; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TpVju2z52ieKZ9g+UW8bQZ3qR3Ja1fAXqmPTBm/6Msg=;
+        b=BeVRVPqO0O305RjMJiBj8lTEXhjaLTyvvgDhBrRtBO00+Wx12QPri93zNKjhBW++Ez
+         fqLqKxjjyF7U8HLtmQOHR6vpkDk0mVjV9At2pQLhMOxNkFb3oIAYM+PBnxSNJ0LKzxdH
+         NfVS8Mxq9fQ/fxa4BgP1/EjhSqcL5Mtp/gnpXHmMeOFOuc5io+nxFJxETdxGcrFNkgsI
+         /fiAlujFBHTKZbVIWRIs1TBiS7XF9nepFlVh3B/v8FzTnFkM6FLEdPgqjpU2KdhHputv
+         diSmbUBuJEVxah2De4nt4Vd+ABsTbS0bQ+rsNSbKgw0JYBybk1M4aBzxEeVNW/gNTJsi
+         0Olg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769527219; x=1770132019;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TpVju2z52ieKZ9g+UW8bQZ3qR3Ja1fAXqmPTBm/6Msg=;
+        b=tWfJvZGMcbG2Rj85S/+7M3MhUqi7skFBlpGqe/PkLXhS8jT7fnYlFmOGIZhuEozmpi
+         BDBBHeOwjj9qrtNemQKAvnvRr8xAUDeaCRcZUksw0V26j7lEslfQChE5vIcwzDkEJi9K
+         WItuLRy51esXSkMhaBps7f6cMmphgBco2wqasTVK40gRDWQOl1a8Mo1eDDBY5KST0jKx
+         tbDYeyr8aBbMpq1JmjiaJAAoGimO440tXualjLYwOLuQHaoylbG/vxrwgcVJVcAq8Rte
+         7TzTDDa2lM30lav/Yv/T10srqlJVaKFJ54m+xBPyCsHlVdz/7cp0iAlIFerrH4YLgpyA
+         uMPg==
+X-Forwarded-Encrypted: i=1; AJvYcCXXfOVHBnAqVOwHWgx4T0TibJ9npfbexMLXJZSS2R0+fyNkpMVjO9rnNOHOEl4xiP9nwDI8jECfOBNviWA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyKC8h/sXPUc6CqQ2tDQOtOAO1adabF4zOUr487wNyI7dAeQOsZ
+	8fI/Yze165IJjbZaUmXT5z310+cvX2d3+pQuuXHR8rv/tjHw3j5nbGkF08mAZ0et0G0=
+X-Gm-Gg: AZuq6aKvoTvtDrMo4gWQDiYC6uwNvq3YpKzEC0RreNNI/p31XLULn/uEkNwN2XhNRiG
+	+os9wPdqwUyVp+wGcvTDQwWUNF7WpoXF8lfz3ONRR5XCx5weZuncJ6oFpyq470aRIrcIy+VvWP4
+	nt/nzrLL7TYeFQ0Iqku2fVvkLFKB4v2OCO7dh/6BzIEzNDIa2JPFg/6j8nK4/TRr1yaGSMj5aG3
+	KXbd3rmbKGwEi8ZBY5Y3C+JIDG0HNN5SU8VVBQAIHOZjR9v5/5eiNAKBNhEd3xQaI/eBr/ky4UI
+	/RiRM354aVQCB6iwFdKUuBoTecs4xYC30fCjo10LCByTnko71n5qrnRzQ7OPFqeXpKYAoiQMHkq
+	sRUh5WymXC4r49DLvgFxDwOtJNSZBHEAdwCibLT8p1mZuQL2XJyqVBR0bsDdGafNLrqYRjDDAhf
+	rZmNo13H+WfHNeHysw4icCpjPjZfgcWMRd8S2nk+h/
+X-Received: by 2002:a05:600c:5553:b0:480:1c53:2085 with SMTP id 5b1f17b1804b1-4806a313f35mr20307595e9.19.1769527219144;
+        Tue, 27 Jan 2026 07:20:19 -0800 (PST)
+Received: from [10.0.1.22] (109-81-1-107.rct.o2.cz. [109.81.1.107])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066c034dfsm67200105e9.10.2026.01.27.07.20.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jan 2026 07:20:18 -0800 (PST)
+Message-ID: <52cbbccf-d5b6-4a33-b16a-4a09fe5e64d3@suse.com>
+Date: Tue, 27 Jan 2026 16:20:15 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,194 +91,325 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 08/17] module: Deduplicate signature extraction
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen
+ <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Jonathan Corbet <corbet@lwn.net>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Roberto Sassu <roberto.sassu@huawei.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Eric Snowberg <eric.snowberg@oracle.com>,
+ Nicolas Schier <nicolas.schier@linux.dev>, Daniel Gomez
+ <da.gomez@kernel.org>, Aaron Tomlin <atomlin@atomlin.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>,
+ Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>,
+ Xiu Jianfeng <xiujianfeng@huawei.com>,
+ =?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
+ Arnout Engelen <arnout@bzzt.net>, Mattia Rizzolo <mattia@mapreri.org>,
+ kpcyrd <kpcyrd@archlinux.org>, Christian Heusel <christian@heusel.eu>,
+ =?UTF-8?Q?C=C3=A2ju_Mihai-Drosi?= <mcaju95@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
+ <20260113-module-hashes-v4-8-0b932db9b56b@weissschuh.net>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260113-module-hashes-v4-8-0b932db9b56b@weissschuh.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: eGqTO_9vNmTSjSLiqNmrGVdlw7BiDUz7
-X-Authority-Analysis: v=2.4 cv=Uptu9uwB c=1 sm=1 tr=0 ts=6978d156 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=ULK339cd-4IVAxCgyX4A:9
-X-Proofpoint-ORIG-GUID: JLSNF7j7hRtVaLT0RnF5jsQyLH2OEOz1
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDEyMSBTYWx0ZWRfX4cUkFswFFsJu
- EuaOOor/xWO+QGKh/XDApT/ukR/Q/OobJEubvDEz0NlpBlY1EDYjTbV2Y17SCRsK/dMuGjMcSfE
- SIAEmmGwUweguFUDoNQ6YrA/qRWYLVjR3tym9hemdvEA+VJsVQNFbKMkwqjwil67QwCPmSPAzgJ
- hW1KLlP1v2MZky0QfrMITA6iEpFRzbAyRnhWMWFx1YxDAs3nllx0Fr99hAeforozwebeGupCfhV
- mZ2ZqQjosAn1r6qotjNkElrW7GHKcuIsAAx/MH7rykD9vEyAaZnxrbEO19pvUNbN9tnRkwojcMY
- BnS2vQeOfVt7lpx7FqnTF8YFGtYTa5cX2F5sEn0lv+wDoFExG9tyO6DiUVwed2EYo9ZKrF95tLt
- ms6AXg+yplXXQ3vjpOPzzcBVWD+qIQncc2cr+Q3ZqZR8N04ZY6bCeY4uCnwhzrCYYHbRwuRMvsL
- owgX1CA2Z5WKjk2ydJQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-27_03,2026-01-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 clxscore=1015 lowpriorityscore=0
- phishscore=0 adultscore=0 impostorscore=0 bulkscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
- definitions=main-2601270121
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16322-lists,linuxppc-dev=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux@weissschuh.net,m:nathan@kernel.org,m:arnd@arndb.de,m:mcgrof@kernel.org,m:samitolvanen@google.com,m:da.gomez@samsung.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:naveen@kernel.org,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:nicolas.schier@linux.dev,m:da.gomez@kernel.org,m:atomlin@atomlin.com,m:chleroy@kernel.org,m:nsc@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:xiujianfeng@huawei.com,m:f.gruenbichler@proxmox.com,m:arnout@bzzt.net,m:mattia@mapreri.org,m:kpcyrd@archlinux.org,m:christian@heusel.eu,m:mcaju95@gmail.com,m:bigeasy@linutronix.de,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-integrity@vger.kerne
+ l.org,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[petr.pavlu@suse.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[40];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:linux-integrity@vger.kernel.org,m:keyrings@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:christophe.leroy@csgroup.eu,m:James.Bottomley@HansenPartnership.com,m:jarkko@kernel.org,m:zohar@linux.ibm.com,m:nayna@linux.ibm.com,m:rnsastry@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:ssrish@linux.ibm.com,s:lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,HansenPartnership.com,kernel.org,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16320-lists,linuxppc-dev=lfdr.de];
-	FORGED_SENDER(0.00)[ssrish@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ssrish@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,arndb.de,google.com,samsung.com,paul-moore.com,namei.org,hallyn.com,lwn.net,linux.ibm.com,ellerman.id.au,gmail.com,huawei.com,oracle.com,linux.dev,atomlin.com,oss.cyber.gouv.fr,proxmox.com,bzzt.net,mapreri.org,archlinux.org,heusel.eu,linutronix.de,vger.kernel.org,lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_TWELVE(0.00)[12];
-	NEURAL_HAM(-0.00)[-0.992];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[petr.pavlu@suse.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[suse.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.ibm.com:mid]
-X-Rspamd-Queue-Id: 5D7D1960F6
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,suse.com:mid,suse.com:dkim]
+X-Rspamd-Queue-Id: 11F39968E6
 X-Rspamd-Action: no action
 
-From: Nayna Jain <nayna@linux.ibm.com>
+On 1/13/26 1:28 PM, Thomas Weißschuh wrote:
+> The logic to extract the signature bits from a module file are
+> duplicated between the module core and IMA modsig appraisal.
+> 
+> Unify the implementation.
+> 
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> ---
+>  include/linux/module_signature.h    |  4 +--
+>  kernel/module/signing.c             | 52 +++++++------------------------------
+>  kernel/module_signature.c           | 41 +++++++++++++++++++++++++++--
+>  security/integrity/ima/ima_modsig.c | 24 ++++-------------
+>  4 files changed, 56 insertions(+), 65 deletions(-)
+> 
+> diff --git a/include/linux/module_signature.h b/include/linux/module_signature.h
+> index 7eb4b00381ac..186a55effa30 100644
+> --- a/include/linux/module_signature.h
+> +++ b/include/linux/module_signature.h
+> @@ -40,7 +40,7 @@ struct module_signature {
+>  	__be32	sig_len;	/* Length of signature data */
+>  };
+>  
+> -int mod_check_sig(const struct module_signature *ms, size_t file_len,
+> -		  const char *name);
+> +int mod_split_sig(const void *buf, size_t *buf_len, bool mangled,
+> +		  size_t *sig_len, const u8 **sig, const char *name);
+>  
+>  #endif /* _LINUX_MODULE_SIGNATURE_H */
+> diff --git a/kernel/module/signing.c b/kernel/module/signing.c
+> index fe3f51ac6199..6d64c0d18d0a 100644
+> --- a/kernel/module/signing.c
+> +++ b/kernel/module/signing.c
+> @@ -37,54 +37,22 @@ void set_module_sig_enforced(void)
+>  	sig_enforce = true;
+>  }
+>  
+> -/*
+> - * Verify the signature on a module.
+> - */
+> -static int mod_verify_sig(const void *mod, struct load_info *info)
+> -{
+> -	struct module_signature ms;
+> -	size_t sig_len, modlen = info->len;
+> -	int ret;
+> -
+> -	pr_devel("==>%s(,%zu)\n", __func__, modlen);
+> -
+> -	if (modlen <= sizeof(ms))
+> -		return -EBADMSG;
+> -
+> -	memcpy(&ms, mod + (modlen - sizeof(ms)), sizeof(ms));
+> -
+> -	ret = mod_check_sig(&ms, modlen, "module");
+> -	if (ret)
+> -		return ret;
+> -
+> -	sig_len = be32_to_cpu(ms.sig_len);
+> -	modlen -= sig_len + sizeof(ms);
+> -	info->len = modlen;
+> -
+> -	return verify_pkcs7_signature(mod, modlen, mod + modlen, sig_len,
+> -				      VERIFY_USE_SECONDARY_KEYRING,
+> -				      VERIFYING_MODULE_SIGNATURE,
+> -				      NULL, NULL);
+> -}
+> -
+>  int module_sig_check(struct load_info *info, int flags)
+>  {
+> -	int err = -ENODATA;
+> -	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
+> +	int err;
+>  	const char *reason;
+>  	const void *mod = info->hdr;
+> +	size_t sig_len;
+> +	const u8 *sig;
+>  	bool mangled_module = flags & (MODULE_INIT_IGNORE_MODVERSIONS |
+>  				       MODULE_INIT_IGNORE_VERMAGIC);
+> -	/*
+> -	 * Do not allow mangled modules as a module with version information
+> -	 * removed is no longer the module that was signed.
+> -	 */
+> -	if (!mangled_module &&
+> -	    info->len > markerlen &&
+> -	    memcmp(mod + info->len - markerlen, MODULE_SIG_STRING, markerlen) == 0) {
+> -		/* We truncate the module to discard the signature */
+> -		info->len -= markerlen;
+> -		err = mod_verify_sig(mod, info);
+> +
+> +	err = mod_split_sig(info->hdr, &info->len, mangled_module, &sig_len, &sig, "module");
+> +	if (!err) {
+> +		err = verify_pkcs7_signature(mod, info->len, sig, sig_len,
+> +					     VERIFY_USE_SECONDARY_KEYRING,
+> +					     VERIFYING_MODULE_SIGNATURE,
+> +					     NULL, NULL);
+>  		if (!err) {
+>  			info->sig_ok = true;
+>  			return 0;
 
-Update Documentation/security/keys/trusted-encrypted.rst and Documentation/
-admin-guide/kernel-parameters.txt with PowerVM Key Wrapping Module (PKWM)
-as a new trust source
+The patch looks to modify the behavior when mangled_module is true.
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
----
- .../admin-guide/kernel-parameters.txt         |  1 +
- .../security/keys/trusted-encrypted.rst       | 50 +++++++++++++++++++
- 2 files changed, 51 insertions(+)
+Previously, module_sig_check() didn't attempt to extract the signature
+in such a case and treated the module as unsigned. The err remained set
+to -ENODATA and the function subsequently consulted module_sig_check()
+and security_locked_down() to determine an appropriate result.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 1058f2a6d6a8..aac15079b33d 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7790,6 +7790,7 @@ Kernel parameters
- 			- "tee"
- 			- "caam"
- 			- "dcp"
-+			- "pkwm"
- 			If not specified then it defaults to iterating through
- 			the trust source list starting with TPM and assigns the
- 			first trust source as a backend which is initialized
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index eae6a36b1c9a..ddff7c7c2582 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -81,6 +81,14 @@ safe.
-          and the UNIQUE key. Default is to use the UNIQUE key, but selecting
-          the OTP key can be done via a module parameter (dcp_use_otp_key).
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Rooted to a unique, per-LPAR key, which is derived from a system-wide,
-+         randomly generated LPAR root key. Both the per-LPAR keys and the LPAR
-+         root key are stored in hypervisor-owned secure memory at runtime,
-+         and the LPAR root key is additionally persisted in secure locations
-+         such as the processor SEEPROMs and encrypted NVRAM.
-+
-   *  Execution isolation
- 
-      (1) TPM
-@@ -102,6 +110,14 @@ safe.
-          environment. Only basic blob key encryption is executed there.
-          The actual key sealing/unsealing is done on main processor/kernel space.
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Fixed set of cryptographic operations done on on-chip hardware
-+         cryptographic acceleration unit NX. Keys for wrapping and unwrapping
-+         are managed by PowerVM Platform KeyStore, which stores keys in an
-+         isolated in-memory copy in secure hypervisor memory, as well as in a
-+         persistent copy in hypervisor-encrypted NVRAM.
-+
-   * Optional binding to platform integrity state
- 
-      (1) TPM
-@@ -129,6 +145,11 @@ safe.
-          Relies on Secure/Trusted boot process (called HAB by vendor) for
-          platform integrity.
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Relies on secure and trusted boot process of IBM Power systems for
-+         platform integrity.
-+
-   *  Interfaces and APIs
- 
-      (1) TPM
-@@ -149,6 +170,11 @@ safe.
-          Vendor-specific API that is implemented as part of the DCP crypto driver in
-          ``drivers/crypto/mxs-dcp.c``.
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Platform Keystore has well documented interfaces in PAPR document.
-+         Refer to ``Documentation/arch/powerpc/papr_hcalls.rst``
-+
-   *  Threat model
- 
-      The strength and appropriateness of a particular trust source for a given
-@@ -191,6 +217,10 @@ selected trust source:
-      a dedicated hardware RNG that is independent from DCP which can be enabled
-      to back the kernel RNG.
- 
-+   * PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+     The normal kernel random number generator is used to generate keys.
-+
- Users may override this by specifying ``trusted.rng=kernel`` on the kernel
- command-line to override the used RNG with the kernel's random number pool.
- 
-@@ -321,6 +351,26 @@ Usage::
- specific to this DCP key-blob implementation.  The key length for new keys is
- always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
- 
-+Trusted Keys usage: PKWM
-+------------------------
-+
-+Usage::
-+
-+    keyctl add trusted name "new keylen [options]" ring
-+    keyctl add trusted name "load hex_blob" ring
-+    keyctl print keyid
-+
-+    options:
-+       wrap_flags=   ascii hex value of security policy requirement
-+                       0x00: no secure boot requirement (default)
-+                       0x01: require secure boot to be in either audit or
-+                             enforced mode
-+                       0x02: require secure boot to be in enforced mode
-+
-+"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
-+specific to PKWM key-blob implementation.  The key length for new keys is
-+always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-+
- Encrypted Keys usage
- --------------------
- 
+Newly, module_sig_check() calls mod_split_sig(), which skips the
+extraction of the marker ("~Module signature appended~\n") from the end
+of the module and instead attempts to read it as an actual
+module_signature. The value is then passed to mod_check_sig() which
+should return -EBADMSG. The error is propagated to module_sig_check()
+and treated as fatal, without consulting module_sig_check() and
+security_locked_down().
+
+I think the mangled_module flag should not be passed to mod_split_sig()
+and it should be handled solely by module_sig_check().
+
+> diff --git a/kernel/module_signature.c b/kernel/module_signature.c
+> index 00132d12487c..b2384a73524c 100644
+> --- a/kernel/module_signature.c
+> +++ b/kernel/module_signature.c
+> @@ -8,6 +8,7 @@
+>  
+>  #include <linux/errno.h>
+>  #include <linux/printk.h>
+> +#include <linux/string.h>
+>  #include <linux/module_signature.h>
+>  #include <asm/byteorder.h>
+>  
+> @@ -18,8 +19,8 @@
+>   * @file_len:	Size of the file to which @ms is appended.
+>   * @name:	What is being checked. Used for error messages.
+>   */
+> -int mod_check_sig(const struct module_signature *ms, size_t file_len,
+> -		  const char *name)
+> +static int mod_check_sig(const struct module_signature *ms, size_t file_len,
+> +			 const char *name)
+>  {
+>  	if (be32_to_cpu(ms->sig_len) >= file_len - sizeof(*ms))
+>  		return -EBADMSG;
+> @@ -44,3 +45,39 @@ int mod_check_sig(const struct module_signature *ms, size_t file_len,
+>  
+>  	return 0;
+>  }
+> +
+> +int mod_split_sig(const void *buf, size_t *buf_len, bool mangled,
+> +		  size_t *sig_len, const u8 **sig, const char *name)
+> +{
+> +	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
+> +	struct module_signature ms;
+> +	size_t modlen = *buf_len;
+> +	int ret;
+> +
+> +	/*
+> +	 * Do not allow mangled modules as a module with version information
+> +	 * removed is no longer the module that was signed.
+> +	 */
+> +	if (!mangled &&
+> +	    *buf_len > markerlen &&
+> +	    memcmp(buf + modlen - markerlen, MODULE_SIG_STRING, markerlen) == 0) {
+> +		/* We truncate the module to discard the signature */
+> +		modlen -= markerlen;
+> +	}
+> +
+> +	if (modlen <= sizeof(ms))
+> +		return -EBADMSG;
+> +
+> +	memcpy(&ms, buf + (modlen - sizeof(ms)), sizeof(ms));
+> +
+> +	ret = mod_check_sig(&ms, modlen, name);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*sig_len = be32_to_cpu(ms.sig_len);
+> +	modlen -= *sig_len + sizeof(ms);
+> +	*buf_len = modlen;
+> +	*sig = buf + modlen;
+> +
+> +	return 0;
+> +}
+> diff --git a/security/integrity/ima/ima_modsig.c b/security/integrity/ima/ima_modsig.c
+> index 3265d744d5ce..a57342d39b07 100644
+> --- a/security/integrity/ima/ima_modsig.c
+> +++ b/security/integrity/ima/ima_modsig.c
+> @@ -40,44 +40,30 @@ struct modsig {
+>  int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t buf_len,
+>  		    struct modsig **modsig)
+>  {
+> -	const size_t marker_len = strlen(MODULE_SIG_STRING);
+> -	const struct module_signature *sig;
+> +	size_t buf_len_sz = buf_len;
+>  	struct modsig *hdr;
+>  	size_t sig_len;
+> -	const void *p;
+> +	const u8 *sig;
+>  	int rc;
+>  
+> -	if (buf_len <= marker_len + sizeof(*sig))
+> -		return -ENOENT;
+> -
+> -	p = buf + buf_len - marker_len;
+> -	if (memcmp(p, MODULE_SIG_STRING, marker_len))
+> -		return -ENOENT;
+> -
+> -	buf_len -= marker_len;
+> -	sig = (const struct module_signature *)(p - sizeof(*sig));
+> -
+> -	rc = mod_check_sig(sig, buf_len, func_tokens[func]);
+> +	rc = mod_split_sig(buf, &buf_len_sz, true, &sig_len, &sig, func_tokens[func]);
+
+Passing mangled=true to mod_split_sig() seems incorrect here. It causes
+that the function doesn't properly extract the signature marker at the
+end of the module, no?
+
+>  	if (rc)
+>  		return rc;
+>  
+> -	sig_len = be32_to_cpu(sig->sig_len);
+> -	buf_len -= sig_len + sizeof(*sig);
+> -
+>  	/* Allocate sig_len additional bytes to hold the raw PKCS#7 data. */
+>  	hdr = kzalloc(struct_size(hdr, raw_pkcs7, sig_len), GFP_KERNEL);
+>  	if (!hdr)
+>  		return -ENOMEM;
+>  
+>  	hdr->raw_pkcs7_len = sig_len;
+> -	hdr->pkcs7_msg = pkcs7_parse_message(buf + buf_len, sig_len);
+> +	hdr->pkcs7_msg = pkcs7_parse_message(sig, sig_len);
+>  	if (IS_ERR(hdr->pkcs7_msg)) {
+>  		rc = PTR_ERR(hdr->pkcs7_msg);
+>  		kfree(hdr);
+>  		return rc;
+>  	}
+>  
+> -	memcpy(hdr->raw_pkcs7, buf + buf_len, sig_len);
+> +	memcpy(hdr->raw_pkcs7, sig, sig_len);
+>  
+>  	/* We don't know the hash algorithm yet. */
+>  	hdr->hash_algo = HASH_ALGO__LAST;
+> 
+
 -- 
-2.47.3
-
+Thanks,
+Petr
 
