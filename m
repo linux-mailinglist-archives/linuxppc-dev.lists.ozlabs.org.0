@@ -1,78 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-16333-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16307-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PbRJNQveWlovwEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16333-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 22:36:20 +0100
+	id AFUQNjaPeGmqqwEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16307-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:11:02 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADF19AB9F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 22:36:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D765592807
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:11:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f0zHP3TD9z2xbQ;
-	Wed, 28 Jan 2026 08:36:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f0h4f3KYZz309N;
+	Tue, 27 Jan 2026 21:10:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769506084;
-	cv=none; b=iRZ2T0c5qbjt69rDhJR+Oka03YpS/EOzPAzFZkTCHp+PwFOJ62h0B8jDhpXiAynvjmOLkHND+PbozZUVAPd2BgOkVE5H5+hogPj8wah1yttqRwoWJdyEN3Da5kyUKTD9IM/SeASRHgMs3i6i/hLqUxJwUqIsDWqkMAl8tD5OUSbKWgJQoBODriBXC+o9JgENhvbrvK2TCIMO3JP4dVU3q4wC9FJLn1pTAM6Wd47xMI/OH+6m10au3+3Po8FXJaY/bWEsCN7ufKp28nZWEOHA1ZrEsUceyIPRc14N9DLtizZaMW6pG6NC7YX4l/69Le2lRD3DydsNCk1hPB2BTnwusQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769508658;
+	cv=none; b=RTsEI8EJt3DvLcUXFo1hGvK6zYq/Rxra4jbIKQJFDPcZmMc8LDBk2pPJ9OIkD8knDXv2XI7mDpdoXHKSlcfc715q5IlXwrb51mCoeky3INqaUk40Bdr0uckTQiqnNOKS/5DWaO8KvpEix5PyJ+KQ4Jm3pd0aF2JgOKALsGqO1ISuK0Y9Hk8UOWahHs7pHLHd9HLvM8gzq1nyXwBY/0PDcPS4qX+D7Z1uhK1dqMYU+OeFT+2uVqr7bJU2Md8vVtqh6vdB1nzL1j1qZl7Futzh3hoYEKbl9/fScWRoF0pACEURaYhFBz1chTXudA0s79/l76j1Nl0QD5He8d8KD4ED3g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769506084; c=relaxed/relaxed;
-	bh=QxWbi0fR89aN2JlOIVMD+G7j77d5nNaeRsUPp7VB8Yk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=U9+BTUZISWZ8Vty7t2fbyTysYYljrafK7KC89O7igw3mMT42RxZpKRdwhd2Xfg6qyUr0R1/blsNIhKq40GF7DgD3+eDTVXQ2pAAQ46SqKaOfiN2a3Jo7dEKKZ1zqb5pfTHipdmKrrX8LJKlEsFgk30E0aRuA/dPbM9SduTVwwRJOn5TwKsWPCN482tyB0nVdo4r5GJ8EQwuNesL+kv/mj9hsaHCV+d4AYQjrxZuY9z7CnIf+Jh4cFXrlgsj56jwCKJcj3fYfXrZStpyeFY0vThxcIrZsRyaC4vV0JpjZ8IA9I3f2Lj91lHHbH0macPrAKaRCTbvfbGD0ztbayrqi2w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oEO2FeMp; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=tglx@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oEO2FeMp;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=tglx@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	t=1769508658; c=relaxed/relaxed;
+	bh=GebPFzdH5/TcOmRhG7eem2w9uuXkfKKUu1sG5WDhDU4=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gVlqBzIabSdSo2/7nTMtfzBwXfgk4ux+RSwR2SkWe54t59X3bQ2lGGGRpI0tCQp/EzTXdHFbV/V9U/AietLxnzM5o5zbvw6WM2Kklwpo0VRJE3cFVSH7vEOQ6mxK+yg0dMT1beKoO8ulJ8l2osVqyVP4TO+7ZxWKKcZPGu2H4dPTAhqQNd/84KY67A7N9NM8kh453WPGaCT6EMNKGUybYMAdgW4Q/HGpNmEs3iNsqMTu5Ybr2KrekXskqYvlFHG4ixH8KlmDVg6Cp1BPbCWJqafzOTFNGQ+i3zVt6hxvl3R3hyAKWuMRkadVaj/cstTCf9+5RdFox08HhUcgmOE/hQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0g774rG2z2xcB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jan 2026 20:28:03 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A3E6260143;
-	Tue, 27 Jan 2026 09:28:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA751C116C6;
-	Tue, 27 Jan 2026 09:28:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769506081;
-	bh=NUtdM1nWlicDFUqsuPzcoMB/gzA3aziNceLt7F8iSE8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=oEO2FeMpvi1NaSCO2Gn8Cj6UbLkdPGgHSCr2a7tIho96JHKe2OPIWUlyKRZRs+g/p
-	 bOydMQemiNt+degt62tyGOKCzCMxGQP/+fWYHd5fQoEeMMtMBrEhvbKzxQI+uASfo+
-	 WnvxAODGQoHBidevnuikSB14Qm/l1uuA8SKt8swMro14a0ryd5Zo1SXOw/QtvrZtYe
-	 o9wowBLm4NktfnH4gj6vq4gkvSOgZCJwp+WvtCKPASNeo0iUYm1k9Mj89Qs/nBEKdC
-	 UoXofhNhiJNlSAVG+UzzUh/MKGzx0b0QaoSEXAsSwPPoP60aL3O7aNFQz0OEp+KLaq
-	 Ksz08X55xve/w==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Vivian Wang <wangruikang@iscas.ac.cn>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
- Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)"
- <chleroy@kernel.org>, Alex Deucher <alexander.deucher@amd.com>, Christian
- =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>, David Airlie
- <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, "Creeley, Brett" <bcreeley@amd.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, Jaroslav
- Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: Han Gao <gaohan@iscas.ac.cn>, Vivian Wang <wangruikang@iscas.ac.cn>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- netdev@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-riscv@lists.infradead.org,
- sophgo@lists.linux.dev
-Subject: Re: [PATCH v3 2/4] PCI/MSI: Check msi_addr_mask in
- msi_verify_entries()
-In-Reply-To: <20260123-pci-msi-addr-mask-v3-2-9f9baa048524@iscas.ac.cn>
-References: <20260123-pci-msi-addr-mask-v3-0-9f9baa048524@iscas.ac.cn>
- <20260123-pci-msi-addr-mask-v3-2-9f9baa048524@iscas.ac.cn>
-Date: Tue, 27 Jan 2026 10:27:58 +0100
-Message-ID: <87jyx3be1t.ffs@tglx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0h4d3qC3z2xcB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jan 2026 21:10:57 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f0h3q5wXLzJ46jd;
+	Tue, 27 Jan 2026 18:10:15 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8D28740585;
+	Tue, 27 Jan 2026 18:10:51 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 27 Jan
+ 2026 10:10:50 +0000
+Date: Tue, 27 Jan 2026 10:10:49 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+CC: <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <bhelgaas@google.com>, <kbusch@kernel.org>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <mahesh@linux.ibm.com>,
+	<oohall@gmail.com>, <terry.bowman@amd.com>, <tianruidong@linux.alibaba.com>,
+	<lukas@wunner.de>
+Subject: Re: [PATCH v7 1/5] PCI/DPC: Clarify naming for error port in DPC
+ Handling
+Message-ID: <20260127101049.0000640d@huawei.com>
+In-Reply-To: <20260124074557.73961-2-xueshuai@linux.alibaba.com>
+References: <20260124074557.73961-1-xueshuai@linux.alibaba.com>
+	<20260124074557.73961-2-xueshuai@linux.alibaba.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,89 +68,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [4.29 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.01 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	FORGED_RECIPIENTS(0.00)[m:wangruikang@iscas.ac.cn,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:bcreeley@amd.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:bhelgaas@google.com,m:perex@perex.cz,m:tiwai@suse.com,m:gaohan@iscas.ac.cn,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:netdev@vger.kernel.org,m:linux-pci@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:sophgo@lists.linux.dev,m:andrew@lunn.ch,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_TO(0.00)[iscas.ac.cn,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,amd.com,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,perex.cz,suse.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[tglx@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	GREYLIST(0.00)[pass,body];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16333-lists,linuxppc-dev=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16307-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,google.com,kernel.org,linux.intel.com,linux.ibm.com,gmail.com,amd.com,linux.alibaba.com,wunner.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:xueshuai@linux.alibaba.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,m:lukas@wunner.de,s:lists@lfdr.de];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev,netdev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BADF19AB9F
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[jonathan.cameron@huawei.com,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,linuxppc-dev@lists.ozlabs.org];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	HAS_XOIP(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,intel.com:email,huawei.com:mid,huawei.com:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: D765592807
 X-Rspamd-Action: no action
 
-On Fri, Jan 23 2026 at 14:07, Vivian Wang wrote:
-> Instead of a 32-bit/64-bit dichotomy, check the MSI address against
-> msi_addr_mask.
->
-> This allows platforms with MSI doorbell above 32-bit address space to
+On Sat, 24 Jan 2026 15:45:53 +0800
+Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 
-with a MSI doorbell address above the 32-bit limit to
+> dpc_handler() is registered for error port which recevie DPC interrupt
+> and acpi_dpc_port_get() locate the port that experienced the containment
+> event.
+> 
+> Rename edev and pdev to err_port for clear so that later patch will
+> avoid misused err_port in pcie_do_recovery().
+> 
+> No functional changes intended.
+> 
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Seems like a good readability improvement to me.
 
-> work with devices without full 64-bit MSI address support, as long as
-> the doorbell is within addressable range of MSI of the device.
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
-within the addressable
-
->  static int msi_verify_entries(struct pci_dev *dev)
->  {
->  	struct msi_desc *entry;
-> +	u64 address;
->  
->  	if (dev->msi_addr_mask == DMA_BIT_MASK(64))
->  		return 0;
->  
->  	msi_for_each_desc(entry, &dev->dev, MSI_DESC_ALL) {
-> -		if (entry->msg.address_hi) {
-> -			pci_err(dev, "arch assigned 64-bit MSI address %#x%08x but device only supports 32 bits\n",
-> -				entry->msg.address_hi, entry->msg.address_lo);
-> +		address = (u64)entry->msg.address_hi << 32 |
-> +			  entry->msg.address_lo;
-
-No line break required. Let it stick out.
-
-> +		if (address & ~dev->msi_addr_mask) {
-> +			pci_err(dev, "arch assigned 64-bit MSI address %#llx above device MSI address mask %#llx\n",
-> +				address, dev->msi_addr_mask);
->  			break;
->  		}
->  	}
-
-Other than those nits:
-
-Reviewed-by: Thomas Gleixner <tglx@kernel.org>
 
