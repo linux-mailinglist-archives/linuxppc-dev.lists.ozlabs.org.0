@@ -1,92 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-16314-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16315-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6N9FH5fPeGmNtQEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16314-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 15:45:43 +0100
+	id ECZiCFHReGmNtQEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16315-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 15:53:05 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840CF95F0E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 15:45:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2AF960C1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 15:53:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f0p9W0Y11z309S;
-	Wed, 28 Jan 2026 01:45:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f0pL55Cqbz309N;
+	Wed, 28 Jan 2026 01:53:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769525134;
-	cv=none; b=DuRXrB7CnEk1plD8aFM+INDOtRlEQDCAh0izfo46TGBm78qV+UQW6GvLt+IUuXOsxajR//KIZNyPfxMLcnd6VnielqosnSaD3EpfgJDaTkBaZ1MEJ/5WD+hg2tUTvpiYiNGdnXw8El+LLdNrJB/sli1j7VADlCOzKY5Hq/3900Q1nZJpy2Ax+R/MaQcdOZw09idII1gpdqQoEfmp/l7EsVl5wEWq9/a12gQuSnW+m7nV8q4iHgL8HH2H8fk4sCCNUdKUt3f8C3Ezxyus2GJSj00Qm3OdVAbpnGCX9KU6fUV8E5o/nhgzzwYqCnG5scOWwWBkHUefA+V3hn/FaLFvGQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769525581;
+	cv=none; b=WECYP68enTOE4YmSKe0zyITmMF/CVRDSBAqlOgbImJuhJMHUvtui4FLLn50sPSUyrDvkZi+2xijXP31tVrWW6kIXO0dI5l8NjvH7j2uXqe2DgnBdU8gg/496SR34f03esbGITVjHVubLyrCbS0tIcAuSbZa1C4lYx5DTSKZNXosg+V3KcO5SUZVZ8A/FUvfZc5vkg15Dh/hOkB9pPYhpizAQXdSJlMDAiKBfuNRfXDGx0mNqOvVOHK8oWY03ZW+vXVbkFu2UXIleSBKNDJc55mZ6fb6VdK9oRbihnSRRsM6lYeduiOLHxYkJI4N7WY4etj/OGSgS65ZWaPxdvRyFLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769525134; c=relaxed/relaxed;
-	bh=ZT2n0nSZugFte3TRA8IFPlQN20B/3iyqkX0gewzEVUU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SgLV7rubf8oz/kHtFrZBcdlufC2G4pcoctH7ZparNjGzmIpWKQJI6Y8aHNX5GpR9ch6acN9IOj4pXm0PYsM0GIzadR4wZoQdShMv2MZqMIMk9VuqLMQiV3j0RL99dvv8QatGz6N+UKjO2VdTe81Jf9Fvbw7utgM75E0LSSCgih309aCAodebM8t3DOkjUJfvUmxue7D/Djt4UZyyYHpS1hufDdH+6mVz46+asqhf3lllVw8OQ2rrGj0ZPnwU9I59pX7SAYFSym2pSin0F9APgVioFII3sybTzZaKDyCfttLgvdijtwZkWlAacyNJ6G647At16+HuDRiq+dkEkJB+2Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k1FxynCb; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1769525581; c=relaxed/relaxed;
+	bh=jUMYkYZEFqCMLdQSRiG3tgCgSpNq4nyFuCHURg/CLSE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kNQYuc4X4PiUuiG6ZHQ1QxPtGSeDYShyRpC2AGg3YXa09/Ox17rPHGbMt65bLDqT7ymb1srx0dTcc5TkVxe1sNxe5Uik7JKA+U03LhW5Te9OKVbDbA8KQI7NLKGhMB7oM1YtvLRdnvAc+Nct5lzl2eoVUFo/oPbrIMJ0GbRp0wLiZaX48JbOeLG80p+LJB3r6D+GLrLZ0RGbHzdd4hmbqp2ZahPqzAw4F2vRlI3TnDDSzW9OyAJwdGDwXZrTcocUJeXFkbi8u0OqwZWt1QeHWwJFPpYIhXi9o6xOyEAN8EqLieOTPXpfDV7C1gh/lDetxL/x6OYbOlcjjxLa3n88ow==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n165nIZx; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k1FxynCb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n165nIZx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0p9T6gvpz2xXB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jan 2026 01:45:33 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D11C043965;
-	Tue, 27 Jan 2026 14:45:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C21C116C6;
-	Tue, 27 Jan 2026 14:45:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769525131;
-	bh=0YGeP0O62Pc53bwcfFkz6Pdb1KEkMMpDyI0yE++MS9Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k1FxynCbgFyhQaZBWbdQ3U3/gG7zvUiYTdT05s4SfRvueGwkwdMXfQ67RXYmWXNMt
-	 nJcwbHtZ7igNbyW3UV297EDBMkUnggDFqkNCcRRA+vRpQtytrAnvyEHNrTU6qtdODo
-	 1LbCma+SiMl2LT5ZuLyH7tZpYFN9UJ2XKhsK4xuHGPaRH8LD/O8BLUfTlNb0oHlPNi
-	 O/otIJveig2kXrzcfYZMWTt5fvWceAjmmlhVGZjLExQFzzscRRARYyYJJl4ENA3zWK
-	 zldlROZ0P7SlFX+FcV4aIGqzhLCTEzmtf2d26kCH+JflCjYXc+hEeq7F76jfRgZo4e
-	 vcqAUDXHE61jQ==
-Date: Tue, 27 Jan 2026 15:45:29 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Ben Segall <bsegall@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ingo Molnar <mingo@redhat.com>, Jan Kiszka <jan.kiszka@siemens.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Xin Zhao <jackzxcui1989@163.com>, linux-pm@vger.kernel.org,
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 05/15] s390/time: Prepare to stop elapsing in
- dynticks-idle
-Message-ID: <aXjPiZCHZ77R4awi@localhost.localdomain>
-References: <20260116145208.87445-1-frederic@kernel.org>
- <20260116145208.87445-6-frederic@kernel.org>
- <20260121121748.9719Bab-hca@linux.ibm.com>
- <aXEVM-04lj0lntMr@localhost.localdomain>
- <20260122144045.38254A3e-hca@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0pL43QnXz2xXB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jan 2026 01:52:59 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60R54cWf021821;
+	Tue, 27 Jan 2026 14:52:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=jUMYkYZEFqCMLdQSRiG3tgCgSpNq4nyFuCHURg/CL
+	SE=; b=n165nIZx7U2aZSMEurVSq511quAqUkJlFjnHIX5GXgE9B/J6r0AztpaH6
+	MTYXZXLRDK5gFOT6yYKsbXOank34cnW0leoslh2Ae2tthGV9DFdNjcTKDVqOIZye
+	IL1thFNf4l/A/adej7jHP0rY3TwABtAlVmpQJoo9XrR4xd6aMM5Bi1wPRFnP9CjY
+	kn9wQrssl8pg5M2kXQ0lLVxkwTqrilEG+mF2qZjBI2/+4VEqr794ow3N5xy3B/GK
+	L+GuX8p5i1IH9UBTCK6jiY+UXh+BuHfVfdZf/u/h9tGIQFdKpv7hFMJqKWPc47it
+	nduVKM20HP7zvU1YRuCPHS3mJNfcQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnrtdvw9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jan 2026 14:52:45 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60RElmAO005883;
+	Tue, 27 Jan 2026 14:52:45 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnrtdvw6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jan 2026 14:52:45 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60RD4EFF031030;
+	Tue, 27 Jan 2026 14:52:44 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bw8dsh4h3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jan 2026 14:52:44 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60REqeuq27328898
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 27 Jan 2026 14:52:40 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A99BD2004B;
+	Tue, 27 Jan 2026 14:52:40 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DD3BC20040;
+	Tue, 27 Jan 2026 14:52:36 +0000 (GMT)
+Received: from li-fc74f8cc-3279-11b2-a85c-ef5828687581.ibm.com.com (unknown [9.124.210.108])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 27 Jan 2026 14:52:36 +0000 (GMT)
+From: Srish Srinivasan <ssrish@linux.ibm.com>
+To: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, James.Bottomley@HansenPartnership.com,
+        jarkko@kernel.org, zohar@linux.ibm.com, nayna@linux.ibm.com,
+        rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, ssrish@linux.ibm.com
+Subject: [PATCH v5 0/6] Extend "trusted" keys to support a new trust source named the PowerVM Key Wrapping Module (PKWM)
+Date: Tue, 27 Jan 2026 20:22:22 +0530
+Message-ID: <20260127145228.48320-1-ssrish@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,119 +99,173 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260122144045.38254A3e-hca@linux.ibm.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: b1GsP9IPq-_D65tdBFIAsCcoauEc7vYW
+X-Authority-Analysis: v=2.4 cv=Uptu9uwB c=1 sm=1 tr=0 ts=6978d13d cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8
+ a=OZ_REq_LgKhKeL2JI8IA:9
+X-Proofpoint-ORIG-GUID: 2-rH4ahASdrg-IiUEunGPdG7b-lAkrfR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDEyMSBTYWx0ZWRfX4tsn+m73WuC6
+ gpT/3mTQf1/SGcjzWsgT3vOC50D3B7i8tFI5ixosz37kEgtlnBh9FQJTJEe3s5r7myYKCXD1Efa
+ 5Sy7gP8SVkkCFkofv5ZfYA8vIcUtueKful0htghmuDLMqwOmf+F5caBwUq3A4xsyqWxISQpGTmS
+ 0I/K4syOt2XSBTFkzumxBV6uyl+tWWiLyHyaXb5FSjIkDnLU2kKGOtBirf425Ul2ybyuj2lASMn
+ gT2plaNbZcr6DD4kagvEzkCdKhj0TFHRSQlyXg+/nuvryAWWmKy0wTkctOv2noJNbAsxKHwLd89
+ ECesQtHO+UctlHlYCVIVg+DYarqQThziytCz5GNsfw+UFAmPH59BcKjHEi89w+ruf+O193PIPUG
+ vJXY1bRtCTCsuzg7lXCq9RvPRTXH0TPCGxGtQFOPLak0/5Rx2nH2uBZdz793rvKRBFYWLutCZ2k
+ u4Gkwvs1Q+D/i4IlG1g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-27_03,2026-01-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 clxscore=1015 lowpriorityscore=0
+ phishscore=0 adultscore=0 impostorscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2601270121
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16314-lists,linuxppc-dev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:hca@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:chleroy@kernel.org,m:rafael@kernel.org,m:agordeev@linux.ibm.com,m:anna-maria@linutronix.de,m:bsegall@google.com,m:boqun.feng@gmail.com,m:borntraeger@linux.ibm.com,m:dietmar.eggemann@arm.com,m:mingo@redhat.com,m:jan.kiszka@siemens.com,m:joelagnelf@nvidia.com,m:juri.lelli@redhat.com,m:kbingham@kernel.org,m:maddy@linux.ibm.com,m:mgorman@suse.de,m:mpe@ellerman.id.au,m:neeraj.upadhyay@kernel.org,m:npiggin@gmail.com,m:paulmck@kernel.org,m:peterz@infradead.org,m:rostedt@goodmis.org,m:svens@linux.ibm.com,m:tglx@linutronix.de,m:urezki@gmail.com,m:vschneid@redhat.com,m:gor@linux.ibm.com,m:vincent.guittot@linaro.org,m:viresh.kumar@linaro.org,m:jackzxcui1989@163.com,m:linux-pm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[34];
-	FORGED_SENDER(0.00)[frederic@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,linux.ibm.com,linutronix.de,google.com,gmail.com,arm.com,redhat.com,siemens.com,nvidia.com,suse.de,ellerman.id.au,infradead.org,goodmis.org,linaro.org,163.com,lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[frederic@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:linux-integrity@vger.kernel.org,m:keyrings@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:christophe.leroy@csgroup.eu,m:James.Bottomley@HansenPartnership.com,m:jarkko@kernel.org,m:zohar@linux.ibm.com,m:nayna@linux.ibm.com,m:rnsastry@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:ssrish@linux.ibm.com,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,HansenPartnership.com,kernel.org,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16315-lists,linuxppc-dev=lfdr.de];
+	FORGED_SENDER(0.00)[ssrish@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[localhost.localdomain:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 840CF95F0E
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ssrish@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_TWELVE(0.00)[12];
+	NEURAL_HAM(-0.00)[-0.992];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 3E2AF960C1
 X-Rspamd-Action: no action
 
-Le Thu, Jan 22, 2026 at 03:40:45PM +0100, Heiko Carstens a écrit :
-> On Wed, Jan 21, 2026 at 07:04:35PM +0100, Frederic Weisbecker wrote:
-> > BTW here is a question for you, does the timer (as in get_cpu_timer()) still
-> > decrements while in idle? I would assume not, given how lc->system_timer
-> > is updated in account_idle_time_irq().
-> 
-> It is not decremented while in idle (or when the hypervisor schedules
-> the virtual cpu away). We use the fact that the cpu timer is not
-> decremented when the virtual cpu is not running vs the real
-> time-of-day clock to calculate steal time.
+Power11 has introduced a feature called the PowerVM Key Wrapping Module
+(PKWM), where PowerVM in combination with Power LPAR Platform KeyStore
+(PLPKS) [1] supports a new feature called "Key Wrapping" [2] to protect
+user secrets by wrapping them using a hypervisor generated wrapping key.
+This wrapping key is an AES-GCM-256 symmetric key that is stored as an
+object in the PLPKS. It has policy based protections that prevents it from
+being read out or exposed to the user. This wrapping key can then be used
+by the OS to wrap or unwrap secrets via hypervisor calls.
 
-Ok, good then!
+This patchset intends to add the PKWM, which is a combination of IBM
+PowerVM and PLPKS, as a new trust source for trusted keys. The wrapping key
+does not exist by default and its generation is requested by the kernel at
+the time of PKWM initialization. This key is then persisted by the PKWM and
+is used for wrapping any kernel provided key, and is never exposed to the
+user. The kernel is aware of only the label to this wrapping key.
 
-> 
-> > And another question in this same function is this :
-> > 
-> >     lc->steal_timer += idle->clock_idle_enter - lc->last_update_clock;
-> > 
-> > clock_idle_enter is updated right before halting the CPU. But when was
-> > last_update_clock updated last? Could be either task switch to idle, or
-> > a previous idle tick interrupt or a previous idle IRQ entry. In any case
-> > I'm not sure the difference is meaningful as steal time.
-> > 
-> > I must be missing something.
-> 
-> "It has been like that forever" :) However I do agree that this doesn't seem
-> to make any sense. At least with the current implementation I cannot see how
-> that makes sense, since the difference of two time stamps, which do not
-> include any steal time are added.
-> 
-> Maybe it broke by some of all the changes over the years, or it was always
-> wrong, or I am missing something too.
-> 
-> Will investigate and address it if required. Thank you for bringing this up!
+Along with the PKWM implementation, this patchset includes two preparatory
+patches: one fixing the kernel-doc inconsistencies in the PLPKS code and
+another reorganizing PLPKS config variables in the sysfs.
 
-Ok, I take some relief from the fact it's not only unclear to me :-)
+Changelog:
 
-> 
-> > > Not sure what to do with this. I thought about removing those sysfs files
-> > > already in the past, since they are of very limited use; and most likely
-> > > nothing in user space would miss them.
-> > 
-> > Perhaps but this file is a good comparison point against /proc/stat because
-> > s390 vtime is much closer to measuring the actual CPU halted time than what
-> > the generic nohz accounting does (which includes more idle code execution).
-> 
-> Yes, while comparing those files I also see an unexpected difference of
-> several seconds after two days of uptime; that is before your changes.
-> 
-> In theory the sum of idle and iowait in /proc/stat should be the same like the
-> per-cpu idle_time_us sysfs file. But there is a difference, which shouldn't be
-> there as far as I can tell. Yet another thing to look into.
+v5:
 
-Yes and that's expected both before and after my changes.
+* Patch 1:
+  - Add Nayna's Reviewed-by tag
+* Patch 2:
+  - Add Nayna's Reviewed-by tag
+* Patch 3:
+  - Add Nayna's Reviewed-by tag
+* Patch 4:
+  - Fix build error identified by chleroy@kernel.org
+  - Add Nayna's Reviewed-by tag
+* Patch 5:
+  - Add Reviewed-by tags from Nayna and Jarkko
 
-* /proc/stat is the time spent between tick_nohz_idle_enter() and
-  tick_nohz_idle_exit() (to simplify, because there are some pause during
-  idle IRQs).
+v4:
 
-* The s390 idle sysfs file depicts more closely the time spent while the
-  CPU is really idle (and not executing idle code).
+* Patch 5:
+  - Add a per-backend private data pointer in trusted_key_options
+    to store a pointer to the backend-specific options structure
+  - Minor clean-up
 
-Different semantics and this is why you observe different results. I guess
-/proc/stat has higher values (with idle + iowait) and that is expected.
+v3:
 
-Thanks.
+* Patch 2:
+  - Add Mimi's Reviewed-by tag
+* Patch 4:
+  - Minor tweaks to some print statements
+  - Fix typos
+* Patch 5:
+  - Fix typos
+  - Add Mimi's Reviewed-by tag
+* Patch 6:
+  - Add Mimi's Reviewed-by tag
+
+v2:
+
+* Patch 2:
+  - Fix build warning detected by the kernel test bot
+* Patch 5:
+  - Use pr_debug inside dump_options
+  - Replace policyhande with wrap_flags inside dump_options
+  - Provide meaningful error messages with error codes
+
+Nayna Jain (1):
+  docs: trusted-encryped: add PKWM as a new trust source
+
+Srish Srinivasan (5):
+  pseries/plpks: fix kernel-doc comment inconsistencies
+  powerpc/pseries: move the PLPKS config inside its own sysfs directory
+  pseries/plpks: expose PowerVM wrapping features via the sysfs
+  pseries/plpks: add HCALLs for PowerVM Key Wrapping Module
+  keys/trusted_keys: establish PKWM as a trusted source
+
+ .../ABI/testing/sysfs-firmware-plpks          |  58 ++
+ Documentation/ABI/testing/sysfs-secvar        |  65 --
+ .../admin-guide/kernel-parameters.txt         |   1 +
+ Documentation/arch/powerpc/papr_hcalls.rst    |  43 ++
+ .../security/keys/trusted-encrypted.rst       |  50 ++
+ MAINTAINERS                                   |   9 +
+ arch/powerpc/include/asm/hvcall.h             |   4 +-
+ arch/powerpc/include/asm/plpks.h              |  95 +--
+ arch/powerpc/include/asm/secvar.h             |   1 -
+ arch/powerpc/kernel/secvar-sysfs.c            |  21 +-
+ arch/powerpc/platforms/pseries/Makefile       |   2 +-
+ arch/powerpc/platforms/pseries/plpks-secvar.c |  29 -
+ arch/powerpc/platforms/pseries/plpks-sysfs.c  |  96 +++
+ arch/powerpc/platforms/pseries/plpks.c        | 687 +++++++++++++++++-
+ include/keys/trusted-type.h                   |   7 +-
+ include/keys/trusted_pkwm.h                   |  33 +
+ security/keys/trusted-keys/Kconfig            |   8 +
+ security/keys/trusted-keys/Makefile           |   2 +
+ security/keys/trusted-keys/trusted_core.c     |   6 +-
+ security/keys/trusted-keys/trusted_pkwm.c     | 190 +++++
+ 20 files changed, 1206 insertions(+), 201 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-plpks
+ create mode 100644 arch/powerpc/platforms/pseries/plpks-sysfs.c
+ create mode 100644 include/keys/trusted_pkwm.h
+ create mode 100644 security/keys/trusted-keys/trusted_pkwm.c
 
 -- 
-Frederic Weisbecker
-SUSE Labs
+2.47.3
+
 
