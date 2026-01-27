@@ -1,60 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-16312-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16313-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNfSC1KXeGkWrQEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16312-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:45:38 +0100
+	id yAEcFSuZeGkWrQEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16313-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:53:31 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB0C9316D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:45:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D7F93331
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:53:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f0hrZ3vBkz2yGM;
-	Tue, 27 Jan 2026 21:45:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f0j1g4vkjz309N;
+	Tue, 27 Jan 2026 21:53:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769510734;
-	cv=none; b=BK1b4FuyMLpvLZjJ9vA6zNEwH/34hACYn4GcWdFYOAGbQBZve4d/a76KPMDsnMTJaT1mhvQ0xJz5qyY+7zHm5FfzmpjPGW/fuQLL6uWQdYez5qMP8km0gFioEoGaqrS8xLw1JX6MqIi7duhso7zM2IZN15nXO73ArRFEyrl2a7Gq8ZX5e4n5T4COa7dqtd9pbxpjeLrWjaMR3j7khz9Dq5zoDS1e78IFIsxnW1uNrft8W4SrUz3nP3JEphqcSjy5WMcOx8m902lzT+cBVMflYSArNtoXYWfypHz4m9Xk9/F0DvphiJ5GAXB+gDfEAIpsNI9C5nb9wuSUmRXSIVdesQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.7
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769511207;
+	cv=none; b=oylac2GeCAGWVDgesqZA+B51+RRiX/X7BMqvC1xIosMciq7E6F2jGq6t3knHBguP2oxSah3zXB2aiEc36X/E+mnoQAqGwJCoTYTSwx0vxj3H/DRUR8/p89lPbO7wdbDILZ5sObLrUByYWFDPRVoiIYTnd36DYOt5I3xa42uWbs5VxYueQndQn7TbOtbmBeUBduLaymW0Low2jF+s/osOEIbsd3Ib+LK23yoXvpPrgpMwaq5M3KfRKMw3FzweJW/rJA3zSWaydcCyo40DK4XaA11i9qKDUTZZOybfUQFUyHDgunFDqHWGEivauex2obrAP5b6eZe9k7AMT5JePog2vQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769510734; c=relaxed/relaxed;
-	bh=6gx54Ce9sD7vvmlNSJDj2gXVfTeVR4gT1+DQYofJ5hc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dqGb4h+udAqw10gF4d1hr34J+CHqZfaSZTSMHTt1uDCDIC6mANtrANCmbE68rtdthnE4cLD8ZjLiMw6meKvBZ/fdigf3zSEX2jf0T9s/0K6iKBMzrkTbemBUD71Y+aYP3njzAVO4egOXvqcCklrc0AIYIrc1t27w/3qBnmnk68pu/oZNttYySMhnKHCg9mhSqNwXZ/YtZdyKAnfwt3QzSf9wQMhSnU0hCfUlrpcE193ug+T9tuZ2UaqnUvRzBTUrD0hRSYY8sqTSKVM4onhXkBAwlk9/TJMcyD6Pzda0NB+dywvU3DBh055eA0NFg9zLT0y5cuBXwHMYWW76dtOxRQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	t=1769511207; c=relaxed/relaxed;
+	bh=5Zz3Wvw2skGp1+4xP3UWjyn0FpYnUP/vHGLhsQfqFHM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I3aqivV8GMw4jALA435KjSUmkUBnO+Bs/khS6W0lIdx6qx5+ryKNswpkEUf9cma8AoolXkMehEHCzXT6D2jw0z0KDY+/Hs1ORUr3HlLqbudF/wwfqGDpyFv+HmE6icEAEAH690VFOkVA7TarE30hXHhmF4GqwNCrXXYXpRw1+FdTLWj2N4+e5OKMJzf/5/lC6O5Ubwpb1ZEFSXk+rtxn70a43ddEDJ2ZlFkMELEJxPo722lXMZp8rg5BwbTlcE/g7tvK2GDqHsLsFh92SW6vElkzu5O2oIID/p8g8rIp7pHhVL9mPMz9GveFbXgB0NUxrhxix7vVrUlPVbFwWBBsPw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nNDZl+TU; dkim-atps=neutral; spf=pass (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nNDZl+TU;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0hrY2XtMz2xcB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jan 2026 21:45:33 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f0hqp2vBWzJ46dV;
-	Tue, 27 Jan 2026 18:44:54 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2E6344056A;
-	Tue, 27 Jan 2026 18:45:30 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 27 Jan
- 2026 10:45:22 +0000
-Date: Tue, 27 Jan 2026 10:45:20 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-CC: <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <bhelgaas@google.com>, <kbusch@kernel.org>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <mahesh@linux.ibm.com>,
-	<oohall@gmail.com>, <terry.bowman@amd.com>, <tianruidong@linux.alibaba.com>,
-	<lukas@wunner.de>
-Subject: Re: [PATCH v7 5/5] PCI/AER: Only clear error bits in
- pcie_clear_device_status()
-Message-ID: <20260127104520.0000579c@huawei.com>
-In-Reply-To: <20260124074557.73961-6-xueshuai@linux.alibaba.com>
-References: <20260124074557.73961-1-xueshuai@linux.alibaba.com>
-	<20260124074557.73961-6-xueshuai@linux.alibaba.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0j1d0fyQz2xjP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jan 2026 21:53:23 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769511205; x=1801047205;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5JVIknwk5gyxKcnzOslVb7nY28N3YTAZLF4V1LuATPs=;
+  b=nNDZl+TUJcbWzxH1XUYCF+0wrSiKYDJeGUt4BUzwcYUBlPIW1Mn+kw/Z
+   SdqmLe9uvi8C/HHMA6Yhx8NBmQGiFiQtQnQIwkMOxS0+TRTOHfW4UnYMn
+   zI43Y5wgNQpSsT4GRbIN4z0C7L/uTzxZ+woGI/R6Ckl1TOUezuSIH5Q1O
+   IDCKChL+n3Sa1ktl3aSnQExW5nfR7XPN7s74mUAHlcXj7MdDgHUB9v9Vh
+   BCcgo24gePPdUjdPK8CZO0cTICj/wCXf9iN4iHPfZ5zVLpuLdV3td0OSV
+   YREblh3m75f9P2U8raHvljFDythYwySq7p2NHzrZht9UGyzK2GwgfL11A
+   g==;
+X-CSE-ConnectionGUID: vvi3sgLcTYWBL59f4WFgdA==
+X-CSE-MsgGUID: XJEjsvnfR7a5v60eyadmOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="96167230"
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
+   d="scan'208";a="96167230"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 02:53:21 -0800
+X-CSE-ConnectionGUID: Wq+eU3UVTW+G0hcvS3CrrA==
+X-CSE-MsgGUID: uJpKnxgYQ4e4CIXFaVV5NQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
+   d="scan'208";a="208376105"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 27 Jan 2026 02:53:19 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vkghB-00000000YNk-2m22;
+	Tue, 27 Jan 2026 10:53:17 +0000
+Date: Tue, 27 Jan 2026 18:53:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: wenxiong@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: oe-kbuild-all@lists.linux.dev, maddy@linux.ibm.com, haren@linux.ibm.com,
+	tyreld@linux.ibm.com, Wen Xiong <wenxiong@linux.ibm.com>
+Subject: Re: [PATCH] error path improvement in dlpar add
+Message-ID: <202601271817.2ldcFxjL-lkp@intel.com>
+References: <20260127021845.2326-1-wenxiong@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,112 +84,154 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- dubpeml500005.china.huawei.com (7.214.145.207)
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260127021845.2326-1-wenxiong@linux.ibm.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.01 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+X-Spamd-Result: default: False [-1.21 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16312-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,google.com,kernel.org,linux.intel.com,linux.ibm.com,gmail.com,amd.com,linux.alibaba.com,wunner.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:xueshuai@linux.alibaba.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,m:lukas@wunner.de,s:lists@lfdr.de];
-	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[jonathan.cameron@huawei.com,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16313-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:wenxiong@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:oe-kbuild-all@lists.linux.dev,m:maddy@linux.ibm.com,m:haren@linux.ibm.com,m:tyreld@linux.ibm.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,linuxppc-dev@lists.ozlabs.org];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	HAS_XOIP(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,huawei.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,wunner.de:email]
-X-Rspamd-Queue-Id: 3AB0C9316D
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid,01.org:url]
+X-Rspamd-Queue-Id: 10D7F93331
 X-Rspamd-Action: no action
 
-On Sat, 24 Jan 2026 15:45:57 +0800
-Shuai Xue <xueshuai@linux.alibaba.com> wrote:
+Hi,
 
-> Currently, pcie_clear_device_status() clears the entire PCIe Device
-> Status register (PCI_EXP_DEVSTA), which includes both error status bits
-> and other status bits such as AUX Power Detected (AUXPD) and
-> Transactions Pending (TRPND).
-> 
-> Clearing non-error status bits can interfere with other drivers or
-> subsystems that may rely on these bits. To fix it, only clear the error
-> bits (0xf) while preserving other status bits.
-> 
-> Fixes: ec752f5d54d7 ("PCI/AER: Clear device status bits during ERR_FATAL and ERR_NONFATAL")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Lukas Wunner <lukas@wunner.de>
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Similar to previous. Drag to start of series to make backports easier if
-we think this is a fix that affects real cases.  For stuff that's defined
-in the PCI 6.2 spec, AUX power and Transactions Pending are RO, but
-the interesting one is Emergency Power Reduction Detected which is RW1C
-and hence reason this fix is potentially needed  + future features using
-remaining bits.
+kernel test robot noticed the following build warnings:
 
-I'd be more explicit in the commit message for that.  Talk about it not
-mattering for AUXPD or TRPND because they are RO, vs the ones we
-aren't using yet in Linux with the emergency power reduction detected
-as an example that clearly shows we need to mask this!
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on powerpc/fixes linus/master v6.19-rc7 next-20260126]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-J
+url:    https://github.com/intel-lab-lkp/linux/commits/wenxiong-linux-ibm-com/error-path-improvement-in-dlpar-add/20260127-121714
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20260127021845.2326-1-wenxiong%40linux.ibm.com
+patch subject: [PATCH] error path improvement in dlpar add
+config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20260127/202601271817.2ldcFxjL-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260127/202601271817.2ldcFxjL-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601271817.2ldcFxjL-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> arch/powerpc/kernel/pci-hotplug.c:182:12: warning: more '%' conversions than data arguments [-Wformat-insufficient-args]
+     182 |                 pr_err("%s: unable to add hotplug pci device!\n");
+         |                         ~^
+   include/linux/printk.h:555:25: note: expanded from macro 'pr_err'
+     555 |         printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
+         |                                ^~~
+   include/linux/printk.h:402:21: note: expanded from macro 'pr_fmt'
+     402 | #define pr_fmt(fmt) fmt
+         |                     ^~~
+   include/linux/printk.h:512:53: note: expanded from macro 'printk'
+     512 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+         |                                                     ^~~
+   include/linux/printk.h:484:11: note: expanded from macro 'printk_index_wrap'
+     484 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                         ^~~~
+   1 warning generated.
 
 
-> ---
->  drivers/pci/pci.c             | 2 +-
->  include/uapi/linux/pci_regs.h | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 13dbb405dc31..0b947f90c333 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -2246,7 +2246,7 @@ void pcie_clear_device_status(struct pci_dev *dev)
->  	u16 sta;
->  
->  	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
-> -	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
-> +	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta & PCI_EXP_DEVSTA_ERR);
->  }
->  #endif
->  
-> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-> index 3add74ae2594..f4b68203bc4e 100644
-> --- a/include/uapi/linux/pci_regs.h
-> +++ b/include/uapi/linux/pci_regs.h
-> @@ -534,6 +534,7 @@
->  #define  PCI_EXP_DEVSTA_NFED	0x0002	/* Non-Fatal Error Detected */
->  #define  PCI_EXP_DEVSTA_FED	0x0004	/* Fatal Error Detected */
->  #define  PCI_EXP_DEVSTA_URD	0x0008	/* Unsupported Request Detected */
-> +#define  PCI_EXP_DEVSTA_ERR	0xf	/* Error bits */
->  #define  PCI_EXP_DEVSTA_AUXPD	0x0010	/* AUX Power Detected */
->  #define  PCI_EXP_DEVSTA_TRPND	0x0020	/* Transactions Pending */
->  #define PCI_CAP_EXP_RC_ENDPOINT_SIZEOF_V1	12	/* v1 endpoints without link end here */
+vim +182 arch/powerpc/kernel/pci-hotplug.c
 
+   125	
+   126	/**
+   127	 * pci_hp_add_devices - adds new pci devices to bus
+   128	 * @bus: the indicated PCI bus
+   129	 *
+   130	 * This routine will find and fixup new pci devices under
+   131	 * the indicated bus. This routine presumes that there
+   132	 * might already be some devices under this bridge, so
+   133	 * it carefully tries to add only new devices.  (And that
+   134	 * is how this routine differs from other, similar pcibios
+   135	 * routines.)
+   136	 */
+   137	void pci_hp_add_devices(struct pci_bus *bus)
+   138	{
+   139		int mode, max;
+   140		struct pci_dev *dev;
+   141		struct pci_controller *phb;
+   142		struct device_node *dn = pci_bus_to_OF_node(bus);
+   143		int ret = 0;
+   144	
+   145		if (!dn)
+   146			return;
+   147	
+   148		phb = pci_bus_to_host(bus);
+   149	
+   150		mode = PCI_PROBE_NORMAL;
+   151		if (phb->controller_ops.probe_mode)
+   152			mode = phb->controller_ops.probe_mode(bus);
+   153	
+   154		if (mode == PCI_PROBE_DEVTREE) {
+   155			/* use ofdt-based probe */
+   156			of_rescan_bus(dn, bus);
+   157		} else if (mode == PCI_PROBE_NORMAL &&
+   158			   dn->child && PCI_DN(dn->child)) {
+   159			/*
+   160			 * Use legacy probe. In the partial hotplug case, we
+   161			 * probably have grandchildren devices unplugged. So
+   162			 * we don't check the return value from pci_scan_slot() in
+   163			 * order for fully rescan all the way down to pick them up.
+   164			 * They can have been removed during partial hotplug.
+   165			 */
+   166			traverse_siblings_and_scan_slot(dn, bus);
+   167			max = bus->busn_res.start;
+   168			/*
+   169			 * Scan bridges that are already configured. We don't touch
+   170			 * them unless they are misconfigured (which will be done in
+   171			 * the second scan below).
+   172			 */
+   173			for_each_pci_bridge(dev, bus)
+   174				max = pci_scan_bridge(bus, dev, max, 0);
+   175	
+   176			/* Scan bridges that need to be reconfigured */
+   177			for_each_pci_bridge(dev, bus)
+   178				max = pci_scan_bridge(bus, dev, max, 1);
+   179		}
+   180		ret = pcibios_finish_adding_to_bus(bus);
+   181		if (ret)
+ > 182			pr_err("%s: unable to add hotplug pci device!\n");
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
