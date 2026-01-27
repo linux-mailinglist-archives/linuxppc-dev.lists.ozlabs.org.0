@@ -1,83 +1,100 @@
-Return-Path: <linuxppc-dev+bounces-16322-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16323-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OuuIsbXeGmUtgEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16322-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 16:20:38 +0100
+	id +GYZDybfeGkGtwEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16323-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 16:52:06 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F39968E6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 16:20:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C916A971E4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 16:52:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f0pxr4218z309N;
-	Wed, 28 Jan 2026 02:20:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f0qf95ZPvz309N;
+	Wed, 28 Jan 2026 02:52:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::335"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769527232;
-	cv=none; b=WUliIXJ0m/xpzbNV0spHgXH5x1ENf3At8oNkU2fkqq0YwNOnq3jQG/P30TI3d7qT6C0vFCmNSJi5EwoaVdJw/Yn0GRiM+1DfDWxBFRUjWRuqh1WGzy72xIyrMeMkM8R1o1CRJeteLO+OFZkMN6RlSDTEtZ+6pDx/Q8NopI0Z5lZzgw3cN6ylkGYQ09RX9DqS8Cm/NOzWNCd8KKDq3bQWc4s+ZnWvXciGi/crL5yI3/TljPEDXlsRT/U2ZWBfAm3pQA5j1VfNtzgB6OZ0cOixYp7U6h64ME3HcSoLls0Gjv7IvB/O1OfaAuPUdNa1bAlgsF/Ya/OmfXun1hE4RfEJAA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769529121;
+	cv=none; b=eHswaZ+WR9xOEcofau/N0lxtitHYLgvU4OZ/BIBeb4oAWp4ne0NoVa5C5Vd1I814Yz+h7B1P1/Hz24ctDGxocySuGD49FuAyKzFYCVvIvRU9Wf50zj9lpKKjB9mfcuSB11un1710mb3JcP+CUTgLbAFKuPjjfIqT+rjQRLChwOkuCYkFRHHfMvB799NRpbDEDmp1EFTcKoEROAdDOXnsMqoG0Ibncp0TnqrbbJvyHIfMUXFqpSBRrlHg+DWD1mRgim5fxEZ9/UzZo3JpS3BYcxxqus3XUzyfUtCuUZ7lp8BDtnutXayEsXgD0yGnCOe1NrXFsszWKd7f5rhMdilRIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769527232; c=relaxed/relaxed;
-	bh=TpVju2z52ieKZ9g+UW8bQZ3qR3Ja1fAXqmPTBm/6Msg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BqbCXfw64XeY9O3DjqHzzltatGQfKJn86TKumQLdbnL7esvHDkjacGLofxtOaeIG2LVd0gIMbrCNFSlBmn+2SWT8DPEGB15jGf/F5FHJjhWbSAlL/ffGtq69r1c9vg6hxBnMcq27P703FQXaEOkBKtGtKapwM++aHxZVOtowEKiE6zp7t7ZdjAb/StGx8QuUkTdALJmbf/KaZJBS6cOtlx7jj2X608aAnRRbvdRq6jWWOuQ/xIzZxABxrPieWBKNQ6nHbkj9/VU+cmrHBfoXw8RjcqmJsYIkMO1kLL4PxAjQyOIOskVhbqnZHpG4klYtug6zQTwIJrLdtp3keZWmNg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=BeVRVPqO; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=petr.pavlu@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+	t=1769529121; c=relaxed/relaxed;
+	bh=0OxxS5n1xieZUpH8YohdiA+9VRXqomSLAoDHyJVmPjo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OTre4v7V8fn+Shl4FrOQMW7T+GFRuU3Q2inoX/4QG+xOl7azK+dc4+IhRjyd7HZopGWHYTbteSWGbCUlTpQhjDtPZlwplSwx/vjI2Iy2PWByICHogMicsteHYRsZkH7WLvqZAg4QzBhBhQJKi+NCpj1I1mAP6RZZNv0udMCxMaIpv9mjy79EaPR5Dmb2pMIn7C667ZF3tPyXM/tHGlFuGd1DKs6eYdaDchit+l6W1VnEXbIa9b7mRd2WhVtbYnbaHfpPJ3B3QHwp44nNg84ICsSBX9I1Argmhqz+UXuNuIlFS60QyPGGKkxJX1m+y9IyY3L/AnvzJoIRlXuHieY0YQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R2OZ3tNd; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=BeVRVPqO;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R2OZ3tNd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=petr.pavlu@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0pxn48l6z2xXB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jan 2026 02:20:27 +1100 (AEDT)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-4801d7c72a5so45417495e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jan 2026 07:20:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769527219; x=1770132019; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TpVju2z52ieKZ9g+UW8bQZ3qR3Ja1fAXqmPTBm/6Msg=;
-        b=BeVRVPqO0O305RjMJiBj8lTEXhjaLTyvvgDhBrRtBO00+Wx12QPri93zNKjhBW++Ez
-         fqLqKxjjyF7U8HLtmQOHR6vpkDk0mVjV9At2pQLhMOxNkFb3oIAYM+PBnxSNJ0LKzxdH
-         NfVS8Mxq9fQ/fxa4BgP1/EjhSqcL5Mtp/gnpXHmMeOFOuc5io+nxFJxETdxGcrFNkgsI
-         /fiAlujFBHTKZbVIWRIs1TBiS7XF9nepFlVh3B/v8FzTnFkM6FLEdPgqjpU2KdhHputv
-         diSmbUBuJEVxah2De4nt4Vd+ABsTbS0bQ+rsNSbKgw0JYBybk1M4aBzxEeVNW/gNTJsi
-         0Olg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769527219; x=1770132019;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TpVju2z52ieKZ9g+UW8bQZ3qR3Ja1fAXqmPTBm/6Msg=;
-        b=tWfJvZGMcbG2Rj85S/+7M3MhUqi7skFBlpGqe/PkLXhS8jT7fnYlFmOGIZhuEozmpi
-         BDBBHeOwjj9qrtNemQKAvnvRr8xAUDeaCRcZUksw0V26j7lEslfQChE5vIcwzDkEJi9K
-         WItuLRy51esXSkMhaBps7f6cMmphgBco2wqasTVK40gRDWQOl1a8Mo1eDDBY5KST0jKx
-         tbDYeyr8aBbMpq1JmjiaJAAoGimO440tXualjLYwOLuQHaoylbG/vxrwgcVJVcAq8Rte
-         7TzTDDa2lM30lav/Yv/T10srqlJVaKFJ54m+xBPyCsHlVdz/7cp0iAlIFerrH4YLgpyA
-         uMPg==
-X-Forwarded-Encrypted: i=1; AJvYcCXXfOVHBnAqVOwHWgx4T0TibJ9npfbexMLXJZSS2R0+fyNkpMVjO9rnNOHOEl4xiP9nwDI8jECfOBNviWA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyKC8h/sXPUc6CqQ2tDQOtOAO1adabF4zOUr487wNyI7dAeQOsZ
-	8fI/Yze165IJjbZaUmXT5z310+cvX2d3+pQuuXHR8rv/tjHw3j5nbGkF08mAZ0et0G0=
-X-Gm-Gg: AZuq6aKvoTvtDrMo4gWQDiYC6uwNvq3YpKzEC0RreNNI/p31XLULn/uEkNwN2XhNRiG
-	+os9wPdqwUyVp+wGcvTDQwWUNF7WpoXF8lfz3ONRR5XCx5weZuncJ6oFpyq470aRIrcIy+VvWP4
-	nt/nzrLL7TYeFQ0Iqku2fVvkLFKB4v2OCO7dh/6BzIEzNDIa2JPFg/6j8nK4/TRr1yaGSMj5aG3
-	KXbd3rmbKGwEi8ZBY5Y3C+JIDG0HNN5SU8VVBQAIHOZjR9v5/5eiNAKBNhEd3xQaI/eBr/ky4UI
-	/RiRM354aVQCB6iwFdKUuBoTecs4xYC30fCjo10LCByTnko71n5qrnRzQ7OPFqeXpKYAoiQMHkq
-	sRUh5WymXC4r49DLvgFxDwOtJNSZBHEAdwCibLT8p1mZuQL2XJyqVBR0bsDdGafNLrqYRjDDAhf
-	rZmNo13H+WfHNeHysw4icCpjPjZfgcWMRd8S2nk+h/
-X-Received: by 2002:a05:600c:5553:b0:480:1c53:2085 with SMTP id 5b1f17b1804b1-4806a313f35mr20307595e9.19.1769527219144;
-        Tue, 27 Jan 2026 07:20:19 -0800 (PST)
-Received: from [10.0.1.22] (109-81-1-107.rct.o2.cz. [109.81.1.107])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066c034dfsm67200105e9.10.2026.01.27.07.20.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jan 2026 07:20:18 -0800 (PST)
-Message-ID: <52cbbccf-d5b6-4a33-b16a-4a09fe5e64d3@suse.com>
-Date: Tue, 27 Jan 2026 16:20:15 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0qf80KQLz2xc8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jan 2026 02:51:59 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60R7WMWC008927;
+	Tue, 27 Jan 2026 15:51:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=0OxxS5n1xieZUpH8YohdiA+9VRXqom
+	SLAoDHyJVmPjo=; b=R2OZ3tNd9SFjbhgmya+gAkR1LeSUyxH/4qTui9x0/Uant4
+	+He/E+9jhq17CXdAWqvn5tlXSBsBIY0k423Lv7jq6+YfHZeVMd54Yo78qQxKVPuq
+	dd6+jAI5VodjgFmoPT7n1593r1Fb9KKf6vYGR1TGJZ3ta6ySO2jEKN+/Q8hmskV6
+	M8b11DKp4JlY2KTeW8cYzln1cfyON+Phmgew57hSVAbypNIaxaMdvoh0QMqa7FG9
+	hBGIKEIipRzww0uYI0TSD1KqYz0ocdD/Bq8GtccsOZugDFGRaiamzsY71sb3mD3g
+	D02I83U0zVNelxPrFSiVffd8VmGWOQFku/D27YOQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnr64dmr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jan 2026 15:51:44 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60RFhAPC013427;
+	Tue, 27 Jan 2026 15:51:43 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnr64dmn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jan 2026 15:51:43 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60RD696c019647;
+	Tue, 27 Jan 2026 15:51:42 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw9dn18ec-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jan 2026 15:51:42 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60RFpc0B25821738
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 27 Jan 2026 15:51:38 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4FDCE20040;
+	Tue, 27 Jan 2026 15:51:38 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F2062004B;
+	Tue, 27 Jan 2026 15:51:38 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 27 Jan 2026 15:51:38 +0000 (GMT)
+Date: Tue, 27 Jan 2026 16:51:36 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>, Rohan McLure <rmclure@nvidia.com>,
+        Christophe Leroy <chleroy@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
+        x86@kernel.org, Nicholas Miehlbradt <nicholas@linux.ibm.com>,
+        Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+        Andrew Donnellan <andrew+kernel@donnellan.id.au>,
+        Srish Srinivasan <ssrish@linux.ibm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v18 10/12] powerpc/mm: Implement *_user_accessible_page()
+ for ptes
+Message-ID: <20260127155136.2808076Add-agordeev@linux.ibm.com>
+References: <20251219-pgtable_check_v18rebase-v18-0-755bc151a50b@linux.ibm.com>
+ <20251219-pgtable_check_v18rebase-v18-10-755bc151a50b@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,325 +108,117 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 08/17] module: Deduplicate signature extraction
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen
- <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>,
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>, Jonathan Corbet <corbet@lwn.net>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
- Roberto Sassu <roberto.sassu@huawei.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Eric Snowberg <eric.snowberg@oracle.com>,
- Nicolas Schier <nicolas.schier@linux.dev>, Daniel Gomez
- <da.gomez@kernel.org>, Aaron Tomlin <atomlin@atomlin.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Nicolas Schier <nsc@kernel.org>,
- Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>,
- Xiu Jianfeng <xiujianfeng@huawei.com>,
- =?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
- Arnout Engelen <arnout@bzzt.net>, Mattia Rizzolo <mattia@mapreri.org>,
- kpcyrd <kpcyrd@archlinux.org>, Christian Heusel <christian@heusel.eu>,
- =?UTF-8?Q?C=C3=A2ju_Mihai-Drosi?= <mcaju95@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
- linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
-References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
- <20260113-module-hashes-v4-8-0b932db9b56b@weissschuh.net>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260113-module-hashes-v4-8-0b932db9b56b@weissschuh.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219-pgtable_check_v18rebase-v18-10-755bc151a50b@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDEyOSBTYWx0ZWRfXxChMywYP3CXN
+ le5d6yn3Qq6MfjN6zC+Z+DQqleCzkUqKSkhMwpJSnn1Mj3zS2dO0nICsNnXEMtWsE3vyb83rzjQ
+ 6kso4VpQ4wBoGpfXa+uDicwe3s/Tx9G27+lBkSjIdnBpBe924kovkU2wInK8zp4fCnVcBOZS31H
+ BJ3DIi34TvoRR/5d3SQODO1mtpcggsmfvH/oLD96EUws0DAq+gksrBtgsBJS82RwOsHFmTzrNBL
+ CNwOe0QD3sOFuH+hrRzC0HuLjsyg7NKVHQVFym8CqHd55vAIbLaoGLE/k7/e/ZOrw+hMYWVP7oQ
+ 3uUxUrs0HYHgzU6E9dLRct4A1ePYLRq2MVcmQ4XlAiQw0ogB0VlRgK8V/qrltGoxEmwPlQvaIpZ
+ oDSvwJEhdafxFukf2IRJrEZNbsOh1QhzlSOcS3BDkUFas4hDHNqKbsmPKpZG1pCe2JqB0joy895
+ KqtIgfb/A4B51Vjsq2g==
+X-Proofpoint-GUID: 8EJeeV34r0_XNIY9EmhfW46Wh100FMUs
+X-Proofpoint-ORIG-GUID: Bk5rloqyZadRkxusHYTPbD17s7SpVN9w
+X-Authority-Analysis: v=2.4 cv=X+Vf6WTe c=1 sm=1 tr=0 ts=6978df10 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=cPWeadVanShsLn6B-a8A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-27_03,2026-01-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1011 spamscore=0 adultscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2601270129
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
+X-Spamd-Result: default: False [0.29 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-16323-lists,linuxppc-dev=lfdr.de];
+	FREEMAIL_CC(0.00)[kvack.org,lists.ozlabs.org,soleen.com,linux-foundation.org,linux.ibm.com,gmail.com,nvidia.com,kernel.org,ghiti.fr,dorminy.me,donnellan.id.au,lists.infradead.org,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16322-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux@weissschuh.net,m:nathan@kernel.org,m:arnd@arndb.de,m:mcgrof@kernel.org,m:samitolvanen@google.com,m:da.gomez@samsung.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:naveen@kernel.org,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:nicolas.schier@linux.dev,m:da.gomez@kernel.org,m:atomlin@atomlin.com,m:chleroy@kernel.org,m:nsc@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:xiujianfeng@huawei.com,m:f.gruenbichler@proxmox.com,m:arnout@bzzt.net,m:mattia@mapreri.org,m:kpcyrd@archlinux.org,m:christian@heusel.eu,m:mcaju95@gmail.com,m:bigeasy@linutronix.de,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-integrity@vger.kerne
- l.org,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[petr.pavlu@suse.com,linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[40];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:ajd@linux.ibm.com,m:linux-mm@kvack.org,m:linuxppc-dev@lists.ozlabs.org,m:pasha.tatashin@soleen.com,m:akpm@linux-foundation.org,m:maddy@linux.ibm.com,m:npiggin@gmail.com,m:rmclure@nvidia.com,m:chleroy@kernel.org,m:alex@ghiti.fr,m:x86@kernel.org,m:nicholas@linux.ibm.com,m:sweettea-kernel@dorminy.me,m:andrew+kernel@donnellan.id.au,m:ssrish@linux.ibm.com,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:andrew@donnellan.id.au,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FORGED_SENDER(0.00)[agordeev@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[kernel.org,arndb.de,google.com,samsung.com,paul-moore.com,namei.org,hallyn.com,lwn.net,linux.ibm.com,ellerman.id.au,gmail.com,huawei.com,oracle.com,linux.dev,atomlin.com,oss.cyber.gouv.fr,proxmox.com,bzzt.net,mapreri.org,archlinux.org,heusel.eu,linutronix.de,vger.kernel.org,lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWELVE(0.00)[12];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[petr.pavlu@suse.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[suse.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FROM_NEQ_ENVFROM(0.00)[agordeev@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linuxppc-dev,kernel];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,suse.com:mid,suse.com:dkim]
-X-Rspamd-Queue-Id: 11F39968E6
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linux.ibm.com:mid]
+X-Rspamd-Queue-Id: C916A971E4
 X-Rspamd-Action: no action
 
-On 1/13/26 1:28 PM, Thomas Weißschuh wrote:
-> The logic to extract the signature bits from a module file are
-> duplicated between the module core and IMA modsig appraisal.
-> 
-> Unify the implementation.
-> 
-> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> ---
->  include/linux/module_signature.h    |  4 +--
->  kernel/module/signing.c             | 52 +++++++------------------------------
->  kernel/module_signature.c           | 41 +++++++++++++++++++++++++++--
->  security/integrity/ima/ima_modsig.c | 24 ++++-------------
->  4 files changed, 56 insertions(+), 65 deletions(-)
-> 
-> diff --git a/include/linux/module_signature.h b/include/linux/module_signature.h
-> index 7eb4b00381ac..186a55effa30 100644
-> --- a/include/linux/module_signature.h
-> +++ b/include/linux/module_signature.h
-> @@ -40,7 +40,7 @@ struct module_signature {
->  	__be32	sig_len;	/* Length of signature data */
->  };
->  
-> -int mod_check_sig(const struct module_signature *ms, size_t file_len,
-> -		  const char *name);
-> +int mod_split_sig(const void *buf, size_t *buf_len, bool mangled,
-> +		  size_t *sig_len, const u8 **sig, const char *name);
->  
->  #endif /* _LINUX_MODULE_SIGNATURE_H */
-> diff --git a/kernel/module/signing.c b/kernel/module/signing.c
-> index fe3f51ac6199..6d64c0d18d0a 100644
-> --- a/kernel/module/signing.c
-> +++ b/kernel/module/signing.c
-> @@ -37,54 +37,22 @@ void set_module_sig_enforced(void)
->  	sig_enforce = true;
->  }
->  
-> -/*
-> - * Verify the signature on a module.
-> - */
-> -static int mod_verify_sig(const void *mod, struct load_info *info)
-> -{
-> -	struct module_signature ms;
-> -	size_t sig_len, modlen = info->len;
-> -	int ret;
-> -
-> -	pr_devel("==>%s(,%zu)\n", __func__, modlen);
-> -
-> -	if (modlen <= sizeof(ms))
-> -		return -EBADMSG;
-> -
-> -	memcpy(&ms, mod + (modlen - sizeof(ms)), sizeof(ms));
-> -
-> -	ret = mod_check_sig(&ms, modlen, "module");
-> -	if (ret)
-> -		return ret;
-> -
-> -	sig_len = be32_to_cpu(ms.sig_len);
-> -	modlen -= sig_len + sizeof(ms);
-> -	info->len = modlen;
-> -
-> -	return verify_pkcs7_signature(mod, modlen, mod + modlen, sig_len,
-> -				      VERIFY_USE_SECONDARY_KEYRING,
-> -				      VERIFYING_MODULE_SIGNATURE,
-> -				      NULL, NULL);
-> -}
-> -
->  int module_sig_check(struct load_info *info, int flags)
->  {
-> -	int err = -ENODATA;
-> -	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
-> +	int err;
->  	const char *reason;
->  	const void *mod = info->hdr;
-> +	size_t sig_len;
-> +	const u8 *sig;
->  	bool mangled_module = flags & (MODULE_INIT_IGNORE_MODVERSIONS |
->  				       MODULE_INIT_IGNORE_VERMAGIC);
-> -	/*
-> -	 * Do not allow mangled modules as a module with version information
-> -	 * removed is no longer the module that was signed.
-> -	 */
-> -	if (!mangled_module &&
-> -	    info->len > markerlen &&
-> -	    memcmp(mod + info->len - markerlen, MODULE_SIG_STRING, markerlen) == 0) {
-> -		/* We truncate the module to discard the signature */
-> -		info->len -= markerlen;
-> -		err = mod_verify_sig(mod, info);
-> +
-> +	err = mod_split_sig(info->hdr, &info->len, mangled_module, &sig_len, &sig, "module");
-> +	if (!err) {
-> +		err = verify_pkcs7_signature(mod, info->len, sig, sig_len,
-> +					     VERIFY_USE_SECONDARY_KEYRING,
-> +					     VERIFYING_MODULE_SIGNATURE,
-> +					     NULL, NULL);
->  		if (!err) {
->  			info->sig_ok = true;
->  			return 0;
+On Fri, Dec 19, 2025 at 04:09:42AM +1100, Andrew Donnellan wrote:
 
-The patch looks to modify the behavior when mangled_module is true.
+Hi All,
 
-Previously, module_sig_check() didn't attempt to extract the signature
-in such a case and treated the module as unsigned. The err remained set
-to -ENODATA and the function subsequently consulted module_sig_check()
-and security_locked_down() to determine an appropriate result.
-
-Newly, module_sig_check() calls mod_split_sig(), which skips the
-extraction of the marker ("~Module signature appended~\n") from the end
-of the module and instead attempts to read it as an actual
-module_signature. The value is then passed to mod_check_sig() which
-should return -EBADMSG. The error is propagated to module_sig_check()
-and treated as fatal, without consulting module_sig_check() and
-security_locked_down().
-
-I think the mangled_module flag should not be passed to mod_split_sig()
-and it should be handled solely by module_sig_check().
-
-> diff --git a/kernel/module_signature.c b/kernel/module_signature.c
-> index 00132d12487c..b2384a73524c 100644
-> --- a/kernel/module_signature.c
-> +++ b/kernel/module_signature.c
-> @@ -8,6 +8,7 @@
->  
->  #include <linux/errno.h>
->  #include <linux/printk.h>
-> +#include <linux/string.h>
->  #include <linux/module_signature.h>
->  #include <asm/byteorder.h>
->  
-> @@ -18,8 +19,8 @@
->   * @file_len:	Size of the file to which @ms is appended.
->   * @name:	What is being checked. Used for error messages.
->   */
-> -int mod_check_sig(const struct module_signature *ms, size_t file_len,
-> -		  const char *name)
-> +static int mod_check_sig(const struct module_signature *ms, size_t file_len,
-> +			 const char *name)
->  {
->  	if (be32_to_cpu(ms->sig_len) >= file_len - sizeof(*ms))
->  		return -EBADMSG;
-> @@ -44,3 +45,39 @@ int mod_check_sig(const struct module_signature *ms, size_t file_len,
->  
->  	return 0;
->  }
-> +
-> +int mod_split_sig(const void *buf, size_t *buf_len, bool mangled,
-> +		  size_t *sig_len, const u8 **sig, const char *name)
+...
+> Page table checking depends on architectures providing an
+> implementation of p{te,md,ud}_user_accessible_page.
+...
+> +static inline bool pte_user_accessible_page(pte_t pte, unsigned long addr)
 > +{
-> +	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
-> +	struct module_signature ms;
-> +	size_t modlen = *buf_len;
-> +	int ret;
-> +
-> +	/*
-> +	 * Do not allow mangled modules as a module with version information
-> +	 * removed is no longer the module that was signed.
-> +	 */
-> +	if (!mangled &&
-> +	    *buf_len > markerlen &&
-> +	    memcmp(buf + modlen - markerlen, MODULE_SIG_STRING, markerlen) == 0) {
-> +		/* We truncate the module to discard the signature */
-> +		modlen -= markerlen;
-> +	}
-> +
-> +	if (modlen <= sizeof(ms))
-> +		return -EBADMSG;
-> +
-> +	memcpy(&ms, buf + (modlen - sizeof(ms)), sizeof(ms));
-> +
-> +	ret = mod_check_sig(&ms, modlen, name);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*sig_len = be32_to_cpu(ms.sig_len);
-> +	modlen -= *sig_len + sizeof(ms);
-> +	*buf_len = modlen;
-> +	*sig = buf + modlen;
-> +
-> +	return 0;
+> +	return pte_present(pte) && !is_kernel_addr(addr);
 > +}
-> diff --git a/security/integrity/ima/ima_modsig.c b/security/integrity/ima/ima_modsig.c
-> index 3265d744d5ce..a57342d39b07 100644
-> --- a/security/integrity/ima/ima_modsig.c
-> +++ b/security/integrity/ima/ima_modsig.c
-> @@ -40,44 +40,30 @@ struct modsig {
->  int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t buf_len,
->  		    struct modsig **modsig)
->  {
-> -	const size_t marker_len = strlen(MODULE_SIG_STRING);
-> -	const struct module_signature *sig;
-> +	size_t buf_len_sz = buf_len;
->  	struct modsig *hdr;
->  	size_t sig_len;
-> -	const void *p;
-> +	const u8 *sig;
->  	int rc;
->  
-> -	if (buf_len <= marker_len + sizeof(*sig))
-> -		return -ENOENT;
-> -
-> -	p = buf + buf_len - marker_len;
-> -	if (memcmp(p, MODULE_SIG_STRING, marker_len))
-> -		return -ENOENT;
-> -
-> -	buf_len -= marker_len;
-> -	sig = (const struct module_signature *)(p - sizeof(*sig));
-> -
-> -	rc = mod_check_sig(sig, buf_len, func_tokens[func]);
-> +	rc = mod_split_sig(buf, &buf_len_sz, true, &sig_len, &sig, func_tokens[func]);
 
-Passing mangled=true to mod_split_sig() seems incorrect here. It causes
-that the function doesn't properly extract the signature marker at the
-end of the module, no?
+We looked into implementing this for s390 and for us the only possible
+user vs kernel entry attribute is comparing mm to init_mm. The generic
+code already does that, but I am not sure whether such check alone is
+enough.
 
->  	if (rc)
->  		return rc;
->  
-> -	sig_len = be32_to_cpu(sig->sig_len);
-> -	buf_len -= sig_len + sizeof(*sig);
-> -
->  	/* Allocate sig_len additional bytes to hold the raw PKCS#7 data. */
->  	hdr = kzalloc(struct_size(hdr, raw_pkcs7, sig_len), GFP_KERNEL);
->  	if (!hdr)
->  		return -ENOMEM;
->  
->  	hdr->raw_pkcs7_len = sig_len;
-> -	hdr->pkcs7_msg = pkcs7_parse_message(buf + buf_len, sig_len);
-> +	hdr->pkcs7_msg = pkcs7_parse_message(sig, sig_len);
->  	if (IS_ERR(hdr->pkcs7_msg)) {
->  		rc = PTR_ERR(hdr->pkcs7_msg);
->  		kfree(hdr);
->  		return rc;
->  	}
->  
-> -	memcpy(hdr->raw_pkcs7, buf + buf_len, sig_len);
-> +	memcpy(hdr->raw_pkcs7, sig, sig_len);
->  
->  	/* We don't know the hash algorithm yet. */
->  	hdr->hash_algo = HASH_ALGO__LAST;
-> 
+But it occured to me that we could implement e.g. ARCH_SUPPORTS_PTC_USER_PAGE
+that adds an extra field to struct page_table_check:
 
--- 
-Thanks,
-Petr
+struct page_table_check {
+	atomic_t anon_map_count;
+	atomic_t file_map_count;
+#ifdef CONFIG_ARCH_SUPPORTS_PTC_USER_PAGE
+	bool user_page;
+#endif
+};
+
+Page Table Extensions already used by PTC, so that would fit pretty natural.
+Once a page is mapped into a user process it would be marked as user_page,
+while p{te,md,ud}_user_accessible_page() could go generic:
+
+static inline bool pte_user_accessible_page(pte_t pte, unsigned long addr)
+{
+	return pte_present(pte) && page_table_check_is_user_page(pte);
+}
+...
+
+I guess, many architectures without viable p.._user() support could benefit
+from that.
+
+But I am not sure whether is it doable, so opinions are very welcomed!
+
+Thanks!
 
