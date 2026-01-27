@@ -1,76 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-16313-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16314-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAEcFSuZeGkWrQEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16313-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:53:31 +0100
+	id 6N9FH5fPeGmNtQEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16314-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 15:45:43 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D7F93331
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 11:53:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 840CF95F0E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jan 2026 15:45:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f0j1g4vkjz309N;
-	Tue, 27 Jan 2026 21:53:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f0p9W0Y11z309S;
+	Wed, 28 Jan 2026 01:45:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.7
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769511207;
-	cv=none; b=oylac2GeCAGWVDgesqZA+B51+RRiX/X7BMqvC1xIosMciq7E6F2jGq6t3knHBguP2oxSah3zXB2aiEc36X/E+mnoQAqGwJCoTYTSwx0vxj3H/DRUR8/p89lPbO7wdbDILZ5sObLrUByYWFDPRVoiIYTnd36DYOt5I3xa42uWbs5VxYueQndQn7TbOtbmBeUBduLaymW0Low2jF+s/osOEIbsd3Ib+LK23yoXvpPrgpMwaq5M3KfRKMw3FzweJW/rJA3zSWaydcCyo40DK4XaA11i9qKDUTZZOybfUQFUyHDgunFDqHWGEivauex2obrAP5b6eZe9k7AMT5JePog2vQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769525134;
+	cv=none; b=DuRXrB7CnEk1plD8aFM+INDOtRlEQDCAh0izfo46TGBm78qV+UQW6GvLt+IUuXOsxajR//KIZNyPfxMLcnd6VnielqosnSaD3EpfgJDaTkBaZ1MEJ/5WD+hg2tUTvpiYiNGdnXw8El+LLdNrJB/sli1j7VADlCOzKY5Hq/3900Q1nZJpy2Ax+R/MaQcdOZw09idII1gpdqQoEfmp/l7EsVl5wEWq9/a12gQuSnW+m7nV8q4iHgL8HH2H8fk4sCCNUdKUt3f8C3Ezxyus2GJSj00Qm3OdVAbpnGCX9KU6fUV8E5o/nhgzzwYqCnG5scOWwWBkHUefA+V3hn/FaLFvGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769511207; c=relaxed/relaxed;
-	bh=5Zz3Wvw2skGp1+4xP3UWjyn0FpYnUP/vHGLhsQfqFHM=;
+	t=1769525134; c=relaxed/relaxed;
+	bh=ZT2n0nSZugFte3TRA8IFPlQN20B/3iyqkX0gewzEVUU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I3aqivV8GMw4jALA435KjSUmkUBnO+Bs/khS6W0lIdx6qx5+ryKNswpkEUf9cma8AoolXkMehEHCzXT6D2jw0z0KDY+/Hs1ORUr3HlLqbudF/wwfqGDpyFv+HmE6icEAEAH690VFOkVA7TarE30hXHhmF4GqwNCrXXYXpRw1+FdTLWj2N4+e5OKMJzf/5/lC6O5Ubwpb1ZEFSXk+rtxn70a43ddEDJ2ZlFkMELEJxPo722lXMZp8rg5BwbTlcE/g7tvK2GDqHsLsFh92SW6vElkzu5O2oIID/p8g8rIp7pHhVL9mPMz9GveFbXgB0NUxrhxix7vVrUlPVbFwWBBsPw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nNDZl+TU; dkim-atps=neutral; spf=pass (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=SgLV7rubf8oz/kHtFrZBcdlufC2G4pcoctH7ZparNjGzmIpWKQJI6Y8aHNX5GpR9ch6acN9IOj4pXm0PYsM0GIzadR4wZoQdShMv2MZqMIMk9VuqLMQiV3j0RL99dvv8QatGz6N+UKjO2VdTe81Jf9Fvbw7utgM75E0LSSCgih309aCAodebM8t3DOkjUJfvUmxue7D/Djt4UZyyYHpS1hufDdH+6mVz46+asqhf3lllVw8OQ2rrGj0ZPnwU9I59pX7SAYFSym2pSin0F9APgVioFII3sybTzZaKDyCfttLgvdijtwZkWlAacyNJ6G647At16+HuDRiq+dkEkJB+2Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k1FxynCb; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nNDZl+TU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k1FxynCb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0j1d0fyQz2xjP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jan 2026 21:53:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769511205; x=1801047205;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5JVIknwk5gyxKcnzOslVb7nY28N3YTAZLF4V1LuATPs=;
-  b=nNDZl+TUJcbWzxH1XUYCF+0wrSiKYDJeGUt4BUzwcYUBlPIW1Mn+kw/Z
-   SdqmLe9uvi8C/HHMA6Yhx8NBmQGiFiQtQnQIwkMOxS0+TRTOHfW4UnYMn
-   zI43Y5wgNQpSsT4GRbIN4z0C7L/uTzxZ+woGI/R6Ckl1TOUezuSIH5Q1O
-   IDCKChL+n3Sa1ktl3aSnQExW5nfR7XPN7s74mUAHlcXj7MdDgHUB9v9Vh
-   BCcgo24gePPdUjdPK8CZO0cTICj/wCXf9iN4iHPfZ5zVLpuLdV3td0OSV
-   YREblh3m75f9P2U8raHvljFDythYwySq7p2NHzrZht9UGyzK2GwgfL11A
-   g==;
-X-CSE-ConnectionGUID: vvi3sgLcTYWBL59f4WFgdA==
-X-CSE-MsgGUID: XJEjsvnfR7a5v60eyadmOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="96167230"
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
-   d="scan'208";a="96167230"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 02:53:21 -0800
-X-CSE-ConnectionGUID: Wq+eU3UVTW+G0hcvS3CrrA==
-X-CSE-MsgGUID: uJpKnxgYQ4e4CIXFaVV5NQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
-   d="scan'208";a="208376105"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 27 Jan 2026 02:53:19 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vkghB-00000000YNk-2m22;
-	Tue, 27 Jan 2026 10:53:17 +0000
-Date: Tue, 27 Jan 2026 18:53:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: wenxiong@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
-Cc: oe-kbuild-all@lists.linux.dev, maddy@linux.ibm.com, haren@linux.ibm.com,
-	tyreld@linux.ibm.com, Wen Xiong <wenxiong@linux.ibm.com>
-Subject: Re: [PATCH] error path improvement in dlpar add
-Message-ID: <202601271817.2ldcFxjL-lkp@intel.com>
-References: <20260127021845.2326-1-wenxiong@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f0p9T6gvpz2xXB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jan 2026 01:45:33 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D11C043965;
+	Tue, 27 Jan 2026 14:45:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C21C116C6;
+	Tue, 27 Jan 2026 14:45:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769525131;
+	bh=0YGeP0O62Pc53bwcfFkz6Pdb1KEkMMpDyI0yE++MS9Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k1FxynCbgFyhQaZBWbdQ3U3/gG7zvUiYTdT05s4SfRvueGwkwdMXfQ67RXYmWXNMt
+	 nJcwbHtZ7igNbyW3UV297EDBMkUnggDFqkNCcRRA+vRpQtytrAnvyEHNrTU6qtdODo
+	 1LbCma+SiMl2LT5ZuLyH7tZpYFN9UJ2XKhsK4xuHGPaRH8LD/O8BLUfTlNb0oHlPNi
+	 O/otIJveig2kXrzcfYZMWTt5fvWceAjmmlhVGZjLExQFzzscRRARYyYJJl4ENA3zWK
+	 zldlROZ0P7SlFX+FcV4aIGqzhLCTEzmtf2d26kCH+JflCjYXc+hEeq7F76jfRgZo4e
+	 vcqAUDXHE61jQ==
+Date: Tue, 27 Jan 2026 15:45:29 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Ben Segall <bsegall@google.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>, Jan Kiszka <jan.kiszka@siemens.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mel Gorman <mgorman@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Xin Zhao <jackzxcui1989@163.com>, linux-pm@vger.kernel.org,
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 05/15] s390/time: Prepare to stop elapsing in
+ dynticks-idle
+Message-ID: <aXjPiZCHZ77R4awi@localhost.localdomain>
+References: <20260116145208.87445-1-frederic@kernel.org>
+ <20260116145208.87445-6-frederic@kernel.org>
+ <20260121121748.9719Bab-hca@linux.ibm.com>
+ <aXEVM-04lj0lntMr@localhost.localdomain>
+ <20260122144045.38254A3e-hca@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,154 +100,119 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260127021845.2326-1-wenxiong@linux.ibm.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260122144045.38254A3e-hca@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.21 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16313-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16314-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:wenxiong@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:oe-kbuild-all@lists.linux.dev,m:maddy@linux.ibm.com,m:haren@linux.ibm.com,m:tyreld@linux.ibm.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:hca@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:chleroy@kernel.org,m:rafael@kernel.org,m:agordeev@linux.ibm.com,m:anna-maria@linutronix.de,m:bsegall@google.com,m:boqun.feng@gmail.com,m:borntraeger@linux.ibm.com,m:dietmar.eggemann@arm.com,m:mingo@redhat.com,m:jan.kiszka@siemens.com,m:joelagnelf@nvidia.com,m:juri.lelli@redhat.com,m:kbingham@kernel.org,m:maddy@linux.ibm.com,m:mgorman@suse.de,m:mpe@ellerman.id.au,m:neeraj.upadhyay@kernel.org,m:npiggin@gmail.com,m:paulmck@kernel.org,m:peterz@infradead.org,m:rostedt@goodmis.org,m:svens@linux.ibm.com,m:tglx@linutronix.de,m:urezki@gmail.com,m:vschneid@redhat.com,m:gor@linux.ibm.com,m:vincent.guittot@linaro.org,m:viresh.kumar@linaro.org,m:jackzxcui1989@163.com,m:linux-pm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:boqunfeng@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[34];
+	FORGED_SENDER(0.00)[frederic@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,linux.ibm.com,linutronix.de,google.com,gmail.com,arm.com,redhat.com,siemens.com,nvidia.com,suse.de,ellerman.id.au,infradead.org,goodmis.org,linaro.org,163.com,lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[frederic@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid,01.org:url]
-X-Rspamd-Queue-Id: 10D7F93331
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[localhost.localdomain:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 840CF95F0E
 X-Rspamd-Action: no action
 
-Hi,
+Le Thu, Jan 22, 2026 at 03:40:45PM +0100, Heiko Carstens a écrit :
+> On Wed, Jan 21, 2026 at 07:04:35PM +0100, Frederic Weisbecker wrote:
+> > BTW here is a question for you, does the timer (as in get_cpu_timer()) still
+> > decrements while in idle? I would assume not, given how lc->system_timer
+> > is updated in account_idle_time_irq().
+> 
+> It is not decremented while in idle (or when the hypervisor schedules
+> the virtual cpu away). We use the fact that the cpu timer is not
+> decremented when the virtual cpu is not running vs the real
+> time-of-day clock to calculate steal time.
 
-kernel test robot noticed the following build warnings:
+Ok, good then!
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on powerpc/fixes linus/master v6.19-rc7 next-20260126]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> > And another question in this same function is this :
+> > 
+> >     lc->steal_timer += idle->clock_idle_enter - lc->last_update_clock;
+> > 
+> > clock_idle_enter is updated right before halting the CPU. But when was
+> > last_update_clock updated last? Could be either task switch to idle, or
+> > a previous idle tick interrupt or a previous idle IRQ entry. In any case
+> > I'm not sure the difference is meaningful as steal time.
+> > 
+> > I must be missing something.
+> 
+> "It has been like that forever" :) However I do agree that this doesn't seem
+> to make any sense. At least with the current implementation I cannot see how
+> that makes sense, since the difference of two time stamps, which do not
+> include any steal time are added.
+> 
+> Maybe it broke by some of all the changes over the years, or it was always
+> wrong, or I am missing something too.
+> 
+> Will investigate and address it if required. Thank you for bringing this up!
 
-url:    https://github.com/intel-lab-lkp/linux/commits/wenxiong-linux-ibm-com/error-path-improvement-in-dlpar-add/20260127-121714
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/20260127021845.2326-1-wenxiong%40linux.ibm.com
-patch subject: [PATCH] error path improvement in dlpar add
-config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20260127/202601271817.2ldcFxjL-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260127/202601271817.2ldcFxjL-lkp@intel.com/reproduce)
+Ok, I take some relief from the fact it's not only unclear to me :-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601271817.2ldcFxjL-lkp@intel.com/
+> 
+> > > Not sure what to do with this. I thought about removing those sysfs files
+> > > already in the past, since they are of very limited use; and most likely
+> > > nothing in user space would miss them.
+> > 
+> > Perhaps but this file is a good comparison point against /proc/stat because
+> > s390 vtime is much closer to measuring the actual CPU halted time than what
+> > the generic nohz accounting does (which includes more idle code execution).
+> 
+> Yes, while comparing those files I also see an unexpected difference of
+> several seconds after two days of uptime; that is before your changes.
+> 
+> In theory the sum of idle and iowait in /proc/stat should be the same like the
+> per-cpu idle_time_us sysfs file. But there is a difference, which shouldn't be
+> there as far as I can tell. Yet another thing to look into.
 
-All warnings (new ones prefixed by >>):
+Yes and that's expected both before and after my changes.
 
->> arch/powerpc/kernel/pci-hotplug.c:182:12: warning: more '%' conversions than data arguments [-Wformat-insufficient-args]
-     182 |                 pr_err("%s: unable to add hotplug pci device!\n");
-         |                         ~^
-   include/linux/printk.h:555:25: note: expanded from macro 'pr_err'
-     555 |         printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
-         |                                ^~~
-   include/linux/printk.h:402:21: note: expanded from macro 'pr_fmt'
-     402 | #define pr_fmt(fmt) fmt
-         |                     ^~~
-   include/linux/printk.h:512:53: note: expanded from macro 'printk'
-     512 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
-         |                                                     ^~~
-   include/linux/printk.h:484:11: note: expanded from macro 'printk_index_wrap'
-     484 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
-         |                         ^~~~
-   1 warning generated.
+* /proc/stat is the time spent between tick_nohz_idle_enter() and
+  tick_nohz_idle_exit() (to simplify, because there are some pause during
+  idle IRQs).
 
+* The s390 idle sysfs file depicts more closely the time spent while the
+  CPU is really idle (and not executing idle code).
 
-vim +182 arch/powerpc/kernel/pci-hotplug.c
+Different semantics and this is why you observe different results. I guess
+/proc/stat has higher values (with idle + iowait) and that is expected.
 
-   125	
-   126	/**
-   127	 * pci_hp_add_devices - adds new pci devices to bus
-   128	 * @bus: the indicated PCI bus
-   129	 *
-   130	 * This routine will find and fixup new pci devices under
-   131	 * the indicated bus. This routine presumes that there
-   132	 * might already be some devices under this bridge, so
-   133	 * it carefully tries to add only new devices.  (And that
-   134	 * is how this routine differs from other, similar pcibios
-   135	 * routines.)
-   136	 */
-   137	void pci_hp_add_devices(struct pci_bus *bus)
-   138	{
-   139		int mode, max;
-   140		struct pci_dev *dev;
-   141		struct pci_controller *phb;
-   142		struct device_node *dn = pci_bus_to_OF_node(bus);
-   143		int ret = 0;
-   144	
-   145		if (!dn)
-   146			return;
-   147	
-   148		phb = pci_bus_to_host(bus);
-   149	
-   150		mode = PCI_PROBE_NORMAL;
-   151		if (phb->controller_ops.probe_mode)
-   152			mode = phb->controller_ops.probe_mode(bus);
-   153	
-   154		if (mode == PCI_PROBE_DEVTREE) {
-   155			/* use ofdt-based probe */
-   156			of_rescan_bus(dn, bus);
-   157		} else if (mode == PCI_PROBE_NORMAL &&
-   158			   dn->child && PCI_DN(dn->child)) {
-   159			/*
-   160			 * Use legacy probe. In the partial hotplug case, we
-   161			 * probably have grandchildren devices unplugged. So
-   162			 * we don't check the return value from pci_scan_slot() in
-   163			 * order for fully rescan all the way down to pick them up.
-   164			 * They can have been removed during partial hotplug.
-   165			 */
-   166			traverse_siblings_and_scan_slot(dn, bus);
-   167			max = bus->busn_res.start;
-   168			/*
-   169			 * Scan bridges that are already configured. We don't touch
-   170			 * them unless they are misconfigured (which will be done in
-   171			 * the second scan below).
-   172			 */
-   173			for_each_pci_bridge(dev, bus)
-   174				max = pci_scan_bridge(bus, dev, max, 0);
-   175	
-   176			/* Scan bridges that need to be reconfigured */
-   177			for_each_pci_bridge(dev, bus)
-   178				max = pci_scan_bridge(bus, dev, max, 1);
-   179		}
-   180		ret = pcibios_finish_adding_to_bus(bus);
-   181		if (ret)
- > 182			pr_err("%s: unable to add hotplug pci device!\n");
+Thanks.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Frederic Weisbecker
+SUSE Labs
 
