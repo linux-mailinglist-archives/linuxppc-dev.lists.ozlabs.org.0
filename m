@@ -1,68 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-16364-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16365-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MXTDwsXemlS2QEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16364-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 15:02:51 +0100
+	id uEyRKCglemlk3QEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16365-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 16:03:04 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D680A26F0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 15:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2C0A3737
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 16:03:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f1P9c1bMnz2xm3;
-	Thu, 29 Jan 2026 01:02:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f1QW333fPz2xm3;
+	Thu, 29 Jan 2026 02:02:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769608964;
-	cv=none; b=NThKva25xcwI1z7G/y5VIAFO9d+R9D4OQzDZTM5aP+u9xyzAvBpmTUstROSGJPGAU8xW++LdbO4nlcUFcK9h/wetuG/gmbPJlDZnZrXVBlc8tiK711QixFiDy/7TGuS560A5OR1SKS823vwzurKzYM8B5iipDZIjCDTDiKDleD/qEFh95ZubLxM0FlUVtMjCoLZesKeDHwEIGxn+GUiAIMfXEm7MzWX6J/nMoJZPDePWufoqonCpQk+0EpZ/7Tn+GlwRXzFICLCf3NLUmm2P0F7Mys06xOVgFgmurmC82VnTRw4DdR9LAQgwbOFO6oBrbYt/ac9rI3pJagxufxbBow==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769612575;
+	cv=none; b=I/Ks3FGgmHWTM0CzmRpOxszVjBQvsUYIfi/9bkPgXAc9nDGC8+TEeikv0kMqJ9WhvcV9wx5r7t39bVl+KxKsYGEWbN3V0hMrQaqUAjqv1bheAArME2F7ZmMHjC/1XsrJUFx65hSF3kCwN1tZK0D7z/mbv81u02prvKRjZQQrzF1P273ourGX5n41niOn8SnWXNRofEzofPUFXz3OCmBnrHYOfp81mdWIdLBcTeJbRwk9SItaDBjA71MF7/JqLnBBLtfOawyNMgd07LSbgiaFBXOs0/YvE7ldRADYH+UKz6PvbnZNyzN1B96rNmoEDAg2bf1iHwZOSmxmdvzF9OmmKw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769608964; c=relaxed/relaxed;
-	bh=yWbt6lh+3bpPLJugNJcWG7ZRS4g49UvH5frndTAUT+E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cxe9BZt+4xGT3KHvYLJINkrlNumoiJQcnMxwttOLA/qUePtY4eF9th+70QDh7FKjUWlvauRM8+2onvreNaw/jvIfsYxJsGuZ+H2yeCebnmdlb5JtioFhg6xnPbL6U3PilRB5HTgK2L8S7aBs+VDwOiiGngOjZJXi++QWRYmgrfx+1ffWEw0nBVCJIZIqM3VXUn3NJ6gnSni+dkbKc+OpUVbkCQo0p/iH9NefqjhRlNtllxViIDm43Vn0R1IFL68u749P4zwYVOnSidcWR4BWSFB98iybkcWWeinsxNgyKNCPzZRZEI31NY1T9zjDoVYlgGOkd3q0TOQpJF5mzVnUyA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q08SQs3X; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q08SQs3X;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	t=1769612575; c=relaxed/relaxed;
+	bh=tyK6ajaUc5s1nrtvwdiHewvd7LYkt/YrFbTz7vFBTr8=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C1SOklKn5vKpbT8y0ed3xKt13hdpqEHfpT0oZAyTehxXIaci5c7f8YSNsGzZ9wrZVFJ6/52X7JPuGxiL8KDVE9k0N833Bma1DMWNusUB+KqfgHzEFmTfMIXdGHUoH9FN+xhYq05/NEzEkYMFzzAYOej/yxQwRzd7W1ENGf7wvbocLurrQ6qTikHGCRSsouu9Fk12BQDpDCKC4U6P3d+YIu8BafcbKhi1W00YOmCfdNu0KEsndCtj/XFBcpWmzozGszjK6RTr+czcmo88G1QI7ZYXNC5GDgLXZQ64fIhJEPVsj0RnVWbkElmnVMU86B2UJQOFBRFNrozgkks9mhYFlg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f1P9b10XKz2xjK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jan 2026 01:02:43 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 81D58433F5;
-	Wed, 28 Jan 2026 14:02:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5FCC4CEF1;
-	Wed, 28 Jan 2026 14:02:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769608960;
-	bh=DJYJy6rAk8mT7ZaSQdUIpTiwpwqy148hC1cHlbsyWMs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Q08SQs3Xfz4etQe09Uf2U07aKF8yM3DjGfCHspwWepYA6a4QMYujKntJdJT23t8R2
-	 LjMzRMGqjS2IbK4OCx351wRmzgvot4atywiaJr/9BO8HDTuS70url9H6UJhUi9Dtxk
-	 juZHnWQAq6CGv04Rx6rk1msE96O478gaC4KxoLpArKIOWsQrUEhjhwyHEFYmqdrBVG
-	 CGZZ8oKf7a2zkZKmessyFz1TvrI2numIePwaxzW9SLTD+imj6e+lkZr30ktMkMzb13
-	 +4te8RaxgErCavsbk3CiKQIzS/C9g+CcBi7fAwZnrjrBy6D95T2nNPwuHSQh0gqH6y
-	 mPDhSsHJuNOpw==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>
-Cc: devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH] powerpc: dts: fsl: Drop unused .dtsi files
-Date: Wed, 28 Jan 2026 08:02:20 -0600
-Message-ID: <20260128140222.1627203-1-robh@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f1QW20f8Yz2xjK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jan 2026 02:02:51 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f1QTx62TpzHnH5w;
+	Wed, 28 Jan 2026 23:01:57 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8A4DF40574;
+	Wed, 28 Jan 2026 23:02:45 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 28 Jan
+ 2026 15:02:44 +0000
+Date: Wed, 28 Jan 2026 15:02:43 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+CC: <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <bhelgaas@google.com>, <kbusch@kernel.org>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <mahesh@linux.ibm.com>,
+	<oohall@gmail.com>, <terry.bowman@amd.com>, <tianruidong@linux.alibaba.com>,
+	<lukas@wunner.de>
+Subject: Re: [PATCH v7 2/5] PCI/DPC: Run recovery on device that detected
+ the error
+Message-ID: <20260128150243.000012d8@huawei.com>
+In-Reply-To: <09cf1319-619d-4a6b-97f7-188c1a73aea0@linux.alibaba.com>
+References: <20260124074557.73961-1-xueshuai@linux.alibaba.com>
+	<20260124074557.73961-3-xueshuai@linux.alibaba.com>
+	<20260127102402.00004da2@huawei.com>
+	<09cf1319-619d-4a6b-97f7-188c1a73aea0@linux.alibaba.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,416 +70,206 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.79 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.01 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-16364-lists,linuxppc-dev=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-16365-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN_FAIL(0.00)[1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.f.9.b.1.2.0.0.4.9.4.0.4.2.asn6.rspamd.com:server fail];
-	FORGED_SENDER(0.00)[robh@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:xueshuai@linux.alibaba.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,m:lukas@wunner.de,s:lists@lfdr.de];
+	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
+	FORGED_SENDER(0.00)[jonathan.cameron@huawei.com,linuxppc-dev@lists.ozlabs.org];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS(0.00)[m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:richardcochran@gmail.com,m:devicetree@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:netdev@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,linux.ibm.com,ellerman.id.au,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	DBL_PROHIBIT(0.00)[0.0.31.64:email,0.0.42.248:email,0.0.23.112:email,0.0.3.232:email,0.3.122.160:email,0.0.54.176:email,0.0.11.184:email,0.0.7.208:email,0.0.15.160:email,0.0.50.200:email,0.6.26.128:email,0.3.126.136:email];
-	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN_FAIL(0.00)[1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.f.9.b.1.2.0.0.4.9.4.0.4.2.asn6.rspamd.com:server fail];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,google.com,kernel.org,linux.intel.com,linux.ibm.com,gmail.com,amd.com,linux.alibaba.com,wunner.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_XOIP(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev,dt];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,0.0.0.1:email,0.0.39.16:email,e1000:email,e3000:email,e000:email,0.0.165.160:email,b000:email,f000:email,a000:email,0.0.4.176:email,0.1.91.168:email,0.0.35.40:email,0.0.27.88:email,0.0.58.152:email,0.0.66.104:email,0.0.62.128:email,0.0.19.136:email]
-X-Rspamd-Queue-Id: 6D680A26F0
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,intel.com:email,huawei.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: DD2C0A3737
 X-Rspamd-Action: no action
 
-These files are not included by anything and therefore don't get built or
-tested.
+On Wed, 28 Jan 2026 20:27:31 +0800
+Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 
-There's also no upstream driver for the interlaken-lac stuff.
+> On 1/27/26 6:24 PM, Jonathan Cameron wrote:
+> > On Sat, 24 Jan 2026 15:45:54 +0800
+> > Shuai Xue <xueshuai@linux.alibaba.com> wrote:
+> >   
+> >> The current implementation of pcie_do_recovery() assumes that the
+> >> recovery process is executed for the device that detected the error.
+> >> However, the DPC driver currently passes the error port that experienced
+> >> the DPC event to pcie_do_recovery().
+> >>
+> >> Use the SOURCE ID register to correctly identify the device that
+> >> detected the error. When passing the error device, the
+> >> pcie_do_recovery() will find the upstream bridge and walk bridges
+> >> potentially AER affected. And subsequent commits will be able to
+> >> accurately access AER status of the error device.
+> >>
+> >> Should not observe any functional changes.
+> >>
+> >> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> >> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Hi Shuai,
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- .../boot/dts/fsl/interlaken-lac-portals.dtsi  | 156 ------------------
- arch/powerpc/boot/dts/fsl/interlaken-lac.dtsi |  45 -----
- .../boot/dts/fsl/pq3-mpic-message-B.dtsi      |  43 -----
- .../fsl/qoriq-fman3-0-10g-1-best-effort.dtsi  |  80 ---------
- 4 files changed, 324 deletions(-)
- delete mode 100644 arch/powerpc/boot/dts/fsl/interlaken-lac-portals.dtsi
- delete mode 100644 arch/powerpc/boot/dts/fsl/interlaken-lac.dtsi
- delete mode 100644 arch/powerpc/boot/dts/fsl/pq3-mpic-message-B.dtsi
- delete mode 100644 arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1-best-effort.dtsi
+> >> ---
+> >>   drivers/pci/pci.h      |  2 +-
+> >>   drivers/pci/pcie/dpc.c | 25 +++++++++++++++++++++----
+> >>   drivers/pci/pcie/edr.c |  7 ++++---
+> >>   3 files changed, 26 insertions(+), 8 deletions(-)
+> >>
+...
 
-diff --git a/arch/powerpc/boot/dts/fsl/interlaken-lac-portals.dtsi b/arch/powerpc/boot/dts/fsl/interlaken-lac-portals.dtsi
-deleted file mode 100644
-index 9cffccf4e07e..000000000000
---- a/arch/powerpc/boot/dts/fsl/interlaken-lac-portals.dtsi
-+++ /dev/null
-@@ -1,156 +0,0 @@
--/* T4240 Interlaken LAC Portal device tree stub with 24 portals.
-- *
-- * Copyright 2012 Freescale Semiconductor Inc.
-- *
-- * Redistribution and use in source and binary forms, with or without
-- * modification, are permitted provided that the following conditions are met:
-- *     * Redistributions of source code must retain the above copyright
-- *       notice, this list of conditions and the following disclaimer.
-- *     * Redistributions in binary form must reproduce the above copyright
-- *       notice, this list of conditions and the following disclaimer in the
-- *       documentation and/or other materials provided with the distribution.
-- *     * Neither the name of Freescale Semiconductor nor the
-- *       names of its contributors may be used to endorse or promote products
-- *       derived from this software without specific prior written permission.
-- *
-- *
-- * ALTERNATIVELY, this software may be distributed under the terms of the
-- * GNU General Public License ("GPL") as published by the Free Software
-- * Foundation, either version 2 of that License or (at your option) any
-- * later version.
-- *
-- * THIS SOFTWARE IS PROVIDED BY Freescale Semiconductor "AS IS" AND ANY
-- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-- * DISCLAIMED. IN NO EVENT SHALL Freescale Semiconductor BE LIABLE FOR ANY
-- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- */
--
--#address-cells = <0x1>;
--#size-cells = <0x1>;
--compatible = "fsl,interlaken-lac-portals";
--
--lportal0: lac-portal@0 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x0 0x1000>;
--};
--
--lportal1: lac-portal@1000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x1000 0x1000>;
--};
--
--lportal2: lac-portal@2000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x2000 0x1000>;
--};
--
--lportal3: lac-portal@3000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x3000 0x1000>;
--};
--
--lportal4: lac-portal@4000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x4000 0x1000>;
--};
--
--lportal5: lac-portal@5000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x5000 0x1000>;
--};
--
--lportal6: lac-portal@6000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x6000 0x1000>;
--};
--
--lportal7: lac-portal@7000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x7000 0x1000>;
--};
--
--lportal8: lac-portal@8000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x8000 0x1000>;
--};
--
--lportal9: lac-portal@9000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x9000 0x1000>;
--};
--
--lportal10: lac-portal@A000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0xA000 0x1000>;
--};
--
--lportal11: lac-portal@B000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0xB000 0x1000>;
--};
--
--lportal12: lac-portal@C000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0xC000 0x1000>;
--};
--
--lportal13: lac-portal@D000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0xD000 0x1000>;
--};
--
--lportal14: lac-portal@E000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0xE000 0x1000>;
--};
--
--lportal15: lac-portal@F000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0xF000 0x1000>;
--};
--
--lportal16: lac-portal@10000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x10000 0x1000>;
--};
--
--lportal17: lac-portal@11000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x11000 0x1000>;
--};
--
--lportal18: lac-portal@1200 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x12000 0x1000>;
--};
--
--lportal19: lac-portal@13000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x13000 0x1000>;
--};
--
--lportal20: lac-portal@14000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x14000 0x1000>;
--};
--
--lportal21: lac-portal@15000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x15000 0x1000>;
--};
--
--lportal22: lac-portal@16000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x16000 0x1000>;
--};
--
--lportal23: lac-portal@17000 {
--	compatible = "fsl,interlaken-lac-portal-v1.0";
--	reg = <0x17000 0x1000>;
--};
-diff --git a/arch/powerpc/boot/dts/fsl/interlaken-lac.dtsi b/arch/powerpc/boot/dts/fsl/interlaken-lac.dtsi
-deleted file mode 100644
-index e8208720ac0e..000000000000
---- a/arch/powerpc/boot/dts/fsl/interlaken-lac.dtsi
-+++ /dev/null
-@@ -1,45 +0,0 @@
--/*
-- * T4 Interlaken Look-aside Controller (LAC) device tree stub
-- *
-- * Copyright 2012 Freescale Semiconductor Inc.
-- *
-- * Redistribution and use in source and binary forms, with or without
-- * modification, are permitted provided that the following conditions are met:
-- *     * Redistributions of source code must retain the above copyright
-- *       notice, this list of conditions and the following disclaimer.
-- *     * Redistributions in binary form must reproduce the above copyright
-- *       notice, this list of conditions and the following disclaimer in the
-- *       documentation and/or other materials provided with the distribution.
-- *     * Neither the name of Freescale Semiconductor nor the
-- *       names of its contributors may be used to endorse or promote products
-- *       derived from this software without specific prior written permission.
-- *
-- *
-- * ALTERNATIVELY, this software may be distributed under the terms of the
-- * GNU General Public License ("GPL") as published by the Free Software
-- * Foundation, either version 2 of that License or (at your option) any
-- * later version.
-- *
-- * THIS SOFTWARE IS PROVIDED BY Freescale Semiconductor "AS IS" AND ANY
-- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-- * DISCLAIMED. IN NO EVENT SHALL Freescale Semiconductor BE LIABLE FOR ANY
-- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- */
--
--lac: lac@229000 {
--	compatible = "fsl,interlaken-lac";
--	reg = <0x229000 0x1000>;
--	interrupts = <16 2 1 18>;
--};
--
--lac-hv@228000 {
--	compatible = "fsl,interlaken-lac-hv";
--	reg = <0x228000 0x1000>;
--	fsl,non-hv-node = <&lac>;
--};
-diff --git a/arch/powerpc/boot/dts/fsl/pq3-mpic-message-B.dtsi b/arch/powerpc/boot/dts/fsl/pq3-mpic-message-B.dtsi
-deleted file mode 100644
-index 1cf0b77b1efe..000000000000
---- a/arch/powerpc/boot/dts/fsl/pq3-mpic-message-B.dtsi
-+++ /dev/null
-@@ -1,43 +0,0 @@
--/*
-- * PQ3 MPIC Message (Group B) device tree stub [ controller @ offset 0x42400 ]
-- *
-- * Copyright 2012 Freescale Semiconductor Inc.
-- *
-- * Redistribution and use in source and binary forms, with or without
-- * modification, are permitted provided that the following conditions are met:
-- *     * Redistributions of source code must retain the above copyright
-- *       notice, this list of conditions and the following disclaimer.
-- *     * Redistributions in binary form must reproduce the above copyright
-- *       notice, this list of conditions and the following disclaimer in the
-- *       documentation and/or other materials provided with the distribution.
-- *     * Neither the name of Freescale Semiconductor nor the
-- *       names of its contributors may be used to endorse or promote products
-- *       derived from this software without specific prior written permission.
-- *
-- *
-- * ALTERNATIVELY, this software may be distributed under the terms of the
-- * GNU General Public License ("GPL") as published by the Free Software
-- * Foundation, either version 2 of that License or (at your option) any
-- * later version.
-- *
-- * THIS SOFTWARE IS PROVIDED BY Freescale Semiconductor ``AS IS'' AND ANY
-- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-- * DISCLAIMED. IN NO EVENT SHALL Freescale Semiconductor BE LIABLE FOR ANY
-- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- */
--
--message@42400 {
--	compatible = "fsl,mpic-v3.1-msgr";
--	reg = <0x42400 0x200>;
--	interrupts = <
--		0xb4 2 0 0
--		0xb5 2 0 0
--		0xb6 2 0 0
--		0xb7 2 0 0>;
--};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1-best-effort.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1-best-effort.dtsi
-deleted file mode 100644
-index 71eb75e82c2e..000000000000
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1-best-effort.dtsi
-+++ /dev/null
-@@ -1,80 +0,0 @@
--/*
-- * QorIQ FMan v3 1g port #1 device tree stub [ controller @ offset 0x400000 ]
-- *
-- * Copyright 2012 - 2015 Freescale Semiconductor Inc.
-- *
-- * Redistribution and use in source and binary forms, with or without
-- * modification, are permitted provided that the following conditions are met:
-- *     * Redistributions of source code must retain the above copyright
-- *	 notice, this list of conditions and the following disclaimer.
-- *     * Redistributions in binary form must reproduce the above copyright
-- *	 notice, this list of conditions and the following disclaimer in the
-- *	 documentation and/or other materials provided with the distribution.
-- *     * Neither the name of Freescale Semiconductor nor the
-- *	 names of its contributors may be used to endorse or promote products
-- *	 derived from this software without specific prior written permission.
-- *
-- *
-- * ALTERNATIVELY, this software may be distributed under the terms of the
-- * GNU General Public License ("GPL") as published by the Free Software
-- * Foundation, either version 2 of that License or (at your option) any
-- * later version.
-- *
-- * THIS SOFTWARE IS PROVIDED BY Freescale Semiconductor ``AS IS'' AND ANY
-- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-- * DISCLAIMED. IN NO EVENT SHALL Freescale Semiconductor BE LIABLE FOR ANY
-- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- */
--
--fman@400000 {
--	fman0_rx_0x09: port@89000 {
--		cell-index = <0x9>;
--		compatible = "fsl,fman-v3-port-rx";
--		reg = <0x89000 0x1000>;
--		fsl,fman-10g-port;
--		fsl,fman-best-effort-port;
--	};
--
--	fman0_tx_0x29: port@a9000 {
--		cell-index = <0x29>;
--		compatible = "fsl,fman-v3-port-tx";
--		reg = <0xa9000 0x1000>;
--		fsl,fman-10g-port;
--		fsl,fman-best-effort-port;
--	};
--
--	ethernet@e2000 {
--		cell-index = <1>;
--		compatible = "fsl,fman-memac";
--		reg = <0xe2000 0x1000>;
--		fsl,fman-ports = <&fman0_rx_0x09 &fman0_tx_0x29>;
--		ptp-timer = <&ptp_timer0>;
--		pcsphy-handle = <&pcsphy1>, <&qsgmiia_pcs1>;
--		pcs-handle-names = "sgmii", "qsgmii";
--	};
--
--	mdio@e1000 {
--		qsgmiia_pcs1: ethernet-pcs@1 {
--			compatible = "fsl,lynx-pcs";
--			reg = <1>;
--		};
--	};
--
--	mdio@e3000 {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
--		reg = <0xe3000 0x1000>;
--		fsl,erratum-a011043; /* must ignore read errors */
--
--		pcsphy1: ethernet-phy@0 {
--			reg = <0x0>;
--		};
--	};
--};
--- 
-2.51.0
+> >> -void dpc_process_error(struct pci_dev *pdev)
+> >> +/**
+> >> + * dpc_process_error - handle the DPC error status
+> >> + * @pdev: the port that experienced the containment event
+> >> + *
+> >> + * Return: the device that detected the error.
+> >> + *
+> >> + * NOTE: The device reference count is increased, the caller must decrement
+> >> + * the reference count by calling pci_dev_put().
+> >> + */
+> >> +struct pci_dev *dpc_process_error(struct pci_dev *pdev)  
+> > 
+> > Maybe it makes sense to carry the err_port naming for the pci_dev
+> > in here as well?  Seems stronger than just relying on people
+> > reading the documentation you've added.  
+> 
+> Good point. I think renaming the parameter would improve clarity. However,
+> I'd prefer to handle it in a separate patch to keep this change focused on
+> the functional modification. Would that work for you?
+> 
+Sure. Ideal would be a precursor patch, but if it's much easier to
+do on top of this I'm fine with that.
+
+You are absolutely correct that it should be a separate patch!
+
+> >     
+> >>   {
+> >>   	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
+> >>   	struct aer_err_info info = {};
+> >> +	struct pci_dev *err_dev;
+> >>   
+> >>   	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
+> >>   
+> >> @@ -279,6 +289,7 @@ void dpc_process_error(struct pci_dev *pdev)
+> >>   			pci_aer_clear_nonfatal_status(pdev);
+> >>   			pci_aer_clear_fatal_status(pdev);
+> >>   		}
+> >> +		err_dev = pci_dev_get(pdev);
+> >>   		break;
+> >>   	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE:
+> >>   	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE:
+> >> @@ -290,6 +301,8 @@ void dpc_process_error(struct pci_dev *pdev)
+> >>   				"ERR_FATAL" : "ERR_NONFATAL",
+> >>   			 pci_domain_nr(pdev->bus), PCI_BUS_NUM(source),
+> >>   			 PCI_SLOT(source), PCI_FUNC(source));
+> >> +		err_dev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
+> >> +					    PCI_BUS_NUM(source), source & 0xff);  
+> > 
+> > Bunch of replication in her with the pci_warn(). Maybe some local variables?
+> > Maybe even rebuild the final parameter from PCI_DEVFN(slot, func) just to make the
+> > association with the print really obvious?  
+> 
+> Agreed. Here's the improved version:
+> 
+> --- a/drivers/pci/pcie/dpc.c
+> +++ b/drivers/pci/pcie/dpc.c
+> @@ -293,17 +293,28 @@ struct pci_dev *dpc_process_error(struct pci_dev *pdev)
+>                  break;
+>          case PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE:
+>          case PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE:
+> -               pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID,
+> -                                    &source);
+> +       {
+> +               int domain, bus;
+> +               u8 slot, func, devfn;
+> +               const char *err_type;
+> +
+> +               pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
+> +
+> +               /* Extract source device location */
+> +               domain = pci_domain_nr(pdev->bus);
+> +               bus = PCI_BUS_NUM(source);
+> +               slot = PCI_SLOT(source);
+> +               func = PCI_FUNC(source);
+> +               devfn = PCI_DEVFN(slot, func);
+> +
+> +               err_type = (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) ?
+> +                          "ERR_FATAL" : "ERR_NONFATAL";
+> +
+>                  pci_warn(pdev, "containment event, status:%#06x, %s received from %04x:%02x:%02x.%d\n",
+> -                        status,
+> -                        (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) ?
+> -                               "ERR_FATAL" : "ERR_NONFATAL",
+> -                        pci_domain_nr(pdev->bus), PCI_BUS_NUM(source),
+> -                        PCI_SLOT(source), PCI_FUNC(source));
+> -               err_dev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
+> -                                           PCI_BUS_NUM(source), source & 0xff);
+> +                        status, err_type, domain, bus, slot, func);
+> +               err_dev = pci_get_domain_bus_and_slot(domain, bus, devfn);
+Maybe don't bother with local variables for the things only used once.
+e.g.
+
+		err_dev = pci_get_domain_bus_and_slot(domain, bus, PCI_DEVFN(slot, func));
+
+and possibly the same for err_type.
+
+I don't mind though if you prefer to use locals for everything.
+
+
+
+>                  break;
+> +       }
+>          case PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT:
+>                  ext_reason = status & PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT;
+>                  pci_warn(pdev, "containment event, status:%#06x: %s detected\n",
+> 
+> > 
+> > Is there any chance that this might return NULL?   Feels like maybe that's
+> > only a possibility on a broken setup, but I'm not sure of all the wonderful
+> > races around hotplug and DPC occurring before the OS has caught up.  
+> 
+> Surprise Down events are handled separately in
+> dpc_handle_surprise_removal() and won't reach dpc_process_error().
+> Please correct me if I missed anything.
+
+Probably fine. I just didn't check particularly closely.  
+
+Jonathan
+> 
+> Thanks for valuable comments.
+> 
+> Best Regards,
+> Shuai
 
 
