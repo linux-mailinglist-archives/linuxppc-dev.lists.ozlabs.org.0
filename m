@@ -1,71 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-16350-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16351-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BTwALbOeWnezgEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16350-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 09:54:14 +0100
+	id CDClHT/deWnI0QEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16351-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 10:56:15 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AD19E7B7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 09:54:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C31EF9F10C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 10:56:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f1GKY1gymz2xjK;
-	Wed, 28 Jan 2026 19:54:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f1Hj66cg2z2xm3;
+	Wed, 28 Jan 2026 20:56:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769590449;
-	cv=none; b=NPh7Z4n0bt6sleLFT9Ewt4S31W6NfAoleUEOiwqLN6KhcETBOo1gxI5/wKaG0yjFWJ9JEgPRvWHorCeAMhSCO5lHTtyh4EiNVeTkxK4LPVGANMGe32eql8Z92GnzVyUmWdUpRiDzyZQNOWFxa51GpaUUDQ2F2prucHc414FH04dhkJp/2TKDTEv1mGua37tQf09E82PeI8qL+zHsEojEVof5JjPmzOB8PzhpheNZj6nReF5z2T5zOLKj0OjsvYpqdvJNPsbSWqTTCpcO+5Z16+OXm/igEo/XjJGjG8PBBRbwXJijxr0xSeg4R9NKbbkycQWHkboxY5L45XINCD/OgQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769594170;
+	cv=none; b=f9A98iIxx13gGJ3HWWwsxEOjMSful7ieI6xt+Ld3nzSZuiMJph29M+uPGvgxhayCH08PI0+dOr2vZ/l/vIONGH4fuIxfXuNEY42WP5v3V/T/TtuBy73OnAjj4QkLa4r6Ch+NpjpwgNd6B4wFxCzX/qGadJiCsEYN0zSfYQMkBya9RBNQJBGCzIWiW1/prnb03xbwhvBuHi23IOC/XNCEwxCg16l5dBk7IHNN0TmtO+SN7Gxe8b8ANFnvs2kZb0f/UbmnnUH6A0IgmUP9f5ML537HvOjEfczegGcPLcAFedyMxWDZX5ZtK+PV3KVKMSDTJzkGBqORh5y/nyuM1e8kLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769590449; c=relaxed/relaxed;
-	bh=wxcLHxE0h0tZrYY8m14TIbzP4neRX2cVHl04cabob+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B663FnJFvP2G0KEVp8oaI/w/kXrKg+pBqVaKfaxID5+WTWWWkgEQj+zL+geGSyfA5gPSb8mmX1lfNCgG3zXRZ+UM4JgKd/4yO4G9CYzvGHHKU4x2537X4ytNanCHWuNq1zybP4082CsCXuY948quhKI6Y0JyDWcc79hTfAlNJcFIW4AcoVtAdvcxMvtJceoLC3OfrB8WU3/zNDN+0XjhiQU1A/4JUGgx4325BHUQSu9f2zY09rxYU5SCb/v3xRWrVeIhrGpS3P1KFZ5IFe8f5Vi2ASf/WLrMSLSQaSzLKDoMROItB2oVCRfDEioP9Y/xH/3sNqrWPc8QcccUiUiYUg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=IiNsTsjt; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+	t=1769594170; c=relaxed/relaxed;
+	bh=IKkhJFSlDPDWBwrmIbzE9ozrrgoANZfOeT947Sp++R0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MoaLWkT/+6p+I9tF6ejBvOpVaWVV1EzVzVbbugl9CaKYfhUVCcnlcpOr7/cvlcMQBvROMMh1ZTQG84lYUsP1py8+fTA6LHHm3giz68rJU2diKgEDlgUkZgvgSr+6aSGlIIgOVb0Mtz3BDNFKB8iId7mj9IZMRAKUq29mzUB5EKGyBYqkmFXgTDkoO6cKJlD5ZnV+xi7wPK4f8qR1IYne4K++j36Yk98gLkbvH+wz6r9MGXBWsJMWOyZ3/6IStTuiO+2FRbE0LxX5Xxl8cLF23pFh2PtvDSYgfVirUuDRVFUPbqHzQ054avPgfitOxqN6e1idrLzcH1VTuMCQQkruWQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=gZhLyDmU; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Sy+8hJO5; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=IiNsTsjt;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=gZhLyDmU;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Sy+8hJO5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f1GKV56yKz2xMY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jan 2026 19:54:06 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 68D5D60097;
-	Wed, 28 Jan 2026 08:54:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B35C4CEF1;
-	Wed, 28 Jan 2026 08:54:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769590442;
-	bh=sp8ZzgKfLYBf6n5dvtaPV7JJtZoVmZtARJEfnOlvgnA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IiNsTsjt7/JJEy7yHNve/JooAIlH0pnM87ZGvmgdHepEWko5EVz56NLPJSRbmXI8w
-	 sxKEPaOCpGXqDtQ0OHpQYWN7Mt9VjqvMvARm+eLYaHLPTNohEerYQif5fI9Qezgjy+
-	 G4XDfI/hst0WjbqQ1xzHMsJI6EzUETgPfOt5Yvr0=
-Date: Wed, 28 Jan 2026 09:53:58 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Samuel Wu <wusamuel@google.com>, linux-fsdevel@vger.kernel.org,
-	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
-	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
-	linux-mm@kvack.org, linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
-	linux-usb@vger.kernel.org, paul@paul-moore.com,
-	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org,
-	john.johansen@canonical.com, selinux@vger.kernel.org,
-	borntraeger@linux.ibm.com, bpf@vger.kernel.org, clm@meta.com,
-	android-kernel-team <android-kernel-team@google.com>
-Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
-Message-ID: <2026012812-jurist-whoops-0ef5@gregkh>
-References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
- <CAG2KctrjSP+XyBiOB7hGA2DWtdpg3diRHpQLKGsVYxExuTZazA@mail.gmail.com>
- <2026012715-mantra-pope-9431@gregkh>
- <CAHk-=whME4fu2Gn+W7MPiFHqwn51VByhpttf-wHdhAqQAQXpqw@mail.gmail.com>
- <20260127201454.GQ3183987@ZenIV>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f1Hj46DJdz2xT6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jan 2026 20:56:08 +1100 (AEDT)
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1769594158;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IKkhJFSlDPDWBwrmIbzE9ozrrgoANZfOeT947Sp++R0=;
+	b=gZhLyDmUiwiJU/sYXX7aZEe1CsXZvv97eKfANU75x8MqzuTeuw/D7uyIMeJi3mQO3Upi33
+	A7TxyKjKbLnegA9CxXipXICM8rU8AhM9LY+9RaGY2eycdwruEZuAW3tI+cWfmUVHIKwvOf
+	CSYNlzMpT6NH2XWB5OlS6lWVqje5fC48xfY0TnZfH8IApIFOJ/mzlveNGmjtYne6T3acDk
+	KzAo1o/1e4qU4gvhd265h4CiaSiRa57IJQ3lJoIsDqnqBGIDQ7rN5OOtj/x9ajizbAIEyv
+	JLSrEffsOKArmwGJjyyhMbmAXfY3LdPgK8WhPi6msJgxNrTze/zHFrVFspKVyg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1769594158;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IKkhJFSlDPDWBwrmIbzE9ozrrgoANZfOeT947Sp++R0=;
+	b=Sy+8hJO5EOsJkAdaw7z2pz2wRBoyvXuXJsblQKNMT22NnKn80IrltvmEoVeCqyETUPw/Aw
+	mRmi/3rd3mIediBg==
+To: linux-kernel@vger.kernel.org
+Cc: "Thomas Gleixner" <tglx@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 05/20] bus: fsl-mc: Use default primary handler
+Date: Wed, 28 Jan 2026 10:55:25 +0100
+Message-ID: <20260128095540.863589-6-bigeasy@linutronix.de>
+In-Reply-To: <20260128095540.863589-1-bigeasy@linutronix.de>
+References: <20260128095540.863589-1-bigeasy@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,74 +79,95 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260127201454.GQ3183987@ZenIV>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.29 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:torvalds@linux-foundation.org,m:wusamuel@google.com,m:linux-fsdevel@vger.kernel.org,m:brauner@kernel.org,m:jack@suse.cz,m:raven@themaw.net,m:miklos@szeredi.hu,m:neil@brown.name,m:a.hindborg@kernel.org,m:linux-mm@kvack.org,m:linux-efi@vger.kernel.org,m:ocfs2-devel@lists.linux.dev,m:kees@kernel.org,m:rostedt@goodmis.org,m:linux-usb@vger.kernel.org,m:paul@paul-moore.com,m:casey@schaufler-ca.com,m:linuxppc-dev@lists.ozlabs.org,m:john.johansen@canonical.com,m:selinux@vger.kernel.org,m:borntraeger@linux.ibm.com,m:bpf@vger.kernel.org,m:clm@meta.com,m:android-kernel-team@google.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16350-lists,linuxppc-dev=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16351-lists,linuxppc-dev=lfdr.de];
+	FORGED_SENDER(0.00)[bigeasy@linutronix.de,linuxppc-dev@lists.ozlabs.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:tglx@kernel.org,m:bigeasy@linutronix.de,m:ioana.ciornei@nxp.com,m:linuxppc-dev@lists.ozlabs.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 30AD19E7B7
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,lists.ozlabs.org:helo,lists.ozlabs.org:rdns,linutronix.de:email,linutronix.de:dkim,linutronix.de:mid]
+X-Rspamd-Queue-Id: C31EF9F10C
 X-Rspamd-Action: no action
 
-On Tue, Jan 27, 2026 at 08:14:54PM +0000, Al Viro wrote:
-> On Tue, Jan 27, 2026 at 10:39:04AM -0800, Linus Torvalds wrote:
-> > On Mon, 26 Jan 2026 at 23:42, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > Note that I had to revert commit e5bf5ee26663 ("functionfs: fix the
-> > > open/removal races") from the stable backports, as it was causing issues
-> > > on the pixel devices it got backported to.  So perhaps look there?
-> > 
-> > Hmm. That commit is obviously still upstream, do we understand why it
-> > caused problems in the backports?
-> 
-> This is all I've seen:
-> 
-> | It has been reported to cause test problems in Android devices.  As the
-> | other functionfs changes were not also backported at the same time,
-> | something is out of sync.  So just revert this one for now and it can
-> | come back in the future as a patch series if it is tested.
-> 
-> My apologies for not following up on that one; Greg, could you give some
-> references to those reports?
+There is no added value in dprc_irq0_handler() compared to
+irq_default_primary_handler().
 
-Sorry, all I got was a "this commit caused devices to fail" and was
-found from bisection, on the 6.18.y tree.  Samuel has much more
-information as to exactly what is happening here as he can see the test
-results properly, I'll let him work through this, thanks!
+Use the default primary interrupt handler by specifying NULL.
 
-greg k-h
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+Cc: Ioana Ciornei <ioana.ciornei@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ drivers/bus/fsl-mc/dprc-driver.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
+
+diff --git a/drivers/bus/fsl-mc/dprc-driver.c b/drivers/bus/fsl-mc/dprc-dri=
+ver.c
+index c63a7e688db6a..db67442addad2 100644
+--- a/drivers/bus/fsl-mc/dprc-driver.c
++++ b/drivers/bus/fsl-mc/dprc-driver.c
+@@ -380,17 +380,6 @@ int dprc_scan_container(struct fsl_mc_device *mc_bus_d=
+ev,
+ }
+ EXPORT_SYMBOL_GPL(dprc_scan_container);
+=20
+-/**
+- * dprc_irq0_handler - Regular ISR for DPRC interrupt 0
+- *
+- * @irq_num: IRQ number of the interrupt being handled
+- * @arg: Pointer to device structure
+- */
+-static irqreturn_t dprc_irq0_handler(int irq_num, void *arg)
+-{
+-	return IRQ_WAKE_THREAD;
+-}
+-
+ /**
+  * dprc_irq0_handler_thread - Handler thread function for DPRC interrupt 0
+  *
+@@ -527,7 +516,7 @@ static int register_dprc_irq_handler(struct fsl_mc_devi=
+ce *mc_dev)
+ 	 */
+ 	error =3D devm_request_threaded_irq(&mc_dev->dev,
+ 					  irq->virq,
+-					  dprc_irq0_handler,
++					  NULL,
+ 					  dprc_irq0_handler_thread,
+ 					  IRQF_NO_SUSPEND | IRQF_ONESHOT,
+ 					  dev_name(&mc_dev->dev),
+--=20
+2.51.0
+
 
