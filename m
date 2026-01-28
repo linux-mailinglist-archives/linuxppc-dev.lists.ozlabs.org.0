@@ -1,62 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-16365-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16366-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEyRKCglemlk3QEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16365-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 16:03:04 +0100
+	id aIYvGbAuemlq3wEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16366-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 16:43:44 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2C0A3737
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 16:03:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A55A44E8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 16:43:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f1QW333fPz2xm3;
-	Thu, 29 Jan 2026 02:02:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f1RQ41qqvz2xm3;
+	Thu, 29 Jan 2026 02:43:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769612575;
-	cv=none; b=I/Ks3FGgmHWTM0CzmRpOxszVjBQvsUYIfi/9bkPgXAc9nDGC8+TEeikv0kMqJ9WhvcV9wx5r7t39bVl+KxKsYGEWbN3V0hMrQaqUAjqv1bheAArME2F7ZmMHjC/1XsrJUFx65hSF3kCwN1tZK0D7z/mbv81u02prvKRjZQQrzF1P273ourGX5n41niOn8SnWXNRofEzofPUFXz3OCmBnrHYOfp81mdWIdLBcTeJbRwk9SItaDBjA71MF7/JqLnBBLtfOawyNMgd07LSbgiaFBXOs0/YvE7ldRADYH+UKz6PvbnZNyzN1B96rNmoEDAg2bf1iHwZOSmxmdvzF9OmmKw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769615020;
+	cv=none; b=GTP4YkhMjiixHJqcb9i7+oYPAq36vNBDccTdSCBiV63IY9lMCWLCWvfFy24Qfb/9o/ObMIzPmo6RMU5budgytpmawSgWDg+TbmuWY59mu7rK459IzEjiS7ga8hw2aqF94yM8udNh0haS7pweF3GmLUBkG+TBGPXu8nAVAkOYe97iOsmTkfCRl1qCOhTIdxqac1gCYwJMNBIkx76Ty9kirVehzL0VWGroDgG67Tkv1MwpelqWTJSeQe/UqPPhMSAdSVHzhn1xJpBJCG0rTLSbAKH9WwOr01nXEun0kKGUcAQA9uj88+qL8iwiTX+USM8KwhcZjdJZdXEOG42lbRZDmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769612575; c=relaxed/relaxed;
-	bh=tyK6ajaUc5s1nrtvwdiHewvd7LYkt/YrFbTz7vFBTr8=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C1SOklKn5vKpbT8y0ed3xKt13hdpqEHfpT0oZAyTehxXIaci5c7f8YSNsGzZ9wrZVFJ6/52X7JPuGxiL8KDVE9k0N833Bma1DMWNusUB+KqfgHzEFmTfMIXdGHUoH9FN+xhYq05/NEzEkYMFzzAYOej/yxQwRzd7W1ENGf7wvbocLurrQ6qTikHGCRSsouu9Fk12BQDpDCKC4U6P3d+YIu8BafcbKhi1W00YOmCfdNu0KEsndCtj/XFBcpWmzozGszjK6RTr+czcmo88G1QI7ZYXNC5GDgLXZQ64fIhJEPVsj0RnVWbkElmnVMU86B2UJQOFBRFNrozgkks9mhYFlg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	t=1769615020; c=relaxed/relaxed;
+	bh=Q5ehoPfKCnMrGe3rcMqLU9mGYdKDQYwX3KSGhNVuayM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dAiMJ0aS5MG61Y0v+uG7lx/i5eUpWRCLOd5AxNS8dkIRniVkodvFoPAWA8d5e2Ioucz7n5bjjxjD5uS27JkcBnCgFZV8WbRkvES8yp/xRj6lLsTtHa4IJlbCqMfgQ1qVFLSQU5Zx8rIUAEpk/Sal4L3CG8Vod3DCMfUNkdPc2W3b+TrMF++VpgiMFOIQ8o/byGetG7b7Iamq3QxBSs9z6vsIw/FbFDl6lXiTM4d2OKggRCwXgFQp5A4T3SII329DmDG92SKX2co/zeEvB1E3qeXrzmm9G5Z+Ptghj/s44cCcjBNpIA2mooi60EQW7NAB92XJy6e5+lQeA1tW7y9WNw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k/feX2du; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k/feX2du;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=chleroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f1QW20f8Yz2xjK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jan 2026 02:02:51 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f1QTx62TpzHnH5w;
-	Wed, 28 Jan 2026 23:01:57 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8A4DF40574;
-	Wed, 28 Jan 2026 23:02:45 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 28 Jan
- 2026 15:02:44 +0000
-Date: Wed, 28 Jan 2026 15:02:43 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-CC: <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <bhelgaas@google.com>, <kbusch@kernel.org>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <mahesh@linux.ibm.com>,
-	<oohall@gmail.com>, <terry.bowman@amd.com>, <tianruidong@linux.alibaba.com>,
-	<lukas@wunner.de>
-Subject: Re: [PATCH v7 2/5] PCI/DPC: Run recovery on device that detected
- the error
-Message-ID: <20260128150243.000012d8@huawei.com>
-In-Reply-To: <09cf1319-619d-4a6b-97f7-188c1a73aea0@linux.alibaba.com>
-References: <20260124074557.73961-1-xueshuai@linux.alibaba.com>
-	<20260124074557.73961-3-xueshuai@linux.alibaba.com>
-	<20260127102402.00004da2@huawei.com>
-	<09cf1319-619d-4a6b-97f7-188c1a73aea0@linux.alibaba.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f1RQ319rQz2xjK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jan 2026 02:43:39 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3150A405E4;
+	Wed, 28 Jan 2026 15:43:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E418AC116C6;
+	Wed, 28 Jan 2026 15:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769615017;
+	bh=Ms6JSPLx+R0AGkkQXNUtlIKDAJmwsS9TPgZf+SoweB0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=k/feX2duw105DXZwD6VCd+YxveRBQQvZwG1gOS/X0ZdFYkzFA6flqG/HNZxbCSfEo
+	 9S8zDChgoORh5Zyax+Grj+WTS3kYtPu9i+rikFALF271mQxYnQpc9H9/qdlMYKUfZF
+	 AsBZ1QCegWxjyUlNMxdHoA0QkK/ou4etDhoUDKOHIHSLKb0z/7NK3UEWtL6R1o08hs
+	 7MG3+rRl/P54CNe8LJHDsqbTyk4VKLMXkVVlsfhwjS2FCEAH8bGgkEjI1Z5sPALKEG
+	 yP0jnOXkMTCnXyidLUhJ0LwyZCZCQybgN1qZ1dURyhzo/rGFzVuw/VvYe3wKcGr374
+	 q2owya+xV+W4A==
+Message-ID: <1fca424a-6215-4303-a0cd-623063945ce6@kernel.org>
+Date: Wed, 28 Jan 2026 16:43:32 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,206 +63,92 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
- dubpeml500005.china.huawei.com (7.214.145.207)
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc: dts: fsl: Drop unused .dtsi files
+To: "Rob Herring (Arm)" <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20260128140222.1627203-1-robh@kernel.org>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260128140222.1627203-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.01 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-16365-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:xueshuai@linux.alibaba.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,m:lukas@wunner.de,s:lists@lfdr.de];
-	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
-	FORGED_SENDER(0.00)[jonathan.cameron@huawei.com,linuxppc-dev@lists.ozlabs.org];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN_FAIL(0.00)[1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.f.9.b.1.2.0.0.4.9.4.0.4.2.asn6.rspamd.com:server fail];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,google.com,kernel.org,linux.intel.com,linux.ibm.com,gmail.com,amd.com,linux.alibaba.com,wunner.de];
+	TAGGED_FROM(0.00)[bounces-16366-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:richardcochran@gmail.com,m:devicetree@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-kernel@vger.kernel.org,m:netdev@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,linux.ibm.com,ellerman.id.au,gmail.com];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	MIME_TRACE(0.00)[0:+];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_XOIP(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,intel.com:email,huawei.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: DD2C0A3737
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev,dt];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: C8A55A44E8
 X-Rspamd-Action: no action
 
-On Wed, 28 Jan 2026 20:27:31 +0800
-Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 
-> On 1/27/26 6:24 PM, Jonathan Cameron wrote:
-> > On Sat, 24 Jan 2026 15:45:54 +0800
-> > Shuai Xue <xueshuai@linux.alibaba.com> wrote:
-> >   
-> >> The current implementation of pcie_do_recovery() assumes that the
-> >> recovery process is executed for the device that detected the error.
-> >> However, the DPC driver currently passes the error port that experienced
-> >> the DPC event to pcie_do_recovery().
-> >>
-> >> Use the SOURCE ID register to correctly identify the device that
-> >> detected the error. When passing the error device, the
-> >> pcie_do_recovery() will find the upstream bridge and walk bridges
-> >> potentially AER affected. And subsequent commits will be able to
-> >> accurately access AER status of the error device.
-> >>
-> >> Should not observe any functional changes.
-> >>
-> >> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> >> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Hi Shuai,
 
-> >> ---
-> >>   drivers/pci/pci.h      |  2 +-
-> >>   drivers/pci/pcie/dpc.c | 25 +++++++++++++++++++++----
-> >>   drivers/pci/pcie/edr.c |  7 ++++---
-> >>   3 files changed, 26 insertions(+), 8 deletions(-)
-> >>
-...
-
-> >> -void dpc_process_error(struct pci_dev *pdev)
-> >> +/**
-> >> + * dpc_process_error - handle the DPC error status
-> >> + * @pdev: the port that experienced the containment event
-> >> + *
-> >> + * Return: the device that detected the error.
-> >> + *
-> >> + * NOTE: The device reference count is increased, the caller must decrement
-> >> + * the reference count by calling pci_dev_put().
-> >> + */
-> >> +struct pci_dev *dpc_process_error(struct pci_dev *pdev)  
-> > 
-> > Maybe it makes sense to carry the err_port naming for the pci_dev
-> > in here as well?  Seems stronger than just relying on people
-> > reading the documentation you've added.  
+Le 28/01/2026 à 15:02, Rob Herring (Arm) a écrit :
+> These files are not included by anything and therefore don't get built or
+> tested.
 > 
-> Good point. I think renaming the parameter would improve clarity. However,
-> I'd prefer to handle it in a separate patch to keep this change focused on
-> the functional modification. Would that work for you?
+> There's also no upstream driver for the interlaken-lac stuff.
 > 
-Sure. Ideal would be a precursor patch, but if it's much easier to
-do on top of this I'm fine with that.
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>   .../boot/dts/fsl/interlaken-lac-portals.dtsi  | 156 ------------------
+>   arch/powerpc/boot/dts/fsl/interlaken-lac.dtsi |  45 -----
 
-You are absolutely correct that it should be a separate patch!
+Those two files were added by commit 8c43d2b0ca10 ("powerpc: Add T4 LAC 
+device tree binding & defs") together with 
+Documentation/devicetree/bindings/powerpc/fsl/interlaken-lac.txt
 
-> >     
-> >>   {
-> >>   	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
-> >>   	struct aer_err_info info = {};
-> >> +	struct pci_dev *err_dev;
-> >>   
-> >>   	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
-> >>   
-> >> @@ -279,6 +289,7 @@ void dpc_process_error(struct pci_dev *pdev)
-> >>   			pci_aer_clear_nonfatal_status(pdev);
-> >>   			pci_aer_clear_fatal_status(pdev);
-> >>   		}
-> >> +		err_dev = pci_dev_get(pdev);
-> >>   		break;
-> >>   	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE:
-> >>   	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE:
-> >> @@ -290,6 +301,8 @@ void dpc_process_error(struct pci_dev *pdev)
-> >>   				"ERR_FATAL" : "ERR_NONFATAL",
-> >>   			 pci_domain_nr(pdev->bus), PCI_BUS_NUM(source),
-> >>   			 PCI_SLOT(source), PCI_FUNC(source));
-> >> +		err_dev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
-> >> +					    PCI_BUS_NUM(source), source & 0xff);  
-> > 
-> > Bunch of replication in her with the pci_warn(). Maybe some local variables?
-> > Maybe even rebuild the final parameter from PCI_DEVFN(slot, func) just to make the
-> > association with the print really obvious?  
+Should the Documentation file be removed as well ?
+
+Regardless,
+
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+
+
+
+>   .../boot/dts/fsl/pq3-mpic-message-B.dtsi      |  43 -----
+>   .../fsl/qoriq-fman3-0-10g-1-best-effort.dtsi  |  80 ---------
+>   4 files changed, 324 deletions(-)
+>   delete mode 100644 arch/powerpc/boot/dts/fsl/interlaken-lac-portals.dtsi
+>   delete mode 100644 arch/powerpc/boot/dts/fsl/interlaken-lac.dtsi
+>   delete mode 100644 arch/powerpc/boot/dts/fsl/pq3-mpic-message-B.dtsi
+>   delete mode 100644 arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1-best-effort.dtsi
 > 
-> Agreed. Here's the improved version:
-> 
-> --- a/drivers/pci/pcie/dpc.c
-> +++ b/drivers/pci/pcie/dpc.c
-> @@ -293,17 +293,28 @@ struct pci_dev *dpc_process_error(struct pci_dev *pdev)
->                  break;
->          case PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE:
->          case PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE:
-> -               pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID,
-> -                                    &source);
-> +       {
-> +               int domain, bus;
-> +               u8 slot, func, devfn;
-> +               const char *err_type;
-> +
-> +               pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
-> +
-> +               /* Extract source device location */
-> +               domain = pci_domain_nr(pdev->bus);
-> +               bus = PCI_BUS_NUM(source);
-> +               slot = PCI_SLOT(source);
-> +               func = PCI_FUNC(source);
-> +               devfn = PCI_DEVFN(slot, func);
-> +
-> +               err_type = (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) ?
-> +                          "ERR_FATAL" : "ERR_NONFATAL";
-> +
->                  pci_warn(pdev, "containment event, status:%#06x, %s received from %04x:%02x:%02x.%d\n",
-> -                        status,
-> -                        (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) ?
-> -                               "ERR_FATAL" : "ERR_NONFATAL",
-> -                        pci_domain_nr(pdev->bus), PCI_BUS_NUM(source),
-> -                        PCI_SLOT(source), PCI_FUNC(source));
-> -               err_dev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
-> -                                           PCI_BUS_NUM(source), source & 0xff);
-> +                        status, err_type, domain, bus, slot, func);
-> +               err_dev = pci_get_domain_bus_and_slot(domain, bus, devfn);
-Maybe don't bother with local variables for the things only used once.
-e.g.
-
-		err_dev = pci_get_domain_bus_and_slot(domain, bus, PCI_DEVFN(slot, func));
-
-and possibly the same for err_type.
-
-I don't mind though if you prefer to use locals for everything.
-
-
-
->                  break;
-> +       }
->          case PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT:
->                  ext_reason = status & PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT;
->                  pci_warn(pdev, "containment event, status:%#06x: %s detected\n",
-> 
-> > 
-> > Is there any chance that this might return NULL?   Feels like maybe that's
-> > only a possibility on a broken setup, but I'm not sure of all the wonderful
-> > races around hotplug and DPC occurring before the OS has caught up.  
-> 
-> Surprise Down events are handled separately in
-> dpc_handle_surprise_removal() and won't reach dpc_process_error().
-> Please correct me if I missed anything.
-
-Probably fine. I just didn't check particularly closely.  
-
-Jonathan
-> 
-> Thanks for valuable comments.
-> 
-> Best Regards,
-> Shuai
-
 
