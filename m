@@ -1,89 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-16337-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16340-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UG1aJORJeWmXwQEAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16337-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 00:27:32 +0100
+	id SCntGeuTeWmOxgEAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16340-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 05:43:23 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2559B63C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 00:27:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30939D0C3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jan 2026 05:43:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f11lg6SQTz2xqj;
-	Wed, 28 Jan 2026 10:27:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f18m71FjBz2xjK;
+	Wed, 28 Jan 2026 15:43:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c000::1" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769556447;
-	cv=pass; b=Ooh5BkEsEdDJU8CB/hVfb7/TAzuBvhw8guX++y/xLG9yw5zu5PfPXoXTxUyKEUsSXNTii/Eqb9EzNFPKNt9YGpiRfCvfmfIkrktY6F8e5DS30mBN4rLsbNG4h0mcl6k/PC+pXN2Bz/qmf0ADqHJ7gwgMZ6CoXNAjuIYSzB2a+AA20O1SfxF0x+OKrBEnNfeNoGG4SUPjPHx6Rz3dZrgjOraSg/rapDoqPJ0Vh9CN/ab6PwDxloA4GaLmTPM5jpJ9X3xioJ7nNjUgm0pqB33f99mt27MXuLnQ/wQZAhQJul/zlGtEKWPbt5rsnhEhW3Kk6nSQ551EBR424hZn4ww+8A==
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a00:1450:4864:20::62c" arc.chain=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769565765;
+	cv=pass; b=UqfW9pKZq+5t/Ep1QrgZ4c05CBc1saoarbP6yAB6I6Db5QWpSLRGag6ad9EjBbNEZZ+IL/HlRel1+9KGrit1+yEV2JpUaype1X0fxEI5anUtIcQFJXVPJIqI3r+KF/NOdyeDo53ojV/7chcuNvc3CeNjb3NOMdJDsBiIT2QM0Fl86zRZXOHSlZpmIWv9FJwMviKuztZuylIwVBFGxYOM5H04otJmiVVOsPf7xkXIQ25vEF7D90jOb01fKIyCnLWV+iOIYhsy/F2sWMRIEG+6k7QbakarQYVb1WaJifD4A9pNXyx/PpPkMuwCBOdCp11dBFqpYmdRsPrVXGBDnM/Rdw==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769556447; c=relaxed/relaxed;
-	bh=LQqknpQqy4JhFOECbjUgQownCi2Q61dUwmWEG2YGriA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=nlptScUvVwJVwzM5HXNq0RjW9tGL8KkHVu75S1E0X9bKlY9N2k54UUCB5/RYaIElmN68USDGrld4FYKCxvsy8TqhV4BHW4SzNmY73XPuxDRUdKHFvOlSGkX1eglzvW9YVYDmLqq1DyAoUn22IZzVM8u+8KzuiW/xsv+WgAtpfejiM9S1ZEDCzXsnL6OQR+K+yiBO+4DG/zxiB2pC7zr7JbSqwWjI2TkBLc51515a3nt+teYdi1nZ62pZ21gLbDhWoOgH/z/+RZFKY4afkZ621U6JH5Cj/2D5xEO9JPk4k3dvtwvMwPoFUrCHAq6QK2G9iTtli9M+J/ee9yYJlGMwnQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=WoUwig3H; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c000::1; helo=byapr05cu005.outbound.protection.outlook.com; envelope-from=jniethe@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+	t=1769565765; c=relaxed/relaxed;
+	bh=Xjs7REJ/WW1grWbDrI+yGSmGQ7BvuQU3ORny1k3JZHE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EH6vyD4r9FEFN5ITxUGeY9ImuiGX2EsGoRog4lfbpanSB2sNEAWnVGmdmZ8JjeQcA5SZMmRMnUtNX5M0nBJeGnVZYL8yUyr387j+jScuS/N/cIQFDdwkPYVzmcmxbe3GKOwGUtVabPvZSdkKCn27+tP4pUjJKAUePb/ul5Cipo0fYsDgDiex7tQIKUuhDQQeT9QD1FfO3jgwRyEvbgLiAa/dBi/JE+elrca/NnlA+XgoEP3y4oeN3cbRpoM6AEIuyk0dwjXWhjvRrTs4IrsZh/jei5Lynvu3ZddkISJH1ALFaX+fj/WVKbGBpG7pXKRfblAajaxKO29jjaCu1lJhwg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=cY2SbmyJ; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=wusamuel@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=WoUwig3H;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=cY2SbmyJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:c000::1; helo=byapr05cu005.outbound.protection.outlook.com; envelope-from=jniethe@nvidia.com; receiver=lists.ozlabs.org)
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c000::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=wusamuel@google.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f11lf4KnTz2xMQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jan 2026 10:27:26 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IJqatHPZknzFf4bxdemEgvr42HFVs8e/VlIEc8StJW1nrTRG8K91bUfBvMvFjeTnUoT4+flmONvbMj0yLRdRmgVcfzrIw7mxEsdbixhPTGlGqzACyNebqe7YoY6veVrKUErfOw6ykWtXKkUt7resZK2WypYz8EY9ewNNNAZYYmgDtB3rO3SvwfVsbh06BPPzykWr8mHkttLzFRLbBFvjR+2DeBYO95KSCp+Yy5VHFu0O3LiaIZ4hs993kSAYO2bcKBb8sk1yp0j00BHhiuju32jLK/UQjShXDJJD61wcerfpkA4kn0UBbemp5K9uxWEZ/gCkh3v47kMlKCm4T7GDYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LQqknpQqy4JhFOECbjUgQownCi2Q61dUwmWEG2YGriA=;
- b=AFZ0uz86m60v90izS89t1l4YVyQZLk9B7grAMKgVsgIDUHDVhGledkVtARWKsox3n8y+C5oMgDNb7zb/0kMRl3uYdpTfSmkbrRRdkF7pugZbdGn54V/FbT8q2mC/T5CwsXoWOLoyJCWVPQIevYdj4qY//NTSrqkivHWv0zZFyNrevorgQOgs7UvCX+8RtS7xwrvSvwy5LtShx3938pG5p+B90xvcoHm0irpFgSWsWaidIZLdQUVp4QLwJuek0gELZniXVvd72/2RGQ2Aj91i3mqvGTNTTX/apB2iuu8QofzL7OjhcbZBr8W2GbH6JYhF4K11IUw4spj87ikMOs7RRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LQqknpQqy4JhFOECbjUgQownCi2Q61dUwmWEG2YGriA=;
- b=WoUwig3HRHhJBPpKsqkMFPVgIPppUNthfSNax9hNfOcRfiaCdIstPaNNCnG9Zv2zxippPB5ehejK6F/LzvqZYNFgZAWoMLhfrKvkWqaHZWJoMValTpoU56aSMT8XuKHsylT1FAhlLCc40efLLNScHWU32oFdQPv+fwUPg5GsCf7F3Tn9jztnpGC9k49JPdAQKWghjU0CfUjmH1/TgvxUsmcwGDI36Wp/O89ydW7fdk8ejftDh3EOs9w0us3KslsUCRbIPyXeqoYxh9B/Z2uJr0rtY/F6jk7QFpIQSzoxAp8JjmWsiZayGQTmBd6aGDe68O1jIEYYwMq5va+H5XclMw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com (2603:10b6:8:be::6) by
- BY5PR12MB4161.namprd12.prod.outlook.com (2603:10b6:a03:209::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Tue, 27 Jan
- 2026 23:27:03 +0000
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::9e49:782:8e98:1ff1]) by DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::9e49:782:8e98:1ff1%5]) with mapi id 15.20.9542.010; Tue, 27 Jan 2026
- 23:27:03 +0000
-Message-ID: <91a36928-5c92-47c4-8b4d-1c0ad320671a@nvidia.com>
-Date: Wed, 28 Jan 2026 10:26:55 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/13] mm: Remove device private pages from the
- physical address space
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, balbirs@nvidia.com, matthew.brost@intel.com,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, david@redhat.com, apopple@nvidia.com,
- lorenzo.stoakes@oracle.com, lyude@redhat.com, dakr@kernel.org,
- airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
- mpenttil@redhat.com, jgg@nvidia.com, willy@infradead.org,
- linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org, jgg@ziepe.ca,
- Felix.Kuehling@amd.com, jhubbard@nvidia.com
-References: <20260123062309.23090-1-jniethe@nvidia.com>
- <20260123062309.23090-14-jniethe@nvidia.com>
- <1ECE2357-DEBC-4E46-99CA-34BE894161CF@nvidia.com>
-Content-Language: en-US
-From: Jordan Niethe <jniethe@nvidia.com>
-In-Reply-To: <1ECE2357-DEBC-4E46-99CA-34BE894161CF@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY5PR13CA0011.namprd13.prod.outlook.com
- (2603:10b6:a03:180::24) To DM4PR12MB9072.namprd12.prod.outlook.com
- (2603:10b6:8:be::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f15Bp5nQ1z2xHt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jan 2026 13:02:42 +1100 (AEDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-b8845cb5862so985262966b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jan 2026 18:02:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769565757; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZDERjzPLkaKQST8k2PgyICXgqB4ie/zy5ncpenI7YiL7FhSZg2uYDZdRP7VJwA29jY
+         Yq/11hEQffA+4vR6xUxCeXqJoXp18kIEqZcpti3LW3P2MwbF7D/GvpIMC89G1VP9+Qh9
+         Aryz4oGZqsBw7uQebqc13umAnJOTsqU3xUfiCqg11TQF6Azuw/12oxIYbV4wHPpt5UDA
+         s9YUZ1/d1VY9rtJkleQxUcOU1tT8ft1rLJA+NEX97N4jT0U68N28MzWJPhok2iXd2oFj
+         MSSQasl0zWQbLDMcgDoIdpmisoesLy/th0MhPoSJ88fnoYwIP61ZFYyyX4sMeXCuXcjH
+         merA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Xjs7REJ/WW1grWbDrI+yGSmGQ7BvuQU3ORny1k3JZHE=;
+        fh=n39rZlvbIJyeSE1/S8S/HExDq9FUrswz9kTP3wUVfLk=;
+        b=DZgzTR+bPDPl/8WdTcmO8SkVla59jOX6EjdF06LkxPiZ8OHsh6l7myIwTVUybF78tW
+         yUK+JbjGbyBD2qZl6YaunQnBwmuEfs1PTT5I2tEijy6+AiZkeY3KVnt2ucXcm2Kfy5sJ
+         Y0TWvrWaV4k8ixeowpBp1J3Yu3GLCmL60mIQRnSSmjr9i5eV/mEX17NRYS4XicDraplM
+         sDxWvdM1yIVXaRacnaRZG8hYuUQ5BVnn9FyCtvtqv6sN0oebpExzZ/vcU+JJOL0ktCrR
+         TpZcBbwLkPcwKPoMgkkMFc+2pq+L2wBQ+/rliO7vSss9R+r+fuDpAPhJGQs39+bCwTUj
+         5NYg==;
+        darn=lists.ozlabs.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769565757; x=1770170557; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xjs7REJ/WW1grWbDrI+yGSmGQ7BvuQU3ORny1k3JZHE=;
+        b=cY2SbmyJYn3t6Gz4H/FgXGtMYyxtk0zeRJ0I2U8Cq7C/iHVJNq19t8zh7BQIQWCilo
+         aKUXXLPgLlr137RLSzXxnbRkPpg6NIG/u0rKZOVxd6Kkfj8SwSEyf20vZNWqRsfzrj5d
+         vzBjinPJ76KYaXw/2xAf315d4bE8HyVRcUan/il6LkEzBDSlbEiWsu/Z+onl6MpIsAOq
+         jSktL2b3TcEulqxFkg531O12OpEOh9FDNhA7cO7kLqDxuVQPEmgtclhm/7X5uHZLAgZt
+         u124r5d+MZkpNWTR12mmt8pR98M1imdrwb19q59xpNenj5WE61KnPv2gJIA5DtPEtdIu
+         E+XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769565757; x=1770170557;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Xjs7REJ/WW1grWbDrI+yGSmGQ7BvuQU3ORny1k3JZHE=;
+        b=o+X2XSiGn5atCsA+YCm/hlx/1qOOXqYpn2NeycxetktvegOgXMVXV3HUc+iBfrK7XL
+         eQMCePxZBI6S3zrPLK1Dqo63XsG2hSww5afgg1OV123nk/HDKaqWBN0Xb8CuEJ1kZn2b
+         xvUWnyhc53VfIercfU+H3qsHxaeqJHimDdNylKFWij4ZjYrtgbHnJRIV6ddJLCShfRky
+         4P+zGre1FFDkDa3OiDvKFwPmCwCMyLMw2e7FblhG/Y+cbDDEG6aE/XEpk9B2dHJK9XtF
+         XOevbDp40P8v5/VCLFQNrSAVsHwitCJi6Hl2cxHlr2RdscjN3h2WtA/z7NSnBQr4idhV
+         15rg==
+X-Forwarded-Encrypted: i=1; AJvYcCV7ks9tSa0I6ggTmNW/u5HgvGO4Vf5c2XbhsWgKcHVDabP+hMAF1w9s3zGripXO76X/yMeVWN5ZI7j5OfU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxiIkAEGwVrn42S5PwKMLff0Gc2KEQOXoUXySWNBDVd2p4d5Gfb
+	vEDC/5fAFjf4tIrrsXoLtPyFbgB1H7sWdnoLUkJIP6XP92DcZqZy7/WVUQL4vbrQfd2vzMrSIIt
+	GWakITTI1SQxtFw57PNNPUWy4CnnAyfZrT4nisd/E
+X-Gm-Gg: AZuq6aJhIMZH5fOhBeD+NsMLM4BbFJTL+ZXm560ca5d4C8UWbvmbBAkf9f7tMhzz6at
+	eu9BjsI8lKlsPo3O68XjMJf7cgqFoVRpAsTX0D/7btyDyWmqDNfWQRdyjQcMGN1pCO2rdYcKMH6
+	OcEk+hYB7Pkwm8NAs8sjy3DlwdyE9TC90VEHrQgu+uEYl2MUFkhkt3/M+G2COGmxRcMXVAM0zMk
+	/Gw0LHmQ0Umnw+WRoIdBuEV/xn0ntpSJXv9RhJD/GVCcYRww+gPXMWAI8jJX4GZtptZboDxHvW1
+	ybh6JodL83CHB6jYNRRlEUeAmQ==
+X-Received: by 2002:a17:907:1c95:b0:b87:7419:d3a8 with SMTP id
+ a640c23a62f3a-b8dab330fc4mr281957066b.34.1769565756791; Tue, 27 Jan 2026
+ 18:02:36 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,214 +105,464 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB9072:EE_|BY5PR12MB4161:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8ee91af-c88f-4db8-d098-08de5dfb9394
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?U2NndnNPN01FUUpDMER1TnVFdnZWODFVRkRlTmVaYmRKWmVrUTh0VTRzYUVa?=
- =?utf-8?B?Rk9HSTFTbGtGc2RqdUZJRmdYSitjdi9GY0lMaWt1N1h0ZXpzZnRSaS9oR29J?=
- =?utf-8?B?RVVCcnZCbWJZcVdVeXc1SkNkTTVlcEVxSDF4Yk0vUlovS0poQzhwdEV2Qkh4?=
- =?utf-8?B?Vm1IcDVJZTBxTEVFbEdBdXJSdFRRWEg0dWdHVnd3Z0QzWTU0MXlpelRXLzQ2?=
- =?utf-8?B?dHlDbjA3MkpFRjVraFRWd0kvb20yZjlXNzJsMENMeFYvR01DN0hndWgyNlhv?=
- =?utf-8?B?UWd2K0IwWHJRSHlZanQ5S1NIQmM5aUU2ZTZ5ZkJJVUdpaWJBQlYzVU05aU9t?=
- =?utf-8?B?RVhyRmFMMVpJeTFnNEZZZ3RIRklHNzVXTy9CN0IwN1pHdjR6bDgvYlFROFc1?=
- =?utf-8?B?ZGlabHVadzBpLzFUejhtV0REa01DY2s2bXBZWExSNFZRb3pWZUFaVmJ6VmVO?=
- =?utf-8?B?dEdBNHZKcW9jR3NoVmU5TzdwUnc1UFhaWWFhdk4rMjhKc0hZR1lscE9VZWVJ?=
- =?utf-8?B?NWhLSFp0QkxEa1R5VGN1UVZ0MVAzWEdKbWNIbDNuUENHajNFeFBuRnN3SUxI?=
- =?utf-8?B?Z2tkcytLZlR2WUVENFRPaXNncXZ5S3hkc3QwRnhvWkxHREN4M2IwbEJYN2RV?=
- =?utf-8?B?Z3JZTVR1WFQ4ckZOcXdKRStoeE8xNGplcjk5bE50SGJ0REhnak4zYmZ5TzJp?=
- =?utf-8?B?b1ZlSmdQOFEzRmhnckcrTmdvSU9ET0x0SldCMVVPb3ZlN3lpUkk2TUpnYmVZ?=
- =?utf-8?B?L3NzUGpJZzZiZ0k1cEkwWVBOOWRUbFY1L1NnYXdnRjFET056TDFhVGVCSTVp?=
- =?utf-8?B?MkkwUXJGZXc2c0hhQ3lXUVpPamN6VGtzWkpzYXhZN29EOGNjSWVZYTlhV1E4?=
- =?utf-8?B?Kzh4Q0JjQ0dsNXpkdUlYYWNGMS9XWE42VDBXU0lndys2RTdyWm1IOE1URFVq?=
- =?utf-8?B?eDFwLzY0NkwwY0s1ZW5uZGlEWkwwRWtydlRDNmxQZ0VTRWZiR3ljcytnZmdu?=
- =?utf-8?B?LzRtZGQ2dHVuS01MeVN3TlRldU5Sdy9vRHkvdFJNWmVhTjVEVHlsTEVTZ3hZ?=
- =?utf-8?B?S1lQZEQrRWRVdThaVVFWYW12WXo1WlphaUdtNlNsR2JUSUpKWDBwVW9lYlNZ?=
- =?utf-8?B?N3BmcG8wZVpoYUp2N1kzTmI3bFdzTnZCa0svQ3IxbnNkREdpNHluVk9TRnAy?=
- =?utf-8?B?K0QvNHdSSTdnb1Y0N2Q5SWRDc1pWNGtWSjNZalhxSnVyc1JENFBJNG1NY1Zk?=
- =?utf-8?B?RVF2V21aT0VxUm85Vm5rN2NiRVhXRHVIQndpd2FEWmk5MCtpdXp6MEhMSVFC?=
- =?utf-8?B?a1NzU3J0V0tnNjc3SGNOYkRMcWtHckNqRlA3Z2dVcVBVSU9VVVlGYnIvYmhs?=
- =?utf-8?B?UU41VVVXajhkQlpYMFdsY09xS3VzR1lyN2xvSWU4UjRsK0RkQU1wRElPRGtj?=
- =?utf-8?B?MGhEWXZVYkVmRzQ5K1pIVVdOUVBCRVRuTUdXSU9OMlh2WXUzVEdoeGNyeHYz?=
- =?utf-8?B?RUFhVzJqdDZTZzdRcFVqUCtBMEh0VHMveEh5ZlJkMUhYZll5Q1ZrNkRHK0VQ?=
- =?utf-8?B?TE14REVDVjJRTC9rbHpPRFVkMzhvZHpqK3ltTHhBSmRDb2h0ekNTd0VoWjA2?=
- =?utf-8?B?YitYalpwdDNzcVp3VnlsL0toYXYvTXJEOVUySHVXdC85YVF2aStTaFZQbS9U?=
- =?utf-8?B?UHpGMTFpRTdFRWgyRDI3TGxVam1XcndsQzJ3Z3dIYlRQWlpLVWx3aytURGFW?=
- =?utf-8?B?Q1dhV3M1bDE4b2pvVy9mT1c2M0lGTzI3TzNHcGp3MmFXUURtRDdqZisvUUUx?=
- =?utf-8?B?NlR5T2VWRGhlU2FqTGtlMXpOdHF2aUhFZkpMUzVKMDV2ejN4ZWJOUVgvVVZs?=
- =?utf-8?B?OTY2TDloR3BtUUYrNW52U1p3YzliZmMyb2JUQXJZd3oyelBLbm8wNW84N1FX?=
- =?utf-8?B?Q1BjNFgzeWFsUC9jYXJ6K1B3SnYyaTRGcmhPZmVYOHd3eXg4RGRrbTc0b1Ux?=
- =?utf-8?B?V01OVjRSeU9JTnBHajZlaUIxSWcrckJlSWRqRHgzTDBhN01SSmhpZVVjZ0xB?=
- =?utf-8?B?QW4xODFwOE9DczBKZjM0WnM1WkxzMUFyQVpuRHBnQ3kvKzdtUWppU2piNGgv?=
- =?utf-8?Q?gsas=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB9072.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bm1mTUc2MjU5eXJpSCt3VG0vbWVDdENzTlAwWVlJQUVzZWIzSUZBOVJxRDIv?=
- =?utf-8?B?dTJnMmEwQ0lKN016MTZ3b3RIV00yenJ1ZkRsZnhWL2Z5SGQ2TFBvYjg1WFJL?=
- =?utf-8?B?eWxmMjllbWUyblFVaEFOb3RBdVpIZmdkakNkNm5haGZlUHE1aGxTZGRabmVY?=
- =?utf-8?B?V1BTU2o0WmdmbDIvbWFBamlaRVo1MmZNK0dvQWJPcGQ2RUJzeDYvWEtEMThN?=
- =?utf-8?B?d0Z2aC8vOGtBaFRlSUVqQ1F3dytIRTBIQVJ1NGpwQ1c4WFpuRjY4V2N0YmF1?=
- =?utf-8?B?bGhHMjJlZytTbFJmcEpQaUlxNzgxMWN6TEFmYkJ1TTJRcGNjNW5aNk1TZnpT?=
- =?utf-8?B?cUc5VkFhWVpjN0RXdnYybnpjZ0EwWFl6Y05aWmRHdktHRkM5NFdicWFTVG5Y?=
- =?utf-8?B?dHI3b3k5ekVzaEprUkxtYm8wWm9OeWJDQ2FQTS8yM2FCc0orUUlNZExOOEhE?=
- =?utf-8?B?L3dlSVQ5WEdJMzA3Nk5qN3JvN3FDMmFMSGw4Z1NSc2JkbnVSK2kvWmhuMHVD?=
- =?utf-8?B?Nkk2VlBGeThIdzdDS3FZTXJPa1J4Zkxsa3NaWGtaMnByN3ZyNWNhVXdYQjly?=
- =?utf-8?B?WjZQcWRUT3FaeHUwMDF3UVNBSjRyZDBBWTFwenB4bVpKaWFhTmd3eC9BUTh4?=
- =?utf-8?B?K1JvNC9aa1hiNVRMSkUrYnIvRU4wenBESW5WR3cwM2JlcFZzQXhqRjFCM01l?=
- =?utf-8?B?TlVJYXdoSzlPbkIrWGxaa2pmbi9MUGRYMy9GMFFzSTZWN09Eam96S0pmcnph?=
- =?utf-8?B?bG1CZTU3NlF6TXU3L1BsNDlleWRoSktBVzU4NUg2VVpNRXZDVksybHhTaS92?=
- =?utf-8?B?aWo5Tnd5K2I4T1p3VHdEdFNZaVFGQ0w0Q2xCU1RpbjR3ZUVNa2dZaWNHdmlj?=
- =?utf-8?B?Tmk3K084S3ZldlM2V05ObEVyWm5IUnBNcDFFbktuak05UHB2MXpkaG1qYUxn?=
- =?utf-8?B?b2hyYXRGeERvME9ZUFhwNkNrdW10T202QnEvNVpPVjdqMzgzK1pkWTlGSTFj?=
- =?utf-8?B?Sjc5cVI5WmhsOGRFeUFoR1lvaXgxZHFTajRsd3Y4TWV1bU52RlJaQ1dTY1J3?=
- =?utf-8?B?bERiMjRkeGVZS2Rjd0JWTEhqNXk3cWR0c3BMazVvbktZS1d0Y09WeERHbHJ1?=
- =?utf-8?B?R2h2MjZ5d1loQ2NFTmhTekxncjBWV2NIYU8wZXhYWVJDZGpTV3IyTm5lMzIy?=
- =?utf-8?B?Wmd0am4zTksybTcwdndrbThacE1JUGNVR3JYcm93L3FGSmhVRDlPekpjbzhM?=
- =?utf-8?B?U3JsbWM5ckw5bkV3VFRGZENDanFHdFlRZEZkcG9YOFQ3SE45a0dRQS9keXFq?=
- =?utf-8?B?VTRUZjNDbjZ1YktyNWtlOWpqcU9UTHhFV3B0US9pSnFxQXBCWFVlVmpTS2w0?=
- =?utf-8?B?alJZYmwwYWwzeFNEaWMrREFHS1ZiUkt5SGdWVHBCS2NFUUhRcS9XSUJtR1J6?=
- =?utf-8?B?c2FRKzgyZ0w2Z0dxeXdSeVYwaXJtdTl1QU9BdzZ5Uk9tWTV2dWFqUVA1a1pX?=
- =?utf-8?B?QmVJYnVNbkw4b1k0YS9TRzQ4YzV5cTQ4NkZHM3ZWZHdLcSt3Y05TcDZLODNH?=
- =?utf-8?B?QVJZZTBkMlYvTHpzalFrSjFSWFJxZ1JLY09kcGNMQlNyN1FvTkxJOHdySWN0?=
- =?utf-8?B?QWF6eVBwQXp1VmRSdG5QbThxQVhZSHVsQVYvc3lmU1dKR05iMyt1dnQrd3NF?=
- =?utf-8?B?eE85V3BnaW5xUC9zbklaY2NqNDlId3E3c1FiS0cwK1kzVGxJTGhVUXNHUTZ2?=
- =?utf-8?B?aHJ5S0U1UzE2M0lsQm1Nb0V6ckFsaEV3Y3UrcmsyeVlaQms3a0lqWkZ4MTNQ?=
- =?utf-8?B?WCs3cGRSRlB2V2d3d0J4dEhFYUhqUHBIWEx6QldWcEQ5aldUd2Z2OUZGL1Bw?=
- =?utf-8?B?R0NybWNKSEYxTU1sWCtpR2ZuZ2trZm16dEVUN3FUeG42dU5QSStHS2FUZU1l?=
- =?utf-8?B?ME1RdkxXZ1hmUWJHRGJwRkc2NUxzVXZ5NVNBVGpKWFh0MCtFRG9XMXA4KzhM?=
- =?utf-8?B?QS9pMkJ5Rlc4TTFKQnFqTjRFNThpeTBmUzlaWHptcE8vcklvVGZuQzNwRHhU?=
- =?utf-8?B?a3EwZ0RWQWVvSWJWQ1BzTGNjSFRkbDc4YURLNFNoQ2d4VG44c3lVempHa1o2?=
- =?utf-8?B?OXY3anVKV3B3SnlOa0tMVmkxSkJNR3ljV3k1WmxFODRGZmlXVlBzeXF1S0Z5?=
- =?utf-8?B?dXlVOXZUVngwM3UxVmhhS1FVNlNmb0RXcjdJN2F6ZlBXRGtLMTBBMlhtVE81?=
- =?utf-8?B?aHM4ZkdwL3F2WHF5RGljamIrWGFuVFlNajZON1EzQ1dTanowZVhxN0cwbTk1?=
- =?utf-8?B?NmIzVjNMa1BhMk9jaVNOTW9qb3pzZFR1aWZxdFRsbSs4dVltQm16Zz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8ee91af-c88f-4db8-d098-08de5dfb9394
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB9072.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2026 23:27:02.8874
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YnWA5PtZfAsyrBFsJJjtp0EazDm5XofdMgC3cPb9AQffw2iDXYIJi4u/wXQawZfQMYFtS409qcHLLHNn9BawoA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4161
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+ <CAG2KctrjSP+XyBiOB7hGA2DWtdpg3diRHpQLKGsVYxExuTZazA@mail.gmail.com> <2026012715-mantra-pope-9431@gregkh>
+In-Reply-To: <2026012715-mantra-pope-9431@gregkh>
+From: Samuel Wu <wusamuel@google.com>
+Date: Tue, 27 Jan 2026 18:02:25 -0800
+X-Gm-Features: AZwV_QjNxLKzH4SWKEB4t-7rNY8Sc7_QUT5_wgx9ZFwlSN8bjQfsTOxnH38Kjmw
+Message-ID: <CAG2Kctoo=xiVdhRZnLaoePuu2cuQXMCdj2q6L-iTnb8K1RMHkw@mail.gmail.com>
+Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, 
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz, 
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, 
+	linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
+	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org, 
+	paul@paul-moore.com, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
+	john.johansen@canonical.com, selinux@vger.kernel.org, 
+	borntraeger@linux.ibm.com, bpf@vger.kernel.org, clm@meta.com, 
+	android-kernel-team <android-kernel-team@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.7 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_MED,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16337-lists,linuxppc-dev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:ziy@nvidia.com,m:linux-mm@kvack.org,m:balbirs@nvidia.com,m:matthew.brost@intel.com,m:akpm@linux-foundation.org,m:linux-kernel@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:david@redhat.com,m:apopple@nvidia.com,m:lorenzo.stoakes@oracle.com,m:lyude@redhat.com,m:dakr@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:rcampbell@nvidia.com,m:mpenttil@redhat.com,m:jgg@nvidia.com,m:willy@infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:intel-xe@lists.freedesktop.org,m:jgg@ziepe.ca,m:Felix.Kuehling@amd.com,m:jhubbard@nvidia.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jniethe@nvidia.com,linuxppc-dev@lists.ozlabs.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kvack.org,nvidia.com,intel.com,linux-foundation.org,vger.kernel.org,lists.freedesktop.org,redhat.com,oracle.com,kernel.org,gmail.com,ffwll.ch,infradead.org,lists.ozlabs.org,ziepe.ca,amd.com];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[wusamuel@google.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:viro@zeniv.linux.org.uk,m:linux-fsdevel@vger.kernel.org,m:torvalds@linux-foundation.org,m:brauner@kernel.org,m:jack@suse.cz,m:raven@themaw.net,m:miklos@szeredi.hu,m:neil@brown.name,m:a.hindborg@kernel.org,m:linux-mm@kvack.org,m:linux-efi@vger.kernel.org,m:ocfs2-devel@lists.linux.dev,m:kees@kernel.org,m:rostedt@goodmis.org,m:linux-usb@vger.kernel.org,m:paul@paul-moore.com,m:casey@schaufler-ca.com,m:linuxppc-dev@lists.ozlabs.org,m:john.johansen@canonical.com,m:selinux@vger.kernel.org,m:borntraeger@linux.ibm.com,m:bpf@vger.kernel.org,m:clm@meta.com,m:android-kernel-team@google.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16340-lists,linuxppc-dev=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jniethe@nvidia.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	FROM_NEQ_ENVFROM(0.00)[wusamuel@google.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 7B2559B63C
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.org.uk:email,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: F30939D0C3
 X-Rspamd-Action: no action
 
-Hi,
+On Mon, Jan 26, 2026 at 11:42=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+> On Mon, Jan 26, 2026 at 04:56:42PM -0800, Samuel Wu wrote:
+> > On Mon, Nov 17, 2025 at 9:15=E2=80=AFPM Al Viro <viro@zeniv.linux.org.u=
+k> wrote:
+> > >
+> > > Some filesystems use a kinda-sorta controlled dentry refcount leak to=
+ pin
+> > > dentries of created objects in dcache (and undo it when removing thos=
+e).
+> > > Reference is grabbed and not released, but it's not actually _stored_
+> > > anywhere.  That works, but it's hard to follow and verify; among othe=
+r
+> > > things, we have no way to tell _which_ of the increments is intended
+> > > to be an unpaired one.  Worse, on removal we need to decide whether
+> > > the reference had already been dropped, which can be non-trivial if
+> > > that removal is on umount and we need to figure out if this dentry is
+> > > pinned due to e.g. unlink() not done.  Usually that is handled by usi=
+ng
+> > > kill_litter_super() as ->kill_sb(), but there are open-coded special
+> > > cases of the same (consider e.g. /proc/self).
+> > >
+> > > Things get simpler if we introduce a new dentry flag (DCACHE_PERSISTE=
+NT)
+> > > marking those "leaked" dentries.  Having it set claims responsibility
+> > > for +1 in refcount.
+> > >
+> > > The end result this series is aiming for:
+> > >
+> > > * get these unbalanced dget() and dput() replaced with new primitives=
+ that
+> > >   would, in addition to adjusting refcount, set and clear persistency=
+ flag.
+> > > * instead of having kill_litter_super() mess with removing the remain=
+ing
+> > >   "leaked" references (e.g. for all tmpfs files that hadn't been remo=
+ved
+> > >   prior to umount), have the regular shrink_dcache_for_umount() strip
+> > >   DCACHE_PERSISTENT of all dentries, dropping the corresponding
+> > >   reference if it had been set.  After that kill_litter_super() becom=
+es
+> > >   an equivalent of kill_anon_super().
+> > >
+> > > Doing that in a single step is not feasible - it would affect too man=
+y places
+> > > in too many filesystems.  It has to be split into a series.
+> > >
+> > > This work has really started early in 2024; quite a few preliminary p=
+ieces
+> > > have already gone into mainline.  This chunk is finally getting to th=
+e
+> > > meat of that stuff - infrastructure and most of the conversions to it=
+.
+> > >
+> > > Some pieces are still sitting in the local branches, but the bulk of
+> > > that stuff is here.
+> > >
+> > > Compared to v3:
+> > >         * fixed a functionfs braino around ffs_epfiles_destroy() (in =
+#40/54,
+> > > used to be #36/50).
+> > >         * added fixes for a couple of UAF in functionfs (##36--39); t=
+hat
+> > > does *NOT* include any fixes for dmabuf bugs Chris posted last week, =
+though.
+> > >
+> > > The branch is -rc5-based; it lives in
+> > > git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #work.pers=
+istency
+> > > individual patches in followups.
+> > >
+> > > Please, help with review and testing.  If nobody objects, in a few da=
+ys it
+> > > goes into #for-next.
+> > >
+> > > Shortlog:
+> > >       fuse_ctl_add_conn(): fix nlink breakage in case of early failur=
+e
+> > >       tracefs: fix a leak in eventfs_create_events_dir()
+> > >       new helper: simple_remove_by_name()
+> > >       new helper: simple_done_creating()
+> > >       introduce a flag for explicitly marking persistently pinned den=
+tries
+> > >       primitives for maintaining persisitency
+> > >       convert simple_{link,unlink,rmdir,rename,fill_super}() to new p=
+rimitives
+> > >       convert ramfs and tmpfs
+> > >       procfs: make /self and /thread_self dentries persistent
+> > >       configfs, securityfs: kill_litter_super() not needed
+> > >       convert xenfs
+> > >       convert smackfs
+> > >       convert hugetlbfs
+> > >       convert mqueue
+> > >       convert bpf
+> > >       convert dlmfs
+> > >       convert fuse_ctl
+> > >       convert pstore
+> > >       convert tracefs
+> > >       convert debugfs
+> > >       debugfs: remove duplicate checks in callers of start_creating()
+> > >       convert efivarfs
+> > >       convert spufs
+> > >       convert ibmasmfs
+> > >       ibmasmfs: get rid of ibmasmfs_dir_ops
+> > >       convert devpts
+> > >       binderfs: use simple_start_creating()
+> > >       binderfs_binder_ctl_create(): kill a bogus check
+> > >       convert binderfs
+> > >       autofs_{rmdir,unlink}: dentry->d_fsdata->dentry =3D=3D dentry t=
+here
+> > >       convert autofs
+> > >       convert binfmt_misc
+> > >       selinuxfs: don't stash the dentry of /policy_capabilities
+> > >       selinuxfs: new helper for attaching files to tree
+> > >       convert selinuxfs
+> > >       functionfs: don't abuse ffs_data_closed() on fs shutdown
+> > >       functionfs: don't bother with ffs->ref in ffs_data_{opened,clos=
+ed}()
+> > >       functionfs: need to cancel ->reset_work in ->kill_sb()
+> > >       functionfs: fix the open/removal races
+> > >       functionfs: switch to simple_remove_by_name()
+> > >       convert functionfs
+> > >       gadgetfs: switch to simple_remove_by_name()
+> > >       convert gadgetfs
+> > >       hypfs: don't pin dentries twice
+> > >       hypfs: switch hypfs_create_str() to returning int
+> > >       hypfs: swich hypfs_create_u64() to returning int
+> > >       convert hypfs
+> > >       convert rpc_pipefs
+> > >       convert nfsctl
+> > >       convert rust_binderfs
+> > >       get rid of kill_litter_super()
+> > >       convert securityfs
+> > >       kill securityfs_recursive_remove()
+> > >       d_make_discardable(): warn if given a non-persistent dentry
+> > >
+> > > Diffstat:
+> > >  Documentation/filesystems/porting.rst     |   7 ++
+> > >  arch/powerpc/platforms/cell/spufs/inode.c |  17 ++-
+> > >  arch/s390/hypfs/hypfs.h                   |   6 +-
+> > >  arch/s390/hypfs/hypfs_diag_fs.c           |  60 ++++------
+> > >  arch/s390/hypfs/hypfs_vm_fs.c             |  21 ++--
+> > >  arch/s390/hypfs/inode.c                   |  82 +++++--------
+> > >  drivers/android/binder/rust_binderfs.c    | 121 ++++++-------------
+> > >  drivers/android/binderfs.c                |  82 +++----------
+> > >  drivers/base/devtmpfs.c                   |   2 +-
+> > >  drivers/misc/ibmasm/ibmasmfs.c            |  24 ++--
+> > >  drivers/usb/gadget/function/f_fs.c        | 144 +++++++++++++-------=
+---
+> > >  drivers/usb/gadget/legacy/inode.c         |  49 ++++----
+> > >  drivers/xen/xenfs/super.c                 |   2 +-
+> > >  fs/autofs/inode.c                         |   2 +-
+> > >  fs/autofs/root.c                          |  11 +-
+> > >  fs/binfmt_misc.c                          |  69 ++++++-----
+> > >  fs/configfs/dir.c                         |  10 +-
+> > >  fs/configfs/inode.c                       |   3 +-
+> > >  fs/configfs/mount.c                       |   2 +-
+> > >  fs/dcache.c                               | 111 +++++++++++-------
+> > >  fs/debugfs/inode.c                        |  32 ++----
+> > >  fs/devpts/inode.c                         |  57 ++++-----
+> > >  fs/efivarfs/inode.c                       |   7 +-
+> > >  fs/efivarfs/super.c                       |   5 +-
+> > >  fs/fuse/control.c                         |  38 +++---
+> > >  fs/hugetlbfs/inode.c                      |  12 +-
+> > >  fs/internal.h                             |   1 -
+> > >  fs/libfs.c                                |  52 +++++++--
+> > >  fs/nfsd/nfsctl.c                          |  18 +--
+> > >  fs/ocfs2/dlmfs/dlmfs.c                    |   8 +-
+> > >  fs/proc/base.c                            |   6 +-
+> > >  fs/proc/internal.h                        |   1 +
+> > >  fs/proc/root.c                            |  14 +--
+> > >  fs/proc/self.c                            |  10 +-
+> > >  fs/proc/thread_self.c                     |  11 +-
+> > >  fs/pstore/inode.c                         |   7 +-
+> > >  fs/ramfs/inode.c                          |   8 +-
+> > >  fs/super.c                                |   8 --
+> > >  fs/tracefs/event_inode.c                  |   7 +-
+> > >  fs/tracefs/inode.c                        |  13 +--
+> > >  include/linux/dcache.h                    |   4 +-
+> > >  include/linux/fs.h                        |   6 +-
+> > >  include/linux/proc_fs.h                   |   2 -
+> > >  include/linux/security.h                  |   2 -
+> > >  init/do_mounts.c                          |   2 +-
+> > >  ipc/mqueue.c                              |  12 +-
+> > >  kernel/bpf/inode.c                        |  15 +--
+> > >  mm/shmem.c                                |  38 ++----
+> > >  net/sunrpc/rpc_pipe.c                     |  27 ++---
+> > >  security/apparmor/apparmorfs.c            |  13 ++-
+> > >  security/inode.c                          |  35 +++---
+> > >  security/selinux/selinuxfs.c              | 185 +++++++++++++-------=
+----------
+> > >  security/smack/smackfs.c                  |   2 +-
+> > >  53 files changed, 649 insertions(+), 834 deletions(-)
+> > >
+> > >         Overview:
+> > >
+> > > First two commits are bugfixes (fusectl and tracefs resp.)
+> > >
+> > > [1/54] fuse_ctl_add_conn(): fix nlink breakage in case of early failu=
+re
+> > > [2/54] tracefs: fix a leak in eventfs_create_events_dir()
+> > >
+> > > Next, two commits adding a couple of useful helpers, the next three a=
+dding
+> > > the infrastructure and the rest consists of per-filesystem conversion=
+s.
+> > >
+> > > [3/54] new helper: simple_remove_by_name()
+> > > [4/54] new helper: simple_done_creating()
+> > >         end_creating_path() analogue for internal object creation; un=
+like
+> > > end_creating_path() no mount is passed to it (or guaranteed to exist,=
+ for
+> > > that matter - it might be used during the filesystem setup, before th=
+e
+> > > superblock gets attached to any mounts).
+> > >
+> > > Infrastructure:
+> > > [5/54] introduce a flag for explicitly marking persistently pinned de=
+ntries
+> > >         * introduce the new flag
+> > >         * teach shrink_dcache_for_umount() to handle it (i.e. remove
+> > > and drop refcount on anything that survives to umount with that flag
+> > > still set)
+> > >         * teach kill_litter_super() that anything with that flag does
+> > > *not* need to be unpinned.
+> > > [6/54] primitives for maintaining persisitency
+> > >         * d_make_persistent(dentry, inode) - bump refcount, mark pers=
+istent
+> > > and make hashed positive.  Return value is a borrowed reference to de=
+ntry;
+> > > it can be used until something removes persistency (at the very least=
+,
+> > > until the parent gets unlocked, but some filesystems may have stronge=
+r
+> > > exclusion).
+> > >         * d_make_discardable() - remove persistency mark and drop ref=
+erence.
+> > >
+> > > NOTE: at that stage d_make_discardable() does not reject dentries not
+> > > marked persistent - it acts as if the mark been set.
+> > >
+> > > Rationale: less noise in series splitup that way.  We want (and on th=
+e
+> > > next commit will get) simple_unlink() to do the right thing - remove
+> > > persistency, if it's there.  However, it's used by many filesystems.
+> > > We would have either to convert them all at once or split simple_unli=
+nk()
+> > > into "want persistent" and "don't want persistent" versions, the latt=
+er
+> > > being the old one.  In the course of the series almost all callers
+> > > would migrate to the replacement, leaving only two pathological cases
+> > > with the old one.  The same goes for simple_rmdir() (two callers left=
+ in
+> > > the end), simple_recursive_removal() (all callers gone in the end), e=
+tc.
+> > > That's a lot of noise and it's easier to start with d_make_discardabl=
+e()
+> > > quietly accepting non-persistent dentries, then, in the end, add priv=
+ate
+> > > copies of simple_unlink() and simple_rmdir() for two weird users (con=
+figfs
+> > > and apparmorfs) and have those use dput() instead of d_make_discardab=
+le().
+> > > At that point we'd be left with all callers of d_make_discardable()
+> > > always passing persistent dentries, allowing to add a warning in it.
+> > >
+> > > [7/54] convert simple_{link,unlink,rmdir,rename,fill_super}() to new =
+primitives
+> > >         See above re quietly accepting non-peristent dentries in
+> > > simple_unlink(), simple_rmdir(), etc.
+> > >
+> > >         Converting filesystems:
+> > > [8/54] convert ramfs and tmpfs
+> > > [9/54] procfs: make /self and /thread_self dentries persistent
+> > > [10/54] configfs, securityfs: kill_litter_super() not needed
+> > > [11/54] convert xenfs
+> > > [12/54] convert smackfs
+> > > [13/54] convert hugetlbfs
+> > > [14/54] convert mqueue
+> > > [15/54] convert bpf
+> > > [16/54] convert dlmfs
+> > > [17/54] convert fuse_ctl
+> > > [18/54] convert pstore
+> > > [19/54] convert tracefs
+> > > [20/54] convert debugfs
+> > > [21/54] debugfs: remove duplicate checks in callers of start_creating=
+()
+> > > [22/54] convert efivarfs
+> > > [23/54] convert spufs
+> > > [24/54] convert ibmasmfs
+> > > [25/54] ibmasmfs: get rid of ibmasmfs_dir_ops
+> > > [26/54] convert devpts
+> > > [27/54] binderfs: use simple_start_creating()
+> > > [28/54] binderfs_binder_ctl_create(): kill a bogus check
+> > > [29/54] convert binderfs
+> > > [30/54] autofs_{rmdir,unlink}: dentry->d_fsdata->dentry =3D=3D dentry=
+ there
+> > > [31/54] convert autofs
+> > > [32/54] convert binfmt_misc
+> > > [33/54] selinuxfs: don't stash the dentry of /policy_capabilities
+> > > [34/54] selinuxfs: new helper for attaching files to tree
+> > > [35/54] convert selinuxfs
+> > >
+> > >         Several functionfs fixes, before converting it, to make life
+> > > simpler for backporting:
+> > > [36/54] functionfs: don't abuse ffs_data_closed() on fs shutdown
+> > > [37/54] functionfs: don't bother with ffs->ref in ffs_data_{opened,cl=
+osed}()
+> > > [38/54] functionfs: need to cancel ->reset_work in ->kill_sb()
+> > > [39/54] functionfs: fix the open/removal races
+> > >
+> > >         ... and back to filesystems conversions:
+> > >
+> > > [40/54] functionfs: switch to simple_remove_by_name()
+> > > [41/54] convert functionfs
+> > > [42/54] gadgetfs: switch to simple_remove_by_name()
+> > > [43/54] convert gadgetfs
+> > > [44/54] hypfs: don't pin dentries twice
+> > > [45/54] hypfs: switch hypfs_create_str() to returning int
+> > > [46/54] hypfs: swich hypfs_create_u64() to returning int
+> > > [47/54] convert hypfs
+> > > [48/54] convert rpc_pipefs
+> > > [49/54] convert nfsctl
+> > > [50/54] convert rust_binderfs
+> > >
+> > >         ... and no kill_litter_super() callers remain, so we
+> > > can take it out:
+> > > [51/54] get rid of kill_litter_super()
+> > >
+> > >         Followups:
+> > > [52/54] convert securityfs
+> > >         That was the last remaining user of simple_recursive_removal(=
+)
+> > > that did *not* mark things persistent.  Now the only places where
+> > > d_make_discardable() is still called for dentries that are not marked
+> > > persistent are the calls of simple_{unlink,rmdir}() in configfs and
+> > > apparmorfs.
+> > >
+> > > [53/54] kill securityfs_recursive_remove()
+> > >         Unused macro...
+> > >
+> > > [54/54] d_make_discardable(): warn if given a non-persistent dentry
+> > >
+> > > At this point there are very few call chains that might lead to
+> > > d_make_discardable() on a dentry that hadn't been made persistent:
+> > > calls of simple_unlink() and simple_rmdir() in configfs and
+> > > apparmorfs.
+> > >
+> > > Both filesystems do pin (part of) their contents in dcache, but
+> > > they are currently playing very unusual games with that.  Converting
+> > > them to more usual patterns might be possible, but it's definitely
+> > > going to be a long series of changes in both cases.
+> > >
+> > > For now the easiest solution is to have both stop using simple_unlink=
+()
+> > > and simple_rmdir() - that allows to make d_make_discardable() warn
+> > > when given a non-persistent dentry.
+> > >
+> > > Rather than giving them full-blown private copies (with calls of
+> > > d_make_discardable() replaced with dput()), let's pull the parts of
+> > > simple_unlink() and simple_rmdir() that deal with timestamps and link
+> > > counts into separate helpers (__simple_unlink() and __simple_rmdir()
+> > > resp.) and have those used by configfs and apparmorfs.
+> > >
+> >
+> > Hi Al, when I apply this patchset my Pixel 6 no longer enumerates on
+> > lsusb or ADB. It was quite hard to bisect to this point, as this is
+> > non-deterministic and seems to be setup specific. Note, I am using
+> > android-mainline, but my understanding is that this build does not
+> > have any out-of-tree USB patches, and that there are no vendor hooks
+> > in the build.
+> >
+> > My apologies as I can't offer any other clues; there are no obviously
+> > bad dmesg logs and I'm still working on narrowing down the exact
+> > commit(s) that started this, but just wanted to send a FYI in case
+> > something stands out as obvious.
+>
+> Note that I had to revert commit e5bf5ee26663 ("functionfs: fix the
+> open/removal races") from the stable backports, as it was causing issues
+> on the pixel devices it got backported to.  So perhaps look there?
+>
+> thanks,
+>
+> greg k-h
 
-On 28/1/26 08:12, Zi Yan wrote:
-> 
->> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->> index 039a2d71e92f..e61a0e49a7c9 100644
->> --- a/mm/page_vma_mapped.c
->> +++ b/mm/page_vma_mapped.c
->> @@ -107,6 +107,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
->>   static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->>   {
->>   	unsigned long pfn;
->> +	bool device_private = false;
->>   	pte_t ptent = ptep_get(pvmw->pte);
->>
->>   	if (pvmw->flags & PVMW_MIGRATION) {
->> @@ -115,6 +116,9 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->>   		if (!softleaf_is_migration(entry))
->>   			return false;
->>
->> +		if (softleaf_is_migration_device_private(entry))
->> +			device_private = true;
->> +
->>   		pfn = softleaf_to_pfn(entry);
->>   	} else if (pte_present(ptent)) {
->>   		pfn = pte_pfn(ptent);
->> @@ -127,8 +131,14 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->>   			return false;
->>
->>   		pfn = softleaf_to_pfn(entry);
->> +
->> +		if (softleaf_is_device_private(entry))
->> +			device_private = true;
->>   	}
->>
->> +	if ((device_private) ^ !!(pvmw->flags & PVMW_DEVICE_PRIVATE))
-> 
-> Would “device_private != !!(pvmw->flags & PVMW_DEVICE_PRIVATE)” be more
-> readable? Also I wonder if “!!” is needed here, since I remember modern
-> C can convert “pvmw->flags & PVMW_DEVICE_PRIVATE” to bool.
+Thanks for the suggestion. I tried a few different setups, and now I'm
+fairly confident e5bf5ee26663 ("functionfs: fix the open/removal
+races") is the culprit. I did have to revert 6ca67378d0e7 ("convert
+functionfs") and c7747fafaba0 ("functionfs: switch to
+simple_remove_by_name()") to successfully build, but reverting only
+those two in isolation did not fix the issue.
 
-Yeah, "!=" should work. I did need the "!!" - maybe because xor is bitwise?
-If it's not needed with "!=" I"ll remove it.
+Al, please let me know if you have any other variant of the patch(s)
+that you want tested, otherwise feel free to add these tags as
+appropriate:
+Reported-by: Samuel Wu <wusamuel@google.com>
+Tested-by: Samuel Wu <wusamuel@google.com>
 
-> 
->> +		return false;
->> +
->>   	if ((pfn + pte_nr - 1) < pvmw->pfn)
->>   		return false;
->>   	if (pfn > (pvmw->pfn + pvmw->nr_pages - 1))
->> @@ -137,8 +147,11 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->>   }
->>
->>   /* Returns true if the two ranges overlap.  Careful to not overflow. */
->> -static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
->> +static bool check_pmd(unsigned long pfn, bool device_private, struct page_vma_mapped_walk *pvmw)
->>   {
->> +	if ((device_private) ^ !!(pvmw->flags & PVMW_DEVICE_PRIVATE))
-> 
-> Ditto.
-
-ack.
-
-> 
-> Feel free to add:
-> 
-> Reviewed-by: Zi Yan <ziy@nvidia.com> # for MM changes
-
-Thanks for reviewing.
-
-> 
-> Best Regards,
-> Yan, Zi
-
+Thanks!
 
