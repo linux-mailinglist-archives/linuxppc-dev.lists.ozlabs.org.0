@@ -1,60 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-16407-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16408-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKZJD9Pfe2ljJAIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16407-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jan 2026 23:31:47 +0100
+	id gCA5IdTke2nBJAIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16408-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jan 2026 23:53:08 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6365DB559F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jan 2026 23:31:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA26B58A4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jan 2026 23:53:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f2DQR6tY5z2y6G;
-	Fri, 30 Jan 2026 09:31:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f2Dv43Vp4z2y6G;
+	Fri, 30 Jan 2026 09:53:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769725903;
-	cv=none; b=Kw+/ItXmxZ2pCV5YdCexT3ZT7fe9jLHHli61v1i6bKAunlY4ibSrlP0WVY9nJX7jotvglYIFObRjBTGTh1LXgKLcS7Hov17uiVZMJNunTvLT6x5+UXQsfR0nFZUqBNQjFCwRO1fkgc1gcNLplIoUQkzGUsTIQTTRZHJsxYC9CSaeA0H9OsF8ZKv/0USoPlLqinapTbCsiToHbnDeB5NCzAVy6FyKQAylGhL7LWEk7LspE3stJFoRJDC9FenGr08Rx3zqg/J2hNeYnPHVw84eBBs9ueE++TCYhhbPDpsntFZFAFeF7wjoSqoEERraxNbHgOrmg6gjMWuA+GumnSsXLA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769727184;
+	cv=none; b=co5Gf5z2zadr9GNFBcs+TFQQx4Q1tDf7IqBrTmsTK+w+F4lTU7ogRS/lYnqTKu3EdxOWMY5oUY+/mNeCKoO4WXrXoe/KpuPvB1d8zeI5mx9E+cj4HygVgyMcvXxSV76CGKaSNThmrJCYEb1FZq8K6eOVVwMWrFU5j9cccvjVtXuuUIFaxFx/GtxofWLG4SF3Bmye29ip/9EIMcURYhbKZAhiVA55XjoPRBCnbmFvDgyyY9WJpRLfjZXtw8WzCcSWTi29K1MRPwjOLOyYdVeorRC/Z/LuvomS4UUmvjUCSAHmbiYX1SCjPWwuN9TJas/Ny1ClEEJD8vKJVxiXINgCDg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769725903; c=relaxed/relaxed;
-	bh=AGbWynn54TuwXdaLRJ2FlA7C/5UgLSkYvUaEIrfr1bI=;
+	t=1769727184; c=relaxed/relaxed;
+	bh=NzC4ieMh6vmoXuGrRF8AJfVTPzFDIVwsq0W+97NeH6I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JUO6g8gjwPtFselkJ8cUZ00f9ppriSYSk5ECICKkIhrPZw84oWK30W7tLkDeOgdRBmD2hgayxl7GfMQyPThtO5RN/RMtVgi+3Lr0EqB58xq+x5bxmFbmJQvuHm9LV+Zza+et2NhpTT1lPHMmr/gAu9w1kRl7+jamSKlwufNQCKoHLnpd/PEnPMjubrkXkKHWmLfcNcAJDV7Fra4ZZ+jgc+V1kSwQte7Jz127ZmAYrAC1p10wrO8ehcjJz/XZEtorcl+xVaP+b2CnmIIQXtlaonKqMypXn6kZFOmNXbBK1/pu808bo7KnkCKAmOchlVhu6EvdSHmoxYJ9ZdQoEvMEUw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q9XqZXlz; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lc0V3y/OJ9EsPP9R4iTPC7OM2oIEpx3SM/sEYL10/y6zpjqmL4EKguF+y8Npv/OqrCA2NJpedTXAE/hpKOYpGEm4xUoTArZhWY+G23tEJ9sR+PXT4dusXNJdaJ3YJSHh8oeh/BW2n5OU5QyTT7Dc4xAVhIKY4LUg3wYu0gtxQ46IM+N3+R9LvIAX3v3tfNvetJhWQ3WQStKUkW8GmJ90pItR13v+thOBT+AMzxaNJ0nukg9NVohIreURE/w4cDw0KlxnOAwnbeE7C+hVJ3d43gGGwUaHOVZDgnJk+9Tr9uoko8R/NUY1sEfj/TQwsOfJIIp/PkNBTKbxI15wpPwRKA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=Xd3s3aE8; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q9XqZXlz;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=Xd3s3aE8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f2DQR22Nxz2xpk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 09:31:43 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2F6B460054;
-	Thu, 29 Jan 2026 22:31:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFF7C4CEF7;
-	Thu, 29 Jan 2026 22:31:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769725899;
-	bh=E32m1zZl3x1RripaVchHUXrgIQHgmrfviHWdUL621HE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q9XqZXlzP6Mp6G99g+KUIqj2ErofnD8ERZW7Gh29Xb9YlUznohVK/Imewv1JI6ILk
-	 zQ+6rZYGMs5Wvsqs6eiDPtVG0t2AmarAYGamMZiH4MRm8iNAIQaGD7ouYFSixJQkdU
-	 UBPtshydj6D/gmxbpm+w844GVPIpUpk66r/HzsTVio/nsCKXxgJSqGuGs5BB2MdXxR
-	 mHp5HxhnkQ26Lo5h7Wd+XkinJfRgP5wE2Ek4ieDpicb1JesZT6T+RUU1jxgn2M3g9g
-	 lBC9v94uFT2rnM2tCeKjHp9g3NkU5VUodpFxX4tnqkji6DOnNqdd5tmmkpJDoeU6Pu
-	 zGJWVYtdLOj9g==
-Date: Thu, 29 Jan 2026 15:31:36 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev
-Subject: Re: Failure to build with LLVM for the Wii
-Message-ID: <20260129223136.GA1614447@ax162>
-References: <aXs8sgAcci9FKKpx@luna>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f2Dv070Rbz2xpk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 09:52:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
+	bh=NzC4ieMh6vmoXuGrRF8AJfVTPzFDIVwsq0W+97NeH6I=; b=Xd3s3aE8lP0Iuf76XmQmTqyylY
+	kyjYtmWz3WE5Wp7qeyPuSNsrn7VnrFKLBLvg1QeejST/l0HFm8A1qmVzFffJgrhLWXrFqbyf6a33e
+	/22zqtNz8ozygjvj4by61/hPWVbdmEB1InvlYHMIf70seSv2TGIK6fBViv/wS7HAbDGRBmDvmj2ZB
+	JntUzR5O2yOGBeO5kVkWDZ996QY77yEhYaT27vlMP0zpBJ3x2kyXvwFS0IvjUmVIU8AbZJaqR0rdb
+	wrNWss8rPX4hfCo90x1Ou0DJDoWZBnnF+jopJxNrM5FqeIqToCi5KntAUvJccM6KN/Cc2/WSy2jpw
+	jyJAcUeA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1vlauH-00000007wty-0EGP;
+	Thu, 29 Jan 2026 22:54:33 +0000
+Date: Thu, 29 Jan 2026 22:54:33 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Samuel Wu <wusamuel@google.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+	a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org, clm@meta.com,
+	android-kernel-team <android-kernel-team@google.com>
+Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
+Message-ID: <20260129225433.GU3183987@ZenIV>
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+ <CAG2KctrjSP+XyBiOB7hGA2DWtdpg3diRHpQLKGsVYxExuTZazA@mail.gmail.com>
+ <2026012715-mantra-pope-9431@gregkh>
+ <CAG2Kctoo=xiVdhRZnLaoePuu2cuQXMCdj2q6L-iTnb8K1RMHkw@mail.gmail.com>
+ <20260128045954.GS3183987@ZenIV>
+ <CAG2KctqWy-gnB4o6FAv3kv6+P2YwqeWMBu7bmHZ=Acq+4vVZ3g@mail.gmail.com>
+ <20260129032335.GT3183987@ZenIV>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,87 +85,90 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aXs8sgAcci9FKKpx@luna>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20260129032335.GT3183987@ZenIV>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.71 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[zeniv.linux.org.uk,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[linux.org.uk:s=zeniv-20220401];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16407-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linkmauve@linkmauve.fr,m:linuxppc-dev@lists.ozlabs.org,m:llvm@lists.linux.dev,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[nathan@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[viro@zeniv.linux.org.uk,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	FORGED_RECIPIENTS(0.00)[m:wusamuel@google.com,m:gregkh@linuxfoundation.org,m:linux-fsdevel@vger.kernel.org,m:torvalds@linux-foundation.org,m:brauner@kernel.org,m:jack@suse.cz,m:raven@themaw.net,m:miklos@szeredi.hu,m:neil@brown.name,m:a.hindborg@kernel.org,m:linux-mm@kvack.org,m:linux-efi@vger.kernel.org,m:ocfs2-devel@lists.linux.dev,m:kees@kernel.org,m:rostedt@goodmis.org,m:linux-usb@vger.kernel.org,m:paul@paul-moore.com,m:casey@schaufler-ca.com,m:linuxppc-dev@lists.ozlabs.org,m:john.johansen@canonical.com,m:selinux@vger.kernel.org,m:borntraeger@linux.ibm.com,m:bpf@vger.kernel.org,m:clm@meta.com,m:android-kernel-team@google.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16408-lists,linuxppc-dev=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[viro@zeniv.linux.org.uk,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[linux.org.uk:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 6365DB559F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.org.uk:email,linux.org.uk:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 2CA26B58A4
 X-Rspamd-Action: no action
 
-Hi Link,
-
-On Thu, Jan 29, 2026 at 11:55:46AM +0100, Link Mauve wrote:
-> I’m trying to build the kernel for the Nintendo Wii, using LLVM instead
-> of gcc, in order to bring Rust support to this architecture (and also
-> because my distribution doesn’t ship a cross-compiling gcc), but I get
-> this build issue near the end:
-> ```
-> % make O=wii LLVM=1 ARCH=powerpc -j1
-> make[1]: Entering directory '/home/linkmauve/dev/linux/wii'
->   GEN     Makefile
->   CALL    ../scripts/checksyscalls.sh
->   DESCEND objtool
->   INSTALL libsubcmd_headers
->   WRAP    arch/powerpc/boot/dtbImage.wii
-> objcopy: Unable to recognise the format of the input file `vmlinux'
-> make[3]: *** [../arch/powerpc/boot/Makefile:394: arch/powerpc/boot/dtbImage.wii] Error 1
-> make[2]: *** [../arch/powerpc/Makefile:236: zImage] Error 2
-> make[1]: *** [/home/linkmauve/dev/linux/Makefile:248: __sub-make] Error 2
-> make[1]: Leaving directory '/home/linkmauve/dev/linux/wii'
-> make: *** [Makefile:248: __sub-make] Error 2
-> ```
+On Thu, Jan 29, 2026 at 03:23:35AM +0000, Al Viro wrote:
+> On Wed, Jan 28, 2026 at 04:58:57PM -0800, Samuel Wu wrote:
+> > On Tue, Jan 27, 2026 at 8:58 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
+> > 
+> > > Very interesting...  Does 1544775687f0 (parent of e5bf5ee26663)
+> > > demonstrate that behaviour?
+> > 
+> > Reverting only 1544775687f0 (functionfs: need to cancel ->reset_work
+> > in ->kill_sb()) does not fix the issue. With 6.19-rc7 as baseline, the
+> > simplest working recipe at the moment is with 6ca67378d0e7,
+> > c7747fafaba0, and e5bf5ee26663 reverted.
 > 
-> I believe it should use $(OBJCOPY) instead of objcopy, which is set to
-> llvm-objcopy, but couldn’t figure out where it is misconfigured.
+> Sorry, I hadn't been clear enough: if you do
+> git switch --detach 1544775687f0 
+> and build the resulting tree, does the breakage reproduce?  What I want
+> to do is to split e5bf5ee26663 into smaller steps and see which one
+> introduces the breakage, but the starting point would be verify that
+> there's no breakage prior to that.
 > 
-> Thanks for your help!
+> 
+> PS: v6.19-rc7 contains fc45aee66223 ("get rid of kill_litter_super()"),
+> and reverting 6ca67378d0e7 ("convert functionfs") would reintroduce
+> the call of that function in ffs_fs_kill_sb(), so the resulting tree
+> won't even build on any configs with functionfs enabledd; are you sure
+> that you'd been testing v6.19-rc7 + reverts of just these 3 commits?
 
-It is the arch/powerpc/boot/wrapper script:
+Could you try your reproducer on mainline with the following delta applied?
 
-  https://github.com/ClangBuiltLinux/linux/issues/1601
-
-I have a WIP series from long ago that may be a good starting point for
-getting something working but there were some errors I never got around
-to solving before having to shelve it for other issues:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/nathan/linux.git/log/?h=wip/llvm-1-powerpc-boot-wrapper
-
-Maybe something I (or someone else) can get back to soon.
-
-Cheers,
-Nathan
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index 05c6750702b6..6c6d55ba0749 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -646,12 +646,11 @@ static int ffs_ep0_open(struct inode *inode, struct file *file)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ffs_data_opened(ffs);
+ 	if (ffs->state == FFS_CLOSING) {
+-		ffs_data_closed(ffs);
+ 		mutex_unlock(&ffs->mutex);
+ 		return -EBUSY;
+ 	}
++	ffs_data_opened(ffs);
+ 	mutex_unlock(&ffs->mutex);
+ 	file->private_data = ffs;
+ 
 
