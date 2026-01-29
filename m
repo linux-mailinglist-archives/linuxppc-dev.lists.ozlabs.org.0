@@ -1,83 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-16399-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16400-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHSsHL1xe2mMEgIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16399-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jan 2026 15:42:05 +0100
+	id oIGeIVlye2mMEgIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16400-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jan 2026 15:44:41 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1191B1155
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jan 2026 15:42:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9901CB11CE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jan 2026 15:44:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f220T0D5Dz2ydj;
-	Fri, 30 Jan 2026 01:42:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f223T6ln0z2ydj;
+	Fri, 30 Jan 2026 01:44:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::335"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769697720;
-	cv=none; b=lC+8GOa5ZoLDMXp70FPqoWiGxnDaEkhaXlA3uX2hSFQpE0E116yRazTMzakqk+nUPbCKoQFCl0M4/w1ILDVnFpTpXFADW24LY716tMILGoo4oZoY6qAMznLRMtX1mBXtA7u9VcPn3AYxuO/c832VcgkeyWwmUvRcWUObf2nI4DsZ+P2svG8u8Vvj7yrtJVzPmkyXJEwUO6HV1nThYWlcAX0Zr6p0+paX/1QQkJdwOI9lcyJOYy8eiHnvXZT9dBZuglwUIaHhvUSqQbklpA5tl3NEdOxBTpJLVf0Td8XQCLIdIgN9zImxNsj+EoUiyoPh3D6lYl90PVNW/F/hDEonUg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::329"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769697877;
+	cv=none; b=VtGe8aJ8njJb4TaiSjwn3Z7Cvhoc92Zz9LA9tox5HfOgYHoCfm93ocWfXu2EWiuVDJzKED5bRguuEr8gtD9GZrHGDgSelDPaEe5FVnr3Y5dcsW2gTb0+mkLr6PH7VjAxWM+bAzxMgBc6xttpyZJO3qSaM2Feqp8LQc86k1ULRiVuolrF0Wv9wES16ECtduMgNOvgbEkt0wfIPltj94Bfu3jRLPo2YYU25ynWVhcqKC0i2VN8uILTVVLdvMclCVImIHg2Ss1bg0eUxxJ3aq1x/iLXbhFUI0vJ4x14NZZN8NsYy8wjEmQVGmLSUBX4pdQB3UCtM44x8gsvLjnc4Y6S5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769697720; c=relaxed/relaxed;
-	bh=RiXqWFBbTqasdWh8G25vCefiMtu7P/aKonwdz1Q+QEk=;
+	t=1769697877; c=relaxed/relaxed;
+	bh=aP9REXm6r045bgV7SMsbpSrPiKfypwCy9eB8rfdPdvU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iK0XXP4shkbhxeQpKF7tXQrHO2lqRKPQN+r/rAzIOpY7g25fyZMAtzp0CM39vn37D/0dvB6MUJ6f4vXC9RNYtWjMY8mbTLo+ExgJfdLMghlwdKOysNgEY39n8zyg77L2/nQDcJWBJl3YGk++acDtqPmbMBAf3MNHd7ngiklRwvCN0IpfhXPi3ql2Oh+9Ik4s3rF2NA/Tvg51ntSFoJ6rs3AU4wyMK8IE1haw8zv4HkOWIWQP4YApznlfsBkhiUXLZ0oxXQWX3xMYKb3/bNTQj8ccJDWfM8tS5ZcA8/uwwTR0nxc7kK68mBldVW2igR8fYq6ZAPEKu7nBuu7iMy2bvQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Ogp4KETa; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=petr.pavlu@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=gQXBVSJNaHgiuha6Ki/zQY4XBS58wY/FpXp5YpLo5WkIdx/NLmpkXpZui/ARjC7FtZeRWLxR6eZ/Fmb0VbdLI14JaBxY6WGNjAv/9Wbpp2ACOsWyVG9VMIthpssizGhF2QZ88tsWnrDmr3I8WS70yvma3A9xhRa/g8EZfPIePY1uMOOZJgW2M4uJzstAZpNPxRGLrxJrMpvNNg0+mpehjV5w1bqKkUeaQVIcluI/tEWVglYUUEhIaPjfvHlnMk1ceF07khhbcDcENbCe0mjBx5+qnMdamSSZY1cYjcDOc0Oyv5CZuXP6GQpprk/PuFM44h9NEjj4e13v57YDU4UXSQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=QXYIwzEy; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=petr.pavlu@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Ogp4KETa;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=QXYIwzEy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=petr.pavlu@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=petr.pavlu@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f220M4Fccz2xQs
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 01:41:54 +1100 (AEDT)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-4801c2fae63so8428185e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jan 2026 06:41:54 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f223S5YkBz2xQs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 01:44:36 +1100 (AEDT)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-47ff94b46afso9597255e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jan 2026 06:44:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769697706; x=1770302506; darn=lists.ozlabs.org;
+        d=suse.com; s=google; t=1769697873; x=1770302673; darn=lists.ozlabs.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=RiXqWFBbTqasdWh8G25vCefiMtu7P/aKonwdz1Q+QEk=;
-        b=Ogp4KETaRlzp9BOjnwdLlxeCfmULhAqjOouteVOVQqYBEGsdm15aKtXy8Newi84uf7
-         /iZvj0XKNAMIXZGQKCHdlsNaeQeQbs/VeJFuqbvqcr0Pu37o5fZO1GW0jsRIYssclHn+
-         2/zS/pCtfSvmlnDHMDRwqy1JAlgxR43Ch02FNsyEyZsAXNM+1Z/el1WRMIQuP+Qayg6i
-         Sra4/6CcDcrEIeUhmUkFBZxHwfcDGn3eNfjHQtlRaAIEdbAgi3YlPBKCax0ERNhaZr0p
-         G6kCqeA1HS393m9tsNPJlqVmUYJa5NUaOtzO1PnQDiw0YsBGSm4fnj6FWpdczuUuMeO+
-         ZtMg==
+        bh=aP9REXm6r045bgV7SMsbpSrPiKfypwCy9eB8rfdPdvU=;
+        b=QXYIwzEyqDEHYZtJtYSYF2qVgTTE6Txm8234trXQ6Qu93gnQLzi8KPz6hD+caM6kYM
+         u0Qt3D081hDkn5R1rJgiNrNI1h2/CD4SqKzcc2W0pBueT4iKdwCDtIGpyn2VDakw6HfK
+         KJkJ/wM/nuUawP5XBrdQAthEquRXYZO5WwVCJG6ty3d+oHeGuaAQlsuWn7b+Vc0GcXmk
+         XWk/p6NId/N57cjOp8VkHdduuojw8Fs1TcqD02bSQuU83yXjq9EuaZVhdzZlk+Mln4pX
+         zB5IVANDS8rdeyaBrj4wQ86zRYf93qW1hlzs7X0E6NXfbmIGZAFZrmp6ZADusKIs5u0x
+         7MlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769697706; x=1770302506;
+        d=1e100.net; s=20230601; t=1769697873; x=1770302673;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RiXqWFBbTqasdWh8G25vCefiMtu7P/aKonwdz1Q+QEk=;
-        b=vZOsKOhlTn6qaUiWP/K1r1wAQ19VFPWRULUw9Dj3DpnRs4VueJjxZuZFulEdJurrJw
-         kiocxvFIDQbH4fvSdnkyU8PqoDdv+/J2vFQpl7n6nj1BMbyEN/DddbC1clmdIXPp0536
-         c2XdZ0633kH+7fyAp0u4Zitnp/Y+IIAyyGsJ8f0I8to7mH9W2f9EdZ7rCa6iz931w3vF
-         HUlS6DMAXB6SIRn55rTuVB33mHD6XjL4T1IgIbh3RJdNNScOwXSyI5LXNDYChgTKAiiR
-         XbTMOQtEIS/f66lFwPn23l52jtmBq42POxzH7M6ayy12A8K8RBBSNwRCFvRpXicbeXwY
-         RKUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWbL/3uhuZL3Vj0d7qLk5s00QAeAX7PVp91lhhvoob5CAKjyGrVelNsILzO5zsEB4pkFcrYweoy9lAkZLQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzhT4NX/AdJUdj/36mdz71VxeSUUrmjnYpONoMWWlApZwuvGkEE
-	he8xRMENPU5vsasjGDBX/9fhlVk6Ik6/jnxGTzsgZpK5DpLcgnsseB8CadA4dfjNV/s=
-X-Gm-Gg: AZuq6aJiy4CcbM6NI9q4Woyh0SEldJzs29l2mVtUrIDFAWdSDyZVsvx9zgniruR5LHo
-	wWhKJnmc166WRdYLODWbrXHfot93Ek+zq5FGt7Z7TTCotLDMVk/+JdD1XoNGR7tazOtvSQNm6aZ
-	q5XUZirG8JQ4xncssMBI9goegUDl/7bxHFrXAxwXHjFKT8RYDFrAZzjEmJw/uEC1a9JH0rqgT37
-	lBtx29cb6EP9tUIo74msfTqYXsQ3/dTjyuW6p7bmPESS2hPch5w0NDdKkP+i+A+RaMcqgvgggsi
-	hQVZImaaQ3rrFhYl0fiYbWblU8qjiyEheNWZKrBZDMOXkJD8eeB+P5DWX02lq16piEN3fJLKjo7
-	pu9H+FArCX8QsIX8Q7bFrdeXGvi7vfiuoPKqQTo1Mm2cCANRA7/QYHWRFEC8trb3sypn4u1JBCS
-	NLibwQVtXY3jPiUQSr/Kw7+ggw9En9ow==
-X-Received: by 2002:a05:600c:8b76:b0:480:2521:4d92 with SMTP id 5b1f17b1804b1-48069c49d54mr120114805e9.24.1769697705735;
-        Thu, 29 Jan 2026 06:41:45 -0800 (PST)
+        bh=aP9REXm6r045bgV7SMsbpSrPiKfypwCy9eB8rfdPdvU=;
+        b=B+kQnRUB3Z9nUpaX1ggPTeswG0avyH/Jgb1gNqWMlU8B0I/X1+odo9rr8bPbX+YwWN
+         ib1Oac0mqG9kctGzJrGhN3YfrBvmrepBZrvO7jACNNCPAddKggyileFxEGxq9f6mm93v
+         TG6S7BwMLkrK3dnTsA991b2qnRQkp6jYh8Y+PkaPIXXvBxTowKcLoJvfwa8y49wZQBFG
+         75JYJmS9G06JDXUV73I11/srV8J8rvzfFB19eS1yE7Ub0IND+J0EjmiET2Gj6ua9VbX2
+         fjLfpNAfrTrdaLK+2zVTpEngMmoVT22TVNomA/gjT11y+ZESiSFTeQE3psBcQtR8JS1j
+         3TLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFXm9yOV68eR2i4z0nffr0AajVxKKIJIOpMtHSWM8NhONRK/EMqQOObeBjFcKbgPtquij/cJHdHQjhg8k=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzIJsTLZrBxZ58DEtGv+IxfCm+4eVYOSq7w8k1NDHsQMOKGfslf
+	JgO4Hyu+1+z6/2rVB3PH6Kv57zqMibohD2a1vMxG4xuQkg2UaAojfPrBnyL/2HftXDg=
+X-Gm-Gg: AZuq6aKi/2yaFb+Vxy/SlREwR3zzisCOo5P75MeirvE7uWz4ciWUfFXRdQYELxJhbHk
+	wcTd3HkB4xjqu8br8AP5at++HOjP+B59TTwFWZsWPPd3epWEhqEYH2DeO1LEZryBh1i53yCCkIG
+	n5en6bUCGD/CZZpSd6CwD0QuibgFLquxMumvt5pQ4jC25U/wIdevDO4wDb8N2Vx9D2+0xLSMOld
+	eNtwXW5C0M9eLEPLq3U0Bc9Jj4Q+3TDVcO+aWp2EOCNdd4tmB3uq94bpAAOqLUgMWD6ujRnzIxl
+	ovi2QfoEOEPv0+5LtgcVkxvtpL4kYkVPAo2H+hf+pyKXJkNHcmTNyFeq4EJ+AniKhEL0PyGDMKT
+	AUZWdJ19kwqXffgVcPGEM+SllkCbRc/jAFpDoYNglw8/8vASH9KXun4gnhAnsxM5yZ7KStOxdMO
+	ReUD81f7y0BTRaQQD2C2zVC1G/CD/SWg==
+X-Received: by 2002:a05:600c:c8d:b0:46e:59bd:f7e2 with SMTP id 5b1f17b1804b1-480828ad89emr46795915e9.11.1769697873050;
+        Thu, 29 Jan 2026 06:44:33 -0800 (PST)
 Received: from [10.0.1.22] (109-81-1-107.rct.o2.cz. [109.81.1.107])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066c37433sm182396725e9.10.2026.01.29.06.41.43
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4806cddffc0sm166871115e9.5.2026.01.29.06.44.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Jan 2026 06:41:45 -0800 (PST)
-Message-ID: <aa92ce4a-d336-4d03-b87d-1c39b1c553da@suse.com>
-Date: Thu, 29 Jan 2026 15:41:43 +0100
+        Thu, 29 Jan 2026 06:44:32 -0800 (PST)
+Message-ID: <fd19f9d3-b01c-4cc8-9fd5-642350e7b36b@suse.com>
+Date: Thu, 29 Jan 2026 15:44:31 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,7 +92,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 12/17] module: Move signature splitting up
+Subject: Re: [PATCH v4 13/17] module: Report signature type to users
 To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
  Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen
@@ -121,10 +121,10 @@ Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
  linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
 References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
- <20260113-module-hashes-v4-12-0b932db9b56b@weissschuh.net>
+ <20260113-module-hashes-v4-13-0b932db9b56b@weissschuh.net>
 Content-Language: en-US
 From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260113-module-hashes-v4-12-0b932db9b56b@weissschuh.net>
+In-Reply-To: <20260113-module-hashes-v4-13-0b932db9b56b@weissschuh.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -138,11 +138,11 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
 	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16399-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16400-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:linux@weissschuh.net,m:nathan@kernel.org,m:arnd@arndb.de,m:mcgrof@kernel.org,m:samitolvanen@google.com,m:da.gomez@samsung.com,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:corbet@lwn.net,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:naveen@kernel.org,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:nicolas.schier@linux.dev,m:da.gomez@kernel.org,m:atomlin@atomlin.com,m:chleroy@kernel.org,m:nsc@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:xiujianfeng@huawei.com,m:f.gruenbichler@proxmox.com,m:arnout@bzzt.net,m:mattia@mapreri.org,m:kpcyrd@archlinux.org,m:christian@heusel.eu,m:mcaju95@gmail.com,m:bigeasy@linutronix.de,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arch@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-integrity@vger.kerne
  l.org,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
@@ -156,7 +156,7 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[petr.pavlu@suse.com,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[suse.com:+];
@@ -166,61 +166,52 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[weissschuh.net:email,suse.com:mid,suse.com:dkim,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: B1191B1155
+X-Rspamd-Queue-Id: 9901CB11CE
 X-Rspamd-Action: no action
 
 On 1/13/26 1:28 PM, Thomas Weißschuh wrote:
-> The signature splitting will also be used by CONFIG_MODULE_HASHES.
+> The upcoming CONFIG_MODULE_HASHES will introduce a signature type.
+> This needs to be handled by callers differently than PKCS7 signatures.
 > 
-> Move it up the callchain, so the result can be reused.
+> Report the signature type to the caller and let them verify it.
 > 
 > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 > ---
 > [...]
 > diff --git a/kernel/module/main.c b/kernel/module/main.c
-> index c09b25c0166a..d65bc300a78c 100644
+> index d65bc300a78c..2a28a0ece809 100644
 > --- a/kernel/module/main.c
 > +++ b/kernel/module/main.c
-> @@ -3346,10 +3346,21 @@ static int early_mod_check(struct load_info *info, int flags)
->  
->  static int module_integrity_check(struct load_info *info, int flags)
+> @@ -3348,19 +3348,24 @@ static int module_integrity_check(struct load_info *info, int flags)
 >  {
-> +	bool mangled_module = flags & (MODULE_INIT_IGNORE_MODVERSIONS |
-> +				       MODULE_INIT_IGNORE_VERMAGIC);
-> +	size_t sig_len;
-> +	const u8 *sig;
+>  	bool mangled_module = flags & (MODULE_INIT_IGNORE_MODVERSIONS |
+>  				       MODULE_INIT_IGNORE_VERMAGIC);
+> +	enum pkey_id_type sig_type;
+>  	size_t sig_len;
+>  	const u8 *sig;
 >  	int err = 0;
 >  
-> +	if (IS_ENABLED(CONFIG_MODULE_SIG_POLICY)) {
-> +		err = mod_split_sig(info->hdr, &info->len, mangled_module,
-> +				    &sig_len, &sig, "module");
-> +		if (err)
-> +			return err;
-> +	}
-> +
->  	if (IS_ENABLED(CONFIG_MODULE_SIG))
-> -		err = module_sig_check(info, flags);
-> +		err = module_sig_check(info, sig, sig_len);
+>  	if (IS_ENABLED(CONFIG_MODULE_SIG_POLICY)) {
+>  		err = mod_split_sig(info->hdr, &info->len, mangled_module,
+> -				    &sig_len, &sig, "module");
+> +				    &sig_type, &sig_len, &sig, "module");
+>  		if (err)
+>  			return err;
+>  	}
 >  
->  	if (err)
->  		return err;
+> -	if (IS_ENABLED(CONFIG_MODULE_SIG))
+> +	if (IS_ENABLED(CONFIG_MODULE_SIG) && sig_type == PKEY_ID_PKCS7) {
+>  		err = module_sig_check(info, sig, sig_len);
+> +	} else {
+> +		pr_err("module: not signed with expected PKCS#7 message\n");
+> +		err = -ENOPKG;
+> +	}
 
-I suggest moving the IS_ENABLED(CONFIG_MODULE_SIG) block under the
-new IS_ENABLED(CONFIG_MODULE_SIG_POLICY) section. I realize that
-CONFIG_MODULE_SIG implies CONFIG_MODULE_SIG_POLICY, but I believe this
-change makes it more apparent that this it the case. Otherwise, one
-might for example wonder if sig_len in the module_sig_check() call can
-be undefined.
-
-	if (IS_ENABLED(CONFIG_MODULE_SIG_POLICY)) {
-		err = mod_split_sig(info->hdr, &info->len, mangled_module,
-				    &sig_len, &sig, "module");
-		if (err)
-			return err;
-
-		if (IS_ENABLED(CONFIG_MODULE_SIG))
-			err = module_sig_check(info, sig, sig_len);
-	}
+The new else branch means that if the user chooses not to configure any
+module integrity policy, they will no longer be able to load any
+modules. I think this entire if-else part should be moved under the
+IS_ENABLED(CONFIG_MODULE_SIG_POLICY) block above, as I'm mentioning on
+patch #12.
 
 -- 
 Thanks,
