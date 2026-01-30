@@ -1,83 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-16419-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16420-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFSVAqxFfGnfLgIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16419-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jan 2026 06:46:20 +0100
+	id IFKaAnxNfGlwLwIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16420-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jan 2026 07:19:40 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207A4B76A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jan 2026 06:46:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA5DBB7986
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jan 2026 07:19:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f2Q3r5scxz2xpg;
-	Fri, 30 Jan 2026 16:46:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f2QpJ3BVGz2xjP;
+	Fri, 30 Jan 2026 17:19:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769751976;
-	cv=none; b=Tk7F7QBQtZFPHko+qZO0MiUeXZ2vIdQImi7Lm2ajTe/4MzhlgDa4XmE+n0kr3ZZsekc27nZkRz3SjR8jhk2o1MK1L07pBnGpcCDXIROf2CV7NAojM0AjVqNh8zTGPFUlwf09aTs+q6UF6BZuUz40pl/wF3vIhxxLmVyQqD8c7bMrjxmLfmUV9tLdcHvKHeHFPnsQetoI62pVeb83kff9mPyinLljyADQmx+Ow97CFzvfhmVBWulV6ud9lJmNsW/Wznaew572wpwypo8LLapFZKKnGUXC27ZBB05ZJjkgMIVwabUru5z5bKWdW1cOc1zjX7POSVRFV7bpTBZhylFnWw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769753976;
+	cv=none; b=ax+IVXszTKvhPUzjacz2JldQEsVqqrMea6QSZSls9vx48NEmHygBvu9+fUQhwDTEV2bdwyucpqKHITqg0ZnDFJjMQ8bQV6BaTUl1f7Bs/XabNVG920B1LHBloi3qgvS82iSMJO6hcFWsJ4ZqgrRX4is09RIJp6lHGMYlKuGvNaUEJZadiLNzEv55ZBnec1XuLDH+h3tx8ZPrdekK4mmS90VY4oiPwiAO5rPs5mPdsH6uXlmcEDgFLx4He1bhDcOHFdKXmPYDi2LCp0/MfC/A5UUWmK+NErd9P1u6/Str7ePwbcXq4PIyFd9ALMhx02dgkvUOrU1/T51RElsZnijtKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769751976; c=relaxed/relaxed;
-	bh=Ez2f5J4iIXsfO+/V2AsQEPmwIM0HXd7GRN6J7qk/9m4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXlZbYR4Uaio2qgpEYNvnzOs9R0z4ceqgUjXTF6f5c8vr7z9N8LXVAO957YmDDbl2fuFL8IayqSvTFdTJ4w1Ou3b2NtfsaHlVDTk0ZEVdwQg/I6nAxZ1muLhi2XHtH1r6A+5sJG24xEyNjM/VUPhn4Mq6RgBXLHwoff75/FA63CqAmjx+56J5L4IoA5QFWYRsceCA1wM+rLx5JksIflnvPcWB0dL22JyWe8/+IIFAtzGZwZMcrXrYKkOiZU6nBCWrD8FZJ8+9jP2LSIijwQiQ7EEJgxdjUP4tKKeviDITuGzOeTe3L4nLpqQOZeU/b7+VUxKBeSV5U2i3bB2PvAS3g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jUvq0K2u; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1769753976; c=relaxed/relaxed;
+	bh=VzpX+D1T4NO0rxBtsw/qAjafd/dtQvbYUw2Hzo6xLTQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jl/gs6rq7s/bgsaZRaetozmWTUoqwq9sro6c6eK35etwIQN62pfB17Y16N3AUlyRD5Xfo6n3XtnERKRhtYJnRLQfyvi3/RTq4dHNs/619RIMnybkgXO7g73hbr7O5GdBblHvgaKp+H72aJ+3rx7VnTwFChM7jhBbvU1GQsO56E1OzRj7uaT4+SrBbV1sgXjtKbpLVE6a3c9Bt1qw1c3Dp/It0TCa51g5hBoArvwpg8V+A/nzhY1rbJtbUyWbOVWdzW/Og0B4OT+cJ2ZRssTHIlGd4C8x3W07q0BBPnOhniNoPbnyY8rG8pI8MnOWH9xWGt5W7ZUQey23TkAt+qpD3g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aXecpj40; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jUvq0K2u;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aXecpj40;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f2Q3q35g4z2xjP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 16:46:15 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60U5D9TA011294
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 05:46:12 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f2QpH0xzGz2xS6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 17:19:34 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60U0EBqL015530;
+	Fri, 30 Jan 2026 06:19:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Ez2f5J4iIXsfO+/V2
-	AsQEPmwIM0HXd7GRN6J7qk/9m4=; b=jUvq0K2uBrGneyUhwUwWF1AXA7vmfLH3q
-	N6a87tTQgUWBRhjiid67feVQMu/gefNYk167TI498OA03Vae9KFFIMbndD7cW3YJ
-	OxQ9cxj9LCCqBSOrOzKRapRdU1fChmOTxvbEghZCImmtXG8+9O8Y3OM5ctN9oHKW
-	nrKt34iBSgpYMqgkrCIMi2th5BHZMz5AI2ehtIATgf6aMHJk3Owdc8SonUTHiNTa
-	PimPCSZUbddzSs8pAWw3Xn/pge2/CVIiwOm2sQpmW0CNjrjO7yR/kw3Dt0tWVZ6Q
-	U8Dy1SgHFXilGXpLn7no68JL5gSkloKOc8AFyw8xQdpbBnKI1+77w==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvmgg9j92-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 05:46:11 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60U1p6He018394
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 05:46:10 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bwb424sdk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 05:46:10 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60U5k6l036897200
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=VzpX+D
+	1T4NO0rxBtsw/qAjafd/dtQvbYUw2Hzo6xLTQ=; b=aXecpj40VtzWrULkv2//g0
+	DNm4evtQAxe6kErip5vck8OYSe8wT0dY8PZfUyYZBCXSjIWNUAU8DdOdkd8jH9zY
+	v1169dU8uEZ/5kuLpQ/GK08+MWz3u5yCWCkyh3/YRiJvGgHJ/NckhVbjAci0AWAy
+	wWcHYWKZICLRsDN7auFUZsjPRrhPvNV1ZKcjTHjBgBViUfISzuRtWI9bdSOG6IFz
+	fn1bLvX2sw9hX5JWjqQnDNsO69zqcvIVKUlUMRtKrzJaXTzO0KmYgTlf+V9Q1OUx
+	jkO7t3xBHIWJUnxbs0DG0DKfy6BQrP22sX2EQasUtKyJPQklHE4pz7vimMdSLBtA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnt84k96-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 30 Jan 2026 06:19:05 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60U5tCbX026805;
+	Fri, 30 Jan 2026 06:19:04 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw9wkn364-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 30 Jan 2026 06:19:04 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60U6J3jA22872656
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 30 Jan 2026 05:46:06 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A1BA52004B;
-	Fri, 30 Jan 2026 05:46:06 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9EEC42004D;
-	Fri, 30 Jan 2026 05:46:05 +0000 (GMT)
-Received: from li-218185cc-29b5-11b2-a85c-9a1300ae2e6e.in.ibm.com (unknown [9.109.215.162])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 30 Jan 2026 05:46:05 +0000 (GMT)
-From: Donet Tom <donettom@linux.ibm.com>
-To: gbatra@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-        Donet Tom <donettom@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/iommu: bypass DMA APIs for coherent allocations for pre-mapped memory
-Date: Fri, 30 Jan 2026 11:16:02 +0530
-Message-ID: <20260130054602.21331-1-donettom@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251107161105.85999-1-gbatra@linux.ibm.com>
-References: <20251107161105.85999-1-gbatra@linux.ibm.com>
+	Fri, 30 Jan 2026 06:19:03 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 38E9458052;
+	Fri, 30 Jan 2026 06:19:03 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BF90558056;
+	Fri, 30 Jan 2026 06:18:59 +0000 (GMT)
+Received: from [9.61.240.86] (unknown [9.61.240.86])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 30 Jan 2026 06:18:59 +0000 (GMT)
+Message-ID: <a5bc60c3-ec63-4aa6-a455-20817a8e7cff@linux.ibm.com>
+Date: Fri, 30 Jan 2026 11:48:58 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,88 +84,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] powerpc64/ftrace: fixes clang build issues
+To: Hari Bathini <hbathini@linux.ibm.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "Naveen N. Rao" <naveen@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-trace-kernel@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu
+ <mhiramat@kernel.org>, llvm@lists.linux.dev,
+        Maryam Moghadas <maryammo@ca.ibm.com>
+References: <20260127084926.34497-1-hbathini@linux.ibm.com>
+Content-Language: en-GB
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <20260127084926.34497-1-hbathini@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Z4vh3XRA c=1 sm=1 tr=0 ts=697c45a3 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=5ow3zEcTcvu9A-jyJV8A:9
-X-Proofpoint-GUID: fRVW-NjcxcxTKs9xLBhWdFGgVMPwNP2d
-X-Proofpoint-ORIG-GUID: fRVW-NjcxcxTKs9xLBhWdFGgVMPwNP2d
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDA0MCBTYWx0ZWRfX7zVsLA0pw/qu
- jco5lfwMeQ3EceWmnwZNZUyXMs/0fS2ow93RyTW9DdvgQ/rzuI6rAQNs8nbff5uuUfcYZsXbL9R
- bpqpx/D4aoI5xg5BtjTtWitNPH2A8p/p2UUiCemOujDcwnbgUh6CuktSNZtjz2LYGsptAefpxpO
- 63sRFjRT5QBz8cYPJrcruX/Xf3/N2YpSDmDo3wcWnSeHrY4uE/H4D+N8XOHKlXIYylbMF3SEb67
- I5DjtmK/JJPPS8/1OfLIBbOkEO9ElWse6TXfAL5dhxfEmJEB1Mh3uO/0ZIzpUup7odnZXdpV72A
- loqPWEp/DzEBOY60scaLz1I3PKKcuhGSdAMRtjdPDY06lx6ju4sCQcvpHmT4OHrVLHMUhqLu/xm
- MagpczncpqzdlnB4axx0Ew/v5jiLvkS42QUZFtllmlb1tMOAMZudfdsFCBNQ+xV7kZCkCUt1fCA
- dhFq0cq3zo8d11u4alw==
+X-Proofpoint-GUID: jEaW0EEztOdj0g1ZFujptFKA60au6H7-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDA0NyBTYWx0ZWRfX4irutqbuq9l6
+ 2f5rYw2Ae1O/chIYka3uERQgrUQfpcsSo/s4xDAXgPtDXAnXWqrfJR9S5LAbfv7Dd9JY5FsQ/HF
+ qI5g8U6uyiLmMFtFmBdns/PWRLOS54eMMcHHz5WNg4VheXRaUIac1xotA4h7CfxKsRNklEv2qSd
+ 5HPG4b74KzBhWzdPOITdIaDrIpHeU4eLVGB1CL+aeH3/jZbB6yT7z/eUJVCxown/wIona+05UDP
+ 0NbJ5MhLhOpWX94SBf96mQnuE6vMIMmeCb9EHwSOfiKLKNlODbSQkUAFp4EZeXt+2LjtLxFqNa0
+ eDb8ScEXvQ4JxvfvEG7+g5sDx9JpXNi8Q0xEZA+eICGEu5p5MhsStP0EWLAqre+/EBulIqSvA+b
+ 0OvXpzW9PVji5SzCTi15bR6t0EfGPdR8SAorgbWmXcEZgijMlGighHSpfXccMWkv4wJEO+/UPWw
+ w9jvT24x1raYN4SfzpQ==
+X-Authority-Analysis: v=2.4 cv=Zs3g6t7G c=1 sm=1 tr=0 ts=697c4d59 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=NEAV23lmAAAA:8 a=VnNF1IyMAAAA:8 a=nOZgRAGxndUz1iHlvXcA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: jEaW0EEztOdj0g1ZFujptFKA60au6H7-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-01-29_03,2026-01-29_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 phishscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 adultscore=0 phishscore=0 suspectscore=0
+ bulkscore=0 impostorscore=0 priorityscore=1501 malwarescore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601300040
+ reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601300047
 X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[lists.ozlabs.org:server fail,linux.ibm.com:server fail];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-16420-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gcc-check-fpatchable-function-entry.sh:url,check-fpatchable-function-entry.sh:url,linux.ibm.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
+	FORGED_SENDER(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16419-lists,linuxppc-dev=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gbatra@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:donettom@linux.ibm.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:hbathini@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:christophe.leroy@csgroup.eu,m:naveen@kernel.org,m:mpe@ellerman.id.au,m:linux-trace-kernel@vger.kernel.org,m:mark.rutland@arm.com,m:rostedt@goodmis.org,m:mhiramat@kernel.org,m:llvm@lists.linux.dev,m:maryammo@ca.ibm.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[donettom@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns];
-	FROM_NEQ_ENVFROM(0.00)[donettom@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[venkat88@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 207A4B76A7
+X-Rspamd-Queue-Id: EA5DBB7986
 X-Rspamd-Action: no action
 
-On Fri, 07 Nov 2025 10:11:05 -0600, Gaurav Batra wrote:
-> Leverage ARCH_HAS_DMA_MAP_DIRECT config option for coherent allocations as
-> well. This will bypass DMA ops for memory allocations that have been
-> pre-mapped.
-> 
-> Always set device bus_dma_limit when memory is pre-mapped. In some
-> architectures, like PowerPC, pmemory can be converted to regular memory via
-> daxctl command. This will gate the coherent allocations to pre-mapped RAM
-> only, by dma_coherent_ok().
-> 
-> [...]
 
-Even though this patch is now merged. But FWIW, I had verified this on my
-system and it fixed the iommu_alloc failure problem for me. So
+On 27/01/26 2:19 pm, Hari Bathini wrote:
+> Support for -fpatchable-function-entry on ppc64le was added in Clang
+> with [1]. Faced a couple of issues while building the linux kernel
+> with Clang though. Patches 1 & 2 address those issues. The last patch
+> provides workaround to ensure, an open issue [2] in Clang with
+> -fpatchable-function-entry support, does not impact the linux
+> ftrace subsystem.
+>
+> [1] https://github.com/llvm/llvm-project/pull/151569
+> [2] https://github.com/llvm/llvm-project/issues/163706
+>
+>
+> Hari Bathini (3):
+>    powerpc64: make clang cross-build friendly
+>    powerpc64/ftrace: fix OOL stub count with clang
+>    powerpc64/ftrace: workaround clang recording GEP in
+>      __patchable_function_entries
+>
+>   arch/powerpc/Kconfig                          |  4 +--
+>   arch/powerpc/kernel/trace/ftrace.c            | 26 ++++++++++++++++---
+>   ....sh => check-fpatchable-function-entry.sh} |  0
+>   arch/powerpc/tools/ftrace-gen-ool-stubs.sh    |  4 +--
+>   4 files changed, 26 insertions(+), 8 deletions(-)
+>   rename arch/powerpc/tools/{gcc-check-fpatchable-function-entry.sh => check-fpatchable-function-entry.sh} (100%)
+>
+Tested this patch series, and bulild is successful with both GCC and 
+clang23.x version.
 
-Tested-by: Donet Tom <donettom@linux.ibm.com>
 
--- 
-2.52.0
+KERNEL PARAMETER enabled:
+
+CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY=y
+CONFIG_PPC_FTRACE_OUT_OF_LINE=y
+CONFIG_PPC_FTRACE_OUT_OF_LINE_NUM_RESERVE=32768
+
+
+clang version 23.0.0git
+
+
+Please add below tag for the series.
+
+
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+
+
+
+Regards,
+
+Venkat.
 
 
