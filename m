@@ -1,76 +1,98 @@
-Return-Path: <linuxppc-dev+bounces-16421-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16422-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLPeAJ1XfGn6LwIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16421-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jan 2026 08:02:53 +0100
+	id qN2jErxbfGkYMAIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16422-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jan 2026 08:20:28 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126C4B7C00
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jan 2026 08:02:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A75B7D9A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jan 2026 08:20:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f2Rm65xgNz2xjP;
-	Fri, 30 Jan 2026 18:02:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f2S8R6zfBz30M0;
+	Fri, 30 Jan 2026 18:20:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769756566;
-	cv=none; b=VG9l4w4AMLsYa2ShnbwiWszqWwba5NlS0ujJDxPaSb2jkmJFUPd1WvD3zORn5heIrHeAQZVNb+mPeengZLOqc30Le8Gc4wjmtHvWe/q9oXvIZCCfhAJye7BxIidU0rypp1SUmyLp+fMKvBitJzaE6KC0x6iUoDeH6+Err1b16/sp8cRT8nL0nObFqVVGriVvlpsntDLkG68L0SuWrtAuCZIzkgIpqbSLBmI0oVXsPxxiYotDu6266ch20wn6rzcaA85FnBrX0fxHjxtR54eToQILSAPb4BhkKDZWgAeuNIVGH8pqoSwaknQVkwtpcCer9N45GD41ZeeIIR7SAmeBqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769756566; c=relaxed/relaxed;
-	bh=INMf6UfFQjVVnORY/K4s0FguYtBlQgR4+GC7Az9nAHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TSo30j8wxVQw4KQIuoLHa+f8rh8rMHSVVeoSxkWpf2e8cry+Gh8xChXmvJw/I6oup6Obgd7DtJ8Ue+2lSWp45Xc1ShKF6Q+gpEMOrIzSJBYyAGimCDI8tWa6H6SAzDIcxXZqDG0J/Rx5u3xpc5Q0l+QSukix1X8dAcx9pl4tLepe93fA0CGhBVLbHutb+LCn5cWUX2kflX02nSYAcsa8NtsbKcuGcfNqKjJ8a65hI+YBE754kjRgdqTPEi5Sow0M4NFi7QZtO0SN+vP/FOiUia6o95h9CzIDXfDizV3aNqMoEwfpscr5RoHfM4KL7IcjU29jK4O0WIlK1mQkgemyeA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=ilytkKYY; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2607:f8b0:4864:20::122b" arc.chain=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769757623;
+	cv=pass; b=Fc1u6/RSLrtXh47U/p8Ik3FYXJx6R7aQdpjJBchkmOQ6hvyk4KZMmlWQJ7JaeDeeeiZt+BOMnvwOFqM0EKlZeSXcnMMMIkwaRT6XnSI8gGSZ9GBCwYmkZzaBGJz1TOluTxChW0AViaWfJg2+0wkMHiaSODjF4RK1qCWfObxF/yAeWSsPpHF+9gVlnXAkv7t3bva4jQylvWOLgx+Bj4Vca4YWdjI0xVyhyFW30QYzzv+1xUXJfJqWwVzUg9zHxXkAlFUZuiYpcgBz+se9xYVnTOnhVpuPK1+aMise1FpRN0vA38ug17WJljPpwt1e0UeclDXcjG5QYh527OcJWXIasg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1769757623; c=relaxed/relaxed;
+	bh=yiCInPBw07YvtBtb/8UPQ6O9jfSpvmf7nJNZXF9oh5Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M/KN2WoZ2Du9/EgBDI/2cgnFdLPRV0rLERhYJf0sHDThURR1hx05mOmaxaEuU3Ve1duqh95VWAzawIijWH4UZr3l53LNJtn4g4hVSOREuLHVCNkhCWFVCdlxWZdYG7mQ4iHjCEOiNVA7AU0C8gI7kFtFE05S7DSu/ObA2jjBOAi3V+UQzoLEEUy049YKq3z3avOayMyD3KVhsJl3/gBPkeG/SXqDFRRuwVRqb/OTCndPEQwG2YAwVJSk+BROTuAV6GyHOP/EXm+ogjLuxCFK3cJxI+E4K+CZ+07peIZkbWSuHEwHGyTMH295sN4Gh6vLlqU10Yd4moyJwRovkQ3r7A==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ffO15Ghb; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::122b; helo=mail-dl1-x122b.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=ilytkKYY;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ffO15Ghb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::122b; helo=mail-dl1-x122b.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-dl1-x122b.google.com (mail-dl1-x122b.google.com [IPv6:2607:f8b0:4864:20::122b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f2Rm55J52z2xS6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 18:02:44 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
-	bh=INMf6UfFQjVVnORY/K4s0FguYtBlQgR4+GC7Az9nAHk=; b=ilytkKYYIb15hDUYvk/ktFurn2
-	rIoSaVvuwrv/jNqt4iR6TROJ8IeZlN1PH5whhMv1/AbdXFNN++4wyTyv7KF0rsVh9LyisYV+v2x4b
-	8QcYgnYdrwmOBebbLAj82HRGHPg83XKl4d5ixnZQP3jnt6qes1l7NJpUU15IRRrSd2OrPbXiWuF5G
-	1Usc1/YAHY1hTXStoU1uN95rtw2ejQed+PicyisANY6LLn93TFaRsRfhXSowFrUo7Xjyenb5oA8gy
-	k3TEBPyYB9WuLgY3oozldImd1hRSvpxcR/Ekx3NPG7coY7XpmsUV6OouYMej4OWnhCk8fo8Af/yTI
-	OpDd5jSA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1vliYK-00000009qV4-2BjG;
-	Fri, 30 Jan 2026 07:04:24 +0000
-Date: Fri, 30 Jan 2026 07:04:24 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Samuel Wu <wusamuel@google.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org,
-	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
-	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
-	a.hindborg@kernel.org, linux-mm@kvack.org,
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
-	paul@paul-moore.com, casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org, clm@meta.com,
-	android-kernel-team <android-kernel-team@google.com>
-Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
-Message-ID: <20260130070424.GV3183987@ZenIV>
-References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
- <CAG2KctrjSP+XyBiOB7hGA2DWtdpg3diRHpQLKGsVYxExuTZazA@mail.gmail.com>
- <2026012715-mantra-pope-9431@gregkh>
- <CAG2Kctoo=xiVdhRZnLaoePuu2cuQXMCdj2q6L-iTnb8K1RMHkw@mail.gmail.com>
- <20260128045954.GS3183987@ZenIV>
- <CAG2KctqWy-gnB4o6FAv3kv6+P2YwqeWMBu7bmHZ=Acq+4vVZ3g@mail.gmail.com>
- <20260129032335.GT3183987@ZenIV>
- <20260129225433.GU3183987@ZenIV>
- <CAG2KctoNjktJTQqBb7nGeazXe=ncpwjsc+Lm+JotcpaO3Sf9gw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f2S8Q1HXvz30FF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 18:20:21 +1100 (AEDT)
+Received: by mail-dl1-x122b.google.com with SMTP id a92af1059eb24-124afd03fd1so2789271c88.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jan 2026 23:20:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769757614; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lOizwf3KTMfhwpltA5TeSk8PctiWgampNOYu2F19if5L2PtnUQ5bMM5n5Tm/k7omJ2
+         ZIfDa0AJA+HK6q9f6wBl/62a4JHQUfNpsKshgMRgtw+SxBbUGDyVh/GxVLhXiJ0g9oIl
+         9x8LNnQ7r1hJv8JdQyuzWkTTMOsc2QNhewhLPAyzKPkwQlFpgSZGpl5nvdxOoiGy9f3l
+         tVqDVeFMGuNzR8J4d59ajzk8LkWuZ2bGZk311Xl0MZpAECXWkRkzRd7AUo96poAy36F2
+         Qhcnn6KWQl7IjMUMcxBNKHp9OaCZNeLg2r6+hu6+RsuBmvirBHEnFdPrfiblvlMzQFyA
+         cdCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yiCInPBw07YvtBtb/8UPQ6O9jfSpvmf7nJNZXF9oh5Q=;
+        fh=J2VvihtnvH65RNRk0CllUBMbwcECnJHOnYtdiVIKvHs=;
+        b=On9i3kNNvU3xN4fM9aZBpWB2N/Gg7O4ndDptWfnykFiEvf8R9BHdPfE2ZHryuKYE5x
+         2LEqVAIMWqiGXgAVm9I7/34Z4bidsAe37PYQRRbs6nSOgeg3t6Rq8zAPskeYQWrvhOhN
+         YZN0wFLb+7Q86VyOt02anJbQafxkf3DBWuILPxoh5pW+92sT4nnqjBr2oM90l1aEUGwy
+         I49umtqzbW8z/Cluf+UjON5cyNEbJr31jAHZFsSQqv9Xh/3bjhv80JbGdh1VmeljhkNX
+         cRq6sh2/yjtfqeRoBgEgs+lso9pBwnMYZ/H8FOd3qiQKoo7rdOZ+FiiwI1dCrznpYy0N
+         Uqsw==;
+        darn=lists.ozlabs.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769757614; x=1770362414; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yiCInPBw07YvtBtb/8UPQ6O9jfSpvmf7nJNZXF9oh5Q=;
+        b=ffO15GhbDUyiqB1YSmwrqhjn0MTvTIrFHjvaR+X3zl6cNbC/Re/h1HJEID6pY1RoJJ
+         r7ElkmAJ3VTCYVl7c9h9JxfSBaN0MZdwBCOTppgNNR9aYGBWPXeYArUlP9N/65lt0Pzi
+         IU+KfqJ1jdPh1mr0qK53Egh4ruov2y/yAF8BxRUOdwbfudEgrCIMxeeU60FJvFPscgwn
+         /r6KcjngPldWOcQiyYmnA3BhFbtCw9RATTYNElp6lezn9PlBHfY/PYaCihkf01UQn3eu
+         ExVgttuxQacrkBKvXU979m+Ncdiv1E7R4+WLnhG8uFzX3xYf8gOn1eAjNVBznI8i/Hhy
+         SAYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769757614; x=1770362414;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yiCInPBw07YvtBtb/8UPQ6O9jfSpvmf7nJNZXF9oh5Q=;
+        b=iA0f10Hwl7AHBjLmH1pyRkKJYlVoe0Rwe7jztplkYSGocFN5UhxQ/Knc4g31V9y5kV
+         2xYHfZNqplgL9PrgioYC62bc0Ai1078y+scMC/8HckhhA77RNeXv4TLi3aMOqh5uh8Yp
+         dU1fNjCLX8eXvtltlcUWWiLgswkdXgC3PAu19KDVon5RLAoXYWnAczVDy9/NMPl8WQq1
+         UhBX3HV93YFzzDUIxjO3IluOIugHlD0yod3w16SPubex8cA/HZpXQNOb9YRgPFGsr+ve
+         N/hzX8JPjgky5XqZCbQxUocMKUWWJ0z9EKN1Zy/GjHw8m5vXyNwAJSDHXYOjfqa/fnKa
+         6R2g==
+X-Forwarded-Encrypted: i=1; AJvYcCWqKVav/xSarrY8so+/WglxaS2ItX3J9N/fpKs3ObKErEhV8EI+8GlpKfb0mZmsBtPycqIvNgAGivgp7es=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwJJgsQm3YNmEPERul9Yl24IVVLyPzfAY9iC9DWAjnJnenOaORw
+	Ow+EEOnM8ZFK/RtAzEoBrwKoX0nDn51fdqq4rVyZ9PQz+5e48GPZFtK2O5Y19vC54r01bCMrdoa
+	NFCTM/lcT4/1XW19eZZBe8pMc/UeFgiw=
+X-Gm-Gg: AZuq6aI9rh9ilNo8rCssYnf9rFqOtwklXhCdTCVec6NnokjHRUjHZn+IFaZaoJt655H
+	8ALuaLqjzj+O3jOQLSY1NhVpKWDXZJ0rtkdKuG6WyGWo8z1+PHTBWL3uwoYhyTBCThrIos+HXwW
+	/yX/LRCWt8Vu+BMQcyidk2ewwwKBnq+QBXsknGuKIoEUpMdn/18uoL5x/9mDovqXbcQh4OlDxg/
+	cy/6XRRUdZCVk/fK8IUcd5TvAntT2SJa6Vy7vL3hXSMccpabAhgKh8CCjrEt0TAZX0PKQkGNH4D
+	CQFvcQQcmSVZNd3R1/jDkFOhj4hP/mMGs092V/8OdWNuNsg/MydjM3G2mSgXRc1btUFFLt6bhsM
+	D09mSs3zy+GhcuQ==
+X-Received: by 2002:a05:7022:207:b0:123:35a4:e8be with SMTP id
+ a92af1059eb24-125c0f8d01fmr955848c88.13.1769757613717; Thu, 29 Jan 2026
+ 23:20:13 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,71 +106,87 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG2KctoNjktJTQqBb7nGeazXe=ncpwjsc+Lm+JotcpaO3Sf9gw@mail.gmail.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+References: <20260130054330.3462544-1-shengjiu.wang@nxp.com> <20260130054330.3462544-2-shengjiu.wang@nxp.com>
+In-Reply-To: <20260130054330.3462544-2-shengjiu.wang@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Fri, 30 Jan 2026 09:20:01 +0200
+X-Gm-Features: AZwV_QhrTfQ-UYZ4PfDVoCm6fliDdKe2PvVXhTLbJKtRrXqH5MmZHe0lNlu_Efo
+Message-ID: <CAEnQRZC5umZYoxemGO_yc5xT328uQxUG8Sg8yZvgDowhLP6UPg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] ASoC: dt-bindings: fsl,imx-asrc: Add support for
+ i.MX952 platform
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: lgirdwood@gmail.com, broonie@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, 
+	perex@perex.cz, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.71 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[zeniv.linux.org.uk,none];
-	MID_RHS_NOT_FQDN(0.50)[];
+X-Spamd-Result: default: False [-0.71 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MAILLIST(-0.20)[generic];
-	R_DKIM_ALLOW(-0.20)[linux.org.uk:s=zeniv-20220401];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-16422-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[viro@zeniv.linux.org.uk,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[danielbaluta@gmail.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	FORGED_RECIPIENTS(0.00)[m:wusamuel@google.com,m:gregkh@linuxfoundation.org,m:linux-fsdevel@vger.kernel.org,m:torvalds@linux-foundation.org,m:brauner@kernel.org,m:jack@suse.cz,m:raven@themaw.net,m:miklos@szeredi.hu,m:neil@brown.name,m:a.hindborg@kernel.org,m:linux-mm@kvack.org,m:linux-efi@vger.kernel.org,m:ocfs2-devel@lists.linux.dev,m:kees@kernel.org,m:rostedt@goodmis.org,m:linux-usb@vger.kernel.org,m:paul@paul-moore.com,m:casey@schaufler-ca.com,m:linuxppc-dev@lists.ozlabs.org,m:john.johansen@canonical.com,m:selinux@vger.kernel.org,m:borntraeger@linux.ibm.com,m:bpf@vger.kernel.org,m:clm@meta.com,m:android-kernel-team@google.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:shengjiu.wang@nxp.com,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:shawnguo@kernel.org,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:linux-sound@vger.kernel.org,m:devicetree@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:shengjiu.wang@gmail.com,m:Xiubo.Lee@gmail.com,m:nicoleotsuka@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:linuxppc-dev@lists.ozlabs.org,m:krzk@kernel.org,m:conor@kernel.org,m:shengjiuwang@gmail.com,m:XiuboLee@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16421-lists,linuxppc-dev=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[viro@zeniv.linux.org.uk,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[linux.org.uk:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[danielbaluta@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,pengutronix.de,vger.kernel.org,lists.linux.dev,lists.infradead.org,perex.cz,suse.com,lists.ozlabs.org];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linuxppc-dev,dt];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.org.uk:email,linux.org.uk:dkim]
-X-Rspamd-Queue-Id: 126C4B7C00
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,mail.gmail.com:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: A5A75B7D9A
 X-Rspamd-Action: no action
 
-On Thu, Jan 29, 2026 at 05:16:20PM -0800, Samuel Wu wrote:
-> On Thu, Jan 29, 2026 at 2:52 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
-> 
-> > > Sorry, I hadn't been clear enough: if you do
-> > > git switch --detach 1544775687f0
-> > > and build the resulting tree, does the breakage reproduce?  What I want
-> > > to do is to split e5bf5ee26663 into smaller steps and see which one
-> > > introduces the breakage, but the starting point would be verify that
-> > > there's no breakage prior to that.
-> 
-> Ultimately, same conclusion as before: 6.18-rc5 with patches up to
-> 1544775687f0 works, but adding e5bf5ee26663 breaks it.
+On Fri, Jan 30, 2026 at 7:44=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.co=
+m> wrote:
+>
+> Add new compatible string 'fsl,imx952-asrc' for i.MX952 platform,
+> below are the differences that make this ASRC not fallback compatible
+> with other platforms.
+>
+> 1) There is a power domain on i.MX952 for the wakeupmix system where
+> ASRC is in. But it is enabled by default, ASRC device don't need
+> to enable it, so it is optional for i.MX952.
+> 2) The clock sources of ASRC are different on i.MX952.
+> 3) There is a limitation on i.MX952 that DMA request is not cleared at th=
+e
+> end of conversion with dma slave mode. Which causes sample is dropped fro=
+m
+> the input fifo on the second time if DMA is triggered before the client
+> device and DMA may copy wrong data from output fifo as the output fifo is
+> not ready in the beginning. So there is specially handling in the driver.
+>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-OK.  Could you take a clone of mainline repository and in there run
-; git fetch git://git.kernel.org:/pub/scm/linux/kernel/git/viro/vfs.git for-wsamuel:for-wsamuel
-then
-; git diff for-wsamuel e5bf5ee26663
-to verify that for-wsamuel is identical to tree you've seen breakage on
-; git diff for-wsamuel-base 1544775687f0
-to verify that for-wsamuel-base is the tree where the breakage did not reproduce
-Then bisect from for-wsamuel-base to for-wsamuel.
-
-Basically, that's the offending commit split into steps; let's try to figure
-out what causes the breakage with better resolution...
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 
