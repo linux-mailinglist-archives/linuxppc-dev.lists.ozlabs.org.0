@@ -1,116 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-16482-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16483-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIUfOWI3fmnjWQIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16482-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jan 2026 18:09:54 +0100
+	id EPl2Jb1cfmnlXgIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16483-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jan 2026 20:49:17 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9CAC3209
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jan 2026 18:09:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3409BC3B7D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jan 2026 20:49:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f3KB11s4Nz2xm3;
-	Sun, 01 Feb 2026 04:09:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f3Njz5P7gz2xm3;
+	Sun, 01 Feb 2026 06:49:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.180.131 arc.chain=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769871514;
-	cv=pass; b=DGYXJsHxNLtzpyu9WyjJW8GhK1BV+oqUd+VkhWXD6vx/r1In2a5cYCkDT38DVI1fENA5SiY08UBgFtY25BupyFMKn9dpPXzDRfi6JfmW/cYYYXfK3UbWxCefThOFn4k136yipDrRiJ2MALOv8RSDo+xuhXTnpx8U83oBr7GIP/tC0T67KyqiVrGjk6sPDFOlcDC9xYGEwlBSErHrhJjLUJwUDy5D/Eicfv5kWIMo0RKB38pucJA+ezQ3jwuxqlttE6vbqk8nhgjw7OUN6nGkShmBMBH6Q/br/tunYaNHpDXdMPIoPhjTWMaP/f9DXMH9TU5fPQhS4vsDelFPY/MUNA==
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a00:1450:4864:20::633" arc.chain=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769888951;
+	cv=pass; b=hzDoNqquObgWvvKUh8OEnuVBABMJQV2XNtaWbi6W//0T+7b0x9UrLZ1wpEYNOyc86qm9xb+Udh9pflbYm7chnG/vbMBYHiX0yY7D7KMhuJy8tywkwZ14Q3QUH/Ost9Hte3fmjg/wARBn7Lg02kW0m1sxHeyZ8P37zN3v27Ae4gJxD4m1H8VokO6sFmLm3+RjHYwiskfl6TVPtJbTkGP6s0ZqqApQSBJ96oTmnYQZfAFEP+2JTz/Zos0Rd0znmrCYFLtJyhdDVnrHgCYN/kaXoZAtdOpSv0H3sNijT/S5LklwnYCodoSD31H13mZJqYFU46OXLzU0dXzj2cRBbJwgjg==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769871514; c=relaxed/relaxed;
-	bh=UjEvOy2WGDJOvuBTZY4HtZUR5P6Q5ANbgXFoz/CfBwA=;
+	t=1769888951; c=relaxed/relaxed;
+	bh=pvJH79c3ek4UlgvkC3XFusrRWLJlCUgDtsKCKKtm5AI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EwWKRzbDNEcIgjeDjEAwxaK+1vOC6akhAaWbWs00yKWTDggS91h9ofh0Y+e444z1YODWn9v11lZqGpFqMhcFcnWDVzpR2AORX+V6FDDh11N3bdiYX0be5S6lRGpEyWI1qdnbzaTKTdO19Rik2ArvXA2CHV3RPr9sEZEGGmAuG+5wVgZyX6hEuZT5tAUfJJ4IQSzkf4mLPHl5dQJWe6/C7scr8J71cdkO9aEBJtRRx47xekXLlWf9BvzzZEqAkteHjkXlUx5vOhZSklqE9u8gXlK4G/4/7SHAqD5wTAvNqq/9xhsHifzhR7l/+JYB5cl/7v9dzH9ZJsGtQwbiSFbh5g==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=OvHzB4qP; dkim=pass (2048-bit key; unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=fc5LSb0q; dkim-atps=neutral; spf=pass (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=krishna.kurapati@oss.qualcomm.com; receiver=lists.ozlabs.org) smtp.mailfrom=oss.qualcomm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+	 To:Cc:Content-Type; b=QJI1OmkXhvseBs87wQIm2BAa5y55haUbCFpUKRTk/R4TJmDSP6efopMra2X1RPCA1NoGfZX0uSOn4k8zdfQCih5Tnl0SHzXgv/EjmgXtdYp5F1rfW6ypCaz5xvhELEc78cpTtdZ/fDbtbNTNdtCctVHNEMGlciLsObAqTjZchzhLvq3mb43KYd8LcyG1QIQVEM9eP/bHUZrhiVAbuHa6K6UvsLZE/nUDqWII2dt4+ZjLOL/Il+c1dN06uPeHaZWg0cv0z9Q5ZZHy0qQ+O6veQZkfpHWfuwFJQjEm7RIHnyLUpz1gRiwvgyhkKccRWGcJEDTxZMslGZ35LbnVYpyLIw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Xtrzq6tp; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=wusamuel@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=OvHzB4qP;
-	dkim=pass (2048-bit key; unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=fc5LSb0q;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Xtrzq6tp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oss.qualcomm.com (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=krishna.kurapati@oss.qualcomm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=wusamuel@google.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f3GGc5CCbz2xSN
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 01 Feb 2026 01:58:31 +1100 (AEDT)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60VDEfgw2565170
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jan 2026 14:58:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	UjEvOy2WGDJOvuBTZY4HtZUR5P6Q5ANbgXFoz/CfBwA=; b=OvHzB4qP/0jw0pjw
-	qHWpKU9MTVgAy76IZFOwvomNtT5ojMnLFjv9vAMABxUYDDdhCdM/mdh/1U5ckbR1
-	OHXys8Fv+a3PchmsefgHP4EyfqjCbDSoUrH0Z9vDG2TJsjY7dmvbMOIBYgB07cQC
-	ID8YMzju3Vh/8MpgAyNwHRivnN+v5eYDr5CIhLCfTj2mGS4XRYyxzAUFh9cINBG3
-	4lbqX8kwiPdpC2X1VC+X57Yc4hGnLxfwp4WoeziP1V7KW8OWpTYzBS2/84Kelkij
-	c7Hl5zdRcBv8uYhTITx455LsNqpLBdwF+tnJlsXg2fGzqhfqDBQ8OAyarNxVhK3m
-	+a43bA==
-Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com [74.125.224.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c1ard0xyq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jan 2026 14:58:27 +0000 (GMT)
-Received: by mail-yx1-f69.google.com with SMTP id 956f58d0204a3-6494cbfe6b7so3902532d50.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jan 2026 06:58:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769871507; cv=none;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f3Njx4dhSz2xQs
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 01 Feb 2026 06:49:09 +1100 (AEDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-b8845cb580bso513713766b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jan 2026 11:49:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769888941; cv=none;
         d=google.com; s=arc-20240605;
-        b=FEzsZDxPEyTMBPc9NIu5rFedzoBi3GbVXfh2ba1lPQEmQFF/QceipYI2SH/XAzwHtp
-         3dVxKfM5MbGtya4sxgK+Bq34rRAmvzbYzGh/bUZ37rUzSYh7cmKXjdfNdjPbFqtG7lZI
-         cJXAz/ryDxFOGj1Rh3CaMyRvK+bdakvZZG+ZE/1Wutedf7nbiLaZAlAqgUp7b60zsi8E
-         5M9biSJxH+7zh63c44t9ppMTUTk2O6KCM0nwagAa8ESwQUXxgwweE8/IhWQGwXbcu/gh
-         VOWaapc57si2dKi00H2x9ggmf5yX+R8UhWMXq3BPGwXgvP5YzlDItFm08/x17x2xL/pj
-         W8Wg==
+        b=bgAZ92skDM11qt+BfG/7PkpAT97gHtgUWUYx5hQiXODR0+xV7HG6NcfURf/nx1NzAU
+         LiMuz/SfimRK2m9kUJ0jBpBvgtklZCWyoXCgVYG08ErKwRIT0N0DXXFzh8uLNZtE7lPY
+         +5VpznJyX9UCsdGFfv0c8zEjqgjR3a5svF32lgS7I6Ko3vZ8qXtPTbRw+r+7TnOoBz/O
+         BOQuTv+bjbmplhECGaH8ldZLOwkg4gb7ciDMqtc9xXloqTRcY6AvBXBzTCwRj8N4Xlim
+         DSCiqXJi3amZuzzpu8emOF9DaR/+Yo34i9WdcxMUTyiK2JEK6m7SLzbgpZjTlKpsNE1C
+         QxPA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=UjEvOy2WGDJOvuBTZY4HtZUR5P6Q5ANbgXFoz/CfBwA=;
-        fh=+DDbu/dBnif81Fpzvvs0EXVYcqQtF9Xi8V7qXH3luVg=;
-        b=SMApFc7ETualaYT31pEDkXgBkB+MlLwUdXUW7jObXfHmBva6M8/o2wyeyB2F/2pmXL
-         d9jVqpuiyDUdlvZTX6H2Wz50iIFIDVrT/mclQkN4PedmmsNN7IuiNgIqU/KvqwyT71ZZ
-         bvx//GZS515xTW80iGW9ifvG5iJ0t/zSVrS1jrQ9llWHcVeMvt8eCilOyB+CFj5Ov8IS
-         T2ll9FByomVXB1rVvt4tyuGH9KghXrPY1WwXo9wU/RRI0QDeZdUzzxgCoZ6UrpPFwM9D
-         dbd/jK1fSbFhp3LGd9ldBCYnKOf90kmWV9Y+Ie3//PH5mlu4qCMMSdMA261X5tXmWyot
-         SMrQ==;
+        bh=pvJH79c3ek4UlgvkC3XFusrRWLJlCUgDtsKCKKtm5AI=;
+        fh=m8WUURBsDhIiaPCFIH9JamGdqfSNTodhDAdEyju5oPQ=;
+        b=URQjiLXbco9tlUqqrlHfr0lsGAaR0yvGHwsmATlPlnFnl7u5K2wMULmteZW8BshTL/
+         F7AnFxd39iXFJziGFpMaE7kjQ5dj2p6Sc4kV0zjn9/JCncIkjQVO9zAdDH7dZOKTqaBg
+         JIcSthEXRLoaw116iHbIPjuzvoPc3uYsEXtZ8aSA13DwH4gu7HHsDiH5lO+w6QeBjf6o
+         Gl1bqKdj4WCMcqyTj8Ynrl8h4aE7K3ZUwjUZSnAzyu1AJqzVxcY3kdBQCIF4flTNh07x
+         RfmjurhKJYLBpmv/ABhAHznAihYXAoC8ZxqKXaqU8W9OQ/e84L3KUkEPW1IA2sL/NFpk
+         8zVQ==;
         darn=lists.ozlabs.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769871507; x=1770476307; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1769888941; x=1770493741; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UjEvOy2WGDJOvuBTZY4HtZUR5P6Q5ANbgXFoz/CfBwA=;
-        b=fc5LSb0ql0R3yPIphNKnLFt2in6EapAS2mJ1ajz3ZHpqEtvqK+nLOaMWZDtpTEzCx/
-         CE8/NolIV3xhah/J2ewOnYVSy8WdZoiFhVNGil5pCXcbrycGsdeHQMpxVLCRKjF5LoEg
-         OkCipjcgPY0b8+9VzG6dAmTsd/rxfAfxjzp9uBF/VGS28tfboZ3JZRrFGccorTTaKD45
-         Ukq9/t0V8sc/eoaWQ8Dc6Rx4jNg4srNdDuYS+6Fii7U0JLKUKhRNCC5nTCR2v9o2pbnQ
-         Y2sZR6GUVUmg8EbQMI8AuMGjEomRiwhPyC8GryoDo7vhanevkH59XusWw39np3ILqXK/
-         DaLA==
+        bh=pvJH79c3ek4UlgvkC3XFusrRWLJlCUgDtsKCKKtm5AI=;
+        b=Xtrzq6tpWckI3YRxpeq3KIwy/W1eNRwlrXQn54L5sHA9kFYgyu0cifXo9iuU4Dmuy2
+         8uWziQJaA/Q03koeRfesfOqemMnrR5C2qllLCo/BoFDNuqSV04Ikp6k/ZRQzuNlhSxt6
+         mRBW+0V1rsp860LLXN5z5+ajxMR/IXpfdN4vkxLsfN+oHmMXUUkuDTAh43YthCJHTDhc
+         4KL1/dkyO+4eUl3KL7DXlW4gSPhtClt3CrI6Ayj4fCPaSLuht+GkhkeEDxwwI5oYFR19
+         maImg2HPXUrYhYXu/rhnWhp3QGeXi8/rdKdX7tLBXoO1xLim0fPgAhCwcftWGUROSvjy
+         T63A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769871507; x=1770476307;
+        d=1e100.net; s=20230601; t=1769888941; x=1770493741;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=UjEvOy2WGDJOvuBTZY4HtZUR5P6Q5ANbgXFoz/CfBwA=;
-        b=mHfb+jU+hfnwDkQIuvXH7OXhj/Dy8pvmZVI8U0jFF3eQgHnoKzo9kiByZeGwWt5Iy0
-         VJaZOSvnqo3IYHhyDSm/lFYYrOcxyb8rqNQnlU3PSedaxX7YTPIj+nURTUiXvH4q0P2N
-         ubyqQ6hhIvgkPP8XPUNkBWRgTxjft4/y7Eg4qqiNquXNx0YfSUI7gknG3q6uuG1KawUP
-         mqb3WT6WmwfSu1r5Famr4ASyHvc2FRba5B76SALwTs6C7Dv6UHvy0z4wWyk96b9KvNU3
-         I2KuGnyHXko/yTRMcLYQZSEgBGYC9fLlSIU69UC5rMtpr/Rxtb/TOvseY3T7jUZooyAz
-         6NFg==
-X-Forwarded-Encrypted: i=1; AJvYcCX5s84enaHhJg8SxQ6bvPHvy2F5VtKauKMCY7LjpVjic0/0CWIGa4CT/z1CvvcrA/X+2gJ2JrrtFwgcPMY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxRPKxw3njNxnYSmxLp6ms5m1h1qf0Hu5KxdvJ5LdyMKQedkMcm
-	+4fCfQtOudzhyZP6i8R2nggK1T0z6ZgY1kayMnx0C8/Gg9i6tP+TsdM9R9d9aqRDZQJ0K+8mitW
-	aVqi/0eBQr/8yNVGxvRbto57CbfH+WqxDaQT6OlA5GPPmv+hc9DgRWH9t5UWLEJ4q4h4hZ/oj9e
-	+qRN6yd12AfxBaECqmlYdBPGaPK+btB1aWmpsWad8V7uQ=
-X-Gm-Gg: AZuq6aLrUrBIMiTUznwvqBKRx7Fusk1CF5mmSLYVuBtG37niKlh/bwL/er6pgZrAgpm
-	1hQoZWQiO75V7iOO36nWQeXRHBPthDHwvP7XFxbygx4hJyWT7BcmrVlieeCzT1RC1HGU2PrDXrT
-	vfHBk18oF9F7R75zYRW5MMbLwX8P3e4Qex1f1CmwHB7w8Ug9e86PU+0NrL5cTggygVQn0=
-X-Received: by 2002:a05:690e:4107:b0:649:7c5c:88e3 with SMTP id 956f58d0204a3-649a8547db8mr4403456d50.95.1769871506937;
-        Sat, 31 Jan 2026 06:58:26 -0800 (PST)
-X-Received: by 2002:a05:690e:4107:b0:649:7c5c:88e3 with SMTP id
- 956f58d0204a3-649a8547db8mr4403441d50.95.1769871506570; Sat, 31 Jan 2026
- 06:58:26 -0800 (PST)
+        bh=pvJH79c3ek4UlgvkC3XFusrRWLJlCUgDtsKCKKtm5AI=;
+        b=V91KWEIVOL+BuW1g47y0D0sLG/NpO3Xt25rkpFuY3a6b5JJnjQKp9qjK49r3ERzf41
+         phxvR0TMQmCNJun8m//GU0jqlSWmYcLNVTd1Tqj7GIUvNYzw18+1Js4UsUjRjvoEVcuK
+         JqjIqSrZ64qgnNv5k/eg+BFNEZIzinrhrRsoQ3zexYtp250W47g2Wc+Rm3ufdIY8fyf/
+         asJMbHYq65CYURKESW2k55REtQeVkXH6Cjej5mkYfGudEOvk+ndE3RCFpIyg/olGY36C
+         TepAoZq9l1XdxFRYGUdRpbo+5yySrwx83gDuxLpErFKPAKm4158yipE/Phuh5SWlGv88
+         Sp5g==
+X-Forwarded-Encrypted: i=1; AJvYcCXGY9GnxyLqN7w50/ujn+jhsBvsbFYq3rbxCRLx5DGZ3Pm9Sh92iSpRXF8znc1DYM/fihiNPsgeZFsITog=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzZ3TXqtIoT4fkfQbs3sBV1BX9wt1Ti/7O8kVttJTMEhVZSLgBN
+	tVVjrMSW4zLMfp3FENKbG8ATLlLGNe/jIiA+lI08KbXka4ma1nu7U/R4Bj+K4LxifsEtJdbBYck
+	8ldrgqn0X2nm89hbbiWEszkbjqlDX4Ch+3DOgsVu+
+X-Gm-Gg: AZuq6aLjKAFASzQv2jc2ARhdKwyE0SUDMxqXhhfapHTVwT/GEOOKfIvdygsskl3/OuC
+	eJZDv9rzRL2OEDY6e9NlXQi0aNYxFcTlDbSIACos8Ss5uKvevsHEVPv0QxLmwFVtiiVLETM2UKb
+	Gkz+dZWrKS5wYuaS0nNOfv7j4R445qnShJ9tlyEEtS0BQp3uu/EjZKGFBh9OBQQrS4ywXx0VS6o
+	gdxOFpvsgwcoMQfEucJRo5dtgyQxX2uFYxwLdJZjfobsuPkE+kdHx+aAP3pKZBRzevu
+X-Received: by 2002:a17:906:794b:b0:b73:6d56:7332 with SMTP id
+ a640c23a62f3a-b8dff5288a2mr467832866b.13.1769888940424; Sat, 31 Jan 2026
+ 11:49:00 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -124,151 +104,374 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
- <CAG2KctrjSP+XyBiOB7hGA2DWtdpg3diRHpQLKGsVYxExuTZazA@mail.gmail.com>
- <2026012715-mantra-pope-9431@gregkh> <CAG2Kctoo=xiVdhRZnLaoePuu2cuQXMCdj2q6L-iTnb8K1RMHkw@mail.gmail.com>
- <20260128045954.GS3183987@ZenIV> <CAG2KctqWy-gnB4o6FAv3kv6+P2YwqeWMBu7bmHZ=Acq+4vVZ3g@mail.gmail.com>
- <20260129032335.GT3183987@ZenIV> <20260129225433.GU3183987@ZenIV> <CAG2KctoNjktJTQqBb7nGeazXe=ncpwjsc+Lm+JotcpaO3Sf9gw@mail.gmail.com>
-In-Reply-To: <CAG2KctoNjktJTQqBb7nGeazXe=ncpwjsc+Lm+JotcpaO3Sf9gw@mail.gmail.com>
-From: Krishna Kurapati PSSNV <krishna.kurapati@oss.qualcomm.com>
-Date: Sat, 31 Jan 2026 20:28:15 +0530
-X-Gm-Features: AZwV_Qjt6-X-XbfNyo2_bleHjewtRG1qoA5gEXW9Hu9LjqRyKmxz-97xcVzcIio
-Message-ID: <CAEiyvppoiL2EiSmVvNV3DEkr7wwyC1Fbwhm14h7Rfus4Z8uP7g@mail.gmail.com>
+References: <CAG2KctqWy-gnB4o6FAv3kv6+P2YwqeWMBu7bmHZ=Acq+4vVZ3g@mail.gmail.com>
+ <20260129032335.GT3183987@ZenIV> <20260129225433.GU3183987@ZenIV>
+ <CAG2KctoNjktJTQqBb7nGeazXe=ncpwjsc+Lm+JotcpaO3Sf9gw@mail.gmail.com>
+ <20260130070424.GV3183987@ZenIV> <CAG2Kctoqja9R1bBzdEAV15_yt=sBGkcub6C2nGE6VHMJh13=FQ@mail.gmail.com>
+ <20260130235743.GW3183987@ZenIV> <CAG2KctotL+tpHQMWWAFOQEy=3NX-7fa9YroqsjnxKmTuunJ2AQ@mail.gmail.com>
+ <20260131011831.GZ3183987@ZenIV> <CAG2KctoKDsfbyopQYq3-nJBg3fG+7Nrer17S6HqQ+nCWEcHeWQ@mail.gmail.com>
+ <20260131024324.GA3183987@ZenIV>
+In-Reply-To: <20260131024324.GA3183987@ZenIV>
+From: Samuel Wu <wusamuel@google.com>
+Date: Sat, 31 Jan 2026 11:48:49 -0800
+X-Gm-Features: AZwV_Qix7s2zR2ubTIU666aQNHaAYNz5LepZwEs2cPS3Y4RZWye8TClZc5UBZ0c
+Message-ID: <CAG2KctoJoBevAM=2F=dNnM3VUUcHX9VV-vhKDx5ydOwa4a6zUA@mail.gmail.com>
 Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
-To: Samuel Wu <wusamuel@google.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, Greg KH <gregkh@linuxfoundation.org>,
-        linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
-        brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu,
-        neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org,
-        linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-        kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
-        paul@paul-moore.com, casey@schaufler-ca.com,
-        linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-        selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-        bpf@vger.kernel.org, clm@meta.com,
-        android-kernel-team <android-kernel-team@google.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Greg KH <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, 
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz, 
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, 
+	linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
+	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org, 
+	paul@paul-moore.com, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
+	john.johansen@canonical.com, selinux@vger.kernel.org, 
+	borntraeger@linux.ibm.com, bpf@vger.kernel.org, clm@meta.com, 
+	android-kernel-team <android-kernel-team@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMxMDEyNSBTYWx0ZWRfX0sSki7+qyv8S
- G+Zty89Ro84r4vgisxMdOrzjRYRKjnlku1zlS3gxtWipKba1aqLK54iKJu7xjJaD5vGCUmSiR5N
- xHCIAcIQsz7v9ZxhTZmuJvA6OpDEiBO+OaCuBZPi2XPq9T2chR1cP3FOpkeTTTF6O89escxF+ga
- ASCYGyiBTNWQ1e1eN/WlkssCm8FNOFZRlXefcjLJOvzydPOA4IAPLXukSfiL0WcICmujOYvNm1C
- oJgmia7iUw1zxF95NypVrRhAHvpxEGIdpusQTaplZlcoeCF93BnvkErd+dbR/PSkOQ6e+sgYn/p
- 8Q1kuDTyxmDqxEPI4e1eBLM39FOUbn+hhN4yCiJoA1/FwphMzXG4J1GG8RRN+mzUvfXtf29myN+
- p7b806QKZOiIDvo7sluSSL4upvjQE9AlyLByYAgCwn9bNBqTyN8iqj+nWXX/8R45SatZVsA1MtE
- KHVBqdpo4fELrAKOl9A==
-X-Authority-Analysis: v=2.4 cv=J6anLQnS c=1 sm=1 tr=0 ts=697e1893 cx=c_pps
- a=J+5FMm3BkXb42VdG8aMU9w==:117 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=1XWaLZrsAAAA:8 a=drOt6m5kAAAA:8 a=wEBb_YokH4NsbSDSc3AA:9 a=QEXdDO2ut3YA:10
- a=Epx66wHExT0cjJnnR-oj:22 a=RMMjzBEyIzXRtoq5n5K6:22
-X-Proofpoint-ORIG-GUID: n5GDg0YO3qU2j7Q-vI1dAChK9CaRiTfN
-X-Proofpoint-GUID: n5GDg0YO3qU2j7Q-vI1dAChK9CaRiTfN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-31_02,2026-01-30_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 suspectscore=0
- malwarescore=0 bulkscore=0 adultscore=0 clxscore=1011 spamscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2601310125
-X-Spam-Status: No, score=0.3 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-15.7 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_MED,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16482-lists,linuxppc-dev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[krishna.kurapati@oss.qualcomm.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:gregkh@linuxfoundation.org,m:linux-fsdevel@vger.kernel.org,m:torvalds@linux-foundation.org,m:brauner@kernel.org,m:jack@suse.cz,m:raven@themaw.net,m:miklos@szeredi.hu,m:neil@brown.name,m:a.hindborg@kernel.org,m:linux-mm@kvack.org,m:linux-efi@vger.kernel.org,m:ocfs2-devel@lists.linux.dev,m:kees@kernel.org,m:rostedt@goodmis.org,m:linux-usb@vger.kernel.org,m:paul@paul-moore.com,m:casey@schaufler-ca.com,m:linuxppc-dev@lists.ozlabs.org,m:john.johansen@canonical.com,m:selinux@vger.kernel.org,m:borntraeger@linux.ibm.com,m:bpf@vger.kernel.org,m:clm@meta.com,m:android-kernel-team@google.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[wusamuel@google.com,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[26];
-	FORGED_RECIPIENTS(0.00)[m:wusamuel@google.com,m:viro@zeniv.linux.org.uk,m:gregkh@linuxfoundation.org,m:linux-fsdevel@vger.kernel.org,m:torvalds@linux-foundation.org,m:brauner@kernel.org,m:jack@suse.cz,m:raven@themaw.net,m:miklos@szeredi.hu,m:neil@brown.name,m:a.hindborg@kernel.org,m:linux-mm@kvack.org,m:linux-efi@vger.kernel.org,m:ocfs2-devel@lists.linux.dev,m:kees@kernel.org,m:rostedt@goodmis.org,m:linux-usb@vger.kernel.org,m:paul@paul-moore.com,m:casey@schaufler-ca.com,m:linuxppc-dev@lists.ozlabs.org,m:john.johansen@canonical.com,m:selinux@vger.kernel.org,m:borntraeger@linux.ibm.com,m:bpf@vger.kernel.org,m:clm@meta.com,m:android-kernel-team@google.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	TAGGED_FROM(0.00)[bounces-16483-lists,linuxppc-dev=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	MISSING_XM_UA(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[viro.zeniv.linux.org.uk:query timed out];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krishna.kurapati@oss.qualcomm.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wusamuel@google.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,qualcomm.com:dkim,oss.qualcomm.com:dkim,linux.org.uk:email]
-X-Rspamd-Queue-Id: 3D9CAC3209
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linux.org.uk:email]
+X-Rspamd-Queue-Id: 3409BC3B7D
 X-Rspamd-Action: no action
 
-On Fri, Jan 30, 2026 at 6:46=E2=80=AFAM Samuel Wu <wusamuel@google.com> wro=
-te:
+On Fri, Jan 30, 2026 at 6:41=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> w=
+rote:
 >
-> On Thu, Jan 29, 2026 at 2:52=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk>=
- wrote:
+> On Fri, Jan 30, 2026 at 06:09:00PM -0800, Samuel Wu wrote:
+> > On Fri, Jan 30, 2026 at 5:16=E2=80=AFPM Al Viro <viro@zeniv.linux.org.u=
+k> wrote:
+> > >
+> > > On Fri, Jan 30, 2026 at 05:05:34PM -0800, Samuel Wu wrote:
+> > >
+> > > > > How lovely...  Could you slap
+> > > > >         WARN_ON(ret =3D=3D -EAGAIN);
+> > > > > right before that
+> > > > >         if (ret < 0)
+> > > > >                 return ret;
+> > > >
+> > > > Surprisingly ret =3D=3D 0 every time, so no difference in dmesg log=
+s with
+> > > > this addition.
+> > >
+> > > What the hell?  Other than that mutex_lock(), the only change in ther=
+e
+> > > is the order of store to file->private_data and call of ffs_data_open=
+ed();
+> > > that struct file pointer is not visible to anyone at that point...
+> >
+> > Agree, 09e88dc22ea2 (serialize ffs_ep0_open() on ffs->mutex) in itself
+> > is quite straightforward. Not familiar with this code path so just
+> > speculating, but is there any interaction with previous patches (e.g.
+> > refcounting)?
+> >
+> > > Wait, it also brings ffs_data_reset() on that transition under ffs->m=
+utex...
+> > > For a quick check: does
+> > > git fetch git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git =
+for-wsamuel2
+> > > git switch --detach FETCH_HEAD
+> > > demonstrate the same breakage?
+> >
+> > Had to adjust forward declaration of ffs_data_reset() to build, but
+> > unfortunately same breakage.
 >
-
-[...]
-
-> I'm exploring a few other paths, but not having USB access makes
-> traditional tools a bit difficult. One thing I'm rechecking and is
-> worth mentioning is the lockdep below: it's been present for quite
-> some time now, but I'm not sure if it would have some undesired
-> interaction with your patch.
+> That really looks like a badly racy userland on top of everything else...
+> I mean, it smells like userland open() from one process while another
+> is in the middle of configuring that stuff getting delayed too much
+> for the entire thing to work.  Bloody wonderful...
 >
-> [ BUG: Invalid wait context ]
-> 6.18.0-rc5-mainline-maybe-dirty-4k
-> -----------------------------
-> irq/360-dwc3/352 is trying to lock:
-> ffffff800792deb8 (&psy->extensions_sem){.+.+}-{3:3}, at:
-> __power_supply_set_property+0x40/0x180
-> other info that might help us debug this:
-> context-{4:4}
-> 1 lock held by irq/360-dwc3/352:
->  #0: ffffff8017bb98f0 (&gi->spinlock){....}-{2:2}, at:
-> configfs_composite_suspend+0x28/0x68
-> Call trace:
->  show_stack+0x18/0x28 (C)
->  __dump_stack+0x28/0x3c
->  dump_stack_lvl+0xac/0xf0
->  dump_stack+0x18/0x3c
->  __lock_acquire+0x794/0x2bec
->  lock_acquire+0x148/0x2cc
->  down_read+0x3c/0x194
->  __power_supply_set_property+0x40/0x180
->  power_supply_set_property+0x14/0x20
->  dwc3_gadget_vbus_draw+0x8c/0xcc
->  usb_gadget_vbus_draw+0x48/0x130
->  composite_suspend+0xcc/0xe4
->  configfs_composite_suspend+0x44/0x68
->  dwc3_thread_interrupt+0x8f8/0xc88
->  irq_thread_fn+0x48/0xa8
->  irq_thread+0x150/0x31c
->  kthread+0x150/0x280
->  ret_from_fork+0x10/0x20
+> OK, let's see if a variant with serialization on spinlock works - how doe=
+s
+> the following do on top of mainline?
+
+Excellent, this is working consistently for me on the latest 6.19-rc7.
+
 >
-
-Hi Samuel,
-
- Not sure if it helps, but Prashanth recently pushed a patch to
-address this vbus_draw kernel panic:
- https://lore.kernel.org/all/20260129111403.3081730-1-prashanth.k@oss.qualc=
-omm.com/
-
- Can you check if it fixes the above crash in vbus_draw.
-
-Regards,
-Krishna,
+> diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/func=
+tion/f_fs.c
+> index 05c6750702b6..fa467a40949d 100644
+> --- a/drivers/usb/gadget/function/f_fs.c
+> +++ b/drivers/usb/gadget/function/f_fs.c
+> @@ -59,7 +59,6 @@ static struct ffs_data *__must_check ffs_data_new(const=
+ char *dev_name)
+>         __attribute__((malloc));
+>
+>  /* Opened counter handling. */
+> -static void ffs_data_opened(struct ffs_data *ffs);
+>  static void ffs_data_closed(struct ffs_data *ffs);
+>
+>  /* Called with ffs->mutex held; take over ownership of data. */
+> @@ -636,23 +635,25 @@ static ssize_t ffs_ep0_read(struct file *file, char=
+ __user *buf,
+>         return ret;
+>  }
+>
+> +
+> +static void ffs_data_reset(struct ffs_data *ffs);
+> +
+>  static int ffs_ep0_open(struct inode *inode, struct file *file)
+>  {
+>         struct ffs_data *ffs =3D inode->i_sb->s_fs_info;
+> -       int ret;
+>
+> -       /* Acquire mutex */
+> -       ret =3D ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+> -       if (ret < 0)
+> -               return ret;
+> -
+> -       ffs_data_opened(ffs);
+> +       spin_lock_irq(&ffs->eps_lock);
+>         if (ffs->state =3D=3D FFS_CLOSING) {
+> -               ffs_data_closed(ffs);
+> -               mutex_unlock(&ffs->mutex);
+> +               spin_unlock_irq(&ffs->eps_lock);
+>                 return -EBUSY;
+>         }
+> -       mutex_unlock(&ffs->mutex);
+> +       if (!ffs->opened++ && ffs->state =3D=3D FFS_DEACTIVATED) {
+> +               ffs->state =3D FFS_CLOSING;
+> +               spin_unlock_irq(&ffs->eps_lock);
+> +               ffs_data_reset(ffs);
+> +       } else {
+> +               spin_unlock_irq(&ffs->eps_lock);
+> +       }
+>         file->private_data =3D ffs;
+>
+>         return stream_open(inode, file);
+> @@ -1202,15 +1203,10 @@ ffs_epfile_open(struct inode *inode, struct file =
+*file)
+>  {
+>         struct ffs_data *ffs =3D inode->i_sb->s_fs_info;
+>         struct ffs_epfile *epfile;
+> -       int ret;
+> -
+> -       /* Acquire mutex */
+> -       ret =3D ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+> -       if (ret < 0)
+> -               return ret;
+>
+> -       if (!atomic_inc_not_zero(&ffs->opened)) {
+> -               mutex_unlock(&ffs->mutex);
+> +       spin_lock_irq(&ffs->eps_lock);
+> +       if (!ffs->opened) {
+> +               spin_unlock_irq(&ffs->eps_lock);
+>                 return -ENODEV;
+>         }
+>         /*
+> @@ -1220,11 +1216,11 @@ ffs_epfile_open(struct inode *inode, struct file =
+*file)
+>          */
+>         epfile =3D smp_load_acquire(&inode->i_private);
+>         if (unlikely(ffs->state !=3D FFS_ACTIVE || !epfile)) {
+> -               mutex_unlock(&ffs->mutex);
+> -               ffs_data_closed(ffs);
+> +               spin_unlock_irq(&ffs->eps_lock);
+>                 return -ENODEV;
+>         }
+> -       mutex_unlock(&ffs->mutex);
+> +       ffs->opened++;
+> +       spin_unlock_irq(&ffs->eps_lock);
+>
+>         file->private_data =3D epfile;
+>         return stream_open(inode, file);
+> @@ -2092,8 +2088,6 @@ static int ffs_fs_init_fs_context(struct fs_context=
+ *fc)
+>         return 0;
+>  }
+>
+> -static void ffs_data_reset(struct ffs_data *ffs);
+> -
+>  static void
+>  ffs_fs_kill_sb(struct super_block *sb)
+>  {
+> @@ -2150,15 +2144,6 @@ static void ffs_data_get(struct ffs_data *ffs)
+>         refcount_inc(&ffs->ref);
+>  }
+>
+> -static void ffs_data_opened(struct ffs_data *ffs)
+> -{
+> -       if (atomic_add_return(1, &ffs->opened) =3D=3D 1 &&
+> -                       ffs->state =3D=3D FFS_DEACTIVATED) {
+> -               ffs->state =3D FFS_CLOSING;
+> -               ffs_data_reset(ffs);
+> -       }
+> -}
+> -
+>  static void ffs_data_put(struct ffs_data *ffs)
+>  {
+>         if (refcount_dec_and_test(&ffs->ref)) {
+> @@ -2176,28 +2161,29 @@ static void ffs_data_put(struct ffs_data *ffs)
+>
+>  static void ffs_data_closed(struct ffs_data *ffs)
+>  {
+> -       if (atomic_dec_and_test(&ffs->opened)) {
+> -               if (ffs->no_disconnect) {
+> -                       struct ffs_epfile *epfiles;
+> -                       unsigned long flags;
+> -
+> -                       ffs->state =3D FFS_DEACTIVATED;
+> -                       spin_lock_irqsave(&ffs->eps_lock, flags);
+> -                       epfiles =3D ffs->epfiles;
+> -                       ffs->epfiles =3D NULL;
+> -                       spin_unlock_irqrestore(&ffs->eps_lock,
+> -                                                       flags);
+> -
+> -                       if (epfiles)
+> -                               ffs_epfiles_destroy(ffs->sb, epfiles,
+> -                                                ffs->eps_count);
+> -
+> -                       if (ffs->setup_state =3D=3D FFS_SETUP_PENDING)
+> -                               __ffs_ep0_stall(ffs);
+> -               } else {
+> -                       ffs->state =3D FFS_CLOSING;
+> -                       ffs_data_reset(ffs);
+> -               }
+> +       spin_lock_irq(&ffs->eps_lock);
+> +       if (--ffs->opened) {    // not the last opener?
+> +               spin_unlock_irq(&ffs->eps_lock);
+> +               return;
+> +       }
+> +       if (ffs->no_disconnect) {
+> +               struct ffs_epfile *epfiles;
+> +
+> +               ffs->state =3D FFS_DEACTIVATED;
+> +               epfiles =3D ffs->epfiles;
+> +               ffs->epfiles =3D NULL;
+> +               spin_unlock_irq(&ffs->eps_lock);
+> +
+> +               if (epfiles)
+> +                       ffs_epfiles_destroy(ffs->sb, epfiles,
+> +                                        ffs->eps_count);
+> +
+> +               if (ffs->setup_state =3D=3D FFS_SETUP_PENDING)
+> +                       __ffs_ep0_stall(ffs);
+> +       } else {
+> +               ffs->state =3D FFS_CLOSING;
+> +               spin_unlock_irq(&ffs->eps_lock);
+> +               ffs_data_reset(ffs);
+>         }
+>  }
+>
+> @@ -2214,7 +2200,7 @@ static struct ffs_data *ffs_data_new(const char *de=
+v_name)
+>         }
+>
+>         refcount_set(&ffs->ref, 1);
+> -       atomic_set(&ffs->opened, 0);
+> +       ffs->opened =3D 0;
+>         ffs->state =3D FFS_READ_DESCRIPTORS;
+>         mutex_init(&ffs->mutex);
+>         spin_lock_init(&ffs->eps_lock);
+> @@ -2266,6 +2252,7 @@ static void ffs_data_reset(struct ffs_data *ffs)
+>  {
+>         ffs_data_clear(ffs);
+>
+> +       spin_lock_irq(&ffs->eps_lock);
+>         ffs->raw_descs_data =3D NULL;
+>         ffs->raw_descs =3D NULL;
+>         ffs->raw_strings =3D NULL;
+> @@ -2289,6 +2276,7 @@ static void ffs_data_reset(struct ffs_data *ffs)
+>         ffs->ms_os_descs_ext_prop_count =3D 0;
+>         ffs->ms_os_descs_ext_prop_name_len =3D 0;
+>         ffs->ms_os_descs_ext_prop_data_len =3D 0;
+> +       spin_unlock_irq(&ffs->eps_lock);
+>  }
+>
+>
+> @@ -3756,6 +3744,7 @@ static int ffs_func_set_alt(struct usb_function *f,
+>  {
+>         struct ffs_function *func =3D ffs_func_from_usb(f);
+>         struct ffs_data *ffs =3D func->ffs;
+> +       unsigned long flags;
+>         int ret =3D 0, intf;
+>
+>         if (alt > MAX_ALT_SETTINGS)
+> @@ -3768,12 +3757,15 @@ static int ffs_func_set_alt(struct usb_function *=
+f,
+>         if (ffs->func)
+>                 ffs_func_eps_disable(ffs->func);
+>
+> +       spin_lock_irqsave(&ffs->eps_lock, flags);
+>         if (ffs->state =3D=3D FFS_DEACTIVATED) {
+>                 ffs->state =3D FFS_CLOSING;
+> +               spin_unlock_irqrestore(&ffs->eps_lock, flags);
+>                 INIT_WORK(&ffs->reset_work, ffs_reset_work);
+>                 schedule_work(&ffs->reset_work);
+>                 return -ENODEV;
+>         }
+> +       spin_unlock_irqrestore(&ffs->eps_lock, flags);
+>
+>         if (ffs->state !=3D FFS_ACTIVE)
+>                 return -ENODEV;
+> @@ -3791,16 +3783,20 @@ static void ffs_func_disable(struct usb_function =
+*f)
+>  {
+>         struct ffs_function *func =3D ffs_func_from_usb(f);
+>         struct ffs_data *ffs =3D func->ffs;
+> +       unsigned long flags;
+>
+>         if (ffs->func)
+>                 ffs_func_eps_disable(ffs->func);
+>
+> +       spin_lock_irqsave(&ffs->eps_lock, flags);
+>         if (ffs->state =3D=3D FFS_DEACTIVATED) {
+>                 ffs->state =3D FFS_CLOSING;
+> +               spin_unlock_irqrestore(&ffs->eps_lock, flags);
+>                 INIT_WORK(&ffs->reset_work, ffs_reset_work);
+>                 schedule_work(&ffs->reset_work);
+>                 return;
+>         }
+> +       spin_unlock_irqrestore(&ffs->eps_lock, flags);
+>
+>         if (ffs->state =3D=3D FFS_ACTIVE) {
+>                 ffs->func =3D NULL;
+> diff --git a/drivers/usb/gadget/function/u_fs.h b/drivers/usb/gadget/func=
+tion/u_fs.h
+> index 4b3365f23fd7..6a80182aadd7 100644
+> --- a/drivers/usb/gadget/function/u_fs.h
+> +++ b/drivers/usb/gadget/function/u_fs.h
+> @@ -176,7 +176,7 @@ struct ffs_data {
+>         /* reference counter */
+>         refcount_t                      ref;
+>         /* how many files are opened (EP0 and others) */
+> -       atomic_t                        opened;
+> +       int                             opened;
+>
+>         /* EP0 state */
+>         enum ffs_state                  state;
 
