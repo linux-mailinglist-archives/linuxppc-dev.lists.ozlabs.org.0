@@ -1,77 +1,130 @@
-Return-Path: <linuxppc-dev+bounces-16480-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16481-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Hv6Bu5rfWlxSAIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16480-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jan 2026 03:41:50 +0100
+	id SBZLONu+fWkATgIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16481-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jan 2026 09:35:39 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E3FC051D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jan 2026 03:41:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E40AEC1463
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jan 2026 09:35:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f2xwS4K4kz2yDY;
-	Sat, 31 Jan 2026 13:41:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f35mj6F1Yz2xc2;
+	Sat, 31 Jan 2026 19:35:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769827304;
-	cv=none; b=devCpWICNNHC3J5oVxvRmE1sXP38ZEu1hG5PIbiv7QUobJIZDuaKqmcYG9prWvuaGdBHJwW9aRomU8Vx55vXzP4Kvpf4SrEP4ta/B6kkzIUGqeSFPaeybUfBUoACfMjfIDtS0IGeymUcjDEGgO8jsHGwD3DWN4ljEV2pNryttJsW0JX9aZHdTuQ8XU6vz8KSJk+MdV7p3nN0S4RY6KJVioI+WmjE27tNm0YxiJus0/qWCif8OZYD5TMAEUJThILu8yIPlviqAQW2MllYtfbPvSdIonvdFAkXLf7QVGO/Idofi88CSqQdScxIWKW/PwIipIGQOTnxFalcFtimZA/5KQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769845006;
+	cv=none; b=DqeGWvix3KMH22cPF/s1bft+7IeMl37JJaChO+tAtq0eYq6x/mJAbxPD3TZDU9L7h7MkGrUNcq5iS1V5hQvG3fvU0W2oZQ2p9fO58OZio9C+DzIpT4SZul7ufqlPJKG0eS9mbYth1Iq6kFuOwhbI21nnwddTc07qGAr+FaH+X3C0Oxpl5hY4GmrV1qXbvgl27mcMpSQB6k0V1en+Bw7Xx3ofKpmPRRKVfmVltmRJpfpWTJJeEYti35jW5BN0MV5xzRKXtd2BXmKmYxdBNqpXAy0TAHmzuW1ikTVSthJ+Bvcq+KU3476zlCPPk4T6v4K5v6imK/6rEKIdlCxgeD2DyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769827304; c=relaxed/relaxed;
-	bh=D3+SZjilbeej82D6cZd1fnlpNeQE0EQG9Sk/0nsOkcI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nYyX5KkbkIixcl+2i+PymKYtNxhrJ5kq3rJ8KkoiM6HFQiT5YMsztOHdId9qIHeuFxn3Ip1Yk2LPRMhndLRBBwSvj72fzn739Y1Zr0Yk2juyea2APcS7CjoW0le4vN2sa7bcUQfPdC9wg/3OLYLnykA4YJVwYFbvg8Fl39QO5aBSEWGb+RjPtGdL/WhHz+smyburINswyfpsaoj/rVCK29PUeVlAuMflvG49AYXoTqsQHyPhzjfLctIbXupGbBz6sL4n6Qk2+QS3Li5vEN+mJS8v0B4Crt78swYGUn25ES7A6G42c0LmuzHyBK0Rg0E6Sbdn54nUevj4SOgyq0rgZQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=qWC3w5CK; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+	t=1769845006; c=relaxed/relaxed;
+	bh=5n1UjayTk0hO0b45clVXSkBxo9hRuWG9N3/vJ5awb1g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mLaIM015Sv1ZwkmzatPEnHJaIDh9ZMZXCTQn+SZ+SwfByixgqTCPpOCx+mkE3Wzp0Jqtou0l0Ch9P6MhPxViTKmSYnnUz2B7I8X5II4d+Qguy98t0ZLPeaxaWEgAW9TuOKfLFLxh39PPyRhf3vNnpZ+G0tCa2o+MFWxL/32NPgI0ue7aOvAxIwAJmXgYGN1PEd0eFcBzPD7oLTUxD8f4tkl5zHE0B7/obXqfRO6TvEY5hYytnAtUVLTLBYxPcd2Nb61UaWTcmjOBSBLUdJsZGIXdjBpNAWndtM+uEM7nFmjhYyg+AdfQz+zqkN31yRpAyZ34HvqNRvSXBC3IR3yOww==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fSbkYAlT; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32d; helo=mail-wm1-x32d.google.com; envelope-from=mcaju95@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=qWC3w5CK;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fSbkYAlT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32d; helo=mail-wm1-x32d.google.com; envelope-from=mcaju95@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f2xwR1zWsz2xBV
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jan 2026 13:41:41 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
-	bh=D3+SZjilbeej82D6cZd1fnlpNeQE0EQG9Sk/0nsOkcI=; b=qWC3w5CKXv3HugEtDLi+gWk6Te
-	Hc8cao6e2I9WgDwxI4vEw6/OOMZ0qMbMvoRPxa0zfL889Znbb9v+o6mkUi4R9tqX1mLpzhvD0xoHu
-	A1FS75JfMHJT8e1fluxMg79bZ5p2V1SLvWIdPEt+DUYwGQhnCTlCyw5eUykIzMp/SyA3Dg82fzRkd
-	W4aq3clE4iJumyrtoBDrf1fy8Q10XImeg/Di9PUsmvPZitiMMiGJVNI5QSEEiTAlGnVVLtoyz8fzu
-	SNrXZtDVIbbwXXxKzFeQigWkSVz6jmd8pu1W41IeFVPnRHqFHxaQZ5Lb0Bhj4mQ7n5mCHIm+p4gtY
-	REVLuqEw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1vm0xI-0000000E6WY-2rbV;
-	Sat, 31 Jan 2026 02:43:24 +0000
-Date: Sat, 31 Jan 2026 02:43:24 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Samuel Wu <wusamuel@google.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org,
-	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
-	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
-	a.hindborg@kernel.org, linux-mm@kvack.org,
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
-	paul@paul-moore.com, casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org, clm@meta.com,
-	android-kernel-team <android-kernel-team@google.com>
-Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
-Message-ID: <20260131024324.GA3183987@ZenIV>
-References: <CAG2KctqWy-gnB4o6FAv3kv6+P2YwqeWMBu7bmHZ=Acq+4vVZ3g@mail.gmail.com>
- <20260129032335.GT3183987@ZenIV>
- <20260129225433.GU3183987@ZenIV>
- <CAG2KctoNjktJTQqBb7nGeazXe=ncpwjsc+Lm+JotcpaO3Sf9gw@mail.gmail.com>
- <20260130070424.GV3183987@ZenIV>
- <CAG2Kctoqja9R1bBzdEAV15_yt=sBGkcub6C2nGE6VHMJh13=FQ@mail.gmail.com>
- <20260130235743.GW3183987@ZenIV>
- <CAG2KctotL+tpHQMWWAFOQEy=3NX-7fa9YroqsjnxKmTuunJ2AQ@mail.gmail.com>
- <20260131011831.GZ3183987@ZenIV>
- <CAG2KctoKDsfbyopQYq3-nJBg3fG+7Nrer17S6HqQ+nCWEcHeWQ@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f34Ss13RSz2xP8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jan 2026 18:36:44 +1100 (AEDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-480706554beso29983925e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jan 2026 23:36:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769844996; x=1770449796; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5n1UjayTk0hO0b45clVXSkBxo9hRuWG9N3/vJ5awb1g=;
+        b=fSbkYAlTOVQKwpuiCh062TO4sSNQ+XlrFHmeNiVi5xaowvmeeR3NqkpH9Hn7z0vxd/
+         wQsnhRFF7xrvCQWUcPyMiXeUQjii/rbILSs/xDw8Zkjci56M0+kMN5wmKgjrbqc1QC+q
+         uKTzCWjxFI5c1cXCnEobb8stm5TsbUXS8fDB1jBEbPQOziWXKJOff3DgvUw3jXFvoccr
+         ctbF1PeDOah/0lAIK0DYleLdAH7LkrD6OHNhrT/hocpFuRiRhBa9IVLLJ+TdC77fYyv5
+         aSMPr5TSGPxv32s+tUgOvDg/fRCR5H5OqWgClqkXRq7IaexrAsJn5AVKr6mUL1C41pcz
+         fsYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769844996; x=1770449796;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5n1UjayTk0hO0b45clVXSkBxo9hRuWG9N3/vJ5awb1g=;
+        b=n8Y5PwRTE7npn3XIWmuEncX0GVkWujmfSDsRXI30NW9D169UyBNGkMhuUyfTxJEsMP
+         7jilLHiHN6pOzCbBmUVq7TAK1CIxFdVa6fEv+TAEWNvHteLgQlWkzEQGW4MsvjN0er9v
+         SpFbO6CXUvop6dXLw9VxqHfN+QUauercLJ+xXbfo6hGtKQ91YYihFHkyg0dFFo41HnzA
+         8Na9IT07kOkcaBwwLNGEvQtOfF/pV8RZgWOl0HcblCtKNcbOSTExiGSYH+adNPXTlyCm
+         W0DQu01hr866M/jP1b6MN9jCpqjg1lCvuuoeWkp7xEXesRaVTbU2Fn4KyYYNjd3zuiPH
+         DG/w==
+X-Forwarded-Encrypted: i=1; AJvYcCWtiXOWwfJR/2vHr/hDHKEAA1kZf9nCCFKwLTpbZui/2EKKU2bOEHGmQ1fpT3KgP8LQGuW6i9yUzbLLOMM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywo9KiacfeIvQ3zEStQmUDuCWqWiFFKDlRv8zi1gF/NUSfpkaUD
+	/7MrhS5cuQIafNbMdG3cBea14JYE0pkvIaEYakN3h9ODC3lS+MlbgO9P
+X-Gm-Gg: AZuq6aKAN1OXg9vJegnnj0s7fMlXenkiOIQ0is8o0IRj3D54ZQSIK/+Whh3VIKgKTp3
+	EtYdQxROD6i6NJYckdGyV9x8jMIXDohd91RtFzzXJ+VG+Xl/zsBoMmGOctZDB/ld5E70D9KsE4l
+	iXuxp5y3QsZflc0C33KBolLh/AHWV/D8guxrNSSWMYIB10vQor9IhI5ubs8mxx07leMzSH+GXuQ
+	4lTjKn+XwZ1txih97qwyAQnqleaJoebW8RHi5iiIW0ghwsBsdBZVWHrcNu5NWo9nWukBZrILFSO
+	XI1A2bdWJBBmrxWDc/PqNCi5qUkJOYwUZ0Khu9sB77ae+Z7RiouiSoFQkhuZwQiD6idVVWkev1m
+	q0PiBC1Ksmu3AlgqQbwJ6v97y1KcFaHL7Lj7O1CetrAUQ7Ph7wUb4uUbIfSmTRWQtcYEQmR7Yfb
+	Vy
+X-Received: by 2002:a05:600c:1e89:b0:47a:9560:5944 with SMTP id 5b1f17b1804b1-482db4ac0f4mr57301605e9.34.1769844995600;
+        Fri, 30 Jan 2026 23:36:35 -0800 (PST)
+Received: from legion.lan ([2a02:a58:9200:ea00::700])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4806cd8fadfsm248952145e9.0.2026.01.30.23.36.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 23:36:35 -0800 (PST)
+From: =?UTF-8?q?Mihai-Drosi=20C=C3=A2ju?= <mcaju95@gmail.com>
+To: linux@weissschuh.net
+Cc: arnd@arndb.de,
+	arnout@bzzt.net,
+	atomlin@atomlin.com,
+	bigeasy@linutronix.de,
+	chleroy@kernel.org,
+	christian@heusel.eu,
+	corbet@lwn.net,
+	coxu@redhat.com,
+	da.gomez@kernel.org,
+	da.gomez@samsung.com,
+	dmitry.kasatkin@gmail.com,
+	eric.snowberg@oracle.com,
+	f.gruenbichler@proxmox.com,
+	jmorris@namei.org,
+	kpcyrd@archlinux.org,
+	linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	lkp@intel.com,
+	maddy@linux.ibm.com,
+	mattia@mapreri.org,
+	mcaju95@gmail.com,
+	mcgrof@kernel.org,
+	mpe@ellerman.id.au,
+	nathan@kernel.org,
+	naveen@kernel.org,
+	nicolas.bouchinet@oss.cyber.gouv.fr,
+	nicolas.schier@linux.dev,
+	npiggin@gmail.com,
+	nsc@kernel.org,
+	paul@paul-moore.com,
+	petr.pavlu@suse.com,
+	roberto.sassu@huawei.com,
+	samitolvanen@google.com,
+	serge@hallyn.com,
+	xiujianfeng@huawei.com,
+	zohar@linux.ibm.com
+Subject: Re: [PATCH v4 00/17] module: Introduce hash-based integrity checking
+Date: Sat, 31 Jan 2026 09:36:36 +0200
+Message-ID: <20260131073636.65494-1-mcaju95@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
+References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,328 +138,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG2KctoKDsfbyopQYq3-nJBg3fG+7Nrer17S6HqQ+nCWEcHeWQ@mail.gmail.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.71 / 15.00];
+X-Spamd-Result: default: False [0.79 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[zeniv.linux.org.uk,none];
-	MID_RHS_NOT_FQDN(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MAILLIST(-0.20)[generic];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[linux.org.uk:s=zeniv-20220401];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[viro@zeniv.linux.org.uk,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	FORGED_RECIPIENTS(0.00)[m:wusamuel@google.com,m:gregkh@linuxfoundation.org,m:linux-fsdevel@vger.kernel.org,m:torvalds@linux-foundation.org,m:brauner@kernel.org,m:jack@suse.cz,m:raven@themaw.net,m:miklos@szeredi.hu,m:neil@brown.name,m:a.hindborg@kernel.org,m:linux-mm@kvack.org,m:linux-efi@vger.kernel.org,m:ocfs2-devel@lists.linux.dev,m:kees@kernel.org,m:rostedt@goodmis.org,m:linux-usb@vger.kernel.org,m:paul@paul-moore.com,m:casey@schaufler-ca.com,m:linuxppc-dev@lists.ozlabs.org,m:john.johansen@canonical.com,m:selinux@vger.kernel.org,m:borntraeger@linux.ibm.com,m:bpf@vger.kernel.org,m:clm@meta.com,m:android-kernel-team@google.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-16481-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linux.org.uk:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux@weissschuh.net,m:arnd@arndb.de,m:arnout@bzzt.net,m:atomlin@atomlin.com,m:bigeasy@linutronix.de,m:chleroy@kernel.org,m:christian@heusel.eu,m:corbet@lwn.net,m:coxu@redhat.com,m:da.gomez@kernel.org,m:da.gomez@samsung.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:f.gruenbichler@proxmox.com,m:jmorris@namei.org,m:kpcyrd@archlinux.org,m:linux-arch@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-integrity@vger.kernel.org,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:lkp@intel.com,m:maddy@linux.ibm.com,m:mattia@mapreri.org,m:mcaju95@gmail.com,m:mcgrof@kernel.org,m:mpe@ellerman.id.au,m:nathan@kernel.org,m:naveen@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:nicolas.schier@linux.dev,m:npiggin@gmail.com,m:nsc@kernel.org,m:paul@paul-moore.com,m:petr.pavlu@suse.com,m:roberto.sassu@huawei.com,m:samitolvanen@google.com,m:se
+ rge@hallyn.com,m:xiujianfeng@huawei.com,m:zohar@linux.ibm.com,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[mcaju95@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[43];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[arndb.de,bzzt.net,atomlin.com,linutronix.de,kernel.org,heusel.eu,lwn.net,redhat.com,samsung.com,gmail.com,oracle.com,proxmox.com,namei.org,archlinux.org,vger.kernel.org,lists.ozlabs.org,intel.com,linux.ibm.com,mapreri.org,ellerman.id.au,oss.cyber.gouv.fr,linux.dev,paul-moore.com,suse.com,huawei.com,google.com,hallyn.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[viro@zeniv.linux.org.uk,linuxppc-dev@lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-16480-lists,linuxppc-dev=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[mcaju95@gmail.com,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.org.uk:email,linux.org.uk:dkim]
-X-Rspamd-Queue-Id: A4E3FC051D
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E40AEC1463
 X-Rspamd-Action: no action
 
-On Fri, Jan 30, 2026 at 06:09:00PM -0800, Samuel Wu wrote:
-> On Fri, Jan 30, 2026 at 5:16 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
-> >
-> > On Fri, Jan 30, 2026 at 05:05:34PM -0800, Samuel Wu wrote:
-> >
-> > > > How lovely...  Could you slap
-> > > >         WARN_ON(ret == -EAGAIN);
-> > > > right before that
-> > > >         if (ret < 0)
-> > > >                 return ret;
-> > >
-> > > Surprisingly ret == 0 every time, so no difference in dmesg logs with
-> > > this addition.
-> >
-> > What the hell?  Other than that mutex_lock(), the only change in there
-> > is the order of store to file->private_data and call of ffs_data_opened();
-> > that struct file pointer is not visible to anyone at that point...
-> 
-> Agree, 09e88dc22ea2 (serialize ffs_ep0_open() on ffs->mutex) in itself
-> is quite straightforward. Not familiar with this code path so just
-> speculating, but is there any interaction with previous patches (e.g.
-> refcounting)?
-> 
-> > Wait, it also brings ffs_data_reset() on that transition under ffs->mutex...
-> > For a quick check: does
-> > git fetch git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git for-wsamuel2
-> > git switch --detach FETCH_HEAD
-> > demonstrate the same breakage?
-> 
-> Had to adjust forward declaration of ffs_data_reset() to build, but
-> unfortunately same breakage.
+> The current signature-based module integrity checking has some drawbacks
+in combination with reproducible builds. Either the module signing key
+is generated at build time, which makes the build unreproducible, or a
+static signing key is used, which precludes rebuilds by third parties
+and makes the whole build and packaging process much more complicated.
 
-That really looks like a badly racy userland on top of everything else...
-I mean, it smells like userland open() from one process while another
-is in the middle of configuring that stuff getting delayed too much
-for the entire thing to work.  Bloody wonderful...
+I think there is a middle ground where the module signing key is generated
+using a key derivation function that has as an input a deterministic value
+on the build host, such as /etc/machine-id . The problem with this approach
+is that only hosts knowing the value will be able to reproduce the build.
 
-OK, let's see if a variant with serialization on spinlock works - how does
-the following do on top of mainline?
+Maybe this is a solution to NixOS secret management? Introduce minimal
+impurity as a cryptographic seed and derive the rest of the secrets using
+something like Argon2(seed, key_uuid).
 
-diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index 05c6750702b6..fa467a40949d 100644
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -59,7 +59,6 @@ static struct ffs_data *__must_check ffs_data_new(const char *dev_name)
- 	__attribute__((malloc));
- 
- /* Opened counter handling. */
--static void ffs_data_opened(struct ffs_data *ffs);
- static void ffs_data_closed(struct ffs_data *ffs);
- 
- /* Called with ffs->mutex held; take over ownership of data. */
-@@ -636,23 +635,25 @@ static ssize_t ffs_ep0_read(struct file *file, char __user *buf,
- 	return ret;
- }
- 
-+
-+static void ffs_data_reset(struct ffs_data *ffs);
-+
- static int ffs_ep0_open(struct inode *inode, struct file *file)
- {
- 	struct ffs_data *ffs = inode->i_sb->s_fs_info;
--	int ret;
- 
--	/* Acquire mutex */
--	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
--	if (ret < 0)
--		return ret;
--
--	ffs_data_opened(ffs);
-+	spin_lock_irq(&ffs->eps_lock);
- 	if (ffs->state == FFS_CLOSING) {
--		ffs_data_closed(ffs);
--		mutex_unlock(&ffs->mutex);
-+		spin_unlock_irq(&ffs->eps_lock);
- 		return -EBUSY;
- 	}
--	mutex_unlock(&ffs->mutex);
-+	if (!ffs->opened++ && ffs->state == FFS_DEACTIVATED) {
-+		ffs->state = FFS_CLOSING;
-+		spin_unlock_irq(&ffs->eps_lock);
-+		ffs_data_reset(ffs);
-+	} else {
-+		spin_unlock_irq(&ffs->eps_lock);
-+	}
- 	file->private_data = ffs;
- 
- 	return stream_open(inode, file);
-@@ -1202,15 +1203,10 @@ ffs_epfile_open(struct inode *inode, struct file *file)
- {
- 	struct ffs_data *ffs = inode->i_sb->s_fs_info;
- 	struct ffs_epfile *epfile;
--	int ret;
--
--	/* Acquire mutex */
--	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
--	if (ret < 0)
--		return ret;
- 
--	if (!atomic_inc_not_zero(&ffs->opened)) {
--		mutex_unlock(&ffs->mutex);
-+	spin_lock_irq(&ffs->eps_lock);
-+	if (!ffs->opened) {
-+		spin_unlock_irq(&ffs->eps_lock);
- 		return -ENODEV;
- 	}
- 	/*
-@@ -1220,11 +1216,11 @@ ffs_epfile_open(struct inode *inode, struct file *file)
- 	 */
- 	epfile = smp_load_acquire(&inode->i_private);
- 	if (unlikely(ffs->state != FFS_ACTIVE || !epfile)) {
--		mutex_unlock(&ffs->mutex);
--		ffs_data_closed(ffs);
-+		spin_unlock_irq(&ffs->eps_lock);
- 		return -ENODEV;
- 	}
--	mutex_unlock(&ffs->mutex);
-+	ffs->opened++;
-+	spin_unlock_irq(&ffs->eps_lock);
- 
- 	file->private_data = epfile;
- 	return stream_open(inode, file);
-@@ -2092,8 +2088,6 @@ static int ffs_fs_init_fs_context(struct fs_context *fc)
- 	return 0;
- }
- 
--static void ffs_data_reset(struct ffs_data *ffs);
--
- static void
- ffs_fs_kill_sb(struct super_block *sb)
- {
-@@ -2150,15 +2144,6 @@ static void ffs_data_get(struct ffs_data *ffs)
- 	refcount_inc(&ffs->ref);
- }
- 
--static void ffs_data_opened(struct ffs_data *ffs)
--{
--	if (atomic_add_return(1, &ffs->opened) == 1 &&
--			ffs->state == FFS_DEACTIVATED) {
--		ffs->state = FFS_CLOSING;
--		ffs_data_reset(ffs);
--	}
--}
--
- static void ffs_data_put(struct ffs_data *ffs)
- {
- 	if (refcount_dec_and_test(&ffs->ref)) {
-@@ -2176,28 +2161,29 @@ static void ffs_data_put(struct ffs_data *ffs)
- 
- static void ffs_data_closed(struct ffs_data *ffs)
- {
--	if (atomic_dec_and_test(&ffs->opened)) {
--		if (ffs->no_disconnect) {
--			struct ffs_epfile *epfiles;
--			unsigned long flags;
--
--			ffs->state = FFS_DEACTIVATED;
--			spin_lock_irqsave(&ffs->eps_lock, flags);
--			epfiles = ffs->epfiles;
--			ffs->epfiles = NULL;
--			spin_unlock_irqrestore(&ffs->eps_lock,
--							flags);
--
--			if (epfiles)
--				ffs_epfiles_destroy(ffs->sb, epfiles,
--						 ffs->eps_count);
--
--			if (ffs->setup_state == FFS_SETUP_PENDING)
--				__ffs_ep0_stall(ffs);
--		} else {
--			ffs->state = FFS_CLOSING;
--			ffs_data_reset(ffs);
--		}
-+	spin_lock_irq(&ffs->eps_lock);
-+	if (--ffs->opened) {	// not the last opener?
-+		spin_unlock_irq(&ffs->eps_lock);
-+		return;
-+	}
-+	if (ffs->no_disconnect) {
-+		struct ffs_epfile *epfiles;
-+
-+		ffs->state = FFS_DEACTIVATED;
-+		epfiles = ffs->epfiles;
-+		ffs->epfiles = NULL;
-+		spin_unlock_irq(&ffs->eps_lock);
-+
-+		if (epfiles)
-+			ffs_epfiles_destroy(ffs->sb, epfiles,
-+					 ffs->eps_count);
-+
-+		if (ffs->setup_state == FFS_SETUP_PENDING)
-+			__ffs_ep0_stall(ffs);
-+	} else {
-+		ffs->state = FFS_CLOSING;
-+		spin_unlock_irq(&ffs->eps_lock);
-+		ffs_data_reset(ffs);
- 	}
- }
- 
-@@ -2214,7 +2200,7 @@ static struct ffs_data *ffs_data_new(const char *dev_name)
- 	}
- 
- 	refcount_set(&ffs->ref, 1);
--	atomic_set(&ffs->opened, 0);
-+	ffs->opened = 0;
- 	ffs->state = FFS_READ_DESCRIPTORS;
- 	mutex_init(&ffs->mutex);
- 	spin_lock_init(&ffs->eps_lock);
-@@ -2266,6 +2252,7 @@ static void ffs_data_reset(struct ffs_data *ffs)
- {
- 	ffs_data_clear(ffs);
- 
-+	spin_lock_irq(&ffs->eps_lock);
- 	ffs->raw_descs_data = NULL;
- 	ffs->raw_descs = NULL;
- 	ffs->raw_strings = NULL;
-@@ -2289,6 +2276,7 @@ static void ffs_data_reset(struct ffs_data *ffs)
- 	ffs->ms_os_descs_ext_prop_count = 0;
- 	ffs->ms_os_descs_ext_prop_name_len = 0;
- 	ffs->ms_os_descs_ext_prop_data_len = 0;
-+	spin_unlock_irq(&ffs->eps_lock);
- }
- 
- 
-@@ -3756,6 +3744,7 @@ static int ffs_func_set_alt(struct usb_function *f,
- {
- 	struct ffs_function *func = ffs_func_from_usb(f);
- 	struct ffs_data *ffs = func->ffs;
-+	unsigned long flags;
- 	int ret = 0, intf;
- 
- 	if (alt > MAX_ALT_SETTINGS)
-@@ -3768,12 +3757,15 @@ static int ffs_func_set_alt(struct usb_function *f,
- 	if (ffs->func)
- 		ffs_func_eps_disable(ffs->func);
- 
-+	spin_lock_irqsave(&ffs->eps_lock, flags);
- 	if (ffs->state == FFS_DEACTIVATED) {
- 		ffs->state = FFS_CLOSING;
-+		spin_unlock_irqrestore(&ffs->eps_lock, flags);
- 		INIT_WORK(&ffs->reset_work, ffs_reset_work);
- 		schedule_work(&ffs->reset_work);
- 		return -ENODEV;
- 	}
-+	spin_unlock_irqrestore(&ffs->eps_lock, flags);
- 
- 	if (ffs->state != FFS_ACTIVE)
- 		return -ENODEV;
-@@ -3791,16 +3783,20 @@ static void ffs_func_disable(struct usb_function *f)
- {
- 	struct ffs_function *func = ffs_func_from_usb(f);
- 	struct ffs_data *ffs = func->ffs;
-+	unsigned long flags;
- 
- 	if (ffs->func)
- 		ffs_func_eps_disable(ffs->func);
- 
-+	spin_lock_irqsave(&ffs->eps_lock, flags);
- 	if (ffs->state == FFS_DEACTIVATED) {
- 		ffs->state = FFS_CLOSING;
-+		spin_unlock_irqrestore(&ffs->eps_lock, flags);
- 		INIT_WORK(&ffs->reset_work, ffs_reset_work);
- 		schedule_work(&ffs->reset_work);
- 		return;
- 	}
-+	spin_unlock_irqrestore(&ffs->eps_lock, flags);
- 
- 	if (ffs->state == FFS_ACTIVE) {
- 		ffs->func = NULL;
-diff --git a/drivers/usb/gadget/function/u_fs.h b/drivers/usb/gadget/function/u_fs.h
-index 4b3365f23fd7..6a80182aadd7 100644
---- a/drivers/usb/gadget/function/u_fs.h
-+++ b/drivers/usb/gadget/function/u_fs.h
-@@ -176,7 +176,7 @@ struct ffs_data {
- 	/* reference counter */
- 	refcount_t			ref;
- 	/* how many files are opened (EP0 and others) */
--	atomic_t			opened;
-+	int				opened;
- 
- 	/* EP0 state */
- 	enum ffs_state			state;
+There might be another approach to code integrity rather than step-by-step
+reproducibility. One may exploit the very cryptographic primitives that make
+reproducibility hard to ensure that reproducibility is most  likely valid.
+
+For example, the module signing issue, the build host publishes four artifacts:
+* The source-code
+* The compiled and signed binary
+* The build environment
+* Its public key
+
+Now, we don't need to sign with the private key to know that building the source
+code using the specific build environment and signing the result with the private
+key will result in the claimed binary. We can just compile and verify with the
+public key.
+
+So a traditional workflow would be:
+compiled_module + module_signature == module
+
+In this case we build the module, sign it with whatever key, distribute the
+builds and the private key to whoever wants to reproduce the build. Or we build
+locally and the key stays with the end-user.
+
+While the cryptographic approach would be:
+verify(compiled_code, module.signature) is True
+
+In this case we distribute the builds, source code and the public key. While
+everyone can ensure that the compiled code is the result of the build
+environment and source code. The signature is verified using cryptographic
+means.
+
+As long as no one cracks RSA or an algorithm of our choosing/has an absurd
+amount of luck, the cryptographic approach would be just as good as the traditional
+approach at ensuring that a program has stopped with a certain output.
 
