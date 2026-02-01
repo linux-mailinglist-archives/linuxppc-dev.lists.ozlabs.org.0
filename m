@@ -1,89 +1,101 @@
-Return-Path: <linuxppc-dev+bounces-16497-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16498-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHu5MDKFf2kTswIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16497-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 17:54:10 +0100
+	id cNzEBwSJf2mptAIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16498-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 18:10:28 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB24C6914
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 17:54:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FA6C69F6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 18:10:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f3wnV05Prz2yGx;
-	Mon, 02 Feb 2026 03:54:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f3x8H33M1z2ySb;
+	Mon, 02 Feb 2026 04:10:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769964845;
-	cv=none; b=YHSzW0RdKqhRSSqFqTrHHEaR6eV70WU5sIp8GNqfcIdV38tYGoBdqxgsYo/aXUu622NvLEbOfU55b/2+m52sb5ze0txiHNM9x/pJkigW/iig5Vb8TcE4QDEr4LaGuPoH87PybsYAkOylkJm0944Atvq2VLWz++nIENdzU3U8T+yinINTeZmqu2Oo1TjdAtUpruwqzqJPU6bHwzSvaHPYZq50uU8PE2zhPR0KDtsBknTXNPqFWlHrReuNAVWa9J7qGJzBBzvzMdukJGlBmo5mbIS84RcDp3QgZei893fm0wYr7OEdH8ahFQqDQL01zOtpkCbPBvw+yy5tn+je2BeVxw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769965823;
+	cv=none; b=lKZHCERw+IGmnPp0+S+3wR1rwJDGzqWQczW280XxsdCD6zeu6PFdb3/xnKtWLhO2PfeRD+LJlGKY18BEPT5tLJ8Asq+GLEH7LVeguCtI28kJkAZRx1rYBm7AkoKFP8Y8TjgLO80oW+5vCPyxJFww8ZQnS6Y2ZDtH0VNZk9SHw1Msg6OgOiwwIKAAsnzgmWDhz6OwNqBc9+Bx5p3fRBwRbcg01fPIs0xdZlmCJPCH6tv7LlNeHioYZ7GWgGDc/rRNP5pw8wmx5iwAm4uri0knLeTnvQdonV6cSuUt1cgshng/WbajzDfJGBatn3qpgUrC1KGv94CZJVz15HQou9hE4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769964845; c=relaxed/relaxed;
-	bh=2tMSgbI0jMcpFL6WYU4eGr8ihKd31sPH32yhsqf/z2k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KCCesdUFT9+ttWjtZPh/jSUn+LJqUdVqs28qEXbNRTQ1iexTPLJEfq5+D7ulWFRK5gM0RzekJ/BrqVO0WQqmO4g/gGIy8C5ZRBbYfLuhD4YAvcYomp4vom8EZlNvJnOYNVUmilSWfDLFSEDnITP6HFsItSCOu4NshfuIzGoA2e33D1vLJ5oRC6Bn8O6iiKHp5LaQIrstVSH0KKqMzb94IfqvDtJw0QhG8X7IZ+ojN/KTKijTRUZ89UfS37m92yn+gmO+IM6Pwd6AQ4KygJSC7h8AdqGQus38ckwds2vHD3H39RlcC/5d1kgKbMWK6H5q4wlD2i76O5xwSTkcsc2tzA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I0Fjh3M3; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1769965823; c=relaxed/relaxed;
+	bh=AXzGf8dg7zdwjSpH9NQ85FkESCYj8y44yqTfJ6FGfkQ=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=P1qb/1gpBUPdfkDg4yNFFY1dVQC/IDM77jriCQJ7HRTEVkUN6iZgjMdjDAoNfRaOjHQJ11JdsvX3gL6SjnEVaVlLqklXrwfFgtdowu6pyWvJGI2+TYzf7gh+MIPS7VWyzH7uYGZwCy6iYxbugrrQhtIR4uOmm5zB7+w5F2oHfH8hXdkNqjvfBeXMIr9BPsVuL/ycpASkqQW8eOXjbRQR3l3P8bOfNjCOM2uwKDWDqUR3/5MCbZ1sUV3Rhp2JmfnmbcHO++ETtOx+1T2qpktSIrDSKkpwwFR86N0CGnkrfKKmpLZwOFSBkTIjRT1YkrOmPXgAee2jdADc0ZP038zXZA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DKbBqLBP; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DKbBqLBP; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhowells@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I0Fjh3M3;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DKbBqLBP;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DKbBqLBP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhowells@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f3wnS6BNPz2xqL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Feb 2026 03:54:03 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6116lV6O017410;
-	Sun, 1 Feb 2026 16:53:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=2tMSgbI0jMcpFL6WYU4eGr8ihKd31sPH32yhsqf/z
-	2k=; b=I0Fjh3M3xyXyjrzJUNU/VP7zYDfqpF1X6zK1DkAPSXhSaYFetIANSLHv7
-	3Lse0ObX7eRsBGG4IqlHIVX5ymRg3KDtfKAyl37m/lJsBzQH95awbznoSZ+W4O3L
-	ww5ZSoO5aGxv0xUA+Km8O9weE7kpMQnqVnk9X7o1DQZcEAw7MsNsnILSPGeHMuDt
-	fZJylQSKyVJ2GvwXuNMhzIM/XDeuWdgKB7WM5AvaYHyQ7z0UThUA9CgubPpfwQz3
-	qXjWrVsoJNkV1joMCsid/pxUXvGAKz+t3Wxp1sN+b+qQ+c/wEnOwbfFlRTD9x5C4
-	Q5aW/JHEQJga8TZNJOthU3er1eZWA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c198651cv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 01 Feb 2026 16:53:52 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 611Grqx1010216;
-	Sun, 1 Feb 2026 16:53:52 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c198651ct-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 01 Feb 2026 16:53:52 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 611Gb5oc005959;
-	Sun, 1 Feb 2026 16:53:51 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c1x9j1ts0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 01 Feb 2026 16:53:51 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 611GrlkE51708262
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 1 Feb 2026 16:53:47 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A05B42004B;
-	Sun,  1 Feb 2026 16:53:47 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 576F620043;
-	Sun,  1 Feb 2026 16:53:45 +0000 (GMT)
-Received: from li-fc74f8cc-3279-11b2-a85c-ef5828687581.ibm.com.com (unknown [9.39.20.75])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun,  1 Feb 2026 16:53:45 +0000 (GMT)
-From: Srish Srinivasan <ssrish@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, nayna@linux.ibm.com, zohar@linux.ibm.com,
-        rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
-        ssrish@linux.ibm.com
-Subject: [PATCH] powerpc/pseries: plpks: export plpks_wrapping_is_supported
-Date: Sun,  1 Feb 2026 22:23:44 +0530
-Message-ID: <20260201165344.950870-1-ssrish@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f3x8G0MLhz2yDk
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Feb 2026 04:10:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769965815;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AXzGf8dg7zdwjSpH9NQ85FkESCYj8y44yqTfJ6FGfkQ=;
+	b=DKbBqLBPl4hPr0jsOScvmYifKqR6CfkpCX35Lbs7ZhtCnrAgGB2DvmgW1zvVIqxrbD3Ac9
+	U179HmV67I/6F+9xo528x4zrNs+CgIIQsFyIhpBZiQLw6sbUx7FuNo+LYpKlqS3fonYpn4
+	z+fDEu6PBFGqChb5lDDCYgWhNm8x6F4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769965815;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AXzGf8dg7zdwjSpH9NQ85FkESCYj8y44yqTfJ6FGfkQ=;
+	b=DKbBqLBPl4hPr0jsOScvmYifKqR6CfkpCX35Lbs7ZhtCnrAgGB2DvmgW1zvVIqxrbD3Ac9
+	U179HmV67I/6F+9xo528x4zrNs+CgIIQsFyIhpBZiQLw6sbUx7FuNo+LYpKlqS3fonYpn4
+	z+fDEu6PBFGqChb5lDDCYgWhNm8x6F4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-oQw7rZraM7KagOwiXj8BJg-1; Sun,
+ 01 Feb 2026 12:10:11 -0500
+X-MC-Unique: oQw7rZraM7KagOwiXj8BJg-1
+X-Mimecast-MFC-AGG-ID: oQw7rZraM7KagOwiXj8BJg_1769965807
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 99D621956066;
+	Sun,  1 Feb 2026 17:10:04 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.33.164])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3D41A18004D8;
+	Sun,  1 Feb 2026 17:09:50 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20260131073636.65494-1-mcaju95@gmail.com>
+References: <20260131073636.65494-1-mcaju95@gmail.com> <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
+To: =?us-ascii?Q?=3D=3FUTF-8=3Fq=3FMihai-Drosi=3D20C=3DC3=3DA2ju=3F=3D?= <mcaju95@gmail.com>
+Cc: dhowells@redhat.com, linux@weissschuh.net, arnd@arndb.de,
+    arnout@bzzt.net, atomlin@atomlin.com, bigeasy@linutronix.de,
+    chleroy@kernel.org, christian@heusel.eu, corbet@lwn.net,
+    coxu@redhat.com, da.gomez@kernel.org, da.gomez@samsung.com,
+    dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com,
+    f.gruenbichler@proxmox.com, jmorris@namei.org, kpcyrd@archlinux.org,
+    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+    linux-integrity@vger.kernel.org, linux-kbuild@vger.kernel.org,
+    linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+    linux-security-module@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+    lkp@intel.com, maddy@linux.ibm.com, mattia@mapreri.org,
+    mcgrof@kernel.org, mpe@ellerman.id.au, nathan@kernel.org,
+    naveen@kernel.org, nicolas.bouchinet@oss.cyber.gouv.fr,
+    nicolas.schier@linux.dev, npiggin@gmail.com, nsc@kernel.org,
+    paul@paul-moore.com, petr.pavlu@suse.com, roberto.sassu@huawei.com,
+    samitolvanen@google.com, serge@hallyn.com, xiujianfeng@huawei.com,
+    zohar@linux.ibm.com
+Subject: Re: [PATCH v4 00/17] module: Introduce hash-based integrity checking
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,98 +109,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAxMDE0NiBTYWx0ZWRfXyJX+Ay5SgAgI
- yCClGqeYUxt0nEKc84uxN+dYX9eSQIyXvB2zkAT1ExLRTjObiV7ZZb5XIid8GLbDuI6OGUTnLej
- YA1gDo2Q7Osvz/5eKeMEmD5zKUCa3E4RQxNUP90PW4x4Jv+0qOOMlduIqoY7DMmez+HISHH7IDF
- tI4l/KEQOlaNWE5iVGe6AXXIIL1CVatk+9DmASm02N/Fn++whk+bn7UYmd10Y3vkhhCIKZ2YmPR
- x//gQQ9akZpUtcv9rqe7zel2YgohaT3DtqHMgR5Ma37JRvC+iFfq2FfgqxkNSe/Vb8C8O3CyZtV
- 9zf4kHyDywMRqWlwjxZy6NGMAmTWGU7Kd/0OzBrVb+YhWErBG6AOT8Thsxs9jHP7Atr3tyOwX3x
- e5QfqF8/2PSvqTt4zw8brktJCKLE0L9GvW2kHMxaC7JeA+ve2PCem1zVKTsCelr/EpTwJ54KCKk
- 1mxuVe0VGtFZwmxVPAQ==
-X-Proofpoint-GUID: sbxXnh39Pidq5PaRryjFnBmY0NkI-bWK
-X-Authority-Analysis: v=2.4 cv=DbAaa/tW c=1 sm=1 tr=0 ts=697f8520 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=QyXUC8HyAAAA:8 a=h_aGgwYpWhQZvvvh6yEA:9
-X-Proofpoint-ORIG-GUID: CKhOrYsh8MC42vvcLJRghKUViMOVQGPH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-01_06,2026-01-30_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 adultscore=0 malwarescore=0 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1015 suspectscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
- definitions=main-2602010146
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 01 Feb 2026 17:09:48 +0000
+Message-ID: <2316630.1769965788@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.71 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.49 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	TO_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	MAILLIST(-0.20)[generic];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	MAILLIST(-0.20)[generic];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,vger.kernel.org];
-	FROM_NEQ_ENVFROM(0.00)[ssrish@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
-	TO_DN_NONE(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16497-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16498-lists,linuxppc-dev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_TWELVE(0.00)[12];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[dhowells@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[44];
+	FORGED_RECIPIENTS(0.00)[m:mcaju95@gmail.com,m:dhowells@redhat.com,m:linux@weissschuh.net,m:arnd@arndb.de,m:arnout@bzzt.net,m:atomlin@atomlin.com,m:bigeasy@linutronix.de,m:chleroy@kernel.org,m:christian@heusel.eu,m:corbet@lwn.net,m:coxu@redhat.com,m:da.gomez@kernel.org,m:da.gomez@samsung.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:f.gruenbichler@proxmox.com,m:jmorris@namei.org,m:kpcyrd@archlinux.org,m:linux-arch@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-integrity@vger.kernel.org,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:lkp@intel.com,m:maddy@linux.ibm.com,m:mattia@mapreri.org,m:mcgrof@kernel.org,m:mpe@ellerman.id.au,m:nathan@kernel.org,m:naveen@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:nicolas.schier@linux.dev,m:npiggin@gmail.com,m:nsc@kernel.org,m:paul@paul-moore.com,m:petr.pavlu@suse.com,m:roberto.sassu@huawei.com,m:samito
+ lvanen@google.com,m:serge@hallyn.com,m:xiujianfeng@huawei.com,m:zohar@linux.ibm.com,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[redhat.com,weissschuh.net,arndb.de,bzzt.net,atomlin.com,linutronix.de,kernel.org,heusel.eu,lwn.net,samsung.com,gmail.com,oracle.com,proxmox.com,namei.org,archlinux.org,vger.kernel.org,lists.ozlabs.org,intel.com,linux.ibm.com,mapreri.org,ellerman.id.au,oss.cyber.gouv.fr,linux.dev,paul-moore.com,suse.com,huawei.com,google.com,hallyn.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email]
-X-Rspamd-Queue-Id: DDB24C6914
+	DBL_BLOCKED_OPENRESOLVER(0.00)[warthog.procyon.org.uk:mid]
+X-Rspamd-Queue-Id: 63FA6C69F6
 X-Rspamd-Action: no action
 
-Building trusted-keys as a module fails modpost with:
+Mihai-Drosi C=C3=A2ju <mcaju95@gmail.com> wrote:
 
-ERROR: modpost: "plpks_wrapping_is_supported" [security/keys/trusted-keys/
-trusted.ko] undefined!
+> > The current signature-based module integrity checking has some drawbacks
+> in combination with reproducible builds. Either the module signing key
+> is generated at build time, which makes the build unreproducible, or a
+> static signing key is used, which precludes rebuilds by third parties
+> and makes the whole build and packaging process much more complicated.
 
-Export plpks_wrapping_is_supported() so trusted-keys links cleanly
+There is another issue too: If you have a static private key that you use to
+sign modules (and probably other things), someone will likely give you a GPL
+request to get it.
 
-This patch is intended to be applied on top of the earlier "Extend "trusted
-" keys to support a new trust source named the PowerVM Key Wrapping Module
-(PKWM)" series (v5).
-Link: https://lore.kernel.org/all/20260127145228.48320-1-ssrish@linux.ibm.com/
+One advantage of using a transient key every build and deleting it after is
+that no one has the key.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202602010724.1g9hbLKv-lkp@intel.com/
-Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/plpks.c | 1 +
- 1 file changed, 1 insertion(+)
+One other thing to remember: security is *meant* to get in the way.  That's
+the whole point of it.
 
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index 038ecf8f6d6b..23e4e2a922fc 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -896,6 +896,7 @@ bool plpks_wrapping_is_supported(void)
- {
- 	return wrapsupport;
- }
-+EXPORT_SYMBOL_GPL(plpks_wrapping_is_supported);
- 
- /**
-  * plpks_gen_wrapping_key() - Generate a new random key with the 'wrapping key'
--- 
-2.47.3
+However, IANAL.
+
+David
 
 
