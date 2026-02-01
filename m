@@ -1,85 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-16487-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16488-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qTD/Ak1Pf2kLnwIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16487-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 14:04:13 +0100
+	id aLlxF2lcf2m0owIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16488-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 15:00:09 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF069C5F4E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 14:04:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9979CC606F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 15:00:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f3qh653RKz2yDk;
-	Mon, 02 Feb 2026 00:04:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f3rwf6HlMz2yDk;
+	Mon, 02 Feb 2026 01:00:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769951046;
-	cv=none; b=LFDyhKc+RZmp72oTmCqJK4h8LnUOUGpgu3t39I4VKICar78ArtHYyyePmM+/0qDUTNOCkwGHd10+roszzxK3KEKNTZEeOVJxaOvn4qIPUR1bFOItOSm2K5eR7UpgyS8fnzlCyJxJr/TLRoP0+InXjBT+8X3FkWhzQiFXwvy5a+dZUcj3mXN4zuf0UQkNXp5eJ0IlN6oihmscWr2KP06BLH3aUH85XYJy9ZrnqRTsXgu0ZNVPrP6LXzaoMJijFrzTdcuOfT1NmNdbkhkm+gW3UiCDZPSmGpIEHSeoQYwogB+6U7oO+LrMK6ma2zrSjZw1DBGdwkTgo1eIzvieTPX8Vw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769954402;
+	cv=none; b=k+MgtXZksHFfUQh6EDH2ENI5VTeizEp5uNJJ76Io3UJi70MvPHT71njlCZMJWDAqAZ1SvMgYcCsLLBTsgsq/zknrrN3H/Cegp+wPSXRCEoGj2+Q9VHca8ZOgQvYOgCRWnZYrUbb/WxFgKLwQCbteKMC0F4462ccd9JkTFgzxO34xEJjofPgdq58TbrgeO/10Vgldqi2de7yrsJeI0Va9eMY4F7i/bTDNddArJstIRbF+bLth/3Rw/kRsDt81kZPi+Uo6lvcPYtyC0PE1xZ9LEm3PHY9Z2M8WqFAJ0NqldzX/JYt4/UN4H77M+SlFpNV203JnmZJS8l5/jOM4McsI4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769951046; c=relaxed/relaxed;
-	bh=k1PWc9/54O7DPE1urxqdZHaylpF5xEjc39oqRVstw+I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yf+YsAbMjQcSLpOcYvcUOtYA/Ha+1m7wNj1OkZozQmJC0BncIpVYFXnNeRdkQQrBKxUKne8CeTKuqBKgoKsVvARIL1vnr1Mn1nxM1Ei5pbGbWWpQjwapmagMxW6CmYABcxRR80T78nO102cdY5l1I2V1MyVwEypUVp2D9lcPj2CPGu56B+iqxa/Hs+ovHmLScyME1yLmkCCxsgj4COnLc035i0ajc83NUtT1IxlPqOr0FLaVJ2ASMULaD6nUWeb9XLXwiRa0rneVdU1YWowVIv+Ph0g7NFLtyvkemJsCi+ugtmRGkaLfV+G3pKcm2E4oe0dSAAAPAvyT8SzrI6pxhQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bWZp6jyI; dkim-atps=neutral; spf=pass (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1769954402; c=relaxed/relaxed;
+	bh=YvJIjmim0OikdErSegBjMhVuxU2jaiv07AsIxZxgla0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jGydW1XxxjCG43wtlYW4iK6NDQ0Cw4/j9ghgegw9N8D8+dd1h9kNgFEK2szzTYFG5Y/0VbzfmEWjDRABSHLXFDgptDIzBld3KmkSb/5AoJyi063iigSmSJOgh/6yUSHYkjYmQGtLX7HkDjcKHEdK5eMHfQ2bfgsl26iHt1wdL4HqnL+ligcXFFwpXrVH3JcV8u72gNLA0upZSNs6qp0dM0Ick3719qfWwN5uH+JVIEQXg+XzNg+xYX/mLB2sNlio+ppUV3vcNKOddJ0+o3jxIgnclow973wVazJm9Fh91mmHl48DeibT9tsBKJxfN8O9MOXNycrRVsgAplKXqf2ybg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=X7XFKVge; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bWZp6jyI;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=X7XFKVge;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f3qh404Kdz2xd6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Feb 2026 00:04:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769951044; x=1801487044;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JxRbL3UiA7chywZx7s/1NhqsSsDE4+0tIBI21pQzhp8=;
-  b=bWZp6jyIWdQ65SHcqDq6Wx4qyZixX+JQc2OIF0MxK2jzYExeZEiVqctd
-   GvriDA0BjXCEPWoL8q5dr6vu/h5c5oOnx7rtN5oUP4Y1jgDSnT/fJ76X0
-   xeK3DYmapoBFYNCVGoQd00nqNMkvzq5/PX9EbD09k5i7UWwuHJ+WQlSQv
-   iFCgMC+bDspBLSyddN/HcxsyAnvnAFaVP72TXyZ3c0pswFwYqSophsDX4
-   1fGQ87OOBBhc79ptJTFIx3K7gorwpO4TX06V20y/foJdjLNz4mD++9ReG
-   GaAhVY5+hNwqorY7B1Fb2AQ/5jALe1lIkMgf6HEhcoAy8vChtgfH1qTYw
-   Q==;
-X-CSE-ConnectionGUID: h7U32uVnSAS2GVJgPV6VbQ==
-X-CSE-MsgGUID: 34dee3KtRMifTEfmTGd1Yg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11688"; a="70149725"
-X-IronPort-AV: E=Sophos;i="6.21,266,1763452800"; 
-   d="scan'208";a="70149725"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2026 05:03:58 -0800
-X-CSE-ConnectionGUID: 3kWg8PvUTxuKPPw4OIctOQ==
-X-CSE-MsgGUID: TrdnJnaNRvGEGGazG0k4kQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,266,1763452800"; 
-   d="scan'208";a="209048462"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 01 Feb 2026 05:03:52 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vmX7F-00000000elw-1KtL;
-	Sun, 01 Feb 2026 13:03:49 +0000
-Date: Sun, 1 Feb 2026 21:03:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, balbirs@nvidia.com,
-	matthew.brost@intel.com, akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	david@redhat.com, ziy@nvidia.com, apopple@nvidia.com,
-	lorenzo.stoakes@oracle.com, lyude@redhat.com, dakr@kernel.org,
-	airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
-	mpenttil@redhat.com, jgg@nvidia.com, willy@infradead.org,
-	linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org,
-	jgg@ziepe.ca, Felix.Kuehling@amd.com, jniethe@nvidia.com,
-	jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au
-Subject: Re: [PATCH v5 13/13] mm: Remove device private pages from the
- physical address space
-Message-ID: <202602012037.jpAjBFBa-lkp@intel.com>
-References: <20260130111050.53670-14-jniethe@nvidia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f3rwd1tXDz2xd6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Feb 2026 01:00:00 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 611AOUH5023281;
+	Sun, 1 Feb 2026 13:59:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=YvJIjmim0OikdErSegBjMhVuxU2jaiv07AsIxZxgl
+	a0=; b=X7XFKVgeDrxEOSCp7xsPSE3zz3J9PNHiSZAY4bvGqdH6BR0BNlD7dK5oS
+	qc02131/KdB8r08Rl7wVk11gttptp66usg0tlqeWXqqp2wGtiVCOarVcvU2lIpG2
+	P2QRJ5Q99JuQlj417Fly7Jnzr//h0eTjRfSYha0Y5womAv+ZcAw+SuRLXo3qRdLz
+	spIaXGwKQ9XMfNqKTXitGwghYUiUdkhHt2Twgolywd1AqELLziBfgQly7JZPBw4o
+	kd+YplyyogeSLcXoYqutjrlw/4QNHg1o+um8IISc45Rad4FG62AXZWMfFGuEp5Vl
+	7wSGEfEcE2KSzUwQau4hrbyEsStuA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c185gkt4d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 01 Feb 2026 13:59:40 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 611DxdOo032705;
+	Sun, 1 Feb 2026 13:59:39 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c185gkt4a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 01 Feb 2026 13:59:39 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 611AVQuf027348;
+	Sun, 1 Feb 2026 13:59:38 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c1xs11ajv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 01 Feb 2026 13:59:38 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 611DxYrQ58917196
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 1 Feb 2026 13:59:34 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BF51D2004D;
+	Sun,  1 Feb 2026 13:59:34 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A0ECE20040;
+	Sun,  1 Feb 2026 13:59:31 +0000 (GMT)
+Received: from li-fc74f8cc-3279-11b2-a85c-ef5828687581.ibm.com.com (unknown [9.39.20.39])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sun,  1 Feb 2026 13:59:31 +0000 (GMT)
+From: Srish Srinivasan <ssrish@linux.ibm.com>
+To: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, James.Bottomley@HansenPartnership.com,
+        jarkko@kernel.org, zohar@linux.ibm.com, nayna@linux.ibm.com,
+        rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, ssrish@linux.ibm.com
+Subject: [PATCH v6 0/6] Extend "trusted" keys to support a new trust source named the PowerVM Key Wrapping Module (PKWM)
+Date: Sun,  1 Feb 2026 19:29:24 +0530
+Message-ID: <20260201135930.898721-1-ssrish@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,135 +99,178 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260130111050.53670-14-jniethe@nvidia.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=UdxciaSN c=1 sm=1 tr=0 ts=697f5c4c cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=QyXUC8HyAAAA:8 a=VwQbUJbxAAAA:8
+ a=ppIsY0g9Vwzl1MCcPLUA:9
+X-Proofpoint-GUID: aJ_UsP8Af8NIVjDlrBxAJylb5H1sc0GD
+X-Proofpoint-ORIG-GUID: FpMvTFeFkjJEkxWfDYsJlCrSQ1UB72lw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAxMDEyMCBTYWx0ZWRfX7IG/S9+2pWPF
+ 4gwkD4uxRVHNZ6DgjQWkoqTkNzAn+/MmRONUMDpNCzmwTw28eiLwE6rCbq1CQnWAsut/913SEV+
+ ePJLMUYkYDH+u5FA1Y8DzZz86FW9l9NJvaw7woqyIYItKi+d7mo84Wjg4JPT+FqwuEG8GUWJbwc
+ lJXyhaT6m0I8a+sJMdQfehG9Ve098AMvY+78eDJG6YLkoi4XoQjW19HW07tgt85TCRgAOIPWbCI
+ iNcpLfGKYLP6kCvgdCOtVFsaKfeYM7hT3FMCSwdcLrhXt8XPHeWigrKl+OZaUD0ggi2GRBloOcu
+ e3kNB3E6Mj+TpCAet6Xll8li96phGMbhBQwVPLdvGv1f/F3NbPdliN4AzwljUUF83ddf5N8s2Yq
+ tvL2xjhrcGhrab/kmV9kBn/uLpeeslXJvQBO3OqPvSpwF2HsUcTV4Ssmy+/mj5dCyqnOmUhvpWK
+ s+fBiopBzFCKgKHN3kw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-01_05,2026-01-30_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 impostorscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 bulkscore=0 spamscore=0 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2602010120
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.21 / 15.00];
-	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+X-Spamd-Result: default: False [-0.71 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-16487-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_CC(0.00)[lists.linux.dev,nvidia.com,intel.com,linux-foundation.org,vger.kernel.org,lists.freedesktop.org,redhat.com,oracle.com,kernel.org,gmail.com,ffwll.ch,infradead.org,lists.ozlabs.org,ziepe.ca,amd.com,linux.ibm.com,ellerman.id.au];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	FORGED_RECIPIENTS(0.00)[m:jniethe@nvidia.com,m:linux-mm@kvack.org,m:llvm@lists.linux.dev,m:oe-kbuild-all@lists.linux.dev,m:balbirs@nvidia.com,m:matthew.brost@intel.com,m:akpm@linux-foundation.org,m:linux-kernel@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:david@redhat.com,m:ziy@nvidia.com,m:apopple@nvidia.com,m:lorenzo.stoakes@oracle.com,m:lyude@redhat.com,m:dakr@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:rcampbell@nvidia.com,m:mpenttil@redhat.com,m:jgg@nvidia.com,m:willy@infradead.org,m:linuxppc-dev@lists.ozlabs.org,m:intel-xe@lists.freedesktop.org,m:jgg@ziepe.ca,m:Felix.Kuehling@amd.com,m:jhubbard@nvidia.com,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-integrity@vger.kernel.org,m:keyrings@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:christophe.leroy@csgroup.eu,m:James.Bottomley@HansenPartnership.com,m:jarkko@kernel.org,m:zohar@linux.ibm.com,m:nayna@linux.ibm.com,m:rnsastry@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:ssrish@linux.ibm.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,HansenPartnership.com,kernel.org,vger.kernel.org];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[ssrish@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16488-lists,linuxppc-dev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FROM_NEQ_ENVFROM(0.00)[ssrish@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[01.org:url]
-X-Rspamd-Queue-Id: BF069C5F4E
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9979CC606F
 X-Rspamd-Action: no action
 
-Hi Jordan,
+Power11 has introduced a feature called the PowerVM Key Wrapping Module
+(PKWM), where PowerVM in combination with Power LPAR Platform KeyStore
+(PLPKS) [1] supports a new feature called "Key Wrapping" [2] to protect
+user secrets by wrapping them using a hypervisor generated wrapping key.
+This wrapping key is an AES-GCM-256 symmetric key that is stored as an
+object in the PLPKS. It has policy based protections that prevents it from
+being read out or exposed to the user. This wrapping key can then be used
+by the OS to wrap or unwrap secrets via hypervisor calls.
 
-kernel test robot noticed the following build warnings:
+This patchset intends to add the PKWM, which is a combination of IBM
+PowerVM and PLPKS, as a new trust source for trusted keys. The wrapping key
+does not exist by default and its generation is requested by the kernel at
+the time of PKWM initialization. This key is then persisted by the PKWM and
+is used for wrapping any kernel provided key, and is never exposed to the
+user. The kernel is aware of only the label to this wrapping key.
 
-[auto build test WARNING on 344db0fba38920be64a429c64a8ca0531572896c]
+Along with the PKWM implementation, this patchset includes two preparatory
+patches: one fixing the kernel-doc inconsistencies in the PLPKS code and
+another reorganizing PLPKS config variables in the sysfs.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jordan-Niethe/mm-migrate_device-Introduce-migrate_pfn_from_page-helper/20260130-191416
-base:   344db0fba38920be64a429c64a8ca0531572896c
-patch link:    https://lore.kernel.org/r/20260130111050.53670-14-jniethe%40nvidia.com
-patch subject: [PATCH v5 13/13] mm: Remove device private pages from the physical address space
-config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20260201/202602012037.jpAjBFBa-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260201/202602012037.jpAjBFBa-lkp@intel.com/reproduce)
+Changelog:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602012037.jpAjBFBa-lkp@intel.com/
+v6:
 
-All warnings (new ones prefixed by >>):
+* Patch 1 to Patch 3:
+  - Add Nayna's Tested-by tag
+* Patch 4
+  - Fix build error reported by kernel test robot <lkp@intel.com>
+  - Add Nayna's Tested-by tag
+* Patch 5
+  - Add Nayna's Tested-by tag
 
->> drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_migrate.c:1071:7: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-    1071 |                 if (IS_ERR(r))
-         |                     ^~~~~~~~~
-   drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_migrate.c:1075:6: note: uninitialized use occurs here
-    1075 |         if (ret) {
-         |             ^~~
-   drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_migrate.c:1071:3: note: remove the 'if' if its condition is always true
-    1071 |                 if (IS_ERR(r))
-         |                 ^~~~~~~~~~~~~~
-    1072 |                         ret = PTR_ERR(r);
-   drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_migrate.c:1035:9: note: initialize the variable 'ret' to silence this warning
-    1035 |         int ret;
-         |                ^
-         |                 = 0
-   1 warning generated.
+v5:
 
+* Patch 1 to Patch 3:
+  - Add Nayna's Reviewed-by tag
+* Patch 4:
+  - Fix build error identified by chleroy@kernel.org
+  - Add Nayna's Reviewed-by tag
+* Patch 5:
+  - Add Reviewed-by tags from Nayna and Jarkko
 
-vim +1071 drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_migrate.c
+v4:
 
-  1028	
-  1029	int kgd2kfd_init_zone_device(struct amdgpu_device *adev)
-  1030	{
-  1031		struct amdgpu_kfd_dev *kfddev = &adev->kfd;
-  1032		struct dev_pagemap *pgmap;
-  1033		unsigned long size;
-  1034		void *r;
-  1035		int ret;
-  1036	
-  1037		/* Page migration works on gfx9 or newer */
-  1038		if (amdgpu_ip_version(adev, GC_HWIP, 0) < IP_VERSION(9, 0, 1))
-  1039			return -EINVAL;
-  1040	
-  1041		if (adev->apu_prefer_gtt)
-  1042			return 0;
-  1043	
-  1044		pgmap = &kfddev->pgmap;
-  1045		memset(pgmap, 0, sizeof(*pgmap));
-  1046	
-  1047		/* TODO: register all vram to HMM for now.
-  1048		 * should remove reserved size
-  1049		 */
-  1050		size = ALIGN(adev->gmc.real_vram_size, 2ULL << 20);
-  1051		if (adev->gmc.xgmi.connected_to_cpu) {
-  1052			pgmap->range.start = adev->gmc.aper_base;
-  1053			pgmap->range.end = adev->gmc.aper_base + adev->gmc.aper_size - 1;
-  1054			pgmap->type = MEMORY_DEVICE_COHERENT;
-  1055		} else {
-  1056			pgmap->nr_pages = size / PAGE_SIZE;
-  1057			pgmap->type = MEMORY_DEVICE_PRIVATE;
-  1058		}
-  1059	
-  1060		pgmap->nr_range = 1;
-  1061		pgmap->ops = &svm_migrate_pgmap_ops;
-  1062		pgmap->owner = SVM_ADEV_PGMAP_OWNER(adev);
-  1063		pgmap->flags = 0;
-  1064		/* Device manager releases device-specific resources, memory region and
-  1065		 * pgmap when driver disconnects from device.
-  1066		 */
-  1067		if (pgmap->type == MEMORY_DEVICE_PRIVATE) {
-  1068			ret = devm_memremap_device_private_pagemap(adev->dev, pgmap);
-  1069		} else {
-  1070			r = devm_memremap_pages(adev->dev, pgmap);
-> 1071			if (IS_ERR(r))
+* Patch 5:
+  - Add a per-backend private data pointer in trusted_key_options
+    to store a pointer to the backend-specific options structure
+  - Minor clean-up
+
+v3:
+
+* Patch 2:
+  - Add Mimi's Reviewed-by tag
+* Patch 4:
+  - Minor tweaks to some print statements
+  - Fix typos
+* Patch 5:
+  - Fix typos
+  - Add Mimi's Reviewed-by tag
+* Patch 6:
+  - Add Mimi's Reviewed-by tag
+
+v2:
+
+* Patch 2:
+  - Fix build warning detected by the kernel test bot
+* Patch 5:
+  - Use pr_debug inside dump_options
+  - Replace policyhande with wrap_flags inside dump_options
+  - Provide meaningful error messages with error codes
+
+Nayna Jain (1):
+  docs: trusted-encryped: add PKWM as a new trust source
+
+Srish Srinivasan (5):
+  pseries/plpks: fix kernel-doc comment inconsistencies
+  powerpc/pseries: move the PLPKS config inside its own sysfs directory
+  pseries/plpks: expose PowerVM wrapping features via the sysfs
+  pseries/plpks: add HCALLs for PowerVM Key Wrapping Module
+  keys/trusted_keys: establish PKWM as a trusted source
+
+ .../ABI/testing/sysfs-firmware-plpks          |  58 ++
+ Documentation/ABI/testing/sysfs-secvar        |  65 --
+ .../admin-guide/kernel-parameters.txt         |   1 +
+ Documentation/arch/powerpc/papr_hcalls.rst    |  43 ++
+ .../security/keys/trusted-encrypted.rst       |  50 ++
+ MAINTAINERS                                   |   9 +
+ arch/powerpc/include/asm/hvcall.h             |   4 +-
+ arch/powerpc/include/asm/plpks.h              |  95 +--
+ arch/powerpc/include/asm/secvar.h             |   1 -
+ arch/powerpc/kernel/secvar-sysfs.c            |  21 +-
+ arch/powerpc/platforms/pseries/Makefile       |   2 +-
+ arch/powerpc/platforms/pseries/plpks-secvar.c |  29 -
+ arch/powerpc/platforms/pseries/plpks-sysfs.c  |  96 +++
+ arch/powerpc/platforms/pseries/plpks.c        | 688 +++++++++++++++++-
+ include/keys/trusted-type.h                   |   7 +-
+ include/keys/trusted_pkwm.h                   |  33 +
+ security/keys/trusted-keys/Kconfig            |   8 +
+ security/keys/trusted-keys/Makefile           |   2 +
+ security/keys/trusted-keys/trusted_core.c     |   6 +-
+ security/keys/trusted-keys/trusted_pkwm.c     | 190 +++++
+ 20 files changed, 1207 insertions(+), 201 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-plpks
+ create mode 100644 arch/powerpc/platforms/pseries/plpks-sysfs.c
+ create mode 100644 include/keys/trusted_pkwm.h
+ create mode 100644 security/keys/trusted-keys/trusted_pkwm.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.3
+
 
