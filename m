@@ -1,80 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-16500-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16501-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEwNJ6+zf2kVwQIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16500-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 21:12:31 +0100
+	id +JxAB77Tf2mjyAIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16501-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 23:29:18 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9550EC7235
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 21:12:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9353FC766F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 23:29:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f41BK4TdXz2yrl;
-	Mon, 02 Feb 2026 07:12:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f44D85D3Pz2yrl;
+	Mon, 02 Feb 2026 09:29:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769976745;
-	cv=none; b=WVajBA94BDOxD/+lf2vMJ+q23W41YlGxbs9wf9/D9whhhvTqw0nALUJr+qHg6+v0znR5K2KL0x1BdDcnUc3sX1MhGcUvV32XtmMkPnpCk+ggmqN5cob7gL7oqt57ewDAEKN4ytC6q8bz51jFq52B1HksynhPSuu5tccZi6La0A8U8mhl4QKIwrXPnV2agLYxDCHAMSJYCqanik8oey8RaFxFs+AKDZAqju4tuVdSSGSaHFSwIoZHDUqF8v7joK0AwzvsMiDWV9dmXHFo+EZhtsoS/BVaFhxyvxvLczbixwtzpXcyNWgWztUHXjIYl/Q4a2wYb5y96awJGC1DG5STqQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769984952;
+	cv=none; b=ghQRUrDUOJnk9Iew/7vyeZ1xQjkoS+ysgQuOp+yB7789FQ2KRebvz+APU59EtcWwR+pG4yfmVfAcqZe5kMsKpt3GnB0XPFYhjigAzJav5BNqcz39I3Za8qc7qtOqNNFl5cVeR0aFrmovK5Cp7KbMj7X0xgB3mLC3Vx0lX/DaIQlg7Iyv4EC5Yyf1EbtOdlxjbxSELvobyN2LiY+sbUiKIWpDqUYGWy8oZZ76k01mA+n+Bf/gJK4XaPgsaTQrEVMyPiLoNN1DzQAH94mBgEQbsFzMRdOVnFIfIsTv8+uz9q/8gwaig/xPyjpepHZTwYLSrKewjz/5kGhPLNztrnA62g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769976745; c=relaxed/relaxed;
-	bh=n7UE7HJmKRFcTX7LjokAA9IEGfkzkEmFjPR0EbMgHfs=;
+	t=1769984952; c=relaxed/relaxed;
+	bh=Z9B0iwRdcfSMyYw2xUFYbLThRCzv45G5fYlmY7N08Yg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SltdYpJKOmb4+X530aYbG5SzHb6NXLBShw4H7Wbt74MbJES/VDkYwt6thq8b3NpOpBK8O3VhvkHFNdi1sFd+1hVm4ugZZuZZ1G6NY9TTS61ukr/KIV47wvoPB8TshAL5Ai29Pm6A0jejaBRCltJezyO4EfGNFhgFFM1gD593HCi7OAEhohGk5nI4yt6l8ZHBYbvrtZGp5Ax4HemCmrFzfFrgPtTNx+kl/GT/7NzAfLNHprhQYzX7jopGrT+/03E4+GNq+b1YqhBzudgQvyv3ohHh60CQhoWTva3ffNABXGfXTtW6L3EKcA2FoCHVSgjuyY1HqFW8ULO+xWyjLuuibA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fIdRv4hA; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=RBYb8DWpFOws53ljamWgo10QRLfdeq6EQ9+YeDFUorz5Og78PQ2c+euOGo+cICKPhjUE8G/BJk/qbtIF7H0t0B3TPHDQRttelae0UmtBg4SoZEeHU8yJbFrEfwq5NBT30zejdcE28mCKxKMcyf6XglZ5jwZpLtjmZ6lorHSFwgpJfRfKRCswkUu6+fLVXI174NIjdhfRmVDO4zPyVX498BVTyuTWEOqKqZCYafcNibEBtutkgpogbZbxIOGvMY2wzaQdxJ8GEx1qA+1m6KC6w5FsfwS9APj9w4XsTp+4rIn9mW+L6B0vCn3/rCOJqu1s5UHWeBOmEBfA77YVW/w6nQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YGPdnvNo; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fIdRv4hA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YGPdnvNo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f41BJ1XPdz2yFm
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Feb 2026 07:12:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f44D70yJWz2xjQ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Feb 2026 09:29:11 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 801A64385A;
-	Sun,  1 Feb 2026 20:12:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C67C4CEF7;
-	Sun,  1 Feb 2026 20:12:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 205F760008;
+	Sun,  1 Feb 2026 22:29:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 730B0C4CEF7;
+	Sun,  1 Feb 2026 22:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769976741;
-	bh=P4abRiJNT2o7A1KauWPFd1QUCJK6AwkuNkuWQv1rej0=;
+	s=k20201202; t=1769984947;
+	bh=DxXTUd2sVNIlf9nm0i+s4NtR8Hl+nkM+Cwtr/R7+iTs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fIdRv4hA/DqSiqBclAtFK4XfUk/ksYnebA0yhghX5vLyndIRXaysGZ5MMbgL4vwkI
-	 8QvBVSpULQqoJhdyvj1t+Bug4HEuYNCYZpbs71huOoJbBE+HauLZ7LOEuhZ05cJQV/
-	 94Y42B9l4Ik8l7KwDFKgbh0MP9IX/WqJ6i2FNecab++SmyJy3Bh3nn+Acqzrq+Njoe
-	 CsZ/nV1JY55rWf1JPQfvoOd6i0Xj135qyfTL+vl7JOttvuSTevqqFRtknPLvL8LLVJ
-	 cQaAEOaE5VWFnmDFi97q9n93wpKJXVcB/h7Fay/vhGI+7dszWX9t1U+EoJG9mhwgBV
-	 dAMVUoFltx0rw==
-Date: Sun, 1 Feb 2026 12:12:18 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: =?us-ascii?B?PT9VVEYtOD9xP01paGFpLURyb3NpPTIwQz1DMz1BMmp1Pz0=?= <mcaju95@gmail.com>,
-	linux@weissschuh.net, arnd@arndb.de, arnout@bzzt.net,
-	atomlin@atomlin.com, bigeasy@linutronix.de, chleroy@kernel.org,
-	christian@heusel.eu, corbet@lwn.net, coxu@redhat.com,
-	da.gomez@kernel.org, da.gomez@samsung.com,
-	dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com,
-	f.gruenbichler@proxmox.com, jmorris@namei.org, kpcyrd@archlinux.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-integrity@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, lkp@intel.com, maddy@linux.ibm.com,
-	mattia@mapreri.org, mcgrof@kernel.org, mpe@ellerman.id.au,
-	nathan@kernel.org, naveen@kernel.org,
-	nicolas.bouchinet@oss.cyber.gouv.fr, nicolas.schier@linux.dev,
-	npiggin@gmail.com, nsc@kernel.org, paul@paul-moore.com,
-	petr.pavlu@suse.com, roberto.sassu@huawei.com,
-	samitolvanen@google.com, serge@hallyn.com, xiujianfeng@huawei.com,
-	zohar@linux.ibm.com
-Subject: Re: [PATCH v4 00/17] module: Introduce hash-based integrity checking
-Message-ID: <20260201201218.GA15755@quark>
-References: <20260131073636.65494-1-mcaju95@gmail.com>
- <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
- <2316630.1769965788@warthog.procyon.org.uk>
+	b=YGPdnvNokhVj+bbB6U2HTakzEQs77Eyc+70jNzgOcQSCdfQqtZVP2S13HH2JdSqvI
+	 iiJ1Y0MHxXi9fkxF1/sxXDH8OFXKQ9hIgGY+/T+AzAg2cSqD9g/Id231r+pE3GgolW
+	 oFBdb8DbL7XwUR5wpCundArK6kJ7sPkYNHhLvCrN9Bktw2ilWGCCe2gnbrDF4ioVGW
+	 7jjGdJgaanmc7+qN7t20BJs9TMTFY57dFq9FqN39kf6UAZsUc6xJRMxJXvFBr3IbQa
+	 kUO+0nawWrDdPzjg9Qu+zn49Bvg6iM5P9jbOOvi0vbHIFcZtM0xst3mPnDyM+KHCkY
+	 dk1PHcxOZWEsg==
+Date: Mon, 2 Feb 2026 00:29:04 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Srish Srinivasan <ssrish@linux.ibm.com>
+Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+	James.Bottomley@hansenpartnership.com, zohar@linux.ibm.com,
+	nayna@linux.ibm.com, rnsastry@linux.ibm.com,
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v6 6/6] docs: trusted-encryped: add PKWM as a new trust
+ source
+Message-ID: <aX_TsBNTMvvsM_bt@kernel.org>
+References: <20260201135930.898721-1-ssrish@linux.ibm.com>
+ <20260201135930.898721-7-ssrish@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,87 +75,182 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2316630.1769965788@warthog.procyon.org.uk>
+In-Reply-To: <20260201135930.898721-7-ssrish@linux.ibm.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.29 / 15.00];
-	CC_EXCESS_BASE64(1.50)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.21 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MAILLIST(-0.20)[generic];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
-	MAILLIST(-0.20)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16500-lists,linuxppc-dev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16501-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[ebiggers@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FORGED_SENDER(0.00)[jarkko@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,hansenpartnership.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_RECIPIENTS(0.00)[m:ssrish@linux.ibm.com,m:linux-integrity@vger.kernel.org,m:keyrings@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:christophe.leroy@csgroup.eu,m:James.Bottomley@hansenpartnership.com,m:zohar@linux.ibm.com,m:nayna@linux.ibm.com,m:rnsastry@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:linux-security-module@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:dhowells@redhat.com,m:mcaju95@gmail.com,m:linux@weissschuh.net,m:arnd@arndb.de,m:arnout@bzzt.net,m:atomlin@atomlin.com,m:bigeasy@linutronix.de,m:chleroy@kernel.org,m:christian@heusel.eu,m:corbet@lwn.net,m:coxu@redhat.com,m:da.gomez@kernel.org,m:da.gomez@samsung.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:f.gruenbichler@proxmox.com,m:jmorris@namei.org,m:kpcyrd@archlinux.org,m:linux-arch@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-integrity@vger.kernel.org,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:lkp@intel.com,m:maddy@linux.ibm.com,m:mattia@mapreri.org,m:mcgrof@kernel.org,m:mpe@ellerman.id.au,m:nathan@kernel.org,m:naveen@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:nicolas.schier@linux.dev,m:npiggin@gmail.com,m:nsc@kernel.org,m:paul@paul-moore.com,m:petr.pavlu@suse.com,m:roberto.sassu@huawei.com,m:samito
- lvanen@google.com,m:serge@hallyn.com,m:xiujianfeng@huawei.com,m:zohar@linux.ibm.com,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,weissschuh.net,arndb.de,bzzt.net,atomlin.com,linutronix.de,kernel.org,heusel.eu,lwn.net,redhat.com,samsung.com,oracle.com,proxmox.com,namei.org,archlinux.org,vger.kernel.org,lists.ozlabs.org,intel.com,linux.ibm.com,mapreri.org,ellerman.id.au,oss.cyber.gouv.fr,linux.dev,paul-moore.com,suse.com,huawei.com,google.com,hallyn.com];
+	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[44];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	FROM_NEQ_ENVFROM(0.00)[jarkko@kernel.org,linuxppc-dev@lists.ozlabs.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 9550EC7235
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 9353FC766F
 X-Rspamd-Action: no action
 
-On Sun, Feb 01, 2026 at 05:09:48PM +0000, David Howells wrote:
-> Mihai-Drosi Câju <mcaju95@gmail.com> wrote:
+On Sun, Feb 01, 2026 at 07:29:30PM +0530, Srish Srinivasan wrote:
+> From: Nayna Jain <nayna@linux.ibm.com>
 > 
-> > > The current signature-based module integrity checking has some drawbacks
-> > in combination with reproducible builds. Either the module signing key
-> > is generated at build time, which makes the build unreproducible, or a
-> > static signing key is used, which precludes rebuilds by third parties
-> > and makes the whole build and packaging process much more complicated.
+> Update Documentation/security/keys/trusted-encrypted.rst and Documentation/
+> admin-guide/kernel-parameters.txt with PowerVM Key Wrapping Module (PKWM)
+> as a new trust source
 > 
-> There is another issue too: If you have a static private key that you use to
-> sign modules (and probably other things), someone will likely give you a GPL
-> request to get it.
-> 
-> One advantage of using a transient key every build and deleting it after is
-> that no one has the key.
-> 
-> One other thing to remember: security is *meant* to get in the way.  That's
-> the whole point of it.
-> 
-> However, IANAL.
-> 
-> David
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
+> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
 
-It sounds like hash-based module authentication is just better, then.
-If the full set of authentic modules is known at kernel build time, then
-signatures are unnecessary to verify their authenticity: a list of
-hashes built into the kernel image is perfectly sufficient.
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-(This patchset actually gets a little fancy and makes it a Merkle tree
-root.  But it could be simplified to just a list of hashes.)
+And you are free to take 5/6 and 6/6 to a pull request if you prefer
+that route.
 
-With that being the case, why is there still effort being put into
-adding more features to module signing?  I would think efforts should be
-focused on hash-based module authentication, i.e. this patchset.
+> ---
+>  .../admin-guide/kernel-parameters.txt         |  1 +
+>  .../security/keys/trusted-encrypted.rst       | 50 +++++++++++++++++++
+>  2 files changed, 51 insertions(+)
+> 
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index 1058f2a6d6a8..aac15079b33d 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -7790,6 +7790,7 @@ Kernel parameters
+>  			- "tee"
+>  			- "caam"
+>  			- "dcp"
+> +			- "pkwm"
+>  			If not specified then it defaults to iterating through
+>  			the trust source list starting with TPM and assigns the
+>  			first trust source as a backend which is initialized
+> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
+> index eae6a36b1c9a..ddff7c7c2582 100644
+> --- a/Documentation/security/keys/trusted-encrypted.rst
+> +++ b/Documentation/security/keys/trusted-encrypted.rst
+> @@ -81,6 +81,14 @@ safe.
+>           and the UNIQUE key. Default is to use the UNIQUE key, but selecting
+>           the OTP key can be done via a module parameter (dcp_use_otp_key).
+>  
+> +     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
+> +
+> +         Rooted to a unique, per-LPAR key, which is derived from a system-wide,
+> +         randomly generated LPAR root key. Both the per-LPAR keys and the LPAR
+> +         root key are stored in hypervisor-owned secure memory at runtime,
+> +         and the LPAR root key is additionally persisted in secure locations
+> +         such as the processor SEEPROMs and encrypted NVRAM.
+> +
+>    *  Execution isolation
+>  
+>       (1) TPM
+> @@ -102,6 +110,14 @@ safe.
+>           environment. Only basic blob key encryption is executed there.
+>           The actual key sealing/unsealing is done on main processor/kernel space.
+>  
+> +     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
+> +
+> +         Fixed set of cryptographic operations done on on-chip hardware
+> +         cryptographic acceleration unit NX. Keys for wrapping and unwrapping
+> +         are managed by PowerVM Platform KeyStore, which stores keys in an
+> +         isolated in-memory copy in secure hypervisor memory, as well as in a
+> +         persistent copy in hypervisor-encrypted NVRAM.
+> +
+>    * Optional binding to platform integrity state
+>  
+>       (1) TPM
+> @@ -129,6 +145,11 @@ safe.
+>           Relies on Secure/Trusted boot process (called HAB by vendor) for
+>           platform integrity.
+>  
+> +     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
+> +
+> +         Relies on secure and trusted boot process of IBM Power systems for
+> +         platform integrity.
+> +
+>    *  Interfaces and APIs
+>  
+>       (1) TPM
+> @@ -149,6 +170,11 @@ safe.
+>           Vendor-specific API that is implemented as part of the DCP crypto driver in
+>           ``drivers/crypto/mxs-dcp.c``.
+>  
+> +     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
+> +
+> +         Platform Keystore has well documented interfaces in PAPR document.
+> +         Refer to ``Documentation/arch/powerpc/papr_hcalls.rst``
+> +
+>    *  Threat model
+>  
+>       The strength and appropriateness of a particular trust source for a given
+> @@ -191,6 +217,10 @@ selected trust source:
+>       a dedicated hardware RNG that is independent from DCP which can be enabled
+>       to back the kernel RNG.
+>  
+> +   * PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
+> +
+> +     The normal kernel random number generator is used to generate keys.
+> +
+>  Users may override this by specifying ``trusted.rng=kernel`` on the kernel
+>  command-line to override the used RNG with the kernel's random number pool.
+>  
+> @@ -321,6 +351,26 @@ Usage::
+>  specific to this DCP key-blob implementation.  The key length for new keys is
+>  always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
+>  
+> +Trusted Keys usage: PKWM
+> +------------------------
+> +
+> +Usage::
+> +
+> +    keyctl add trusted name "new keylen [options]" ring
+> +    keyctl add trusted name "load hex_blob" ring
+> +    keyctl print keyid
+> +
+> +    options:
+> +       wrap_flags=   ascii hex value of security policy requirement
+> +                       0x00: no secure boot requirement (default)
+> +                       0x01: require secure boot to be in either audit or
+> +                             enforced mode
+> +                       0x02: require secure boot to be in enforced mode
+> +
+> +"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
+> +specific to PKWM key-blob implementation.  The key length for new keys is
+> +always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
+> +
+>  Encrypted Keys usage
+>  --------------------
+>  
+> -- 
+> 2.47.3
+> 
 
-- Eric
+BR, Jarkko
 
