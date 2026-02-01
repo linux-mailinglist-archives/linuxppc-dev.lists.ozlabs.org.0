@@ -1,65 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-16496-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16497-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKp4E8x9f2klsAIAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16496-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 17:22:36 +0100
+	id mHu5MDKFf2kTswIAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16497-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 17:54:10 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E2EC6769
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 17:22:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB24C6914
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 01 Feb 2026 17:54:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f3w526y8Kz2yDk;
-	Mon, 02 Feb 2026 03:22:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f3wnV05Prz2yGx;
+	Mon, 02 Feb 2026 03:54:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.69.126.157
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769962950;
-	cv=none; b=FyMo+MyWQ4HIBZLMuXng5AO4kVgWM4cvY+msWemxkbidzHOYnPQgKCShUTQXU+tTlzxVJ5tYEuVgQ9D0VH4gASKJRvQ0/X8kKPOUpns+/2f9NCjyC6+3LbHk1u6BkhEHpbL00eFAH0fetZEItYmLRaprsbTblXcdF1YaWzTfxxI6PdP2b2aTo1xwmerfkImzgpne95j2Ed6fAvTXwGGa1wR5sge8dnR/x5eIBSLsxHxUcu+LFsQCHAHs81u18yaBmg7FT60CyQ0AGgZXS/tcTMx9h3C2UarV0LxWCXfwgN/MsH6S8990c9UQ5pgOIfyOiZ6Owk9hgR8IDitv5hT9Zw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1769964845;
+	cv=none; b=YHSzW0RdKqhRSSqFqTrHHEaR6eV70WU5sIp8GNqfcIdV38tYGoBdqxgsYo/aXUu622NvLEbOfU55b/2+m52sb5ze0txiHNM9x/pJkigW/iig5Vb8TcE4QDEr4LaGuPoH87PybsYAkOylkJm0944Atvq2VLWz++nIENdzU3U8T+yinINTeZmqu2Oo1TjdAtUpruwqzqJPU6bHwzSvaHPYZq50uU8PE2zhPR0KDtsBknTXNPqFWlHrReuNAVWa9J7qGJzBBzvzMdukJGlBmo5mbIS84RcDp3QgZei893fm0wYr7OEdH8ahFQqDQL01zOtpkCbPBvw+yy5tn+je2BeVxw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1769962950; c=relaxed/relaxed;
-	bh=Ekq1Oa0kOuIGGpmbH0KxUoKo4PNldrHeMX6YIdXEy9w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=STSBauda4RdDABsfwAKqTKM9zKoh3y+jTFlGjr1miJfko9qfprBLh5hBHXdgddbNJ8iYP1jNr4rvFjHhFAH4ENNk/RZIWH154RnDw7I3fvDoBtty2gO9gRh95uinT62ngKB2y74DbzaoZysFFB01bGZAUX+EmykZuLXkdBwwueoN3NcgAEVi7+qbNE6GSYE1t4pq9u1bHqs9G6LutdOyjSMTx15sL35BoojIdsyLCOlnmVAZmqNZgbj/FZGd2g9FzF7bVgWHeJpVV5MlpkxwcAgqxOHyhUwkmPXS5Cqm6ZLx+DvW3UfHxTQ+LHtyAd1UZ1OXWQwnEgDLqI2zcg1skA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=bEfjssX6; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+	t=1769964845; c=relaxed/relaxed;
+	bh=2tMSgbI0jMcpFL6WYU4eGr8ihKd31sPH32yhsqf/z2k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KCCesdUFT9+ttWjtZPh/jSUn+LJqUdVqs28qEXbNRTQ1iexTPLJEfq5+D7ulWFRK5gM0RzekJ/BrqVO0WQqmO4g/gGIy8C5ZRBbYfLuhD4YAvcYomp4vom8EZlNvJnOYNVUmilSWfDLFSEDnITP6HFsItSCOu4NshfuIzGoA2e33D1vLJ5oRC6Bn8O6iiKHp5LaQIrstVSH0KKqMzb94IfqvDtJw0QhG8X7IZ+ojN/KTKijTRUZ89UfS37m92yn+gmO+IM6Pwd6AQ4KygJSC7h8AdqGQus38ckwds2vHD3H39RlcC/5d1kgKbMWK6H5q4wlD2i76O5xwSTkcsc2tzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I0Fjh3M3; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=bEfjssX6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I0Fjh3M3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f3w504l2Jz2xgX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Feb 2026 03:22:28 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1769962934;
-	bh=xlStmTRMhWVPt3fGtyXwEEDK5QLc9ZLigiHpsUvTOrc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bEfjssX6nVvGGJYCjRv1Hgum2HvUXJPGA7CgYPlDg4pNFEnfuqh6BJNVd4xzoEnb/
-	 ZMmAJGEOHpCghTNwc5ybR5xqiScFWUgOJvwITdq0n0q7Kv6pPqNjU99FoLxmpQ1ILY
-	 /UCNvFIurX5sZ1rKb2ccqszu5PRz2lLOVB+DzJaQ=
-Date: Sun, 1 Feb 2026 17:22:12 +0100
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Mihai-Drosi =?utf-8?B?Q8OianU=?= <mcaju95@gmail.com>
-Cc: arnd@arndb.de, arnout@bzzt.net, atomlin@atomlin.com, 
-	bigeasy@linutronix.de, chleroy@kernel.org, christian@heusel.eu, corbet@lwn.net, 
-	coxu@redhat.com, da.gomez@kernel.org, da.gomez@samsung.com, 
-	dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com, f.gruenbichler@proxmox.com, 
-	jmorris@namei.org, kpcyrd@archlinux.org, linux-arch@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-integrity@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, lkp@intel.com, 
-	maddy@linux.ibm.com, mattia@mapreri.org, mcgrof@kernel.org, mpe@ellerman.id.au, 
-	nathan@kernel.org, naveen@kernel.org, nicolas.bouchinet@oss.cyber.gouv.fr, 
-	nicolas.schier@linux.dev, npiggin@gmail.com, nsc@kernel.org, paul@paul-moore.com, 
-	petr.pavlu@suse.com, roberto.sassu@huawei.com, samitolvanen@google.com, 
-	serge@hallyn.com, xiujianfeng@huawei.com, zohar@linux.ibm.com
-Subject: Re: [PATCH v4 00/17] module: Introduce hash-based integrity checking
-Message-ID: <1ff0f085-fe89-48b4-bae3-559777a56a0d@t-8ch.de>
-References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
- <20260131073636.65494-1-mcaju95@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f3wnS6BNPz2xqL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Feb 2026 03:54:03 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6116lV6O017410;
+	Sun, 1 Feb 2026 16:53:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=2tMSgbI0jMcpFL6WYU4eGr8ihKd31sPH32yhsqf/z
+	2k=; b=I0Fjh3M3xyXyjrzJUNU/VP7zYDfqpF1X6zK1DkAPSXhSaYFetIANSLHv7
+	3Lse0ObX7eRsBGG4IqlHIVX5ymRg3KDtfKAyl37m/lJsBzQH95awbznoSZ+W4O3L
+	ww5ZSoO5aGxv0xUA+Km8O9weE7kpMQnqVnk9X7o1DQZcEAw7MsNsnILSPGeHMuDt
+	fZJylQSKyVJ2GvwXuNMhzIM/XDeuWdgKB7WM5AvaYHyQ7z0UThUA9CgubPpfwQz3
+	qXjWrVsoJNkV1joMCsid/pxUXvGAKz+t3Wxp1sN+b+qQ+c/wEnOwbfFlRTD9x5C4
+	Q5aW/JHEQJga8TZNJOthU3er1eZWA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c198651cv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 01 Feb 2026 16:53:52 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 611Grqx1010216;
+	Sun, 1 Feb 2026 16:53:52 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c198651ct-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 01 Feb 2026 16:53:52 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 611Gb5oc005959;
+	Sun, 1 Feb 2026 16:53:51 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c1x9j1ts0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 01 Feb 2026 16:53:51 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 611GrlkE51708262
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 1 Feb 2026 16:53:47 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A05B42004B;
+	Sun,  1 Feb 2026 16:53:47 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 576F620043;
+	Sun,  1 Feb 2026 16:53:45 +0000 (GMT)
+Received: from li-fc74f8cc-3279-11b2-a85c-ef5828687581.ibm.com.com (unknown [9.39.20.75])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sun,  1 Feb 2026 16:53:45 +0000 (GMT)
+From: Srish Srinivasan <ssrish@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, nayna@linux.ibm.com, zohar@linux.ibm.com,
+        rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
+        ssrish@linux.ibm.com
+Subject: [PATCH] powerpc/pseries: plpks: export plpks_wrapping_is_supported
+Date: Sun,  1 Feb 2026 22:23:44 +0530
+Message-ID: <20260201165344.950870-1-ssrish@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,101 +97,98 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260131073636.65494-1-mcaju95@gmail.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAxMDE0NiBTYWx0ZWRfXyJX+Ay5SgAgI
+ yCClGqeYUxt0nEKc84uxN+dYX9eSQIyXvB2zkAT1ExLRTjObiV7ZZb5XIid8GLbDuI6OGUTnLej
+ YA1gDo2Q7Osvz/5eKeMEmD5zKUCa3E4RQxNUP90PW4x4Jv+0qOOMlduIqoY7DMmez+HISHH7IDF
+ tI4l/KEQOlaNWE5iVGe6AXXIIL1CVatk+9DmASm02N/Fn++whk+bn7UYmd10Y3vkhhCIKZ2YmPR
+ x//gQQ9akZpUtcv9rqe7zel2YgohaT3DtqHMgR5Ma37JRvC+iFfq2FfgqxkNSe/Vb8C8O3CyZtV
+ 9zf4kHyDywMRqWlwjxZy6NGMAmTWGU7Kd/0OzBrVb+YhWErBG6AOT8Thsxs9jHP7Atr3tyOwX3x
+ e5QfqF8/2PSvqTt4zw8brktJCKLE0L9GvW2kHMxaC7JeA+ve2PCem1zVKTsCelr/EpTwJ54KCKk
+ 1mxuVe0VGtFZwmxVPAQ==
+X-Proofpoint-GUID: sbxXnh39Pidq5PaRryjFnBmY0NkI-bWK
+X-Authority-Analysis: v=2.4 cv=DbAaa/tW c=1 sm=1 tr=0 ts=697f8520 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=QyXUC8HyAAAA:8 a=h_aGgwYpWhQZvvvh6yEA:9
+X-Proofpoint-ORIG-GUID: CKhOrYsh8MC42vvcLJRghKUViMOVQGPH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-01_06,2026-01-30_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0 adultscore=0 malwarescore=0 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 suspectscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2602010146
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.71 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[weissschuh.net,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.20)[generic];
 	R_SPF_ALLOW(-0.20)[+ip4:112.213.38.117];
-	R_DKIM_ALLOW(-0.20)[weissschuh.net:s=mail];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16496-lists,linuxppc-dev=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[arndb.de,bzzt.net,atomlin.com,linutronix.de,kernel.org,heusel.eu,lwn.net,redhat.com,samsung.com,gmail.com,oracle.com,proxmox.com,namei.org,archlinux.org,vger.kernel.org,lists.ozlabs.org,intel.com,linux.ibm.com,mapreri.org,ellerman.id.au,oss.cyber.gouv.fr,linux.dev,paul-moore.com,suse.com,huawei.com,google.com,hallyn.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:mcaju95@gmail.com,m:arnd@arndb.de,m:arnout@bzzt.net,m:atomlin@atomlin.com,m:bigeasy@linutronix.de,m:chleroy@kernel.org,m:christian@heusel.eu,m:corbet@lwn.net,m:coxu@redhat.com,m:da.gomez@kernel.org,m:da.gomez@samsung.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:f.gruenbichler@proxmox.com,m:jmorris@namei.org,m:kpcyrd@archlinux.org,m:linux-arch@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-integrity@vger.kernel.org,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:lkp@intel.com,m:maddy@linux.ibm.com,m:mattia@mapreri.org,m:mcgrof@kernel.org,m:mpe@ellerman.id.au,m:nathan@kernel.org,m:naveen@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:nicolas.schier@linux.dev,m:npiggin@gmail.com,m:nsc@kernel.org,m:paul@paul-moore.com,m:petr.pavlu@suse.com,m:roberto.sassu@huawei.com,m:samitolvanen@google.com,m:serge@hallyn.com,m:xiujia
- nfeng@huawei.com,m:zohar@linux.ibm.com,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER(0.00)[linux@weissschuh.net,linuxppc-dev@lists.ozlabs.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ssrish@linux.ibm.com,linuxppc-dev@lists.ozlabs.org];
+	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-16497-lists,linuxppc-dev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[42];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_NEQ_ENVFROM(0.00)[linux@weissschuh.net,linuxppc-dev@lists.ozlabs.org];
-	DKIM_TRACE(0.00)[weissschuh.net:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linuxppc-dev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: D6E2EC6769
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[linuxppc-dev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email]
+X-Rspamd-Queue-Id: DDB24C6914
 X-Rspamd-Action: no action
 
-Hi Mihai-Drosi,
+Building trusted-keys as a module fails modpost with:
 
-thanks for taking an interest into these patches!
+ERROR: modpost: "plpks_wrapping_is_supported" [security/keys/trusted-keys/
+trusted.ko] undefined!
 
-On 2026-01-31 09:36:36+0200, Mihai-Drosi Câju wrote:
-> > The current signature-based module integrity checking has some drawbacks
-> > in combination with reproducible builds. Either the module signing key
-> > is generated at build time, which makes the build unreproducible, or a
-> > static signing key is used, which precludes rebuilds by third parties
-> > and makes the whole build and packaging process much more complicated.
-> 
-> I think there is a middle ground where the module signing key is generated
-> using a key derivation function that has as an input a deterministic value
-> on the build host, such as /etc/machine-id . The problem with this approach
-> is that only hosts knowing the value will be able to reproduce the build.
+Export plpks_wrapping_is_supported() so trusted-keys links cleanly
 
-The goal is to make the distro kernel packages rebuildable by the
-general public. Any involvement of secret values will break this goal.
+This patch is intended to be applied on top of the earlier "Extend "trusted
+" keys to support a new trust source named the PowerVM Key Wrapping Module
+(PKWM)" series (v5).
+Link: https://lore.kernel.org/all/20260127145228.48320-1-ssrish@linux.ibm.com/
 
-> Maybe this is a solution to NixOS secret management? Introduce minimal
-> impurity as a cryptographic seed and derive the rest of the secrets using
-> something like Argon2(seed, key_uuid).
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202602010724.1g9hbLKv-lkp@intel.com/
+Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/plpks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I am not familiar with NixOS and its secret management.
-This patchset serves a wider audience.
+diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
+index 038ecf8f6d6b..23e4e2a922fc 100644
+--- a/arch/powerpc/platforms/pseries/plpks.c
++++ b/arch/powerpc/platforms/pseries/plpks.c
+@@ -896,6 +896,7 @@ bool plpks_wrapping_is_supported(void)
+ {
+ 	return wrapsupport;
+ }
++EXPORT_SYMBOL_GPL(plpks_wrapping_is_supported);
+ 
+ /**
+  * plpks_gen_wrapping_key() - Generate a new random key with the 'wrapping key'
+-- 
+2.47.3
 
-> There might be another approach to code integrity rather than step-by-step
-> reproducibility. One may exploit the very cryptographic primitives that make
-> reproducibility hard to ensure that reproducibility is most  likely valid.
-> 
-> For example, the module signing issue, the build host publishes four artifacts:
-> * The source-code
-> * The compiled and signed binary
-> * The build environment
-> * Its public key
-> 
-> Now, we don't need to sign with the private key to know that building the source
-> code using the specific build environment and signing the result with the private
-> key will result in the claimed binary. We can just compile and verify with the
-> public key.
-
-This could work if the goal is only to verify the reproducibility of a
-single, signed-en-bloc artifact. But we also need to handle vmlinux which
-contains the corresponding public key. It would need different handling.
-We can add some special logic to strip that public key before
-comparision. But then vmlinux might be compressed or wrapped in some
-other format. Another whole collection of special logic.
-
-(...)
-
-
-Thomas
 
