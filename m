@@ -1,84 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-16527-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16528-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFhcOEjxgGkgDQMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16527-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Feb 2026 19:47:36 +0100
+	id 6MilIZcSgWkqEAMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16528-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Feb 2026 22:09:43 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A522D04A8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Feb 2026 19:47:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A5ED18AA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 02 Feb 2026 22:09:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f4bFw5fb4z30FP;
-	Tue, 03 Feb 2026 05:47:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f4fPs3bSMz2xKx;
+	Tue, 03 Feb 2026 08:09:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770058052;
-	cv=none; b=ciXKSZbR/ZZ/yxfaY+6+bGDgneV7ABBPbOT3knN7KmK2mxnuInLNtwgRwVaQMwFG2sG7PN5ERUg4ckGiUJUvi9xQL3HW1ogtKXwqulff2H8uaU35vV9vR05aQiQVKHT3bbmiWKOkaD3C7AHsJMLZrYCTy3bsjnsUOk1RcjAwcDK+zRNB5Dj8oVllVMG+gxgi/jyH5Izq8HvaWDRdogOAfb1ZswVj4LT5teqOKmxbnYSV081K5FjAQVqSOGgZ28cD/xVMLLjRxKjgcHsE0Y3uQEwox3ucZJNSzb8I4PB5h0ObqGUQdbBsk/kf2JS78BQUUXEr5nV80fGsH3VqgIoTMg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=83.223.78.240
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770066577;
+	cv=none; b=eiJoRqpHSy3zN+tQb0BjN5121JdwTN2ttAeMWE9Vj8lcoK+360PIRFjGOGueXpwSLGC5M74AxCyAscaOD3s/B8QGd2LrwpuENaUzOLqg4/YLyZhEwqvAk5lWl288++Dv2hEvnsmFpbAfUhPGaGrbKWc4gsvyC6FgzCX+a5NalFT590iq7WY3QqSaEIv+pIKlCZWDqDC+9k8ExsxU5vpIRyzdnSVEd69RvwYTXAgvlDj37Td8JwkB6wE5oSp2vDsN40e6xf1xi8+9Ghanyzw1hDtvOY7idOuYVY6KZMiXvS8FRvkl7SXrJ388xkMAlgx9LGuUXUShg3gfWFRSvqKayg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770058052; c=relaxed/relaxed;
-	bh=Zp4groAgVFf8Z6FsyW78hGxMRu8WsOlzg3z3ubBRZRs=;
+	t=1770066577; c=relaxed/relaxed;
+	bh=gNiJ/jl1QYyOrGHHsZeeP54O4O8Pg59etnwrRXvoaLI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kz2xjI3TMKqoPrvQhipY8bv02haIQeB99dMOz8VN0Gbl/QsHhOuImrNgVUnyeOS1w5RX0vvMXXpllYr0hOwDfRrGE6Kz87T04RWeKqJw4Lay9KuZ4yOdlgB3qBjYo/aYBqhUPU4MwO5T7Zy3ySYQn9APnJqNJeSu1kMmFouUFX0BHQfRck7n5QMYVTr/ZqJ3JTriw4+7ogJM9Tqsh+CfjPVW9rit96HtynOkVMwaLKCzWjkgDKwL4s35mfV2rRmVaUb8G32t4/Z+NJljmZVum5TnlnHuSE5Bw91XK8iFpBC+jZ+xlQEHyObH7EeBmr8Cqaz3IbjHLx934cq9wHzECA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aCKhW3mX; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aCKhW3mX;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	 Content-Type:Content-Disposition:In-Reply-To; b=YSf5XQjDsZ1t9xejYmaA0K8xodto0FGdaXAP/0Wh9pW9Vbk4vwuIhh8PimL8EWGYwf+4+LHQ8hqUXQUU47wDDNWeW2IaPAw3YGbr3BnPZJYWTg49iG2cu2WnpkJCj7S9/PQJrjrYGC0PccioDT4EXXHP68g19wnL64ZtwyvxNexkh5DhX9OZ/PpPVEofhVGLvWr4V1qwLwNYp/GMn+a4RBfjR0gkZeoAtyMIJrzbCf0O42fW5G/6kD9v208HEhDTWSG9cVhvh5Wc49HVkw5iQjfy7jj2W6/j71p/iwmnNbEAvykY1wStDFogQwglg6/5F2ytUCOWVK9eLL6/lGtR7g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=83.223.78.240; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout2.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout2.hostsharing.net (client-ip=83.223.78.240; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f4bFv4CHYz2xpn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 05:47:31 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8915860010;
-	Mon,  2 Feb 2026 18:47:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8E1C116C6;
-	Mon,  2 Feb 2026 18:47:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770058049;
-	bh=b1c9hVroKYW8OCGypKuuUgArjCJp8gAKeo9XoSbuZKE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aCKhW3mXh4GMY6S3gJZHpkUL/e079wkvIz4StZSSFnNiJpENS1vb009Nnw6/Gv1Ho
-	 O7IqLvlFBUcPPaHmemphyl8g5x/Xu1vGyLhXz2xHPJYq43Akq6PHjLNgr+KJ5RZ3OB
-	 jYfmikmo7u6XcZF1Y+aEaBpajLhG1o0HZca91/uZ12/t/3iGvhD3gTGbGV0Xpk4bzT
-	 7PvlHHVPEAx2QjM9YwOHrva2imznODhL/DXbiUI1JtwPimcHJQbP4HucTvqJN5r3am
-	 r+PSyekjnt8ryUK0OML++wPPKLWeKExnZA83OKQWgOm51T9t9rlSEUc/Xm3GptqwJC
-	 CajFQV8Axm+mw==
-Date: Mon, 2 Feb 2026 10:47:25 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: =?us-ascii?B?PT9VVEYtOD9xP01paGFpLURyb3NpPTIwQz1DMz1BMmp1Pz0=?= <mcaju95@gmail.com>,
-	linux@weissschuh.net, arnd@arndb.de, arnout@bzzt.net,
-	atomlin@atomlin.com, bigeasy@linutronix.de, chleroy@kernel.org,
-	christian@heusel.eu, corbet@lwn.net, coxu@redhat.com,
-	da.gomez@kernel.org, da.gomez@samsung.com,
-	dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com,
-	f.gruenbichler@proxmox.com, jmorris@namei.org, kpcyrd@archlinux.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-integrity@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, lkp@intel.com, maddy@linux.ibm.com,
-	mattia@mapreri.org, mcgrof@kernel.org, mpe@ellerman.id.au,
-	nathan@kernel.org, naveen@kernel.org,
-	nicolas.bouchinet@oss.cyber.gouv.fr, nicolas.schier@linux.dev,
-	npiggin@gmail.com, nsc@kernel.org, paul@paul-moore.com,
-	petr.pavlu@suse.com, roberto.sassu@huawei.com,
-	samitolvanen@google.com, serge@hallyn.com, xiujianfeng@huawei.com,
-	zohar@linux.ibm.com
-Subject: Re: [PATCH v4 00/17] module: Introduce hash-based integrity checking
-Message-ID: <20260202184725.GC2036@quark>
-References: <20260202183055.GB2036@quark>
- <20260201201218.GA15755@quark>
- <20260131073636.65494-1-mcaju95@gmail.com>
- <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
- <2316630.1769965788@warthog.procyon.org.uk>
- <2339369.1770024079@warthog.procyon.org.uk>
- <2513499.1770057531@warthog.procyon.org.uk>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f4fPq5QXRz2xGF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 08:09:33 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 520912006F69;
+	Mon,  2 Feb 2026 22:09:27 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 4B301290DD; Mon,  2 Feb 2026 22:09:27 +0100 (CET)
+Date: Mon, 2 Feb 2026 22:09:27 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com,
+	kbusch@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com,
+	mahesh@linux.ibm.com, oohall@gmail.com, Jonathan.Cameron@huawei.com,
+	terry.bowman@amd.com, tianruidong@linux.alibaba.com
+Subject: Re: [PATCH v7 2/5] PCI/DPC: Run recovery on device that detected the
+ error
+Message-ID: <aYESh4bCE2lzTg2S@wunner.de>
+References: <20260124074557.73961-1-xueshuai@linux.alibaba.com>
+ <20260124074557.73961-3-xueshuai@linux.alibaba.com>
+ <aYCujqZIvxElSsOE@wunner.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,61 +68,97 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2513499.1770057531@warthog.procyon.org.uk>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <aYCujqZIvxElSsOE@wunner.de>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.29 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	CC_EXCESS_BASE64(1.50)[];
+X-Spamd-Result: default: False [-1.51 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
 	MAILLIST(-0.20)[generic];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16527-lists,linuxppc-dev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:dhowells@redhat.com,m:mcaju95@gmail.com,m:linux@weissschuh.net,m:arnd@arndb.de,m:arnout@bzzt.net,m:atomlin@atomlin.com,m:bigeasy@linutronix.de,m:chleroy@kernel.org,m:christian@heusel.eu,m:corbet@lwn.net,m:coxu@redhat.com,m:da.gomez@kernel.org,m:da.gomez@samsung.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:f.gruenbichler@proxmox.com,m:jmorris@namei.org,m:kpcyrd@archlinux.org,m:linux-arch@vger.kernel.org,m:linux-doc@vger.kernel.org,m:linux-integrity@vger.kernel.org,m:linux-kbuild@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-security-module@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:lkp@intel.com,m:maddy@linux.ibm.com,m:mattia@mapreri.org,m:mcgrof@kernel.org,m:mpe@ellerman.id.au,m:nathan@kernel.org,m:naveen@kernel.org,m:nicolas.bouchinet@oss.cyber.gouv.fr,m:nicolas.schier@linux.dev,m:npiggin@gmail.com,m:nsc@kernel.org,m:paul@paul-moore.com,m:petr.pavlu@suse.com,m:roberto.sassu@huawei.com,m:samito
- lvanen@google.com,m:serge@hallyn.com,m:xiujianfeng@huawei.com,m:zohar@linux.ibm.com,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:xueshuai@linux.alibaba.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:Jonathan.Cameron@huawei.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[lukas@wunner.de,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[44];
-	FORGED_SENDER(0.00)[ebiggers@kernel.org,linuxppc-dev@lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-16528-lists,linuxppc-dev=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,google.com,kernel.org,linux.intel.com,linux.ibm.com,gmail.com,huawei.com,amd.com,linux.alibaba.com];
+	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
+	MISSING_XM_UA(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[gmail.com,weissschuh.net,arndb.de,bzzt.net,atomlin.com,linutronix.de,kernel.org,heusel.eu,lwn.net,redhat.com,samsung.com,oracle.com,proxmox.com,namei.org,archlinux.org,vger.kernel.org,lists.ozlabs.org,intel.com,linux.ibm.com,mapreri.org,ellerman.id.au,oss.cyber.gouv.fr,linux.dev,paul-moore.com,suse.com,huawei.com,google.com,hallyn.com];
+	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,linuxppc-dev@lists.ozlabs.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 0A522D04A8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wunner.de:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 95A5ED18AA
 X-Rspamd-Action: no action
 
-On Mon, Feb 02, 2026 at 06:38:51PM +0000, David Howells wrote:
-> > Could you give more details on this use case and why it needs
-> > signatures, as opposed to e.g. loading an additional Merkle tree root
-> > into the kernel to add to the set of allowed modules?
+On Mon, Feb 02, 2026 at 03:02:54PM +0100, Lukas Wunner wrote:
+> You're assuming that the parent of the Requester is always identical
+> to the containing Downstream Port.  But that's not necessarily the case:
 > 
-> Because we don't want to, for example, include all the nvidia drivers in our
-> kernel SRPM.
+> E.g., imagine a DPC-capable Root Port with a PCIe switch below
+> whose Downstream Ports are not DPC-capable.  Let's say an Endpoint
+> beneath the PCIe switch sends ERR_FATAL upstream.  AFAICS, your patch
+> will cause pcie_do_recovery() to invoke dpc_reset_link() with the
+> Downstream Port of the PCIe switch as argument.  That function will
+> then happily use pdev->dpc_cap even though it's 0.
 
-That doesn't answer my question.  Are you trying to say these modules
-need to be built later *and* signed using the original signing key?
+Thinking about this some more, I realized there's another problem:
 
-- Eric
+In a scenario like the one I've outlined above, after your change,
+pcie_do_recovery() will only broadcast error_detected (and other
+callbacks) below the downstream port of the PCIe switch -- and not
+to any other devices below the containing Root Port.
+
+However, the DPC-induced Link Down event at the Root Port results
+in a Hot Reset being propagated down the hierarchy to any device
+below the Root Port.  So with your change, the siblings of the
+downstream port on the PCIe switch will no longer be informed of
+the reset and thus are no longer given an opportunity to recover
+after reset.
+
+The premise on which this patch is built is false -- that the bridge
+upstream of the error-reporting device is always equal to the
+containing Downstream Port.
+
+It seems the only reason why you want to pass the reporting device
+to pcie_do_recovery() is that you want to call pcie_clear_device_status()
+and pci_aer_clear_nonfatal_status() with that device.
+
+However as I've said before, those calls are AER-specific and should
+be moved out of pcie_do_recovery() so that it becomes generic and can
+be used by EEH and s390:
+
+https://lore.kernel.org/all/aPYKe1UKKkR7qrt1@wunner.de/
+
+There's another problem:  When a device experiences an error while DPC
+is ongoing (i.e. while the link is down), its ERR_FATAL or ERR_NONFATAL
+Message may not come through.  Still the error bits are set in the
+device's Uncorrectable Error Status register.  So I think what we need to
+do is walk the hierarchy below the containing Downstream Port after the
+link is back up and search for devices with any error bits set,
+then report and clear those errors.  We may do this after first
+examining the device in the DPC Error Source ID register.
+Any additional errors found while walking the hierarchy can then
+be identified as "occurred during DPC recovery".
+
+Thanks,
+
+Lukas
 
