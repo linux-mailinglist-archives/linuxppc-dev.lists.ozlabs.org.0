@@ -1,60 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-16537-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16538-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMhyEYingWm3IQMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16537-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 08:45:12 +0100
+	id oLpjCo2pgWn0IQMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16538-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 08:53:49 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:21b9:f100::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D02D5CFD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 08:45:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B403D5DEA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 08:53:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f4wW84bNWz30GV;
-	Tue, 03 Feb 2026 18:45:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f4wj33Wrqz30GV;
+	Tue, 03 Feb 2026 18:53:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=83.223.78.240
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770104708;
-	cv=none; b=aEUozyksflQm+cDP/RBGbhDklDdfU6Cwu8E97tzqUVAzSe5mk0Li3072uV9QPs301wE7FwZltLi2uXESgfkSZU6iaWvsZAqyjZeerwqUBgGkBWPcaj0phh6lYDohKVag1NDIKop6A211zE+Mb5n3vXGf5tvijxtDz9wvrYMi7KL8f1lvwB7nsqfSqb6l5RQafg2xonpva1XFdaeRN34B6o0YnKok2VMXTtaH/mUPGLx+y1zIw70qbZ3kwDjL1vFPuWcxdfJ/sQdhrFfyTACJaX4E5UIq4Tu+jabxxP/L3SHRuusEF09AQYITjPPpcyxD6cVCT4Rh/7ZOEqamkv71tw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f8:fff3:b8::112"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770105223;
+	cv=none; b=MC7/+OG8tL1Xg4BM6RhmKma2SsUcj5t1fIH/K4fXB/gIwcG4FZ4bmeJedtO1fYnf4mq7GhvG14kkaU92rOzEt3QMoLbLFygaikQ7In1H3kN/PEk5W1RJPVyqAoMkeJD0GxqwK6owwAHMZi88ZSy5RYmDCbds545MjD3BbobPSJMjmELkYjNJ+F9/x63oZdCLTLey3k9Q0MjY+AMlAOHK2i4G9fKezl0qn2DYfocMstGzmTT4TqCi6yaSrB4e9CpmHXYKaD06e0fLOJa/XYGd5adc4soHAzt5nblYnAia6vQtkwoHYsUaqhMZ+TnQHE97XbckigRdXDVma9lmYWb30w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770104708; c=relaxed/relaxed;
-	bh=9sX3wRAtrEossmq3cY7uDXzysZPX25inkDRtX1XRoX8=;
+	t=1770105223; c=relaxed/relaxed;
+	bh=jI5LcoYBZdWXxS8YoKjjfNSuHkf8Zg75Kdji8LYGQ54=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nfKtGAE2EKIRsUuQBEQEuKq9Bp2iytieBlD+FyiOo1Il2c4Y1THqt8hWbiJ/nHswVbu8FFEf0AuNFVS7HQpzZPGMv7Tft+EjxN/bMYD0hndcJDYM0mBui19kxfnLvyRszimgloz7SKi87BaPjsYBmB9LKKIE+oxz/Xm3BnvlLln5BMNEjjZ4V0yWSUJIew2jVR/uKFgvVKC+12uwROInZjY/h30ynl2/4Uo0oxQvXtkBcM4NqIK6xA4Ui5YQ/QoolHybzpbpAAQKYs6cyBKn+nP/sAsWgTt6nohzjbxz0dP/szUYsJ5YfErnS+c4nN5XQr54nPfT150L5suFPIk03A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=83.223.78.240; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout2.hostsharing.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=A9r+0xngu5wqk8qGnHBbMazB6Rl+yC9LGgWi711tG8kmmL72HOdnC5HzU0G0u/hWF0pjkkgFci+ofB2eFneFLn6z/bZb3aWjaerG22pK6ZtlxwClYb9DTQ2ExrFv4vRPdXtCNUoqYl9sdSEeSTYkhbLKTGB/fQhB1dIZoYH32+iJqMXUHM0BUr28X9fkVO+d53stI+E0EnCT2IbGFzmDNTudXam4bHQDSodB/y4RI2qUYX/0jxBWvDd87DG5gCVUNPUL0gFMdMmyVrhpcHvd6/VKMHIHCyxDksDGqmOq1Lx9qR6cXV0Z2nTZ2+/FJk/HkgZps0+WX3JyieyHxgqKnw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:4f8:fff3:b8::112; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout2.hostsharing.net (client-ip=83.223.78.240; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=2a01:4f8:fff3:b8::112; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [IPv6:2a01:4f8:fff3:b8::112])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f4wW70F8Pz309y
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 18:45:04 +1100 (AEDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f4wj227Dkz2xjb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 18:53:41 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384
 	 client-signature ECDSA (secp384r1) client-digest SHA384)
 	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id C7AB02007FCC;
-	Tue,  3 Feb 2026 08:44:59 +0100 (CET)
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 7CD8A2C01622;
+	Tue,  3 Feb 2026 08:53:37 +0100 (CET)
 Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id A334D290DB; Tue,  3 Feb 2026 08:44:59 +0100 (CET)
-Date: Tue, 3 Feb 2026 08:44:59 +0100
+	id 646541DEA0; Tue,  3 Feb 2026 08:53:37 +0100 (CET)
+Date: Tue, 3 Feb 2026 08:53:37 +0100
 From: Lukas Wunner <lukas@wunner.de>
 To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com,
 	kbusch@kernel.org, sathyanarayanan.kuppuswamy@linux.intel.com,
-	mahesh@linux.ibm.com, oohall@gmail.com, terry.bowman@amd.com,
-	tianruidong@linux.alibaba.com
+	mahesh@linux.ibm.com, oohall@gmail.com, Jonathan.Cameron@huawei.com,
+	terry.bowman@amd.com, tianruidong@linux.alibaba.com
 Subject: Re: [PATCH v7 5/5] PCI/AER: Only clear error bits in
  pcie_clear_device_status()
-Message-ID: <aYGne72Gjb_d9Myd@wunner.de>
+Message-ID: <aYGpgSztxNMZO-oC@wunner.de>
 References: <20260124074557.73961-1-xueshuai@linux.alibaba.com>
  <20260124074557.73961-6-xueshuai@linux.alibaba.com>
- <20260127104520.0000579c@huawei.com>
- <881e57b7-aa73-4df6-b37b-d71571567436@linux.alibaba.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,30 +67,29 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <881e57b7-aa73-4df6-b37b-d71571567436@linux.alibaba.com>
-X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+In-Reply-To: <20260124074557.73961-6-xueshuai@linux.alibaba.com>
+X-Spam-Status: No, score=0.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.51 / 15.00];
 	ARC_ALLOW(-1.00)[lists.ozlabs.org:s=201707:i=1];
 	MAILLIST(-0.20)[generic];
-	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2404:9400:21b9:f100::1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:xueshuai@linux.alibaba.com,m:jonathan.cameron@huawei.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:xueshuai@linux.alibaba.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:bhelgaas@google.com,m:kbusch@kernel.org,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:mahesh@linux.ibm.com,m:oohall@gmail.com,m:Jonathan.Cameron@huawei.com,m:terry.bowman@amd.com,m:tianruidong@linux.alibaba.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[lukas@wunner.de,linuxppc-dev@lists.ozlabs.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-16537-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16538-lists,linuxppc-dev=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[linuxppc-dev@lists.ozlabs.org];
-	FREEMAIL_CC(0.00)[huawei.com,vger.kernel.org,lists.ozlabs.org,google.com,kernel.org,linux.intel.com,linux.ibm.com,gmail.com,amd.com,linux.alibaba.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,google.com,kernel.org,linux.intel.com,linux.ibm.com,gmail.com,huawei.com,amd.com,linux.alibaba.com];
 	ASN(0.00)[asn:133159, ipnet:2404:9400:2000::/36, country:AU];
 	MISSING_XM_UA(0.00)[];
 	PREVIOUSLY_DELIVERED(0.00)[linuxppc-dev@lists.ozlabs.org];
@@ -107,35 +103,39 @@ X-Spamd-Result: default: False [-1.51 / 15.00];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linuxppc-dev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[wunner.de:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
-X-Rspamd-Queue-Id: 54D02D5CFD
+X-Rspamd-Queue-Id: 1B403D5DEA
 X-Rspamd-Action: no action
 
-On Wed, Jan 28, 2026 at 08:45:36PM +0800, Shuai Xue wrote:
-> The revised the commit message is:
-> 
-> PCI/AER: Only clear error bits in PCIe Device Status register
-> 
-> Currently, pcie_clear_device_status() clears the entire PCIe Device
-> Status register (PCI_EXP_DEVSTA), which includes both error status bits
-> and other status bits.
-> 
-> According to PCIe Base Spec r6.0 sec 7.5.3.5, the Device Status register
-> contains different types of status bits:
+On Sat, Jan 24, 2026 at 03:45:57PM +0800, Shuai Xue wrote:
+> +++ b/drivers/pci/pci.c
+> @@ -2246,7 +2246,7 @@ void pcie_clear_device_status(struct pci_dev *dev)
+>  	u16 sta;
+>  
+>  	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
+> -	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
+> +	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta & PCI_EXP_DEVSTA_ERR);
+>  }
 
-Always cite the latest spec revision, i.e. PCIe r7.0 sec 7.5.3.5.
+I don't think there's any harm to write error bits which are currently 0,
+so I'd just get rid of the pcie_capability_read_word() and directly write
+the error bits.
 
-> - RW1C (read/write 1 to clear) non-error bits: For example, Emergency
->   Power Reduction Detected (bit 6). Unconditionally clearing these bits
->   can interfere with other drivers or subsystems that rely on them.
+> +++ b/include/uapi/linux/pci_regs.h
+> @@ -534,6 +534,7 @@
+>  #define  PCI_EXP_DEVSTA_NFED	0x0002	/* Non-Fatal Error Detected */
+>  #define  PCI_EXP_DEVSTA_FED	0x0004	/* Fatal Error Detected */
+>  #define  PCI_EXP_DEVSTA_URD	0x0008	/* Unsupported Request Detected */
+> +#define  PCI_EXP_DEVSTA_ERR	0xf	/* Error bits */
 
-It would be good to explicitly call out that this bit was introduced with
-PCIe r5.0 in 2019 and that it's currently the only writable bit in the
-register besides the error bits.
+There's only one user of PCI_EXP_DEVSTA_ERR and it feels a little
+awkward to define a macro in a uapi header which does not correspond
+to an "official" bit definition but is just there for convenience.
 
-> - Reserved bits: May be used for future features and should be preserved.
+So maybe it's better to simply use the macros for the four bits in
+pcie_clear_device_status()?  Might also be slightly clearer.
 
-Wrong, they're marked "RsvdZ" (not "RsvdP"), so they're supposed to be
-written as zero (not preserved).
+This patch could be submitted individually instead of being part
+of this series.
 
 Thanks,
 
