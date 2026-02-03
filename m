@@ -1,46 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-16549-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16550-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0M0rHTztgWkFMAMAu9opvQ
-	(envelope-from <linuxppc-dev+bounces-16549-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 13:42:36 +0100
+	id cFQzHJ7tgWkFMAMAu9opvQ
+	(envelope-from <linuxppc-dev+bounces-16550-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>)
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 13:44:14 +0100
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84446D925C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 13:42:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8285CD92F2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 03 Feb 2026 13:44:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4f536K0g00z30T8;
-	Tue, 03 Feb 2026 23:42:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4f538C0N0zz30T8;
+	Tue, 03 Feb 2026 23:44:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.69.126.157
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770122553;
-	cv=none; b=RuuwlUvbasoUGWxoBDpb5ywbTUNjLfGDkOmwRIyudxs3Jb0SY70cSjn3lx1oH9GiEzKSbhIjyvXkIwWrlNOGu+lxpRK6zj0qYck956flNtDEUQg1q2vXSizOs5rKMYLr4cc4HZ/LLoP0s4n17JdZ0uAhHlg7CgHAaAm0rcufsoP3n0GxDSZzbnZUnyNEgtD9Lg6IuLfd0JZTgKJVSEMJATy5IO5C2FD0i/+IXHsTXSOqdO9cC84Ym/BW0sCLnyYtiSTislWkwd4YARA4TRuL7wyVCYKyRV3ul3G5UchrYW+MpfI12tUCL2rtnMVMNygUgUAYhBfFQyh20iiAYl35gw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1770122650;
+	cv=none; b=KksZfJ8NdhFgmmy4ayqLX/6oTCMGYP4xKLwV9uFVvllu0E3PhBek9Pl2J+12q3glscuSi4230Q12CfWakF9J9PGTlay+orZjjCSIu1c0dS1zlE5gQilLRyqXCjLrISHJLEEae7bD0KdWPQlz0kF5Vo49P014QEJqLH5my4hwkQsE5MLv8+KvDH5BMz06scFBkwSIrAv3/9OXccYyku6oWkUY3byWW1k8UJ6vteI81rARjsSqlqBfzoz4+JXsRQ/AC5J0JWfEUALEX7qp/nulsJPYavPysmCkziXJp5HOuwNlrwQtvkkOM0vhK0Nw6cpvm65OO7VIolSzVIOJUbzBTQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1770122553; c=relaxed/relaxed;
-	bh=irb6E8LSn2ChZallYiRh2EYB/H75YZYoYhTa9Bklsy8=;
+	t=1770122650; c=relaxed/relaxed;
+	bh=RA+12AgdHQ2c0mALL3E63gSEBxQMJO52jgNasY+io6c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TE35pWx/MtLyDOt7nyRiqT2Yarpv+Gc/orpKLrjE2kc3mutuVyOLFkTVTayqmkO5zqWyV8AIyINxvJin5PkUBbdDQyf++6DUDaU21y7+mLFR35HLxW540Tqh7qt0StWcQjHUwXgDM1TYT0tqxO5i6KLAd6dL4P0+NUH5wd3oyakNXnCqYlHO6AmNuaJQRh+u11l5zd536kK0/7Q2gg/oJygGs+9MSvTnLCSeXsqfL5oEPsXHjF7lcY/rLRlim+xmkWGdrkm9UXJPgo61rgl2gmqge9/j96TAk6RoW4SsWCLTakJP8F842xCUfd8C+OkBP+8FJgorO3X44bIFGog3Bg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=VaAFHhJc; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=VqcaLNDFCJOGzJdEBWoyxlh7crdkh6PmyHcvI/BCTNvL6yuv+WN+CXfE8LbqQaeneBr933dkxAQKWlJas/vcmvRY8NqAgxB067jkDE1QU0qeYB8GoOGGI2SekLDQ4FJphH+eifNwA+BaDC3kGEKIX1NdgJdYT5GzywK5pX9oIPYKSmV9tsPk85AP2yYkxDAtRhFqNJhXST8GRn+NF0/RitmwVJWSSLJclE0RB/Okm6xkgWJSk7VgtBljC7x4gWy6BHH3ZaNReiVtmLYOQXTw8tWVZYv2BG5DV/L4M7Vdl2YoH+rTwtwqC4Ee9kqATS+9A3v7FV1Nd4SIZjpIK8AwzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=SMXk7Zio; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=VaAFHhJc;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=SMXk7Zio;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4f536H6jGpz309S
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 23:42:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4f538B1sMYz309S
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Feb 2026 23:44:10 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1770122547;
-	bh=+vKlgAoMgxorO8wzZsSKLOlHjUax16wakp+NL76Z0jg=;
+	s=mail; t=1770122645;
+	bh=4xMbDkPtYFnbhn8oi8ogQM7HDBoaOGhwFfB7e0t3td4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VaAFHhJc7RJThp3X+a8KljdNfBU40Qohg4ZbBihrSHkldtnS2mr7PIOYLFNNVh3m4
-	 iwPDIMK7zHXuYYbgAnk2nZqfMp/Kc/PcVHebE1k/b71FBy78nAPYLadtFkiaM5Sf6e
-	 bpmVJeSOu/HMoajP8WRx2JjXQW/CSQtzckT5P31U=
-Date: Tue, 3 Feb 2026 13:42:26 +0100
+	b=SMXk7Ziop93PtXgUUPvFJrwX+tZphLJn717cY967EJ+dn5c3ytK5Jd3akdSlt7smz
+	 LjQYDD5nu7+lEc/AI7bKfPM9nyLwM7tXiMSSwvKs2nPopR1BLCJ2Cgd771dfO3qck8
+	 4K58p7AUrndd8U19BhXdA2hDQ2k+wJyqNngf+7xI=
+Date: Tue, 3 Feb 2026 13:44:05 +0100
 From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
 To: Petr Pavlu <petr.pavlu@suse.com>
 Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
@@ -62,11 +62,11 @@ Cc: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
 	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org, 
 	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
 	linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v4 12/17] module: Move signature splitting up
-Message-ID: <2d6b4a2e-b65a-4db2-aa92-2ad80d066516@t-8ch.de>
+Subject: Re: [PATCH v4 13/17] module: Report signature type to users
+Message-ID: <8d399298-88a6-4c89-a0ed-fed0268b6493@t-8ch.de>
 References: <20260113-module-hashes-v4-0-0b932db9b56b@weissschuh.net>
- <20260113-module-hashes-v4-12-0b932db9b56b@weissschuh.net>
- <aa92ce4a-d336-4d03-b87d-1c39b1c553da@suse.com>
+ <20260113-module-hashes-v4-13-0b932db9b56b@weissschuh.net>
+ <fd19f9d3-b01c-4cc8-9fd5-642350e7b36b@suse.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,7 +83,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aa92ce4a-d336-4d03-b87d-1c39b1c553da@suse.com>
+In-Reply-To: <fd19f9d3-b01c-4cc8-9fd5-642350e7b36b@suse.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
@@ -99,7 +99,7 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-16549-lists,linuxppc-dev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-16550-lists,linuxppc-dev=lfdr.de];
 	FORGED_SENDER(0.00)[linux@weissschuh.net,linuxppc-dev@lists.ozlabs.org];
 	FREEMAIL_CC(0.00)[kernel.org,arndb.de,google.com,samsung.com,paul-moore.com,namei.org,hallyn.com,lwn.net,linux.ibm.com,ellerman.id.au,gmail.com,huawei.com,oracle.com,linux.dev,atomlin.com,oss.cyber.gouv.fr,proxmox.com,bzzt.net,mapreri.org,archlinux.org,heusel.eu,linutronix.de,vger.kernel.org,lists.ozlabs.org];
 	RCPT_COUNT_TWELVE(0.00)[40];
@@ -121,63 +121,54 @@ X-Spamd-Result: default: False [-0.71 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:133159, ipnet:112.213.32.0/21, country:AU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[t-8ch.de:mid]
-X-Rspamd-Queue-Id: 84446D925C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[weissschuh.net:email,weissschuh.net:dkim,t-8ch.de:mid,lists.ozlabs.org:helo,lists.ozlabs.org:rdns]
+X-Rspamd-Queue-Id: 8285CD92F2
 X-Rspamd-Action: no action
 
-On 2026-01-29 15:41:43+0100, Petr Pavlu wrote:
+On 2026-01-29 15:44:31+0100, Petr Pavlu wrote:
 > On 1/13/26 1:28 PM, Thomas Weißschuh wrote:
-> > The signature splitting will also be used by CONFIG_MODULE_HASHES.
+> > The upcoming CONFIG_MODULE_HASHES will introduce a signature type.
+> > This needs to be handled by callers differently than PKCS7 signatures.
 > > 
-> > Move it up the callchain, so the result can be reused.
+> > Report the signature type to the caller and let them verify it.
 > > 
 > > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 > > ---
 > > [...]
 > > diff --git a/kernel/module/main.c b/kernel/module/main.c
-> > index c09b25c0166a..d65bc300a78c 100644
+> > index d65bc300a78c..2a28a0ece809 100644
 > > --- a/kernel/module/main.c
 > > +++ b/kernel/module/main.c
-> > @@ -3346,10 +3346,21 @@ static int early_mod_check(struct load_info *info, int flags)
-> >  
-> >  static int module_integrity_check(struct load_info *info, int flags)
+> > @@ -3348,19 +3348,24 @@ static int module_integrity_check(struct load_info *info, int flags)
 > >  {
-> > +	bool mangled_module = flags & (MODULE_INIT_IGNORE_MODVERSIONS |
-> > +				       MODULE_INIT_IGNORE_VERMAGIC);
-> > +	size_t sig_len;
-> > +	const u8 *sig;
+> >  	bool mangled_module = flags & (MODULE_INIT_IGNORE_MODVERSIONS |
+> >  				       MODULE_INIT_IGNORE_VERMAGIC);
+> > +	enum pkey_id_type sig_type;
+> >  	size_t sig_len;
+> >  	const u8 *sig;
 > >  	int err = 0;
 > >  
-> > +	if (IS_ENABLED(CONFIG_MODULE_SIG_POLICY)) {
-> > +		err = mod_split_sig(info->hdr, &info->len, mangled_module,
-> > +				    &sig_len, &sig, "module");
-> > +		if (err)
-> > +			return err;
-> > +	}
-> > +
-> >  	if (IS_ENABLED(CONFIG_MODULE_SIG))
-> > -		err = module_sig_check(info, flags);
-> > +		err = module_sig_check(info, sig, sig_len);
+> >  	if (IS_ENABLED(CONFIG_MODULE_SIG_POLICY)) {
+> >  		err = mod_split_sig(info->hdr, &info->len, mangled_module,
+> > -				    &sig_len, &sig, "module");
+> > +				    &sig_type, &sig_len, &sig, "module");
+> >  		if (err)
+> >  			return err;
+> >  	}
 > >  
-> >  	if (err)
-> >  		return err;
+> > -	if (IS_ENABLED(CONFIG_MODULE_SIG))
+> > +	if (IS_ENABLED(CONFIG_MODULE_SIG) && sig_type == PKEY_ID_PKCS7) {
+> >  		err = module_sig_check(info, sig, sig_len);
+> > +	} else {
+> > +		pr_err("module: not signed with expected PKCS#7 message\n");
+> > +		err = -ENOPKG;
+> > +	}
 > 
-> I suggest moving the IS_ENABLED(CONFIG_MODULE_SIG) block under the
-> new IS_ENABLED(CONFIG_MODULE_SIG_POLICY) section. I realize that
-> CONFIG_MODULE_SIG implies CONFIG_MODULE_SIG_POLICY, but I believe this
-> change makes it more apparent that this it the case. Otherwise, one
-> might for example wonder if sig_len in the module_sig_check() call can
-> be undefined.
-> 
-> 	if (IS_ENABLED(CONFIG_MODULE_SIG_POLICY)) {
-> 		err = mod_split_sig(info->hdr, &info->len, mangled_module,
-> 				    &sig_len, &sig, "module");
-> 		if (err)
-> 			return err;
-> 
-> 		if (IS_ENABLED(CONFIG_MODULE_SIG))
-> 			err = module_sig_check(info, sig, sig_len);
-> 	}
+> The new else branch means that if the user chooses not to configure any
+> module integrity policy, they will no longer be able to load any
+> modules. I think this entire if-else part should be moved under the
+> IS_ENABLED(CONFIG_MODULE_SIG_POLICY) block above, as I'm mentioning on
+> patch #12.
 
 Ack.
 
